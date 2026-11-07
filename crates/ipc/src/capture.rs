@@ -61,6 +61,57 @@ pub enum Declined {
     Small,
 }
 
+impl Declined {
+    pub const ALL: [Declined; 6] = [
+        Declined::IntegrationOff,
+        Declined::Browser,
+        Declined::FileType,
+        Declined::Site,
+        Declined::Address,
+        Declined::Small,
+    ];
+
+    /// Its name between the native host and the extension: the host's reply (`declined`), and
+    /// the extension's notice of a download it left alone by the same rules
+    /// (extension/background.js).
+    pub fn code(self) -> &'static str {
+        match self {
+            Declined::IntegrationOff => "integration-off",
+            Declined::Browser => "browser",
+            Declined::FileType => "file-type",
+            Declined::Site => "site",
+            Declined::Address => "address",
+            Declined::Small => "small",
+        }
+    }
+
+    pub fn from_code(code: &str) -> Option<Declined> {
+        Declined::ALL.into_iter().find(|d| d.code() == code)
+    }
+
+    /// Why, for MDM's log (English, as the rest of it), naming the setting that decides.
+    pub fn reason(self) -> &'static str {
+        match self {
+            Declined::IntegrationOff => {
+                "Options > General > Use advanced browser integration is off"
+            }
+            Declined::Browser => {
+                "the browser is unticked in Options > General > Capture downloads from the following browsers"
+            }
+            Declined::FileType => "its type isn't in Options > File types",
+            Declined::Site => {
+                "its site is in Options > File types > Don't start downloading automatically from the following sites"
+            }
+            Declined::Address => {
+                "its address is in Options > File types > Edit list (addresses left to the browser)"
+            }
+            Declined::Small => {
+                "it is smaller than Options > File types > Don't take files smaller than"
+            }
+        }
+    }
+}
+
 impl CaptureRules {
     /// The rules as the app last saved them (defaults when there is no list yet).
     pub fn load() -> CaptureRules {
@@ -88,16 +139,24 @@ impl CaptureRules {
 
     /// Are downloads from `browser` (a name `browser_named` gives) taken at all?
     pub fn captures(&self, browser: &str) -> bool {
-        self.advanced_integration && !self.browsers.iter().any(|(b, on)| b == browser && !on)
+        self.capture_off(browser).is_none()
+    }
+
+    /// Why no download from `browser` is taken (integration off, the browser unticked), if so.
+    pub fn capture_off(&self, browser: &str) -> Option<Declined> {
+        if !self.advanced_integration {
+            Some(Declined::IntegrationOff)
+        } else if self.browsers.iter().any(|(b, on)| b == browser && !on) {
+            Some(Declined::Browser)
+        } else {
+            None
+        }
     }
 
     /// May `browser` hand `url` (saved as `file_name`) over?
     pub fn accepts(&self, url: &str, file_name: &str, browser: &str) -> Result<(), Declined> {
-        if !self.advanced_integration {
-            return Err(Declined::IntegrationOff);
-        }
-        if !self.captures(browser) {
-            return Err(Declined::Browser);
+        if let Some(off) = self.capture_off(browser) {
+            return Err(off);
         }
         if !self.auto_type(file_name) {
             return Err(Declined::FileType);
@@ -214,7 +273,7 @@ pub fn browser_of(user_agent: &str) -> &'static str {
 }
 
 /// The host of an http(s) address, lower case.
-fn host_of(url: &str) -> String {
+pub fn host_of(url: &str) -> String {
     let rest = url.split_once("://").map_or(url, |(_, r)| r);
     let authority = rest.split(['/', '?', '#']).next().unwrap_or("");
     let host = authority.rsplit_once('@').map_or(authority, |(_, h)| h);
@@ -471,5 +530,23 @@ mod tests {
         ));
         assert!(!address_matches(" ", "https://x.org/"));
         assert!(!wildcard("*/files/*.zip", "https://x.org/files/a.rar"));
+    }
+
+    #[test]
+    fn each_refusal_has_a_name_and_a_reason() {
+        for d in Declined::ALL {
+            assert_eq!(Declined::from_code(d.code()), Some(d));
+            assert!(d.reason().contains("Options >"), "{d:?}");
+        }
+        assert_eq!(Declined::from_code("FileType"), None);
+        let mut r = CaptureRules {
+            browsers: vec![(EDGE.into(), false)],
+            ..CaptureRules::default()
+        };
+        assert_eq!(r.capture_off(CHROME), None);
+        assert_eq!(r.capture_off(EDGE), Some(Declined::Browser));
+        r.advanced_integration = false;
+        assert_eq!(r.capture_off(CHROME), Some(Declined::IntegrationOff));
+        assert!(!r.captures(CHROME));
     }
 }

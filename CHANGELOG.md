@@ -80,7 +80,16 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   Mister Download Manager to your browser** window opens it in each of them (**Install it by
   hand** stays there for a browser that can't use its store), Chrome offers it by itself once
   MDM is installed, and the website, the help and the README offer **Add to Chrome** beside
-  **Add to Firefox**.
+  **Add to Firefox**. The store's copy needs MDM 0.3.0: the helper of MDM 0.2.x serves only the
+  copy in MDM's own folder, and the browser refuses the store's
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)).
+- **MDM says why the browser kept a download**
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): every download left
+  to the browser by Options is a line in MDM's log naming the setting that decided (its type
+  isn't in **File types**, its site or address is excluded, it's under the minimum size, the
+  browser is unticked, browser integration is off, or the extension may not read the site), and
+  the extension's button shows the last one, with the file's name. A download from a private
+  window is logged without its name or site.
 - **Themes: View → Theme** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)).
   **Classic** is MDM's look, unchanged and still the default. **Native** takes your system's
   colours: Windows' accent colour and, when it is on, its contrast theme; the desktop's accent

@@ -25,6 +25,7 @@ function fakeApi({
   panelOn,
   access = true,
   rules = {},
+  rulesReply,
   appName,
   proxy,
   session,
@@ -33,6 +34,7 @@ function fakeApi({
   proxyPerm = firefox ? "optional" : undefined,
   proxyGranted = false,
   proxyAnswer = true,
+  noticeReply,
 }) {
   const raw = [];
   // Objects made inside the sandbox have its prototypes: compare plain copies.
@@ -68,6 +70,7 @@ function fakeApi({
       local: {
         get: async (defaults) => ({ ...defaults, ...JSON.parse(JSON.stringify(store)) }),
         set: async (v) => Object.assign(store, JSON.parse(JSON.stringify(v))),
+        remove: async (k) => [k].flat().forEach((key) => delete store[key]),
       },
       ...(session
         ? {
@@ -112,11 +115,16 @@ function fakeApi({
         if (!host) throw new Error("Specified native messaging host not found.");
         if (m.rules) {
           calls.push(["rules", m]);
+          // `rulesReply`: the whole answer, as an older app's host gives it.
+          if (rulesReply) return rulesReply;
           return { ok: true, version: "0.2.5", types, capture: true, excludedSites: "*.update.microsoft.com", excludedAddresses: [], opened: true, ...rules };
         }
         calls.push(["native", name, m]);
         // The video button: "may it show" follows `panelOn`.
         if (m.panel) return { ok: panelOn !== false };
+        // A notice of a download left alone (#208): an older host, which knows none, takes it
+        // for an address it can't download (`noticeReply`).
+        if (m.declined) return noticeReply || { ok: true };
         return reply;
       },
       getManifest: () => ({
@@ -221,7 +229,10 @@ function load(api, firefox) {
 }
 
 const settle = () => new Promise((r) => setTimeout(r, 30));
-const natives = (calls) => calls.filter((c) => c[0] === "native").map((c) => c[2]);
+// The messages to the host about downloads, and apart, the notices of downloads the extension
+// left to the browser by Options (#208).
+const natives = (calls) => calls.filter((c) => c[0] === "native" && !c[2].declined).map((c) => c[2]);
+const notices = (calls) => calls.filter((c) => c[0] === "native" && c[2].declined).map((c) => c[2].declined);
 const steps = (calls) => calls.filter((c) => ["pause", "cancel", "erase", "resume", "removeFile"].includes(c[0])).map((c) => c[0]);
 let passed = 0;
 const ok = (what) => {
@@ -288,7 +299,10 @@ const ok = (what) => {
   await settle();
   assert.deepEqual(natives(calls), []);
   assert.deepEqual(steps(calls), []);
-  ok("a type not listed stays with the browser");
+  // Said, for MDM's log, under its own key and without an address.
+  assert.deepEqual(notices(calls), [{ why: "file-type", name: "page.html", site: "x" }]);
+  assert.ok(!calls.some((c) => c[0] === "native" && c[2].declined && "url" in c[2]));
+  ok("a type not listed stays with the browser, and MDM's log hears why");
 }
 
 // Chrome: incognito downloads use the incognito store; the address asked for goes as the
@@ -425,12 +439,15 @@ const ok = (what) => {
   assert.ok(await keep({ id: 51, url: "https://dl.update.microsoft.com/kb.exe", filename: "kb.exe" }), "excluded site");
   assert.ok(await keep({ id: 52, url: "blob:https://x/1234", filename: "a.zip" }), "blob:");
   assert.deepEqual(natives(calls), []);
+  // Alt and blob: are the user's and the browser's own: nothing to say. An excluded site is.
+  assert.deepEqual(notices(calls), [{ why: "site", name: "kb.exe", site: "dl.update.microsoft.com" }]);
   const limited = fakeApi({ firefox: false, access: false });
   load(limited.api, false);
   let suggested = false;
   limited.listeners.determining({ id: 53, url: "https://x/a.zip", filename: "a.zip" }, () => (suggested = true));
   await settle();
   assert.ok(suggested && natives(limited.calls).length === 0, "site access withdrawn");
+  assert.deepEqual(notices(limited.calls).map((n) => n.why), ["site-access"]);
   ok("Alt, excluded sites, blob: and withdrawn site access stay with the browser");
 }
 
@@ -1096,6 +1113,102 @@ const MPD = (protect) => `<?xml version="1.0"?>
   const m = natives(calls)[0];
   assert.deepEqual([m.proxy, m.proxyPac, m.proxyLogin], [undefined, undefined, undefined]);
   ok("no proxy: nothing extra goes");
+}
+
+// ---- #208: why a download stayed with the browser, and older apps --------------------------
+
+const popupState = (listeners) =>
+  new Promise((r) => listeners.message({ type: "state" }, { id: "ours" }, (v) => r(JSON.parse(JSON.stringify(v)))));
+
+// The host refuses by Options (its rules changed since): the rule it names is kept for the popup
+// (the host logged it; no notice); a download taken later clears it.
+{
+  const { api, calls, listeners, store } = fakeApi({ firefox: false, reply: { ok: false, why: "options", declined: "browser", error: "left to the browser by Options (Browser)" } });
+  load(api, false);
+  let kept = false;
+  listeners.determining({ id: 60, url: "https://x/a.zip", filename: "a.zip" }, () => (kept = true));
+  await settle();
+  assert.ok(kept);
+  assert.deepEqual(notices(calls), []);
+  const s = await popupState(listeners);
+  assert.deepEqual([s.declined.why, s.declined.name, s.declined.site, s.connected], ["browser", "a.zip", "x", true]);
+  ok("#208: the host's refusal is kept for the popup, by its rule");
+}
+{
+  const { api, listeners, store } = fakeApi({ firefox: false });
+  load(api, false);
+  store.declined = { why: "file-type", name: "p.png", site: "x", at: 1 };
+  listeners.determining({ id: 61, url: "https://x/b.zip", filename: "b.zip" }, () => {});
+  await settle();
+  assert.equal(store.declined, undefined, "a download taken clears it");
+  assert.equal((await popupState(listeners)).declined, null);
+  ok("#208: a download taken clears the last refusal");
+}
+
+// An app before #208 (0.2.4, 0.3.0): its rules say only the types (0.2.4) or no reason for
+// `capture` (0.3.0), its refusal only in the error text, and it takes a notice for an address it
+// can't download. Downloads go as before, the popup still names the rule, the status stays.
+{
+  const old024 = { ok: true, types: "ZIP EXE" };
+  const notice024 = { ok: false, error: "not an http(s) or ftp(s) URL" };
+  const { api, calls, listeners } = fakeApi({ firefox: false, rulesReply: old024, noticeReply: notice024 });
+  load(api, false);
+  listeners.determining({ id: 62, url: "https://x/a.zip", filename: "a.zip" }, () => {});
+  await settle();
+  assert.equal(natives(calls).length, 1, "a listed type is offered");
+  listeners.determining({ id: 63, url: "https://x/p.png", filename: "p.png" }, () => {});
+  await settle();
+  assert.deepEqual(notices(calls).map((n) => n.why), ["file-type"]);
+  const s = await popupState(listeners);
+  assert.ok(s.connected && !s.why, `the older host's answer to a notice changes no status: ${JSON.stringify(s)}`);
+  assert.equal(s.declined.why, "file-type");
+  ok("#208: a 0.2.4 app: downloads as before, a notice it can't read is harmless");
+}
+{
+  const { api, listeners } = fakeApi({ firefox: true, reply: { ok: false, error: "left to the browser by Options (Small)" } });
+  load(api, true);
+  listeners.created({ id: 64, url: "https://x/c.zip", filename: "C:\\dl\\c.zip" });
+  await settle();
+  assert.equal((await popupState(listeners)).declined.why, "small");
+  const off = fakeApi({ firefox: false, rules: { capture: false } });
+  load(off.api, false);
+  off.listeners.determining({ id: 65, url: "https://x/d.zip", filename: "d.zip" }, () => {});
+  await settle();
+  assert.deepEqual(notices(off.calls).map((n) => n.why), ["browser"], "0.3.0: capture off, no reason: the browser's box");
+  const integration = fakeApi({ firefox: false, rules: { capture: false, captureOff: "integration-off" } });
+  load(integration.api, false);
+  integration.listeners.determining({ id: 66, url: "https://x/e.zip", filename: "e.zip" }, () => {});
+  await settle();
+  assert.deepEqual(natives(integration.calls), []);
+  assert.deepEqual(notices(integration.calls).map((n) => n.why), ["integration-off"]);
+  ok("#208: an older host's refusal read from its words; capture off by the reason given");
+}
+
+// A private window's: neither its name nor its site is kept or sent.
+{
+  const { api, calls, listeners, store } = fakeApi({ firefox: false });
+  load(api, false);
+  listeners.determining({ id: 67, url: "https://secret.test/p.png", filename: "p.png", incognito: true }, () => {});
+  await settle();
+  assert.deepEqual([store.declined.why, store.declined.name, store.declined.site], ["file-type", "", ""]);
+  const sent = calls.find((c) => c[0] === "native" && c[2].declined)[2];
+  assert.ok(sent.private && !JSON.stringify(sent).includes("secret"));
+  ok("#208: a private window's refusal names nothing");
+}
+
+// The codes agree end to end: the app's (mdm_ipc::capture::Declined::code), the extension's own
+// ("site-access"), and a popup text for each.
+{
+  const rust = readFileSync(new URL("../../crates/ipc/src/capture.rs", import.meta.url), "utf8");
+  const body = /pub fn code\(self\)[\s\S]*?\n    \}\n/.exec(rust)[0];
+  const codes = [...body.matchAll(/=> "([a-z-]+)"/g)].map((m) => m[1]);
+  assert.deepEqual(codes, ["integration-off", "browser", "file-type", "site", "address", "small"]);
+  const en = JSON.parse(readFileSync(new URL("../../extension/_locales/en/messages.json", import.meta.url), "utf8"));
+  for (const c of [...codes, "site-access"]) assert.ok(en[`declined_${c.replace(/-/g, "_")}`], `a popup text for ${c}`);
+  assert.ok(en.popup_declined && en.popup_declined_unnamed);
+  const bg = code;
+  for (const name of ["IntegrationOff", "Browser", "FileType", "Site", "Address", "Small"]) assert.ok(bg.includes(`${name}: "`), `older hosts' ${name}`);
+  ok("#208: refusal codes, the app's and the popup's, agree");
 }
 
 // The manifests (#42): "proxy" optional in Firefox's, absent from Chrome's (it can't be optional

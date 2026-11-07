@@ -160,6 +160,68 @@ fn options_and_a_refusing_app_start_nothing() {
     let _ = std::fs::remove_dir_all(&dir);
 }
 
+/// #208: every download left to the browser is in MDM's log with why, whether the host refused
+/// it or the extension left it alone by the same rules (and only told the host); none reaches
+/// the app. A private window's is logged without its site or name.
+#[test]
+fn what_is_left_to_the_browser_is_logged() {
+    let dir = data_dir("logged", serde_json::json!({ "auto_types": "ZIP" }));
+    let app = fake_app(&dir, "ok");
+    std::fs::create_dir_all(dir.join("logs")).unwrap();
+    std::fs::write(dir.join("logs").join("mdm.log"), "an earlier line\n").unwrap();
+    let (replies, ok) = run(
+        &dir,
+        CALLER,
+        &[
+            serde_json::json!({ "url": "https://x.test/p.png", "filename": "p.png", "userAgent": UA }),
+            serde_json::json!({ "url": "https://dl.update.microsoft.com/kb.zip", "filename": "kb.zip", "userAgent": UA }),
+            serde_json::json!({ "url": "https://secret.test/s.png", "filename": "s.png", "userAgent": UA, "private": true }),
+            serde_json::json!({ "declined": { "why": "site-access", "site": "y.test", "name": "b.zip" }, "userAgent": UA }),
+        ],
+    );
+    assert!(ok);
+    let declined: Vec<_> = replies.iter().map(|r| r["declined"].clone()).collect();
+    assert_eq!(
+        declined,
+        [
+            serde_json::json!("file-type"),
+            serde_json::json!("site"),
+            serde_json::json!("file-type"),
+            serde_json::Value::Null
+        ]
+    );
+    assert_eq!(replies[3]["ok"], true, "a notice is only noted");
+    assert!(
+        app.recv_timeout(Duration::from_millis(500)).is_err(),
+        "nothing reached the app"
+    );
+    let log = std::fs::read_to_string(dir.join("logs").join("mdm.log")).unwrap();
+    let lines: Vec<&str> = log.lines().collect();
+    assert_eq!(lines.len(), 5, "{log}");
+    assert_eq!(lines[0], "an earlier line");
+    assert!(
+        lines[1].contains("INFO nmhost")
+            && lines[1].contains(
+                "Google Chrome keeps p.png from x.test: its type isn't in Options > File types"
+            ),
+        "{log}"
+    );
+    assert!(
+        lines[2].contains("kb.zip from dl.update.microsoft.com: its site is in"),
+        "{log}"
+    );
+    assert!(
+        lines[3].contains("a download from a private window") && !log.contains("secret"),
+        "{log}"
+    );
+    assert!(
+        lines[4]
+            .contains("b.zip from y.test: the browser doesn't let the extension read this site"),
+        "{log}"
+    );
+    let _ = std::fs::remove_dir_all(&dir);
+}
+
 #[test]
 fn strangers_are_refused() {
     let dir = data_dir("strangers", serde_json::json!({}));

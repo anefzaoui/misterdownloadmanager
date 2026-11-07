@@ -790,6 +790,10 @@
    "source": "What it understands",
    "text": "이해하는 내용"
   },
+  "124817fe7912fea6": {
+   "source": "When the browser keeps a download, the extension's button says which of these left it there, with the file's name, and MDM's log has a line for each one (<x1/> in <g2>MDM's data folder</g2>).",
+   "text": "브라우저가 다운로드를 유지하면 확장 프로그램 버튼에 파일 이름과 함께 다운로드를 남긴 항목이 표시되며, MDM 로그에는 각 항목에 대한 줄이 있습니다(<g2>MDM 데이터 폴더</g2>의 <x1/>)."
+  },
   "12696d50b6f54aa3": {
    "source": "The tray icon",
    "text": "트레이 아이콘"
@@ -5925,6 +5929,10 @@
   "8ba3e471bdf1018f": {
    "source": "<g1>Manual proxy/socks configuration</g1> — type the proxy's address, <g2>Port</g2>, and a <g3>UserName</g3> and <g4>Password</g4> if it needs them, then tick the protocols it is for (<g5>http</g5>, <g6>https</g6>). For a SOCKS proxy, write the address as <x7/>.",
    "text": "<g1>수동 프록시/SOCKS 구성</g1> — 프록시 주소, <g2>포트</g2>, 필요한 경우 <g3>사용자 이름</g3> 및 <g4>암호</g4>를 입력한 다음 해당 프로토콜(<g5>HTTP</g5>, <g6>HTTPS</g6>)을 선택합니다. SOCKS 프록시의 경우 주소를 <x7/>로 작성합니다."
+  },
+  "8bd06bcd07c716e2": {
+   "source": "<g1>MDM 0.2.x with the extension from the Chrome Web Store?</g1> The store's copy needs MDM 0.3.0 or later. Update MDM with <g2>Help → Check for updates...</g2>. Until then, remove the store's copy and load the one in MDM's folder instead (<x3/>, see <g4>Browser integration</g4>).",
+   "text": "<g1>Chrome 웹 스토어의 확장 프로그램이 설치된 MDM 0.2.x를 사용 중이신가요?</g1> 스토어 버전은 MDM 0.3.0 이상이 필요합니다. <g2>도움말 → 업데이트 확인...</g2>을 통해 MDM을 업데이트하세요. 그때까지는 스토어 버전을 제거하고 MDM 폴더에 있는 확장 프로그램을 대신 로드하세요(<x3/>, <g4>브라우저 통합</g4> 참조)."
   },
   "8bdb8ef261917fb7": {
    "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> (Firefox, optional: asked for only when you switch it on in the popup) to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",

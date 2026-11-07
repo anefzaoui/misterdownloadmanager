@@ -13,6 +13,10 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ When the browser keeps a download, MDM says why: each one is in MDM's log with the setting
+  that decided, and the extension's button shows the last one. The extension from the Chrome Web
+  Store needs MDM 0.3.0 (0.2.x serves only the copy in MDM's folder)
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
 - ✅ Open folder in Download complete no longer freezes the window on Linux when the file
   manager is slow to answer or never does: MDM asks in the background and opens the folder after
   5 seconds without an answer; every other program a window starts (Set it up, the Trash, an
