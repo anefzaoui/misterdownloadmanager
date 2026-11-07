@@ -609,6 +609,8 @@ mod tests {
             holder: Holder::new(call),
             ..Waker::default()
         };
+        // The translations are read once, on the first text (the app has read them long before).
+        let _ = crate::i18n::t("Mister Download Manager is running the queue \"{queue}\"");
         (w, asked)
     }
 
