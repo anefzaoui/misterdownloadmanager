@@ -251,7 +251,7 @@ def crew_pile() -> str:
     shown = max(cap for _, cap in PILE_TIERS)
     # "+N" for each width where the row is full: its count there, and only there.
     more = "".join(f'<span class="pile-n pile-n-{cap}">+{n - cap}</span>' for _, cap in PILE_TIERS if n > cap)
-    more_li = (f'<li class="pile-more"><a href="/contributors.html"><span aria-hidden="true" translate="no" dir="ltr">{more}</span>'
+    more_li = (f'<li class="pile-more"><a href="/contributors.html"><span translate="no" dir="ltr">{more}</span> '
                f'<span class="sr-only">Everyone who helped</span></a></li>' if more else "")
     full = " ".join(f"pile-full-{cap}" for _, cap in PILE_TIERS if n > cap)
     return f"""<div class="parcel-crew">
