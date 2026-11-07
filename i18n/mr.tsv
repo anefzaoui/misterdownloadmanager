@@ -183,6 +183,11 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	डीब्रिड सेवा तुमच्या स्वतःच्या सशुल्क खात्यासह फाइल होस्टची लिंक डाउनलोड करते आणि MDM ला थेट लिंक देते. फक्त तुमचे स्वतःचे खाते वापरा: खाते किंवा त्याच्या लिंक्स शेअर केल्याने सेवांच्या अटींचा भंग होतो आणि ते निलंबित केले जाऊ शकते. ब्राउझरने आधीच सुरू केलेले डाउनलोड जसे आहेत तसेच राहतील.
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	A file of this torrent can't be saved safely: {name}	या टोरंटची फाइल सुरक्षितपणे सेव्ह केली जाऊ शकत नाही: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -431,6 +436,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	आणखी एक DNS...
+#. text in unix.rs
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+#, machine
+	Another program has set the computer's wake alarm	दुसऱ्या प्रोग्रामने संगणकाचा वेक अलार्म सेट केला आहे
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -739,6 +748,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Chad	चाड
+#. text in the Scheduler window
+#. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+#, machine
+	Change	बदला
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -1179,6 +1192,10 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	या खात्यांद्वारे समर्थित फाइल-होस्ट लिंक्स डाउनलोड करा
+#. text in a dialog box
+#. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
+#, machine
+	Download through {service}	{service} द्वारे डाउनलोड करा
 #. window title in the Download video window
 #, machine
 	Download video from a page	एका पृष्ठावरून व्हिडिओ डाउनलोड करा
@@ -1820,6 +1837,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Hong Kong	हाँगकाँग
+#. text in the Scheduler window
+#. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+#, machine
+	How to allow it	याची अनुमती कशी द्यावी
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -2347,6 +2368,11 @@
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager मध्ये अंतर्गत त्रुटी आली
+#. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Mister Download Manager is running the queue "{queue}"	Mister Download Manager "{queue}" रांग चालवत आहे
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -2758,9 +2784,17 @@
 #. a country's name (where a download's server is)
 #, machine
 	Oman	ओमान
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+#, machine
+	On battery, Windows' power options don't allow wake timers	बॅटरीवर, Windows चे पॉवर पर्याय वेक टाइमरला अनुमती देत नाहीत
 #. text in a download's progress window
 #, machine
 	on download stop/resume	डाउनलोड थांबल्यावर/पुन्हा सुरू झाल्यावर
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
+#, machine
+	On macOS, only an administrator can schedule a wake	macOS वर, फक्त प्रशासकच वेक शेड्यूल करू शकतो
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	एकदा
@@ -2784,6 +2818,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	फक्त पूर्ण झालेले डाउनलोड किंवा अजून सुरू न झालेले डाउनलोड हलवता येते. ते थांबवा आणि प्रथम पूर्ण करा.
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+#, machine
+	Only an administrator can allow this	केवळ प्रशासकच याला अनुमती देऊ शकतो
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -3318,6 +3356,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	हे मित्राला पाठवा:
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+#, machine
+	Send torrents and magnet links to the first account instead of to peers	पीअर्सना पाठवण्याऐवजी टॉरंट आणि मॅग्नेट लिंक्स पहिल्या खात्यावर पाठवा
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3364,6 +3406,14 @@
 #. button in Test browser integration: register MDM's helper with the browsers
 #, machine
 	Set it up	ते सेट करा
+#. message or event log entry in the main window
+#. event log: File Properties: the download no longer goes through the debrid account
+#, machine
+	Set to download directly, not through the debrid account	थेट डाउनलोड करण्यासाठी सेट केले आहे, डीब्रिड खात्याद्वारे नाही
+#. message or event log entry in the main window
+#. event log: File Properties: the download goes through the debrid account again
+#, machine
+	Set to download through the debrid account	डीब्रिड खात्याद्वारे डाउनलोड करण्यासाठी सेट केले आहे
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3644,7 +3694,7 @@
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	यावेळी डाउनलोड थांबवा
-#. button in playlistdlg.rs
+#. text in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
 	Stop listing	सूची करणे थांबवा
@@ -3839,6 +3889,15 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The computer could not be turned off: {error}	संगणक बंद करता आला नाही: {error}
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue"
+#, machine
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	सुरू होण्याच्या वेळेच्या एक मिनिट आधी संगणक वेक होतो आणि रांग चालू असताना तो वेक राहतो. Mister Download Manager चालू असणे आवश्यक आहे (ते सूचना क्षेत्रात प्रतीक्षा करू शकते).
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	The computer will be woken on {date} at {time}	संगणक {date} रोजी {time} वाजता वेक होईल
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4078,6 +4137,14 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	या श्रेणीमध्ये किंवा रांगेत अद्याप कोणतेही डाउनलोड नाहीत.
+#. text in win32.rs
+#. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
+#, machine
+	This computer can't be woken by a timer	हा संगणक टाइमरद्वारे वेक होऊ शकत नाही
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
+#, machine
+	This computer has no wake alarm that programs can set	या संगणकामध्ये असा वेक अलार्म नाही जो प्रोग्राम सेट करू शकतील
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4150,9 +4217,21 @@
 #. where a download's server is, when a proxy carries it: {country} is the proxy's country
 #, machine
 	through a proxy in {country}	{country} मधील प्रॉक्सीद्वारे
+#. text in a download's Properties window
+#. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
+#, machine
+	Through {service}	{service} द्वारे
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+#, machine
+	Through {service}: the service downloads the torrent, then MDM its files	{service} द्वारे: सेवा टॉरंट डाउनलोड करते, नंतर MDM त्याच्या फाइल्स डाउनलोड करते
 #. text in the Scheduler window
 #, machine
 	Thursday	गुरुवार
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+#, machine
+	Tick "Start download at" first: the computer is woken for the start time	प्रथम "या वेळी डाउनलोड सुरू करा" निवडा: संगणक सुरू होण्याच्या वेळेसाठी वेक होतो
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	उरलेला वेळ
@@ -4551,6 +4630,10 @@
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	प्रतीक्षा करत आहे: डाउनलोड मर्यादा गाठली आहे (शेड्यूलर)
+#. text in the Scheduler window
+#. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+#, machine
+	Wake the computer to run this queue	ही रांग चालवण्यासाठी संगणकाला वेक करा
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4584,6 +4667,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	वाइल्डकार्ड आकार
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
+#, machine
+	Windows allows wake timers only while plugged in	Windows फक्त प्लग इन असतानाच वेक टाइमरला अनुमती देते
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4594,6 +4681,10 @@
 #. text in langpick.rs
 #, machine
 	Windows' language ({language})	Windows ची भाषा ({language})
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+#, machine
+	Windows' power options don't allow wake timers	Windows चे पॉवर पर्याय वेक टाइमरला अनुमती देत नाहीत
 #. message or event log entry in the main window
 #, machine
 	with Add URL	URL जोडा सह
@@ -4816,6 +4907,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{total} पैकी {n} निवडलेले
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+#, machine
+	{percent} at {service}	{service} वर {percent}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -4827,6 +4922,9 @@
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	{service} तुम्हाला प्रथम या संगणकाला परवानगी देण्यास सांगत आहे: त्याचा ईमेल पहा
+#. text in errors.rs
+#, machine
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} हे टोरंट मिळवू शकत नाही: कोणीही ते शेअर करत नाही किंवा त्याची लिंक वाचता येत नाही
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} या फाइल होस्टपर्यंत सध्या पोहोचू शकत नाही; MDM नंतर पुन्हा प्रयत्न करेल
@@ -5466,7 +5564,7 @@ menu	Download &video from a page...	एका पृष्ठावरून &�
 #, machine
 menu	Download in order	क्रमाने डाउनलोड करा
 #. menu command in the main window
-#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	यासोबत काढा
 #. menu command in the main window
@@ -5517,6 +5615,26 @@ menu	Hide drop target	ड्रॉप टार्गेट लपवा
 #, machine
 menu	High contrast	उच्च कॉन्ट्रास्ट
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+#, machine
+menu	It couldn't start: the log says why	ते सुरू होऊ शकले नाही: लॉगमध्ये कारण दिले आहे
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+#, machine
+menu	Its first frame didn't show within 10 seconds	त्याची पहिली फ्रेम 10 सेकंदात दिसली नाही
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+#, machine
+menu	Its last start ended before its first frame	त्याची शेवटची सुरुवात त्याच्या पहिल्या फ्रेमपूर्वी संपली
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Apple's), usually kept as is
+#, machine
+menu	Metal	Metal
+#. menu command in the main window
+#. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Metal didn't start here: OpenGL draws	Metal येथे सुरू झाले नाही: OpenGL ड्रॉ करते
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
 menu	Metro	मेट्रो
@@ -5531,6 +5649,10 @@ menu	Move/Rename (Ctrl-M)	हलवा/पुनर्नामित करा 
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
 menu	Native	नेटिव्ह
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+#, machine
+menu	No graphics card here has a driver for it	येथे कोणत्याही ग्राफिक्स कार्डमध्ये त्यासाठी ड्रायव्हर नाही
 #. menu command in the main window
 #, machine
 menu	On Double click	डबल क्लिकवर
@@ -5656,6 +5778,10 @@ menu	Support &MDM	&MDM ला सपोर्ट करा
 #, machine
 menu	Tell a &friend	मित्राला सांगा(&f)
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+#, machine
+menu	The graphics card was lost twice in 10 minutes	ग्राफिक्स कार्ड 10 मिनिटांत दोनदा हरवले
+#. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
 menu	Theme	थीम
@@ -5694,6 +5820,14 @@ menu	Turn of&f	बंद करा(&f)
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Verify checksum...	चेकसम सत्यापित करा...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+#, machine
+menu	Vulkan	Vulkan
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Vulkan didn't start here: OpenGL draws	Vulkan येथे सुरू झाले नाही: OpenGL ड्रॉ करते
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

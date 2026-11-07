@@ -140,6 +140,17 @@ pub fn service(service: &str, fault: &mdm_engine::ServiceFault) -> String {
         F::TooManyRequests(_) => t("{service} asks to slow down; MDM will try again in a minute"),
         // i18n: a debrid service's error: it isn't answering
         F::ServiceDown => t("{service} is not responding; try again later"),
+        // i18n: a debrid service's error: it can't get the torrent sent to it (nobody shares it any more, or its magnet link can't be read)
+        F::TorrentUnavailable => {
+            t("{service} can't get this torrent: nobody shares it, or its link can't be read")
+        }
+        F::UnsafeName(name) => {
+            return fmt(
+                // i18n: a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+                t("A file of this torrent can't be saved safely: {name}"),
+                &[("name", &ltr(name))],
+            );
+        }
         F::Other(message) => {
             return fmt(
                 // i18n: a debrid service's error in its own words (English); {service} its name
