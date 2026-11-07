@@ -891,7 +891,7 @@ async function mediaDownload(tabId, url) {
       src: it.url,
       title: String(tab.title || "").slice(0, 300),
       referrer: tab.url && tab.url !== page ? tab.url : "",
-      cookies: await cookieHeader(it.url, ctx),
+      ...(await videoCookies(it.url, ctx)),
       ...(ctx.incognito ? { private: true } : {}),
     });
   }
@@ -902,14 +902,39 @@ async function mediaDownload(tabId, url) {
 
 // Cookies from the store the download belongs to, never another: Firefox names it on the
 // download (private windows and containers each have their own); Chrome's incognito store is "1".
-async function cookieHeader(url, { incognito, storeId }) {
+async function cookiesFor(url, { incognito, storeId }) {
   try {
     const query = storeId ? { url, storeId } : incognito ? { url, storeId: "1" } : { url };
-    const list = await ext.cookies.getAll(query);
-    return list.map((c) => `${c.name}=${c.value}`).join("; ");
+    return (await ext.cookies.getAll(query)) || [];
   } catch {
-    return "";
+    return [];
   }
+}
+
+function header(list) {
+  return list.map((c) => `${c.name}=${c.value}`).join("; ");
+}
+
+async function cookieHeader(url, ctx) {
+  return header(await cookiesFor(url, ctx));
+}
+
+// For yt-dlp, which may ask another host of the site than the page's (a YouTube Music page is
+// looked up on www.youtube.com): each cookie with the domain, path and flags the browser keeps,
+// so the app files `.youtube.com`'s sign-in for every host of it and a host's own cookie for
+// that host alone. The header goes too, for an older app.
+async function videoCookies(url, ctx) {
+  const list = await cookiesFor(url, ctx);
+  const cookieJar = list.map((c) => ({
+    name: c.name,
+    value: c.value,
+    domain: c.domain,
+    hostOnly: Boolean(c.hostOnly),
+    path: c.path || "/",
+    secure: Boolean(c.secure),
+    ...(typeof c.expirationDate === "number" ? { expirationDate: c.expirationDate } : {}),
+  }));
+  return { cookies: header(list), cookieJar };
 }
 
 // Has the user left this extension the site? With access limited ("On click", some sites), its
@@ -1433,7 +1458,7 @@ ext.contextMenus.onClicked.addListener(async (info, tab) => {
     // window, which reads streams (a manifest downloaded as a file is only a short list).
     // The manifest's own cookies (its server may not be the page's), as the media list sends.
     if (url && MANIFEST.test(url)) {
-      const reply = await native({ video: true, explicit: true, url: info.pageUrl, src: url, cookies: await cookieHeader(url, { incognito, storeId }), private: incognito });
+      const reply = await native({ video: true, explicit: true, url: info.pageUrl, src: url, ...(await videoCookies(url, { incognito, storeId })), private: incognito });
       if (!reply.ok && reply.why !== "options") explain(reply.why);
       return;
     }
@@ -1452,7 +1477,7 @@ ext.contextMenus.onClicked.addListener(async (info, tab) => {
         url: page,
         ...(src ? { src } : {}),
         referrer: info.pageUrl && info.pageUrl !== page ? info.pageUrl : "",
-        cookies: await cookieHeader(src || page, { incognito, storeId }),
+        ...(await videoCookies(src || page, { incognito, storeId })),
         private: incognito,
       });
       if (!reply.ok && reply.why !== "options") explain(reply.why);
@@ -1572,7 +1597,7 @@ async function pageMessage(m, sender) {
       referrer: tab.url && tab.url !== page ? tab.url : "",
       // The cookies of what yt-dlp is given (the app files them under its host): the stream's
       // own server may not be the page's, and the page's cookies are not for it.
-      cookies: await cookieHeader(src || page, { incognito: tab.incognito, storeId: tab.cookieStoreId }),
+      ...(await videoCookies(src || page, { incognito: tab.incognito, storeId: tab.cookieStoreId })),
       ...(tab.incognito ? { private: true } : {}),
     });
     return { ok: Boolean(reply.ok), why: reply.why };

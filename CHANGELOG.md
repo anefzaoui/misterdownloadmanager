@@ -594,6 +594,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   installs it (apt, dnf, zypper, pacman or apk, by the distribution), on the terminal and in a
   message box (zenity or kdialog, when there is one). In a Wayland session it opens its window
   on Wayland instead, saying so.
+- **Signed-in videos from YouTube Music and YouTube's mobile site**
+  ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229)): the button over a
+  video on music.youtube.com or m.youtube.com passed the page's cookies for that host only, while
+  yt-dlp asks www.youtube.com, so the sign-in didn't reach it. The extension now sends each
+  cookie with the domain the browser keeps it for, and MDM gives yt-dlp each one for that domain:
+  youtube.com's sign-in reaches every YouTube host, and a host's own cookie stays with that host.
+  With an older extension, a YouTube page's cookies (or a site's mobile page's, m. and mobile.)
+  go to the whole site.
 - **Update now finds the Linux and macOS files by either name**: a release's AppImage, .deb,
   .rpm, .tar.gz and .dmg were named `…-experimental`; MDM now looks for the name without it
   first and still takes the older one, so Update now keeps working whichever a release uses.
