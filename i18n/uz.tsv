@@ -5502,7 +5502,7 @@ menu	Download &video from a page...	Sahifadan &video yuklab olish...
 #, machine
 menu	Download in order	Tartib bilan yuklab olish
 #. menu command in the main window
-#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	Bilan chizish
 #. menu command in the main window
@@ -5553,6 +5553,26 @@ menu	Hide drop target	Tashlash nishonini yashirish
 #, machine
 menu	High contrast	Yuqori kontrast
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+#, machine
+menu	It couldn't start: the log says why	Ishga tushmadi: jurnalda sababi yozilgan
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+#, machine
+menu	Its first frame didn't show within 10 seconds	Uning birinchi kadr 10 soniya ichida ko‘rinmadi
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+#, machine
+menu	Its last start ended before its first frame	Uning oxirgi ishga tushishi birinchi kadrgacha tugadi
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Apple's), usually kept as is
+#, machine
+menu	Metal	Metal
+#. menu command in the main window
+#. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Metal didn't start here: OpenGL draws	Metal bu yerda ishga tushmadi: OpenGL chizadi
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
 menu	Metro	Metro
@@ -5567,6 +5587,10 @@ menu	Move/Rename (Ctrl-M)	Koʻchirish/Nomini oʻzgartirish (Ctrl-M)
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
 menu	Native	Mahalliy
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+#, machine
+menu	No graphics card here has a driver for it	Bu yerda hech bir grafik kartada uning drayveri yo‘q
 #. menu command in the main window
 #, machine
 menu	On Double click	Ikki marta bosilganda
@@ -5692,6 +5716,10 @@ menu	Support &MDM	MDM'ni qoʻllab-quv&vatlash
 #, machine
 menu	Tell a &friend	&Doʻstga aytish
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+#, machine
+menu	The graphics card was lost twice in 10 minutes	Grafik karta 10 daqiqada ikki marta yo‘qoldi
+#. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
 menu	Theme	Mavzu
@@ -5730,6 +5758,14 @@ menu	Turn of&f	&Oʻchirish
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Verify checksum...	Nazorat summasini tekshirish...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+#, machine
+menu	Vulkan	Vulkan
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Vulkan didn't start here: OpenGL draws	Vulkan bu yerda ishga tushmadi: OpenGL chizadi
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

@@ -5502,7 +5502,7 @@ menu	Download &video from a page...	Mag-download ng &video mula sa isang page...
 #, machine
 menu	Download in order	I-download nang may pagkakasunod-sunod
 #. menu command in the main window
-#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	Mag-drawing gamit ang
 #. menu command in the main window
@@ -5553,6 +5553,26 @@ menu	Hide drop target	Itago ang drop target
 #, machine
 menu	High contrast	Mataas na contrast
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+#, machine
+menu	It couldn't start: the log says why	Hindi ito makapagsimula: sinasabi ng log kung bakit
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+#, machine
+menu	Its first frame didn't show within 10 seconds	Hindi lumabas ang unang frame nito sa loob ng 10 segundo
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+#, machine
+menu	Its last start ended before its first frame	Natapos ang huling pagsisimula nito bago ang unang frame nito
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Apple's), usually kept as is
+#, machine
+menu	Metal	Metal
+#. menu command in the main window
+#. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Metal didn't start here: OpenGL draws	Hindi nagsimula ang Metal dito: Gumuhit ang OpenGL
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
 menu	Metro	Metro
@@ -5567,6 +5587,10 @@ menu	Move/Rename (Ctrl-M)	Ilipat/Palitan ang Pangalan (Ctrl-M)
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
 menu	Native	Native
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+#, machine
+menu	No graphics card here has a driver for it	Walang graphics card dito ang may driver para dito
 #. menu command in the main window
 #, machine
 menu	On Double click	Sa Dobleng pag-click
@@ -5692,6 +5716,10 @@ menu	Support &MDM	Suportahan ang &MDM
 #, machine
 menu	Tell a &friend	Sabihin sa &kaibigan
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+#, machine
+menu	The graphics card was lost twice in 10 minutes	Dalawang beses nawala ang graphics card sa loob ng 10 minuto
+#. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
 menu	Theme	Tema
@@ -5730,6 +5758,14 @@ menu	Turn of&f	I-o&ff
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Verify checksum...	I-verify ang checksum...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+#, machine
+menu	Vulkan	Vulkan
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Vulkan didn't start here: OpenGL draws	Hindi nagsimula ang Vulkan dito: Gumuhit ang OpenGL
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

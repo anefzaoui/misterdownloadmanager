@@ -116,7 +116,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   again (the menu says so); without a usable OpenGL either, it draws with Microsoft's software
   renderer (Remote Desktop, virtual machines without a graphics driver). When the graphics card
   is reset while MDM runs (a driver update), MDM starts again by itself. Freeze and crash
-  reports say what was drawing. Linux and macOS keep OpenGL.
+  reports say what was drawing. Linux and macOS keep OpenGL by default.
+- **Linux: Vulkan, and macOS: Metal, in View → Draw with** ([#206](https://github.com/anefzaoui/misterdownloadmanager/issues/206)).
+  Linux can draw its windows with Vulkan (on Wayland and X11), and macOS with Metal, the way
+  Windows draws with Direct3D. OpenGL stays the default there until reports from real graphics
+  cards are in: try it and tell us how it went. The same safety net as on Windows: when Vulkan
+  or Metal can't start (no driver for it), its first frame doesn't come within 10 seconds, or a
+  start with it ends before its first frame, MDM draws with OpenGL until it is chosen again, and
+  the menu now says why (on Windows too). A graphics card reset while MDM runs starts MDM again.
 - **The extension lists the media a page has loaded**
   ([#38](https://github.com/anefzaoui/misterdownloadmanager/issues/38)). The toolbar button's
   window has **Media on this page**: the HLS and DASH streams the page's players loaded (each

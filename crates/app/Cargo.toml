@@ -73,7 +73,10 @@ tray-icon = "0.26.1"
 # Linux (experimental): windows on Wayland and X11; the tray over D-Bus (StatusNotifierItem:
 # KDE, and GNOME with its AppIndicator extension), no GTK.
 [target.'cfg(target_os = "linux")'.dependencies]
-eframe = { workspace = true, features = ["wayland", "x11"] }
+# View → Draw with → Vulkan (#206, renderer.rs): eframe's wgpu renderer with wgpu's Vulkan backend
+# only (Wayland and X11 windows; no GL backend: OpenGL stays eframe's glow, and the default).
+eframe = { workspace = true, features = ["wayland", "x11", "wgpu_no_default_features"] }
+wgpu = { version = "30.0", default-features = false, features = ["vulkan", "wgsl"] }
 # Choosing X11 (XWayland) over Wayland when both are there (unix.rs prefer_x11, #50); the
 # workspace's patched winit, as eframe's.
 winit = { version = "0.30.13", default-features = false, features = ["x11"] }
@@ -82,11 +85,17 @@ tray-icon = { version = "0.26.1", default-features = false, features = ["ksni"] 
 # tree through the tray (ksni) and AccessKit, with the same features.
 zbus = { version = "5.19.0", default-features = false, features = ["async-io", "blocking-api"] }
 
-# macOS: Finder's file icons (unix.rs file_icon); already in the tree through winit and rfd.
 [target.'cfg(target_os = "macos")'.dependencies]
+# Finder's file icons (unix.rs file_icon); already in the tree through winit and rfd.
 objc2 = "0.6.5"
 objc2-foundation = { version = "0.3.2", default-features = false, features = ["std", "NSString", "NSGeometry", "objc2-core-foundation"] }
 objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "NSWorkspace", "NSImage", "NSImageRep", "NSBitmapImageRep", "NSGraphicsContext", "NSGraphics", "objc2-core-foundation"] }
+# View → Draw with → Metal (#206, renderer.rs): eframe's wgpu renderer with wgpu's Metal backend
+# only; OpenGL stays eframe's glow, and the default. egui-wgpu's fix for windows that jitter while
+# they are resized (Core Animation presenting with the resize), as upstream egui turns it on.
+eframe = { workspace = true, features = ["wgpu_no_default_features"] }
+wgpu = { version = "30.0", default-features = false, features = ["metal", "wgsl"] }
+egui-wgpu = { version = "0.37.0", default-features = false, features = ["macos-window-resize-jitter-fix"] }
 
 # Crash reports on Linux and macOS: thread and process ids, signals (unix.rs).
 [target.'cfg(unix)'.dependencies]

@@ -104,6 +104,10 @@ Everything below ships together, in one release, as version 0.3.0.
 - ✅ Windows: MDM draws with Direct3D 12 by default; **View → Draw with** goes back to OpenGL, and
   either one falls back to the other when it can't start
   ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89))
+- ✅ Linux and macOS: **View → Draw with → Vulkan** (Linux) and **Metal** (macOS), with the same
+  fallback to OpenGL as Direct3D on Windows; OpenGL stays their default for now, and the menu
+  says why when one can't start here
+  ([#206](https://github.com/anefzaoui/misterdownloadmanager/issues/206))
 - ✅ Screen readers see a window's contents the first time they read it, not only its title bar
   ([#131](https://github.com/anefzaoui/misterdownloadmanager/issues/131))
 - ✅ Magnet links get their file list in seconds again: the DHT keeps going after a computer it
@@ -279,6 +283,9 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Look and performance
 
+- 📋 Vulkan the default on Linux and Metal on macOS, once real graphics cards have tried them (AMD,
+  Intel and NVIDIA, X11 and Wayland, older cards without Vulkan)
+  ([#206](https://github.com/anefzaoui/misterdownloadmanager/issues/206))
 - 📋 Linux: follow the desktop's dark or light setting ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156))
 - 📋 Benchmarks against other download managers
   ([#71](https://github.com/anefzaoui/misterdownloadmanager/issues/71))

@@ -5502,7 +5502,7 @@ menu	Download &video from a page...	페이지에서 &비디오 다운로드...
 #, machine
 menu	Download in order	순서대로 다운로드
 #. menu command in the main window
-#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	다음으로 그리기
 #. menu command in the main window
@@ -5553,6 +5553,26 @@ menu	Hide drop target	드롭 대상 숨기기
 #, machine
 menu	High contrast	고대비
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+#, machine
+menu	It couldn't start: the log says why	시작할 수 없음: 로그에 이유가 있습니다.
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+#, machine
+menu	Its first frame didn't show within 10 seconds	첫 프레임이 10초 이내에 표시되지 않았습니다.
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+#, machine
+menu	Its last start ended before its first frame	마지막 시작이 첫 프레임 전에 종료되었습니다.
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Apple's), usually kept as is
+#, machine
+menu	Metal	Metal
+#. menu command in the main window
+#. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Metal didn't start here: OpenGL draws	Metal이 여기서 시작되지 않음: OpenGL이 그립니다.
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
 menu	Metro	메트로
@@ -5567,6 +5587,10 @@ menu	Move/Rename (Ctrl-M)	이동/이름 바꾸기(Ctrl+M)
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
 menu	Native	기본
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+#, machine
+menu	No graphics card here has a driver for it	여기에 드라이버가 있는 그래픽 카드가 없습니다.
 #. menu command in the main window
 #, machine
 menu	On Double click	두 번 클릭 시
@@ -5692,6 +5716,10 @@ menu	Support &MDM	MDM &지원
 #, machine
 menu	Tell a &friend	친구에게 알리기(&F)
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+#, machine
+menu	The graphics card was lost twice in 10 minutes	그래픽 카드가 10분 안에 두 번 손실되었습니다.
+#. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
 menu	Theme	테마
@@ -5730,6 +5758,14 @@ menu	Turn of&f	끄기(&F)
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Verify checksum...	체크섬 확인...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+#, machine
+menu	Vulkan	Vulkan
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Vulkan didn't start here: OpenGL draws	Vulkan이 여기서 시작되지 않음: OpenGL이 그립니다.
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

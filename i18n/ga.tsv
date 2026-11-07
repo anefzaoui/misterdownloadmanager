@@ -5502,7 +5502,7 @@ menu	Download &video from a page...	Íoslódáil &físeán ó leathanach...
 #, machine
 menu	Download in order	Íoslódáil in ord
 #. menu command in the main window
-#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	Tarraing le
 #. menu command in the main window
@@ -5553,6 +5553,26 @@ menu	Hide drop target	Folaigh sprioc titime
 #, machine
 menu	High contrast	Ardchodarsnacht
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+#, machine
+menu	It couldn't start: the log says why	Níorbh fhéidir é a thosú: deir an logáil cén fáth
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+#, machine
+menu	Its first frame didn't show within 10 seconds	Níor taispeánadh a chéad fhráma laistigh de 10 soicind
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+#, machine
+menu	Its last start ended before its first frame	Tháinig deireadh lena thús deireanach roimh a chéad fhráma
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Apple's), usually kept as is
+#, machine
+menu	Metal	Metal
+#. menu command in the main window
+#. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Metal didn't start here: OpenGL draws	Níor thosaigh Metal anseo: tarraingíonn OpenGL
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
 menu	Metro	Metro
@@ -5567,6 +5587,10 @@ menu	Move/Rename (Ctrl-M)	Bog/Athainmnigh (Ctrl-M)
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
 menu	Native	Dúchasach
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+#, machine
+menu	No graphics card here has a driver for it	Níl tiománaí ag aon chárta grafaicí anseo dó
 #. menu command in the main window
 #, machine
 menu	On Double click	Ar chliceáil dúbailte
@@ -5692,6 +5716,10 @@ menu	Support &MDM	Tacaigh le &MDM
 #, machine
 menu	Tell a &friend	Inis do &chara
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+#, machine
+menu	The graphics card was lost twice in 10 minutes	Cailleadh an cárta grafaicí faoi dhó i 10 nóiméad
+#. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
 menu	Theme	Téama
@@ -5730,6 +5758,14 @@ menu	Turn of&f	Cuir &as
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Verify checksum...	Fíoraigh seiceáil suime...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+#, machine
+menu	Vulkan	Vulkan
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Vulkan didn't start here: OpenGL draws	Níor thosaigh Vulkan anseo: tarraingíonn OpenGL
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
