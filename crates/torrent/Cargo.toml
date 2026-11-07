@@ -11,6 +11,9 @@ publish.workspace = true
 [dependencies]
 # 9.1.0 and later: upstream's robustness fixes for what peers send.
 librqbit = { version = "9.1.0", default-features = false, features = ["rust-tls"] }
+# The TLS setup of the session's HTTP clients (trackers, UPnP), MDM's own: a system without CA
+# certificates still starts a session (mdm_engine::tls).
+mdm-engine.workspace = true
 flate2.workspace = true
 # Reading librqbit's saved session (session.json) before it starts (lib.rs).
 serde_json.workspace = true

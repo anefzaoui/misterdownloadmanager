@@ -546,6 +546,10 @@ impl Torrents {
                 env!("CARGO_PKG_VERSION_MAJOR"),
                 env!("CARGO_PKG_VERSION_MINOR")
             )),
+            // Its HTTP clients (trackers, UPnP) with MDM's TLS setup: on a system without CA
+            // certificates librqbit's own can't be built and the session wouldn't start; with
+            // it, plain HTTP trackers work and HTTPS ones fail saying why (mdm_engine::tls).
+            configure_http_client: Some(Arc::new(mdm_engine::tls::configure)),
             ..Default::default()
         };
         prepare_saved(&cfg.state_dir.join("session"), proxied);

@@ -1,7 +1,9 @@
 //! The certificates secure connections (HTTPS, FTPS, DNS over TLS or HTTPS) check servers with:
 //! the system's. A system without any (a minimal Linux without the `ca-certificates` package,
 //! #264) still gives every client: plain HTTP and FTP work, and each secure connection fails
-//! with [`NO_ROOTS`], which the engine reports as `Error::NoCertificates`.
+//! with [`NO_ROOTS`], which the engine reports as `Error::NoCertificates`. The torrent session's
+//! HTTP clients take the same setup (mdm-torrent), so a session still starts there: DHT, peers
+//! and plain HTTP trackers work, HTTPS trackers fail with [`NO_ROOTS`].
 
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -39,8 +41,10 @@ pub fn system_has_roots() -> bool {
 
 /// `builder` with the TLS it can have here: reqwest's own (the system's verifier) when the
 /// system has certificates, else one whose every secure connection fails with [`NO_ROOTS`]
-/// (reqwest's would refuse to build the client at all, plain HTTP included).
-pub(crate) fn configure(builder: reqwest::ClientBuilder) -> reqwest::ClientBuilder {
+/// (reqwest's would refuse to build the client at all, plain HTTP included). MDM's own clients
+/// get it through `net::bind_client`; the torrent session's (trackers, UPnP) through librqbit's
+/// `SessionOptions::configure_http_client` (mdm-torrent).
+pub fn configure(builder: reqwest::ClientBuilder) -> reqwest::ClientBuilder {
     configure_with(builder, system_has_roots())
 }
 
