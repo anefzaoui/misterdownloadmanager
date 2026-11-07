@@ -3591,7 +3591,7 @@ fn button_face(
     let state = State::of(&resp, enabled);
     let p = ui.painter();
     let face = button_colors(kind, state, crate::theme::colors());
-    paint_button(p, rc, kind, state, &face, false);
+    let radius = paint_button(p, rc, kind, state, &face, false);
     // "&Start now": the letter after '&' is underlined and Alt+letter presses it.
     let (shown, mnemonic) = match label.split_once('&') {
         Some((before, after)) if !after.is_empty() => (format!("{before}{after}"), Some(before)),
@@ -3630,7 +3630,7 @@ fn button_face(
         resp
     };
     if resp.has_focus() || (default_focus && ui.ctx().memory(|m| m.focused().is_none())) {
-        focus_ring(ui.painter(), rc.shrink(2.0));
+        focus_ring_round(ui.painter(), rc.shrink(2.0), (radius - 2.0).max(0.0));
     }
     if cut {
         resp.on_hover_text(label.replace('&', ""))
@@ -3642,8 +3642,15 @@ fn button_face(
 /// A push button's face, edge and bottom line in the theme's button style (`palette::ButtonLook`):
 /// flat (Windows 11, KDE), or shaded toward the theme's `gloss` (Luna, Aero, Aqua). `part`: a
 /// small button-like part (a spin box's halves, an icon button, a drop-down), whose corners stay
-/// the controls'. Every button and every part drawn as one comes here.
-fn paint_button(p: &Painter, rc: Rect, kind: ButtonKind, state: State, face: &Face, part: bool) {
+/// the controls'. Every button and every part drawn as one comes here. Its corners' radius.
+fn paint_button(
+    p: &Painter,
+    rc: Rect,
+    kind: ButtonKind,
+    state: State,
+    face: &Face,
+    part: bool,
+) -> f32 {
     use crate::palette::ButtonLook;
     let c = crate::theme::colors();
     let m = crate::theme::metrics();
@@ -3673,7 +3680,7 @@ fn paint_button(p: &Painter, rc: Rect, kind: ButtonKind, state: State, face: &Fa
                 face.bottom,
             );
         }
-        return;
+        return radius;
     };
     fill_shaded(p, rc, radius, &shine.stops(face.fill, c.gloss));
     // Windows XP: a glow inside the edge, orange under the pointer, blue on the default button
@@ -3704,6 +3711,7 @@ fn paint_button(p: &Painter, rc: Rect, kind: ButtonKind, state: State, face: &Fa
         Stroke::new(m.border, border),
         StrokeKind::Inside,
     );
+    radius
 }
 
 /// A button's colours.
@@ -3900,6 +3908,12 @@ pub fn keyboard_in_use(ctx: &egui::Context) -> bool {
 
 /// The keyboard focus around `rc`: a dotted rectangle, every other pixel, in the theme's ink.
 pub fn focus_ring(p: &Painter, rc: Rect) {
+    focus_ring_round(p, rc, control_radius());
+}
+
+/// [`focus_ring`] whose ring or frame (where the theme draws one) has corners of `radius`: a
+/// control rounded otherwise than the others (Mac OS X's push buttons, round at the ends).
+pub fn focus_ring_round(p: &Painter, rc: Rect, radius: f32) {
     // Only once the keyboard is in use in this window, as Windows shows focus rectangles.
     if !keyboard_in_use(p.ctx()) {
         return;
@@ -3908,22 +3922,12 @@ pub fn focus_ring(p: &Painter, rc: Rect) {
     // GNOME: a rounded ring, as wide as two points, the controls' corners.
     match crate::theme::current().controls.focus {
         crate::palette::FocusLook::Ring => {
-            p.rect_stroke(
-                rc,
-                control_radius(),
-                Stroke::new(2.0, ink),
-                StrokeKind::Inside,
-            );
+            p.rect_stroke(rc, radius, Stroke::new(2.0, ink), StrokeKind::Inside);
             return;
         }
         // KDE: a frame one point wide.
         crate::palette::FocusLook::Frame => {
-            p.rect_stroke(
-                rc,
-                control_radius(),
-                Stroke::new(1.0, ink),
-                StrokeKind::Inside,
-            );
+            p.rect_stroke(rc, radius, Stroke::new(1.0, ink), StrokeKind::Inside);
             return;
         }
         crate::palette::FocusLook::Dotted => {}
