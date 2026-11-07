@@ -58,32 +58,8 @@ fn draw_caption(
     if !cfg!(windows) {
         return None;
     }
-    let rect = egui::Rect::from_min_size(o, vec2(width, TITLE_H));
-    let bar = crate::winui::caption::title_bar(ui, rect, title, buttons);
-    #[cfg(windows)]
-    if let Some(hwnd) = hwnd {
-        let ppp = ui.ctx().pixels_per_point();
-        let px = |r: egui::Rect| {
-            let (a, b) = ((r.min - o) * ppp, (r.max - o) * ppp);
-            [
-                a.x.round() as i32,
-                a.y.round() as i32,
-                b.x.round() as i32,
-                b.y.round() as i32,
-            ]
-        };
-        crate::win32::set_caption_hits(
-            hwnd,
-            crate::win32::CaptionHits {
-                strip_h: (TITLE_H * ppp).round() as i32,
-                icon: px(bar.icon),
-                buttons: bar.buttons.iter().map(|r| px(*r)).collect(),
-            },
-        );
-    }
-    #[cfg(not(windows))]
-    let _ = hwnd;
-    bar.pressed
+    // The one drawn title bar of every window (dialogs.rs), with its hit test.
+    crate::dialogs::drawn_title(ui, o, width, title, buttons, hwnd)
 }
 
 /// A greyed label (the limits' captions while off).

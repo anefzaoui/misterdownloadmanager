@@ -17,6 +17,11 @@ Everything below ships together, in one release, as version 0.3.0.
   queue runs: on Windows when the power plan allows wake timers (the Scheduler says when it
   doesn't), on Linux once an administrator allows it, and on macOS it says why it can't
   ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142))
+- ✅ A finished download no longer fails with "part file still in use" on a busy computer, and
+  the rest of the engine tests that failed now and then there (slow connections, a prompt stop,
+  speed limits, links that expire, sparse files and a few more) wait for what they check, not for
+  time; the slow-connection test now fails if the engine stops reconnecting slow connections,
+  which it didn't before ([#201](https://github.com/anefzaoui/misterdownloadmanager/issues/201))
 - ✅ A window closed with its title bar's × keeps its contents until it goes, instead of turning
   black for a moment (seconds on Linux) ([#207](https://github.com/anefzaoui/misterdownloadmanager/issues/207))
 - ✅ A freeze while MDM handles a command, or minimized, opens the crash report window and writes
@@ -36,6 +41,9 @@ Everything below ships together, in one release, as version 0.3.0.
 - ✅ A Linux test machine for every change, scripted: an Ubuntu 24.04 desktop that builds each
   branch and drives MDM, Firefox and Chrome there (part of
   [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
+- ✅ The Linux test machine also has KDE Plasma, Cinnamon and XFCE copies, which test a build
+  without making it; store packages and theme windows are checked there too (part of
+  [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
 - ✅ Firefox: reading the browser's proxy (#42) is an opt-in, a switch in the extension's popup, so
   the extension's update asks for no new permission; Chrome's extension leaves it out for now
 - ✅ Streams whose address doesn't end in .m3u8 or .mpd, served as plain text, are found too: by
@@ -50,6 +58,15 @@ Everything below ships together, in one release, as version 0.3.0.
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ View → Theme: Classic (the default), Native (the system's accent colour and high contrast,
   followed as they change) and High contrast
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ Themes: Metro, Windows 8's flat look (its controls, a drawn title bar on Windows, Fluent
+  icons); themes choose each control's style and bring their own icons
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ Themes: Adwaita, GNOME's look (its controls, a header bar on Windows, GNOME's Adwaita icons
+  in colour and one colour)
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ Themes: Breeze, KDE Plasma's look (its focus frame, check boxes, buttons and title bar on
+  Windows, KDE's Breeze icons)
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ Dark mode: grey notes and error texts readable (4.5:1), Options' failed checks no longer dark
   red on the dark dialog ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
@@ -224,6 +241,9 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Bugs being looked into
 
+- 🔍 Menus with a black band across their top on a Windows 11 Insider build
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): menus are now plain
+  pop-up windows, as Windows' own are; a test build is with the reporter
 - 🔍 A freeze of the window on start ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
   most likely a computer busy just after start; freeze reports now measure it, so the next one says
 - 🔍 A crash on Linux as Download File Info opens

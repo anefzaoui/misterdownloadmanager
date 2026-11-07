@@ -64,6 +64,26 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   accent, every edge drawn and text at 7:1 or more. A theme applies at once, light and dark alike,
   and theme files in the themes folder (**View → Theme → Open themes folder**) are listed too;
   High contrast is itself such a file, in the same format.
+- **Themes: Metro** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)), after
+  Windows 8's flat look, the layout kept: square corners, flat buttons, boxes that take an accent
+  border when focused, check boxes with a tick, a bordered progress bar, scroll bars with their
+  arrows always shown, one-colour icons (Microsoft's Fluent UI System Icons, MIT) and, on
+  Windows, a title bar MDM draws in the theme's colour with the title centred (resizing, Snap
+  Layouts on Maximize, double-click and Alt+Space work as with the system's). Theme files can now
+  choose each control's style (`[controls]`), an icon set, and a theme can be a folder that brings
+  its own icons.
+- **Themes: Adwaita** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)),
+  after GNOME's look, the layout kept: round corners, flat grey buttons, a rounded focus ring,
+  boxes that take a ring when focused, GNOME's check boxes and radio buttons, GNOME's Adwaita
+  icons (LGPL-3.0), in colour for files and categories and one colour in the toolbar, and, on
+  Windows, a header bar MDM draws with the title in bold and round buttons. An icon set can now
+  mix PNG pictures with SVG drawings, and one-colour icons (`-symbolic.svg`) with coloured ones.
+- **Themes: Breeze** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)), after
+  KDE Plasma's look, the layout kept: rounded corners, buttons and boxes whose edge takes the
+  accent under the pointer or when focused, KDE's check boxes and radio buttons (the accent's
+  edge, a tick in the text's colour), a focus frame, KDE's Breeze icons (LGPL-3.0-or-later) and,
+  on Windows, a title bar MDM draws in KDE's style: the title centred, round buttons that fill
+  under the pointer (Close in red).
 - **The Firefox add-on is on addons.mozilla.org**: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/),
   installed with one click and kept up to date by Firefox (and by Zen and LibreWolf). MDM's
   **Add Mister Download Manager to your browser** window opens it for them; the website, the
@@ -311,6 +331,17 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Developers: the rest of the engine tests no longer fail on a busy computer**
+  ([#201](https://github.com/anefzaoui/misterdownloadmanager/issues/201)). Nine tests checked a
+  time, a speed or a byte count that a starved CPU or a busy CI runner can't keep. Each now
+  checks the state itself, or times from the event it is about: a slow request's own duration, a
+  stop measured from Stop against a wait of minutes, the first bytes before a pause, a speed
+  limit against a download the server paces at the same time (and every byte paid for once),
+  parts asked again instead of a deadline, links that expire after a number of requests instead
+  of milliseconds, range attempts a server without ranges answers slowly enough not to fill the
+  sockets, and the bytes a sparse file takes on the drive. The slow-connection test now fails
+  without shedding (it passed without it before). The lab server can hand out such links
+  (`/redirect?uses=N`) and pace answers to range requests on their own (`range_rate`).
 - **Developers: a Linux test machine, scripted** (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
   `tools/lab/linux-vm/` sets up an Ubuntu 24.04 desktop in VirtualBox from a Windows host
   (`vm.ps1`: hardware, headless start, linked clones; `setup.sh`: packages, Rust, Node, the
@@ -319,7 +350,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   pixel by pixel (`shots.sh`, `shot-host.sh`, `pixdiff.py`), HLS and DASH hand-overs from the Snap
   Firefox and Google Chrome (`streams.mjs`, `streams-chrome.mjs`), the extension's proxy switch
   (`proxy-optin.mjs`), hand-overs and the Scheduler while minimized, torrents without a network,
-  and MDM's start-up time (`measure.sh`). Every change is now checked on Linux as on Windows.
+  and MDM's start-up time (`measure.sh`). Every change is now checked on Linux as on Windows. The
+  machine also has copies on KDE Plasma, Cinnamon and XFCE (`desktop.sh`), which get a build
+  copied over instead of making one (`vm.ps1 deploy`); a window harness shoots many windows from
+  one running MDM in any language, mode and theme, with real clicks and keys inside the machine
+  (`win.sh`, `win-host.sh`); and a store package is checked before it ships (`store-check.mjs`,
+  `chrome-menu.mjs`).
 - **Developers: the engine tests no longer fail on a busy computer**
   ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136)). Three end-to-end tests
   depended on timing: a refused connection coming back, the learned connection limit, and a dead
@@ -410,6 +446,20 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **A finished download no longer fails with "part file still in use" on a busy computer**
+  ([#201](https://github.com/anefzaoui/misterdownloadmanager/issues/201)): when the last bytes
+  came in, the connections still running were cut off. One cut off while it read or wrote the
+  part file (checking the bytes before a reconnect, for example) left that read or write to finish
+  on its own, with the file still open, and renaming the finished file failed. The connections are
+  now told to stop and waited for, when a download completes and when it is stopped or fails, so
+  none of them outlives it. A stopped download's last writes are also in its saved progress now.
+- **Menus without a black band across their top**
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): on a Windows 11
+  Insider build (22635), every menu and submenu showed a black band a title bar tall across its
+  top and a thin one down its left side, its items moved down by as much and its last ones cut
+  off. A menu's window had a title bar's style, hidden by MDM, and something on that build placed
+  the menu's picture where the title bar would have ended. Menus are now plain pop-up windows, as
+  Windows' own menus are, with nothing above their items to take for a title bar.
 - **A window closed with its title bar's × no longer turns black first**
   ([#207](https://github.com/anefzaoui/misterdownloadmanager/issues/207)): every dialog and the
   progress window turned black for a moment when closed with the × or Alt+F4, rather than with
