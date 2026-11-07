@@ -31,7 +31,7 @@ pub fn open_page(path: &str) {
     } else {
         format!("{REPO}/blob/main/docs/{path}")
     };
-    let _ = open::that_detached(url);
+    crate::launch::open(url);
 }
 
 /// Help → Support MDM and About's link: the Sponsors page in the browser. Asked for only: MDM
@@ -39,7 +39,7 @@ pub fn open_page(path: &str) {
 /// clicks come from scripts, not from a person at the browser.
 pub fn support() {
     if !crate::offscreen() {
-        let _ = open::that_detached(SPONSORS);
+        crate::launch::open(SPONSORS);
     }
 }
 
@@ -48,12 +48,19 @@ pub fn support() {
 /// language. The parameters are the form's field ids (all text fields: GitHub's page drops a
 /// dropdown's value from the address).
 pub fn report_problem() {
-    let enc = |s: &str| url::form_urlencoded::byte_serialize(s.as_bytes()).collect::<String>();
-    let url = report_fields().iter().fold(
-        format!("{REPO}/issues/new?template=bug.yml"),
-        |url, (k, v)| format!("{url}&{k}={}", enc(v)),
-    );
-    let _ = open::that_detached(url);
+    // On a thread of its own: the fields ask the system (macOS: `sw_vers`), which the window's
+    // thread doesn't wait for (#222).
+    let _ = std::thread::Builder::new()
+        .name("report-problem".into())
+        .spawn(|| {
+            let enc =
+                |s: &str| url::form_urlencoded::byte_serialize(s.as_bytes()).collect::<String>();
+            let url = report_fields().iter().fold(
+                format!("{REPO}/issues/new?template=bug.yml"),
+                |url, (k, v)| format!("{url}&{k}={}", enc(v)),
+            );
+            let _ = open::that_detached(url);
+        });
 }
 
 /// The Bug report form's fields MDM fills in: (field id, value).
@@ -261,11 +268,19 @@ impl Updates {
             self.slot = None;
         }
         let install = mdm_tools::update::Install::detect();
-        // The release file arrived (checked): put it in place.
+        // The release file arrived (checked) and is in place (on the job's thread): MDM closes
+        // once the new copy (or the installer) has started.
         if let Some(res) = self.job.as_ref().and_then(crate::update::Job::result) {
             self.job = None;
-            match res.and_then(|file| crate::update::apply(install, &file)) {
-                Ok(crate::update::Next::Restart) => return Outcome::Done(true),
+            let started = res.and_then(|next| match next {
+                crate::update::Next::Restart(mut cmd) => cmd
+                    .spawn()
+                    .map(|_| crate::update::Next::Restart(cmd))
+                    .map_err(|e| e.to_string()),
+                opened => Ok(opened),
+            });
+            match started {
+                Ok(crate::update::Next::Restart(_)) => return Outcome::Done(true),
                 Ok(crate::update::Next::Opened) => self.status = Some(UpdateStatus::Opened),
                 Err(e) => self.status = Some(UpdateStatus::Failed(e)),
             }
@@ -376,16 +391,24 @@ impl Updates {
                 let status_rc =
                     egui::Rect::from_min_size(o + vec2(11.0, bottom), vec2(255.0, 21.0));
                 if let Some(job) = &self.job {
-                    let fraction = job.progress.fraction();
-                    let line = crate::i18n::fmt(
-                        // i18n: Check for updates, while Update now downloads; {percent} like "42%"
-                        crate::i18n::t("Downloading the update... {percent}"),
-                        &[(
-                            "percent",
-                            &fraction
-                                .map_or(String::new(), |f| crate::i18n::percent(f64::from(f), 0)),
-                        )],
-                    );
+                    let installing = job.installing();
+                    // Put in place: a bar that moves, no percent.
+                    let fraction = job.progress.fraction().filter(|_| !installing);
+                    let line = if installing {
+                        // i18n: Check for updates, after Update now downloaded it: unpacking and putting the new version in place
+                        crate::i18n::t("Installing the update...").to_owned()
+                    } else {
+                        crate::i18n::fmt(
+                            // i18n: Check for updates, while Update now downloads; {percent} like "42%"
+                            crate::i18n::t("Downloading the update... {percent}"),
+                            &[(
+                                "percent",
+                                &fraction.map_or(String::new(), |f| {
+                                    crate::i18n::percent(f64::from(f), 0)
+                                }),
+                            )],
+                        )
+                    };
                     winui::text(&p, status_rc.left(), status_rc.top() + 9.0, &line, ink);
                     winui::progress_bar(
                         &p,
@@ -472,6 +495,7 @@ impl Updates {
                             self.job = Some(crate::update::Job::start(
                                 rt,
                                 ui.ctx(),
+                                install,
                                 rel.assets.clone(),
                                 asset,
                             ));
@@ -480,11 +504,18 @@ impl Updates {
                         .clicked()
                         || enter
                     {
-                        let _ = open::that_detached(&rel.page);
+                        crate::launch::open(&rel.page);
                         return Outcome::Done(false);
                     }
                 }
-                let kind = if download.is_some() || matches!(result, Some(Err(_))) {
+                // Being put in place: nothing can stop that, so no Cancel (nor Esc) meanwhile.
+                let installing = self
+                    .job
+                    .as_ref()
+                    .is_some_and(crate::update::Job::installing);
+                let kind = if installing {
+                    ButtonKind::Disabled
+                } else if download.is_some() || matches!(result, Some(Err(_))) {
                     ButtonKind::Normal
                 } else {
                     ButtonKind::Default
@@ -498,7 +529,9 @@ impl Updates {
                     None,
                 )
                 .clicked();
-                if close && self.job.is_some() {
+                if installing {
+                    Outcome::Open
+                } else if close && self.job.is_some() {
                     // Cancel: the download stops, the window stays (Update now again, Later).
                     self.job = None;
                     Outcome::Open
@@ -634,7 +667,7 @@ impl About {
                     open_page("");
                 }
                 if winui::link(ui, &p, source.0, source.1, "Source code", "source") {
-                    let _ = open::that_detached(REPO);
+                    crate::launch::open(REPO);
                 }
                 if winui::link(
                     ui,
@@ -644,7 +677,7 @@ impl About {
                     "Licenses and credits",
                     "credits",
                 ) {
-                    let _ = open::that_detached(format!("{REPO}/blob/main/ATTRIBUTION.md"));
+                    crate::launch::open(format!("{REPO}/blob/main/ATTRIBUTION.md"));
                 }
                 // Its own row under them: the creator's Sponsors page (Help → Support MDM).
                 y += 22.0;

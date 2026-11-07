@@ -37,7 +37,10 @@ struct Job {
     referer: Option<String>,
 }
 
-type Slot = Arc<Mutex<Option<Result<Report, Error>>>>;
+/// An archive's outcome, from its thread: the report, and with "delete the archive" whether it
+/// went to the Trash (moved there on that thread too: `gio trash`, `trash`, the Finder, which
+/// may ask first, are programs the window's thread doesn't wait for, #222).
+type Slot = Arc<Mutex<Option<(Result<Report, Error>, Option<bool>)>>>;
 
 struct Running {
     job: Job,
@@ -191,10 +194,10 @@ impl Extracts {
             .running
             .as_ref()
             .and_then(|r| r.result.lock().unwrap().take());
-        if let Some(result) = done
+        if let Some((result, trashed)) = done
             && let Some(run) = self.running.take()
         {
-            self.finish(run.job, result, items);
+            self.finish(run.job, result, trashed, items);
             changed = true;
         }
         if self.running.is_none()
@@ -209,7 +212,13 @@ impl Extracts {
         changed
     }
 
-    fn finish(&mut self, job: Job, result: Result<Report, Error>, items: &mut [Item]) {
+    fn finish(
+        &mut self,
+        job: Job,
+        result: Result<Report, Error>,
+        trashed: Option<bool>,
+        items: &mut [Item],
+    ) {
         let name = job
             .archive
             .file_name()
@@ -280,9 +289,7 @@ impl Extracts {
                 ),
             );
         }
-        if job.delete {
-            let present: Vec<PathBuf> = job.files.iter().filter(|f| f.exists()).cloned().collect();
-            let gone = to_trash(&present);
+        if let Some(gone) = trashed {
             let text = match (gone, cfg!(windows)) {
                 // i18n: in a download's log: the downloaded archive, after it was extracted
                 (true, true) => crate::i18n::t("The archive was moved to the Recycle Bin"),
@@ -408,11 +415,17 @@ fn start(job: Job, ctx: &egui::Context) -> Running {
         .spawn(move || {
             let r = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| run(&j, &stop)))
                 .unwrap_or_else(|_| Err(Error::Damaged("the decoder failed".into())));
-            *slot.lock().unwrap() = Some(r);
+            // Extracted: the archive (and its volumes) to the Trash, when asked.
+            let trashed = (r.is_ok() && j.delete).then(|| {
+                let present: Vec<PathBuf> =
+                    j.files.iter().filter(|f| f.exists()).cloned().collect();
+                to_trash(&present)
+            });
+            *slot.lock().unwrap() = Some((r, trashed));
             ctx.request_repaint();
         });
     if let Err(e) = spawned {
-        *result.lock().unwrap() = Some(Err(Error::Io(e)));
+        *result.lock().unwrap() = Some((Err(Error::Io(e)), None));
     }
     Running {
         job,
@@ -512,7 +525,7 @@ impl ToolDialog {
                     ],
                 );
                 if row[0].clicked() {
-                    let _ = open::that_detached("https://www.7-zip.org/");
+                    crate::launch::open("https://www.7-zip.org/");
                 }
                 if row[1].clicked() || winui::escape_pressed(ui) || winui::enter_pressed(ui) {
                     Outcome::Done(())

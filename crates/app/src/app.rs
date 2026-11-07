@@ -3935,7 +3935,7 @@ impl App {
         self.sound(3);
         let sch = self.queues[q].schedule.clone();
         if let Some(path) = &sch.open_when_done {
-            let _ = open::that_detached(path);
+            crate::launch::open(path);
         }
         self.when_done(sch.when_done());
     }
@@ -4019,7 +4019,7 @@ impl App {
             Cmd::Browse(c) => {
                 let dir = self.settings.category_dir(c, &self.downloads);
                 let _ = std::fs::create_dir_all(&dir);
-                let _ = open::that_detached(dir);
+                crate::launch::open(dir);
             }
             Cmd::DoubleClickOpen(open) => {
                 self.settings.double_click_open = open;
@@ -4105,7 +4105,7 @@ impl App {
             Cmd::OpenThemesFolder => {
                 if let Some(dir) = crate::themefile::dir() {
                     let _ = std::fs::create_dir_all(&dir);
-                    let _ = open::that_detached(dir);
+                    crate::launch::open(dir);
                 }
             }
             #[cfg(gpu)]
@@ -4159,7 +4159,7 @@ impl App {
                         .find(|i| i.id == id)
                         .and_then(|i| i.context.referer.clone());
                     if let Some(page) = page {
-                        let _ = open::that_detached(page);
+                        crate::launch::open(page);
                     }
                     self.properties(id);
                 }
