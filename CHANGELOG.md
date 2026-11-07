@@ -536,6 +536,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   Download File Info grows by what Preview's label needs (Russian, Ukrainian, Telugu, Belarusian
   and a few more), the Proxy page's title moves left to give Get System its room, and the
   Scheduler's drop-down widens towards its caption. English is unchanged.
+- **A menu shut with Escape opens again at the first click on its title**: a menu opened from
+  the menu bar and shut with Escape, the pointer still on its title, was left marked open. On
+  Linux the next click on that title only "shut" it, and a second click was needed; on Windows
+  Escape seemed to do nothing (the menu came back at once). Escape, or MDM losing the focus, now
+  shuts the menu whatever the pointer rests on; a press on a title still shuts its own menu or
+  opens another.
 - **A video that needs a sign-in downloads from the button over it**
   ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229)): the button's cookies
   reached the Download video window's look-up but not the download's own, which then failed with
