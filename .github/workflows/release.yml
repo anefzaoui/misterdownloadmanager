@@ -6,9 +6,6 @@
 #   SHA256SUMS.txt, its notes from CHANGELOG.md (Help -> Check for updates sees it at once). The
 #   release waits for Windows and the extensions: a failed Linux or macOS build leaves those out.
 # - Run by hand (Actions -> Release -> Run workflow) it only builds and keeps them as artifacts.
-# Code signing turns on by itself once these repository secrets exist:
-#   CODESIGN_PFX_BASE64  the certificate (.pfx), base64
-#   CODESIGN_PASSWORD    its password
 name: Release
 
 on:
@@ -147,8 +144,7 @@ jobs:
           New-Item -ItemType Directory -Force target/store | Out-Null
           Copy-Item target/extension/mdm-chrome-store.zip "target/store/MisterDownloadManager-$v-chrome-web-store.zip"
 
-      # The Firefox add-on is listed on addons.mozilla.org: with the AMO API key in the
-      # repository's secrets (AMO_JWT_ISSUER, AMO_JWT_SECRET), each release's version is sent there
+      # The Firefox add-on is listed on addons.mozilla.org: each release's version is sent there
       # for review (not waited for); Firefox installs and updates it from its listing. The .xpi
       # in the release stays the unsigned one (for about:debugging).
       - name: Send the Firefox add-on to addons.mozilla.org
@@ -170,11 +166,9 @@ jobs:
           }
 
       # The extension is listed in the Chrome Web Store (ejoleppdfgjdndddcjoehopknmlglojp,
-      # crates/ipc STORE_ID): with the store API's OAuth credentials in the repository's secrets
-      # (CWS_CLIENT_ID, CWS_CLIENT_SECRET, CWS_REFRESH_TOKEN, CWS_PUBLISHER_ID), each release's zip
-      # is uploaded and sent for review (not waited for); Chrome, Edge, Brave, Opera and Vivaldi
-      # update from the listing. Without them it is uploaded by hand from the chrome-web-store
-      # artifact. A store refusal (a version it has already) never fails the release.
+      # crates/ipc STORE_ID): each release's zip is uploaded and sent for review (not waited for);
+      # Chrome, Edge, Brave, Opera and Vivaldi update from the listing. A store refusal (a version
+      # it has already) never fails the release.
       - name: Send the extension to the Chrome Web Store
         if: ${{ env.CWS_REFRESH_TOKEN != '' }}
         continue-on-error: true
@@ -293,8 +287,8 @@ jobs:
           $files = Get-ChildItem dist -File | Sort-Object Name
           $sums = $files | ForEach-Object { "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower())  $($_.Name)" }
           Set-Content -Encoding ascii dist/SHA256SUMS.txt $sums
-          # Signed with MDM's release key (fingerprint 5826D399249DE856EA087D802E293C28E8A69D74, the
-          # MDM_RELEASE_KEY secret): MDM updates itself only from a list it signed
+          # Signed with MDM's release key (fingerprint 5826D399249DE856EA087D802E293C28E8A69D74):
+          # MDM updates itself only from a list it signed
           # (crates/tools/src/update.rs; the public key is crates/tools/keys/mdm-release.asc).
           if ($env:MDM_RELEASE_KEY) {
             $key = Join-Path $env:RUNNER_TEMP "mdm-release.asc"

@@ -60,8 +60,10 @@ button:hover { filter: brightness(0.96); }
 button:focus-visible, input:focus-visible, .link:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 button.accent { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
 button.row { width: 100%; text-align: start; margin-top: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.actions { display: flex; gap: 8px; margin-top: 12px; }
-.actions button { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Each button as wide as its text; when both don't fit on one line (a wider font, a longer
+   language), Options goes below Open and each takes the whole line, so neither is cut. */
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.actions button { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .note { color: var(--muted); margin: 10px 0 0; font-size: 12px; }
 footer { display: flex; justify-content: space-between; align-items: baseline; margin-top: 10px; border-top: 1px solid var(--edge); padding-top: 6px; color: var(--muted); font-size: 12px; }
 /* Help and Support MDM side by side on the footer's one line: the popup keeps its height. */
