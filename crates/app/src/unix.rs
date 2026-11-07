@@ -44,16 +44,13 @@ pub fn run_at_startup() -> bool {
     startup_file().is_some_and(|f| f.is_file())
 }
 
-pub fn set_run_at_startup(on: bool) {
-    let (Some(file), Some(exe)) = (startup_file(), program()) else {
-        return;
-    };
-    if !on {
-        let _ = std::fs::remove_file(&file);
-        return;
-    }
+/// The startup entry for the program `exe`: started with the session, MDM waits in the
+/// notification area (`/startup`, #226). A LaunchAgent on macOS, an XDG autostart entry on
+/// Linux.
+fn startup_entry(exe: &Path, macos: bool) -> String {
     let exe = exe.display().to_string();
-    let text = if cfg!(target_os = "macos") {
+    let arg = mdm_ipc::STARTUP;
+    if macos {
         let exe = exe
             .replace('&', "&amp;")
             .replace('<', "&lt;")
@@ -64,7 +61,8 @@ pub fn set_run_at_startup(on: bool) {
              \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n\
              <plist version=\"1.0\">\n<dict>\n\
              \x20 <key>Label</key><string>io.github.anefzaoui.misterdownloadmanager</string>\n\
-             \x20 <key>ProgramArguments</key><array><string>{exe}</string></array>\n\
+             \x20 <key>ProgramArguments</key><array><string>{exe}</string>\
+             <string>{arg}</string></array>\n\
              \x20 <key>RunAtLoad</key><true/>\n\
              </dict>\n</plist>\n"
         )
@@ -79,14 +77,76 @@ pub fn set_run_at_startup(on: bool) {
             .collect();
         format!(
             "[Desktop Entry]\nType=Application\nName=Mister Download Manager\n\
-             Exec=\"{quoted}\"\nIcon=misterdownloadmanager\nTerminal=false\n\
+             Exec=\"{quoted}\" {arg}\nIcon=misterdownloadmanager\nTerminal=false\n\
              X-GNOME-Autostart-enabled=true\n"
         )
+    }
+}
+
+/// A startup entry written before #226 for the program `exe`: it names that program but passes
+/// no `/startup`. Another copy's entry (an AppImage elsewhere) is not this one's to rewrite.
+fn startup_outdated(text: &str, exe: &Path, macos: bool) -> bool {
+    !text.contains(mdm_ipc::STARTUP)
+        && entry_program(text, macos).is_some_and(|p| Path::new(&p) == exe)
+}
+
+/// The program a startup entry starts: a LaunchAgent's first argument, an autostart entry's
+/// `Exec=` program (unquoted as the Desktop Entry specification quotes it).
+fn entry_program(text: &str, macos: bool) -> Option<String> {
+    if macos {
+        let start = text.find("<array><string>")? + "<array><string>".len();
+        let end = start + text[start..].find("</string>")?;
+        return Some(
+            text[start..end]
+                .replace("&lt;", "<")
+                .replace("&gt;", ">")
+                .replace("&amp;", "&"),
+        );
+    }
+    let line = text.lines().find_map(|l| l.strip_prefix("Exec="))?;
+    let Some(rest) = line.strip_prefix('"') else {
+        return line.split_whitespace().next().map(str::to_owned);
     };
+    let mut out = String::new();
+    let mut chars = rest.chars();
+    while let Some(c) = chars.next() {
+        match c {
+            '\\' => out.extend(chars.next()),
+            '"' => return Some(out),
+            c => out.push(c),
+        }
+    }
+    None
+}
+
+pub fn set_run_at_startup(on: bool) {
+    let (Some(file), Some(exe)) = (startup_file(), program()) else {
+        return;
+    };
+    if !on {
+        let _ = std::fs::remove_file(&file);
+        return;
+    }
+    let text = startup_entry(&exe, cfg!(target_os = "macos"));
     if let Some(dir) = file.parent() {
         let _ = std::fs::create_dir_all(dir);
     }
     let _ = std::fs::write(&file, text);
+}
+
+/// The startup entry written again with its argument when it was written without (by 0.3.0 or
+/// earlier) for this very program (#226).
+pub fn update_run_at_startup() {
+    let (Some(file), Some(exe)) = (startup_file(), program()) else {
+        return;
+    };
+    let Ok(text) = std::fs::read_to_string(&file) else {
+        return;
+    };
+    if startup_outdated(&text, &exe, cfg!(target_os = "macos")) {
+        tracing::info!("startup entry written again, to start in the notification area");
+        set_run_at_startup(true);
+    }
 }
 
 /// Browser integration: the host's manifests in every installed browser's folder. There is no
@@ -1094,6 +1154,68 @@ mod tests {
         // The folder opened after the limit, not after gdbus's 30 s.
         assert!(took < Duration::from_secs(20), "took {took:?}");
         let _ = std::fs::remove_dir_all(&root);
+    }
+}
+
+#[cfg(test)]
+mod startup_tests {
+    use super::{entry_program, startup_entry, startup_outdated};
+    use std::path::Path;
+
+    /// The entries 0.3.0 and earlier wrote: the program alone.
+    fn old_entry(exe: &str, macos: bool) -> String {
+        if macos {
+            format!(
+                "<plist version=\"1.0\">\n<dict>\n  <key>ProgramArguments</key><array>\
+                 <string>{exe}</string></array>\n  <key>RunAtLoad</key><true/>\n</dict>\n</plist>\n"
+            )
+        } else {
+            format!("[Desktop Entry]\nType=Application\nExec=\"{exe}\"\nTerminal=false\n")
+        }
+    }
+
+    /// The autostart entry and the LaunchAgent start MDM with `/startup` (#226), and name the
+    /// program as it is, quoting and all.
+    #[test]
+    fn the_startup_entries_start_mdm_in_the_tray() {
+        for exe in [
+            "/home/ana/Apps/Mister Download Manager.AppImage",
+            "/opt/mdm/misterdownloadmanager",
+            "/Applications/Mister Download Manager.app/Contents/MacOS/misterdownloadmanager",
+            "/home/a\"b$c/m&d<m>",
+        ] {
+            for macos in [false, true] {
+                let text = startup_entry(Path::new(exe), macos);
+                assert!(text.contains("/startup"), "{text}");
+                assert_eq!(entry_program(&text, macos).as_deref(), Some(exe), "{text}");
+                assert!(!startup_outdated(&text, Path::new(exe), macos));
+            }
+        }
+        let desktop = startup_entry(Path::new("/opt/mdm/misterdownloadmanager"), false);
+        assert!(desktop.contains("Exec=\"/opt/mdm/misterdownloadmanager\" /startup\n"));
+        let plist = startup_entry(Path::new("/opt/mdm/misterdownloadmanager"), true);
+        assert!(plist.contains(
+            "<array><string>/opt/mdm/misterdownloadmanager</string><string>/startup</string></array>"
+        ));
+    }
+
+    /// An entry of 0.3.0 and earlier for this program is written again; another copy's is not.
+    #[test]
+    fn old_startup_entries_are_rewritten() {
+        let exe = "/home/ana/Apps/Mister Download Manager.AppImage";
+        for macos in [false, true] {
+            assert!(startup_outdated(
+                &old_entry(exe, macos),
+                Path::new(exe),
+                macos
+            ));
+            assert!(!startup_outdated(
+                &old_entry("/elsewhere/mdm.AppImage", macos),
+                Path::new(exe),
+                macos
+            ));
+        }
+        assert!(!startup_outdated("", Path::new(exe), false));
     }
 }
 

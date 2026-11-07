@@ -22,6 +22,17 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Started with the computer, MDM waits in the notification area**
+  ([#226](https://github.com/anefzaoui/misterdownloadmanager/issues/226)): with **Options →
+  General → Launch Mister Download Manager on startup**, MDM no longer opens its window in front
+  at every sign-in. It starts hidden, its icon in the notification area, with its downloads,
+  queues, Scheduler and browser hand-overs running; its icon, or starting MDM again, shows the
+  window as before. The same on Linux and macOS; where no notification area shows MDM's icon
+  (some Linux desktops), it starts minimized, and the option's tooltip says so (it waits for
+  one up to 30 seconds after its icon is made, its window hidden: a desktop's can come up after
+  MDM at sign-in). The startup entry now passes `/startup` (new on the [command line](docs/command-line.md)); an entry written by
+  an earlier version or its installer is written again at the next start, and the installer
+  writes the new one.
 - **Sign-ins in the system's keychain**
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)): debrid accounts, Sites
   Logins' passwords and the proxy's password are kept in Windows Credential Manager, in the
