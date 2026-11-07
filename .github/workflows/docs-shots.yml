@@ -44,7 +44,7 @@ jobs:
 
       - name: Build
         run: |
-          cargo build -p mdm-app -p mdm-labserver -p mdm-cli
+          cargo build -p mdm-app -p mdm-labserver -p mdm-cli -p mdm-nmhost
           if ($LASTEXITCODE) { throw "build $LASTEXITCODE" }
           # The torrent's progress window: a swarm of seeders and a tracker on this runner.
           cargo build -p mdm-torrent --example swarm
@@ -124,6 +124,9 @@ jobs:
           "lab server at $base answers $code" | Tee-Object -Append "$out\runner.txt"
           if ($code -ne 200) { throw "the lab server isn't reached at $base" }
           $net = @{ Port = $port; UrlHost = "downloads.example" }
+          # Browser integration set up, as the installer does it, so the browser offer window shows
+          # a computer where it works (this runner's own user only).
+          & target\debug\misterdownloadmanager-nmhost.exe --register
           # On the screen, as nobody watches it: llvmpipe draws nothing off the screens.
           $at = "40,40"
           # Every window of docs-shots.ps1's own list, light (docs/images) and dark (the site's

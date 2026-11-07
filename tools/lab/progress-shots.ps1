@@ -142,7 +142,14 @@ try {
 
   if (Want "video") {
     $tools = Join-Path ([Environment]::GetFolderPath("ApplicationData")) "misterdownloadmanager\tools"
-    if (-not (Test-Path "$tools\yt-dlp\current.json")) { throw "no yt-dlp in ${tools}: install it from MDM first" }
+    if ($YtDlp) {
+      # A tools folder of the run's own, holding the given yt-dlp as MDM installs it.
+      $tools = Join-Path $work "tools"
+      New-Item -ItemType Directory -Force "$tools\yt-dlp\given" | Out-Null
+      Copy-Item (Resolve-Path $YtDlp).Path "$tools\yt-dlp\given\yt-dlp.exe"
+      [IO.File]::WriteAllText("$tools\yt-dlp\current.json", (@{ version = "given"; exe = "$tools\yt-dlp\given\yt-dlp.exe" } | ConvertTo-Json))
+    }
+    if (-not (Test-Path "$tools\yt-dlp\current.json")) { throw "no yt-dlp in ${tools}: install it from MDM first, or pass -YtDlp" }
     $srv = Start-Process -PassThru -WindowStyle Hidden (Join-Path $bin "labserver.exe") -ArgumentList "--bind 127.0.0.1:$Port"
     $video = "open-movie-trailer.mp4"
     $item = @{
