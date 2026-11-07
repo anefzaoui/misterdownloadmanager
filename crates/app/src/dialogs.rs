@@ -326,6 +326,9 @@ fn dialog_window<T>(
         if close { Outcome::Closed } else { out }
     });
     let rescaled = follow_scale(ctx, vid, key, shown);
+    // Elsewhere follow_scale asked the window manager itself.
+    #[cfg(not(windows))]
+    let _ = rescaled;
     // Give the window IDM's modal-dialog frame (3 px borders, 26 px caption) once it exists,
     // and again at a new size (a dialog that grows: the frame is sized from the client).
     #[cfg(windows)]
