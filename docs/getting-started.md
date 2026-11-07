@@ -34,6 +34,27 @@ Browser integration is set up by MDM itself at each start on Linux and macOS (th
 
 In a Wayland session (GNOME, KDE Plasma and others), MDM's windows run through XWayland when it is there: Wayland doesn't let a program place its own windows, so MDM's menus and drop-down lists would open in the middle of the screen. To run on Wayland itself anyway, start it with `MDM_WAYLAND=1 misterdownloadmanager`.
 
+#### Uninstall on Linux {#uninstall-linux}
+
+`sudo apt remove misterdownloadmanager` (or `sudo dnf remove misterdownloadmanager`) removes the
+programs; for the AppImage or the tar.gz, delete the file or the folder. What MDM keeps in your
+home folder stays, as with any package: your list and settings
+(`~/.local/share/misterdownloadmanager`) and the small files that tell your browsers where MDM's
+helper is. A package can't remove those: it never touches home folders. Without MDM they lead
+nowhere, so the extension says it can't reach MDM. To remove them as well, run this as each user
+who used MDM, **before** uninstalling:
+
+```sh
+misterdownloadmanager-nmhost --unregister
+```
+
+(From the AppImage: `~/.local/share/misterdownloadmanager/browser-host/misterdownloadmanager-nmhost --unregister`.)
+Already uninstalled? This removes the same files:
+
+```sh
+find ~/.mozilla ~/.librewolf ~/.config -name com.misterdownloadmanager.host.json -delete 2>/dev/null
+```
+
 ## Install with the setup
 
 1. Run `MisterDownloadManager-<version>-setup.exe`.
