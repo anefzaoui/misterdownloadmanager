@@ -21,7 +21,7 @@ Nothing here touches the installed MDM or the real releases:
 These checks need the **`test-update`** cargo feature. It is off by default, and no release build turns it on. It adds:
 
 - `MDM_TEST_UPDATE_KEY`: a public key the release's checksum list may be signed with, besides MDM's own.
-- `/show updates` and `/show update-now`: Check for updates, then Update now, with no clicks.
+- `/show update-now`: Update now pressed, with no clicks, in the window `/show updates` opens (that one every build has).
 - `MDM_TEST_UPDATE_HOLD=N`: holds "Installing the update..." for N seconds.
 
 The build must be release mode. A debug build is "built from source", and those never update.

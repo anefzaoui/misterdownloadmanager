@@ -1673,10 +1673,8 @@ impl App {
             "find" => self.run(Cmd::Find, None, ctx),
             "scheduler" => self.run(Cmd::Scheduler, None, ctx),
             "about" => self.run(Cmd::About, None, ctx),
-            // Update now's end-to-end tests (feature `test-update`, never in a release): Check
-            // for updates against MDM_UPDATE_FEED, then Update now pressed.
-            #[cfg(feature = "test-update")]
-            "updates" => self.run(Cmd::CheckUpdates, None, ctx),
+            // Update now's end-to-end tests (feature `test-update`, never in a release): Update
+            // now pressed in the window `/show updates` opened (against MDM_UPDATE_FEED).
             #[cfg(feature = "test-update")]
             "update-now" => {
                 if let Some(u) = &mut self.updates {
