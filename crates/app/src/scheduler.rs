@@ -984,7 +984,13 @@ impl Scheduler {
                 || (icon == "cross" && delete_key);
             // English, as the icon and its wash take it.
             let img = winui::rect(rc).min + vec2(2.0, 2.0);
-            icons.paint(ui, IconKey::Silk(icon), img);
+            // The theme's icon set may draw them (move up, move down, remove).
+            let need = match icon {
+                "arrow_up" => "misc-up",
+                "arrow_down" => "misc-down",
+                _ => "misc-remove",
+            };
+            icons.paint(ui, IconKey::Themed(need, icon), img);
             if !enabled {
                 // Disabled: wash the icon out.
                 fill(&p, img.x, img.y, img.x + 15.0, img.y + 15.0, {

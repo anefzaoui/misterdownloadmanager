@@ -103,6 +103,10 @@ enum Cmd {
     ToggleDarkMode,
     /// View → Always dark (#60).
     ToggleAlwaysDark,
+    /// View → Theme → a theme (#45): a built-in's id or a theme file's name.
+    Theme(&'static str),
+    /// View → Theme → Open themes folder.
+    OpenThemesFolder,
     /// View → Draw with → OpenGL / Direct3D (#89), from the next start.
     #[cfg(windows)]
     DrawWith(crate::renderer::Api),
@@ -484,10 +488,19 @@ pub struct App {
     saver: store::Saver,
     /// When the light/dark mode was last checked against Windows' app mode.
     theme_checked: Option<Instant>,
+    /// View → Theme's choices (#45), and when the themes folder last changed (read again then).
+    theme_list: Vec<crate::themefile::Entry>,
+    themes_changed: Option<std::time::SystemTime>,
     /// When `logic`'s every-2-seconds work last ran (crash state, torrents, #174).
     ticked: Option<Instant>,
     /// The main window's caption matches the mode.
     caption_set: bool,
+    /// Windows: whether the main window's title bar is ours (a style theme's, #45), as applied
+    /// to its frame; None until the window exists. And the window, once it is.
+    #[cfg_attr(not(windows), allow(dead_code))]
+    drawn_frame: Option<bool>,
+    #[cfg_attr(not(windows), allow(dead_code))]
+    main_hwnd: Option<isize>,
     list: list::ListState,
     icons: ShellIcons,
     /// Open top-level menu (index into `chrome::menus()`).
@@ -672,17 +685,19 @@ fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
 }
 
 /// Silk icons standing in for IDM's XP-era category icons.
+/// A theme's icon set may replace them (`crate::themeicons`).
 fn category_icon(c: Category) -> IconKey {
-    IconKey::Silk(match c {
-        Category::Compressed => "page_white_zip",
-        Category::Documents => "page_white",
-        Category::Music => "music",
-        Category::Programs => "application_xp",
-        Category::Video => "film",
-        Category::General => "page_white",
-        Category::Torrents => "folder_link",
-        Category::Custom(_) => "folder",
-    })
+    let (need, silk) = match c {
+        Category::Compressed => ("cat-compressed", "page_white_zip"),
+        Category::Documents => ("cat-documents", "page_white"),
+        Category::Music => ("cat-music", "music"),
+        Category::Programs => ("cat-programs", "application_xp"),
+        Category::Video => ("cat-video", "film"),
+        Category::General => ("cat-documents", "page_white"),
+        Category::Torrents => ("cat-torrents", "folder_link"),
+        Category::Custom(_) => ("cat-folder", "folder"),
+    };
+    IconKey::Themed(need, silk)
 }
 
 impl App {
@@ -694,7 +709,10 @@ impl App {
         loaded: store::Loaded,
     ) -> Self {
         // The look (#45): the chosen theme before anything is drawn.
-        crate::theme::select(&loaded.settings.theme);
+        crate::theme::select(
+            &crate::theme::startup_id(&loaded.settings.theme),
+            &cc.egui_ctx,
+        );
         crate::theme::apply(&cc.egui_ctx);
         let mut settings = loaded.settings;
         if settings.limiter_on_startup {
@@ -898,8 +916,13 @@ impl App {
             last_save: Instant::now(),
             saver: store::Saver::new(),
             theme_checked: None,
+            theme_list: crate::themefile::list(),
+            themes_changed: crate::themefile::changed(),
             ticked: None,
             caption_set: false,
+            // The system's title bar is the frame's own: nothing to apply for it.
+            drawn_frame: Some(false),
+            main_hwnd: None,
             list,
             icons: ShellIcons,
             open_menu: None,
@@ -1771,6 +1794,12 @@ impl App {
                     p.show_tab(tab);
                 }
             }
+            // View → Theme → a theme, as the menu picks it (#45): `theme:native` (tests of the
+            // live switch without a click).
+            "theme" => {
+                let id = crate::chrome::label(tab);
+                self.run(Cmd::Theme(id), None, ctx);
+            }
             // A menu of the menu bar open (menu:0 is Tasks), for screenshots; menu:3:draw opens
             // View with its Draw with submenu (#89).
             "menu" => {
@@ -1778,11 +1807,17 @@ impl App {
                 let (index, sub) = tab.split_once(':').unwrap_or((tab, ""));
                 let index = index.parse().unwrap_or(0);
                 self.open_menu = Some(index);
+                // menu:3:theme opens View → Theme (#45).
+                let wanted = match sub {
+                    "draw" => "Draw with",
+                    "theme" => "Theme",
+                    _ => "",
+                };
                 let at = self
                     .menu_entries(index)
                     .iter()
-                    .position(|e| matches!(e, MenuEntry::Sub("Draw with", ..)));
-                if let (Some(at), "draw") = (at, sub) {
+                    .position(|e| matches!(e, MenuEntry::Sub(name, ..) if *name == wanted));
+                if let Some(at) = at {
                     chrome::open_sub_at(ctx, &format!("menu-{index}"), at);
                 }
             }
@@ -4309,6 +4344,24 @@ impl App {
                 self.theme_checked = None;
                 self.dirty = true;
             }
+            Cmd::Theme(id) => {
+                self.settings.theme = id.to_owned();
+                crate::theme::select(id, ctx);
+                // Live: egui's own visuals, the glyph rendering and the captions follow at once;
+                // every painter reads the new theme from its next frame.
+                crate::theme::apply_theme(ctx);
+                crate::theme::apply_mode(ctx);
+                self.caption_set = false;
+                self.theme_checked = None;
+                self.dirty = true;
+                ctx.request_repaint();
+            }
+            Cmd::OpenThemesFolder => {
+                if let Some(dir) = crate::themefile::dir() {
+                    let _ = std::fs::create_dir_all(&dir);
+                    let _ = open::that_detached(dir);
+                }
+            }
             #[cfg(windows)]
             Cmd::DrawWith(api) => {
                 // Chosen again after it failed here: its next start is tried.
@@ -4940,16 +4993,59 @@ impl App {
                 I("Support &MDM", Cmd::Support, true, false),
             ],
         };
-        // View → Draw with (MDM's, #89), after Always dark. Windows only: Linux and macOS draw
-        // with OpenGL only (renderer.rs).
-        #[cfg(windows)]
+        // View → Theme (MDM's, #45), after Always dark; then Draw with (#89), Windows only:
+        // Linux and macOS draw with OpenGL only (renderer.rs).
         if let Some(at) = menu
             .iter()
             .position(|e| matches!(e, I(_, Cmd::ToggleAlwaysDark, ..)))
         {
-            menu.insert(at + 1, self.draw_with_menu());
+            menu.insert(at + 1, self.theme_menu());
+            #[cfg(windows)]
+            menu.insert(at + 2, self.draw_with_menu());
         }
         menu
+    }
+
+    /// View → Theme (#45): the built-in themes, the theme files in the themes folder, and a way
+    /// to that folder. Picked, a theme applies at once.
+    fn theme_menu(&self) -> MenuEntry<Cmd> {
+        use MenuEntry::{Item as I, Radio, Sep, Sub};
+        let chosen = self.settings.theme.as_str();
+        let mut items = Vec::new();
+        let mut files = false;
+        let on = |id: &str| chosen == id;
+        // i18n: View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
+        items.push(Radio("Classic", Cmd::Theme("classic"), true, on("classic")));
+        // i18n: View → Theme: the system's own colours (its accent colour, its high contrast)
+        items.push(Radio("Native", Cmd::Theme("native"), true, on("native")));
+        // i18n: View → Theme: black and white with strong edges, for low vision
+        items.push(Radio(
+            "High contrast",
+            Cmd::Theme("high-contrast"),
+            true,
+            on("high-contrast"),
+        ));
+        items.push(Sep);
+        // i18n: View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
+        items.push(Radio("Metro", Cmd::Theme("metro"), true, on("metro")));
+        // i18n: View → Theme: a style theme's name (GNOME's look, the Linux desktop), a name: keep "Adwaita" as written
+        items.push(Radio("Adwaita", Cmd::Theme("adwaita"), true, on("adwaita")));
+        // i18n: View → Theme: a style theme's name (KDE Plasma's look, the Linux desktop), a name: keep "Breeze" as written
+        items.push(Radio("Breeze", Cmd::Theme("breeze"), true, on("breeze")));
+        for e in self.theme_list.iter().filter(|e| e.path.is_some()) {
+            if !files {
+                items.push(Sep);
+                files = true;
+            }
+            // A file's theme by its own name, untranslated.
+            let (id, name) = (crate::chrome::label(&e.id), crate::chrome::label(&e.name));
+            items.push(Radio(name, Cmd::Theme(id), true, e.id == chosen));
+        }
+        items.push(Sep);
+        // i18n: View → Theme: opens the folder where theme files go (TOML or JSON)
+        items.push(I("Open themes folder", Cmd::OpenThemesFolder, true, false));
+        // i18n: View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
+        Sub("Theme", true, items)
     }
 
     /// View → Draw with (#89): OpenGL or Direct3D, used from the next start; a greyed line says
@@ -5321,7 +5417,7 @@ impl App {
         let mut branch =
             |label, open: bool, icon, badge, view: View, b: Branch, child: fn(Category) -> View| {
                 rows.push((
-                    row(0, label, Some(open), IconKey::Silk(icon), badge, Some(view)),
+                    row(0, label, Some(open), icon, badge, Some(view)),
                     Some(view),
                     b,
                 ));
@@ -5347,7 +5443,7 @@ impl App {
         branch(
             "All Downloads",
             self.all_open,
-            "folder",
+            IconKey::Themed("cat-all", "folder"),
             None,
             View::All,
             Branch::All,
@@ -5357,7 +5453,7 @@ impl App {
             // i18n: adjective: the downloads that are not complete yet
             "Unfinished",
             self.unfinished_open,
-            "folder_go",
+            IconKey::Themed("cat-unfinished", "folder_go"),
             None,
             View::Unfinished(None),
             Branch::Unfinished,
@@ -5367,7 +5463,7 @@ impl App {
             // i18n: adjective: the downloads that are complete
             "Finished",
             self.finished_open,
-            "folder",
+            IconKey::Themed("cat-finished", "folder"),
             Some("tick"),
             View::Finished(None),
             Branch::Finished,
@@ -5380,7 +5476,7 @@ impl App {
                 // i18n: plural noun: the download queues
                 "Queues",
                 Some(self.queues_open),
-                IconKey::Silk("folder"),
+                IconKey::Themed("cat-queues", "folder"),
                 Some("page_white_stack"),
                 None,
             ),
@@ -5424,6 +5520,78 @@ impl App {
         self.popup = Some((kind, at, self.popup_serial));
     }
 
+    /// The main window's title bar where the theme draws its own (Windows only: elsewhere the
+    /// window manager owns the title bar): the frame is switched to ours or back as the theme
+    /// changes, the bar drawn at the top of `full`; returns what is left for the layout.
+    fn drawn_caption(&mut self, ui: &mut Ui, full: egui::Rect) -> egui::Rect {
+        #[cfg(windows)]
+        {
+            use crate::winui::caption::{self, CAPTION_H, CaptionButton};
+            let want =
+                crate::theme::current().controls.caption != crate::palette::CaptionLook::System;
+            if self.drawn_frame != Some(want)
+                && let Some(h) = crate::win32::drawn_frame(crate::MAIN_TITLE, want)
+            {
+                self.drawn_frame = Some(want);
+                self.main_hwnd = Some(h);
+                ui.ctx().request_repaint();
+            }
+            if !want || self.drawn_frame != Some(true) {
+                return full;
+            }
+            let rect = egui::Rect::from_min_size(full.min, egui::vec2(full.width(), CAPTION_H));
+            if let Some(h) = self.main_hwnd {
+                let m = crate::win32::max_button_state(h);
+                caption::frame_maximize(m.hot, m.pressed);
+            }
+            let buttons = [
+                (CaptionButton::Close, true),
+                (CaptionButton::Maximize, true),
+                (CaptionButton::Minimize, true),
+            ];
+            let bar = caption::title_bar(ui, rect, crate::MAIN_TITLE, &buttons);
+            if let Some(h) = self.main_hwnd {
+                let ppp = ui.ctx().pixels_per_point();
+                let px = |r: egui::Rect| {
+                    let (a, b) = ((r.min - full.min) * ppp, (r.max - full.min) * ppp);
+                    [
+                        a.x.round() as i32,
+                        a.y.round() as i32,
+                        b.x.round() as i32,
+                        b.y.round() as i32,
+                    ]
+                };
+                crate::win32::set_caption_hits(
+                    h,
+                    crate::win32::CaptionHits {
+                        strip_h: (CAPTION_H * ppp).round() as i32,
+                        icon: px(bar.icon),
+                        buttons: bar.buttons.iter().map(|r| px(*r)).collect(),
+                        max_button: Some(1),
+                    },
+                );
+            }
+            let ctx = ui.ctx();
+            match bar.pressed {
+                Some(CaptionButton::Close) => ctx.send_viewport_cmd(egui::ViewportCommand::Close),
+                Some(CaptionButton::Minimize) => {
+                    ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true))
+                }
+                Some(CaptionButton::Maximize) => {
+                    let max = ctx.input(|i| i.viewport().maximized) == Some(true);
+                    ctx.send_viewport_cmd(egui::ViewportCommand::Maximized(!max));
+                }
+                _ => {}
+            }
+            egui::Rect::from_min_max(egui::pos2(full.min.x, full.min.y + CAPTION_H), full.max)
+        }
+        #[cfg(not(windows))]
+        {
+            let _ = ui;
+            full
+        }
+    }
+
     fn toggle(&mut self, b: Branch) {
         match b {
             Branch::All => self.all_open = !self.all_open,
@@ -5437,11 +5605,14 @@ impl App {
     fn paint(&mut self, ui: &mut Ui) {
         let ctx = ui.ctx().clone();
         let full = ui.max_rect();
+        // The client area, laid out from the right in a right-to-left interface (winui).
+        let _surface = winui::Surface::enter(full.min.x, full.max.x);
+        // A style theme's title bar, drawn above the layout (Windows; #45), mirrored right to
+        // left as the progress window's.
+        let full = self.drawn_caption(ui, full);
         let o = full.min;
         let (w, h) = (full.width(), full.height());
         let mut chosen: Option<(Cmd, Option<u64>)> = None;
-        // The client area, laid out from the right in a right-to-left interface (winui).
-        let _surface = winui::Surface::enter(o.x, o.x + w);
 
         // The menu bar from the keyboard: F10 or Alt pressed alone opens its first menu, Alt and a
         // menu's underlined letter that menu (Windows and Linux); on macOS, whose apps have no
@@ -7453,11 +7624,24 @@ impl eframe::App for App {
             .is_none_or(|t| t.elapsed() > Duration::from_secs(2))
         {
             self.theme_checked = Some(Instant::now());
+            // A theme file added, removed or renamed: View → Theme lists it.
+            let changed = crate::themefile::changed();
+            if changed != self.themes_changed {
+                self.themes_changed = changed;
+                self.theme_list = crate::themefile::list();
+            }
             let changed = crate::theme::update(
                 self.settings.dark_mode_support,
                 self.settings.always_dark,
                 &ctx,
             );
+            // Native follows the system's accent and contrast as they change.
+            let changed = if crate::theme::follow_system(&ctx) {
+                crate::theme::apply_theme(&ctx);
+                true
+            } else {
+                changed
+            };
             // The caption follows (first check: the window may not exist yet; retried).
             if changed || !self.caption_set {
                 crate::theme::apply_mode(&ctx);

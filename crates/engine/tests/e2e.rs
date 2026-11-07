@@ -145,8 +145,22 @@ async fn a_slow_download_does_not_rewrite_its_state_every_tick() {
         }
     };
     let first = std::fs::read(&state).unwrap();
-    // 20 save ticks while bytes trickle in: no flush is due, nothing is rewritten.
-    tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+    // Save ticks while bytes trickle in: no flush is due, nothing is rewritten. Waits for the
+    // bytes themselves, not a time (#201: on a starved CPU none had come in a second): the first
+    // ones, then more, over at least a second (20 ticks; fewer on a starved CPU, never none).
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(30);
+    let running = &dl;
+    let bytes_in = move |more_than: u64| async move {
+        while running.snapshot().downloaded <= more_than {
+            assert!(std::time::Instant::now() < deadline, "no bytes came in");
+            tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+        }
+        running.snapshot().downloaded
+    };
+    let ticks = tokio::time::sleep(std::time::Duration::from_secs(1));
+    let early = bytes_in(0).await;
+    bytes_in(early).await;
+    ticks.await;
     assert_eq!(
         std::fs::read(&state).unwrap(),
         first,
@@ -412,19 +426,31 @@ async fn a_refusal_below_the_learned_cap_is_retried() {
 
 #[tokio::test]
 async fn slow_connections_reconnect_instead_of_holding_the_end() {
-    // Every third request crawls at 20 KB/s: without shedding, all connections end up on
-    // such requests and 8 MiB takes ~12 s.
-    let s = server("rate=8M&slow_every=3&slow_rate=20K").await;
-    let started = std::time::Instant::now();
-    let (log, size) = fetch(&s, "/gen/8M/slow.bin?seed=32", 32, fast_opts()).await;
+    // Every third request crawls at 1 KB/s. The other connections split such a request's part
+    // and take its halves over, down to pieces too small to split again (64 KiB here): without
+    // shedding, a slow request holds the end on such a piece for over a minute.
+    let s = server("rate=8M&slow_every=3&slow_rate=1K").await;
+    let opts = Options {
+        min_split: 64 << 10,
+        ..fast_opts()
+    };
+    let (log, size) = fetch(&s, "/gen/8M/slow.bin?seed=32", 32, opts).await;
     assert_eq!(size, 8 << 20);
+    // Timed from each slow request's own start, not the download's (#201: on a starved CPU the
+    // whole download took 8-25 s against an 8 s budget, and at 20 KB/s it took under 8 s without
+    // shedding too). Shedding drops a slow request once 2 s have shown it slow (or lets it end
+    // with under 2 s of its own pace left): about 2 s on an idle machine, up to 8 s on a starved
+    // one. Without shedding the last ones run 64 s or more.
+    let slow: Vec<_> = log
+        .iter()
+        .filter(|e| e.rate == Some(1024))
+        .map(|e| (e.t_end_ms - e.t_start_ms, e.bytes_sent, e.body_len))
+        .collect();
+    assert!(!slow.is_empty(), "the fault was there");
     assert!(
-        started.elapsed() < std::time::Duration::from_secs(8),
-        "took {:?}",
-        started.elapsed()
+        slow.iter().all(|(ms, ..)| *ms < 20_000),
+        "a slow request held its piece (ms, sent, asked): {slow:?}"
     );
-    let slow = log.iter().filter(|e| e.rate == Some(20 * 1024)).count();
-    assert!(slow > 0, "the fault was there");
 }
 
 #[tokio::test]
@@ -577,8 +603,11 @@ async fn no_range_server_uses_one_connection() {
 #[tokio::test]
 async fn a_server_without_ranges_sends_the_file_once() {
     // The probe takes about 375 ms; every range attempt is answered after 300 ms, so the first
-    // answers come while it runs and a retry's after it has ended.
-    let s = server("no_range=true&rate=8M&range_latency_ms=300").await;
+    // answers come while it runs and a retry's after it has ended. The range attempts' answers
+    // (the whole file, which the engine drops at their headers) come at 32 KB/s: at the probe's
+    // 8 MB/s the server filled each one's socket (1.3 MiB on Windows) before a starved CPU had
+    // dropped them, and 7 of them made 12.8 MB served for 3 MiB (#201).
+    let s = server("no_range=true&rate=8M&range_latency_ms=300&range_rate=32K").await;
     let (log, size) = fetch(&s, "/gen/3M?seed=41", 41, fast_opts()).await;
     assert_eq!(size, 3 << 20);
     let sent: u64 = log.iter().map(|e| e.bytes_sent).sum();
@@ -588,7 +617,7 @@ async fn a_server_without_ranges_sends_the_file_once() {
         .collect();
     // One plain GET, the probe: no start over on one connection. The bytes served beyond the
     // file are what the server had written into the range attempts' sockets when the engine
-    // dropped them (a few hundred KiB on a busy machine); a second copy would double them.
+    // dropped them (32 KB a second each); a second copy would double them.
     assert_eq!(
         log.iter().filter(|e| e.range.is_none()).count(),
         1,
@@ -968,11 +997,13 @@ async fn a_plain_web_page_is_still_downloaded() {
 
 #[tokio::test]
 async fn signed_links_that_expire_while_downloading_are_refreshed() {
-    // Each redirect hands out a link valid for 400 ms; connections drop every 256 KB, so they
-    // keep asking for new ranges after their link expired.
+    // Each redirect hands out a link good for 4 requests; connections drop every 256 KB, so they
+    // keep asking for new ranges after their link expired. Counted in requests, not time (#201:
+    // a link valid for 400 ms could expire on a starved CPU before the refresh that asked for it
+    // had used it, and the download failed with LinkExpired).
     let s = server("rate=1M&drop_after=256K").await;
     let target = s.url("/gen/4M/signed.bin?seed=23");
-    let path = format!("{}&ttl_ms=400", redirect_path(&target));
+    let path = format!("{}&uses=4", redirect_path(&target));
     let opts = Options {
         max_connections: 4,
         ..fast_opts()
@@ -1031,14 +1062,15 @@ async fn resume_follows_the_original_address_when_the_redirected_one_expired() {
 async fn a_dead_link_fails_fast_instead_of_retrying() {
     let s = server("rate=1M").await;
     let (_dir, state) = paused(&s, "/gen/8M/d.bin?seed=15").await;
-    // The address now answers 404 (and there is no other address to fall back to).
+    // The address now answers 404 (and there is no other address to fall back to); the server
+    // logs it ("gone" is no size).
     let mut saved = mdm_engine::state::ResumeState::load(&state).unwrap();
-    let gone: url::Url = s.url("/gone").parse().unwrap();
+    let gone: url::Url = s.url("/gen/gone/d.bin").parse().unwrap();
     saved.url = gone.clone();
     saved.final_url = gone;
     std::fs::write(&state, serde_json::to_vec(&saved).unwrap()).unwrap();
-    let started = std::time::Instant::now();
-    // Default options: retries back off from 1 s, so retrying a 404 would take far longer.
+    s.clear_log();
+    // Default options: a retry would wait 1 s first, then longer.
     let err = Download::resume(state, Default::default(), Options::default())
         .unwrap()
         .wait()
@@ -1048,11 +1080,26 @@ async fn a_dead_link_fails_fast_instead_of_retrying() {
         matches!(err, mdm_engine::Error::Status(s) if s.as_u16() == 404),
         "{err}"
     );
-    assert!(
-        started.elapsed() < std::time::Duration::from_secs(3),
-        "took {:?}",
-        started.elapsed()
-    );
+    asked_once(&s).await;
+}
+
+/// Every request the server got since its log was cleared asks for another part: nothing was
+/// asked again, so nothing was retried. Counted, not timed (#201: a 3 s budget, against the 1 s
+/// a first retry waits, failed on a starved CPU).
+async fn asked_once(s: &LabServer) {
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("every request ends");
+    let log = s.log();
+    let asked: Vec<_> = log
+        .iter()
+        .map(|e| (e.range.clone(), e.status, e.outcome.clone()))
+        .collect();
+    let mut ranges: Vec<_> = log.iter().map(|e| e.range.clone()).collect();
+    ranges.sort();
+    ranges.dedup();
+    assert!(!log.is_empty(), "nothing was asked");
+    assert_eq!(ranges.len(), log.len(), "a part was asked again: {asked:?}");
 }
 
 /// Point a paused download's state at its own address plus the fault overrides `faults`.
@@ -1071,14 +1118,15 @@ async fn a_web_page_instead_of_the_file_stops_the_resume() {
     let (_dir, state) = paused(&s, "/gen/8M/w.bin?seed=16").await;
     // The link now leads to a sign-in page.
     with_faults(&state, "html=true");
-    let started = std::time::Instant::now();
+    s.clear_log();
+    // Default options: a retry would wait 1 s first, then longer.
     let err = Download::resume(state.clone(), Default::default(), Options::default())
         .unwrap()
         .wait()
         .await
         .unwrap_err();
     assert!(matches!(err, mdm_engine::Error::GotWebPage), "{err}");
-    assert!(started.elapsed() < std::time::Duration::from_secs(3));
+    asked_once(&s).await;
     assert!(state.exists(), "the data is kept for a later resume");
 }
 
@@ -1247,17 +1295,63 @@ async fn changed_file_fails() {
 async fn speed_limit_caps_the_whole_download() {
     // 8 connections, but the limit is per download (IDM: "for one file").
     let s = server("").await;
-    let opts = Options {
+    // The download alone is timed, not the wait for the server's log (#201: `fetch` waits for
+    // it, which a starved CPU stretched to seconds).
+    let timed = |path: &str, seed: u64, opts: Options| {
+        let dir = tempfile::tempdir().unwrap();
+        let req = Request {
+            url: s.url(path).parse().unwrap(),
+            headers: Default::default(),
+            dest: Destination::Dir(dir.path().to_owned()),
+        };
+        async move {
+            let started = std::time::Instant::now();
+            let out = Download::start(req, opts)
+                .wait()
+                .await
+                .expect("download succeeds");
+            let secs = started.elapsed().as_secs_f64();
+            let mut want = vec![0; 2 << 20];
+            content::fill(seed, 0, &mut want);
+            assert!(
+                std::fs::read(&out.path).unwrap() == want,
+                "content mismatch"
+            );
+            drop(dir);
+            secs
+        }
+    };
+    // At the same time, a yardstick: the same 2 MiB at 1 MiB/s, paced by the server on one
+    // connection, with no limit of ours. It takes 2 s on an idle machine, and as long as the
+    // machine makes it on a busy one.
+    // An unlimited global cap beside the limit counts the bytes the connections pay for.
+    let paid = std::sync::Arc::new(mdm_engine::limiter::Limiter::new(None));
+    let limited = Options {
         speed_limit: Some(1 << 20),
+        global: Some(paid.clone()),
         ..fast_opts()
     };
-    let t = std::time::Instant::now();
-    let (_, size) = fetch(&s, "/gen/2M?seed=12", 12, opts).await;
-    let secs = t.elapsed().as_secs_f64() - 0.3; // fetch() waits 300 ms for the server log
-    assert_eq!(size, 2 << 20);
-    // At least the time the limit allows (without it: well under a second). The upper bound
-    // only catches a limit far too strict; a busy CI runner adds seconds of its own.
-    assert!((1.5..6.0).contains(&secs), "2 MB at 1 MB/s took {secs:.2}s");
+    let one = Options {
+        max_connections: 1,
+        ..fast_opts()
+    };
+    let (secs, paced) = tokio::join!(
+        timed("/gen/2M/limited.bin?seed=12", 12, limited),
+        timed("/gen/2M/paced.bin?seed=13&rate=1M", 13, one),
+    );
+    // At least the time the limit allows: the budget builds up from the download's start, so
+    // 2 MiB can't come in under 2 s (without the limit: well under a second).
+    assert!(secs >= 1.9, "2 MB at 1 MB/s took {secs:.2}s");
+    // Every byte kept was paid for once: no byte waits for the limit twice (or for bytes thrown
+    // away), whatever the machine's speed.
+    assert_eq!(paid.taken(), 2 << 20, "bytes paid for");
+    // The upper bound only catches a limit far too strict: 5 times the yardstick, about 10 s on
+    // an idle machine (#201: a fixed 6 s failed on a starved CPU or a busy CI runner, which took
+    // 6-17 s; there the limited download took up to 3.9 times as long as the yardstick).
+    assert!(
+        secs < 5.0 * paced,
+        "2 MB at 1 MB/s took {secs:.2}s (paced by the server: {paced:.2}s)"
+    );
 }
 
 /// #39: under a low limit each connection waits seconds for its turn; Stop ends those waits
@@ -1271,21 +1365,45 @@ async fn stop_is_prompt_under_a_low_limit() {
         headers: Default::default(),
         dest: Destination::Dir(dir.path().to_owned()),
     };
+    // The global cap starts unlimited: it only counts the bytes each connection pays for, until
+    // the test needs a connection in a long wait.
+    let global = std::sync::Arc::new(mdm_engine::limiter::Limiter::new(None));
     let opts = Options {
         speed_limit: Some(32 << 10),
+        global: Some(global.clone()),
         ..fast_opts()
     };
     let dl = Download::start(req, opts);
-    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(15);
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(30);
     while dl.snapshot().downloaded < 64 << 10 {
         assert!(std::time::Instant::now() < deadline, "never started");
         tokio::time::sleep(std::time::Duration::from_millis(50)).await;
     }
-    let t = std::time::Instant::now();
+    // A wait that can't pass for a slow machine (#201: a 1 s budget failed on a starved CPU,
+    // where the stop itself took up to 3.4 s, about as long as the waits it must not sit out).
+    // The cap goes to 32 KB/s with 4 MiB owed: any connection paying from now on waits two
+    // minutes. Stop is pressed once one of them is in that wait.
+    global.set(Some(32 << 10));
+    let _ = tokio::time::timeout(std::time::Duration::ZERO, global.acquire(4 << 20)).await;
+    let owed = global.taken();
+    while global.taken() == owed {
+        assert!(
+            std::time::Instant::now() < deadline,
+            "no connection paid again"
+        );
+        tokio::time::sleep(std::time::Duration::from_millis(10)).await;
+    }
+    // Measured from Stop: a stop that waited would take 2 minutes, a prompt one well under 10 s
+    // however busy the machine (it still writes what arrived, and the resume state).
     dl.cancel();
-    let _ = dl.wait().await;
-    let secs = t.elapsed().as_secs_f64();
-    assert!(secs < 1.0, "stopping took {secs:.2}s");
+    let stopped = tokio::time::timeout(std::time::Duration::from_secs(10), dl.wait())
+        .await
+        .expect("Stop waited out the speed limit");
+    assert!(
+        matches!(stopped, Err(mdm_engine::Error::Cancelled)),
+        "{:?}",
+        stopped.map(|o| o.size)
+    );
 }
 
 #[tokio::test]
