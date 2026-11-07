@@ -616,6 +616,14 @@ choose. And Linux, checked on a real desktop with every change.
 
 ### Fixed
 
+- **Windows: a slow start no longer turns Direct3D off** (part of
+  [#280](https://github.com/anefzaoui/misterdownloadmanager/issues/280)): MDM gives Direct3D 10
+  seconds to show its first frame, and goes back to OpenGL when it doesn't. Those 10 seconds
+  counted MDM's own loading too (the list, the fonts, the icons), which can take that long by
+  itself on a busy computer just after it starts, so Direct3D was taken for failing and OpenGL drew
+  from then on. Only Direct3D's own time counts now. Crash and freeze reports say what drew, on
+  which graphics card and driver (OpenGL's too), and why, near their top, where a report cut to fit
+  still has it.
 - **Linux: torrents work on a system without CA certificates too** (part of
   [#264](https://github.com/anefzaoui/misterdownloadmanager/issues/264)): the torrent engine built
   its own connection for the trackers, which can't be made without them, so no torrent or magnet
@@ -965,6 +973,12 @@ choose. And Linux, checked on a real desktop with every change.
 
 #### The browser
 
+- **Waterfox (and Firefox set to ask what to do with each file): the download stayed in the
+  browser** ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)). Firefox's
+  family hands an extension the download only after its *What should … do with this file?*
+  dialog, by which time it has already downloaded the file behind the dialog. MDM now takes the
+  download as the server's answer arrives, before the dialog: for a file MDM takes, the dialog
+  never shows and the browser downloads nothing. Other files open the dialog as before.
 - A second browser download arriving while Download File Info was open replaced the first, which
   was lost (the browser had already given it up). They now wait their turn, and those still
   waiting when MDM quits are kept in the main queue (Download Later).

@@ -1717,6 +1717,23 @@ pub fn process_alive(pid: u32) -> bool {
     unsafe { libc::kill(pid as libc::pid_t, 0) == 0 }
 }
 
+/// The OpenGL driver in its own words, for the log and the crash reports (#280): its renderer
+/// (the graphics card) and version (Mesa's carries its own: "4.6 (Core Profile) Mesa 24.0.5").
+/// Windows: win32.rs.
+#[allow(unsafe_code)]
+pub fn gl_driver(gl: &eframe::glow::Context) -> String {
+    use eframe::glow::{self, HasContext as _};
+    // SAFETY: called while eframe makes the app, with its context current on this thread;
+    // glGetString only reads the driver's strings.
+    let (renderer, version) = unsafe {
+        (
+            gl.get_parameter_string(glow::RENDERER),
+            gl.get_parameter_string(glow::VERSION),
+        )
+    };
+    format!("{renderer} ({version})")
+}
+
 /// End process `pid` (a frozen MDM the user chose to close from the crash report).
 #[allow(unsafe_code)]
 pub fn end_process(pid: u32) -> bool {

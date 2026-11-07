@@ -399,6 +399,7 @@ fn app() -> eframe::Result {
     let result = renderer::run("misterdownloadmanager", &plan, options, move |cc| {
         scale::start(&cc.egui_ctx, z);
         let _ = window.set(cc.egui_ctx.clone());
+        renderer::test_slow_start();
         app::App::new(&cc.egui_ctx, handle, commands, sink, loaded, start)
     });
     crash::clean_exit();

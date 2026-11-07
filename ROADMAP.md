@@ -96,6 +96,9 @@ Everything below ships together, in the next release.
   that decided, and the extension's button shows the last one. The extension from the Chrome Web
   Store needs this release (0.2.x serves only the copy in MDM's folder)
   ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
+- ✅ Waterfox, and Firefox set to ask what to do with each file: MDM takes the download before
+  the browser's *What should … do with this file?* dialog, which no longer shows for the files
+  MDM takes ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
 - ✅ More file types taken from the browser by default: DMG, PKG, DEB, RPM, APPIMAGE, MSIX, APPX,
   CAB, JAR, XZ, ZST, WEBM, FLAC, OPUS and others; a list never edited gains them
   ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
@@ -409,6 +412,10 @@ Everything below ships together, in the next release.
   target are plain pop-up windows now, as Windows' own are, and the reporter confirmed them fixed;
   the progress window and every window whose title bar MDM draws (the style themes) are framed
   without a title bar style too, their test build is with the reporter
+- 🔍 A freeze inside a graphics card's OpenGL driver on Windows
+  ([#280](https://github.com/anefzaoui/misterdownloadmanager/issues/280)): a slow start no longer
+  turns Direct3D off (its first-frame limit counted MDM's own loading), and reports now say what
+  drew, on which card and driver, and why; waiting to hear which one drew there
 - 🔍 Menus opening as the pointer crosses the menu bar on a tiling window manager
   ([#277](https://github.com/anefzaoui/misterdownloadmanager/issues/277)): after a command the
   bar waits for a click, as before the first one (now tested on Windows and Linux); once a menu is

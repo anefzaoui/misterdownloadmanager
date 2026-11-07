@@ -9,7 +9,8 @@
 //   cargo build --release -p mdm-app -p mdm-nmhost -p mdm-labserver; tools\extension\pack.ps1
 //   node tools/extension/e2e.mjs [chrome] [brave] [edge] [firefox] [--only=case,case]
 //
-// The cases (per browser): link (a .zip link, throttled and not), cookie (cookies and referrer
+// The cases (per browser): link (a .zip link, throttled and not), ask (Firefox set to ask what to
+// do with each new type, as Waterfox is: caught before its dialog, #208), cookie (cookies and referrer
 // forwarded), names (Content-Disposition), redirect, form (POST, 303), alt (Alt+click leaves it
 // to the browser), opened (a PDF or MP3 the browser would show or play), csp (the video button
 // under a strict CSP), hls (the stream a player loaded), streams (HLS and DASH players handed over
@@ -1285,6 +1286,34 @@ const CASES = {
       done.push(query ? "throttled" : "full speed");
     }
     return done.join(", ");
+  },
+
+  // #208: Firefox set to ask what to do with each new type (Waterfox's default): the download is
+  // caught from the answer before the browser's "What should … do with this file?" dialog, which
+  // never opens, and the browser doesn't download the file behind it. Firefox's family only.
+  async ask(t) {
+    if (!t.session.inBrowser) throw new Skip("Firefox's family only");
+    const s = t.session;
+    const always = JSON.stringify("browser.download.always_ask_before_handling_new_types");
+    await s.inBrowser(`(Services.prefs.setBoolPref(${always}, true), "set")`);
+    try {
+      const file = `e2e-ask-${t.name}.zip`;
+      const url = `/gen/2M/${file}?rate=512K`;
+      const size = await sizeOf(LAB + url);
+      await clickLink(t, url);
+      await arrived(file, size);
+      const dialog = await s.inBrowser(
+        `[...Services.wm.getEnumerator(null)].some((w) => Boolean(w.document.getElementById("unknownContentTypeWindow")))`,
+      );
+      if (dialog) throw new Error("the browser's dialog opened");
+      await keptNothing(t.dl);
+      // The browser's own request (the first) was stopped before it had the file.
+      const [own] = (await requests(`/gen/2M/${file}`)).filter((e) => e.method === "GET");
+      if (!own || own.bytes_sent >= size) throw new Error(`the browser downloaded the file itself: ${own ? brief(own) : "no request"}`);
+      return `no dialog, MDM has it, the browser's request stopped after ${own.bytes_sent} bytes`;
+    } finally {
+      await s.inBrowser(`(Services.prefs.clearUserPref(${always}), "set")`).catch(() => {});
+    }
   },
 
   // Cookies and referrer: a file behind a session cookie and hotlink protection.

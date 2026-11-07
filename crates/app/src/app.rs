@@ -8072,7 +8072,10 @@ impl eframe::App for App {
     /// (#162). A command that opens a window gets the UI pass that creates it, minimized or not
     /// (no window is raised or focused for it beyond what the command itself does).
     fn logic(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        // MDM's own work: not counted as the graphics API's time to its first frame (#280).
+        crate::renderer::own_work_begin();
         self.tick(ctx);
+        crate::renderer::own_work_end();
     }
 
     fn ui(&mut self, ui: &mut Ui, frame: &mut eframe::Frame) {
