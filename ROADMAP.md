@@ -19,6 +19,11 @@ Everything below ships together, in one release, as version 0.3.0.
   page's title no longer runs over its icon or past the window's edge in Greek, Finnish, Catalan
   and a few more: a title too long for one line beside Get System takes two
   ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192))
+- ✅ Linux: galleries work with the gallery-dl the distribution ships (Ubuntu 24.04's 1.26.9
+  failed at once): MDM passes only the options that release accepts, from 1.20 on, and an older
+  one gives way to MDM's own copy, saying why; the lab's test streams are real ones, which ffmpeg
+  6.1 and 8 download to the end
+  ([#236](https://github.com/anefzaoui/misterdownloadmanager/issues/236))
 - ✅ Run MDM on a server without a window (Docker, Unraid, any Linux machine), and send it
   downloads from the phone or the browser extension
   ([#157](https://github.com/anefzaoui/misterdownloadmanager/issues/157))

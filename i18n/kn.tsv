@@ -6357,3 +6357,13 @@ extension	Wait a moment, then try again.	ಒಂದು ಕ್ಷಣ ನಿರೀ�
 #. pairing failed: the code was wrong
 #, machine
 extension	Wrong code.	ತಪ್ಪಾದ ಕೋಡ್.
+#. text in helpers.rs
+#. Video helpers: the person's own gallery-dl is too old and not used; {version} = its version, {oldest} = the oldest MDM can use
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Your own program ({version}) is too old: MDM needs {oldest} or newer	ನಿಮ್ಮ ಸ್ವಂತ ಪ್ರೋಗ್ರಾಂ ({version}) ತುಂಬಾ ಹಳೆಯದು: MDM ಗೆ {oldest} ಅಥವಾ ಹೊಸದು ಬೇಕು
+#. text in errors.rs
+#. error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} ತುಂಬಾ ಹಳೆಯದು: MDM ಗೆ {oldest} ಅಥವಾ ಹೊಸದು ಬೇಕು

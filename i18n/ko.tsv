@@ -6357,3 +6357,13 @@ extension	Wait a moment, then try again.	잠시 기다린 다음 다시 시도�
 #. pairing failed: the code was wrong
 #, machine
 extension	Wrong code.	잘못된 코드입니다.
+#. text in helpers.rs
+#. Video helpers: the person's own gallery-dl is too old and not used; {version} = its version, {oldest} = the oldest MDM can use
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Your own program ({version}) is too old: MDM needs {oldest} or newer	사용자 프로그램({version})이 너무 오래되었습니다. MDM에는 {oldest} 이상이 필요합니다.
+#. text in errors.rs
+#. error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version}이(가) 너무 오래되었습니다. MDM에는 {oldest} 이상이 필요합니다.

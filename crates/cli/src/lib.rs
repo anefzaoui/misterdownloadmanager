@@ -522,17 +522,30 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                 ));
             }
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
-            let tool = mdm_tools::gallery::installed(&dir).ok_or_else(|| {
-                anyhow::anyhow!("gallery-dl is not installed: run install-gallery-dl")
+            // A gallery-dl of the person's too old for MDM is passed over (#236), said plainly.
+            let old = mdm_tools::gallery::chosen_too_old(&dir).map(|old| {
+                format!(
+                    "your gallery-dl {} ({}) is too old: MDM needs {} or newer",
+                    old.version,
+                    old.exe.display(),
+                    mdm_tools::gallery::OLDEST
+                )
+            });
+            let tool = mdm_tools::gallery::installed(&dir).ok_or_else(|| match &old {
+                Some(why) => anyhow::anyhow!("{why}; run install-gallery-dl for MDM's own copy"),
+                None => anyhow::anyhow!("gallery-dl is not installed: run install-gallery-dl"),
             })?;
-            if !mdm_tools::gallery::handles(&tool.exe, &url)? {
+            if let Some(why) = &old {
+                eprintln!("{why}: using MDM's own copy, {}", tool.version);
+            }
+            if !mdm_tools::gallery::handles(&tool, &url)? {
                 anyhow::bail!("gallery-dl can't read this address");
             }
             let name = mdm_tools::gallery::name_of(&url::Url::parse(&url)?);
             let folder = output.join(name);
             let ask = mdm_tools::gallery::Ask { limit, rate: None };
             let job = mdm_tools::gallery::GalleryJob::start(
-                &tool.exe,
+                &tool,
                 &url,
                 &folder,
                 &ask,
