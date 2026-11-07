@@ -2,10 +2,12 @@
 //! one table for the native host (which writes the manifests), and the app (which lists the
 //! browsers and checks the manifests are there), #41.
 //!
-//! Sources: each browser's own code or packaging (Chromium's `launch_context_win.cc`, Firefox's
-//! `nsXREDirProvider.cpp`, Helium's `scan-chrome-native-messaging-hosts.patch` and branding
-//! patches, Zen's issue #10622); folders marked "unverified" in issue #41 come from other
-//! projects' installers and cost nothing when absent.
+//! Sources: each browser's own code or packaging (Chromium's `launch_context_win.cc` and
+//! `chrome_paths*.cc`, Firefox's `nsXREDirProvider.cpp`, Helium's
+//! `scan-chrome-native-messaging-hosts.patch` and branding patches, Zen's issue #10622, Brave's
+//! `brave_main_delegate.cc`, `chrome_paths_linux.cc` and `chromium_install_modes.h`); folders
+//! marked "unverified" in issue #41 come from other projects' installers and cost nothing when
+//! absent.
 
 use std::path::{Path, PathBuf};
 
@@ -34,6 +36,9 @@ pub struct Browser {
     pub linux_config: &'static [&'static str],
     /// Linux: Gecko data folders under $HOME (`.zen`).
     pub linux_home: &'static [&'static str],
+    /// macOS: the folder under ~/Library/Application Support whose `NativeMessagingHosts` a
+    /// Chromium browser reads when it isn't its own data folder (Brave reads Chrome's).
+    pub mac_hosts: Option<&'static str>,
 }
 
 const fn chromium(
@@ -51,6 +56,15 @@ const fn chromium(
         mac_data,
         linux_config,
         linux_home: &[],
+        mac_hosts: None,
+    }
+}
+
+impl Browser {
+    /// On macOS it reads host manifests from `folder`'s `NativeMessagingHosts`, not its own.
+    const fn mac_hosts_in(mut self, folder: &'static str) -> Browser {
+        self.mac_hosts = Some(folder);
+        self
     }
 }
 
@@ -70,20 +84,39 @@ const fn gecko(
         mac_data,
         linux_config,
         linux_home,
+        mac_hosts: None,
     }
 }
 
 /// Every browser MDM names, Chromium's first.
 pub const BROWSERS: &[Browser] = &[
+    // Each channel keeps its own folder (Chromium's chrome_paths_linux.cc and chrome_paths_mac.mm).
     chromium(
         "Google Chrome",
-        &["Google Chrome.app"],
-        &["google-chrome", "google-chrome-stable"],
-        &["Google/Chrome"],
+        &[
+            "Google Chrome.app",
+            "Google Chrome Beta.app",
+            "Google Chrome Dev.app",
+            "Google Chrome Canary.app",
+        ],
+        &[
+            "google-chrome",
+            "google-chrome-stable",
+            "google-chrome-beta",
+            "google-chrome-unstable",
+            "google-chrome-canary",
+        ],
+        &[
+            "Google/Chrome",
+            "Google/Chrome Beta",
+            "Google/Chrome Dev",
+            "Google/Chrome Canary",
+        ],
         &[
             "google-chrome",
             "google-chrome-beta",
             "google-chrome-unstable",
+            "google-chrome-canary",
         ],
     ),
     chromium(
@@ -95,36 +128,78 @@ pub const BROWSERS: &[Browser] = &[
     ),
     chromium(
         "Microsoft Edge",
-        &["Microsoft Edge.app"],
-        &["microsoft-edge", "microsoft-edge-stable"],
-        &["Microsoft Edge"],
-        &["microsoft-edge"],
+        &[
+            "Microsoft Edge.app",
+            "Microsoft Edge Beta.app",
+            "Microsoft Edge Dev.app",
+            "Microsoft Edge Canary.app",
+        ],
+        &[
+            "microsoft-edge",
+            "microsoft-edge-stable",
+            "microsoft-edge-beta",
+            "microsoft-edge-dev",
+        ],
+        &[
+            "Microsoft Edge",
+            "Microsoft Edge Beta",
+            "Microsoft Edge Dev",
+            "Microsoft Edge Canary",
+        ],
+        &[
+            "microsoft-edge",
+            "microsoft-edge-beta",
+            "microsoft-edge-dev",
+        ],
     ),
+    // Brave and Brave Origin (#253), each channel in its own folder (`-Beta`, `-Dev`, `-Nightly`),
+    // all named "Brave" to the extension. On Linux each reads its own folder; on macOS all read
+    // Chrome's (brave_main_delegate.cc); on Windows, Chromium's and Chrome's keys.
     chromium(
         "Brave",
         &[
             "Brave Browser.app",
             "Brave Browser Beta.app",
             "Brave Browser Nightly.app",
+            "Brave Origin.app",
+            "Brave Origin Beta.app",
+            "Brave Origin Nightly.app",
         ],
-        &["brave-browser", "brave"],
+        &[
+            "brave-browser",
+            "brave",
+            "brave-browser-beta",
+            "brave-browser-nightly",
+            "brave-origin",
+            "brave-origin-beta",
+            "brave-origin-nightly",
+        ],
         &[
             "BraveSoftware/Brave-Browser",
             "BraveSoftware/Brave-Browser-Beta",
             "BraveSoftware/Brave-Browser-Nightly",
+            "BraveSoftware/Brave-Origin",
+            "BraveSoftware/Brave-Origin-Beta",
+            "BraveSoftware/Brave-Origin-Nightly",
         ],
         &[
             "BraveSoftware/Brave-Browser",
             "BraveSoftware/Brave-Browser-Beta",
+            "BraveSoftware/Brave-Browser-Dev",
             "BraveSoftware/Brave-Browser-Nightly",
+            "BraveSoftware/Brave-Origin",
+            "BraveSoftware/Brave-Origin-Beta",
+            "BraveSoftware/Brave-Origin-Dev",
+            "BraveSoftware/Brave-Origin-Nightly",
         ],
-    ),
+    )
+    .mac_hosts_in("Google/Chrome"),
     chromium(
         "Vivaldi",
         &["Vivaldi.app"],
-        &["vivaldi", "vivaldi-stable"],
+        &["vivaldi", "vivaldi-stable", "vivaldi-snapshot"],
         &["Vivaldi"],
-        &["vivaldi"],
+        &["vivaldi", "vivaldi-snapshot"],
     ),
     // Opera's folders: unverified.
     chromium(
@@ -315,13 +390,20 @@ pub fn host_dirs(home: &Path, config: &Path, mac: bool, all_users: bool) -> Vec<
     let mut gecko_there = false;
     for b in BROWSERS {
         let there: Vec<PathBuf> = data(b).into_iter().filter(|d| d.is_dir()).collect();
-        match b.family {
-            Family::Chromium => {
+        match (b.family, b.mac_hosts.filter(|_| mac)) {
+            // Brave on macOS: Chrome's folder, made if need be, whichever channel is there.
+            (Family::Chromium, Some(hosts)) if !there.is_empty() => {
+                push(
+                    support.join(hosts).join("NativeMessagingHosts"),
+                    Family::Chromium,
+                );
+            }
+            (Family::Chromium, _) => {
                 for d in there {
                     push(d.join("NativeMessagingHosts"), Family::Chromium);
                 }
             }
-            Family::Gecko => gecko_there |= !there.is_empty(),
+            (Family::Gecko, _) => gecko_there |= !there.is_empty(),
         }
     }
     if gecko_there {
@@ -345,6 +427,21 @@ pub fn host_dirs(home: &Path, config: &Path, mac: bool, all_users: bool) -> Vec<
         }
     }
     dirs
+}
+
+/// The program the host manifest at `manifest` starts (its `path`; a relative one, which
+/// Windows allows, is beside the manifest), when the manifest can be read.
+pub fn manifest_program(manifest: &Path) -> Option<PathBuf> {
+    let text = std::fs::read_to_string(manifest).ok()?;
+    let json: serde_json::Value = serde_json::from_str(&text).ok()?;
+    let path = PathBuf::from(json.get("path")?.as_str()?.trim());
+    if path.as_os_str().is_empty() {
+        return None;
+    }
+    Some(match manifest.parent() {
+        Some(dir) if path.is_relative() => dir.join(path),
+        _ => path,
+    })
 }
 
 #[cfg(test)]
@@ -524,5 +621,102 @@ mod tests {
             assert_eq!(named(b.name).map(|x| x.name), Some(b.name));
         }
         assert!(named("Netscape").is_none());
+    }
+
+    /// #253: Brave Origin keeps its own folder on Linux (`Brave-Origin`, beside Brave's
+    /// `Brave-Browser`) and reads its manifest there; a user with both gets both.
+    #[test]
+    fn brave_origin_gets_its_own_folder() {
+        let h = tempfile::tempdir().unwrap();
+        std::fs::create_dir_all(h.path().join(".config/BraveSoftware/Brave-Origin")).unwrap();
+        assert_eq!(
+            user(h.path(), false),
+            vec![(
+                h.path()
+                    .join(".config/BraveSoftware/Brave-Origin/NativeMessagingHosts"),
+                Family::Chromium
+            )]
+        );
+        std::fs::create_dir_all(h.path().join(".config/BraveSoftware/Brave-Browser")).unwrap();
+        assert_eq!(user(h.path(), false).len(), 2);
+    }
+
+    /// Brave, Brave Origin and their channels read Chrome's folder on macOS, even with no Chrome.
+    #[test]
+    fn brave_on_macos_gets_chromes_folder() {
+        for folder in ["BraveSoftware/Brave-Browser", "BraveSoftware/Brave-Origin"] {
+            let m = tempfile::tempdir().unwrap();
+            let support = m.path().join("Library/Application Support");
+            std::fs::create_dir_all(support.join(folder)).unwrap();
+            assert_eq!(
+                user(m.path(), true),
+                vec![(
+                    support.join("Google/Chrome/NativeMessagingHosts"),
+                    Family::Chromium
+                )],
+                "{folder}"
+            );
+        }
+    }
+
+    /// Every folder the table lists, alone in a home folder, gets the manifest where that
+    /// browser reads it: its own `NativeMessagingHosts` (Chromium's family; on macOS the one it
+    /// reads instead, when the table says so), or Mozilla's (Firefox's family).
+    #[test]
+    fn every_listed_folder_is_covered() {
+        for b in BROWSERS {
+            for mac in [false, true] {
+                let folders: Vec<&str> = if mac {
+                    b.mac_data.to_vec()
+                } else {
+                    b.linux_config.iter().chain(b.linux_home).copied().collect()
+                };
+                for folder in folders {
+                    let h = tempfile::tempdir().unwrap();
+                    let home = h.path();
+                    let support = home.join("Library/Application Support");
+                    let data = if mac {
+                        support.join(folder)
+                    } else if b.linux_home.contains(&folder) {
+                        home.join(folder)
+                    } else {
+                        home.join(".config").join(folder)
+                    };
+                    std::fs::create_dir_all(&data).unwrap();
+                    let want = match (b.family, mac) {
+                        (Family::Chromium, true) => match b.mac_hosts {
+                            Some(hosts) => support.join(hosts).join("NativeMessagingHosts"),
+                            None => data.join("NativeMessagingHosts"),
+                        },
+                        (Family::Chromium, false) => data.join("NativeMessagingHosts"),
+                        (Family::Gecko, true) => support.join("Mozilla/NativeMessagingHosts"),
+                        (Family::Gecko, false) => home.join(".mozilla/native-messaging-hosts"),
+                    };
+                    let got = user(home, mac);
+                    assert!(
+                        got.contains(&(want.clone(), b.family)),
+                        "{} ({folder}, mac {mac}): {got:?} lacks {want:?}",
+                        b.name
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn a_manifests_program() {
+        let d = tempfile::tempdir().unwrap();
+        let m = d.path().join("host.json");
+        let abs = d.path().join("elsewhere").join("host");
+        let json = serde_json::json!({ "name": "x", "path": abs, "type": "stdio" });
+        std::fs::write(&m, json.to_string()).unwrap();
+        assert_eq!(manifest_program(&m), Some(abs));
+        std::fs::write(&m, r#"{"name":"x","path":"host.exe"}"#).unwrap();
+        assert_eq!(manifest_program(&m), Some(d.path().join("host.exe")));
+        for bad in [r#"{"name":"x"}"#, r#"{"path":""}"#, "not json"] {
+            std::fs::write(&m, bad).unwrap();
+            assert_eq!(manifest_program(&m), None, "{bad}");
+        }
+        assert_eq!(manifest_program(&d.path().join("none.json")), None);
     }
 }

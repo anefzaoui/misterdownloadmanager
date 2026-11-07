@@ -150,66 +150,201 @@ pub fn update_run_at_startup() {
     }
 }
 
+/// The browsers' helper program (crates/nmhost), beside this one.
+const HOST: &str = "misterdownloadmanager-nmhost";
+/// The manifest it writes in each browser's folder.
+const MANIFEST: &str = "com.misterdownloadmanager.host.json";
+/// How long the helper's `--register` has at a start (it writes a few small files).
+const REGISTER_LIMIT: std::time::Duration = std::time::Duration::from_secs(20);
+/// Why the last registration failed, in the system's words (Test browser integration says it);
+/// None once one succeeded.
+static REGISTER_ERROR: std::sync::Mutex<Option<String>> = std::sync::Mutex::new(None);
+
 /// Browser integration: the host's manifests in every installed browser's folder. There is no
-/// installer step on Linux and macOS, so this runs at each start (a moved app, or a browser
-/// installed since, is picked up).
+/// installer step on Linux and macOS, so this runs at each start, on a thread of its own: a
+/// moved app, a browser installed since, or a helper copy that went missing is repaired.
 ///
 /// From an AppImage, whose programs sit in a mount that is gone once it quits, the host is first
 /// copied to the data folder with the AppImage's path beside it (`app-path`: the host starts
-/// that when MDM isn't running), and registered from there.
+/// that when MDM isn't running), and registered from there (#253).
 pub fn register_browsers() {
-    if let Some(mut cmd) = register_command() {
-        spawn(&mut cmd);
+    let started = std::thread::Builder::new()
+        .name("register-browsers".into())
+        .spawn(|| register_browsers_now(REGISTER_LIMIT));
+    if let Err(e) = started {
+        tracing::warn!("browser integration: not set up, no thread for it: {e}");
     }
 }
 
 /// `register_browsers`, waiting for it to finish, up to `limit` (Test browser integration's Set
-/// it up, on a thread of its own: extension::set_up).
+/// it up, on a thread of its own: extension::set_up). Every failure is logged and kept for Test
+/// browser integration ([`register_error`]).
 pub fn register_browsers_now(limit: std::time::Duration) {
-    if let Some(mut cmd) = register_command() {
-        crate::launch::run_within(&mut cmd, limit);
+    let result = host_program().and_then(|host| run_register(&host, limit));
+    match &result {
+        Ok(said) => tracing::info!("browser integration set up: {said}"),
+        Err(e) => tracing::warn!("browser integration not set up: {e}"),
+    }
+    if let Ok(mut last) = REGISTER_ERROR.lock() {
+        *last = result.err();
     }
 }
 
-/// The host's `--register`, from a copy outside an AppImage's mount when it runs from one.
-fn register_command() -> Option<Command> {
-    let Ok(exe) = std::env::current_exe() else {
-        return None;
-    };
-    let host = exe.with_file_name("misterdownloadmanager-nmhost");
-    let host = match (std::env::var_os("APPIMAGE"), mdm_ipc::data_dir()) {
-        (Some(image), Some(data)) => {
-            let dir = data.join("browser-host");
-            let copy = dir.join("misterdownloadmanager-nmhost");
-            let made = std::fs::create_dir_all(&dir)
-                .and_then(|()| std::fs::copy(&host, &copy).map(|_| ()))
-                .and_then(|()| std::fs::write(dir.join("app-path"), image.as_encoded_bytes()));
-            if made.is_err() {
-                return None;
-            }
-            copy
-        }
-        _ => host,
-    };
-    let mut cmd = Command::new(host);
-    cmd.arg("--register");
-    Some(cmd)
+/// Why the last registration failed, if it did.
+pub fn register_error() -> Option<String> {
+    REGISTER_ERROR.lock().ok().and_then(|e| e.clone())
 }
 
-/// Browser integration is registered: a host manifest in one of the browsers' folders, for this
-/// user or for everyone (Options → General → Test browser integration).
-pub fn host_registered() -> bool {
+/// The helper to register: beside this program, or from an AppImage its copy in the data folder
+/// (made or repaired first).
+fn host_program() -> Result<PathBuf, String> {
+    let exe = std::env::current_exe().map_err(|e| format!("this program's path: {e}"))?;
+    let host = exe.with_file_name(HOST);
+    let Some(image) = std::env::var_os("APPIMAGE").filter(|i| !i.is_empty()) else {
+        return if host.is_file() {
+            Ok(host)
+        } else {
+            Err(format!("{}: not found", host.display()))
+        };
+    };
+    let data = mdm_ipc::data_dir().ok_or("no data folder to copy the helper to")?;
+    install_host_copy(&host, &data.join("browser-host"), Path::new(&image))
+}
+
+/// The AppImage's helper `from` copied into `dir`, with the AppImage's path (`image`) beside it
+/// in `app-path`; each written only when it differs. A copy is written under a temporary name,
+/// made executable, then renamed over the old one: a browser still running the old copy keeps it
+/// (writing over a running program fails with "Text file busy"), and the manifest never names a
+/// half-written file.
+fn install_host_copy(from: &Path, dir: &Path, image: &Path) -> Result<PathBuf, String> {
+    let failed = |what: &Path, e: std::io::Error| format!("{}: {e}", what.display());
+    std::fs::create_dir_all(dir).map_err(|e| failed(dir, e))?;
+    let copy = dir.join(HOST);
+    let program = std::fs::read(from).map_err(|e| failed(from, e))?;
+    if !(runs(&copy) && std::fs::read(&copy).is_ok_and(|old| old == program)) {
+        replace(&copy, &program, 0o755).map_err(|e| failed(&copy, e))?;
+        tracing::info!("browser integration: helper copied to {}", copy.display());
+    }
+    let app_path = dir.join("app-path");
+    let image = image.as_os_str().as_encoded_bytes();
+    if std::fs::read(&app_path).ok().as_deref() != Some(image) {
+        replace(&app_path, image, 0o644).map_err(|e| failed(&app_path, e))?;
+    }
+    Ok(copy)
+}
+
+/// `path` written as `bytes` with `mode`, through a temporary file renamed over it.
+fn replace(path: &Path, bytes: &[u8], mode: u32) -> std::io::Result<()> {
+    use std::io::Write;
+    use std::os::unix::fs::{OpenOptionsExt, PermissionsExt};
+    let name = path.file_name().unwrap_or_default().to_string_lossy();
+    let tmp = path.with_file_name(format!(".{name}.{}.tmp", std::process::id()));
+    let written = std::fs::OpenOptions::new()
+        .write(true)
+        .create(true)
+        .truncate(true)
+        .mode(mode)
+        .open(&tmp)
+        .and_then(|mut f| {
+            f.write_all(bytes)?;
+            // The mode asked for, whatever the umask took away.
+            f.set_permissions(std::fs::Permissions::from_mode(mode))?;
+            f.sync_all()
+        })
+        .and_then(|()| std::fs::rename(&tmp, path));
+    if written.is_err() {
+        let _ = std::fs::remove_file(&tmp);
+    }
+    written
+}
+
+/// A program file that can be run.
+fn runs(path: &Path) -> bool {
+    use std::os::unix::fs::PermissionsExt;
+    std::fs::metadata(path).is_ok_and(|m| m.is_file() && m.permissions().mode() & 0o111 != 0)
+}
+
+/// The helper's `--register`: what it says it did, or why it failed.
+fn run_register(host: &Path, limit: std::time::Duration) -> Result<String, String> {
+    use std::io::Read;
+    let mut child = Command::new(host)
+        .arg("--register")
+        .stdin(Stdio::null())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
+        .map_err(|e| format!("{}: {e}", host.display()))?;
+    let status = crate::launch::wait_within(&mut child, limit);
+    // A few lines at most: they fit the pipes, so the helper never waits on them.
+    let mut said = String::new();
+    if let Some(mut out) = child.stdout.take() {
+        let _ = out.read_to_string(&mut said);
+    }
+    if let Some(mut err) = child.stderr.take() {
+        said.push('\n');
+        let _ = err.read_to_string(&mut said);
+    }
+    let said = said.split_whitespace().collect::<Vec<_>>().join(" ");
+    match status {
+        Some(s) if s.success() => Ok(said),
+        Some(s) => Err(format!("{} --register: {s}: {said}", host.display())),
+        None => Err(format!(
+            "{} --register: no answer in {limit:?}",
+            host.display()
+        )),
+    }
+}
+
+/// Where browser integration stands (Options → General → Test browser integration): the
+/// manifests in the folders the browsers here read (mdm_ipc::browsers), for this user, or for
+/// everyone when no browser is there for this user, and the helper each names.
+pub fn host_registration() -> crate::extension::Registration {
     let home = PathBuf::from(std::env::var_os("HOME").unwrap_or_default());
     let config = std::env::var_os("XDG_CONFIG_HOME")
         .map(PathBuf::from)
         .filter(|p| p.is_absolute())
         .unwrap_or_else(|| home.join(".config"));
     let mac = cfg!(target_os = "macos");
-    // The folders the native host writes (mdm_ipc::browsers), for this user and for everyone.
-    [false, true]
-        .into_iter()
-        .flat_map(|all| mdm_ipc::browsers::host_dirs(&home, &config, mac, all))
-        .any(|(d, _)| d.join("com.misterdownloadmanager.host.json").is_file())
+    let user = mdm_ipc::browsers::host_dirs(&home, &config, mac, false);
+    if user.is_empty() {
+        registration_in(
+            mdm_ipc::browsers::host_dirs(&home, &config, mac, true),
+            true,
+        )
+    } else {
+        registration_in(user, false)
+    }
+}
+
+/// `host_registration` for the host folders `dirs`, everyone's (`all_users`) or one user's.
+fn registration_in(
+    dirs: Vec<(PathBuf, mdm_ipc::browsers::Family)>,
+    all_users: bool,
+) -> crate::extension::Registration {
+    use crate::extension::Registration;
+    if dirs.is_empty() {
+        return Registration::NoBrowser;
+    }
+    // A browser reads its user folder's manifest first: each must be there and name a helper
+    // that runs. Everyone's folders: one that works is enough.
+    let (mut ready, mut missing, mut broken) = (0, 0, None);
+    for (dir, _) in dirs {
+        let manifest = dir.join(MANIFEST);
+        if !manifest.is_file() {
+            missing += 1;
+            continue;
+        }
+        match mdm_ipc::browsers::manifest_program(&manifest) {
+            Some(p) if runs(&p) => ready += 1,
+            Some(p) => broken = broken.or(Some(p)),
+            None => missing += 1,
+        }
+    }
+    match broken {
+        Some(p) if !(all_users && ready > 0) => Registration::HelperMissing(p),
+        _ if ready > 0 && (all_users || missing == 0) => Registration::Ready,
+        _ => Registration::Missing,
+    }
 }
 
 /// Options → Sounds: play a sound file (macOS: afplay; Linux: PulseAudio / PipeWire's paplay,
@@ -1616,6 +1751,139 @@ mod tests {
         // The folder opened after the limit, not after gdbus's 30 s.
         assert!(took < Duration::from_secs(20), "took {took:?}");
         let _ = std::fs::remove_dir_all(&root);
+    }
+}
+
+#[cfg(test)]
+mod host_copy_tests {
+    use super::{HOST, MANIFEST, install_host_copy, registration_in, runs};
+    use crate::extension::Registration;
+    use mdm_ipc::browsers::Family;
+    use std::path::Path;
+
+    fn program(dir: &Path, name: &str, body: &str) -> std::path::PathBuf {
+        use std::os::unix::fs::PermissionsExt;
+        let p = dir.join(name);
+        std::fs::write(&p, format!("#!/bin/sh\n{body}\n")).unwrap();
+        std::fs::set_permissions(&p, std::fs::Permissions::from_mode(0o755)).unwrap();
+        p
+    }
+
+    /// #253: the AppImage's helper is copied out of its mount, executable, with the AppImage's
+    /// path beside it; a copy that went missing is made again at the next start.
+    #[test]
+    fn the_helper_is_copied_and_repaired() {
+        let t = tempfile::tempdir().unwrap();
+        let from = program(t.path(), "mount-host", "echo one");
+        let dir = t.path().join("data/browser-host");
+        let image = Path::new("/home/u/Apps/MDM.AppImage");
+        let copy = install_host_copy(&from, &dir, image).unwrap();
+        assert_eq!(copy, dir.join(HOST));
+        assert!(runs(&copy));
+        assert_eq!(std::fs::read(&copy).unwrap(), std::fs::read(&from).unwrap());
+        assert_eq!(
+            std::fs::read_to_string(dir.join("app-path")).unwrap(),
+            "/home/u/Apps/MDM.AppImage"
+        );
+        // Moved by an AppImage manager, and the copy deleted: both put right.
+        std::fs::remove_file(&copy).unwrap();
+        let moved = Path::new("/home/u/Applications/mdm.appimage");
+        install_host_copy(&from, &dir, moved).unwrap();
+        assert!(runs(&copy));
+        assert_eq!(
+            std::fs::read_to_string(dir.join("app-path")).unwrap(),
+            moved.to_str().unwrap()
+        );
+        // Not executable any more: made so again.
+        {
+            use std::os::unix::fs::PermissionsExt;
+            std::fs::set_permissions(&copy, std::fs::Permissions::from_mode(0o644)).unwrap();
+        }
+        assert!(!runs(&copy));
+        install_host_copy(&from, &dir, moved).unwrap();
+        assert!(runs(&copy));
+        // Nothing temporary is left behind.
+        let left: Vec<_> = std::fs::read_dir(&dir).unwrap().flatten().collect();
+        assert_eq!(left.len(), 2, "{left:?}");
+    }
+
+    /// #253: a browser still runs the old copy (writing over a running program fails with "Text
+    /// file busy"): the new one replaces it all the same, and the old one keeps running.
+    #[test]
+    fn the_helper_is_replaced_while_a_browser_runs_it() {
+        let t = tempfile::tempdir().unwrap();
+        let dir = t.path().join("browser-host");
+        std::fs::create_dir_all(&dir).unwrap();
+        // A real program (a script would run as the shell, its file only read).
+        let old = dir.join(HOST);
+        std::fs::copy("/bin/sleep", &old).unwrap();
+        let mut running = std::process::Command::new(&old).arg("30").spawn().unwrap();
+        std::thread::sleep(std::time::Duration::from_millis(200));
+        assert!(
+            std::fs::write(&old, b"x").is_err() || cfg!(target_os = "macos"),
+            "Linux refuses to write over a running program"
+        );
+        let from = program(t.path(), "new-host", "echo two");
+        let copy = install_host_copy(&from, &dir, Path::new("/x.AppImage")).unwrap();
+        assert_eq!(std::fs::read(&copy).unwrap(), std::fs::read(&from).unwrap());
+        assert!(
+            running.try_wait().unwrap().is_none(),
+            "the old copy still runs"
+        );
+        let _ = running.kill();
+        let _ = running.wait();
+    }
+
+    #[test]
+    fn a_copy_that_cant_be_made_says_why() {
+        let t = tempfile::tempdir().unwrap();
+        let err = install_host_copy(
+            &t.path().join("no-such-host"),
+            &t.path().join("browser-host"),
+            Path::new("/x.AppImage"),
+        )
+        .unwrap_err();
+        assert!(err.contains("no-such-host"), "{err}");
+    }
+
+    /// Test browser integration: every user folder must have the manifest, naming a helper that
+    /// runs; a manifest naming a missing helper is said as such (#253).
+    #[test]
+    fn registration_reads_the_manifests_and_their_helper() {
+        let t = tempfile::tempdir().unwrap();
+        let helper = program(t.path(), HOST, "true");
+        let (a, b) = (t.path().join("a"), t.path().join("b"));
+        for d in [&a, &b] {
+            std::fs::create_dir_all(d).unwrap();
+        }
+        let write = |dir: &Path, path: &Path| {
+            let json =
+                serde_json::json!({ "name": "com.misterdownloadmanager.host", "path": path });
+            std::fs::write(dir.join(MANIFEST), json.to_string()).unwrap();
+        };
+        let dirs = || vec![(a.clone(), Family::Chromium), (b.clone(), Family::Gecko)];
+        assert_eq!(registration_in(vec![], false), Registration::NoBrowser);
+        assert_eq!(registration_in(dirs(), false), Registration::Missing);
+        write(&a, &helper);
+        assert_eq!(
+            registration_in(dirs(), false),
+            Registration::Missing,
+            "one browser's folder lacks it"
+        );
+        assert_eq!(
+            registration_in(dirs(), true),
+            Registration::Ready,
+            "everyone's: one is enough"
+        );
+        write(&b, &helper);
+        assert_eq!(registration_in(dirs(), false), Registration::Ready);
+        let gone = t.path().join("gone/misterdownloadmanager-nmhost");
+        write(&b, &gone);
+        assert_eq!(
+            registration_in(dirs(), false),
+            Registration::HelperMissing(gone.clone())
+        );
+        assert_eq!(registration_in(dirs(), true), Registration::Ready);
     }
 }
 
