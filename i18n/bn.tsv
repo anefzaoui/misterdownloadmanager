@@ -2614,6 +2614,10 @@
 #, machine
 	No addresses yet	এখনও কোনো ঠিকানা নেই
 #. text in extension.rs
+#. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
+#, machine
+	No browser MDM can connect to was found	এমন কোনো ব্রাউজার পাওয়া যায়নি যার সাথে MDM কানেক্ট করতে পারে
+#. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 #, machine
 	No browser's extension has connected yet	কোনো ব্রাউজারের এক্সটেনশন এখনও সংযুক্ত হয়নি
@@ -3462,6 +3466,11 @@
 #. event log: File Properties: the download goes through the debrid account again
 #, machine
 	Set to download through the debrid account	ডিপ্রিড অ্যাকাউন্টের মাধ্যমে ডাউনলোড করার জন্য সেট করা হয়েছে
+#. text in extension.rs
+#. a check of Test browser integration: setting it up failed; {error} is the system's own message, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Setting it up failed: {error}	সেট আপ করা ব্যর্থ হয়েছে: {error}
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -4077,6 +4086,10 @@
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
 	the FTP server answered {code} {reply}	FTP সার্ভার {code} {reply} উত্তর দিয়েছে
+#. text in extension.rs
+#. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
+#, machine
+	The helper program the browsers start is missing	ব্রাউজারগুলো যে সহায়ক প্রোগ্রাম শুরু করে তা অনুপস্থিত
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine

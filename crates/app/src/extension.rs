@@ -334,13 +334,42 @@ fn seen_names() -> Vec<String> {
         .collect()
 }
 
-/// Is browser integration registered on this computer (the native host's manifests, where the
-/// browsers look)?
-pub fn registered() -> bool {
+/// Where browser integration's registration stands on this computer.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum Registration {
+    /// The browsers find the native host's manifest, and the helper program it names is there.
+    Ready,
+    /// A browser's folder (or the registry) has no manifest.
+    Missing,
+    /// No browser MDM knows was found to register with (Linux and macOS find them by their
+    /// folders; Windows registers for every browser at once).
+    #[cfg_attr(windows, allow(dead_code))]
+    NoBrowser,
+    /// A manifest names a helper program that isn't there or can't be run (#253).
+    HelperMissing(std::path::PathBuf),
+}
+
+/// Where browser integration's registration stands: the native host's manifests where the
+/// browsers look, and the helper they name.
+pub fn registration() -> Registration {
     #[cfg(windows)]
-    return crate::win32::host_registered();
+    return crate::win32::host_registration();
     #[cfg(unix)]
-    return crate::unix::host_registered();
+    return crate::unix::host_registration();
+}
+
+/// Is browser integration registered on this computer, ready for the browsers?
+pub fn registered() -> bool {
+    registration() == Registration::Ready
+}
+
+/// Why the last registration failed, in the system's words (Linux and macOS, where MDM
+/// registers itself at each start).
+fn register_error() -> Option<String> {
+    #[cfg(windows)]
+    return None;
+    #[cfg(unix)]
+    return crate::unix::register_error();
 }
 
 /// Set it up's runs finished so far: a window that shows the checks reads them again when this
@@ -419,13 +448,44 @@ pub fn checks(settings: &crate::settings::Settings) -> Vec<Check> {
             "This is the installed copy, not a portable one",
             Some("not-installed"),
         ),
-        check(
-            registered(),
+    ];
+    let registration = registration();
+    out.push(match &registration {
+        Registration::Ready | Registration::Missing => check(
+            registration == Registration::Ready,
             // i18n: a check of Test browser integration: the browsers find MDM's helper program
             "The browsers can find Mister Download Manager",
             Some("not-installed"),
         ),
-    ];
+        Registration::NoBrowser => check(
+            false,
+            // i18n: a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
+            "No browser MDM can connect to was found",
+            Some("not-installed"),
+        ),
+        Registration::HelperMissing(path) => {
+            tracing::warn!("browser integration: {} is missing", path.display());
+            check(
+                false,
+                // i18n: a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
+                "The helper program the browsers start is missing",
+                Some("not-installed"),
+            )
+        }
+    });
+    if registration != Registration::Ready
+        && let Some(error) = register_error()
+    {
+        out.push(Check {
+            ok: false,
+            text: crate::i18n::fmt(
+                // i18n: a check of Test browser integration: setting it up failed; {error} is the system's own message, in English
+                crate::i18n::t("Setting it up failed: {error}"),
+                &[("error", &error)],
+            ),
+            why: Some("not-installed"),
+        });
+    }
     let seen = mdm_ipc::extension::seen_browsers();
     if seen.is_empty() {
         out.push(check(

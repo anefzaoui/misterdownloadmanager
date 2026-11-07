@@ -718,15 +718,29 @@ pub fn popup<C: Clone>(
     // gives that window the focus, and must not count as clicking away.
     let focused = ctx.input(|i| i.viewport().focused) == Some(true)
         || ctx.data(|d| d.get_temp::<bool>(window_focus).unwrap_or(false));
-    // (first pass, last pass, focused since): focus is only *lost* if it was had.
-    let (first, lost_focus) = ctx.data_mut(|d| {
-        let (first, last, had) = d
-            .get_temp::<(u64, u64, bool)>(shown)
-            .unwrap_or((pass, pass, focused));
-        let first = if last + 1 < pass { pass } else { first };
-        d.insert_temp(shown, (first, pass, had || focused));
-        (first == pass, had && !focused)
+    // (first pass, last pass, the focus): focus is only *lost* if it was had, and only when no
+    // window of ours gets it back within FOCUS_GRACE (#250).
+    let now = ctx.input(|i| i.time);
+    let (first, verdict) = ctx.data_mut(|d| {
+        let (first, last, seen) = d.get_temp::<(u64, u64, MenuFocus)>(shown).unwrap_or((
+            pass,
+            pass,
+            MenuFocus::default(),
+        ));
+        let (first, mut seen) = if last + 1 < pass {
+            (pass, MenuFocus::default())
+        } else {
+            (first, seen)
+        };
+        let verdict = seen.pass(focused, now);
+        d.insert_temp(shown, (first, pass, seen));
+        (first == pass, verdict)
     });
+    if let FocusVerdict::Away { wait } = verdict {
+        // No event may come to look again (the pointer resting on the menu).
+        ctx.request_repaint_after(std::time::Duration::from_secs_f64(wait));
+    }
+    let lost_focus = verdict == FocusVerdict::Left;
     if !first
         && (lost_focus
             || ctx.input(|i| i.key_pressed(egui::Key::Escape) || i.pointer.any_pressed()))
@@ -747,6 +761,55 @@ pub fn popup<C: Clone>(
         return PopupResult::Dismissed;
     }
     PopupResult::Open
+}
+
+/// How long the focus may be away from every window of ours before an open menu counts as left.
+/// On Linux a window manager may give a menu's window the focus (KWin, sway, and GNOME under
+/// Wayland give it to a submenu's as it opens). When that submenu closes (the pointer back on
+/// another item of its parent), its window passes the focus on, and for a frame or more no
+/// window of ours has it: counted as the app losing the focus, it closed the whole menu (#250).
+const FOCUS_GRACE: f64 = 0.4;
+
+/// Whether an open menu still has the focus: the main window's or one of the menu's windows'.
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+struct MenuFocus {
+    /// One of ours has had the focus since the menu opened.
+    had: bool,
+    /// Since when none of ours has had it (the app's clock, in seconds).
+    away_since: Option<f64>,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+enum FocusVerdict {
+    /// Ours, or never had (a menu opened while another app was in front).
+    Here,
+    /// Gone for less than FOCUS_GRACE: look again in `wait` seconds.
+    Away { wait: f64 },
+    /// Gone for FOCUS_GRACE: another app has it, the menu closes.
+    Left,
+}
+
+impl MenuFocus {
+    /// After a pass at `now`: `focused` is whether one of our windows had the focus in it.
+    fn pass(&mut self, focused: bool, now: f64) -> FocusVerdict {
+        if focused {
+            self.had = true;
+            self.away_since = None;
+            return FocusVerdict::Here;
+        }
+        if !self.had {
+            return FocusVerdict::Here;
+        }
+        let since = *self.away_since.get_or_insert(now);
+        let away = now - since;
+        if away >= FOCUS_GRACE {
+            FocusVerdict::Left
+        } else {
+            FocusVerdict::Away {
+                wait: FOCUS_GRACE - away,
+            }
+        }
+    }
 }
 
 /// Where the last press that closed a popup went down, in this window.
@@ -1238,8 +1301,12 @@ fn popup_level<C: Clone>(
                             });
                             sub_at = None;
                         } else {
-                            ui.ctx()
-                                .request_repaint_after(std::time::Duration::from_millis(60));
+                            // The window that draws the menus (this one is drawn in its pass):
+                            // a pointer resting on the item brings no event to close it by.
+                            ui.ctx().request_repaint_after_for(
+                                std::time::Duration::from_millis(60),
+                                parent_vid,
+                            );
                         }
                     } else if depth == 0 {
                         ui.ctx().data_mut(|d| d.remove::<f64>(since_key));
@@ -2080,7 +2147,7 @@ fn chevron(p: &egui::Painter, ox: f32, top: f32, open: bool, bright: bool) {
 
 #[cfg(test)]
 mod tests {
-    use super::{MenuBarEvent, menubar_next};
+    use super::{FOCUS_GRACE, FocusVerdict, MenuBarEvent, MenuFocus, menubar_next};
 
     /// Runs `events` from no menu open; the open menu after each.
     fn run(events: &[MenuBarEvent]) -> Vec<Option<usize>> {
@@ -2158,6 +2225,54 @@ mod tests {
             },
         ]);
         assert_eq!(steps, [Some(0), Some(1), Some(1), Some(2)]);
+    }
+
+    /// The focus over a menu's passes (`(focused, time)` each), as `MenuFocus` judges it.
+    fn focus_run(passes: &[(bool, f64)]) -> Vec<FocusVerdict> {
+        let mut f = MenuFocus::default();
+        passes.iter().map(|&(on, t)| f.pass(on, t)).collect()
+    }
+
+    /// #250: Tasks open, Import's submenu open with the focus (KWin, sway), the pointer back
+    /// onto another item: the submenu's window closes and hands the focus on, and for a few
+    /// frames no window of ours has it. The menu stays.
+    #[test]
+    fn a_submenu_closing_with_the_focus_leaves_its_menu_open() {
+        let v = focus_run(&[
+            (true, 0.0),   // the main window, then the menu's window
+            (true, 0.5),   // the submenu's window took it
+            (false, 1.0),  // the submenu closed: nobody has it
+            (false, 1.02), // the next frame
+            (true, 1.05),  // the main window (or the menu's) got it back
+            (true, 1.6),
+        ]);
+        assert!(v.iter().all(|x| *x != FocusVerdict::Left), "{v:?}");
+        assert_eq!(v[2], FocusVerdict::Away { wait: FOCUS_GRACE });
+        // Gone again later: counted afresh.
+        let v = focus_run(&[
+            (true, 0.0),
+            (false, 1.0),
+            (true, 1.3),
+            (false, 5.0),
+            (false, 5.3),
+        ]);
+        assert!(v.iter().all(|x| *x != FocusVerdict::Left), "{v:?}");
+    }
+
+    /// Another app takes the focus (a click on its window, Alt+Tab): the menu closes once the
+    /// focus has stayed away, and asks to be looked at again until then.
+    #[test]
+    fn the_focus_gone_to_another_app_closes_the_menu() {
+        let v = focus_run(&[(true, 0.0), (false, 2.0), (false, 2.1), (false, 2.5)]);
+        assert_eq!(v[0], FocusVerdict::Here);
+        assert!(matches!(v[1], FocusVerdict::Away { wait } if (wait - FOCUS_GRACE).abs() < 1e-9));
+        assert!(
+            matches!(v[2], FocusVerdict::Away { wait } if (wait - (FOCUS_GRACE - 0.1)).abs() < 1e-9)
+        );
+        assert_eq!(v[3], FocusVerdict::Left);
+        // A menu opened while another app was in front (a tray menu): no focus to lose.
+        let v = focus_run(&[(false, 0.0), (false, 1.0), (false, 9.0)]);
+        assert!(v.iter().all(|x| *x == FocusVerdict::Here), "{v:?}");
     }
 
     #[test]
