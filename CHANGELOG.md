@@ -526,6 +526,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   check box ("The symbols couldn't be fetched: …", an issue's title, a translation) ran past the
   window's right edge, or its left edge in Persian. It is now cut with "…" at the margin and shown
   whole under the pointer.
+- **Linux: Dark Mode support follows XFCE, MATE and other desktops too**
+  ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156)): MDM followed the
+  desktop's light or dark setting only where the freedesktop portal answers (GNOME, KDE,
+  Cinnamon). Where it doesn't, as on XFCE, MDM stayed light under a dark theme. It now reads the
+  theme the desktop gives its programs (a name such as Adwaita-dark, Mint-Y-Dark or Greybird-dark
+  is dark), GNOME's own dark style setting when there is no portal, and GTK's settings with no
+  desktop at all, and it follows changes as they happen. The portal still comes first. A change
+  now shows at once too: the window waited for its next theme check, up to 20 s on a busy
+  machine, on every desktop.
 - **Open folder no longer freezes the window on Linux**
   ([#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222)): Download complete's
   **Open folder** asks the desktop's file manager (over D-Bus) to show the file, and MDM waited

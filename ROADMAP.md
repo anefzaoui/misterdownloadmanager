@@ -16,6 +16,9 @@ Everything below ships together, in one release, as version 0.3.0.
 - ✅ The crash report window's status line (such as "The symbols couldn't be fetched: …") stays
   inside the window: cut with "…" at its margin and shown whole under the pointer (part of
   [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
+- ✅ Linux: Dark Mode support follows the desktop's dark or light theme on XFCE, MATE and others
+  without the portal's setting, and on GNOME without the portal, live
+  ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156))
 - ✅ Started with the computer, MDM waits in the notification area instead of opening its window
   in front, on Windows, Linux and macOS (minimized where no notification area shows its icon);
   startup entries written before are updated, and the installer writes the new one
@@ -324,6 +327,5 @@ Everything below ships together, in one release, as version 0.3.0.
 - 📋 Vulkan the default on Linux and Metal on macOS, once real graphics cards have tried them (AMD,
   Intel and NVIDIA, X11 and Wayland, older cards without Vulkan)
   ([#206](https://github.com/anefzaoui/misterdownloadmanager/issues/206))
-- 📋 Linux: follow the desktop's dark or light setting ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156))
 - 📋 Benchmarks against other download managers
   ([#71](https://github.com/anefzaoui/misterdownloadmanager/issues/71))

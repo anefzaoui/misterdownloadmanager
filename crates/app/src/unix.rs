@@ -1,7 +1,8 @@
 //! Linux and macOS counterparts of what `win32` does through Windows (experimental builds):
 //! starting with the session, the browsers' host registration, sounds, showing a file in its
 //! folder, and the torrent link handler. Each runs the system's own tool, so nothing here needs
-//! a library; the exceptions are the desktop's dark mode on Linux (D-Bus, through zbus) and the
+//! a library; the exceptions are the desktop's dark mode on Linux (D-Bus through zbus, the
+//! settings daemon's XSETTINGS through x11rb) and the
 //! crash reports (at the end): signals and Mach exceptions through crash-handler, thread and
 //! process ids through libc.
 
@@ -331,18 +332,19 @@ pub fn wheel_lines() -> Option<f32> {
     Some(3.0)
 }
 
-/// The desktop's light or dark preference on Linux, as the freedesktop portal tells it
-/// (`org.freedesktop.appearance` `color-scheme`, which KDE, GNOME, Cinnamon, COSMIC and the
-/// others set): `Some(true)` dark, `Some(false)` light, `None` when no portal answers or the
-/// desktop has no preference (then the window system's answer is used). X11 reports no theme to
-/// winit at all, so without this "Dark Mode support" never turns dark there. The first call
-/// starts a thread that reads it and follows its changes (D-Bus can take seconds to answer, or
-/// start the portal); `ctx` is repainted when it changes.
+/// The desktop's light or dark preference on Linux: `Some(true)` dark, `Some(false)` light,
+/// `None` when nothing says (then the window system's answer is used). X11 reports no theme to
+/// winit at all, so without this "Dark Mode support" never turns dark there.
+///
+/// First the freedesktop portal (`org.freedesktop.appearance` `color-scheme`, which KDE, GNOME,
+/// Cinnamon, COSMIC and the others set). When it has no Settings interface (XFCE's, MATE's and
+/// older desktops' portals) or no preference, the desktop's theme settings decide
+/// ([`theme_settings_dark`]). The first call starts a thread that reads the portal and follows
+/// its changes (D-Bus can take seconds to answer, or start the portal), and the fallback's
+/// watchers when it is needed; `ctx` is repainted when either changes.
 #[cfg(target_os = "linux")]
 pub fn desktop_dark(ctx: &egui::Context) -> Option<bool> {
-    use std::sync::atomic::{AtomicU8, Ordering};
-    // 0: not known, 1: dark, 2: light.
-    static SCHEME: AtomicU8 = AtomicU8::new(0);
+    use std::sync::atomic::Ordering;
     static WATCH: std::sync::Once = std::sync::Once::new();
     WATCH.call_once(|| {
         let ctx = ctx.clone();
@@ -356,7 +358,12 @@ pub fn desktop_dark(ctx: &egui::Context) -> Option<bool> {
                         _ => 0,
                     };
                     if SCHEME.swap(scheme, Ordering::Relaxed) != scheme {
-                        ctx.request_repaint();
+                        desktop_changed(&ctx);
+                    }
+                    // No preference: the theme settings may still say (GNOME's "default" with
+                    // a dark GTK theme, a portal that answers 0 for every desktop).
+                    if scheme == 0 {
+                        watch_theme_settings(&ctx);
                     }
                 };
                 let watch = || -> zbus::Result<()> {
@@ -386,14 +393,363 @@ pub fn desktop_dark(ctx: &egui::Context) -> Option<bool> {
                 };
                 if let Err(e) = watch() {
                     tracing::info!("desktop theme: no answer from the portal ({e})");
+                    SCHEME.store(0, Ordering::Relaxed);
+                    watch_theme_settings(&ctx);
                 }
             });
     });
-    match SCHEME.load(Ordering::Relaxed) {
+    let known = |v: u8| match v {
         1 => Some(true),
         2 => Some(false),
         _ => None,
+    };
+    known(SCHEME.load(Ordering::Relaxed)).or_else(|| known(SETTINGS.load(Ordering::Relaxed)))
+}
+
+/// How many times the desktop's light or dark, accent or contrast changed (the watchers here).
+/// The app's theme check runs every 2 s; a change seen here runs it at once ([`desktop_changed`]),
+/// so the window follows the desktop in the frame that the change wakes (#156).
+#[cfg(target_os = "linux")]
+static DESKTOP_GENERATION: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+
+/// See [`DESKTOP_GENERATION`].
+#[cfg(target_os = "linux")]
+pub fn desktop_generation() -> u64 {
+    DESKTOP_GENERATION.load(std::sync::atomic::Ordering::Relaxed)
+}
+
+/// The desktop's look changed: counted, and a frame woken to show it.
+#[cfg(target_os = "linux")]
+fn desktop_changed(ctx: &egui::Context) {
+    DESKTOP_GENERATION.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+    ctx.request_repaint();
+}
+
+// The portal's answer and the theme settings' (0: not known, 1: dark, 2: light).
+#[cfg(target_os = "linux")]
+static SCHEME: std::sync::atomic::AtomicU8 = std::sync::atomic::AtomicU8::new(0);
+#[cfg(target_os = "linux")]
+static SETTINGS: std::sync::atomic::AtomicU8 = std::sync::atomic::AtomicU8::new(0);
+/// The running settings daemon's `Net/ThemeName` (XSETTINGS), kept by its watcher.
+#[cfg(target_os = "linux")]
+static XSETTINGS_THEME: std::sync::Mutex<Option<String>> = std::sync::Mutex::new(None);
+
+/// The desktop's dark or light from its theme settings, for when the portal can't say. In order:
+/// - GNOME and its relatives: `org.gnome.desktop.interface color-scheme` (what the portal
+///   would have answered), when it says prefer-dark or prefer-light;
+/// - `GTK_THEME` (e.g. `Adwaita:dark`), which overrides everything for GTK programs;
+/// - XSETTINGS `Net/ThemeName`: the GTK theme that the running settings daemon gives every
+///   program (xfsettingsd, mate-, cinnamon- and gnome-settings-daemon, LXDE's, Budgie's);
+/// - the desktop's own setting: XFCE's `xfconf` xsettings channel, MATE's and Cinnamon's
+///   `gtk-theme`, GNOME's (Wayland without XWayland's daemon);
+/// - GTK's `settings.ini` (window managers with no settings daemon).
+///
+/// A theme is dark when a word of its name is "dark" (Adwaita-dark, Yaru-dark, Mint-Y-Dark-Aqua,
+/// Greybird-dark, Breeze-Dark); not "Arc-Darker", whose views are light. Another desktop's
+/// leftover settings are not read: GNOME's dconf keys stay after a switch to XFCE.
+#[cfg(target_os = "linux")]
+fn theme_settings_dark() -> Option<(bool, &'static str)> {
+    let desktop = std::env::var("XDG_CURRENT_DESKTOP")
+        .unwrap_or_default()
+        .to_ascii_lowercase();
+    let is = |names: &[&str]| desktop.split(':').any(|d| names.contains(&d));
+    let gnome = is(&[
+        "gnome",
+        "unity",
+        "ubuntu",
+        "budgie",
+        "pantheon",
+        "gnome-classic",
+    ]);
+    if gnome
+        && let Some(dark) =
+            gsetting("org.gnome.desktop.interface", "color-scheme").and_then(|s| scheme_word(&s))
+    {
+        return Some((dark, "GNOME's color-scheme"));
     }
+    if let Ok(theme) = std::env::var("GTK_THEME")
+        && !theme.is_empty()
+    {
+        return Some((theme_name_dark(&theme), "GTK_THEME"));
+    }
+    if let Some(theme) = XSETTINGS_THEME
+        .lock()
+        .unwrap_or_else(|e| e.into_inner())
+        .clone()
+    {
+        return Some((theme_name_dark(&theme), "XSETTINGS Net/ThemeName"));
+    }
+    let own = if is(&["xfce"]) {
+        command_line("xfconf-query", &["-c", "xsettings", "-p", "/Net/ThemeName"])
+    } else if is(&["mate"]) {
+        gsetting("org.mate.interface", "gtk-theme")
+    } else if is(&["x-cinnamon", "cinnamon"]) {
+        gsetting("org.cinnamon.desktop.interface", "gtk-theme")
+    } else if gnome {
+        gsetting("org.gnome.desktop.interface", "gtk-theme")
+    } else {
+        None
+    };
+    if let Some(theme) = own {
+        return Some((theme_name_dark(&theme), "the desktop's GTK theme"));
+    }
+    let config = std::env::var_os("XDG_CONFIG_HOME")
+        .map(PathBuf::from)
+        .filter(|p| p.is_absolute())
+        .or_else(|| std::env::var_os("HOME").map(|h| PathBuf::from(h).join(".config")))?;
+    ["gtk-4.0/settings.ini", "gtk-3.0/settings.ini"]
+        .iter()
+        .find_map(|f| gtk_settings_dark(&std::fs::read_to_string(config.join(f)).ok()?))
+        .map(|dark| (dark, "GTK's settings.ini"))
+}
+
+/// One GSettings key's value, unquoted (`gsettings get`); None without gsettings or the schema.
+#[cfg(target_os = "linux")]
+fn gsetting(schema: &str, key: &str) -> Option<String> {
+    command_line("gsettings", &["get", schema, key]).map(|s| s.trim_matches('\'').to_string())
+}
+
+/// A tool's first line of output, trimmed; None when it fails or prints nothing.
+#[cfg(target_os = "linux")]
+fn command_line(program: &str, args: &[&str]) -> Option<String> {
+    let out = Command::new(program)
+        .args(args)
+        .stdin(Stdio::null())
+        .stderr(Stdio::null())
+        .output()
+        .ok()?;
+    let line = String::from_utf8_lossy(&out.stdout)
+        .lines()
+        .next()?
+        .trim()
+        .to_string();
+    (out.status.success() && !line.is_empty()).then_some(line)
+}
+
+/// GNOME's `color-scheme`: prefer-dark or prefer-light; None for "default" (no preference).
+// Linux only: the desktop theme fallback, and `xdgicons` (its INI reader) is built for Linux.
+#[cfg(target_os = "linux")]
+fn scheme_word(s: &str) -> Option<bool> {
+    match s {
+        "prefer-dark" => Some(true),
+        "prefer-light" => Some(false),
+        _ => None,
+    }
+}
+
+/// Is a GTK theme's name a dark one? A word of it (split at anything but letters and digits)
+/// is "dark", in any case: `Adwaita-dark`, `Adwaita:dark` (GTK_THEME's variant), `Mint-Y-Dark`.
+// Linux only: the desktop theme fallback, and `xdgicons` (its INI reader) is built for Linux.
+#[cfg(target_os = "linux")]
+fn theme_name_dark(name: &str) -> bool {
+    name.split(|c: char| !c.is_ascii_alphanumeric())
+        .any(|word| word.eq_ignore_ascii_case("dark"))
+}
+
+/// GTK's `settings.ini`: `gtk-application-prefer-dark-theme`, else the theme's name.
+// Linux only: the desktop theme fallback, and `xdgicons` (its INI reader) is built for Linux.
+#[cfg(target_os = "linux")]
+fn gtk_settings_dark(text: &str) -> Option<bool> {
+    use crate::xdgicons::ini_value;
+    let prefer = ini_value(text, "Settings", "gtk-application-prefer-dark-theme");
+    if let Some(p) = prefer.as_deref()
+        && matches!(p, "1" | "true")
+    {
+        return Some(true);
+    }
+    ini_value(text, "Settings", "gtk-theme-name").map(|name| theme_name_dark(&name))
+}
+
+/// Starts the theme settings' watchers (once): they read [`theme_settings_dark`] now and again
+/// whenever the settings daemon's XSETTINGS or a dconf key of the desktop's interface changes.
+#[cfg(target_os = "linux")]
+fn watch_theme_settings(ctx: &egui::Context) {
+    static WATCH: std::sync::Once = std::sync::Once::new();
+    WATCH.call_once(|| {
+        let refresh = {
+            let ctx = ctx.clone();
+            move || {
+                use std::sync::atomic::Ordering;
+                let found = theme_settings_dark();
+                let v = match found {
+                    Some((true, _)) => 1,
+                    Some((false, _)) => 2,
+                    None => 0,
+                };
+                if SETTINGS.swap(v, Ordering::Relaxed) != v {
+                    match found {
+                        Some((dark, from)) => tracing::info!(
+                            "desktop theme: {} from {from}",
+                            if dark { "dark" } else { "light" }
+                        ),
+                        None => tracing::info!("desktop theme: no setting says"),
+                    }
+                    desktop_changed(&ctx);
+                }
+            }
+        };
+        let x = refresh.clone();
+        let _ = std::thread::Builder::new()
+            .name("desktop-theme-x".into())
+            .spawn(move || {
+                if let Err(e) = watch_xsettings(&x) {
+                    tracing::info!("desktop theme: no XSETTINGS ({e})");
+                }
+                // Read once without it (Wayland, no X server).
+                x();
+            });
+        let _ = std::thread::Builder::new()
+            .name("desktop-theme-dconf".into())
+            .spawn(move || {
+                if let Err(e) = watch_dconf(&refresh) {
+                    tracing::info!("desktop theme: no dconf changes ({e})");
+                }
+            });
+    });
+}
+
+/// Follows the XSETTINGS manager's `_XSETTINGS_SETTINGS` (the settings daemon of an X11
+/// session, XWayland's in a Wayland one): keeps `Net/ThemeName` in [`XSETTINGS_THEME`] and calls
+/// `changed` after each read, also when the daemon ends or another takes over.
+#[cfg(target_os = "linux")]
+fn watch_xsettings(changed: &dyn Fn()) -> Result<(), Box<dyn std::error::Error>> {
+    use x11rb::connection::Connection;
+    use x11rb::protocol::Event;
+    use x11rb::protocol::xproto::{AtomEnum, ChangeWindowAttributesAux, ConnectionExt, EventMask};
+    let (conn, screen) = x11rb::rust_connection::RustConnection::connect(None)?;
+    let root = conn.setup().roots[screen].root;
+    let atom = |name: &str| -> Result<u32, Box<dyn std::error::Error>> {
+        Ok(conn.intern_atom(false, name.as_bytes())?.reply()?.atom)
+    };
+    let selection = atom(&format!("_XSETTINGS_S{screen}"))?;
+    let settings = atom("_XSETTINGS_SETTINGS")?;
+    let manager = atom("MANAGER")?;
+    // A new manager announces itself on the root window (MANAGER client message).
+    conn.change_window_attributes(
+        root,
+        &ChangeWindowAttributesAux::new().event_mask(EventMask::STRUCTURE_NOTIFY),
+    )?
+    .check()?;
+    loop {
+        let owner = conn.get_selection_owner(selection)?.reply()?.owner;
+        let mut theme = None;
+        if owner != x11rb::NONE {
+            // The owner may be gone already: then no theme, and its end or the next manager
+            // brings us back here.
+            let watched = conn
+                .change_window_attributes(
+                    owner,
+                    &ChangeWindowAttributesAux::new()
+                        .event_mask(EventMask::PROPERTY_CHANGE | EventMask::STRUCTURE_NOTIFY),
+                )?
+                .check();
+            if watched.is_ok()
+                && let Ok(reply) = conn
+                    .get_property(false, owner, settings, AtomEnum::ANY, 0, u32::MAX / 4)?
+                    .reply()
+            {
+                theme = xsettings_string(&reply.value, "Net/ThemeName");
+            }
+        }
+        *XSETTINGS_THEME.lock().unwrap_or_else(|e| e.into_inner()) = theme;
+        changed();
+        // Until the settings change, the daemon ends or a new one starts.
+        loop {
+            match conn.wait_for_event()? {
+                Event::PropertyNotify(e) if e.window == owner && e.atom == settings => break,
+                Event::DestroyNotify(e) if e.window == owner => break,
+                Event::ClientMessage(e) if e.type_ == manager => break,
+                _ => {}
+            }
+        }
+    }
+}
+
+/// Calls `changed` whenever dconf writes a key of a desktop's interface settings (GNOME's,
+/// MATE's, Cinnamon's color-scheme or gtk-theme): dconf's writer announces every change on the
+/// session bus.
+#[cfg(target_os = "linux")]
+fn watch_dconf(changed: &dyn Fn()) -> zbus::Result<()> {
+    let conn = zbus::blocking::Connection::session()?;
+    let rule = zbus::MatchRule::builder()
+        .msg_type(zbus::message::Type::Signal)
+        .interface("ca.desrt.dconf.Writer")?
+        .member("Notify")?
+        .build();
+    for message in zbus::blocking::MessageIterator::for_match_rule(rule, &conn, None)? {
+        let message = message?;
+        let Ok((prefix, keys, _tag)) = message
+            .body()
+            .deserialize::<(String, Vec<String>, String)>()
+        else {
+            continue;
+        };
+        let interface = |path: &str| {
+            [
+                "/org/gnome/desktop/interface/",
+                "/org/mate/desktop/interface/",
+                "/org/cinnamon/desktop/interface/",
+            ]
+            .iter()
+            .any(|dir| path.starts_with(dir) || dir.starts_with(path))
+        };
+        let touched = if keys.is_empty() {
+            interface(&prefix)
+        } else {
+            keys.iter().any(|k| interface(&format!("{prefix}{k}")))
+        };
+        if touched {
+            changed();
+        }
+    }
+    Ok(())
+}
+
+/// A string setting from an XSETTINGS property (the freedesktop XSETTINGS format: a byte-order
+/// byte, the serial, the number of settings, then each one's type, name, serial and value, all
+/// padded to 4 bytes). None when it isn't there, isn't a string, or the data is cut short.
+#[cfg_attr(not(target_os = "linux"), allow(dead_code))]
+fn xsettings_string(data: &[u8], key: &str) -> Option<String> {
+    let big = *data.first()? == 1;
+    let u16_at = |at: usize| -> Option<usize> {
+        let b: [u8; 2] = data.get(at..at + 2)?.try_into().ok()?;
+        Some(if big {
+            u16::from_be_bytes(b)
+        } else {
+            u16::from_le_bytes(b)
+        } as usize)
+    };
+    let u32_at = |at: usize| -> Option<usize> {
+        let b: [u8; 4] = data.get(at..at + 4)?.try_into().ok()?;
+        Some(if big {
+            u32::from_be_bytes(b)
+        } else {
+            u32::from_le_bytes(b)
+        } as usize)
+    };
+    let pad = |n: usize| n.div_ceil(4) * 4;
+    let count = u32_at(8)?;
+    let mut at = 12;
+    for _ in 0..count {
+        let kind = *data.get(at)?;
+        let name_len = u16_at(at + 2)?;
+        let name = data.get(at + 4..at + 4 + name_len)?;
+        at += 4 + pad(name_len) + 4; // the name, then its last-change serial
+        match kind {
+            0 => at += 4, // an integer
+            1 => {
+                let len = u32_at(at)?;
+                let value = data.get(at + 4..at + 4 + len)?;
+                if name == key.as_bytes() {
+                    return Some(String::from_utf8_lossy(value).into_owned());
+                }
+                at += 4 + pad(len);
+            }
+            2 => at += 8, // a colour: four 16-bit parts
+            _ => return None,
+        }
+    }
+    None
 }
 
 /// The desktop's accent colour and whether it asks for higher contrast (the freedesktop portal's
@@ -419,7 +775,7 @@ fn desktop_look(ctx: &egui::Context) -> (Option<egui::Color32>, bool) {
                         _ => {}
                     }
                     if *look != before {
-                        ctx.request_repaint();
+                        desktop_changed(&ctx);
                     }
                 };
                 let watch = || -> zbus::Result<()> {
@@ -1075,6 +1431,111 @@ mod tests {
             Some(2)
         );
         assert_eq!(super::color_scheme(&Value::Str("dark".into())), None);
+    }
+
+    /// An XSETTINGS property as a settings daemon writes it, in either byte order: an integer,
+    /// a colour and two strings.
+    fn xsettings(big: bool) -> Vec<u8> {
+        let n16 = |n: u16| {
+            if big {
+                n.to_be_bytes()
+            } else {
+                n.to_le_bytes()
+            }
+        };
+        let n32 = |n: u32| {
+            if big {
+                n.to_be_bytes()
+            } else {
+                n.to_le_bytes()
+            }
+        };
+        let mut d = vec![u8::from(big), 0, 0, 0];
+        d.extend(n32(7)); // serial
+        d.extend(n32(4)); // settings
+        let head = |d: &mut Vec<u8>, kind: u8, name: &str| {
+            d.extend([kind, 0]);
+            d.extend(n16(name.len() as u16));
+            d.extend(name.as_bytes());
+            d.resize(d.len().div_ceil(4) * 4, 0);
+            d.extend(n32(3)); // last change
+        };
+        head(&mut d, 0, "Net/DoubleClickTime");
+        d.extend(n32(400));
+        head(&mut d, 2, "Gtk/Color");
+        d.extend([0; 8]);
+        head(&mut d, 1, "Net/IconThemeName");
+        d.extend(n32(10));
+        d.extend(b"elementary\0\0"); // padded to 4
+        head(&mut d, 1, "Net/ThemeName");
+        d.extend(n32(12));
+        d.extend(b"Adwaita-dark");
+        d
+    }
+
+    #[test]
+    fn xsettings_strings_are_found_in_either_byte_order() {
+        for big in [false, true] {
+            let d = xsettings(big);
+            assert_eq!(
+                super::xsettings_string(&d, "Net/ThemeName").as_deref(),
+                Some("Adwaita-dark")
+            );
+            assert_eq!(
+                super::xsettings_string(&d, "Net/IconThemeName").as_deref(),
+                Some("elementary")
+            );
+            assert_eq!(super::xsettings_string(&d, "Net/DoubleClickTime"), None);
+            assert_eq!(super::xsettings_string(&d, "Gtk/FontName"), None);
+            // Cut short anywhere: nothing, no panic.
+            for end in 0..d.len() {
+                let _ = super::xsettings_string(&d[..end], "Net/ThemeName");
+            }
+        }
+    }
+
+    #[test]
+    fn dark_theme_names() {
+        for dark in [
+            "Adwaita-dark",
+            "Adwaita:dark",
+            "Yaru-dark",
+            "Mint-Y-Dark-Aqua",
+            "Greybird-dark",
+            "Breeze-Dark",
+            "Materia-dark-compact",
+        ] {
+            assert!(super::theme_name_dark(dark), "{dark}");
+        }
+        for light in ["Adwaita", "Yaru", "Arc-Darker", "Greybird", "Darkroom", ""] {
+            assert!(!super::theme_name_dark(light), "{light}");
+        }
+    }
+
+    #[test]
+    fn gnome_color_scheme_and_gtk_settings() {
+        assert_eq!(super::scheme_word("prefer-dark"), Some(true));
+        assert_eq!(super::scheme_word("prefer-light"), Some(false));
+        assert_eq!(super::scheme_word("default"), None);
+        let ini = |body: &str| format!("[Settings]\n{body}\n");
+        assert_eq!(
+            super::gtk_settings_dark(&ini("gtk-application-prefer-dark-theme=1")),
+            Some(true)
+        );
+        assert_eq!(
+            super::gtk_settings_dark(&ini(
+                "gtk-application-prefer-dark-theme=false\ngtk-theme-name=Arc-Dark"
+            )),
+            Some(true)
+        );
+        assert_eq!(
+            super::gtk_settings_dark(&ini("gtk-theme-name=Adwaita")),
+            Some(false)
+        );
+        assert_eq!(
+            super::gtk_settings_dark(&ini("gtk-font-name=Sans 10")),
+            None
+        );
     }
 
     /// The child of [`show_in_folder_never_waits_for_the_file_manager`]: the file it shows.
