@@ -22,6 +22,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Cookies for video sites**
+  ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229)): Options → Sites Logins
+  can let yt-dlp read a browser's cookies on this computer (Firefox, Chrome, Edge, Brave, Opera,
+  Vivaldi, Chromium, Whale; Safari on macOS), with a profile by name or folder, so a pasted link
+  to a video that needs you signed in (YouTube's "Sign in to confirm you're not a bot") works.
+  Off by default. When the browser's extension passes the page's own cookies, those are used
+  instead. When the browser's cookies can't be read (Chrome, Edge and Brave lock them on
+  Windows; a locked keyring on Linux), the Download video window says so in plain words.
 - **Started with the computer, MDM waits in the notification area**
   ([#226](https://github.com/anefzaoui/misterdownloadmanager/issues/226)): with **Options →
   General → Launch Mister Download Manager on startup**, MDM no longer opens its window in front
@@ -521,6 +529,23 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Three more controls fit their translated text**
+  ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192), after #212): in Russian
+  and a few other languages, Download File Info's **Preview**, Options → Proxy's **Get System**
+  and the Scheduler's drop-down after **Turn off computer when done** still ended in "...".
+  Download File Info grows by what Preview's label needs (Russian, Ukrainian, Telugu, Belarusian
+  and a few more), the Proxy page's title moves left to give Get System its room, and the
+  Scheduler's drop-down widens towards its caption. English is unchanged.
+- **A menu shut with Escape opens again at the first click on its title**: a menu opened from
+  the menu bar and shut with Escape, the pointer still on its title, was left marked open. On
+  Linux the next click on that title only "shut" it, and a second click was needed; on Windows
+  Escape seemed to do nothing (the menu came back at once). Escape, or MDM losing the focus, now
+  shuts the menu whatever the pointer rests on; a press on a title still shuts its own menu or
+  opens another.
+- **A video that needs a sign-in downloads from the button over it**
+  ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229)): the button's cookies
+  reached the Download video window's look-up but not the download's own, which then failed with
+  "Sign in to confirm you're not a bot".
 - **The window no longer freezes when the system's sleep or keychain service is slow**
   (follows [#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222)): a queue set to
   **Wake the computer to run this queue** asks the system to keep the computer awake while it
