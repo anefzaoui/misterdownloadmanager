@@ -13,6 +13,7 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ The public files carry no maintainer setup notes: what the release workflow's store and signing steps need is kept out of the repository
 - ✅ Download File Info's Preview, Options → Proxy's Get System and the Scheduler's "when done"
   drop-down fit their translated text (Russian and others), after #212
   ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192))
