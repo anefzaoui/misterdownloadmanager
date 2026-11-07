@@ -14,7 +14,8 @@ Everything below ships together, in one release, as version 0.3.0.
 ### Done
 
 - ✅ Options → Proxy's Get System and the Scheduler's "when done" drop-down fit in the last
-  languages that still cut them (Bulgarian, Armenian, Tamil; Greek, Malayalam), and the Proxy
+  languages that still cut them (Bulgarian, Armenian, Macedonian, Tamil; Greek, Malayalam, and
+  six the translation review lengthened), and the Proxy
   page's title no longer runs over its icon or past the window's edge in Greek, Finnish, Catalan
   and a few more: a title too long for one line beside Get System takes two
   ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192))

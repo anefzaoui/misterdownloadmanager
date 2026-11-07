@@ -555,7 +555,9 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   Armenian, Tamil), and where it ran over the page's icon or past the window's left edge
   (Greek, Finnish, Catalan, Estonian, Latvian, Lithuanian, Malayalam, Serbian, Afrikaans). In
   Greek and Malayalam, the Scheduler's "Turn off computer when done" and its choices have
-  shorter machine translations, so the drop-down fits beside the caption. English is unchanged.
+  shorter machine translations, so the drop-down fits beside the caption; in Belarusian, Welsh,
+  French, Russian, Tamil and Ukrainian, the longer ones the translation review brought (such as
+  Russian's Hibernate) are back to their earlier, shorter wording. English is unchanged.
 - **Brave Origin connects on Linux, and the AppImage's helper is always there**
   ([#253](https://github.com/anefzaoui/misterdownloadmanager/issues/253)): Brave Origin keeps
   its settings in a folder of its own (`~/.config/BraveSoftware/Brave-Origin`), which MDM didn't
