@@ -315,7 +315,7 @@ impl Why {
     }
 
     /// A failure file's text: its reason's key, then the details on the next line. An older
-    /// one (one line of details, from MDM 0.3 on Windows) is `Other`.
+    /// one (one line of details, from test builds before 0.5.0 on Windows) is `Other`.
     fn read(text: &str) -> (Why, &str) {
         let (first, rest) = text.trim().split_once('\n').unwrap_or((text.trim(), ""));
         match Why::ALL.into_iter().find(|w| w.key() == first.trim()) {
@@ -1125,7 +1125,7 @@ mod tests {
             let text = format!("{}\nsome details", why.key());
             assert_eq!(Why::read(&text), (why, "some details"));
         }
-        // MDM 0.3's files on Windows: one line of details.
+        // The files of test builds before 0.5.0 on Windows: one line of details.
         let old = "Direct3D drew no first frame within 10 s";
         assert_eq!(Why::read(old), (Why::Other, old));
         assert_eq!(Why::read("  \n"), (Why::Other, ""));

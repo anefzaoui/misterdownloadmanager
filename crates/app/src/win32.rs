@@ -1777,8 +1777,8 @@ pub fn run_at_startup() -> bool {
     })
 }
 
-/// The startup entry rewritten with its argument when it was written without (by 0.3.0 or
-/// earlier, or by their installer) for this very program (#226).
+/// The startup entry rewritten with its argument when it was written without (by versions
+/// before 0.5.0, or by their installer) for this very program (#226).
 pub fn update_run_at_startup() {
     let (Some(name), Ok(exe)) = (run_value(), std::env::current_exe()) else {
         return;
@@ -1851,12 +1851,12 @@ mod startup_tests {
         assert!(!startup_outdated(&cmd, Path::new(EXE)));
     }
 
-    /// An entry of 0.3.0 and earlier, or of their installer, is written again; one for another
+    /// An entry of a version before 0.5.0, or of its installer, is written again; one for another
     /// copy of MDM, or one already up to date, is left alone.
     #[test]
     fn old_startup_entries_are_rewritten() {
         let exe = Path::new(EXE);
-        // Options in 0.3.0 and earlier, and the installer's: the program alone, quoted.
+        // Options before 0.5.0, and the installer's: the program alone, quoted.
         assert!(startup_outdated(&format!("\"{EXE}\""), exe));
         // Written by hand: unquoted, in another case, with other slashes.
         assert!(startup_outdated(

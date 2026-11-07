@@ -154,8 +154,8 @@ pub fn set_run_at_startup(on: bool) {
     let _ = std::fs::write(&file, text);
 }
 
-/// The startup entry written again with its argument when it was written without (by 0.3.0 or
-/// earlier) for this very program (#226).
+/// The startup entry written again with its argument when it was written without (by versions
+/// before 0.5.0) for this very program (#226).
 pub fn update_run_at_startup() {
     let (Some(file), Some(exe)) = (startup_file(), program()) else {
         return;
@@ -2314,7 +2314,7 @@ mod startup_tests {
     use super::{entry_program, startup_entry, startup_outdated};
     use std::path::Path;
 
-    /// The entries 0.3.0 and earlier wrote: the program alone.
+    /// The entries versions before 0.5.0 wrote: the program alone.
     fn old_entry(exe: &str, macos: bool) -> String {
         if macos {
             format!(
@@ -2351,7 +2351,7 @@ mod startup_tests {
         ));
     }
 
-    /// An entry of 0.3.0 and earlier for this program is written again; another copy's is not.
+    /// An entry of a version before 0.5.0 for this program is written again; another copy's is not.
     #[test]
     fn old_startup_entries_are_rewritten() {
         let exe = "/home/ana/Apps/Mister Download Manager.AppImage";

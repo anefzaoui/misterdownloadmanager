@@ -1,15 +1,15 @@
 # Roadmap
 
-What's done for the next release, what's being built, and what's planned. Each item links to its
+What's done for version 0.5.0, what's being built, and what's planned. Each item links to its
 issue, where the details and the discussion are. Released changes are in
 [CHANGELOG.md](CHANGELOG.md). Ideas and bug reports are welcome in
 [Issues](https://github.com/anefzaoui/misterdownloadmanager/issues).
 
-✅ done, not released yet · 🔄 being built · 📋 planned · 🔍 looking into it
+✅ done, coming in 0.5.0 · 🔄 being built · 📋 planned · 🔍 looking into it
 
-## The next release
+## Version 0.5.0
 
-Everything below ships together, in the next release.
+Everything below ships together, in version 0.5.0.
 
 ### Done
 
@@ -405,6 +405,10 @@ Everything below ships together, in the next release.
   docs, the README and the website brought up to date
   ([#186](https://github.com/anefzaoui/misterdownloadmanager/issues/186))
 
+## Being worked on
+
+These ship when they're ready: in 0.5.0 when they make it, or in a later version.
+
 ### Being built
 
 - 🔄 Linux, what's left ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
@@ -426,8 +430,8 @@ Everything below ships together, in the next release.
   desktop should behave otherwise is being discussed with the reporter
 - 🔍 A freeze of the window on start ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
   the first window took over a minute while the graphics driver set up OpenGL; MDM now draws
-  with Direct3D 12 by default and keeps it through a slow start, so the next version should
-  not do this
+  with Direct3D 12 by default and keeps it through a slow start, so 0.5.0 should not do
+  this
 - 🔍 A crash on Linux as Download File Info opens
   ([#48](https://github.com/anefzaoui/misterdownloadmanager/issues/48)), likely fixed with #22
 - 🔍 Linux on GNOME Wayland: a right-click menu opening in the middle of the window, and buttons

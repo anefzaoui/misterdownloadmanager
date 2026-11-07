@@ -56,7 +56,7 @@ NAME = "Mister Download Manager"
 # says "Coming with version <this>" (coming_banner(): the feature pages, the Themes page, the
 # features' tiles), shown for a feature whose `since` is this version or later. At that release
 # set it to "" and every banner goes at once; a published release at or past it hides them too.
-UPCOMING = "0.5"
+UPCOMING = "0.5.0"
 CARGO_VERSION = re.search(r'(?m)^version\s*=\s*"([^"]+)"', (ROOT / "Cargo.toml").read_text("utf-8")).group(1)
 
 
@@ -962,8 +962,9 @@ def build_news() -> None:
     releases = []
     for m in re.finditer(r"(?ms)^## \[([^\]]+)\](?: - (\d{4}-\d{2}-\d{2}))?\s*\n(.*?)(?=^## |\Z)", text):
         ver, date, body = m.group(1), m.group(2), m.group(3).strip()
-        # Changes not released yet aren't news.
-        if ver.lower() == "unreleased":
+        # Changes not released yet aren't news: a version past the published one comes with its
+        # release (the release rebuilds the site).
+        if ver.lower() == "unreleased" or (re.fullmatch(r"[\d.]+", ver) and vparts(ver) > vparts(VERSION)):
             continue
         body = re.sub(r"\]\((docs/[^)]+)\)", lambda x: "](" + doc_link(x.group(1).split("/", 1)[1], ROOT / "docs" / "x.md") + ")", body)
         releases.append((ver, date, body))
@@ -1169,7 +1170,9 @@ FEATURE_IMAGES: set[str] = set()
 
 
 def vparts(v: str) -> tuple[int, ...]:
-    return tuple(int(x) for x in re.findall(r"\d+", v or "")) or (0,)
+    """A version's numbers, padded to three: "0.5" and "0.5.0" are the same version."""
+    parts = tuple(int(x) for x in re.findall(r"\d+", v or ""))
+    return parts + (0,) * (3 - len(parts))
 
 
 def upcoming() -> str:

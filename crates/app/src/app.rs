@@ -818,7 +818,7 @@ impl App {
         }
         // "Launch on startup" is whatever the Run key says (the installer may have set it); on
         // Linux and macOS, the autostart entry / LaunchAgent.
-        // An entry written before #226 (by 0.3.0 and earlier, or by their installer) starts MDM
+        // An entry written before #226 (by versions before 0.5.0, or by their installer) starts MDM
         // with its window in front: written again, with the argument that starts it in the
         // notification area. Only an entry for this very program (not one a copy elsewhere
         // wrote), and never by a portable copy, which writes nothing outside its folder.
