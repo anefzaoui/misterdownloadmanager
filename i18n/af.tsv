@@ -5245,6 +5245,27 @@ extension	Hold Alt while clicking a link to let the browser download it.	Hou Alt
 #, machine
 extension	How to fix it	Hoe om dit reg te maak
 #. text in the browser extension
+#. why a download stayed with the browser: the file is smaller than the app's minimum size setting
+#, machine
+extension	It's smaller than the minimum size in Options → File types.	Dit is kleiner as die minimum grootte in Opsies → Lêertipes.
+#. text in the browser extension
+#. why a download stayed with the browser: its address matches the app's list of addresses not to take
+#, machine
+extension	Its address is in Options → File types, addresses left to the browser.	Die adres daarvan is in Opsies → Lêertipes, adresse wat aan die blaaier oorgelaat is.
+#. text in the browser extension
+#. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
+#, machine
+extension	Its site is in Options → File types, sites left to the browser.	Die webwerf daarvan is in Opsies → Lêertipes, webwerwe wat aan die blaaier oorgelaat is.
+#. text in the browser extension
+#. why a download stayed with the browser: its file type isn't on the app's list; Options and File types are the app's window and its page, as the app names them
+#, machine
+extension	Its type isn't in Options → File types.	Die tipe daarvan is nie in Opsies → Lêertipes nie.
+#. text in the browser extension
+#. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+extension	Left to the browser: {name}	Aan die blaaier oorgelaat: {name}
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	Regstreeks
@@ -5340,6 +5361,18 @@ extension	The connection to Mister Download Manager failed	Die verbinding met Mi
 #, machine
 extension	The download button is off on this site	Die aflaai-knoppie is af op hierdie werf
 #. text in the browser extension
+#. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
+#, machine
+extension	The extension isn't allowed to read this site (the browser's site access).	Die uitbreiding word nie toegelaat om hierdie webwerf te lees nie (die blaaier se webwerftoegang).
+#. text in the browser extension
+#. in the toolbar button's popup when the last download the browser kept came from a private window (its name isn't kept); followed by why (one of the declined_* texts)
+#, machine
+extension	The last download was left to the browser.	Die laaste aflaai is aan die blaaier oorgelaat.
+#. text in the browser extension
+#. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
+#, machine
+extension	This browser isn't ticked in Options → General.	Hierdie blaaier is nie gemerk in Opsies → Algemeen nie.
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	Hierdie aflaai se besonderhede was te groot om oor te dra
@@ -5347,6 +5380,10 @@ extension	This download's details were too large to hand over	Hierdie aflaai se 
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	Dateer Mister Download Manager op om alles te gebruik wat hierdie uitbreiding bied
+#. text in the browser extension
+#. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
+#, machine
+extension	Use advanced browser integration is off in Options → General.	Gebruik gevorderde blaaierintegrasie is afgeskakel in Opsies → Algemeen.
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

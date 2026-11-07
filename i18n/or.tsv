@@ -5245,6 +5245,27 @@ extension	Hold Alt while clicking a link to let the browser download it.	ବ୍�
 #, machine
 extension	How to fix it	ଏହାକୁ କିପରି ଠିକ୍ କରିବେ
 #. text in the browser extension
+#. why a download stayed with the browser: the file is smaller than the app's minimum size setting
+#, machine
+extension	It's smaller than the minimum size in Options → File types.	ଏହା ବିକଳ୍ପ → ଫାଇଲ୍ ପ୍ରକାରରେ ସର୍ବନିମ୍ନ ଆକାରଠାରୁ ଛୋଟ ଅଟେ।
+#. text in the browser extension
+#. why a download stayed with the browser: its address matches the app's list of addresses not to take
+#, machine
+extension	Its address is in Options → File types, addresses left to the browser.	ଏହାର ଠିକଣା ବିକଳ୍ପ → ଫାଇଲ୍ ପ୍ରକାର, ବ୍ରାଉଜରକୁ ଛଡାଯାଇଥିବା ଠିକଣାରେ ଅଛି।
+#. text in the browser extension
+#. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
+#, machine
+extension	Its site is in Options → File types, sites left to the browser.	ଏହାର ସାଇଟ୍ ବିକଳ୍ପ → ଫାଇଲ୍ ପ୍ରକାର, ବ୍ରାଉଜରକୁ ଛଡାଯାଇଥିବା ସାଇଟ୍‌ରେ ଅଛି।
+#. text in the browser extension
+#. why a download stayed with the browser: its file type isn't on the app's list; Options and File types are the app's window and its page, as the app names them
+#, machine
+extension	Its type isn't in Options → File types.	ଏହାର ପ୍ରକାର ବିକଳ୍ପ → ଫାଇଲ୍ ପ୍ରକାରରେ ନାହିଁ।
+#. text in the browser extension
+#. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+extension	Left to the browser: {name}	ବ୍ରାଉଜରକୁ ଛଡାଯାଇଛି: {name}
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	ଲାଇଭ୍
@@ -5340,6 +5361,18 @@ extension	The connection to Mister Download Manager failed	Mister Download Manag
 #, machine
 extension	The download button is off on this site	ଏହି ସାଇଟ୍‌ରେ ଡାଉନଲୋଡ୍ ବଟନ୍ ବନ୍ଦ ଅଛି
 #. text in the browser extension
+#. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
+#, machine
+extension	The extension isn't allowed to read this site (the browser's site access).	ଏହି ସାଇଟ୍ ପଢିବାକୁ ଏକ୍ସଟେନ୍ସନ୍‌କୁ ଅନୁମତି ନାହିଁ (ବ୍ରାଉଜରର ସାଇଟ୍ ପ୍ରବେଶ)।
+#. text in the browser extension
+#. in the toolbar button's popup when the last download the browser kept came from a private window (its name isn't kept); followed by why (one of the declined_* texts)
+#, machine
+extension	The last download was left to the browser.	ଶେଷ ଡାଉନଲୋଡ୍ ବ୍ରାଉଜରକୁ ଛଡାଯାଇଥିଲା।
+#. text in the browser extension
+#. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
+#, machine
+extension	This browser isn't ticked in Options → General.	ଏହି ବ୍ରାଉଜର ବିକଳ୍ପ → ସାଧାରଣରେ ଟିକ୍ ହୋଇନାହିଁ।
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	ଏହି ଡାଉନଲୋଡ୍‌ର ବିବରଣୀ ହସ୍ତାନ୍ତର କରିବା ପାଇଁ ବହୁତ ବଡ଼ ଥିଲା
@@ -5347,6 +5380,10 @@ extension	This download's details were too large to hand over	ଏହି ଡା�
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	ଏହି ଏକ୍ସଟେନ୍ସନ୍‌ର ସମସ୍ତ ବୈଶିଷ୍ଟ୍ୟ ବ୍ୟବହାର କରିବାକୁ Mister Download Manager ଅପଡେଟ୍ କରନ୍ତୁ
+#. text in the browser extension
+#. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
+#, machine
+extension	Use advanced browser integration is off in Options → General.	ବିକଳ୍ପ → ସାଧାରଣରେ ଉନ୍ନତ ବ୍ରାଉଜର ଏକୀକରଣ ବ୍ୟବହାର କରନ୍ତୁ ବନ୍ଦ ଅଛି।
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

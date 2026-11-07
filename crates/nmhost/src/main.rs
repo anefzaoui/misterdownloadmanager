@@ -106,6 +106,20 @@ struct Message {
     exclude_site: Option<String>,
     /// The toolbar button: bring Mister Download Manager's window up.
     open: bool,
+    /// The extension left a download to the browser by Options' rules (it has them from
+    /// `rules`) without asking about it: for MDM's log. Under its own key, with no `url`: an
+    /// older host takes it for an address it can't download, and hands nothing over.
+    declined: Option<Notice>,
+}
+
+/// A download the extension left to the browser: why (a `Declined` code, or `site-access`:
+/// the browser doesn't let it read the site), its site and file name.
+#[derive(Debug, Default, Deserialize, PartialEq)]
+#[serde(default)]
+struct Notice {
+    why: String,
+    site: String,
+    name: String,
 }
 
 #[derive(Default, Serialize)]
@@ -139,6 +153,13 @@ struct Reply {
     /// For `rules`: files smaller than this (KB) stay with the browser.
     #[serde(skip_serializing_if = "Option::is_none")]
     min_kb: Option<u64>,
+    /// For `rules` when `capture` is false: why (`integration-off`, `browser`).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    capture_off: Option<&'static str>,
+    /// A download left to the browser by Options: which rule (a `Declined` code), for the
+    /// extension to say (its popup).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    declined: Option<&'static str>,
 }
 
 impl Reply {
@@ -197,8 +218,13 @@ fn answer(m: Message, rules: &mdm_ipc::capture::CaptureRules) -> Reply {
             excluded_addresses: Some(rules.excluded_addresses.clone()),
             opened: Some(rules.capture_opened),
             min_kb: Some(rules.capture_min_kb),
+            capture_off: rules.capture_off(browser).map(|d| d.code()),
             ..Default::default()
         };
+    }
+    if let Some(n) = &m.declined {
+        log_left(browser, &n.site, &n.name, notice_reason(&n.why), m.private);
+        return Reply::done();
     }
     // The video button: asked about, clicked, its menu. What it sends goes to the app (started
     // if need be), which opens its window or keeps the setting.
@@ -273,12 +299,91 @@ fn answer(m: Message, rules: &mdm_ipc::capture::CaptureRules) -> Reply {
         return Reply::failed("refused", "not an http(s) or ftp(s) URL");
     }
     if let Err(why) = verdict(&m, rules) {
-        return Reply::failed(
-            "options",
-            format!("left to the browser by Options ({why:?})"),
-        );
+        let site = mdm_ipc::capture::host_of(&m.url);
+        log_left(browser, &site, &file_name_of(&m), why.reason(), m.private);
+        return Reply {
+            declined: Some(why.code()),
+            ..Reply::failed(
+                "options",
+                format!("left to the browser by Options ({why:?})"),
+            )
+        };
     }
     delivered(&to_command(m))
+}
+
+/// Why the extension left a download alone, from its notice's code.
+fn notice_reason(code: &str) -> String {
+    match mdm_ipc::capture::Declined::from_code(code) {
+        Some(d) => d.reason().to_owned(),
+        None if code == "site-access" => {
+            "the browser doesn't let the extension read this site (its site access is limited)"
+                .to_owned()
+        }
+        None => format!("{:?}", clean(code, 32)),
+    }
+}
+
+/// `s` for one line of the log: no line breaks or other control characters, at most `max`
+/// characters.
+fn clean(s: &str, max: usize) -> String {
+    s.chars()
+        .map(|c| if c.is_control() { ' ' } else { c })
+        .take(max)
+        .collect()
+}
+
+/// The log line for a download left to the browser. A private window's site and file name are
+/// left out: the log outlives the window.
+fn left_line(browser: &str, site: &str, name: &str, reason: &str, private: bool) -> String {
+    let browser = if browser.is_empty() {
+        "a browser"
+    } else {
+        browser
+    };
+    let what = if private {
+        "a download from a private window".to_owned()
+    } else {
+        match (clean(name, 200), clean(site, 200)) {
+            (n, s) if n.trim().is_empty() && s.trim().is_empty() => "a download".to_owned(),
+            (n, s) if s.trim().is_empty() => n,
+            (n, s) if n.trim().is_empty() => format!("a download from {s}"),
+            (n, s) => format!("{n} from {s}"),
+        }
+    };
+    format!("browser integration: {browser} keeps {what}: {reason}")
+}
+
+fn log_left(browser: &str, site: &str, name: &str, reason: impl AsRef<str>, private: bool) {
+    log_line(&left_line(browser, site, name, reason.as_ref(), private));
+}
+
+/// A line in MDM's log (`<data>/logs/mdm.log`, crates/crash/src/logs.rs), dated as the app's
+/// own lines: the host runs apart from the app, which may not be running at all. Appended
+/// whole, so it never splits a line the app writes at the same time.
+fn log_line(message: &str) {
+    // Unit tests run without a data folder of their own: never into the real MDM's log
+    // (tests/host.rs runs the program with its own and reads what it wrote).
+    if cfg!(test) {
+        return;
+    }
+    let Some(dir) = mdm_ipc::data_dir().map(|d| d.join("logs")) else {
+        return;
+    };
+    if std::fs::create_dir_all(&dir).is_err() {
+        return;
+    }
+    let line = format!(
+        "{}  INFO nmhost mdm_nmhost: {message}\n",
+        chrono::Utc::now().format("%Y-%m-%dT%H:%M:%S%.6fZ")
+    );
+    if let Ok(mut f) = std::fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open(dir.join("mdm.log"))
+    {
+        let _ = f.write_all(line.as_bytes());
+    }
 }
 
 /// The Download video window's command for a video message: the page, or the video's own file
@@ -1083,6 +1188,102 @@ mod tests {
             &rules,
         );
         assert!(!r.ok && r.why == Some("refused"));
+    }
+
+    #[test]
+    fn a_refusal_says_which_rule() {
+        let rules = mdm_ipc::capture::CaptureRules {
+            browsers: vec![("Microsoft Edge".into(), false)],
+            ..Default::default()
+        };
+        let ua = "Mozilla/5.0 (Windows NT 10.0) Chrome/141.0.0.0 Safari/537.36";
+        let msg = |url: &str, name: &str, ua: &str| Message {
+            url: url.into(),
+            filename: Some(name.into()),
+            user_agent: Some(ua.into()),
+            ..Default::default()
+        };
+        let r = answer(msg("https://x.test/p.png", "p.png", ua), &rules);
+        assert_eq!(
+            (r.ok, r.why, r.declined),
+            (false, Some("options"), Some("file-type"))
+        );
+        // The words older extensions read stay as they were.
+        assert_eq!(
+            r.error.as_deref(),
+            Some("left to the browser by Options (FileType)")
+        );
+        let edge = "Mozilla/5.0 (Windows NT 10.0) Chrome/141.0.0.0 Safari/537.36 Edg/141.0.0.0";
+        let r = answer(msg("https://x.test/a.zip", "a.zip", edge), &rules);
+        assert_eq!(r.declined, Some("browser"));
+        let json = serde_json::to_string(&r).unwrap();
+        assert!(json.contains(r#""declined":"browser""#), "{json}");
+        // The rules say why nothing is taken from this browser.
+        let hello = Message {
+            hello: true,
+            user_agent: Some(edge.into()),
+            ..Default::default()
+        };
+        let json = serde_json::to_string(&answer(hello, &rules)).unwrap();
+        assert!(json.contains(r#""capture":false"#) && json.contains(r#""captureOff":"browser""#));
+    }
+
+    #[test]
+    fn the_extensions_own_refusals_are_only_noted() {
+        let rules = mdm_ipc::capture::CaptureRules::default();
+        let raw = r#"{"declined":{"why":"file-type","site":"x.test","name":"p.png"},"userAgent":"UA","brands":[],"v":"0.3.0"}"#;
+        let m: Message = serde_json::from_str(raw).unwrap();
+        assert_eq!(
+            m.declined,
+            Some(Notice {
+                why: "file-type".into(),
+                site: "x.test".into(),
+                name: "p.png".into()
+            })
+        );
+        // No address of its own: an older host, which knows no `declined`, refuses it as an
+        // address it can't download, and hands nothing over.
+        assert!(!downloadable(&m.url));
+        let r = answer(m, &rules);
+        assert!(r.ok && r.error.is_none(), "noted, nothing delivered");
+        assert_eq!(
+            notice_reason("site"),
+            mdm_ipc::capture::Declined::Site.reason()
+        );
+        assert!(notice_reason("site-access").contains("site access"));
+        assert_eq!(notice_reason("x\ny"), r#""x y""#);
+    }
+
+    #[test]
+    fn log_lines_name_what_was_left_and_why() {
+        let reason = mdm_ipc::capture::Declined::FileType.reason();
+        assert_eq!(
+            left_line("Waterfox", "x.test", "p.png", reason, false),
+            "browser integration: Waterfox keeps p.png from x.test: its type isn't in Options > File types"
+        );
+        // A private window's download is never named; nor can a name break the line.
+        let private = left_line("Google Chrome", "secret.test", "s.zip", reason, true);
+        assert!(!private.contains("secret") && private.contains("private window"));
+        assert!(!left_line("", "x.test", "a\nb.zip", reason, false).contains('\n'));
+        assert!(
+            left_line("", "", "", reason, false)
+                .starts_with("browser integration: a browser keeps a download:")
+        );
+    }
+
+    #[test]
+    fn older_extensions_messages_still_work() {
+        // As the Chrome Web Store's 0.2.4 extension sends a download (no browser name from
+        // getBrowserInfo, no notices), and as 0.2.4's own extension did (no brands, no version).
+        let rules = mdm_ipc::capture::CaptureRules::default();
+        for raw in [
+            r#"{"url":"https://x.test/a.zip","finalUrl":"","referrer":"https://x.test/","cookies":"","filename":"a.zip","size":1048576,"mime":"application/zip","userAgent":"Mozilla/5.0 Chrome/141.0.0.0 Safari/537.36","brands":["Not:A-Brand","Chromium","Google Chrome"],"v":"0.2.4"}"#,
+            r#"{"url":"https://x.test/a.zip","referrer":"https://x.test/","cookies":"","userAgent":"Mozilla/5.0 Chrome/141.0.0.0 Safari/537.36","filename":"a.zip"}"#,
+        ] {
+            let m: Message = serde_json::from_str(raw).unwrap();
+            assert_eq!(verdict(&m, &rules), Ok(()), "{raw}");
+            assert_eq!(to_command(m).name.as_deref(), Some("a.zip"));
+        }
     }
 
     #[test]

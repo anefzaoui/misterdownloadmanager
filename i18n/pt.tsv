@@ -5235,6 +5235,27 @@ extension	Hold Alt while clicking a link to let the browser download it.	Mantenh
 #, machine
 extension	How to fix it	Como corrigir
 #. text in the browser extension
+#. why a download stayed with the browser: the file is smaller than the app's minimum size setting
+#, machine
+extension	It's smaller than the minimum size in Options → File types.	É menor do que o tamanho mínimo em Opções → Tipos de ficheiro.
+#. text in the browser extension
+#. why a download stayed with the browser: its address matches the app's list of addresses not to take
+#, machine
+extension	Its address is in Options → File types, addresses left to the browser.	O endereço está em Opções → Tipos de ficheiro, endereços deixados para o navegador.
+#. text in the browser extension
+#. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
+#, machine
+extension	Its site is in Options → File types, sites left to the browser.	O site está em Opções → Tipos de ficheiro, sites deixados para o navegador.
+#. text in the browser extension
+#. why a download stayed with the browser: its file type isn't on the app's list; Options and File types are the app's window and its page, as the app names them
+#, machine
+extension	Its type isn't in Options → File types.	O tipo não está em Opções → Tipos de ficheiro.
+#. text in the browser extension
+#. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+extension	Left to the browser: {name}	Deixado para o navegador: {name}
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	Em direto
@@ -5330,6 +5351,18 @@ extension	The connection to Mister Download Manager failed	A ligação ao Mister
 #, machine
 extension	The download button is off on this site	O botão de download está desativado neste site
 #. text in the browser extension
+#. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
+#, machine
+extension	The extension isn't allowed to read this site (the browser's site access).	A extensão não tem permissão para ler este site (acesso ao site do navegador).
+#. text in the browser extension
+#. in the toolbar button's popup when the last download the browser kept came from a private window (its name isn't kept); followed by why (one of the declined_* texts)
+#, machine
+extension	The last download was left to the browser.	A última transferência foi deixada para o navegador.
+#. text in the browser extension
+#. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
+#, machine
+extension	This browser isn't ticked in Options → General.	Este navegador não está selecionado em Opções → Geral.
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	Os detalhes deste download eram demasiado grandes para serem entregues
@@ -5337,6 +5370,10 @@ extension	This download's details were too large to hand over	Os detalhes deste 
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	Atualize o Mister Download Manager para usar tudo o que esta extensão oferece
+#. text in the browser extension
+#. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
+#, machine
+extension	Use advanced browser integration is off in Options → General.	A opção "Utilizar integração avançada do navegador" está desativada em Opções → Geral.
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

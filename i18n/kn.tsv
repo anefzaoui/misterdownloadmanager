@@ -5235,6 +5235,27 @@ extension	Hold Alt while clicking a link to let the browser download it.	ಬ್�
 #, machine
 extension	How to fix it	ಅದನ್ನು ಹೇಗೆ ಸರಿಪಡಿಸುವುದು
 #. text in the browser extension
+#. why a download stayed with the browser: the file is smaller than the app's minimum size setting
+#, machine
+extension	It's smaller than the minimum size in Options → File types.	ಇದು ಆಯ್ಕೆಗಳು → ಫೈಲ್ ಪ್ರಕಾರಗಳಲ್ಲಿನ ಕನಿಷ್ಠ ಗಾತ್ರಕ್ಕಿಂತ ಚಿಕ್ಕದಾಗಿದೆ.
+#. text in the browser extension
+#. why a download stayed with the browser: its address matches the app's list of addresses not to take
+#, machine
+extension	Its address is in Options → File types, addresses left to the browser.	ಅದರ ವಿಳಾಸವು ಆಯ್ಕೆಗಳು → ಫೈಲ್ ಪ್ರಕಾರಗಳು, ಬ್ರೌಸರ್‌ಗೆ ಬಿಟ್ಟ ವಿಳಾಸಗಳಲ್ಲಿದೆ.
+#. text in the browser extension
+#. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
+#, machine
+extension	Its site is in Options → File types, sites left to the browser.	ಅದರ ಸೈಟ್ ಆಯ್ಕೆಗಳು → ಫೈಲ್ ಪ್ರಕಾರಗಳು, ಬ್ರೌಸರ್‌ಗೆ ಬಿಟ್ಟ ಸೈಟ್‌ಗಳಲ್ಲಿದೆ.
+#. text in the browser extension
+#. why a download stayed with the browser: its file type isn't on the app's list; Options and File types are the app's window and its page, as the app names them
+#, machine
+extension	Its type isn't in Options → File types.	ಅದರ ಪ್ರಕಾರವು ಆಯ್ಕೆಗಳು → ಫೈಲ್ ಪ್ರಕಾರಗಳಲ್ಲಿಲ್ಲ.
+#. text in the browser extension
+#. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+extension	Left to the browser: {name}	ಬ್ರೌಸರ್‌ಗೆ ಬಿಡಲಾಗಿದೆ: {name}
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	ಲೈವ್
@@ -5330,6 +5351,18 @@ extension	The connection to Mister Download Manager failed	Mister Download Manag
 #, machine
 extension	The download button is off on this site	ಈ ಸೈಟ್‌ನಲ್ಲಿ ಡೌನ್‌ಲೋಡ್ ಬಟನ್ ಆಫ್ ಆಗಿದೆ
 #. text in the browser extension
+#. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
+#, machine
+extension	The extension isn't allowed to read this site (the browser's site access).	ಈ ಸೈಟ್ ಅನ್ನು ಓದಲು ವಿಸ್ತರಣೆಗೆ ಅನುಮತಿ ಇಲ್ಲ (ಬ್ರೌಸರ್‌ನ ಸೈಟ್ ಪ್ರವೇಶ).
+#. text in the browser extension
+#. in the toolbar button's popup when the last download the browser kept came from a private window (its name isn't kept); followed by why (one of the declined_* texts)
+#, machine
+extension	The last download was left to the browser.	ಕೊನೆಯ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಬ್ರೌಸರ್‌ಗೆ ಬಿಡಲಾಗಿದೆ.
+#. text in the browser extension
+#. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
+#, machine
+extension	This browser isn't ticked in Options → General.	ಈ ಬ್ರೌಸರ್ ಅನ್ನು ಆಯ್ಕೆಗಳು → ಸಾಮಾನ್ಯದಲ್ಲಿ ಗುರುತಿಸಲಾಗಿಲ್ಲ.
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	ಈ ಡೌನ್‌ಲೋಡ್‌ನ ವಿವರಗಳು ಹಸ್ತಾಂತರಿಸಲು ತುಂಬಾ ದೊಡ್ಡದಾಗಿದೆ
@@ -5337,6 +5370,10 @@ extension	This download's details were too large to hand over	ಈ ಡೌನ್�
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	ಈ ವಿಸ್ತರಣೆಯು ನೀಡುವ ಎಲ್ಲವನ್ನೂ ಬಳಸಲು Mister Download Manager ಅನ್ನು ನವೀಕರಿಸಿ
+#. text in the browser extension
+#. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
+#, machine
+extension	Use advanced browser integration is off in Options → General.	ಆಯ್ಕೆಗಳು → ಸಾಮಾನ್ಯದಲ್ಲಿ ಸುಧಾರಿತ ಬ್ರೌಸರ್ ಇಂಟಿಗ್ರೇಷನ್ ಬಳಸಿ ಆಫ್ ಆಗಿದೆ.
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

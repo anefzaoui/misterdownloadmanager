@@ -5235,6 +5235,27 @@ extension	Hold Alt while clicking a link to let the browser download it.	ஒர�
 #, machine
 extension	How to fix it	எப்படிச் சரிசெய்வது
 #. text in the browser extension
+#. why a download stayed with the browser: the file is smaller than the app's minimum size setting
+#, machine
+extension	It's smaller than the minimum size in Options → File types.	விருப்பத்தேர்வுகள் → கோப்பு வகைகளில் உள்ள குறைந்தபட்ச அளவை விட இது சிறியது.
+#. text in the browser extension
+#. why a download stayed with the browser: its address matches the app's list of addresses not to take
+#, machine
+extension	Its address is in Options → File types, addresses left to the browser.	அதன் முகவரி விருப்பத்தேர்வுகள் → கோப்பு வகைகள், உலாவியில் விடப்பட்ட முகவரிகளில் உள்ளது.
+#. text in the browser extension
+#. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
+#, machine
+extension	Its site is in Options → File types, sites left to the browser.	அதன் தளம் விருப்பத்தேர்வுகள் → கோப்பு வகைகள், உலாவியில் விடப்பட்ட தளங்களில் உள்ளது.
+#. text in the browser extension
+#. why a download stayed with the browser: its file type isn't on the app's list; Options and File types are the app's window and its page, as the app names them
+#, machine
+extension	Its type isn't in Options → File types.	அதன் வகை விருப்பத்தேர்வுகள் → கோப்பு வகைகளில் இல்லை.
+#. text in the browser extension
+#. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+extension	Left to the browser: {name}	உலாவியில் விடப்பட்டது: {name}
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	நேரலை
@@ -5330,6 +5351,18 @@ extension	The connection to Mister Download Manager failed	Mister Download Manag
 #, machine
 extension	The download button is off on this site	இந்தத் தளத்தில் பதிவிறக்கப் பொத்தான் முடக்கப்பட்டுள்ளது
 #. text in the browser extension
+#. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
+#, machine
+extension	The extension isn't allowed to read this site (the browser's site access).	இந்த தளத்தைப் படிக்க நீட்டிப்புக்கு அனுமதி இல்லை (உலாவியின் தள அணுகல்).
+#. text in the browser extension
+#. in the toolbar button's popup when the last download the browser kept came from a private window (its name isn't kept); followed by why (one of the declined_* texts)
+#, machine
+extension	The last download was left to the browser.	கடைசி பதிவிறக்கம் உலாவியில் விடப்பட்டது.
+#. text in the browser extension
+#. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
+#, machine
+extension	This browser isn't ticked in Options → General.	இந்த உலாவி விருப்பத்தேர்வுகள் → பொது என்பதில் டிக் செய்யப்படவில்லை.
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	இந்தப் பதிவிறக்கத்தின் விவரங்கள் ஒப்படைக்க முடியாத அளவுக்குப் பெரியதாக இருந்தன
@@ -5337,6 +5370,10 @@ extension	This download's details were too large to hand over	இந்தப்
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	இந்த நீட்டிப்பு வழங்கும் அனைத்தையும் பயன்படுத்த Mister Download Managerஐப் புதுப்பிக்கவும்
+#. text in the browser extension
+#. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
+#, machine
+extension	Use advanced browser integration is off in Options → General.	மேம்பட்ட உலாவி ஒருங்கிணைப்பைப் பயன்படுத்து விருப்பத்தேர்வுகள் → பொது என்பதில் முடக்கப்பட்டுள்ளது.
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
