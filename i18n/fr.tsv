@@ -192,6 +192,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Un ID de configuration NextDNS est composé de six lettres et chiffres (0-9, a-f).
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Nom ou dossier d’un profil. Vide : le profil utilisé en dernier. Pour un navigateur basé sur Chromium qui n’est pas dans la liste (Helium, Thorium...), choisissez Chromium et le dossier de son profil.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Choisissez la langue dans laquelle Mister Download Manager affiche ses fenêtres :
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	Choisir le dossier du profil
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	Îles Cook
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	Cookies pour les sites vidéo
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	Copié dans le Presse-papiers.
@@ -1648,6 +1660,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	à partir d’un fichier torrent
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	Depuis le navigateur :
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1812,7 +1828,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Masquer les &catégories
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	Masquer l’onglet
 #. text in a download's progress window; text in standard windows
@@ -1884,6 +1900,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	Dans les catégories : le menu de la catégorie sélectionnée
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	dans le trousseau verrouillé
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1924,6 +1944,11 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	Installer yt-dlp
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Check for updates, after Update now downloaded it: unpacking and putting the new version in place
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Installing the update...	Installation de la mise à jour...
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -2646,6 +2671,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Aucun proxy/SOCKS
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Aucun trousseau système n’a répondu. Les identifiants et mots de passe sont donc conservés dans les paramètres de MDM, que vous seul pouvez lire.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2767,6 +2796,9 @@
 #. text in the Scheduler window
 #, machine
 	October	Octobre
+#. option (radio button) in the Options window
+#, machine
+	Off	Désactivé
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	Désactivé : un torrent terminé s’arrête, comme tout téléchargement.
@@ -2795,6 +2827,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	Sur macOS, seul un administrateur peut planifier une sortie de veille
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Sous Windows, Chrome, Edge et Brave peuvent verrouiller leurs cookies. Firefox fonctionne.
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Une fois à
@@ -3028,6 +3064,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	L’aperçu n’est pas encore disponible
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	Profil (facultatif) :
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -3045,6 +3085,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	Configuration du proxy / socks
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	serveur proxy
 #. label in the Options window
 #, machine
 	Proxy server address	Adresse du serveur proxy
@@ -3084,6 +3128,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Files d’attente
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	Lus sur cet ordinateur uniquement, et envoyés uniquement au site de la vidéo.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3502,6 +3550,18 @@
 #, machine
 	Sign in in the browser	Se connecter dans le navigateur
 #. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	Les identifiants et mots de passe sont conservés dans le trousseau macOS.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	Les identifiants et mots de passe sont conservés dans le trousseau système (Secret Service).
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	Les identifiants et mots de passe sont conservés dans le Gestionnaire d’informations d’identification Windows.
+#. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
 	Signed in as {user} ({state})	Connecté en tant que {user} ({state})
@@ -3667,6 +3727,14 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Started with gallery-dl {version}	Démarré avec gallery-dl {version}
+#. text in the Options window
+#. the same tooltip where no notification area (system tray) shows MDM's icon (some Linux desktops): its window starts minimized instead
+#, machine
+	Started with the computer, it starts minimized: no notification area shows its icon here	Démarré avec l’ordinateur, il démarre en mode réduit : aucune zone de notification n’affiche son icône ici
+#. text in the Options window
+#. tooltip of "Launch Mister Download Manager on startup": started with the computer, MDM's window stays hidden, its icon in the notification area (system tray)
+#, machine
+	Started with the computer, it waits in the notification area	Démarré avec l’ordinateur, il attend dans la zone de notification
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
@@ -4075,10 +4143,22 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	le serveur a envoyé une partie inattendue du fichier ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Le site veut que vous soyez connecté, même avec les cookies de votre navigateur pour cette page. Connectez-vous à celui-ci dans votre navigateur, puis réessayez.
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Le site veut que vous soyez connecté, même avec les cookies de {browser}. Connectez-vous à celui-ci dans {browser}, puis recherchez la page à nouveau.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Les symboles n’ont pas pu être récupérés : certaines lignes du rapport affichent des adresses au lieu de noms (les développeurs peuvent toujours les lire).
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Le trousseau système est verrouillé et MDM ne le déverrouille pas. Les identifiants et mots de passe sont donc conservés dans les paramètres de MDM, que vous seul pouvez lire.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4183,6 +4263,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Nécessite ffmpeg
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Cette copie portable conserve les identifiants et mots de passe dans ses propres paramètres, chiffrés pour votre compte Windows.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Cette copie portable conserve les identifiants et mots de passe dans ses propres paramètres, que vous seul pouvez lire.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4208,7 +4296,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Cette vidéo nécessite que vous soyez connecté. Utilisez le bouton Télécharger la vidéo au-dessus dans votre navigateur, qui transmet votre connexion.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Cette vidéo nécessite que vous soyez connecté. Utilisez le bouton Télécharger la vidéo au-dessus de celle-ci dans votre navigateur, qui transmet votre connexion, ou choisissez votre navigateur dans Options → Connexions aux sites → Cookies pour les sites vidéo.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4585,14 +4673,6 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Les recherches de vidéos utilisent yt-dlp (environ 23 Mo, vérifié par sa signature).
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	Les pages vidéo et les torrents ne peuvent pas encore l’utiliser.
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	Les pages vidéo ne peuvent pas encore l’utiliser.
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4671,6 +4751,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows autorise les minuteurs de sortie de veille uniquement lorsque l’ordinateur est branché
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Le Gestionnaire d’informations d’identification Windows n’a pas répondu. Les identifiants et mots de passe sont donc conservés dans les paramètres de MDM, chiffrés pour votre compte Windows.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4751,9 +4835,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	Votre système : {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp ne peut pas lire les cookies de {browser} tant que {browser} est ouvert. Fermez {browser} et recherchez la page à nouveau, ou choisissez Firefox dans Options → Connexions aux sites.
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp n’a pas pu obtenir la clé des cookies de {browser} depuis le trousseau du système. Déverrouillez le trousseau et recherchez la page à nouveau.
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp n’a pas pu lire les cookies de {browser} : {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp n’a trouvé aucun cookie de {browser} sur cet ordinateur. Vérifiez le navigateur et son profil dans Options → Connexions aux sites.
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp n’est pas installé (Tâches → Télécharger une vidéo depuis une page l’installe)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp se connecte aux sites vidéo avec les cookies de ce navigateur, lus à partir de ses fichiers sur cet ordinateur uniquement. Utilisé lorsque l’extension du navigateur n’a pas transmis les cookies de la page elle-même : une adresse collée, une liste de lecture.
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4786,6 +4891,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm} : vérifié à la fin du téléchargement
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} garde ses cookies verrouillés sous Windows, de sorte que yt-dlp ne peut pas les lire. Choisissez Firefox dans Options → Connexions aux sites, ou utilisez le bouton Télécharger la vidéo au-dessus de la vidéo dans {browser}.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -5906,43 +6015,272 @@ unit	{n} MB	{n} Mo
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} Mo/s
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	Fichier .torrent
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	Ajouter
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	Ajouté.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	Ajouté. MDM lit le torrent : il rejoindra la liste dans un instant.
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	Adresse ou lien magnet
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	Tout
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	Automatique (par type de fichier)
 #. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
-	in the locked keyring	dans le trousseau verrouillé
+	Certificate (SHA-256): {fingerprint}	Certificat (SHA-256) : {fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	Choisir un fichier .torrent
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	Code
 #. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: label before the 8-digit code
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Aucun trousseau système n’a répondu. Les identifiants et mots de passe sont donc conservés dans les paramètres de MDM, que vous seul pouvez lire.
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+	Code:	Code :
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
 #, machine
-	proxy server	serveur proxy
+	Delete the file too	Supprimer aussi le fichier
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#. column title: a paired phone's or computer's name
 #, machine
-	Sign-ins and passwords are kept in the macOS keychain.	Les identifiants et mots de passe sont conservés dans le trousseau macOS.
+	Device	Appareil
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
 #, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	Les identifiants et mots de passe sont conservés dans le trousseau système (Secret Service).
+	Every local network address	Toutes les adresses du réseau local
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	Oublier cet appareil
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	Oublier cet appareil ? Il aura besoin d’un nouveau code pour se reconnecter.
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	depuis un appareil jumelé
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
 #, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	Les identifiants et mots de passe sont conservés dans le Gestionnaire d’informations d’identification Windows.
+	It could not start: {error}	Impossible de démarrer : {error}
 #. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. column title: when the device last reached MDM
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Le trousseau système est verrouillé et MDM ne le déverrouille pas. Les identifiants et mots de passe sont donc conservés dans les paramètres de MDM, que vous seul pouvez lire.
+	Last seen	Dernière connexion
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	Autoriser les téléphones et ordinateurs du réseau local à contrôler MDM
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#. Options → Remote: label before the choice of the address MDM listens on
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Cette copie portable conserve les identifiants et mots de passe dans ses propres paramètres, chiffrés pour votre compte Windows.
+	Listen on:	Écouter sur :
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Cette copie portable conserve les identifiants et mots de passe dans ses propres paramètres, que vous seul pouvez lire.
+	MDM can't be reached on the network now: Options → Remote says why.	MDM est actuellement inaccessible sur le réseau : les Options → Télécommande expliquent pourquoi.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	MDM ne peut pas télécharger cette adresse.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	MDM n’a pas pu l’ajouter.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	MDM n’a pas pu le faire.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM ne répond pas. Vérifiez qu’il est en cours d’exécution et sur le même réseau.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM ne répond pas. Nouvelle tentative...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	MDM n’affiche aucun code pour l’instant. Cliquez d’abord sur Jumeler un appareil.
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	Plus
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	Nouveau code
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	Aucun téléchargement ici.
 #. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Le Gestionnaire d’informations d’identification Windows n’a pas répondu. Les identifiants et mots de passe sont donc conservés dans les paramètres de MDM, chiffrés pour votre compte Windows.
+	No local network now: it starts when the computer joins one.	Pas de réseau local pour l’instant : il démarrera lorsque l’ordinateur en rejoindra un.
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	Désactivé : rien sur le réseau ne peut atteindre MDM.
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	Sur l’ordinateur, ouvrez Options, puis Télécommande, et cliquez sur Jumeler un appareil. Entrez le code affiché.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	Sur le téléphone, scannez ce code avec l’appareil photo, ou ouvrez l’adresse et entrez le code.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	Activé. Sur le téléphone, ouvrez cette adresse :
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Seuls les appareils jumelés peuvent voir ou modifier quoi que ce soit. La première fois, le navigateur du téléphone avertit à propos du certificat de MDM : son empreinte est celle ci-dessus.
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	Jumeler
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	Jumeler un appareil
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	Jumeler un appareil...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Jumeler avec Mister Download Manager
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	Jumelé
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	Appareils jumelés :
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	Le port {port} est utilisé par un autre programme : choisissez-en un autre.
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	En file d’attente
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	À distance
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	Contrôle à distance
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	Supprimer {name} de la liste ?
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	Démarrer maintenant
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	Les modifications s’appliquent lorsque vous cliquez sur OK.
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	Ce code ne peut plus être utilisé.
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	Cet ordinateur uniquement (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	Nom de cet appareil
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	Ce fichier est trop volumineux pour être un torrent.
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	Ce n’est pas un fichier torrent.
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	Activez d’abord le contrôle à distance.
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	Attendez un instant, puis réessayez.
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	Attendre dans {queue}
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	En attente de l’appareil. Le code est valide pendant {time}.
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	Quand
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	Code incorrect. Affichez un nouveau code dans MDM et réessayez.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	Code incorrect. Essais restants : {n}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} est jumelé. Il peut maintenant contrôler MDM.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{done} sur {size}
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} libre

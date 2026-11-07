@@ -72,7 +72,7 @@ pub fn page_url(doc: &str, lang: &str) -> String {
 /// person at the browser.
 pub fn open_page(doc: &str) {
     if !crate::offscreen() {
-        let _ = open::that_detached(page_url(doc, crate::i18n::code()));
+        crate::launch::open(page_url(doc, crate::i18n::code()));
     }
 }
 
@@ -81,7 +81,7 @@ pub fn open_page(doc: &str) {
 /// clicks come from scripts, not from a person at the browser.
 pub fn support() {
     if !crate::offscreen() {
-        let _ = open::that_detached(SPONSORS);
+        crate::launch::open(SPONSORS);
     }
 }
 
@@ -90,12 +90,19 @@ pub fn support() {
 /// language. The parameters are the form's field ids (all text fields: GitHub's page drops a
 /// dropdown's value from the address).
 pub fn report_problem() {
-    let enc = |s: &str| url::form_urlencoded::byte_serialize(s.as_bytes()).collect::<String>();
-    let url = report_fields().iter().fold(
-        format!("{REPO}/issues/new?template=bug.yml"),
-        |url, (k, v)| format!("{url}&{k}={}", enc(v)),
-    );
-    let _ = open::that_detached(url);
+    // On a thread of its own: the fields ask the system (macOS: `sw_vers`), which the window's
+    // thread doesn't wait for (#222).
+    let _ = std::thread::Builder::new()
+        .name("report-problem".into())
+        .spawn(|| {
+            let enc =
+                |s: &str| url::form_urlencoded::byte_serialize(s.as_bytes()).collect::<String>();
+            let url = report_fields().iter().fold(
+                format!("{REPO}/issues/new?template=bug.yml"),
+                |url, (k, v)| format!("{url}&{k}={}", enc(v)),
+            );
+            let _ = open::that_detached(url);
+        });
 }
 
 /// The Bug report form's fields MDM fills in: (field id, value).
@@ -261,6 +268,8 @@ pub struct Updates {
     job: Option<crate::update::Job>,
     /// What Update now came to, when it didn't close MDM.
     status: Option<UpdateStatus>,
+    /// Update now pressed by a test (`/show update-now`, feature `test-update`).
+    press: bool,
 }
 
 #[derive(Clone, Debug)]
@@ -271,12 +280,19 @@ enum UpdateStatus {
 }
 
 impl Updates {
+    /// Update now, as if pressed (`/show update-now`: Update now's end-to-end tests).
+    #[cfg(feature = "test-update")]
+    pub fn press_update_now(&mut self) {
+        self.press = true;
+    }
+
     pub fn check(rt: &tokio::runtime::Handle, ctx: &egui::Context) -> Self {
         Updates {
             slot: Some(check(rt, ctx)),
             result: None,
             job: None,
             status: None,
+            press: false,
         }
     }
 
@@ -287,6 +303,7 @@ impl Updates {
             result: Some(Ok(Found::Newer(release))),
             job: None,
             status: None,
+            press: false,
         }
     }
 
@@ -303,11 +320,19 @@ impl Updates {
             self.slot = None;
         }
         let install = mdm_tools::update::Install::detect();
-        // The release file arrived (checked): put it in place.
+        // The release file arrived (checked) and is in place (on the job's thread): MDM closes
+        // once the new copy (or the installer) has started.
         if let Some(res) = self.job.as_ref().and_then(crate::update::Job::result) {
             self.job = None;
-            match res.and_then(|file| crate::update::apply(install, &file)) {
-                Ok(crate::update::Next::Restart) => return Outcome::Done(true),
+            let started = res.and_then(|next| match next {
+                crate::update::Next::Restart(mut cmd) => cmd
+                    .spawn()
+                    .map(|_| crate::update::Next::Restart(cmd))
+                    .map_err(|e| e.to_string()),
+                opened => Ok(opened),
+            });
+            match started {
+                Ok(crate::update::Next::Restart(_)) => return Outcome::Done(true),
                 Ok(crate::update::Next::Opened) => self.status = Some(UpdateStatus::Opened),
                 Err(e) => self.status = Some(UpdateStatus::Failed(e)),
             }
@@ -412,22 +437,71 @@ impl Updates {
                         download = Some(rel.clone());
                     }
                 }
-                // Under the answer: how Update now is going, else the automatic check's switch.
-                // In English, as the text pens take it (a right-to-left window placed the status
-                // over its buttons when given the mirrored rect).
-                let status_rc =
-                    egui::Rect::from_min_size(o + vec2(11.0, bottom), vec2(255.0, 21.0));
+                // Update now when this copy's file is in the signed release (and it hasn't just
+                // failed); else Download opens the release's page.
+                let asset = download.as_ref().and_then(|rel| {
+                    crate::update::asset_for(install, &rel.version, &rel.assets)
+                        .filter(|_| !matches!(self.status, Some(UpdateStatus::Failed(_))))
+                });
+                let close_label = if self.job.is_some() {
+                    // i18n: button: stop downloading the update
+                    crate::i18n::mark("Cancel")
+                } else if download.is_some() {
+                    // i18n: button: not now (download the update later)
+                    crate::i18n::mark("Later")
+                } else {
+                    crate::i18n::mark("OK")
+                };
+                // The first button: Retry after a failed check, Update now or Download for a new
+                // version.
+                let first = if matches!(result, Some(Err(_))) {
+                    Some("Retry")
+                } else if download.is_some() {
+                    Some(if asset.is_some() {
+                        "Update now"
+                    } else {
+                        "Download"
+                    })
+                } else {
+                    None
+                };
+                // The buttons as wide as their labels in this language (#192), the row ending
+                // where it ends in English.
+                let row: Vec<(&str, f32)> = first
+                    .into_iter()
+                    .chain([close_label])
+                    .map(|l| (l, 73.0))
+                    .collect();
+                let placed = winui::buttons_to_right(&p, 429.0, 9.0, &row, 150.0);
+                let (first_at, close_at) = (placed[0], placed[placed.len() - 1]);
+                // Under the answer: how Update now is going, else the automatic check's switch,
+                // up to 8 px before the buttons (as in English with two). In English, as the text
+                // pens take it (a right-to-left window placed the status over its buttons when
+                // given the mirrored rect).
+                let status_right = (first_at.0 - 8.0).min(266.0);
+                let status_rc = egui::Rect::from_min_size(
+                    o + vec2(11.0, bottom),
+                    vec2(status_right - 11.0, 21.0),
+                );
                 if let Some(job) = &self.job {
-                    let fraction = job.progress.fraction();
-                    let line = crate::i18n::fmt(
-                        // i18n: Check for updates, while Update now downloads; {percent} like "42%"
-                        crate::i18n::t("Downloading the update... {percent}"),
-                        &[(
-                            "percent",
-                            &fraction
-                                .map_or(String::new(), |f| crate::i18n::percent(f64::from(f), 0)),
-                        )],
-                    );
+                    let installing = job.installing();
+                    // Put in place: a bar that moves, no percent.
+                    let fraction = job.progress.fraction().filter(|_| !installing);
+                    let line = if installing {
+                        // i18n: Check for updates, after Update now downloaded it: unpacking and putting the new version in place
+                        crate::i18n::t("Installing the update...").to_owned()
+                    } else {
+                        crate::i18n::fmt(
+                            // i18n: Check for updates, while Update now downloads; {percent} like "42%"
+                            crate::i18n::t("Downloading the update... {percent}"),
+                            &[(
+                                "percent",
+                                &fraction.map_or(String::new(), |f| {
+                                    crate::i18n::percent(f64::from(f), 0)
+                                }),
+                            )],
+                        )
+                    };
                     winui::text(&p, status_rc.left(), status_rc.top() + 9.0, &line, ink);
                     winui::progress_bar(
                         &p,
@@ -469,23 +543,14 @@ impl Updates {
                         // i18n: check box in the update window: look for a new version every time MDM starts
                         "Check for updates at every start",
                         true,
-                        Some(o.x + 266.0),
+                        Some(o.x + status_right),
                     );
                 }
-                let close_label = if self.job.is_some() {
-                    // i18n: button: stop downloading the update
-                    crate::i18n::mark("Cancel")
-                } else if download.is_some() {
-                    // i18n: button: not now (download the update later)
-                    crate::i18n::mark("Later")
-                } else {
-                    crate::i18n::mark("OK")
-                };
                 // Enter presses the default button, as in the other dialogs.
                 let mut enter = winui::enter_pressed(ui);
                 // A check that failed can be tried again.
+                let at = r(o, first_at.0, bottom, first_at.1, 21.0);
                 if matches!(result, Some(Err(_))) {
-                    let at = r(o, 274.0, bottom, 73.0, 21.0);
                     // i18n: button: check for updates again
                     let retry = winui::button(ui, at, "Retry", ButtonKind::Default, false, None);
                     if retry.clicked() || enter {
@@ -495,11 +560,6 @@ impl Updates {
                     }
                 }
                 if let Some(rel) = &download {
-                    // Update now when this copy's file is in the signed release (and it
-                    // hasn't just failed); else Download opens the release's page.
-                    let asset = crate::update::asset_for(install, &rel.version, &rel.assets)
-                        .filter(|_| !matches!(self.status, Some(UpdateStatus::Failed(_))));
-                    let at = r(o, 274.0, bottom, 73.0, 21.0);
                     if let Some(asset) = asset {
                         let idle = self.job.is_none();
                         let kind = if idle {
@@ -509,11 +569,15 @@ impl Updates {
                         };
                         // i18n: button: download and install the new version, then restart
                         let update = winui::button(ui, at, "Update now", kind, false, None);
-                        if update.clicked() || (enter && idle) {
+                        if update.clicked()
+                            || (enter && idle)
+                            || (idle && std::mem::take(&mut self.press))
+                        {
                             self.status = None;
                             self.job = Some(crate::update::Job::start(
                                 rt,
                                 ui.ctx(),
+                                install,
                                 rel.assets.clone(),
                                 asset,
                             ));
@@ -522,25 +586,34 @@ impl Updates {
                         .clicked()
                         || enter
                     {
-                        let _ = open::that_detached(&rel.page);
+                        crate::launch::open(&rel.page);
                         return Outcome::Done(false);
                     }
                 }
-                let kind = if download.is_some() || matches!(result, Some(Err(_))) {
+                // Being put in place: nothing can stop that, so no Cancel (nor Esc) meanwhile.
+                let installing = self
+                    .job
+                    .as_ref()
+                    .is_some_and(crate::update::Job::installing);
+                let kind = if installing {
+                    ButtonKind::Disabled
+                } else if download.is_some() || matches!(result, Some(Err(_))) {
                     ButtonKind::Normal
                 } else {
                     ButtonKind::Default
                 };
                 let close = winui::button(
                     ui,
-                    r(o, 356.0, bottom, 73.0, 21.0),
+                    r(o, close_at.0, bottom, close_at.1, 21.0),
                     close_label,
                     kind,
                     false,
                     None,
                 )
                 .clicked();
-                if close && self.job.is_some() {
+                if installing {
+                    Outcome::Open
+                } else if close && self.job.is_some() {
                     // Cancel: the download stops, the window stays (Update now again, Later).
                     self.job = None;
                     Outcome::Open
@@ -676,7 +749,7 @@ impl About {
                     open_page("");
                 }
                 if winui::link(ui, &p, source.0, source.1, "Source code", "source") {
-                    let _ = open::that_detached(REPO);
+                    crate::launch::open(REPO);
                 }
                 if winui::link(
                     ui,
@@ -686,7 +759,7 @@ impl About {
                     "Licenses and credits",
                     "credits",
                 ) {
-                    let _ = open::that_detached(format!("{REPO}/blob/main/ATTRIBUTION.md"));
+                    crate::launch::open(format!("{REPO}/blob/main/ATTRIBUTION.md"));
                 }
                 // Its own row under them: the creator's Sponsors page (Help → Support MDM).
                 y += 22.0;
@@ -892,6 +965,17 @@ impl TellFriend {
                 );
                 crate::dialogs::grow_to(ui.ctx(), "tell-a-friend", lines, 5);
                 let o = o + vec2(0.0, extra);
+                // The buttons as wide as their labels in this language (#192), the row ending
+                // where it ends in English.
+                let [copy_at, email_at, close_at] = winui::buttons_to_right(
+                    &p,
+                    409.0,
+                    9.0,
+                    &[("Copy", 73.0), ("Email", 73.0), ("Close", 73.0)],
+                    130.0,
+                )[..] else {
+                    unreachable!("three buttons")
+                };
                 if let Some((said, failed)) = self.said {
                     // Short of the buttons beside it (a long translation: "...", whole on hover).
                     let c = if failed {
@@ -906,13 +990,13 @@ impl TellFriend {
                         o.y + 150.0,
                         crate::i18n::t(said),
                         c,
-                        o.x + 166.0,
+                        o.x + copy_at.0 - 6.0,
                         "copied",
                     );
                 }
                 let copy = winui::button(
                     ui,
-                    r(o, 172.0, 136.0, 73.0, 21.0),
+                    r(o, copy_at.0, 136.0, copy_at.1, 21.0),
                     "Copy",
                     ButtonKind::Default,
                     false,
@@ -922,7 +1006,7 @@ impl TellFriend {
                     || winui::enter_pressed(ui);
                 let email = winui::button(
                     ui,
-                    r(o, 254.0, 136.0, 73.0, 21.0),
+                    r(o, email_at.0, 136.0, email_at.1, 21.0),
                     "Email",
                     ButtonKind::Normal,
                     false,
@@ -931,7 +1015,7 @@ impl TellFriend {
                 .clicked();
                 let close = winui::button(
                     ui,
-                    r(o, 336.0, 136.0, 73.0, 21.0),
+                    r(o, close_at.0, 136.0, close_at.1, 21.0),
                     "Close",
                     ButtonKind::Normal,
                     false,

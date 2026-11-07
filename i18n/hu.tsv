@@ -192,6 +192,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	A NextDNS konfigurációs azonosítója hat betűből és számjegyből (0-9, a-f) áll.
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Egy profil neve vagy mappája. Üres: az utoljára használt profil. Nem listázott Chromium-alapú böngésző (Helium, Thorium...) esetén válassza a Chromiumot és a profiljának mappáját.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Válassza ki azt a nyelvet, amelyen a Mister Download Manager megjeleníti az ablakait:
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	Válassza ki a profil mappáját
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	Cook-szigetek
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	Sütik videóoldalakhoz
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	A vágólapra másolva.
@@ -1648,6 +1660,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	torrentfájlból
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	Böngészőből:
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1812,7 +1828,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Kategóriák el&rejtése
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	Lap elrejtése
 #. text in a download's progress window; text in standard windows
@@ -1884,6 +1900,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	Kategóriákban: a kijelölt kategória menüje
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	a zárolt kulcskarika
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1924,6 +1944,11 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	yt-dlp telepítése
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Check for updates, after Update now downloaded it: unpacking and putting the new version in place
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Installing the update...	Frissítés telepítése...
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -2646,6 +2671,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Nincs proxy/SOCKS
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Nem válaszolt a rendszer kulcskarikája, így a bejelentkezések és jelszavak az MDM beállításaiban maradnak, melyeket csak Ön olvashat.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2767,6 +2796,9 @@
 #. text in the Scheduler window
 #, machine
 	October	Október
+#. option (radio button) in the Options window
+#, machine
+	Off	Ki
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	Ki: a befejezett torrent leáll, mint bármely letöltés.
@@ -2795,6 +2827,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	macOS rendszeren csak rendszergazda ütemezhet ébresztést
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Windowson a Chrome, az Edge és a Brave zárolhatja a sütijeit. A Firefox működik.
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Egyszer ekkor:
@@ -3028,6 +3064,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	Az előnézet még nem érhető el
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	Profil (opcionális):
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -3045,6 +3085,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	Proxy / SOCKS konfiguráció
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	proxykiszolgáló
 #. label in the Options window
 #, machine
 	Proxy server address	Proxykiszolgáló címe
@@ -3084,6 +3128,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Sorok
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	Csak ezen a számítógépen olvasható, és csak a videó oldalára küldhető.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3502,6 +3550,18 @@
 #, machine
 	Sign in in the browser	Bejelentkezés a böngészőben
 #. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	A bejelentkezések és jelszavak a macOS kulcskarikájában vannak tárolva.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	A bejelentkezések és jelszavak a rendszer kulcskarikájában (Secret Service) vannak tárolva.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	A bejelentkezések és jelszavak a Windows hitelesítőadat-kezelőjében vannak tárolva.
+#. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
 	Signed in as {user} ({state})	Bejelentkezve mint {user} ({state})
@@ -3667,6 +3727,14 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Started with gallery-dl {version}	Indítva gallery-dl {version} verzióval
+#. text in the Options window
+#. the same tooltip where no notification area (system tray) shows MDM's icon (some Linux desktops): its window starts minimized instead
+#, machine
+	Started with the computer, it starts minimized: no notification area shows its icon here	A számítógéppel együtt indul, minimalizálva: az értesítési területen nem jelenik meg az ikonja
+#. text in the Options window
+#. tooltip of "Launch Mister Download Manager on startup": started with the computer, MDM's window stays hidden, its icon in the notification area (system tray)
+#, machine
+	Started with the computer, it waits in the notification area	A számítógéppel együtt indul, és az értesítési területen várakozik
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
@@ -4075,10 +4143,22 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	a szerver a fájl váratlan részét küldte ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Az oldal bejelentkezést kér, még a böngészője sütijeivel is ehhez az oldalhoz. Jelentkezzen be a böngészőjében, majd próbálja újra.
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Az oldal bejelentkezést kér, még a(z) {browser} sütijeivel is. Jelentkezzen be a(z) {browser} böngészőbe, majd keresse meg újra az oldalt.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	A szimbólumokat nem sikerült letölteni: a jelentés néhány sora nevek helyett címeket mutat (a fejlesztők továbbra is el tudják olvasni őket).
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	A rendszer kulcskarikája zárolva van, és az MDM nem oldja fel, így a bejelentkezések és jelszavak az MDM beállításaiban maradnak, melyeket csak Ön olvashat.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4183,6 +4263,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Ehhez ffmpeg szükséges
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Ez a hordozható másolat a bejelentkezéseket és jelszavakat saját beállításaiban tárolja, titkosítva az Ön Windows-fiókja számára.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Ez a hordozható másolat a bejelentkezéseket és jelszavakat saját beállításaiban tárolja, melyeket csak Ön olvashat.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4208,7 +4296,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Ez a videó bejelentkezést igényel. Használja a „Videó letöltése” gombot a böngészőjében, amely továbbítja a bejelentkezési adatait.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Ez a videó bejelentkezést igényel. Használja a böngészőjében a videó feletti Videó letöltése gombot, amely továbbítja a bejelentkezését, vagy válassza ki a böngészőjét a Beállítások → Oldalak bejelentkezései → Sütik videóoldalakhoz menüpontban.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4585,14 +4673,6 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	A videókeresések yt-dlp-t használnak (kb. 23 MB, aláírás ellenőrizve).
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	A videóoldalak és a torrentek még nem használhatják.
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	A videóoldalak még nem használhatják.
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4671,6 +4751,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	A Windows csak csatlakoztatott állapotban engedélyezi az ébresztési időzítőket
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	A Windows hitelesítőadat-kezelője nem válaszolt, így a bejelentkezések és jelszavak az MDM beállításaiban maradnak, titkosítva az Ön Windows-fiókja számára.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4751,9 +4835,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	A rendszeré: {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	A yt-dlp nem tudja olvasni a(z) {browser} sütijeit, amíg a(z) {browser} nyitva van. Zárja be a(z) {browser} böngészőt, és keresse meg újra az oldalt, vagy válassza a Firefoxot a Beállítások → Oldalak bejelentkezései menüpontban.
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	A yt-dlp nem tudta lekérni a(z) {browser} sütijeinek kulcsát a rendszer kulcstartójából. Oldja fel a kulcstartót, és keresse meg újra az oldalt.
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	A yt-dlp nem tudta olvasni a(z) {browser} sütijeit: {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	A yt-dlp nem talált {browser} sütiket ezen a számítógépen. Ellenőrizze a böngészőt és a profilját a Beállítások → Oldalak bejelentkezései menüpontban.
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	A yt-dlp nincs telepítve (Feladatok → Videó letöltése egy oldalról telepíti)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	A yt-dlp ezzel a böngészővel jelentkezik be a videóoldalakra, a sütiket csak erről a számítógépről olvassa be. Akkor használatos, ha a böngésző kiterjesztése nem adta át az oldal saját sütijeit: beillesztett cím, lejátszási lista.
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4786,6 +4891,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: letöltés befejezésekor ellenőrizve
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	A(z) {browser} Windowson zárolva tartja a sütijeit, így a yt-dlp nem tudja olvasni őket. Válassza a Firefoxot a Beállítások → Oldalak bejelentkezései menüpontban, vagy használja a Videó letöltése gombot a videó felett a(z) {browser} böngészőben.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -5906,43 +6015,272 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/mp
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent fájl
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	Hozzáadás
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	Hozzáadva.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	Hozzáadva. Az MDM olvassa a torrentet: hamarosan megjelenik a listában.
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	Cím vagy mágneses hivatkozás
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	Összes
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	Automatikus (fájltípus szerint)
 #. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
-	in the locked keyring	a zárolt kulcskarika
+	Certificate (SHA-256): {fingerprint}	Tanúsítvány (SHA-256): {fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	.torrent fájl kiválasztása
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	Kód
 #. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: label before the 8-digit code
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Nem válaszolt a rendszer kulcskarikája, így a bejelentkezések és jelszavak az MDM beállításaiban maradnak, melyeket csak Ön olvashat.
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+	Code:	Kód:
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
 #, machine
-	proxy server	proxykiszolgáló
+	Delete the file too	A fájl törlése is
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#. column title: a paired phone's or computer's name
 #, machine
-	Sign-ins and passwords are kept in the macOS keychain.	A bejelentkezések és jelszavak a macOS kulcskarikájában vannak tárolva.
+	Device	Eszköz
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
 #, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	A bejelentkezések és jelszavak a rendszer kulcskarikájában (Secret Service) vannak tárolva.
+	Every local network address	Minden helyi hálózati cím
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	Eszköz elfelejtése
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	Elfelejti ezt az eszközt? Új kódra lesz szüksége az újbóli csatlakozáshoz.
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	párosított eszközről
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
 #, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	A bejelentkezések és jelszavak a Windows hitelesítőadat-kezelőjében vannak tárolva.
+	It could not start: {error}	Nem sikerült elindítani: {error}
 #. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. column title: when the device last reached MDM
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	A rendszer kulcskarikája zárolva van, és az MDM nem oldja fel, így a bejelentkezések és jelszavak az MDM beállításaiban maradnak, melyeket csak Ön olvashat.
+	Last seen	Utoljára látható
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	Engedélyezi a telefonoknak és számítógépeknek az MDM vezérlését a helyi hálózaton
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#. Options → Remote: label before the choice of the address MDM listens on
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Ez a hordozható másolat a bejelentkezéseket és jelszavakat saját beállításaiban tárolja, titkosítva az Ön Windows-fiókja számára.
+	Listen on:	Figyelés:
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Ez a hordozható másolat a bejelentkezéseket és jelszavakat saját beállításaiban tárolja, melyeket csak Ön olvashat.
+	MDM can't be reached on the network now: Options → Remote says why.	Az MDM jelenleg nem érhető el a hálózaton: az Opciók → Távoli menüpontban található az ok.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	Az MDM nem tudja letölteni ezt a címet.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	Az MDM nem tudta hozzáadni.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	Az MDM nem tudta megtenni.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	Az MDM nem válaszol. Ellenőrizze, hogy fut-e, és ugyanazon a hálózaton van-e.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	Az MDM nem válaszol. Újrapróbálkozás...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	Az MDM most nem mutat kódot. Először kattintson ott az Eszköz párosítása gombra.
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	Továbbiak
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	Új kód
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	Nincsenek letöltések itt.
 #. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	A Windows hitelesítőadat-kezelője nem válaszolt, így a bejelentkezések és jelszavak az MDM beállításaiban maradnak, titkosítva az Ön Windows-fiókja számára.
+	No local network now: it starts when the computer joins one.	Nincs helyi hálózat: akkor indul el, amikor a számítógép csatlakozik egyhez.
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	Ki: semmi a hálózaton nem érheti el az MDM-et.
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	A számítógépen nyissa meg az Opciók, majd a Távoli menüpontot, és kattintson az Eszköz párosítása gombra. Adja meg a megjelenő kódot.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	A telefonon olvassa be ezt a kódot a kamerával, vagy nyissa meg a címet, és adja meg a kódot.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	Be. A telefonon nyissa meg ezt a címet:
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Csak a párosított eszközök láthatnak vagy módosíthatnak bármit. Az első alkalommal a telefon böngészője figyelmeztet az MDM saját tanúsítványára: az ujjlenyomata a fent látható.
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	Párosítás
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	Eszköz párosítása
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	Eszköz párosítása...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Párosítás a következővel: Mister Download Manager
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	Párosítva
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	Párosított eszközök:
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	A(z) {port} portot egy másik program használja: válasszon másikat.
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	Várólistán
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	Távoli elérés
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	Távoli vezérlés
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	Eltávolítja a(z) {name} elemet a listáról?
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	Indítás most
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	A módosítások az OK gombra kattintva lépnek érvénybe.
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	Ez a kód már nem használható.
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	Csak ez a számítógép (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	Az eszköz neve
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	Ez a fájl túl nagy ahhoz, hogy torrent legyen.
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	Ez nem torrentfájl.
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	Először kapcsolja be a távvezérlést.
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	Várjon egy pillanatot, majd próbálja újra.
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	Várakozás a(z) {queue} várólistán
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	Várakozás az eszközre. A kód {time} ideig érvényes.
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	Mikor
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	Hibás kód. Mutasson új kódot az MDM-ben, és próbálja újra.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	Hibás kód. Hátralévő próbálkozások: {n}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	A(z) {device} párosítva van. Mostantól vezérelheti az MDM-et.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{done} / {size}
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} szabad

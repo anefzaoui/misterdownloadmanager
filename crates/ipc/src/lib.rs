@@ -63,11 +63,27 @@ pub struct Command {
     pub api: Option<bool>,
     /// Automation API: `"pause"`, `"start"`, `"remove"` (off the list, its file kept) or
     /// `"delete"` (with its file) the downloads `ids`; answered with what was done and skipped.
+    /// `"start_queue"` / `"stop_queue"` start or stop the queue named `queue`.
     pub action: Option<String>,
     pub ids: Vec<u64>,
+    /// A category for `url` (its `key` in the list's `categories`); none: by the file's type.
+    pub category: Option<String>,
+    /// A queue by name: where `url` waits (with `later`), or the one `action` starts or stops.
+    pub queue: Option<String>,
+    /// Sent by the remote control (#141, crates/remote) on behalf of a paired device, never read
+    /// from a request line: no window opens for it, and it may only add, list and act.
+    #[serde(skip)]
+    pub remote: bool,
+    /// The remote control: an uploaded .torrent file's bytes (never read from a request line).
+    #[serde(skip)]
+    pub torrent_file: Option<Vec<u8>>,
     /// `/exit` (beyond IDM): the running app saves and quits (the installer, before an upgrade
     /// or an uninstall). Starts nothing when no app runs.
     pub exit: bool,
+    /// `/startup` (beyond IDM): started with the session (Options → General → Launch on
+    /// startup, or the installer's "Start when Windows starts", #226): MDM starts in the
+    /// notification area, its window hidden. Changes nothing in a running app.
+    pub startup: bool,
     /// `/show <window>` (beyond IDM): the running app opens one of its windows by name, for
     /// screenshots and scripted checks (tools/lab/docs-shots.ps1): `addurl`, `batch`, `find`,
     /// `scheduler`, `about`, `language`, `shortcuts`, `speedlimit`, `properties`, `delete`,
@@ -99,6 +115,39 @@ impl Command {
 pub struct Incoming {
     pub cmd: Command,
     pub reply: Option<std::sync::mpsc::SyncSender<String>>,
+}
+
+/// The app's command channel from inside its own process (the remote control, #141): where
+/// commands go, and what wakes the app to read them.
+#[derive(Clone)]
+pub struct Sink {
+    tx: Sender<Incoming>,
+    wake: std::sync::Arc<dyn Fn() + Send + Sync>,
+}
+
+impl Sink {
+    pub fn new(tx: Sender<Incoming>, wake: std::sync::Arc<dyn Fn() + Send + Sync>) -> Sink {
+        Sink { tx, wake }
+    }
+
+    /// Hand `cmd` to the app and wait up to `wait` for its one-line answer (blocking). None:
+    /// the app is quitting or didn't answer in time.
+    pub fn ask(&self, cmd: Command, wait: Duration) -> Option<String> {
+        let (rtx, rrx) = std::sync::mpsc::sync_channel(1);
+        self.tx
+            .send(Incoming {
+                cmd,
+                reply: Some(rtx),
+            })
+            .ok()?;
+        (self.wake)();
+        rrx.recv_timeout(wait).ok()
+    }
+
+    /// Wake the app (to show something that changed: a device paired).
+    pub fn wake(&self) {
+        (self.wake)();
+    }
 }
 
 #[derive(Serialize, Deserialize)]
@@ -491,6 +540,10 @@ fn random_token() -> String {
         .collect()
 }
 
+/// The argument every startup entry passes (the Run key, the XDG autostart entry, the
+/// LaunchAgent, the installer's): MDM starts in the notification area ([`Command::startup`]).
+pub const STARTUP: &str = "/startup";
+
 /// Parse IDM's command line: `/d URL [/p dir] [/f name] [/a] [/n] [/q] [/s]` (case-insensitive;
 /// `-d` also accepted). Returns None when there is nothing to do.
 pub fn parse_args(args: &[String]) -> Option<Command> {
@@ -508,6 +561,7 @@ pub fn parse_args(args: &[String]) -> Option<Command> {
             "s" => cmd.start_queue = true,
             "q" | "h" => {}
             "exit" => cmd.exit = true,
+            "startup" => cmd.startup = true,
             "show" => cmd.show = it.next().map(|w| w.to_ascii_lowercase()),
             // A bare magnet link or .torrent file (what Windows passes for an association).
             _ if a
@@ -549,6 +603,10 @@ mod tests {
         assert!(c.later && c.silent && !c.start_queue);
         assert!(parse_args(&a("/s")).unwrap().start_queue);
         assert!(parse_args(&a("/exit")).unwrap().exit);
+        // The startup entries' argument (#226), as written and as a Linux user might.
+        assert!(parse_args(&[STARTUP.into()]).unwrap().startup);
+        assert!(parse_args(&a("--startup")).unwrap().startup);
+        assert!(!parse_args(&a("/s")).unwrap().startup);
         assert!(parse_args(&[]).is_none());
     }
 

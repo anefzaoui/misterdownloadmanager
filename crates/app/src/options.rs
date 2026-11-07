@@ -50,7 +50,12 @@ enum Sub {
     Dns(DnsEdit),
     /// Accounts → Add...: the service, a pasted token, and the sign-in running (#44).
     Account(AccountEdit),
+    /// Remote → Pair a device...: the code shown, until a device pairs or it is closed.
+    Pair,
 }
+
+/// Options → Remote's page number (the tabs' numbers).
+const REMOTE_PAGE: usize = 11;
 
 /// Connection → DNS's sub-dialog: a copy of the DNS fields, kept on OK.
 struct DnsEdit {
@@ -103,6 +108,31 @@ impl DnsEdit {
         s.dns_nextdns_id = self.nextdns_id.trim().to_lowercase();
         s.dns_fallback = self.fallback;
     }
+}
+
+/// Sites Logins → Cookies for video sites' browser at first (#229): the one chosen, else the
+/// first browser whose extension reached MDM when yt-dlp reads it (MDM doesn't know the
+/// system's default browser), else Firefox, which yt-dlp reads on every system.
+fn cookie_browser_at(s: &Settings) -> usize {
+    let browsers = mdm_tools::proc::cookie_browsers();
+    let seen = mdm_ipc::extension::seen_browsers();
+    let by_extension = seen.iter().find_map(|(name, _)| {
+        let ytdlp = match name.as_str() {
+            "Mozilla Firefox" => "firefox",
+            "Google Chrome" => "chrome",
+            "Microsoft Edge" => "edge",
+            "Brave Browser" => "brave",
+            "Opera" => "opera",
+            "Apple Safari" => "safari",
+            _ => return None,
+        };
+        browsers.iter().position(|b| *b == ytdlp)
+    });
+    browsers
+        .iter()
+        .position(|b| *b == s.video_cookies)
+        .or(by_extension)
+        .unwrap_or(0)
 }
 
 /// Connection → DNS's list: the system's, the services by name, the user's own.
@@ -181,6 +211,16 @@ pub struct OptionsDialog {
     seven_zip: Option<std::path::PathBuf>,
     /// Proxy / Socks → Network adapter (#35): the computer's adapters, read again every 2 s.
     adapters: Option<(std::time::Instant, Vec<mdm_engine::net::Adapter>)>,
+    /// Remote (#141): the running remote control (its state, paired devices, pairing), the
+    /// port as typed, and the paired devices list's scroll and selection.
+    remote: Option<mdm_remote::Remote>,
+    port: String,
+    device_rows: winui::RowList,
+    /// Test browser integration → Set it up's runs seen finished (crate::extension).
+    set_up_seen: u64,
+    /// Sites Logins → Cookies for video sites (#229): the browser in the list (an index into
+    /// `mdm_tools::proc::cookie_browsers`), kept while Off is chosen.
+    cookie_browser: usize,
 }
 
 impl OptionsDialog {
@@ -191,12 +231,36 @@ impl OptionsDialog {
         self
     }
 
+    /// With the app's remote control (Remote: its state, devices and pairing).
+    pub fn with_remote(mut self, remote: Option<mdm_remote::Remote>) -> Self {
+        self.remote = remote;
+        self
+    }
+
+    /// With Remote → Pair a device... open (`/show options:pair`).
+    pub fn with_pairing(mut self) -> Self {
+        self.page = REMOTE_PAGE;
+        self.pair();
+        self
+    }
+
     /// With General → Download panels → Edit... open (`/show options:panels`).
     pub fn with_panels(mut self) -> Self {
         self.sub = Some(Sub::Panels(
             self.s.video_panel,
             self.s.video_panel_sites.clone(),
         ));
+        self
+    }
+
+    /// With General → Test browser integration's window over it, or Accounts → Add's (`/show
+    /// options:test`, `options:account`: screenshots, #192).
+    pub fn with_window(mut self, name: &str) -> Self {
+        match name {
+            "test" => self.sub = Some(Sub::Test(crate::extension::checks(&self.s))),
+            "account" => self.sub = Some(Sub::Account(AccountEdit::default())),
+            _ => {}
+        }
         self
     }
 
@@ -222,11 +286,16 @@ impl OptionsDialog {
             account_rows: Default::default(),
             sound_rows: Default::default(),
             sub: None,
+            set_up_seen: 0,
             cat_edit: None,
             restore_ask: None,
             learned,
             seven_zip: crate::extractq::seven_zip(),
             adapters: None,
+            remote: None,
+            port: settings.remote_port.to_string(),
+            device_rows: Default::default(),
+            cookie_browser: cookie_browser_at(settings),
         }
     }
 
@@ -242,7 +311,7 @@ impl OptionsDialog {
             LIGHT_BG(),
             |ui, o| {
                 // Ctrl+Tab through the pages in the tabs' order (Archives, 10, came last).
-                const ORDER: [usize; 11] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+                const ORDER: [usize; 12] = [0, 1, 2, 3, 4, 11, 5, 6, 7, 8, 9, 10];
                 let at = ORDER.iter().position(|p| *p == self.page).unwrap_or(0);
                 let by_key = winui::tab_keys(ui, ORDER.len(), at).map(|i| ORDER[i]);
                 if let Some(p) = tabs(ui, o, self.page).or(by_key) {
@@ -259,6 +328,7 @@ impl OptionsDialog {
                     7 => self.accounts(ui, o),
                     9 => self.regional(ui, o),
                     10 => self.archives(ui, o),
+                    REMOTE_PAGE => self.remote_page(ui, o),
                     8 => self.sounds(ui, o),
                     _ => self.regional(ui, o),
                 }
@@ -337,6 +407,7 @@ impl OptionsDialog {
                 s.limits_mb = self.mb.parse().unwrap_or(200).max(1);
                 s.capture_min_kb = self.min_kb.parse().unwrap_or(0);
                 s.limits_hours = self.hours.parse().unwrap_or(5).max(1);
+                s.remote_port = self.remote_port();
                 Outcome::Done(s)
             }
             Outcome::Closed => Outcome::Closed,
@@ -408,7 +479,19 @@ impl OptionsDialog {
             // extensions: an IDM-era Chrome policy with no meaning for MDM's extension (MV3):
             // shown as IDM has it, greyed (D-021).
             let enabled = !(portable && i == 0) && i != 2 && (i != 5 || tray);
-            winui::checkbox_light(ui, o + vec2(30.0, y), v, label, enabled);
+            let check = winui::checkbox_light(ui, o + vec2(30.0, y), v, label, enabled);
+            // Where a start with the session leaves the window (#226).
+            if i == 0 && enabled && check.hovered() {
+                check.on_hover_text(if crate::can_start_in_tray() {
+                    // i18n: tooltip of "Launch Mister Download Manager on startup": started with the computer, MDM's window stays hidden, its icon in the notification area (system tray)
+                    crate::i18n::t("Started with the computer, it waits in the notification area")
+                } else {
+                    // i18n: the same tooltip where no notification area (system tray) shows MDM's icon (some Linux desktops): its window starts minimized instead
+                    crate::i18n::t(
+                        "Started with the computer, it starts minimized: no notification area shows its icon here",
+                    )
+                });
+            }
         }
         group(
             ui,
@@ -458,15 +541,28 @@ impl OptionsDialog {
         let off = |ui: &mut Ui, rc: Rect, label: &str| {
             winui::button_light(ui, rc, label, ButtonKind::Disabled, false);
         };
+        // Both as wide as their labels in this language (#192), within the group box.
+        let [test_at, add_at] = winui::button_row(
+            &p,
+            &[
+                ("Test browser integration...", 30.0, 180.0),
+                ("Add browser...", 286.0, 106.0),
+            ],
+            8.0,
+            30.0,
+            260.0,
+        )[..] else {
+            unreachable!("two buttons")
+        };
         off(
             ui,
-            r(o, 286.0, 328.0, 106.0, 21.0),
+            r(o, add_at.0, 328.0, add_at.1, 21.0),
             crate::i18n::mark("Add browser..."),
         );
         // MDM's: what stands between a browser and MDM, checked in order.
         if winui::button_light(
             ui,
-            r(o, 30.0, 328.0, 180.0, 21.0),
+            r(o, test_at.0, 328.0, test_at.1, 21.0),
             "Test browser integration...",
             ButtonKind::Normal,
             false,
@@ -476,11 +572,16 @@ impl OptionsDialog {
             self.sub = Some(Sub::Test(crate::extension::checks(&self.s)));
         }
         winui::etched_h(&p, o.x + 34.0, o.y + 356.0, 357.0);
+        // The buttons at the right as wide as their labels in this language (#192), their
+        // captions ending 6 px before them.
+        let fit_right =
+            |label: &str| winui::buttons_to_right(&p, 392.0, 0.0, &[(label, 73.0)], 160.0)[0];
+        let keys_at = fit_right("Keys...");
         let label = crate::i18n::t("Customize keys to prevent or force downloading with MDM");
         // Inside the browsers' group box: it starts no further out than the group's frame.
         let (rect, cut) = winui::text_right_within(
             &p,
-            o.x + 313.0,
+            o.x + keys_at.0 - 6.0,
             o.y + 379.0,
             label,
             LIGHT_TEXT(),
@@ -491,7 +592,7 @@ impl OptionsDialog {
         }
         if winui::button_light(
             ui,
-            r(o, 319.0, 365.0, 73.0, 21.0),
+            r(o, keys_at.0, 365.0, keys_at.1, 21.0),
             "Keys...",
             ButtonKind::Normal,
             false,
@@ -509,13 +610,20 @@ impl OptionsDialog {
         off(ui, r(o, 289.0, 406.0, 103.0, 21.0), "Edit...");
         // The download button over videos in the browsers (our own panel, Sub::Panels).
         let label = crate::i18n::t("Customize MDM Download panels in browsers");
-        let (rect, cut) = winui::text_right(&p, o.x + 313.0, o.y + 452.0, label, LIGHT_TEXT());
+        let panels_at = fit_right("Edit...");
+        let (rect, cut) = winui::text_right(
+            &p,
+            o.x + panels_at.0 - 6.0,
+            o.y + 452.0,
+            label,
+            LIGHT_TEXT(),
+        );
         if cut {
             winui::full_on_hover(ui, rect, ("general-right", 452), label);
         }
         if winui::button_light(
             ui,
-            r(o, 319.0, 438.0, 73.0, 21.0),
+            r(o, panels_at.0, 438.0, panels_at.1, 21.0),
             // i18n: verb: edit the item
             "Edit...",
             ButtonKind::Normal,
@@ -556,9 +664,11 @@ impl OptionsDialog {
             "auto-types",
             true,
         );
+        // Default as wide as its label in this language (#192), growing to the left.
+        let default_at = winui::buttons_to_right(&p, 389.0, 0.0, &[("Default", 73.0)], 200.0)[0];
         if winui::button_light(
             ui,
-            r(o, 316.0, 175.0, 73.0, 21.0),
+            r(o, default_at.0, 175.0, default_at.1, 21.0),
             // i18n: button: put back the default list
             "Default",
             ButtonKind::Normal,
@@ -582,16 +692,24 @@ impl OptionsDialog {
             "excluded-sites",
             true,
         );
-        text(
+        let spaces = text(
             &p,
             o.x + 21.0,
             o.y + 293.0,
             crate::i18n::t("(separate names by spaces)"),
             LIGHT_TEXT(),
         );
+        // Short of the note before it.
+        let default_at = winui::button_row(
+            &p,
+            &[("Default", 316.0, 73.0)],
+            0.0,
+            winui::rect(spaces).right() - o.x + 8.0,
+            200.0,
+        )[0];
         if winui::button_light(
             ui,
-            r(o, 316.0, 284.0, 73.0, 21.0),
+            r(o, default_at.0, 284.0, default_at.1, 21.0),
             // i18n: button: put back the default list
             "Default",
             ButtonKind::Normal,
@@ -608,9 +726,12 @@ impl OptionsDialog {
             crate::i18n::t("Don't start downloading automatically from the following addresses:"),
             LIGHT_TEXT(),
         );
+        let (list_x, list_w) =
+            winui::button_row_from_left(&p, &[("Edit list ...", 22.0, 135.0)], 0.0, 389.0, 260.0)
+                [0];
         if winui::button_light(
             ui,
-            r(o, 22.0, 334.0, 135.0, 21.0),
+            r(o, list_x, 334.0, list_w, 21.0),
             "Edit list ...",
             ButtonKind::Normal,
             false,
@@ -684,10 +805,19 @@ impl OptionsDialog {
             self.category = i;
             self.cat_dir = display_dir(&self.s.category_dir(cats[i], downloads));
         }
-        // New / Edit... (D-021): a category of the user's; a built-in one's folder.
+        // New / Edit... (D-021): a category of the user's; a built-in one's folder. One width for
+        // both, as wide as the longer label in this language (#192), into the room after the
+        // list (it ends at 242).
+        let (col_x, col_w) = winui::buttons_to_right(
+            &p,
+            392.0,
+            0.0,
+            &[(winui::widest_label(&p, &["New", "Edit..."]), 73.0)],
+            142.0,
+        )[0];
         if winui::button_light(
             ui,
-            r(o, 319.0, 105.0, 73.0, 21.0),
+            r(o, col_x, 105.0, col_w, 21.0),
             // i18n: button: create a new item
             "New",
             ButtonKind::Normal,
@@ -700,7 +830,7 @@ impl OptionsDialog {
         }
         if winui::button_light(
             ui,
-            r(o, 319.0, 137.0, 73.0, 21.0),
+            r(o, col_x, 137.0, col_w, 21.0),
             // i18n: verb: edit the item
             "Edit...",
             ButtonKind::Normal,
@@ -726,9 +856,12 @@ impl OptionsDialog {
             "Default download directory for \"{category}\" category",
         ));
         winui::text_in_window(ui, &p, o.x + 30.0, o.y + 230.0, &dir_line, LIGHT_TEXT());
+        // Browse as wide as its label in this language (#192); the box ends 7 px before it.
+        let (browse_x, browse_w) =
+            winui::buttons_to_right(&p, 392.0, 0.0, &[("Browse", 73.0)], 160.0)[0];
         winui::edit_light_on(
             ui,
-            r(o, 31.0, 239.0, 281.0, 23.0),
+            r(o, 31.0, 239.0, browse_x - 7.0 - 31.0, 23.0),
             &mut self.cat_dir,
             true,
             false,
@@ -736,7 +869,7 @@ impl OptionsDialog {
         );
         if winui::button_light(
             ui,
-            r(o, 319.0, 240.0, 73.0, 21.0),
+            r(o, browse_x, 240.0, browse_w, 21.0),
             // i18n: verb: choose a folder
             "Browse",
             ButtonKind::Normal,
@@ -777,10 +910,12 @@ impl OptionsDialog {
         // D-004: no temporary directory — parts are written next to the file, so there is
         // nothing to assemble at the end.
         let none = crate::i18n::t("Not used: file parts are written next to the file");
-        readonly(ui, r(o, 30.0, 349.0, 281.0, 23.0), none);
+        let (browse_x, browse_w) =
+            winui::buttons_to_right(&p, 390.0, 0.0, &[("Browse", 73.0)], 160.0)[0];
+        readonly(ui, r(o, 30.0, 349.0, browse_x - 6.0 - 30.0, 23.0), none);
         winui::button_light(
             ui,
-            r(o, 317.0, 350.0, 73.0, 21.0),
+            r(o, browse_x, 350.0, browse_w, 21.0),
             // i18n: verb: choose a folder
             "Browse",
             ButtonKind::Disabled,
@@ -848,9 +983,12 @@ impl OptionsDialog {
             398.0,
         );
         let s = &mut self.s;
+        // Edit... as wide as its label in this language (#192), its caption before it.
+        let (edit_x, edit_w) =
+            winui::buttons_to_right(&p, 392.0, 0.0, &[("Edit...", 73.0)], 160.0)[0];
         winui::text_right(
             &p,
-            o.x + 306.0,
+            o.x + edit_x - 13.0,
             o.y + 104.0,
             crate::i18n::t("Customize \"Download progress\" dialog"),
             LIGHT_DISABLED(),
@@ -858,7 +996,7 @@ impl OptionsDialog {
         // The progress dialog customisation dialog is not built yet.
         winui::button_light(
             ui,
-            r(o, 319.0, 89.0, 73.0, 21.0),
+            r(o, edit_x, 89.0, edit_w, 21.0),
             // i18n: verb: edit the item
             "Edit...",
             ButtonKind::Disabled,
@@ -958,14 +1096,14 @@ impl OptionsDialog {
         winui::etched_h(&p, o.x + 21.0, o.y + 426.0, 381.0);
         winui::text_right(
             &p,
-            o.x + 302.0,
+            o.x + edit_x - 17.0,
             o.y + 451.0,
             crate::i18n::t("Virus checking settings"),
             LIGHT_DISABLED(),
         );
         winui::button_light(
             ui,
-            r(o, 319.0, 436.0, 73.0, 21.0),
+            r(o, edit_x, 436.0, edit_w, 21.0),
             // i18n: verb: edit the item
             "Edit...",
             ButtonKind::Disabled,
@@ -1067,10 +1205,19 @@ impl OptionsDialog {
                     }),
             )
             .collect();
+        // New, Delete and Edit: one width, as wide as the longest label in this language (#192),
+        // the list ending 8 px before them (its Number column ends at 291).
+        let (col_x, col_w) = winui::buttons_to_right(
+            &p,
+            392.0,
+            0.0,
+            &[(winui::widest_label(&p, &["New", "Delete", "Edit"]), 73.0)],
+            92.0,
+        )[0];
         let (dbl, del_key) = report(
             ui,
             o,
-            r(o, 30.0, 184.0, 281.0, 100.0),
+            r(o, 30.0, 184.0, col_x - 8.0 - 30.0, 100.0),
             // i18n: column titles: the server, and the number of connections allowed to it
             &[
                 (crate::i18n::mark("Server"), 241.0),
@@ -1088,7 +1235,7 @@ impl OptionsDialog {
             .filter(|i| *i < self.s.conn_exceptions.len());
         let new = winui::button_light(
             ui,
-            r(o, 319.0, 195.0, 73.0, 21.0),
+            r(o, col_x, 195.0, col_w, 21.0),
             // i18n: button: create a new item
             "New",
             ButtonKind::Normal,
@@ -1101,12 +1248,13 @@ impl OptionsDialog {
             ButtonKind::Disabled
         };
         // i18n: verb: delete the item
-        let del = winui::button_light(ui, r(o, 319.0, 224.0, 73.0, 21.0), "Delete", kind, false)
+        let del = winui::button_light(ui, r(o, col_x, 224.0, col_w, 21.0), "Delete", kind, false)
             .clicked()
             || del_key;
         let edit =
             // i18n: verb: edit the item
-            winui::button_light(ui, r(o, 319.0, 254.0, 73.0, 21.0), "Edit", kind, false).clicked();
+            winui::button_light(ui, r(o, col_x, 254.0, col_w, 21.0), "Edit", kind, false)
+                .clicked();
         if new {
             self.sub = Some(Sub::Exception(None, String::new(), "1".into()));
         }
@@ -1211,17 +1359,37 @@ impl OptionsDialog {
         Icon::PageProxy
             .image(true)
             .paint_at(ui, r(o, 21.0, 50.0, 32.0, 32.0));
-        page_title(
-            &p,
-            winui::tahoma_bold(),
-            o.x + 112.0,
-            o.y + 69.0,
-            "Proxy / socks configuration",
-        );
+        // Get System as wide as its label in this language (#192), its right end kept. A
+        // translated title ends where the English one does, unless the button needs that room:
+        // then the title moves left (no further than 8 px after the icon) and ends 8 px before it.
+        let english_end =
+            112.0 + winui::text_width_font(&p, winui::tahoma_bold(), "Proxy / socks configuration");
+        let title_w = page_title_width(&p, winui::tahoma_bold(), "Proxy / socks configuration");
+        // The icon ends at 53; the button never moves right of its English place.
+        let from = (53.0 + 8.0 + title_w + 8.0).min(307.0);
+        let (get_x, get_w) =
+            winui::button_row(&p, &[("Get System", 307.0, 93.0)], 0.0, from, 160.0)[0];
+        if get_x - 8.0 < english_end {
+            page_title_ending(
+                &p,
+                winui::tahoma_bold(),
+                o.x + get_x - 8.0,
+                o.y + 69.0,
+                "Proxy / socks configuration",
+            );
+        } else {
+            page_title(
+                &p,
+                winui::tahoma_bold(),
+                o.x + 112.0,
+                o.y + 69.0,
+                "Proxy / socks configuration",
+            );
+        }
         let s = &mut self.s;
         if winui::button_light(
             ui,
-            r(o, 307.0, 61.0, 93.0, 21.0),
+            r(o, get_x, 61.0, get_w, 21.0),
             "Get System",
             ButtonKind::Normal,
             false,
@@ -1709,10 +1877,11 @@ impl OptionsDialog {
                 vec![site.clone(), user.clone(), "*".repeat(pass.chars().count())]
             })
             .collect();
+        // The list leaves the page's foot to Cookies for video sites (#229).
         let (dbl, del_key) = report(
             ui,
             o,
-            r(o, 21.0, 93.0, 383.0, 280.0),
+            r(o, 21.0, 93.0, 383.0, 140.0),
             &[
                 // i18n: column title: the site (and path) a login is for
                 (crate::i18n::mark("Site/path"), 262.0),
@@ -1726,9 +1895,23 @@ impl OptionsDialog {
             "opt-logins",
         );
         let sel = self.login_rows.selected.filter(|i| *i < rows.len());
+        // As wide as their labels in this language (#192), under the list (it ends at 404).
+        let [new_at, edit_at, remove_at] = winui::button_row_from_left(
+            &ui.painter().clone(),
+            &[
+                ("New", 31.0, 73.0),
+                ("Edit", 125.0, 73.0),
+                ("Remove", 220.0, 73.0),
+            ],
+            21.0,
+            404.0,
+            140.0,
+        )[..] else {
+            unreachable!("three buttons")
+        };
         let new = winui::button_light(
             ui,
-            r(o, 31.0, 381.0, 73.0, 21.0),
+            r(o, new_at.0, 241.0, new_at.1, 21.0),
             // i18n: button: create a new item
             "New",
             ButtonKind::Normal,
@@ -1742,10 +1925,16 @@ impl OptionsDialog {
         };
         let edit =
             // i18n: verb: edit the item
-            winui::button_light(ui, r(o, 125.0, 381.0, 73.0, 21.0), "Edit", kind, false).clicked();
+            winui::button_light(ui, r(o, edit_at.0, 241.0, edit_at.1, 21.0), "Edit", kind, false).clicked();
         // i18n: verb: remove the item
-        let remove = winui::button_light(ui, r(o, 220.0, 381.0, 73.0, 21.0), "Remove", kind, false)
-            .clicked()
+        let remove = winui::button_light(
+            ui,
+            r(o, remove_at.0, 241.0, remove_at.1, 21.0),
+            "Remove",
+            kind,
+            false,
+        )
+        .clicked()
             || del_key;
         if new {
             self.sub = Some(Sub::Login(
@@ -1764,6 +1953,120 @@ impl OptionsDialog {
                 self.sub = Some(Sub::Login(Some(i), site, user, pass));
             }
         }
+        self.video_cookies(ui, o);
+    }
+
+    /// Sites Logins → Cookies for video sites (#229): Off, or the browser whose cookies yt-dlp
+    /// reads on this computer (`--cookies-from-browser`) when the extension passed none, and its
+    /// profile (a name, or a folder: a Chromium fork's).
+    fn video_cookies(&mut self, ui: &mut Ui, o: Pos2) {
+        let p = ui.painter().clone();
+        // i18n: Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+        group(ui, o, 16.0, 270.0, 392.0, 130.0, "Cookies for video sites");
+        let browsers = mdm_tools::proc::cookie_browsers();
+        let at = self.cookie_browser.min(browsers.len() - 1);
+        let on = !self.s.video_cookies.is_empty();
+        // i18n: Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+        let tip = crate::i18n::t(
+            "yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.",
+        );
+        // i18n: Options → Sites Logins → Cookies for video sites: don't read any browser's cookies (the default)
+        let off =
+            winui::radio_light(ui, o + vec2(30.0, 288.0), !on, "Off", true).on_hover_text(tip);
+        let from = winui::radio_light_until(
+            ui,
+            o + vec2(30.0, 314.0),
+            on,
+            // i18n: Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+            "From browser:",
+            true,
+            Some(194.0),
+        )
+        .on_hover_text(tip);
+        let choose = |s: &mut Settings, i: usize| s.video_cookies = browsers[i].to_owned();
+        match winui::radio_keys(ui, &[off.clone(), from.clone()]) {
+            Some(0) => self.s.video_cookies.clear(),
+            Some(_) => choose(&mut self.s, at),
+            None if off.clicked() => self.s.video_cookies.clear(),
+            None if from.clicked() => choose(&mut self.s, at),
+            None => {}
+        }
+        let on = !self.s.video_cookies.is_empty();
+        let names: Vec<&str> = browsers
+            .iter()
+            .map(|b| crate::videodlg::browser_label(b))
+            .collect();
+        if let Some(i) = winui::combo_light(
+            ui,
+            r(o, 200.0, 311.0, 192.0, 21.0),
+            &names,
+            at,
+            on,
+            "opt-cookie-browser",
+        ) {
+            self.cookie_browser = i;
+            choose(&mut self.s, i);
+        }
+        // The profile: a name (Firefox's, "Profile 1") or a folder; empty, the last one used.
+        let ink = if on { LIGHT_TEXT() } else { LIGHT_DISABLED() };
+        // i18n: Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+        let label = crate::i18n::t("Profile (optional):");
+        let (rect, cut) =
+            winui::text_right_within(&p, o.x + 194.0, o.y + 354.0, label, ink, o.x + 30.0);
+        if cut {
+            winui::full_on_hover(ui, rect, "cookie-profile", label);
+        }
+        winui::edit_light_on(
+            ui,
+            r(o, 200.0, 338.0, 160.0, 23.0),
+            &mut self.s.video_cookies_profile,
+            on,
+            false,
+            LIGHT_PAGE(),
+        )
+        .on_hover_text(crate::i18n::t(
+            // i18n: Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+            "A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.",
+        ));
+        // i18n: Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+        let pick_title = crate::i18n::t("Choose the profile's folder");
+        let kind = if on {
+            ButtonKind::Normal
+        } else {
+            ButtonKind::Disabled
+        };
+        if winui::button_light(ui, r(o, 365.0, 339.0, 27.0, 21.0), "...", kind, false)
+            .on_hover_text(pick_title)
+            .clicked()
+        {
+            let title = pick_title.to_owned();
+            winui::start_pick(ui.ctx(), "options-cookie-profile", move || {
+                rfd::FileDialog::new().set_title(title).pick_folder()
+            });
+        }
+        if let Some(dir) = winui::picked(ui.ctx(), "options-cookie-profile") {
+            self.s.video_cookies_profile = dir.display().to_string();
+        }
+        // What to expect: Chrome-family browsers on Windows lock their cookies (Chrome 127 and
+        // later's app-bound encryption); yt-dlp says so when it meets it, Options says so first.
+        let chromium = on && !matches!(self.s.video_cookies.as_str(), "firefox" | "safari");
+        let (note, ink) = if cfg!(windows) && chromium {
+            (
+                // i18n: Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+                crate::i18n::t(
+                    "On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.",
+                ),
+                winui::ERROR(),
+            )
+        } else {
+            (
+                // i18n: Options → Sites Logins → Cookies for video sites: a note under the choices
+                crate::i18n::t("Read on this computer only, and sent only to the video's site."),
+                LIGHT_DISABLED(),
+            )
+        };
+        // Two lines at most: a longer language wraps rather than being cut.
+        winui::paragraph(&p, o.x + 30.0, o.y + 380.0, note, ink, o.x + 400.0, 13.0);
     }
 
     /// Archives (ours, #37): extracting archives when their download completes, what becomes
@@ -2163,9 +2466,24 @@ impl OptionsDialog {
         } else {
             ButtonKind::Disabled
         };
-        let browse =
-            winui::button_light(ui, r(o, 106.0, 371.0, 73.0, 21.0), "Browse...", kind, false)
-                .clicked();
+        // Both as wide as their labels in this language (#192), each around its English centre.
+        let browse_at = winui::button_around(&p, "Browse...", 106.0, 73.0, 21.0, 233.0);
+        let play_at = winui::button_around(
+            &p,
+            "Play",
+            241.0,
+            73.0,
+            browse_at.0 + browse_at.1 + 8.0,
+            404.0,
+        );
+        let browse = winui::button_light(
+            ui,
+            r(o, browse_at.0, 371.0, browse_at.1, 21.0),
+            "Browse...",
+            kind,
+            false,
+        )
+        .clicked();
         let has_file = sel.is_some_and(|i| !self.s.sounds[i].1.is_empty());
         let play_kind = if has_file {
             ButtonKind::Normal
@@ -2174,7 +2492,7 @@ impl OptionsDialog {
         };
         let play =
             // i18n: verb: plays the sound
-            winui::button_light(ui, r(o, 241.0, 371.0, 73.0, 21.0), "Play", play_kind, false)
+            winui::button_light(ui, r(o, play_at.0, 371.0, play_at.1, 21.0), "Play", play_kind, false)
                 .clicked();
         if let Some(i) = sel {
             if browse || pick_file == Some(i) {
@@ -2199,9 +2517,480 @@ impl OptionsDialog {
 
     // ---- entry dialogs --------------------------------------------------------------------
 
+    /// The computer's adapters, read again every 2 s (Proxy / Socks' adapter, Remote's address).
+    fn adapters_now(&mut self) -> Vec<mdm_engine::net::Adapter> {
+        let stale = self
+            .adapters
+            .as_ref()
+            .is_none_or(|(at, _)| at.elapsed() >= std::time::Duration::from_secs(2));
+        if stale {
+            self.adapters = Some((std::time::Instant::now(), crate::netwatch::adapters()));
+        }
+        self.adapters
+            .as_ref()
+            .map(|(_, a)| a.clone())
+            .unwrap_or_default()
+    }
+
+    /// Remote's port as typed, or the one saved when it isn't a port MDM takes.
+    fn remote_port(&self) -> u16 {
+        self.port
+            .trim()
+            .parse::<u16>()
+            .ok()
+            .filter(|p| *p >= 1024)
+            .unwrap_or(self.from.remote_port)
+    }
+
+    /// The remote control as this draft says (on, address, port).
+    fn remote_config(&self) -> mdm_remote::Config {
+        let mut s = self.s.clone();
+        s.remote_port = self.remote_port();
+        crate::remote::config(&s)
+    }
+
+    /// Remote → Pair a device...: the remote control starts as the page says (Cancel puts it
+    /// back as it was), a new code is shown.
+    fn pair(&mut self) {
+        let config = self.remote_config();
+        if let Some(r) = &self.remote {
+            r.apply(config);
+            r.start_pairing();
+        }
+        self.sub = Some(Sub::Pair);
+    }
+
+    /// Remote (#141, ours): phones and computers on the local network add and control
+    /// downloads from a page MDM serves, once paired with a code shown here.
+    fn remote_page(&mut self, ui: &mut Ui, o: Pos2) {
+        let p = ui.painter().clone();
+        // i18n: Options page title: control MDM from a phone or another computer on the local network
+        let title = crate::i18n::mark("Remote control");
+        let w = winui::text_width_font(&p, winui::tahoma_bold(), title);
+        header(ui, o, Icon::PageRemote, title, true, 406.0 - w, 61.0, 406.0);
+        let adapters = self.adapters_now();
+        winui::checkbox_light(
+            ui,
+            o + vec2(21.0, 92.0),
+            &mut self.s.remote_on,
+            // i18n: Options → Remote check box (off by default)
+            "Let phones and computers on the local network control MDM",
+            true,
+        );
+        let on = self.s.remote_on;
+        let color = if on { LIGHT_TEXT() } else { LIGHT_DISABLED() };
+        text(
+            &p,
+            o.x + 21.0,
+            o.y + 131.0,
+            // i18n: Options → Remote: label before the choice of the address MDM listens on
+            crate::i18n::t("Listen on:"),
+            color,
+        );
+        let chosen = self.s.remote_listen.trim().to_owned();
+        let mut values = vec![String::new(), mdm_remote::addrs::THIS_COMPUTER.to_owned()];
+        let mut labels = vec![
+            // i18n: Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
+            crate::i18n::t("Every local network address").to_owned(),
+            // i18n: Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+            crate::i18n::t("This computer only (127.0.0.1)").to_owned(),
+        ];
+        for a in &adapters {
+            for ip in
+                a.v4.iter()
+                    .map(|v| v.to_string())
+                    .chain(a.v6.iter().map(|v| v.to_string()))
+            {
+                labels.push(format!("{} \u{2014} {ip}", a.name));
+                values.push(ip);
+            }
+        }
+        if !values.contains(&chosen) {
+            labels.push(crate::i18n::fmt(
+                crate::i18n::t("{adapter} (not connected)"),
+                &[("adapter", &chosen)],
+            ));
+            values.push(chosen.clone());
+        }
+        let at = values.iter().position(|v| *v == chosen).unwrap_or(0);
+        let shown: Vec<&str> = labels.iter().map(String::as_str).collect();
+        if let Some(i) = winui::combo_light(
+            ui,
+            r(o, 130.0, 118.0, 278.0, 21.0),
+            &shown,
+            at,
+            on,
+            "opt-remote-at",
+        ) {
+            self.s.remote_listen = values[i].clone();
+        }
+        // i18n: Options → Remote: label before the port number box
+        text(&p, o.x + 21.0, o.y + 159.0, crate::i18n::t("Port:"), color);
+        winui::spin_box(
+            ui,
+            r(o, 130.0, 146.0, 80.0, 21.0),
+            &mut self.port,
+            1024,
+            65535,
+            on,
+            "opt-remote-port",
+        );
+        // What it does now: as saved, or what OK changes.
+        group(ui, o, 16.0, 178.0, 392.0, 96.0, "Status");
+        let running = self.remote.as_ref().map(|r| r.status());
+        let urls = self.remote.as_ref().map(|r| r.urls()).unwrap_or_default();
+        let changed = self.remote_config() != crate::remote::config(&self.from);
+        use mdm_remote::Status;
+        let (line, ok) = match &running {
+            _ if changed => (
+                // i18n: Options → Remote → Status: the settings were changed; they apply on OK
+                crate::i18n::t("The changes apply when you click OK.").to_owned(),
+                true,
+            ),
+            None | Some(Status::Off) => (
+                // i18n: Options → Remote → Status: the remote control is off
+                crate::i18n::t("Off: nothing on the network can reach MDM.").to_owned(),
+                true,
+            ),
+            Some(Status::Listening(_)) => (
+                // i18n: Options → Remote → Status: on; the address follows in a box below
+                crate::i18n::t("On. On the phone, open this address:").to_owned(),
+                true,
+            ),
+            Some(Status::NoAddress) => (
+                // i18n: Options → Remote → Status: on, but the computer has no local network address now
+                crate::i18n::t("No local network now: it starts when the computer joins one.")
+                    .to_owned(),
+                false,
+            ),
+            Some(Status::PortInUse(port)) => (
+                crate::i18n::fmt(
+                    // i18n: Options → Remote → Status: another program uses the port; {port} = its number
+                    crate::i18n::t("Port {port} is used by another program: choose another."),
+                    &[("port", &port.to_string())],
+                ),
+                false,
+            ),
+            Some(Status::Failed(e)) => (
+                crate::i18n::fmt(
+                    // i18n: Options → Remote → Status: it could not start; {error} = the system's reason
+                    crate::i18n::t("It could not start: {error}"),
+                    &[("error", e)],
+                ),
+                false,
+            ),
+        };
+        let ink = if ok {
+            LIGHT_TEXT()
+        } else {
+            crate::theme::colors().error_strong
+        };
+        let (rect, cut) = winui::label_into(
+            &p,
+            o.x + 30.0,
+            o.y + 207.0,
+            &line,
+            ink,
+            o.x + 400.0,
+            o.x + 30.0,
+        );
+        if cut {
+            winui::full_on_hover(ui, rect, "opt-remote-state", &line);
+        }
+        if !changed && let Some(first) = urls.first() {
+            readonly_ltr(ui, r(o, 30.0, 215.0, 364.0, 21.0), first);
+        }
+        if let Some(fp) = self.remote.as_ref().and_then(|r| r.fingerprint()) {
+            let label = crate::i18n::fmt(
+                // i18n: Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
+                crate::i18n::t("Certificate (SHA-256): {fingerprint}"),
+                &[("fingerprint", &crate::i18n::ltr(&fp))],
+            );
+            let (rect, cut) = winui::label_into(
+                &p,
+                o.x + 30.0,
+                o.y + 260.0,
+                &label,
+                LIGHT_TEXT(),
+                o.x + 400.0,
+                o.x + 30.0,
+            );
+            if cut {
+                winui::full_on_hover(ui, rect, "opt-remote-cert", &label);
+            }
+        }
+        // The paired devices.
+        text(
+            &p,
+            o.x + 21.0,
+            o.y + 296.0,
+            // i18n: Options → Remote: label above the list of paired phones and computers
+            crate::i18n::t("Paired devices:"),
+            LIGHT_TEXT(),
+        );
+        let devices = self
+            .remote
+            .as_ref()
+            .map(|r| r.devices())
+            .unwrap_or_default();
+        let when = |secs: i64| {
+            chrono::DateTime::from_timestamp(secs, 0)
+                .map(|t| {
+                    crate::regional::short_date_time(t.with_timezone(&chrono::Local).naive_local())
+                })
+                .unwrap_or_default()
+        };
+        let rows: Vec<Vec<String>> = devices
+            .iter()
+            .map(|d| vec![d.name.clone(), when(d.added), when(d.seen)])
+            .collect();
+        let (_, del_key) = report(
+            ui,
+            o,
+            r(o, 16.0, 302.0, 392.0, 88.0),
+            &[
+                // i18n: column title: a paired phone's or computer's name
+                (crate::i18n::mark("Device"), 120.0),
+                // i18n: column title: when the device was paired
+                (crate::i18n::mark("Paired"), 256.0),
+                // i18n: column title: when the device last reached MDM
+                (crate::i18n::mark("Last seen"), 392.0),
+            ],
+            &rows,
+            &mut self.device_rows,
+            false,
+            "opt-remote-devices",
+        );
+        let sel = self.device_rows.selected.filter(|i| *i < rows.len());
+        let pair_kind = if on {
+            ButtonKind::Normal
+        } else {
+            ButtonKind::Disabled
+        };
+        let pair = winui::why_disabled(
+            winui::button_light(
+                ui,
+                r(o, 16.0, 398.0, 130.0, 21.0),
+                // i18n: Options → Remote button: shows a code (and a QR code) that pairs a phone
+                "Pair a device...",
+                pair_kind,
+                false,
+            ),
+            !on,
+            // i18n: why Options → Remote → Pair a device... is greyed
+            "Turn on the remote control first.",
+        )
+        .clicked();
+        let remove_kind = if sel.is_some() {
+            ButtonKind::Normal
+        } else {
+            ButtonKind::Disabled
+        };
+        let remove = winui::button_light(
+            ui,
+            r(o, 154.0, 398.0, 90.0, 21.0),
+            "Remove",
+            remove_kind,
+            false,
+        )
+        .clicked()
+            || del_key;
+        if pair && on {
+            self.pair();
+        }
+        // Unpaired at once (not on OK): a lost phone is refused from its next request on.
+        if remove
+            && let (Some(i), Some(r)) = (sel, &self.remote)
+            && let Some(d) = devices.get(i)
+        {
+            r.remove(&d.id);
+            self.device_rows.selected = None;
+        }
+        winui::paragraph(
+            &p,
+            o.x + 21.0,
+            o.y + 438.0,
+            // i18n: Options → Remote, at the bottom of the page
+            crate::i18n::t(
+                "Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.",
+            ),
+            LIGHT_TEXT(),
+            o.x + 406.0,
+            13.0,
+        );
+    }
+
+    /// Remote → Pair a device...: the address (and a QR code of it), the code, and the device
+    /// once it paired. False when it closes.
+    fn pair_window(&mut self, ctx: &egui::Context) -> bool {
+        let Some(remote) = self.remote.clone() else {
+            return false;
+        };
+        ctx.request_repaint_after(std::time::Duration::from_millis(500));
+        let out = window(
+            ctx,
+            "opt-pair",
+            // i18n: window title: Options → Remote → Pair a device...
+            "Pair a device",
+            [360.0, 420.0],
+            false,
+            LIGHT_BG(),
+            |ui, o| {
+                let p = ui.painter().clone();
+                let urls = remote.urls();
+                let (shown, paired) = remote.pairing();
+                let close_label = if paired.is_some() {
+                    // i18n: button: close the window (the device is paired)
+                    "Done"
+                } else {
+                    "Close"
+                };
+                let close = winui::button_light(
+                    ui,
+                    r(o, 274.0, 387.0, 73.0, 21.0),
+                    close_label,
+                    ButtonKind::Default,
+                    false,
+                )
+                .clicked();
+                let Some(url) = urls.first() else {
+                    winui::paragraph(
+                        &p,
+                        o.x + 14.0,
+                        o.y + 30.0,
+                        // i18n: Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
+                        crate::i18n::t(
+                            "MDM can't be reached on the network now: Options → Remote says why.",
+                        ),
+                        crate::theme::colors().error_strong,
+                        o.x + 346.0,
+                        14.0,
+                    );
+                    return if close || winui::escape_pressed(ui) {
+                        Outcome::Closed
+                    } else {
+                        Outcome::Open
+                    };
+                };
+                if let Some(name) = &paired {
+                    let line = crate::i18n::fmt(
+                        // i18n: Options → Remote → Pair a device: done; {device} = the name it was given
+                        crate::i18n::t("{device} is paired. It can control MDM now."),
+                        &[("device", &crate::i18n::isolate(name))],
+                    );
+                    winui::paragraph(
+                        &p,
+                        o.x + 14.0,
+                        o.y + 30.0,
+                        &line,
+                        LIGHT_TEXT(),
+                        o.x + 346.0,
+                        14.0,
+                    );
+                    return if close || winui::escape_pressed(ui) || winui::enter_pressed(ui) {
+                        Outcome::Done(())
+                    } else {
+                        Outcome::Open
+                    };
+                }
+                winui::paragraph(
+                    &p,
+                    o.x + 14.0,
+                    o.y + 24.0,
+                    // i18n: Options → Remote → Pair a device: how to pair
+                    crate::i18n::t(
+                        "On the phone, scan this code with the camera, or open the address and enter the code.",
+                    ),
+                    LIGHT_TEXT(),
+                    o.x + 346.0,
+                    14.0,
+                );
+                let link = match &shown {
+                    Some((code, _)) => format!("{url}#pair={code}"),
+                    None => url.clone(),
+                };
+                crate::remote::paint_qr(&p, r(o, 90.0, 56.0, 180.0, 180.0), &link);
+                readonly_ltr(ui, r(o, 14.0, 246.0, 332.0, 21.0), url);
+                match &shown {
+                    Some((code, left)) => {
+                        text(
+                            &p,
+                            o.x + 14.0,
+                            o.y + 300.0,
+                            // i18n: Options → Remote → Pair a device: label before the 8-digit code
+                            crate::i18n::t("Code:"),
+                            LIGHT_TEXT(),
+                        );
+                        let big = egui::FontId::new(26.0, winui::tahoma_bold().family);
+                        winui::text_font(
+                            &p,
+                            big,
+                            o.x + 80.0,
+                            o.y + 304.0,
+                            &crate::i18n::ltr(&format!("{} {}", &code[..4], &code[4..])),
+                            LIGHT_TEXT(),
+                        );
+                        let secs = left.as_secs();
+                        let line = crate::i18n::fmt(
+                            // i18n: Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+                            crate::i18n::t("Waiting for the device. The code works for {time}."),
+                            &[("time", &format!("{}:{:02}", secs / 60, secs % 60))],
+                        );
+                        winui::paragraph(
+                            &p,
+                            o.x + 14.0,
+                            o.y + 336.0,
+                            &line,
+                            LIGHT_TEXT(),
+                            o.x + 346.0,
+                            14.0,
+                        );
+                    }
+                    None => {
+                        winui::paragraph(
+                            &p,
+                            o.x + 14.0,
+                            o.y + 300.0,
+                            // i18n: Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+                            crate::i18n::t("This code can't be used any more."),
+                            crate::theme::colors().error_strong,
+                            o.x + 346.0,
+                            14.0,
+                        );
+                        if winui::button_light(
+                            ui,
+                            r(o, 14.0, 318.0, 100.0, 21.0),
+                            // i18n: Options → Remote → Pair a device: button: show a new code
+                            "New code",
+                            ButtonKind::Normal,
+                            false,
+                        )
+                        .clicked()
+                        {
+                            remote.start_pairing();
+                        }
+                    }
+                }
+                if close || winui::escape_pressed(ui) {
+                    Outcome::Closed
+                } else {
+                    Outcome::Open
+                }
+            },
+        );
+        matches!(out, Outcome::Open)
+    }
+
     fn sub_dialog(&mut self, ctx: &egui::Context) {
         let Some(sub) = self.sub.take() else { return };
         match sub {
+            Sub::Pair => {
+                if self.pair_window(ctx) {
+                    self.sub = Some(Sub::Pair);
+                } else if let Some(r) = &self.remote {
+                    r.stop_pairing();
+                }
+            }
             Sub::Login(row, mut site, mut user, mut pass) => {
                 let title = if row.is_some() {
                     crate::i18n::mark("Edit login")
@@ -2549,11 +3338,21 @@ impl OptionsDialog {
                         }
                         let first = checks.iter().find(|c| !c.ok);
                         let y = h - 46.0;
+                        // As wide as their labels in this language (#192), short of Close.
+                        let [fix_at, set_up_at] = winui::button_row_from_left(
+                            &p,
+                            &[("How to fix it", 14.0, 110.0), ("Set it up", 132.0, 110.0)],
+                            8.0,
+                            440.0 - 14.0 - 73.0 - 8.0,
+                            200.0,
+                        )[..] else {
+                            unreachable!("two buttons")
+                        };
                         if let Some(c) = first {
                             if let Some(why) = c.why
                                 && winui::button_light(
                                     ui,
-                                    r(o, 14.0, y, 110.0, 25.0),
+                                    r(o, fix_at.0, y, fix_at.1, 25.0),
                                     // i18n: button in Test browser integration: open the help page's section for the problem
                                     "How to fix it",
                                     ButtonKind::Normal,
@@ -2567,7 +3366,7 @@ impl OptionsDialog {
                                 && mdm_ipc::portable_dir().is_none()
                                 && winui::button_light(
                                     ui,
-                                    r(o, 132.0, y, 110.0, 25.0),
+                                    r(o, set_up_at.0, y, set_up_at.1, 25.0),
                                     // i18n: button in Test browser integration: register MDM's helper with the browsers
                                     "Set it up",
                                     ButtonKind::Normal,
@@ -2593,8 +3392,11 @@ impl OptionsDialog {
                         }
                     },
                 );
+                // Set it up runs on a thread of its own; the checks are read again once it's done.
                 if set_up {
-                    crate::extension::set_up();
+                    crate::extension::set_up(ctx);
+                }
+                if crate::extension::set_up_finished(&mut self.set_up_seen) {
                     checks = crate::extension::checks(&self.s);
                 }
                 if matches!(out, Outcome::Open) {
@@ -2906,17 +3708,29 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
     }
     if let S::Waiting { code, page, until } = &state {
         // The code, large, to type at the service's page.
+        let code_font = egui::FontId::monospace(crate::theme::metrics().font_code);
         p.text(
             o + vec2(14.0, 78.0),
             egui::Align2::LEFT_TOP,
             code,
-            egui::FontId::monospace(crate::theme::metrics().font_code),
+            code_font.clone(),
             LIGHT_TEXT(),
         );
+        // The buttons as wide as their labels in this language (#192), short of the code.
+        let code_end = 14.0 + winui::text_width_font(&p, code_font, code);
+        let [copy_at, open_at] = winui::button_row(
+            &p,
+            &[("Copy code", 200.0, 90.0), ("Open the page", 296.0, 110.0)],
+            6.0,
+            (code_end + 12.0).min(200.0),
+            200.0,
+        )[..] else {
+            unreachable!("two buttons")
+        };
         // i18n: button: copy the sign-in code
         if winui::button_light(
             ui,
-            r(o, 200.0, 80.0, 90.0, 21.0),
+            r(o, copy_at.0, 80.0, copy_at.1, 21.0),
             "Copy code",
             ButtonKind::Normal,
             false,
@@ -2928,7 +3742,7 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
         // i18n: button: open the service's page where the code is typed
         if winui::button_light(
             ui,
-            r(o, 296.0, 80.0, 110.0, 21.0),
+            r(o, open_at.0, 80.0, open_at.1, 21.0),
             "Open the page",
             ButtonKind::Normal,
             false,
@@ -2968,11 +3782,19 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
         crate::i18n::t("Paste your API key (from the service's Account page):")
     };
     text(&p, o.x + 14.0, o.y + 178.0, label, LIGHT_TEXT());
-    winui::password_light(ui, r(o, 14.0, 186.0, 280.0, 21.0), &mut e.token, !busy);
+    // As wide as its label in this language (#192); the box ends 6 px before it.
+    let (use_x, use_w) =
+        winui::buttons_to_right(&p, 406.0, 0.0, &[("Use the token", 106.0)], 200.0)[0];
+    winui::password_light(
+        ui,
+        r(o, 14.0, 186.0, use_x - 6.0 - 14.0, 21.0),
+        &mut e.token,
+        !busy,
+    );
     // i18n: button: sign in with the token typed in
     if winui::button_light(
         ui,
-        r(o, 300.0, 186.0, 106.0, 21.0),
+        r(o, use_x, 186.0, use_w, 21.0),
         "Use the token",
         kind(!busy && !e.token.trim().is_empty()),
         false,
@@ -2984,7 +3806,13 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
     // i18n: button: open the service's page that shows the user's API token
     if winui::button_light(
         ui,
-        r(o, 14.0, 212.0, 160.0, 21.0),
+        r(
+            o,
+            14.0,
+            212.0,
+            winui::button_fit_width(&p, "Find my token", 160.0, 392.0),
+            21.0,
+        ),
         "Find my token",
         ButtonKind::Normal,
         false,
@@ -3050,7 +3878,7 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
 /// whose clicks come from scripts, not from a person at the browser.
 fn open_page(url: &str) {
     if !crate::offscreen() {
-        let _ = open::that_detached(url);
+        crate::launch::open(url);
     }
 }
 
@@ -3123,7 +3951,8 @@ fn tab_row(
 /// The two-row tab strip and the page frame; returns the page clicked.
 fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
     // (page, label, x0, x1, label x): the rows never move sideways, only swap front and back.
-    const G: [(usize, &str, f32, f32, f32); 5] = [
+    // Remote (#141, ours) joins the first row, which is sized by its labels since.
+    const G: [(usize, &str, f32, f32, f32); 6] = [
         // i18n: tab title: general settings
         (0, crate::i18n::mark("General"), 8.0, 82.0, 26.0),
         // i18n: tab title
@@ -3134,6 +3963,14 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
         (3, crate::i18n::mark("Downloads"), 241.0, 330.0, 260.0),
         // i18n: tab title: connection settings
         (4, crate::i18n::mark("Connection"), 330.0, 419.0, 349.0),
+        (
+            REMOTE_PAGE,
+            // i18n: tab title: control MDM from a phone or another computer on the local network
+            crate::i18n::mark("Remote"),
+            380.0,
+            419.0,
+            390.0,
+        ),
     ];
     // IDM's Dial Up / VPN tab is gone (D-021: no modem support; it did nothing); ours, Regional
     // (how dates and times are written), Accounts (#44, debrid services) and Archives (#37) share
@@ -3154,8 +3991,9 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
     ];
     let p = ui.painter().clone();
     let border = winui::HEADER_LINE();
-    let (g, pr) = (tab_row(&p, &G, true), tab_row(&p, &P, false));
-    let (front, back): (&[_], &[_]) = if page < 5 { (&g, &pr) } else { (&pr, &g) };
+    let (g, pr) = (tab_row(&p, &G, false), tab_row(&p, &P, false));
+    let first_row = page < 5 || page == REMOTE_PAGE;
+    let (front, back): (&[_], &[_]) = if first_row { (&g, &pr) } else { (&pr, &g) };
     let mut clicked = None;
     let mut tab = |ui: &mut Ui,
                    (i, label, x0, x1, lx): (usize, &str, f32, f32, f32),
@@ -3195,7 +4033,7 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
             winui::keep_keys(ui, &resp, true, false, false);
             if resp.has_focus() {
                 // Left / Right (mirrored in RTL), Home / End through the pages in order.
-                const ORDER: [usize; 11] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+                const ORDER: [usize; 12] = [0, 1, 2, 3, 4, 11, 5, 6, 7, 8, 9, 10];
                 let at = ORDER.iter().position(|p| *p == i).unwrap_or(0) as isize;
                 let fwd = if winui::rtl() { -1 } else { 1 };
                 let to = if winui::take_key(ui, egui::Key::ArrowRight) {
@@ -3338,6 +4176,24 @@ fn page_title(p: &egui::Painter, font: egui::FontId, x: f32, baseline: f32, engl
         let end = x + winui::text_width_font(p, font.clone(), english);
         end - winui::text_width_font(p, font.clone(), shown)
     };
+    winui::text_font(p, font, x, baseline, shown, LIGHT_TEXT());
+}
+
+/// How wide [`page_title`] draws `english` translated.
+fn page_title_width(p: &egui::Painter, font: egui::FontId, english: &str) -> f32 {
+    winui::text_width_font(p, font, crate::i18n::t(english))
+}
+
+/// [`page_title`] ending at English x `end` (a control after it needs the room up to there).
+fn page_title_ending(
+    p: &egui::Painter,
+    font: egui::FontId,
+    end: f32,
+    baseline: f32,
+    english: &str,
+) {
+    let shown = crate::i18n::t(english);
+    let x = end - winui::text_width_font(p, font.clone(), shown);
     winui::text_font(p, font, x, baseline, shown, LIGHT_TEXT());
 }
 
@@ -3503,6 +4359,18 @@ fn readonly(ui: &mut Ui, rc: Rect, value: &str) {
         value,
         LIGHT_PAGE(),
         false,
+        ("options", rc.left() as i32, rc.top() as i32),
+    );
+}
+
+/// [`readonly`] for an address: left to right in every language.
+fn readonly_ltr(ui: &mut Ui, rc: Rect, value: &str) {
+    winui::readonly_field(
+        ui,
+        rc,
+        value,
+        LIGHT_PAGE(),
+        true,
         ("options", rc.left() as i32, rc.top() as i32),
     );
 }

@@ -66,6 +66,104 @@ fn dns() -> mdm_engine::DnsChoice {
     DNS.read().unwrap().clone().unwrap_or_default()
 }
 
+/// The browsers yt-dlp reads cookies from (`--cookies-from-browser`; yt-dlp's
+/// `cookies.SUPPORTED_BROWSERS`), in the order Options lists them. Safari only on macOS.
+pub const COOKIE_BROWSERS: [&str; 9] = [
+    "firefox", "chrome", "edge", "brave", "opera", "vivaldi", "chromium", "whale", "safari",
+];
+
+/// The browsers this system offers (Safari is macOS's only).
+pub fn cookie_browsers() -> Vec<&'static str> {
+    COOKIE_BROWSERS
+        .iter()
+        .copied()
+        .filter(|b| *b != "safari" || cfg!(target_os = "macos"))
+        .collect()
+}
+
+/// Options → Sites Logins → Cookies for video sites (#229): the browser whose cookies yt-dlp
+/// reads on this computer, and its profile (a name, or a profile folder: a Chromium fork's
+/// `chromium:<its profile folder>`), for the runs the browser's extension passed no cookies to.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct BrowserCookies {
+    pub browser: String,
+    pub profile: Option<String>,
+}
+
+impl BrowserCookies {
+    /// `browser` (one of [`COOKIE_BROWSERS`]) and its profile; None for any other name.
+    pub fn new(browser: &str, profile: &str) -> Option<Self> {
+        let browser = browser.trim().to_ascii_lowercase();
+        (!browser.is_empty() && COOKIE_BROWSERS.contains(&browser.as_str())).then(|| {
+            BrowserCookies {
+                browser,
+                profile: Some(profile.trim().to_owned()).filter(|p| !p.is_empty()),
+            }
+        })
+    }
+
+    /// yt-dlp's `BROWSER[:PROFILE]`.
+    pub fn spec(&self) -> String {
+        match &self.profile {
+            Some(p) => format!("{}:{p}", self.browser),
+            None => self.browser.clone(),
+        }
+    }
+}
+
+/// The browser yt-dlp reads cookies from, as the app shares it ([`set_browser_cookies`]).
+static BROWSER_COOKIES: std::sync::RwLock<Option<BrowserCookies>> = std::sync::RwLock::new(None);
+
+/// Options → Sites Logins → Cookies for video sites (the app's setting; None: off).
+pub fn set_browser_cookies(chosen: Option<BrowserCookies>) {
+    if *BROWSER_COOKIES.read().unwrap() != chosen {
+        *BROWSER_COOKIES.write().unwrap() = chosen;
+    }
+}
+
+pub fn browser_cookies() -> Option<BrowserCookies> {
+    BROWSER_COOKIES.read().unwrap().clone()
+}
+
+/// The cookies a yt-dlp run with arguments `args` gets from the chosen browser: none when the
+/// run has cookies already, else `--cookies-from-browser BROWSER[:PROFILE]`.
+///
+/// The browser's extension passes the cookies of the very page (or stream) the video was on,
+/// from the window and profile it was in (a private window, a Firefox container), as the
+/// browser sent them a moment ago (`FromBrowser`, written to the file `--cookies` names). Those
+/// win: they are that session's, and reading the whole cookie store of a browser may give
+/// another profile's, an older session's, or nothing at all (Chrome on Windows). The browser's
+/// store is read only when nothing came: a pasted address, a link typed into Add URL, a
+/// playlist listed later. yt-dlp would merge the two if given both; it never is.
+fn browser_cookie_args(args: &[String], chosen: Option<&BrowserCookies>) -> Vec<String> {
+    let has_cookies = args
+        .iter()
+        .any(|a| a == "--cookies" || a == "--cookies-from-browser");
+    match chosen {
+        Some(c) if !has_cookies => vec!["--cookies-from-browser".into(), c.spec()],
+        _ => Vec::new(),
+    }
+}
+
+/// Does yt-dlp's `WARNING:` (or `ERROR:`) line say it couldn't read the browser's cookies?
+/// Kept on the failure's message (`Spawned::failure`), where `lookup_error` names it.
+pub fn cookie_trouble(line: &str) -> bool {
+    let l = line.to_ascii_lowercase();
+    [
+        "cookie database",
+        "cookies database",
+        "decrypt",
+        "unknown cookie version",
+        "keyring",
+        "secretstorage",
+        "kwallet",
+        "local state",
+        "failed to load cookies",
+    ]
+    .iter()
+    .any(|k| l.contains(k))
+}
+
 /// The helpers' relay, started on first use.
 fn relay() -> Result<Arc<crate::relay::Relay>, ProcError> {
     let mut slot = RELAY.lock().unwrap();
@@ -272,9 +370,37 @@ fn ytdlp_command(exe: &Path) -> Command {
     cmd
 }
 
-/// `yt-dlp` with arguments in layers: `user` extras, then `ours`, then the fixed ones last
-/// (so nothing can switch them off), then `--` and the URL (so a URL starting with `-` is never
-/// read as an option).
+/// The user's extras and ours, then the chosen browser's cookies when the run has none
+/// ([`browser_cookie_args`]). Reading them, yt-dlp's warnings stay on (a look-up's
+/// `--no-warnings` is dropped): the one saying the browser's cookies couldn't be decrypted is
+/// what explains the site's "sign in" that follows (`Spawned::failure`).
+fn layers(cmd: &mut Command, user: &[String], ours: &[String]) -> Result<(), ProcError> {
+    layers_with(cmd, user, ours, browser_cookies().as_ref())
+}
+
+fn layers_with(
+    cmd: &mut Command,
+    user: &[String],
+    ours: &[String],
+    chosen: Option<&BrowserCookies>,
+) -> Result<(), ProcError> {
+    let all: Vec<String> = user.iter().chain(ours).cloned().collect();
+    let from_store = browser_cookie_args(&all, chosen);
+    for a in &all {
+        if from_store.is_empty() || a != "--no-warnings" {
+            cmd.arg(safe(a)?);
+        }
+    }
+    for a in &from_store {
+        cmd.arg(safe(a)?);
+    }
+    Ok(())
+}
+
+/// `yt-dlp` with arguments in layers: `user` extras, then `ours` (then the chosen browser's
+/// cookies when neither brought any, [`layers`]), then the fixed ones last (so nothing can
+/// switch them off), then `--` and the URL (so a URL starting with `-` is never read as an
+/// option).
 pub fn ytdlp(
     exe: &Path,
     user: &[String],
@@ -283,9 +409,7 @@ pub fn ytdlp(
 ) -> Result<Command, ProcError> {
     let mut cmd = ytdlp_command(exe);
     let route = through_adapter(&mut cmd, Helper::YtDlp)?;
-    for a in user.iter().chain(ours) {
-        cmd.arg(safe(a)?);
-    }
+    layers(&mut cmd, user, ours)?;
     cmd.args(["--ignore-config", "--no-exec", "--no-update"]);
     cmd.args(UTF8);
     cmd.args(route);
@@ -304,9 +428,7 @@ pub fn ytdlp_info(
 ) -> Result<Command, ProcError> {
     let mut cmd = ytdlp_command(exe);
     let route = through_adapter(&mut cmd, Helper::YtDlp)?;
-    for a in user.iter().chain(ours) {
-        cmd.arg(safe(a)?);
-    }
+    layers(&mut cmd, user, ours)?;
     cmd.args(["--ignore-config", "--no-exec", "--no-update"]);
     cmd.args(UTF8);
     cmd.args(route);
@@ -382,10 +504,31 @@ impl Spawned {
             .or(tail.back())
             .map(|l| l.trim_start_matches("ERROR:").trim().to_owned())
             .unwrap_or_else(|| "it stopped without saying why".into());
+        let warnings = self.warnings.lock().unwrap();
         ProcError::Failed {
             tool: self.name.clone(),
-            message,
+            message: with_cookie_trouble(message, &warnings, &tail),
         }
+    }
+}
+
+/// A failure's `message` with what yt-dlp said earlier about the browser's cookies, when that
+/// isn't the message itself (#229): Chrome's cookies it couldn't decrypt are only a warning,
+/// and the site's "sign in" that follows is the error; "failed to load cookies" comes after the
+/// line saying why.
+fn with_cookie_trouble(message: String, warnings: &[String], tail: &VecDeque<String>) -> String {
+    let earlier = warnings
+        .iter()
+        .map(String::as_str)
+        .chain(tail.iter().map(|l| {
+            l.trim_start_matches("ERROR:")
+                .trim_start_matches("WARNING:")
+                .trim()
+        }))
+        .find(|l| cookie_trouble(l) && *l != message && !message.contains(*l));
+    match earlier {
+        Some(why) => format!("{message} ({why})"),
+        None => message,
     }
 }
 
@@ -511,6 +654,137 @@ mod tests {
         assert!(!path.exists(), "removed once done");
         let none = FromBrowser::default().args("https://x.test/").unwrap();
         assert!(none.0.is_empty() && none.1.is_none());
+    }
+
+    /// #229: the button over a YouTube video sends the watch page (its player plays a blob:, and
+    /// a video's own requests aren't a manifest) with the cookies the browser has for that page:
+    /// youtube.com's sign-in, `__Secure-` ones included. They are filed for www.youtube.com and
+    /// its subdomains, the host yt-dlp's YouTube extractor asks (and checks the sign-in on), as
+    /// session cookies (expiry 0, which yt-dlp's loader keeps) sent over HTTP and HTTPS.
+    #[test]
+    fn a_youtube_pages_cookies_reach_the_host_ytdlp_asks() {
+        let b = FromBrowser {
+            cookies: Some(
+                "VISITOR_INFO1_LIVE=v; SAPISID=s/1; __Secure-3PAPISID=s3; __Secure-3PSID=p3; \
+                 LOGIN_INFO=AFmmF2s:QUQ3; __Host-GAPS=1:g"
+                    .into(),
+            ),
+            ..Default::default()
+        };
+        let (args, file) = b
+            .args("https://www.youtube.com/watch?v=A1WG3x-Ebpk")
+            .unwrap();
+        assert_eq!(args[0], "--cookies");
+        let file = file.unwrap();
+        let text = std::fs::read_to_string(&file.0).unwrap();
+        for (name, value) in [
+            ("VISITOR_INFO1_LIVE", "v"),
+            ("SAPISID", "s/1"),
+            ("__Secure-3PAPISID", "s3"),
+            ("__Secure-3PSID", "p3"),
+            ("LOGIN_INFO", "AFmmF2s:QUQ3"),
+            ("__Host-GAPS", "1:g"),
+        ] {
+            let line = format!(".www.youtube.com\tTRUE\t/\tFALSE\t0\t{name}\t{value}\n");
+            assert!(text.contains(&line), "{line:?} in {text}");
+        }
+        assert_eq!(text.lines().count(), 7, "the header and six cookies");
+    }
+
+    fn yt(chosen: Option<&BrowserCookies>, ours: &[&str]) -> Vec<String> {
+        let mut cmd = Command::new("yt-dlp");
+        let ours: Vec<String> = ours.iter().map(|s| s.to_string()).collect();
+        layers_with(&mut cmd, &[], &ours, chosen).unwrap();
+        cmd.get_args()
+            .map(|a| a.to_string_lossy().into_owned())
+            .collect()
+    }
+
+    /// #229: Options → Cookies for video sites. Off: nothing added. On: every run without
+    /// cookies of its own reads the browser's (a pasted address, a look-up), with yt-dlp's
+    /// warnings kept on; a run with the extension's cookies keeps those alone.
+    #[test]
+    fn the_browsers_cookies_only_when_the_extension_sent_none() {
+        assert_eq!(yt(None, &["-J", "--no-warnings"]), ["-J", "--no-warnings"]);
+        let firefox = BrowserCookies::new("Firefox", "").unwrap();
+        assert_eq!(firefox.spec(), "firefox");
+        assert_eq!(
+            yt(Some(&firefox), &["-J", "--no-warnings"]),
+            ["-J", "--cookies-from-browser", "firefox"]
+        );
+        assert_eq!(
+            yt(Some(&firefox), &["-J", "--cookies", "/tmp/c.txt"]),
+            ["-J", "--cookies", "/tmp/c.txt"],
+            "the extension's cookies win"
+        );
+        // A profile by name, or a Chromium fork's profile folder (Helium, Thorium...).
+        let named = BrowserCookies::new("chrome", " Profile 1 ").unwrap();
+        assert_eq!(named.spec(), "chrome:Profile 1");
+        let fork = BrowserCookies::new(
+            "chromium",
+            r"C:\Users\a\AppData\Local\Helium\User Data\Default",
+        )
+        .unwrap();
+        assert_eq!(
+            yt(Some(&fork), &["-f", "b"]),
+            [
+                "-f",
+                "b",
+                "--cookies-from-browser",
+                r"chromium:C:\Users\a\AppData\Local\Helium\User Data\Default"
+            ]
+        );
+        // Only the browsers yt-dlp reads; Off is no browser.
+        assert!(BrowserCookies::new("helium", "").is_none());
+        assert!(BrowserCookies::new("", "x").is_none());
+        // A profile with a line break never reaches yt-dlp.
+        let bad = BrowserCookies::new("firefox", "a\nb").unwrap();
+        let mut cmd = Command::new("yt-dlp");
+        assert!(layers_with(&mut cmd, &[], &[], Some(&bad)).is_err());
+        assert_eq!(
+            cookie_browsers().contains(&"safari"),
+            cfg!(target_os = "macos")
+        );
+    }
+
+    /// #229: why the browser's cookies didn't help stays on the failure's message.
+    #[test]
+    fn the_cookie_trouble_is_kept_on_the_failure() {
+        let tail: VecDeque<String> = [
+            "[youtube] Extracting URL: https://www.youtube.com/watch?v=x",
+            "Extracted 3 cookies from chrome (41 could not be decrypted)",
+            "ERROR: [youtube] x: Sign in to confirm you're not a bot.",
+        ]
+        .map(String::from)
+        .into();
+        let warnings = vec!["unknown cookie version: \"b'v20'\"".to_owned()];
+        assert_eq!(
+            with_cookie_trouble(
+                "[youtube] x: Sign in to confirm you're not a bot.".into(),
+                &warnings,
+                &tail
+            ),
+            "[youtube] x: Sign in to confirm you're not a bot. (unknown cookie version: \"b'v20'\")"
+        );
+        let copy: VecDeque<String> = [
+            "ERROR: Could not copy Chrome cookie database. See  https://github.com/yt-dlp/yt-dlp/issues/7271  for more info",
+            "ERROR: failed to load cookies",
+        ]
+        .map(String::from)
+        .into();
+        assert!(
+            with_cookie_trouble("failed to load cookies".into(), &[], &copy)
+                .contains("Could not copy Chrome cookie database")
+        );
+        // Nothing about cookies: the message as it was.
+        assert_eq!(
+            with_cookie_trouble(
+                "Video unavailable".into(),
+                &["a warning".into()],
+                &VecDeque::new()
+            ),
+            "Video unavailable"
+        );
     }
 
     #[test]

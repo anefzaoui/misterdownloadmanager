@@ -192,6 +192,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Mae ID cyfluniad NextDNS yn cynnwys chwe llythyren a digid (0-9, a-f).
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Enw proffil neu ei ffolder. Gwag: y proffil a ddefnyddiwyd ddiwethaf. Ar gyfer porwr sydd wedi'i adeiladu ar Gromiwm nad yw wedi'i restru (Helium, Thorium...), dewiswch Gromiwm a ffolder ei broffil.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Dewiswch yr iaith y mae Mister Download Manager yn dangos ei ffenestri ynddi:
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	Dewiswch ffolder y proffil
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	Ynysoedd Cook
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	Cwcis ar gyfer safleoedd fideo
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	Wedi'i gopïo i'r clipfwrdd.
@@ -1648,6 +1660,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	o ffeil cenllif
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	O'r porwr:
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1812,7 +1828,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Cuddio &categorïau
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	Cuddio tab
 #. text in a download's progress window; text in standard windows
@@ -1884,6 +1900,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	Yn y categorïau: dewislen y categori a ddewiswyd
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	yn y cylch allweddi sydd wedi'i gloi
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1924,6 +1944,11 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	Gosod yt-dlp
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Check for updates, after Update now downloaded it: unpacking and putting the new version in place
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Installing the update...	Yn gosod y diweddariad...
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -2646,6 +2671,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Dim dirprwy/SOCKS
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Ni ymatebodd unrhyw gylch allweddi system, felly cedwir mewngofnodion a chyfrineiriau yn ngyfluniadau MDM, na all ond chi eu darllen.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2767,6 +2796,9 @@
 #. text in the Scheduler window
 #, machine
 	October	Hydref
+#. option (radio button) in the Options window
+#, machine
+	Off	I ffwrdd
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	I ffwrdd: mae cenllif gorffenedig yn stopio, fel unrhyw lawrlwythiad.
@@ -2795,6 +2827,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	Ar macOS, dim ond gweinyddwr all drefnu deffro
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Ar Windows, gall Chrome, Edge a Brave gloi eu cwcis. Mae Firefox yn gweithio.
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Unwaith am
@@ -3028,6 +3064,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	Nid yw rhagolwg ar gael eto
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	Proffil (dewisol):
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -3045,6 +3085,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	Ffurfweddiad dirprwy / socks
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	gweinydd dirprwy
 #. label in the Options window
 #, machine
 	Proxy server address	Cyfeiriad gweinydd dirprwy
@@ -3084,6 +3128,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Ciwiau
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	Darllenir ar y cyfrifiadur hwn yn unig, ac anfonir i safle'r fideo yn unig.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3502,6 +3550,18 @@
 #, machine
 	Sign in in the browser	Mewngofnodi yn y porwr
 #. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	Cedwir mewngofnodion a chyfrineiriau yn y cylch allweddi macOS.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	Cedwir mewngofnodion a chyfrineiriau yn y cylch allweddi system (Gwasanaeth Cyfrinachol).
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	Cedwir mewngofnodion a chyfrineiriau yn Rheolwr Credential Windows.
+#. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
 	Signed in as {user} ({state})	Wedi mewngofnodi fel {user} ({state})
@@ -3667,6 +3727,14 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Started with gallery-dl {version}	Dechrau gyda gallery-dl {version}
+#. text in the Options window
+#. the same tooltip where no notification area (system tray) shows MDM's icon (some Linux desktops): its window starts minimized instead
+#, machine
+	Started with the computer, it starts minimized: no notification area shows its icon here	Wedi'i gychwyn gyda'r cyfrifiadur, mae'n cychwyn wedi'i leihau: nid oes unrhyw ardal hysbysu yn dangos ei eicon yma
+#. text in the Options window
+#. tooltip of "Launch Mister Download Manager on startup": started with the computer, MDM's window stays hidden, its icon in the notification area (system tray)
+#, machine
+	Started with the computer, it waits in the notification area	Wedi'i gychwyn gyda'r cyfrifiadur, mae'n aros yn yr ardal hysbysu
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
@@ -4075,10 +4143,22 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	anfonodd y gweinydd ran annisgwyl o'r ffeil ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Mae'r safle eisiau i chi fewngofnodi, hyd yn oed gyda chwcis eich porwr ar gyfer y dudalen hon. Mewngofnodwch iddo yn eich porwr, yna ceisiwch eto.
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Mae'r safle eisiau i chi fewngofnodi, hyd yn oed gyda chwcis {browser}. Mewngofnodwch iddo yn {browser}, yna chwiliwch am y dudalen eto.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Ni ellid nôl y symbolau: mae rhai llinellau o'r adroddiad yn dangos cyfeiriadau yn hytrach nag enwau (gall y datblygwyr eu darllen o hyd).
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Mae'r cylch allweddi system wedi'i gloi ac nid yw MDM yn ei ddatgloi, felly cedwir mewngofnodion a chyfrineiriau yn ngyfluniadau MDM, na all ond chi eu darllen.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4183,6 +4263,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Mae hyn angen ffmpeg
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Mae'r copi cludadwy hwn yn cadw mewngofnodion a chyfrineiriau yn ei osodiadau ei hun, wedi'u hamgryptio ar gyfer eich cyfrif Windows.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Mae'r copi cludadwy hwn yn cadw mewngofnodion a chyfrineiriau yn ei osodiadau ei hun, na all ond chi eu darllen.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4208,7 +4296,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Mae angen i chi fewngofnodi i weld y fideo hwn. Defnyddiwch y botwm Lawrlwytho fideo drosto yn eich porwr, sy'n trosglwyddo eich mewngofnodi.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Mae angen i chi fod wedi mewngofnodi i'r fideo hwn. Defnyddiwch y botwm Lawrlwytho fideo uwchben y fideo yn eich porwr, sy'n trosglwyddo eich mewngofnodi, neu dewiswch eich porwr yn Opsiynau → Mewngofnodi Safleoedd → Cwcis ar gyfer safleoedd fideo.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4585,14 +4673,6 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Mae chwiliadau fideo yn defnyddio yt-dlp (tua 23 MB, wedi'i wirio yn erbyn ei lofnod).
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	Ni all tudalennau fideo a thorrents ei ddefnyddio eto.
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	Ni all tudalennau fideo ei ddefnyddio eto.
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4671,6 +4751,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Mae Windows yn caniatáu amseryddion deffro dim ond tra'n plygio i mewn
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Ni ymatebodd Rheolwr Credential Windows, felly cedwir mewngofnodion a chyfrineiriau yn ngyfluniadau MDM, wedi'u hamgryptio ar gyfer eich cyfrif Windows.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4751,9 +4835,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	Eich system chi: {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	Ni all yt-dlp ddarllen cwcis {browser} tra bod {browser} ar agor. Caewch {browser} a chwiliwch am y dudalen eto, neu dewiswch Firefox yn Opsiynau → Mewngofnodi Safleoedd.
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	Ni allai yt-dlp gael yr allwedd i gwcis {browser} o gylch allweddi'r system. Datgloi'r cylch allweddi a chwiliwch am y dudalen eto.
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	Ni allai yt-dlp ddarllen cwcis {browser}: {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	Ni ddarganfu yt-dlp unrhyw gwcis {browser} ar y cyfrifiadur hwn. Gwiriwch y porwr a'i broffil yn Opsiynau → Mewngofnodi Safleoedd.
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	Nid yw yt-dlp wedi'i osod (Tasgau → Lawrlwytho fideo o dudalen yn ei osod)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	Mae yt-dlp yn mewngofnodi i safleoedd fideo gyda chwcis y porwr hwn, wedi'u darllen o'i ffeiliau ar y cyfrifiadur hwn yn unig. Fe'i defnyddir pan na throsglwyddodd estyniad y porwr gwcis y dudalen ei hun: cyfeiriad wedi'i gludo, rhestr chwarae.
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4786,6 +4891,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: wedi'i wirio pan fydd y lawrlwythiad yn gorffen
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	Mae {browser} yn cadw ei gwcis wedi'u cloi iddo'i hun ar Windows, felly ni all yt-dlp eu darllen. Dewiswch Firefox yn Opsiynau → Mewngofnodi Safleoedd, neu defnyddiwch y botwm Lawrlwytho fideo uwchben y fideo yn {browser}.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -5906,43 +6015,268 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/eiliad
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	Ffeil .torrent
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	Ychwanegu
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	Ychwanegwyd.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	Ychwanegwyd. Mae MDM yn darllen y cenllif: bydd yn ymuno â'r rhestr mewn eiliad.
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	Cyfeiriad neu ddolen magnet
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	Pawb
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	Awtomatig (yn ôl math y ffeil)
 #. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
-	in the locked keyring	yn y cylch allweddi sydd wedi'i gloi
+	Certificate (SHA-256): {fingerprint}	Tystysgrif (SHA-256): {fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	Dewiswch ffeil .torrent
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	Cod
 #. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: label before the 8-digit code
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Ni ymatebodd unrhyw gylch allweddi system, felly cedwir mewngofnodion a chyfrineiriau yn ngyfluniadau MDM, na all ond chi eu darllen.
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+	Code:	Cod:
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
 #, machine
-	proxy server	gweinydd dirprwy
+	Delete the file too	Dileu'r ffeil hefyd
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#. column title: a paired phone's or computer's name
 #, machine
-	Sign-ins and passwords are kept in the macOS keychain.	Cedwir mewngofnodion a chyfrineiriau yn y cylch allweddi macOS.
+	Device	Dyfais
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
 #, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	Cedwir mewngofnodion a chyfrineiriau yn y cylch allweddi system (Gwasanaeth Cyfrinachol).
+	Every local network address	Pob cyfeiriad rhwydwaith lleol
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	Anghofio'r ddyfais hon
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	Anghofio'r ddyfais hon? Bydd angen cod newydd arni i gysylltu eto.
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	o ddyfais pâr
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
 #, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	Cedwir mewngofnodion a chyfrineiriau yn Rheolwr Credential Windows.
+	It could not start: {error}	Ni allai ddechrau: {error}
 #. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. column title: when the device last reached MDM
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Mae'r cylch allweddi system wedi'i gloi ac nid yw MDM yn ei ddatgloi, felly cedwir mewngofnodion a chyfrineiriau yn ngyfluniadau MDM, na all ond chi eu darllen.
+	Last seen	Gwelwyd ddiwethaf
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	Gadewch i ffonau a chyfrifiaduron ar y rhwydwaith lleol reoli MDM
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#. Options → Remote: label before the choice of the address MDM listens on
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Mae'r copi cludadwy hwn yn cadw mewngofnodion a chyfrineiriau yn ei osodiadau ei hun, wedi'u hamgryptio ar gyfer eich cyfrif Windows.
+	Listen on:	Gwrando ar:
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Mae'r copi cludadwy hwn yn cadw mewngofnodion a chyfrineiriau yn ei osodiadau ei hun, na all ond chi eu darllen.
+	MDM can't be reached on the network now: Options → Remote says why.	Ni ellir cyrraedd MDM ar y rhwydwaith nawr: mae Opsiynau → Anghysbell yn dweud pam.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	Ni all MDM lawrlwytho'r cyfeiriad hwn.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	Ni allai MDM ei ychwanegu.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	Ni allai MDM ei wneud.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	Nid yw MDM yn ateb. Gwiriwch ei fod yn rhedeg ac ar yr un rhwydwaith.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	Nid yw MDM yn ateb. Yn ceisio eto...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	Nid yw MDM yn dangos cod nawr. Cliciwch Pâr dyfais yno yn gyntaf.
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	Mwy
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	Cod newydd
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	Dim lawrlwythiadau yma.
 #. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Ni ymatebodd Rheolwr Credential Windows, felly cedwir mewngofnodion a chyfrineiriau yn ngyfluniadau MDM, wedi'u hamgryptio ar gyfer eich cyfrif Windows.
+	No local network now: it starts when the computer joins one.	Dim rhwydwaith lleol nawr: mae'n dechrau pan fydd y cyfrifiadur yn ymuno ag un.
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	I ffwrdd: ni all unrhyw beth ar y rhwydwaith gyrraedd MDM.
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	Ar y cyfrifiadur, agorwch Opsiynau, yna Anghysbell, a chliciwch Pâr dyfais. Rhowch y cod y mae'n ei ddangos.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	Ar y ffôn, sganiwch y cod hwn gyda'r camera, neu agorwch y cyfeiriad a rhowch y cod.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	Ymlaen. Ar y ffôn, agorwch y cyfeiriad hwn:
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Dim ond dyfeisiau pâr sy'n gweld neu'n newid unrhyw beth. Y tro cyntaf, mae porwr y ffôn yn rhybuddio am dystysgrif MDM ei hun: ei hôl bys yw'r un uchod.
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	Pâr
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	Pâr dyfais
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	Pâr dyfais...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Pârwch â Mister Download Manager
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	Wedi'i baru
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	Dyfeisiau wedi'u paru:
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	Mae porth {port} yn cael ei ddefnyddio gan raglen arall: dewiswch un arall.
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	Mewn ciw
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	Rheoli o bell
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	Dileu {name} o'r rhestr?
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	Dechrau nawr
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	Mae'r newidiadau'n berthnasol pan fyddwch chi'n clicio Iawn.
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	Ni ellir defnyddio'r cod hwn mwyach.
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	Y cyfrifiadur hwn yn unig (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	Enw'r ddyfais hon
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	Mae'r ffeil hon yn rhy fawr i fod yn ffeil cenllif.
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	Nid yw hon yn ffeil cenllif.
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	Trowch y rheolaeth bell ymlaen yn gyntaf.
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	Arhoswch funud, yna ceisiwch eto.
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	Aros yn {queue}
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	Yn aros am y ddyfais. Mae'r cod yn gweithio am {time}.
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	Pryd
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	Cod anghywir. Dangoswch god newydd yn MDM a cheisiwch eto.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	Cod anghywir. Ceisiadau ar ôl: {n}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	Mae {device} wedi'i baru. Gall reoli MDM nawr.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{done} o {size}
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} yn rhydd

@@ -366,9 +366,26 @@ impl Scheduler {
         );
         let tree = r(o, 11.0, 44.0, 173.0, 379.0 + DY);
         let delete_key = self.tree(ui, icons, tree);
+        // The bottom row (the queue's buttons under the tree, the window's beside it), each as
+        // wide as its label in this language (#192): a longer one moves its neighbours along.
+        let row = winui::button_row(
+            &ui.painter().clone(),
+            &[
+                ("&New queue", 21.0, 73.0),
+                ("&Delete", 102.0, 73.0),
+                ("&Start now", 216.0, 73.0),
+                ("S&top", 297.0, 73.0),
+                ("&Help", 390.0, 73.0),
+                ("&Apply", 484.0, 73.0),
+                ("&Close", 565.0, 73.0),
+            ],
+            8.0,
+            21.0,
+            200.0,
+        );
         let new_queue = winui::button_light(
             ui,
-            r(o, 21.0, 432.0 + DY, 73.0, 21.0),
+            r(o, row[0].0, 432.0 + DY, row[0].1, 21.0),
             "&New queue",
             ButtonKind::Normal,
             false,
@@ -377,7 +394,7 @@ impl Scheduler {
         let deletable = self.selected >= 2 && self.selected < self.queues.len();
         let delete = winui::button_light(
             ui,
-            r(o, 102.0, 432.0 + DY, 73.0, 21.0),
+            r(o, row[1].0, 432.0 + DY, row[1].1, 21.0),
             // i18n: verb: delete the queue
             "&Delete",
             if deletable {
@@ -388,7 +405,15 @@ impl Scheduler {
             false,
         )
         .clicked();
-        winui::etched_v(&p, o.x + 197.0, o.y + 11.0, 442.0 + DY);
+        // The line between the panes runs down beside the buttons; it stops above them where a
+        // longer label takes a button across it.
+        let across = row[1].0 + row[1].1 > 197.0 - 4.0 || row[2].0 < 197.0 + 4.0;
+        let line_h = if across {
+            432.0 + DY - 6.0 - 11.0
+        } else {
+            442.0 + DY
+        };
+        winui::etched_v(&p, o.x + 197.0, o.y + 11.0, line_h);
 
         // ---- right pane ---------------------------------------------------------------
         let on_queue = self.selected < self.queues.len();
@@ -444,20 +469,20 @@ impl Scheduler {
                 ButtonKind::Disabled
             }
         };
-        let btn = |ui: &mut Ui, x: f32, label: &str, k: ButtonKind| {
-            winui::button_light(ui, r(o, x, 432.0 + DY, 73.0, 21.0), label, k, false).clicked()
+        let btn = |ui: &mut Ui, (x, w): (f32, f32), label: &str, k: ButtonKind| {
+            winui::button_light(ui, r(o, x, 432.0 + DY, w, 21.0), label, k, false).clicked()
         };
         // i18n: verb: start the queue now
         let start = btn(
             ui,
-            216.0,
+            row[2],
             crate::i18n::mark("&Start now"),
             kind(on_queue && !is_running),
         );
         // i18n: verb: stop the queue
-        let stop = btn(ui, 297.0, crate::i18n::mark("S&top"), kind(is_running));
+        let stop = btn(ui, row[3], crate::i18n::mark("S&top"), kind(is_running));
         // i18n: noun: button that opens the help
-        if btn(ui, 390.0, crate::i18n::mark("&Help"), ButtonKind::Normal) {
+        if btn(ui, row[4], crate::i18n::mark("&Help"), ButtonKind::Normal) {
             crate::help::open_page("queues-and-scheduler.md#the-scheduler-window");
         }
         let dirty = {
@@ -465,9 +490,9 @@ impl Scheduler {
             (&q, &l) != (&self.applied.0, &self.applied.1)
         };
         // i18n: verb: save the changes
-        let apply = btn(ui, 484.0, crate::i18n::mark("&Apply"), kind(dirty));
+        let apply = btn(ui, row[5], crate::i18n::mark("&Apply"), kind(dirty));
         // i18n: verb: close the window
-        let close = btn(ui, 565.0, crate::i18n::mark("&Close"), ButtonKind::Normal);
+        let close = btn(ui, row[6], crate::i18n::mark("&Close"), ButtonKind::Normal);
 
         if modal {
             return Outcome::Open;
@@ -799,17 +824,23 @@ impl Scheduler {
             "Exit Mister Download Manager when done",
             true,
         );
+        // The drop-down as wide as its choices in this language need (#192), widening to the
+        // left (its right end kept), up to 8 px after the caption, which stays whole.
+        let caption_end = winui::checkbox_caption_end(&p, 228.0, "Turn off computer when done");
+        let turn_off_w =
+            winui::combo_fit_width(&p, &TurnOff::LABELS, 119.0, 627.0 - (caption_end + 8.0));
+        let turn_off_x = 627.0 - turn_off_w;
         winui::checkbox_light_until(
             ui,
             at(228.0, 384.0 + DY),
             &mut f.turn_off_on,
             "Turn off computer when done",
             true,
-            Some(o.x + 508.0),
+            Some(o.x + turn_off_x),
         );
         if let Some(i) = winui::combo_light(
             ui,
-            r(o, 508.0, 383.0 + DY, 119.0, 21.0),
+            r(o, turn_off_x, 383.0 + DY, turn_off_w, 21.0),
             &TurnOff::LABELS,
             f.turn_off,
             f.turn_off_on,

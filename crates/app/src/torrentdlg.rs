@@ -18,7 +18,7 @@ use crate::torrents::Host;
 use crate::winui::{self, ButtonKind, fill_l as fill, r, text};
 
 /// How long a magnet may take to get its file list from peers.
-const METADATA_WAIT: Duration = Duration::from_secs(180);
+pub const METADATA_WAIT: Duration = Duration::from_secs(180);
 const ROW: f32 = 17.0;
 
 type Slot = Arc<Mutex<Option<Result<Meta, String>>>>;
@@ -41,6 +41,11 @@ pub struct TorrentAdd {
     pub from_magnet: bool,
     /// Download in order (#39): the files' start first, to watch while it downloads.
     pub in_order: bool,
+    /// The queue it waits in, chosen already (a paired device's, #141); None: Download Later
+    /// asks as it does for any download.
+    pub queue: Option<usize>,
+    /// No progress window when it starts (sent from a paired device).
+    pub quiet: bool,
 }
 
 pub struct TorrentDialog {
@@ -83,7 +88,7 @@ pub struct TorrentDialog {
 
 /// The category of a torrent: its largest file's.
 /// Every torrent goes to the Torrents category and its folder (D-021), whatever it holds.
-fn category_of(_meta: &Meta) -> Category {
+pub fn category_of(_meta: &Meta) -> Category {
     Category::Torrents
 }
 
@@ -405,6 +410,8 @@ impl TorrentDialog {
                     start_now: self.start_now.unwrap_or(true),
                     from_magnet: self.from_magnet,
                     in_order: self.in_order,
+                    queue: None,
+                    quiet: false,
                 })
             }
         }
@@ -540,11 +547,20 @@ impl TorrentDialog {
 
         self.file_list(ui, r(o, 11.0, 58.0, 578.0, 262.0));
 
-        // Select all / none, and what is chosen.
+        // Select all / none, each as wide as its label in this language (#192), and what is chosen.
         let has = self.meta.is_some();
+        let [all_at, none_at] = winui::buttons_from_left(
+            &p,
+            11.0,
+            6.0,
+            &[("Select all", 90.0), ("Select none", 90.0)],
+            160.0,
+        )[..] else {
+            unreachable!("two buttons")
+        };
         if winui::button(
             ui,
-            r(o, 11.0, 328.0, 90.0, 21.0),
+            r(o, all_at.0, 328.0, all_at.1, 21.0),
             "Select all",
             kind(has, false),
             false,
@@ -557,7 +573,7 @@ impl TorrentDialog {
         }
         if winui::button(
             ui,
-            r(o, 107.0, 328.0, 90.0, 21.0),
+            r(o, none_at.0, 328.0, none_at.1, 21.0),
             "Select none",
             kind(has, false),
             false,
@@ -634,20 +650,31 @@ impl TorrentDialog {
             }
         }
 
+        // The bottom row, each button as wide as its label in this language (#192).
+        let [now_at, later_at, cancel_at] = winui::buttons_to_right(
+            &p,
+            589.0,
+            6.0,
+            &[("Download Now", 105.0), ("Later", 91.0), ("Cancel", 91.0)],
+            160.0,
+        )[..] else {
+            unreachable!("three buttons")
+        };
         // #39: its files' start first, to watch a video while it downloads (also later, from
-        // its right-click menu).
-        winui::checkbox(
+        // its right-click menu). Its caption stops before the buttons.
+        winui::checkbox_until(
             ui,
             pos2(o.x + 14.0, o.y + 432.0),
             &mut self.in_order,
             // i18n: Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
             "Download in order",
             has,
+            Some(o.x + now_at.0),
         );
         let ready = has && count > 0 && !self.folder.trim().is_empty() && !busy;
         let now = winui::button(
             ui,
-            r(o, 290.0, 428.0, 105.0, 21.0),
+            r(o, now_at.0, 428.0, now_at.1, 21.0),
             "Download Now",
             kind(ready, true),
             false,
@@ -657,7 +684,7 @@ impl TorrentDialog {
             || (ready && winui::enter_pressed(ui));
         let later = winui::button(
             ui,
-            r(o, 401.0, 428.0, 91.0, 21.0),
+            r(o, later_at.0, 428.0, later_at.1, 21.0),
             // i18n: button: add it now, start downloading later
             "Later",
             kind(ready, false),
@@ -667,7 +694,7 @@ impl TorrentDialog {
         .clicked();
         let cancel = winui::button(
             ui,
-            r(o, 498.0, 428.0, 91.0, 21.0),
+            r(o, cancel_at.0, 428.0, cancel_at.1, 21.0),
             "Cancel",
             ButtonKind::Normal,
             false,

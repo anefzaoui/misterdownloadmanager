@@ -230,6 +230,14 @@ pub struct Settings {
     /// The local automation API (beyond IDM): status queries over the command channel. Off by
     /// default; `misterdownloadmanager-cli api on` turns it on.
     pub automation_api: bool,
+    /// Options → Remote (#141, beyond IDM): paired phones and computers on the local network
+    /// add and control downloads (crates/remote). Off by default.
+    pub remote_on: bool,
+    /// Its port.
+    pub remote_port: u16,
+    /// Where it listens: "" every local network address, `127.0.0.1` this computer only, or
+    /// one address (`mdm_remote::addrs::chosen`).
+    pub remote_listen: String,
     /// Torrents keep sharing after they finish (D-018: off; a finished torrent stops, like any
     /// download).
     pub torrent_keep_sharing: bool,
@@ -276,6 +284,12 @@ pub struct Settings {
     /// Download video from a page: the subtitles last chosen (#68), offered again for the
     /// next video when it has that language (none at first).
     pub video_subs: mdm_tools::video::Subs,
+    /// Options → Sites Logins → Cookies for video sites (#229): the browser whose cookies
+    /// yt-dlp reads on this computer when the extension passed none (yt-dlp's name: `firefox`,
+    /// `chrome`...; empty: off, the default), and its profile (a name or a folder; empty: the
+    /// browser's last used). A settings file from before has neither: off.
+    pub video_cookies: String,
+    pub video_cookies_profile: String,
     /// Options → Archives (#37): extract an archive when its download completes (a Link grabber
     /// package says so itself). Off, as a browser leaves archives alone.
     pub extract_auto: bool,
@@ -408,6 +422,9 @@ impl Default for Settings {
             debrid_torrents: false,
             sounds: Default::default(),
             automation_api: false,
+            remote_on: false,
+            remote_port: mdm_remote::PORT,
+            remote_listen: String::new(),
             torrent_keep_sharing: false,
             torrent_associations: false,
             torrent_incoming: true,
@@ -431,6 +448,8 @@ impl Default for Settings {
             drop_target: false,
             drop_target_pos: None,
             video_subs: Default::default(),
+            video_cookies: String::new(),
+            video_cookies_profile: String::new(),
             extract_auto: false,
             extract_delete: false,
             extract_subfolder: 0,
@@ -935,6 +954,19 @@ pub fn share_route(route: mdm_engine::Route) {
     mdm_tools::proc::set_route(route);
 }
 
+impl Settings {
+    /// Options → Sites Logins → Cookies for video sites, as yt-dlp is given it (None: off, or
+    /// a browser yt-dlp doesn't read).
+    pub fn video_cookies(&self) -> Option<mdm_tools::proc::BrowserCookies> {
+        mdm_tools::proc::BrowserCookies::new(&self.video_cookies, &self.video_cookies_profile)
+    }
+}
+
+/// Keep every yt-dlp run on Options' cookies for video sites (cheap when they didn't change).
+pub fn share_video_cookies(s: &Settings) {
+    mdm_tools::proc::set_browser_cookies(s.video_cookies());
+}
+
 /// The network adapter MDM's connections go through now (#35).
 pub fn own_route() -> mdm_engine::Route {
     OWN_ROUTE.read().unwrap().clone()
@@ -1090,6 +1122,9 @@ mod tests {
         // An older settings file has no switch: locked.
         let old: Settings = serde_json::from_str(r#"{"max_connections": 64}"#).unwrap();
         assert!(!old.many_connections);
+        // Nor cookies for video sites (#229): off.
+        assert_eq!(old.video_cookies(), None);
+        assert_eq!(Settings::default().video_cookies(), None);
         assert_eq!(old.connections_for(&url("https://fast.org/a")), 32);
         // IDM's default: no proxy, but "use the browser's proxy" ticked — the browser's is
         // Windows' (none set there: direct).
@@ -1193,6 +1228,10 @@ pub(crate) mod sealed {
     }
 
     pub(crate) fn open(stored: &str) -> String {
+        // Read as the disk has it (store::keep_generations only checks that a list reads).
+        if crate::secrets::is_prepared() {
+            return stored.to_owned();
+        }
         if stored.starts_with(REF) {
             return crate::secrets::vault().open(stored);
         }

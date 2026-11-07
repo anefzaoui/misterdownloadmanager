@@ -7,6 +7,7 @@
 //! offer; `/show extension` brings it back.
 
 use std::path::PathBuf;
+use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::time::Duration;
 
 use egui::{Pos2, Ui};
@@ -38,6 +39,8 @@ pub struct Extension {
     registered: bool,
     /// When the status files were read last (once a second, not every frame).
     looked: std::time::Instant,
+    /// Set it up's runs seen finished ([`set_up_finished`]).
+    set_up_seen: u64,
 }
 
 /// Whether `row` (a browser as the window lists it) is among the browsers seen (as Options
@@ -82,6 +85,7 @@ impl Extension {
             seen: seen_names(),
             registered: registered(),
             looked: std::time::Instant::now(),
+            set_up_seen: 0,
         }
     }
 
@@ -89,7 +93,8 @@ impl Extension {
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<()> {
         // The host marks the extension seen when a browser starts it: look again now and then
         // (each browser's own, as each adds it).
-        if self.looked.elapsed() >= Duration::from_secs(1) {
+        if self.looked.elapsed() >= Duration::from_secs(1) || set_up_finished(&mut self.set_up_seen)
+        {
             self.looked = std::time::Instant::now();
             self.connected = mdm_ipc::extension::seen();
             self.seen = seen_names();
@@ -163,11 +168,21 @@ impl Extension {
                 },
                 ink,
             );
+            let label = if page.is_none() {
+                // i18n: button in the browser extension's window: open the tutorial that adds the extension
+                "Show me how"
+            } else {
+                // i18n: button in the browser extension's window: open the extension's page in that browser
+                "Add the extension"
+            };
+            // As wide as its label in this language (#192).
+            let (add_x, add_w) =
+                winui::buttons_to_right(&p, W - 18.0, 8.0, &[(label, 150.0)], 220.0)[0];
             // This browser's extension is there already: said, before its button.
             if is_seen(&self.seen, name) {
                 winui::text_right(
                     &p,
-                    o.x + W - 18.0 - 150.0 - 10.0,
+                    o.x + add_x - 10.0,
                     o.y + y + 16.0,
                     &format!(
                         "\u{2714} {}",
@@ -177,16 +192,9 @@ impl Extension {
                     winui::SUCCESS(),
                 );
             }
-            let label = if page.is_none() {
-                // i18n: button in the browser extension's window: open the tutorial that adds the extension
-                "Show me how"
-            } else {
-                // i18n: button in the browser extension's window: open the extension's page in that browser
-                "Add the extension"
-            };
             let add = winui::button(
                 ui,
-                r(o, W - 18.0 - 150.0, y, 150.0, 25.0),
+                r(o, add_x, y, add_w, 25.0),
                 label,
                 if k == 0 {
                     ButtonKind::Accent
@@ -208,7 +216,7 @@ impl Extension {
                     #[cfg(unix)]
                     Some(program) => crate::unix::open_in(program, url),
                     None => {
-                        let _ = open::that_detached(url);
+                        crate::launch::open(url);
                     }
                 }
             }
@@ -218,6 +226,9 @@ impl Extension {
         // extension could reach the app, so that comes first, with the fix.
         let y = h - 84.0;
         if !self.registered {
+            // As wide as its label in this language (#192); the paragraph ends 10 px before it.
+            let (fix_x, fix_w) =
+                winui::buttons_to_right(&p, W - 18.0, 8.0, &[("Set it up", 110.0)], 180.0)[0];
             winui::paragraph(
                 &p,
                 o.x + 18.0,
@@ -226,12 +237,12 @@ impl Extension {
                     "Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.",
                 ),
                 winui::ERROR(),
-                o.x + W - 18.0 - 120.0,
+                o.x + fix_x - 10.0,
                 14.0,
             );
             let fix = winui::button(
                 ui,
-                r(o, W - 18.0 - 110.0, y - 4.0, 110.0, 25.0),
+                r(o, fix_x, y - 4.0, fix_w, 25.0),
                 // i18n: button in the browser extension's window: register MDM's helper with the browsers
                 "Set it up",
                 ButtonKind::Accent,
@@ -239,8 +250,7 @@ impl Extension {
                 None,
             );
             if fix.clicked() {
-                set_up();
-                self.registered = registered();
+                set_up(ui.ctx());
             }
         }
         let (line, color) = if !self.registered {
@@ -279,9 +289,18 @@ impl Extension {
         {
             crate::help::open_page(mdm_ipc::extension::GUIDE_DOC);
         }
+        // As wide as their labels in this language (#192), Don't ask again only while no
+        // extension has reached MDM.
+        let row: Vec<(&str, f32)> = if self.connected {
+            vec![("Close", 90.0)]
+        } else {
+            vec![("Don't ask again", 130.0), ("Close", 90.0)]
+        };
+        let placed = winui::buttons_to_right(&p, W - 18.0, 8.0, &row, 200.0);
+        let close_at = placed[placed.len() - 1];
         let close = winui::button(
             ui,
-            r(o, W - 18.0 - 90.0, y, 90.0, 25.0),
+            r(o, close_at.0, y, close_at.1, 25.0),
             "Close",
             ButtonKind::Default,
             false,
@@ -294,7 +313,7 @@ impl Extension {
             // i18n: button in the browser extension's window: stop offering it at each start
             let never = winui::button(
                 ui,
-                r(o, W - 18.0 - 90.0 - 8.0 - 130.0, y, 130.0, 25.0),
+                r(o, placed[0].0, y, placed[0].1, 25.0),
                 "Don't ask again",
                 ButtonKind::Normal,
                 false,
@@ -324,17 +343,52 @@ pub fn registered() -> bool {
     return crate::unix::host_registered();
 }
 
+/// Set it up's runs finished so far: a window that shows the checks reads them again when this
+/// changes ([`set_up_finished`]).
+static SET_UP_DONE: AtomicU64 = AtomicU64::new(0);
+/// A Set it up is running (a second press waits for it).
+static SETTING_UP: AtomicBool = AtomicBool::new(false);
+/// How long the native host's `--register` has (it writes a few files, or registry keys).
+const SET_UP_LIMIT: Duration = Duration::from_secs(20);
+
 /// Register it now, for a copy installed without it (the setup's box unticked): the native
-/// host's own `--register`, for this user, waited for (the checks read the result next).
-pub fn set_up() {
-    #[cfg(unix)]
-    crate::unix::register_browsers_now();
-    #[cfg(windows)]
-    if let Ok(exe) = std::env::current_exe() {
-        let _ = std::process::Command::new(exe.with_file_name("misterdownloadmanager-nmhost.exe"))
-            .arg("--register")
-            .status();
+/// host's own `--register`, for this user, on a thread of its own (a program waited for on the
+/// window's thread freezes it for as long as the program takes, #222). The window repaints when
+/// it's done, and [`set_up_finished`] tells the checks to read the result.
+pub fn set_up(ctx: &egui::Context) {
+    if SETTING_UP.swap(true, Ordering::AcqRel) {
+        return;
     }
+    let ctx = ctx.clone();
+    let started = std::thread::Builder::new()
+        .name("set-up".into())
+        .spawn(move || {
+            #[cfg(unix)]
+            crate::unix::register_browsers_now(SET_UP_LIMIT);
+            #[cfg(windows)]
+            if let Ok(exe) = std::env::current_exe() {
+                crate::launch::run_within(
+                    std::process::Command::new(
+                        exe.with_file_name("misterdownloadmanager-nmhost.exe"),
+                    )
+                    .arg("--register"),
+                    SET_UP_LIMIT,
+                );
+            }
+            SETTING_UP.store(false, Ordering::Release);
+            SET_UP_DONE.fetch_add(1, Ordering::AcqRel);
+            ctx.request_repaint();
+        });
+    if started.is_err() {
+        SETTING_UP.store(false, Ordering::Release);
+    }
+}
+
+/// Whether a Set it up finished since `seen` was last given here (it is then brought up to
+/// date): the caller reads the checks again.
+pub fn set_up_finished(seen: &mut u64) -> bool {
+    let done = SET_UP_DONE.load(Ordering::Acquire);
+    std::mem::replace(seen, done) != done
 }
 
 /// One line of Options → General → Test browser integration: what was checked, whether it

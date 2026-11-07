@@ -2,7 +2,7 @@
 
 [← Back to docs index](README.md)
 
-Open **Downloads → Options**, or click **Options** on the toolbar. The window has nine pages on two rows of tabs. **OK** saves your changes; closing the window or pressing **Esc** throws them away.
+Open **Downloads → Options**, or click **Options** on the toolbar. The window has twelve pages on two rows of tabs. **OK** saves your changes; closing the window or pressing **Esc** throws them away.
 
 Some buttons are greyed. They belong to features that aren't built yet.
 
@@ -11,7 +11,7 @@ Some buttons are greyed. They belong to features that aren't built yet.
 ![Options on its General page: start with the system, the clipboard, browser integration and the browsers MDM takes downloads from](images/help/options-general.webp)
 *General: how MDM starts, and what it takes from the clipboard and the browsers.*
 
-- **Launch Mister Download Manager on startup** — start MDM when you sign in to Windows. Off by default. Greyed in a [portable copy](portable.md), which writes nothing to the registry.
+- **Launch Mister Download Manager on startup** — start MDM when you sign in to Windows. It starts in the notification area, its window hidden, with its downloads, queues and Scheduler running; click its icon (or start MDM again) to show the window. On Linux and macOS it starts with your session the same way; where no notification area shows MDM's icon (some Linux desktops), it starts minimized, and the option's tooltip says so. MDM waits for the notification area up to 30 seconds after making its icon, its window hidden, as a desktop's can come up after MDM at sign-in. Off by default. Greyed in a [portable copy](portable.md), which writes nothing to the registry.
 - **Offer to download links copied to the clipboard** — when you copy a link whose file type is on the **File types** page, **Download File Info** opens with it, ready to start (or the download starts at once, with **Show start download dialog** off). On by default.
 - **Use advanced browser integration** — let the browser extension hand downloads to MDM. Turn it off to keep every download in the browser.
 - **Confirm before deleting downloads** — ask before taking downloads off the list. On by default; **Don't show this dialog again** in that question turns it off, and ticking it here turns it back on.
@@ -107,6 +107,11 @@ More in [Connections and speed](connections-and-speed.md).
 
 User names and passwords for sites that ask for them. **New** adds a row: the site (with a path if the login is only for part of it), the user name and the password. **Edit** and **Remove** change or delete the selected row. MDM uses the login for every download from that site. A login typed in **Add URL** (**Use authorization**) takes priority for that one download.
 
+**Cookies for video sites** — for videos that play only when you're signed in (YouTube's "Sign in to confirm you're not a bot"):
+
+- **Off** (the default) — yt-dlp gets cookies only from the browser's extension, when you use the button over a video.
+- **From browser** — yt-dlp reads the chosen browser's cookies on this computer (Firefox, Chrome, Edge, Brave, Opera, Vivaldi, Chromium, Whale; Safari on macOS) for every video it looks up or downloads, pasted addresses included. When the extension passed the page's own cookies, those are used instead. **Profile (optional)**: a profile's name or folder (**...** chooses one); empty, the one used last. Chrome, Edge and Brave lock their cookies on Windows: Firefox works. See [Sites that want you signed in](video.md#sites-that-want-you-signed-in).
+
 ## Accounts
 
 ![Options on its Accounts page: debrid service accounts](images/help/options-accounts.webp)
@@ -144,6 +149,21 @@ Archives (zip, 7z, rar, tar, gz, xz), and [Link grabber](link-grabber.md).
 - Whether **7-Zip** was found: 7z and RAR archives need it.
 - **Look links up when they arrive (name, size, online)** — Link grabber asks each server about its file (on by default).
 - **Hide web pages** — Link grabber's default for the same box (on).
+
+## Remote
+
+![Options: Remote](images/options-remote.png)
+
+Control MDM from your phone or another computer on the local network: see
+[Control MDM from your phone](remote-control.md).
+
+- **Let phones and computers on the local network control MDM** (off by default).
+- **Listen on** — every local network address (the default), this computer only, or one address.
+- **Port** — 8463 by default.
+- **Status** — what it is doing, the address to open on the phone, and the certificate's
+  fingerprint.
+- **Paired devices** — **Pair a device...** shows a QR code and a code; **Remove** unpairs the
+  device selected, at once.
 
 ## Elsewhere
 

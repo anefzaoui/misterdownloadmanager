@@ -192,6 +192,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	ایک NextDNS کنفیگریشن ID چھ حروف اور ہندسوں (0-9, a-f) پر مشتمل ہوتی ہے۔
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	پروفائل کا نام یا اس کا فولڈر۔ خالی: آخری استعمال شدہ پروفائل۔ Chromium پر بنے ہوئے براؤزر کے لیے جو درج نہیں ہے (Helium, Thorium...)، Chromium اور اس کے پروفائل کا فولڈر منتخب کریں۔
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	وہ زبان منتخب کریں جس میں Mister Download Manager اپنی ونڈوز دکھاتا ہے:
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	پروفائل کا فولڈر منتخب کریں
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	کک جزائر
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	ویڈیو سائٹس کے لیے کوکیز
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	کلپ بورڈ پر کاپی ہو گیا۔
@@ -1648,6 +1660,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	ایک ٹورنٹ فائل سے
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	براؤزر سے:
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1812,7 +1828,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	زمرے چھپائیں(&C)
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	ٹیب چھپائیں
 #. text in a download's progress window; text in standard windows
@@ -1884,6 +1900,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	زمروں میں: منتخب زمرے کا مینو
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	مقفل کیرنگ میں
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1924,6 +1944,11 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	yt-dlp انسٹال کریں
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Check for updates, after Update now downloaded it: unpacking and putting the new version in place
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Installing the update...	اپ ڈیٹ انسٹال ہو رہا ہے...
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -2646,6 +2671,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	کوئی پراکسی/SOCKS نہیں
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	سسٹم کیرنگ نے جواب نہیں دیا، لہذا سائن ان اور پاس ورڈز MDM کی سیٹنگز میں رکھے جاتے ہیں، جنہیں صرف آپ پڑھ سکتے ہیں۔
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2767,6 +2796,9 @@
 #. text in the Scheduler window
 #, machine
 	October	اکتوبر
+#. option (radio button) in the Options window
+#, machine
+	Off	آف
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	آف: ایک مکمل ٹورنٹ رک جاتا ہے، کسی بھی ڈاؤن لوڈ کی طرح۔
@@ -2795,6 +2827,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	macOS پر، صرف ایک منتظم ہی ویک کا شیڈول کر سکتا ہے
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Windows پر، Chrome، Edge اور Brave اپنی کوکیز کو لاک کر سکتے ہیں۔ Firefox کام کرتا ہے۔
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	ایک بار پر
@@ -3028,6 +3064,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	پیش منظر ابھی دستیاب نہیں ہے
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	پروفائل (اختیاری):
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -3045,6 +3085,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	پراکسی / SOCKS کنفیگریشن
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	پراکسی سرور
 #. label in the Options window
 #, machine
 	Proxy server address	پراکسی سرور کا پتہ
@@ -3084,6 +3128,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	قطاریں
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	صرف اس کمپیوٹر پر پڑھا جائے گا، اور صرف ویڈیو کی سائٹ پر بھیجا جائے گا۔
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3502,6 +3550,18 @@
 #, machine
 	Sign in in the browser	براؤزر میں سائن ان کریں
 #. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	سائن ان اور پاس ورڈز macOS کیچین میں رکھے جاتے ہیں۔
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	سائن ان اور پاس ورڈز سسٹم کیرنگ (Secret Service) میں رکھے جاتے ہیں۔
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	سائن ان اور پاس ورڈز Windows Credential Manager میں رکھے جاتے ہیں۔
+#. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
 	Signed in as {user} ({state})	{user} کے طور پر سائن ان کیا گیا ({state})
@@ -3667,6 +3727,14 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Started with gallery-dl {version}	gallery-dl {version} کے ساتھ شروع کیا گیا
+#. text in the Options window
+#. the same tooltip where no notification area (system tray) shows MDM's icon (some Linux desktops): its window starts minimized instead
+#, machine
+	Started with the computer, it starts minimized: no notification area shows its icon here	کمپیوٹر کے ساتھ شروع ہونے پر، یہ کم سے کم ہو کر شروع ہوتا ہے: یہاں کوئی اطلاع کا علاقہ اس کا آئیکن نہیں دکھاتا
+#. text in the Options window
+#. tooltip of "Launch Mister Download Manager on startup": started with the computer, MDM's window stays hidden, its icon in the notification area (system tray)
+#, machine
+	Started with the computer, it waits in the notification area	کمپیوٹر کے ساتھ شروع ہونے پر، یہ اطلاع کے علاقے میں انتظار کرتا ہے
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
@@ -4075,10 +4143,22 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	سرور نے فائل کا ایک غیر متوقع حصہ بھیجا ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	سائٹ آپ کو سائن ان کرنا چاہتی ہے، اس صفحے کے لیے آپ کے براؤزر کی کوکیز کے ساتھ بھی۔ اپنے براؤزر میں سائن ان کریں، پھر دوبارہ کوشش کریں۔
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	سائٹ آپ کو سائن ان کرنا چاہتی ہے، یہاں تک کہ {browser} کی کوکیز کے ساتھ بھی۔ {browser} میں سائن ان کریں، پھر صفحہ دوبارہ تلاش کریں۔
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	علامتیں حاصل نہیں کی جا سکیں: رپورٹ کی کچھ لائنیں ناموں کے بجائے ایڈریسز دکھاتی ہیں (ڈویلپرز انہیں پھر بھی پڑھ سکتے ہیں)۔
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	سسٹم کیرنگ مقفل ہے اور MDM اسے ان لاک نہیں کرتا، لہذا سائن ان اور پاس ورڈز MDM کی سیٹنگز میں رکھے جاتے ہیں، جنہیں صرف آپ پڑھ سکتے ہیں۔
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4183,6 +4263,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	اس کے لیے ffmpeg درکار ہے
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	یہ پورٹیبل کاپی سائن ان اور پاس ورڈز اپنی سیٹنگز میں رکھتی ہے، جو آپ کے Windows اکاؤنٹ کے لیے انکرپٹڈ ہیں۔
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	یہ پورٹیبل کاپی سائن ان اور پاس ورڈز اپنی سیٹنگز میں رکھتی ہے، جنہیں صرف آپ پڑھ سکتے ہیں۔
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4208,7 +4296,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	اس ویڈیو کے لیے آپ کو سائن ان ہونا ضروری ہے۔ اپنے براؤزر میں اس کے اوپر ڈاؤن لوڈ ویڈیو بٹن استعمال کریں، جو آپ کے سائن ان کو آگے بڑھاتا ہے۔
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	اس ویڈیو کے لیے آپ کو سائن ان ہونا ضروری ہے۔ اپنے براؤزر میں اس کے اوپر ڈاؤن لوڈ ویڈیو بٹن استعمال کریں، جو آپ کے سائن ان کو آگے بڑھاتا ہے، یا Options → Sites Logins → Cookies for video sites میں اپنا براؤزر منتخب کریں۔
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4585,14 +4673,6 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ویڈیو کی تلاش yt-dlp استعمال کرتی ہے (تقریبا 23 MB، اس کے دستخط کے خلاف جانچ کی گئی)۔
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	ویڈیو کے صفحات اور ٹورنٹس اسے ابھی استعمال نہیں کر سکتے۔
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	ویڈیو کے صفحات اسے ابھی استعمال نہیں کر سکتے۔
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4671,6 +4751,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows ویک ٹائمرز کی اجازت صرف پلگ ان ہونے پر دیتا ہے
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Credential Manager نے جواب نہیں دیا، لہذا سائن ان اور پاس ورڈز MDM کی سیٹنگز میں رکھے جاتے ہیں، جو آپ کے Windows اکاؤنٹ کے لیے انکرپٹڈ ہیں۔
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4751,9 +4835,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	آپ کے سسٹم کا: {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	جب {browser} کھلا ہو تو yt-dlp {browser} کی کوکیز نہیں پڑھ سکتا۔ {browser} کو بند کریں اور صفحہ دوبارہ تلاش کریں، یا Options → Sites Logins میں Firefox منتخب کریں۔
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp سسٹم کے کیرنگ سے {browser} کی کوکیز کی کلید حاصل نہیں کر سکا۔ کیرنگ کو ان لاک کریں اور صفحہ دوبارہ تلاش کریں۔
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp {browser} کی کوکیز نہیں پڑھ سکا: {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp کو اس کمپیوٹر پر {browser} کی کوئی کوکیز نہیں ملی۔ Options → Sites Logins میں براؤزر اور اس کے پروفائل کو چیک کریں۔
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp انسٹال نہیں ہے (ٹاسکس → صفحہ سے ویڈیو ڈاؤن لوڈ کریں اسے انسٹال کرتا ہے)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp اس براؤزر کی کوکیز کے ساتھ ویڈیو سائٹس میں سائن ان کرتا ہے، جو صرف اس کمپیوٹر پر اس کی فائلوں سے پڑھی جاتی ہیں۔ اس وقت استعمال ہوتا ہے جب براؤزر کی ایکسٹینشن نے صفحہ کی اپنی کوکیز پاس نہیں کیں: ایک پیسٹ شدہ پتہ، ایک پلے لسٹ۔
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4786,6 +4891,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: ڈاؤن لوڈ مکمل ہونے پر چیک کیا گیا
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} Windows پر اپنی کوکیز کو اپنے لیے لاک رکھتا ہے، لہذا yt-dlp انہیں نہیں پڑھ سکتا۔ Options → Sites Logins میں Firefox منتخب کریں، یا {browser} میں ویڈیو کے اوپر ڈاؤن لوڈ ویڈیو بٹن استعمال کریں۔
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -5906,43 +6015,272 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/سیکنڈ
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent فائل
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	شامل کریں
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	شامل کر دیا گیا۔
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	شامل کر دیا گیا۔ MDM ٹورنٹ پڑھ رہا ہے: یہ ایک لمحے میں فہرست میں شامل ہو جائے گا۔
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	ایڈریس یا میگنیٹ لنک
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	سب
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	خودکار (فائل کی قسم کے لحاظ سے)
 #. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
-	in the locked keyring	مقفل کیرنگ میں
+	Certificate (SHA-256): {fingerprint}	سرٹیفکیٹ (SHA-256): {fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	.torrent فائل منتخب کریں
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	کوڈ
 #. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: label before the 8-digit code
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	سسٹم کیرنگ نے جواب نہیں دیا، لہذا سائن ان اور پاس ورڈز MDM کی سیٹنگز میں رکھے جاتے ہیں، جنہیں صرف آپ پڑھ سکتے ہیں۔
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+	Code:	کوڈ:
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
 #, machine
-	proxy server	پراکسی سرور
+	Delete the file too	فائل بھی حذف کریں
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#. column title: a paired phone's or computer's name
 #, machine
-	Sign-ins and passwords are kept in the macOS keychain.	سائن ان اور پاس ورڈز macOS کیچین میں رکھے جاتے ہیں۔
+	Device	آلہ
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
 #, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	سائن ان اور پاس ورڈز سسٹم کیرنگ (Secret Service) میں رکھے جاتے ہیں۔
+	Every local network address	ہر مقامی نیٹ ورک ایڈریس
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	اس آلے کو بھول جائیں
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	اس آلے کو بھول جائیں؟ دوبارہ کنیکٹ کرنے کے لیے اسے ایک نئے کوڈ کی ضرورت ہوگی۔
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	ایک جوڑا بنائے گئے آلے سے
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
 #, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	سائن ان اور پاس ورڈز Windows Credential Manager میں رکھے جاتے ہیں۔
+	It could not start: {error}	یہ شروع نہیں ہو سکا: {error}
 #. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. column title: when the device last reached MDM
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	سسٹم کیرنگ مقفل ہے اور MDM اسے ان لاک نہیں کرتا، لہذا سائن ان اور پاس ورڈز MDM کی سیٹنگز میں رکھے جاتے ہیں، جنہیں صرف آپ پڑھ سکتے ہیں۔
+	Last seen	آخری بار دیکھا گیا
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	مقامی نیٹ ورک پر موجود فونز اور کمپیوٹرز کو MDM کو کنٹرول کرنے دیں
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#. Options → Remote: label before the choice of the address MDM listens on
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	یہ پورٹیبل کاپی سائن ان اور پاس ورڈز اپنی سیٹنگز میں رکھتی ہے، جو آپ کے Windows اکاؤنٹ کے لیے انکرپٹڈ ہیں۔
+	Listen on:	اس پر سنیں:
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	یہ پورٹیبل کاپی سائن ان اور پاس ورڈز اپنی سیٹنگز میں رکھتی ہے، جنہیں صرف آپ پڑھ سکتے ہیں۔
+	MDM can't be reached on the network now: Options → Remote says why.	MDM کو اب نیٹ ورک پر نہیں پہنچا جا سکتا: آپشنز → ریموٹ بتاتا ہے کیوں۔
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	MDM اس ایڈریس کو ڈاؤن لوڈ نہیں کر سکتا۔
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	MDM اسے شامل نہیں کر سکا۔
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	MDM اسے نہیں کر سکا۔
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM جواب نہیں دے رہا ہے۔ چیک کریں کہ یہ چل رہا ہے اور اسی نیٹ ورک پر ہے۔
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM جواب نہیں دے رہا ہے۔ دوبارہ کوشش کر رہا ہے...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	MDM اب کوئی کوڈ نہیں دکھا رہا ہے۔ پہلے وہاں ایک آلہ جوڑیں پر کلک کریں۔
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	مزید
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	نیا کوڈ
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	یہاں کوئی ڈاؤن لوڈز نہیں ہیں۔
 #. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Credential Manager نے جواب نہیں دیا، لہذا سائن ان اور پاس ورڈز MDM کی سیٹنگز میں رکھے جاتے ہیں، جو آپ کے Windows اکاؤنٹ کے لیے انکرپٹڈ ہیں۔
+	No local network now: it starts when the computer joins one.	اب کوئی مقامی نیٹ ورک نہیں: یہ تب شروع ہوگا جب کمپیوٹر کسی ایک میں شامل ہوگا۔
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	بند: نیٹ ورک پر کوئی بھی MDM تک نہیں پہنچ سکتا۔
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	کمپیوٹر پر، آپشنز کھولیں، پھر ریموٹ، اور ایک آلہ جوڑیں پر کلک کریں۔ جو کوڈ دکھایا گیا ہے اسے درج کریں۔
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	فون پر، اس کوڈ کو کیمرے سے اسکین کریں، یا ایڈریس کھولیں اور کوڈ درج کریں۔
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	آن۔ فون پر، یہ ایڈریس کھولیں:
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	صرف جوڑا بنائے گئے آلات ہی کچھ دیکھ یا تبدیل کر سکتے ہیں۔ پہلی بار، فون کا براؤزر MDM کے اپنے سرٹیفکیٹ کے بارے میں خبردار کرتا ہے: اس کا فنگر پرنٹ اوپر والا ہے۔
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	جوڑیں
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	ایک آلہ جوڑیں
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	ایک آلہ جوڑیں...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Mister Download Manager کے ساتھ جوڑا بنائیں
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	جوڑا بنایا گیا
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	جوڑا بنائے گئے آلات:
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	پورٹ {port} کسی دوسرے پروگرام کے ذریعے استعمال ہو رہا ہے: کوئی دوسرا منتخب کریں۔
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	قطار میں شامل
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	ریموٹ
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	ریموٹ کنٹرول
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	فہرست سے {name} کو ہٹائیں؟
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	ابھی شروع کریں
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	تبدیلیاں اس وقت لاگو ہوں گی جب آپ ٹھیک ہے پر کلک کریں گے۔
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	یہ کوڈ مزید استعمال نہیں کیا جا سکتا۔
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	صرف یہ کمپیوٹر (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	اس آلے کا نام
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	یہ فائل ٹورینٹ ہونے کے لیے بہت بڑی ہے۔
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	یہ ٹورینٹ فائل نہیں ہے۔
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	پہلے ریموٹ کنٹرول آن کریں۔
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	ایک لمحہ انتظار کریں، پھر دوبارہ کوشش کریں۔
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	{queue} میں انتظار کریں
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	آلے کا انتظار ہے۔ کوڈ {time} کے لیے کام کرتا ہے۔
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	کب
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	غلط کوڈ۔ MDM میں ایک نیا کوڈ دکھائیں اور دوبارہ کوشش کریں۔
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	غلط کوڈ۔ باقی کوششیں: {n}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} جوڑا بنا ہوا ہے۔ یہ اب MDM کو کنٹرول کر سکتا ہے۔
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{size} میں سے {done}
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} خالی
