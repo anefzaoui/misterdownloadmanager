@@ -176,15 +176,16 @@ opt-level = 3
 debug = "line-tables-only"
 
 # storytold's egui fork (as storytold/craft-libs, D-003) plus MDM's commits on anefzaoui/egui
-# (branch mdm-wgpu, on mdm-accesskit-windows): every window created hidden gets an AccessKit
-# adapter, with OpenGL (glow) and with Direct3D (wgpu, #89), so screen readers read the dialogs
-# and menus; a dialog opened while the main window is minimized no longer panics
+# (branch mdm-start-hidden, on mdm-wgpu, on mdm-accesskit-windows): every window created hidden
+# gets an AccessKit adapter, with OpenGL (glow) and with Direct3D (wgpu, #89), so screen readers
+# read the dialogs and menus; a dialog opened while the main window is minimized no longer panics
 # (emilk/egui#8470); and a window's first accessibility request is answered with its last tree
 # (#131); Direct3D keeps only the graphics adapter in use (a laptop's other GPU sleeps) and, on
 # Intel Iris Xe, uploads no all-zero texel blocks (gfx-rs/wgpu#10651, #89); a hidden viewport
 # can ask for a pass (Context::request_ui_pass: a dialog opened while minimized, #162); OpenGL
-# without a usable configuration is an error, not a panic, so the next renderer is tried. craft-libs can take the same commits to share
-# one egui again.
+# without a usable configuration is an error, not a panic, so the next renderer is tried; a main
+# window built hidden stays hidden after its first frame (a start with the session waits in the
+# notification area, #226). craft-libs can take the same commits to share one egui again.
 [patch.crates-io]
 # librqbit 9.1.0 with per-torrent rate limits that change while a torrent runs (#39), and a
 # magnet lookup's progress counted (#92), and every socket bound to one address (`bind_ip`,
@@ -201,14 +202,14 @@ librqbit-peer-protocol = { git = "https://github.com/anefzaoui/rqbit.git", rev =
 librqbit-sha1-wrapper = { git = "https://github.com/anefzaoui/rqbit.git", rev = "d0015a87bebf7ea581764ad45710a4abb6886dc6" }
 librqbit-tracker-comms = { git = "https://github.com/anefzaoui/rqbit.git", rev = "d0015a87bebf7ea581764ad45710a4abb6886dc6" }
 librqbit-upnp = { git = "https://github.com/anefzaoui/rqbit.git", rev = "d0015a87bebf7ea581764ad45710a4abb6886dc6" }
-ecolor = { git = "https://github.com/anefzaoui/egui.git", rev = "41fb5992144720ba048e4351ecdc9c94d1115ec0" }
-emath = { git = "https://github.com/anefzaoui/egui.git", rev = "41fb5992144720ba048e4351ecdc9c94d1115ec0" }
-epaint = { git = "https://github.com/anefzaoui/egui.git", rev = "41fb5992144720ba048e4351ecdc9c94d1115ec0" }
-epaint_default_fonts = { git = "https://github.com/anefzaoui/egui.git", rev = "41fb5992144720ba048e4351ecdc9c94d1115ec0" }
-egui = { git = "https://github.com/anefzaoui/egui.git", rev = "41fb5992144720ba048e4351ecdc9c94d1115ec0" }
-egui-winit = { git = "https://github.com/anefzaoui/egui.git", rev = "41fb5992144720ba048e4351ecdc9c94d1115ec0" }
-egui_glow = { git = "https://github.com/anefzaoui/egui.git", rev = "41fb5992144720ba048e4351ecdc9c94d1115ec0" }
-egui-wgpu = { git = "https://github.com/anefzaoui/egui.git", rev = "41fb5992144720ba048e4351ecdc9c94d1115ec0" }
-egui_extras = { git = "https://github.com/anefzaoui/egui.git", rev = "41fb5992144720ba048e4351ecdc9c94d1115ec0" }
-eframe = { git = "https://github.com/anefzaoui/egui.git", rev = "41fb5992144720ba048e4351ecdc9c94d1115ec0" }
+ecolor = { git = "https://github.com/anefzaoui/egui.git", rev = "517027e916d11183b65b0cd9e5066154dbc7324b" }
+emath = { git = "https://github.com/anefzaoui/egui.git", rev = "517027e916d11183b65b0cd9e5066154dbc7324b" }
+epaint = { git = "https://github.com/anefzaoui/egui.git", rev = "517027e916d11183b65b0cd9e5066154dbc7324b" }
+epaint_default_fonts = { git = "https://github.com/anefzaoui/egui.git", rev = "517027e916d11183b65b0cd9e5066154dbc7324b" }
+egui = { git = "https://github.com/anefzaoui/egui.git", rev = "517027e916d11183b65b0cd9e5066154dbc7324b" }
+egui-winit = { git = "https://github.com/anefzaoui/egui.git", rev = "517027e916d11183b65b0cd9e5066154dbc7324b" }
+egui_glow = { git = "https://github.com/anefzaoui/egui.git", rev = "517027e916d11183b65b0cd9e5066154dbc7324b" }
+egui-wgpu = { git = "https://github.com/anefzaoui/egui.git", rev = "517027e916d11183b65b0cd9e5066154dbc7324b" }
+egui_extras = { git = "https://github.com/anefzaoui/egui.git", rev = "517027e916d11183b65b0cd9e5066154dbc7324b" }
+eframe = { git = "https://github.com/anefzaoui/egui.git", rev = "517027e916d11183b65b0cd9e5066154dbc7324b" }
 winit = { git = "https://github.com/storytold/winit.git", rev = "a517b3846ee8457d84ee4975110bfda6797c44dc" }
