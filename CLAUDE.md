@@ -47,8 +47,8 @@ craft-libs), laid out the way Internet Download Manager users expect. Start by r
 - Website design goes through the Impeccable skill (`/impeccable`, `.claude/skills/impeccable`):
   product truth in [PRODUCT.md](PRODUCT.md), the visual system in DESIGN.md, the site's
   direction contract in `.impeccable/surfaces/`; its hook checks every website edit.
-- `tools/installer/build-linux.sh` / `build-macos.sh` — the experimental Linux (AppImage, tar.gz,
-  .deb, .rpm) and macOS (.dmg) downloads; run by `release.yml` on GitHub's runners.
+- `tools/installer/build-linux.sh` / `build-macos.sh` — the Linux (AppImage, tar.gz, .deb, .rpm)
+  and the experimental macOS (.dmg) downloads; run by `release.yml` on GitHub's runners.
 - Windows: if `cargo` isn't on PATH in an old shell, prefix
   `$env:Path = "$env:USERPROFILE\.cargo\bin;$env:Path"`.
 

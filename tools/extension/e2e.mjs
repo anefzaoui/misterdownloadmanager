@@ -25,8 +25,9 @@
 // installer does) and unregistered at the end. Every registry key that touches (the browsers'
 // host entries and Chrome's external extension, per user and for everyone) is exported first
 // and checked byte for byte at the end; one that differs is put back from its copy. An installed
-// copy's registration for everyone (HKLM) is only read. Your own browser profiles are never used,
-// nor the clipboard. Every process started here is stopped at the end.
+// copy's registration for everyone (HKLM) is only read. With E2E_HOST_NAME, the host is registered
+// under that test name instead, for the run's Chromium browsers only (testHost). Your own browser
+// profiles are never used, nor the clipboard. Every process started here is stopped at the end.
 //
 // Linux (the lab's VM, tools/lab/linux-vm): the host's manifests (files) are written instead, and
 // put back byte for byte at the end (E2E_REPLACE_HOST=1 lets it replace a copy already
@@ -34,6 +35,7 @@
 //
 // The programs: target/release, or CARGO_TARGET_DIR's release folder when it is set.
 import { spawn, spawnSync } from "node:child_process";
+import crypto from "node:crypto";
 import fs from "node:fs";
 import http from "node:http";
 import net from "node:net";
@@ -51,9 +53,13 @@ const LAB = `http://127.0.0.1:${PORT}`;
 const PROXY_PORT = 8102;
 const PROXY_HOST = "lab.mdm.test";
 const proxyLog = [];
+// The same proxy as a PAC script (Chromium's case: inline, or by its address on that proxy).
+const PAC = `function FindProxyForURL(url, host) { return host === "${PROXY_HOST}" ? "PROXY 127.0.0.1:${PROXY_PORT}" : "DIRECT"; }`;
 // The extension's own address in Firefox (moz-extension://UUID/), fixed in the test profile so
 // its pages (the popup) can be opened in a tab.
 const FIREFOX_ID = "integration@misterdownloadmanager.com";
+// The Chromium extension the browsers load: pack.ps1's, or its copy for E2E_HOST_NAME (testHost).
+let chromiumExtension = path.join(root, "target", "extension", "chromium");
 const FIREFOX_UUID = "5d0c3b8e-7a51-4c1e-9f0a-38e2c4a1d7b6";
 
 const pf = process.env.ProgramFiles || "C:\\Program Files";
@@ -213,7 +219,7 @@ async function chromium(bin, profile, dl, page, ready) {
   try {
     const { product } = await cdp.send("Browser.getVersion");
     const major = Number((/\/(\d+)\./.exec(product) || [])[1]) || 0;
-    const { id } = await cdp.send("Extensions.loadUnpacked", { path: path.join(root, "target", "extension", "chromium") });
+    const { id } = await cdp.send("Extensions.loadUnpacked", { path: chromiumExtension });
     // Its service worker runs, and has asked the host for the rules.
     const sw = await until("the extension's service worker", 15000, async () =>
       (await cdp.send("Target.getTargets")).targetInfos.find((t) => t.type === "service_worker" && t.url.includes(id)),
@@ -349,13 +355,22 @@ async function chromium(bin, profile, dl, page, ready) {
         await sleep(500);
         return seen;
       },
-      // Run `expression` in the extension's service worker (the proxy case sets the browser's proxy
-      // there, as a VPN extension does).
+      // Run `expression` in the extension's service worker.
       inExtension: async (expression) => {
         const s = (await cdp.send("Target.attachToTarget", { targetId: sw.targetId, flatten: true })).sessionId;
         const r = await cdp.send("Runtime.evaluate", { expression, awaitPromise: true, returnByValue: true }, s);
         if (r.exceptionDetails) throw new Error(`in the extension: ${r.exceptionDetails.text} ${expression}`);
         return r.result.value;
+      },
+      // Another extension (the folder `dir`), loaded beside ours, and its page `page` open in a tab:
+      // that tab's `evaluate` and `close` (the proxy case's stand-in VPN extension sets the
+      // browser's proxy there, as one does). A page, not its service worker: the browser may
+      // stop an idle worker, a page keeps its extension API while open.
+      loadExtension: async (dir, page) => {
+        const { id: other } = await cdp.send("Extensions.loadUnpacked", { path: dir });
+        const t = await tab(`chrome-extension://${other}/${page}`);
+        await until("the other extension's page", 10000, () => t.evaluate("document.readyState === 'complete' && typeof chrome === 'object' && Boolean(chrome.proxy)").catch(() => false));
+        return t;
       },
       close: () => {
         killTree(proc);
@@ -996,6 +1011,11 @@ class Skip extends Error {}
 function startProxy() {
   const to = (host, port) => (host === PROXY_HOST ? ["127.0.0.1", PORT] : [host, Number(port) || 80]);
   const server = http.createServer((req, res) => {
+    // Its PAC script, as a VPN extension may set one by its address (Chromium's pac_script.url).
+    if (req.url === "/mdm.pac") {
+      res.writeHead(200, { "content-type": "application/x-ns-proxy-autoconfig" }).end(PAC);
+      return;
+    }
     proxyLog.push({ method: req.method, target: req.url });
     let u;
     try {
@@ -1042,30 +1062,121 @@ async function mdmRequests(p) {
   return all.slice(1);
 }
 
-// #42 in Chrome: no "proxy" permission (Chrome can't make it optional), so no proxy API, no
-// switch in the popup, no error in the service worker's console, and downloads as before.
-async function proxyInChrome(t) {
+// One file through the lab's host (lab.mdm.test, known to the test proxy only): how many of its
+// requests went through the proxy (the browser's own first; MDM's when it got the proxy).
+async function throughProxy(t, label, wantMdm) {
+  proxyLog.length = 0;
+  const file = `e2e-proxy-${t.name}-${label}.xz`;
+  await clickLink(t, `http://${PROXY_HOST}:${PORT}/gen/1M/${file}`);
+  if (wantMdm) await arrived(file, 1 << 20, "");
+  else await sleep(8000);
+  await keptNothing(t.dl);
+  return proxyLog.filter((e) => e.target.includes(file)).length;
+}
+
+// A stand-in VPN extension: it has the "proxy" permission and sets the browser's proxy
+// (chrome.proxy.settings.set, from its page), as real VPN and proxy extensions do.
+function vpnExtension() {
+  const dir = path.join(work, "vpn-extension");
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(
+    path.join(dir, "manifest.json"),
+    JSON.stringify({ manifest_version: 3, name: "MDM e2e stand-in VPN", version: "1.0", permissions: ["proxy"] }),
+  );
+  // Its page, driven over DevTools by e2e.mjs.
+  fs.writeFileSync(path.join(dir, "page.html"), "<!doctype html><title>stand-in VPN</title>");
+  return dir;
+}
+
+// #42 in Chrome and the other Chromium browsers: "proxy" is required there (Chrome can't make it
+// optional), and the popup's switch is the extension's own setting, off as installed. A stand-in
+// VPN extension sets the browser's proxy: a fixed server, then a PAC script (inline, then by its
+// address). Off, MDM gets nothing of it (only the browser's request goes through the proxy); on,
+// MDM downloads through the same proxy. Also: what Chrome warns about on install and update is
+// the same with and without "proxy" (Chrome counts it as access to every site, which the
+// extension already has), so the update doesn't switch the extension off to ask.
+async function proxyInChromium(t) {
   const s = t.session;
-  const ext = await s.inExtension(`JSON.stringify({ api: typeof chrome.proxy, perms: chrome.runtime.getManifest().permissions, optional: chrome.runtime.getManifest().optional_permissions || [] })`);
-  const e = JSON.parse(ext);
-  if (e.api !== "undefined" || e.perms.includes("proxy") || e.optional.includes("proxy")) throw new Error(`Chrome has the proxy permission: ${ext}`);
+  const done = [];
+  const ext = JSON.parse(
+    await s.inExtension(`(async () => {
+      const m = chrome.runtime.getManifest();
+      // As a manifest on its own: its name in plain text, no locale folder to read.
+      const plain = (perms, hosts = m.host_permissions) => JSON.stringify({ manifest_version: 3, name: "MDM", version: m.version, permissions: perms, host_permissions: hosts });
+      const warn = (...a) => new Promise((r) => chrome.management.getPermissionWarningsByManifest(plain(...a), r));
+      const without = m.permissions.filter((p) => p !== "proxy");
+      return JSON.stringify({ api: typeof chrome.proxy, perms: m.permissions, optional: m.optional_permissions || [], with: await warn(m.permissions), without: await warn(without), alone: await warn(["proxy"], []) });
+    })()`),
+  );
+  if (ext.api !== "object" || !ext.perms.includes("proxy") || ext.optional.includes("proxy")) throw new Error(`Chrome's proxy permission: ${JSON.stringify(ext)}`);
+  if (JSON.stringify(ext.with) !== JSON.stringify(ext.without)) throw new Error(`"proxy" adds a warning: ${JSON.stringify(ext.with)} vs ${JSON.stringify(ext.without)}`);
+  // The same check is no proof if Chrome said nothing for "proxy" at all: on its own, it warns.
+  if (!ext.alone.length || !ext.with.includes(ext.alone[0])) throw new Error(`"proxy" alone: ${JSON.stringify(ext.alone)}`);
+  done.push(`"proxy" required; Chrome's warnings with it ${JSON.stringify(ext.with)}, the same as without it ("proxy" alone: ${JSON.stringify(ext.alone)})`);
+
+  const vpnPage = await s.loadExtension(vpnExtension(), "page.html");
+  const vpn = vpnPage.evaluate;
+  const setProxy = async (value) => {
+    await vpn(`chrome.proxy.settings.set({ value: ${JSON.stringify(value)}, scope: "regular" }).then(() => "set")`);
+    await sleep(500);
+    // What our extension then reads: the other extension's.
+    const seen = JSON.parse(await s.inExtension(`chrome.proxy.settings.get({}).then((d) => JSON.stringify(d))`));
+    if (seen.levelOfControl !== "controlled_by_other_extensions" || seen.value.mode !== value.mode) throw new Error(`the browser's proxy as read: ${JSON.stringify(seen)}`);
+    return seen;
+  };
+  const fixed = { mode: "fixed_servers", rules: { singleProxy: { scheme: "http", host: "127.0.0.1", port: PROXY_PORT } } };
   const popup = await s.tab(`${s.base}popup.html`);
   try {
+    await setProxy(fixed);
     await until("the popup", 10000, () =>
       popup.evaluate(`location.href.startsWith(${JSON.stringify(s.base)}) && document.readyState === "complete" && Boolean(document.getElementById("proxy-row"))`).catch(() => false),
     );
-    if (!(await popup.evaluate("document.getElementById('proxy-row').hidden"))) throw new Error("the proxy switch shows in Chrome");
+    await sleep(300);
+    // As installed: the switch shown, off; nothing handed over.
+    const shown = await popup.evaluate("[!document.getElementById('proxy-row').hidden, document.getElementById('proxy').checked, document.getElementById('proxy-row').title]");
+    if (!shown[0] || shown[1]) throw new Error(`the switch as installed: ${JSON.stringify(shown)} (want shown, off)`);
+    const off = await throughProxy(t, "off", false);
+    if (off !== 1) throw new Error(`as installed: ${off} requests through the proxy (want the browser's only)`);
+    done.push(`as installed: the switch shown, off; a VPN extension's proxy (controlled_by_other_extensions): the browser's request only`);
+
+    // On, as a user clicks it: the setting stored, no permission asked.
+    await popup.evaluate("document.getElementById('proxy').click()");
+    await until("the switch on", 5000, async () => (await popup.evaluate("chrome.storage.local.get('proxyOn').then((v) => v.proxyOn === true)")));
+    const on = await throughProxy(t, "on", true);
+    if (on < 2) throw new Error(`on: only ${on} request(s) through the proxy`);
+    done.push(`on, a fixed server: ${on} requests through it (the browser's, then MDM's)`);
+
+    await setProxy({ mode: "pac_script", pacScript: { data: PAC } });
+    const pacData = await throughProxy(t, "pac-data", true);
+    if (pacData < 2) throw new Error(`a PAC script (inline): only ${pacData} request(s) through the proxy`);
+    done.push(`an inline PAC script: ${pacData} requests through its proxy`);
+
+    await setProxy({ mode: "pac_script", pacScript: { url: `http://127.0.0.1:${PROXY_PORT}/mdm.pac` } });
+    const pacUrl = await throughProxy(t, "pac-url", true);
+    if (pacUrl < 2) throw new Error(`a PAC script (by its address): only ${pacUrl} request(s) through the proxy`);
+    done.push(`a PAC script by its address: ${pacUrl} requests through its proxy`);
+
+    // Off again: nothing more of it goes.
+    await setProxy(fixed);
+    await popup.evaluate("document.getElementById('proxy').click()");
+    await until("the switch off", 5000, async () => (await popup.evaluate("chrome.storage.local.get('proxyOn').then((v) => v.proxyOn === false)")));
+    const after = await throughProxy(t, "off-again", false);
+    if (after !== 1) throw new Error(`switched off: ${after} requests through the proxy`);
+    done.push("switched off: the browser's request only");
   } finally {
     await popup.close();
+    await vpn(`chrome.proxy.settings.clear({ scope: "regular" }).then(() => "cleared")`).catch(() => {});
+    await vpnPage.close();
   }
-  // An ordinary download goes as before.
+  // An ordinary download goes as before, with no proxy set.
   const file = `e2e-noproxy-${t.name}.zip`;
   await clickLink(t, `/gen/1M/${file}`);
   await arrived(file, 1 << 20);
   await keptNothing(t.dl);
   const errors = await s.workerErrors();
   if (errors.length) throw new Error(`the service worker's console: ${errors.join(" | ")}`);
-  return `no proxy permission or API (${e.perms.join(", ")}), no switch, a download as before, no error in the service worker's console`;
+  done.push("no proxy: a download as before; no error in the service worker's console");
+  return done.join("; ");
 }
 
 const CASES = {
@@ -1073,9 +1184,9 @@ const CASES = {
   // known to that proxy only, so MDM can download it only through the same proxy, which the
   // extension hands over with the download, once the user switched that on: the popup's switch
   // asks for the optional "proxy" permission (Firefox). Chrome can't make it optional, so its
-  // extension has neither the permission nor the switch, and downloads as before #42.
+  // extension has it from the install and the switch is its own setting (proxyInChromium).
   async proxy(t) {
-    if (!t.session.inBrowser) return proxyInChrome(t);
+    if (!t.session.inBrowser) return proxyInChromium(t);
     const s = t.session;
     const pref = (k, v) => s.inBrowser(`(Services.prefs.${typeof v === "number" ? "setIntPref" : typeof v === "boolean" ? "setBoolPref" : "setStringPref"}(${JSON.stringify(k)}, ${JSON.stringify(v)}), "set")`);
     // The browser's proxy, as a VPN extension sets it (Firefox's own setting: 127.0.0.1 itself
@@ -1711,6 +1822,51 @@ export function regRestore(before, dir, written = []) {
   return { changed, differ: differ.map((b) => b.key) };
 }
 
+// E2E_HOST_NAME=com.mdm.sometest (Windows, Chromium browsers): the host is registered under that
+// test name only, for this run's browsers only (per user), instead of `nmhost --register`'s
+// every browser under the real name: a browser you have open never reaches the test's host. The
+// extension loaded is pack.ps1's with that name in background.js. Its keys are removed at the end.
+const TEST_HOST_KEYS = {
+  chrome: "Software\\Google\\Chrome\\NativeMessagingHosts",
+  brave: "Software\\BraveSoftware\\Brave-Browser\\NativeMessagingHosts",
+  edge: "Software\\Microsoft\\Edge\\NativeMessagingHosts",
+};
+function testHost(name, browsers, nmhost) {
+  if (!WIN) throw new Error("E2E_HOST_NAME: Windows only");
+  if (!/^[a-z0-9_]+(\.[a-z0-9_]+)+$/.test(name) || name === HOST) throw new Error(`E2E_HOST_NAME: ${name} isn't a test host name`);
+  const other = browsers.filter((b) => !TEST_HOST_KEYS[b]);
+  if (other.length) throw new Error(`E2E_HOST_NAME: Chromium browsers only (${other.join(", ")}: their add-on is the signed package)`);
+  const dir = path.join(work, "extension-chromium");
+  fs.cpSync(path.join(root, "target", "extension", "chromium"), dir, { recursive: true });
+  const bg = path.join(dir, "background.js");
+  const code = fs.readFileSync(bg, "utf8");
+  const renamed = code.replace(`const HOST = "${HOST}";`, `const HOST = ${JSON.stringify(name)};`);
+  if (renamed === code) throw new Error("background.js: its host's name wasn't found");
+  fs.writeFileSync(bg, renamed);
+  // The unpacked extension's ID, from its manifest's key (as Chromium makes it).
+  const key = JSON.parse(fs.readFileSync(path.join(dir, "manifest.json"), "utf8")).key;
+  const hex = crypto.createHash("sha256").update(Buffer.from(key, "base64")).digest("hex").slice(0, 32);
+  const id = [...hex].map((c) => String.fromCharCode(97 + parseInt(c, 16))).join("");
+  const file = path.join(work, "host", `${name}.json`);
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, JSON.stringify({ name, description: "Mister Download Manager (test)", path: nmhost, type: "stdio", allowed_origins: [`chrome-extension://${id}/`] }, null, 2));
+  const keys = browsers.map((b) => `HKCU\\${TEST_HOST_KEYS[b]}\\${name}`);
+  const there = (k) => spawnSync("reg", ["query", k], { stdio: "ignore" }).status === 0;
+  for (const k of keys) if (there(k)) throw new Error(`${k} is there already: not touching it`);
+  for (const k of keys) {
+    if (spawnSync("reg", ["add", k, "/ve", "/t", "REG_SZ", "/d", file, "/f"], { stdio: "ignore" }).status !== 0) throw new Error(`reg add ${k}`);
+  }
+  chromiumExtension = dir;
+  return {
+    keys,
+    // Removed; the ones still there after (none).
+    remove: () => {
+      for (const k of keys) spawnSync("reg", ["delete", k, "/f"], { stdio: "ignore" });
+      return keys.filter(there);
+    },
+  };
+}
+
 // Is Internet Download Manager running (E2E_IDM_OK=1)? Even with its 127.0.0.1 exception it takes
 // a PDF sent "inline; filename=..." at the network level (the browser gets "204 No Content",
 // IDM downloads the file itself), so that case is left out while it runs.
@@ -1786,6 +1942,9 @@ async function run() {
   let regBefore = null;
   let regCheck = null;
   let written = [];
+  // E2E_HOST_NAME's registration (testHost), and what was left of it at the end.
+  let test = null;
+  let testLeft = [];
   try {
     await until("the lab server", 10000, () => fetch(`${LAB}/`).then((r) => r.ok, () => false));
     // An installed Mister Download Manager's registration is never replaced or removed.
@@ -1797,10 +1956,14 @@ async function run() {
       throw new Error("Mister Download Manager's host is already registered (an installed copy): not touching it");
     }
     regBefore = regSnapshot(path.join(work, "registry", "before"));
-    const reg = spawnSync(nmhost, ["--register"], { encoding: "utf8" });
-    // Where it wrote (Linux, macOS), for the restore.
-    written = [...(reg.stdout || "").matchAll(/^registered \S+ in (.+)$/gm)].map((m) => path.join(m[1].trim(), `${HOST}.json`));
-    if (reg.status !== 0) throw new Error(`nmhost --register: ${reg.stderr || reg.stdout}`);
+    if (process.env.E2E_HOST_NAME) {
+      test = testHost(process.env.E2E_HOST_NAME, names, nmhost);
+    } else {
+      const reg = spawnSync(nmhost, ["--register"], { encoding: "utf8" });
+      // Where it wrote (Linux, macOS), for the restore.
+      written = [...(reg.stdout || "").matchAll(/^registered \S+ in (.+)$/gm)].map((m) => path.join(m[1].trim(), `${HOST}.json`));
+      if (reg.status !== 0) throw new Error(`nmhost --register: ${reg.stderr || reg.stdout}`);
+    }
     for (const name of names) {
       const [kind, candidates] = BROWSERS[name];
       const bin = candidates.find((p) => fs.existsSync(p));
@@ -1875,7 +2038,8 @@ async function run() {
       }
     }
   } finally {
-    spawnSync(nmhost, ["--unregister"]);
+    if (test) testLeft = test.remove();
+    else spawnSync(nmhost, ["--unregister"]);
     if (regBefore) regCheck = regRestore(regBefore, path.join(work, "registry", "after"), written);
     await stopApp().catch(() => {});
     await stopRemote().catch(() => {});
@@ -1894,8 +2058,9 @@ async function run() {
         : `${WIN ? "registry" : "host manifests"}: ${regBefore.length} ${WIN ? "keys" : "files"} byte-identical to before the run${regCheck.changed.length ? ` (put back: ${regCheck.changed.join(", ")})` : ""}; present before: ${kept.join(", ") || "none"}`,
     );
   }
+  if (test) console.log(testLeft.length ? `test host: STILL REGISTERED: ${testLeft.join(", ")}` : `test host: ${test.keys.join(", ")} registered for the run, removed`);
   console.log(`total ${((Date.now() - t0) / 1000).toFixed(0)}s`);
-  if (results.some((r) => r[2] === "FAILED" || r[2] === "BUG") || (regCheck && regCheck.differ.length)) process.exit(1);
+  if (results.some((r) => r[2] === "FAILED" || r[2] === "BUG") || (regCheck && regCheck.differ.length) || testLeft.length) process.exit(1);
 }
 
 // Run when started, not when another script imports its helpers (tools/readme/browser-shots.mjs).

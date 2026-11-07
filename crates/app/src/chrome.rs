@@ -200,9 +200,10 @@ pub fn menus(p: &egui::Painter) -> Vec<(&'static str, f32, f32, f32)> {
         .collect()
 }
 
-/// Paint the menu bar; returns the index of a top item that was clicked or hovered while
-/// another menu is open (menu switching).
-pub fn menu_bar(ui: &mut Ui, o: Pos2, width: f32, open: Option<usize>) -> Option<usize> {
+/// Paint the menu bar; returns what happened to its titles this frame, for [`menubar_next`]: a
+/// title clicked (or opened and shut by a screen reader), or the pointer over one (which only
+/// moves to it from another open menu).
+pub fn menu_bar(ui: &mut Ui, o: Pos2, width: f32, open: Option<usize>) -> Option<MenuBarEvent> {
     let p = ui.painter().clone();
     fill(
         &p,
@@ -239,6 +240,7 @@ pub fn menu_bar(ui: &mut Ui, o: Pos2, width: f32, open: Option<usize>) -> Option
     );
     winui::expose(&bar, egui::Role::MenuBar, "", true, None);
     let titles_ui = ui.new_child(egui::UiBuilder::new().accessibility_parent(bar.id));
+    let released = ui.input(|x| x.pointer.any_released());
     for (i, (label, x, w, tx)) in menus(&p).iter().enumerate() {
         // From the leading edge: the first menu at the right in RTL.
         let rc = winui::rect(Rect::from_min_size(o + vec2(*x, 0.0), vec2(*w, MENU_H)));
@@ -274,15 +276,11 @@ pub fn menu_bar(ui: &mut Ui, o: Pos2, width: f32, open: Option<usize>) -> Option
             )
         });
         if collapse && open == Some(i) {
-            ui.ctx()
-                .data_mut(|d| d.insert_temp(egui::Id::unique("menubar-collapse"), true));
-            hit = Some(i);
-        }
-        if resp.clicked()
-            || (expand && open != Some(i))
-            || (open.is_some() && open != Some(i) && resp.hovered())
-        {
-            hit = Some(i);
+            hit = Some(MenuBarEvent::Title { i, released: true });
+        } else if resp.clicked() || (expand && open != Some(i)) {
+            hit = Some(MenuBarEvent::Title { i, released });
+        } else if resp.hovered() && open.is_some_and(|o| o != i) {
+            hit = Some(MenuBarEvent::Hover(i));
         }
         if resp.clicked() || expand || collapse {
             // No pointer moves to bring the next frame: the menu is drawn (or shut) on it.
@@ -303,9 +301,12 @@ pub fn menubar_title_at(p: &egui::Painter, o: Pos2, pos: Pos2) -> Option<usize> 
 /// What happened to the menu bar this frame, for [`menubar_next`].
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum MenuBarEvent {
-    /// [`menu_bar`] returned title `i`: clicked (`released`: the click's release, or a
-    /// screen reader's Collapse), or hovered while another menu is open.
+    /// Title `i` clicked (`released`: the click's release, or a screen reader's Collapse), or
+    /// opened by a screen reader's Expand.
     Title { i: usize, released: bool },
+    /// The pointer over title `i`, no click: while another menu is open, that one's menu opens
+    /// instead (Windows' menu bars, and IDM's); otherwise nothing.
+    Hover(usize),
     /// The open menu shut itself (Escape, a press outside it, the app losing the focus);
     /// `press_on_title`: the press that shut it went down on a title of the bar.
     Dismissed { press_on_title: bool },
@@ -322,8 +323,13 @@ pub enum MenuBarEvent {
 /// opens another one. Escape, or the app losing the focus, with the pointer resting on the bar
 /// (where the click that opened the menu left it) used to leave the menu marked open with
 /// nothing shown, so the next click on its title only "shut" it, and nothing opened.
+///
+/// The pointer alone never opens a menu: it only moves from an open one to another (#277). Once
+/// a menu closes in any way (a command chosen, Escape, a click elsewhere, another window taking
+/// the focus), the bar waits for a click.
 pub fn menubar_next(open: Option<usize>, event: MenuBarEvent) -> Option<usize> {
     match event {
+        MenuBarEvent::Hover(i) => open.map(|_| i),
         MenuBarEvent::Title { i, released } => {
             if open == Some(i) && released {
                 None
@@ -340,13 +346,6 @@ pub fn menubar_next(open: Option<usize>, event: MenuBarEvent) -> Option<usize> {
         | MenuBarEvent::Chosen => None,
         MenuBarEvent::Open(i) => Some(i),
     }
-}
-
-/// A screen reader or UI Automation asked to shut the open menu-bar menu (Collapse on its
-/// title) this frame; taken once.
-pub fn menubar_collapse(ctx: &egui::Context) -> bool {
-    ctx.data_mut(|d| d.remove_temp::<bool>(egui::Id::unique("menubar-collapse")))
-        .unwrap_or(false)
 }
 
 // ---- popup menus ---------------------------------------------------------------------------
@@ -2219,10 +2218,7 @@ mod tests {
                 released: true,
             },
             // Hovered while Tasks is open: File opens.
-            MenuBarEvent::Title {
-                i: 1,
-                released: false,
-            },
+            MenuBarEvent::Hover(1),
             // Pressed and released on Downloads.
             MenuBarEvent::Dismissed {
                 press_on_title: true,
@@ -2281,6 +2277,90 @@ mod tests {
         // A menu opened while another app was in front (a tray menu): no focus to lose.
         let v = focus_run(&[(false, 0.0), (false, 1.0), (false, 9.0)]);
         assert!(v.iter().all(|x| *x == FocusVerdict::Here), "{v:?}");
+    }
+
+    /// #277: Help → About clicked, About closed, then the pointer over the titles: nothing opens
+    /// until a click. The bar is as inactive after a command as before the first click.
+    #[test]
+    fn after_a_command_the_pointer_alone_opens_nothing() {
+        use MenuBarEvent::{Chosen, Dismissed, Hover, Title};
+        let steps = run(&[
+            // Before any click: the pointer over the titles opens nothing.
+            Hover(0),
+            Hover(4),
+            // Help clicked; the pointer on its own title keeps it.
+            Title {
+                i: 4,
+                released: true,
+            },
+            Hover(4),
+            // About chosen: the menu closes.
+            Chosen,
+            // About opens and takes the focus, is closed, the main window has it again: no
+            // event of the bar's (its menu is closed). A stray dismissal changes nothing.
+            Dismissed {
+                press_on_title: false,
+            },
+            // The pointer over every title: still nothing.
+            Hover(0),
+            Hover(1),
+            Hover(2),
+            Hover(3),
+            Hover(4),
+            // A click opens a menu again.
+            Title {
+                i: 1,
+                released: true,
+            },
+        ]);
+        assert_eq!(
+            steps,
+            [
+                None,
+                None,
+                Some(4),
+                Some(4),
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                Some(1)
+            ]
+        );
+        // The same after a command chosen from the keyboard (Alt+H, A), and after Escape or a
+        // click elsewhere.
+        for end in [
+            Chosen,
+            Dismissed {
+                press_on_title: false,
+            },
+        ] {
+            assert_eq!(
+                run(&[MenuBarEvent::Open(4), end, Hover(0), Hover(3)]),
+                [Some(4), None, None, None]
+            );
+        }
+    }
+
+    /// With a menu open, the pointer moves it from title to title, as in Windows' menu bars
+    /// (and IDM's); on its own title it stays.
+    #[test]
+    fn with_a_menu_open_the_pointer_switches_menus() {
+        use MenuBarEvent::{Hover, Title};
+        let steps = run(&[
+            Title {
+                i: 0,
+                released: true,
+            },
+            Hover(1),
+            Hover(1),
+            Hover(3),
+            Hover(0),
+        ]);
+        assert_eq!(steps, [Some(0), Some(1), Some(1), Some(3), Some(0)]);
     }
 
     #[test]
