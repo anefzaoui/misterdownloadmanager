@@ -180,12 +180,22 @@ fn dialog_window<T>(
     // The title in the interface language (Win32 finds the window by it, so it is used as is
     // from here on).
     let title = crate::i18n::t(title);
+    // A style theme's title bar is ours (Windows, #45): drawn above the layout, which keeps its
+    // size; the frame (win32::thin_frame) gives the caption to the client.
+    let drawn = drawn_captions();
+    let caption_h = if drawn {
+        crate::winui::caption::CAPTION_H
+    } else {
+        0.0
+    };
+    let outer = [client[0], client[1] + caption_h];
     // Hidden until `keep_theme` has given it its theme (see there).
     let mut builder = ViewportBuilder::default()
         .with_visible(false)
         .with_title(title)
-        .with_inner_size(client)
-        .with_resizable(false)
+        .with_inner_size(outer)
+        // The thin frame trims the sizing borders and keeps the size fixed.
+        .with_resizable(drawn)
         .with_minimize_button(minimize)
         .with_maximize_button(false);
     // Every dialog carries the app icon: without one Windows draws its generic placeholder.
@@ -202,7 +212,7 @@ fn dialog_window<T>(
             egui::WindowLevel::Normal
         });
     }
-    if let Some(p) = place(ctx, key, client) {
+    if let Some(p) = place(ctx, key, outer) {
         builder = builder.with_position(p);
     }
     crate::crash::window(id);
@@ -215,7 +225,27 @@ fn dialog_window<T>(
                 let origin = ui.max_rect().min;
                 // The client area, laid out from the right in a right-to-left interface.
                 let _surface = winui::Surface::enter(origin.x, origin.x + client[0]);
-                body(ui, origin)
+                // Our title bar's ×: like the window manager's, the window is painted in its
+                // closing pass too (#207), then closes.
+                let mut caption_close = false;
+                if drawn {
+                    use crate::winui::caption::CaptionButton;
+                    let mut buttons = vec![(CaptionButton::Close, true)];
+                    if minimize {
+                        buttons.push((CaptionButton::Minimize, true));
+                    }
+                    let hwnd = ui.ctx().data(|d| d.get_temp::<isize>(key.with("hwnd")));
+                    match drawn_title(ui, origin, client[0], title, &buttons, hwnd) {
+                        Some(CaptionButton::Close) => caption_close = true,
+                        Some(CaptionButton::Minimize) => {
+                            ui.ctx()
+                                .send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+                        }
+                        _ => {}
+                    }
+                }
+                let out = body(ui, origin + egui::vec2(0.0, caption_h));
+                if caption_close { Outcome::Closed } else { out }
             })
             .inner;
         if close { Outcome::Closed } else { out }
@@ -226,10 +256,24 @@ fn dialog_window<T>(
     {
         let framed = key.with("framed");
         let scale = ctx.input_for(ViewportId::from_hash_of(id), |i| i.pixels_per_point);
-        if ctx.data(|d| d.get_temp::<[f32; 2]>(framed)) != Some(client)
-            && crate::win32::dialog_frame(title, client, !crate::theme::dark_surface(), scale)
-        {
-            ctx.data_mut(|d| d.insert_temp(framed, client));
+        // The size and whose title bar it is: either changing frames it again.
+        let want = [outer[0], outer[1] + if drawn { 1e6 } else { 0.0 }];
+        if ctx.data(|d| d.get_temp::<[f32; 2]>(framed)) != Some(want) {
+            if drawn {
+                if let Some(h) = crate::win32::thin_frame(title, outer, scale, None) {
+                    ctx.data_mut(|d| {
+                        d.insert_temp(framed, want);
+                        d.insert_temp(key.with("hwnd"), h);
+                    });
+                }
+            } else if crate::win32::dialog_frame(
+                title,
+                client,
+                !crate::theme::dark_surface(),
+                scale,
+            ) {
+                ctx.data_mut(|d| d.insert_temp(framed, want));
+            }
         }
     }
     keep_theme(
@@ -260,9 +304,60 @@ fn dialog_window<T>(
         ctx.data_mut(|d| d.remove::<bool>(focused));
         forget_place(ctx, key);
         #[cfg(windows)]
-        ctx.data_mut(|d| d.remove::<[f32; 2]>(key.with("framed")));
+        ctx.data_mut(|d| {
+            d.remove::<[f32; 2]>(key.with("framed"));
+            d.remove::<isize>(key.with("hwnd"));
+        });
     }
     out
+}
+
+/// Whether the windows' title bars are ours: a style theme's on Windows (#45). Elsewhere the
+/// window manager draws them, which takes no style of ours (Wayland places its own buttons).
+pub fn drawn_captions() -> bool {
+    cfg!(windows) && crate::theme::current().controls.caption != crate::palette::CaptionLook::System
+}
+
+/// A title bar we draw (where the window's frame is ours: win32::thin_frame), `width` points
+/// wide at `o`, with `buttons` from the window's end; the button pressed. Where its buttons and
+/// icon are goes to the window's hit test (win32::set_caption_hits), in client pixels, each
+/// frame (`hwnd`: the window, once its frame is applied).
+pub fn drawn_title(
+    ui: &mut Ui,
+    o: Pos2,
+    width: f32,
+    title: &str,
+    buttons: &[(crate::winui::caption::CaptionButton, bool)],
+    hwnd: Option<isize>,
+) -> Option<crate::winui::caption::CaptionButton> {
+    use crate::winui::caption::CAPTION_H;
+    let rect = egui::Rect::from_min_size(o, egui::vec2(width, CAPTION_H));
+    let bar = crate::winui::caption::title_bar(ui, rect, title, buttons);
+    #[cfg(windows)]
+    if let Some(hwnd) = hwnd {
+        let ppp = ui.ctx().pixels_per_point();
+        let px = |r: egui::Rect| {
+            let (a, b) = ((r.min - o) * ppp, (r.max - o) * ppp);
+            [
+                a.x.round() as i32,
+                a.y.round() as i32,
+                b.x.round() as i32,
+                b.y.round() as i32,
+            ]
+        };
+        crate::win32::set_caption_hits(
+            hwnd,
+            crate::win32::CaptionHits {
+                strip_h: (CAPTION_H * ppp).round() as i32,
+                icon: px(bar.icon),
+                buttons: bar.buttons.iter().map(|r| px(*r)).collect(),
+                max_button: None,
+            },
+        );
+    }
+    #[cfg(not(windows))]
+    let _ = hwnd;
+    bar.pressed
 }
 
 /// Whether the window manager asked this window to close (its title bar's ×, Alt+F4, a
@@ -573,6 +668,14 @@ pub struct FileInfo {
     folders_open: bool,
     /// "+" was clicked: the app opens the new-category window.
     pub new_category: bool,
+    /// The debrid accounts (#44): which one this address goes through, if any.
+    route: crate::debrid::Route,
+    /// The account that takes the address ("Real-Debrid (labuser)"), as last looked at: the
+    /// "Download through" line shows while there is one.
+    through: Option<String>,
+    /// "Download through …" unticked: downloaded directly instead (`Item::direct`). Unticked
+    /// from the start when the browser had already started the download.
+    pub direct: bool,
 }
 
 pub enum Start {
@@ -585,15 +688,19 @@ impl FileInfo {
     /// `request`'s headers (the download's own). A download from the browser needs no look-up:
     /// the browser has had the answer, and its name (a link's `download` name, a Unicode
     /// `filename*`) is the one it checked; asking again could get another.
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         new: NewUrl,
         context: mdm_ipc::Command,
         request: crate::app::RequestParts,
+        route: crate::debrid::Route,
         downloads: PathBuf,
         dirs: Vec<(String, String)>,
         rt: &tokio::runtime::Handle,
         ctx: &egui::Context,
     ) -> Self {
+        let direct = crate::debrid::browser_started(&context);
+        let through = route.through(&new.url);
         let from_browser = context
             .name
             .as_deref()
@@ -647,6 +754,36 @@ impl FileInfo {
             folders: Vec::new(),
             folders_open: false,
             new_category: false,
+            route,
+            through,
+            direct,
+        }
+    }
+
+    /// Look the address up again as it will now be downloaded: through the debrid account
+    /// or directly (#44), its name and size can differ.
+    fn look_again(&mut self, ctx: &egui::Context) {
+        self.request.opts.unlocker = self.route.unlocker(&self.url, self.direct);
+        self.through = self.route.through(&self.url);
+        self.probe = start_probe(&self.rt, ctx, &self.url, &self.request);
+        self.info = None;
+        // The old way's answer is closed.
+        self.kept = None;
+    }
+
+    /// The account that takes the address appeared or changed (the services' host lists are
+    /// read when MDM starts, and Options may change them while the dialog is open): looked up
+    /// again its way. A download the browser had started keeps the browser's answer, and goes
+    /// directly unless the line is ticked.
+    fn follow_route(&mut self, ctx: &egui::Context) {
+        let through = self.route.through(&self.url);
+        if through == self.through {
+            return;
+        }
+        if self.direct {
+            self.through = through;
+        } else {
+            self.look_again(ctx);
         }
     }
 
@@ -660,6 +797,7 @@ impl FileInfo {
                 if url == self.url {
                     return;
                 }
+                let from_browser = crate::debrid::browser_started(&self.context);
                 if !self.edited {
                     let name = mdm_engine::naming::file_name(None, &url);
                     self.category = Category::of(&name);
@@ -677,16 +815,19 @@ impl FileInfo {
                 }
                 self.context.name = None;
                 self.context.size = None;
+                self.context.mime = None;
                 self.context.final_url = None;
                 self.context.post = None;
                 self.context.post_type = None;
                 self.request.opts.post = None;
                 self.request.headers.remove(reqwest::header::CONTENT_TYPE);
-                self.probe = start_probe(&self.rt, ctx, &url, &self.request);
-                self.info = None;
-                // The old address's answer is closed.
-                self.kept = None;
+                // Another address isn't the download the browser had started: it goes through
+                // the debrid account that takes its host (#44), unless the user unticked it.
+                if from_browser {
+                    self.direct = false;
+                }
                 self.url = url;
+                self.look_again(ctx);
             }
             _ => self.url_bad = true,
         }
@@ -788,11 +929,15 @@ impl FileInfo {
             }
             self.info = Some(res);
         }
+        self.follow_route(ctx);
+        // The "Download through" line (#44) takes a row of its own while an account takes the
+        // address: the window grows by it.
+        let dy = if self.through.is_some() { 26.0 } else { 0.0 };
         window(
             ctx,
             "file-info",
             "Download File Info",
-            [570.0, 234.0],
+            [570.0, 234.0 + dy],
             true,
             winui::BG(),
             |ui, o| {
@@ -958,13 +1103,36 @@ impl FileInfo {
                     false,
                 );
 
+                // Through a debrid account (#44): ticked, the service unlocks the link; unticked,
+                // the address is downloaded directly. Either way it is looked up again.
+                if let Some(through) = &self.through {
+                    let mut on = !self.direct;
+                    let caption = crate::i18n::fmt(
+                        // i18n: Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
+                        crate::i18n::t("Download through {service}"),
+                        &[("service", through)],
+                    );
+                    winui::checkbox_until(
+                        ui,
+                        o + vec2(96.0, 186.0),
+                        &mut on,
+                        &caption,
+                        true,
+                        Some(o.x + 462.0),
+                    );
+                    if on == self.direct {
+                        self.direct = !on;
+                        self.look_again(ui.ctx());
+                    }
+                }
+
                 // Where the server is (#140), as the look saw it: "..." while it looks; blank when
                 // nothing was asked (the browser had the answer) or the look failed.
                 // i18n: label before where a download's server is (its country and round trip)
                 winui::text_right(
                     &p,
                     o.x + 88.0,
-                    o.y + 193.0,
+                    o.y + 193.0 + dy,
                     crate::i18n::t("Server"),
                     winui::TEXT(),
                 );
@@ -972,7 +1140,7 @@ impl FileInfo {
                     None => crate::whereis::line(
                         ui,
                         o.x + 96.0,
-                        o.y + 193.0,
+                        o.y + 193.0 + dy,
                         o.x + 462.0,
                         None,
                         "file-info",
@@ -983,7 +1151,7 @@ impl FileInfo {
                             crate::whereis::line(
                                 ui,
                                 o.x + 96.0,
-                                o.y + 193.0,
+                                o.y + 193.0 + dy,
                                 o.x + 462.0,
                                 Some(&seen),
                                 "file-info",
@@ -1018,7 +1186,7 @@ impl FileInfo {
                 };
                 let later = winui::button(
                     ui,
-                    r(o, 97.0, 206.0, 109.0, 21.0),
+                    r(o, 97.0, 206.0 + dy, 109.0, 21.0),
                     "Download Later",
                     later_kind,
                     false,
@@ -1027,7 +1195,7 @@ impl FileInfo {
                 let later = winui::why_disabled(later, blocked.is_some(), blocked.unwrap_or(""));
                 let start = winui::button(
                     ui,
-                    r(o, 225.0, 206.0, 109.0, 21.0),
+                    r(o, 225.0, 206.0 + dy, 109.0, 21.0),
                     "Start Download",
                     start_kind,
                     true,
@@ -1036,7 +1204,7 @@ impl FileInfo {
                 let start = winui::why_disabled(start, blocked.is_some(), blocked.unwrap_or(""));
                 let cancel = winui::button(
                     ui,
-                    r(o, 352.0, 206.0, 109.0, 21.0),
+                    r(o, 352.0, 206.0 + dy, 109.0, 21.0),
                     "Cancel",
                     ButtonKind::Normal,
                     false,

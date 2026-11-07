@@ -217,6 +217,17 @@ pub fn paint(ui: &Ui, painter: &Painter, kind: Kind, rc: Rect) {
     let rc = rc.round_to_pixels(ppp);
     let px = (rc.width() * ppp).round().clamp(1.0, 512.0) as u32;
     let what = What::of(kind);
+    // A theme with an icon set draws its own for the type's kind (#45); the system's otherwise.
+    if crate::theme::current().icon_set.is_some() {
+        let ext = match &what {
+            What::File(Some(e)) => Some(e.as_str()),
+            _ => None,
+        };
+        let need = crate::themeicons::file_need(tango_name(&what), ext);
+        if crate::themeicons::paint(ui, painter, need, rc, true) {
+            return;
+        }
+    }
     match shown(ctx, &what, px) {
         Some(Shown::Texture(t)) => {
             let uv = Rect::from_min_max(pos2(0.0, 0.0), pos2(1.0, 1.0));

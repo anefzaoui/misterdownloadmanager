@@ -9,6 +9,7 @@ mod countries;
 mod crash;
 mod crashui;
 mod debrid;
+mod derive;
 mod dialogs;
 mod droptarget;
 mod errors;
@@ -26,6 +27,7 @@ mod icons;
 mod langpick;
 mod list;
 mod model;
+mod native;
 mod netwatch;
 mod options;
 mod pacfetch;
@@ -47,6 +49,7 @@ mod settings;
 mod store;
 mod theme;
 mod themefile;
+mod themeicons;
 mod torrentdlg;
 mod torrents;
 mod transfer;
@@ -55,6 +58,7 @@ mod tray;
 mod unix;
 mod update;
 mod videodlg;
+mod wake;
 mod whereis;
 #[cfg(windows)]
 mod win32;
@@ -169,7 +173,8 @@ fn main() -> std::process::ExitCode {
         // or a pipe. On Linux and macOS the launcher became this process, terminal and all.
         #[cfg(windows)]
         win32::cli_console(cli.launcher);
-        return mdm_cli::main(cli.args);
+        // Downloads go through the debrid accounts of Options → Accounts (#44).
+        return mdm_cli::main_with(cli.args, Some(&debrid::CliAccounts));
     }
     // A server (#157): the app without a window.
     let all: Vec<String> = std::env::args().skip(1).collect();

@@ -10,7 +10,7 @@ use std::process::{Command, Stdio};
 
 /// The program to start again later: the AppImage file itself when running from one (its
 /// programs sit in a temporary mount), else this executable.
-fn program() -> Option<PathBuf> {
+pub fn program() -> Option<PathBuf> {
     std::env::var_os("APPIMAGE")
         .map(PathBuf::from)
         .or_else(|| std::env::current_exe().ok())
@@ -345,6 +345,148 @@ pub fn desktop_dark(ctx: &egui::Context) -> Option<bool> {
         1 => Some(true),
         2 => Some(false),
         _ => None,
+    }
+}
+
+/// The desktop's accent colour and whether it asks for higher contrast (the freedesktop portal's
+/// `accent-color` and `contrast`, GNOME 47+, KDE Plasma), read on a thread of their own that
+/// follows their changes; `ctx` is repainted when one changes. None / false until the portal
+/// answers, or when it has neither.
+#[cfg(target_os = "linux")]
+fn desktop_look(ctx: &egui::Context) -> (Option<egui::Color32>, bool) {
+    use std::sync::Mutex;
+    static LOOK: Mutex<(Option<egui::Color32>, bool)> = Mutex::new((None, false));
+    static WATCH: std::sync::Once = std::sync::Once::new();
+    WATCH.call_once(|| {
+        let ctx = ctx.clone();
+        let _ = std::thread::Builder::new()
+            .name("desktop-look".into())
+            .spawn(move || {
+                let set = |name: &str, v: &zbus::zvariant::Value| {
+                    let mut look = LOOK.lock().unwrap_or_else(|e| e.into_inner());
+                    let before = *look;
+                    match name {
+                        "accent-color" => look.0 = accent_color(v),
+                        "contrast" => look.1 = color_scheme(v) == Some(1),
+                        _ => {}
+                    }
+                    if *look != before {
+                        ctx.request_repaint();
+                    }
+                };
+                let watch = || -> zbus::Result<()> {
+                    let conn = zbus::blocking::Connection::session()?;
+                    let portal = zbus::blocking::Proxy::new(
+                        &conn,
+                        "org.freedesktop.portal.Desktop",
+                        "/org/freedesktop/portal/desktop",
+                        "org.freedesktop.portal.Settings",
+                    )?;
+                    let changes = portal.receive_signal("SettingChanged")?;
+                    for name in ["accent-color", "contrast"] {
+                        let key = ("org.freedesktop.appearance", name);
+                        let now: zbus::Result<zbus::zvariant::OwnedValue> = portal
+                            .call("ReadOne", &key)
+                            .or_else(|_| portal.call("Read", &key));
+                        if let Ok(now) = now {
+                            set(name, &now);
+                        }
+                    }
+                    for change in changes {
+                        let (namespace, name, value): (String, String, zbus::zvariant::OwnedValue) =
+                            change.body().deserialize()?;
+                        if namespace == "org.freedesktop.appearance" {
+                            set(&name, &value);
+                        }
+                    }
+                    Ok(())
+                };
+                if let Err(e) = watch() {
+                    tracing::info!("desktop accent: no answer from the portal ({e})");
+                }
+            });
+    });
+    *LOOK.lock().unwrap_or_else(|e| e.into_inner())
+}
+
+/// The desktop's accent colour (the Native theme's), if it has one.
+#[cfg(target_os = "linux")]
+pub fn desktop_accent(ctx: &egui::Context) -> Option<egui::Color32> {
+    desktop_look(ctx).0
+}
+
+/// The desktop asks for higher contrast.
+#[cfg(target_os = "linux")]
+pub fn desktop_contrast(ctx: &egui::Context) -> bool {
+    desktop_look(ctx).1
+}
+
+/// The portal's `accent-color`: sRGB, each part from 0 to 1, unwrapped from `Read`'s variants;
+/// a part out of range means none is set.
+#[cfg(target_os = "linux")]
+fn accent_color(v: &zbus::zvariant::Value) -> Option<egui::Color32> {
+    use zbus::zvariant::Value;
+    match v {
+        Value::Value(inner) => accent_color(inner),
+        Value::Structure(s) => {
+            let parts: Vec<f64> = s
+                .fields()
+                .iter()
+                .filter_map(|f| match f {
+                    Value::F64(x) => Some(*x),
+                    _ => None,
+                })
+                .collect();
+            accent_parts(&parts)
+        }
+        _ => None,
+    }
+}
+
+/// Three parts from 0 to 1 as a colour; None for anything else.
+#[cfg_attr(not(target_os = "linux"), allow(dead_code))]
+fn accent_parts(parts: &[f64]) -> Option<egui::Color32> {
+    if parts.len() != 3 || parts.iter().any(|p| !(0.0..=1.0).contains(p)) {
+        return None;
+    }
+    let b = |p: f64| (p * 255.0).round() as u8;
+    Some(egui::Color32::from_rgb(
+        b(parts[0]),
+        b(parts[1]),
+        b(parts[2]),
+    ))
+}
+
+/// macOS's accent colour (System Settings → Appearance), from `defaults read -g
+/// AppleAccentColor`: -1 graphite, 0 red, 1 orange, 2 yellow, 3 green, 4 blue, 5 purple, 6 pink;
+/// no value is the default (multicolour: blue). Mapped to Apple's published system colours.
+#[cfg(target_os = "macos")]
+pub fn mac_accent() -> Option<egui::Color32> {
+    let out = Command::new("defaults")
+        .args(["read", "-g", "AppleAccentColor"])
+        .stderr(Stdio::null())
+        .output()
+        .ok()?;
+    let n = String::from_utf8_lossy(&out.stdout)
+        .trim()
+        .parse::<i32>()
+        .ok();
+    Some(mac_accent_color(n))
+}
+
+/// AppleAccentColor's number (None: not set) as the colour it stands for.
+#[cfg_attr(not(target_os = "macos"), allow(dead_code))]
+fn mac_accent_color(n: Option<i32>) -> egui::Color32 {
+    let rgb = egui::Color32::from_rgb;
+    match n {
+        Some(-1) => rgb(0x8c, 0x8c, 0x8c),
+        Some(0) => rgb(0xff, 0x3b, 0x30),
+        Some(1) => rgb(0xff, 0x95, 0x00),
+        Some(2) => rgb(0xff, 0xcc, 0x00),
+        Some(3) => rgb(0x28, 0xcd, 0x41),
+        Some(5) => rgb(0xaf, 0x52, 0xde),
+        Some(6) => rgb(0xff, 0x2d, 0x55),
+        _ => rgb(0x00, 0x7a, 0xff),
     }
 }
 
@@ -837,4 +979,187 @@ mod tests {
         );
         assert_eq!(super::color_scheme(&Value::Str("dark".into())), None);
     }
+}
+
+// ---- waking the computer for a queue (#142) -----------------------------------------------
+
+/// Linux: the clock chip's wake alarm, in seconds since 1970. Root's alone unless an
+/// administrator lets users write it (docs/queues-and-scheduler.md shows a tmpfiles.d line).
+/// Without it nothing else wakes a sleeping Linux for a program: a systemd user timer's
+/// `WakeSystem=` needs the system manager, rtcwake needs root, alarm timers CAP_WAKE_ALARM.
+#[cfg(target_os = "linux")]
+const WAKEALARM: &str = "/sys/class/rtc/rtc0/wakealarm";
+
+/// Whether MDM may wake this computer.
+pub fn wake_support() -> crate::wake::Support {
+    #[cfg(target_os = "linux")]
+    {
+        use crate::wake::Support;
+        let path = Path::new(WAKEALARM);
+        if !path.exists() {
+            return Support::NoAlarm;
+        }
+        // Opening it for writing changes nothing: it only asks whether we may.
+        if std::fs::OpenOptions::new().write(true).open(path).is_ok() {
+            Support::Ready
+        } else {
+            Support::NeedsAdmin
+        }
+    }
+    // macOS: `pmset schedule wake` and IOPMSchedulePowerEvent need an administrator, and MDM
+    // never asks for one by itself.
+    #[cfg(target_os = "macos")]
+    {
+        crate::wake::Support::MacAdmin
+    }
+}
+
+/// Seconds to add to a system time to have the clock chip's: the chip may keep local time
+/// (/etc/adjtime: LOCAL), or have drifted from the system's clock (a virtual machine's was a
+/// minute and a half behind). The alarm is set in the chip's time, as rtcwake does.
+#[cfg(target_os = "linux")]
+fn rtc_offset() -> i64 {
+    let chip = std::fs::read_to_string("/sys/class/rtc/rtc0/since_epoch")
+        .ok()
+        .and_then(|s| s.trim().parse::<i64>().ok());
+    match chip {
+        Some(chip) => chip - chrono::Utc::now().timestamp(),
+        None => 0,
+    }
+}
+
+/// Wake the computer at `at` (seconds since 1970, UTC), or cancel MDM's wake (None).
+#[cfg(target_os = "linux")]
+pub fn wake_at(at: Option<i64>) -> Result<(), String> {
+    // The alarm MDM set (in the chip's time), to tell it from another program's: kept in the
+    // data folder, so an alarm left by an MDM that was killed (or signed out of) is still ours.
+    let file = mdm_ipc::data_dir().map(|d| d.join("wake-alarm"));
+    let mut ours = file
+        .as_ref()
+        .and_then(|f| std::fs::read_to_string(f).ok())
+        .and_then(|s| s.trim().parse::<i64>().ok());
+    let keep = |v: Option<i64>| {
+        if let Some(f) = &file {
+            let _ = match v {
+                Some(v) => std::fs::write(f, v.to_string()),
+                None => std::fs::remove_file(f),
+            };
+        }
+    };
+    let set_now = std::fs::read_to_string(WAKEALARM)
+        .ok()
+        .and_then(|s| s.trim().parse::<i64>().ok());
+    let want = at.map(|t| t + rtc_offset());
+    // The same alarm within a couple of seconds (the two clocks are read a moment apart).
+    let close = |a: i64, b: i64| (a - b).abs() <= 2;
+    match (set_now, want) {
+        (Some(now), Some(w)) if close(now, w) => {
+            if ours != Some(now) {
+                keep(Some(now));
+            }
+            return Ok(());
+        }
+        (None, None) => {
+            if ours.is_some() {
+                keep(None);
+            }
+            return Ok(());
+        }
+        _ => {}
+    }
+    // There is one alarm: one that another program (rtcwake, a script) set stays theirs.
+    if let Some(theirs) = set_now
+        && ours.is_none_or(|o| !close(o, theirs))
+    {
+        if want.is_none() {
+            return Ok(());
+        }
+        return Err(crate::i18n::t(
+            // i18n: the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+            "Another program has set the computer's wake alarm",
+        )
+        .to_owned());
+    }
+    let write = |v: &str| std::fs::write(WAKEALARM, v).map_err(|e| e.to_string());
+    // An alarm is replaced by clearing it first (writing over it is refused).
+    if set_now.is_some() {
+        write("0")?;
+    }
+    ours = None;
+    if let Some(v) = want {
+        write(&v.to_string())?;
+        ours = Some(v);
+    }
+    keep(ours);
+    Ok(())
+}
+
+#[cfg(target_os = "macos")]
+pub fn wake_at(at: Option<i64>) -> Result<(), String> {
+    match at {
+        None => Ok(()),
+        Some(_) => Err("macOS lets only an administrator schedule a wake".to_owned()),
+    }
+}
+
+/// Keep the computer from sleeping while `reason` is given; None lets it sleep again as the
+/// system's settings say. Linux: logind's sleep and idle inhibitor, held by its file
+/// descriptor (`systemd-inhibit --list` shows it with its reason); a user in the active
+/// session may take it without a password. False when logind refused.
+#[cfg(target_os = "linux")]
+pub fn keep_awake(reason: Option<&str>) -> bool {
+    use std::sync::Mutex;
+    static LOCK: Mutex<Option<zbus::zvariant::OwnedFd>> = Mutex::new(None);
+    let mut held = LOCK.lock().unwrap_or_else(|e| e.into_inner());
+    // Closing the descriptor ends the inhibitor.
+    *held = None;
+    let Some(reason) = reason else {
+        return true;
+    };
+    let take = || -> zbus::Result<zbus::zvariant::OwnedFd> {
+        let conn = zbus::blocking::Connection::system()?;
+        let logind = zbus::blocking::Proxy::new(
+            &conn,
+            "org.freedesktop.login1",
+            "/org/freedesktop/login1",
+            "org.freedesktop.login1.Manager",
+        )?;
+        logind.call(
+            "Inhibit",
+            &("sleep:idle", "Mister Download Manager", reason, "block"),
+        )
+    };
+    match take() {
+        Ok(fd) => {
+            *held = Some(fd);
+            true
+        }
+        Err(e) => {
+            tracing::warn!("wake: logind's inhibitor refused ({e})");
+            false
+        }
+    }
+}
+
+/// macOS: `caffeinate -i` (no idle sleep) for as long as MDM runs, ended when not needed.
+#[cfg(target_os = "macos")]
+pub fn keep_awake(reason: Option<&str>) -> bool {
+    use std::sync::Mutex;
+    static CHILD: Mutex<Option<std::process::Child>> = Mutex::new(None);
+    let mut held = CHILD.lock().unwrap_or_else(|e| e.into_inner());
+    if let Some(mut c) = held.take() {
+        let _ = c.kill();
+        let _ = c.wait();
+    }
+    if reason.is_some() {
+        *held = Command::new("caffeinate")
+            .args(["-i", "-w", &std::process::id().to_string()])
+            .stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .spawn()
+            .ok();
+        return held.is_some();
+    }
+    true
 }

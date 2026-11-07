@@ -107,7 +107,7 @@ pub fn monitor_main(m: MonitorArgs) -> eframe::Result {
     plan.watched = false;
     let data = m.data.clone();
     crate::renderer::run("misterdownloadmanager-crash", &plan, options, move |cc| {
-        crate::theme::select(&settings.theme);
+        crate::theme::select(&crate::theme::startup_id(&settings.theme), &cc.egui_ctx);
         crate::theme::apply(&cc.egui_ctx);
         crate::i18n::set_lang(settings.language.as_deref());
         crate::theme::language_fonts(&cc.egui_ctx);

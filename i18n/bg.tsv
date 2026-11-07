@@ -153,10 +153,6 @@
 #. RSS feeds window, Download rules: shown in the empty Save to box
 #, machine
 	(the Torrents category's folder)	(папката на категорията Торенти)
-#. text in remote.rs
-#. remote control page (on a phone): button that picks a .torrent file on the phone
-#, machine
-	.torrent file	.torrent файл
 #. text in the Options window
 #. a 12-hour clock, with an example
 #, machine
@@ -187,6 +183,11 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Услугата за дебридиране изтегля връзка от файлов хост с вашия платен акаунт и дава на MDM директна връзка. Използвайте само собствения си акаунт: споделянето на акаунт или неговите връзки нарушава условията на услугите и може да доведе до спирането му. Изтеглянията, които браузърът вече е стартирал, остават непроменени.
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	A file of this torrent can't be saved safely: {name}	Файл от този торент не може да бъде записан безопасно: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -234,10 +235,6 @@
 #. tab title: the user's debrid service accounts (Real-Debrid…)
 #, machine
 	Accounts	Акаунти
-#. text in remote.rs
-#. remote control page (on a phone): button: add the download
-#, machine
-	Add	Добавяне
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Добавяне на изтегляне (Добавяне на URL)
@@ -319,14 +316,6 @@
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
 	Added {source}	Добавено {source}
-#. text in remote.rs
-#. remote control page (on a phone): a download was added
-#, machine
-	Added.	Добавено.
-#. text in remote.rs
-#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
-#, machine
-	Added. MDM is reading the torrent: it joins the list in a moment.	Добавено. MDM чете торента: той ще се присъедини към списъка след малко.
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -336,10 +325,6 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	Address changed to {host}	Адресът е променен на {host}
-#. text in remote.rs
-#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
-#, machine
-	Address or magnet link	Адрес или magnet връзка
 #. text in the Options window; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
@@ -376,10 +361,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Algeria	Алжир
-#. text in remote.rs
-#. remote control page (on a phone): tab: every download
-#, machine
-	All	Всички
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	Всички изтегляния
@@ -455,6 +436,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	Друг DNS...
+#. text in unix.rs
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+#, machine
+	Another program has set the computer's wake alarm	Друга програма е задала аларма за събуждане на компютъра
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -550,10 +535,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Austria	Австрия
-#. text in remote.rs
-#. remote control page (on a phone): category choice: the category follows the file's type
-#, machine
-	Automatic (by file type)	Автоматично (по тип файл)
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -706,7 +687,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	Канада
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Отказ
@@ -741,8 +722,7 @@
 #. page title in the Options window
 #, machine
 	Categories, file types, folders	Категории, типове файлове, папки
-#. text in a dialog box; text in the Options window; text in remote.rs
-#. remote control page (on a phone): label of the category choice for a new download
+#. text in a dialog box; text in the Options window
 #, machine
 	Category	Категория
 #. text in categories.rs
@@ -761,10 +741,6 @@
 #, machine
 	Central African Republic	Централноафриканска република
 #. text in the Options window
-#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
-#, machine
-	Certificate (SHA-256): {fingerprint}	Сертификат (SHA-256): {fingerprint}
-#. text in the Options window
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
 	Certificate name:	Име на сертификат:
@@ -772,6 +748,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Chad	Чад
+#. text in the Scheduler window
+#. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+#, machine
+	Change	Промяна
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -839,10 +819,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	China	Китай
-#. text in remote.rs
-#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
-#, machine
-	Choose a .torrent file	Изберете .torrent файл
 #. text in langpick.rs
 #, machine
 	Choose a language	Изберете език
@@ -883,13 +859,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cocos (Keeling) Islands	Кокосови (Кийлинг) острови
-#. text in remote.rs
-#. remote control page (on a phone): label of the pairing code's box (8 digits)
-#, machine
-	Code	Код
-#. text in the Options window
-#, machine
-	Code:	Код:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -898,7 +867,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	Коморски острови
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
 #, machine
@@ -1070,10 +1039,6 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its files stay where they are.	Изтриване на категорията „{category}“? Нейните файлове остават там, където са.
-#. text in remote.rs
-#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
-#, machine
-	Delete the file too	Изтриване и на файла
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1098,10 +1063,6 @@
 #. text in a download's Properties window
 #, machine
 	Description:	Описание:
-#. text in the Options window
-#. column title: a paired phone's or computer's name
-#, machine
-	Device	Устройство
 #. text in the Add torrent window
 #. the DHT (finding peers without trackers) is turned off in Torrent settings
 #, machine
@@ -1166,8 +1127,7 @@
 #. text in the Options window
 #, machine
 	Don't take files smaller than (KB, 0 = any size):	Не вземайте файлове, по-малки от (КБ, 0 = всякакъв размер):
-#. text in the Options window; text in a download's progress window
-#. button: close the window (the device is paired)
+#. text in a download's progress window
 #, machine
 	Done	Готово
 #. button in the Options window
@@ -1232,6 +1192,10 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	Изтегляне на поддържани връзки към файлови хостове чрез тези акаунти
+#. text in a dialog box
+#. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
+#, machine
+	Download through {service}	Изтегляне чрез {service}
 #. window title in the Download video window
 #, machine
 	Download video from a page	Изтегляне на видео от страница
@@ -1260,7 +1224,7 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	Downloaded {size} ({bytes} Bytes)	Изтеглени {size} ({bytes} байта)
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in remote.rs
+#. item in the Categories tree in the download list; value in a column's filter list in the download list
 #. a download's status (state it is in, not a command)
 #, machine
 	Downloading	Изтегляне
@@ -1404,7 +1368,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Eritrea	Еритрея
-#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
@@ -1434,10 +1398,6 @@
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
 	Every connection goes through it, from {ip}.	Всяка връзка минава през него, от {ip}.
-#. text in the Options window
-#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
-#, machine
-	Every local network address	Всеки адрес на локалната мрежа
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1605,9 +1565,8 @@
 #. text in the Find window
 #, machine
 	Find:	Намиране:
-#. item in the Categories tree in the main window; text in remote.rs
+#. item in the Categories tree in the main window
 #. adjective: the downloads that are complete
-#. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	Завършени
 #. text in countries.rs
@@ -1641,14 +1600,6 @@
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Force processes to terminate	Принудително прекратяване на процесите
-#. text in remote.rs
-#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
-#, machine
-	Forget this device	Забрави това устройство
-#. text in remote.rs
-#. remote control page (on a phone): question before unpairing this phone
-#, machine
-	Forget this device? It needs a new code to connect again.	Да забравите ли това устройство? Ще е необходим нов код за повторно свързване.
 #. text in the Scheduler window
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1690,10 +1641,6 @@
 #. message or event log entry in the main window
 #, machine
 	from a page (yt-dlp)	от страница (yt-dlp)
-#. message or event log entry in the main window
-#. where a download came from (its Properties): a phone or computer paired in Options → Remote
-#, machine
-	from a paired device	от сдвоено устройство
 #. message or event log entry in the main window
 #. where a download came from, in its log: a playlist or channel, by yt-dlp
 #, machine
@@ -1890,6 +1837,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Hong Kong	Хонконг
+#. text in the Scheduler window
+#. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+#, machine
+	How to allow it	Как да го разрешите
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -2004,11 +1955,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Israel	Израел
-#. text in the Options window
-#. Options → Remote → Status: it could not start; {error} = the system's reason
-#. {error} = an error message (keep the braces as they are)
-#, machine
-	It could not start: {error}	Не можа да стартира: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2145,10 +2091,6 @@
 #. text in the Batch download window
 #, machine
 	Last file:	Последен файл:
-#. text in the Options window
-#. column title: when the device last reached MDM
-#, machine
-	Last seen	Последно видяно
 #. text in a download's Properties window
 #. {last} = the date and time of the last attempt to download
 #, machine
@@ -2173,10 +2115,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Lesotho	Лесото
-#. checkbox in the Options window
-#. Options → Remote check box (off by default)
-#, machine
-	Let phones and computers on the local network control MDM	Разрешаване на телефони и компютри в локалната мрежа да контролират MDM
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 #, machine
@@ -2224,9 +2162,6 @@
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
 	List the rest	Изброяване на останалите
-#. text in the Options window
-#, machine
-	Listen on:	Слушане на:
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
@@ -2387,35 +2322,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Mayotte	Майот
-#. text in the Options window
-#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
-#, machine
-	MDM can't be reached on the network now: Options → Remote says why.	MDM не може да бъде достигнат в мрежата сега: Опции → Отдалечен достъп показва защо.
-#. text in remote.rs
-#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
-#, machine
-	MDM cannot download this address.	MDM не може да изтегли този адрес.
-#. text in remote.rs
-#. remote control page (on a phone): adding a download failed
-#, machine
-	MDM could not add it.	MDM не можа да го добави.
-#. text in remote.rs
-#. remote control page (on a phone): an action failed
-#, machine
-	MDM could not do it.	MDM не можа да го направи.
-#. text in remote.rs
-#. remote control page (on a phone): MDM can't be reached while pairing
-#, machine
-	MDM does not answer. Check that it is running and on the same network.	MDM не отговаря. Проверете дали работи и е в същата мрежа.
-#. text in remote.rs
-#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
-#. the trailing ... means it is still going on: keep it
-#, machine
-	MDM does not answer. Trying again...	MDM не отговаря. Опитва се отново...
-#. text in remote.rs
-#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
-#, machine
-	MDM shows no code now. Click Pair a device there first.	MDM не показва код сега. Първо щракнете върху Сдвояване на устройство там.
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -2462,6 +2368,11 @@
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager срещна вътрешна грешка
+#. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Mister Download Manager is running the queue "{queue}"	Mister Download Manager изпълнява опашката „{queue}“
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -2513,10 +2424,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Montserrat	Монсерат
-#. text in remote.rs
-#. remote control page (on a phone): its menu's button
-#, machine
-	More	Още
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2644,10 +2551,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	New Caledonia	Нова Каледония
-#. button in the Options window
-#. Options → Remote → Pair a device: button: show a new code
-#, machine
-	New code	Нов код
 #. text in the Options window
 #, machine
 	New exception	Ново изключение
@@ -2705,10 +2608,6 @@
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
 	No downloads here	Няма изтегляния тук
-#. text in remote.rs
-#. remote control page (on a phone): the list shown is empty
-#, machine
-	No downloads here.	Няма изтегляния тук.
 #. message or event log entry in the main window
 #. title in the empty download list, when the column filters hide every download
 #, machine
@@ -2730,10 +2629,6 @@
 #. text in langpick.rs
 #, machine
 	No language matches.	Няма съвпадащ език.
-#. text in the Options window
-#. Options → Remote → Status: on, but the computer has no local network address now
-#, machine
-	No local network now: it starts when the computer joins one.	Няма локална мрежа сега: стартира, когато компютърът се присъедини към такава.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Email found no mail program
 #, machine
@@ -2876,10 +2771,6 @@
 #, machine
 	Off: a finished torrent stops, like any download.	Изкл.: завършен торент спира, като всяко изтегляне.
 #. text in the Options window
-#. Options → Remote → Status: the remote control is off
-#, machine
-	Off: nothing on the network can reach MDM.	Изключено: нищо в мрежата не може да достигне MDM.
-#. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	Предлагане за изтегляне на връзки, копирани в клипборда
 #. text in the Link grabber window
@@ -2893,21 +2784,17 @@
 #. a country's name (where a download's server is)
 #, machine
 	Oman	Оман
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+#, machine
+	On battery, Windows' power options don't allow wake timers	При захранване от батерия опциите за захранване на Windows не позволяват таймери за събуждане
 #. text in a download's progress window
 #, machine
 	on download stop/resume	при спиране/възобновяване на изтеглянето
-#. text in remote.rs
-#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
-	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	На компютъра отворете Опции, след това Отдалечен достъп и щракнете върху Сдвояване на устройство. Въведете кода, който показва.
-#. text in the Options window
-#. Options → Remote → Pair a device: how to pair
-#, machine
-	On the phone, scan this code with the camera, or open the address and enter the code.	На телефона сканирайте този код с камерата или отворете адреса и въведете кода.
-#. text in the Options window
-#. Options → Remote → Status: on; the address follows in a box below
-#, machine
-	On. On the phone, open this address:	Включено. На телефона отворете този адрес:
+	On macOS, only an administrator can schedule a wake	В macOS само администратор може да планира събуждане
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Веднъж в
@@ -2931,14 +2818,14 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Може да се премести само завършено изтегляне или такова, което още не е започнало. Първо го спрете и го завършете.
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+#, machine
+	Only an administrator can allow this	Само администратор може да разреши това
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	Само MP4 и MKV видеоклипове могат да съдържат субтитри
-#. text in the Options window
-#. Options → Remote, at the bottom of the page
-#, machine
-	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Само сдвоени устройства виждат или променят нещо. Първия път браузърът на телефона предупреждава за собствения сертификат на MDM: неговият отпечатък е този по-горе.
 #. text in playlistdlg.rs
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
@@ -3009,30 +2896,6 @@
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Адрес на страницата
-#. text in remote.rs
-#. remote control page (on a phone): button: pair this phone with MDM
-#, machine
-	Pair	Сдвояване
-#. window title in the Options window
-#. window title: Options → Remote → Pair a device...
-#, machine
-	Pair a device	Сдвояване на устройство
-#. button in the Options window
-#. Options → Remote button: shows a code (and a QR code) that pairs a phone
-#. the trailing ... means it opens a window: keep it
-#, machine
-	Pair a device...	Сдвояване на устройство...
-#. text in remote.rs
-#. remote control page (on a phone): title of the pairing screen
-#, machine
-	Pair with Mister Download Manager	Сдвояване с Mister Download Manager
-#. text in the Options window
-#. column title: when the device was paired
-#, machine
-	Paired	Сдвоено
-#. text in the Options window
-#, machine
-	Paired devices:	Сдвоени устройства:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3083,9 +2946,8 @@
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine
 	Pasted	Поставено
-#. text in a download's progress window; text in remote.rs
+#. text in a download's progress window
 #. verb: pause the download
-#. remote control page (on a phone): button: pause a download
 #, machine
 	Pause	Пауза
 #. text in a download's Properties window
@@ -3142,12 +3004,7 @@
 #. label in the Options window
 #, machine
 	Port	Порт
-#. text in the Options window
-#. Options → Remote → Status: another program uses the port; {port} = its number
-#, machine
-	Port {port} is used by another program: choose another.	Порт {port} се използва от друга програма: изберете друг.
-#. text in the Options window; text in the Add torrent window
-#. Options → Remote: label before the port number box
+#. text in the Add torrent window
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	Порт:
@@ -3223,10 +3080,6 @@
 #. text in the Options window
 #, machine
 	Queue processing stopped/finished	Обработката на опашката спря/завърши
-#. text in remote.rs
-#. remote control page (on a phone): a download's state: added, waiting to start
-#, machine
-	Queued	На опашка
 #. item in the Categories tree in the main window; text in the Scheduler window
 #. plural noun: the download queues
 #, machine
@@ -3294,16 +3147,8 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Remember this path for "{category}" category	Запомни този път за категория „{category}“
-#. text in the Options window
-#, machine
-	Remote	Отдалечен
-#. text in the Options window
-#. Options page title: control MDM from a phone or another computer on the local network
-#, machine
-	Remote control	Отдалечено управление
-#. button in the Options window; text in remote.rs; button in rssdlg.rs
+#. button in the Options window; button in rssdlg.rs
 #. verb: remove the item
-#. remote control page (on a phone): button: remove a download from the list
 #. RSS feeds window: unsubscribe from the selected feed
 #, machine
 	Remove	Премахване
@@ -3314,11 +3159,6 @@
 #. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
 #, machine
 	Remove its downloads from the list (running ones move to General)	Премахване на изтеглянията му от списъка (текущите се преместват в Общи)
-#. text in remote.rs
-#. remote control page (on a phone): question before removing a download; {name} its file name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	Remove {name} from the list?	Премахване на {name} от списъка?
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -3516,6 +3356,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Изпрати това на приятел:
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+#, machine
+	Send torrents and magnet links to the first account instead of to peers	Изпращане на торенти и магнитни връзки към първия акаунт вместо към пиъри
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3562,6 +3406,14 @@
 #. button in Test browser integration: register MDM's helper with the browsers
 #, machine
 	Set it up	Настройте го
+#. message or event log entry in the main window
+#. event log: File Properties: the download no longer goes through the debrid account
+#, machine
+	Set to download directly, not through the debrid account	Настроено за директно изтегляне, не чрез debrid акаунт
+#. message or event log entry in the main window
+#. event log: File Properties: the download goes through the debrid account again
+#, machine
+	Set to download through the debrid account	Настроено за изтегляне чрез debrid акаунт
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3777,9 +3629,8 @@
 #. a country's name (where a download's server is)
 #, machine
 	Sri Lanka	Шри Ланка
-#. text in the Link grabber window; text in remote.rs
+#. text in the Link grabber window
 #. Link grabber button: download the ticked links now
-#. remote control page (on a phone): button: start a download or a queue
 #, machine
 	Start	Старт
 #. button in a dialog box
@@ -3797,10 +3648,6 @@
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	Стартиране на основна опашка за изтегляне
-#. text in remote.rs
-#. remote control page (on a phone): "When" choice: start the download at once
-#, machine
-	Start now	Стартирай сега
 #. text in a download's progress window
 #, machine
 	Start positions and download progress by connections	Начални позиции и напредък на изтеглянето по връзки
@@ -3832,7 +3679,7 @@
 #. column title: the account's state (premium, days left)
 #, machine
 	State	Състояние
-#. text in the Link grabber window; group box title in the Options window; text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -3841,8 +3688,7 @@
 #. label before the download's state
 #, machine
 	Status:	Състояние:
-#. text in remote.rs; text in the Add torrent window
-#. remote control page (on a phone): button: stop a queue
+#. text in the Add torrent window
 #, machine
 	Stop	Спиране
 #. text in the Scheduler window; checkbox in the Scheduler window
@@ -3871,7 +3717,7 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	Спиране на {queue}
-#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
@@ -4027,10 +3873,6 @@
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	Браузърите могат да намерят Mister Download Manager
-#. text in the Options window
-#. Options → Remote → Status: the settings were changed; they apply on OK
-#, machine
-	The changes apply when you click OK.	Промените ще се приложат, когато щракнете върху OK.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -4047,6 +3889,15 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The computer could not be turned off: {error}	Компютърът не можа да бъде изключен: {error}
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue"
+#, machine
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	Компютърът се събужда минута преди началния час и остава буден, докато опашката работи. Mister Download Manager трябва да работи (може да изчака в областта за уведомяване).
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	The computer will be woken on {date} at {time}	Компютърът ще бъде събуден на {date} в {time}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4286,14 +4137,14 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	Тази категория или опашка все още не съдържа изтегляния.
-#. text in the Options window
-#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#. text in win32.rs
+#. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
-	This code can't be used any more.	Този код не може да се използва повече.
-#. text in the Options window
-#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+	This computer can't be woken by a timer	Този компютър не може да бъде събуден от таймер
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 #, machine
-	This computer only (127.0.0.1)	Само този компютър (127.0.0.1)
+	This computer has no wake alarm that programs can set	Този компютър няма аларма за събуждане, която програмите могат да задават
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4302,14 +4153,6 @@
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
 	This date has passed: the queue will not start	Тази дата е минала: опашката няма да стартира
-#. text in remote.rs
-#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
-#, machine
-	This device's name	Име на това устройство
-#. text in remote.rs
-#. remote control page (on a phone): the file chosen is too large for a .torrent file
-#, machine
-	This file is too large to be a torrent.	Този файл е твърде голям, за да бъде торент.
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Тази папка не съществува:
@@ -4324,10 +4167,6 @@
 #. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	това не е magnet връзка или .torrent файл
-#. text in remote.rs
-#. remote control page (on a phone): the file chosen isn't a .torrent file
-#, machine
-	This is not a torrent file.	Това не е торент файл.
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -4378,9 +4217,21 @@
 #. where a download's server is, when a proxy carries it: {country} is the proxy's country
 #, machine
 	through a proxy in {country}	чрез прокси в {country}
+#. text in a download's Properties window
+#. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
+#, machine
+	Through {service}	Чрез {service}
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+#, machine
+	Through {service}: the service downloads the torrent, then MDM its files	Чрез {service}: услугата изтегля торента, след което MDM изтегля неговите файлове
 #. text in the Scheduler window
 #, machine
 	Thursday	Четвъртък
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+#, machine
+	Tick "Start download at" first: the computer is woken for the start time	Първо отметнете „Стартиране на изтеглянето в“: компютърът се събужда за началния час
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Оставащо време
@@ -4498,10 +4349,6 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	Включване
-#. tooltip (why a control is greyed) in the Options window
-#. why Options → Remote → Pair a device... is greyed
-#, machine
-	Turn on the remote control first.	Първо включете отдалеченото управление.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4569,9 +4416,8 @@
 #. Link grabber button (IDM's): untick every link
 #, machine
 	Uncheck all	Отмаркирай всички
-#. item in the Categories tree in the main window; text in remote.rs
+#. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
-#. remote control page (on a phone): tab: downloads not finished yet
 #, machine
 	Unfinished	Незавършени
 #. text in countries.rs
@@ -4771,33 +4617,23 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	volume {n} of it is missing	липсва том {n} от него
-#. text in remote.rs
-#. remote control page (on a phone): codes were tried too fast
-#, machine
-	Wait a moment, then try again.	Изчакайте малко, след което опитайте отново.
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
 	Wait for the list, or stop listing	Изчакайте списъка или спрете изброяването
-#. text in remote.rs
-#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
-#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
-#, machine
-	Wait in {queue}	Изчакайте в {queue}
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	Изчакване
-#. text in the Options window
-#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
-#. {time} = a time of day (keep the braces as they are)
-#, machine
-	Waiting for the device. The code works for {time}.	Изчакване на устройството. Кодът е валиден за {time}.
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	Изчакване: достигнато е ограничението за изтегляне (планировчик)
+#. text in the Scheduler window
+#. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+#, machine
+	Wake the computer to run this queue	Събуждане на компютъра за изпълнение на тази опашка
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4828,13 +4664,13 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	What's new:	Какво ново:
-#. text in remote.rs
-#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
-#, machine
-	When	Кога
 #. text in the Batch download window
 #, machine
 	Wildcard size	Размер на заместващия знак
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
+#, machine
+	Windows allows wake timers only while plugged in	Windows позволява таймери за събуждане само докато е включен в захранването
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4845,6 +4681,10 @@
 #. text in langpick.rs
 #, machine
 	Windows' language ({language})	Език на Windows ({language})
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+#, machine
+	Windows' power options don't allow wake timers	Опциите за захранване на Windows не позволяват таймери за събуждане
 #. message or event log entry in the main window
 #, machine
 	with Add URL	с Добавяне на URL адрес
@@ -4859,15 +4699,6 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	Записване на дати и часове
-#. text in remote.rs
-#. remote control page (on a phone): pairing failed and the code is void now
-#, machine
-	Wrong code. Show a new code in MDM and try again.	Грешен код. Покажете нов код в MDM и опитайте отново.
-#. text in remote.rs
-#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
-#. {n} = a number (keep the braces as they are)
-#, machine
-	Wrong code. Tries left: {n}	Грешен код. Остават опити: {n}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -4977,15 +4808,6 @@
 #. {count} = a number (keep the braces as they are)
 #, machine
 	{count}, {speed}	{count}, {speed}
-#. text in the Options window
-#. Options → Remote → Pair a device: done; {device} = the name it was given
-#, machine
-	{device} is paired. It can control MDM now.	{device} е сдвоено. Вече може да управлява MDM.
-#. text in remote.rs
-#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
-#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
-	{done} of {size}	{done} от {size}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
@@ -5085,6 +4907,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} от {total} избрани
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+#, machine
+	{percent} at {service}	{percent} в {service}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -5096,6 +4922,9 @@
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	{service} ви моли първо да разрешите този компютър: вижте имейла си
+#. text in errors.rs
+#, machine
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} не може да изтегли този торент: никой не го споделя или връзката му не може да бъде прочетена
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} не може да достигне този файлов хост в момента; MDM ще опита отново по-късно
@@ -5146,11 +4975,6 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	{size} ({bytes} Bytes)	{size} ({bytes} байта)
-#. text in remote.rs
-#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
-#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
-	{size} free	{size} свободни
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -5226,14 +5050,6 @@ column	Time left	Оставащо време
 #, machine
 column	Transfer rate	Скорост на трансфер
 #. text in the browser extension
-#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
-#, machine
-extension	Another Mister Download Manager (a server)	Друг Mister Download Manager (сървър)
-#. text in the browser extension
-#. the name this browser gets in the other MDM's list of paired devices
-#, machine
-extension	Browser extension	Разширение на браузъра
-#. text in the browser extension
 #. menu command of the download button over a video: opens its settings in Mister Download Manager
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -5273,17 +5089,9 @@ extension	Download with Mister Download Manager	Изтегляне с Mister Dow
 #, machine
 extension	Downloads from {site} stay with the browser	Изтеглянията от {site} остават в браузъра
 #. text in the browser extension
-#. the toolbar button's status while downloads go to another MDM
-#, machine
-extension	Downloads go to {address}	Изтеглянията отиват на {address}
-#. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 #, machine
 extension	Drag to move it along the video's edge	Плъзнете, за да го преместите по ръба на видеоклипа
-#. text in the browser extension
-#. the address typed isn't an https:// address
-#, machine
-extension	Enter its https:// address.	Въведете неговия https:// адрес.
 #. text in the browser extension
 #. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
 #, machine
@@ -5304,14 +5112,6 @@ extension	Hold Alt while clicking a link to let the browser download it.	Зад�
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	Как да го поправите
-#. text in the browser extension
-#. pairing failed for another reason
-#, machine
-extension	It didn't work. Try again.	Не се получи. Опитайте отново.
-#. text in the browser extension
-#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
-#, machine
-extension	It shows no code now: click Pair a device there first.	Сега не показва код: първо щракнете върху Сдвояване на устройство там.
 #. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
@@ -5363,18 +5163,6 @@ extension	Never take downloads from {site}	Никога не вземайте и
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	Все още не е намерено видео или звук на тази страница. Пуснете го, след което отворете това отново.
 #. text in the browser extension
-#. pairing failed: the other MDM didn't answer
-#, machine
-extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Не е достигнато. Отворете адреса му веднъж в този браузър и приемете сертификата му, след което опитайте отново.
-#. text in the browser extension
-#. button: open the other MDM's address in a tab (to accept its certificate once)
-#, machine
-extension	Open it	Отворете го
-#. text in the browser extension
-#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
-#, machine
-extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	Отворете адреса му веднъж и приемете сертификата му, след което въведете код от неговите Опции, Отдалечен, Сдвояване на устройство (или misterdownloadmanager-cli pair).
-#. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
 extension	Open Mister Download Manager	Отворете Mister Download Manager
@@ -5383,14 +5171,6 @@ extension	Open Mister Download Manager	Отворете Mister Download Manager
 #. the trailing ... means it is still going on: keep it
 #, machine
 extension	Options...	Опции...
-#. text in the browser extension
-#. button: pair this browser with the other MDM using the code
-#, machine
-extension	Pair	Сдвояване
-#. text in the browser extension
-#. placeholder of the box for the 8-digit code the other MDM shows
-#, machine
-extension	Pairing code	Код за сдвояване
 #. text in the browser extension
 #. status when the user switched off taking downloads in the toolbar button's popup
 #, machine
@@ -5407,10 +5187,6 @@ extension	Protected video: it can't be saved	Защитено видео: не �
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
 extension	Send downloads through this browser's proxy or VPN extension	Изпращане на изтегляния през прокси или VPN разширението на този браузър
-#. text in the browser extension
-#. heading in the toolbar button's popup, above the choice of where downloads go
-#, machine
-extension	Send downloads to	Изпращане на изтегляния до
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -5432,10 +5208,6 @@ extension	The connection to Mister Download Manager failed	Връзката с M
 #, machine
 extension	The download button is off on this site	Бутонът за изтегляне е изключен за този сайт
 #. text in the browser extension
-#. choice under Send downloads to: the Mister Download Manager on this computer
-#, machine
-extension	This computer	Този компютър
-#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	Подробностите за това изтегляне бяха твърде големи, за да бъдат предадени
@@ -5443,14 +5215,6 @@ extension	This download's details were too large to hand over	Подробнос
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	Актуализирайте Mister Download Manager, за да използвате всичко, което предлага това разширение
-#. text in the browser extension
-#. pairing failed: codes tried too fast
-#, machine
-extension	Wait a moment, then try again.	Изчакайте малко, след което опитайте отново.
-#. text in the browser extension
-#. pairing failed: the code was wrong
-#, machine
-extension	Wrong code.	Грешен код.
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -5677,12 +5441,20 @@ menu	Add category	Добавяне на категория
 #, machine
 menu	Add trackers...	Добавяне на тракери...
 #. menu command in the main window
+#. View → Theme: a style theme's name (GNOME's look, the Linux desktop), a name: keep "Adwaita" as written
+#, machine
+menu	Adwaita	Adwaita
+#. menu command in the main window
 #. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
 #, machine
 menu	Applies the next time MDM starts	Прилага се при следващото стартиране на MDM
 #. menu command in the main window
 #, machine
 menu	Arrange files	Подреждане на файлове
+#. menu command in the main window
+#. View → Theme: a style theme's name (KDE Plasma's look, the Linux desktop), a name: keep "Breeze" as written
+#, machine
+menu	Breeze	Breeze
 #. menu command in the main window
 #. verb: opens this category's download folder
 #, machine
@@ -5746,6 +5518,10 @@ menu	C&ustomize URL List...	П&ерсонализиране на списък с
 #, machine
 menu	Check for &updates...	Проверка за &актуализации...
 #. menu command in the main window
+#. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
+#, machine
+menu	Classic	Класическа
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Clear all &filters	Изчистване на всички &филтри
@@ -5788,7 +5564,7 @@ menu	Download &video from a page...	Изтегляне на &видео от с�
 #, machine
 menu	Download in order	Изтегляне по ред
 #. menu command in the main window
-#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	Чертаене с
 #. menu command in the main window
@@ -5835,12 +5611,48 @@ menu	H&elp contents	&Помощно съдържание
 #, machine
 menu	Hide drop target	Скриване на целта за плъзгане
 #. menu command in the main window
+#. View → Theme: black and white with strong edges, for low vision
+#, machine
+menu	High contrast	Висок контраст
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+#, machine
+menu	It couldn't start: the log says why	Не можа да стартира: в дневника пише защо
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+#, machine
+menu	Its first frame didn't show within 10 seconds	Първият му кадър не се показа до 10 секунди
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+#, machine
+menu	Its last start ended before its first frame	Последното му стартиране приключи преди първия му кадър
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Apple's), usually kept as is
+#, machine
+menu	Metal	Metal
+#. menu command in the main window
+#. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Metal didn't start here: OpenGL draws	Metal не стартира тук: чертае OpenGL
+#. menu command in the main window
+#. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
+#, machine
+menu	Metro	Метро
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Mister Download Manager &Home Page	&Начална страница на Mister Download Manager
 #. menu command in the main window
 #, machine
 menu	Move/Rename (Ctrl-M)	Преместване/Преименуване (Ctrl+M)
+#. menu command in the main window
+#. View → Theme: the system's own colours (its accent colour, its high contrast)
+#, machine
+menu	Native	Естествена
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+#, machine
+menu	No graphics card here has a driver for it	Нито една графична карта тук няма драйвер за него
 #. menu command in the main window
 #, machine
 menu	On Double click	При двойно щракване
@@ -5857,6 +5669,10 @@ menu	Open &torrent file...	Отваряне на &torrent файл...
 #. menu command in the main window
 #, machine
 menu	Open folder	Отваряне на папка
+#. menu command in the main window
+#. View → Theme: opens the folder where theme files go (TOML or JSON)
+#, machine
+menu	Open themes folder	Отваряне на папката с теми
 #. menu command in the main window
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -5962,6 +5778,14 @@ menu	Support &MDM	Подкрепете &MDM
 #, machine
 menu	Tell a &friend	Кажете на &приятел
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+#, machine
+menu	The graphics card was lost twice in 10 minutes	Графичната карта беше изгубена два пъти за 10 минути
+#. menu command in the main window
+#. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
+#, machine
+menu	Theme	Тема
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -5996,6 +5820,14 @@ menu	Turn of&f	Изключ&ване
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Verify checksum...	Проверка на контролна сума...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+#, machine
+menu	Vulkan	Vulkan
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Vulkan didn't start here: OpenGL draws	Vulkan не стартира тук: чертае OpenGL
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6074,3 +5906,332 @@ unit	{n} MB	{n} МБ
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} МБ/сек
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent файл
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	Добавяне
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	Добавено.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	Добавено. MDM чете торента: той ще се присъедини към списъка след малко.
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	Адрес или magnet връзка
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	Всички
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	Автоматично (по тип файл)
+#. text in the Options window
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
+#, machine
+	Certificate (SHA-256): {fingerprint}	Сертификат (SHA-256): {fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	Изберете .torrent файл
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	Код
+#. text in the Options window
+#. Options → Remote → Pair a device: label before the 8-digit code
+#, machine
+	Code:	Код:
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
+#, machine
+	Delete the file too	Изтриване и на файла
+#. text in the Options window
+#. column title: a paired phone's or computer's name
+#, machine
+	Device	Устройство
+#. text in the Options window
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
+#, machine
+	Every local network address	Всеки адрес на локалната мрежа
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	Забрави това устройство
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	Да забравите ли това устройство? Ще е необходим нов код за повторно свързване.
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	от сдвоено устройство
+#. text in the Options window
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	It could not start: {error}	Не можа да стартира: {error}
+#. text in the Options window
+#. column title: when the device last reached MDM
+#, machine
+	Last seen	Последно видяно
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	Разрешаване на телефони и компютри в локалната мрежа да контролират MDM
+#. text in the Options window
+#. Options → Remote: label before the choice of the address MDM listens on
+#, machine
+	Listen on:	Слушане на:
+#. text in the Options window
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
+#, machine
+	MDM can't be reached on the network now: Options → Remote says why.	MDM не може да бъде достигнат в мрежата сега: Опции → Отдалечен достъп показва защо.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	MDM не може да изтегли този адрес.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	MDM не можа да го добави.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	MDM не можа да го направи.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM не отговаря. Проверете дали работи и е в същата мрежа.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM не отговаря. Опитва се отново...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	MDM не показва код сега. Първо щракнете върху Сдвояване на устройство там.
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	Още
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	Нов код
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	Няма изтегляния тук.
+#. text in the Options window
+#. Options → Remote → Status: on, but the computer has no local network address now
+#, machine
+	No local network now: it starts when the computer joins one.	Няма локална мрежа сега: стартира, когато компютърът се присъедини към такава.
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	Изключено: нищо в мрежата не може да достигне MDM.
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	На компютъра отворете Опции, след това Отдалечен достъп и щракнете върху Сдвояване на устройство. Въведете кода, който показва.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	На телефона сканирайте този код с камерата или отворете адреса и въведете кода.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	Включено. На телефона отворете този адрес:
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Само сдвоени устройства виждат или променят нещо. Първия път браузърът на телефона предупреждава за собствения сертификат на MDM: неговият отпечатък е този по-горе.
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	Сдвояване
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	Сдвояване на устройство
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	Сдвояване на устройство...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Сдвояване с Mister Download Manager
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	Сдвоено
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	Сдвоени устройства:
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	Порт {port} се използва от друга програма: изберете друг.
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	На опашка
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	Отдалечен
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	Отдалечено управление
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	Премахване на {name} от списъка?
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	Стартирай сега
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	Промените ще се приложат, когато щракнете върху OK.
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	Този код не може да се използва повече.
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	Само този компютър (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	Име на това устройство
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	Този файл е твърде голям, за да бъде торент.
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	Това не е торент файл.
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	Първо включете отдалеченото управление.
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	Изчакайте малко, след което опитайте отново.
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	Изчакайте в {queue}
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	Изчакване на устройството. Кодът е валиден за {time}.
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	Кога
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	Грешен код. Покажете нов код в MDM и опитайте отново.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	Грешен код. Остават опити: {n}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} е сдвоено. Вече може да управлява MDM.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{done} от {size}
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} свободни
+#. text in the browser extension
+#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
+#, machine
+extension	Another Mister Download Manager (a server)	Друг Mister Download Manager (сървър)
+#. text in the browser extension
+#. the name this browser gets in the other MDM's list of paired devices
+#, machine
+extension	Browser extension	Разширение на браузъра
+#. text in the browser extension
+#. the toolbar button's status while downloads go to another MDM
+#, machine
+extension	Downloads go to {address}	Изтеглянията отиват на {address}
+#. text in the browser extension
+#. the address typed isn't an https:// address
+#, machine
+extension	Enter its https:// address.	Въведете неговия https:// адрес.
+#. text in the browser extension
+#. pairing failed for another reason
+#, machine
+extension	It didn't work. Try again.	Не се получи. Опитайте отново.
+#. text in the browser extension
+#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
+#, machine
+extension	It shows no code now: click Pair a device there first.	Сега не показва код: първо щракнете върху Сдвояване на устройство там.
+#. text in the browser extension
+#. pairing failed: the other MDM didn't answer
+#, machine
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Не е достигнато. Отворете адреса му веднъж в този браузър и приемете сертификата му, след което опитайте отново.
+#. text in the browser extension
+#. button: open the other MDM's address in a tab (to accept its certificate once)
+#, machine
+extension	Open it	Отворете го
+#. text in the browser extension
+#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
+#, machine
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	Отворете адреса му веднъж и приемете сертификата му, след което въведете код от неговите Опции, Отдалечен, Сдвояване на устройство (или misterdownloadmanager-cli pair).
+#. text in the browser extension
+#. button: pair this browser with the other MDM using the code
+#, machine
+extension	Pair	Сдвояване
+#. text in the browser extension
+#. placeholder of the box for the 8-digit code the other MDM shows
+#, machine
+extension	Pairing code	Код за сдвояване
+#. text in the browser extension
+#. heading in the toolbar button's popup, above the choice of where downloads go
+#, machine
+extension	Send downloads to	Изпращане на изтегляния до
+#. text in the browser extension
+#. choice under Send downloads to: the Mister Download Manager on this computer
+#, machine
+extension	This computer	Този компютър
+#. text in the browser extension
+#. pairing failed: codes tried too fast
+#, machine
+extension	Wait a moment, then try again.	Изчакайте малко, след което опитайте отново.
+#. text in the browser extension
+#. pairing failed: the code was wrong
+#, machine
+extension	Wrong code.	Грешен код.

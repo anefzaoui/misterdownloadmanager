@@ -25,6 +25,78 @@ pub fn http() -> Result<Arc<Http>, String> {
     Http::new(&crate::settings::own_net(), services()).map(Arc::new)
 }
 
+/// Did the browser start this download itself (it came with the browser's size or type,
+/// `ipc::Command`)? Then the host is already sending the file: by default it is downloaded
+/// directly, not through a debrid account (`Item::direct`).
+pub fn browser_started(context: &mdm_ipc::Command) -> bool {
+    context.size.is_some() || context.mime.is_some()
+}
+
+/// Which account a download goes through (#44): the accounts' handle (`App::debrid`), Options'
+/// "Download supported file-host links through these accounts", and each account's name for the
+/// windows that say it. Cheap to clone: Download File Info and File Properties keep one.
+#[derive(Clone, Default)]
+pub struct Route {
+    debrid: mdm_debrid::Debrid,
+    on: bool,
+    /// Each account's id and its name at the service.
+    names: Arc<Vec<(u64, String)>>,
+}
+
+impl Route {
+    pub fn new(debrid: &mdm_debrid::Debrid, settings: &crate::settings::Settings) -> Self {
+        Route {
+            debrid: debrid.clone(),
+            on: settings.debrid_on,
+            names: Arc::new(
+                settings
+                    .debrid_accounts
+                    .iter()
+                    .map(|a| (a.id, a.user.clone()))
+                    .collect(),
+            ),
+        }
+    }
+
+    /// The account whose service takes `url`'s host: None when turned off in Options, or no
+    /// account takes it (or its host lists aren't read yet).
+    pub fn account(&self, url: &url::Url) -> Option<(u64, ServiceKind)> {
+        if !self.on {
+            return None;
+        }
+        self.debrid.account_for(url)
+    }
+
+    /// The unlocker a download of `url` goes with (`mdm_engine::Options::unlocker`): none when
+    /// it is downloaded directly (`direct`: the user's choice, or the browser had started it).
+    pub fn unlocker(&self, url: &url::Url, direct: bool) -> Option<Arc<dyn mdm_engine::Unlocker>> {
+        if direct || self.account(url).is_none() {
+            return None;
+        }
+        self.debrid.unlocker_for(url)
+    }
+
+    /// The service that takes `url`, and the account's name: "Real-Debrid (labuser)".
+    pub fn through(&self, url: &url::Url) -> Option<String> {
+        let (id, service) = self.account(url)?;
+        let user = self
+            .names
+            .iter()
+            .find(|(a, _)| *a == id)
+            .map(|(_, u)| u.as_str())
+            .filter(|u| !u.is_empty());
+        Some(match user {
+            Some(u) => format!("{} ({})", service.name(), crate::i18n::ltr(u)),
+            None => service.name().to_owned(),
+        })
+    }
+
+    /// Just the service's name ("Real-Debrid"), for the narrow places.
+    pub fn service(&self, url: &url::Url) -> Option<&'static str> {
+        self.account(url).map(|(_, s)| s.name())
+    }
+}
+
 /// "premium, 143 days left", "free account": what Options shows for an account.
 pub fn state_text(info: &AccountInfo) -> String {
     match (info.premium, info.premium_left) {
@@ -186,5 +258,50 @@ impl SignIn {
             Err(why) if why.is_empty() => self.set(SignInState::Idle, ctx),
             Err(why) => self.set(SignInState::Failed(why), ctx),
         }
+    }
+}
+
+/// The command line's way to the accounts in Options → Accounts (#44, `mdm_cli::Accounts`): read
+/// from the app's settings, which open their sealed secrets, when a download asks, never before.
+/// The services are asked through the download's own network options.
+pub struct CliAccounts;
+
+impl mdm_cli::Accounts for CliAccounts {
+    fn unlocker<'a>(
+        &'a self,
+        url: &'a url::Url,
+        net: &'a mdm_engine::Options,
+    ) -> mdm_cli::Unlocking<'a> {
+        Box::pin(async move {
+            let Some(settings) = crate::store::settings_only() else {
+                return Ok(None);
+            };
+            let accounts: Vec<mdm_debrid::Account> = settings
+                .debrid_accounts
+                .iter()
+                .filter(|a| a.enabled)
+                .filter_map(crate::settings::DebridAccount::account)
+                .collect();
+            if !settings.debrid_on || accounts.is_empty() {
+                return Ok(None);
+            }
+            let http = Http::new(net, services()).map(Arc::new)?;
+            let debrid = mdm_debrid::Debrid::default();
+            debrid.set_accounts(accounts, http);
+            let failed = debrid.refresh_hosts().await.err();
+            match (debrid.unlocker_for(url), failed) {
+                (Some(u), _) => Ok(Some(u)),
+                // A service that didn't answer may take this host: the command line says so.
+                (None, Some((service, f))) => Err(format!(
+                    "{} didn't say which file hosts it takes ({})",
+                    service.name(),
+                    match f {
+                        Fault::Service(f) => f.to_string(),
+                        Fault::Unsupported => "unsupported".into(),
+                    }
+                )),
+                (None, None) => Ok(None),
+            }
+        })
     }
 }

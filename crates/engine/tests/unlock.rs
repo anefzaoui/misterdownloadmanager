@@ -260,3 +260,60 @@ async fn the_look_names_and_sizes_the_file_through_the_service() {
     assert_eq!(info.size, Some(2 << 20));
     assert_eq!(info.file_name, "d");
 }
+
+#[tokio::test]
+async fn a_download_begun_directly_continues_through_the_service_once_set_to() {
+    // File Properties' "Through …" ticked on a download that went directly until now (#44):
+    // resumed, the service is asked at once, and the file continues from its link.
+    let lab = LabServer::start(Config::default()).await.unwrap();
+    let port = lab.url("/").parse::<Url>().unwrap().port().unwrap();
+    let dir = tempfile::tempdir().unwrap();
+    let hosts = vec![("hoster.test".to_owned(), vec!["127.0.0.1".parse().unwrap()])];
+    let req = Request {
+        url: format!("http://hoster.test:{port}/gen/2M/d.bin?seed=47&rate=512K")
+            .parse()
+            .unwrap(),
+        ..request(dir.path(), false)
+    };
+    let direct = Options {
+        hosts: hosts.clone(),
+        max_connections: 1,
+        ..Options::default()
+    };
+    let dl = Download::start(req, direct);
+    let file = loop {
+        tokio::time::sleep(Duration::from_millis(100)).await;
+        let s = dl.snapshot();
+        if s.downloaded > 0
+            && let Some(f) = s.file
+        {
+            break f;
+        }
+    };
+    dl.cancel();
+    assert!(matches!(dl.wait().await, Err(Error::Cancelled)));
+    let u = fake(
+        &lab,
+        Answer::Direct {
+            path: "/gen/2M/d.bin?seed=47".into(),
+            ttl_ms: None,
+            chunks: None,
+        },
+    );
+    let opts = Options {
+        hosts,
+        ..options(u.clone())
+    };
+    let state = mdm_engine::state::state_path(&file);
+    let out = Download::resume(state, HeaderMap::new(), opts)
+        .unwrap()
+        .wait()
+        .await
+        .expect("continued through the service");
+    assert!(same(&std::fs::read(&out.path).unwrap(), 47));
+    assert_eq!(
+        u.calls.load(Ordering::SeqCst),
+        1,
+        "the service asked at once"
+    );
+}
