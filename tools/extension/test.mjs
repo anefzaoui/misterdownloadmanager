@@ -34,6 +34,7 @@ function fakeApi({
   proxyPerm = firefox ? "optional" : undefined,
   proxyGranted = false,
   proxyAnswer = true,
+  proxyOn = false,
   noticeReply,
 }) {
   const raw = [];
@@ -51,7 +52,8 @@ function fakeApi({
       },
     };
   };
-  const store = {};
+  // `proxyOn`: Chromium's proxy switch (#42), stored by the popup.
+  const store = proxyOn ? { proxyOn: true } : {};
   const granted = { proxy: proxyGranted };
   const downloads = {
     pause: async (id) => calls.push(["pause", id]),
@@ -69,9 +71,14 @@ function fakeApi({
     storage: {
       local: {
         get: async (defaults) => ({ ...defaults, ...JSON.parse(JSON.stringify(store)) }),
-        set: async (v) => Object.assign(store, JSON.parse(JSON.stringify(v))),
+        set: async (v) => {
+          const changes = Object.fromEntries(Object.entries(v).map(([k, n]) => [k, { oldValue: store[k], newValue: n }]));
+          Object.assign(store, JSON.parse(JSON.stringify(v)));
+          listeners.storageChanged && listeners.storageChanged(changes, "local");
+        },
         remove: async (k) => [k].flat().forEach((key) => delete store[key]),
       },
+      onChanged: event("storageChanged"),
       ...(session
         ? {
             session: {
@@ -989,35 +996,89 @@ const MPD = (protect) => `<?xml version="1.0"?>
 }
 
 // #42: the browser's proxy goes with the download, so the app uses the same one: an opt-in, the
-// "proxy" permission. Chromium can't make it optional, so the Chrome extension doesn't have it
-// yet: these first four are its reading, for the release that adds it ("required").
+// popup's switch. Chromium can't make the "proxy" permission optional, so its extension has it
+// from the install ("required") and the switch is its own setting (`proxyOn`, off as installed).
+// What Chromium's proxy.settings.get says, handed over for each address: {url: proxy or PAC}.
+async function chromeProxy(proxy, urls, { on = true, levelOfControl } = {}) {
+  const { api, calls, listeners } = fakeApi({ firefox: false, proxy, proxyPerm: "required", proxyOn: on });
+  if (levelOfControl) api.proxy.settings.get = async () => ({ value: proxy, levelOfControl });
+  load(api, false);
+  let id = 600;
+  for (const url of urls) listeners.determining({ id: id++, url, filename: "f.zip" }, () => {});
+  await settle();
+  const sent = natives(calls);
+  assert.equal(sent.length, urls.length, "every download handed over");
+  return Object.fromEntries(sent.map((m) => [m.url, m.proxy || (m.proxyPac ? `PAC ${m.proxyPac}` : null)]));
+}
 {
-  // Chromium, a VPN extension's fixed SOCKS5 proxy: remote DNS (socks5h), as Chromium does.
+  // A VPN extension's fixed SOCKS5 proxy: remote DNS (socks5h), as Chromium does.
   const proxy = { mode: "fixed_servers", rules: { singleProxy: { scheme: "socks5", host: "vpn.example", port: 1080 }, bypassList: ["<local>"] } };
-  const { api, calls, listeners } = fakeApi({ firefox: false, proxy, proxyPerm: "required" });
+  const { api, calls, listeners } = fakeApi({ firefox: false, proxy, proxyPerm: "required", proxyOn: true });
   load(api, false);
   listeners.determining({ id: 31, url: "https://files.example/p.zip", filename: "p.zip" }, () => {});
   await settle();
   const m = natives(calls)[0];
   assert.equal(m.proxy, "socks5h://vpn.example:1080");
   assert.equal(m.proxyLogin, undefined);
-  ok("Chrome: the extension's SOCKS5 proxy goes with the download");
+  assert.ok(!calls.some((c) => c[0] === "contains-proxy" || c[0] === "request"), "no permission call: Chrome's is required");
+  ok("Chrome, switched on: the extension's SOCKS5 proxy goes with the download");
 }
 {
-  // Its bypass list: a local name goes direct, so nothing is sent.
-  const proxy = { mode: "fixed_servers", rules: { singleProxy: { scheme: "http", host: "p", port: 8080 }, bypassList: ["*.intranet.example"] } };
-  const { api, calls, listeners } = fakeApi({ firefox: false, proxy, proxyPerm: "required" });
-  load(api, false);
-  listeners.determining({ id: 32, url: "https://files.intranet.example/p.zip", filename: "p.zip" }, () => {});
-  await settle();
-  assert.equal(natives(calls)[0].proxy, undefined);
-  ok("Chrome: an address on the bypass list goes without the proxy");
+  // One server per scheme: http and https each their own, the fallback for the one not given;
+  // a scheme and a port left out are Chromium's defaults (http; 80, 443, 1080).
+  const per = { mode: "fixed_servers", rules: { proxyForHttp: { scheme: "http", host: "h.example", port: 3128 }, proxyForHttps: { scheme: "https", host: "s.example" } } };
+  assert.deepEqual(await chromeProxy(per, ["http://x/a.zip", "https://x/b.zip"]), { "http://x/a.zip": "http://h.example:3128", "https://x/b.zip": "https://s.example:443" });
+  const fallback = { mode: "fixed_servers", rules: { proxyForHttp: { host: "h.example" }, fallbackProxy: { scheme: "socks4", host: "f.example" } } };
+  assert.deepEqual(await chromeProxy(fallback, ["http://x/c.zip", "https://x/d.zip"]), { "http://x/c.zip": "http://h.example:80", "https://x/d.zip": "socks4://f.example:1080" });
+  const onlyHttp = { mode: "fixed_servers", rules: { proxyForHttp: { scheme: "http", host: "h.example", port: 8080 } } };
+  assert.deepEqual(await chromeProxy(onlyHttp, ["http://x/e.zip", "https://x/f.zip"]), { "http://x/e.zip": "http://h.example:8080", "https://x/f.zip": null });
+  const socks = { mode: "fixed_servers", rules: { singleProxy: { scheme: "socks5", host: "10.8.0.1" } } };
+  assert.deepEqual(await chromeProxy(socks, ["https://x/g.zip"]), { "https://x/g.zip": "socks5h://10.8.0.1:1080" });
+  const quic = { mode: "fixed_servers", rules: { singleProxy: { scheme: "quic", host: "q.example", port: 443 } } };
+  assert.deepEqual(await chromeProxy(quic, ["https://x/h.zip"]), { "https://x/h.zip": null }, "a QUIC proxy, which the app can't use: nothing");
+  ok("Chrome: a fixed server for each scheme, the fallback, Chromium's default ports");
+}
+{
+  // The bypass list, read as Chromium reads it: those addresses go without the proxy.
+  const P = "http://p.example:8080";
+  const rules = (bypassList) => ({ mode: "fixed_servers", rules: { singleProxy: { scheme: "http", host: "p.example", port: 8080 }, bypassList } });
+  const list = ["*.intranet.example", ".corp.example", "<local>", "10.0.0.0/8", "files.example:8080", "https://secure.example", "*mirror.example"];
+  const urls = [
+    "https://files.intranet.example/a.zip", // *.intranet.example
+    "https://intranet.example/b.zip", // not *.intranet.example's
+    "https://a.corp.example/c.zip", // .corp.example is *.corp.example
+    "https://corp.example/d.zip", // not .corp.example's
+    "http://nas/e.zip", // <local>: no dot
+    "http://10.1.2.3/f.zip", // 10.0.0.0/8
+    "http://11.1.2.3/g.zip", // not in it
+    "http://files.example:8080/h.zip", // its port
+    "http://files.example/i.zip", // another port
+    "https://secure.example/j.zip", // its scheme
+    "http://secure.example/k.zip", // another scheme
+    "https://dl.mirror.example/l.zip", // *mirror.example
+    "https://other.example/m.zip",
+  ];
+  const got = await chromeProxy(rules(list), urls);
+  assert.deepEqual(
+    urls.map((u) => got[u]),
+    [null, P, null, P, null, null, P, null, P, null, P, null, P],
+  );
+  // Chromium never sends loopback to a proxy, unless the list has "<-loopback>".
+  const local = ["http://localhost:8000/n.zip", "http://127.0.0.1/o.zip", "http://[::1]/p.zip", "http://app.localhost/q.zip"];
+  const plain = await chromeProxy(rules([]), [...local, "http://[fe80::1]/r.zip", "https://feature.example/s.zip", "https://127.example/t.zip"]);
+  assert.deepEqual(local.map((u) => plain[u]), [null, null, null, null], "loopback: direct");
+  assert.equal(plain["http://[fe80::1]/r.zip"], null, "link-local: direct");
+  assert.deepEqual([plain["https://feature.example/s.zip"], plain["https://127.example/t.zip"]], [P, P], "names that only look local");
+  const forced = await chromeProxy(rules(["<-loopback>"]), local);
+  assert.deepEqual(local.map((u) => forced[u]), [P, P, P, P], "<-loopback>: through the proxy");
+  ok("Chrome: the bypass list (patterns, ranges, ports, schemes, <local>, loopback and <-loopback>)");
 }
 {
   // A proxy that asked for a login (the VPN extension answers it): flagged for the app.
-  const proxy = { mode: "fixed_servers", rules: { proxyForHttps: { scheme: "https", host: "gw.vpn.example", port: 443 } } };
-  const { api, calls, listeners } = fakeApi({ firefox: false, proxy, proxyPerm: "required" });
+  const proxy = { mode: "fixed_servers", rules: { proxyForHttps: { scheme: "https", host: "gw.vpn.example" } } };
+  const { api, calls, listeners } = fakeApi({ firefox: false, proxy, proxyPerm: "required", proxyOn: true });
   load(api, false);
+  await settle();
   listeners.authRequired({ isProxy: true, challenger: { host: "gw.vpn.example", port: 443 } });
   listeners.determining({ id: 33, url: "https://x/q.zip", filename: "q.zip" }, () => {});
   await settle();
@@ -1026,14 +1087,69 @@ const MPD = (protect) => `<?xml version="1.0"?>
   ok("Chrome: a proxy that asks for a login is flagged");
 }
 {
-  // A PAC script set by the extension: its text goes.
+  // A PAC script: inline (its data) or by its address (fetched without cookies); one that can't
+  // be fetched, or isn't a PAC script, sends nothing.
   const data = 'function FindProxyForURL(u, h) { return "PROXY p:3128"; }';
-  const { api, calls, listeners } = fakeApi({ firefox: false, proxy: { mode: "pac_script", pacScript: { data } }, proxyPerm: "required" });
+  assert.deepEqual(await chromeProxy({ mode: "pac_script", pacScript: { data } }, ["https://x/r.zip"]), { "https://x/r.zip": `PAC ${data}` });
+  served = { "http://wpad.example/vpn.pac": { body: data }, "http://wpad.example/page.html": { body: "<html>" } };
+  const before = fetched.length;
+  assert.deepEqual(await chromeProxy({ mode: "pac_script", pacScript: { url: "http://wpad.example/vpn.pac", mandatory: false } }, ["https://x/s.zip"]), { "https://x/s.zip": `PAC ${data}` });
+  assert.deepEqual(fetched.slice(before).filter(([u]) => u.includes("wpad")), [["http://wpad.example/vpn.pac", "omit"]]);
+  assert.deepEqual(await chromeProxy({ mode: "pac_script", pacScript: { url: "http://wpad.example/gone.pac" } }, ["https://x/t.zip"]), { "https://x/t.zip": null });
+  assert.deepEqual(await chromeProxy({ mode: "pac_script", pacScript: { url: "http://wpad.example/page.html" } }, ["https://x/u.zip"]), { "https://x/u.zip": null });
+  served = {};
+  ok("Chrome: a PAC script, inline or by its address");
+}
+{
+  // Direct, the system's, auto-detect: nothing (the app goes by its own Options). A policy's or
+  // the command line's proxy (not_controllable) is the browser's too.
+  for (const mode of ["direct", "system", "auto_detect"]) {
+    assert.deepEqual(await chromeProxy({ mode }, ["https://x/v.zip"]), { "https://x/v.zip": null }, mode);
+  }
+  const policy = { mode: "fixed_servers", rules: { singleProxy: { scheme: "http", host: "corp-proxy", port: 8080 } } };
+  assert.deepEqual(await chromeProxy(policy, ["https://x/w.zip"], { levelOfControl: "not_controllable" }), { "https://x/w.zip": "http://corp-proxy:8080" });
+  ok("Chrome: direct, system and auto-detect send nothing; a policy's proxy goes");
+}
+{
+  // As installed (the switch off): nothing read or sent, a proxy login seen included; the popup
+  // switches it on (storage), then off: it follows at once. No permission call, nothing in the
+  // console.
+  const before = complaints.length;
+  const proxy = { mode: "fixed_servers", rules: { singleProxy: { scheme: "http", host: "10.0.0.9", port: 3128 } } };
+  const { api, calls, listeners, store } = fakeApi({ firefox: false, proxy, proxyPerm: "required" });
+  let read = 0;
+  api.proxy.settings.get = async () => (read++, { value: proxy, levelOfControl: "controlled_by_other_extensions" });
   load(api, false);
-  listeners.determining({ id: 34, url: "https://x/r.zip", filename: "r.zip" }, () => {});
   await settle();
-  assert.equal(natives(calls)[0].proxyPac, data);
-  ok("Chrome: a PAC script's text goes with the download");
+  listeners.authRequired({ isProxy: true, challenger: { host: "10.0.0.9", port: 3128 } });
+  listeners.determining({ id: 42, url: "https://x/off.zip", filename: "off.zip" }, () => {});
+  await settle();
+  let m = natives(calls)[0];
+  assert.deepEqual([m.proxy, m.proxyPac, m.proxyLogin], [undefined, undefined, undefined]);
+  assert.equal(read, 0, "the browser's proxy settings never read while off");
+  await api.storage.local.set({ proxyOn: true });
+  await settle();
+  listeners.determining({ id: 43, url: "https://x/on.zip", filename: "on.zip" }, () => {});
+  await settle();
+  m = natives(calls)[1];
+  assert.deepEqual([m.proxy, m.proxyLogin], ["http://10.0.0.9:3128", undefined], "on: the proxy goes; the login seen while off was not kept");
+  listeners.authRequired({ isProxy: true, challenger: { host: "10.0.0.9", port: 3128 } });
+  await api.storage.local.set({ proxyOn: false });
+  await settle();
+  assert.equal(store.proxyOn, false);
+  listeners.determining({ id: 44, url: "https://x/off2.zip", filename: "off2.zip" }, () => {});
+  await settle();
+  m = natives(calls)[2];
+  assert.deepEqual([m.proxy, m.proxyPac, m.proxyLogin], [undefined, undefined, undefined], "off again: nothing");
+  await api.storage.local.set({ proxyOn: true });
+  listeners.determining({ id: 45, url: "https://x/on2.zip", filename: "on2.zip" }, () => {});
+  await settle();
+  m = natives(calls)[3];
+  assert.deepEqual([m.proxy, m.proxyLogin], ["http://10.0.0.9:3128", undefined], "on again: the login seen before was forgotten when off");
+  assert.equal(read, 2, "read only while on");
+  assert.ok(!calls.some((c) => c[0] === "contains-proxy" || c[0] === "request" || c[0] === "remove"), "no permission call");
+  assert.equal(complaints.length, before, `the console: ${JSON.stringify(complaints.slice(before))}`);
+  ok("Chrome: off as installed (nothing read or sent), on and off from the popup's switch, nothing in the console");
 }
 {
   // Firefox, switched on (the optional permission granted): the proxy its own request for the
@@ -1094,10 +1210,11 @@ const MPD = (protect) => `<?xml version="1.0"?>
   ok("Firefox: switched on, then off: the proxy goes only while on");
 }
 {
-  // Chrome as shipped (no "proxy" permission, its API absent): as before #42, and the extension
-  // never asks about the permission; nothing in the console.
+  // A Chromium manifest without the "proxy" permission (0.2.4's, the API absent), even with the
+  // switch's setting there: as before #42, and the extension never asks about the permission;
+  // nothing in the console.
   const before = complaints.length;
-  const { api, calls, listeners } = fakeApi({ firefox: false });
+  const { api, calls, listeners } = fakeApi({ firefox: false, proxyOn: true });
   load(api, false);
   listeners.authRequired && listeners.authRequired({ isProxy: true, challenger: { host: "p", port: 1 } });
   listeners.determining({ id: 41, url: "https://x/y.zip", filename: "y.zip" }, () => {});
@@ -1107,11 +1224,11 @@ const MPD = (protect) => `<?xml version="1.0"?>
   assert.ok(!calls.some((c) => c[0] === "contains-proxy" || c[0] === "request"), "no permission call");
   assert.equal(listeners.authRequired, undefined, "no proxy-login listener");
   assert.equal(complaints.length, before, `the console: ${JSON.stringify(complaints.slice(before))}`);
-  ok("Chrome as shipped: no proxy permission, no reading, no permission call, nothing in the console");
+  ok("Chromium without the proxy permission: no reading, no permission call, nothing in the console");
 }
 {
-  // No proxy in use (permission there): nothing extra.
-  const { api, calls, listeners } = fakeApi({ firefox: false, proxyPerm: "required" });
+  // No proxy in use (switched on): nothing extra.
+  const { api, calls, listeners } = fakeApi({ firefox: false, proxyPerm: "required", proxyOn: true });
   load(api, false);
   listeners.determining({ id: 36, url: "https://x/t.zip", filename: "t.zip" }, () => {});
   await settle();
@@ -1216,18 +1333,22 @@ const popupState = (listeners) =>
   ok("#208: refusal codes, the app's and the popup's, agree");
 }
 
-// The manifests (#42): "proxy" optional in Firefox's, absent from Chrome's (it can't be optional
-// there); the popup's switch is shown only where it is optional.
+// The manifests (#42): "proxy" optional in Firefox's, required in Chrome's (it can't be optional
+// there); the popup's switch: the permission in Firefox, the extension's own setting in Chrome.
 {
   const chrome = JSON.parse(readFileSync(new URL("../../extension/manifest.json", import.meta.url), "utf8"));
   const firefox = JSON.parse(readFileSync(new URL("../../extension/manifest.firefox.json", import.meta.url), "utf8"));
-  assert.ok(!(chrome.permissions || []).includes("proxy") && !(chrome.optional_permissions || []).includes("proxy"), "Chrome: no proxy");
+  assert.ok((chrome.permissions || []).includes("proxy") && !(chrome.optional_permissions || []).includes("proxy"), "Chrome: proxy required");
   assert.ok(!(firefox.permissions || []).includes("proxy"), "Firefox: proxy not required");
   assert.deepEqual(firefox.optional_permissions, ["proxy"], "Firefox: proxy optional");
   const popup = readFileSync(new URL("../../extension/popup.js", import.meta.url), "utf8");
-  assert.ok(/optional_permissions \|\| \[\]\)\.includes\("proxy"\)/.test(popup), "the switch only where proxy is optional");
+  assert.ok(/optional_permissions \|\| \[\]\)\.includes\("proxy"\)/.test(popup), "Firefox's switch where proxy is optional");
   assert.ok(/permissions\.request\(PROXY\)/.test(popup) && /permissions\.remove\(PROXY\)/.test(popup), "asked for and taken back on the switch");
-  ok("manifests: proxy optional in Firefox, absent in Chrome; the popup's switch");
+  assert.ok(/storage\.local\s*\.get\(\{ proxyOn: false \}\)/.test(popup) && /storage\.local\.set\(\{ proxyOn: box\.checked \}\)/.test(popup), "Chrome's switch: its own setting");
+  assert.ok(/const PROXY_SWITCH = "proxyOn"/.test(code), "the same setting in background.js");
+  const en = JSON.parse(readFileSync(new URL("../../extension/_locales/en/messages.json", import.meta.url), "utf8"));
+  assert.ok(en.popup_proxy && en.popup_proxy_title && en.popup_proxy_title_chromium, "the switch's texts");
+  ok("manifests: proxy optional in Firefox, required in Chrome; the popup's switch in each");
 }
 // Another MDM (#157): the file types caught for it are the app's defaults, and every message
 // the pairing can end with is there.

@@ -212,11 +212,24 @@ async function showMedia(tab, connected) {
   }
 }
 
-// #42: reading the browser's proxy (a VPN or proxy extension's) is an opt-in, the optional
-// "proxy" permission, asked for on this switch. Only where the browser lets it be optional
-// (Firefox); Chromium has no switch.
+// #42: reading the browser's proxy (a VPN or proxy extension's) is an opt-in, this switch, off as
+// installed. Firefox: the optional "proxy" permission, asked for on it. Chromium can't make that
+// permission optional, so the extension has it from the install, and the switch is a setting of
+// its own (`proxyOn`, which background.js reads before each download).
 const PROXY = { permissions: ["proxy"] };
-if ((ext.runtime.getManifest().optional_permissions || []).includes("proxy")) {
+const manifest = ext.runtime.getManifest();
+if (!(manifest.optional_permissions || []).includes("proxy") && (manifest.permissions || []).includes("proxy")) {
+  const row = $("proxy-row");
+  const box = $("proxy");
+  row.hidden = false;
+  row.title = t("popup_proxy_title_chromium");
+  ext.storage.local
+    .get({ proxyOn: false })
+    .then((v) => (box.checked = Boolean(v.proxyOn)))
+    .catch(() => {});
+  box.addEventListener("change", () => ext.storage.local.set({ proxyOn: box.checked }).catch(() => {}));
+}
+if ((manifest.optional_permissions || []).includes("proxy")) {
   const row = $("proxy-row");
   const box = $("proxy");
   row.hidden = false;

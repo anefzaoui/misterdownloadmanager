@@ -162,7 +162,10 @@ Everything below ships together, in the next release.
   without making it; store packages and theme windows are checked there too (part of
   [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
 - ✅ Firefox: reading the browser's proxy (#42) is an opt-in, a switch in the extension's popup, so
-  the extension's update asks for no new permission; Chrome's extension leaves it out for now
+  the extension's update asks for no new permission
+- ✅ Chrome and the other Chromium browsers: downloads go through the browser's proxy or VPN
+  extension too (#42), with the same switch, off as installed: a fixed server for each scheme and
+  its bypass list, or an auto-config script
 - ✅ Streams whose address doesn't end in .m3u8 or .mpd, served as plain text, are found too: by
   the button over the video, the right-click menu and the media list, read only when asked
   ([#171](https://github.com/anefzaoui/misterdownloadmanager/issues/171))
@@ -419,12 +422,8 @@ Everything below ships together, in the next release.
 
 ### Browser extension
 
-- 📋 Chrome: read the browser's proxy or VPN extension's (#42 is Firefox's for now: Chrome can't
-  make that permission optional, so it needs a release that can add it)
 - ✅ On Firefox Add-ons: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/)
 - ✅ On the Chrome Web Store: [Mister Download Manager](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp)
-- 📋 Chrome: use the browser's proxy or VPN extension for downloads too (it needs a permission
-  Chrome can't ask for later, so it waits for a release that can ask everyone once)
 
 ### Look and performance
 
