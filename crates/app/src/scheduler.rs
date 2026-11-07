@@ -458,7 +458,7 @@ impl Scheduler {
         let stop = btn(ui, 297.0, crate::i18n::mark("S&top"), kind(is_running));
         // i18n: noun: button that opens the help
         if btn(ui, 390.0, crate::i18n::mark("&Help"), ButtonKind::Normal) {
-            crate::help::open_page("help/scheduler.html");
+            crate::help::open_page("queues-and-scheduler.md#the-scheduler-window");
         }
         let dirty = {
             let (q, l) = self.state();

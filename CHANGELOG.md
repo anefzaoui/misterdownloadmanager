@@ -117,6 +117,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   [GitHub Sponsors](https://github.com/sponsors/anefzaoui) page in the browser; the website, the
   README and the browser extension's popup link to it too. Only when asked: MDM stays free, with
   no reminders, and nothing changes or unlocks.
+- **Video pages and image galleries through the chosen network adapter**
+  ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35)): with **Options → Proxy /
+  Socks → Network adapter** set, video downloads (yt-dlp and the ffmpeg it starts) and galleries
+  (gallery-dl) now start, on Windows, Linux and macOS, instead of being refused. They go through a
+  proxy MDM runs on this computer, which opens their connections through the adapter as MDM opens
+  its own, with the DNS you chose, IPv4 and IPv6. The same kill switch: when the adapter
+  disconnects, their connections close at once and the downloads stop, then start again when it
+  is back. Formats over RTMP, RTSP, MMS or FTP, which can't go through it, are refused. The
+  command line's `video-get` and `gallery-get` take `--adapter`.
 - **Torrents through the chosen network adapter on Windows**
   ([#143](https://github.com/anefzaoui/misterdownloadmanager/issues/143)): with **Options → Proxy /
   Socks → Network adapter** set, torrents now start on Windows too, instead of being refused.
@@ -486,6 +495,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Help opens the website's help pages, in your language**
+  ([#227](https://github.com/anefzaoui/misterdownloadmanager/issues/227)): **Help contents**,
+  **Tutorials**, **Scheduler and queues**, **Video downloads**, the **Help** buttons of Options and
+  the Scheduler, and the browser extension window's tutorial and help links opened the docs on
+  GitHub (the Options and Scheduler buttons a page that wasn't there). They open
+  misterdownloadmanager.com now, at the same section, in the interface language when the website
+  has it (else English), and **Home Page** opens the website too. The command line's and the MCP
+  server's help name the website's guide. Problem reports, releases and the source stay on GitHub.
 - **A finished download no longer fails with "part file still in use" on a busy computer**
   ([#201](https://github.com/anefzaoui/misterdownloadmanager/issues/201)): when the last bytes
   came in, the connections still running were cut off. One cut off while it read or wrote the

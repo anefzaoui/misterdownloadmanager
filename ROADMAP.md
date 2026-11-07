@@ -158,6 +158,8 @@ Everything below ships together, in one release, as version 0.3.0.
   another way when it disconnects ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
 - ✅ Torrents on Windows through the chosen network adapter, with the same kill switch
   ([#143](https://github.com/anefzaoui/misterdownloadmanager/issues/143))
+- ✅ Video pages and image galleries through the chosen network adapter too, with the same kill
+  switch ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
 - ✅ Downloads from a browser behind a VPN or proxy extension go through the same proxy
   ([#42](https://github.com/anefzaoui/misterdownloadmanager/issues/42))
 - ✅ Hide to the notification area: a download's progress window (its own button, or Minimize)
@@ -240,6 +242,8 @@ Everything below ships together, in one release, as version 0.3.0.
   ([#168](https://github.com/anefzaoui/misterdownloadmanager/issues/168)), and no page scrolls
   sideways on a phone, Arabic and Persian included: long paths, links and tables wrap or scroll
   inside the page ([#169](https://github.com/anefzaoui/misterdownloadmanager/issues/169))
+- ✅ Help opens the website's help pages, in the interface language when the website has it
+  ([#227](https://github.com/anefzaoui/misterdownloadmanager/issues/227))
 
 ### Being built
 
@@ -273,7 +277,6 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Network
 
-- 📋 Video pages through a chosen network adapter too ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
 - 📋 Control MDM from a phone or another computer on the local network, off by default
   ([#141](https://github.com/anefzaoui/misterdownloadmanager/issues/141))
 - 📋 Run MDM headless on a server (Docker, Unraid) and send it downloads from the browser
