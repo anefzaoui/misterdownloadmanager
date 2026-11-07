@@ -153,10 +153,6 @@
 #. RSS feeds window, Download rules: shown in the empty Save to box
 #, machine
 	(the Torrents category's folder)	(il-folder tal-kategorija Torrents)
-#. text in remote.rs
-#. remote control page (on a phone): button that picks a .torrent file on the phone
-#, machine
-	.torrent file	.torrent file
 #. text in the Options window
 #. a 12-hour clock, with an example
 #, machine
@@ -187,6 +183,11 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Servizz ta' debrid iniżżel link ta' host tal-fajls bil-kont imħallas tiegħek u jagħti lil MDM link dirett. Uża l-kont tiegħek biss: il-qsim ta' kont jew il-links tiegħu jikser it-termini tas-servizzi u jista' jwassal biex jiġi sospiż. It-tniżżil li diġà beda l-brawżer jibqa' kif inhu.
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	A file of this torrent can't be saved safely: {name}	Fajl ta' dan it-torrent ma jistax jiġi ssejvjat b'mod sigur: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -234,10 +235,6 @@
 #. tab title: the user's debrid service accounts (Real-Debrid…)
 #, machine
 	Accounts	Kontijiet
-#. text in remote.rs
-#. remote control page (on a phone): button: add the download
-#, machine
-	Add	Żid
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Żid download (Żid URL)
@@ -319,14 +316,6 @@
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
 	Added {source}	Miżjud {source}
-#. text in remote.rs
-#. remote control page (on a phone): a download was added
-#, machine
-	Added.	Miżjud.
-#. text in remote.rs
-#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
-#, machine
-	Added. MDM is reading the torrent: it joins the list in a moment.	Miżjud. MDM qed jaqra t-torrent: jingħaqad mal-lista fi ftit mumenti.
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -336,10 +325,6 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	Address changed to {host}	L-indirizz inbidel għal {host}
-#. text in remote.rs
-#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
-#, machine
-	Address or magnet link	Indirizz jew link manjetika
 #. text in the Options window; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
@@ -376,10 +361,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Algeria	Alġerija
-#. text in remote.rs
-#. remote control page (on a phone): tab: every download
-#, machine
-	All	Kollha
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	Id-Downloads Kollha
@@ -455,6 +436,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	DNS ieħor...
+#. text in unix.rs
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+#, machine
+	Another program has set the computer's wake alarm	Programm ieħor issettja l-allarm tal-qawmien tal-kompjuter
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -550,10 +535,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Austria	Awstrija
-#. text in remote.rs
-#. remote control page (on a phone): category choice: the category follows the file's type
-#, machine
-	Automatic (by file type)	Awtomatiku (skont it-tip tal-fajl)
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -706,7 +687,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	Kanada
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Ikkanċella
@@ -741,8 +722,7 @@
 #. page title in the Options window
 #, machine
 	Categories, file types, folders	Kategoriji, tipi ta' fajls, fowlders
-#. text in a dialog box; text in the Options window; text in remote.rs
-#. remote control page (on a phone): label of the category choice for a new download
+#. text in a dialog box; text in the Options window
 #, machine
 	Category	Kategorija
 #. text in categories.rs
@@ -761,10 +741,6 @@
 #, machine
 	Central African Republic	Repubblika Ċentru-Afrikana
 #. text in the Options window
-#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
-#, machine
-	Certificate (SHA-256): {fingerprint}	Ċertifikat (SHA-256): {fingerprint}
-#. text in the Options window
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
 	Certificate name:	Isem taċ-ċertifikat:
@@ -772,6 +748,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Chad	Chad
+#. text in the Scheduler window
+#. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+#, machine
+	Change	Ibdel
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -839,10 +819,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	China	Ċina
-#. text in remote.rs
-#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
-#, machine
-	Choose a .torrent file	Agħżel fajl .torrent
 #. text in langpick.rs
 #, machine
 	Choose a language	Agħżel lingwa
@@ -883,14 +859,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cocos (Keeling) Islands	Gżejjer Cocos (Keeling)
-#. text in remote.rs
-#. remote control page (on a phone): label of the pairing code's box (8 digits)
-#, machine
-	Code	Kodiċi
-#. text in the Options window
-#. Options → Remote → Pair a device: label before the 8-digit code
-#, machine
-	Code:	Kodiċi:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -899,7 +867,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	Komoros
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
 #, machine
@@ -1071,10 +1039,6 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its files stay where they are.	Ħassar il-kategorija "{category}"? Il-fajls tagħha jibqgħu fejn qegħdin.
-#. text in remote.rs
-#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
-#, machine
-	Delete the file too	Ħassar il-fajl ukoll
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1099,10 +1063,6 @@
 #. text in a download's Properties window
 #, machine
 	Description:	Deskrizzjoni:
-#. text in the Options window
-#. column title: a paired phone's or computer's name
-#, machine
-	Device	Apparat
 #. text in the Add torrent window
 #. the DHT (finding peers without trackers) is turned off in Torrent settings
 #, machine
@@ -1167,8 +1127,7 @@
 #. text in the Options window
 #, machine
 	Don't take files smaller than (KB, 0 = any size):	Tiħux fajls iżgħar minn (KB, 0 = kwalunkwe daqs):
-#. text in the Options window; text in a download's progress window
-#. button: close the window (the device is paired)
+#. text in a download's progress window
 #, machine
 	Done	Lest
 #. button in the Options window
@@ -1233,6 +1192,10 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	Niżżel links ta' file-host appoġġjati permezz ta' dawn il-kontijiet
+#. text in a dialog box
+#. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
+#, machine
+	Download through {service}	Niżżel permezz ta' {service}
 #. window title in the Download video window
 #, machine
 	Download video from a page	Niżżel vidjo minn paġna
@@ -1261,7 +1224,7 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	Downloaded {size} ({bytes} Bytes)	Niżżel {size} ({bytes} Bytes)
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in remote.rs
+#. item in the Categories tree in the download list; value in a column's filter list in the download list
 #. a download's status (state it is in, not a command)
 #, machine
 	Downloading	Qed jitniżżel
@@ -1405,7 +1368,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Eritrea	Eritrea
-#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
@@ -1435,10 +1398,6 @@
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
 	Every connection goes through it, from {ip}.	Kull konnessjoni tgħaddi minnha, minn {ip}.
-#. text in the Options window
-#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
-#, machine
-	Every local network address	Kull indirizz tan-netwerk lokali
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1606,9 +1565,8 @@
 #. text in the Find window
 #, machine
 	Find:	Sib:
-#. item in the Categories tree in the main window; text in remote.rs
+#. item in the Categories tree in the main window
 #. adjective: the downloads that are complete
-#. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	Lest
 #. text in countries.rs
@@ -1642,14 +1600,6 @@
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Force processes to terminate	Iġġiegħel il-proċessi jintemmu
-#. text in remote.rs
-#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
-#, machine
-	Forget this device	Insa dan l-apparat
-#. text in remote.rs
-#. remote control page (on a phone): question before unpairing this phone
-#, machine
-	Forget this device? It needs a new code to connect again.	Tinsa dan l-apparat? Ikollu bżonn kodiċi ġdid biex jerġa' jikkonnettja.
 #. text in the Scheduler window
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1691,10 +1641,6 @@
 #. message or event log entry in the main window
 #, machine
 	from a page (yt-dlp)	minn paġna (yt-dlp)
-#. message or event log entry in the main window
-#. where a download came from (its Properties): a phone or computer paired in Options → Remote
-#, machine
-	from a paired device	minn apparat imqabbad
 #. message or event log entry in the main window
 #. where a download came from, in its log: a playlist or channel, by yt-dlp
 #, machine
@@ -1891,6 +1837,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Hong Kong	Ħong Kong
+#. text in the Scheduler window
+#. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+#, machine
+	How to allow it	Kif tippermettih
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -2005,11 +1955,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Israel	Iżrael
-#. text in the Options window
-#. Options → Remote → Status: it could not start; {error} = the system's reason
-#. {error} = an error message (keep the braces as they are)
-#, machine
-	It could not start: {error}	Ma setax jibda: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2146,10 +2091,6 @@
 #. text in the Batch download window
 #, machine
 	Last file:	L-aħħar fajl:
-#. text in the Options window
-#. column title: when the device last reached MDM
-#, machine
-	Last seen	L-aħħar darba li deher
 #. text in a download's Properties window
 #. {last} = the date and time of the last attempt to download
 #, machine
@@ -2174,10 +2115,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Lesotho	Lesoto
-#. checkbox in the Options window
-#. Options → Remote check box (off by default)
-#, machine
-	Let phones and computers on the local network control MDM	Ħalli t-telefowns u l-kompjuters fuq in-netwerk lokali jikkontrollaw l-MDM
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 #, machine
@@ -2225,10 +2162,6 @@
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
 	List the rest	Elenka l-bqija
-#. text in the Options window
-#. Options → Remote: label before the choice of the address MDM listens on
-#, machine
-	Listen on:	Isma' fuq:
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
@@ -2389,35 +2322,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Mayotte	Mayotte
-#. text in the Options window
-#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
-#, machine
-	MDM can't be reached on the network now: Options → Remote says why.	L-MDM ma jistax jintlaħaq fuq in-netwerk issa: L-Għażliet → Remote jgħid għaliex.
-#. text in remote.rs
-#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
-#, machine
-	MDM cannot download this address.	L-MDM ma jistax iniżżel dan l-indirizz.
-#. text in remote.rs
-#. remote control page (on a phone): adding a download failed
-#, machine
-	MDM could not add it.	L-MDM ma setax iżidu.
-#. text in remote.rs
-#. remote control page (on a phone): an action failed
-#, machine
-	MDM could not do it.	L-MDM ma setax jagħmlu.
-#. text in remote.rs
-#. remote control page (on a phone): MDM can't be reached while pairing
-#, machine
-	MDM does not answer. Check that it is running and on the same network.	L-MDM ma jweġibx. Iċċekkja li qed jaħdem u fuq l-istess netwerk.
-#. text in remote.rs
-#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
-#. the trailing ... means it is still going on: keep it
-#, machine
-	MDM does not answer. Trying again...	L-MDM ma jweġibx. Qed jerġa' jipprova...
-#. text in remote.rs
-#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
-#, machine
-	MDM shows no code now. Click Pair a device there first.	L-MDM ma jurix kodiċi issa. Ikklikkja Qabbad apparat hemm l-ewwel.
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -2464,6 +2368,11 @@
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager sab żball intern
+#. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Mister Download Manager is running the queue "{queue}"	Mister Download Manager qed imexxi l-kju "{queue}"
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -2515,10 +2424,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Montserrat	Montserrat
-#. text in remote.rs
-#. remote control page (on a phone): its menu's button
-#, machine
-	More	Aktar
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2646,10 +2551,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	New Caledonia	New Caledonia
-#. button in the Options window
-#. Options → Remote → Pair a device: button: show a new code
-#, machine
-	New code	Kodiċi ġdid
 #. text in the Options window
 #, machine
 	New exception	Eċċezzjoni ġdida
@@ -2707,10 +2608,6 @@
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
 	No downloads here	L-ebda tniżżil hawn
-#. text in remote.rs
-#. remote control page (on a phone): the list shown is empty
-#, machine
-	No downloads here.	M'hemmx downloads hawn.
 #. message or event log entry in the main window
 #. title in the empty download list, when the column filters hide every download
 #, machine
@@ -2732,10 +2629,6 @@
 #. text in langpick.rs
 #, machine
 	No language matches.	L-ebda lingwa ma taqbel.
-#. text in the Options window
-#. Options → Remote → Status: on, but the computer has no local network address now
-#, machine
-	No local network now: it starts when the computer joins one.	M'hemmx netwerk lokali issa: jibda meta l-kompjuter jingħaqad ma' wieħed.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Email found no mail program
 #, machine
@@ -2878,10 +2771,6 @@
 #, machine
 	Off: a finished torrent stops, like any download.	Mitfi: torrent lest jieqaf, bħal kull tniżżil.
 #. text in the Options window
-#. Options → Remote → Status: the remote control is off
-#, machine
-	Off: nothing on the network can reach MDM.	Mitfi: xejn fuq in-netwerk ma jista' jilħaq l-MDM.
-#. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	Offri li tniżżel links ikkupjati fil-clipboard
 #. text in the Link grabber window
@@ -2895,21 +2784,17 @@
 #. a country's name (where a download's server is)
 #, machine
 	Oman	Oman
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+#, machine
+	On battery, Windows' power options don't allow wake timers	Fuq il-batterija, l-għażliet tal-enerġija tal-Windows ma jippermettux tajmers tal-qawmien
 #. text in a download's progress window
 #, machine
 	on download stop/resume	meta t-tniżżil jieqaf/jerġa' jibda
-#. text in remote.rs
-#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
-	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	Fuq il-kompjuter, iftaħ l-Għażliet, imbagħad Remote, u kklikkja Qabbad apparat. Daħħal il-kodiċi li juri.
-#. text in the Options window
-#. Options → Remote → Pair a device: how to pair
-#, machine
-	On the phone, scan this code with the camera, or open the address and enter the code.	Fuq it-telefon, skennja dan il-kodiċi bil-kamera, jew iftaħ l-indirizz u daħħal il-kodiċi.
-#. text in the Options window
-#. Options → Remote → Status: on; the address follows in a box below
-#, machine
-	On. On the phone, open this address:	Mixgħul. Fuq it-telefon, iftaħ dan l-indirizz:
+	On macOS, only an administrator can schedule a wake	Fuq macOS, amministratur biss jista' jiskeda qawmien
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Darba fi
@@ -2933,14 +2818,14 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Jista' jitċaqlaq biss tniżżil lest, jew wieħed li għadu ma bediex. Waqqfu u lestih l-ewwel.
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+#, machine
+	Only an administrator can allow this	Amministratur biss jista' jippermetti dan
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	Il-vidjos MP4 u MKV biss jistgħu jżommu sottotitli
-#. text in the Options window
-#. Options → Remote, at the bottom of the page
-#, machine
-	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Apparati mqabbda biss jaraw jew ibiddlu xi ħaġa. L-ewwel darba, il-browser tat-telefon iwissi dwar iċ-ċertifikat tal-MDM stess: il-marka tas-swaba' tiegħu hija dik ta' hawn fuq.
 #. text in playlistdlg.rs
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
@@ -3011,31 +2896,6 @@
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Indirizz tal-paġna
-#. text in remote.rs
-#. remote control page (on a phone): button: pair this phone with MDM
-#, machine
-	Pair	Qabbad
-#. window title in the Options window
-#. window title: Options → Remote → Pair a device...
-#, machine
-	Pair a device	Qabbad apparat
-#. button in the Options window
-#. Options → Remote button: shows a code (and a QR code) that pairs a phone
-#. the trailing ... means it opens a window: keep it
-#, machine
-	Pair a device...	Qabbad apparat...
-#. text in remote.rs
-#. remote control page (on a phone): title of the pairing screen
-#, machine
-	Pair with Mister Download Manager	Għaqqad ma' Mister Download Manager
-#. text in the Options window
-#. column title: when the device was paired
-#, machine
-	Paired	Imqabbad
-#. text in the Options window
-#. Options → Remote: label above the list of paired phones and computers
-#, machine
-	Paired devices:	Apparat imqabbad:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3086,9 +2946,8 @@
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine
 	Pasted	Pejstjat
-#. text in a download's progress window; text in remote.rs
+#. text in a download's progress window
 #. verb: pause the download
-#. remote control page (on a phone): button: pause a download
 #, machine
 	Pause	Pawża
 #. text in a download's Properties window
@@ -3145,12 +3004,7 @@
 #. label in the Options window
 #, machine
 	Port	Port
-#. text in the Options window
-#. Options → Remote → Status: another program uses the port; {port} = its number
-#, machine
-	Port {port} is used by another program: choose another.	Il-port {port} qed jintuża minn programm ieħor: agħżel ieħor.
-#. text in the Options window; text in the Add torrent window
-#. Options → Remote: label before the port number box
+#. text in the Add torrent window
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	Port:
@@ -3226,10 +3080,6 @@
 #. text in the Options window
 #, machine
 	Queue processing stopped/finished	L-ipproċessar tal-kju waqaf/tlesta
-#. text in remote.rs
-#. remote control page (on a phone): a download's state: added, waiting to start
-#, machine
-	Queued	Fil-kju
 #. item in the Categories tree in the main window; text in the Scheduler window
 #. plural noun: the download queues
 #, machine
@@ -3297,17 +3147,8 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Remember this path for "{category}" category	Ftakar din it-triq għall-kategorija "{category}"
-#. text in the Options window
-#. tab title: control MDM from a phone or another computer on the local network
-#, machine
-	Remote	Remote
-#. text in the Options window
-#. Options page title: control MDM from a phone or another computer on the local network
-#, machine
-	Remote control	Kontroll mill-bogħod
-#. button in the Options window; text in remote.rs; button in rssdlg.rs
+#. button in the Options window; button in rssdlg.rs
 #. verb: remove the item
-#. remote control page (on a phone): button: remove a download from the list
 #. RSS feeds window: unsubscribe from the selected feed
 #, machine
 	Remove	Neħħi
@@ -3318,11 +3159,6 @@
 #. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
 #, machine
 	Remove its downloads from the list (running ones move to General)	Neħħi t-tniżżil tagħha mil-lista (dawk li qed jaħdmu jmorru għal Ġenerali)
-#. text in remote.rs
-#. remote control page (on a phone): question before removing a download; {name} its file name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	Remove {name} from the list?	Neħħi {name} mil-lista?
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -3520,6 +3356,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Ibgħat dan lil ħabib:
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+#, machine
+	Send torrents and magnet links to the first account instead of to peers	Ibgħat torrents u links manjetiċi lill-ewwel kont minflok lill-pari
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3566,6 +3406,14 @@
 #. button in Test browser integration: register MDM's helper with the browsers
 #, machine
 	Set it up	Waħħalha
+#. message or event log entry in the main window
+#. event log: File Properties: the download no longer goes through the debrid account
+#, machine
+	Set to download directly, not through the debrid account	Issettjat biex jitniżżel direttament, mhux permezz tal-kont debrid
+#. message or event log entry in the main window
+#. event log: File Properties: the download goes through the debrid account again
+#, machine
+	Set to download through the debrid account	Issettjat biex jitniżżel permezz tal-kont debrid
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3781,9 +3629,8 @@
 #. a country's name (where a download's server is)
 #, machine
 	Sri Lanka	Sri Lanka
-#. text in the Link grabber window; text in remote.rs
+#. text in the Link grabber window
 #. Link grabber button: download the ticked links now
-#. remote control page (on a phone): button: start a download or a queue
 #, machine
 	Start	Ibda
 #. button in a dialog box
@@ -3801,10 +3648,6 @@
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	Ibda l-kju prinċipali tat-tniżżil
-#. text in remote.rs
-#. remote control page (on a phone): "When" choice: start the download at once
-#, machine
-	Start now	Ibda issa
 #. text in a download's progress window
 #, machine
 	Start positions and download progress by connections	Pożizzjonijiet tal-bidu u progress tat-tniżżil skont il-konnessjonijiet
@@ -3836,7 +3679,7 @@
 #. column title: the account's state (premium, days left)
 #, machine
 	State	Stat
-#. text in the Link grabber window; group box title in the Options window; text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -3845,8 +3688,7 @@
 #. label before the download's state
 #, machine
 	Status:	Status:
-#. text in remote.rs; text in the Add torrent window
-#. remote control page (on a phone): button: stop a queue
+#. text in the Add torrent window
 #, machine
 	Stop	Waqqaf
 #. text in the Scheduler window; checkbox in the Scheduler window
@@ -3875,7 +3717,7 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	Waqqaf {queue}
-#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
@@ -4031,10 +3873,6 @@
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	Il-brawżers jistgħu jsibu Mister Download Manager
-#. text in the Options window
-#. Options → Remote → Status: the settings were changed; they apply on OK
-#, machine
-	The changes apply when you click OK.	Il-bidliet japplikaw meta tikklikkja OK.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -4051,6 +3889,15 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The computer could not be turned off: {error}	Il-kompjuter ma setax jintefa: {error}
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue"
+#, machine
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	Il-kompjuter jitqajjem minuta qabel il-ħin tal-bidu u jinżamm imqajjem waqt li l-kju jaħdem. Mister Download Manager irid ikun qed jaħdem (jista' jistenna fiż-żona tan-notifiki).
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	The computer will be woken on {date} at {time}	Il-kompjuter se jitqajjem fi {date} fil-{time}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4290,14 +4137,14 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	Din il-kategorija jew kju ma fihomx tniżżil s'issa.
-#. text in the Options window
-#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#. text in win32.rs
+#. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
-	This code can't be used any more.	Dan il-kodiċi ma jistax jintuża aktar.
-#. text in the Options window
-#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+	This computer can't be woken by a timer	Dan il-kompjuter ma jistax jitqajjem b'tajmer
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 #, machine
-	This computer only (127.0.0.1)	Dan il-kompjuter biss (127.0.0.1)
+	This computer has no wake alarm that programs can set	Dan il-kompjuter m'għandux allarm tal-qawmien li l-programmi jistgħu jissettjaw
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4306,14 +4153,6 @@
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
 	This date has passed: the queue will not start	Din id-data għaddiet: il-kju mhux se jibda
-#. text in remote.rs
-#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
-#, machine
-	This device's name	Isem dan l-apparat
-#. text in remote.rs
-#. remote control page (on a phone): the file chosen is too large for a .torrent file
-#, machine
-	This file is too large to be a torrent.	Dan il-fajl huwa kbir wisq biex ikun torrent.
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Dan il-folder ma jeżistix:
@@ -4328,10 +4167,6 @@
 #. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	din mhix link manjetika jew fajl .torrent
-#. text in remote.rs
-#. remote control page (on a phone): the file chosen isn't a .torrent file
-#, machine
-	This is not a torrent file.	Dan mhux fajl torrent.
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -4382,9 +4217,21 @@
 #. where a download's server is, when a proxy carries it: {country} is the proxy's country
 #, machine
 	through a proxy in {country}	permezz ta' prokura fi {country}
+#. text in a download's Properties window
+#. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
+#, machine
+	Through {service}	Permezz ta' {service}
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+#, machine
+	Through {service}: the service downloads the torrent, then MDM its files	Permezz ta' {service}: is-servizz iniżżel it-torrent, imbagħad MDM iniżżel il-fajls tiegħu
 #. text in the Scheduler window
 #, machine
 	Thursday	Il-Ħamis
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+#, machine
+	Tick "Start download at" first: the computer is woken for the start time	Immarka "Ibda t-tniżżil fi" l-ewwel: il-kompjuter jitqajjem għall-ħin tal-bidu
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Ħin li fadal
@@ -4502,10 +4349,6 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	Ixgħel
-#. tooltip (why a control is greyed) in the Options window
-#. why Options → Remote → Pair a device... is greyed
-#, machine
-	Turn on the remote control first.	Ixgħel il-kontroll mill-bogħod l-ewwel.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4573,9 +4416,8 @@
 #. Link grabber button (IDM's): untick every link
 #, machine
 	Uncheck all	Neħħi l-marka minn kollox
-#. item in the Categories tree in the main window; text in remote.rs
+#. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
-#. remote control page (on a phone): tab: downloads not finished yet
 #, machine
 	Unfinished	Mhux lest
 #. text in countries.rs
@@ -4775,33 +4617,23 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	volume {n} of it is missing	volum {n} tiegħu huwa nieqes
-#. text in remote.rs
-#. remote control page (on a phone): codes were tried too fast
-#, machine
-	Wait a moment, then try again.	Stenna ftit, imbagħad erġa' pprova.
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
 	Wait for the list, or stop listing	Stenna l-lista, jew waqqaf l-elenkar
-#. text in remote.rs
-#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
-#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
-#, machine
-	Wait in {queue}	Stenna fil-{queue}
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	Qed jistenna
-#. text in the Options window
-#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
-#. {time} = a time of day (keep the braces as they are)
-#, machine
-	Waiting for the device. The code works for {time}.	Qed tistenna l-apparat. Il-kodiċi jaħdem għal {time}.
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	Qed jistenna: il-limitu tat-tniżżil intlaħaq (Skeduler)
+#. text in the Scheduler window
+#. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+#, machine
+	Wake the computer to run this queue	Qajjem il-kompjuter biex imexxi dan il-kju
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4832,13 +4664,13 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	What's new:	X'hemm ġdid:
-#. text in remote.rs
-#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
-#, machine
-	When	Meta
 #. text in the Batch download window
 #, machine
 	Wildcard size	Daqs tal-wildcard
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
+#, machine
+	Windows allows wake timers only while plugged in	Il-Windows tippermetti tajmers tal-qawmien biss meta jkun imqabbad
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4849,6 +4681,10 @@
 #. text in langpick.rs
 #, machine
 	Windows' language ({language})	Lingwa tal-Windows ({language})
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+#, machine
+	Windows' power options don't allow wake timers	L-għażliet tal-enerġija tal-Windows ma jippermettux tajmers tal-qawmien
 #. message or event log entry in the main window
 #, machine
 	with Add URL	b'Żid URL
@@ -4863,15 +4699,6 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	Ikteb id-dati u l-ħinijiet
-#. text in remote.rs
-#. remote control page (on a phone): pairing failed and the code is void now
-#, machine
-	Wrong code. Show a new code in MDM and try again.	Kodiċi żbaljat. Uri kodiċi ġdid f'MDM u erġa' pprova.
-#. text in remote.rs
-#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
-#. {n} = a number (keep the braces as they are)
-#, machine
-	Wrong code. Tries left: {n}	Kodiċi żbaljat. Tentattivi li fadal: {n}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -4981,15 +4808,6 @@
 #. {count} = a number (keep the braces as they are)
 #, machine
 	{count}, {speed}	{count}, {speed}
-#. text in the Options window
-#. Options → Remote → Pair a device: done; {device} = the name it was given
-#, machine
-	{device} is paired. It can control MDM now.	{device} huwa mqabbad. Issa jista' jikkontrolla l-MDM.
-#. text in remote.rs
-#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
-#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
-	{done} of {size}	{done} minn {size}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
@@ -5089,6 +4907,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} minn {total} magħżula
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+#, machine
+	{percent} at {service}	{percent} fuq {service}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -5100,6 +4922,9 @@
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	{service} jitlobek biex l-ewwel tippermetti dan il-kompjuter: ara l-email tiegħu
+#. text in errors.rs
+#, machine
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} ma jistax jikseb dan it-torrent: ħadd ma jaqsmu, jew il-link tiegħu ma tistax tinqara
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} ma jistax jilħaq dan il-file host bħalissa; MDM jerġa' jipprova aktar tard
@@ -5150,11 +4975,6 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	{size} ({bytes} Bytes)	{size} ({bytes} Bytes)
-#. text in remote.rs
-#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
-#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
-	{size} free	{size} ħieles
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -5744,7 +5564,7 @@ menu	Download &video from a page...	Niżżel &video minn paġna...
 #, machine
 menu	Download in order	Niżżel fl-ordni
 #. menu command in the main window
-#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	Pinġi bi
 #. menu command in the main window
@@ -5795,6 +5615,26 @@ menu	Hide drop target	Aħbi l-mira tal-waqgħa
 #, machine
 menu	High contrast	Kuntrast qawwi
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+#, machine
+menu	It couldn't start: the log says why	Ma setax jibda: il-log jgħid għaliex
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+#, machine
+menu	Its first frame didn't show within 10 seconds	L-ewwel qafas tiegħu ma deherx fi żmien 10 sekondi
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+#, machine
+menu	Its last start ended before its first frame	L-aħħar bidu tiegħu spiċċa qabel l-ewwel qafas tiegħu
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Apple's), usually kept as is
+#, machine
+menu	Metal	Metal
+#. menu command in the main window
+#. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Metal didn't start here: OpenGL draws	Metal ma bediex hawn: OpenGL ipinġi
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
 menu	Metro	Metro
@@ -5809,6 +5649,10 @@ menu	Move/Rename (Ctrl-M)	Mexxi/Semmi mill-ġdid (Ctrl-M)
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
 menu	Native	Nattiv
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+#, machine
+menu	No graphics card here has a driver for it	L-ebda karta grafika hawn m'għandha sewwieq għaliha
 #. menu command in the main window
 #, machine
 menu	On Double click	Fuq Ikklikkja Doppja
@@ -5934,6 +5778,10 @@ menu	Support &MDM	Appoġġja lil &MDM
 #, machine
 menu	Tell a &friend	Għid lil &ħabib
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+#, machine
+menu	The graphics card was lost twice in 10 minutes	Il-karta grafika ntilfet darbtejn f'10 minuti
+#. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
 menu	Theme	Tema
@@ -5972,6 +5820,14 @@ menu	Turn of&f	Itf&i
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Verify checksum...	Ivverifika ċ-checksum...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+#, machine
+menu	Vulkan	Vulkan
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Vulkan didn't start here: OpenGL draws	Vulkan ma bediex hawn: OpenGL ipinġi
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6050,3 +5906,272 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/sek
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent file
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	Żid
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	Miżjud.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	Miżjud. MDM qed jaqra t-torrent: jingħaqad mal-lista fi ftit mumenti.
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	Indirizz jew link manjetika
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	Kollha
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	Awtomatiku (skont it-tip tal-fajl)
+#. text in the Options window
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
+#, machine
+	Certificate (SHA-256): {fingerprint}	Ċertifikat (SHA-256): {fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	Agħżel fajl .torrent
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	Kodiċi
+#. text in the Options window
+#. Options → Remote → Pair a device: label before the 8-digit code
+#, machine
+	Code:	Kodiċi:
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
+#, machine
+	Delete the file too	Ħassar il-fajl ukoll
+#. text in the Options window
+#. column title: a paired phone's or computer's name
+#, machine
+	Device	Apparat
+#. text in the Options window
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
+#, machine
+	Every local network address	Kull indirizz tan-netwerk lokali
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	Insa dan l-apparat
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	Tinsa dan l-apparat? Ikollu bżonn kodiċi ġdid biex jerġa' jikkonnettja.
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	minn apparat imqabbad
+#. text in the Options window
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	It could not start: {error}	Ma setax jibda: {error}
+#. text in the Options window
+#. column title: when the device last reached MDM
+#, machine
+	Last seen	L-aħħar darba li deher
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	Ħalli t-telefowns u l-kompjuters fuq in-netwerk lokali jikkontrollaw l-MDM
+#. text in the Options window
+#. Options → Remote: label before the choice of the address MDM listens on
+#, machine
+	Listen on:	Isma' fuq:
+#. text in the Options window
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
+#, machine
+	MDM can't be reached on the network now: Options → Remote says why.	L-MDM ma jistax jintlaħaq fuq in-netwerk issa: L-Għażliet → Remote jgħid għaliex.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	L-MDM ma jistax iniżżel dan l-indirizz.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	L-MDM ma setax iżidu.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	L-MDM ma setax jagħmlu.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	L-MDM ma jweġibx. Iċċekkja li qed jaħdem u fuq l-istess netwerk.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	L-MDM ma jweġibx. Qed jerġa' jipprova...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	L-MDM ma jurix kodiċi issa. Ikklikkja Qabbad apparat hemm l-ewwel.
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	Aktar
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	Kodiċi ġdid
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	M'hemmx downloads hawn.
+#. text in the Options window
+#. Options → Remote → Status: on, but the computer has no local network address now
+#, machine
+	No local network now: it starts when the computer joins one.	M'hemmx netwerk lokali issa: jibda meta l-kompjuter jingħaqad ma' wieħed.
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	Mitfi: xejn fuq in-netwerk ma jista' jilħaq l-MDM.
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	Fuq il-kompjuter, iftaħ l-Għażliet, imbagħad Remote, u kklikkja Qabbad apparat. Daħħal il-kodiċi li juri.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	Fuq it-telefon, skennja dan il-kodiċi bil-kamera, jew iftaħ l-indirizz u daħħal il-kodiċi.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	Mixgħul. Fuq it-telefon, iftaħ dan l-indirizz:
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Apparati mqabbda biss jaraw jew ibiddlu xi ħaġa. L-ewwel darba, il-browser tat-telefon iwissi dwar iċ-ċertifikat tal-MDM stess: il-marka tas-swaba' tiegħu hija dik ta' hawn fuq.
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	Qabbad
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	Qabbad apparat
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	Qabbad apparat...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Għaqqad ma' Mister Download Manager
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	Imqabbad
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	Apparat imqabbad:
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	Il-port {port} qed jintuża minn programm ieħor: agħżel ieħor.
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	Fil-kju
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	Remote
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	Kontroll mill-bogħod
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	Neħħi {name} mil-lista?
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	Ibda issa
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	Il-bidliet japplikaw meta tikklikkja OK.
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	Dan il-kodiċi ma jistax jintuża aktar.
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	Dan il-kompjuter biss (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	Isem dan l-apparat
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	Dan il-fajl huwa kbir wisq biex ikun torrent.
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	Dan mhux fajl torrent.
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	Ixgħel il-kontroll mill-bogħod l-ewwel.
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	Stenna ftit, imbagħad erġa' pprova.
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	Stenna fil-{queue}
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	Qed tistenna l-apparat. Il-kodiċi jaħdem għal {time}.
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	Meta
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	Kodiċi żbaljat. Uri kodiċi ġdid f'MDM u erġa' pprova.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	Kodiċi żbaljat. Tentattivi li fadal: {n}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} huwa mqabbad. Issa jista' jikkontrolla l-MDM.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{done} minn {size}
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} ħieles

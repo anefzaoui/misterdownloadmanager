@@ -4,7 +4,7 @@
  "segments": {
   "0001df97223dc970": {
    "source": "In Firefox, once you switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in its popup (Firefox asks you first), when the browser uses a proxy for a download (set by a VPN or proxy extension, or in its settings), the extension passes <g2>the proxy's address</g2>, or its <g3>proxy auto-config script</g3>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy. Switched off (as installed), it reads nothing of the browser's proxy. The extension for Chrome and the other Chromium browsers doesn't do this yet.",
-   "text": "У Firefox, щойно ви ввімкнете <g1>Надсилати завантаження через проксі-сервер або розширення VPN цього браузера</g1> у його спливаючому вікні (Firefox запитає вас спочатку), коли браузер використовує проксі для завантаження (встановлений VPN або проксі-розширенням, або в його налаштуваннях), розширення передає <g2>адресу проксі-сервера</g2> або його <g3>скрипт автоматичної конфігурації проксі</g3>, щоб MDM завантажував через той самий проксі. Воно ніколи не читає і не передає логін проксі-сервера. Воно лише зазначає, що проксі вимагав його, щоб MDM міг повідомити вам, що він не може використовувати цей проксі. У вимкненому стані (як встановлено) воно нічого не читає про проксі браузера. Розширення для Chrome та інших браузерів на базі Chromium цього ще не робить."
+   "text": "У Firefox, щойно ви ввімкнете <g1>Надсилати завантаження через проксі-сервер або розширення VPN цього браузера</g1> у його спливаючому вікні (Firefox спочатку запитає вас), коли браузер використовує проксі для завантаження (встановлений VPN або проксі-розширенням, або в його налаштуваннях), розширення передає <g2>адресу проксі-сервера</g2> або його <g3>скрипт автоматичної конфігурації проксі-сервера</g3>, щоб MDM завантажував через той самий проксі. Воно ніколи не читає та не передає логін проксі-сервера. Воно лише зазначає, що проксі-сервер запитував його, щоб MDM міг повідомити вам, що він не може використовувати цей проксі-сервер. У вимкненому стані (як встановлено) воно нічого не читає про проксі-сервер браузера. Розширення для Chrome та інших браузерів Chromium цього ще не робить."
   },
   "0004ade2a3d1d57f": {
    "source": "The extension is connected, but MDM's own settings leave this download to the browser. Check, in MDM:",
@@ -210,6 +210,10 @@
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
   },
+  "04bb12464d3a29f6": {
+   "source": "Tick <g1>Wake the computer to run this queue</g1>, under the start time, and a computer that is asleep at the start time is woken for it. It needs <g2>Start download at</g2>.",
+   "text": "Поставте позначку <g1>Розбудити комп’ютер для запуску цієї черги</g1> під часом початку, і комп’ютер, який перебуває в сплячому режимі в цей час, буде розбуджено. Для цього потрібен параметр <g2>Почати завантаження о</g2>."
+  },
   "04fca60787a71402": {
    "source": "Don't make MDM reachable from the internet (a router's port forwarding): the remote control is made for your home network. To reach it while away, use a VPN to your home network instead (WireGuard, Tailscale): with Tailscale, choose its address in <g1>Listen on</g1>.",
    "text": "Не робіть MDM доступним з інтернету (переадресація портів маршрутизатора): віддалене керування створено для вашої домашньої мережі. Щоб дістатися до нього, перебуваючи далеко, використовуйте VPN до вашої домашньої мережі (WireGuard, Tailscale): з Tailscale виберіть його адресу в <g1>Слухати на</g1>."
@@ -369,6 +373,10 @@
   "08084c2a5ca0a411": {
    "source": "Right-click a category for:",
    "text": "Клацніть правою кнопкою миші на категорії для:"
+  },
+  "0809f66ed7e37c8f": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Draw with</g6> (OpenGL, or Direct3D on Windows, Vulkan on Linux, Metal on macOS) and <g7>Language</g7>.",
+   "text": "<g1>Вигляд</g1> — показати або приховати категорії, відсортувати список (<g2>Упорядкувати файли</g2>), <g3>Підтримка темного режиму</g3>, <g4>Завжди темний</g4>, <g5>Тема</g5>, <g6>Малювати за допомогою</g6> (OpenGL, або Direct3D у Windows, Vulkan у Linux, Metal у macOS) та <g7>Мова</g7>."
   },
   "0830de009b68f05d": {
    "source": "No, unless you want it to. While a torrent downloads it trades pieces with other people, as every torrent client does. When it finishes, it stops, like any…",
@@ -616,7 +624,7 @@
   },
   "0f0281b39f2ac4c5": {
    "source": "A VPN or proxy extension is a proxy for the browser only. In Firefox, switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in the extension's toolbar popup: Firefox asks you once to allow the extension to read the browser's proxy, and MDM then downloads what it takes from the browser through the same proxy (with <g2>Options → Proxy / Socks → Use proxy/socks from a browser's request</g2>, on by default; see <g3>Options</g3>). Switch it off to take that permission back. Chrome, Edge, Brave, Opera and Vivaldi don't offer this yet: for now, set the same proxy in MDM's <g4>Options → Proxy / Socks</g4>.",
-   "text": "Розширення VPN або проксі-сервера є проксі лише для браузера. У Firefox увімкніть <g1>Надсилати завантаження через проксі-сервер або розширення VPN цього браузера</g1> у спливаючому вікні панелі інструментів розширення: Firefox один раз запитає вас дозволити розширенню читати проксі-сервер браузера, і MDM потім завантажує те, що він отримує з браузера, через той самий проксі-сервер (з <g2>Параметри → Проксі / Socks → Використовувати проксі/socks із запиту браузера</g2>, увімкнено за замовчуванням; див. <g3>Параметри</g3>). Вимкніть його, щоб відкликати цей дозвіл. Chrome, Edge, Brave, Opera та Vivaldi ще не пропонують цього: наразі встановіть той самий проксі-сервер у <g4>Параметри → Проксі / Socks</g4> MDM."
+   "text": "Розширення VPN або проксі-сервера є проксі-сервером лише для браузера. У Firefox увімкніть <g1>Надсилати завантаження через проксі-сервер або розширення VPN цього браузера</g1> у спливаючому вікні панелі інструментів розширення: Firefox один раз запитає вас дозволити розширенню читати проксі-сервер браузера, і MDM потім завантажуватиме те, що він отримує з браузера, через той самий проксі-сервер (з <g2>Параметри → Проксі / Socks → Використовувати проксі/socks із запиту браузера</g2>, увімкнено за замовчуванням; див. <g3>Параметри</g3>). Вимкніть його, щоб відкликати цей дозвіл. Chrome, Edge, Brave, Opera та Vivaldi ще не пропонують цього: наразі встановіть той самий проксі-сервер у <g4>Параметри → Проксі / Socks</g4> MDM."
   },
   "0f09c75008b1a460": {
    "source": "<g1>Questions</g1> (\"Create this folder?\", delete, a duplicate download, the turn-off countdown) could open behind the window that asked them; they stay in front now.",
@@ -1246,6 +1254,10 @@
    "source": "The download's log (hover over it in the list) says what happened: <g1>Extracted 12 files to …</g1>, or why not, for example <g2>Couldn't extract movie.7z.001: volume 3 of it is missing</g2>. An encrypted archive without its password opens the <g3>Archive password</g3> window. Type the password and click <g4>Extract</g4>, or <g5>Cancel</g5> to leave the archive as it is.",
    "text": "Журнал завантаження (наведіть курсор на нього у списку) показує, що сталося: <g1>Видобуто 12 файлів до…</g1>, або чому ні, наприклад <g2>Не вдалося видобути movie.7z.001: відсутній том 3</g2>. Зашифрований архів без пароля відкриває вікно <g3>Пароль архіву</g3>. Введіть пароль і натисніть <g4>Видобути</g4>, або <g5>Скасувати</g5>, щоб залишити архів як є."
   },
+  "1d422617fd378822": {
+   "source": "Open <g1>Downloads → Options</g1>, or click <g2>Options</g2> on the toolbar. The window has nine pages on two rows of tabs. <g3>OK</g3> saves your changes; closing the window or pressing <g4>Esc</g4> throws them away.",
+   "text": "Відкрийте <g1>Завантаження → Параметри</g1> або натисніть <g2>Параметри</g2> на панелі інструментів. Вікно має дев’ять сторінок на двох рядках вкладок. <g3>OK</g3> зберігає ваші зміни; закриття вікна або натискання <g4>Esc</g4> скасовує їх."
+  },
   "1d698c89212c8b9b": {
    "source": "Median CPU time each app used during a run, and its peak memory. MDM draws its window with the GPU, which takes more memory than IDM's classic Windows controls.",
    "text": "Медіана часу ЦП, використаного кожною програмою під час виконання, та її пікове використання пам'яті. MDM малює своє вікно за допомогою графічного процесора, що займає більше пам'яті, ніж класичні елементи керування Windows в IDM."
@@ -1397,6 +1409,10 @@
   "214a5490cbec850d": {
    "source": "<g1>Look links up when they arrive (name, size, online)</g1> — Link grabber asks each server about its file (on by default).",
    "text": "<g1>Шукати посилання після їх надходження (ім’я, розмір, онлайн)</g1> — Захоплення посилань запитує кожен сервер про його файл (увімкнено за замовчуванням)."
+  },
+  "216583d42da33e52": {
+   "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
+   "text": "У macOS лише адміністратор може запланувати пробудження, тому параметр неактивний. MDM не запитує пароль адміністратора. Адміністратор може налаштувати Mac на пробудження щодня за хвилину до початку черги, наприклад, о 22:59 для черги, яка починається о 23:00:"
   },
   "219b4865ef43eb2a": {
    "source": "not to use it to overload, attack or get around the limits of servers you don't own.",
@@ -1589,6 +1605,10 @@
   "25b4db9aa4024862": {
    "source": "The current speed.",
    "text": "Поточна швидкість."
+  },
+  "25bdccac1d0ecb03": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
+   "text": "Якщо Direct3D, Vulkan або Metal не можуть запуститися на вашому комп'ютері (немає драйвера для них, деякі віртуальні машини), або його перше вікно не відображається протягом 10 секунд, MDM малює за допомогою OpenGL, і <g1>Вигляд → Малювати за допомогою</g1> повідомляє про це та чому. Повторний вибір спробує це знову при наступному запуску."
   },
   "25e1ffe092788c2a": {
    "source": "<g1>Download File Info</g1>, the progress window and <g2>Properties</g2> show where a download's server is: its country's flag and name, then the time a round trip to it takes, such as <g3>about 24 ms (near)</g3>.",
@@ -1918,6 +1938,10 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>Країна</g1> береться з таблиці діапазонів адрес, яка постачається з MDM (<g2>IP to Country Lite від DB-IP</g2>, CC BY 4.0), і шукається на вашому комп'ютері. MDM ніколи не надсилає адресу нікуди, щоб запитати, де вона знаходиться. Таблиця оновлюється з кожним випуском; адреса, яка перемістилася з того часу, може показувати свою стару країну."
   },
+  "2cd03d5c814bd111": {
+   "source": "Last updated 2026-11-07",
+   "text": "Останнє оновлення 2026-11-07"
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>Огляд</g1> — відкрити її папку в Провіднику."
@@ -1964,7 +1988,7 @@
   },
   "2d99670ca729da8a": {
    "source": "Every colour and size a control is drawn with comes from the active theme (#45): <x1/> declares its roles (<x2/>, <x3/>…) with the classic look's values, the shared painters (<x4/>, <x5/>, <x6/>, <x7/>) read them through <x8/> and <x9/> and decide each control's states from them, and <x10/> reads theme files (TOML or JSON in the data folder's <x11/>) that change any of them. Where a window puts its controls stays its layout. So do the icons before file names (<x12/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x13/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
-   "text": "Кожен колір і розмір, з яким малюється елемент керування, походить з активної теми (#45): <x1/> оголошує свої ролі (<x2/>, <x3/>…) зі значеннями класичного вигляду, спільні художники (<x4/>, <x5/>, <x6/>, <x7/>) читають їх через <x8/> та <x9/> і визначають стани кожного елемента керування з них, а <x10/> читає файли тем (TOML або JSON у <x11/> папки даних), які змінюють будь-який з них. Розташування елементів керування у вікні залишається його макетом. Те саме стосується іконок перед іменами файлів (<x12/>): системні списки зображень оболонки Windows, Finder macOS (NSWorkspace), тема іконок робочого столу Linux (<x13/>, shared-mime-info та специфікація теми іконок). Кожен тип шукається один раз для кожного розміру пікселів у фоновому потоці. Іконки Tango (в комплекті) використовуються до тих пір, поки системна іконка не буде готова, і там, де система її не має."
+   "text": "Кожен колір і розмір, яким малюється елемент керування, походить від активної теми (#45): <x1/> оголошує свої ролі (<x2/>, <x3/>…) зі значеннями класичного вигляду, спільні художники (<x4/>, <x5/>, <x6/>, <x7/>) читають їх через <x8/> та <x9/> і визначають стани кожного елемента керування з них, а <x10/> читає файли тем (TOML або JSON у папці даних <x11/>), які змінюють будь-який з них. Місце розташування елементів керування у вікні залишається його макетом. Так само і піктограми перед іменами файлів (<x12/>): системні списки зображень оболонки Windows, Finder macOS (NSWorkspace), тема піктограм робочого столу Linux (<x13/>, shared-mime-info та Icon Theme Specification). Кожен тип шукається один раз для кожного розміру пікселя у фоновому потоці. Піктограми Tango (в комплекті) використовуються, доки системна піктограма не буде готова, і там, де система її не має."
   },
   "2d9d101be2d0f3be": {
    "source": "FTP and FTPS (<x1/>) go through the same planner, workers and state: a segment is <x2/> + <x3/> on a control session instead of a ranged <x4/>, <x5/> and <x6/> stand in for the headers, and sessions are pooled per download and reused between segments.",
@@ -2142,6 +2166,10 @@
    "source": "Rules only look at articles that are new since the feed was last fetched, and a feed's first fetch only lists what is there. So adding a feed or a rule never downloads a whole backlog. <g1>Matches ... articles now</g1> shows which of the articles the feeds hold now the rule matches, to check it; download those by hand. A torrent the list already has isn't added again, and neither is one whose files are already in the folder: MDM never writes into files it didn't make without asking. The bottom line of the tab says what the rules did last, and a torrent a rule added says so in its event log.",
    "text": "Правила розглядають лише ті статті, які є новими з моменту останнього отримання каналу, а перше отримання каналу лише перелічує те, що є. Тому додавання каналу або правила ніколи не завантажує весь список. <g1>Відповідає ... статтям зараз</g1> показує, яким статтям, що містяться в каналах зараз, відповідає правило, щоб перевірити його; завантажте їх вручну. Торрент, який вже є в списку, не додається знову, як і той, файли якого вже є в папці: MDM ніколи не записує в файли, які він не створював, без запиту. Нижній рядок вкладки показує, що правила робили востаннє, а торрент, доданий правилом, вказує це у своєму журналі подій."
   },
+  "326233a6912ae49d": {
+   "source": "A user's systemd timer can't wake the computer, and <x1/> needs root, so without this setting MDM can't wake the computer. MDM never asks for an administrator's password.",
+   "text": "Таймер systemd користувача не може розбудити комп’ютер, а <x1/> потребує root-прав, тому без цього налаштування MDM не може розбудити комп’ютер. MDM ніколи не запитує пароль адміністратора."
+  },
   "327c76a006445d54": {
    "source": "Yes. MDM comes with an MCP server, <x1/>: add it to Claude Desktop, Claude Code, Cursor, VS Code or another assistant that supports MCP, and you can ask it in your own words to list, add, pause, resume or remove downloads. It works with the MDM on your computer only, and needs the automation API on. See <g2>AI assistants</g2>.",
    "text": "Так. MDM постачається з MCP-сервером, <x1/>: додайте його до Claude Desktop, Claude Code, Cursor, VS Code або іншого помічника, який підтримує MCP, і ви зможете своїми словами просити його перелічити, додати, призупинити, відновити або видалити завантаження. Він працює лише з MDM на вашому комп’ютері та потребує ввімкненого API автоматизації. Дивіться <g2>ШІ-помічники</g2>."
@@ -2272,7 +2300,7 @@
   },
   "36d5bb353cf00059": {
    "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download, once you allow it: in Firefox, switch on <g2>Send downloads through this browser's proxy or VPN extension</g2> in the extension's toolbar popup (Firefox asks you once). Chrome, Edge, Brave, Opera and Vivaldi don't hand the proxy over yet: there, set the same proxy in <g3>Options → Proxy / Socks</g3>.",
-   "text": "<g1>Використовувати проксі/socks із запиту браузера…</g1> — увімкнено за замовчуванням. Завантаження, яке MDM отримує з браузера, проходить через проксі, який браузер використовував для нього. Це той, який встановлено розширенням VPN або проксі, власним ручним проксі браузера або його скриптом автоматичної конфігурації проксі. Без цього завантаження відбуватиметься з вашої власної адреси, і контент, обмежений країною VPN або її адресою, не завантажиться. Розширення браузера зчитує цей проксі та передає його MDM з кожним завантаженням, щойно ви дозволите це: у Firefox увімкніть <g2>Надсилати завантаження через проксі-сервер або розширення VPN цього браузера</g2> у спливаючому вікні розширення на панелі інструментів (Firefox запитає вас один раз). Chrome, Edge, Brave, Opera та Vivaldi ще не передають проксі: там встановіть той самий проксі в <g3>Параметри → Проксі / Socks</g3>."
+   "text": "<g1>Використовувати проксі/Socks із запиту браузера…</g1> — увімкнено за замовчуванням. Завантаження, яке MDM отримує з браузера, проходить через проксі, який браузер використовував для нього. Це той, який встановлює розширення VPN або проксі, власний ручний проксі браузера або його сценарій автоматичної конфігурації проксі. Без цього завантаження відбуватиметься з вашої власної адреси, і вміст, обмежений країною VPN або її адресою, не завантажиться. Розширення браузера зчитує цей проксі та передає його MDM з кожним завантаженням, щойно ви дозволите це: у Firefox увімкніть <g2>Надсилати завантаження через проксі-сервер або розширення VPN цього браузера</g2> у спливаючому вікні панелі інструментів розширення (Firefox запитає вас один раз). Chrome, Edge, Brave, Opera та Vivaldi ще не передають проксі: там встановіть той самий проксі в <g3>Параметри → Проксі / Socks</g3>."
   },
   "36ef08c42af60d54": {
    "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
@@ -3362,6 +3390,10 @@
    "source": "JSON for scripts and programs",
    "text": "JSON для скриптів та програм"
   },
+  "53220733cbddcf56": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose <g1>View → Draw with → OpenGL</g1> (or <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), then quit MDM (<g5>Tasks → Exit</g5>) and start it again. Choosing the first one goes back the same way.",
+   "text": "У Windows MDM малює свої вікна за допомогою Direct3D 12; у Linux та macOS — за допомогою OpenGL, або за допомогою Vulkan (Linux) чи Metal (macOS), якщо ви їх оберете. Графічний драйвер все ще може працювати некоректно: вікно, яке застигає на секунди, мерехтить або показує неправильні кольори чи блоки. Спробуйте інший: оберіть <g1>Вигляд → Малювати за допомогою → OpenGL</g1> (або <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), потім вийдіть з MDM (<g5>Завдання → Вихід</g5>) і запустіть його знову. Вибір першого повертає тим же шляхом."
+  },
   "53463dc2311b18e1": {
    "source": "when <g1>Options → Archives → Extract archives when their download completes</g1> is on (off by default), for any other download,",
    "text": "коли увімкнено <g1>Параметри → Архіви → Видобувати архіви після завершення завантаження</g1> (вимкнено за замовчуванням) для будь-якого іншого завантаження,"
@@ -3598,6 +3630,10 @@
    "source": "<g1>A copy from elsewhere?</g1> Remove it and add the extension as MDM's <g2>Add Mister Download Manager to your browser</g2> window shows (see <g3>Browser integration</g3>).",
    "text": "<g1>Копія з іншого місця?</g1> Видаліть її та додайте розширення, як показано у вікні MDM <g2>Додати Mister Download Manager до браузера</g2> (див. <g3>Інтеграція з браузером</g3>)."
   },
+  "5922c26d865c882f": {
+   "source": "The wake follows the schedule: change the start time or the days, untick the option or delete the queue, and the wake moves or goes away. MDM sets it again each time it starts. Nothing stays behind in the system when MDM quits or is uninstalled.",
+   "text": "Будильник слідує за розкладом: змініть час початку або дні, зніміть позначку з параметра або видаліть чергу, і будильник переміститься або зникне. MDM встановлює його знову щоразу, коли запускається. Нічого не залишається в системі після виходу або видалення MDM."
+  },
   "5934223575270924": {
    "source": "In <g1>Download File Info</g1>: <g2>Start Download</g2>",
    "text": "У <g1>Інформація про файл завантаження</g1>: <g2>Почати завантаження</g2>"
@@ -3822,6 +3858,10 @@
    "source": "What Update now does",
    "text": "Що робить Оновити зараз"
   },
+  "5f91bf43437c9761": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Draw with</g6> (Windows: Direct3D, or OpenGL) and <g7>Language</g7>.",
+   "text": "<g1>Вигляд</g1> — показати або приховати категорії, сортувати список (<g2>Упорядкувати файли</g2>), <g3>Підтримка темного режиму</g3>, <g4>Завжди темний</g4>, <g5>Тема</g5>, <g6>Малювати за допомогою</g6> (Windows: Direct3D або OpenGL) та <g7>Мова</g7>."
+  },
   "5fcf81378fa34b81": {
    "source": "<g1>Downloads → Speed Limiter → Settings...</g1> — speed limits. See <g2>Connections and speed</g2>.",
    "text": "<g1>Завантаження → Обмежувач швидкості → Налаштування...</g1> — обмеження швидкості. Див. <g2>З’єднання та швидкість</g2>."
@@ -3841,6 +3881,10 @@
   "601260a4be471ed2": {
    "source": "The box under the list edits the package you selected:",
    "text": "Поле під списком редагує вибраний вами пакет:"
+  },
+  "6038a4d72bef82d8": {
+   "source": "removes it.",
+   "text": "видаляє його."
   },
   "603f376b07905d51": {
    "source": "Q",
@@ -4417,6 +4461,10 @@
   "6d73e61c3ec9dd6e": {
    "source": "\"Try IDM 30-days free trial\" — <g1>internetdownloadmanager.com</g1>; prices at <g2>its purchase page</g2>",
    "text": "«Спробуйте IDM 30-денну безкоштовну пробну версію» — <g1>internetdownloadmanager.com</g1>; ціни на <g2>сторінці покупки</g2>"
+  },
+  "6d806c3d427a08be": {
+   "source": "Open Downloads → Options, or click Options on the toolbar. The window has nine pages on two rows of tabs. OK saves your changes; closing the window or…",
+   "text": "Відкрийте Завантаження → Параметри або натисніть Параметри на панелі інструментів. Вікно має дев’ять сторінок на двох рядках вкладок. OK зберігає ваші зміни; закриття вікна або…"
   },
   "6d8509c5a6eeec47": {
    "source": "Column",
@@ -5334,6 +5382,10 @@
    "source": "Put downloads in a queue",
    "text": "Додати завантаження до черги"
   },
+  "83771adf9df51604": {
+   "source": "Windows wakes a computer only if its power plan allows wake timers. If it doesn't, the Scheduler says so, and <g1>Change</g1> opens the setting: <g2>Power Options → Change plan settings → Change advanced power settings → Sleep → Allow wake timers</g2>. Choose <g3>Enable</g3>: <g4>Important Wake Timers Only</g4> lets only Windows' own important timers wake the computer. On laptops the setting is often off on battery, so the computer is woken only while plugged in.",
+   "text": "Windows будить комп’ютер, лише якщо його план живлення дозволяє таймери пробудження. Якщо ні, Планувальник повідомляє про це, а <g1>Змінити</g1> відкриває налаштування: <g2>Параметри живлення → Змінити параметри плану → Змінити додаткові параметри живлення → Сон → Дозволити таймери пробудження</g2>. Виберіть <g3>Увімкнути</g3>: <g4>Лише важливі таймери пробудження</g4> дозволяє лише власним важливим таймерам Windows будити комп’ютер. На ноутбуках цей параметр часто вимкнений при роботі від батареї, тому комп’ютер будиться лише під час підключення до мережі."
+  },
   "837e0b4660975a88": {
    "source": "Select or unselect one more download",
    "text": "Вибрати або скасувати вибір ще одного завантаження"
@@ -5357,6 +5409,10 @@
   "83cfeac35d769e94": {
    "source": "It stores its own settings (paused or not, MDM's file types and excluded sites, its connection status, where you dragged the video button on each of the last 200 sites; nothing from private windows) in the browser's extension storage, on your computer.",
    "text": "Воно зберігає власні налаштування (призупинено чи ні, типи файлів MDM та виключені сайти, статус його підключення, куди ви перетягнули кнопку відео на кожному з останніх 200 сайтів; нічого з приватних вікон) у сховищі розширення браузера, на вашому комп'ютері."
+  },
+  "83d008fc3c256167": {
+   "source": "Themes",
+   "text": "Теми"
   },
   "83d81da9ed13c6e6": {
    "source": "MDM asks each service well under its request limit: Real-Debrid at most 120 times a minute (it allows 250), AllDebrid 300 (it allows 600), Premiumize 60 (it publishes no limit). When a service says it's asked too often, MDM waits.",
@@ -5574,6 +5630,10 @@
    "source": "When MDM isn't running",
    "text": "Коли MDM не запущено"
   },
+  "8964c9e8c41b70ca": {
+   "source": "On Linux only an administrator may set the computer's wake alarm, so the option is greyed until an administrator allows it. To let the users in a <x1/> group set it, an administrator runs, once:",
+   "text": "У Linux лише адміністратор може встановити будильник пробудження комп’ютера, тому параметр неактивний, доки адміністратор не дозволить його. Щоб дозволити користувачам у групі <x1/> встановити його, адміністратор запускає один раз:"
+  },
   "89c2ac8b048f39e1": {
    "source": "The next choice of a drop-down list or radio group; a number up or down",
    "text": "Наступний вибір спадного списку або групи перемикачів; число вгору або вниз"
@@ -5656,7 +5716,7 @@
   },
   "8bdb8ef261917fb7": {
    "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> (Firefox, optional: asked for only when you switch it on in the popup) to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
-   "text": "Його дозволи та причини: <g1>downloads</g1> для перегляду та передачі завантажень; <g2>cookies</g2>, щоб завантаження з авторизацією працювали в MDM; <g3>nativeMessaging</g3> для зв'язку з MDM; <g4>contextMenus</g4> для пунктів контекстного меню; <g5>storage</g5> для його налаштувань; <g6>webRequest</g6> для перегляду відправлених форм та завантажених відеопотоків (нічого не змінює); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge та інші браузери на базі Chromium), щоб файли, які браузер відкрив би (PDF), завантажувалися замість цього, для типів, які приймає MDM; у Firefox це робить <g8>webRequestBlocking</g8>; <g9>scripting</g9> для читання посилань сторінки за вашим запитом та для додавання кнопки відео до вже відкритих сторінок після встановлення розширення; <g10>proxy</g10> (Firefox, необов'язково: запитується лише при ввімкненні у спливаючому вікні) для читання того, який проксі використовує браузер, щоб завантаження, взяті з браузера за VPN або проксі-розширенням, також проходили через нього (ніколи не змінює проксі браузера); доступ до всіх сайтів, оскільки завантаження та відео можуть надходити з будь-якого сайту."
+   "text": "Його дозволи та чому: <g1>downloads</g1> для перегляду та передачі завантажень; <g2>cookies</g2>, щоб завантаження з авторизацією працювали в MDM; <g3>nativeMessaging</g3> для зв'язку з MDM; <g4>contextMenus</g4> для елементів контекстного меню; <g5>storage</g5> для його налаштувань; <g6>webRequest</g6> для перегляду надісланих форм та завантажених відеопотоків (нічого не змінює); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge та інші браузери Chromium), щоб файли, які браузер відкрив би (PDF), завантажувалися замість цього, для типів, які приймає MDM; у Firefox <g8>webRequestBlocking</g8> робить це; <g9>scripting</g9> для читання посилань сторінки, коли ви запитуєте, та для додавання кнопки відео до вже відкритих сторінок, коли розширення встановлено; <g10>proxy</g10> (Firefox, необов'язково: запитується лише при ввімкненні у спливаючому вікні) для читання того, який проксі-сервер використовує браузер, щоб завантаження, взяті з браузера за VPN або проксі-розширенням, також проходили через нього (ніколи не змінює проксі-сервер браузера); доступ до всіх сайтів, оскільки завантаження та відео можуть надходити з будь-якого сайту."
   },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
@@ -6026,6 +6086,10 @@
    "source": "Downloads",
    "text": "Завантаження"
   },
+  "95bb2c4ecf20a6d7": {
+   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Останнє оновлення 2026-11-07 · стосується програми, розширення для браузера та misterdownloadmanager.com"
+  },
   "95e0579f795bdd56": {
    "source": "<g1>Description or part of the description</g1> — your notes.",
    "text": "<g1>Опис або частина опису</g1> — ваші нотатки."
@@ -6036,7 +6100,7 @@
   },
   "95f874ce586a0506": {
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. It times both parts of a frame: what MDM handles (the commands that come in, the clock of downloads, queues and the Scheduler), which runs minimized too, and the drawing; never the wait between frames. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>Виявлення проблем.</g1> Коли MDM аварійно завершує роботу (виняток Windows, сигнал у Linux, виняток Mach у macOS), панікує або зависає, він запитує дамп у монітора. Зависання — це кадр вікна, що виконується понад 8 с, який відстежується потоком-сторожовим, що ігнорує час, проведений у режимі сну. Він вимірює обидві частини кадру: те, що обробляє MDM (вхідні команди, годинник завантажень, черги та Планувальник), що також працює у згорнутому вигляді, і малювання; ніколи не чекає між кадрами. Сторожовий потік також вимірює, скільки часу процесора отримав потік вікна тим часом, і звіт показує, що це означає: він працював весь час (цикл), він чекав у блокуванні або на вхід/вихід (взаємне блокування), або він майже не працював у звичайному коді, що означає, що комп'ютер занадто зайнятий, щоб запустити MDM, або повільно завантажує його з диска, швидше за все, це не помилка MDM (вони мають один підпис, <x2/>). macOS ще не вимірює це. Потім монітор записує <g3>мінідамп</g3> кожного потоку ззовні, через <x4/> та <x5/>. Аварійно завершений процес ніколи не записує власний дамп, так само роблять Firefox, Crashpad і Sentry."
+   "text": "<g1>Виявлення проблем.</g1> Коли MDM аварійно завершує роботу (виняток Windows, сигнал на Linux, виняток Mach на macOS), панікує або зависає, він запитує дамп у монітора. Зависання — це кадр вікна, що виконується понад 8 секунд, який відстежується потоком-сторожем, що ігнорує час, проведений у сплячому режимі. Він вимірює обидві частини кадру: те, що обробляє MDM (вхідні команди, годинник завантажень, черги та Планувальник), що також працює у згорнутому вигляді, і малювання; ніколи не чекає між кадрами. Сторож також вимірює, скільки часу процесора отримав потік вікна тим часом, і звіт показує, що це означає: він працював весь час (цикл), він чекав у блокуванні або на введення/виведення (взаємне блокування), або він майже не працював у звичайному коді, що означає, що комп'ютер занадто зайнятий, щоб запустити MDM, або повільно завантажує його з диска, швидше за все, це не помилка MDM (вони мають один підпис, <x2/>). macOS ще не вимірює це. Потім монітор записує <g3>мінідамп</g3> кожного потоку ззовні, через <x4/> та <x5/>. Аварійно завершений процес ніколи не записує свій власний дамп, так само роблять Firefox, Crashpad та Sentry."
   },
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
@@ -6342,6 +6406,10 @@
    "source": "<g1>As the system's region writes them</g1> (the default) — Windows' region settings (Settings → Time &amp; language → Region); on macOS and Linux, your language's usual way. In English the list keeps IDM's own date text.",
    "text": "<g1>Як їх записує регіон системи</g1> (типово) — регіональні налаштування Windows (Налаштування → Час і мова → Регіон); на macOS та Linux — звичайний спосіб вашої мови. В англійській мові список зберігає власний текст дати IDM."
   },
+  "9d2e5b317ca7d67a": {
+   "source": "MDM wakes the computer a minute before the start time, so the network is back when the queue starts.",
+   "text": "MDM будить комп’ютер за хвилину до часу початку, щоб мережа відновилася до запуску черги."
+  },
   "9d5b2429780e94aa": {
    "source": "Latest",
    "text": "Остання версія"
@@ -6460,7 +6528,7 @@
   },
   "a02445ca780f3ef8": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
-   "text": "Одне вікно egui, намальоване за фіксованими піксельними координатами, плюс один безпосередній вікно перегляду для кожного діалогового вікна. <x1/> зберігає стан (завантаження, черги, налаштування, вибір списку) і перетворює команди меню, панелі інструментів, клавіш та IPC на дії. Кожне діалогове вікно є власним модулем і повертає <x2/> (відкрито, закрито, виконано зі значенням). Виклики лише для Windows обмежені <x3/>, а їхні аналоги для Linux та macOS – <x4/> (починаючи з сесії, хоста браузерів, звуків, показу в папці, обробника збоїв); кожен інший файл є безпечним, портативним Rust. Шрифти надходять із системи: папка Fonts у Windows, системні шрифти macOS, fontconfig у Linux (<x5/>)."
+   "text": "Одне вікно egui, намальоване за фіксованими піксельними координатами, плюс один безпосередній вікно перегляду на діалогове вікно. <x1/> зберігає стан (завантаження, черги, налаштування, вибір списку) і перетворює команди меню, панелі інструментів, клавіш та IPC на дії. Кожне діалогове вікно є власним модулем і повертає <x2/> (відкрите, закрите, виконане зі значенням). Виклики лише для Windows обмежені <x3/>, а їхні аналоги для Linux та macOS — <x4/> (починаючи з сесії, хоста браузерів, звуків, показу в папці, обробника збоїв); кожен інший файл є безпечним, портативним Rust. Шрифти беруться з системи: папка Fonts у Windows, системні шрифти macOS, fontconfig у Linux (<x5/>)."
   },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
@@ -6741,6 +6809,10 @@
   "a76617f8c395dcdd": {
    "source": "Can other programs or scripts control MDM? — Mister Download Manager",
    "text": "Чи можуть інші програми або скрипти керувати MDM? — Mister Download Manager"
+  },
+  "a796d15297b81a60": {
+   "source": "<g1>High contrast</g1>: black and white, a bright accent, every edge drawn, text at 7:1 or more.",
+   "text": "<g1>Висока контрастність</g1>: чорно-білий, яскравий акцент, промальовані всі краї, текст із контрастністю 7:1 або більше."
   },
   "a7a3f7c6b7a38022": {
    "source": "<g1>The download list's file icons</g1> were drawn over the Categories pane when the list was scrolled sideways (the Categories tree and the Scheduler had the same fault).",
@@ -7178,6 +7250,10 @@
    "source": "runs unit tests and end-to-end downloads against <x1/> with injected faults (slow, dropped and refused connections, servers without ranges, changing files). <x2/> runs the published speed comparison; its raw data is in <x3/>.",
    "text": "запускає модульні тести та наскрізні завантаження проти <x1/> з впровадженими помилками (повільні, відкинуті та відхилені з'єднання, сервери без діапазонів, файли, що змінюються). <x2/> запускає опубліковане порівняння швидкості; його необроблені дані знаходяться в <x3/>."
   },
+  "b1f35176aca676c5": {
+   "source": "While the queue runs, the computer doesn't go to sleep. When the queue is done, the computer's own sleep settings apply again: a computer nobody is using goes back to sleep by itself. <g1>Turn off computer when done → Sleep</g1> sends it back to sleep at once.",
+   "text": "Поки черга працює, комп’ютер не переходить у сплячий режим. Після завершення черги знову застосовуються власні налаштування сну комп’ютера: комп’ютер, яким ніхто не користується, сам повертається в сплячий режим. <g1>Вимкнути комп’ютер після завершення → Сплячий режим</g1> негайно переводить його в сплячий режим."
+  },
   "b20550787cbefe06": {
    "source": "Where it listens",
    "text": "Де він слухає"
@@ -7298,6 +7374,10 @@
    "source": "Dependencies point inward: <x1/>, <x2/>, <x3/>, <x4/> and <x5/> use <x6/> and <x7/>; the engine knows nothing of the UI. The app sees the engine only through its events (progress, segment table snapshots, finished, failed).",
    "text": "Залежності вказують всередину: <x1/>, <x2/>, <x3/>, <x4/> та <x5/> використовують <x6/> та <x7/>; рушій нічого не знає про інтерфейс користувача. Програма бачить рушій лише через його події (прогрес, знімки таблиці сегментів, завершено, не вдалося)."
   },
+  "b447fbc7b60ab7d5": {
+   "source": "On Linux, Vulkan needs your graphics card's Vulkan driver: Mesa's (<x1/> on Ubuntu and Debian, <x2/> or <x3/> on Arch) for AMD and Intel, NVIDIA's own driver for NVIDIA.",
+   "text": "У Linux Vulkan потребує драйвера Vulkan вашої відеокарти: Mesa's (<x1/> на Ubuntu та Debian, <x2/> або <x3/> на Arch) для AMD та Intel, власний драйвер NVIDIA для NVIDIA."
+  },
   "b45cf41d19dc2fdc": {
    "source": "The AppImage can also be updated by AppImage tools (AppImageLauncher, Gear Lever, AppImageUpdate): it carries the address of its updates, and each release has its <x1/> file, so those tools download only the parts that changed. This starts with the AppImage of the version after 0.2.4.",
    "text": "AppImage також можна оновити за допомогою інструментів AppImage (AppImageLauncher, Gear Lever, AppImageUpdate): він містить адресу своїх оновлень, і кожен випуск має свій файл <x1/>, тому ці інструменти завантажують лише ті частини, що змінилися. Це починається з AppImage версії після 0.2.4."
@@ -7361,6 +7441,10 @@
   "b66ef1366b1ed932": {
    "source": "Children",
    "text": "Діти"
+  },
+  "b68461ac7025e237": {
+   "source": "then signs out and in again. The setting stays after a restart. The computer has one wake alarm: if another program has set it, MDM leaves it alone and says so.",
+   "text": "потім виходить і знову входить. Налаштування зберігається після перезавантаження. Комп’ютер має один будильник пробудження: якщо інша програма встановила його, MDM залишає його без змін і повідомляє про це."
   },
   "b68fb1f513d1da2c": {
    "source": "9. Changes",
@@ -7798,6 +7882,10 @@
    "source": "torrents on Windows;",
    "text": "торренти на Windows;"
   },
+  "c20a850dfc745632": {
+   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "Якщо жоден не може запуститися, MDM малює за допомогою програмного рендерера (Microsoft у Windows, Mesa у Linux), тому вікно все одно відкривається (віддалений робочий стіл, віртуальна машина без графічного драйвера). Це працює, але завантажує процесор більше."
+  },
   "c281dc13eb22554f": {
    "source": "Brave",
    "text": "Brave"
@@ -8180,7 +8268,7 @@
   },
   "cd00d2b47225467c": {
    "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (a deadlock; or <x6/>, 12 s of a busy window thread, <x7/>, <x8/>, <x9/>). <x10/> does that in a copy of the app off the screens, its window visible and minimized.",
-   "text": "<g1>Тестування.</g1> <x2/> запускає справжнє зависання, паніку та збій (<x3/>) і перевіряє підпис кожного звіту. Щоб спробувати це в програмі, запустіть MDM з <x4/>, потім запустіть <x5/> (взаємне блокування; або <x6/>, 12 с зайнятого потоку вікна, <x7/>, <x8/>, <x9/>). <x10/> робить це в копії програми поза екранами, її вікно видиме та згорнуте."
+   "text": "<g1>Тестування.</g1> <x2/> запускає справжнє зависання, паніку та збій (<x3/>) і перевіряє підпис кожного звіту. Щоб спробувати це в програмі, запустіть MDM з <x4/>, потім запустіть <x5/> (взаємне блокування; або <x6/>, 12 секунд зайнятого потоку вікна, <x7/>, <x8/>, <x9/>). <x10/> робить це в копії програми поза екранами, її вікно видиме та згорнуте."
   },
   "cd259ac663c10ccb": {
    "source": "Download a gallery",
@@ -8193,6 +8281,10 @@
   "cd673e3701cb16c6": {
    "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
    "text": "<g1>Дозволити більше 32 з’єднань</g1> — збільшує максимум до 128 для зазначеного вище числа та для винятків. Більшість серверів дозволяють набагато менше з однієї адреси; MDM це помічає і запитує менше. Якщо знову вимкнути, будь-яке вище число повернеться до 32."
+  },
+  "cda67136f4731916": {
+   "source": "Each has a light and a dark side: <g1>Dark Mode support</g1> and <g2>Always dark</g2> choose between them as before. Theme files you put in the themes folder (<g3>View → Theme → Open themes folder</g3>) are listed there too.",
+   "text": "Кожна має світлу та темну сторону: <g1>Підтримка темного режиму</g1> та <g2>Завжди темний</g2> вибирають між ними, як і раніше. Файли тем, які ви поміщаєте в папку тем (<g3>Вигляд → Тема → Відкрити папку тем</g3>), також перераховані там."
   },
   "cda8d2bd08f07beb": {
    "source": "Torrent settings",
@@ -8209,6 +8301,10 @@
   "cddd71be4d398e2a": {
    "source": "<g1><g2>AI assistants (MCP)</g2></g1> — let Claude, Cursor, VS Code or another MCP assistant list, add, pause and remove your downloads.",
    "text": "<g1><g2>Помічники ШІ (MCP)</g2></g1> — дозвольте Claude, Cursor, VS Code або іншому помічнику MCP перераховувати, додавати, призупиняти та видаляти ваші завантаження."
+  },
+  "ce31d32b225369aa": {
+   "source": "Dependencies point inward: <x1/>, <x2/>, <x3/> and <x4/> use <x5/> and <x6/>; the engine knows nothing of the UI. The app sees the engine only through its events (progress, segment table snapshots, finished, failed).",
+   "text": "Залежності вказують всередину: <x1/>, <x2/>, <x3/> та <x4/> використовують <x5/> та <x6/>; рушій нічого не знає про інтерфейс користувача. Програма бачить рушій лише через його події (прогрес, знімки таблиці сегментів, завершено, невдало)."
   },
   "ce3fd49165d30cfd": {
    "source": "Type a name",
@@ -8409,6 +8505,10 @@
   "d325a1b1c8ab0caa": {
    "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.",
    "text": "Що Mister Download Manager, його розширення для браузера та цей вебсайт роблять з вашими даними: додаток та розширення нічого не збирають; вебсайт підраховує відвідування за допомогою Statcounter."
+  },
+  "d351cad9276045ed": {
+   "source": "<g1>Classic</g1>: MDM's own look, the default.",
+   "text": "<g1>Класична</g1>: власний вигляд MDM, за замовчуванням."
   },
   "d354d0b6bb0bfffe": {
    "source": "Subtitles",
@@ -8686,6 +8786,10 @@
    "source": "Listing and acting on downloads needs MDM's automation API, which is off until you turn it on. With MDM running, run this once (it stays on):",
    "text": "Для переліку та дій із завантаженнями потрібен API автоматизації MDM, який вимкнений, доки ви його не увімкнете. При запущеному MDM запустіть це один раз (він залишається увімкненим):"
   },
+  "d9862086c382da0c": {
+   "source": "Wake the computer to run a queue",
+   "text": "Розбудити комп’ютер для запуску черги"
+  },
   "d9b76e3e6afd2fa9": {
    "source": "<g1><g2>Download a video from a page</g2></g1> — pick a quality and save a video.",
    "text": "<g1><g2>Завантажити відео зі сторінки</g2></g1> — виберіть якість та збережіть відео."
@@ -8854,6 +8958,10 @@
    "source": "<g1>Delete archives after extracting</g1>: once extracted, the archives go to the Recycle Bin (the Trash on macOS and Linux).",
    "text": "<g1>Видалити архіви після видобування</g1>: після видобування архіви переміщуються до Кошика (Trash на macOS та Linux)."
   },
+  "de8c9f450c2f7eeb": {
+   "source": "Every download and the total speed: <x1/>. <x2/> is <x3/>, <x4/>, <x5/>, <x6/> or <x7/>; <x8/> is <x9/> while unknown; <x10/> (why it failed) is there only for a download in <x11/>. Only while the API is on.",
+   "text": "Кожне завантаження та загальна швидкість: <x1/>. <x2/> — це <x3/>, <x4/>, <x5/>, <x6/> або <x7/>; <x8/> — це <x9/>, якщо невідомо; <x10/> (чому не вдалося) є лише для завантаження в <x11/>. Лише коли API увімкнено."
+  },
   "deb3f2db3855218f": {
    "source": "<g1>Never take downloads from</g1> the current site: adds it to MDM's excluded sites.",
    "text": "<g1>Ніколи не перехоплювати завантаження з</g1> поточного сайту: додає його до виключених сайтів MDM."
@@ -8901,6 +9009,10 @@
   "e04b6de25915105e": {
    "source": "Open a pull request on <g1>GitHub</g1> with the edited catalog, or",
    "text": "Відкрийте запит на злиття на <g1>GitHub</g1> з відредагованим каталогом, або"
+  },
+  "e04f69d547a21d71": {
+   "source": "<g1>Native</g1>: your system's colours. Windows' accent colour (Settings → Personalization → Colors) and, when it is on, its contrast theme; the desktop's accent colour and its higher contrast setting on Linux (GNOME 47 and later, KDE Plasma); the accent colour on macOS. It follows them when you change them.",
+   "text": "<g1>Власна</g1>: кольори вашої системи. Колір акценту Windows (Налаштування → Персоналізація → Кольори) і, якщо він увімкнений, її контрастна тема; колір акценту робочого столу та його налаштування вищої контрастності в Linux (GNOME 47 і новіші, KDE Plasma); колір акценту в macOS. Він слідує за ними, коли ви їх змінюєте."
   },
   "e0610521a37bb854": {
    "source": "New",
@@ -9266,6 +9378,10 @@
    "source": "Add to Firefox",
    "text": "Додати до Firefox"
   },
+  "e8b5d61bef6a7b3c": {
+   "source": "The line under the option says when the computer will next be woken, or why it can't be.",
+   "text": "Рядок під параметром вказує, коли комп’ютер буде розбуджено наступного разу, або чому це неможливо."
+  },
   "e8cba16e3299c9aa": {
    "source": "Several files are downloaded one after another, sorted by name.",
    "text": "Кілька файлів завантажуються один за одним, відсортовані за назвою."
@@ -9329,6 +9445,10 @@
   "eb19c6905b29ec9c": {
    "source": "Choose <g1>Tasks → Torrent settings...</g1> (or the arrow next to <g2>Add Torrent</g2>):",
    "text": "Виберіть <g1>Завдання → Налаштування торрентів...</g1> (або стрілку поруч із <g2>Додати торрент</g2>):"
+  },
+  "eb2157973bc61b4f": {
+   "source": "<g1>View → Theme</g1> changes MDM's look at once, keeping its layout:",
+   "text": "<g1>Вигляд → Тема</g1> миттєво змінює вигляд MDM, зберігаючи його макет:"
   },
   "eb54002890a30cf8": {
    "source": "<g1>Ctrl+M</g1> or <g2>F2</g2>",
@@ -9626,6 +9746,10 @@
    "source": "Use the path from step 2 (in JSON, every <x1/> is written <x2/>). Other assistants take the same thing: a command to start, no arguments.",
    "text": "Використовуйте шлях з кроку 2 (у JSON кожен <x1/> записується як <x2/>). Інші помічники приймають те саме: команду для запуску, без аргументів."
   },
+  "f2b7594f26285d1d": {
+   "source": "Adds a download, as the command line's <x1/> do (<x2/> is <x3/>); <x4/>. Also with the API off, like the command line.",
+   "text": "Додає завантаження, як це робить <x1/> командного рядка (<x2/> — це <x3/>); <x4/>. Також з вимкненим API, як командний рядок."
+  },
   "f2bc0cdd555a56be": {
    "source": "<g1>Online</g1>: the server has the file.",
    "text": "<g1>Онлайн</g1>: сервер має файл."
@@ -9898,6 +10022,10 @@
    "source": "Check <g1>Save to</g1> and <g2>File name</g2>. The name comes from the video's title; change it if you like.",
    "text": "Перевірте <g1>Зберегти до</g1> та <g2>Ім'я файлу</g2>. Ім'я походить від назви відео; змініть його, якщо бажаєте."
   },
+  "fa8e04c072819d0f": {
+   "source": "<g1>Metro</g1>: Windows 8's flat look: square corners, flat buttons and boxes, a coloured title bar with the title centred (on Windows, where MDM draws it), and one-colour icons (Microsoft's Fluent UI System Icons).",
+   "text": "<g1>Метро</g1>: плаский вигляд Windows 8: квадратні кути, пласкі кнопки та поля, кольорова панель заголовка з вирівняним по центру заголовком (у Windows, де MDM її малює) та одноколірні іконки (Fluent UI System Icons від Microsoft)."
+  },
   "fa92082584a3b68a": {
    "source": "What IDM still does that MDM doesn't",
    "text": "Що IDM робить, а MDM ще ні"
@@ -9930,6 +10058,10 @@
    "source": "After a cut connection",
    "text": "Після розриву з'єднання"
   },
+  "fb26f9e65b7f456b": {
+   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default). View → Draw with picks one. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open; a start whose first frame doesn't come, or a graphics card lost twice, is remembered with its reason, which the menu shows.",
+   "text": "Вікна малюються за допомогою OpenGL (eframe's glow) або за допомогою власного графічного API системи через eframe's wgpu, лише з одним бекендом: Direct3D 12 у Windows (за замовчуванням), Vulkan у Linux, Metal у macOS (вибір там; OpenGL залишається їхнім замовчуванням). Вигляд → Малювати за допомогою вибирає один. Один шлях коду робить це на кожній системі (<x1/>): коли обраний не може запуститися, спробується інший, тому вікна завжди відкриваються; запуск, перший кадр якого не надходить, або відеокарта, втрачена двічі, запам'ятовується з причиною, яку показує меню."
+  },
   "fb2ec8c40af11f70": {
    "source": "MDM downloads BitTorrent files from magnet links and <x1/> files. Torrents appear in the same list as other downloads, marked <g2>Torrent</g2> in the <g3>Source</g3> column, and can be queued and scheduled like them.",
    "text": "MDM завантажує файли BitTorrent за magnet-посиланнями та файлами <x1/>. Торренти відображаються в тому ж списку, що й інші завантаження, позначені як <g2>Торрент</g2> у стовпці <g3>Джерело</g3>, і можуть бути поставлені в чергу та заплановані, як і інші завантаження."
@@ -9937,6 +10069,10 @@
   "fb3cc6240014e2b2": {
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, open its page in the Chrome Web Store and click Add to Chrome (Edge shows Get, and first asks to allow extensions from other stores). Can't use a store? Open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
    "text": "Установіть MDM за допомогою інсталятора та залиште позначеним пункт Налаштувати інтеграцію з браузером. У Firefox відкрийте сторінку доповнення на addons.mozilla.org і натисніть Додати до Firefox. У Chrome, Edge, Brave, Opera та Vivaldi відкрийте його сторінку в Chrome Web Store і натисніть Додати в Chrome (Edge показує Отримати і спочатку просить дозволити розширення з інших магазинів). Не можете скористатися магазином? Відкрийте сторінку розширень браузера, увімкніть Режим розробника, виберіть Завантажити розпаковане та оберіть папку extension\\chromium у папці MDM. Посібник докладно описує цей процес."
+  },
+  "fb7be2f77bb10a9c": {
+   "source": "MDM has to be running (it can sit in the notification area). The computer has to be asleep, not shut down.",
+   "text": "MDM має бути запущений (він може знаходитися в області сповіщень). Комп’ютер має бути в сплячому режимі, а не вимкнений."
   },
   "fb833006931d511e": {
    "source": "Is MDM available in my language?",

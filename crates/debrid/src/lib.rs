@@ -14,6 +14,7 @@
 pub mod alldebrid;
 pub mod premiumize;
 pub mod realdebrid;
+pub mod torrents;
 
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex, RwLock};
@@ -244,6 +245,27 @@ impl Http {
             .header(reqwest::header::USER_AGENT, USER_AGENT)
     }
 
+    fn delete(&self, url: &Url) -> reqwest::RequestBuilder {
+        self.client
+            .delete(url.clone())
+            .header(reqwest::header::USER_AGENT, USER_AGENT)
+    }
+
+    /// Real-Debrid: send `req`, whose answer has no body (204); an error answer through `fault`.
+    async fn empty(
+        &self,
+        req: reqwest::RequestBuilder,
+        fault: fn(u16, &[u8], Option<u64>) -> Fault,
+    ) -> Result<(), Fault> {
+        let (status, body, retry_after) = self.send(ServiceKind::RealDebrid, req).await?;
+        if (200..300).contains(&status) {
+            return Ok(());
+        }
+        let f = fault(status, &body, retry_after);
+        self.pause(ServiceKind::RealDebrid, &f);
+        Err(f)
+    }
+
     fn post_form(&self, url: &Url, form: &[(&str, &str)]) -> reqwest::RequestBuilder {
         let body = url::form_urlencoded::Serializer::new(String::new())
             .extend_pairs(form)
@@ -468,6 +490,22 @@ impl Session {
     }
 }
 
+/// A service's id for a torrent, checked before it goes into an address: letters, digits, `-`
+/// and `_` only.
+pub(crate) fn plain_id(id: &str) -> Result<&str, Fault> {
+    if !id.is_empty()
+        && id
+            .chars()
+            .all(|c| c.is_ascii_alphanumeric() || c == '-' || c == '_')
+    {
+        Ok(id)
+    } else {
+        Err(Fault::Service(ServiceFault::Other(
+            "the service gave an id MDM can't use".into(),
+        )))
+    }
+}
+
 /// Does `host` belong to one of `domains` (the domain itself or a subdomain of it; `www.` and
 /// case ignored)? `notexample.com` is not `example.com`'s.
 pub fn host_matches(host: &str, domains: &[String]) -> bool {
@@ -529,21 +567,32 @@ impl Debrid {
         *sessions = kept;
     }
 
-    /// Read each account's service's supported domains.
-    pub async fn refresh_hosts(&self) -> Result<(), Fault> {
+    /// Read each account's service's supported domains. A service that doesn't answer leaves
+    /// the others' lists read: the first failure is returned, with its service, once every
+    /// account was asked.
+    pub async fn refresh_hosts(&self) -> Result<(), (ServiceKind, Fault)> {
         let sessions = self.sessions.read().unwrap().clone();
+        let mut first = None;
         for s in sessions {
             let list = match s.account.service {
-                ServiceKind::RealDebrid => realdebrid::domains(&s.http).await?,
-                ServiceKind::AllDebrid => alldebrid::domains(&s.http).await?,
+                ServiceKind::RealDebrid => realdebrid::domains(&s.http).await,
+                ServiceKind::AllDebrid => alldebrid::domains(&s.http).await,
                 // Premiumize lists its services to signed-in accounts.
-                ServiceKind::Premiumize => {
-                    premiumize::domains(&s.http, &s.token(false).await?).await?
-                }
+                ServiceKind::Premiumize => match s.token(false).await {
+                    Ok(t) => premiumize::domains(&s.http, &t).await,
+                    Err(e) => Err(e),
+                },
             };
-            self.domains.write().unwrap().insert(s.account.id, list);
+            match list {
+                Ok(list) => {
+                    self.domains.write().unwrap().insert(s.account.id, list);
+                }
+                Err(f) => {
+                    first.get_or_insert((s.account.service, f));
+                }
+            }
         }
-        Ok(())
+        first.map_or(Ok(()), Err)
     }
 
     /// Whether the host lists are there for every account.

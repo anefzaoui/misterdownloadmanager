@@ -153,10 +153,6 @@
 #. RSS feeds window, Download rules: shown in the empty Save to box
 #, machine
 	(the Torrents category's folder)	(Torrents k'atmayuq qillqaq k'atmaynin)
-#. text in remote.rs
-#. remote control page (on a phone): button that picks a .torrent file on the phone
-#, machine
-	.torrent file	.torrent willaku
 #. text in the Options window
 #. a 12-hour clock, with an example
 #, machine
@@ -187,6 +183,11 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Huk debrid llamk'ayqa huk willañiqita qhawaqpa t'inkinta qullqichasqa yupayniykiwan uraykachin, chaymanta MDMman huk chiqan t'inkita qun. Sapallayki yupayniykita llamk'achiy: huk yupayta utaq t'inkinkunata rakinakuyqa llamk'aykunapa kamachikuykunata p'akiyta atin, chaymanta hark'asqa kayta atin. Ñawpaqtaña qhawaqpa qallarisqan uraykachiykunaqa imaynan kanku hinallataqmi qhipakun.
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	A file of this torrent can't be saved safely: {name}	Kay torrentpa huk willañiqin mana allinta waqaychakuyta atinchu: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -234,10 +235,6 @@
 #. tab title: the user's debrid service accounts (Real-Debrid…)
 #, machine
 	Accounts	Willaykuna
-#. text in remote.rs
-#. remote control page (on a phone): button: add the download
-#, machine
-	Add	Yapa
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Uraykuchiyta yapay (URL yapay)
@@ -319,14 +316,6 @@
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
 	Added {source}	{source} yapasqa
-#. text in remote.rs
-#. remote control page (on a phone): a download was added
-#, machine
-	Added.	Yapachisqa.
-#. text in remote.rs
-#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
-#, machine
-	Added. MDM is reading the torrent: it joins the list in a moment.	Yapachisqa. MDM torrentta ñawinchan: huk pisi pachamanta listaman hukllachakunqa.
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -336,10 +325,6 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	Address changed to {host}	Dirección {host}man t'ikrasqa
-#. text in remote.rs
-#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
-#, machine
-	Address or magnet link	Chiqanchay utaq magnet t'inkiq
 #. text in the Options window; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
@@ -376,10 +361,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Algeria	Argelia
-#. text in remote.rs
-#. remote control page (on a phone): tab: every download
-#, machine
-	All	Tukuy
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	Tukuy Uraykuchiykuna
@@ -455,6 +436,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	Huk DNS...
+#. text in unix.rs
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+#, machine
+	Another program has set the computer's wake alarm	Huk ruwana wakichiyqa ñawpaqtaña kay antañiqiqpa rikch'arichiy pachanpaq huk rikch'arichiyta churanña
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -550,10 +535,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Austria	Austria
-#. text in remote.rs
-#. remote control page (on a phone): category choice: the category follows the file's type
-#, machine
-	Automatic (by file type)	Kikinmanta (willaku rikch'ayninman hina)
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -706,7 +687,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	Canada
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Tukuchiy
@@ -741,8 +722,7 @@
 #. page title in the Options window
 #, machine
 	Categories, file types, folders	Sapsikuna, willañiqi rikch'aqkuna, k'atachakuna
-#. text in a dialog box; text in the Options window; text in remote.rs
-#. remote control page (on a phone): label of the category choice for a new download
+#. text in a dialog box; text in the Options window
 #, machine
 	Category	Sapsi
 #. text in categories.rs
@@ -761,10 +741,6 @@
 #, machine
 	Central African Republic	Central African Republic
 #. text in the Options window
-#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
-#, machine
-	Certificate (SHA-256): {fingerprint}	Chiqanchay (SHA-256): {fingerprint}
-#. text in the Options window
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
 	Certificate name:	Certificado suti:
@@ -772,6 +748,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Chad	Chad
+#. text in the Scheduler window
+#. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+#, machine
+	Change	T'ijray
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -839,10 +819,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	China	China
-#. text in remote.rs
-#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
-#, machine
-	Choose a .torrent file	Huk .torrent willakuta akllay
 #. text in langpick.rs
 #, machine
 	Choose a language	Rimay simita akllay
@@ -883,14 +859,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cocos (Keeling) Islands	Cocos (Keeling) Islands
-#. text in remote.rs
-#. remote control page (on a phone): label of the pairing code's box (8 digits)
-#, machine
-	Code	Chiqanchay
-#. text in the Options window
-#. Options → Remote → Pair a device: label before the 8-digit code
-#, machine
-	Code:	Chiqanchay:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -899,7 +867,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	Comoros
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
 #, machine
@@ -1071,10 +1039,6 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its files stay where they are.	"{category}" nisqa rakita chinkachiyta munankichu? Chaypi kaq willkakunaqa kachkanqallapunim.
-#. text in remote.rs
-#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
-#, machine
-	Delete the file too	Willakuta chinkachiytawan
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1099,10 +1063,6 @@
 #. text in a download's Properties window
 #, machine
 	Description:	Riqsichiy:
-#. text in the Options window
-#. column title: a paired phone's or computer's name
-#, machine
-	Device	Rurana
 #. text in the Add torrent window
 #. the DHT (finding peers without trackers) is turned off in Torrent settings
 #, machine
@@ -1167,8 +1127,7 @@
 #. text in the Options window
 #, machine
 	Don't take files smaller than (KB, 0 = any size):	Kaymanta aswan pisi willañiqikunata ama hap'iychu (KB, 0 = mayqin sayaypas):
-#. text in the Options window; text in a download's progress window
-#. button: close the window (the device is paired)
+#. text in a download's progress window
 #, machine
 	Done	Tukusqa
 #. button in the Options window
@@ -1233,6 +1192,10 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	Kay willañiqikuna qhatunapaq t'inkikunata kay willaykunawan qhatuy
+#. text in a dialog box
+#. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
+#, machine
+	Download through {service}	{service} nisqawan uraykachay
 #. window title in the Download video window
 #, machine
 	Download video from a page	Huk paginamanta videota uraykuchiy
@@ -1261,7 +1224,7 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	Downloaded {size} ({bytes} Bytes)	{size} ({bytes} Bytes) uraykuchisqa
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in remote.rs
+#. item in the Categories tree in the download list; value in a column's filter list in the download list
 #. a download's status (state it is in, not a command)
 #, machine
 	Downloading	Uraykuchisqa
@@ -1405,7 +1368,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Eritrea	Eritrea
-#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
@@ -1435,10 +1398,6 @@
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
 	Every connection goes through it, from {ip}.	Tukuy t'inkinakuykuna chaymanta purin, {ip} nisqamanta.
-#. text in the Options window
-#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
-#, machine
-	Every local network address	Tukuy kay llaqta network chiqanchay
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1606,9 +1565,8 @@
 #. text in the Find window
 #, machine
 	Find:	Maskay:
-#. item in the Categories tree in the main window; text in remote.rs
+#. item in the Categories tree in the main window
 #. adjective: the downloads that are complete
-#. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	Tukusqa
 #. text in countries.rs
@@ -1642,14 +1600,6 @@
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Force processes to terminate	Ruraykunata tukuchinapaq kallpachay
-#. text in remote.rs
-#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
-#, machine
-	Forget this device	Kay ruranata qunqay
-#. text in remote.rs
-#. remote control page (on a phone): question before unpairing this phone
-#, machine
-	Forget this device? It needs a new code to connect again.	Kay ruranata qunqayta munankichu? Musuq chiqanchayta munanqa hukllachakunanpaq.
 #. text in the Scheduler window
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1691,10 +1641,6 @@
 #. message or event log entry in the main window
 #, machine
 	from a page (yt-dlp)	huk p'anqamanta (yt-dlp)
-#. message or event log entry in the main window
-#. where a download came from (its Properties): a phone or computer paired in Options → Remote
-#, machine
-	from a paired device	huk chiqanchasqa ruranamanta
 #. message or event log entry in the main window
 #. where a download came from, in its log: a playlist or channel, by yt-dlp
 #, machine
@@ -1891,6 +1837,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Hong Kong	Hong Kong
+#. text in the Scheduler window
+#. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+#, machine
+	How to allow it	Imayna saqiy
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -2005,11 +1955,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Israel	Israel
-#. text in the Options window
-#. Options → Remote → Status: it could not start; {error} = the system's reason
-#. {error} = an error message (keep the braces as they are)
-#, machine
-	It could not start: {error}	Manam qallariyta atirqanchu: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2146,10 +2091,6 @@
 #. text in the Batch download window
 #, machine
 	Last file:	Qhipa willañiqi:
-#. text in the Options window
-#. column title: when the device last reached MDM
-#, machine
-	Last seen	Qhipa kutita rikusqa
 #. text in a download's Properties window
 #. {last} = the date and time of the last attempt to download
 #, machine
@@ -2174,10 +2115,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Lesotho	Lesotho
-#. checkbox in the Options window
-#. Options → Remote check box (off by default)
-#, machine
-	Let phones and computers on the local network control MDM	Kay llaqta networkpi kaq telefonokuna utaq ruranakuna MDMta kamachiyta saqiy
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 #, machine
@@ -2225,10 +2162,6 @@
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
 	List the rest	Pusapata qhipanta qillqay
-#. text in the Options window
-#. Options → Remote: label before the choice of the address MDM listens on
-#, machine
-	Listen on:	Kaypi uyariy:
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
@@ -2389,35 +2322,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Mayotte	Mayotte
-#. text in the Options window
-#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
-#, machine
-	MDM can't be reached on the network now: Options → Remote says why.	MDM manam networkpi chayasqa kanchu kunan: Akllanakuna → Karumanta nisqa imarayku.
-#. text in remote.rs
-#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
-#, machine
-	MDM cannot download this address.	MDM manam kay chiqanchayta uraykachiyta atinchu.
-#. text in remote.rs
-#. remote control page (on a phone): adding a download failed
-#, machine
-	MDM could not add it.	MDM manam yapayta atirqanchu.
-#. text in remote.rs
-#. remote control page (on a phone): an action failed
-#, machine
-	MDM could not do it.	MDM manam ruwayta atirqanchu.
-#. text in remote.rs
-#. remote control page (on a phone): MDM can't be reached while pairing
-#, machine
-	MDM does not answer. Check that it is running and on the same network.	MDM manam kutichinchu. Qhawariy purichkasqanta hinallataq kikin networkpi kasqanta.
-#. text in remote.rs
-#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
-#. the trailing ... means it is still going on: keep it
-#, machine
-	MDM does not answer. Trying again...	MDM manam kutichinchu. Kutichiyta munachkan...
-#. text in remote.rs
-#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
-#, machine
-	MDM shows no code now. Click Pair a device there first.	MDM manam chiqanchayta rikuchinchu kunan. Ñawpaqta chaypi Ruranata chiqanchayta ñit'iy.
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -2464,6 +2368,11 @@
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager huk ukhu pantayta tariran
+#. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Mister Download Manager is running the queue "{queue}"	Mister Download Manager "{queue}" siq'ita purichishan
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -2515,10 +2424,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Montserrat	Montserrat
-#. text in remote.rs
-#. remote control page (on a phone): its menu's button
-#, machine
-	More	Astawan
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2646,10 +2551,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	New Caledonia	Musuq Caledonia
-#. button in the Options window
-#. Options → Remote → Pair a device: button: show a new code
-#, machine
-	New code	Musuq chiqanchay
 #. text in the Options window
 #, machine
 	New exception	Musuq mana chaskina
@@ -2707,10 +2608,6 @@
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
 	No downloads here	Manan ima uraykuchiykuna kanchu
-#. text in remote.rs
-#. remote control page (on a phone): the list shown is empty
-#, machine
-	No downloads here.	Manam kanchu uraykachiykuna kaypi.
 #. message or event log entry in the main window
 #. title in the empty download list, when the column filters hide every download
 #, machine
@@ -2732,10 +2629,6 @@
 #. text in langpick.rs
 #, machine
 	No language matches.	Mana mayqin rimay simipas tupanchu.
-#. text in the Options window
-#. Options → Remote → Status: on, but the computer has no local network address now
-#, machine
-	No local network now: it starts when the computer joins one.	Manam kanchu kay llaqta network kunan: qallarinqa rurana hukllachakuptin.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Email found no mail program
 #, machine
@@ -2878,10 +2771,6 @@
 #, machine
 	Off: a finished torrent stops, like any download.	Wañuchisqa: huk tukusqa torrent sayan, imayna huk urayk'uchiy.
 #. text in the Options window
-#. Options → Remote → Status: the remote control is off
-#, machine
-	Off: nothing on the network can reach MDM.	Wañuchisqa: manam kanchu networkpi MDMta chayanapaq.
-#. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	Khipunapaq wakichisqa t'inkikunata uraykachinapaq kayta munay
 #. text in the Link grabber window
@@ -2895,21 +2784,17 @@
 #. a country's name (where a download's server is)
 #, machine
 	Oman	Omán
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+#, machine
+	On battery, Windows' power options don't allow wake timers	Bateriyapi kachkaptinqa, Windowspa kallpa akllanakunaqa mana rikch'arichiy pacha churanakunata saqinchu
 #. text in a download's progress window
 #, machine
 	on download stop/resume	urayk'uchiy sayaypi/qatiypi
-#. text in remote.rs
-#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
-	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	Ruranapi, Akllanakuna kicharichiy, chaymanta Karumanta, hinallataq Ruranata chiqanchayta ñit'iy. Rikuchisqan chiqanchayta qillqay.
-#. text in the Options window
-#. Options → Remote → Pair a device: how to pair
-#, machine
-	On the phone, scan this code with the camera, or open the address and enter the code.	Telefonopi, kay chiqanchayta camaraqwan escaniy, utaq chiqanchayta kicharichiy hinallataq chiqanchayta qillqay.
-#. text in the Options window
-#. Options → Remote → Status: on; the address follows in a box below
-#, machine
-	On. On the phone, open this address:	Kicharisqa. Telefonopi, kay chiqanchayta kicharichiy:
+	On macOS, only an administrator can schedule a wake	macOSpiqa, huk kamachiqlla rikch'arichiyta wakichiyta atin
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Huk kutilla
@@ -2933,14 +2818,14 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Tukusqa uraykuylla, utaq manaraq qallarisqa kaqlla, kuyuchisqa kanman. Ñawpaqta sayachiy hinaspa tukuchiy.
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+#, machine
+	Only an administrator can allow this	Huk kamachiqlla kayta saqillanman
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	MP4 chaymanta MKV videokunallam qillqakunata churanqaku
-#. text in the Options window
-#. Options → Remote, at the bottom of the page
-#, machine
-	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Chiqanchasqa ruranakuna sapallanku imatapas rikunkuna utaq cambiankuna. Ñawpaq kutita, telefonopa navegadornin MDMpa kikin chiqanchayninmanta willanqa: chaypa fingerprintninqa hanaqpi kaqmi.
 #. text in playlistdlg.rs
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
@@ -3011,31 +2896,6 @@
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	P'anqap direccionnin
-#. text in remote.rs
-#. remote control page (on a phone): button: pair this phone with MDM
-#, machine
-	Pair	Chiqanchay
-#. window title in the Options window
-#. window title: Options → Remote → Pair a device...
-#, machine
-	Pair a device	Huk ruranata chiqanchay
-#. button in the Options window
-#. Options → Remote button: shows a code (and a QR code) that pairs a phone
-#. the trailing ... means it opens a window: keep it
-#, machine
-	Pair a device...	Huk ruranata chiqanchay...
-#. text in remote.rs
-#. remote control page (on a phone): title of the pairing screen
-#, machine
-	Pair with Mister Download Manager	Mister Download Managerwan tupay
-#. text in the Options window
-#. column title: when the device was paired
-#, machine
-	Paired	Tupasqa
-#. text in the Options window
-#. Options → Remote: label above the list of paired phones and computers
-#, machine
-	Paired devices:	Tupasqa llamkanakuna:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3086,9 +2946,8 @@
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine
 	Pasted	K'askachisqa
-#. text in a download's progress window; text in remote.rs
+#. text in a download's progress window
 #. verb: pause the download
-#. remote control page (on a phone): button: pause a download
 #, machine
 	Pause	Sayachiy
 #. text in a download's Properties window
@@ -3145,12 +3004,7 @@
 #. label in the Options window
 #, machine
 	Port	Puerto
-#. text in the Options window
-#. Options → Remote → Status: another program uses the port; {port} = its number
-#, machine
-	Port {port} is used by another program: choose another.	{port} punkuta huk llamkana llamkapi kachkan: hukta akllay.
-#. text in the Options window; text in the Add torrent window
-#. Options → Remote: label before the port number box
+#. text in the Add torrent window
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	Puerto:
@@ -3226,10 +3080,6 @@
 #. text in the Options window
 #, machine
 	Queue processing stopped/finished	Churaq ruray sayachisqa/tukusqa
-#. text in remote.rs
-#. remote control page (on a phone): a download's state: added, waiting to start
-#, machine
-	Queued	Churanapaq
 #. item in the Categories tree in the main window; text in the Scheduler window
 #. plural noun: the download queues
 #, machine
@@ -3297,17 +3147,8 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Remember this path for "{category}" category	"{category}" patachapataq kay ñanta yuyariy
-#. text in the Options window
-#. tab title: control MDM from a phone or another computer on the local network
-#, machine
-	Remote	Karu
-#. text in the Options window
-#. Options page title: control MDM from a phone or another computer on the local network
-#, machine
-	Remote control	Karu kamachiy
-#. button in the Options window; text in remote.rs; button in rssdlg.rs
+#. button in the Options window; button in rssdlg.rs
 #. verb: remove the item
-#. remote control page (on a phone): button: remove a download from the list
 #. RSS feeds window: unsubscribe from the selected feed
 #, machine
 	Remove	Qichuy
@@ -3318,11 +3159,6 @@
 #. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
 #, machine
 	Remove its downloads from the list (running ones move to General)	Kay pachaq uraykuchisqankunata listamanta qichuy (purichkaqkunata Sapsiman astay)
-#. text in remote.rs
-#. remote control page (on a phone): question before removing a download; {name} its file name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	Remove {name} from the list?	{name} sutita listamanta hurquykuyta munankichu?
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -3520,6 +3356,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Kayta huk masiman kachay:
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+#, machine
+	Send torrents and magnet links to the first account instead of to peers	Ñawpaq kaq cuentaq servisninman torrentkunata chaymanta magnet linkkunata kachay, mana peerkunaman
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3566,6 +3406,14 @@
 #. button in Test browser integration: register MDM's helper with the browsers
 #, machine
 	Set it up	Ruway
+#. message or event log entry in the main window
+#. event log: File Properties: the download no longer goes through the debrid account
+#, machine
+	Set to download directly, not through the debrid account	Manam debrid cuenta nisqawan uraykachanapaqchu churakun, aswanpas chiqalla uraykachanapaqmi
+#. message or event log entry in the main window
+#. event log: File Properties: the download goes through the debrid account again
+#, machine
+	Set to download through the debrid account	Debrid cuenta nisqawan uraykachanapaqmi churakun
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3781,9 +3629,8 @@
 #. a country's name (where a download's server is)
 #, machine
 	Sri Lanka	Sri Lanka
-#. text in the Link grabber window; text in remote.rs
+#. text in the Link grabber window
 #. Link grabber button: download the ticked links now
-#. remote control page (on a phone): button: start a download or a queue
 #, machine
 	Start	Qallariy
 #. button in a dialog box
@@ -3801,10 +3648,6 @@
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	Hatun kachay t'aqwiyta qallariy
-#. text in remote.rs
-#. remote control page (on a phone): "When" choice: start the download at once
-#, machine
-	Start now	Kunan qallariy
 #. text in a download's progress window
 #, machine
 	Start positions and download progress by connections	Qallariy tiyanakuna chaymanta kachay puriy t'inkikunawan
@@ -3836,7 +3679,7 @@
 #. column title: the account's state (premium, days left)
 #, machine
 	State	Kawsay
-#. text in the Link grabber window; group box title in the Options window; text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -3845,8 +3688,7 @@
 #. label before the download's state
 #, machine
 	Status:	Kachkay:
-#. text in remote.rs; text in the Add torrent window
-#. remote control page (on a phone): button: stop a queue
+#. text in the Add torrent window
 #, machine
 	Stop	Sayachiy
 #. text in the Scheduler window; checkbox in the Scheduler window
@@ -3875,7 +3717,7 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	{queue} sayachiy
-#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
@@ -4031,10 +3873,6 @@
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	Wamp'uqkuna Mister Download Managerta tarinku
-#. text in the Options window
-#. Options → Remote → Status: the settings were changed; they apply on OK
-#, machine
-	The changes apply when you click OK.	Hukchasqakunaqa "Arí" nisqapi ñit'iqtiyki llamkanku.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -4051,6 +3889,15 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The computer could not be turned off: {error}	Antaqa manam wañuchisqa atinchu: {error}
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue"
+#, machine
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	Antañiqiqqa huk minututa ñawpaqta rikch'arichisqa kanqa qallariy pacha manaraq chayamuchkaptin, chaymanta rikch'arisqa kanqa siq'i purichkaptin. Mister Download Manager purichkasqa kanan (willay patapi suyayta atin).
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	The computer will be woken on {date} at {time}	Antañiqiqqa {date} p'unchawpi {time} pachapi rikch'arichisqa kanqa
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4290,14 +4137,14 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	Kay t'aqapi utaq churanakuypiqa manan ima uraykuchiykunapas kanchu.
-#. text in the Options window
-#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#. text in win32.rs
+#. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
-	This code can't be used any more.	Kay codigoqa manaña llamk'achiy atikunchu.
-#. text in the Options window
-#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+	This computer can't be woken by a timer	Kay antañiqiqqa mana huk pacha churanawan rikch'arichisqa kayta atinchu
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 #, machine
-	This computer only (127.0.0.1)	Kay computadora sapallan (127.0.0.1)
+	This computer has no wake alarm that programs can set	Kay antañiqiqqa mana rikch'arichiy pacha churanayuqchu, mayqintachus wakichiykuna churayta atin
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4306,14 +4153,6 @@
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
 	This date has passed: the queue will not start	Kay p'unchawqa pasasqañam: churanakuy manan qallarinqachu
-#. text in remote.rs
-#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
-#, machine
-	This device's name	Kay llamkanap sutin
-#. text in remote.rs
-#. remote control page (on a phone): the file chosen is too large for a .torrent file
-#, machine
-	This file is too large to be a torrent.	Kay willakuyqa ancha hatunmi huk torrent kananpaq.
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Kay qillqaq mana kanchu:
@@ -4328,10 +4167,6 @@
 #. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	kayqa manam huk magnet linkchu nitaq huk .torrent willañiqichu
-#. text in remote.rs
-#. remote control page (on a phone): the file chosen isn't a .torrent file
-#, machine
-	This is not a torrent file.	Kayqa manam huk torrent willakuychu.
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -4382,9 +4217,21 @@
 #. where a download's server is, when a proxy carries it: {country} is the proxy's country
 #, machine
 	through a proxy in {country}	huk proxywan {country} suyupi
+#. text in a download's Properties window
+#. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
+#, machine
+	Through {service}	{service} nisqawan
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+#, machine
+	Through {service}: the service downloads the torrent, then MDM its files	{service}pi: chay servismi torrentta uraykachin, chaymanta MDM chay archivokunata
 #. text in the Scheduler window
 #, machine
 	Thursday	Jueves
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+#, machine
+	Tick "Start download at" first: the computer is woken for the start time	Ñawpaqta "Qallariy uraykachiyta" akllay: antañiqiqqa qallariy pachapaq rikch'arichisqa kanqa
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Pacha puchukay
@@ -4502,10 +4349,6 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	Kallpachay
-#. tooltip (why a control is greyed) in the Options window
-#. why Options → Remote → Pair a device... is greyed
-#, machine
-	Turn on the remote control first.	Ñawpaqta karu kamachiyta k'anchay.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4573,9 +4416,8 @@
 #. Link grabber button (IDM's): untick every link
 #, machine
 	Uncheck all	Tukuyta mana t'ikraychu
-#. item in the Categories tree in the main window; text in remote.rs
+#. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
-#. remote control page (on a phone): tab: downloads not finished yet
 #, machine
 	Unfinished	Mana tukusqa
 #. text in countries.rs
@@ -4775,33 +4617,23 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	volume {n} of it is missing	chaypa {n} volumenqa chinkasqa
-#. text in remote.rs
-#. remote control page (on a phone): codes were tried too fast
-#, machine
-	Wait a moment, then try again.	Huk ratuta suyay, chaymanta huktawan qallariy.
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
 	Wait for the list, or stop listing	Listata suyay, utaq qillqayta sayachiy
-#. text in remote.rs
-#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
-#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
-#, machine
-	Wait in {queue}	{queue}pi suyay
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	Suyaspa
-#. text in the Options window
-#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
-#. {time} = a time of day (keep the braces as they are)
-#, machine
-	Waiting for the device. The code works for {time}.	Llamkanapaq suyachkan. Codigoqa {time}paq llamkan.
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	Suyaspa: uraykachiy sayayninman chayasqa (Wakichiy)
+#. text in the Scheduler window
+#. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+#, machine
+	Wake the computer to run this queue	Kay siq'ita purichinapaq antañiqiqta rikch'arichiy
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4832,13 +4664,13 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	What's new:	Imakuna musuq:
-#. text in remote.rs
-#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
-#, machine
-	When	Hayk'aq
 #. text in the Batch download window
 #, machine
 	Wildcard size	Sallqa sayay
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
+#, machine
+	Windows allows wake timers only while plugged in	Windowsqa rikch'arichiy pacha churanakunata kallpawan t'inkisqa kachkaptinllata saqin
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4849,6 +4681,10 @@
 #. text in langpick.rs
 #, machine
 	Windows' language ({language})	Windows rimay simi ({language})
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+#, machine
+	Windows' power options don't allow wake timers	Windowspa kallpa akllanakunaqa mana rikch'arichiy pacha churanakunata saqinchu
 #. message or event log entry in the main window
 #, machine
 	with Add URL	URL yapaywan
@@ -4863,15 +4699,6 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	P'unchawkunata pachakunatawan qillqay
-#. text in remote.rs
-#. remote control page (on a phone): pairing failed and the code is void now
-#, machine
-	Wrong code. Show a new code in MDM and try again.	Pantay codigo. MDMpi huk mosoq codigota rikuchiy, chaymanta huktawan qallariy.
-#. text in remote.rs
-#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
-#. {n} = a number (keep the braces as they are)
-#, machine
-	Wrong code. Tries left: {n}	Pantay codigo. {n} qhipaqta qallarinapaq
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -4981,15 +4808,6 @@
 #. {count} = a number (keep the braces as they are)
 #, machine
 	{count}, {speed}	{count}, {speed}
-#. text in the Options window
-#. Options → Remote → Pair a device: done; {device} = the name it was given
-#, machine
-	{device} is paired. It can control MDM now.	{device} tupasqa kachkan. Kunanqa MDMta kamachiyta atin.
-#. text in remote.rs
-#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
-#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
-	{done} of {size}	{done} {size}manta
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
@@ -5089,6 +4907,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{total}manta {n} akllasqa
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+#, machine
+	{percent} at {service}	{percent} {service}pi
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -5100,6 +4922,9 @@
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	{service}qa kay computadorata ñawpaqta saqinaykita mañakun: emailniykita qhaway
+#. text in errors.rs
+#, machine
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} kay torrentta mana chaskiyta atinchu: manam pipas rakinchu, utaq manam k'askachaynin ñawinchayta atinchu
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service}qa manan kay willañiqita kunan pacha aypayta atinchu; MDMqa qhipaman huktawan purichinqa
@@ -5150,11 +4975,6 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	{size} ({bytes} Bytes)	{size} ({bytes} Bytes)
-#. text in remote.rs
-#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
-#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
-	{size} free	{size} qispisqa
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -5744,7 +5564,7 @@ menu	Download &video from a page...	P'anqamanta &videota uraykachiy...
 #, machine
 menu	Download in order	Chaynata uraykachiy
 #. menu command in the main window
-#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	Siq'iy kaywan
 #. menu command in the main window
@@ -5795,6 +5615,26 @@ menu	Hide drop target	Uraykachiy churanata pakay
 #, machine
 menu	High contrast	Anchaq t'ikra
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+#, machine
+menu	It couldn't start: the log says why	Manan qallariykullarqanchu: imarayku kasqan qillqasqapi kachkan
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+#, machine
+menu	Its first frame didn't show within 10 seconds	Chunka segundopi manan ñawpaq rikch'aynin rikhurirqanchu
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+#, machine
+menu	Its last start ended before its first frame	Qhipa qallariynin ñawpaq rikch'ayninmanta ñawpaqta tukukurqan
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Apple's), usually kept as is
+#, machine
+menu	Metal	Metal
+#. menu command in the main window
+#. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Metal didn't start here: OpenGL draws	Metal manan kaypi qallariykullarqanchu: OpenGL siq'in
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
 menu	Metro	Metro
@@ -5809,6 +5649,10 @@ menu	Move/Rename (Ctrl-M)	Kuyuchiy/Sutinchay (Ctrl-M)
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
 menu	Native	Sapsi
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+#, machine
+menu	No graphics card here has a driver for it	Manan kaypi siq'ina tarjetachu chaypaq controladorayuq kachkan
 #. menu command in the main window
 #, machine
 menu	On Double click	Iskay kutita ñit'ispa
@@ -5934,6 +5778,10 @@ menu	Support &MDM	&MDM-ta yanapay
 #, machine
 menu	Tell a &friend	Huk &masiman willay
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+#, machine
+menu	The graphics card was lost twice in 10 minutes	Sip'ina tarjeta chunka minutopi iskay kutita chinkarqan
+#. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
 menu	Theme	Kallpachana
@@ -5972,6 +5820,14 @@ menu	Turn of&f	&Wichq'ay
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Verify checksum...	Checksumta qhawariy...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+#, machine
+menu	Vulkan	Vulkan
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Vulkan didn't start here: OpenGL draws	Vulkan manan kaypi qallariykullarqanchu: OpenGL siq'in
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6050,3 +5906,272 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/s
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent willaku
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	Yapa
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	Yapachisqa.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	Yapachisqa. MDM torrentta ñawinchan: huk pisi pachamanta listaman hukllachakunqa.
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	Chiqanchay utaq magnet t'inkiq
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	Tukuy
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	Kikinmanta (willaku rikch'ayninman hina)
+#. text in the Options window
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
+#, machine
+	Certificate (SHA-256): {fingerprint}	Chiqanchay (SHA-256): {fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	Huk .torrent willakuta akllay
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	Chiqanchay
+#. text in the Options window
+#. Options → Remote → Pair a device: label before the 8-digit code
+#, machine
+	Code:	Chiqanchay:
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
+#, machine
+	Delete the file too	Willakuta chinkachiytawan
+#. text in the Options window
+#. column title: a paired phone's or computer's name
+#, machine
+	Device	Rurana
+#. text in the Options window
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
+#, machine
+	Every local network address	Tukuy kay llaqta network chiqanchay
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	Kay ruranata qunqay
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	Kay ruranata qunqayta munankichu? Musuq chiqanchayta munanqa hukllachakunanpaq.
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	huk chiqanchasqa ruranamanta
+#. text in the Options window
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	It could not start: {error}	Manam qallariyta atirqanchu: {error}
+#. text in the Options window
+#. column title: when the device last reached MDM
+#, machine
+	Last seen	Qhipa kutita rikusqa
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	Kay llaqta networkpi kaq telefonokuna utaq ruranakuna MDMta kamachiyta saqiy
+#. text in the Options window
+#. Options → Remote: label before the choice of the address MDM listens on
+#, machine
+	Listen on:	Kaypi uyariy:
+#. text in the Options window
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
+#, machine
+	MDM can't be reached on the network now: Options → Remote says why.	MDM manam networkpi chayasqa kanchu kunan: Akllanakuna → Karumanta nisqa imarayku.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	MDM manam kay chiqanchayta uraykachiyta atinchu.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	MDM manam yapayta atirqanchu.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	MDM manam ruwayta atirqanchu.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM manam kutichinchu. Qhawariy purichkasqanta hinallataq kikin networkpi kasqanta.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM manam kutichinchu. Kutichiyta munachkan...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	MDM manam chiqanchayta rikuchinchu kunan. Ñawpaqta chaypi Ruranata chiqanchayta ñit'iy.
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	Astawan
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	Musuq chiqanchay
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	Manam kanchu uraykachiykuna kaypi.
+#. text in the Options window
+#. Options → Remote → Status: on, but the computer has no local network address now
+#, machine
+	No local network now: it starts when the computer joins one.	Manam kanchu kay llaqta network kunan: qallarinqa rurana hukllachakuptin.
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	Wañuchisqa: manam kanchu networkpi MDMta chayanapaq.
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	Ruranapi, Akllanakuna kicharichiy, chaymanta Karumanta, hinallataq Ruranata chiqanchayta ñit'iy. Rikuchisqan chiqanchayta qillqay.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	Telefonopi, kay chiqanchayta camaraqwan escaniy, utaq chiqanchayta kicharichiy hinallataq chiqanchayta qillqay.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	Kicharisqa. Telefonopi, kay chiqanchayta kicharichiy:
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Chiqanchasqa ruranakuna sapallanku imatapas rikunkuna utaq cambiankuna. Ñawpaq kutita, telefonopa navegadornin MDMpa kikin chiqanchayninmanta willanqa: chaypa fingerprintninqa hanaqpi kaqmi.
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	Chiqanchay
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	Huk ruranata chiqanchay
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	Huk ruranata chiqanchay...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Mister Download Managerwan tupay
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	Tupasqa
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	Tupasqa llamkanakuna:
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	{port} punkuta huk llamkana llamkapi kachkan: hukta akllay.
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	Churanapaq
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	Karu
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	Karu kamachiy
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	{name} sutita listamanta hurquykuyta munankichu?
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	Kunan qallariy
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	Hukchasqakunaqa "Arí" nisqapi ñit'iqtiyki llamkanku.
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	Kay codigoqa manaña llamk'achiy atikunchu.
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	Kay computadora sapallan (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	Kay llamkanap sutin
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	Kay willakuyqa ancha hatunmi huk torrent kananpaq.
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	Kayqa manam huk torrent willakuychu.
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	Ñawpaqta karu kamachiyta k'anchay.
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	Huk ratuta suyay, chaymanta huktawan qallariy.
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	{queue}pi suyay
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	Llamkanapaq suyachkan. Codigoqa {time}paq llamkan.
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	Hayk'aq
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	Pantay codigo. MDMpi huk mosoq codigota rikuchiy, chaymanta huktawan qallariy.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	Pantay codigo. {n} qhipaqta qallarinapaq
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} tupasqa kachkan. Kunanqa MDMta kamachiyta atin.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{done} {size}manta
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} qispisqa

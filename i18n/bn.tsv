@@ -153,10 +153,6 @@
 #. RSS feeds window, Download rules: shown in the empty Save to box
 #, machine
 	(the Torrents category's folder)	(টরেন্টস ক্যাটাগরির ফোল্ডার)
-#. text in remote.rs
-#. remote control page (on a phone): button that picks a .torrent file on the phone
-#, machine
-	.torrent file	.torrent ফাইল
 #. text in the Options window
 #. a 12-hour clock, with an example
 #, machine
@@ -187,6 +183,11 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	একটি ডিব্রিড পরিষেবা আপনার নিজস্ব অর্থপ্রদত্ত অ্যাকাউন্ট ব্যবহার করে একটি ফাইল হোস্টের লিঙ্ক ডাউনলোড করে এবং MDM-কে একটি সরাসরি লিঙ্ক দেয়। শুধুমাত্র আপনার নিজস্ব অ্যাকাউন্ট ব্যবহার করুন: একটি অ্যাকাউন্ট বা এর লিঙ্কগুলি শেয়ার করলে পরিষেবার শর্তাবলী লঙ্ঘন হয় এবং এটি স্থগিত হতে পারে। ব্রাউজার দ্বারা ইতিমধ্যে শুরু করা ডাউনলোডগুলি যেমন আছে তেমনই থাকবে।
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	A file of this torrent can't be saved safely: {name}	এই টরেন্টের একটি ফাইল নিরাপদে সংরক্ষণ করা যাবে না: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -234,10 +235,6 @@
 #. tab title: the user's debrid service accounts (Real-Debrid…)
 #, machine
 	Accounts	অ্যাকাউন্ট
-#. text in remote.rs
-#. remote control page (on a phone): button: add the download
-#, machine
-	Add	যোগ করুন
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	একটি ডাউনলোড যোগ করুন (URL যোগ করুন)
@@ -319,14 +316,6 @@
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
 	Added {source}	{source} যোগ করা হয়েছে
-#. text in remote.rs
-#. remote control page (on a phone): a download was added
-#, machine
-	Added.	যোগ করা হয়েছে।
-#. text in remote.rs
-#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
-#, machine
-	Added. MDM is reading the torrent: it joins the list in a moment.	যোগ করা হয়েছে। MDM টরেন্টটি পড়ছে: এটি কিছুক্ষণের মধ্যে তালিকায় যোগ হবে।
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -336,10 +325,6 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	Address changed to {host}	ঠিকানা {host}-এ পরিবর্তিত হয়েছে
-#. text in remote.rs
-#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
-#, machine
-	Address or magnet link	ঠিকানা বা ম্যাগনেট লিঙ্ক
 #. text in the Options window; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
@@ -376,10 +361,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Algeria	আলজেরিয়া
-#. text in remote.rs
-#. remote control page (on a phone): tab: every download
-#, machine
-	All	সব
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	সমস্ত ডাউনলোড
@@ -455,6 +436,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	অন্য একটি DNS...
+#. text in unix.rs
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+#, machine
+	Another program has set the computer's wake alarm	অন্য একটি প্রোগ্রাম কম্পিউটারের ওয়েক অ্যালার্ম সেট করেছে
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -550,10 +535,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Austria	অস্ট্রিয়া
-#. text in remote.rs
-#. remote control page (on a phone): category choice: the category follows the file's type
-#, machine
-	Automatic (by file type)	স্বয়ংক্রিয় (ফাইলের প্রকার অনুযায়ী)
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -706,7 +687,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	কানাডা
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	বাতিল করুন
@@ -741,8 +722,7 @@
 #. page title in the Options window
 #, machine
 	Categories, file types, folders	শ্রেণীসমূহ, ফাইলের প্রকার, ফোল্ডার
-#. text in a dialog box; text in the Options window; text in remote.rs
-#. remote control page (on a phone): label of the category choice for a new download
+#. text in a dialog box; text in the Options window
 #, machine
 	Category	শ্রেণী
 #. text in categories.rs
@@ -761,10 +741,6 @@
 #, machine
 	Central African Republic	মধ্য আফ্রিকান প্রজাতন্ত্র
 #. text in the Options window
-#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
-#, machine
-	Certificate (SHA-256): {fingerprint}	শংসাপত্র (SHA-256): {fingerprint}
-#. text in the Options window
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
 	Certificate name:	শংসাপত্রের নাম:
@@ -772,6 +748,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Chad	চাদ
+#. text in the Scheduler window
+#. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+#, machine
+	Change	পরিবর্তন করুন
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -839,10 +819,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	China	চীন
-#. text in remote.rs
-#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
-#, machine
-	Choose a .torrent file	একটি .torrent ফাইল বেছে নিন
 #. text in langpick.rs
 #, machine
 	Choose a language	একটি ভাষা চয়ন করুন
@@ -883,14 +859,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cocos (Keeling) Islands	কোকোস (কিলিং) দ্বীপপুঞ্জ
-#. text in remote.rs
-#. remote control page (on a phone): label of the pairing code's box (8 digits)
-#, machine
-	Code	কোড
-#. text in the Options window
-#. Options → Remote → Pair a device: label before the 8-digit code
-#, machine
-	Code:	কোড:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -899,7 +867,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	কোমোরোস
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
 #, machine
@@ -1071,10 +1039,6 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its files stay where they are.	"{category}" বিভাগটি মুছে ফেলবেন? এর ফাইলগুলি যেখানে আছে সেখানেই থাকবে।
-#. text in remote.rs
-#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
-#, machine
-	Delete the file too	ফাইলটিও মুছে ফেলুন
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1099,10 +1063,6 @@
 #. text in a download's Properties window
 #, machine
 	Description:	বর্ণনা:
-#. text in the Options window
-#. column title: a paired phone's or computer's name
-#, machine
-	Device	ডিভাইস
 #. text in the Add torrent window
 #. the DHT (finding peers without trackers) is turned off in Torrent settings
 #, machine
@@ -1167,8 +1127,7 @@
 #. text in the Options window
 #, machine
 	Don't take files smaller than (KB, 0 = any size):	এর চেয়ে ছোট ফাইল নেবেন না (KB, 0 = যেকোনো আকার):
-#. text in the Options window; text in a download's progress window
-#. button: close the window (the device is paired)
+#. text in a download's progress window
 #, machine
 	Done	সম্পন্ন
 #. button in the Options window
@@ -1233,6 +1192,10 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	এই অ্যাকাউন্টগুলির মাধ্যমে সমর্থিত ফাইল-হোস্ট লিঙ্কগুলি ডাউনলোড করুন
+#. text in a dialog box
+#. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
+#, machine
+	Download through {service}	{service} এর মাধ্যমে ডাউনলোড করুন
 #. window title in the Download video window
 #, machine
 	Download video from a page	একটি পৃষ্ঠা থেকে ভিডিও ডাউনলোড করুন
@@ -1261,7 +1224,7 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	Downloaded {size} ({bytes} Bytes)	{size} ({bytes} বাইট) ডাউনলোড করা হয়েছে
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in remote.rs
+#. item in the Categories tree in the download list; value in a column's filter list in the download list
 #. a download's status (state it is in, not a command)
 #, machine
 	Downloading	ডাউনলোড হচ্ছে
@@ -1405,7 +1368,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Eritrea	ইরিত্রিয়া
-#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
@@ -1435,10 +1398,6 @@
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
 	Every connection goes through it, from {ip}.	প্রতিটি সংযোগ এর মাধ্যমে যায়, {ip} থেকে।
-#. text in the Options window
-#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
-#, machine
-	Every local network address	প্রতিটি স্থানীয় নেটওয়ার্ক ঠিকানা
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1606,9 +1565,8 @@
 #. text in the Find window
 #, machine
 	Find:	খুঁজুন:
-#. item in the Categories tree in the main window; text in remote.rs
+#. item in the Categories tree in the main window
 #. adjective: the downloads that are complete
-#. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	সম্পন্ন হয়েছে
 #. text in countries.rs
@@ -1642,14 +1600,6 @@
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Force processes to terminate	প্রক্রিয়াগুলি বন্ধ করতে বাধ্য করুন
-#. text in remote.rs
-#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
-#, machine
-	Forget this device	এই ডিভাইসটি ভুলে যান
-#. text in remote.rs
-#. remote control page (on a phone): question before unpairing this phone
-#, machine
-	Forget this device? It needs a new code to connect again.	এই ডিভাইসটি ভুলে যাবেন? আবার সংযোগ করতে একটি নতুন কোড লাগবে।
 #. text in the Scheduler window
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1691,10 +1641,6 @@
 #. message or event log entry in the main window
 #, machine
 	from a page (yt-dlp)	একটি পৃষ্ঠা থেকে (yt-dlp)
-#. message or event log entry in the main window
-#. where a download came from (its Properties): a phone or computer paired in Options → Remote
-#, machine
-	from a paired device	একটি জোড়া করা ডিভাইস থেকে
 #. message or event log entry in the main window
 #. where a download came from, in its log: a playlist or channel, by yt-dlp
 #, machine
@@ -1891,6 +1837,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Hong Kong	হংকং
+#. text in the Scheduler window
+#. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+#, machine
+	How to allow it	কীভাবে অনুমতি দেবেন
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -2005,11 +1955,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Israel	ইসরায়েল
-#. text in the Options window
-#. Options → Remote → Status: it could not start; {error} = the system's reason
-#. {error} = an error message (keep the braces as they are)
-#, machine
-	It could not start: {error}	এটি শুরু করা যায়নি: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2146,10 +2091,6 @@
 #. text in the Batch download window
 #, machine
 	Last file:	শেষ ফাইল:
-#. text in the Options window
-#. column title: when the device last reached MDM
-#, machine
-	Last seen	শেষ দেখা
 #. text in a download's Properties window
 #. {last} = the date and time of the last attempt to download
 #, machine
@@ -2174,10 +2115,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Lesotho	লেসোথো
-#. checkbox in the Options window
-#. Options → Remote check box (off by default)
-#, machine
-	Let phones and computers on the local network control MDM	স্থানীয় নেটওয়ার্কে থাকা ফোন এবং কম্পিউটারগুলিকে MDM নিয়ন্ত্রণ করতে দিন
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 #, machine
@@ -2225,10 +2162,6 @@
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
 	List the rest	বাকিগুলো তালিকাভুক্ত করুন
-#. text in the Options window
-#. Options → Remote: label before the choice of the address MDM listens on
-#, machine
-	Listen on:	এতে শুনুন:
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
@@ -2389,35 +2322,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Mayotte	মায়োত্তে
-#. text in the Options window
-#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
-#, machine
-	MDM can't be reached on the network now: Options → Remote says why.	MDM এখন নেটওয়ার্কে পৌঁছানো যাচ্ছে না: বিকল্প → রিমোট কারণটি বলছে।
-#. text in remote.rs
-#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
-#, machine
-	MDM cannot download this address.	MDM এই ঠিকানাটি ডাউনলোড করতে পারে না।
-#. text in remote.rs
-#. remote control page (on a phone): adding a download failed
-#, machine
-	MDM could not add it.	MDM এটি যোগ করতে পারেনি।
-#. text in remote.rs
-#. remote control page (on a phone): an action failed
-#, machine
-	MDM could not do it.	MDM এটি করতে পারেনি।
-#. text in remote.rs
-#. remote control page (on a phone): MDM can't be reached while pairing
-#, machine
-	MDM does not answer. Check that it is running and on the same network.	MDM উত্তর দিচ্ছে না। এটি চলছে এবং একই নেটওয়ার্কে আছে কিনা তা পরীক্ষা করুন।
-#. text in remote.rs
-#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
-#. the trailing ... means it is still going on: keep it
-#, machine
-	MDM does not answer. Trying again...	MDM উত্তর দিচ্ছে না। আবার চেষ্টা করা হচ্ছে...
-#. text in remote.rs
-#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
-#, machine
-	MDM shows no code now. Click Pair a device there first.	MDM এখন কোনো কোড দেখাচ্ছে না। প্রথমে সেখানে একটি ডিভাইস জোড়া করুন-এ ক্লিক করুন।
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -2464,6 +2368,11 @@
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager একটি অভ্যন্তরীণ ত্রুটির সম্মুখীন হয়েছে
+#. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Mister Download Manager is running the queue "{queue}"	Mister Download Manager "{queue}" কিউ চালাচ্ছে
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -2515,10 +2424,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Montserrat	মন্টসেরাট
-#. text in remote.rs
-#. remote control page (on a phone): its menu's button
-#, machine
-	More	আরও
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2646,10 +2551,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	New Caledonia	নিউ ক্যালেডোনিয়া
-#. button in the Options window
-#. Options → Remote → Pair a device: button: show a new code
-#, machine
-	New code	নতুন কোড
 #. text in the Options window
 #, machine
 	New exception	নতুন ব্যতিক্রম
@@ -2707,10 +2608,6 @@
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
 	No downloads here	এখানে কোনো ডাউনলোড নেই
-#. text in remote.rs
-#. remote control page (on a phone): the list shown is empty
-#, machine
-	No downloads here.	এখানে কোনো ডাউনলোড নেই।
 #. message or event log entry in the main window
 #. title in the empty download list, when the column filters hide every download
 #, machine
@@ -2732,10 +2629,6 @@
 #. text in langpick.rs
 #, machine
 	No language matches.	কোনো ভাষা মেলেনি।
-#. text in the Options window
-#. Options → Remote → Status: on, but the computer has no local network address now
-#, machine
-	No local network now: it starts when the computer joins one.	এখন কোনো স্থানীয় নেটওয়ার্ক নেই: কম্পিউটার একটিতে যোগ দিলে এটি শুরু হবে।
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Email found no mail program
 #, machine
@@ -2878,10 +2771,6 @@
 #, machine
 	Off: a finished torrent stops, like any download.	বন্ধ: একটি সম্পূর্ণ টরেন্ট বন্ধ হয়ে যায়, যেকোনো ডাউনলোডের মতো।
 #. text in the Options window
-#. Options → Remote → Status: the remote control is off
-#, machine
-	Off: nothing on the network can reach MDM.	বন্ধ: নেটওয়ার্কে কিছুই MDM-এ পৌঁছাতে পারে না।
-#. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	ক্লিপবোর্ডে কপি করা লিঙ্কগুলি ডাউনলোড করার অফার করুন
 #. text in the Link grabber window
@@ -2895,21 +2784,17 @@
 #. a country's name (where a download's server is)
 #, machine
 	Oman	ওমান
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+#, machine
+	On battery, Windows' power options don't allow wake timers	ব্যাটারিতে, Windows-এর পাওয়ার অপশন ওয়েক টাইমার অনুমোদন করে না
 #. text in a download's progress window
 #, machine
 	on download stop/resume	ডাউনলোড বন্ধ/পুনরায় শুরু হলে
-#. text in remote.rs
-#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
-	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	কম্পিউটারে, বিকল্প খুলুন, তারপর রিমোট, এবং একটি ডিভাইস জোড়া করুন-এ ক্লিক করুন। এটি যে কোডটি দেখায় তা লিখুন।
-#. text in the Options window
-#. Options → Remote → Pair a device: how to pair
-#, machine
-	On the phone, scan this code with the camera, or open the address and enter the code.	ফোনে, ক্যামেরা দিয়ে এই কোডটি স্ক্যান করুন, অথবা ঠিকানাটি খুলুন এবং কোডটি লিখুন।
-#. text in the Options window
-#. Options → Remote → Status: on; the address follows in a box below
-#, machine
-	On. On the phone, open this address:	চালু আছে। ফোনে, এই ঠিকানাটি খুলুন:
+	On macOS, only an administrator can schedule a wake	macOS-এ, শুধুমাত্র একজন প্রশাসক ওয়েক শিডিউল করতে পারেন
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	একবার এ
@@ -2933,14 +2818,14 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	শুধুমাত্র একটি সম্পূর্ণ ডাউনলোড, অথবা যেটি এখনো শুরু হয়নি, সেটি সরানো যেতে পারে। প্রথমে এটি বন্ধ করুন এবং শেষ করুন।
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+#, machine
+	Only an administrator can allow this	শুধুমাত্র একজন প্রশাসক এটি অনুমতি দিতে পারেন
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	শুধুমাত্র MP4 এবং MKV ভিডিও সাবটাইটেল ধারণ করতে পারে
-#. text in the Options window
-#. Options → Remote, at the bottom of the page
-#, machine
-	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	শুধুমাত্র জোড়া করা ডিভাইসগুলি কিছু দেখতে বা পরিবর্তন করতে পারে। প্রথমবার, ফোনের ব্রাউজার MDM-এর নিজস্ব শংসাপত্র সম্পর্কে সতর্ক করবে: এর ফিঙ্গারপ্রিন্ট উপরেরটি।
 #. text in playlistdlg.rs
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
@@ -3011,31 +2896,6 @@
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	পৃষ্ঠার ঠিকানা
-#. text in remote.rs
-#. remote control page (on a phone): button: pair this phone with MDM
-#, machine
-	Pair	জোড়া করুন
-#. window title in the Options window
-#. window title: Options → Remote → Pair a device...
-#, machine
-	Pair a device	একটি ডিভাইস জোড়া করুন
-#. button in the Options window
-#. Options → Remote button: shows a code (and a QR code) that pairs a phone
-#. the trailing ... means it opens a window: keep it
-#, machine
-	Pair a device...	একটি ডিভাইস জোড়া করুন...
-#. text in remote.rs
-#. remote control page (on a phone): title of the pairing screen
-#, machine
-	Pair with Mister Download Manager	Mister Download Manager এর সাথে যুক্ত করুন
-#. text in the Options window
-#. column title: when the device was paired
-#, machine
-	Paired	যুক্ত করা হয়েছে
-#. text in the Options window
-#. Options → Remote: label above the list of paired phones and computers
-#, machine
-	Paired devices:	যুক্ত করা ডিভাইসসমূহ:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3086,9 +2946,8 @@
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine
 	Pasted	পেস্ট করা হয়েছে
-#. text in a download's progress window; text in remote.rs
+#. text in a download's progress window
 #. verb: pause the download
-#. remote control page (on a phone): button: pause a download
 #, machine
 	Pause	বিরতি দিন
 #. text in a download's Properties window
@@ -3145,12 +3004,7 @@
 #. label in the Options window
 #, machine
 	Port	পোর্ট
-#. text in the Options window
-#. Options → Remote → Status: another program uses the port; {port} = its number
-#, machine
-	Port {port} is used by another program: choose another.	পোর্ট {port} অন্য একটি প্রোগ্রাম দ্বারা ব্যবহৃত হচ্ছে: অন্য একটি নির্বাচন করুন।
-#. text in the Options window; text in the Add torrent window
-#. Options → Remote: label before the port number box
+#. text in the Add torrent window
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	পোর্ট:
@@ -3226,10 +3080,6 @@
 #. text in the Options window
 #, machine
 	Queue processing stopped/finished	সারি প্রক্রিয়াকরণ বন্ধ/শেষ হয়েছে
-#. text in remote.rs
-#. remote control page (on a phone): a download's state: added, waiting to start
-#, machine
-	Queued	সারিভুক্ত
 #. item in the Categories tree in the main window; text in the Scheduler window
 #. plural noun: the download queues
 #, machine
@@ -3297,17 +3147,8 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Remember this path for "{category}" category	"{category}" ক্যাটাগরির জন্য এই পথটি মনে রাখুন
-#. text in the Options window
-#. tab title: control MDM from a phone or another computer on the local network
-#, machine
-	Remote	রিমোট
-#. text in the Options window
-#. Options page title: control MDM from a phone or another computer on the local network
-#, machine
-	Remote control	রিমোট কন্ট্রোল
-#. button in the Options window; text in remote.rs; button in rssdlg.rs
+#. button in the Options window; button in rssdlg.rs
 #. verb: remove the item
-#. remote control page (on a phone): button: remove a download from the list
 #. RSS feeds window: unsubscribe from the selected feed
 #, machine
 	Remove	সরান
@@ -3318,11 +3159,6 @@
 #. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
 #, machine
 	Remove its downloads from the list (running ones move to General)	তালিকা থেকে এর ডাউনলোডগুলি সরান (চলমানগুলি সাধারণে চলে যাবে)
-#. text in remote.rs
-#. remote control page (on a phone): question before removing a download; {name} its file name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	Remove {name} from the list?	তালিকা থেকে {name} সরিয়ে ফেলবেন?
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -3520,6 +3356,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	এটি একজন বন্ধুকে পাঠান:
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+#, machine
+	Send torrents and magnet links to the first account instead of to peers	পিয়ারদের কাছে না পাঠিয়ে প্রথম অ্যাকাউন্টের পরিষেবাতে টরেন্ট এবং ম্যাগনেট লিঙ্ক পাঠান
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3566,6 +3406,14 @@
 #. button in Test browser integration: register MDM's helper with the browsers
 #, machine
 	Set it up	সেট আপ করুন
+#. message or event log entry in the main window
+#. event log: File Properties: the download no longer goes through the debrid account
+#, machine
+	Set to download directly, not through the debrid account	ডিপ্রিড অ্যাকাউন্টের মাধ্যমে নয়, সরাসরি ডাউনলোড করার জন্য সেট করা হয়েছে
+#. message or event log entry in the main window
+#. event log: File Properties: the download goes through the debrid account again
+#, machine
+	Set to download through the debrid account	ডিপ্রিড অ্যাকাউন্টের মাধ্যমে ডাউনলোড করার জন্য সেট করা হয়েছে
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3781,9 +3629,8 @@
 #. a country's name (where a download's server is)
 #, machine
 	Sri Lanka	শ্রীলঙ্কা
-#. text in the Link grabber window; text in remote.rs
+#. text in the Link grabber window
 #. Link grabber button: download the ticked links now
-#. remote control page (on a phone): button: start a download or a queue
 #, machine
 	Start	শুরু করুন
 #. button in a dialog box
@@ -3801,10 +3648,6 @@
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	প্রধান ডাউনলোড কিউ শুরু করুন
-#. text in remote.rs
-#. remote control page (on a phone): "When" choice: start the download at once
-#, machine
-	Start now	এখনই শুরু করুন
 #. text in a download's progress window
 #, machine
 	Start positions and download progress by connections	সংযোগ দ্বারা শুরু অবস্থান এবং ডাউনলোড অগ্রগতি
@@ -3836,7 +3679,7 @@
 #. column title: the account's state (premium, days left)
 #, machine
 	State	অবস্থা
-#. text in the Link grabber window; group box title in the Options window; text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -3845,8 +3688,7 @@
 #. label before the download's state
 #, machine
 	Status:	স্ট্যাটাস:
-#. text in remote.rs; text in the Add torrent window
-#. remote control page (on a phone): button: stop a queue
+#. text in the Add torrent window
 #, machine
 	Stop	বন্ধ করুন
 #. text in the Scheduler window; checkbox in the Scheduler window
@@ -3875,7 +3717,7 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	{queue} বন্ধ করুন
-#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
@@ -4031,10 +3873,6 @@
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	ব্রাউজারগুলি Mister Download Manager খুঁজে পেতে পারে
-#. text in the Options window
-#. Options → Remote → Status: the settings were changed; they apply on OK
-#, machine
-	The changes apply when you click OK.	আপনি ঠিক আছে ক্লিক করলে পরিবর্তনগুলি প্রয়োগ হবে।
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -4051,6 +3889,15 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The computer could not be turned off: {error}	কম্পিউটার বন্ধ করা যায়নি: {error}
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue"
+#, machine
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	কম্পিউটার শুরু হওয়ার এক মিনিট আগে জাগানো হয় এবং কিউ চলার সময় সজাগ রাখা হয়। Mister Download Manager চালু থাকতে হবে (এটি নোটিফিকেশন এলাকায় অপেক্ষা করতে পারে)।
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	The computer will be woken on {date} at {time}	কম্পিউটার {date} তারিখে {time} সময়ে জাগানো হবে
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4290,14 +4137,14 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	এই বিভাগ বা সারিতে এখনো কোনো ডাউনলোড নেই।
-#. text in the Options window
-#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#. text in win32.rs
+#. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
-	This code can't be used any more.	এই কোড আর ব্যবহার করা যাবে না।
-#. text in the Options window
-#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+	This computer can't be woken by a timer	এই কম্পিউটার একটি টাইমার দ্বারা জাগানো যাবে না
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 #, machine
-	This computer only (127.0.0.1)	শুধুমাত্র এই কম্পিউটার (127.0.0.1)
+	This computer has no wake alarm that programs can set	এই কম্পিউটারে এমন কোনো ওয়েক অ্যালার্ম নেই যা প্রোগ্রাম সেট করতে পারে
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4306,14 +4153,6 @@
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
 	This date has passed: the queue will not start	এই তারিখটি চলে গেছে: সারি শুরু হবে না
-#. text in remote.rs
-#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
-#, machine
-	This device's name	এই ডিভাইসের নাম
-#. text in remote.rs
-#. remote control page (on a phone): the file chosen is too large for a .torrent file
-#, machine
-	This file is too large to be a torrent.	এই ফাইলটি টরেন্ট হওয়ার জন্য খুব বড়।
 #. text in a dialog box
 #, machine
 	This folder does not exist:	এই ফোল্ডারটি বিদ্যমান নেই:
@@ -4328,10 +4167,6 @@
 #. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	এটি একটি ম্যাগনেট লিঙ্ক বা একটি .টরেন্ট ফাইল নয়
-#. text in remote.rs
-#. remote control page (on a phone): the file chosen isn't a .torrent file
-#, machine
-	This is not a torrent file.	এটি একটি টরেন্ট ফাইল নয়।
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -4382,9 +4217,21 @@
 #. where a download's server is, when a proxy carries it: {country} is the proxy's country
 #, machine
 	through a proxy in {country}	একটি প্রক্সির মাধ্যমে {country} এ
+#. text in a download's Properties window
+#. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
+#, machine
+	Through {service}	{service} এর মাধ্যমে
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+#, machine
+	Through {service}: the service downloads the torrent, then MDM its files	{service}-এর মাধ্যমে: পরিষেবাটি টরেন্ট ডাউনলোড করে, তারপর MDM এর ফাইলগুলি ডাউনলোড করে
 #. text in the Scheduler window
 #, machine
 	Thursday	বৃহস্পতিবার
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+#, machine
+	Tick "Start download at" first: the computer is woken for the start time	প্রথমে "ডাউনলোড শুরু করুন" টিক দিন: কম্পিউটার শুরু হওয়ার সময়ের জন্য জাগানো হয়
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	বাকি সময়
@@ -4502,10 +4349,6 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	চালু করুন
-#. tooltip (why a control is greyed) in the Options window
-#. why Options → Remote → Pair a device... is greyed
-#, machine
-	Turn on the remote control first.	প্রথমে রিমোট কন্ট্রোল চালু করুন।
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4573,9 +4416,8 @@
 #. Link grabber button (IDM's): untick every link
 #, machine
 	Uncheck all	সব আনচেক করুন
-#. item in the Categories tree in the main window; text in remote.rs
+#. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
-#. remote control page (on a phone): tab: downloads not finished yet
 #, machine
 	Unfinished	অসমাপ্ত
 #. text in countries.rs
@@ -4775,33 +4617,23 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	volume {n} of it is missing	এর ভলিউম {n} অনুপস্থিত
-#. text in remote.rs
-#. remote control page (on a phone): codes were tried too fast
-#, machine
-	Wait a moment, then try again.	এক মুহূর্ত অপেক্ষা করুন, তারপর আবার চেষ্টা করুন।
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
 	Wait for the list, or stop listing	তালিকার জন্য অপেক্ষা করুন, অথবা তালিকাভুক্তি বন্ধ করুন
-#. text in remote.rs
-#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
-#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
-#, machine
-	Wait in {queue}	{queue}-এ অপেক্ষা করুন
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	অপেক্ষা করছে
-#. text in the Options window
-#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
-#. {time} = a time of day (keep the braces as they are)
-#, machine
-	Waiting for the device. The code works for {time}.	ডিভাইসের জন্য অপেক্ষা করা হচ্ছে। কোডটি {time} এর জন্য কাজ করবে।
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	অপেক্ষা করছে: ডাউনলোডের সীমা পৌঁছে গেছে (শিডিউলার)
+#. text in the Scheduler window
+#. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+#, machine
+	Wake the computer to run this queue	এই কিউ চালানোর জন্য কম্পিউটারকে জাগান
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4832,13 +4664,13 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	What's new:	নতুন কী আছে:
-#. text in remote.rs
-#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
-#, machine
-	When	কখন
 #. text in the Batch download window
 #, machine
 	Wildcard size	ওয়াইল্ডকার্ড আকার
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
+#, machine
+	Windows allows wake timers only while plugged in	Windows ওয়েক টাইমার শুধুমাত্র প্লাগ ইন করা অবস্থায় অনুমোদন করে
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4849,6 +4681,10 @@
 #. text in langpick.rs
 #, machine
 	Windows' language ({language})	Windows-এর ভাষা ({language})
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+#, machine
+	Windows' power options don't allow wake timers	Windows-এর পাওয়ার অপশন ওয়েক টাইমার অনুমোদন করে না
 #. message or event log entry in the main window
 #, machine
 	with Add URL	URL যোগ করুন সহ
@@ -4863,15 +4699,6 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	তারিখ ও সময় লিখুন
-#. text in remote.rs
-#. remote control page (on a phone): pairing failed and the code is void now
-#, machine
-	Wrong code. Show a new code in MDM and try again.	ভুল কোড। MDM-এ একটি নতুন কোড দেখান এবং আবার চেষ্টা করুন।
-#. text in remote.rs
-#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
-#. {n} = a number (keep the braces as they are)
-#, machine
-	Wrong code. Tries left: {n}	ভুল কোড। বাকি চেষ্টা: {n}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -4981,15 +4808,6 @@
 #. {count} = a number (keep the braces as they are)
 #, machine
 	{count}, {speed}	{count}, {speed}
-#. text in the Options window
-#. Options → Remote → Pair a device: done; {device} = the name it was given
-#, machine
-	{device} is paired. It can control MDM now.	{device} যুক্ত করা হয়েছে। এটি এখন MDM নিয়ন্ত্রণ করতে পারে।
-#. text in remote.rs
-#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
-#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
-	{done} of {size}	{size} এর মধ্যে {done}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
@@ -5089,6 +4907,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{total} এর {n} নির্বাচিত
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+#, machine
+	{percent} at {service}	{service}-এ {percent}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -5100,6 +4922,9 @@
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	{service} আপনাকে প্রথমে এই কম্পিউটারকে অনুমতি দিতে বলছে: এর ইমেল দেখুন
+#. text in errors.rs
+#, machine
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} এই টরেন্টটি পেতে পারছে না: কেউ এটি শেয়ার করছে না, অথবা এর লিঙ্ক পড়া যাচ্ছে না
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} এই ফাইল হোস্টের সাথে এই মুহূর্তে যোগাযোগ করতে পারছে না; MDM পরে আবার চেষ্টা করবে
@@ -5150,11 +4975,6 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	{size} ({bytes} Bytes)	{size} ({bytes} বাইট)
-#. text in remote.rs
-#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
-#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
-	{size} free	{size} খালি
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -5744,7 +5564,7 @@ menu	Download &video from a page...	একটি পৃষ্ঠা থেকে
 #, machine
 menu	Download in order	ক্রমানুসারে ডাউনলোড করুন
 #. menu command in the main window
-#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	এর সাথে আঁকুন
 #. menu command in the main window
@@ -5795,6 +5615,26 @@ menu	Hide drop target	ড্রপ টার্গেট লুকান
 #, machine
 menu	High contrast	উচ্চ বৈসাদৃশ্য
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+#, machine
+menu	It couldn't start: the log says why	এটি শুরু হতে পারেনি: লগ কারণটি বলছে
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+#, machine
+menu	Its first frame didn't show within 10 seconds	এর প্রথম ফ্রেম 10 সেকেন্ডের মধ্যে দেখা যায়নি
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+#, machine
+menu	Its last start ended before its first frame	এর শেষ শুরু এর প্রথম ফ্রেমের আগে শেষ হয়েছে
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Apple's), usually kept as is
+#, machine
+menu	Metal	Metal
+#. menu command in the main window
+#. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Metal didn't start here: OpenGL draws	Metal এখানে শুরু হয়নি: OpenGL ড্র করে
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
 menu	Metro	মেট্রো
@@ -5809,6 +5649,10 @@ menu	Move/Rename (Ctrl-M)	সরান/পুনঃনামকরণ করু�
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
 menu	Native	নেটিভ
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+#, machine
+menu	No graphics card here has a driver for it	এখানে কোনো গ্রাফিক্স কার্ডের জন্য এর ড্রাইভার নেই
 #. menu command in the main window
 #, machine
 menu	On Double click	ডাবল ক্লিকে
@@ -5934,6 +5778,10 @@ menu	Support &MDM	MDM সমর্থন করুন(&M)
 #, machine
 menu	Tell a &friend	একজন বন্ধুকে বলুন(&f)
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+#, machine
+menu	The graphics card was lost twice in 10 minutes	গ্রাফিক্স কার্ড 10 মিনিটের মধ্যে দুবার হারিয়ে গেছে
+#. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
 menu	Theme	থিম
@@ -5972,6 +5820,14 @@ menu	Turn of&f	বন্ধ করুন(&f)
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Verify checksum...	চেকসাম যাচাই করুন...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+#, machine
+menu	Vulkan	Vulkan
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Vulkan didn't start here: OpenGL draws	Vulkan এখানে শুরু হয়নি: OpenGL ড্র করে
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6050,3 +5906,272 @@ unit	{n} MB	{n} এমবি
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} এমবি/সেকেন্ড
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent ফাইল
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	যোগ করুন
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	যোগ করা হয়েছে।
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	যোগ করা হয়েছে। MDM টরেন্টটি পড়ছে: এটি কিছুক্ষণের মধ্যে তালিকায় যোগ হবে।
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	ঠিকানা বা ম্যাগনেট লিঙ্ক
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	সব
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	স্বয়ংক্রিয় (ফাইলের প্রকার অনুযায়ী)
+#. text in the Options window
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
+#, machine
+	Certificate (SHA-256): {fingerprint}	শংসাপত্র (SHA-256): {fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	একটি .torrent ফাইল বেছে নিন
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	কোড
+#. text in the Options window
+#. Options → Remote → Pair a device: label before the 8-digit code
+#, machine
+	Code:	কোড:
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
+#, machine
+	Delete the file too	ফাইলটিও মুছে ফেলুন
+#. text in the Options window
+#. column title: a paired phone's or computer's name
+#, machine
+	Device	ডিভাইস
+#. text in the Options window
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
+#, machine
+	Every local network address	প্রতিটি স্থানীয় নেটওয়ার্ক ঠিকানা
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	এই ডিভাইসটি ভুলে যান
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	এই ডিভাইসটি ভুলে যাবেন? আবার সংযোগ করতে একটি নতুন কোড লাগবে।
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	একটি জোড়া করা ডিভাইস থেকে
+#. text in the Options window
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	It could not start: {error}	এটি শুরু করা যায়নি: {error}
+#. text in the Options window
+#. column title: when the device last reached MDM
+#, machine
+	Last seen	শেষ দেখা
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	স্থানীয় নেটওয়ার্কে থাকা ফোন এবং কম্পিউটারগুলিকে MDM নিয়ন্ত্রণ করতে দিন
+#. text in the Options window
+#. Options → Remote: label before the choice of the address MDM listens on
+#, machine
+	Listen on:	এতে শুনুন:
+#. text in the Options window
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
+#, machine
+	MDM can't be reached on the network now: Options → Remote says why.	MDM এখন নেটওয়ার্কে পৌঁছানো যাচ্ছে না: বিকল্প → রিমোট কারণটি বলছে।
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	MDM এই ঠিকানাটি ডাউনলোড করতে পারে না।
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	MDM এটি যোগ করতে পারেনি।
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	MDM এটি করতে পারেনি।
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM উত্তর দিচ্ছে না। এটি চলছে এবং একই নেটওয়ার্কে আছে কিনা তা পরীক্ষা করুন।
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM উত্তর দিচ্ছে না। আবার চেষ্টা করা হচ্ছে...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	MDM এখন কোনো কোড দেখাচ্ছে না। প্রথমে সেখানে একটি ডিভাইস জোড়া করুন-এ ক্লিক করুন।
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	আরও
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	নতুন কোড
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	এখানে কোনো ডাউনলোড নেই।
+#. text in the Options window
+#. Options → Remote → Status: on, but the computer has no local network address now
+#, machine
+	No local network now: it starts when the computer joins one.	এখন কোনো স্থানীয় নেটওয়ার্ক নেই: কম্পিউটার একটিতে যোগ দিলে এটি শুরু হবে।
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	বন্ধ: নেটওয়ার্কে কিছুই MDM-এ পৌঁছাতে পারে না।
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	কম্পিউটারে, বিকল্প খুলুন, তারপর রিমোট, এবং একটি ডিভাইস জোড়া করুন-এ ক্লিক করুন। এটি যে কোডটি দেখায় তা লিখুন।
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	ফোনে, ক্যামেরা দিয়ে এই কোডটি স্ক্যান করুন, অথবা ঠিকানাটি খুলুন এবং কোডটি লিখুন।
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	চালু আছে। ফোনে, এই ঠিকানাটি খুলুন:
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	শুধুমাত্র জোড়া করা ডিভাইসগুলি কিছু দেখতে বা পরিবর্তন করতে পারে। প্রথমবার, ফোনের ব্রাউজার MDM-এর নিজস্ব শংসাপত্র সম্পর্কে সতর্ক করবে: এর ফিঙ্গারপ্রিন্ট উপরেরটি।
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	জোড়া করুন
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	একটি ডিভাইস জোড়া করুন
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	একটি ডিভাইস জোড়া করুন...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Mister Download Manager এর সাথে যুক্ত করুন
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	যুক্ত করা হয়েছে
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	যুক্ত করা ডিভাইসসমূহ:
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	পোর্ট {port} অন্য একটি প্রোগ্রাম দ্বারা ব্যবহৃত হচ্ছে: অন্য একটি নির্বাচন করুন।
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	সারিভুক্ত
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	রিমোট
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	রিমোট কন্ট্রোল
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	তালিকা থেকে {name} সরিয়ে ফেলবেন?
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	এখনই শুরু করুন
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	আপনি ঠিক আছে ক্লিক করলে পরিবর্তনগুলি প্রয়োগ হবে।
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	এই কোড আর ব্যবহার করা যাবে না।
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	শুধুমাত্র এই কম্পিউটার (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	এই ডিভাইসের নাম
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	এই ফাইলটি টরেন্ট হওয়ার জন্য খুব বড়।
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	এটি একটি টরেন্ট ফাইল নয়।
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	প্রথমে রিমোট কন্ট্রোল চালু করুন।
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	এক মুহূর্ত অপেক্ষা করুন, তারপর আবার চেষ্টা করুন।
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	{queue}-এ অপেক্ষা করুন
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	ডিভাইসের জন্য অপেক্ষা করা হচ্ছে। কোডটি {time} এর জন্য কাজ করবে।
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	কখন
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	ভুল কোড। MDM-এ একটি নতুন কোড দেখান এবং আবার চেষ্টা করুন।
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	ভুল কোড। বাকি চেষ্টা: {n}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} যুক্ত করা হয়েছে। এটি এখন MDM নিয়ন্ত্রণ করতে পারে।
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{size} এর মধ্যে {done}
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} খালি

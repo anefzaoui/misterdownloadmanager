@@ -4,7 +4,7 @@
  "segments": {
   "0001df97223dc970": {
    "source": "In Firefox, once you switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in its popup (Firefox asks you first), when the browser uses a proxy for a download (set by a VPN or proxy extension, or in its settings), the extension passes <g2>the proxy's address</g2>, or its <g3>proxy auto-config script</g3>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy. Switched off (as installed), it reads nothing of the browser's proxy. The extension for Chrome and the other Chromium browsers doesn't do this yet.",
-   "text": "Firefox'ta, açılır penceresinde <g1>İndirmeleri bu tarayıcının proxy veya VPN uzantısı üzerinden gönder</g1> seçeneğini açtığınızda (Firefox size önce sorar), tarayıcı bir indirme için proxy kullandığında (bir VPN veya proxy uzantısı tarafından veya ayarlarında ayarlanmışsa), uzantı <g2>proxy'nin adresini</g2> veya <g3>proxy otomatik yapılandırma betiğini</g3> iletir, böylece MDM aynı proxy üzerinden indirir. Proxy'nin oturum açma bilgilerini asla okumaz veya iletmez. Sadece bir proxy'nin bunu istediğini not eder, böylece MDM size o proxy'yi kullanamayacağını söyleyebilir. Kapalıyken (kurulduğu gibi), tarayıcının proxy'si hakkında hiçbir şey okumaz. Chrome ve diğer Chromium tarayıcıları için uzantı henüz bunu yapmamaktadır."
+   "text": "Firefox'ta, açılır penceresinde <g1>İndirmeleri bu tarayıcının proxy veya VPN uzantısı üzerinden gönder</g1> seçeneğini açtığınızda (Firefox size önce sorar), tarayıcı bir indirme için proxy kullandığında (bir VPN veya proxy uzantısı tarafından veya ayarlarında ayarlanmış), uzantı <g2>proxy'nin adresini</g2> veya <g3>proxy otomatik yapılandırma betiğini</g3> iletir, böylece MDM aynı proxy üzerinden indirir. Proxy'nin giriş bilgilerini asla okumaz veya iletmez. Sadece bir proxy'nin istendiğini not eder, böylece MDM size o proxy'yi kullanamayacağını söyleyebilir. Kapalıyken (kurulduğu gibi), tarayıcının proxy'si hakkında hiçbir şey okumaz. Chrome ve diğer Chromium tarayıcıları için uzantı bunu henüz yapmamaktadır."
   },
   "0004ade2a3d1d57f": {
    "source": "The extension is connected, but MDM's own settings leave this download to the browser. Check, in MDM:",
@@ -210,6 +210,10 @@
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
   },
+  "04bb12464d3a29f6": {
+   "source": "Tick <g1>Wake the computer to run this queue</g1>, under the start time, and a computer that is asleep at the start time is woken for it. It needs <g2>Start download at</g2>.",
+   "text": "Başlangıç saatinin altında <g1>Bu kuyruğu çalıştırmak için bilgisayarı uyandır</g1> seçeneğini işaretleyin; başlangıç saatinde uyku modunda olan bir bilgisayar bu işlem için uyanır. Bu seçenek <g2>İndirmeyi şu saatte başlat</g2> ayarını gerektirir."
+  },
   "04fca60787a71402": {
    "source": "Don't make MDM reachable from the internet (a router's port forwarding): the remote control is made for your home network. To reach it while away, use a VPN to your home network instead (WireGuard, Tailscale): with Tailscale, choose its address in <g1>Listen on</g1>.",
    "text": "MDM'yi internetten erişilebilir hale getirmeyin (bir yönlendiricinin bağlantı noktası yönlendirmesi): uzaktan kumanda ev ağınız için yapılmıştır. Uzaktayken erişmek için bunun yerine ev ağınıza bir VPN kullanın (WireGuard, Tailscale): Tailscale ile <g1>Dinle</g1> bölümünde adresini seçin."
@@ -369,6 +373,10 @@
   "08084c2a5ca0a411": {
    "source": "Right-click a category for:",
    "text": "Bir kategoriye sağ tıklayarak şunları yapabilirsiniz:"
+  },
+  "0809f66ed7e37c8f": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Draw with</g6> (OpenGL, or Direct3D on Windows, Vulkan on Linux, Metal on macOS) and <g7>Language</g7>.",
+   "text": "<g1>Görünüm</g1> — kategorileri gösterir veya gizler, listeyi sıralar (<g2>Dosyaları düzenle</g2>), <g3>Koyu Mod desteği</g3>, <g4>Her zaman koyu</g4>, <g5>Tema</g5>, <g6>Şununla çiz</g6> (OpenGL veya Windows'ta Direct3D, Linux'ta Vulkan, macOS'ta Metal) ve <g7>Dil</g7> ayarlarını içerir."
   },
   "0830de009b68f05d": {
    "source": "No, unless you want it to. While a torrent downloads it trades pieces with other people, as every torrent client does. When it finishes, it stops, like any…",
@@ -616,7 +624,7 @@
   },
   "0f0281b39f2ac4c5": {
    "source": "A VPN or proxy extension is a proxy for the browser only. In Firefox, switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in the extension's toolbar popup: Firefox asks you once to allow the extension to read the browser's proxy, and MDM then downloads what it takes from the browser through the same proxy (with <g2>Options → Proxy / Socks → Use proxy/socks from a browser's request</g2>, on by default; see <g3>Options</g3>). Switch it off to take that permission back. Chrome, Edge, Brave, Opera and Vivaldi don't offer this yet: for now, set the same proxy in MDM's <g4>Options → Proxy / Socks</g4>.",
-   "text": "VPN veya proxy uzantısı yalnızca tarayıcı için bir proxydir. Firefox'ta, uzantının araç çubuğu açılır penceresinde <g1>İndirmeleri bu tarayıcının proxy veya VPN uzantısı üzerinden gönder</g1> seçeneğini açın: Firefox sizden bir kez uzantının tarayıcının proxy'sini okumasına izin vermenizi ister ve MDM daha sonra tarayıcıdan aldığı şeyi aynı proxy üzerinden indirir (varsayılan olarak açık olan <g2>Seçenekler → Ara Sunucu / Socks → Tarayıcı isteğinden proxy/socks kullan</g2> ile; bkz. <g3>Seçenekler</g3>). Bu izni geri almak için kapatın. Chrome, Edge, Brave, Opera ve Vivaldi bunu henüz sunmuyor: şimdilik, aynı proxy'yi MDM'nin <g4>Seçenekler → Ara Sunucu / Socks</g4> bölümünde ayarlayın."
+   "text": "VPN veya proxy uzantısı sadece tarayıcı için bir proxydir. Firefox'ta, uzantının araç çubuğu açılır penceresinde <g1>İndirmeleri bu tarayıcının proxy veya VPN uzantısı üzerinden gönder</g1> seçeneğini açın: Firefox sizden bir kez uzantının tarayıcının proxy'sini okumasına izin vermenizi ister ve MDM daha sonra tarayıcıdan aldığı şeyi aynı proxy üzerinden indirir (varsayılan olarak açık olan <g2>Seçenekler → Ara Sunucu / Socks → Tarayıcı isteğinden proxy/socks kullan</g2> ile; bkz. <g3>Seçenekler</g3>). Bu izni geri almak için kapatın. Chrome, Edge, Brave, Opera ve Vivaldi henüz bunu sunmuyor: şimdilik, aynı proxy'yi MDM'nin <g4>Seçenekler → Ara Sunucu / Socks</g4> bölümünde ayarlayın."
   },
   "0f09c75008b1a460": {
    "source": "<g1>Questions</g1> (\"Create this folder?\", delete, a duplicate download, the turn-off countdown) could open behind the window that asked them; they stay in front now.",
@@ -1246,6 +1254,10 @@
    "source": "The download's log (hover over it in the list) says what happened: <g1>Extracted 12 files to …</g1>, or why not, for example <g2>Couldn't extract movie.7z.001: volume 3 of it is missing</g2>. An encrypted archive without its password opens the <g3>Archive password</g3> window. Type the password and click <g4>Extract</g4>, or <g5>Cancel</g5> to leave the archive as it is.",
    "text": "İndirmenin günlüğü (listede üzerine gelindiğinde) ne olduğunu söyler: <g1>12 dosya şuraya ayıklandı…</g1> veya neden olmadığını, örneğin <g2>movie.7z.001 ayıklanamadı: 3. birimi eksik</g2>. Parolası olmayan şifreli bir arşiv <g3>Arşiv parolası</g3> penceresini açar. Parolayı yazın ve <g4>Ayıkla</g4>'ya tıklayın veya arşivi olduğu gibi bırakmak için <g5>İptal</g5>'e tıklayın."
   },
+  "1d422617fd378822": {
+   "source": "Open <g1>Downloads → Options</g1>, or click <g2>Options</g2> on the toolbar. The window has nine pages on two rows of tabs. <g3>OK</g3> saves your changes; closing the window or pressing <g4>Esc</g4> throws them away.",
+   "text": "<g1>İndirilenler → Seçenekler</g1>’i açın veya araç çubuğundaki <g2>Seçenekler</g2>’e tıklayın. Pencerede iki sıra sekmede dokuz sayfa bulunur. <g3>Tamam</g3> değişikliklerinizi kaydeder; pencereyi kapatmak veya <g4>Esc</g4> tuşuna basmak onları iptal eder."
+  },
   "1d698c89212c8b9b": {
    "source": "Median CPU time each app used during a run, and its peak memory. MDM draws its window with the GPU, which takes more memory than IDM's classic Windows controls.",
    "text": "Her uygulamanın bir çalıştırma sırasında kullandığı medyan CPU süresi ve en yüksek belleği. MDM, penceresini GPU ile çizer, bu da IDM'nin klasik Windows kontrollerinden daha fazla bellek kullanır."
@@ -1397,6 +1409,10 @@
   "214a5490cbec850d": {
    "source": "<g1>Look links up when they arrive (name, size, online)</g1> — Link grabber asks each server about its file (on by default).",
    "text": "<g1>Bağlantılar geldiğinde ara (ad, boyut, çevrimiçi)</g1> — Bağlantı yakalayıcı her sunucuya dosyası hakkında soru sorar (varsayılan olarak açık)."
+  },
+  "216583d42da33e52": {
+   "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
+   "text": "macOS'te yalnızca bir yönetici uyandırma zamanlayabilir, bu nedenle seçenek gri renkte görünür. MDM yönetici parolası istemez. Bir yönetici, Mac'i her gün kuyruk başlamadan bir dakika önce, örneğin saat 23:00'te başlayacak bir kuyruk için 22:59'da uyandırabilir:"
   },
   "219b4865ef43eb2a": {
    "source": "not to use it to overload, attack or get around the limits of servers you don't own.",
@@ -1589,6 +1605,10 @@
   "25b4db9aa4024862": {
    "source": "The current speed.",
    "text": "Mevcut hız."
+  },
+  "25bdccac1d0ecb03": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
+   "text": "Direct3D, Vulkan veya Metal bilgisayarınızda başlayamazsa (sürücüsü yoksa, bazı sanal makinelerde), veya ilk penceresi 10 saniye içinde görünmezse, MDM OpenGL ile çizer ve <g1>Görünüm → Şununla çiz</g1> bunu ve nedenini belirtir. Tekrar seçmek, bir sonraki başlatmada tekrar denemesini sağlar."
   },
   "25e1ffe092788c2a": {
    "source": "<g1>Download File Info</g1>, the progress window and <g2>Properties</g2> show where a download's server is: its country's flag and name, then the time a round trip to it takes, such as <g3>about 24 ms (near)</g3>.",
@@ -1918,6 +1938,10 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>Ülke</g1>, MDM ile birlikte gelen (DB-IP tarafından <g2>IP to Country Lite</g2>, CC BY 4.0) adres aralıkları tablosundan gelir ve bilgisayarınızda aranır. MDM, adresin nerede olduğunu sormak için hiçbir yere göndermez. Tablo her sürümle güncellenir; o zamandan beri taşınmış bir adres eski ülkesini gösterebilir."
   },
+  "2cd03d5c814bd111": {
+   "source": "Last updated 2026-11-07",
+   "text": "Son güncelleme: 7 Kasım 2026"
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>Gözat</g1> — klasörünü Dosya Gezgini'nde açar."
@@ -1964,7 +1988,7 @@
   },
   "2d99670ca729da8a": {
    "source": "Every colour and size a control is drawn with comes from the active theme (#45): <x1/> declares its roles (<x2/>, <x3/>…) with the classic look's values, the shared painters (<x4/>, <x5/>, <x6/>, <x7/>) read them through <x8/> and <x9/> and decide each control's states from them, and <x10/> reads theme files (TOML or JSON in the data folder's <x11/>) that change any of them. Where a window puts its controls stays its layout. So do the icons before file names (<x12/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x13/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
-   "text": "Bir kontrolün çizildiği her renk ve boyut, etkin temadan (#45) gelir: <x1/>, klasik görünümün değerleriyle rollerini (<x2/>, <x3/>…) bildirir, paylaşılan çiziciler (<x4/>, <x5/>, <x6/>, <x7/>) bunları <x8/> ve <x9/> aracılığıyla okur ve her kontrolün durumlarını bunlardan belirler ve <x10/>, bunlardan herhangi birini değiştiren tema dosyalarını (veri klasörünün <x11/> içindeki TOML veya JSON) okur. Bir pencerenin kontrollerini nereye koyduğu, düzeni olarak kalır. Dosya adlarının önündeki simgeler de öyle (<x12/>): Windows kabuğunun sistem görüntü listeleri, macOS Finder'ın (NSWorkspace), Linux masaüstünün simge teması (<x13/>, shared-mime-info ve Simge Tema Belirtimi). Her tür, arka plan iş parçacığında, piksel boyutuna göre bir kez aranır. Tango'nun simgeleri (paketlenmiş), sistemin simgesi hazır olana kadar ve sistemde hiç simge yoksa yerini alır."
+   "text": "Bir kontrolün çizildiği her renk ve boyut, etkin temadan (#45) gelir: <x1/> rollerini (<x2/>, <x3/>…) klasik görünümün değerleriyle bildirir, paylaşılan çiziciler (<x4/>, <x5/>, <x6/>, <x7/>) bunları <x8/> ve <x9/> aracılığıyla okur ve her kontrolün durumlarını bunlardan belirler ve <x10/>, veri klasörünün <x11/> içindeki (TOML veya JSON) tema dosyalarını okur ve bunlardan herhangi birini değiştirir. Bir pencerenin kontrollerini nereye koyduğu düzeni olarak kalır. Dosya adlarının önündeki simgeler de öyle (<x12/>): Windows kabuğunun sistem görüntü listeleri, macOS Finder'ın (NSWorkspace), Linux masaüstünün simge teması (<x13/>, shared-mime-info ve Simge Tema Spesifikasyonu). Her tür, piksel boyutuna göre, bir arka plan iş parçacığında bir kez aranır. Tango'nun simgeleri (paketlenmiş), sistemin simgesi hazır olana kadar ve sistemde hiçbiri olmadığında kullanılır."
   },
   "2d9d101be2d0f3be": {
    "source": "FTP and FTPS (<x1/>) go through the same planner, workers and state: a segment is <x2/> + <x3/> on a control session instead of a ranged <x4/>, <x5/> and <x6/> stand in for the headers, and sessions are pooled per download and reused between segments.",
@@ -2142,6 +2166,10 @@
    "source": "Rules only look at articles that are new since the feed was last fetched, and a feed's first fetch only lists what is there. So adding a feed or a rule never downloads a whole backlog. <g1>Matches ... articles now</g1> shows which of the articles the feeds hold now the rule matches, to check it; download those by hand. A torrent the list already has isn't added again, and neither is one whose files are already in the folder: MDM never writes into files it didn't make without asking. The bottom line of the tab says what the rules did last, and a torrent a rule added says so in its event log.",
    "text": "Kurallar yalnızca akış en son getirildiğinden beri yeni olan makalelere bakar ve bir akışın ilk getirilişi yalnızca mevcut olanı listeler. Bu nedenle bir akış veya kural eklemek asla tüm bir birikimi indirmez. <g1>Şu anda ... makaleyle eşleşiyor</g1> kuralın şu anda akışların tuttuğu makalelerden hangileriyle eşleştiğini gösterir, kontrol etmek için; bunları elle indirin. Listede zaten bulunan bir torrent tekrar eklenmez, dosyaları zaten klasörde olan bir torrent de eklenmez: MDM, sormadan yapmadığı dosyalara asla yazmaz. Sekmenin alt satırı kuralların en son ne yaptığını söyler ve bir kuralın eklediği bir torrent olay günlüğünde bunu belirtir."
   },
+  "326233a6912ae49d": {
+   "source": "A user's systemd timer can't wake the computer, and <x1/> needs root, so without this setting MDM can't wake the computer. MDM never asks for an administrator's password.",
+   "text": "Bir kullanıcının systemd zamanlayıcısı bilgisayarı uyandıramaz ve <x1/> kök izni gerektirir, bu nedenle bu ayar olmadan MDM bilgisayarı uyandıramaz. MDM asla yönetici parolası istemez."
+  },
   "327c76a006445d54": {
    "source": "Yes. MDM comes with an MCP server, <x1/>: add it to Claude Desktop, Claude Code, Cursor, VS Code or another assistant that supports MCP, and you can ask it in your own words to list, add, pause, resume or remove downloads. It works with the MDM on your computer only, and needs the automation API on. See <g2>AI assistants</g2>.",
    "text": "Evet. MDM bir MCP sunucusu ile birlikte gelir, <x1/>: bunu Claude Desktop, Claude Code, Cursor, VS Code veya MCP'yi destekleyen başka bir asistana ekleyin ve indirmeleri listelemesini, eklemesini, duraklatmasını, devam ettirmesini veya kaldırmasını kendi kelimelerinizle isteyebilirsiniz. Yalnızca bilgisayarınızdaki MDM ile çalışır ve otomasyon API'sinin açık olması gerekir. Bkz. <g2>Yapay zeka asistanları</g2>."
@@ -2272,7 +2300,7 @@
   },
   "36d5bb353cf00059": {
    "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download, once you allow it: in Firefox, switch on <g2>Send downloads through this browser's proxy or VPN extension</g2> in the extension's toolbar popup (Firefox asks you once). Chrome, Edge, Brave, Opera and Vivaldi don't hand the proxy over yet: there, set the same proxy in <g3>Options → Proxy / Socks</g3>.",
-   "text": "<g1>İndirmeleri tarayıcının proxy veya VPN uzantısı üzerinden gönder</g1> — varsayılan olarak açık. MDM'nin tarayıcıdan aldığı bir indirme, tarayıcının bunun için kullandığı proxy üzerinden gider. Bu, bir VPN veya proxy uzantısının ayarladığı, tarayıcının kendi manuel proxy'si veya proxy otomatik yapılandırma betiğidir. Bu olmadan, indirme kendi adresinizden başlar ve VPN'in ülkesiyle veya adresiyle sınırlı içerik başarısız olur. Tarayıcı uzantısı bu proxy'yi okur ve siz izin verdiğinizde her indirme ile MDM'ye iletir: Firefox'ta, uzantının araç çubuğu açılır penceresinde <g2>İndirmeleri bu tarayıcının proxy veya VPN uzantısı üzerinden gönder</g2> seçeneğini açın (Firefox size bir kez sorar). Chrome, Edge, Brave, Opera ve Vivaldi henüz proxy'yi devretmez: orada, aynı proxy'yi <g3>Seçenekler → Ara Sunucu / Socks</g3> içinde ayarlayın."
+   "text": "<g1>Tarayıcı isteğindeki proxy/socks'u kullan…</g1> — varsayılan olarak açık. MDM'nin tarayıcıdan aldığı bir indirme, tarayıcının bunun için kullandığı proxy üzerinden gerçekleşir. Bu, bir VPN veya proxy uzantısının ayarladığı, tarayıcının kendi manuel proxy'si veya proxy otomatik yapılandırma betiğidir. Bu olmadan, indirme kendi adresinizden başlar ve VPN'in ülkesiyle veya adresiyle sınırlı içerik başarısız olur. Tarayıcı uzantısı, siz izin verdiğinizde bu proxy'yi okur ve her indirmede MDM'ye iletir: Firefox'ta, uzantının araç çubuğu açılır penceresinde <g2>İndirmeleri bu tarayıcının proxy veya VPN uzantısı üzerinden gönder</g2> seçeneğini açın (Firefox size bir kez sorar). Chrome, Edge, Brave, Opera ve Vivaldi henüz proxy'yi devretmez: orada, aynı proxy'yi <g3>Seçenekler → Ara Sunucu / Socks</g3> bölümünde ayarlayın."
   },
   "36ef08c42af60d54": {
    "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
@@ -3362,6 +3390,10 @@
    "source": "JSON for scripts and programs",
    "text": "Betikler ve programlar için JSON"
   },
+  "53220733cbddcf56": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose <g1>View → Draw with → OpenGL</g1> (or <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), then quit MDM (<g5>Tasks → Exit</g5>) and start it again. Choosing the first one goes back the same way.",
+   "text": "Windows'ta MDM pencerelerini Direct3D 12 ile çizer; Linux ve macOS'ta ise OpenGL ile veya seçtiğinizde Vulkan (Linux) ya da Metal (macOS) ile çizer. Bir grafik sürücüsü yine de hatalı davranabilir: pencere saniyelerce donar, titrer veya yanlış renkler ya da bloklar gösterir. Diğerini deneyin: <g1>Görünüm → Şununla çiz → OpenGL</g1> (veya <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>) seçeneğini belirleyin, ardından MDM'den çıkın (<g5>Görevler → Çıkış</g5>) ve tekrar başlatın. İlk seçeneği tekrar seçmek aynı şekilde geri döner."
+  },
   "53463dc2311b18e1": {
    "source": "when <g1>Options → Archives → Extract archives when their download completes</g1> is on (off by default), for any other download,",
    "text": "<g1>Seçenekler → Arşivler → İndirme tamamlandığında arşivleri ayıkla</g1> açık olduğunda (varsayılan olarak kapalıdır), diğer tüm indirmeler için,"
@@ -3598,6 +3630,10 @@
    "source": "<g1>A copy from elsewhere?</g1> Remove it and add the extension as MDM's <g2>Add Mister Download Manager to your browser</g2> window shows (see <g3>Browser integration</g3>).",
    "text": "<g1>Başka bir yerden bir kopya mı?</g1> Onu kaldırın ve uzantıyı MDM'nin <g2>Mister Download Manager uygulamasını tarayıcınıza ekleyin</g2> penceresinin gösterdiği gibi ekleyin (<g3>Tarayıcı entegrasyonu</g3> bölümüne bakın)."
   },
+  "5922c26d865c882f": {
+   "source": "The wake follows the schedule: change the start time or the days, untick the option or delete the queue, and the wake moves or goes away. MDM sets it again each time it starts. Nothing stays behind in the system when MDM quits or is uninstalled.",
+   "text": "Uyandırma, programa göre gerçekleşir: başlangıç saatini veya günleri değiştirin, seçeneğin işaretini kaldırın veya kuyruğu silin, uyandırma da değişir veya kalkar. MDM, her başladığında bunu tekrar ayarlar. MDM kapandığında veya kaldırıldığında sistemde hiçbir şey kalmaz."
+  },
   "5934223575270924": {
    "source": "In <g1>Download File Info</g1>: <g2>Start Download</g2>",
    "text": "<g1>Dosya Bilgilerini İndir</g1> içinde: <g2>İndirmeyi Başlat</g2>"
@@ -3822,6 +3858,10 @@
    "source": "What Update now does",
    "text": "Şimdi güncelle ne yapar"
   },
+  "5f91bf43437c9761": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Draw with</g6> (Windows: Direct3D, or OpenGL) and <g7>Language</g7>.",
+   "text": "<g1>Görünüm</g1> — kategorileri gösterir veya gizler, listeyi sıralar (<g2>Dosyaları düzenle</g2>), <g3>Koyu Mod desteği</g3>, <g4>Her zaman koyu</g4>, <g5>Tema</g5>, <g6>Şununla çiz</g6> (Windows: Direct3D veya OpenGL) ve <g7>Dil</g7> seçeneklerini içerir."
+  },
   "5fcf81378fa34b81": {
    "source": "<g1>Downloads → Speed Limiter → Settings...</g1> — speed limits. See <g2>Connections and speed</g2>.",
    "text": "<g1>İndirilenler → Hız Sınırlayıcı → Ayarlar...</g1> — hız sınırları. Bkz. <g2>Bağlantılar ve hız</g2>."
@@ -3841,6 +3881,10 @@
   "601260a4be471ed2": {
    "source": "The box under the list edits the package you selected:",
    "text": "Listenin altındaki kutu, seçtiğiniz paketi düzenler:"
+  },
+  "6038a4d72bef82d8": {
+   "source": "removes it.",
+   "text": "kaldırır."
   },
   "603f376b07905d51": {
    "source": "Q",
@@ -4388,7 +4432,7 @@
   },
   "6c93571eac4f03c3": {
    "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request.",
-   "text": "Firefox'ta MDM, tarayıcının dosya için yaptığı kendi isteğinin kullandığı proxy'yi görür, buna bir VPN uzantısının her istek için seçtiği proxy'ler de dahildir."
+   "text": "Firefox'ta MDM, tarayıcının dosya için yaptığı kendi isteğinin kullandığı proxy'yi görür; buna bir VPN uzantısının her istek için seçtiği proxy'ler de dahildir."
   },
   "6cfaa56a34e8372a": {
    "source": "A torrent can contain anything, and anyone can make one. Only open programs from people you trust, and scan them if in doubt.",
@@ -4417,6 +4461,10 @@
   "6d73e61c3ec9dd6e": {
    "source": "\"Try IDM 30-days free trial\" — <g1>internetdownloadmanager.com</g1>; prices at <g2>its purchase page</g2>",
    "text": "\"IDM 30 günlük ücretsiz deneme sürümünü deneyin\" — <g1>internetdownloadmanager.com</g1>; fiyatlar <g2>satın alma sayfasında</g2>"
+  },
+  "6d806c3d427a08be": {
+   "source": "Open Downloads → Options, or click Options on the toolbar. The window has nine pages on two rows of tabs. OK saves your changes; closing the window or…",
+   "text": "İndirilenler → Seçenekler'i açın veya araç çubuğundaki Seçenekler'e tıklayın. Pencerede iki sıra sekmede dokuz sayfa bulunur. Tamam değişikliklerinizi kaydeder; pencereyi kapatmak veya…"
   },
   "6d8509c5a6eeec47": {
    "source": "Column",
@@ -5334,6 +5382,10 @@
    "source": "Put downloads in a queue",
    "text": "İndirmeleri bir sıraya koyun"
   },
+  "83771adf9df51604": {
+   "source": "Windows wakes a computer only if its power plan allows wake timers. If it doesn't, the Scheduler says so, and <g1>Change</g1> opens the setting: <g2>Power Options → Change plan settings → Change advanced power settings → Sleep → Allow wake timers</g2>. Choose <g3>Enable</g3>: <g4>Important Wake Timers Only</g4> lets only Windows' own important timers wake the computer. On laptops the setting is often off on battery, so the computer is woken only while plugged in.",
+   "text": "Windows, bilgisayarı yalnızca güç planı uyandırma zamanlayıcılarına izin veriyorsa uyandırır. İzin vermiyorsa, Zamanlayıcı bunu belirtir ve <g1>Değiştir</g1> ayarı açar: <g2>Güç Seçenekleri → Plan ayarlarını değiştir → Gelişmiş güç ayarlarını değiştir → Uyku → Uyandırma zamanlayıcılarına izin ver</g2>. <g3>Etkinleştir</g3> seçeneğini seçin: <g4>Yalnızca Önemli Uyandırma Zamanlayıcıları</g4> yalnızca Windows'un kendi önemli zamanlayıcılarının bilgisayarı uyandırmasına izin verir. Dizüstü bilgisayarlarda bu ayar genellikle pildeyken kapalıdır, bu nedenle bilgisayar yalnızca prize takılıyken uyanır."
+  },
   "837e0b4660975a88": {
    "source": "Select or unselect one more download",
    "text": "Bir indirme daha seç veya seçimi kaldır"
@@ -5357,6 +5409,10 @@
   "83cfeac35d769e94": {
    "source": "It stores its own settings (paused or not, MDM's file types and excluded sites, its connection status, where you dragged the video button on each of the last 200 sites; nothing from private windows) in the browser's extension storage, on your computer.",
    "text": "Kendi ayarlarını (duraklatıldı mı, MDM'nin dosya türleri ve hariç tutulan siteler, bağlantı durumu, son 200 siteden her birinde video düğmesini nereye sürüklediğiniz; özel pencerelerden hiçbir şey yok) tarayıcının eklenti depolama alanında, bilgisayarınızda saklar."
+  },
+  "83d008fc3c256167": {
+   "source": "Themes",
+   "text": "Temalar"
   },
   "83d81da9ed13c6e6": {
    "source": "MDM asks each service well under its request limit: Real-Debrid at most 120 times a minute (it allows 250), AllDebrid 300 (it allows 600), Premiumize 60 (it publishes no limit). When a service says it's asked too often, MDM waits.",
@@ -5574,6 +5630,10 @@
    "source": "When MDM isn't running",
    "text": "MDM çalışmadığında"
   },
+  "8964c9e8c41b70ca": {
+   "source": "On Linux only an administrator may set the computer's wake alarm, so the option is greyed until an administrator allows it. To let the users in a <x1/> group set it, an administrator runs, once:",
+   "text": "Linux'ta yalnızca bir yönetici bilgisayarın uyandırma alarmını ayarlayabilir, bu nedenle yönetici izin verene kadar bu seçenek gri renkte görünür. Bir <x1/> grubundaki kullanıcıların bunu ayarlamasına izin vermek için bir yönetici bir kez şunu çalıştırır:"
+  },
   "89c2ac8b048f39e1": {
    "source": "The next choice of a drop-down list or radio group; a number up or down",
    "text": "Bir açılır listenin veya radyo grubunun sonraki seçeneği; bir sayıyı yukarı veya aşağı"
@@ -5656,7 +5716,7 @@
   },
   "8bdb8ef261917fb7": {
    "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> (Firefox, optional: asked for only when you switch it on in the popup) to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
-   "text": "İzinleri ve nedenleri: indirmeleri görmek ve MDM'ye aktarmak için <g1>downloads</g1>; oturum açılmış indirmelerin MDM'de çalışması için <g2>cookies</g2>; MDM ile iletişim kurmak için <g3>nativeMessaging</g3>; sağ tıklama öğeleri için <g4>contextMenus</g4>; ayarları için <g5>storage</g5>; gönderilen formları ve yüklenen video akışlarını görmek için <g6>webRequest</g6> (hiçbir şeyi değiştirmez); tarayıcının açacağı dosyaların (bir PDF) bunun yerine indirilmesi için <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge ve diğer Chromium tarayıcıları), MDM'nin kabul ettiği türler için; Firefox'ta bunu <g8>webRequestBlocking</g8> yapar; siz istediğinizde bir sayfanın bağlantılarını okumak ve uzantı yüklendiğinde zaten açık olan sayfalara video düğmesini eklemek için <g9>scripting</g9>; tarayıcının hangi proxy'yi kullandığını okumak için <g10>proxy</g10> (Firefox, isteğe bağlı: yalnızca açılır pencerede açtığınızda istenir), böylece bir VPN veya proxy uzantısının arkasındaki bir tarayıcıdan alınan indirmeler de onun üzerinden geçer (tarayıcının proxy'sini asla değiştirmez); indirmeler ve videolar herhangi bir siteden gelebileceği için tüm sitelere erişim."
+   "text": "İzinleri ve nedenleri: indirmeleri görmek ve devretmek için <g1>downloads</g1>; MDM'de oturum açmış indirmelerin çalışması için <g2>cookies</g2>; MDM ile konuşmak için <g3>nativeMessaging</g3>; sağ tıklama öğeleri için <g4>contextMenus</g4>; ayarları için <g5>storage</g5>; gönderilen formları ve yüklenen video akışlarını görmek için <g6>webRequest</g6> (hiçbir şeyi değiştirmez); tarayıcının açacağı dosyaların (bir PDF) bunun yerine indirilmesi için <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge ve diğer Chromium tarayıcıları), MDM'nin aldığı türler için; Firefox'ta <g8>webRequestBlocking</g8> bunu yapar; siz istediğinizde bir sayfanın bağlantılarını okumak ve uzantı yüklendiğinde zaten açık olan sayfalara video düğmesini eklemek için <g9>scripting</g9>; tarayıcının hangi proxy'yi kullandığını okumak için <g10>proxy</g10> (Firefox, isteğe bağlı: yalnızca açılır pencerede açtığınızda istenir), böylece bir VPN veya proxy uzantısının arkasındaki bir tarayıcıdan alınan indirmeler de onun üzerinden gider (tarayıcının proxy'sini asla değiştirmez); indirmeler ve videolar herhangi bir siteden gelebileceği için tüm sitelere erişim."
   },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
@@ -6026,6 +6086,10 @@
    "source": "Downloads",
    "text": "İndirilenler"
   },
+  "95bb2c4ecf20a6d7": {
+   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Son güncelleme 2026-11-07 · uygulama, tarayıcı uzantısı ve misterdownloadmanager.com için geçerlidir"
+  },
   "95e0579f795bdd56": {
    "source": "<g1>Description or part of the description</g1> — your notes.",
    "text": "<g1>Açıklama veya açıklamanın bir kısmı</g1> — notlarınız."
@@ -6036,7 +6100,7 @@
   },
   "95f874ce586a0506": {
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. It times both parts of a frame: what MDM handles (the commands that come in, the clock of downloads, queues and the Scheduler), which runs minimized too, and the drawing; never the wait between frames. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>Sorunları yakalama.</g1> MDM çöktüğünde (Windows istisnası, Linux'ta sinyal, macOS'ta Mach istisnası), paniklediğinde veya donduğunda, monitörden bir döküm ister. Donma, uyku süresini göz ardı eden bir izleyici iş parçacığı tarafından görülen, pencerenin 8 saniyeden fazla çalışan bir karesidir. Bir karenin her iki bölümünü de zamanlar: MDM'nin işlediği (gelen komutlar, indirmelerin saati, kuyruklar ve Zamanlayıcı), bu da küçültülmüş olarak çalışır ve çizim; asla kareler arasındaki beklemeyi değil. İzleyici ayrıca pencere iş parçacığının bu arada ne kadar işlemci süresi aldığını da ölçer ve rapor bunun ne anlama geldiğini söyler: sürekli çalıştı (bir döngü), bir kilitte veya G/Ç'de bekledi (bir kilitlenme) veya sıradan kodda neredeyse hiç çalışmadı, bu da MDM'yi çalıştırmak için çok meşgul veya diskten yüklemek için yavaş bir bilgisayar olduğu anlamına gelir, büyük olasılıkla MDM'nin hatası değildir (bunlar tek bir imzayı paylaşır, <x2/>). macOS henüz bunu ölçmüyor. Monitör daha sonra <x4/> ve <x5/> aracılığıyla dışarıdan her iş parçacığının bir <g3>minidump</g3>'ını yazar. Çöken bir işlem asla kendi dökümünü yazmaz, Firefox, Crashpad ve Sentry de bunu böyle yapar."
+   "text": "<g1>Sorunları yakalama.</g1> MDM çöktüğünde (Windows istisnası, Linux'ta sinyal, macOS'ta Mach istisnası), paniklediğinde veya donduğunda, monitörden bir döküm ister. Donma, uyku modunda geçirilen süreyi göz ardı eden bir izleyici iş parçacığı tarafından görülen, 8 saniyeden fazla çalışan pencerenin bir karesidir. Bir karenin her iki bölümünü de zamanlar: MDM'nin işlediği (gelen komutlar, indirmelerin saati, kuyruklar ve Zamanlayıcı), bu da küçültülmüş olarak çalışır ve çizim; kareler arasındaki beklemeyi asla zamanlamaz. İzleyici ayrıca pencere iş parçacığının bu arada ne kadar işlemci süresi aldığını da ölçer ve rapor bunun ne anlama geldiğini söyler: sürekli çalıştı (bir döngü), bir kilitte veya G/Ç'de bekledi (bir kilitlenme) veya sıradan kodda neredeyse hiç çalışmadı, bu da MDM'yi çalıştırmak için çok meşgul veya diskten yüklemek için yavaş bir bilgisayar olduğu anlamına gelir, büyük olasılıkla MDM'nin hatası değildir (bunlar tek bir imzayı paylaşır, <x2/>). macOS bunu henüz ölçmez. Monitör daha sonra <x4/> ve <x5/> aracılığıyla dışarıdan her iş parçacığının bir <g3>minidump</g3>'ını yazar. Çöken bir işlem asla kendi dökümünü yazmaz, Firefox, Crashpad ve Sentry de bunu böyle yapar."
   },
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
@@ -6342,6 +6406,10 @@
    "source": "<g1>As the system's region writes them</g1> (the default) — Windows' region settings (Settings → Time &amp; language → Region); on macOS and Linux, your language's usual way. In English the list keeps IDM's own date text.",
    "text": "<g1>Sistemin bölgesi yazdığı gibi</g1> (varsayılan) — Windows'un bölge ayarları (Ayarlar → Saat ve dil → Bölge); macOS ve Linux'ta, dilinizin olağan yolu. İngilizce'de liste IDM'in kendi tarih metnini korur."
   },
+  "9d2e5b317ca7d67a": {
+   "source": "MDM wakes the computer a minute before the start time, so the network is back when the queue starts.",
+   "text": "MDM, kuyruk başlamadan bir dakika önce bilgisayarı uyandırır, böylece kuyruk başladığında ağ geri gelmiş olur."
+  },
   "9d5b2429780e94aa": {
    "source": "Latest",
    "text": "En son"
@@ -6460,7 +6528,7 @@
   },
   "a02445ca780f3ef8": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
-   "text": "Sabit piksel koordinatlarına çizilmiş tek bir egui penceresi ve her iletişim kutusu için bir anlık görünüm penceresi. <x1/> durumu (indirmeler, kuyruklar, ayarlar, listenin seçimi) tutar ve menü, araç çubuğu, tuş ve IPC komutlarını eylemlere dönüştürür. Her iletişim kutusu kendi modülüdür ve bir <x2/> (açık, kapalı, bir değerle tamamlandı) döndürür. Yalnızca Windows'a özgü çağrılar <x3/> ile sınırlıdır ve bunların Linux ve macOS karşılıkları <x4/> ile sınırlıdır (oturumla başlayarak, tarayıcıların ana bilgisayarı, sesler, klasörde göster, çökme işleyici); diğer her dosya güvenli, taşınabilir Rust'tır. Yazı tipleri sistemden gelir: Windows'un Yazı Tipleri klasörü, macOS'un sistem yazı tipleri, Linux'ta fontconfig (<x5/>)."
+   "text": "Sabit piksel koordinatlarına çizilmiş tek bir egui penceresi ve her iletişim kutusu için bir anlık görüntü alanı. <x1/> durumu (indirmeler, kuyruklar, ayarlar, listenin seçimi) tutar ve menü, araç çubuğu, tuş ve IPC komutlarını eylemlere dönüştürür. Her iletişim kutusu kendi modülüdür ve bir <x2/> (açık, kapalı, bir değerle tamamlandı) döndürür. Yalnızca Windows'a özgü çağrılar <x3/> ile sınırlıdır ve bunların Linux ve macOS karşılıkları <x4/> ile sınırlıdır (oturumla başlayan, tarayıcıların ana bilgisayarı, sesler, klasörde göster, çökme işleyicisi); diğer her dosya güvenli, taşınabilir Rust'tır. Yazı tipleri sistemden gelir: Windows'un Yazı Tipleri klasörü, macOS'un sistem yazı tipleri, Linux'ta fontconfig (<x5/>)."
   },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
@@ -6741,6 +6809,10 @@
   "a76617f8c395dcdd": {
    "source": "Can other programs or scripts control MDM? — Mister Download Manager",
    "text": "Başka programlar veya betikler MDM'yi kontrol edebilir mi? — Mister Download Manager"
+  },
+  "a796d15297b81a60": {
+   "source": "<g1>High contrast</g1>: black and white, a bright accent, every edge drawn, text at 7:1 or more.",
+   "text": "<g1>Yüksek karşıtlık</g1>: siyah beyaz, parlak bir vurgu, her kenar çizili, metin 7:1 veya daha fazla kontrastta."
   },
   "a7a3f7c6b7a38022": {
    "source": "<g1>The download list's file icons</g1> were drawn over the Categories pane when the list was scrolled sideways (the Categories tree and the Scheduler had the same fault).",
@@ -7178,6 +7250,10 @@
    "source": "runs unit tests and end-to-end downloads against <x1/> with injected faults (slow, dropped and refused connections, servers without ranges, changing files). <x2/> runs the published speed comparison; its raw data is in <x3/>.",
    "text": "Enjekte edilmiş hatalarla (yavaş, düşen ve reddedilen bağlantılar, aralıksız sunucular, değişen dosyalar) <x1/>'e karşı birim testleri ve uçtan uca indirmeler çalıştırır. <x2/> yayınlanan hız karşılaştırmasını çalıştırır; ham verileri <x3/>'tedir."
   },
+  "b1f35176aca676c5": {
+   "source": "While the queue runs, the computer doesn't go to sleep. When the queue is done, the computer's own sleep settings apply again: a computer nobody is using goes back to sleep by itself. <g1>Turn off computer when done → Sleep</g1> sends it back to sleep at once.",
+   "text": "Kuyruk çalışırken bilgisayar uyku moduna geçmez. Kuyruk bittiğinde, bilgisayarın kendi uyku ayarları tekrar geçerli olur: kimsenin kullanmadığı bir bilgisayar kendiliğinden uyku moduna geri döner. <g1>Bittiğinde bilgisayarı kapat → Uyku</g1> seçeneği bilgisayarı hemen uyku moduna gönderir."
+  },
   "b20550787cbefe06": {
    "source": "Where it listens",
    "text": "Nerede dinler"
@@ -7298,6 +7374,10 @@
    "source": "Dependencies point inward: <x1/>, <x2/>, <x3/>, <x4/> and <x5/> use <x6/> and <x7/>; the engine knows nothing of the UI. The app sees the engine only through its events (progress, segment table snapshots, finished, failed).",
    "text": "Bağımlılıklar içe doğru işaret eder: <x1/>, <x2/>, <x3/>, <x4/> ve <x5/>, <x6/> ve <x7/> kullanır; motor, kullanıcı arayüzü hakkında hiçbir şey bilmez. Uygulama, motoru yalnızca olayları (ilerleme, segment tablosu anlık görüntüleri, tamamlandı, başarısız oldu) aracılığıyla görür."
   },
+  "b447fbc7b60ab7d5": {
+   "source": "On Linux, Vulkan needs your graphics card's Vulkan driver: Mesa's (<x1/> on Ubuntu and Debian, <x2/> or <x3/> on Arch) for AMD and Intel, NVIDIA's own driver for NVIDIA.",
+   "text": "Linux'ta Vulkan, grafik kartınızın Vulkan sürücüsüne ihtiyaç duyar: AMD ve Intel için Mesa'nın (<x1/> Ubuntu ve Debian'da, <x2/> veya <x3/> Arch'ta), NVIDIA için NVIDIA'nın kendi sürücüsü."
+  },
   "b45cf41d19dc2fdc": {
    "source": "The AppImage can also be updated by AppImage tools (AppImageLauncher, Gear Lever, AppImageUpdate): it carries the address of its updates, and each release has its <x1/> file, so those tools download only the parts that changed. This starts with the AppImage of the version after 0.2.4.",
    "text": "AppImage, AppImage araçları (AppImageLauncher, Gear Lever, AppImageUpdate) ile de güncellenebilir: güncellemelerinin adresini taşır ve her sürümün kendi <x1/> dosyası vardır, bu sayede bu araçlar yalnızca değişen kısımları indirir. Bu, 0.2.4 sürümünden sonraki AppImage ile başlar."
@@ -7361,6 +7441,10 @@
   "b66ef1366b1ed932": {
    "source": "Children",
    "text": "Çocuklar"
+  },
+  "b68461ac7025e237": {
+   "source": "then signs out and in again. The setting stays after a restart. The computer has one wake alarm: if another program has set it, MDM leaves it alone and says so.",
+   "text": "ardından oturumu kapatıp tekrar açar. Ayar yeniden başlatmadan sonra da kalır. Bilgisayarın bir uyandırma alarmı vardır: başka bir program bunu ayarladıysa, MDM ona dokunmaz ve bunu belirtir."
   },
   "b68fb1f513d1da2c": {
    "source": "9. Changes",
@@ -7798,6 +7882,10 @@
    "source": "torrents on Windows;",
    "text": "Windows'taki torrentler;"
   },
+  "c20a850dfc745632": {
+   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "İkisi de başlayamazsa, MDM bir yazılım oluşturucu ile çizer (Windows'ta Microsoft'un, Linux'ta Mesa'nın), böylece pencere yine de açılır (Uzak Masaüstü, grafik sürücüsü olmayan bir sanal makine). Çalışır, ancak işlemciyi daha meşgul eder."
+  },
   "c281dc13eb22554f": {
    "source": "Brave",
    "text": "Brave"
@@ -8180,7 +8268,7 @@
   },
   "cd00d2b47225467c": {
    "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (a deadlock; or <x6/>, 12 s of a busy window thread, <x7/>, <x8/>, <x9/>). <x10/> does that in a copy of the app off the screens, its window visible and minimized.",
-   "text": "<g1>Test etme.</g1> <x2/> gerçek bir donma, panik ve çökme (<x3/>) çalıştırır ve her raporun imzasını kontrol eder. Uygulamada denemek için MDM'yi <x4/> ile başlatın, ardından <x5/> (bir kilitlenme; veya <x6/>, 12 saniyelik meşgul bir pencere iş parçacığı, <x7/>, <x8/>, <x9/>) çalıştırın. <x10/> bunu, ekranların dışında, penceresi görünür ve küçültülmüş bir uygulama kopyasında yapar."
+   "text": "<g1>Test etme.</g1> <x2/> gerçek bir donma, panik ve çökme (<x3/>) çalıştırır ve her raporun imzasını kontrol eder. Uygulamada denemek için MDM'yi <x4/> ile başlatın, ardından <x5/> (bir kilitlenme; veya <x6/>, 12 saniyelik meşgul bir pencere iş parçacığı, <x7/>, <x8/>, <x9/>) çalıştırın. <x10/> bunu, ekranlardan uzakta, penceresi görünür ve küçültülmüş bir uygulama kopyasında yapar."
   },
   "cd259ac663c10ccb": {
    "source": "Download a gallery",
@@ -8193,6 +8281,10 @@
   "cd673e3701cb16c6": {
    "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
    "text": "<g1>32'den fazla bağlantıya izin ver</g1> — yukarıdaki sayı ve istisnalar için en fazla bağlantı sayısını 128'e çıkarır. Çoğu sunucu tek bir adresten çok daha azına izin verir; MDM bunu fark eder ve daha azını ister. Tekrar kapatıldığında, daha yüksek bir sayı 32'ye geri döner."
+  },
+  "cda67136f4731916": {
+   "source": "Each has a light and a dark side: <g1>Dark Mode support</g1> and <g2>Always dark</g2> choose between them as before. Theme files you put in the themes folder (<g3>View → Theme → Open themes folder</g3>) are listed there too.",
+   "text": "Her birinin açık ve koyu tarafı vardır: <g1>Koyu Mod desteği</g1> ve <g2>Her zaman koyu</g2> daha önce olduğu gibi aralarında seçim yapar. Tema klasörüne (<g3>Görünüm → Tema → Temalar klasörünü aç</g3>) koyduğunuz tema dosyaları da orada listelenir."
   },
   "cda8d2bd08f07beb": {
    "source": "Torrent settings",
@@ -8209,6 +8301,10 @@
   "cddd71be4d398e2a": {
    "source": "<g1><g2>AI assistants (MCP)</g2></g1> — let Claude, Cursor, VS Code or another MCP assistant list, add, pause and remove your downloads.",
    "text": "<g1><g2>Yapay zeka asistanları (MCP)</g2></g1> — Claude, Cursor, VS Code veya başka bir MCP asistanının indirmelerinizi listelemesine, eklemesine, duraklatmasına ve kaldırmasına izin verin."
+  },
+  "ce31d32b225369aa": {
+   "source": "Dependencies point inward: <x1/>, <x2/>, <x3/> and <x4/> use <x5/> and <x6/>; the engine knows nothing of the UI. The app sees the engine only through its events (progress, segment table snapshots, finished, failed).",
+   "text": "Bağımlılıklar içe doğru işaret eder: <x1/>, <x2/>, <x3/> ve <x4/>, <x5/> ve <x6/> kullanır; motor, kullanıcı arayüzü hakkında hiçbir şey bilmez. Uygulama, motoru yalnızca olayları (ilerleme, segment tablosu anlık görüntüleri, tamamlandı, başarısız oldu) aracılığıyla görür."
   },
   "ce3fd49165d30cfd": {
    "source": "Type a name",
@@ -8409,6 +8505,10 @@
   "d325a1b1c8ab0caa": {
    "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.",
    "text": "Mister Download Manager, tarayıcı uzantısı ve bu web sitesinin verilerinizle ne yaptığı: uygulama ve uzantı hiçbir şey toplamaz; web sitesi Statcounter ile ziyaretleri sayar."
+  },
+  "d351cad9276045ed": {
+   "source": "<g1>Classic</g1>: MDM's own look, the default.",
+   "text": "<g1>Klasik</g1>: MDM'nin kendi görünümü, varsayılan."
   },
   "d354d0b6bb0bfffe": {
    "source": "Subtitles",
@@ -8686,6 +8786,10 @@
    "source": "Listing and acting on downloads needs MDM's automation API, which is off until you turn it on. With MDM running, run this once (it stays on):",
    "text": "İndirmeleri listelemek ve üzerinde işlem yapmak için MDM'nin otomasyon API'si gerekir, bu API siz açana kadar kapalıdır. MDM çalışırken, bunu bir kez çalıştırın (açık kalır):"
   },
+  "d9862086c382da0c": {
+   "source": "Wake the computer to run a queue",
+   "text": "Bir kuyruğu çalıştırmak için bilgisayarı uyandır"
+  },
   "d9b76e3e6afd2fa9": {
    "source": "<g1><g2>Download a video from a page</g2></g1> — pick a quality and save a video.",
    "text": "<g1><g2>Bir sayfadan video indirin</g2></g1> — bir kalite seçin ve bir videoyu kaydedin."
@@ -8854,6 +8958,10 @@
    "source": "<g1>Delete archives after extracting</g1>: once extracted, the archives go to the Recycle Bin (the Trash on macOS and Linux).",
    "text": "<g1>Ayıklandıktan sonra arşivleri sil</g1>: ayıklandıktan sonra arşivler Geri Dönüşüm Kutusu'na (macOS ve Linux'ta Çöp Kutusu) gider."
   },
+  "de8c9f450c2f7eeb": {
+   "source": "Every download and the total speed: <x1/>. <x2/> is <x3/>, <x4/>, <x5/>, <x6/> or <x7/>; <x8/> is <x9/> while unknown; <x10/> (why it failed) is there only for a download in <x11/>. Only while the API is on.",
+   "text": "Her indirme ve toplam hız: <x1/>. <x2/> şunlardan biridir: <x3/>, <x4/>, <x5/>, <x6/> veya <x7/>; <x8/> bilinmiyorken <x9/>'dur; <x10/> (neden başarısız olduğu) yalnızca <x11/> durumundaki bir indirme için mevcuttur. Yalnızca API açıkken."
+  },
   "deb3f2db3855218f": {
    "source": "<g1>Never take downloads from</g1> the current site: adds it to MDM's excluded sites.",
    "text": "Geçerli siteden <g1>Asla indirme alma</g1>: siteyi MDM'nin hariç tutulan sitelerine ekler."
@@ -8901,6 +9009,10 @@
   "e04b6de25915105e": {
    "source": "Open a pull request on <g1>GitHub</g1> with the edited catalog, or",
    "text": "Düzenlenmiş katalog ile <g1>GitHub</g1> üzerinde bir çekme isteği açın veya"
+  },
+  "e04f69d547a21d71": {
+   "source": "<g1>Native</g1>: your system's colours. Windows' accent colour (Settings → Personalization → Colors) and, when it is on, its contrast theme; the desktop's accent colour and its higher contrast setting on Linux (GNOME 47 and later, KDE Plasma); the accent colour on macOS. It follows them when you change them.",
+   "text": "<g1>Yerel</g1>: Sisteminizin renkleri. Windows'un vurgu rengi (Ayarlar → Kişiselleştirme → Renkler) ve açık olduğunda kontrast teması; Linux'ta masaüstünün vurgu rengi ve yüksek kontrast ayarı (GNOME 47 ve sonrası, KDE Plasma); macOS'ta vurgu rengi. Bunları değiştirdiğinizde MDM de takip eder."
   },
   "e0610521a37bb854": {
    "source": "New",
@@ -9266,6 +9378,10 @@
    "source": "Add to Firefox",
    "text": "Firefox'a Ekle"
   },
+  "e8b5d61bef6a7b3c": {
+   "source": "The line under the option says when the computer will next be woken, or why it can't be.",
+   "text": "Seçeneğin altındaki satır, bilgisayarın bir sonraki ne zaman uyandırılacağını veya neden uyandırılamayacağını belirtir."
+  },
   "e8cba16e3299c9aa": {
    "source": "Several files are downloaded one after another, sorted by name.",
    "text": "Birkaç dosya, isme göre sıralanmış olarak art arda indirilir."
@@ -9329,6 +9445,10 @@
   "eb19c6905b29ec9c": {
    "source": "Choose <g1>Tasks → Torrent settings...</g1> (or the arrow next to <g2>Add Torrent</g2>):",
    "text": "<g1>Görevler → Torrent ayarları...</g1> (veya <g2>Torrent Ekle</g2> yanındaki ok) seçeneğini belirleyin:"
+  },
+  "eb2157973bc61b4f": {
+   "source": "<g1>View → Theme</g1> changes MDM's look at once, keeping its layout:",
+   "text": "<g1>Görünüm → Tema</g1>, MDM'nin düzenini koruyarak görünümünü anında değiştirir:"
   },
   "eb54002890a30cf8": {
    "source": "<g1>Ctrl+M</g1> or <g2>F2</g2>",
@@ -9626,6 +9746,10 @@
    "source": "Use the path from step 2 (in JSON, every <x1/> is written <x2/>). Other assistants take the same thing: a command to start, no arguments.",
    "text": "2. adımdaki yolu kullanın (JSON'da, her <x1/> <x2/> olarak yazılır). Diğer asistanlar da aynı şeyi alır: başlatmak için bir komut, argüman yok."
   },
+  "f2b7594f26285d1d": {
+   "source": "Adds a download, as the command line's <x1/> do (<x2/> is <x3/>); <x4/>. Also with the API off, like the command line.",
+   "text": "Komut satırının <x1/> yaptığı gibi bir indirme ekler (<x2/>, <x3/>'tür); <x4/>. API kapalıyken de, komut satırı gibi."
+  },
   "f2bc0cdd555a56be": {
    "source": "<g1>Online</g1>: the server has the file.",
    "text": "<g1>Çevrimiçi</g1>: sunucuda dosya var."
@@ -9898,6 +10022,10 @@
    "source": "Check <g1>Save to</g1> and <g2>File name</g2>. The name comes from the video's title; change it if you like.",
    "text": "<g1>Kaydedileceği yer</g1> ve <g2>Dosya adı</g2>'nı kontrol edin. Ad, videonun başlığından gelir; isterseniz değiştirebilirsiniz."
   },
+  "fa8e04c072819d0f": {
+   "source": "<g1>Metro</g1>: Windows 8's flat look: square corners, flat buttons and boxes, a coloured title bar with the title centred (on Windows, where MDM draws it), and one-colour icons (Microsoft's Fluent UI System Icons).",
+   "text": "<g1>Metro</g1>: Windows 8'in düz görünümü: kare köşeler, düz düğmeler ve kutular, ortalanmış başlıklı renkli bir başlık çubuğu (MDM'nin çizdiği Windows'ta) ve tek renkli simgeler (Microsoft'un Fluent UI Sistem Simgeleri)."
+  },
   "fa92082584a3b68a": {
    "source": "What IDM still does that MDM doesn't",
    "text": "IDM'nin hala yaptığı, MDM'nin yapmadığı şeyler"
@@ -9930,6 +10058,10 @@
    "source": "After a cut connection",
    "text": "Bağlantı kesildikten sonra"
   },
+  "fb26f9e65b7f456b": {
+   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default). View → Draw with picks one. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open; a start whose first frame doesn't come, or a graphics card lost twice, is remembered with its reason, which the menu shows.",
+   "text": "Pencereler OpenGL (eframe'in glow'u) ile veya eframe'in wgpu'su aracılığıyla sistemin kendi grafik API'si ile, yalnızca o tek arka uçla çizilir: Windows'ta Direct3D 12 (orada varsayılan), Linux'ta Vulkan, macOS'ta Metal (orada seçenekler; OpenGL varsayılanları olarak kalır). Görünüm → Şununla çiz birini seçer. Tek bir kod yolu bunu her sistemde yapar (<x1/>): seçilen başlatılamadığında, diğeri denenir, böylece pencereler her zaman açılır; ilk çerçevesi gelmeyen bir başlangıç veya iki kez kaybedilen bir grafik kartı, menünün gösterdiği nedeni ile hatırlanır."
+  },
   "fb2ec8c40af11f70": {
    "source": "MDM downloads BitTorrent files from magnet links and <x1/> files. Torrents appear in the same list as other downloads, marked <g2>Torrent</g2> in the <g3>Source</g3> column, and can be queued and scheduled like them.",
    "text": "MDM, magnet bağlantılarından ve <x1/> dosyalarından BitTorrent dosyalarını indirir. Torrentler, diğer indirmelerle aynı listede görünür, <g3>Kaynak</g3> sütununda <g2>Torrent</g2> olarak işaretlenir ve onlar gibi sıraya alınabilir ve zamanlanabilir."
@@ -9937,6 +10069,10 @@
   "fb3cc6240014e2b2": {
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, open its page in the Chrome Web Store and click Add to Chrome (Edge shows Get, and first asks to allow extensions from other stores). Can't use a store? Open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
    "text": "MDM'yi kurulum dosyasıyla yükleyin ve Tarayıcı entegrasyonunu ayarla seçeneğini işaretli bırakın. Firefox'ta, eklentinin addons.mozilla.org sayfasını açın ve Firefox'a Ekle'ye tıklayın. Chrome, Edge, Brave, Opera ve Vivaldi'de, Chrome Web Mağazası'ndaki sayfasını açın ve Chrome'a Ekle'ye tıklayın (Edge'de Yükle yazar ve önce diğer mağazalardan uzantılara izin vermenizi ister). Bir mağaza kullanamıyor musunuz? Tarayıcının uzantılar sayfasını açın, Geliştirici modunu açın, Paketlenmemiş uzantıyı yükle'yi seçin ve MDM klasöründeki extension\\chromium klasörünü seçin. Eğitim videosu bunu adım adım gösterir."
+  },
+  "fb7be2f77bb10a9c": {
+   "source": "MDM has to be running (it can sit in the notification area). The computer has to be asleep, not shut down.",
+   "text": "MDM'nin çalışıyor olması gerekir (bildirim alanında durabilir). Bilgisayarın kapalı değil, uyku modunda olması gerekir."
   },
   "fb833006931d511e": {
    "source": "Is MDM available in my language?",
