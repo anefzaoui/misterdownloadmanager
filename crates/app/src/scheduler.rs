@@ -78,6 +78,7 @@ struct Form {
     turn_off_on: bool,
     turn_off: usize,
     force: bool,
+    wake: bool,
     files_at_once: String,
 }
 
@@ -109,6 +110,7 @@ impl Form {
                 .and_then(|t| TurnOff::ALL.iter().position(|x| *x == t))
                 .unwrap_or(0),
             force: s.force_close,
+            wake: s.wake,
             files_at_once: q.files_at_once.to_string(),
         }
     }
@@ -131,6 +133,7 @@ impl Form {
         s.exit_when_done = self.exit;
         s.turn_off = self.turn_off_on.then(|| TurnOff::ALL[self.turn_off]);
         s.force_close = self.turn_off_on && self.force;
+        s.wake = self.wake;
         q.files_at_once = self.files_at_once.parse().unwrap_or(4).clamp(1, 99);
     }
 }
@@ -164,6 +167,13 @@ pub struct Scheduler {
     /// Delete's question, for this queue, while it is asked.
     deleting: Option<(usize, crate::dialogs::Confirm)>,
 }
+
+/// How much lower everything under "Start download at" sits than in IDM's window: the room for
+/// "Wake the computer to run this queue" and its note (#142).
+const DY: f32 = 40.0;
+
+// i18n: checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+const WAKE_LABEL: &str = crate::i18n::mark("Wake the computer to run this queue");
 
 // i18n: the Scheduler's page (and checkbox) that caps how much is downloaded in a time
 const LIMITS_LABEL: &str = crate::i18n::mark("Download limits");
@@ -276,6 +286,7 @@ impl Scheduler {
         icons: &mut ShellIcons,
         items: &[Item],
         live: &[Queue],
+        wake_error: Option<&str>,
         actions: &mut Vec<Action>,
     ) -> bool {
         self.sync_items(live);
@@ -291,10 +302,10 @@ impl Scheduler {
             "scheduler",
             // i18n: noun: the tool that starts and stops queues on time
             "Scheduler",
-            [651.0, 465.0],
+            [651.0, 465.0 + DY],
             false,
             LIGHT_BG(),
-            |ui, o| self.body(ui, o, icons, items, running, actions, naming),
+            |ui, o| self.body(ui, o, icons, items, running, wake_error, actions, naming),
         );
         if self.naming.is_some() {
             self.name_prompt(ctx);
@@ -336,6 +347,7 @@ impl Scheduler {
         icons: &mut ShellIcons,
         items: &[Item],
         running: &[String],
+        wake_error: Option<&str>,
         actions: &mut Vec<Action>,
         modal: bool,
     ) -> Outcome<()> {
@@ -352,11 +364,11 @@ impl Scheduler {
             crate::i18n::t("Queues"),
             LIGHT_TEXT(),
         );
-        let tree = r(o, 11.0, 44.0, 173.0, 379.0);
+        let tree = r(o, 11.0, 44.0, 173.0, 379.0 + DY);
         let delete_key = self.tree(ui, icons, tree);
         let new_queue = winui::button_light(
             ui,
-            r(o, 21.0, 432.0, 73.0, 21.0),
+            r(o, 21.0, 432.0 + DY, 73.0, 21.0),
             "&New queue",
             ButtonKind::Normal,
             false,
@@ -365,7 +377,7 @@ impl Scheduler {
         let deletable = self.selected >= 2 && self.selected < self.queues.len();
         let delete = winui::button_light(
             ui,
-            r(o, 102.0, 432.0, 73.0, 21.0),
+            r(o, 102.0, 432.0 + DY, 73.0, 21.0),
             // i18n: verb: delete the queue
             "&Delete",
             if deletable {
@@ -376,7 +388,7 @@ impl Scheduler {
             false,
         )
         .clicked();
-        winui::etched_v(&p, o.x + 197.0, o.y + 11.0, 442.0);
+        winui::etched_v(&p, o.x + 197.0, o.y + 11.0, 442.0 + DY);
 
         // ---- right pane ---------------------------------------------------------------
         let on_queue = self.selected < self.queues.len();
@@ -410,13 +422,13 @@ impl Scheduler {
             ];
             let current = if self.tab == Tab::Schedule { 0 } else { 1 };
             if let Some(t) =
-                winui::tabs_light(ui, o, r(o, 213.0, 23.0, 428.0, 403.0), &tabs, current)
+                winui::tabs_light(ui, o, r(o, 213.0, 23.0, 428.0, 403.0 + DY), &tabs, current)
                     .or(winui::tab_keys(ui, 2, current))
             {
                 self.tab = if t == 0 { Tab::Schedule } else { Tab::Files };
             }
             match self.tab {
-                Tab::Schedule => self.schedule_page(ui, o),
+                Tab::Schedule => self.schedule_page(ui, o, wake_error),
                 Tab::Files => self.files_page(ui, o, icons, items),
             }
         } else {
@@ -433,7 +445,7 @@ impl Scheduler {
             }
         };
         let btn = |ui: &mut Ui, x: f32, label: &str, k: ButtonKind| {
-            winui::button_light(ui, r(o, x, 432.0, 73.0, 21.0), label, k, false).clicked()
+            winui::button_light(ui, r(o, x, 432.0 + DY, 73.0, 21.0), label, k, false).clicked()
         };
         // i18n: verb: start the queue now
         let start = btn(
@@ -562,7 +574,7 @@ impl Scheduler {
         ev.delete.is_some()
     }
 
-    fn schedule_page(&mut self, ui: &mut Ui, o: Pos2) {
+    fn schedule_page(&mut self, ui: &mut Ui, o: Pos2, wake_error: Option<&str>) {
         let p = ui.painter().clone();
         let sync = self.queues[self.selected].sync;
         let f = &mut self.forms[self.selected];
@@ -696,11 +708,13 @@ impl Scheduler {
                 .on_hover_text(crate::i18n::t(why));
             }
         }
-        winui::etched_h(&p, o.x + 229.0, o.y + 227.0, 398.0);
+        self.wake_row(ui, o, wake_error);
+        let f = &mut self.forms[self.selected];
+        winui::etched_h(&p, o.x + 229.0, o.y + 227.0 + DY, 398.0);
         let stop_x = after(229.0, "Stop download at", 384.0, 627.0 - 89.0);
         winui::checkbox_light_until(
             ui,
-            at(229.0, 243.0),
+            at(229.0, 243.0 + DY),
             &mut f.stop_at_on,
             "Stop download at",
             true,
@@ -708,7 +722,7 @@ impl Scheduler {
         );
         time_picker(
             ui,
-            r(o, stop_x, 238.0, 89.0, 23.0),
+            r(o, stop_x, 238.0 + DY, 89.0, 23.0),
             &mut f.stop_at,
             f.stop_at_on,
             "stop-at",
@@ -717,7 +731,7 @@ impl Scheduler {
         // The caption stops before the box after it on the row (long translations are cut).
         winui::checkbox_light_until(
             ui,
-            at(229.0, 267.0),
+            at(229.0, 267.0 + DY),
             &mut f.retries_on,
             "Number of retries for each file if downloading failed :",
             true,
@@ -725,24 +739,24 @@ impl Scheduler {
         );
         winui::number_field(
             ui,
-            r(o, 541.0, 260.0, 48.0, 23.0),
+            r(o, 541.0, 260.0 + DY, 48.0, 23.0),
             &mut f.retries,
             1,
             9999,
             f.retries_on,
             LIGHT_PAGE(),
         );
-        winui::etched_h(&p, o.x + 229.0, o.y + 290.0, 398.0);
+        winui::etched_h(&p, o.x + 229.0, o.y + 290.0 + DY, 398.0);
         winui::checkbox_light(
             ui,
-            at(228.0, 300.0),
+            at(228.0, 300.0 + DY),
             &mut f.open_on,
             "Open the following file when done:",
             true,
         );
         winui::edit_light_on(
             ui,
-            r(o, 228.0, 318.0, 356.0, 23.0),
+            r(o, 228.0, 318.0 + DY, 356.0, 23.0),
             &mut f.open_file,
             f.open_on,
             false,
@@ -750,7 +764,7 @@ impl Scheduler {
         );
         let browse = winui::button_light(
             ui,
-            r(o, 592.0, 319.0, 21.0, 21.0),
+            r(o, 592.0, 319.0 + DY, 21.0, 21.0),
             "...",
             if f.open_on {
                 ButtonKind::Normal
@@ -772,7 +786,7 @@ impl Scheduler {
         // Dial-up is hung up through Windows' rasdial; macOS and Linux have no such command.
         let hang_up = winui::checkbox_light(
             ui,
-            at(228.0, 348.0),
+            at(228.0, 348.0 + DY),
             &mut f.hang_up,
             "Hang up modem when done",
             cfg!(windows),
@@ -780,14 +794,14 @@ impl Scheduler {
         winui::why_disabled(hang_up, !cfg!(windows), crate::progress::NO_DIAL_UP);
         winui::checkbox_light(
             ui,
-            at(228.0, 366.0),
+            at(228.0, 366.0 + DY),
             &mut f.exit,
             "Exit Mister Download Manager when done",
             true,
         );
         winui::checkbox_light_until(
             ui,
-            at(228.0, 384.0),
+            at(228.0, 384.0 + DY),
             &mut f.turn_off_on,
             "Turn off computer when done",
             true,
@@ -795,7 +809,7 @@ impl Scheduler {
         );
         if let Some(i) = winui::combo_light(
             ui,
-            r(o, 508.0, 383.0, 119.0, 21.0),
+            r(o, 508.0, 383.0 + DY, 119.0, 21.0),
             &TurnOff::LABELS,
             f.turn_off,
             f.turn_off_on,
@@ -805,11 +819,108 @@ impl Scheduler {
         }
         winui::checkbox_light(
             ui,
-            at(246.0, 402.0),
+            at(246.0, 402.0 + DY),
             &mut f.force,
             "Force processes to terminate",
             f.turn_off_on,
         );
+    }
+
+    /// "Wake the computer to run this queue" under the start time, and a line under it: when
+    /// the computer will be woken, or why it can't be (#142).
+    fn wake_row(&mut self, ui: &mut Ui, o: Pos2, wake_error: Option<&str>) {
+        use crate::wake::Support;
+        let p = ui.painter().clone();
+        let support = crate::wake::support();
+        let mut q = self.queues[self.selected].clone();
+        let f = &mut self.forms[self.selected];
+        let can = support.can_tick();
+        let enabled = f.start_at_on && can;
+        // Where waking can't be, the box shows it off (the setting is kept, for a data folder
+        // carried to a system that can).
+        let mut shown = f.wake && can;
+        let resp =
+            winui::checkbox_light(ui, o + vec2(228.0, 229.0), &mut shown, WAKE_LABEL, enabled);
+        if enabled {
+            f.wake = shown;
+        }
+        let why = if !can {
+            support_reason(&support).unwrap_or("")
+        } else {
+            // i18n: tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+            "Tick \"Start download at\" first: the computer is woken for the start time"
+        };
+        let resp = winui::why_disabled(resp, !enabled, why);
+        if enabled {
+            resp.on_hover_text(crate::i18n::t(
+                // i18n: tooltip on the Scheduler's "Wake the computer to run this queue"
+                "The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).",
+            ));
+        }
+        // The line under it: a problem (in the error colour when it stops the wake), else when
+        // the computer wakes.
+        let (note, link, error): (String, Option<&str>, bool) = match &support {
+            Support::NeedsAdmin | Support::NoAlarm | Support::MacAdmin => (
+                crate::i18n::t(support_reason(&support).unwrap_or("")).to_owned(),
+                // i18n: link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+                (support != Support::NoAlarm).then_some(crate::i18n::mark("How to allow it")),
+                false,
+            ),
+            _ if !(f.wake && f.start_at_on) => (String::new(), None, false),
+            Support::TimersOff { .. } | Support::NotOnBattery => (
+                crate::i18n::t(support_reason(&support).unwrap_or("")).to_owned(),
+                // i18n: link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+                Some(crate::i18n::mark("Change")),
+                matches!(support, Support::TimersOff { .. }),
+            ),
+            Support::Ready => match wake_error {
+                Some(e) => (e.to_owned(), None, true),
+                None => {
+                    f.apply_to(&mut q);
+                    let now = Local::now().naive_local();
+                    match crate::wake::next_start(&q.schedule, now) {
+                        Some(start) => (wake_note(crate::wake::wake_for(start, now)), None, false),
+                        None => (String::new(), None, false),
+                    }
+                }
+            },
+        };
+        if note.is_empty() {
+            return;
+        }
+        let (x, right, baseline) = (244.0, 627.0, 257.0);
+        let lw = link.map_or(0.0, |l| {
+            winui::text_width(&p, crate::i18n::t(l)).ceil() + 8.0
+        });
+        let room = (right - x - lw).max(0.0);
+        let color = if error { winui::ERROR() } else { LIGHT_TEXT() };
+        winui::fit(
+            ui,
+            &p,
+            o.x + x,
+            o.y + baseline,
+            &note,
+            color,
+            o.x + x + room,
+            "sched-wake-note",
+        );
+        let Some(l) = link else {
+            return;
+        };
+        let end = x + winui::text_width(&p, &note).ceil().min(room) + 8.0;
+        if winui::link(ui, &p, o.x + end, o.y + baseline, l, "sched-wake-link") {
+            match support {
+                #[cfg(windows)]
+                Support::TimersOff { .. } | Support::NotOnBattery => {
+                    crate::win32::open_power_options()
+                }
+                // The guide's section on it (never from an off-screen test run).
+                _ if !crate::offscreen() => crate::help::open_page(
+                    "queues-and-scheduler.md#wake-the-computer-to-run-a-queue",
+                ),
+                _ => {}
+            }
+        }
     }
 
     fn files_page(&mut self, ui: &mut Ui, o: Pos2, icons: &mut ShellIcons, items: &[Item]) {
@@ -844,7 +955,7 @@ impl Scheduler {
         );
 
         // The queue's files: File Name, Size, Status, Time left.
-        let list = r(o, 229.0, 82.0, 396.0, 294.0);
+        let list = r(o, 229.0, 82.0, 396.0, 294.0 + DY);
         crate::options::list_frame(&p, list);
         fill(
             &p,
@@ -876,7 +987,7 @@ impl Scheduler {
             );
         }
         // The rows: the shared row list under the header (its frame on the list's).
-        let body = Rect::from_min_max(o + vec2(230.0, 108.0), o + vec2(624.0, 375.0));
+        let body = Rect::from_min_max(o + vec2(230.0, 108.0), o + vec2(624.0, 375.0 + DY));
         let ids = self.queues[self.selected].items.clone();
         // Looked up once a frame (a long queue in a long list was slow to draw).
         let by_id: std::collections::HashMap<u64, &Item> =
@@ -979,7 +1090,7 @@ impl Scheduler {
             ),
         ];
         for (icon, x, enabled, tip) in buttons {
-            let rc = r(o, x, 387.0, 19.0, 21.0);
+            let rc = r(o, x, 387.0 + DY, 19.0, 21.0);
             let clicked = winui::icon_button_light(ui, rc, icon, enabled, tip).clicked()
                 || (icon == "cross" && delete_key);
             // English, as the icon and its wash take it.
@@ -1209,6 +1320,60 @@ impl Scheduler {
             }
         }
     }
+}
+
+/// Why the computer can't be woken, or only partly (English, translated where shown).
+fn support_reason(s: &crate::wake::Support) -> Option<&'static str> {
+    use crate::wake::Support;
+    Some(match s {
+        Support::Ready => return None,
+        Support::TimersOff { battery: true } => {
+            // i18n: the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+            crate::i18n::mark("On battery, Windows' power options don't allow wake timers")
+        }
+        Support::TimersOff { battery: false } => {
+            // i18n: the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+            crate::i18n::mark("Windows' power options don't allow wake timers")
+        }
+        Support::NotOnBattery => {
+            // i18n: the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
+            crate::i18n::mark("Windows allows wake timers only while plugged in")
+        }
+        Support::NeedsAdmin => {
+            // i18n: the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+            crate::i18n::mark("Only an administrator can allow this")
+        }
+        Support::NoAlarm => {
+            // i18n: the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
+            crate::i18n::mark("This computer has no wake alarm that programs can set")
+        }
+        Support::MacAdmin => {
+            // i18n: the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
+            crate::i18n::mark("On macOS, only an administrator can schedule a wake")
+        }
+    })
+}
+
+/// "The computer will be woken on 06/11/2026 at 22:59:00", in the formats in use.
+fn wake_note(at: chrono::NaiveDateTime) -> String {
+    use chrono::Timelike;
+    let time = crate::regional::time_text(
+        at.hour(),
+        at.minute(),
+        at.second(),
+        crate::regional::current().clock24,
+    );
+    crate::i18n::fmt(
+        // i18n: the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+        crate::i18n::t("The computer will be woken on {date} at {time}"),
+        &[
+            (
+                "date",
+                &crate::i18n::ltr(&crate::regional::short_date(at.date())),
+            ),
+            ("time", &crate::i18n::ltr(&time)),
+        ],
+    )
 }
 
 // ---- pickers ----------------------------------------------------------------------------

@@ -1647,11 +1647,19 @@ impl OptionsDialog {
             "Download supported file-host links through these accounts",
             true,
         );
+        winui::checkbox_light(
+            ui,
+            o + vec2(21.0, 376.0),
+            &mut self.s.debrid_torrents,
+            // i18n: Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+            "Send torrents and magnet links to the first account instead of to peers",
+            self.s.debrid_on,
+        );
         let p = ui.painter().clone();
         winui::paragraph(
             &p,
             o.x + 21.0,
-            o.y + 388.0,
+            o.y + 410.0,
             // i18n: Options → Accounts: what these accounts are, and the services' rule against sharing
             crate::i18n::t(
                 "A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.",

@@ -392,6 +392,10 @@ pub struct Item {
     /// the file). Kept, so a download goes the same way after a restart.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub direct: bool,
+    /// A torrent through a debrid account (#44): its `url` is the magnet link, `dest` its folder
+    /// (or its one file, once known).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub remote: Option<RemoteSpec>,
     #[serde(skip)]
     pub live: Option<Live>,
     /// The engine's last view of this download (segments, connections).
@@ -437,6 +441,20 @@ pub enum Job {
         url: Url,
     },
     Torrent(crate::torrents::Run),
+    /// A torrent through a debrid account, then its files over HTTP (#44).
+    Remote(mdm_debrid::torrents::RemoteTorrent),
+}
+
+/// A torrent sent to a debrid account (#44).
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct RemoteSpec {
+    /// The account it went to (Options → Accounts).
+    pub account: u64,
+    /// The service's id for it, once sent: a restart continues there, nothing is sent twice.
+    #[serde(default)]
+    pub transfer: Option<String>,
+    /// The folder its files go into (a torrent of several files gets its own folder there).
+    pub folder: PathBuf,
 }
 
 /// A gallery download's choice (#58).
@@ -498,6 +516,7 @@ impl Job {
         match self {
             Job::File(d) => d.snapshot(),
             Job::Torrent(t) => t.snapshot(),
+            Job::Remote(r) => r.snapshot(),
             Job::Video { job, url } => tool_snapshot(job.progress(), url),
             Job::Gallery { job, url } => tool_snapshot(job.progress(), url),
         }
@@ -509,6 +528,7 @@ impl Job {
             Job::Video { job, .. } => job.stop(),
             Job::Gallery { job, .. } => job.stop(),
             Job::Torrent(t) => t.cancel(),
+            Job::Remote(r) => r.cancel(),
         }
     }
 
@@ -518,6 +538,7 @@ impl Job {
         match self {
             Job::File(d) => d.set_speed_limit(rate),
             Job::Torrent(t) => t.set_speed_limit(rate),
+            Job::Remote(r) => r.set_speed_limit(rate),
             Job::Video { .. } | Job::Gallery { .. } => {}
         }
     }
@@ -526,7 +547,7 @@ impl Job {
         match self {
             Job::File(d) => d.speed_limit(),
             Job::Torrent(t) => t.speed_limit(),
-            Job::Video { .. } | Job::Gallery { .. } => None,
+            Job::Remote(_) | Job::Video { .. } | Job::Gallery { .. } => None,
         }
     }
 }
@@ -659,6 +680,7 @@ impl Item {
             package: None,
             server: None,
             direct: false,
+            remote: None,
             live: None,
             snap: None,
             login: None,
@@ -672,6 +694,12 @@ impl Item {
             return false;
         };
         let s = live.dl.snapshot();
+        // The service's id for a torrent sent to it (#44), kept to continue after a restart.
+        if let (Job::Remote(r), Some(spec)) = (&live.dl, self.remote.as_mut())
+            && spec.transfer.is_none()
+        {
+            spec.transfer = r.transfer();
+        }
         if let Some(server) = &s.server {
             self.server = Some(crate::whereis::Seen::from(server));
         }
@@ -804,7 +832,33 @@ impl Item {
     }
 
     /// The Status column: `13.38%`, `Complete`, `Error`, or blank.
+    /// A torrent at its debrid service (#44), before its files come: "45% at Real-Debrid" (the
+    /// percentage first: the list's Status column is narrow).
+    pub fn at_service(&self) -> Option<String> {
+        let Some(Live {
+            dl: Job::Remote(r), ..
+        }) = &self.live
+        else {
+            return None;
+        };
+        let (service, progress) = r.at_service()?;
+        Some(crate::i18n::fmt(
+            // i18n: a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+            crate::i18n::t("{percent} at {service}"),
+            &[
+                ("service", service),
+                (
+                    "percent",
+                    &progress.map_or_else(|| "...".to_owned(), |p| percent(p as f64)),
+                ),
+            ],
+        ))
+    }
+
     pub fn status_text(&self) -> String {
+        if let Some(at) = self.at_service() {
+            return at;
+        }
         if self
             .snap
             .as_ref()
