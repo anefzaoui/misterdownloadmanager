@@ -233,11 +233,15 @@ fn info_file() -> PathBuf {
     ))
 }
 
-/// The page's video information from yt-dlp (one video, not a playlist).
-fn look_up(exe: &Path, url: &str) -> Result<serde_json::Value, String> {
-    let args: Vec<String> = ["-J", "--no-playlist", "--no-warnings"]
+/// The page's video information from yt-dlp (one video, not a playlist), asked as the browser
+/// asked for the page (`browser`: its Referer, User-Agent and cookies, `FromBrowser::args`).
+/// Without them (#229) a page that wants a sign-in, YouTube's "confirm you're not a bot", was
+/// refused here although the video window's look-up, which had them, had listed its qualities.
+fn look_up(exe: &Path, url: &str, browser: &[String]) -> Result<serde_json::Value, String> {
+    let mut args: Vec<String> = ["-J", "--no-playlist", "--no-warnings"]
         .map(String::from)
         .to_vec();
+    args.extend(browser.iter().cloned());
     let cmd = proc::ytdlp(exe, &[], &args, url).map_err(|e| e.to_string())?;
     let out = proc::output(cmd, "yt-dlp", std::time::Duration::from_secs(90))
         .map_err(|e| e.to_string())?;
@@ -308,10 +312,12 @@ fn relaxed(selector: &str) -> Option<String> {
 /// - no video left at all after the move: once more on the page's own servers, unmoved.
 ///
 /// Whenever it is given up, yt-dlp's whole job is ended (#79).
+#[allow(clippy::too_many_arguments)]
 fn supervise(
     exe: &Path,
     url: &str,
     ours: &[String],
+    browser: &[String],
     progress: &Mutex<Progress>,
     child: &Child,
     expected: Option<u64>,
@@ -325,7 +331,7 @@ fn supervise(
     let mut last = String::from("yt-dlp stopped");
     for _ in 0..5 {
         match attempt(
-            exe, url, &ours, progress, child, expected, retry, &dead, reroute,
+            exe, url, &ours, browser, progress, child, expected, retry, &dead, reroute,
         ) {
             Attempt::Stopped => return,
             Attempt::Done(f, problems, quality) => {
@@ -622,6 +628,7 @@ fn attempt(
     exe: &Path,
     url: &str,
     ours: &[String],
+    browser: &[String],
     progress: &Mutex<Progress>,
     child: &Child,
     expected: Option<u64>,
@@ -630,7 +637,7 @@ fn attempt(
     reroute: bool,
 ) -> Attempt {
     let failed = |error: String, rerouted: bool| Attempt::Failed { error, rerouted };
-    let mut info = match look_up(exe, url) {
+    let mut info = match look_up(exe, url, browser) {
         Ok(v) => v,
         Err(e) => return failed(e, false),
     };
@@ -862,7 +869,7 @@ impl VideoJob {
         }
         let (theirs, cookies) = browser.args(url)?;
         retry_base.extend(theirs.iter().cloned());
-        ours.extend(theirs);
+        ours.extend(theirs.iter().cloned());
         if let Some(dir) = ffmpeg.and_then(Path::parent) {
             ours.extend([
                 "--ffmpeg-location".into(),
@@ -887,12 +894,24 @@ impl VideoJob {
         for a in &ours {
             proc::safe(a)?;
         }
+        // Whose cookies yt-dlp has, for the log (#229): the browser's name only, never a
+        // cookie or the profile (a folder may name the person).
+        let events = match proc::browser_cookies() {
+            Some(b) if cookies.is_none() => vec![(
+                std::time::SystemTime::now(),
+                format!(
+                    "Cookies read from {} on this computer (Options → Sites Logins)",
+                    b.browser
+                ),
+            )],
+            _ => Vec::new(),
+        };
         let progress = Arc::new(Mutex::new(Progress {
             state: State::Running,
             downloaded: 0,
             total: None,
             speed: 0.0,
-            events: Vec::new(),
+            events,
             side_files: Vec::new(),
             sub_problems: Vec::new(),
         }));
@@ -909,6 +928,7 @@ impl VideoJob {
                         &exe,
                         &url,
                         &ours,
+                        &theirs,
                         &progress,
                         &child,
                         expected,

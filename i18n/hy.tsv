@@ -192,6 +192,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS-ի կոնֆիգուրացիայի ID-ն վեց տառ և թիվ է (0-9, a-f):
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Պրոֆիլի անունը կամ դրա թղթապանակը։ Դատարկ՝ վերջին անգամ օգտագործված պրոֆիլը։ Chromium-ի վրա հիմնված բրաուզերի համար, որը նշված չէ (Helium, Thorium...), ընտրեք Chromium-ը և դրա պրոֆիլի թղթապանակը։
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Ընտրեք լեզուն, որով Mister Download Manager-ը ցուցադրում է իր պատուհանները:
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	Ընտրեք պրոֆիլի թղթապանակը
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	Կուկի կղզիներ
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	Թխուկներ տեսանյութերի կայքերի համար
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	Պատճենվել է սեղմատախտակին։
@@ -1812,7 +1824,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Թաքցնել &կատեգորիաները
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	Թաքցնել ներդիրը
 #. text in a download's progress window; text in standard windows
@@ -1884,6 +1896,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	Կատեգորիաներում՝ ընտրված կատեգորիայի մենյուն
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	կողպված բանալիների պահոցում
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2651,6 +2667,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Առանց պրոքսիի/SOCKS-ի
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Համակարգի բանալիների պահոցը չպատասխանեց, ուստի մուտքանուններն ու գաղտնաբառերը պահվում են MDM-ի կարգավորումներում, որոնք միայն դուք կարող եք կարդալ։
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2772,6 +2792,9 @@
 #. text in the Scheduler window
 #, machine
 	October	Հոկտեմբեր
+#. option (radio button) in the Options window
+#, machine
+	Off	Անջատված
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	Անջատված է. ավարտված տորենտը կանգ է առնում, ինչպես ցանկացած ներբեռնում։
@@ -2800,6 +2823,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	macOS-ում միայն ադմինիստրատորը կարող է արթնացում նախատեսել
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Windows-ում Chrome-ը, Edge-ը և Brave-ը կարող են արգելափակել իրենց թխուկները։ Firefox-ն աշխատում է։
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Մեկ անգամ՝ ժամը
@@ -3050,6 +3077,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	Պրոքսի / SOCKS կոնֆիգուրացիա
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	փոխանորդ սերվեր
 #. label in the Options window
 #, machine
 	Proxy server address	Պրոքսի սերվերի հասցե
@@ -3089,6 +3120,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Հերթեր
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	Կարդացվում է միայն այս համակարգչում և ուղարկվում է միայն տեսանյութի կայքին։
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3506,6 +3541,18 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	Մուտք գործել զննարկիչում
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	Մուտքանուններն ու գաղտնաբառերը պահվում են macOS-ի բանալիների պահոցում։
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	Մուտքանուններն ու գաղտնաբառերը պահվում են համակարգի բանալիների պահոցում (Secret Service)։
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	Մուտքանուններն ու գաղտնաբառերը պահվում են Windows-ի հավատարմագրերի կառավարչում։
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -4088,10 +4135,22 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	սերվերը ֆայլի անսպասելի մաս ուղարկեց ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Կայքը ցանկանում է, որ մուտք գործեք, նույնիսկ այս էջի համար ձեր բրաուզերի թխուկներով։ Մուտք գործեք այն ձեր բրաուզերում, ապա նորից փորձեք։
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Կայքը ցանկանում է, որ մուտք գործեք, նույնիսկ {browser}-ի թխուկներով։ Մուտք գործեք այն {browser}-ում, ապա նորից փնտրեք էջը։
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Սիմվոլները հնարավոր չեղավ ստանալ. հաշվետվության որոշ տողերում անունների փոխարեն հասցեներ են (մշակողները դեռ կարող են դրանք կարդալ)։
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Համակարգի բանալիների պահոցը կողպված է, և MDM-ը չի բացում այն, ուստի մուտքանուններն ու գաղտնաբառերը պահվում են MDM-ի կարգավորումներում, որոնք միայն դուք կարող եք կարդալ։
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4196,6 +4255,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Սա պահանջում է ffmpeg
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Այս շարժական պատճենը մուտքանուններն ու գաղտնաբառերը պահում է իր սեփական կարգավորումներում՝ գաղտնագրված ձեր Windows հաշվի համար։
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Այս շարժական պատճենը մուտքանուններն ու գաղտնաբառերը պահում է իր սեփական կարգավորումներում, որոնք միայն դուք կարող եք կարդալ։
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4221,7 +4288,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Այս տեսանյութը պահանջում է մուտք գործել։ Օգտագործեք «Ներբեռնել տեսանյութը» կոճակը դրա վրա ձեր զննարկիչում, որը կփոխանցի ձեր մուտքը։
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Այս տեսանյութը պահանջում է, որ դուք մուտք գործած լինեք։ Օգտագործեք «Ներբեռնել տեսանյութը» կոճակը դրա վրա ձեր բրաուզերում, որը փոխանցում է ձեր մուտքը, կամ ընտրեք ձեր բրաուզերը Ընտրանքներ → Կայքերի մուտքեր → Թխուկներ տեսանյութերի կայքերի համար բաժնում։
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4598,14 +4665,6 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Տեսանյութի որոնումները օգտագործում են yt-dlp (մոտ 23 ՄԲ, ստուգված է իր ստորագրության դեմ):
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	Տեսանյութերի էջերն ու թորենթները դեռ չեն կարող օգտագործել այն։
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	Տեսանյութերի էջերը դեռ չեն կարող օգտագործել այն։
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4684,6 +4743,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows-ը թույլ է տալիս արթնացման ժամաչափեր միայն միացված վիճակում
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows-ի հավատարմագրերի կառավարիչը չպատասխանեց, ուստի մուտքանուններն ու գաղտնաբառերը պահվում են MDM-ի կարգավորումներում՝ գաղտնագրված ձեր Windows հաշվի համար։
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4764,9 +4827,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	Ձեր համակարգի՝ {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp-ը չի կարող կարդալ {browser}-ի թխուկները, քանի դեռ {browser}-ը բաց է։ Փակեք {browser}-ը և նորից փնտրեք էջը, կամ ընտրեք Firefox-ը Ընտրանքներ → Կայքերի մուտքեր բաժնում։
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp-ը չկարողացավ ստանալ {browser}-ի թխուկների բանալին համակարգի բանալիների պահոցից։ Ապաարգելափակեք բանալիների պահոցը և նորից փնտրեք էջը։
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp-ը չկարողացավ կարդալ {browser}-ի թխուկները. {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp-ը չգտավ {browser}-ի թխուկներ այս համակարգչում։ Ստուգեք բրաուզերը և դրա պրոֆիլը Ընտրանքներ → Կայքերի մուտքեր բաժնում։
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp-ը տեղադրված չէ (Առաջադրանքներ → Ներբեռնել տեսանյութ էջից տեղադրում է այն)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp-ը մուտք է գործում տեսանյութերի կայքեր այս բրաուզերի թխուկներով, որոնք կարդացվում են միայն այս համակարգչի ֆայլերից։ Օգտագործվում է, երբ բրաուզերի ընդլայնումը չի փոխանցել էջի սեփականը՝ տեղադրված հասցե, երգացանկ։
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4799,6 +4883,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}. ստուգվում է ներբեռնման ավարտից հետո
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser}-ը Windows-ում իր թխուկները պահում է արգելափակված, այնպես որ yt-dlp-ը չի կարող կարդալ դրանք։ Ընտրեք Firefox-ը Ընտրանքներ → Կայքերի մուտքեր բաժնում, կամ օգտագործեք «Ներբեռնել տեսանյութը» կոճակը տեսանյութի վրա {browser}-ում։
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -5919,43 +6007,3 @@ unit	{n} MB	{n} ՄԲ
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} ՄԲ/վրկ
-#. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
-#, machine
-	in the locked keyring	կողպված բանալիների պահոցում
-#. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
-#, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Համակարգի բանալիների պահոցը չպատասխանեց, ուստի մուտքանուններն ու գաղտնաբառերը պահվում են MDM-ի կարգավորումներում, որոնք միայն դուք կարող եք կարդալ։
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
-#, machine
-	proxy server	փոխանորդ սերվեր
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
-#, machine
-	Sign-ins and passwords are kept in the macOS keychain.	Մուտքանուններն ու գաղտնաբառերը պահվում են macOS-ի բանալիների պահոցում։
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
-#, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	Մուտքանուններն ու գաղտնաբառերը պահվում են համակարգի բանալիների պահոցում (Secret Service)։
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
-#, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	Մուտքանուններն ու գաղտնաբառերը պահվում են Windows-ի հավատարմագրերի կառավարչում։
-#. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
-#, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Համակարգի բանալիների պահոցը կողպված է, և MDM-ը չի բացում այն, ուստի մուտքանուններն ու գաղտնաբառերը պահվում են MDM-ի կարգավորումներում, որոնք միայն դուք կարող եք կարդալ։
-#. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
-#, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Այս շարժական պատճենը մուտքանուններն ու գաղտնաբառերը պահում է իր սեփական կարգավորումներում՝ գաղտնագրված ձեր Windows հաշվի համար։
-#. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
-#, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Այս շարժական պատճենը մուտքանուններն ու գաղտնաբառերը պահում է իր սեփական կարգավորումներում, որոնք միայն դուք կարող եք կարդալ։
-#. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
-#, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows-ի հավատարմագրերի կառավարիչը չպատասխանեց, ուստի մուտքանուններն ու գաղտնաբառերը պահվում են MDM-ի կարգավորումներում՝ գաղտնագրված ձեր Windows հաշվի համար։

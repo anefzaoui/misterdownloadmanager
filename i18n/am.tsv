@@ -192,6 +192,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	የNextDNS ውቅረት መታወቂያ ስድስት ፊደሎች እና አሃዞች (0-9፣ a-f) ነው።
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	የመገለጫ ስም ወይም አቃፊው። ባዶ ከሆነ፡ ለመጨረሻ ጊዜ ጥቅም ላይ የዋለው መገለጫ። ያልተዘረዘረ በChromium ላይ ለተመሰረተ አሳሽ (Helium, Thorium...) Chromium እና የመገለጫውን አቃፊ ይምረጡ።
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Mister Download Manager መስኮቶቹን የሚያሳይበትን ቋንቋ ይምረጡ:
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	የመገለጫውን አቃፊ ይምረጡ
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	ኩክ ደሴቶች
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	ለቪዲዮ ጣቢያዎች ኩኪዎች
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	ወደ ቅንጥብ ሰሌዳ ተቀድቷል።
@@ -1648,6 +1660,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	ከቶረንት ፋይል
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	ከአሳሽ:
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1812,7 +1828,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	ምድቦችን &ደብቅ
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	ትር ደብቅ
 #. text in a download's progress window; text in standard windows
@@ -2780,6 +2796,9 @@
 #. text in the Scheduler window
 #, machine
 	October	ጥቅምት
+#. option (radio button) in the Options window
+#, machine
+	Off	ጠፍቷል
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	ጠፍቷል: የተጠናቀቀ ቶረንት እንደማንኛውም ማውረድ ይቆማል።
@@ -2808,6 +2827,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	በmacOS ላይ፣ አስተዳዳሪ ብቻ ማንቂያ መርሐግብር ማስያዝ ይችላል
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	በWindows ላይ Chrome፣ Edge እና Brave ኩኪዎቻቸውን ሊቆልፉ ይችላሉ። Firefox ይሰራል።
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	አንድ ጊዜ በ
@@ -3041,6 +3064,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	ቅድመ እይታ ገና አይገኝም
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	መገለጫ (አማራጭ):
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -3101,6 +3128,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	ወረፋዎች
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	በዚህ ኮምፒውተር ላይ ብቻ ይነበባል፣ እና ለቪዲዮው ጣቢያ ብቻ ይላካል።
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -4112,6 +4143,14 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	አገልጋዩ ያልተጠበቀ የፋይሉን ክፍል ልኳል ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	ጣቢያው ገብተው እንዲጠቀሙ ይፈልጋል፣ ምንም እንኳን የአሳሽዎ ኩኪዎች ለዚህ ገጽ ቢኖሩም። በአሳሽዎ ውስጥ ይግቡ፣ ከዚያ እንደገና ይሞክሩ።
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	ጣቢያው ገብተው እንዲጠቀሙ ይፈልጋል፣ ምንም እንኳን የ{browser} ኩኪዎች ቢኖሩ። በ{browser} ውስጥ ይግቡ፣ ከዚያ ገጹን እንደገና ይፈልጉ።
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4225,6 +4264,10 @@
 #, machine
 	This needs ffmpeg	ይህ ffmpeg ያስፈልገዋል
 #. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	ይህ ተንቀሳቃሽ ቅጂ የመግቢያ መረጃዎችን እና የይለፍ ቃሎችን በራሱ ቅንብሮች ውስጥ ያቆያል፣ ለWindows መለያዎ የተመሰጠረ ነው።
+#. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
 #, machine
 	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	ይህ ተንቀሳቃሽ ቅጂ የመግቢያ መረጃዎችን እና የይለፍ ቃሎችን እርስዎ ብቻ ሊያነቧቸው በሚችሉት የራሱ ቅንብሮች ውስጥ ያቆያል።
@@ -4253,7 +4296,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	ይህ ቪዲዮ እርስዎ እንዲገቡ ይጠይቃል። በመግባትዎ የሚያልፍ በአሳሽዎ ውስጥ ያለውን የቪዲዮ አውርድ አዝራር ይጠቀሙ።
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	ይህ ቪዲዮ ገብተው እንዲጠቀሙ ይጠይቃል። በአሳሽዎ ውስጥ ያለውን የቪዲዮ ማውረድ ቁልፍ ይጠቀሙ፣ ይህም የመግቢያ መረጃዎን ያስተላልፋል፣ ወይም በአማራጮች → የጣቢያ መግቢያዎች → ለቪዲዮ ጣቢያዎች ኩኪዎች ውስጥ አሳሽዎን ይምረጡ።
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4630,14 +4673,6 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	የቪዲዮ ፍለጋዎች yt-dlpን ይጠቀማሉ (ወደ 23 ሜባ፣ ከፊርማው ጋር ተረጋግጧል)።
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	የቪዲዮ ገጾች እና ቶረንቶች ገና ሊጠቀሙበት አይችሉም።
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	የቪዲዮ ገጾች ገና ሊጠቀሙበት አይችሉም።
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4716,6 +4751,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows የማንቂያ ሰዓት ቆጣሪዎችን የሚፈቅደው ሲሰካ ብቻ ነው
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Credential Manager ምላሽ አልሰጠም፣ ስለዚህ የመግቢያ መረጃዎች እና የይለፍ ቃሎች በMDM ቅንብሮች ውስጥ ይቀመጣሉ፣ ለWindows መለያዎ የተመሰጠሩ ናቸው።
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4796,9 +4835,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	የእርስዎ ስርዓት፦ {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp {browser} ክፍት እያለ የ{browser} ኩኪዎችን ማንበብ አይችልም። {browser}ን ይዝጉ እና ገጹን እንደገና ይፈልጉ፣ ወይም በአማራጮች → የጣቢያ መግቢያዎች ውስጥ Firefoxን ይምረጡ።
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp የ{browser} ኩኪዎችን ቁልፍ ከስርዓቱ ቁልፍ ሰንሰለት ማግኘት አልቻለም። የቁልፍ ሰንሰለቱን ይክፈቱ እና ገጹን እንደገና ይፈልጉ።
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp የ{browser} ኩኪዎችን ማንበብ አልቻለም: {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp በዚህ ኮምፒውተር ላይ የ{browser} ኩኪዎችን አላገኘም። በአማራጮች → የጣቢያ መግቢያዎች ውስጥ አሳሹን እና መገለጫውን ያረጋግጡ።
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp አልተጫነም (ተግባራት → ቪዲዮ ከገጽ አውርድ ይጭነዋል)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp የቪዲዮ ጣቢያዎችን በዚህ አሳሽ ኩኪዎች ይገባል፣ በዚህ ኮምፒውተር ላይ ካሉ ፋይሎቹ ብቻ ይነበባል። የአሳሽ ቅጥያው የገጹን ኩኪዎች ሳያስተላልፍ ሲቀር ጥቅም ላይ ይውላል: የተለጠፈ አድራሻ፣ አጫዋች ዝርዝር።
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4831,6 +4891,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: ማውረዱ ሲጠናቀቅ ተረጋግጧል
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} ኩኪዎቹን በWindows ላይ ለራሱ ይቆልፋል፣ ስለዚህ yt-dlp ሊያነባቸው አይችልም። በOptions → Sites Logins ውስጥ Firefoxን ይምረጡ፣ ወይም በ{browser} ውስጥ ባለው ቪዲዮ ላይ ያለውን Download video ቁልፍ ይጠቀሙ።
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine

@@ -7665,6 +7665,7 @@ impl eframe::App for App {
         // the taskbar's progress all stood still until the window was restored.
         crate::settings::share_proxy(self.settings.proxy());
         crate::settings::share_dns(self.settings.dns());
+        crate::settings::share_video_cookies(&self.settings);
         self.follow_assistive_technology(ctx);
         self.network_adapter_tick(ctx);
         self.debrid_tick();
