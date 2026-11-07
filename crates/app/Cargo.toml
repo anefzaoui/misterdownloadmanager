@@ -84,9 +84,6 @@ tray-icon = { version = "0.26.1", default-features = false, features = ["ksni"] 
 # The desktop's light or dark preference from the freedesktop portal (unix.rs); already in the
 # tree through the tray (ksni) and AccessKit, with the same features.
 zbus = { version = "5.19.0", default-features = false, features = ["async-io", "blocking-api"] }
-# Withdrawing a minimized window into the tray (unix.rs withdraw, #226): Xlib, loaded at run time
-# (already in the tree through winit).
-x11-dl = "2.21.0"
 
 [target.'cfg(target_os = "macos")'.dependencies]
 # Finder's file icons (unix.rs file_icon); already in the tree through winit and rfd.

@@ -214,18 +214,28 @@ fn a_start_with_the_session_waits_in_the_tray() {
     let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
         // Its first frame drawn (Direct3D's watchdog content), hidden.
         wait_for(&mut app, &data, "first frame drawn", wait);
-        let tray = cfg!(windows) || log(&data).contains("in the notification area");
+        // Where it settled (app.rs at_login): the notification area, or, with no tray host here
+        // (#59) after its grace period, minimized.
+        let until = Instant::now() + wait;
+        let tray = loop {
+            let text = log(&data);
+            if text.contains("started with the session: in the notification area") {
+                break true;
+            }
+            if text.contains("notification area within") {
+                break false;
+            }
+            assert!(Instant::now() < until, "not settled:\n{text}");
+            std::thread::sleep(Duration::from_millis(200));
+        };
+        assert!(tray || cfg!(unix), "Windows always has a notification area");
         if tray {
-            wait_for(&mut app, &data, "in the notification area", wait);
             wait_for(&mut app, &data, "tray icon shown", wait);
             // A few seconds on: still no window (the main one, or any other).
             std::thread::sleep(Duration::from_secs(3));
             if let Some(n) = visible_windows(app.id(), "") {
                 assert_eq!(n, 0, "visible windows after a start with the session");
             }
-        } else {
-            // No tray host here (#59): minimized instead.
-            wait_for(&mut app, &data, "minimized (no notification area)", wait);
         }
         // The old entry, written again with the argument.
         wait_for(&mut app, &data, "startup entry written again", wait);

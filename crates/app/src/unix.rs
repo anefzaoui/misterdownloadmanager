@@ -583,26 +583,6 @@ pub fn tray_host() -> bool {
     has().unwrap_or(false)
 }
 
-/// The X11 window `window` on the Xlib display `display` withdrawn (#226): a minimized (iconic)
-/// window that goes into the tray. Hiding it (an unmap, what winit does) leaves an iconic window
-/// iconic, a minimized button still in the taskbar: ICCCM (4.1.4) has a client withdraw one
-/// with a synthetic UnmapNotify too, which XWithdrawWindow sends. Nothing where Xlib can't load.
-#[cfg(target_os = "linux")]
-#[allow(unsafe_code)]
-pub fn withdraw(display: usize, window: u64) {
-    let Ok(xlib) = x11_dl::xlib::Xlib::open() else {
-        return;
-    };
-    let d = display as *mut x11_dl::xlib::Display;
-    // SAFETY: winit's own Xlib display, alive while the app runs, on its thread; the window
-    // is the main window's.
-    unsafe {
-        let screen = (xlib.XDefaultScreen)(d);
-        (xlib.XWithdrawWindow)(d, window as x11_dl::xlib::Window, screen);
-        (xlib.XFlush)(d);
-    }
-}
-
 /// `win32::on_a_screen`: winit has no monitor list before the window exists, so a saved
 /// position is trusted (the window manager keeps windows on screen on Linux and macOS).
 pub fn on_a_screen(_x: i32, _y: i32) -> bool {

@@ -272,17 +272,33 @@ fn next_trim(done: u32) -> Duration {
     }
 }
 
-/// A start with the session that found no notification area started minimized (#226). A
-/// desktop's tray often comes up a moment after the programs it starts (GNOME's AppIndicator
-/// extension, a panel still loading): one that shows up this soon after the start takes the
-/// window then, as if it had been there.
-const LATE_TRAY_WITHIN: Duration = Duration::from_secs(30);
+/// Started with the session (#226), the window waits hidden until the notification area is
+/// known: MDM's own tray icon created and a tray there to show it. A desktop's tray can come
+/// after MDM (GNOME's AppIndicator extension at sign-in), and MDM's icon after its own first
+/// look: this long they are waited for, the window still hidden, before it shows minimized.
+const TRAY_GRACE: Duration = Duration::from_secs(20);
 
-/// Started minimized for want of a tray (#226), `since` the start: whether to move the window
-/// into the notification area now, `tray` there now and the window `still_minimized` (not
-/// brought back by the user meanwhile).
-fn late_tray(since: Duration, tray: bool, still_minimized: bool) -> bool {
-    since <= LATE_TRAY_WITHIN && tray && still_minimized
+/// Where a start with the session (#226) leaves the window, decided here alone.
+#[derive(Debug, PartialEq)]
+enum AtLogin {
+    /// Not known yet: hidden, looked at again in a second.
+    Wait,
+    /// MDM's icon is in a notification area: the window stays hidden there.
+    Tray,
+    /// No notification area within [`TRAY_GRACE`]: shown, minimized.
+    Minimize,
+}
+
+/// `since` the start: whether MDM's tray `icon` was created and a tray `host` shows it (Windows,
+/// macOS: always one; Linux: a StatusNotifierWatcher, #59).
+fn at_login(since: Duration, icon: bool, host: bool) -> AtLogin {
+    if icon && host {
+        AtLogin::Tray
+    } else if since >= TRAY_GRACE {
+        AtLogin::Minimize
+    } else {
+        AtLogin::Wait
+    }
 }
 
 /// Hand the memory the process isn't using now back to the system (#72).
@@ -472,14 +488,10 @@ pub struct App {
     /// how many times it was since the window hid.
     trim_when_hidden: Option<Instant>,
     trims_since_hidden: u32,
-    /// Started with the session but minimized, no tray there yet (#226): when, and when a tray
-    /// was last looked for. A tray that comes within [`LATE_TRAY_WITHIN`] takes the window.
-    started_minimized: Option<Instant>,
-    late_tray_checked: Option<Instant>,
-    /// Linux on X11: the main window's Xlib display and window, to withdraw it when it goes
-    /// into a tray minimized (unix::withdraw).
-    #[cfg(target_os = "linux")]
-    x11: Option<(usize, u64)>,
+    /// Started with the session, the window hidden until the notification area is known
+    /// (#226, [`at_login`]): when, and when it was last looked at.
+    at_login: Option<Instant>,
+    at_login_checked: Option<Instant>,
     exiting: bool,
     /// Clipboard watching (Options → General): the text last seen (outer None: not looked
     /// yet) and when.
@@ -828,9 +840,9 @@ impl App {
             _ => View::All,
         };
         let show_categories = settings.show_categories;
-        // Started with the session where no tray can hold it (#226): minimized instead.
+        // Started with the session where a window can't be hidden (Wayland, #226): minimized.
         if start == crate::Start::Minimized {
-            tracing::info!("started with the session: minimized (no notification area)");
+            tracing::info!("started with the session: minimized (a window can't be hidden here)");
             cc.egui_ctx
                 .send_viewport_cmd(egui::ViewportCommand::Minimized(true));
         }
@@ -931,27 +943,13 @@ impl App {
             clip_checked: None,
             tray: None,
             tray_limiter: None,
-            // Started with the session (#226): hidden in the tray from the first frame.
-            hidden: start == crate::Start::Tray,
-            trim_when_hidden: (start == crate::Start::Tray).then(|| Instant::now() + next_trim(0)),
+            // Started with the session (#226): hidden from the first frame.
+            hidden: start == crate::Start::Session,
+            trim_when_hidden: (start == crate::Start::Session)
+                .then(|| Instant::now() + next_trim(0)),
             trims_since_hidden: 0,
-            started_minimized: (start == crate::Start::Minimized).then(Instant::now),
-            late_tray_checked: None,
-            #[cfg(target_os = "linux")]
-            x11: {
-                use raw_window_handle::{
-                    HasDisplayHandle, HasWindowHandle, RawDisplayHandle, RawWindowHandle,
-                };
-                match (
-                    cc.display_handle().map(|h| h.as_raw()),
-                    cc.window_handle().map(|h| h.as_raw()),
-                ) {
-                    (Ok(RawDisplayHandle::Xlib(d)), Ok(RawWindowHandle::Xlib(w))) => {
-                        d.display.map(|p| (p.as_ptr() as usize, w.window as u64))
-                    }
-                    _ => None,
-                }
-            },
+            at_login: (start == crate::Start::Session).then(Instant::now),
+            at_login_checked: None,
             exiting: false,
             confirm_delete: None,
             confirm_queue_delete: None,
@@ -2527,6 +2525,8 @@ impl App {
 
     /// The window back from the tray (or from minimized), in front.
     fn show_window(&mut self, ctx: &egui::Context) {
+        // Asked for (a second launch, the tray icon): no start with the session to settle.
+        self.at_login = None;
         self.trim_when_hidden = None;
         self.hidden = false;
         ctx.send_viewport_cmd(egui::ViewportCommand::Visible(true));
@@ -2542,43 +2542,41 @@ impl App {
         crate::tray::available()
     }
 
-    /// Started minimized for want of a tray (#226): a tray that shows up within
-    /// [`LATE_TRAY_WITHIN`] of the start (the desktop's, still coming up at login) takes the
-    /// window. Looked for once a second until then; never again after.
-    fn late_tray(&mut self, ctx: &egui::Context) {
-        let Some(started) = self.started_minimized else {
+    /// Started with the session (#226): once a second, until it is known, where the window goes
+    /// ([`at_login`]): it stays hidden in the notification area, or shows minimized.
+    fn settle_at_login(&mut self, ctx: &egui::Context) {
+        let Some(started) = self.at_login else {
             return;
         };
-        if started.elapsed() > LATE_TRAY_WITHIN {
-            tracing::info!("started minimized: no notification area came, the window stays so");
-            self.started_minimized = None;
-            return;
-        }
+        ctx.request_repaint_after(Duration::from_secs(1));
         if self
-            .late_tray_checked
+            .at_login_checked
             .is_some_and(|t| t.elapsed() < Duration::from_secs(1))
         {
-            ctx.request_repaint_after(Duration::from_secs(1));
             return;
         }
-        self.late_tray_checked = Some(Instant::now());
-        ctx.request_repaint_after(Duration::from_secs(1));
-        let minimized = ctx.input(|i| i.viewport().minimized != Some(false));
-        if late_tray(
-            started.elapsed(),
-            self.tray.is_some() && crate::can_start_in_tray(),
-            minimized,
-        ) {
-            tracing::info!(
-                "a notification area came {} ms after the start: the window goes into it",
-                started.elapsed().as_millis()
-            );
-            self.started_minimized = None;
-            self.hide_to_tray(ctx);
-            // Minimized, hiding leaves it iconic on X11, its button still in the taskbar.
-            #[cfg(target_os = "linux")]
-            if let Some((display, window)) = self.x11 {
-                crate::unix::withdraw(display, window);
+        self.at_login_checked = Some(Instant::now());
+        let icon = self.tray.is_some();
+        let since = started.elapsed();
+        match at_login(since, icon, icon && self.tray_shown()) {
+            AtLogin::Wait => {}
+            AtLogin::Tray => {
+                tracing::info!(
+                    "started with the session: in the notification area ({} ms on)",
+                    since.as_millis()
+                );
+                self.at_login = None;
+            }
+            AtLogin::Minimize => {
+                tracing::info!(
+                    "started with the session: no notification area within {} s: minimized",
+                    TRAY_GRACE.as_secs()
+                );
+                self.at_login = None;
+                self.trim_when_hidden = None;
+                self.hidden = false;
+                ctx.send_viewport_cmd(egui::ViewportCommand::Visible(true));
+                ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
             }
         }
     }
@@ -2626,7 +2624,7 @@ impl App {
                 .collect();
             t.set_downloads(&running);
         }
-        self.late_tray(ctx);
+        self.settle_at_login(ctx);
         let cmds = self.tray.as_ref().map(|t| t.poll()).unwrap_or_default();
         for c in cmds {
             use crate::tray::TrayCmd;
@@ -7852,26 +7850,28 @@ fn share(cap: u64, other: f64) -> u64 {
 }
 
 #[cfg(test)]
-mod late_tray_tests {
-    use super::{LATE_TRAY_WITHIN, late_tray};
+mod at_login_tests {
+    use super::{AtLogin, TRAY_GRACE, at_login};
     use std::time::Duration;
 
-    /// Started minimized for want of a tray (#226, GNOME's AppIndicator extension registering
-    /// its tray two seconds after MDM looked): a tray that comes soon after takes the window.
+    /// Where a start with the session leaves the window (#226), in each order its tray icon and
+    /// the desktop's tray can come in.
     #[test]
-    fn a_tray_that_comes_soon_after_the_start_takes_the_window() {
+    fn the_window_waits_for_the_tray_then_stays_there_or_shows_minimized() {
         let s = Duration::from_secs;
-        assert!(late_tray(s(2), true, true), "the tray came 2 s on");
-        assert!(late_tray(LATE_TRAY_WITHIN, true, true));
-        assert!(!late_tray(s(2), false, true), "no tray yet: minimized");
-        assert!(
-            !late_tray(s(2), true, false),
-            "brought back by the user meanwhile: theirs"
-        );
-        assert!(
-            !late_tray(LATE_TRAY_WITHIN + s(1), true, true),
-            "too late: the user knows it as a minimized window by now"
-        );
+        // The tray first (Windows, KDE): MDM's icon registered, the window stays hidden.
+        assert_eq!(at_login(s(0), true, true), AtLogin::Tray);
+        // The decision first (XFCE: MDM looked before its own icon had registered; GNOME: the
+        // AppIndicator extension's tray came 2 s after MDM): waited for, hidden, then the tray.
+        assert_eq!(at_login(s(0), false, false), AtLogin::Wait);
+        assert_eq!(at_login(s(0), true, false), AtLogin::Wait);
+        assert_eq!(at_login(s(2), true, true), AtLogin::Tray);
+        assert_eq!(at_login(TRAY_GRACE - s(1), true, true), AtLogin::Tray);
+        // No tray within the grace period (a desktop without one, #59; Windows' taskbar not
+        // there to take the icon): shown, minimized.
+        assert_eq!(at_login(TRAY_GRACE, true, false), AtLogin::Minimize);
+        assert_eq!(at_login(TRAY_GRACE, false, false), AtLogin::Minimize);
+        assert_eq!(at_login(s(60), false, true), AtLogin::Minimize);
     }
 }
 
