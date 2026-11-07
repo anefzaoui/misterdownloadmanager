@@ -12,7 +12,7 @@ How Mister Download Manager's pieces fit together.
 | `crates/mcp` | `mdm-mcp` | The MCP server (`misterdownloadmanager-mcp`): AI assistants list, add and control the running app's downloads through the automation API |
 | `crates/nmhost` | `mdm-nmhost` | The browser's native messaging host: takes captured downloads from the extension and hands them to the app |
 | `crates/ipc` | `mdm-ipc` | The single-instance channel (a token-protected local socket), the data folder, and the capture rules shared by the app and the host |
-| `crates/tools` | `mdm-tools` | Video pages through yt-dlp and ffmpeg (run as separate programs) |
+| `crates/tools` | `mdm-tools` | Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (`relay.rs`) |
 | `crates/crash` | `mdm-crash` | Crash and freeze reports: the monitor process, out-of-process minidumps, symbolicated stacks, the report's text and the release logs ([crash-reports.md](crash-reports.md)) |
 | `crates/torrent` | `mdm-torrent` | BitTorrent and magnet links through librqbit |
 | `crates/labserver` | `mdm-labserver` | An HTTP Range server with a request log and fault injection, and an FTP/FTPS server with its own faults, for tests and benchmarks |
@@ -75,9 +75,12 @@ before file names (`fileicons.rs`): the Windows shell's system image lists, macO
 Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's
 icons (bundled) stand in until the system's icon is ready, and wherever the system has none.
 
-On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend
-only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL.
-When the chosen one can't start, the other one is tried, so the windows always open.
+The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through
+eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on
+Linux, Metal on macOS (choices there; OpenGL stays their default). View → Draw with picks one. One
+code path does it on every system (`crates/app/src/renderer.rs`): when the chosen one can't start,
+the other one is tried, so the windows always open; a start whose first frame doesn't come, or a
+graphics card lost twice, is remembered with its reason, which the menu shows.
 
 The download list and settings are saved atomically to `%APPDATA%\misterdownloadmanager\`
 (`downloads.json`). The browser host reads the same file for the capture rules, so a change in

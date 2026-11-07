@@ -183,6 +183,11 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Bidh seirbheis debrid a’ luchdachadh sìos ceangal aoigheachd faidhle leis a’ chunntas pàighte agad fhèin agus a’ toirt ceangal dìreach do MDM. Na cleachd ach do chunntas fhèin: bidh roinneadh cunntais no a cheanglaichean a’ briseadh cumhachan nan seirbheisean agus faodaidh e a bhith air a chur dheth. Bidh luchdachadh sìos a thòisich am brabhsair mar-thà a’ fuireach mar a tha iad.
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	A file of this torrent can't be saved safely: {name}	Cha gabh faidhle dhen toirrent seo a shàbhaladh gu sàbhailte: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -431,6 +436,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	DNS eile...
+#. text in unix.rs
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+#, machine
+	Another program has set the computer's wake alarm	Tha prògram eile air inneal-rabhaidh dùsgadh a' choimpiutair a shuidheachadh
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -739,6 +748,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Chad	Chad
+#. text in the Scheduler window
+#. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+#, machine
+	Change	Atharraich
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -1179,6 +1192,10 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	Luchdaich sìos ceanglaichean aoigh faidhle le taic tro na cunntasan sin
+#. text in a dialog box
+#. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
+#, machine
+	Download through {service}	Luchdaich sìos tro {service}
 #. window title in the Download video window
 #, machine
 	Download video from a page	Luchdaich sìos bhidio bho dhuilleag
@@ -1820,6 +1837,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Hong Kong	Hong Kong
+#. text in the Scheduler window
+#. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+#, machine
+	How to allow it	Ciamar a cheadaicheas tu e
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -2347,6 +2368,11 @@
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Bhuail Mister Download Manager air mearachd a-staigh
+#. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Mister Download Manager is running the queue "{queue}"	Tha Mister Download Manager a' ruith a' chiutha "{queue}"
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -2758,9 +2784,17 @@
 #. a country's name (where a download's server is)
 #, machine
 	Oman	Omàn
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+#, machine
+	On battery, Windows' power options don't allow wake timers	Air bataraidh, chan eil roghainnean cumhachd Windows a' ceadachadh tìmearan dùsgadh
 #. text in a download's progress window
 #, machine
 	on download stop/resume	air stad/ath-thòiseachadh luchdachadh sìos
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
+#, machine
+	On macOS, only an administrator can schedule a wake	Air macOS, chan urrainn ach rianaire dùsgadh a chlàradh
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Aon uair aig
@@ -2784,6 +2818,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Chan urrainnear ach luchdachadh sìos a tha deiseil, no nach deach a thòiseachadh fhathast, a ghluasad. Stad e is crìochnaich e an toiseach.
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+#, machine
+	Only an administrator can allow this	Chan urrainn ach rianaire seo a cheadachadh
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -3318,6 +3356,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Cuir seo gu caraid:
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+#, machine
+	Send torrents and magnet links to the first account instead of to peers	Cuir toirrentan is ceanglaichean magnait chun a’ chiad chunntais an àite gu co-aoisean
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3364,6 +3406,14 @@
 #. button in Test browser integration: register MDM's helper with the browsers
 #, machine
 	Set it up	Stèidhich e
+#. message or event log entry in the main window
+#. event log: File Properties: the download no longer goes through the debrid account
+#, machine
+	Set to download directly, not through the debrid account	Suidhichte airson a luchdachadh sìos gu dìreach, chan ann tro chunntas debrid
+#. message or event log entry in the main window
+#. event log: File Properties: the download goes through the debrid account again
+#, machine
+	Set to download through the debrid account	Suidhichte airson a luchdachadh sìos tro chunntas debrid
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3644,7 +3694,7 @@
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	Stad luchdachadh sìos aig
-#. button in playlistdlg.rs
+#. text in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
 	Stop listing	Stad an liostadh
@@ -3839,6 +3889,15 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The computer could not be turned off: {error}	Cha b’ urrainnear an coimpiutair a chuir dheth: {error}
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue"
+#, machine
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	Thèid an coimpiutair a dhùsgadh mionaid ron àm tòiseachaidh agus a chumail dùisgte fhad 's a bhios an ciutha a' ruith. Feumaidh Mister Download Manager a bhith a' ruith (faodaidh e feitheamh san raon fiosrachaidh).
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	The computer will be woken on {date} at {time}	Thèid an coimpiutair a dhùsgadh air {date} aig {time}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4078,6 +4137,14 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	Chan eil luchdachadh a-nuas anns a’ roinn no an ciudha seo fhathast.
+#. text in win32.rs
+#. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
+#, machine
+	This computer can't be woken by a timer	Chan urrainn tìmear an coimpiutair seo a dhùsgadh
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
+#, machine
+	This computer has no wake alarm that programs can set	Chan eil inneal-rabhaidh dùsgadh aig a' choimpiutair seo as urrainn prògraman a shuidheachadh
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4150,9 +4217,21 @@
 #. where a download's server is, when a proxy carries it: {country} is the proxy's country
 #, machine
 	through a proxy in {country}	tro proxy ann an {country}
+#. text in a download's Properties window
+#. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
+#, machine
+	Through {service}	Tro {service}
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+#, machine
+	Through {service}: the service downloads the torrent, then MDM its files	Tro {service}: luchdaichidh an t-seirbheis an toirrent, an uairsin MDM na faidhlichean aige
 #. text in the Scheduler window
 #, machine
 	Thursday	Diardaoin
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+#, machine
+	Tick "Start download at" first: the computer is woken for the start time	Comharraich "Tòisich luchdachadh sìos aig" an toiseach: thèid an coimpiutair a dhùsgadh airson an àm tòiseachaidh
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Ùine air fhàgail
@@ -4551,6 +4630,10 @@
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	A' feitheamh: chaidh an crìoch luchdaich sìos a ruighinn (Clàraiche)
+#. text in the Scheduler window
+#. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+#, machine
+	Wake the computer to run this queue	Dùisg an coimpiutair gus an ciutha seo a ruith
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4584,6 +4667,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	Meud iomlan
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
+#, machine
+	Windows allows wake timers only while plugged in	Chan eil Windows a' ceadachadh tìmearan dùsgadh ach fhad 's a tha e air a phlugadh a-steach
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4594,6 +4681,10 @@
 #. text in langpick.rs
 #, machine
 	Windows' language ({language})	Cànan Windows ({language})
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+#, machine
+	Windows' power options don't allow wake timers	Chan eil roghainnean cumhachd Windows a' ceadachadh tìmearan dùsgadh
 #. message or event log entry in the main window
 #, machine
 	with Add URL	le Cuir URL ris
@@ -4816,6 +4907,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} de {total} air a thaghadh
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+#, machine
+	{percent} at {service}	{percent} aig {service}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -4827,6 +4922,9 @@
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	tha {service} ag iarraidh ort an coimpiutair seo a cheadachadh an toiseach: faic am post-d aige
+#. text in errors.rs
+#, machine
+	{service} can't get this torrent: nobody shares it, or its link can't be read	Chan urrainn do {service} an toirrent seo fhaighinn: chan eil duine ga roinneadh, no chan urrainnear a cheangal a leughadh
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	chan urrainn do {service} an aoigh faidhle seo a ruighinn an-dràsta; feuchaidh MDM a-rithist nas fhaide air adhart
@@ -5466,7 +5564,7 @@ menu	Download &video from a page...	Luchdaich sìos &bhidio bho dhuilleag...
 #, machine
 menu	Download in order	Luchdaich sìos ann an òrdugh
 #. menu command in the main window
-#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	Tarraing le
 #. menu command in the main window
@@ -5517,6 +5615,26 @@ menu	Hide drop target	Falaich targaid tuiteam
 #, machine
 menu	High contrast	Àrd-chaochlaideachd
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+#, machine
+menu	It couldn't start: the log says why	Cha b' urrainn dha tòiseachadh: tha an log ag innse carson
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+#, machine
+menu	Its first frame didn't show within 10 seconds	Cha do nochd a chiad fhrèam taobh a-staigh 10 diogan
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+#, machine
+menu	Its last start ended before its first frame	Thàinig an tòiseachadh mu dheireadh aige gu crìch ron chiad fhrèam aige
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Apple's), usually kept as is
+#, machine
+menu	Metal	Metal
+#. menu command in the main window
+#. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Metal didn't start here: OpenGL draws	Cha do thòisich Metal an seo: tha OpenGL a' tarraing
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
 menu	Metro	Metro
@@ -5531,6 +5649,10 @@ menu	Move/Rename (Ctrl-M)	Gluais/Ath-ainmich (Ctrl-M)
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
 menu	Native	Dùthchasach
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+#, machine
+menu	No graphics card here has a driver for it	Chan eil draibhear aig cairt grafaigeachd sam bith an seo air a shon
 #. menu command in the main window
 #, machine
 menu	On Double click	Air Dùbailt-bhriog
@@ -5656,6 +5778,10 @@ menu	Support &MDM	Thoir taic do &MDM
 #, machine
 menu	Tell a &friend	Innis do &charaid
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+#, machine
+menu	The graphics card was lost twice in 10 minutes	Chaidh a' chairt grafaigeachd a chall dà uair ann an 10 mionaidean
+#. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
 menu	Theme	Cuspair
@@ -5694,6 +5820,14 @@ menu	Turn of&f	Tionndaidh &dheth
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Verify checksum...	Dearbhaich suim-smachd...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+#, machine
+menu	Vulkan	Vulkan
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Vulkan didn't start here: OpenGL draws	Cha do thòisich Vulkan an seo: tha OpenGL a' tarraing
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

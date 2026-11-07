@@ -221,6 +221,10 @@ pub struct Settings {
     pub debrid_accounts: Vec<DebridAccount>,
     /// "Download supported file-host links through these accounts".
     pub debrid_on: bool,
+    /// Options → Accounts (#44): magnet links and .torrent files go to the first account, whose
+    /// service downloads them; their files then come over HTTP. No peer connections. Off: as
+    /// before, through the torrent engine.
+    pub debrid_torrents: bool,
     /// Sounds: download complete, download failed, queue started, queue stopped/finished.
     pub sounds: [(bool, String); 4],
     /// The local automation API (beyond IDM): status queries over the command channel. Off by
@@ -401,6 +405,7 @@ impl Default for Settings {
             site_logins: Vec::new(),
             debrid_accounts: Vec::new(),
             debrid_on: true,
+            debrid_torrents: false,
             sounds: Default::default(),
             automation_api: false,
             torrent_keep_sharing: false,
@@ -841,11 +846,14 @@ pub fn share_proxy(proxy: mdm_engine::Proxy) {
     }
 }
 
-/// Keep [`own_net`] on the settings' DNS (cheap when it didn't change).
+/// Keep [`own_net`] on the settings' DNS (cheap when it didn't change), and the helpers' relay
+/// (#35: the servers of video pages and galleries are looked up with it while an adapter is
+/// chosen).
 pub fn share_dns(dns: mdm_engine::DnsChoice) {
     if OWN_DNS.read().unwrap().as_ref() != Some(&dns) {
-        *OWN_DNS.write().unwrap() = Some(dns);
+        *OWN_DNS.write().unwrap() = Some(dns.clone());
     }
+    mdm_tools::proc::set_dns(dns);
 }
 
 static OWN_ROUTE: std::sync::RwLock<mdm_engine::Route> =

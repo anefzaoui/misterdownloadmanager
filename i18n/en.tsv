@@ -143,6 +143,10 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+	A file of this torrent can't be saved safely: {name}	A file of this torrent can't be saved safely: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	A NextDNS configuration ID is six letters and digits (0-9, a-f).
@@ -326,6 +330,9 @@
 #. Options → Connection → DNS: a DNS server the user types in
 #. the trailing ... means it is still going on: keep it
 	Another DNS...	Another DNS...
+#. text in unix.rs
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+	Another program has set the computer's wake alarm	Another program has set the computer's wake alarm
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 	Answered in {ms} ms: {ip}	Answered in {ms} ms: {ip}
@@ -553,6 +560,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Chad	Chad
+#. text in the Scheduler window
+#. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+	Change	Change
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 	Change folder for "{category}" category on last selected	Change folder for "{category}" category on last selected
@@ -875,6 +885,9 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 	Download supported file-host links through these accounts	Download supported file-host links through these accounts
+#. text in a dialog box
+#. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
+	Download through {service}	Download through {service}
 #. window title in the Download video window
 	Download video from a page	Download video from a page
 #. text in helpers.rs
@@ -1346,6 +1359,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Hong Kong	Hong Kong
+#. text in the Scheduler window
+#. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+	How to allow it	How to allow it
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 	How to fix it	How to fix it
@@ -1735,6 +1751,10 @@
 #. text in crashui.rs
 #. crash report window heading: an internal error, MDM still running
 	Mister Download Manager hit an internal error	Mister Download Manager hit an internal error
+#. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+	Mister Download Manager is running the queue "{queue}"	Mister Download Manager is running the queue "{queue}"
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 	Mister Download Manager stopped responding	Mister Download Manager stopped responding
@@ -2033,8 +2053,14 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Oman	Oman
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+	On battery, Windows' power options don't allow wake timers	On battery, Windows' power options don't allow wake timers
 #. text in a download's progress window
 	on download stop/resume	on download stop/resume
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
+	On macOS, only an administrator can schedule a wake	On macOS, only an administrator can schedule a wake
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 	Once at	Once at
 #. text in extension.rs
@@ -2051,6 +2077,9 @@
 	Only a finished download, or one not started yet, can be moved	Only a finished download, or one not started yet, can be moved
 #. message or event log entry in the main window
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+	Only an administrator can allow this	Only an administrator can allow this
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 	Only MP4 and MKV videos can hold subtitles	Only MP4 and MKV videos can hold subtitles
@@ -2445,6 +2474,9 @@
 	Send on GitHub	Send on GitHub
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Send this to a friend:	Send this to a friend:
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+	Send torrents and magnet links to the first account instead of to peers	Send torrents and magnet links to the first account instead of to peers
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Senegal	Senegal
@@ -2479,6 +2511,12 @@
 #. button in the browser extension's window: register MDM's helper with the browsers
 #. button in Test browser integration: register MDM's helper with the browsers
 	Set it up	Set it up
+#. message or event log entry in the main window
+#. event log: File Properties: the download no longer goes through the debrid account
+	Set to download directly, not through the debrid account	Set to download directly, not through the debrid account
+#. message or event log entry in the main window
+#. event log: File Properties: the download goes through the debrid account again
+	Set to download through the debrid account	Set to download through the debrid account
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -2827,6 +2865,13 @@
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 	The computer could not be turned off: {error}	The computer could not be turned off: {error}
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue"
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+#. {time} = a time of day (keep the braces as they are)
+	The computer will be woken on {date} at {time}	The computer will be woken on {date} at {time}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 	The computer will go to sleep in {n} seconds.	The computer will go to sleep in {n} seconds.
@@ -2999,6 +3044,12 @@
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 	This category or queue holds no downloads yet.	This category or queue holds no downloads yet.
+#. text in win32.rs
+#. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
+	This computer can't be woken by a timer	This computer can't be woken by a timer
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
+	This computer has no wake alarm that programs can set	This computer has no wake alarm that programs can set
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 	this computer or the local network	this computer or the local network
@@ -3052,8 +3103,17 @@
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it: {country} is the proxy's country
 	through a proxy in {country}	through a proxy in {country}
+#. text in a download's Properties window
+#. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
+	Through {service}	Through {service}
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+	Through {service}: the service downloads the torrent, then MDM its files	Through {service}: the service downloads the torrent, then MDM its files
 #. text in the Scheduler window
 	Thursday	Thursday
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+	Tick "Start download at" first: the computer is woken for the start time	Tick "Start download at" first: the computer is woken for the start time
 #. text in a download's progress window; text in the Scheduler window
 	Time left	Time left
 #. text in countries.rs
@@ -3313,12 +3373,6 @@
 	Video	Video
 #. text in the Download video window
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Video lookups use yt-dlp (about 23 MB, checked against its signature).
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-	Video pages and torrents can't use it yet.	Video pages and torrents can't use it yet.
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-	Video pages can't use it yet.	Video pages can't use it yet.
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 	Videos	Videos
@@ -3347,6 +3401,9 @@
 	Waiting	Waiting
 #. message or event log entry in the main window
 	Waiting: the download limit is reached (Scheduler)	Waiting: the download limit is reached (Scheduler)
+#. text in the Scheduler window
+#. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+	Wake the computer to run this queue	Wake the computer to run this queue
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Wallis and Futuna	Wallis and Futuna
@@ -3371,6 +3428,9 @@
 	What's new:	What's new:
 #. text in the Batch download window
 	Wildcard size	Wildcard size
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
+	Windows allows wake timers only while plugged in	Windows allows wake timers only while plugged in
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 	Windows refused	Windows refused
@@ -3378,6 +3438,9 @@
 	Windows' language	Windows' language
 #. text in langpick.rs
 	Windows' language ({language})	Windows' language ({language})
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+	Windows' power options don't allow wake timers	Windows' power options don't allow wake timers
 #. message or event log entry in the main window
 	with Add URL	with Add URL
 #. text in the Add torrent window
@@ -3546,6 +3609,9 @@
 #. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 	{n} of {total} selected	{n} of {total} selected
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+	{percent} at {service}	{percent} at {service}
 #. text in errors.rs
 	{problem} ({cause})	{problem} ({cause})
 #. text in errors.rs
@@ -3554,6 +3620,8 @@
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 	{service} asks you to allow this computer first: see its email	{service} asks you to allow this computer first: see its email
+#. text in errors.rs
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} can't get this torrent: nobody shares it, or its link can't be read
 #. text in errors.rs
 	{service} can't reach this file host right now; MDM will try again later	{service} can't reach this file host right now; MDM will try again later
 #. text in errors.rs
@@ -4036,7 +4104,7 @@ menu	Download &video from a page...	Download &video from a page...
 #. right-click → Torrent, a choice with a check mark: download the torrent's files from their start, to watch a video while it downloads
 menu	Download in order	Download in order
 #. menu command in the main window
-#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 menu	Draw with	Draw with
 #. menu command in the main window
 #. verb: save the download list to a file
@@ -4074,6 +4142,21 @@ menu	Hide drop target	Hide drop target
 #. View → Theme: black and white with strong edges, for low vision
 menu	High contrast	High contrast
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+menu	It couldn't start: the log says why	It couldn't start: the log says why
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+menu	Its first frame didn't show within 10 seconds	Its first frame didn't show within 10 seconds
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+menu	Its last start ended before its first frame	Its last start ended before its first frame
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Apple's), usually kept as is
+menu	Metal	Metal
+#. menu command in the main window
+#. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+menu	Metal didn't start here: OpenGL draws	Metal didn't start here: OpenGL draws
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 menu	Metro	Metro
 #. menu command in the main window
@@ -4084,6 +4167,9 @@ menu	Move/Rename (Ctrl-M)	Move/Rename (Ctrl-M)
 #. menu command in the main window
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 menu	Native	Native
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+menu	No graphics card here has a driver for it	No graphics card here has a driver for it
 #. menu command in the main window
 menu	On Double click	On Double click
 #. menu command in the main window
@@ -4178,6 +4264,9 @@ menu	Support &MDM	Support &MDM
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Tell a &friend	Tell a &friend
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+menu	The graphics card was lost twice in 10 minutes	The graphics card was lost twice in 10 minutes
+#. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 menu	Theme	Theme
 #. menu command in the main window
@@ -4207,6 +4296,12 @@ menu	Turn of&f	Turn of&f
 #. menu command in the main window
 #. the trailing ... means it opens a window: keep it
 menu	Verify checksum...	Verify checksum...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+menu	Vulkan	Vulkan
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+menu	Vulkan didn't start here: OpenGL draws	Vulkan didn't start here: OpenGL draws
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menubar	&Downloads	&Downloads

@@ -668,6 +668,14 @@ pub struct FileInfo {
     folders_open: bool,
     /// "+" was clicked: the app opens the new-category window.
     pub new_category: bool,
+    /// The debrid accounts (#44): which one this address goes through, if any.
+    route: crate::debrid::Route,
+    /// The account that takes the address ("Real-Debrid (labuser)"), as last looked at: the
+    /// "Download through" line shows while there is one.
+    through: Option<String>,
+    /// "Download through …" unticked: downloaded directly instead (`Item::direct`). Unticked
+    /// from the start when the browser had already started the download.
+    pub direct: bool,
 }
 
 pub enum Start {
@@ -680,15 +688,19 @@ impl FileInfo {
     /// `request`'s headers (the download's own). A download from the browser needs no look-up:
     /// the browser has had the answer, and its name (a link's `download` name, a Unicode
     /// `filename*`) is the one it checked; asking again could get another.
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         new: NewUrl,
         context: mdm_ipc::Command,
         request: crate::app::RequestParts,
+        route: crate::debrid::Route,
         downloads: PathBuf,
         dirs: Vec<(String, String)>,
         rt: &tokio::runtime::Handle,
         ctx: &egui::Context,
     ) -> Self {
+        let direct = crate::debrid::browser_started(&context);
+        let through = route.through(&new.url);
         let from_browser = context
             .name
             .as_deref()
@@ -742,6 +754,36 @@ impl FileInfo {
             folders: Vec::new(),
             folders_open: false,
             new_category: false,
+            route,
+            through,
+            direct,
+        }
+    }
+
+    /// Look the address up again as it will now be downloaded: through the debrid account
+    /// or directly (#44), its name and size can differ.
+    fn look_again(&mut self, ctx: &egui::Context) {
+        self.request.opts.unlocker = self.route.unlocker(&self.url, self.direct);
+        self.through = self.route.through(&self.url);
+        self.probe = start_probe(&self.rt, ctx, &self.url, &self.request);
+        self.info = None;
+        // The old way's answer is closed.
+        self.kept = None;
+    }
+
+    /// The account that takes the address appeared or changed (the services' host lists are
+    /// read when MDM starts, and Options may change them while the dialog is open): looked up
+    /// again its way. A download the browser had started keeps the browser's answer, and goes
+    /// directly unless the line is ticked.
+    fn follow_route(&mut self, ctx: &egui::Context) {
+        let through = self.route.through(&self.url);
+        if through == self.through {
+            return;
+        }
+        if self.direct {
+            self.through = through;
+        } else {
+            self.look_again(ctx);
         }
     }
 
@@ -755,6 +797,7 @@ impl FileInfo {
                 if url == self.url {
                     return;
                 }
+                let from_browser = crate::debrid::browser_started(&self.context);
                 if !self.edited {
                     let name = mdm_engine::naming::file_name(None, &url);
                     self.category = Category::of(&name);
@@ -772,16 +815,19 @@ impl FileInfo {
                 }
                 self.context.name = None;
                 self.context.size = None;
+                self.context.mime = None;
                 self.context.final_url = None;
                 self.context.post = None;
                 self.context.post_type = None;
                 self.request.opts.post = None;
                 self.request.headers.remove(reqwest::header::CONTENT_TYPE);
-                self.probe = start_probe(&self.rt, ctx, &url, &self.request);
-                self.info = None;
-                // The old address's answer is closed.
-                self.kept = None;
+                // Another address isn't the download the browser had started: it goes through
+                // the debrid account that takes its host (#44), unless the user unticked it.
+                if from_browser {
+                    self.direct = false;
+                }
                 self.url = url;
+                self.look_again(ctx);
             }
             _ => self.url_bad = true,
         }
@@ -883,11 +929,15 @@ impl FileInfo {
             }
             self.info = Some(res);
         }
+        self.follow_route(ctx);
+        // The "Download through" line (#44) takes a row of its own while an account takes the
+        // address: the window grows by it.
+        let dy = if self.through.is_some() { 26.0 } else { 0.0 };
         window(
             ctx,
             "file-info",
             "Download File Info",
-            [570.0, 234.0],
+            [570.0, 234.0 + dy],
             true,
             winui::BG(),
             |ui, o| {
@@ -1053,13 +1103,36 @@ impl FileInfo {
                     false,
                 );
 
+                // Through a debrid account (#44): ticked, the service unlocks the link; unticked,
+                // the address is downloaded directly. Either way it is looked up again.
+                if let Some(through) = &self.through {
+                    let mut on = !self.direct;
+                    let caption = crate::i18n::fmt(
+                        // i18n: Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
+                        crate::i18n::t("Download through {service}"),
+                        &[("service", through)],
+                    );
+                    winui::checkbox_until(
+                        ui,
+                        o + vec2(96.0, 186.0),
+                        &mut on,
+                        &caption,
+                        true,
+                        Some(o.x + 462.0),
+                    );
+                    if on == self.direct {
+                        self.direct = !on;
+                        self.look_again(ui.ctx());
+                    }
+                }
+
                 // Where the server is (#140), as the look saw it: "..." while it looks; blank when
                 // nothing was asked (the browser had the answer) or the look failed.
                 // i18n: label before where a download's server is (its country and round trip)
                 winui::text_right(
                     &p,
                     o.x + 88.0,
-                    o.y + 193.0,
+                    o.y + 193.0 + dy,
                     crate::i18n::t("Server"),
                     winui::TEXT(),
                 );
@@ -1067,7 +1140,7 @@ impl FileInfo {
                     None => crate::whereis::line(
                         ui,
                         o.x + 96.0,
-                        o.y + 193.0,
+                        o.y + 193.0 + dy,
                         o.x + 462.0,
                         None,
                         "file-info",
@@ -1078,7 +1151,7 @@ impl FileInfo {
                             crate::whereis::line(
                                 ui,
                                 o.x + 96.0,
-                                o.y + 193.0,
+                                o.y + 193.0 + dy,
                                 o.x + 462.0,
                                 Some(&seen),
                                 "file-info",
@@ -1113,7 +1186,7 @@ impl FileInfo {
                 };
                 let later = winui::button(
                     ui,
-                    r(o, 97.0, 206.0, 109.0, 21.0),
+                    r(o, 97.0, 206.0 + dy, 109.0, 21.0),
                     "Download Later",
                     later_kind,
                     false,
@@ -1122,7 +1195,7 @@ impl FileInfo {
                 let later = winui::why_disabled(later, blocked.is_some(), blocked.unwrap_or(""));
                 let start = winui::button(
                     ui,
-                    r(o, 225.0, 206.0, 109.0, 21.0),
+                    r(o, 225.0, 206.0 + dy, 109.0, 21.0),
                     "Start Download",
                     start_kind,
                     true,
@@ -1131,7 +1204,7 @@ impl FileInfo {
                 let start = winui::why_disabled(start, blocked.is_some(), blocked.unwrap_or(""));
                 let cancel = winui::button(
                     ui,
-                    r(o, 352.0, 206.0, 109.0, 21.0),
+                    r(o, 352.0, 206.0 + dy, 109.0, 21.0),
                     "Cancel",
                     ButtonKind::Normal,
                     false,
