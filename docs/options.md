@@ -26,7 +26,7 @@ See [Browser integration](browser-integration.md).
 ![Options on its File types page: the file types the browser hands to MDM and the sites it leaves alone](images/help/options-file-types.webp)
 *File types: what the browser hands over, and the sites left alone.*
 
-- **Automatically start downloading the following file types** — the file types the browser hands over (and the clipboard picks up). Separate them by spaces; `*` matches any characters, as in `R0*`. **Default** puts the original list back.
+- **Automatically start downloading the following file types** — the file types the browser hands over (and the clipboard picks up). Separate them by spaces; `*` matches any characters, as in `R0*`. **Default** puts the original list back. The list starts with the usual archives, programs and installers (Windows, macOS and Linux ones: DMG, PKG, DEB, RPM, APPIMAGE, MSIX), music and videos, and PDF. A list you never changed gains the types a new version adds; one you edited stays as it is.
 - **Don't start downloading automatically from the following sites** — sites whose downloads stay in the browser, separated by spaces. `*.example.com` covers every part of a site. **Default** puts the original list back.
 
 ## Save to

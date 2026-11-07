@@ -90,6 +90,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   browser is unticked, browser integration is off, or the extension may not read the site), and
   the extension's button shows the last one, with the file's name. A download from a private
   window is logged without its name or site.
+- **More file types taken from the browser by default**
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): today's installers and
+  packages (DMG and PKG for macOS, DEB, RPM and APPIMAGE for Linux, MSIX, APPX, APPXBUNDLE and CAB
+  for Windows, JAR), archives (XZ, ZST, TGZ, TXZ) and WEBM, FLAC and OPUS join **Options → File
+  types**. A list never edited gains them on the next start; one you edited stays as it is.
 - **Themes: View → Theme** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)).
   **Classic** is MDM's look, unchanged and still the default. **Native** takes your system's
   colours: Windows' accent colour and, when it is on, its contrast theme; the desktop's accent
