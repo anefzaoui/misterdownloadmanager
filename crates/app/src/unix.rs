@@ -1077,31 +1077,296 @@ fn color_scheme(v: &zbus::zvariant::Value) -> Option<u32> {
     }
 }
 
-/// Linux: the windows run through X11 (XWayland, in a Wayland session) when there is one, unless
-/// `MDM_WAYLAND=1` (#50). Wayland lets no program place its own windows, and MDM's menus and drop
-/// lists are windows it places under what was clicked: Wayland put them in the middle of the
-/// screen. The hook for `NativeOptions::event_loop_builder`; None: winit's own choice.
+/// Linux: a library winit loads when the window opens (not linked: the program starts without
+/// it, and the window then can't open), with its package in each family of distributions.
 #[cfg(target_os = "linux")]
-pub fn prefer_x11() -> Option<eframe::EventLoopBuilderHook> {
-    let set = |name: &str| std::env::var_os(name).is_some_and(|v| !v.is_empty());
-    let keep = std::env::var_os("MDM_WAYLAND").is_some_and(|v| v == "1");
-    let x11 = set("WAYLAND_DISPLAY") && set("DISPLAY") && !keep;
-    let _ = ON_WAYLAND.set(set("WAYLAND_DISPLAY") && !x11);
-    x11.then(|| -> eframe::EventLoopBuilderHook {
-        Box::new(|b| {
-            use winit::platform::x11::EventLoopBuilderExtX11;
-            b.with_x11();
-        })
-    })
+#[derive(Debug, PartialEq, Eq)]
+pub struct WindowLib {
+    /// The names winit's loaders try, the usual one first.
+    pub names: &'static [&'static str],
+    /// Its package on Debian and Ubuntu, Fedora (and RHEL), openSUSE, Arch, Alpine.
+    packages: [&'static str; 5],
 }
 
 #[cfg(target_os = "linux")]
-static ON_WAYLAND: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
+const XKBCOMMON: WindowLib = WindowLib {
+    names: &["libxkbcommon.so.0", "libxkbcommon.so"],
+    packages: [
+        "libxkbcommon0",
+        "libxkbcommon",
+        "libxkbcommon0",
+        "libxkbcommon",
+        "libxkbcommon",
+    ],
+};
 
-/// Linux: MDM's windows are Wayland's (not X11's or XWayland's), as `prefer_x11` decided.
+/// What an X11 window (or XWayland's) needs: the keyboard (xkbcommon-dl) and Xlib's parts
+/// (x11-dl), as winit opens them.
+#[cfg(target_os = "linux")]
+const X11_LIBS: &[WindowLib] = &[
+    WindowLib {
+        names: &["libxkbcommon-x11.so.0", "libxkbcommon-x11.so"],
+        packages: [
+            "libxkbcommon-x11-0",
+            "libxkbcommon-x11",
+            "libxkbcommon-x11-0",
+            "libxkbcommon-x11",
+            "libxkbcommon",
+        ],
+    },
+    XKBCOMMON,
+    WindowLib {
+        names: &["libX11.so.6", "libX11.so"],
+        packages: ["libx11-6", "libX11", "libX11-6", "libx11", "libx11"],
+    },
+    WindowLib {
+        names: &["libX11-xcb.so.1", "libX11-xcb.so"],
+        packages: [
+            "libx11-xcb1",
+            "libX11-xcb",
+            "libX11-xcb1",
+            "libx11",
+            "libx11",
+        ],
+    },
+    WindowLib {
+        names: &["libXcursor.so.1", "libXcursor.so"],
+        packages: [
+            "libxcursor1",
+            "libXcursor",
+            "libXcursor1",
+            "libxcursor",
+            "libxcursor",
+        ],
+    },
+    WindowLib {
+        names: &["libXi.so.6", "libXi.so"],
+        packages: ["libxi6", "libXi", "libXi6", "libxi", "libxi"],
+    },
+];
+
+/// What a Wayland window needs: the keyboard, and Wayland's client library (winit loads it).
+#[cfg(target_os = "linux")]
+const WAYLAND_LIBS: &[WindowLib] = &[
+    XKBCOMMON,
+    WindowLib {
+        names: &["libwayland-client.so.0", "libwayland-client.so"],
+        packages: [
+            "libwayland-client0",
+            "libwayland-client",
+            "libwayland-client0",
+            "wayland",
+            "wayland-libs-client",
+        ],
+    },
+];
+
+/// Linux: the display system MDM's windows use, decided once (`window_system`), and what the
+/// system lacks for it.
+#[cfg(target_os = "linux")]
+#[derive(Debug, Default, PartialEq, Eq)]
+pub struct WindowSystem {
+    /// Wayland's windows, not X11's (or XWayland's).
+    pub wayland: bool,
+    /// X11 is chosen in a Wayland session (XWayland): winit is told so.
+    x11_over_wayland: bool,
+    /// X11 was MDM's choice, but these are missing: Wayland's windows instead.
+    pub x11_missing: Vec<&'static WindowLib>,
+    /// The chosen system lacks these: no window can open (#265).
+    pub missing: Vec<&'static WindowLib>,
+}
+
+/// The windows run through X11 (XWayland, in a Wayland session) when there is one, unless
+/// `MDM_WAYLAND=1` (#50). Wayland lets no program place its own windows, and MDM's menus and drop
+/// lists are windows it places under what was clicked: Wayland put them in the middle of the
+/// screen. Without the libraries X11's windows need, Wayland's when there is one (#265).
+/// `loads`: whether a library can be loaded.
+#[cfg(target_os = "linux")]
+fn choose_window_system(
+    wayland_session: bool,
+    x11_session: bool,
+    keep_wayland: bool,
+    loads: impl Fn(&WindowLib) -> bool,
+) -> WindowSystem {
+    let lacking = |libs: &'static [WindowLib]| libs.iter().filter(|l| !loads(l)).collect();
+    let mut ws = WindowSystem::default();
+    if x11_session && !(wayland_session && keep_wayland) {
+        ws.missing = lacking(X11_LIBS);
+        if ws.missing.is_empty() {
+            ws.x11_over_wayland = wayland_session;
+            return ws;
+        }
+        if !wayland_session {
+            return ws;
+        }
+        ws.x11_missing = std::mem::take(&mut ws.missing);
+    }
+    if wayland_session {
+        ws.wayland = true;
+        ws.missing = lacking(WAYLAND_LIBS);
+    }
+    ws
+}
+
+/// Linux: the display system MDM's windows use (see `choose_window_system`), decided at the
+/// first question.
+#[cfg(target_os = "linux")]
+pub fn window_system() -> &'static WindowSystem {
+    static CHOSEN: std::sync::OnceLock<WindowSystem> = std::sync::OnceLock::new();
+    CHOSEN.get_or_init(|| {
+        let set = |name: &str| std::env::var_os(name).is_some_and(|v| !v.is_empty());
+        choose_window_system(
+            set("WAYLAND_DISPLAY"),
+            set("DISPLAY"),
+            std::env::var_os("MDM_WAYLAND").is_some_and(|v| v == "1"),
+            |lib| lib.names.iter().any(|n| loads(n)),
+        )
+    })
+}
+
+/// Whether the library `name` can be loaded, as winit's loaders would load it (and unloaded
+/// again at once).
+#[cfg(target_os = "linux")]
+#[allow(unsafe_code)]
+fn loads(name: &str) -> bool {
+    let Ok(name) = std::ffi::CString::new(name) else {
+        return false;
+    };
+    // SAFETY: a NUL-terminated name; the handle, when there is one, is closed right after and
+    // nothing of the library is used.
+    let handle = unsafe { libc::dlopen(name.as_ptr(), libc::RTLD_LAZY | libc::RTLD_LOCAL) };
+    if handle.is_null() {
+        return false;
+    }
+    // SAFETY: the handle dlopen just gave.
+    unsafe { libc::dlclose(handle) };
+    true
+}
+
+/// The hook for `NativeOptions::event_loop_builder` that opens the windows where
+/// `window_system` chose; None: winit's own choice (the same).
+#[cfg(target_os = "linux")]
+pub fn event_loop_hook() -> Option<eframe::EventLoopBuilderHook> {
+    let ws = window_system();
+    if ws.x11_over_wayland {
+        Some(Box::new(|b| {
+            use winit::platform::x11::EventLoopBuilderExtX11;
+            b.with_x11();
+        }))
+    } else if ws.wayland {
+        Some(Box::new(|b| {
+            use winit::platform::wayland::EventLoopBuilderExtWayland;
+            b.with_wayland();
+        }))
+    } else {
+        None
+    }
+}
+
+/// Linux: MDM's windows are Wayland's (not X11's or XWayland's), as `window_system` decided.
 #[cfg(target_os = "linux")]
 pub fn on_wayland() -> bool {
-    *ON_WAYLAND.get_or_init(|| std::env::var_os("WAYLAND_DISPLAY").is_some_and(|v| !v.is_empty()))
+    window_system().wayland
+}
+
+/// The family of distributions /etc/os-release (`os_release`) names: the index of its packages
+/// in `WindowLib::packages`, and how it installs one.
+#[cfg(target_os = "linux")]
+fn installer(os_release: &str) -> Option<(usize, &'static str)> {
+    let field = |key: &str| {
+        os_release
+            .lines()
+            .find_map(|l| l.strip_prefix(key)?.strip_prefix('='))
+            .map(|v| v.trim().trim_matches(['"', '\'']).to_lowercase())
+            .unwrap_or_default()
+    };
+    let ids = format!("{} {}", field("ID"), field("ID_LIKE"));
+    let is = |name: &str| ids.split_whitespace().any(|id| id == name);
+    if is("debian") || is("ubuntu") {
+        Some((0, "sudo apt install"))
+    } else if is("suse") || is("opensuse") || ids.contains("opensuse") {
+        Some((2, "sudo zypper install"))
+    } else if is("fedora") || is("rhel") || is("centos") {
+        Some((1, "sudo dnf install"))
+    } else if is("arch") {
+        Some((3, "sudo pacman -S"))
+    } else if is("alpine") {
+        Some((4, "sudo apk add"))
+    } else {
+        None
+    }
+}
+
+/// The command that installs `libs` on the distribution /etc/os-release (`os_release`) names;
+/// None for one MDM doesn't know.
+#[cfg(target_os = "linux")]
+fn install_command(libs: &[&WindowLib], os_release: &str) -> Option<String> {
+    let (family, command) = installer(os_release)?;
+    let mut packages: Vec<&str> = Vec::new();
+    for lib in libs {
+        if !packages.contains(&lib.packages[family]) {
+            packages.push(lib.packages[family]);
+        }
+    }
+    Some(format!("{command} {}", packages.join(" ")))
+}
+
+/// What the system lacks for the windows, and how to install it, in the interface language
+/// (#265): `opening` says the window can't open, else that X11's windows fell back to Wayland's.
+#[cfg(target_os = "linux")]
+pub fn missing_text(libs: &[&WindowLib], opening: bool) -> String {
+    use crate::i18n::{fmt, ltr, t};
+    let names: Vec<&str> = libs.iter().map(|l| l.names[0]).collect();
+    let names = ltr(&names.join(", "));
+    let what = if opening {
+        // i18n: Linux, at start, on the terminal and in a message box: a library the window needs isn't installed; {libraries} = its file names (libxkbcommon-x11.so.0…), left as they are
+        t("Mister Download Manager can't open its window: this system lacks {libraries}.")
+    } else {
+        // i18n: Linux, at start, on the terminal: the libraries an X11 window needs aren't installed, so the window opens through Wayland instead, where menus can't be placed under what was clicked; {libraries} = their file names, left as they are
+        t(
+            "Mister Download Manager's X11 window needs {libraries}, which this system lacks: it opens on Wayland instead, where its menus may open away from their titles.",
+        )
+    };
+    let what = fmt(what, &[("libraries", &names)]);
+    let release = std::fs::read_to_string("/etc/os-release").unwrap_or_default();
+    let how = match install_command(libs, &release) {
+        Some(command) => fmt(
+            // i18n: Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
+            t("To install what's missing: {command}"),
+            &[("command", &ltr(&command))],
+        ),
+        // i18n: Linux, after a missing library's name, on a distribution MDM doesn't know
+        None => t("Install what's missing from your distribution's packages.").to_owned(),
+    };
+    format!("{what}\n{how}")
+}
+
+/// Says `text` on the terminal, in the log and, when a display is there, in a message box
+/// (zenity or kdialog, the first there): MDM's own window can't open.
+#[cfg(target_os = "linux")]
+pub fn tell_window_failed(text: &str) {
+    eprintln!("{text}");
+    tracing::error!("{text}");
+    let title = "Mister Download Manager";
+    let boxes: [(&str, Vec<&str>); 2] = [
+        (
+            "zenity",
+            vec!["--error", "--no-markup", "--title", title, "--text", text],
+        ),
+        ("kdialog", vec!["--title", title, "--error", text]),
+    ];
+    for (tool, args) in boxes {
+        let shown = Command::new(tool)
+            .args(args)
+            .stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .status();
+        // Not there, or it couldn't show (no display): the next one.
+        if shown.is_ok_and(|s| s.code().is_some_and(|c| c != 255 && c != 127)) {
+            return;
+        }
+    }
 }
 
 /// Linux: a tray host is there to show MDM's icon (a StatusNotifierWatcher on the session bus:
@@ -1576,6 +1841,116 @@ fn set_xattr(path: &Path, name: &str, value: &str) {
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
     use zbus::zvariant::Value;
+
+    use super::{WindowLib, X11_LIBS, choose_window_system, install_command};
+
+    const X11_KEYBOARD: &str = "libxkbcommon-x11.so.0";
+
+    /// Every library loads but X11's keyboard.
+    fn without_x11_keyboard(lib: &WindowLib) -> bool {
+        lib.names[0] != X11_KEYBOARD
+    }
+
+    /// #265: without libxkbcommon-x11, an X11 session can't open the window (said, not a
+    /// panic); a Wayland session opens it on Wayland instead; with everything there, X11 as
+    /// before (#50).
+    #[test]
+    fn a_missing_x11_library_is_named_or_wayland_used() {
+        let x11_only = choose_window_system(false, true, false, without_x11_keyboard);
+        assert!(!x11_only.wayland);
+        let names: Vec<&str> = x11_only.missing.iter().map(|l| l.names[0]).collect();
+        assert_eq!(names, [X11_KEYBOARD]);
+
+        let both = choose_window_system(true, true, false, without_x11_keyboard);
+        assert!(both.wayland && both.missing.is_empty(), "{both:?}");
+        assert_eq!(both.x11_missing.len(), 1);
+        assert!(!both.x11_over_wayland);
+
+        let fine = choose_window_system(true, true, false, |_| true);
+        assert!(!fine.wayland && fine.x11_over_wayland && fine.missing.is_empty());
+        let asked = choose_window_system(true, true, true, |_| true);
+        assert!(asked.wayland && !asked.x11_over_wayland && asked.x11_missing.is_empty());
+
+        // Nothing loads: on Wayland, its own libraries are named.
+        let none = choose_window_system(true, false, false, |_| false);
+        assert!(none.wayland);
+        assert_eq!(none.missing[0].names[0], "libxkbcommon.so.0");
+    }
+
+    /// The package to install, by the distribution's family (/etc/os-release's ID and ID_LIKE).
+    #[test]
+    fn the_install_command_fits_the_distribution() {
+        let keyboard = [&X11_LIBS[0]];
+        let cases = [
+            (
+                "ID=debian
+",
+                Some("sudo apt install libxkbcommon-x11-0"),
+            ),
+            (
+                "ID=linuxmint
+ID_LIKE=\"ubuntu debian\"
+",
+                Some("sudo apt install libxkbcommon-x11-0"),
+            ),
+            (
+                "ID=fedora
+",
+                Some("sudo dnf install libxkbcommon-x11"),
+            ),
+            (
+                "ID=\"rocky\"
+ID_LIKE=\"rhel centos fedora\"
+",
+                Some("sudo dnf install libxkbcommon-x11"),
+            ),
+            (
+                "ID=\"opensuse-tumbleweed\"
+ID_LIKE=\"opensuse suse\"
+",
+                Some("sudo zypper install libxkbcommon-x11-0"),
+            ),
+            (
+                "ID=arch
+",
+                Some("sudo pacman -S libxkbcommon-x11"),
+            ),
+            (
+                "ID=endeavouros
+ID_LIKE=arch
+",
+                Some("sudo pacman -S libxkbcommon-x11"),
+            ),
+            (
+                "ID=alpine
+",
+                Some("sudo apk add libxkbcommon"),
+            ),
+            (
+                "ID=nixos
+",
+                None,
+            ),
+            ("", None),
+        ];
+        for (release, want) in cases {
+            assert_eq!(
+                install_command(&keyboard, release).as_deref(),
+                want,
+                "{release}"
+            );
+        }
+        // Two libraries from one package are asked once (Arch's libx11).
+        let xlib = [&X11_LIBS[2], &X11_LIBS[3]];
+        assert_eq!(
+            install_command(
+                &xlib, "ID=arch
+"
+            )
+            .as_deref(),
+            Some("sudo pacman -S libx11")
+        );
+    }
 
     /// `ReadOne` answers the number, `Read` the number wrapped in one more variant.
     #[test]
