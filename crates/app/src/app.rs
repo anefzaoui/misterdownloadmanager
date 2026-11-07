@@ -7726,10 +7726,13 @@ impl eframe::App for App {
         self.main_drops(&ctx);
         self.remember_layout(&ctx);
         // Light or dark: IDM follows Windows' app mode (checked every 2 s) unless View → Dark
-        // Mode support is off. Switches live (IDM asks to restart).
-        if self
-            .theme_checked
-            .is_none_or(|t| t.elapsed() > Duration::from_secs(2))
+        // Mode support is off. Switches live (IDM asks to restart). On Linux the desktop's own
+        // change wakes a frame, and the check runs in it rather than at its next 2 s (#156).
+        let desktop_changed = crate::theme::system_changed();
+        if desktop_changed
+            || self
+                .theme_checked
+                .is_none_or(|t| t.elapsed() > Duration::from_secs(2))
         {
             self.theme_checked = Some(Instant::now());
             // A theme file added, removed or renamed: View → Theme lists it.
