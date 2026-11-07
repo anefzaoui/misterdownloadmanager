@@ -22,6 +22,22 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **The Scheduler wakes the computer to run a queue**
+  ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142)): tick **Wake the
+  computer to run this queue** under the start time, and a sleeping computer is woken a minute
+  before the queue starts and kept awake while it runs; the line under it says when. On Windows
+  it needs **Allow wake timers** in the power plan: when that is off the Scheduler says so, with a
+  link to the setting. On Linux an administrator has to allow it once (the guide shows how); on
+  macOS only an administrator can schedule a wake, so the option says why it's greyed. MDM never
+  asks for an administrator's password. The Scheduler is 40 pixels taller for it.
+- **Torrents through your debrid account**
+  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)): with **Send torrents and
+  magnet links to the first account instead of to peers** ticked (**Options → Accounts**), a
+  magnet link or a `.torrent` file goes to the account. Real-Debrid, AllDebrid and Premiumize
+  download the torrent on their servers, and the list shows how far they are (**45% at
+  Real-Debrid**). MDM then downloads its files over HTTP, with all its connections and resume, and removes
+  the torrent from the account's list. Your computer never connects to the torrent's peers.
+  Experimental, as the accounts are.
 - **Debrid accounts: one link directly, and the command line**
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)): **Download File Info**
   says which account a link goes through (**Download through Real-Debrid (your account)**);
@@ -92,6 +108,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   [GitHub Sponsors](https://github.com/sponsors/anefzaoui) page in the browser; the website, the
   README and the browser extension's popup link to it too. Only when asked: MDM stays free, with
   no reminders, and nothing changes or unlocks.
+- **Video pages and image galleries through the chosen network adapter**
+  ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35)): with **Options → Proxy /
+  Socks → Network adapter** set, video downloads (yt-dlp and the ffmpeg it starts) and galleries
+  (gallery-dl) now start, on Windows, Linux and macOS, instead of being refused. They go through a
+  proxy MDM runs on this computer, which opens their connections through the adapter as MDM opens
+  its own, with the DNS you chose, IPv4 and IPv6. The same kill switch: when the adapter
+  disconnects, their connections close at once and the downloads stop, then start again when it
+  is back. Formats over RTMP, RTSP, MMS or FTP, which can't go through it, are refused. The
+  command line's `video-get` and `gallery-get` take `--adapter`.
 - **Torrents through the chosen network adapter on Windows**
   ([#143](https://github.com/anefzaoui/misterdownloadmanager/issues/143)): with **Options → Proxy /
   Socks → Network adapter** set, torrents now start on Windows too, instead of being refused.
@@ -358,6 +383,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   sockets, and the bytes a sparse file takes on the drive. The slow-connection test now fails
   without shedding (it passed without it before). The lab server can hand out such links
   (`/redirect?uses=N`) and pace answers to range requests on their own (`range_rate`).
+- **Developers: Linux builds and window shots in minutes, on WSL2** (part of
+  [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): `tools/lab/wsl/` sets up
+  `mdm-lab`, an Ubuntu 24.04 WSL2 distribution of its own, which builds any branch or pull request
+  for Linux at the computer's full speed (`build.sh`: about 5 minutes from scratch, under a minute
+  after a change, against 15 to 60 in the VirtualBox machine), shoots MDM's windows in any language
+  and mode on a virtual screen that never shows on Windows (`shots.sh`: about a second a window,
+  against 40), compares OpenGL and Vulkan pixel by pixel (`renderers.sh`), and hands a build to a
+  VirtualBox machine for what needs a real desktop (`deploy.ps1`).
 - **Developers: a Linux test machine, scripted** (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
   `tools/lab/linux-vm/` sets up an Ubuntu 24.04 desktop in VirtualBox from a Windows host
   (`vm.ps1`: hardware, headless start, linked clones; `setup.sh`: packages, Rust, Node, the
@@ -462,6 +495,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Help opens the website's help pages, in your language**
+  ([#227](https://github.com/anefzaoui/misterdownloadmanager/issues/227)): **Help contents**,
+  **Tutorials**, **Scheduler and queues**, **Video downloads**, the **Help** buttons of Options and
+  the Scheduler, and the browser extension window's tutorial and help links opened the docs on
+  GitHub (the Options and Scheduler buttons a page that wasn't there). They open
+  misterdownloadmanager.com now, at the same section, in the interface language when the website
+  has it (else English), and **Home Page** opens the website too. The command line's and the MCP
+  server's help name the website's guide. Problem reports, releases and the source stay on GitHub.
 - **A finished download no longer fails with "part file still in use" on a busy computer**
   ([#201](https://github.com/anefzaoui/misterdownloadmanager/issues/201)): when the last bytes
   came in, the connections still running were cut off. One cut off while it read or wrote the

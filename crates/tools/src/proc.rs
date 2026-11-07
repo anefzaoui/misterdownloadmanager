@@ -1,7 +1,8 @@
-//! Supervised helper processes (yt-dlp, later ffmpeg): every child is in one Windows Job Object
+//! Supervised helper processes (yt-dlp, gallery-dl): every child is in one Windows Job Object
 //! that kills it when we exit (even on a crash), runs without a console window, gets its
 //! arguments in fixed layers (the user's extras, ours, then the fixed ones and `--` before the
-//! URL) with CR / LF / NUL refused, and keeps only a short stderr tail for messages.
+//! URL) with CR / LF / NUL refused, keeps only a short stderr tail for messages, and goes through
+//! the chosen network adapter (#35, `crate::relay`).
 
 use std::collections::VecDeque;
 use std::io::{BufRead, BufReader, Read};
@@ -30,14 +31,22 @@ pub enum ProcError {
     Adapter(#[from] mdm_engine::NetError),
 }
 
-/// Options → Proxy / Socks → Network adapter (#35) for yt-dlp and the media-server checks; the
-/// app shares it as it changes ([`set_route`]).
+/// Options → Proxy / Socks → Network adapter (#35) for the helpers and the media-server checks;
+/// the app shares it as it changes ([`set_route`]).
 static ROUTE: std::sync::RwLock<mdm_engine::Route> = std::sync::RwLock::new(mdm_engine::Route::Any);
+/// Options → Connection → DNS (#36): what the relay looks the helpers' servers up with.
+static DNS: std::sync::RwLock<Option<mdm_engine::DnsChoice>> = std::sync::RwLock::new(None);
+/// The relay the helpers go through while an adapter is chosen, started when first needed.
+static RELAY: Mutex<Option<Arc<crate::relay::Relay>>> = Mutex::new(None);
 
-/// The network adapter yt-dlp and the media-server checks go through (the app's setting).
+/// The network adapter the helpers and the media-server checks go through (the app's setting).
+/// A change closes what the relay has open (it was held to the old route).
 pub fn set_route(route: mdm_engine::Route) {
     if *ROUTE.read().unwrap() != route {
         *ROUTE.write().unwrap() = route;
+        if let Some(relay) = RELAY.lock().unwrap().as_ref() {
+            relay.route_changed();
+        }
     }
 }
 
@@ -45,41 +54,110 @@ pub fn route() -> mdm_engine::Route {
     ROUTE.read().unwrap().clone()
 }
 
-/// yt-dlp and the chosen adapter (#35): nothing to add when there's none; refused while one is
-/// chosen, on every system, rather than sent around it. yt-dlp can't bind a device, and its
-/// `--source-address` was seen not to hold on Windows (yt-dlp 2026.10.26, given the address of
-/// an adapter without a route, still connected from the Ethernet adapter's), so its connections
-/// would leave by the normal route. The way to cover it is a proxy on this computer whose own
-/// connections MDM binds (a follow-up).
-fn route_args() -> Result<Vec<String>, ProcError> {
-    route_for("Video pages (yt-dlp)")
-}
-
-/// The same rule for any helper that can't be held to an adapter (`what` names it).
-fn route_for(what: &str) -> Result<Vec<String>, ProcError> {
-    match route() {
-        mdm_engine::Route::Any => Ok(Vec::new()),
-        mdm_engine::Route::Down { label } => Err(mdm_engine::NetError::Down { label }.into()),
-        mdm_engine::Route::Bound(b) => Err(mdm_engine::NetError::NotSupported {
-            label: b.label.clone(),
-            what: what.into(),
-        }
-        .into()),
+/// The DNS the helpers' servers are looked up with while an adapter is chosen (the app's
+/// setting; the system's until set).
+pub fn set_dns(dns: mdm_engine::DnsChoice) {
+    if DNS.read().unwrap().as_ref() != Some(&dns) {
+        *DNS.write().unwrap() = Some(dns);
     }
 }
 
+fn dns() -> mdm_engine::DnsChoice {
+    DNS.read().unwrap().clone().unwrap_or_default()
+}
+
+/// The helpers' relay, started on first use.
+fn relay() -> Result<Arc<crate::relay::Relay>, ProcError> {
+    let mut slot = RELAY.lock().unwrap();
+    if let Some(r) = slot.as_ref() {
+        return Ok(r.clone());
+    }
+    let relay = crate::relay::Relay::start(Arc::new(|| (route(), dns())))
+        .map(Arc::new)
+        .map_err(|e| ProcError::Start("the network adapter's relay".into(), e))?;
+    *slot = Some(relay.clone());
+    Ok(relay)
+}
+
+/// Which helper [`through_adapter`] sets up.
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum Helper {
+    YtDlp,
+    GalleryDl,
+}
+
+/// A helper and the chosen adapter (#35): nothing to do when there's none; refused while it is
+/// down; else every connection the helper and what it starts make goes through the relay
+/// (`crate::relay`), which holds them to the adapter. The arguments returned go before `--`.
+///
+/// - yt-dlp: `--proxy` for its own requests (and the external downloaders it passes it to), and
+///   `--geo-verification-proxy`. The ffmpeg it starts gets the proxy from it (`http_proxy`), and
+///   may only open what goes through it: HTTP(S) and the layers under them, local files, `data:`
+///   and `crypto:` (`-protocol_whitelist`). RTMP and FTP formats go to that ffmpeg, which refuses
+///   them, instead of rtmpdump or yt-dlp's own FTP, which would ignore the proxy; RTSP and MMS
+///   formats (mpv or mplayer, in older yt-dlp) stop the download (`--break-match-filters`; `?`
+///   lets an entry not yet chosen pass, a playlist's).
+/// - gallery-dl: `--proxy`.
+/// - Both, and anything they start: `HTTP_PROXY`, `HTTPS_PROXY` and `ALL_PROXY` (curl, aria2c,
+///   gallery-dl's Python), with `NO_PROXY` taken away so no host is let around it.
+fn through_adapter(cmd: &mut Command, helper: Helper) -> Result<Vec<String>, ProcError> {
+    match route() {
+        mdm_engine::Route::Any => Ok(Vec::new()),
+        mdm_engine::Route::Down { label } => Err(mdm_engine::NetError::Down { label }.into()),
+        mdm_engine::Route::Bound(_) => {
+            let url = relay()?.url();
+            for var in [
+                "HTTP_PROXY",
+                "HTTPS_PROXY",
+                "ALL_PROXY",
+                "http_proxy",
+                "https_proxy",
+                "all_proxy",
+            ] {
+                cmd.env(var, &url);
+            }
+            cmd.env_remove("NO_PROXY").env_remove("no_proxy");
+            Ok(match helper {
+                Helper::YtDlp => vec![
+                    "--proxy".into(),
+                    url.clone(),
+                    "--geo-verification-proxy".into(),
+                    url,
+                    // yt-dlp's keys are http, ftp, m3u8, dash and rtmp only: anything else
+                    // ("rtsp:ffmpeg") would make ffmpeg the downloader for everything.
+                    "--downloader".into(),
+                    "rtmp:ffmpeg".into(),
+                    "--downloader".into(),
+                    "ftp:ffmpeg".into(),
+                    "--downloader-args".into(),
+                    format!("ffmpeg_i:-protocol_whitelist {FFMPEG_PROTOCOLS}"),
+                    "--break-match-filters".into(),
+                    "protocol!*=?rtsp & protocol!*=?mms".into(),
+                ],
+                Helper::GalleryDl => vec!["--proxy".into(), url],
+            })
+        }
+    }
+}
+
+/// What the ffmpeg yt-dlp starts may open while an adapter is chosen: HTTP(S) through the relay
+/// (`httpproxy`, `tls` and `tcp` are the layers under them; HLS and DASH open nothing else) and
+/// what stays on this computer.
+const FFMPEG_PROTOCOLS: &str = "file,crypto,data,http,https,tls,tcp,httpproxy";
+
 /// `gallery-dl` (#58) with arguments in the same layers as [`ytdlp`]: `ours`, then the fixed
 /// ones (no configuration file of the person's, never a question on the console), then `--` and
-/// the address. Its output is read as UTF-8, as yt-dlp's is (#79). Like yt-dlp it can't be held
-/// to a network adapter, so it is refused while one is chosen (#35).
+/// the address. Its output is read as UTF-8, as yt-dlp's is (#79). With an adapter chosen it goes
+/// through the relay (#35, [`through_adapter`]).
 pub fn gallery_dl(exe: &Path, ours: &[String], url: &str) -> Result<Command, ProcError> {
-    route_for("Image galleries (gallery-dl)")?;
     let mut cmd = Command::new(exe);
+    let route = through_adapter(&mut cmd, Helper::GalleryDl)?;
     cmd.env("PYTHONIOENCODING", "utf-8");
     for a in ours {
         cmd.arg(safe(a)?);
     }
     cmd.args(["--ignore-config", "--no-input"]);
+    cmd.args(route);
     cmd.arg("--");
     cmd.arg(safe(url)?);
     Ok(cmd)
@@ -203,8 +281,8 @@ pub fn ytdlp(
     ours: &[String],
     url: &str,
 ) -> Result<Command, ProcError> {
-    let route = route_args()?;
     let mut cmd = ytdlp_command(exe);
+    let route = through_adapter(&mut cmd, Helper::YtDlp)?;
     for a in user.iter().chain(ours) {
         cmd.arg(safe(a)?);
     }
@@ -224,8 +302,8 @@ pub fn ytdlp_info(
     ours: &[String],
     info: &Path,
 ) -> Result<Command, ProcError> {
-    let route = route_args()?;
     let mut cmd = ytdlp_command(exe);
+    let route = through_adapter(&mut cmd, Helper::YtDlp)?;
     for a in user.iter().chain(ours) {
         cmd.arg(safe(a)?);
     }

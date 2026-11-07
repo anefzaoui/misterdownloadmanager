@@ -280,7 +280,7 @@ impl OptionsDialog {
                 )
                 .clicked()
                 {
-                    crate::help::open_page("help/#options");
+                    crate::help::open_page("options.md");
                 }
                 if modal {
                     Outcome::Open
@@ -1485,14 +1485,9 @@ impl OptionsDialog {
                     crate::i18n::t("Every connection goes through it, from {ip}."),
                     &[("ip", &crate::i18n::ltr(&ip.unwrap_or_default()))],
                 );
-                // What can't be held to it on this system (refused, not sent around it).
-                #[cfg(windows)]
-                // i18n: Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-                let not_yet = crate::i18n::t("Video pages and torrents can't use it yet.");
-                #[cfg(not(windows))]
-                // i18n: Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-                let not_yet = crate::i18n::t("Video pages can't use it yet.");
-                (format!("{line}\n{not_yet}"), true)
+                // Downloads, torrents (#143), video pages and galleries (through the helpers'
+                // relay, #35) all go through it on every system: nothing more to say.
+                (line, true)
             }
         };
         let color = if ok {
@@ -1647,11 +1642,19 @@ impl OptionsDialog {
             "Download supported file-host links through these accounts",
             true,
         );
+        winui::checkbox_light(
+            ui,
+            o + vec2(21.0, 376.0),
+            &mut self.s.debrid_torrents,
+            // i18n: Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+            "Send torrents and magnet links to the first account instead of to peers",
+            self.s.debrid_on,
+        );
         let p = ui.painter().clone();
         winui::paragraph(
             &p,
             o.x + 21.0,
-            o.y + 388.0,
+            o.y + 410.0,
             // i18n: Options → Accounts: what these accounts are, and the services' rule against sharing
             crate::i18n::t(
                 "A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.",
@@ -2533,7 +2536,7 @@ impl OptionsDialog {
                                 )
                                 .clicked()
                             {
-                                let _ = open::that_detached(mdm_ipc::extension::help_page(why));
+                                crate::help::open_page(&mdm_ipc::extension::help_doc(why));
                             }
                             if c.why == Some("not-installed")
                                 && mdm_ipc::portable_dir().is_none()

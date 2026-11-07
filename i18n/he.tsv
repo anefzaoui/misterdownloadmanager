@@ -183,6 +183,11 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	שירות דבריד מוריד קישור של מארח קבצים עם החשבון בתשלום שלך ומעניק ל-MDM קישור ישיר. השתמש רק בחשבון שלך: שיתוף חשבון או קישוריו מפר את תנאי השירותים ועלול לגרום להשעייתו. הורדות שהדפדפן כבר התחיל נשארות כפי שהן.
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	A file of this torrent can't be saved safely: {name}	לא ניתן לשמור קובץ זה של טורנט באופן בטוח: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -431,6 +436,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	DNS אחר...
+#. text in unix.rs
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+#, machine
+	Another program has set the computer's wake alarm	תוכנית אחרת הגדירה את אזעקת ההתעוררות של המחשב
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -739,6 +748,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Chad	צ'אד
+#. text in the Scheduler window
+#. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+#, machine
+	Change	שנה
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -1824,6 +1837,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Hong Kong	הונג קונג
+#. text in the Scheduler window
+#. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+#, machine
+	How to allow it	כיצד לאפשר זאת
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -2351,6 +2368,11 @@
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	אירעה שגיאה פנימית ב- Mister Download Manager
+#. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Mister Download Manager is running the queue "{queue}"	Mister Download Manager מפעיל את התור "{queue}"
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -2762,9 +2784,17 @@
 #. a country's name (where a download's server is)
 #, machine
 	Oman	עומאן
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+#, machine
+	On battery, Windows' power options don't allow wake timers	בסוללה, אפשרויות צריכת החשמל של Windows אינן מאפשרות טיימרים להתעוררות
 #. text in a download's progress window
 #, machine
 	on download stop/resume	בעצירת/המשך הורדה
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
+#, machine
+	On macOS, only an administrator can schedule a wake	ב-macOS, רק מנהל מערכת יכול לתזמן התעוררות
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	פעם אחת ב-
@@ -2788,6 +2818,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	ניתן להעביר רק הורדה שהסתיימה או שעדיין לא התחילה. עצור אותה וסיים אותה תחילה.
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+#, machine
+	Only an administrator can allow this	רק מנהל מערכת יכול לאפשר זאת
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -3322,6 +3356,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	שלח זאת לחבר:
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+#, machine
+	Send torrents and magnet links to the first account instead of to peers	שלח טורנטים וקישורי מגנט לחשבון הראשון במקום לעמיתים
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3851,6 +3889,15 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The computer could not be turned off: {error}	לא ניתן לכבות את המחשב: {error}
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue"
+#, machine
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	המחשב מתעורר דקה לפני שעת ההתחלה ונשאר ער בזמן שהתור פועל. Mister Download Manager חייב לפעול (הוא יכול להמתין באזור ההודעות).
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	The computer will be woken on {date} at {time}	המחשב יתעורר ב-{date} בשעה {time}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4090,6 +4137,14 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	קטגוריה או תור זה אינם מכילים הורדות עדיין.
+#. text in win32.rs
+#. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
+#, machine
+	This computer can't be woken by a timer	מחשב זה אינו יכול להתעורר באמצעות טיימר
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
+#, machine
+	This computer has no wake alarm that programs can set	למחשב זה אין אזעקת התעוררות שתוכניות יכולות להגדיר
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4166,9 +4221,17 @@
 #. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
 #, machine
 	Through {service}	דרך {service}
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+#, machine
+	Through {service}: the service downloads the torrent, then MDM its files	דרך {service}: השירות מוריד את הטורנט, ואז MDM מוריד את הקבצים שלו
 #. text in the Scheduler window
 #, machine
 	Thursday	יום חמישי
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+#, machine
+	Tick "Start download at" first: the computer is woken for the start time	סמן תחילה את "התחל הורדה בשעה": המחשב מתעורר לשעת ההתחלה
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	זמן שנותר
@@ -4567,6 +4630,10 @@
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	ממתין: מגבלת ההורדות הושגה (מתזמן)
+#. text in the Scheduler window
+#. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+#, machine
+	Wake the computer to run this queue	הער את המחשב כדי להפעיל תור זה
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4600,6 +4667,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	גודל תו כללי
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
+#, machine
+	Windows allows wake timers only while plugged in	Windows מאפשר טיימרים להתעוררות רק כשהוא מחובר לחשמל
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4610,6 +4681,10 @@
 #. text in langpick.rs
 #, machine
 	Windows' language ({language})	שפת Windows ({language})
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+#, machine
+	Windows' power options don't allow wake timers	אפשרויות צריכת החשמל של Windows אינן מאפשרות טיימרים להתעוררות
 #. message or event log entry in the main window
 #, machine
 	with Add URL	עם הוספת כתובת URL
@@ -4832,6 +4907,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} מתוך {total} נבחרו
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+#, machine
+	{percent} at {service}	{percent} ב-{service}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -4843,6 +4922,9 @@
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	{service} מבקש שתאשר מחשב זה תחילה: ראה את הדוא"ל שלו
+#. text in errors.rs
+#, machine
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} לא יכול לקבל טורנט זה: אף אחד לא משתף אותו, או שהקישור שלו לא ניתן לקריאה
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} לא יכול להגיע למארח קבצים זה כרגע; MDM ינסה שוב מאוחר יותר
