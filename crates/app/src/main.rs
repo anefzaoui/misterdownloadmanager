@@ -158,6 +158,40 @@ pub fn quiet(builder: egui::ViewportBuilder) -> egui::ViewportBuilder {
     }
 }
 
+/// How this start shows the main window (#226).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Start {
+    /// In front, as a start by the user does.
+    Shown,
+    /// Started with the session (the startup entry's [`mdm_ipc::STARTUP`]): hidden in the
+    /// notification area, downloads, queues and the Scheduler running, until the tray icon (or
+    /// a second launch) shows it.
+    Tray,
+    /// Started with the session where no notification area shows MDM's icon (some Linux
+    /// desktops, #59; Wayland, where a window can't be hidden): minimized instead.
+    Minimized,
+}
+
+/// How a start shows the main window: `at_login` when the startup entry started it, `tray` when
+/// a notification area shows MDM's icon and the window can be hidden there.
+fn start_mode(at_login: bool, tray: bool) -> Start {
+    match (at_login, tray) {
+        (false, _) => Start::Shown,
+        (true, true) => Start::Tray,
+        (true, false) => Start::Minimized,
+    }
+}
+
+/// Whether the main window can wait hidden in the notification area: a tray shows MDM's icon
+/// (Linux: a tray host is there, #59) and the window can be hidden (not on Wayland).
+pub fn can_start_in_tray() -> bool {
+    #[cfg(target_os = "linux")]
+    if unix::on_wayland() {
+        return false;
+    }
+    tray::available()
+}
+
 fn main() -> std::process::ExitCode {
     renderer::mark_start();
     // PAC's myIpAddress from the routing table, not a UDP socket (a firewall prompt, #35).
@@ -227,6 +261,8 @@ fn app() -> eframe::Result {
     };
     #[cfg(windows)]
     win32::mark_running();
+    // Started with the session (#226): in the notification area, not in front.
+    let start = start_mode(cmd.as_ref().is_some_and(|c| c.startup), can_start_in_tray());
     // This launch is MDM: its fonts are looked up while the rest starts (only the instance pays
     // for them, not a launch that hands its command over).
     theme::prepare_fonts();
@@ -299,6 +335,12 @@ fn app() -> eframe::Result {
     if offscreen() {
         viewport = viewport.with_position(offscreen_at());
     }
+    // Hidden from its first frame on: the app shows it from the tray (eframe keeps a root
+    // window built hidden so).
+    if start == Start::Tray {
+        tracing::info!("started with the session: in the notification area");
+        viewport = viewport.with_visible(false);
+    }
     // OpenGL or Direct3D (View → Draw with, #89), the other one when it can't start.
     let plan = renderer::plan(
         loaded.settings.renderer,
@@ -317,7 +359,7 @@ fn app() -> eframe::Result {
             cc.egui_ctx.set_zoom_factor(z);
         }
         let _ = window.set(cc.egui_ctx.clone());
-        app::App::new(cc, handle, commands, loaded)
+        app::App::new(cc, handle, commands, loaded, start)
     });
     crash::clean_exit();
     result
@@ -325,6 +367,18 @@ fn app() -> eframe::Result {
 
 #[cfg(test)]
 mod tests {
+    use super::{Start, start_mode};
+
+    /// Started with the session (#226): in the notification area, or minimized where none shows
+    /// MDM's icon; a start by the user shows the window, tray or not.
+    #[test]
+    fn a_start_with_the_session_waits_in_the_tray() {
+        assert_eq!(start_mode(true, true), Start::Tray);
+        assert_eq!(start_mode(true, false), Start::Minimized);
+        assert_eq!(start_mode(false, true), Start::Shown);
+        assert_eq!(start_mode(false, false), Start::Shown);
+    }
+
     /// An off-screen run neither reads the clipboard (Add URL, Batch, the clipboard monitor…)
     /// nor writes it (Copy magnet link, Copy…): it logs what it would have copied.
     #[test]

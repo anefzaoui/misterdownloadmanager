@@ -22,6 +22,16 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Started with the computer, MDM waits in the notification area**
+  ([#226](https://github.com/anefzaoui/misterdownloadmanager/issues/226)): with **Options →
+  General → Launch Mister Download Manager on startup**, MDM no longer opens its window in front
+  at every sign-in. It starts hidden, its icon in the notification area, with its downloads,
+  queues, Scheduler and browser hand-overs running; its icon, or starting MDM again, shows the
+  window as before. The same on Linux and macOS; where no notification area shows MDM's icon
+  (some Linux desktops), it starts minimized, and the option's tooltip says so. The startup entry
+  now passes `/startup` (new on the [command line](docs/command-line.md)); an entry written by
+  an earlier version or its installer is written again at the next start, and the installer
+  writes the new one.
 - **Debrid accounts: one link directly, and the command line**
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)): **Download File Info**
   says which account a link goes through (**Download through Real-Debrid (your account)**);

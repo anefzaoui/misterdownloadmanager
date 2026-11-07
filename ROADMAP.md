@@ -13,6 +13,10 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ Started with the computer, MDM waits in the notification area instead of opening its window
+  in front, on Windows, Linux and macOS (minimized where no notification area shows its icon);
+  startup entries written before are updated, and the installer writes the new one
+  ([#226](https://github.com/anefzaoui/misterdownloadmanager/issues/226))
 - ✅ A finished download no longer fails with "part file still in use" on a busy computer, and
   the rest of the engine tests that failed now and then there (slow connections, a prompt stop,
   speed limits, links that expire, sparse files and a few more) wait for what they check, not for

@@ -700,6 +700,7 @@ impl App {
         rt: tokio::runtime::Handle,
         commands: std::sync::mpsc::Receiver<ipc::Incoming>,
         loaded: store::Loaded,
+        start: crate::Start,
     ) -> Self {
         // The look (#45): the chosen theme before anything is drawn.
         crate::theme::select(
@@ -737,13 +738,23 @@ impl App {
         }
         // "Launch on startup" is whatever the Run key says (the installer may have set it); on
         // Linux and macOS, the autostart entry / LaunchAgent.
+        // An entry written before #226 (by 0.3.0 and earlier, or by their installer) starts MDM
+        // with its window in front: written again, with the argument that starts it in the
+        // notification area. Only an entry for this very program (not one a copy elsewhere
+        // wrote), and never by a portable copy, which writes nothing outside its folder.
         #[cfg(windows)]
         {
             settings.launch_on_startup = crate::win32::run_at_startup();
+            if settings.launch_on_startup && mdm_ipc::portable_dir().is_none() {
+                crate::win32::update_run_at_startup();
+            }
         }
         #[cfg(unix)]
         {
             settings.launch_on_startup = crate::unix::run_at_startup();
+            if settings.launch_on_startup && mdm_ipc::portable_dir().is_none() {
+                crate::unix::update_run_at_startup();
+            }
             if mdm_ipc::portable_dir().is_none() && !crate::offscreen() {
                 crate::unix::register_browsers();
             }
@@ -792,6 +803,12 @@ impl App {
             _ => View::All,
         };
         let show_categories = settings.show_categories;
+        // Started with the session where no tray can hold it (#226): minimized instead.
+        if start == crate::Start::Minimized {
+            tracing::info!("started with the session: minimized (no notification area)");
+            cc.egui_ctx
+                .send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+        }
         App {
             rt,
             items,
@@ -889,8 +906,9 @@ impl App {
             clip_checked: None,
             tray: None,
             tray_limiter: None,
-            hidden: false,
-            trim_when_hidden: None,
+            // Started with the session (#226): hidden in the tray from the first frame.
+            hidden: start == crate::Start::Tray,
+            trim_when_hidden: (start == crate::Start::Tray).then(|| Instant::now() + next_trim(0)),
             trims_since_hidden: 0,
             exiting: false,
             confirm_delete: None,
@@ -1868,6 +1886,11 @@ impl App {
             self.run(Cmd::Exit, None, ctx);
             return;
         }
+        // The startup entry's (#226): this start began in the tray (main.rs), or MDM already
+        // ran; either way the window stays where it is.
+        if cmd.startup {
+            return;
+        }
         if let Some(name) = cmd.show.as_deref() {
             self.show_window(ctx);
             self.show_named(name, ctx);
@@ -2469,7 +2492,11 @@ impl App {
 
     /// The tray icon: created once, its commands run, and closing the window hides it there.
     fn tray(&mut self, ctx: &egui::Context) {
-        if self.tray.is_none() && self.tray_limiter.is_none() && !crate::offscreen() {
+        // Off-screen test copies have none, but for MDM_TEST_TRAY=1 (#226's check: a start with
+        // the session shows the icon, and no window).
+        let wanted =
+            !crate::offscreen() || std::env::var_os("MDM_TEST_TRAY").is_some_and(|v| v == "1");
+        if self.tray.is_none() && self.tray_limiter.is_none() && wanted {
             let icon = crate::app_icon();
             self.tray = crate::tray::Tray::new(
                 ctx,
@@ -2478,6 +2505,9 @@ impl App {
                 self.settings.speed_limit_on,
             );
             self.tray_limiter = Some(self.settings.speed_limit_on);
+            if self.tray.is_some() {
+                tracing::info!("tray icon shown");
+            }
         }
         if let Some(t) = &self.tray
             && self.tray_limiter != Some(self.settings.speed_limit_on)

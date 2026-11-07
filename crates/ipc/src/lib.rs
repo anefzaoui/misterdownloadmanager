@@ -68,6 +68,10 @@ pub struct Command {
     /// `/exit` (beyond IDM): the running app saves and quits (the installer, before an upgrade
     /// or an uninstall). Starts nothing when no app runs.
     pub exit: bool,
+    /// `/startup` (beyond IDM): started with the session (Options → General → Launch on
+    /// startup, or the installer's "Start when Windows starts", #226): MDM starts in the
+    /// notification area, its window hidden. Changes nothing in a running app.
+    pub startup: bool,
     /// `/show <window>` (beyond IDM): the running app opens one of its windows by name, for
     /// screenshots and scripted checks (tools/lab/docs-shots.ps1): `addurl`, `batch`, `find`,
     /// `scheduler`, `about`, `language`, `shortcuts`, `speedlimit`, `properties`, `delete`,
@@ -491,6 +495,10 @@ fn random_token() -> String {
         .collect()
 }
 
+/// The argument every startup entry passes (the Run key, the XDG autostart entry, the
+/// LaunchAgent, the installer's): MDM starts in the notification area ([`Command::startup`]).
+pub const STARTUP: &str = "/startup";
+
 /// Parse IDM's command line: `/d URL [/p dir] [/f name] [/a] [/n] [/q] [/s]` (case-insensitive;
 /// `-d` also accepted). Returns None when there is nothing to do.
 pub fn parse_args(args: &[String]) -> Option<Command> {
@@ -508,6 +516,7 @@ pub fn parse_args(args: &[String]) -> Option<Command> {
             "s" => cmd.start_queue = true,
             "q" | "h" => {}
             "exit" => cmd.exit = true,
+            "startup" => cmd.startup = true,
             "show" => cmd.show = it.next().map(|w| w.to_ascii_lowercase()),
             // A bare magnet link or .torrent file (what Windows passes for an association).
             _ if a
@@ -549,6 +558,10 @@ mod tests {
         assert!(c.later && c.silent && !c.start_queue);
         assert!(parse_args(&a("/s")).unwrap().start_queue);
         assert!(parse_args(&a("/exit")).unwrap().exit);
+        // The startup entries' argument (#226), as written and as a Linux user might.
+        assert!(parse_args(&[STARTUP.into()]).unwrap().startup);
+        assert!(parse_args(&a("--startup")).unwrap().startup);
+        assert!(!parse_args(&a("/s")).unwrap().startup);
         assert!(parse_args(&[]).is_none());
     }
 
