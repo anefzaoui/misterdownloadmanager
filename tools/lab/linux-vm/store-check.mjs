@@ -179,10 +179,14 @@ if (browser === "firefox") {
   fs.rmSync(profile, { recursive: true, force: true });
   const downloads = path.join(profile, "downloads");
   fs.mkdirSync(downloads, { recursive: true });
-  // With --user-data-dir, Chrome reads host manifests from <user-data-dir>/NativeMessagingHosts.
+  // With --user-data-dir, Chrome reads host manifests from <user-data-dir>/NativeMessagingHosts,
+  // then from everyone's (/etc/opt/chrome/native-messaging-hosts): the user's is copied there when
+  // there is one (with the .deb or .rpm installed there is none, #266, and everyone's is read).
   const hosts = path.join(profile, "NativeMessagingHosts");
   fs.mkdirSync(hosts, { recursive: true });
-  fs.copyFileSync(path.join(process.env.HOME, ".config/google-chrome/NativeMessagingHosts/com.misterdownloadmanager.host.json"), path.join(hosts, "com.misterdownloadmanager.host.json"));
+  const mine = path.join(process.env.HOME, ".config/google-chrome/NativeMessagingHosts/com.misterdownloadmanager.host.json");
+  if (fs.existsSync(mine)) fs.copyFileSync(mine, path.join(hosts, "com.misterdownloadmanager.host.json"));
+  say(`host manifest: ${fs.existsSync(mine) ? mine : "/etc/opt/chrome/native-messaging-hosts (none in the home folder)"}`);
   const proc = spawn(
     "/usr/bin/google-chrome",
     ["--headless", "--remote-debugging-pipe", "--enable-unsafe-extension-debugging", "--password-store=basic", `--user-data-dir=${profile}`, "--no-first-run", "--no-default-browser-check", "about:blank"],

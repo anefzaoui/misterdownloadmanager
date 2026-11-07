@@ -15,9 +15,10 @@ Everything below ships together, in one release, as version 0.3.0.
 
 - ✅ Linux: Update now asks the package manager which package MDM is; a copy installed by
   another package manager (pacman) is left to the system's updates, with a plain message
-- ✅ Linux: the guide says what uninstalling leaves in each user's home folder (the browsers' host
-  files, the list and settings) and how to remove it; a package can't
-  ([#266](https://github.com/anefzaoui/misterdownloadmanager/issues/266))
+- ✅ Linux: the .deb and .rpm install the browsers' host files for everyone and remove them on
+  uninstall, so nothing is left in the home folders for Chrome, Chromium, Edge, Brave, Vivaldi and
+  Firefox (the Snap too); the guide says what the AppImage and the tar.gz leave, and how to remove
+  it ([#266](https://github.com/anefzaoui/misterdownloadmanager/issues/266))
 - ✅ Linux: menus and drop-down lists open under what was clicked on tiling compositors (sway)
   too, through XWayland, as on GNOME and KDE
   ([#267](https://github.com/anefzaoui/misterdownloadmanager/issues/267))

@@ -35,7 +35,7 @@ The browser started MDM's helper, but it stopped before answering. Security soft
 - Allow `misterdownloadmanager-nmhost.exe` (in MDM's folder) in your antivirus or anti-malware program.
 - Reinstall MDM to restore its files.
 - On Linux, with Firefox or Chromium installed as a Snap, see [Flatpak and Snap browsers](#linux-sandbox).
-- Uninstalled MDM on Linux? Its browser files stay in your home folder: [remove them](getting-started.md#uninstall-linux), and the extension too.
+- Uninstalled MDM on Linux? The .deb and .rpm take their browser files with them; the AppImage's and the tar.gz's stay in your home folder: [remove them](getting-started.md#uninstall-linux), and the extension too.
 
 ## MDM doesn't accept this copy of the extension {#forbidden}
 
@@ -84,7 +84,7 @@ An add-on loaded with **Load Temporary Add-on** (from `about:debugging`) is remo
 
 Browsers installed as a Flatpak or a Snap run in a sandbox, which decides whether they can reach MDM.
 
-- **Firefox as a Snap** (Ubuntu's own Firefox) reaches MDM through the desktop. The first time the extension calls MDM, the desktop asks **Allow Firefox to start WebExtension backend?** for Mister Download Manager: choose **Allow**. After **Don't allow**, the extension says the connection failed and the desktop doesn't ask again; to be asked again, run this in a terminal, then use the extension again:
+- **Firefox as a Snap** (Ubuntu's own Firefox) reaches MDM through the desktop, which reads the browser files in your home folder and those the .deb or .rpm installs for everyone. The first time the extension calls MDM, the desktop asks **Allow Firefox to start WebExtension backend?** for Mister Download Manager: choose **Allow**. After **Don't allow**, the extension says the connection failed and the desktop doesn't ask again; to be asked again, run this in a terminal, then use the extension again:
 
   `gdbus call --session --dest org.freedesktop.impl.portal.PermissionStore --object-path /org/freedesktop/impl/portal/PermissionStore --method org.freedesktop.impl.portal.PermissionStore.Delete webextensions com.misterdownloadmanager.host`
 - **Chromium as a Snap** (Ubuntu's Chromium) starts MDM's helper inside its sandbox, where it can't reach MDM, so MDM doesn't list it in **Add Mister Download Manager to your browser**. Use Firefox, or Google Chrome from its own `.deb`.

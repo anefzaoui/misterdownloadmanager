@@ -37,12 +37,17 @@ In a Wayland session (GNOME, KDE Plasma and others), MDM's windows run through X
 #### Uninstall on Linux {#uninstall-linux}
 
 `sudo apt remove misterdownloadmanager` (or `sudo dnf remove misterdownloadmanager`) removes the
-programs; for the AppImage or the tar.gz, delete the file or the folder. What MDM keeps in your
-home folder stays, as with any package: your list and settings
-(`~/.local/share/misterdownloadmanager`) and the small files that tell your browsers where MDM's
-helper is. A package can't remove those: it never touches home folders. Without MDM they lead
-nowhere, so the extension says it can't reach MDM. To remove them as well, run this as each user
-who used MDM, **before** uninstalling:
+programs, and the small files that tell your browsers where MDM's helper is: the .deb and .rpm
+install those for everyone (in `/etc` and `/usr/lib`), for Chrome, Chromium, Edge, Brave, Vivaldi
+and Firefox (the Snap too), so MDM doesn't write them in your home folder. For the AppImage or the
+tar.gz, delete the file or the folder.
+
+What MDM keeps in your home folder stays, as with any package: your list and settings
+(`~/.local/share/misterdownloadmanager`), the AppImage's and the tar.gz's browser files, and
+those of the browsers that read them only there (Opera, Helium, Thorium, and Firefox's forks:
+Zen, LibreWolf, Floorp, Waterfox). A package can't remove those: it never touches
+home folders. Without MDM they lead nowhere, so the extension says it can't reach MDM. To remove
+them as well, run this as each user who used MDM, **before** uninstalling:
 
 ```sh
 misterdownloadmanager-nmhost --unregister

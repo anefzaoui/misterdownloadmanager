@@ -599,6 +599,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   right-click menus and the drop-down lists opened in the middle of the screen, as the compositor
   placed them like windows. They are now menu windows no window manager places, as X11 menus are,
   so they open where MDM puts them, on every window manager.
+- **Linux: uninstalling the .deb or .rpm leaves no browser files behind**
+  ([#266](https://github.com/anefzaoui/misterdownloadmanager/issues/266)): MDM wrote the files
+  that tell each browser where its helper is in every user's home folder, and `apt remove` or
+  `dnf remove` left them there, naming a program that was gone. The packages now install them for
+  everyone, in each browser's own folder (Chrome and Brave, Chromium and Vivaldi, Edge, Firefox,
+  the Snap Firefox included), and remove them with the package; MDM writes none in the home
+  folder for those browsers, and takes away the ones an earlier version wrote. The AppImage and
+  the tar.gz, and Opera, Helium, Thorium and Firefox's forks (which read them only in the home
+  folder), still get them there.
 - **Linux: a missing window library is named, with how to install it**
   ([#265](https://github.com/anefzaoui/misterdownloadmanager/issues/265)): from the tar.gz or the
   AppImage, on a system without libxkbcommon-x11 (or another library X11 windows need), MDM
