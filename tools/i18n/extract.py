@@ -57,6 +57,11 @@ SINKS = {
     "header": (3, ""), "group": (6, ""), "disabled_label": (3, ""), "page_title": (4, ""),
     # A greyed control's reason on hover (winui::why_disabled).
     "why_disabled": (2, ""),
+    # A button's width measured for its label (winui::button_fit_width): the label of a button.
+    "button_fit_width": (1, ""),
+    # Where a checkbox's caption ends (winui::checkbox_caption_end); a page title's width and the
+    # title ending before a control (options.rs).
+    "checkbox_caption_end": (2, ""), "page_title_width": (2, ""), "page_title_ending": (4, ""),
 }
 SINK_CALL = re.compile(
     r"\b(?:winui::|MenuEntry::|crate::i18n::|i18n::)?(" + "|".join(SINKS) + r")\s*\(")
@@ -90,7 +95,9 @@ ROLES = {
     "Radio": "menu choice", "Sub": "submenu", "off": "menu command", "by": "menu choice",
     "tn": "count", "link": "link (opens a web page)", "header": "page title",
     "group": "group box title", "disabled_label": "label", "page_title": "page title",
-    "why_disabled": "tooltip (why a control is greyed)",
+    "why_disabled": "tooltip (why a control is greyed)", "button_fit_width": "button",
+    "checkbox_caption_end": "checkbox", "page_title_width": "page title",
+    "page_title_ending": "page title",
 }
 CONTEXT_ROLES = {
     "menu": "menu command", "toolbar": "toolbar button", "column": "column title",

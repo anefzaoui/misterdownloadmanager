@@ -12,7 +12,8 @@ use mdm_engine::{Destination, Download, Options, Request};
 use reqwest::header::{AUTHORIZATION, HeaderMap, HeaderValue};
 
 use crate::chrome::{
-    self, IconKey, MenuEntry, PopupResult, ShellIcons, ToolbarEvent, TreeEvent, TreeRow,
+    self, IconKey, MenuBarEvent, MenuEntry, PopupResult, ShellIcons, ToolbarEvent, TreeEvent,
+    TreeRow,
 };
 use crate::dialogs::{self, AddUrl, Complete, FileInfo, Outcome, Start};
 use crate::icons::Icon;
@@ -272,6 +273,38 @@ fn next_trim(done: u32) -> Duration {
     }
 }
 
+/// Started with the session (#226), the window waits hidden until the notification area is
+/// known: MDM's own tray icon created and a tray there to show it. A desktop's tray can come
+/// after MDM (GNOME's AppIndicator extension at sign-in answered 11.5 s after MDM's icon, on
+/// the lab's VM), and MDM's icon after its own first look: this long they are waited for,
+/// counted from MDM's icon (from the start while it has none), the window still hidden,
+/// before it shows minimized.
+const TRAY_GRACE: Duration = Duration::from_secs(30);
+
+/// Where a start with the session (#226) leaves the window, decided here alone.
+#[derive(Debug, PartialEq)]
+enum AtLogin {
+    /// Not known yet: hidden, looked at again in a second.
+    Wait,
+    /// MDM's icon is in a notification area: the window stays hidden there.
+    Tray,
+    /// No notification area within [`TRAY_GRACE`]: shown, minimized.
+    Minimize,
+}
+
+/// `since` the start, and since MDM's tray `icon` was created (None: not yet): whether a tray
+/// `host` shows it (Windows, macOS: always one; Linux: a StatusNotifierWatcher, #59). The
+/// grace counts from the icon, so a slow start of MDM's own doesn't eat the desktop's time.
+fn at_login(since: Duration, icon: Option<Duration>, host: bool) -> AtLogin {
+    if icon.is_some() && host {
+        AtLogin::Tray
+    } else if icon.unwrap_or(since) >= TRAY_GRACE {
+        AtLogin::Minimize
+    } else {
+        AtLogin::Wait
+    }
+}
+
 /// Hand the memory the process isn't using now back to the system (#72).
 fn trim_memory() {
     #[cfg(windows)]
@@ -465,6 +498,12 @@ pub struct App {
     /// how many times it was since the window hid.
     trim_when_hidden: Option<Instant>,
     trims_since_hidden: u32,
+    /// Started with the session, the window hidden until the notification area is known
+    /// (#226, [`at_login`]): when, when MDM's tray icon was first seen, and when it was last
+    /// looked at.
+    at_login: Option<Instant>,
+    at_login_icon: Option<Instant>,
+    at_login_checked: Option<Instant>,
     exiting: bool,
     /// Clipboard watching (Options → General): the text last seen (outer None: not looked
     /// yet) and when.
@@ -483,6 +522,8 @@ pub struct App {
     duplicate_cleared: bool,
     downloads: PathBuf,
     dirty: bool,
+    /// `secrets::Vault::confirmed` when last seen.
+    secrets_confirmed: u64,
     last_save: Instant,
     /// Writes the list off the window's thread.
     saver: store::Saver,
@@ -709,6 +750,7 @@ impl App {
         commands: std::sync::mpsc::Receiver<ipc::Incoming>,
         sink: ipc::Sink,
         loaded: store::Loaded,
+        start: crate::Start,
     ) -> Self {
         // The look (#45): the chosen theme before anything is drawn.
         crate::theme::select(
@@ -746,13 +788,23 @@ impl App {
         }
         // "Launch on startup" is whatever the Run key says (the installer may have set it); on
         // Linux and macOS, the autostart entry / LaunchAgent.
+        // An entry written before #226 (by 0.3.0 and earlier, or by their installer) starts MDM
+        // with its window in front: written again, with the argument that starts it in the
+        // notification area. Only an entry for this very program (not one a copy elsewhere
+        // wrote), and never by a portable copy, which writes nothing outside its folder.
         #[cfg(windows)]
         {
             settings.launch_on_startup = crate::win32::run_at_startup();
+            if settings.launch_on_startup && mdm_ipc::portable_dir().is_none() {
+                crate::win32::update_run_at_startup();
+            }
         }
         #[cfg(unix)]
         {
             settings.launch_on_startup = crate::unix::run_at_startup();
+            if settings.launch_on_startup && mdm_ipc::portable_dir().is_none() {
+                crate::unix::update_run_at_startup();
+            }
             if mdm_ipc::portable_dir().is_none() && !crate::offscreen() {
                 crate::unix::register_browsers();
             }
@@ -803,6 +855,12 @@ impl App {
         let show_categories = settings.show_categories;
         // The remote control (#141): off unless Options → Remote turned it on.
         let remote = crate::remote::start(&rt, sink, &settings);
+        // Started with the session where a window can't be hidden (Wayland, #226): minimized.
+        if start == crate::Start::Minimized {
+            tracing::info!("started with the session: minimized (a window can't be hidden here)");
+            cc.egui_ctx
+                .send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+        }
         App {
             rt,
             items,
@@ -903,9 +961,14 @@ impl App {
             clip_checked: None,
             tray: None,
             tray_limiter: None,
-            hidden: false,
-            trim_when_hidden: None,
+            // Started with the session (#226): hidden from the first frame.
+            hidden: start == crate::Start::Session,
+            trim_when_hidden: (start == crate::Start::Session)
+                .then(|| Instant::now() + next_trim(0)),
             trims_since_hidden: 0,
+            at_login: (start == crate::Start::Session).then(Instant::now),
+            at_login_icon: None,
+            at_login_checked: None,
             exiting: false,
             confirm_delete: None,
             confirm_queue_delete: None,
@@ -915,6 +978,7 @@ impl App {
             duplicate_cleared: false,
             downloads,
             dirty: false,
+            secrets_confirmed: 0,
             last_save: Instant::now(),
             saver: store::Saver::new(),
             theme_checked: None,
@@ -1682,8 +1746,23 @@ impl App {
             "find" => self.run(Cmd::Find, None, ctx),
             "scheduler" => self.run(Cmd::Scheduler, None, ctx),
             "about" => self.run(Cmd::About, None, ctx),
+            // Update now's end-to-end tests (feature `test-update`, never in a release): Update
+            // now pressed in the window `/show updates` opened (against MDM_UPDATE_FEED).
+            #[cfg(feature = "test-update")]
+            "update-now" => {
+                if let Some(u) = &mut self.updates {
+                    u.press_update_now();
+                }
+            }
             // The main window into the tray, as closing it does (tests and #72's measurements).
             "tray" => self.hide_to_tray(ctx),
+            // Off-screen test copies: the drop target's menu, as a right-click on it opens it
+            // (#208's checks; a posted click has no pointer position by the time it is seen).
+            "drop-target-menu" if crate::offscreen() => {
+                if let Some(at) = self.drop_target.as_ref().map(|d| d.center()) {
+                    self.drop_target_menu(at, ctx);
+                }
+            }
             // The main window minimized, not to the tray (tests of #162).
             "minimized" => ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true)),
             // Off-screen test copies: the interface zoomed (`zoom:1.5`) while running, as a
@@ -1705,8 +1784,9 @@ impl App {
             "add-trackers" if first.is_some() => self.run(Cmd::TorrentAddTrackers, first, ctx),
             // rss:rules opens it on its Download rules tab.
             "rss" => self.run(Cmd::RssFeeds(tab == "rules"), None, ctx),
-            // menu:torrent opens it with its Torrent submenu open.
-            "menu" if first.is_some() => {
+            // menu:torrent opens it with its Torrent submenu open. A number (menu:3) is the
+            // menu bar's, below, with downloads in the list or not.
+            "menu" if first.is_some() && !tab.starts_with(|c: char| c.is_ascii_digit()) => {
                 if let Some(id) = first {
                     self.selection.set(id);
                 }
@@ -1783,6 +1863,20 @@ impl App {
             "extension" => self.extension = Some(crate::extension::Extension::new()),
             "language" => self.run(Cmd::ChooseLanguage, None, ctx),
             "shortcuts" => self.run(Cmd::Shortcuts, None, ctx),
+            // The Help menu's windows and Download a gallery, for screenshots (#192). updates
+            // asks GitHub, as Help → Check for updates does.
+            "tell-friend" => self.run(Cmd::TellFriend, None, ctx),
+            "updates" => self.run(Cmd::CheckUpdates, None, ctx),
+            "checksum" if first.is_some() => self.run(Cmd::VerifyChecksum, first, ctx),
+            "gallery" => {
+                let dir = self
+                    .settings
+                    .category_dir(Category::General, &self.downloads);
+                self.gallery_dlg = Some(crate::gallerydlg::GalleryDialog::new(
+                    dir,
+                    "https://commons.wikimedia.org/wiki/Category:Sunsets",
+                ));
+            }
             "speedlimit" => self.run(Cmd::LimiterSettings, None, ctx),
             "properties" if first.is_some() => self.run(Cmd::Properties, first, ctx),
             "delete" if first.is_some() => self.run(Cmd::Remove, first, ctx),
@@ -1875,6 +1969,8 @@ impl App {
                 if tab == "panels" {
                     self.options = self.options.take().map(|o| o.with_panels());
                 }
+                // A window over a page (screenshots, #192): options:test, options:account.
+                self.options = self.options.take().map(|o| o.with_window(tab));
                 // Remote → Pair a device... (the docs' screenshots, #141).
                 if tab == "pair" {
                     self.options = self.options.take().map(|o| o.with_pairing());
@@ -1888,6 +1984,11 @@ impl App {
     fn handle_command(&mut self, cmd: ipc::Command, ctx: &egui::Context) {
         if cmd.exit {
             self.run(Cmd::Exit, None, ctx);
+            return;
+        }
+        // The startup entry's (#226): this start began in the tray (main.rs), or MDM already
+        // ran; either way the window stays where it is.
+        if cmd.startup {
             return;
         }
         if let Some(name) = cmd.show.as_deref() {
@@ -2489,6 +2590,8 @@ impl App {
 
     /// The window back from the tray (or from minimized), in front.
     fn show_window(&mut self, ctx: &egui::Context) {
+        // Asked for (a second launch, the tray icon): no start with the session to settle.
+        self.at_login = None;
         self.trim_when_hidden = None;
         self.hidden = false;
         ctx.send_viewport_cmd(egui::ViewportCommand::Visible(true));
@@ -2504,9 +2607,56 @@ impl App {
         crate::tray::available()
     }
 
+    /// Started with the session (#226): once a second, until it is known, where the window goes
+    /// ([`at_login`]): it stays hidden in the notification area, or shows minimized.
+    fn settle_at_login(&mut self, ctx: &egui::Context) {
+        let Some(started) = self.at_login else {
+            return;
+        };
+        ctx.request_repaint_after(Duration::from_secs(1));
+        if self
+            .at_login_checked
+            .is_some_and(|t| t.elapsed() < Duration::from_secs(1))
+        {
+            return;
+        }
+        self.at_login_checked = Some(Instant::now());
+        if self.tray.is_some() && self.at_login_icon.is_none() {
+            self.at_login_icon = Some(Instant::now());
+        }
+        let icon = self.at_login_icon.map(|t| t.elapsed());
+        let since = started.elapsed();
+        match at_login(since, icon, icon.is_some() && self.tray_shown()) {
+            AtLogin::Wait => {}
+            AtLogin::Tray => {
+                tracing::info!(
+                    "started with the session: in the notification area ({} ms on)",
+                    since.as_millis()
+                );
+                self.at_login = None;
+            }
+            AtLogin::Minimize => {
+                tracing::info!(
+                    "started with the session: no notification area within {} s of the icon: minimized ({} ms on)",
+                    TRAY_GRACE.as_secs(),
+                    since.as_millis()
+                );
+                self.at_login = None;
+                self.trim_when_hidden = None;
+                self.hidden = false;
+                ctx.send_viewport_cmd(egui::ViewportCommand::Visible(true));
+                ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+            }
+        }
+    }
+
     /// The tray icon: created once, its commands run, and closing the window hides it there.
     fn tray(&mut self, ctx: &egui::Context) {
-        if self.tray.is_none() && self.tray_limiter.is_none() && !crate::offscreen() {
+        // Off-screen test copies have none, but for MDM_TEST_TRAY=1 (#226's check: a start with
+        // the session shows the icon, and no window).
+        let wanted =
+            !crate::offscreen() || std::env::var_os("MDM_TEST_TRAY").is_some_and(|v| v == "1");
+        if self.tray.is_none() && self.tray_limiter.is_none() && wanted {
             let icon = crate::app_icon();
             self.tray = crate::tray::Tray::new(
                 ctx,
@@ -2515,6 +2665,9 @@ impl App {
                 self.settings.speed_limit_on,
             );
             self.tray_limiter = Some(self.settings.speed_limit_on);
+            if self.tray.is_some() {
+                tracing::info!("tray icon shown");
+            }
         }
         if let Some(t) = &self.tray
             && self.tray_limiter != Some(self.settings.speed_limit_on)
@@ -2540,6 +2693,7 @@ impl App {
                 .collect();
             t.set_downloads(&running);
         }
+        self.settle_at_login(ctx);
         let cmds = self.tray.as_ref().map(|t| t.poll()).unwrap_or_default();
         for c in cmds {
             use crate::tray::TrayCmd;
@@ -4368,7 +4522,7 @@ impl App {
         self.sound(3);
         let sch = self.queues[q].schedule.clone();
         if let Some(path) = &sch.open_when_done {
-            let _ = open::that_detached(path);
+            crate::launch::open(path);
         }
         self.when_done(sch.when_done());
     }
@@ -4452,7 +4606,7 @@ impl App {
             Cmd::Browse(c) => {
                 let dir = self.settings.category_dir(c, &self.downloads);
                 let _ = std::fs::create_dir_all(&dir);
-                let _ = open::that_detached(dir);
+                crate::launch::open(dir);
             }
             Cmd::DoubleClickOpen(open) => {
                 self.settings.double_click_open = open;
@@ -4538,7 +4692,7 @@ impl App {
             Cmd::OpenThemesFolder => {
                 if let Some(dir) = crate::themefile::dir() {
                     let _ = std::fs::create_dir_all(&dir);
-                    let _ = open::that_detached(dir);
+                    crate::launch::open(dir);
                 }
             }
             #[cfg(gpu)]
@@ -4592,7 +4746,7 @@ impl App {
                         .find(|i| i.id == id)
                         .and_then(|i| i.context.referer.clone());
                     if let Some(page) = page {
-                        let _ = open::that_detached(page);
+                        crate::launch::open(page);
                     }
                     self.properties(id);
                 }
@@ -4912,6 +5066,16 @@ impl App {
             if self.last_save.elapsed() > Duration::from_secs(30) {
                 self.dirty = true;
             }
+        }
+        // The keychain took a secret (#44): saved again, with its reference in its place.
+        let vault = crate::secrets::vault();
+        if vault.pending() {
+            ctx.request_repaint_after(Duration::from_millis(250));
+        }
+        let confirmed = vault.confirmed();
+        if confirmed != self.secrets_confirmed {
+            self.secrets_confirmed = confirmed;
+            self.dirty = true;
         }
         if self.dirty && self.last_save.elapsed() > Duration::from_secs(1) {
             // Written on the saver's thread (store::Saver); refused at once when the list
@@ -5905,7 +6069,7 @@ impl App {
             self.alt_down = alt;
             if let Some(i) = open {
                 self.alt_alone = false;
-                self.open_menu = Some(i);
+                self.open_menu = chrome::menubar_next(self.open_menu, MenuBarEvent::Open(i));
                 chrome::start_keyboard(&ctx, &format!("menu-{i}"));
             }
         } else {
@@ -5913,43 +6077,43 @@ impl App {
             self.alt_alone = false;
         }
 
-        // Menu bar and its popups.
+        // Menu bar and its popups: which menu is open is chrome::menubar_next's to say.
         if let Some(i) = chrome::menu_bar(ui, o, w, self.open_menu) {
-            let clicked = ui.input(|x| x.pointer.any_released()) || chrome::menubar_collapse(&ctx);
-            self.open_menu = if self.open_menu == Some(i) && clicked {
-                None
-            } else {
-                Some(i)
-            };
+            let released = ui.input(|x| x.pointer.any_released()) || chrome::menubar_collapse(&ctx);
+            self.open_menu =
+                chrome::menubar_next(self.open_menu, MenuBarEvent::Title { i, released });
         }
         if let Some(i) = self.open_menu {
             let x = chrome::menus(ui.painter())[i].1;
             let entries = self.menu_entries(i);
             // Under the item's leading edge (the menu's top-right in RTL).
             let at = pos2(winui::mx(o.x + x), o.y + chrome::MENU_H - 1.0);
-            match chrome::popup(&ctx, &format!("menu-{i}"), at, &entries, &|c: &Cmd| {
+            let event = match chrome::popup(&ctx, &format!("menu-{i}"), at, &entries, &|c: &Cmd| {
                 c.hint()
             }) {
-                PopupResult::Open => {}
+                PopupResult::Open => None,
                 PopupResult::Neighbor(d) => {
                     let n = chrome::menus(ui.painter()).len() as i32;
                     let j = (i as i32 + d).rem_euclid(n) as usize;
-                    self.open_menu = Some(j);
                     chrome::start_keyboard(&ctx, &format!("menu-{j}"));
+                    Some(MenuBarEvent::Open(j))
                 }
                 PopupResult::Chosen(c) => {
                     chosen = Some((c, None));
-                    self.open_menu = None;
+                    Some(MenuBarEvent::Chosen)
                 }
                 PopupResult::Dismissed => {
-                    // Clicks on the bar itself are handled by `menu_bar`.
-                    let on_bar = ctx
-                        .pointer_interact_pos()
-                        .is_some_and(|p| p.y < o.y + chrome::MENU_H);
-                    if !on_bar {
-                        self.open_menu = None;
-                    }
+                    // Shut by a press on a title: its click (on release) is `menu_bar`'s. Not
+                    // by Escape with the pointer merely resting on the bar.
+                    let press =
+                        ui.input(|x| x.pointer.press_origin().filter(|_| x.pointer.any_pressed()));
+                    let press_on_title = press
+                        .is_some_and(|at| chrome::menubar_title_at(ui.painter(), o, at).is_some());
+                    Some(MenuBarEvent::Dismissed { press_on_title })
                 }
+            };
+            if let Some(event) = event {
+                self.open_menu = chrome::menubar_next(self.open_menu, event);
             }
         }
 
@@ -6496,19 +6660,22 @@ impl App {
             match ev {
                 Event::Drop(s) => self.dropped(vec![s], ctx),
                 Event::ShowMain => self.show_window(ctx),
-                Event::Context(screen) => {
-                    // Popups take a point in the main window.
-                    let origin = ctx
-                        .input(|i| i.viewport().inner_rect)
-                        .map_or(Pos2::ZERO, |r| r.min);
-                    self.open_popup(Popup::DropTarget, screen - origin.to_vec2());
-                }
+                Event::Context(screen) => self.drop_target_menu(screen, ctx),
                 Event::Moved(p) => {
                     self.settings.drop_target_pos = Some((p.x.round() as i32, p.y.round() as i32));
                     self.dirty = true;
                 }
             }
         }
+    }
+
+    /// The drop target's menu at `screen` (a point on the screen, logical points).
+    fn drop_target_menu(&mut self, screen: Pos2, ctx: &egui::Context) {
+        // Popups take a point in the main window.
+        let origin = ctx
+            .input(|i| i.viewport().inner_rect)
+            .map_or(Pos2::ZERO, |r| r.min);
+        self.open_popup(Popup::DropTarget, screen - origin.to_vec2());
     }
 
     /// Tasks → Export: every download's address, as an IDM export file or plain text.
@@ -7789,6 +7956,7 @@ impl eframe::App for App {
         // the taskbar's progress all stood still until the window was restored.
         crate::settings::share_proxy(self.settings.proxy());
         crate::settings::share_dns(self.settings.dns());
+        crate::settings::share_video_cookies(&self.settings);
         self.follow_assistive_technology(ctx);
         self.network_adapter_tick(ctx);
         self.debrid_tick();
@@ -7851,10 +8019,13 @@ impl eframe::App for App {
         self.main_drops(&ctx);
         self.remember_layout(&ctx);
         // Light or dark: IDM follows Windows' app mode (checked every 2 s) unless View → Dark
-        // Mode support is off. Switches live (IDM asks to restart).
-        if self
-            .theme_checked
-            .is_none_or(|t| t.elapsed() > Duration::from_secs(2))
+        // Mode support is off. Switches live (IDM asks to restart). On Linux the desktop's own
+        // change wakes a frame, and the check runs in it rather than at its next 2 s (#156).
+        let desktop_changed = crate::theme::system_changed();
+        if desktop_changed
+            || self
+                .theme_checked
+                .is_none_or(|t| t.elapsed() > Duration::from_secs(2))
         {
             self.theme_checked = Some(Instant::now());
             // A theme file added, removed or renamed: View → Theme lists it.
@@ -8016,6 +8187,43 @@ fn share(cap: u64, other: f64) -> u64 {
         cap.saturating_sub(other as u64)
     };
     rest.max(half).max(1024)
+}
+
+#[cfg(test)]
+mod at_login_tests {
+    use super::{AtLogin, TRAY_GRACE, at_login};
+    use std::time::Duration;
+
+    /// Where a start with the session leaves the window (#226), in each order its tray icon and
+    /// the desktop's tray can come in.
+    #[test]
+    fn the_window_waits_for_the_tray_then_stays_there_or_shows_minimized() {
+        let s = Duration::from_secs;
+        let icon = |d| Some(s(d));
+        // The tray first (Windows, KDE): MDM's icon registered, the window stays hidden.
+        assert_eq!(at_login(s(0), icon(0), true), AtLogin::Tray);
+        // The decision first (XFCE: MDM looked before its own icon had registered; GNOME: the
+        // AppIndicator extension's tray came 11.5 s after MDM's icon): waited for, hidden, then
+        // the tray.
+        assert_eq!(at_login(s(0), None, false), AtLogin::Wait);
+        assert_eq!(at_login(s(0), icon(0), false), AtLogin::Wait);
+        assert_eq!(at_login(s(13), icon(12), true), AtLogin::Tray);
+        assert_eq!(
+            at_login(s(60), TRAY_GRACE.checked_sub(s(1)), true),
+            AtLogin::Tray
+        );
+        // The grace counts from MDM's icon: a slow start of its own leaves the desktop its time.
+        assert_eq!(at_login(TRAY_GRACE + s(5), icon(5), false), AtLogin::Wait);
+        // No tray within the grace period (a desktop without one, #59; Windows' taskbar not
+        // there to take the icon): shown, minimized.
+        assert_eq!(
+            at_login(TRAY_GRACE, Some(TRAY_GRACE), false),
+            AtLogin::Minimize
+        );
+        // No icon at all (the tray couldn't be made): the grace from the start.
+        assert_eq!(at_login(TRAY_GRACE, None, false), AtLogin::Minimize);
+        assert_eq!(at_login(s(60), None, true), AtLogin::Minimize);
+    }
 }
 
 #[cfg(test)]

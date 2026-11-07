@@ -292,6 +292,56 @@ pub fn menu_bar(ui: &mut Ui, o: Pos2, width: f32, open: Option<usize>) -> Option
     hit
 }
 
+/// The menu-bar title under `pos` (main-window coordinates), as [`menu_bar`] lays them out at
+/// `o`: the first menu at the right in RTL.
+pub fn menubar_title_at(p: &egui::Painter, o: Pos2, pos: Pos2) -> Option<usize> {
+    menus(p).iter().position(|(_, x, w, _)| {
+        winui::rect(Rect::from_min_size(o + vec2(*x, 0.0), vec2(*w, MENU_H))).contains(pos)
+    })
+}
+
+/// What happened to the menu bar this frame, for [`menubar_next`].
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum MenuBarEvent {
+    /// [`menu_bar`] returned title `i`: clicked (`released`: the click's release, or a
+    /// screen reader's Collapse), or hovered while another menu is open.
+    Title { i: usize, released: bool },
+    /// The open menu shut itself (Escape, a press outside it, the app losing the focus);
+    /// `press_on_title`: the press that shut it went down on a title of the bar.
+    Dismissed { press_on_title: bool },
+    /// An item was chosen.
+    Chosen,
+    /// Left or Right, or the keyboard (Alt, F10, an access letter), opened menu `i`.
+    Open(usize),
+}
+
+/// The menu bar's open menu after `event` (`open`: the one open before it).
+///
+/// A menu that shut itself is closed here too, unless the press that shut it went down on a
+/// title: that press's release is the title's click, which shuts the menu (its own title) or
+/// opens another one. Escape, or the app losing the focus, with the pointer resting on the bar
+/// (where the click that opened the menu left it) used to leave the menu marked open with
+/// nothing shown, so the next click on its title only "shut" it, and nothing opened.
+pub fn menubar_next(open: Option<usize>, event: MenuBarEvent) -> Option<usize> {
+    match event {
+        MenuBarEvent::Title { i, released } => {
+            if open == Some(i) && released {
+                None
+            } else {
+                Some(i)
+            }
+        }
+        MenuBarEvent::Dismissed {
+            press_on_title: true,
+        } => open,
+        MenuBarEvent::Dismissed {
+            press_on_title: false,
+        }
+        | MenuBarEvent::Chosen => None,
+        MenuBarEvent::Open(i) => Some(i),
+    }
+}
+
 /// A screen reader or UI Automation asked to shut the open menu-bar menu (Collapse on its
 /// title) this frame; taken once.
 pub fn menubar_collapse(ctx: &egui::Context) -> bool {
@@ -791,6 +841,70 @@ fn menu_size<C>(
     vec2(38.0 + widest + if has_sub { 48.0 } else { 30.0 }, h + 6.0)
 }
 
+/// How a borderless window of ours looks and takes the pointer ([`style_popup`]).
+#[derive(Clone, Copy, PartialEq, Debug)]
+pub enum PopupLook {
+    /// A menu: never activated (the main window keeps the focus), small rounded corners and
+    /// the menu's border, no open animation.
+    Menu,
+    /// A small floating window (the drop target): activated as any window, rounded corners.
+    Floating,
+}
+
+/// The builder of every borderless window of ours (a menu, the drop target): no title bar, not
+/// resizable, no taskbar button, always on top. On Windows it is created hidden: its first pass
+/// makes it a plain popup ([`style_popup`]) and [`show_popup`] shows it then.
+pub fn popup_viewport(title: &str) -> egui::ViewportBuilder {
+    egui::ViewportBuilder::default()
+        .with_title(title)
+        .with_decorations(false)
+        .with_resizable(false)
+        .with_taskbar(false)
+        .with_always_on_top()
+        // Hidden until styled, then shown (show_popup).
+        .with_visible(!cfg!(windows))
+}
+
+/// Call first in the pass of a borderless window titled `title` (made with [`popup_viewport`]),
+/// before anything is drawn in it. On Windows it becomes a plain popup window, its client the
+/// whole window (win32::popup_window): winit's borderless windows keep a caption style, which
+/// on a Windows 11 Insider build (22635) put a black band a title bar tall across the top of
+/// every menu and of the drop target, their picture moved down by as much (#208). Styled in
+/// the window's own pass: its frame changes, and a picture drawn before that was lost with the
+/// old frame (black until something made it draw again). True on the pass that styled it: show
+/// it then ([`show_popup`]). Elsewhere nothing to do (false).
+#[cfg_attr(not(windows), allow(unused_variables))]
+pub fn style_popup(title: &str, look: PopupLook) -> bool {
+    #[cfg(windows)]
+    {
+        use crate::win32::Popup;
+        let kind = match look {
+            PopupLook::Menu => Popup::Menu {
+                border: u32::from_le_bytes([
+                    POPUP_BORDER().r(),
+                    POPUP_BORDER().g(),
+                    POPUP_BORDER().b(),
+                    0,
+                ]),
+            },
+            PopupLook::Floating => Popup::Floating,
+        };
+        crate::win32::popup_window(title, kind)
+    }
+    #[cfg(not(windows))]
+    false
+}
+
+/// Show the borderless window `vid` [`style_popup`] just styled (from its parent's pass).
+pub fn show_popup(ctx: &egui::Context, vid: egui::ViewportId) {
+    ctx.send_viewport_cmd_to(vid, egui::ViewportCommand::Visible(true));
+    // The command is carried out on the window's next frame: a menu opened from the keyboard
+    // (Shift+F10, the Menu key) or a screen reader moves no pointer to bring one, and stayed
+    // hidden (#113).
+    ctx.request_repaint_of(vid);
+    ctx.request_repaint();
+}
+
 /// Place a menu of `size` at screen point `at`, flipped to stay inside the monitor's work area:
 /// up (or left) of the point, or for a submenu (`parent`: the parent menu's screen rect) to the
 /// parent's left side. In a right-to-left interface `at` is the menu's top-right: it opens to
@@ -856,15 +970,8 @@ fn popup_level<C: Clone>(
         .and_then(|(a, b)| if depth == 0 { a } else { b });
     let screen = Rect::from_min_size(place_menu(at, size, parent), size);
     let title = format!("misterdownloadmanager menu {depth}"); // not translated: an id
-    let builder = egui::ViewportBuilder::default()
-        .with_title(title.clone())
-        .with_decorations(false)
-        .with_resizable(false)
-        .with_taskbar(false)
-        .with_always_on_top()
+    let builder = popup_viewport(&title)
         .with_active(false)
-        // Hidden until styled (no open animation, no activation), then shown below.
-        .with_visible(!cfg!(windows))
         .with_position(screen.min)
         .with_inner_size(size);
     let open_sub = if depth == 0 {
@@ -878,24 +985,10 @@ fn popup_level<C: Clone>(
     let parent_vid = ctx.viewport_id();
     // Set when this pass made the new (hidden) window a menu window: shown below. (Elsewhere a
     // menu's window is created visible.)
-    #[cfg_attr(not(windows), allow(unused_mut))]
     let mut styled = false;
     ctx.show_viewport_immediate(vid, builder, |ui, _| {
-        // Made a menu window (win32::menu_window) in its own pass, before anything is drawn in
-        // it: its frame changes (#208), and a picture drawn before that was lost with the old
-        // frame, so the menu showed black until something made it draw again.
-        #[cfg(windows)]
-        {
-            styled = crate::win32::menu_window(
-                &title,
-                u32::from_le_bytes([
-                    POPUP_BORDER().r(),
-                    POPUP_BORDER().g(),
-                    POPUP_BORDER().b(),
-                    0,
-                ]),
-            );
-        }
+        // Made a menu window in its own pass, before anything is drawn in it (style_popup).
+        styled = style_popup(&title, PopupLook::Menu);
         // What happens in this window, for popup() and keyboard(), which run in the parent's
         // pass: they must not ask egui about a menu window by its id, which creates one when it
         // isn't open (a submenu, mostly): an untitled copy of the main window, opened and closed
@@ -921,7 +1014,7 @@ fn popup_level<C: Clone>(
         // arrow on the left pointing left.
         let _surface = winui::Surface::enter(o.x, o.x + w);
         let rtl = winui::rtl();
-        // Body; Windows 11 rounds the window and draws the border and shadow (menu_window).
+        // Body; Windows 11 rounds the window and draws the border and shadow (style_popup).
         fill(
             &painter,
             o.x,
@@ -1161,12 +1254,7 @@ fn popup_level<C: Clone>(
         }
     });
     if styled {
-        ctx.send_viewport_cmd_to(vid, egui::ViewportCommand::Visible(true));
-        // The command is carried out on the menu's next frame: a menu opened from the keyboard
-        // (Shift+F10, the Menu key) or a screen reader moves no pointer to bring one, and stayed
-        // hidden (#113).
-        ctx.request_repaint_of(vid);
-        ctx.request_repaint();
+        show_popup(ctx, vid);
     }
     if let Some((i, slot_y)) = sub_at
         && let MenuEntry::Sub(_, _, children) = &entries[i]
@@ -1987,5 +2075,105 @@ fn chevron(p: &egui::Painter, ox: f32, top: f32, open: bool, bright: bool) {
                 }
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{MenuBarEvent, menubar_next};
+
+    /// Runs `events` from no menu open; the open menu after each.
+    fn run(events: &[MenuBarEvent]) -> Vec<Option<usize>> {
+        let mut open = None;
+        events
+            .iter()
+            .map(|e| {
+                open = menubar_next(open, *e);
+                open
+            })
+            .collect()
+    }
+
+    #[test]
+    fn a_title_clicked_after_escape_opens_its_menu_again() {
+        // Click Tasks, Escape (the pointer still on Tasks: no press), click Tasks.
+        let steps = run(&[
+            MenuBarEvent::Title {
+                i: 0,
+                released: true,
+            },
+            MenuBarEvent::Dismissed {
+                press_on_title: false,
+            },
+            MenuBarEvent::Title {
+                i: 0,
+                released: true,
+            },
+        ]);
+        assert_eq!(steps, [Some(0), None, Some(0)]);
+    }
+
+    #[test]
+    fn clicking_the_open_menus_title_shuts_it() {
+        // The press shuts the menu's window; its release, on the same title, shuts the menu.
+        let steps = run(&[
+            MenuBarEvent::Title {
+                i: 1,
+                released: true,
+            },
+            MenuBarEvent::Dismissed {
+                press_on_title: true,
+            },
+            MenuBarEvent::Title {
+                i: 1,
+                released: true,
+            },
+            MenuBarEvent::Title {
+                i: 1,
+                released: true,
+            },
+        ]);
+        assert_eq!(steps, [Some(1), Some(1), None, Some(1)]);
+    }
+
+    #[test]
+    fn another_title_opens_its_menu_from_an_open_one() {
+        let steps = run(&[
+            MenuBarEvent::Title {
+                i: 0,
+                released: true,
+            },
+            // Hovered while Tasks is open: File opens.
+            MenuBarEvent::Title {
+                i: 1,
+                released: false,
+            },
+            // Pressed and released on Downloads.
+            MenuBarEvent::Dismissed {
+                press_on_title: true,
+            },
+            MenuBarEvent::Title {
+                i: 2,
+                released: true,
+            },
+        ]);
+        assert_eq!(steps, [Some(0), Some(1), Some(1), Some(2)]);
+    }
+
+    #[test]
+    fn a_press_elsewhere_a_choice_or_the_focus_lost_closes_the_menu() {
+        for end in [
+            MenuBarEvent::Dismissed {
+                press_on_title: false,
+            },
+            MenuBarEvent::Chosen,
+        ] {
+            assert_eq!(run(&[MenuBarEvent::Open(3), end]), [Some(3), None]);
+        }
+        // Left / Right from the keyboard move to the neighbour.
+        assert_eq!(
+            run(&[MenuBarEvent::Open(0), MenuBarEvent::Open(4)]),
+            [Some(0), Some(4)]
+        );
     }
 }

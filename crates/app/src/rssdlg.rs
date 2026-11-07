@@ -131,16 +131,19 @@ impl RssWindow {
             crate::i18n::t("Feed address:"),
             winui::TEXT(),
         );
+        // Add feed as wide as its label in this language (#192); the box ends 10 px before it.
+        let (add_x, add_w) =
+            winui::buttons_to_right(&p, 740.0, 10.0, &[("Add feed", 120.0)], 200.0)[0];
         winui::edit(
             ui,
-            r(o, 140.0, 42.0, 470.0, 22.0),
+            r(o, 140.0, 42.0, add_x - 10.0 - 140.0, 22.0),
             &mut self.address,
             true,
             false,
         );
         let add = winui::button(
             ui,
-            r(o, 620.0, 42.0, 120.0, 22.0),
+            r(o, add_x, 42.0, add_w, 22.0),
             // i18n: RSS feeds window: button that subscribes to the feed whose address is typed
             "Add feed",
             ButtonKind::Normal,
@@ -432,9 +435,20 @@ impl RssWindow {
                 );
             },
         );
+        // As wide as their labels in this language (#192), under the list (it ends at 222) and
+        // short of the rule's box beside it (from 240).
+        let [new_at, delete_at] = winui::button_row_from_left(
+            &p,
+            &[("New rule", 22.0, 96.0), ("Delete", 126.0, 96.0)],
+            8.0,
+            232.0,
+            160.0,
+        )[..] else {
+            unreachable!("two buttons")
+        };
         let new = winui::button(
             ui,
-            r(o, 22.0, 414.0, 96.0, 21.0),
+            r(o, new_at.0, 414.0, new_at.1, 21.0),
             // i18n: RSS feeds window, Download rules: make a new rule
             "New rule",
             ButtonKind::Normal,
@@ -453,7 +467,7 @@ impl RssWindow {
         let sel = self.rules.selected.filter(|i| *i < store.rules.len());
         let delete = winui::button(
             ui,
-            r(o, 126.0, 414.0, 96.0, 21.0),
+            r(o, delete_at.0, 414.0, delete_at.1, 21.0),
             "Delete",
             if sel.is_some() {
                 ButtonKind::Normal

@@ -15,8 +15,8 @@ pub struct DebridAccount {
     /// The account's name at the service, and its state as last read ("premium, 143 days").
     pub user: String,
     pub state: String,
-    /// The credential's JSON (`mdm_debrid::Credential`), sealed on disk (`sealed`). Never
-    /// shown, logged or sent anywhere but the service.
+    /// The credential's JSON (`mdm_debrid::Credential`); on disk its keychain reference, or sealed
+    /// (`sealed`, secrets.rs). Never shown, logged or sent anywhere but the service.
     #[serde(with = "sealed")]
     pub secret: String,
 }
@@ -284,6 +284,12 @@ pub struct Settings {
     /// Download video from a page: the subtitles last chosen (#68), offered again for the
     /// next video when it has that language (none at first).
     pub video_subs: mdm_tools::video::Subs,
+    /// Options → Sites Logins → Cookies for video sites (#229): the browser whose cookies
+    /// yt-dlp reads on this computer when the extension passed none (yt-dlp's name: `firefox`,
+    /// `chrome`...; empty: off, the default), and its profile (a name or a folder; empty: the
+    /// browser's last used). A settings file from before has neither: off.
+    pub video_cookies: String,
+    pub video_cookies_profile: String,
     /// Options → Archives (#37): extract an archive when its download completes (a Link grabber
     /// package says so itself). Off, as a browser leaves archives alone.
     pub extract_auto: bool,
@@ -442,6 +448,8 @@ impl Default for Settings {
             drop_target: false,
             drop_target_pos: None,
             video_subs: Default::default(),
+            video_cookies: String::new(),
+            video_cookies_profile: String::new(),
             extract_auto: false,
             extract_delete: false,
             extract_subfolder: 0,
@@ -452,6 +460,64 @@ impl Default for Settings {
 }
 
 impl Settings {
+    /// The settings as the list file writes them (#44, secrets.rs): each secret's field holds
+    /// its keychain reference once the keychain holds it, else the secret sealed as before
+    /// (and the keychain is asked to take it). Serialized inside `secrets::prepared`, where these
+    /// fields go as they are. Also called at start: secrets from before go to the keychain then.
+    pub fn for_disk(&self) -> Settings {
+        let vault = crate::secrets::vault();
+        let mut pass = vault.pass();
+        let mut disk = self.clone();
+        let mut keys = std::collections::HashSet::new();
+        let mut kept = |key: String, label: &dyn Fn() -> String, secret: &str| {
+            // A key once (two logins for the same site and user get one each).
+            let mut k = key.clone();
+            let mut n = 2;
+            while !keys.insert(k.clone()) {
+                k = format!("{key}-{n}");
+                n += 1;
+            }
+            pass.secret(&k, label, secret)
+                .unwrap_or_else(|| sealed::seal(secret))
+        };
+        // Their names in the system's keychain (Credential Manager, the keyring).
+        disk.proxy_pass = kept(
+            "proxy".into(),
+            &|| {
+                format!(
+                    "Mister Download Manager: {} {}:{}",
+                    // i18n: the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+                    crate::i18n::t("proxy server"),
+                    self.proxy_host,
+                    self.proxy_port
+                )
+            },
+            &self.proxy_pass,
+        );
+        for (a, d) in self.debrid_accounts.iter().zip(&mut disk.debrid_accounts) {
+            d.secret = kept(
+                format!("debrid/{}", a.id),
+                &|| format!("Mister Download Manager: {} ({})", a.service.name(), a.user),
+                &a.secret,
+            );
+        }
+        for ((site, user, pw), d) in self.site_logins.iter().zip(&mut disk.site_logins) {
+            d.2 = kept(
+                format!(
+                    "login/{:016x}",
+                    fnv(&format!(
+                        "{site}
+{user}"
+                    ))
+                ),
+                &|| format!("Mister Download Manager: {site} ({user})"),
+                pw,
+            );
+        }
+        pass.finish();
+        disk
+    }
+
     /// Options → Archives' folder choice, for mdm-extract.
     pub fn extract_into(&self) -> mdm_extract::Subfolder {
         match self.extract_subfolder {
@@ -460,6 +526,15 @@ impl Settings {
             _ => mdm_extract::Subfolder::Smart,
         }
     }
+}
+
+/// FNV-1a: a stable hash (std's may change between builds), for keychain keys.
+pub(crate) fn fnv(s: &str) -> u64 {
+    let mut h: u64 = 0xcbf2_9ce4_8422_2325;
+    for b in s.bytes() {
+        h = (h ^ u64::from(b)).wrapping_mul(0x0100_0000_01b3);
+    }
+    h
 }
 
 /// The most entries a drop list keeps.
@@ -857,11 +932,14 @@ pub fn share_proxy(proxy: mdm_engine::Proxy) {
     }
 }
 
-/// Keep [`own_net`] on the settings' DNS (cheap when it didn't change).
+/// Keep [`own_net`] on the settings' DNS (cheap when it didn't change), and the helpers' relay
+/// (#35: the servers of video pages and galleries are looked up with it while an adapter is
+/// chosen).
 pub fn share_dns(dns: mdm_engine::DnsChoice) {
     if OWN_DNS.read().unwrap().as_ref() != Some(&dns) {
-        *OWN_DNS.write().unwrap() = Some(dns);
+        *OWN_DNS.write().unwrap() = Some(dns.clone());
     }
+    mdm_tools::proc::set_dns(dns);
 }
 
 static OWN_ROUTE: std::sync::RwLock<mdm_engine::Route> =
@@ -874,6 +952,19 @@ pub fn share_route(route: mdm_engine::Route) {
         *OWN_ROUTE.write().unwrap() = route.clone();
     }
     mdm_tools::proc::set_route(route);
+}
+
+impl Settings {
+    /// Options → Sites Logins → Cookies for video sites, as yt-dlp is given it (None: off, or
+    /// a browser yt-dlp doesn't read).
+    pub fn video_cookies(&self) -> Option<mdm_tools::proc::BrowserCookies> {
+        mdm_tools::proc::BrowserCookies::new(&self.video_cookies, &self.video_cookies_profile)
+    }
+}
+
+/// Keep every yt-dlp run on Options' cookies for video sites (cheap when they didn't change).
+pub fn share_video_cookies(s: &Settings) {
+    mdm_tools::proc::set_browser_cookies(s.video_cookies());
 }
 
 /// The network adapter MDM's connections go through now (#35).
@@ -1031,6 +1122,9 @@ mod tests {
         // An older settings file has no switch: locked.
         let old: Settings = serde_json::from_str(r#"{"max_connections": 64}"#).unwrap();
         assert!(!old.many_connections);
+        // Nor cookies for video sites (#229): off.
+        assert_eq!(old.video_cookies(), None);
+        assert_eq!(Settings::default().video_cookies(), None);
         assert_eq!(old.connections_for(&url("https://fast.org/a")), 32);
         // IDM's default: no proxy, but "use the browser's proxy" ticked — the browser's is
         // Windows' (none set there: direct).
@@ -1049,10 +1143,9 @@ mod tests {
     }
 }
 
-/// Sites Logins' passwords on disk: sealed for this Windows account (`dpapi:` and base64, which
-/// only this account on this computer can open); elsewhere as they are, in the data folder only
-/// its owner may read (mdm_ipc::private_dir). A list from before reads as before, and a sealed
-/// password that can't be opened (the list copied to another account) reads as none.
+/// Sites Logins' passwords on disk: in the system's keychain once it holds them (secrets.rs),
+/// else sealed as `sealed` seals them. A list from before reads as before, and a password that
+/// can't be opened (the list copied to another account) reads as none.
 mod sealed_logins {
     use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
@@ -1062,6 +1155,9 @@ mod sealed_logins {
         v: &[(String, String, String)],
         s: S,
     ) -> Result<S::Ok, S::Error> {
+        if crate::secrets::is_prepared() {
+            return v.serialize(s);
+        }
         v.iter()
             .map(|(site, user, pw)| (site, user, seal(pw)))
             .collect::<Vec<_>>()
@@ -1078,18 +1174,27 @@ mod sealed_logins {
     }
 }
 
-/// One secret on disk (the proxy's password, a debrid account's credential, #44): sealed as
-/// `sealed_logins`' passwords are. Windows: DPAPI, for this account on this computer. Linux and
-/// macOS: as it is, in the data folder only its owner may read (mdm_ipc::private_dir; the system
-/// keychains are planned, #44's last phase). A secret that can't be opened (the file copied to
-/// another account) reads as none: sign in again.
+/// One secret on disk (the proxy's password, a debrid account's credential, #44). In the
+/// system's keychain once it holds it: the settings then keep its reference (secrets.rs,
+/// `keychain:…`, written by [`Settings::for_disk`]). Until then, and where no keychain is used:
+/// Windows seals it with DPAPI, for this account on this computer; Linux and macOS keep it as it
+/// is, in the data folder only its owner may read (mdm_ipc::private_dir). A secret that can't be
+/// opened (the file copied to another account) reads as none: sign in again.
 pub(crate) mod sealed {
     use serde::{Deserialize, Deserializer, Serializer};
 
+    use crate::secrets::REF;
+
     #[cfg(windows)]
     const SEALED: &str = "dpapi:";
+    /// Before a secret kept as it is that would read as a reference (`keychain:…`), or as one
+    /// of these.
+    const PLAIN: &str = "plain:";
 
     pub fn serialize<S: Serializer>(v: &str, s: S) -> Result<S::Ok, S::Error> {
+        if crate::secrets::is_prepared() {
+            return s.serialize_str(v);
+        }
         s.serialize_str(&seal(v))
     }
 
@@ -1108,10 +1213,31 @@ pub(crate) mod sealed {
                 base64::engine::general_purpose::STANDARD.encode(sealed)
             );
         }
+        if pw.starts_with(REF) || escaped(pw).is_some() {
+            return format!("{PLAIN}{pw}");
+        }
         pw.to_owned()
     }
 
+    /// What `seal` escaped: `plain:` before a reference or another `plain:` (a plain secret from
+    /// before that starts with `plain:` alone reads as it is).
+    fn escaped(stored: &str) -> Option<&str> {
+        stored
+            .strip_prefix(PLAIN)
+            .filter(|rest| rest.starts_with(REF) || rest.starts_with(PLAIN))
+    }
+
     pub(crate) fn open(stored: &str) -> String {
+        // Read as the disk has it (store::keep_generations only checks that a list reads).
+        if crate::secrets::is_prepared() {
+            return stored.to_owned();
+        }
+        if stored.starts_with(REF) {
+            return crate::secrets::vault().open(stored);
+        }
+        if let Some(plain) = escaped(stored) {
+            return plain.to_owned();
+        }
         #[cfg(windows)]
         if let Some(b64) = stored.strip_prefix(SEALED) {
             use base64::Engine as _;

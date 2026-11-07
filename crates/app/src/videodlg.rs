@@ -303,7 +303,15 @@ impl VideoDialog {
                         ));
                     }
                 }
-                Err(e) => self.error = Some(lookup_error(&e)),
+                Err(e) => {
+                    // Whose cookies the look-up had (#229): the extension's, or (none came) the
+                    // browser's Options names, or none.
+                    let sent = self.looking.as_ref().is_some_and(|(_, b)| {
+                        b.cookies.as_deref().is_some_and(|c| !c.trim().is_empty())
+                    });
+                    let store = (!sent).then(mdm_tools::proc::browser_cookies).flatten();
+                    self.error = Some(lookup_error(&e, sent, store.as_ref()));
+                }
             }
         }
         let installed = self
@@ -1016,9 +1024,65 @@ pub fn from_browser(c: &mdm_ipc::Command) -> mdm_tools::proc::FromBrowser {
     }
 }
 
+/// A browser's name as people know it, from yt-dlp's (`chrome`: Chrome).
+pub fn browser_label(name: &str) -> &'static str {
+    match name {
+        "firefox" => "Firefox",
+        "chrome" => "Chrome",
+        "edge" => "Edge",
+        "brave" => "Brave",
+        "opera" => "Opera",
+        "vivaldi" => "Vivaldi",
+        "chromium" => "Chromium",
+        "whale" => "Whale",
+        "safari" => "Safari",
+        _ => "?",
+    }
+}
+
 /// yt-dlp's reason in plain words where it is one users meet often; otherwise its own text.
-fn lookup_error(e: &str) -> String {
+/// `sent`: the browser's extension passed the page's cookies; `store`: else, the browser whose
+/// cookies yt-dlp read (Options → Sites Logins → Cookies for video sites, #229).
+fn lookup_error(e: &str, sent: bool, store: Option<&mdm_tools::proc::BrowserCookies>) -> String {
     let lower = e.to_ascii_lowercase();
+    let browser = store.map_or("?", |b| browser_label(&b.browser));
+    let named = |text: &str| crate::i18n::fmt(crate::i18n::t(text), &[("browser", browser)]);
+    // The browser's cookies yt-dlp couldn't read come first: the site's "sign in" that follows
+    // is only their result.
+    if store.is_some() && mdm_tools::proc::cookie_trouble(&lower) {
+        return if lower.contains("could not copy chrome cookie database") {
+            // i18n: the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+            named(
+                "yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.",
+            )
+        } else if lower.contains("could not find") {
+            // i18n: the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+            named(
+                "yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.",
+            )
+        } else if cfg!(windows)
+            && (lower.contains("decrypt") || lower.contains("unknown cookie version"))
+        {
+            // i18n: the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+            named(
+                "{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.",
+            )
+        } else if ["keyring", "secretstorage", "kwallet", "decrypt"]
+            .iter()
+            .any(|k| lower.contains(k))
+        {
+            // i18n: the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+            named(
+                "yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.",
+            )
+        } else {
+            crate::i18n::fmt(
+                // i18n: the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+                crate::i18n::t("yt-dlp couldn't read {browser}'s cookies: {error}"),
+                &[("browser", browser), ("error", e)],
+            )
+        };
+    }
     let plain = if lower.contains("drm") {
         // i18n: the Download video window: the page's video is copy-protected
         "This video is protected (DRM): no tool can save it."
@@ -1029,8 +1093,19 @@ fn lookup_error(e: &str) -> String {
         || lower.contains("login")
         || lower.contains("private video")
     {
-        // i18n: the Download video window: the video needs the user to be signed in
-        "This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on."
+        if store.is_some() {
+            // i18n: the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+            return named(
+                "The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.",
+            );
+        }
+        if sent {
+            // i18n: the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+            "The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again."
+        } else {
+            // i18n: the Download video window: the video needs the user to be signed in
+            "This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites."
+        }
     } else {
         return e.to_owned();
     };
@@ -1060,6 +1135,74 @@ pub(crate) fn choice_label(label: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #229: yt-dlp's refusals and its trouble with a browser's cookies, in MDM's words, saying
+    /// which cookies it had.
+    #[test]
+    fn cookie_and_sign_in_errors_in_plain_words() {
+        let bot = "yt-dlp failed: [youtube] A1WG3x-Ebpk: Sign in to confirm you're not a bot. Use --cookies-from-browser or --cookies for the authentication.";
+        assert!(lookup_error(bot, false, None).contains("Cookies for video sites"));
+        assert!(lookup_error(bot, true, None).contains("even with your browser's cookies"));
+        let firefox = mdm_tools::proc::BrowserCookies::new("firefox", "").unwrap();
+        let chrome = mdm_tools::proc::BrowserCookies::new("chrome", "").unwrap();
+        assert_eq!(
+            lookup_error(bot, false, Some(&firefox)),
+            "The site wants you signed in, even with Firefox's cookies. Sign in to it in Firefox, then look the page up again."
+        );
+        // Chrome's app-bound cookies: only a warning, kept on the error (proc::with_cookie_trouble).
+        let v20 = format!("{bot} (unknown cookie version: \"b'v20'\")");
+        let said = lookup_error(&v20, false, Some(&chrome));
+        if cfg!(windows) {
+            assert!(
+                said.starts_with("Chrome keeps its cookies locked"),
+                "{said}"
+            );
+        } else {
+            // No app-bound encryption elsewhere: yt-dlp's own words.
+            assert!(
+                said.starts_with("yt-dlp couldn't read Chrome's cookies: "),
+                "{said}"
+            );
+        }
+        // Linux: the key wasn't in the keyring.
+        let v11 = format!("{bot} (cannot decrypt v11 cookies: no key found)");
+        let said = lookup_error(&v11, false, Some(&chrome));
+        if cfg!(windows) {
+            assert!(
+                said.starts_with("Chrome keeps its cookies locked"),
+                "{said}"
+            );
+        } else {
+            assert!(said.contains("system's keyring"), "{said}");
+        }
+        assert!(
+            lookup_error(
+                "yt-dlp failed: failed to load cookies (Could not copy Chrome cookie database. See  https://github.com/yt-dlp/yt-dlp/issues/7271  for more info)",
+                false,
+                Some(&chrome)
+            )
+            .starts_with("yt-dlp can't read Chrome's cookies while Chrome is open")
+        );
+        assert!(
+            lookup_error(
+                "yt-dlp failed: failed to load cookies (could not find firefox cookies database in 'C:\\p')",
+                false,
+                Some(&firefox)
+            )
+            .starts_with("yt-dlp found no cookies of Firefox")
+        );
+        let keyring = lookup_error(
+            "yt-dlp failed: Sign in (failed to read from keyring)",
+            false,
+            Some(&chrome),
+        );
+        assert!(keyring.contains("system's keyring"), "{keyring}");
+        // Anything else stays yt-dlp's own words.
+        assert_eq!(
+            lookup_error("yt-dlp failed: Video unavailable", false, Some(&firefox)),
+            "yt-dlp failed: Video unavailable"
+        );
+    }
 
     fn sub(code: &str, automatic: bool) -> SubChoice {
         SubChoice {

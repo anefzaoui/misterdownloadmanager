@@ -96,10 +96,31 @@ the list:
 
 ## Where the sign-in is kept
 
-- **Windows**: sealed for your Windows account (DPAPI), in MDM's settings. A copy of the
-  settings on another account or computer can't read it: sign in again there.
-- **Linux and macOS**: in MDM's settings, in a data folder only you may read (0700), not yet
-  in the system's keychain. Keeping it in the keychain is planned.
+In the system's keychain, as are Sites Logins' passwords and the proxy's. MDM's settings keep
+only a reference to it. **Options → Accounts** says where they are on your computer.
+
+- **Windows**: in **Windows Credential Manager** (Control Panel → Credential Manager → Windows
+  Credentials), as entries named `Mister Download Manager/…`, for your Windows account. They
+  roam with your profile, as MDM's settings folder does.
+- **Linux**: in the system keyring through the Secret Service (GNOME Keyring, KeePassXC, KDE's
+  wallet with its Secret Service on), its default collection, as items labelled
+  `Mister Download Manager: …`. MDM never unlocks a locked keyring and never asks for its
+  password: when the keyring is locked (some desktops that log in on their own leave it
+  locked) or there is none (many tiling window managers), the sign-ins stay in MDM's settings,
+  in a data folder only you may read (0700), as before.
+- **macOS**: in the login keychain (**Keychain Access**), service `Mister Download Manager`.
+  macOS may ask once whether MDM may use them, after an update.
+- **A portable copy** writes nothing outside its folder: it keeps them in its own settings
+  (Windows: encrypted for your Windows account).
+
+Sign-ins saved by an earlier version move to the keychain on the next start; the settings keep
+the old copy until the keychain has it. When the keychain can't be read (a locked keyring), the
+account shows **in the locked keyring** and comes back once the keyring is unlocked and MDM
+starts again. A removed account's entry leaves the keychain with it.
+
+**Uninstalling** on Windows with **remove the download list and settings** removes MDM's
+entries from Credential Manager too. Elsewhere, or to remove them yourself:
+`misterdownloadmanager --forget-sign-ins` (only MDM's own entries).
 
 MDM never writes the token to its event log, crash reports, the automation API or the
 command line's output.
