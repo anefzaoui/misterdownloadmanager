@@ -105,11 +105,11 @@
           </div>
           <div class="tour-stage" data-lightbox>
             <figure class="tour-panel" role="tabpanel" id="tour-progress" aria-labelledby="tour-tab-progress" data-on>
-              <img class="for-light" src="/assets/screens/progress-light.webp" width="548" height="443" alt="The download progress window: a file over eight connections, each one's share drawn as it fills."><img class="for-dark" src="/assets/screens/progress-dark.webp" width="548" height="443" alt="The download progress window: a file over eight connections, each one's share drawn as it fills.">
+              <img class="for-light" src="/assets/screens/progress-light.webp" width="380" height="477" alt="The download progress window: a file over eight connections, each one's share drawn as it fills."><img class="for-dark" src="/assets/screens/progress-dark.webp" width="548" height="443" alt="The download progress window: a file over eight connections, each one's share drawn as it fills.">
               <figcaption class="sr-only"><b>Every connection, live</b> Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</figcaption>
             </figure>
             <figure class="tour-panel" role="tabpanel" id="tour-torrents" aria-labelledby="tour-tab-torrents" aria-hidden="true">
-              <img class="for-light" src="/assets/screens/torrent-light.webp" width="548" height="448" loading="lazy" alt="A torrent's progress window on its Pieces tab: a square for each piece, filled once it's here."><img class="for-dark" src="/assets/screens/torrent-dark.webp" width="548" height="448" loading="lazy" alt="A torrent's progress window on its Pieces tab: a square for each piece, filled once it's here.">
+              <img class="for-light" src="/assets/screens/torrent-light.webp" width="548" height="449" loading="lazy" alt="A torrent's progress window on its Pieces tab: a square for each piece, filled once it's here."><img class="for-dark" src="/assets/screens/torrent-dark.webp" width="548" height="449" loading="lazy" alt="A torrent's progress window on its Pieces tab: a square for each piece, filled once it's here.">
               <figcaption class="sr-only"><b>Torrents, built in</b> Magnet links and .torrent files in the same list. Pick the files you want, then watch the swarm piece by piece.</figcaption>
             </figure>
             <figure class="tour-panel" role="tabpanel" id="tour-video" aria-labelledby="tour-tab-video" aria-hidden="true">
@@ -117,7 +117,7 @@
               <figcaption class="sr-only"><b>Video from a page</b> Paste a page's address and choose a quality, up to 4K, from YouTube, Vimeo and thousands of other sites.</figcaption>
             </figure>
             <figure class="tour-panel" role="tabpanel" id="tour-scheduler" aria-labelledby="tour-tab-scheduler" aria-hidden="true">
-              <img class="for-light" src="/assets/screens/scheduler-light.webp" width="651" height="490" loading="lazy" alt="The Scheduler: a queue started and stopped by the clock."><img class="for-dark" src="/assets/screens/scheduler-dark.webp" width="651" height="490" loading="lazy" alt="The Scheduler: a queue started and stopped by the clock.">
+              <img class="for-light" src="/assets/screens/scheduler-light.webp" width="651" height="530" loading="lazy" alt="The Scheduler: a queue started and stopped by the clock."><img class="for-dark" src="/assets/screens/scheduler-dark.webp" width="651" height="530" loading="lazy" alt="The Scheduler: a queue started and stopped by the clock.">
               <figcaption class="sr-only"><b>Downloads on a schedule</b> Queues that start at 2 a.m., stop by 7 and turn the computer off when they're done.</figcaption>
             </figure>
             <figure class="tour-panel" role="tabpanel" id="tour-languages" aria-labelledby="tour-tab-languages" aria-hidden="true">
@@ -346,7 +346,7 @@
       <div class="wrap facts-inner">
         <div class="sec-intro">
           <h2 id="tldr-title">In short</h2>
-          <p><strong>Mister Download Manager (MDM)</strong> is a free, open-source download manager for Windows 10 and 11, with experimental builds for macOS and Linux. It looks and works like Internet Download Manager (IDM), but it is free (GPL-3.0), downloaded a 1 GiB file 5.4 times faster than IDM 6.42 in our published benchmark, and also downloads torrents, magnet links and videos from web pages. A browser extension for Chrome, Edge, Brave, Opera, Vivaldi and Firefox hands downloads to it.</p>
+          <p><strong>Mister Download Manager (MDM)</strong> is a free, open-source download manager for Windows 10 and 11, with builds for Linux and macOS. It looks and works like Internet Download Manager (IDM), but it is free (GPL-3.0), downloaded a 1 GiB file 5.4 times faster than IDM 6.42 in our published benchmark, and also downloads torrents, magnet links and videos from web pages. A browser extension for Chrome, Edge, Brave, Opera, Vivaldi and Firefox hands downloads to it.</p>
         </div>
         <div class="sheet sheet-labelled facts-sheet">
         <p class="sheet-band"><b>Mister Download Manager {{VERSION}}</b><span>The facts</span></p>
@@ -408,7 +408,7 @@
           <details><summary>Is it safe to install?</summary><p>The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <a href="/faq/is-it-safe.html">More</a></p></details>
           <details><summary>Can I move my downloads over from IDM?</summary><p>Yes: export your list from IDM, then choose Tasks → Import → From IDM export file in MDM. <a href="/faq/import-from-idm.html">More</a></p></details>
           <details><summary>Which browsers work with it?</summary><p>Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <a href="{{AMO}}">Firefox's add-ons store</a> and <a href="{{CWS}}">the Chrome Web Store</a>. Without the extension, copy a link and MDM opens the download window. <a href="/faq/browsers.html">More</a></p></details>
-          <details><summary>Mac or Linux?</summary><p>Yes, to try: every release has a .dmg for Apple Silicon and Intel Macs and an AppImage, .deb, .rpm and .tar.gz for Linux, marked experimental while they mature. <a href="/faq/systems.html">More</a></p></details>
+          <details><summary>Mac or Linux?</summary><p>Yes: every release has an AppImage, .deb, .rpm and .tar.gz for Linux and a .dmg for Apple Silicon and Intel Macs. Today's are marked experimental; from the next release, Linux isn't, after checks on four desktops, and macOS stays experimental. <a href="/faq/systems.html">More</a></p></details>
           <details><summary>Where can I get help?</summary><p>The <a href="/help/">user guide</a> covers every window, with step-by-step tutorials. Something broken? <a href="{{REPO}}/issues/new?template=bug.yml">Open an issue on GitHub</a>, or use Help → Report a problem in the app.</p></details>
         </div>
         <p class="services-links"><a class="text-link" href="/faq/">All questions</a><a class="text-link" href="/help/troubleshooting.html">Troubleshooting</a><a class="text-link" href="{{REPO}}/issues/new?template=bug.yml">Report an issue</a></p>

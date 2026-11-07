@@ -15,7 +15,7 @@ No. MDM is an independent program written from scratch in Rust, with no connecti
 
 ### How is MDM different from IDM? {#mdm-vs-idm}
 
-The layout is familiar on purpose: the toolbar, the categories, the download list, the progress window with every connection, queues and the scheduler. The differences: MDM is free and open source, downloads BitTorrent and magnet links in the same list, finished faster in [our benchmark](/benchmark.html), speaks 86 languages and has experimental builds for macOS and Linux. IDM is the more mature product, refined over many years. See the full [comparison](/idm-alternative.html).
+The layout is familiar on purpose: the toolbar, the categories, the download list, the progress window with every connection, queues and the scheduler. The differences: MDM is free and open source, downloads BitTorrent and magnet links in the same list, finished faster in [our benchmark](/benchmark.html), speaks 86 languages and has builds for Linux and macOS. IDM is the more mature product, refined over many years. See the full [comparison](/idm-alternative.html).
 
 ### Is it safe? Does it contain adware or spyware? {#is-it-safe}
 
@@ -23,7 +23,7 @@ MDM contains no adware, spyware, bundled offers or tracking. Its whole source co
 
 ### Does MDM collect my data? {#privacy}
 
-No. MDM has no accounts, no analytics and no telemetry. It connects to the servers you download from and, once a week, asks GitHub whether a newer version exists (you can turn that off in Help → Check for updates). The browser extension talks only to MDM on your own computer. The details are in the [privacy policy](/privacy.html).
+No. MDM has no accounts, no analytics and no telemetry. It connects to the servers you download from and, each time it starts and once a day while it runs, asks GitHub whether a newer version exists (you can turn that off in Help → Check for updates). The browser extension talks only to MDM on your own computer. The details are in the [privacy policy](/privacy.html).
 
 ### Who makes Mister Download Manager? {#who-makes-it}
 
@@ -33,7 +33,7 @@ MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contribu
 
 ### Which systems does it run on? {#systems}
 
-Windows 10 and 11, 64-bit, is the main platform. Builds for macOS (one download for Apple Silicon and Intel Macs) and Linux (AppImage, .deb, .rpm and .tar.gz) come with every release too; they are marked experimental because they are new and less tested. See [Download](/download.html).
+Windows 10 and 11, 64-bit, is the main platform. Builds for Linux (AppImage, .deb, .rpm and .tar.gz) and macOS (.dmg) come with every release too; today's are marked experimental. From the next release, Linux isn't experimental any more: it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS stays experimental. See [Windows, Mac and Linux](/features/systems.html) and [Download](/download.html).
 
 ### Does it run on Windows 7 or 8? {#windows-7}
 
@@ -49,7 +49,7 @@ Yes. In IDM, export your list with **Tasks → Export → To IDM export file**. 
 
 ### How do I uninstall it? {#uninstall}
 
-Open Windows **Settings → Apps**, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.
+Open Windows **Settings → Apps**, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder. On Linux, remove the package with your package manager, or delete the AppImage; [Uninstall on Linux](/help/getting-started.html#uninstall-linux) says what stays in your home folder and how to remove it.
 
 ## Browsers
 
@@ -97,7 +97,7 @@ Yes: `ftp://`, and FTP over TLS both ways (`ftpes://` and `ftps://`), with sever
 
 ### Does it support proxies? {#proxy}
 
-Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in **Options → Proxy / Socks**. See [Options](/help/options.html).
+Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in **Options → Proxy / Socks**. See [Options](/help/options.html). To keep every download on a VPN, see [Network adapter](/features/network-adapter.html).
 
 ## Video and torrents
 

@@ -2,9 +2,11 @@
 # Windows runner: a stock Windows, so the file icons in them are Windows' own, not those of
 # programs someone installed. Run by hand (Actions → Docs screenshots → Run workflow) or by a
 # push to a docs-shots/** branch. Never on other pushes or pull requests. The PNGs come back as
-# the "docs-shots" artifact, with what the runner had (screen, DPI, fonts, file associations);
-# a person puts them in docs/images and runs tools/website/screens.py. The help pages' pictures
-# come back raw in help-raw/: into target/shots/raw, then `python tools/shots/make.py build`.
+# the "docs-shots" artifact, with what the runner had (screen, DPI, fonts, file associations).
+# A person makes the pictures of them (tools/shots/README.md): `python tools/shots/make.py docs
+# <artifact>` (docs/images/*.webp), `python tools/website/screens.py <artifact>/site-dark --light
+# <artifact>/docs` (the site's), and the help pages' from help-raw/ (into target/shots/raw, then
+# `python tools/shots/make.py build`).
 name: Docs screenshots
 
 on:
@@ -43,7 +45,21 @@ jobs:
           restore-keys: ${{ runner.os }}-cargo-
 
       - name: Build
-        run: cargo build -p mdm-app -p mdm-labserver
+        run: |
+          cargo build -p mdm-app -p mdm-labserver -p mdm-cli -p mdm-nmhost
+          if ($LASTEXITCODE) { throw "build $LASTEXITCODE" }
+          # The torrent's progress window: a swarm of seeders and a tracker on this runner.
+          cargo build -p mdm-torrent --example swarm
+          if ($LASTEXITCODE) { throw "swarm $LASTEXITCODE" }
+
+      # The video's progress window: yt-dlp brings a lab server file in (pinned and checked).
+      - name: yt-dlp
+        run: |
+          $ErrorActionPreference = "Stop"
+          $url = "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.26/yt-dlp.exe"
+          Invoke-WebRequest -UseBasicParsing $url -OutFile "$env:RUNNER_TEMP\yt-dlp.exe"
+          $sum = (Get-FileHash "$env:RUNNER_TEMP\yt-dlp.exe" -Algorithm SHA256).Hash
+          if ($sum -ne "F5389D3698ECDE4EF06F4E6B1CE0294FE9AC1396228C8990B8D3416D6D177A7D") { throw "yt-dlp checksum $sum" }
 
       # The runner has no GPU and only Windows' OpenGL 1.1; the app needs 3.x. Mesa's llvmpipe
       # (software OpenGL 4.6) is put beside the program for this job only (mesa-dist-win,
@@ -110,12 +126,24 @@ jobs:
           "lab server at $base answers $code" | Tee-Object -Append "$out\runner.txt"
           if ($code -ne 200) { throw "the lab server isn't reached at $base" }
           $net = @{ Port = $port; UrlHost = "downloads.example" }
+          # Browser integration set up, as the installer does it, so the browser offer window shows
+          # a computer where it works (this runner's own user only).
+          & target\debug\misterdownloadmanager-nmhost.exe --register
           # On the screen, as nobody watches it: llvmpipe draws nothing off the screens.
           $at = "40,40"
-          tools\lab\docs-shots.ps1 -Exe $exe -Server $srv -Torrent $torrent -Work $work -At $at @net -OutDir "$out\docs" -Only main-light, add-torrent, properties, progress
-          tools\lab\docs-shots.ps1 -Exe $exe -Server $srv -Work $work -At $at @net -OutDir "$out\docs" -Only main-dark
+          # Every window of docs-shots.ps1's own list, light (docs/images) and dark (the site's
+          # night pictures, and the README's dark main window), then the Arabic main window.
+          tools\lab\docs-shots.ps1 -Exe $exe -Server $srv -Torrent $torrent -Work $work -At $at @net -OutDir "$out\docs"
+          tools\lab\docs-shots.ps1 -Exe $exe -Server $srv -Torrent $torrent -Work $work -At $at @net -Dark -OutDir "$out\site-dark"
           tools\lab\docs-shots.ps1 -Exe $exe -Server $srv -Work $work -At $at @net -OutDir "$out\docs" -Lang ar -Only arabic-main
-          tools\lab\docs-shots.ps1 -Exe $exe -Server $srv -Torrent $torrent -Work $work -At $at @net -Dark -OutDir "$out\site-dark" -Only main-dark, add-torrent, progress
+          # A video's and a torrent's progress window (with the torrent's Pieces tab), light and dark.
+          $bin = "target\debug"
+          # One that fails is reported, and the help pages' pictures are still taken.
+          foreach ($mode in "docs", "site-dark") {
+            $d = if ($mode -eq "site-dark") { @{ Dark = $true } } else { @{} }
+            try { tools\lab\progress-shots.ps1 -Bin $bin -OutDir "$out\$mode" -YtDlp "$env:RUNNER_TEMP\yt-dlp.exe" -Work "$work\p" -At $at -TorrentTabs pieces @d }
+            catch { Write-Warning "progress-shots ($mode): $_" }
+          }
           # The help pages' pictures (tools/shots/shots.toml), light and dark, raw: a person runs
           # `python tools/shots/make.py build` on them (crop, annotate, WebP) and commits that.
           python tools\shots\make.py shoot --bin target\debug --work $work --at $at --url-host downloads.example --port $port

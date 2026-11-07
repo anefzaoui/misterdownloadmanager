@@ -4,7 +4,7 @@
 
 **Link grabber** gathers many links at once, sorts them into packages, and lets you tick the ones to download. MDM can then extract the archives it downloaded (zip, 7z, rar and more), by itself or when you ask.
 
-![Link grabber](images/grabber.png)
+![Link grabber](images/grabber.webp)
 
 ## Where links come from
 

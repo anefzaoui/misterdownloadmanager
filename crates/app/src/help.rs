@@ -820,7 +820,7 @@ impl About {
 // Keyboard shortcuts
 
 /// Every shortcut the main window answers (keep in step with `app.rs` and `list.rs`).
-const SHORTCUTS: [(&str, &str); 23] = [
+const SHORTCUTS: [(&str, &str); 25] = [
     ("Ctrl+N", "Add a download (Add URL)"),
     ("Ctrl+F", "Find a download"),
     ("F3", "Find the next match"),
@@ -859,6 +859,12 @@ const SHORTCUTS: [(&str, &str); 23] = [
         "In the categories: the selected category's menu",
     ),
     ("Esc", "Close a menu or dialog"),
+    // View → Interface size (#262), in every window.
+    (
+        "Ctrl++ / Ctrl+-",
+        "Make everything larger / smaller (View → Interface size)",
+    ),
+    ("Ctrl+0", "Everything at its normal size (100%)"),
 ];
 
 pub struct Shortcuts;

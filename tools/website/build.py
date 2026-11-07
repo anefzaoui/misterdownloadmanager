@@ -195,11 +195,38 @@ def esc(s: str) -> str:
     return html.escape(s, quote=True)
 
 
+def github_slug(text: str, separator: str = "-") -> str:
+    """A heading's id as GitHub makes it, so a docs link such as `options.md#proxy--socks` works
+    on GitHub and here alike: lower case, punctuation dropped (letters of every script, digits,
+    `-` and `_` kept), each space a dash, runs of dashes kept."""
+    return re.sub(r"[^\w\- ]", "", text.strip().lower()).replace(" ", separator)
+
+
+def old_aliases(out: str) -> str:
+    """Each heading whose GitHub id differs from the id this site gave it before (Python
+    Markdown's own: ASCII only, a run of dashes made one) keeps that one reachable too, for the
+    links already out there (`options.html#proxy-socks`)."""
+    from markdown.extensions.toc import slugify
+
+    def alias(m: re.Match) -> str:
+        text = html.unescape(re.sub(r"<[^>]+>", "", m.group(3)))
+        old = slugify(text, "-")
+        # A heading with an id of its own (`{#not-running}`) never had another.
+        if not old or old == m.group(2) or not m.group(2).startswith(github_slug(text)):
+            return m.group(0)
+        # Before the heading, not inside it: the heading's text stays one segment, translated
+        # as it was (sitei18n).
+        return f'<span id="{esc(old)}" class="anchor-alias"></span>{m.group(0)}'
+
+    return re.sub(r'(<h[1-6] id="([^"]*)">)(.*?)(</h[1-6]>)', alias, out, flags=re.S)
+
+
 def md(text: str) -> str:
     out = markdown.markdown(
         text, extensions=["tables", "fenced_code", "toc", "attr_list", "sane_lists", "md_in_html"],
-        extension_configs={"toc": {"permalink": False}},
+        extension_configs={"toc": {"permalink": False, "slugify": github_slug}},
     )
+    out = old_aliases(out)
     # A table wider than the column scrolls inside its own box, not the page (#169).
     return re.sub(r"<table\b.*?</table>", lambda m: f'<div class="table-wrap">{m.group(0)}</div>', out, flags=re.S)
 
@@ -695,7 +722,7 @@ def image_size(path: Path) -> tuple[int, int] | None:
 
 def dark_of(name: str) -> str | None:
     """The night version of docs/images/<name>, when there is one: x-dark.webp beside x.webp
-    (the help pictures, tools/shots/make.py), or main-dark.png beside main-light.png."""
+    (the help pictures, tools/shots/make.py), or main-dark.webp beside main-light.webp."""
     p = Path(name)
     stem = p.stem[: -len("-light")] if p.stem.endswith("-light") else p.stem
     dark = p.with_name(f"{stem}-dark{p.suffix}").as_posix()

@@ -8,6 +8,8 @@ MDM can be driven without its window in three ways:
 - **`misterdownloadmanager-cli`**, a separate command-line tool: download files, videos and torrents in a terminal, with progress, without the app.
 - **The automation API**: other programs list the running app's downloads (as JSON) and pause, start, remove or delete them, over a local, token-protected channel. AI assistants use it through MDM's MCP server: see [AI assistants](ai-assistants.md).
 
+To run the whole app without a window, on a home server or a NAS, see [Run MDM on a server](server.md) (`misterdownloadmanager --headless`); to control it from a phone, [Control MDM from your phone](remote-control.md).
+
 The examples use Windows' paths; on macOS and Linux the programs have the same names without `.exe`.
 
 ## The app's command line

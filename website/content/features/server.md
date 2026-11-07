@@ -35,7 +35,7 @@ The remote control is on in this mode. The log prints the address to open and a 
 with a QR code: pair your phone as with the [remote control](/features/remote.html), and
 `misterdownloadmanager-cli pair` makes a new code at any time.
 
-In the browser extension, **Send downloads to → Another MDM** sends the downloads it catches, and
+In the browser extension, **Send downloads to → Another Mister Download Manager (a server)** sends the downloads it catches, and
 **Download with Mister Download Manager** on a link, to the server instead of your computer. The
 browser's cookies stay behind, so a download that needs you signed in to a site stays with your
 computer.

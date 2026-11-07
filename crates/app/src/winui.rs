@@ -4704,7 +4704,7 @@ pub fn wheel_rows(ui: &Ui, row_h: f32, page: f32) -> f32 {
     #[cfg(unix)]
     let lines = crate::unix::wheel_lines();
     let notch = lines.unwrap_or(page);
-    ui.input(|i| {
+    let rows = ui.input(|i| {
         i.events
             .iter()
             .map(|e| match e {
@@ -4721,7 +4721,23 @@ pub fn wheel_rows(ui: &Ui, row_h: f32, page: f32) -> f32 {
                 _ => 0.0,
             })
             .sum()
-    })
+    });
+    // Taken: a window scrolled as a whole (scale::pane) leaves this turn to the list under the
+    // pointer.
+    if rows != 0.0 {
+        let pass = ui.ctx().cumulative_pass_nr();
+        ui.ctx()
+            .data_mut(|d| d.insert_temp(egui::Id::unique("wheel-taken"), pass));
+    }
+    rows
+}
+
+/// Whether a list or a box under the pointer took this frame's wheel ([`wheel_rows`]).
+pub fn wheel_taken(ui: &Ui) -> bool {
+    let pass = ui.ctx().cumulative_pass_nr();
+    ui.ctx()
+        .data(|d| d.get_temp::<u64>(egui::Id::unique("wheel-taken")))
+        == Some(pass)
 }
 
 /// [`wheel_rows`] in whole rows, the rest kept under `id` for the next turn of the wheel (a

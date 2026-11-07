@@ -88,7 +88,7 @@ A page address that points at one video inside a playlist or a mix (for example 
 
 ## Through a VPN's adapter
 
-With **Options → Proxy / Socks → [Network adapter](options.md#proxy--socks)** set, video downloads go through that adapter too, with the same kill switch as other downloads: MDM hands yt-dlp (and the ffmpeg it starts) a proxy of its own on this computer, and opens every connection through the adapter. When the adapter disconnects, the video download stops, and it starts again when the adapter is back. Formats sent over RTMP, RTSP, MMS or FTP can't go through it and are refused.
+With **Options → Proxy / Socks → [Network adapter](options.md#proxy--socks)** set, video downloads go through that adapter too, with the same kill switch as other downloads: MDM hands yt-dlp (and the ffmpeg it starts) a proxy of its own on this computer, and opens every connection through the adapter, looking the names up with the DNS you chose in **Options → Connection** (without an adapter, yt-dlp uses the system's DNS). When the adapter disconnects, the video download stops, and it starts again when the adapter is back. Formats sent over RTMP, RTSP, MMS or FTP can't go through it and are refused.
 
 ## Sites that want you signed in
 
@@ -99,7 +99,8 @@ signed in.
 
 - **The Download video button over the video** passes that page's cookies, from the window and
   profile you're in (a private window, a Firefox container), for the look-up and the download.
-  Nothing to set up.
+  Nothing to set up. Each cookie goes with the domain the browser keeps it for, so a sign-in on
+  YouTube Music (music.youtube.com) or YouTube's mobile site reaches www.youtube.com too.
 - **A pasted address** (Add URL, Download video from a page, a playlist): choose your browser in
   **Options → Sites Logins → Cookies for video sites**. yt-dlp then reads that browser's cookies
   on this computer for every video it looks up or downloads. When the extension passed the

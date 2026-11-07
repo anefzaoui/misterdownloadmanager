@@ -1,14 +1,14 @@
 # Mister Download Manager — documentation
 
-Mister Download Manager (MDM) is a free download manager for Windows. It is laid out the way Internet Download Manager users expect: a toolbar, categories on the left, one list of downloads and a browser extension that hands downloads to it.
+Mister Download Manager (MDM) is a free download manager for Windows and Linux (and, still experimental, macOS). It is laid out the way Internet Download Manager users expect: a toolbar, categories on the left, one list of downloads and a browser extension that hands downloads to it.
 
 These pages explain each part of the program. The tutorials walk through the things people do most, one task each.
 
-![The main window](images/main-light.png)
+![The main window](images/main-light.webp)
 
 ## Start here
 
-- **[Getting started](getting-started.md)** — install MDM (setup, portable or zip), choose a language and find your way around the main window.
+- **[Getting started](getting-started.md)** — install MDM (setup, portable or zip on Windows; the packages on Linux; the .dmg on a Mac), choose a language and find your way around the main window.
 - **[Your first download](guide-first-download.md)** — a two-minute walk-through from copied link to opened file.
 
 ## Downloading
@@ -34,14 +34,15 @@ These pages explain each part of the program. The tutorials walk through the thi
 - **[Image galleries](galleries.md)** — download a gallery's pictures (Wikimedia Commons, Flickr, DeviantArt and many more) with gallery-dl.
 - **[Torrents](torrents.md)** — magnet links and .torrent files, choosing files, and sharing.
 - **[Torrents and your security](torrent-security.md)** — what others can see, the network switches, blocklists, proxies.
-- **[Debrid service accounts](debrid.md)** — Real-Debrid: file-host links through your own account.
+- **[Debrid service accounts](debrid.md)** — Real-Debrid, AllDebrid and Premiumize: file-host links through your own account.
 
 ## Settings
 
 - **[Options](options.md)** — every page of the Options window.
-- **[Languages](languages.md)** — the 86 interface languages, right-to-left layouts, and how to help translate.
+- **[Themes](themes.md)** — the built-in looks (Classic, Native, High contrast, Metro, Adwaita, Breeze, Luna, Aero, Aqua), and how to make your own in a text file.
+- **[Languages](languages.md)** — the 86 interface languages, numbers and dates, right-to-left layouts, and how to help translate.
 - **[Portable mode](portable.md)** — run MDM from a folder or a USB stick without installing it.
-- **[Keyboard shortcuts](keyboard-shortcuts.md)** — every key the main window answers.
+- **[Keyboard shortcuts](keyboard-shortcuts.md)** — every key the main window answers, and screen readers.
 - **[Command line and automation](command-line.md)** — IDM's command-line switches, the `misterdownloadmanager-cli` tool, and the automation API other programs can use.
 - **[AI assistants (MCP)](ai-assistants.md)** — let Claude, Cursor, VS Code or another MCP assistant list, add, pause and remove your downloads.
 
@@ -66,4 +67,4 @@ These pages explain each part of the program. The tutorials walk through the thi
 
 ---
 
-> Screenshots in these docs show the light theme unless noted. MDM follows Windows' dark mode: when Windows is set to dark, MDM is dark too.
+> Screenshots in these docs show Windows and the light theme unless noted; on the website each has its dark version beside it. MDM follows the system's dark mode: when Windows (or your desktop) is set to dark, MDM is dark too.

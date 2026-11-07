@@ -28,7 +28,7 @@
 </p>
 
 <p align="center">
-  Windows 10 and 11 · macOS (Apple Silicon and Intel) · Linux (Ubuntu, Debian, Mint, Fedora, openSUSE, Arch and more)<br>
+  Windows 10 and 11 · Linux (Ubuntu, Debian, Mint, Fedora, openSUSE, Arch and more) · macOS (Apple Silicon and Intel, experimental)<br>
   86 languages · no ads, no trial, no sign-up
 </p>
 
@@ -43,8 +43,8 @@
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/images/main-dark.png">
-    <img src="docs/images/main-light.png" alt="Mister Download Manager's main window: categories, toolbar and a list of downloads" width="920">
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/main-dark.webp">
+    <img src="docs/images/main-light.webp" alt="Mister Download Manager's main window: categories, toolbar and a list of downloads" width="920">
   </picture>
 </p>
 
@@ -55,6 +55,7 @@
   <a href="https://github.com/anefzaoui/misterdownloadmanager/stargazers"><img src="https://img.shields.io/github/stars/anefzaoui/misterdownloadmanager?logo=github" alt="GitHub stars"></a>
   <a href="https://addons.mozilla.org/firefox/addon/mister-download-manager/"><img src="https://img.shields.io/amo/v/mister-download-manager?logo=firefoxbrowser&label=Firefox%20add-on" alt="Firefox add-on"></a>
   <a href="https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp"><img src="https://img.shields.io/chrome-web-store/v/ejoleppdfgjdndddcjoehopknmlglojp?logo=googlechrome&label=Chrome%20Web%20Store" alt="Chrome Web Store"></a>
+  <a href="https://github.com/sponsors/anefzaoui"><img src="https://img.shields.io/github/sponsors/anefzaoui?logo=githubsponsors&label=Sponsors" alt="GitHub Sponsors"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/anefzaoui/misterdownloadmanager" alt="GPL-3.0 license"></a>
 </p>
 
@@ -110,21 +111,39 @@ one:
 > Windows may say *"Windows protected your PC"* the first time, because this early version isn't
 > code-signed yet. Click **More info**, then **Run anyway**.
 
-### On a Mac or Linux? Be the first to try it
+### On Linux
 
-Fresh builds for **macOS** (Apple Silicon and Intel) and **Linux** are on the same download page,
-marked `-experimental`: they're brand new and we haven't tried them ourselves yet. Give them a go
-and [tell us how it went](https://github.com/anefzaoui/misterdownloadmanager/issues/new/choose); you'll
-help make them as solid as the Windows version.
+MDM runs on Linux too, tested on Ubuntu 24.04, Debian 12 and Fedora with GNOME, KDE Plasma, Xfce
+and Cinnamon, on X11 and in Wayland sessions: the tray, dark mode, browser integration (Ubuntu's
+Snap Firefox included) and the packages' installs. Not there yet: screen readers (Orca) don't
+read its windows, and Flatpak browsers can't reach it. The files still carry `-experimental` in
+their names ([more](docs/getting-started.md#on-linux)).
+
+| File | For |
+| --- | --- |
+| `...-linux-x86_64-experimental.deb` | Ubuntu, Debian, Mint, Pop!_OS: `sudo apt install ./<file>.deb`. |
+| `...-linux-x86_64-experimental.rpm` | Fedora, openSUSE, RHEL: `sudo dnf install ./<file>.rpm`. |
+| `...-linux-x86_64-experimental.AppImage` | Any Linux. Make it executable and run it. |
+| `...-linux-x86_64-experimental.tar.gz` | The plain programs, for any distribution. |
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/main-linux-dark.webp">
+    <img src="docs/images/main-linux.webp" alt="Mister Download Manager's main window on Ubuntu's GNOME desktop" width="620">
+  </picture>
+</p>
+
+### On a Mac? Be the first to try it
+
+Fresh builds for **macOS** (Apple Silicon and Intel) are on the same download page, marked
+`-experimental`: we haven't tried them on a Mac ourselves yet. Give them a go and
+[tell us how it went](https://github.com/anefzaoui/misterdownloadmanager/issues/new/choose); you'll
+help make them as solid as the Windows and Linux versions.
 
 | File | For |
 | --- | --- |
 | `...-macos-arm64-experimental.dmg` | Mac with Apple Silicon (M1 or later). Open it and drag MDM to Applications. The first time, right-click the app and choose **Open**. |
 | `...-macos-x86_64-experimental.dmg` | Mac with an Intel processor, the same way. |
-| `...-linux-x86_64-experimental.AppImage` | Any Linux. Make it executable and run it. |
-| `...-linux-x86_64-experimental.deb` | Ubuntu, Debian, Mint, Pop!_OS. |
-| `...-linux-x86_64-experimental.rpm` | Fedora, openSUSE, RHEL. |
-| `...-linux-x86_64-experimental.tar.gz` | The plain programs, for any distro. |
 
 ## 🌍 In your language
 
@@ -227,28 +246,28 @@ right-to-left window.
 
 <table>
   <tr>
-    <td width="50%"><img src="docs/images/video-button-youtube.png" alt="The Download video button over a YouTube video in Chrome"><br><sub><b>One click on YouTube</b>: the Download video button appears over the video.</sub></td>
-    <td width="50%"><img src="docs/images/video-button-page.png" alt="The Download video button over a video file playing in Chrome"><br><sub><b>Any video on any page</b>: drag the button where you like, it stays there.</sub></td>
+    <td width="50%"><img src="docs/images/video-button-youtube.webp" alt="The Download video button over a YouTube video in Chrome"><br><sub><b>One click on YouTube</b>: the Download video button appears over the video.</sub></td>
+    <td width="50%"><img src="docs/images/video-button-page.webp" alt="The Download video button over a video file playing in Chrome"><br><sub><b>Any video on any page</b>: drag the button where you like, it stays there.</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="docs/images/progress.png" alt="Progress window"><br><sub><b>Watch it fly</b>: every connection's share of the file, live speed and time left.</sub></td>
-    <td width="50%"><img src="docs/images/main-dark.png" alt="Dark mode"><br><sub><b>Dark mode</b> that follows Windows.</sub></td>
+    <td width="50%"><img src="docs/images/progress.webp" alt="Progress window"><br><sub><b>Watch it fly</b>: every connection's share of the file, live speed and time left.</sub></td>
+    <td width="50%"><img src="docs/images/main-dark.webp" alt="Dark mode"><br><sub><b>Dark mode</b> that follows Windows.</sub></td>
   </tr>
   <tr>
-    <td><img src="docs/images/add-url.png" alt="Add URL"><br><sub><b>Add a download</b>: paste a link, or let MDM catch it from your browser.</sub></td>
-    <td><img src="docs/images/add-torrent.png" alt="Add torrent"><br><sub><b>Torrents and magnet links</b>: pick the files you want, skip the rest.</sub></td>
+    <td><img src="docs/images/add-url.webp" alt="Add URL"><br><sub><b>Add a download</b>: paste a link, or let MDM catch it from your browser.</sub></td>
+    <td><img src="docs/images/add-torrent.webp" alt="Add torrent"><br><sub><b>Torrents and magnet links</b>: pick the files you want, skip the rest.</sub></td>
   </tr>
   <tr>
-    <td><img src="docs/images/progress-torrent.png" alt="A torrent's progress window"><br><sub><b>A torrent's progress</b>: its files, peers, trackers and pieces, in tabs.</sub></td>
-    <td><img src="docs/images/progress-video.png" alt="A video's progress window"><br><sub><b>A video's progress</b>: speed and time left while yt-dlp brings it in.</sub></td>
+    <td><img src="docs/images/progress-torrent.webp" alt="A torrent's progress window"><br><sub><b>A torrent's progress</b>: its files, peers, trackers and pieces, in tabs.</sub></td>
+    <td><img src="docs/images/progress-video.webp" alt="A video's progress window"><br><sub><b>A video's progress</b>: speed and time left while yt-dlp brings it in.</sub></td>
   </tr>
   <tr>
-    <td><img src="docs/images/language-picker.png" alt="Language picker"><br><sub><b>86 languages</b>, chosen by flag on the first start.</sub></td>
-    <td><img src="docs/images/arabic-main.png" alt="Arabic interface"><br><sub><b>Right to left</b> for Arabic, Hebrew, Persian, Urdu and Uyghur.</sub></td>
+    <td><img src="docs/images/language-picker.webp" alt="Language picker"><br><sub><b>86 languages</b>, chosen by flag on the first start.</sub></td>
+    <td><img src="docs/images/arabic-main.webp" alt="Arabic interface"><br><sub><b>Right to left</b> for Arabic, Hebrew, Persian, Urdu and Uyghur.</sub></td>
   </tr>
   <tr>
-    <td><img src="docs/images/scheduler.png" alt="Scheduler"><br><sub><b>Download overnight</b>: queues that start and stop on their own.</sub></td>
-    <td><img src="docs/images/options-connection.png" alt="Options"><br><sub><b>Options</b> where you expect them, every control working.</sub></td>
+    <td><img src="docs/images/scheduler.webp" alt="Scheduler"><br><sub><b>Download overnight</b>: queues that start and stop on their own.</sub></td>
+    <td><img src="docs/images/options-connection.webp" alt="Options"><br><sub><b>Options</b> where you expect them, every control working.</sub></td>
   </tr>
 </table>
 
@@ -257,14 +276,27 @@ right-to-left window.
 - **Speeds up every download** by fetching parts of the file at the same time, and keeps
   re-balancing until the last byte.
 - **Resumes** after a crash, a restart or a dropped connection, without starting over.
-- **Catches downloads from Firefox, Chrome, Edge and Brave**, and gives them back to
-  the browser when MDM isn't running.
-- **Downloads videos** from web pages (a button appears over the video), and **torrents and magnet links**.
-- **Downloads overnight** with queues and a scheduler, then shuts the computer down if you like.
+- **Catches downloads from Firefox, Chrome, Edge, Brave, Opera and Vivaldi** (the extension is
+  on Firefox Add-ons and the Chrome Web Store), and gives them back to the browser when MDM isn't
+  running.
+- **Downloads videos** from web pages (a button appears over the video; playlists, subtitles,
+  the sound alone), **image galleries** with gallery-dl, and **torrents and magnet links**
+  (sequential order, RSS feeds, sharing limits).
+- **Many links at once**: the Link grabber sorts them into packages and extracts the archives
+  (zip, 7z, rar) when they're in. Debrid accounts (Real-Debrid, AllDebrid, Premiumize; experimental) download
+  file-host links through your own account.
+- **Downloads overnight** with queues and a scheduler that can wake the computer, then shuts it
+  down if you like.
+- **Through your VPN only**, if you want: hold every download to one network adapter, with a kill
+  switch, and choose an encrypted DNS. Each download shows its server's country.
+- **From your phone, or on a server**: control MDM from a phone on your home network, or run it
+  without a window on a NAS (Docker, Unraid) ([how](docs/server.md)).
 - **Works from scripts too**: IDM's command-line switches, a command-line tool, and a local API for other programs ([how](docs/command-line.md)).
 - **Works with your AI assistant**: an MCP server lets Claude, Cursor or VS Code list, add, pause and remove your downloads ([set it up](docs/ai-assistants.md)).
 - **Leaves you some speed**: limit one download or all of them, only while you're at the computer.
-- **Day and dark mode**, 86 languages, and a portable version for USB sticks.
+- **Day and dark mode, and themes**: Classic, Native, High contrast, Metro, Adwaita, Breeze,
+  Luna, Aero and Aqua, or your own in a text file ([how](docs/themes.md)). Everything larger, up
+  to 200 %, with **View → Interface size**. 86 languages, and a portable version for USB sticks.
 - **Works from the keyboard and with screen readers** (Narrator, NVDA): every window, dialog and
   menu ([the keys](docs/keyboard-shortcuts.md)).
 - **No ads, no trial, no account**. Free and open source.
@@ -352,12 +384,17 @@ pieces fit.
 | Crate | What it is |
 |---|---|
 | [`mdm-engine`](crates/engine) | The download engine: segmentation, connections, resume, limits |
-| [`mdm-app`](crates/app) | The Windows app (egui) |
+| [`mdm-app`](crates/app) | The desktop app (egui), and `--headless` for servers |
 | [`mdm-cli`](crates/cli) | Headless downloads from the command line |
 | [`mdm-mcp`](crates/mcp) | The MCP server, for AI assistants |
 | [`mdm-nmhost`](crates/nmhost) | The browser's native messaging host |
-| [`mdm-ipc`](crates/ipc) | Talking to a running app; shared capture rules |
-| [`mdm-tools`](crates/tools) | yt-dlp and ffmpeg for video pages |
+| [`mdm-ipc`](crates/ipc) | Talking to a running app; shared capture rules; the extension's IDs |
+| [`mdm-remote`](crates/remote) | The remote control: the HTTPS server and page a paired phone uses |
+| [`mdm-crash`](crates/crash) | Crash and freeze reports: the monitor, minidumps, stacks |
+| [`mdm-debrid`](crates/debrid) | Debrid accounts through the services' official APIs |
+| [`mdm-extract`](crates/extract) | Archive extraction (zip, tar, gz, xz; 7z and RAR through 7-Zip) |
+| [`mdm-geo`](crates/geo) | A server's country, from an IP table on this computer |
+| [`mdm-tools`](crates/tools) | yt-dlp and ffmpeg for video pages, gallery-dl for galleries |
 | [`mdm-torrent`](crates/torrent) | BitTorrent through librqbit |
 | [`mdm-labserver`](crates/labserver) | An HTTP test server with fault injection, for tests and benchmarks |
 
@@ -370,6 +407,8 @@ pieces fit.
 | `python tools/installer/languages.py` | The installer's messages in every language |
 | `node tools/readme/build.mjs` | This page's pictures, comparison table and flags, from the benchmark data |
 | `tools\lab\docs-shots.ps1` | The screenshots, from a separate test instance (`/show <window>` opens each window), off the screen |
+| `python tools/shots/make.py` | The help pages' pictures, from one list (`tools/shots/shots.toml`): shot, cropped, annotated, lossless WebP; `make.py check` keeps them in step |
+| `tools/lab/wsl/` | A WSL2 machine that builds MDM for Linux in minutes and shoots its windows on a virtual screen ([README](tools/lab/wsl/README.md)) |
 | `tools\lab\progress-shots.ps1` | The progress window of a video (yt-dlp) and of a torrent, from a swarm on this computer (`cargo run -p mdm-torrent --example swarm`) |
 | `python tools/website/build.py --serve` | misterdownloadmanager.com into `target/site` (help pages from `docs/`, news from the CHANGELOG, FAQ and legal pages from `website/content/`), served on http://127.0.0.1:8765; GitHub Pages publishes it (`pages.yml`) |
 | `python tools/readme/social.py` | The repository's social preview card (`docs/images/social-preview.png`) |
@@ -382,12 +421,13 @@ pieces fit.
 
 ## Status and helping out
 
-MDM is an early preview: the engine and the main window are solid, some corners are
-"good enough for now".
+MDM is young: the engine, the main window and the browser integration are solid on Windows and
+Linux, and some corners are still "good enough for now".
 
 - **Translations are machine-made.** Rows marked `#, machine` in [`i18n/`](i18n) wait for a
   native speaker; fixing one is a one-line pull request ([how](docs/languages.md)).
-- Not yet: code signing. The macOS and Linux builds are untested.
+- Not yet: code signing. The macOS builds are untested; on Linux, screen readers (Orca) and
+  Flatpak browsers aren't supported yet.
 
 Bug reports and ideas are welcome in
 [Issues](https://github.com/anefzaoui/misterdownloadmanager/issues/new/choose): **Help → Report a problem**

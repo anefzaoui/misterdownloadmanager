@@ -111,7 +111,11 @@ Choose **Tasks → Torrent settings...** (or the arrow next to **Add Torrent**):
 - **Limit uploading for all torrents to** — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.
 - **Open magnet links and .torrent files with Mister Download Manager** — Windows then opens magnet links in your browser and `.torrent` files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' **Open with** stays first. The setup can turn it on for you.
 
+The same window has the network switches (incoming connections, the port, UPnP, the DHT, a SOCKS5 proxy) and the blocklist: see [Torrents and your security](torrent-security.md).
+
 MDM starts its torrent engine the first time you add a torrent. If you never use torrents, it never listens for peers.
+
+With a debrid account, torrents and magnet links can go to the service instead of to peers, and MDM downloads the files from it over HTTP: see [Torrents through the service](debrid.md#torrents-through-the-service).
 
 ## Next steps
 

@@ -96,11 +96,18 @@
         <li>Start Mister Download Manager from the Start menu, then <a href="/help/guide-first-download.html">download your first file</a>.</li>
       </ol>
 
+      <h2 id="linux-mac">On Linux or a Mac</h2>
+      <p><b>Linux</b>: install the <b>.deb</b> with <code>sudo apt install ./&lt;file&gt;.deb</code> (Debian, Ubuntu, Mint) or the <b>.rpm</b> with <code>sudo dnf install ./&lt;file&gt;.rpm</code> (Fedora), and the packages bring what MDM needs. Or make the <b>AppImage</b> executable (<code>chmod +x</code>) and run it. MDM connects itself to your browsers at each start; then add the extension from your browser's store, above. <a href="/help/getting-started.html#on-linux">More in the help</a>.</p>
+      <figure class="shot"><img class="for-light" src="/assets/screens/main-linux-light.webp" width="930" height="507" alt="Mister Download Manager's main window on Ubuntu's GNOME desktop: the categories and a list of downloads." loading="lazy" decoding="async"><img class="for-dark" src="/assets/screens/main-linux-dark.webp" width="930" height="507" alt="Mister Download Manager's main window on Ubuntu's GNOME desktop, in night mode." loading="lazy" decoding="async"><figcaption>MDM on Ubuntu's GNOME desktop.</figcaption></figure>
+      <p><b>macOS</b>: open the <b>.dmg</b> and drag Mister Download Manager to Applications, then right-click it and choose <b>Open</b> the first time.</p>
+      <!--@coming 0.5-->
+      <p>Linux won't be experimental any more. GNOME, KDE Plasma, Xfce and Cinnamon were checked window by window, with the tray and Dark Mode support, in Wayland sessions too, and the <b>.deb</b> and <b>.rpm</b> in clean Ubuntu 24.04, Debian 12 and Fedora 45 systems. What's left: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows on Linux yet. macOS stays experimental. <a href="/features/systems.html">Windows, Mac and Linux</a></p>
+
       <h2>What you need</h2>
       <ul>
         <li><b>Windows 10 or 11</b>, 64-bit; about 100 MB of disk space.</li>
         <li><b>macOS 11</b> or later on Apple Silicon or Intel (experimental).</li>
-        <li><b>Linux</b> on x86-64 with a desktop session (experimental).</li>
+        <li><b>Linux</b> on x86-64 with a desktop session, X11 or Wayland (today's files experimental).</li>
         <li>For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.</li>
       </ul>
 

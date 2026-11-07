@@ -96,6 +96,16 @@ impl DropTarget {
         }
     }
 
+    /// The interface size changed (#262; `ratio`: the old zoom over the new): kept where it is
+    /// on the screen, its place being in points, and made its size at the new one.
+    pub fn rescale(&mut self, ctx: &egui::Context, ratio: f32) {
+        self.pos = (self.pos.to_vec2() * ratio).round().to_pos2();
+        ctx.send_viewport_cmd_to(
+            ViewportId::from_hash_of("drop-target"),
+            ViewportCommand::InnerSize(vec2(SIZE, SIZE)),
+        );
+    }
+
     pub fn show(&mut self, ctx: &egui::Context, icon: &egui::ImageSource<'static>) -> Vec<Event> {
         let mut events: Vec<Event> = self
             .drops

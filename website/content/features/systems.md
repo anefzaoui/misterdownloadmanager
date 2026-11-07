@@ -2,9 +2,9 @@
 name: Windows, Mac and Linux
 title: Download manager for Windows, with macOS and Linux builds
 headline: Made for Windows. On a Mac and Linux too.
-line: Stable on Windows 10 and 11, installed or portable; experimental builds for macOS and Linux.
-lede: MDM is built for 64-bit Windows 10 and 11, as an installer, a portable copy or a plain zip. Experimental builds for macOS and Linux come with every release.
-description: Mister Download Manager runs on Windows 10 and 11, installed or portable, with experimental macOS (.dmg) and Linux (AppImage, .deb, .rpm) builds.
+line: Stable on Windows 10 and 11, installed or portable; builds for Linux and macOS with every release.
+lede: MDM is built for 64-bit Windows 10 and 11, as an installer, a portable copy or a plain zip. Builds for Linux and macOS come with every release.
+description: Mister Download Manager runs on Windows 10 and 11, installed or portable, with Linux (AppImage, .deb, .rpm, .tar.gz) and macOS (.dmg) builds.
 group: app
 order: 340
 since: 0.1.0
@@ -36,13 +36,13 @@ written to the registry. Two things need the installer instead: starting with Wi
 taking downloads from the browser, since both go through the registry. [Carry MDM on a USB
 stick](guide-usb-stick.md) shows the set-up.
 
-## Mac and Linux: experimental, and said so
+## Mac and Linux: what you get today
 
-The files marked `-experimental` are for macOS 11 and later, on Apple Silicon or Intel, and for
-Linux on x86-64: an AppImage for most distributions, a `.deb` for Ubuntu, Debian, Mint and
-Pop!_OS, an `.rpm` for Fedora, openSUSE and RHEL, and a `.tar.gz` of the plain programs. They
-are new, so you'd be among the first: please [tell us how it
-went](https://github.com/anefzaoui/misterdownloadmanager/issues/new/choose), good or bad.
+Today's files marked `-experimental` are for macOS 11 and later, on Apple Silicon or Intel, and
+for Linux on x86-64: an AppImage for most distributions, a `.deb` for Ubuntu, Debian, Mint and
+Pop!_OS, an `.rpm` for Fedora, openSUSE and RHEL, and a `.tar.gz` of the plain programs. Please
+[tell us how it went](https://github.com/anefzaoui/misterdownloadmanager/issues/new/choose), good
+or bad.
 
 There, MDM connects itself to your browsers at each start, has its tray icon, follows the
 system's light or dark look and uses the system's fonts and ffmpeg. The Mac app isn't notarized
@@ -50,6 +50,28 @@ by Apple yet, so macOS asks before its first start: right-click it and choose **
 macOS 15 and later, **System Settings → Privacy & Security → Open Anyway**). A `.deb` or `.rpm`
 update opens in the system's installer. A few parts work only on Windows, and the help says so
 where it matters.
+
+## Linux, checked on four desktops
+
+<!--@coming 0.5-->
+
+Linux won't be experimental any more: every change is now checked on a Linux desktop as well as
+on Windows. GNOME, KDE Plasma, Xfce and Cinnamon were checked window by window: the tray icon and
+its menu, **Minimize to the notification area**, Dark Mode support following the desktop, and the
+browsers handing downloads over (Ubuntu's Snap Firefox, Google Chrome and Brave). A Wayland
+session runs MDM through XWayland, so menus open under their titles, on tiling compositors such
+as sway too. The `.deb` and `.rpm` were installed in clean Ubuntu 24.04, Debian 12 and Fedora 45
+systems and bring everything MDM needs; from the AppImage or the `.tar.gz`, a missing library is
+named at start with the command that installs it. **Update now** asks the package manager which
+package MDM is.
+
+![MDM's main window on Ubuntu 24.04's GNOME desktop: the categories and a list of downloads, each with the desktop's icon for its type](images/main-linux.webp)
+*On Ubuntu's GNOME desktop, with the desktop's own file icons.*
+
+What's left: the Flatpak Firefox isn't checked yet; screen readers (Orca) don't read MDM's
+windows on Linux yet; and native Wayland windows can't place menus, so XWayland stays the
+default. macOS stays experimental: its builds are made and tested by GitHub Actions, not yet on a
+Mac of ours.
 
 ## Smaller Mac downloads, lighter Linux updates
 

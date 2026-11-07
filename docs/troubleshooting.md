@@ -45,7 +45,7 @@ When none of this helps, the browser keeps the download, so nothing is lost. The
 - MDM must be running at that time. Closing the window is fine (it stays in the tray); **Tasks → Exit** is not.
 - Did you click **Apply** after setting the time?
 - **Daily** starts only on the ticked days. **Once at** starts only on that date.
-- A computer that is asleep doesn't run anything until it wakes.
+- A computer that is asleep doesn't run anything until it wakes, unless the queue has **Wake the computer to run this queue** ticked (on Windows it needs **Allow wake timers** in the power plan; the Scheduler says when it's off). See [Wake the computer to run a queue](queues-and-scheduler.md#wake-the-computer-to-run-a-queue).
 
 ## A video won't download
 
@@ -65,6 +65,14 @@ Task Manager shows several figures, and they mean different things:
 
 Closed to the notification area, MDM gives its memory back to Windows: **Memory** drops to under 10 MB within seconds and stays low while it waits. Downloads, queues and the scheduler go on as before. The list of every language (**View → Language**) loads fonts for every script while it's open; MDM lets them go when it closes.
 
+## The text is too small or blurry
+
+MDM keeps Internet Download Manager's compact sizes. On a large or high-resolution screen, choose **View → Interface size** (125 %, 150 %, 175 % or 200 %), or press **Ctrl +** and **Ctrl −** in any MDM window, as in a browser; **Ctrl 0** goes back to 100 %. Every window follows at once, and MDM starts at that size next time. It comes on top of Windows' own display scale (**Settings → System → Display → Scale**).
+
+A window larger than the screen at that size (Options at 200 % on a 1366 × 768 screen) opens as large as the screen allows, and the rest scrolls: with the scroll bars, the mouse wheel, or **Tab** to the next control.
+
+MDM tells Windows it draws for each monitor's own scale, so Windows never stretches its windows into blur, and it draws Windows' fonts grid-fitted to whole pixels. If the text still looks blurred, tell us your screen's resolution and Windows' display scale when you [report it](https://github.com/anefzaoui/misterdownloadmanager/issues).
+
 ## The window freezes or draws wrongly
 
 On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose **View → Draw with → OpenGL** (or **Direct3D**, **Vulkan**, **Metal**), then quit MDM (**Tasks → Exit**) and start it again. Choosing the first one goes back the same way.
@@ -75,19 +83,27 @@ On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with Ope
 - If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and **View → Draw with** says so and why. Choosing it again tries it again at the next start.
 - On Linux, Vulkan needs your graphics card's Vulkan driver: Mesa's (`mesa-vulkan-drivers` on Ubuntu and Debian, `vulkan-radeon` or `vulkan-intel` on Arch) for AMD and Intel, NVIDIA's own driver for NVIDIA.
 - If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.
-- If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself.
+- If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and **View → Draw with** says why.
 - Updating the graphics driver from the card maker's site (Intel, AMD or NVIDIA) fixes many of these problems.
-- A freeze or crash report says which one was drawing: include it when you report a problem.
+- A freeze or crash report says which one was drawing: include it when you report a problem. A freeze report also says whether MDM was busy, waiting, or hardly ran at all (a computer too busy to run it); see [Crash reports](crash-reports.md).
 
 ## The setup or MDM won't start
 
 - If Windows says **Windows protected your PC**, click **More info**, check that the file is `MisterDownloadManager-<version>-setup.exe` from the [Releases](https://github.com/anefzaoui/misterdownloadmanager/releases) page, then click **Run anyway**.
 - MDM runs only once. Starting it again brings the running copy's window to the front. If nothing appears, look for MDM's icon in the notification area.
+- **Linux, from the AppImage or the tar.gz:** if the system lacks a library MDM's window needs (such as `libxkbcommon-x11`), MDM names it on the terminal and in a message box, with the command that installs it (`sudo apt install libxkbcommon-x11-0`, or your distribution's). The .deb and .rpm bring these libraries themselves. In a Wayland session MDM opens its window on Wayland instead.
+- **Linux, the first start is slow:** MDM looks up the system's fonts for every script once, all together, while it starts (fontconfig); a first start on a busy computer can take a few seconds more. Install your distribution's Noto fonts if some scripts or symbols show as boxes.
+
+## HTTPS downloads fail with "no certificates" (Linux)
+
+A minimal Linux system (often with the AppImage, the tar.gz or a build from source) may have no CA certificates, which MDM needs to check a secure server. Plain `http://` and `ftp://` downloads still work; each `https://` or `ftps://` one stops at once saying the computer has no certificates to check the server with. Install the `ca-certificates` package (`sudo apt install ca-certificates`, `sudo dnf install ca-certificates`), then resume the download. The .deb and .rpm bring it.
 
 ## Where your data is
 
 - Installed or the plain zip: `%APPDATA%\misterdownloadmanager`. The list and settings are in `downloads.json`.
 - Portable: the `data` folder next to `misterdownloadmanager.exe`.
+- Linux: `~/.local/share/misterdownloadmanager`; a Mac: `~/Library/Application Support/misterdownloadmanager`.
+- Passwords (Sites Logins, the proxy, debrid accounts) are in the system's keychain, not in `downloads.json`; see [Options → Sites Logins](options.md#sites-logins).
 
 To back up your list, quit MDM (**Tasks → Exit**) and copy `downloads.json`.
 

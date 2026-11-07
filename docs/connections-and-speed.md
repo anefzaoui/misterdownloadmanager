@@ -6,7 +6,7 @@
 
 Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.
 
-![The progress window](images/progress.png)
+![The progress window](images/progress.webp)
 
 The **Download status** tab shows:
 
@@ -26,6 +26,9 @@ The buttons:
 - **Pause** stops the download and keeps what it has; **Resume** continues it.
 - **Cancel** stops the download and closes the window. The download stays in the list and can be resumed.
 - Closing the window with its close box keeps the download running.
+- **Hide to the notification area** (a short dash with an arrow down to the corner; on Windows in
+  the title bar, left of Minimize) puts the window in the notification area; **Downloads in
+  progress** in the tray icon's menu brings it back. See [The tray icon](getting-started.md#the-tray-icon).
 
 ## Where the server is
 
@@ -84,6 +87,24 @@ A download resumes where it stopped: after you stop it, after the connection dro
 
 [Resume a broken download](guide-resume-broken-download.md) covers expired links too.
 
+## Through your VPN only: the network adapter and its kill switch
+
+**Options → Proxy / Socks → Network adapter** holds every connection MDM opens to one network
+adapter, usually your VPN's: downloads, FTP, torrents, video pages and galleries, MDM's own
+downloads and the update check. It works as a kill switch: when the adapter disconnects, or the
+VPN is switched off, nothing goes out through your normal connection. Running downloads stop with
+**… is not connected**, and start again by themselves when the adapter is back. The line under
+the list shows the adapter's address, or that it isn't connected. Details in
+[Options → Proxy / Socks](options.md#proxy--socks) and, for torrents, in
+[Torrents and your security](torrent-security.md).
+
+## The DNS
+
+**Options → Connection → DNS** chooses who turns the servers' names into addresses: the system's
+DNS (the default), or an encrypted one (DNS over HTTPS or TLS) such as Cloudflare, Google, Quad9,
+AdGuard, NextDNS or your own. With a network adapter chosen, MDM asks it through the adapter, so
+the names stay inside your VPN too. See [Options → Connection](options.md#connection).
+
 ## Speed Limiter
 
 The Speed Limiter keeps MDM from using all of your connection.
@@ -105,7 +126,7 @@ In the same window, tick **Limit all downloads together to** and set the speed. 
 
 Tick **Only while I'm using the computer** to apply it only while you use the mouse or keyboard. After a minute without input, MDM goes back to full speed.
 
-![Speed Limiter settings](images/speed-limiter.png)
+![Speed Limiter settings](images/speed-limiter.webp)
 
 ### For one download
 

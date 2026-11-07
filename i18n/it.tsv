@@ -1656,6 +1656,9 @@
 #. message or event log entry in the main window
 	Main download queue	Coda di download principale
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Make everything larger / smaller (View → Interface size)	Ingrandisci / Rimpicciolisci tutto (Visualizza → Dimensioni interfaccia)
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Make the selection longer or shorter	Estendi o riduci la selezione
 #. text in crashui.rs
 #. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
@@ -3912,6 +3915,14 @@ extension	Use advanced browser integration is off in Options → General.	L'opzi
 key	Alt+Enter	Alt+Invio
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl++ / Ctrl+-	Ctrl++ / Ctrl+-
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+0	Ctrl+0
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Ctrl+A	Ctrl+A
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
@@ -4005,6 +4016,11 @@ menu	&Exit	&Esci
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Import	&Importa
+#. menu command in the main window
+#. View menu: submenu choosing how large MDM draws its windows and text (100 % to 200 %), as a browser's zoom
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Interface size	Dimensioni &interfaccia
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Keyboard shortcuts	&Scorciatoie da tastiera
@@ -4612,6 +4628,9 @@ menu	Vulkan didn't start here: OpenGL draws	Vulkan non si avvia su questo comput
 #. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
 #, machine
 	Every local network address	Ogni indirizzo di rete locale
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Everything at its normal size (100%)	Tutto alle dimensioni normali (100%)
 #. text in remote.rs
 #. remote control page (on a phone): menu command: unpair this phone or computer from MDM
 #, machine

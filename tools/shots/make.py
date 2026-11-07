@@ -12,6 +12,7 @@ command takes them all again, light and dark:
     python tools/shots/make.py build           # again from the last shoot's raw pictures
     python tools/shots/make.py check           # the list, the pages and the files agree
     python tools/shots/make.py snippet add-url # the Markdown for one picture
+    python tools/shots/make.py docs <run>      # docs/images/*.webp from a Docs screenshots run
 
 `shoot` runs tools/lab/docs-shots.ps1 twice (light, then dark) with the list's windows: the
 app's own instance with its own data folder and download folder (MDM_DATA_DIR), off the screens
@@ -19,6 +20,11 @@ app's own instance with its own data folder and download folder (MDM_DATA_DIR), 
 controls come with it (tools/lab/ui-rects.ps1, the app's accessibility tree), so the list names
 controls ("Start Download") instead of pixels, and a moved button needs no edit here. The raw
 pictures stay in target/shots/raw/.
+
+`check` also keeps the budget of every picture in docs/images and website/assets (#186): none
+over 300 KB, no PNG where lossless WebP belongs, none that nothing shows. `docs` writes the
+README's and the docs pages' own pictures (docs/images/<name>.webp) from a Docs screenshots run
+(.github/workflows/docs-shots.yml's artifact) or single PNGs.
 
 `build` crops, annotates (drawn 4x larger, then scaled down: smooth edges) and writes lossless
 WebP: `cwebp -lossless -z 9 -metadata none` when cwebp is on PATH, Pillow's lossless WebP
@@ -280,6 +286,77 @@ def build(shots: list[dict]) -> None:
     print(f"{made} pictures in {OUT.relative_to(ROOT)}")
 
 
+# ---- docs: the README's and the docs pages' own pictures ----------------------------------------
+
+IMAGES = ROOT / "docs" / "images"
+# docs-shots.ps1's and progress-shots.ps1's pictures that docs/images keeps (as <name>.webp),
+# from a Docs screenshots run's docs/ folder; main-dark from its site-dark/ folder.
+DOCS_SHOTS = ["add-torrent", "add-url", "arabic-main", "crash-report", "grabber", "language-picker",
+              "main-light", "options-connection", "options-remote", "progress", "progress-torrent",
+              "progress-torrent-pieces", "progress-video", "scheduler", "speed-limiter"]
+DOCS_DARK = ["main-dark"]
+
+
+def docs(run: Path | None, extra: list[Path]) -> None:
+    """docs/images/<name>.webp, lossless, from a Docs screenshots run (the docs-shots artifact:
+    docs/*.png and site-dark/*.png) and from single PNGs (`--png`: the browser's pictures, the
+    phone's, a window shot elsewhere), each by its file name. A shot the run lacks keeps its
+    picture."""
+    from PIL import Image
+    todo = [(p, p.stem) for p in extra]
+    if run:
+        todo = [(run / "docs" / f"{n}.png", n) for n in DOCS_SHOTS] + \
+            [(run / "site-dark" / f"{n}.png", n) for n in DOCS_DARK] + todo
+    for src, name in todo:
+        if not src.is_file():
+            print(f"  {name}: no {src}; kept")
+            continue
+        img = Image.open(src).convert("RGBA")
+        if img.getchannel("A").getextrema() == (255, 255):
+            img = img.convert("RGB")
+        dst = IMAGES / f"{name}.webp"
+        # A browser's picture holds a video frame: lossless would be several times larger.
+        save_webp(img, dst, 90 if name.startswith("video-button") else 0)
+        print(f"  {dst.relative_to(ROOT).as_posix():44} {img.size[0]}x{img.size[1]}  {dst.stat().st_size // 1024} KB")
+
+
+# ---- the budget: every picture in docs/images and website/assets ---------------------------------
+
+# Pictures that stay PNG: the social card (og:image: some sites don't read WebP), the logo and
+# the icons the README shows.
+PNG_OK = {"docs/images/social-preview.png", "docs/images/logo.png"}
+PNG_DIRS = ("docs/images/icons/", "docs/images/browsers/")
+SCREEN_DIRS = ("website/assets/screens/", "website/assets/browser/", "website/assets/win/")
+TEXT = (".md", ".html", ".py", ".ps1", ".mjs", ".js", ".css", ".toml", ".yml", ".json", ".sh", ".rs", ".txt")
+
+
+def budget() -> list[str]:
+    """#186: no screenshot over 300 KB, no PNG where WebP belongs, no picture that nothing shows."""
+    files = subprocess.run(["git", "ls-files", "-co", "--exclude-standard"], cwd=ROOT,
+                           capture_output=True, text=True, check=True).stdout.splitlines()
+    pics = [f for f in files
+            if (f.startswith("docs/images/") and not f.startswith("docs/images/help/") or f.startswith(SCREEN_DIRS))
+            and f.rsplit(".", 1)[-1].lower() in ("png", "webp", "jpg", "jpeg", "gif") and (ROOT / f).is_file()]
+    corpus = []
+    for f in files:
+        if f.endswith(TEXT) and not f.startswith(("i18n/", "docs/bench/")) and (ROOT / f).is_file():
+            corpus.append((ROOT / f).read_text("utf-8", errors="replace"))
+    text = "\n".join(corpus)
+    bad = []
+    for f in pics:
+        size = (ROOT / f).stat().st_size
+        ext = f.rsplit(".", 1)[-1].lower()
+        if size > BUDGET:
+            bad.append(f"{f}: {size // 1024} KB, over {BUDGET // 1024} KB")
+        if ext != "webp" and f not in PNG_OK and not f.startswith(PNG_DIRS):
+            bad.append(f"{f}: a screenshot in {ext.upper()}; lossless WebP belongs here")
+        name = f.rsplit("/", 1)[-1]
+        # A night picture is found beside its day one (x-dark.webp beside x-light.webp or x.webp).
+        if not any(n in text for n in (name, name.replace("-dark.", "-light."), name.replace("-dark.", "."))):
+            bad.append(f"{f}: nothing shows it (left over?)")
+    return bad
+
+
 # ---- check / snippet ----------------------------------------------------------------------------
 
 def snippet(s: dict) -> str:
@@ -334,6 +411,7 @@ def check(shots: list[dict]) -> int:
                 bad.append(f"{page.name}: links {sid}.webp; link the light picture, the site adds the dark one")
             elif sid not in ids:
                 bad.append(f"{page.name}: {sid}.webp is not in the shot list")
+    bad += budget()
     for b in bad:
         print(b, file=sys.stderr)
     print(f"{len(shots)} shots, {len(bad)} problems")
@@ -342,8 +420,10 @@ def check(shots: list[dict]) -> int:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    ap.add_argument("step", nargs="?", default="all", choices=["all", "shoot", "build", "check", "snippet"])
-    ap.add_argument("id", nargs="?", help="snippet: the shot's id")
+    ap.add_argument("step", nargs="?", default="all", choices=["all", "shoot", "build", "check", "snippet", "docs"])
+    ap.add_argument("id", nargs="?", help="snippet: the shot's id; docs: a Docs screenshots run's folder")
+    ap.add_argument("--png", type=Path, action="append", default=[],
+                    help="docs: a single PNG to put in docs/images as <its name>.webp (again for more)")
     ap.add_argument("--only", default="", help="these shot ids (commas)")
     target = Path(os.environ.get("CARGO_TARGET_DIR", ROOT / "target"))
     ap.add_argument("--bin", type=Path, default=target / "release", help="where the release build is")
@@ -357,6 +437,9 @@ def main() -> int:
     shots = load()
     if a.step == "check":
         return check(shots)
+    if a.step == "docs":
+        docs(Path(a.id) if a.id else None, a.png)
+        return 0
     if a.step == "snippet":
         hit = [s for s in shots if s["id"] == a.id]
         if not hit:
