@@ -194,7 +194,9 @@ fn keep_generations(p: &Path) {
     let Ok(current) = std::fs::read(p) else {
         return;
     };
-    if parse_bytes(&current).is_none() {
+    // Read as it is on the disk: its keychain references aren't opened (secrets.rs), which
+    // would ask the keychain on every save, and on the window's thread at the last one.
+    if crate::secrets::prepared(|| parse_bytes(&current)).is_none() {
         return;
     }
     let _ = std::fs::write(backup_path(p), &current);
