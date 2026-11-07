@@ -280,7 +280,7 @@ impl OptionsDialog {
                 )
                 .clicked()
                 {
-                    crate::help::open_page("help/#options");
+                    crate::help::open_page("options.md");
                 }
                 if modal {
                     Outcome::Open
@@ -2533,7 +2533,7 @@ impl OptionsDialog {
                                 )
                                 .clicked()
                             {
-                                let _ = open::that_detached(mdm_ipc::extension::help_page(why));
+                                crate::help::open_page(&mdm_ipc::extension::help_doc(why));
                             }
                             if c.why == Some("not-installed")
                                 && mdm_ipc::portable_dir().is_none()

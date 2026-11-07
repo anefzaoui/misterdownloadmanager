@@ -21,7 +21,7 @@ use serde_json::json;
     about = "Mister Download Manager command line",
     long_about = "Mister Download Manager command line: downloads, videos and torrents without the \
                   window, and the running app's automation API. Guide: \
-                  https://github.com/anefzaoui/misterdownloadmanager/blob/main/docs/command-line.md"
+                  https://misterdownloadmanager.com/help/command-line.html"
 )]
 struct Cli {
     /// Print JSON for programs: one object per line (`progress` events, then `done`, `paused`

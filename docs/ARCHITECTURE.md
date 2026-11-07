@@ -17,7 +17,7 @@ How Mister Download Manager's pieces fit together.
 | `crates/torrent` | `mdm-torrent` | BitTorrent and magnet links through librqbit |
 | `crates/labserver` | `mdm-labserver` | An HTTP Range server with a request log and fault injection, and an FTP/FTPS server with its own faults, for tests and benchmarks |
 | `extension/` | — | The Chromium (MV3) and Firefox extension |
-| `docs/` | — | The user guide and tutorials (Help opens them), this file, the benchmark data |
+| `docs/` | — | The user guide and tutorials, this file, the benchmark data; the website makes the guide its help pages, which Help opens |
 | `website/` | — | A future website's pages (not published yet) |
 
 Dependencies point inward: `app`, `cli`, `mcp` and `nmhost` use `engine` and `ipc`; the engine knows

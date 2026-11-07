@@ -453,6 +453,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Help opens the website's help pages, in your language**
+  ([#227](https://github.com/anefzaoui/misterdownloadmanager/issues/227)): **Help contents**,
+  **Tutorials**, **Scheduler and queues**, **Video downloads**, the **Help** buttons of Options and
+  the Scheduler, and the browser extension window's tutorial and help links opened the docs on
+  GitHub (the Options and Scheduler buttons a page that wasn't there). They open
+  misterdownloadmanager.com now, at the same section, in the interface language when the website
+  has it (else English), and **Home Page** opens the website too. The command line's and the MCP
+  server's help name the website's guide. Problem reports, releases and the source stay on GitHub.
 - **A finished download no longer fails with "part file still in use" on a busy computer**
   ([#201](https://github.com/anefzaoui/misterdownloadmanager/issues/201)): when the last bytes
   came in, the connections still running were cut off. One cut off while it read or wrote the

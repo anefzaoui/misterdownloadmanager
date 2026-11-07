@@ -227,6 +227,8 @@ Everything below ships together, in one release, as version 0.3.0.
   ([#168](https://github.com/anefzaoui/misterdownloadmanager/issues/168)), and no page scrolls
   sideways on a phone, Arabic and Persian included: long paths, links and tables wrap or scroll
   inside the page ([#169](https://github.com/anefzaoui/misterdownloadmanager/issues/169))
+- ✅ Help opens the website's help pages, in the interface language when the website has it
+  ([#227](https://github.com/anefzaoui/misterdownloadmanager/issues/227))
 
 ### Being built
 
