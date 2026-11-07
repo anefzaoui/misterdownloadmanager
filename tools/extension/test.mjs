@@ -84,7 +84,8 @@ function fakeApi({
     cookies: {
       getAll: async (q) => {
         calls.push(["cookies", q]);
-        return [{ name: "sid", value: "1" }];
+        // As Chrome gives one: its other fields aren't sent.
+        return [{ name: "sid", value: "1", domain: ".tube.test", hostOnly: false, path: "/", secure: true, httpOnly: true, sameSite: "lax", session: false, expirationDate: 1893456000.5, storeId: "0" }];
       },
     },
     permissions: {
@@ -265,6 +266,7 @@ const ok = (what) => {
     ["https://x/a.zip", "https://page/", "sid=1", "a.zip", 2048, "application/zip", "UA", "0.2.5"],
   );
   assert.deepEqual(m.brands, ["Chromium", "Brave"]);
+  assert.equal(m.cookieJar, undefined, "a file's download: the header the app sends");
   assert.deepEqual(steps(calls), ["pause", "cancel", "erase"]);
   ok("Firefox: taken with its container's cookies, size and type");
 }
@@ -550,6 +552,8 @@ const ok = (what) => {
   assert.equal(video.url, "https://tube.test/embed/1", "the page the browser names, not the message's");
   assert.equal(video.referrer, "https://blog.test/post");
   assert.equal(video.cookies, "sid=1");
+  // Each cookie with its domain and flags, for yt-dlp asking another host of the site.
+  assert.deepEqual(video.cookieJar, [{ name: "sid", value: "1", domain: ".tube.test", hostOnly: false, path: "/", secure: true, expirationDate: 1893456000.5 }]);
   assert.deepEqual(await ask({ type: "hide-site", host: "elsewhere.test" }), { ok: true });
   assert.ok(natives(calls).some((m) => m.hideSite === "tube.test"));
   assert.deepEqual(await ask({ type: "panel" }, "https://tube.test/embed/3"), { on: false }, "off at once");
@@ -740,6 +744,7 @@ const MPD = (protect) => `<?xml version="1.0"?>
   const v = natives(calls).find((m) => m.video);
   assert.deepEqual([v.explicit, v.src, v.url, v.title, v.cookies, v.referrer], [true, "https://cdn.test/v/master.m3u8", "https://watch.test/v/1", "A film", "sid=1", ""]);
   assert.deepEqual(calls.filter((c) => c[0] === "cookies").pop()[1], { url: "https://cdn.test/v/master.m3u8" });
+  assert.deepEqual(v.cookieJar.map((c) => c.domain), [".tube.test"], "each cookie with its domain");
   await popupAsk(listeners, { type: "media-download", tab: 9, url: "https://files.test/movie.mp4" });
   const f = natives(calls).find((m) => m.url === "https://files.test/movie.mp4");
   assert.deepEqual([f.explicit, f.referrer, f.size, f.mime, f.video], [true, "https://watch.test/v/1", 52428800, "video/mp4", undefined]);
