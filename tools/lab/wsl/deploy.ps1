@@ -7,8 +7,7 @@ real desktop (GNOME or KDE portals, the tray, real browsers) never waits for the
 The programs are read straight from the distribution's disk (\\wsl$\mdm-lab\home\lab\lab\bin\<label>)
 and copied with VBoxManage guestcontrol into a folder beside the target, then renamed into place
 (a running program or script is never overwritten half-way). The VM must be running; nothing else
-of it changes. Its account: MDM_VM_USER / MDM_VM_PASSWORD, or the git-ignored k/vm-ubuntu.txt
-("user: <name>" and "password: <word>" lines), never printed. -DryRun: what it would copy, and
+of it changes. Its account: MDM_VM_USER / MDM_VM_PASSWORD, never printed. -DryRun: what it would copy, and
 where, without calling VBoxManage (its guestcontrol copyto has no dry run of its own).
 #>
 param(
@@ -22,16 +21,15 @@ $vbox = Join-Path $env:ProgramFiles 'Oracle\VirtualBox\VBoxManage.exe'
 if ($Label -notmatch '^[A-Za-z0-9._-]+$') { throw "label: letters, digits, '.', '_' and '-' only" }
 
 $user = $env:MDM_VM_USER; $pass = $env:MDM_VM_PASSWORD
-# k\ is in the main checkout (a worktree has none): found through git's common folder.
-$common = git -C $PSScriptRoot rev-parse --path-format=absolute --git-common-dir 2>$null
-$keys = if ($common) { Join-Path (Split-Path -Parent $common) 'k\vm-ubuntu.txt' } else { '' }
-if ((-not $user -or -not $pass) -and $keys -and (Test-Path $keys)) {
+# Or a local file outside the repository, like the other developer keys (%USERPROFILE%\.mdm-dev).
+$keys = Join-Path $env:USERPROFILE '.mdm-dev\vm-account.txt'
+if ((-not $user -or -not $pass) -and (Test-Path $keys)) {
     foreach ($line in Get-Content $keys) {
         if (-not $user -and $line -match '^\s*user:\s*(\S+)') { $user = $Matches[1] }
         if (-not $pass -and $line -match '^\s*password:\s*(\S+)') { $pass = $Matches[1] }
     }
 }
-if (-not $user -or -not $pass) { throw "no VM account: set MDM_VM_USER and MDM_VM_PASSWORD, or k\vm-ubuntu.txt" }
+if (-not $user -or -not $pass) { throw "no VM account: set MDM_VM_USER and MDM_VM_PASSWORD" }
 $auth = @('--username', $user, '--password', $pass)
 
 $src = "\\wsl$\$Distro\home\lab\lab\bin\$Label"
