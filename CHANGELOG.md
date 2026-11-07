@@ -549,6 +549,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   whole under the pointer. Its title ("Mister Download Manager crash report") is now in MDM's
   language too; it was always in the system's. On Windows that also gives its title bar MDM's
   light or dark again in every language: outside English it kept Windows' own mode.
+- **Leaving a submenu no longer closes the whole menu**
+  ([#250](https://github.com/anefzaoui/misterdownloadmanager/issues/250)): on Linux, with a
+  submenu open (Tasks → Import, Downloads → Speed Limiter), moving the pointer back onto its menu,
+  to another item, closed the menu itself as well. Some window managers (KWin, sway) give a
+  submenu's window the focus; when the submenu closed, its window handed the focus on, and for a
+  moment no window of MDM had it, which counted as MDM losing the focus. A menu now closes for
+  that only when the focus stays away (a click in another program). A submenu also closes when
+  the pointer rests on another item without moving, instead of waiting for the next move.
 - **Three more controls fit their translated text**
   ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192), after #212): in Russian
   and a few other languages, Download File Info's **Preview**, Options → Proxy's **Get System**
