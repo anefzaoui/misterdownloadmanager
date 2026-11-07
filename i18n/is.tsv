@@ -183,6 +183,11 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Afþjónusta sækir tengil hýsingarþjónustu með þínum eigin greidda reikningi og gefur MDM beinan tengil. Notaðu aðeins þinn eigin reikning: að deila reikningi eða tenglum hans brýtur í bága við skilmála þjónustunnar og getur leitt til þess að honum verði lokað. Niðurhal sem vafrinn hefur þegar hafið helst óbreytt.
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	A file of this torrent can't be saved safely: {name}	Ekki er hægt að vista skrá þessa straums á öruggan hátt: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -431,6 +436,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	Annað DNS...
+#. text in unix.rs
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+#, machine
+	Another program has set the computer's wake alarm	Annað forrit hefur stillt vekjaraklukkuna fyrir tölvuna
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -739,6 +748,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Chad	Tsjad
+#. text in the Scheduler window
+#. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+#, machine
+	Change	Breyta
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -1179,6 +1192,10 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	Sækja studda skráartengla í gegnum þessa reikninga
+#. text in a dialog box
+#. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
+#, machine
+	Download through {service}	Sækja í gegnum {service}
 #. window title in the Download video window
 #, machine
 	Download video from a page	Sækja myndskeið af síðu
@@ -1820,6 +1837,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Hong Kong	Hong Kong
+#. text in the Scheduler window
+#. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+#, machine
+	How to allow it	Hvernig á að leyfa það
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -1903,6 +1924,11 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	Setja upp yt-dlp
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Check for updates, after Update now downloaded it: unpacking and putting the new version in place
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Installing the update...	Set upp uppfærslu...
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -2347,6 +2373,11 @@
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager lenti í innri villu
+#. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Mister Download Manager is running the queue "{queue}"	Mister Download Manager er að keyra biðröðina „{queue}“
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -2758,9 +2789,17 @@
 #. a country's name (where a download's server is)
 #, machine
 	Oman	Óman
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+#, machine
+	On battery, Windows' power options don't allow wake timers	Á rafhlöðu leyfa orkustillingar Windows ekki vekjaratíma
 #. text in a download's progress window
 #, machine
 	on download stop/resume	við stöðvun/áframhald niðurhals
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
+#, machine
+	On macOS, only an administrator can schedule a wake	Á macOS getur aðeins stjórnandi tímasett vekjaratíma
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Einu sinni klukkan
@@ -2784,6 +2823,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Aðeins er hægt að færa niðurhal sem er lokið eða ekki hafið enn. Stöðvaðu það og kláraðu það fyrst.
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+#, machine
+	Only an administrator can allow this	Aðeins stjórnandi getur leyft þetta
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -3318,6 +3361,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Senda þetta til vinar:
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+#, machine
+	Send torrents and magnet links to the first account instead of to peers	Senda strauma og segultengla á fyrsta reikninginn í stað jafningja
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3364,6 +3411,14 @@
 #. button in Test browser integration: register MDM's helper with the browsers
 #, machine
 	Set it up	Setja upp
+#. message or event log entry in the main window
+#. event log: File Properties: the download no longer goes through the debrid account
+#, machine
+	Set to download directly, not through the debrid account	Stillt á að sækja beint, ekki í gegnum debrid-reikninginn
+#. message or event log entry in the main window
+#. event log: File Properties: the download goes through the debrid account again
+#, machine
+	Set to download through the debrid account	Stillt á að sækja í gegnum debrid-reikninginn
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3644,7 +3699,7 @@
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	Hætta niðurhali klukkan
-#. button in playlistdlg.rs
+#. text in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
 	Stop listing	Hætta skráningu
@@ -3839,6 +3894,15 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The computer could not be turned off: {error}	Ekki tókst að slökkva á tölvunni: {error}
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue"
+#, machine
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	Tölvan er vakin einni mínútu fyrir upphafstímann og henni haldið vakandi á meðan biðröðin keyrir. Mister Download Manager þarf að vera í gangi (það getur beðið á tilkynningasvæðinu).
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	The computer will be woken on {date} at {time}	Tölvan verður vakin þann {date} klukkan {time}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4078,6 +4142,14 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	Þessi flokkur eða biðröð inniheldur engin niðurhal ennþá.
+#. text in win32.rs
+#. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
+#, machine
+	This computer can't be woken by a timer	Ekki er hægt að vekja þessa tölvu með tímamæli
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
+#, machine
+	This computer has no wake alarm that programs can set	Þessi tölva hefur enga vekjaraklukku sem forrit geta stillt
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4150,9 +4222,21 @@
 #. where a download's server is, when a proxy carries it: {country} is the proxy's country
 #, machine
 	through a proxy in {country}	í gegnum umboðsþjón í {country}
+#. text in a download's Properties window
+#. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
+#, machine
+	Through {service}	Í gegnum {service}
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+#, machine
+	Through {service}: the service downloads the torrent, then MDM its files	Í gegnum {service}: þjónustan sækir strauminn, síðan MDM skrárnar
 #. text in the Scheduler window
 #, machine
 	Thursday	Fimmtudagur
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+#, machine
+	Tick "Start download at" first: the computer is woken for the start time	Hakaðu fyrst við „Byrja niðurhal á“: tölvan er vakin fyrir upphafstímann
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Tími eftir
@@ -4184,6 +4268,7 @@
 	too many redirects	of margar tilvísanir
 #. value in a column's filter list in the download list; text in the Add torrent window
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#. noun: label before the torrent file or magnet link
 #, machine
 	Torrent	Torrent
 #. text in the download list (sizes, speeds, status)
@@ -4550,6 +4635,10 @@
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	Bíður: niðurhalsmörkum er náð (tímaáætlun)
+#. text in the Scheduler window
+#. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+#, machine
+	Wake the computer to run this queue	Vekja tölvuna til að keyra þessa biðröð
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4583,6 +4672,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	Stærð staðgengils
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
+#, machine
+	Windows allows wake timers only while plugged in	Windows leyfir aðeins vekjaratíma á meðan tölvan er tengd við rafmagn
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4593,6 +4686,10 @@
 #. text in langpick.rs
 #, machine
 	Windows' language ({language})	Tungumál Windows ({language})
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+#, machine
+	Windows' power options don't allow wake timers	Orkustillingar Windows leyfa ekki vekjaratíma
 #. message or event log entry in the main window
 #, machine
 	with Add URL	með Bæta við URL
@@ -4815,6 +4912,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} af {total} valið
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+#, machine
+	{percent} at {service}	{percent} hjá {service}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -4826,6 +4927,9 @@
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	{service} biður þig um að leyfa þessa tölvu fyrst: sjáðu tölvupóstinn þeirra
+#. text in errors.rs
+#, machine
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} getur ekki sótt þennan straum: enginn deilir honum eða ekki er hægt að lesa tengilinn
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} nær ekki til þessa skráarhýsingaraðila núna; MDM mun reyna aftur síðar
@@ -5342,12 +5446,20 @@ menu	Add category	Bæta við flokki
 #, machine
 menu	Add trackers...	Bæta við rekjurum...
 #. menu command in the main window
+#. View → Theme: a style theme's name (GNOME's look, the Linux desktop), a name: keep "Adwaita" as written
+#, machine
+menu	Adwaita	Adwaita
+#. menu command in the main window
 #. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
 #, machine
 menu	Applies the next time MDM starts	Tekur gildi næst þegar MDM ræsir
 #. menu command in the main window
 #, machine
 menu	Arrange files	Raða skrám
+#. menu command in the main window
+#. View → Theme: a style theme's name (KDE Plasma's look, the Linux desktop), a name: keep "Breeze" as written
+#, machine
+menu	Breeze	Breeze
 #. menu command in the main window
 #. verb: opens this category's download folder
 #, machine
@@ -5457,7 +5569,7 @@ menu	Download &video from a page...	Hlaða niður &myndbandi af síðu...
 #, machine
 menu	Download in order	Sækja í röð
 #. menu command in the main window
-#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	Teikna með
 #. menu command in the main window
@@ -5508,6 +5620,26 @@ menu	Hide drop target	Fela dráttarmark
 #, machine
 menu	High contrast	Mikil birtuskil
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+#, machine
+menu	It couldn't start: the log says why	Það gat ekki ræst: annállinn segir hvers vegna
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+#, machine
+menu	Its first frame didn't show within 10 seconds	Fyrsti ramminn birtist ekki innan 10 sekúndna
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+#, machine
+menu	Its last start ended before its first frame	Síðasta ræsing endaði fyrir fyrsta ramma
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Apple's), usually kept as is
+#, machine
+menu	Metal	Metal
+#. menu command in the main window
+#. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Metal didn't start here: OpenGL draws	Metal ræstist ekki hér: OpenGL teiknar
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
 menu	Metro	Metro
@@ -5522,6 +5654,10 @@ menu	Move/Rename (Ctrl-M)	Færa/endurnefna (Ctrl-M)
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
 menu	Native	Innbyggt
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+#, machine
+menu	No graphics card here has a driver for it	Ekkert skjákort hér hefur rekil fyrir það
 #. menu command in the main window
 #, machine
 menu	On Double click	Við tvísmell
@@ -5647,6 +5783,10 @@ menu	Support &MDM	Styðja &MDM
 #, machine
 menu	Tell a &friend	Segja &vini
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+#, machine
+menu	The graphics card was lost twice in 10 minutes	Skjákortið tapaðist tvisvar á 10 mínútum
+#. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
 menu	Theme	Þema
@@ -5685,6 +5825,14 @@ menu	Turn of&f	Slökkva &á
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Verify checksum...	Staðfesta afgreiðslutölu...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+#, machine
+menu	Vulkan	Vulkan
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Vulkan didn't start here: OpenGL draws	Vulkan ræstist ekki hér: OpenGL teiknar
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5763,3 +5911,43 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/sek
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	í læstum lyklakippu
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Engin kerfislyklakippa svaraði, svo innskráningar og lykilorð eru geymd í stillingum MDM, sem aðeins þú getur lesið.
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	proxy-þjónn
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	Innskráningar og lykilorð eru geymd í macOS lyklakippunni.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	Innskráningar og lykilorð eru geymd í kerfislyklakippunni (Secret Service).
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	Innskráningar og lykilorð eru geymd í Windows Credential Manager.
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Kerfislyklakippan er læst og MDM aflæsir henni ekki, svo innskráningar og lykilorð eru geymd í stillingum MDM, sem aðeins þú getur lesið.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Þessi færanlega útgáfa geymir innskráningar og lykilorð í eigin stillingum, dulkóðuð fyrir Windows reikninginn þinn.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Þessi færanlega útgáfa geymir innskráningar og lykilorð í eigin stillingum, sem aðeins þú getur lesið.
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Credential Manager svaraði ekki, svo innskráningar og lykilorð eru geymd í stillingum MDM, dulkóðuð fyrir Windows reikninginn þinn.

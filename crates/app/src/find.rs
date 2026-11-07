@@ -146,9 +146,12 @@ impl Find {
                     true,
                 );
                 let can = !q.text.trim().is_empty() && (q.name || q.description || q.site);
+                // As wide as its label in this language (#192), short of Cancel.
+                let (find_x, find_w) =
+                    winui::button_around(&ui.painter().clone(), "Find", 73.0, 73.0, 11.0, 190.0);
                 let find = winui::button_light(
                     ui,
-                    r(o, 73.0, 207.0, 73.0, 21.0),
+                    r(o, find_x, 207.0, find_w, 21.0),
                     // i18n: verb: button that starts the search
                     "Find",
                     if can {

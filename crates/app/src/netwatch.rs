@@ -55,7 +55,33 @@ fn compute(wanted: &str) -> Route {
     if wanted.trim().is_empty() {
         return Route::Any;
     }
-    mdm_engine::net::route_for(wanted, &adapters())
+    #[allow(unused_mut)]
+    let mut route = mdm_engine::net::route_for(wanted, &adapters());
+    // The test adapter (debug builds, below) is on loopback, where the lab server is too:
+    // connections to this computer are bound to it as well, so the lab sees them come from the
+    // adapter's address (#35, the helpers' relay; unbound, nothing would show it).
+    #[cfg(debug_assertions)]
+    if let Route::Bound(b) = &mut route
+        && test_adapter().is_some_and(|(name, _)| name == b.name)
+    {
+        std::sync::Arc::make_mut(b).loopback_too = true;
+    }
+    route
+}
+
+/// Debug builds: the test adapter `MDM_TEST_ADAPTER` names (see [`adapters`]), as (name, address).
+#[cfg(debug_assertions)]
+fn test_adapter() -> Option<(String, std::net::IpAddr)> {
+    std::env::var("MDM_TEST_ADAPTER")
+        .ok()
+        .and_then(|v| match v.strip_prefix('@') {
+            Some(file) => std::fs::read_to_string(file).ok(),
+            None => Some(v),
+        })
+        .and_then(|v| {
+            let (n, a) = v.trim().split_once('=')?;
+            Some((n.trim().to_owned(), a.trim().parse().ok()?))
+        })
 }
 
 /// The computer's network adapters, as Options lists them and the watch reads them. Debug
@@ -67,17 +93,7 @@ pub fn adapters() -> Vec<mdm_engine::net::Adapter> {
     #[allow(unused_mut)]
     let mut all = mdm_engine::net::adapters();
     #[cfg(debug_assertions)]
-    if let Some((name, ip)) = std::env::var("MDM_TEST_ADAPTER")
-        .ok()
-        .and_then(|v| match v.strip_prefix('@') {
-            Some(file) => std::fs::read_to_string(file).ok(),
-            None => Some(v),
-        })
-        .and_then(|v| {
-            let (n, a) = v.trim().split_once('=')?;
-            Some((n.trim().to_owned(), a.trim().parse().ok()?))
-        })
-    {
+    if let Some((name, ip)) = test_adapter() {
         let (mut v4, mut v6) = (Vec::new(), Vec::new());
         match ip {
             std::net::IpAddr::V4(a) => v4.push(a),

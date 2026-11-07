@@ -62,6 +62,34 @@ pub fn load() -> Loaded {
     load_from(&p, empty)
 }
 
+/// Only the settings, read without touching anything (the command line's debrid accounts,
+/// #44): the list as `load` would take it (the file, else its newest generation), but a damaged
+/// file is left where it is for the app to deal with. None: no list, or none that reads.
+pub fn settings_only() -> Option<Settings> {
+    #[derive(Deserialize)]
+    struct Only {
+        #[serde(default)]
+        settings: Settings,
+    }
+    let p = path()?;
+    let read = |p: &Path| {
+        let bytes = std::fs::read(p).ok()?;
+        let json = bytes.strip_prefix(b"\xef\xbb\xbf").unwrap_or(&bytes);
+        serde_json::from_slice::<Only>(json)
+            .ok()
+            .map(|o| o.settings)
+    };
+    read(&p).or_else(|| {
+        [
+            backup_path(&p),
+            generation_path(&p, 1),
+            generation_path(&p, 2),
+        ]
+        .iter()
+        .find_map(|g| read(g))
+    })
+}
+
 /// How often an older generation is kept.
 const GENERATION_EVERY: Duration = Duration::from_secs(10 * 60);
 
@@ -233,14 +261,18 @@ fn encode(
         settings: &'a Settings,
         queues: &'a [Queue],
     }
-    serde_json::to_vec_pretty(&ListRef {
-        version: VERSION,
-        next_id,
-        // A private window's downloads live in memory only, as the browser keeps them.
-        items: items.iter().filter(|i| !i.context.private).collect(),
-        columns,
-        settings,
-        queues,
+    // The secrets as the disk keeps them: keychain references, or sealed (secrets.rs, #44).
+    let settings = &settings.for_disk();
+    crate::secrets::prepared(|| {
+        serde_json::to_vec_pretty(&ListRef {
+            version: VERSION,
+            next_id,
+            // A private window's downloads live in memory only, as the browser keeps them.
+            items: items.iter().filter(|i| !i.context.private).collect(),
+            columns,
+            settings,
+            queues,
+        })
     })
     .map_err(std::io::Error::other)
 }
@@ -253,7 +285,10 @@ fn write(p: &Path, json: &[u8]) -> std::io::Result<()> {
     }
     keep_generations(p);
     // The list holds the saved logins: its owner's only (the folder too).
-    mdm_ipc::private_write(p, json)
+    mdm_ipc::private_write(p, json)?;
+    // On the disk now: keychain entries it no longer names can go.
+    crate::secrets::vault().after_write();
+    Ok(())
 }
 
 /// Saves the list on a thread of its own. The write ends with a flush to the disk, which waited

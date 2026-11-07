@@ -13,6 +13,36 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ Open folder in Download complete no longer freezes the window on Linux when the file
+  manager is slow to answer or never does: MDM asks in the background and opens the folder after
+  5 seconds without an answer; every other program a window starts (Set it up, the Trash, an
+  update being put in place, pages and folders) no longer holds the window either
+  ([#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222))
+- ✅ A download too big for its drive is refused on a very busy computer too: the free-space
+  check's 5 seconds count from when it runs, not from when it was asked, and it asks only the
+  folder's own drive (shared network folders too) instead of listing every drive; and the host
+  connection limit test tells a reconnect from a connection too many ([#224](https://github.com/anefzaoui/misterdownloadmanager/issues/224))
+- ✅ The crash report window in every language: the report keeps its lines (German and Arabic
+  ran them together) and reads left to right in Arabic and Persian; **End and restart MDM** fits
+  its text ([#204](https://github.com/anefzaoui/misterdownloadmanager/issues/204))
+- ✅ Every window's buttons fit their text in every language: Download File Info (German
+  **Später herunterladen** was cut), Download complete, Add torrent, Download a gallery, the
+  progress window, the Scheduler, Options, the Help menu's windows, RSS feeds, the video helpers
+  and the browser window; English is unchanged, right to left too
+  ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192))
+- ✅ Linux builds and window shots in minutes: a WSL2 machine builds any branch in about 5
+  minutes (under one after a change) and shoots every window in any language in about a second
+  each, never showing on the screen; the Linux desktops still check what needs them (part of
+  [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
+- ✅ The Scheduler wakes the computer from sleep to run a queue, and keeps it awake while the
+  queue runs: on Windows when the power plan allows wake timers (the Scheduler says when it
+  doesn't), on Linux once an administrator allows it, and on macOS it says why it can't
+  ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142))
+- ✅ A finished download no longer fails with "part file still in use" on a busy computer, and
+  the rest of the engine tests that failed now and then there (slow connections, a prompt stop,
+  speed limits, links that expire, sparse files and a few more) wait for what they check, not for
+  time; the slow-connection test now fails if the engine stops reconnecting slow connections,
+  which it didn't before ([#201](https://github.com/anefzaoui/misterdownloadmanager/issues/201))
 - ✅ A window closed with its title bar's × keeps its contents until it goes, instead of turning
   black for a moment (seconds on Linux) ([#207](https://github.com/anefzaoui/misterdownloadmanager/issues/207))
 - ✅ A freeze while MDM handles a command, or minimized, opens the crash report window and writes
@@ -52,6 +82,12 @@ Everything below ships together, in one release, as version 0.3.0.
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ Themes: Metro, Windows 8's flat look (its controls, a drawn title bar on Windows, Fluent
   icons); themes choose each control's style and bring their own icons
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ Themes: Adwaita, GNOME's look (its controls, a header bar on Windows, GNOME's Adwaita icons
+  in colour and one colour)
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ Themes: Breeze, KDE Plasma's look (its focus frame, check boxes, buttons and title bar on
+  Windows, KDE's Breeze icons)
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ Dark mode: grey notes and error texts readable (4.5:1), Options' failed checks no longer dark
   red on the dark dialog ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
@@ -93,6 +129,10 @@ Everything below ships together, in one release, as version 0.3.0.
 - ✅ Windows: MDM draws with Direct3D 12 by default; **View → Draw with** goes back to OpenGL, and
   either one falls back to the other when it can't start
   ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89))
+- ✅ Linux and macOS: **View → Draw with → Vulkan** (Linux) and **Metal** (macOS), with the same
+  fallback to OpenGL as Direct3D on Windows; OpenGL stays their default for now, and the menu
+  says why when one can't start here
+  ([#206](https://github.com/anefzaoui/misterdownloadmanager/issues/206))
 - ✅ Screen readers see a window's contents the first time they read it, not only its title bar
   ([#131](https://github.com/anefzaoui/misterdownloadmanager/issues/131))
 - ✅ Magnet links get their file list in seconds again: the DHT keeps going after a computer it
@@ -123,10 +163,20 @@ Everything below ships together, in one release, as version 0.3.0.
 - ✅ Tests and test tools stay on 127.0.0.1: no Windows Firewall questions while developing
 - ✅ Debrid accounts (experimental): Real-Debrid, AllDebrid and Premiumize; file-host links downloaded through your own account (Options → Accounts)
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
+- ✅ Debrid accounts: a per-download "directly instead" choice, "through the service" in Download
+  File Info, and the command line using the accounts
+  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
+- ✅ Debrid accounts: torrents and magnet links through the service, their files downloaded over
+  HTTP, no peer connections ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
+- ✅ Sign-ins in the system's keychain: Windows Credential Manager, the Secret Service keyring on
+  Linux, the macOS keychain; for debrid accounts, Sites Logins and the proxy
+  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 - ✅ Downloads through one network adapter (a VPN's), with a kill switch: nothing goes out
   another way when it disconnects ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
 - ✅ Torrents on Windows through the chosen network adapter, with the same kill switch
   ([#143](https://github.com/anefzaoui/misterdownloadmanager/issues/143))
+- ✅ Video pages and image galleries through the chosen network adapter too, with the same kill
+  switch ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
 - ✅ Downloads from a browser behind a VPN or proxy extension go through the same proxy
   ([#42](https://github.com/anefzaoui/misterdownloadmanager/issues/42))
 - ✅ Hide to the notification area: a download's progress window (its own button, or Minimize)
@@ -200,6 +250,9 @@ Everything below ships together, in one release, as version 0.3.0.
   ([#113](https://github.com/anefzaoui/misterdownloadmanager/issues/113))
 - ✅ The README's, the docs' and the website's screenshots are taken on a stock Windows (GitHub's
   runner), so the file icons in them are Windows' own
+- ✅ The help shows what it describes: pictures of each window, numbered where a step points at
+  one control, step strips for the usual flows, in light and dark, made from one shot list
+  ([#228](https://github.com/anefzaoui/misterdownloadmanager/issues/228))
 - ✅ Website in European Portuguese, and an [intended use](https://misterdownloadmanager.com/intended-use.html) page
 - ✅ Website: the [free IDM alternative](https://misterdownloadmanager.com/idm-alternative.html) page compares
   MDM with IDM and with nine other free download managers, each checked on its own site, with
@@ -209,6 +262,8 @@ Everything below ships together, in one release, as version 0.3.0.
   ([#168](https://github.com/anefzaoui/misterdownloadmanager/issues/168)), and no page scrolls
   sideways on a phone, Arabic and Persian included: long paths, links and tables wrap or scroll
   inside the page ([#169](https://github.com/anefzaoui/misterdownloadmanager/issues/169))
+- ✅ Help opens the website's help pages, in the interface language when the website has it
+  ([#227](https://github.com/anefzaoui/misterdownloadmanager/issues/227))
 
 ### Being built
 
@@ -226,9 +281,10 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Bugs being looked into
 
-- 🔍 Menus with a black band across their top on a Windows 11 Insider build
-  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): menus are now plain
-  pop-up windows, as Windows' own are; a test build is with the reporter
+- 🔍 Menus and the drop target with a black band across their top on a Windows 11 Insider build
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): menus are plain pop-up
+  windows now, as Windows' own are, and the reporter confirmed them fixed; the drop target is one
+  too, its test build is with the reporter
 - 🔍 A freeze of the window on start ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
   most likely a computer busy just after start; freeze reports now measure it, so the next one says
 - 🔍 A crash on Linux as Download File Info opens
@@ -239,16 +295,9 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Downloads and windows
 
-- 📋 The Scheduler wakes the computer from sleep to run a queue
-  ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142))
-- 📋 Debrid services, the rest: a per-download "directly instead" choice, "through the service" in
-  File Info, the command line using the accounts, torrents through the service, the system
-  keychains for the sign-ins
-  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 
 ### Network
 
-- 📋 Video pages through a chosen network adapter too ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
 - 📋 Control MDM from a phone or another computer on the local network, off by default
   ([#141](https://github.com/anefzaoui/misterdownloadmanager/issues/141))
 - 📋 Run MDM headless on a server (Docker, Unraid) and send it downloads from the browser
@@ -265,6 +314,9 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Look and performance
 
+- 📋 Vulkan the default on Linux and Metal on macOS, once real graphics cards have tried them (AMD,
+  Intel and NVIDIA, X11 and Wayland, older cards without Vulkan)
+  ([#206](https://github.com/anefzaoui/misterdownloadmanager/issues/206))
 - 📋 Linux: follow the desktop's dark or light setting ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156))
 - 📋 Benchmarks against other download managers
   ([#71](https://github.com/anefzaoui/misterdownloadmanager/issues/71))

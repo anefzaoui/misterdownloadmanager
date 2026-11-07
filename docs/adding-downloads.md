@@ -14,7 +14,8 @@ There are several ways to give MDM something to download. Most of them end in th
 
 MDM takes `http://`, `https://`, `ftp://`, `ftps://`, `ftpes://` and `magnet:` addresses. Anything else gets **Invalid address**.
 
-![Add URL](images/add-url.png)
+![Enter new address to download, with the Address box, Use authorization and OK](images/help/add-url.webp)
+*The numbers are the steps above: 3 the address, 4 a login if the server needs one, 5 OK.*
 
 If the address is a video's page (YouTube, Vimeo, TikTok and others), the video window opens instead. See [Video downloads](video.md). A magnet link opens **Add torrent**; see [Torrents](torrents.md).
 
@@ -94,6 +95,9 @@ MDM asks the server for the file's name and size, and shows them in **Download F
 - **Description** — a note of your own. It shows in the list's **Description** column and Find can search it.
 - **Server** — where the server is: its country's flag and name, and how long a round trip to it takes. See [Where the server is](connections-and-speed.md#where-the-server-is). It stays blank when the browser handed the download over with its name and size, since MDM didn't need to ask the server.
 
+![Download File Info for a ZIP file: its address, the Compressed category, the folder it goes to, its size, and the Download Later, Start Download and Cancel buttons](images/help/download-file-info.webp)
+*1 the category, 2 where the file goes, 3 start now, 4 or put it in a queue.*
+
 Then choose:
 
 - **Start Download** (or **Enter**) — download now. The progress window opens.
@@ -136,7 +140,8 @@ For files whose names differ only by a number or a letter, such as `photo001.jpg
 
 The downloads go to a queue. As with Download Later, MDM asks which queue unless you turn off **Options → Downloads → Show queue selection panel on closing batch download dialogs**.
 
-![Batch download](images/batch.png)
+![Batch download: an address with an asterisk, what replaces it, and the first, second and last file](images/help/batch.webp)
+*One asterisk in the address, then numbers or letters from–to.*
 
 ## A list of links
 
@@ -145,6 +150,9 @@ To add every link in a text file:
 1. Choose **Tasks → Import → From text file**.
 2. Pick the file. **Link grabber** lists every web address MDM found in it, in packages.
 3. Untick the addresses you don't want (**Check all** and **Uncheck all** help), then click **Add to queue**.
+
+![Link grabber listing the links of a page in packages, with their names, sizes and whether they are online](images/help/link-grabber.webp)
+*Link grabber: untick what you don't want, then Add to queue.*
 
 The downloads join the **Main download queue**, ready to start (**Start** starts it too). **Tasks → Import → From IDM export file** reads an `.ef2` file, with each download's referrer and cookies.
 
