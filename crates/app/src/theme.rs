@@ -196,6 +196,21 @@ pub fn update(dark_mode_support: bool, always_dark: bool, ctx: &egui::Context) -
     DARK.swap(want, Ordering::Relaxed) != want
 }
 
+/// Did the desktop say its look changed since the last call? On Linux, the portal's and the theme
+/// settings' watchers count each change (`unix::desktop_generation`), and the app's theme check,
+/// otherwise every 2 s, then runs in the frame the change woke (#156). Elsewhere false: the check's
+/// 2 s are its only clock there.
+pub fn system_changed() -> bool {
+    #[cfg(target_os = "linux")]
+    {
+        static SEEN: AtomicU64 = AtomicU64::new(0);
+        let now = crate::unix::desktop_generation();
+        SEEN.swap(now, Ordering::Relaxed) != now
+    }
+    #[cfg(not(target_os = "linux"))]
+    false
+}
+
 /// Dark or not: View → Always dark, else the system's mode while Dark Mode support is on.
 fn wanted(dark_mode_support: bool, always_dark: bool, system_dark: bool) -> bool {
     always_dark || (dark_mode_support && system_dark)

@@ -18,6 +18,18 @@ Everything below ships together, in one release, as version 0.3.0.
   link that asks to "confirm you're not a bot" works when you're signed in there; and the button
   over videos now passes the page's cookies to the download as well as to the look-up
   ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229))
+- ✅ The window no longer freezes on Linux when the system's sleep service (logind) or keyring
+  (Secret Service) is slow or doesn't answer: keeping the computer awake for a woken queue is
+  asked in the background, a keyring that doesn't answer at start is waited for once instead of
+  once per saved password, and the tray check and Download File Info's Save As check no longer
+  wait on every frame (follows [#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222))
+- ✅ Linux: Dark Mode support follows the desktop's dark or light theme on XFCE, MATE and others
+  without the portal's setting, and on GNOME without the portal, live
+  ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156))
+- ✅ Started with the computer, MDM waits in the notification area instead of opening its window
+  in front, on Windows, Linux and macOS (minimized where no notification area shows its icon);
+  startup entries written before are updated, and the installer writes the new one
+  ([#226](https://github.com/anefzaoui/misterdownloadmanager/issues/226))
 - ✅ Open folder in Download complete no longer freezes the window on Linux when the file
   manager is slow to answer or never does: MDM asks in the background and opens the folder after
   5 seconds without an answer; every other program a window starts (Set it up, the Trash, an
@@ -322,6 +334,5 @@ Everything below ships together, in one release, as version 0.3.0.
 - 📋 Vulkan the default on Linux and Metal on macOS, once real graphics cards have tried them (AMD,
   Intel and NVIDIA, X11 and Wayland, older cards without Vulkan)
   ([#206](https://github.com/anefzaoui/misterdownloadmanager/issues/206))
-- 📋 Linux: follow the desktop's dark or light setting ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156))
 - 📋 Benchmarks against other download managers
   ([#71](https://github.com/anefzaoui/misterdownloadmanager/issues/71))

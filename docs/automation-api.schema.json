@@ -333,6 +333,11 @@
           "description": "`/s`: start the main queue.",
           "type": "boolean"
         },
+        "startup": {
+          "default": false,
+          "description": "`/startup` (beyond IDM): started with the session (Options → General → Launch on\nstartup, or the installer's \"Start when Windows starts\", #226): MDM starts in the\nnotification area, its window hidden. Changes nothing in a running app.",
+          "type": "boolean"
+        },
         "token": {
           "description": "The `token` from ipc.json (it changes at every start of the app).",
           "type": "string"

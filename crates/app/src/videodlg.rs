@@ -1158,7 +1158,22 @@ mod tests {
                 "{said}"
             );
         } else {
-            assert!(said.contains("keyring"), "{said}");
+            // No app-bound encryption elsewhere: yt-dlp's own words.
+            assert!(
+                said.starts_with("yt-dlp couldn't read Chrome's cookies: "),
+                "{said}"
+            );
+        }
+        // Linux: the key wasn't in the keyring.
+        let v11 = format!("{bot} (cannot decrypt v11 cookies: no key found)");
+        let said = lookup_error(&v11, false, Some(&chrome));
+        if cfg!(windows) {
+            assert!(
+                said.starts_with("Chrome keeps its cookies locked"),
+                "{said}"
+            );
+        } else {
+            assert!(said.contains("system's keyring"), "{said}");
         }
         assert!(
             lookup_error(
