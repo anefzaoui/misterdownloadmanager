@@ -15,6 +15,11 @@ Everything below ships together, in one release, as version 0.3.0.
 
 - ✅ A menu of the menu bar shut with Escape opens again at the first click on its title (on
   Linux it took two; on Windows, Escape with the pointer on the title left the menu open)
+- ✅ Cookies for video sites: yt-dlp can read a browser's cookies on this computer (Firefox,
+  Chrome, Edge, Brave, Opera, Vivaldi, Chromium, Whale; Safari on macOS), so a pasted YouTube
+  link that asks to "confirm you're not a bot" works when you're signed in there; and the button
+  over videos now passes the page's cookies to the download as well as to the look-up
+  ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229))
 - ✅ The window no longer freezes on Linux when the system's sleep service (logind) or keyring
   (Secret Service) is slow or doesn't answer: keeping the computer awake for a woken queue is
   asked in the background, a keyring that doesn't answer at start is waited for once instead of

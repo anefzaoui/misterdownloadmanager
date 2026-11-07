@@ -192,6 +192,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Ett NextDNS-konfigurations-ID består av sex bokstäver och siffror (0-9, a-f).
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Ett profils namn eller dess mapp. Tomt: den senast använda profilen. För en webbläsare baserad på Chromium som inte finns med i listan (Helium, Thorium...), välj Chromium och dess profils mapp.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Välj vilket språk Mister Download Manager ska visa sina fönster på:
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	Välj profilsmappen
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	Cooköarna
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	Cookies för videosidor
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	Kopierat till Urklipp.
@@ -1648,6 +1660,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	från en torrentfil
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	Från webbläsare:
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1812,7 +1828,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Dölj &kategorier
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	Dölj flik
 #. text in a download's progress window; text in standard windows
@@ -1884,6 +1900,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	I kategorierna: menyn för den valda kategorin
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	i den låsta nyckelringen
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2651,6 +2671,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Ingen proxy/SOCKS
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Ingen systemnyckelring svarade, så inloggningar och lösenord sparas i MDM:s inställningar, som bara du kan läsa.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2772,6 +2796,9 @@
 #. text in the Scheduler window
 #, machine
 	October	Oktober
+#. option (radio button) in the Options window
+#, machine
+	Off	Av
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	Av: en färdig torrent stoppas, som alla nedladdningar.
@@ -2800,6 +2827,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	På macOS kan endast en administratör schemalägga en väckning
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	I Windows kan Chrome, Edge och Brave låsa sina cookies. Firefox fungerar.
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	En gång vid
@@ -3033,6 +3064,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	Förhandsgranskning är inte tillgänglig ännu
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	Profil (valfritt):
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -3050,6 +3085,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	Proxy-/Socks-konfiguration
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	proxyserver
 #. label in the Options window
 #, machine
 	Proxy server address	Proxy-serveradress
@@ -3089,6 +3128,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Köer
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	Läs endast på den här datorn och skickas endast till videosidan.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3506,6 +3549,18 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	Logga in i webbläsaren
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	Inloggningar och lösenord sparas i macOS-nyckelringen.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	Inloggningar och lösenord sparas i systemnyckelringen (Secret Service).
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	Inloggningar och lösenord sparas i Windows Credential Manager.
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -4088,10 +4143,22 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	servern skickade en oväntad del av filen ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Webbplatsen vill att du är inloggad, även med din webbläsares cookies för den här sidan. Logga in på den i din webbläsare och försök sedan igen.
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Webbplatsen vill att du är inloggad, även med {browser}s cookies. Logga in på den i {browser} och sök sedan upp sidan igen.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Symbolerna kunde inte hämtas: vissa rader i rapporten visar adresser istället för namn (utvecklarna kan fortfarande läsa dem).
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Systemnyckelringen är låst och MDM låser inte upp den, så inloggningar och lösenord sparas i MDM:s inställningar, som bara du kan läsa.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4196,6 +4263,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Detta kräver ffmpeg
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Denna portabla kopia sparar inloggningar och lösenord i sina egna inställningar, krypterade för ditt Windows-konto.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Denna portabla kopia sparar inloggningar och lösenord i sina egna inställningar, som bara du kan läsa.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4221,7 +4296,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Denna video kräver att du är inloggad. Använd knappen Ladda ner video ovanför den i din webbläsare, som vidarebefordrar din inloggning.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Den här videon kräver att du är inloggad. Använd knappen Ladda ned video ovanför den i din webbläsare, som skickar vidare din inloggning, eller välj din webbläsare i Alternativ → Webbplatsinloggningar → Cookies för videosidor.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4598,14 +4673,6 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Videosökningar använder yt-dlp (cirka 23 MB, kontrolleras mot dess signatur).
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	Videosidor och torrenter kan inte använda den än.
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	Videosidor kan inte använda den än.
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4684,6 +4751,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows tillåter väckningstimer endast när den är ansluten
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Credential Manager svarade inte, så inloggningar och lösenord sparas i MDM:s inställningar, krypterade för ditt Windows-konto.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4764,9 +4835,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	Ditt systems: {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp kan inte läsa {browser}s cookies medan {browser} är öppen. Stäng {browser} och sök upp sidan igen, eller välj Firefox i Alternativ → Webbplatsinloggningar.
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp kunde inte hämta nyckeln till {browser}s cookies från systemets nyckelring. Lås upp nyckelringen och sök upp sidan igen.
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp kunde inte läsa {browser}s cookies: {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp hittade inga cookies från {browser} på den här datorn. Kontrollera webbläsaren och dess profil i Alternativ → Webbplatsinloggningar.
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp är inte installerat (Uppgifter → Ladda ned video från en sida installerar det)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp loggar in på videosidor med den här webbläsarens cookies, lästa från dess filer endast på den här datorn. Används när webbläsarens tillägg inte skickade sidans egna: en inklistrad adress, en spellista.
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4799,6 +4891,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: kontrolleras när nedladdningen är klar
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} håller sina cookies låsta för sig själv i Windows, så yt-dlp kan inte läsa dem. Välj Firefox i Alternativ → Webbplatsinloggningar, eller använd knappen Ladda ned video ovanför videon i {browser}.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -5919,43 +6015,3 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/sek
-#. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
-#, machine
-	in the locked keyring	i den låsta nyckelringen
-#. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
-#, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Ingen systemnyckelring svarade, så inloggningar och lösenord sparas i MDM:s inställningar, som bara du kan läsa.
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
-#, machine
-	proxy server	proxyserver
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
-#, machine
-	Sign-ins and passwords are kept in the macOS keychain.	Inloggningar och lösenord sparas i macOS-nyckelringen.
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
-#, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	Inloggningar och lösenord sparas i systemnyckelringen (Secret Service).
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
-#, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	Inloggningar och lösenord sparas i Windows Credential Manager.
-#. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
-#, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Systemnyckelringen är låst och MDM låser inte upp den, så inloggningar och lösenord sparas i MDM:s inställningar, som bara du kan läsa.
-#. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
-#, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Denna portabla kopia sparar inloggningar och lösenord i sina egna inställningar, krypterade för ditt Windows-konto.
-#. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
-#, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Denna portabla kopia sparar inloggningar och lösenord i sina egna inställningar, som bara du kan läsa.
-#. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
-#, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Credential Manager svarade inte, så inloggningar och lösenord sparas i MDM:s inställningar, krypterade för ditt Windows-konto.

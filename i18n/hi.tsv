@@ -192,6 +192,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS कॉन्फ़िगरेशन ID छह अक्षर और अंक (0-9, a-f) का होता है।
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	किसी प्रोफ़ाइल का नाम या उसका फ़ोल्डर। खाली: अंतिम बार उपयोग की गई प्रोफ़ाइल। Chromium पर बने किसी ऐसे ब्राउज़र के लिए जो सूचीबद्ध नहीं है (Helium, Thorium...), Chromium और उसकी प्रोफ़ाइल का फ़ोल्डर चुनें।
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Mister Download Manager अपनी विंडोज़ जिस भाषा में दिखाता है, उसे चुनें:
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	प्रोफ़ाइल का फ़ोल्डर चुनें
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	कुक द्वीप समूह
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	वीडियो साइटों के लिए कुकीज़
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	क्लिपबोर्ड पर कॉपी किया गया।
@@ -1648,6 +1660,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	एक टॉरेंट फ़ाइल से
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	ब्राउज़र से:
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1812,7 +1828,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	श्रेणियाँ छुपाएँ(&C)
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	टैब छुपाएँ
 #. text in a download's progress window; text in standard windows
@@ -1884,6 +1900,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	श्रेणियों में: चयनित श्रेणी का मेन्यू
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	लॉक किए गए कीरिंग में
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2651,6 +2671,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	कोई प्रॉक्सी/SOCKS नहीं
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	किसी सिस्टम कीरिंग ने जवाब नहीं दिया, इसलिए साइन-इन और पासवर्ड MDM की सेटिंग में रखे जाते हैं, जिन्हें केवल आप ही पढ़ सकते हैं।
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2772,6 +2796,9 @@
 #. text in the Scheduler window
 #, machine
 	October	अक्टूबर
+#. option (radio button) in the Options window
+#, machine
+	Off	बंद
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	बंद: एक समाप्त टोरेंट किसी भी डाउनलोड की तरह रुक जाता है।
@@ -2800,6 +2827,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	macOS पर, केवल एक व्यवस्थापक ही वेक शेड्यूल कर सकता है
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Windows पर, Chrome, Edge और Brave अपनी कुकीज़ लॉक कर सकते हैं। Firefox काम करता है।
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	एक बार पर
@@ -3033,6 +3064,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	पूर्वावलोकन अभी उपलब्ध नहीं है
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	प्रोफ़ाइल (वैकल्पिक):
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -3050,6 +3085,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	प्रॉक्सी / SOCKS कॉन्फ़िगरेशन
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	प्रॉक्सी सर्वर
 #. label in the Options window
 #, machine
 	Proxy server address	प्रॉक्सी सर्वर पता
@@ -3089,6 +3128,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	कतारें
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	केवल इस कंप्यूटर पर पढ़ें, और केवल वीडियो की साइट पर भेजें।
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3506,6 +3549,18 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	ब्राउज़र में साइन इन करें
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	साइन-इन और पासवर्ड macOS कीचेन में रखे जाते हैं।
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	साइन-इन और पासवर्ड सिस्टम कीरिंग (सीक्रेट सर्विस) में रखे जाते हैं।
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	साइन-इन और पासवर्ड Windows क्रेडेंशियल मैनेजर में रखे जाते हैं।
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -4088,10 +4143,22 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	सर्वर ने फ़ाइल का एक अप्रत्याशित भाग भेजा ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	साइट चाहती है कि आप साइन इन करें, भले ही इस पेज के लिए आपके ब्राउज़र की कुकीज़ हों। अपने ब्राउज़र में साइन इन करें, फिर से कोशिश करें।
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	साइट चाहती है कि आप साइन इन करें, भले ही {browser} की कुकीज़ हों। {browser} में साइन इन करें, फिर से पेज देखें।
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	प्रतीकों को फ़ेच नहीं किया जा सका: रिपोर्ट की कुछ पंक्तियाँ नामों के बजाय पते दिखाती हैं (डेवलपर्स उन्हें अभी भी पढ़ सकते हैं)।
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	सिस्टम कीरिंग लॉक है और MDM इसे अनलॉक नहीं करता है, इसलिए साइन-इन और पासवर्ड MDM की सेटिंग में रखे जाते हैं, जिन्हें केवल आप ही पढ़ सकते हैं।
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4196,6 +4263,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	इसके लिए ffmpeg चाहिए
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	यह पोर्टेबल कॉपी साइन-इन और पासवर्ड को अपनी सेटिंग में रखती है, जो आपके Windows खाते के लिए एन्क्रिप्टेड हैं।
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	यह पोर्टेबल कॉपी साइन-इन और पासवर्ड को अपनी सेटिंग में रखती है, जिन्हें केवल आप ही पढ़ सकते हैं।
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4221,7 +4296,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	इस वीडियो के लिए आपको साइन इन करना होगा। अपने ब्राउज़र में इसके ऊपर डाउनलोड वीडियो बटन का उपयोग करें, जो आपके साइन-इन को पास करता है।
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	इस वीडियो के लिए आपको साइन इन करना होगा। अपने ब्राउज़र में इसके ऊपर डाउनलोड वीडियो बटन का उपयोग करें, जो आपके साइन-इन को पास करता है, या विकल्प → साइट लॉगिन → वीडियो साइटों के लिए कुकीज़ में अपना ब्राउज़र चुनें।
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4598,14 +4673,6 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	वीडियो लुकअप yt-dlp का उपयोग करते हैं (लगभग 23 MB, इसकी हस्ताक्षर के विरुद्ध जाँच की गई)।
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	वीडियो पेज और टोरेंट अभी इसका उपयोग नहीं कर सकते हैं।
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	वीडियो पेज अभी इसका उपयोग नहीं कर सकते हैं।
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4684,6 +4751,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows केवल प्लग इन होने पर वेक टाइमर की अनुमति देता है
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows क्रेडेंशियल मैनेजर ने जवाब नहीं दिया, इसलिए साइन-इन और पासवर्ड MDM की सेटिंग में रखे जाते हैं, जो आपके Windows खाते के लिए एन्क्रिप्टेड हैं।
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4764,9 +4835,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	आपके सिस्टम का: {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	जब तक {browser} खुला है, yt-dlp {browser} की कुकीज़ नहीं पढ़ सकता। {browser} बंद करें और पेज को फिर से देखें, या विकल्प → साइट लॉगिन में Firefox चुनें।
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp सिस्टम के कीरिंग से {browser} की कुकीज़ की कुंजी प्राप्त नहीं कर सका। कीरिंग को अनलॉक करें और पेज को फिर से देखें।
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp {browser} की कुकीज़ नहीं पढ़ सका: {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp को इस कंप्यूटर पर {browser} की कोई कुकीज़ नहीं मिलीं। विकल्प → साइट लॉगिन में ब्राउज़र और उसकी प्रोफ़ाइल जांचें।
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp स्थापित नहीं है (कार्य → किसी पृष्ठ से वीडियो डाउनलोड करें इसे स्थापित करता है)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp इस ब्राउज़र की कुकीज़ के साथ वीडियो साइटों में साइन इन करता है, जो केवल इस कंप्यूटर पर इसकी फ़ाइलों से पढ़ी जाती हैं। इसका उपयोग तब किया जाता है जब ब्राउज़र के एक्सटेंशन ने पेज की अपनी कुकीज़ पास नहीं कीं: एक चिपकाया गया पता, एक प्लेलिस्ट।
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4799,6 +4891,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: डाउनलोड समाप्त होने पर जाँच की गई
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	Windows पर {browser} अपनी कुकीज़ को अपने तक ही सीमित रखता है, इसलिए yt-dlp उन्हें नहीं पढ़ सकता। विकल्प → साइट लॉगिन में Firefox चुनें, या {browser} में वीडियो के ऊपर डाउनलोड वीडियो बटन का उपयोग करें।
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -5919,43 +6015,3 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/सेकंड
-#. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
-#, machine
-	in the locked keyring	लॉक किए गए कीरिंग में
-#. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
-#, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	किसी सिस्टम कीरिंग ने जवाब नहीं दिया, इसलिए साइन-इन और पासवर्ड MDM की सेटिंग में रखे जाते हैं, जिन्हें केवल आप ही पढ़ सकते हैं।
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
-#, machine
-	proxy server	प्रॉक्सी सर्वर
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
-#, machine
-	Sign-ins and passwords are kept in the macOS keychain.	साइन-इन और पासवर्ड macOS कीचेन में रखे जाते हैं।
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
-#, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	साइन-इन और पासवर्ड सिस्टम कीरिंग (सीक्रेट सर्विस) में रखे जाते हैं।
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
-#, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	साइन-इन और पासवर्ड Windows क्रेडेंशियल मैनेजर में रखे जाते हैं।
-#. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
-#, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	सिस्टम कीरिंग लॉक है और MDM इसे अनलॉक नहीं करता है, इसलिए साइन-इन और पासवर्ड MDM की सेटिंग में रखे जाते हैं, जिन्हें केवल आप ही पढ़ सकते हैं।
-#. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
-#, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	यह पोर्टेबल कॉपी साइन-इन और पासवर्ड को अपनी सेटिंग में रखती है, जो आपके Windows खाते के लिए एन्क्रिप्टेड हैं।
-#. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
-#, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	यह पोर्टेबल कॉपी साइन-इन और पासवर्ड को अपनी सेटिंग में रखती है, जिन्हें केवल आप ही पढ़ सकते हैं।
-#. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
-#, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows क्रेडेंशियल मैनेजर ने जवाब नहीं दिया, इसलिए साइन-इन और पासवर्ड MDM की सेटिंग में रखे जाते हैं, जो आपके Windows खाते के लिए एन्क्रिप्टेड हैं।

@@ -192,6 +192,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS 設定識別碼為六個字母和數字 (0-9, a-f)。
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	設定檔名稱或其資料夾。空白：上次使用的設定檔。對於未列出的 Chromium 瀏覽器 (Helium、Thorium...)，請選擇 Chromium 及其設定檔資料夾。
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	選擇 Mister Download Manager 顯示視窗的語言：
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	選擇設定檔資料夾
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	庫克群島
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	視訊網站的 Cookie
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	已複製到剪貼簿。
@@ -1648,6 +1660,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	來自 torrent 檔案
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	從瀏覽器：
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1812,7 +1828,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	隱藏&類別
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	隱藏索引標籤
 #. text in a download's progress window; text in standard windows
@@ -1884,6 +1900,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	在類別中：所選類別的功能表
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	在鎖定的金鑰圈中
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2651,6 +2671,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	無 Proxy/SOCKS
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	沒有系統金鑰圈回應，因此登入資訊和密碼會保留在 MDM 的設定中，只有您可以讀取。
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2772,6 +2796,9 @@
 #. text in the Scheduler window
 #, machine
 	October	十月
+#. option (radio button) in the Options window
+#, machine
+	Off	關閉
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	關閉：完成的 torrent 會停止，就像任何下載一樣。
@@ -2800,6 +2827,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	在 macOS 上，只有管理員才能排程喚醒
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	在 Windows 上，Chrome、Edge 和 Brave 可能會鎖定其 Cookie。Firefox 可以運作。
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	一次在
@@ -3033,6 +3064,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	預覽尚未可用
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	設定檔 (選用)：
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -3050,6 +3085,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	Proxy / socks 設定
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	Proxy 伺服器
 #. label in the Options window
 #, machine
 	Proxy server address	Proxy 伺服器位址
@@ -3089,6 +3128,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	佇列
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	僅在此電腦上讀取，並僅傳送至視訊網站。
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3506,6 +3549,18 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	在瀏覽器中登入
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	登入資訊和密碼會保留在 macOS 金鑰圈中。
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	登入資訊和密碼會保留在系統金鑰圈中 (Secret Service)。
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	登入資訊和密碼會保留在 Windows 認證管理員中。
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -4088,10 +4143,22 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	伺服器傳送了檔案的意外部分 ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	即使使用您瀏覽器針對此頁面的 Cookie，網站仍要求您登入。請在您的瀏覽器中登入，然後再試一次。
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	即使使用 {browser} 的 Cookie，網站仍要求您登入。請在 {browser} 中登入，然後再次查詢該頁面。
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	無法擷取符號：報告的某些行顯示位址而非名稱 (開發人員仍然可以讀取它們)。
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	系統金鑰圈已鎖定，MDM 不會將其解鎖，因此登入資訊和密碼會保留在 MDM 的設定中，只有您可以讀取。
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4196,6 +4263,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	這需要 ffmpeg
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	此可攜式複本會將登入資訊和密碼保留在其自己的設定中，並為您的 Windows 帳戶加密。
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	此可攜式複本會將登入資訊和密碼保留在其自己的設定中，只有您可以讀取。
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4221,7 +4296,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	此視訊需要您登入。請在瀏覽器中使用其上方的「下載視訊」按鈕，這會傳遞您的登入資訊。
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	此視訊需要您登入。請使用瀏覽器中視訊上方的「下載視訊」按鈕，該按鈕會傳遞您的登入資訊，或在「選項」→「網站登入」→「視訊網站的 Cookie」中選擇您的瀏覽器。
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4598,14 +4673,6 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	視訊查詢使用 yt-dlp (約 23 MB，已根據其簽章檢查)。
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	視訊頁面和 torrent 尚無法使用。
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	視訊頁面尚無法使用。
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4684,6 +4751,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows 僅在接上電源時才允許喚醒計時器
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows 認證管理員沒有回應，因此登入資訊和密碼會保留在 MDM 的設定中，並為您的 Windows 帳戶加密。
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4764,9 +4835,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	您的系統：{path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	當 {browser} 開啟時，yt-dlp 無法讀取 {browser} 的 Cookie。請關閉 {browser} 並再次查詢該頁面，或在「選項」→「網站登入」中選擇 Firefox。
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp 無法從系統金鑰圈取得 {browser} Cookie 的金鑰。請解鎖金鑰圈並再次查詢該頁面。
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp 無法讀取 {browser} 的 Cookie：{error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp 在此電腦上找不到 {browser} 的 Cookie。請在「選項」→「網站登入」中檢查瀏覽器及其設定檔。
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp 未安裝 (工作 → 從頁面下載視訊會安裝它)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp 僅從此電腦上的檔案讀取此瀏覽器的 Cookie，並使用這些 Cookie 登入視訊網站。當瀏覽器擴充功能未傳遞頁面本身的 Cookie 時使用：貼上的位址、播放清單。
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4799,6 +4891,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}：下載完成時檢查
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} 在 Windows 上將其 Cookie 鎖定給自己，因此 yt-dlp 無法讀取它們。請在「選項」→「網站登入」中選擇 Firefox，或使用 {browser} 中視訊上方的「下載視訊」按鈕。
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -5919,43 +6015,3 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/秒
-#. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
-#, machine
-	in the locked keyring	在鎖定的金鑰圈中
-#. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
-#, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	沒有系統金鑰圈回應，因此登入資訊和密碼會保留在 MDM 的設定中，只有您可以讀取。
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
-#, machine
-	proxy server	Proxy 伺服器
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
-#, machine
-	Sign-ins and passwords are kept in the macOS keychain.	登入資訊和密碼會保留在 macOS 金鑰圈中。
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
-#, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	登入資訊和密碼會保留在系統金鑰圈中 (Secret Service)。
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
-#, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	登入資訊和密碼會保留在 Windows 認證管理員中。
-#. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
-#, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	系統金鑰圈已鎖定，MDM 不會將其解鎖，因此登入資訊和密碼會保留在 MDM 的設定中，只有您可以讀取。
-#. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
-#, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	此可攜式複本會將登入資訊和密碼保留在其自己的設定中，並為您的 Windows 帳戶加密。
-#. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
-#, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	此可攜式複本會將登入資訊和密碼保留在其自己的設定中，只有您可以讀取。
-#. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
-#, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows 認證管理員沒有回應，因此登入資訊和密碼會保留在 MDM 的設定中，並為您的 Windows 帳戶加密。

@@ -192,6 +192,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	ഒരു NextDNS കോൺഫിഗറേഷൻ ഐഡിക്ക് ആറ് അക്ഷരങ്ങളും അക്കങ്ങളും (0-9, a-f) ഉണ്ടായിരിക്കണം.
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	ഒരു പ്രൊഫൈലിന്റെ പേരോ അതിന്റെ ഫോൾഡറോ. ശൂന്യം: അവസാനം ഉപയോഗിച്ച പ്രൊഫൈൽ. ലിസ്റ്റ് ചെയ്യാത്ത Chromium-ൽ നിർമ്മിച്ച ഒരു ബ്രൗസറിനായി (Helium, Thorium...), Chromium-ഉം അതിന്റെ പ്രൊഫൈലിന്റെ ഫോൾഡറും തിരഞ്ഞെടുക്കുക.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Mister Download Manager അതിൻ്റെ വിൻഡോകളിൽ കാണിക്കുന്ന ഭാഷ തിരഞ്ഞെടുക്കുക:
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	പ്രൊഫൈലിന്റെ ഫോൾഡർ തിരഞ്ഞെടുക്കുക
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	കുക്ക് ദ്വീപുകൾ
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	വീഡിയോ സൈറ്റുകൾക്കായുള്ള കുക്കികൾ
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി.
@@ -1648,6 +1660,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	ഒരു ടോറന്റ് ഫയലിൽ നിന്ന്
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	ബ്രൗസറിൽ നിന്ന്:
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1812,7 +1828,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	&വിഭാഗങ്ങൾ മറയ്ക്കുക
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	ടാബ് മറയ്ക്കുക
 #. text in a download's progress window; text in standard windows
@@ -1884,6 +1900,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	വിഭാഗങ്ങളിൽ: തിരഞ്ഞെടുത്ത വിഭാഗത്തിന്റെ മെനു
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	ലോക്ക് ചെയ്ത കീറിംഗിൽ
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2651,6 +2671,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	പ്രോക്സി/SOCKS ഇല്ല
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	സിസ്റ്റം കീറിംഗ് പ്രതികരിച്ചില്ല, അതിനാൽ സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും MDM-ന്റെ ക്രമീകരണങ്ങളിൽ സൂക്ഷിച്ചിരിക്കുന്നു, അത് നിങ്ങൾക്ക് മാത്രമേ വായിക്കാൻ കഴിയൂ.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2772,6 +2796,9 @@
 #. text in the Scheduler window
 #, machine
 	October	ഒക്ടോബർ
+#. option (radio button) in the Options window
+#, machine
+	Off	ഓഫ്
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	ഓഫ്: പൂർത്തിയാക്കിയ ടോറന്റ്, ഏതൊരു ഡൗൺലോഡ് പോലെയും നിർത്തുന്നു.
@@ -2800,6 +2827,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	macOS-ൽ, ഒരു അഡ്മിനിസ്ട്രേറ്റർക്ക് മാത്രമേ വേക്ക് ഷെഡ്യൂൾ ചെയ്യാൻ കഴിയൂ
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Windows-ൽ, Chrome, Edge, Brave എന്നിവ അവയുടെ കുക്കികൾ ലോക്ക് ചെയ്തേക്കാം. Firefox പ്രവർത്തിക്കും.
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	ഒരിക്കൽ
@@ -3033,6 +3064,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	പ്രിവ്യൂ ഇതുവരെ ലഭ്യമല്ല
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	പ്രൊഫൈൽ (ഓപ്ഷണൽ):
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -3050,6 +3085,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	പ്രോക്സി / SOCKS കോൺഫിഗറേഷൻ
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	പ്രോക്സി സെർവർ
 #. label in the Options window
 #, machine
 	Proxy server address	പ്രോക്സി സെർവർ വിലാസം
@@ -3089,6 +3128,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	ക്യൂകൾ
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	ഈ കമ്പ്യൂട്ടറിൽ മാത്രം വായിക്കുകയും വീഡിയോയുടെ സൈറ്റിലേക്ക് മാത്രം അയക്കുകയും ചെയ്യുന്നു.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3506,6 +3549,18 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	ബ്രൗസറിൽ സൈൻ ഇൻ ചെയ്യുക
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും macOS കീചെയിനിൽ സൂക്ഷിച്ചിരിക്കുന്നു.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും സിസ്റ്റം കീറിംഗിൽ (സീക്രട്ട് സർവീസ്) സൂക്ഷിച്ചിരിക്കുന്നു.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും Windows ക്രെഡൻഷ്യൽ മാനേജറിൽ സൂക്ഷിച്ചിരിക്കുന്നു.
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -4088,10 +4143,22 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	സെർവർ ഫയലിന്റെ അപ്രതീക്ഷിത ഭാഗം അയച്ചു ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	ഈ പേജിനായുള്ള നിങ്ങളുടെ ബ്രൗസറിന്റെ കുക്കികൾ ഉപയോഗിച്ചാലും സൈറ്റ് നിങ്ങളെ സൈൻ ഇൻ ചെയ്യാൻ ആവശ്യപ്പെടുന്നു. നിങ്ങളുടെ ബ്രൗസറിൽ സൈൻ ഇൻ ചെയ്യുക, തുടർന്ന് വീണ്ടും ശ്രമിക്കുക.
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	{browser}-ന്റെ കുക്കികൾ ഉപയോഗിച്ചാലും സൈറ്റ് നിങ്ങളെ സൈൻ ഇൻ ചെയ്യാൻ ആവശ്യപ്പെടുന്നു. {browser}-ൽ സൈൻ ഇൻ ചെയ്യുക, തുടർന്ന് പേജ് വീണ്ടും നോക്കുക.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	ചിഹ്നങ്ങൾ എടുക്കാൻ കഴിഞ്ഞില്ല: റിപ്പോർട്ടിലെ ചില വരികൾ പേരുകൾക്ക് പകരം വിലാസങ്ങൾ കാണിക്കുന്നു (ഡെവലപ്പർമാർക്ക് ഇപ്പോഴും അവ വായിക്കാൻ കഴിയും).
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	സിസ്റ്റം കീറിംഗ് ലോക്ക് ചെയ്തിരിക്കുന്നു, MDM അത് അൺലോക്ക് ചെയ്യുന്നില്ല, അതിനാൽ സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും MDM-ന്റെ ക്രമീകരണങ്ങളിൽ സൂക്ഷിച്ചിരിക്കുന്നു, അത് നിങ്ങൾക്ക് മാത്രമേ വായിക്കാൻ കഴിയൂ.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4196,6 +4263,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	ഇതിന് ffmpeg ആവശ്യമാണ്
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	ഈ പോർട്ടബിൾ കോപ്പി സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും അതിൻ്റെ സ്വന്തം ക്രമീകരണങ്ങളിൽ സൂക്ഷിക്കുന്നു, നിങ്ങളുടെ Windows അക്കൗണ്ടിനായി എൻക്രിപ്റ്റ് ചെയ്ത നിലയിൽ.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	ഈ പോർട്ടബിൾ കോപ്പി സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും അതിൻ്റെ സ്വന്തം ക്രമീകരണങ്ങളിൽ സൂക്ഷിക്കുന്നു, അത് നിങ്ങൾക്ക് മാത്രമേ വായിക്കാൻ കഴിയൂ.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4221,7 +4296,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	ഈ വീഡിയോ കാണാൻ നിങ്ങൾ സൈൻ ഇൻ ചെയ്യേണ്ടതുണ്ട്. നിങ്ങളുടെ സൈൻ-ഇൻ വിവരങ്ങൾ കൈമാറുന്ന നിങ്ങളുടെ ബ്രൗസറിലെ ഡൗൺലോഡ് വീഡിയോ ബട്ടൺ ഉപയോഗിക്കുക.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	ഈ വീഡിയോ കാണാൻ നിങ്ങൾ സൈൻ ഇൻ ചെയ്യേണ്ടതുണ്ട്. നിങ്ങളുടെ ബ്രൗസറിലെ വീഡിയോയ്ക്ക് മുകളിലുള്ള ഡൗൺലോഡ് വീഡിയോ ബട്ടൺ ഉപയോഗിക്കുക, അത് നിങ്ങളുടെ സൈൻ-ഇൻ കൈമാറും, അല്ലെങ്കിൽ ഓപ്ഷനുകൾ → സൈറ്റുകൾ ലോഗിനുകൾ → വീഡിയോ സൈറ്റുകൾക്കായുള്ള കുക്കികൾ എന്നതിൽ നിങ്ങളുടെ ബ്രൗസർ തിരഞ്ഞെടുക്കുക.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4598,14 +4673,6 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	വീഡിയോ തിരയലുകൾ yt-dlp ഉപയോഗിക്കുന്നു (ഏകദേശം 23 MB, അതിന്റെ സിഗ്നേച്ചർ ഉപയോഗിച്ച് പരിശോധിച്ചു).
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	വീഡിയോ പേജുകൾക്കും ടോറന്റുകൾക്കും ഇത് ഇതുവരെ ഉപയോഗിക്കാൻ കഴിയില്ല.
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	വീഡിയോ പേജുകൾക്ക് ഇത് ഇതുവരെ ഉപയോഗിക്കാൻ കഴിയില്ല.
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4684,6 +4751,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	പ്ലഗ് ഇൻ ചെയ്യുമ്പോൾ മാത്രമേ Windows വേക്ക് ടൈമറുകൾ അനുവദിക്കൂ
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows ക്രെഡൻഷ്യൽ മാനേജർ പ്രതികരിച്ചില്ല, അതിനാൽ സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും MDM-ന്റെ ക്രമീകരണങ്ങളിൽ സൂക്ഷിച്ചിരിക്കുന്നു, നിങ്ങളുടെ Windows അക്കൗണ്ടിനായി എൻക്രിപ്റ്റ് ചെയ്ത നിലയിൽ.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4764,9 +4835,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	നിങ്ങളുടെ സിസ്റ്റത്തിന്റേത്: {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	{browser} തുറന്നിരിക്കുമ്പോൾ yt-dlp-ക്ക് {browser}-ന്റെ കുക്കികൾ വായിക്കാൻ കഴിയില്ല. {browser} അടച്ച് പേജ് വീണ്ടും നോക്കുക, അല്ലെങ്കിൽ ഓപ്ഷനുകൾ → സൈറ്റുകൾ ലോഗിനുകൾ എന്നതിൽ Firefox തിരഞ്ഞെടുക്കുക.
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	സിസ്റ്റത്തിന്റെ കീറിംഗിൽ നിന്ന് {browser}-ന്റെ കുക്കികളിലേക്കുള്ള കീ yt-dlp-ക്ക് ലഭിച്ചില്ല. കീറിംഗ് അൺലോക്ക് ചെയ്ത് പേജ് വീണ്ടും നോക്കുക.
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp-ക്ക് {browser}-ന്റെ കുക്കികൾ വായിക്കാൻ കഴിഞ്ഞില്ല: {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	ഈ കമ്പ്യൂട്ടറിൽ {browser}-ന്റെ കുക്കികളൊന്നും yt-dlp-ക്ക് കണ്ടെത്താൻ കഴിഞ്ഞില്ല. ഓപ്ഷനുകൾ → സൈറ്റുകൾ ലോഗിനുകൾ എന്നതിൽ ബ്രൗസറും അതിന്റെ പ്രൊഫൈലും പരിശോധിക്കുക.
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല (ടാസ്‌ക്കുകൾ → ഒരു പേജിൽ നിന്ന് വീഡിയോ ഡൗൺലോഡ് ചെയ്യുക എന്നത് ഇൻസ്റ്റാൾ ചെയ്യുന്നു)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	ഈ ബ്രൗസറിന്റെ കുക്കികൾ ഉപയോഗിച്ച് yt-dlp വീഡിയോ സൈറ്റുകളിൽ സൈൻ ഇൻ ചെയ്യുന്നു, ഈ കമ്പ്യൂട്ടറിലെ ഫയലുകളിൽ നിന്ന് മാത്രം വായിക്കുന്നു. ബ്രൗസറിന്റെ എക്സ്റ്റൻഷൻ പേജിന്റെ സ്വന്തം കുക്കികൾ കൈമാറാത്തപ്പോൾ ഉപയോഗിക്കുന്നു: ഒട്ടിച്ച വിലാസം, ഒരു പ്ലേലിസ്റ്റ്.
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4799,6 +4891,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: ഡൗൺലോഡ് പൂർത്തിയാകുമ്പോൾ പരിശോധിച്ചു
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	Windows-ൽ {browser} അതിൻ്റെ കുക്കികൾ ലോക്ക് ചെയ്ത് സൂക്ഷിക്കുന്നതിനാൽ yt-dlp-ക്ക് അവ വായിക്കാൻ കഴിയില്ല. ഓപ്ഷനുകൾ → സൈറ്റ് ലോഗിനുകൾ എന്നതിൽ Firefox തിരഞ്ഞെടുക്കുക, അല്ലെങ്കിൽ {browser}-ലെ വീഡിയോയുടെ മുകളിലുള്ള വീഡിയോ ഡൗൺലോഡ് ബട്ടൺ ഉപയോഗിക്കുക.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -5919,43 +6015,3 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/സെക്കൻഡ്
-#. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
-#, machine
-	in the locked keyring	ലോക്ക് ചെയ്ത കീറിംഗിൽ
-#. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
-#, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	സിസ്റ്റം കീറിംഗ് പ്രതികരിച്ചില്ല, അതിനാൽ സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും MDM-ന്റെ ക്രമീകരണങ്ങളിൽ സൂക്ഷിച്ചിരിക്കുന്നു, അത് നിങ്ങൾക്ക് മാത്രമേ വായിക്കാൻ കഴിയൂ.
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
-#, machine
-	proxy server	പ്രോക്സി സെർവർ
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
-#, machine
-	Sign-ins and passwords are kept in the macOS keychain.	സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും macOS കീചെയിനിൽ സൂക്ഷിച്ചിരിക്കുന്നു.
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
-#, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും സിസ്റ്റം കീറിംഗിൽ (സീക്രട്ട് സർവീസ്) സൂക്ഷിച്ചിരിക്കുന്നു.
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
-#, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും Windows ക്രെഡൻഷ്യൽ മാനേജറിൽ സൂക്ഷിച്ചിരിക്കുന്നു.
-#. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
-#, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	സിസ്റ്റം കീറിംഗ് ലോക്ക് ചെയ്തിരിക്കുന്നു, MDM അത് അൺലോക്ക് ചെയ്യുന്നില്ല, അതിനാൽ സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും MDM-ന്റെ ക്രമീകരണങ്ങളിൽ സൂക്ഷിച്ചിരിക്കുന്നു, അത് നിങ്ങൾക്ക് മാത്രമേ വായിക്കാൻ കഴിയൂ.
-#. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
-#, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	ഈ പോർട്ടബിൾ കോപ്പി സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും അതിൻ്റെ സ്വന്തം ക്രമീകരണങ്ങളിൽ സൂക്ഷിക്കുന്നു, നിങ്ങളുടെ Windows അക്കൗണ്ടിനായി എൻക്രിപ്റ്റ് ചെയ്ത നിലയിൽ.
-#. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
-#, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	ഈ പോർട്ടബിൾ കോപ്പി സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും അതിൻ്റെ സ്വന്തം ക്രമീകരണങ്ങളിൽ സൂക്ഷിക്കുന്നു, അത് നിങ്ങൾക്ക് മാത്രമേ വായിക്കാൻ കഴിയൂ.
-#. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
-#, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows ക്രെഡൻഷ്യൽ മാനേജർ പ്രതികരിച്ചില്ല, അതിനാൽ സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും MDM-ന്റെ ക്രമീകരണങ്ങളിൽ സൂക്ഷിച്ചിരിക്കുന്നു, നിങ്ങളുടെ Windows അക്കൗണ്ടിനായി എൻക്രിപ്റ്റ് ചെയ്ത നിലയിൽ.

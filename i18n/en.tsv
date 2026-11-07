@@ -150,6 +150,9 @@
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	A NextDNS configuration ID is six letters and digits (0-9, a-f).
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 	A proxy carries this download: the place and the time are the proxy's, not the server's.	A proxy carries this download: the place and the time are the proxy's, not the server's.
@@ -618,6 +621,9 @@
 	Choose a language	Choose a language
 #. text in langpick.rs
 	Choose the language Mister Download Manager shows its windows in:	Choose the language Mister Download Manager shows its windows in:
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+	Choose the profile's folder	Choose the profile's folder
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 	Choose {name}	Choose {name}
@@ -685,6 +691,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Cook Islands	Cook Islands
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+	Cookies for video sites	Cookies for video sites
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Copied to the clipboard.	Copied to the clipboard.
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1219,6 +1228,9 @@
 	from a playlist (yt-dlp)	from a playlist (yt-dlp)
 #. message or event log entry in the main window
 	from a torrent file	from a torrent file
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+	From browser:	From browser:
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 	From must come before To	From must come before To
@@ -2051,6 +2063,8 @@
 	Numbers	Numbers
 #. text in the Scheduler window
 	October	October
+#. option (radio button) in the Options window
+	Off	Off
 #. text in the Add torrent window
 	Off: a finished torrent stops, like any download.	Off: a finished torrent stops, like any download.
 #. text in the Options window
@@ -2071,6 +2085,9 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 	On macOS, only an administrator can schedule a wake	On macOS, only an administrator can schedule a wake
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 	Once at	Once at
 #. text in extension.rs
@@ -2242,6 +2259,9 @@
 #. text in a dialog box
 #. tooltip of the greyed Preview button in Download File Info
 	Preview isn't available yet	Preview isn't available yet
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+	Profile (optional):	Profile (optional):
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 	Programs	Programs
@@ -2286,6 +2306,9 @@
 #. item in the Categories tree in the main window; text in the Scheduler window
 #. plural noun: the download queues
 	Queues	Queues
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+	Read on this computer only, and sent only to the video's site.	Read on this computer only, and sent only to the video's site.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 	Reading the crash data…	Reading the crash data…
@@ -3027,6 +3050,12 @@
 	the server sent a web page instead of the file (sign-in needed or the link expired?)	the server sent a web page instead of the file (sign-in needed or the link expired?)
 #. text in errors.rs
 	the server sent an unexpected part of the file ({detail})	the server sent an unexpected part of the file ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).
@@ -3133,7 +3162,7 @@
 	This video is protected (DRM): no tool can save it.	This video is protected (DRM): no tool can save it.
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 	through a proxy	through a proxy
@@ -3530,8 +3559,24 @@
 #. text in helpers.rs
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 	Your system's: {path}	Your system's: {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp couldn't read {browser}'s cookies: {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.
 #. message or event log entry in the main window
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp is not installed (Tasks → Download video from a page installs it)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 	yt-dlp: finds the video	yt-dlp: finds the video
@@ -3556,6 +3601,9 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	{algorithm}: checked when the download finishes	{algorithm}: checked when the download finishes
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 	{browser}: the extension connected	{browser}: the extension connected

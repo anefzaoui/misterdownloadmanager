@@ -4401,3 +4401,76 @@ menu	Vulkan didn't start here: OpenGL draws	Vulkan non si avvia su questo comput
 #. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Gestione credenziali di Windows non ha risposto, quindi gli accessi e le password sono conservati nelle impostazioni di MDM, crittografate per il tuo account Windows.
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Il nome di un profilo o la sua cartella. Vuoto: l'ultimo profilo usato. Per un browser basato su Chromium non elencato (Helium, Thorium...), scegli Chromium e la cartella del suo profilo.
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	Scegli la cartella del profilo
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	Cookie per i siti video
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	Dal browser:
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Check for updates, after Update now downloaded it: unpacking and putting the new version in place
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Installing the update...	Installazione dell'aggiornamento...
+#. option (radio button) in the Options window
+#, machine
+	Off	Disattivato
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Su Windows, Chrome, Edge e Brave potrebbero bloccare i loro cookie. Firefox funziona.
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	Profilo (facoltativo):
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	Lettura solo su questo computer e invio solo al sito del video.
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Il sito richiede l'accesso, anche con i cookie del browser per questa pagina. Accedi nel browser, quindi riprova.
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Il sito richiede l'accesso, anche con i cookie di {browser}. Accedi in {browser}, quindi cerca di nuovo la pagina.
+#. text in the Download video window
+#. the Download video window: the video needs the user to be signed in
+#, machine
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Questo video richiede l'accesso. Usa il pulsante Scarica video sopra di esso nel browser, che passa il tuo accesso, oppure scegli il tuo browser in Opzioni → Accessi ai siti → Cookie per i siti video.
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp non può leggere i cookie di {browser} mentre {browser} è aperto. Chiudi {browser} e cerca di nuovo la pagina, oppure scegli Firefox in Opzioni → Accessi ai siti.
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp non è riuscito a ottenere la chiave dei cookie di {browser} dal portachiavi del sistema. Sblocca il portachiavi e cerca di nuovo la pagina.
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp non è riuscito a leggere i cookie di {browser}: {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp non ha trovato cookie di {browser} su questo computer. Controlla il browser e il suo profilo in Opzioni → Accessi ai siti.
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp accede ai siti video con i cookie di questo browser, letti solo dai suoi file su questo computer. Usato quando l'estensione del browser non ha passato i cookie della pagina: un indirizzo incollato, una playlist.
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} mantiene i suoi cookie bloccati su Windows, quindi yt-dlp non può leggerli. Scegli Firefox in Opzioni → Accessi ai siti, oppure usa il pulsante Scarica video sopra il video in {browser}.

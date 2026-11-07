@@ -192,6 +192,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	ID konfigurace NextDNS má šest písmen a číslic (0-9, a-f).
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Název profilu nebo jeho složka. Prázdné: naposledy použitý profil. Pro prohlížeč založený na Chromiu, který není v seznamu (Helium, Thorium...), zvolte Chromium a složku jeho profilu.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Zvolte jazyk, ve kterém se mají zobrazovat okna aplikace Mister Download Manager:
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	Vyberte složku profilu
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	Cookovy ostrovy
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	Soubory cookie pro video weby
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	Zkopírováno do schránky.
@@ -1648,6 +1660,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	ze souboru torrentu
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	Z prohlížeče:
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1812,7 +1828,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Skrýt &kategorie
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	Skrýt kartu
 #. text in a download's progress window; text in standard windows
@@ -1884,6 +1900,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	V kategoriích: nabídka vybrané kategorie
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	v uzamčené klíčence
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2651,6 +2671,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Bez proxy/SOCKS
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Systémová klíčenka neodpověděla, takže přihlašovací údaje a hesla jsou uložena v nastavení MDM, které můžete číst pouze vy.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2772,6 +2796,9 @@
 #. text in the Scheduler window
 #, machine
 	October	Říjen
+#. option (radio button) in the Options window
+#, machine
+	Off	Vypnuto
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	Vypnuto: dokončený torrent se zastaví jako každé stahování.
@@ -2800,6 +2827,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	V systému macOS může probuzení naplánovat pouze správce
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Ve Windows mohou Chrome, Edge a Brave uzamknout své soubory cookie. Firefox funguje.
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Jednou v
@@ -3033,6 +3064,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	Náhled zatím není k dispozici
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	Profil (volitelné):
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -3050,6 +3085,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	Konfigurace proxy / socks
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	server proxy
 #. label in the Options window
 #, machine
 	Proxy server address	Adresa proxy serveru
@@ -3089,6 +3128,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Fronty
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	Čteno pouze v tomto počítači a odesláno pouze na web videa.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3506,6 +3549,18 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	Přihlásit se v prohlížeči
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	Přihlašovací údaje a hesla jsou uložena v klíčence macOS.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	Přihlašovací údaje a hesla jsou uložena v systémové klíčence (Secret Service).
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	Přihlašovací údaje a hesla jsou uložena ve Správci pověření systému Windows.
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -4088,10 +4143,22 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	server odeslal neočekávanou část souboru ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Web vyžaduje, abyste byli přihlášeni, a to i s cookies vašeho prohlížeče pro tuto stránku. Přihlaste se k němu ve svém prohlížeči a zkuste to znovu.
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Web vyžaduje, abyste byli přihlášeni, a to i s cookies prohlížeče {browser}. Přihlaste se k němu v prohlížeči {browser} a poté stránku znovu vyhledejte.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Symboly se nepodařilo načíst: některé řádky zprávy ukazují adresy místo názvů (vývojáři je stále mohou přečíst).
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Systémová klíčenka je uzamčena a MDM ji neodemkne, takže přihlašovací údaje a hesla jsou uložena v nastavení MDM, které můžete číst pouze vy.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4196,6 +4263,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Vyžaduje ffmpeg
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Tato přenosná kopie uchovává přihlašovací údaje a hesla ve vlastním nastavení, zašifrovaná pro váš účet Windows.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Tato přenosná kopie uchovává přihlašovací údaje a hesla ve vlastním nastavení, které můžete číst pouze vy.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4221,7 +4296,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Toto video vyžaduje, abyste byli přihlášeni. Použijte tlačítko Stáhnout video nad ním ve vašem prohlížeči, které předá vaše přihlášení.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Toto video vyžaduje, abyste byli přihlášeni. Použijte tlačítko Stáhnout video nad ním ve vašem prohlížeči, které předá vaše přihlašovací údaje, nebo zvolte svůj prohlížeč v Možnosti → Přihlášení k webům → Soubory cookie pro video weby.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4598,14 +4673,6 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Vyhledávání videí používá yt-dlp (asi 23 MB, kontrolováno proti jeho podpisu).
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	Stránky s videem a torrenty jej zatím nemohou používat.
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	Stránky s videem jej zatím nemohou používat.
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4684,6 +4751,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows povoluje časovače probuzení pouze při připojení k síti
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Správce pověření systému Windows neodpověděl, takže přihlašovací údaje a hesla jsou uložena v nastavení MDM, zašifrovaná pro váš účet Windows.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4764,9 +4835,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	Váš systém: {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp nemůže číst soubory cookie prohlížeče {browser}, dokud je {browser} otevřený. Zavřete {browser} a znovu vyhledejte stránku, nebo zvolte Firefox v Možnosti → Přihlášení k webům.
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp nemohl získat klíč k souborům cookie prohlížeče {browser} ze systémové klíčenky. Odemkněte klíčenku a znovu vyhledejte stránku.
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp nemohl přečíst soubory cookie prohlížeče {browser}: {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp nenašel žádné soubory cookie prohlížeče {browser} v tomto počítači. Zkontrolujte prohlížeč a jeho profil v Možnosti → Přihlášení k webům.
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp není nainstalován (Úlohy → Stáhnout video ze stránky jej nainstaluje)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp se přihlašuje k video webům pomocí souborů cookie tohoto prohlížeče, čtených pouze z jeho souborů v tomto počítači. Používá se, když rozšíření prohlížeče nepředalo vlastní soubory cookie stránky: vložená adresa, seznam skladeb.
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4799,6 +4891,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: zkontrolováno po dokončení stahování
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} uchovává své soubory cookie uzamčené pro sebe ve Windows, takže yt-dlp je nemůže číst. Zvolte Firefox v Možnosti → Přihlášení k webům, nebo použijte tlačítko Stáhnout video nad videem v prohlížeči {browser}.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -5919,43 +6015,3 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/s
-#. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
-#, machine
-	in the locked keyring	v uzamčené klíčence
-#. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
-#, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Systémová klíčenka neodpověděla, takže přihlašovací údaje a hesla jsou uložena v nastavení MDM, které můžete číst pouze vy.
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
-#, machine
-	proxy server	server proxy
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
-#, machine
-	Sign-ins and passwords are kept in the macOS keychain.	Přihlašovací údaje a hesla jsou uložena v klíčence macOS.
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
-#, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	Přihlašovací údaje a hesla jsou uložena v systémové klíčence (Secret Service).
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
-#, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	Přihlašovací údaje a hesla jsou uložena ve Správci pověření systému Windows.
-#. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
-#, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Systémová klíčenka je uzamčena a MDM ji neodemkne, takže přihlašovací údaje a hesla jsou uložena v nastavení MDM, které můžete číst pouze vy.
-#. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
-#, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Tato přenosná kopie uchovává přihlašovací údaje a hesla ve vlastním nastavení, zašifrovaná pro váš účet Windows.
-#. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
-#, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Tato přenosná kopie uchovává přihlašovací údaje a hesla ve vlastním nastavení, které můžete číst pouze vy.
-#. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
-#, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Správce pověření systému Windows neodpověděl, takže přihlašovací údaje a hesla jsou uložena v nastavení MDM, zašifrovaná pro váš účet Windows.
