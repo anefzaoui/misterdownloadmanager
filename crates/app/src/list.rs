@@ -1321,11 +1321,18 @@ fn filter_box(ui: &mut Ui, st: &mut ListState) {
                     st.filters[col] = (keep.len() < vals.len()).then(|| {
                         Filter::Values(vals.iter().copied().filter(|v| keep.contains(v)).collect())
                     });
+                    // As wide as its label in this language (#192), short of Close.
+                    let w = winui::button_fit_width(
+                        ui.painter(),
+                        "Show all",
+                        90.0,
+                        FILTER_W - 90.0 - 8.0 - 10.0,
+                    );
                     if winui::button(
                         ui,
                         r(Rect::from_min_size(
                             pos2(o.x + 10.0, o.y + h - 28.0),
-                            egui::vec2(90.0, 21.0),
+                            egui::vec2(w, 21.0),
                         )),
                         "Show all",
                         winui::ButtonKind::Normal,

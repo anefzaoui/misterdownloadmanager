@@ -12,7 +12,7 @@ use std::sync::mpsc::{Receiver, channel};
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
-use egui::{Pos2, Ui, ViewportBuilder};
+use egui::{Pos2, Rect, Ui, ViewportBuilder};
 use mdm_crash::MonitorArgs;
 use mdm_crash::github::{self, Found};
 use mdm_crash::monitor::{self, Event};
@@ -414,25 +414,33 @@ impl ReportWindow {
             crate::i18n::t("The report"),
             winui::TEXT(),
         );
-        let text = made.as_ref().map_or_else(
-            // i18n: crash report window: shown while the crash dump is being read
-            || crate::i18n::t("Reading the crash data…").to_owned(),
-            |m| m.text.clone(),
-        );
         winui::field_frame(
             &p,
             r(o, 16.0, 208.0, 588.0, 226.0),
             winui::FieldLook::ReadOnly,
         );
-        winui::scroll_text(
-            ui,
-            egui::Id::unique("crash-report-text"),
-            r(o, 18.0, 210.0, 584.0, 222.0),
-            &text,
-            winui::TEXT(),
-            14.0,
-            true,
-        );
+        match &made {
+            // The report as it is: its lines, left to right in every language (#204).
+            Some(m) => winui::scroll_text(
+                ui,
+                egui::Id::unique("crash-report-text"),
+                Rect::from_min_size(o + egui::vec2(18.0, 210.0), egui::vec2(584.0, 222.0)),
+                &m.text,
+                winui::TEXT(),
+                14.0,
+                true,
+            ),
+            None => {
+                winui::text(
+                    &p,
+                    o.x + 24.0,
+                    o.y + 226.0,
+                    // i18n: crash report window: shown while the crash dump is being read
+                    crate::i18n::t("Reading the crash data…"),
+                    winui::MUTED(),
+                );
+            }
+        }
 
         // What is happening behind it.
         let status: Option<String> = if let Some((done, total)) = fetching {
@@ -478,18 +486,44 @@ impl ReportWindow {
             );
         }
 
-        // The buttons.
+        // The buttons, each as wide as its label in this language (#204): the row fills the
+        // window's width, those wider than their label giving room to those that need it.
         let y = 500.0;
+        let send_label = if found.is_some() {
+            // i18n: crash report window button: open the GitHub issue already filed (and copy the report to add it there)
+            "Open the reported issue"
+        } else {
+            // i18n: crash report window button: open GitHub's crash report form filled in
+            "Send on GitHub"
+        };
+        // A frozen MDM can be ended; a gone one started again.
+        let frozen = self.job.kind == Kind::Freeze && alive && !self.recovered;
+        let restart_label = if frozen {
+            // i18n: crash report window button: end the frozen MDM and start it again
+            "End and restart MDM"
+        } else {
+            // i18n: crash report window button: start MDM again
+            "Restart MDM"
+        };
+        let [send_at, copy_at, folder_at, restart_at, close_at] = winui::button_row(
+            &p,
+            &[
+                (send_label, 16.0, 170.0),
+                ("Copy report", 192.0, 110.0),
+                ("Open folder", 308.0, 110.0),
+                (restart_label, 424.0, 112.0),
+                ("Close", 542.0, 62.0),
+            ],
+            6.0,
+            16.0,
+            260.0,
+        )[..] else {
+            unreachable!("five buttons")
+        };
         let send = winui::button(
             ui,
-            r(o, 16.0, y, 170.0, 25.0),
-            if found.is_some() {
-                // i18n: crash report window button: open the GitHub issue already filed (and copy the report to add it there)
-                "Open the reported issue"
-            } else {
-                // i18n: crash report window button: open GitHub's crash report form filled in
-                "Send on GitHub"
-            },
+            r(o, send_at.0, y, send_at.1, 25.0),
+            send_label,
             if made.is_some() {
                 ButtonKind::Default
             } else {
@@ -501,7 +535,7 @@ impl ReportWindow {
         .clicked();
         let copy = winui::button(
             ui,
-            r(o, 192.0, y, 110.0, 25.0),
+            r(o, copy_at.0, y, copy_at.1, 25.0),
             // i18n: crash report window button: copy the report's text
             "Copy report",
             if made.is_some() {
@@ -515,7 +549,7 @@ impl ReportWindow {
         .clicked();
         let folder = winui::button(
             ui,
-            r(o, 308.0, y, 110.0, 25.0),
+            r(o, folder_at.0, y, folder_at.1, 25.0),
             // i18n: crash report window button: show the report's file in its folder
             "Open folder",
             ButtonKind::Normal,
@@ -523,19 +557,10 @@ impl ReportWindow {
             None,
         )
         .clicked();
-        // A frozen MDM can be ended; a gone one started again.
-        let frozen = self.job.kind == Kind::Freeze && alive && !self.recovered;
-        let restart_label = if frozen {
-            // i18n: crash report window button: end the frozen MDM and start it again
-            "End and restart MDM"
-        } else {
-            // i18n: crash report window button: start MDM again
-            "Restart MDM"
-        };
         let restart = (!alive || frozen)
             && winui::button(
                 ui,
-                r(o, 424.0, y, 112.0, 25.0),
+                r(o, restart_at.0, y, restart_at.1, 25.0),
                 restart_label,
                 ButtonKind::Normal,
                 false,
@@ -544,7 +569,7 @@ impl ReportWindow {
             .clicked();
         let close = winui::button(
             ui,
-            r(o, 542.0, y, 62.0, 25.0),
+            r(o, close_at.0, y, close_at.1, 25.0),
             "Close",
             ButtonKind::Normal,
             false,
