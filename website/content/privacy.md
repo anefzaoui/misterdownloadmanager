@@ -12,7 +12,7 @@ priority: 0.4
 
 - The app and the extension **send nothing about you to us**. We don't run servers that could receive it.
 - This **website** counts visits with **Statcounter**, which sets a cookie and sees your IP address; it runs only on the website, never in the app.
-- The app talks to **the servers you download from**, to **GitHub** to check for updates once a week (you can turn that off), and to GitHub again for **yt-dlp and ffmpeg** if you download videos.
+- The app talks to **the servers you download from**, to **GitHub** to check for updates when it starts (you can turn that off), and to GitHub again for **yt-dlp and ffmpeg** if you download videos.
 - **Torrents** are peer to peer: other people in a torrent's swarm see your IP address, as with every torrent client.
 - The **browser extension** talks only to Mister Download Manager on your own computer.
 - Your download list and settings stay **on your computer**.
@@ -25,16 +25,26 @@ Mister Download Manager ("MDM") is free, open-source software made by Ahmed Nefz
 
 ### What stays on your computer
 
-Your download list, settings, logins you save in **Sites Logins**, the history of each download and the files you download are stored only on your computer: in `%APPDATA%\misterdownloadmanager` on Windows (or the `data` folder of the portable copy), and in the usual application-data folder on macOS and Linux. Nothing is uploaded anywhere. Uninstalling offers to delete them.
+Your download list, settings, logins you save in **Sites Logins**, the history of each download and the files you download are stored only on your computer: in `%APPDATA%\misterdownloadmanager` on Windows (or the `data` folder of the portable copy), and in the usual application-data folder on macOS and Linux. Nothing is uploaded anywhere. Uninstalling offers to delete them. From the next release, the passwords of Sites Logins, the proxy and debrid accounts go into the system's keychain instead (Windows Credential Manager, the keyring on Linux, the macOS keychain), still on your computer, when one is there and unlocked.
 
 ### Who the app talks to, and why
 
 - **The servers you download from.** To download a file, MDM connects to the server that holds it and sends what any browser would: the request, and the cookies, referrer and browser identification the extension passed along, so downloads that need you to be signed in keep working. Those servers see your IP address, as they would if your browser downloaded the file.
 - **Your proxy**, if you set one in **Options → Proxy / Socks**, and your network's proxy auto-config script, if you point MDM at one.
-- **GitHub, to check for updates.** Once a week MDM asks GitHub's public API for the latest release of MDM (`api.github.com/repos/anefzaoui/misterdownloadmanager/releases/latest`). The request carries MDM's version in its User-Agent and nothing else. Turn the weekly check off in **Help → Check for updates**. If you choose **Update now**, MDM downloads the new version's file and its signed checksum list from the same GitHub release. GitHub's own privacy statement applies to these requests.
+- **GitHub, to check for updates.** Each time it starts, and once a day while it stays open, MDM asks GitHub's public API for the latest release of MDM (`api.github.com/repos/anefzaoui/misterdownloadmanager/releases/latest`). The request carries MDM's version in its User-Agent and nothing else. Turn the check off in **Help → Check for updates** (**Check for updates at every start**). If you choose **Update now**, MDM downloads the new version's file and its signed checksum list from the same GitHub release. GitHub's own privacy statement applies to these requests.
 - **GitHub, for video helpers.** If you use **Download video from a page**, MDM downloads yt-dlp (and ffmpeg, if you want merged qualities) from their official GitHub releases, checks them, and once per session asks GitHub whether yt-dlp has a newer release. yt-dlp then talks to the video site you asked for, as your browser would.
 - **Torrent peers and trackers.** When you download a torrent, MDM connects to the trackers listed in the torrent, to the BitTorrent DHT network and to other peers, who see your IP address and which pieces you have. To accept connections it may ask your router to open a port (UPnP). This is how BitTorrent works; it ends when the torrent stops.
 - **Your AI assistant, only if you connect one.** MDM's MCP server (`misterdownloadmanager-mcp`) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see [AI assistants](/help/ai-assistants.html).
+
+From the next release, only if you choose them:
+
+- **The DNS you choose.** With a DNS other than the system's in **Options → Connection → DNS** (Cloudflare, Google, Quad9, AdGuard, NextDNS or your own), MDM asks it, over HTTPS, TLS or TCP, for the addresses of the servers it downloads from. That service sees those names and your IP address, under its own privacy terms.
+- **Your debrid accounts.** A link or torrent you send through a Real-Debrid, AllDebrid or Premiumize account in **Options → Accounts** goes to that service, which then serves the file. Its sign-in stays on your computer, with the passwords above.
+- **Codeberg, for gallery-dl.** If you download an image gallery, MDM installs gallery-dl from its official releases on Codeberg and checks its author's signature; gallery-dl then talks to the site you asked for.
+- **A torrent IP blocklist**, if you give one: MDM fetches it from the address you entered, again every 7 days.
+- **Your own devices, for the remote control.** Off until you turn it on in **Options → Remote**: then MDM answers, over HTTPS on your local network, only the phones and computers you paired with its code.
+
+The server's country that **Download File Info** and the progress window show comes from a table inside MDM: no address is sent anywhere to look it up.
 
 MDM has **no analytics, no automatic crash reporting, no telemetry and no advertising** (a crash report goes only where you send it yourself). It never sends us your download list, the addresses you download, or anything else.
 
