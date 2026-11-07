@@ -218,15 +218,17 @@ def load_crew() -> None:
               "them (set GITHUB_TOKEN if the rate limit ran out)", file=sys.stderr)
 
 
+def face(p: dict, size: int) -> str:
+    """One contributor's round photo, linked to their GitHub profile; the login is the link's
+    name, shown over the photo on hover and focus (never translated)."""
+    return (f'<li translate="no"><a class="face" href="{esc(p["profile"])}"><img src="{esc(contributors.avatar(p["avatar"], size * 2))}" '
+            f'width="{size}" height="{size}" alt="" loading="lazy" decoding="async">'
+            f'<span class="face-name">{esc(p["login"])}</span></a></li>')
+
+
 def faces(people: list[dict], size: int = 56) -> str:
-    """Round photos of `people`, each linked to their GitHub profile; the login is the link's
-    name, shown over the photo on hover and focus. Logins are never translated."""
-    items = "".join(
-        f'<li><a class="face" href="{esc(p["profile"])}"><img src="{esc(contributors.avatar(p["avatar"], size * 2))}" '
-        f'width="{size}" height="{size}" alt="" loading="lazy" decoding="async">'
-        f'<span class="face-name">{esc(p["login"])}</span></a></li>'
-        for p in people)
-    return f'<ul class="faces faces-{size}" style="--face: {size}px" role="list" translate="no">{items}</ul>'
+    """Round photos of `people` (a release on the News page), row under row."""
+    return f'<ul class="faces" style="--face: {size}px" role="list">{"".join(face(p, size) for p in people)}</ul>'
 
 
 def people_count(n: int) -> str:
@@ -234,25 +236,29 @@ def people_count(n: int) -> str:
     return f'<span translate="no">{n}</span> {"person" if n == 1 else "people"}'
 
 
-def humans_section() -> str:
-    """The home page's thanks: every contributor's photo, on a labelled sheet."""
+# How many photos the home page's row shows, by the screen's width (styles.css .pile, the same
+# breakpoints): (from this width up, photos). The rest are "+N", which opens /contributors.html.
+PILE_TIERS = [(0, 7), (561, 11), (1200, 15)]
+
+
+def crew_pile() -> str:
+    """The home page's thanks, on the board beside the hero's label (under the window; after the
+    label on a phone): "Made possible by these amazing humans", a row of round photos, overlapping,
+    and "+N" for the ones the row has no room for."""
     if not CREW:
         return ""
-    # Smaller photos as the crowd grows, so it stays one block rather than a wall.
-    size = 56 if len(CREW) <= 80 else 44 if len(CREW) <= 200 else 36
-    return f"""<section class="sec crew" id="contributors" aria-labelledby="crew-title">
-      <div class="wrap">
-        <div class="sec-intro">
-          <h2 id="crew-title">Made possible by these amazing humans</h2>
-          <p>Everyone who sent a pull request, reported a problem, asked for a feature or joined a conversation on GitHub. Thank you.</p>
-        </div>
-        <div class="sheet sheet-labelled crew-sheet">
-          <p class="sheet-band"><b><svg aria-hidden="true"><use href="#i-heart"/></svg>Contributors</b><span>{people_count(len(CREW))} on GitHub</span></p>
-          {faces(CREW, size)}
-          <p class="crew-links"><a class="text-link" href="/contributors.html">Everyone and what they did</a><a class="text-link" href="/contributing.html">Join them</a></p>
-        </div>
-      </div>
-    </section>"""
+    n = len(CREW)
+    shown = max(cap for _, cap in PILE_TIERS)
+    # "+N" for each width where the row is full: its count there, and only there.
+    more = "".join(f'<span class="pile-n pile-n-{cap}">+{n - cap}</span>' for _, cap in PILE_TIERS if n > cap)
+    more_li = (f'<li class="pile-more"><a href="/contributors.html"><span aria-hidden="true" translate="no" dir="ltr">{more}</span>'
+               f'<span class="sr-only">Everyone who helped</span></a></li>' if more else "")
+    full = " ".join(f"pile-full-{cap}" for _, cap in PILE_TIERS if n > cap)
+    return f"""<div class="parcel-crew">
+          <p class="crew-title" id="crew-title">Made possible by these amazing humans</p>
+          <ul class="faces pile {full}" style="--face: 44px" role="list" aria-labelledby="crew-title">{"".join(face(p, 44) for p in CREW[:shown])}{more_li}</ul>
+          <p class="crew-fine">{people_count(n)} who sent a pull request, reported a problem or joined a conversation on GitHub. <a href="/contributors.html">Meet them all</a></p>
+        </div>"""
 
 
 def esc(s: str) -> str:
@@ -1104,8 +1110,12 @@ def build_contributors() -> None:
             counts = "".join(
                 f'<li><b translate="no">{p[k]}</b> {w[0] if p[k] == 1 else w[1]}</li>'
                 for k, w in words.items() if p[k])
-            rows.append(f'<li><a class="roster-who" href="{esc(p["profile"])}"><img src="{esc(contributors.avatar(p["avatar"], 96))}" '
-                        f'width="48" height="48" alt="" loading="lazy" decoding="async"><span translate="no">{esc(p["login"])}</span></a>'
+            # The login in a block of its own marked translate="no": an inline one alone in its
+            # block would still go to the translators (sitei18n unwraps a lone element).
+            # The photo links there too, for the pointer only (the login is the link to tab to).
+            rows.append(f'<li><a class="roster-pic" href="{esc(p["profile"])}" tabindex="-1" aria-hidden="true"><img src="{esc(contributors.avatar(p["avatar"], 96))}" '
+                        f'width="48" height="48" alt="" loading="lazy" decoding="async"></a>'
+                        f'<p class="roster-who" translate="no"><a href="{esc(p["profile"])}">{esc(p["login"])}</a></p>'
                         f'<ul class="roster-counts" role="list">{counts}</ul></li>')
         sheets.append(f"""<section class="sheet sheet-labelled roster-sheet" aria-labelledby="crew-{key}">
         <h2 class="sheet-band" id="crew-{key}"><b>{name}</b><span>{people_count(len(people))}</span></h2>
@@ -1119,7 +1129,7 @@ def build_contributors() -> None:
         body = "\n      ".join(sheets)
     lede = ("Made possible by these amazing humans: everyone who sent a pull request, opened an issue or "
             "joined a conversation on GitHub. Thank you, every one of you.")
-    fine = (f"From GitHub's public record, <time datetime=\"{TODAY}\">{TODAY}</time>: people with pull requests "
+    fine = (f"From GitHub's public record, <time datetime=\"{TODAY}\" translate=\"no\">{TODAY}</time>: people with pull requests "
             "first, then those who opened issues, then those who commented, each once. The maintainer and "
             "automated accounts aren't counted.")
     write(path, f"Contributors — {NAME}",
@@ -1261,7 +1271,7 @@ def fill(text: str) -> str:
     if "<!--@features-->" in text:
         text = text.replace("<!--@features-->", manifest(feature_list()))
     text = coming_marks(text.replace("<!--@coming-->", coming_banner()))
-    text = text.replace("<!--@humans-->", humans_section())
+    text = text.replace("<!--@crew-->", crew_pile())
     text = text.replace("<!--@fields-->", waybill_fields()).replace("<!--@barcode-->", barcode.svg(f"MDM {VERSION}"))
     return (text.replace("{{VERSION}}", VERSION).replace("{{REPO}}", REPO).replace("{{SITE}}", SITE)
             .replace("{{SPONSORS}}", SPONSORS).replace("{{SOFTWARE_LD}}", json.dumps(SOFTWARE_LD, ensure_ascii=False, separators=(",", ":"))))
