@@ -82,7 +82,8 @@ tar -C "$stage" -czf "$dist/$name.tar.gz" "$name"
 
 # .deb. Its dependencies, and the .rpm's: the libraries the window loads at run time. Without
 # libxkbcommon-x11 (winit's keyboard under X11, and XWayland, MDM's default in a Wayland session)
-# the window panics at start; EGL draws Wayland windows. GTK pulls in the rest.
+# the window panics at start; EGL draws Wayland windows; without the CA certificates no download
+# starts, HTTP ones too ("No CA certificates were loaded from the system"). GTK pulls in the rest.
 deb="$stage/deb"
 cp -r "$tree" "$deb"
 mkdir -p "$deb/DEBIAN"
@@ -91,7 +92,7 @@ Package: misterdownloadmanager
 Version: $version
 Architecture: amd64
 Maintainer: Mister Download Manager <https://github.com/anefzaoui/misterdownloadmanager>
-Depends: libc6 (>= $glibc), libgtk-3-0, libgl1, libegl1, libxkbcommon0, libxkbcommon-x11-0
+Depends: libc6 (>= $glibc), libgtk-3-0, libgl1, libegl1, libxkbcommon0, libxkbcommon-x11-0, ca-certificates
 Section: net
 Priority: optional
 Homepage: https://github.com/anefzaoui/misterdownloadmanager
@@ -111,7 +112,7 @@ Release: 1
 Summary: Download manager (experimental Linux build)
 License: GPL-3.0-or-later
 URL: https://github.com/anefzaoui/misterdownloadmanager
-Requires: glibc >= $glibc, gtk3, mesa-libGL, mesa-libEGL, libxkbcommon, libxkbcommon-x11
+Requires: glibc >= $glibc, gtk3, mesa-libGL, mesa-libEGL, libxkbcommon, libxkbcommon-x11, ca-certificates
 AutoReqProv: no
 
 %description
