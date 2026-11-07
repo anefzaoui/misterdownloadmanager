@@ -1179,6 +1179,10 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	הורד קישורי מארחי קבצים נתמכים דרך חשבונות אלה
+#. text in a dialog box
+#. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
+#, machine
+	Download through {service}	הורדה דרך {service}
 #. window title in the Download video window
 #, machine
 	Download video from a page	הורדת וידאו מדף
@@ -3364,6 +3368,14 @@
 #. button in Test browser integration: register MDM's helper with the browsers
 #, machine
 	Set it up	הגדר זאת
+#. message or event log entry in the main window
+#. event log: File Properties: the download no longer goes through the debrid account
+#, machine
+	Set to download directly, not through the debrid account	הוגדר להורדה ישירה, לא דרך חשבון ה-debrid
+#. message or event log entry in the main window
+#. event log: File Properties: the download goes through the debrid account again
+#, machine
+	Set to download through the debrid account	הוגדר להורדה דרך חשבון ה-debrid
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -4150,6 +4162,10 @@
 #. where a download's server is, when a proxy carries it: {country} is the proxy's country
 #, machine
 	through a proxy in {country}	דרך שרת Proxy ב-{country}
+#. text in a download's Properties window
+#. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
+#, machine
+	Through {service}	דרך {service}
 #. text in the Scheduler window
 #, machine
 	Thursday	יום חמישי
@@ -5353,6 +5369,10 @@ menu	Applies the next time MDM starts	חל על הפעם הבאה ש-MDM יופ�
 #. menu command in the main window
 #, machine
 menu	Arrange files	סדר קבצים
+#. menu command in the main window
+#. View → Theme: a style theme's name (KDE Plasma's look, the Linux desktop), a name: keep "Breeze" as written
+#, machine
+menu	Breeze	Breeze
 #. menu command in the main window
 #. verb: opens this category's download folder
 #, machine

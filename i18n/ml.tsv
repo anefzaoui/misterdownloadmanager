@@ -1179,6 +1179,10 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	ഈ അക്കൗണ്ടുകളിലൂടെ പിന്തുണയ്ക്കുന്ന ഫയൽ-ഹോസ്റ്റ് ലിങ്കുകൾ ഡൗൺലോഡ് ചെയ്യുക
+#. text in a dialog box
+#. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
+#, machine
+	Download through {service}	{service} വഴി ഡൗൺലോഡ് ചെയ്യുക
 #. window title in the Download video window
 #, machine
 	Download video from a page	ഒരു പേജിൽ നിന്ന് വീഡിയോ ഡൗൺലോഡ് ചെയ്യുക
@@ -3364,6 +3368,14 @@
 #. button in Test browser integration: register MDM's helper with the browsers
 #, machine
 	Set it up	ഇത് സജ്ജീകരിക്കുക
+#. message or event log entry in the main window
+#. event log: File Properties: the download no longer goes through the debrid account
+#, machine
+	Set to download directly, not through the debrid account	ഡീബ്രിഡ് അക്കൗണ്ട് വഴിയല്ലാതെ നേരിട്ട് ഡൗൺലോഡ് ചെയ്യാൻ സജ്ജീകരിച്ചു
+#. message or event log entry in the main window
+#. event log: File Properties: the download goes through the debrid account again
+#, machine
+	Set to download through the debrid account	ഡീബ്രിഡ് അക്കൗണ്ട് വഴി ഡൗൺലോഡ് ചെയ്യാൻ സജ്ജീകരിച്ചു
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -4150,6 +4162,10 @@
 #. where a download's server is, when a proxy carries it: {country} is the proxy's country
 #, machine
 	through a proxy in {country}	{country} എന്നതിലെ ഒരു പ്രോക്സി വഴി
+#. text in a download's Properties window
+#. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
+#, machine
+	Through {service}	{service} വഴി
 #. text in the Scheduler window
 #, machine
 	Thursday	വ്യാഴം
@@ -5353,6 +5369,10 @@ menu	Applies the next time MDM starts	അടുത്ത തവണ MDM ആരം
 #. menu command in the main window
 #, machine
 menu	Arrange files	ഫയലുകൾ ക്രമീകരിക്കുക
+#. menu command in the main window
+#. View → Theme: a style theme's name (KDE Plasma's look, the Linux desktop), a name: keep "Breeze" as written
+#, machine
+menu	Breeze	Breeze
 #. menu command in the main window
 #. verb: opens this category's download folder
 #, machine

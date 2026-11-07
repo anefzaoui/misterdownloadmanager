@@ -3224,6 +3224,16 @@ struct Face {
 /// A button's colours for `kind` in `state`, from `c` (a theme's variant). The states are
 /// decided here, once for every button: the pressed one flattens its bottom edge.
 fn button_colors(kind: ButtonKind, state: State, c: &crate::palette::Palette) -> Face {
+    button_colors_in(kind, state, c, crate::theme::current().controls.button)
+}
+
+/// [`button_colors`] in the button style `look`.
+fn button_colors_in(
+    kind: ButtonKind,
+    state: State,
+    c: &crate::palette::Palette,
+    look: crate::palette::ButtonLook,
+) -> Face {
     let pressed = state == State::Pressed;
     if kind == ButtonKind::Accent {
         // The accent filled, a shade lighter under the pointer and darker pressed.
@@ -3251,6 +3261,14 @@ fn button_colors(kind: ButtonKind, state: State, c: &crate::palette::Palette) ->
             (c.button_default_border, c.button_default_bottom)
         }
         ButtonKind::Disabled => (c.button_disabled_border, c.button_disabled_border),
+    };
+    // KDE: the edge in the accent under the pointer and pressed (its face tinted pressed, by
+    // the theme's colours).
+    let breeze = look == crate::palette::ButtonLook::Breeze;
+    let (border, bottom) = if breeze && matches!(state, State::Hot | State::Pressed) {
+        (c.accent, c.accent)
+    } else {
+        (border, bottom)
     };
     let face = Face {
         fill: match state {
@@ -3382,14 +3400,27 @@ pub fn focus_ring(p: &Painter, rc: Rect) {
     }
     let ink = crate::theme::colors().focus_ring;
     // GNOME: a rounded ring, as wide as two points, the controls' corners.
-    if crate::theme::current().controls.focus == crate::palette::FocusLook::Ring {
-        p.rect_stroke(
-            rc,
-            control_radius(),
-            Stroke::new(2.0, ink),
-            StrokeKind::Inside,
-        );
-        return;
+    match crate::theme::current().controls.focus {
+        crate::palette::FocusLook::Ring => {
+            p.rect_stroke(
+                rc,
+                control_radius(),
+                Stroke::new(2.0, ink),
+                StrokeKind::Inside,
+            );
+            return;
+        }
+        // KDE: a frame one point wide.
+        crate::palette::FocusLook::Frame => {
+            p.rect_stroke(
+                rc,
+                control_radius(),
+                Stroke::new(1.0, ink),
+                StrokeKind::Inside,
+            );
+            return;
+        }
+        crate::palette::FocusLook::Dotted => {}
     }
     let (l, t, r, b) = (rc.left(), rc.top(), rc.right() - 1.0, rc.bottom() - 1.0);
     let mut x = l;
@@ -3515,6 +3546,32 @@ pub fn row_check(
 }
 
 pub fn check_box_glyph(p: &Painter, rc: Rect, checked: bool, state: State) {
+    // KDE: the box's edge in the accent under the pointer; checked, the accent's edge around
+    // its inside tinted with it, a tick in the text's colour.
+    if crate::theme::current().controls.check == crate::palette::CheckLook::Breeze {
+        let m = crate::theme::metrics();
+        let (fill_c, border) = breeze_box(state, checked);
+        if let Some(f) = fill_c {
+            p.rect_filled(rc, m.check_radius, f);
+        }
+        p.rect_stroke(
+            rc,
+            m.check_radius,
+            Stroke::new(m.border, border),
+            StrokeKind::Inside,
+        );
+        if checked {
+            p.line(
+                vec![
+                    pos2(rc.left() + 3.0, rc.top() + 6.5),
+                    pos2(rc.left() + 5.5, rc.top() + 9.0),
+                    pos2(rc.left() + 10.0, rc.top() + 4.0),
+                ],
+                Stroke::new(2.0, breeze_mark(state)),
+            );
+        }
+        return;
+    }
     // GNOME: a 2-point border at rest (its inside tinted under the pointer), the accent filled
     // with a light tick, 2 points wide, when checked.
     if crate::theme::current().controls.check == crate::palette::CheckLook::Adwaita {
@@ -3667,6 +3724,35 @@ fn fluent_mark() -> Color32 {
     crate::theme::colors().check_mark
 }
 
+/// A KDE check box's or radio's inside (none when disabled) and edge: the accent's edge under
+/// the pointer or pressed, and when checked, around an inside tinted with the accent.
+fn breeze_box(state: State, checked: bool) -> (Option<Color32>, Color32) {
+    let c = crate::theme::colors();
+    let (fill_c, border) = fluent_box(state);
+    let edge = match state {
+        State::Disabled if checked => c.check_on_disabled,
+        State::Disabled => border,
+        _ if checked => fluent_accent(state),
+        State::Hot | State::Pressed => c.check_on_hot,
+        _ => border,
+    };
+    let inside = match (checked, fill_c) {
+        (true, Some(f)) => Some(crate::derive::mix(f, fluent_accent(state), 0.3)),
+        (_, f) => f,
+    };
+    (inside, edge)
+}
+
+/// The tick or dot on a checked KDE box or radio: the text's colour, greyed when disabled.
+fn breeze_mark(state: State) -> Color32 {
+    let c = crate::theme::colors();
+    if state == State::Disabled {
+        c.check_on_disabled
+    } else {
+        c.check_mark
+    }
+}
+
 /// An unchecked Windows 11 check box's or radio's fill (none when disabled) and border in
 /// `state`: darker fill under the pointer, darker still and a fainter border while pressed.
 fn fluent_box(state: State) -> (Option<Color32>, Color32) {
@@ -3735,7 +3821,17 @@ pub fn radio_light_until(
     );
     let c = glyph + vec2(6.5, 6.5);
     let state = State::of(&resp, enabled);
-    if selected {
+    // KDE: as its check box, round; the dot in the text's colour.
+    if crate::theme::current().controls.check == crate::palette::CheckLook::Breeze {
+        let (fill_c, edge) = breeze_box(state, selected);
+        if let Some(f) = fill_c {
+            p.circle_filled(c, 6.0, f);
+        }
+        p.circle_stroke(c, 6.0, Stroke::new(1.0, edge));
+        if selected {
+            p.circle_filled(c, 2.5, breeze_mark(state));
+        }
+    } else if selected {
         p.circle_filled(c, 6.5, fluent_accent(state));
         // Windows 11's dot grows under the pointer and shrinks while pressed.
         let dot = match state {
@@ -4750,6 +4846,8 @@ pub mod caption {
         /// The title centred in the bar (else after the icon), and in bold.
         centred: bool,
         bold: bool,
+        /// A button under the pointer or pressed draws its glyph in the bar's colour (KDE).
+        invert: bool,
     }
 
     fn style() -> Style {
@@ -4761,6 +4859,7 @@ pub mod caption {
             icon: true,
             centred: false,
             bold: false,
+            invert: false,
         };
         match crate::theme::current().controls.caption {
             CaptionLook::System => windows,
@@ -4776,6 +4875,18 @@ pub mod caption {
                 icon: false,
                 centred: true,
                 bold: true,
+                invert: false,
+            },
+            // KDE's Breeze: the icon, the title centred, 18-point round buttons shown only
+            // under the pointer, in the title's colour with the glyph in the bar's.
+            CaptionLook::Breeze => Style {
+                button_w: 26.0,
+                end: 4.0,
+                circle: Some(18.0),
+                icon: true,
+                centred: true,
+                bold: false,
+                invert: true,
             },
         }
     }
@@ -4936,7 +5047,8 @@ pub mod caption {
         let hover = enabled && (resp.hovered() || frame_hot);
         let pressed = enabled && (resp.is_pointer_button_down_on() || frame_pressed);
         let close = b == CaptionButton::Close;
-        let circle = style().circle;
+        let st = style();
+        let circle = st.circle;
         let fill = match (pressed, hover, close) {
             (true, _, true) => Some(close_pressed()),
             (false, true, true) => Some(CLOSE_HOVER()),
@@ -4956,7 +5068,9 @@ pub mod caption {
                 }
             }
         }
-        let ink = if close && pressed {
+        let ink = if st.invert && (hover || pressed) {
+            CAPTION_BG()
+        } else if close && pressed {
             CLOSE_INK().gamma_multiply(0.7)
         } else if close && hover {
             CLOSE_INK()
@@ -5572,17 +5686,26 @@ mod tests {
         // Issue #7: pressed was #f5f5f5 against hot #f6f6f6, the same to the eye.
         for theme in crate::palette::builtins() {
             for c in [&theme.light, &theme.dark] {
-                button_states_differ(c);
+                button_states_differ(c, theme.controls.button);
             }
         }
     }
 
-    fn button_states_differ(c: &crate::palette::Palette) {
+    fn button_states_differ(c: &crate::palette::Palette, look: crate::palette::ButtonLook) {
+        let button_colors = |kind, state, c| button_colors_in(kind, state, c, look);
         {
             for kind in [ButtonKind::Normal, ButtonKind::Default] {
                 let rest = button_colors(kind, State::Normal, c);
                 let hot = button_colors(kind, State::Hot, c);
                 let pressed = button_colors(kind, State::Pressed, c);
+                // KDE: the edge takes the accent under the pointer, the face pressed; the label
+                // stays.
+                if look == crate::palette::ButtonLook::Breeze {
+                    assert_ne!(hot.border, rest.border, "hot takes the accent's edge");
+                    assert_ne!(pressed.fill, rest.fill, "pressed tints the face");
+                    assert_eq!(pressed.bottom, pressed.border, "one edge all round");
+                    continue;
+                }
                 assert_ne!(pressed.text, rest.text, "pressed dims the label");
                 assert_eq!(
                     pressed.bottom, pressed.border,

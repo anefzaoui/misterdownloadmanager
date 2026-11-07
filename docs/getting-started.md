@@ -118,6 +118,9 @@ MDM follows your system: when Windows (or your desktop's light/dark preference o
   check boxes, a header bar with the title in bold and round buttons (on Windows, where MDM
   draws it), and GNOME's Adwaita icons, in colour for files and categories, one colour in the
   toolbar.
+- **Breeze**: KDE Plasma's look: rounded corners, buttons and boxes that take the accent's edge
+  under the pointer or when focused, KDE's check boxes and focus frame, KDE's title bar with the
+  title centred and round buttons (on Windows, where MDM draws it), and KDE's Breeze icons.
 
 Each has a light and a dark side: **Dark Mode support** and **Always dark** choose between
 them as before. Theme files you put in the themes folder (**View → Theme → Open themes folder**)

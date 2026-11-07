@@ -62,6 +62,34 @@ pub fn load() -> Loaded {
     load_from(&p, empty)
 }
 
+/// Only the settings, read without touching anything (the command line's debrid accounts,
+/// #44): the list as `load` would take it (the file, else its newest generation), but a damaged
+/// file is left where it is for the app to deal with. None: no list, or none that reads.
+pub fn settings_only() -> Option<Settings> {
+    #[derive(Deserialize)]
+    struct Only {
+        #[serde(default)]
+        settings: Settings,
+    }
+    let p = path()?;
+    let read = |p: &Path| {
+        let bytes = std::fs::read(p).ok()?;
+        let json = bytes.strip_prefix(b"\xef\xbb\xbf").unwrap_or(&bytes);
+        serde_json::from_slice::<Only>(json)
+            .ok()
+            .map(|o| o.settings)
+    };
+    read(&p).or_else(|| {
+        [
+            backup_path(&p),
+            generation_path(&p, 1),
+            generation_path(&p, 2),
+        ]
+        .iter()
+        .find_map(|g| read(g))
+    })
+}
+
 /// How often an older generation is kept.
 const GENERATION_EVERY: Duration = Duration::from_secs(10 * 60);
 

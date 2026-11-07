@@ -13,6 +13,11 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ A finished download no longer fails with "part file still in use" on a busy computer, and
+  the rest of the engine tests that failed now and then there (slow connections, a prompt stop,
+  speed limits, links that expire, sparse files and a few more) wait for what they check, not for
+  time; the slow-connection test now fails if the engine stops reconnecting slow connections,
+  which it didn't before ([#201](https://github.com/anefzaoui/misterdownloadmanager/issues/201))
 - ✅ A window closed with its title bar's × keeps its contents until it goes, instead of turning
   black for a moment (seconds on Linux) ([#207](https://github.com/anefzaoui/misterdownloadmanager/issues/207))
 - ✅ A freeze while MDM handles a command, or minimized, opens the crash report window and writes
@@ -55,6 +60,9 @@ Everything below ships together, in one release, as version 0.3.0.
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ Themes: Adwaita, GNOME's look (its controls, a header bar on Windows, GNOME's Adwaita icons
   in colour and one colour)
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ Themes: Breeze, KDE Plasma's look (its focus frame, check boxes, buttons and title bar on
+  Windows, KDE's Breeze icons)
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ Dark mode: grey notes and error texts readable (4.5:1), Options' failed checks no longer dark
   red on the dark dialog ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
@@ -129,6 +137,9 @@ Everything below ships together, in one release, as version 0.3.0.
   finishing during a save no longer fails ([#116](https://github.com/anefzaoui/misterdownloadmanager/issues/116))
 - ✅ Tests and test tools stay on 127.0.0.1: no Windows Firewall questions while developing
 - ✅ Debrid accounts (experimental): Real-Debrid, AllDebrid and Premiumize; file-host links downloaded through your own account (Options → Accounts)
+  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
+- ✅ Debrid accounts: a per-download "directly instead" choice, "through the service" in Download
+  File Info, and the command line using the accounts
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 - ✅ Downloads through one network adapter (a VPN's), with a kill switch: nothing goes out
   another way when it disconnects ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
@@ -248,9 +259,8 @@ Everything below ships together, in one release, as version 0.3.0.
 
 - 📋 The Scheduler wakes the computer from sleep to run a queue
   ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142))
-- 📋 Debrid services, the rest: a per-download "directly instead" choice, "through the service" in
-  File Info, the command line using the accounts, torrents through the service, the system
-  keychains for the sign-ins
+- 📋 Debrid services, the rest: torrents through the service, the system keychains for the
+  sign-ins
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 
 ### Network

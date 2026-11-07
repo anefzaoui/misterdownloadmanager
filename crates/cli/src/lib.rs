@@ -63,6 +63,11 @@ enum Cmd {
         /// sent and the download fails.
         #[arg(long)]
         adapter: Option<String>,
+        /// Download the address itself, never through a debrid account. Without it, a link
+        /// from a file host that an account in the app's Options → Accounts takes goes through
+        /// that account, as in the app.
+        #[arg(long)]
+        direct: bool,
     },
     /// The running app's downloads, as JSON (automation API; turn it on with `api on`).
     Status,
@@ -221,7 +226,60 @@ enum Cmd {
         /// Extra request header, e.g. "Cookie: id=1" (repeatable).
         #[arg(short = 'H', long = "header")]
         headers: Vec<String>,
+        /// Continue from the address itself, never through a debrid account (see `get`).
+        #[arg(long)]
+        direct: bool,
     },
+}
+
+/// What [`Accounts::unlocker`] gives: the unlocker, or why the services couldn't say.
+pub type Unlocking<'a> = std::pin::Pin<
+    Box<
+        dyn std::future::Future<
+                Output = Result<Option<std::sync::Arc<dyn mdm_engine::Unlocker>>, String>,
+            > + Send
+            + 'a,
+    >,
+>;
+
+/// The debrid accounts the command line downloads through (#44): the ones in the app's Options
+/// → Accounts. They are kept sealed in the app's settings, which this library doesn't read: the
+/// app's program hands them over ([`main_with`]).
+pub trait Accounts: Send + Sync {
+    /// The unlocker for `url`: the first account, in the user's order, whose service takes its
+    /// host, the services asked through `net` (the download's own DNS, proxy and adapter).
+    /// `Ok(None)`: no account takes it, or there is none. `Err`: none of the services that
+    /// answered takes it, and one didn't say which hosts it takes (in English).
+    fn unlocker<'a>(&'a self, url: &'a url::Url, net: &'a Options) -> Unlocking<'a>;
+}
+
+/// `opts` with the unlocker for `url` (#44), unless `direct` or there are no accounts; says
+/// which service the download goes through.
+async fn through_account(
+    accounts: Option<&dyn Accounts>,
+    url: &url::Url,
+    direct: bool,
+    mut opts: Options,
+    json: bool,
+) -> anyhow::Result<Options> {
+    let Some(accounts) = accounts.filter(|_| !direct) else {
+        return Ok(opts);
+    };
+    // As the app: a service that can't say which hosts it takes isn't asked; the address is
+    // downloaded itself (said on stderr, not in the JSON output).
+    let unlocker = accounts.unlocker(url, &opts).await.unwrap_or_else(|e| {
+        eprintln!("warning: {e}; downloading the address itself");
+        None
+    });
+    if let Some(u) = &unlocker {
+        if json {
+            emit(json!({ "event": "through", "service": u.name() }));
+        } else {
+            println!("through {}", u.name());
+        }
+    }
+    opts.unlocker = unlocker;
+    Ok(opts)
 }
 
 /// One JSON line on stdout (`--json`).
@@ -318,10 +376,15 @@ pub fn launched(args: Vec<OsString>) -> Option<Launch> {
 /// Run the command line `args` (without the program's name): what `misterdownloadmanager-cli`
 /// does, its output, and its exit code (1 when a command fails).
 pub fn main(args: Vec<OsString>) -> ExitCode {
+    main_with(args, None)
+}
+
+/// [`main`], downloading through the app's debrid `accounts` (#44).
+pub fn main_with(args: Vec<OsString>, accounts: Option<&dyn Accounts>) -> ExitCode {
     let cli = Cli::parse_from(std::iter::once(OsString::from(NAME)).chain(args));
     let rt = tokio::runtime::Runtime::new().expect("tokio runtime");
     let json = cli.json;
-    match rt.block_on(run(cli.cmd, json)) {
+    match rt.block_on(run(cli.cmd, json, accounts)) {
         Ok(()) => ExitCode::SUCCESS,
         Err(e) if e.is::<Reported>() => ExitCode::FAILURE,
         Err(e) => {
@@ -335,7 +398,7 @@ pub fn main(args: Vec<OsString>) -> ExitCode {
     }
 }
 
-async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
+async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::Result<()> {
     match cmd {
         Cmd::Get {
             url,
@@ -345,17 +408,14 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
             checksum,
             dns,
             adapter,
+            direct,
         } => {
             let dest = if output.is_dir() {
                 Destination::Dir(output)
             } else {
                 Destination::File(output)
             };
-            let req = Request {
-                url,
-                headers: parse_headers(&headers)?,
-                dest,
-            };
+            let headers = parse_headers(&headers)?;
             let opts = Options {
                 checksum,
                 dns,
@@ -365,6 +425,8 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
                 }),
                 ..opts(connections)
             };
+            let opts = through_account(accounts, &url, direct, opts, json).await?;
+            let req = Request { url, headers, dest };
             watch(Download::start(req, opts), json).await
         }
         Cmd::InstallYtdlp => {
@@ -904,8 +966,18 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
             state,
             connections,
             headers,
+            direct,
         } => {
-            let dl = Download::resume(state, parse_headers(&headers)?, opts(connections))?;
+            // Through the account its address goes through (#44): the link a service gave
+            // expires, and the service gives a new one.
+            let opts = match mdm_engine::state::ResumeState::load(&state) {
+                Ok(saved) => {
+                    through_account(accounts, &saved.url, direct, opts(connections), json).await?
+                }
+                // Download::resume says what is wrong with it.
+                Err(_) => opts(connections),
+            };
+            let dl = Download::resume(state, parse_headers(&headers)?, opts)?;
             watch(dl, json).await
         }
     }
@@ -1119,6 +1191,78 @@ fn torrent_source(s: &str) -> anyhow::Result<mdm_torrent::Source> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// A service that takes `hoster.test` only, or (`broken`) can't say which hosts it takes.
+    #[derive(Debug)]
+    struct Service;
+
+    impl mdm_engine::Unlocker for Service {
+        fn name(&self) -> &str {
+            "Fake-Debrid"
+        }
+
+        fn unlock<'a>(
+            &'a self,
+            _: &'a url::Url,
+            _: &'a (dyn Fn(String) + Send + Sync),
+            _: &'a tokio_util::sync::CancellationToken,
+        ) -> std::pin::Pin<
+            Box<
+                dyn std::future::Future<
+                        Output = Result<Option<mdm_engine::Unlocked>, mdm_engine::ServiceFault>,
+                    > + Send
+                    + 'a,
+            >,
+        > {
+            Box::pin(async { Ok(None) })
+        }
+    }
+
+    struct Fake {
+        broken: bool,
+    }
+
+    impl Accounts for Fake {
+        fn unlocker<'a>(&'a self, url: &'a url::Url, _: &'a Options) -> Unlocking<'a> {
+            Box::pin(async move {
+                if self.broken {
+                    return Err("Fake-Debrid didn't say".into());
+                }
+                Ok((url.host_str() == Some("hoster.test")).then(|| {
+                    std::sync::Arc::new(Service) as std::sync::Arc<dyn mdm_engine::Unlocker>
+                }))
+            })
+        }
+    }
+
+    #[tokio::test]
+    async fn downloads_go_through_the_apps_accounts_unless_direct() {
+        let host: url::Url = "http://hoster.test/file/1".parse().unwrap();
+        let other: url::Url = "http://example.test/a.zip".parse().unwrap();
+        let fake = Fake { broken: false };
+        let via = |u, direct, a: Option<&'static Fake>| {
+            let u: &url::Url = u;
+            let u = u.clone();
+            async move {
+                through_account(a.map(|a| a as &dyn Accounts), &u, direct, opts(1), true)
+                    .await
+                    .unwrap()
+                    .unlocker
+                    .map(|u| u.name().to_owned())
+            }
+        };
+        let fake: &'static Fake = Box::leak(Box::new(fake));
+        assert_eq!(
+            via(&host, false, Some(fake)).await.as_deref(),
+            Some("Fake-Debrid")
+        );
+        // --direct, another host, no accounts (the plain library), a service that can't say.
+        assert_eq!(via(&host, true, Some(fake)).await, None);
+        assert_eq!(via(&other, false, Some(fake)).await, None);
+        assert_eq!(via(&host, false, None).await, None);
+        let broken: &'static Fake = Box::leak(Box::new(Fake { broken: true }));
+        assert_eq!(via(&host, false, Some(broken)).await, None);
+    }
 
     fn args(a: &[&str]) -> Vec<OsString> {
         a.iter().map(OsString::from).collect()

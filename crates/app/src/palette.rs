@@ -425,8 +425,12 @@ pub struct Controls {
     pub scroll: ScrollLook,
     /// The title bar: the system's, or drawn by MDM in the theme's style (Windows only).
     pub caption: CaptionLook,
-    /// The keyboard focus around a control: Windows' dotted rectangle, or GNOME's rounded ring.
+    /// The keyboard focus around a control: Windows' dotted rectangle, GNOME's rounded ring or
+    /// KDE's frame.
     pub focus: FocusLook,
+    /// A push button: Windows 11's, or KDE's (the edge in the accent under the pointer, the face
+    /// tinted with it pressed).
+    pub button: ButtonLook,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -443,6 +447,18 @@ pub enum CheckLook {
     Square,
     /// GNOME: a 2-point border at rest, the accent filled with a light tick when checked.
     Adwaita,
+    /// KDE: the edge in the accent under the pointer; checked, the accent's edge, its inside
+    /// tinted with it, a tick in the text's colour.
+    Breeze,
+}
+
+/// How a push button shows the pointer and a press.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ButtonLook {
+    /// Windows 11: its face lighter under the pointer, its bottom edge flattened pressed.
+    Fluent,
+    /// KDE: its edge in the accent under the pointer and pressed, its face tinted pressed.
+    Breeze,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -466,6 +482,9 @@ pub enum CaptionLook {
     Metro,
     /// GNOME's header bar: the title centred in bold, no icon, round buttons tinted at rest.
     Adwaita,
+    /// KDE's title bar: the icon, the title centred, round buttons that fill with the title's
+    /// colour under the pointer (Close red), their glyph then the bar's.
+    Breeze,
 }
 
 /// How the keyboard focus is drawn around a control.
@@ -475,6 +494,8 @@ pub enum FocusLook {
     Dotted,
     /// GNOME: a 2-point ring in the focus ink, its corners the controls' radius.
     Ring,
+    /// KDE: a 1-point frame in the focus ink, its corners the controls' radius.
+    Frame,
 }
 
 impl Controls {
@@ -485,6 +506,7 @@ impl Controls {
         scroll: ScrollLook::Overlay,
         caption: CaptionLook::System,
         focus: FocusLook::Dotted,
+        button: ButtonLook::Fluent,
     };
 
     /// Sets the control with this key to the style named `value`; false when either is unknown.
@@ -496,6 +518,9 @@ impl Controls {
             ("check", "fluent") => self.check = CheckLook::Fluent,
             ("check", "square") => self.check = CheckLook::Square,
             ("check", "adwaita") => self.check = CheckLook::Adwaita,
+            ("check", "breeze") => self.check = CheckLook::Breeze,
+            ("button", "fluent") => self.button = ButtonLook::Fluent,
+            ("button", "breeze") => self.button = ButtonLook::Breeze,
             ("progress", "line") => self.progress = ProgressLook::Line,
             ("progress", "bar") => self.progress = ProgressLook::Bar,
             ("scroll", "overlay") => self.scroll = ScrollLook::Overlay,
@@ -503,8 +528,10 @@ impl Controls {
             ("caption", "system") => self.caption = CaptionLook::System,
             ("caption", "metro") => self.caption = CaptionLook::Metro,
             ("caption", "adwaita") => self.caption = CaptionLook::Adwaita,
+            ("caption", "breeze") => self.caption = CaptionLook::Breeze,
             ("focus", "dotted") => self.focus = FocusLook::Dotted,
             ("focus", "ring") => self.focus = FocusLook::Ring,
+            ("focus", "frame") => self.focus = FocusLook::Frame,
             _ => return false,
         }
         true
@@ -551,7 +578,7 @@ pub static CLASSIC: Theme = Theme {
 /// (written out above), then the ones shipped as theme files (`assets/themes/`, in the format
 /// users write, so they double as examples). Native follows the system and is made when chosen
 /// (`crate::native`).
-pub fn builtins() -> [&'static Theme; 4] {
+pub fn builtins() -> [&'static Theme; 5] {
     static HIGH_CONTRAST: std::sync::LazyLock<Theme> = std::sync::LazyLock::new(|| {
         crate::themefile::builtin(
             "high-contrast",
@@ -565,7 +592,10 @@ pub fn builtins() -> [&'static Theme; 4] {
     static ADWAITA: std::sync::LazyLock<Theme> = std::sync::LazyLock::new(|| {
         crate::themefile::builtin("adwaita", include_str!("../assets/themes/adwaita.toml"))
     });
-    [&CLASSIC, &HIGH_CONTRAST, &METRO, &ADWAITA]
+    static BREEZE: std::sync::LazyLock<Theme> = std::sync::LazyLock::new(|| {
+        crate::themefile::builtin("breeze", include_str!("../assets/themes/breeze.toml"))
+    });
+    [&CLASSIC, &HIGH_CONTRAST, &METRO, &ADWAITA, &BREEZE]
 }
 
 /// `#rrggbb` or `#rrggbbaa` (the `#` optional, as Base16 writes them) as a colour.
@@ -711,6 +741,35 @@ mod tests {
         }
     }
 
+    /// The style themes' keyboard focus ring is seen (WCAG 2.1 non-text contrast, 3:1) on the
+    /// window and on the boxes, light and dark, its transparency included. Classic keeps IDM's
+    /// dotted grey rectangle.
+    #[test]
+    fn style_themes_focus_rings_are_seen() {
+        use crate::derive::contrast;
+        let over = |fg: Color32, bg: Color32| {
+            let a = fg.a() as f32 / 255.0;
+            // Color32 is premultiplied: its channels already carry the alpha.
+            let mix = |f: u8, b: u8| (f as f32 + b as f32 * (1.0 - a)).round().min(255.0) as u8;
+            Color32::from_rgb(
+                mix(fg.r(), bg.r()),
+                mix(fg.g(), bg.g()),
+                mix(fg.b(), bg.b()),
+            )
+        };
+        for t in builtins() {
+            if t.id == "classic" || t.id == "high-contrast" {
+                continue;
+            }
+            for p in [&t.light, &t.dark] {
+                for bg in [p.window, p.field] {
+                    let r = contrast(over(p.focus_ring, bg), bg);
+                    assert!(r >= 3.0, "{} {}: focus ring {r:.2} on {bg:?}", t.id, p.dark);
+                }
+            }
+        }
+    }
+
     /// A theme shipped as a file reads without a warning.
     #[test]
     fn built_in_theme_files_read_cleanly() {
@@ -729,6 +788,11 @@ mod tests {
                 "adwaita",
                 "Adwaita",
                 include_str!("../assets/themes/adwaita.toml"),
+            ),
+            (
+                "breeze",
+                "Breeze",
+                include_str!("../assets/themes/breeze.toml"),
             ),
         ] {
             let v: serde_json::Value = toml::from_str(text).unwrap();
@@ -753,6 +817,13 @@ mod tests {
         assert_eq!(adwaita.controls.focus, FocusLook::Ring);
         assert_eq!(adwaita.controls.check, CheckLook::Adwaita);
         assert_eq!(adwaita.controls.field_focus, FieldFocus::Ring);
+        let breeze = builtins()[4];
+        assert_eq!(breeze.icon_set.as_deref(), Some("breeze"));
+        assert_eq!(breeze.controls.caption, CaptionLook::Breeze);
+        assert_eq!(breeze.controls.focus, FocusLook::Frame);
+        assert_eq!(breeze.controls.check, CheckLook::Breeze);
+        assert_eq!(breeze.controls.button, ButtonLook::Breeze);
+        assert_eq!(breeze.controls.field_focus, FieldFocus::Border);
     }
 
     /// The classic look's dark secondary and error texts read on every dark surface they sit on
