@@ -81,7 +81,7 @@ raw-window-handle = "0.6"
 [target.'cfg(not(target_os = "linux"))'.dependencies]
 tray-icon = "0.26.1"
 
-# Linux (experimental): windows on Wayland and X11; the tray over D-Bus (StatusNotifierItem:
+# Linux: windows on Wayland and X11; the tray over D-Bus (StatusNotifierItem:
 # KDE, and GNOME with its AppIndicator extension), no GTK.
 [target.'cfg(target_os = "linux")'.dependencies]
 # View → Draw with → Vulkan (#206, renderer.rs): eframe's wgpu renderer with wgpu's Vulkan backend

@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
-# Builds the Linux release into target/dist/ (experimental: built by CI, not yet tested by us):
-#   MisterDownloadManager-<version>-linux-x86_64-experimental.AppImage  runs on most distros
-#   MisterDownloadManager-<version>-linux-x86_64-experimental.AppImage.zsync  its updates (AppImage tools)
-#   MisterDownloadManager-<version>-linux-x86_64-experimental.tar.gz    the plain programs
-#   MisterDownloadManager-<version>-linux-x86_64-experimental.deb       Debian, Ubuntu, Mint
-#   MisterDownloadManager-<version>-linux-x86_64-experimental.rpm       Fedora, RHEL, openSUSE
+# Builds the Linux release into target/dist/ (up to 0.2.4, each name ended in "-experimental"):
+#   MisterDownloadManager-<version>-linux-x86_64.AppImage        runs on most distros
+#   MisterDownloadManager-<version>-linux-x86_64.AppImage.zsync  its updates (AppImage tools)
+#   MisterDownloadManager-<version>-linux-x86_64.tar.gz          the plain programs
+#   MisterDownloadManager-<version>-linux-x86_64.deb             Debian, Ubuntu, Mint
+#   MisterDownloadManager-<version>-linux-x86_64.rpm             Fedora, RHEL, openSUSE
+# Update now (crates/tools/src/update.rs), the website (tools/website/build.py) and the docs
+# look for these names, and still for the "-experimental" ones of older releases.
 # Needs: cargo, pwsh (the extension), python3 with Pillow (the icon), dpkg-deb, rpmbuild, curl (appimagetool is fetched),
 # and zsyncmake if the appimagetool fetched doesn't write the .zsync itself.
 # Build on the oldest Ubuntu you want to support: the programs need its glibc or newer.
@@ -15,7 +17,7 @@ dist="$root/target/dist"
 bin="$root/target/release"
 version="$(sed -n 's/^version *= *"\([^"]*\)".*/\1/p' "$root/Cargo.toml" | head -1)"
 [ -n "$version" ] || { echo "no version in Cargo.toml" >&2; exit 1; }
-name="MisterDownloadManager-$version-linux-x86_64-experimental"
+name="MisterDownloadManager-$version-linux-x86_64"
 programs=(misterdownloadmanager misterdownloadmanager-nmhost misterdownloadmanager-cli misterdownloadmanager-mcp)
 
 if [ "${1:-}" != "--no-build" ]; then
@@ -106,7 +108,7 @@ Depends: libc6 (>= $glibc), libgtk-3-0, libgl1, libegl1, libxkbcommon0, libxkbco
 Section: net
 Priority: optional
 Homepage: https://github.com/anefzaoui/misterdownloadmanager
-Description: Download manager (experimental Linux build)
+Description: Download manager
  Speeds up downloads with several connections at once, resumes them, catches them from the
  browser, and downloads videos and torrents.
 EOF
@@ -119,7 +121,7 @@ cat > "$rpm/SPECS/mdm.spec" <<EOF
 Name: misterdownloadmanager
 Version: $version
 Release: 1
-Summary: Download manager (experimental Linux build)
+Summary: Download manager
 License: GPL-3.0-or-later
 URL: https://github.com/anefzaoui/misterdownloadmanager
 Requires: glibc >= $glibc, gtk3, mesa-libGL, mesa-libEGL, libxkbcommon, libxkbcommon-x11, ca-certificates
@@ -160,7 +162,7 @@ curl -fsSL -o "$tool" \
 chmod +x "$tool"
 # Update information (#24): AppImageLauncher, Gear Lever and AppImageUpdate read it from the
 # AppImage, find the latest release's .zsync and download only the parts that changed. MDM's own
-# Update now doesn't need it. The pattern also matches a later name without "-experimental".
+# Update now doesn't need it. The pattern also matches the names up to 0.2.4, with "-experimental".
 update="gh-releases-zsync|anefzaoui|misterdownloadmanager|latest|MisterDownloadManager-*-linux-x86_64*.AppImage.zsync"
 # No FUSE on CI runners: the tool runs from its own extracted copy.
 # zstd at its strongest level (#25; unpacking is as fast): the tool's 128K blocks stay, as 1M
