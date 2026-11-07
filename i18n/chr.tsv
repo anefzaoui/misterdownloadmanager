@@ -2614,6 +2614,10 @@
 #, machine
 	No addresses yet	ᎪᏢᏒᎢ ᎢᏗᏢ ᏂᎨᏒᎾ
 #. text in extension.rs
+#. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
+#, machine
+	No browser MDM can connect to was found	MDM-ᎠᏗᏍᏓᎷᎩᏍᏗ ᏂᏓᏩᏛᎲᎾ
+#. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 #, machine
 	No browser's extension has connected yet	ᎥᏝ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏱᏚᎾᏙᏢᏒᎢ
@@ -3462,6 +3466,11 @@
 #. event log: File Properties: the download goes through the debrid account again
 #, machine
 	Set to download through the debrid account	ᎠᏰᏟᎢᏳᏍᏗ ᏗᏗᏍᎪᏗ ᏗᎬᏔᏂᏙᎯ ᎤᎾᎫᏴᏗ ᎢᏗᏓᏛᏗ.
+#. text in extension.rs
+#. a check of Test browser integration: setting it up failed; {error} is the system's own message, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Setting it up failed: {error}	ᎠᎴᏅᏗᏱ ᎤᏓᎴᎾ: {error}
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3727,6 +3736,14 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Started with gallery-dl {version}	ᏗᏓᎴᏅᏔᏅᎯ gallery-dl {version}
+#. text in the Options window
+#. the same tooltip where no notification area (system tray) shows MDM's icon (some Linux desktops): its window starts minimized instead
+#, machine
+	Started with the computer, it starts minimized: no notification area shows its icon here	ᎢᎬᏱ ᎤᎾᎴᏅᎲᎯ, ᎤᏍᏗᎨᏴ ᎢᎬᏱ ᎤᎾᎴᏅᎲᎯ: ᎥᏝ ᎪᎯ ᎢᎦᎨᏛ ᎢᎬᏱ ᎤᎾᎴᏅᎲᎯ ᏱᎩ
+#. text in the Options window
+#. tooltip of "Launch Mister Download Manager on startup": started with the computer, MDM's window stays hidden, its icon in the notification area (system tray)
+#, machine
+	Started with the computer, it waits in the notification area	ᎢᎬᏱ ᎤᎾᎴᏅᎲᎯ, ᎢᎦᎨᏛ ᎢᎬᏱ ᎤᎾᎴᏅᎲᎯ
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
@@ -4069,6 +4086,10 @@
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
 	the FTP server answered {code} {reply}	FTP ᏗᎦᏁᎶᎯ ᎤᏁᏤᎴ {code} {reply}
+#. text in extension.rs
+#. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
+#, machine
+	The helper program the browsers start is missing	ᎠᎵᏍᏕᎸᏗ ᎢᏗᏢ ᎾᏍᎩ ᏗᏓᎴᏅᏗᏍᎩ ᎤᎵᏛᏔᏅ
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4188,7 +4209,7 @@
 #. text in the Options window
 #. Options → Archives check box (Linux and macOS)
 #, machine
-	Then move the archives to the Trash	ᎿᏉᏃ ᏗᎪᏢᏒᎢ ᏗᎦᎴᏴᏔᏅᎢ ᏗᎦᎶᏗᏱ
+	Then move the archives to the Trash	ᎿᏉᏃ ᏗᎪᏢᏒᎢ ᏗᎦᎴᏴᏔᏅᎢ ᏗᎪᏢᏒᎢ ᏗᎦᎶᏗᏱ
 #. text in categories.rs
 #, machine
 	There is already a category with this name	ᎿᏉ ᏚᎾᏙᏢᏒ ᎤᎾᏙᏢᏒ ᎯᎠ ᏚᎾᏙᏢᏒ ᎢᏯᏓᏛᏁᏗ
@@ -6272,3 +6293,67 @@ unit	{n} MB/sec	{n} ᎷᏴ/ᎠᏍᏆᎶᎢ
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{size} free	{size} ᏂᏓᏙᏢᎾ
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	ᎢᏗᎾᏓᏟᏃᏅᎯᏉ ᎢᎬᏩᏃᎷᎩ ᎠᎴ ᎢᎬᏩᏁᏟᏴᏍᎩ ᏂᎦᎥᎢ. ᎢᎬᏱᏱ, ᎢᎦᎷᎨᏍᏗ ᎤᏃᎴ-ᎠᏂᏃᏔᏅᎯ MDM ᎤᏩᏒ ᎤᏤᎵᎦ ᎪᏪᎵ ᎤᏃᎯᏳᏓᏁᎯ ᎤᏃᏍᏕᏍᏗ: ᎤᏃᏰᏂ-ᎤᏃᎴᏍᏙᏗ ᎦᎸᎳᏗᏢ ᏥᎩ.
+#. text in the browser extension
+#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
+#, machine
+extension	Another Mister Download Manager (a server)	ᏅᏩᏓᎴ Mister Download Manager (ᎤᎾᏗᏱᏍᎩ)
+#. text in the browser extension
+#. the name this browser gets in the other MDM's list of paired devices
+#, machine
+extension	Browser extension	ᎤᏃᎴ-ᎠᏂᏃᏔᏅᎯ ᎤᏅᎯᏓᏍᏗ
+#. text in the browser extension
+#. the toolbar button's status while downloads go to another MDM
+#, machine
+extension	Downloads go to {address}	ᎠᎾᏗᏒᏍᎬᎢ {address} ᏩᏂᎷᎪᎢ
+#. text in the browser extension
+#. the address typed isn't an https:// address
+#, machine
+extension	Enter its https:// address.	https:// ᎤᏃᎴ-ᎠᏂᏃᏔᏅᎯ ᎤᏃᎴᏍᏙᏗ ᎰᏪᎸᎦ.
+#. text in the browser extension
+#. pairing failed for another reason
+#, machine
+extension	It didn't work. Try again.	ᎥᏝ ᏳᎵᏍᏔᏁᎢ. ᏔᎵᏁ ᎢᏣᏢᏓᎳ.
+#. text in the browser extension
+#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
+#, machine
+extension	It shows no code now: click Pair a device there first.	ᎥᏝ ᎪᏪᎵ ᏳᎾᏄᎪᏥᎭ ᎪᎯ ᎢᏳᎢ: ᎢᎬᏱ ᎾᎿ ᎢᏣᏢᏓᎳ ᎪᏪᎵ ᎢᏣᏛᏅᎢᏍᏓ.
+#. text in the browser extension
+#. pairing failed: the other MDM didn't answer
+#, machine
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	ᎥᏝ ᏳᎾᎷᏤᎢ. ᎢᎬᏱ ᎾᏍᎩ ᎤᏃᎴᏍᏙᏗ ᎢᏣᏍᏚᎢᏓ ᎯᎠ ᎤᏃᎴ-ᎠᏂᏃᏔᏅᎯ ᎠᎴ ᎢᏣᏓᏂᎸᎦ ᎤᏤᎵᎦ ᎪᏪᎵ ᎤᏃᎯᏳᏓᏁᎯ, ᎿᏉᏃ ᏔᎵᏁ ᎢᏣᏢᏓᎳ.
+#. text in the browser extension
+#. button: open the other MDM's address in a tab (to accept its certificate once)
+#, machine
+extension	Open it	ᎢᏣᏍᏚᎢᏓ
+#. text in the browser extension
+#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
+#, machine
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	ᎢᎬᏱ ᎾᏍᎩ ᎤᏃᎴᏍᏙᏗ ᎢᏣᏍᏚᎢᏓ ᎠᎴ ᎢᏣᏓᏂᎸᎦ ᎤᏤᎵᎦ ᎪᏪᎵ ᎤᏃᎯᏳᏓᏁᎯ, ᎿᏉᏃ ᎢᏣᎰᏪᎸᎦ ᎪᏪᎵ ᎾᎿ ᎤᏤᎵᎦ ᎢᏯᏓᏅᏖᏗ, ᎢᏅᎯᏳ, ᎢᏣᏢᏓᎳ ᎪᏪᎵ (ᎠᎴ misterdownloadmanager-cli pair).
+#. text in the browser extension
+#. button: pair this browser with the other MDM using the code
+#, machine
+extension	Pair	ᎢᏣᏢᏓᎳ
+#. text in the browser extension
+#. placeholder of the box for the 8-digit code the other MDM shows
+#, machine
+extension	Pairing code	ᎢᏣᏢᏓᎳ ᎪᏪᎵ
+#. text in the browser extension
+#. heading in the toolbar button's popup, above the choice of where downloads go
+#, machine
+extension	Send downloads to	ᎠᎾᏗᏒᏍᎬᎢ ᏩᏂᎷᎪᎢ
+#. text in the browser extension
+#. choice under Send downloads to: the Mister Download Manager on this computer
+#, machine
+extension	This computer	ᎯᎠ ᎢᏗᎾᏓᏟᏃᏅᎯ
+#. text in the browser extension
+#. pairing failed: codes tried too fast
+#, machine
+extension	Wait a moment, then try again.	ᎣᏍᏓ ᎢᏣᎦᏘᏓ, ᎿᏉᏃ ᏔᎵᏁ ᎢᏣᏢᏓᎳ.
+#. text in the browser extension
+#. pairing failed: the code was wrong
+#, machine
+extension	Wrong code.	ᎤᎾᏓᎴ ᎪᏪᎵ.

@@ -17,7 +17,9 @@
 // .m3u8 or .mpd, served as text/plain or octet-stream, #171), sniffed (#171 without yt-dlp: such
 // streams found only when asked, by the button and the media list, a text decoy never), media (the
 // toolbar button's list of the media a tab loaded: streams, files, a protected stream; #38), video (shown, clicked, dragged,
-// kept; "never on the site" in the last browser), start (MDM not running: the host starts it).
+// kept; "never on the site" in the last browser), start (MDM not running: the host starts it),
+// remote (Send downloads to → Another MDM, #157: paired from the popup, a link downloaded by a
+// headless MDM; E2E_REMOTE_URL for one running elsewhere, such as the Docker image: remoteServer).
 //
 // Windows: the host is registered for the current user while it runs (nmhost --register, as the
 // installer does) and unregistered at the end. Every registry key that touches (the browsers'
@@ -25,6 +27,10 @@
 // and checked byte for byte at the end; one that differs is put back from its copy. An installed
 // copy's registration for everyone (HKLM) is only read. Your own browser profiles are never used,
 // nor the clipboard. Every process started here is stopped at the end.
+//
+// Linux (the lab's VM, tools/lab/linux-vm): the host's manifests (files) are written instead, and
+// put back byte for byte at the end (E2E_REPLACE_HOST=1 lets it replace a copy already
+// registered there); the cases that read the app's windows (UI Automation) are skipped.
 //
 // The programs: target/release, or CARGO_TARGET_DIR's release folder when it is set.
 import { spawn, spawnSync } from "node:child_process";
@@ -53,12 +59,22 @@ const FIREFOX_UUID = "5d0c3b8e-7a51-4c1e-9f0a-38e2c4a1d7b6";
 const pf = process.env.ProgramFiles || "C:\\Program Files";
 const pf86 = process.env["ProgramFiles(x86)"] || "C:\\Program Files (x86)";
 const local = process.env.LOCALAPPDATA || "";
-const BROWSERS = {
-  chrome: ["chromium", [`${pf}\\Google\\Chrome\\Application\\chrome.exe`, `${local}\\Google\\Chrome\\Application\\chrome.exe`]],
-  brave: ["chromium", [`${pf}\\BraveSoftware\\Brave-Browser\\Application\\brave.exe`, `${local}\\BraveSoftware\\Brave-Browser\\Application\\brave.exe`]],
-  edge: ["chromium", [`${pf86}\\Microsoft\\Edge\\Application\\msedge.exe`, `${pf}\\Microsoft\\Edge\\Application\\msedge.exe`]],
-  firefox: ["firefox", [`${pf}\\Mozilla Firefox\\firefox.exe`, `${pf86}\\Mozilla Firefox\\firefox.exe`]],
-};
+const WIN = process.platform === "win32";
+const BROWSERS = WIN
+  ? {
+      chrome: ["chromium", [`${pf}\\Google\\Chrome\\Application\\chrome.exe`, `${local}\\Google\\Chrome\\Application\\chrome.exe`]],
+      brave: ["chromium", [`${pf}\\BraveSoftware\\Brave-Browser\\Application\\brave.exe`, `${local}\\BraveSoftware\\Brave-Browser\\Application\\brave.exe`]],
+      edge: ["chromium", [`${pf86}\\Microsoft\\Edge\\Application\\msedge.exe`, `${pf}\\Microsoft\\Edge\\Application\\msedge.exe`]],
+      firefox: ["firefox", [`${pf}\\Mozilla Firefox\\firefox.exe`, `${pf86}\\Mozilla Firefox\\firefox.exe`]],
+    }
+  : // Linux (the lab's VM: tools/lab/linux-vm).
+    {
+      chrome: ["chromium", ["/usr/bin/google-chrome", "/opt/google/chrome/chrome"]],
+      brave: ["chromium", ["/usr/bin/brave-browser"]],
+      edge: ["chromium", ["/usr/bin/microsoft-edge"]],
+      // A .deb or tarball Firefox; else Ubuntu's Snap.
+      firefox: ["firefox", ["/usr/lib/firefox/firefox", "/opt/firefox/firefox", "/snap/bin/firefox"]],
+    };
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 export async function until(what, ms, test) {
@@ -70,10 +86,21 @@ export async function until(what, ms, test) {
     await sleep(250);
   }
 }
-export const killTree = (p) => p && p.exitCode === null && spawnSync("taskkill", ["/T", "/F", "/PID", String(p.pid)]);
+// A process and its children, stopped.
+export function killPid(pid) {
+  if (WIN) return spawnSync("taskkill", ["/T", "/F", "/PID", String(pid)]);
+  spawnSync("pkill", ["-KILL", "-P", String(pid)]);
+  try {
+    process.kill(pid, "SIGKILL");
+  } catch {
+    // Gone already.
+  }
+}
+export const killTree = (p) => p && p.exitCode === null && killPid(p.pid);
 // Every process using a test profile: a browser's launcher may exit and leave the browser (Firefox),
 // so its tree is not enough. Only processes naming that folder are stopped.
 export function killProfile(profile) {
+  if (!WIN) return spawnSync("pkill", ["-KILL", "-f", profile]);
   const folder = profile.replace(/'/g, "''");
   spawnSync("powershell", [
     "-NoProfile",
@@ -173,6 +200,11 @@ async function chromium(bin, profile, dl, page, ready) {
       "--no-first-run",
       "--no-default-browser-check",
       "--window-size=1280,900",
+      // The remote case's server has its own certificate (in real use the popup's "Open it" lets
+      // the person accept it once); the lab's pages are plain http.
+      "--ignore-certificate-errors",
+      // Linux: no keyring prompt for the test profile.
+      ...(WIN ? [] : ["--password-store=basic"]),
       "about:blank",
     ],
     { env: process.env, stdio: ["ignore", "ignore", "ignore", "pipe", "pipe"], windowsHide: true },
@@ -375,7 +407,8 @@ async function firefox(bin, profile, dl, page, ready) {
       }),
     );
     const bidi = new Bidi(ws);
-    const { capabilities } = await bidi.send("session.new", { capabilities: {} });
+    // The remote case's server certificate, as in Chromium (above).
+    const { capabilities } = await bidi.send("session.new", { capabilities: { alwaysMatch: { acceptInsecureCerts: true } } });
     const major = Number(String(capabilities.browserVersion || "").split(".")[0]) || 0;
     const xpi = path.join(root, "target", "extension", "mdm-firefox.xpi");
     const { extension } = await bidi.send("webExtension.install", { extensionData: { type: "archivePath", path: xpi } });
@@ -543,11 +576,11 @@ let ytdlp = "";
 const appExe = exe("misterdownloadmanager");
 
 // One command to the instance over its channel (ipc.json), its one-line answer.
-function ipc(cmd) {
+function ipc(cmd, dir = data) {
   return new Promise((resolve, reject) => {
     let ep;
     try {
-      ep = JSON.parse(fs.readFileSync(path.join(data, "ipc.json"), "utf8"));
+      ep = JSON.parse(fs.readFileSync(path.join(dir, "ipc.json"), "utf8"));
     } catch (e) {
       return reject(e);
     }
@@ -568,15 +601,29 @@ async function mdmList() {
 }
 
 // The running copies of target/release's app (each with its crash monitor, the same program with
-// --crash-monitor): [pid, is the monitor].
+// --crash-monitor): [pid, is the monitor]. A headless one (the remote case's server) isn't one.
 function appProcesses() {
+  if (!WIN) {
+    // /proc: each process's program and arguments.
+    const found = [];
+    for (const pid of fs.readdirSync("/proc").filter((d) => /^\d+$/.test(d))) {
+      try {
+        if (fs.readlinkSync(`/proc/${pid}/exe`).replace(/ \(deleted\)$/, "") !== appExe) continue;
+        const args = fs.readFileSync(`/proc/${pid}/cmdline`, "utf8").split("\0");
+        if (!args.includes("--headless")) found.push([Number(pid), args.includes("--crash-monitor")]);
+      } catch {
+        // Gone, or another user's.
+      }
+    }
+    return found;
+  }
   const p = appExe.replace(/'/g, "''");
   const out = spawnSync(
     "powershell",
     [
       "-NoProfile",
       "-Command",
-      `Get-CimInstance Win32_Process -Filter "Name='misterdownloadmanager.exe'" | Where-Object { $_.ExecutablePath -eq '${p}' } | ForEach-Object { "$($_.ProcessId) $($_.CommandLine -like '*--crash-monitor*')" }`,
+      `Get-CimInstance Win32_Process -Filter "Name='misterdownloadmanager.exe'" | Where-Object { $_.ExecutablePath -eq '${p}' -and $_.CommandLine -notlike '*--headless*' } | ForEach-Object { "$($_.ProcessId) $($_.CommandLine -like '*--crash-monitor*')" }`,
     ],
     { encoding: "utf8" },
   ).stdout;
@@ -606,7 +653,7 @@ async function stopApp() {
   try {
     await until("the test instance to quit", 15000, () => !ourPids().length);
   } catch {
-    for (const pid of ourPids()) spawnSync("taskkill", ["/T", "/F", "/PID", String(pid)]);
+    for (const pid of ourPids()) killPid(pid);
   }
 }
 
@@ -641,6 +688,68 @@ async function requests(p) {
 }
 const clearLog = () => fetch(`${LAB}/_log`, { method: "DELETE" });
 const brief = (e) => `${e.method} ${e.status} ${e.outcome} ${e.range || "-"}`;
+
+// ---- another Mister Download Manager (the remote case, #157) -------------------------------------
+
+// The server the remote case sends downloads to: E2E_REMOTE_URL names one already running (the
+// Docker image: E2E_REMOTE_PAIR is a command printing a pairing code, `docker exec mdm
+// misterdownloadmanager-cli pair`, and E2E_REMOTE_DOWNLOADS the folder its downloads land in, as
+// seen from here); else target/release's app runs headless here, on 127.0.0.1, with its own data
+// and download folders under target/e2e.
+const REMOTE_PORT = 18463;
+let remote = null;
+async function remoteServer() {
+  if (remote) return remote;
+  if (process.env.E2E_REMOTE_URL) {
+    const cmd = process.env.E2E_REMOTE_PAIR;
+    const downloads = process.env.E2E_REMOTE_DOWNLOADS;
+    if (!cmd || !downloads) throw new Error("E2E_REMOTE_URL needs E2E_REMOTE_PAIR and E2E_REMOTE_DOWNLOADS");
+    const code = async () => {
+      const out = spawnSync(cmd, { shell: true, encoding: "utf8" });
+      const m = [...String(out.stdout).matchAll(/code (\d{4}) (\d{4})/g)].pop();
+      if (!m) throw new Error(`no pairing code from ${cmd}: ${out.stdout}${out.stderr}`);
+      return m[1] + m[2];
+    };
+    remote = { url: process.env.E2E_REMOTE_URL, downloads, code };
+    return remote;
+  }
+  const dir = path.join(work, "remote");
+  const rdata = path.join(dir, "data");
+  const downloads = path.join(dir, "Downloads");
+  fs.mkdirSync(rdata, { recursive: true });
+  const args = ["--headless", "--data", rdata, "--downloads", downloads, "--listen", "127.0.0.1", "--port", String(REMOTE_PORT)];
+  const proc = spawn(appExe, args, { env: { ...process.env, MDM_DATA_DIR: rdata }, stdio: "ignore", windowsHide: true });
+  const code = async () => {
+    const a = JSON.parse(await ipc({ pair: true }, rdata));
+    if (!a.code) throw new Error(`no pairing code: ${JSON.stringify(a)}`);
+    return a.code;
+  };
+  remote = { url: `https://127.0.0.1:${REMOTE_PORT}/`, downloads, code, proc, data: rdata };
+  await until("the headless MDM", 20000, () => code().then(() => true, () => false));
+  return remote;
+}
+async function stopRemote() {
+  if (!remote || !remote.proc) return;
+  await ipc({ exit: true }, remote.data).catch(() => {});
+  await until("the headless MDM to quit", 15000, () => remote.proc.exitCode !== null).catch(() => killTree(remote.proc));
+}
+// The file `name` of `size` bytes somewhere in `dir` (a category's folder): its path.
+function findFile(dir, name, size) {
+  let entries = [];
+  try {
+    entries = fs.readdirSync(dir, { withFileTypes: true });
+  } catch {
+    return null;
+  }
+  for (const e of entries) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) {
+      const f = findFile(p, name, size);
+      if (f) return f;
+    } else if (e.name === name && fs.statSync(p).size === size) return p;
+  }
+  return null;
+}
 const sizeOf = async (url) => Number((await fetch(url, { method: "HEAD" })).headers.get("content-length"));
 
 // The browser kept nothing: its download folder is empty (no .part, no .crdownload, no
@@ -656,9 +765,13 @@ async function keptNothing(dl) {
 
 // ---- the test instance's windows (Windows) ----------------------------------------------------
 
+// Elsewhere they are not read (Win32 and UI Automation): the cases that need them are skipped.
+const NO_UIA = "the app's windows are read through UI Automation (Windows only)";
+
 // Its windows: titles, closing the one titled `close`, and those that show on a screen. Collected
 // in C#: what a PowerShell callback prints is lost.
 function appWindows(pid, close = "", onScreen = false) {
+  if (!WIN) throw new Skip(NO_UIA);
   const script = `
 Add-Type @"
 using System; using System.Text; using System.Collections.Generic; using System.Runtime.InteropServices;
@@ -692,6 +805,7 @@ public static class W {
 // The address in the Download video window's "Page address" box, read through UI Automation
 // (the app's windows have AccessKit adapters, also off the screens); null while it isn't open.
 function videoAddress(pid) {
+  if (!WIN) throw new Skip(NO_UIA);
   const script = `
 Add-Type -AssemblyName UIAutomationClient; Add-Type -AssemblyName UIAutomationTypes
 $A = [System.Windows.Automation.AutomationElement]
@@ -713,6 +827,7 @@ const VIDEO_WINDOW = "Download video from a page";
 // Whether the Download video window's "Download Now" is enabled: yt-dlp looked the address up
 // and offered something to download (#155). null while the window isn't open.
 function videoReady(pid) {
+  if (!WIN) throw new Skip(NO_UIA);
   const script = `
 Add-Type -AssemblyName UIAutomationClient; Add-Type -AssemblyName UIAutomationTypes
 $A = [System.Windows.Automation.AutomationElement]
@@ -1434,11 +1549,66 @@ const CASES = {
     await arrived(file, 1 << 20, "Compressed", 60000);
     const pids = ourApps();
     if (pids.length !== 1) throw new Error(`${pids.length} instances run after the download`);
-    const shown = pids.flatMap((p) => appWindows(p, "", true));
+    // Off the screens: read on Windows only (NO_UIA).
+    const shown = WIN ? pids.flatMap((p) => appWindows(p, "", true)) : [];
     await keptNothing(t.dl);
     await stopApp();
     if (shown.length) throw new Error(`the instance the host started shows on the screen: ${shown.join(", ")}`);
-    return `started by the host (pid ${pids[0]}), off the screens, stopped`;
+    return `started by the host (pid ${pids[0]})${WIN ? ", off the screens" : ""}, stopped`;
+  },
+
+  // #157: Send downloads to → Another Mister Download Manager. The popup pairs with a server (its
+  // address and a code); a link clicked then downloads there, into the server's folders, the
+  // browser's cookies not sent: neither the browser nor this computer's MDM keeps it. The popup
+  // goes back to This computer at the end.
+  async remote(t) {
+    const r = await remoteServer();
+    const s = t.session;
+    const file = `e2e-remote-${t.name}.zip`;
+    const popup = await s.tab(`${s.base}popup.html`);
+    try {
+      await until("the popup", 10000, () => popup.evaluate(`document.readyState === "complete" && Boolean(document.getElementById("to-remote"))`).catch(() => false));
+      await sleep(300);
+      // Another MDM chosen: its address and code boxes show (the popup's script may still be
+      // starting: chosen again until they do).
+      await until("the address and code boxes", 10000, () =>
+        popup.evaluate(`(document.getElementById("remote-form").hidden && document.getElementById("to-remote").click(), !document.getElementById("remote-form").hidden)`),
+      );
+      const code = await r.code();
+      await popup.evaluate(`(() => {
+        document.getElementById("remote-url").value = ${JSON.stringify(r.url)};
+        document.getElementById("remote-code").value = ${JSON.stringify(code)};
+        document.getElementById("remote-pair").click();
+        return true; })()`);
+      // Paired: the boxes close and the status names the server.
+      const host = new URL(r.url).host;
+      const said = await until("paired", 15000, () =>
+        popup.evaluate(`(() => {
+          const bad = document.getElementById("remote-said");
+          if (!bad.hidden && bad.textContent) return "refused: " + bad.textContent;
+          const text = document.getElementById("status-text").textContent;
+          const ok = document.getElementById("remote-form").hidden && document.getElementById("status").classList.contains("ok");
+          return ok && text.includes(${JSON.stringify(host)}) ? text : ""; })()`),
+      ).catch(async (e) => {
+        e.message += ` (the popup: ${await popup.evaluate(`document.getElementById("status-text").textContent`).catch(() => "?")})`;
+        throw e;
+      });
+      if (said.startsWith("refused")) throw new Error(`pairing ${said}`);
+      await clickLink(t, `/gen/1M/${file}`);
+      const at = await until(`${file} in the server's folder`, 45000, () => findFile(r.downloads, file, 1 << 20));
+      // The server's requests (not the browser's own first one, which it cancels): none with the
+      // browser's cookies.
+      const theirs = (await requests(`/gen/1M/${file}`)).filter((e) => e.user_agent !== t.ua);
+      if (!theirs.length) throw new Error("no request from the server");
+      if (theirs.some((e) => (e.cookie || "").length)) throw new Error(`a cookie went to the server's download: ${theirs.map((e) => e.cookie).join("; ")}`);
+      if ((await mdmList().catch(() => [])).some((d) => d.file === file)) throw new Error("this computer's MDM got it too");
+      await keptNothing(t.dl);
+      return `paired (${said}); ${file} downloaded by the server into ${path.relative(r.downloads, at)} (${theirs.length} request(s), no cookie), not by this computer`;
+    } finally {
+      await popup.evaluate(`(document.getElementById("to-here").click(), true)`).catch(() => {});
+      await sleep(500);
+      await popup.close();
+    }
   },
 };
 
@@ -1463,8 +1633,54 @@ const REG_KEYS = ["HKCU", "HKLM"].flatMap((root) => [
   [`${root}\\Software\\Google\\Chrome\\Extensions`, true],
 ]);
 
+// Linux and macOS: the host's manifests (`<HOST>.json`) in the home folder's browser folders,
+// found by a walk (each browser family has its own places: crates/ipc browsers.rs host_dirs),
+// as {key: path, bytes}. The walk skips build and package folders.
+function manifestFiles() {
+  const home = process.env.HOME || "";
+  const skip = new Set(["target", "node_modules", ".cargo", ".rustup", ".git", ".cache"]);
+  const found = [];
+  const walk = (dir, depth) => {
+    let entries = [];
+    try {
+      entries = fs.readdirSync(dir, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    for (const e of entries) {
+      const p = path.join(dir, e.name);
+      if (e.isDirectory() && !e.isSymbolicLink() && depth < 6 && !skip.has(e.name)) walk(p, depth + 1);
+      else if (e.name === `${HOST}.json`) found.push(p);
+    }
+  };
+  walk(home, 0);
+  return found;
+}
+function unixSnapshot(extra = []) {
+  return [...new Set([...manifestFiles(), ...extra])].map((key) => ({ key, bytes: fs.existsSync(key) ? fs.readFileSync(key) : null }));
+}
+// The manifests as they were before the run: each one written since is put back or removed.
+function unixRestore(before, written) {
+  const was = new Map(before.map((b) => [b.key, b.bytes]));
+  const changed = [];
+  for (const a of unixSnapshot(written)) {
+    const b = was.get(a.key) ?? null;
+    if ((a.bytes === null && b === null) || (a.bytes && b && a.bytes.equals(b))) continue;
+    changed.push(a.key);
+    if (b) fs.writeFileSync(a.key, b);
+    else fs.rmSync(a.key, { force: true });
+  }
+  const again = new Map(unixSnapshot(written).map((a) => [a.key, a.bytes]));
+  const differ = [...new Set([...was.keys(), ...again.keys()])].filter((k) => {
+    const [x, y] = [was.get(k) ?? null, again.get(k) ?? null];
+    return !((x === null && y === null) || (x && y && x.equals(y)));
+  });
+  return { changed, differ };
+}
+
 // Each key's export (reg export: its values, byte for byte), or null when it isn't there.
 export function regSnapshot(dir) {
+  if (!WIN) return unixSnapshot();
   fs.mkdirSync(dir, { recursive: true });
   return REG_KEYS.map(([key, wow32], i) => {
     const file = path.join(dir, `key${i}.reg`);
@@ -1477,7 +1693,8 @@ export function regSnapshot(dir) {
 
 // The keys as they were before the run: compared byte for byte; one that differs (per user only,
 // never HKLM) is removed and imported again from its copy. What was found, for the summary.
-export function regRestore(before, dir) {
+export function regRestore(before, dir, written = []) {
+  if (!WIN) return unixRestore(before, written);
   const after = regSnapshot(dir);
   const changed = [];
   for (const [i, b] of before.entries()) {
@@ -1568,23 +1785,40 @@ async function run() {
   const results = [];
   let regBefore = null;
   let regCheck = null;
+  let written = [];
   try {
     await until("the lab server", 10000, () => fetch(`${LAB}/`).then((r) => r.ok, () => false));
     // An installed Mister Download Manager's registration is never replaced or removed.
+    // Linux and macOS: its manifests (files) are put back byte for byte at the end, so a lab
+    // machine's (E2E_REPLACE_HOST=1) may be replaced while the run lasts.
     const key = "HKCU\\Software\\Google\\Chrome\\NativeMessagingHosts\\com.misterdownloadmanager.host";
-    if (spawnSync("reg", ["query", key], { stdio: "ignore" }).status === 0) {
+    const installed = WIN ? spawnSync("reg", ["query", key], { stdio: "ignore" }).status === 0 : regSnapshot().some((m) => m.bytes) && process.env.E2E_REPLACE_HOST !== "1";
+    if (installed) {
       throw new Error("Mister Download Manager's host is already registered (an installed copy): not touching it");
     }
     regBefore = regSnapshot(path.join(work, "registry", "before"));
     const reg = spawnSync(nmhost, ["--register"], { encoding: "utf8" });
+    // Where it wrote (Linux, macOS), for the restore.
+    written = [...(reg.stdout || "").matchAll(/^registered \S+ in (.+)$/gm)].map((m) => path.join(m[1].trim(), `${HOST}.json`));
     if (reg.status !== 0) throw new Error(`nmhost --register: ${reg.stderr || reg.stdout}`);
     for (const name of names) {
       const [kind, candidates] = BROWSERS[name];
       const bin = candidates.find((p) => fs.existsSync(p));
-      const profile = path.join(work, `profile-${name}`);
+      // A Snap (Ubuntu's Firefox) reads its profile only from its own folder, and starts the host
+      // through the desktop portal, without the browser's environment (MDM_DATA_DIR): the host
+      // would reach this computer's own MDM, not the test instance, so only the remote case runs.
+      const snap = Boolean(bin) && bin.startsWith("/snap/");
+      const profile = snap ? path.join(process.env.HOME, "snap", name, "common", "mdm-e2e-profile") : path.join(work, `profile-${name}`);
       const dl = path.join(work, `browser-${name}`);
+      fs.rmSync(profile, { recursive: true, force: true });
       fs.mkdirSync(profile, { recursive: true });
       fs.mkdirSync(dl, { recursive: true });
+      // Linux: with --user-data-dir, Chromium reads the host's manifest from that folder.
+      const chromiumManifest = written.find((w) => !/mozilla/i.test(w));
+      if (!WIN && kind === "chromium" && chromiumManifest) {
+        fs.mkdirSync(path.join(profile, "NativeMessagingHosts"), { recursive: true });
+        fs.copyFileSync(chromiumManifest, path.join(profile, "NativeMessagingHosts", `${HOST}.json`));
+      }
       const started = Date.now();
       let session;
       try {
@@ -1598,7 +1832,9 @@ async function run() {
         // E2E_OLD_APP=1: an app older than extension-seen (0.2.4, for the compatibility runs:
         // a new extension with a released app): the extension is given time to reach it instead.
         const ready = () =>
-          process.env.E2E_OLD_APP
+          snap
+            ? sleep(3000).then(() => (seenAs = "(a Snap: not this test's instance; only the remote case runs)"))
+            : process.env.E2E_OLD_APP
             ? sleep(8000).then(() => (seenAs = "(an older app: not reported)"))
             : until(`${name}'s extension reaching the host`, 20000, () => {
             try {
@@ -1609,12 +1845,13 @@ async function run() {
             }
           }).then(() => sleep(300)); // its answer stored
         session = await (kind === "firefox" ? firefox : chromium)(bin, profile, dl, `${LAB}/page?link=none`, ready);
-        const t = { name, kind, session, dl, last: name === names[names.length - 1], ua: await session.evaluate("navigator.userAgent") };
+        const t = { name, kind, session, dl, snap, last: name === names[names.length - 1], ua: await session.evaluate("navigator.userAgent") };
         results.push([name, "browser", "ok", `${kind} ${session.major} (to MDM: ${seenAs}), extension ${session.extension}`, Date.now() - started]);
         for (const [label, fn] of Object.entries(CASES)) {
           if (only.length && !only.includes(label)) continue;
           const at = Date.now();
           try {
+            if (snap && label !== "remote") throw new Skip("a Snap browser starts the host without the test's environment");
             await startApp();
             await clearLog();
             const detail = await fn(t);
@@ -1634,13 +1871,15 @@ async function run() {
         results.push([name, "browser", "FAILED", e.message, Date.now() - started]);
       } finally {
         if (session) session.close();
+        if (snap) fs.rmSync(profile, { recursive: true, force: true, maxRetries: 5, retryDelay: 500 });
       }
     }
   } finally {
     spawnSync(nmhost, ["--unregister"]);
-    if (regBefore) regCheck = regRestore(regBefore, path.join(work, "registry", "after"));
+    if (regBefore) regCheck = regRestore(regBefore, path.join(work, "registry", "after"), written);
     await stopApp().catch(() => {});
-    for (const pid of ourPids()) spawnSync("taskkill", ["/T", "/F", "/PID", String(pid)]);
+    await stopRemote().catch(() => {});
+    for (const pid of ourPids()) killPid(pid);
     killTree(server);
     proxy.close();
   }
@@ -1651,8 +1890,8 @@ async function run() {
     const kept = regBefore.filter((b) => b.bytes).map((b) => b.key);
     console.log(
       regCheck.differ.length
-        ? `registry: DIFFERS after the run: ${regCheck.differ.join(", ")}`
-        : `registry: ${regBefore.length} keys byte-identical to before the run${regCheck.changed.length ? ` (put back: ${regCheck.changed.join(", ")})` : ""}; present before: ${kept.join(", ") || "none"}`,
+        ? `${WIN ? "registry" : "host manifests"}: DIFFERS after the run: ${regCheck.differ.join(", ")}`
+        : `${WIN ? "registry" : "host manifests"}: ${regBefore.length} ${WIN ? "keys" : "files"} byte-identical to before the run${regCheck.changed.length ? ` (put back: ${regCheck.changed.join(", ")})` : ""}; present before: ${kept.join(", ") || "none"}`,
     );
   }
   console.log(`total ${((Date.now() - t0) / 1000).toFixed(0)}s`);

@@ -229,3 +229,68 @@ fn zen_and_helium_alone_are_registered() {
     }
     let _ = std::fs::remove_dir_all(&home);
 }
+
+/// #253: a user with only Brave Origin gets the manifest where it reads it (Linux: its own
+/// `Brave-Origin` folder; macOS: Chrome's, which every Brave reads), naming this very program.
+#[cfg(not(windows))]
+#[test]
+fn brave_origin_alone_is_registered() {
+    let home = data_dir("brave-origin", serde_json::json!({}));
+    let mac = cfg!(target_os = "macos");
+    let support = home.join("Library/Application Support");
+    let (origin, hosts) = if mac {
+        (
+            support.join("BraveSoftware/Brave-Origin"),
+            support.join("Google/Chrome/NativeMessagingHosts"),
+        )
+    } else {
+        (
+            home.join(".config/BraveSoftware/Brave-Origin"),
+            home.join(".config/BraveSoftware/Brave-Origin/NativeMessagingHosts"),
+        )
+    };
+    std::fs::create_dir_all(&origin).unwrap();
+    let out = Command::new(HOST)
+        .arg("--register")
+        .env("HOME", &home)
+        .env_remove("XDG_CONFIG_HOME")
+        .env_remove("APPDIR")
+        .env("MDM_DATA_DIR", &home)
+        .output()
+        .unwrap();
+    assert!(out.status.success(), "{out:?}");
+    let file = hosts.join("com.misterdownloadmanager.host.json");
+    let manifest: serde_json::Value =
+        serde_json::from_str(&std::fs::read_to_string(&file).unwrap()).unwrap();
+    assert_eq!(
+        std::fs::canonicalize(manifest["path"].as_str().unwrap()).unwrap(),
+        std::fs::canonicalize(HOST).unwrap()
+    );
+    let _ = std::fs::remove_dir_all(&home);
+}
+
+/// #253: run from inside an AppImage's mount (APPDIR), the host refuses to register itself: the
+/// mount is gone once the AppImage quits, and a manifest would name a program that isn't there.
+#[cfg(not(windows))]
+#[test]
+fn a_host_inside_an_appimage_mount_is_not_registered() {
+    let home = data_dir("appimage-mount", serde_json::json!({}));
+    std::fs::create_dir_all(home.join(".config/google-chrome")).unwrap();
+    let mount = PathBuf::from(HOST).parent().unwrap().to_owned();
+    let out = Command::new(HOST)
+        .arg("--register")
+        .env("HOME", &home)
+        .env_remove("XDG_CONFIG_HOME")
+        .env("APPDIR", &mount)
+        .env("MDM_DATA_DIR", &home)
+        .output()
+        .unwrap();
+    assert!(!out.status.success());
+    assert!(String::from_utf8_lossy(&out.stderr).contains("AppImage"));
+    assert!(
+        !home
+            .join(".config/google-chrome/NativeMessagingHosts/com.misterdownloadmanager.host.json")
+            .exists()
+    );
+    let _ = std::fs::remove_dir_all(&home);
+}

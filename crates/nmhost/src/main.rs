@@ -31,8 +31,9 @@ mod win32;
 const HOST_NAME: &str = "com.misterdownloadmanager.host";
 use mdm_ipc::extension::{FIREFOX_ID, STORE_ID, STORE_UPDATE_URL, chromium_ids, store_id};
 /// Where each Chromium browser looks for native messaging hosts on Windows, under HKCU (one
-/// user) or HKLM (everyone). Chromium-branded builds (Chromium, Helium, Thorium) read
-/// Chromium's first, then Chrome's, as most other forks do (Chromium's launch_context_win.cc).
+/// user) or HKLM (everyone). Chromium-branded builds (Chromium, Helium, Thorium, and Brave and
+/// Brave Origin with every channel) read Chromium's first, then Chrome's, as most other forks do
+/// (Chromium's launch_context_win.cc). Brave's own key is kept for builds that read it.
 #[cfg(windows)]
 const REGISTRY_KEYS: [&str; 4] = [
     r"Software\Google\Chrome\NativeMessagingHosts",
@@ -753,9 +754,26 @@ fn chrome_external_dir(all_users: bool) -> Option<PathBuf> {
     chrome.exists().then_some(dir)
 }
 
+/// Linux: this program runs from inside an AppImage's mount (`APPDIR`), which is gone once the
+/// AppImage quits: a manifest naming it would name a program that no longer exists (#253). The
+/// app registers a copy outside it instead (unix.rs).
+#[cfg(not(windows))]
+fn mount_refused() -> Result<(), String> {
+    let exe = std::env::current_exe().map_err(|e| e.to_string())?;
+    match std::env::var_os("APPDIR").map(PathBuf::from) {
+        Some(mount) if !mount.as_os_str().is_empty() && exe.starts_with(&mount) => Err(format!(
+            "{} is inside the AppImage's mount, which is gone once it quits: register a copy \
+             outside it",
+            exe.display()
+        )),
+        _ => Ok(()),
+    }
+}
+
 #[cfg(not(windows))]
 fn register(all_users: bool) -> Result<(), String> {
     portable_refused()?;
+    mount_refused()?;
     let (chromium, firefox) = (chromium_manifest()?, firefox_manifest()?);
     let dirs = host_dirs(all_users);
     // One browser's folder that can't be written doesn't keep the others from theirs.

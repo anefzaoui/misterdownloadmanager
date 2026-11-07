@@ -18,6 +18,18 @@ Everything below ships together, in one release, as version 0.3.0.
   one gives way to MDM's own copy, saying why; the lab's test streams are real ones, which ffmpeg
   6.1 and 8 download to the end
   ([#236](https://github.com/anefzaoui/misterdownloadmanager/issues/236))
+- ✅ Run MDM on a server without a window (Docker, Unraid, any Linux machine), and send it
+  downloads from the phone or the browser extension
+  ([#157](https://github.com/anefzaoui/misterdownloadmanager/issues/157))
+- ✅ Better translations in every language: each language has a style guide and the terms its
+  reviewers settled, and every machine translation of the program and the website was reviewed
+  again against them
+- ✅ Linux: browser integration reaches Brave Origin (and the Beta, Dev and Nightly versions of
+  Brave, Chrome and Edge, and Vivaldi's snapshot); on macOS Brave is set up where it reads it,
+  Chrome's folder. From the AppImage, the helper program the browsers start is copied out
+  reliably, even while a browser still runs the old one, and put back at each start if it went
+  missing; Test browser integration says when it is missing, or why setting it up failed
+  ([#253](https://github.com/anefzaoui/misterdownloadmanager/issues/253))
 - ✅ The extension's popup shows **Open Mister Download Manager** whole: it was cut to "Open Mister
   Do…" on Linux and in longer languages; Options moves below it when both don't fit on one line
   (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
@@ -28,6 +40,9 @@ Everything below ships together, in one release, as version 0.3.0.
 - ✅ Control MDM from a phone or another computer on the local network: **Options → Remote**, off
   by default; a paired device adds links, magnets and torrents, sees the list and pauses, starts
   and removes downloads ([#141](https://github.com/anefzaoui/misterdownloadmanager/issues/141))
+- ✅ Linux: moving the pointer from an open submenu back onto its menu, or to another item, closes
+  only the submenu, not the whole menu
+  ([#250](https://github.com/anefzaoui/misterdownloadmanager/issues/250))
 - ✅ Download File Info's Preview, Options → Proxy's Get System and the Scheduler's "when done"
   drop-down fit their translated text (Russian and others), after #212
   ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192))
@@ -335,8 +350,6 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Network
 
-- 📋 Run MDM headless on a server (Docker, Unraid) and send it downloads from the browser
-  ([#157](https://github.com/anefzaoui/misterdownloadmanager/issues/157))
 
 ### Browser extension
 

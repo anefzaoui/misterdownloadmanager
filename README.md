@@ -364,7 +364,7 @@ pieces fit.
 | Tool | What it does |
 |---|---|
 | `tools\dev\check-cross.ps1` | Checks the code for Linux and macOS from Windows (with [Zig](https://ziglang.org) as the C compiler) |
-| `node tools/extension/e2e.mjs` | The browser extension in real Chrome, Brave, Edge and Firefox, headless: a link's download must reach MDM |
+| `node tools/extension/e2e.mjs` | The browser extension in real Chrome, Brave, Edge and Firefox, headless: a link's download must reach MDM (or another MDM, a server); on Windows and Linux |
 | `python tools/i18n/extract.py` | Lists every interface text in `i18n/en.tsv` (CI checks it matches the code) |
 | `python tools/i18n/translate.py` | Translates what the catalogs lack (checks every row in code) |
 | `python tools/installer/languages.py` | The installer's messages in every language |
