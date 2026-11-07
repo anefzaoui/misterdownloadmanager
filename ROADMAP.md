@@ -387,6 +387,10 @@ Everything below ships together, in version 0.5.0.
   [Themes](https://misterdownloadmanager.com/themes.html) page with every built-in theme, light and
   dark, and how to make, try and share your own
   ([#260](https://github.com/anefzaoui/misterdownloadmanager/issues/260))
+- ✅ Thanks to the people who make MDM possible: everyone who sent a pull request, opened an issue
+  or commented on GitHub, as round photos on the home page and the README, on a
+  [Contributors](https://misterdownloadmanager.com/contributors.html) page with what each one did,
+  at the end of each release on the News page, and in each release's notes on GitHub
 - ✅ Themes ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)): today's look stays the default. Every colour, size and spacing now
   comes from the chosen theme (the classic look pixel for pixel the same); **View → Theme** with
   Classic, Native (follows the system's accent and contrast on Windows, Linux and macOS) and High

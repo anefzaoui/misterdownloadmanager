@@ -33,7 +33,9 @@ from pathlib import Path
 import markdown
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import barcode  # noqa: E402
+import contributors  # noqa: E402  (tools/contributors.py: the people the site thanks)
 import sitei18n  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -199,6 +201,58 @@ def repo_stats() -> dict[str, str]:
 
 
 STATS: dict[str, str] = {}
+
+# The people who made MDM possible (tools/contributors.py), read once per build: everyone, and the
+# releases for each one's own. None when GitHub can't be read: the home page then leaves its
+# section out, /contributors.html says so, and the News page thanks nobody (with a warning).
+CREW: list[dict] | None = None
+CREW_RELEASES: list[dict] | None = None
+
+
+def load_crew() -> None:
+    global CREW, CREW_RELEASES
+    CREW = contributors.everyone()
+    CREW_RELEASES = contributors.releases() if CREW is not None else None
+    if CREW is None:
+        print("warning: the contributors couldn't be read from GitHub; the site is built without "
+              "them (set GITHUB_TOKEN if the rate limit ran out)", file=sys.stderr)
+
+
+def faces(people: list[dict], size: int = 56) -> str:
+    """Round photos of `people`, each linked to their GitHub profile; the login is the link's
+    name, shown over the photo on hover and focus. Logins are never translated."""
+    items = "".join(
+        f'<li><a class="face" href="{esc(p["profile"])}"><img src="{esc(contributors.avatar(p["avatar"], size * 2))}" '
+        f'width="{size}" height="{size}" alt="" loading="lazy" decoding="async">'
+        f'<span class="face-name">{esc(p["login"])}</span></a></li>'
+        for p in people)
+    return f'<ul class="faces faces-{size}" style="--face: {size}px" role="list" translate="no">{items}</ul>'
+
+
+def people_count(n: int) -> str:
+    """"26 people", the number kept out of the text to translate (one text for every count)."""
+    return f'<span translate="no">{n}</span> {"person" if n == 1 else "people"}'
+
+
+def humans_section() -> str:
+    """The home page's thanks: every contributor's photo, on a labelled sheet."""
+    if not CREW:
+        return ""
+    # Smaller photos as the crowd grows, so it stays one block rather than a wall.
+    size = 56 if len(CREW) <= 80 else 44 if len(CREW) <= 200 else 36
+    return f"""<section class="sec crew" id="contributors" aria-labelledby="crew-title">
+      <div class="wrap">
+        <div class="sec-intro">
+          <h2 id="crew-title">Made possible by these amazing humans</h2>
+          <p>Everyone who sent a pull request, reported a problem, asked for a feature or joined a conversation on GitHub. Thank you.</p>
+        </div>
+        <div class="sheet sheet-labelled crew-sheet">
+          <p class="sheet-band"><b><svg aria-hidden="true"><use href="#i-heart"/></svg>Contributors</b><span>{people_count(len(CREW))} on GitHub</span></p>
+          {faces(CREW, size)}
+          <p class="crew-links"><a class="text-link" href="/contributors.html">Everyone and what they did</a><a class="text-link" href="/contributing.html">Join them</a></p>
+        </div>
+      </div>
+    </section>"""
 
 
 def esc(s: str) -> str:
@@ -474,6 +528,7 @@ def footer() -> str:
             <li><a href="{REPO}/releases">Releases</a></li>
             <li><a href="/news.html">What's new</a></li>
             <li><a href="/contributing.html">Contributing</a></li>
+            <li><a href="/contributors.html">Contributors</a></li>
             <li><a href="/news.xml">News feed</a></li>
           </ul>
         </div>
@@ -957,6 +1012,26 @@ def build_faq() -> None:
 
 # ---- News: CHANGELOG.md -------------------------------------------------------------------------
 
+def release_thanks(ver: str) -> str:
+    """A release's closing thanks: everyone active on GitHub between the release before it and
+    this one (tools/contributors.py window()), as round photos. Empty for a release GitHub doesn't
+    list, or one nobody but the maintainer worked on."""
+    if CREW is None or not CREW_RELEASES:
+        return ""
+    rel = next((r for r in CREW_RELEASES if contributors.vparts(r["version"]) == contributors.vparts(ver)), None)
+    people = contributors.for_release(rel["tag"], CREW_RELEASES) if rel else None
+    if not people:
+        return ""
+    before = [r["version"] for r in CREW_RELEASES if contributors.vparts(r["version"]) < contributors.vparts(ver)]
+    since = (f'<p class="fine">Everyone who sent a pull request, opened an issue or commented on GitHub '
+             f'since version <span translate="no">{esc(max(before, key=contributors.vparts))}</span>.</p>' if before else "")
+    return f"""<div class="release-thanks">
+          <h3>Thanks to</h3>
+          {faces(people, 40)}
+          {since}
+        </div>"""
+
+
 def build_news() -> None:
     text = (ROOT / "CHANGELOG.md").read_text("utf-8")
     releases = []
@@ -976,6 +1051,7 @@ def build_news() -> None:
         <h2>What's new in version {esc(ver)} {when}</h2>
         {md(body)}
         <p><a href="{REPO}/releases/tag/v{esc(ver)}">Release page and files on GitHub</a></p>
+        {release_thanks(ver)}
       </section>""")
     write("/news.html", f"What's new — {NAME} version history",
           f"Every {NAME} release and what it changed, newest first: new features, fixes and downloads.",
@@ -1008,6 +1084,51 @@ def build_news() -> None:
 </feed>
 """
     (OUT / "news.xml").write_text(feed, "utf-8", newline="\n")
+
+
+# ---- Contributors: tools/contributors.py ----------------------------------------------------------
+
+def build_contributors() -> None:
+    """/contributors.html: everyone the home page thanks, in their groups, with what they did."""
+    path = "/contributors.html"
+    trail = [("Home", "/"), ("Contributors", path)]
+    groups = [("pr", "Pull requests"), ("issue", "Issues"), ("comment", "Comments")]
+    words = {"prs": ("pull request", "pull requests"), "issues": ("issue", "issues"), "comments": ("comment", "comments")}
+    sheets = []
+    for key, name in groups:
+        people = [p for p in CREW or [] if p["group"] == key]
+        if not people:
+            continue
+        rows = []
+        for p in people:
+            counts = "".join(
+                f'<li><b translate="no">{p[k]}</b> {w[0] if p[k] == 1 else w[1]}</li>'
+                for k, w in words.items() if p[k])
+            rows.append(f'<li><a class="roster-who" href="{esc(p["profile"])}"><img src="{esc(contributors.avatar(p["avatar"], 96))}" '
+                        f'width="48" height="48" alt="" loading="lazy" decoding="async"><span translate="no">{esc(p["login"])}</span></a>'
+                        f'<ul class="roster-counts" role="list">{counts}</ul></li>')
+        sheets.append(f"""<section class="sheet sheet-labelled roster-sheet" aria-labelledby="crew-{key}">
+        <h2 class="sheet-band" id="crew-{key}"><b>{name}</b><span>{people_count(len(people))}</span></h2>
+        <ul class="roster" role="list">{"".join(rows)}</ul>
+      </section>""")
+    if CREW is None:
+        body = f"""<div class="page-body prose">
+        <p>The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <a href="{REPO}/pulls?q=is%3Apr">pull requests</a> and <a href="{REPO}/issues?q=is%3Aissue">issues</a>.</p>
+      </div>"""
+    else:
+        body = "\n      ".join(sheets)
+    lede = ("Made possible by these amazing humans: everyone who sent a pull request, opened an issue or "
+            "joined a conversation on GitHub. Thank you, every one of you.")
+    fine = (f"From GitHub's public record, <time datetime=\"{TODAY}\">{TODAY}</time>: people with pull requests "
+            "first, then those who opened issues, then those who commented, each once. The maintainer and "
+            "automated accounts aren't counted.")
+    write(path, f"Contributors — {NAME}",
+          f"The people who made {NAME} possible: everyone who sent a pull request, opened an issue or joined a conversation on GitHub.",
+          f"""{page_head("Contributors", lede, trail, fine)}
+    <div class="wrap crew-page">
+      {body}
+      <p class="crew-join"><a class="btn btn-line" href="/contributing.html">Join them: the contributing guide</a></p>
+    </div>""", jsonld=[crumbs_ld(trail)], priority="0.5")
 
 
 # ---- Languages: i18n/languages.tsv ---------------------------------------------------------------
@@ -1140,6 +1261,7 @@ def fill(text: str) -> str:
     if "<!--@features-->" in text:
         text = text.replace("<!--@features-->", manifest(feature_list()))
     text = coming_marks(text.replace("<!--@coming-->", coming_banner()))
+    text = text.replace("<!--@humans-->", humans_section())
     text = text.replace("<!--@fields-->", waybill_fields()).replace("<!--@barcode-->", barcode.svg(f"MDM {VERSION}"))
     return (text.replace("{{VERSION}}", VERSION).replace("{{REPO}}", REPO).replace("{{SITE}}", SITE)
             .replace("{{SPONSORS}}", SPONSORS).replace("{{SOFTWARE_LD}}", json.dumps(SOFTWARE_LD, ensure_ascii=False, separators=(",", ":"))))
@@ -1573,6 +1695,7 @@ def finish(available: dict[str, list[str]]) -> None:
 
 def main() -> None:
     STATS.update(repo_stats())
+    load_crew()
     copy_static()
     build_templated("index.html", "/", "home", "1.0")
     build_templated("download.html", "/download.html", "download", "0.9")
@@ -1584,6 +1707,7 @@ def main() -> None:
     build_news()
     build_languages()
     build_repo_pages()
+    build_contributors()
     build_content_pages()
     build_features()
     build_themes()

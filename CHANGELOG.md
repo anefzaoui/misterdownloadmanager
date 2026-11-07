@@ -475,6 +475,11 @@ choose. And Linux, checked on a real desktop with every change.
   can't do yet; the home page lists them all, by group. The Themes page shows every built-in theme
   in its light and dark side, and how to make your own theme file, try it without building MDM,
   and share it, with a prompt to give an AI assistant. What isn't in a release yet says so.
+- **Made possible by these amazing humans**: the home page thanks everyone who sent a pull
+  request, opened an issue or joined a conversation on GitHub, with their round photos; the new
+  [Contributors](https://misterdownloadmanager.com/contributors.html) page shows what each one did;
+  each release, on the News page and in its notes on GitHub, ends with the people who helped since
+  the one before; and the README thanks everyone too.
 
 ### Changed
 
