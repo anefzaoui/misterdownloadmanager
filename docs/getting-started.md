@@ -152,7 +152,8 @@ MDM follows your system: when Windows (or your desktop's light/dark preference o
 Each has a light and a dark side: **Dark Mode support** and **Always dark** choose between
 them as before. Theme files you put in the themes folder (**View → Theme → Open themes folder**)
 are listed there too. A theme in a folder of its own (`<name>/theme.toml`) can bring its icons in
-`icons/16` and `icons/24`, each named for what it shows (`tb-add-url.svg`, `cat-music.png`…):
+`icons/16` and `icons/24` (and, for PNG pictures, `icons/32` and `icons/48`, used on a screen
+scaled to 150 % and more), each named for what it shows (`tb-add-url.svg`, `cat-music.png`…):
 SVG or PNG files keep their colours, and `-symbolic.svg` or `-symbolic.png` ones, as GNOME and
 KDE name them, take the theme's text colour.
 

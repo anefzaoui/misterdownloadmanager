@@ -1,5 +1,6 @@
 //! A theme's icon set (#45): files named by what MDM needs them for (`tb-add-url`, `cat-music`,
-//! `ft-pdf`…, the list in [`NEEDS`]), at 16 pixels and at 24 (drawn at 24 and up). A theme that
+//! `ft-pdf`…, the list in [`NEEDS`]), at 16 pixels and at 24 (drawn at 24 and up), pictures at
+//! 32 and 48 too (a screen at 150 % to 300 %, [`SIZES`]). A theme that
 //! has a set draws its icons where the classic look draws its own (the toolbar's outlines, the
 //! categories' Silk icons, the file types' system icons); a need the set lacks keeps the classic
 //! icon.
@@ -10,7 +11,7 @@
 //! greys are drawn in the theme's text colour (greyed when disabled), their colours kept, as
 //! GNOME and KDE recolour theirs. A set of SVGs all one colour says so once (`icon-mono = true`).
 //!
-//! Built-in sets are carried in the program (`assets/themes/<set>/icons/{16,24}/`). A theme file
+//! Built-in sets are carried in the program (`assets/themes/<set>/icons/{16,24,32,48}/`). A theme file
 //! in a folder of its own (`themes/<id>/theme.toml`) can bring one beside it
 //! (`themes/<id>/icons/16/…`), read when the theme is chosen.
 
@@ -94,7 +95,11 @@ struct File {
     mono: bool,
 }
 
-/// One set: each need's icon at the sizes it has (16 pixels, and 24, drawn at 24 and up).
+/// The sizes a set's icons are drawn at, in pixels: 16 and 24 (drawn at 24 and up), and for
+/// pictures, which don't scale cleanly, 32 and 48 (a screen at 150 % to 300 %).
+pub const SIZES: [u32; 4] = [16, 24, 32, 48];
+
+/// One set: each need's icon at the sizes it has ([`SIZES`]).
 #[derive(Default)]
 pub struct Set {
     files: HashMap<(String, u32), File>,
@@ -103,20 +108,28 @@ pub struct Set {
 impl Set {
     #[cfg(test)]
     fn has(&self, need: &str) -> bool {
-        self.files.contains_key(&(need.to_owned(), 16))
-            || self.files.contains_key(&(need.to_owned(), 24))
+        SIZES
+            .iter()
+            .any(|s| self.files.contains_key(&(need.to_owned(), *s)))
     }
 
-    /// The file nearest `px` (the screen's pixels): 16 up to 20 pixels, 24 above; the other size
-    /// when one is missing. A 16-pixel picture is drawn at about its size only: larger, the 24's
-    /// drawing is sharper where there is one.
+    /// The file for `px` (the screen's pixels): the smallest drawn for at least that size, else
+    /// the largest. A picture is drawn at most a pixel larger than its size (16 up to 17 pixels,
+    /// 32 up to 34): larger, the next size is sharper. A drawing scales cleanly, a quarter up (16
+    /// up to 20 pixels; 24 above, where it is the largest).
     fn file(&self, need: &str, px: f32) -> Option<(u32, File)> {
-        let get = |s: u32| self.files.get(&(need.to_owned(), s)).cloned();
-        get(16)
-            .filter(|f| px <= 20.0 && !(f.png && px > 17.0))
-            .map(|f| (16, f))
-            .or_else(|| get(24).map(|f| (24, f)))
-            .or_else(|| get(16).map(|f| (16, f)))
+        let have = SIZES
+            .iter()
+            .filter_map(|&s| self.files.get(&(need.to_owned(), s)).map(|f| (s, f)));
+        let mut largest = None;
+        for (s, f) in have {
+            let stretch = if f.png { 1.0625 } else { 1.25 };
+            if px <= s as f32 * stretch {
+                return Some((s, f.clone()));
+            }
+            largest = Some((s, f.clone()));
+        }
+        largest
     }
 
     /// A set from its files: each `(size, file name, bytes)`, the file named after its need
@@ -284,35 +297,36 @@ macro_rules! builtin_files {
 static SETS: LazyLock<Mutex<HashMap<String, Arc<Set>>>> = LazyLock::new(|| {
     let mut sets = HashMap::new();
     // Microsoft's Fluent UI System Icons (MIT, assets/themes/metro/icons/LICENSE), recoloured
-    // white to be tinted; the torrent ones and Hide to the notification area are MDM's own, in
-    // their style, one-colour pictures.
+    // white to be tinted; the magnet and the torrent file are MDM's own at their weight, Hide
+    // to the notification area MDM's own one-colour picture.
     let metro = builtin_files!("metro";
         16: ["cat-all.svg", "cat-compressed.svg", "cat-documents.svg", "cat-finished.svg",
             "cat-folder-open.svg", "cat-folder.svg", "cat-music.svg", "cat-programs.svg",
-            "cat-queues.svg", "cat-torrents-symbolic.png", "cat-unfinished.svg", "cat-video.svg",
+            "cat-queues.svg", "cat-torrents.svg", "cat-unfinished.svg", "cat-video.svg",
             "ft-archive.svg", "ft-audio.svg", "ft-code.svg", "ft-disk-image.svg", "ft-document.svg",
             "ft-executable.svg", "ft-font.svg", "ft-generic.svg", "ft-image.svg", "ft-pdf.svg",
-            "ft-presentation.svg", "ft-spreadsheet.svg", "ft-text.svg", "ft-torrent-symbolic.png",
+            "ft-presentation.svg", "ft-spreadsheet.svg", "ft-text.svg", "ft-torrent.svg",
             "ft-video.svg", "misc-down.svg", "misc-emblem-ok.svg", "misc-remove.svg", "misc-up.svg",
             "st-complete.svg", "st-downloading.svg", "st-error.svg", "st-paused.svg",
-            "st-queued.svg", "st-seeding.svg", "tb-add-torrent-symbolic.png", "tb-add-url.svg",
+            "st-queued.svg", "st-seeding.svg", "tb-add-torrent.svg", "tb-add-url.svg",
             "tb-delete-completed.svg", "tb-delete.svg", "tb-options.svg", "tb-resume.svg",
             "tb-scheduler.svg", "tb-start-queue.svg", "tb-stop-all.svg", "tb-stop-queue.svg",
             "tb-stop.svg", "ui-close.svg", "ui-maximize.svg", "ui-minimize.svg", "ui-restore.svg",
             "ui-to-tray-symbolic.png"];
         24: ["cat-all.svg", "cat-compressed.svg", "cat-documents.svg", "cat-finished.svg",
             "cat-folder-open.svg", "cat-folder.svg", "cat-music.svg", "cat-programs.svg",
-            "cat-queues.svg", "cat-torrents-symbolic.png", "cat-unfinished.svg", "cat-video.svg",
+            "cat-queues.svg", "cat-torrents.svg", "cat-unfinished.svg", "cat-video.svg",
             "ft-archive.svg", "ft-audio.svg", "ft-code.svg", "ft-document.svg", "ft-executable.svg",
             "ft-font.svg", "ft-generic.svg", "ft-image.svg", "ft-pdf.svg", "ft-presentation.svg",
-            "ft-spreadsheet.svg", "ft-text.svg", "ft-torrent-symbolic.png", "ft-video.svg",
-            "misc-down.svg", "misc-emblem-ok.svg", "misc-remove.svg", "misc-up.svg",
-            "st-complete.svg", "st-downloading.svg", "st-error.svg", "st-paused.svg",
-            "st-queued.svg", "st-seeding.svg", "tb-add-torrent-symbolic.png", "tb-add-url.svg",
-            "tb-delete-completed.svg", "tb-delete.svg", "tb-options.svg", "tb-resume.svg",
-            "tb-scheduler.svg", "tb-stop-all.svg", "tb-stop-queue.svg", "tb-stop.svg",
-            "ui-close.svg", "ui-maximize.svg", "ui-minimize.svg", "ui-restore.svg",
-            "ui-to-tray-symbolic.png"]);
+            "ft-spreadsheet.svg", "ft-text.svg", "ft-torrent.svg", "ft-video.svg", "misc-down.svg",
+            "misc-emblem-ok.svg", "misc-remove.svg", "misc-up.svg", "st-complete.svg",
+            "st-downloading.svg", "st-error.svg", "st-paused.svg", "st-queued.svg",
+            "st-seeding.svg", "tb-add-torrent.svg", "tb-add-url.svg", "tb-delete-completed.svg",
+            "tb-delete.svg", "tb-options.svg", "tb-resume.svg", "tb-scheduler.svg",
+            "tb-stop-all.svg", "tb-stop-queue.svg", "tb-stop.svg", "ui-close.svg",
+            "ui-maximize.svg", "ui-minimize.svg", "ui-restore.svg", "ui-to-tray-symbolic.png"];
+        32: ["ui-to-tray-symbolic.png"];
+        48: ["ui-to-tray-symbolic.png"]);
     sets.insert("metro".to_owned(), Arc::new(Set::from_files(metro, true)));
     // GNOME's adwaita-icon-theme 51.0 (LGPL-3, assets/themes/adwaita/icons/LICENSE), its files
     // as GNOME ships them: colour pictures at 16 pixels and drawings above, one-colour symbolic
@@ -349,7 +363,9 @@ static SETS: LazyLock<Mutex<HashMap<String, Arc<Set>>>> = LazyLock::new(|| {
             "tb-options-symbolic.svg", "tb-resume-symbolic.svg", "tb-scheduler-symbolic.svg",
             "tb-start-queue-symbolic.svg", "tb-stop-all-symbolic.svg", "tb-stop-queue-symbolic.svg",
             "tb-stop-symbolic.svg", "ui-close-symbolic.svg", "ui-maximize-symbolic.svg",
-            "ui-minimize-symbolic.svg", "ui-restore-symbolic.svg", "ui-to-tray-symbolic.png"]);
+            "ui-minimize-symbolic.svg", "ui-restore-symbolic.svg", "ui-to-tray-symbolic.png"];
+        32: ["ft-pdf.png", "ft-torrent.png", "ui-to-tray-symbolic.png"];
+        48: ["ft-pdf.png", "ft-torrent.png", "ui-to-tray-symbolic.png"]);
     sets.insert(
         "adwaita".to_owned(),
         Arc::new(Set::from_files(adwaita, false)),
@@ -389,13 +405,15 @@ static SETS: LazyLock<Mutex<HashMap<String, Arc<Set>>>> = LazyLock::new(|| {
             "tb-resume-symbolic.svg", "tb-scheduler-symbolic.svg", "tb-start-queue-symbolic.svg",
             "tb-stop-all-symbolic.svg", "tb-stop-queue-symbolic.svg", "tb-stop-symbolic.svg",
             "ui-close-symbolic.svg", "ui-maximize-symbolic.svg", "ui-minimize-symbolic.svg",
-            "ui-restore-symbolic.svg", "ui-to-tray-symbolic.png"]);
+            "ui-restore-symbolic.svg", "ui-to-tray-symbolic.png"];
+        32: ["ft-pdf.png", "ui-to-tray-symbolic.png"];
+        48: ["ft-pdf.png", "ui-to-tray-symbolic.png"]);
     sets.insert(
         "breeze".to_owned(),
         Arc::new(Set::from_files(breeze, false)),
     );
     // The era themes' sets (#45): pictures drawn for MDM in the manner of Windows XP, Windows 7
-    // and Mac OS X, in colour, at 16 and 24 pixels. The title bar's buttons are MDM's own
+    // and Mac OS X, in colour, at 16, 24, 32 and 48 pixels. The title bar's buttons are MDM's own
     // vector glyphs (drawn by `winui::caption`), but for Hide to the notification area.
     let luna = builtin_files!("luna";
         16: ["cat-all.png", "cat-compressed.png", "cat-documents.png", "cat-finished.png",
@@ -411,6 +429,30 @@ static SETS: LazyLock<Mutex<HashMap<String, Arc<Set>>>> = LazyLock::new(|| {
             "tb-scheduler.png", "tb-start-queue.png", "tb-stop-all.png", "tb-stop-queue.png",
             "tb-stop.png", "ui-to-tray.png"];
         24: ["cat-all.png", "cat-compressed.png", "cat-documents.png", "cat-finished.png",
+            "cat-folder-open.png", "cat-folder.png", "cat-music.png", "cat-programs.png",
+            "cat-queues.png", "cat-torrents.png", "cat-unfinished.png", "cat-video.png",
+            "ft-archive.png", "ft-audio.png", "ft-code.png", "ft-disk-image.png", "ft-document.png",
+            "ft-executable.png", "ft-font.png", "ft-generic.png", "ft-image.png", "ft-pdf.png",
+            "ft-presentation.png", "ft-spreadsheet.png", "ft-text.png", "ft-torrent.png",
+            "ft-video.png", "misc-down.png", "misc-emblem-ok.png", "misc-remove.png", "misc-up.png",
+            "st-complete.png", "st-downloading.png", "st-error.png", "st-paused.png",
+            "st-queued.png", "st-seeding.png", "tb-add-torrent.png", "tb-add-url.png",
+            "tb-delete-completed.png", "tb-delete.png", "tb-options.png", "tb-resume.png",
+            "tb-scheduler.png", "tb-start-queue.png", "tb-stop-all.png", "tb-stop-queue.png",
+            "tb-stop.png", "ui-to-tray.png"];
+        32: ["cat-all.png", "cat-compressed.png", "cat-documents.png", "cat-finished.png",
+            "cat-folder-open.png", "cat-folder.png", "cat-music.png", "cat-programs.png",
+            "cat-queues.png", "cat-torrents.png", "cat-unfinished.png", "cat-video.png",
+            "ft-archive.png", "ft-audio.png", "ft-code.png", "ft-disk-image.png", "ft-document.png",
+            "ft-executable.png", "ft-font.png", "ft-generic.png", "ft-image.png", "ft-pdf.png",
+            "ft-presentation.png", "ft-spreadsheet.png", "ft-text.png", "ft-torrent.png",
+            "ft-video.png", "misc-down.png", "misc-emblem-ok.png", "misc-remove.png", "misc-up.png",
+            "st-complete.png", "st-downloading.png", "st-error.png", "st-paused.png",
+            "st-queued.png", "st-seeding.png", "tb-add-torrent.png", "tb-add-url.png",
+            "tb-delete-completed.png", "tb-delete.png", "tb-options.png", "tb-resume.png",
+            "tb-scheduler.png", "tb-start-queue.png", "tb-stop-all.png", "tb-stop-queue.png",
+            "tb-stop.png", "ui-to-tray.png"];
+        48: ["cat-all.png", "cat-compressed.png", "cat-documents.png", "cat-finished.png",
             "cat-folder-open.png", "cat-folder.png", "cat-music.png", "cat-programs.png",
             "cat-queues.png", "cat-torrents.png", "cat-unfinished.png", "cat-video.png",
             "ft-archive.png", "ft-audio.png", "ft-code.png", "ft-disk-image.png", "ft-document.png",
@@ -447,6 +489,30 @@ static SETS: LazyLock<Mutex<HashMap<String, Arc<Set>>>> = LazyLock::new(|| {
             "st-queued.png", "st-seeding.png", "tb-add-torrent.png", "tb-add-url.png",
             "tb-delete-completed.png", "tb-delete.png", "tb-options.png", "tb-resume.png",
             "tb-scheduler.png", "tb-start-queue.png", "tb-stop-all.png", "tb-stop-queue.png",
+            "tb-stop.png", "ui-to-tray.png"];
+        32: ["cat-all.png", "cat-compressed.png", "cat-documents.png", "cat-finished.png",
+            "cat-folder-open.png", "cat-folder.png", "cat-music.png", "cat-programs.png",
+            "cat-queues.png", "cat-torrents.png", "cat-unfinished.png", "cat-video.png",
+            "ft-archive.png", "ft-audio.png", "ft-code.png", "ft-disk-image.png", "ft-document.png",
+            "ft-executable.png", "ft-font.png", "ft-generic.png", "ft-image.png", "ft-pdf.png",
+            "ft-presentation.png", "ft-spreadsheet.png", "ft-text.png", "ft-torrent.png",
+            "ft-video.png", "misc-down.png", "misc-emblem-ok.png", "misc-remove.png", "misc-up.png",
+            "st-complete.png", "st-downloading.png", "st-error.png", "st-paused.png",
+            "st-queued.png", "st-seeding.png", "tb-add-torrent.png", "tb-add-url.png",
+            "tb-delete-completed.png", "tb-delete.png", "tb-options.png", "tb-resume.png",
+            "tb-scheduler.png", "tb-start-queue.png", "tb-stop-all.png", "tb-stop-queue.png",
+            "tb-stop.png", "ui-to-tray.png"];
+        48: ["cat-all.png", "cat-compressed.png", "cat-documents.png", "cat-finished.png",
+            "cat-folder-open.png", "cat-folder.png", "cat-music.png", "cat-programs.png",
+            "cat-queues.png", "cat-torrents.png", "cat-unfinished.png", "cat-video.png",
+            "ft-archive.png", "ft-audio.png", "ft-code.png", "ft-disk-image.png", "ft-document.png",
+            "ft-executable.png", "ft-font.png", "ft-generic.png", "ft-image.png", "ft-pdf.png",
+            "ft-presentation.png", "ft-spreadsheet.png", "ft-text.png", "ft-torrent.png",
+            "ft-video.png", "misc-down.png", "misc-emblem-ok.png", "misc-remove.png", "misc-up.png",
+            "st-complete.png", "st-downloading.png", "st-error.png", "st-paused.png",
+            "st-queued.png", "st-seeding.png", "tb-add-torrent.png", "tb-add-url.png",
+            "tb-delete-completed.png", "tb-delete.png", "tb-options.png", "tb-resume.png",
+            "tb-scheduler.png", "tb-start-queue.png", "tb-stop-all.png", "tb-stop-queue.png",
             "tb-stop.png", "ui-to-tray.png"]);
     sets.insert("aero".to_owned(), Arc::new(Set::from_files(aero, false)));
     let aqua = builtin_files!("aqua";
@@ -473,17 +539,41 @@ static SETS: LazyLock<Mutex<HashMap<String, Arc<Set>>>> = LazyLock::new(|| {
             "st-queued.png", "st-seeding.png", "tb-add-torrent.png", "tb-add-url.png",
             "tb-delete-completed.png", "tb-delete.png", "tb-options.png", "tb-resume.png",
             "tb-scheduler.png", "tb-start-queue.png", "tb-stop-all.png", "tb-stop-queue.png",
+            "tb-stop.png", "ui-to-tray.png"];
+        32: ["cat-all.png", "cat-compressed.png", "cat-documents.png", "cat-finished.png",
+            "cat-folder-open.png", "cat-folder.png", "cat-music.png", "cat-programs.png",
+            "cat-queues.png", "cat-torrents.png", "cat-unfinished.png", "cat-video.png",
+            "ft-archive.png", "ft-audio.png", "ft-code.png", "ft-disk-image.png", "ft-document.png",
+            "ft-executable.png", "ft-font.png", "ft-generic.png", "ft-image.png", "ft-pdf.png",
+            "ft-presentation.png", "ft-spreadsheet.png", "ft-text.png", "ft-torrent.png",
+            "ft-video.png", "misc-down.png", "misc-emblem-ok.png", "misc-remove.png", "misc-up.png",
+            "st-complete.png", "st-downloading.png", "st-error.png", "st-paused.png",
+            "st-queued.png", "st-seeding.png", "tb-add-torrent.png", "tb-add-url.png",
+            "tb-delete-completed.png", "tb-delete.png", "tb-options.png", "tb-resume.png",
+            "tb-scheduler.png", "tb-start-queue.png", "tb-stop-all.png", "tb-stop-queue.png",
+            "tb-stop.png", "ui-to-tray.png"];
+        48: ["cat-all.png", "cat-compressed.png", "cat-documents.png", "cat-finished.png",
+            "cat-folder-open.png", "cat-folder.png", "cat-music.png", "cat-programs.png",
+            "cat-queues.png", "cat-torrents.png", "cat-unfinished.png", "cat-video.png",
+            "ft-archive.png", "ft-audio.png", "ft-code.png", "ft-disk-image.png", "ft-document.png",
+            "ft-executable.png", "ft-font.png", "ft-generic.png", "ft-image.png", "ft-pdf.png",
+            "ft-presentation.png", "ft-spreadsheet.png", "ft-text.png", "ft-torrent.png",
+            "ft-video.png", "misc-down.png", "misc-emblem-ok.png", "misc-remove.png", "misc-up.png",
+            "st-complete.png", "st-downloading.png", "st-error.png", "st-paused.png",
+            "st-queued.png", "st-seeding.png", "tb-add-torrent.png", "tb-add-url.png",
+            "tb-delete-completed.png", "tb-delete.png", "tb-options.png", "tb-resume.png",
+            "tb-scheduler.png", "tb-start-queue.png", "tb-stop-all.png", "tb-stop-queue.png",
             "tb-stop.png", "ui-to-tray.png"]);
     sets.insert("aqua".to_owned(), Arc::new(Set::from_files(aqua, false)));
     Mutex::new(sets)
 });
 
 /// Reads the set in `dir` (`16/<need>.svg`, `.png`, `-symbolic.svg` or `-symbolic.png`, the
-/// same in `24`) under `name`, for a theme file's own folder. Only the known needs are read;
-/// other files are left alone. False when the folder holds none.
+/// same in `24`, and in `32` and `48` for pictures) under `name`, for a theme file's own folder.
+/// Only the known needs are read; other files are left alone. False when the folder holds none.
 pub fn load_folder(name: &str, dir: &Path, mono: bool) -> bool {
     let mut files = Vec::new();
-    for px in [16u32, 24] {
+    for px in SIZES {
         for (need, _) in NEEDS {
             for f in [
                 format!("{need}-symbolic.svg"),
@@ -673,10 +763,11 @@ mod tests {
             let text = std::str::from_utf8(&f.bytes).unwrap();
             assert!(!text.contains("#212121"), "{need} keeps Fluent's ink");
         }
-        // MDM's own, where Fluent has none of that meaning.
-        for need in ["tb-add-torrent", "cat-torrents", "ft-torrent", "ui-to-tray"] {
-            assert!(metro.file(need, 16.0).unwrap().1.png, "{need}");
-            assert!(metro.file(need, 32.0).unwrap().1.png, "{need}");
+        // MDM's own Hide to the notification area, where Fluent has none of that meaning: a
+        // picture at every size; its torrent icons are drawings at Fluent's weight.
+        for px in [16.0, 24.0, 32.0, 48.0] {
+            assert!(metro.file("ui-to-tray", px).unwrap().1.png, "{px}");
+            assert!(!metro.file("tb-add-torrent", px).unwrap().1.png, "{px}");
         }
     }
 
@@ -711,8 +802,8 @@ mod tests {
         assert_eq!(&whitened(b"nope")[..], b"nope");
     }
 
-    /// Luna, Aero and Aqua have a colour picture for every need, at 16 and 24 pixels, but the
-    /// title bar's four, which their title bars draw themselves; Hide to the notification area
+    /// Luna, Aero and Aqua have a colour picture for every need, at 16, 24, 32 and 48 pixels, but
+    /// the title bar's four, which their title bars draw themselves; Hide to the notification area
     /// is a picture.
     #[test]
     fn era_sets_have_every_picture_but_the_title_bars_glyphs() {
@@ -723,7 +814,7 @@ mod tests {
                     *need,
                     "ui-minimize" | "ui-maximize" | "ui-restore" | "ui-close"
                 );
-                for px in [16u32, 24] {
+                for px in SIZES {
                     let f = set.files.get(&((*need).to_owned(), px));
                     assert_eq!(f.is_none(), bar, "{name} {need} {px}");
                     let Some(f) = f else { continue };
@@ -732,10 +823,12 @@ mod tests {
                     assert_eq!((img.width(), img.height()), (px, px), "{name} {need}");
                 }
             }
-            // The 16's picture up to 17 pixels on screen, the 24's above.
-            assert_eq!(set.file("tb-resume", 16.0).unwrap().0, 16);
-            assert_eq!(set.file("tb-resume", 18.0).unwrap().0, 24);
-            assert_eq!(set.file("tb-resume", 32.0).unwrap().0, 24);
+            // Each picture up to a pixel over its size on screen, the next one above.
+            for (px, size) in [(16.0, 16), (17.0, 16), (18.0, 24), (26.0, 32), (34.0, 32)] {
+                assert_eq!(set.file("tb-resume", px).unwrap().0, size, "{name} {px}");
+            }
+            assert_eq!(set.file("tb-resume", 40.0).unwrap().0, 48);
+            assert_eq!(set.file("tb-resume", 96.0).unwrap().0, 48);
             assert!(set.file("ui-close", 16.0).is_none());
         }
     }
@@ -748,9 +841,12 @@ mod tests {
         for name in ["metro", "adwaita", "breeze", "luna", "aero", "aqua"] {
             let carried = set(name).unwrap();
             let mut n = 0;
-            for px in [16u32, 24] {
+            for px in SIZES {
                 let folder = dir.join(name).join("icons").join(px.to_string());
-                for entry in std::fs::read_dir(&folder).unwrap() {
+                let Ok(entries) = std::fs::read_dir(&folder) else {
+                    continue;
+                };
+                for entry in entries {
                     let file = entry.unwrap().file_name().into_string().unwrap();
                     let stem = file.rsplit_once('.').unwrap().0;
                     let need = stem.strip_suffix("-symbolic").unwrap_or(stem);
@@ -766,6 +862,42 @@ mod tests {
                 }
             }
             assert_eq!(n, carried.files.len(), "{name}: one file per need and size");
+        }
+    }
+
+    /// Every built-in set carries the sizes the loader asks for up to a screen at 300 %: a need
+    /// whose largest file is a picture has it at 48 pixels and at every size between (a
+    /// drawing's largest scales cleanly), so no picture is stretched.
+    #[test]
+    fn pictures_come_in_every_size_the_loader_asks_for() {
+        for name in ["metro", "adwaita", "breeze", "luna", "aero", "aqua"] {
+            let set = set(name).unwrap();
+            for (need, _) in NEEDS {
+                let sizes: Vec<u32> = SIZES
+                    .into_iter()
+                    .filter(|s| set.files.contains_key(&((*need).to_owned(), *s)))
+                    .collect();
+                let Some(&largest) = sizes.last() else {
+                    continue;
+                };
+                let f = &set.files[&((*need).to_owned(), largest)];
+                if !f.png {
+                    continue;
+                }
+                let from = sizes[0];
+                let want: Vec<u32> = SIZES.into_iter().filter(|s| *s >= from).collect();
+                assert_eq!(
+                    sizes, want,
+                    "{name} {need}: a picture at every size up to 48"
+                );
+                // At 100 %, 150 %, 200 % and 300 % (16-point icons), its own size, never one
+                // stretched.
+                for (px, size) in [(16.0, 16), (24.0, 24), (32.0, 32), (48.0, 48)] {
+                    if px as u32 >= from {
+                        assert_eq!(set.file(need, px).unwrap().0, size, "{name} {need} {px}");
+                    }
+                }
+            }
         }
     }
 

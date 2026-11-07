@@ -6,8 +6,8 @@ Microsoft's icons, or any other project's, is used or copied. GPL-3.0-or-later, 
 LICENSE, at the top of the repository).
 
 Each file is a colour picture named for the need MDM uses it for (crates/app/src/themeicons.rs
-lists them), drawn twice: 16/<need>.png for 16 pixels and 24/<need>.png for 24 and up. Any can
-be swapped for another file of the same name.
+lists them), at four sizes: 16/<need>.png, 24/, 32/ and 48/ (a screen at 100 % to 300 %). Any
+can be swapped for another file of the same name.
 
 The title bar's Minimize, Maximize, Restore and Close are drawn by the theme's title bar itself
 (crates/app/src/winui.rs); every other need has a picture here.

@@ -149,12 +149,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   bar and a grey title bar with the title centred and small round graphite buttons whose glyphs
   show under the pointer. Every glyph and shade is MDM's own drawing; none of Microsoft's or
   Apple's pictures or fonts are used.
-- **Metro, Adwaita and Breeze: MDM's own icons where theirs had none**: Metro's Add torrent,
-  Torrents, torrent file and Hide to the notification area, Adwaita's PDF, torrent file and Hide
-  to the notification area, and Breeze's PDF and Hide to the notification area, drawn for MDM in
-  each one's style (the one-colour ones in the theme's text colour). An icon set can now hold
-  one-colour pictures (`-symbolic.png`), drawn in the theme's text colour as its one-colour
-  drawings are.
+- **Metro, Adwaita and Breeze: MDM's own icons where theirs had none**: Metro's Hide to the
+  notification area, Adwaita's PDF, torrent file and Hide to the notification area, and Breeze's
+  PDF and Hide to the notification area, drawn for MDM in each one's style (the one-colour ones
+  in the theme's text colour). An icon set can now hold one-colour pictures (`-symbolic.png`),
+  drawn in the theme's text colour as its one-colour drawings are, and pictures at 32 and 48
+  pixels, used on a screen scaled to 150 % and more: the style themes' pictures stay sharp there.
 - **The Firefox add-on is on addons.mozilla.org**: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/),
   installed with one click and kept up to date by Firefox (and by Zen and LibreWolf). MDM's
   **Add Mister Download Manager to your browser** window opens it for them; the website, the
