@@ -6075,6 +6075,8 @@ impl App {
             ];
             let bar = caption::title_bar(ui, rect, crate::MAIN_TITLE, &buttons);
             if let Some(h) = self.main_hwnd {
+                // The sizing frame above the bar (Windows 11, #208) in the bar's colour.
+                crate::win32::caption_colour(h, [bar.top.r(), bar.top.g(), bar.top.b()]);
                 let ppp = ui.ctx().pixels_per_point();
                 let px = |r: egui::Rect| {
                     let (a, b) = ((r.min - full.min) * ppp, (r.max - full.min) * ppp);

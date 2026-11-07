@@ -419,10 +419,11 @@ These ship when they're ready: in 0.5.0 when they make it, or in a later version
 
 ### Bugs being looked into
 
-- 🔍 Menus and the drop target with a black band across their top on a Windows 11 Insider build
-  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): menus are plain pop-up
-  windows now, as Windows' own are, and the reporter confirmed them fixed; the band on windows
-  with a drawn title bar (the download's progress window) is being fixed
+- 🔍 Windows with a black band across their top on a Windows 11 Insider build
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): menus and the drop
+  target are plain pop-up windows now, as Windows' own are, and the reporter confirmed them fixed;
+  the progress window and every window whose title bar MDM draws (the style themes) are framed
+  without a title bar style too, their test build is with the reporter
 - 🔍 Menus opening as the pointer crosses the menu bar on a tiling window manager
   ([#277](https://github.com/anefzaoui/misterdownloadmanager/issues/277)): after a command the
   bar waits for a click, as before the first one (now tested on Windows and Linux); once a menu is

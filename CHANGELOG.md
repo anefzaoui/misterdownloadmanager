@@ -672,6 +672,17 @@ choose. And Linux, checked on a real desktop with every change.
   picture where the title bar would have ended. Menus and the drop target are now plain pop-up
   windows, as Windows' own menus are, with nothing above their contents to take for a title bar;
   every window of MDM without a title bar is made one the same way.
+- **The progress window, and the windows with a style theme's title bar, without a black band
+  across their top** ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): on
+  the same Windows 11 Insider build, the progress window showed a black band a title bar tall
+  above its own title bar and a thin one down its left side, its contents moved down and cut off
+  at the bottom; so could every dialog and the main window with Metro, Luna, Aero or Aqua. MDM
+  draws these title bars itself, in windows that kept the system's title bar style, hidden.
+  On Windows 11 they now have no title bar style at all: the progress window and the dialogs are
+  plain windows, all theirs; the main window keeps the system's resizing edges, so it still
+  resizes, snaps and maximizes as before, with a thin strip of its title bar's colour above it.
+  Moving them by their title bar, their taskbar button, Alt+Tab and the window menu (Alt+Space,
+  or a right-click on the title bar) work as before. Windows 10 keeps the frames it had.
 - **A window closed with its title bar's × no longer turns black first**
   ([#207](https://github.com/anefzaoui/misterdownloadmanager/issues/207)): every dialog and the
   progress window turned black for a moment when closed with the × or Alt+F4, rather than with
