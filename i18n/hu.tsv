@@ -117,7 +117,7 @@
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
-	"{what}" isn't an IP address.	"{what}" nem IP-cím.
+	"{what}" isn't an IP address.	„{what}” nem IP-cím.
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -192,6 +192,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	A NextDNS konfigurációs azonosítója hat betűből és számjegyből (0-9, a-f) áll.
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Egy profil neve vagy mappája. Üres: az utoljára használt profil. Nem listázott Chromium-alapú böngésző (Helium, Thorium...) esetén válassza a Chromiumot és a profiljának mappáját.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -203,7 +207,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
-	A rule adds the new articles whose titles it matches, as they come.	Egy szabály hozzáadja az új cikkeket, amelyeknek a címe megegyezik, amint megjelennek.
+	A rule adds the new articles whose titles it matches, as they come.	Egy szabály hozzáadja az új, címük alapján illeszkedő cikkeket, amint megjelennek.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -369,7 +373,7 @@
 	All files	Összes fájl
 #. text in helpers.rs
 #, machine
-	All set: on a page with a video, use Tasks → Download video from a page.	Minden kész: videót tartalmazó oldalon használja a Feladatok → Videó letöltése oldalról menüpontot.
+	All set: on a page with a video, use Tasks → Download video from a page.	Minden kész: videót tartalmazó oldalon válassza a Feladatok → Videó letöltése egy oldalról menüpontot.
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
@@ -385,7 +389,7 @@
 #. text in the Link grabber window
 #. Link grabber: the package of links the download list has already
 #, machine
-	Already in the list	Már a listában
+	Already in the list	Már szerepel a listában
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
@@ -393,7 +397,7 @@
 #. checkbox in crashui.rs
 #. crash report window: checkbox; the .dmp file holds what MDM had in memory
 #, machine
-	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	A hibajelentéshez csatolja a hibakeresési adatokat (.dmp): tartalmazhat címeket, cookie-kat és jelszavakat
+	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	A hibakeresési adatok (.dmp) csatolása is: címeket, cookie-kat és jelszavakat tartalmazhat
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	A fájl törlése a lemezről is
@@ -403,14 +407,14 @@
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
-	Always dark	Mindig sötét
+	Always dark	Mindig sötét mód
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
 	Always into a folder named after it	Mindig egy, a nevéről elnevezett mappába
 #. checkbox in a dialog box
 #, machine
-	Always turn on Speed Limiter on Mister Download Manager startup	Mindig kapcsolja be a sebességkorlátozót a Mister Download Manager indításakor
+	Always turn on Speed Limiter on Mister Download Manager startup	A sebességkorlátozó bekapcsolása a Mister Download Manager indításakor
 #. text in regional.rs; text in the Scheduler window
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
@@ -443,7 +447,7 @@
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
-	Answered in {ms} ms: {ip}	{ms} ms alatt válaszolt: {ip}
+	Answered in {ms} ms: {ip}	Válasz {ms} ms alatt: {ip}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -806,7 +810,7 @@
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Checking {name} ({n} of {total})...	{name} ellenőrzése ({n}/{total})...
+	Checking {name} ({n} of {total})...	A(z) {name} ellenőrzése ({n}/{total})...
 #. text in the Checksum window; text in the Link grabber window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -825,10 +829,14 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Válassza ki azt a nyelvet, amelyen a Mister Download Manager megjeleníti az ablakait:
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	Válassza ki a profil mappáját
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Choose {name}	{name} kiválasztása
+	Choose {name}	Válassza ki a(z) {name} fájlt
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	Cook-szigetek
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	Sütik videóoldalakhoz
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	A vágólapra másolva.
@@ -963,13 +975,13 @@
 	Customize "Download progress" dialog	„Letöltési folyamat” párbeszédpanel testreszabása
 #. text in the Options window
 #, machine
-	Customize keys to prevent or force downloading with MDM	Billentyűk testreszabása a letöltés megakadályozásához vagy kényszerítéséhez az MDM-mel
+	Customize keys to prevent or force downloading with MDM	A letöltés megakadályozására vagy az MDM-mel történő letöltés kényszerítésére szolgáló billentyűk testreszabása
 #. text in the Options window
 #, machine
-	Customize MDM Download panels in browsers	MDM letöltési panelek testreszabása a böngészőkben
+	Customize MDM Download panels in browsers	Az MDM letöltési paneljeinek testreszabása a böngészőkben
 #. text in the Options window
 #, machine
-	Customize MDM menu items in context menu of browsers	MDM menüelemek testreszabása a böngészők helyi menüjében
+	Customize MDM menu items in context menu of browsers	Az MDM menüelemeinek testreszabása a böngészők helyi menüjében
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1019,7 +1031,7 @@
 	Default download settings	Alapértelmezett letöltési beállítások
 #. text in the Options window
 #, machine
-	Default max. conn. number	Alapértelmezett max. kapcs. szám
+	Default max. conn. number	Alapértelmezett maximális kapcsolatszám
 #. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
@@ -1038,18 +1050,18 @@
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its files stay where they are.	Törli a(z) „{category}” kategóriát? A fájljai a helyükön maradnak.
+	Delete the category "{category}"? Its files stay where they are.	Biztosan törli a(z) „{category}” kategóriát? A fájljai a helyükön maradnak.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
-	Delete the queue "{queue}"? Its downloads stay in the list.	Törli a(z) „{queue}” várólistát? A letöltései a listában maradnak.
+	Delete the queue "{queue}"? Its downloads stay in the list.	Biztosan törli a(z) „{queue}” várólistát? A letöltései a listában maradnak.
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Delete the selected downloads (asks first)	A kijelölt letöltések törlése (először rákérdez)
+	Delete the selected downloads (asks first)	A kijelölt letöltések törlése (előtte megerősítést kér)
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Delete the selected downloads and their files (asks first)	A kijelölt letöltések és fájljaik törlése (először rákérdez)
+	Delete the selected downloads and their files (asks first)	A kijelölt letöltések és fájljaik törlése (előtte megerősítést kér)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1073,7 +1085,7 @@
 	disk error: {error}	lemezhiba: {error}
 #. text in the Scheduler window
 #, machine
-	displayed in the list of queues	megjelenítve a várólisták listájában
+	displayed in the list of queues	megjelenik a várólisták listájában
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1098,7 +1110,7 @@
 	Do not start downloading, only add files to the queue	Ne indítsa el a letöltést, csak adja hozzá a fájlokat a várólistához
 #. text in a dialog box
 #, machine
-	Do you want to create it?	Létrehozza?
+	Do you want to create it?	Szeretné létrehozni?
 #. text in the download list (sizes, speeds, status)
 #. category name: documents (pdf, doc…)
 #, machine
@@ -1120,10 +1132,10 @@
 	Don't show this dialog again	Ne jelenítse meg újra ezt a párbeszédpanelt
 #. text in the Options window
 #, machine
-	Don't start downloading automatically from the following addresses:	Ne indítsa el automatikusan a letöltést a következő címekről:
+	Don't start downloading automatically from the following addresses:	Ne induljon el automatikusan a letöltés a következő címekről:
 #. text in the Options window
 #, machine
-	Don't start downloading automatically from the following sites:	Ne indítsa el automatikusan a letöltést a következő webhelyekről:
+	Don't start downloading automatically from the following sites:	Ne induljon el automatikusan a letöltés a következő webhelyekről:
 #. text in the Options window
 #, machine
 	Don't take files smaller than (KB, 0 = any size):	Ne töltsön le kisebb fájlokat, mint (KB, 0 = bármilyen méret):
@@ -1172,7 +1184,7 @@
 #. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
-	Download no more than {mb} MBytes\nevery {hours} hours	Legfeljebb {mb} MB letöltése\nminden {hours} órában
+	Download no more than {mb} MBytes\nevery {hours} hours	Legfeljebb {mb} MB letöltése\nevery {hours} órában
 #. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	Letöltés most
@@ -1202,7 +1214,7 @@
 #. text in helpers.rs
 #. the headline of the first start's helpers window
 #, machine
-	Download videos from YouTube and 1,000+ sites	Videók letöltése YouTube-ról és több mint 1000 webhelyről
+	Download videos from YouTube and 1,000+ sites	Videók letöltése a YouTube-ról és több mint 1000 webhelyről
 #. text in the Scheduler window
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
@@ -1227,7 +1239,7 @@
 #. item in the Categories tree in the download list; value in a column's filter list in the download list
 #. a download's status (state it is in, not a command)
 #, machine
-	Downloading	Letöltés
+	Downloading	Letöltés folyamatban
 #. message or event log entry in the main window
 #, machine
 	Downloading again from the start	Újra letöltés az elejétől
@@ -1411,7 +1423,7 @@
 	Exit	Kilépés
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Exit Mister Download Manager when done	Kilépés a Mister Download Managerből, ha kész
+	Exit Mister Download Manager when done	Kilépés a(z) Mister Download Manager alkalmazásból, ha befejeződött
 #. text in the Checksum window
 #, machine
 	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	Várható ellenőrzőösszeg (MD5, SHA-1, SHA-256, SHA-512 vagy CRC32):
@@ -1429,7 +1441,7 @@
 	Export	Exportálás
 #. text in the Options window
 #, machine
-	Extend the availability of Manifest 2 Chrome extensions	A Manifest 2 Chrome-bővítmények elérhetőségének kiterjesztése
+	Extend the availability of Manifest 2 Chrome extensions	A Manifest 2-es Chrome-bővítmények elérhetőségének meghosszabbítása
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	Szóközökkel elválasztott kiterjesztések, például MP4 MKV R0*
@@ -1468,7 +1480,7 @@
 	Faroe Islands	Feröer-szigetek
 #. text in the Scheduler window
 #, machine
-	February	Február
+	February	február
 #. text in rssdlg.rs
 #. RSS feeds window: label before the box where a feed's web address is typed
 #, machine
@@ -1554,14 +1566,14 @@
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
-	Find peers on the local network	Társkeresés a helyi hálózaton
+	Find peers on the local network	Társak keresése a helyi hálózaton
 #. text in the Add torrent window
 #. Torrent settings: the DHT, the network peers use to find each other
 #, machine
-	Find peers through the DHT	Társkeresés a DHT-n keresztül
+	Find peers through the DHT	Társak keresése a DHT-n keresztül
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Find the next match	Következő egyezés keresése
+	Find the next match	Következő találat keresése
 #. text in the Find window
 #, machine
 	Find:	Keresés:
@@ -1582,7 +1594,7 @@
 #. text in the Download video window
 #. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
 #, machine
-	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	A FLAC pontosan megőrzi a hangot, de nem tud olyan minőséget hozzáadni, amivel az oldal hangja nem rendelkezik: a fájl csak nagyobb lesz.
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	A FLAC pontosan megőrzi a hangot, de nem javíthatja az oldal hangminőségét: csak nagyobb fájlt eredményez.
 #. text in categories.rs
 #, machine
 	Folder:	Mappa:
@@ -1593,10 +1605,10 @@
 #. text in the Add torrent window
 #. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
 #, machine
-	For your account only. Another app set as the default stays first.	Csak az Ön fiókjához. Egy másik alapértelmezett alkalmazás marad az első.
+	For your account only. Another app set as the default stays first.	Csak az aktuális fiókra érvényes. Egy másik alapértelmezettként beállított alkalmazás továbbra is elsőbbséget élvez.
 #. text in the Add torrent window
 #, machine
-	For your Windows account only. Another app chosen in "Open with" stays first.	Csak a Windows-fiókjához. Az „Társítás” menüben kiválasztott másik alkalmazás marad az első.
+	For your Windows account only. Another app chosen in "Open with" stays first.	Csak a Windows-fiókra érvényes. A „Megnyitás ezzel” menüben kiválasztott másik alkalmazás továbbra is elsőbbséget élvez.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Force processes to terminate	Folyamatok kényszerített leállítása
@@ -1627,7 +1639,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	French Southern Territories	Francia Déli Területek
+	French Southern Territories	Francia déli területek
 #. text in the Scheduler window
 #, machine
 	Friday	Péntek
@@ -1637,7 +1649,7 @@
 	from a gallery (gallery-dl)	egy galériából (gallery-dl)
 #. message or event log entry in the main window
 #, machine
-	from a magnet link	mágnestulajdonság-hivatkozásból
+	from a magnet link	magnethivatkozásból
 #. message or event log entry in the main window
 #, machine
 	from a page (yt-dlp)	oldalról (yt-dlp)
@@ -1648,10 +1660,14 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	torrentfájlból
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	Böngészőből:
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	From must come before To	A „Feladó” dátumnak meg kell előznie a „Címzett” dátumot
+	From must come before To	A kezdő dátumnak meg kell előznie a záró dátumot
 #. message or event log entry in the main window
 #, machine
 	from the browser	böngészőből
@@ -1663,7 +1679,7 @@
 	From:	Ettől:
 #. checkbox in the Options window
 #, machine
-	ftp	ftp
+	ftp	FTP
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1685,7 +1701,7 @@
 #. message or event log entry in the main window
 #. a gallery download's error: the helper program it needs is missing
 #, machine
-	gallery-dl is not installed (Add URL with a gallery's address installs it)	A gallery-dl nincs telepítve (galéria címével történő URL hozzáadása telepíti)
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	A gallery-dl nincs telepítve (egy galéria címével történő URL-hozzáadás telepíti)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1812,7 +1828,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Kategóriák el&rejtése
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	Lap elrejtése
 #. text in a download's progress window; text in standard windows
@@ -1867,7 +1883,7 @@
 	If a duplicate download link is added:	Ha duplikált letöltési hivatkozás kerül hozzáadásra:
 #. text in the Options window
 #, machine
-	If existing file is complete, show download complete dialog; otherwise resume it.	Ha a meglévő fájl teljes, megjeleníti a letöltés befejezve párbeszédpanelt; egyébként folytatja.
+	If existing file is complete, show download complete dialog; otherwise resume it.	Ha a meglévő fájl teljes, jelenítse meg a letöltés befejeződéséről szóló párbeszédpanelt, egyébként folytassa a letöltést.
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
@@ -1884,6 +1900,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	Kategóriákban: a kijelölt kategória menüje
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	a zárolt kulcskarika
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1988,11 +2008,11 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	{size} méretű fájlt írna, ami több, mint a rendelkezésre álló {limit} hely vagy ok
+	it would write {size}, more than the {limit} there is room or reason for	{size} méretű fájlt írna ki, ami meghaladná a rendelkezésre álló {limit} korlátot
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Lehetőség van fájlnevek szekvenciális csoportjának hozzáadására, mint például img001.jpg, img002.jpg stb.,\nimg100.jpg az MDM letöltési sorához. Használja a csillag karaktert a fájlnév mintájához.
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Fájlnevek sorozatát is hozzáadhatja az MDM letöltési sorához, például img001.jpg, img002.jpg stb.,\nimg100.jpg. A fájlnévmintában használjon csillag (*) helyettesítő karaktert.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2028,7 +2048,7 @@
 	July	Július
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Jump to the download whose name starts with it	Ugrás arra a letöltésre, amelynek neve azzal kezdődik
+	Jump to the download whose name starts with it	Ugrás arra a letöltésre, amelynek neve ezzel kezdődik
 #. text in the Scheduler window
 #, machine
 	June	Június
@@ -2041,7 +2061,7 @@
 	KBytes/sec	KBájt/mp
 #. checkbox in the Add torrent window
 #, machine
-	Keep sharing torrents after they finish	Torrentek megosztásának folytatása a befejezés után
+	Keep sharing torrents after they finish	Torrentek megosztásának folytatása a befejezésük után
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2068,7 +2088,7 @@
 #. text in a download's Properties window
 #. Properties, where a download's server is: not seen yet (it hasn't run)
 #, machine
-	known once it has run	ismert, miután lefutott
+	known once it has run	futtatás után ismert
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2111,7 +2131,7 @@
 	Latvia	Lettország
 #. text in the Options window
 #, machine
-	Launch Mister Download Manager on startup	Indítsa el a Mister Download Managert indításkor
+	Launch Mister Download Manager on startup	A(z) Mister Download Manager indítása a rendszer indításakor
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2594,6 +2614,10 @@
 #, machine
 	No addresses yet	Még nincsenek címek
 #. text in extension.rs
+#. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
+#, machine
+	No browser MDM can connect to was found	Nem található olyan böngésző, amelyhez az MDM csatlakozni tudna
+#. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 #, machine
 	No browser's extension has connected yet	Egyetlen böngészőbővítmény sem csatlakozott még
@@ -2651,6 +2675,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Nincs proxy/SOCKS
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Nem válaszolt a rendszer kulcskarikája, így a bejelentkezések és jelszavak az MDM beállításaiban maradnak, melyeket csak Ön olvashat.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2711,7 +2739,7 @@
 #. RSS feeds window, Download rules: a regular expression that can't be read, with why
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Not a regular expression: {error}	Nem reguláris kifejezés: {error}
+	Not a regular expression: {error}	Nem érvényes reguláris kifejezés: {error}
 #. text in the Add torrent window
 #. Add trackers: a line that isn't a tracker's address (http, https or udp)
 #, machine
@@ -2742,14 +2770,14 @@
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
-	not supported by this service	ez a szolgáltatás nem támogatja
+	not supported by this service	ezt a fájlt nem támogatja a szolgáltatás
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Nincs használatban: a fájlrészek a fájl mellé íródnak
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Megjegyzés: Az internetszerverek megszakíthatják a kapcsolatot, ha a sebesség túl korlátozott! Ezért nem\najánlott a sebességkorlátozó használata olyan szerverekről történő letöltéshez, amelyek nem támogatják\na „folytatás” funkciót.
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Megjegyzés: Az internetszerverek megszakíthatják a kapcsolatot, ha a sebesség túl alacsony! Ezért nem\najánlott a sebességkorlátozó használata olyan szerverekről történő letöltéshez, amelyek nem támogatják\na „folytatás” funkciót.
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	Megjegyzés: Ezek a beállítások nem vonatkoznak a várólista feldolgozására
@@ -2772,6 +2800,9 @@
 #. text in the Scheduler window
 #, machine
 	October	Október
+#. option (radio button) in the Options window
+#, machine
+	Off	Ki
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	Ki: a befejezett torrent leáll, mint bármely letöltés.
@@ -2792,7 +2823,7 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
 #, machine
-	On battery, Windows' power options don't allow wake timers	A Windows energiagazdálkodási beállításai akkumulátoros üzemmódban nem engedélyezik az ébresztési időzítőket
+	On battery, Windows' power options don't allow wake timers	A Windows energiagazdálkodási beállításai akkumulátorról nem engedélyezik az ébresztési időzítőket
 #. text in a download's progress window
 #, machine
 	on download stop/resume	letöltés leállításakor/folytatásakor
@@ -2800,6 +2831,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	macOS rendszeren csak rendszergazda ütemezhet ébresztést
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Windowson a Chrome, az Edge és a Brave zárolhatja a sütijeit. A Firefox működik.
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Egyszer ekkor:
@@ -2835,7 +2870,7 @@
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Only the first {n} videos are listed.	Csak az első {n} videó van listázva.
+	Only the first {n} videos are listed.	Csak az első {n} videó szerepel a listában.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Csak amíg használom a számítógépet
@@ -2889,11 +2924,11 @@
 #. text in a download's progress window
 #. tab title: what happens when the download finishes
 #, machine
-	Options on completion	Beállítások a befejezéskor
+	Options on completion	Befejezés utáni műveletek
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
-	Or paste your API token:	Vagy illessze be az API tokenjét:
+	Or paste your API token:	Vagy illessze be az API-tokenjét:
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -2993,7 +3028,7 @@
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
 #, machine
-	plain DNS	egyszerű DNS
+	plain DNS	titkosítatlan DNS
 #. button in the Options window
 #. verb: plays the sound
 #, machine
@@ -3033,6 +3068,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	Az előnézet még nem érhető el
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	Profil (opcionális):
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -3050,6 +3089,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	Proxy / SOCKS konfiguráció
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	proxykiszolgáló
 #. label in the Options window
 #, machine
 	Proxy server address	Proxykiszolgáló címe
@@ -3089,6 +3132,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Sorok
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	Csak ezen a számítógépen olvasható, és csak a videó oldalára küldhető.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3112,7 +3159,7 @@
 #. event log entry: Reannounce failed, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Reannounce failed: {error}	Az újra bejelentkezés sikertelen: {error}
+	Reannounce failed: {error}	Az újrahirdetés sikertelen: {error}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -3419,6 +3466,11 @@
 #. event log: File Properties: the download goes through the debrid account again
 #, machine
 	Set to download through the debrid account	Debrid-fiókon keresztüli letöltésre állítva
+#. text in extension.rs
+#. a check of Test browser integration: setting it up failed; {error} is the system's own message, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Setting it up failed: {error}	A beállítás sikertelen: {error}
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3506,6 +3558,18 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	Bejelentkezés a böngészőben
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	A bejelentkezések és jelszavak a macOS kulcskarikájában vannak tárolva.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	A bejelentkezések és jelszavak a rendszer kulcskarikájában (Secret Service) vannak tárolva.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	A bejelentkezések és jelszavak a Windows hitelesítőadat-kezelőjében vannak tárolva.
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -3666,12 +3730,12 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: the download started (just now)
 #, machine
-	Started	Elindítva
+	Started	Elindult
 #. message or event log entry in the main window
 #. a gallery download's log: {version} = gallery-dl's version
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	Started with gallery-dl {version}	Indítva gallery-dl {version} verzióval
+	Started with gallery-dl {version}	Elindult a gallery-dl {version} verziójával
 #. text in the Options window
 #. the same tooltip where no notification area (system tray) shows MDM's icon (some Linux desktops): its window starts minimized instead
 #, machine
@@ -3683,7 +3747,7 @@
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
-	Started with yt-dlp {version} ({format})	Elindítva yt-dlp {version} ({format}) verzióval
+	Started with yt-dlp {version} ({format})	Elindult a yt-dlp {version} ({format}) verziójával
 #. text in helpers.rs
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3853,7 +3917,7 @@
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
-	the .torrent file kept for it is gone	az ehhez tárolt .torrent fájl eltűnt
+	the .torrent file kept for it is gone	az ehhez tárolt .torrent fájl hiányzik
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	Az URL-nek http(s) vagy ftp(s) címnek kell lennie
@@ -4022,6 +4086,10 @@
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
 	the FTP server answered {code} {reply}	az FTP-kiszolgáló válasza: {code} {reply}
+#. text in extension.rs
+#. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
+#, machine
+	The helper program the browsers start is missing	Hiányzik a böngészők által indított segédprogram
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4066,7 +4134,7 @@
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	A kiválasztott letöltés nem teljes. Biztosan törölni szeretné\na Mister Download Manager letöltési listájáról?
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	A kiválasztott letöltés nem fejeződött be. Biztosan törölni szeretné\na(z) Mister Download Manager letöltési listájáról?
 #. text in errors.rs
 #, machine
 	the server answered {status}	a szerver {status} választ adott
@@ -4088,10 +4156,22 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	a szerver a fájl váratlan részét küldte ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Az oldal bejelentkezést kér, még a böngészője sütijeivel is ehhez az oldalhoz. Jelentkezzen be a böngészőjében, majd próbálja újra.
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Az oldal bejelentkezést kér, még a(z) {browser} sütijeivel is. Jelentkezzen be a(z) {browser} böngészőbe, majd keresse meg újra az oldalt.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	A szimbólumokat nem sikerült letölteni: a jelentés néhány sora nevek helyett címeket mutat (a fejlesztők továbbra is el tudják olvasni őket).
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	A rendszer kulcskarikája zárolva van, és az MDM nem oldja fel, így a bejelentkezések és jelszavak az MDM beállításaiban maradnak, melyeket csak Ön olvashat.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4179,7 +4259,7 @@
 	this is a Google Drive folder, not a file	ez egy Google Drive-mappa, nem fájl
 #. text in errors.rs
 #, machine
-	this is not a magnet link or a .torrent file	ez nem mágneses hivatkozás vagy .torrent fájl
+	this is not a magnet link or a .torrent file	ez nem magnet hivatkozás vagy .torrent fájl
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -4196,6 +4276,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Ehhez ffmpeg szükséges
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Ez a hordozható másolat a bejelentkezési adatokat és jelszavakat a saját beállításaiban tárolja, a Windows-fiókjához titkosítva.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Ez a hordozható másolat a bejelentkezéseket és jelszavakat saját beállításaiban tárolja, melyeket csak Ön olvashat.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4203,7 +4291,7 @@
 	this program isn't {name}	ez a program nem {name}
 #. text in a download's progress window
 #, machine
-	This system has no dial-up connections to hang up	Ez a rendszer nem rendelkezik felhívható tárcsázós kapcsolatokkal
+	This system has no dial-up connections to hang up	Ez a rendszer nem rendelkezik bontandó betárcsázós kapcsolattal
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -4221,7 +4309,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Ez a videó bejelentkezést igényel. Használja a „Videó letöltése” gombot a böngészőjében, amely továbbítja a bejelentkezési adatait.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Ehhez a videóhoz be kell jelentkezni. Használja a böngészőjében a videó feletti Videó letöltése gombot, amely továbbítja a bejelentkezési adatait, vagy válassza ki a böngészőjét a Beállítások → Oldalak bejelentkezései → Sütik videóoldalakhoz menüpontban.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4237,7 +4325,7 @@
 #. message or event log entry in the main window
 #. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
 #, machine
-	Through {service}: the service downloads the torrent, then MDM its files	{service} szolgáltatáson keresztül: a szolgáltatás letölti a torrentet, majd az MDM a fájljait
+	Through {service}: the service downloads the torrent, then MDM its files	{service} szolgáltatáson keresztül: a szolgáltatás letölti a torrentet, majd az MDM letölti a fájljait
 #. text in the Scheduler window
 #, machine
 	Thursday	csütörtök
@@ -4285,14 +4373,14 @@
 #. message or event log entry in the main window; text in the Add torrent window
 #. the kind of file the Open dialog lists
 #, machine
-	Torrent files	Torrent fájlok
+	Torrent files	Torrentfájlok
 #. window title in the Add torrent window
 #, machine
-	Torrent settings	Torrent beállítások
+	Torrent settings	Torrentbeállítások
 #. text in torrent downloads
 #. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
 #, machine
-	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	A torrentbeállítások szerint a proxyt kell használni, de a Proxy / Socks nem tartalmaz SOCKS5 proxyt
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	A torrentbeállítások proxy használatát írják elő, de a Proxy / Socks beállítások között nincs SOCKS5-proxy
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -4301,7 +4389,7 @@
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	torrents could not start: {error}	A torrentek nem indíthatók: {error}
+	torrents could not start: {error}	A torrentek indítása nem sikerült: {error}
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -4376,11 +4464,11 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	Type a letter in From and in To	Írjon be egy betűt a „Feladó” és a „Címzett” mezőbe
+	Type a letter in From and in To	Írjon be egy betűt a „Kezdőérték” és a „Végérték” mezőbe
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	Type a number in From and in To	Írjon be egy számot a „Feladó” és a „Címzett” mezőbe
+	Type a number in From and in To	Írjon be egy számot a „Kezdőérték” és a „Végérték” mezőbe
 #. text in the settings
 #. Options → DNS: no server address was typed
 #, machine
@@ -4571,7 +4659,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Vatican City	Vatikán
+	Vatican City	Vatikánváros
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4598,14 +4686,6 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	A videókeresések yt-dlp-t használnak (kb. 23 MB, aláírás ellenőrizve).
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	A videóoldalak és a torrentek még nem használhatják.
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	A videóoldalak még nem használhatják.
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4621,7 +4701,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Virgin Islands (U.S.)	Virgin-szigetek (USA)
+	Virgin Islands (U.S.)	Amerikai Virgin-szigetek
 #. text in the Options window
 #, machine
 	Virus checking settings	Vírusellenőrzési beállítások
@@ -4639,7 +4719,7 @@
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
-	Waiting	Várakozás
+	Waiting	Várakozik
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	Várakozás: a letöltési korlát elérve (Ütemező)
@@ -4683,7 +4763,11 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
-	Windows allows wake timers only while plugged in	A Windows csak csatlakoztatott állapotban engedélyezi az ébresztési időzítőket
+	Windows allows wake timers only while plugged in	A Windows csak hálózati tápellátás mellett engedélyezi az ébresztési időzítőket
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	A Windows hitelesítőadat-kezelője nem válaszolt, így a bejelentkezések és jelszavak az MDM beállításaiban maradnak, titkosítva az Ön Windows-fiókja számára.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4764,9 +4848,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	A rendszeré: {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	A yt-dlp nem tudja olvasni a(z) {browser} sütijeit, amíg a(z) {browser} nyitva van. Zárja be a(z) {browser} böngészőt, és keresse meg újra az oldalt, vagy válassza a Firefoxot a Beállítások → Oldalak bejelentkezései menüpontban.
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	A yt-dlp nem tudta lekérni a(z) {browser} sütijeinek kulcsát a rendszer kulcstartójából. Oldja fel a kulcstartót, és keresse meg újra az oldalt.
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	A yt-dlp nem tudta olvasni a(z) {browser} sütijeit: {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	A yt-dlp nem talált {browser} sütiket ezen a számítógépen. Ellenőrizze a böngészőt és a profilját a Beállítások → Oldalak bejelentkezései menüpontban.
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	A yt-dlp nincs telepítve (Feladatok → Videó letöltése egy oldalról telepíti)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	A yt-dlp ezzel a böngészővel jelentkezik be a videóoldalakra, a sütiket csak erről a számítógépről olvassa be. Akkor használatos, ha a böngésző kiterjesztése nem adta át az oldal saját sütijeit: beillesztett cím, lejátszási lista.
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4782,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ és XZ; egy felosztott archívum (.part1.rar, .7z.001) az összes kötet beérkezése után. A már meglévő fájl megmarad: az új számozva lesz.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ és XZ; felosztott archívum (.part1.rar, .7z.001) esetén az összes kötet beérkezése után. A már meglévő fájl megmarad: az új fájl sorszámot kap.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4790,7 +4895,7 @@
 #. text in the Options window
 #. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
 #, machine
-	{adapter} is not connected: nothing is downloaded until it is back.	A {adapter} nincs csatlakoztatva: addig nem töltődik le semmi, amíg vissza nem tér.
+	{adapter} is not connected: nothing is downloaded until it is back.	A(z) {adapter} nincs csatlakoztatva: addig nem töltődik le semmi, amíg újra csatlakozik.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4798,16 +4903,20 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{algorithm}: checked when the download finishes	{algorithm}: letöltés befejezésekor ellenőrizve
+	{algorithm}: checked when the download finishes	{algorithm}: ellenőrzés a letöltés befejezésekor
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	A(z) {browser} Windowson zárolva tartja a sütijeit, így a yt-dlp nem tudja olvasni őket. Válassza a Firefoxot a Beállítások → Webhelyek bejelentkezései menüpontban, vagy használja a Videó letöltése gombot a videó felett a(z) {browser} böngészőben.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
-	{browser}: the extension connected	{browser}: a bővítmény csatlakoztatva
+	{browser}: the extension connected	{browser}: a bővítmény csatlakozott
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	{browser}: the extension {version} connected	{browser}: a {version} bővítmény csatlakoztatva
+	{browser}: the extension {version} connected	{browser}: a {version} verziójú bővítmény csatlakozott
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
@@ -4815,7 +4924,7 @@
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
-	{column} contains	{column} tartalmazza
+	{column} contains	{column} tartalma
 #. message or event log entry in the main window
 #. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
 #. {count} = a number (keep the braces as they are)
@@ -4828,17 +4937,17 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{file} could not be deleted from the disk: {error}	{file} nem törölhető a lemezről: {error}
+	{file} could not be deleted from the disk: {error}	Nem sikerült törölni a(z) {file} fájlt a lemezről: {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{file} could not be opened: {error}	{file} nem nyitható meg: {error}
+	{file} could not be opened: {error}	Nem sikerült megnyitni a(z) {file} fájlt: {error}
 #. text in the Checksum window
 #, machine
-	{file} could not be read to check it	{file} nem olvasható az ellenőrzéshez
+	{file} could not be read to check it	A(z) {file} fájl nem olvasható az ellenőrzéshez
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} már nincs ott, ahová mentve lett (áthelyezve vagy törölve). A jobb kattintás menüben az „Újra letöltés” újra letölti.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	A(z) {file} már nincs ott, ahová mentette (áthelyezték vagy törölték). A jobb gombbal megnyitható menü Újra letöltés parancsával ismét letöltheti.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4851,12 +4960,12 @@
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} ({size} each)	{have} / {total} ({size} mindegyik)
+	{have} of {total} ({size} each)	{have} / {total} ({size}/darab)
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} pieces ({size} each)	{have} / {total} darab ({size} mindegyik)
+	{have} of {total} pieces ({size} each)	{have} / {total} darab ({size}/darab)
 #. text in the download list (sizes, speeds, status)
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
@@ -4864,15 +4973,15 @@
 #. text in errors.rs
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 #, machine
-	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} nem érhető el a {adapter} adapteren keresztül: nincs ilyen típusú címe (IPv4 vagy IPv6)
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} nem érhető el a(z) {adapter} adapteren keresztül: az adapternek nincs ilyen típusú címe (IPv4 vagy IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
-	{language}, automatic	{language}, automatikus
+	{language}, automatic	{language}, automatikusan generált
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
-	{live} connected, {known} known	{live} csatlakoztatva, {known} ismert
+	{live} connected, {known} known	{live} csatlakozik, {known} ismert
 #. text in the Scheduler window
 #. the calendar's title: {month} = a month's name, {year} = its year
 #, machine
@@ -4880,7 +4989,7 @@
 #. text in the download list (sizes, speeds, status)
 #. {m} = minutes; {s} = seconds (keep the braces as they are)
 #, machine
-	{m} min {s} sec	{m} perc {s} mp
+	{m} min {s} sec	{m} perc {s} másodperc
 #. text in the Add torrent window
 #. the torrent's name, then {files} = "3 files" and {size} = its total size
 #. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -4890,12 +4999,12 @@
 #. {name} = yt-dlp or ffmpeg; {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
-	{name} could not be downloaded: {error}	A {name} nem tölthető le: {error}
+	{name} could not be downloaded: {error}	Nem sikerült letölteni a(z) {name} fájlt: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} egy 7z vagy RAR archívum. Az MDM ezeket a 7-Zippel bontja ki, amely nincs telepítve.
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	A(z) {name} 7z vagy RAR archívum. Az MDM a 7-Zip programmal bontja ki ezeket, de a program nincs telepítve.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -4919,28 +5028,28 @@
 #. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} selected	{n} / {total} kiválasztva
+	{n} of {total} selected	{n} / {total} kijelölve
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
-	{percent} at {service}	{percent} – {service}
+	{percent} at {service}	{service}: {percent}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} lassítást kér; az MDM egy perc múlva újra megpróbálja
+	{service} asks to slow down; MDM will try again in a minute	A(z) {service} lassítást kér; az MDM egy perc múlva újra próbálkozik
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} először engedélyeznie kell ezt a számítógépet: nézze meg az e-mailjét
+	{service} asks you to allow this computer first: see its email	A(z) {service} kéri, hogy előbb engedélyezze ezt a számítógépet: nézze meg az e-mailt
 #. text in errors.rs
 #, machine
 	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} nem tudja letölteni ezt a torrentet: senki sem osztja meg, vagy a hivatkozása nem olvasható
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} jelenleg nem éri el ezt a fájlmegosztót; az MDM később újra megpróbálja
+	{service} can't reach this file host right now; MDM will try again later	A(z) {service} jelenleg nem éri el ezt a fájltárhelyet; az MDM később újra próbálkozik
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -4948,7 +5057,7 @@
 #. text in errors.rs
 #. a debrid service's error: it refuses this computer's address (a VPN or a server address)
 #, machine
-	{service} refuses this connection (a VPN or server address?)	{service} elutasítja ezt a kapcsolatot (VPN vagy szerver cím?)
+	{service} refuses this connection (a VPN or server address?)	A(z) {service} elutasítja ezt a kapcsolatot (VPN- vagy szervercím?)
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
@@ -4979,7 +5088,7 @@
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: a fájlmegosztóhoz tartozó korlátja jelenleg kimerült
+	{service}: your limit for this file host is used up for now	{service}: a fájlmegosztóra vonatkozó korlátja jelenleg kimerült
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
@@ -5021,7 +5130,7 @@
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{what} could not be installed: {error}	A {what} nem telepíthető: {error}
+	{what} could not be installed: {error}	A {what} telepítése nem sikerült: {error}
 #. column title in the download list in the download list
 #. past participle: when the download was added
 #, machine
@@ -5095,7 +5204,7 @@ extension	Download video	Videó letöltése
 #. text in the browser extension
 #. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
 #, machine
-extension	Download with Mister Download Manager	Letöltés a Mister Download Manager használatával
+extension	Download with Mister Download Manager	Letöltés a(z) Mister Download Manager alkalmazással
 #. text in the browser extension
 #. shown in the toolbar button's popup after the site was excluded
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -5108,7 +5217,7 @@ extension	Drag to move it along the video's edge	Húzza a videó szélére a moz
 #. text in the browser extension
 #. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
 #, machine
-extension	Hands downloads from the browser to Mister Download Manager.	Átadja a letöltéseket a böngészőből a Mister Download Manager számára.
+extension	Hands downloads from the browser to Mister Download Manager.	Átadja a letöltéseket a böngészőből a(z) Mister Download Manager alkalmazásnak.
 #. text in the browser extension
 #. link in the toolbar button's popup to the help page
 #, machine
@@ -5116,7 +5225,7 @@ extension	Help	Súgó
 #. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
-extension	Hide on this video	Elrejtés ezen a videón
+extension	Hide on this video	Elrejtés ennél a videónál
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
@@ -5177,7 +5286,7 @@ extension	Mister Download Manager isn't installed, or its browser integration is
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager ezután ugyanazon a proxyn keresztül tölt le, mint ez a böngésző. A böngésző egyszer kéri, hogy engedélyezze; ennek kikapcsolása visszavonja ezt.
+extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Az Mister Download Manager ezután ugyanazon a proxyn keresztül tölt le, mint ez a böngésző. A böngésző egyszer engedélyt kér erre; ennek kikapcsolásával visszavonhatja az engedélyt.
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -5195,7 +5304,7 @@ extension	Never take downloads from {site}	Soha ne töltsön le fájlokat a(z) {
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
-extension	No video or sound found on this page yet. Play it, then open this again.	Még nem található videó vagy hang ezen az oldalon. Játssza le, majd nyissa meg újra.
+extension	No video or sound found on this page yet. Play it, then open this again.	Még nem található videó vagy hang ezen az oldalon. Indítsa el a lejátszást, majd nyissa meg újra.
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
@@ -5236,11 +5345,11 @@ extension	Take downloads from this browser	Letöltések átvétele ebből a bön
 #. text in the browser extension
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
-extension	The connection to Mister Download Manager failed	A(z) Mister Download Manager kapcsolódása sikertelen
+extension	The connection to Mister Download Manager failed	Nem sikerült csatlakozni az Mister Download Manager alkalmazáshoz
 #. text in the browser extension
 #. shown briefly on the download button over a video when the app's settings keep the button off on this web site
 #, machine
-extension	The download button is off on this site	A letöltés gomb ki van kapcsolva ezen a webhelyen
+extension	The download button is off on this site	A letöltés gomb ezen a webhelyen ki van kapcsolva
 #. text in the browser extension
 #. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
 #, machine
@@ -5603,7 +5712,7 @@ menu	Direct3D	Direct3D
 #. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Direct3D didn't start here: OpenGL draws	A Direct3D nem indult el: az OpenGL rajzol
+menu	Direct3D didn't start here: OpenGL draws	A Direct3D nem indult el: az OpenGL végzi a rajzolást
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -5659,7 +5768,7 @@ menu	From &text file...	&Szövegfájlból...
 menu	H&elp contents	&Súgó tartalma
 #. menu command in the main window
 #, machine
-menu	Hide drop target	Cél elrejtése
+menu	Hide drop target	Célterület elrejtése
 #. menu command in the main window
 #. View → Theme: black and white with strong edges, for low vision
 #, machine
@@ -5830,7 +5939,7 @@ menu	Tell a &friend	&Ajánlás ismerősnek
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
-menu	The graphics card was lost twice in 10 minutes	A grafikus kártya 10 percen belül kétszer veszett el
+menu	The graphics card was lost twice in 10 minutes	A grafikus kártya 10 percen belül kétszer leállt
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
@@ -5956,43 +6065,332 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/mp
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent fájl
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	Hozzáadás
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	Hozzáadva.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	Hozzáadva. Az MDM olvassa a torrentet: hamarosan megjelenik a listában.
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	Cím vagy mágneses hivatkozás
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	Összes
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	Automatikus (fájltípus szerint)
 #. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
-	in the locked keyring	a zárolt kulcskarika
+	Certificate (SHA-256): {fingerprint}	Tanúsítvány (SHA-256): {fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	.torrent fájl kiválasztása
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	Kód
 #. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: label before the 8-digit code
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Nem válaszolt a rendszer kulcskarikája, így a bejelentkezések és jelszavak az MDM beállításaiban maradnak, melyeket csak Ön olvashat.
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+	Code:	Kód:
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
 #, machine
-	proxy server	proxykiszolgáló
+	Delete the file too	A fájl törlése is
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#. column title: a paired phone's or computer's name
 #, machine
-	Sign-ins and passwords are kept in the macOS keychain.	A bejelentkezések és jelszavak a macOS kulcskarikájában vannak tárolva.
+	Device	Eszköz
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
 #, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	A bejelentkezések és jelszavak a rendszer kulcskarikájában (Secret Service) vannak tárolva.
+	Every local network address	Minden helyi hálózati cím
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	Eszköz elfelejtése
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	Elfelejti ezt az eszközt? Új kódra lesz szüksége az újbóli csatlakozáshoz.
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	párosított eszközről
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
 #, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	A bejelentkezések és jelszavak a Windows hitelesítőadat-kezelőjében vannak tárolva.
+	It could not start: {error}	Nem sikerült elindítani: {error}
 #. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. column title: when the device last reached MDM
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	A rendszer kulcskarikája zárolva van, és az MDM nem oldja fel, így a bejelentkezések és jelszavak az MDM beállításaiban maradnak, melyeket csak Ön olvashat.
+	Last seen	Utoljára látható
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	Engedélyezi a telefonoknak és számítógépeknek az MDM vezérlését a helyi hálózaton
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#. Options → Remote: label before the choice of the address MDM listens on
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Ez a hordozható másolat a bejelentkezéseket és jelszavakat saját beállításaiban tárolja, titkosítva az Ön Windows-fiókja számára.
+	Listen on:	Figyelés:
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Ez a hordozható másolat a bejelentkezéseket és jelszavakat saját beállításaiban tárolja, melyeket csak Ön olvashat.
+	MDM can't be reached on the network now: Options → Remote says why.	Az MDM jelenleg nem érhető el a hálózaton: az Opciók → Távoli menüpontban található az ok.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	Az MDM nem tudja letölteni ezt a címet.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	Az MDM nem tudta hozzáadni.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	Az MDM nem tudta megtenni.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	Az MDM nem válaszol. Ellenőrizze, hogy fut-e, és ugyanazon a hálózaton van-e.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	Az MDM nem válaszol. Újrapróbálkozás...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	Az MDM most nem mutat kódot. Először kattintson ott az Eszköz párosítása gombra.
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	Továbbiak
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	Új kód
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	Nincsenek letöltések itt.
 #. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	A Windows hitelesítőadat-kezelője nem válaszolt, így a bejelentkezések és jelszavak az MDM beállításaiban maradnak, titkosítva az Ön Windows-fiókja számára.
+	No local network now: it starts when the computer joins one.	Nincs helyi hálózat: akkor indul el, amikor a számítógép csatlakozik egyhez.
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	Ki: semmi a hálózaton nem érheti el az MDM-et.
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	A számítógépen nyissa meg az Opciók, majd a Távoli menüpontot, és kattintson az Eszköz párosítása gombra. Adja meg a megjelenő kódot.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	A telefonon olvassa be ezt a kódot a kamerával, vagy nyissa meg a címet, és adja meg a kódot.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	Be. A telefonon nyissa meg ezt a címet:
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Csak a párosított eszközök láthatnak vagy módosíthatnak bármit. Az első alkalommal a telefon böngészője figyelmeztet az MDM saját tanúsítványára: az ujjlenyomata a fent látható.
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	Párosítás
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	Eszköz párosítása
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	Eszköz párosítása...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Párosítás a következővel: Mister Download Manager
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	Párosítva
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	Párosított eszközök:
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	A(z) {port} portot egy másik program használja: válasszon másikat.
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	Várólistán
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	Távoli elérés
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	Távoli vezérlés
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	Eltávolítja a(z) {name} elemet a listáról?
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	Indítás most
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	A módosítások az OK gombra kattintva lépnek érvénybe.
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	Ez a kód már nem használható.
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	Csak ez a számítógép (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	Az eszköz neve
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	Ez a fájl túl nagy ahhoz, hogy torrent legyen.
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	Ez nem torrentfájl.
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	Először kapcsolja be a távvezérlést.
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	Várjon egy pillanatot, majd próbálja újra.
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	Várakozás a(z) {queue} várólistán
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	Várakozás az eszközre. A kód {time} ideig érvényes.
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	Mikor
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	Hibás kód. Mutasson új kódot az MDM-ben, és próbálja újra.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	Hibás kód. Hátralévő próbálkozások: {n}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	A(z) {device} párosítva van. Mostantól vezérelheti az MDM-et.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{done} / {size}
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} szabad
+#. text in the browser extension
+#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
+#, machine
+extension	Another Mister Download Manager (a server)	Másik Mister Download Manager (kiszolgáló)
+#. text in the browser extension
+#. the name this browser gets in the other MDM's list of paired devices
+#, machine
+extension	Browser extension	Böngészőbővítmény
+#. text in the browser extension
+#. the toolbar button's status while downloads go to another MDM
+#, machine
+extension	Downloads go to {address}	A letöltések ide mennek: {address}
+#. text in the browser extension
+#. the address typed isn't an https:// address
+#, machine
+extension	Enter its https:// address.	Adja meg a https:// címét.
+#. text in the browser extension
+#. pairing failed for another reason
+#, machine
+extension	It didn't work. Try again.	Nem sikerült. Próbálja újra.
+#. text in the browser extension
+#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
+#, machine
+extension	It shows no code now: click Pair a device there first.	Most nem mutat kódot: először kattintson ott az Eszköz párosítása gombra.
+#. text in the browser extension
+#. pairing failed: the other MDM didn't answer
+#, machine
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Nem érhető el. Nyissa meg egyszer a címét ebben a böngészőben, és fogadja el a tanúsítványát, majd próbálja újra.
+#. text in the browser extension
+#. button: open the other MDM's address in a tab (to accept its certificate once)
+#, machine
+extension	Open it	Megnyitás
+#. text in the browser extension
+#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
+#, machine
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	Nyissa meg egyszer a címét, és fogadja el a tanúsítványát, majd adja meg a kódot a Beállítások, Távoli, Eszköz párosítása (vagy misterdownloadmanager-cli pair) menüpontból.
+#. text in the browser extension
+#. button: pair this browser with the other MDM using the code
+#, machine
+extension	Pair	Párosítás
+#. text in the browser extension
+#. placeholder of the box for the 8-digit code the other MDM shows
+#, machine
+extension	Pairing code	Párosítási kód
+#. text in the browser extension
+#. heading in the toolbar button's popup, above the choice of where downloads go
+#, machine
+extension	Send downloads to	Letöltések küldése ide
+#. text in the browser extension
+#. choice under Send downloads to: the Mister Download Manager on this computer
+#, machine
+extension	This computer	Ez a számítógép
+#. text in the browser extension
+#. pairing failed: codes tried too fast
+#, machine
+extension	Wait a moment, then try again.	Várjon egy pillanatot, majd próbálja újra.
+#. text in the browser extension
+#. pairing failed: the code was wrong
+#, machine
+extension	Wrong code.	Hibás kód.

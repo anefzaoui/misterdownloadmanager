@@ -12,7 +12,8 @@ use mdm_engine::{Destination, Download, Options, Request};
 use reqwest::header::{AUTHORIZATION, HeaderMap, HeaderValue};
 
 use crate::chrome::{
-    self, IconKey, MenuEntry, PopupResult, ShellIcons, ToolbarEvent, TreeEvent, TreeRow,
+    self, IconKey, MenuBarEvent, MenuEntry, PopupResult, ShellIcons, ToolbarEvent, TreeEvent,
+    TreeRow,
 };
 use crate::dialogs::{self, AddUrl, Complete, FileInfo, Outcome, Start};
 use crate::icons::Icon;
@@ -452,6 +453,12 @@ pub struct App {
     torrents_started: bool,
     /// The torrent session, started on first use (D-014).
     torrent_host: crate::torrents::Host,
+    /// The remote control (#141): paired phones and computers on the local network.
+    pub remote: Option<mdm_remote::Remote>,
+    /// Torrents a paired device sent, their files being looked up (`remote::poll_torrents`).
+    pub remote_torrents: Vec<crate::remote::Lookup>,
+    /// Free space where downloads go, and when it was last looked up (`free_space`).
+    free_space: std::sync::Arc<std::sync::Mutex<(Option<Instant>, Option<u64>)>>,
     /// Options → Proxy / Socks → Network adapter (#35): the watch, the route seen last frame, and
     /// the downloads stopped because it changed, to start again when it allows.
     netwatch: crate::netwatch::NetWatch,
@@ -498,6 +505,9 @@ pub struct App {
     at_login_icon: Option<Instant>,
     at_login_checked: Option<Instant>,
     exiting: bool,
+    /// Run without a window (`--headless`, #157): nothing is shown or asked; what arrives is
+    /// added as the remote control adds it.
+    headless: bool,
     /// Clipboard watching (Options → General): the text last seen (outer None: not looked
     /// yet) and when.
     clip_seen: Option<Option<String>>,
@@ -737,19 +747,32 @@ fn category_icon(c: Category) -> IconKey {
 }
 
 impl App {
+    /// For a run without a window (#157): downloads go to `downloads` when given (a server's
+    /// share), and nothing waits for an answer from someone at the computer.
+    pub fn headless(mut self, downloads: Option<PathBuf>) -> Self {
+        self.headless = true;
+        if let Some(d) = downloads {
+            self.downloads = d;
+        }
+        self
+    }
+
+    /// Asked to quit (File → Exit, `/exit`, the Scheduler's "Exit when done").
+    pub fn wants_exit(&self) -> bool {
+        self.exiting || self.exit_requested
+    }
+
     pub fn new(
-        cc: &eframe::CreationContext<'_>,
+        ctx: &egui::Context,
         rt: tokio::runtime::Handle,
         commands: std::sync::mpsc::Receiver<ipc::Incoming>,
+        sink: ipc::Sink,
         loaded: store::Loaded,
         start: crate::Start,
     ) -> Self {
         // The look (#45): the chosen theme before anything is drawn.
-        crate::theme::select(
-            &crate::theme::startup_id(&loaded.settings.theme),
-            &cc.egui_ctx,
-        );
-        crate::theme::apply(&cc.egui_ctx);
+        crate::theme::select(&crate::theme::startup_id(&loaded.settings.theme), ctx);
+        crate::theme::apply(ctx);
         let mut settings = loaded.settings;
         if settings.limiter_on_startup {
             settings.speed_limit_on = true;
@@ -773,7 +796,7 @@ impl App {
         }
         let ask_language = !settings.language_asked;
         crate::i18n::set_lang(settings.language.as_deref());
-        crate::theme::language_fonts(&cc.egui_ctx);
+        crate::theme::language_fonts(ctx);
         crate::regional::set(&settings.regional);
         if settings.proxy_mode == 2 {
             crate::pacfetch::refresh(&settings.proxy_script, &rt);
@@ -845,11 +868,12 @@ impl App {
             _ => View::All,
         };
         let show_categories = settings.show_categories;
+        // The remote control (#141): off unless Options → Remote turned it on.
+        let remote = crate::remote::start(&rt, sink, &settings);
         // Started with the session where a window can't be hidden (Wayland, #226): minimized.
         if start == crate::Start::Minimized {
             tracing::info!("started with the session: minimized (a window can't be hidden here)");
-            cc.egui_ctx
-                .send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+            ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
         }
         App {
             rt,
@@ -864,7 +888,7 @@ impl App {
             queues_open,
             maximized: None,
             a11y_lang: "",
-            ui_ctx: cc.egui_ctx.clone(),
+            ui_ctx: ctx.clone(),
             tree_keys: false,
             move_rename_for: None,
             list_view: view,
@@ -928,6 +952,9 @@ impl App {
             blocklist_busy: Default::default(),
             torrents_started: false,
             torrent_host: crate::torrents::Host::new(),
+            remote,
+            remote_torrents: Vec::new(),
+            free_space: Default::default(),
             netwatch: Default::default(),
             debrid: Default::default(),
             debrid_from: 0,
@@ -957,6 +984,7 @@ impl App {
             at_login_icon: None,
             at_login_checked: None,
             exiting: false,
+            headless: false,
             confirm_delete: None,
             confirm_queue_delete: None,
             confirm_redownload: None,
@@ -1946,6 +1974,7 @@ impl App {
                     "archives" => 10,
                     "sounds" => 8,
                     "regional" => 9,
+                    "remote" | "pair" => 11,
                     _ => 0,
                 };
                 self.run(Cmd::Options, None, ctx);
@@ -1957,6 +1986,10 @@ impl App {
                 }
                 // A window over a page (screenshots, #192): options:test, options:account.
                 self.options = self.options.take().map(|o| o.with_window(tab));
+                // Remote → Pair a device... (the docs' screenshots, #141).
+                if tab == "pair" {
+                    self.options = self.options.take().map(|o| o.with_pairing());
+                }
             }
             _ => {}
         }
@@ -1966,6 +1999,18 @@ impl App {
     fn handle_command(&mut self, cmd: ipc::Command, ctx: &egui::Context) {
         if cmd.exit {
             self.run(Cmd::Exit, None, ctx);
+            return;
+        }
+        // Without a window (#157): an address, magnet or .torrent is added as a paired device's
+        // is (no Download File Info, no Add torrent); nothing else opens anything.
+        if self.headless {
+            if cmd.start_queue {
+                self.start_queue(0);
+            }
+            if cmd.url.is_some() {
+                let answer = self.remote_add(cmd);
+                tracing::info!("headless: added: {answer}");
+            }
             return;
         }
         // The startup entry's (#226): this start began in the tray (main.rs), or MDM already
@@ -2090,7 +2135,17 @@ impl App {
                 .clone()
                 .unwrap_or_else(|| mdm_engine::naming::file_name(None, &url));
             let name = mdm_engine::naming::sanitize(&name);
-            let category = Category::of(&name);
+            // The automation API's `category` (by its key) and `queue` (by name), when given.
+            let category = cmd
+                .category
+                .as_deref()
+                .and_then(|k| Category::all().into_iter().find(|c| c.key() == k))
+                .unwrap_or_else(|| Category::of(&name));
+            let queue = cmd
+                .queue
+                .as_deref()
+                .and_then(|n| self.queues.iter().position(|q| q.name == n))
+                .unwrap_or(0);
             let dir = cmd
                 .dir
                 .clone()
@@ -2107,7 +2162,7 @@ impl App {
             let id = self.push_item(url, dest, category, String::new(), size, None, cmd, source);
             self.name_guessed(id, guessed);
             if later {
-                self.queues[0].items.push(id);
+                self.queues[queue].items.push(id);
             } else {
                 self.start(id, true);
             }
@@ -3453,7 +3508,9 @@ impl App {
         }
         self.selection.set(id);
         if add.start_now {
-            self.start(id, true);
+            self.start(id, !add.quiet);
+        } else if let Some(q) = add.queue.filter(|q| *q < self.queues.len()) {
+            self.queues[q].items.push(id);
         } else {
             self.queue_later(vec![id], self.settings.queue_panel_later);
         }
@@ -3720,6 +3777,8 @@ impl App {
             from_magnet,
             // RSS rules download as torrents usually do: the rarest pieces first.
             in_order: false,
+            queue: None,
+            quiet: false,
         });
         let feed = self
             .rss
@@ -3896,18 +3955,52 @@ impl App {
     /// The automation API's answer (a JSON line, shaped by `ipc::api`): `api` turns it on or
     /// off; `query: "list"` gives every download and the total speed, `action` acts on
     /// downloads ([`App::act`]) — only while it is on.
+    ///
+    /// A paired device's command (the remote control, #141) is answered while Options → Remote
+    /// is on, whatever the automation API's switch: it may list, add and act, nothing else.
     fn answer(&mut self, cmd: &ipc::Command) -> String {
         use ipc::api::{ApiAnswer, DownloadInfo, ErrorAnswer, ListAnswer, line};
-        if let Some(on) = cmd.api {
+        if cmd.pair && !cmd.remote {
+            return self.pair_answer();
+        }
+        if cmd.remote {
+            if !self.settings.remote_on {
+                return line(&ErrorAnswer {
+                    error: "the remote control is off".into(),
+                    code: Some("remote-off".into()),
+                });
+            }
+            if cmd.url.is_some() || cmd.torrent_file.is_some() {
+                return self.remote_add(cmd.clone());
+            }
+        } else if let Some(on) = cmd.api {
             self.settings.automation_api = on;
             self.dirty = true;
             return line(&ApiAnswer { api: on });
-        }
-        if !self.settings.automation_api {
+        } else if !self.settings.automation_api {
             return line(&ErrorAnswer {
                 error: "the automation API is off (misterdownloadmanager-cli api on)".into(),
                 code: Some(ipc::api::API_OFF.into()),
             });
+        }
+        if let Some(action @ ("start_queue" | "stop_queue")) = cmd.action.as_deref() {
+            let at = cmd
+                .queue
+                .as_deref()
+                .and_then(|n| self.queues.iter().position(|q| q.name == n));
+            let Some(q) = at else {
+                return line(&ErrorAnswer {
+                    error: "no such queue".into(),
+                    code: Some("unknown-queue".into()),
+                });
+            };
+            if action == "start_queue" {
+                self.start_queue(q);
+            } else {
+                self.stop_queue(q);
+            }
+            self.dirty = true;
+            return line(&ipc::api::ActAnswer::default());
         }
         if let Some(action) = cmd.action.as_deref() {
             return match self.act(action, &cmd.ids) {
@@ -3923,13 +4016,26 @@ impl App {
                     .map(|i| DownloadInfo {
                         id: i.id,
                         file: i.file_name.clone(),
-                        url: i.url.to_string(),
-                        path: i.dest.to_string_lossy().into_owned(),
+                        // A paired device sees no folder of the computer's, nor a password in
+                        // an address.
+                        url: if cmd.remote {
+                            let mut u = i.url.clone();
+                            let _ = u.set_password(None);
+                            u.to_string()
+                        } else {
+                            i.url.to_string()
+                        },
+                        path: if cmd.remote {
+                            String::new()
+                        } else {
+                            i.dest.to_string_lossy().into_owned()
+                        },
                         status: format!("{:?}", i.status),
                         size: i.size,
                         downloaded: i.downloaded,
                         speed: if i.live.is_some() { i.rate() as u64 } else { 0 },
                         added: i.added.clone(),
+                        category: i.category.key().into_owned(),
                         error: i.error.clone().filter(|_| i.status == Status::Error),
                     })
                     .collect();
@@ -3939,15 +4045,246 @@ impl App {
                     .filter(|i| i.live.is_some())
                     .map(|i| i.rate())
                     .sum();
+                let queues = self
+                    .queues
+                    .iter()
+                    .map(|q| ipc::api::QueueInfo {
+                        name: q.name.clone(),
+                        running: q.running,
+                        ids: q.items.clone(),
+                    })
+                    .collect();
+                let categories = Category::all()
+                    .into_iter()
+                    .map(|c| ipc::api::CategoryInfo {
+                        key: c.key().into_owned(),
+                        name: c.label().into_owned(),
+                    })
+                    .collect();
                 line(&ListAnswer {
                     downloads,
                     speed: speed as u64,
+                    queues,
+                    categories,
+                    free: self.free_space(),
                 })
             }
             other => line(&ErrorAnswer {
                 error: format!("unknown query {other:?}"),
                 code: None,
             }),
+        }
+    }
+
+    /// `{"pair": true}` (`misterdownloadmanager-cli pair`, #157): a new pairing code, the
+    /// page's addresses and a QR code for a terminal; an error while the remote control is off
+    /// or not listening.
+    pub fn pair_answer(&mut self) -> String {
+        use ipc::api::{ErrorAnswer, PairAnswer, line};
+        let mut urls = self.remote.as_ref().map(|r| r.urls()).unwrap_or_default();
+        // A container knows only its own address: the one people open, when given.
+        if let Some(public) = crate::remote::public_url()
+            && !urls.is_empty()
+        {
+            urls.insert(0, public);
+        }
+        let (Some(remote), Some(first)) = (&self.remote, urls.first()) else {
+            return line(&ErrorAnswer {
+                error: "the remote control isn't listening (Options → Remote)".into(),
+                code: Some("remote-off".into()),
+            });
+        };
+        let code = remote.start_pairing();
+        line(&PairAnswer {
+            qr: crate::remote::qr_text(&format!("{first}#pair={code}")),
+            code,
+            minutes: (mdm_remote::pairing::VALID.as_secs() / 60) as u32,
+            urls,
+        })
+    }
+
+    /// Free space where downloads go (General's folder), looked up off this thread at most every
+    /// 10 s (a network share can be slow to answer).
+    fn free_space(&mut self) -> Option<u64> {
+        let (checked, free) = *self.free_space.lock().unwrap();
+        if checked.is_none_or(|t| t.elapsed() >= Duration::from_secs(10)) {
+            self.free_space.lock().unwrap().0 = Some(Instant::now());
+            let dir = self
+                .settings
+                .category_dir(Category::General, &self.downloads);
+            let slot = self.free_space.clone();
+            self.rt.spawn_blocking(move || {
+                // The folder may not exist yet: its nearest existing parent's volume.
+                let at = dir
+                    .ancestors()
+                    .find(|d| d.is_dir())
+                    .map(std::path::Path::to_owned);
+                let free = at
+                    .and_then(|d| mdm_engine::disk::volume_of(&d))
+                    .map(|v| v.free);
+                slot.lock().unwrap().1 = free;
+            });
+        }
+        free
+    }
+
+    /// A download a paired device sent (#141): an address added as a silent command line's is,
+    /// or a magnet link or .torrent file as Add torrent's Download Now with every file, in the
+    /// category and queue it chose (by file type, and started now, when it chose none). No
+    /// window opens. Answered with its id, or `pending` while a torrent's files are looked up.
+    fn remote_add(&mut self, mut cmd: ipc::Command) -> String {
+        use ipc::api::{AddAnswer, ErrorAnswer, line};
+        let fail = |code: &str, error: &str| {
+            line(&ErrorAnswer {
+                error: error.into(),
+                code: Some(code.into()),
+            })
+        };
+        let category = match cmd.category.as_deref() {
+            None => None,
+            Some(key) => match Category::all().into_iter().find(|c| c.key() == key) {
+                Some(c) => Some(c),
+                None => return fail("unknown-category", "no such category"),
+            },
+        };
+        let queue = match cmd.queue.as_deref() {
+            None => None,
+            Some(name) => match self.queues.iter().position(|q| q.name == name) {
+                Some(q) => Some(q),
+                None => return fail("unknown-queue", "no such queue"),
+            },
+        };
+        // Later: in the queue chosen, else the main queue; else started now.
+        let queue = cmd.later.then(|| queue.unwrap_or(0));
+        let text = cmd.url.clone().unwrap_or_default();
+        let torrent = match cmd.torrent_file.take() {
+            Some(bytes) => Some((mdm_torrent::Source::File(bytes), false)),
+            None => mdm_torrent::Source::magnet(text.trim()).map(|m| (m, true)),
+        };
+        if let Some((source, from_magnet)) = torrent {
+            let slot: crate::remote::Slot = Default::default();
+            let (out, host, known) = (
+                slot.clone(),
+                self.torrent_host.clone(),
+                self.torrent_hashes(),
+            );
+            self.rt.spawn(async move {
+                let res = match host.session(known).await {
+                    Ok(t) => t
+                        .metadata(&source, crate::torrentdlg::METADATA_WAIT, None)
+                        .await
+                        .map_err(|e| crate::errors::torrent(&e)),
+                    Err(e) => Err(e),
+                };
+                *out.lock().unwrap() = Some(res);
+            });
+            self.remote_torrents.push(crate::remote::Lookup {
+                slot,
+                category,
+                queue,
+                from_magnet,
+            });
+            return line(&AddAnswer {
+                id: None,
+                pending: true,
+            });
+        }
+        let Some(url) = url::Url::parse(text.trim())
+            .ok()
+            .filter(mdm_engine::supported)
+        else {
+            return fail("unsupported", "not an address MDM downloads");
+        };
+        // Already in the list: no one at the computer to ask, so Options' choice, with "ask"
+        // taken as "add it again" (under a numbered name).
+        if let Some(dup) = self.items.iter().find(|i| i.url == url).map(|i| i.id) {
+            match self.settings.duplicate_action {
+                2 => self.overwrite(dup),
+                3 => {
+                    return line(&AddAnswer {
+                        id: Some(dup),
+                        pending: false,
+                    });
+                }
+                _ => {}
+            }
+        }
+        let name = mdm_engine::naming::sanitize(&mdm_engine::naming::file_name(None, &url));
+        let category = category.unwrap_or_else(|| Category::of(&name));
+        let dir = self.settings.category_dir(category, &self.downloads);
+        let dest = mdm_engine::naming::destination(&dir, &name);
+        cmd.remote = false;
+        let id = self.push_item(
+            url,
+            dest,
+            category,
+            String::new(),
+            None,
+            None,
+            cmd,
+            // i18n: where a download came from (its Properties): a phone or computer paired in Options → Remote
+            crate::i18n::mark("from a paired device"),
+        );
+        self.name_guessed(id, true);
+        match queue {
+            Some(q) => self.queues[q].items.push(id),
+            None => self.start(id, false),
+        }
+        self.dirty = true;
+        line(&AddAnswer {
+            id: Some(id),
+            pending: false,
+        })
+    }
+
+    /// The torrents a paired device sent whose files are known now: added with every file
+    /// (into the category's folder), as an RSS rule adds one; never over files already there.
+    fn poll_remote_torrents(&mut self) {
+        let mut ready = Vec::new();
+        self.remote_torrents
+            .retain(|l| match l.slot.lock().unwrap().take() {
+                Some(res) => {
+                    ready.push((res, l.category, l.queue, l.from_magnet));
+                    false
+                }
+                None => true,
+            });
+        for (res, category, queue, from_magnet) in ready {
+            let meta = match res {
+                Ok(meta) => meta,
+                Err(e) => {
+                    tracing::warn!("remote control: a torrent could not be read: {e}");
+                    continue;
+                }
+            };
+            if self.torrent_hashes().contains(&meta.info_hash) {
+                continue;
+            }
+            let category = category.unwrap_or_else(|| crate::torrentdlg::category_of(&meta));
+            let dir = crate::model::category_folder(
+                category,
+                &self.downloads,
+                &self.settings.category_dirs,
+            );
+            if !meta.existing_in(&dir).is_empty() {
+                tracing::warn!(
+                    "remote control: {}: its files are already in {}",
+                    meta.name,
+                    dir.display()
+                );
+                continue;
+            }
+            self.add_torrent(crate::torrentdlg::TorrentAdd {
+                meta,
+                dir,
+                files: None,
+                category,
+                start_now: queue.is_none(),
+                from_magnet,
+                in_order: false,
+                queue,
+                quiet: true,
+            });
         }
     }
 
@@ -4020,6 +4357,10 @@ impl App {
         }
         self.settings = new;
         crate::regional::set(&self.settings.regional);
+        // Options → Remote: listening started, stopped or moved.
+        if let Some(r) = &self.remote {
+            r.apply(crate::remote::config(&self.settings));
+        }
         if self.settings.proxy_mode == 2 {
             crate::pacfetch::refresh(&self.settings.proxy_script, &self.rt);
         }
@@ -4586,11 +4927,14 @@ impl App {
             }
             Cmd::Options => {
                 if self.options.is_none() {
-                    self.options = Some(crate::options::OptionsDialog::new(
-                        &self.settings,
-                        &self.downloads,
-                        self.host_limits.learned(),
-                    ));
+                    self.options = Some(
+                        crate::options::OptionsDialog::new(
+                            &self.settings,
+                            &self.downloads,
+                            self.host_limits.learned(),
+                        )
+                        .with_remote(self.remote.clone()),
+                    );
                 } else {
                     dialogs::raise(ctx, dialogs::dialog_viewport("options"));
                 }
@@ -5782,7 +6126,7 @@ impl App {
             self.alt_down = alt;
             if let Some(i) = open {
                 self.alt_alone = false;
-                self.open_menu = Some(i);
+                self.open_menu = chrome::menubar_next(self.open_menu, MenuBarEvent::Open(i));
                 chrome::start_keyboard(&ctx, &format!("menu-{i}"));
             }
         } else {
@@ -5790,43 +6134,43 @@ impl App {
             self.alt_alone = false;
         }
 
-        // Menu bar and its popups.
+        // Menu bar and its popups: which menu is open is chrome::menubar_next's to say.
         if let Some(i) = chrome::menu_bar(ui, o, w, self.open_menu) {
-            let clicked = ui.input(|x| x.pointer.any_released()) || chrome::menubar_collapse(&ctx);
-            self.open_menu = if self.open_menu == Some(i) && clicked {
-                None
-            } else {
-                Some(i)
-            };
+            let released = ui.input(|x| x.pointer.any_released()) || chrome::menubar_collapse(&ctx);
+            self.open_menu =
+                chrome::menubar_next(self.open_menu, MenuBarEvent::Title { i, released });
         }
         if let Some(i) = self.open_menu {
             let x = chrome::menus(ui.painter())[i].1;
             let entries = self.menu_entries(i);
             // Under the item's leading edge (the menu's top-right in RTL).
             let at = pos2(winui::mx(o.x + x), o.y + chrome::MENU_H - 1.0);
-            match chrome::popup(&ctx, &format!("menu-{i}"), at, &entries, &|c: &Cmd| {
+            let event = match chrome::popup(&ctx, &format!("menu-{i}"), at, &entries, &|c: &Cmd| {
                 c.hint()
             }) {
-                PopupResult::Open => {}
+                PopupResult::Open => None,
                 PopupResult::Neighbor(d) => {
                     let n = chrome::menus(ui.painter()).len() as i32;
                     let j = (i as i32 + d).rem_euclid(n) as usize;
-                    self.open_menu = Some(j);
                     chrome::start_keyboard(&ctx, &format!("menu-{j}"));
+                    Some(MenuBarEvent::Open(j))
                 }
                 PopupResult::Chosen(c) => {
                     chosen = Some((c, None));
-                    self.open_menu = None;
+                    Some(MenuBarEvent::Chosen)
                 }
                 PopupResult::Dismissed => {
-                    // Clicks on the bar itself are handled by `menu_bar`.
-                    let on_bar = ctx
-                        .pointer_interact_pos()
-                        .is_some_and(|p| p.y < o.y + chrome::MENU_H);
-                    if !on_bar {
-                        self.open_menu = None;
-                    }
+                    // Shut by a press on a title: its click (on release) is `menu_bar`'s. Not
+                    // by Escape with the pointer merely resting on the bar.
+                    let press =
+                        ui.input(|x| x.pointer.press_origin().filter(|_| x.pointer.any_pressed()));
+                    let press_on_title = press
+                        .is_some_and(|at| chrome::menubar_title_at(ui.painter(), o, at).is_some());
+                    Some(MenuBarEvent::Dismissed { press_on_title })
                 }
+            };
+            if let Some(event) = event {
+                self.open_menu = chrome::menubar_next(self.open_menu, event);
             }
         }
 
@@ -7462,8 +7806,12 @@ impl App {
             match d.show(ctx, &self.downloads) {
                 Outcome::Open => {}
                 Outcome::Closed => {
-                    // Cancel: categories the dialog added, changed or restored are undone.
+                    // Cancel: categories the dialog added, changed or restored are undone, and
+                    // the remote control listens as before Pair a device... moved it.
                     self.settings.publish_categories();
+                    if let Some(r) = &self.remote {
+                        r.apply(crate::remote::config(&self.settings));
+                    }
                     self.options = None;
                 }
                 Outcome::Done(new) => {
@@ -7643,6 +7991,17 @@ impl eframe::App for App {
     /// (#162). A command that opens a window gets the UI pass that creates it, minimized or not
     /// (no window is raised or focused for it beyond what the command itself does).
     fn logic(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        self.tick(ctx);
+    }
+
+    fn ui(&mut self, ui: &mut Ui, frame: &mut eframe::Frame) {
+        self.paint_frame(ui, frame);
+    }
+}
+
+impl App {
+    /// What runs at every frame, window or not (`logic`, and a headless run's loop).
+    pub fn tick(&mut self, ctx: &egui::Context) {
         // The freeze watchdog times this as it times `ui` (crash.rs): a command or the clock
         // that hangs is reported too, minimized or not (#202).
         crate::crash::logic_begin();
@@ -7665,21 +8024,28 @@ impl eframe::App for App {
         // the taskbar's progress all stood still until the window was restored.
         crate::settings::share_proxy(self.settings.proxy());
         crate::settings::share_dns(self.settings.dns());
-        self.follow_assistive_technology(ctx);
+        crate::settings::share_video_cookies(&self.settings);
+        if !self.headless {
+            self.follow_assistive_technology(ctx);
+        }
         self.network_adapter_tick(ctx);
         self.debrid_tick();
         self.poll(ctx);
+        self.poll_remote_torrents();
         // What failed in any window, told here (dialogs::tell).
         if let Some((title, text)) = dialogs::told().pop() {
             self.notice = Some((title, text));
         }
-        self.auto_update_check(ctx);
         self.apply_global_limit();
-        self.watch_clipboard(ctx);
-        self.tray(ctx);
-        // The taskbar button's green bar: everything running, as one.
-        #[cfg(windows)]
-        crate::win32::taskbar_progress(crate::MAIN_TITLE, self.overall_progress());
+        // A server (#157) has no screen, clipboard or tray, and is updated by its image.
+        if !self.headless {
+            self.auto_update_check(ctx);
+            self.watch_clipboard(ctx);
+            self.tray(ctx);
+            // The taskbar button's green bar: everything running, as one.
+            #[cfg(windows)]
+            crate::win32::taskbar_progress(crate::MAIN_TITLE, self.overall_progress());
+        }
         if self
             .ticked
             .is_none_or(|t| t.elapsed() > Duration::from_secs(2))
@@ -7704,7 +8070,7 @@ impl eframe::App for App {
         crate::crash::logic_end();
     }
 
-    fn ui(&mut self, ui: &mut Ui, _frame: &mut eframe::Frame) {
+    fn paint_frame(&mut self, ui: &mut Ui, _frame: &mut eframe::Frame) {
         // The freeze watchdog times every frame's drawing, as it times its logic (crash.rs).
         crate::crash::frame_begin();
         // A lost graphics device is noticed before this frame paints (renderer.rs).

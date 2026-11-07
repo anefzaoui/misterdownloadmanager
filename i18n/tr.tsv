@@ -38,7 +38,7 @@
 #. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Şu anda {n} makaleyle eşleşiyor (yalnızca yenilerini ekler):|Şu anda {n} makaleyle eşleşiyor (yalnızca yenilerini ekler):
+@plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Şu anda {n} makale eşleşiyor (yalnızca yenileri ekler):|Şu anda {n} makale eşleşiyor (yalnızca yenileri ekler):
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -80,12 +80,12 @@
 #. event log entry: the files ticked in a torrent's Files tab changed; {n} of them are ticked now
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} file chosen to download|{n} files chosen to download	{n} dosya indirmek için seçildi|{n} dosya indirmek için seçildi
+@plural	{n} file chosen to download|{n} files chosen to download	{n} dosya indirilmek üzere seçildi|{n} dosya indirilmek üzere seçildi
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} dosya zaten orada olan bir dosyanın adını taşıyordu ve numaralandırıldı|{n} dosya zaten orada olan bir dosyanın adını taşıyordu ve numaralandırıldı
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} dosyanın adı zaten var olan bir dosyayla aynıydı ve dosyaya numara eklendi|{n} dosyanın adı zaten var olan dosyalarla aynıydı ve dosyalara numara eklendi
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
@@ -117,7 +117,7 @@
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
-	"{what}" isn't an IP address.	"{what}" bir IP adresi değil.
+	"{what}" isn't an IP address.	“{what}” bir IP adresi değil.
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -164,25 +164,25 @@
 #. window title in extracting archives (a download's log, the Archive password window)
 #. window title: 7-Zip (a program's name) must be installed
 #, machine
-	7-Zip needed	7-Zip gerekli
+	7-Zip needed	7-Zip gerekiyor
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
-	7z and RAR archives are extracted by 7-Zip ({path}).	7z ve RAR arşivleri 7-Zip ({path}) tarafından ayıklanır.
+	7z and RAR archives are extracted by 7-Zip ({path}).	7z ve RAR arşivleri 7-Zip ({path}) tarafından çıkarılır.
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 #, machine
-	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z ve RAR arşivleri, yüklü olmayan 7-Zip'i (7-zip.org) gerektirir.
+	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z ve RAR arşivlerini çıkarmak için 7-Zip (7-zip.org) gerekiyor; yüklü değil.
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	7z and RAR archives need 7-Zip, which isn't installed	7z ve RAR arşivleri, yüklü olmayan 7-Zip'i gerektirir
+	7z and RAR archives need 7-Zip, which isn't installed	7z ve RAR arşivlerini çıkarmak için 7-Zip gerekiyor; yüklü değil
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< Ayrıntıları gizle
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Bir debrid hizmeti, kendi ücretli hesabınızla bir dosya barındırıcının bağlantısını indirir ve MDM'ye doğrudan bir bağlantı verir. Yalnızca kendi hesabınızı kullanın: bir hesabı veya bağlantılarını paylaşmak, hizmetlerin koşullarını ihlal eder ve hesabın askıya alınmasına neden olabilir. Tarayıcının zaten başlattığı indirmeler olduğu gibi kalır.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Bir debrid hizmeti, dosya barındırıcının bağlantısını ücretli hesabınızı kullanarak indirir ve MDM'ye doğrudan bir bağlantı verir. Yalnızca kendi hesabınızı kullanın: hesabı veya bağlantılarını paylaşmak hizmetlerin kullanım koşullarını ihlal eder ve hesabın askıya alınmasına neden olabilir. Tarayıcının başlattığı indirmeler olduğu gibi kalır.
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
@@ -192,6 +192,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS yapılandırma kimliği altı harf ve rakamdan (0-9, a-f) oluşur.
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Bir profilin adı veya klasörü. Boş: en son kullanılan profil. Listelenmeyen bir Chromium tabanlı tarayıcı için (Helium, Thorium...), Chromium'u ve profilinin klasörünü seçin.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -340,7 +344,7 @@
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Advanced / Socks...	Gelişmiş / Socks...
+	Advanced / Socks...	Gelişmiş / SOCKS...
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 #, machine
@@ -373,12 +377,12 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
-	All the uploader's	Yükleyicinin tümü
+	All the uploader's	Yükleyicinin tüm dilleri
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Allow more than {n} connections	Adres başına {n} bağlantıdan fazlasına izin ver
+	Allow more than {n} connections	{n} bağlantıdan fazlasına izin ver
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	zaten indiriliyor: {path}
@@ -399,7 +403,7 @@
 	Also delete the file from disk	Dosyayı diskten de sil
 #. checkbox in the Options window
 #, machine
-	Also take files the browser would open (PDF, music, video)	Tarayıcının açacağı dosyaları da al (PDF, müzik, video)
+	Also take files the browser would open (PDF, music, video)	Tarayıcının açacağı dosyaları da indir (PDF, müzik, video)
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -476,7 +480,7 @@
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Mister Download Manager indirme listesinden "{name}" öğesini silmek istediğinizden emin misiniz?
+	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Mister Download Manager'in indirme listesinden "{name}" öğesini silmek istediğinizden emin misiniz?
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -626,7 +630,7 @@
 	Brazil	Brezilya
 #. text in the Options window
 #, machine
-	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Varsayılan {names} ayarlarını (adları, dosya türleri ve klasörleri) geri yüklemek istiyor musunuz? Kendi kategorileriniz, Genel ve Torrentler olduğu gibi kalır. Genel klasörüne taşınmış indirmeler orada kalır.
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	{names} kategorilerini teslim edildikleri hâle döndürmek istiyor musunuz: adları, dosya türleri ve klasörleri? Kendi kategorileriniz, Genel ve Torrentler olduğu gibi kalır. Genel'e taşınmış indirmeler orada kalır.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -670,7 +674,7 @@
 	by batch download	toplu indirme ile
 #. message or event log entry in the main window
 #, machine
-	by Link grabber	Bağlantı yakalayıcı tarafından
+	by Link grabber	Bağlantı yakalayıcıyla
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Mister Download Manager'ın pencerelerini göstereceği dili seçin:
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	Profilin klasörünü seçin
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	Cook Adaları
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	Video siteleri için çerezler
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	Panoya kopyalandı.
@@ -1095,7 +1107,7 @@
 	DNS:	DNS:
 #. checkbox in the Options window
 #, machine
-	Do not start downloading, only add files to the queue	İndirmeye başlama, yalnızca dosyaları kuyruğa ekle
+	Do not start downloading, only add files to the queue	İndirmeyi başlatma, yalnızca dosyaları kuyruğa ekle
 #. text in a dialog box
 #, machine
 	Do you want to create it?	Oluşturmak ister misiniz?
@@ -1120,10 +1132,10 @@
 	Don't show this dialog again	Bu iletişim kutusunu bir daha gösterme
 #. text in the Options window
 #, machine
-	Don't start downloading automatically from the following addresses:	Aşağıdaki adreslerden otomatik olarak indirmeye başlama:
+	Don't start downloading automatically from the following addresses:	Aşağıdaki adreslerden otomatik olarak indirmeyi başlatma:
 #. text in the Options window
 #, machine
-	Don't start downloading automatically from the following sites:	Aşağıdaki sitelerden otomatik olarak indirmeye başlama:
+	Don't start downloading automatically from the following sites:	Aşağıdaki sitelerden otomatik olarak indirmeyi başlatma:
 #. text in the Options window
 #, machine
 	Don't take files smaller than (KB, 0 = any size):	Şu boyuttan küçük dosyaları alma (KB, 0 = herhangi bir boyut):
@@ -1140,11 +1152,11 @@
 #. message or event log entry in the main window
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Download "{name}" again from the start? A finished file is replaced when the new download completes.	"{name}" dosyasını baştan tekrar indirilsin mi? Yeni indirme tamamlandığında bitmiş dosyanın yerini alır.
+	Download "{name}" again from the start? A finished file is replaced when the new download completes.	"{name}" dosyası baştan tekrar indirilsin mi? Yeni indirme tamamlandığında mevcut dosyanın yerini alır.
 #. window title in gallerydlg.rs
 #. window title: download an image gallery's files (gallery-dl)
 #, machine
-	Download a gallery	Galeri indir
+	Download a gallery	Galeri indirme
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	İndirme tamamlandı
@@ -1172,7 +1184,7 @@
 #. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
-	Download no more than {mb} MBytes\nevery {hours} hours	{mb} MB'tan fazla indirme\nher {hours} saatte
+	Download no more than {mb} MBytes\nevery {hours} hours	En fazla {mb} MB indir\nher {hours} saatte
 #. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	Şimdi İndir
@@ -1191,7 +1203,7 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
-	Download supported file-host links through these accounts	Desteklenen dosya barındırıcısı bağlantılarını bu hesaplar aracılığıyla indir
+	Download supported file-host links through these accounts	Desteklenen dosya barındırma hizmetlerinin bağlantılarını bu hesaplar aracılığıyla indir
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 #, machine
@@ -1202,7 +1214,7 @@
 #. text in helpers.rs
 #. the headline of the first start's helpers window
 #, machine
-	Download videos from YouTube and 1,000+ sites	YouTube ve 1.000'den fazla siteden video indirin
+	Download videos from YouTube and 1,000+ sites	YouTube ve 1.000'den fazla siteden video indirme
 #. text in the Scheduler window
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
@@ -1263,11 +1275,11 @@
 #. text in a dialog box
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Downloads stopped and will resume automatically at {time}.	İndirilenler durduruldu ve {time} tarihinde otomatik olarak devam edecek.
+	Downloads stopped and will resume automatically at {time}.	İndirmeler durduruldu ve saat {time}'te otomatik olarak devam edecek.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	DR Congo	Kongo DC
+	DR Congo	Kongo Demokratik Cumhuriyeti
 #. text in droptarget.rs
 #. the drop target's tooltip on macOS and Linux (they hand over files only)
 #, machine
@@ -1304,14 +1316,14 @@
 	Edit	Düzenle
 #. text in the Options window
 #, machine
-	Edit exception	Özel durumu düzenle
+	Edit exception	İstisnayı düzenle
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Edit list ...	Listeyi düzenle...
 #. text in the Options window
 #, machine
-	Edit login	Oturum açmayı düzenle
+	Edit login	Oturum açma bilgilerini düzenle
 #. button in the Options window
 #. verb: edit the item
 #. the trailing ... means it opens a window: keep it
@@ -1331,7 +1343,7 @@
 #. text in gallerydlg.rs
 #. in Download a gallery, after the "Files at most" box
 #, machine
-	Empty: all of them. On most sites the newest come first.	Boş: hepsi. Çoğu sitede en yeniler önce gelir.
+	Empty: all of them. On most sites the newest come first.	Boş bırakılırsa tümü. Çoğu sitede en yeniler önce gelir.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -1397,7 +1409,7 @@
 #. text in the Options window
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
-	Every connection goes through it, from {ip}.	Her bağlantı, {ip} adresinden geçerek yapılır.
+	Every connection goes through it, from {ip}.	Her bağlantı {ip} adresinden yapılır.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1411,7 +1423,7 @@
 	Exit	Çıkış
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Exit Mister Download Manager when done	Bittiğinde Mister Download Manager'dan çık
+	Exit Mister Download Manager when done	Tamamlandığında Mister Download Manager'dan çık
 #. text in the Checksum window
 #, machine
 	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	Beklenen sağlama toplamı (MD5, SHA-1, SHA-256, SHA-512 veya CRC32):
@@ -1444,7 +1456,7 @@
 #. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 #, machine
-	Extract when done	Bittiğinde çıkar
+	Extract when done	Tamamlandığında çıkar
 #. text in extracting archives (a download's log, the Archive password window)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1499,7 +1511,7 @@
 	File	Dosya
 #. text in the Scheduler window
 #, machine
-	File Name	Dosya Adı
+	File Name	Dosya adı
 #. text in the Download video window
 #, machine
 	File name	Dosya adı
@@ -1508,7 +1520,7 @@
 	File name or part of the name	Dosya adı veya adın bir kısmı
 #. window title in a download's Properties window
 #, machine
-	File Properties	Dosya Özellikleri
+	File Properties	Dosya özellikleri
 #. text in a download's progress window
 #, machine
 	File size	Dosya boyutu
@@ -1648,6 +1660,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	bir torrent dosyasından
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	Tarayıcıdan:
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1786,7 +1802,7 @@
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
-	Have	Var
+	Have	İndirilen
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1812,7 +1828,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	&Kategorileri gizle
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	Sekmeyi gizle
 #. text in a download's progress window; text in standard windows
@@ -1867,23 +1883,27 @@
 	If a duplicate download link is added:	Yinelenen bir indirme bağlantısı eklenirse:
 #. text in the Options window
 #, machine
-	If existing file is complete, show download complete dialog; otherwise resume it.	Mevcut dosya tamamsa, indirme tamamlandı iletişim kutusunu göster; aksi takdirde devam ettir.
+	If existing file is complete, show download complete dialog; otherwise resume it.	Mevcut dosya tamamsa indirme tamamlandı iletişim kutusu gösterilsin; aksi takdirde indirme sürdürülsün.
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
-	If it can't be reached, use the system's DNS	Ulaşılamazsa sistemin DNS'ini kullan
+	If it can't be reached, use the system's DNS	Ulaşılamazsa sistem DNS'ini kullan
 #. checkbox in the Options window
 #, machine
-	Ignore file modification time changes when resuming a download	Bir indirmeye devam ederken dosya değiştirme zamanı değişikliklerini yoksay
+	Ignore file modification time changes when resuming a download	İndirmeye devam ederken dosya değiştirme zamanı değişikliklerini yoksay
 #. message or event log entry in the main window
 #, machine
-	Import	İçeri Aktar
+	Import	İçe aktar
 #. value in a column's filter list in the download list
 #, machine
-	In a queue	Bir kuyrukta
+	In a queue	Kuyrukta
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	Kategorilerde: seçili kategorinin menüsü
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	kilitli anahtarlıkta
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1919,7 +1939,7 @@
 #. link (opens a web page) in extension.rs
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
-	Install it by hand	Elle elle kurun
+	Install it by hand	Elle kurun
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1932,7 +1952,7 @@
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Into a folder named after it, when it holds several things	Birden çok öğe içerdiğinde, kendi adını taşıyan bir klasöre
+	Into a folder named after it, when it holds several things	Birden çok öğe içeriyorsa kendi adını taşıyan bir klasöre
 #. text in a dialog box
 #, machine
 	Invalid address	Geçersiz adres
@@ -1967,7 +1987,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it is damaged, or not the archive its name says	hasarlı veya adının söylediği arşiv değil
+	it is damaged, or not the archive its name says	hasarlı veya adının belirttiği arşiv değil
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -1975,7 +1995,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it needs a password	parola gerekiyor
+	it needs a password	parola gerektiriyor
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
@@ -1988,7 +2008,7 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	{size} yazacaktı, mevcut {limit} alandan veya nedenden daha fazla
+	it would write {size}, more than the {limit} there is room or reason for	{size} yazılamayacak; mevcut alan {limit} değerinden az
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2041,7 +2061,7 @@
 	KBytes/sec	KB/sn
 #. checkbox in the Add torrent window
 #, machine
-	Keep sharing torrents after they finish	Torrentleri bittikten sonra paylaşmaya devam et
+	Keep sharing torrents after they finish	Torrentleri tamamlandıktan sonra paylaşmaya devam et
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2141,7 +2161,7 @@
 	Liechtenstein	Lihtenştayn
 #. checkbox in a dialog box
 #, machine
-	Limit all downloads together to	Tüm indirmeleri birlikte şuna sınırla
+	Limit all downloads together to	Tüm indirmeleri birlikte şu hızla sınırla
 #. text in a download's progress window
 #. a torrent's progress window, Speed Limiter tab: a limit for what this torrent sends to others
 #, machine
@@ -2149,7 +2169,7 @@
 #. text in the Add torrent window
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
-	Limit uploading for all torrents to	Tüm torrentler için karşıya yüklemeyi şuna sınırla:
+	Limit uploading for all torrents to	Tüm torrentlerde karşıya yükleme hızını şununla sınırla:
 #. window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -2166,12 +2186,12 @@
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
-	List the rest	Kalanı listele
+	List the rest	Kalanları listele
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	Listeleme {n} videodan sonra durdu: {error}
+	Listing stopped after {n} videos: {error}	{n} video listelendikten sonra listeleme durdu: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
@@ -2594,6 +2614,10 @@
 #, machine
 	No addresses yet	Henüz adres yok
 #. text in extension.rs
+#. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
+#, machine
+	No browser MDM can connect to was found	MDM'nin bağlanabileceği bir tarayıcı bulunamadı
+#. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 #, machine
 	No browser's extension has connected yet	Henüz hiçbir tarayıcı uzantısı bağlanmadı
@@ -2651,6 +2675,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Proxy/SOCKS yok
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Sistem anahtarlığı yanıt vermediği için oturum açma bilgileri ve parolalar yalnızca sizin okuyabileceğiniz MDM ayarlarına kaydedilir.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2738,7 +2766,7 @@
 	Not now? Get them later from Tasks → Download video from a page.	Şimdi değil mi? Daha sonra Görevler → Bir sayfadan video indir bölümünden edinin.
 #. text in a download's Properties window
 #, machine
-	not one server (peers, or a helper's)	tek sunucu değil (eşler veya bir yardımcının)
+	not one server (peers, or a helper's)	tek sunucu değil (eşler veya yardımcı sunucusu)
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
@@ -2772,6 +2800,9 @@
 #. text in the Scheduler window
 #, machine
 	October	Ekim
+#. option (radio button) in the Options window
+#, machine
+	Off	Kapalı
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	Kapalı: tamamlanmış bir torrent, diğer indirmeler gibi durur.
@@ -2800,6 +2831,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	macOS'ta yalnızca bir yönetici uyandırma zamanlayabilir
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Windows'ta Chrome, Edge ve Brave çerezlerini kilitleyebilir. Firefox çalışır.
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Bir kez saat
@@ -2822,7 +2857,7 @@
 	Only a finished download, or one not started yet, can be moved	Yalnızca tamamlanmış veya henüz başlatılmamış bir indirme taşınabilir
 #. message or event log entry in the main window
 #, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Yalnızca tamamlanmış veya henüz başlatılmamış bir indirme taşınabilir. Önce durdurun ve bitirin.
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Yalnızca tamamlanmış veya henüz başlatılmamış bir indirme taşınabilir. Önce durdurup tamamlayın.
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
@@ -3033,6 +3068,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	Önizleme henüz mevcut değil
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	Profil (isteğe bağlı):
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -3046,10 +3085,14 @@
 #. text in the Options window
 #. tab title
 #, machine
-	Proxy / Socks	Ara Sunucu / Socks
+	Proxy / Socks	Proxy / SOCKS
 #. page title in the Options window
 #, machine
-	Proxy / socks configuration	Ara sunucu / socks yapılandırması
+	Proxy / socks configuration	Proxy / SOCKS yapılandırması
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	proxy sunucusu
 #. label in the Options window
 #, machine
 	Proxy server address	Ara sunucu adresi
@@ -3089,6 +3132,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Sıralar
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	Yalnızca bu bilgisayarda okunur ve yalnızca videonun sitesine gönderilir.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3167,7 +3214,7 @@
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
-	Replace asterisk to	Yıldızı şununla değiştir
+	Replace asterisk to	Yıldızın yerine şunu koy
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -3285,10 +3332,10 @@
 #. group box title in the Options window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Save To...	Kaydedileceği Yer...
+	Save To...	Kaydedileceği yer...
 #. text in a download's progress window; text in a download's Properties window
 #, machine
-	Save To:	Kaydedileceği Yer:
+	Save To:	Kaydedileceği yer:
 #. text in the Link grabber window; text in rssdlg.rs
 #. Link grabber: the folder the package's files go to (a label before its box)
 #. RSS feeds window, Download rules: the folder the rule's torrents go to
@@ -3419,6 +3466,11 @@
 #. event log: File Properties: the download goes through the debrid account again
 #, machine
 	Set to download through the debrid account	Debrid hesabı üzerinden indirilecek şekilde ayarlandı
+#. text in extension.rs
+#. a check of Test browser integration: setting it up failed; {error} is the system's own message, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Setting it up failed: {error}	Kurulum başarısız oldu: {error}
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3435,7 +3487,7 @@
 #. text in a download's progress window
 #. a torrent's General tab: how long it has been shared once finished, in all
 #, machine
-	Shared for	Şunun için paylaşıldı:
+	Shared for	Paylaşım süresi
 #. text in a download's progress window
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
@@ -3474,14 +3526,14 @@
 	Show details >>	Ayrıntıları göster >>
 #. checkbox in the Options window; checkbox in a download's progress window
 #, machine
-	Show download complete dialog	İndirme tamamlandı iletişim kutusunu göster
+	Show download complete dialog	İndirme tamamlandığında iletişim kutusunu göster
 #. text in extension.rs
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
 	Show me how	Nasıl yapıldığını göster
 #. checkbox in the Options window
 #, machine
-	Show queue selection panel on closing batch download dialogs	Toplu indirme iletişim kutularını kapatırken sıra seçim panelini göster
+	Show queue selection panel on closing batch download dialogs	Toplu indirme iletişim kutuları kapatılırken sıra seçim panelini göster
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on pressing "Download Later" button	"Daha Sonra İndir" düğmesine basıldığında sıra seçim panelini göster
@@ -3497,7 +3549,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
-	Shut down	Kapat
+	Shut down	Bilgisayarı kapat
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3507,13 +3559,25 @@
 #, machine
 	Sign in in the browser	Tarayıcıda oturum aç
 #. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	Oturum açma bilgileri ve parolalar macOS anahtar zincirinde tutulur.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	Oturum açma bilgileri ve parolalar sistem anahtar zincirinde (Secret Service) tutulur.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	Oturum açma bilgileri ve parolalar Windows Kimlik Bilgileri Yöneticisi'nde tutulur.
+#. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
 	Signed in as {user} ({state})	{user} olarak oturum açıldı ({state})
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
-	signed out: sign in again	oturumu kapatıldı: tekrar oturum açın
+	signed out: sign in again	oturum kapalı: yeniden oturum aç
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3535,13 +3599,13 @@
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
-	Sites Logins	Site Oturum Açmaları
+	Sites Logins	Site oturum açma bilgileri
 #. text in helpers.rs
 #, machine
-	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Siteler en iyi kalitelerini ayrı video ve ses olarak gönderir ve ffmpeg bunları birleştirir. Bu sistemde MDM sizinkini kullanır: ffmpeg'i paket yöneticinizle yükleyin.
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Siteler en iyi kaliteyi ayrı video ve ses olarak gönderir, ffmpeg de bunları birleştirir. Bu sistemde MDM sizinkini kullanır: ffmpeg'i paket yöneticinizle yükleyin.
 #. text in helpers.rs
 #, machine
-	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Siteler en iyi kalitelerini ayrı video ve ses olarak gönderir. ffmpeg bunları her yerde oynatılabilen tek bir dosyada birleştirir.
+	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Siteler en iyi kaliteyi ayrı video ve ses olarak gönderir. ffmpeg bunları her yerde oynatılabilen tek bir dosyada birleştirir.
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -3560,7 +3624,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: put it to sleep)
 #, machine
-	Sleep	Uyku
+	Sleep	Uyku moduna al
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3753,7 +3817,7 @@
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
-	Su	Pa
+	Su	Pz
 #. text in the Download video window
 #. label before the list of a video's subtitle languages
 #, machine
@@ -3765,7 +3829,7 @@
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
 #, machine
-	Subtitles in {language} couldn't be downloaded: {reason}	{language} dilindeki alt yazılar indirilemedi: {reason}
+	Subtitles in {language} couldn't be downloaded: {reason}	{language} dilindeki altyazılar indirilemedi: {reason}
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -3932,7 +3996,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
-	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT kimseye ulaşamadı. Bir güvenlik duvarı, VPN veya ağ, DHT ve çoğu izleyicinin kullandığı UDP'yi engelliyor olabilir.
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT kimseye ulaşamadı. Bir güvenlik duvarı, VPN veya ağ, DHT'nin ve çoğu izleyicinin kullandığı UDP'yi engelliyor olabilir.
 #. text in errors.rs
 #, machine
 	the disk is full	disk dolu
@@ -3953,7 +4017,7 @@
 	The download list could not be saved: {error}. Changes are kept while MDM runs.	İndirme listesi kaydedilemedi: {error}. MDM çalışırken değişiklikler korunur.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Zaten bildiğiniz indirme yöneticisi, daha hızlı olmak için yeniden inşa edildi. GNU GPL, sürüm 3 veya sonrası altında ücretsiz ve açık kaynak. Videolar yt-dlp tarafından bulunur; torrentler librqbit üzerinde çalışır.
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Zaten bildiğiniz indirme yöneticisi, daha hızlı çalışacak şekilde yeniden tasarlandı. GNU GPL sürüm 3 veya sonrası kapsamında ücretsiz ve açık kaynaklıdır. Videolar yt-dlp tarafından bulunur; torrentler librqbit üzerinde çalışır.
 #. text in a dialog box
 #, machine
 	The download queue is done.	İndirme kuyruğu tamamlandı.
@@ -4022,6 +4086,10 @@
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
 	the FTP server answered {code} {reply}	FTP sunucusu {code} {reply} yanıtını verdi
+#. text in extension.rs
+#. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
+#, machine
+	The helper program the browsers start is missing	Tarayıcıların başlattığı yardımcı program eksik
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4047,7 +4115,7 @@
 	the release has no {what}	sürümde {what} yok
 #. text in errors.rs
 #, machine
-	the release's checksum list is not signed by its publisher's key	sürümün sağlama toplamı listesi yayıncısının anahtarı tarafından imzalanmamış
+	the release's checksum list is not signed by its publisher's key	sürümün sağlama toplamı listesi yayıncısının anahtarıyla imzalanmamış
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine
@@ -4088,10 +4156,22 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	sunucu dosyanın beklenmeyen bir bölümünü gönderdi ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Site, bu sayfa için tarayıcınızın çerezleri olsa bile oturum açmanızı istiyor. Tarayıcınızda oturum açın, ardından tekrar deneyin.
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Site, {browser} çerezleri olsa bile oturum açmanızı istiyor. {browser} içinde oturum açın, ardından sayfayı tekrar arayın.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Semboller getirilemedi: raporun bazı satırları adlar yerine adresleri gösteriyor (geliştiriciler yine de okuyabilir).
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Sistem anahtarlığı kilitli ve MDM kilidini açmıyor, bu nedenle oturum açma bilgileri ve parolalar yalnızca sizin okuyabileceğiniz MDM ayarlarına kaydedilir.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4191,11 +4271,19 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
-	This magnet link names no trackers and the DHT is off, so no peer can be found.	Bu mıknatıs bağlantısı izleyici belirtmiyor ve DHT kapalı, bu nedenle eş bulunamıyor.
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	Bu mıknatıs bağlantısında izleyici belirtilmemiş ve DHT kapalı, bu nedenle eş bulunamıyor.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Bunun için ffmpeg gerekiyor
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Bu taşınabilir kopya, oturum açma bilgilerini ve parolaları kendi ayarlarında, Windows hesabınız için şifrelenmiş olarak tutar.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Bu taşınabilir kopya, oturum açma bilgilerini ve parolaları yalnızca sizin okuyabileceğiniz kendi ayarlarında tutar.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4217,11 +4305,11 @@
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
-	This video is protected (DRM): no tool can save it.	Bu video korumalıdır (DRM): hiçbir araç kaydedemez.
+	This video is protected (DRM): no tool can save it.	Bu video korumalıdır (DRM): hiçbir araç bu videoyu kaydedemez.
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Bu video için oturum açmanız gerekiyor. Tarayıcınızda, oturum açma bilgilerinizi ileten Video İndir düğmesini kullanın.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Bu video oturum açmanızı gerektiriyor. Tarayıcınızda videonun üzerindeki Video İndir düğmesini kullanın (bu, oturum açma bilgilerinizi iletir) veya Seçenekler → Site Oturum Açmaları → Video siteleri için çerezler bölümünde tarayıcınızı seçin.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4354,7 +4442,7 @@
 	Turn off computer	Bilgisayarı kapat
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Turn off computer when done	Bittiğinde bilgisayarı kapat
+	Turn off computer when done	İndirme tamamlandığında bilgisayarı kapat
 #. button in a dialog box
 #, machine
 	Turn off now	Şimdi kapat
@@ -4432,7 +4520,7 @@
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
-	Unfinished	Bitmemiş
+	Unfinished	Tamamlanmamış
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4505,7 +4593,7 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	Use one * only	Yalnızca bir * kullanın
+	Use one * only	Yalnızca bir * kullan
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -4598,14 +4686,6 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Video aramaları yt-dlp kullanır (yaklaşık 23 MB, imzasına göre denetlendi).
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	Video sayfaları ve torrentler henüz kullanamaz.
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	Video sayfaları henüz kullanamaz.
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4629,7 +4709,7 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
 #. {n} = a number (keep the braces as they are)
 #, machine
-	volume {n} of it is missing	{n} numaralı birimi eksik
+	volume {n} of it is missing	Arşivin {n}. cildi eksik
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
@@ -4684,6 +4764,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows, uyandırma zamanlayıcılarına yalnızca prize takılıyken izin verir
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Kimlik Bilgileri Yöneticisi yanıt vermediği için oturum açma bilgileri ve parolalar MDM ayarlarına, Windows hesabınız için şifrelenmiş olarak kaydedilir.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4764,9 +4848,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	Sisteminizin: {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp, {browser} açıkken {browser} çerezlerini okuyamıyor. {browser} uygulamasını kapatın ve sayfayı tekrar arayın veya Seçenekler → Site Oturum Açmaları bölümünde Firefox'u seçin.
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp, {browser} çerezlerinin anahtarını sistemin anahtar zincirinden alamadı. Anahtar zincirinin kilidini açın ve sayfayı tekrar arayın.
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp, {browser} çerezlerini okuyamadı: {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp, bu bilgisayarda {browser} çerezlerini bulamadı. Seçenekler → Site Oturum Açmaları bölümünde tarayıcıyı ve profilini kontrol edin.
 #. message or event log entry in the main window
 #, machine
-	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp yüklü değil (Görevler → Bir sayfadan video indir seçeneği yükler)
+	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp yüklü değil (Görevler → Bir sayfadan video indir seçeneği yt-dlp'yi yükler)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp, yalnızca bu bilgisayardaki dosyalarından okunan bu tarayıcının çerezleriyle video sitelerine giriş yapar. Tarayıcının uzantısı sayfanın kendi çerezlerini iletmediğinde kullanılır: yapıştırılan bir adres, bir oynatma listesi.
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4782,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ ve XZ; bölünmüş bir arşiv (.part1.rar, .7z.001) her\nbirim tamamlandığında. Zaten var olan bir dosya korunur: yenisi numaralandırılır.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ ve XZ; bölünmüş bir arşiv (.part1.rar, .7z.001) tüm\nbirimleri indirildikten sonra. Zaten var olan bir dosya korunur: yenisi numaralandırılır.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4790,7 +4895,7 @@
 #. text in the Options window
 #. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
 #, machine
-	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} bağlı değil: geri gelene kadar hiçbir şey indirilmez.
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} bağlı değil: bağlantı yeniden kurulana kadar hiçbir şey indirilmez.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4798,7 +4903,11 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{algorithm}: checked when the download finishes	{algorithm}: indirme bittiğinde kontrol edildi
+	{algorithm}: checked when the download finishes	{algorithm}: indirme tamamlandığında denetlenir
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser}, Windows'ta çerezlerini yalnızca kendisinin okuyabileceği şekilde şifreler; bu nedenle yt-dlp bunları okuyamaz. Seçenekler → Site Oturum Açmaları bölümünde Firefox'u seçin veya {browser} içindeki videonun üzerindeki Video İndir düğmesini kullanın.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -4811,7 +4920,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
-	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} bu dosyayı sunuyor: konum, sunucusunun konumudur, genellikle size yakındır, site sahibinin değil.
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} bu dosyayı sunuyor: konum, sunucusunun bulunduğu yerdir; genellikle size yakındır, site sahibinin bulunduğu yer değil.
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -4824,7 +4933,7 @@
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
-	{ext} File	{ext} Dosyası
+	{ext} File	{ext} dosyası
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4835,10 +4944,10 @@
 	{file} could not be opened: {error}	{file} açılamadı: {error}
 #. text in the Checksum window
 #, machine
-	{file} could not be read to check it	{file} denetlemek için okunamadı
+	{file} could not be read to check it	{file}, denetlenmek üzere okunamadı
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} kaydedildiği yerde değil (taşınmış veya silinmiş). Sağ tıklama menüsündeki Yeniden İndir seçeneğiyle dosyayı tekrar alabilirsiniz.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} artık kaydedildiği yerde değil (taşınmış veya silinmiş). Dosyayı yeniden indirmek için sağ tıklama menüsündeki Yeniden indir seçeneğini kullanın.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4900,7 +5009,7 @@
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is protected by a password:	{name} bir parola ile korunuyor:
+	{name} is protected by a password:	{name} parolayla korunuyor:
 #. text in the settings
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
@@ -4923,18 +5032,18 @@
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
-	{percent} at {service}	{service} üzerinde {percent}
+	{percent} at {service}	{service} üzerinde %{percent}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} yavaşlamanızı istiyor; MDM bir dakika içinde tekrar deneyecek
+	{service} asks to slow down; MDM will try again in a minute	{service} istek sıklığını azaltmanızı istiyor; MDM bir dakika içinde yeniden deneyecek
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} önce bu bilgisayara izin vermenizi istiyor: e-postasına bakın
+	{service} asks you to allow this computer first: see its email	{service} önce bu bilgisayarın onaylanmasını istiyor: e-postayı kontrol edin
 #. text in errors.rs
 #, machine
 	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} bu torrenti alamıyor: kimse paylaşmıyor veya bağlantısı okunamıyor
@@ -4972,7 +5081,7 @@
 #. text in errors.rs
 #. a debrid service's error: the account has no premium (or it ended)
 #, machine
-	{service}: this needs a premium account	{service}: bu bir premium hesap gerektirir
+	{service}: this needs a premium account	{service}: premium hesap gerekiyor
 #. text in errors.rs
 #, machine
 	{service}: too many downloads at once through your account; MDM will try again	{service}: hesabınız aracılığıyla aynı anda çok fazla indirme; MDM tekrar deneyecek
@@ -4991,7 +5100,7 @@
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{size} is too big for this {file_system} drive (files up to 4 GB)	{size}, bu {file_system} sürücüsü için çok büyük (4 GB'a kadar dosyalar)
+	{size} is too big for this {file_system} drive (files up to 4 GB)	{size}, bu {file_system} sürücüsü için çok büyük (en fazla 4 GB'lık dosyalar)
 #. text in the download list (sizes, speeds, status)
 #. {s} = seconds (keep the braces as they are)
 #, machine
@@ -5100,7 +5209,7 @@ extension	Download with Mister Download Manager	Mister Download Manager ile İnd
 #. shown in the toolbar button's popup after the site was excluded
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-extension	Downloads from {site} stay with the browser	{site} adresinden indirmeler tarayıcıda kalır
+extension	Downloads from {site} stay with the browser	{site} adresinden yapılan indirmeler tarayıcıda kalır
 #. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 #, machine
@@ -5116,11 +5225,11 @@ extension	Help	Yardım
 #. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
-extension	Hide on this video	Bu videoda gizle
+extension	Hide on this video	Yalnızca bu videoda gizle
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
-extension	Hold Alt while clicking a link to let the browser download it.	Bir bağlantıya tıklarken Alt tuşunu basılı tutarak tarayıcının indirmesini sağlayın.
+extension	Hold Alt while clicking a link to let the browser download it.	Tarayıcının bir bağlantıyı indirmesini sağlamak için tıklarken Alt tuşunu basılı tutun.
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
@@ -5161,7 +5270,7 @@ extension	Mister Download Manager	Mister Download Manager
 #. text in the browser extension
 #. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager didn't start in time	Mister Download Manager zamanında başlamadı
+extension	Mister Download Manager didn't start in time	Mister Download Manager zamanında başlatılamadı
 #. text in the browser extension
 #. status when the app refuses this copy of the extension (another copy is installed, or it came from another store); keep the name Mister Download Manager as it is
 #, machine
@@ -5169,7 +5278,7 @@ extension	Mister Download Manager doesn't accept this copy of the extension	Mist
 #. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager yüklü değil veya başlamadı
+extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager yüklü değil veya başlatılamadı
 #. text in the browser extension
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
@@ -5177,7 +5286,7 @@ extension	Mister Download Manager isn't installed, or its browser integration is
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager daha sonra bu tarayıcıyla aynı proxy üzerinden indirir. Tarayıcı sizden bir kez izin vermenizi ister; bunu kapatmak bu izni geri alır.
+extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager daha sonra bu tarayıcıyla aynı proxy üzerinden indirme yapar. Tarayıcı bir kez izin vermenizi ister; bu seçeneği kapatmak verilen izni geri alır.
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -5186,16 +5295,16 @@ extension	More options	Diğer seçenekler
 #. menu command of the download button over a video: never show the button on this web site again
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-extension	Never on {site}	{site} üzerinde asla gösterme
+extension	Never on {site}	{site} sitesinde bir daha gösterme
 #. text in the browser extension
 #. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-extension	Never take downloads from {site}	{site} adresinden indirmeleri asla alma
+extension	Never take downloads from {site}	{site} sitesindeki indirmeleri artık alma
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
-extension	No video or sound found on this page yet. Play it, then open this again.	Bu sayfada henüz video veya ses bulunamadı. Oynatın, ardından bunu tekrar açın.
+extension	No video or sound found on this page yet. Play it, then open this again.	Bu sayfada henüz video veya ses bulunamadı. Oynatıp tekrar açın.
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
@@ -5232,11 +5341,11 @@ extension	Support MDM	MDM'yi Destekleyin
 #. text in the browser extension
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
-extension	Take downloads from this browser	Bu tarayıcıdan indirmeleri al
+extension	Take downloads from this browser	İndirmeleri bu tarayıcıdan al
 #. text in the browser extension
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
-extension	The connection to Mister Download Manager failed	Mister Download Manager bağlantısı başarısız oldu
+extension	The connection to Mister Download Manager failed	Mister Download Manager ile bağlantı kurulamadı
 #. text in the browser extension
 #. shown briefly on the download button over a video when the app's settings keep the button off on this web site
 #, machine
@@ -5256,11 +5365,11 @@ extension	This browser isn't ticked in Options → General.	Bu tarayıcı, Seçe
 #. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
-extension	This download's details were too large to hand over	Bu indirmenin ayrıntıları devredilemeyecek kadar büyüktü
+extension	This download's details were too large to hand over	Bu indirmenin ayrıntıları aktarılamayacak kadar büyüktü
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
-extension	Update Mister Download Manager to use everything this extension offers	Bu uzantının sunduğu her şeyi kullanmak için Mister Download Manager uygulamasını güncelleyin
+extension	Update Mister Download Manager to use everything this extension offers	Bu uzantının sunduğu tüm özellikleri kullanmak için Mister Download Manager uygulamasını güncelle
 #. text in the browser extension
 #. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
 #, machine
@@ -5292,7 +5401,7 @@ key	Ctrl+N	Ctrl+N
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+Space	Ctrl+Ara Çubuğu
+key	Ctrl+Space	Ctrl+Boşluk
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -5508,7 +5617,7 @@ menu	Breeze	Breeze
 #. menu command in the main window
 #. verb: opens this category's download folder
 #, machine
-menu	Browse	Göz at
+menu	Browse	Klasörü aç
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5577,17 +5686,17 @@ menu	Classic	Klasik
 menu	Clear all &filters	Tüm &filtreleri temizle
 #. menu command in the main window
 #, machine
-menu	Copy magnet link	Mıknatıs bağlantısını kopyala
+menu	Copy magnet link	Magnet bağlantısını kopyala
 #. menu command in the main window
 #, machine
-menu	Create new queue	Yeni sıra oluştur
+menu	Create new queue	Yeni kuyruk oluştur
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Cu&t	Ke&s
 #. menu command in the main window
 #, machine
-menu	Dark Mode support	Koyu Mod desteği
+menu	Dark Mode support	Koyu mod desteği
 #. menu command in the main window
 #. verb: deletes the category
 #. verb: deletes the queue
@@ -5595,7 +5704,7 @@ menu	Dark Mode support	Koyu Mod desteği
 menu	Delete	Sil
 #. menu command in the main window
 #, machine
-menu	Delete from queue	Sıradan sil
+menu	Delete from queue	Kuyruktan sil
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Microsoft's), usually kept as is
 #, machine
@@ -5638,7 +5747,7 @@ menu	Find Next (F3)	Sonrakini Bul (F3)
 #. menu command in the main window
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
-menu	First and last pieces first	Önce ilk ve son parçalar
+menu	First and last pieces first	İlk ve son parçaları önce indir
 #. menu command in the main window
 #. noun: the list's font (submenu)
 #, machine
@@ -5667,7 +5776,7 @@ menu	High contrast	Yüksek karşıtlık
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
-menu	It couldn't start: the log says why	Başlatılamadı: günlükte nedeni yazıyor
+menu	It couldn't start: the log says why	Başlatılamadı: günlükte nedeni belirtiliyor
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
 #, machine
@@ -5675,7 +5784,7 @@ menu	Its first frame didn't show within 10 seconds	İlk çerçevesi 10 saniye i�
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
-menu	Its last start ended before its first frame	Son başlangıcı ilk çerçevesinden önce bitti
+menu	Its last start ended before its first frame	Son başlatma işlemi ilk karesi gösterilmeden sona erdi
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Apple's), usually kept as is
 #, machine
@@ -5683,7 +5792,7 @@ menu	Metal	Metal
 #. menu command in the main window
 #. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Metal didn't start here: OpenGL draws	Metal burada başlamadı: OpenGL çiziyor
+menu	Metal didn't start here: OpenGL draws	Metal burada başlatılamadı: OpenGL çiziyor
 #. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
@@ -5698,11 +5807,11 @@ menu	Move/Rename (Ctrl-M)	Taşı/Yeniden Adlandır (Ctrl-M)
 #. menu command in the main window
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
-menu	Native	Yerel
+menu	Native	Sistem
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
-menu	No graphics card here has a driver for it	Buradaki hiçbir grafik kartında bunun için sürücü yok
+menu	No graphics card here has a driver for it	Buradaki hiçbir grafik kartında bu grafik sistemi için sürücü yok
 #. menu command in the main window
 #, machine
 menu	On Double click	Çift tıklamada
@@ -5769,7 +5878,7 @@ menu	Remove with &files	Dosyalarla bi&rlikte kaldır
 #. menu command in the main window
 #. verb: removes the download from the list and its file from the disk
 #, machine
-menu	Remove with files	Dosyalarla birlikte kaldır
+menu	Remove with files	Dosyaları da silerek kaldır
 #. menu command in the main window
 #, machine
 menu	Resume Download	İndirmeye Devam Et
@@ -5956,43 +6065,332 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/sn
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent dosyası
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	Ekle
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	Eklendi.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	Eklendi. MDM torrent'i okuyor: birazdan listeye katılır.
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	Adres veya magnet bağlantısı
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	Tümü
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	Otomatik (dosya türüne göre)
 #. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
-	in the locked keyring	kilitli anahtarlıkta
+	Certificate (SHA-256): {fingerprint}	Sertifika (SHA-256): {fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	Bir .torrent dosyası seçin
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	Kod
 #. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: label before the 8-digit code
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Sistem anahtarlığı yanıt vermediği için oturum açma bilgileri ve parolalar yalnızca sizin okuyabileceğiniz MDM ayarlarına kaydedilir.
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+	Code:	Kod:
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
 #, machine
-	proxy server	proxy sunucusu
+	Delete the file too	Dosyayı da sil
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#. column title: a paired phone's or computer's name
 #, machine
-	Sign-ins and passwords are kept in the macOS keychain.	Oturum açma bilgileri ve parolalar macOS anahtarlığında tutulur.
+	Device	Cihaz
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
 #, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	Oturum açma bilgileri ve parolalar sistem anahtarlığında (Secret Service) tutulur.
+	Every local network address	Her yerel ağ adresi
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	Bu cihazı unut
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	Bu cihazı unutulsun mu? Tekrar bağlanmak için yeni bir koda ihtiyacı olacak.
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	eşleştirilmiş bir cihazdan
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
 #, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	Oturum açma bilgileri ve parolalar Windows Kimlik Bilgileri Yöneticisi'nde tutulur.
+	It could not start: {error}	Başlatılamadı: {error}
 #. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. column title: when the device last reached MDM
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Sistem anahtarlığı kilitli ve MDM kilidini açmıyor, bu nedenle oturum açma bilgileri ve parolalar yalnızca sizin okuyabileceğiniz MDM ayarlarına kaydedilir.
+	Last seen	Son görülme
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	Yerel ağdaki telefonların ve bilgisayarların MDM'yi kontrol etmesine izin ver
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#. Options → Remote: label before the choice of the address MDM listens on
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Bu taşınabilir kopya, oturum açma bilgilerini ve parolaları kendi ayarlarında, Windows hesabınız için şifrelenmiş olarak tutar.
+	Listen on:	Dinlenecek adres:
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Bu taşınabilir kopya, oturum açma bilgilerini ve parolaları yalnızca sizin okuyabileceğiniz kendi ayarlarında tutar.
+	MDM can't be reached on the network now: Options → Remote says why.	MDM'ye şu anda ağ üzerinden ulaşılamıyor: Seçenekler → Uzak nedenini belirtir.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	MDM bu adresi indiremiyor.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	MDM ekleyemedi.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	MDM yapamadı.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM yanıt vermiyor. Çalıştığından ve aynı ağda olduğundan emin olun.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM yanıt vermiyor. Tekrar deneniyor...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	MDM şu anda kod göstermiyor. Önce oradaki Bir cihazı eşleştir'e tıklayın.
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	Daha fazla
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	Yeni kod
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	Burada indirme yok.
 #. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Kimlik Bilgileri Yöneticisi yanıt vermediği için oturum açma bilgileri ve parolalar MDM ayarlarına, Windows hesabınız için şifrelenmiş olarak kaydedilir.
+	No local network now: it starts when the computer joins one.	Şu anda yerel ağ yok: bilgisayar birine katıldığında başlar.
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	Kapalı: ağdaki hiçbir şey MDM'ye ulaşamaz.
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	Bilgisayarda Seçenekler'i, ardından Uzak'ı açın ve Bir cihazı eşleştir'e tıklayın. Gösterdiği kodu girin.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	Telefonda, bu kodu kamerayla tarayın veya adresi açıp kodu girin.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	Açık. Telefonda bu adresi açın:
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Yalnızca eşleştirilmiş cihazlar herhangi bir şeyi görebilir veya değiştirebilir. İlk kez, telefonun tarayıcısı MDM'nin kendi sertifikası hakkında uyarır: parmak izi yukarıdakiyle aynıdır.
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	Eşleştir
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	Bir cihazı eşleştir
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	Bir cihazı eşleştir...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Mister Download Manager ile eşleştir
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	Eşleştirildi
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	Eşleştirilmiş cihazlar:
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	{port} bağlantı noktası başka bir program tarafından kullanılıyor: başka bir tane seçin.
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	Sırada
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	Uzaktan
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	Uzaktan kumanda
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	{name} listeden kaldırılsın mı?
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	Şimdi başlat
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	Değişiklikler Tamam'a tıkladığınızda uygulanır.
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	Bu kod artık kullanılamaz.
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	Yalnızca bu bilgisayar (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	Bu cihazın adı
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	Bu dosya bir torrent olmak için çok büyük.
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	Bu bir torrent dosyası değil.
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	Önce uzaktan kumandayı açın.
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	Biraz bekleyin, sonra tekrar deneyin.
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	{queue} içinde bekle
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	Cihaz bekleniyor. Kod {time} boyunca çalışır.
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	Ne zaman
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	Yanlış kod. MDM'de yeni bir kod gösterin ve tekrar deneyin.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	Yanlış kod. Kalan deneme sayısı: {n}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} eşleştirildi. Artık MDM'yi kontrol edebilir.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{size} üzerinden {done}
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} boş
+#. text in the browser extension
+#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
+#, machine
+extension	Another Mister Download Manager (a server)	Başka bir Mister Download Manager (bir sunucu)
+#. text in the browser extension
+#. the name this browser gets in the other MDM's list of paired devices
+#, machine
+extension	Browser extension	Tarayıcı uzantısı
+#. text in the browser extension
+#. the toolbar button's status while downloads go to another MDM
+#, machine
+extension	Downloads go to {address}	İndirmeler {address} adresine gidiyor
+#. text in the browser extension
+#. the address typed isn't an https:// address
+#, machine
+extension	Enter its https:// address.	https:// adresini girin.
+#. text in the browser extension
+#. pairing failed for another reason
+#, machine
+extension	It didn't work. Try again.	İşe yaramadı. Tekrar deneyin.
+#. text in the browser extension
+#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
+#, machine
+extension	It shows no code now: click Pair a device there first.	Şu anda kod göstermiyor: önce oradaki Bir cihazı eşle'ye tıklayın.
+#. text in the browser extension
+#. pairing failed: the other MDM didn't answer
+#, machine
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Ulaşılamadı. Bu tarayıcıda adresini bir kez açın ve sertifikasını kabul edin, sonra tekrar deneyin.
+#. text in the browser extension
+#. button: open the other MDM's address in a tab (to accept its certificate once)
+#, machine
+extension	Open it	Aç
+#. text in the browser extension
+#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
+#, machine
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	Adresini bir kez açın ve sertifikasını kabul edin, sonra Seçenekler, Uzak, Bir cihazı eşle'den (veya misterdownloadmanager-cli pair) bir kod girin.
+#. text in the browser extension
+#. button: pair this browser with the other MDM using the code
+#, machine
+extension	Pair	Eşle
+#. text in the browser extension
+#. placeholder of the box for the 8-digit code the other MDM shows
+#, machine
+extension	Pairing code	Eşleme kodu
+#. text in the browser extension
+#. heading in the toolbar button's popup, above the choice of where downloads go
+#, machine
+extension	Send downloads to	İndirmeleri şuraya gönder
+#. text in the browser extension
+#. choice under Send downloads to: the Mister Download Manager on this computer
+#, machine
+extension	This computer	Bu bilgisayar
+#. text in the browser extension
+#. pairing failed: codes tried too fast
+#, machine
+extension	Wait a moment, then try again.	Biraz bekleyin, sonra tekrar deneyin.
+#. text in the browser extension
+#. pairing failed: the code was wrong
+#, machine
+extension	Wrong code.	Yanlış kod.

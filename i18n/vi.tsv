@@ -11,7 +11,7 @@
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Bạn có chắc chắn muốn xóa {n} bản tải xuống này khỏi danh sách tải xuống của Mister Download Manager không?
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Bạn có chắc muốn xóa {n} mục tải xuống này khỏi danh sách tải xuống của Mister Download Manager không?
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers that answered
 #. {n} = a number (keep the braces as they are)
@@ -85,12 +85,12 @@
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} tệp đã có tên của một tệp đã có ở đó và đã được đánh số
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} tệp trùng tên với tệp đã có và được đánh số
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} peer|{n} peers	{n} ngang hàng
+@plural	{n} peer|{n} peers	{n} máy ngang hàng
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -99,7 +99,7 @@
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} tracker added|{n} trackers added	{n} trình theo dõi đã thêm
+@plural	{n} tracker added|{n} trackers added	Đã thêm {n} trình theo dõi
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -117,7 +117,7 @@
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
-	"{what}" isn't an IP address.	"{what}" không phải là địa chỉ IP.
+	"{what}" isn't an IP address.	“{what}” không phải là địa chỉ IP.
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Dịch vụ debrid tải xuống liên kết của máy chủ tệp bằng tài khoản trả phí của riêng bạn và cung cấp cho MDM một liên kết trực tiếp. Chỉ sử dụng tài khoản của riêng bạn: việc chia sẻ tài khoản hoặc liên kết của tài khoản sẽ vi phạm các điều khoản dịch vụ và có thể khiến tài khoản bị tạm ngưng. Các bản tải xuống mà trình duyệt đã bắt đầu vẫn giữ nguyên.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Dịch vụ debrid tải xuống liên kết từ dịch vụ lưu trữ tệp bằng tài khoản trả phí của bạn rồi cung cấp cho MDM một liên kết trực tiếp. Chỉ sử dụng tài khoản của riêng bạn: chia sẻ tài khoản hoặc các liên kết của tài khoản sẽ vi phạm điều khoản dịch vụ và có thể khiến tài khoản bị đình chỉ. Các lượt tải xuống mà trình duyệt đã bắt đầu vẫn giữ nguyên.
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
@@ -192,6 +192,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	ID cấu hình NextDNS gồm sáu chữ cái và chữ số (0-9, a-f).
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Tên hồ sơ hoặc thư mục của hồ sơ đó. Để trống: hồ sơ được sử dụng gần đây nhất. Đối với trình duyệt dựa trên Chromium không có trong danh sách (Helium, Thorium...), hãy chọn Chromium và thư mục hồ sơ của trình duyệt đó.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -207,7 +211,7 @@
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
-	a server on this computer sent the download elsewhere, which would not go through {adapter}	một máy chủ trên máy tính này đã gửi bản tải xuống đến nơi khác, bản tải xuống đó sẽ không đi qua {adapter}
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	một máy chủ trên máy tính này đã chuyển hướng bản tải xuống đến nơi khác, khiến bản tải xuống không đi qua {adapter}
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -352,7 +356,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Aland Islands	Quần đảo Aland
+	Aland Islands	Quần đảo Åland
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -373,7 +377,7 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
-	All the uploader's	Tất cả của người tải lên
+	All the uploader's	Tất cả phụ đề của người tải lên
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -497,7 +501,7 @@
 	As the system's region writes them	Theo cách viết của khu vực hệ thống
 #. text in the Options window
 #, machine
-	Ask it with:	Hỏi với:
+	Ask it with:	Hỏi bằng:
 #. message or event log entry in the main window
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Chọn ngôn ngữ Mister Download Manager hiển thị cửa sổ:
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	Chọn thư mục hồ sơ
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -840,7 +848,7 @@
 #. text in a download's progress window
 #. column title: the peer's torrent program
 #, machine
-	Client	Máy khách
+	Client	Ứng dụng khách
 #. text in the Options window
 #, machine
 	Clock:	Đồng hồ:
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	Quần đảo Cook
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	Cookie cho các trang web video
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	Đã sao chép vào bảng tạm.
@@ -1066,14 +1078,14 @@
 #. text in the Add torrent window
 #. the DHT (finding peers without trackers) is turned off in Torrent settings
 #, machine
-	DHT off	DHT tắt
+	DHT off	Đã tắt DHT
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	disk error: {error}	lỗi ổ đĩa: {error}
 #. text in the Scheduler window
 #, machine
-	displayed in the list of queues	hiển thị trong danh sách hàng đợi
+	displayed in the list of queues	được hiển thị trong danh sách hàng đợi
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1120,13 +1132,13 @@
 	Don't show this dialog again	Không hiển thị hộp thoại này nữa
 #. text in the Options window
 #, machine
-	Don't start downloading automatically from the following addresses:	Không tự động bắt đầu tải xuống từ các địa chỉ sau:
+	Don't start downloading automatically from the following addresses:	Không tự động tải xuống từ các địa chỉ sau:
 #. text in the Options window
 #, machine
-	Don't start downloading automatically from the following sites:	Không tự động bắt đầu tải xuống từ các trang web sau:
+	Don't start downloading automatically from the following sites:	Không tự động tải xuống từ các trang web sau:
 #. text in the Options window
 #, machine
-	Don't take files smaller than (KB, 0 = any size):	Không lấy các tệp nhỏ hơn (KB, 0 = mọi kích thước):
+	Don't take files smaller than (KB, 0 = any size):	Không lấy tệp nhỏ hơn (KB, 0 = mọi kích thước):
 #. text in a download's progress window
 #, machine
 	Done	Hoàn tất
@@ -1251,7 +1263,7 @@
 #. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #, machine
-	Downloading {name} ({n} of {total})... {percent}	Đang tải xuống {name} ({n} trên {total})... {percent}
+	Downloading {name} ({n} of {total})... {percent}	Đang tải xuống {name} ({n}/{total})... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
@@ -1259,7 +1271,7 @@
 #. text in the tray icon's menu
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #, machine
-	Downloads in progress	Tải xuống đang tiến hành
+	Downloads in progress	Đang tải xuống
 #. text in a dialog box
 #. {time} = a time of day (keep the braces as they are)
 #, machine
@@ -1282,7 +1294,7 @@
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
-	Dropped links	Liên kết đã thả
+	Dropped links	Đã thả liên kết
 #. window title in a dialog box
 #, machine
 	Duplicate download link	Liên kết tải xuống trùng lặp
@@ -1397,7 +1409,7 @@
 #. text in the Options window
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
-	Every connection goes through it, from {ip}.	Mọi kết nối đều đi qua đó, từ {ip}.
+	Every connection goes through it, from {ip}.	Mọi kết nối đều đi qua bộ điều hợp đó, từ {ip}.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1529,7 +1541,7 @@
 #. text in gallerydlg.rs
 #. label before the box for how many of a gallery's files to download at most
 #, machine
-	Files at most	Tối đa số tệp
+	Files at most	Số tệp tối đa
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1596,7 +1608,7 @@
 	For your account only. Another app set as the default stays first.	Chỉ dành cho tài khoản của bạn. Một ứng dụng khác được đặt làm mặc định vẫn được ưu tiên.
 #. text in the Add torrent window
 #, machine
-	For your Windows account only. Another app chosen in "Open with" stays first.	Chỉ dành cho tài khoản Windows của bạn. Một ứng dụng khác được chọn trong "Mở bằng" vẫn đứng đầu.
+	For your Windows account only. Another app chosen in "Open with" stays first.	Chỉ dành cho tài khoản Windows của bạn. Ứng dụng khác được chọn trong “Mở bằng” vẫn được ưu tiên.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Force processes to terminate	Buộc các quy trình phải chấm dứt
@@ -1648,10 +1660,14 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	từ tệp torrent
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	Từ trình duyệt:
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	From must come before To	Từ phải đứng trước Đến
+	From must come before To	Giá trị Từ phải nhỏ hơn giá trị Đến
 #. message or event log entry in the main window
 #, machine
 	from the browser	từ trình duyệt
@@ -1681,11 +1697,11 @@
 	gallery-dl can download this gallery's files.	gallery-dl có thể tải xuống các tệp của thư viện ảnh này.
 #. text in gallerydlg.rs
 #, machine
-	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl không thể đọc địa chỉ này. Thay vào đó, hãy thêm dưới dạng tệp (Thêm URL).
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl không thể đọc địa chỉ này. Thay vào đó, hãy thêm địa chỉ dưới dạng tệp (Thêm URL).
 #. message or event log entry in the main window
 #. a gallery download's error: the helper program it needs is missing
 #, machine
-	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl chưa được cài đặt (Thêm URL với địa chỉ thư viện ảnh sẽ cài đặt)
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl chưa được cài đặt (Thêm URL với địa chỉ thư viện ảnh sẽ cài đặt gallery-dl)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1812,7 +1828,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Ẩn &danh mục
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	Ẩn tab
 #. text in a download's progress window; text in standard windows
@@ -1884,6 +1900,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	Trong các danh mục: menu của danh mục đã chọn
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	trong chuỗi khóa bị khóa
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1988,7 +2008,7 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	nó sẽ ghi {size}, nhiều hơn {limit} dung lượng hoặc lý do cho phép
+	it would write {size}, more than the {limit} there is room or reason for	nó sẽ ghi {size}, vượt quá giới hạn {limit} về dung lượng hoặc mức cho phép
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2278,7 +2298,7 @@
 	Map the port on the router (UPnP)	Ánh xạ cổng trên bộ định tuyến (UPnP)
 #. text in the Scheduler window
 #, machine
-	March	Tháng 3
+	March	tháng 3
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2388,7 +2408,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.	Mister Download Manager ghi mọi kết nối trực tiếp vào tệp cuối cùng\n(một tệp phần thưa thớt bên cạnh), vì vậy không cần thư mục tạm thời và không\ncần bước lắp ráp.
+	Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.	Mister Download Manager ghi mọi kết nối trực tiếp vào tệp cuối cùng\n(một tệp thưa bên cạnh), vì vậy không cần thư mục tạm thời và không\ncần bước ghép nối.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -2397,7 +2417,7 @@
 #. Video helpers: {version} = the version of MDM's own copy
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	Mister Download Manager's own copy, version {version}	Bản sao của Mister Download Manager, phiên bản {version}
+	Mister Download Manager's own copy, version {version}	Bản sao riêng của Mister Download Manager, phiên bản {version}
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2458,7 +2478,7 @@
 	Move to folder	Di chuyển đến thư mục
 #. message or event log entry in the main window
 #, machine
-	Move to queue	Di chuyển đến hàng đợi
+	Move to queue	Đã chuyển vào hàng đợi
 #. text in the Scheduler window
 #, machine
 	Move up	Di chuyển lên
@@ -2594,6 +2614,10 @@
 #, machine
 	No addresses yet	Chưa có địa chỉ nào
 #. text in extension.rs
+#. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
+#, machine
+	No browser MDM can connect to was found	Không tìm thấy trình duyệt nào mà MDM có thể kết nối
+#. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 #, machine
 	No browser's extension has connected yet	Chưa có tiện ích mở rộng trình duyệt nào kết nối
@@ -2651,6 +2675,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Không có proxy/socks
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Không có chuỗi khóa hệ thống nào phản hồi, vì vậy thông tin đăng nhập và mật khẩu được giữ trong cài đặt của MDM, chỉ bạn mới có thể đọc.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2665,7 +2693,7 @@
 	No video found on this page. Play the video, then use the Download video button over it.	Không tìm thấy video nào trên trang này. Phát video, sau đó sử dụng nút Tải xuống video phía trên.
 #. text in the Download video window
 #, machine
-	No video this can download on that page	Không có video nào có thể tải xuống trên trang đó
+	No video this can download on that page	Không có video nào trên trang đó có thể tải xuống
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	Không tìm thấy địa chỉ web nào trong {file}.
@@ -2706,7 +2734,7 @@
 	Norway	Na Uy
 #. text in the Checksum window
 #, machine
-	Not a checksum this can read	Đây không phải là tổng kiểm mà ứng dụng có thể đọc
+	Not a checksum this can read	Đây không phải là tổng kiểm tra mà ứng dụng có thể đọc
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: a regular expression that can't be read, with why
 #. {error} = an error message (keep the braces as they are)
@@ -2772,6 +2800,9 @@
 #. text in the Scheduler window
 #, machine
 	October	Tháng Mười
+#. option (radio button) in the Options window
+#, machine
+	Off	Tắt
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	Tắt: một torrent đã hoàn tất sẽ dừng, giống như bất kỳ bản tải xuống nào.
@@ -2800,6 +2831,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	Trên macOS, chỉ quản trị viên mới có thể lên lịch đánh thức
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Trên Windows, Chrome, Edge và Brave có thể khóa cookie của chúng. Firefox hoạt động.
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Một lần vào lúc
@@ -3033,6 +3068,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	Bản xem trước chưa có sẵn
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	Hồ sơ (tùy chọn):
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -3050,6 +3089,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	Cấu hình proxy / socks
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	máy chủ proxy
 #. label in the Options window
 #, machine
 	Proxy server address	Địa chỉ máy chủ proxy
@@ -3064,7 +3107,7 @@
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
-	Put them into the video	Đặt chúng vào video
+	Put them into the video	Nhúng chúng vào video
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3089,6 +3132,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Hàng đợi
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	Chỉ đọc trên máy tính này và chỉ gửi đến trang web của video.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3277,7 +3324,7 @@
 	Saudi Arabia	Ả Rập Xê Út
 #. text in a dialog box
 #, machine
-	Save As	Lưu Thành
+	Save As	Lưu thành
 #. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
@@ -3405,7 +3452,7 @@
 	Set a socks5:// proxy in Options → Proxy / Socks first	Trước tiên, hãy đặt proxy socks5:// trong Tùy chọn → Proxy / Socks
 #. checkbox in the Options window
 #, machine
-	Set file creation date as provided by the server	Đặt ngày tạo tệp theo máy chủ cung cấp
+	Set file creation date as provided by the server	Đặt ngày tạo tệp theo ngày máy chủ cung cấp
 #. button in extension.rs; button in the Options window
 #. button in the browser extension's window: register MDM's helper with the browsers
 #. button in Test browser integration: register MDM's helper with the browsers
@@ -3414,11 +3461,16 @@
 #. message or event log entry in the main window
 #. event log: File Properties: the download no longer goes through the debrid account
 #, machine
-	Set to download directly, not through the debrid account	Đặt để tải xuống trực tiếp, không qua tài khoản debrid
+	Set to download directly, not through the debrid account	Đã đặt để tải xuống trực tiếp, không qua tài khoản debrid
 #. message or event log entry in the main window
 #. event log: File Properties: the download goes through the debrid account again
 #, machine
-	Set to download through the debrid account	Đặt để tải xuống qua tài khoản debrid
+	Set to download through the debrid account	Đã đặt để tải xuống qua tài khoản debrid
+#. text in extension.rs
+#. a check of Test browser integration: setting it up failed; {error} is the system's own message, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Setting it up failed: {error}	Thiết lập không thành công: {error}
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3478,7 +3530,7 @@
 #. text in extension.rs
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
-	Show me how	Chỉ cho tôi cách thực hiện
+	Show me how	Chỉ tôi cách làm
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on closing batch download dialogs	Hiển thị bảng chọn hàng đợi khi đóng hộp thoại tải xuống hàng loạt
@@ -3507,6 +3559,18 @@
 #, machine
 	Sign in in the browser	Đăng nhập trong trình duyệt
 #. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	Thông tin đăng nhập và mật khẩu được giữ trong chuỗi khóa macOS.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	Thông tin đăng nhập và mật khẩu được giữ trong chuỗi khóa hệ thống (Dịch vụ Bí mật).
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	Thông tin đăng nhập và mật khẩu được giữ trong Trình quản lý Thông tin xác thực của Windows.
+#. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
 	Signed in as {user} ({state})	Đã đăng nhập với tên {user} ({state})
@@ -3524,7 +3588,7 @@
 	Sint Maarten	Sint Maarten
 #. checkbox in the Find window
 #, machine
-	Site name/Download link/Parent web page/Referer	Tên trang web/Liên kết tải xuống/Trang web gốc/Referer
+	Site name/Download link/Parent web page/Referer	Tên trang web/Liên kết tải xuống/Trang web gốc/Trang giới thiệu
 #. text in the Options window
 #. column title: the site (and path) a login is for
 #, machine
@@ -3538,7 +3602,7 @@
 	Sites Logins	Đăng nhập trang web
 #. text in helpers.rs
 #, machine
-	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Các trang web gửi chất lượng tốt nhất của chúng dưới dạng video và âm thanh riêng biệt, và ffmpeg ghép chúng lại. Trên hệ thống này, MDM sử dụng của bạn: cài đặt ffmpeg bằng trình quản lý gói của bạn.
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Các trang web gửi video và âm thanh riêng biệt với chất lượng tốt nhất, rồi ffmpeg ghép chúng lại. Trên hệ thống này, MDM sử dụng ffmpeg của bạn: cài đặt ffmpeg bằng trình quản lý gói.
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Các trang web gửi chất lượng tốt nhất của chúng dưới dạng video và âm thanh riêng biệt. ffmpeg ghép chúng lại thành một tệp có thể phát ở bất cứ đâu.
@@ -3662,7 +3726,7 @@
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
-	Start {queue}	Bắt đầu {queue}
+	Start {queue}	Đã bắt đầu {queue}
 #. message or event log entry in the main window
 #. event log entry, past tense: the download started (just now)
 #, machine
@@ -3675,7 +3739,7 @@
 #. text in the Options window
 #. the same tooltip where no notification area (system tray) shows MDM's icon (some Linux desktops): its window starts minimized instead
 #, machine
-	Started with the computer, it starts minimized: no notification area shows its icon here	Khởi động cùng máy tính, nó sẽ khởi động ở dạng thu nhỏ: không có vùng thông báo nào hiển thị biểu tượng của nó ở đây
+	Started with the computer, it starts minimized: no notification area shows its icon here	Khởi động cùng máy tính, ứng dụng sẽ khởi động ở chế độ thu nhỏ: vùng thông báo không hiển thị biểu tượng ở đây
 #. text in the Options window
 #. tooltip of "Launch Mister Download Manager on startup": started with the computer, MDM's window stays hidden, its icon in the notification area (system tray)
 #, machine
@@ -3721,7 +3785,7 @@
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
 #, machine
-	Stop sharing at a share ratio of	Dừng chia sẻ ở tỷ lệ chia sẻ
+	Stop sharing at a share ratio of	Dừng chia sẻ khi tỷ lệ chia sẻ đạt
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -3729,7 +3793,7 @@
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
-	Stop {queue}	Dừng {queue}
+	Stop {queue}	Đã dừng {queue}
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): stopped by the user
@@ -4013,7 +4077,7 @@
 	The folder could not be created: {error}	Không thể tạo thư mục: {error}
 #. text in errors.rs
 #, machine
-	the folder {path} is not available (drive removed or network share offline?)	thư mục {path} không khả dụng (ổ đĩa đã bị xóa hoặc chia sẻ mạng ngoại tuyến?)
+	the folder {path} is not available (drive removed or network share offline?)	thư mục {path} không khả dụng (ổ đĩa đã bị tháo hoặc thư mục chia sẻ mạng ngoại tuyến?)
 #. text in crashui.rs
 #. crash report window: after Send opened the browser
 #, machine
@@ -4022,6 +4086,10 @@
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
 	the FTP server answered {code} {reply}	máy chủ FTP đã trả lời {code} {reply}
+#. text in extension.rs
+#. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
+#, machine
+	The helper program the browsers start is missing	Chương trình trợ giúp mà trình duyệt khởi động bị thiếu
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4072,7 +4140,7 @@
 	the server answered {status}	máy chủ đã trả lời {status}
 #. text in errors.rs
 #, machine
-	the server can't send parts of the file, so it can't be resumed	máy chủ không thể gửi các phần của tệp, vì vậy không thể tiếp tục
+	the server can't send parts of the file, so it can't be resumed	máy chủ không thể gửi các phần của tệp, vì vậy không thể tiếp tục tải xuống
 #. text in errors.rs
 #, machine
 	the server did not answer in time	máy chủ không trả lời kịp thời
@@ -4088,10 +4156,22 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	máy chủ đã gửi một phần không mong muốn của tệp ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Trang web muốn bạn đăng nhập, ngay cả với cookie của trình duyệt cho trang này. Đăng nhập vào trang đó trong trình duyệt của bạn, sau đó thử lại.
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Trang web muốn bạn đăng nhập, ngay cả với cookie của {browser}. Đăng nhập vào trang đó trong {browser}, sau đó tìm lại trang.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
-	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Không thể tìm nạp các ký hiệu: một số dòng của báo cáo hiển thị địa chỉ thay vì tên (các nhà phát triển vẫn có thể đọc chúng).
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Không thể tải ký hiệu xuống: một số dòng trong báo cáo hiển thị địa chỉ thay vì tên (các nhà phát triển vẫn có thể đọc được).
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Chuỗi khóa hệ thống bị khóa và MDM không mở khóa, vì vậy thông tin đăng nhập và mật khẩu được giữ trong cài đặt của MDM, chỉ bạn mới có thể đọc.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4121,7 +4201,7 @@
 	The update is open in your system's package installer.	Bản cập nhật đang mở trong trình cài đặt gói của hệ thống.
 #. text in a download's Properties window
 #, machine
-	The web page from which this file was obtained:	Trang web mà tệp này được lấy từ:
+	The web page from which this file was obtained:	Trang web mà từ đó tệp này được tải xuống:
 #. text in the Options window
 #. Options → Archives check box
 #, machine
@@ -4139,10 +4219,10 @@
 	There is already a queue with this name	Đã có một hàng đợi với tên này
 #. text in a download's progress window
 #, machine
-	These settings are unavailable when "Show download complete dialog" is turned on	Các cài đặt này không khả dụng khi "Hiển thị hộp thoại hoàn tất tải xuống" được bật
+	These settings are unavailable when "Show download complete dialog" is turned on	Không thể dùng các cài đặt này khi bật "Hiển thị hộp thoại hoàn tất tải xuống"
 #. text in helpers.rs
 #, machine
-	They keep downloading if you close this window.	Chúng vẫn tiếp tục tải xuống nếu bạn đóng cửa sổ này.
+	They keep downloading if you close this window.	Các lượt tải xuống vẫn tiếp tục nếu bạn đóng cửa sổ này.
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	Địa chỉ này đã có trong danh sách tải xuống:
@@ -4153,7 +4233,7 @@
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
-	This computer can't be woken by a timer	Máy tính này không thể được đánh thức bằng bộ hẹn giờ
+	This computer can't be woken by a timer	Không thể đánh thức máy tính này bằng bộ hẹn giờ
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 #, machine
@@ -4191,11 +4271,19 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
-	This magnet link names no trackers and the DHT is off, so no peer can be found.	Liên kết magnet này không có trình theo dõi và DHT đang tắt, nên không tìm thấy đồng đẳng nào.
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	Liên kết magnet này không có tracker và DHT đang tắt, nên không tìm thấy peer nào.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Cần có ffmpeg
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Bản sao di động này giữ thông tin đăng nhập và mật khẩu trong cài đặt riêng của nó, được mã hóa cho tài khoản Windows của bạn.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Bản sao di động này giữ thông tin đăng nhập và mật khẩu trong cài đặt riêng của nó, chỉ bạn mới có thể đọc.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4203,7 +4291,7 @@
 	this program isn't {name}	chương trình này không phải là {name}
 #. text in a download's progress window
 #, machine
-	This system has no dial-up connections to hang up	Hệ thống này không có kết nối quay số để ngắt
+	This system has no dial-up connections to hang up	Hệ thống này không có kết nối quay số nào để ngắt
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -4221,7 +4309,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Video này yêu cầu bạn phải đăng nhập. Sử dụng nút Tải xuống video phía trên trong trình duyệt của bạn, nút này sẽ chuyển thông tin đăng nhập của bạn.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Video này yêu cầu bạn phải đăng nhập. Sử dụng nút Tải xuống video trên video đó trong trình duyệt của bạn, nút này sẽ chuyển thông tin đăng nhập của bạn, hoặc chọn trình duyệt của bạn trong Tùy chọn → Đăng nhập trang web → Cookie cho các trang web video.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4244,7 +4332,7 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
-	Tick "Start download at" first: the computer is woken for the start time	Trước tiên hãy chọn "Bắt đầu tải xuống lúc": máy tính được đánh thức vào thời gian bắt đầu
+	Tick "Start download at" first: the computer is woken for the start time	Trước tiên, hãy chọn "Bắt đầu tải xuống lúc": máy tính sẽ được đánh thức vào thời gian bắt đầu
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Thời gian còn lại
@@ -4314,7 +4402,7 @@
 #. Add trackers: above the box; {name} is the torrent's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Trackers to add to {name}, one address a line:	Trình theo dõi để thêm vào {name}, mỗi dòng một địa chỉ:
+	Trackers to add to {name}, one address a line:	Tracker cần thêm vào {name}, mỗi dòng một địa chỉ:
 #. text in a download's progress window
 #, machine
 	Transfer rate	Tốc độ truyền
@@ -4396,7 +4484,7 @@
 #. text in the settings
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 #, machine
-	Type the name the server's certificate shows.	Nhập tên mà chứng chỉ của máy chủ hiển thị.
+	Type the name the server's certificate shows.	Nhập tên máy chủ được ghi trên chứng chỉ.
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -4491,7 +4579,7 @@
 	Use another program...	Sử dụng chương trình khác...
 #. text in the Batch download window; checkbox in the Batch download window; text in a dialog box; checkbox in a dialog box
 #, machine
-	Use authorization	Sử dụng ủy quyền
+	Use authorization	Dùng thông tin xác thực
 #. text in the Options window
 #, machine
 	Use automatic configuration script	Sử dụng tập lệnh cấu hình tự động
@@ -4598,14 +4686,6 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Tra cứu video sử dụng yt-dlp (khoảng 23 MB, đã kiểm tra chữ ký).
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	Các trang video và torrent chưa thể sử dụng tính năng này.
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	Các trang video chưa thể sử dụng tính năng này.
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4684,6 +4764,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows chỉ cho phép hẹn giờ đánh thức khi cắm điện
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Trình quản lý Thông tin xác thực của Windows không phản hồi, vì vậy thông tin đăng nhập và mật khẩu được giữ trong cài đặt của MDM, được mã hóa cho tài khoản Windows của bạn.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4764,9 +4848,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	Hệ thống của bạn: {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp không thể đọc cookie của {browser} khi {browser} đang mở. Đóng {browser} và tìm lại trang, hoặc chọn Firefox trong Tùy chọn → Đăng nhập trang web.
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp không thể lấy khóa cookie của {browser} từ chuỗi khóa của hệ thống. Mở khóa chuỗi khóa và tìm lại trang.
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp không thể đọc cookie của {browser}: {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp không tìm thấy cookie của {browser} trên máy tính này. Kiểm tra trình duyệt và hồ sơ của trình duyệt đó trong Tùy chọn → Đăng nhập trang web.
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp chưa được cài đặt (Tác vụ → Tải xuống video từ trang sẽ cài đặt)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp đăng nhập vào các trang web video bằng cookie của trình duyệt này, được đọc từ các tệp của trình duyệt đó trên máy tính này. Được sử dụng khi tiện ích mở rộng của trình duyệt không chuyển cookie của trang: một địa chỉ đã dán, một danh sách phát.
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4782,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ và XZ; một kho lưu trữ được chia tách (.part1.rar, .7z.001) sau khi tất cả các tập đã có. Một tệp đã có sẽ được giữ lại: tệp mới sẽ được đánh số.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ và XZ; một tệp lưu trữ được chia thành nhiều phần (.part1.rar, .7z.001) sau khi đã có đủ các phần. Tệp đã tồn tại sẽ được giữ lại: tệp mới sẽ được đánh số.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4790,15 +4895,19 @@
 #. text in the Options window
 #. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
 #, machine
-	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} chưa được kết nối: không có gì được tải xuống cho đến khi nó được kết nối lại.
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} chưa kết nối: sẽ không tải xuống gì cho đến khi kết nối lại.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{algorithm} checksum	Tổng kiểm {algorithm}
+	{algorithm} checksum	Tổng kiểm tra {algorithm}
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{algorithm}: checked when the download finishes	{algorithm}: được kiểm tra khi quá trình tải xuống hoàn tất
+	{algorithm}: checked when the download finishes	{algorithm}: được kiểm tra khi tải xuống hoàn tất
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	Trên Windows, {browser} khóa cookie để chỉ trình duyệt này có thể đọc chúng, vì vậy yt-dlp không thể đọc được. Chọn Firefox trong Tùy chọn → Đăng nhập trang web, hoặc dùng nút Tải xuống video ngay trên video trong {browser}.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -4807,7 +4916,7 @@
 #. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	{browser}: the extension {version} connected	{browser}: tiện ích mở rộng {version} đã kết nối
+	{browser}: the extension {version} connected	{browser}: tiện ích mở rộng phiên bản {version} đã kết nối
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
@@ -4838,11 +4947,11 @@
 	{file} could not be read to check it	Không thể đọc {file} để kiểm tra
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} không còn ở vị trí đã lưu (đã di chuyển hoặc xóa). Tải lại, trong menu chuột phải, để tải lại.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} không còn ở vị trí đã lưu (đã bị di chuyển hoặc xóa). Chọn Tải lại trong menu chuột phải để tải lại tệp.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file does NOT match its checksum ({algorithm})	{file}: tệp KHÔNG khớp với tổng kiểm tra của nó ({algorithm})
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: tệp KHÔNG khớp với tổng kiểm tra ({algorithm})
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4851,12 +4960,12 @@
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} ({size} each)	{have} trong số {total} ({size} mỗi tệp)
+	{have} of {total} ({size} each)	{have}/{total} ({size} mỗi phần)
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} pieces ({size} each)	{have} trong số {total} mảnh ({size} mỗi mảnh)
+	{have} of {total} pieces ({size} each)	{have}/{total} phần ({size} mỗi phần)
 #. text in the download list (sizes, speeds, status)
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
@@ -4864,11 +4973,11 @@
 #. text in errors.rs
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 #, machine
-	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} không thể truy cập được qua {adapter}: nó không có địa chỉ thuộc loại đó (IPv4 hoặc IPv6)
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	Không thể truy cập {ip} qua {adapter}: adapter không có địa chỉ thuộc loại đó (IPv4 hoặc IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
-	{language}, automatic	{language}, tự động
+	{language}, automatic	{language}, tạo tự động
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
@@ -4895,7 +5004,7 @@
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} là tệp lưu trữ 7z hoặc RAR. MDM giải nén các tệp này bằng 7-Zip, nhưng chưa được cài đặt.
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} là tệp lưu trữ 7z hoặc RAR. MDM giải nén các tệp này bằng 7-Zip, nhưng 7-Zip chưa được cài đặt.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -4915,15 +5024,15 @@
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} chosen	{n} trong số {total} đã chọn
+	{n} of {total} chosen	Đã chọn {n}/{total}
 #. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} selected	{n} trong số {total} đã chọn
+	{n} of {total} selected	Đã chọn {n}/{total}
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
-	{percent} at {service}	{percent} tại {service}
+	{percent} at {service}	{percent} trên {service}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -4934,17 +5043,17 @@
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} yêu cầu bạn cho phép máy tính này trước: xem email của nó
+	{service} asks you to allow this computer first: see its email	{service} yêu cầu bạn cho phép máy tính này trước: hãy xem email từ dịch vụ
 #. text in errors.rs
 #, machine
-	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} không thể tải torrent này: không ai chia sẻ hoặc không thể đọc liên kết của nó
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} không thể tải torrent này: không có ai chia sẻ hoặc không thể đọc liên kết
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} không thể truy cập máy chủ tệp này ngay bây giờ; MDM sẽ thử lại sau
+	{service} can't reach this file host right now; MDM will try again later	{service} hiện không thể truy cập máy chủ lưu trữ tệp này; MDM sẽ thử lại sau
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
-	{service} is not responding; try again later	{service} không phản hồi; thử lại sau
+	{service} is not responding; try again later	{service} không phản hồi; hãy thử lại sau
 #. text in errors.rs
 #. a debrid service's error: it refuses this computer's address (a VPN or a server address)
 #, machine
@@ -4972,7 +5081,7 @@
 #. text in errors.rs
 #. a debrid service's error: the account has no premium (or it ended)
 #, machine
-	{service}: this needs a premium account	{service}: cần tài khoản trả phí
+	{service}: this needs a premium account	{service}: cần tài khoản Premium
 #. text in errors.rs
 #, machine
 	{service}: too many downloads at once through your account; MDM will try again	{service}: quá nhiều lượt tải xuống cùng lúc thông qua tài khoản của bạn; MDM sẽ thử lại
@@ -5007,7 +5116,7 @@
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: not added, because files of its names are already in the folder (MDM never writes into them unasked)
 #, machine
-	{title}: not added: files of its names are already in {folder}	{title}: không được thêm: các tệp có tên của nó đã có trong {folder}
+	{title}: not added: files of its names are already in {folder}	{title}: không được thêm: đã có tệp cùng tên trong {folder}
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: a rule's article could not be added, with why
 #. {error} = an error message (keep the braces as they are)
@@ -5021,7 +5130,7 @@
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{what} could not be installed: {error}	{what} không thể cài đặt: {error}
+	{what} could not be installed: {error}	Không thể cài đặt {what}: {error}
 #. column title in the download list in the download list
 #. past participle: when the download was added
 #, machine
@@ -5066,7 +5175,7 @@ column	Transfer rate	Tốc độ truyền
 #. menu command of the download button over a video: opens its settings in Mister Download Manager
 #. the trailing ... means it is still going on: keep it
 #, machine
-extension	Button settings...	Thiết đặt nút...
+extension	Button settings...	Cài đặt nút...
 #. text in the browser extension
 #. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
 #, machine
@@ -5161,7 +5270,7 @@ extension	Mister Download Manager	Mister Download Manager
 #. text in the browser extension
 #. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager didn't start in time	Mister Download Manager không khởi động kịp thời
+extension	Mister Download Manager didn't start in time	Mister Download Manager chưa khởi động kịp
 #. text in the browser extension
 #. status when the app refuses this copy of the extension (another copy is installed, or it came from another store); keep the name Mister Download Manager as it is
 #, machine
@@ -5173,7 +5282,7 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #. text in the browser extension
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager chưa được cài đặt hoặc tích hợp trình duyệt của nó chưa được thiết lập
+extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager chưa được cài đặt hoặc tích hợp trình duyệt chưa được thiết lập
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
@@ -5186,12 +5295,12 @@ extension	More options	Tùy chọn khác
 #. menu command of the download button over a video: never show the button on this web site again
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-extension	Never on {site}	Không bao giờ trên {site}
+extension	Never on {site}	Không hiển thị trên {site} nữa
 #. text in the browser extension
 #. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-extension	Never take downloads from {site}	Không bao giờ tải xuống từ {site}
+extension	Never take downloads from {site}	Không nhận tải xuống từ {site} nữa
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
@@ -5232,7 +5341,7 @@ extension	Support MDM	Hỗ trợ MDM
 #. text in the browser extension
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
-extension	Take downloads from this browser	Tải xuống từ trình duyệt này
+extension	Take downloads from this browser	Nhận tải xuống từ trình duyệt này
 #. text in the browser extension
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
@@ -5240,7 +5349,7 @@ extension	The connection to Mister Download Manager failed	Kết nối với Mis
 #. text in the browser extension
 #. shown briefly on the download button over a video when the app's settings keep the button off on this web site
 #, machine
-extension	The download button is off on this site	Nút tải xuống đã tắt trên trang web này
+extension	The download button is off on this site	Nút tải xuống bị tắt trên trang web này
 #. text in the browser extension
 #. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
 #, machine
@@ -5256,11 +5365,11 @@ extension	This browser isn't ticked in Options → General.	Trình duyệt này 
 #. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
-extension	This download's details were too large to hand over	Chi tiết của bản tải xuống này quá lớn để chuyển giao
+extension	This download's details were too large to hand over	Thông tin của lượt tải xuống này quá lớn để chuyển giao
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
-extension	Update Mister Download Manager to use everything this extension offers	Cập nhật Mister Download Manager để sử dụng mọi thứ tiện ích mở rộng này cung cấp
+extension	Update Mister Download Manager to use everything this extension offers	Cập nhật Mister Download Manager để sử dụng mọi tính năng mà tiện ích mở rộng này cung cấp
 #. text in the browser extension
 #. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
 #, machine
@@ -5426,7 +5535,7 @@ menu	&Pause All	&Tạm dừng tất cả
 #. verb: removes the selected download from the list
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Remove	&Xóa
+menu	&Remove	&Gỡ khỏi danh sách
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5497,7 +5606,7 @@ menu	Adwaita	Adwaita
 #. menu command in the main window
 #. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
 #, machine
-menu	Applies the next time MDM starts	Áp dụng vào lần khởi động MDM tiếp theo
+menu	Applies the next time MDM starts	Có hiệu lực vào lần khởi động MDM tiếp theo
 #. menu command in the main window
 #, machine
 menu	Arrange files	Sắp xếp tệp
@@ -5603,7 +5712,7 @@ menu	Direct3D	Direct3D
 #. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Direct3D didn't start here: OpenGL draws	Direct3D không khởi động ở đây: OpenGL vẽ
+menu	Direct3D didn't start here: OpenGL draws	Direct3D không khởi động được: OpenGL sẽ vẽ
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -5638,7 +5747,7 @@ menu	Find Next (F3)	Tìm tiếp theo (F3)
 #. menu command in the main window
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
-menu	First and last pieces first	Các phần đầu và cuối trước
+menu	First and last pieces first	Ưu tiên tải các phần đầu và cuối
 #. menu command in the main window
 #. noun: the list's font (submenu)
 #, machine
@@ -5675,7 +5784,7 @@ menu	Its first frame didn't show within 10 seconds	Khung hình đầu tiên khô
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
-menu	Its last start ended before its first frame	Lần khởi động cuối cùng kết thúc trước khung hình đầu tiên
+menu	Its last start ended before its first frame	Lần khởi động gần nhất kết thúc trước khi khung hình đầu tiên xuất hiện
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Apple's), usually kept as is
 #, machine
@@ -5698,7 +5807,7 @@ menu	Move/Rename (Ctrl-M)	Di chuyển/Đổi tên (Ctrl-M)
 #. menu command in the main window
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
-menu	Native	Gốc
+menu	Native	Theo hệ thống
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
@@ -5910,7 +6019,7 @@ toolbar	Add URL	Thêm URL
 toolbar	Delete	Xóa
 #. toolbar button in the main window
 #, machine
-toolbar	Delete Completed	Xóa đã hoàn tất
+toolbar	Delete Completed	Xóa mục đã hoàn tất
 #. toolbar button in the main window
 #. plural noun: opens the Options window (settings)
 #, machine
@@ -5956,43 +6065,332 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/giây
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	Tệp .torrent
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	Thêm
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	Đã thêm.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	Đã thêm. MDM đang đọc torrent: nó sẽ tham gia danh sách trong giây lát.
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	Địa chỉ hoặc liên kết magnet
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	Tất cả
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	Tự động (theo loại tệp)
 #. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
-	in the locked keyring	trong chuỗi khóa bị khóa
+	Certificate (SHA-256): {fingerprint}	Chứng chỉ (SHA-256): {fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	Chọn tệp .torrent
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	Mã
 #. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: label before the 8-digit code
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Không có chuỗi khóa hệ thống nào phản hồi, vì vậy thông tin đăng nhập và mật khẩu được giữ trong cài đặt của MDM, chỉ bạn mới có thể đọc.
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+	Code:	Mã:
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
 #, machine
-	proxy server	máy chủ proxy
+	Delete the file too	Xóa cả tệp
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#. column title: a paired phone's or computer's name
 #, machine
-	Sign-ins and passwords are kept in the macOS keychain.	Thông tin đăng nhập và mật khẩu được giữ trong chuỗi khóa macOS.
+	Device	Thiết bị
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
 #, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	Thông tin đăng nhập và mật khẩu được giữ trong chuỗi khóa hệ thống (Dịch vụ Bí mật).
+	Every local network address	Mọi địa chỉ mạng cục bộ
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	Quên thiết bị này
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	Quên thiết bị này? Thiết bị cần mã mới để kết nối lại.
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	từ một thiết bị đã ghép nối
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
 #, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	Thông tin đăng nhập và mật khẩu được giữ trong Trình quản lý Thông tin xác thực của Windows.
+	It could not start: {error}	Không thể khởi động: {error}
 #. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. column title: when the device last reached MDM
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Chuỗi khóa hệ thống bị khóa và MDM không mở khóa, vì vậy thông tin đăng nhập và mật khẩu được giữ trong cài đặt của MDM, chỉ bạn mới có thể đọc.
+	Last seen	Lần cuối nhìn thấy
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	Cho phép điện thoại và máy tính trên mạng cục bộ điều khiển MDM
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#. Options → Remote: label before the choice of the address MDM listens on
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Bản sao di động này giữ thông tin đăng nhập và mật khẩu trong cài đặt riêng của nó, được mã hóa cho tài khoản Windows của bạn.
+	Listen on:	Nghe trên:
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Bản sao di động này giữ thông tin đăng nhập và mật khẩu trong cài đặt riêng của nó, chỉ bạn mới có thể đọc.
+	MDM can't be reached on the network now: Options → Remote says why.	Không thể truy cập MDM trên mạng ngay bây giờ: Tùy chọn → Điều khiển từ xa cho biết lý do.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	MDM không thể tải xuống địa chỉ này.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	MDM không thể thêm nó.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	MDM không thể thực hiện nó.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM không trả lời. Kiểm tra xem nó có đang chạy và trên cùng một mạng không.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM không trả lời. Đang thử lại...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	MDM không hiển thị mã nào bây giờ. Nhấp vào Ghép nối thiết bị ở đó trước.
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	Thêm
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	Mã mới
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	Không có bản tải xuống nào ở đây.
 #. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Trình quản lý Thông tin xác thực của Windows không phản hồi, vì vậy thông tin đăng nhập và mật khẩu được giữ trong cài đặt của MDM, được mã hóa cho tài khoản Windows của bạn.
+	No local network now: it starts when the computer joins one.	Không có mạng cục bộ nào bây giờ: nó sẽ khởi động khi máy tính tham gia một mạng.
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	Tắt: không có gì trên mạng có thể truy cập MDM.
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	Trên máy tính, mở Tùy chọn, sau đó Điều khiển từ xa và nhấp vào Ghép nối thiết bị. Nhập mã mà nó hiển thị.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	Trên điện thoại, quét mã này bằng camera hoặc mở địa chỉ và nhập mã.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	Bật. Trên điện thoại, mở địa chỉ này:
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Chỉ các thiết bị đã ghép nối mới có thể xem hoặc thay đổi bất cứ điều gì. Lần đầu tiên, trình duyệt của điện thoại cảnh báo về chứng chỉ của MDM: dấu vân tay của nó là dấu vân tay ở trên.
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	Ghép nối
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	Ghép nối thiết bị
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	Ghép nối thiết bị...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Ghép nối với Mister Download Manager
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	Đã ghép nối
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	Thiết bị đã ghép nối:
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	Cổng {port} đang được chương trình khác sử dụng: hãy chọn cổng khác.
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	Đã xếp hàng
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	Điều khiển từ xa
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	Điều khiển từ xa
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	Xóa {name} khỏi danh sách?
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	Bắt đầu ngay
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	Các thay đổi sẽ được áp dụng khi bạn bấm OK.
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	Mã này không thể sử dụng được nữa.
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	Chỉ máy tính này (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	Tên thiết bị này
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	Tệp này quá lớn để trở thành một torrent.
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	Đây không phải là tệp torrent.
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	Trước tiên, hãy bật điều khiển từ xa.
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	Đợi một lát, rồi thử lại.
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	Chờ trong {queue}
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	Đang chờ thiết bị. Mã có hiệu lực trong {time}.
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	Khi nào
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	Sai mã. Hiển thị mã mới trong MDM và thử lại.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	Sai mã. Số lần thử còn lại: {n}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} đã được ghép nối. Giờ đây, nó có thể điều khiển MDM.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{done} trên {size}
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	Còn trống {size}
+#. text in the browser extension
+#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
+#, machine
+extension	Another Mister Download Manager (a server)	Một Mister Download Manager khác (máy chủ)
+#. text in the browser extension
+#. the name this browser gets in the other MDM's list of paired devices
+#, machine
+extension	Browser extension	Tiện ích mở rộng trình duyệt
+#. text in the browser extension
+#. the toolbar button's status while downloads go to another MDM
+#, machine
+extension	Downloads go to {address}	Tải xuống chuyển đến {address}
+#. text in the browser extension
+#. the address typed isn't an https:// address
+#, machine
+extension	Enter its https:// address.	Nhập địa chỉ https:// của nó.
+#. text in the browser extension
+#. pairing failed for another reason
+#, machine
+extension	It didn't work. Try again.	Không thành công. Thử lại.
+#. text in the browser extension
+#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
+#, machine
+extension	It shows no code now: click Pair a device there first.	Hiện không có mã: trước tiên hãy nhấp vào Ghép nối thiết bị ở đó.
+#. text in the browser extension
+#. pairing failed: the other MDM didn't answer
+#, machine
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Không thể truy cập. Mở địa chỉ của nó một lần trong trình duyệt này và chấp nhận chứng chỉ của nó, sau đó thử lại.
+#. text in the browser extension
+#. button: open the other MDM's address in a tab (to accept its certificate once)
+#, machine
+extension	Open it	Mở
+#. text in the browser extension
+#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
+#, machine
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	Mở địa chỉ của nó một lần và chấp nhận chứng chỉ của nó, sau đó nhập mã từ Tùy chọn, Từ xa, Ghép nối thiết bị (hoặc misterdownloadmanager-cli pair).
+#. text in the browser extension
+#. button: pair this browser with the other MDM using the code
+#, machine
+extension	Pair	Ghép nối
+#. text in the browser extension
+#. placeholder of the box for the 8-digit code the other MDM shows
+#, machine
+extension	Pairing code	Mã ghép nối
+#. text in the browser extension
+#. heading in the toolbar button's popup, above the choice of where downloads go
+#, machine
+extension	Send downloads to	Gửi tải xuống đến
+#. text in the browser extension
+#. choice under Send downloads to: the Mister Download Manager on this computer
+#, machine
+extension	This computer	Máy tính này
+#. text in the browser extension
+#. pairing failed: codes tried too fast
+#, machine
+extension	Wait a moment, then try again.	Đợi một lát, sau đó thử lại.
+#. text in the browser extension
+#. pairing failed: the code was wrong
+#, machine
+extension	Wrong code.	Sai mã.

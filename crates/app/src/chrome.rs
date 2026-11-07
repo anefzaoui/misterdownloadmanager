@@ -292,6 +292,56 @@ pub fn menu_bar(ui: &mut Ui, o: Pos2, width: f32, open: Option<usize>) -> Option
     hit
 }
 
+/// The menu-bar title under `pos` (main-window coordinates), as [`menu_bar`] lays them out at
+/// `o`: the first menu at the right in RTL.
+pub fn menubar_title_at(p: &egui::Painter, o: Pos2, pos: Pos2) -> Option<usize> {
+    menus(p).iter().position(|(_, x, w, _)| {
+        winui::rect(Rect::from_min_size(o + vec2(*x, 0.0), vec2(*w, MENU_H))).contains(pos)
+    })
+}
+
+/// What happened to the menu bar this frame, for [`menubar_next`].
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum MenuBarEvent {
+    /// [`menu_bar`] returned title `i`: clicked (`released`: the click's release, or a
+    /// screen reader's Collapse), or hovered while another menu is open.
+    Title { i: usize, released: bool },
+    /// The open menu shut itself (Escape, a press outside it, the app losing the focus);
+    /// `press_on_title`: the press that shut it went down on a title of the bar.
+    Dismissed { press_on_title: bool },
+    /// An item was chosen.
+    Chosen,
+    /// Left or Right, or the keyboard (Alt, F10, an access letter), opened menu `i`.
+    Open(usize),
+}
+
+/// The menu bar's open menu after `event` (`open`: the one open before it).
+///
+/// A menu that shut itself is closed here too, unless the press that shut it went down on a
+/// title: that press's release is the title's click, which shuts the menu (its own title) or
+/// opens another one. Escape, or the app losing the focus, with the pointer resting on the bar
+/// (where the click that opened the menu left it) used to leave the menu marked open with
+/// nothing shown, so the next click on its title only "shut" it, and nothing opened.
+pub fn menubar_next(open: Option<usize>, event: MenuBarEvent) -> Option<usize> {
+    match event {
+        MenuBarEvent::Title { i, released } => {
+            if open == Some(i) && released {
+                None
+            } else {
+                Some(i)
+            }
+        }
+        MenuBarEvent::Dismissed {
+            press_on_title: true,
+        } => open,
+        MenuBarEvent::Dismissed {
+            press_on_title: false,
+        }
+        | MenuBarEvent::Chosen => None,
+        MenuBarEvent::Open(i) => Some(i),
+    }
+}
+
 /// A screen reader or UI Automation asked to shut the open menu-bar menu (Collapse on its
 /// title) this frame; taken once.
 pub fn menubar_collapse(ctx: &egui::Context) -> bool {
@@ -668,15 +718,29 @@ pub fn popup<C: Clone>(
     // gives that window the focus, and must not count as clicking away.
     let focused = ctx.input(|i| i.viewport().focused) == Some(true)
         || ctx.data(|d| d.get_temp::<bool>(window_focus).unwrap_or(false));
-    // (first pass, last pass, focused since): focus is only *lost* if it was had.
-    let (first, lost_focus) = ctx.data_mut(|d| {
-        let (first, last, had) = d
-            .get_temp::<(u64, u64, bool)>(shown)
-            .unwrap_or((pass, pass, focused));
-        let first = if last + 1 < pass { pass } else { first };
-        d.insert_temp(shown, (first, pass, had || focused));
-        (first == pass, had && !focused)
+    // (first pass, last pass, the focus): focus is only *lost* if it was had, and only when no
+    // window of ours gets it back within FOCUS_GRACE (#250).
+    let now = ctx.input(|i| i.time);
+    let (first, verdict) = ctx.data_mut(|d| {
+        let (first, last, seen) = d.get_temp::<(u64, u64, MenuFocus)>(shown).unwrap_or((
+            pass,
+            pass,
+            MenuFocus::default(),
+        ));
+        let (first, mut seen) = if last + 1 < pass {
+            (pass, MenuFocus::default())
+        } else {
+            (first, seen)
+        };
+        let verdict = seen.pass(focused, now);
+        d.insert_temp(shown, (first, pass, seen));
+        (first == pass, verdict)
     });
+    if let FocusVerdict::Away { wait } = verdict {
+        // No event may come to look again (the pointer resting on the menu).
+        ctx.request_repaint_after(std::time::Duration::from_secs_f64(wait));
+    }
+    let lost_focus = verdict == FocusVerdict::Left;
     if !first
         && (lost_focus
             || ctx.input(|i| i.key_pressed(egui::Key::Escape) || i.pointer.any_pressed()))
@@ -697,6 +761,55 @@ pub fn popup<C: Clone>(
         return PopupResult::Dismissed;
     }
     PopupResult::Open
+}
+
+/// How long the focus may be away from every window of ours before an open menu counts as left.
+/// On Linux a window manager may give a menu's window the focus (KWin, sway, and GNOME under
+/// Wayland give it to a submenu's as it opens). When that submenu closes (the pointer back on
+/// another item of its parent), its window passes the focus on, and for a frame or more no
+/// window of ours has it: counted as the app losing the focus, it closed the whole menu (#250).
+const FOCUS_GRACE: f64 = 0.4;
+
+/// Whether an open menu still has the focus: the main window's or one of the menu's windows'.
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+struct MenuFocus {
+    /// One of ours has had the focus since the menu opened.
+    had: bool,
+    /// Since when none of ours has had it (the app's clock, in seconds).
+    away_since: Option<f64>,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+enum FocusVerdict {
+    /// Ours, or never had (a menu opened while another app was in front).
+    Here,
+    /// Gone for less than FOCUS_GRACE: look again in `wait` seconds.
+    Away { wait: f64 },
+    /// Gone for FOCUS_GRACE: another app has it, the menu closes.
+    Left,
+}
+
+impl MenuFocus {
+    /// After a pass at `now`: `focused` is whether one of our windows had the focus in it.
+    fn pass(&mut self, focused: bool, now: f64) -> FocusVerdict {
+        if focused {
+            self.had = true;
+            self.away_since = None;
+            return FocusVerdict::Here;
+        }
+        if !self.had {
+            return FocusVerdict::Here;
+        }
+        let since = *self.away_since.get_or_insert(now);
+        let away = now - since;
+        if away >= FOCUS_GRACE {
+            FocusVerdict::Left
+        } else {
+            FocusVerdict::Away {
+                wait: FOCUS_GRACE - away,
+            }
+        }
+    }
 }
 
 /// Where the last press that closed a popup went down, in this window.
@@ -1188,8 +1301,12 @@ fn popup_level<C: Clone>(
                             });
                             sub_at = None;
                         } else {
-                            ui.ctx()
-                                .request_repaint_after(std::time::Duration::from_millis(60));
+                            // The window that draws the menus (this one is drawn in its pass):
+                            // a pointer resting on the item brings no event to close it by.
+                            ui.ctx().request_repaint_after_for(
+                                std::time::Duration::from_millis(60),
+                                parent_vid,
+                            );
                         }
                     } else if depth == 0 {
                         ui.ctx().data_mut(|d| d.remove::<f64>(since_key));
@@ -2025,5 +2142,153 @@ fn chevron(p: &egui::Painter, ox: f32, top: f32, open: bool, bright: bool) {
                 }
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{FOCUS_GRACE, FocusVerdict, MenuBarEvent, MenuFocus, menubar_next};
+
+    /// Runs `events` from no menu open; the open menu after each.
+    fn run(events: &[MenuBarEvent]) -> Vec<Option<usize>> {
+        let mut open = None;
+        events
+            .iter()
+            .map(|e| {
+                open = menubar_next(open, *e);
+                open
+            })
+            .collect()
+    }
+
+    #[test]
+    fn a_title_clicked_after_escape_opens_its_menu_again() {
+        // Click Tasks, Escape (the pointer still on Tasks: no press), click Tasks.
+        let steps = run(&[
+            MenuBarEvent::Title {
+                i: 0,
+                released: true,
+            },
+            MenuBarEvent::Dismissed {
+                press_on_title: false,
+            },
+            MenuBarEvent::Title {
+                i: 0,
+                released: true,
+            },
+        ]);
+        assert_eq!(steps, [Some(0), None, Some(0)]);
+    }
+
+    #[test]
+    fn clicking_the_open_menus_title_shuts_it() {
+        // The press shuts the menu's window; its release, on the same title, shuts the menu.
+        let steps = run(&[
+            MenuBarEvent::Title {
+                i: 1,
+                released: true,
+            },
+            MenuBarEvent::Dismissed {
+                press_on_title: true,
+            },
+            MenuBarEvent::Title {
+                i: 1,
+                released: true,
+            },
+            MenuBarEvent::Title {
+                i: 1,
+                released: true,
+            },
+        ]);
+        assert_eq!(steps, [Some(1), Some(1), None, Some(1)]);
+    }
+
+    #[test]
+    fn another_title_opens_its_menu_from_an_open_one() {
+        let steps = run(&[
+            MenuBarEvent::Title {
+                i: 0,
+                released: true,
+            },
+            // Hovered while Tasks is open: File opens.
+            MenuBarEvent::Title {
+                i: 1,
+                released: false,
+            },
+            // Pressed and released on Downloads.
+            MenuBarEvent::Dismissed {
+                press_on_title: true,
+            },
+            MenuBarEvent::Title {
+                i: 2,
+                released: true,
+            },
+        ]);
+        assert_eq!(steps, [Some(0), Some(1), Some(1), Some(2)]);
+    }
+
+    /// The focus over a menu's passes (`(focused, time)` each), as `MenuFocus` judges it.
+    fn focus_run(passes: &[(bool, f64)]) -> Vec<FocusVerdict> {
+        let mut f = MenuFocus::default();
+        passes.iter().map(|&(on, t)| f.pass(on, t)).collect()
+    }
+
+    /// #250: Tasks open, Import's submenu open with the focus (KWin, sway), the pointer back
+    /// onto another item: the submenu's window closes and hands the focus on, and for a few
+    /// frames no window of ours has it. The menu stays.
+    #[test]
+    fn a_submenu_closing_with_the_focus_leaves_its_menu_open() {
+        let v = focus_run(&[
+            (true, 0.0),   // the main window, then the menu's window
+            (true, 0.5),   // the submenu's window took it
+            (false, 1.0),  // the submenu closed: nobody has it
+            (false, 1.02), // the next frame
+            (true, 1.05),  // the main window (or the menu's) got it back
+            (true, 1.6),
+        ]);
+        assert!(v.iter().all(|x| *x != FocusVerdict::Left), "{v:?}");
+        assert_eq!(v[2], FocusVerdict::Away { wait: FOCUS_GRACE });
+        // Gone again later: counted afresh.
+        let v = focus_run(&[
+            (true, 0.0),
+            (false, 1.0),
+            (true, 1.3),
+            (false, 5.0),
+            (false, 5.3),
+        ]);
+        assert!(v.iter().all(|x| *x != FocusVerdict::Left), "{v:?}");
+    }
+
+    /// Another app takes the focus (a click on its window, Alt+Tab): the menu closes once the
+    /// focus has stayed away, and asks to be looked at again until then.
+    #[test]
+    fn the_focus_gone_to_another_app_closes_the_menu() {
+        let v = focus_run(&[(true, 0.0), (false, 2.0), (false, 2.1), (false, 2.5)]);
+        assert_eq!(v[0], FocusVerdict::Here);
+        assert!(matches!(v[1], FocusVerdict::Away { wait } if (wait - FOCUS_GRACE).abs() < 1e-9));
+        assert!(
+            matches!(v[2], FocusVerdict::Away { wait } if (wait - (FOCUS_GRACE - 0.1)).abs() < 1e-9)
+        );
+        assert_eq!(v[3], FocusVerdict::Left);
+        // A menu opened while another app was in front (a tray menu): no focus to lose.
+        let v = focus_run(&[(false, 0.0), (false, 1.0), (false, 9.0)]);
+        assert!(v.iter().all(|x| *x == FocusVerdict::Here), "{v:?}");
+    }
+
+    #[test]
+    fn a_press_elsewhere_a_choice_or_the_focus_lost_closes_the_menu() {
+        for end in [
+            MenuBarEvent::Dismissed {
+                press_on_title: false,
+            },
+            MenuBarEvent::Chosen,
+        ] {
+            assert_eq!(run(&[MenuBarEvent::Open(3), end]), [Some(3), None]);
+        }
+        // Left / Right from the keyboard move to the neighbour.
+        assert_eq!(
+            run(&[MenuBarEvent::Open(0), MenuBarEvent::Open(4)]),
+            [Some(0), Some(4)]
+        );
     }
 }

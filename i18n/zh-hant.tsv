@@ -11,7 +11,7 @@
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	您確定要從 Mister Download Manager 下載清單中刪除這 {n} 個下載項目嗎？
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	您確定要從 Mister Download Manager 的下載清單中刪除這 {n} 個下載項目嗎？
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers that answered
 #. {n} = a number (keep the braces as they are)
@@ -64,12 +64,12 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} downloading|{n} downloading	{n} 個下載中
+@plural	{n} downloading|{n} downloading	正在下載 {n} 個檔案
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} 個項目已省略 (連結，或導致資料夾外部的名稱)
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	已略過 {n} 個項目（連結，或會導致路徑超出資料夾範圍的名稱）
 #. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
@@ -80,12 +80,12 @@
 #. event log entry: the files ticked in a torrent's Files tab changed; {n} of them are ticked now
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} file chosen to download|{n} files chosen to download	{n}個檔案已選取以下載
+@plural	{n} file chosen to download|{n} files chosen to download	已選取 {n} 個檔案供下載
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} 個檔案的名稱與現有檔案名稱相同，並已編號
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} 個檔案的名稱與現有檔案名稱相同，已重新編號
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
@@ -99,7 +99,7 @@
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} tracker added|{n} trackers added	{n}個追蹤器已新增
+@plural	{n} tracker added|{n} trackers added	已新增 {n} 個追蹤器
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -148,19 +148,19 @@
 	&Start now	立&即開始
 #. text in the Options window
 #, machine
-	(separate names by spaces)	(以空格分隔名稱)
+	(separate names by spaces)	（以空格分隔名稱）
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown in the empty Save to box
 #, machine
-	(the Torrents category's folder)	(Torrent 類別的資料夾)
+	(the Torrents category's folder)	（Torrent 類別的資料夾）
 #. text in the Options window
 #. a 12-hour clock, with an example
 #, machine
-	12-hour (9:41 PM)	12 小時制 (下午 9:41)
+	12-hour (9:41 PM)	12 小時制（下午 9:41）
 #. text in the Options window
 #. a 24-hour clock, with an example
 #, machine
-	24-hour (21:41)	24 小時制 (21:41)
+	24-hour (21:41)	24 小時制（21:41）
 #. window title in extracting archives (a download's log, the Archive password window)
 #. window title: 7-Zip (a program's name) must be installed
 #, machine
@@ -168,46 +168,50 @@
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
-	7z and RAR archives are extracted by 7-Zip ({path}).	7z 和 RAR 壓縮檔由 7-Zip ({path}) 解壓縮。
+	7z and RAR archives are extracted by 7-Zip ({path}).	7z 和 RAR 壓縮檔由 7-Zip（{path}）解壓縮。
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 #, machine
-	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z 和 RAR 壓縮檔需要 7-Zip (7-zip.org)，但未安裝。
+	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z 和 RAR 壓縮檔需要 7-Zip（7-zip.org），但尚未安裝。
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	7z and RAR archives need 7-Zip, which isn't installed	7z 和 RAR 壓縮檔需要 7-Zip，但未安裝
+	7z and RAR archives need 7-Zip, which isn't installed	7z 和 RAR 壓縮檔需要 7-Zip，但尚未安裝
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< 隱藏詳細資料
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	解除限制服務會使用您自己的付費帳戶下載檔案主機的連結，並提供 MDM 直接連結。請僅使用您自己的帳戶：共用帳戶或其連結會違反服務條款，並可能導致帳戶暫停。瀏覽器已開始的下載會保持原樣。
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	解鎖服務會使用您自己的付費帳戶下載檔案主機的連結，並提供 MDM 直接連結。請僅使用您自己的帳戶：共用帳戶或其連結會違反服務條款，並可能導致帳戶遭到停用。瀏覽器已開始的下載會維持原狀。
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	A file of this torrent can't be saved safely: {name}	此 torrent 的檔案無法安全儲存：{name}
+	A file of this torrent can't be saved safely: {name}	此 torrent 中的檔案無法安全儲存：{name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS 設定識別碼為六個字母和數字 (0-9, a-f)。
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	設定檔名稱或其資料夾。留空：使用上次使用的設定檔。對於未列出的 Chromium 瀏覽器 (Helium、Thorium...)，請選擇 Chromium 和其設定檔資料夾。
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
-	A proxy carries this download: the place and the time are the proxy's, not the server's.	此下載由 Proxy 執行：位置和時間皆為 Proxy 的，而非伺服器的。
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	此下載由 Proxy 轉送：位置和時間都是 Proxy 的，而非伺服器的。
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
-	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	已儲存報告。將其傳送給 GitHub 上的開發人員有助於他們修復此問題；您可以先在下方閱讀報告中的所有內容。不會自動傳送任何內容：傳送會在您的瀏覽器中開啟已填寫的報告表單，供您檢查和提交。
+	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	已儲存報告。將報告傳送給 GitHub 上的開發人員有助於他們修正此問題；您可以先在下方閱讀報告中的所有內容。報告不會自動傳送：按一下「傳送」會在您的瀏覽器中開啟已填寫的報告表單，供您檢查並提交。
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
-	A rule adds the new articles whose titles it matches, as they come.	規則會新增符合其標題的新文章。
+	A rule adds the new articles whose titles it matches, as they come.	規則會在新文章到達時，新增標題符合規則的文章。
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
-	a server on this computer sent the download elsewhere, which would not go through {adapter}	此電腦上的伺服器將下載傳送到其他位置，但無法透過 {adapter} 傳送
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	此電腦上的伺服器將下載傳送到其他位置，無法透過 {adapter} 傳送
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -280,7 +284,7 @@
 	Add the extension	新增擴充功能
 #. text in extension.rs
 #, machine
-	Add the free extension: files you download in your browser come here, and videos get a Download button.	新增免費擴充功能：您在瀏覽器中下載的檔案會傳送到這裡，影片也會有「下載」按鈕。
+	Add the free extension: files you download in your browser come here, and videos get a Download button.	新增免費擴充功能：在瀏覽器中下載的檔案會傳送到這裡，影片也會顯示「下載」按鈕。
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -302,7 +306,7 @@
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Add {n} downloads to the list? Each video gets its own row.	將 {n} 個下載新增至清單？每個影片都會有自己的列。
+	Add {n} downloads to the list? Each video gets its own row.	要將 {n} 個下載新增至清單嗎？每部影片都會有自己的列。
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
@@ -403,7 +407,7 @@
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
-	Always dark	一律為深色
+	Always dark	一律使用深色模式
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	選擇 Mister Download Manager 顯示視窗的語言：
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	選擇設定檔資料夾
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -871,7 +879,7 @@
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
 #, machine
-	Complete	完成
+	Complete	已完成
 #. text in the download list (sizes, speeds, status)
 #. category name: compressed archives (zip, rar, 7z)
 #, machine
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	庫克群島
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	視訊網站的 Cookie
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	已複製到剪貼簿。
@@ -998,7 +1010,7 @@
 	Day, month, year	日、月、年
 #. page title in the Options window
 #, machine
-	Debrid service accounts	多源服務帳戶
+	Debrid service accounts	解密服務帳戶
 #. text in the Scheduler window
 #, machine
 	December	十二月
@@ -1013,7 +1025,7 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Default download directory for "{category}" category	「{category}」類別的預設下載目錄
+	Default download directory for "{category}" category	「{category}」類別的預設下載資料夾
 #. page title in the Options window
 #, machine
 	Default download settings	預設下載設定
@@ -1110,7 +1122,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Dominican Republic	多明尼加
+	Dominican Republic	多明尼加共和國
 #. button in extension.rs
 #. button in the browser extension's window: stop offering it at each start
 #, machine
@@ -1429,7 +1441,7 @@
 	Export	匯出
 #. text in the Options window
 #, machine
-	Extend the availability of Manifest 2 Chrome extensions	延長 Manifest 2 Chrome 擴充功能的可用性
+	Extend the availability of Manifest 2 Chrome extensions	延長 Manifest 2 Chrome 擴充功能的可用期限
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	副檔名以空格分隔，例如 MP4 MKV R0*
@@ -1648,6 +1660,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	來自 torrent 檔案
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	從瀏覽器：
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1663,7 +1679,7 @@
 	From:	從:
 #. checkbox in the Options window
 #, machine
-	ftp	ftp
+	ftp	FTP
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1681,11 +1697,11 @@
 	gallery-dl can download this gallery's files.	gallery-dl 可以下載此圖庫的檔案。
 #. text in gallerydlg.rs
 #, machine
-	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl 無法讀取此位址。請改為新增為檔案 (新增 URL)。
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl 無法讀取此網址。請改為將其新增為檔案（新增 URL）。
 #. message or event log entry in the main window
 #. a gallery download's error: the helper program it needs is missing
 #, machine
-	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl 未安裝 (使用圖庫位址新增 URL 即可安裝)
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	未安裝 gallery-dl（使用圖庫網址新增 URL 即可安裝）
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1735,7 +1751,7 @@
 #. text in errors.rs
 #. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
 #, machine
-	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google 雲端硬碟現在不提供此檔案：{message} (在瀏覽器中登入 Google 通常有幫助；否則，請稍後再試)
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google 雲端硬碟目前不提供此檔案：{message}（在瀏覽器中登入 Google 通常有幫助；否則，請稍後再試）
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1812,7 +1828,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	隱藏&類別
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	隱藏索引標籤
 #. text in a download's progress window; text in standard windows
@@ -1871,7 +1887,7 @@
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
-	If it can't be reached, use the system's DNS	如果無法連線，請使用系統的 DNS
+	If it can't be reached, use the system's DNS	若無法連線，使用系統的 DNS
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	繼續下載時忽略檔案修改時間變更
@@ -1884,6 +1900,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	在類別中：所選類別的功能表
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	在鎖定的金鑰圈中
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1932,7 +1952,7 @@
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Into a folder named after it, when it holds several things	當其包含多個項目時，放入以其命名的資料夾
+	Into a folder named after it, when it holds several things	若包含多個項目，則放入以其命名的資料夾
 #. text in a dialog box
 #, machine
 	Invalid address	無效位址
@@ -1988,7 +2008,7 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	它將寫入 {size}，超出 {limit} 的可用空間或原因
+	it would write {size}, more than the {limit} there is room or reason for	寫入 {size} 會超出可用空間或 {limit} 的限制
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2003,7 +2023,7 @@
 	its files could not be written: {error}	無法寫入其檔案：{error}
 #. text in errors.rs
 #, machine
-	its release information is not as expected: {detail}	其發行資訊不如預期：{detail}
+	its release information is not as expected: {detail}	其發行資訊不符合預期：{detail}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2018,7 +2038,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Jersey	澤西
+	Jersey	澤西島
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2035,7 +2055,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Kazakhstan	哈薩克
+	Kazakhstan	哈薩克斯坦
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 #, machine
 	KBytes/sec	KB/秒
@@ -2080,7 +2100,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Kyrgyzstan	吉爾吉斯
+	Kyrgyzstan	吉爾吉斯斯坦
 #. text in langpick.rs
 #. window title (the interface language)
 #, machine
@@ -2171,7 +2191,7 @@
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	列出在 {n} 個影片後停止：{error}
+	Listing stopped after {n} videos: {error}	列出 {n} 個影片後停止：{error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
@@ -2355,7 +2375,7 @@
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
-	Missing	遺失
+	Missing	未下載
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
@@ -2594,6 +2614,10 @@
 #, machine
 	No addresses yet	尚無位址
 #. text in extension.rs
+#. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
+#, machine
+	No browser MDM can connect to was found	找不到 MDM 可連線的瀏覽器
+#. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 #, machine
 	No browser's extension has connected yet	尚未有瀏覽器擴充功能連線
@@ -2626,7 +2650,7 @@
 	No folders yet	尚無資料夾
 #. text in a dialog box
 #, machine
-	No goes back, to choose another folder.	「否」會返回以選擇另一個資料夾。
+	No goes back, to choose another folder.	選擇「否」會返回以選擇另一個資料夾。
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -2637,7 +2661,7 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Email found no mail program
 #, machine
-	No mail app opened.	沒有開啟郵件應用程式。
+	No mail app opened.	未能開啟郵件應用程式。
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	沒有郵件應用程式：訊息已複製，請貼到您的郵件中。
@@ -2647,10 +2671,14 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
-	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	尚未有任何點對點。可能很少人分享此 Torrent，或防火牆、VPN 或網路可能正在封鎖 BitTorrent。
+	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	尚未有任何對等節點。可能很少人分享此 torrent，或防火牆、VPN 或網路可能正在封鎖 BitTorrent。
 #. text in the Options window
 #, machine
 	No proxy/socks	無 Proxy/SOCKS
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	沒有系統金鑰圈回應，因此登入資訊和密碼會保留在 MDM 的設定中，只有您可以讀取。
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2662,7 +2690,7 @@
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
-	No video found on this page. Play the video, then use the Download video button over it.	此頁面上找不到視訊。請播放視訊，然後使用其上方的「下載視訊」按鈕。
+	No video found on this page. Play the video, then use the Download video button over it.	此頁面上找不到任何影片。請播放影片，然後使用影片上方的「下載影片」按鈕。
 #. text in the Download video window
 #, machine
 	No video this can download on that page	此頁面無可下載的影片
@@ -2676,14 +2704,14 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: the video has no subtitles
 #, machine
-	None on this page	此頁面無
+	None on this page	此頁面沒有字幕
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
 #, machine
-	None ticked: every feed.	未勾選：所有摘要。
+	None ticked: every feed.	未勾選：所有 RSS 摘要。
 #. text in a download's progress window
 #, machine
-	None: peers come from the DHT and other peers	無：對等點來自 DHT 和其他對等點
+	None: peers come from the DHT and other peers	無：對等節點來自 DHT 和其他對等節點
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2742,7 +2770,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
-	not supported by this service	此服務不支援
+	not supported by this service	不受此服務支援
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	未使用：檔案部分寫入檔案旁
@@ -2772,12 +2800,15 @@
 #. text in the Scheduler window
 #, machine
 	October	十月
+#. option (radio button) in the Options window
+#, machine
+	Off	關閉
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	關閉：完成的 torrent 會停止，就像任何下載一樣。
 #. text in the Options window
 #, machine
-	Offer to download links copied to the clipboard	提供下載複製到剪貼簿的連結
+	Offer to download links copied to the clipboard	提示下載複製到剪貼簿的連結
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 #, machine
@@ -2800,6 +2831,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	在 macOS 上，只有管理員才能排程喚醒
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	在 Windows 上，Chrome、Edge 和 Brave 可能會鎖定其 Cookie。Firefox 可以運作。
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	一次在
@@ -2946,7 +2981,7 @@
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
 #, machine
-	Paste your API key (from the service's Account page):	貼上您的 API 金鑰 (從服務的「帳戶」頁面取得)：
+	Paste your API key (from the service's Account page):	貼上您的 API 金鑰（從服務的「帳戶」頁面取得）：
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine
@@ -2970,7 +3005,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: peers are known but none answered
 #, machine
-	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	已找到點對點，但尚未有任何回應。防火牆或 VPN 可能正在封鎖連線。
+	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	已找到對等節點，但尚未有任何回應。防火牆或 VPN 可能正在封鎖連線。
 #. option (radio button) in the Scheduler window
 #, machine
 	Periodic synchronization	定期同步處理
@@ -3033,13 +3068,17 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	預覽尚未可用
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	設定檔 (選用)：
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
 	Programs	程式
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Properties of the selected download	選取下載的屬性
+	Properties of the selected download	所選下載項目的屬性
 #. text in a download's progress window
 #, machine
 	Property	屬性
@@ -3050,6 +3089,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	Proxy / socks 設定
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	Proxy 伺服器
 #. label in the Options window
 #, machine
 	Proxy server address	Proxy 伺服器位址
@@ -3089,6 +3132,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	佇列
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	僅在此電腦上讀取，並僅傳送至視訊網站。
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3333,7 +3380,7 @@
 	Select none	取消全選
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Select or unselect one more download	選取或取消選取一個下載
+	Select or unselect one more download	選取或取消選取下一個下載
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select or unselect the download with the dotted outline	選取或取消選取虛線框的下載
@@ -3419,6 +3466,11 @@
 #. event log: File Properties: the download goes through the debrid account again
 #, machine
 	Set to download through the debrid account	設定為透過 Debrid 帳戶下載
+#. text in extension.rs
+#. a check of Test browser integration: setting it up failed; {error} is the system's own message, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Setting it up failed: {error}	設定失敗：{error}
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3435,7 +3487,7 @@
 #. text in a download's progress window
 #. a torrent's General tab: how long it has been shared once finished, in all
 #, machine
-	Shared for	已分享
+	Shared for	分享時間
 #. text in a download's progress window
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
@@ -3478,7 +3530,7 @@
 #. text in extension.rs
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
-	Show me how	顯示方式
+	Show me how	教我如何操作
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on closing batch download dialogs	關閉批次下載對話方塊時顯示佇列選取面板
@@ -3506,6 +3558,18 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	在瀏覽器中登入
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	登入資訊和密碼會保留在 macOS 金鑰圈中。
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	登入資訊和密碼會保留在系統金鑰圈中 (Secret Service)。
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	登入資訊和密碼會保留在 Windows 認證管理員中。
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -3721,7 +3785,7 @@
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
 #, machine
-	Stop sharing at a share ratio of	分享率達到以下時停止分享
+	Stop sharing at a share ratio of	分享率達到以下數值時停止分享
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -3761,7 +3825,7 @@
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
 #, machine
-	Subtitles in {language} came on a second try: they're beside the video, not in it.	第二次嘗試時，{language} 字幕已下載：它們在影片旁，而不是在影片中。
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	第二次嘗試時才下載到 {language} 字幕：字幕檔在影片旁，而不是影片中。
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
 #, machine
@@ -3780,7 +3844,7 @@
 	Sunday	星期日
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Support MDM on GitHub Sponsors	在 GitHub Sponsors 上支援 MDM
+	Support MDM on GitHub Sponsors	在 GitHub Sponsors 上支持 MDM
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3811,7 +3875,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Tajikistan	塔吉克
+	Tajikistan	塔吉克斯坦
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3819,7 +3883,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	任務 → 連結擷取器，或瀏覽器的「下載所有連結」：分割\n封存檔的磁碟區是一個套件，頁面上的其他連結是另一個。
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	任務 → 連結擷取器，或瀏覽器的「下載所有連結」：分割\n封存檔的磁碟區會合併為一個套件，頁面上的其他連結則是另一個套件。
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	告訴朋友
@@ -3873,11 +3937,11 @@
 	The archive was moved to the Trash	封存檔已移至垃圾桶
 #. text in the Download video window
 #, machine
-	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	最佳品質、MP3、Opus 和 FLAC 需要 ffmpeg (約 80 MB)。
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	最佳品質、MP3、Opus 和 FLAC 需要 ffmpeg（約 80 MB）。
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	最佳品質、MP3、Opus 和 FLAC 需要 ffmpeg：請使用系統的套件管理員 (或 Homebrew) 安裝。
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	最佳品質、MP3、Opus 和 FLAC 需要 ffmpeg：請使用系統的套件管理員（或 Homebrew）安裝。
 #. text in the settings
 #. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
 #, machine
@@ -3925,7 +3989,7 @@
 	The computer will shut down in {n} seconds.	電腦將在 {n} 秒後關機。
 #. text in errors.rs
 #, machine
-	the connection closed before the part was complete	部分完成前連線已關閉
+	the connection closed before the part was complete	連線在部分內容完成前已中斷
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	接收資料時連線中斷
@@ -4022,6 +4086,10 @@
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
 	the FTP server answered {code} {reply}	FTP 伺服器回應 {code} {reply}
+#. text in extension.rs
+#. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
+#, machine
+	The helper program the browsers start is missing	瀏覽器啟動的輔助程式遺失
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4072,38 +4140,50 @@
 	the server answered {status}	伺服器回應 {status}
 #. text in errors.rs
 #, machine
-	the server can't send parts of the file, so it can't be resumed	伺服器無法傳送檔案的部分，因此無法繼續
+	the server can't send parts of the file, so it can't be resumed	伺服器無法傳送檔案的部分內容，因此無法繼續下載
 #. text in errors.rs
 #, machine
 	the server did not answer in time	伺服器未及時回應
 #. text in errors.rs
 #, machine
-	the server did not send the requested part	伺服器未傳送請求的部分
+	the server did not send the requested part	伺服器未傳送要求的部分內容
 #. text in errors.rs
 #, machine
-	the server is busy ({status}); try again later	伺服器忙碌中 ({status})；請稍後再試
+	the server is busy ({status}); try again later	伺服器忙碌（{status}）；請稍後再試
 #. text in errors.rs
 #, machine
 	the server sent a web page instead of the file (sign-in needed or the link expired?)	伺服器傳送的是網頁而非檔案 (需要登入或連結已過期？)
 #. text in errors.rs
 #, machine
-	the server sent an unexpected part of the file ({detail})	伺服器傳送了檔案的意外部分 ({detail})
+	the server sent an unexpected part of the file ({detail})	伺服器傳送了非預期的檔案部分（{detail}）
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	即使使用您瀏覽器中此頁面的 Cookie，網站仍要求您登入。請在瀏覽器中登入，然後再試一次。
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	即使使用 {browser} 的 Cookie，網站仍要求您登入。請在 {browser} 中登入，然後重新查詢該頁面。
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
-	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	無法擷取符號：報告的某些行顯示位址而非名稱 (開發人員仍然可以讀取它們)。
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	無法擷取符號：報告中的某些行會顯示位址而非名稱（開發人員仍可讀取這些位址）。
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	系統金鑰圈已鎖定，MDM 不會將其解鎖，因此登入資訊和密碼會保存在 MDM 的設定資料夾中，只有您可以讀取。
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
-	The system's DNS	系統的 DNS
+	The system's DNS	系統 DNS
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
-	The time is a round trip, measured as this download's own connections opened.	時間為往返時間，以本次下載的連線開啟時間測量。
+	The time is a round trip, measured as this download's own connections opened.	時間是往返時間，依本次下載所開啟連線的往返時間測量。
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The torrent could not be saved: {error}	無法儲存 Torrent: {error}
+	The torrent could not be saved: {error}	無法儲存 Torrent：{error}
 #. text in torrent downloads
 #. an error: the torrent is gone from the torrent session
 #, machine
@@ -4115,13 +4195,13 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The update couldn't be installed: {error}	無法安裝更新: {error}
+	The update couldn't be installed: {error}	無法安裝更新：{error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	The update is open in your system's package installer.	更新已在您系統的套件安裝程式中開啟。
+	The update is open in your system's package installer.	更新已在系統的套件安裝程式中開啟。
 #. text in a download's Properties window
 #, machine
-	The web page from which this file was obtained:	取得此檔案的網頁:
+	The web page from which this file was obtained:	取得此檔案的網頁：
 #. text in the Options window
 #. Options → Archives check box
 #, machine
@@ -4136,16 +4216,16 @@
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
-	There is already a queue with this name	已存在同名的佇列
+	There is already a queue with this name	已有同名的佇列
 #. text in a download's progress window
 #, machine
-	These settings are unavailable when "Show download complete dialog" is turned on	當「顯示下載完成對話方塊」開啟時，這些設定無法使用
+	These settings are unavailable when "Show download complete dialog" is turned on	開啟「顯示下載完成對話方塊」時，無法使用這些設定
 #. text in helpers.rs
 #, machine
 	They keep downloading if you close this window.	如果您關閉此視窗，它們會繼續下載。
 #. text in a dialog box
 #, machine
-	This address is already in the list of downloads:	此位址已在下載清單中:
+	This address is already in the list of downloads:	此位址已在下載清單中：
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -4153,11 +4233,11 @@
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
-	This computer can't be woken by a timer	這部電腦無法由計時器喚醒
+	This computer can't be woken by a timer	這部電腦無法透過計時器喚醒
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 #, machine
-	This computer has no wake alarm that programs can set	這部電腦沒有程式可以設定的喚醒鬧鐘
+	This computer has no wake alarm that programs can set	這部電腦沒有可供程式設定的喚醒鬧鐘
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4168,7 +4248,7 @@
 	This date has passed: the queue will not start	此日期已過：佇列將不會啟動
 #. text in a dialog box
 #, machine
-	This folder does not exist:	此資料夾不存在:
+	This folder does not exist:	此資料夾不存在：
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
@@ -4196,6 +4276,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	這需要 ffmpeg
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	此可攜式複本會將登入資訊和密碼保留在其自己的設定中，並為您的 Windows 帳戶加密。
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	此可攜式複本會將登入資訊和密碼保留在其自己的設定中，只有您可以讀取。
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4221,15 +4309,15 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	此視訊需要您登入。請在瀏覽器中使用其上方的「下載視訊」按鈕，這會傳遞您的登入資訊。
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	此視訊需要您登入。請使用瀏覽器中視訊上方的「下載視訊」按鈕，該按鈕會傳遞您的登入資訊，或在「選項」→「網站登入」→「視訊網站的 Cookie」中選擇您的瀏覽器。
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
-	through a proxy	透過 Proxy
+	through a proxy	透過代理伺服器
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it: {country} is the proxy's country
 #, machine
-	through a proxy in {country}	透過 {country} 的 Proxy
+	through a proxy in {country}	透過位於 {country} 的代理伺服器
 #. text in a download's Properties window
 #. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
 #, machine
@@ -4343,7 +4431,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Turks and Caicos Islands	土克斯及開科斯群島
+	Turks and Caicos Islands	特克斯和凱科斯群島
 #. text in the tray icon's menu
 #. verb: turn the Speed Limiter off
 #, machine
@@ -4509,7 +4597,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	如果發生下載錯誤，請使用瀏覽器要求的 Proxy/SOCKS\n用於從瀏覽器攔截的下載
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	如果發生下載錯誤，請使用瀏覽器要求中的 Proxy/SOCKS\n用於從瀏覽器攔截的下載
 #. checkbox in a download's progress window
 #, machine
 	Use Speed Limiter	使用速度限制器
@@ -4526,7 +4614,7 @@
 	Use the token	使用權杖
 #. text in a dialog box
 #, machine
-	Use them for this torrent? What matches it is kept, the rest replaced.	要將它們用於此 torrent 嗎？符合的會保留，其餘的會取代。
+	Use them for this torrent? What matches it is kept, the rest replaced.	要將它們用於此 torrent 嗎？符合的項目會保留，其餘的會取代。
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	將此 Proxy 用於以下通訊協定:
@@ -4598,14 +4686,6 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	視訊查詢使用 yt-dlp (約 23 MB，已根據其簽章檢查)。
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	視訊頁面和 torrent 尚無法使用。
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	視訊頁面尚無法使用。
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4684,6 +4764,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows 僅在接上電源時才允許喚醒計時器
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows 認證管理員沒有回應，因此登入資訊和密碼會保留在 MDM 的設定中，並為您的 Windows 帳戶加密。
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4764,9 +4848,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	您的系統：{path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	當 {browser} 開啟時，yt-dlp 無法讀取 {browser} 的 Cookie。請關閉 {browser} 並再次查詢該頁面，或在「選項」→「網站登入」中選擇 Firefox。
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp 無法從系統金鑰圈取得 {browser} Cookie 的金鑰。請解鎖金鑰圈並再次查詢該頁面。
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp 無法讀取 {browser} 的 Cookie：{error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp 在此電腦上找不到 {browser} 的 Cookie。請在「選項」→「網站登入」中檢查瀏覽器及其設定檔。
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp 未安裝 (工作 → 從頁面下載視訊會安裝它)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp 僅從此電腦上的檔案讀取此瀏覽器的 Cookie，並使用這些 Cookie 登入視訊網站。當瀏覽器擴充功能未傳遞頁面本身的 Cookie 時使用：貼上的位址、播放清單。
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4782,23 +4887,27 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP、7Z、RAR、TAR、GZ 和 XZ；分割封存檔 (.part1.rar、.7z.001) 在\n所有磁碟區都存在時。已存在的檔案會保留：新檔案會編號。
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP、7Z、RAR、TAR、GZ 和 XZ；分割壓縮檔（.part1.rar、.7z.001）會在\n所有分卷都到齊後處理。已存在的檔案會保留：新檔案會編號。
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
-	{adapter} (not connected)	{adapter} (未連線)
+	{adapter} (not connected)	{adapter}（未連線）
 #. text in the Options window
 #. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
 #, machine
-	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} 未連線：在連線之前，不會下載任何內容。
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} 未連線：恢復連線前不會下載任何內容。
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{algorithm} checksum	{algorithm} 總和檢查碼
+	{algorithm} checksum	{algorithm} 檢查碼
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}：下載完成時檢查
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} 在 Windows 上會將 Cookie 鎖定，只有自己能讀取，因此 yt-dlp 無法讀取這些 Cookie。請在「選項」→「網站登入」中選擇 Firefox，或使用 {browser} 中影片上方的「下載影片」按鈕。
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -4811,7 +4920,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
-	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} 提供此檔案：位置是其伺服器的位置，通常在您附近，而不是網站擁有者的位置。
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} 提供此檔案：位置是其伺服器所在的位置，通常在您附近，而不是網站擁有者所在的位置。
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -4838,25 +4947,25 @@
 	{file} could not be read to check it	無法讀取 {file} 以進行檢查
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} 不再位於儲存位置 (已移動或刪除)。在其右鍵功能表中選取「重新下載」可再次取得。
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} 已不在原本的儲存位置（已移動或刪除）。在右鍵功能表中選取「重新下載」，即可再次下載。
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file does NOT match its checksum ({algorithm})	{file}：檔案與其總和檢查碼 ({algorithm}) 不符
+	{file}: the file does NOT match its checksum ({algorithm})	{file}：檔案與其檢查碼（{algorithm}）不符
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file matches its checksum ({algorithm})	{file}：檔案與其總和檢查碼 ({algorithm}) 相符
+	{file}: the file matches its checksum ({algorithm})	{file}：檔案與其檢查碼（{algorithm}）相符
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} ({size} each)	{total} 個中的 {have} 個 (每個 {size})
+	{have} of {total} ({size} each)	{total} 個中的 {have} 個（每個 {size}）
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} pieces ({size} each)	{total} 個中的 {have} 個片段 (每個 {size})
+	{have} of {total} pieces ({size} each)	{total} 個片段中的 {have} 個（每個 {size}）
 #. text in the download list (sizes, speeds, status)
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
@@ -4864,11 +4973,11 @@
 #. text in errors.rs
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 #, machine
-	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	無法透過 {adapter} 連線到 {ip}：它沒有該類型的位址 (IPv4 或 IPv6)
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	無法透過 {adapter} 連線到 {ip}：此網路介面卡沒有該類型的位址（IPv4 或 IPv6）
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
-	{language}, automatic	{language}，自動
+	{language}, automatic	{language}，自動產生
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
@@ -4895,7 +5004,7 @@
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} 是 7z 或 RAR 壓縮檔。MDM 使用 7-Zip 解壓縮這些檔案，但未安裝 7-Zip。
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} 是 7z 或 RAR 壓縮檔。MDM 使用 7-Zip 解壓縮這些檔案，但尚未安裝 7-Zip。
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -4905,17 +5014,17 @@
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} isn't offered as {how}.	{name} 未以 {how} 形式提供。
+	{name} isn't offered as {how}.	{name} 不提供 {how}。
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} (auto)	{n} (自動)
+	{n} (auto)	{n}（自動）
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} chosen	已選擇 {n} 個，共 {total} 個
+	{n} of {total} chosen	已選取 {n} 個，共 {total} 個
 #. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4948,7 +5057,7 @@
 #. text in errors.rs
 #. a debrid service's error: it refuses this computer's address (a VPN or a server address)
 #, machine
-	{service} refuses this connection (a VPN or server address?)	{service} 拒絕此連線 (VPN 或伺服器位址？)
+	{service} refuses this connection (a VPN or server address?)	{service} 拒絕此連線（VPN 或伺服器位址？）
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
@@ -5116,11 +5225,11 @@ extension	Help	說明
 #. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
-extension	Hide on this video	在此影片上隱藏
+extension	Hide on this video	僅在此影片上隱藏
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
-extension	Hold Alt while clicking a link to let the browser download it.	按住 Alt 鍵並點擊連結，讓瀏覽器下載。
+extension	Hold Alt while clicking a link to let the browser download it.	按住 Alt 鍵並按一下連結，讓瀏覽器下載。
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
@@ -5216,7 +5325,7 @@ extension	Protected	受保護
 #. text in the browser extension
 #. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
 #, machine
-extension	Protected video: it can't be saved	受保護影片：無法儲存
+extension	Protected video: it can't be saved	受保護的影片：無法儲存
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
@@ -5830,7 +5939,7 @@ menu	Tell a &friend	告訴朋友(&F)
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
-menu	The graphics card was lost twice in 10 minutes	顯示卡在 10 分鐘內遺失兩次
+menu	The graphics card was lost twice in 10 minutes	顯示卡在 10 分鐘內失效兩次
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
@@ -5877,7 +5986,7 @@ menu	Vulkan	Vulkan
 #. menu command in the main window
 #. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Vulkan didn't start here: OpenGL draws	Vulkan 未在此處啟動：OpenGL 繪製
+menu	Vulkan didn't start here: OpenGL draws	Vulkan 在此處無法啟動：使用 OpenGL 繪圖
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5956,43 +6065,332 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/秒
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent 檔案
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	新增
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	已新增。
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	已新增。MDM 正在讀取 torrent：它會立即加入清單。
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	位址或磁力連結
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	全部
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	自動 (依檔案類型)
 #. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
-	in the locked keyring	在鎖定的金鑰圈中
+	Certificate (SHA-256): {fingerprint}	憑證 (SHA-256)：{fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	選擇 .torrent 檔案
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	代碼
 #. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: label before the 8-digit code
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	沒有系統金鑰圈回應，因此登入資訊和密碼會保留在 MDM 的設定中，只有您可以讀取。
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+	Code:	代碼：
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
 #, machine
-	proxy server	Proxy 伺服器
+	Delete the file too	也刪除檔案
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#. column title: a paired phone's or computer's name
 #, machine
-	Sign-ins and passwords are kept in the macOS keychain.	登入資訊和密碼會保留在 macOS 金鑰圈中。
+	Device	裝置
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
 #, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	登入資訊和密碼會保留在系統金鑰圈中 (Secret Service)。
+	Every local network address	每個區域網路位址
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	忘記此裝置
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	忘記此裝置？它需要新的代碼才能再次連線。
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	來自已配對的裝置
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
 #, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	登入資訊和密碼會保留在 Windows 認證管理員中。
+	It could not start: {error}	無法啟動：{error}
 #. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. column title: when the device last reached MDM
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	系統金鑰圈已鎖定，MDM 不會將其解鎖，因此登入資訊和密碼會保留在 MDM 的設定中，只有您可以讀取。
+	Last seen	上次看到
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	允許區域網路上的手機和電腦控制 MDM
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#. Options → Remote: label before the choice of the address MDM listens on
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	此可攜式複本會將登入資訊和密碼保留在其自己的設定中，並為您的 Windows 帳戶加密。
+	Listen on:	監聽：
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	此可攜式複本會將登入資訊和密碼保留在其自己的設定中，只有您可以讀取。
+	MDM can't be reached on the network now: Options → Remote says why.	MDM 目前無法在網路上連線：選項 → 遠端說明原因。
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	MDM 無法下載此位址。
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	MDM 無法新增。
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	MDM 無法執行。
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM 沒有回應。請檢查它是否正在執行且在同一個網路上。
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM 沒有回應。正在重試...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	MDM 目前沒有顯示代碼。請先按一下「配對裝置」。
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	更多
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	新代碼
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	這裡沒有下載。
 #. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows 認證管理員沒有回應，因此登入資訊和密碼會保留在 MDM 的設定中，並為您的 Windows 帳戶加密。
+	No local network now: it starts when the computer joins one.	目前沒有區域網路：當電腦加入區域網路時會啟動。
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	關閉：網路上的任何東西都無法連線到 MDM。
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	在電腦上，開啟「選項」，然後開啟「遠端」，然後按一下「配對裝置」。輸入它顯示的代碼。
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	在手機上，使用相機掃描此代碼，或開啟位址並輸入代碼。
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	開啟。在手機上，開啟此位址：
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	只有已配對的裝置才能查看或變更任何內容。第一次時，手機的瀏覽器會警告 MDM 自己的憑證：其指紋就是上面那個。
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	配對
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	配對裝置
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	配對裝置...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	與 Mister Download Manager 配對
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	已配對
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	已配對的裝置:
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	連接埠 {port} 已被其他程式使用: 請選擇另一個。
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	已排入佇列
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	遠端
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	遠端控制
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	從清單中移除 {name}？
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	立即開始
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	變更會在您按一下「確定」時套用。
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	此代碼無法再使用。
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	僅限此電腦 (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	此裝置的名稱
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	此檔案太大，無法作為 torrent 檔案。
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	這不是 torrent 檔案。
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	請先開啟遠端控制。
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	請稍候片刻，然後再試一次。
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	在 {queue} 中等候
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	正在等候裝置。此代碼在 {time} 內有效。
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	時間
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	代碼錯誤。請在 MDM 中顯示新代碼，然後再試一次。
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	代碼錯誤。剩餘嘗試次數: {n}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} 已配對。現在可以控制 MDM。
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{done} / {size}
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} 可用
+#. text in the browser extension
+#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
+#, machine
+extension	Another Mister Download Manager (a server)	另一個 Mister Download Manager (伺服器)
+#. text in the browser extension
+#. the name this browser gets in the other MDM's list of paired devices
+#, machine
+extension	Browser extension	瀏覽器擴充功能
+#. text in the browser extension
+#. the toolbar button's status while downloads go to another MDM
+#, machine
+extension	Downloads go to {address}	下載項目傳送至 {address}
+#. text in the browser extension
+#. the address typed isn't an https:// address
+#, machine
+extension	Enter its https:// address.	輸入其 https:// 位址。
+#. text in the browser extension
+#. pairing failed for another reason
+#, machine
+extension	It didn't work. Try again.	失敗。請再試一次。
+#. text in the browser extension
+#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
+#, machine
+extension	It shows no code now: click Pair a device there first.	它現在沒有顯示代碼：請先按一下「配對裝置」。
+#. text in the browser extension
+#. pairing failed: the other MDM didn't answer
+#, machine
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	無法連線。請先在此瀏覽器中開啟其位址一次並接受其憑證，然後再試一次。
+#. text in the browser extension
+#. button: open the other MDM's address in a tab (to accept its certificate once)
+#, machine
+extension	Open it	開啟它
+#. text in the browser extension
+#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
+#, machine
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	開啟其位址一次並接受其憑證，然後從其「選項」、「遠端」、「配對裝置」(或 misterdownloadmanager-cli pair) 輸入代碼。
+#. text in the browser extension
+#. button: pair this browser with the other MDM using the code
+#, machine
+extension	Pair	配對
+#. text in the browser extension
+#. placeholder of the box for the 8-digit code the other MDM shows
+#, machine
+extension	Pairing code	配對代碼
+#. text in the browser extension
+#. heading in the toolbar button's popup, above the choice of where downloads go
+#, machine
+extension	Send downloads to	傳送下載項目至
+#. text in the browser extension
+#. choice under Send downloads to: the Mister Download Manager on this computer
+#, machine
+extension	This computer	這部電腦
+#. text in the browser extension
+#. pairing failed: codes tried too fast
+#, machine
+extension	Wait a moment, then try again.	請稍候片刻，然後再試一次。
+#. text in the browser extension
+#. pairing failed: the code was wrong
+#, machine
+extension	Wrong code.	代碼錯誤。

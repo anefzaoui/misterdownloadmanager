@@ -17,7 +17,7 @@
 #. {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
 #, machine
-@plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	ピア {n} 台に接続中、ファイル リストを取得しています...
+@plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	ピア {n} 台に接続しました。ファイル リストを取得しています...
 #. count in the Add torrent window
 #. where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -109,7 +109,7 @@
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
 #, machine
-@plural	{title}: {count} video|{title}: {count} videos	{title}: {count} 個の動画
+@plural	{title}: {count} video|{title}: {count} videos	{title}: {count} 本の動画
 #. count in playlistdlg.rs
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 #, machine
@@ -117,7 +117,7 @@
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
-	"{what}" isn't an IP address.	"{what}" は IP アドレスではありません。
+	"{what}" isn't an IP address.	「{what}」は IP アドレスではありません。
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -191,7 +191,11 @@
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
-	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS 構成 ID は、6 文字の英数字 (0-9、a-f) です。
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS の構成 ID は、6 文字の英数字 (0-9、a-f) です。
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	プロファイルの名前またはフォルダー。空の場合、最後に使用されたプロファイルが使用されます。リストにない Chromium ベースのブラウザー (Helium、Thorium など) の場合は、Chromium とそのプロファイルのフォルダーを選択してください。
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -207,7 +211,7 @@
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
-	a server on this computer sent the download elsewhere, which would not go through {adapter}	このコンピューター上のサーバーがダウンロードを別の場所に送信しました。これは {adapter} を通過しません。
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	このコンピューター上のサーバーがダウンロードを別の場所に送信しましたが、{adapter} を経由しない場所です
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -373,12 +377,12 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
-	All the uploader's	アップロード者によるすべての字幕
+	All the uploader's	アップロード者が提供したすべての字幕
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Allow more than {n} connections	{n} を超える接続を許可する
+	Allow more than {n} connections	{n} 件を超える接続を許可する
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	既にダウンロード中です: {path}
@@ -501,7 +505,7 @@
 #. message or event log entry in the main window
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
-	Asked the trackers for peers again	トラッカーにピアを再要求しました
+	Asked the trackers for peers again	トラッカーにピアを再通知しました
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
@@ -515,15 +519,15 @@
 #. text in the Download video window
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
-	Audio only {type}	オーディオのみ {type}
+	Audio only {type}	音声のみ {type}
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
-	Audio only, original	音声のみ、オリジナル
+	Audio only, original	音声のみ（オリジナル）
 #. text in the Download video window
 #. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
 #, machine
-	Audio only, original {type}	音声のみ、オリジナル {type}
+	Audio only, original {type}	音声のみ（オリジナル） {type}
 #. text in the Scheduler window
 #, machine
 	August	8 月
@@ -541,7 +545,7 @@
 	Automatically put in "{category}" category the following file types:	次のファイルの種類を自動的に「{category}」カテゴリに入れる:
 #. text in the Options window
 #, machine
-	Automatically start downloading the following file types:	次のファイルの種類を自動的にダウンロードし始める:
+	Automatically start downloading the following file types:	次のファイルの種類を自動的にダウンロードする:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -667,7 +671,7 @@
 	Busy, try later	ビジー状態です。後で再試行してください
 #. message or event log entry in the main window
 #, machine
-	by batch download	バッチ ダウンロードによる
+	by batch download	一括ダウンロードによる
 #. message or event log entry in the main window
 #, machine
 	by Link grabber	リンク グラバーによる
@@ -700,7 +704,7 @@
 #. message or event log entry in the main window
 #. {text} = text the user searched for (keep the braces as they are)
 #, machine
-	Cannot find "{text}"	"{text}" が見つかりません
+	Cannot find "{text}"	「{text}」が見つかりません
 #. text in the Checksum window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Mister Download Manager のウィンドウに表示する言語を選択してください:
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	プロファイルのフォルダーを選択
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	クック諸島
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	動画サイトの Cookie
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	クリップボードにコピーされました。
@@ -942,7 +954,7 @@
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Couldn't extract {name}: {why}	{name} を抽出できませんでした: {why}
+	Couldn't extract {name}: {why}	{name} を展開できませんでした: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	フォルダーの作成
@@ -1289,7 +1301,7 @@
 #. text in the Options window
 #. Options → Network adapter: what "Any" means
 #, machine
-	Each connection takes the system's route.	各接続はシステムのルートを使用します。
+	Each connection takes the system's route.	各接続でシステムのルートを使用します。
 #. text in the Link grabber window
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
@@ -1419,7 +1431,7 @@
 #. event log entry: the user gave the checksum the file must have
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	Expected checksum set ({algorithm})	予期されるチェックサムが設定されました ({algorithm})
+	Expected checksum set ({algorithm})	期待するチェックサムを設定しました ({algorithm})
 #. text in the Options window
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
@@ -1648,6 +1660,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	トレントファイルから
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	ブラウザーから:
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1786,7 +1802,7 @@
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
-	Have	所有
+	Have	取得済み
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1807,12 +1823,12 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
-	Hibernate	休止状態
+	Hibernate	休止状態にする
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	カテゴリを非表示(&C)
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	タブを非表示
 #. text in a download's progress window; text in standard windows
@@ -1867,7 +1883,7 @@
 	If a duplicate download link is added:	重複するダウンロードリンクが追加された場合:
 #. text in the Options window
 #, machine
-	If existing file is complete, show download complete dialog; otherwise resume it.	既存のファイルが完全な場合は、ダウンロード完了ダイアログを表示します。それ以外の場合は再開します。
+	If existing file is complete, show download complete dialog; otherwise resume it.	既存のファイルが完了している場合は、ダウンロード完了ダイアログを表示します。それ以外の場合は再開します。
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
@@ -1884,6 +1900,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	カテゴリ内: 選択したカテゴリのメニュー
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	ロックされたキーリング内
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2064,7 +2084,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Kiribati	キリバチ
+	Kiribati	キリバス
 #. text in a download's Properties window
 #. Properties, where a download's server is: not seen yet (it hasn't run)
 #, machine
@@ -2123,7 +2143,7 @@
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 #, machine
-	Letters	文字
+	Letters	英字
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2166,22 +2186,22 @@
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
-	List the rest	残りをリスト
+	List the rest	残りを一覧表示
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	{n} 個の動画をリストした後に停止しました: {error}
+	Listing stopped after {n} videos: {error}	{n} 本の動画を一覧表示した後に停止しました: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n}	動画をリスト中: {n}
+	Listing the videos: {n}	動画を一覧表示中: {n} 本
 #. text in playlistdlg.rs
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	動画をリスト中: {total} 個中 {n} 個
+	Listing the videos: {n} of {total}	動画を一覧表示中: 全 {total} 本中 {n} 本
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -2206,7 +2226,7 @@
 #. checkbox in the Options window
 #. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
 #, machine
-	Look links up when they arrive (name, size, online)	リンクが到着したら検索する (名前、サイズ、オンライン)
+	Look links up when they arrive (name, size, online)	リンクの到着時に情報を検索する (名前、サイズ、オンライン)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	検索
@@ -2241,14 +2261,14 @@
 	Madagascar	マダガスカル
 #. message or event log entry in the main window
 #, machine
-	Main download queue	メインダウンロードキュー
+	Main download queue	メインのダウンロード キュー
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Make the selection longer or shorter	選択範囲を長くまたは短くする
 #. text in crashui.rs
 #. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
 #, machine
-	Making the report readable: fetching the symbols ({done} of {total} MB)…	レポートを読みやすくしています: シンボルをフェッチ中 ({total} MB 中 {done} MB)…
+	Making the report readable: fetching the symbols ({done} of {total} MB)…	レポートを読みやすくしています: シンボルを取得中 ({done} / {total} MB)…
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2271,7 +2291,7 @@
 	Malta	マルタ
 #. text in the Options window
 #, machine
-	Manual proxy/socks configuration	手動プロキシ/SOCKS 構成
+	Manual proxy/socks configuration	プロキシ/SOCKS の手動設定
 #. checkbox in the Add torrent window
 #. Torrent settings: ask the router (UPnP) to forward the port
 #, machine
@@ -2355,7 +2375,7 @@
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
-	Missing	不足
+	Missing	未取得
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
@@ -2384,7 +2404,7 @@
 	Mister Download Manager stopped responding	Mister Download Manager が応答を停止しました
 #. text in crashui.rs
 #, machine
-	Mister Download Manager stopped responding for a while	Mister Download Manager がしばらく応答を停止しました
+	Mister Download Manager stopped responding for a while	Mister Download Manager がしばらく応答しなくなりました
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2397,7 +2417,7 @@
 #. Video helpers: {version} = the version of MDM's own copy
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	Mister Download Manager's own copy, version {version}	Mister Download Manager のコピー、バージョン {version}
+	Mister Download Manager's own copy, version {version}	Mister Download Manager 自身のコピー、バージョン {version}
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2514,7 +2534,7 @@
 #. text in the Options window
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
-	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	ホスト ファイル内の名前とローカル名 (単一の単語、.local、.lan) はシステムの DNS に残ります。ビデオ ページとトレント トラッカーは、現時点ではシステムの DNS を使用します。
+	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	ホスト ファイル内の名前とローカル名 (単一の単語、.local、.lan) はシステムの DNS を使用します。ビデオ ページとトレント トラッカーも、現時点ではシステムの DNS を使用します。
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2526,7 +2546,7 @@
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (under 60 ms)
 #, machine
-	near	近
+	near	近い
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
@@ -2594,6 +2614,10 @@
 #, machine
 	No addresses yet	アドレスはまだありません
 #. text in extension.rs
+#. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
+#, machine
+	No browser MDM can connect to was found	MDM が接続できるブラウザーが見つかりませんでした
+#. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 #, machine
 	No browser's extension has connected yet	ブラウザーの拡張機能はまだ接続されていません
@@ -2637,7 +2661,7 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Email found no mail program
 #, machine
-	No mail app opened.	メール アプリが開かれていません。
+	No mail app opened.	メール アプリが開きませんでした。
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	メール アプリがありません: メッセージがコピーされました。メールに貼り付けてください。
@@ -2651,6 +2675,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	プロキシ/SOCKS なし
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	システムキーリングが応答しなかったため、サインインとパスワードはMDMの設定に保存されます。これはあなただけが読み取ることができます。
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2668,7 +2696,7 @@
 	No video this can download on that page	このページにはダウンロードできる動画がありません
 #. message or event log entry in the main window
 #, machine
-	No web addresses were found in {file}.	{file} で Web アドレスが見つかりませんでした。
+	No web addresses were found in {file}.	{file} に Web アドレスが見つかりませんでした。
 #. text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
@@ -2680,7 +2708,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
 #, machine
-	None ticked: every feed.	何もチェックされていない場合: すべてのフィード。
+	None ticked: every feed.	何も選択されていません: すべてのフィードが対象です。
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	なし: ピアは DHT および他のピアから取得されます
@@ -2745,7 +2773,7 @@
 	not supported by this service	このサービスではサポートされていません
 #. text in the Options window
 #, machine
-	Not used: file parts are written next to the file	未使用: ファイルのパーツはファイルの隣に書き込まれます
+	Not used: file parts are written next to the file	未使用: ファイルのパーツはファイルと同じフォルダーに書き込まれます
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2772,6 +2800,9 @@
 #. text in the Scheduler window
 #, machine
 	October	10 月
+#. option (radio button) in the Options window
+#, machine
+	Off	オフ
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	オフ: 完了した torrent は、他のダウンロードと同様に停止します。
@@ -2800,6 +2831,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	macOS では、管理者のみがスリープ解除をスケジュールできます
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Windows では、Chrome、Edge、Brave が Cookie をロックする場合があります。Firefox は動作します。
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	一度だけ
@@ -2962,7 +2997,7 @@
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
-	Paused	一時停止
+	Paused	一時停止中
 #. text in a download's progress window
 #. tab title: the other computers sharing the torrent
 #, machine
@@ -3033,6 +3068,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	プレビューはまだ利用できません
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	プロファイル (任意):
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -3050,6 +3089,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	プロキシ / SOCKS 構成
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	プロキシ サーバー
 #. label in the Options window
 #, machine
 	Proxy server address	プロキシ サーバー アドレス
@@ -3073,7 +3116,7 @@
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
 #. label before the quality chosen for all of a playlist's videos
 #, machine
-	Quality	品質
+	Quality	画質
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -3089,6 +3132,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	キュー
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	このコンピューターからのみ読み取られ、動画サイトにのみ送信されます。
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3151,7 +3198,7 @@
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Remember this path for "{category}" category	「{category}」カテゴリのこのパスを記憶する
+	Remember this path for "{category}" category	「{category}」カテゴリにこのパスを記憶する
 #. button in the Options window; button in rssdlg.rs
 #. verb: remove the item
 #. RSS feeds window: unsubscribe from the selected feed
@@ -3167,7 +3214,7 @@
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
-	Replace asterisk to	アスタリスクを置き換える
+	Replace asterisk to	アスタリスクを置き換える文字
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -3419,6 +3466,11 @@
 #. event log: File Properties: the download goes through the debrid account again
 #, machine
 	Set to download through the debrid account	デブリッドアカウントを介してダウンロードするように設定されました
+#. text in extension.rs
+#. a check of Test browser integration: setting it up failed; {error} is the system's own message, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Setting it up failed: {error}	セットアップに失敗しました: {error}
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3507,6 +3559,18 @@
 #, machine
 	Sign in in the browser	ブラウザーでサインイン
 #. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	サインインとパスワードはmacOSキーチェーンに保存されます。
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	サインインとパスワードはシステムキーリング (Secret Service) に保存されます。
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	サインインとパスワードはWindows資格情報マネージャーに保存されます。
+#. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
 	Signed in as {user} ({state})	{user} としてサインイン済み ({state})
@@ -3538,10 +3602,10 @@
 	Sites Logins	サイトのログイン
 #. text in helpers.rs
 #, machine
-	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	サイトは最高の品質を個別の映像と音声として送信し、ffmpeg がそれらを結合します。このシステムでは MDM はあなたのものを使用します: パッケージマネージャーで ffmpeg をインストールしてください。
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	サイトは最高品質の映像と音声を個別に送信し、ffmpeg がそれらを結合します。このシステムでは MDM はお使いの ffmpeg を使用します: パッケージマネージャーで ffmpeg をインストールしてください。
 #. text in helpers.rs
 #, machine
-	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	サイトは最高の品質を個別の映像と音声として送信します。ffmpeg はそれらを結合して、どこでも再生できる 1 つのファイルにします。
+	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	サイトは最高品質の映像と音声を個別に送信します。ffmpeg はそれらを結合して、どこでも再生できる 1 つのファイルにします。
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -3666,7 +3730,7 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: the download started (just now)
 #, machine
-	Started	開始済み
+	Started	開始しました
 #. message or event log entry in the main window
 #. a gallery download's log: {version} = gallery-dl's version
 #. {version} = a version number (keep the braces as they are)
@@ -3683,7 +3747,7 @@
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
-	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) で開始
+	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) で開始しました
 #. text in helpers.rs
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3853,7 +3917,7 @@
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
-	the .torrent file kept for it is gone	保存されている .torrent ファイルがありません
+	the .torrent file kept for it is gone	.torrent ファイルの保存されたコピーが見つかりません
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	アドレスは http(s) または ftp(s) である必要があります
@@ -3932,7 +3996,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
-	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT は誰も検出できませんでした。ファイアウォール、VPN、またはネットワークが、DHT とほとんどのトラッカーが使用する UDP をブロックしている可能性があります。
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT から応答がありませんでした。ファイアウォール、VPN、またはネットワークによって、DHT やほとんどのトラッカーが使用する UDP がブロックされている可能性があります。
 #. text in errors.rs
 #, machine
 	the disk is full	ディスクがいっぱいです
@@ -3991,7 +4055,7 @@
 	The file matches ({algorithm})	ファイルが一致します ({algorithm})
 #. text in a dialog box
 #, machine
-	The file saved as	ファイルは次として保存されました
+	The file saved as	ファイルの保存先
 #. text in the download list (sizes, speeds, status)
 #, machine
 	The file types that are not listed in any other category	他のどのカテゴリにもリストされていないファイルの種類
@@ -4022,6 +4086,10 @@
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
 	the FTP server answered {code} {reply}	FTP サーバーが {code} {reply} と応答しました
+#. text in extension.rs
+#. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
+#, machine
+	The helper program the browsers start is missing	ブラウザーが起動するヘルパー プログラムが見つかりません
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4088,10 +4156,22 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	サーバーがファイルの予期しない部分を送信しました ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	このページではブラウザーの Cookie を使用しても、サイトへのサインインが必要です。ブラウザーでサインインしてから、もう一度お試しください。
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	このページでは {browser} の Cookie を使用しても、サイトへのサインインが必要です。{browser} でサインインしてから、もう一度ページを検索してください。
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	シンボルをフェッチできませんでした: レポートの一部の行には名前ではなくアドレスが表示されます (開発者は引き続き読み取ることができます)。
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	システムキーリングはロックされており、MDMはロックを解除しないため、サインインとパスワードはMDMの設定に保存されます。これはあなただけが読み取ることができます。
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4196,6 +4276,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	これには ffmpeg が必要です
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	このポータブル版は、サインイン情報とパスワードを独自の設定に保存し、この Windows アカウントだけが読み取れるように暗号化します。
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	このポータブル版は、サインイン情報とパスワードを独自の設定に保存します。この設定はこのアカウントだけが読み取れます。
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4221,7 +4309,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	この動画を視聴するにはサインインが必要です。ブラウザーでその上にある [動画をダウンロード] ボタンを使用すると、サインイン情報が渡されます。
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	この動画にはサインインが必要です。ブラウザーの動画上にある [動画をダウンロード] ボタンを使用すると、サインイン情報が渡されます。または、[オプション] → [サイトのログイン] → [動画サイトの Cookie] でブラウザーを選択してください。
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4488,7 +4576,7 @@
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Use another program...	別のプログラムを使用...
+	Use another program...	別のプログラムを選択...
 #. text in the Batch download window; checkbox in the Batch download window; text in a dialog box; checkbox in a dialog box
 #, machine
 	Use authorization	認証を使用する
@@ -4598,14 +4686,6 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ビデオの検索には yt-dlp (約 23 MB、署名で確認済み) を使用します。
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	動画ページとトレントではまだ使用できません。
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	動画ページではまだ使用できません。
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4673,7 +4753,7 @@
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
-	What were you doing when it happened? (optional)	発生時に何をされていましたか? (省略可能)
+	What were you doing when it happened? (optional)	発生時に何をしていましたか? (省略可能)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	What's new:	新機能:
@@ -4684,6 +4764,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows は、電源に接続されている場合にのみスリープ解除タイマーを許可します
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows資格情報マネージャーが応答しなかったため、サインインとパスワードはMDMの設定に保存され、Windowsアカウント用に暗号化されます。
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4764,9 +4848,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	システム: {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	{browser} が開いている間は、yt-dlp は {browser} の Cookie を読み取ることができません。{browser} を閉じてページを再度検索するか、[オプション] → [サイトのログイン] で Firefox を選択してください。
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp はシステムキーリングから {browser} の Cookie のキーを取得できませんでした。キーリングのロックを解除して、もう一度ページを検索してください。
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp は {browser} の Cookie を読み取れませんでした: {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp はこのコンピューターで {browser} の Cookie を見つけられませんでした。ブラウザーとプロファイルを [オプション] → [サイトのログイン] で確認してください。
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp がインストールされていません (タスク → ページからビデオをダウンロードでインストール)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp は、このブラウザーの Cookie をこのコンピューター上のファイルからのみ読み取り、動画サイトにサインインします。ブラウザーの拡張機能がページの Cookie を渡さなかった場合 (貼り付けられたアドレス、プレイリストなど) に使用されます。
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4799,6 +4904,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: ダウンロード完了時にチェック済み
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	Windows では、{browser} は Cookie をロックしているため、yt-dlp は読み取ることができません。[オプション] → [サイトのログイン] で Firefox を選択するか、{browser} の動画上にある [動画をダウンロード] ボタンを使用してください。
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -4811,7 +4920,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
-	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} がこのファイルを配信しています。場所はサーバーのもので、多くの場合ユーザーの近くにあり、サイト所有者のものではありません。
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	このファイルは {cdn} から配信されています。表示される場所はサーバーの所在地で、多くの場合ユーザーの近くにあります。サイト所有者の所在地ではありません。
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -4838,7 +4947,7 @@
 	{file} could not be read to check it	{file} を読み取って確認できませんでした
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} は保存場所になくなっています (移動または削除されました)。右クリック メニューの「再ダウンロード」で再度取得できます。
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} は保存先にありません (移動または削除されています)。右クリック メニューの「再ダウンロード」で再ダウンロードできます。
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4956,7 +5065,7 @@
 #. text in errors.rs
 #. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
 #, machine
-	{service}: sign in again (Options → Accounts)	{service}: もう一度サインインしてください (オプション → アカウント)
+	{service}: sign in again (Options → Accounts)	{service}: 再度サインインしてください (オプション → アカウント)
 #. text in errors.rs
 #. a debrid service's error: the account is locked, banned or not activated
 #, machine
@@ -5016,7 +5125,7 @@
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
-	{what} can't go through a chosen network adapter ({adapter}) yet	{what} は、選択したネットワーク アダプター ({adapter}) をまだ通過できません
+	{what} can't go through a chosen network adapter ({adapter}) yet	{what} は、選択したネットワーク アダプター ({adapter}) 経由ではまだ送信できません
 #. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
@@ -5356,7 +5465,7 @@ key	Type a name	名前を入力
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Up / Down	上 / 下
+key	Up / Down	↑ / ↓
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5426,7 +5535,7 @@ menu	&Pause All	すべて一時停止(&P)
 #. verb: removes the selected download from the list
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Remove	削除(&R)
+menu	&Remove	リストから削除(&R)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5435,7 +5544,7 @@ menu	&Report a problem	問題の報告(&R)
 #. header menu: put the columns back as they first were (order, widths, all shown)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Reset columns	列をリセット(&R)
+menu	&Reset columns	列を初期状態に戻す(&R)
 #. menu command in the main window
 #. Tasks menu: the RSS feeds window (feeds of torrents, and rules that add them)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -5457,7 +5566,7 @@ menu	&Stop Download	ダウンロードを停止(&S)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Tray icon	タスク バー アイコン(&T)
+menu	&Tray icon	通知領域アイコン(&T)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5508,7 +5617,7 @@ menu	Breeze	Breeze
 #. menu command in the main window
 #. verb: opens this category's download folder
 #, machine
-menu	Browse	参照
+menu	Browse	フォルダーを開く
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5675,7 +5784,7 @@ menu	Its first frame didn't show within 10 seconds	最初のフレームが10秒
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
-menu	Its last start ended before its first frame	最初のフレームが表示される前に前回の起動が終了しました
+menu	Its last start ended before its first frame	前回の起動は最初のフレームが表示される前に終了しました
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Apple's), usually kept as is
 #, machine
@@ -5683,7 +5792,7 @@ menu	Metal	Metal
 #. menu command in the main window
 #. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Metal didn't start here: OpenGL draws	Metal はここでは起動しませんでした: OpenGL が描画します
+menu	Metal didn't start here: OpenGL draws	Metal はこの環境で起動できませんでした: OpenGL で描画します
 #. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
@@ -5702,7 +5811,7 @@ menu	Native	ネイティブ
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
-menu	No graphics card here has a driver for it	このグラフィック カードには、それ用のドライバーがありません
+menu	No graphics card here has a driver for it	この環境には、それに対応するドライバーを備えたグラフィック カードがありません
 #. menu command in the main window
 #, machine
 menu	On Double click	ダブルクリック時
@@ -5749,7 +5858,7 @@ menu	Reannounce	再アナウンス
 #. menu command in the main window
 #. right-click → Torrent: read every piece of the torrent's files again and check it
 #, machine
-menu	Recheck files	ファイルの再チェック
+menu	Recheck files	ファイルを再チェック
 #. menu command in the main window
 #. verb: download the file again from the start
 #, machine
@@ -5772,7 +5881,7 @@ menu	Remove with &files	ファイルと共に削除(&F)
 menu	Remove with files	ファイルと共に削除
 #. menu command in the main window
 #, machine
-menu	Resume Download	ダウンロードの再開
+menu	Resume Download	ダウンロードを再開
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5818,11 +5927,11 @@ menu	Start now	今すぐ開始
 menu	Stop	停止
 #. menu command in the main window
 #, machine
-menu	Stop Download	ダウンロードの停止
+menu	Stop Download	ダウンロードを停止
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Support &MDM	MDM のサポート(&M)
+menu	Support &MDM	MDM をサポート(&M)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5830,7 +5939,7 @@ menu	Tell a &friend	友達に教える(&F)
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
-menu	The graphics card was lost twice in 10 minutes	グラフィック カードが10分間に2回失われました
+menu	The graphics card was lost twice in 10 minutes	グラフィック カードが10分間に2回応答しなくなりました
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
@@ -5857,7 +5966,7 @@ menu	Torrent	トレント
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Torrent setti&ngs...	Torrent 設定(&N)...
+menu	Torrent setti&ngs...	トレントの設定(&N)...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5869,7 +5978,7 @@ menu	Turn of&f	オフにする(&F)
 #. menu command in the main window
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Verify checksum...	チェックサムの確認...
+menu	Verify checksum...	チェックサムを確認...
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
 #, machine
@@ -5877,7 +5986,7 @@ menu	Vulkan	Vulkan
 #. menu command in the main window
 #. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Vulkan didn't start here: OpenGL draws	Vulkan はここでは起動しませんでした: OpenGL が描画します
+menu	Vulkan didn't start here: OpenGL draws	Vulkan はここでは起動しませんでした: OpenGL で描画します
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5925,7 +6034,7 @@ toolbar	Resume	再開
 toolbar	Scheduler	スケジューラ
 #. toolbar button in the main window
 #, machine
-toolbar	Start Queue	キューの開始
+toolbar	Start Queue	キューを開始
 #. toolbar button in the main window
 #. verb: stop the selected downloads
 #, machine
@@ -5935,7 +6044,7 @@ toolbar	Stop	停止
 toolbar	Stop All	すべて停止
 #. toolbar button in the main window
 #, machine
-toolbar	Stop Queue	キューの停止
+toolbar	Stop Queue	キューを停止
 #. unit after a number in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -5956,43 +6065,332 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/秒
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent ファイル
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	追加
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	追加されました。
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	追加されました。MDM がトレントを読み取っています。しばらくするとリストに表示されます。
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	アドレスまたはマグネット リンク
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	すべて
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	自動 (ファイルの種類別)
 #. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
-	in the locked keyring	ロックされたキーリング内
+	Certificate (SHA-256): {fingerprint}	証明書 (SHA-256): {fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	.torrent ファイルを選択
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	コード
 #. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: label before the 8-digit code
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	システムキーリングが応答しなかったため、サインインとパスワードはMDMの設定に保存されます。これはあなただけが読み取ることができます。
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+	Code:	コード:
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
 #, machine
-	proxy server	プロキシ サーバー
+	Delete the file too	ファイルも削除
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#. column title: a paired phone's or computer's name
 #, machine
-	Sign-ins and passwords are kept in the macOS keychain.	サインインとパスワードはmacOSキーチェーンに保存されます。
+	Device	デバイス
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
 #, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	サインインとパスワードはシステムキーリング (Secret Service) に保存されます。
+	Every local network address	すべてのローカル ネットワーク アドレス
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	このデバイスを登録解除
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	このデバイスを登録解除しますか? 再接続するには新しいコードが必要です。
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	ペアリングされたデバイスから
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
 #, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	サインインとパスワードはWindows資格情報マネージャーに保存されます。
+	It could not start: {error}	開始できませんでした: {error}
 #. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. column title: when the device last reached MDM
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	システムキーリングはロックされており、MDMはロックを解除しないため、サインインとパスワードはMDMの設定に保存されます。これはあなただけが読み取ることができます。
+	Last seen	最終表示
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	ローカル ネットワーク上の電話とコンピューターに MDM を制御させる
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#. Options → Remote: label before the choice of the address MDM listens on
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	このポータブルコピーは、サインインとパスワードを独自の設定に保存し、Windowsアカウント用に暗号化します。
+	Listen on:	リッスンするアドレス:
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	このポータブルコピーは、サインインとパスワードを独自の設定に保存します。これはあなただけが読み取ることができます。
+	MDM can't be reached on the network now: Options → Remote says why.	現在、MDM にネットワーク経由でアクセスできません: [オプション] → [リモート] で理由を確認してください。
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	MDM はこのアドレスをダウンロードできません。
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	MDM は追加できませんでした。
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	MDM は実行できませんでした。
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM が応答しません。MDM が実行中で、同じネットワーク上にあることを確認してください。
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM が応答しません。再試行しています...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	MDM に現在コードが表示されていません。まず [デバイスのペアリング] をクリックしてください。
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	その他
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	新しいコード
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	ここにダウンロードはありません。
 #. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows資格情報マネージャーが応答しなかったため、サインインとパスワードはMDMの設定に保存され、Windowsアカウント用に暗号化されます。
+	No local network now: it starts when the computer joins one.	現在ローカル ネットワークがありません: コンピューターがネットワークに参加すると開始されます。
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	オフ: ネットワーク上の何も MDM に到達できません。
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	コンピューターで [オプション] を開き、[リモート] をクリックして、[デバイスのペアリング] をクリックします。表示されたコードを入力します。
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	電話で、カメラでこのコードをスキャンするか、アドレスを開いてコードを入力します。
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	オン。電話で、このアドレスを開きます:
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	ペアリングされたデバイスのみが何かを表示または変更できます。初回は、電話のブラウザーが MDM 独自の証明書について警告します。そのフィンガープリントは上記のとおりです。
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	ペアリング
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	デバイスのペアリング
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	デバイスのペアリング...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Mister Download Manager とペアリング
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	ペアリング済み
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	ペアリング済みのデバイス:
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	ポート {port} は別のプログラムで使用されています。別のポートを選択してください。
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	キューに登録済み
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	リモート
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	リモート コントロール
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	リストから {name} を削除しますか?
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	今すぐ開始
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	変更は [OK] をクリックすると適用されます。
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	このコードはもう使用できません。
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	このコンピューターのみ (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	このデバイスの名前
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	このファイルは大きすぎて torrent にできません。
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	これは torrent ファイルではありません。
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	まずリモート コントロールをオンにしてください。
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	しばらく待ってから、もう一度お試しください。
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	{queue} で待機
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	デバイスを待機しています。コードは {time} 有効です。
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	時期
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	コードが間違っています。MDM で新しいコードを表示して、もう一度お試しください。
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	コードが間違っています。残り試行回数: {n}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} がペアリングされました。MDM を制御できるようになりました。
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{size} 中 {done}
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} 空き
+#. text in the browser extension
+#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
+#, machine
+extension	Another Mister Download Manager (a server)	別の Mister Download Manager (サーバー)
+#. text in the browser extension
+#. the name this browser gets in the other MDM's list of paired devices
+#, machine
+extension	Browser extension	ブラウザー拡張機能
+#. text in the browser extension
+#. the toolbar button's status while downloads go to another MDM
+#, machine
+extension	Downloads go to {address}	ダウンロードは {address} に送信されます
+#. text in the browser extension
+#. the address typed isn't an https:// address
+#, machine
+extension	Enter its https:// address.	https:// アドレスを入力してください。
+#. text in the browser extension
+#. pairing failed for another reason
+#, machine
+extension	It didn't work. Try again.	動作しませんでした。もう一度お試しください。
+#. text in the browser extension
+#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
+#, machine
+extension	It shows no code now: click Pair a device there first.	現在コードが表示されていません: まず「デバイスのペアリング」をクリックしてください。
+#. text in the browser extension
+#. pairing failed: the other MDM didn't answer
+#, machine
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	到達できません。このブラウザーで一度アドレスを開き、証明書を承認してから、もう一度お試しください。
+#. text in the browser extension
+#. button: open the other MDM's address in a tab (to accept its certificate once)
+#, machine
+extension	Open it	開く
+#. text in the browser extension
+#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
+#, machine
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	一度アドレスを開いて証明書を承認し、そのオプション、リモート、デバイスのペアリング (または misterdownloadmanager-cli pair) からコードを入力してください。
+#. text in the browser extension
+#. button: pair this browser with the other MDM using the code
+#, machine
+extension	Pair	ペアリング
+#. text in the browser extension
+#. placeholder of the box for the 8-digit code the other MDM shows
+#, machine
+extension	Pairing code	ペアリング コード
+#. text in the browser extension
+#. heading in the toolbar button's popup, above the choice of where downloads go
+#, machine
+extension	Send downloads to	ダウンロードの送信先
+#. text in the browser extension
+#. choice under Send downloads to: the Mister Download Manager on this computer
+#, machine
+extension	This computer	このコンピューター
+#. text in the browser extension
+#. pairing failed: codes tried too fast
+#, machine
+extension	Wait a moment, then try again.	しばらく待ってから、もう一度お試しください。
+#. text in the browser extension
+#. pairing failed: the code was wrong
+#, machine
+extension	Wrong code.	コードが間違っています。

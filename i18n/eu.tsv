@@ -6,7 +6,7 @@
 #. never shown for a single file
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Ezabatu {n} fitxategia diskotik ere|Ezabatu {n} fitxategiak diskotik ere
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Ezabatu {n} fitxategi diskotik ere|Ezabatu {n} fitxategi diskotik ere
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -85,7 +85,7 @@
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} fitxategik lehendik zegoen fitxategi baten izen bera zuen eta zenbakitu egin da|{n} fitxategik lehendik zeuden fitxategien izen bera zuten eta zenbakitu egin dira
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} fitxategi zenbakitu da, lehendik zegoen fitxategi baten izen bera zuelako|{n} fitxategi zenbakitu dira, lehendik zeuden fitxategien izen bera zutelako
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
@@ -99,7 +99,7 @@
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} tracker added|{n} trackers added	{n} jarraitzaile gehitu da|{n} jarraitzaile gehitu dira
+@plural	{n} tracker added|{n} trackers added	{n} tracker gehitu da|{n} tracker gehitu dira
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -152,7 +152,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown in the empty Save to box
 #, machine
-	(the Torrents category's folder)	(Torrentak kategoriako karpeta)
+	(the Torrents category's folder)	(Torrentak kategoriaren karpeta)
 #. text in the Options window
 #. a 12-hour clock, with an example
 #, machine
@@ -187,11 +187,15 @@
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	A file of this torrent can't be saved safely: {name}	Ezin da torrent honen fitxategi bat segurtasunez gorde: {name}
+	A file of this torrent can't be saved safely: {name}	Ezin da torrent honetako fitxategi bat modu seguruan gorde: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
-	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS konfigurazio ID bat sei letra eta zifraz osatuta dago (0-9, a-f).
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS konfigurazio-ID batek sei karaktere ditu (0-9, a-f).
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Profil baten izena edo haren karpeta. Hutsik: azken erabilitako profila. Zerrendan agertzen ez den Chromium-en oinarritutako arakatzaile baterako (Helium, Thorium...), aukeratu Chromium eta haren profilaren karpeta.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -203,7 +207,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
-	A rule adds the new articles whose titles it matches, as they come.	Arau batek bat datozen artikulu berriak gehitzen ditu, iristen diren heinean.
+	A rule adds the new articles whose titles it matches, as they come.	Arau batek bere izenburuarekin bat datozen artikulu berriak gehitzen ditu, iritsi ahala.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -215,10 +219,10 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	a volume of it is missing	bolumen bat falta da
+	a volume of it is missing	bolumenetako bat falta da
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	About Mister Download Manager	Mister Download Manager-i buruz
+	About Mister Download Manager	Mister Download Manager-ri buruz
 #. text in whereis.rs
 #. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
 #, machine
@@ -237,7 +241,7 @@
 	Accounts	Kontuak
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Add a download (Add URL)	Deskarga bat gehitu (URL gehitu)
+	Add a download (Add URL)	Gehitu deskarga bat (Gehitu URL bat)
 #. window title in the Options window
 #. window title: adding a debrid service account (Real-Debrid…)
 #, machine
@@ -259,11 +263,11 @@
 #. text in playlistdlg.rs
 #. title of the question asked before a playlist adds many downloads
 #, machine
-	Add many downloads	Deskarga asko gehitu
+	Add many downloads	Gehitu deskarga asko
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
-	Add Mister Download Manager to your browser	Mister Download Manager gehitu zure arakatzaileari
+	Add Mister Download Manager to your browser	Gehitu Mister Download Manager zure arakatzailean
 #. message or event log entry in the main window; text in the tray icon's menu
 #. link in the empty download list: opens Add URL
 #, machine
@@ -284,7 +288,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
-	Add them without starting them	Gehitu abiarazi gabe
+	Add them without starting them	Gehitu torrentak hasi gabe
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
@@ -297,7 +301,7 @@
 	Add torrent	Gehitu torrenta
 #. window title in the Add torrent window
 #, machine
-	Add trackers	Jarraitzaileak gehitu
+	Add trackers	Gehitu jarraitzaileak
 #. text in playlistdlg.rs
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
@@ -311,7 +315,7 @@
 #. message or event log entry in the main window
 #. event log entry: an RSS download rule added this torrent; {rule} is the rule's name, {feed} the feed's
 #, machine
-	Added by the RSS rule {rule} from {feed}	{rule} RSS arauak gehitua {feed} jarioan
+	Added by the RSS rule {rule} from {feed}	{rule} RSS arauak gehitu du {feed} jariotik
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -324,7 +328,7 @@
 #. message or event log entry in the main window
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
-	Address changed to {host}	Helbidea {host} bihurtu da
+	Address changed to {host}	Helbidea {host} helbidearekin aldatu da
 #. text in the Options window; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
@@ -373,7 +377,7 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
-	All the uploader's	Kargatzailearen guztiak
+	All the uploader's	Kargatzailearen hizkuntza guztiak
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -458,7 +462,7 @@
 	Any (the system chooses)	Edozein (sistemak aukeratzen du)
 #. text in the Scheduler window
 #, machine
-	April	Apirila
+	April	apirila
 #. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
 #. what a screen reader calls the Archive password window's box
 #. what a screen reader calls Link grabber's password box
@@ -667,7 +671,7 @@
 	Busy, try later	Lanpetuta, saiatu geroago
 #. message or event log entry in the main window
 #, machine
-	by batch download	lote-deskargaren bidez
+	by batch download	lotean deskargatuta
 #. message or event log entry in the main window
 #, machine
 	by Link grabber	Esteka-hartzailearen bidez
@@ -700,14 +704,14 @@
 #. message or event log entry in the main window
 #. {text} = text the user searched for (keep the braces as they are)
 #, machine
-	Cannot find "{text}"	"{text}" ezin da aurkitu
+	Cannot find "{text}"	Ezin da «{text}» aurkitu
 #. text in the Checksum window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Cannot read the file: {error}	Ezin da fitxategia irakurri: {error}
+	Cannot read the file: {error}	Ezin izan da fitxategia irakurri: {error}
 #. text in errors.rs
 #, machine
-	cannot resume: {detail}	ezin da berrekin: {detail}
+	cannot resume: {detail}	ezin izan da berrekin: {detail}
 #. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	Harrapatu deskargak arakatzaile hauetatik:
@@ -728,7 +732,7 @@
 #. text in categories.rs
 #. title of the folder picker of the category dialog
 #, machine
-	Category folder	Kategoria-karpeta
+	Category folder	Kategoriaren karpeta
 #. text in categories.rs
 #, machine
 	Category properties	Kategoriaren propietateak
@@ -755,11 +759,11 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Change folder for "{category}" category on last selected	Aldatu "{category}" kategoriaren karpeta azken hautatutakoan
+	Change folder for "{category}" category on last selected	Aldatu «{category}» kategoriaren karpeta azken hautatutakoan
 #. text in the Link grabber window
 #. Link grabber button (IDM's): tick every link
 #, machine
-	Check all	Guztiak markatu
+	Check all	Markatu guztiak
 #. text in rssdlg.rs
 #. RSS feeds window, at the bottom: "Check feeds every [30] minutes"
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Aukeratu Mister Download Manager-ek bere leihoak erakusteko erabiliko duen hizkuntza:
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	Aukeratu profilaren karpeta
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	Cook uharteak
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	Bideo-guneetako cookieak
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	Arbelera kopiatu da.
@@ -960,16 +972,16 @@
 	Curaçao	Curaçao
 #. text in the Options window
 #, machine
-	Customize "Download progress" dialog	"Deskargaren aurrerapena" elkarrizketa-koadroa pertsonalizatu
+	Customize "Download progress" dialog	Pertsonalizatu «Deskargaren aurrerapena» elkarrizketa-koadroa
 #. text in the Options window
 #, machine
-	Customize keys to prevent or force downloading with MDM	MDM-rekin deskargatzea eragotzi edo behartzeko teklak pertsonalizatu
+	Customize keys to prevent or force downloading with MDM	Pertsonalizatu MDM-rekin deskargatzea eragozteko edo behartzeko teklak
 #. text in the Options window
 #, machine
-	Customize MDM Download panels in browsers	MDM deskarga-panelak pertsonalizatu arakatzaileetan
+	Customize MDM Download panels in browsers	Pertsonalizatu arakatzaileetako MDM deskarga-panelak
 #. text in the Options window
 #, machine
-	Customize MDM menu items in context menu of browsers	MDM menu-elementuak pertsonalizatu arakatzaileen laster-menuetan
+	Customize MDM menu items in context menu of browsers	Pertsonalizatu arakatzaileetako laster-menuetako MDM menu-elementuak
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1013,7 +1025,7 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Default download directory for "{category}" category	"{category}" kategoriarako deskarga-direktorio lehenetsia
+	Default download directory for "{category}" category	«{category}» kategoriaren deskarga-direktorio lehenetsia
 #. page title in the Options window
 #, machine
 	Default download settings	Deskarga-ezarpen lehenetsiak
@@ -1028,28 +1040,28 @@
 #. checkbox in the Link grabber window
 #. Link grabber check box: after extracting, the archives go to the Recycle Bin
 #, machine
-	Delete archives after extracting	Artxiboak ezabatu atera ondoren
+	Delete archives after extracting	Atera ondoren, ezabatu artxiboak
 #. window title in a dialog box
 #, machine
-	Delete category	Kategoria ezabatu
+	Delete category	Ezabatu kategoria
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	Ilara ezabatu
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its files stay where they are.	"{category}" kategoria ezabatu? Bere fitxategiak dauden lekuan geratuko dira.
+	Delete the category "{category}"? Its files stay where they are.	«{category}» kategoria ezabatu nahi duzu? Fitxategiak dauden lekuan geratuko dira.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
-	Delete the queue "{queue}"? Its downloads stay in the list.	"{queue}" ilara ezabatu nahi duzu? Haren deskargak zerrendan geratuko dira.
+	Delete the queue "{queue}"? Its downloads stay in the list.	«{queue}» ilara ezabatu nahi duzu? Deskargak zerrendan geratuko dira.
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Delete the selected downloads (asks first)	Hautatutako deskargak ezabatu (lehenik galdetzen du)
+	Delete the selected downloads (asks first)	Ezabatu hautatutako deskargak (lehenik galdetzen du)
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Delete the selected downloads and their files (asks first)	Hautatutako deskargak eta haien fitxategiak ezabatu (lehenik galdetzen du)
+	Delete the selected downloads and their files (asks first)	Ezabatu hautatutako deskargak eta haien fitxategiak (lehenik galdetzen du)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1126,7 +1138,7 @@
 	Don't start downloading automatically from the following sites:	Ez hasi deskargatzen automatikoki gune hauetatik:
 #. text in the Options window
 #, machine
-	Don't take files smaller than (KB, 0 = any size):	Ez hartu baino txikiagoak diren fitxategiak (KB, 0 = edozein tamaina):
+	Don't take files smaller than (KB, 0 = any size):	Ez hartu tamaina hau baino txikiagoko fitxategirik (KB, 0 = edozein tamaina):
 #. text in a download's progress window
 #, machine
 	Done	Eginda
@@ -1278,7 +1290,7 @@
 #. text in a dialog box
 #. tooltip of the handle in Download complete: drag it to drop the downloaded file somewhere
 #, machine
-	Drag the file into a folder or an app	Arrastatu fitxategia karpeta edo aplikazio batera
+	Drag the file into a folder or an app	Arrastatu fitxategia karpeta batera edo aplikazio batera
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
@@ -1341,7 +1353,7 @@
 	Enter a magnet link or choose a .torrent file	Sartu magnet esteka bat edo aukeratu .torrent fitxategi bat
 #. text in the Scheduler window
 #, machine
-	Enter a name for the new queue that will be	Sartu izen bat ilara berriarentzat, hau izango dena
+	Enter a name for the new queue that will be	Sartu ilara berriarentzat izen bat, hau izango dena
 #. text in the Add torrent window
 #. Add trackers: OK with an empty box
 #, machine
@@ -1648,6 +1660,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	torrent fitxategi batetik
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	Arakatzailetik:
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1711,7 +1727,7 @@
 #. window title in helpers.rs
 #. title of the first start's window that offers yt-dlp and ffmpeg
 #, machine
-	Get ready for video downloads	Presta zaitez bideo-deskargak egiteko
+	Get ready for video downloads	Presta zaitez bideoak deskargatzeko
 #. button in the Options window
 #, machine
 	Get System	Sistema lortu
@@ -1735,7 +1751,7 @@
 #. text in errors.rs
 #. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
 #, machine
-	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drivek ez du fitxategi hau emango orain: {message} (askotan laguntzen du Google-n saioa hastea zure arakatzailean; bestela, saiatu berriro geroago)
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drivek ez dizu fitxategi hau emango orain: {message} (askotan laguntzen du Google-n saioa hastea zure arakatzailean; bestela, saiatu berriro geroago)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1812,7 +1828,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	&Kategoriak ezkutatu
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	Ezkutatu fitxa
 #. text in a download's progress window; text in standard windows
@@ -1857,7 +1873,7 @@
 	Hungary	Hungaria
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	Mister Download Manager-ekin deskargatzen dut: azkarra, doakoa, eta dagoeneko ezagutzen duzun deskarga-kudeatzailearen antza du. {link}
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	Mister Download Manager-ekin deskargatzen dut: azkarra, doakoa eta dagoeneko ezagutzen duzun deskarga-kudeatzailearen antzekoa da. {link}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1867,7 +1883,7 @@
 	If a duplicate download link is added:	Deskarga-esteka bikoiztu bat gehitzen bada:
 #. text in the Options window
 #, machine
-	If existing file is complete, show download complete dialog; otherwise resume it.	Dagoen fitxategia osatuta badago, erakutsi deskarga osatuta elkarrizketa-koadroa; bestela, berrekin.
+	If existing file is complete, show download complete dialog; otherwise resume it.	Dagoen fitxategia osatuta badago, erakutsi deskarga amaitu dela adierazten duen elkarrizketa-koadroa; bestela, berrekin deskargari.
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
@@ -1880,10 +1896,14 @@
 	Import	Inportatu
 #. value in a column's filter list in the download list
 #, machine
-	In a queue	Ilara batean
+	In a queue	Ilaran
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	Kategorietan: hautatutako kategoriaren menua
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	blokeatutako giltza-sortan
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1907,7 +1927,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. in the "7-Zip needed" window, under why
 #, machine
-	Install 7-Zip (free), then right-click the download and choose Extract.	Instalatu 7-Zip (doan), eta gero egin klik eskuineko botoiarekin deskargan eta aukeratu Atera.
+	Install 7-Zip (free), then right-click the download and choose Extract.	Instalatu 7-Zip (doan), eta gero egin klik eskuineko botoiarekin deskargan eta hautatu Atera.
 #. text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
@@ -1932,14 +1952,14 @@
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Into a folder named after it, when it holds several things	Bere izeneko karpeta batera, hainbat gauza baditu
+	Into a folder named after it, when it holds several things	Hainbat gauza baditu, bere izena duen karpeta batean
 #. text in a dialog box
 #, machine
 	Invalid address	Helbide baliogabea
 #. text in the Options window
 #. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
 #, machine
-	IP addresses (optional):	IP helbideak (aukerakoa):
+	IP addresses (optional):	IP helbideak (aukerakoak):
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1971,11 +1991,11 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it is not an archive MDM extracts	ez da MDM-k ateratzen duen artxibo bat
+	it is not an archive MDM extracts	MDMk ateratzen ez duen artxiboa da
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it needs a password	pasahitz bat behar du
+	it needs a password	pasahitza behar du
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
@@ -1988,11 +2008,11 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	{size} idatziko luke, dagoen tokia edo arrazoia baino {limit} gehiago
+	it would write {size}, more than the {limit} there is room or reason for	{size} idatziko luke, baimendutako {limit} baino gehiago
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Fitxategi-izen sekuentzialen talde bat gehitu daiteke, hala nola img001.jpg, img002.jpg, etab.,\nimg100.jpg MDM deskarga-ilara. Erabili izartxoaren komodina fitxategi-izenaren patroiarentzat.
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Fitxategi-izen sekuentzialen talde bat gehitu daiteke, hala nola img001.jpg, img002.jpg, etab.,\nimg100.jpg, MDMren deskarga-ilaran. Erabili izartxoaren komodina fitxategi-izenaren ereduan.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2068,7 +2088,7 @@
 #. text in a download's Properties window
 #. Properties, where a download's server is: not seen yet (it hasn't run)
 #, machine
-	known once it has run	exekutatu ondoren jakingo da
+	known once it has run	Exekutatu ondoren ezagutuko da
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2111,7 +2131,7 @@
 	Latvia	Letonia
 #. text in the Options window
 #, machine
-	Launch Mister Download Manager on startup	Abiarazi Mister Download Manager abiaraztean
+	Launch Mister Download Manager on startup	Hasi Mister Download Manager sistema abiaraztean
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2278,11 +2298,11 @@
 	Map the port on the router (UPnP)	Mapatu ataka bideratzailean (UPnP)
 #. text in the Scheduler window
 #, machine
-	March	Martxoa
+	March	martxoa
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Marshall Islands	Marshall Uharteak
+	Marshall Islands	Marshall uharteak
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2368,11 +2388,11 @@
 	Mister Download Manager Configuration	Mister Download Manager konfigurazioa
 #. text in crashui.rs
 #, machine
-	Mister Download Manager crash report	Mister Download Manager kraskadura-txostena
+	Mister Download Manager crash report	Mister Download Manager hutsegite-txostena
 #. text in crashui.rs
 #. crash report window heading: an internal error, MDM still running
 #, machine
-	Mister Download Manager hit an internal error	Mister Download Manager barne-errore bat izan du
+	Mister Download Manager hit an internal error	Mister Download Manager-ek barne-errore bat izan du
 #. text in wake.rs
 #. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -2381,10 +2401,10 @@
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
-	Mister Download Manager stopped responding	Mister Download Manager erantzuteari utzi dio
+	Mister Download Manager stopped responding	Mister Download Manager-ek erantzuteari utzi dio
 #. text in crashui.rs
 #, machine
-	Mister Download Manager stopped responding for a while	Mister Download Manager erantzuteari utzi dio denbora batez
+	Mister Download Manager stopped responding for a while	Mister Download Manager-ek denbora batez ez du erantzun
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2397,7 +2417,7 @@
 #. Video helpers: {version} = the version of MDM's own copy
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	Mister Download Manager's own copy, version {version}	Mister Download Manager kopia propioa, {version} bertsioa
+	Mister Download Manager's own copy, version {version}	Mister Download Manager-en kopia propioa, {version} bertsioa
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2455,10 +2475,10 @@
 	Move or rename the selected download	Hautatutako deskarga mugitu edo izena aldatu
 #. text in a download's Properties window
 #, machine
-	Move to folder	Karpeta batera eraman
+	Move to folder	Eraman karpetara
 #. message or event log entry in the main window
 #, machine
-	Move to queue	Ilara batera eraman
+	Move to queue	Eraman ilarara
 #. text in the Scheduler window
 #, machine
 	Move up	Mugitu gora
@@ -2490,7 +2510,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: words that make the rule skip an article
 #, machine
-	Must not contain:	Hau ezin du izan:
+	Must not contain:	Hau ez du izan behar:
 #. option (radio button) in the Options window
 #, machine
 	My own way:	Nire erara:
@@ -2594,6 +2614,10 @@
 #, machine
 	No addresses yet	Oraindik ez dago helbiderik
 #. text in extension.rs
+#. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
+#, machine
+	No browser MDM can connect to was found	Ez da aurkitu MDM konekta daitekeen arakatzailerik
+#. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 #, machine
 	No browser's extension has connected yet	Oraindik ez da arakatzailerik konektatu
@@ -2651,6 +2675,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Proxy/Socks gabe
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Sistemaren giltza-sortak ez du erantzun, beraz, saio-hasierak eta pasahitzak MDMren ezarpenetan gordetzen dira, zuk bakarrik irakur ditzakezunetan.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2738,7 +2766,7 @@
 	Not now? Get them later from Tasks → Download video from a page.	Orain ez? Lortu geroago Zereginak → Deskargatu bideoa orri batetik atalean.
 #. text in a download's Properties window
 #, machine
-	not one server (peers, or a helper's)	ez zerbitzari bat (pareak edo laguntzaile batena)
+	not one server (peers, or a helper's)	ez zerbitzari bat (parekoena edo laguntzaile batena)
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
@@ -2755,7 +2783,7 @@
 	Note: These settings don't relate to queue processing	Oharra: Ezarpen hauek ez dute zerikusirik ilararen prozesamenduarekin
 #. message or event log entry in the main window
 #, machine
-	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Ez dago deskargatzeko ezer {item} elementuan: arrastatu estekak, .torrent fitxategi bat edo helbide-zerrenda bat (.txt, .ef2).
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Ez dago ezer deskargatzeko {item} elementuan: arrastatu estekak, .torrent fitxategi bat edo helbide-zerrenda bat (.txt, .ef2).
 #. text in the Scheduler window
 #, machine
 	November	Azaroa
@@ -2764,7 +2792,7 @@
 	Number	Zenbakia
 #. checkbox in the Scheduler window
 #, machine
-	Number of retries for each file if downloading failed :	Fitxategi bakoitzeko berriro saiatzeko kopurua, deskarga huts egiten badu:
+	Number of retries for each file if downloading failed :	Fitxategi bakoitzeko berriro saiatzeko kopurua, deskargak huts egiten badu:
 #. option (radio button) in the Batch download window
 #. the * in the address runs through numbers
 #, machine
@@ -2772,6 +2800,9 @@
 #. text in the Scheduler window
 #, machine
 	October	Urria
+#. option (radio button) in the Options window
+#, machine
+	Off	Desaktibatuta
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	Desaktibatuta: amaitutako torrent bat gelditu egiten da, edozein deskarga bezala.
@@ -2795,14 +2826,18 @@
 	On battery, Windows' power options don't allow wake timers	Bateriarekin, Windowsen energia-aukerek ez dituzte esnatze-tenporizadoreak onartzen
 #. text in a download's progress window
 #, machine
-	on download stop/resume	deskarga gelditu/berrekin denean
+	on download stop/resume	deskarga gelditzean/berrekitzean
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	macOSen, administratzaile batek bakarrik programa dezake esnatzea
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Windowsen, Chrome, Edge eta Brave arakatzaileek cookieak blokea ditzakete. Firefoxek funtzionatzen du.
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
-	Once at	Behin, honetan:
+	Once at	Behin, ordu honetan
 #. text in extension.rs
 #, machine
 	Once it is added, this window says so. Chrome may also ask by itself at its next start.	Gehitu ondoren, leiho honek hala dio. Chrome-k ere bere kabuz galdetu dezake hurrengo abiaraztean.
@@ -2811,7 +2846,7 @@
 	One address per line; * stands for any text: example.com/private/*	Helbide bat lerroko; * edozein testuren ordez: adibidea.com/pribatua/*
 #. option (radio button) in the Scheduler window
 #, machine
-	One-time downloading	Behin-behineko deskarga
+	One-time downloading	Behin bakarrik deskargatzea
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server has the file
 #, machine
@@ -2857,10 +2892,10 @@
 	Open Mister Download Manager	Ireki Mister Download Manager
 #. text in the Scheduler window
 #, machine
-	Open the following file when done	Ireki ondorengo fitxategia amaitutakoan
+	Open the following file when done	Hurrengo fitxategia ireki amaitutakoan
 #. checkbox in the Scheduler window
 #, machine
-	Open the following file when done:	Hau amaitutakoan, ireki fitxategi hau:
+	Open the following file when done:	Deskarga amaitutakoan, ireki fitxategi hau:
 #. button in the Options window
 #. button: open the service's page where the code is typed
 #, machine
@@ -2889,7 +2924,7 @@
 #. text in a download's progress window
 #. tab title: what happens when the download finishes
 #, machine
-	Options on completion	Aukerak amaitzean
+	Options on completion	Amaitzean egin beharrekoak
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
@@ -2970,7 +3005,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: peers are known but none answered
 #, machine
-	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	Parekideak aurkitu dira, baina oraindik ez du inork erantzun. Baliteke suebaki batek edo VPN batek konexioak blokeatzea.
+	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	Parekoak aurkitu dira, baina oraindik ez du inork erantzun. Baliteke suebaki batek edo VPN batek konexioak blokeatzea.
 #. option (radio button) in the Scheduler window
 #, machine
 	Periodic synchronization	Aldizkako sinkronizazioa
@@ -3033,6 +3068,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	Aurrebista ez dago oraindik erabilgarri
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	Profila (aukerakoa):
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -3050,6 +3089,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	Proxy / socks konfigurazioa
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	proxy zerbitzaria
 #. label in the Options window
 #, machine
 	Proxy server address	Proxy zerbitzariaren helbidea
@@ -3081,7 +3124,7 @@
 	Queue # {n}	Ilarak # {n}
 #. text in the Options window
 #, machine
-	Queue processing started	Ilara prozesatzea hasi da
+	Queue processing started	Ilara prozesatzen hasi da
 #. text in the Options window
 #, machine
 	Queue processing stopped/finished	Ilara prozesatzea gelditu/amaitu da
@@ -3089,6 +3132,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Ilarak
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	Ordenagailu honetan bakarrik irakurrita, eta bideoaren gunera bakarrik bidalita.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3171,7 +3218,7 @@
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
-	Restart MDM	MDM berrabiarazi
+	Restart MDM	Berrabiarazi MDM
 #. button in the Options window; text in the Options window
 #, machine
 	Restore the built-in categories	Berrezarri kategoria integratuak
@@ -3194,7 +3241,7 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: check for updates again
 #, machine
-	Retry	Berriro saiatu
+	Retry	Saiatu berriro
 #. text in a download's progress window
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -3227,7 +3274,7 @@
 #. text in the Scheduler window
 #. Saturday, as short as a calendar's column head (two letters in English)
 #, machine
-	Sa	Lr
+	Sa	La
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3419,6 +3466,11 @@
 #. event log: File Properties: the download goes through the debrid account again
 #, machine
 	Set to download through the debrid account	Debrid kontuaren bidez deskargatzeko ezarrita
+#. text in extension.rs
+#. a check of Test browser integration: setting it up failed; {error} is the system's own message, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Setting it up failed: {error}	Ezarpenak huts egin du: {error}
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3435,7 +3487,7 @@
 #. text in a download's progress window
 #. a torrent's General tab: how long it has been shared once finished, in all
 #, machine
-	Shared for	Partekatuta honetarako:
+	Shared for	Partekatuta guztira
 #. text in a download's progress window
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
@@ -3484,7 +3536,7 @@
 	Show queue selection panel on closing batch download dialogs	Erakutsi ilara hautatzeko panela lote-deskargaren elkarrizketa-koadroak ixten direnean
 #. checkbox in the Options window
 #, machine
-	Show queue selection panel on pressing "Download Later" button	Erakutsi ilara hautatzeko panela "Deskargatu geroago" botoia sakatzean
+	Show queue selection panel on pressing "Download Later" button	Erakutsi ilara hautatzeko panela «Deskargatu geroago» botoia sakatzean
 #. checkbox in the Options window
 #, machine
 	Show start download dialog	Erakutsi deskarga hasteko elkarrizketa-koadroa
@@ -3506,6 +3558,18 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	Hasi saioa nabigatzailean
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	Saio-hasierak eta pasahitzak macOS giltza-sortan gordetzen dira.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	Saio-hasierak eta pasahitzak sistemaren giltza-sortan gordetzen dira (Secret Service).
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	Saio-hasierak eta pasahitzak Windows Kredentzial Kudeatzailean gordetzen dira.
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -3560,7 +3624,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: put it to sleep)
 #, machine
-	Sleep	Egonean
+	Sleep	Lo egin
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3649,7 +3713,7 @@
 	Start download on Mister Download Manager startup	Hasi deskarga Mister Download Manager abiaraztean
 #. checkbox in the Options window
 #, machine
-	Start downloading immediately while displaying "Download File Info" dialog	Hasi deskargatzen berehala "Deskargatu fitxategiaren informazioa" elkarrizketa-koadroa bistaratzen den bitartean
+	Start downloading immediately while displaying "Download File Info" dialog	Hasi deskargatzen berehala, «Deskargatu fitxategiaren informazioa» elkarrizketa-koadroa bistaratzen den bitartean
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	Hasi deskarga-ilara nagusia
@@ -3738,11 +3802,11 @@
 #. message or event log entry in the main window
 #. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
 #, machine
-	Stopped: the network adapter changed; starting again	Geldituta: sare-egokitzailea aldatu da; berriro hasten da
+	Stopped: the network adapter changed; starting again	Geldituta: sare-egokitzailea aldatu da; berriro hasten
 #. message or event log entry in the main window
 #. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
 #, machine
-	Stopped: {adapter} is not connected; it goes on when it is back	Geldituta: {adapter} ez dago konektatuta; konektatzen denean jarraituko du
+	Stopped: {adapter} is not connected; it goes on when it is back	Geldituta: {adapter} ez dago konektatuta; berriro konektatzean jarraituko du
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	Deskarga amaitzen denean gelditzen da
@@ -3761,7 +3825,7 @@
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
 #, machine
-	Subtitles in {language} came on a second try: they're beside the video, not in it.	{language} hizkuntzako azpitituluak bigarren saiakera batean etorri dira: bideoaren ondoan daude, ez barruan.
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	{language} hizkuntzako azpitituluak bigarren saiakeran jaitsi dira: bideoaren ondoan daude, ez barruan.
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
 #, machine
@@ -3799,7 +3863,7 @@
 	Switzerland	Suitza
 #. message or event log entry in the main window
 #, machine
-	Synchronization queue	Sinkronizazio-ilaran
+	Synchronization queue	Sinkronizazio-ilara
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3819,7 +3883,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Atazak → Esteka-hartzailea, edo arakatzailearen "Esteka guztiak deskargatu": artxibo\nzatitu baten bolumenak pakete bat dira, orri bateko beste estekak, beste bat.
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Atazak → Esteka-hartzailea, edo arakatzailearen «Esteka guztiak deskargatu»: artxibo\nzatitu bateko bolumenak pakete bakarra dira, eta orri bateko beste estekak beste bat.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	Lagun bati gomendatu
@@ -3873,15 +3937,15 @@
 	The archive was moved to the Trash	Artxiboa zakarrontzira eraman da
 #. text in the Download video window
 #, machine
-	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Kalitate onenek, MP3, Opus eta FLACek, ffmpeg behar dute (80 MB inguru).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Kalitate onenek eta MP3, Opus eta FLAC formatuek ffmpeg behar dute (80 MB inguru).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Kalitate onenek, MP3, Opus eta FLACek, ffmpeg behar dute: instalatu zure sistemaren pakete-kudeatzailearekin (edo Homebrew-rekin).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Kalitate onenek eta MP3, Opus eta FLAC formatuek ffmpeg behar dute: instalatu zure sistemako pakete-kudeatzailearekin (edo Homebrew-rekin).
 #. text in the settings
 #. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
 #, machine
-	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	arakatzailearen proxyak (VPN edo proxy-luzapen batek) luzapen horrek bakarrik duen saio-hasiera eskatzen du: erabili VPNaren aplikazioa, edo aukeratu haren sare-egokitzailea Aukerak → Proxy / Socks atalean
+	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	arakatzailearen proxyak (VPN edo proxy-luzapen batek) luzapen horrek bakarrik duen saioa hasteko datuak eskatzen ditu: erabili VPNaren aplikazioa, edo aukeratu haren sare-egokitzailea Aukerak → Proxy / Socks atalean
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3905,7 +3969,7 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue"
 #, machine
-	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	Ordenagailua hasiera-ordua baino minutu bat lehenago esnatzen da eta esna mantentzen da ilara exekutatzen den bitartean. Mister Download Manager martxan egon behar da (jakinarazpen-eremuan itxaron dezake).
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	Ordenagailua hasiera-ordua baino minutu bat lehenago esnatzen da eta esna mantentzen da ilara martxan dagoen bitartean. Mister Download Manager martxan egon behar du (jakinarazpen-eremuan itxaron dezake).
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
 #. {time} = a time of day (keep the braces as they are)
@@ -3943,7 +4007,7 @@
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
-	The download limit ({mb} MBytes every {hours} hours) has been reached.	Deskarga-muga ({mb} MB {hours} orduro) lortu da.
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	Deskarga-muga ({mb} MB {hours} orduro) gainditu da.
 #. text in errors.rs
 #, machine
 	the download link has expired (refresh the download address)	deskarga-esteka iraungita dago (freskatu deskarga-helbidea)
@@ -3956,7 +4020,7 @@
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Dagoeneko ezagutzen duzun deskarga-kudeatzailea, azkarragoa izateko berreraikia. Doakoa eta kode irekikoa, GNU GPL 3. bertsioaren edo berriagoaren arabera. Bideoak yt-dlp-k aurkitzen ditu; torrentak librqbit-en exekutatzen dira.
 #. text in a dialog box
 #, machine
-	The download queue is done.	Deskarga-ilarak amaitu du.
+	The download queue is done.	Deskarga-ilara amaitu da.
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	deskargatutako programak ez du bat egiten sinatutako kontrol-sumarekin
@@ -4022,6 +4086,10 @@
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
 	the FTP server answered {code} {reply}	FTP zerbitzariak {code} {reply} erantzun du
+#. text in extension.rs
+#. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
+#, machine
+	The helper program the browsers start is missing	Arakatzaileek abiarazten duten laguntzaile-programa falta da
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4088,10 +4156,22 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	zerbitzariak fitxategiaren ustekabeko zati bat bidali du ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Guneak saioa hastea nahi du, nahiz eta arakatzailearen luzapenak orrialde honetako cookieak pasatu. Hasi saioa arakatzailean, eta saiatu berriro.
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Guneak saioa hastea nahi du, nahiz eta {browser}-en cookieak izan. Hasi saioa {browser}-en, eta bilatu orrialdea berriro.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Ezin izan dira sinboloak eskuratu: txostenaren lerro batzuek helbideak erakusten dituzte izenen ordez (garatzaileek irakur ditzakete hala ere).
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Sistemaren giltza-sorta blokeatuta dago eta MDMk ez du desblokeatzen, beraz, saio-hasierak eta pasahitzak MDMren ezarpenetan gordetzen dira, zuk bakarrik irakur ditzakezunetan.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4191,11 +4271,19 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
-	This magnet link names no trackers and the DHT is off, so no peer can be found.	Magnet esteka honek ez du jarraitzaile-izenik eta DHT desaktibatuta dago; beraz, ezin da parekorik aurkitu.
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	Magnet esteka honek ez du jarraitzailerik adierazten, eta DHT desaktibatuta dago; beraz, ezin da parekorik aurkitu.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Horretarako ffmpeg behar da
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Kopia eramangarri honek saio-hasierako datuak eta pasahitzak bere ezarpenetan gordetzen ditu, zure Windows konturako enkriptatuta.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Kopia eramangarri honek saio-hasierako datuak eta pasahitzak bere ezarpenetan gordetzen ditu, eta zuk bakarrik irakur ditzakezu.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4217,11 +4305,11 @@
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
-	This video is protected (DRM): no tool can save it.	Bideo hau babestuta dago (DRM): tresnarik ezin du gorde.
+	This video is protected (DRM): no tool can save it.	Bideo hau babestuta dago (DRM): ezin du tresna batek ere gorde.
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Bideo honek saioa hasita izatea eskatzen du. Erabili Deskargatu bideoa botoia zure arakatzailean, saioa hasita duzula pasatzen duena.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Saioa hasita izan behar duzu bideo hau ikusteko. Erabili arakatzailean bideoaren gainean dagoen Deskargatu bideoa botoia, saioa partekatzeko, edo aukeratu zure arakatzailea Aukerak → Guneetako saio-hasierak → Bideo-guneetako cookieak atalean.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4237,14 +4325,14 @@
 #. message or event log entry in the main window
 #. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
 #, machine
-	Through {service}: the service downloads the torrent, then MDM its files	{service} bidez: zerbitzuak torrenta deskargatzen du, eta gero MDM-k bere fitxategiak
+	Through {service}: the service downloads the torrent, then MDM its files	{service} bidez: zerbitzuak torrenta deskargatzen du, eta gero MDMk haren fitxategiak deskargatzen ditu
 #. text in the Scheduler window
 #, machine
 	Thursday	Osteguna
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
-	Tick "Start download at" first: the computer is woken for the start time	Markatu "Hasi deskarga hemen" lehenik: ordenagailua hasiera-ordurako esnatzen da
+	Tick "Start download at" first: the computer is woken for the start time	Markatu «Hasi deskarga hemen» aukera lehenik: ordenagailua esnatuko da hasiera-orduan
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Geratzen den denbora
@@ -4273,7 +4361,7 @@
 	Tonga	Tonga
 #. text in errors.rs
 #, machine
-	too many redirects	birzuzenketa gehiegi
+	too many redirects	birbideratze gehiegi
 #. value in a column's filter list in the download list; text in the Add torrent window
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #. noun: label before the torrent file or magnet link
@@ -4314,7 +4402,7 @@
 #. Add trackers: above the box; {name} is the torrent's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Trackers to add to {name}, one address a line:	Gehitzeko jarraitzaileak {name} torrentari, helbide bat lerro bakoitzeko:
+	Trackers to add to {name}, one address a line:	{name} torrentari gehitzeko jarraitzaileak, helbide bat lerro bakoitzeko:
 #. text in a download's progress window
 #, machine
 	Transfer rate	Transferentzia-tasa
@@ -4465,7 +4553,7 @@
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
-	Up to {height}p	{height}p-raino
+	Up to {height}p	Gehienez {height}p
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -4473,7 +4561,7 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Updates could not be checked: {error}	Ezin izan dira eguneraketak egiaztatu: {error}
+	Updates could not be checked: {error}	Ezin izan da eguneraketak egiaztatu: {error}
 #. text in a dialog box
 #, machine
 	URL	URLa
@@ -4536,7 +4624,7 @@
 	Use this rule	Erabili arau hau
 #. text in the Options window
 #, machine
-	Used by the list of downloads and the Scheduler.	Deskargen zerrendak eta programatzaileak erabiltzen dute.
+	Used by the list of downloads and the Scheduler.	Deskargen zerrendak eta antolatzaileak erabiltzen dute.
 #. text in the Options window
 #. column title: the user name
 #, machine
@@ -4598,14 +4686,6 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Bideo-bilaketek yt-dlp erabiltzen dute (23 MB inguru, sinaduraren arabera egiaztatuta).
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	Bideo-orriek eta torrent-ek ezin dute oraindik erabili.
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	Bideo-orriek ezin dute oraindik erabili.
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4684,6 +4764,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windowsek esnatze-tenporizadoreak onartzen ditu konektatuta dagoen bitartean soilik
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Kredentzial Kudeatzaileak ez du erantzun, beraz, saio-hasierak eta pasahitzak MDMren ezarpenetan gordetzen dira, zure Windows konturako enkriptatuta.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4764,9 +4848,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	Zure sistemarena: {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp-k ezin ditu {browser}-en cookieak irakurri {browser} irekita dagoen bitartean. Itxi {browser} eta bilatu orrialdea berriro, edo aukeratu Firefox Aukerak → Guneen saioak atalean.
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp-k ezin izan du {browser}-en cookieen gakoa lortu sistemaren gako-sortatik. Desblokeatu gako-sorta eta bilatu orrialdea berriro.
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp-k ezin izan ditu {browser}-en cookieak irakurri: {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp-k ez du {browser}-en cookieik aurkitu ordenagailu honetan. Egiaztatu arakatzailea eta haren profila Aukerak → Guneen saioak atalean.
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp ez dago instalatuta (Zereginak → Deskargatu bideoa orri batetik aukerak instalatzen du)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp-k bideo-guneetan saioa hasten du arakatzaile honen cookieekin, ordenagailu honetako fitxategietatik bakarrik irakurrita. Arakatzailearen luzapenak orrialdearen cookieak pasatu ez dituenean erabiltzen da: itsatsitako helbide bat, erreprodukzio-zerrenda bat.
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4782,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ eta XZ; artxibo zatitu bat (.part1.rar, .7z.001) bolumen\nbakoitza dagoenean. Dagoeneko dagoen fitxategi bat gordetzen da: berriari zenbaki bat esleitzen zaio.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ eta XZ; artxibo zatitu bat (.part1.rar, .7z.001) bolumen guztiak iritsitakoan. Dagoeneko dagoen fitxategia gordetzen da: berriari zenbaki bat esleitzen zaio.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4790,7 +4895,7 @@
 #. text in the Options window
 #. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
 #, machine
-	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} ez dago konektatuta: ez da ezer deskargatzen berriro konektatu arte.
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} ez dago konektatuta: ez da ezer deskargatuko berriro konektatu arte.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4798,16 +4903,20 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{algorithm}: checked when the download finishes	{algorithm}: deskarga amaitzean egiaztatuta
+	{algorithm}: checked when the download finishes	{algorithm}: deskarga amaitzean egiaztatzen da
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser}-ek cookieak enkriptatzen ditu Windows-en, beraiek soilik irakur ditzan; beraz, yt-dlp-k ezin ditu irakurri. Aukeratu Firefox Aukerak → Guneetako saio-hasierak atalean, edo erabili Deskargatu bideoa botoia {browser}-eko bideoaren gainean.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
-	{browser}: the extension connected	{browser}: luzapena konektatuta
+	{browser}: the extension connected	{browser}: luzapena konektatu da
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	{browser}: the extension {version} connected	{browser}: {version} luzapena konektatuta
+	{browser}: the extension {version} connected	{browser}: {version} luzapena konektatu da
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
@@ -4815,7 +4924,7 @@
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
-	{column} contains	{column} honek dauka
+	{column} contains	{column} dauka
 #. message or event log entry in the main window
 #. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
 #. {count} = a number (keep the braces as they are)
@@ -4835,28 +4944,28 @@
 	{file} could not be opened: {error}	Ezin izan da {file} ireki: {error}
 #. text in the Checksum window
 #, machine
-	{file} could not be read to check it	Ezin izan da {file} irakurri egiaztatzeko
+	{file} could not be read to check it	Ezin izan da {file} irakurri egiaztatu ahal izateko
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} ez dago jada gorde zen tokian (mugitu edo ezabatu egin da). Berriro deskargatzeko, erabili eskuin-klikaren menua.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} ez dago jada gorde zen tokian (mugitu edo ezabatu egin da). Berriro deskargatzeko, erabili eskuin-klikaren menuko Berriro deskargatu aukera.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file does NOT match its checksum ({algorithm})	{file}: fitxategia EZ dator bat bere egiaztapen-sumarekin ({algorithm})
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: fitxategia EZ dator bat kontrol-baturarekin ({algorithm})
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file matches its checksum ({algorithm})	{file}: fitxategia bat dator bere egiaztapen-sumarekin ({algorithm})
+	{file}: the file matches its checksum ({algorithm})	{file}: fitxategia bat dator kontrol-baturarekin ({algorithm})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} ({size} each)	{total}tik {have} ({size} bakoitza)
+	{have} of {total} ({size} each)	{have}/{total} ({size} bakoitza)
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} pieces ({size} each)	{total} piezatik {have} ({size} bakoitza)
+	{have} of {total} pieces ({size} each)	{have}/{total} pieza ({size} bakoitza)
 #. text in the download list (sizes, speeds, status)
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
@@ -4864,15 +4973,15 @@
 #. text in errors.rs
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 #, machine
-	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} ezin da {adapter} bidez iritsi: ez du mota horretako helbiderik (IPv4 edo IPv6)
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	Ezin da {ip} helbidera iritsi {adapter} bidez: ez du mota horretako helbiderik (IPv4 edo IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
-	{language}, automatic	{language}, automatikoa
+	{language}, automatic	{language}, automatikoak
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
-	{live} connected, {known} known	{live} konektatuta, {known} ezagutzen dira
+	{live} connected, {known} known	{live} konektatuta, {known} ezagun
 #. text in the Scheduler window
 #. the calendar's title: {month} = a month's name, {year} = its year
 #, machine
@@ -4895,12 +5004,12 @@
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} 7z edo RAR artxibo bat da. MDM-k 7-Zip-ekin ateratzen ditu horiek, baina ez dago instalatuta.
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} 7z edo RAR artxibo bat da. MDMk 7-Zip-ekin ateratzen ditu artxibo horiek, baina 7-Zip ez dago instalatuta.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is protected by a password:	{name} pasahitz baten bidez babestuta dago:
+	{name} is protected by a password:	{name} pasahitz batez babestuta dago:
 #. text in the settings
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
@@ -4910,7 +5019,7 @@
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} (auto)	{n} (auto)
+	{n} (auto)	{n} (automatikoki)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
@@ -4919,7 +5028,7 @@
 #. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} selected	{total}tik {n} hautatuta
+	{n} of {total} selected	{n}/{total} hautatuta
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
@@ -4930,17 +5039,17 @@
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} moteltzeko eskatzen du; MDM minutu batean saiatuko da berriro
+	{service} asks to slow down; MDM will try again in a minute	{service} motelago jarduteko eskatzen ari da; MDM minutu batean saiatuko da berriro
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} ordenagailu hau lehenik baimendu dezazun eskatzen du: ikusi bere posta elektronikoa
+	{service} asks you to allow this computer first: see its email	{service} ordenagailu hau baimentzeko eskatzen dizu lehenik: begiratu haren mezu elektronikoa
 #. text in errors.rs
 #, machine
 	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} ezin du torrent hau lortu: inork ez du partekatzen, edo ezin da bere esteka irakurri
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} ezin du fitxategi-ostalari honetara iritsi orain; MDM geroago saiatuko da berriro
+	{service} can't reach this file host right now; MDM will try again later	{service} ezin da fitxategi-ostalari honetara iritsi une honetan; MDM geroago saiatuko da berriro
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -4999,7 +5108,7 @@
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: {title} was added by the rule {rule}
 #, machine
-	{title}: added by {rule}	{title}: {rule} arauak gehitua
+	{title}: added by {rule}	{title}: {rule} arauak gehitu du
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: a rule's article is a torrent the list already has
 #, machine
@@ -5070,12 +5179,12 @@ extension	Button settings...	Botoiaren ezarpenak...
 #. text in the browser extension
 #. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
 #, machine
-extension	Connected to Mister Download Manager	Mister Download Managerra konektatuta
+extension	Connected to Mister Download Manager	Mister Download Manager-ra konektatuta
 #. text in the browser extension
 #. the toolbar button's status when the browser reaches the app, with the app's version number; keep the name Mister Download Manager as it is
 #. {version} = a version number (keep the braces as they are)
 #, machine
-extension	Connected to Mister Download Manager {version}	Mister Download Manager {version}ra konektatuta
+extension	Connected to Mister Download Manager {version}	Mister Download Manager {version} bertsiora konektatuta
 #. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
@@ -5083,11 +5192,11 @@ extension	Download	Deskargatu
 #. text in the browser extension
 #. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
 #, machine
-extension	Download all links with Mister Download Manager	Orrialdeko esteka guztiak deskargatu Mister Download Managerrekin
+extension	Download all links with Mister Download Manager	Deskargatu orrialdeko esteka guztiak Mister Download Manager-rekin
 #. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 #, machine
-extension	Download selected links with Mister Download Manager	Hautatutako estekak deskargatu Mister Download Managerrekin
+extension	Download selected links with Mister Download Manager	Deskargatu hautatutako estekak Mister Download Manager-rekin
 #. text in the browser extension
 #. the button over a video on a web page that downloads it; verb; short (it sits on the video)
 #, machine
@@ -5095,7 +5204,7 @@ extension	Download video	Deskargatu bideoa
 #. text in the browser extension
 #. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
 #, machine
-extension	Download with Mister Download Manager	Deskargatu Mister Download Manager erabiliz
+extension	Download with Mister Download Manager	Deskargatu Mister Download Manager-rekin
 #. text in the browser extension
 #. shown in the toolbar button's popup after the site was excluded
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -5161,7 +5270,7 @@ extension	Mister Download Manager	Mister Download Manager
 #. text in the browser extension
 #. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager didn't start in time	Mister Download Manager ez da garaiz hasi
+extension	Mister Download Manager didn't start in time	Mister Download Manager ez da garaiz abiatu
 #. text in the browser extension
 #. status when the app refuses this copy of the extension (another copy is installed, or it came from another store); keep the name Mister Download Manager as it is
 #, machine
@@ -5186,7 +5295,7 @@ extension	More options	Aukera gehiago
 #. menu command of the download button over a video: never show the button on this web site again
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-extension	Never on {site}	Inoiz ez {site} gunean
+extension	Never on {site}	Inoiz ez erakutsi {site} gunean
 #. text in the browser extension
 #. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -5252,7 +5361,7 @@ extension	This browser isn't ticked in Options → General.	Arakatzaile hau ez d
 #. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
-extension	This download's details were too large to hand over	Deskarga honen xehetasunak handiegiak ziren transferitzeko
+extension	This download's details were too large to hand over	Deskarga honen xehetasunak handiegiak ziren bidaltzeko
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
@@ -5264,35 +5373,35 @@ extension	Use advanced browser integration is off in Options → General.	Arakat
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Alt+Enter	Alt+Sartu
+key	Alt+Enter	Alt+Enter
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+A	Ktrl+A
+key	Ctrl+A	Ctrl+A
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+click	Ktrl+klik
+key	Ctrl+click	Ctrl+klik
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+F	Ktrl+F
+key	Ctrl+F	Ctrl+F
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+M / F2	Ktrl+M / F2
+key	Ctrl+M / F2	Ctrl+M / F2
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+N	Ktrl+N
+key	Ctrl+N	Ctrl+N
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+Space	Ktrl+Zuriunea
+key	Ctrl+Space	Ctrl+Zuriunea
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+Up / Ctrl+Down	Ktrl+Gora / Ktrl+Behera
+key	Ctrl+Up / Ctrl+Down	Ctrl+Gora / Ctrl+Behera
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -5634,7 +5743,7 @@ menu	Find Next (F3)	Bilatu hurrengoa (F3)
 #. menu command in the main window
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
-menu	First and last pieces first	Lehenengo eta azkeneko zatiak lehenengo
+menu	First and last pieces first	Lehenik lehenengo eta azken zatiak
 #. menu command in the main window
 #. noun: the list's font (submenu)
 #, machine
@@ -5663,7 +5772,7 @@ menu	High contrast	Kontraste handia
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
-menu	It couldn't start: the log says why	Ezin izan da abiarazi: erregistroak dio zergatia
+menu	It couldn't start: the log says why	Ezin izan da abiarazi: erregistroak azaltzen du zergatik
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
 #, machine
@@ -5671,7 +5780,7 @@ menu	Its first frame didn't show within 10 seconds	Bere lehen fotograma ez da 10
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
-menu	Its last start ended before its first frame	Azken abiaraztea lehen fotograma baino lehen amaitu da
+menu	Its last start ended before its first frame	Azken abiaraztea lehen fotograma agertu baino lehen amaitu da
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Apple's), usually kept as is
 #, machine
@@ -5698,7 +5807,7 @@ menu	Native	Natiboa
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
-menu	No graphics card here has a driver for it	Hemen ez dago txartel grafikorik horretarako kontrolatzailerik duena
+menu	No graphics card here has a driver for it	Hemen ez dago horretarako kontrolatzailea duen txartel grafikorik
 #. menu command in the main window
 #, machine
 menu	On Double click	Klik bikoitzean
@@ -5732,7 +5841,7 @@ menu	OpenGL	OpenGL
 #. noun: opens the download's Properties window
 #. noun: opens the category's properties
 #, machine
-menu	Properties	Ezaugarriak
+menu	Properties	Propietateak
 #. menu command in the main window
 #. verb: download the file again from the start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -5761,11 +5870,11 @@ menu	Remove	Kendu
 #. verb: removes the selected download from the list and its file from the disk
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Remove with &files	Kendu &fitxategiekin
+menu	Remove with &files	Kendu &fitxategiak
 #. menu command in the main window
 #. verb: removes the download from the list and its file from the disk
 #, machine
-menu	Remove with files	Kendu fitxategiekin
+menu	Remove with files	Kendu fitxategiak
 #. menu command in the main window
 #, machine
 menu	Resume Download	Berrekin deskargari
@@ -5777,7 +5886,7 @@ menu	S&cheduler	A&ntolatzailea
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	S&ettings...	E&zarpenak...
+menu	S&ettings...	&Ezarpenak...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5952,43 +6061,332 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/s
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent fitxategia
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	Gehitu
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	Gehituta.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	Gehituta. MDM torrenta irakurtzen ari da: laster gehituko da zerrendara.
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	Helbidea edo magnet esteka
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	Guztiak
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	Automatikoa (fitxategi motaren arabera)
 #. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
-	in the locked keyring	blokeatutako giltza-sortan
+	Certificate (SHA-256): {fingerprint}	Ziurtagiria (SHA-256): {fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	.torrent fitxategi bat aukeratu
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	Kodea
 #. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: label before the 8-digit code
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Sistemaren giltza-sortak ez du erantzun, beraz, saio-hasierak eta pasahitzak MDMren ezarpenetan gordetzen dira, zuk bakarrik irakur ditzakezunetan.
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+	Code:	Kodea:
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
 #, machine
-	proxy server	proxy zerbitzaria
+	Delete the file too	Fitxategia ere ezabatu
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#. column title: a paired phone's or computer's name
 #, machine
-	Sign-ins and passwords are kept in the macOS keychain.	Saio-hasierak eta pasahitzak macOS giltza-sortan gordetzen dira.
+	Device	Gailua
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
 #, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	Saio-hasierak eta pasahitzak sistemaren giltza-sortan gordetzen dira (Secret Service).
+	Every local network address	Tokiko sareko helbide guztiak
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	Ahaztu gailu hau
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	Gailu hau ahaztu? Kode berri bat beharko du berriro konektatzeko.
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	parekatutako gailu batetik
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
 #, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	Saio-hasierak eta pasahitzak Windows Kredentzial Kudeatzailean gordetzen dira.
+	It could not start: {error}	Ezin izan da abiarazi: {error}
 #. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. column title: when the device last reached MDM
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Sistemaren giltza-sorta blokeatuta dago eta MDMk ez du desblokeatzen, beraz, saio-hasierak eta pasahitzak MDMren ezarpenetan gordetzen dira, zuk bakarrik irakur ditzakezunetan.
+	Last seen	Azken ikusia
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	Utzi tokiko sareko telefono eta ordenagailuei MDM kontrolatzen
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#. Options → Remote: label before the choice of the address MDM listens on
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Kopia eramangarri honek saio-hasierak eta pasahitzak bere ezarpenetan gordetzen ditu, zure Windows konturako enkriptatuta.
+	Listen on:	Entzun hemen:
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Kopia eramangarri honek saio-hasierak eta pasahitzak bere ezarpenetan gordetzen ditu, zuk bakarrik irakur ditzakezunetan.
+	MDM can't be reached on the network now: Options → Remote says why.	MDM ezin da sarean iritsi orain: Aukerak → Urrunekoa atalean zergatia azaltzen da.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	MDM-k ezin du helbide hau deskargatu.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	MDM-k ezin izan du gehitu.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	MDM-k ezin izan du egin.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM-k ez du erantzuten. Egiaztatu martxan dagoela eta sare berean.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM-k ez du erantzuten. Berriro saiatzen...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	MDM-k ez du koderik erakusten orain. Egin klik lehenik Parekatu gailu bat botoian.
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	Gehiago
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	Kode berria
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	Ez dago deskargarik hemen.
 #. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Kredentzial Kudeatzaileak ez du erantzun, beraz, saio-hasierak eta pasahitzak MDMren ezarpenetan gordetzen dira, zure Windows konturako enkriptatuta.
+	No local network now: it starts when the computer joins one.	Ez dago tokiko sarerik orain: ordenagailua batera konektatzen denean hasiko da.
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	Desaktibatuta: sarean ezerk ezin du MDM-ra iritsi.
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	Ordenagailuan, ireki Aukerak, gero Urrunekoa, eta egin klik Parekatu gailu bat botoian. Sartu erakusten duen kodea.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	Telefonoan, eskaneatu kode hau kamerarekin, edo ireki helbidea eta sartu kodea.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	Aktibatuta. Telefonoan, ireki helbide hau:
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Parekatu diren gailuek bakarrik ikusi edo alda dezakete ezer. Lehen aldiz, telefonoaren nabigatzaileak MDM-ren ziurtagiriari buruz ohartaraziko du: bere hatz-marka goiko hori da.
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	Parekatu
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	Parekatu gailu bat
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	Parekatu gailu bat...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Mister Download Manager aplikazioarekin parekatu
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	Parekatu da
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	Parekaturiko gailuak:
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	{port} ataka beste programa batek erabiltzen du: aukeratu beste bat.
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	Ilara
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	Urrunekoa
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	Urruneko kontrola
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	{name} zerrendatik kendu?
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	Hasi orain
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	Aldaketak Ados sakatzean aplikatuko dira.
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	Kode hau ezin da gehiago erabili.
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	Ordenagailu hau bakarrik (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	Gailu honen izena
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	Fitxategi hau handiegia da torrent bat izateko.
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	Hau ez da torrent fitxategi bat.
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	Aktibatu urruneko kontrola lehenik.
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	Itxaron une bat, eta saiatu berriro.
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	Itxaron {queue} ilaran
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	Gailuaren zain. Kodeak {time} balio du.
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	Noiz
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	Kode okerra. Erakutsi kode berri bat MDM-n eta saiatu berriro.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	Kode okerra. Geratzen diren saiakerak: {n}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} parekatu da. MDM kontrola dezake orain.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{size}tik {done}
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} libre
+#. text in the browser extension
+#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
+#, machine
+extension	Another Mister Download Manager (a server)	Beste Mister Download Manager bat (zerbitzari bat)
+#. text in the browser extension
+#. the name this browser gets in the other MDM's list of paired devices
+#, machine
+extension	Browser extension	Arakatzailearen luzapena
+#. text in the browser extension
+#. the toolbar button's status while downloads go to another MDM
+#, machine
+extension	Downloads go to {address}	Deskargak hona doaz: {address}
+#. text in the browser extension
+#. the address typed isn't an https:// address
+#, machine
+extension	Enter its https:// address.	Sartu bere https:// helbidea.
+#. text in the browser extension
+#. pairing failed for another reason
+#, machine
+extension	It didn't work. Try again.	Ez du funtzionatu. Saiatu berriro.
+#. text in the browser extension
+#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
+#, machine
+extension	It shows no code now: click Pair a device there first.	Ez du koderik erakusten orain: egin klik lehenik Parekatu gailu bat aukeran.
+#. text in the browser extension
+#. pairing failed: the other MDM didn't answer
+#, machine
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Ez da iritsi. Ireki bere helbidea behin arakatzaile honetan eta onartu bere ziurtagiria, eta saiatu berriro.
+#. text in the browser extension
+#. button: open the other MDM's address in a tab (to accept its certificate once)
+#, machine
+extension	Open it	Ireki
+#. text in the browser extension
+#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
+#, machine
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	Ireki bere helbidea behin eta onartu bere ziurtagiria, eta sartu kode bat bere Aukerak, Urrunekoa, Parekatu gailu bat (edo misterdownloadmanager-cli pair) atalean.
+#. text in the browser extension
+#. button: pair this browser with the other MDM using the code
+#, machine
+extension	Pair	Parekatu
+#. text in the browser extension
+#. placeholder of the box for the 8-digit code the other MDM shows
+#, machine
+extension	Pairing code	Pareketa-kodea
+#. text in the browser extension
+#. heading in the toolbar button's popup, above the choice of where downloads go
+#, machine
+extension	Send downloads to	Bidali deskargak hona
+#. text in the browser extension
+#. choice under Send downloads to: the Mister Download Manager on this computer
+#, machine
+extension	This computer	Ordenagailu hau
+#. text in the browser extension
+#. pairing failed: codes tried too fast
+#, machine
+extension	Wait a moment, then try again.	Itxaron une bat, eta saiatu berriro.
+#. text in the browser extension
+#. pairing failed: the code was wrong
+#, machine
+extension	Wrong code.	Kode okerra.

@@ -6,7 +6,7 @@
 #. never shown for a single file
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Також видалити {n} файл з диска|Також видалити {n} файли з диска|Також видалити {n} файлів з диска
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Також видалити з диска {n} файл|Також видалити з диска {n} файли|Також видалити з диска {n} файлів
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -117,7 +117,7 @@
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
-	"{what}" isn't an IP address.	"{what}" не є IP-адресою.
+	"{what}" isn't an IP address.	«{what}» — не IP-адреса.
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -192,10 +192,14 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Ідентифікатор конфігурації NextDNS складається з шести літер і цифр (0-9, a-f).
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Ім’я профілю або його папка. Порожньо: останній використаний профіль. Для браузера на базі Chromium, якого немає в списку (Helium, Thorium...), виберіть Chromium та папку його профілю.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
-	A proxy carries this download: the place and the time are the proxy's, not the server's.	Цей файл завантажується через проксі-сервер: місце та час належать проксі-серверу, а не серверу.
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	Цей файл завантажується через проксі-сервер: місце та час визначаються проксі-сервером, а не сервером.
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -203,7 +207,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
-	A rule adds the new articles whose titles it matches, as they come.	Правило додає нові статті, заголовки яких відповідають, коли вони надходять.
+	A rule adds the new articles whose titles it matches, as they come.	Правило додає нові статті із заголовками, що відповідають йому, у міру їх появи.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -211,11 +215,11 @@
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
-	A tracker on this computer or the local network is never contacted: {line}	Трекер на цьому комп’ютері або в локальній мережі ніколи не контактує: {line}
+	A tracker on this computer or the local network is never contacted: {line}	До трекера на цьому комп’ютері або в локальній мережі ніколи не підключаються: {line}
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	a volume of it is missing	відсутній один з томів
+	a volume of it is missing	відсутній один із його томів
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Про Mister Download Manager
@@ -284,7 +288,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
-	Add them without starting them	Додати без запуску
+	Add them without starting them	Додати їх, не запускаючи
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
@@ -373,7 +377,7 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
-	All the uploader's	Усі від завантажувача
+	All the uploader's	Усі субтитри від автора
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -403,7 +407,7 @@
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
-	Always dark	Завжди темний
+	Always dark	Завжди темна тема
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -497,11 +501,11 @@
 	As the system's region writes them	Як їх записує регіон системи
 #. text in the Options window
 #, machine
-	Ask it with:	Запитати за допомогою:
+	Ask it with:	Запитувати за допомогою:
 #. message or event log entry in the main window
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
-	Asked the trackers for peers again	Знову запитано трекери про піри
+	Asked the trackers for peers again	Повторно надіслано запит трекерам на отримання пірів
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
@@ -538,7 +542,7 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Automatically put in "{category}" category the following file types:	Автоматично поміщати до категорії "{category}" такі типи файлів:
+	Automatically put in "{category}" category the following file types:	Автоматично поміщати до категорії «{category}» такі типи файлів:
 #. text in the Options window
 #, machine
 	Automatically start downloading the following file types:	Автоматично починати завантаження таких типів файлів:
@@ -670,7 +674,7 @@
 	by batch download	пакетним завантаженням
 #. message or event log entry in the main window
 #, machine
-	by Link grabber	за допомогою Link grabber
+	by Link grabber	за допомогою засобу збирання посилань
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -735,7 +739,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Cayman Islands	Кайманові Острови
+	Cayman Islands	Кайманові острови
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Виберіть мову, якою Mister Download Manager відображатиме свої вікна:
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	Виберіть папку профілю
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -866,7 +874,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Comoros	Коморські Острови
+	Comoros	Коморські острови
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	Острови Кука
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	Файли cookie для відеосайтів
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	Скопійовано до буфера обміну.
@@ -960,10 +972,10 @@
 	Curaçao	Кюрасао
 #. text in the Options window
 #, machine
-	Customize "Download progress" dialog	Налаштувати діалогове вікно "Прогрес завантаження"
+	Customize "Download progress" dialog	Налаштувати діалогове вікно «Прогрес завантаження»
 #. text in the Options window
 #, machine
-	Customize keys to prevent or force downloading with MDM	Налаштувати клавіші для запобігання або примусового завантаження за допомогою MDM
+	Customize keys to prevent or force downloading with MDM	Налаштувати клавіші для запобігання завантаженню за допомогою MDM або його примусового запуску
 #. text in the Options window
 #, machine
 	Customize MDM Download panels in browsers	Налаштувати панелі завантаження MDM у браузерах
@@ -977,7 +989,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Czech Republic	Чеська Республіка
+	Czech Republic	Чехія
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -985,7 +997,7 @@
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #. adverb: every day (the other choice is once, on a date)
 #, machine
-	Daily	Щоденно
+	Daily	Щодня
 #. text in the Options window
 #, machine
 	Date order:	Порядок дати:
@@ -998,7 +1010,7 @@
 	Day, month, year	День, місяць, рік
 #. page title in the Options window
 #, machine
-	Debrid service accounts	Облікові записи служби дебридування
+	Debrid service accounts	Облікові записи сервісів розблокування завантажень
 #. text in the Scheduler window
 #, machine
 	December	Грудень
@@ -1013,13 +1025,13 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Default download directory for "{category}" category	Типовий каталог завантажень для категорії "{category}"
+	Default download directory for "{category}" category	Типова папка для завантажень категорії «{category}»
 #. page title in the Options window
 #, machine
 	Default download settings	Типові параметри завантаження
 #. text in the Options window
 #, machine
-	Default max. conn. number	Типова макс. кількість з’єднань
+	Default max. conn. number	Типова максимальна кількість з’єднань
 #. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
@@ -1028,7 +1040,7 @@
 #. checkbox in the Link grabber window
 #. Link grabber check box: after extracting, the archives go to the Recycle Bin
 #, machine
-	Delete archives after extracting	Видалити архіви після видобування
+	Delete archives after extracting	Видаляти архіви після розпакування
 #. window title in a dialog box
 #, machine
 	Delete category	Видалити категорію
@@ -1043,7 +1055,7 @@
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
-	Delete the queue "{queue}"? Its downloads stay in the list.	Видалити чергу "{queue}"? Її завантаження залишаться у списку.
+	Delete the queue "{queue}"? Its downloads stay in the list.	Видалити чергу «{queue}»? Її завантаження залишаться у списку.
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Delete the selected downloads (asks first)	Видалити вибрані завантаження (запитує спочатку)
@@ -1140,7 +1152,7 @@
 #. message or event log entry in the main window
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Завантажити "{name}" знову з початку? Завершений файл буде замінено після завершення нового завантаження.
+	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Завантажити «{name}» знову з початку? Завершений файл буде замінено після завершення нового завантаження.
 #. window title in gallerydlg.rs
 #. window title: download an image gallery's files (gallery-dl)
 #, machine
@@ -1345,7 +1357,7 @@
 #. text in the Add torrent window
 #. Add trackers: OK with an empty box
 #, machine
-	Enter a tracker's address, one a line	Введіть адресу трекера, по одному на рядок
+	Enter a tracker's address, one a line	Введіть адресу трекера, по одній на рядок
 #. window title in a dialog box
 #, machine
 	Enter new address to download	Введіть нову адресу для завантаження
@@ -1648,6 +1660,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	з torrent-файлу
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	З браузера:
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1685,7 +1701,7 @@
 #. message or event log entry in the main window
 #. a gallery download's error: the helper program it needs is missing
 #, machine
-	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl не встановлено (Додати URL з адресою галереї встановлює його)
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl не встановлено (Додавання адреси галереї через «Додати URL» встановлює його)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1807,18 +1823,18 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
-	Hibernate	Гібернація
+	Hibernate	Перевести комп’ютер у режим гібернації
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Сховати &категорії
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	Сховати вкладку
 #. text in a download's progress window; text in standard windows
 #. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
 #, machine
-	Hide to the notification area	Приховати в область сповіщень
+	Hide to the notification area	Приховати в області сповіщень
 #. checkbox in the Link grabber window; text in the Link grabber window; checkbox in the Options window
 #. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
 #, machine
@@ -1884,6 +1900,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	У категоріях: меню вибраної категорії
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	у заблокованій зв’язці ключів
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1988,11 +2008,11 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	він записав би {size}, що перевищує {limit} доступного місця або причини
+	it would write {size}, more than the {limit} there is room or reason for	було б записано {size}, що перевищує {limit} доступного місця або допустимого обсягу
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Можна додати групу послідовних імен файлів, таких як img001.jpg, img002.jpg тощо,\nimg100.jpg до черги завантажень MDM. Використовуйте символ узагальнення (зірочку) для шаблону імені файлу.
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Можна додати до черги завантажень MDM групу файлів із послідовними іменами, наприклад img001.jpg, img002.jpg тощо,\nimg100.jpg. Використовуйте зірочку як символ узагальнення в шаблоні імені файлу.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2092,7 +2112,7 @@
 #. message or event log entry in the main window
 #. RSS: a feed bigger than MDM reads (5 MB)
 #, machine
-	larger than a feed can be	більше, ніж може бути канал
+	larger than a feed can be	перевищує допустимий розмір каналу
 #. text in the Batch download window
 #, machine
 	Last file:	Останній файл:
@@ -2171,7 +2191,7 @@
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	Перелік зупинено після {n} відео: {error}
+	Listing stopped after {n} videos: {error}	Створення списку зупинено після {n} відео: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
@@ -2202,7 +2222,7 @@
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
-	Login	Вхід
+	Login	Ім’я користувача
 #. checkbox in the Options window
 #. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
 #, machine
@@ -2322,7 +2342,7 @@
 #. text in the Scheduler window
 #. the month (the fifth of the year)
 #, machine
-	May	Травень
+	May	травень
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2412,7 +2432,7 @@
 	Monaco	Монако
 #. text in the Options window; text in the Scheduler window
 #, machine
-	Monday	Понеділок
+	Monday	понеділок
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2449,7 +2469,7 @@
 #. text in a dialog box
 #. choice in Delete category: what happens to the category's downloads
 #, machine
-	Move its downloads to General	Перемістити завантаження до категорії "Загальні"
+	Move its downloads to General	Перемістити завантаження до категорії «Загальні»
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Перемістити або перейменувати вибране завантаження
@@ -2594,6 +2614,10 @@
 #, machine
 	No addresses yet	Адрес ще немає
 #. text in extension.rs
+#. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
+#, machine
+	No browser MDM can connect to was found	Не знайдено браузера, до якого MDM може підключитися
+#. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 #, machine
 	No browser's extension has connected yet	Розширення жодного браузера ще не підключено
@@ -2637,7 +2661,7 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Email found no mail program
 #, machine
-	No mail app opened.	Не відкрито жодної поштової програми.
+	No mail app opened.	Поштову програму не відкрито.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	Немає поштової програми: повідомлення скопійовано, вставте його у свою пошту.
@@ -2651,6 +2675,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Без проксі/SOCKS
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Системна зв’язка ключів не відповіла, тому дані для входу та паролі зберігаються в налаштуваннях MDM, які можете прочитати лише ви.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2772,6 +2800,9 @@
 #. text in the Scheduler window
 #, machine
 	October	Жовтень
+#. option (radio button) in the Options window
+#, machine
+	Off	Вимкнено
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	Вимк.: завершений торрент зупиняється, як і будь-яке завантаження.
@@ -2792,7 +2823,7 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
 #, machine
-	On battery, Windows' power options don't allow wake timers	Від параметрів живлення Windows не дозволяють таймери пробудження під час роботи від акумулятора
+	On battery, Windows' power options don't allow wake timers	Параметри живлення Windows не дозволяють таймери пробудження під час роботи від акумулятора
 #. text in a download's progress window
 #, machine
 	on download stop/resume	при зупинці/відновленні завантаження
@@ -2800,6 +2831,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	У macOS лише адміністратор може запланувати пробудження
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	У Windows Chrome, Edge і Brave можуть блокувати свої файли cookie. Firefox працює.
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Один раз о
@@ -2860,7 +2895,7 @@
 	Open the following file when done	Відкрити наступний файл після завершення
 #. checkbox in the Scheduler window
 #, machine
-	Open the following file when done:	Відкрити файл після завершення:
+	Open the following file when done:	Відкривати файл після завершення:
 #. button in the Options window
 #. button: open the service's page where the code is typed
 #, machine
@@ -2868,7 +2903,7 @@
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
-	Open the reported issue	Відкрити повідомлену проблему
+	Open the reported issue	Відкрити створене повідомлення про проблему
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Open the selected download	Відкрити вибране завантаження
@@ -3033,6 +3068,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	Попередній перегляд ще недоступний
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	Профіль (необов’язково):
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -3050,6 +3089,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	Конфігурація проксі / socks
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	проксі-сервер
 #. label in the Options window
 #, machine
 	Proxy server address	Адреса проксі-сервера
@@ -3089,6 +3132,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Черги
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	Читаються лише на цьому комп’ютері та надсилаються лише на сайт відео.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3182,7 +3229,7 @@
 #. text in a download's progress window
 #. verb: continue the download
 #, machine
-	Resume	Продовжити
+	Resume	Відновити
 #. text in a download's progress window
 #. label: whether the server lets a stopped download continue (Yes / No)
 #, machine
@@ -3267,7 +3314,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Sao Tome and Principe	Сан-Томе і Принсіпі
+	Sao Tome and Principe	Сан-Томе і Принсипі
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Saturday	Субота
@@ -3419,6 +3466,11 @@
 #. event log: File Properties: the download goes through the debrid account again
 #, machine
 	Set to download through the debrid account	Налаштовано на завантаження через обліковий запис debrid
+#. text in extension.rs
+#. a check of Test browser integration: setting it up failed; {error} is the system's own message, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Setting it up failed: {error}	Не вдалося налаштувати: {error}
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3507,6 +3559,18 @@
 #, machine
 	Sign in in the browser	Увійти в браузері
 #. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	Дані для входу та паролі зберігаються у зв’язці ключів macOS.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	Дані для входу та паролі зберігаються в системній зв’язці ключів (Secret Service).
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	Дані для входу та паролі зберігаються в диспетчері облікових даних Windows.
+#. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
 	Signed in as {user} ({state})	Ви ввійшли як {user} ({state})
@@ -3560,7 +3624,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: put it to sleep)
 #, machine
-	Sleep	Сплячий режим
+	Sleep	Приспати
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4022,6 +4086,10 @@
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
 	the FTP server answered {code} {reply}	FTP-сервер відповів {code} {reply}
+#. text in extension.rs
+#. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
+#, machine
+	The helper program the browsers start is missing	Допоміжна програма, яку запускають браузери, відсутня
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4047,7 +4115,7 @@
 	the release has no {what}	у випуску відсутній {what}
 #. text in errors.rs
 #, machine
-	the release's checksum list is not signed by its publisher's key	список контрольних сум випуску не підписаний ключем видавця
+	the release's checksum list is not signed by its publisher's key	список контрольних сум випуску не підписано ключем видавця
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine
@@ -4062,7 +4130,7 @@
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
-	the secure connection failed	Безпечне з’єднання не вдалося
+	the secure connection failed	Не вдалося встановити захищене з’єднання
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -4088,18 +4156,30 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	сервер надіслав неочікувану частину файлу ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Сайт вимагає входу, навіть із файлами cookie вашого браузера для цієї сторінки. Увійдіть на нього у своєму браузері, а потім спробуйте ще раз.
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Сайт вимагає входу, навіть із файлами cookie {browser}. Увійдіть на нього в {browser}, а потім знову знайдіть сторінку.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
-	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Не вдалося отримати символи: деякі рядки звіту показують адреси замість імен (розробники все ще можуть їх прочитати).
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Не вдалося отримати символи: в деяких рядках звіту замість імен відображаються адреси (розробники все одно зможуть їх прочитати).
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Системна зв’язка ключів заблокована, і MDM її не розблоковує, тому дані для входу та паролі зберігаються в налаштуваннях MDM, які можете прочитати лише ви.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
-	The system's DNS	Системний DNS
+	The system's DNS	Системна DNS
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
-	The time is a round trip, measured as this download's own connections opened.	Час – це час передачі даних в обидва боки, виміряний як відкриті з’єднання цього завантаження.
+	The time is a round trip, measured as this download's own connections opened.	Час вимірюється як тривалість проходження сигналу туди й назад через з’єднання, відкриті цим завантаженням.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4107,7 +4187,7 @@
 #. text in torrent downloads
 #. an error: the torrent is gone from the torrent session
 #, machine
-	the torrent is no longer there	торрент більше не існує
+	the torrent is no longer there	торрента більше немає
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4115,13 +4195,13 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The update couldn't be installed: {error}	Не вдалося інсталювати оновлення: {error}
+	The update couldn't be installed: {error}	Не вдалося встановити оновлення: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The update is open in your system's package installer.	Оновлення відкрито в інсталяторі пакетів вашої системи.
 #. text in a download's Properties window
 #, machine
-	The web page from which this file was obtained:	Веб-сторінка, з якої було отримано цей файл:
+	The web page from which this file was obtained:	Вебсторінка, з якої отримано цей файл:
 #. text in the Options window
 #. Options → Archives check box
 #, machine
@@ -4129,7 +4209,7 @@
 #. text in the Options window
 #. Options → Archives check box (Linux and macOS)
 #, machine
-	Then move the archives to the Trash	Потім перемістити архіви до Смітника
+	Then move the archives to the Trash	Потім перемістити архіви до кошика
 #. text in categories.rs
 #, machine
 	There is already a category with this name	Категорія з такою назвою вже існує
@@ -4196,6 +4276,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Для цього потрібен ffmpeg
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Ця портативна копія зберігає дані для входу та паролі у власних налаштуваннях, зашифрованих для вашого облікового запису Windows.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Ця портативна копія зберігає дані для входу та паролі у власних налаштуваннях, які можете прочитати лише ви.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4203,7 +4291,7 @@
 	this program isn't {name}	ця програма не {name}
 #. text in a download's progress window
 #, machine
-	This system has no dial-up connections to hang up	Ця система не має комутованих з'єднань для роз'єднання
+	This system has no dial-up connections to hang up	У цій системі немає комутованих з’єднань, які можна роз’єднати
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -4221,7 +4309,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Для цього відео потрібен вхід. Використовуйте кнопку «Завантажити відео» над ним у своєму браузері, яка передає ваш вхід.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Для цього відео потрібен вхід. Скористайтеся кнопкою «Завантажити відео» над ним у своєму браузері, яка передає ваш вхід, або виберіть свій браузер у меню «Параметри» → «Входи на сайти» → «Файли cookie для відеосайтів».
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4598,14 +4686,6 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Пошук відео використовує yt-dlp (близько 23 МБ, перевірено за підписом).
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	Відеосторінки та торренти ще не можуть його використовувати.
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	Відеосторінки ще не можуть його використовувати.
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4669,7 +4749,7 @@
 #. text in the Options window
 #. Options → Archives: a label before the list of where extracted files go
 #, machine
-	What an archive holds goes:	Вміст архіву переходить:
+	What an archive holds goes:	Куди переміщувати вміст архіву:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -4684,6 +4764,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows дозволяє таймери пробудження лише під час підключення до мережі
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Диспетчер облікових даних Windows не відповів, тому дані для входу та паролі зберігаються в налаштуваннях MDM, зашифрованих для вашого облікового запису Windows.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4764,9 +4848,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	Ваша системна: {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp не може читати файли cookie {browser}, поки {browser} відкрито. Закрийте {browser} і знову знайдіть сторінку, або виберіть Firefox у меню «Параметри» → «Входи на сайти».
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp не вдалося отримати ключ до файлів cookie {browser} із системного сховища ключів. Розблокуйте сховище ключів і знову знайдіть сторінку.
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp не вдалося прочитати файли cookie {browser}: {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp не знайшов файлів cookie {browser} на цьому комп’ютері. Перевірте браузер та його профіль у меню «Параметри» → «Входи на сайти».
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp не встановлено (Завдання → Завантажити відео зі сторінки встановлює його)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp входить на відеосайти за допомогою файлів cookie цього браузера, які читаються лише з його файлів на цьому комп’ютері. Використовується, коли розширення браузера не передало власні файли cookie сторінки: вставлена адреса, список відтворення.
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4782,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ та XZ; розділений архів (.part1.rar, .7z.001) після\nтого, як усі томи будуть на місці. Файл, який вже існує, зберігається: новий нумерується.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ та XZ; розділений архів (.part1.rar, .7z.001) після\nотримання всіх томів. Наявний файл зберігається, новому присвоюється номер.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4799,6 +4904,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: перевіряється після завершення завантаження
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} зберігає свої файли cookie заблокованими для себе у Windows, тому yt-dlp не може їх прочитати. Виберіть Firefox у меню «Параметри» → «Входи на сайти» або скористайтеся кнопкою «Завантажити відео» над відео в {browser}.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -4811,7 +4920,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
-	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} обслуговує цей файл: місцезнаходження його сервера, часто поблизу вас, а не власника сайту.
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} обслуговує цей файл: показано місце розташування його сервера, часто поблизу вас, а не власника сайту.
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -4838,7 +4947,7 @@
 	{file} could not be read to check it	{file} не вдалося прочитати для перевірки
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} більше не знаходиться там, де його було збережено (переміщено або видалено). Повторне завантаження в його контекстному меню отримує його знову.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} більше немає в місці, де його було збережено (його перемістили або видалили). Команда «Завантажити знову» в контекстному меню завантажить його ще раз.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4864,7 +4973,7 @@
 #. text in errors.rs
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 #, machine
-	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} недоступний через {adapter}: він не має адреси такого типу (IPv4 або IPv6)
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} недоступна через {adapter}: цей адаптер не має адреси такого типу (IPv4 або IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -4872,7 +4981,7 @@
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
-	{live} connected, {known} known	{live} підключено, {known} відомо
+	{live} connected, {known} known	{live} підключених, {known} відомих
 #. text in the Scheduler window
 #. the calendar's title: {month} = a month's name, {year} = its year
 #, machine
@@ -4895,7 +5004,7 @@
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} — це архів 7z або RAR. MDM розпаковує їх за допомогою 7-Zip, який не встановлено.
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} — це архів 7z або RAR. MDM розпаковує такі архіви за допомогою 7-Zip, який не встановлено.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -4905,7 +5014,7 @@
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} isn't offered as {how}.	{name} не пропонується як {how}.
+	{name} isn't offered as {how}.	{name} не пропонується у форматі {how}.
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -4934,7 +5043,7 @@
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} просить спочатку дозволити цей комп’ютер: перегляньте його електронний лист
+	{service} asks you to allow this computer first: see its email	{service} просить спочатку дозволити цей комп’ютер: перевірте електронний лист від сервісу
 #. text in errors.rs
 #, machine
 	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} не може отримати цей торрент: його ніхто не роздає, або його посилання неможливо прочитати
@@ -5116,7 +5225,7 @@ extension	Help	Довідка
 #. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
-extension	Hide on this video	Приховати на цьому відео
+extension	Hide on this video	Приховати для цього відео
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
@@ -5181,12 +5290,12 @@ extension	Mister Download Manager then downloads through the same proxy as this 
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
-extension	More options	Більше опцій
+extension	More options	Інші параметри
 #. text in the browser extension
 #. menu command of the download button over a video: never show the button on this web site again
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-extension	Never on {site}	Ніколи на {site}
+extension	Never on {site}	Ніколи не показувати на сайті {site}
 #. text in the browser extension
 #. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -5232,11 +5341,11 @@ extension	Support MDM	Підтримати MDM
 #. text in the browser extension
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
-extension	Take downloads from this browser	Завантажувати файли з цього браузера
+extension	Take downloads from this browser	Перехоплювати завантаження з цього браузера
 #. text in the browser extension
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
-extension	The connection to Mister Download Manager failed	З’єднання з Mister Download Manager не вдалося
+extension	The connection to Mister Download Manager failed	Не вдалося встановити з’єднання з Mister Download Manager
 #. text in the browser extension
 #. shown briefly on the download button over a video when the app's settings keep the button off on this web site
 #, machine
@@ -5532,7 +5641,7 @@ menu	By &Size	За &розміром
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	By &Time Left	За &залишковим часом
+menu	By &Time Left	За &часом до завершення
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5621,7 +5730,7 @@ menu	Draw with	Малювати за допомогою
 #. verb: save the download list to a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	E&xport	&Експорт
+menu	E&xport	&Експортувати
 #. menu command in the main window
 #, machine
 menu	Edit queue	Редагувати чергу
@@ -5956,43 +6065,332 @@ unit	{n} MB	{n} МБ
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} МБ/с
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent-файл
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	Додати
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	Додано.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	Додано. MDM читає торрент: він з’явиться у списку за мить.
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	Адреса або magnet-посилання
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	Усі
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	Автоматично (за типом файлу)
 #. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
-	in the locked keyring	у заблокованій зв’язці ключів
+	Certificate (SHA-256): {fingerprint}	Сертифікат (SHA-256): {fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	Виберіть .torrent-файл
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	Код
 #. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: label before the 8-digit code
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Системна зв’язка ключів не відповіла, тому дані для входу та паролі зберігаються в налаштуваннях MDM, які можете прочитати лише ви.
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+	Code:	Код:
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
 #, machine
-	proxy server	проксі-сервер
+	Delete the file too	Видалити файл також
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#. column title: a paired phone's or computer's name
 #, machine
-	Sign-ins and passwords are kept in the macOS keychain.	Дані для входу та паролі зберігаються у зв’язці ключів macOS.
+	Device	Пристрій
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
 #, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	Дані для входу та паролі зберігаються в системній зв’язці ключів (Secret Service).
+	Every local network address	Кожна адреса локальної мережі
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	Забути цей пристрій
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	Забути цей пристрій? Для повторного підключення потрібен новий код.
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	з парного пристрою
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
 #, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	Дані для входу та паролі зберігаються в диспетчері облікових даних Windows.
+	It could not start: {error}	Не вдалося запустити: {error}
 #. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. column title: when the device last reached MDM
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Системна зв’язка ключів заблокована, і MDM її не розблоковує, тому дані для входу та паролі зберігаються в налаштуваннях MDM, які можете прочитати лише ви.
+	Last seen	Останній перегляд
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	Дозволити телефонам і комп’ютерам у локальній мережі керувати MDM
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#. Options → Remote: label before the choice of the address MDM listens on
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Ця портативна копія зберігає дані для входу та паролі у власних налаштуваннях, зашифрованих для вашого облікового запису Windows.
+	Listen on:	Прослуховувати:
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Ця портативна копія зберігає дані для входу та паролі у власних налаштуваннях, які можете прочитати лише ви.
+	MDM can't be reached on the network now: Options → Remote says why.	MDM зараз недоступний у мережі: у розділі «Параметри → Віддалений доступ» вказано причину.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	MDM не може завантажити цю адресу.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	MDM не вдалося додати його.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	MDM не вдалося це зробити.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM не відповідає. Перевірте, чи він запущений і знаходиться в тій самій мережі.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM не відповідає. Повторна спроба...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	MDM зараз не показує код. Спершу натисніть «Підключити пристрій».
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	Більше
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	Новий код
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	Тут немає завантажень.
 #. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Диспетчер облікових даних Windows не відповів, тому дані для входу та паролі зберігаються в налаштуваннях MDM, зашифрованих для вашого облікового запису Windows.
+	No local network now: it starts when the computer joins one.	Зараз немає локальної мережі: вона запуститься, коли комп’ютер приєднається до неї.
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	Вимкнено: ніщо в мережі не може дістатися до MDM.
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	На комп’ютері відкрийте «Параметри», потім «Віддалений доступ» і натисніть «Підключити пристрій». Введіть код, який він показує.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	На телефоні відскануйте цей код камерою або відкрийте адресу та введіть код.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	Увімкнено. На телефоні відкрийте цю адресу:
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Лише парні пристрої можуть бачити або змінювати щось. Вперше браузер телефону попередить про власний сертифікат MDM: його відбиток є тим, що вище.
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	Підключити
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	Підключити пристрій
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	Підключити пристрій...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Створити пару з Mister Download Manager
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	Створено пару
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	Створені пари пристроїв:
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	Порт {port} використовується іншою програмою: виберіть інший.
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	У черзі
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	Віддалений
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	Віддалене керування
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	Видалити {name} зі списку?
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	Почати зараз
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	Зміни застосовуються після натискання кнопки «ОК».
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	Цей код більше не можна використовувати.
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	Лише цей комп’ютер (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	Назва цього пристрою
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	Цей файл завеликий для торрент-файлу.
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	Це не торрент-файл.
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	Спочатку ввімкніть віддалене керування.
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	Зачекайте трохи, потім спробуйте ще раз.
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	Чекати в {queue}
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	Очікування пристрою. Код дійсний протягом {time}.
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	Коли
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	Неправильний код. Покажіть новий код у MDM і спробуйте ще раз.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	Неправильний код. Залишилося спроб: {n}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} створено пару. Тепер він може керувати MDM.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{done} з {size}
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} вільно
+#. text in the browser extension
+#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
+#, machine
+extension	Another Mister Download Manager (a server)	Інший Mister Download Manager (сервер)
+#. text in the browser extension
+#. the name this browser gets in the other MDM's list of paired devices
+#, machine
+extension	Browser extension	Розширення браузера
+#. text in the browser extension
+#. the toolbar button's status while downloads go to another MDM
+#, machine
+extension	Downloads go to {address}	Завантаження надсилаються на {address}
+#. text in the browser extension
+#. the address typed isn't an https:// address
+#, machine
+extension	Enter its https:// address.	Введіть його https:// адресу.
+#. text in the browser extension
+#. pairing failed for another reason
+#, machine
+extension	It didn't work. Try again.	Не спрацювало. Спробуйте ще раз.
+#. text in the browser extension
+#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
+#, machine
+extension	It shows no code now: click Pair a device there first.	Зараз він не показує код: спочатку натисніть «З’єднати пристрій» там.
+#. text in the browser extension
+#. pairing failed: the other MDM didn't answer
+#, machine
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Недоступно. Відкрийте його адресу один раз у цьому браузері та прийміть його сертифікат, потім спробуйте ще раз.
+#. text in the browser extension
+#. button: open the other MDM's address in a tab (to accept its certificate once)
+#, machine
+extension	Open it	Відкрити
+#. text in the browser extension
+#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
+#, machine
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	Відкрийте його адресу один раз і прийміть його сертифікат, потім введіть код з його «Параметри», «Віддалений», «З’єднати пристрій» (або misterdownloadmanager-cli pair).
+#. text in the browser extension
+#. button: pair this browser with the other MDM using the code
+#, machine
+extension	Pair	З’єднати
+#. text in the browser extension
+#. placeholder of the box for the 8-digit code the other MDM shows
+#, machine
+extension	Pairing code	Код з’єднання
+#. text in the browser extension
+#. heading in the toolbar button's popup, above the choice of where downloads go
+#, machine
+extension	Send downloads to	Надсилати завантаження до
+#. text in the browser extension
+#. choice under Send downloads to: the Mister Download Manager on this computer
+#, machine
+extension	This computer	Цей комп’ютер
+#. text in the browser extension
+#. pairing failed: codes tried too fast
+#, machine
+extension	Wait a moment, then try again.	Зачекайте трохи, потім спробуйте ще раз.
+#. text in the browser extension
+#. pairing failed: the code was wrong
+#, machine
+extension	Wrong code.	Неправильний код.

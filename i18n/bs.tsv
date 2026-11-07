@@ -192,6 +192,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	ID konfiguracije NextDNS-a sastoji se od šest slova i cifara (0-9, a-f).
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Naziv profila ili njegova fascikla. Prazno: zadnji korišteni profil. Za preglednik izgrađen na Chromiumu koji nije na listi (Helium, Thorium...), odaberite Chromium i fasciklu njegovog profila.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -369,7 +373,7 @@
 	All files	Sve datoteke
 #. text in helpers.rs
 #, machine
-	All set: on a page with a video, use Tasks → Download video from a page.	Sve spremno: na stranici sa videozapisom koristite Zadaci → Preuzmi videozapis sa stranice.
+	All set: on a page with a video, use Tasks → Download video from a page.	Sve spremno: na stranici s videozapisom koristite Zadaci → Preuzmite videozapis sa stranice.
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
@@ -378,7 +382,7 @@
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Allow more than {n} connections	Dozvoli više od {n} veza
+	Allow more than {n} connections	Dozvolite više od {n} veza
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	već se preuzima: {path}
@@ -403,14 +407,14 @@
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
-	Always dark	Uvijek tamno
+	Always dark	Uvijek tamni način
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
 	Always into a folder named after it	Uvijek u mapu nazvanu po njoj
 #. checkbox in a dialog box
 #, machine
-	Always turn on Speed Limiter on Mister Download Manager startup	Uvijek uključi ograničivač brzine pri pokretanju programa Mister Download Manager
+	Always turn on Speed Limiter on Mister Download Manager startup	Uvijek uključiti ograničivač brzine pri pokretanju programa Mister Download Manager
 #. text in regional.rs; text in the Scheduler window
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
@@ -443,7 +447,7 @@
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
-	Answered in {ms} ms: {ip}	Odgovor u {ms} ms: {ip}
+	Answered in {ms} ms: {ip}	Odgovoreno za {ms} ms: {ip}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -526,7 +530,7 @@
 	Audio only, original {type}	Samo zvuk, originalni {type}
 #. text in the Scheduler window
 #, machine
-	August	August
+	August	Avgust
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -710,7 +714,7 @@
 	cannot resume: {detail}	nije moguće nastaviti: {detail}
 #. group box title in the Options window; text in the Options window
 #, machine
-	Capture downloads from the following browsers:	Preuzmi preuzimanja iz sljedećih preglednika:
+	Capture downloads from the following browsers:	Preuzimanja se preuzimaju iz sljedećih preglednika:
 #. text in extension.rs
 #. the headline of the window that offers the browser extension
 #, machine
@@ -751,15 +755,15 @@
 #. text in the Scheduler window
 #. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
 #, machine
-	Change	Promijeni
+	Change	Promijenite
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Change folder for "{category}" category on last selected	Promijeni mapu za kategoriju „{category}” na posljednje odabrano
+	Change folder for "{category}" category on last selected	Promijenite mapu kategorije „{category}” na posljednje odabranu
 #. text in the Link grabber window
 #. Link grabber button (IDM's): tick every link
 #, machine
-	Check all	Označi sve
+	Check all	Označite sve
 #. text in rssdlg.rs
 #. RSS feeds window, at the bottom: "Check feeds every [30] minutes"
 #, machine
@@ -777,7 +781,7 @@
 #. message or event log entry in the main window
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
-	Checked: {have} of {total} there	Provjereno: {have} od {total} tamo
+	Checked: {have} of {total} there	Provjereno: {have} od {total}
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Odaberite jezik na kojem će Mister Download Manager prikazivati svoje prozore:
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	Odaberite fasciklu profila
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -854,7 +862,7 @@
 	Close	Zatvori
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Close a menu or dialog	Zatvori meni ili dijalog
+	Close a menu or dialog	Zatvorite meni ili dijalog
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -882,10 +890,10 @@
 	Configuration ID:	ID konfiguracije:
 #. text in the Options window
 #, machine
-	Confirm before deleting downloads	Potvrdi prije brisanja preuzimanja
+	Confirm before deleting downloads	Potvrđujte prije brisanja preuzimanja
 #. window title in a dialog box
 #, machine
-	Confirm deletion of downloads	Potvrdi brisanje preuzimanja
+	Confirm deletion of downloads	Potvrdite brisanje preuzimanja
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	Kukova ostrva
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	Kolačići za video stranice
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	Kopirano u međuspremnik.
@@ -963,13 +975,13 @@
 	Customize "Download progress" dialog	Prilagodi dijalog „Napredak preuzimanja”
 #. text in the Options window
 #, machine
-	Customize keys to prevent or force downloading with MDM	Prilagodi tipke za sprječavanje ili forsiranje preuzimanja pomoću MDM-a
+	Customize keys to prevent or force downloading with MDM	Prilagodite tipke za sprječavanje ili prisilno preuzimanje pomoću MDM-a
 #. text in the Options window
 #, machine
-	Customize MDM Download panels in browsers	Prilagodi MDM panele za preuzimanje u preglednicima
+	Customize MDM Download panels in browsers	Prilagodite MDM panele za preuzimanje u preglednicima
 #. text in the Options window
 #, machine
-	Customize MDM menu items in context menu of browsers	Prilagodi MDM stavke menija u kontekstnom meniju preglednika
+	Customize MDM menu items in context menu of browsers	Prilagodite MDM stavke menija u kontekstnom meniju preglednika
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1038,18 +1050,18 @@
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its files stay where they are.	Izbrisati kategoriju „{category}“? Njene datoteke ostaju tamo gdje jesu.
+	Delete the category "{category}"? Its files stay where they are.	Želite li izbrisati kategoriju „{category}“? Njene datoteke ostaju tamo gdje jesu.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
-	Delete the queue "{queue}"? Its downloads stay in the list.	Izbrisati red čekanja „{queue}”? Njegova preuzimanja ostaju na popisu.
+	Delete the queue "{queue}"? Its downloads stay in the list.	Želite li izbrisati red čekanja „{queue}”? Njegova preuzimanja ostaju na popisu.
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Delete the selected downloads (asks first)	Izbriši odabrana preuzimanja (prvo pita)
+	Delete the selected downloads (asks first)	Izbrišite odabrana preuzimanja (prvo se traži potvrda)
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Delete the selected downloads and their files (asks first)	Izbriši odabrana preuzimanja i njihove datoteke (prvo pita)
+	Delete the selected downloads and their files (asks first)	Izbrišite odabrana preuzimanja i njihove datoteke (prvo se traži potvrda)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1073,7 +1085,7 @@
 	disk error: {error}	greška diska: {error}
 #. text in the Scheduler window
 #, machine
-	displayed in the list of queues	prikazano na popisu redova čekanja
+	displayed in the list of queues	prikazuje se na popisu redova čekanja
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1114,7 +1126,7 @@
 #. button in extension.rs
 #. button in the browser extension's window: stop offering it at each start
 #, machine
-	Don't ask again	Ne pitaj ponovo
+	Don't ask again	Ne pitajte ponovo
 #. checkbox in a dialog box
 #, machine
 	Don't show this dialog again	Ne prikazuj ovaj dijaloški okvir ponovno
@@ -1136,7 +1148,7 @@
 	Down	Dolje
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Download	Preuzmi
+	Download	Preuzmite
 #. message or event log entry in the main window
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -1157,7 +1169,7 @@
 #. text in the Add torrent window
 #. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
 #, machine
-	Download in order	Preuzmi redom
+	Download in order	Preuzimajte redom
 #. button in a dialog box
 #, machine
 	Download Later	Preuzmi kasnije
@@ -1172,10 +1184,10 @@
 #. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
-	Download no more than {mb} MBytes\nevery {hours} hours	Preuzmi najviše {mb} MB\nsvakih {hours} sati
+	Download no more than {mb} MBytes\nevery {hours} hours	Preuzmite najviše {mb} MB\nsvakih {hours} sati
 #. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
-	Download Now	Preuzmi odmah
+	Download Now	Preuzmite odmah
 #. window title in the Options window
 #. window title: the download button the extension shows over videos
 #, machine
@@ -1191,27 +1203,27 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
-	Download supported file-host links through these accounts	Preuzmi podržane veze hostova datoteka putem ovih računa
+	Download supported file-host links through these accounts	Preuzimajte podržane veze hostova datoteka putem ovih računa
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 #, machine
-	Download through {service}	Preuzmi putem {service}
+	Download through {service}	Preuzmite putem {service}
 #. window title in the Download video window
 #, machine
 	Download video from a page	Preuzmi videozapis sa stranice
 #. text in helpers.rs
 #. the headline of the first start's helpers window
 #, machine
-	Download videos from YouTube and 1,000+ sites	Preuzmite videozapise sa YouTubea i više od 1.000 stranica
+	Download videos from YouTube and 1,000+ sites	Preuzmite videozapise s YouTubea i više od 1.000 stranica
 #. text in the Scheduler window
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
-	Download {files} files at the same time	Preuzmi {files} datoteka istovremeno
+	Download {files} files at the same time	Preuzmite {files} datoteka istovremeno
 #. button in rssdlg.rs
 #. RSS feeds window: add the selected article's torrent (opens Add torrent)
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Download...	Preuzmi...
+	Download...	Preuzmite...
 #. text in a download's progress window
 #. label before the amount received so far
 #. column title: bytes this connection received
@@ -1234,11 +1246,11 @@
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Downloading and verifying ffmpeg (about 80 MB)...	Preuzimanje i provjera ffmpeg-a (oko 80 MB)...
+	Downloading and verifying ffmpeg (about 80 MB)...	Preuzimaju se i provjeravaju ffmpeg (oko 80 MB)...
 #. text in gallerydlg.rs
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Downloading and verifying gallery-dl...	Preuzimam i provjeravam gallery-dl...
+	Downloading and verifying gallery-dl...	Preuzima se i provjerava gallery-dl...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1246,12 +1258,12 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
-	Downloading the update... {percent}	Preuzimanje ažuriranja... {percent}
+	Downloading the update... {percent}	Preuzima se ažuriranje... {percent}
 #. text in helpers.rs
 #. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #, machine
-	Downloading {name} ({n} of {total})... {percent}	Preuzimam {name} ({n} od {total})... {percent}
+	Downloading {name} ({n} of {total})... {percent}	Preuzima se {name} ({n} od {total})... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
@@ -1429,7 +1441,7 @@
 	Export	Izvoz
 #. text in the Options window
 #, machine
-	Extend the availability of Manifest 2 Chrome extensions	Proširi dostupnost Manifest 2 Chrome ekstenzija
+	Extend the availability of Manifest 2 Chrome extensions	Proširite dostupnost Manifest 2 ekstenzija za Chrome
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	Ekstenzije razdvojene razmacima, na primjer MP4 MKV R0*
@@ -1457,7 +1469,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Falkland Islands	Foklandska ostrva
+	Falkland Islands	Falklandska ostrva
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (over 150 ms)
 #, machine
@@ -1468,7 +1480,7 @@
 	Faroe Islands	Farska ostrva
 #. text in the Scheduler window
 #, machine
-	February	Februar
+	February	februar
 #. text in rssdlg.rs
 #. RSS feeds window: label before the box where a feed's web address is typed
 #, machine
@@ -1546,7 +1558,7 @@
 	Find a download	Pronađi preuzimanje
 #. message or event log entry in the main window; window title in the Find window
 #, machine
-	Find file	Pronađi datoteku
+	Find file	Pronađena datoteka
 #. button in the Options window
 #. button: open the service's page that shows the user's API token
 #, machine
@@ -1648,6 +1660,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	iz torrent datoteke
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	Iz preglednika:
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1714,7 +1730,7 @@
 	Get ready for video downloads	Pripremite se za preuzimanje videozapisa
 #. button in the Options window
 #, machine
-	Get System	Preuzmi sistem
+	Get System	Koristite sistem
 #. text in the Add torrent window
 #. still going on; {n} = the seconds it has taken so far ("s" = seconds)
 #. {n} = a number (keep the braces as they are)
@@ -1735,7 +1751,7 @@
 #. text in errors.rs
 #. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
 #, machine
-	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google disk sada neće dati ovu datoteku: {message} (često pomaže prijava na Google u vašem pregledniku; u suprotnom, pokušajte ponovo kasnije)
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive sada neće dati ovu datoteku: {message} (često pomaže prijava na Google u vašem pregledniku; u suprotnom, pokušajte ponovo kasnije)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1786,7 +1802,7 @@
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
-	Have	Ima
+	Have	Preuzeto
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1803,7 +1819,7 @@
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Helpers...	Pomoćnici...
+	Helpers...	Pomoćni programi...
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
@@ -1812,7 +1828,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Sakrij &kategorije
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	Sakrij karticu
 #. text in a download's progress window; text in standard windows
@@ -1877,13 +1893,17 @@
 	Ignore file modification time changes when resuming a download	Zanemari promjene vremena izmjene datoteke prilikom nastavka preuzimanja
 #. message or event log entry in the main window
 #, machine
-	Import	Uvezi
+	Import	Uvoz
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	U redu čekanja
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	U kategorijama: meni odabrane kategorije
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	u zaključanom privjesku za ključeve
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1919,7 +1939,7 @@
 #. link (opens a web page) in extension.rs
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
-	Install it by hand	Instalirajte ručno
+	Install it by hand	Kako ga ručno instalirati
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1932,7 +1952,7 @@
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Into a folder named after it, when it holds several things	U mapu nazvanu po njoj, kada sadrži više stvari
+	Into a folder named after it, when it holds several things	U mapu nazvanu po arhivi, ako sadrži više stavki
 #. text in a dialog box
 #, machine
 	Invalid address	Nevažeća adresa
@@ -1975,7 +1995,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it needs a password	potrebna je lozinka
+	it needs a password	potrebna joj je lozinka
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
@@ -1988,11 +2008,11 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	zapisalo bi {size}, više nego što je {limit} prostora ili razloga
+	it would write {size}, more than the {limit} there is room or reason for	zapisalo bi {size}, više nego što stane u {limit} ili što ima smisla
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Moguće je dodati grupu sekvencijalnih naziva datoteka kao što su img001.jpg, img002.jpg, itd.,\nimg100.jpg u MDM red za preuzimanje. Koristite zvjezdicu kao zamjenski znak za obrazac naziva datoteke.
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Možete dodati grupu uzastopnih naziva datoteka, kao što su img001.jpg, img002.jpg itd.,\nimg100.jpg, u red za preuzimanje u MDM-u. Koristite zvjezdicu kao zamjenski znak u obrascu naziva datoteke.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2000,7 +2020,7 @@
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	its files could not be written: {error}	njegove datoteke nije moguće zapisati: {error}
+	its files could not be written: {error}	Nije moguće zapisati njegove datoteke: {error}
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	informacije o izdanju nisu očekivane: {detail}
@@ -2010,7 +2030,7 @@
 	Jamaica	Jamajka
 #. text in the Scheduler window
 #, machine
-	January	Januar
+	January	januar
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2025,13 +2045,13 @@
 	Jordan	Jordan
 #. text in the Scheduler window
 #, machine
-	July	Juli
+	July	juli
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Jump to the download whose name starts with it	Skoči na preuzimanje čiji naziv počinje s tim
+	Jump to the download whose name starts with it	Pređite na preuzimanje čiji naziv počinje tim znakom
 #. text in the Scheduler window
 #, machine
-	June	Juni
+	June	juni
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2041,7 +2061,7 @@
 	KBytes/sec	KBajta/sek
 #. checkbox in the Add torrent window
 #, machine
-	Keep sharing torrents after they finish	Nastavi dijeliti torrente nakon što završe
+	Keep sharing torrents after they finish	Nastavite dijeliti torrente nakon što se preuzimanje završi
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2049,7 +2069,7 @@
 #. text in the Add torrent window
 #. Add trackers: under the box
 #, machine
-	Kept with the torrent, after the trackers it has.	Zadržano uz torrent, nakon trackera koje ima.
+	Kept with the torrent, after the trackers it has.	Zadržava se uz torrent, nakon postojećih trackera.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	Prečice na tastaturi
@@ -2092,7 +2112,7 @@
 #. message or event log entry in the main window
 #. RSS: a feed bigger than MDM reads (5 MB)
 #, machine
-	larger than a feed can be	veće nego što feed može biti
+	larger than a feed can be	veće od dozvoljene veličine feeda
 #. text in the Batch download window
 #, machine
 	Last file:	Posljednja datoteka:
@@ -2145,11 +2165,11 @@
 #. text in a download's progress window
 #. a torrent's progress window, Speed Limiter tab: a limit for what this torrent sends to others
 #, machine
-	Limit uploading	Ograniči slanje
+	Limit uploading	Ograniči otpremanje
 #. text in the Add torrent window
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
-	Limit uploading for all torrents to	Ograniči slanje za sve torrente na
+	Limit uploading for all torrents to	Ograniči otpremanje za sve torrente na
 #. window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -2322,7 +2342,7 @@
 #. text in the Scheduler window
 #. the month (the fifth of the year)
 #, machine
-	May	Maj
+	May	maj
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2412,7 +2432,7 @@
 	Monaco	Monako
 #. text in the Options window; text in the Scheduler window
 #, machine
-	Monday	Ponedjeljak
+	Monday	ponedjeljak
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2594,17 +2614,21 @@
 #, machine
 	No addresses yet	Još nema adresa
 #. text in extension.rs
+#. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
+#, machine
+	No browser MDM can connect to was found	Nije pronađen preglednik s kojim se MDM može povezati
+#. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 #, machine
-	No browser's extension has connected yet	Nijedno proširenje preglednika se još nije povezalo
+	No browser's extension has connected yet	Još se nije povezalo nijedno proširenje preglednika
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 #, machine
-	no data folder	nema mape za podatke
+	no data folder	nema mape s podacima
 #. text in torrent downloads
 #. an error: the app has no folder for its torrent data
 #, machine
-	no data folder for torrents	nema mape za podatke za torrente
+	no data folder for torrents	nema mape s podacima za torrente
 #. text in the Scheduler window
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
@@ -2616,7 +2640,7 @@
 #. message or event log entry in the main window
 #. title in the empty download list, when the column filters hide every download
 #, machine
-	No downloads match the filters	Nema preuzimanja koja odgovaraju filterima
+	No downloads match the filters	Nijedno preuzimanje ne odgovara filterima
 #. message or event log entry in the main window
 #. title in the empty download list when there are no downloads at all
 #, machine
@@ -2637,7 +2661,7 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Email found no mail program
 #, machine
-	No mail app opened.	Nijedna aplikacija za poštu nije otvorena.
+	No mail app opened.	Nije otvorena nijedna aplikacija za poštu.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	Nema aplikacije za poštu: poruka je kopirana, zalijepite je u svoju poštu.
@@ -2651,14 +2675,18 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Bez proxyja/socksa
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Nijedan sistemski privjesak za ključeve nije odgovorio, tako da se prijave i lozinke čuvaju u MDM postavkama, koje samo vi možete čitati.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
-	No tracker added: it has them already	Nijedan tracker nije dodan: već ih ima
+	No tracker added: it has them already	Nije dodan nijedan tracker: torrent ih već ima
 #. text in the Add torrent window
 #. the magnet link names no tracker (a server that lists a torrent's peers)
 #, machine
-	No trackers	Nema praćenja
+	No trackers	Nema trackera
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -2676,7 +2704,7 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: the video has no subtitles
 #, machine
-	None on this page	Nema na ovoj stranici
+	None on this page	Nijedno na ovoj stranici
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
 #, machine
@@ -2772,6 +2800,9 @@
 #. text in the Scheduler window
 #, machine
 	October	Oktobar
+#. option (radio button) in the Options window
+#, machine
+	Off	Isključeno
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	Isključeno: završeni torrent se zaustavlja, kao i svako preuzimanje.
@@ -2800,6 +2831,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	Na macOS-u, samo administrator može zakazati buđenje
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Na Windowsu, Chrome, Edge i Brave mogu zaključati svoje kolačiće. Firefox radi.
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Jednom u
@@ -2871,10 +2906,10 @@
 	Open the reported issue	Otvori prijavljeni problem
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Open the selected download	Otvori odabrano preuzimanje
+	Open the selected download	Otvorite odabrano preuzimanje
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Open the selected download's menu	Otvori meni odabranog preuzimanja
+	Open the selected download's menu	Otvorite meni odabranog preuzimanja
 #. message or event log entry in the main window; text in the Add torrent window
 #, machine
 	Open torrent file	Otvori torrent datoteku
@@ -2954,7 +2989,7 @@
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
-	Pause	Pauziraj
+	Pause	Pauzirajte
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -3033,6 +3068,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	Pregled još nije dostupan
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	Profil (opcionalno):
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -3050,6 +3089,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	Proxy / socks konfiguracija
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	proxy server
 #. label in the Options window
 #, machine
 	Proxy server address	Adresa proxy servera
@@ -3089,6 +3132,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Redovi čekanja
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	Čita se samo na ovom računaru i šalje se samo na video stranicu.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3167,14 +3214,14 @@
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
-	Replace asterisk to	Zamijeni zvjezdicu sa
+	Replace asterisk to	Zamijenite zvjezdicu sa
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
-	Restart MDM	Ponovo pokreni MDM
+	Restart MDM	Ponovo pokrenite MDM
 #. button in the Options window; text in the Options window
 #, machine
-	Restore the built-in categories	Vrati ugrađene kategorije
+	Restore the built-in categories	Vratite ugrađene kategorije
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -3182,7 +3229,7 @@
 #. text in a download's progress window
 #. verb: continue the download
 #, machine
-	Resume	Nastavi
+	Resume	Nastavite
 #. text in a download's progress window
 #. label: whether the server lets a stopped download continue (Yes / No)
 #, machine
@@ -3190,16 +3237,16 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: the download resumed (just now)
 #, machine
-	Resumed	Nastavljeno
+	Resumed	Preuzimanje je nastavljeno.
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: check for updates again
 #, machine
-	Retry	Pokušaj ponovo
+	Retry	Pokušajte ponovo
 #. text in a download's progress window
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Retrying: {error}	Pokušavam ponovo: {error}
+	Retrying: {error}	Pokušava se ponovo: {error}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3223,7 +3270,7 @@
 #. verb: stop the queue
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-	S&top	Zaus&tavi
+	S&top	Za&ustavite
 #. text in the Scheduler window
 #. Saturday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -3293,7 +3340,7 @@
 #. Link grabber: the folder the package's files go to (a label before its box)
 #. RSS feeds window, Download rules: the folder the rule's torrents go to
 #, machine
-	Save to:	Spremi u:
+	Save to:	Sačuvajte u:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
@@ -3309,18 +3356,18 @@
 	Scheduler	Raspoređivač
 #. text in langpick.rs
 #, machine
-	Search:	Pretraži:
+	Search:	Pretraga:
 #. text in the Batch download window
 #, machine
 	Second file:	Druga datoteka:
 #. text in a dialog box
 #. title of the folder picker
 #, machine
-	Select a folder	Odaberite fasciklu
+	Select a folder	Odaberite mapu
 #. button in playlistdlg.rs; button in the Add torrent window
 #. button in Download video for a playlist: tick every video
 #, machine
-	Select all	Odaberi sve
+	Select all	Odaberite sve
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select all downloads	Odaberi sva preuzimanja
@@ -3419,6 +3466,11 @@
 #. event log: File Properties: the download goes through the debrid account again
 #, machine
 	Set to download through the debrid account	Postavljeno za preuzimanje putem debrid naloga
+#. text in extension.rs
+#. a check of Test browser integration: setting it up failed; {error} is the system's own message, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Setting it up failed: {error}	Postavljanje nije uspjelo: {error}
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3497,7 +3549,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
-	Shut down	Isključi
+	Shut down	Isključivanje
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3506,6 +3558,18 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	Prijavi se u pregledniku
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	Prijave i lozinke se čuvaju u macOS privjesku za ključeve.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	Prijave i lozinke se čuvaju u sistemskom privjesku za ključeve (Secret Service).
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	Prijave i lozinke se čuvaju u Windows Credential Manageru.
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -3535,7 +3599,7 @@
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
-	Sites Logins	Prijave za stranice
+	Sites Logins	Prijave na stranicama
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Stranice šalju svoj najbolji kvalitet kao zaseban video i audio, a ffmpeg ih spaja. Na ovom sistemu MDM koristi vaš: instalirajte ffmpeg sa svojim upraviteljem paketa.
@@ -3560,7 +3624,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: put it to sleep)
 #, machine
-	Sleep	Spavanje
+	Sleep	Stanje mirovanja
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3580,10 +3644,10 @@
 #. text in a download's progress window
 #. legend: pieces partly downloaded
 #, machine
-	Some	Neki
+	Some	Djelimično
 #. text in a dialog box
 #, machine
-	Some of the torrent's files are already in this folder:	Neke od torrent datoteka su već u ovoj fascikli:
+	Some of the torrent's files are already in this folder:	Neke datoteke iz torrenta već se nalaze u ovoj fascikli:
 #. text in the Options window
 #, machine
 	Sound file	Zvučna datoteka
@@ -3640,7 +3704,7 @@
 	Start	Pokreni
 #. button in a dialog box
 #, machine
-	Start Download	Pokreni preuzimanje
+	Start Download	Pokrenite preuzimanje
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Start download at	Pokreni preuzimanje u
@@ -3761,16 +3825,16 @@
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
 #, machine
-	Subtitles in {language} came on a second try: they're beside the video, not in it.	Titlovi na jeziku {language} su preuzeti u drugom pokušaju: nalaze se pored videozapisa, a ne u njemu.
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	Titlovi na jeziku {language} preuzeti su iz drugog pokušaja: nalaze se pored videozapisa, a ne u njemu.
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
 #, machine
-	Subtitles in {language} couldn't be downloaded: {reason}	Titlovi na jeziku {language} nisu mogli biti preuzeti: {reason}
+	Subtitles in {language} couldn't be downloaded: {reason}	Nije moguće preuzeti titlove na jeziku {language}: {reason}
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Titlovi na jeziku {language} nisu mogli biti preuzeti: {site} je odbio (previše zahtjeva).
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Nije moguće preuzeti titlove na jeziku {language}: stranica {site} odbila je zahtjev (previše zahtjeva).
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3819,7 +3883,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Zadaci → Hvatač veza, ili preglednikov "Preuzmi sve veze": volumeni\npodijeljene arhive su jedan paket, ostale veze stranice drugi.
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Zadaci → Hvatač veza ili preglednikova opcija „Preuzmi sve veze“: volumeni\npodijeljene arhive čine jedan paket, a ostale veze sa stranice drugi.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	Recite prijatelju
@@ -3833,7 +3897,7 @@
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 #, machine
-	Test browser integration	Testirajte integraciju preglednika
+	Test browser integration	Testiranje integracije preglednika
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -3841,7 +3905,7 @@
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
-	Th	Če
+	Th	Čt
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3853,7 +3917,7 @@
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
-	the .torrent file kept for it is gone	.torrent datoteka koja je sačuvana za nju je nestala
+	the .torrent file kept for it is gone	Nedostaje .torrent datoteka sačuvana za ovo preuzimanje
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	Adresa mora biti http(s) ili ftp(s) adresa
@@ -3873,15 +3937,15 @@
 	The archive was moved to the Trash	Arhiva je premještena u Smeće
 #. text in the Download video window
 #, machine
-	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Najbolji kvaliteti, MP3, Opus i FLAC, zahtijevaju ffmpeg (oko 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Za najbolje kvalitete, MP3, Opus i FLAC potreban je ffmpeg (oko 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Najbolji kvaliteti, MP3, Opus i FLAC, zahtijevaju ffmpeg: instalirajte ga pomoću upravitelja paketa vašeg sistema (ili Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Za najbolje kvalitete, MP3, Opus i FLAC potreban je ffmpeg: instalirajte ga pomoću upravitelja paketa vašeg sistema (ili Homebrew).
 #. text in the settings
 #. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
 #, machine
-	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	proxy preglednika (VPN ili proxy ekstenzija) traži prijavu koju ima samo ta ekstenzija: koristite vlastitu aplikaciju VPN-a ili odaberite njegov mrežni adapter u Opcijama → Proxy / Socks
+	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	Ekstenzija za proxy preglednika (VPN ili proxy ekstenzija) traži prijavu kojoj može pristupiti samo ta ekstenzija: koristite vlastitu VPN aplikaciju ili odaberite njen mrežni adapter u Postavke → Proxy / Socks
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3893,7 +3957,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the sign-in code ran out before it was used
 #, machine
-	the code expired: sign in again	kod je istekao: prijavite se ponovo
+	the code expired: sign in again	Kod je istekao: prijavite se ponovo
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -3901,16 +3965,16 @@
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The computer could not be turned off: {error}	Računar se nije mogao isključiti: {error}
+	The computer could not be turned off: {error}	Nije moguće isključiti računar: {error}
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue"
 #, machine
-	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	Računar se budi minutu prije vremena početka i ostaje budan dok se red pokreće. Mister Download Manager mora biti pokrenut (može čekati u području obavijesti).
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	Računar se budi minutu prije vremena početka i ostaje budan dok red radi. Mister Download Manager mora biti pokrenut (može ostati u području obavijesti).
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	The computer will be woken on {date} at {time}	Računar će biti probuđen {date} u {time}
+	The computer will be woken on {date} at {time}	Računar će se probuditi {date} u {time}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4022,6 +4086,10 @@
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
 	the FTP server answered {code} {reply}	FTP server je odgovorio {code} {reply}
+#. text in extension.rs
+#. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
+#, machine
+	The helper program the browsers start is missing	Nedostaje pomoćni program koji preglednici pokreću
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4066,13 +4134,13 @@
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Odabrano preuzimanje nije dovršeno. Jeste li sigurni da ga želite izbrisati\niz liste preuzimanja Mister Download Managera?
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Odabrano preuzimanje nije dovršeno. Jeste li sigurni da ga želite izbrisati\niz liste preuzimanja aplikacije Mister Download Manager?
 #. text in errors.rs
 #, machine
 	the server answered {status}	server je odgovorio {status}
 #. text in errors.rs
 #, machine
-	the server can't send parts of the file, so it can't be resumed	server ne može slati dijelove datoteke, pa se ne može nastaviti
+	the server can't send parts of the file, so it can't be resumed	server ne može slati dijelove datoteke, pa se preuzimanje ne može nastaviti
 #. text in errors.rs
 #, machine
 	the server did not answer in time	server nije odgovorio na vrijeme
@@ -4088,10 +4156,22 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	server je poslao neočekivani dio datoteke ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Stranica zahtijeva da budete prijavljeni, čak i uz kolačiće vašeg preglednika za ovu stranicu. Prijavite se na nju u svom pregledniku, a zatim pokušajte ponovo.
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Stranica zahtijeva da budete prijavljeni, čak i uz kolačiće preglednika {browser}. Prijavite se na nju u pregledniku {browser}, a zatim ponovo potražite stranicu.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Simboli se nisu mogli preuzeti: neke linije izvještaja prikazuju adrese umjesto imena (programeri ih i dalje mogu pročitati).
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Sistemski privjesak za ključeve je zaključan i MDM ga ne otključava, pa se podaci za prijavu i lozinke čuvaju u postavkama MDM-a, koje samo vi možete čitati.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4099,15 +4179,15 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
-	The time is a round trip, measured as this download's own connections opened.	Vrijeme je povratno putovanje, mjereno kao otvorene veze ovog preuzimanja.
+	The time is a round trip, measured as this download's own connections opened.	Vrijeme predstavlja povratno putovanje, mjereno pomoću veza koje je ovo preuzimanje otvorilo.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The torrent could not be saved: {error}	Torrent se ne može sačuvati: {error}
+	The torrent could not be saved: {error}	Torrent nije mogao biti sačuvan: {error}
 #. text in torrent downloads
 #. an error: the torrent is gone from the torrent session
 #, machine
-	the torrent is no longer there	Torrent više nije tu
+	the torrent is no longer there	Torrent više nije dostupan
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4118,10 +4198,10 @@
 	The update couldn't be installed: {error}	Ažuriranje nije moglo biti instalirano: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	The update is open in your system's package installer.	Ažuriranje je otvoreno u instalateru paketa vašeg sistema.
+	The update is open in your system's package installer.	Ažuriranje je otvoreno u sistemskom instalateru paketa.
 #. text in a download's Properties window
 #, machine
-	The web page from which this file was obtained:	Web stranica sa koje je ova datoteka dobijena:
+	The web page from which this file was obtained:	Web stranica s koje je ova datoteka preuzeta:
 #. text in the Options window
 #. Options → Archives check box
 #, machine
@@ -4132,7 +4212,7 @@
 	Then move the archives to the Trash	Zatim premjesti arhive u Smeće
 #. text in categories.rs
 #, machine
-	There is already a category with this name	Već postoji kategorija sa ovim imenom
+	There is already a category with this name	Već postoji kategorija s ovim imenom
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -4142,7 +4222,7 @@
 	These settings are unavailable when "Show download complete dialog" is turned on	Ove postavke nisu dostupne kada je uključena opcija „Prikaži dijalog o završetku preuzimanja”
 #. text in helpers.rs
 #, machine
-	They keep downloading if you close this window.	Nastavit će se preuzimati ako zatvorite ovaj prozor.
+	They keep downloading if you close this window.	Preuzimanja će se nastaviti ako zatvorite ovaj prozor.
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	Ova adresa je već na listi preuzimanja:
@@ -4153,7 +4233,7 @@
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
-	This computer can't be woken by a timer	Ovaj računar ne može biti probuđen tajmerom
+	This computer can't be woken by a timer	Ovaj računar nije moguće probuditi tajmerom
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 #, machine
@@ -4165,21 +4245,21 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
-	This date has passed: the queue will not start	Ovaj datum je prošao: red čekanja neće početi
+	This date has passed: the queue will not start	Ovaj datum je prošao: red čekanja se neće pokrenuti
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Ova mapa ne postoji:
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
-	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	ova datoteka Google diska zahtijeva da se prijavite: prijavite se na Google u svom pregledniku, a zatim je preuzmite odatle
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	za ovu datoteku s Google diska morate se prijaviti: prijavite se na Google u svom pregledniku, a zatim je preuzmite odatle
 #. text in errors.rs
 #. a download's error: the address is a Google Drive folder, which isn't one file
 #, machine
-	this is a Google Drive folder, not a file	ovo je mapa Google diska, a ne datoteka
+	this is a Google Drive folder, not a file	ovo je mapa s Google diska, a ne datoteka
 #. text in errors.rs
 #, machine
-	this is not a magnet link or a .torrent file	ovo nije magnet link ili .torrent datoteka
+	this is not a magnet link or a .torrent file	ovo nije magnetna veza ni .torrent datoteka
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -4191,11 +4271,19 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
-	This magnet link names no trackers and the DHT is off, so no peer can be found.	Ova magnetna veza ne imenuje nijedan tracker i DHT je isključen, tako da se ne može pronaći nijedan peer.
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	Ova magnetna veza ne navodi nijedan tracker, a DHT je isključen, pa se ne može pronaći nijedan peer.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
-	This needs ffmpeg	Ovo zahtijeva ffmpeg
+	This needs ffmpeg	Za ovo je potreban ffmpeg
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Ova prenosiva kopija čuva prijave i lozinke u vlastitim postavkama, šifrirane za vaš Windows račun.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Ova prenosiva kopija čuva prijave i lozinke u vlastitim postavkama, koje samo vi možete čitati.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4203,7 +4291,7 @@
 	this program isn't {name}	ovaj program nije {name}
 #. text in a download's progress window
 #, machine
-	This system has no dial-up connections to hang up	Ovaj sistem nema dial-up veze za prekid
+	This system has no dial-up connections to hang up	Ovaj sistem nema dial-up veza koje bi se mogle prekinuti
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -4221,7 +4309,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Za ovaj video morate biti prijavljeni. Koristite dugme Preuzmi video iznad njega u vašem pregledniku, koji prosljeđuje vašu prijavu.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Za ovaj videozapis morate biti prijavljeni. Koristite dugme Preuzmi videozapis iznad njega u svom pregledniku, koje prosljeđuje vašu prijavu, ili odaberite svoj preglednik u Opcije → Prijave na stranice → Kolačići za videozapis.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4237,21 +4325,21 @@
 #. message or event log entry in the main window
 #. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
 #, machine
-	Through {service}: the service downloads the torrent, then MDM its files	Preko {service}: usluga preuzima torrent, a zatim MDM njegove datoteke
+	Through {service}: the service downloads the torrent, then MDM its files	Preko {service}: usluga preuzima torrent, a zatim MDM preuzima njegove datoteke
 #. text in the Scheduler window
 #, machine
 	Thursday	Četvrtak
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
-	Tick "Start download at" first: the computer is woken for the start time	Prvo označite „Pokreni preuzimanje u“: računar se budi za vrijeme početka
+	Tick "Start download at" first: the computer is woken for the start time	Prvo označite „Pokrenite preuzimanje u“: računar će se probuditi u vrijeme početka
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Preostalo vrijeme
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Timor-Leste	Istočni Timor
+	Timor-Leste	Timor-Leste
 #. text in the Batch download window
 #, machine
 	To:	Za:
@@ -4281,7 +4369,7 @@
 	Torrent	Torrent
 #. text in the download list (sizes, speeds, status)
 #, machine
-	Torrent downloads (magnet links and .torrent files)	Torrent preuzimanja (magnet linkovi i .torrent datoteke)
+	Torrent downloads (magnet links and .torrent files)	Torrent preuzimanja (magnetne veze i .torrent datoteke)
 #. message or event log entry in the main window; text in the Add torrent window
 #. the kind of file the Open dialog lists
 #, machine
@@ -4292,7 +4380,7 @@
 #. text in torrent downloads
 #. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
 #, machine
-	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Postavke torrenta kažu da se koristi proxy, ali Proxy / Socks nema SOCKS5 proxy
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Postavke torrenta nalažu korištenje proxyja, ali u odjeljku Proxy / Socks nema SOCKS5 proxyja
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -4301,7 +4389,7 @@
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	torrents could not start: {error}	torrenti se ne mogu pokrenuti: {error}
+	torrents could not start: {error}	Pokretanje torrenta nije uspjelo: {error}
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -4309,7 +4397,7 @@
 #. text in a download's progress window
 #. tab title: the servers that list the peers
 #, machine
-	Trackers	Praćenja
+	Trackers	Trackeri
 #. text in the Add torrent window
 #. Add trackers: above the box; {name} is the torrent's name
 #. {name} = a file name (keep the braces as they are)
@@ -4324,7 +4412,7 @@
 	Trinidad and Tobago	Trinidad i Tobago
 #. button in helpers.rs
 #, machine
-	Try again	Pokušaj ponovo
+	Try again	Pokušajte ponovo
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -4354,7 +4442,7 @@
 	Turn off computer	Isključi računar
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Turn off computer when done	Isključi računar kada završi
+	Turn off computer when done	Isključite računar kada se završi
 #. button in a dialog box
 #, machine
 	Turn off now	Isključi sada
@@ -4372,15 +4460,15 @@
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 #, machine
-	Type a feed's address above and click Add feed.	Upišite adresu feeda iznad i kliknite Dodaj feed.
+	Type a feed's address above and click Add feed.	Upišite adresu RSS feeda iznad i kliknite na Dodaj feed.
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	Type a letter in From and in To	Upišite slovo u Od i u Do
+	Type a letter in From and in To	Upišite slovo u polja Od i Do
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	Type a number in From and in To	Upišite broj u Od i u Do
+	Type a number in From and in To	Upišite broj u polja Od i Do
 #. text in the settings
 #. Options → DNS: no server address was typed
 #, machine
@@ -4392,11 +4480,11 @@
 #. text in a dialog box
 #. why Start Download is greyed in Download File Info
 #, machine
-	Type the file's name in Save As	Upišite naziv datoteke u Sačuvaj kao
+	Type the file's name in Save As	Upišite naziv datoteke u polje Sačuvaj kao
 #. text in the settings
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 #, machine
-	Type the name the server's certificate shows.	Upišite naziv koji prikazuje certifikat servera.
+	Type the name the server's certificate shows.	Upišite naziv naveden na certifikatu servera.
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -4409,7 +4497,7 @@
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
-	Type what to find, and tick at least one place to look	Upišite šta da pronađete i označite barem jedno mjesto za pretragu
+	Type what to find, and tick at least one place to look	Upišite šta želite pronaći i označite barem jedno mjesto za pretragu
 #. text in a download's Properties window
 #, machine
 	Type:	Vrsta:
@@ -4526,7 +4614,7 @@
 	Use the token	Koristi token
 #. text in a dialog box
 #, machine
-	Use them for this torrent? What matches it is kept, the rest replaced.	Koristiti ih za ovaj torrent? Ono što se podudara se zadržava, ostalo se zamjenjuje.
+	Use them for this torrent? What matches it is kept, the rest replaced.	Želite li ih koristiti za ovaj torrent? Ono što se podudara zadržava se, a ostalo se zamjenjuje.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Koristi ovaj proxy za sljedeće protokole:
@@ -4598,14 +4686,6 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Pretraživanja videozapisa koriste yt-dlp (oko 23 MB, provjereno prema potpisu).
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	Video stranice i torrenti ga još ne mogu koristiti.
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	Video stranice ga još ne mogu koristiti.
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4633,7 +4713,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
-	Wait for the list, or stop listing	Sačekajte listu ili zaustavite navođenje
+	Wait for the list, or stop listing	Sačekajte da se lista učita ili zaustavite njeno učitavanje
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -4669,7 +4749,7 @@
 #. text in the Options window
 #. Options → Archives: a label before the list of where extracted files go
 #, machine
-	What an archive holds goes:	Sadržaj arhive ide:
+	What an archive holds goes:	Sadržaj arhive ide u:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -4684,6 +4764,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows dozvoljava tajmere buđenja samo dok je priključen
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Credential Manager nije odgovorio, tako da se prijave i lozinke čuvaju u MDM postavkama, šifrirane za vaš Windows račun.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4708,7 +4792,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: under the boxes; | separates alternatives, * and ? are wildcards, 1x2 is season 1 episode 2
 #, machine
-	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	Riječi: sve; | između alternativa; * i ?. Epizode: 1x2;1x5-8;2x1-. Svaka epizoda jednom.
+	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	Riječi: sve; | između alternativa; * i ?. Epizode: 1x2;1x5-8;2x1-. Svaka epizoda samo jednom.
 #. group box title in the Options window
 #, machine
 	Write dates and times	Pisanje datuma i vremena
@@ -4764,9 +4848,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	Vaš sistem: {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp ne može čitati {browser} kolačiće dok je {browser} otvoren. Zatvorite {browser} i ponovo potražite stranicu, ili odaberite Firefox u Opcije → Prijave na stranice.
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp nije mogao dobiti ključ za {browser} kolačiće iz sistemskog privjeska za ključeve. Otključajte privjesak za ključeve i ponovo potražite stranicu.
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp nije mogao pročitati {browser} kolačiće: {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp nije pronašao kolačiće {browser} na ovom računaru. Provjerite preglednik i njegov profil u Opcije → Prijave na stranice.
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp nije instaliran (Zadaci → Preuzmi video sa stranice ga instalira)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp se prijavljuje na video stranice pomoću kolačića ovog preglednika, čitanih samo iz njegovih datoteka na ovom računaru. Koristi se kada ekstenzija preglednika nije proslijedila vlastite kolačiće stranice: zalijepljena adresa, lista za reprodukciju.
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4782,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ i XZ; podijeljena arhiva (.part1.rar, .7z.001) kada\nsu svi volumeni prisutni. Datoteka koja već postoji se zadržava: nova se numerira.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ i XZ; podijeljena arhiva (.part1.rar, .7z.001) kada\nsu prisutni svi dijelovi. Postojeća datoteka se zadržava, a nova dobija broj.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4790,7 +4895,7 @@
 #. text in the Options window
 #. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
 #, machine
-	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} nije povezan: ništa se ne preuzima dok se ne vrati.
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} nije povezan: preuzimanje se neće nastaviti dok se veza ne uspostavi.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4798,7 +4903,11 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{algorithm}: checked when the download finishes	{algorithm}: provjereno kada se preuzimanje završi
+	{algorithm}: checked when the download finishes	{algorithm}: provjerava se kada se preuzimanje završi
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} na Windowsu čuva kolačiće tako da im samo on može pristupiti, pa ih yt-dlp ne može pročitati. Odaberite Firefox u Opcije → Prijave na stranice ili koristite dugme Preuzmite videozapis iznad videozapisa u {browser}.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -4811,7 +4920,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
-	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} poslužuje ovu datoteku: lokacija je lokacija njegovog servera, često blizu vas, a ne vlasnika stranice.
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} poslužuje ovu datoteku: lokacija je lokacija servera, često blizu vas, a ne vlasnika stranice.
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -4828,7 +4937,7 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{file} could not be deleted from the disk: {error}	{file} nije moguće izbrisati sa diska: {error}
+	{file} could not be deleted from the disk: {error}	{file} nije moguće izbrisati s diska: {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4838,15 +4947,15 @@
 	{file} could not be read to check it	{file} nije moguće pročitati za provjeru
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} više nije tamo gdje je sačuvan (premješten ili izbrisan). Ponovno preuzimanje, u njegovom kontekstnom meniju, ponovo ga preuzima.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} više nije na lokaciji na koju je sačuvan (premješten je ili izbrisan). Opcija Ponovo preuzmi u kontekstnom meniju preuzima ga ponovo.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file does NOT match its checksum ({algorithm})	{file}: datoteka se NE podudara sa svojim kontrolnim zbrojem ({algorithm})
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: kontrolna suma datoteke NE podudara se s kontrolnom sumom ({algorithm})
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file matches its checksum ({algorithm})	{file}: datoteka se podudara sa svojim kontrolnim zbrojem ({algorithm})
+	{file}: the file matches its checksum ({algorithm})	{file}: kontrolna suma datoteke podudara se s kontrolnom sumom ({algorithm})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -4860,7 +4969,7 @@
 #. text in the download list (sizes, speeds, status)
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
-	{h} hour(s) {m} min	{h} sat(i) {m} min
+	{h} hour(s) {m} min	{h} h {m} min
 #. text in errors.rs
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 #, machine
@@ -4890,12 +4999,12 @@
 #. {name} = yt-dlp or ffmpeg; {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
-	{name} could not be downloaded: {error}	{name} nije moguće preuzeti: {error}
+	{name} could not be downloaded: {error}	Nije moguće preuzeti {name}: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} je 7z ili RAR arhiva. MDM ih ekstrahuje pomoću 7-Zip-a, koji nije instaliran.
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} je 7z ili RAR arhiva. MDM ih raspakuje pomoću programa 7-Zip, koji nije instaliran.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -4905,7 +5014,7 @@
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} isn't offered as {how}.	{name} se ne nudi kao {how}.
+	{name} isn't offered as {how}.	{name} nije dostupan kao {how}.
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -4915,7 +5024,7 @@
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} chosen	{n} od {total} odabrano
+	{n} of {total} chosen	Odabrano: {n} od {total}
 #. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4923,7 +5032,7 @@
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
-	{percent} at {service}	{percent} kod {service}
+	{percent} at {service}	{percent} na servisu {service}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -4934,13 +5043,13 @@
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} traži da prvo dozvolite ovaj računar: pogledajte njegovu e-poštu
+	{service} asks you to allow this computer first: see its email	{service} traži da prvo odobrite ovaj računar: provjerite e-poštu
 #. text in errors.rs
 #, machine
-	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} ne može dobiti ovaj torrent: niko ga ne dijeli ili se njegova veza ne može pročitati
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} ne može preuzeti ovaj torrent: niko ga ne dijeli ili nije moguće pročitati njegovu vezu
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} trenutno ne može doći do ovog hosta datoteka; MDM će pokušati ponovo kasnije
+	{service} can't reach this file host right now; MDM will try again later	{service} trenutno ne može pristupiti ovom hostingu datoteka; MDM će pokušati ponovo kasnije
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -5021,7 +5130,7 @@
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{what} could not be installed: {error}	{what} nije mogao biti instaliran: {error}
+	{what} could not be installed: {error}	Nije moguće instalirati {what}: {error}
 #. column title in the download list in the download list
 #. past participle: when the download was added
 #, machine
@@ -5120,7 +5229,7 @@ extension	Hide on this video	Sakrij na ovom videozapisu
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
-extension	Hold Alt while clicking a link to let the browser download it.	Držite Alt dok kliknete vezu da bi je preglednik preuzeo.
+extension	Hold Alt while clicking a link to let the browser download it.	Držite Alt dok klikćete na vezu da bi je preglednik preuzeo.
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
@@ -5177,7 +5286,7 @@ extension	Mister Download Manager isn't installed, or its browser integration is
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager zatim preuzima putem istog proxyja kao i ovaj preglednik. Preglednik će vas jednom pitati da to dozvolite; isključivanjem ove opcije to se poništava.
+extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager zatim preuzima putem istog proxyja kao i ovaj preglednik. Preglednik će vas jednom pitati za dozvolu; isključivanjem ove opcije opozivate je.
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -5191,15 +5300,15 @@ extension	Never on {site}	Nikad na {site}
 #. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-extension	Never take downloads from {site}	Nikada ne preuzimaj sa {site}
+extension	Never take downloads from {site}	Nikad ne preuzimaj preuzimanja sa {site}
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
-extension	No video or sound found on this page yet. Play it, then open this again.	Još uvijek nema videozapisa ili zvuka na ovoj stranici. Reprodukujte ga, a zatim ponovo otvorite ovo.
+extension	No video or sound found on this page yet. Play it, then open this again.	Na ovoj stranici još nema videozapisa ni zvuka. Pokrenite reprodukciju, a zatim ponovo otvorite ovo.
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
-extension	Open Mister Download Manager	Otvori Mister Download Manager
+extension	Open Mister Download Manager	Otvorite Mister Download Manager
 #. text in the browser extension
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it
@@ -5216,11 +5325,11 @@ extension	Protected	Zaštićeno
 #. text in the browser extension
 #. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
 #, machine
-extension	Protected video: it can't be saved	Zaštićeni video: ne može se spremiti
+extension	Protected video: it can't be saved	Zaštićeni videozapis: nije ga moguće sačuvati
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
-extension	Send downloads through this browser's proxy or VPN extension	Šalji preuzimanja putem proxyja ili VPN ekstenzije ovog preglednika
+extension	Send downloads through this browser's proxy or VPN extension	Šaljite preuzimanja putem proxyja ili VPN ekstenzije ovog preglednika
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -5232,7 +5341,7 @@ extension	Support MDM	Podržite MDM
 #. text in the browser extension
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
-extension	Take downloads from this browser	Preuzimajte datoteke iz ovog preglednika
+extension	Take downloads from this browser	Preuzimanje iz ovog preglednika
 #. text in the browser extension
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
@@ -5256,7 +5365,7 @@ extension	This browser isn't ticked in Options → General.	Ovaj preglednik nije
 #. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
-extension	This download's details were too large to hand over	Detalji ovog preuzimanja bili su preveliki za prijenos
+extension	This download's details were too large to hand over	Podaci ovog preuzimanja bili su preveliki za prosljeđivanje
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
@@ -5364,12 +5473,12 @@ menu	&About Mister Download Manager	O &Mister Download Manageru
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Add new download	&Dodaj novo preuzimanje
+menu	&Add new download	&Dodajte novo preuzimanje
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	&Add new download...	&Dodaj novo preuzimanje...
+menu	&Add new download...	&Dodajte novo preuzimanje...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5381,7 +5490,7 @@ menu	&Delete	&Izbriši
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Delete All Completed	&Izbriši sve dovršeno
+menu	&Delete All Completed	&Izbrišite sva završena preuzimanja
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5435,7 +5544,7 @@ menu	&Report a problem	&Prijavi problem
 #. header menu: put the columns back as they first were (order, widths, all shown)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Reset columns	&Poništi kolone
+menu	&Reset columns	&Vrati kolone na početne postavke
 #. menu command in the main window
 #. Tasks menu: the RSS feeds window (feeds of torrents, and rules that add them)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -5478,7 +5587,7 @@ menu	Add &batch download	Dodaj &grupno preuzimanje
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Add &magnet link...	Dodaj &magnetnu vezu...
+menu	Add &magnet link...	Dodajte &magnetnu vezu...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5489,7 +5598,7 @@ menu	Add category	Dodaj kategoriju
 #. menu command in the main window
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Add trackers...	Dodaj trackere...
+menu	Add trackers...	Dodajte trackere...
 #. menu command in the main window
 #. View → Theme: a style theme's name (GNOME's look, the Linux desktop), a name: keep "Adwaita" as written
 #, machine
@@ -5561,12 +5670,12 @@ menu	By Transfer &Rate	Po &brzini prijenosa
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	C&ustomize URL List...	P&rilagodi listu URL-ova...
+menu	C&ustomize URL List...	P&rilagodite listu URL-ova...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Check for &updates...	Provjeri &ažuriranja...
+menu	Check for &updates...	Provjerite &ažuriranja...
 #. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
@@ -5584,7 +5693,7 @@ menu	Create new queue	Kreiraj novi red
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Cu&t	I&sijeci
+menu	Cu&t	I&zrežite
 #. menu command in the main window
 #, machine
 menu	Dark Mode support	Podrška za tamni način rada
@@ -5592,7 +5701,7 @@ menu	Dark Mode support	Podrška za tamni način rada
 #. verb: deletes the category
 #. verb: deletes the queue
 #, machine
-menu	Delete	Izbriši
+menu	Delete	Izbrišite
 #. menu command in the main window
 #, machine
 menu	Delete from queue	Izbriši iz reda
@@ -5608,7 +5717,7 @@ menu	Direct3D didn't start here: OpenGL draws	Direct3D se ovdje nije pokrenuo: O
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Download &video from a page...	Preuzmi &video sa stranice...
+menu	Download &video from a page...	Preuzmite &video sa stranice...
 #. menu command in the main window
 #. right-click → Torrent, a choice with a check mark: download the torrent's files from their start, to watch a video while it downloads
 #, machine
@@ -5616,29 +5725,29 @@ menu	Download in order	Preuzmi redom
 #. menu command in the main window
 #. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
-menu	Draw with	Crtaj pomoću
+menu	Draw with	Crtanje pomoću
 #. menu command in the main window
 #. verb: save the download list to a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	E&xport	I&zvezi
+menu	E&xport	I&zvezite
 #. menu command in the main window
 #, machine
-menu	Edit queue	Uredi red
+menu	Edit queue	Uredite red
 #. menu command in the main window
 #. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
 #, machine
-menu	Extract	Izdvoji
+menu	Extract	Raspakujte
 #. menu command in the main window
 #, machine
-menu	Find (Ctrl-F)	Pronađi (Ctrl-F)
+menu	Find (Ctrl-F)	Pronađite (Ctrl-F)
 #. menu command in the main window
 #, machine
-menu	Find Next (F3)	Pronađi sljedeće (F3)
+menu	Find Next (F3)	Pronađite sljedeće (F3)
 #. menu command in the main window
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
-menu	First and last pieces first	Prvi i zadnji dijelovi prvi
+menu	First and last pieces first	Najprije prvi i posljednji dijelovi
 #. menu command in the main window
 #. noun: the list's font (submenu)
 #, machine
@@ -5667,11 +5776,11 @@ menu	High contrast	Visoki kontrast
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
-menu	It couldn't start: the log says why	Nije se moglo pokrenuti: zapisnik kaže zašto
+menu	It couldn't start: the log says why	Nije se pokrenuo: zapisnik navodi razlog
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
 #, machine
-menu	Its first frame didn't show within 10 seconds	Njegov prvi kadar se nije prikazao u roku od 10 sekundi
+menu	Its first frame didn't show within 10 seconds	Prvi kadar se nije prikazao u roku od 10 sekundi
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
@@ -5765,11 +5874,11 @@ menu	Remove	Ukloni
 #. verb: removes the selected download from the list and its file from the disk
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Remove with &files	Ukloni sa &datotekama
+menu	Remove with &files	Ukloni i &datoteke
 #. menu command in the main window
 #. verb: removes the download from the list and its file from the disk
 #, machine
-menu	Remove with files	Ukloni sa datotekama
+menu	Remove with files	Ukloni i datoteke
 #. menu command in the main window
 #, machine
 menu	Resume Download	Nastavi preuzimanje
@@ -5910,7 +6019,7 @@ toolbar	Add URL	Dodaj URL
 toolbar	Delete	Izbriši
 #. toolbar button in the main window
 #, machine
-toolbar	Delete Completed	Izbriši dovršeno
+toolbar	Delete Completed	Izbriši dovršena
 #. toolbar button in the main window
 #. plural noun: opens the Options window (settings)
 #, machine
@@ -5956,43 +6065,332 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/s
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent datoteka
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	Dodaj
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	Dodano.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	Dodano. MDM čita torrent: pridružit će se listi za trenutak.
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	Adresa ili magnetna veza
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	Sve
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	Automatski (prema vrsti datoteke)
 #. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
-	in the locked keyring	u zaključanom privjesku za ključeve
+	Certificate (SHA-256): {fingerprint}	Certifikat (SHA-256): {fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	Odaberite .torrent datoteku
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	Kod
 #. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: label before the 8-digit code
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Nijedan sistemski privjesak za ključeve nije odgovorio, tako da se prijave i lozinke čuvaju u MDM postavkama, koje samo vi možete čitati.
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+	Code:	Kod:
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
 #, machine
-	proxy server	proxy server
+	Delete the file too	Izbriši i datoteku
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#. column title: a paired phone's or computer's name
 #, machine
-	Sign-ins and passwords are kept in the macOS keychain.	Prijave i lozinke se čuvaju u macOS privjesku za ključeve.
+	Device	Uređaj
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
 #, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	Prijave i lozinke se čuvaju u sistemskom privjesku za ključeve (Secret Service).
+	Every local network address	Svaka adresa lokalne mreže
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	Zaboravi ovaj uređaj
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	Zaboraviti ovaj uređaj? Trebat će mu novi kod za ponovno povezivanje.
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	sa uparenog uređaja
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
 #, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	Prijave i lozinke se čuvaju u Windows Credential Manageru.
+	It could not start: {error}	Nije se moglo pokrenuti: {error}
 #. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. column title: when the device last reached MDM
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Sistemski privjesak za ključeve je zaključan i MDM ga ne otključava, tako da se prijave i lozinke čuvaju u MDM postavkama, koje samo vi možete čitati.
+	Last seen	Zadnji put viđen
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	Dozvoli telefonima i računarima na lokalnoj mreži da kontrolišu MDM
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#. Options → Remote: label before the choice of the address MDM listens on
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Ova prenosiva kopija čuva prijave i lozinke u vlastitim postavkama, šifrirane za vaš Windows račun.
+	Listen on:	Slušaj na:
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Ova prenosiva kopija čuva prijave i lozinke u vlastitim postavkama, koje samo vi možete čitati.
+	MDM can't be reached on the network now: Options → Remote says why.	MDM trenutno nije dostupan na mreži: Opcije → Daljinski upravljač objašnjava zašto.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	MDM ne može preuzeti ovu adresu.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	MDM ga nije mogao dodati.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	MDM to nije mogao učiniti.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM ne odgovara. Provjerite da li je pokrenut i na istoj mreži.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM ne odgovara. Pokušavam ponovo...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	MDM sada ne prikazuje kod. Prvo kliknite Uparite uređaj tamo.
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	Više
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	Novi kod
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	Nema preuzimanja ovdje.
 #. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Credential Manager nije odgovorio, tako da se prijave i lozinke čuvaju u MDM postavkama, šifrirane za vaš Windows račun.
+	No local network now: it starts when the computer joins one.	Nema lokalne mreže sada: pokreće se kada se računar pridruži jednoj.
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	Isključeno: ništa na mreži ne može doći do MDM-a.
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	Na računaru otvorite Opcije, zatim Daljinski upravljač i kliknite Uparite uređaj. Unesite kod koji se prikazuje.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	Na telefonu skenirajte ovaj kod kamerom ili otvorite adresu i unesite kod.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	Uključeno. Na telefonu otvorite ovu adresu:
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Samo upareni uređaji vide ili mijenjaju bilo šta. Prvi put, preglednik telefona upozorava na MDM-ov vlastiti certifikat: njegov otisak prsta je onaj iznad.
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	Upari
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	Uparite uređaj
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	Uparite uređaj...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Uparite sa Mister Download Manager
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	Uparivanje
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	Upareni uređaji:
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	Port {port} koristi drugi program: odaberite drugi.
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	U redu čekanja
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	Daljinski
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	Daljinsko upravljanje
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	Ukloniti {name} sa liste?
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	Pokreni sada
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	Promjene se primjenjuju kada kliknete U redu.
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	Ovaj kod se više ne može koristiti.
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	Samo ovaj računar (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	Naziv ovog uređaja
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	Ova datoteka je prevelika da bi bila torrent.
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	Ovo nije torrent datoteka.
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	Prvo uključite daljinsko upravljanje.
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	Sačekajte trenutak, pa pokušajte ponovo.
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	Čekaj u {queue}
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	Čekam uređaj. Kod radi za {time}.
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	Kada
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	Pogrešan kod. Prikažite novi kod u MDM-u i pokušajte ponovo.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	Pogrešan kod. Preostalo pokušaja: {n}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} je uparen. Sada može kontrolisati MDM.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{done} od {size}
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} slobodno
+#. text in the browser extension
+#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
+#, machine
+extension	Another Mister Download Manager (a server)	Drugi Mister Download Manager (server)
+#. text in the browser extension
+#. the name this browser gets in the other MDM's list of paired devices
+#, machine
+extension	Browser extension	Proširenje preglednika
+#. text in the browser extension
+#. the toolbar button's status while downloads go to another MDM
+#, machine
+extension	Downloads go to {address}	Preuzimanja idu na {address}
+#. text in the browser extension
+#. the address typed isn't an https:// address
+#, machine
+extension	Enter its https:// address.	Unesite njegovu https:// adresu.
+#. text in the browser extension
+#. pairing failed for another reason
+#, machine
+extension	It didn't work. Try again.	Nije uspjelo. Pokušajte ponovo.
+#. text in the browser extension
+#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
+#, machine
+extension	It shows no code now: click Pair a device there first.	Trenutno ne prikazuje kôd: prvo kliknite Uparite uređaj tamo.
+#. text in the browser extension
+#. pairing failed: the other MDM didn't answer
+#, machine
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Nije dostignuto. Otvorite njegovu adresu jednom u ovom pregledniku i prihvatite njegov certifikat, zatim pokušajte ponovo.
+#. text in the browser extension
+#. button: open the other MDM's address in a tab (to accept its certificate once)
+#, machine
+extension	Open it	Otvori ga
+#. text in the browser extension
+#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
+#, machine
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	Otvorite njegovu adresu jednom i prihvatite njegov certifikat, zatim unesite kôd iz njegovih Opcija, Daljinski, Uparite uređaj (ili misterdownloadmanager-cli pair).
+#. text in the browser extension
+#. button: pair this browser with the other MDM using the code
+#, machine
+extension	Pair	Uparivanje
+#. text in the browser extension
+#. placeholder of the box for the 8-digit code the other MDM shows
+#, machine
+extension	Pairing code	Kôd za uparivanje
+#. text in the browser extension
+#. heading in the toolbar button's popup, above the choice of where downloads go
+#, machine
+extension	Send downloads to	Pošalji preuzimanja na
+#. text in the browser extension
+#. choice under Send downloads to: the Mister Download Manager on this computer
+#, machine
+extension	This computer	Ovaj računar
+#. text in the browser extension
+#. pairing failed: codes tried too fast
+#, machine
+extension	Wait a moment, then try again.	Sačekajte trenutak, zatim pokušajte ponovo.
+#. text in the browser extension
+#. pairing failed: the code was wrong
+#, machine
+extension	Wrong code.	Pogrešan kôd.

@@ -11,7 +11,7 @@
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Ar tikrai norite ištrinti {n} atsisiuntimą iš „Mister Download Manager“ atsisiuntimų sąrašo?|Ar tikrai norite ištrinate šiuos {n} atsisiuntimus iš „Mister Download Manager“ atsisiuntimų sąrašo?|Ar tikrai norite ištrinate šiuos {n} atsisiuntimus iš „Mister Download Manager“ atsisiuntimų sąrašo?
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Ar tikrai norite ištrinti {n} atsisiuntimą iš „Mister Download Manager“ atsisiuntimų sąrašo?|Ar tikrai norite ištrinti šiuos {n} atsisiuntimus iš „Mister Download Manager“ atsisiuntimų sąrašo?|Ar tikrai norite ištrinti šiuos {n} atsisiuntimus iš „Mister Download Manager“ atsisiuntimų sąrašo?
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers that answered
 #. {n} = a number (keep the braces as they are)
@@ -27,7 +27,7 @@
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Išskirtas {n} failas į {folder}|Išskirti {n} failai į {folder}|Išskirta {n} failų į {folder}
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Išskleistas {n} failas į {folder}|Išskleisti {n} failai į {folder}|Išskleista {n} failų į {folder}
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers found so far (none answered yet)
 #. {n} = a number (keep the braces as they are)
@@ -85,7 +85,7 @@
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} failas jau turėjo tokį pat pavadinimą ir buvo sunumeruotas|{n} failai jau turėjo tokį pat pavadinimą ir buvo sunumeruoti|{n} failų jau turėjo tokį pat pavadinimą ir buvo sunumeruota
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} failas turėjo jau esančio failo pavadinimą ir buvo sunumeruotas|{n} failai turėjo jau esančio failo pavadinimą ir buvo sunumeruoti|{n} failų turėjo jau esančio failo pavadinimą ir buvo sunumeruota
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
@@ -99,7 +99,7 @@
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} tracker added|{n} trackers added	Pridėtas {n} sekiklis|Pridėti {n} sekikliai|Pridėta {n} sekiklių
+@plural	{n} tracker added|{n} trackers added	Pridėtas {n} sekiklis.|Pridėti {n} sekikliai.|Pridėta {n} sekiklių.
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -117,7 +117,7 @@
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
-	"{what}" isn't an IP address.	"{what}" nėra IP adresas.
+	"{what}" isn't an IP address.	„{what}“ nėra IP adresas.
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -192,6 +192,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	„NextDNS“ konfigūracijos ID sudaro šešios raidės ir skaitmenys (0–9, a–f).
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Profilio pavadinimas arba jo aplankas. Tuščia: paskutinis naudotas profilis. Jei naršyklė sukurta naudojant „Chromium“, bet jos nėra sąraše („Helium“, „Thorium“...), pasirinkite „Chromium“ ir jos profilio aplanką.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -199,15 +203,15 @@
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
-	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Ataskaita buvo išsaugota. Jos siuntimas kūrėjams į „GitHub“ padeda jiems tai ištaisyti; pirmiausia galite perskaityti viską, ką ji turi, žemiau. Niekas nesiunčiama savaime: „Siųsti“ atidaro ataskaitos formą jūsų naršyklėje, užpildytą, kad galėtumėte ją patikrinti ir pateikti.
+	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Ataskaita išsaugota. Jos siuntimas kūrėjams į „GitHub“ padeda jiems išspręsti problemą; pirmiausia galite perskaityti viską, kas joje yra, žemiau. Niekas nesiunčiama savaime: „Siųsti“ atidaro užpildytą ataskaitos formą jūsų naršyklėje, kad galėtumėte ją patikrinti ir pateikti.
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
-	A rule adds the new articles whose titles it matches, as they come.	Taisyklė prideda naujus straipsnius, kurių pavadinimai atitinka, kai jie atsiranda.
+	A rule adds the new articles whose titles it matches, as they come.	Taisyklė prideda naujus straipsnius, kurių pavadinimai atitinka jos sąlygas, kai tik jie pasirodo.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
-	a server on this computer sent the download elsewhere, which would not go through {adapter}	šio kompiuterio serveris nukreipė atsisiuntimą kitur, o tai nepraeitų per {adapter}
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	šio kompiuterio serveris nukreipė atsisiuntimą kitur, todėl jis nebūtų vykdomas per {adapter}
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -630,7 +634,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	British Indian Ocean Territory	Indijos Vandenyno Britų Sritis
+	British Indian Ocean Territory	Britų Indijos vandenyno teritorija
 #. text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
@@ -667,7 +671,7 @@
 	Busy, try later	Užimta, bandykite vėliau
 #. message or event log entry in the main window
 #, machine
-	by batch download	pagal paketinius atsisiuntimus
+	by batch download	paketiniu atsisiuntimu
 #. message or event log entry in the main window
 #, machine
 	by Link grabber	naudojant nuorodų griebtuvą
@@ -710,7 +714,7 @@
 	cannot resume: {detail}	nepavyko atnaujinti: {detail}
 #. group box title in the Options window; text in the Options window
 #, machine
-	Capture downloads from the following browsers:	Atsisiųsti iš šių naršyklių:
+	Capture downloads from the following browsers:	Atsisiuntimų perėmimas iš šių naršyklių:
 #. text in extension.rs
 #. the headline of the window that offers the browser extension
 #, machine
@@ -777,7 +781,7 @@
 #. message or event log entry in the main window
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
-	Checked: {have} of {total} there	Patikrinta: {have} iš {total} yra
+	Checked: {have} of {total} there	Patikrinta: ten yra {have} iš {total}
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Pasirinkite kalbą, kuria „Mister Download Manager“ rodys savo langus:
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	Pasirinkite profilio aplanką
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	Kuko Salos
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	Vaizdo įrašų svetainių slapukai
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	Nukopijuota į mainų sritį.
@@ -963,7 +975,7 @@
 	Customize "Download progress" dialog	Tinkinti dialogo langą „Atsisiuntimo eiga“
 #. text in the Options window
 #, machine
-	Customize keys to prevent or force downloading with MDM	Tinkinti klavišus, kad būtų užkirstas kelias atsisiuntimui naudojant MDM arba jis būtų priverstinai atliktas
+	Customize keys to prevent or force downloading with MDM	Tinkinti klavišus, kad būtų galima neleisti atsisiųsti naudojant MDM arba priverstinai atsisiųsti naudojant MDM
 #. text in the Options window
 #, machine
 	Customize MDM Download panels in browsers	Tinkinti MDM atsisiuntimo skydelius naršyklėse
@@ -1009,7 +1021,7 @@
 #. button in the Options window
 #. button: put back the default list
 #, machine
-	Default	Numatytasis
+	Default	Atkurti numatytuosius
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -1038,12 +1050,12 @@
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its files stay where they are.	Ištrinti kategoriją „{category}“? Jos failai lieka ten, kur yra.
+	Delete the category "{category}"? Its files stay where they are.	Ar tikrai norite ištrinti kategoriją „{category}“? Jos failai liks ten, kur yra.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
-	Delete the queue "{queue}"? Its downloads stay in the list.	Naikinti eilę „{queue}“? Jos atsisiuntimai liks sąraše.
+	Delete the queue "{queue}"? Its downloads stay in the list.	Ar tikrai norite panaikinti eilę „{queue}“? Jos atsisiuntimai liks sąraše.
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Delete the selected downloads (asks first)	Naikinti pasirinktus atsisiuntimus (pirmiausia paklaus)
@@ -1282,7 +1294,7 @@
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
-	Dropped links	Nuvilktos nuorodos
+	Dropped links	Nuvilkintos nuorodos
 #. window title in a dialog box
 #, machine
 	Duplicate download link	Dublikato atsisiuntimo nuoroda
@@ -1397,7 +1409,7 @@
 #. text in the Options window
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
-	Every connection goes through it, from {ip}.	Kiekvienas ryšys eina per jį, iš {ip}.
+	Every connection goes through it, from {ip}.	Visi ryšiai eina per šį adapterį, iš {ip}.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1411,7 +1423,7 @@
 	Exit	Išeiti
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Exit Mister Download Manager when done	Baigus išeiti iš „Mister Download Manager“
+	Exit Mister Download Manager when done	Baigus atsisiuntimą, išeiti iš „Mister Download Manager“
 #. text in the Checksum window
 #, machine
 	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	Numatoma kontrolinė suma (MD5, SHA-1, SHA-256, SHA-512 arba CRC32):
@@ -1468,7 +1480,7 @@
 	Faroe Islands	Farerų salos
 #. text in the Scheduler window
 #, machine
-	February	Vasaris
+	February	vasaris
 #. text in rssdlg.rs
 #. RSS feeds window: label before the box where a feed's web address is typed
 #, machine
@@ -1484,7 +1496,7 @@
 #. text in the Add torrent window
 #. Torrent settings, at the bottom
 #, machine
-	Fetched again every 7 days. Changes apply when no torrent is running.	Atnaujinama kas 7 dienas. Pakeitimai taikomi, kai torrentas neveikia.
+	Fetched again every 7 days. Changes apply when no torrent is running.	Atsisiunčiama iš naujo kas 7 dienas. Pakeitimai taikomi, kai neveikia nė vienas torrentas.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -1533,7 +1545,7 @@
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
-	Files go to: {folder}	Failai keliauja į: {folder}
+	Files go to: {folder}	Failai įrašomi į: {folder}
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Failai eilėje
@@ -1648,6 +1660,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	iš „torrent“ failo
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	Iš naršyklės:
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1685,7 +1701,7 @@
 #. message or event log entry in the main window
 #. a gallery download's error: the helper program it needs is missing
 #, machine
-	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl neįdiegta (Pridėti URL su galerijos adresu įdiegia ją)
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl neįdiegta (Pridėjus galerijos adresą per „Pridėti URL“, ji įdiegiama)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1731,7 +1747,7 @@
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
-	Goes on after the download finishes	Tęsiasi atsisiuntimui pasibaigus
+	Goes on after the download finishes	Tęsiamas pasibaigus atsisiuntimui
 #. text in errors.rs
 #. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
 #, machine
@@ -1782,11 +1798,11 @@
 	Haiti	Haitis
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Hang up modem when done	Baigus atsijungti nuo modemo
+	Hang up modem when done	Baigus atsisiuntimą atsijungti nuo modemo
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
-	Have	Turi
+	Have	Atsisiųsta
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1812,7 +1828,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Slėpti &kategorijas
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	Slėpti skirtuką
 #. text in a download's progress window; text in standard windows
@@ -1825,7 +1841,7 @@
 	Hide web pages	Slėpti tinklalapius
 #. text in the Options window
 #, machine
-	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Laikykite Alt ir spustelėkite nuorodą, kad naršyklė ją atsisiųstų, o ne Mister Download Manager.
+	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Laikykite nuspaudę Alt ir spustelėkite nuorodą, kad naršyklė ją atsisiųstų, o ne Mister Download Manager.
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Home page	Pagrindinis puslapis
@@ -1884,6 +1900,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	Kategorijose: pasirinktos kategorijos meniu
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	užrakintame raktų pakete
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2028,7 +2048,7 @@
 	July	Liepa
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Jump to the download whose name starts with it	Pereiti prie atsisiuntimo, kurio pavadinimas prasideda ja
+	Jump to the download whose name starts with it	Pereiti prie atsisiuntimo, kurio pavadinimas prasideda šia raide
 #. text in the Scheduler window
 #, machine
 	June	Birželis
@@ -2202,7 +2222,7 @@
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
-	Login	Prisijungimas
+	Login	Prisijungimo vardas
 #. checkbox in the Options window
 #. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
 #, machine
@@ -2322,7 +2342,7 @@
 #. text in the Scheduler window
 #. the month (the fifth of the year)
 #, machine
-	May	Gegužė
+	May	gegužė
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2412,7 +2432,7 @@
 	Monaco	Monakas
 #. text in the Options window; text in the Scheduler window
 #, machine
-	Monday	Pirmadienis
+	Monday	pirmadienis
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2594,9 +2614,13 @@
 #, machine
 	No addresses yet	Dar nėra adresų
 #. text in extension.rs
+#. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
+#, machine
+	No browser MDM can connect to was found	Nerasta naršyklių, prie kurių MDM galėtų prisijungti
+#. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 #, machine
-	No browser's extension has connected yet	Dar neprisijungė jokia naršyklės plėtinys
+	No browser's extension has connected yet	Dar neprisijungė joks naršyklės plėtinys
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 #, machine
@@ -2604,7 +2628,7 @@
 #. text in torrent downloads
 #. an error: the app has no folder for its torrent data
 #, machine
-	no data folder for torrents	nėra duomenų aplanko torrentams
+	no data folder for torrents	nėra torrentų duomenų aplanko
 #. text in the Scheduler window
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
@@ -2643,14 +2667,18 @@
 	No mail app: the message is copied, paste it in your mail.	Nėra el. pašto programos: pranešimas nukopijuotas, įklijuokite jį į savo el. laišką.
 #. text in errors.rs
 #, machine
-	no peer sent the torrent's file list in time	nėra bendrinimo mazgo, kuris laiku atsiųstų torrento failų sąrašą
+	no peer sent the torrent's file list in time	joks mazgas laiku neatsiuntė torrento failų sąrašo
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
-	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Kol kas nėra siuntėjų. Šį torentą gali bendrinti nedaug žmonių, arba užkarda, VPN ar tinklas gali blokuoti „BitTorrent“.
+	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Kol kas nėra bendraamžių. Šį torrentą gali bendrinti nedaug žmonių arba užkarda, VPN ar tinklas gali blokuoti „BitTorrent“.
 #. text in the Options window
 #, machine
 	No proxy/socks	Nėra tarpinio serverio / SOCKS
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Sistemos raktų saugykla neatsakė, todėl prisijungimo duomenys ir slaptažodžiai saugomi MDM nustatymuose, kuriuos galite skaityti tik jūs.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2662,13 +2690,13 @@
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
-	No video found on this page. Play the video, then use the Download video button over it.	Šiame puslapyje nerasta vaizdo įrašų. Paleiskite vaizdo įrašą, tada naudokite mygtuką „Atsisiųsti vaizdo įrašą“ virš jo.
+	No video found on this page. Play the video, then use the Download video button over it.	Šiame puslapyje nerasta vaizdo įrašo. Paleiskite vaizdo įrašą, tada naudokite mygtuką „Atsisiųsti vaizdo įrašą“ virš jo.
 #. text in the Download video window
 #, machine
 	No video this can download on that page	Šiame puslapyje nėra vaizdo įrašo, kurį būtų galima atsisiųsti
 #. message or event log entry in the main window
 #, machine
-	No web addresses were found in {file}.	Faile „{file}“ nerasta jokių žiniatinklio adresų.
+	No web addresses were found in {file}.	Faile {file} nerasta jokių žiniatinklio adresų.
 #. text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
@@ -2738,7 +2766,7 @@
 	Not now? Get them later from Tasks → Download video from a page.	Ne dabar? Gaukite juos vėliau iš Užduotys → Atsisiųsti vaizdo įrašą iš puslapio.
 #. text in a download's Properties window
 #, machine
-	not one server (peers, or a helper's)	ne vienas serveris (lygiaverčiai asmenys arba pagalbinis)
+	not one server (peers, or a helper's)	ne iš vieno serverio (lygiaverčių mazgų arba pagalbinio serverio)
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
@@ -2772,6 +2800,9 @@
 #. text in the Scheduler window
 #, machine
 	October	Spalis
+#. option (radio button) in the Options window
+#, machine
+	Off	Išjungta
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	Išjungta: baigtas torrentas sustoja, kaip ir bet kuris atsisiuntimas.
@@ -2800,6 +2831,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	„macOS“ sistemoje tik administratorius gali suplanuoti žadinimą
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	„Windows“ sistemoje „Chrome“, „Edge“ ir „Brave“ gali užrakinti savo slapukus. „Firefox“ veikia.
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Vieną kartą
@@ -2934,7 +2969,7 @@
 	Password:	Slaptažodis:
 #. text in the Add torrent window
 #, machine
-	Paste a magnet link or choose a .torrent file, then Look up.	Įklijuokite magnetinę nuorodą arba pasirinkite .torrent failą, tada ieškokite.
+	Paste a magnet link or choose a .torrent file, then Look up.	Įklijuokite magnetinę nuorodą arba pasirinkite .torrent failą, tada pasirinkite „Ieškoti“.
 #. text in the Link grabber window
 #. Link grabber, while it is empty
 #, machine
@@ -3024,7 +3059,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 #, machine
-	premium, {days} days left	„Premium“, liko {days} dienos
+	premium, {days} days left	„Premium“, liko {days} dienų
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -3033,6 +3068,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	Peržiūra dar nepasiekiama
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	Profilis (pasirinktinai):
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -3050,6 +3089,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	Tarpinio serverio / „Socks“ konfigūracija
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	tarpinis serveris
 #. label in the Options window
 #, machine
 	Proxy server address	Tarpinio serverio adresas
@@ -3089,6 +3132,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Eilės
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	Skaitoma tik šiame kompiuteryje ir siunčiama tik į vaizdo įrašo svetainę.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3132,7 +3179,7 @@
 	Redownload	Atsisiųsti iš naujo
 #. text in a download's Properties window
 #, machine
-	Referer:	Nukreipėjas:
+	Referer:	Persiuntimo URL:
 #. button in rssdlg.rs
 #. RSS feeds window: fetch the selected feed again now
 #, machine
@@ -3333,10 +3380,10 @@
 	Select none	Nepasirinkti nė vieno
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Select or unselect one more download	Pasirinkti arba atšaukti dar vieną atsisiuntimą
+	Select or unselect one more download	Pasirinkti arba atžymėti dar vieną atsisiuntimą
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Select or unselect the download with the dotted outline	Pasirinkti arba atšaukti atsisiuntimą su punktyrine linija
+	Select or unselect the download with the dotted outline	Pasirinkti arba atžymėti atsisiuntimą, pažymėtą punktyriniu kontūru
 #. group box title in the Options window
 #, machine
 	Select sounds for Mister Download Manager events	Pasirinkti garsus „Mister Download Manager“ įvykiams
@@ -3419,6 +3466,11 @@
 #. event log: File Properties: the download goes through the debrid account again
 #, machine
 	Set to download through the debrid account	Nustatyta atsisiųsti per „debrid“ paskyrą
+#. text in extension.rs
+#. a check of Test browser integration: setting it up failed; {error} is the system's own message, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Setting it up failed: {error}	Nustatyti nepavyko: {error}
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3507,6 +3559,18 @@
 #, machine
 	Sign in in the browser	Prisijungti naršyklėje
 #. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	Prisijungimo duomenys ir slaptažodžiai saugomi „macOS“ raktų pakete.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	Prisijungimo duomenys ir slaptažodžiai saugomi sistemos raktų pakete („Secret Service“).
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	Prisijungimo duomenys ir slaptažodžiai saugomi „Windows“ kredencialų tvarkytuvėje.
+#. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
 	Signed in as {user} ({state})	Prisijungta kaip {user} ({state})
@@ -3538,7 +3602,7 @@
 	Sites Logins	Svetainių prisijungimai
 #. text in helpers.rs
 #, machine
-	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Svetainės siunčia geriausią kokybę kaip atskirą vaizdo įrašą ir garsą, o „ffmpeg“ juos sujungia. Šioje sistemoje MDM naudoja jūsų: įdiekite „ffmpeg“ naudodami savo paketų tvarkyklę.
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Svetainės siunčia geriausios kokybės vaizdo ir garso įrašus atskirai, o „ffmpeg“ juos sujungia. Šioje sistemoje MDM naudoja jūsų „ffmpeg“: įdiekite jį naudodami paketų tvarkytuvę.
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Svetainės siunčia geriausią kokybę kaip atskirą vaizdo įrašą ir garsą. „ffmpeg“ sujungia juos į vieną failą, kuris veikia visur.
@@ -3717,11 +3781,11 @@
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
 #, machine
-	Stop sharing after sharing for	Nustoti bendrinti po bendrinimo
+	Stop sharing after sharing for	Nustoti bendrinti praėjus bendrinimo laikui
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
 #, machine
-	Stop sharing at a share ratio of	Nustoti bendrinti, kai bendrinimo santykis yra
+	Stop sharing at a share ratio of	Nustoti bendrinti, kai bendrinimo santykis pasiekia
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -3765,12 +3829,12 @@
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
 #, machine
-	Subtitles in {language} couldn't be downloaded: {reason}	Subtitrų {language} kalba nepavyko atsisiųsti: {reason}
+	Subtitles in {language} couldn't be downloaded: {reason}	Nepavyko atsisiųsti {language} kalbos subtitrų: {reason}
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Subtitrų {language} kalba nepavyko atsisiųsti: {site} atsisakė (per daug užklausų).
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Nepavyko atsisiųsti {language} kalbos subtitrų: {site} atsisakė (per daug užklausų).
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3780,7 +3844,7 @@
 	Sunday	Sekmadienis
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Support MDM on GitHub Sponsors	Palaikykite MDM „GitHub Sponsors“
+	Support MDM on GitHub Sponsors	Palaikykite MDM per „GitHub Sponsors“
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3819,7 +3883,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Užduotys → Nuorodų griebtuvas arba naršyklės „Atsisiųsti visas nuorodas“: padalinto\narchyvo tomai yra vienas paketas, kiti puslapio saitus – kitas.
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Užduotys → Nuorodų griebtuvas arba naršyklės „Atsisiųsti visas nuorodas“: padalinto\narchyvo tomai sudaro vieną paketą, kitos puslapio nuorodos – kitą.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	Papasakoti draugui
@@ -3881,7 +3945,7 @@
 #. text in the settings
 #. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
 #, machine
-	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	naršyklės tarpinis serveris (VPN arba tarpinio serverio plėtinys) prašo prisijungimo, kurį turi tik tas plėtinys: naudokite VPN programą arba pasirinkite jo tinklo adapterį parinktyse „Parinktys“ → „Tarpinis serveris / SOCKS“
+	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	naršyklės tarpinis serveris (VPN arba tarpinio serverio plėtinys) prašo prisijungimo duomenų, kuriuos turi tik tas plėtinys: naudokite VPN programą arba pasirinkite jo tinklo adapterį skiltyje „Parinktys“ → „Tarpinis serveris / SOCKS“
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3893,7 +3957,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the sign-in code ran out before it was used
 #, machine
-	the code expired: sign in again	kodas baigėsi: prisijunkite iš naujo
+	the code expired: sign in again	kodo galiojimo laikas baigėsi: prisijunkite iš naujo
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -3956,7 +4020,7 @@
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Jums jau pažįstama atsisiuntimų tvarkyklė, perkurta, kad būtų greitesnė. Nemokama ir atvirojo kodo pagal GNU GPL, 3 versiją ar naujesnę. Vaizdo įrašai randami naudojant yt-dlp; torrentai veikia su librqbit.
 #. text in a dialog box
 #, machine
-	The download queue is done.	Atsisiuntimo eilė baigta.
+	The download queue is done.	Atsisiuntimų eilė baigta.
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	atsisiųsta programa neatitinka pasirašytos kontrolinės sumos
@@ -4022,6 +4086,10 @@
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
 	the FTP server answered {code} {reply}	FTP serveris atsakė {code} {reply}
+#. text in extension.rs
+#. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
+#, machine
+	The helper program the browsers start is missing	Trūksta pagalbinės programos, kurią paleidžia naršyklės
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4072,7 +4140,7 @@
 	the server answered {status}	serveris atsakė {status}
 #. text in errors.rs
 #, machine
-	the server can't send parts of the file, so it can't be resumed	serveris negali siųsti failo dalių, todėl jo negalima atnaujinti
+	the server can't send parts of the file, so it can't be resumed	serveris negali siųsti failo dalių, todėl jo negalima tęsti
 #. text in errors.rs
 #, machine
 	the server did not answer in time	serveris neatsakė laiku
@@ -4088,10 +4156,22 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	serveris atsiuntė netikėtą failo dalį ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Svetainė nori, kad prisijungtumėte, net ir su jūsų naršyklės slapukais šiam puslapiui. Prisijunkite prie jos savo naršyklėje, tada bandykite dar kartą.
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Svetainė nori, kad prisijungtumėte, net ir su {browser} slapukais. Prisijunkite prie jos {browser}, tada vėl ieškokite puslapio.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Simbolių nepavyko gauti: kai kurios ataskaitos eilutės rodo adresus vietoj pavadinimų (kūrėjai vis tiek gali juos perskaityti).
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Sistemos raktų paketas yra užrakintas ir MDM jo neatrakina, todėl prisijungimo duomenys ir slaptažodžiai saugomi MDM nustatymuose, kuriuos galite skaityti tik jūs.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4107,7 +4187,7 @@
 #. text in torrent downloads
 #. an error: the torrent is gone from the torrent session
 #, machine
-	the torrent is no longer there	torrento nebeliko
+	the torrent is no longer there	torrento nebėra
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4142,7 +4222,7 @@
 	These settings are unavailable when "Show download complete dialog" is turned on	Šie nustatymai nepasiekiami, kai įjungtas „Rodyti atsisiuntimo užbaigimo dialogo langą“
 #. text in helpers.rs
 #, machine
-	They keep downloading if you close this window.	Jie toliau atsisiunčia, jei uždarysite šį langą.
+	They keep downloading if you close this window.	Jie toliau atsisiunčiami, jei uždarysite šį langą.
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	Šis adresas jau yra atsisiuntimų sąraše:
@@ -4191,11 +4271,19 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
-	This magnet link names no trackers and the DHT is off, so no peer can be found.	Šioje magnetinėje nuorodoje nenurodyti jokie sekikliai, o DHT išjungtas, todėl negalima rasti jokio bendrininko.
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	Šioje magnetinėje nuorodoje nenurodyta jokių sekiklių, o DHT išjungtas, todėl nepavyksta rasti nė vieno bendrininko.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Tam reikia ffmpeg
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Ši nešiojamoji kopija saugo prisijungimo duomenis ir slaptažodžius savo nustatymuose, užšifruotus taip, kad juos galėtų perskaityti tik jūsų „Windows“ paskyra.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Ši nešiojamoji kopija saugo prisijungimo duomenis ir slaptažodžius savo nustatymuose, kuriuos galite skaityti tik jūs.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4203,11 +4291,11 @@
 	this program isn't {name}	ši programa nėra {name}
 #. text in a download's progress window
 #, machine
-	This system has no dial-up connections to hang up	Ši sistema neturi telefono ryšio, kurį būtų galima nutraukti
+	This system has no dial-up connections to hang up	Šioje sistemoje nėra telefono ryšio, kurį būtų galima nutraukti
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	šio torrento failo pavadinimas nėra saugus rašyti, todėl jis nebuvo pridėtas: {name}
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	šio torrento failo pavadinimo negalima saugiai įrašyti, todėl jis nebuvo pridėtas: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Šis torrentas jau yra atsisiuntimų sąraše
@@ -4221,7 +4309,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Šiam vaizdo įrašui reikia, kad būtumėte prisijungę. Naudokite mygtuką „Atsisiųsti vaizdo įrašą“ virš jo naršyklėje, kuri perduoda jūsų prisijungimo duomenis.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Šiam vaizdo įrašui reikia, kad būtumėte prisijungę. Naudokite mygtuką „Atsisiųsti vaizdo įrašą“ virš jo savo naršyklėje, kuris perduoda jūsų prisijungimo duomenis, arba pasirinkite savo naršyklę „Parinktys“ → „Svetainių prisijungimai“ → „Vaizdo įrašų svetainių slapukai“.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4229,7 +4317,7 @@
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it: {country} is the proxy's country
 #, machine
-	through a proxy in {country}	per tarpinį serverį {country}
+	through a proxy in {country}	per tarpinį serverį šalyje {country}
 #. text in a download's Properties window
 #. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
 #, machine
@@ -4237,7 +4325,7 @@
 #. message or event log entry in the main window
 #. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
 #, machine
-	Through {service}: the service downloads the torrent, then MDM its files	Per „{service}“: paslauga atsisiunčia torrentą, tada MDM – jo failus
+	Through {service}: the service downloads the torrent, then MDM its files	Per {service}: paslauga atsisiunčia torrentą, tada MDM – jo failus
 #. text in the Scheduler window
 #, machine
 	Thursday	Ketvirtadienis
@@ -4292,7 +4380,7 @@
 #. text in torrent downloads
 #. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
 #, machine
-	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Torrrento nustatymuose nurodyta naudoti tarpinį serverį, bet Tarpinis serveris / Socks neturi SOCKS5 tarpinio serverio
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Torrento nustatymuose nurodyta naudoti tarpinį serverį, bet „Tarpinis serveris / Socks“ nenustatytas SOCKS5 tarpinis serveris
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -4301,15 +4389,15 @@
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	torrents could not start: {error}	torrentų nepavyko paleisti: {error}
+	torrents could not start: {error}	nepavyko paleisti torrentų: {error}
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
-	Tracker	Seklys
+	Tracker	Sekiklis
 #. text in a download's progress window
 #. tab title: the servers that list the peers
 #, machine
-	Trackers	Sekliai
+	Trackers	Sekikliai
 #. text in the Add torrent window
 #. Add trackers: above the box; {name} is the torrent's name
 #. {name} = a file name (keep the braces as they are)
@@ -4368,7 +4456,7 @@
 	Tuvalu	Tuvalu
 #. text in helpers.rs
 #, machine
-	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Du nemokami pagalbininkai leidžia tai veikti. Gaukite juos dabar, ir vaizdo įrašo išsaugojimas bus vos vieno paspaudimo atstumu, kai jį rasite.
+	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Du nemokami pagalbiniai įrankiai leidžia tai padaryti. Įsidiekite juos dabar, ir radę vaizdo įrašą galėsite jį išsaugoti vienu spustelėjimu.
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 #, machine
@@ -4396,7 +4484,7 @@
 #. text in the settings
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 #, machine
-	Type the name the server's certificate shows.	Įveskite serverio sertifikato pavadinimą.
+	Type the name the server's certificate shows.	Įveskite serverio sertifikate nurodytą pavadinimą.
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -4405,7 +4493,7 @@
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Įveskite šį kodą {page} ir leiskite MDM; laukiama jūsų (kodas baigiasi po {time}).
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Įveskite šį kodą puslapyje {page} ir suteikite MDM leidimą; laukiama, kol tai padarysite (kodas nustos galioti po {time}).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -4540,19 +4628,19 @@
 #. text in the Options window
 #. column title: the user name
 #, machine
-	User	Vartotojas
+	User	Naudotojas
 #. page title in the Options window
 #, machine
-	User names and passwords for servers/sites	Vartotojų vardai ir slaptažodžiai serveriams / svetainėms
+	User names and passwords for servers/sites	Naudotojų vardai ir slaptažodžiai serveriams / svetainėms
 #. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	„User-Agent“ rankiniu būdu pridėtiems atsisiuntimams:
 #. text in the Options window
 #, machine
-	User:	Vartotojas:
+	User:	Naudotojas:
 #. label in the Options window
 #, machine
-	UserName	Vartotojo vardas
+	UserName	Naudotojo vardas
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4597,15 +4685,7 @@
 	Video	Vaizdo įrašai
 #. text in the Download video window
 #, machine
-	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Vaizdo įrašų paieškos naudoja yt-dlp (apie 23 MB, patikrinta pagal parašą).
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	Vaizdo įrašų puslapiai ir torentai dar negali jo naudoti.
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	Vaizdo įrašų puslapiai dar negali jo naudoti.
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Vaizdo įrašų paieškai naudojama yt-dlp (apie 23 MB, patikrinta pagal parašą).
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4650,7 +4730,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Wallis and Futuna	Valis ir Futūna
+	Wallis and Futuna	Volisas ir Futūna
 #. text in the Scheduler window
 #. Wednesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -4669,11 +4749,11 @@
 #. text in the Options window
 #. Options → Archives: a label before the list of where extracted files go
 #, machine
-	What an archive holds goes:	Archyvo turinys keliauja:
+	What an archive holds goes:	Kur saugomas archyvo turinys:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
-	What were you doing when it happened? (optional)	Ką darėte, kai tai atsitiko? (pasirinktinai)
+	What were you doing when it happened? (optional)	Ką darėte, kai tai įvyko? (pasirinktinai)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	What's new:	Kas naujo:
@@ -4684,6 +4764,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	„Windows“ leidžia žadinimo laikmačius tik prijungus prie maitinimo šaltinio
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	„Windows“ kredencialų tvarkytuvė neatsakė, todėl prisijungimo duomenys ir slaptažodžiai saugomi MDM nustatymuose, užšifruotuose jūsų „Windows“ paskyrai.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4711,7 +4795,7 @@
 	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	Žodžiai: visi; | tarp alternatyvų; * ir ?. Serijos: 1x2;1x5-8;2x1-. Kiekviena serija vieną kartą.
 #. group box title in the Options window
 #, machine
-	Write dates and times	Datos ir laiko rašymas
+	Write dates and times	Datų ir laiko rašymas
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -4764,9 +4848,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	Jūsų sistemos: {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	„yt-dlp“ negali skaityti {browser} slapukų, kol {browser} yra atidaryta. Uždarykite {browser} ir vėl ieškokite puslapio, arba pasirinkite „Firefox“ „Parinktys“ → „Svetainių prisijungimai“.
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	„yt-dlp“ negalėjo gauti rakto į {browser} slapukus iš sistemos raktų paketo. Atrakinkite raktų paketą ir vėl ieškokite puslapio.
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	„yt-dlp“ negalėjo skaityti {browser} slapukų: {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	„yt-dlp“ nerado {browser} slapukų šiame kompiuteryje. Patikrinkite naršyklę ir jos profilį „Parinktys“ → „Svetainių prisijungimai“.
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	„yt-dlp“ neįdiegta (užduotys → atsisiųsti vaizdo įrašą iš puslapio įdiegia ją)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	„yt-dlp“ prisijungia prie vaizdo įrašų svetainių naudodama šios naršyklės slapukus, skaitomus iš jos failų tik šiame kompiuteryje. Naudojama, kai naršyklės plėtinys neperdavė paties puslapio slapukų: įklijuotas adresas, grojaraštis.
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4798,7 +4903,11 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{algorithm}: checked when the download finishes	{algorithm}: patikrinta, kai atsisiuntimas baigiamas
+	{algorithm}: checked when the download finishes	{algorithm}: patikrinama baigus atsisiuntimą
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	„Windows“ sistemoje {browser} užšifruoja slapukus taip, kad juos galėtų skaityti tik pati naršyklė, todėl „yt-dlp“ negali jų perskaityti. Pasirinkite „Firefox“ skiltyje „Parinktys“ → „Svetainių prisijungimai“ arba naudokite mygtuką „Atsisiųsti vaizdo įrašą“ virš vaizdo įrašo naršyklėje {browser}.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -4828,25 +4937,25 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{file} could not be deleted from the disk: {error}	{file} nepavyko ištrinti iš disko: {error}
+	{file} could not be deleted from the disk: {error}	Nepavyko ištrinti failo {file} iš disko: {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{file} could not be opened: {error}	{file} nepavyko atidaryti: {error}
+	{file} could not be opened: {error}	Nepavyko atidaryti failo {file}: {error}
 #. text in the Checksum window
 #, machine
-	{file} could not be read to check it	{file} nepavyko perskaityti, kad būtų patikrinta
+	{file} could not be read to check it	Nepavyko perskaityti failo {file}, kad būtų galima jį patikrinti
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} nebėra ten, kur buvo išsaugotas (perkeltas arba ištrintas). Iš naujo atsisiųsti, dešiniojo pelės mygtuko meniu, jį vėl atsisiunčia.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} nebėra ten, kur buvo išsaugotas (perkeltas arba ištrintas). Dešiniojo pelės mygtuko meniu pasirinkite „Atsisiųsti iš naujo“, kad jį atsisiųstumėte dar kartą.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file does NOT match its checksum ({algorithm})	{file}: failas NESUTAMPA su jo kontroline suma ({algorithm})
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: failo kontrolinė suma NESUTAMPA su ({algorithm})
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file matches its checksum ({algorithm})	{file}: failas sutampa su jo kontroline suma ({algorithm})
+	{file}: the file matches its checksum ({algorithm})	{file}: failo kontrolinė suma sutampa su ({algorithm})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -4868,11 +4977,11 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
-	{language}, automatic	{language}, automatiniai
+	{language}, automatic	{language}, automatiškai sugeneruoti
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
-	{live} connected, {known} known	{live} prijungta, {known} žinoma
+	{live} connected, {known} known	Prijungta: {live}, žinoma: {known}
 #. text in the Scheduler window
 #. the calendar's title: {month} = a month's name, {year} = its year
 #, machine
@@ -4890,12 +4999,12 @@
 #. {name} = yt-dlp or ffmpeg; {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
-	{name} could not be downloaded: {error}	{name} nepavyko atsisiųsti: {error}
+	{name} could not be downloaded: {error}	Nepavyko atsisiųsti {name}: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} yra 7z arba RAR archyvas. MDM juos išskleidžia naudodama 7-Zip, kuri neįdiegta.
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} yra 7z arba RAR archyvas. MDM išskleidžia tokius archyvus naudodama „7-Zip“, kuris neįdiegtas.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -4923,24 +5032,24 @@
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
-	{percent} at {service}	{percent} paslaugoje „{service}“
+	{percent} at {service}	{percent} „{service}“ paslaugoje
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} prašo sulėtinti; MDM bandys dar kartą po minutės
+	{service} asks to slow down; MDM will try again in a minute	{service} prašo sulėtinti užklausas; MDM bandys dar kartą po minutės
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} prašo pirmiausia leisti šiam kompiuteriui: patikrinkite el. laišką
+	{service} asks you to allow this computer first: see its email	{service} prašo pirmiausia patvirtinti šį kompiuterį: patikrinkite el. laišką
 #. text in errors.rs
 #, machine
-	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} negali gauti šio torento: niekas juo nesidalija arba jo nuorodos negalima perskaityti
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} negali gauti šio torento: niekas jo nesidalija arba nepavyksta nuskaityti jo nuorodos
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} šiuo metu negali pasiekti šio failų prieglobos; MDM bandys dar kartą vėliau
+	{service} can't reach this file host right now; MDM will try again later	{service} šiuo metu negali pasiekti šio failų prieglobos serverio; MDM bandys dar kartą vėliau
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -4952,7 +5061,7 @@
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
-	{service} won't give this file	{service} neduos šio failo
+	{service} won't give this file	{service} nepateiks šio failo
 #. text in errors.rs
 #. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
 #, machine
@@ -4979,7 +5088,7 @@
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: šio failų prieglobos paslaugos limito kol kas viršytas
+	{service}: your limit for this file host is used up for now	{service}: kol kas išnaudotas šio failų prieglobos serverio limitas
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
@@ -5039,7 +5148,7 @@ column	Last Try Date	Paskutinio bandymo data
 #. column title in the download list in the download list
 #. column title: one letter for Queue (the column is narrow)
 #, machine
-column	Q	E
+column	Q	Q
 #. column title in the main window; column title in the download list
 #. tooltip of the narrow "Q" column's title
 #, machine
@@ -5120,7 +5229,7 @@ extension	Hide on this video	Slėpti šiame vaizdo įraše
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
-extension	Hold Alt while clicking a link to let the browser download it.	Laikykite Alt ir spustelėkite nuorodą, kad naršyklė ją atsisiųstų.
+extension	Hold Alt while clicking a link to let the browser download it.	Laikykite nuspaudę Alt ir spustelėkite nuorodą, kad ją atsisiųstų naršyklė.
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
@@ -5195,7 +5304,7 @@ extension	Never take downloads from {site}	Niekada nepaimti atsisiuntimų iš {s
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
-extension	No video or sound found on this page yet. Play it, then open this again.	Šiame puslapyje dar nerasta vaizdo ar garso. Paleiskite, tada atidarykite tai iš naujo.
+extension	No video or sound found on this page yet. Play it, then open this again.	Šiame puslapyje dar nerasta vaizdo ar garso. Paleiskite jį, tada atidarykite šį langą iš naujo.
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
@@ -5232,7 +5341,7 @@ extension	Support MDM	Palaikykite MDM
 #. text in the browser extension
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
-extension	Take downloads from this browser	Paimti atsisiuntimus iš šios naršyklės
+extension	Take downloads from this browser	Perimti atsisiuntimus iš šios naršyklės
 #. text in the browser extension
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
@@ -5256,11 +5365,11 @@ extension	This browser isn't ticked in Options → General.	Ši naršyklė nepa�
 #. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
-extension	This download's details were too large to hand over	Šio atsisiuntimo duomenys buvo per dideli, kad būtų galima perduoti
+extension	This download's details were too large to hand over	Šio atsisiuntimo duomenys buvo per dideli, kad juos būtų galima perduoti
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
-extension	Update Mister Download Manager to use everything this extension offers	Atnaujinkite Mister Download Manager, kad galėtumėte naudoti viską, ką siūlo šis plėtinys
+extension	Update Mister Download Manager to use everything this extension offers	Atnaujinkite Mister Download Manager, kad galėtumėte naudotis visomis šio plėtinio funkcijomis
 #. text in the browser extension
 #. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
 #, machine
@@ -5381,7 +5490,7 @@ menu	&Delete	&Naikinti
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Delete All Completed	&Naikinti visus baigtus
+menu	&Delete All Completed	&Naikinti visus baigtus atsisiuntimus
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5473,7 +5582,7 @@ menu	&Video downloads	&Vaizdo įrašų atsisiuntimai
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Add &batch download	Pridėti &paketinių atsisiuntimų
+menu	Add &batch download	Pridėti &atsisiuntimų paketą
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -5544,7 +5653,7 @@ menu	By Parent &Web Page	Pagal &pirminį tinklalapį
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	By R&eferer	Pagal n&uorodą
+menu	By R&eferer	Pagal n&ukreipėją
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5603,7 +5712,7 @@ menu	Direct3D	Direct3D
 #. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Direct3D didn't start here: OpenGL draws	Direct3D čia nepasileido: piešia OpenGL
+menu	Direct3D didn't start here: OpenGL draws	Direct3D čia nepasileido: langai piešiami naudojant OpenGL
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -5659,7 +5768,7 @@ menu	From &text file...	Iš &teksto failo...
 menu	H&elp contents	&Žinyno turinys
 #. menu command in the main window
 #, machine
-menu	Hide drop target	Slėpti vilkimo tikslą
+menu	Hide drop target	Slėpti vilkimo sritį
 #. menu command in the main window
 #. View → Theme: black and white with strong edges, for low vision
 #, machine
@@ -5683,7 +5792,7 @@ menu	Metal	Metal
 #. menu command in the main window
 #. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Metal didn't start here: OpenGL draws	„Metal“ čia nepasileido: piešia „OpenGL“
+menu	Metal didn't start here: OpenGL draws	„Metal“ čia nepasileido: langus piešia „OpenGL“
 #. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
@@ -5702,7 +5811,7 @@ menu	Native	Vietinė
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
-menu	No graphics card here has a driver for it	Nėra grafikos plokštės, turinčios tvarkyklę
+menu	No graphics card here has a driver for it	Nė viena grafikos plokštė neturi jai skirtos tvarkyklės
 #. menu command in the main window
 #, machine
 menu	On Double click	Dukart spustelėjus
@@ -5722,7 +5831,7 @@ menu	Open folder	Atidaryti aplanką
 #. menu command in the main window
 #. View → Theme: opens the folder where theme files go (TOML or JSON)
 #, machine
-menu	Open themes folder	Atidaryti temas aplanką
+menu	Open themes folder	Atidaryti temų aplanką
 #. menu command in the main window
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -5797,7 +5906,7 @@ menu	Select &all	Žymėti &viską
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Show &drop target	Rodyti &vilkimo tikslą
+menu	Show &drop target	Rodyti &vilkimo sritį
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Rodyti „Mister Download Manager“
@@ -5956,43 +6065,332 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/sek.
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent failas
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	Pridėti
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	Pridėta.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	Pridėta. MDM skaito torrentą: jis netrukus prisijungs prie sąrašo.
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	Adresas arba magnetinė nuoroda
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	Visi
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	Automatinis (pagal failo tipą)
 #. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
-	in the locked keyring	užrakintame raktų pakete
+	Certificate (SHA-256): {fingerprint}	Sertifikatas (SHA-256): {fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	Pasirinkite .torrent failą
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	Kodas
 #. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: label before the 8-digit code
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Sistemos raktų paketas neatsakė, todėl prisijungimo duomenys ir slaptažodžiai saugomi MDM nustatymuose, kuriuos galite skaityti tik jūs.
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+	Code:	Kodas:
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
 #, machine
-	proxy server	tarpinio serverio
+	Delete the file too	Ištrinti ir failą
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#. column title: a paired phone's or computer's name
 #, machine
-	Sign-ins and passwords are kept in the macOS keychain.	Prisijungimo duomenys ir slaptažodžiai saugomi „macOS“ raktų pakete.
+	Device	Įrenginys
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
 #, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	Prisijungimo duomenys ir slaptažodžiai saugomi sistemos raktų pakete („Secret Service“).
+	Every local network address	Kiekvienas vietinio tinklo adresas
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	Pamiršti šį įrenginį
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	Pamiršti šį įrenginį? Norint vėl prisijungti, reikės naujo kodo.
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	iš susieto įrenginio
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
 #, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	Prisijungimo duomenys ir slaptažodžiai saugomi „Windows“ kredencialų tvarkytuvėje.
+	It could not start: {error}	Nepavyko paleisti: {error}
 #. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. column title: when the device last reached MDM
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Sistemos raktų paketas yra užrakintas ir MDM jo neatrakina, todėl prisijungimo duomenys ir slaptažodžiai saugomi MDM nustatymuose, kuriuos galite skaityti tik jūs.
+	Last seen	Paskutinį kartą matytas
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	Leisti telefonams ir kompiuteriams vietiniame tinkle valdyti MDM
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#. Options → Remote: label before the choice of the address MDM listens on
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Ši nešiojamoji kopija saugo prisijungimo duomenis ir slaptažodžius savo nustatymuose, užšifruotus jūsų „Windows“ paskyrai.
+	Listen on:	Klausytis:
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Ši nešiojamoji kopija saugo prisijungimo duomenis ir slaptažodžius savo nustatymuose, kuriuos galite skaityti tik jūs.
+	MDM can't be reached on the network now: Options → Remote says why.	MDM dabar nepasiekiamas tinkle: parinktys → Nuotolinis valdymas nurodo priežastį.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	MDM negali atsisiųsti šio adreso.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	MDM negalėjo jo pridėti.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	MDM negalėjo to padaryti.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM neatsako. Patikrinkite, ar jis veikia ir yra tame pačiame tinkle.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM neatsako. Bandoma dar kartą...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	MDM dabar nerodo kodo. Pirmiausia spustelėkite „Susieti įrenginį“.
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	Daugiau
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	Naujas kodas
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	Čia nėra atsisiuntimų.
 #. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	„Windows“ kredencialų tvarkytuvė neatsakė, todėl prisijungimo duomenys ir slaptažodžiai saugomi MDM nustatymuose, užšifruotuose jūsų „Windows“ paskyrai.
+	No local network now: it starts when the computer joins one.	Dabar nėra vietinio tinklo: jis paleidžiamas, kai kompiuteris prisijungia prie jo.
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	Išjungta: niekas tinkle negali pasiekti MDM.
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	Kompiuteryje atidarykite Parinktis, tada Nuotolinis valdymas ir spustelėkite Susieti įrenginį. Įveskite rodomą kodą.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	Telefone nuskaitykite šį kodą fotoaparatu arba atidarykite adresą ir įveskite kodą.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	Įjungta. Telefone atidarykite šį adresą:
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Tik susieti įrenginiai mato arba keičia ką nors. Pirmą kartą telefono naršyklė įspėja apie MDM sertifikatą: jo piršto atspaudas yra aukščiau nurodytas.
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	Susieti
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	Susieti įrenginį
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	Susieti įrenginį...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Susieti su „Mister Download Manager“
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	Susietas
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	Susieti įrenginiai:
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	Prievadą {port} naudoja kita programa: pasirinkite kitą.
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	Eilėje
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	Nuotolinis
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	Nuotolinis valdymas
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	Pašalinti „{name}“ iš sąrašo?
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	Pradėti dabar
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	Pakeitimai bus pritaikyti spustelėjus „Gerai“.
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	Šio kodo nebegalima naudoti.
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	Tik šis kompiuteris (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	Šio įrenginio pavadinimas
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	Šis failas per didelis, kad būtų torrentas.
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	Tai nėra torrento failas.
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	Pirmiausia įjunkite nuotolinį valdymą.
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	Palaukite, tada bandykite dar kartą.
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	Laukti eilėje „{queue}“
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	Laukiama įrenginio. Kodas galioja {time}.
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	Kada
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	Neteisingas kodas. Parodykite naują kodą MDM ir bandykite dar kartą.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	Neteisingas kodas. Liko bandymų: {n}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} susietas. Dabar jis gali valdyti MDM.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{done} iš {size}
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} laisvos vietos
+#. text in the browser extension
+#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
+#, machine
+extension	Another Mister Download Manager (a server)	Kitas „Mister Download Manager“ (serveris)
+#. text in the browser extension
+#. the name this browser gets in the other MDM's list of paired devices
+#, machine
+extension	Browser extension	Naršyklės plėtinys
+#. text in the browser extension
+#. the toolbar button's status while downloads go to another MDM
+#, machine
+extension	Downloads go to {address}	Atsisiuntimai siunčiami į {address}
+#. text in the browser extension
+#. the address typed isn't an https:// address
+#, machine
+extension	Enter its https:// address.	Įveskite jo https:// adresą.
+#. text in the browser extension
+#. pairing failed for another reason
+#, machine
+extension	It didn't work. Try again.	Nepavyko. Bandykite dar kartą.
+#. text in the browser extension
+#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
+#, machine
+extension	It shows no code now: click Pair a device there first.	Dabar nerodo kodo: pirmiausia spustelėkite „Susieti įrenginį“.
+#. text in the browser extension
+#. pairing failed: the other MDM didn't answer
+#, machine
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Nepasiekta. Atidarykite jo adresą vieną kartą šioje naršyklėje ir priimkite jo sertifikatą, tada bandykite dar kartą.
+#. text in the browser extension
+#. button: open the other MDM's address in a tab (to accept its certificate once)
+#, machine
+extension	Open it	Atidaryti
+#. text in the browser extension
+#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
+#, machine
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	Atidarykite jo adresą vieną kartą ir priimkite jo sertifikatą, tada įveskite kodą iš „Parinktys“, „Nuotolinis“, „Susieti įrenginį“ (arba „misterdownloadmanager-cli pair“).
+#. text in the browser extension
+#. button: pair this browser with the other MDM using the code
+#, machine
+extension	Pair	Susieti
+#. text in the browser extension
+#. placeholder of the box for the 8-digit code the other MDM shows
+#, machine
+extension	Pairing code	Susiejimo kodas
+#. text in the browser extension
+#. heading in the toolbar button's popup, above the choice of where downloads go
+#, machine
+extension	Send downloads to	Siųsti atsisiuntimus į
+#. text in the browser extension
+#. choice under Send downloads to: the Mister Download Manager on this computer
+#, machine
+extension	This computer	Šis kompiuteris
+#. text in the browser extension
+#. pairing failed: codes tried too fast
+#, machine
+extension	Wait a moment, then try again.	Palaukite, tada bandykite dar kartą.
+#. text in the browser extension
+#. pairing failed: the code was wrong
+#, machine
+extension	Wrong code.	Neteisingas kodas.

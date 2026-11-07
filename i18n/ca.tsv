@@ -94,7 +94,7 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} selected|{n} selected	{n} seleccionada|{n} seleccionades
+@plural	{n} selected|{n} selected	{n} seleccionat|{n} seleccionats
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -117,7 +117,7 @@
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
-	"{what}" isn't an IP address.	"{what}" no és una adreça IP.
+	"{what}" isn't an IP address.	«{what}» no és una adreça IP.
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -187,11 +187,15 @@
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	A file of this torrent can't be saved safely: {name}	No es pot desar un fitxer d'aquest torrent de manera segura: {name}
+	A file of this torrent can't be saved safely: {name}	No es pot desar de manera segura un fitxer d'aquest torrent: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Un ID de configuració de NextDNS té sis lletres i dígits (0-9, a-f).
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	El nom d'un perfil o la seva carpeta. Buit: el perfil utilitzat per darrera vegada. Per a un navegador basat en Chromium que no apareix a la llista (Helium, Thorium...), trieu Chromium i la carpeta del seu perfil.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -336,7 +340,7 @@
 #. window title in the Options window
 #. window title: the addresses whose downloads stay with the browser
 #, machine
-	Addresses left to the browser	Adreces que es deixen al navegador
+	Addresses left to the browser	Adreces gestionades pel navegador
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -373,7 +377,7 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
-	All the uploader's	Tots els de l'uploader
+	All the uploader's	Totes les de qui ha pujat el vídeo
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -700,7 +704,7 @@
 #. message or event log entry in the main window
 #. {text} = text the user searched for (keep the braces as they are)
 #, machine
-	Cannot find "{text}"	No es pot trobar "{text}"
+	Cannot find "{text}"	No s’ha trobat «{text}»
 #. text in the Checksum window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -777,7 +781,7 @@
 #. message or event log entry in the main window
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
-	Checked: {have} of {total} there	Comprovat: {have} de {total} allà
+	Checked: {have} of {total} there	S’ha comprovat: {have} de {total}
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Trieu l'idioma en què Mister Download Manager mostra les seves finestres:
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	Trieu la carpeta del perfil
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	Illes Cook
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	Galetes per a llocs de vídeo
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	S'ha copiat al porta-retalls.
@@ -960,16 +972,16 @@
 	Curaçao	Curaçao
 #. text in the Options window
 #, machine
-	Customize "Download progress" dialog	Personalitza el diàleg "Progrés de la descàrrega"
+	Customize "Download progress" dialog	Personalitza el diàleg «Progrés de la baixada»
 #. text in the Options window
 #, machine
-	Customize keys to prevent or force downloading with MDM	Personalitza les tecles per evitar o forçar la descàrrega amb MDM
+	Customize keys to prevent or force downloading with MDM	Personalitza les tecles per evitar o forçar la baixada amb MDM
 #. text in the Options window
 #, machine
-	Customize MDM Download panels in browsers	Personalitza els panells de descàrrega de MDM als navegadors
+	Customize MDM Download panels in browsers	Personalitza els panells de baixada de MDM als navegadors
 #. text in the Options window
 #, machine
-	Customize MDM menu items in context menu of browsers	Personalitza els elements de menú de MDM al menú contextual dels navegadors
+	Customize MDM menu items in context menu of browsers	Personalitza els elements de menú de MDM als menús contextuals dels navegadors
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -998,7 +1010,7 @@
 	Day, month, year	Dia, mes, any
 #. page title in the Options window
 #, machine
-	Debrid service accounts	Comptes de servei debrid
+	Debrid service accounts	Comptes de serveis debrid
 #. text in the Scheduler window
 #, machine
 	December	Desembre
@@ -1013,7 +1025,7 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Default download directory for "{category}" category	Directori de baixada per defecte per a la categoria "{category}"
+	Default download directory for "{category}" category	Directori de baixada per defecte per a la categoria «{category}»
 #. page title in the Options window
 #, machine
 	Default download settings	Configuració de baixada per defecte
@@ -1038,12 +1050,12 @@
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its files stay where they are.	Suprimir la categoria "{category}"? Els seus fitxers es queden on són.
+	Delete the category "{category}"? Its files stay where they are.	Vols suprimir la categoria «{category}»? Els fitxers es quedaran on són.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
-	Delete the queue "{queue}"? Its downloads stay in the list.	Voleu suprimir la cua "{queue}"? Les seves baixades es mantindran a la llista.
+	Delete the queue "{queue}"? Its downloads stay in the list.	Vols suprimir la cua «{queue}»? Les baixades es mantindran a la llista.
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Delete the selected downloads (asks first)	Suprimeix les baixades seleccionades (pregunta primer)
@@ -1070,10 +1082,10 @@
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	disk error: {error}	error de disc: {error}
+	disk error: {error}	Error de disc: {error}
 #. text in the Scheduler window
 #, machine
-	displayed in the list of queues	mostrat a la llista de cues
+	displayed in the list of queues	que es mostra a la llista de cues
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1267,7 +1279,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	DR Congo	R.D. del Congo
+	DR Congo	República Democràtica del Congo
 #. text in droptarget.rs
 #. the drop target's tooltip on macOS and Linux (they hand over files only)
 #, machine
@@ -1411,7 +1423,7 @@
 	Exit	Surt
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Exit Mister Download Manager when done	Surt de Mister Download Manager quan s'hagi acabat
+	Exit Mister Download Manager when done	Tanca Mister Download Manager quan acabi
 #. text in the Checksum window
 #, machine
 	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	Suma de comprovació esperada (MD5, SHA-1, SHA-256, SHA-512 o CRC32):
@@ -1426,7 +1438,7 @@
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Experimental: creat a partir de la documentació de l'API pública dels serveis, encara no s'ha confirmat amb comptes reals.
 #. message or event log entry in the main window
 #, machine
-	Export	Exporta
+	Export	Exportació
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	Amplia la disponibilitat de les extensions de Chrome de Manifest 2
@@ -1648,6 +1660,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	des d'un fitxer torrent
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	Des del navegador:
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1707,14 +1723,14 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. button: opens 7-Zip's website (7-Zip is a program's name)
 #, machine
-	Get 7-Zip	Obtenir 7-Zip
+	Get 7-Zip	Obtén 7-Zip
 #. window title in helpers.rs
 #. title of the first start's window that offers yt-dlp and ffmpeg
 #, machine
 	Get ready for video downloads	Prepareu-vos per a les baixades de vídeo
 #. button in the Options window
 #, machine
-	Get System	Obtenir sistema
+	Get System	Obtén el sistema
 #. text in the Add torrent window
 #. still going on; {n} = the seconds it has taken so far ("s" = seconds)
 #. {n} = a number (keep the braces as they are)
@@ -1771,7 +1787,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Guinea-Bissau	Guinea Bissau
+	Guinea-Bissau	Guinea-Bissau
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1812,7 +1828,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Amaga les &categories
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	Amaga la pestanya
 #. text in a download's progress window; text in standard windows
@@ -1884,6 +1900,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	A les categories: el menú de la categoria seleccionada
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	al clauer bloquejat
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2010,7 +2030,7 @@
 	Jamaica	Jamaica
 #. text in the Scheduler window
 #, machine
-	January	Gener
+	January	gener
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2025,13 +2045,13 @@
 	Jordan	Jordània
 #. text in the Scheduler window
 #, machine
-	July	Juliol
+	July	juliol
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Jump to the download whose name starts with it	Salta a la descàrrega el nom de la qual comenci per aquesta lletra
 #. text in the Scheduler window
 #, machine
-	June	Juny
+	June	juny
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2322,7 +2342,7 @@
 #. text in the Scheduler window
 #. the month (the fifth of the year)
 #, machine
-	May	Maig
+	May	maig
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2412,7 +2432,7 @@
 	Monaco	Mònaco
 #. text in the Options window; text in the Scheduler window
 #, machine
-	Monday	Dilluns
+	Monday	dilluns
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2452,22 +2472,22 @@
 	Move its downloads to General	Moure les baixades a General
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Move or rename the selected download	Moure o canviar el nom de la baixada seleccionada
+	Move or rename the selected download	Mou o canvia el nom de la baixada seleccionada
 #. text in a download's Properties window
 #, machine
-	Move to folder	Moure a la carpeta
+	Move to folder	Mou a la carpeta
 #. message or event log entry in the main window
 #, machine
-	Move to queue	Moure a la cua
+	Move to queue	Mou a la cua
 #. text in the Scheduler window
 #, machine
 	Move up	Puja
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Move without changing the selection	Moure sense canviar la selecció
+	Move without changing the selection	Mou sense canviar la selecció
 #. message or event log entry in the main window
 #, machine
-	Move/Rename	Moure/Canviar nom
+	Move/Rename	Mou/Canvia el nom
 #. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -2478,7 +2498,7 @@
 	Mozambique	Moçambic
 #. text in errors.rs
 #, machine
-	much slower than the other connections; reconnecting	molt més lent que les altres connexions; es torna a connectar
+	much slower than the other connections; reconnecting	molt més lenta que les altres connexions; es torna a connectar
 #. text in the download list (sizes, speeds, status)
 #. category name: audio files
 #, machine
@@ -2594,17 +2614,21 @@
 #, machine
 	No addresses yet	Encara no hi ha adreces
 #. text in extension.rs
+#. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
+#, machine
+	No browser MDM can connect to was found	No s'ha trobat cap navegador al qual MDM es pugui connectar
+#. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 #, machine
 	No browser's extension has connected yet	Encara no s'ha connectat cap extensió de navegador
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 #, machine
-	no data folder	no hi ha carpeta de dades
+	no data folder	No hi ha cap carpeta de dades
 #. text in torrent downloads
 #. an error: the app has no folder for its torrent data
 #, machine
-	no data folder for torrents	no hi ha carpeta de dades per a torrents
+	no data folder for torrents	No hi ha cap carpeta de dades per als torrents
 #. text in the Scheduler window
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
@@ -2612,15 +2636,15 @@
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
-	No downloads here	No hi ha baixades aquí
+	No downloads here	No hi ha cap baixada aquí
 #. message or event log entry in the main window
 #. title in the empty download list, when the column filters hide every download
 #, machine
-	No downloads match the filters	Cap baixada coincideix amb els filtres
+	No downloads match the filters	Cap baixada no coincideix amb els filtres
 #. message or event log entry in the main window
 #. title in the empty download list when there are no downloads at all
 #, machine
-	No downloads yet	Encara no hi ha baixades
+	No downloads yet	Encara no hi ha cap baixada
 #. text in a dialog box
 #, machine
 	No folders yet	Encara no hi ha cap carpeta
@@ -2630,7 +2654,7 @@
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
-	No language matches the search	Cap idioma coincideix amb la cerca
+	No language matches the search	Cap idioma no coincideix amb la cerca
 #. text in langpick.rs
 #, machine
 	No language matches.	No hi ha cap idioma coincident.
@@ -2643,7 +2667,7 @@
 	No mail app: the message is copied, paste it in your mail.	No hi ha cap aplicació de correu: el missatge s'ha copiat, enganxeu-lo al vostre correu.
 #. text in errors.rs
 #, machine
-	no peer sent the torrent's file list in time	cap parell ha enviat la llista de fitxers del torrent a temps
+	no peer sent the torrent's file list in time	Cap parell no ha enviat la llista de fitxers del torrent a temps
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
@@ -2651,6 +2675,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Sense proxy/socks
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	El clauer del sistema no ha respost, de manera que els inicis de sessió i les contrasenyes es guarden a la configuració de MDM, que només podeu llegir vosaltres.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2658,7 +2686,7 @@
 #. text in the Add torrent window
 #. the magnet link names no tracker (a server that lists a torrent's peers)
 #, machine
-	No trackers	Sense rastrejadors
+	No trackers	Cap rastrejador
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -2680,7 +2708,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
 #, machine
-	None ticked: every feed.	Cap marcat: tots els canals.
+	None ticked: every feed.	Cap canal marcat: tots els canals.
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	Cap: els parells provenen de la DHT i d'altres parells
@@ -2718,7 +2746,7 @@
 	Not a tracker address: {line}	No és una adreça de rastrejador: {line}
 #. text in errors.rs
 #, machine
-	not enough disk space: {needed} needed, {free} free	no hi ha prou espai al disc: es necessiten {needed}, {free} lliures
+	not enough disk space: {needed} needed, {free} free	No hi ha prou espai al disc: en calen {needed} i n'hi ha {free} lliures
 #. text in rssdlg.rs
 #. RSS feeds window: the selected feed hasn't been fetched yet
 #, machine
@@ -2729,7 +2757,7 @@
 #. text in helpers.rs
 #. Video helpers: no copy of this helper yet
 #, machine
-	Not installed yet	Encara no instal·lat
+	Not installed yet	Encara no està instal·lat
 #. button in helpers.rs
 #, machine
 	Not now	Ara no
@@ -2749,7 +2777,7 @@
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Nota: els servidors d'Internet poden interrompre la connexió quan la velocitat és massa limitada. Per tant, no es\nrecomana utilitzar el limitador de velocitat per baixar de servidors que no admeten la funció de "reprendre".
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Nota: els servidors d'Internet poden interrompre la connexió si la velocitat és massa baixa. Per tant, no es\nrecomana fer servir el limitador de velocitat per baixar fitxers de servidors que no admeten la funció de «reprendre».
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	Nota: aquesta configuració no es relaciona amb el processament de la cua
@@ -2758,7 +2786,7 @@
 	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	No hi ha res per baixar a {item}: arrossegueu enllaços, un fitxer .torrent o una llista d'adreces (.txt, .ef2).
 #. text in the Scheduler window
 #, machine
-	November	Novembre
+	November	novembre
 #. text in the Options window
 #, machine
 	Number	Número
@@ -2771,13 +2799,16 @@
 	Numbers	Números
 #. text in the Scheduler window
 #, machine
-	October	Octubre
+	October	octubre
+#. option (radio button) in the Options window
+#, machine
+	Off	Desactivat
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	Desactivat: un torrent finalitzat s'atura, com qualsevol baixada.
 #. text in the Options window
 #, machine
-	Offer to download links copied to the clipboard	Oferir la baixada d'enllaços copiats al porta-retalls
+	Offer to download links copied to the clipboard	Ofereix baixar els enllaços copiats al porta-retalls
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 #, machine
@@ -2800,12 +2831,16 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	A macOS, només un administrador pot programar una activació
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	A Windows, Chrome, Edge i Brave poden bloquejar les seves galetes. Firefox funciona.
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Una vegada a les
 #. text in extension.rs
 #, machine
-	Once it is added, this window says so. Chrome may also ask by itself at its next start.	Un cop s'hagi afegit, aquesta finestra ho indicarà. Chrome també pot preguntar-ho per si mateix al seu proper inici.
+	Once it is added, this window says so. Chrome may also ask by itself at its next start.	Un cop s'hagi afegit, aquesta finestra ho indicarà. Chrome també pot preguntar-ho per si mateix en iniciar-se la propera vegada.
 #. text in the Options window
 #, machine
 	One address per line; * stands for any text: example.com/private/*	Una adreça per línia; * representa qualsevol text: example.com/private/*
@@ -2822,7 +2857,7 @@
 	Only a finished download, or one not started yet, can be moved	Només es pot moure una baixada finalitzada o una que encara no s'ha iniciat
 #. message or event log entry in the main window
 #, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Només es pot moure una baixada finalitzada o una que encara no s'ha iniciat. Atureu-la i finalitzeu-la primer.
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Només es pot moure una baixada finalitzada o una que encara no s'ha iniciat. Atura-la i finalitza-la primer.
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
@@ -2844,20 +2879,20 @@
 #. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 #, machine
-	Open	Obrir
+	Open	Obre
 #. button in crashui.rs; button in a dialog box
 #. crash report window button: show the report's file in its folder
 #, machine
 	Open folder	Obre la carpeta
 #. checkbox in the Add torrent window
 #, machine
-	Open magnet links and .torrent files with Mister Download Manager	Obrir enllaços magnet i fitxers .torrent amb Mister Download Manager
+	Open magnet links and .torrent files with Mister Download Manager	Obre els enllaços magnet i els fitxers .torrent amb Mister Download Manager
 #. text in the tray icon's menu
 #, machine
-	Open Mister Download Manager	Obrir Mister Download Manager
+	Open Mister Download Manager	Obre Mister Download Manager
 #. text in the Scheduler window
 #, machine
-	Open the following file when done	Obrir el fitxer següent quan s'hagi acabat
+	Open the following file when done	Obre el fitxer següent quan s'hagi acabat
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	Obre el fitxer següent quan s'hagi acabat:
@@ -3033,6 +3068,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	La previsualització encara no està disponible
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	Perfil (opcional):
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -3049,7 +3088,11 @@
 	Proxy / Socks	Servidor intermediari/Socks
 #. page title in the Options window
 #, machine
-	Proxy / socks configuration	Configuració del servidor intermediari/socks
+	Proxy / socks configuration	Configuració del proxy / Socks
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	servidor intermediari
 #. label in the Options window
 #, machine
 	Proxy server address	Adreça del servidor intermediari
@@ -3060,11 +3103,11 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	Put a * in the address where the numbers or letters go	Poseu un * a l'adreça on van els números o les lletres
+	Put a * in the address where the numbers or letters go	Posa un * a l’adreça on van els números o les lletres
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
-	Put them into the video	Posar-los al vídeo
+	Put them into the video	Posa’ls al vídeo
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3081,18 +3124,22 @@
 	Queue # {n}	Cua núm. {n}
 #. text in the Options window
 #, machine
-	Queue processing started	Processament de la cua iniciat
+	Queue processing started	S’ha iniciat el processament de la cua.
 #. text in the Options window
 #, machine
-	Queue processing stopped/finished	Processament de la cua aturat/finalitzat
+	Queue processing stopped/finished	S’ha aturat/finalitzat el processament de la cua.
 #. item in the Categories tree in the main window; text in the Scheduler window
 #. plural noun: the download queues
 #, machine
 	Queues	Cues
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	Només es llegeix en aquest ordinador i només s'envia al lloc del vídeo.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
-	Reading the crash data…	Llegint les dades de l'error…
+	Reading the crash data…	S’estan llegint les dades de l’error…
 #. text in the Add torrent window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3151,7 +3198,7 @@
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Remember this path for "{category}" category	Recorda aquest camí per a la categoria "{category}"
+	Remember this path for "{category}" category	Recorda aquest camí per a la categoria «{category}»
 #. button in the Options window; button in rssdlg.rs
 #. verb: remove the item
 #. RSS feeds window: unsubscribe from the selected feed
@@ -3163,7 +3210,7 @@
 #. text in a dialog box
 #. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
 #, machine
-	Remove its downloads from the list (running ones move to General)	Eliminar les baixades de la llista (les que s'estan executant es mouen a General)
+	Remove its downloads from the list (running ones move to General)	Elimina les baixades de la llista (les que s’estan executant es mouen a General)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -3174,7 +3221,7 @@
 	Restart MDM	Reinicia MDM
 #. button in the Options window; text in the Options window
 #, machine
-	Restore the built-in categories	Restaurar les categories integrades
+	Restore the built-in categories	Restaura les categories integrades
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -3270,7 +3317,7 @@
 	Sao Tome and Principe	São Tomé i Príncipe
 #. text in the Options window; text in the Scheduler window
 #, machine
-	Saturday	Dissabte
+	Saturday	dissabte
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3316,7 +3363,7 @@
 #. text in a dialog box
 #. title of the folder picker
 #, machine
-	Select a folder	Seleccioneu una carpeta
+	Select a folder	Selecciona una carpeta
 #. button in playlistdlg.rs; button in the Add torrent window
 #. button in Download video for a playlist: tick every video
 #, machine
@@ -3419,6 +3466,11 @@
 #. event log: File Properties: the download goes through the debrid account again
 #, machine
 	Set to download through the debrid account	S'ha configurat per baixar a través del compte de Debrid
+#. text in extension.rs
+#. a check of Test browser integration: setting it up failed; {error} is the system's own message, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Setting it up failed: {error}	La configuració ha fallat: {error}
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3487,17 +3539,17 @@
 	Show queue selection panel on pressing "Download Later" button	Mostra el panell de selecció de cua en prémer el botó "Baixa més tard"
 #. checkbox in the Options window
 #, machine
-	Show start download dialog	Mostra el diàleg d'inici de la descàrrega
+	Show start download dialog	Mostra el diàleg d’inici de baixada
 #. checkbox in the Options window; checkbox in the Scheduler window
 #, machine
 	Show warning before stopping downloads	Mostra un avís abans d'aturar les descàrregues
 #. text in a download's progress window
 #, machine
-	Shown while the torrent is downloading.	Es mostra mentre el torrent s'està baixant.
+	Shown while the torrent is downloading.	Es mostra mentre s’està baixant el torrent.
 #. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
-	Shut down	Tanca la sessió
+	Shut down	Apaga l’ordinador
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3507,13 +3559,25 @@
 #, machine
 	Sign in in the browser	Inicia la sessió al navegador
 #. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	Els inicis de sessió i les contrasenyes es guarden al clauer de macOS.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	Les credencials i les contrasenyes es guarden al clauer del sistema (Secret Service).
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	Els inicis de sessió i les contrasenyes es guarden al Gestor de credencials de Windows.
+#. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
 	Signed in as {user} ({state})	S'ha iniciat la sessió com a {user} ({state})
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
-	signed out: sign in again	s'ha tancat la sessió: torneu a iniciar-la
+	signed out: sign in again	sessió tancada: torna a iniciar-la
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3524,7 +3588,7 @@
 	Sint Maarten	Sint Maarten
 #. checkbox in the Find window
 #, machine
-	Site name/Download link/Parent web page/Referer	Nom del lloc/Enllaç de descàrrega/Pàgina web principal/Referent
+	Site name/Download link/Parent web page/Referer	Nom del lloc/Enllaç de baixada/Pàgina web principal/Referent
 #. text in the Options window
 #. column title: the site (and path) a login is for
 #, machine
@@ -3538,10 +3602,10 @@
 	Sites Logins	Inicis de sessió de llocs
 #. text in helpers.rs
 #, machine
-	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Els llocs web envien la seva millor qualitat com a vídeo i àudio separats, i ffmpeg els uneix. En aquest sistema, MDM utilitza el vostre: instal·leu ffmpeg amb el vostre gestor de paquets.
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Els llocs web envien el vídeo i l’àudio per separat amb la qualitat més alta, i ffmpeg els uneix. En aquest sistema, MDM utilitza el teu: instal·la ffmpeg amb el gestor de paquets.
 #. text in helpers.rs
 #, machine
-	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Els llocs web envien la seva millor qualitat com a vídeo i àudio separats. ffmpeg els uneix en un sol fitxer que es pot reproduir a qualsevol lloc.
+	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Els llocs web envien el vídeo i l’àudio per separat amb la qualitat més alta. ffmpeg els uneix en un sol fitxer que es pot reproduir a qualsevol lloc.
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -3560,7 +3624,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: put it to sleep)
 #, machine
-	Sleep	Suspèn
+	Sleep	Posa en suspensió
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3666,7 +3730,7 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: the download started (just now)
 #, machine
-	Started	Iniciat
+	Started	S'ha iniciat
 #. message or event log entry in the main window
 #. a gallery download's log: {version} = gallery-dl's version
 #. {version} = a version number (keep the braces as they are)
@@ -3683,7 +3747,7 @@
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
-	Started with yt-dlp {version} ({format})	Iniciat amb yt-dlp {version} ({format})
+	Started with yt-dlp {version} ({format})	S'ha iniciat amb yt-dlp {version} ({format})
 #. text in helpers.rs
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3738,11 +3802,11 @@
 #. message or event log entry in the main window
 #. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
 #, machine
-	Stopped: the network adapter changed; starting again	Aturat: l'adaptador de xarxa ha canviat; es torna a iniciar
+	Stopped: the network adapter changed; starting again	S'ha aturat: ha canviat l'adaptador de xarxa; es torna a iniciar
 #. message or event log entry in the main window
 #. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
 #, machine
-	Stopped: {adapter} is not connected; it goes on when it is back	Aturat: {adapter} no està connectat; continuarà quan torni a estar-ho
+	Stopped: {adapter} is not connected; it goes on when it is back	S'ha aturat: {adapter} no està connectat; es reprendrà quan torni a estar connectat
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	S'atura quan la descàrrega finalitza
@@ -3780,7 +3844,7 @@
 	Sunday	Diumenge
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Support MDM on GitHub Sponsors	Donar suport a MDM a GitHub Sponsors
+	Support MDM on GitHub Sponsors	Dona suport a MDM a GitHub Sponsors
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3822,7 +3886,7 @@
 	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Tasques → Capturador d'enllaços, o "Baixa tots els enllaços" del navegador: els volums d'un arxiu\ndividit són un paquet, els altres enllaços d'una pàgina un altre.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Tell a friend	Recomana a un amic
+	Tell a friend	Recomana-ho a un amic
 #. group box title in the Options window
 #, machine
 	Temporary directory	Directori temporal
@@ -3932,7 +3996,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
-	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	El DHT no ha arribat a ningú. Un tallafoc, una VPN o la xarxa poden estar bloquejant UDP, que utilitzen el DHT i la majoria de rastrejadors.
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	El DHT no ha pogut contactar amb ningú. Un tallafoc, una VPN o la xarxa poden estar bloquejant UDP, que utilitzen el DHT i la majoria de rastrejadors.
 #. text in errors.rs
 #, machine
 	the disk is full	el disc és ple
@@ -3943,7 +4007,7 @@
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
-	The download limit ({mb} MBytes every {hours} hours) has been reached.	S'ha arribat al límit de descàrrega ({mb} MB cada {hours} hores).
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	S'ha arribat al límit de baixada ({mb} MB cada {hours} hores).
 #. text in errors.rs
 #, machine
 	the download link has expired (refresh the download address)	l'enllaç de baixada ha caducat (actualitzeu l'adreça de baixada)
@@ -4022,6 +4086,10 @@
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
 	the FTP server answered {code} {reply}	el servidor FTP ha respost {code} {reply}
+#. text in extension.rs
+#. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
+#, machine
+	The helper program the browsers start is missing	Falta el programa d'ajuda que inicien els navegadors
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4047,7 +4115,7 @@
 	the release has no {what}	la versió no té {what}
 #. text in errors.rs
 #, machine
-	the release's checksum list is not signed by its publisher's key	la llista de sumes de comprovació de la versió no està signada per la clau del seu editor
+	the release's checksum list is not signed by its publisher's key	la llista de sumes de comprovació de la versió no està signada amb la clau del seu editor
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine
@@ -4088,10 +4156,22 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	el servidor ha enviat una part inesperada del fitxer ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	El lloc vol que inicieu la sessió, fins i tot amb les galetes del vostre navegador per a aquesta pàgina. Inicieu-hi la sessió al vostre navegador i torneu-ho a provar.
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	El lloc vol que inicieu la sessió, fins i tot amb les galetes de {browser}. Inicieu-hi la sessió a {browser} i torneu a cercar la pàgina.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	No s'han pogut obtenir els símbols: algunes línies de l'informe mostren adreces en lloc de noms (els desenvolupadors encara les poden llegir).
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	El clauer del sistema està bloquejat i MDM no el desbloqueja, de manera que els inicis de sessió i les contrasenyes es guarden a la configuració de MDM, que només podeu llegir vosaltres.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4196,6 +4276,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Això requereix ffmpeg
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Aquesta còpia portàtil guarda els inicis de sessió i les contrasenyes a la seva pròpia configuració, xifrada per al vostre compte de Windows.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Aquesta còpia portàtil guarda els inicis de sessió i les contrasenyes a la seva pròpia configuració, que només podeu llegir vosaltres.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4221,7 +4309,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Aquest vídeo requereix que hagis iniciat la sessió. Utilitza el botó Baixa vídeo que hi ha a sobre al navegador, que transmet el teu inici de sessió.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Aquest vídeo requereix que iniciïs la sessió. Fes servir el botó Baixa el vídeo que hi ha a sobre del vídeo al navegador, que transmet les teves dades d'inici de sessió, o tria el navegador a Opcions → Inicis de sessió de llocs → Galetes per a llocs de vídeo.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4491,13 +4579,13 @@
 	Use another program...	Utilitza un altre programa...
 #. text in the Batch download window; checkbox in the Batch download window; text in a dialog box; checkbox in a dialog box
 #, machine
-	Use authorization	Utilitzar autorització
+	Use authorization	Fes servir l’autorització
 #. text in the Options window
 #, machine
-	Use automatic configuration script	Utilitzar script de configuració automàtica
+	Use automatic configuration script	Fes servir l’script de configuració automàtica
 #. checkbox in the Options window
 #, machine
-	Use FTP in PASV mode	Utilitzar FTP en mode PASV
+	Use FTP in PASV mode	Fes servir FTP en mode PASV
 #. button in helpers.rs
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
@@ -4509,13 +4597,13 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	Utilitzar proxy/socks d'una sol·licitud del navegador si hi ha errors de baixada /\nper a les baixades interceptades del navegador
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	Fes servir el proxy/socks d’una sol·licitud del navegador si hi ha errors de baixada /\nper a les baixades interceptades del navegador
 #. checkbox in a download's progress window
 #, machine
-	Use Speed Limiter	Utilitzar limitador de velocitat
+	Use Speed Limiter	Fes servir el limitador de velocitat
 #. text in the Options window
 #, machine
-	Use system settings	Utilitzar la configuració del sistema
+	Use system settings	Fes servir la configuració del sistema
 #. checkbox in the Add torrent window
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
@@ -4526,33 +4614,33 @@
 	Use the token	Utilitza el testimoni
 #. text in a dialog box
 #, machine
-	Use them for this torrent? What matches it is kept, the rest replaced.	Utilitzar-los per a aquest torrent? El que coincideix es manté, la resta es reemplaça.
+	Use them for this torrent? What matches it is kept, the rest replaced.	Vols fer-los servir per a aquest torrent? Es conserva el que coincideix i se substitueix la resta.
 #. label in the Options window
 #, machine
-	Use this proxy for the following protocols:	Utilitzar aquest proxy per als protocols següents:
+	Use this proxy for the following protocols:	Fes servir aquest proxy per als protocols següents:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the rule is on
 #, machine
 	Use this rule	Utilitza aquesta regla
 #. text in the Options window
 #, machine
-	Used by the list of downloads and the Scheduler.	Utilitzat per la llista de baixades i el Planificador.
+	Used by the list of downloads and the Scheduler.	La llista de baixades i el Programador en fan ús.
 #. text in the Options window
 #. column title: the user name
 #, machine
 	User	Usuari
 #. page title in the Options window
 #, machine
-	User names and passwords for servers/sites	Noms d'usuari i contrasenyes per a servidors/llocs
+	User names and passwords for servers/sites	Noms d’usuari i contrasenyes per a servidors/llocs
 #. text in the Options window
 #, machine
-	User-Agent for manually added downloads:	Agent d'usuari per a baixades afegides manualment:
+	User-Agent for manually added downloads:	Agent d’usuari per a baixades afegides manualment:
 #. text in the Options window
 #, machine
 	User:	Usuari:
 #. label in the Options window
 #, machine
-	UserName	Nom d'usuari
+	UserName	Nom d’usuari
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4579,14 +4667,14 @@
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
-	Verify	Verificar
+	Verify	Verifica
 #. window title in the Checksum window; text in the Checksum window
 #, machine
-	Verify checksum	Verificar suma de comprovació
+	Verify checksum	Verifica la suma de comprovació
 #. text in the download list (sizes, speeds, status)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Verifying...	Verificant...
+	Verifying...	S’està verificant...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -4597,15 +4685,7 @@
 	Video	Vídeo
 #. text in the Download video window
 #, machine
-	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Les cerques de vídeo utilitzen yt-dlp (uns 23 MB, comprovat amb la seva signatura).
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	Les pàgines de vídeo i els torrents no el poden utilitzar encara.
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	Les pàgines de vídeo no el poden utilitzar encara.
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Les cerques de vídeos es fan amb yt-dlp (uns 23 MB, comprovat amb la seva signatura).
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4621,7 +4701,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Virgin Islands (U.S.)	Illes Verges Americanes
+	Virgin Islands (U.S.)	Illes Verges dels Estats Units
 #. text in the Options window
 #, machine
 	Virus checking settings	Configuració de la comprovació de virus
@@ -4633,16 +4713,16 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
-	Wait for the list, or stop listing	Espera la llista o atura-la
+	Wait for the list, or stop listing	Espera que es mostri la llista o atura’n la generació
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
-	Waiting	Esperant
+	Waiting	En espera
 #. message or event log entry in the main window
 #, machine
-	Waiting: the download limit is reached (Scheduler)	Esperant: s'ha arribat al límit de baixades (Planificador)
+	Waiting: the download limit is reached (Scheduler)	En espera: s’ha arribat al límit de baixades (Programador)
 #. text in the Scheduler window
 #. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
 #, machine
@@ -4684,6 +4764,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows permet els temporitzadors d'activació només mentre està endollat
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	El Gestor de credencials de Windows no ha respost, de manera que els inicis de sessió i les contrasenyes es guarden a la configuració de MDM, xifrada per al vostre compte de Windows.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4764,9 +4848,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	El vostre sistema: {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp no pot llegir les galetes de {browser} mentre {browser} està obert. Tanqueu {browser} i torneu a cercar la pàgina, o trieu Firefox a Opcions → Inicis de sessió de llocs.
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp no ha pogut obtenir la clau de les galetes de {browser} del dipòsit de claus del sistema. Desbloquegeu el dipòsit de claus i torneu a cercar la pàgina.
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp no ha pogut llegir les galetes de {browser}: {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp no ha trobat galetes de {browser} en aquest ordinador. Comproveu el navegador i el seu perfil a Opcions → Inicis de sessió de llocs.
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp no està instal·lat (Tasques → Baixa vídeo d'una pàgina l'instal·la)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp inicia la sessió als llocs de vídeo amb les galetes d'aquest navegador, llegides només dels seus fitxers en aquest ordinador. S'utilitza quan l'extensió del navegador no ha passat les galetes de la pàgina: una adreça enganxada, una llista de reproducció.
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4782,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ i XZ; un arxiu dividit (.part1.rar, .7z.001) un cop\ntots els volums hi són. Un fitxer que ja hi és es conserva: el nou es numera.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ i XZ; un arxiu dividit (.part1.rar, .7z.001) un cop\ntots els volums hi són. Es conserva el fitxer que ja hi ha: el nou es numera.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4799,6 +4904,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: comprovat quan la baixada finalitza
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} manté les galetes bloquejades perquè només s'hi pugui accedir des del mateix navegador a Windows, de manera que yt-dlp no les pot llegir. Tria Firefox a Opcions → Inicis de sessió als llocs, o fes servir el botó Baixa el vídeo que hi ha damunt del vídeo a {browser}.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -4811,7 +4920,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
-	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} serveix aquest fitxer: la ubicació és la del seu servidor, sovint a prop vostre, no la del propietari del lloc.
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} serveix aquest fitxer: la ubicació és la del seu servidor, sovint a prop teu, no la del propietari del lloc.
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -4851,7 +4960,7 @@
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} ({size} each)	{have} de {total} ({size} cadascun)
+	{have} of {total} ({size} each)	{have} de {total} ({size} cadascuna)
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -4864,7 +4973,7 @@
 #. text in errors.rs
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 #, machine
-	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} no es pot accedir a través de {adapter}: no té cap adreça d'aquest tipus (IPv4 o IPv6)
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	No es pot accedir a {ip} a través de {adapter}: no té cap adreça d'aquest tipus (IPv4 o IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -4934,17 +5043,17 @@
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} us demana que permeteu primer aquest ordinador: consulteu el seu correu electrònic
+	{service} asks you to allow this computer first: see its email	{service} et demana que autoritzis primer aquest ordinador: consulta el correu electrònic que t'ha enviat
 #. text in errors.rs
 #, machine
 	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} no pot obtenir aquest torrent: ningú el comparteix o l'enllaç no es pot llegir
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} no pot arribar a aquest allotjament de fitxers ara mateix; MDM ho tornarà a intentar més tard
+	{service} can't reach this file host right now; MDM will try again later	{service} no pot accedir a aquest allotjament de fitxers ara mateix; MDM ho tornarà a intentar més tard
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
-	{service} is not responding; try again later	{service} no respon; torneu-ho a provar més tard
+	{service} is not responding; try again later	{service} no respon; torna-ho a provar més tard
 #. text in errors.rs
 #. a debrid service's error: it refuses this computer's address (a VPN or a server address)
 #, machine
@@ -4960,7 +5069,7 @@
 #. text in errors.rs
 #. a debrid service's error: the account is locked, banned or not activated
 #, machine
-	{service}: the account is locked or not activated	{service}: el compte està bloquejat o no activat
+	{service}: the account is locked or not activated	{service}: el compte està bloquejat o no està activat
 #. text in errors.rs
 #. a debrid service's error: the file is gone from its host
 #, machine
@@ -5116,11 +5225,11 @@ extension	Help	Ajuda
 #. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
-extension	Hide on this video	Amaga en aquest vídeo
+extension	Hide on this video	Amaga només en aquest vídeo
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
-extension	Hold Alt while clicking a link to let the browser download it.	Mantén Alt premut mentre fas clic a un enllaç per deixar que el navegador el baixi.
+extension	Hold Alt while clicking a link to let the browser download it.	Mantén premuda la tecla Alt mentre fas clic en un enllaç perquè el navegador el baixi.
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
@@ -5177,7 +5286,7 @@ extension	Mister Download Manager isn't installed, or its browser integration is
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager descarrega llavors a través del mateix servidor intermediari que aquest navegador. El navegador us demanarà una vegada que ho permeteu; si ho desactiveu, es revoca el permís.
+extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Aleshores, Mister Download Manager baixa els fitxers a través del mateix servidor intermediari que aquest navegador. El navegador et demanarà una vegada que ho permetis; si desactives aquesta opció, revocaràs el permís.
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -5186,16 +5295,16 @@ extension	More options	Més opcions
 #. menu command of the download button over a video: never show the button on this web site again
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-extension	Never on {site}	Mai a {site}
+extension	Never on {site}	No ho tornis a mostrar a {site}
 #. text in the browser extension
 #. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-extension	Never take downloads from {site}	No baixis mai de {site}
+extension	Never take downloads from {site}	No interceptis mai les baixades de {site}
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
-extension	No video or sound found on this page yet. Play it, then open this again.	Encara no s'ha trobat cap vídeo ni so en aquesta pàgina. Reprodueix-lo i torna a obrir-ho.
+extension	No video or sound found on this page yet. Play it, then open this again.	Encara no s’ha trobat cap vídeo ni cap so en aquesta pàgina. Reprodueix-ne un i torna a obrir-ho.
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
@@ -5228,11 +5337,11 @@ extension	Sent to Mister Download Manager	Enviat a Mister Download Manager
 #. text in the browser extension
 #. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
 #, machine
-extension	Support MDM	Donar suport a MDM
+extension	Support MDM	Dona suport a MDM
 #. text in the browser extension
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
-extension	Take downloads from this browser	Rebre baixades d'aquest navegador
+extension	Take downloads from this browser	Intercepta les baixades d’aquest navegador
 #. text in the browser extension
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
@@ -5260,7 +5369,7 @@ extension	This download's details were too large to hand over	Els detalls d'aque
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
-extension	Update Mister Download Manager to use everything this extension offers	Actualitzeu Mister Download Manager per utilitzar tot el que ofereix aquesta extensió
+extension	Update Mister Download Manager to use everything this extension offers	Actualitza Mister Download Manager per aprofitar tot el que ofereix aquesta extensió
 #. text in the browser extension
 #. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
 #, machine
@@ -5304,7 +5413,7 @@ key	Delete	Supr
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Drag on blank space	Arrossegar en espai en blanc
+key	Drag on blank space	Arrossega en un espai en blanc
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -5332,19 +5441,19 @@ key	Shift+click	Majúscules+clic
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Shift+Delete	Majúscules+Supr
+key	Shift+Delete	Maj+Supr
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Shift+F10	Majúscules+F10
+key	Shift+F10	Maj+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Shift+F10 / Menu	Majúscules+F10 / Menú
+key	Shift+F10 / Menu	Maj+F10 / Menú
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Shift+Up / Shift+Down	Majúscules+Amunt / Majúscules+Avall
+key	Shift+Up / Shift+Down	Maj+Amunt / Maj+Avall
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -5497,7 +5606,7 @@ menu	Adwaita	Adwaita
 #. menu command in the main window
 #. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
 #, machine
-menu	Applies the next time MDM starts	S'aplicarà la pròxima vegada que s'iniciï MDM
+menu	Applies the next time MDM starts	S'aplica la pròxima vegada que s'iniciï MDM
 #. menu command in the main window
 #, machine
 menu	Arrange files	Organitza fitxers
@@ -5544,7 +5653,7 @@ menu	By Parent &Web Page	Per pàgina &web principal
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	By R&eferer	Per &referent
+menu	By R&eferer	Per &referència
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5603,7 +5712,7 @@ menu	Direct3D	Direct3D
 #. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Direct3D didn't start here: OpenGL draws	Direct3D no s'ha iniciat aquí: OpenGL dibuixa
+menu	Direct3D didn't start here: OpenGL draws	Direct3D no s'ha iniciat en aquest ordinador: OpenGL dibuixa
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -5647,7 +5756,7 @@ menu	Font	Font
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	From &IDM export file...	Des d'un fitxer d'exportació d'&IDM...
+menu	From &IDM export file...	Des d'un fitxer d'exportació de l'&IDM...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -5667,15 +5776,15 @@ menu	High contrast	Contrast alt
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
-menu	It couldn't start: the log says why	No s'ha pogut iniciar: el registre indica el motiu
+menu	It couldn't start: the log says why	No s'ha pogut iniciar: el registre n'indica el motiu
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
 #, machine
-menu	Its first frame didn't show within 10 seconds	El seu primer fotograma no s'ha mostrat en 10 segons
+menu	Its first frame didn't show within 10 seconds	El primer fotograma no s'ha mostrat en 10 segons
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
-menu	Its last start ended before its first frame	El seu darrer inici ha acabat abans del seu primer fotograma
+menu	Its last start ended before its first frame	L'últim inici s'ha acabat abans que es mostrés el primer fotograma
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Apple's), usually kept as is
 #, machine
@@ -5702,7 +5811,7 @@ menu	Native	Natiu
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
-menu	No graphics card here has a driver for it	Cap targeta gràfica té un controlador per a això
+menu	No graphics card here has a driver for it	Cap targeta gràfica d'aquest ordinador té un controlador per a aquest sistema
 #. menu command in the main window
 #, machine
 menu	On Double click	En fer doble clic
@@ -5710,23 +5819,23 @@ menu	On Double click	En fer doble clic
 #. verb: opens the downloaded file
 #. what double-clicking a download does — verb: open the file
 #, machine
-menu	Open	Obrir
+menu	Open	Obre
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Open &torrent file...	Obrir fitxer de &torrent...
+menu	Open &torrent file...	Obre el fitxer de &torrent...
 #. menu command in the main window
 #, machine
-menu	Open folder	Obrir carpeta
+menu	Open folder	Obre la carpeta
 #. menu command in the main window
 #. View → Theme: opens the folder where theme files go (TOML or JSON)
 #, machine
-menu	Open themes folder	Obrir la carpeta de temes
+menu	Open themes folder	Obre la carpeta de temes
 #. menu command in the main window
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Open with...	Obrir amb...
+menu	Open with...	Obre amb...
 #. menu command in the main window
 #. View → Draw with: a graphics system's name, usually kept as is
 #, machine
@@ -5745,31 +5854,31 @@ menu	R&edownload	&Torna a baixar
 #. menu command in the main window
 #. right-click → Torrent: ask the torrent's trackers for peers again now
 #, machine
-menu	Reannounce	Reanuncia
+menu	Reannounce	Torna a anunciar
 #. menu command in the main window
 #. right-click → Torrent: read every piece of the torrent's files again and check it
 #, machine
-menu	Recheck files	Recomprova els fitxers
+menu	Recheck files	Torna a comprovar els fitxers
 #. menu command in the main window
 #. verb: download the file again from the start
 #, machine
 menu	Redownload	Torna a baixar
 #. menu command in the main window
 #, machine
-menu	Refresh download address	Actualitzar adreça de baixada
+menu	Refresh download address	Actualitza l'adreça de baixada
 #. menu command in the main window
 #. verb: removes the download from the list
 #, machine
-menu	Remove	Eliminar
+menu	Remove	Elimina
 #. menu command in the main window
 #. verb: removes the selected download from the list and its file from the disk
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Remove with &files	Suprimeix amb els &fitxers
+menu	Remove with &files	Suprimeix els &fitxers
 #. menu command in the main window
 #. verb: removes the download from the list and its file from the disk
 #, machine
-menu	Remove with files	Suprimeix amb els fitxers
+menu	Remove with files	Suprimeix els fitxers
 #. menu command in the main window
 #, machine
 menu	Resume Download	Reprèn la baixada
@@ -5822,7 +5931,7 @@ menu	Stop Download	Atura la baixada
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Support &MDM	Donar suport a &MDM
+menu	Support &MDM	Dona suport a &MDM
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5830,7 +5939,7 @@ menu	Tell a &friend	Explica-ho a un &amic
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
-menu	The graphics card was lost twice in 10 minutes	La targeta gràfica s'ha perdut dues vegades en 10 minuts
+menu	The graphics card was lost twice in 10 minutes	La targeta gràfica ha deixat de funcionar dues vegades en 10 minuts
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
@@ -5956,43 +6065,332 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/s
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	Fitxer .torrent
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	Afegeix
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	Afegit.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	Afegit. MDM està llegint el torrent: s'unirà a la llista en un moment.
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	Adreça o enllaç magnet
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	Tot
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	Automàtic (per tipus de fitxer)
 #. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
-	in the locked keyring	al clauer bloquejat
+	Certificate (SHA-256): {fingerprint}	Certificat (SHA-256): {fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	Tria un fitxer .torrent
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	Codi
 #. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: label before the 8-digit code
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	El clauer del sistema no ha respost, de manera que els inicis de sessió i les contrasenyes es guarden a la configuració de MDM, que només podeu llegir vosaltres.
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+	Code:	Codi:
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
 #, machine
-	proxy server	servidor intermediari
+	Delete the file too	Suprimeix també el fitxer
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#. column title: a paired phone's or computer's name
 #, machine
-	Sign-ins and passwords are kept in the macOS keychain.	Els inicis de sessió i les contrasenyes es guarden al clauer de macOS.
+	Device	Dispositiu
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
 #, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	Els inicis de sessió i les contrasenyes es guarden al clauer del sistema (Secret Service).
+	Every local network address	Totes les adreces de xarxa local
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	Oblida aquest dispositiu
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	Vols oblidar aquest dispositiu? Necessitarà un codi nou per tornar-se a connectar.
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	des d'un dispositiu vinculat
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
 #, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	Els inicis de sessió i les contrasenyes es guarden al Gestor de credencials de Windows.
+	It could not start: {error}	No s'ha pogut iniciar: {error}
 #. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. column title: when the device last reached MDM
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	El clauer del sistema està bloquejat i MDM no el desbloqueja, de manera que els inicis de sessió i les contrasenyes es guarden a la configuració de MDM, que només podeu llegir vosaltres.
+	Last seen	Última vegada que es va veure
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	Permet que els telèfons i ordinadors de la xarxa local controlin MDM
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#. Options → Remote: label before the choice of the address MDM listens on
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Aquesta còpia portàtil guarda els inicis de sessió i les contrasenyes a la seva pròpia configuració, xifrada per al vostre compte de Windows.
+	Listen on:	Escolta a:
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Aquesta còpia portàtil guarda els inicis de sessió i les contrasenyes a la seva pròpia configuració, que només podeu llegir vosaltres.
+	MDM can't be reached on the network now: Options → Remote says why.	MDM no es pot accedir a la xarxa ara: Opcions → Remot indica per què.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	MDM no pot baixar aquesta adreça.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	MDM no l'ha pogut afegir.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	MDM no ho ha pogut fer.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM no respon. Comprova que s'està executant i que es troba a la mateixa xarxa.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM no respon. S'està tornant a intentar...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	MDM no mostra cap codi ara. Fes clic a Vincula un dispositiu primer.
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	Més
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	Codi nou
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	No hi ha baixades aquí.
 #. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	El Gestor de credencials de Windows no ha respost, de manera que els inicis de sessió i les contrasenyes es guarden a la configuració de MDM, xifrada per al vostre compte de Windows.
+	No local network now: it starts when the computer joins one.	No hi ha xarxa local ara: s'iniciarà quan l'ordinador s'uneixi a una.
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	Desactivat: res a la xarxa pot accedir a MDM.
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	A l'ordinador, obre Opcions, després Remot i fes clic a Vincula un dispositiu. Introdueix el codi que mostra.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	Al telèfon, escaneja aquest codi amb la càmera o obre l'adreça i introdueix el codi.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	Activat. Al telèfon, obre aquesta adreça:
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Només els dispositius vinculats poden veure o canviar qualsevol cosa. La primera vegada, el navegador del telèfon avisarà sobre el certificat propi de MDM: la seva empremta digital és la de dalt.
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	Vincula
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	Vincula un dispositiu
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	Vincula un dispositiu...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Vincula amb Mister Download Manager
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	Vinculat
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	Dispositius vinculats:
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	El port {port} l'està utilitzant un altre programa: trieu-ne un altre.
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	En cua
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	Remot
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	Control remot
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	Voleu eliminar {name} de la llista?
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	Inicia ara
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	Els canvis s'aplicaran quan feu clic a D'acord.
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	Aquest codi ja no es pot utilitzar.
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	Només aquest ordinador (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	Nom d'aquest dispositiu
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	Aquest fitxer és massa gran per ser un torrent.
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	Això no és un fitxer torrent.
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	Activeu primer el control remot.
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	Espereu un moment i torneu-ho a provar.
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	Espera a {queue}
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	Esperant el dispositiu. El codi funciona durant {time}.
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	Quan
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	Codi incorrecte. Mostra un codi nou a MDM i torna-ho a provar.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	Codi incorrecte. Intentos restants: {n}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} està vinculat. Ara pot controlar MDM.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{done} de {size}
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} lliures
+#. text in the browser extension
+#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
+#, machine
+extension	Another Mister Download Manager (a server)	Un altre Mister Download Manager (un servidor)
+#. text in the browser extension
+#. the name this browser gets in the other MDM's list of paired devices
+#, machine
+extension	Browser extension	Extensió del navegador
+#. text in the browser extension
+#. the toolbar button's status while downloads go to another MDM
+#, machine
+extension	Downloads go to {address}	Les baixades van a {address}
+#. text in the browser extension
+#. the address typed isn't an https:// address
+#, machine
+extension	Enter its https:// address.	Introduïu la seva adreça https://.
+#. text in the browser extension
+#. pairing failed for another reason
+#, machine
+extension	It didn't work. Try again.	No ha funcionat. Torneu-ho a provar.
+#. text in the browser extension
+#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
+#, machine
+extension	It shows no code now: click Pair a device there first.	Ara no mostra cap codi: primer feu clic a Empllaçar un dispositiu allà.
+#. text in the browser extension
+#. pairing failed: the other MDM didn't answer
+#, machine
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	No s'ha pogut accedir. Obriu la seva adreça una vegada en aquest navegador i accepteu el seu certificat, i torneu-ho a provar.
+#. text in the browser extension
+#. button: open the other MDM's address in a tab (to accept its certificate once)
+#, machine
+extension	Open it	Obrir-lo
+#. text in the browser extension
+#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
+#, machine
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	Obriu la seva adreça una vegada i accepteu el seu certificat, i introduïu un codi des de les seves Opcions, Remot, Empllaçar un dispositiu (o misterdownloadmanager-cli pair).
+#. text in the browser extension
+#. button: pair this browser with the other MDM using the code
+#, machine
+extension	Pair	Empllaçar
+#. text in the browser extension
+#. placeholder of the box for the 8-digit code the other MDM shows
+#, machine
+extension	Pairing code	Codi d'empllaçament
+#. text in the browser extension
+#. heading in the toolbar button's popup, above the choice of where downloads go
+#, machine
+extension	Send downloads to	Enviar baixades a
+#. text in the browser extension
+#. choice under Send downloads to: the Mister Download Manager on this computer
+#, machine
+extension	This computer	Aquest ordinador
+#. text in the browser extension
+#. pairing failed: codes tried too fast
+#, machine
+extension	Wait a moment, then try again.	Espereu un moment i torneu-ho a provar.
+#. text in the browser extension
+#. pairing failed: the code was wrong
+#, machine
+extension	Wrong code.	Codi incorrecte.

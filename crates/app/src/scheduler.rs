@@ -824,17 +824,23 @@ impl Scheduler {
             "Exit Mister Download Manager when done",
             true,
         );
+        // The drop-down as wide as its choices in this language need (#192), widening to the
+        // left (its right end kept), up to 8 px after the caption, which stays whole.
+        let caption_end = winui::checkbox_caption_end(&p, 228.0, "Turn off computer when done");
+        let turn_off_w =
+            winui::combo_fit_width(&p, &TurnOff::LABELS, 119.0, 627.0 - (caption_end + 8.0));
+        let turn_off_x = 627.0 - turn_off_w;
         winui::checkbox_light_until(
             ui,
             at(228.0, 384.0 + DY),
             &mut f.turn_off_on,
             "Turn off computer when done",
             true,
-            Some(o.x + 508.0),
+            Some(o.x + turn_off_x),
         );
         if let Some(i) = winui::combo_light(
             ui,
-            r(o, 508.0, 383.0 + DY, 119.0, 21.0),
+            r(o, turn_off_x, 383.0 + DY, turn_off_w, 21.0),
             &TurnOff::LABELS,
             f.turn_off,
             f.turn_off_on,

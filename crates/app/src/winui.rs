@@ -2596,6 +2596,26 @@ pub fn button_fit_width(p: &Painter, label: &str, min: f32, max: f32) -> f32 {
     label_width(p, label, min).clamp(min, max.max(min))
 }
 
+/// The English x where the translated `caption` of a checkbox whose glyph is at English x `x`
+/// ends ([`checkbox_light_until`]'s caption starts 16 px after its glyph): what a control after
+/// it may come up to.
+pub fn checkbox_caption_end(p: &Painter, x: f32, caption: &str) -> f32 {
+    x + 16.0 + text_width(p, crate::i18n::t(caption))
+}
+
+/// How wide a [`combo_light`] must be for each of its translated `items` to show whole before
+/// its chevron (the widest decides, so the box keeps its size as the choice changes): at least
+/// `min` (its English width: English items fit it, so English never changes), at most `max`
+/// (past it the choice ends in "..." and shows whole on hover, as before).
+pub fn combo_fit_width(p: &Painter, items: &[&str], min: f32, max: f32) -> f32 {
+    let widest = items
+        .iter()
+        .map(|item| text_width_font(p, tahoma(), crate::i18n::t(item)))
+        .fold(0.0, f32::max);
+    // combo_light's room for its label: 5 px before it, 19 px for the chevron after it.
+    (widest + 5.0 + 19.0).ceil().clamp(min, max.max(min))
+}
+
 /// The width a [`button`] `english` px wide wants for its translated `label`: the label and the
 /// room inside the border; no wider than `english` where the label shows whole in it (a label
 /// that fits as tightly as some English ones do keeps the button as it is), and narrower where the
@@ -5607,6 +5627,24 @@ mod tests {
             // Cut: as wide as the label and the usual room.
             let cut = (text + 2.0).floor();
             assert_eq!(button_fit_width(p, label, cut, 300.0), (text + 16.0).ceil());
+        });
+    }
+
+    #[test]
+    fn a_drop_down_is_as_wide_as_its_widest_choice() {
+        with_painter(|p| {
+            // Short choices: its English width.
+            assert_eq!(
+                combo_fit_width(p, &["Sleep", "Hibernate"], 119.0, 300.0),
+                119.0
+            );
+            // A long one: it and the chevron's room, whichever is chosen.
+            let long = "A choice much longer than its English box";
+            let want = (text_width(p, long) + 24.0).ceil();
+            assert_eq!(combo_fit_width(p, &["Sleep", long], 119.0, 300.0), want);
+            // No room for it: as wide as there is (it ends in "..."), never below English.
+            assert_eq!(combo_fit_width(p, &[long], 119.0, 150.0), 150.0);
+            assert_eq!(combo_fit_width(p, &[long], 119.0, 80.0), 119.0);
         });
     }
 

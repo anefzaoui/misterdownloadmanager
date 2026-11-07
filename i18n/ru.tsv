@@ -187,11 +187,15 @@
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	A file of this torrent can't be saved safely: {name}	Файл этого торрента не может быть безопасно сохранен: {name}
+	A file of this torrent can't be saved safely: {name}	Не удалось безопасно сохранить файл этого торрента: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
-	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Идентификатор конфигурации NextDNS состоит из шести букв и цифр (0-9, a-f).
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Идентификатор конфигурации NextDNS состоит из шести букв и цифр (0–9, a–f).
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
+#, machine
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Имя профиля или его папка. Пусто: последний использованный профиль. Для браузера на основе Chromium, которого нет в списке (Helium, Thorium...), выберите Chromium и папку его профиля.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -203,7 +207,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
-	A rule adds the new articles whose titles it matches, as they come.	Правило добавляет новые статьи, заголовки которых ему соответствуют, по мере их поступления.
+	A rule adds the new articles whose titles it matches, as they come.	Правило добавляет новые статьи по мере их поступления, если их заголовки ему соответствуют.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -218,7 +222,7 @@
 	a volume of it is missing	отсутствует один из томов
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	About Mister Download Manager	О Mister Download Manager
+	About Mister Download Manager	О программе Mister Download Manager
 #. text in whereis.rs
 #. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
 #, machine
@@ -311,7 +315,7 @@
 #. message or event log entry in the main window
 #. event log entry: an RSS download rule added this torrent; {rule} is the rule's name, {feed} the feed's
 #, machine
-	Added by the RSS rule {rule} from {feed}	Добавлено правилом RSS {rule} из {feed}
+	Added by the RSS rule {rule} from {feed}	Добавлен правилом RSS {rule} из ленты {feed}
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -369,7 +373,7 @@
 	All files	Все файлы
 #. text in helpers.rs
 #, machine
-	All set: on a page with a video, use Tasks → Download video from a page.	Все готово: на странице с видео используйте Задачи → Загрузить видео со страницы.
+	All set: on a page with a video, use Tasks → Download video from a page.	Всё готово: на странице с видео выберите Задачи → Загрузить видео со страницы.
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
@@ -414,7 +418,7 @@
 #. text in regional.rs; text in the Scheduler window
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
-	AM	ДП
+	AM	AM
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -825,6 +829,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Выберите язык, на котором Mister Download Manager будет отображать свои окна:
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
+#, machine
+	Choose the profile's folder	Выбор папки профиля
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -915,6 +923,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cook Islands	Острова Кука
+#. group box title in the Options window
+#. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
+#, machine
+	Cookies for video sites	Файлы cookie для видеосайтов
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	Скопировано в буфер обмена.
@@ -1423,13 +1435,13 @@
 #. text in the Options window
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Экспериментально: создано на основе общедоступной документации API служб, еще не подтверждено реальными учетными записями.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Экспериментальная функция: создана на основе общедоступной документации API служб, еще не проверена на реальных учетных записях.
 #. message or event log entry in the main window
 #, machine
 	Export	Экспорт
 #. text in the Options window
 #, machine
-	Extend the availability of Manifest 2 Chrome extensions	Расширить доступность расширений Chrome Manifest 2
+	Extend the availability of Manifest 2 Chrome extensions	Продлить срок поддержки расширений Chrome Manifest 2
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	Расширения, разделенные пробелами, например MP4 MKV R0*
@@ -1648,6 +1660,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	из torrent-файла
+#. option (radio button) in the Options window
+#. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
+#, machine
+	From browser:	Из браузера:
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1782,7 +1798,7 @@
 	Haiti	Гаити
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Hang up modem when done	Отключить модем по завершении
+	Hang up modem when done	Отключать модем по завершении
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
@@ -1790,7 +1806,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Heard Island and McDonald Islands	Острова Херд и Макдоналд
+	Heard Island and McDonald Islands	Острова Херд и Макдональд
 #. button in the Options window
 #. noun: button that opens the help
 #, machine
@@ -1807,12 +1823,12 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
-	Hibernate	Гибернация
+	Hibernate	Перевести компьютер в спящий режим
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Скрыть &категории
-#. text in a download's progress window; button in a download's progress window
+#. button in a download's progress window
 #, machine
 	Hide tab	Скрыть вкладку
 #. text in a download's progress window; text in standard windows
@@ -1884,6 +1900,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	В категориях: меню выбранной категории
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	в заблокированной связке ключей
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2594,6 +2614,10 @@
 #, machine
 	No addresses yet	Адресов пока нет
 #. text in extension.rs
+#. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
+#, machine
+	No browser MDM can connect to was found	Не найден браузер, к которому MDM может подключиться
+#. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 #, machine
 	No browser's extension has connected yet	Расширение ни одного браузера еще не подключено
@@ -2651,6 +2675,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Без прокси/SOCKS
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Системная связка ключей не ответила, поэтому данные для входа и пароли хранятся в настройках MDM, которые можете прочитать только вы.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2772,6 +2800,9 @@
 #. text in the Scheduler window
 #, machine
 	October	Октябрь
+#. option (radio button) in the Options window
+#, machine
+	Off	Выкл.
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	Выкл.: завершенный торрент останавливается, как любая загрузка.
@@ -2800,6 +2831,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	В macOS только администратор может запланировать пробуждение
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
+#, machine
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	В Windows Chrome, Edge и Brave могут блокировать свои файлы cookie. Firefox работает.
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Один раз в
@@ -2830,7 +2865,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
-	Only MP4 and MKV videos can hold subtitles	Субтитры могут содержать только видео MP4 и MKV
+	Only MP4 and MKV videos can hold subtitles	Только видео MP4 и MKV могут содержать субтитры
 #. text in playlistdlg.rs
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
@@ -3033,6 +3068,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	Предварительный просмотр пока недоступен
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
+#, machine
+	Profile (optional):	Профиль (необязательно):
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -3050,6 +3089,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	Настройка прокси / socks
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	прокси-сервер
 #. label in the Options window
 #, machine
 	Proxy server address	Адрес прокси-сервера
@@ -3089,6 +3132,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Очереди
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: a note under the choices
+#, machine
+	Read on this computer only, and sent only to the video's site.	Считывается только на этом компьютере и отправляется только на сайт видео.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3129,7 +3176,7 @@
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
-	Redownload	Перезагрузить
+	Redownload	Скачать заново
 #. text in a download's Properties window
 #, machine
 	Referer:	Реферер:
@@ -3419,6 +3466,11 @@
 #. event log: File Properties: the download goes through the debrid account again
 #, machine
 	Set to download through the debrid account	Настроено на загрузку через аккаунт debrid
+#. text in extension.rs
+#. a check of Test browser integration: setting it up failed; {error} is the system's own message, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Setting it up failed: {error}	Не удалось настроить: {error}
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3506,6 +3558,18 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	Войти в браузере
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	Данные для входа и пароли хранятся в связке ключей macOS.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	Данные для входа и пароли хранятся в системной связке ключей (Secret Service).
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	Данные для входа и пароли хранятся в диспетчере учетных данных Windows.
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -4022,6 +4086,10 @@
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
 	the FTP server answered {code} {reply}	FTP-сервер ответил {code} {reply}
+#. text in extension.rs
+#. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
+#, machine
+	The helper program the browsers start is missing	Вспомогательная программа, запускаемая браузерами, отсутствует
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4088,10 +4156,22 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	сервер отправил неожиданную часть файла ({detail})
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
+#, machine
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Сайт требует входа в систему, даже с файлами cookie вашего браузера для этой страницы. Войдите на сайт в браузере, затем повторите попытку.
+#. text in the Download video window
+#. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Сайт требует входа в систему, даже с файлами cookie {browser}. Войдите в {browser}, затем снова найдите страницу.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Не удалось получить символы: некоторые строки отчета показывают адреса вместо имен (разработчики все равно могут их прочитать).
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Системная связка ключей заблокирована, и MDM не разблокирует ее, поэтому данные для входа и пароли хранятся в настройках MDM, которые можете прочитать только вы.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4099,7 +4179,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
-	The time is a round trip, measured as this download's own connections opened.	Время — это время приема-передачи, измеряемое как собственные открытые соединения этой загрузки.
+	The time is a round trip, measured as this download's own connections opened.	Время — это время кругового прохождения сигнала, измеренное по числу открытых соединений этой загрузки.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4196,6 +4276,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Для этого требуется ffmpeg
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Эта портативная копия хранит данные для входа и пароли в своих настройках, зашифрованных для вашей учетной записи Windows.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Эта портативная копия хранит данные для входа и пароли в своих настройках, которые можете прочитать только вы.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4221,7 +4309,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Для этого видео требуется вход в систему. Используйте кнопку «Загрузить видео» над ним в браузере, который передает ваши данные для входа.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Для этого видео требуется вход в систему. Используйте кнопку «Загрузить видео» над ним в браузере, которая передает ваши данные для входа, или выберите свой браузер в меню «Параметры» → «Входы на сайты» → «Файлы cookie для видеосайтов».
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4597,15 +4685,7 @@
 	Video	Видео
 #. text in the Download video window
 #, machine
-	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Поиск видео использует yt-dlp (около 23 МБ, проверено по подписи).
-#. text in the Options window
-#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-#, machine
-	Video pages and torrents can't use it yet.	Видеостраницы и торренты пока не могут использовать его.
-#. text in the Options window
-#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-#, machine
-	Video pages can't use it yet.	Видеостраницы пока не могут использовать его.
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Для поиска видео используется yt-dlp (около 23 МБ, проверено по подписи).
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4684,6 +4764,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows разрешает таймеры пробуждения только при подключении к сети
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Диспетчер учетных данных Windows не ответил, поэтому данные для входа и пароли хранятся в настройках MDM, зашифрованных для вашей учетной записи Windows.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4764,9 +4848,30 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	Ваша системная: {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp не может читать файлы cookie {browser}, пока {browser} открыт. Закройте {browser} и снова найдите страницу, или выберите Firefox в меню «Параметры» → «Входы на сайты».
+#. text in the Download video window
+#. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
+#, machine
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp не удалось получить ключ к файлам cookie {browser} из системной связки ключей. Разблокируйте связку ключей и снова найдите страницу.
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp не удалось прочитать файлы cookie {browser}: {error}
+#. text in the Download video window
+#. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
+#, machine
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp не нашел файлов cookie {browser} на этом компьютере. Проверьте браузер и его профиль в меню «Параметры» → «Входы на сайты».
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp не установлен (Задачи → Загрузить видео со страницы устанавливает его)
+#. text in the Options window
+#. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
+#, machine
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp входит на видеосайты с файлами cookie этого браузера, считываемыми только из его файлов на этом компьютере. Используется, когда расширение браузера не передало собственные файлы cookie страницы: вставленный адрес, список воспроизведения.
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4782,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ и XZ; разделенный архив (.part1.rar, .7z.001) после\nтого, как все тома будут на месте. Уже существующий файл сохраняется: новый нумеруется.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ и XZ; многотомный архив (.part1.rar, .7z.001) после\nзагрузки всех томов. Уже существующий файл сохраняется: новому присваивается номер.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4799,6 +4904,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: проверяется по завершении загрузки
+#. text in the Download video window
+#. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
+#, machine
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	В Windows файлы cookie в {browser} доступны только этому браузеру, поэтому yt-dlp не может их прочитать. Выберите Firefox в разделе «Параметры» → «Входы на сайты» или нажмите кнопку «Загрузить видео» над видео в {browser}.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -4811,11 +4920,11 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
-	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} обслуживает этот файл: местоположение его сервера, часто рядом с вами, а не владельца сайта.
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	Этот файл обслуживает сеть {cdn}: показано местоположение её сервера, которое часто находится рядом с вами, а не с владельцем сайта.
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
-	{column} contains	{column} содержит
+	{column} contains	Содержимое столбца «{column}»
 #. message or event log entry in the main window
 #. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
 #. {count} = a number (keep the braces as they are)
@@ -4838,7 +4947,7 @@
 	{file} could not be read to check it	Не удалось прочитать файл {file} для проверки
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	Файл {file} больше не находится там, где он был сохранен (перемещен или удален). Выберите «Перезагрузить» в контекстном меню, чтобы получить его снова.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	Файла {file} больше нет в сохранённом месте (он перемещён или удалён). Выберите «Скачать заново» в контекстном меню, чтобы скачать его снова.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4868,11 +4977,11 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
-	{language}, automatic	{language}, автоматически
+	{language}, automatic	{language}, автоматически созданные
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
-	{live} connected, {known} known	{live} подключено, {known} известно
+	{live} connected, {known} known	Подключено: {live}, известно: {known}
 #. text in the Scheduler window
 #. the calendar's title: {month} = a month's name, {year} = its year
 #, machine
@@ -4895,12 +5004,12 @@
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} — это архив 7z или RAR. MDM извлекает их с помощью 7-Zip, который не установлен.
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} — это архив 7z или RAR. MDM извлекает такие архивы с помощью 7-Zip, который не установлен.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is protected by a password:	{name} защищен паролем:
+	{name} is protected by a password:	{name} защищён паролем:
 #. text in the settings
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
@@ -4975,7 +5084,7 @@
 	{service}: this needs a premium account	{service}: для этого требуется премиум-аккаунт
 #. text in errors.rs
 #, machine
-	{service}: too many downloads at once through your account; MDM will try again	{service}: слишком много загрузок одновременно через вашу учетную запись; MDM повторит попытку
+	{service}: too many downloads at once through your account; MDM will try again	{service}: слишком много одновременных загрузок через вашу учетную запись; MDM повторит попытку
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
@@ -5394,7 +5503,7 @@ menu	&Exit	&Выход
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Import	&Импорт
+menu	&Import	&Импортировать
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5508,7 +5617,7 @@ menu	Breeze	Breeze
 #. menu command in the main window
 #. verb: opens this category's download folder
 #, machine
-menu	Browse	Обзор
+menu	Browse	Открыть папку
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5659,11 +5768,11 @@ menu	From &text file...	Из &текстового файла...
 menu	H&elp contents	&Содержание справки
 #. menu command in the main window
 #, machine
-menu	Hide drop target	Скрыть цель перетаскивания
+menu	Hide drop target	Скрыть панель перетаскивания
 #. menu command in the main window
 #. View → Theme: black and white with strong edges, for low vision
 #, machine
-menu	High contrast	Высокий контраст
+menu	High contrast	Высокая контрастность
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
@@ -5675,7 +5784,7 @@ menu	Its first frame didn't show within 10 seconds	Первый кадр не о
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
-menu	Its last start ended before its first frame	Последний запуск завершился до первого кадра
+menu	Its last start ended before its first frame	Последний запуск завершился до появления первого кадра
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Apple's), usually kept as is
 #, machine
@@ -5683,7 +5792,7 @@ menu	Metal	Metal
 #. menu command in the main window
 #. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Metal didn't start here: OpenGL draws	Metal здесь не запустился: рисует OpenGL
+menu	Metal didn't start here: OpenGL draws	Не удалось запустить Metal: отрисовка выполняется с помощью OpenGL
 #. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
@@ -5694,7 +5803,7 @@ menu	Metro	Метро
 menu	Mister Download Manager &Home Page	&Домашняя страница Mister Download Manager
 #. menu command in the main window
 #, machine
-menu	Move/Rename (Ctrl-M)	Переместить/Переименовать (Ctrl+M)
+menu	Move/Rename (Ctrl-M)	Переместить/переименовать (Ctrl+M)
 #. menu command in the main window
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
@@ -5702,10 +5811,10 @@ menu	Native	Системная
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
-menu	No graphics card here has a driver for it	Ни одна видеокарта не имеет для него драйвера
+menu	No graphics card here has a driver for it	Для этой графической системы нет драйвера ни у одной видеокарты
 #. menu command in the main window
 #, machine
-menu	On Double click	По двойному щелчку
+menu	On Double click	При двойном щелчке
 #. menu command in the main window
 #. verb: opens the downloaded file
 #. what double-clicking a download does — verb: open the file
@@ -5745,11 +5854,11 @@ menu	R&edownload	П&ерезагрузить
 #. menu command in the main window
 #. right-click → Torrent: ask the torrent's trackers for peers again now
 #, machine
-menu	Reannounce	Повторный анонс
+menu	Reannounce	Повторно сообщить трекерам
 #. menu command in the main window
 #. right-click → Torrent: read every piece of the torrent's files again and check it
 #, machine
-menu	Recheck files	Повторная проверка файлов
+menu	Recheck files	Повторно проверить файлы
 #. menu command in the main window
 #. verb: download the file again from the start
 #, machine
@@ -5797,7 +5906,7 @@ menu	Select &all	Выбрать &все
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Show &drop target	Показать &цель перетаскивания
+menu	Show &drop target	Показать &панель перетаскивания
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Показать Mister Download Manager
@@ -5830,7 +5939,7 @@ menu	Tell a &friend	Рассказать &другу
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
-menu	The graphics card was lost twice in 10 minutes	Видеокарта была потеряна дважды за 10 минут
+menu	The graphics card was lost twice in 10 minutes	Видеокарта дважды отключалась за 10 минут
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
@@ -5956,43 +6065,332 @@ unit	{n} MB	{n} МБ
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} МБ/с
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent-файл
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	Добавить
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	Добавлено.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	Добавлено. MDM читает торрент: он скоро появится в списке.
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	Адрес или magnet-ссылка
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	Все
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	Автоматически (по типу файла)
 #. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
-	in the locked keyring	в заблокированной связке ключей
+	Certificate (SHA-256): {fingerprint}	Сертификат (SHA-256): {fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	Выбрать .torrent-файл
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	Код
 #. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: label before the 8-digit code
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Системная связка ключей не ответила, поэтому данные для входа и пароли хранятся в настройках MDM, которые можете прочитать только вы.
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+	Code:	Код:
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
 #, machine
-	proxy server	прокси-сервер
+	Delete the file too	Удалить файл тоже
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#. column title: a paired phone's or computer's name
 #, machine
-	Sign-ins and passwords are kept in the macOS keychain.	Данные для входа и пароли хранятся в связке ключей macOS.
+	Device	Устройство
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
 #, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	Данные для входа и пароли хранятся в системной связке ключей (Secret Service).
+	Every local network address	Все адреса локальной сети
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	Забыть это устройство
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	Забыть это устройство? Для повторного подключения потребуется новый код.
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	с сопряженного устройства
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
 #, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	Данные для входа и пароли хранятся в диспетчере учетных данных Windows.
+	It could not start: {error}	Не удалось запустить: {error}
 #. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#. column title: when the device last reached MDM
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Системная связка ключей заблокирована, и MDM не разблокирует ее, поэтому данные для входа и пароли хранятся в настройках MDM, которые можете прочитать только вы.
+	Last seen	Последний раз
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	Разрешить телефонам и компьютерам в локальной сети управлять MDM
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#. Options → Remote: label before the choice of the address MDM listens on
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Эта портативная копия хранит данные для входа и пароли в своих настройках, зашифрованных для вашей учетной записи Windows.
+	Listen on:	Прослушивать:
 #. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Эта портативная копия хранит данные для входа и пароли в своих настройках, которые можете прочитать только вы.
+	MDM can't be reached on the network now: Options → Remote says why.	MDM сейчас недоступен в сети: в разделе «Параметры» → «Удаленный доступ» указана причина.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	MDM не может загрузить этот адрес.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	MDM не удалось добавить его.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	MDM не удалось это сделать.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM не отвечает. Убедитесь, что он запущен и находится в той же сети.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM не отвечает. Повторная попытка...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	MDM сейчас не показывает код. Сначала нажмите «Сопрячь устройство».
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	Еще
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	Новый код
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	Здесь нет загрузок.
 #. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Диспетчер учетных данных Windows не ответил, поэтому данные для входа и пароли хранятся в настройках MDM, зашифрованных для вашей учетной записи Windows.
+	No local network now: it starts when the computer joins one.	Сейчас нет локальной сети: она запустится, когда компьютер подключится к ней.
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	Выключено: ничто в сети не может связаться с MDM.
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	На компьютере откройте «Параметры», затем «Удаленный доступ» и нажмите «Сопрячь устройство». Введите отображаемый код.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	На телефоне отсканируйте этот код камерой или откройте адрес и введите код.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	Включено. На телефоне откройте этот адрес:
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Только сопряженные устройства могут просматривать или изменять что-либо. При первом подключении браузер телефона предупредит о собственном сертификате MDM: его отпечаток совпадает с указанным выше.
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	Сопрячь
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	Сопряжение устройства
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	Сопрячь устройство...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Подключить к Mister Download Manager
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	Подключено
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	Подключенные устройства:
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	Порт {port} используется другой программой: выберите другой.
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	В очереди
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	Удаленное управление
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	Удаленное управление
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	Удалить {name} из списка?
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	Начать сейчас
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	Изменения будут применены после нажатия кнопки «ОК».
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	Этот код больше нельзя использовать.
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	Только этот компьютер (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	Имя этого устройства
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	Этот файл слишком велик для торрент-файла.
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	Это не торрент-файл.
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	Сначала включите удаленное управление.
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	Подождите немного, затем повторите попытку.
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	Ждать в очереди «{queue}»
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	Ожидание устройства. Код действует {time}.
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	Когда
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	Неверный код. Покажите новый код в MDM и повторите попытку.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	Неверный код. Осталось попыток: {n}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} подключено. Теперь оно может управлять MDM.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{done} из {size}
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} свободно
+#. text in the browser extension
+#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
+#, machine
+extension	Another Mister Download Manager (a server)	Другой Mister Download Manager (сервер)
+#. text in the browser extension
+#. the name this browser gets in the other MDM's list of paired devices
+#, machine
+extension	Browser extension	Расширение браузера
+#. text in the browser extension
+#. the toolbar button's status while downloads go to another MDM
+#, machine
+extension	Downloads go to {address}	Загрузки отправляются на {address}
+#. text in the browser extension
+#. the address typed isn't an https:// address
+#, machine
+extension	Enter its https:// address.	Введите его адрес https://.
+#. text in the browser extension
+#. pairing failed for another reason
+#, machine
+extension	It didn't work. Try again.	Не удалось. Повторите попытку.
+#. text in the browser extension
+#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
+#, machine
+extension	It shows no code now: click Pair a device there first.	Сейчас код не отображается: сначала нажмите «Сопрячь устройство» там.
+#. text in the browser extension
+#. pairing failed: the other MDM didn't answer
+#, machine
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Недоступно. Откройте его адрес один раз в этом браузере и примите его сертификат, затем повторите попытку.
+#. text in the browser extension
+#. button: open the other MDM's address in a tab (to accept its certificate once)
+#, machine
+extension	Open it	Открыть
+#. text in the browser extension
+#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
+#, machine
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	Откройте его адрес один раз и примите его сертификат, затем введите код из его «Параметров», «Удаленного доступа», «Сопрячь устройство» (или misterdownloadmanager-cli pair).
+#. text in the browser extension
+#. button: pair this browser with the other MDM using the code
+#, machine
+extension	Pair	Сопрячь
+#. text in the browser extension
+#. placeholder of the box for the 8-digit code the other MDM shows
+#, machine
+extension	Pairing code	Код сопряжения
+#. text in the browser extension
+#. heading in the toolbar button's popup, above the choice of where downloads go
+#, machine
+extension	Send downloads to	Отправлять загрузки в
+#. text in the browser extension
+#. choice under Send downloads to: the Mister Download Manager on this computer
+#, machine
+extension	This computer	Этот компьютер
+#. text in the browser extension
+#. pairing failed: codes tried too fast
+#, machine
+extension	Wait a moment, then try again.	Подождите немного, затем повторите попытку.
+#. text in the browser extension
+#. pairing failed: the code was wrong
+#, machine
+extension	Wrong code.	Неверный код.
