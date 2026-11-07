@@ -328,8 +328,7 @@
 	Another DNS...	Altro DNS...
 #. text in unix.rs
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
-#, machine
-	Another program has set the computer's wake alarm	Un altro programma ha impostato la sveglia di riattivazione del computer
+	Another program has set the computer's wake alarm	Un altro programma ha già impostato la sveglia di riattivazione del computer
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 	Answered in {ms} ms: {ip}	Risposta in {ms} ms: {ip}
@@ -559,7 +558,6 @@
 	Chad	Ciad
 #. text in the Scheduler window
 #. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
-#, machine
 	Change	Modifica
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
@@ -885,7 +883,6 @@
 	Download supported file-host links through these accounts	Scarica i collegamenti dei file hosting supportati tramite questi account
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
-#, machine
 	Download through {service}	Scarica tramite {service}
 #. window title in the Download video window
 	Download video from a page	Scarica video da una pagina
@@ -1360,7 +1357,6 @@
 	Hong Kong	Hong Kong
 #. text in the Scheduler window
 #. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
-#, machine
 	How to allow it	Come consentirlo
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
@@ -1754,7 +1750,6 @@
 #. text in wake.rs
 #. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
-#, machine
 	Mister Download Manager is running the queue "{queue}"	Mister Download Manager sta eseguendo la coda "{queue}"
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
@@ -2056,13 +2051,11 @@
 	Oman	Oman
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
-#, machine
-	On battery, Windows' power options don't allow wake timers	A batteria, le opzioni di risparmio energia di Windows non consentono i timer di riattivazione
+	On battery, Windows' power options don't allow wake timers	Con l'alimentazione a batteria, le Opzioni risparmio energia di Windows non consentono i timer di riattivazione
 #. text in a download's progress window
 	on download stop/resume	all'interruzione/ripresa del download
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
-#, machine
 	On macOS, only an administrator can schedule a wake	Su macOS, solo un amministratore può pianificare una riattivazione
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 	Once at	Una volta alle
@@ -2082,7 +2075,6 @@
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Si può spostare solo un download completato o non ancora avviato. Prima interrompilo e portalo a termine.
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
-#, machine
 	Only an administrator can allow this	Solo un amministratore può consentirlo
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
@@ -2514,12 +2506,10 @@
 	Set it up	Configura
 #. message or event log entry in the main window
 #. event log: File Properties: the download no longer goes through the debrid account
-#, machine
-	Set to download directly, not through the debrid account	Impostato per scaricare direttamente, non tramite l'account debrid
+	Set to download directly, not through the debrid account	Impostato il download diretto, senza l'account debrid
 #. message or event log entry in the main window
 #. event log: File Properties: the download goes through the debrid account again
-#, machine
-	Set to download through the debrid account	Impostato per scaricare tramite l'account debrid
+	Set to download through the debrid account	Impostato il download tramite l'account debrid
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -2706,12 +2696,10 @@
 	Started with gallery-dl {version}	Avviato con gallery-dl {version}
 #. text in the Options window
 #. the same tooltip where no notification area (system tray) shows MDM's icon (some Linux desktops): its window starts minimized instead
-#, machine
-	Started with the computer, it starts minimized: no notification area shows its icon here	Avviato con il computer, si avvia in modalità minimizzata: qui non è presente alcuna icona nell'area di notifica
+	Started with the computer, it starts minimized: no notification area shows its icon here	All'avvio del sistema si apre ridotto a icona, perché qui non c'è un'area di notifica che ne mostri l'icona
 #. text in the Options window
 #. tooltip of "Launch Mister Download Manager on startup": started with the computer, MDM's window stays hidden, its icon in the notification area (system tray)
-#, machine
-	Started with the computer, it waits in the notification area	Avviato con il computer, rimane in attesa nell'area di notifica
+	Started with the computer, it waits in the notification area	All'avvio del sistema resta in attesa nell'area di notifica
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 	Started with yt-dlp {version} ({format})	Avviato con yt-dlp {version} ({format})
@@ -2878,12 +2866,10 @@
 	The computer could not be turned off: {error}	Impossibile spegnere il computer: {error}
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue"
-#, machine
-	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	Il computer viene riattivato un minuto prima dell'ora di inizio e mantenuto attivo mentre la coda è in esecuzione. Mister Download Manager deve essere in esecuzione (può attendere nell'area di notifica).
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	Il computer viene riattivato un minuto prima dell'ora di inizio e resta attivo mentre la coda è in esecuzione. Mister Download Manager deve essere aperto (può restare in attesa nell'area di notifica).
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
 #. {time} = a time of day (keep the braces as they are)
-#, machine
 	The computer will be woken on {date} at {time}	Il computer verrà riattivato il {date} alle {time}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
@@ -3059,12 +3045,10 @@
 	This category or queue holds no downloads yet.	Questa categoria o coda non contiene ancora download.
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
-#, machine
 	This computer can't be woken by a timer	Questo computer non può essere riattivato da un timer
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
-#, machine
-	This computer has no wake alarm that programs can set	Questo computer non ha una sveglia di riattivazione che i programmi possono impostare
+	This computer has no wake alarm that programs can set	Questo computer non ha una sveglia di riattivazione impostabile dai programmi
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 	this computer or the local network	questo computer o la rete locale
@@ -3120,14 +3104,12 @@
 	through a proxy in {country}	tramite un proxy in {country}
 #. text in a download's Properties window
 #. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
-#, machine
 	Through {service}	Tramite {service}
 #. text in the Scheduler window
 	Thursday	giovedì
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
-#, machine
-	Tick "Start download at" first: the computer is woken for the start time	Seleziona prima "Avvia download alle": il computer viene riattivato per l'ora di inizio
+	Tick "Start download at" first: the computer is woken for the start time	Seleziona prima "Avvia download alle": il computer viene riattivato all'ora di inizio
 #. text in a download's progress window; text in the Scheduler window
 	Time left	Tempo rimanente
 #. text in countries.rs
@@ -3423,7 +3405,6 @@
 	Waiting: the download limit is reached (Scheduler)	In attesa: limite di download raggiunto (Pianificatore)
 #. text in the Scheduler window
 #. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
-#, machine
 	Wake the computer to run this queue	Riattiva il computer per eseguire questa coda
 #. text in countries.rs
 #. a country's name (where a download's server is)
@@ -3451,8 +3432,7 @@
 	Wildcard size	Lunghezza del carattere jolly
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
-#, machine
-	Windows allows wake timers only while plugged in	Windows consente i timer di riattivazione solo quando è collegato all'alimentazione
+	Windows allows wake timers only while plugged in	Windows consente i timer di riattivazione solo con l'alimentazione collegata
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 	Windows refused	Windows ha rifiutato l'operazione
@@ -3462,8 +3442,7 @@
 	Windows' language ({language})	Lingua di Windows ({language})
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
-#, machine
-	Windows' power options don't allow wake timers	Le opzioni di risparmio energia di Windows non consentono i timer di riattivazione
+	Windows' power options don't allow wake timers	Le Opzioni risparmio energia di Windows non consentono i timer di riattivazione
 #. message or event log entry in the main window
 	with Add URL	con Aggiungi URL
 #. text in the Add torrent window
@@ -4352,97 +4331,73 @@ unit	{n} MB	{n} MB
 unit	{n} MB/sec	{n} MB/sec
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
-#, machine
-menu	It couldn't start: the log says why	Impossibile avviarlo: il registro indica il motivo
+menu	It couldn't start: the log says why	Impossibile avviarlo: il motivo è indicato nel registro
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
-#, machine
-menu	Its first frame didn't show within 10 seconds	Il primo frame non è stato visualizzato entro 10 secondi
+menu	Its first frame didn't show within 10 seconds	Il primo fotogramma non è comparso entro 10 secondi
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
-#, machine
-menu	Its last start ended before its first frame	L'ultimo avvio è terminato prima del primo frame
+menu	Its last start ended before its first frame	L'ultimo avvio si è interrotto prima del primo fotogramma
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Apple's), usually kept as is
-#, machine
 menu	Metal	Metal
 #. menu command in the main window
 #. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
-#, machine
-menu	Metal didn't start here: OpenGL draws	Metal non è stato avviato qui: disegna OpenGL
+menu	Metal didn't start here: OpenGL draws	Metal non si avvia su questo computer: si usa OpenGL
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
-#, machine
-menu	No graphics card here has a driver for it	Nessuna scheda grafica qui ha un driver per esso
+menu	No graphics card here has a driver for it	Nessuna scheda grafica di questo computer ha un driver adatto
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
-#, machine
-menu	The graphics card was lost twice in 10 minutes	La scheda grafica è stata persa due volte in 10 minuti
+menu	The graphics card was lost twice in 10 minutes	La scheda grafica ha smesso di rispondere due volte in 10 minuti
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
-#, machine
 menu	Vulkan	Vulkan
 #. menu command in the main window
 #. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
-#, machine
-menu	Vulkan didn't start here: OpenGL draws	Vulkan non è stato avviato qui: disegna OpenGL
+menu	Vulkan didn't start here: OpenGL draws	Vulkan non si avvia su questo computer: si usa OpenGL
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
-#, machine
 	A file of this torrent can't be saved safely: {name}	Impossibile salvare in modo sicuro un file di questo torrent: {name}
 #. text in the Options window
 #. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
-#, machine
-	Send torrents and magnet links to the first account instead of to peers	Invia torrent e collegamenti magnet al primo account invece che ai peer
+	Send torrents and magnet links to the first account instead of to peers	Invia i torrent e i link magnet al primo account invece che ai peer
 #. message or event log entry in the main window
 #. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
-#, machine
-	Through {service}: the service downloads the torrent, then MDM its files	Tramite {service}: il servizio scarica il torrent, quindi MDM i suoi file
+	Through {service}: the service downloads the torrent, then MDM its files	Tramite {service}: il servizio scarica il torrent, poi MDM ne scarica i file
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
-#, machine
 	{percent} at {service}	{percent} su {service}
 #. text in errors.rs
-#, machine
 	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} non riesce a ottenere questo torrent: nessuno lo condivide o il suo collegamento non può essere letto
 #. text in the Options window
 #. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
-#, machine
 	in the locked keyring	nel portachiavi bloccato
 #. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
-#, machine
 	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Nessun portachiavi di sistema ha risposto, quindi gli accessi e le password sono conservati nelle impostazioni di MDM, che solo tu puoi leggere.
 #. text in the settings
 #. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
-#, machine
 	proxy server	server proxy
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
-#, machine
 	Sign-ins and passwords are kept in the macOS keychain.	Gli accessi e le password sono conservati nel portachiavi di macOS.
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
-#, machine
 	Sign-ins and passwords are kept in the system keyring (Secret Service).	Gli accessi e le password sono conservati nel portachiavi di sistema (Secret Service).
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
-#, machine
 	Sign-ins and passwords are kept in Windows Credential Manager.	Gli accessi e le password sono conservati in Gestione credenziali di Windows.
 #. text in the Options window
 #. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
-#, machine
 	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Il portachiavi di sistema è bloccato e MDM non lo sblocca, quindi gli accessi e le password sono conservati nelle impostazioni di MDM, che solo tu puoi leggere.
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
-#, machine
 	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Questa copia portatile conserva gli accessi e le password nelle proprie impostazioni, crittografate per il tuo account Windows.
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
-#, machine
 	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Questa copia portatile conserva gli accessi e le password nelle proprie impostazioni, che solo tu puoi leggere.
 #. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
-#, machine
 	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Gestione credenziali di Windows non ha risposto, quindi gli accessi e le password sono conservati nelle impostazioni di MDM, crittografate per il tuo account Windows.

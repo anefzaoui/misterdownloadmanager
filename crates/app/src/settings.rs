@@ -1193,6 +1193,10 @@ pub(crate) mod sealed {
     }
 
     pub(crate) fn open(stored: &str) -> String {
+        // Read as the disk has it (store::keep_generations only checks that a list reads).
+        if crate::secrets::is_prepared() {
+            return stored.to_owned();
+        }
         if stored.starts_with(REF) {
             return crate::secrets::vault().open(stored);
         }
