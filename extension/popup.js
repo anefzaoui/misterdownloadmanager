@@ -49,6 +49,7 @@ async function show() {
   fix.hidden = s.connected && s.why !== "update-app";
   fix.href = `${HELP}#${s.why || "not-installed"}`;
   $("take").checked = !s.paused;
+  showDeclined(s.connected && s.declined);
   $("take").disabled = !s.connected;
   $("open").disabled = $("options").disabled = !s.connected;
   $("version").textContent = s.version ? `v${s.version}` : "";
@@ -78,6 +79,20 @@ async function show() {
     }
   };
   if (site) await showMedia(tab, s.connected);
+}
+
+// The last download left to the browser by MDM's Options, and which one (#208); a later one
+// taken clears it (background.js noteLeft). A reason this version can't name says no more.
+function showDeclined(d) {
+  const box = $("declined");
+  box.hidden = !(d && d.why);
+  if (box.hidden) return;
+  const what = d.name ? t("popup_declined", d.name) : t("popup_declined_unnamed");
+  const key = `declined_${String(d.why).replace(/-/g, "_")}`;
+  const why = t(key);
+  $("declined-what").textContent = what;
+  $("declined-what").title = what;
+  $("declined-why").textContent = why === key ? "" : why;
 }
 
 // ---- the media the tab loaded ------------------------------------------------------------------

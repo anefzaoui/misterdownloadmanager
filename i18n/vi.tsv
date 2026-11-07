@@ -5245,6 +5245,27 @@ extension	Hold Alt while clicking a link to let the browser download it.	Giữ p
 #, machine
 extension	How to fix it	Cách khắc phục
 #. text in the browser extension
+#. why a download stayed with the browser: the file is smaller than the app's minimum size setting
+#, machine
+extension	It's smaller than the minimum size in Options → File types.	Tệp nhỏ hơn kích thước tối thiểu trong Tùy chọn → Loại tệp.
+#. text in the browser extension
+#. why a download stayed with the browser: its address matches the app's list of addresses not to take
+#, machine
+extension	Its address is in Options → File types, addresses left to the browser.	Địa chỉ của tệp nằm trong Tùy chọn → Loại tệp, địa chỉ để lại cho trình duyệt.
+#. text in the browser extension
+#. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
+#, machine
+extension	Its site is in Options → File types, sites left to the browser.	Trang web của tệp nằm trong Tùy chọn → Loại tệp, trang web để lại cho trình duyệt.
+#. text in the browser extension
+#. why a download stayed with the browser: its file type isn't on the app's list; Options and File types are the app's window and its page, as the app names them
+#, machine
+extension	Its type isn't in Options → File types.	Loại tệp không có trong Tùy chọn → Loại tệp.
+#. text in the browser extension
+#. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+extension	Left to the browser: {name}	Để lại cho trình duyệt: {name}
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	Trực tiếp
@@ -5340,6 +5361,18 @@ extension	The connection to Mister Download Manager failed	Kết nối với Mis
 #, machine
 extension	The download button is off on this site	Nút tải xuống bị tắt trên trang web này
 #. text in the browser extension
+#. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
+#, machine
+extension	The extension isn't allowed to read this site (the browser's site access).	Tiện ích không được phép đọc trang web này (quyền truy cập trang web của trình duyệt).
+#. text in the browser extension
+#. in the toolbar button's popup when the last download the browser kept came from a private window (its name isn't kept); followed by why (one of the declined_* texts)
+#, machine
+extension	The last download was left to the browser.	Bản tải xuống cuối cùng đã được để lại cho trình duyệt.
+#. text in the browser extension
+#. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
+#, machine
+extension	This browser isn't ticked in Options → General.	Trình duyệt này không được chọn trong Tùy chọn → Chung.
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	Thông tin của lượt tải xuống này quá lớn để chuyển giao
@@ -5347,6 +5380,10 @@ extension	This download's details were too large to hand over	Thông tin của l
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	Cập nhật Mister Download Manager để sử dụng mọi tính năng mà tiện ích mở rộng này cung cấp
+#. text in the browser extension
+#. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
+#, machine
+extension	Use advanced browser integration is off in Options → General.	Tích hợp trình duyệt nâng cao đang tắt trong Tùy chọn → Chung.
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

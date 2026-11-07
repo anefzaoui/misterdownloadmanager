@@ -46,13 +46,13 @@
    "source": "Both are kept in a <x1/> folder in MDM's data folder.",
    "text": "Les deux sont conservés dans un dossier <x1/> dans le dossier de données de MDM."
   },
-  "01742a721637a688": {
-   "source": "<g1>Automatically start downloading the following file types</g1> — the file types the browser hands over (and the clipboard picks up). Separate them by spaces; <x2/> matches any characters, as in <x3/>. <g4>Default</g4> puts the original list back.",
-   "text": "<g1>Démarrer automatiquement le téléchargement des types de fichiers suivants</g1> — les types de fichiers que le navigateur transfère (et que le Presse-papiers récupère). Séparez-les par des espaces ; <x2/> correspond à n’importe quel caractère, comme dans <x3/>. <g4>Par défaut</g4> restaure la liste originale."
-  },
   "017e6920369637f6": {
    "source": "<g1>One look for every kind of control</g1>, in both themes: text boxes, read-only fields, check boxes, buttons, drop-downs, tabs, lists and their headers, popups and progress bars are each drawn one way everywhere (dark mode drew some windows' controls in an older style, with bright borders). A number and its arrows are one box now, as Windows 11's are; text is centred in controls of any height; one blue for selection and focus.",
    "text": "<g1>Un seul aspect pour chaque type de contrôle</g1>, dans les deux thèmes : les zones de texte, les champs en lecture seule, les cases à cocher, les boutons, les listes déroulantes, les onglets, les listes et leurs en-têtes, les popups et les barres de progression sont chacun dessinés de la même manière partout (le mode sombre dessinait les contrôles de certaines fenêtres dans un style plus ancien, avec des bordures lumineuses). Un nombre et ses flèches sont maintenant une seule boîte, comme ceux de Windows 11 ; le texte est centré dans les contrôles de toute hauteur ; un bleu pour la sélection et le focus."
+  },
+  "018b2949529218d0": {
+   "source": "<g1>Options → File types → Automatically start downloading the following file types</g1> must list the file's type. The list starts with the usual ones: ZIP, RAR, 7Z, EXE, MSI, ISO, DMG, DEB, RPM, APPIMAGE, MP3, MP4, MKV, WEBM, PDF and many more.",
+   "text": "<g1>Options → Types de fichiers → Démarrer automatiquement le téléchargement des types de fichiers suivants</g1> doit lister le type de fichier. La liste commence par les types habituels : ZIP, RAR, 7Z, EXE, MSI, ISO, DMG, DEB, RPM, APPIMAGE, MP3, MP4, MKV, WEBM, PDF et bien d’autres."
   },
   "01b91d4b38df7f4a": {
    "source": "<g1>Launch Mister Download Manager on startup</g1> — start MDM when you sign in to Windows. Off by default. Greyed in a <g2>portable copy</g2>, which writes nothing to the registry.",
@@ -809,6 +809,10 @@
   "1214d36ab497a361": {
    "source": "What it understands",
    "text": "Ce qu'il comprend"
+  },
+  "124817fe7912fea6": {
+   "source": "When the browser keeps a download, the extension's button says which of these left it there, with the file's name, and MDM's log has a line for each one (<x1/> in <g2>MDM's data folder</g2>).",
+   "text": "Quand le navigateur garde un téléchargement, le bouton de l'extension indique lequel l'a laissé là, avec le nom du fichier, et le journal de MDM a une ligne pour chacun (<x1/> dans le <g2>dossier de données de MDM</g2>)."
   },
   "12696d50b6f54aa3": {
    "source": "The tray icon",
@@ -2993,6 +2997,10 @@
   "42284b459dc526d2": {
    "source": "The download list →",
    "text": "La liste des téléchargements →"
+  },
+  "424df5ff0d11d26b": {
+   "source": "<g1>Automatically start downloading the following file types</g1> — the file types the browser hands over (and the clipboard picks up). Separate them by spaces; <x2/> matches any characters, as in <x3/>. <g4>Default</g4> puts the original list back. The list starts with the usual archives, programs and installers (Windows, macOS and Linux ones: DMG, PKG, DEB, RPM, APPIMAGE, MSIX), music and videos, and PDF. A list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>Télécharger automatiquement les types de fichiers suivants</g1> — les types de fichiers que le navigateur transmet (et que le presse-papiers récupère). Séparez-les par des espaces ; <x2/> correspond à n’importe quel caractère, comme dans <x3/>. <g4>Par défaut</g4> restaure la liste originale. La liste commence par les archives, programmes et installateurs habituels (Windows, macOS et Linux : DMG, PKG, DEB, RPM, APPIMAGE, MSIX), la musique et les vidéos, et les PDF. Une liste que vous n’avez jamais modifiée reçoit les types ajoutés par une nouvelle version ; une liste que vous avez éditée reste telle quelle."
   },
   "427cc05e98da7048": {
    "source": "<g1>Extract when done</g1>: ticked by itself when the package holds an archive.",
@@ -6141,6 +6149,10 @@
   "8ba3e471bdf1018f": {
    "source": "<g1>Manual proxy/socks configuration</g1> — type the proxy's address, <g2>Port</g2>, and a <g3>UserName</g3> and <g4>Password</g4> if it needs them, then tick the protocols it is for (<g5>http</g5>, <g6>https</g6>). For a SOCKS proxy, write the address as <x7/>.",
    "text": "<g1>Configuration manuelle du proxy/SOCKS</g1> — saisissez l’adresse du proxy, le <g2>Port</g2>, ainsi qu’un <g3>Nom d’utilisateur</g3> et un <g4>Mot de passe</g4> si nécessaire, puis cochez les protocoles concernés (<g5>http</g5>, <g6>https</g6>). Pour un proxy SOCKS, saisissez l’adresse sous la forme <x7/>."
+  },
+  "8bd06bcd07c716e2": {
+   "source": "<g1>MDM 0.2.x with the extension from the Chrome Web Store?</g1> The store's copy needs MDM 0.3.0 or later. Update MDM with <g2>Help → Check for updates...</g2>. Until then, remove the store's copy and load the one in MDM's folder instead (<x3/>, see <g4>Browser integration</g4>).",
+   "text": "<g1>MDM 0.2.x avec l'extension du Chrome Web Store ?</g1> La version du Store nécessite MDM 0.3.0 ou ultérieur. Mettez MDM à jour avec <g2>Aide → Rechercher les mises à jour...</g2>. En attendant, supprimez la version du Store et chargez celle du dossier de MDM à la place (<x3/>, voir <g4>Intégration au navigateur</g4>)."
   },
   "8bdb8ef261917fb7": {
    "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> (Firefox, optional: asked for only when you switch it on in the popup) to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
@@ -10037,10 +10049,6 @@
   "e7f94851f01d41a6": {
    "source": "Open the extensions page: <x1/>, <x2/> or <x3/>.",
    "text": "Ouvrez la page des extensions : <x1/>, <x2/> ou <x3/>."
-  },
-  "e803616ce211e6e6": {
-   "source": "<g1>Options → File types → Automatically start downloading the following file types</g1> must list the file's type. The list starts with the usual ones: ZIP, RAR, 7Z, EXE, MSI, ISO, MP3, MP4, MKV, PDF and many more.",
-   "text": "L’option <g1>Options → Types de fichiers → Démarrer automatiquement le téléchargement des types de fichiers suivants</g1> doit lister le type de fichier. La liste commence par les types habituels : ZIP, RAR, 7Z, EXE, MSI, ISO, MP3, MP4, MKV, PDF et bien d’autres."
   },
   "e8106b0dea9e8b3a": {
    "source": "Options, Connection page",
