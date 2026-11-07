@@ -45,6 +45,7 @@ mod rss;
 mod rssdlg;
 mod scale;
 mod scheduler;
+mod schemes;
 mod scrollbar;
 mod secrets;
 mod selection;

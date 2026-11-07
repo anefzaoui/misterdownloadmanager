@@ -197,6 +197,9 @@ Everything below ships together, in the next release.
   glossy buttons, their check boxes and progress bars, their title bars on Windows, icons drawn
   for MDM); Metro, Adwaita and Breeze get MDM's own icons where theirs had none
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ Themes: Base16 and pywal colour schemes imported as themes (View → Theme → Add a theme
+  file…, or the themes folder); **pywal** follows `wal` as it writes new colours, text kept
+  readable (4.5:1) ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ Dark mode: grey notes and error texts readable (4.5:1), Options' failed checks no longer dark
   red on the dark dialog ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ A minimized MDM keeps working: queues, the Scheduler, download limits, the kill switch and
@@ -382,8 +385,8 @@ Everything below ships together, in the next release.
   Classic, Native (follows the system's accent and contrast on Windows, Linux and macOS) and High
   contrast; style themes with their own control shapes, a drawn title bar on Windows and their own
   icons: Metro, Adwaita, Breeze, Luna, Aero and Aqua; and theme files anyone can make, try and
-  share, in TOML or JSON, built on any theme (`inherits`), with their own icons
-  ([the guide](docs/themes.md))
+  share, in TOML or JSON, built on any theme (`inherits`), with their own icons; Base16 and
+  pywal colour schemes read as themes ([the guide](docs/themes.md))
 - ✅ Linux, no longer experimental: every change is checked on Ubuntu (GNOME) as well as Windows,
   and on KDE Plasma, Cinnamon and Xfce; Wayland sessions (through XWayland, menus under their
   titles on sway too); the .deb and .rpm installed in clean Ubuntu, Debian and Fedora systems, the
@@ -397,8 +400,6 @@ Everything below ships together, in the next release.
 
 ### Being built
 
-- 🔄 Themes: Base16 and pywal colour schemes imported as themes
-  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - 🔄 Linux, what's left ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
   screen readers (Orca) reading MDM's windows; browsers installed as a Flatpak (Firefox from
   Flathub may reach MDM through the desktop, as the Snap does: to check); native Wayland windows

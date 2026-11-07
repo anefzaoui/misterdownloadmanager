@@ -61,8 +61,18 @@ choose. And Linux, checked on a real desktop with every change.
     set, and a theme can be a folder that brings its own icons. An icon set can mix PNG pictures
     with SVG drawings, and one-colour icons (`-symbolic.svg`, `-symbolic.png`, drawn in the
     theme's text colour) with coloured ones, and hold pictures at 32 and 48 pixels, used on a
-    screen scaled to 150 % and more: the style themes' pictures stay sharp there. Base16 and pywal
-    schemes come next.
+    screen scaled to 150 % and more: the style themes' pictures stay sharp there.
+  - **Base16 and pywal colour schemes as themes**: a Base16 or Base24 scheme (`.yaml`, the
+    classic layout and tinted-theming's `palette:` one) or pywal's `colors.json` (wallust's
+    pywal-shaped one too), added with **View → Theme → Add a theme file…** or put in the themes
+    folder, is a theme on the classic look: only the colours change. base00 and base01 are the
+    backgrounds, base05 and base04 the text, base0D the focus, the selection and the progress bar
+    (pywal: its background and foreground, color4); text is kept at 4.5:1 or more against every
+    background and the accent at 3:1, moved a little where a scheme falls short. Once `wal` has
+    run, **View → Theme** lists **pywal**, read from where pywal writes it
+    (`~/.cache/wal/colors.json`, `%USERPROFILE%\.cache\wal\colors.json` on Windows), and MDM
+    follows each new wallpaper's colours within two seconds. A theme file can `inherits` a scheme
+    to change more than its colours.
 - **View → Interface size** ([#262](https://github.com/anefzaoui/misterdownloadmanager/issues/262)):
   every window larger, 100 % to 200 %, on top of the system's display scale; **Ctrl +**,
   **Ctrl −** and **Ctrl 0** in any MDM window, as in a browser. Every open window follows at once
