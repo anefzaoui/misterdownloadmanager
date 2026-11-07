@@ -83,3 +83,10 @@ footer { display: flex; justify-content: space-between; align-items: baseline; m
 .drm { flex: none; color: var(--bad); font-size: 11px; font-weight: 600; }
 .media .note { margin-top: 6px; }
 .media .note.bad { color: var(--bad); }
+/* Send downloads to (#157): this computer, or another MDM with its address and a pairing code. */
+.send { margin-top: 12px; border-top: 1px solid var(--edge); padding-top: 8px; }
+.send h2 { margin: 0 0 6px; font-size: 12px; font-weight: 600; color: var(--muted); }
+.choice { display: flex; align-items: center; gap: 6px; margin: 4px 0; }
+#remote-form input[type="url"], #remote-form input[inputmode] { width: 100%; box-sizing: border-box; margin-top: 6px; padding: 4px 6px; border: 1px solid var(--edge); border-radius: 4px; background: var(--field); color: inherit; font: inherit; }
+#remote-form .actions { margin-top: 8px; }
+.note.bad { color: var(--bad); }

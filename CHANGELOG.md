@@ -22,6 +22,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Run MDM on a server** ([#157](https://github.com/anefzaoui/misterdownloadmanager/issues/157)):
+  `misterdownloadmanager --headless` runs MDM without a window (a home server, a NAS, Docker,
+  Unraid), its folders and port set by flags or the environment; a `Dockerfile`, a Compose file
+  and an Unraid template come with it. Phones pair with the code it prints (or
+  `misterdownloadmanager-cli pair`), and the browser extension can **send downloads to another
+  MDM**. [Guide](docs/server.md).
 - **Control MDM from your phone** ([#141](https://github.com/anefzaoui/misterdownloadmanager/issues/141)):
   **Options → Remote**, off by default. A phone or another computer on the local network, paired
   with a code (or a QR code) MDM shows, opens a page MDM serves over HTTPS: it adds links, magnet
@@ -400,6 +406,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Better translations in every language.** Every machine-translated text of the program and
+  of the website was read again against the English, with a style guide for each language (how
+  it writes commands, questions and labels) and the terms native reviewers settled, and fixed
+  where it was wrong or unnatural. Texts a person reviewed (all of Italian and Arabic) were left
+  as they are. New texts are translated the same way from now on.
 - **Developers: the host connection limit test tells a reconnect from a connection too many**
   ([#224](https://github.com/anefzaoui/misterdownloadmanager/issues/224)). A server sees that a
   client dropped an answer only when it next writes to it, so on a busy computer a connection

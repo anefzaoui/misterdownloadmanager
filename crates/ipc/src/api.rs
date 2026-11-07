@@ -102,6 +102,18 @@ pub struct Skipped {
     pub why: String,
 }
 
+/// `{"pair": true}` (#157): a new pairing code for the remote control, while it is on.
+#[derive(Clone, Debug, Default, Serialize, Deserialize, JsonSchema)]
+pub struct PairAnswer {
+    /// The 8-digit code; it works once, for `minutes`.
+    pub code: String,
+    pub minutes: u32,
+    /// The page's addresses, the one a phone most likely reaches first.
+    pub urls: Vec<String>,
+    /// A QR code of the first address with the code, drawn with text blocks for a terminal.
+    pub qr: String,
+}
+
 /// `{"api": true}` / `{"api": false}`: the API's new state.
 #[derive(Clone, Debug, Serialize, Deserialize, JsonSchema)]
 pub struct ApiAnswer {
@@ -146,6 +158,7 @@ pub fn schema() -> serde_json::Value {
     let _ = generator.subschema_for::<ActAnswer>();
     let _ = generator.subschema_for::<ApiAnswer>();
     let _ = generator.subschema_for::<AddAnswer>();
+    let _ = generator.subschema_for::<PairAnswer>();
     let _ = generator.subschema_for::<ErrorAnswer>();
     let defs = generator.take_definitions(true);
     serde_json::json!({

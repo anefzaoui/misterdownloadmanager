@@ -41,6 +41,25 @@ fn startup_file() -> Option<PathBuf> {
     }
 }
 
+/// A headless run (#157) is asked to stop: SIGTERM (`docker stop`, systemd) or SIGINT (Ctrl+C).
+pub async fn terminated() {
+    use tokio::signal::unix::{SignalKind, signal};
+    match (
+        signal(SignalKind::terminate()),
+        signal(SignalKind::interrupt()),
+    ) {
+        (Ok(mut term), Ok(mut int)) => {
+            tokio::select! {
+                _ = term.recv() => {}
+                _ = int.recv() => {}
+            }
+        }
+        _ => {
+            let _ = tokio::signal::ctrl_c().await;
+        }
+    }
+}
+
 pub fn run_at_startup() -> bool {
     startup_file().is_some_and(|f| f.is_file())
 }

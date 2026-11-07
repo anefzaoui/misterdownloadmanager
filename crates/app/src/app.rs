@@ -505,6 +505,9 @@ pub struct App {
     at_login_icon: Option<Instant>,
     at_login_checked: Option<Instant>,
     exiting: bool,
+    /// Run without a window (`--headless`, #157): nothing is shown or asked; what arrives is
+    /// added as the remote control adds it.
+    headless: bool,
     /// Clipboard watching (Options → General): the text last seen (outer None: not looked
     /// yet) and when.
     clip_seen: Option<Option<String>>,
@@ -744,8 +747,23 @@ fn category_icon(c: Category) -> IconKey {
 }
 
 impl App {
+    /// For a run without a window (#157): downloads go to `downloads` when given (a server's
+    /// share), and nothing waits for an answer from someone at the computer.
+    pub fn headless(mut self, downloads: Option<PathBuf>) -> Self {
+        self.headless = true;
+        if let Some(d) = downloads {
+            self.downloads = d;
+        }
+        self
+    }
+
+    /// Asked to quit (File → Exit, `/exit`, the Scheduler's "Exit when done").
+    pub fn wants_exit(&self) -> bool {
+        self.exiting || self.exit_requested
+    }
+
     pub fn new(
-        cc: &eframe::CreationContext<'_>,
+        ctx: &egui::Context,
         rt: tokio::runtime::Handle,
         commands: std::sync::mpsc::Receiver<ipc::Incoming>,
         sink: ipc::Sink,
@@ -753,11 +771,8 @@ impl App {
         start: crate::Start,
     ) -> Self {
         // The look (#45): the chosen theme before anything is drawn.
-        crate::theme::select(
-            &crate::theme::startup_id(&loaded.settings.theme),
-            &cc.egui_ctx,
-        );
-        crate::theme::apply(&cc.egui_ctx);
+        crate::theme::select(&crate::theme::startup_id(&loaded.settings.theme), ctx);
+        crate::theme::apply(ctx);
         let mut settings = loaded.settings;
         if settings.limiter_on_startup {
             settings.speed_limit_on = true;
@@ -781,7 +796,7 @@ impl App {
         }
         let ask_language = !settings.language_asked;
         crate::i18n::set_lang(settings.language.as_deref());
-        crate::theme::language_fonts(&cc.egui_ctx);
+        crate::theme::language_fonts(ctx);
         crate::regional::set(&settings.regional);
         if settings.proxy_mode == 2 {
             crate::pacfetch::refresh(&settings.proxy_script, &rt);
@@ -858,8 +873,7 @@ impl App {
         // Started with the session where a window can't be hidden (Wayland, #226): minimized.
         if start == crate::Start::Minimized {
             tracing::info!("started with the session: minimized (a window can't be hidden here)");
-            cc.egui_ctx
-                .send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+            ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
         }
         App {
             rt,
@@ -874,7 +888,7 @@ impl App {
             queues_open,
             maximized: None,
             a11y_lang: "",
-            ui_ctx: cc.egui_ctx.clone(),
+            ui_ctx: ctx.clone(),
             tree_keys: false,
             move_rename_for: None,
             list_view: view,
@@ -970,6 +984,7 @@ impl App {
             at_login_icon: None,
             at_login_checked: None,
             exiting: false,
+            headless: false,
             confirm_delete: None,
             confirm_queue_delete: None,
             confirm_redownload: None,
@@ -1984,6 +1999,18 @@ impl App {
     fn handle_command(&mut self, cmd: ipc::Command, ctx: &egui::Context) {
         if cmd.exit {
             self.run(Cmd::Exit, None, ctx);
+            return;
+        }
+        // Without a window (#157): an address, magnet or .torrent is added as a paired device's
+        // is (no Download File Info, no Add torrent); nothing else opens anything.
+        if self.headless {
+            if cmd.start_queue {
+                self.start_queue(0);
+            }
+            if cmd.url.is_some() {
+                let answer = self.remote_add(cmd);
+                tracing::info!("headless: added: {answer}");
+            }
             return;
         }
         // The startup entry's (#226): this start began in the tray (main.rs), or MDM already
@@ -3933,6 +3960,9 @@ impl App {
     /// is on, whatever the automation API's switch: it may list, add and act, nothing else.
     fn answer(&mut self, cmd: &ipc::Command) -> String {
         use ipc::api::{ApiAnswer, DownloadInfo, ErrorAnswer, ListAnswer, line};
+        if cmd.pair && !cmd.remote {
+            return self.pair_answer();
+        }
         if cmd.remote {
             if !self.settings.remote_on {
                 return line(&ErrorAnswer {
@@ -4044,6 +4074,33 @@ impl App {
                 code: None,
             }),
         }
+    }
+
+    /// `{"pair": true}` (`misterdownloadmanager-cli pair`, #157): a new pairing code, the
+    /// page's addresses and a QR code for a terminal; an error while the remote control is off
+    /// or not listening.
+    pub fn pair_answer(&mut self) -> String {
+        use ipc::api::{ErrorAnswer, PairAnswer, line};
+        let mut urls = self.remote.as_ref().map(|r| r.urls()).unwrap_or_default();
+        // A container knows only its own address: the one people open, when given.
+        if let Some(public) = crate::remote::public_url()
+            && !urls.is_empty()
+        {
+            urls.insert(0, public);
+        }
+        let (Some(remote), Some(first)) = (&self.remote, urls.first()) else {
+            return line(&ErrorAnswer {
+                error: "the remote control isn't listening (Options → Remote)".into(),
+                code: Some("remote-off".into()),
+            });
+        };
+        let code = remote.start_pairing();
+        line(&PairAnswer {
+            qr: crate::remote::qr_text(&format!("{first}#pair={code}")),
+            code,
+            minutes: (mdm_remote::pairing::VALID.as_secs() / 60) as u32,
+            urls,
+        })
     }
 
     /// Free space where downloads go (General's folder), looked up off this thread at most every
@@ -7934,6 +7991,17 @@ impl eframe::App for App {
     /// (#162). A command that opens a window gets the UI pass that creates it, minimized or not
     /// (no window is raised or focused for it beyond what the command itself does).
     fn logic(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        self.tick(ctx);
+    }
+
+    fn ui(&mut self, ui: &mut Ui, frame: &mut eframe::Frame) {
+        self.paint_frame(ui, frame);
+    }
+}
+
+impl App {
+    /// What runs at every frame, window or not (`logic`, and a headless run's loop).
+    pub fn tick(&mut self, ctx: &egui::Context) {
         // The freeze watchdog times this as it times `ui` (crash.rs): a command or the clock
         // that hangs is reported too, minimized or not (#202).
         crate::crash::logic_begin();
@@ -7957,7 +8025,9 @@ impl eframe::App for App {
         crate::settings::share_proxy(self.settings.proxy());
         crate::settings::share_dns(self.settings.dns());
         crate::settings::share_video_cookies(&self.settings);
-        self.follow_assistive_technology(ctx);
+        if !self.headless {
+            self.follow_assistive_technology(ctx);
+        }
         self.network_adapter_tick(ctx);
         self.debrid_tick();
         self.poll(ctx);
@@ -7966,13 +8036,16 @@ impl eframe::App for App {
         if let Some((title, text)) = dialogs::told().pop() {
             self.notice = Some((title, text));
         }
-        self.auto_update_check(ctx);
         self.apply_global_limit();
-        self.watch_clipboard(ctx);
-        self.tray(ctx);
-        // The taskbar button's green bar: everything running, as one.
-        #[cfg(windows)]
-        crate::win32::taskbar_progress(crate::MAIN_TITLE, self.overall_progress());
+        // A server (#157) has no screen, clipboard or tray, and is updated by its image.
+        if !self.headless {
+            self.auto_update_check(ctx);
+            self.watch_clipboard(ctx);
+            self.tray(ctx);
+            // The taskbar button's green bar: everything running, as one.
+            #[cfg(windows)]
+            crate::win32::taskbar_progress(crate::MAIN_TITLE, self.overall_progress());
+        }
         if self
             .ticked
             .is_none_or(|t| t.elapsed() > Duration::from_secs(2))
@@ -7997,7 +8070,7 @@ impl eframe::App for App {
         crate::crash::logic_end();
     }
 
-    fn ui(&mut self, ui: &mut Ui, _frame: &mut eframe::Frame) {
+    fn paint_frame(&mut self, ui: &mut Ui, _frame: &mut eframe::Frame) {
         // The freeze watchdog times every frame's drawing, as it times its logic (crash.rs).
         crate::crash::frame_begin();
         // A lost graphics device is noticed before this frame paints (renderer.rs).

@@ -182,5 +182,71 @@
   "video_drm": {
     "message": "Protected video: it can't be saved",
     "description": "shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it"
+  },
+  "popup_send_to": {
+    "message": "Send downloads to",
+    "description": "heading in the toolbar button's popup, above the choice of where downloads go"
+  },
+  "popup_send_here": {
+    "message": "This computer",
+    "description": "choice under Send downloads to: the Mister Download Manager on this computer"
+  },
+  "popup_send_remote": {
+    "message": "Another Mister Download Manager (a server)",
+    "description": "choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is"
+  },
+  "popup_remote_code": {
+    "message": "Pairing code",
+    "description": "placeholder of the box for the 8-digit code the other MDM shows"
+  },
+  "popup_remote_open": {
+    "message": "Open it",
+    "description": "button: open the other MDM's address in a tab (to accept its certificate once)"
+  },
+  "popup_remote_pair": {
+    "message": "Pair",
+    "description": "button: pair this browser with the other MDM using the code"
+  },
+  "popup_remote_help": {
+    "message": "Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).",
+    "description": "help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is"
+  },
+  "status_remote": {
+    "message": "Downloads go to $address$",
+    "description": "the toolbar button's status while downloads go to another MDM",
+    "placeholders": {
+      "address": {
+        "content": "$1",
+        "example": "https://192.168.1.10:8463/"
+      }
+    }
+  },
+  "remote_address": {
+    "message": "Enter its https:// address.",
+    "description": "the address typed isn't an https:// address"
+  },
+  "remote_unreachable": {
+    "message": "Not reached. Open its address once in this browser and accept its certificate, then try again.",
+    "description": "pairing failed: the other MDM didn't answer"
+  },
+  "remote_wrong_code": {
+    "message": "Wrong code.",
+    "description": "pairing failed: the code was wrong"
+  },
+  "remote_no_code": {
+    "message": "It shows no code now: click Pair a device there first.",
+    "description": "pairing failed: the other MDM shows no pairing code; Pair a device is its button"
+  },
+  "remote_too_soon": {
+    "message": "Wait a moment, then try again.",
+    "description": "pairing failed: codes tried too fast"
+  },
+  "remote_failed": {
+    "message": "It didn't work. Try again.",
+    "description": "pairing failed for another reason"
+  },
+  "remote_device_name": {
+    "message": "Browser extension",
+    "description": "the name this browser gets in the other MDM's list of paired devices"
   }
 }

@@ -212,6 +212,9 @@ enum Cmd {
         #[arg(required = true)]
         ids: Vec<u64>,
     },
+    /// Show a new code that pairs a phone or a browser with the running app's remote control
+    /// (#141, #157): its address, the code and a QR code to scan.
+    Pair,
     /// Turn the running app's automation API on or off (off by default).
     Api {
         /// on or off.
@@ -314,6 +317,35 @@ fn ask(cmd: mdm_ipc::Command) -> anyhow::Result<()> {
         return Err(Reported.into());
     }
     Ok(())
+}
+
+/// `pair`: a new pairing code from the running app, printed for a person.
+fn pair() -> anyhow::Result<()> {
+    let answer = mdm_ipc::request(&mdm_ipc::Command {
+        pair: true,
+        ..Default::default()
+    })
+    .map_err(|e| anyhow::anyhow!("Mister Download Manager isn't running ({e})"))?;
+    match mdm_ipc::api::parse::<mdm_ipc::api::PairAnswer>(&answer).map_err(anyhow::Error::msg)? {
+        Ok(a) => {
+            println!("{}", a.qr);
+            println!(
+                "Open {} on the phone (or scan the code above),",
+                a.urls.join("  or  ")
+            );
+            println!(
+                "then enter the code {} {} (it works once, for {} minutes).",
+                a.code.get(..4).unwrap_or_default(),
+                a.code.get(4..).unwrap_or_default(),
+                a.minutes
+            );
+            Ok(())
+        }
+        Err(e) => {
+            eprintln!("{}", e.error);
+            Err(Reported.into())
+        }
+    }
 }
 
 /// An automation API action on the running app's downloads; prints its answer.
@@ -972,6 +1004,7 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
         Cmd::Start { ids } => act("start", ids),
         Cmd::Remove { ids } => act("remove", ids),
         Cmd::Delete { ids } => act("delete", ids),
+        Cmd::Pair => pair(),
         Cmd::Api { state } => ask(mdm_ipc::Command {
             api: Some(state == "on"),
             ..Default::default()
