@@ -10,6 +10,7 @@ How Mister Download Manager's pieces fit together.
 | `crates/app` | `mdm-app` | The desktop app (`misterdownloadmanager.exe`, egui): list, categories, queues, scheduler, dialogs, tray, settings |
 | `crates/cli` | `mdm-cli` | Headless downloads with progress (`get`, `resume`), videos, torrents and the automation API's commands: a library the app's program runs (`misterdownloadmanager --cli …`), and `misterdownloadmanager-cli`, a small launcher that starts it with the same arguments, terminal and exit code |
 | `crates/mcp` | `mdm-mcp` | The MCP server (`misterdownloadmanager-mcp`): AI assistants list, add and control the running app's downloads through the automation API |
+| `crates/remote` | `mdm-remote` | The remote control (#141): the HTTPS server a paired phone or computer on the local network uses (its page, pairing codes, device tokens, the self-signed certificate); every request becomes an automation API command the app answers |
 | `crates/nmhost` | `mdm-nmhost` | The browser's native messaging host: takes captured downloads from the extension and hands them to the app |
 | `crates/ipc` | `mdm-ipc` | The single-instance channel (a token-protected local socket), the data folder, and the capture rules shared by the app and the host |
 | `crates/tools` | `mdm-tools` | Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (`relay.rs`) |
@@ -20,7 +21,7 @@ How Mister Download Manager's pieces fit together.
 | `docs/` | — | The user guide and tutorials, this file, the benchmark data; the website makes the guide its help pages, which Help opens |
 | `website/` | — | A future website's pages (not published yet) |
 
-Dependencies point inward: `app`, `cli`, `mcp` and `nmhost` use `engine` and `ipc`; the engine knows
+Dependencies point inward: `app`, `cli`, `mcp`, `nmhost` and `remote` use `engine` and `ipc`; the engine knows
 nothing of the UI. The app sees the engine only through its events (progress, segment table
 snapshots, finished, failed).
 
@@ -95,6 +96,18 @@ page ──► extension ──native messaging──► mdm-nmhost ──ipc─
 The extension asks the host which file types to take, checks each download against them, and
 cancels the browser's download only after the app has accepted it; otherwise the browser keeps
 it.
+
+## Remote control
+
+```
+phone ──HTTPS (paired token)──► mdm-remote ──ipc::Sink──► app (answer, remote_add)
+```
+
+The server runs on the app's Tokio runtime, one listener per local network address. Each request
+is checked (`Host`, `Origin`, token), turned into an `mdm_ipc::Command` marked `remote` (a field
+no request line can set) and handed to the app through the same channel as the command line's;
+the app answers it on its next frame, as it answers the automation API. Its page is built in
+(`crates/remote/web`) and its texts come from the app's catalogs (`remote.rs`).
 
 ## Translations
 

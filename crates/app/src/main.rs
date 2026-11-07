@@ -38,6 +38,7 @@ mod properties;
 mod queue;
 mod quota;
 mod regional;
+mod remote;
 mod renderer;
 mod rss;
 mod rssdlg;
@@ -291,11 +292,14 @@ fn app() -> eframe::Result {
     }
     let window: std::sync::Arc<std::sync::OnceLock<egui::Context>> = Default::default();
     let wake = window.clone();
-    let _ = mdm_ipc::serve(tx, move || {
+    let wake: std::sync::Arc<dyn Fn() + Send + Sync> = std::sync::Arc::new(move || {
         if let Some(ctx) = wake.get() {
             ctx.request_repaint();
         }
     });
+    // The remote control (#141) sends its commands down the same channel.
+    let sink = mdm_ipc::Sink::new(tx.clone(), wake.clone());
+    let _ = mdm_ipc::serve(tx, move || wake());
 
     // Downloads run on a Tokio runtime; the UI thread only reads snapshots.
     let rt = tokio::runtime::Runtime::new().expect("tokio runtime");
@@ -376,7 +380,7 @@ fn app() -> eframe::Result {
             cc.egui_ctx.set_zoom_factor(z);
         }
         let _ = window.set(cc.egui_ctx.clone());
-        app::App::new(cc, handle, commands, loaded, start)
+        app::App::new(cc, handle, commands, sink, loaded, start)
     });
     crash::clean_exit();
     result

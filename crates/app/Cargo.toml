@@ -36,6 +36,8 @@ mdm-engine.workspace = true
 mdm-extract.workspace = true
 mdm-geo.workspace = true
 mdm-ipc.workspace = true
+# The remote control (#141): a paired phone adds and controls downloads over the local network.
+mdm-remote.workspace = true
 mdm-tools.workspace = true
 mdm-torrent.workspace = true
 open.workspace = true
@@ -47,6 +49,8 @@ tokio.workspace = true
 url.workspace = true
 percent-encoding.workspace = true
 rfd = "0.17.2"
+# Options → Remote → Pair a device's QR code of the address (#141; Nayuki's, no dependencies).
+qrcodegen = "1.8.0"
 # Line breaks between characters keep a letter and its marks together (Thai, Khmer, Indic).
 unicode-segmentation = "1.13.3"
 # Crash and freeze reports: the monitor, minidumps, symbolicated stacks, release logs.
