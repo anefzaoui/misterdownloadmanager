@@ -13,6 +13,9 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ Download File Info's Preview, Options → Proxy's Get System and the Scheduler's "when done"
+  drop-down fit their translated text (Russian and others), after #212
+  ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192))
 - ✅ Started with the computer, MDM waits in the notification area instead of opening its window
   in front, on Windows, Linux and macOS (minimized where no notification area shows its icon);
   startup entries written before are updated, and the installer writes the new one

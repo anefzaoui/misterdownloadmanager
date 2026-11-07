@@ -1302,24 +1302,33 @@ impl OptionsDialog {
         Icon::PageProxy
             .image(true)
             .paint_at(ui, r(o, 21.0, 50.0, 32.0, 32.0));
-        page_title(
-            &p,
-            winui::tahoma_bold(),
-            o.x + 112.0,
-            o.y + 69.0,
-            "Proxy / socks configuration",
-        );
-        // As wide as its label in this language (#192), short of the title (a translated title
-        // ends where the English one does).
-        let title_end =
+        // Get System as wide as its label in this language (#192), its right end kept. A
+        // translated title ends where the English one does, unless the button needs that room:
+        // then the title moves left (no further than 8 px after the icon) and ends 8 px before it.
+        let english_end =
             112.0 + winui::text_width_font(&p, winui::tahoma_bold(), "Proxy / socks configuration");
-        let (get_x, get_w) = winui::button_row(
-            &p,
-            &[("Get System", 307.0, 93.0)],
-            0.0,
-            title_end + 8.0,
-            160.0,
-        )[0];
+        let title_w = page_title_width(&p, winui::tahoma_bold(), "Proxy / socks configuration");
+        // The icon ends at 53; the button never moves right of its English place.
+        let from = (53.0 + 8.0 + title_w + 8.0).min(307.0);
+        let (get_x, get_w) =
+            winui::button_row(&p, &[("Get System", 307.0, 93.0)], 0.0, from, 160.0)[0];
+        if get_x - 8.0 < english_end {
+            page_title_ending(
+                &p,
+                winui::tahoma_bold(),
+                o.x + get_x - 8.0,
+                o.y + 69.0,
+                "Proxy / socks configuration",
+            );
+        } else {
+            page_title(
+                &p,
+                winui::tahoma_bold(),
+                o.x + 112.0,
+                o.y + 69.0,
+                "Proxy / socks configuration",
+            );
+        }
         let s = &mut self.s;
         if winui::button_light(
             ui,
@@ -3514,6 +3523,24 @@ fn page_title(p: &egui::Painter, font: egui::FontId, x: f32, baseline: f32, engl
         let end = x + winui::text_width_font(p, font.clone(), english);
         end - winui::text_width_font(p, font.clone(), shown)
     };
+    winui::text_font(p, font, x, baseline, shown, LIGHT_TEXT());
+}
+
+/// How wide [`page_title`] draws `english` translated.
+fn page_title_width(p: &egui::Painter, font: egui::FontId, english: &str) -> f32 {
+    winui::text_width_font(p, font, crate::i18n::t(english))
+}
+
+/// [`page_title`] ending at English x `end` (a control after it needs the room up to there).
+fn page_title_ending(
+    p: &egui::Painter,
+    font: egui::FontId,
+    end: f32,
+    baseline: f32,
+    english: &str,
+) {
+    let shown = crate::i18n::t(english);
+    let x = end - winui::text_width_font(p, font.clone(), shown);
     winui::text_font(p, font, x, baseline, shown, LIGHT_TEXT());
 }
 

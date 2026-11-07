@@ -521,6 +521,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Three more controls fit their translated text**
+  ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192), after #212): in Russian
+  and a few other languages, Download File Info's **Preview**, Options → Proxy's **Get System**
+  and the Scheduler's drop-down after **Turn off computer when done** still ended in "...".
+  Download File Info grows by what Preview's label needs (Russian, Ukrainian, Telugu, Belarusian
+  and a few more), the Proxy page's title moves left to give Get System its room, and the
+  Scheduler's drop-down widens towards its caption. English is unchanged.
 - **Open folder no longer freezes the window on Linux**
   ([#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222)): Download complete's
   **Open folder** asks the desktop's file manager (over D-Bus) to show the file, and MDM waited
