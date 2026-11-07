@@ -3120,6 +3120,10 @@
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 	This computer can't be woken by a timer	لا يمكن إيقاظ هذا الكمبيوتر بواسطة مؤقت
+#. text in errors.rs
+#. a download's error on a computer (a minimal Linux) without the certificates that secure connections check servers with; "ca-certificates" is the package's name, left as is
+#, machine
+	this computer has no certificates to check the server with: install the ca-certificates package, then try again	لا يحتوي هذا الكمبيوتر على شهادات للتحقق من الخادم: ثبت حزمة ca-certificates، ثم حاول مرة أخرى
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 	This computer has no wake alarm that programs can set	لا يحتوي هذا الكمبيوتر على منبه إيقاظ يمكن للبرامج ضبطه

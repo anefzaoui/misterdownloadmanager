@@ -207,12 +207,14 @@ pub fn system_proxy(url: &url::Url) -> Option<String> {
 
 /// `builder` with its connections held to `route`: a reqwest client anywhere in MDM goes through
 /// this. `Route::Down` refuses to build one. `to_this_computer`: every connection the client
-/// makes goes to this computer (a local server, or a proxy on it), which isn't bound.
+/// makes goes to this computer (a local server, or a proxy on it), which isn't bound. On a
+/// system without certificates, its secure connections fail saying so (crate::tls, #264).
 pub fn bind_client(
     builder: reqwest::ClientBuilder,
     route: &Route,
     to_this_computer: bool,
 ) -> Result<reqwest::ClientBuilder, NetError> {
+    let builder = crate::tls::configure(builder);
     match route {
         Route::Any => Ok(builder),
         Route::Down { label } => Err(NetError::Down {

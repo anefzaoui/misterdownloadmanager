@@ -314,6 +314,10 @@ pub enum Error {
     /// retrying now won't help, the user has to do something else.
     #[error("{0}")]
     Refused(Refusal),
+    /// A secure connection (HTTPS, FTPS) on a system without trusted certificates to check
+    /// the server with (a minimal Linux without `ca-certificates`, #264).
+    #[error("{}", crate::tls::NO_ROOTS)]
+    NoCertificates,
 }
 
 /// What failed on the network (`Error::Net`).
@@ -357,6 +361,7 @@ impl Error {
                 | Error::ChecksumMismatch(_)
                 | Error::Cancelled
                 | Error::InUse(_)
+                | Error::NoCertificates
         )
     }
 
@@ -477,6 +482,9 @@ impl From<io::Error> for Error {
 
 impl From<reqwest::Error> for Error {
     fn from(e: reqwest::Error) -> Self {
+        if crate::tls::is_no_roots(&e) {
+            return Error::NoCertificates;
+        }
         Error::Http(Arc::new(e))
     }
 }

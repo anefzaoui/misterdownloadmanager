@@ -13,6 +13,8 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ Linux: plain HTTP downloads work on a system without CA certificates, and HTTPS ones say to
+  install them ([#264](https://github.com/anefzaoui/misterdownloadmanager/issues/264))
 - ✅ Linux packages checked in clean Ubuntu 24.04, Debian 12 and Fedora 45 systems: install, the
   command line, the window, the desktop entry and icon, browser integration and uninstall; the
   .deb and .rpm now bring the keyboard library MDM's window needs under X11 and the CA

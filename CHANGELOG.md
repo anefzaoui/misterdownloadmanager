@@ -567,6 +567,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Linux: plain HTTP downloads work on a system without CA certificates**
+  ([#264](https://github.com/anefzaoui/misterdownloadmanager/issues/264)): on a minimal install
+  without the `ca-certificates` package (the tar.gz, the AppImage or a source build), no download
+  started, `http://` ones included ("No CA certificates were loaded from the system"). Plain HTTP
+  and FTP now work there, and each HTTPS or FTPS download fails at once, without retrying, saying
+  that the computer has no certificates to check the server with and to install
+  `ca-certificates`.
 - **The Linux .deb and .rpm bring what MDM's window needs** (part of
   [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): on a system without
   libxkbcommon-x11 (a minimal install, a container), MDM installed from them stopped at start
