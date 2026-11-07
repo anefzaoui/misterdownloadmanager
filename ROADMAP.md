@@ -13,6 +13,9 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ Better translations in every language: each language has a style guide and the terms its
+  reviewers settled, and every machine translation of the program and the website was reviewed
+  again against them
 - ✅ The extension's popup shows **Open Mister Download Manager** whole: it was cut to "Open Mister
   Do…" on Linux and in longer languages; Options moves below it when both don't fit on one line
   (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))

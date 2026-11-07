@@ -400,6 +400,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Better translations in every language.** Every machine-translated text of the program and
+  of the website was read again against the English, with a style guide for each language (how
+  it writes commands, questions and labels) and the terms native reviewers settled, and fixed
+  where it was wrong or unnatural. Texts a person reviewed (all of Italian and Arabic) were left
+  as they are. New texts are translated the same way from now on.
 - **Developers: the host connection limit test tells a reconnect from a connection too many**
   ([#224](https://github.com/anefzaoui/misterdownloadmanager/issues/224)). A server sees that a
   client dropped an answer only when it next writes to it, so on a busy computer a connection
