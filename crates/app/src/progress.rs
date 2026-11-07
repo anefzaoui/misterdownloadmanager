@@ -421,9 +421,29 @@ impl Progress {
         } else {
             ButtonKind::Normal
         };
+        // The row as wide as its labels in this language need (#192), each laid out for the
+        // longer of its two labels so it keeps its size when they change; Cancel stays at the
+        // window's edge.
+        let [details_at, pause_at, cancel_at] = winui::button_row(
+            &p,
+            &[
+                (
+                    winui::widest_label(&p, &["<< Hide details", "Show details >>"]),
+                    30.0,
+                    138.0,
+                ),
+                (winui::widest_label(&p, &["Pause", "Resume"]), 311.0, 82.0),
+                ("Cancel", 422.0, 73.0),
+            ],
+            8.0,
+            30.0,
+            200.0,
+        )[..] else {
+            unreachable!("three buttons")
+        };
         if winui::button(
             ui,
-            r(o, 30.0, 206.0, 138.0, 22.0),
+            r(o, details_at.0, 206.0, details_at.1, 22.0),
             details_label,
             kind,
             false,
@@ -446,7 +466,7 @@ impl Progress {
         };
         if winui::button(
             ui,
-            r(o, 311.0, 206.0, 82.0, 22.0),
+            r(o, pause_at.0, 206.0, pause_at.1, 22.0),
             label,
             pkind,
             false,
@@ -462,7 +482,7 @@ impl Progress {
         }
         if winui::button(
             ui,
-            r(o, 422.0, 206.0, 73.0, 22.0),
+            r(o, cancel_at.0, 206.0, cancel_at.1, 22.0),
             "Cancel",
             ButtonKind::Normal,
             false,
@@ -862,6 +882,8 @@ fn status_page(ui: &Ui, o: Pos2, item: &Item, snap: Option<&Snapshot>, frac: f64
         winui::copyable(ui, rect, key, s, cut);
     };
     let status = match item.status {
+        // A torrent its debrid service is downloading (#44).
+        Status::Downloading if item.at_service().is_some() => item.at_service().unwrap_or_default(),
         Status::Downloading => {
             // A video (yt-dlp) has no engine connections: data arriving is the sign.
             let receiving = snap.is_some_and(|s| {

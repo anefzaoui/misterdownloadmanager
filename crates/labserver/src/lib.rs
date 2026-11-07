@@ -3,6 +3,7 @@
 
 pub mod content;
 pub mod debrid;
+pub mod debrid_torrents;
 pub mod drive;
 pub mod faults;
 mod feeds;
@@ -12,4 +13,4 @@ mod server;
 mod streams;
 
 pub use faults::Faults;
-pub use server::{Config, HELP, LabServer, LogEntry, LogSink, SlotHold};
+pub use server::{Config, HELP, Held, LabServer, LogEntry, LogSink, SlotHold};

@@ -347,9 +347,23 @@ impl Helpers {
         winui::text(&p, o.x + 16.0, o.y + y + 20.0, later, muted);
         let y = y + 28.0;
         if self.job.is_none() {
+            // As wide as their labels in this language (#192), the row ending where it ends in
+            // English.
+            let [not_now_at, yes_at] = winui::button_row(
+                &p,
+                &[
+                    ("Not now", 196.0, 90.0),
+                    ("Yes, download them (recommended)", 292.0, 212.0),
+                ],
+                6.0,
+                16.0,
+                360.0,
+            )[..] else {
+                unreachable!("two buttons")
+            };
             let not_now = winui::button(
                 ui,
-                r(o, 196.0, y, 90.0, 25.0),
+                r(o, not_now_at.0, y, not_now_at.1, 25.0),
                 "Not now",
                 ButtonKind::Normal,
                 false,
@@ -358,7 +372,7 @@ impl Helpers {
             // i18n: the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
             let yes = winui::button(
                 ui,
-                r(o, 292.0, y, 212.0, 25.0),
+                r(o, yes_at.0, y, yes_at.1, 25.0),
                 "Yes, download them (recommended)",
                 ButtonKind::Accent,
                 false,
@@ -370,10 +384,19 @@ impl Helpers {
                 *answer = Some(false);
             }
         } else {
+            let [again_at, close_at] = winui::button_row(
+                &p,
+                &[("Try again", 318.0, 90.0), ("Close", 414.0, 90.0)],
+                6.0,
+                16.0,
+                200.0,
+            )[..] else {
+                unreachable!("two buttons")
+            };
             if failed && !running {
                 let again = winui::button(
                     ui,
-                    r(o, 318.0, y, 90.0, 25.0),
+                    r(o, again_at.0, y, again_at.1, 25.0),
                     "Try again",
                     ButtonKind::Normal,
                     false,
@@ -385,7 +408,7 @@ impl Helpers {
             }
             let close = winui::button(
                 ui,
-                r(o, 414.0, y, 90.0, 25.0),
+                r(o, close_at.0, y, close_at.1, 25.0),
                 "Close",
                 ButtonKind::Default,
                 false,
@@ -537,9 +560,22 @@ impl Programs {
                 ("helper", k),
             );
             let busy = self.checking.is_some();
+            // As wide as their labels in this language (#192), side by side from the left.
+            let [other_at, own_at] = winui::button_row_from_left(
+                &p,
+                &[
+                    ("Use another program...", 14.0, 180.0),
+                    ("Use MDM's own copy", 202.0, 180.0),
+                ],
+                8.0,
+                486.0,
+                260.0,
+            )[..] else {
+                unreachable!("two buttons")
+            };
             if winui::button(
                 ui,
-                r(o, 14.0, y - o.y + 46.0, 180.0, 21.0),
+                r(o, other_at.0, y - o.y + 46.0, other_at.1, 21.0),
                 // i18n: Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
                 "Use another program...",
                 if busy {
@@ -561,7 +597,7 @@ impl Programs {
             }
             if winui::button(
                 ui,
-                r(o, 202.0, y - o.y + 46.0, 180.0, 21.0),
+                r(o, own_at.0, y - o.y + 46.0, own_at.1, 21.0),
                 // i18n: Video helpers: button: go back to the copy MDM downloads and checks itself
                 "Use MDM's own copy",
                 if mine && !busy {

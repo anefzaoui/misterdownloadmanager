@@ -328,6 +328,47 @@ static SETS: LazyLock<Mutex<HashMap<String, Arc<Set>>>> = LazyLock::new(|| {
         "adwaita".to_owned(),
         Arc::new(Set::from_files(adwaita, false)),
     );
+    // KDE's breeze-icons 6.31 (LGPL-3.0-or-later, assets/themes/breeze/icons/LICENSE), its files
+    // as KDE ships them: colour drawings for files and categories, one-colour icons (its
+    // ColorScheme-Text ones) in the theme's ink, their highlight and warning colours kept. The
+    // PDF icon is MDM's own, in its style.
+    let breeze = builtin_files!("breeze";
+        16: ["cat-all-symbolic.svg", "cat-compressed.svg", "cat-documents.svg",
+            "cat-finished-symbolic.svg", "cat-folder-open-symbolic.svg",
+            "cat-folder-symbolic.svg", "cat-music.svg", "cat-programs-symbolic.svg",
+            "cat-queues-symbolic.svg", "cat-torrents.svg", "cat-unfinished-symbolic.svg",
+            "cat-video.svg", "ft-archive.svg", "ft-audio.svg", "ft-code.svg", "ft-disk-image-symbolic.svg",
+            "ft-document.svg", "ft-executable-symbolic.svg", "ft-font.svg", "ft-generic.svg",
+            "ft-image.svg", "ft-pdf.svg", "ft-presentation.svg", "ft-spreadsheet.svg",
+            "ft-text.svg", "ft-torrent.svg", "ft-video.svg", "misc-down-symbolic.svg",
+            "misc-emblem-ok-symbolic.svg", "misc-remove.svg", "misc-up-symbolic.svg",
+            "st-complete-symbolic.svg", "st-downloading-symbolic.svg", "st-error-symbolic.svg",
+            "st-paused-symbolic.svg", "st-queued-symbolic.svg", "st-seeding-symbolic.svg",
+            "tb-add-url-symbolic.svg", "tb-delete-completed-symbolic.svg", "tb-delete.svg",
+            "tb-options-symbolic.svg", "tb-resume-symbolic.svg", "tb-scheduler-symbolic.svg",
+            "tb-stop-symbolic.svg", "ui-close-symbolic.svg", "ui-maximize-symbolic.svg",
+            "ui-minimize-symbolic.svg", "ui-restore-symbolic.svg", "ui-to-tray-symbolic.svg"];
+        24: ["cat-all-symbolic.svg", "cat-compressed.svg", "cat-documents.svg",
+            "cat-finished-symbolic.svg", "cat-folder-open-symbolic.svg",
+            "cat-folder-symbolic.svg", "cat-music.svg", "cat-programs.svg",
+            "cat-queues-symbolic.svg", "cat-torrents.svg", "cat-unfinished-symbolic.svg",
+            "cat-video.svg", "ft-archive.svg", "ft-audio.svg", "ft-code.svg", "ft-disk-image.svg",
+            "ft-document.svg", "ft-executable.svg", "ft-font.svg", "ft-generic.svg",
+            "ft-image.svg", "ft-pdf.svg", "ft-presentation.svg", "ft-spreadsheet.svg",
+            "ft-text.svg", "ft-torrent.svg", "ft-video.svg", "misc-down-symbolic.svg",
+            "misc-emblem-ok-symbolic.svg", "misc-remove.svg", "misc-up-symbolic.svg",
+            "st-complete-symbolic.svg", "st-downloading-symbolic.svg", "st-error-symbolic.svg",
+            "st-paused-symbolic.svg", "st-queued-symbolic.svg", "st-seeding-symbolic.svg",
+            "tb-add-torrent-symbolic.svg", "tb-add-url-symbolic.svg",
+            "tb-delete-completed-symbolic.svg", "tb-delete.svg", "tb-options-symbolic.svg",
+            "tb-resume-symbolic.svg", "tb-scheduler-symbolic.svg", "tb-start-queue-symbolic.svg",
+            "tb-stop-all-symbolic.svg", "tb-stop-queue-symbolic.svg", "tb-stop-symbolic.svg",
+            "ui-close-symbolic.svg", "ui-maximize-symbolic.svg", "ui-minimize-symbolic.svg",
+            "ui-restore-symbolic.svg", "ui-to-tray-symbolic.svg"]);
+    sets.insert(
+        "breeze".to_owned(),
+        Arc::new(Set::from_files(breeze, false)),
+    );
     Mutex::new(sets)
 });
 
@@ -540,6 +581,32 @@ mod tests {
         // Our own PDF and torrent file keep their colours.
         assert!(!adw.file("ft-pdf", 16.0).unwrap().1.mono);
         assert!(!adw.file("ft-torrent", 32.0).unwrap().1.mono);
+    }
+
+    /// Breeze has every need: KDE's one-colour icons (ColorScheme-Text) take the ink and keep
+    /// their highlight and warning colours; its colour icons and our PDF keep theirs.
+    #[test]
+    fn breeze_has_every_need_and_keeps_its_colours() {
+        let set = set("breeze").unwrap();
+        for (need, _) in NEEDS {
+            assert!(set.has(need), "breeze lacks {need}");
+            for px in [16.0, 32.0] {
+                let (_, f) = set.file(need, px).unwrap();
+                let text = std::str::from_utf8(&f.bytes).unwrap();
+                assert!(!f.png && text.contains("<svg"), "{need}");
+                assert_eq!(f.mono, text.contains("ColorScheme-Text"), "{need} {px}");
+                if f.mono {
+                    let inked = inked(&f.bytes, "#123456");
+                    let text = std::str::from_utf8(&inked).unwrap();
+                    assert!(!text.contains("#232629"), "{need} keeps KDE's ink");
+                }
+            }
+        }
+        // st-error's red stays red.
+        let (_, f) = set.file("st-error", 16.0).unwrap();
+        let text = String::from_utf8(inked(&f.bytes, "#123456").to_vec()).unwrap();
+        assert!(text.contains("#da4453"), "{text}");
+        assert!(!set.file("ft-pdf", 16.0).unwrap().1.mono);
     }
 
     /// A one-colour icon takes the ink in its greys (GNOME's #2e3436, KDE's ColorScheme-Text)

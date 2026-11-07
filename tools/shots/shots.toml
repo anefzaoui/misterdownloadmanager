@@ -1,0 +1,623 @@
+# The help pages' pictures (docs/images/help/), one entry each. tools/shots/make.py takes them
+# all again in one go, light and dark; `make.py check` keeps this list, the pages and the files
+# in step. See tools/shots/README.md.
+#
+#   id       the file: docs/images/help/<id>.webp (light) and <id>-dark.webp
+#   page     the docs page it is on, and `under` the heading it sits under
+#   take     what to open, as tools/lab/docs-shots.ps1 -Show takes it: a /show argument
+#            ("options:connection"), "@main", "@menu:<show argument>" (a menu, over the main
+#            window), "@download:<lab server path>" (Download File Info, as a browser hands a
+#            download over), "@complete:<path>" (Download complete), "@torrent" (Add torrent for
+#            tools/lab/Open Movie Night.torrent); "a+b" runs /show a first ("theme:breeze+@main").
+#            Shots with the same take share one capture.
+#   from     instead of take: a picture already in the repository (the browser's, made by
+#            tools/readme/browser-shots.mjs), and from_dark its night version if there is one
+#   crop     what to keep: [x, y, w, h] in the window's pixels (w or h 0: to the edge), or
+#            { around = ["control", ...], pad = 16 } the controls' area and a margin (an edge
+#            within `snap`, 24 px, is kept whole). The whole window when absent.
+#   ring     controls to ring (by their accessible name, "Button:OK" by type too, "OK#2" the
+#            second of the name, or [x, y, w, h])
+#   marks    numbered markers: a control, or { at = control, n = 3, side = "left" | "right" |
+#            "top" | "bottom" | "center" | "corner" }; numbered 1, 2... unless n says
+#   lossy    a quality (90) for a photograph, such as a video in the browser: lossy WebP there,
+#            lossless for every window
+#   alt      what the picture shows, for whoever can't see it
+#   caption  the line under it (in a step strip: what to do)
+# The page carries alt and caption as Markdown (`make.py snippet <id>` prints it); the site's
+# translations (tools/website/translate_site.py) translate them with the page.
+
+# ---- Getting started ----------------------------------------------------------------------------
+
+[[shot]]
+id = "first-language"
+page = "getting-started.md"
+under = "First start and the language"
+take = "language"
+alt = "The language list on first start: every language with its flag, its own name and its English name"
+caption = "Pick your language. View → Language changes it later."
+
+[[shot]]
+id = "first-helpers"
+page = "getting-started.md"
+under = "The video helpers"
+take = "helpers"
+ring = ["Yes, download them (recommended)"]
+alt = "MDM offers yt-dlp and ffmpeg on its first start, with Yes, download them (recommended) and Not now"
+caption = "Yes downloads both helpers in the background, once."
+
+[[shot]]
+id = "main-window"
+page = "getting-started.md"
+under = "The main window"
+take = "@main"
+# The toolbar has no accessible names: a rectangle at its end. 1 right of the menu bar's last
+# menu, 2 right of the toolbar, 3 and 4 in the empty part of the categories and the list.
+marks = [{ at = "MenuItem:Help", side = "right" }, { at = [810, 60, 10, 50], side = "right" }, { at = "Tree:Categories", side = "center" }, { at = "List:Downloads", side = "center" }]
+alt = "The main window: the menu bar, the toolbar, the categories on the left and the download list on the right"
+caption = "1 the menu bar, 2 the toolbar, 3 the categories, 4 the download list."
+
+[[shot]]
+id = "view-dark-mode"
+page = "getting-started.md"
+under = "Dark mode"
+take = "@menu:menu:3"
+crop = [145, 28, 230, 280]
+marks = [{ at = "Dark Mode support", side = "right" }, { at = "Always dark", side = "right" }]
+alt = "The View menu open, with Dark Mode support and Always dark"
+caption = "1 Dark Mode support follows the system; 2 Always dark keeps MDM dark."
+
+[[shot]]
+id = "view-theme"
+page = "getting-started.md"
+under = "Themes"
+take = "@menu:menu:3:theme"
+crop = [145, 28, 366, 356]
+alt = "View → Theme open: Classic, Native, High contrast, Metro, Adwaita and Breeze"
+caption = "View → Theme switches at once, keeping the layout."
+
+[[shot]]
+id = "theme-classic"
+page = "getting-started.md"
+under = "Themes"
+take = "theme:classic+@main"
+crop = [0, 0, 560, 260]
+alt = "The main window's toolbar and categories in the Classic theme"
+caption = "Classic"
+
+[[shot]]
+id = "theme-high-contrast"
+page = "getting-started.md"
+under = "Themes"
+take = "theme:high-contrast+@main"
+crop = [0, 0, 560, 260]
+alt = "The main window's toolbar and categories in the High contrast theme"
+caption = "High contrast"
+
+[[shot]]
+id = "theme-adwaita"
+page = "getting-started.md"
+under = "Themes"
+take = "theme:adwaita+@main"
+crop = [0, 0, 560, 260]
+alt = "The main window's toolbar and categories in the Adwaita theme"
+caption = "Adwaita"
+
+[[shot]]
+id = "theme-breeze"
+page = "getting-started.md"
+under = "Themes"
+take = "theme:breeze+@main"
+crop = [0, 0, 560, 260]
+alt = "The main window's toolbar and categories in the Breeze theme"
+caption = "Breeze"
+
+# ---- Adding downloads ---------------------------------------------------------------------------
+
+[[shot]]
+id = "add-url"
+page = "adding-downloads.md"
+under = "Add URL"
+take = "addurl"
+marks = [{ at = "Address", n = 3, side = "corner" }, { at = "Use authorization", n = 4, side = "right" }, { at = "OK", n = 5 }]
+alt = "Enter new address to download, with the Address box, Use authorization and OK"
+caption = "The numbers are the steps above: 3 the address, 4 a login if the server needs one, 5 OK."
+
+[[shot]]
+id = "download-file-info"
+page = "adding-downloads.md"
+under = "Download File Info"
+take = "@download:gen/250M/project-files-2026.zip"
+# 1 and 2 in the margin before the labels.
+marks = [{ at = [30, 61, 0, 21], side = "center" }, { at = [30, 91, 0, 20], side = "center" }, { at = "Start Download", side = "corner" }, { at = "Download Later", side = "corner" }]
+alt = "Download File Info for a ZIP file: its address, the Compressed category, the folder it goes to, its size, and the Download Later, Start Download and Cancel buttons"
+caption = "1 the category, 2 where the file goes, 3 start now, 4 or put it in a queue."
+
+[[shot]]
+id = "batch"
+page = "adding-downloads.md"
+under = "Batch download: many numbered files"
+take = "batch"
+alt = "Batch download: an address with an asterisk, what replaces it, and the first, second and last file"
+caption = "One asterisk in the address, then numbers or letters from–to."
+
+[[shot]]
+id = "link-grabber"
+page = "adding-downloads.md"
+under = "A list of links"
+take = "grabber"
+alt = "Link grabber listing the links of a page in packages, with their names, sizes and whether they are online"
+caption = "Link grabber: untick what you don't want, then Add to queue."
+
+# ---- Browser integration ------------------------------------------------------------------------
+
+[[shot]]
+id = "browser-offer"
+page = "browser-integration.md"
+under = "Set it up"
+take = "extension"
+alt = "Add Mister Download Manager to your browser: each browser found, with a button to its store page"
+caption = "MDM's own window opens each browser's store page for you."
+
+[[shot]]
+id = "catch-file-info"
+page = "browser-integration.md"
+under = "What it takes"
+take = "@download:gen/250M/project-files-2026.zip"
+ring = ["Start Download"]
+alt = "Download File Info in MDM for a file clicked in the browser"
+caption = "Click a download link in the browser: Download File Info opens in MDM."
+
+[[shot]]
+id = "catch-progress"
+page = "browser-integration.md"
+under = "What it takes"
+take = "progress"
+alt = "The progress window of a download coming in over several connections"
+caption = "Start Download: the progress window shows it coming in."
+
+[[shot]]
+id = "catch-complete"
+page = "browser-integration.md"
+under = "What it takes"
+take = "@complete:gen/2M/release-notes-2026.pdf"
+ring = ["Open"]
+alt = "Download complete, with Open, Open with..., Open folder and Close"
+caption = "Download complete: Open the file, or Open folder."
+
+[[shot]]
+id = "options-integration"
+page = "browser-integration.md"
+under = "What it takes"
+take = "options:general"
+crop = [18, 172, 380, 208]
+marks = ["Use advanced browser integration", "List:Capture downloads from the following browsers"]
+alt = "Options, General: Use advanced browser integration and the list of browsers MDM takes downloads from"
+caption = "1 must be on, and 2 your browser ticked."
+
+[[shot]]
+id = "video-button"
+page = "browser-integration.md"
+under = "The download button over videos"
+from = "docs/images/video-button-youtube.png"
+crop = [400, 0, 720, 405]
+lossy = 90
+alt = "The Download video button over a YouTube video in Chrome"
+caption = "The button over a video. Drag it where you like; it stays there."
+
+[[shot]]
+id = "download-panels"
+page = "browser-integration.md"
+under = "The download button over videos"
+take = "options:panels"
+alt = "The Download panels settings: the button on or off, and the sites it never shows on"
+caption = "Options → General → Edit...: turn the button off, or list sites it never shows on."
+
+# ---- Video --------------------------------------------------------------------------------------
+
+[[shot]]
+id = "video-lookup"
+page = "video.md"
+under = "Start a video download"
+take = "video-subs"
+crop = [0, 0, 0, 108]
+ring = ["Look up"]
+alt = "Download video from a page, with the Page address box and Look up"
+caption = "Paste the page's address and click Look up."
+
+[[shot]]
+id = "video-qualities"
+page = "video.md"
+under = "Start a video download"
+take = "video-subs"
+alt = "The video window after Look up: the qualities with their sizes, Save to, File name and Subtitles"
+caption = "Pick a quality, then Download Now."
+
+[[shot]]
+id = "video-progress"
+page = "video.md"
+under = "Start a video download"
+from = "docs/images/progress-video.png"
+alt = "A video's progress window while yt-dlp brings it in"
+caption = "It downloads like any other file, in its own row and window."
+
+[[shot]]
+id = "video-helpers"
+page = "video.md"
+under = "Use your own copies"
+take = "video-helpers"
+alt = "The video helpers window: yt-dlp and ffmpeg, each with its version and Use another program..."
+caption = "Helpers...: use your own yt-dlp or ffmpeg instead."
+
+[[shot]]
+id = "video-subtitles"
+page = "video.md"
+under = "Subtitles"
+take = "video-subs"
+# The Subtitles list has no accessible name of its own: its rectangle.
+crop = [0, 268, 0, 100]
+ring = [[71, 340, 199, 21]]
+alt = "The Subtitles list of the video window, with Put them into the video"
+caption = "Choose the subtitles; tick Put them into the video to keep them inside the file."
+
+[[shot]]
+id = "video-playlist"
+page = "video.md"
+under = "Playlists and channels"
+take = "video-playlist:7"
+alt = "The video window listing a playlist's videos, each with its length and a box to tick, and one quality for all"
+caption = "A playlist: every video ticked, one quality for all."
+
+# ---- Torrents -----------------------------------------------------------------------------------
+
+[[shot]]
+id = "torrent-add"
+page = "torrents.md"
+under = "Add a torrent"
+take = "@torrent"
+ring = ["Download Now"]
+alt = "Add torrent with a torrent's files as a folder tree, the folder they go to, and Download Now"
+caption = "Untick what you don't want, then Download Now."
+
+[[shot]]
+id = "torrent-files"
+page = "torrents.md"
+under = "Add a torrent"
+from = "docs/images/progress-torrent.png"
+alt = "A torrent's progress window on its Files tab"
+caption = "Its progress window: each file and how much of it is here."
+
+[[shot]]
+id = "torrent-pieces"
+page = "torrents.md"
+under = "Add a torrent"
+from = "docs/images/progress-torrent-pieces.png"
+alt = "The Pieces tab: a square for each piece, filled once it's here"
+caption = "Pieces: the torrent's map, filling in."
+
+[[shot]]
+id = "rss-feeds"
+page = "torrents.md"
+under = "RSS feeds"
+take = "rss"
+alt = "RSS feeds: the feeds MDM follows and their items"
+caption = "RSS feeds, and the rules that pick what to download."
+
+[[shot]]
+id = "torrent-settings"
+page = "torrents.md"
+under = "Torrent settings"
+take = "torrent-settings"
+alt = "Torrent settings: sharing, limits and what others can see"
+caption = "Tasks → Torrent settings..."
+
+# ---- Queues and the Scheduler -------------------------------------------------------------------
+
+[[shot]]
+id = "scheduler"
+page = "queues-and-scheduler.md"
+under = "The Scheduler window"
+take = "scheduler"
+marks = [{ at = "Main download queue", side = "right" }, { at = "Download limits", side = "right" }, { at = "TabItem:Schedule", side = "top" }, { at = "Files in the queue", side = "top" }]
+alt = "The Scheduler: the queues on the left with Download limits, the selected queue's Schedule tab on the right"
+caption = "1 the queues, 2 Download limits, 3 the queue's schedule, 4 its files."
+
+# ---- Download list ------------------------------------------------------------------------------
+
+[[shot]]
+id = "list-columns"
+page = "download-list.md"
+under = "Columns"
+take = "@main"
+crop = [150, 120, 0, 345]
+alt = "The download list with its columns: Source, File Name, Q, Size, Status, Time left, Transfer rate and more"
+caption = "Click a column title to sort; its funnel filters."
+
+[[shot]]
+id = "list-categories"
+page = "download-list.md"
+under = "Categories"
+take = "@main"
+crop = [0, 118, 151, 190]
+alt = "The Categories pane: All Downloads with a category per file type, Unfinished, Finished and Queues"
+caption = "All Downloads, Unfinished, Finished and Queues, each by category."
+
+[[shot]]
+id = "category-properties"
+page = "download-list.md"
+under = "Categories"
+take = "category:music"
+alt = "A category's properties: its name, file types and folder"
+caption = "Right-click a category → Properties: its name, file types and folder."
+
+[[shot]]
+id = "properties"
+page = "download-list.md"
+under = "Properties"
+take = "properties"
+alt = "File Properties: the file's name, address, folder, size, status and description"
+caption = "File Properties: change the address or the folder of a download."
+
+[[shot]]
+id = "find"
+page = "download-list.md"
+under = "Finding a download"
+take = "find"
+alt = "Find file: a name to look for, with where to look"
+caption = "Downloads → Find (Ctrl+F)."
+
+[[shot]]
+id = "delete-confirm"
+page = "download-list.md"
+under = "Deleting downloads"
+take = "delete"
+ring = ["Also delete the file from disk"]
+alt = "Confirm deletion of downloads, with Also delete the file from disk"
+caption = "Tick Also delete the file from disk only if you want the file gone too."
+
+# ---- Troubleshooting ----------------------------------------------------------------------------
+
+[[shot]]
+id = "draw-with"
+page = "troubleshooting.md"
+under = "The window freezes or draws wrongly"
+take = "@menu:menu:3:draw"
+# Down to Font: a computer without Direct3D (GitHub's runner) adds why under the choices.
+crop = [145, 28, 306, 246]
+alt = "View → Draw with open: OpenGL and Direct3D"
+caption = "View → Draw with: the other way of drawing."
+
+[[shot]]
+id = "about-updates"
+page = "troubleshooting.md"
+under = "Updates"
+take = "about"
+alt = "About Mister Download Manager: its version, licence and links"
+caption = "Help → About: the version you have."
+
+# ---- Options -------------------------------------------------------------------------------------
+
+[[shot]]
+id = "options-general"
+page = "options.md"
+under = "General"
+take = "options:general"
+alt = "Options on its General page: start with the system, the clipboard, browser integration and the browsers MDM takes downloads from"
+caption = "General: how MDM starts, and what it takes from the clipboard and the browsers."
+
+[[shot]]
+id = "options-file-types"
+page = "options.md"
+under = "File types"
+take = "options:types"
+alt = "Options on its File types page: the file types the browser hands to MDM and the sites it leaves alone"
+caption = "File types: what the browser hands over, and the sites left alone."
+
+[[shot]]
+id = "options-save-to"
+page = "options.md"
+under = "Save to"
+take = "options:saveto"
+alt = "Options on its Save to page: a category, its file types and its folder"
+caption = "Save to: each category's file types and folder."
+
+[[shot]]
+id = "options-downloads"
+page = "options.md"
+under = "Downloads"
+take = "options:downloads"
+alt = "Options on its Downloads page: the start download dialog, Download complete and duplicate links"
+caption = "Downloads: which windows show, and what a duplicate link does."
+
+[[shot]]
+id = "options-connection"
+page = "options.md"
+under = "Connection"
+take = "options:connection"
+alt = "Options on its Connection page: connections per download, the network adapter and per-server exceptions"
+caption = "Connection: how many connections, through which network adapter."
+
+[[shot]]
+id = "options-proxy"
+page = "options.md"
+under = "Proxy / Socks"
+take = "options:proxy"
+alt = "Options on its Proxy / Socks page"
+caption = "Proxy / Socks: no proxy, the system's, or your own."
+
+[[shot]]
+id = "options-logins"
+page = "options.md"
+under = "Sites Logins"
+take = "options:logins"
+alt = "Options on its Sites Logins page: a list of sites with their user names"
+caption = "Sites Logins: a user name and password per site."
+
+[[shot]]
+id = "options-accounts"
+page = "options.md"
+under = "Accounts"
+take = "options:accounts"
+alt = "Options on its Accounts page: debrid service accounts"
+caption = "Accounts: your debrid accounts."
+
+[[shot]]
+id = "options-sounds"
+page = "options.md"
+under = "Sounds"
+take = "options:sounds"
+alt = "Options on its Sounds page: a sound for each event"
+caption = "Sounds: a sound for each event."
+
+[[shot]]
+id = "options-regional"
+page = "options.md"
+under = "Regional"
+take = "options:regional"
+alt = "Options on its Regional page: the system's way of writing dates and times, or your own"
+caption = "Regional: dates and times as the system writes them, or your own way."
+
+[[shot]]
+id = "options-archives"
+page = "options.md"
+under = "Archives"
+take = "options:archives"
+alt = "Options on its Archives page: extracting archives when they are downloaded, and Link grabber's look-ups"
+caption = "Archives: extract when downloaded, and where the files go."
+
+# ---- Tutorials ----------------------------------------------------------------------------------
+
+[[shot]]
+id = "first-add-url"
+page = "guide-first-download.md"
+under = "Steps"
+take = "addurl"
+ring = ["OK"]
+alt = "Enter new address to download with the copied address filled in"
+caption = "Add URL: the copied address is already there. Click OK."
+
+[[shot]]
+id = "first-file-info"
+page = "guide-first-download.md"
+under = "Steps"
+take = "@download:gen/250M/project-files-2026.zip"
+ring = ["Start Download"]
+alt = "Download File Info with the file's name, size and folder"
+caption = "Check the folder, then Start Download."
+
+[[shot]]
+id = "first-progress"
+page = "guide-first-download.md"
+under = "Steps"
+take = "progress"
+alt = "The progress window: speed, time left and each connection's share of the file"
+caption = "The progress window shows it coming in."
+
+[[shot]]
+id = "first-complete"
+page = "guide-first-download.md"
+under = "Steps"
+take = "@complete:gen/2M/release-notes-2026.pdf"
+ring = ["Open", "Open folder"]
+alt = "Download complete with Open and Open folder"
+caption = "Done: Open the file, or Open folder."
+
+[[shot]]
+id = "catch-file-types"
+page = "guide-catch-browser-downloads.md"
+under = "Choose what MDM takes"
+take = "options:types"
+# The two lists have no accessible names: their rectangles.
+marks = [{ at = [22, 135, 378, 57], side = "right" }, { at = [22, 253, 378, 48], side = "right" }]
+alt = "Options, File types: the file types MDM takes from the browser, and the sites it leaves alone"
+caption = "1 the file types MDM takes, 2 the sites it leaves to the browser."
+
+[[shot]]
+id = "overnight-later"
+page = "guide-download-overnight.md"
+under = "1. Put the downloads in a queue"
+take = "@download:gen/250M/project-files-2026.zip"
+crop = [0, 84, 0, 0]
+ring = ["Download Later"]
+alt = "Download File Info with Download Later ringed"
+caption = "Download Later puts it in a queue instead of starting it."
+
+[[shot]]
+id = "overnight-start"
+page = "guide-download-overnight.md"
+under = "2. Set the start time"
+take = "scheduler"
+crop = [220, 128, 412, 162]
+marks = [{ at = "Start download at", side = "right" }, { at = "Daily", side = "right" }, { at = "Stop download at", side = "right" }]
+alt = "The Scheduler's Schedule tab: Start download at, Once at or Daily, and Stop download at"
+caption = "1 the start time, 2 once or daily, 3 a stop time if you want one."
+
+[[shot]]
+id = "overnight-done"
+page = "guide-download-overnight.md"
+under = "4. Decide what happens at the end (optional)"
+take = "scheduler"
+crop = [218, 316, 420, 122]
+ring = ["CheckBox:Turn off computer when done"]
+alt = "The Scheduler's choices for when the queue is done, Turn off computer when done among them"
+caption = "When the queue is done: open a file, quit MDM, or turn the computer off."
+
+[[shot]]
+id = "speed-limiter"
+page = "guide-keep-speed-for-everything-else.md"
+under = "Cap MDM as a whole (recommended)"
+take = "speedlimit"
+alt = "Speed Limiter settings: the maximum speed for all downloads"
+caption = "Downloads → Speed Limiter → Settings...: one speed for all of MDM."
+
+[[shot]]
+id = "usb-save-to"
+page = "guide-usb-stick.md"
+under = "2. Save downloads to the stick"
+take = "options:saveto"
+ring = ["Default download directory for"]
+alt = "Options, Save to: a category's folder"
+caption = "Point each category's folder at the stick."
+
+[[shot]]
+id = "resume-properties"
+page = "guide-resume-broken-download.md"
+under = "When the link has expired"
+take = "properties"
+# The address box is named by the address itself.
+ring = ["Edit:http"]
+alt = "File Properties with the download's address"
+caption = "Paste the new link into Address, then resume."
+
+[[shot]]
+id = "find-file"
+page = "guide-find-in-long-list.md"
+under = "Find by name"
+take = "find"
+alt = "Find file: a name to look for"
+caption = "Ctrl+F, type part of the name, then Find."
+
+[[shot]]
+id = "vfp-qualities"
+page = "guide-video-from-page.md"
+under = "Steps"
+take = "video-subs"
+alt = "The video window listing a video's qualities with their sizes"
+caption = "MDM lists the qualities: pick one."
+
+[[shot]]
+id = "vfp-progress"
+page = "guide-video-from-page.md"
+under = "Steps"
+from = "docs/images/progress-video.png"
+alt = "A video's progress window"
+caption = "It downloads like any other file."
+
+[[shot]]
+id = "test-integration"
+page = "browser-integration.md"
+under = "When MDM isn't running"
+take = "options:general"
+crop = [18, 172, 380, 208]
+ring = ["Test browser integration..."]
+alt = "Options, General with Test browser integration..."
+caption = "Test browser integration... says whether the browser reaches MDM."

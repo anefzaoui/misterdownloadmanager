@@ -662,6 +662,120 @@ def doc_sections() -> list[tuple[str, list[tuple[str, str]]]]:
     return [(s, pages) for s, pages in out if pages]
 
 
+def image_size(path: Path) -> tuple[int, int] | None:
+    """A PNG's or WebP's width and height, read from its header (no imaging library)."""
+    try:
+        head = path.read_bytes()[:40]
+    except OSError:
+        return None
+    if head[:8] == b"\x89PNG\r\n\x1a\n":
+        return int.from_bytes(head[16:20], "big"), int.from_bytes(head[20:24], "big")
+    if head[:4] == b"RIFF" and head[8:12] == b"WEBP":
+        kind = head[12:16]
+        if kind == b"VP8L":
+            b = int.from_bytes(head[21:25], "little")
+            return (b & 0x3FFF) + 1, ((b >> 14) & 0x3FFF) + 1
+        if kind == b"VP8X":
+            return int.from_bytes(head[24:27], "little") + 1, int.from_bytes(head[27:30], "little") + 1
+        if kind == b"VP8 ":
+            return int.from_bytes(head[26:28], "little") & 0x3FFF, int.from_bytes(head[28:30], "little") & 0x3FFF
+    return None
+
+
+def dark_of(name: str) -> str | None:
+    """The night version of docs/images/<name>, when there is one: x-dark.webp beside x.webp
+    (the help pictures, tools/shots/make.py), or main-dark.png beside main-light.png."""
+    p = Path(name)
+    stem = p.stem[: -len("-light")] if p.stem.endswith("-light") else p.stem
+    dark = p.with_name(f"{stem}-dark{p.suffix}").as_posix()
+    return dark if dark != name and (ROOT / "docs" / "images" / dark).is_file() else None
+
+
+IMG = re.compile(r'<img\b([^>]*?)\s*/?>')
+
+
+def shot_html(attrs: str, lazy: bool) -> str:
+    """A help picture as the page shows it: its real size (width and height, so nothing moves as
+    it loads), lazy below the first one, and its night version beside it, the site's theme
+    choosing which shows (.for-light / .for-dark, as on the home page: they follow the system's
+    choice and the header's switch alike; a hidden lazy picture isn't fetched)."""
+    a = dict(re.findall(r'(\w[\w-]*)="([^"]*)"', attrs))
+    src = a.get("src", "")
+    m = re.match(r"/help/images/([\w./-]+)$", src)
+    if not m:
+        return f"<img{attrs}>"
+    name = m.group(1)
+    size = image_size(ROOT / "docs" / "images" / name)
+    dims = f' width="{size[0]}" height="{size[1]}"' if size else ""
+    alt = a.get("alt", "")
+    load = ' loading="lazy" decoding="async"' if lazy else ' decoding="async"'
+    dark = dark_of(name)
+    if not dark:
+        return f'<img src="{src}"{dims} alt="{alt}"{load}>'
+    dsize = image_size(ROOT / "docs" / "images" / dark)
+    ddims = f' width="{dsize[0]}" height="{dsize[1]}"' if dsize else dims
+    return (f'<img class="for-light" src="{src}"{dims} alt="{alt}"{load}>'
+            f'<img class="for-dark" src="/help/images/{dark}"{ddims} alt="{alt}" loading="lazy" decoding="async">')
+
+
+def help_figures(body: str) -> str:
+    """docs/ pictures into figures. The Markdown stays plain for GitHub:
+
+        ![What it shows](images/help/add-url.webp)
+        *The caption.*
+
+    is a figure with its caption (an image, then an italic line, in one paragraph); a picture
+    alone in its paragraph is a figure without one. A numbered list after `<!-- steps -->` whose
+    items are each a picture and its caption is a step strip: the pictures side by side, in
+    order, each under its step; a bulleted list after `<!-- pictures -->`, pictures side by
+    side without numbers. Every help picture gets its size, lazy loading after the first, and
+    its night version."""
+    seen = [0]
+
+    def pic(attrs: str) -> str:
+        seen[0] += 1
+        return shot_html(attrs, lazy=seen[0] > 1)
+
+    def figure(inner: str, cls: str = "shot") -> str | None:
+        m = re.fullmatch(r"\s*(?:<p>)?\s*<img\b([^>]*?)\s*/?>\s*(?:<br\s*/?>)?\s*(?:<em>((?:(?!</?p>).)*?)</em>)?\s*(?:</p>)?\s*", inner, re.S)
+        if not m:
+            return None
+        cap = f"<figcaption>{m.group(2).strip()}</figcaption>" if m.group(2) else ""
+        # A step reads what to do, then shows it.
+        if cls == "step":
+            return f'<figure class="{cls}">{cap}{pic(m.group(1))}</figure>'
+        return f'<figure class="{cls}">{pic(m.group(1))}{cap}</figure>'
+
+    def strip(m: re.Match) -> str:
+        """A step strip (<!-- steps --> and a numbered list) or pictures side by side
+        (<!-- pictures --> and a bulleted list)."""
+        numbered = m.group(1) is not None
+        items = re.findall(r"<li>(.*?)</li>", m.group(1) if numbered else m.group(2), re.S)
+        figs = [figure(i, "step" if numbered else "shot") for i in items]
+        if not items or None in figs:
+            return re.sub(r"<!-- (steps|pictures) -->\s*", "", m.group(0))
+        lis = "".join(f"<li>{f}</li>" for f in figs)
+        tag, cls = ("ol", "steps") if numbered else ("ul", "pics")
+        return f'<{tag} class="{cls} {cls}-{len(items)}">{lis}</{tag}>'
+
+    # In page order, so the first picture is the one not loaded lazily.
+    out = []
+    pos = 0
+    pat = re.compile(r"<!-- steps -->\s*<ol>(.*?)</ol>|<!-- pictures -->\s*<ul>(.*?)</ul>|<p>\s*<img\b[^>]*>\s*(?:<br\s*/?>)?\s*(?:<em>(?:(?!</?p>).)*?</em>)?\s*</p>|<img\b[^>]*>", re.S)
+    for m in pat.finditer(body):
+        out.append(body[pos:m.start()])
+        text = m.group(0)
+        if text.startswith("<!--"):
+            out.append(strip(m))
+        elif text.startswith("<p>"):
+            out.append(figure(text) or text)
+        else:
+            out.append(pic(IMG.match(text).group(1)))
+        pos = m.end()
+    out.append(body[pos:])
+    return "".join(out)
+
+
 def build_help() -> None:
     sections = doc_sections()
     docs = sorted((ROOT / "docs").glob("*.md"))
@@ -705,7 +819,7 @@ def build_help() -> None:
     <div class="wrap doc">
       {"".join(nav)}
       <article class="prose">
-        {md(rest)}
+        {help_figures(md(rest))}
         {related}
         {page_tools(f"docs/{f.name}", path, heading)}
         {cta_band()}
@@ -726,6 +840,7 @@ def build_help() -> None:
               priority="0.7" if f.stem.startswith("guide-") or is_index else "0.6",
               extra=f'\n  <link rel="alternate" type="text/markdown" href="{md_path}">')
     dst = OUT / "help" / "images"
+    used_images |= {d for d in map(dark_of, used_images) if d}
     for name in used_images:
         src = ROOT / "docs" / "images" / name
         if src.is_file():

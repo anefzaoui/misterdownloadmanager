@@ -181,6 +181,8 @@ pub struct OptionsDialog {
     seven_zip: Option<std::path::PathBuf>,
     /// Proxy / Socks → Network adapter (#35): the computer's adapters, read again every 2 s.
     adapters: Option<(std::time::Instant, Vec<mdm_engine::net::Adapter>)>,
+    /// Test browser integration → Set it up's runs seen finished (crate::extension).
+    set_up_seen: u64,
 }
 
 impl OptionsDialog {
@@ -197,6 +199,17 @@ impl OptionsDialog {
             self.s.video_panel,
             self.s.video_panel_sites.clone(),
         ));
+        self
+    }
+
+    /// With General → Test browser integration's window over it, or Accounts → Add's (`/show
+    /// options:test`, `options:account`: screenshots, #192).
+    pub fn with_window(mut self, name: &str) -> Self {
+        match name {
+            "test" => self.sub = Some(Sub::Test(crate::extension::checks(&self.s))),
+            "account" => self.sub = Some(Sub::Account(AccountEdit::default())),
+            _ => {}
+        }
         self
     }
 
@@ -222,6 +235,7 @@ impl OptionsDialog {
             account_rows: Default::default(),
             sound_rows: Default::default(),
             sub: None,
+            set_up_seen: 0,
             cat_edit: None,
             restore_ask: None,
             learned,
@@ -280,7 +294,7 @@ impl OptionsDialog {
                 )
                 .clicked()
                 {
-                    crate::help::open_page("help/#options");
+                    crate::help::open_page("options.md");
                 }
                 if modal {
                     Outcome::Open
@@ -458,15 +472,28 @@ impl OptionsDialog {
         let off = |ui: &mut Ui, rc: Rect, label: &str| {
             winui::button_light(ui, rc, label, ButtonKind::Disabled, false);
         };
+        // Both as wide as their labels in this language (#192), within the group box.
+        let [test_at, add_at] = winui::button_row(
+            &p,
+            &[
+                ("Test browser integration...", 30.0, 180.0),
+                ("Add browser...", 286.0, 106.0),
+            ],
+            8.0,
+            30.0,
+            260.0,
+        )[..] else {
+            unreachable!("two buttons")
+        };
         off(
             ui,
-            r(o, 286.0, 328.0, 106.0, 21.0),
+            r(o, add_at.0, 328.0, add_at.1, 21.0),
             crate::i18n::mark("Add browser..."),
         );
         // MDM's: what stands between a browser and MDM, checked in order.
         if winui::button_light(
             ui,
-            r(o, 30.0, 328.0, 180.0, 21.0),
+            r(o, test_at.0, 328.0, test_at.1, 21.0),
             "Test browser integration...",
             ButtonKind::Normal,
             false,
@@ -476,11 +503,16 @@ impl OptionsDialog {
             self.sub = Some(Sub::Test(crate::extension::checks(&self.s)));
         }
         winui::etched_h(&p, o.x + 34.0, o.y + 356.0, 357.0);
+        // The buttons at the right as wide as their labels in this language (#192), their
+        // captions ending 6 px before them.
+        let fit_right =
+            |label: &str| winui::buttons_to_right(&p, 392.0, 0.0, &[(label, 73.0)], 160.0)[0];
+        let keys_at = fit_right("Keys...");
         let label = crate::i18n::t("Customize keys to prevent or force downloading with MDM");
         // Inside the browsers' group box: it starts no further out than the group's frame.
         let (rect, cut) = winui::text_right_within(
             &p,
-            o.x + 313.0,
+            o.x + keys_at.0 - 6.0,
             o.y + 379.0,
             label,
             LIGHT_TEXT(),
@@ -491,7 +523,7 @@ impl OptionsDialog {
         }
         if winui::button_light(
             ui,
-            r(o, 319.0, 365.0, 73.0, 21.0),
+            r(o, keys_at.0, 365.0, keys_at.1, 21.0),
             "Keys...",
             ButtonKind::Normal,
             false,
@@ -509,13 +541,20 @@ impl OptionsDialog {
         off(ui, r(o, 289.0, 406.0, 103.0, 21.0), "Edit...");
         // The download button over videos in the browsers (our own panel, Sub::Panels).
         let label = crate::i18n::t("Customize MDM Download panels in browsers");
-        let (rect, cut) = winui::text_right(&p, o.x + 313.0, o.y + 452.0, label, LIGHT_TEXT());
+        let panels_at = fit_right("Edit...");
+        let (rect, cut) = winui::text_right(
+            &p,
+            o.x + panels_at.0 - 6.0,
+            o.y + 452.0,
+            label,
+            LIGHT_TEXT(),
+        );
         if cut {
             winui::full_on_hover(ui, rect, ("general-right", 452), label);
         }
         if winui::button_light(
             ui,
-            r(o, 319.0, 438.0, 73.0, 21.0),
+            r(o, panels_at.0, 438.0, panels_at.1, 21.0),
             // i18n: verb: edit the item
             "Edit...",
             ButtonKind::Normal,
@@ -556,9 +595,11 @@ impl OptionsDialog {
             "auto-types",
             true,
         );
+        // Default as wide as its label in this language (#192), growing to the left.
+        let default_at = winui::buttons_to_right(&p, 389.0, 0.0, &[("Default", 73.0)], 200.0)[0];
         if winui::button_light(
             ui,
-            r(o, 316.0, 175.0, 73.0, 21.0),
+            r(o, default_at.0, 175.0, default_at.1, 21.0),
             // i18n: button: put back the default list
             "Default",
             ButtonKind::Normal,
@@ -582,16 +623,24 @@ impl OptionsDialog {
             "excluded-sites",
             true,
         );
-        text(
+        let spaces = text(
             &p,
             o.x + 21.0,
             o.y + 293.0,
             crate::i18n::t("(separate names by spaces)"),
             LIGHT_TEXT(),
         );
+        // Short of the note before it.
+        let default_at = winui::button_row(
+            &p,
+            &[("Default", 316.0, 73.0)],
+            0.0,
+            winui::rect(spaces).right() - o.x + 8.0,
+            200.0,
+        )[0];
         if winui::button_light(
             ui,
-            r(o, 316.0, 284.0, 73.0, 21.0),
+            r(o, default_at.0, 284.0, default_at.1, 21.0),
             // i18n: button: put back the default list
             "Default",
             ButtonKind::Normal,
@@ -608,9 +657,12 @@ impl OptionsDialog {
             crate::i18n::t("Don't start downloading automatically from the following addresses:"),
             LIGHT_TEXT(),
         );
+        let (list_x, list_w) =
+            winui::button_row_from_left(&p, &[("Edit list ...", 22.0, 135.0)], 0.0, 389.0, 260.0)
+                [0];
         if winui::button_light(
             ui,
-            r(o, 22.0, 334.0, 135.0, 21.0),
+            r(o, list_x, 334.0, list_w, 21.0),
             "Edit list ...",
             ButtonKind::Normal,
             false,
@@ -684,10 +736,19 @@ impl OptionsDialog {
             self.category = i;
             self.cat_dir = display_dir(&self.s.category_dir(cats[i], downloads));
         }
-        // New / Edit... (D-021): a category of the user's; a built-in one's folder.
+        // New / Edit... (D-021): a category of the user's; a built-in one's folder. One width for
+        // both, as wide as the longer label in this language (#192), into the room after the
+        // list (it ends at 242).
+        let (col_x, col_w) = winui::buttons_to_right(
+            &p,
+            392.0,
+            0.0,
+            &[(winui::widest_label(&p, &["New", "Edit..."]), 73.0)],
+            142.0,
+        )[0];
         if winui::button_light(
             ui,
-            r(o, 319.0, 105.0, 73.0, 21.0),
+            r(o, col_x, 105.0, col_w, 21.0),
             // i18n: button: create a new item
             "New",
             ButtonKind::Normal,
@@ -700,7 +761,7 @@ impl OptionsDialog {
         }
         if winui::button_light(
             ui,
-            r(o, 319.0, 137.0, 73.0, 21.0),
+            r(o, col_x, 137.0, col_w, 21.0),
             // i18n: verb: edit the item
             "Edit...",
             ButtonKind::Normal,
@@ -726,9 +787,12 @@ impl OptionsDialog {
             "Default download directory for \"{category}\" category",
         ));
         winui::text_in_window(ui, &p, o.x + 30.0, o.y + 230.0, &dir_line, LIGHT_TEXT());
+        // Browse as wide as its label in this language (#192); the box ends 7 px before it.
+        let (browse_x, browse_w) =
+            winui::buttons_to_right(&p, 392.0, 0.0, &[("Browse", 73.0)], 160.0)[0];
         winui::edit_light_on(
             ui,
-            r(o, 31.0, 239.0, 281.0, 23.0),
+            r(o, 31.0, 239.0, browse_x - 7.0 - 31.0, 23.0),
             &mut self.cat_dir,
             true,
             false,
@@ -736,7 +800,7 @@ impl OptionsDialog {
         );
         if winui::button_light(
             ui,
-            r(o, 319.0, 240.0, 73.0, 21.0),
+            r(o, browse_x, 240.0, browse_w, 21.0),
             // i18n: verb: choose a folder
             "Browse",
             ButtonKind::Normal,
@@ -777,10 +841,12 @@ impl OptionsDialog {
         // D-004: no temporary directory — parts are written next to the file, so there is
         // nothing to assemble at the end.
         let none = crate::i18n::t("Not used: file parts are written next to the file");
-        readonly(ui, r(o, 30.0, 349.0, 281.0, 23.0), none);
+        let (browse_x, browse_w) =
+            winui::buttons_to_right(&p, 390.0, 0.0, &[("Browse", 73.0)], 160.0)[0];
+        readonly(ui, r(o, 30.0, 349.0, browse_x - 6.0 - 30.0, 23.0), none);
         winui::button_light(
             ui,
-            r(o, 317.0, 350.0, 73.0, 21.0),
+            r(o, browse_x, 350.0, browse_w, 21.0),
             // i18n: verb: choose a folder
             "Browse",
             ButtonKind::Disabled,
@@ -848,9 +914,12 @@ impl OptionsDialog {
             398.0,
         );
         let s = &mut self.s;
+        // Edit... as wide as its label in this language (#192), its caption before it.
+        let (edit_x, edit_w) =
+            winui::buttons_to_right(&p, 392.0, 0.0, &[("Edit...", 73.0)], 160.0)[0];
         winui::text_right(
             &p,
-            o.x + 306.0,
+            o.x + edit_x - 13.0,
             o.y + 104.0,
             crate::i18n::t("Customize \"Download progress\" dialog"),
             LIGHT_DISABLED(),
@@ -858,7 +927,7 @@ impl OptionsDialog {
         // The progress dialog customisation dialog is not built yet.
         winui::button_light(
             ui,
-            r(o, 319.0, 89.0, 73.0, 21.0),
+            r(o, edit_x, 89.0, edit_w, 21.0),
             // i18n: verb: edit the item
             "Edit...",
             ButtonKind::Disabled,
@@ -958,14 +1027,14 @@ impl OptionsDialog {
         winui::etched_h(&p, o.x + 21.0, o.y + 426.0, 381.0);
         winui::text_right(
             &p,
-            o.x + 302.0,
+            o.x + edit_x - 17.0,
             o.y + 451.0,
             crate::i18n::t("Virus checking settings"),
             LIGHT_DISABLED(),
         );
         winui::button_light(
             ui,
-            r(o, 319.0, 436.0, 73.0, 21.0),
+            r(o, edit_x, 436.0, edit_w, 21.0),
             // i18n: verb: edit the item
             "Edit...",
             ButtonKind::Disabled,
@@ -1067,10 +1136,19 @@ impl OptionsDialog {
                     }),
             )
             .collect();
+        // New, Delete and Edit: one width, as wide as the longest label in this language (#192),
+        // the list ending 8 px before them (its Number column ends at 291).
+        let (col_x, col_w) = winui::buttons_to_right(
+            &p,
+            392.0,
+            0.0,
+            &[(winui::widest_label(&p, &["New", "Delete", "Edit"]), 73.0)],
+            92.0,
+        )[0];
         let (dbl, del_key) = report(
             ui,
             o,
-            r(o, 30.0, 184.0, 281.0, 100.0),
+            r(o, 30.0, 184.0, col_x - 8.0 - 30.0, 100.0),
             // i18n: column titles: the server, and the number of connections allowed to it
             &[
                 (crate::i18n::mark("Server"), 241.0),
@@ -1088,7 +1166,7 @@ impl OptionsDialog {
             .filter(|i| *i < self.s.conn_exceptions.len());
         let new = winui::button_light(
             ui,
-            r(o, 319.0, 195.0, 73.0, 21.0),
+            r(o, col_x, 195.0, col_w, 21.0),
             // i18n: button: create a new item
             "New",
             ButtonKind::Normal,
@@ -1101,12 +1179,13 @@ impl OptionsDialog {
             ButtonKind::Disabled
         };
         // i18n: verb: delete the item
-        let del = winui::button_light(ui, r(o, 319.0, 224.0, 73.0, 21.0), "Delete", kind, false)
+        let del = winui::button_light(ui, r(o, col_x, 224.0, col_w, 21.0), "Delete", kind, false)
             .clicked()
             || del_key;
         let edit =
             // i18n: verb: edit the item
-            winui::button_light(ui, r(o, 319.0, 254.0, 73.0, 21.0), "Edit", kind, false).clicked();
+            winui::button_light(ui, r(o, col_x, 254.0, col_w, 21.0), "Edit", kind, false)
+                .clicked();
         if new {
             self.sub = Some(Sub::Exception(None, String::new(), "1".into()));
         }
@@ -1218,10 +1297,21 @@ impl OptionsDialog {
             o.y + 69.0,
             "Proxy / socks configuration",
         );
+        // As wide as its label in this language (#192), short of the title (a translated title
+        // ends where the English one does).
+        let title_end =
+            112.0 + winui::text_width_font(&p, winui::tahoma_bold(), "Proxy / socks configuration");
+        let (get_x, get_w) = winui::button_row(
+            &p,
+            &[("Get System", 307.0, 93.0)],
+            0.0,
+            title_end + 8.0,
+            160.0,
+        )[0];
         let s = &mut self.s;
         if winui::button_light(
             ui,
-            r(o, 307.0, 61.0, 93.0, 21.0),
+            r(o, get_x, 61.0, get_w, 21.0),
             "Get System",
             ButtonKind::Normal,
             false,
@@ -1485,14 +1575,9 @@ impl OptionsDialog {
                     crate::i18n::t("Every connection goes through it, from {ip}."),
                     &[("ip", &crate::i18n::ltr(&ip.unwrap_or_default()))],
                 );
-                // What can't be held to it on this system (refused, not sent around it).
-                #[cfg(windows)]
-                // i18n: Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-                let not_yet = crate::i18n::t("Video pages and torrents can't use it yet.");
-                #[cfg(not(windows))]
-                // i18n: Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-                let not_yet = crate::i18n::t("Video pages can't use it yet.");
-                (format!("{line}\n{not_yet}"), true)
+                // Downloads, torrents (#143), video pages and galleries (through the helpers'
+                // relay, #35) all go through it on every system: nothing more to say.
+                (line, true)
             }
         };
         let color = if ok {
@@ -1530,6 +1615,7 @@ impl OptionsDialog {
             63.0,
             399.0,
         );
+        let vault = crate::secrets::vault();
         let rows: Vec<Vec<String>> = self
             .s
             .debrid_accounts
@@ -1539,8 +1625,15 @@ impl OptionsDialog {
                     a.service.name().to_owned(),
                     a.user.clone(),
                     if a.account().is_none() {
-                        // i18n: Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
-                        crate::i18n::t("signed out: sign in again").to_owned()
+                        if vault.unread(&format!("debrid/{}", a.id))
+                            && vault.kept() == crate::secrets::Kept::Locked
+                        {
+                            // i18n: Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+                            crate::i18n::t("in the locked keyring").to_owned()
+                        } else {
+                            // i18n: Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
+                            crate::i18n::t("signed out: sign in again").to_owned()
+                        }
                     } else {
                         a.state.clone()
                     },
@@ -1550,7 +1643,7 @@ impl OptionsDialog {
         let (_, del_key) = report(
             ui,
             o,
-            r(o, 21.0, 93.0, 383.0, 176.0),
+            r(o, 21.0, 93.0, 383.0, 124.0),
             &[
                 // i18n: column title: the debrid service (Real-Debrid…)
                 (crate::i18n::mark("Service"), 110.0),
@@ -1568,7 +1661,7 @@ impl OptionsDialog {
         // i18n: button: add a debrid service account (opens the sign-in)
         let add = winui::button_light(
             ui,
-            r(o, 21.0, 277.0, 90.0, 21.0),
+            r(o, 21.0, 225.0, 90.0, 21.0),
             "Add...",
             ButtonKind::Normal,
             false,
@@ -1583,7 +1676,7 @@ impl OptionsDialog {
         };
         let remove = winui::button_light(
             ui,
-            r(o, 117.0, 277.0, 90.0, 21.0),
+            r(o, 117.0, 225.0, 90.0, 21.0),
             "Remove",
             kind(sel.is_some()),
             false,
@@ -1593,7 +1686,7 @@ impl OptionsDialog {
         // i18n: button (short): move the account up the list (accounts are asked in the list's order)
         let up = winui::button_light(
             ui,
-            r(o, 213.0, 277.0, 90.0, 21.0),
+            r(o, 213.0, 225.0, 90.0, 21.0),
             "Up",
             kind(sel.is_some_and(|i| i > 0)),
             false,
@@ -1602,7 +1695,7 @@ impl OptionsDialog {
         // i18n: button (short): move the account down the list
         let down = winui::button_light(
             ui,
-            r(o, 309.0, 277.0, 95.0, 21.0),
+            r(o, 309.0, 225.0, 95.0, 21.0),
             "Down",
             kind(sel.is_some_and(|i| i + 1 < rows.len())),
             false,
@@ -1633,7 +1726,7 @@ impl OptionsDialog {
         winui::paragraph(
             &p,
             o.x + 21.0,
-            o.y + 308.0,
+            o.y + 256.0,
             note,
             crate::theme::colors().warning,
             o.x + 404.0,
@@ -1641,17 +1734,25 @@ impl OptionsDialog {
         );
         winui::checkbox_light(
             ui,
-            o + vec2(21.0, 354.0),
+            o + vec2(21.0, 302.0),
             &mut self.s.debrid_on,
             // i18n: Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
             "Download supported file-host links through these accounts",
             true,
         );
+        winui::checkbox_light(
+            ui,
+            o + vec2(21.0, 324.0),
+            &mut self.s.debrid_torrents,
+            // i18n: Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+            "Send torrents and magnet links to the first account instead of to peers",
+            self.s.debrid_on,
+        );
         let p = ui.painter().clone();
-        winui::paragraph(
+        let lines = winui::paragraph(
             &p,
             o.x + 21.0,
-            o.y + 388.0,
+            o.y + 358.0,
             // i18n: Options → Accounts: what these accounts are, and the services' rule against sharing
             crate::i18n::t(
                 "A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.",
@@ -1660,6 +1761,23 @@ impl OptionsDialog {
             o.x + 404.0,
             14.0,
         );
+        // Where the sign-ins are kept (#44, secrets.rs); the list is two rows shorter for it.
+        let kept = vault.kept();
+        if kept == crate::secrets::Kept::Looking {
+            ui.ctx()
+                .request_repaint_after(std::time::Duration::from_millis(200));
+        }
+        if let Some(text) = kept_text(kept) {
+            winui::paragraph(
+                &p,
+                o.x + 21.0,
+                o.y + 358.0 + lines as f32 * 14.0 + 6.0,
+                crate::i18n::t(text),
+                LIGHT_TEXT(),
+                o.x + 404.0,
+                14.0,
+            );
+        }
     }
 
     fn logins(&mut self, ui: &mut Ui, o: Pos2) {
@@ -1698,9 +1816,23 @@ impl OptionsDialog {
             "opt-logins",
         );
         let sel = self.login_rows.selected.filter(|i| *i < rows.len());
+        // As wide as their labels in this language (#192), under the list (it ends at 404).
+        let [new_at, edit_at, remove_at] = winui::button_row_from_left(
+            &ui.painter().clone(),
+            &[
+                ("New", 31.0, 73.0),
+                ("Edit", 125.0, 73.0),
+                ("Remove", 220.0, 73.0),
+            ],
+            21.0,
+            404.0,
+            140.0,
+        )[..] else {
+            unreachable!("three buttons")
+        };
         let new = winui::button_light(
             ui,
-            r(o, 31.0, 381.0, 73.0, 21.0),
+            r(o, new_at.0, 381.0, new_at.1, 21.0),
             // i18n: button: create a new item
             "New",
             ButtonKind::Normal,
@@ -1714,10 +1846,16 @@ impl OptionsDialog {
         };
         let edit =
             // i18n: verb: edit the item
-            winui::button_light(ui, r(o, 125.0, 381.0, 73.0, 21.0), "Edit", kind, false).clicked();
+            winui::button_light(ui, r(o, edit_at.0, 381.0, edit_at.1, 21.0), "Edit", kind, false).clicked();
         // i18n: verb: remove the item
-        let remove = winui::button_light(ui, r(o, 220.0, 381.0, 73.0, 21.0), "Remove", kind, false)
-            .clicked()
+        let remove = winui::button_light(
+            ui,
+            r(o, remove_at.0, 381.0, remove_at.1, 21.0),
+            "Remove",
+            kind,
+            false,
+        )
+        .clicked()
             || del_key;
         if new {
             self.sub = Some(Sub::Login(
@@ -2135,9 +2273,24 @@ impl OptionsDialog {
         } else {
             ButtonKind::Disabled
         };
-        let browse =
-            winui::button_light(ui, r(o, 106.0, 371.0, 73.0, 21.0), "Browse...", kind, false)
-                .clicked();
+        // Both as wide as their labels in this language (#192), each around its English centre.
+        let browse_at = winui::button_around(&p, "Browse...", 106.0, 73.0, 21.0, 233.0);
+        let play_at = winui::button_around(
+            &p,
+            "Play",
+            241.0,
+            73.0,
+            browse_at.0 + browse_at.1 + 8.0,
+            404.0,
+        );
+        let browse = winui::button_light(
+            ui,
+            r(o, browse_at.0, 371.0, browse_at.1, 21.0),
+            "Browse...",
+            kind,
+            false,
+        )
+        .clicked();
         let has_file = sel.is_some_and(|i| !self.s.sounds[i].1.is_empty());
         let play_kind = if has_file {
             ButtonKind::Normal
@@ -2146,7 +2299,7 @@ impl OptionsDialog {
         };
         let play =
             // i18n: verb: plays the sound
-            winui::button_light(ui, r(o, 241.0, 371.0, 73.0, 21.0), "Play", play_kind, false)
+            winui::button_light(ui, r(o, play_at.0, 371.0, play_at.1, 21.0), "Play", play_kind, false)
                 .clicked();
         if let Some(i) = sel {
             if browse || pick_file == Some(i) {
@@ -2521,11 +2674,21 @@ impl OptionsDialog {
                         }
                         let first = checks.iter().find(|c| !c.ok);
                         let y = h - 46.0;
+                        // As wide as their labels in this language (#192), short of Close.
+                        let [fix_at, set_up_at] = winui::button_row_from_left(
+                            &p,
+                            &[("How to fix it", 14.0, 110.0), ("Set it up", 132.0, 110.0)],
+                            8.0,
+                            440.0 - 14.0 - 73.0 - 8.0,
+                            200.0,
+                        )[..] else {
+                            unreachable!("two buttons")
+                        };
                         if let Some(c) = first {
                             if let Some(why) = c.why
                                 && winui::button_light(
                                     ui,
-                                    r(o, 14.0, y, 110.0, 25.0),
+                                    r(o, fix_at.0, y, fix_at.1, 25.0),
                                     // i18n: button in Test browser integration: open the help page's section for the problem
                                     "How to fix it",
                                     ButtonKind::Normal,
@@ -2533,13 +2696,13 @@ impl OptionsDialog {
                                 )
                                 .clicked()
                             {
-                                let _ = open::that_detached(mdm_ipc::extension::help_page(why));
+                                crate::help::open_page(&mdm_ipc::extension::help_doc(why));
                             }
                             if c.why == Some("not-installed")
                                 && mdm_ipc::portable_dir().is_none()
                                 && winui::button_light(
                                     ui,
-                                    r(o, 132.0, y, 110.0, 25.0),
+                                    r(o, set_up_at.0, y, set_up_at.1, 25.0),
                                     // i18n: button in Test browser integration: register MDM's helper with the browsers
                                     "Set it up",
                                     ButtonKind::Normal,
@@ -2565,8 +2728,11 @@ impl OptionsDialog {
                         }
                     },
                 );
+                // Set it up runs on a thread of its own; the checks are read again once it's done.
                 if set_up {
-                    crate::extension::set_up();
+                    crate::extension::set_up(ctx);
+                }
+                if crate::extension::set_up_finished(&mut self.set_up_seen) {
                     checks = crate::extension::checks(&self.s);
                 }
                 if matches!(out, Outcome::Open) {
@@ -2878,17 +3044,29 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
     }
     if let S::Waiting { code, page, until } = &state {
         // The code, large, to type at the service's page.
+        let code_font = egui::FontId::monospace(crate::theme::metrics().font_code);
         p.text(
             o + vec2(14.0, 78.0),
             egui::Align2::LEFT_TOP,
             code,
-            egui::FontId::monospace(crate::theme::metrics().font_code),
+            code_font.clone(),
             LIGHT_TEXT(),
         );
+        // The buttons as wide as their labels in this language (#192), short of the code.
+        let code_end = 14.0 + winui::text_width_font(&p, code_font, code);
+        let [copy_at, open_at] = winui::button_row(
+            &p,
+            &[("Copy code", 200.0, 90.0), ("Open the page", 296.0, 110.0)],
+            6.0,
+            (code_end + 12.0).min(200.0),
+            200.0,
+        )[..] else {
+            unreachable!("two buttons")
+        };
         // i18n: button: copy the sign-in code
         if winui::button_light(
             ui,
-            r(o, 200.0, 80.0, 90.0, 21.0),
+            r(o, copy_at.0, 80.0, copy_at.1, 21.0),
             "Copy code",
             ButtonKind::Normal,
             false,
@@ -2900,7 +3078,7 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
         // i18n: button: open the service's page where the code is typed
         if winui::button_light(
             ui,
-            r(o, 296.0, 80.0, 110.0, 21.0),
+            r(o, open_at.0, 80.0, open_at.1, 21.0),
             "Open the page",
             ButtonKind::Normal,
             false,
@@ -2940,11 +3118,19 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
         crate::i18n::t("Paste your API key (from the service's Account page):")
     };
     text(&p, o.x + 14.0, o.y + 178.0, label, LIGHT_TEXT());
-    winui::password_light(ui, r(o, 14.0, 186.0, 280.0, 21.0), &mut e.token, !busy);
+    // As wide as its label in this language (#192); the box ends 6 px before it.
+    let (use_x, use_w) =
+        winui::buttons_to_right(&p, 406.0, 0.0, &[("Use the token", 106.0)], 200.0)[0];
+    winui::password_light(
+        ui,
+        r(o, 14.0, 186.0, use_x - 6.0 - 14.0, 21.0),
+        &mut e.token,
+        !busy,
+    );
     // i18n: button: sign in with the token typed in
     if winui::button_light(
         ui,
-        r(o, 300.0, 186.0, 106.0, 21.0),
+        r(o, use_x, 186.0, use_w, 21.0),
         "Use the token",
         kind(!busy && !e.token.trim().is_empty()),
         false,
@@ -2956,7 +3142,13 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
     // i18n: button: open the service's page that shows the user's API token
     if winui::button_light(
         ui,
-        r(o, 14.0, 212.0, 160.0, 21.0),
+        r(
+            o,
+            14.0,
+            212.0,
+            winui::button_fit_width(&p, "Find my token", 160.0, 392.0),
+            21.0,
+        ),
         "Find my token",
         ButtonKind::Normal,
         false,
@@ -3022,7 +3214,7 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
 /// whose clicks come from scripts, not from a person at the browser.
 fn open_page(url: &str) {
     if !crate::offscreen() {
-        let _ = open::that_detached(url);
+        crate::launch::open(url);
     }
 }
 
@@ -3482,4 +3674,52 @@ fn readonly(ui: &mut Ui, rc: Rect, value: &str) {
 /// A password edit (characters shown as bullets): the shared one, on the tab page.
 fn password(ui: &mut Ui, rc: Rect, value: &mut String, enabled: bool) {
     winui::password_light_on(ui, rc, value, enabled, LIGHT_PAGE());
+}
+
+/// Options → Accounts: where the sign-ins (and Sites Logins' passwords, the proxy's) are kept,
+/// as `secrets::Vault::kept` found it. None while it is still looking.
+fn kept_text(kept: crate::secrets::Kept) -> Option<&'static str> {
+    use crate::secrets::Kept;
+    Some(match kept {
+        Kept::Looking => return None,
+        #[cfg(windows)]
+        Kept::Keychain => {
+            // i18n: Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+            crate::i18n::mark("Sign-ins and passwords are kept in Windows Credential Manager.")
+        }
+        #[cfg(target_os = "macos")]
+        Kept::Keychain => {
+            // i18n: Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+            crate::i18n::mark("Sign-ins and passwords are kept in the macOS keychain.")
+        }
+        #[cfg(target_os = "linux")]
+        // i18n: Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+        Kept::Keychain => crate::i18n::mark(
+            "Sign-ins and passwords are kept in the system keyring (Secret Service).",
+        ),
+        #[cfg(windows)]
+        // i18n: Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+        Kept::Portable => crate::i18n::mark(
+            "This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.",
+        ),
+        #[cfg(not(windows))]
+        // i18n: Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+        Kept::Portable => crate::i18n::mark(
+            "This portable copy keeps sign-ins and passwords in its own settings, which only you can read.",
+        ),
+        // i18n: Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+        Kept::Locked => crate::i18n::mark(
+            "The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.",
+        ),
+        #[cfg(windows)]
+        // i18n: Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+        Kept::Missing => crate::i18n::mark(
+            "Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.",
+        ),
+        #[cfg(not(windows))]
+        // i18n: Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+        Kept::Missing => crate::i18n::mark(
+            "No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.",
+        ),
+    })
 }

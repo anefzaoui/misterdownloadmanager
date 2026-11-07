@@ -3,7 +3,8 @@
 //! error envelope (`{"error", "error_code"}` with the HTTP status). Nothing here is copied from
 //! the service; the shapes are the documented ones.
 //!
-//! - Tokens (`Authorization: Bearer …`): `good` is a premium account, `free` a free one, and the
+//! - Tokens (`Authorization: Bearer …`): `good` (or `good-…`) is a premium account, `free` a
+//!   free one, and the
 //!   device flow's access tokens (`at-…`) are premium. Anything else is refused (code 8).
 //! - The fake file host: `http://hoster.test/file/<size>/<name>[?flags]`. Its direct link is the
 //!   lab's own `/gen/<size>/<name>`, the same bytes on every unlock of the same link. Flags:
@@ -45,7 +46,8 @@ fn account(headers: &HeaderMap) -> Option<bool> {
         .ok()?
         .strip_prefix("Bearer ")?;
     match token {
-        "good" => Some(true),
+        // `good-…`: a premium token a test can look for in logs (it must never be there).
+        t if t == "good" || t.starts_with("good-") => Some(true),
         "free" => Some(false),
         t if t.starts_with("at-") => Some(true),
         _ => None,
@@ -241,7 +243,8 @@ fn bearer(headers: &HeaderMap) -> Option<bool> {
         .ok()?
         .strip_prefix("Bearer ")?
     {
-        "good" => Some(true),
+        // `good-…`: a premium token a test can look for in logs (it must never be there).
+        t if t == "good" || t.starts_with("good-") => Some(true),
         "free" => Some(false),
         _ => None,
     }

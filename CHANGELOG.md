@@ -22,6 +22,39 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Sign-ins in the system's keychain**
+  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)): debrid accounts, Sites
+  Logins' passwords and the proxy's password are kept in Windows Credential Manager, in the
+  system keyring on Linux (Secret Service: GNOME Keyring, KeePassXC and others) and in the
+  macOS keychain, and the settings keep only a reference. Those already saved move there on
+  the next start. A locked keyring is never unlocked and no keyring is ever asked for a
+  password: without one, they stay in MDM's settings as before. **Options → Accounts** says
+  where they are. A portable copy keeps them in its own folder, and uninstalling with **remove
+  the download list and settings** removes them from Credential Manager too.
+- **The Scheduler wakes the computer to run a queue**
+  ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142)): tick **Wake the
+  computer to run this queue** under the start time, and a sleeping computer is woken a minute
+  before the queue starts and kept awake while it runs; the line under it says when. On Windows
+  it needs **Allow wake timers** in the power plan: when that is off the Scheduler says so, with a
+  link to the setting. On Linux an administrator has to allow it once (the guide shows how); on
+  macOS only an administrator can schedule a wake, so the option says why it's greyed. MDM never
+  asks for an administrator's password. The Scheduler is 40 pixels taller for it.
+- **Torrents through your debrid account**
+  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)): with **Send torrents and
+  magnet links to the first account instead of to peers** ticked (**Options → Accounts**), a
+  magnet link or a `.torrent` file goes to the account. Real-Debrid, AllDebrid and Premiumize
+  download the torrent on their servers, and the list shows how far they are (**45% at
+  Real-Debrid**). MDM then downloads its files over HTTP, with all its connections and resume, and removes
+  the torrent from the account's list. Your computer never connects to the torrent's peers.
+  Experimental, as the accounts are.
+- **Debrid accounts: one link directly, and the command line**
+  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)): **Download File Info**
+  says which account a link goes through (**Download through Real-Debrid (your account)**);
+  untick it to download that link directly. **File Properties** has the same choice for a
+  download in the list, and MDM keeps it after a restart. The command line's `get` and `resume`
+  go through the accounts of **Options → Accounts** too, and `--direct` skips them. A download
+  the browser had already started stays direct after a restart, and when one service doesn't
+  answer, the other accounts still work.
 - **Where a download's server is** ([#140](https://github.com/anefzaoui/misterdownloadmanager/issues/140)):
   **Download File Info**, the progress window and **Properties** show the server's country, with
   its flag, and its round trip, such as **about 24 ms (near)**, in green, amber or red. The country
@@ -70,6 +103,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   icons (LGPL-3.0), in colour for files and categories and one colour in the toolbar, and, on
   Windows, a header bar MDM draws with the title in bold and round buttons. An icon set can now
   mix PNG pictures with SVG drawings, and one-colour icons (`-symbolic.svg`) with coloured ones.
+- **Themes: Breeze** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)), after
+  KDE Plasma's look, the layout kept: rounded corners, buttons and boxes whose edge takes the
+  accent under the pointer or when focused, KDE's check boxes and radio buttons (the accent's
+  edge, a tick in the text's colour), a focus frame, KDE's Breeze icons (LGPL-3.0-or-later) and,
+  on Windows, a title bar MDM draws in KDE's style: the title centred, round buttons that fill
+  under the pointer (Close in red).
 - **The Firefox add-on is on addons.mozilla.org**: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/),
   installed with one click and kept up to date by Firefox (and by Zen and LibreWolf). MDM's
   **Add Mister Download Manager to your browser** window opens it for them; the website, the
@@ -78,6 +117,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   [GitHub Sponsors](https://github.com/sponsors/anefzaoui) page in the browser; the website, the
   README and the browser extension's popup link to it too. Only when asked: MDM stays free, with
   no reminders, and nothing changes or unlocks.
+- **Video pages and image galleries through the chosen network adapter**
+  ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35)): with **Options → Proxy /
+  Socks → Network adapter** set, video downloads (yt-dlp and the ffmpeg it starts) and galleries
+  (gallery-dl) now start, on Windows, Linux and macOS, instead of being refused. They go through a
+  proxy MDM runs on this computer, which opens their connections through the adapter as MDM opens
+  its own, with the DNS you chose, IPv4 and IPv6. The same kill switch: when the adapter
+  disconnects, their connections close at once and the downloads stop, then start again when it
+  is back. Formats over RTMP, RTSP, MMS or FTP, which can't go through it, are refused. The
+  command line's `video-get` and `gallery-get` take `--adapter`.
 - **Torrents through the chosen network adapter on Windows**
   ([#143](https://github.com/anefzaoui/misterdownloadmanager/issues/143)): with **Options → Proxy /
   Socks → Network adapter** set, torrents now start on Windows too, instead of being refused.
@@ -94,7 +142,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   again (the menu says so); without a usable OpenGL either, it draws with Microsoft's software
   renderer (Remote Desktop, virtual machines without a graphics driver). When the graphics card
   is reset while MDM runs (a driver update), MDM starts again by itself. Freeze and crash
-  reports say what was drawing. Linux and macOS keep OpenGL.
+  reports say what was drawing. Linux and macOS keep OpenGL by default.
+- **Linux: Vulkan, and macOS: Metal, in View → Draw with** ([#206](https://github.com/anefzaoui/misterdownloadmanager/issues/206)).
+  Linux can draw its windows with Vulkan (on Wayland and X11), and macOS with Metal, the way
+  Windows draws with Direct3D. OpenGL stays the default there until reports from real graphics
+  cards are in: try it and tell us how it went. The same safety net as on Windows: when Vulkan
+  or Metal can't start (no driver for it), its first frame doesn't come within 10 seconds, or a
+  start with it ends before its first frame, MDM draws with OpenGL until it is chosen again, and
+  the menu now says why (on Windows too). A graphics card reset while MDM runs starts MDM again.
 - **The extension lists the media a page has loaded**
   ([#38](https://github.com/anefzaoui/misterdownloadmanager/issues/38)). The toolbar button's
   window has **Media on this page**: the HLS and DASH streams the page's players loaded (each
@@ -317,6 +372,40 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Developers: the host connection limit test tells a reconnect from a connection too many**
+  ([#224](https://github.com/anefzaoui/misterdownloadmanager/issues/224)). A server sees that a
+  client dropped an answer only when it next writes to it, so on a busy computer a connection
+  that reconnects can be refused once while the server still counts its old answer. The lab
+  server now logs, with each refusal, how far the answers holding the client's slots had been
+  sent; the test fails only for a refusal none of them explains.
+- **The help shows what it describes** ([#228](https://github.com/anefzaoui/misterdownloadmanager/issues/228)):
+  every guide and the main help pages now have pictures of the windows they explain, cropped to
+  what matters, numbered where a step points at one control, and step strips for the usual flows
+  (a download from the browser, a first download, a video, a torrent, a queue overnight). On the
+  website they follow its light or dark theme, keep their place while they load, and open larger
+  with a click; their descriptions and captions are translated with the page. The pictures are
+  made by a script from one list (`tools/shots/`), so they can all be taken again in one go.
+- **Developers: `/show menu:<n>` opens the menu bar's menu even with downloads in the list**; it
+  opened the first download's right-click menu instead.
+- **Developers: the rest of the engine tests no longer fail on a busy computer**
+  ([#201](https://github.com/anefzaoui/misterdownloadmanager/issues/201)). Nine tests checked a
+  time, a speed or a byte count that a starved CPU or a busy CI runner can't keep. Each now
+  checks the state itself, or times from the event it is about: a slow request's own duration, a
+  stop measured from Stop against a wait of minutes, the first bytes before a pause, a speed
+  limit against a download the server paces at the same time (and every byte paid for once),
+  parts asked again instead of a deadline, links that expire after a number of requests instead
+  of milliseconds, range attempts a server without ranges answers slowly enough not to fill the
+  sockets, and the bytes a sparse file takes on the drive. The slow-connection test now fails
+  without shedding (it passed without it before). The lab server can hand out such links
+  (`/redirect?uses=N`) and pace answers to range requests on their own (`range_rate`).
+- **Developers: Linux builds and window shots in minutes, on WSL2** (part of
+  [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): `tools/lab/wsl/` sets up
+  `mdm-lab`, an Ubuntu 24.04 WSL2 distribution of its own, which builds any branch or pull request
+  for Linux at the computer's full speed (`build.sh`: about 5 minutes from scratch, under a minute
+  after a change, against 15 to 60 in the VirtualBox machine), shoots MDM's windows in any language
+  and mode on a virtual screen that never shows on Windows (`shots.sh`: about a second a window,
+  against 40), compares OpenGL and Vulkan pixel by pixel (`renderers.sh`), and hands a build to a
+  VirtualBox machine for what needs a real desktop (`deploy.ps1`).
 - **Developers: a Linux test machine, scripted** (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
   `tools/lab/linux-vm/` sets up an Ubuntu 24.04 desktop in VirtualBox from a Windows host
   (`vm.ps1`: hardware, headless start, linked clones; `setup.sh`: packages, Rust, Node, the
@@ -430,6 +519,59 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   desktop at all, and it follows changes as they happen. The portal still comes first. A change
   now shows at once too: the window waited for its next theme check, up to 20 s on a busy
   machine, on every desktop.
+- **Open folder no longer freezes the window on Linux**
+  ([#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222)): Download complete's
+  **Open folder** asks the desktop's file manager (over D-Bus) to show the file, and MDM waited
+  for its answer on the window's own thread. A file manager slow to start, or one that never
+  answered (seen on Pop!_OS), froze the window until the freeze report caught it. MDM now asks in
+  the background and, when the file manager hasn't answered within 5 seconds, opens the folder
+  instead. Every other program MDM starts from a window goes the same way: Test browser
+  integration's **Set it up**, moving an extracted archive to the Trash (on a Mac the Finder may
+  ask first), putting an update in place (**Installing the update...**, with Cancel greyed while
+  it runs), opening pages and folders, reading the icon theme on Linux and, on a Mac, the accent
+  colour (every 2 seconds with the Native theme) and the system's version for a bug report.
+- **A download too big for the drive is refused on a busy computer too**
+  ([#224](https://github.com/anefzaoui/misterdownloadmanager/issues/224)): before a download
+  starts, MDM checks the drive has room for it. It gave up checking after 5 seconds (a network
+  drive that no longer answers can hang), counted from when it asked; on a very busy computer
+  the check could wait longer than that just to start, and a download too big for its drive
+  started anyway. The 5 seconds now count from when the check runs, and it asks only the
+  folder's own drive instead of listing every drive, which takes well under a millisecond. A
+  shared network folder (`\\server\share`) is checked too, which it wasn't before, and a
+  folder that doesn't exist yet is checked on the drive it will be made on.
+- **The crash report window in other languages**
+  ([#204](https://github.com/anefzaoui/misterdownloadmanager/issues/204)): in any language but
+  English, the report in its box ran together on a few long lines, as its line breaks were taken
+  for a translation's and flowed again. The report now keeps its own lines in every language, and
+  in Arabic and Persian it reads left to right, from the box's left edge, as the English data it
+  is (the window around it stays right to left). The release notes in **Check for updates** keep
+  their lines the same way. **End and restart MDM** showed cut in German, French, Russian and
+  Arabic: the buttons are now as wide as their text, the others giving back room they don't need.
+- **Buttons fit their text in every language, in every window**
+  ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192)): many windows gave
+  their buttons a width made for English, so a longer translation was cut with "..." (German
+  **Später herunterla...** in Download File Info, **Hilfsprogramme...** in Download a gallery,
+  Russian **Открыть с помощью...** in Download complete, French **Nouvelle file d’attente** in the
+  Scheduler). Each button is now as wide as its translated text, and the buttons beside it move
+  along with the same gaps, the row keeping its end; a box or caption beside a widened button
+  ends before it. Where a window has no room left, the buttons wider than their text give some
+  back first. English is unchanged, and in Arabic and the other right-to-left languages the
+  buttons widen the mirrored way.
+- **Help opens the website's help pages, in your language**
+  ([#227](https://github.com/anefzaoui/misterdownloadmanager/issues/227)): **Help contents**,
+  **Tutorials**, **Scheduler and queues**, **Video downloads**, the **Help** buttons of Options and
+  the Scheduler, and the browser extension window's tutorial and help links opened the docs on
+  GitHub (the Options and Scheduler buttons a page that wasn't there). They open
+  misterdownloadmanager.com now, at the same section, in the interface language when the website
+  has it (else English), and **Home Page** opens the website too. The command line's and the MCP
+  server's help name the website's guide. Problem reports, releases and the source stay on GitHub.
+- **A finished download no longer fails with "part file still in use" on a busy computer**
+  ([#201](https://github.com/anefzaoui/misterdownloadmanager/issues/201)): when the last bytes
+  came in, the connections still running were cut off. One cut off while it read or wrote the
+  part file (checking the bytes before a reconnect, for example) left that read or write to finish
+  on its own, with the file still open, and renaming the finished file failed. The connections are
+  now told to stop and waited for, when a download completes and when it is stopped or fails, so
+  none of them outlives it. A stopped download's last writes are also in its saved progress now.
 - **Menus without a black band across their top**
   ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): on a Windows 11
   Insider build (22635), every menu and submenu showed a black band a title bar tall across its

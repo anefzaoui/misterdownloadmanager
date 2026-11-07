@@ -1,0 +1,30 @@
+# The help pages' pictures (tools/shots/): the shot list, the pages and docs/images/help agree.
+# Every picture in the list is on its page under its heading, with the list's alt text and
+# caption; no file is left over; none is over 300 KB. Reads files only: no build, no app.
+name: Help pictures
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "tools/shots/**"
+      - ".github/workflows/help-pictures.yml"
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "tools/shots/**"
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Shot list, pages and files
+        run: python tools/shots/make.py check
