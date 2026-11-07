@@ -1417,7 +1417,6 @@
 	Install it by hand	Installala manualmente
 #. text in unix.rs
 #. Linux, after a missing library's name, on a distribution MDM doesn't know
-#, machine
 	Install what's missing from your distribution's packages.	Installa ciò che manca dai pacchetti della tua distribuzione.
 #. text in the Download video window
 #. button: download and install the yt-dlp program
@@ -1656,8 +1655,7 @@
 #. message or event log entry in the main window
 	Main download queue	Coda di download principale
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
-	Make everything larger / smaller (View → Interface size)	Ingrandisci / Rimpicciolisci tutto (Visualizza → Dimensioni interfaccia)
+	Make everything larger / smaller (View → Interface size)	Ingrandisci / riduci tutto (Visualizza → Dimensioni interfaccia)
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Make the selection longer or shorter	Estendi o riduci la selezione
 #. text in crashui.rs
@@ -1746,7 +1744,6 @@
 	Mister Download Manager	Mister Download Manager
 #. text in unix.rs
 #. Linux, at start, on the terminal and in a message box: a library the window needs isn't installed; {libraries} = its file names (libxkbcommon-x11.so.0…), left as they are
-#, machine
 	Mister Download Manager can't open its window: this system lacks {libraries}.	Impossibile aprire la finestra di Mister Download Manager: a questo sistema mancano {libraries}.
 #. text in crashui.rs
 #. crash report window heading: MDM crashed and is gone
@@ -1779,8 +1776,7 @@
 	Mister Download Manager's own copy, version {version}	Copia di Mister Download Manager, versione {version}
 #. text in unix.rs
 #. Linux, at start, on the terminal: the libraries an X11 window needs aren't installed, so the window opens through Wayland instead, where menus can't be placed under what was clicked; {libraries} = their file names, left as they are
-#, machine
-	Mister Download Manager's X11 window needs {libraries}, which this system lacks: it opens on Wayland instead, where its menus may open away from their titles.	Per la finestra X11 di Mister Download Manager servono {libraries}, che mancano in questo sistema: si apre invece su Wayland, dove i menu potrebbero aprirsi lontano dai loro titoli.
+	Mister Download Manager's X11 window needs {libraries}, which this system lacks: it opens on Wayland instead, where its menus may open away from their titles.	La finestra X11 di Mister Download Manager richiede {libraries}, che mancano in questo sistema: si apre quindi su Wayland, dove i menu potrebbero aprirsi lontano dai loro titoli.
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 	Mo	Lu
@@ -1925,8 +1921,7 @@
 	No addresses yet	Ancora nessun indirizzo
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
-#, machine
-	No browser MDM can connect to was found	Nessun browser a cui MDM può connettersi è stato trovato
+	No browser MDM can connect to was found	Non è stato trovato nessun browser a cui MDM possa connettersi
 #. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 	No browser's extension has connected yet	Nessuna estensione per browser si è ancora connessa
@@ -2532,7 +2527,6 @@
 #. text in extension.rs
 #. a check of Test browser integration: setting it up failed; {error} is the system's own message, in English
 #. {error} = an error message (keep the braces as they are)
-#, machine
 	Setting it up failed: {error}	Configurazione non riuscita: {error}
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
@@ -2977,8 +2971,7 @@
 	the FTP server answered {code} {reply}	il server FTP ha risposto {code} {reply}
 #. text in extension.rs
 #. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
-#, machine
-	The helper program the browsers start is missing	Il programma helper avviato dai browser è mancante
+	The helper program the browsers start is missing	Manca il programma di supporto che i browser avviano
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 	The list could not be saved: {error}	Impossibile salvare l'elenco: {error}
@@ -3076,8 +3069,7 @@
 	This computer can't be woken by a timer	Questo computer non può essere riattivato da un timer
 #. text in errors.rs
 #. a download's error on a computer (a minimal Linux) without the certificates that secure connections check servers with; "ca-certificates" is the package's name, left as is
-#, machine
-	this computer has no certificates to check the server with: install the ca-certificates package, then try again	questo computer non ha certificati per verificare il server: installa il pacchetto ca-certificates, poi riprova
+	this computer has no certificates to check the server with: install the ca-certificates package, then try again	questo computer non ha i certificati per verificare il server: installa il pacchetto ca-certificates, poi riprova
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 	This computer has no wake alarm that programs can set	Questo computer non ha una sveglia di riattivazione impostabile dai programmi
@@ -3149,7 +3141,6 @@
 	Timor-Leste	Timor Est
 #. text in unix.rs
 #. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
-#, machine
 	To install what's missing: {command}	Per installare ciò che manca: {command}
 #. text in the Batch download window
 	To:	A:
@@ -3797,24 +3788,19 @@ extension	Hold Alt while clicking a link to let the browser download it.	Tieni p
 extension	How to fix it	Come risolvere
 #. text in the browser extension
 #. why a download stayed with the browser: the file is smaller than the app's minimum size setting
-#, machine
 extension	It's smaller than the minimum size in Options → File types.	È più piccolo della dimensione minima in Opzioni → Tipi di file.
 #. text in the browser extension
 #. why a download stayed with the browser: its address matches the app's list of addresses not to take
-#, machine
-extension	Its address is in Options → File types, addresses left to the browser.	Il suo indirizzo è in Opzioni → Tipi di file, indirizzi lasciati al browser.
+extension	Its address is in Options → File types, addresses left to the browser.	Il suo indirizzo è in Opzioni → Tipi di file, tra gli indirizzi lasciati al browser.
 #. text in the browser extension
 #. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
-#, machine
-extension	Its site is in Options → File types, sites left to the browser.	Il suo sito è in Opzioni → Tipi di file, siti lasciati al browser.
+extension	Its site is in Options → File types, sites left to the browser.	Il suo sito è in Opzioni → Tipi di file, tra i siti lasciati al browser.
 #. text in the browser extension
 #. why a download stayed with the browser: its file type isn't on the app's list; Options and File types are the app's window and its page, as the app names them
-#, machine
 extension	Its type isn't in Options → File types.	Il suo tipo non è in Opzioni → Tipi di file.
 #. text in the browser extension
 #. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
 #. {name} = a file name (keep the braces as they are)
-#, machine
 extension	Left to the browser: {name}	Lasciato al browser: {name}
 #. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
@@ -3890,15 +3876,12 @@ extension	The connection to Mister Download Manager failed	La connessione a Mist
 extension	The download button is off on this site	Il pulsante di download è disattivato su questo sito
 #. text in the browser extension
 #. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
-#, machine
-extension	The extension isn't allowed to read this site (the browser's site access).	L'estensione non è autorizzata a leggere questo sito (accesso al sito del browser).
+extension	The extension isn't allowed to read this site (the browser's site access).	L'estensione non ha il permesso di leggere questo sito (accesso ai siti del browser).
 #. text in the browser extension
 #. in the toolbar button's popup when the last download the browser kept came from a private window (its name isn't kept); followed by why (one of the declined_* texts)
-#, machine
 extension	The last download was left to the browser.	L'ultimo download è stato lasciato al browser.
 #. text in the browser extension
 #. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
-#, machine
 extension	This browser isn't ticked in Options → General.	Questo browser non è selezionato in Opzioni → Generale.
 #. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
@@ -3908,18 +3891,15 @@ extension	This download's details were too large to hand over	I dati di questo d
 extension	Update Mister Download Manager to use everything this extension offers	Aggiorna Mister Download Manager per usare tutte le funzioni di questa estensione
 #. text in the browser extension
 #. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
-#, machine
-extension	Use advanced browser integration is off in Options → General.	L'opzione "Usa integrazione browser avanzata" è disattivata in Opzioni → Generale.
+extension	Use advanced browser integration is off in Options → General.	L'opzione "Usa l'integrazione avanzata con i browser" è disattivata in Opzioni → Generale.
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Alt+Enter	Alt+Invio
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-#, machine
 key	Ctrl++ / Ctrl+-	Ctrl++ / Ctrl+-
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-#, machine
 key	Ctrl+0	Ctrl+0
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
@@ -4019,7 +3999,6 @@ menu	&Import	&Importa
 #. menu command in the main window
 #. View menu: submenu choosing how large MDM draws its windows and text (100 % to 200 %), as a browser's zoom
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 menu	&Interface size	Dimensioni &interfaccia
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -4099,15 +4078,12 @@ menu	Add trackers...	Aggiungi tracker...
 menu	Adwaita	Adwaita
 #. menu command in the main window
 #. View → Theme: a style theme's name (Windows 7's glassy look), a name: keep "Aero" as written
-#, machine
 menu	Aero	Aero
 #. menu command in the main window
 #. View → Theme: a style theme's name (Mac OS X's look), a name: keep "Aqua" as written
-#, machine
 menu	Aqua	Aqua
 #. menu command in the main window
 #. View → Theme: a style theme's name (Windows XP's look), a name: keep "Luna" as written
-#, machine
 menu	Luna	Luna
 #. menu command in the main window
 #. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
@@ -4501,406 +4477,307 @@ menu	Vulkan didn't start here: OpenGL draws	Vulkan non si avvia su questo comput
 	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Gestione credenziali di Windows non ha risposto, quindi gli accessi e le password sono conservati nelle impostazioni di MDM, crittografate per il tuo account Windows.
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
-#, machine
 	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Il nome di un profilo o la sua cartella. Vuoto: l'ultimo profilo usato. Per un browser basato su Chromium non elencato (Helium, Thorium...), scegli Chromium e la cartella del suo profilo.
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
-#, machine
 	Choose the profile's folder	Scegli la cartella del profilo
 #. group box title in the Options window
 #. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
-#, machine
 	Cookies for video sites	Cookie per i siti video
 #. option (radio button) in the Options window
 #. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
-#, machine
 	From browser:	Dal browser:
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, after Update now downloaded it: unpacking and putting the new version in place
 #. the trailing ... means it is still going on: keep it
-#, machine
 	Installing the update...	Installazione dell'aggiornamento in corso...
 #. option (radio button) in the Options window
-#, machine
 	Off	Disattivato
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
-#, machine
-	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Su Windows, Chrome, Edge e Brave potrebbero bloccare i loro cookie. Firefox funziona.
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Su Windows, Chrome, Edge e Brave potrebbero bloccare i propri cookie. Firefox funziona.
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
-#, machine
 	Profile (optional):	Profilo (facoltativo):
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: a note under the choices
-#, machine
-	Read on this computer only, and sent only to the video's site.	Lettura solo su questo computer e invio solo al sito del video.
+	Read on this computer only, and sent only to the video's site.	I cookie vengono letti solo su questo computer e inviati solo al sito del video.
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
-#, machine
 	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Il sito richiede l'accesso, anche con i cookie del browser per questa pagina. Accedi nel browser, quindi riprova.
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
-#, machine
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Il sito richiede l'accesso, anche con i cookie di {browser}. Accedi in {browser}, quindi cerca di nuovo la pagina.
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
-#, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Questo video richiede l'accesso. Usa il pulsante Scarica video sopra di esso nel browser, che passa il tuo accesso, oppure scegli il tuo browser in Opzioni → Accessi ai siti → Cookie per i siti video.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Questo video richiede l'accesso. Usa nel browser il pulsante Scarica video che compare sopra di esso, che trasmette anche il tuo accesso, oppure scegli il tuo browser in Opzioni → Accessi ai siti → Cookie per i siti video.
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
-#, machine
 	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp non può leggere i cookie di {browser} mentre {browser} è aperto. Chiudi {browser} e cerca di nuovo la pagina, oppure scegli Firefox in Opzioni → Accessi ai siti.
 #. text in the Download video window
 #. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
-#, machine
 	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp non è riuscito a ottenere la chiave dei cookie di {browser} dal portachiavi del sistema. Sblocca il portachiavi e cerca di nuovo la pagina.
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
 #. {error} = an error message (keep the braces as they are)
-#, machine
 	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp non è riuscito a leggere i cookie di {browser}: {error}
 #. text in the Download video window
 #. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
-#, machine
 	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp non ha trovato cookie di {browser} su questo computer. Controlla il browser e il suo profilo in Opzioni → Accessi ai siti.
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
-#, machine
-	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp accede ai siti video con i cookie di questo browser, letti solo dai suoi file su questo computer. Usato quando l'estensione del browser non ha passato i cookie della pagina: un indirizzo incollato, una playlist.
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp accede ai siti video con i cookie di questo browser, letti dai suoi file solo su questo computer. Si usa quando l'estensione del browser non ha passato quelli della pagina: un indirizzo incollato, una playlist.
 #. text in the Download video window
 #. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
-#, machine
-	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} mantiene i suoi cookie bloccati su Windows, quindi yt-dlp non può leggerli. Scegli Firefox in Opzioni → Accessi ai siti, oppure usa il pulsante Scarica video sopra il video in {browser}.
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	Su Windows {browser} protegge i propri cookie in modo che solo lui possa leggerli, quindi yt-dlp non può usarli. Scegli Firefox in Opzioni → Accessi ai siti, oppure usa il pulsante Scarica video sopra il video in {browser}.
 #. text in remote.rs
 #. remote control page (on a phone): button that picks a .torrent file on the phone
-#, machine
 	.torrent file	File .torrent
 #. text in remote.rs
 #. remote control page (on a phone): button: add the download
-#, machine
 	Add	Aggiungi
 #. text in remote.rs
 #. remote control page (on a phone): a download was added
-#, machine
 	Added.	Aggiunto.
 #. text in remote.rs
 #. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
-#, machine
-	Added. MDM is reading the torrent: it joins the list in a moment.	Aggiunto. MDM sta leggendo il torrent: verrà aggiunto all'elenco a breve.
+	Added. MDM is reading the torrent: it joins the list in a moment.	Aggiunto. MDM sta leggendo il torrent: comparirà nell'elenco tra poco.
 #. text in remote.rs
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
-#, machine
 	Address or magnet link	Indirizzo o link magnet
 #. text in remote.rs
 #. remote control page (on a phone): tab: every download
-#, machine
 	All	Tutti
 #. text in remote.rs
 #. remote control page (on a phone): category choice: the category follows the file's type
-#, machine
 	Automatic (by file type)	Automatico (per tipo di file)
 #. text in the Options window
 #. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
-#, machine
 	Certificate (SHA-256): {fingerprint}	Certificato (SHA-256): {fingerprint}
 #. text in remote.rs
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
-#, machine
 	Choose a .torrent file	Scegli un file .torrent
 #. text in remote.rs
 #. remote control page (on a phone): label of the pairing code's box (8 digits)
-#, machine
 	Code	Codice
 #. text in the Options window
 #. Options → Remote → Pair a device: label before the 8-digit code
-#, machine
 	Code:	Codice:
 #. text in remote.rs
 #. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
-#, machine
 	Delete the file too	Elimina anche il file
 #. text in the Options window
 #. column title: a paired phone's or computer's name
-#, machine
 	Device	Dispositivo
 #. text in the Options window
 #. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
-#, machine
-	Every local network address	Ogni indirizzo di rete locale
+	Every local network address	Tutti gli indirizzi della rete locale
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
 	Everything at its normal size (100%)	Tutto alle dimensioni normali (100%)
 #. text in remote.rs
 #. remote control page (on a phone): menu command: unpair this phone or computer from MDM
-#, machine
 	Forget this device	Dimentica questo dispositivo
 #. text in remote.rs
 #. remote control page (on a phone): question before unpairing this phone
-#, machine
 	Forget this device? It needs a new code to connect again.	Dimenticare questo dispositivo? Richiederà un nuovo codice per connettersi di nuovo.
 #. message or event log entry in the main window
 #. where a download came from (its Properties): a phone or computer paired in Options → Remote
-#, machine
 	from a paired device	da un dispositivo associato
 #. text in the Options window
 #. Options → Remote → Status: it could not start; {error} = the system's reason
 #. {error} = an error message (keep the braces as they are)
-#, machine
-	It could not start: {error}	Impossibile avviare: {error}
+	It could not start: {error}	Impossibile avviarlo: {error}
 #. text in the Options window
 #. column title: when the device last reached MDM
-#, machine
-	Last seen	Ultima visualizzazione
+	Last seen	Ultimo contatto
 #. checkbox in the Options window
 #. Options → Remote check box (off by default)
-#, machine
 	Let phones and computers on the local network control MDM	Consenti a telefoni e computer sulla rete locale di controllare MDM
 #. text in the Options window
 #. Options → Remote: label before the choice of the address MDM listens on
-#, machine
 	Listen on:	Ascolta su:
 #. text in the Options window
 #. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
-#, machine
-	MDM can't be reached on the network now: Options → Remote says why.	MDM non è raggiungibile sulla rete ora: le Opzioni → Remoto indicano il motivo.
+	MDM can't be reached on the network now: Options → Remote says why.	MDM non è raggiungibile in rete in questo momento: il motivo è indicato in Opzioni → Remoto.
 #. text in remote.rs
 #. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
-#, machine
 	MDM cannot download this address.	MDM non può scaricare questo indirizzo.
 #. text in remote.rs
 #. remote control page (on a phone): adding a download failed
-#, machine
 	MDM could not add it.	MDM non è riuscito ad aggiungerlo.
 #. text in remote.rs
 #. remote control page (on a phone): an action failed
-#, machine
 	MDM could not do it.	MDM non è riuscito a farlo.
 #. text in remote.rs
 #. remote control page (on a phone): MDM can't be reached while pairing
-#, machine
 	MDM does not answer. Check that it is running and on the same network.	MDM non risponde. Controlla che sia in esecuzione e sulla stessa rete.
 #. text in remote.rs
 #. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
 #. the trailing ... means it is still going on: keep it
-#, machine
-	MDM does not answer. Trying again...	MDM non risponde. Riprovo...
+	MDM does not answer. Trying again...	MDM non risponde. Nuovo tentativo...
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
-#, machine
-	MDM shows no code now. Click Pair a device there first.	MDM non mostra alcun codice ora. Fai clic prima su Associa un dispositivo.
+	MDM shows no code now. Click Pair a device there first.	MDM non mostra nessun codice al momento. Fai prima clic su Associa un dispositivo nel programma.
 #. text in remote.rs
 #. remote control page (on a phone): its menu's button
-#, machine
 	More	Altro
 #. button in the Options window
 #. Options → Remote → Pair a device: button: show a new code
-#, machine
 	New code	Nuovo codice
 #. text in remote.rs
 #. remote control page (on a phone): the list shown is empty
-#, machine
 	No downloads here.	Nessun download qui.
 #. text in the Options window
 #. Options → Remote → Status: on, but the computer has no local network address now
-#, machine
-	No local network now: it starts when the computer joins one.	Nessuna rete locale ora: si avvia quando il computer si unisce a una.
+	No local network now: it starts when the computer joins one.	Nessuna rete locale al momento: si avvierà quando il computer si connetterà a una rete.
 #. text in the Options window
 #. Options → Remote → Status: the remote control is off
-#, machine
 	Off: nothing on the network can reach MDM.	Disattivato: nulla sulla rete può raggiungere MDM.
 #. text in remote.rs
 #. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
-#, machine
-	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	Sul computer, apri Opzioni, quindi Remoto e fai clic su Associa un dispositivo. Inserisci il codice che mostra.
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	Sul computer apri Opzioni, poi Remoto, e fai clic su Associa un dispositivo. Inserisci il codice che compare.
 #. text in the Options window
 #. Options → Remote → Pair a device: how to pair
-#, machine
 	On the phone, scan this code with the camera, or open the address and enter the code.	Sul telefono, scansiona questo codice con la fotocamera, oppure apri l'indirizzo e inserisci il codice.
 #. text in the Options window
 #. Options → Remote → Status: on; the address follows in a box below
-#, machine
-	On. On the phone, open this address:	Attivo. Sul telefono, apri questo indirizzo:
+	On. On the phone, open this address:	Attivo. Sul telefono apri questo indirizzo:
 #. text in the Options window
 #. Options → Remote, at the bottom of the page
-#, machine
-	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Solo i dispositivi associati possono vedere o modificare qualcosa. La prima volta, il browser del telefono avvisa del certificato di MDM: la sua impronta digitale è quella sopra.
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Solo i dispositivi associati possono vedere o modificare qualcosa. La prima volta il browser del telefono mostra un avviso sul certificato di MDM: la sua impronta è quella indicata sopra.
 #. text in remote.rs
 #. remote control page (on a phone): button: pair this phone with MDM
-#, machine
 	Pair	Associa
 #. window title in the Options window
 #. window title: Options → Remote → Pair a device...
-#, machine
 	Pair a device	Associa un dispositivo
 #. button in the Options window
 #. Options → Remote button: shows a code (and a QR code) that pairs a phone
 #. the trailing ... means it opens a window: keep it
-#, machine
 	Pair a device...	Associa un dispositivo...
 #. text in remote.rs
 #. remote control page (on a phone): title of the pairing screen
-#, machine
-	Pair with Mister Download Manager	Associa con Mister Download Manager
+	Pair with Mister Download Manager	Associa a Mister Download Manager
 #. text in the Options window
 #. column title: when the device was paired
-#, machine
 	Paired	Associato
 #. text in the Options window
 #. Options → Remote: label above the list of paired phones and computers
-#, machine
 	Paired devices:	Dispositivi associati:
 #. text in the Options window
 #. Options → Remote → Status: another program uses the port; {port} = its number
-#, machine
 	Port {port} is used by another program: choose another.	La porta {port} è usata da un altro programma: scegline un'altra.
 #. text in remote.rs
 #. remote control page (on a phone): a download's state: added, waiting to start
-#, machine
 	Queued	In coda
 #. text in the Options window
 #. tab title: control MDM from a phone or another computer on the local network
-#, machine
 	Remote	Remoto
 #. text in the Options window
 #. Options page title: control MDM from a phone or another computer on the local network
-#, machine
 	Remote control	Controllo remoto
 #. text in remote.rs
 #. remote control page (on a phone): question before removing a download; {name} its file name
 #. {name} = a file name (keep the braces as they are)
-#, machine
 	Remove {name} from the list?	Rimuovere {name} dall'elenco?
 #. text in remote.rs
 #. remote control page (on a phone): "When" choice: start the download at once
-#, machine
 	Start now	Avvia ora
 #. text in the Options window
 #. Options → Remote → Status: the settings were changed; they apply on OK
-#, machine
-	The changes apply when you click OK.	Le modifiche verranno applicate quando si fa clic su OK.
+	The changes apply when you click OK.	Le modifiche verranno applicate quando fai clic su OK.
 #. text in the Options window
 #. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
-#, machine
-	This code can't be used any more.	Questo codice non può più essere usato.
+	This code can't be used any more.	Questo codice non è più valido.
 #. text in the Options window
 #. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
-#, machine
 	This computer only (127.0.0.1)	Solo questo computer (127.0.0.1)
 #. text in remote.rs
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
-#, machine
 	This device's name	Nome di questo dispositivo
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
-#, machine
 	This file is too large to be a torrent.	Questo file è troppo grande per essere un torrent.
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen isn't a .torrent file
-#, machine
 	This is not a torrent file.	Questo non è un file torrent.
 #. tooltip (why a control is greyed) in the Options window
 #. why Options → Remote → Pair a device... is greyed
-#, machine
 	Turn on the remote control first.	Attiva prima il controllo remoto.
 #. text in remote.rs
 #. remote control page (on a phone): codes were tried too fast
-#, machine
 	Wait a moment, then try again.	Attendi un momento, quindi riprova.
 #. text in remote.rs
 #. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
-#, machine
 	Wait in {queue}	Attendi in {queue}
 #. text in the Options window
 #. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
 #. {time} = a time of day (keep the braces as they are)
-#, machine
 	Waiting for the device. The code works for {time}.	In attesa del dispositivo. Il codice è valido per {time}.
 #. text in remote.rs
 #. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
-#, machine
 	When	Quando
 #. text in remote.rs
 #. remote control page (on a phone): pairing failed and the code is void now
-#, machine
 	Wrong code. Show a new code in MDM and try again.	Codice errato. Mostra un nuovo codice in MDM e riprova.
 #. text in remote.rs
 #. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
 #. {n} = a number (keep the braces as they are)
-#, machine
-	Wrong code. Tries left: {n}	Codice errato. Tentativi rimanenti: {n}
+	Wrong code. Tries left: {n}	Codice errato. Tentativi rimasti: {n}
 #. text in the Options window
 #. Options → Remote → Pair a device: done; {device} = the name it was given
-#, machine
 	{device} is paired. It can control MDM now.	{device} è associato. Ora può controllare MDM.
 #. text in remote.rs
 #. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
 	{done} of {size}	{done} di {size}
 #. text in remote.rs
 #. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
-	{size} free	{size} libero
+	{size} free	{size} liberi
 #. text in the browser extension
 #. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
-#, machine
 extension	Another Mister Download Manager (a server)	Un altro Mister Download Manager (un server)
 #. text in the browser extension
 #. the name this browser gets in the other MDM's list of paired devices
-#, machine
 extension	Browser extension	Estensione del browser
 #. text in the browser extension
 #. the toolbar button's status while downloads go to another MDM
-#, machine
 extension	Downloads go to {address}	I download vanno a {address}
 #. text in the browser extension
 #. the address typed isn't an https:// address
-#, machine
-extension	Enter its https:// address.	Immettere l'indirizzo https://.
+extension	Enter its https:// address.	Inserisci il suo indirizzo https://.
 #. text in the browser extension
 #. pairing failed for another reason
-#, machine
-extension	It didn't work. Try again.	Non ha funzionato. Riprovare.
+extension	It didn't work. Try again.	Non ha funzionato. Riprova.
 #. text in the browser extension
 #. pairing failed: the other MDM shows no pairing code; Pair a device is its button
-#, machine
-extension	It shows no code now: click Pair a device there first.	Non mostra alcun codice ora: fare clic prima su Associa un dispositivo.
+extension	It shows no code now: click Pair a device there first.	Al momento non mostra nessun codice: fai prima clic su Associa un dispositivo.
 #. text in the browser extension
 #. pairing failed: the other MDM didn't answer
-#, machine
-extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Non raggiungibile. Aprire il suo indirizzo una volta in questo browser e accettare il suo certificato, quindi riprovare.
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Non raggiungibile. Apri una volta il suo indirizzo in questo browser e accetta il suo certificato, poi riprova.
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
-#, machine
-extension	Open it	Apri
+extension	Open it	Aprilo
 #. text in the browser extension
 #. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
-#, machine
-extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	Aprire il suo indirizzo una volta e accettare il suo certificato, quindi immettere un codice dalle sue Opzioni, Remoto, Associa un dispositivo (o misterdownloadmanager-cli pair).
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	Apri una volta il suo indirizzo e accetta il suo certificato, poi inserisci un codice da Opzioni → Remoto → Associa un dispositivo (o misterdownloadmanager-cli pair).
 #. text in the browser extension
 #. button: pair this browser with the other MDM using the code
-#, machine
 extension	Pair	Associa
 #. text in the browser extension
 #. placeholder of the box for the 8-digit code the other MDM shows
-#, machine
 extension	Pairing code	Codice di associazione
 #. text in the browser extension
 #. heading in the toolbar button's popup, above the choice of where downloads go
-#, machine
-extension	Send downloads to	Invia download a
+extension	Send downloads to	Invia i download a
 #. text in the browser extension
 #. choice under Send downloads to: the Mister Download Manager on this computer
-#, machine
 extension	This computer	Questo computer
 #. text in the browser extension
 #. pairing failed: codes tried too fast
-#, machine
-extension	Wait a moment, then try again.	Attendere un momento, quindi riprovare.
+extension	Wait a moment, then try again.	Attendi un momento, poi riprova.
 #. text in the browser extension
 #. pairing failed: the code was wrong
-#, machine
 extension	Wrong code.	Codice errato.
