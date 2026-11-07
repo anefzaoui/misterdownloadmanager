@@ -109,9 +109,10 @@ impl Install {
     ];
 
     /// The release files of `version` that replace this kind of copy (the names
-    /// tools/installer/*.sh and build.ps1 give them), the one to take first first. The Linux and
-    /// macOS files were named `…-experimental` up to 0.2.x; a release may name them either way,
-    /// so both are looked for, the plain name first. None for a build from source.
+    /// tools/installer/*.sh and build.ps1 give them), the one to take first first. The Linux files
+    /// are named without "-experimental" from the release after 0.2.4 (build-linux.sh), and the
+    /// macOS ones may lose it too: the plain name is looked for first, then the `…-experimental`
+    /// one of the releases before. None for a build from source.
     pub fn assets(self, version: &str) -> Vec<String> {
         let (tail, ext) = match self {
             Install::Installer => ("setup", ".exe"),
@@ -455,6 +456,32 @@ Connection: close
         assert!(Install::Source.assets("1.0.0").is_empty());
         let labels: std::collections::HashSet<_> = Install::ALL.iter().map(|i| i.label()).collect();
         assert_eq!(labels.len(), Install::ALL.len());
+    }
+
+    /// The Linux names looked for first are the ones tools/installer/build-linux.sh gives its
+    /// files ("$name" plus the extension), so a release and Update now agree.
+    #[test]
+    fn the_linux_names_are_build_linux_sh_s() {
+        let script = include_str!("../../../tools/installer/build-linux.sh").replace("\r\n", "\n");
+        assert!(
+            script.contains("\nname=\"MisterDownloadManager-$version-linux-x86_64\"\n"),
+            "build-linux.sh names its files differently"
+        );
+        for (install, ext) in [
+            (Install::TarGz, ".tar.gz"),
+            (Install::AppImage, ".AppImage"),
+            (Install::Deb, ".deb"),
+            (Install::Rpm, ".rpm"),
+        ] {
+            assert!(
+                script.contains(&format!("\"$dist/$name{ext}\"")),
+                "build-linux.sh makes no {ext}"
+            );
+            assert_eq!(
+                install.assets("1.0.0")[0],
+                format!("MisterDownloadManager-1.0.0-linux-x86_64{ext}")
+            );
+        }
     }
 
     /// Linux: the package manager that owns the program decides; the plain programs elsewhere.

@@ -449,6 +449,10 @@ choose. And Linux, checked on a real desktop with every change.
   it carries the address of its updates, and each release has its `.AppImage.zsync`, so
   AppImageLauncher, Gear Lever and AppImageUpdate download only the parts that changed.
   **Update now** works as before.
+- **The Linux files are named without `-experimental`**: the AppImage, .deb, .rpm and .tar.gz
+  are `MisterDownloadManager-<version>-linux-x86_64.<ext>`, and the .deb's and .rpm's
+  descriptions no longer call them an experimental build. Update now, the AppImage tools and the
+  website find them by either name. The macOS .dmg files keep `-experimental`.
 
 #### The website
 

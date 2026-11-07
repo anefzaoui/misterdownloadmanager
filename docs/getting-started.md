@@ -18,15 +18,16 @@ Every version is on the [Releases](https://github.com/anefzaoui/misterdownloadma
 ### On Linux
 
 MDM runs on 64-bit Linux with a desktop session. It is tested on Ubuntu 24.04, Debian 12 and
-Fedora, with GNOME, KDE Plasma, Xfce and Cinnamon, on X11 and in Wayland sessions. The release
-files still carry `-experimental` in their names:
+Fedora, with GNOME, KDE Plasma, Xfce and Cinnamon, on X11 and in Wayland sessions. Pick one
+of these files (up to version 0.2.4, their names end in `-experimental`, as in
+`...-linux-x86_64-experimental.deb`):
 
 | File | What it is |
 |---|---|
-| `...-linux-x86_64-experimental.deb` | For Ubuntu, Debian, Mint and Pop!_OS: `sudo apt install ./<file>.deb`. It brings the libraries MDM needs. |
-| `...-linux-x86_64-experimental.rpm` | For Fedora, openSUSE and RHEL: `sudo dnf install ./<file>.rpm`. It brings the libraries MDM needs. |
-| `...-linux-x86_64-experimental.AppImage` | Runs on most distributions: make it executable (`chmod +x`) and run it. It updates itself in place (**Help → Check for updates**). |
-| `...-linux-x86_64-experimental.tar.gz` | The plain programs, for any distribution. |
+| `...-linux-x86_64.deb` | For Ubuntu, Debian, Mint and Pop!_OS: `sudo apt install ./<file>.deb`. It brings the libraries MDM needs. |
+| `...-linux-x86_64.rpm` | For Fedora, openSUSE and RHEL: `sudo dnf install ./<file>.rpm`. It brings the libraries MDM needs. |
+| `...-linux-x86_64.AppImage` | Runs on most distributions: make it executable (`chmod +x`) and run it. It updates itself in place (**Help → Check for updates**). |
+| `...-linux-x86_64.tar.gz` | The plain programs, for any distribution. |
 
 ![MDM's main window on Ubuntu 24.04's GNOME desktop: the categories and a list of downloads, each with the desktop's icon for its type](images/main-linux.webp)
 *MDM on Ubuntu's GNOME desktop, with the desktop's own file icons.*

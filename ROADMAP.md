@@ -36,6 +36,8 @@ Everything below ships together, in the next release.
   [#264](https://github.com/anefzaoui/misterdownloadmanager/issues/264)
 - ✅ Update now finds the Linux and macOS release files whether or not their names end in
   "-experimental"
+- ✅ The Linux release files are named without "-experimental" (`…-linux-x86_64.deb` and the
+  others), in the packages' descriptions too; the macOS ones keep it
 - ✅ Linux packages checked in clean Ubuntu 24.04, Debian 12 and Fedora 45 systems: install, the
   command line, the window, the desktop entry and icon, browser integration and uninstall; the
   .deb and .rpm now bring the keyboard library MDM's window needs under X11 and the CA
@@ -381,8 +383,8 @@ Everything below ships together, in the next release.
   titles on sway too); the .deb and .rpm installed in clean Ubuntu, Debian and Fedora systems, the
   AppImage and the tar.gz; the tray, Dark Mode support and Launch on startup on all four desktops;
   the Snap Firefox, Google Chrome and Brave reaching MDM
-  ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)). The release files keep
-  "-experimental" in their names for now
+  ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)), and its release files
+  named without "-experimental"
 - ✅ Every screenshot taken again on Windows and Linux (smaller files, WebP), and every page of the
   docs, the README and the website brought up to date
   ([#186](https://github.com/anefzaoui/misterdownloadmanager/issues/186))
