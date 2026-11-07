@@ -1075,10 +1075,11 @@ mod tests {
             .unwrap();
         let took = start.elapsed();
         let text = String::from_utf8_lossy(&out.stdout);
+        // libtest prints the test's name on the same line, before it.
         let returned = text
-            .lines()
-            .find_map(|l| l.strip_prefix("show_in_folder returned after "))
-            .and_then(|l| l.trim_end_matches(" ms").parse::<u64>().ok())
+            .split("show_in_folder returned after ")
+            .nth(1)
+            .and_then(|l| l.split(" ms").next()?.parse::<u64>().ok())
             .unwrap_or_else(|| panic!("the child said nothing: {text}"));
         assert!(
             returned < 500,

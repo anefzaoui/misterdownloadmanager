@@ -129,16 +129,22 @@ fn program_name(cmd: &Command) -> String {
 #[cfg(all(test, unix))]
 mod tests {
     use super::*;
-    use std::os::unix::fs::PermissionsExt;
     use std::path::{Path, PathBuf};
 
-    /// A shell script `name` in a fresh folder of its own.
+    /// A shell script `name` in `dir`.
     fn script(dir: &Path, name: &str, body: &str) -> PathBuf {
         std::fs::create_dir_all(dir).unwrap();
         let file = dir.join(name);
         std::fs::write(&file, format!("#!/bin/sh\n{body}\n")).unwrap();
-        std::fs::set_permissions(&file, std::fs::Permissions::from_mode(0o755)).unwrap();
         file
+    }
+
+    /// The script run by `sh`: executing a file just written can fail with "text file busy"
+    /// while another test's thread starts a program (it holds the file open for a moment).
+    fn sh(file: &Path) -> Command {
+        let mut cmd = Command::new("/bin/sh");
+        cmd.arg(file);
+        cmd
     }
 
     fn temp(name: &str) -> PathBuf {
@@ -153,7 +159,7 @@ mod tests {
         let hang = script(&dir, "hang", "exec sleep 30");
         let (tx, rx) = std::sync::mpsc::channel();
         let start = Instant::now();
-        run_detached_with_fallback(Command::new(hang), Duration::from_millis(500), move || {
+        run_detached_with_fallback(sh(&hang), Duration::from_millis(500), move || {
             let _ = tx.send(Instant::now());
         });
         assert!(
@@ -174,7 +180,7 @@ mod tests {
         for (body, falls_back) in [("exit 0", false), ("exit 3", true)] {
             let prog = script(&dir, "prog", body);
             let (tx, rx) = std::sync::mpsc::channel();
-            run_detached_with_fallback(Command::new(prog), Duration::from_secs(5), move || {
+            run_detached_with_fallback(sh(&prog), Duration::from_secs(5), move || {
                 let _ = tx.send(());
             });
             let got = rx.recv_timeout(Duration::from_secs(3)).is_ok();
@@ -193,12 +199,12 @@ mod tests {
     fn output_within_reads_the_output_and_gives_up_on_a_hang() {
         let dir = temp("output");
         let say = script(&dir, "say", "echo blue");
-        let out = output_within(&mut Command::new(say), Duration::from_secs(5)).unwrap();
+        let out = output_within(&mut sh(&say), Duration::from_secs(5)).unwrap();
         assert!(out.status.success());
         assert_eq!(String::from_utf8_lossy(&out.stdout).trim(), "blue");
         let hang = script(&dir, "hang", "exec sleep 30");
         let start = Instant::now();
-        assert!(output_within(&mut Command::new(hang), Duration::from_millis(300)).is_none());
+        assert!(output_within(&mut sh(&hang), Duration::from_millis(300)).is_none());
         assert!(start.elapsed() < Duration::from_secs(3));
         let _ = std::fs::remove_dir_all(dir);
     }
