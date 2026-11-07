@@ -589,6 +589,9 @@ mod tests {
     use std::sync::{Arc, Mutex};
     use std::time::Instant;
 
+    /// The queue's name (a constant: a literal in a call would be taken for a text to translate).
+    const QUEUE: &str = "night";
+
     /// What a fake system was asked: a reason (hold) or None (let go).
     type Asked = Arc<Mutex<Vec<Option<String>>>>;
 
@@ -619,7 +622,7 @@ mod tests {
         let start = Instant::now();
         while !done(w) && start.elapsed() < limit {
             let t = Instant::now();
-            w.keep_awake(on, "night");
+            w.keep_awake(on, QUEUE);
             assert!(
                 t.elapsed() < std::time::Duration::from_millis(50),
                 "keep_awake waited {:?}",
@@ -634,7 +637,7 @@ mod tests {
         let secs = std::time::Duration::from_secs;
         let (mut w, asked) = waker(secs(2), true);
         let t = Instant::now();
-        w.keep_awake(true, "night");
+        w.keep_awake(true, QUEUE);
         assert!(t.elapsed() < std::time::Duration::from_millis(50));
         assert!(!w.awake, "not held before the system said so");
         // Every tick returns at once while the system takes its time, and it is asked once.
@@ -645,7 +648,7 @@ mod tests {
             asked.lock().unwrap()[0]
                 .as_deref()
                 .unwrap()
-                .contains("night")
+                .contains(QUEUE)
         );
         // The queue stops: let go, at once too.
         let t = Instant::now();
@@ -688,7 +691,7 @@ mod tests {
     #[test]
     fn stopping_while_the_hold_is_on_its_way_lets_it_go() {
         let (mut w, asked) = waker(std::time::Duration::from_millis(300), true);
-        w.keep_awake(true, "night");
+        w.keep_awake(true, QUEUE);
         w.keep_awake(false, "");
         let start = Instant::now();
         while asked.lock().unwrap().len() < 2 && start.elapsed() < std::time::Duration::from_secs(3)
@@ -706,7 +709,7 @@ mod tests {
     #[test]
     fn quitting_waits_for_a_hanging_system_at_most_a_second() {
         let (mut w, asked) = waker(std::time::Duration::from_secs(10), true);
-        w.keep_awake(true, "night");
+        w.keep_awake(true, QUEUE);
         std::thread::sleep(std::time::Duration::from_millis(50));
         let t = Instant::now();
         w.clear();
