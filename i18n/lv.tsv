@@ -250,6 +250,11 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Pievienot lejupielādi (pievienot URL)
+#. message or event log entry in the main window
+#. title of the file dialog of View → Theme → Add a theme file
+#. title of the message when View → Theme → Add a theme file fails
+#, machine
+	Add a theme file	Pievienot tēmas failu
 #. window title in the Options window
 #. window title: adding a debrid service account (Real-Debrid…)
 #, machine
@@ -4432,6 +4437,10 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	Tīmekļa lapa, no kuras šis fails tika iegūts:
+#. message or event log entry in the main window
+#. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
+#, machine
+	Themes and colour schemes	Tēmas un krāsu shēmas
 #. text in the Options window
 #. Options → Archives check box
 #, machine
@@ -4492,6 +4501,11 @@
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 #, machine
 	This device's name	Šīs ierīces nosaukums
+#. message or event log entry in the main window
+#. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	This file can't be used as a theme: {error}	Šo failu nevar izmantot kā tēmu: {error}
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -6254,6 +6268,10 @@ menu	OpenGL	OpenGL
 #. noun: opens the category's properties
 #, machine
 menu	Properties	Rekvizīti
+#. menu command in the main window
+#. View → Theme: the colours of pywal (a program making colour schemes from the wallpaper), followed as they change; a name: keep "pywal" as written
+#, machine
+menu	pywal	pywal
 #. menu command in the main window
 #. verb: download the file again from the start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation

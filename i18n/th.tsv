@@ -250,6 +250,11 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	เพิ่มการดาวน์โหลด (เพิ่ม URL)
+#. message or event log entry in the main window
+#. title of the file dialog of View → Theme → Add a theme file
+#. title of the message when View → Theme → Add a theme file fails
+#, machine
+	Add a theme file	เพิ่มไฟล์ธีม
 #. window title in the Options window
 #. window title: adding a debrid service account (Real-Debrid…)
 #, machine
@@ -4432,6 +4437,10 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	หน้าเว็บที่ได้รับไฟล์นี้มา:
+#. message or event log entry in the main window
+#. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
+#, machine
+	Themes and colour schemes	ชุดรูปแบบและชุดสี
 #. text in the Options window
 #. Options → Archives check box
 #, machine
@@ -4492,6 +4501,11 @@
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 #, machine
 	This device's name	ชื่ออุปกรณ์นี้
+#. message or event log entry in the main window
+#. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	This file can't be used as a theme: {error}	ไฟล์นี้ใช้เป็นชุดรูปแบบไม่ได้: {error}
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine

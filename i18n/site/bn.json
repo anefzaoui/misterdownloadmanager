@@ -2,10 +2,6 @@
  "language": "bn",
  "note": "Machine translation of the website (tools/website/translate_site.py); fix a row's text to improve it.",
  "segments": {
-  "0001df97223dc970": {
-   "source": "In Firefox, once you switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in its popup (Firefox asks you first), when the browser uses a proxy for a download (set by a VPN or proxy extension, or in its settings), the extension passes <g2>the proxy's address</g2>, or its <g3>proxy auto-config script</g3>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy. Switched off (as installed), it reads nothing of the browser's proxy. The extension for Chrome and the other Chromium browsers doesn't do this yet.",
-   "text": "Firefox-এ, একবার আপনি এর পপআপে <g1>এই ব্রাউজারের প্রক্সি বা VPN এক্সটেনশনের মাধ্যমে ডাউনলোড পাঠান</g1> চালু করলে (Firefox আপনাকে প্রথমে জিজ্ঞাসা করবে), যখন ব্রাউজার কোনো ডাউনলোডের জন্য একটি প্রক্সি ব্যবহার করে (একটি VPN বা প্রক্সি এক্সটেনশন দ্বারা সেট করা, অথবা এর সেটিংসে), তখন এক্সটেনশন <g2>প্রক্সির ঠিকানা</g2>, অথবা এর <g3>প্রক্সি অটো-কনফিগ স্ক্রিপ্ট</g3> পাস করে, যাতে MDM একই প্রক্সির মাধ্যমে ডাউনলোড করে। এটি কখনোই প্রক্সির লগইন পড়ে না বা পাস করে না। এটি শুধুমাত্র নোট করে যে একটি প্রক্সি একটির জন্য অনুরোধ করেছে, যাতে MDM আপনাকে বলতে পারে যে এটি সেই প্রক্সি ব্যবহার করতে পারবে না। বন্ধ করা থাকলে (যেমন ইনস্টল করা আছে), এটি ব্রাউজারের প্রক্সির কিছুই পড়ে না। Chrome এবং অন্যান্য Chromium ব্রাউজারের জন্য এক্সটেনশনটি এখনও এটি করে না।"
-  },
   "0004ade2a3d1d57f": {
    "source": "The extension is connected, but MDM's own settings leave this download to the browser. Check, in MDM:",
    "text": "এক্সটেনশনটি সংযুক্ত, কিন্তু MDM-এর নিজস্ব সেটিংস অনুযায়ী এই ডাউনলোডটি ব্রাউজারেই থাকবে। MDM-এ দেখুন:"
@@ -45,6 +41,10 @@
   "00de390616043a08": {
    "source": "<g1>The toolbar button</g1> says whether the browser reaches MDM, and <g2>How to fix it</g2> opens the help for the reason. When a setting leaves a download to the browser (its type isn't in <g3>File types</g3>, its site is excluded, it's under the minimum size), the button names the setting and the file, and MDM's log keeps a line for each.",
    "text": "<g1>টুলবার বোতামটি</g1> দেখায় ব্রাউজার MDM-এর সাথে সংযুক্ত আছে কিনা, এবং <g2>কীভাবে ঠিক করবেন</g2> বোতামটি কারণটির জন্য সাহায্য খোলে। যখন কোনো সেটিং একটি ডাউনলোড ব্রাউজারের জন্য ছেড়ে দেয় (এর ধরন <g3>ফাইলের ধরন</g3>-এ নেই, এর সাইট বাদ দেওয়া হয়েছে, এটি ন্যূনতম আকারের নিচে), তখন বোতামটি সেটিং এবং ফাইলটির নাম দেখায়, এবং MDM-এর লগ প্রতিটির জন্য একটি লাইন রাখে।"
+  },
+  "00deae29052686c9": {
+   "source": "The download list, text boxes and menus",
+   "text": "ডাউনলোড তালিকা, টেক্সট বক্স এবং মেনু"
   },
   "00dfff13e69e9ac7": {
    "source": "One list for everything",
@@ -249,10 +249,6 @@
   "047d41a834df5979": {
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "বিনামূল্যে এবং উন্মুক্ত উৎস। আপনি ইতিমধ্যেই পরিচিত ইন্টারফেস, ভিতরে একটি দ্রুততর ইঞ্জিন, টরেন্ট এবং ভিডিও বিল্ট ইন।"
-  },
-  "048c63f908d9709e": {
-   "source": "Your download list, settings, logins you save in <g1>Sites Logins</g1>, the history of each download and the files you download are stored only on your computer: in <x2/> on Windows (or the <x3/> folder of the portable copy), and in the usual application-data folder on macOS and Linux. Nothing is uploaded anywhere. Uninstalling offers to delete them. From the next release, the passwords of Sites Logins, the proxy and debrid accounts go into the system's keychain instead (Windows Credential Manager, the keyring on Linux, the macOS keychain), still on your computer, when one is there and unlocked.",
-   "text": "আপনার ডাউনলোড তালিকা, সেটিংস, <g1>সাইটের লগইন তথ্য</g1>-তে সংরক্ষিত লগইন, প্রতিটি ডাউনলোডের ইতিহাস এবং আপনার ডাউনলোড করা ফাইলগুলি শুধুমাত্র আপনার কম্পিউটারে সংরক্ষিত থাকে: Windows-এ <x2/>-এ (অথবা পোর্টেবল কপির <x3/> ফোল্ডারে), এবং macOS ও Linux-এ সাধারণ অ্যাপ্লিকেশন-ডেটা ফোল্ডারে। কোনো কিছুই কোথাও আপলোড করা হয় না। আনইনস্টল করার সময় এগুলি মুছে ফেলার প্রস্তাব দেওয়া হয়। পরবর্তী রিলিজ থেকে, সাইটের লগইন তথ্যের পাসওয়ার্ড, প্রক্সি এবং ডিবিড অ্যাকাউন্টগুলি সিস্টেমের কিচেইনে (Windows Credential Manager, Linux-এর কী-রিং, macOS কিচেইন) সংরক্ষিত হবে, যদি একটি থাকে এবং আনলক করা থাকে, তবে সেগুলি আপনার কম্পিউটারে থাকবে।"
   },
   "0491cdf50cd840a6": {
    "source": "RSS feeds",
@@ -566,6 +562,10 @@
    "source": "Every feature has a page of its own: what it does, where it is in the app, and the real window. All of it is free, in every copy.",
    "text": "প্রতিটি বৈশিষ্ট্যের নিজস্ব একটি পৃষ্ঠা আছে: এটি কী করে, অ্যাপে এটি কোথায় আছে এবং আসল উইন্ডো। এর সবকিছুই বিনামূল্যে, প্রতিটি কপিতে।"
   },
+  "092d1dbe60812120": {
+   "source": "Each has a light and a dark side: <g1>Dark Mode support</g1> and <g2>Always dark</g2> choose between them as before. Theme files you put in the themes folder (<g3>View → Theme → Open themes folder</g3>) are listed there too, and so are Base16 and pywal colour schemes (<g4>View → Theme → Add a theme file…</g4>; <g5>pywal</g5> follows <x6/> as it runs): <g7>Themes</g7> says where that folder is, what a theme file holds (<x8/>, colours, sizes, control shapes, icons), how a scheme's colours are used, and how to make and share one.",
+   "text": "প্রতিটির একটি হালকা এবং একটি গাঢ় দিক আছে: <g1>ডার্ক মোড সমর্থন</g1> এবং <g2>সর্বদা ডার্ক</g2> আগের মতো তাদের মধ্যে বেছে নেয়। থিম ফোল্ডারে (<g3>দেখুন → থিম → থিম ফোল্ডার খুলুন</g3>) আপনি যে থিম ফাইলগুলি রাখেন, সেগুলিও সেখানে তালিকাভুক্ত হয়, এবং Base16 ও pywal রঙের স্কিমগুলিও (<g4>দেখুন → থিম → একটি থিম ফাইল যোগ করুন…</g4>; <g5>pywal</g5> চলার সময় <x6/> অনুসরণ করে): <g7>থিম</g7> বলে যে ফোল্ডারটি কোথায়, একটি থিম ফাইলে কী থাকে (<x8/>, রঙ, আকার, নিয়ন্ত্রণ আকার, আইকন), একটি স্কিমের রঙগুলি কীভাবে ব্যবহার করা হয় এবং কীভাবে একটি তৈরি ও শেয়ার করতে হয়।"
+  },
   "0942a42265a3f89c": {
    "source": "<g1>open an issue</g1> describing what should change, if you'd rather not edit the file.",
    "text": "যদি আপনি ফাইলটি সম্পাদনা করতে না চান, তাহলে কী পরিবর্তন করা উচিত তা বর্ণনা করে <g1>একটি ইস্যু খুলুন</g1>।"
@@ -758,6 +758,10 @@
    "source": "The interface is in every language Windows 11 offers. The catalogs in <g1><x2/></g1> were made by machine translation, and each row marked <x3/> waits for a native speaker:",
    "text": "ইন্টারফেসটি Windows 11-এর প্রতিটি ভাষায় উপলব্ধ। <g1><x2/></g1>-এর ক্যাটালগগুলি মেশিন অনুবাদ দ্বারা তৈরি করা হয়েছিল এবং <x3/> চিহ্নিত প্রতিটি সারি একজন স্থানীয় ভাষাভাষীর জন্য অপেক্ষা করছে:"
   },
+  "0c4e47b7b5c8f9f5": {
+   "source": "A freeze whose report shows the window thread inside the graphics driver as it shows a frame (<x1/> or <x2/> for Intel, <x3/> for NVIDIA, <x4/> for AMD, under <x5/>) is the driver's OpenGL stuck, not MDM: on Windows, choose <g6>View → Draw with → Direct3D</g6> (the default) and restart MDM, and update the graphics driver. If <g7>Draw with</g7> says Direct3D didn't start there, the line under it says why.",
+   "text": "একটি ফ্রিজ যার রিপোর্টে গ্রাফিক্স ড্রাইভারের মধ্যে উইন্ডো থ্রেড একটি ফ্রেম দেখানোর সময় দেখা যায় (<x1/> বা Intel-এর জন্য <x2/>, NVIDIA-এর জন্য <x3/>, AMD-এর জন্য <x4/>, <x5/>-এর অধীনে) তা ড্রাইভারের OpenGL আটকে থাকার কারণে, MDM-এর কারণে নয়: Windows-এ, <g6>দেখুন → আঁকার মাধ্যম → Direct3D</g6> (ডিফল্ট) নির্বাচন করুন এবং MDM পুনরায় চালু করুন, এবং গ্রাফিক্স ড্রাইভার আপডেট করুন। যদি <g7>আঁকার মাধ্যম</g7> বলে যে Direct3D সেখানে চালু হয়নি, তবে এর নিচের লাইনটি কারণটি বলে।"
+  },
   "0c6ce890ecccf13e": {
    "source": "For an internet plan with a data cap, select <g1>Download limits</g1> on the left:",
    "text": "ডেটা ব্যবহারের সীমা থাকা ইন্টারনেট প্ল্যানের জন্য, বাঁ দিকে <g1>ডাউনলোড সীমা</g1> নির্বাচন করুন:"
@@ -798,9 +802,17 @@
    "source": "Download image galleries with gallery-dl",
    "text": "গ্যালারি-ডিএল দিয়ে ছবির গ্যালারি ডাউনলোড করুন"
   },
+  "0d54d09f28b00e41": {
+   "source": "<g1>Debrid accounts</g1><g2>File-host links unlocked through Real-Debrid, AllDebrid or Premiumize, then downloaded with MDM's speed and resume.</g2><g3><x4/>Coming with version 0.5.0</g3>",
+   "text": "<g1>ডিপ্রিড অ্যাকাউন্ট</g1><g2>Real-Debrid, AllDebrid বা Premiumize এর মাধ্যমে ফাইল-হোস্ট লিঙ্কগুলি আনলক করা হয়, তারপর MDM এর গতি এবং রিজুম সহ ডাউনলোড করা হয়।</g2><g3><x4/>0.5.0 সংস্করণে আসছে</g3>"
+  },
   "0d7f42041638ea02": {
    "source": "Portable: the <x1/> folder next to <x2/>.",
    "text": "পোর্টেবল: <x2/>-এর পাশে <x1/> ফোল্ডার।"
+  },
+  "0dac0eca06d7747e": {
+   "source": "<g1>pywal's <x2/></g1>, or any program's file in pywal's shape (wallust's pywal template).",
+   "text": "<g1>pywal-এর <x2/></g1>, অথবা pywal-এর আকারের যেকোনো প্রোগ্রামের ফাইল (wallust-এর pywal টেমপ্লেট)।"
   },
   "0db8fa73ad59b887": {
    "source": "macOS <g1>11 and later</g1>",
@@ -849,10 +861,6 @@
   "0ee7cd7e753d52b4": {
    "source": "Packages that know their archives",
    "text": "প্যাকেজ যা তাদের আর্কাইভ চেনে"
-  },
-  "0f0281b39f2ac4c5": {
-   "source": "A VPN or proxy extension is a proxy for the browser only. In Firefox, switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in the extension's toolbar popup: Firefox asks you once to allow the extension to read the browser's proxy, and MDM then downloads what it takes from the browser through the same proxy (with <g2>Options → Proxy / Socks → Use proxy/socks from a browser's request</g2>, on by default; see <g3>Options</g3>). Switch it off to take that permission back. Chrome, Edge, Brave, Opera and Vivaldi don't offer this yet: for now, set the same proxy in MDM's <g4>Options → Proxy / Socks</g4>.",
-   "text": "একটি VPN বা প্রক্সি এক্সটেনশন শুধুমাত্র ব্রাউজারের জন্য একটি প্রক্সি। Firefox-এ, এক্সটেনশনের টুলবার পপআপে <g1>এই ব্রাউজারের প্রক্সি বা VPN এক্সটেনশনের মাধ্যমে ডাউনলোড পাঠান</g1> চালু করুন: Firefox আপনাকে একবার ব্রাউজারের প্রক্সি পড়ার জন্য এক্সটেনশনটিকে অনুমতি দিতে বলবে, এবং MDM তখন ব্রাউজার থেকে যা নেয় তা একই প্রক্সির মাধ্যমে ডাউনলোড করবে (<g2>বিকল্প → প্রক্সি / SOCKS → ব্রাউজারের অনুরোধ থেকে প্রক্সি/সক্স ব্যবহার করুন</g2> সহ, যা ডিফল্টরূপে চালু থাকে; <g3>বিকল্প</g3> দেখুন)। সেই অনুমতি ফিরিয়ে নিতে এটি বন্ধ করুন। Chrome, Edge, Brave, Opera এবং Vivaldi এখনও এটি অফার করে না: আপাতত, MDM-এর <g4>বিকল্প → প্রক্সি / SOCKS</g4>-এ একই প্রক্সি সেট করুন।"
   },
   "0f09c75008b1a460": {
    "source": "<g1>Questions</g1> (\"Create this folder?\", delete, a duplicate download, the turn-off countdown) could open behind the window that asked them; they stay in front now.",
@@ -970,10 +978,6 @@
    "source": "<g1>Properties</g1> keeps what the last run saw, so a finished download still shows where it came from.",
    "text": "<g1>বৈশিষ্ট্য</g1> শেষ রান যা দেখেছিল তা রাখে, তাই একটি সম্পূর্ণ ডাউনলোড এখনও দেখায় এটি কোথা থেকে এসেছে।"
   },
-  "1106bc7b3da9ee7b": {
-   "source": "More control in the next version",
-   "text": "পরবর্তী সংস্করণে আরও নিয়ন্ত্রণ"
-  },
   "110d6b2bd87a92ac": {
    "source": "Works with what you already use",
    "text": "আপনার ব্যবহৃত জিনিসের সাথে কাজ করে"
@@ -985,6 +989,10 @@
   "1118f34ca5d1ce1f": {
    "source": "<g1>Put them into the video</g1> puts them inside the file instead, as tracks you switch on in the player. It needs ffmpeg, and an MP4 or MKV video.",
    "text": "<g1>এগুলোকে ভিডিওতে রাখুন</g1> নির্বাচন করলে সাবটাইটেলগুলো ফাইলের ভেতরে ট্র্যাক হিসেবে থাকে, যা প্লেয়ারে চালু করা যায়। এর জন্য ffmpeg এবং MP4 বা MKV ভিডিও প্রয়োজন।"
+  },
+  "113095bd997336d5": {
+   "source": "In both, the proxy's login is never read: a proxy that asks for the VPN extension's own login can't be shared, and the download says so rather than going without it.",
+   "text": "উভয় ক্ষেত্রেই, প্রক্সির লগইন কখনও পড়া হয় না: একটি প্রক্সি যা VPN এক্সটেনশনের নিজস্ব লগইনের জন্য জিজ্ঞাসা করে তা শেয়ার করা যায় না, এবং ডাউনলোডটি এটি ছাড়া না গিয়ে তা বলে।"
   },
   "113954a50a843eeb": {
    "source": "Torrents without peers",
@@ -1354,10 +1362,6 @@
    "source": "Download Mister Download Manager",
    "text": "Mister Download Manager ডাউনলোড করুন"
   },
-  "16fa286f58be973f": {
-   "source": "<g1>Notification area</g1><g2>Starts with the computer in the notification area, and hides progress windows there while they run.</g2><g3><x4/>Coming with version 0.5</g3>",
-   "text": "<g1>নোটিফিকেশন এরিয়া</g1><g2>কম্পিউটার চালু হলে নোটিফিকেশন এরিয়াতে শুরু হয়, এবং চলার সময় অগ্রগতি উইন্ডোগুলি সেখানে লুকিয়ে রাখে।</g2><g3><x4/>সংস্করণ 0.5-এর সাথে আসছে</g3>"
-  },
   "172730c20b2fdcfc": {
    "source": "One adapter for everything",
    "text": "সবকিছুর জন্য একটি অ্যাডাপ্টার"
@@ -1369,6 +1373,10 @@
   "174c2671a756fca2": {
    "source": "<g1>Scheduler and queues</g1><g2>Queues started and stopped by the clock, a few files at a time, the computer off at the end.</g2>",
    "text": "<g1>শিডিউলার ও কিউ</g1><g2>ঘড়ি অনুসারে কিউ শুরু ও বন্ধ করা হয়, একবারে কয়েকটি ফাইল, শেষে কম্পিউটার বন্ধ হয়ে যায়।</g2>"
+  },
+  "17834855ff83a05b": {
+   "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> can't ask for that permission at the switch, so the extension has it from the install (Chrome counts it under the access to every site the extension already asks for, so it adds no line to the install prompt and the update asks for nothing new). The switch asks nothing. MDM gets the browser's effective proxy, whoever set it (a VPN or proxy extension, a policy, the command line): a fixed server for the download's scheme (<x2/>, <x3/>, <x4/>, <x5/>), unless the address is on its bypass list, or its proxy auto-config script (by its address or inline). With no proxy, or the system's, nothing is sent and MDM goes by its own Options. A QUIC proxy can't be shared.",
+   "text": "<g1>Chrome, Edge, Brave, Opera এবং Vivaldi</g1> সুইচ করার সময় সেই অনুমতির জন্য জিজ্ঞাসা করতে পারে না, তাই এক্সটেনশনটি ইনস্টল করার সময় থেকেই এটি পায় (Chrome এটিকে এক্সটেনশনের ইতিমধ্যেই অনুরোধ করা প্রতিটি সাইটে অ্যাক্সেসের অধীনে গণনা করে, তাই এটি ইনস্টল প্রম্পটে কোনো লাইন যোগ করে না এবং আপডেট নতুন কিছুর জন্য জিজ্ঞাসা করে না)। সুইচটি কিছুই জিজ্ঞাসা করে না। MDM ব্রাউজারের কার্যকর প্রক্সি গ্রহণ করে, যে সেট করুক না কেন (একটি VPN বা প্রক্সি এক্সটেনশন, একটি নীতি, কমান্ড লাইন): ডাউনলোডের স্কিমের জন্য একটি নির্দিষ্ট সার্ভার (<x2/>, <x3/>, <x4/>, <x5/>), যদি না ঠিকানাটি এর বাইপাস তালিকায় থাকে, অথবা এর প্রক্সি অটো-কনফিগ স্ক্রিপ্ট (এর ঠিকানা বা ইনলাইন দ্বারা)। কোনো প্রক্সি না থাকলে, বা সিস্টেমের প্রক্সি থাকলে, কিছুই পাঠানো হয় না এবং MDM তার নিজস্ব সেটিংস অনুযায়ী চলে। একটি QUIC প্রক্সি শেয়ার করা যায় না।"
   },
   "178857076aff1609": {
    "source": "Archives: extract when downloaded, and where the files go.",
@@ -1385,6 +1393,10 @@
   "17c258da3c18b1a9": {
    "source": "A <x1/> file fetched from a web address goes through the same checks as one opened from disk, and MDM reads at most 10 MB of it.",
    "text": "একটি ওয়েব ঠিকানা থেকে আনা <x1/> ফাইল ডিস্ক থেকে খোলা ফাইলের মতো একই চেকগুলির মধ্য দিয়ে যায় এবং MDM এর সর্বোচ্চ 10 MB পড়ে।"
+  },
+  "17d79e8a62ab236e": {
+   "source": "<g1>Linux and Mac too.</g1> Builds with every release, if you use more than Windows. From version 0.5.0, Linux is no longer experimental: it is checked on GNOME, KDE Plasma, Xfce and Cinnamon.",
+   "text": "<g1>Linux ও ম্যাকের জন্যও।</g1> আপনি যদি Windows ছাড়াও অন্য অপারেটিং সিস্টেম ব্যবহার করেন, তাহলে প্রতিটি রিলিজের সাথে বিল্ড পাওয়া যায়। সংস্করণ 0.5.0 থেকে Linux আর পরীক্ষামূলক নয়: এটি GNOME, KDE Plasma, Xfce এবং Cinnamon-এ পরীক্ষা করা হয়েছে।"
   },
   "17ef8654a7ee71e5": {
    "source": "<g1>.tar.gz</g1> to unpack anywhere",
@@ -1570,10 +1582,6 @@
    "source": "Find the next match",
    "text": "পরবর্তী মিল খুঁজুন"
   },
-  "1b09159f4f0a777e": {
-   "source": "<g1>Remote control</g1><g2>Paste a link on your phone and the computer downloads it. Watch and pause from anywhere at home.</g2><g3><x4/>Coming with version 0.5</g3>",
-   "text": "<g1>রিমোট কন্ট্রোল</g1><g2>আপনার ফোনে একটি লিঙ্ক পেস্ট করুন এবং কম্পিউটার এটি ডাউনলোড করবে। বাড়ি থেকে যেকোনো জায়গা থেকে দেখুন এবং বিরতি দিন।</g2><g3><x4/>সংস্করণ 0.5-এর সাথে আসছে</g3>"
-  },
   "1b0b5fa5425d1c30": {
    "source": "A window larger than the screen at a big interface size scrolls.",
    "text": "একটি বড় ইন্টারফেস আকারে স্ক্রিনের চেয়ে বড় একটি উইন্ডো স্ক্রল করে।"
@@ -1741,10 +1749,6 @@
   "1d098969ea9cf781": {
    "source": ": the user that owns those folders (MDM runs as no particular user).",
    "text": ": যে ব্যবহারকারী সেই ফোল্ডারগুলির মালিক (MDM কোনো নির্দিষ্ট ব্যবহারকারী হিসাবে চলে না)।"
-  },
-  "1d0a65336b5a2caf": {
-   "source": "A theme is one small text file in <g1>TOML</g1> (or JSON, <x2/>). It names only what it changes; everything else comes from the theme it <x3/>:",
-   "text": "একটি থিম হলো <g1>TOML</g1> (বা JSON, <x2/>) ফরম্যাটের একটি ছোট টেক্সট ফাইল। এটি শুধুমাত্র যা পরিবর্তন করে তার নাম দেয়; বাকি সবকিছু যে থিম থেকে এটি <x3/> করে তা থেকে আসে:"
   },
   "1d26bf9aebfa246c": {
    "source": "The main window in Arabic, laid out right to left.",
@@ -2038,6 +2042,10 @@
    "source": "Open the add-on's page on addons.mozilla.org, <g1>Mister Download Manager</g1>, and click <g2>Add to Firefox</g2>. Zen and LibreWolf use the same page.",
    "text": "addons.mozilla.org-এ অ্যাড-অনের পাতা খুলে <g1>Mister Download Manager</g1> খুঁজুন এবং <g2>Add to Firefox</g2> ক্লিক করুন। Zen এবং LibreWolf-এও একই পাতা ব্যবহার করা হয়।"
   },
+  "2293a114810b4b8f": {
+   "source": "More control in version 0.5.0",
+   "text": "সংস্করণ 0.5.0-এ আরও নিয়ন্ত্রণ"
+  },
   "22b1c6afc644a89a": {
    "source": "Small and quick to set up, with a browser extension that catches video and audio",
    "text": "ছোট এবং দ্রুত সেটআপ করা যায়, একটি ব্রাউজার এক্সটেনশন সহ যা ভিডিও এবং অডিও ধরে"
@@ -2250,17 +2258,9 @@
    "source": "The current speed.",
    "text": "বর্তমান গতি।"
   },
-  "25b98a6b34182b85": {
-   "source": "Each has a light and a dark side: <g1>Dark Mode support</g1> and <g2>Always dark</g2> choose between them as before. Theme files you put in the themes folder (<g3>View → Theme → Open themes folder</g3>) are listed there too: <g4>Themes</g4> says where that folder is, what a theme file holds (<x5/>, colours, sizes, control shapes, icons) and how to make and share one.",
-   "text": "প্রতিটির একটি হালকা এবং একটি গাঢ় দিক আছে: <g1>ডার্ক মোড সমর্থন</g1> এবং <g2>সর্বদা ডার্ক</g2> আগের মতো তাদের মধ্যে নির্বাচন করে। থিম ফোল্ডারে (<g3>দেখুন → থিম → থিম ফোল্ডার খুলুন</g3>) আপনি যে থিম ফাইলগুলি রাখেন সেগুলিও সেখানে তালিকাভুক্ত থাকে: <g4>থিম</g4> বলে যে সেই ফোল্ডারটি কোথায়, একটি থিম ফাইলে কী থাকে (<x5/>, রঙ, আকার, নিয়ন্ত্রণ আকার, আইকন) এবং কীভাবে একটি তৈরি ও শেয়ার করতে হয়।"
-  },
   "25bb9b042f030fcd": {
    "source": "The dividers in the link grabber's and Add torrent's tables",
    "text": "লিঙ্ক গ্র্যাবার এবং টরেন্ট যোগ করুন-এর টেবিলের বিভাজক"
-  },
-  "25bdccac1d0ecb03": {
-   "source": "If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
-   "text": "যদি আপনার কম্পিউটারে Direct3D, Vulkan বা Metal শুরু না হয় (এর জন্য কোনো ড্রাইভার নেই, কিছু ভার্চুয়াল মেশিন), অথবা এর প্রথম উইন্ডোটি 10 সেকেন্ডের মধ্যে না দেখায়, তাহলে MDM OpenGL দিয়ে আঁকে, এবং <g1>দেখুন → এর সাথে আঁকুন</g1> তা এবং এর কারণ বলে। এটি আবার নির্বাচন করলে পরবর্তী শুরুতে আবার চেষ্টা করা হবে।"
   },
   "25e1ffe092788c2a": {
    "source": "<g1>Download File Info</g1>, the progress window and <g2>Properties</g2> show where a download's server is: its country's flag and name, then the time a round trip to it takes, such as <g3>about 24 ms (near)</g3>.",
@@ -2333,6 +2333,10 @@
   "2705b80bfe01cf3b": {
    "source": "Click <g1>Apply</g1>, then <g2>Close</g2>.",
    "text": "<g1>প্রয়োগ করুন</g1>-এ ক্লিক করুন, তারপর <g2>বন্ধ করুন</g2>-এ ক্লিক করুন।"
+  },
+  "2708ec161ff30359": {
+   "source": "the background a step toward the foreground",
+   "text": "পটভূমি অগ্রভাগের দিকে এক ধাপ"
   },
   "270c93aa3590e1ee": {
    "source": "<g1>HTTP</g1><g2>and HTTPS</g2>",
@@ -2486,6 +2490,10 @@
    "source": "Disabled text, the one grey of every greyed control and label",
    "text": "অক্ষম টেক্সট, প্রতিটি ধূসর করা নিয়ন্ত্রণ এবং লেবেলের একমাত্র ধূসর রঙ"
   },
+  "2a1c06f26ea84eee": {
+   "source": "<g1>pywal itself:</g1> once <x2/> has run, <g3>View → Theme</g3> lists <g4>pywal</g4>, read straight from where pywal writes its colours: <x5/> (on Windows <x6/>, where winwal and pywal write it; <x7/> or <x8/> when you set them). Pick it and MDM follows your wallpaper: each time <x9/> writes new colours, MDM takes them within two seconds. It looks only at the file's date and size, every two seconds, and only while pywal is the theme. A copy added with <g10>Add a theme file…</g10> keeps the colours it had.",
+   "text": "<g1>pywal নিজেই:</g1> একবার <x2/> চালু হলে, <g3>দেখুন → থিম</g3> <g4>pywal</g4> তালিকাভুক্ত করে, যা pywal তার রঙগুলো যেখানে লেখে সেখান থেকে সরাসরি পঠিত হয়: <x5/> (Windows-এ <x6/>, যেখানে winwal এবং pywal এটি লেখে; <x7/> অথবা <x8/> যখন আপনি সেগুলো সেট করেন)। এটি নির্বাচন করুন এবং MDM আপনার ওয়ালপেপার অনুসরণ করবে: প্রতিবার <x9/> নতুন রঙ লিখলে, MDM দুই সেকেন্ডের মধ্যে সেগুলো গ্রহণ করবে। এটি শুধুমাত্র ফাইলের তারিখ এবং আকার দেখে, প্রতি দুই সেকেন্ডে, এবং শুধুমাত্র যখন pywal থিম হিসাবে থাকে। <g10>একটি থিম ফাইল যোগ করুন…</g10> দিয়ে যোগ করা একটি কপি তার আগের রঙগুলো ধরে রাখে।"
+  },
   "2a24b5869128fbb7": {
    "source": "Light",
    "text": "হালকা"
@@ -2493,6 +2501,10 @@
   "2a367bb5be1ef2a5": {
    "source": "<g1>Build it from source</g1><g2>cargo build, on Windows, macOS or Linux</g2>",
    "text": "<g1>সোর্স কোড থেকে তৈরি করুন</g1><g2>Windows, macOS বা Linux-এ cargo build চালান</g2>"
+  },
+  "2a42c1b85c83a742": {
+   "source": "Windows 10 and 11, 64-bit, is the main platform. Builds for Linux (AppImage, .deb, .rpm and .tar.gz) and macOS (.dmg) come with every release too; today's are marked experimental. From version 0.5.0, Linux isn't experimental any more: it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS stays experimental. See <g1>Windows, Mac and Linux</g1> and <g2>Download</g2>.",
+   "text": "Windows 10 এবং 11, 64-বিট, প্রধান প্ল্যাটফর্ম। Linux (AppImage, .deb, .rpm এবং .tar.gz) এবং macOS (.dmg) এর জন্য বিল্ডগুলিও প্রতিটি রিলিজের সাথে আসে; বর্তমানগুলি পরীক্ষামূলক হিসাবে চিহ্নিত। সংস্করণ 0.5.0 থেকে, Linux আর পরীক্ষামূলক নয়: এটি GNOME, KDE Plasma, Xfce এবং Cinnamon-এ, Wayland সেশনেও পরীক্ষা করা হয়েছে এবং এর প্যাকেজগুলি পরিষ্কার Ubuntu, Debian এবং Fedora সিস্টেমে পরীক্ষা করা হয়েছে। এখনও যা বাকি আছে: Flatpak Firefox এখনও পরীক্ষা করা হয়নি এবং স্ক্রিন রিডার (Orca) এখনও MDM-এর উইন্ডোগুলি পড়তে পারে না। macOS পরীক্ষামূলক রয়ে গেছে। <g1>Windows, Mac এবং Linux</g1> এবং <g2>ডাউনলোড করুন</g2> দেখুন।"
   },
   "2a45fadaa534ed11": {
    "source": "<g1>The volumes of one archive</g1> (<x2/>, <x3/>…, or <x4/>, <x5/>…) form one package named after the archive, as long as they come from the same site.",
@@ -2561,6 +2573,10 @@
   "2b4574fba16c1a56": {
    "source": "IDM vs Mister Download Manager, timed to the millisecond",
    "text": "IDM বনাম Mister Download Manager, মিলিসেকেন্ডে সময় পরিমাপ করা হয়েছে"
+  },
+  "2b53b73d86062fe3": {
+   "source": "(the background)",
+   "text": "(পটভূমি)"
   },
   "2b59fa980f99642c": {
    "source": "<g1>Queues</g1> — each queue; select one to see only its downloads.",
@@ -2750,10 +2766,6 @@
    "source": "Set up once",
    "text": "একবার সেট আপ করুন"
   },
-  "2e1570285e94e88b": {
-   "source": "When MDM takes a download, the browser's own copy is cancelled and removed from the browser's download list. <g1>Download File Info</g1> opens in MDM (unless you turned it off in <g2>Options → Downloads</g2>). Cancelling there doesn't hand the download back to the browser.",
-   "text": "যখন MDM একটি ডাউনলোড গ্রহণ করে, তখন ব্রাউজারের নিজস্ব কপি বাতিল করা হয় এবং ব্রাউজারের ডাউনলোড তালিকা থেকে সরানো হয়। MDM-এ <g1>ফাইল তথ্য ডাউনলোড করুন</g1> খোলে (যদি না আপনি <g2>বিকল্প → ডাউনলোডগুলি</g2>-এ এটি বন্ধ করে থাকেন)। সেখানে বাতিল করলে ডাউনলোডটি ব্রাউজারে ফেরত যায় না।"
-  },
   "2e19d614ecd08b54": {
    "source": "Yes: <x1/>, and FTP over TLS both ways (<x2/> and <x3/>), with several connections at once, resume, and logins from the address or from Sites Logins. See <g4>Adding downloads</g4>.",
    "text": "হ্যাঁ: <x1/> এবং দুই ধরনের FTP over TLS (<x2/> এবং <x3/>), একসঙ্গে একাধিক সংযোগ, ডাউনলোড পুনরায় শুরু করা এবং ঠিকানা বা সাইটের লগইন তথ্য থেকে লগইন ব্যবহার করা যায়। <g4>ডাউনলোড যোগ করা</g4> দেখুন।"
@@ -2893,6 +2905,10 @@
   "301fb01942b6c3a7": {
    "source": "<g1>macOS Intel</g1><g2>.dmg · Macs with an Intel processor · experimental</g2>",
    "text": "<g1>macOS ইন্টেল</g1><g2>.dmg · ইন্টেল প্রসেসরযুক্ত ম্যাকের জন্য · পরীক্ষামূলক</g2>"
+  },
+  "3074fee2a6d94962": {
+   "source": "pywal",
+   "text": "pywal"
   },
   "30abc1780107945b": {
    "source": "Archives unpacked when they arrive",
@@ -3230,10 +3246,6 @@
    "source": "The Speed Limiter keeps MDM from using all of your connection.",
    "text": "স্পিড লিমিটার MDM কে আপনার সংযোগের সবটুকু ব্যবহার করা থেকে বিরত রাখে।"
   },
-  "36d5bb353cf00059": {
-   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download, once you allow it: in Firefox, switch on <g2>Send downloads through this browser's proxy or VPN extension</g2> in the extension's toolbar popup (Firefox asks you once). Chrome, Edge, Brave, Opera and Vivaldi don't hand the proxy over yet: there, set the same proxy in <g3>Options → Proxy / Socks</g3>.",
-   "text": "<g1>একটি ব্রাউজারের অনুরোধ থেকে প্রক্সি/সক্স ব্যবহার করুন…</g1> — এটি ডিফল্টভাবে চালু থাকে। ব্রাউজার থেকে MDM যে ডাউনলোড নেয়, সেটি ব্রাউজার যে প্রক্সি ব্যবহার করেছে তার মাধ্যমে যায়। এটি একটি VPN বা প্রক্সি এক্সটেনশন দ্বারা সেট করা, ব্রাউজারের নিজস্ব ম্যানুয়াল প্রক্সি, অথবা এর প্রক্সি অটো-কনফিগ স্ক্রিপ্ট। এটি ছাড়া, ডাউনলোড আপনার নিজের ঠিকানা থেকে শুরু হবে, এবং VPN-এর দেশ বা এর ঠিকানায় সীমাবদ্ধ বিষয়বস্তু ব্যর্থ হবে। ব্রাউজার এক্সটেনশন সেই প্রক্সি পড়ে এবং প্রতিটি ডাউনলোডের সাথে MDM-কে দেয়, একবার আপনি অনুমতি দিলে: Firefox-এ, এক্সটেনশনের টুলবার পপআপে <g2>এই ব্রাউজারের প্রক্সি বা VPN এক্সটেনশনের মাধ্যমে ডাউনলোড পাঠান</g2> চালু করুন (Firefox আপনাকে একবার জিজ্ঞাসা করবে)। Chrome, Edge, Brave, Opera এবং Vivaldi এখনও প্রক্সি হস্তান্তর করে না: সেখানে, <g3>বিকল্প → প্রক্সি / SOCKS</g3>-এ একই প্রক্সি সেট করুন।"
-  },
   "36ef08c42af60d54": {
    "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
    "text": "এক্সটেনশনের মাধ্যমে Firefox, Chrome, Edge, Brave, Opera এবং Vivaldi, <g1>Firefox-এর অ্যাড-অন স্টোর</g1> এবং <g2>Chrome Web Store</g2> থেকে। এক্সটেনশন ছাড়া, একটি লিঙ্ক কপি করুন এবং MDM ডাউনলোড উইন্ডো খুলবে। <g3>আরও</g3>"
@@ -3293,6 +3305,10 @@
   "377dbb7411c44fb3": {
    "source": ".AppImage",
    "text": ".AppImage"
+  },
+  "37a82a5012e58c8d": {
+   "source": "(the lighter background)",
+   "text": "(হালকা পটভূমি)"
   },
   "37c057891d2cf283": {
    "source": "Your debrid service accounts (Real-Debrid, AllDebrid, Premiumize; experimental): <g1>Add...</g1> signs in by code in the browser or with your API token or key; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See <g2>Debrid service accounts</g2>.",
@@ -3397,6 +3413,10 @@
   "39495ae504c37d96": {
    "source": "The tick or dot on the checked accent",
    "text": "চেক করা অ্যাকসেন্টের টিক বা ডট"
+  },
+  "3973c8ad482da3cc": {
+   "source": "When MDM takes a download, the browser's own copy is cancelled and removed from the browser's download list. In Firefox and the browsers built on it (Waterfox, Zen, LibreWolf), MDM takes it as soon as the server answers, before the browser asks <g1>What should … do with this file?</g1>: for a file MDM takes, that question never shows (Waterfox asks it for every new type of file). Files MDM doesn't take get the question as before. <g2>Download File Info</g2> opens in MDM (unless you turned it off in <g3>Options → Downloads</g3>). Cancelling there doesn't hand the download back to the browser.",
+   "text": "যখন MDM একটি ডাউনলোড গ্রহণ করে, তখন ব্রাউজারের নিজস্ব কপি বাতিল হয়ে যায় এবং ব্রাউজারের ডাউনলোড তালিকা থেকে মুছে ফেলা হয়। Firefox এবং এর উপর ভিত্তি করে তৈরি ব্রাউজারগুলিতে (Waterfox, Zen, LibreWolf), MDM সার্ভার থেকে উত্তর পাওয়ার সাথে সাথেই এটি গ্রহণ করে, ব্রাউজার <g1>এই ফাইলটি দিয়ে কী করা উচিত?</g1> জিজ্ঞাসা করার আগেই: MDM যে ফাইলগুলি গ্রহণ করে, সেগুলির জন্য এই প্রশ্নটি কখনও দেখায় না (Waterfox প্রতিটি নতুন ধরনের ফাইলের জন্য এটি জিজ্ঞাসা করে)। MDM যে ফাইলগুলি গ্রহণ করে না, সেগুলির জন্য আগের মতোই প্রশ্নটি আসে। MDM-এ <g2>ফাইল তথ্য ডাউনলোড করুন</g2> খোলে (যদি আপনি <g3>সেটিংস → ডাউনলোডগুলি</g3>-তে এটি বন্ধ না করে থাকেন)। সেখানে বাতিল করলে ডাউনলোডটি ব্রাউজারে ফেরত যায় না।"
   },
   "3974fae232e4c76f": {
    "source": "MDM is a separate program, written from scratch, but its windows are laid out the way IDM users expect: the toolbar, the categories, the download list, the progress window with every connection, queues and the Scheduler. It is free, with no trial and no sign-up.",
@@ -3505,6 +3525,10 @@
   "3ae62309609ddf49": {
    "source": "The desktop app (<x1/>, egui): list, categories, queues, scheduler, dialogs, tray, settings",
    "text": "ডেস্কটপ অ্যাপ (<x1/>, egui): তালিকা, বিভাগ, সারি, সময়সূচী, ডায়ালগ, ট্রে, সেটিংস"
+  },
+  "3aebebfe6ab0f8e7": {
+   "source": "Version 0.5.0 <g1>coming</g1>",
+   "text": "সংস্করণ 0.5.0 <g1>আসছে</g1>"
   },
   "3aff68cc63b2823a": {
    "source": "<g1>Must contain</g1>: words the title must hold, all of them, in any order. <x2/> takes either, and <x3/> and <x4/> are wildcards.",
@@ -3770,6 +3794,10 @@
    "source": "If Windows says <g1>Windows protected your PC</g1>, click <g2>More info</g2>, check that the file is <x3/> from the <g4>Releases</g4> page, then click <g5>Run anyway</g5>.",
    "text": "যদি Windows বলে <g1>Windows আপনার পিসিকে সুরক্ষিত করেছে</g1>, তাহলে <g2>আরও তথ্য</g2> ক্লিক করুন, ফাইলটি <g4>রিলিজ</g4> পৃষ্ঠা থেকে <x3/> কিনা তা পরীক্ষা করুন, তারপর <g5>যাই হোক চালান</g5> ক্লিক করুন।"
   },
+  "3f2ebaf730ad61c0": {
+   "source": "<g1>View → Theme → Add a theme file…</g1> does it for you: pick the file anywhere, and MDM copies it into the themes folder and uses it at once.",
+   "text": "<g1>দেখুন → থিম → একটি থিম ফাইল যোগ করুন…</g1> আপনার জন্য এটি করে: যেকোনো জায়গা থেকে ফাইলটি নির্বাচন করুন, এবং MDM এটি থিম ফোল্ডারে কপি করে এবং সাথে সাথে ব্যবহার করে।"
+  },
   "3f42f44fd24912f6": {
    "source": "Paste the address, get the pictures",
    "text": "ঠিকানা পেস্ট করুন, ছবিগুলি পান"
@@ -3857,6 +3885,10 @@
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
    "text": "<g1>সংযোগ এবং গতি</g1>-তে আরও দেখুন।"
+  },
+  "4090fb0c5125ff3d": {
+   "source": "(red)",
+   "text": "(লাল)"
   },
   "409d31554c535043": {
    "source": "With <g1>Minimize to the notification area</g1> on in <g2>Options → General</g2> (it is on by default), Minimize hides the main window, and a progress window, in the notification area instead of leaving them on the taskbar. Closing the main window does the same: MDM keeps running until you choose <g3>Tasks → Exit</g3> or <g4>Exit</g4> in the tray menu.",
@@ -3965,10 +3997,6 @@
   "424df5ff0d11d26b": {
    "source": "<g1>Automatically start downloading the following file types</g1> — the file types the browser hands over (and the clipboard picks up). Separate them by spaces; <x2/> matches any characters, as in <x3/>. <g4>Default</g4> puts the original list back. The list starts with the usual archives, programs and installers (Windows, macOS and Linux ones: DMG, PKG, DEB, RPM, APPIMAGE, MSIX), music and videos, and PDF. A list you never changed gains the types a new version adds; one you edited stays as it is.",
    "text": "<g1>নিম্নলিখিত ফাইল প্রকারগুলি স্বয়ংক্রিয়ভাবে ডাউনলোড করা শুরু করুন</g1> — ব্রাউজার যে ফাইল প্রকারগুলি হস্তান্তর করে (এবং ক্লিপবোর্ড তুলে নেয়)। সেগুলিকে স্পেস দিয়ে আলাদা করুন; <x2/> যেকোনো অক্ষরের সাথে মেলে, যেমন <x3/>। <g4>ডিফল্ট</g4> মূল তালিকাটি ফিরিয়ে আনে। তালিকাটি সাধারণ আর্কাইভ, প্রোগ্রাম এবং ইনস্টলার (Windows, macOS এবং Linux-এর: DMG, PKG, DEB, RPM, APPIMAGE, MSIX), সঙ্গীত ও ভিডিও এবং PDF দিয়ে শুরু হয়। যে তালিকা আপনি কখনো পরিবর্তন করেননি, তাতে নতুন সংস্করণ যোগ করা প্রকারগুলি যুক্ত হয়; যে তালিকা আপনি সম্পাদনা করেছেন, সেটি যেমন আছে তেমনই থাকে।"
-  },
-  "425b701755f53498": {
-   "source": "MDM runs on 64-bit Linux with a desktop session. It is tested on Ubuntu 24.04, Debian 12 and Fedora, with GNOME, KDE Plasma, Xfce and Cinnamon, on X11 and in Wayland sessions. The release files still carry <x1/> in their names:",
-   "text": "MDM ডেস্কটপ সেশন সহ 64-বিট Linux-এ চলে। এটি উবুন্টু 24.04, ডেবিয়ান 12 এবং ফেডোরায়, GNOME, KDE Plasma, Xfce ও Cinnamon সহ, X11 এবং Wayland সেশনে পরীক্ষা করা হয়েছে। রিলিজ ফাইলগুলিতে এখনও তাদের নামে <x1/> থাকে:"
   },
   "427cc05e98da7048": {
    "source": "<g1>Extract when done</g1>: ticked by itself when the package holds an archive.",
@@ -4302,6 +4330,10 @@
    "source": "<g1>Downloaded file names are cleaned</g1> before they become paths, so a server can't write outside the folder you chose.",
    "text": "<g1>ডাউনলোড করা ফাইলের নাম থেকে ক্ষতিকর অংশ সরানো হয়</g1> পাথ হিসেবে ব্যবহারের আগে, যাতে সার্ভার আপনার বেছে নেওয়া ফোল্ডারের বাইরে কিছু লিখতে না পারে।"
   },
+  "48e4557fe729bdb3": {
+   "source": "<g1>Link grabber</g1><g2>A page's links gathered, sorted into packages and checked online, then the archives unpacked when they arrive.</g2><g3><x4/>Coming with version 0.5.0</g3>",
+   "text": "<g1>লিঙ্ক গ্র্যাবার</g1><g2>একটি পৃষ্ঠার লিঙ্কগুলি সংগ্রহ করা হয়, প্যাকেজে সাজানো হয় এবং অনলাইনে পরীক্ষা করা হয়, তারপর আর্কাইভগুলি আসার পর আনপ্যাক করা হয়।</g2><g3><x4/>0.5.0 সংস্করণে আসছে</g3>"
+  },
   "48f2a56d5061d294": {
    "source": "Browser extension: <g1><x2/>Add to Firefox</g1> <g3><x4/>Add to Chrome</g3>, for Edge, Brave and Opera too. <g5><g6><x7/>Chrome</g6> <g8><x9/>Edge</g8> <g10><x11/>Brave</g10> <g12><x13/>Opera</g12></g5>",
    "text": "ব্রাউজার এক্সটেনশন: <g1><x2/>Firefox-এ যোগ করুন</g1> <g3><x4/>Chrome-এ যোগ করুন</g3>, Edge, Brave এবং Opera-এর জন্যও। <g5><g6><x7/>Chrome</g6> <g8><x9/>Edge</g8> <g10><x11/>Brave</g10> <g12><x13/>Opera</g12></g5>"
@@ -4550,6 +4582,10 @@
    "source": "Open the selected download (a double-click follows right-click → <g1>On Double click</g1>)",
    "text": "নির্বাচিত ডাউনলোড খুলুন (একটি ডাবল-ক্লিক রাইট-ক্লিক → <g1>ডাবল ক্লিকে</g1> অনুসরণ করে)"
   },
+  "4d37d45d85b5eeae": {
+   "source": "(yellow)",
+   "text": "(হলুদ)"
+  },
   "4d398edd535e24d9": {
    "source": "The <g1>Speed Limiter</g1> tab of a torrent's window has, besides its download limit, <g2>Limit uploading</g2> to a speed of your choice. That limit is kept with the torrent: it applies again whenever the torrent runs or shares. A torrent can't be held under 16 KBytes/sec either way.",
    "text": "একটি টরেন্টের উইন্ডোর <g1>স্পিড লিমিটার</g1> ট্যাবে, এর ডাউনলোড সীমা ছাড়াও, আপনার পছন্দের গতিতে <g2>আপলোড সীমিত করুন</g2> অপশনটি আছে। এই সীমা টরেন্টের সাথে সংরক্ষিত থাকে: যখনই টরেন্ট চলে বা শেয়ার হয়, তখনই এটি আবার প্রযোজ্য হয়। একটি টরেন্টকে কোনোভাবেই 16 কিলোবাইট/সেকেন্ডের নিচে রাখা যায় না।"
@@ -4617,6 +4653,10 @@
   "4e2c245c44f6b6ff": {
    "source": "The files go next to the archive, into a folder named after it when it holds several things (or always, or never: you choose in Options). A file that is already there is kept, and the new one is numbered: <x1/>.",
    "text": "ফাইলগুলি আর্কাইভের পাশে যায়, একটি ফোল্ডারে যার নাম আর্কাইভের নামে হয় যখন এটি একাধিক জিনিস ধারণ করে (অথবা সবসময়, অথবা কখনো নয়: আপনি সেটিংসে নির্বাচন করেন)। একটি ফাইল যা ইতিমধ্যেই সেখানে আছে তা রাখা হয়, এবং নতুন ফাইলটি সংখ্যায়িত হয়: <x1/>।"
+  },
+  "4e2c7e4d886a7efa": {
+   "source": "<g1>Image galleries</g1><g2>Paste a gallery's address and MDM saves all its pictures into a folder of their own.</g2><g3><x4/>Coming with version 0.5.0</g3>",
+   "text": "<g1>ছবির গ্যালারি</g1><g2>একটি গ্যালারির ঠিকানা পেস্ট করুন এবং MDM তার সব ছবি নিজস্ব ফোল্ডারে সংরক্ষণ করবে।</g2><g3><x4/>0.5.0 সংস্করণে আসছে</g3>"
   },
   "4e3145230d389879": {
    "source": "Video downloads →",
@@ -4762,6 +4802,10 @@
    "source": "Corner radius of a glossy push button (Luna, Aero; Aqua's are round at the ends)",
    "text": "চকচকে পুশ বোতামের কোণার ব্যাসার্ধ (Luna, Aero; Aqua-এর প্রান্তগুলি গোলাকার)"
   },
+  "5125c1d0e87b8423": {
+   "source": "It's a theme already. A <g1>Base16 or Base24 scheme</g1> (<x2/>) or pywal's <x3/>, added the same way, changes MDM's colours and nothing else: the scheme's backgrounds behind the list and the windows, its text kept readable (4.5:1 or more), its blue on the focus, the selection and the progress bar. Once <x4/> has run, <g5>View → Theme</g5> lists <g6>pywal</g6>, read from <x7/> (",
+   "text": "এটি ইতিমধ্যেই একটি থিম। একটি <g1>Base16 বা Base24 স্কিম</g1> (<x2/>) অথবা pywal-এর <x3/>, একই উপায়ে যোগ করা হলে, MDM-এর রঙ পরিবর্তন করে এবং অন্য কিছু নয়: তালিকার পিছনে এবং উইন্ডোগুলির পিছনে স্কিমের ব্যাকগ্রাউন্ড, এর পাঠ্য পাঠযোগ্য রাখা হয় (4.5:1 বা তার বেশি), ফোকাসে এর নীল রঙ, নির্বাচন এবং অগ্রগতি বার। একবার <x4/> চললে, <g5>দেখুন → থিম</g5> <g6>pywal</g6> তালিকাভুক্ত করে, যা <x7/> থেকে পড়া হয় ("
+  },
   "5129363a6face12a": {
    "source": "Download Mister Download Manager 0.2.4, the free, open-source download manager: Windows installer and portable zip, macOS .dmg and Linux AppImage, .deb and .rpm, plus the browser extension. No ads, no bundled software.",
    "text": "Mister Download Manager 0.2.4 ডাউনলোড করুন, বিনামূল্যে, ওপেন-সোর্স ডাউনলোড ম্যানেজার: Windows ইনস্টলার এবং পোর্টেবল জিপ, macOS .dmg এবং Linux AppImage, .deb এবং .rpm, এছাড়াও ব্রাউজার এক্সটেনশন। কোনো বিজ্ঞাপন নেই, কোনো বান্ডেল করা সফটওয়্যার নেই।"
@@ -4842,6 +4886,10 @@
    "source": "The main window's toolbar and categories in the Adwaita theme",
    "text": "Adwaita থিমে প্রধান উইন্ডোর টুলবার এবং ক্যাটাগরি"
   },
+  "522d34edf8777786": {
+   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome and the other Chromium browsers, it sees the browser's proxy settings: the server for the download's scheme (honouring their bypass list) or their proxy auto-config script.",
+   "text": "Firefox-এ, MDM ব্রাউজারের নিজস্ব ফাইল অনুরোধের জন্য ব্যবহৃত প্রক্সি দেখতে পায়, যার মধ্যে VPN এক্সটেনশন প্রতিটি অনুরোধের জন্য যে প্রক্সি নির্বাচন করে তাও অন্তর্ভুক্ত। Chrome এবং অন্যান্য Chromium ব্রাউজারগুলিতে, এটি ব্রাউজারের প্রক্সি সেটিংস দেখতে পায়: ডাউনলোডের স্কিমের জন্য সার্ভার (তাদের বাইপাস তালিকা সম্মান করে) অথবা তাদের প্রক্সি অটো-কনফিগ স্ক্রিপ্ট।"
+  },
   "522f96e0598b861e": {
    "source": "Select them (<g1>Ctrl+click</g1> for several).",
    "text": "সেগুলো নির্বাচন করুন (একাধিক নির্বাচন করতে <g1>Ctrl</g1> চেপে ক্লিক করুন)।"
@@ -4877,6 +4925,10 @@
   "53060965f7a26125": {
    "source": "Tick <g1>Send torrents and magnet links to the first account instead of to peers</g1>, and a magnet link or a <x2/> file goes to the service. It downloads the torrent on its own servers while the list shows how far it is (<g3>45% at Real-Debrid</g3>). MDM then fetches the files over HTTP and removes the torrent from the account's list. Your computer never connects to the torrent's peers.",
    "text": "<g1>টরেন্ট এবং ম্যাগনেট লিঙ্ক পিয়ারদের কাছে না পাঠিয়ে প্রথম অ্যাকাউন্টে পাঠান</g1> টিক করুন, এবং একটি ম্যাগনেট লিঙ্ক বা একটি <x2/> ফাইল পরিষেবাটিতে যায়। এটি তার নিজস্ব সার্ভারে টরেন্ট ডাউনলোড করে যখন তালিকাটি দেখায় এটি কতদূর হয়েছে (<g3>Real-Debrid-এ 45%</g3>)। MDM তারপর HTTP এর মাধ্যমে ফাইলগুলি নিয়ে আসে এবং অ্যাকাউন্টের তালিকা থেকে টরেন্টটি সরিয়ে দেয়। আপনার কম্পিউটার কখনই টরেন্টের পিয়ারদের সাথে সংযোগ করে না।"
+  },
+  "530fa50be4207c6a": {
+   "source": "Secondary text (sizes, notes)",
+   "text": "দ্বিতীয় পর্যায়ের টেক্সট (আকার, নোট)"
   },
   "531dcc0b52cbdb34": {
    "source": "JSON for scripts and programs",
@@ -5746,6 +5798,10 @@
    "source": "<g1>Otherwise:</g1> MDM shows the list of languages, each with its flag and its own name. Pick yours.",
    "text": "<g1>অন্যথায়:</g1> MDM ভাষার তালিকা দেখায়, প্রতিটি তার পতাকা এবং নিজস্ব নাম সহ। আপনারটি বেছে নিন।"
   },
+  "617b3af69a12514a": {
+   "source": "works the same way, and follows <x1/> too.",
+   "text": "একইভাবে কাজ করে, এবং <x1/>-কেও অনুসরণ করে।"
+  },
   "6188db7e3b890126": {
    "source": "The automation API is off by default. When you turn it on, it listens only on <x1/> (your own computer) and answers only programs that present the secret token from MDM's data folder.",
    "text": "অটোমেশন API ডিফল্টরূপে বন্ধ থাকে। যখন আপনি এটি চালু করেন, তখন এটি শুধুমাত্র <x1/> (আপনার নিজের কম্পিউটার) এ শোনে এবং শুধুমাত্র সেই প্রোগ্রামগুলির উত্তর দেয় যা MDM-এর ডেটা ফোল্ডার থেকে গোপন টোকেন উপস্থাপন করে।"
@@ -5934,10 +5990,6 @@
    "source": "<g1>Download limits</g1> — download no more than a set amount every few hours. The same setting is in the Scheduler; see <g2>Queues and the Scheduler</g2>.",
    "text": "<g1>ডাউনলোড সীমা</g1> — প্রতি কয়েক ঘণ্টায় একটি নির্দিষ্ট পরিমাণের বেশি ডাউনলোড করবেন না। একই সেটিং সময়সূচীতেও আছে; <g2>সারি এবং সময়সূচী</g2> দেখুন।"
   },
-  "64725d6c207f9ccf": {
-   "source": "<g1>Themes</g1><g2>Nine looks, light and dark, from Classic to Aqua, or your own in a text file.</g2><g3><x4/>Coming with version 0.5</g3>",
-   "text": "<g1>থিম</g1><g2>নয়টি চেহারা, হালকা এবং গাঢ়, ক্লাসিক থেকে Aqua পর্যন্ত, অথবা আপনার নিজস্ব একটি টেক্সট ফাইলে।</g2><g3><x4/>সংস্করণ 0.5-এর সাথে আসছে</g3>"
-  },
   "647a6ba9cf8c0dae": {
    "source": "the <x1/> file, and its folder of icons if it has one;",
    "text": "<x1/> ফাইল, এবং এর যদি আইকন ফোল্ডার থাকে;"
@@ -6065,6 +6117,10 @@
   "676c0b5817404515": {
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
    "text": "অন্য একটি নেটওয়ার্কের মাধ্যমে <g1>সবকিছু</g1> রাউট করতে, পুরো কম্পিউটারের জন্য একটি VPN ব্যবহার করুন।"
+  },
+  "678f0cebde1fdd1c": {
+   "source": "Coming with version 0.5.0",
+   "text": "সংস্করণ 0.5.0-এর সাথে আসছে"
   },
   "67b09013b9c7d05d": {
    "source": "Yes downloads both helpers in the background, once.",
@@ -6294,6 +6350,10 @@
    "source": "<g1><g2></g2></g1> <g3>Torrents, built in</g3> <g4>Magnet links and .torrent files in the same list. Pick the files you want, then watch the swarm piece by piece.</g4>",
    "text": "<g1><g2></g2></g1> <g3>টরেন্ট, বিল্ট ইন</g3> <g4>একই তালিকায় ম্যাগনেট লিঙ্ক এবং .torrent ফাইল। আপনার পছন্দের ফাইলগুলি বেছে নিন, তারপর সোয়ার্মকে টুকরো টুকরো করে দেখুন।</g4>"
   },
+  "6b9274c9f05aa5d0": {
+   "source": "<g1>Coming with version 0.5.0</g1> <g2>It's in the source code now, not yet in the download (version 0.2.4).</g2>",
+   "text": "<g1>সংস্করণ 0.5.0-এর সাথে আসছে</g1> <g2>এটি এখন সোর্স কোডে আছে, ডাউনলোডে (সংস্করণ 0.2.4) এখনো আসেনি।</g2>"
+  },
   "6b957cd1180602a0": {
    "source": "How many connections does it use?",
    "text": "এটি কতটি সংযোগ ব্যবহার করে?"
@@ -6361,10 +6421,6 @@
   "6c8e32cd2774b905": {
    "source": "Torrents — Mister Download Manager help",
    "text": "টরেন্ট — Mister Download Manager-এর সাহায্য"
-  },
-  "6c93571eac4f03c3": {
-   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request.",
-   "text": "Firefox-এ, MDM ব্রাউজারের নিজস্ব ফাইল অনুরোধের জন্য ব্যবহৃত প্রক্সি দেখতে পায়, যার মধ্যে VPN এক্সটেনশন প্রতিটি অনুরোধের জন্য যে প্রক্সি বেছে নেয় তাও অন্তর্ভুক্ত।"
   },
   "6cfaa56a34e8372a": {
    "source": "A torrent can contain anything, and anyone can make one. Only open programs from people you trust, and scan them if in doubt.",
@@ -6482,10 +6538,6 @@
    "source": "<g1>The video window opens instead:</g1> the address is a video's page. See <g2>Download a video from a page</g2>.",
    "text": "<g1>এর পরিবর্তে ভিডিও উইন্ডো খোলে:</g1> ঠিকানাটি একটি ভিডিওর পৃষ্ঠা। <g2>একটি পৃষ্ঠা থেকে একটি ভিডিও ডাউনলোড করুন</g2> দেখুন।"
   },
-  "6e82d522b8ba39c0": {
-   "source": "<g1>Linux and Mac too.</g1> Builds with every release, if you use more than Windows. From the next release, Linux is no longer experimental: it is checked on GNOME, KDE Plasma, Xfce and Cinnamon.",
-   "text": "<g1>Linux ও ম্যাকের জন্যও।</g1> আপনি যদি শুধু Windows ব্যবহার না করেন, তাহলে প্রতিটি রিলিজের সাথে বিল্ড পাওয়া যায়। পরবর্তী রিলিজ থেকে Linux আর পরীক্ষামূলক থাকবে না: এটি GNOME, KDE Plasma, Xfce এবং Cinnamon-এ পরীক্ষা করা হয়েছে।"
-  },
   "6e889ba993e6995d": {
    "source": "The categories tree's background",
    "text": "ক্যাটাগরি ট্রির ব্যাকগ্রাউন্ড"
@@ -6586,10 +6638,6 @@
    "source": "Very likely: MDM speaks 86 languages, every display language Windows 11 offers, chosen on the first start or any time in View → Language. Arabic, Hebrew…",
    "text": "সম্ভাবনা অনেক: MDM 86টি ভাষায় কথা বলে, Windows 11-এর প্রতিটি ডিসপ্লে ভাষা এতে আছে। প্রথমবার চালু করার সময় অথবা যেকোনো সময় দেখুন → ভাষা থেকে এটি বেছে নিতে পারবেন। আরবি, হিব্রু…"
   },
-  "7022b1cc656bc457": {
-   "source": "A freeze or crash report says which one was drawing: include it when you report a problem. A freeze report also says whether MDM was busy, waiting, or hardly ran at all (a computer too busy to run it); see <g1>Crash reports</g1>.",
-   "text": "একটি ফ্রিজ বা ক্র্যাশ রিপোর্টে বলা থাকে কোনটি ড্র করছিল: সমস্যা রিপোর্ট করার সময় এটি অন্তর্ভুক্ত করুন। একটি ফ্রিজ রিপোর্টে আরও বলা থাকে যে MDM ব্যস্ত ছিল, অপেক্ষা করছিল, নাকি একেবারেই চলছিল না (একটি কম্পিউটার এটি চালানোর জন্য খুব ব্যস্ত); <g1>ক্র্যাশ রিপোর্ট</g1> দেখুন।"
-  },
   "70304346a925831b": {
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
    "text": "ব্রাউজারের বদলে MDM <g1>ফাইল তথ্য ডাউনলোড করুন</g1> উইন্ডোটি খুলবে। <g2>ডাউনলোড শুরু করুন</g2> ক্লিক করুন।"
@@ -6654,9 +6702,17 @@
    "source": "View → Language...",
    "text": "দেখুন → ভাষা..."
   },
+  "714ba48c1b2d5091": {
+   "source": "MDM runs on 64-bit Linux with a desktop session. It is tested on Ubuntu 24.04, Debian 12 and Fedora, with GNOME, KDE Plasma, Xfce and Cinnamon, on X11 and in Wayland sessions. Pick one of these files (up to version 0.2.4, their names end in <x1/>, as in <x2/>):",
+   "text": "MDM ডেস্কটপ সেশন সহ 64-বিট Linux-এ চলে। এটি উবুন্টু 24.04, ডেবিয়ান 12 এবং ফেডোরায় GNOME, KDE Plasma, Xfce এবং Cinnamon সহ X11 এবং Wayland সেশনে পরীক্ষা করা হয়েছে। এই ফাইলগুলির মধ্যে একটি বেছে নিন (0.2.4 সংস্করণ পর্যন্ত, তাদের নাম <x1/> দিয়ে শেষ হয়, যেমন <x2/>):"
+  },
   "715d81cad392b906": {
    "source": "Windows <g1>10 and 11</g1>",
    "text": "Windows <g1>10 এবং 11</g1>"
+  },
+  "716774ebd9fc2524": {
+   "source": "Already have a Base16 or pywal scheme?",
+   "text": "আপনার কি ইতিমধ্যেই Base16 বা pywal স্কিম আছে?"
   },
   "716f25c98070b7d2": {
    "source": "Next steps",
@@ -6821,6 +6877,10 @@
   "74292fdf095da831": {
    "source": "A header's bottom line in dialogs' lists",
    "text": "ডায়ালগের তালিকাগুলিতে একটি হেডারের নিচের লাইন"
+  },
+  "742a1c1309efe6e1": {
+   "source": "Borders and the hover and pressed shades are mixed from these, as for a theme file's <x1/>. Text stays readable: text and secondary text at 4.5:1 or more against every background they sit on (WCAG AA), the accent at 3:1. A scheme short of that has those colours moved a little darker (lighter on a dark scheme) until they pass; MDM's log says which.",
+   "text": "বর্ডার এবং হোভার ও প্রেস করা শেডগুলো এগুলি থেকে মিশ্রিত হয়, যেমন একটি থিম ফাইলের <x1/>-এর জন্য। টেক্সট পঠনযোগ্য থাকে: টেক্সট এবং সেকেন্ডারি টেক্সট তাদের উপর থাকা প্রতিটি পটভূমির বিপরীতে 4.5:1 বা তার বেশি (WCAG AA), অ্যাকসেন্ট 3:1। যে স্কিম এর চেয়ে কম, সেগুলোর রঙ কিছুটা গাঢ় করা হয় (ডার্ক স্কিমে হালকা) যতক্ষণ না তারা পাস করে; MDM-এর লগ বলে দেয় কোনটি।"
   },
   "743483ed1a2011f3": {
    "source": "The assistant can list your downloads with their status, size, progress and speed, and filter them by status or by name. It can add an http, https, ftp or ftps address and start it or only queue it, in the folder and under the name you say. A magnet link opens <g1>Add torrent</g1> in MDM, for you to choose the files. It can pause, resume and remove downloads, deleting the files only when asked, and start the main download queue.",
@@ -7114,10 +7174,6 @@
    "source": "Choose <g1>Subtitles</g1> if you want them (see below).",
    "text": "সাবটাইটেল চাইলে <g1>সাবটাইটেল</g1> বেছে নিন (নিচে দেখুন)।"
   },
-  "7a52a7994018e373": {
-   "source": "<g1>Image galleries</g1><g2>Paste a gallery's address and MDM saves all its pictures into a folder of their own.</g2><g3><x4/>Coming with version 0.5</g3>",
-   "text": "<g1>ছবির গ্যালারি</g1><g2>একটি গ্যালারির ঠিকানা পেস্ট করুন এবং MDM এর সমস্ত ছবি তাদের নিজস্ব একটি ফোল্ডারে সংরক্ষণ করবে।</g2><g3><x4/>সংস্করণ 0.5-এর সাথে আসছে</g3>"
-  },
   "7a5b7ab31d5f22cb": {
    "source": "Click <g1>Add Torrent</g1> on the toolbar to open a <x2/> file, or use the arrow next to it for <g3>Add magnet link...</g3>. A magnet link pasted into <g4>Add URL</g4> works too. Torrents land in the same list as your other downloads, marked <g5>Torrent</g5> in the <g6>Source</g6> column, and go into queues and the Scheduler like them.",
    "text": "একটি <x2/> ফাইল খুলতে টুলবারে <g1>টরেন্ট যোগ করুন</g1> ক্লিক করুন, অথবা <g3>ম্যাগনেট লিঙ্ক যোগ করুন...</g3> এর জন্য এর পাশের তীরটি ব্যবহার করুন। <g4>URL যোগ করুন</g4>-এ পেস্ট করা একটি ম্যাগনেট লিঙ্কও কাজ করে। টরেন্টগুলি আপনার অন্যান্য ডাউনলোডের মতোই একই তালিকায় আসে, <g6>উৎস</g6> কলামে <g5>টরেন্ট</g5> হিসাবে চিহ্নিত থাকে এবং তাদের মতোই কিউ এবং সময়সূচীতে যায়।"
@@ -7181,6 +7237,10 @@
   "7b266e2ce8173967": {
    "source": "If something goes differently",
    "text": "যদি কিছু ভিন্নভাবে হয়"
+  },
+  "7b2d988fbba5a132": {
+   "source": "Windows 10 and 11, 64-bit, is the main platform. Builds for Linux (AppImage, .deb, .rpm and .tar.gz) and macOS (.dmg) come with every release too; today's are marked experimental. From version 0.5.0, Linux isn't experimental any more: it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS stays experimental. See Windows, Mac and Linux and Download.",
+   "text": "Windows 10 এবং 11, 64-বিট, প্রধান প্ল্যাটফর্ম। প্রতিটি রিলিজের সাথে Linux (AppImage, .deb, .rpm এবং .tar.gz) এবং macOS (.dmg) এর জন্য বিল্ডও আসে; বর্তমানগুলি পরীক্ষামূলক হিসাবে চিহ্নিত করা হয়েছে। সংস্করণ 0.5.0 থেকে, Linux আর পরীক্ষামূলক নয়: এটি GNOME, KDE Plasma, Xfce এবং Cinnamon-এ, Wayland সেশনেও পরীক্ষা করা হয়েছে এবং এর প্যাকেজগুলি পরিষ্কার Ubuntu, Debian এবং Fedora সিস্টেমে পরীক্ষা করা হয়েছে। এখনও যা বাকি আছে: Flatpak Firefox এখনও পরীক্ষা করা হয়নি এবং স্ক্রিন রিডার (Orca) এখনও MDM-এর উইন্ডোগুলি পড়তে পারে না। macOS পরীক্ষামূলক থাকবে। Windows, Mac এবং Linux এবং ডাউনলোড করুন দেখুন।"
   },
   "7b3a4b79acf13381": {
    "source": "Options on its Proxy / Socks page, with Network adapter near the bottom set to Any (the system chooses)",
@@ -7273,6 +7333,10 @@
   "7cc12e681b9e7519": {
    "source": "Mister Download Manager in 86 languages — translations",
    "text": "Mister Download Manager 86টি ভাষায় — অনুবাদ"
+  },
+  "7ccdcbbf8262ca0f": {
+   "source": "Yes: every release has an AppImage, .deb, .rpm and .tar.gz for Linux and a .dmg for Apple Silicon and Intel Macs. Today's are marked experimental; from version 0.5.0, Linux isn't, after checks on four desktops, and macOS stays experimental. <g1>More</g1>",
+   "text": "হ্যাঁ: প্রতিটি রিলিজের সাথে Linux-এর জন্য একটি AppImage, .deb, .rpm এবং .tar.gz এবং Apple Silicon ও Intel Mac-এর জন্য একটি .dmg থাকে। বর্তমান সংস্করণগুলি পরীক্ষামূলক হিসেবে চিহ্নিত; সংস্করণ 0.5.0 থেকে, চারটি ডেস্কটপে পরীক্ষা করার পর Linux পরীক্ষামূলক থাকবে না, তবে macOS পরীক্ষামূলক থাকবে। <g1>আরও</g1>"
   },
   "7ce987620338a702": {
    "source": "To take a download out of its queue, right-click it and choose <g1>Delete from queue</g1>. The download stays in the list.",
@@ -7826,14 +7890,6 @@
    "source": "Translations",
    "text": "অনুবাদ"
   },
-  "84abb17d51202d69": {
-   "source": "Windows 10 and 11, 64-bit, is the main platform. Builds for Linux (AppImage, .deb, .rpm and .tar.gz) and macOS (.dmg) come with every release too; today's are marked experimental. From the next release, Linux isn't experimental any more: it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS stays experimental. See Windows, Mac and Linux and Download.",
-   "text": "Windows 10 এবং 11, 64-বিট, প্রধান প্ল্যাটফর্ম। Linux (AppImage, .deb, .rpm এবং .tar.gz) এবং macOS (.dmg)-এর জন্য বিল্ডগুলিও প্রতিটি রিলিজের সাথে আসে; আজকেরগুলি পরীক্ষামূলক হিসাবে চিহ্নিত। পরবর্তী রিলিজ থেকে, Linux আর পরীক্ষামূলক থাকবে না: এটি GNOME, KDE Plasma, Xfce এবং Cinnamon-এ, Wayland সেশনেও পরীক্ষা করা হয়েছে এবং এর প্যাকেজগুলি পরিষ্কার Ubuntu, Debian এবং Fedora সিস্টেমে পরীক্ষা করা হয়েছে। এখনও যা বাকি আছে: Flatpak Firefox এখনও পরীক্ষা করা হয়নি এবং স্ক্রিন রিডার (Orca) এখনও MDM-এর উইন্ডোগুলি পড়তে পারে না। macOS পরীক্ষামূলক থাকবে। Windows, ম্যাক এবং Linux এবং ডাউনলোড করুন দেখুন।"
-  },
-  "84b326b02e99fe0b": {
-   "source": "Yes: every release has an AppImage, .deb, .rpm and .tar.gz for Linux and a .dmg for Apple Silicon and Intel Macs. Today's are marked experimental; from the next release, Linux isn't, after checks on four desktops, and macOS stays experimental. <g1>More</g1>",
-   "text": "হ্যাঁ: প্রতিটি রিলিজের সাথে Linux-এর জন্য AppImage, .deb, .rpm ও .tar.gz এবং Apple Silicon ও Intel Mac-এর জন্য .dmg থাকে। বর্তমানেরগুলি পরীক্ষামূলক হিসেবে চিহ্নিত; পরবর্তী রিলিজ থেকে, চারটি ডেস্কটপে যাচাই করার পর Linux পরীক্ষামূলক থাকবে না, তবে macOS পরীক্ষামূলক থাকবে। <g1>আরও</g1>"
-  },
   "84b4301bea02e666": {
    "source": "Download complete, with Open, Open with..., Open folder and Close",
    "text": "ডাউনলোড সম্পূর্ণ, খুলুন, এর সাথে খুলুন..., ফোল্ডার খুলুন এবং বন্ধ করুন সহ"
@@ -7909,10 +7965,6 @@
   "863c349998a9b962": {
    "source": "No mouse needed",
    "text": "মাউসের প্রয়োজন নেই"
-  },
-  "864d58c4443dc3fd": {
-   "source": "Version 0.5 <g1>coming</g1>",
-   "text": "সংস্করণ 0.5 <g1>আসছে</g1>"
   },
   "86924bf8861bc5fa": {
    "source": "<g1><g2>Yes</g2></g1><g3>through add-ons</g3>",
@@ -8198,6 +8250,14 @@
    "source": "Verify a download's checksum (MD5, SHA-256)",
    "text": "ডাউনলোডের চেকসাম (MD5, SHA-256) যাচাই করুন"
   },
+  "8b6b100cf7aba467": {
+   "source": "To change more than colours, make a theme file that inherits the scheme by its file name and adds what you like:",
+   "text": "রঙের চেয়ে বেশি কিছু পরিবর্তন করতে, একটি থিম ফাইল তৈরি করুন যা তার ফাইলের নাম দ্বারা স্কিমটি উত্তরাধিকার সূত্রে পায় এবং আপনার পছন্দসই জিনিস যোগ করে:"
+  },
+  "8b93f9dffbe6efdb": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds of its own (the time MDM spends loading your list and its icons doesn't count, however slow the computer is just after it starts), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
+   "text": "যদি আপনার কম্পিউটারে Direct3D, Vulkan বা Metal চালু না হয় (এর জন্য কোনো ড্রাইভার নেই, কিছু ভার্চুয়াল মেশিন), অথবা এর প্রথম উইন্ডোটি 10 সেকেন্ডের মধ্যে না দেখায় (MDM আপনার তালিকা এবং এর আইকন লোড করতে যে সময় নেয় তা গণনা করা হয় না, কম্পিউটার চালু হওয়ার ঠিক পরে যত ধীরই হোক না কেন), MDM OpenGL দিয়ে আঁকে, এবং <g1>দেখুন → আঁকার মাধ্যম</g1> তা এবং কেন বলে। এটি আবার নির্বাচন করলে পরবর্তী শুরুতে আবার চেষ্টা করা হবে।"
+  },
   "8b95ee287644fd4f": {
    "source": "Mister Download Manager's link grabber collects a page's links, sorts them into packages, checks which are online and extracts the archives they bring.",
    "text": "Mister Download Manager এর লিঙ্ক গ্র্যাবার একটি পৃষ্ঠার লিঙ্কগুলি সংগ্রহ করে, সেগুলিকে প্যাকেজে সাজায়, কোনটি অনলাইন তা পরীক্ষা করে এবং তারা যে আর্কাইভগুলি নিয়ে আসে তা এক্সট্র্যাক্ট করে।"
@@ -8205,10 +8265,6 @@
   "8ba3e471bdf1018f": {
    "source": "<g1>Manual proxy/socks configuration</g1> — type the proxy's address, <g2>Port</g2>, and a <g3>UserName</g3> and <g4>Password</g4> if it needs them, then tick the protocols it is for (<g5>http</g5>, <g6>https</g6>). For a SOCKS proxy, write the address as <x7/>.",
    "text": "<g1>ম্যানুয়াল প্রক্সি/SOCKS কনফিগারেশন</g1> — প্রক্সির ঠিকানা, <g2>পোর্ট</g2>, এবং একটি <g3>ব্যবহারকারীর নাম</g3> ও <g4>পাসওয়ার্ড</g4> টাইপ করুন যদি সেগুলির প্রয়োজন হয়, তারপর এটি যে প্রোটোকলগুলির জন্য সেগুলিতে টিক দিন (<g5>http</g5>, <g6>https</g6>)। একটি SOCKS প্রক্সির জন্য, ঠিকানাটি <x7/> হিসাবে লিখুন।"
-  },
-  "8bdb8ef261917fb7": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> (Firefox, optional: asked for only when you switch it on in the popup) to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
-   "text": "এর অনুমতিগুলো, এবং কেন: ডাউনলোড দেখতে ও হস্তান্তর করতে <g1>downloads</g1>; MDM-এ সাইন-ইন করা ডাউনলোড কাজ করার জন্য <g2>cookies</g2>; MDM-এর সাথে কথা বলার জন্য <g3>nativeMessaging</g3>; রাইট-ক্লিক আইটেমগুলির জন্য <g4>contextMenus</g4>; এর সেটিংসের জন্য <g5>storage</g5>; জমা দেওয়া ফর্ম এবং লোড করা ভিডিও স্ট্রিম দেখতে <g6>webRequest</g6> (এটি কিছুই পরিবর্তন করে না); ব্রাউজার যে ফাইলগুলি খুলবে (একটি PDF) সেগুলিকে MDM যে ধরনের ফাইল নেয়, সেগুলির জন্য ডাউনলোড করার জন্য <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge এবং অন্যান্য Chromium ব্রাউজার); Firefox-এ, <g8>webRequestBlocking</g8> এটি করে; আপনি যখন জিজ্ঞাসা করেন তখন একটি পৃষ্ঠার লিঙ্কগুলি পড়ার জন্য <g9>scripting</g9>, এবং এক্সটেনশন ইনস্টল করার সময় ইতিমধ্যেই খোলা পৃষ্ঠাগুলিতে ভিডিও বোতাম যোগ করার জন্য; ব্রাউজার কোন প্রক্সি ব্যবহার করে তা পড়ার জন্য <g10>proxy</g10> (Firefox, ঐচ্ছিক: আপনি পপআপে এটি চালু করলেই কেবল জিজ্ঞাসা করা হয়), যাতে VPN বা প্রক্সি এক্সটেনশনের পিছনে থাকা ব্রাউজার থেকে নেওয়া ডাউনলোডগুলিও এর মাধ্যমে যায় (এটি ব্রাউজারের প্রক্সি কখনোই পরিবর্তন করে না); সমস্ত সাইটে অ্যাক্সেস কারণ ডাউনলোড এবং ভিডিও যেকোনো সাইট থেকে আসতে পারে।"
   },
   "8bdde34517b27efd": {
    "source": "Options on its Archives page: extracting archives when they are downloaded, and Link grabber's look-ups",
@@ -8233,6 +8289,10 @@
   "8bfc1eb922329fc0": {
    "source": "The browser warns that the connection's certificate isn't trusted. That is expected: MDM made its own certificate, on your computer, and no public authority knows it. To be sure the page is your MDM's, open the warning's details: the certificate's <g1>SHA-256 fingerprint</g1> is the one <g2>Options → Remote</g2> shows. Then continue to the page (<g3>Advanced → Proceed</g3> in Chrome, <g4>Show details → visit this website</g4> in Safari).",
    "text": "ব্রাউজার সতর্ক করে যে সংযোগের শংসাপত্রটি বিশ্বস্ত নয়। এটি প্রত্যাশিত: MDM আপনার কম্পিউটারে নিজস্ব শংসাপত্র তৈরি করেছে, এবং কোনো পাবলিক কর্তৃপক্ষ এটি জানে না। পৃষ্ঠাটি আপনার MDM-এর কিনা তা নিশ্চিত হতে, সতর্কতার বিবরণ খুলুন: শংসাপত্রের <g1>SHA-256 ফিঙ্গারপ্রিন্ট</g1> হল সেটি যা <g2>বিকল্প → রিমোট</g2> দেখায়। তারপর পৃষ্ঠায় চালিয়ে যান (Chrome-এ <g3>উন্নত → চালিয়ে যান</g3>, Safari-এ <g4>বিস্তারিত দেখান → এই ওয়েবসাইট ভিজিট করুন</g4>)।"
+  },
+  "8c03d1eb99dbe431": {
+   "source": "<g1>Remote control</g1><g2>Paste a link on your phone and the computer downloads it. Watch and pause from anywhere at home.</g2><g3><x4/>Coming with version 0.5.0</g3>",
+   "text": "<g1>রিমোট কন্ট্রোল</g1><g2>আপনার ফোনে একটি লিঙ্ক পেস্ট করুন এবং কম্পিউটার সেটি ডাউনলোড করবে। বাড়ির যেকোনো জায়গা থেকে দেখুন এবং বিরতি দিন।</g2><g3><x4/>0.5.0 সংস্করণে আসছে</g3>"
   },
   "8c3034c70156f726": {
    "source": "On Unraid",
@@ -8518,6 +8578,10 @@
    "source": "On <g1>Status</g1>, tick only <g2>Error</g2> to see the downloads that failed.",
    "text": "<g1>স্ট্যাটাস</g1>-এ, শুধুমাত্র <g2>ত্রুটি</g2> টিক দিন যাতে ব্যর্থ হওয়া ডাউনলোডগুলি দেখা যায়।"
   },
+  "918e0b87ff6e78b7": {
+   "source": "(blue)",
+   "text": "(নীল)"
+  },
   "918f09ee3a8310c4": {
    "source": "Sign-in secrets (debrid accounts, Sites Logins' and the proxy's passwords) live in the system's keychain (<x1/>, #44): Windows Credential Manager (<x2/>), the Secret Service on Linux or the macOS keychain (<x3/>). The settings keep a <x4/> reference in their place, written only once the keychain has confirmed the secret; without a keychain (or with a locked one, never unlocked for MDM) the secret stays in the settings as before.",
    "text": "সাইন-ইন গোপনীয়তা (ডিপ্রিড অ্যাকাউন্ট, সাইটের লগইন তথ্য এবং প্রক্সির পাসওয়ার্ড) সিস্টেমের কীচেইনে থাকে (<x1/>, #44): Windows ক্রেডেনশিয়াল ম্যানেজার (<x2/>), Linux-এ সিক্রেট সার্ভিস বা macOS কীচেইন (<x3/>)। সেটিংস তাদের জায়গায় একটি <x4/> রেফারেন্স রাখে, যা কীচেইন গোপনীয়তা নিশ্চিত করার পরেই লেখা হয়; কীচেইন ছাড়া (অথবা একটি লক করা কীচেইন সহ, যা MDM-এর জন্য কখনো আনলক করা হয়নি) গোপনীয়তা আগের মতোই সেটিংসে থাকে।"
@@ -8549,6 +8613,10 @@
   "9227673c225698ac": {
    "source": "Mac fixes from the first round of real use, found on every system and fixed there too; the menus and text boxes work as in any desktop program; and MDM works with AI assistants.",
    "text": "বাস্তবে প্রথমবার ব্যবহারের সময় Mac-এ পাওয়া সমস্যাগুলো সব সিস্টেমেই খুঁজে বের করে ঠিক করা হয়েছে; মেনু ও টেক্সট বক্স এখন যেকোনো ডেস্কটপ প্রোগ্রামের মতো কাজ করে; MDM এআই সহকারীদের সঙ্গেও কাজ করে।"
+  },
+  "92325817a366a602": {
+   "source": "<g1>RSS feeds</g1><g2>Follow torrent feeds, and let rules add the new episodes you want, each one only once.</g2><g3><x4/>Coming with version 0.5.0</g3>",
+   "text": "<g1>RSS ফিডগুলি</g1><g2>টরেন্ট ফিডগুলি অনুসরণ করুন, এবং নিয়মগুলি আপনার পছন্দের নতুন পর্বগুলি যোগ করতে দিন, প্রতিটি শুধুমাত্র একবার।</g2><g3><x4/>0.5.0 সংস্করণে আসছে</g3>"
   },
   "9234aa60d4155968": {
    "source": "<g1>No telemetry</g1>: see the <g2>privacy policy</g2>.",
@@ -8670,6 +8738,10 @@
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
    "text": "Mister Download Manager (\"MDM\", \"সফটওয়্যার\") এবং misterdownloadmanager.com ওয়েবসাইটটি (\"সাইট\") আহমেদ নেফজাউই ও অন্যান্য অবদানকারী (\"আমরা\") তৈরি করেছেন। সফটওয়্যার বা সাইট ব্যবহার করলে আপনি এই শর্তাবলি মেনে নিচ্ছেন। মেনে না নিলে, অনুগ্রহ করে সফটওয়্যার বা সাইট ব্যবহার করবেন না।"
   },
+  "94280a68d863d482": {
+   "source": "Windows, dialogs, the toolbar, the menu bar and column headers",
+   "text": "Windows, ডায়ালগ, টুলবার, মেনু বার এবং কলাম হেডার"
+  },
   "9434b8330f4457a2": {
    "source": "Queues and the Scheduler →",
    "text": "সারি এবং সময়সূচী →"
@@ -8681,6 +8753,10 @@
   "945dd1a4f985ec9a": {
    "source": "<g1>Description</g1> — a note of your own. It shows in the list's <g2>Description</g2> column and Find can search it.",
    "text": "<g1>বর্ণনা</g1> — আপনার নিজের একটি নোট। এটি তালিকার <g2>বর্ণনা</g2> কলামে দেখায় এবং Find এটি অনুসন্ধান করতে পারে।"
+  },
+  "9468ae0314c8bda6": {
+   "source": "A freeze or crash report says which one was drawing, on which graphics card and driver, and why that one (chosen, the default, or the other one failing), on its <x1/> line near the top: include it when you report a problem. A freeze report also says whether MDM was busy, waiting, or hardly ran at all (a computer too busy to run it); see <g2>Crash reports</g2>.",
+   "text": "একটি ফ্রিজ বা ক্র্যাশ রিপোর্টে বলা হয় কোনটি আঁকছিল, কোন গ্রাফিক্স কার্ড এবং ড্রাইভার ব্যবহার করে, এবং কেন সেটি (নির্বাচিত, ডিফল্ট, বা অন্যটি ব্যর্থ), এর উপরের দিকে <x1/> লাইনে: কোনো সমস্যা রিপোর্ট করার সময় এটি অন্তর্ভুক্ত করুন। একটি ফ্রিজ রিপোর্টে আরও বলা হয় যে MDM ব্যস্ত ছিল, অপেক্ষা করছিল, নাকি প্রায় চলেনি (একটি কম্পিউটার এটি চালানোর জন্য খুব ব্যস্ত ছিল); <g2>ক্র্যাশ রিপোর্ট</g2> দেখুন।"
   },
   "94693bc95c63786e": {
    "source": "Extract ZIP, 7z and RAR archives automatically — Mister Download Manager",
@@ -8814,6 +8890,10 @@
    "source": "MDM offers yt-dlp and ffmpeg on its first start, with Yes, download them (recommended) and Not now",
    "text": "প্রথমবার চালু হলে MDM yt-dlp ও ffmpeg ডাউনলোড করার প্রস্তাব দেয়; বিকল্প দুটি হলো হ্যাঁ, সেগুলোকে ডাউনলোড করুন (প্রস্তাবিত) এবং এখন না"
   },
+  "9641498adf0c3309": {
+   "source": "<g1>A Base16 scheme</g1>, the <x2/> file the <g3>Base16 and Base24 schemes</g3> come in: both the classic layout (<x4/> and <x5/> to <x6/> at the top) and the newer one (<x7/> and a <x8/> block). A Base24 scheme reads as its first 16 colours.",
+   "text": "<g1>একটি Base16 স্কিম</g1>, <x2/> ফাইল যা <g3>Base16 এবং Base24 স্কিম</g3>-এর সাথে আসে: ক্লাসিক লেআউট (<x4/> এবং <x5/> থেকে উপরে <x6/> পর্যন্ত) এবং নতুন লেআউট উভয়ই (<x7/> এবং একটি <x8/> ব্লক)। একটি Base24 স্কিম তার প্রথম 16টি রঙ হিসাবে পঠিত হয়।"
+  },
   "964baafe2e54e20e": {
    "source": "For a Mac with Apple Silicon (M1 or later: <g1>Apple menu → About This Mac</g1> shows a <g2>Chip</g2>). Open it and drag Mister Download Manager to Applications. macOS asks before its first start, because the app isn't notarized by Apple: right-click it and choose <g3>Open</g3> (on macOS 15 and later: <g4>System Settings → Privacy &amp; Security → Open Anyway</g4>).",
    "text": "Apple Silicon (M1 বা তার পরের সংস্করণ) প্রসেসরযুক্ত Mac-এর জন্য: <g1>Apple menu → About This Mac</g1>-এ <g2>Chip</g2> লেখা থাকলে সেটি Apple Silicon Mac। ফাইলটি খুলে Mister Download Manager-কে Applications-এ টেনে আনুন। Apple অ্যাপটিকে নোটারাইজ করেনি বলে macOS প্রথমবার চালুর আগে অনুমতি চাইবে: অ্যাপটিতে রাইট-ক্লিক করে <g3>Open</g3> বেছে নিন (macOS 15 এবং পরের সংস্করণে: <g4>System Settings → Privacy &amp; Security → Open Anyway</g4>)।"
@@ -8837,6 +8917,10 @@
   "9682bbc6499d98d3": {
    "source": "<g1>All files and install steps</g1><g2>Every release on GitHub</g2>",
    "text": "<g1>সমস্ত ফাইল এবং ইনস্টল করার ধাপ</g1><g2>GitHub-এ প্রতিটি রিলিজ</g2>"
+  },
+  "9685fae14d6f1d9e": {
+   "source": "<g1>Archives extracted</g1><g2>ZIP, TAR and more extracted as they arrive, 7z and RAR with 7-Zip, split archives once complete.</g2><g3><x4/>Coming with version 0.5.0</g3>",
+   "text": "<g1>আর্কাইভগুলি এক্সট্র্যাক্ট করা হয়েছে</g1><g2>ZIP, TAR এবং আরও অনেক কিছু আসার সাথে সাথে এক্সট্র্যাক্ট করা হয়, 7z এবং RAR 7-Zip দিয়ে, সম্পূর্ণ হওয়ার পর বিভক্ত আর্কাইভগুলি।</g2><g3><x4/>0.5.0 সংস্করণে আসছে</g3>"
   },
   "96abca8820d90816": {
    "source": "Download scheduler and queues — Mister Download Manager",
@@ -8949,6 +9033,10 @@
   "9884d340beffa35b": {
    "source": "<g1>Texts that were always in English</g1> are translated in every language: the empty list's message, buttons of the crash report window, and why OK or Verify is greyed in some windows.",
    "text": "<g1>যে লেখাগুলি সবসময় ইংরেজিতে ছিল</g1> সেগুলি প্রতিটি ভাষায় অনুবাদ করা হয়েছে: খালি তালিকার বার্তা, ক্র্যাশ রিপোর্ট উইন্ডোর বোতাম এবং কিছু উইন্ডোতে কেন OK বা Verify ধূসর হয়ে আছে।"
+  },
+  "988a7a63eb86d092": {
+   "source": "A scheme changes colours only, on the classic look: every window, button and menu stays where it was. A dark scheme makes MDM dark and a light one light, whatever <g1>View → Always dark</g1> says. The scheme's colours go where they mean the same:",
+   "text": "একটি স্কিম শুধুমাত্র ক্লাসিক চেহারার রঙ পরিবর্তন করে: প্রতিটি উইন্ডো, বোতাম এবং মেনু যেখানে ছিল সেখানেই থাকে। একটি ডার্ক স্কিম MDM-কে ডার্ক করে এবং একটি লাইট স্কিম লাইট করে, <g1>দেখুন → সর্বদা ডার্ক</g1> যা-ই বলুক না কেন। স্কিমের রঙগুলো যেখানে তাদের একই অর্থ বোঝায় সেখানে যায়:"
   },
   "98926abaa4b33890": {
    "source": "Your phone opens a small page that MDM itself serves on your home network. Paste a link, a magnet link or a torrent file, and watch it download on the computer. Nothing to install on the phone, and no outside service.",
@@ -9410,10 +9498,6 @@
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
    "text": "একটি egui উইন্ডো নির্দিষ্ট পিক্সেল স্থানাঙ্কে আঁকা হয়, সাথে প্রতিটি ডায়ালগের জন্য একটি তাৎক্ষণিক ভিউপোর্ট। <x1/> অবস্থা (ডাউনলোড, সারি, সেটিংস, তালিকার নির্বাচন) ধরে রাখে এবং মেনু, টুলবার, কী ও IPC কমান্ডকে অ্যাকশনে রূপান্তরিত করে। প্রতিটি ডায়ালগ তার নিজস্ব মডিউল এবং একটি <x2/> (খোলা, বন্ধ, একটি মান সহ সম্পন্ন) ফেরত দেয়। শুধুমাত্র Windows-এর জন্য কলগুলি <x3/>-এর মধ্যে সীমাবদ্ধ এবং তাদের Linux ও macOS প্রতিরূপগুলি <x4/>-এর মধ্যে সীমাবদ্ধ (সেশন থেকে শুরু করে, ব্রাউজারগুলির হোস্ট, শব্দ, ফোল্ডারে দেখানো, ক্র্যাশ হ্যান্ডলার); অন্য প্রতিটি ফাইল নিরাপদ, পোর্টেবল Rust। ফন্টগুলি সিস্টেম থেকে আসে: Windows-এর ফন্টস ফোল্ডার, macOS-এর সিস্টেম ফন্ট, Linux-এ fontconfig (<x5/>)।"
   },
-  "a02573c5615654d6": {
-   "source": "<g1>Network adapter</g1><g2>Every connection MDM opens goes out through the adapter you pick, and stops when it disconnects.</g2><g3><x4/>Coming with version 0.5</g3>",
-   "text": "<g1>নেটওয়ার্ক অ্যাডাপ্টার</g1><g2>MDM যে প্রতিটি সংযোগ খোলে তা আপনার নির্বাচিত অ্যাডাপ্টারের মাধ্যমে যায়, এবং সংযোগ বিচ্ছিন্ন হলে বন্ধ হয়ে যায়।</g2><g3><x4/>সংস্করণ 0.5-এর সাথে আসছে</g3>"
-  },
   "a02c94e070503928": {
    "source": "Browsers built on them work too: Chromium and Helium take the extension as Chrome does, Brave Origin as Brave does, Zen and LibreWolf as Firefox does. On Windows, Zen has a bug of its own (see <g1>The browser and MDM aren't connected</g1>).",
    "text": "এগুলোর উপর ভিত্তি করে তৈরি ব্রাউজারগুলোও কাজ করে: Chromium এবং Helium, Chrome-এর মতো এক্সটেনশন নেয়; Brave Origin, Brave-এর মতো; Zen এবং LibreWolf, Firefox-এর মতো। Windows-এ, Zen-এর নিজস্ব একটি ত্রুটি আছে (দেখুন <g1>ব্রাউজার এবং MDM সংযুক্ত নয়</g1>)।"
@@ -9822,6 +9906,10 @@
    "source": "Internet Download Manager 6.42",
    "text": "Internet Download Manager 6.42"
   },
+  "a73118b926ffe048": {
+   "source": "<g1>Contents</g1><g2>27 features, every one free · 10 coming with version 0.5.0</g2>",
+   "text": "<g1>বিষয়বস্তু</g1><g2>27টি ফিচার, প্রতিটি বিনামূল্যে · 0.5.0 সংস্করণে আসছে 10টি</g2>"
+  },
   "a7431b39fec4f131": {
    "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
    "text": "এটি যেভাবে কাজ করে: Windows অ্যাডাপ্টারের নিজস্ব ঠিকানা ব্যবহার করে সংযোগ স্থাপন করে। এরপর Windows সেই প্যাকেটগুলো শুধু ওই অ্যাডাপ্টারের মাধ্যমেই পাঠায় (এর শক্তিশালী হোস্ট মডেল)। Linux ডিভাইসটিকেই ব্যবহার করে (Linux 5.7 বা তার পরের সংস্করণ), আর macOS ইন্টারফেসটি ব্যবহার করে। অ্যাডাপ্টারে নেই এমন ধরনের ঠিকানা (শুধু IPv4-সমর্থিত VPN-এ IPv6) প্রত্যাখ্যান করা হয়; অন্য পথে পাঠানো হয় না।"
@@ -9990,10 +10078,6 @@
    "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 70 MB.",
    "text": "<g1>মেমরি</g1> (প্রসেস ট্যাবে) হলো MDM শুধুমাত্র নিজের জন্য যে মেমরি ব্যবহার করে, তার <g2>প্রাইভেট ওয়ার্কিং সেট</g2>। উইন্ডো খোলা থাকলে এবং কিছু ডাউনলোড না হলে, এটি প্রায় 70 MB হয়।"
   },
-  "a9e731fc163ca39d": {
-   "source": "<g1>RSS feeds</g1><g2>Follow torrent feeds, and let rules add the new episodes you want, each one only once.</g2><g3><x4/>Coming with version 0.5</g3>",
-   "text": "<g1>RSS ফিডগুলি</g1><g2>টরেন্ট ফিডগুলি অনুসরণ করুন, এবং নিয়মগুলি আপনার পছন্দের নতুন পর্বগুলি যোগ করতে দিন, প্রতিটি শুধুমাত্র একবার।</g2><g3><x4/>সংস্করণ 0.5-এর সাথে আসছে</g3>"
-  },
   "a9e931861de964cf": {
    "source": "Catch downloads from your browser",
    "text": "আপনার ব্রাউজার থেকে ডাউনলোড ধরুন"
@@ -10089,6 +10173,10 @@
   "ab7b271312dd3ab7": {
    "source": "Download <x1/> from <g2>Releases</g2>.",
    "text": "<x1/> <g2>রিলিজ</g2> থেকে ডাউনলোড করুন।"
+  },
+  "ab9b20dc828b823e": {
+   "source": "(green)",
+   "text": "(সবুজ)"
   },
   "abc8c4d74c44fb09": {
    "source": "A fix for 0.2.2, which froze on every system as soon as Add URL opened, and crash reports, so the next problem like it is caught and fixed sooner.",
@@ -10462,6 +10550,10 @@
    "source": "Pauses running downloads.",
    "text": "চলমান ডাউনলোডগুলোতে বিরতি দেয়।"
   },
+  "b23d33e056d9ffcc": {
+   "source": "Text",
+   "text": "টেক্সট"
+  },
   "b23e9f6d4d6a6718": {
    "source": "Browser integration needs one more step in each browser: adding the extension. In Firefox, click <g1>Add to Firefox</g1> on <g2>its page on addons.mozilla.org</g2>; in Chrome, Edge, Brave, Opera and Vivaldi, <g3>Add to Chrome</g3> on <g4>its page in the Chrome Web Store</g4>. <g5>Browser integration</g5> shows how.",
    "text": "ব্রাউজার ইন্টিগ্রেশন চালু করতে প্রতিটি ব্রাউজারে আরেকটি ধাপ দরকার: এক্সটেনশন যোগ করা। Firefox-এ <g2>addons.mozilla.org-এর পৃষ্ঠায়</g2> <g1>Add to Firefox</g1> ক্লিক করুন; Chrome, Edge, Brave, Opera এবং Vivaldi-তে <g4>Chrome Web Store-এর পৃষ্ঠায়</g4> <g3>Add to Chrome</g3> ক্লিক করুন। <g5>ব্রাউজার ইন্টিগ্রেশন</g5> পৃষ্ঠায় এ বিষয়ে নির্দেশনা আছে।"
@@ -10802,10 +10894,6 @@
    "source": "If MDM or this website ever needs to use a new service, this page will say so first, and the change will be listed in <g1>What's new</g1>. Past versions of this page are in the project's history on GitHub.",
    "text": "যদি MDM বা এই ওয়েবসাইটকে কখনও একটি নতুন পরিষেবা ব্যবহার করার প্রয়োজন হয়, তবে এই পৃষ্ঠাটি প্রথমে তা বলবে এবং পরিবর্তনটি <g1>নতুন কী আছে</g1>-এ তালিকাভুক্ত করা হবে। এই পৃষ্ঠার পূর্ববর্তী সংস্করণগুলি GitHub-এ প্রকল্পের ইতিহাসে রয়েছে।"
   },
-  "b7bf106eaf155db5": {
-   "source": "<g1>Coming with version 0.5</g1> <g2>It's in the source code now, not yet in the download (version 0.2.4).</g2>",
-   "text": "<g1>সংস্করণ 0.5 এর সাথে আসছে</g1> <g2>এটি এখন সোর্স কোডে আছে, এখনো ডাউনলোডে নেই (সংস্করণ 0.2.4)।</g2>"
-  },
   "b7c0190ca4719975": {
    "source": "The assistant can't change MDM's options, see your browser, or turn the automation API on by itself.",
    "text": "সহকারী MDM-এর বিকল্পগুলো পরিবর্তন করতে, আপনার ব্রাউজার দেখতে বা নিজে থেকে অটোমেশন API চালু করতে পারে না।"
@@ -10909,10 +10997,6 @@
   "b96597d534e090d4": {
    "source": "100 MiB, 150 ms latency, 4 MB/s per connection",
    "text": "100 MiB, 150 ms বিলম্ব, প্রতি সংযোগে 4 MB/s"
-  },
-  "b9666ad72bc491b0": {
-   "source": "Yes: every release has builds for Linux and macOS. Today's are marked experimental; from the next release, Linux isn't, after checks on four desktops, and macOS stays experimental. Windows 10 and 11 are the main platform. <g1>More</g1>",
-   "text": "হ্যাঁ: প্রতিটি রিলিজে Linux এবং macOS-এর জন্য বিল্ড রয়েছে। বর্তমানগুলি পরীক্ষামূলক হিসাবে চিহ্নিত; পরবর্তী রিলিজ থেকে, চারটি ডেস্কটপে পরীক্ষা করার পর Linux পরীক্ষামূলক থাকবে না, এবং macOS পরীক্ষামূলক থাকবে। Windows 10 এবং 11 প্রধান প্ল্যাটফর্ম। <g1>আরও</g1>"
   },
   "b9688b14c6713f0f": {
    "source": "<g1>Ours</g1><g2><g3>Delivered</g3><g4>1 GiB in 1.01 s</g4></g2>",
@@ -11202,6 +11286,10 @@
    "source": "MDM speaks 86 languages, every display language Windows 11 offers, from Afrikaans to Vietnamese. In Arabic, Hebrew, Persian, Urdu and Uyghur the whole window runs from right to left.",
    "text": "MDM 86টি ভাষায় কথা বলে, Windows 11-এর আফ্রিকান থেকে ভিয়েতনামি পর্যন্ত প্রতিটি ডিসপ্লে ভাষা এতে আছে। আরবি, হিব্রু, ফার্সি, উর্দু এবং উইঘুর ভাষায় পুরো উইন্ডো ডান থেকে বামে চলে।"
   },
+  "bf2ccc2c07e8220f": {
+   "source": "<g1>Server mode</g1><g2>MDM without a window on a NAS, in Docker or on Unraid, fed from your phone or browser.</g2><g3><x4/>Coming with version 0.5.0</g3>",
+   "text": "<g1>সার্ভার মোড</g1><g2>NAS-এ, Docker-এ বা Unraid-এ উইন্ডো ছাড়া MDM, আপনার ফোন বা ব্রাউজার থেকে ফিড করা হয়।</g2><g3><x4/>0.5.0 সংস্করণে আসছে</g3>"
+  },
   "bf34a44f6d2c1b84": {
    "source": "For Ubuntu, Debian, Mint and Pop!_OS: <x1/>. It brings the libraries MDM needs.",
    "text": "উবুন্টু, ডেবিয়ান, মিন্ট এবং পপ!_ওএস-এর জন্য: <x1/>। এটি MDM-এর প্রয়োজনীয় লাইব্রেরিগুলি নিয়ে আসে।"
@@ -11274,6 +11362,10 @@
    "source": "Batch download: an address with an asterisk, what replaces it, and the first, second and last file",
    "text": "ব্যাচ ডাউনলোড: তারকাচিহ্নসহ একটি ঠিকানা, তারকাচিহ্নের বদলে যা বসবে এবং প্রথম, দ্বিতীয় ও শেষ ফাইল"
   },
+  "c0598b0534c589a9": {
+   "source": "More of the browser, in version 0.5.0",
+   "text": "ব্রাউজারের আরও কিছু, সংস্করণ 0.5.0-এ"
+  },
   "c067f04376c32e9a": {
    "source": "When the queue is done",
    "text": "যখন সারি শেষ হয়"
@@ -11285,10 +11377,6 @@
   "c06ba617cdfd5394": {
    "source": "A feed that can't be read is shown in red, with the reason on the line at the bottom.",
    "text": "যে ফিডটি পড়া যায় না সেটি লাল রঙে দেখানো হয়, এবং কারণটি নিচের লাইনে থাকে।"
-  },
-  "c07de5943eb48fd7": {
-   "source": "<g1>Server mode</g1><g2>MDM without a window on a NAS, in Docker or on Unraid, fed from your phone or browser.</g2><g3><x4/>Coming with version 0.5</g3>",
-   "text": "<g1>সার্ভার মোড</g1><g2>NAS-এ, Docker-এ বা Unraid-এ উইন্ডো ছাড়া MDM, আপনার ফোন বা ব্রাউজার থেকে ফিড করা হয়।</g2><g3><x4/>সংস্করণ 0.5-এর সাথে আসছে</g3>"
   },
   "c08d6a11df84016a": {
    "source": "<g1><g2>Carry MDM on a USB stick</g2></g1> — the portable copy, with downloads saved to the stick.",
@@ -11385,6 +11473,10 @@
   "c23b266d3360b64e": {
    "source": "Mister Download Manager's MCP server lets Claude, Cursor, VS Code and other AI assistants list, add, pause and resume downloads, on this PC only.",
    "text": "Mister Download Manager-এর MCP সার্ভার Claude, Cursor, VS Code এবং অন্যান্য এআই অ্যাসিস্ট্যান্টকে শুধুমাত্র এই পিসিতে ডাউনলোডগুলি তালিকাভুক্ত করতে, যোগ করতে, বিরতি দিতে এবং আবার শুরু করতে দেয়।"
+  },
+  "c26769b88da29046": {
+   "source": "Colour schemes made for other programs are themes too, with nothing to convert:",
+   "text": "অন্যান্য প্রোগ্রামের জন্য তৈরি কালার স্কিমগুলোও থিম, কোনো রূপান্তরের প্রয়োজন নেই:"
   },
   "c281dc13eb22554f": {
    "source": "Brave",
@@ -11517,6 +11609,10 @@
   "c51a80cf9beffee4": {
    "source": "<g1>What you download, on your local network.</g1> MDM tells other computers on your network which torrents it has, so they can share faster. On public Wi-Fi, turn off <g2>Find peers on the local network</g2>.",
    "text": "<g1>আপনি স্থানীয় নেটওয়ার্কে কী ডাউনলোড করেন।</g1> MDM আপনার নেটওয়ার্কের অন্য কম্পিউটারগুলোকে জানায়, তার কাছে কোন টরেন্ট আছে, যাতে তারা দ্রুত শেয়ার করতে পারে। পাবলিক Wi-Fi ব্যবহার করার সময় <g2>স্থানীয় নেটওয়ার্কে পিয়ার খুঁজুন</g2> বন্ধ করুন।"
+  },
+  "c520613dac156201": {
+   "source": "<g1>Firefox</g1> asks you once, at the switch, to allow the extension to read the browser's proxy; switching it off takes that permission back. MDM gets the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request.",
+   "text": "<g1>Firefox</g1> আপনাকে একবার, সুইচ করার সময়, এক্সটেনশনটিকে ব্রাউজারের প্রক্সি পড়ার অনুমতি দিতে বলে; এটি বন্ধ করলে সেই অনুমতি প্রত্যাহার করা হয়। MDM ব্রাউজারের নিজস্ব অনুরোধের মাধ্যমে ফাইলটির জন্য যে প্রক্সি ব্যবহার করা হয়েছিল, তা গ্রহণ করে, যার মধ্যে VPN এক্সটেনশন প্রতিটি অনুরোধের জন্য যেগুলি নির্বাচন করে সেগুলিও অন্তর্ভুক্ত।"
   },
   "c52c646bc1a63830": {
    "source": "Download overnight — Mister Download Manager help",
@@ -11662,6 +11758,10 @@
    "source": "<g1>Tab</g1> / <g2>Shift+Tab</g2>",
    "text": "<g1>Tab</g1> / <g2>Shift+Tab</g2>"
   },
+  "c79aa60dd343fd47": {
+   "source": "Add it with <g1>View → Theme → Add a theme file…</g1>, or put it in the themes folder yourself. It shows in <g2>View → Theme</g2> under the scheme's name (<x3/> or <x4/>; pywal's is named after the wallpaper).",
+   "text": "<g1>দেখুন → থিম → একটি থিম ফাইল যোগ করুন…</g1> ব্যবহার করে এটি যোগ করুন, অথবা নিজে থিম ফোল্ডারে রাখুন। এটি স্কিমের নাম অনুসারে <g2>দেখুন → থিম</g2>-এ প্রদর্শিত হয় (<x3/> অথবা <x4/>; pywal-এর নামকরণ ওয়ালপেপারের নামে করা হয়)।"
+  },
   "c79d3d545a5bebd2": {
    "source": "Your account, your rules",
    "text": "আপনার অ্যাকাউন্ট, আপনার নিয়ম"
@@ -11806,6 +11906,10 @@
    "source": "<g1>Aero</g1>: Windows 7's look: glossy buttons that turn light blue under the pointer, quiet check boxes, a glossy green progress bar, a glassy title bar with the title on a soft glow (on Windows), and glossy icons drawn for MDM in that manner.",
    "text": "<g1>Aero</g1>: Windows 7-এর মতো দেখতে: চকচকে বোতাম যা পয়েন্টারের নিচে হালকা নীল হয়ে যায়, শান্ত চেকবক্স, একটি চকচকে সবুজ প্রোগ্রেস বার, একটি কাঁচের মতো টাইটেল বার যেখানে শিরোনামটি হালকা আভায় থাকে (Windows-এ), এবং MDM-এর জন্য সেইভাবে আঁকা চকচকে আইকন।"
   },
+  "ca3c806dbe253e96": {
+   "source": "Base16 and pywal colour schemes",
+   "text": "Base16 এবং pywal কালার স্কিম"
+  },
   "ca3ccb8cc16abc18": {
    "source": "<g1>Installation help</g1><g2>User guide</g2><g3>Report an issue</g3>",
    "text": "<g1>ইনস্টলেশন সহায়তা</g1><g2>ব্যবহারকারী নির্দেশিকা</g2><g3>একটি সমস্যা রিপোর্ট করুন</g3>"
@@ -11866,10 +11970,6 @@
    "source": "Can I download without the browser extension?",
    "text": "আমি কি ব্রাউজার এক্সটেনশন ছাড়া ডাউনলোড করতে পারি?"
   },
-  "cb1df855561b62e7": {
-   "source": "<g1>Contents</g1><g2>27 features, every one free · 10 coming with version 0.5</g2>",
-   "text": "<g1>সূচিপত্র</g1><g2>27টি বৈশিষ্ট্য, প্রতিটি বিনামূল্যে · সংস্করণ 0.5-এর সাথে আসছে 10টি</g2>"
-  },
   "cb565e5b28b1036b": {
    "source": "<g1><x2/> Add to Firefox</g1><g3><x4/> Add to Chrome</g3>",
    "text": "<g1><x2/> Firefox-এ যোগ করুন</g1><g3><x4/> Chrome-এ যোগ করুন</g3>"
@@ -11889,10 +11989,6 @@
   "cb797c11de6612fd": {
    "source": "3. Choose how many run at once",
    "text": "3. একসঙ্গে কতগুলো ডাউনলোড চলবে তা বেছে নিন"
-  },
-  "cb98466b6e5f801c": {
-   "source": "More of the browser, in the next version",
-   "text": "পরবর্তী সংস্করণে ব্রাউজারের আরও কিছু"
   },
   "cbb1b076308c99c8": {
    "source": "<g1>Only downloads</g1>: a paired device lists, adds, pauses, starts and removes downloads, and starts and stops queues. It can't change settings, open windows on the computer, or see folders (the list it gets has no paths).",
@@ -11966,10 +12062,6 @@
    "source": "(<x1/>, #157) runs the same <x2/> without eframe: a loop calls its <x3/> (what <x4/> runs at every frame) on a bare <x5/>, woken by the command channel, and never its <x6/>; commands are added as the remote control adds them (no window). The <x7/> and <x8/> (Compose, Unraid's template) run it on a server (<g9>server.md</g9>).",
    "text": "(<x1/>, #157) eframe ছাড়া একই <x2/> চালায়: একটি লুপ তার <x3/> (যা <x4/> প্রতিটি ফ্রেমে চালায়) একটি খালি <x5/>-এ কল করে, কমান্ড চ্যানেল দ্বারা জাগ্রত হয়, এবং কখনো তার <x6/> নয়; কমান্ডগুলি রিমোট কন্ট্রোল যোগ করার সাথে সাথে যোগ করা হয় (কোনো উইন্ডো নেই)। <x7/> এবং <x8/> (Compose, Unraid-এর টেমপ্লেট) এটি একটি সার্ভারে চালায় (<g9>server.md</g9>)।"
   },
-  "cc92659e2f9607dc": {
-   "source": "<g1>Coming with version 0.5</g1> <g2>This part isn't in the download (version 0.2.4) yet.</g2>",
-   "text": "<g1>সংস্করণ 0.5-এর সাথে আসছে</g1> <g2>এই অংশটি এখনও ডাউনলোডে (সংস্করণ 0.2.4) নেই।</g2>"
-  },
   "ccac18041a0a55cb": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "<g1>ফাইল তথ্য ডাউনলোড করুন</g1>-এ, <g2>পরে ডাউনলোড করুন</g2>-এ ক্লিক করুন।"
@@ -12033,6 +12125,10 @@
   "cdbd4b5a71dd1ff3": {
    "source": "The one you know, down to the pixel. With torrents, video and 86 languages it never had.",
    "text": "আপনি যা জানেন, পিক্সেল পর্যন্ত। টরেন্ট, ভিডিও এবং 86টি ভাষা সহ যা আগে কখনো ছিল না।"
+  },
+  "cdbe806171674ec7": {
+   "source": "Base16",
+   "text": "Base16"
   },
   "cdcbc0e8d8adc8ec": {
    "source": "The file's type is listed in <g1>Options → File types</g1>.",
@@ -12286,6 +12382,10 @@
    "source": "The Chromium (MV3) and Firefox extension",
    "text": "Chromium (MV3) এবং Firefox এক্সটেনশন"
   },
+  "d29614c2b6bb721a": {
+   "source": "<g1>Coming with version 0.5.0</g1> <g2>This part isn't in the download (version 0.2.4) yet.</g2>",
+   "text": "<g1>সংস্করণ 0.5.0-এর সাথে আসছে</g1> <g2>এই অংশটি এখনও ডাউনলোডে (সংস্করণ 0.2.4) নেই।</g2>"
+  },
   "d2a15d4e9d4e0387": {
    "source": "To add every link in a text file:",
    "text": "একটি টেক্সট ফাইলে প্রতিটি লিঙ্ক যোগ করতে:"
@@ -12341,6 +12441,10 @@
   "d381488ca470adde": {
    "source": "Woken up for the queue",
    "text": "সারির জন্য জাগানো হয়েছে"
+  },
+  "d38e4da15901e6a3": {
+   "source": "on Windows), and MDM follows each new wallpaper's colours within two seconds. <g1>The guide</g1> shows which colour goes where.",
+   "text": "Windows-এ), এবং MDM দুই সেকেন্ডের মধ্যে প্রতিটি নতুন ওয়ালপেপারের রঙ অনুসরণ করে। <g1>গাইড</g1> দেখায় কোন রঙ কোথায় যায়।"
   },
   "d394340a01c7d63d": {
    "source": "Gopeed",
@@ -12449,10 +12553,6 @@
   "d523b3399c313ed9": {
    "source": "<g1>Finished</g1> — complete downloads, by category.",
    "text": "<g1>সম্পন্ন হয়েছে</g1> — সম্পূর্ণ ডাউনলোড, শ্রেণী অনুযায়ী।"
-  },
-  "d5602b1836eaee18": {
-   "source": "<g1>Debrid accounts</g1><g2>File-host links unlocked through Real-Debrid, AllDebrid or Premiumize, then downloaded with MDM's speed and resume.</g2><g3><x4/>Coming with version 0.5</g3>",
-   "text": "<g1>ডিপ্রিড অ্যাকাউন্ট</g1><g2>Real-Debrid, AllDebrid বা Premiumize-এর মাধ্যমে ফাইল-হোস্ট লিঙ্কগুলি আনলক করা হয়, তারপর MDM-এর গতি এবং পুনরায় শুরু করার ক্ষমতা সহ ডাউনলোড করা হয়।</g2><g3><x4/>সংস্করণ 0.5-এর সাথে আসছে</g3>"
   },
   "d56f952e1fe6178b": {
    "source": "A whole gallery at once. Only new pictures next time.",
@@ -12870,6 +12970,10 @@
    "source": "Your system's accent colour and contrast setting, followed as you change them, on Windows, Linux and macOS.",
    "text": "Windows, Linux এবং macOS-এ আপনার সিস্টেমের অ্যাকসেন্ট রঙ এবং কনট্রাস্ট সেটিং, যা আপনি পরিবর্তন করলে সে অনুযায়ী পরিবর্তিত হয়।"
   },
+  "dbb6b970d325294a": {
+   "source": "Errors",
+   "text": "ত্রুটি"
+  },
   "dbd0785b71ca5554": {
    "source": "The Mister Download Manager extension for Chrome, Edge, Brave, Opera, Vivaldi and Firefox: downloads you click go to MDM with their cookies.",
    "text": "Chrome, Edge, Brave, Opera, Vivaldi এবং Firefox-এর জন্য Mister Download Manager এক্সটেনশন: আপনার ক্লিক করা ডাউনলোডগুলি তাদের কুকিজ সহ MDM-এ যায়।"
@@ -12894,6 +12998,10 @@
    "source": "<g1>Downloads in progress</g1> lists the running downloads. Choose one to see its progress window.",
    "text": "<g1>চলমান ডাউনলোডগুলি</g1>-তে চলমান ডাউনলোডের তালিকা দেখা যায়। কোনো ডাউনলোডের অগ্রগতির উইন্ডো দেখতে সেটি বেছে নিন।"
   },
+  "dc3eb36ea156b11b": {
+   "source": "<g1>Notification area</g1><g2>Starts with the computer in the notification area, and hides progress windows there while they run.</g2><g3><x4/>Coming with version 0.5.0</g3>",
+   "text": "<g1>নোটিফিকেশন এরিয়া</g1><g2>কম্পিউটার চালু হওয়ার সাথে সাথে নোটিফিকেশন এরিয়াতে শুরু হয়, এবং চলার সময় প্রগ্রেস উইন্ডোগুলি সেখানে লুকিয়ে রাখে।</g2><g3><x4/>0.5.0 সংস্করণে আসছে</g3>"
+  },
   "dc75431952fc8673": {
    "source": "Today's files marked <x1/> are for macOS 11 and later, on Apple Silicon or Intel, and for Linux on x86-64: an AppImage for most distributions, a <x2/> for Ubuntu, Debian, Mint and Pop!_OS, an <x3/> for Fedora, openSUSE and RHEL, and a <x4/> of the plain programs. Please <g5>tell us how it went</g5>, good or bad.",
    "text": "আজকের <x1/> চিহ্নিত ফাইলগুলি macOS 11 এবং তার পরের সংস্করণের জন্য, Apple Silicon বা Intel-এ, এবং x86-64-এর Linux-এর জন্য: বেশিরভাগ ডিস্ট্রিবিউশনের জন্য একটি AppImage, Ubuntu, Debian, Mint এবং Pop!_OS-এর জন্য একটি <x2/>, Fedora, openSUSE এবং RHEL-এর জন্য একটি <x3/>, এবং সাধারণ প্রোগ্রামগুলির একটি <x4/>। ভালো বা খারাপ, <g5>অনুগ্রহ করে আমাদের জানান কেমন লেগেছে</g5>।"
@@ -12917,10 +13025,6 @@
   "dce3ae8513f15cf7": {
    "source": "An import opens <g1>Link grabber</g1>, which sorts the links into packages: the volumes of one archive together, the links of one page together, the rest in <g2>Various files</g2>. Each link is looked up for its real name, its size and whether the server still has it, and the ones that are gone come unticked. A link already in your list goes under <g3>Already in the list</g3>, unticked.",
    "text": "একটি আমদানি <g1>লিঙ্ক গ্র্যাবার</g1> খোলে, যা লিঙ্কগুলিকে প্যাকেজে সাজায়: একটি আর্কাইভের ভলিউম একসাথে, একটি পৃষ্ঠার লিঙ্কগুলি একসাথে, বাকিগুলি <g2>বিভিন্ন ফাইল</g2>-এ। প্রতিটি লিঙ্কের আসল নাম, আকার এবং সার্ভারে এখনও আছে কিনা তা দেখা হয়, এবং যেগুলি চলে গেছে সেগুলি আনটিক করা হয়। আপনার তালিকায় ইতিমধ্যেই থাকা একটি লিঙ্ক <g3>ইতিমধ্যেই তালিকায় আছে</g3>-এর অধীনে যায়, আনটিক করা অবস্থায়।"
-  },
-  "dcee51abbc888fc3": {
-   "source": "From the next release, only if you choose them:",
-   "text": "পরবর্তী রিলিজ থেকে, শুধুমাত্র যদি আপনি সেগুলি নির্বাচন করেন:"
   },
   "dcfc39a9dd2666ad": {
    "source": "Releases",
@@ -12973,10 +13077,6 @@
   "de115a96257ea215": {
    "source": "MDM uses a lot of memory",
    "text": "MDM অনেক মেমরি ব্যবহার করে"
-  },
-  "de4e7b463bdad96e": {
-   "source": "<g1>Archives extracted</g1><g2>ZIP, TAR and more extracted as they arrive, 7z and RAR with 7-Zip, split archives once complete.</g2><g3><x4/>Coming with version 0.5</g3>",
-   "text": "<g1>আর্কাইভ নিষ্কাশন</g1><g2>ZIP, TAR এবং আরও অনেক কিছু আসার সাথে সাথে নিষ্কাশন করা হয়, 7z এবং RAR 7-Zip সহ, সম্পূর্ণ হলে বিভক্ত আর্কাইভ।</g2><g3><x4/>সংস্করণ 0.5-এর সাথে আসছে</g3>"
   },
   "de5eff3673bc7d55": {
    "source": "Free IDM alternatives, compared",
@@ -13033,10 +13133,6 @@
   "dff8acc1481fd233": {
    "source": "p",
    "text": "p"
-  },
-  "e012d6f7a054b81b": {
-   "source": "Windows 10 and 11, 64-bit, is the main platform. Builds for Linux (AppImage, .deb, .rpm and .tar.gz) and macOS (.dmg) come with every release too; today's are marked experimental. From the next release, Linux isn't experimental any more: it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS stays experimental. See <g1>Windows, Mac and Linux</g1> and <g2>Download</g2>.",
-   "text": "Windows 10 এবং 11, 64-বিট, প্রধান প্ল্যাটফর্ম। Linux (AppImage, .deb, .rpm এবং .tar.gz) এবং macOS (.dmg)-এর জন্য বিল্ডও প্রতিটি রিলিজের সাথে আসে; বর্তমানগুলো পরীক্ষামূলক হিসেবে চিহ্নিত। পরবর্তী রিলিজ থেকে, Linux আর পরীক্ষামূলক থাকবে না: এটি GNOME, KDE Plasma, Xfce এবং Cinnamon-এ, Wayland সেশনেও পরীক্ষা করা হয়েছে এবং এর প্যাকেজগুলো পরিষ্কার Ubuntu, Debian এবং Fedora সিস্টেমে পরীক্ষা করা হয়েছে। এখনো যা বাকি আছে: Flatpak Firefox এখনো পরীক্ষা করা হয়নি, এবং স্ক্রিন রিডার (Orca) এখনো MDM-এর উইন্ডোগুলো পড়তে পারে না। macOS পরীক্ষামূলক থাকবে। <g1>Windows, Mac এবং Linux</g1> এবং <g2>ডাউনলোড করুন</g2> দেখুন।"
   },
   "e01bb3ea246cc259": {
    "source": "Your download list and settings stay <g1>on your computer</g1>.",
@@ -13129,6 +13225,10 @@
   "e1846d6a94dee510": {
    "source": "misterdownloadmanager-cli",
    "text": "misterdownloadmanager-cli"
+  },
+  "e1c9dd4b02c7bb56": {
+   "source": "<g1>Themes</g1><g2>Nine looks, light and dark, from Classic to Aqua, or your own in a text file.</g2><g3><x4/>Coming with version 0.5.0</g3>",
+   "text": "<g1>থিম</g1><g2>নয়টি লুক, হালকা এবং গাঢ়, ক্লাসিক থেকে Aqua পর্যন্ত, অথবা একটি টেক্সট ফাইলে আপনার নিজস্ব থিম।</g2><g3><x4/>0.5.0 সংস্করণে আসছে</g3>"
   },
   "e1cb5a9a23d26236": {
    "source": "The video window listing a playlist's videos, each with its length and a box to tick, and one quality for all",
@@ -13437,10 +13537,6 @@
   "e680b303dc899de3": {
    "source": "A second copy of MDM watches the first. When MDM crashes, the report window says <g1>Mister Download Manager closed unexpectedly</g1>. When its window hasn't answered for 8 seconds, it says <g2>Mister Download Manager stopped responding</g2>, and <g3>End and restart MDM</g3> closes the frozen copy and starts a fresh one. If MDM comes back by itself, the window says so.",
    "text": "MDM-এর একটি দ্বিতীয় কপি প্রথমটিকে পর্যবেক্ষণ করে। যখন MDM ক্র্যাশ করে, তখন রিপোর্ট উইন্ডোতে <g1>Mister Download Manager অপ্রত্যাশিতভাবে বন্ধ হয়ে গেছে</g1> লেখা থাকে। যখন এর উইন্ডো 8 সেকেন্ড ধরে সাড়া না দেয়, তখন এটি <g2>Mister Download Manager সাড়া দেওয়া বন্ধ করে দিয়েছে</g2> বলে, এবং <g3>MDM বন্ধ করুন এবং পুনরায় চালু করুন</g3> হিমায়িত কপিটি বন্ধ করে একটি নতুন কপি শুরু করে। যদি MDM নিজে থেকেই ফিরে আসে, উইন্ডোটি তা বলে।"
-  },
-  "e69bea4e38cc4b65": {
-   "source": "<g1>Link grabber</g1><g2>A page's links gathered, sorted into packages and checked online, then the archives unpacked when they arrive.</g2><g3><x4/>Coming with version 0.5</g3>",
-   "text": "<g1>লিঙ্ক গ্র্যাবার</g1><g2>একটি পৃষ্ঠার লিঙ্কগুলি সংগ্রহ করা হয়, প্যাকেজে সাজানো হয় এবং অনলাইনে পরীক্ষা করা হয়, তারপর আর্কাইভগুলি আসার পর আনপ্যাক করা হয়।</g2><g3><x4/>সংস্করণ 0.5-এর সাথে আসছে</g3>"
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
@@ -13786,6 +13882,10 @@
    "source": "<g1>Windows' language</g1>, at the top, follows Windows' display language. When Windows uses a language MDM doesn't have, MDM shows English.",
    "text": "উপরে থাকা <g1>Windows-এর ভাষা</g1> Windows-এর ডিসপ্লে ভাষাকে অনুসরণ করে। যখন Windows এমন একটি ভাষা ব্যবহার করে যা MDM-এর নেই, তখন MDM ইংরেজি দেখায়।"
   },
+  "ec83076f0311f20e": {
+   "source": "A theme is one small text file in <g1>TOML</g1> (or JSON, <x2/>; or a <g3>colour scheme</g3>, <x4/>). It names only what it changes; everything else comes from the theme it <x5/>:",
+   "text": "একটি থিম হলো <g1>TOML</g1>-এ (অথবা JSON, <x2/>; অথবা একটি <g3>কালার স্কিম</g3>, <x4/>) একটি ছোট টেক্সট ফাইল। এটি শুধুমাত্র যা পরিবর্তন করে তার নাম দেয়; অন্য সবকিছু যে থিম থেকে <x5/> হয় সেখান থেকে আসে:"
+  },
   "ec8dbbc2dc38cd32": {
    "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you.",
    "text": "এইগুলির মধ্যে যেকোনো একটি দ্বারা বন্ধ করা টরেন্ট তার ইভেন্ট লগে তা দেখায় এবং MDM শুরু হলে আবার শেয়ার করা হয় না। এটি আবার শেয়ার করতে সীমা বাড়ান বা বন্ধ করুন। - <g1>সমস্ত টরেন্টের জন্য আপলোড সীমিত করুন</g1> — ডিফল্টরূপে বন্ধ থাকে। এটি আপনার সমস্ত টরেন্ট একসাথে অন্যান্য পিয়ারদের কাছে যা পাঠায়, তা ডাউনলোড করার সময় এবং শেয়ার করার সময় সীমিত করে। একটি টরেন্টের নিজস্ব আপলোড সীমা, তার অগ্রগতি উইন্ডোতে, এর উপরে প্রযোজ্য হয়। - <g2>Mister Download Manager দিয়ে ম্যাগনেট লিঙ্ক এবং .torrent ফাইল খুলুন</g2> — Windows তখন আপনার ব্রাউজারে ম্যাগনেট লিঙ্ক এবং এক্সপ্লোরারে <x3/> ফাইল MDM দিয়ে খোলে। এটি শুধুমাত্র আপনার Windows অ্যাকাউন্টের জন্য; Windows-এর <g4>এর সাথে খুলুন</g4> এ আপনি যে প্রোগ্রামটি বেছে নিয়েছেন সেটি প্রথমে থাকে। সেটআপ এটি আপনার জন্য চালু করতে পারে।"
@@ -13950,9 +14050,17 @@
    "source": "- <g1>Chromium as a Snap</g1> (Ubuntu's Chromium) starts MDM's helper inside its sandbox, where it can't reach MDM, so MDM doesn't list it in <g2>Add Mister Download Manager to your browser</g2>. Use Firefox, or Google Chrome from its own <x3/>. - <g4>Flatpak browsers</g4> (such as Zen's <x5/>) can't start MDM's helper, so MDM doesn't list them either. Install the browser from your distribution's packages (or the browser maker's own <x6/>, <x7/>, tarball or AppImage) to use browser integration.",
    "text": "- <g1>Snap হিসেবে Chromium</g1> (Ubuntu-র Chromium) MDM-এর সহায়ক প্রোগ্রামটি নিজের স্যান্ডবক্সে চালায়। সেখানে এটি MDM-এ পৌঁছাতে পারে না, তাই MDM <g2>আপনার ব্রাউজারে Mister Download Manager যোগ করুন</g2> তালিকায় Chromium দেখায় না। Firefox অথবা <x3/> থেকে Google Chrome ব্যবহার করুন। - <g4>Flatpak ব্রাউজারগুলি</g4> (যেমন Zen-এর <x5/>) MDM-এর সহায়ক প্রোগ্রাম চালাতে পারে না, তাই MDM সেগুলিও তালিকায় দেখায় না। ব্রাউজার ইন্টিগ্রেশন ব্যবহার করতে আপনার Linux ডিস্ট্রিবিউশনের প্যাকেজ থেকে ব্রাউজারটি ইনস্টল করুন (অথবা ব্রাউজার নির্মাতার নিজস্ব <x6/>, <x7/>, tarball বা AppImage থেকে)।"
   },
+  "eef0de2100bc665b": {
+   "source": "<g1>Network adapter</g1><g2>Every connection MDM opens goes out through the adapter you pick, and stops when it disconnects.</g2><g3><x4/>Coming with version 0.5.0</g3>",
+   "text": "<g1>নেটওয়ার্ক অ্যাডাপ্টার</g1><g2>MDM এর প্রতিটি সংযোগ আপনার নির্বাচিত অ্যাডাপ্টারের মাধ্যমে যায়, এবং সংযোগ বিচ্ছিন্ন হলে বন্ধ হয়ে যায়।</g2><g3><x4/>0.5.0 সংস্করণে আসছে</g3>"
+  },
   "eef7cd8b9e89ab48": {
    "source": "<g1>The app icon on macOS</g1>: the Dock showed a small, blurry icon while MDM ran; it keeps the app's own now. Elsewhere windows take their icon from a large size (sharp at any scaling).",
    "text": "<g1>macOS-এর অ্যাপ আইকন</g1>: MDM চলার সময় Dock-এ ছোট, ঝাপসা আইকন দেখা যেত; এখন অ্যাপের নিজস্ব আইকন দেখা যায়। অন্য উইন্ডোগুলো বড় আকারের আইকন ব্যবহার করে, যা যেকোনো স্কেলিংয়েই স্পষ্ট থাকে।"
+  },
+  "eefc211f2c3ab5f6": {
+   "source": "(the foreground)",
+   "text": "(অগ্রভাগ)"
   },
   "ef078e7bf8101d03": {
    "source": "1 the file types MDM takes, 2 the sites it leaves to the browser.",
@@ -14034,6 +14142,10 @@
    "source": "Yes. MDM comes with an MCP server, misterdownloadmanager-mcp: add it to Claude Desktop, Claude Code, Cursor, VS Code or another assistant that supports MCP, and you can ask it in your own words to list, add, pause, resume or remove downloads. It works with the MDM on your computer only, and needs the automation API on. See AI assistants.",
    "text": "হ্যাঁ। MDM-এর সঙ্গে একটি MCP সার্ভার রয়েছে, misterdownloadmanager-mcp: এটি Claude Desktop, Claude Code, Cursor, VS Code বা MCP সমর্থন করে এমন অন্য কোনো সহকারীতে যোগ করুন। তারপর নিজের ভাষায় তাকে ডাউনলোডের তালিকা দেখাতে, ডাউনলোড যোগ করতে, বিরতি দিতে, আবার শুরু করতে বা সরাতে বলতে পারবেন। এটি শুধু আপনার কম্পিউটারে থাকা MDM-এর সঙ্গে কাজ করে এবং অটোমেশন API চালু থাকতে হবে। AI সহকারী দেখুন।"
   },
+  "f01b0d771d8f75e6": {
+   "source": "<g1>View → Theme → Add a theme file…</g1> does it for you: pick a file anywhere, and MDM copies it into the themes folder and uses it at once. A file that isn't a theme stays out, and MDM says why.",
+   "text": "<g1>দেখুন → থিম → একটি থিম ফাইল যোগ করুন…</g1> আপনার জন্য এটি করে: যেকোনো জায়গা থেকে একটি ফাইল বেছে নিন, এবং MDM সেটিকে থিম ফোল্ডারে কপি করে এবং সাথে সাথে ব্যবহার করে। যে ফাইল থিম নয়, সেটি বাইরে থাকে এবং MDM কারণ বলে দেয়।"
+  },
   "f01bb992070dab45": {
    "source": "Image galleries — Mister Download Manager help",
    "text": "ছবির গ্যালারি — Mister Download Manager সহায়তা"
@@ -14065,6 +14177,10 @@
   "f0884221450540f4": {
    "source": "More questions",
    "text": "আরও প্রশ্ন"
+  },
+  "f088cdaf6f222203": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download, once you switch on <g2>Send downloads through this browser's proxy or VPN extension</g2> in the extension's toolbar popup (Firefox asks you once; Chrome, Edge, Brave, Opera and Vivaldi ask nothing more: see <g3>A VPN or proxy extension</g3>).",
+   "text": "<g1>একটি ব্রাউজারের অনুরোধ থেকে প্রক্সি/সক্স ব্যবহার করুন…</g1> — এটি ডিফল্টভাবে চালু থাকে। MDM ব্রাউজার থেকে যে ডাউনলোড নেয়, সেটি ব্রাউজার যে প্রক্সি ব্যবহার করেছে তার মাধ্যমে যায়। এটি একটি VPN বা প্রক্সি এক্সটেনশন দ্বারা সেট করা, ব্রাউজারের নিজস্ব ম্যানুয়াল প্রক্সি, অথবা এর প্রক্সি অটো-কনফিগ স্ক্রিপ্ট হতে পারে। এটি ছাড়া, ডাউনলোড আপনার নিজস্ব ঠিকানা থেকে শুরু হবে এবং VPN-এর দেশ বা এর ঠিকানায় সীমাবদ্ধ বিষয়বস্তু ডাউনলোড করা যাবে না। ব্রাউজার এক্সটেনশন সেই প্রক্সি পড়ে এবং প্রতিটি ডাউনলোডের সাথে MDM-কে দেয়, একবার আপনি এক্সটেনশনের টুলবার পপআপে <g2>এই ব্রাউজারের প্রক্সি বা VPN এক্সটেনশনের মাধ্যমে ডাউনলোড পাঠান</g2> চালু করলে (Firefox আপনাকে একবার জিজ্ঞাসা করে; Chrome, Edge, Brave, Opera এবং Vivaldi আর কিছু জিজ্ঞাসা করে না: <g3>একটি VPN বা প্রক্সি এক্সটেনশন</g3> দেখুন)।"
   },
   "f09a7e7e0cc71c2e": {
    "source": "In the system's keychain, as are Sites Logins' passwords and the proxy's. MDM's settings keep only a reference to it. <g1>Options → Accounts</g1> says where they are on your computer.",
@@ -14230,6 +14346,10 @@
    "source": "Intel",
    "text": "ইন্টেল"
   },
+  "f3d42829279ef4a5": {
+   "source": "A VPN or proxy extension is a proxy for the browser only. Switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in the extension's toolbar popup (it's off as installed), and MDM downloads what it takes from the browser through the same proxy (with <g2>Options → Proxy / Socks → Use proxy/socks from a browser's request</g2>, on by default; see <g3>Options</g3>). Switched off, the extension reads nothing of the browser's proxy.",
+   "text": "একটি VPN বা প্রক্সি এক্সটেনশন শুধুমাত্র ব্রাউজারের জন্য একটি প্রক্সি। এক্সটেনশনের টুলবার পপআপে <g1>এই ব্রাউজারের প্রক্সি বা VPN এক্সটেনশনের মাধ্যমে ডাউনলোড পাঠান</g1> চালু করুন (এটি ইনস্টল করার সময় বন্ধ থাকে), এবং MDM ব্রাউজার থেকে যা গ্রহণ করে তা একই প্রক্সির মাধ্যমে ডাউনলোড করে (ডিফল্টরূপে চালু থাকা <g2>সেটিংস → প্রক্সি / SOCKS → ব্রাউজারের অনুরোধ থেকে প্রক্সি/SOCKS ব্যবহার করুন</g2> সহ; <g3>সেটিংস</g3> দেখুন)। বন্ধ থাকলে, এক্সটেনশন ব্রাউজারের প্রক্সির কিছুই পড়ে না।"
+  },
   "f3d90a3cd84b7d3f": {
    "source": "Crash and freeze reports: the monitor process, out-of-process minidumps, symbolicated stacks, the report's text and the release logs (<g1>crash-reports.md</g1>)",
    "text": "ক্র্যাশ এবং ফ্রিজ রিপোর্ট: মনিটর প্রক্রিয়া, আউট-অফ-প্রসেস মিনিডাম্প, প্রতীকী স্ট্যাক, রিপোর্টের পাঠ্য এবং রিলিজ লগ (<g1>crash-reports.md</g1>)"
@@ -14245,6 +14365,10 @@
   "f3eb4961e73b466d": {
    "source": "Tick <g1>Remember Speed Limiter settings for this file on download stop/resume</g1> to keep this limit for the file: it applies again when you resume it later, even after restarting MDM.",
    "text": "ফাইলটির জন্য এই সীমা বজায় রাখতে, ডাউনলোড থামালে বা পুনরায় শুরু করলে <g1>এই ফাইলের জন্য স্পিড লিমিটার সেটিংস মনে রাখুন</g1> নির্বাচন করুন। পরে ডাউনলোডটি পুনরায় শুরু করলে, এমনকি MDM পুনরায় চালু করার পরেও, এই সীমাটি আবার কার্যকর হবে।"
+  },
+  "f430e9ac7d47c2cd": {
+   "source": "Yes: every release has builds for Linux and macOS. Today's are marked experimental; from version 0.5.0, Linux isn't, after checks on four desktops, and macOS stays experimental. Windows 10 and 11 are the main platform. <g1>More</g1>",
+   "text": "হ্যাঁ: প্রতিটি রিলিজের সাথে Linux এবং macOS-এর জন্য বিল্ড পাওয়া যায়। বর্তমান বিল্ডগুলো পরীক্ষামূলক হিসেবে চিহ্নিত; সংস্করণ 0.5.0 থেকে, চারটি ডেস্কটপে পরীক্ষা করার পর Linux আর পরীক্ষামূলক নয়, তবে macOS পরীক্ষামূলকই থাকছে। Windows 10 এবং 11 প্রধান প্ল্যাটফর্ম। <g1>আরও</g1>"
   },
   "f433d571cb30a759": {
    "source": "(or <x1/>) removes the programs, and the small files that tell your browsers where MDM's helper is: the .deb and .rpm install those for everyone (in <x2/> and <x3/>), for Chrome, Chromium, Edge, Brave, Vivaldi and Firefox (the Snap too), so MDM doesn't write them in your home folder. For the AppImage or the tar.gz, delete the file or the folder.",
@@ -14562,6 +14686,10 @@
    "source": "An etched separator's shadow line",
    "text": "একটি খোদাই করা বিভাজকের ছায়া রেখা"
   },
+  "fa8a033a2e9083c4": {
+   "source": "Success, the meters and a torrent's pieces",
+   "text": "সাফল্য, মিটার এবং একটি টরেন্টের অংশ"
+  },
   "fa8e04c072819d0f": {
    "source": "<g1>Metro</g1>: Windows 8's flat look: square corners, flat buttons and boxes, a coloured title bar with the title centred (on Windows, where MDM draws it), and one-colour icons (Microsoft's Fluent UI System Icons).",
    "text": "<g1>মেট্রো</g1>: Windows 8-এর ফ্ল্যাট নকশা: বর্গাকার কোণা, সমতল বোতাম ও বাক্স, রঙিন শিরোনাম বার যাতে শিরোনামটি মাঝখানে থাকে (Windows-এ, যেখানে MDM এটি আঁকে), এবং একরঙা আইকন (Microsoft-এর Fluent UI System Icons)।"
@@ -14589,6 +14717,10 @@
   "fafa608396fbddf1": {
    "source": "Under <g1>Category</g1>, choose <g2>General</g2>.",
    "text": "<g1>শ্রেণী</g1> এর অধীনে, <g2>সাধারণ</g2> নির্বাচন করুন।"
+  },
+  "fb01e711fb6c3664": {
+   "source": "Focus, default buttons, check boxes, links, the selection and the progress bar",
+   "text": "ফোকাস, ডিফল্ট বোতাম, চেক বক্স, লিঙ্ক, নির্বাচন এবং অগ্রগতি বার"
   },
   "fb03c292d20bbcb9": {
    "source": "To the extent allowed by law, we will not be liable for any damages arising from the use of, or inability to use, the software or the site, including lost data, lost profits, or downloads that fail, are incomplete or are harmful. Some places don't allow limiting certain liability; there, our liability is limited as far as the law allows.",
@@ -14790,6 +14922,10 @@
    "source": "<g1>Nothing to relearn.</g1> The toolbar, categories, download list, progress window, queues, Scheduler and Options sit where you expect them. Even the command-line switches are the same: <x2/>.",
    "text": "<g1>নতুন করে কিছু শেখার দরকার নেই।</g1> টুলবার, বিভাগ, ডাউনলোড তালিকা, অগ্রগতি উইন্ডো, সারি, সময়সূচী এবং সেটিংস—সবই আপনার পরিচিত জায়গায় আছে। এমনকি কমান্ড-লাইন সুইচও একই: <x2/>।"
   },
+  "fdc70071f8979731": {
+   "source": "Warnings",
+   "text": "সতর্কতা"
+  },
   "fdcffa742865c035": {
    "source": "<g1>Everything else</g1> goes into <g2>Various files</g2>.",
    "text": "<g1>বাকি সবকিছু</g1> <g2>বিভিন্ন ফাইল</g2>-এ যায়।"
@@ -14889,10 +15025,6 @@
   "ff3bfdeedafee43f": {
    "source": "A torrent counts as one file here: each torrent gets the limit of its own. A download with a limit of its own (see <g1>For one download</g1>) keeps that one.",
    "text": "এখানে একটি টরেন্টকে একটি ফাইল হিসাবে ধরা হয়: প্রতিটি টরেন্ট তার নিজস্ব সীমা পায়। নিজস্ব সীমাযুক্ত একটি ডাউনলোড (<g1>একটি ডাউনলোডের জন্য</g1> দেখুন) সেই সীমাটি বজায় রাখে।"
-  },
-  "ff4aa031b26f3930": {
-   "source": "Coming with version 0.5",
-   "text": "সংস্করণ 0.5-এর সাথে আসছে"
   },
   "ff71942d9ac7e304": {
    "source": "<g1>Your AI assistant, only if you connect one.</g1> MDM's MCP server (<x2/>) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see <g3>AI assistants</g3>.",
