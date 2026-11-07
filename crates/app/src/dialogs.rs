@@ -1184,9 +1184,24 @@ impl FileInfo {
                 } else {
                     (ButtonKind::Normal, ButtonKind::Default)
                 };
+                // The row as wide as its labels in this language need (#192), ending where it
+                // ends in English.
+                let [later_at, start_at, cancel_at] = winui::button_row(
+                    &p,
+                    &[
+                        ("Download Later", 97.0, 109.0),
+                        ("Start Download", 225.0, 109.0),
+                        ("Cancel", 352.0, 109.0),
+                    ],
+                    19.0,
+                    11.0,
+                    200.0,
+                )[..] else {
+                    unreachable!("three buttons")
+                };
                 let later = winui::button(
                     ui,
-                    r(o, 97.0, 206.0 + dy, 109.0, 21.0),
+                    r(o, later_at.0, 206.0 + dy, later_at.1, 21.0),
                     "Download Later",
                     later_kind,
                     false,
@@ -1195,7 +1210,7 @@ impl FileInfo {
                 let later = winui::why_disabled(later, blocked.is_some(), blocked.unwrap_or(""));
                 let start = winui::button(
                     ui,
-                    r(o, 225.0, 206.0 + dy, 109.0, 21.0),
+                    r(o, start_at.0, 206.0 + dy, start_at.1, 21.0),
                     "Start Download",
                     start_kind,
                     true,
@@ -1204,7 +1219,7 @@ impl FileInfo {
                 let start = winui::why_disabled(start, blocked.is_some(), blocked.unwrap_or(""));
                 let cancel = winui::button(
                     ui,
-                    r(o, 352.0, 206.0 + dy, 109.0, 21.0),
+                    r(o, cancel_at.0, 206.0 + dy, cancel_at.1, 21.0),
                     "Cancel",
                     ButtonKind::Normal,
                     false,
@@ -1239,9 +1254,12 @@ impl FileInfo {
                 if let Some(reason) = reason {
                     winui::copyable(ui, at, "file-info-error", &reason, true);
                 }
+                // As wide as its label in this language (#192), around the column's centre, from
+                // the folder box (it ends at 452) to the window's edge.
+                let (px, pw) = winui::button_around(&p, "Preview", 480.0, 73.0, 460.0, 562.0);
                 winui::button(
                     ui,
-                    r(o, 480.0, 128.0, 73.0, 21.0),
+                    r(o, px, 128.0, pw, 21.0),
                     // i18n: verb: open the part already downloaded
                     "Preview",
                     ButtonKind::Disabled,
@@ -1415,15 +1433,31 @@ impl Complete {
                     "complete-saved",
                 );
 
-                let btn = |ui: &mut Ui, x: f32, label: &str, kind| {
-                    winui::button(ui, r(o, x, 157.0, 90.0, 21.0), label, kind, false, None)
+                let btn = |ui: &mut Ui, (x, w): (f32, f32), label: &str, kind| {
+                    winui::button(ui, r(o, x, 157.0, w, 21.0), label, kind, false, None)
+                };
+                // As wide as their labels in this language (#192): a longer one pushes those
+                // after it right, Close last at the window's edge.
+                let [open_at, with_at, folder_at, close_at] = winui::button_row_from_left(
+                    &p,
+                    &[
+                        ("Open", 12.0, 90.0),
+                        ("Open with...", 115.0, 90.0),
+                        ("Open folder", 219.0, 90.0),
+                        ("Close", 354.0, 90.0),
+                    ],
+                    13.0,
+                    444.0,
+                    200.0,
+                )[..] else {
+                    unreachable!("four buttons")
                 };
                 // i18n: verb: opens the downloaded file
-                let open = btn(ui, 12.0, "Open", ButtonKind::Default);
-                let with = btn(ui, 115.0, "Open with...", ButtonKind::Normal);
-                let folder = btn(ui, 219.0, "Open folder", ButtonKind::Normal);
+                let open = btn(ui, open_at, "Open", ButtonKind::Default);
+                let with = btn(ui, with_at, "Open with...", ButtonKind::Normal);
+                let folder = btn(ui, folder_at, "Open folder", ButtonKind::Normal);
                 // i18n: verb: closes this window
-                let close = btn(ui, 354.0, "Close", ButtonKind::Normal);
+                let close = btn(ui, close_at, "Close", ButtonKind::Normal);
                 winui::checkbox(
                     ui,
                     o + vec2(24.0, 191.0),
@@ -1870,9 +1904,20 @@ impl TurnOffCountdown {
                     )],
                 );
                 winui::text(&p, o.x + 11.0, o.y + 34.0, &line, black);
+                // As wide as their labels in this language (#192): a longer one pushes Cancel
+                // right.
+                let [now_at, cancel_at] = winui::button_row_from_left(
+                    &p,
+                    &[("Turn off now", 94.0, 90.0), ("Cancel", 194.0, 73.0)],
+                    10.0,
+                    363.0,
+                    200.0,
+                )[..] else {
+                    unreachable!("two buttons")
+                };
                 let now = winui::button_light(
                     ui,
-                    r(o, 94.0, 63.0, 90.0, 21.0),
+                    r(o, now_at.0, 63.0, now_at.1, 21.0),
                     "Turn off now",
                     ButtonKind::Normal,
                     false,
@@ -1880,7 +1925,7 @@ impl TurnOffCountdown {
                 .clicked();
                 let cancel = winui::button_light(
                     ui,
-                    r(o, 194.0, 63.0, 73.0, 21.0),
+                    r(o, cancel_at.0, 63.0, cancel_at.1, 21.0),
                     "Cancel",
                     ButtonKind::Default,
                     false,
@@ -2494,10 +2539,20 @@ impl DeleteCategory {
                 {
                     self.remove = true;
                 }
+                // As wide as their labels in this language (#192).
+                let [delete_at, cancel_at] = winui::buttons_to_right(
+                    &p,
+                    488.0,
+                    8.0,
+                    &[("Delete", 73.0), ("Cancel", 73.0)],
+                    140.0,
+                )[..] else {
+                    unreachable!("two buttons")
+                };
                 // i18n: button: deletes the category
                 let delete = winui::button_light(
                     ui,
-                    r(o, 334.0, 118.0, 73.0, 21.0),
+                    r(o, delete_at.0, 118.0, delete_at.1, 21.0),
                     "Delete",
                     ButtonKind::Default,
                     false,
@@ -2505,7 +2560,7 @@ impl DeleteCategory {
                 .clicked();
                 let cancel = winui::button_light(
                     ui,
-                    r(o, 415.0, 118.0, 73.0, 21.0),
+                    r(o, cancel_at.0, 118.0, cancel_at.1, 21.0),
                     "Cancel",
                     ButtonKind::Normal,
                     false,

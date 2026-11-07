@@ -606,9 +606,19 @@ impl PasswordDialog {
                     self.focused = true;
                 }
                 let has = !self.password.is_empty();
+                // As wide as their labels in this language (#192).
+                let [ok_at, skip_at] = winui::buttons_to_right(
+                    &ui.painter().clone(),
+                    369.0,
+                    8.0,
+                    &[("Extract", 73.0), ("Cancel", 73.0)],
+                    160.0,
+                )[..] else {
+                    unreachable!("two buttons")
+                };
                 let ok = winui::button_light(
                     ui,
-                    r(o, 215.0, 80.0, 73.0, 21.0),
+                    r(o, ok_at.0, 80.0, ok_at.1, 21.0),
                     // i18n: button: extract the archive with the password typed
                     "Extract",
                     if has {
@@ -621,7 +631,7 @@ impl PasswordDialog {
                 .clicked();
                 let skip = winui::button_light(
                     ui,
-                    r(o, 296.0, 80.0, 73.0, 21.0),
+                    r(o, skip_at.0, 80.0, skip_at.1, 21.0),
                     "Cancel",
                     ButtonKind::Normal,
                     false,

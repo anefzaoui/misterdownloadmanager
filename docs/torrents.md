@@ -14,7 +14,14 @@ MDM downloads BitTorrent files from magnet links and `.torrent` files. Torrents 
 6. To watch a video while it downloads, tick **Download in order** (see [Download in order](#download-in-order)).
 7. Click **Download Now**, or **Later** to add it to the list without starting.
 
-![Add torrent](images/add-torrent.png)
+<!-- steps -->
+
+1. ![Add torrent with a torrent's files as a folder tree, the folder they go to, and Download Now](images/help/torrent-add.webp)
+   *Untick what you don't want, then Download Now.*
+2. ![A torrent's progress window on its Files tab](images/help/torrent-files.webp)
+   *Its progress window: each file and how much of it is here.*
+3. ![The Pieces tab: a square for each piece, filled once it's here](images/help/torrent-pieces.webp)
+   *Pieces: the torrent's map, filling in.*
 
 You can also paste a magnet link into **Add URL**, or drop a magnet link or a `.torrent` file on the drop target (**Tasks → Show drop target**). If a torrent is already in the list, MDM says so instead of adding it twice.
 
@@ -37,10 +44,6 @@ Double-click the torrent in the list to open its progress window. Besides the us
 The tabs stay once the torrent has finished, for as long as it is shared.
 
 The **Speed Limiter** tab of a torrent's window has, besides its download limit, **Limit uploading** to a speed of your choice. That limit is kept with the torrent: it applies again whenever the torrent runs or shares. A torrent can't be held under 16 KBytes/sec either way.
-
-![A torrent's progress window, on its Files tab](images/progress-torrent.png)
-
-![The Pieces tab: a square for each piece, filled once it's here](images/progress-torrent-pieces.png)
 
 ## Torrent commands
 
@@ -71,6 +74,9 @@ A torrent in order isn't faster to finish, and it helps the swarm less: use it f
 
 Many sites publish their new torrents as an RSS or Atom feed. MDM can watch feeds, list what they hold, and add the new torrents you want by itself. Choose **Tasks → RSS feeds...**, or click the arrow next to **Add Torrent**.
 
+![RSS feeds: the feeds MDM follows and their items](images/help/rss-feeds.webp)
+*RSS feeds, and the rules that pick what to download.*
+
 **Feeds** tab:
 
 - Type a feed's address into **Feed address** and click **Add feed**. MDM fetches it at once, then every 30 minutes; change that under **Check feeds every ... minutes**, 5 at the least.
@@ -93,6 +99,9 @@ Feeds and rules are kept in `rss.json` in MDM's data folder. MDM reads at most 5
 ## Torrent settings
 
 Choose **Tasks → Torrent settings...** (or the arrow next to **Add Torrent**):
+
+![Torrent settings: sharing, limits and what others can see](images/help/torrent-settings.webp)
+*Tasks → Torrent settings...*
 
 - **Keep sharing torrents after they finish** — off by default: a finished torrent stops, like any download. Turn it on to keep uploading to other peers after your download is complete.
   - **Stop sharing at a share ratio of** — a finished torrent stops being shared once it has sent that many times what it has (2.00: twice). Off by default.
