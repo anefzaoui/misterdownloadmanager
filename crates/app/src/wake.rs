@@ -644,12 +644,7 @@ mod tests {
         ticks(&mut w, true, secs(6), |w| w.awake);
         assert!(w.awake, "held once the system agreed");
         assert_eq!(asked.lock().unwrap().len(), 1);
-        assert!(
-            asked.lock().unwrap()[0]
-                .as_deref()
-                .unwrap()
-                .contains(QUEUE)
-        );
+        assert!(asked.lock().unwrap()[0].as_deref().unwrap().contains(QUEUE));
         // The queue stops: let go, at once too.
         let t = Instant::now();
         w.keep_awake(false, "");
