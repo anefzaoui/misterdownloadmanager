@@ -476,6 +476,10 @@ pub struct App {
     /// was last looked for. A tray that comes within [`LATE_TRAY_WITHIN`] takes the window.
     started_minimized: Option<Instant>,
     late_tray_checked: Option<Instant>,
+    /// Linux on X11: the main window's Xlib display and window, to withdraw it when it goes
+    /// into a tray minimized (unix::withdraw).
+    #[cfg(target_os = "linux")]
+    x11: Option<(usize, u64)>,
     exiting: bool,
     /// Clipboard watching (Options → General): the text last seen (outer None: not looked
     /// yet) and when.
@@ -933,6 +937,21 @@ impl App {
             trims_since_hidden: 0,
             started_minimized: (start == crate::Start::Minimized).then(Instant::now),
             late_tray_checked: None,
+            #[cfg(target_os = "linux")]
+            x11: {
+                use raw_window_handle::{
+                    HasDisplayHandle, HasWindowHandle, RawDisplayHandle, RawWindowHandle,
+                };
+                match (
+                    cc.display_handle().map(|h| h.as_raw()),
+                    cc.window_handle().map(|h| h.as_raw()),
+                ) {
+                    (Ok(RawDisplayHandle::Xlib(d)), Ok(RawWindowHandle::Xlib(w))) => {
+                        d.display.map(|p| (p.as_ptr() as usize, w.window as u64))
+                    }
+                    _ => None,
+                }
+            },
             exiting: false,
             confirm_delete: None,
             confirm_queue_delete: None,
@@ -2556,6 +2575,11 @@ impl App {
             );
             self.started_minimized = None;
             self.hide_to_tray(ctx);
+            // Minimized, hiding leaves it iconic on X11, its button still in the taskbar.
+            #[cfg(target_os = "linux")]
+            if let Some((display, window)) = self.x11 {
+                crate::unix::withdraw(display, window);
+            }
         }
     }
 
