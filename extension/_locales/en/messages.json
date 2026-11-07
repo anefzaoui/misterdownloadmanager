@@ -151,6 +151,48 @@
     "message": "How to fix it",
     "description": "link under a connection problem in the toolbar button's popup, to the help page's section for it"
   },
+  "popup_declined": {
+    "message": "Left to the browser: $name$",
+    "description": "in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "setup.png"
+      }
+    }
+  },
+  "popup_declined_unnamed": {
+    "message": "The last download was left to the browser.",
+    "description": "in the toolbar button's popup when the last download the browser kept came from a private window (its name isn't kept); followed by why (one of the declined_* texts)"
+  },
+  "declined_file_type": {
+    "message": "Its type isn't in Options → File types.",
+    "description": "why a download stayed with the browser: its file type isn't on the app's list; Options and File types are the app's window and its page, as the app names them"
+  },
+  "declined_site": {
+    "message": "Its site is in Options → File types, sites left to the browser.",
+    "description": "why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from"
+  },
+  "declined_address": {
+    "message": "Its address is in Options → File types, addresses left to the browser.",
+    "description": "why a download stayed with the browser: its address matches the app's list of addresses not to take"
+  },
+  "declined_small": {
+    "message": "It's smaller than the minimum size in Options → File types.",
+    "description": "why a download stayed with the browser: the file is smaller than the app's minimum size setting"
+  },
+  "declined_browser": {
+    "message": "This browser isn't ticked in Options → General.",
+    "description": "why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)"
+  },
+  "declined_integration_off": {
+    "message": "Use advanced browser integration is off in Options → General.",
+    "description": "why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it"
+  },
+  "declined_site_access": {
+    "message": "The extension isn't allowed to read this site (the browser's site access).",
+    "description": "why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on"
+  },
   "popup_alt": {
     "message": "Hold Alt while clicking a link to let the browser download it.",
     "description": "hint in the toolbar button's popup; Alt is the keyboard key"

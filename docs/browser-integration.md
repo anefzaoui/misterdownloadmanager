@@ -50,13 +50,15 @@ When you click a download, the extension checks MDM's Options:
 
 - **Options → General → Use advanced browser integration** must be on. Turn it off to send nothing to MDM.
 - **Options → General → Capture downloads from the following browsers** must have your browser ticked.
-- **Options → File types → Automatically start downloading the following file types** must list the file's type. The list starts with the usual ones: ZIP, RAR, 7Z, EXE, MSI, ISO, MP3, MP4, MKV, PDF and many more.
+- **Options → File types → Automatically start downloading the following file types** must list the file's type. The list starts with the usual ones: ZIP, RAR, 7Z, EXE, MSI, ISO, DMG, DEB, RPM, APPIMAGE, MP3, MP4, MKV, WEBM, PDF and many more.
 - **Options → File types → Don't start downloading automatically from the following sites** must not list the site. Names are separated by spaces, and `*` matches any part, as in `*.update.microsoft.com`. **Edit list ...** below it lists whole addresses to leave alone, one per line (`https://example.com/private/*`).
 - **Options → File types → Don't take files smaller than** leaves small files (a receipt, an icon) to the browser. 0 takes any size.
 - The extension must be allowed to read the site. When you limit it to some sites (or **On click**), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.
 
 ![Options, General: Use advanced browser integration and the list of browsers MDM takes downloads from](images/help/options-integration.webp)
 *1 must be on, and 2 your browser ticked.*
+
+When the browser keeps a download, the extension's button says which of these left it there, with the file's name, and MDM's log has a line for each one (`logs\mdm.log` in [MDM's data folder](crash-reports.md#where-reports-are-kept)).
 
 Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.
 

@@ -125,7 +125,7 @@ async function remoteSend(target, message) {
 // The file types the app takes by default (mdm_ipc::capture::DEFAULT_AUTO_TYPES; a test keeps
 // them the same): what is caught for another MDM when this computer has none to ask.
 const DEFAULT_TYPES =
-  "3GP 7Z AAC ACE AIF APK ARJ ASF AVI BIN BZ2 EXE GZ GZIP IMG ISO LZH M4A M4V MKV MOV MP3 MP4 MPA MPE MPEG MPG MSI MSU OGG OGV PDF PLJ PPS PPT QT R0* R1* RA RAR RM RMVB SEA SIT SITX TAR TIF TIFF TORRENT WAV WMA WMV Z ZIP";
+  "3GP 7Z AAC ACE AIF APK APPIMAGE APPX APPXBUNDLE ARJ ASF AVI BIN BZ2 CAB DEB DMG EXE FLAC GZ GZIP IMG ISO JAR LZH M4A M4V MKV MOV MP3 MP4 MPA MPE MPEG MPG MSI MSIX MSU OGG OGV OPUS PDF PKG PLJ PPS PPT QT R0* R1* RA RAR RM RMVB RPM SEA SIT SITX TAR TGZ TIF TIFF TORRENT TXZ WAV WEBM WMA WMV XZ Z ZIP ZST";
 
 // Pair with the MDM at `address` with a code it shows; {ok} or {ok: false, why, left}.
 async function remotePair(address, code) {
@@ -204,7 +204,8 @@ async function showStatus() {
 
 // ---- the rules: Options in the app, kept here between the browser's stops ------------------
 
-// {types, capture, excludedSites, excludedAddresses, opened, at}; null until first asked.
+// {types, capture, captureOff, excludedSites, excludedAddresses, opened, minKb, at}; null until
+// first asked. `captureOff`: why `capture` is false (a host before #208 doesn't say).
 let rules = null;
 
 async function storedRules() {
@@ -225,6 +226,7 @@ async function askRules() {
     rules = {
       types: reply.types,
       capture: reply.capture !== false,
+      captureOff: typeof reply.captureOff === "string" ? reply.captureOff : "",
       excludedSites: reply.excludedSites || "",
       excludedAddresses: Array.isArray(reply.excludedAddresses) ? reply.excludedAddresses : [],
       opened: reply.opened !== false,
@@ -291,17 +293,60 @@ function addressMatches(pattern, url) {
   return wildcard(p, p.includes("://") ? url : url.replace(/^[a-z][a-z0-9+.-]*:\/\//i, ""));
 }
 
-function excluded(r, url) {
+// Which of Options' lists leaves `url` to the browser: "site", "address", or "" (neither).
+function excludedBy(r, url) {
   let host = "";
   try {
     host = new URL(url).hostname.toLowerCase();
   } catch {
-    return true;
+    return "site";
   }
-  return (
-    r.excludedSites.split(/\s+/).some((p) => p && hostMatches(host, p)) ||
-    r.excludedAddresses.some((p) => addressMatches(p, url))
-  );
+  if (r.excludedSites.split(/\s+/).some((p) => p && hostMatches(host, p))) return "site";
+  if (r.excludedAddresses.some((p) => addressMatches(p, url))) return "address";
+  return "";
+}
+
+function excluded(r, url) {
+  return excludedBy(r, url) !== "";
+}
+
+// ---- downloads left to the browser: why, for the popup and MDM's log (#208) ----------------
+
+// A host's refusal by Options names the rule (`declined`); one before #208 says it only in its
+// error text, by the rule's Rust name (mdm_ipc::capture::Declined).
+const DECLINED_NAMES = {
+  IntegrationOff: "integration-off",
+  Browser: "browser",
+  FileType: "file-type",
+  Site: "site",
+  Address: "address",
+  Small: "small",
+};
+function declinedOf(reply) {
+  if (typeof reply.declined === "string" && reply.declined) return reply.declined;
+  const m = /left to the browser by Options \((\w+)\)/.exec(String(reply.error || ""));
+  return (m && DECLINED_NAMES[m[1]]) || "";
+}
+
+function siteOf(url) {
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return "";
+  }
+}
+
+// The last download left to the browser by Options (or because the extension may not read the
+// site): kept for the popup ({why, name, site, at}; a private window's without its name or
+// site), and, when the extension decided alone (`told` false), told to the host for MDM's log.
+// The host logs its own refusals itself. A download taken later clears it.
+async function noteLeft(why, name, url, incognito, told) {
+  const declined = incognito ? { why, name: "", site: "", at: Date.now() } : { why, name, site: siteOf(url), at: Date.now() };
+  await ext.storage.local.set({ declined });
+  if (told) return;
+  // Under a key of its own, with no address: an older host refuses it as one it can't
+  // download, and hands nothing over.
+  await native({ declined: { why, name: declined.name, site: declined.site }, ...(incognito ? { private: true } : {}) });
 }
 
 // ---- what the page told us: forms posted, links clicked with Alt -------------------------
@@ -1071,7 +1116,9 @@ async function handOff(d) {
   return native(message);
 }
 
-// The file name to offer the app the download under, or null: the browser keeps it.
+// The file name to offer the app the download under (`{name}`), or why Options leave it to
+// the browser (`{left, name}`), or null: the browser keeps it and there is nothing to say (not a
+// web address, paused, Alt held, a form that can't be posted again, MDM not reached).
 async function candidate(item, url) {
   if (!/^https?:/i.test(url)) return null; // blob:, data:, file: stay the browser's
   const { paused } = await ext.storage.local.get({ paused: false });
@@ -1081,15 +1128,24 @@ async function candidate(item, url) {
   const first = firstUrl(item);
   if (bypass.has(first) || postOf(first) === null) return null; // Alt; a form not to post again
   const r = await currentRules();
-  if (!r || !r.capture || excluded(r, first) || excluded(r, url)) return null;
+  if (!r) return null;
   const name = (item.filename || "").split(/[\\/]/).pop() || url.split(/[?#]/)[0].split("/").pop() || "";
+  const left = (why) => ({ left: why, name });
+  if (!r.capture) return left(r.captureOff || "browser");
+  const by = excludedBy(r, first) || excludedBy(r, url);
+  if (by) return left(by);
   const type = extensionOf(name);
-  if (!type || !typePatterns(r.types).some((p) => p.test(type))) return null;
+  if (!type || !typePatterns(r.types).some((p) => p.test(type))) return left("file-type");
   // Smaller than Options' minimum (when the browser knows the size already).
   const size = item.totalBytes > 0 ? item.totalBytes : item.fileSize;
-  if (r.minKb > 0 && size > 0 && size < r.minKb * 1024) return null;
-  if (!(await siteAccess(first))) return null;
-  return name;
+  if (r.minKb > 0 && size > 0 && size < r.minKb * 1024) return left("small");
+  if (!(await siteAccess(first))) return left("site-access");
+  return { name };
+}
+
+// Why it stays with the browser, said (the popup, MDM's log).
+function leftAlone(c, item, url) {
+  if (c && c.left) noteLeft(c.left, c.name, firstUrl(item) || url, item.incognito, false).catch(() => {});
 }
 
 // Offer the download to the app under `name`; true if it took it.
@@ -1106,6 +1162,14 @@ async function offer(item, url, name) {
     incognito: item.incognito,
     storeId: item.cookieStoreId,
   });
+  if (reply.ok) {
+    await ext.storage.local.remove("declined").catch(() => {});
+  } else {
+    // Refused by Options in the app (changed since the extension asked, or a rule only the app
+    // checks, as a redirect's end): the host logged it; the popup says it.
+    const why = declinedOf(reply);
+    if (why) await noteLeft(why, name, first, item.incognito, true).catch(() => {});
+  }
   return Boolean(reply.ok);
 }
 
@@ -1160,8 +1224,13 @@ if (!FIREFOX) {
   ext.downloads.onDeterminingFilename.addListener((item, suggest) => {
     const url = item.finalUrl || item.url;
     candidate(item, url)
-      .then((name) => name && offer(item, url, name))
-      .then((taken) => (taken ? drop(item) : suggest()))
+      .then(async (c) => {
+        const taken = Boolean(c && c.name && !c.left) && (await offer(item, url, c.name));
+        if (taken) return drop(item);
+        // The browser goes on first; why is said after.
+        suggest();
+        leftAlone(c, item, url);
+      })
       .catch(() => suggest());
     return true; // suggest() comes later
   });
@@ -1171,8 +1240,9 @@ if (!FIREFOX) {
   // cancelled or resumed; one that finished meanwhile (a small file) has its file removed.
   ext.downloads.onCreated.addListener(async (item) => {
     const url = item.finalUrl || item.url;
-    const name = await candidate(item, url).catch(() => null);
-    if (!name) return;
+    const c = await candidate(item, url).catch(() => null);
+    if (!c || c.left) return leftAlone(c, item, url);
+    const name = c.name;
     let paused = false;
     try {
       await ext.downloads.pause(item.id);
@@ -1522,9 +1592,10 @@ async function popupMessage(m) {
     const r = await refreshRules();
     const { paused } = await ext.storage.local.get({ paused: false });
     const s = await readStatus();
+    const { declined } = await ext.storage.local.get({ declined: null });
     const remote = await remoteTarget();
-    if (remote) return { connected: true, why: null, remote: remote.url, version: VERSION, paused };
-    return { connected: Boolean(r) && (!s.why || s.why === "update-app"), why: s.why, app: s.app, version: VERSION, paused };
+    if (remote) return { connected: true, why: null, remote: remote.url, version: VERSION, paused, declined };
+    return { connected: Boolean(r) && (!s.why || s.why === "update-app"), why: s.why, app: s.app, version: VERSION, paused, declined };
   }
   if (m.type === "remote-pair" && typeof m.url === "string" && typeof m.code === "string") return remotePair(m.url, m.code);
   if (m.type === "remote-off") return remoteOff();

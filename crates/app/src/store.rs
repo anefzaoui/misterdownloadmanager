@@ -148,6 +148,11 @@ fn load_from(p: &Path, empty: Loaded) -> Loaded {
             }
             let mut settings = f.settings;
             settings.list_known_browsers();
+            // An earlier version's default File types, untouched, become today's (#208); a list
+            // the user edited stays as it is.
+            if let Some(types) = mdm_ipc::capture::upgraded_types(&settings.auto_types) {
+                settings.auto_types = types.into();
+            }
             Loaded {
                 next_id: f.next_id.max(1),
                 items: f.items,
@@ -516,6 +521,26 @@ mod tests {
         std::fs::write(&p, b"broken").unwrap();
         std::fs::write(backup_path(&p), b"broken too").unwrap();
         assert_eq!(load_from(&p, empty()).next_id, 1, "from .1.bak");
+    }
+
+    /// #208: 0.2.x's File types, never edited, gain today's types (DMG, DEB...); an edited list
+    /// is kept as it is.
+    #[test]
+    fn an_untouched_file_types_list_gains_todays_types() {
+        let dir = tempfile::tempdir().unwrap();
+        let p = dir.path().join("downloads.json");
+        let old = "3GP 7Z AAC ACE AIF APK ARJ ASF AVI BIN BZ2 EXE GZ GZIP IMG ISO LZH M4A M4V MKV MOV MP3 MP4 MPA MPE MPEG MPG MSI MSU OGG OGV PDF PLJ PPS PPT QT R0* R1* RA RAR RM RMVB SEA SIT SITX TAR TIF TIFF WAV WMA WMV Z ZIP";
+        let list = |types: &str| {
+            serde_json::json!({ "next_id": 1, "items": [], "settings": { "auto_types": types } })
+                .to_string()
+        };
+        std::fs::write(&p, list(old)).unwrap();
+        let s = load_from(&p, empty()).settings;
+        assert_eq!(s.auto_types, mdm_ipc::capture::DEFAULT_AUTO_TYPES);
+        assert!(s.auto_type("MDM-0.3.0.dmg") && s.auto_type("mdm_0.3.0_amd64.deb"));
+        let edited = format!("{old} NZB");
+        std::fs::write(&p, list(&edited)).unwrap();
+        assert_eq!(load_from(&p, empty()).settings.auto_types, edited);
     }
 
     #[test]
