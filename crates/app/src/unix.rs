@@ -866,49 +866,34 @@ fn accent_parts(parts: &[f64]) -> Option<egui::Color32> {
 /// no value is the default (multicolour: blue). Mapped to Apple's published system colours.
 ///
 /// The Native theme asks every 2 s, from the window's thread, so `defaults` runs on a thread of
-/// its own (#222) and this answers what it said last, one check late; only the first answer is
-/// waited for, at most half a second, so Native starts in the right colour.
+/// its own (#222, crate::launch::Asked) and this answers what it said last, one check late; only
+/// the first answer is waited for, at most half a second, so Native starts in the right colour.
 #[cfg(target_os = "macos")]
 pub fn mac_accent() -> Option<egui::Color32> {
-    use std::sync::Mutex;
-    use std::sync::atomic::{AtomicBool, Ordering};
-    use std::time::{Duration, Instant};
-    /// What `defaults` said last (None: not yet; Some(None): it couldn't be asked).
-    static SAID: Mutex<Option<Option<egui::Color32>>> = Mutex::new(None);
-    static ASKING: AtomicBool = AtomicBool::new(false);
-    let said = || *SAID.lock().unwrap_or_else(|e| e.into_inner());
-    if !ASKING.swap(true, Ordering::AcqRel) {
-        let asked = std::thread::Builder::new()
-            .name("mac-accent".into())
-            .spawn(|| {
-                let out = crate::launch::output_within(
-                    Command::new("defaults").args(["read", "-g", "AppleAccentColor"]),
-                    Duration::from_secs(2),
-                );
-                let color = out.map(|out| {
-                    let n = String::from_utf8_lossy(&out.stdout)
-                        .trim()
-                        .parse::<i32>()
-                        .ok();
-                    mac_accent_color(n)
-                });
-                *SAID.lock().unwrap_or_else(|e| e.into_inner()) = Some(color);
-                ASKING.store(false, Ordering::Release);
-            });
-        if asked.is_err() {
-            ASKING.store(false, Ordering::Release);
-        }
-    }
-    let start = Instant::now();
-    loop {
-        if let Some(color) = said() {
-            return color;
-        }
-        if start.elapsed() > Duration::from_millis(500) {
-            return None;
-        }
-        std::thread::sleep(Duration::from_millis(10));
-    }
+    use std::time::Duration;
+    /// What `defaults` said last (None inside: it couldn't be asked).
+    static SAID: std::sync::LazyLock<crate::launch::Asked<(), Option<egui::Color32>>> =
+        std::sync::LazyLock::new(Default::default);
+    SAID.get(
+        &(),
+        Duration::ZERO,
+        Duration::from_millis(500),
+        None,
+        |_| {
+            let out = crate::launch::output_within(
+                Command::new("defaults").args(["read", "-g", "AppleAccentColor"]),
+                Duration::from_secs(2),
+            );
+            out.map(|out| {
+                let n = String::from_utf8_lossy(&out.stdout)
+                    .trim()
+                    .parse::<i32>()
+                    .ok();
+                mac_accent_color(n)
+            })
+        },
+    )
+    .flatten()
 }
 
 /// AppleAccentColor's number (None: not set) as the colour it stands for.
@@ -968,15 +953,31 @@ pub fn on_wayland() -> bool {
 /// Linux: a tray host is there to show MDM's icon (a StatusNotifierWatcher on the session bus:
 /// KDE, waybar's tray, GNOME's AppIndicator extension), #59. Without one (MangoWC, plain
 /// window managers), closing the window would hide it where nothing can bring it back.
+///
+/// The window asks every frame, so the bus is asked on a thread of its own at most every 2 s
+/// (crate::launch::Asked) and this answers what it said last; only the first answer is waited
+/// for, at most a quarter of a second. A bus that doesn't answer reads as no tray host.
 #[cfg(target_os = "linux")]
 pub fn tray_host() -> bool {
+    static ASKED: std::sync::LazyLock<crate::launch::Asked<(), bool>> =
+        std::sync::LazyLock::new(Default::default);
     let has = || -> zbus::Result<bool> {
-        let bus = zbus::blocking::Connection::session()?;
+        let bus = zbus::blocking::connection::Builder::session()?
+            .method_timeout(std::time::Duration::from_secs(5))
+            .build()?;
         let dbus = zbus::blocking::fdo::DBusProxy::new(&bus)?;
         let name = zbus::names::BusName::try_from("org.kde.StatusNotifierWatcher")?;
         Ok(dbus.name_has_owner(name)?)
     };
-    has().unwrap_or(false)
+    ASKED
+        .get(
+            &(),
+            std::time::Duration::from_secs(2),
+            std::time::Duration::from_millis(250),
+            None,
+            move |_| has().unwrap_or(false),
+        )
+        .unwrap_or(false)
 }
 
 /// `win32::on_a_screen`: winit has no monitor list before the window exists, so a saved
@@ -2106,7 +2107,9 @@ pub fn wake_at(at: Option<i64>) -> Result<(), String> {
 /// Keep the computer from sleeping while `reason` is given; None lets it sleep again as the
 /// system's settings say. Linux: logind's sleep and idle inhibitor, held by its file
 /// descriptor (`systemd-inhibit --list` shows it with its reason); a user in the active
-/// session may take it without a password. False when logind refused.
+/// session may take it without a password. False when logind refused, or didn't answer within
+/// 25 s. Called on wake::Holder's thread, never the window's: logind can be slow right after a
+/// resume.
 #[cfg(target_os = "linux")]
 pub fn keep_awake(reason: Option<&str>) -> bool {
     use std::sync::Mutex;
@@ -2118,7 +2121,9 @@ pub fn keep_awake(reason: Option<&str>) -> bool {
         return true;
     };
     let take = || -> zbus::Result<zbus::zvariant::OwnedFd> {
-        let conn = zbus::blocking::Connection::system()?;
+        let conn = zbus::blocking::connection::Builder::system()?
+            .method_timeout(std::time::Duration::from_secs(25))
+            .build()?;
         let logind = zbus::blocking::Proxy::new(
             &conn,
             "org.freedesktop.login1",

@@ -676,6 +676,9 @@ pub struct FileInfo {
     /// "Download through …" unticked: downloaded directly instead (`Item::direct`). Unticked
     /// from the start when the browser had already started the download.
     pub direct: bool,
+    /// Whether Save As names a folder, looked at off the window's thread: it is asked every
+    /// frame, and a folder on a network share that doesn't answer would freeze the window.
+    dest_dir: crate::launch::Asked<PathBuf, bool>,
 }
 
 pub enum Start {
@@ -730,6 +733,7 @@ impl FileInfo {
             None => (start_probe(rt, ctx, &new.url, &request), None),
         };
         FileInfo {
+            dest_dir: Default::default(),
             url_text: new.url.to_string(),
             url_bad: false,
             focused: false,
@@ -933,11 +937,22 @@ impl FileInfo {
         // The "Download through" line (#44) takes a row of its own while an account takes the
         // address: the window grows by it.
         let dy = if self.through.is_some() { 26.0 } else { 0.0 };
+        // Preview has 92 px for its label in this language (#192), from 8 px after the group box
+        // (it ends at 462) to the window's edge (562): where it needs more, the window grows by it
+        // and the right column (icon, size, Preview) widens, its centre moving by half of it.
+        let preview_w = winui::button_fit_width(
+            &ctx.layer_painter(egui::LayerId::background()),
+            "Preview",
+            73.0,
+            f32::INFINITY,
+        );
+        let wide = (preview_w - 92.0).max(0.0);
+        let cx = (wide / 2.0).floor();
         window(
             ctx,
             "file-info",
             "Download File Info",
-            [570.0, 234.0 + dy],
+            [570.0 + wide, 234.0 + dy],
             true,
             winui::BG(),
             |ui, o| {
@@ -1166,10 +1181,23 @@ impl FileInfo {
                 let name_bad = {
                     let typed = self.save_as.trim();
                     let dest = self.dest();
+                    // A local disk answers within the wait; a share that doesn't reads as no
+                    // folder meanwhile (the download says so if it can't write there).
+                    let folder = || {
+                        self.dest_dir
+                            .get(
+                                &dest,
+                                std::time::Duration::from_secs(1),
+                                std::time::Duration::from_millis(50),
+                                Some(ui.ctx()),
+                                |d| d.is_dir(),
+                            )
+                            .unwrap_or(false)
+                    };
                     typed.is_empty()
                         || typed.ends_with(['\\', '/'])
                         || dest.file_name().is_none()
-                        || dest.is_dir()
+                        || folder()
                 };
                 let blocked = if self.url_bad {
                     Some("Invalid address")
@@ -1226,7 +1254,7 @@ impl FileInfo {
                     Some(0),
                 );
 
-                // Right column, centred on x ≈ 516: file icon, size, Preview.
+                // Right column, centred on x ≈ 516 (+ cx): file icon, size, Preview.
                 // The shell's own 32 px icon for this file type, as IDM shows.
                 let ext = Path::new(&self.save_as)
                     .extension()
@@ -1235,7 +1263,7 @@ impl FileInfo {
                 icons.paint(
                     ui,
                     crate::chrome::IconKey::ExtLarge(ext),
-                    o + vec2(500.0, 45.0),
+                    o + vec2(500.0 + cx, 45.0),
                 );
                 let (size, reason) = match &self.info {
                     None => ("...".to_owned(), None),
@@ -1249,14 +1277,21 @@ impl FileInfo {
                     Some(Err(e)) => (crate::i18n::t("Error").to_owned(), Some(e.clone())),
                 };
                 let w = winui::text_width(&p, &size);
-                let at = winui::text(&p, o.x + 515.0 - w / 2.0, o.y + 103.0, &size, winui::TEXT());
+                let at = winui::text(
+                    &p,
+                    o.x + 515.0 + cx - w / 2.0,
+                    o.y + 103.0,
+                    &size,
+                    winui::TEXT(),
+                );
                 // Why the address didn't answer (not found, sign-in needed…): on hover, copyable.
                 if let Some(reason) = reason {
                     winui::copyable(ui, at, "file-info-error", &reason, true);
                 }
                 // As wide as its label in this language (#192), around the column's centre, from
-                // the folder box (it ends at 452) to the window's edge.
-                let (px, pw) = winui::button_around(&p, "Preview", 480.0, 73.0, 460.0, 562.0);
+                // 8 px after the group box (it ends at 462) to the window's edge.
+                let (px, pw) =
+                    winui::button_around(&p, "Preview", 480.0 + cx, 73.0, 470.0, 562.0 + wide);
                 winui::button(
                     ui,
                     r(o, px, 128.0, pw, 21.0),

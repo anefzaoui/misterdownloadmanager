@@ -292,6 +292,56 @@ pub fn menu_bar(ui: &mut Ui, o: Pos2, width: f32, open: Option<usize>) -> Option
     hit
 }
 
+/// The menu-bar title under `pos` (main-window coordinates), as [`menu_bar`] lays them out at
+/// `o`: the first menu at the right in RTL.
+pub fn menubar_title_at(p: &egui::Painter, o: Pos2, pos: Pos2) -> Option<usize> {
+    menus(p).iter().position(|(_, x, w, _)| {
+        winui::rect(Rect::from_min_size(o + vec2(*x, 0.0), vec2(*w, MENU_H))).contains(pos)
+    })
+}
+
+/// What happened to the menu bar this frame, for [`menubar_next`].
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum MenuBarEvent {
+    /// [`menu_bar`] returned title `i`: clicked (`released`: the click's release, or a
+    /// screen reader's Collapse), or hovered while another menu is open.
+    Title { i: usize, released: bool },
+    /// The open menu shut itself (Escape, a press outside it, the app losing the focus);
+    /// `press_on_title`: the press that shut it went down on a title of the bar.
+    Dismissed { press_on_title: bool },
+    /// An item was chosen.
+    Chosen,
+    /// Left or Right, or the keyboard (Alt, F10, an access letter), opened menu `i`.
+    Open(usize),
+}
+
+/// The menu bar's open menu after `event` (`open`: the one open before it).
+///
+/// A menu that shut itself is closed here too, unless the press that shut it went down on a
+/// title: that press's release is the title's click, which shuts the menu (its own title) or
+/// opens another one. Escape, or the app losing the focus, with the pointer resting on the bar
+/// (where the click that opened the menu left it) used to leave the menu marked open with
+/// nothing shown, so the next click on its title only "shut" it, and nothing opened.
+pub fn menubar_next(open: Option<usize>, event: MenuBarEvent) -> Option<usize> {
+    match event {
+        MenuBarEvent::Title { i, released } => {
+            if open == Some(i) && released {
+                None
+            } else {
+                Some(i)
+            }
+        }
+        MenuBarEvent::Dismissed {
+            press_on_title: true,
+        } => open,
+        MenuBarEvent::Dismissed {
+            press_on_title: false,
+        }
+        | MenuBarEvent::Chosen => None,
+        MenuBarEvent::Open(i) => Some(i),
+    }
+}
+
 /// A screen reader or UI Automation asked to shut the open menu-bar menu (Collapse on its
 /// title) this frame; taken once.
 pub fn menubar_collapse(ctx: &egui::Context) -> bool {
@@ -2025,5 +2075,105 @@ fn chevron(p: &egui::Painter, ox: f32, top: f32, open: bool, bright: bool) {
                 }
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{MenuBarEvent, menubar_next};
+
+    /// Runs `events` from no menu open; the open menu after each.
+    fn run(events: &[MenuBarEvent]) -> Vec<Option<usize>> {
+        let mut open = None;
+        events
+            .iter()
+            .map(|e| {
+                open = menubar_next(open, *e);
+                open
+            })
+            .collect()
+    }
+
+    #[test]
+    fn a_title_clicked_after_escape_opens_its_menu_again() {
+        // Click Tasks, Escape (the pointer still on Tasks: no press), click Tasks.
+        let steps = run(&[
+            MenuBarEvent::Title {
+                i: 0,
+                released: true,
+            },
+            MenuBarEvent::Dismissed {
+                press_on_title: false,
+            },
+            MenuBarEvent::Title {
+                i: 0,
+                released: true,
+            },
+        ]);
+        assert_eq!(steps, [Some(0), None, Some(0)]);
+    }
+
+    #[test]
+    fn clicking_the_open_menus_title_shuts_it() {
+        // The press shuts the menu's window; its release, on the same title, shuts the menu.
+        let steps = run(&[
+            MenuBarEvent::Title {
+                i: 1,
+                released: true,
+            },
+            MenuBarEvent::Dismissed {
+                press_on_title: true,
+            },
+            MenuBarEvent::Title {
+                i: 1,
+                released: true,
+            },
+            MenuBarEvent::Title {
+                i: 1,
+                released: true,
+            },
+        ]);
+        assert_eq!(steps, [Some(1), Some(1), None, Some(1)]);
+    }
+
+    #[test]
+    fn another_title_opens_its_menu_from_an_open_one() {
+        let steps = run(&[
+            MenuBarEvent::Title {
+                i: 0,
+                released: true,
+            },
+            // Hovered while Tasks is open: File opens.
+            MenuBarEvent::Title {
+                i: 1,
+                released: false,
+            },
+            // Pressed and released on Downloads.
+            MenuBarEvent::Dismissed {
+                press_on_title: true,
+            },
+            MenuBarEvent::Title {
+                i: 2,
+                released: true,
+            },
+        ]);
+        assert_eq!(steps, [Some(0), Some(1), Some(1), Some(2)]);
+    }
+
+    #[test]
+    fn a_press_elsewhere_a_choice_or_the_focus_lost_closes_the_menu() {
+        for end in [
+            MenuBarEvent::Dismissed {
+                press_on_title: false,
+            },
+            MenuBarEvent::Chosen,
+        ] {
+            assert_eq!(run(&[MenuBarEvent::Open(3), end]), [Some(3), None]);
+        }
+        // Left / Right from the keyboard move to the neighbour.
+        assert_eq!(
+            run(&[MenuBarEvent::Open(0), MenuBarEvent::Open(4)]),
+            [Some(0), Some(4)]
+        );
     }
 }

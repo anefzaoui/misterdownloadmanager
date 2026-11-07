@@ -18,6 +18,8 @@
 //! sleep settings apply again, and the queue's "Turn off computer when done" can put it to
 //! sleep at once.
 
+use std::sync::mpsc::{Receiver, Sender};
+
 use chrono::{DateTime, Datelike, Duration, Local, NaiveDateTime, TimeZone, Utc};
 
 use crate::queue::{Queue, Schedule};
@@ -184,6 +186,8 @@ pub struct Waker {
     /// When keeping the computer awake was last refused, and how often in a row (asked again
     /// 5 s later, after a minute of refusals once a minute).
     refused: Option<(std::time::Instant, u32)>,
+    /// The system's keep-awake, asked on a thread of its own.
+    holder: Holder,
 }
 
 impl Waker {
@@ -246,20 +250,36 @@ impl Waker {
         }
     }
 
-    /// Keep the computer awake while `on` (a queue with the option is running).
+    /// Keep the computer awake while `on` (a queue with the option is running). Returns at once:
+    /// the system is asked on the holder's thread, and its answer read on a later call.
     pub fn keep_awake(&mut self, on: bool, queue: &str) {
         if !on {
             self.refused = None;
             if std::mem::take(&mut self.awake) {
                 tracing::info!("wake: no longer keeping the computer awake");
-                hold_awake(None);
+            }
+            // A hold still on its way is let go once it is taken (the thread asks in turn).
+            if self.holder.may_hold() {
+                self.holder.release();
             }
             return;
+        }
+        if let Some(held) = self.holder.answer() {
+            if held {
+                tracing::info!("wake: keeping the computer awake");
+                self.awake = true;
+                self.refused = None;
+            } else {
+                self.refusal();
+            }
         }
         // A refusal is asked again a little later: logind refuses while the sleep the computer
         // just woke from is still ending, which is when a woken queue starts.
         let wait = |n: u32| std::time::Duration::from_secs(if n < 12 { 5 } else { 60 });
-        if self.awake || self.refused.is_some_and(|(t, n)| t.elapsed() < wait(n)) {
+        if self.awake
+            || self.holder.asking()
+            || self.refused.is_some_and(|(t, n)| t.elapsed() < wait(n))
+        {
             return;
         }
         let reason = crate::i18n::fmt(
@@ -267,25 +287,177 @@ impl Waker {
             crate::i18n::t("Mister Download Manager is running the queue \"{queue}\""),
             &[("queue", crate::i18n::t(queue))],
         );
-        if hold_awake(Some(&reason)) {
-            tracing::info!("wake: keeping the computer awake");
-            self.awake = true;
-            self.refused = None;
-        } else {
-            let n = self.refused.map_or(0, |(_, n)| n);
-            self.refused = Some((std::time::Instant::now(), n + 1));
+        if !self.holder.hold(reason) {
+            self.refusal();
         }
     }
 
-    /// Cancel the wake (MDM is quitting: Linux's alarm would outlive it).
+    fn refusal(&mut self) {
+        let n = self.refused.map_or(0, |(_, n)| n);
+        self.refused = Some((std::time::Instant::now(), n + 1));
+    }
+
+    /// Cancel the wake (MDM is quitting: Linux's alarm would outlive it). The computer may sleep
+    /// again: waited for at most a second (the system lets go of it when MDM ends anyway).
     pub fn clear(&mut self) {
         self.wanted = None;
         if std::mem::take(&mut self.armed) {
             let _ = arm(None);
         }
-        if self.awake {
-            self.awake = false;
-            hold_awake(None);
+        self.awake = false;
+        if self.holder.may_hold() {
+            self.holder
+                .release_within(std::time::Duration::from_secs(1));
+        }
+    }
+}
+
+/// An order for the holder's thread, with its number.
+enum Order {
+    /// Keep the computer awake for this reason; answered with whether the system agreed.
+    Hold(u64, String),
+    /// Let it sleep again; answered once done.
+    Release(u64),
+}
+
+/// The system's call: keep the computer awake for a reason, or let it sleep (None); false when
+/// the system refused.
+type Call = Box<dyn FnMut(Option<&str>) -> bool + Send>;
+
+/// The holder's thread: the orders to it, and its answers (the order's number, the system's).
+struct HolderThread {
+    orders: Sender<Order>,
+    answers: Receiver<(u64, bool)>,
+}
+
+/// The system's keep-awake (Windows' power request, logind's inhibitor, `caffeinate`), asked on a
+/// thread of its own: logind can be slow to answer right after a resume, which is exactly when a
+/// woken queue starts (and it is asked again every 5 s while it refuses), so the window never
+/// waits for it. The thread takes the orders in turn: a release sent while a hold is still on
+/// its way lets go of that hold.
+struct Holder {
+    /// Taken by the thread when it starts.
+    call: Option<Call>,
+    thread: Option<HolderThread>,
+    /// The hold waiting for its answer.
+    asked: Option<u64>,
+    /// The system agreed to the last hold, and it wasn't released since.
+    held: bool,
+    next: u64,
+}
+
+impl Default for Holder {
+    fn default() -> Self {
+        Holder::new(Box::new(hold_awake))
+    }
+}
+
+impl Holder {
+    fn new(call: Call) -> Holder {
+        Holder {
+            call: Some(call),
+            thread: None,
+            asked: None,
+            held: false,
+            next: 0,
+        }
+    }
+
+    /// Hand the order made with the next number to the thread, starting it the first time: that
+    /// number, or None when there is no thread to take it.
+    fn send(&mut self, order: impl FnOnce(u64) -> Order) -> Option<u64> {
+        if self.thread.is_none() {
+            let mut call = self.call.take()?;
+            let (tx, orders) = std::sync::mpsc::channel::<Order>();
+            let (answers, rx) = std::sync::mpsc::channel();
+            let started = std::thread::Builder::new()
+                .name("keep-awake".into())
+                .spawn(move || {
+                    for order in orders {
+                        let answer = match order {
+                            Order::Hold(n, reason) => (n, call(Some(&reason))),
+                            Order::Release(n) => (n, call(None)),
+                        };
+                        if answers.send(answer).is_err() {
+                            break;
+                        }
+                    }
+                });
+            if let Err(e) = started {
+                tracing::warn!("wake: no thread to keep the computer awake on: {e}");
+                return None;
+            }
+            self.thread = Some(HolderThread {
+                orders: tx,
+                answers: rx,
+            });
+        }
+        self.next += 1;
+        let n = self.next;
+        let thread = self.thread.as_ref()?;
+        thread.orders.send(order(n)).ok().map(|()| n)
+    }
+
+    /// Ask for the computer to be kept awake; false when it can't be asked at all.
+    fn hold(&mut self, reason: String) -> bool {
+        self.asked = self.send(|n| Order::Hold(n, reason));
+        self.asked.is_some()
+    }
+
+    /// A hold is on its way, not answered yet.
+    fn asking(&self) -> bool {
+        self.asked.is_some()
+    }
+
+    /// The computer may be kept awake now, or soon: a hold held, or still on its way.
+    fn may_hold(&self) -> bool {
+        self.held || self.asked.is_some()
+    }
+
+    /// The hold's answer, once it has come (true: held).
+    fn answer(&mut self) -> Option<bool> {
+        let asked = self.asked?;
+        let thread = self.thread.as_ref()?;
+        while let Ok((n, held)) = thread.answers.try_recv() {
+            if n == asked {
+                self.asked = None;
+                self.held = held;
+                return Some(held);
+            }
+        }
+        None
+    }
+
+    /// Let the computer sleep again (after any hold still on its way): the order's number.
+    fn release(&mut self) -> Option<u64> {
+        self.asked = None;
+        self.held = false;
+        self.send(Order::Release)
+    }
+
+    /// [`Holder::release`], waiting at most `limit` for it to be done: whether it was.
+    fn release_within(&mut self, limit: std::time::Duration) -> bool {
+        let Some(n) = self.release() else {
+            return false;
+        };
+        let Some(thread) = self.thread.as_ref() else {
+            return false;
+        };
+        let start = std::time::Instant::now();
+        loop {
+            match thread
+                .answers
+                .recv_timeout(limit.saturating_sub(start.elapsed()))
+            {
+                Ok((m, _)) if m == n => return true,
+                Ok(_) => {}
+                Err(_) => {
+                    tracing::warn!(
+                        "wake: the system hasn't answered within {limit:?}; MDM's hold ends with it"
+                    );
+                    return false;
+                }
+            }
         }
     }
 }
@@ -412,6 +584,139 @@ mod tests {
             })
         );
         assert_eq!(next_wake(&queues[..1], now), None);
+    }
+
+    use std::sync::{Arc, Mutex};
+    use std::time::Instant;
+
+    /// The queue's name (a constant: a literal in a call would be taken for a text to translate).
+    const QUEUE: &str = "night";
+
+    /// What a fake system was asked: a reason (hold) or None (let go).
+    type Asked = Arc<Mutex<Vec<Option<String>>>>;
+
+    /// A Waker whose system takes `slow` to answer each hold, and answers `agrees`.
+    fn waker(slow: std::time::Duration, agrees: bool) -> (Waker, Asked) {
+        let asked = Asked::default();
+        let log = asked.clone();
+        let call: Call = Box::new(move |reason| {
+            log.lock().unwrap().push(reason.map(str::to_owned));
+            if reason.is_some() {
+                std::thread::sleep(slow);
+                agrees
+            } else {
+                true
+            }
+        });
+        let w = Waker {
+            holder: Holder::new(call),
+            ..Waker::default()
+        };
+        // The translations are read once, on the first text (the app has read them long before).
+        let _ = crate::i18n::t("Mister Download Manager is running the queue \"{queue}\"");
+        (w, asked)
+    }
+
+    /// Call `keep_awake` as the window does, each call timed, until `done` or `limit`.
+    fn ticks(w: &mut Waker, on: bool, limit: std::time::Duration, done: impl Fn(&Waker) -> bool) {
+        let start = Instant::now();
+        while !done(w) && start.elapsed() < limit {
+            let t = Instant::now();
+            w.keep_awake(on, QUEUE);
+            assert!(
+                t.elapsed() < std::time::Duration::from_millis(50),
+                "keep_awake waited {:?}",
+                t.elapsed()
+            );
+            std::thread::sleep(std::time::Duration::from_millis(10));
+        }
+    }
+
+    #[test]
+    fn keeping_awake_never_waits_for_a_slow_system() {
+        let secs = std::time::Duration::from_secs;
+        let (mut w, asked) = waker(secs(2), true);
+        let t = Instant::now();
+        w.keep_awake(true, QUEUE);
+        assert!(t.elapsed() < std::time::Duration::from_millis(50));
+        assert!(!w.awake, "not held before the system said so");
+        // Every tick returns at once while the system takes its time, and it is asked once.
+        ticks(&mut w, true, secs(6), |w| w.awake);
+        assert!(w.awake, "held once the system agreed");
+        assert_eq!(asked.lock().unwrap().len(), 1);
+        assert!(asked.lock().unwrap()[0].as_deref().unwrap().contains(QUEUE));
+        // The queue stops: let go, at once too.
+        let t = Instant::now();
+        w.keep_awake(false, "");
+        assert!(t.elapsed() < std::time::Duration::from_millis(50));
+        assert!(!w.awake);
+        let start = Instant::now();
+        while asked.lock().unwrap().len() < 2 && start.elapsed() < secs(3) {
+            std::thread::sleep(std::time::Duration::from_millis(10));
+        }
+        assert_eq!(asked.lock().unwrap()[1], None, "let go");
+    }
+
+    #[test]
+    fn a_refusal_is_asked_again_later_not_every_tick() {
+        let secs = std::time::Duration::from_secs;
+        let (mut w, asked) = waker(std::time::Duration::ZERO, false);
+        ticks(&mut w, true, secs(2), |w| w.refused.is_some());
+        assert_eq!(w.refused.map(|(_, n)| n), Some(1));
+        // The next ticks within the 5 s don't ask again.
+        ticks(&mut w, true, std::time::Duration::from_millis(200), |_| {
+            false
+        });
+        assert_eq!(asked.lock().unwrap().len(), 1);
+        // 5 s later it is asked again.
+        let earlier = Instant::now().checked_sub(secs(6)).unwrap();
+        w.refused = Some((earlier, 1));
+        ticks(&mut w, true, secs(2), |w| {
+            w.refused.is_some_and(|(_, n)| n == 2)
+        });
+        assert_eq!(asked.lock().unwrap().len(), 2);
+        assert!(!w.awake);
+        // Nothing held: nothing to let go.
+        w.keep_awake(false, "");
+        assert_eq!(w.refused, None);
+        std::thread::sleep(std::time::Duration::from_millis(100));
+        assert_eq!(asked.lock().unwrap().len(), 2);
+    }
+
+    #[test]
+    fn stopping_while_the_hold_is_on_its_way_lets_it_go() {
+        let (mut w, asked) = waker(std::time::Duration::from_millis(300), true);
+        w.keep_awake(true, QUEUE);
+        w.keep_awake(false, "");
+        let start = Instant::now();
+        while asked.lock().unwrap().len() < 2 && start.elapsed() < std::time::Duration::from_secs(3)
+        {
+            std::thread::sleep(std::time::Duration::from_millis(10));
+        }
+        let asked = asked.lock().unwrap().clone();
+        assert!(asked[0].is_some() && asked[1].is_none(), "{asked:?}");
+        // The late "yes" is never taken for the stopped queue's.
+        std::thread::sleep(std::time::Duration::from_millis(50));
+        w.keep_awake(false, "");
+        assert!(!w.awake);
+    }
+
+    #[test]
+    fn quitting_waits_for_a_hanging_system_at_most_a_second() {
+        let (mut w, asked) = waker(std::time::Duration::from_secs(10), true);
+        w.keep_awake(true, QUEUE);
+        std::thread::sleep(std::time::Duration::from_millis(50));
+        let t = Instant::now();
+        w.clear();
+        let took = t.elapsed();
+        assert!(took < std::time::Duration::from_millis(1500), "{took:?}");
+        assert!(!w.awake);
+        assert_eq!(asked.lock().unwrap().len(), 1);
+        // A system that answers: quitting lets go, and waits for it.
+        let (mut w, asked) = waker(std::time::Duration::ZERO, true);
+        ticks(&mut w, true, std::time::Duration::from_secs(2), |w| w.awake);
+        w.clear();
+        assert_eq!(asked.lock().unwrap().last(), Some(&None));
     }
 
     #[test]
