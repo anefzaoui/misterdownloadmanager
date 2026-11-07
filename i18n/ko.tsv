@@ -2614,6 +2614,10 @@
 #, machine
 	No addresses yet	아직 주소가 없습니다.
 #. text in extension.rs
+#. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
+#, machine
+	No browser MDM can connect to was found	MDM이 연결할 수 있는 브라우저를 찾을 수 없습니다.
+#. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 #, machine
 	No browser's extension has connected yet	아직 연결된 브라우저 확장 프로그램이 없습니다.
@@ -3462,6 +3466,11 @@
 #. event log: File Properties: the download goes through the debrid account again
 #, machine
 	Set to download through the debrid account	디브리드 계정을 통해 다운로드하도록 설정됨
+#. text in extension.rs
+#. a check of Test browser integration: setting it up failed; {error} is the system's own message, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Setting it up failed: {error}	설정하지 못했습니다: {error}
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -4077,6 +4086,10 @@
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
 	the FTP server answered {code} {reply}	FTP 서버가 {code} {reply}로 응답했습니다.
+#. text in extension.rs
+#. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
+#, machine
+	The helper program the browsers start is missing	브라우저가 시작하는 도우미 프로그램이 없습니다.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine

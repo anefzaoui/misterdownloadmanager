@@ -13,6 +13,12 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ Linux: browser integration reaches Brave Origin (and the Beta, Dev and Nightly versions of
+  Brave, Chrome and Edge, and Vivaldi's snapshot); on macOS Brave is set up where it reads it,
+  Chrome's folder. From the AppImage, the helper program the browsers start is copied out
+  reliably, even while a browser still runs the old one, and put back at each start if it went
+  missing; Test browser integration says when it is missing, or why setting it up failed
+  ([#253](https://github.com/anefzaoui/misterdownloadmanager/issues/253))
 - ✅ The extension's popup shows **Open Mister Download Manager** whole: it was cut to "Open Mister
   Do…" on Linux and in longer languages; Options moves below it when both don't fit on one line
   (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))

@@ -538,6 +538,17 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Brave Origin connects on Linux, and the AppImage's helper is always there**
+  ([#253](https://github.com/anefzaoui/misterdownloadmanager/issues/253)): Brave Origin keeps
+  its settings in a folder of its own (`~/.config/BraveSoftware/Brave-Origin`), which MDM didn't
+  know, so its extension said MDM wasn't installed. MDM now sets up Brave Origin, the Beta, Dev
+  and Nightly versions of Brave, Chrome and Edge, and Vivaldi's snapshot; on macOS, Brave reads
+  Chrome's folder, which MDM now writes for it. From the AppImage, MDM copies the helper program
+  the browsers start out of the AppImage under a new name and swaps it in, so a browser still
+  running the old copy no longer keeps the new one out, and puts it back at each start if it went
+  missing. A copy or setup that fails is written to MDM's log, and **Test browser integration**
+  says when the helper program is missing, when no browser was found, or why setting it up
+  failed.
 - **The extension's popup: Open Mister Download Manager shows whole**
   ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): on Linux, whose fonts
   are wider, and in longer languages, the button was cut to "Open Mister Do…". Each button is now
