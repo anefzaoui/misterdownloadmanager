@@ -20,6 +20,8 @@ pub struct Changes {
     pub address: Option<url::Url>,
     /// Move the file (finished) or its destination (not started) into this folder.
     pub move_to: Option<PathBuf>,
+    /// "Through …" changed (#44): downloaded directly (true) or through the account again.
+    pub direct: Option<bool>,
 }
 
 pub struct Properties {
@@ -31,10 +33,13 @@ pub struct Properties {
     password: String,
     move_to: Option<PathBuf>,
     error: Option<String>,
+    /// The debrid accounts (#44): "Through …" shows while one takes the address.
+    route: crate::debrid::Route,
+    direct: bool,
 }
 
 impl Properties {
-    pub fn new(item: &Item) -> Self {
+    pub fn new(item: &Item, route: crate::debrid::Route) -> Self {
         let (login, password) = item.login.clone().unwrap_or_default();
         Properties {
             id: item.id,
@@ -45,6 +50,8 @@ impl Properties {
             password,
             move_to: None,
             error: None,
+            route,
+            direct: item.direct,
         }
     }
 
@@ -78,6 +85,7 @@ impl Properties {
                         .then(|| (self.login.clone(), self.password.clone())),
                     address,
                     move_to: self.move_to.take(),
+                    direct: (self.direct != item.direct).then_some(self.direct),
                 })
             }
             Outcome::Closed => Outcome::Closed,
@@ -334,6 +342,25 @@ impl Properties {
             &mut self.password,
             editable,
         );
+        // Through a debrid account (#44), beside the login: unticked, downloaded directly. It
+        // changes while the download isn't running or finished.
+        if let Some(service) = self.route.service(&item.url) {
+            let mut on = !self.direct;
+            let caption = crate::i18n::fmt(
+                // i18n: File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
+                crate::i18n::t("Through {service}"),
+                &[("service", service)],
+            );
+            winui::checkbox_light_until(
+                ui,
+                o + vec2(322.0, 329.0),
+                &mut on,
+                &caption,
+                editable,
+                Some(o.x + 467.0),
+            );
+            self.direct = !on;
+        }
         winui::etched_h(&p, o.x + 11.0, o.y + 378.0, 456.0);
         if !complete {
             let last = item.last_try.clone().unwrap_or_default();

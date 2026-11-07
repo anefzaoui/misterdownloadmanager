@@ -13,9 +13,10 @@ A download manager can fill your whole connection. These steps cap MDM so that b
 
 This cap is shared by every download, however many run at once. It works on its own; you don't need to turn the Speed Limiter on.
 
-![Speed Limiter settings](images/speed-limiter.png)
-
 To remove it, open the same window and untick **Limit all downloads together to**.
+
+![Speed Limiter settings: the maximum speed for all downloads](images/help/speed-limiter.webp)
+*Downloads → Speed Limiter → Settings...: one speed for all of MDM.*
 
 ## Cap each file instead
 

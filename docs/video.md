@@ -11,6 +11,15 @@ MDM downloads videos from their web pages: YouTube, Vimeo, Dailymotion, Twitch, 
 
 Any other page address that turns out to be a web page, not a file, is offered to the video window too.
 
+<!-- steps -->
+
+1. ![Download video from a page, with the Page address box and Look up](images/help/video-lookup.webp)
+   *Paste the page's address and click Look up.*
+2. ![The video window after Look up: the qualities with their sizes, Save to, File name and Subtitles](images/help/video-qualities.webp)
+   *Pick a quality, then Download Now.*
+3. ![A video's progress window while yt-dlp brings it in](images/help/video-progress.webp)
+   *It downloads like any other file, in its own row and window.*
+
 ## yt-dlp and ffmpeg
 
 MDM offers its two helpers on its first start, and again the first time they are needed. It
@@ -26,6 +35,9 @@ Both are kept in a `tools` folder in MDM's data folder.
 
 Already have yt-dlp or ffmpeg for another program? Use those instead of a second copy: in **Download video from a page**, click **Helpers...**, then **Use another program...** beside yt-dlp or ffmpeg, and choose the program. MDM runs it once to check that it is that program, and uses it from then on, the command line too. MDM doesn't update a program you chose: keep it up to date yourself (yt-dlp: `yt-dlp -U`, or your package manager). **Use MDM's own copy** goes back to the one MDM downloads and checks.
 
+![The video helpers window: yt-dlp and ffmpeg, each with its version and Use another program...](images/help/video-helpers.webp)
+*Helpers...: use your own yt-dlp or ffmpeg instead.*
+
 ## Choose the quality
 
 1. Wait for the list. It shows each resolution with its size, best first, then the sound alone:
@@ -40,11 +52,12 @@ Already have yt-dlp or ffmpeg for another program? Use those instead of a second
 
 The video then downloads like any other file, with its own row in the list and its progress window. yt-dlp brings it in over one stream of its own, so the window's connections table stays empty.
 
-![A video's progress window](images/progress-video.png)
-
 ## Subtitles
 
 When the video has subtitles, the **Subtitles** list offers them: the uploader's own languages first (and **All the uploader's** when there are several), then the site's automatic captions, marked *automatic*. Of those, only the ones in the language spoken and their translations into English and your interface language are listed; sites like YouTube offer a machine translation into every language they know.
+
+![The Subtitles list of the video window, with Put them into the video](images/help/video-subtitles.webp)
+*Choose the subtitles; tick Put them into the video to keep them inside the file.*
 
 - Saved beside the video, they get its name and the language: `My video.fr.srt`. Players such as VLC and MPV pick them up on their own. With ffmpeg they're always SRT; without it, the site's own format (often WebVTT, `.vtt`).
 - **Put them into the video** puts them inside the file instead, as tracks you switch on in the player. It needs ffmpeg, and an MP4 or MKV video.
@@ -58,6 +71,9 @@ A site may refuse subtitles when it's asked too often: YouTube does, most of all
 
 Paste the address of a playlist (`youtube.com/playlist?list=…`) or a channel's videos (`youtube.com/@name/videos`) and click **Look up**. Instead of one video's qualities, the window lists the list's videos, each with its length.
 
+![The video window listing a playlist's videos, each with its length and a box to tick, and one quality for all](images/help/video-playlist.webp)
+*A playlist: every video ticked, one quality for all.*
+
 - A playlist is listed whole, as its videos come in: the line above the list says how far it is ("Listing the videos: 1,200 of 6,000"). **Stop listing** keeps the ones listed so far, and **List the rest** carries on from there. If the site stops answering part-way (YouTube may, when it's asked too often), the window says after how many videos and why, and **List the rest** tries again from there.
 - A channel is listed 50 videos at a time, newest first. **Load more** lists the next 50.
 - Every video starts ticked. Untick the ones you don't want, or use **Select all** and **Select none**. Private and deleted videos are greyed out and can't be ticked.
@@ -69,6 +85,10 @@ Paste the address of a playlist (`youtube.com/playlist?list=…`) or a channel's
 MDM lists at most 20,000 videos of one list.
 
 A page address that points at one video inside a playlist or a mix (for example `watch?v=…&list=…`) downloads that one video, never the whole list.
+
+## Through a VPN's adapter
+
+With **Options → Proxy / Socks → [Network adapter](options.md#proxy--socks)** set, video downloads go through that adapter too, with the same kill switch as other downloads: MDM hands yt-dlp (and the ffmpeg it starts) a proxy of its own on this computer, and opens every connection through the adapter. When the adapter disconnects, the video download stops, and it starts again when the adapter is back. Formats sent over RTMP, RTSP, MMS or FTP can't go through it and are refused.
 
 ## When a video server can't be reached
 

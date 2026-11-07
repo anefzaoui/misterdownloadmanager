@@ -42,6 +42,7 @@ mod rss;
 mod rssdlg;
 mod scheduler;
 mod scrollbar;
+mod secrets;
 mod selection;
 mod settings;
 mod store;
@@ -56,6 +57,7 @@ mod tray;
 mod unix;
 mod update;
 mod videodlg;
+mod wake;
 mod whereis;
 #[cfg(windows)]
 mod win32;
@@ -170,7 +172,13 @@ fn main() -> std::process::ExitCode {
         // or a pipe. On Linux and macOS the launcher became this process, terminal and all.
         #[cfg(windows)]
         win32::cli_console(cli.launcher);
-        return mdm_cli::main(cli.args);
+        // Downloads go through the debrid accounts of Options → Accounts (#44).
+        return mdm_cli::main_with(cli.args, Some(&debrid::CliAccounts));
+    }
+    // The Windows uninstaller, when the user chose to remove the data too: MDM's sign-ins leave
+    // the system's keychain with it (#44).
+    if std::env::args().nth(1).as_deref() == Some("--forget-sign-ins") {
+        return secrets::forget_all();
     }
     match app() {
         Ok(()) => std::process::ExitCode::SUCCESS,
@@ -274,6 +282,9 @@ fn app() -> eframe::Result {
             ),
         );
     }
+    // Secrets from before (sealed, or kept as they were) go to the system's keychain now; the
+    // list is saved with their references once it holds them (secrets.rs, #44).
+    let _ = loaded.settings.for_disk();
     #[cfg(unix)]
     use unix::on_a_screen;
     #[cfg(windows)]
