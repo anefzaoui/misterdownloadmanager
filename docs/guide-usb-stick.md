@@ -21,7 +21,8 @@ By default, downloads go to the Downloads folder of the computer you're using. T
 4. Choose the next category (**Compressed**, **Documents**, **Music**, **Programs**, **Video**, **Torrents**) and do the same, for example `E:\Downloads\Video`.
 5. Click **OK**.
 
-![Options, Save to page](images/options-save-to.png)
+![Options, Save to: a category's folder](images/help/usb-save-to.webp)
+*Point each category's folder at the stick.*
 
 ## 3. Use it
 

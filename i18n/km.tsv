@@ -5906,3 +5906,43 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/វិនាទី
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	នៅក្នុងកូនសោដែលចាក់សោ
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	គ្មានកូនសោប្រព័ន្ធណាមួយឆ្លើយតបទេ ដូច្នេះការចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកនៅក្នុងការកំណត់របស់ MDM ដែលមានតែអ្នកប៉ុណ្ណោះដែលអាចអានបាន។
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	ម៉ាស៊ីនមេប្រូកស៊ី
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	ការចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកនៅក្នុងកូនសោ macOS ។
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	ការចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកនៅក្នុងកូនសោប្រព័ន្ធ (Secret Service)។
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	ការចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកនៅក្នុងកម្មវិធីគ្រប់គ្រងព័ត៌មានសម្ងាត់របស់ Windows ។
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	កូនសោប្រព័ន្ធត្រូវបានចាក់សោ ហើយ MDM មិនដោះសោវាទេ ដូច្នេះការចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកនៅក្នុងការកំណត់របស់ MDM ដែលមានតែអ្នកប៉ុណ្ណោះដែលអាចអានបាន។
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	ច្បាប់ចម្លងចល័តនេះរក្សាទុកការចូល និងពាក្យសម្ងាត់នៅក្នុងការកំណត់របស់វា ដែលបានអ៊ិនគ្រីបសម្រាប់គណនី Windows របស់អ្នក។
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	ច្បាប់ចម្លងចល័តនេះរក្សាទុកការចូល និងពាក្យសម្ងាត់នៅក្នុងការកំណត់របស់វា ដែលមានតែអ្នកប៉ុណ្ណោះដែលអាចអានបាន។
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	កម្មវិធីគ្រប់គ្រងព័ត៌មានសម្ងាត់របស់ Windows មិនបានឆ្លើយតបទេ ដូច្នេះការចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកនៅក្នុងការកំណត់របស់ MDM ដែលបានអ៊ិនគ្រីបសម្រាប់គណនី Windows របស់អ្នក។

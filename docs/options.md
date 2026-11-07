@@ -8,7 +8,8 @@ Some buttons are greyed. They belong to features that aren't built yet.
 
 ## General
 
-![Options, General page](images/options-general.png)
+![Options on its General page: start with the system, the clipboard, browser integration and the browsers MDM takes downloads from](images/help/options-general.webp)
+*General: how MDM starts, and what it takes from the clipboard and the browsers.*
 
 - **Launch Mister Download Manager on startup** — start MDM when you sign in to Windows. Off by default. Greyed in a [portable copy](portable.md), which writes nothing to the registry.
 - **Offer to download links copied to the clipboard** — when you copy a link whose file type is on the **File types** page, **Download File Info** opens with it, ready to start (or the download starts at once, with **Show start download dialog** off). On by default.
@@ -22,12 +23,16 @@ See [Browser integration](browser-integration.md).
 
 ## File types
 
+![Options on its File types page: the file types the browser hands to MDM and the sites it leaves alone](images/help/options-file-types.webp)
+*File types: what the browser hands over, and the sites left alone.*
+
 - **Automatically start downloading the following file types** — the file types the browser hands over (and the clipboard picks up). Separate them by spaces; `*` matches any characters, as in `R0*`. **Default** puts the original list back.
 - **Don't start downloading automatically from the following sites** — sites whose downloads stay in the browser, separated by spaces. `*.example.com` covers every part of a site. **Default** puts the original list back.
 
 ## Save to
 
-![Options, Save to page](images/options-save-to.png)
+![Options on its Save to page: a category, its file types and its folder](images/help/options-save-to.webp)
+*Save to: each category's file types and folder.*
 
 - **Category** — choose a category to see and change its settings below.
 - **New** — make your own category. **Edit...** changes the selected one: its folder, and for your own categories its name and file types.
@@ -40,6 +45,9 @@ MDM doesn't use a temporary folder: every connection writes straight into the fi
 
 ## Downloads
 
+![Options on its Downloads page: the start download dialog, Download complete and duplicate links](images/help/options-downloads.webp)
+*Downloads: which windows show, and what a duplicate link does.*
+
 - **Show start download dialog** — show **Download File Info** for each new download. With it off, downloads start at once, or only join the queue if you tick **Do not start downloading, only add files to the queue**.
 - **Show download complete dialog** — show **Download complete** when a file finishes.
 - **Start downloading immediately while displaying "Download File Info" dialog** — on by default, so the download is already under way while you choose a folder.
@@ -51,7 +59,8 @@ MDM doesn't use a temporary folder: every connection writes straight into the fi
 
 ## Connection
 
-![Options, Connection page](images/options-connection.png)
+![Options on its Connection page: connections per download, the network adapter and per-server exceptions](images/help/options-connection.webp)
+*Connection: how many connections, through which network adapter.*
 
 - **Default max. conn. number** — how many connections each download may use, from 1 to 32 (8 by default). Type the number or use the arrows.
 - **Allow more than 32 connections** — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.
@@ -70,6 +79,9 @@ More in [Connections and speed](connections-and-speed.md).
 
 ## Proxy / Socks
 
+![Options on its Proxy / Socks page](images/help/options-proxy.webp)
+*Proxy / Socks: no proxy, the system's, or your own.*
+
 - **No proxy/socks** — connect directly. This is the default.
 - **Use system settings** — use the proxy set in Windows.
 - **Use automatic configuration script** — the proxy auto-config (PAC) script your network gives: type its address (`http://…/proxy.pac`, or a file). MDM fetches it and asks it which proxy each download goes through (`PROXY`, `SOCKS` or `DIRECT`), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.
@@ -79,30 +91,40 @@ More in [Connections and speed](connections-and-speed.md).
   - A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under **Network adapter**.
   - In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request.
   - When the browser used no proxy, and **No proxy/socks** is chosen, MDM uses Windows' proxy settings, as browsers do.
-- **Network adapter** — **Any (the system chooses)** is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, torrents, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with "… is not connected" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.
+- **Network adapter** — **Any (the system chooses)** is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, torrents, video pages and image galleries, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with "… is not connected" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.
   - How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.
   - The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under [Connection](#connection) → **DNS**: MDM then asks it through the adapter.
-  - Not held to the adapter yet, so they don't start while one is chosen:
-    - video pages (yt-dlp can't be held to an adapter);
-    - torrents on Windows;
-    - `ftps://` (implicit TLS; `ftp://` with TLS is fine).
+  - Video pages and image galleries: yt-dlp, gallery-dl and the ffmpeg yt-dlp starts can't be held to an adapter themselves, so while one is chosen MDM gives them a proxy of its own on this computer (`127.0.0.1`, with a password only they get). MDM opens their connections through the adapter, as it opens its own, and looks the names up with the DNS you chose. When the adapter disconnects, their connections close and the downloads stop with the others. Video formats that can't go through a proxy (RTMP, RTSP, MMS, FTP) are refused rather than sent around it.
+  - Not held to the adapter yet, so they don't start while one is chosen: `ftps://` (implicit TLS; `ftp://` with TLS is fine).
   - Connections to this computer itself (`localhost`) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.
   - On macOS a VPN that reconnects may get a new interface (`utun5` instead of `utun4`): pick it again.
 - **Use FTP in PASV mode** — on by default: for FTP downloads MDM opens the data connections itself (passive mode), which works through routers and firewalls. Turn it off only for a server that needs active mode (the server connects back to you). FTP never goes through the proxy above, so its **ftp** box stays greyed. See [FTP and FTPS](adding-downloads.md#ftp-and-ftps).
 
 ## Sites Logins
 
+![Options on its Sites Logins page: a list of sites with their user names](images/help/options-logins.webp)
+*Sites Logins: a user name and password per site.*
+
 User names and passwords for sites that ask for them. **New** adds a row: the site (with a path if the login is only for part of it), the user name and the password. **Edit** and **Remove** change or delete the selected row. MDM uses the login for every download from that site. A login typed in **Add URL** (**Use authorization**) takes priority for that one download.
 
 ## Accounts
+
+![Options on its Accounts page: debrid service accounts](images/help/options-accounts.webp)
+*Accounts: your debrid accounts.*
 
 Your debrid service accounts (Real-Debrid, AllDebrid, Premiumize; experimental): **Add...** signs in by code in the browser or with your API token or key; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See [Debrid service accounts](debrid.md).
 
 ## Sounds
 
+![Options on its Sounds page: a sound for each event](images/help/options-sounds.webp)
+*Sounds: a sound for each event.*
+
 Play a sound for **Download complete**, **Download failed**, **Queue processing started** and **Queue processing stopped/finished**. Tick an event, select it, click **Browse...** to choose a `.wav` file, and **Play** to hear it.
 
 ## Regional
+
+![Options on its Regional page: the system's way of writing dates and times, or your own](images/help/options-regional.webp)
+*Regional: dates and times as the system writes them, or your own way.*
 
 How dates and times are written in the list of downloads and the Scheduler.
 
@@ -111,7 +133,8 @@ How dates and times are written in the list of downloads and the Scheduler.
 
 ## Archives
 
-![Options: Archives](images/options-archives.png)
+![Options on its Archives page: extracting archives when they are downloaded, and Link grabber's look-ups](images/help/options-archives.webp)
+*Archives: extract when downloaded, and where the files go.*
 
 Archives (zip, 7z, rar, tar, gz, xz), and [Link grabber](link-grabber.md).
 

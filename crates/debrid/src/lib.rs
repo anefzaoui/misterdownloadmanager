@@ -5,8 +5,8 @@
 //! (the services forbid sharing them).
 //!
 //! The engine knows nothing of accounts: the app asks [`Debrid::unlocker_for`] for each download
-//! (`mdm_engine::Options::unlocker`). Secrets (tokens) live in the app's settings, sealed there;
-//! here they are only in memory, and never written to a log.
+//! (`mdm_engine::Options::unlocker`). Secrets (tokens) are kept by the app, in the system's
+//! keychain; here they are only in memory, and never written to a log.
 //!
 //! The services: Real-Debrid (`realdebrid`), AllDebrid (`alldebrid`) and Premiumize
 //! (`premiumize`), each from its own public API documentation, on one interface (`ServiceKind`).

@@ -5906,3 +5906,43 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/సెకను
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	లాక్ చేయబడిన కీరింగ్‌లో
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	సిస్టమ్ కీరింగ్ స్పందించలేదు, కాబట్టి సైన్-ఇన్‌లు మరియు పాస్‌వర్డ్‌లు MDM సెట్టింగ్‌లలో ఉంచబడతాయి, వీటిని మీరు మాత్రమే చదవగలరు.
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	ప్రాక్సీ సర్వర్
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	సైన్-ఇన్‌లు మరియు పాస్‌వర్డ్‌లు macOS కీచైన్‌లో ఉంచబడతాయి.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	సైన్-ఇన్‌లు మరియు పాస్‌వర్డ్‌లు సిస్టమ్ కీరింగ్‌లో (సీక్రెట్ సర్వీస్) ఉంచబడతాయి.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	సైన్-ఇన్‌లు మరియు పాస్‌వర్డ్‌లు Windows క్రెడెన్షియల్ మేనేజర్‌లో ఉంచబడతాయి.
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	సిస్టమ్ కీరింగ్ లాక్ చేయబడింది మరియు MDM దానిని అన్‌లాక్ చేయదు, కాబట్టి సైన్-ఇన్‌లు మరియు పాస్‌వర్డ్‌లు MDM సెట్టింగ్‌లలో ఉంచబడతాయి, వీటిని మీరు మాత్రమే చదవగలరు.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	ఈ పోర్టబుల్ కాపీ సైన్-ఇన్‌లు మరియు పాస్‌వర్డ్‌లను దాని స్వంత సెట్టింగ్‌లలో ఉంచుతుంది, మీ Windows ఖాతా కోసం ఎన్‌క్రిప్ట్ చేయబడింది.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	ఈ పోర్టబుల్ కాపీ సైన్-ఇన్‌లు మరియు పాస్‌వర్డ్‌లను దాని స్వంత సెట్టింగ్‌లలో ఉంచుతుంది, వీటిని మీరు మాత్రమే చదవగలరు.
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows క్రెడెన్షియల్ మేనేజర్ స్పందించలేదు, కాబట్టి సైన్-ఇన్‌లు మరియు పాస్‌వర్డ్‌లు MDM సెట్టింగ్‌లలో ఉంచబడతాయి, మీ Windows ఖాతా కోసం ఎన్‌క్రిప్ట్ చేయబడ్డాయి.

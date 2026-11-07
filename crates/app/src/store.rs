@@ -261,14 +261,18 @@ fn encode(
         settings: &'a Settings,
         queues: &'a [Queue],
     }
-    serde_json::to_vec_pretty(&ListRef {
-        version: VERSION,
-        next_id,
-        // A private window's downloads live in memory only, as the browser keeps them.
-        items: items.iter().filter(|i| !i.context.private).collect(),
-        columns,
-        settings,
-        queues,
+    // The secrets as the disk keeps them: keychain references, or sealed (secrets.rs, #44).
+    let settings = &settings.for_disk();
+    crate::secrets::prepared(|| {
+        serde_json::to_vec_pretty(&ListRef {
+            version: VERSION,
+            next_id,
+            // A private window's downloads live in memory only, as the browser keeps them.
+            items: items.iter().filter(|i| !i.context.private).collect(),
+            columns,
+            settings,
+            queues,
+        })
     })
     .map_err(std::io::Error::other)
 }
@@ -281,7 +285,10 @@ fn write(p: &Path, json: &[u8]) -> std::io::Result<()> {
     }
     keep_generations(p);
     // The list holds the saved logins: its owner's only (the folder too).
-    mdm_ipc::private_write(p, json)
+    mdm_ipc::private_write(p, json)?;
+    // On the disk now: keychain entries it no longer names can go.
+    crate::secrets::vault().after_write();
+    Ok(())
 }
 
 /// Saves the list on a thread of its own. The write ends with a flush to the disk, which waited

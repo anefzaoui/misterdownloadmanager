@@ -18,6 +18,13 @@ Save a video from YouTube, Vimeo, TikTok and many other sites, in the quality yo
 
 The video appears in the list and downloads like any other file.
 
+<!-- steps -->
+
+1. ![The video window listing a video's qualities with their sizes](images/help/vfp-qualities.webp)
+   *MDM lists the qualities: pick one.*
+2. ![A video's progress window](images/help/vfp-progress.webp)
+   *It downloads like any other file.*
+
 ## Good to know
 
 - A link to one video inside a playlist or a mix downloads just that video, not the whole list.
