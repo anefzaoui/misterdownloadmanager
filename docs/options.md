@@ -155,7 +155,7 @@ Archives (zip, 7z, rar, tar, gz, xz), and [Link grabber](link-grabber.md).
 
 ## Remote
 
-![Options: Remote](images/options-remote.png)
+![Options: Remote](images/options-remote.webp)
 
 Control MDM from your phone or another computer on the local network: see
 [Control MDM from your phone](remote-control.md).

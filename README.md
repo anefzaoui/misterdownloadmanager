@@ -43,8 +43,8 @@
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/images/main-dark.png">
-    <img src="docs/images/main-light.png" alt="Mister Download Manager's main window: categories, toolbar and a list of downloads" width="920">
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/main-dark.webp">
+    <img src="docs/images/main-light.webp" alt="Mister Download Manager's main window: categories, toolbar and a list of downloads" width="920">
   </picture>
 </p>
 
@@ -125,6 +125,13 @@ their names ([more](docs/getting-started.md#on-linux)).
 | `...-linux-x86_64-experimental.rpm` | Fedora, openSUSE, RHEL: `sudo dnf install ./<file>.rpm`. |
 | `...-linux-x86_64-experimental.AppImage` | Any Linux. Make it executable and run it. |
 | `...-linux-x86_64-experimental.tar.gz` | The plain programs, for any distribution. |
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/main-linux-dark.webp">
+    <img src="docs/images/main-linux.webp" alt="Mister Download Manager's main window on Ubuntu's GNOME desktop" width="620">
+  </picture>
+</p>
 
 ### On a Mac? Be the first to try it
 
@@ -239,28 +246,28 @@ right-to-left window.
 
 <table>
   <tr>
-    <td width="50%"><img src="docs/images/video-button-youtube.png" alt="The Download video button over a YouTube video in Chrome"><br><sub><b>One click on YouTube</b>: the Download video button appears over the video.</sub></td>
-    <td width="50%"><img src="docs/images/video-button-page.png" alt="The Download video button over a video file playing in Chrome"><br><sub><b>Any video on any page</b>: drag the button where you like, it stays there.</sub></td>
+    <td width="50%"><img src="docs/images/video-button-youtube.webp" alt="The Download video button over a YouTube video in Chrome"><br><sub><b>One click on YouTube</b>: the Download video button appears over the video.</sub></td>
+    <td width="50%"><img src="docs/images/video-button-page.webp" alt="The Download video button over a video file playing in Chrome"><br><sub><b>Any video on any page</b>: drag the button where you like, it stays there.</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="docs/images/progress.png" alt="Progress window"><br><sub><b>Watch it fly</b>: every connection's share of the file, live speed and time left.</sub></td>
-    <td width="50%"><img src="docs/images/main-dark.png" alt="Dark mode"><br><sub><b>Dark mode</b> that follows Windows.</sub></td>
+    <td width="50%"><img src="docs/images/progress.webp" alt="Progress window"><br><sub><b>Watch it fly</b>: every connection's share of the file, live speed and time left.</sub></td>
+    <td width="50%"><img src="docs/images/main-dark.webp" alt="Dark mode"><br><sub><b>Dark mode</b> that follows Windows.</sub></td>
   </tr>
   <tr>
-    <td><img src="docs/images/add-url.png" alt="Add URL"><br><sub><b>Add a download</b>: paste a link, or let MDM catch it from your browser.</sub></td>
-    <td><img src="docs/images/add-torrent.png" alt="Add torrent"><br><sub><b>Torrents and magnet links</b>: pick the files you want, skip the rest.</sub></td>
+    <td><img src="docs/images/add-url.webp" alt="Add URL"><br><sub><b>Add a download</b>: paste a link, or let MDM catch it from your browser.</sub></td>
+    <td><img src="docs/images/add-torrent.webp" alt="Add torrent"><br><sub><b>Torrents and magnet links</b>: pick the files you want, skip the rest.</sub></td>
   </tr>
   <tr>
-    <td><img src="docs/images/progress-torrent.png" alt="A torrent's progress window"><br><sub><b>A torrent's progress</b>: its files, peers, trackers and pieces, in tabs.</sub></td>
-    <td><img src="docs/images/progress-video.png" alt="A video's progress window"><br><sub><b>A video's progress</b>: speed and time left while yt-dlp brings it in.</sub></td>
+    <td><img src="docs/images/progress-torrent.webp" alt="A torrent's progress window"><br><sub><b>A torrent's progress</b>: its files, peers, trackers and pieces, in tabs.</sub></td>
+    <td><img src="docs/images/progress-video.webp" alt="A video's progress window"><br><sub><b>A video's progress</b>: speed and time left while yt-dlp brings it in.</sub></td>
   </tr>
   <tr>
-    <td><img src="docs/images/language-picker.png" alt="Language picker"><br><sub><b>86 languages</b>, chosen by flag on the first start.</sub></td>
-    <td><img src="docs/images/arabic-main.png" alt="Arabic interface"><br><sub><b>Right to left</b> for Arabic, Hebrew, Persian, Urdu and Uyghur.</sub></td>
+    <td><img src="docs/images/language-picker.webp" alt="Language picker"><br><sub><b>86 languages</b>, chosen by flag on the first start.</sub></td>
+    <td><img src="docs/images/arabic-main.webp" alt="Arabic interface"><br><sub><b>Right to left</b> for Arabic, Hebrew, Persian, Urdu and Uyghur.</sub></td>
   </tr>
   <tr>
-    <td><img src="docs/images/scheduler.png" alt="Scheduler"><br><sub><b>Download overnight</b>: queues that start and stop on their own.</sub></td>
-    <td><img src="docs/images/options-connection.png" alt="Options"><br><sub><b>Options</b> where you expect them, every control working.</sub></td>
+    <td><img src="docs/images/scheduler.webp" alt="Scheduler"><br><sub><b>Download overnight</b>: queues that start and stop on their own.</sub></td>
+    <td><img src="docs/images/options-connection.webp" alt="Options"><br><sub><b>Options</b> where you expect them, every control working.</sub></td>
   </tr>
 </table>
 

@@ -9,7 +9,7 @@ MDM's interface comes in 86 languages: every display language Windows 11 offers,
 - **With the setup:** the setup asks for its language first, with Windows' display language selected. MDM starts in the language you choose there.
 - **Without the setup** (a zip copy): on the first start, MDM shows every language with its flag and its own name. Pick yours.
 
-![Choosing a language on first start](images/language-picker.png)
+![Choosing a language on first start](images/language-picker.webp)
 
 ## Changing it later
 
@@ -21,7 +21,7 @@ Open **View → Language...**. The same window as on the first start opens: ever
 
 In Arabic, Hebrew, Persian, Urdu and Uyghur the whole window is mirrored: the menus, toolbar and categories run from right to left, as Windows does for these languages. File names, addresses and folder paths keep their own direction inside translated sentences, so they stay readable.
 
-![MDM in Arabic](images/arabic-main.png)
+![MDM in Arabic](images/arabic-main.webp)
 
 ## Numbers and dates
 

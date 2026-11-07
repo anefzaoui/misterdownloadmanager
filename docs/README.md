@@ -4,7 +4,7 @@ Mister Download Manager (MDM) is a free download manager for Windows and Linux (
 
 These pages explain each part of the program. The tutorials walk through the things people do most, one task each.
 
-![The main window](images/main-light.png)
+![The main window](images/main-light.webp)
 
 ## Start here
 

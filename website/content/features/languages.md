@@ -33,7 +33,7 @@ display language, and falls back to English when MDM doesn't have it.
 
 ## Right to left, done properly
 
-![MDM in Arabic](images/arabic-main.png)
+![MDM in Arabic](images/arabic-main.webp)
 *The main window in Arabic: the menus, toolbar and categories run from right to left.*
 
 In Arabic, Hebrew, Persian, Urdu and Uyghur the whole window is mirrored, the way Windows does

@@ -6,7 +6,7 @@
 
 Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.
 
-![The progress window](images/progress.png)
+![The progress window](images/progress.webp)
 
 The **Download status** tab shows:
 
@@ -126,7 +126,7 @@ In the same window, tick **Limit all downloads together to** and set the speed. 
 
 Tick **Only while I'm using the computer** to apply it only while you use the mouse or keyboard. After a minute without input, MDM goes back to full speed.
 
-![Speed Limiter settings](images/speed-limiter.png)
+![Speed Limiter settings](images/speed-limiter.webp)
 
 ### For one download
 

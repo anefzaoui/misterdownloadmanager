@@ -65,6 +65,9 @@ systems and bring everything MDM needs; from the AppImage or the `.tar.gz`, a mi
 named at start with the command that installs it. **Update now** asks the package manager which
 package MDM is.
 
+![MDM's main window on Ubuntu 24.04's GNOME desktop: the categories and a list of downloads, each with the desktop's icon for its type](images/main-linux.webp)
+*On Ubuntu's GNOME desktop, with the desktop's own file icons.*
+
 What's left: the Flatpak Firefox isn't checked yet; screen readers (Orca) don't read MDM's
 windows on Linux yet; and native Wayland windows can't place menus, so XWayland stays the
 default. macOS stays experimental: its builds are made and tested by GitHub Actions, not yet on a

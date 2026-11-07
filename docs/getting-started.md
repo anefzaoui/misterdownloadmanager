@@ -28,7 +28,13 @@ files still carry `-experimental` in their names:
 | `...-linux-x86_64-experimental.AppImage` | Runs on most distributions: make it executable (`chmod +x`) and run it. It updates itself in place (**Help → Check for updates**). |
 | `...-linux-x86_64-experimental.tar.gz` | The plain programs, for any distribution. |
 
+![MDM's main window on Ubuntu 24.04's GNOME desktop: the categories and a list of downloads, each with the desktop's icon for its type](images/main-linux.webp)
+*MDM on Ubuntu's GNOME desktop, with the desktop's own file icons.*
+
 Browser integration is set up by MDM itself at each start (the browsers installed then are found); add the extension as in [Browser integration](browser-integration.md). Firefox installed as a Snap (Ubuntu's) reaches MDM once you allow it; other Snap and Flatpak browsers can't (see [Flatpak and Snap browsers](browser-help.md#linux-sandbox)). The tray icon, Dark Mode support and Launch on startup work on GNOME (Ubuntu's), KDE Plasma, Xfce and Cinnamon.
+
+![The window that offers the browser extension on Linux: Google Chrome and Mozilla Firefox, each with Add the extension](images/browser-offer-linux.webp)
+*MDM finds the browsers installed and offers each one its extension.*
 
 In a Wayland session the windows go through XWayland (below). Not there yet on Linux: screen
 readers (Orca) don't read MDM's windows; browsers installed as a Flatpak can't reach MDM (Firefox
@@ -36,6 +42,33 @@ from Flathub may, through the desktop as the Snap does, but that isn't checked y
 Draw with → Vulkan** is a choice, OpenGL stays the default.
 
 In a Wayland session (GNOME, KDE Plasma and others), MDM's windows run through XWayland when it is there: Wayland doesn't let a program place its own windows, so MDM's menus and drop-down lists would open in the middle of the screen. To run on Wayland itself anyway, start it with `MDM_WAYLAND=1 misterdownloadmanager`. If the system lacks a library X11 windows need (such as libxkbcommon-x11, which the .deb and .rpm bring but the AppImage and the tar.gz can't), MDM opens on Wayland instead; with no window system it can use, it names what's missing and the command that installs it.
+
+The windows are the ones described in this help, with the desktop's fonts, file icons and title
+bars:
+
+<!-- pictures -->
+
+- ![Add URL on Linux, with its address box](images/add-url-linux.webp)
+  *Add URL.*
+- ![A download's progress window on Linux: its speed, time left and connections](images/progress-linux.webp)
+  *A download's progress.*
+- ![Add torrent on Linux, with the torrent's files](images/add-torrent-linux.webp)
+  *Add torrent.*
+- ![The Scheduler on Linux](images/scheduler-linux.webp)
+  *The Scheduler.*
+- ![Options on its Connection page, on Linux](images/options-linux.webp)
+  *Options.*
+
+And on the other desktops it was checked on:
+
+<!-- pictures -->
+
+- ![MDM's main window on KDE Plasma](images/kde-main-linux.webp)
+  *KDE Plasma.*
+- ![MDM's main window on Cinnamon](images/cinnamon-main-linux.webp)
+  *Cinnamon.*
+- ![MDM's main window on Xfce](images/xfce-main-linux.webp)
+  *Xfce.*
 
 #### Uninstall on Linux {#uninstall-linux}
 
@@ -172,7 +205,7 @@ MDM follows your system: when Windows (or your desktop's light/dark preference o
   boxes, a blue focus ring, a blue gel progress bar, a grey title bar with small round buttons
   (on Windows), and icons drawn for MDM in that manner.
 
-![View → Theme open: Classic, Native, High contrast, Metro, Adwaita and Breeze](images/help/view-theme.webp)
+![View → Theme open: Classic, Native, High contrast, Metro, Adwaita, Breeze, Luna, Aero and Aqua, and Open themes folder](images/help/view-theme.webp)
 *View → Theme switches at once, keeping the layout.*
 
 <!-- pictures -->
@@ -196,6 +229,9 @@ are listed there too: [Themes](themes.md) says where that folder is, what a them
 Closing the main window doesn't quit MDM. It hides in the notification area, and downloads, queues and schedules carry on.
 
 On Linux this needs a tray, which most desktops have (KDE Plasma, Xfce, Cinnamon, Ubuntu's GNOME or GNOME with the AppIndicator extension, waybar's tray). On a desktop without one (some tiling window managers), closing the window quits MDM, since there would be nowhere to bring it back from.
+
+![MDM's icon in the top bar of Ubuntu's GNOME, its menu open: Open Mister Download Manager, Add new download, Add batch download, Downloads in progress, Speed Limiter, Scheduler, the main queue, Options and Exit](images/tray-linux.webp)
+*The tray icon's menu on Ubuntu's GNOME.*
 
 - Click the tray icon to bring the window back.
 - Right-click it for **Add new download**, **Add batch download**, **Downloads in progress**, **Speed Limiter**, **Scheduler**, the main download queue, **Options** and **Exit**.
