@@ -22,6 +22,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **The website: a page for every feature, and a Themes page**
+  ([#260](https://github.com/anefzaoui/misterdownloadmanager/issues/260)): each feature has a page
+  of its own, with the real window, where to find it in the app, since which version, and what it
+  can't do yet; the home page lists them all, by group. The Themes page shows every built-in theme
+  in its light and dark side, and how to make your own theme file, try it without building MDM,
+  and share it, with a prompt to give an AI assistant. What isn't in a release yet says so.
 - **Run MDM on a server** ([#157](https://github.com/anefzaoui/misterdownloadmanager/issues/157)):
   `misterdownloadmanager --headless` runs MDM without a window (a home server, a NAS, Docker,
   Unraid), its folders and port set by flags or the environment; a `Dockerfile`, a Compose file
@@ -114,7 +120,21 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   Mister Download Manager to your browser** window opens it in each of them (**Install it by
   hand** stays there for a browser that can't use its store), Chrome offers it by itself once
   MDM is installed, and the website, the help and the README offer **Add to Chrome** beside
-  **Add to Firefox**.
+  **Add to Firefox**. The store's copy needs MDM 0.3.0: the helper of MDM 0.2.x serves only the
+  copy in MDM's own folder, and the browser refuses the store's
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)).
+- **MDM says why the browser kept a download**
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): every download left
+  to the browser by Options is a line in MDM's log naming the setting that decided (its type
+  isn't in **File types**, its site or address is excluded, it's under the minimum size, the
+  browser is unticked, browser integration is off, or the extension may not read the site), and
+  the extension's button shows the last one, with the file's name. A download from a private
+  window is logged without its name or site.
+- **More file types taken from the browser by default**
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): today's installers and
+  packages (DMG and PKG for macOS, DEB, RPM and APPIMAGE for Linux, MSIX, APPX, APPXBUNDLE and CAB
+  for Windows, JAR), archives (XZ, ZST, TGZ, TXZ) and WEBM, FLAC and OPUS join **Options → File
+  types**. A list never edited gains them on the next start; one you edited stays as it is.
 - **Themes: View → Theme** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)).
   **Classic** is MDM's look, unchanged and still the default. **Native** takes your system's
   colours: Windows' accent colour and, when it is on, its contrast theme; the desktop's accent
@@ -574,6 +594,9 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   and FTP now work there, and each HTTPS or FTPS download fails at once, without retrying, saying
   that the computer has no certificates to check the server with and to install
   `ca-certificates`.
+- **Update now finds the Linux and macOS files by either name**: a release's AppImage, .deb,
+  .rpm, .tar.gz and .dmg were named `…-experimental`; MDM now looks for the name without it
+  first and still takes the older one, so Update now keeps working whichever a release uses.
 - **The Linux .deb and .rpm bring what MDM's window needs** (part of
   [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): on a system without
   libxkbcommon-x11 (a minimal install, a container), MDM installed from them stopped at start

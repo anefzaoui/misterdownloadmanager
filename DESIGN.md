@@ -322,6 +322,18 @@ Stamp Ink caps at width 70%, 900 weight, a 2.5px rule plus a 1.5px outline offse
 ### Language Dialog
 A Lift sheet, 12px corners, with an ink title band; a grid of flag, native name (isolated with `bdi`) and English name; the current language ringed in ink on Paper Grey. It slides up 14px over .28s on a navy backdrop.
 
+### Coming Sticker (in transit)
+What is in the source but not in a download yet: a paper sticker, ink text, a 1.5px **dashed** ink rule just inside its edge (in transit, like the race's dashed lane before the file moves), a clock icon, "Coming with version 0.5" and a fine line naming the current release. Three sizes from one builder (`build.py coming_banner`): on a page (Sheet shadow, on the board), on a section (Paper Grey, inside prose), on a tile (a 12px tag). Never green: nothing is delivered yet. One setting (`UPCOMING`) shows or removes them all.
+
+### Contents (the packing list)
+Every feature in one labelled sheet: an ink band ("Contents", the count in fine print), then one row per group, the group's field name in the start column and its features in a ruled grid (1px hairlines between cells, no card per item, no icons). Each cell is a link: the name at 17.5px/750 width 86%, its one line in ink-2, an arrow that moves 3px on hover, the coming tag when it applies. The home page and /features/ show the same sheet.
+
+### Feature Parcel
+A feature page's first view repeats the home's memorable moment at a smaller scale: the real window on the board (Lift, natural size, never upscaled) with a small waybill stuck across its lower end corner, tilted 1.6deg (mirrored in RTL), carrying the facts as fields (In the app, Since, Postage: Free, Full guide). Without a screenshot the label stands alone. Under 980px the label sits under the window's foot, overlapping it by 18px.
+
+### Theme Tiles
+Paper tiles two to a row, each its screenshot (light or dark: the switch above the grid chooses, the site's theme by default) over a 1.5px ink rule, then the name and its feel. Rows share their heights (subgrid). The last tile is empty: no paper, a 2px dashed outline on the board, a dashed plus, "Make your own theme". The three make-your-own steps are numbered at poster scale (900, width 68%), because their order is the instruction.
+
 ## Do's and Don'ts
 
 ### Do:

@@ -40,6 +40,10 @@ The browser started MDM's helper, but it stopped before answering. Security soft
 
 MDM's helper serves only its own extension. The browser says this copy isn't one it knows.
 
+- **MDM 0.2.x with the extension from the Chrome Web Store?** The store's copy needs MDM 0.3.0
+  or later. Update MDM with **Help → Check for updates...**. Until then, remove the store's copy
+  and load the one in MDM's folder instead (`extension\chromium`, see
+  [Browser integration](browser-integration.md#chrome-edge-brave-opera-and-vivaldi)).
 - **Two copies installed?** Open the browser's extensions page (`chrome://extensions`, `edge://extensions`, `brave://extensions`) and keep only one **Mister Download Manager**.
 - **A copy from elsewhere?** Remove it and add the extension as MDM's **Add Mister Download Manager to your browser** window shows (see [Browser integration](browser-integration.md)).
 - **An older MDM?** Update MDM: a newer extension may have an ID an old helper doesn't know.

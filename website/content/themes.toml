@@ -1,0 +1,61 @@
+# The Themes page (/themes.html, tools/website/build.py build_themes): MDM's built-in themes, in
+# View → Theme's order, each with its line and its picture (tools/shots/shots.toml, site-theme-*:
+# the main window, light and dark). `tag`: arrives after the rest, with its own "Coming with
+# version" mark (Luna, Aero and Aqua: #259). `note`: a line under the picture.
+
+[[theme]]
+id = "classic"
+name = "Classic"
+feel = "MDM's own look and the default: the layout IDM users know, with Windows 11's controls."
+shot = "images/help/site-theme-classic.webp"
+
+[[theme]]
+id = "native"
+name = "Native"
+feel = "Your system's accent colour and contrast setting, followed as you change them, on Windows, Linux and macOS."
+shot = "images/help/site-theme-native.webp"
+
+[[theme]]
+id = "high-contrast"
+name = "High contrast"
+feel = "Black and white, a bright accent, every edge drawn, text at 7:1 or more."
+shot = "images/help/site-theme-high-contrast.webp"
+
+[[theme]]
+id = "metro"
+name = "Metro"
+feel = "Windows 8's flat look: square corners, flat buttons and one-colour icons."
+shot = "images/help/site-theme-metro.webp"
+
+[[theme]]
+id = "adwaita"
+name = "Adwaita"
+feel = "GNOME's look: round corners, flat grey buttons, a rounded focus ring and a header bar."
+shot = "images/help/site-theme-adwaita.webp"
+
+[[theme]]
+id = "breeze"
+name = "Breeze"
+feel = "KDE Plasma's look: rounded corners, controls that take the accent's edge, KDE's icons."
+shot = "images/help/site-theme-breeze.webp"
+
+[[theme]]
+id = "luna"
+name = "Luna"
+feel = "Windows XP's feel: shaded buttons with an orange glow, green ticks, a deep blue title bar."
+shot = "images/help/site-theme-luna.webp"
+tag = true
+
+[[theme]]
+id = "aero"
+name = "Aero"
+feel = "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar."
+shot = "images/help/site-theme-aero.webp"
+tag = true
+
+[[theme]]
+id = "aqua"
+name = "Aqua"
+feel = "Mac OS X's feel: gel buttons round at the ends, a blue focus ring and a blue gel progress bar."
+shot = "images/help/site-theme-aqua.webp"
+tag = true

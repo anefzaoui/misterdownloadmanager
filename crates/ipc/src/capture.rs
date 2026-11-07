@@ -7,9 +7,35 @@
 
 use serde::Deserialize;
 
-/// Options → File types defaults (IDM 6.42's, and TORRENT: a .torrent the browser hands over opens
-/// Add torrent, #39). They are a new list's only: a saved list stays as it was.
-pub const DEFAULT_AUTO_TYPES: &str = "3GP 7Z AAC ACE AIF APK ARJ ASF AVI BIN BZ2 EXE GZ GZIP IMG ISO LZH M4A M4V MKV MOV MP3 MP4 MPA MPE MPEG MPG MSI MSU OGG OGV PDF PLJ PPS PPT QT R0* R1* RA RAR RM RMVB SEA SIT SITX TAR TIF TIFF TORRENT WAV WMA WMV Z ZIP";
+/// Options → File types defaults: IDM 6.42's; TORRENT (a .torrent the browser hands over opens
+/// Add torrent, #39); and today's installers, packages and archives (macOS DMG and PKG, Linux
+/// DEB, RPM and AppImage, Windows MSIX, APPX and CAB, Java's JAR, XZ, Zstandard and their tarballs)
+/// and open audio and video formats (WEBM, FLAC, OPUS; #208).
+pub const DEFAULT_AUTO_TYPES: &str = "3GP 7Z AAC ACE AIF APK APPIMAGE APPX APPXBUNDLE ARJ ASF AVI BIN BZ2 CAB DEB DMG EXE FLAC GZ GZIP IMG ISO JAR LZH M4A M4V MKV MOV MP3 MP4 MPA MPE MPEG MPG MSI MSIX MSU OGG OGV OPUS PDF PKG PLJ PPS PPT QT R0* R1* RA RAR RM RMVB RPM SEA SIT SITX TAR TGZ TIF TIFF TORRENT TXZ WAV WEBM WMA WMV XZ Z ZIP ZST";
+
+/// The lists earlier versions started with: IDM 6.42's (MDM 0.2.x), then with TORRENT (#39).
+/// A saved list equal to one of them was never edited, and becomes today's (`upgraded_types`).
+const EARLIER_AUTO_TYPES: [&str; 2] = [
+    "3GP 7Z AAC ACE AIF APK ARJ ASF AVI BIN BZ2 EXE GZ GZIP IMG ISO LZH M4A M4V MKV MOV MP3 MP4 MPA MPE MPEG MPG MSI MSU OGG OGV PDF PLJ PPS PPT QT R0* R1* RA RAR RM RMVB SEA SIT SITX TAR TIF TIFF WAV WMA WMV Z ZIP",
+    "3GP 7Z AAC ACE AIF APK ARJ ASF AVI BIN BZ2 EXE GZ GZIP IMG ISO LZH M4A M4V MKV MOV MP3 MP4 MPA MPE MPEG MPG MSI MSU OGG OGV PDF PLJ PPS PPT QT R0* R1* RA RAR RM RMVB SEA SIT SITX TAR TIF TIFF TORRENT WAV WMA WMV Z ZIP",
+];
+
+/// Today's default list when `saved` (Options → File types as saved) is an earlier version's
+/// default, untouched (the same types, in any order or case); `None` when it was edited, or is
+/// today's already: the user's own list never changes.
+pub fn upgraded_types(saved: &str) -> Option<&'static str> {
+    let set = |s: &str| {
+        let mut v: Vec<String> = s.split_whitespace().map(str::to_ascii_uppercase).collect();
+        v.sort();
+        v.dedup();
+        v
+    };
+    let saved = set(saved);
+    EARLIER_AUTO_TYPES
+        .iter()
+        .any(|old| set(old) == saved)
+        .then_some(DEFAULT_AUTO_TYPES)
+}
 pub const DEFAULT_EXCLUDED_SITES: &str = "*.update.microsoft.com download.windowsupdate.com *.download.windowsupdate.com siteseal.thawte.com ecom.cimetz.com *.voice2page.com";
 
 /// The capture settings, named as the app saves them (`Settings` in downloads.json).
@@ -61,6 +87,57 @@ pub enum Declined {
     Small,
 }
 
+impl Declined {
+    pub const ALL: [Declined; 6] = [
+        Declined::IntegrationOff,
+        Declined::Browser,
+        Declined::FileType,
+        Declined::Site,
+        Declined::Address,
+        Declined::Small,
+    ];
+
+    /// Its name between the native host and the extension: the host's reply (`declined`), and
+    /// the extension's notice of a download it left alone by the same rules
+    /// (extension/background.js).
+    pub fn code(self) -> &'static str {
+        match self {
+            Declined::IntegrationOff => "integration-off",
+            Declined::Browser => "browser",
+            Declined::FileType => "file-type",
+            Declined::Site => "site",
+            Declined::Address => "address",
+            Declined::Small => "small",
+        }
+    }
+
+    pub fn from_code(code: &str) -> Option<Declined> {
+        Declined::ALL.into_iter().find(|d| d.code() == code)
+    }
+
+    /// Why, for MDM's log (English, as the rest of it), naming the setting that decides.
+    pub fn reason(self) -> &'static str {
+        match self {
+            Declined::IntegrationOff => {
+                "Options > General > Use advanced browser integration is off"
+            }
+            Declined::Browser => {
+                "the browser is unticked in Options > General > Capture downloads from the following browsers"
+            }
+            Declined::FileType => "its type isn't in Options > File types",
+            Declined::Site => {
+                "its site is in Options > File types > Don't start downloading automatically from the following sites"
+            }
+            Declined::Address => {
+                "its address is in Options > File types > Edit list (addresses left to the browser)"
+            }
+            Declined::Small => {
+                "it is smaller than Options > File types > Don't take files smaller than"
+            }
+        }
+    }
+}
+
 impl CaptureRules {
     /// The rules as the app last saved them (defaults when there is no list yet).
     pub fn load() -> CaptureRules {
@@ -72,8 +149,17 @@ impl CaptureRules {
         crate::data_dir()
             .and_then(|d| std::fs::read(d.join("downloads.json")).ok())
             .and_then(|b| serde_json::from_slice::<Stored>(&b).ok())
-            .map(|s| s.settings)
+            .map(|s| s.settings.upgraded())
             .unwrap_or_default()
+    }
+
+    /// An earlier version's default File types list, untouched, as today's (the app does the
+    /// same when it reads its list, and saves it so).
+    pub fn upgraded(mut self) -> CaptureRules {
+        if let Some(types) = upgraded_types(&self.auto_types) {
+            self.auto_types = types.into();
+        }
+        self
     }
 
     /// Is a file of `size` bytes (the browser's figure, when it has one) too small to take?
@@ -88,16 +174,24 @@ impl CaptureRules {
 
     /// Are downloads from `browser` (a name `browser_named` gives) taken at all?
     pub fn captures(&self, browser: &str) -> bool {
-        self.advanced_integration && !self.browsers.iter().any(|(b, on)| b == browser && !on)
+        self.capture_off(browser).is_none()
+    }
+
+    /// Why no download from `browser` is taken (integration off, the browser unticked), if so.
+    pub fn capture_off(&self, browser: &str) -> Option<Declined> {
+        if !self.advanced_integration {
+            Some(Declined::IntegrationOff)
+        } else if self.browsers.iter().any(|(b, on)| b == browser && !on) {
+            Some(Declined::Browser)
+        } else {
+            None
+        }
     }
 
     /// May `browser` hand `url` (saved as `file_name`) over?
     pub fn accepts(&self, url: &str, file_name: &str, browser: &str) -> Result<(), Declined> {
-        if !self.advanced_integration {
-            return Err(Declined::IntegrationOff);
-        }
-        if !self.captures(browser) {
-            return Err(Declined::Browser);
+        if let Some(off) = self.capture_off(browser) {
+            return Err(off);
         }
         if !self.auto_type(file_name) {
             return Err(Declined::FileType);
@@ -214,7 +308,7 @@ pub fn browser_of(user_agent: &str) -> &'static str {
 }
 
 /// The host of an http(s) address, lower case.
-fn host_of(url: &str) -> String {
+pub fn host_of(url: &str) -> String {
     let rest = url.split_once("://").map_or(url, |(_, r)| r);
     let authority = rest.split(['/', '?', '#']).next().unwrap_or("");
     let host = authority.rsplit_once('@').map_or(authority, |(_, h)| h);
@@ -471,5 +565,70 @@ mod tests {
         ));
         assert!(!address_matches(" ", "https://x.org/"));
         assert!(!wildcard("*/files/*.zip", "https://x.org/files/a.rar"));
+    }
+
+    #[test]
+    fn an_earlier_default_list_becomes_todays_and_an_edited_one_stays() {
+        for old in EARLIER_AUTO_TYPES {
+            assert_eq!(upgraded_types(old), Some(DEFAULT_AUTO_TYPES));
+            // In another order or case: the same list, never edited.
+            let shuffled: Vec<String> = old.split(' ').rev().map(str::to_lowercase).collect();
+            assert_eq!(
+                upgraded_types(&shuffled.join("  ")),
+                Some(DEFAULT_AUTO_TYPES)
+            );
+        }
+        // 0.2.4's list: a .dmg, .deb or .webm is taken once upgraded (#208).
+        let r = CaptureRules {
+            auto_types: EARLIER_AUTO_TYPES[0].into(),
+            ..CaptureRules::default()
+        }
+        .upgraded();
+        for name in [
+            "MDM.dmg",
+            "mdm_0.3.0_amd64.deb",
+            "a.AppImage",
+            "clip.webm",
+            "x.tar.zst",
+        ] {
+            assert!(r.auto_type(name), "{name}");
+        }
+        // Edited by the user: one type more, one less, or their own list: left as it is.
+        let more = format!("{} DMG", EARLIER_AUTO_TYPES[0]);
+        let less = EARLIER_AUTO_TYPES[1].replace(" ZIP", "");
+        for edited in [more.as_str(), less.as_str(), "ZIP RAR", ""] {
+            assert_eq!(upgraded_types(edited), None, "{edited:?}");
+            let r = CaptureRules {
+                auto_types: edited.into(),
+                ..CaptureRules::default()
+            }
+            .upgraded();
+            assert_eq!(r.auto_types, edited);
+        }
+        // Today's needs nothing; it holds every earlier default's types.
+        assert_eq!(upgraded_types(DEFAULT_AUTO_TYPES), None);
+        for old in EARLIER_AUTO_TYPES {
+            for t in old.split(' ') {
+                assert!(DEFAULT_AUTO_TYPES.split(' ').any(|n| n == t), "{t}");
+            }
+        }
+    }
+
+    #[test]
+    fn each_refusal_has_a_name_and_a_reason() {
+        for d in Declined::ALL {
+            assert_eq!(Declined::from_code(d.code()), Some(d));
+            assert!(d.reason().contains("Options >"), "{d:?}");
+        }
+        assert_eq!(Declined::from_code("FileType"), None);
+        let mut r = CaptureRules {
+            browsers: vec![(EDGE.into(), false)],
+            ..CaptureRules::default()
+        };
+        assert_eq!(r.capture_off(CHROME), None);
+        assert_eq!(r.capture_off(EDGE), Some(Declined::Browser));
+        r.advanced_integration = false;
+        assert_eq!(r.capture_off(CHROME), Some(Declined::IntegrationOff));
+        assert!(!r.captures(CHROME));
     }
 }

@@ -290,6 +290,17 @@ def check(shots: list[dict]) -> int:
     bad = []
     ids = {s["id"] for s in shots}
     for s in shots:
+        # A picture of the website's own (its Themes page, its feature pages): the file that
+        # lists it, which the site builds its alt text and caption from.
+        if s["page"].startswith("website/"):
+            site = ROOT / s["page"]
+            if not site.is_file():
+                bad.append(f"{s['id']}: no {s['page']}")
+            elif f"images/help/{s['id']}.webp" not in site.read_text("utf-8"):
+                bad.append(f"{s['id']}: not in {s['page']}")
+            if not (OUT / f"{s['id']}.webp").is_file():
+                bad.append(f"{s['id']}: {(OUT / (s['id'] + '.webp')).relative_to(ROOT)} missing")
+            continue
         page = DOCS / s["page"]
         if not page.is_file():
             bad.append(f"{s['id']}: no page {s['page']}")
