@@ -145,6 +145,8 @@ Everything below ships together, in one release, as version 0.3.0.
 - ✅ Debrid accounts: a per-download "directly instead" choice, "through the service" in Download
   File Info, and the command line using the accounts
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
+- ✅ Debrid accounts: torrents and magnet links through the service, their files downloaded over
+  HTTP, no peer connections ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 - ✅ Downloads through one network adapter (a VPN's), with a kill switch: nothing goes out
   another way when it disconnects ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
 - ✅ Torrents on Windows through the chosen network adapter, with the same kill switch
@@ -261,8 +263,7 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Downloads and windows
 
-- 📋 Debrid services, the rest: torrents through the service, the system keychains for the
-  sign-ins
+- 📋 Debrid services, the rest: the system keychains for the sign-ins
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 
 ### Network

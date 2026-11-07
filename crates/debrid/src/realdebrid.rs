@@ -225,6 +225,69 @@ pub(crate) async fn token(
     http.json(http.post_form(&url, &form), fault).await
 }
 
+/// `POST torrents/addMagnet` (201): the torrent's id.
+pub(crate) async fn add_magnet(http: &Http, token: &str, magnet: &str) -> Result<String, Fault> {
+    #[derive(Deserialize)]
+    struct Added {
+        id: String,
+    }
+    let url = http
+        .services
+        .rd
+        .rest
+        .join("torrents/addMagnet")
+        .expect("relative");
+    let a: Added = http
+        .json(
+            http.post_form(&url, &[("magnet", magnet)])
+                .bearer_auth(token),
+            fault,
+        )
+        .await?;
+    Ok(a.id)
+}
+
+/// `GET torrents/info/{id}`; a torrent waiting for its files to be chosen gets all of them
+/// (`POST torrents/selectFiles/{id}`, `files=all`).
+pub(crate) async fn torrent_status(
+    http: &Http,
+    token: &str,
+    id: &str,
+) -> Result<crate::torrents::Status, Fault> {
+    let id = crate::plain_id(id)?;
+    let rest = &http.services.rd.rest;
+    let url = rest.join(&format!("torrents/info/{id}")).expect("relative");
+    let info: crate::torrents::RdInfo = http.json(http.get(&url).bearer_auth(token), fault).await?;
+    if info.status == "waiting_files_selection" {
+        let url = rest
+            .join(&format!("torrents/selectFiles/{id}"))
+            .expect("relative");
+        http.empty(
+            http.post_form(&url, &[("files", "all")]).bearer_auth(token),
+            fault,
+        )
+        .await?;
+        return Ok(crate::torrents::Status::Working {
+            progress: Some(0.0),
+            what: "files chosen".into(),
+        });
+    }
+    Ok(crate::torrents::rd_status(info))
+}
+
+/// `DELETE torrents/delete/{id}` (204).
+pub(crate) async fn torrent_delete(http: &Http, token: &str, id: &str) -> Result<(), Fault> {
+    let id = crate::plain_id(id)?;
+    let url = http
+        .services
+        .rd
+        .rest
+        .join(&format!("torrents/delete/{id}"))
+        .expect("relative");
+    http.empty(http.delete(&url).bearer_auth(token), fault)
+        .await
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

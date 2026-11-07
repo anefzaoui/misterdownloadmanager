@@ -149,6 +149,124 @@ pub(crate) async fn direct(http: &Http, key: &str, link: &Url) -> Result<DirectD
     .await
 }
 
+/// `POST transfer/create` (`src`): the transfer's id.
+pub(crate) async fn create(http: &Http, key: &str, magnet: &str) -> Result<String, Fault> {
+    #[derive(Deserialize)]
+    struct Created {
+        id: serde_json::Value,
+    }
+    let url = http.services.pm.join("transfer/create").expect("relative");
+    let c: Created = call(
+        http,
+        http.post_form(&url, &[("src", magnet)]).bearer_auth(key),
+    )
+    .await?;
+    match c.id {
+        serde_json::Value::String(s) => Ok(s),
+        serde_json::Value::Number(n) => Ok(n.to_string()),
+        _ => Err(Fault::Service(mdm_engine::ServiceFault::ServiceDown)),
+    }
+}
+
+/// `GET transfer/list`, then for a finished one `item/details` (one file) or `folder/list`,
+/// walked (several).
+pub(crate) async fn transfer_status(
+    http: &Http,
+    key: &str,
+    id: &str,
+) -> Result<crate::torrents::Status, Fault> {
+    use crate::torrents::{PmTransfer, RemoteFile, Status};
+    #[derive(Deserialize)]
+    struct List {
+        #[serde(default)]
+        transfers: Vec<PmTransfer>,
+    }
+    let url = http.services.pm.join("transfer/list").expect("relative");
+    let l: List = call(http, http.get(&url).bearer_auth(key)).await?;
+    let Some(t) = l.transfers.into_iter().find(|t| t.id == id) else {
+        return Ok(Status::Failed(mdm_engine::ServiceFault::FileUnavailable));
+    };
+    if let Some(s) = crate::torrents::pm_working(&t) {
+        return Ok(s);
+    }
+    #[derive(Deserialize)]
+    struct Item {
+        #[serde(default)]
+        name: String,
+        #[serde(default)]
+        size: u64,
+        #[serde(default)]
+        link: String,
+        #[serde(default)]
+        id: String,
+        #[serde(default, rename = "type")]
+        kind: String,
+    }
+    let mut files = Vec::new();
+    if let Some(file) = t.file_id.as_deref() {
+        let mut url = http.services.pm.join("item/details").expect("relative");
+        url.query_pairs_mut()
+            .append_pair("id", crate::plain_id(file)?);
+        let i: Item = call(http, http.get(&url).bearer_auth(key)).await?;
+        files.push(RemoteFile {
+            path: i.name,
+            size: i.size,
+            link: i.link,
+        });
+    } else if let Some(folder) = t.folder_id.as_deref() {
+        #[derive(Deserialize)]
+        struct Folder {
+            #[serde(default)]
+            content: Vec<Item>,
+        }
+        // Breadth first, a folder's path before its files'; at most 64 folders.
+        let mut todo = vec![(folder.to_owned(), String::new())];
+        let mut seen = 0;
+        while let Some((fid, prefix)) = todo.pop() {
+            seen += 1;
+            if seen > 64 {
+                break;
+            }
+            let mut url = http.services.pm.join("folder/list").expect("relative");
+            url.query_pairs_mut()
+                .append_pair("id", crate::plain_id(&fid)?);
+            let f: Folder = call(http, http.get(&url).bearer_auth(key)).await?;
+            for i in f.content {
+                let path = if prefix.is_empty() {
+                    i.name.clone()
+                } else {
+                    format!("{prefix}/{}", i.name)
+                };
+                if i.kind == "folder" {
+                    todo.push((i.id, path));
+                } else if !i.link.is_empty() {
+                    files.push(RemoteFile {
+                        path,
+                        size: i.size,
+                        link: i.link,
+                    });
+                }
+            }
+        }
+    }
+    Ok(Status::Ready {
+        name: t.name,
+        files,
+    })
+}
+
+/// `POST transfer/delete` (`id`): the record only; the files stay in the user's cloud.
+pub(crate) async fn transfer_delete(http: &Http, key: &str, id: &str) -> Result<(), Fault> {
+    let url = http.services.pm.join("transfer/delete").expect("relative");
+    call::<serde_json::Value>(
+        http,
+        http.post_form(&url, &[("id", crate::plain_id(id)?)])
+            .bearer_auth(key),
+    )
+    .await
+    .map(|_| ())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
