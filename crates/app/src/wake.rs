@@ -453,7 +453,7 @@ impl Holder {
                 Ok(_) => {}
                 Err(_) => {
                     tracing::warn!(
-                        "wake: the system didn't let the computer sleep within {limit:?}"
+                        "wake: the system hasn't answered within {limit:?}; MDM's hold ends with it"
                     );
                     return false;
                 }

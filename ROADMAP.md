@@ -13,6 +13,11 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ The window no longer freezes on Linux when the system's sleep service (logind) or keyring
+  (Secret Service) is slow or doesn't answer: keeping the computer awake for a woken queue is
+  asked in the background, a keyring that doesn't answer at start is waited for once instead of
+  once per saved password, and the tray check and Download File Info's Save As check no longer
+  wait on every frame (follows [#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222))
 - ✅ Open folder in Download complete no longer freezes the window on Linux when the file
   manager is slow to answer or never does: MDM asks in the background and opens the folder after
   5 seconds without an answer; every other program a window starts (Set it up, the Trash, an
