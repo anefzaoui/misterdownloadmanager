@@ -4840,6 +4840,11 @@
 #, machine
 	your Google account has no access to this file, or its owner turned off downloading	آپ کے Google اکاؤنٹ کو اس فائل تک رسائی نہیں ہے، یا اس کے مالک نے ڈاؤن لوڈ کرنے کی اجازت بند کر دی ہے
 #. text in helpers.rs
+#. Video helpers: the person's own gallery-dl is too old and not used; {version} = its version, {oldest} = the oldest MDM can use
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Your own program ({version}) is too old: MDM needs {oldest} or newer	آپ کا اپنا پروگرام ({version}) بہت پرانا ہے: MDM کو {oldest} یا اس سے نیا ورژن درکار ہے
+#. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -5015,6 +5020,11 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} isn't offered as {how}.	{name} کو {how} کے طور پر پیش نہیں کیا جاتا ہے۔
+#. text in errors.rs
+#. error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} بہت پرانا ہے: MDM کو {oldest} یا اس سے نیا ورژن درکار ہے
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -5604,9 +5614,17 @@ menu	Add trackers...	ٹریکرز شامل کریں...
 #, machine
 menu	Adwaita	Adwaita
 #. menu command in the main window
+#. View → Theme: a style theme's name (Windows 7's glassy look), a name: keep "Aero" as written
+#, machine
+menu	Aero	Aero
+#. menu command in the main window
 #. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
 #, machine
 menu	Applies the next time MDM starts	اگلی بار MDM شروع ہونے پر لاگو ہوگا
+#. menu command in the main window
+#. View → Theme: a style theme's name (Mac OS X's look), a name: keep "Aqua" as written
+#, machine
+menu	Aqua	Aqua
 #. menu command in the main window
 #, machine
 menu	Arrange files	فائلوں کا انتظام کریں
@@ -5785,6 +5803,10 @@ menu	Its first frame didn't show within 10 seconds	اس کا پہلا فریم 1
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
 menu	Its last start ended before its first frame	اس کی آخری شروعات اس کے پہلے فریم سے پہلے ختم ہو گئی
+#. menu command in the main window
+#. View → Theme: a style theme's name (Windows XP's look), a name: keep "Luna" as written
+#, machine
+menu	Luna	Luna
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Apple's), usually kept as is
 #, machine
