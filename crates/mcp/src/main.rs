@@ -16,7 +16,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 "misterdownloadmanager-mcp: Mister Download Manager's MCP server, for AI \
                  assistants. The assistant starts it (no arguments) and talks to it on stdin and \
                  stdout. Setup: \
-                 https://github.com/anefzaoui/misterdownloadmanager/blob/main/docs/ai-assistants.md"
+                 https://misterdownloadmanager.com/help/ai-assistants.html"
             ),
         }
         return Ok(());

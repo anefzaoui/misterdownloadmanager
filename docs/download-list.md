@@ -4,8 +4,6 @@
 
 Every download, finished or not, has a row in the list. The categories on the left choose which rows you see.
 
-![The main window](images/main-light.png)
-
 The strip under the list says how many downloads it shows and how many are selected, and while
 downloads run, how many and how fast in all (the tray icon's tip says the same). When the list
 is empty it says why: nothing in this category or queue, or the column filters hide everything
@@ -15,6 +13,9 @@ MDM opens where you left it: the window's place and size, the Categories pane, i
 branches and the category or queue you were looking at.
 
 ## Columns
+
+![The download list with its columns: Source, File Name, Q, Size, Status, Time left, Transfer rate and more](images/help/list-columns.webp)
+*Click a column title to sort; its funnel filters.*
 
 | Column | What it shows |
 |---|---|
@@ -51,6 +52,9 @@ A filtered column's funnel turns blue. To remove every filter, right-click a col
 
 The pane on the left has four branches:
 
+![The Categories pane: All Downloads with a category per file type, Unfinished, Finished and Queues](images/help/list-categories.webp)
+*All Downloads, Unfinished, Finished and Queues, each by category.*
+
 - **All Downloads** — everything, with a node per category below it.
 - **Unfinished** — downloads that aren't complete yet, by category.
 - **Finished** — complete downloads, by category.
@@ -64,6 +68,9 @@ Right-click a category for:
 - **Properties** — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.
 - **Add category** — make your own, for example **Books** for `EPUB MOBI`. Give it a name, the file types (separated by spaces, `*` allowed) and a folder.
 - **Delete** — remove a category, your own or a built-in one (not General or Torrents). MDM asks what happens to its downloads: **Move its downloads to General**, or **Remove its downloads from the list** (a download that is running moves to General instead). Their files stay where they are either way. From then on, files of its types go to another category that has them, or to General.
+
+![A category's properties: its name, file types and folder](images/help/category-properties.webp)
+*Right-click a category → Properties: its name, file types and folder.*
 
 To bring the built-in categories back as they came, with their names, file types and folders, use **Options → Save to → Restore the built-in categories**. Your own categories, General and Torrents stay as they are.
 
@@ -97,7 +104,8 @@ The right-click menu has everything you can do with a download: **Open**, **Open
 - **Address** — for an unfinished download, you can paste a new address here. See [Resume a broken download](guide-resume-broken-download.md).
 - **Open** — open the file.
 
-![File Properties](images/properties.png)
+![File Properties: the file's name, address, folder, size, status and description](images/help/properties.webp)
+*File Properties: change the address or the folder of a download.*
 
 **Move/Rename** (**Ctrl+M**) moves or renames the file of a finished download, or of one that hasn't started yet.
 
@@ -121,7 +129,8 @@ Press **Ctrl+F** (or **Downloads → Find**), type part of the name and click **
 
 Typing the start of a name while the list has the focus jumps to the first download whose name starts with it.
 
-![Find file](images/find.png)
+![Find file: a name to look for, with where to look](images/help/find.webp)
+*Downloads → Find (Ctrl+F).*
 
 ## Deleting downloads
 
@@ -140,7 +149,8 @@ A download that is running isn't deleted. Stop it first.
 
 **Delete Completed** on the toolbar (or **Downloads → Delete All Completed**) removes every finished download from the list, with the same question.
 
-![Confirm deletion of downloads](images/delete-confirm.png)
+![Confirm deletion of downloads, with Also delete the file from disk](images/help/delete-confirm.webp)
+*Tick Also delete the file from disk only if you want the file gone too.*
 
 ## Next steps
 

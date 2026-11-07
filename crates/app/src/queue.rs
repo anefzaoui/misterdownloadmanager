@@ -30,6 +30,9 @@ pub struct Schedule {
     pub turn_off: Option<TurnOff>,
     /// With `turn_off`: don't let other programs delay it.
     pub force_close: bool,
+    /// "Wake the computer to run this queue" (#142): woken shortly before `start_at`, kept
+    /// awake while the queue runs (wake.rs).
+    pub wake: bool,
 }
 
 /// What happens when a queue, or one download, is done (besides opening a file).
@@ -97,6 +100,7 @@ impl Default for Schedule {
             exit_when_done: false,
             turn_off: None,
             force_close: false,
+            wake: false,
         }
     }
 }

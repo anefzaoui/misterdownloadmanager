@@ -69,6 +69,9 @@ Closed to the notification area, MDM gives its memory back to Windows: **Memory*
 
 On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose **View → Draw with → OpenGL** (or **Direct3D**, **Vulkan**, **Metal**), then quit MDM (**Tasks → Exit**) and start it again. Choosing the first one goes back the same way.
 
+![View → Draw with open: OpenGL and Direct3D](images/help/draw-with.webp)
+*View → Draw with: the other way of drawing.*
+
 - If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and **View → Draw with** says so and why. Choosing it again tries it again at the next start.
 - On Linux, Vulkan needs your graphics card's Vulkan driver: Mesa's (`mesa-vulkan-drivers` on Ubuntu and Debian, `vulkan-radeon` or `vulkan-intel` on Arch) for AMD and Intel, NVIDIA's own driver for NVIDIA.
 - If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.
@@ -108,7 +111,8 @@ The AppImage can also be updated by AppImage tools (AppImageLauncher, Gear Lever
 
 **Help → About Mister Download Manager** shows the version you have.
 
-![About Mister Download Manager](images/about.png)
+![About Mister Download Manager: its version, licence and links](images/help/about-updates.webp)
+*Help → About: the version you have.*
 
 ## Reporting a problem
 

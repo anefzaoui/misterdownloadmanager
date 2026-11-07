@@ -11,6 +11,7 @@ mod openpgp;
 pub mod pages;
 pub mod playlist;
 pub mod proc;
+pub mod relay;
 pub mod resolve;
 pub mod servers;
 pub mod update;

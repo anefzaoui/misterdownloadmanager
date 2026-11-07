@@ -610,6 +610,29 @@ tbody th { font-weight: 650; }
 .prose kbd { display: inline-block; padding: .05em .45em; border-radius: 4px; background: var(--paper); box-shadow: inset 0 0 0 1px var(--ink-3), inset 0 -2px 0 var(--ink-3); font-size: .82em; line-height: 1.5; }
 .prose img { border-radius: 6px; box-shadow: 0 1px 0 var(--line), 0 10px 24px -14px rgba(4, 18, 52, .45); }
 .prose figure { margin-inline: 0; }
+/* The help pictures (tools/shots/): the real window or the part that matters, at its real size,
+   never upscaled; the caption under it in fine print. Width and height come with every picture,
+   so nothing moves while it loads; the day or night one shows as the page's theme does. */
+.prose .shot { width: fit-content; max-width: 100%; margin-block: 1.7em 1.9em; }
+.prose .shot img, .prose .steps img { max-width: 100%; height: auto; vertical-align: top; }
+.prose figcaption { max-width: 64ch; margin-top: 12px; font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+/* A step strip: a flow in two to four pictures, each under what to do. The numbers are the
+   sequence (it is one), in ink like the label's band. */
+.prose .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); align-items: start; gap: 28px 24px; margin-block: 1.7em 2em; padding: 0; list-style: none; counter-reset: step; }
+.prose .steps-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.prose .steps li { max-width: none; margin: 0; counter-increment: step; }
+/* Pictures side by side that aren't steps (the themes): the same grid, no numbers. */
+.prose .pics { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); align-items: start; gap: 24px; margin-block: 1.7em 2em; padding: 0; list-style: none; }
+.prose .pics li { max-width: none; margin: 0; }
+.prose .pics .shot { margin: 0; }
+.prose .pics img { max-width: 100%; height: auto; vertical-align: top; }
+.prose .steps figure { display: flex; flex-direction: column; gap: 12px; margin: 0; }
+.prose .steps figcaption { display: flex; align-items: baseline; gap: 10px; margin: 0; color: var(--ink); font-size: 16.5px; }
+.prose .steps figcaption::before {
+  content: counter(step); flex: none; display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%;
+  background: var(--ink); color: var(--paper); font-size: 12px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums;
+}
+@media (max-width: 720px) { .prose .steps-4 { grid-template-columns: minmax(0, 1fr); } }
 .prose blockquote { margin-inline: 0; padding: 14px 18px; border-radius: 8px; background: var(--paper-2); }
 .prose blockquote > * + * { margin-top: .6em; }
 .prose hr { border: 0; border-top: 1.5px dashed var(--line); margin-block: 2.2em; }

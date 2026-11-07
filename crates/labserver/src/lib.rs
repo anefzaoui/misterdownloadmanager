@@ -3,6 +3,7 @@
 
 pub mod content;
 pub mod debrid;
+pub mod debrid_torrents;
 pub mod drive;
 pub mod faults;
 mod feeds;
