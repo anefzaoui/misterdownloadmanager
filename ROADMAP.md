@@ -405,6 +405,10 @@ Everything below ships together, in the next release.
   ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): menus are plain pop-up
   windows now, as Windows' own are, and the reporter confirmed them fixed; the drop target is one
   too, its test build is with the reporter
+- 🔍 A freeze inside a graphics card's OpenGL driver on Windows
+  ([#280](https://github.com/anefzaoui/misterdownloadmanager/issues/280)): a slow start no longer
+  turns Direct3D off (its first-frame limit counted MDM's own loading), and reports now say what
+  drew, on which card and driver, and why; waiting to hear which one drew there
 - 🔍 A freeze of the window on start ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
   most likely a computer busy just after start; freeze reports now measure it, so the next one says
 - 🔍 A crash on Linux as Download File Info opens
