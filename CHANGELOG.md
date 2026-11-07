@@ -613,6 +613,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   and FTP now work there, and each HTTPS or FTPS download fails at once, without retrying, saying
   that the computer has no certificates to check the server with and to install
   `ca-certificates`.
+- **Linux: torrents work on a system without CA certificates too** (part of
+  [#264](https://github.com/anefzaoui/misterdownloadmanager/issues/264)): the torrent engine built
+  its own connection for the trackers, which can't be made without them, so no torrent or magnet
+  link started there. It now uses MDM's: peers, the DHT and `http://` trackers work, and an
+  `https://` tracker fails saying there are no certificates to check it with.
 - **Signed-in videos from YouTube Music and YouTube's mobile site**
   ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229)): the button over a
   video on music.youtube.com or m.youtube.com passed the page's cookies for that host only, while

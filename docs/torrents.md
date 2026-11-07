@@ -113,6 +113,8 @@ Choose **Tasks → Torrent settings...** (or the arrow next to **Add Torrent**):
 
 MDM starts its torrent engine the first time you add a torrent. If you never use torrents, it never listens for peers.
 
+On a Linux system without CA certificates (a minimal install without the `ca-certificates` package), torrents still work: peers, the DHT and `http://` trackers. An `https://` tracker can't be checked there, so MDM skips it; install that package to use those too.
+
 ## Next steps
 
 - [Queues and the Scheduler →](queues-and-scheduler.md)
