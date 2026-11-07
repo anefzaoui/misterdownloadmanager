@@ -961,3 +961,186 @@ mod tests {
         assert_eq!(super::color_scheme(&Value::Str("dark".into())), None);
     }
 }
+
+// ---- waking the computer for a queue (#142) -----------------------------------------------
+
+/// Linux: the clock chip's wake alarm, in seconds since 1970. Root's alone unless an
+/// administrator lets users write it (docs/queues-and-scheduler.md shows a tmpfiles.d line).
+/// Without it nothing else wakes a sleeping Linux for a program: a systemd user timer's
+/// `WakeSystem=` needs the system manager, rtcwake needs root, alarm timers CAP_WAKE_ALARM.
+#[cfg(target_os = "linux")]
+const WAKEALARM: &str = "/sys/class/rtc/rtc0/wakealarm";
+
+/// Whether MDM may wake this computer.
+pub fn wake_support() -> crate::wake::Support {
+    #[cfg(target_os = "linux")]
+    {
+        use crate::wake::Support;
+        let path = Path::new(WAKEALARM);
+        if !path.exists() {
+            return Support::NoAlarm;
+        }
+        // Opening it for writing changes nothing: it only asks whether we may.
+        if std::fs::OpenOptions::new().write(true).open(path).is_ok() {
+            Support::Ready
+        } else {
+            Support::NeedsAdmin
+        }
+    }
+    // macOS: `pmset schedule wake` and IOPMSchedulePowerEvent need an administrator, and MDM
+    // never asks for one by itself.
+    #[cfg(target_os = "macos")]
+    {
+        crate::wake::Support::MacAdmin
+    }
+}
+
+/// Seconds to add to a system time to have the clock chip's: the chip may keep local time
+/// (/etc/adjtime: LOCAL), or have drifted from the system's clock (a virtual machine's was a
+/// minute and a half behind). The alarm is set in the chip's time, as rtcwake does.
+#[cfg(target_os = "linux")]
+fn rtc_offset() -> i64 {
+    let chip = std::fs::read_to_string("/sys/class/rtc/rtc0/since_epoch")
+        .ok()
+        .and_then(|s| s.trim().parse::<i64>().ok());
+    match chip {
+        Some(chip) => chip - chrono::Utc::now().timestamp(),
+        None => 0,
+    }
+}
+
+/// Wake the computer at `at` (seconds since 1970, UTC), or cancel MDM's wake (None).
+#[cfg(target_os = "linux")]
+pub fn wake_at(at: Option<i64>) -> Result<(), String> {
+    // The alarm MDM set (in the chip's time), to tell it from another program's: kept in the
+    // data folder, so an alarm left by an MDM that was killed (or signed out of) is still ours.
+    let file = mdm_ipc::data_dir().map(|d| d.join("wake-alarm"));
+    let mut ours = file
+        .as_ref()
+        .and_then(|f| std::fs::read_to_string(f).ok())
+        .and_then(|s| s.trim().parse::<i64>().ok());
+    let keep = |v: Option<i64>| {
+        if let Some(f) = &file {
+            let _ = match v {
+                Some(v) => std::fs::write(f, v.to_string()),
+                None => std::fs::remove_file(f),
+            };
+        }
+    };
+    let set_now = std::fs::read_to_string(WAKEALARM)
+        .ok()
+        .and_then(|s| s.trim().parse::<i64>().ok());
+    let want = at.map(|t| t + rtc_offset());
+    // The same alarm within a couple of seconds (the two clocks are read a moment apart).
+    let close = |a: i64, b: i64| (a - b).abs() <= 2;
+    match (set_now, want) {
+        (Some(now), Some(w)) if close(now, w) => {
+            if ours != Some(now) {
+                keep(Some(now));
+            }
+            return Ok(());
+        }
+        (None, None) => {
+            if ours.is_some() {
+                keep(None);
+            }
+            return Ok(());
+        }
+        _ => {}
+    }
+    // There is one alarm: one that another program (rtcwake, a script) set stays theirs.
+    if let Some(theirs) = set_now
+        && ours.is_none_or(|o| !close(o, theirs))
+    {
+        if want.is_none() {
+            return Ok(());
+        }
+        return Err(crate::i18n::t(
+            // i18n: the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+            "Another program has set the computer's wake alarm",
+        )
+        .to_owned());
+    }
+    let write = |v: &str| std::fs::write(WAKEALARM, v).map_err(|e| e.to_string());
+    // An alarm is replaced by clearing it first (writing over it is refused).
+    if set_now.is_some() {
+        write("0")?;
+    }
+    ours = None;
+    if let Some(v) = want {
+        write(&v.to_string())?;
+        ours = Some(v);
+    }
+    keep(ours);
+    Ok(())
+}
+
+#[cfg(target_os = "macos")]
+pub fn wake_at(at: Option<i64>) -> Result<(), String> {
+    match at {
+        None => Ok(()),
+        Some(_) => Err("macOS lets only an administrator schedule a wake".to_owned()),
+    }
+}
+
+/// Keep the computer from sleeping while `reason` is given; None lets it sleep again as the
+/// system's settings say. Linux: logind's sleep and idle inhibitor, held by its file
+/// descriptor (`systemd-inhibit --list` shows it with its reason); a user in the active
+/// session may take it without a password. False when logind refused.
+#[cfg(target_os = "linux")]
+pub fn keep_awake(reason: Option<&str>) -> bool {
+    use std::sync::Mutex;
+    static LOCK: Mutex<Option<zbus::zvariant::OwnedFd>> = Mutex::new(None);
+    let mut held = LOCK.lock().unwrap_or_else(|e| e.into_inner());
+    // Closing the descriptor ends the inhibitor.
+    *held = None;
+    let Some(reason) = reason else {
+        return true;
+    };
+    let take = || -> zbus::Result<zbus::zvariant::OwnedFd> {
+        let conn = zbus::blocking::Connection::system()?;
+        let logind = zbus::blocking::Proxy::new(
+            &conn,
+            "org.freedesktop.login1",
+            "/org/freedesktop/login1",
+            "org.freedesktop.login1.Manager",
+        )?;
+        logind.call(
+            "Inhibit",
+            &("sleep:idle", "Mister Download Manager", reason, "block"),
+        )
+    };
+    match take() {
+        Ok(fd) => {
+            *held = Some(fd);
+            true
+        }
+        Err(e) => {
+            tracing::warn!("wake: logind's inhibitor refused ({e})");
+            false
+        }
+    }
+}
+
+/// macOS: `caffeinate -i` (no idle sleep) for as long as MDM runs, ended when not needed.
+#[cfg(target_os = "macos")]
+pub fn keep_awake(reason: Option<&str>) -> bool {
+    use std::sync::Mutex;
+    static CHILD: Mutex<Option<std::process::Child>> = Mutex::new(None);
+    let mut held = CHILD.lock().unwrap_or_else(|e| e.into_inner());
+    if let Some(mut c) = held.take() {
+        let _ = c.kill();
+        let _ = c.wait();
+    }
+    if reason.is_some() {
+        *held = Command::new("caffeinate")
+            .args(["-i", "-w", &std::process::id().to_string()])
+            .stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .spawn()
+            .ok();
+        return held.is_some();
+    }
+    true
+}

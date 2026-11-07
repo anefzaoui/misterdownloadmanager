@@ -436,6 +436,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	다른 DNS...
+#. text in unix.rs
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+#, machine
+	Another program has set the computer's wake alarm	다른 프로그램에서 컴퓨터의 절전 모드 해제 알람을 설정했습니다.
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -744,6 +748,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Chad	차드
+#. text in the Scheduler window
+#. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+#, machine
+	Change	변경
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -1829,6 +1837,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Hong Kong	홍콩
+#. text in the Scheduler window
+#. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+#, machine
+	How to allow it	허용하는 방법
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -2356,6 +2368,11 @@
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager에 내부 오류가 발생했습니다.
+#. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Mister Download Manager is running the queue "{queue}"	Mister Download Manager에서 "{queue}" 큐를 실행 중입니다.
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -2767,9 +2784,17 @@
 #. a country's name (where a download's server is)
 #, machine
 	Oman	오만
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+#, machine
+	On battery, Windows' power options don't allow wake timers	배터리 사용 시 Windows 전원 옵션에서 절전 모드 해제 타이머를 허용하지 않습니다.
 #. text in a download's progress window
 #, machine
 	on download stop/resume	다운로드 중지/다시 시작 시
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
+#, machine
+	On macOS, only an administrator can schedule a wake	macOS에서는 관리자만 절전 모드 해제를 예약할 수 있습니다.
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	다음 시간에 한 번
@@ -2793,6 +2818,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	완료된 다운로드 또는 아직 시작되지 않은 다운로드만 이동할 수 있습니다. 먼저 중지하고 완료하세요.
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+#, machine
+	Only an administrator can allow this	관리자만 허용할 수 있습니다.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -3860,6 +3889,15 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The computer could not be turned off: {error}	컴퓨터를 끌 수 없습니다. {error}
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue"
+#, machine
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	컴퓨터는 시작 시간 1분 전에 절전 모드에서 해제되고 큐가 실행되는 동안 절전 모드가 해제된 상태로 유지됩니다. Mister Download Manager이(가) 실행 중이어야 합니다(알림 영역에서 대기할 수 있음).
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	The computer will be woken on {date} at {time}	컴퓨터는 {date} {time}에 절전 모드에서 해제됩니다.
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4099,6 +4137,14 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	이 범주 또는 큐에는 아직 다운로드가 없습니다.
+#. text in win32.rs
+#. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
+#, machine
+	This computer can't be woken by a timer	이 컴퓨터는 타이머로 절전 모드에서 해제될 수 없습니다.
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
+#, machine
+	This computer has no wake alarm that programs can set	이 컴퓨터에는 프로그램이 설정할 수 있는 절전 모드 해제 알람이 없습니다.
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4182,6 +4228,10 @@
 #. text in the Scheduler window
 #, machine
 	Thursday	목요일
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+#, machine
+	Tick "Start download at" first: the computer is woken for the start time	먼저 "다운로드 시작 시간"을 선택하세요. 컴퓨터는 시작 시간을 위해 절전 모드에서 해제됩니다.
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	남은 시간
@@ -4580,6 +4630,10 @@
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	대기 중: 다운로드 제한에 도달했습니다(스케줄러)
+#. text in the Scheduler window
+#. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+#, machine
+	Wake the computer to run this queue	이 큐를 실행하기 위해 컴퓨터 절전 모드 해제
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4613,6 +4667,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	와일드카드 크기
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
+#, machine
+	Windows allows wake timers only while plugged in	Windows는 전원 연결 시에만 절전 모드 해제 타이머를 허용합니다.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4623,6 +4681,10 @@
 #. text in langpick.rs
 #, machine
 	Windows' language ({language})	Windows 언어({language})
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+#, machine
+	Windows' power options don't allow wake timers	Windows 전원 옵션에서 절전 모드 해제 타이머를 허용하지 않습니다.
 #. message or event log entry in the main window
 #, machine
 	with Add URL	URL 추가 사용

@@ -170,6 +170,10 @@
    "source": "Contribute",
    "text": "Katkıda Bulun"
   },
+  "0392cd7e700db53e": {
+   "source": "Last updated 2026-11-06 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Son güncelleme 06.11.2026 · uygulama, tarayıcı uzantısı ve misterdownloadmanager.com için geçerlidir"
+  },
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Mister Download Manager hakkında cevaplar: ücretsiz mi, güvenli mi, IDM ile karşılaştırması, tarayıcılar, videolar, torrentler, hız, Mac ve Linux ve daha fazlası."
@@ -201,6 +205,10 @@
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
+  },
+  "04bb12464d3a29f6": {
+   "source": "Tick <g1>Wake the computer to run this queue</g1>, under the start time, and a computer that is asleep at the start time is woken for it. It needs <g2>Start download at</g2>.",
+   "text": "Başlangıç saatinin altında <g1>Bu kuyruğu çalıştırmak için bilgisayarı uyandır</g1> seçeneğini işaretleyin; başlangıç saatinde uyku modunda olan bir bilgisayar bu işlem için uyanır. Bu seçenek <g2>İndirmeyi şu saatte başlat</g2> ayarını gerektirir."
   },
   "050edc04316dd70a": {
    "source": "On the command line",
@@ -862,6 +870,10 @@
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>Tarayıcı.</g1> Bir sayfaya sağ tıklayarak <g2>Tüm bağlantıları Mister Download Manager ile indir</g2> seçeneğini veya sayfanın bir kısmını seçerek <g3>Seçili bağlantıları Mister Download Manager ile indir</g3> seçeneğini kullanın. Sayfanın yönlendiren bilgisi ve çerezleri her bağlantıyla birlikte gider."
   },
+  "14df350fc9bc4825": {
+   "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
+   "text": "Windows'ta pencereler Direct3D 12 (eframe'in wgpu'su, yalnızca Direct3D 12 arka ucuyla) veya Görünüm → Şununla çiz seçeneği belirlendiğinde OpenGL (eframe'in glow'u) ile çizilir; Linux ve macOS OpenGL kullanır. Seçilen başlatılamadığında diğeri denenir, böylece pencereler her zaman açılır."
+  },
   "14fdd504d3380998": {
    "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
    "text": "Varsayılan olarak MDM, BitTorrent programlarının genellikle yaptığı gibi, en az eşin sahip olduğu parçaları önce indirir. Bu sayede sadece bir eşin sahip olduğu bir parça, o eş ayrılmadan önce alınır ve MDM bunu diğerlerine daha erken aktarabilir. MDM'nin test sürülerinde, sırayla indirme kadar hızlı tamamlandı ve kıt bir parçanın tek sahibinin ayrıldığı durumlarda tamamlanan tek sıraydı."
@@ -1377,6 +1389,10 @@
   "214a5490cbec850d": {
    "source": "<g1>Look links up when they arrive (name, size, online)</g1> — Link grabber asks each server about its file (on by default).",
    "text": "<g1>Bağlantılar geldiğinde ara (ad, boyut, çevrimiçi)</g1> — Bağlantı yakalayıcı her sunucuya dosyası hakkında soru sorar (varsayılan olarak açık)."
+  },
+  "216583d42da33e52": {
+   "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
+   "text": "macOS'te yalnızca bir yönetici uyandırma zamanlayabilir, bu nedenle seçenek gri renkte görünür. MDM yönetici parolası istemez. Bir yönetici, Mac'i her gün kuyruk başlamadan bir dakika önce, örneğin saat 23:00'te başlayacak bir kuyruk için 22:59'da uyandırabilir:"
   },
   "219b4865ef43eb2a": {
    "source": "not to use it to overload, attack or get around the limits of servers you don't own.",
@@ -2121,6 +2137,10 @@
   "321b96d0efb29bed": {
    "source": "Rules only look at articles that are new since the feed was last fetched, and a feed's first fetch only lists what is there. So adding a feed or a rule never downloads a whole backlog. <g1>Matches ... articles now</g1> shows which of the articles the feeds hold now the rule matches, to check it; download those by hand. A torrent the list already has isn't added again, and neither is one whose files are already in the folder: MDM never writes into files it didn't make without asking. The bottom line of the tab says what the rules did last, and a torrent a rule added says so in its event log.",
    "text": "Kurallar yalnızca akış en son getirildiğinden beri yeni olan makalelere bakar ve bir akışın ilk getirilişi yalnızca mevcut olanı listeler. Bu nedenle bir akış veya kural eklemek asla tüm bir birikimi indirmez. <g1>Şu anda ... makaleyle eşleşiyor</g1> kuralın şu anda akışların tuttuğu makalelerden hangileriyle eşleştiğini gösterir, kontrol etmek için; bunları elle indirin. Listede zaten bulunan bir torrent tekrar eklenmez, dosyaları zaten klasörde olan bir torrent de eklenmez: MDM, sormadan yapmadığı dosyalara asla yazmaz. Sekmenin alt satırı kuralların en son ne yaptığını söyler ve bir kuralın eklediği bir torrent olay günlüğünde bunu belirtir."
+  },
+  "326233a6912ae49d": {
+   "source": "A user's systemd timer can't wake the computer, and <x1/> needs root, so without this setting MDM can't wake the computer. MDM never asks for an administrator's password.",
+   "text": "Bir kullanıcının systemd zamanlayıcısı bilgisayarı uyandıramaz ve <x1/> kök izni gerektirir, bu nedenle bu ayar olmadan MDM bilgisayarı uyandıramaz. MDM asla yönetici parolası istemez."
   },
   "327c76a006445d54": {
    "source": "Yes. MDM comes with an MCP server, <x1/>: add it to Claude Desktop, Claude Code, Cursor, VS Code or another assistant that supports MCP, and you can ask it in your own words to list, add, pause, resume or remove downloads. It works with the MDM on your computer only, and needs the automation API on. See <g2>AI assistants</g2>.",
@@ -3550,6 +3570,10 @@
    "source": "<g1>A copy from elsewhere?</g1> Remove it and add the extension as MDM's <g2>Add Mister Download Manager to your browser</g2> window shows (see <g3>Browser integration</g3>).",
    "text": "<g1>Başka bir yerden bir kopya mı?</g1> Onu kaldırın ve uzantıyı MDM'nin <g2>Mister Download Manager uygulamasını tarayıcınıza ekleyin</g2> penceresinin gösterdiği gibi ekleyin (<g3>Tarayıcı entegrasyonu</g3> bölümüne bakın)."
   },
+  "5922c26d865c882f": {
+   "source": "The wake follows the schedule: change the start time or the days, untick the option or delete the queue, and the wake moves or goes away. MDM sets it again each time it starts. Nothing stays behind in the system when MDM quits or is uninstalled.",
+   "text": "Uyandırma, programa göre gerçekleşir: başlangıç saatini veya günleri değiştirin, seçeneğin işaretini kaldırın veya kuyruğu silin, uyandırma da değişir veya kalkar. MDM, her başladığında bunu tekrar ayarlar. MDM kapandığında veya kaldırıldığında sistemde hiçbir şey kalmaz."
+  },
   "5934223575270924": {
    "source": "In <g1>Download File Info</g1>: <g2>Start Download</g2>",
    "text": "<g1>Dosya Bilgilerini İndir</g1> içinde: <g2>İndirmeyi Başlat</g2>"
@@ -3774,6 +3798,10 @@
    "source": "What Update now does",
    "text": "Şimdi güncelle ne yapar"
   },
+  "5f91bf43437c9761": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Draw with</g6> (Windows: Direct3D, or OpenGL) and <g7>Language</g7>.",
+   "text": "<g1>Görünüm</g1> — kategorileri gösterir veya gizler, listeyi sıralar (<g2>Dosyaları düzenle</g2>), <g3>Koyu Mod desteği</g3>, <g4>Her zaman koyu</g4>, <g5>Tema</g5>, <g6>Şununla çiz</g6> (Windows: Direct3D veya OpenGL) ve <g7>Dil</g7> seçeneklerini içerir."
+  },
   "5fcf81378fa34b81": {
    "source": "<g1>Downloads → Speed Limiter → Settings...</g1> — speed limits. See <g2>Connections and speed</g2>.",
    "text": "<g1>İndirilenler → Hız Sınırlayıcı → Ayarlar...</g1> — hız sınırları. Bkz. <g2>Bağlantılar ve hız</g2>."
@@ -3793,6 +3821,10 @@
   "601260a4be471ed2": {
    "source": "The box under the list edits the package you selected:",
    "text": "Listenin altındaki kutu, seçtiğiniz paketi düzenler:"
+  },
+  "6038a4d72bef82d8": {
+   "source": "removes it.",
+   "text": "kaldırır."
   },
   "603f376b07905d51": {
    "source": "Q",
@@ -5266,6 +5298,10 @@
    "source": "Put downloads in a queue",
    "text": "İndirmeleri bir sıraya koyun"
   },
+  "83771adf9df51604": {
+   "source": "Windows wakes a computer only if its power plan allows wake timers. If it doesn't, the Scheduler says so, and <g1>Change</g1> opens the setting: <g2>Power Options → Change plan settings → Change advanced power settings → Sleep → Allow wake timers</g2>. Choose <g3>Enable</g3>: <g4>Important Wake Timers Only</g4> lets only Windows' own important timers wake the computer. On laptops the setting is often off on battery, so the computer is woken only while plugged in.",
+   "text": "Windows, bilgisayarı yalnızca güç planı uyandırma zamanlayıcılarına izin veriyorsa uyandırır. İzin vermiyorsa, Zamanlayıcı bunu belirtir ve <g1>Değiştir</g1> ayarı açar: <g2>Güç Seçenekleri → Plan ayarlarını değiştir → Gelişmiş güç ayarlarını değiştir → Uyku → Uyandırma zamanlayıcılarına izin ver</g2>. <g3>Etkinleştir</g3> seçeneğini seçin: <g4>Yalnızca Önemli Uyandırma Zamanlayıcıları</g4> yalnızca Windows'un kendi önemli zamanlayıcılarının bilgisayarı uyandırmasına izin verir. Dizüstü bilgisayarlarda bu ayar genellikle pildeyken kapalıdır, bu nedenle bilgisayar yalnızca prize takılıyken uyanır."
+  },
   "837e0b4660975a88": {
    "source": "Select or unselect one more download",
    "text": "Bir indirme daha seç veya seçimi kaldır"
@@ -5505,6 +5541,10 @@
   "89630e927a663dc9": {
    "source": "When MDM isn't running",
    "text": "MDM çalışmadığında"
+  },
+  "8964c9e8c41b70ca": {
+   "source": "On Linux only an administrator may set the computer's wake alarm, so the option is greyed until an administrator allows it. To let the users in a <x1/> group set it, an administrator runs, once:",
+   "text": "Linux'ta yalnızca bir yönetici bilgisayarın uyandırma alarmını ayarlayabilir, bu nedenle yönetici izin verene kadar bu seçenek gri renkte görünür. Bir <x1/> grubundaki kullanıcıların bunu ayarlamasına izin vermek için bir yönetici bir kez şunu çalıştırır:"
   },
   "89c2ac8b048f39e1": {
    "source": "The next choice of a drop-down list or radio group; a number up or down",
@@ -5797,6 +5837,10 @@
   "91ebb9f0dfb7f3d7": {
    "source": "A debrid service, such as Real-Debrid, AllDebrid or Premiumize, is a paid account that downloads files from file hosts on its own servers. It hands back a…",
    "text": "Real-Debrid, AllDebrid veya Premiumize gibi bir debrid hizmeti, dosyaları dosya barındırıcılardan kendi sunucularına indiren ücretli bir hesaptır. Bir..."
+  },
+  "91f65bb0d07ece23": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "Bilgisayarınızda Direct3D başlayamazsa (Direct3D 12 sürücüsü yok, bazı sanal makineler) veya ilk penceresi 10 saniye içinde görünmezse, MDM OpenGL ile çizer ve <g1>Görünüm → Şununla çiz</g1> bunu belirtir. <g2>Direct3D</g2> seçeneğini tekrar seçmek, bir sonraki başlatmada tekrar denemesini sağlar."
   },
   "921eb4967f2c69f3": {
    "source": "All the numbers",
@@ -6237,6 +6281,10 @@
   "9d17cb869478b3ac": {
    "source": "<g1>As the system's region writes them</g1> (the default) — Windows' region settings (Settings → Time &amp; language → Region); on macOS and Linux, your language's usual way. In English the list keeps IDM's own date text.",
    "text": "<g1>Sistemin bölgesi yazdığı gibi</g1> (varsayılan) — Windows'un bölge ayarları (Ayarlar → Saat ve dil → Bölge); macOS ve Linux'ta, dilinizin olağan yolu. İngilizce'de liste IDM'in kendi tarih metnini korur."
+  },
+  "9d2e5b317ca7d67a": {
+   "source": "MDM wakes the computer a minute before the start time, so the network is back when the queue starts.",
+   "text": "MDM, kuyruk başlamadan bir dakika önce bilgisayarı uyandırır, böylece kuyruk başladığında ağ geri gelmiş olur."
   },
   "9d5b2429780e94aa": {
    "source": "Latest",
@@ -7046,6 +7094,10 @@
    "source": "runs unit tests and end-to-end downloads against <x1/> with injected faults (slow, dropped and refused connections, servers without ranges, changing files). <x2/> runs the published speed comparison; its raw data is in <x3/>.",
    "text": "Enjekte edilmiş hatalarla (yavaş, düşen ve reddedilen bağlantılar, aralıksız sunucular, değişen dosyalar) <x1/>'e karşı birim testleri ve uçtan uca indirmeler çalıştırır. <x2/> yayınlanan hız karşılaştırmasını çalıştırır; ham verileri <x3/>'tedir."
   },
+  "b1f35176aca676c5": {
+   "source": "While the queue runs, the computer doesn't go to sleep. When the queue is done, the computer's own sleep settings apply again: a computer nobody is using goes back to sleep by itself. <g1>Turn off computer when done → Sleep</g1> sends it back to sleep at once.",
+   "text": "Kuyruk çalışırken bilgisayar uyku moduna geçmez. Kuyruk bittiğinde, bilgisayarın kendi uyku ayarları tekrar geçerli olur: kimsenin kullanmadığı bir bilgisayar kendiliğinden uyku moduna geri döner. <g1>Bittiğinde bilgisayarı kapat → Uyku</g1> seçeneği bilgisayarı hemen uyku moduna gönderir."
+  },
   "b208caa24e13c211": {
    "source": "<g1>Shift+Up / Shift+Down</g1> makes the selection longer or shorter.",
    "text": "<g1>Shift+Yukarı / Shift+Aşağı</g1> seçimi uzatır veya kısaltır."
@@ -7221,6 +7273,10 @@
   "b66ef1366b1ed932": {
    "source": "Children",
    "text": "Çocuklar"
+  },
+  "b68461ac7025e237": {
+   "source": "then signs out and in again. The setting stays after a restart. The computer has one wake alarm: if another program has set it, MDM leaves it alone and says so.",
+   "text": "ardından oturumu kapatıp tekrar açar. Ayar yeniden başlatmadan sonra da kalır. Bilgisayarın bir uyandırma alarmı vardır: başka bir program bunu ayarladıysa, MDM ona dokunmaz ve bunu belirtir."
   },
   "b68fb1f513d1da2c": {
    "source": "9. Changes",
@@ -8186,6 +8242,10 @@
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "Her çalışan indirme işleminin kendi ilerleme penceresi vardır. İndirme başladığında açılır; tekrar açmak için listedeki indirme işlemine çift tıklayın."
   },
+  "d12f8750c4987536": {
+   "source": "Last updated 2026-11-06",
+   "text": "Son güncelleme: 6 Kasım 2026"
+  },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
    "text": "Torrentlerden gelen dosyalar, bir tarayıcının indirmeleri gibi <g1>internetten indirildi</g1> olarak işaretlenir. Windows SmartScreen, bir programı ilk kez çalıştırmadan önce kontrol eder ve Office, belgeleri Korumalı Görünüm'de açar. Bir Mac'te Gatekeeper uygulamaları kontrol eder."
@@ -8517,6 +8577,10 @@
   "d9702d61beba459f": {
    "source": "Listing and acting on downloads needs MDM's automation API, which is off until you turn it on. With MDM running, run this once (it stays on):",
    "text": "İndirmeleri listelemek ve üzerinde işlem yapmak için MDM'nin otomasyon API'si gerekir, bu API siz açana kadar kapalıdır. MDM çalışırken, bunu bir kez çalıştırın (açık kalır):"
+  },
+  "d9862086c382da0c": {
+   "source": "Wake the computer to run a queue",
+   "text": "Bir kuyruğu çalıştırmak için bilgisayarı uyandır"
   },
   "d9b76e3e6afd2fa9": {
    "source": "<g1><g2>Download a video from a page</g2></g1> — pick a quality and save a video.",
@@ -9094,6 +9158,10 @@
    "source": "Add to Firefox",
    "text": "Firefox'a Ekle"
   },
+  "e8b5d61bef6a7b3c": {
+   "source": "The line under the option says when the computer will next be woken, or why it can't be.",
+   "text": "Seçeneğin altındaki satır, bilgisayarın bir sonraki ne zaman uyandırılacağını veya neden uyandırılamayacağını belirtir."
+  },
   "e8cba16e3299c9aa": {
    "source": "Several files are downloaded one after another, sorted by name.",
    "text": "Birkaç dosya, isme göre sıralanmış olarak art arda indirilir."
@@ -9658,6 +9726,10 @@
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
    "text": "Soldaki <g1>Ana indirme kuyruğu</g1>'nu seçin. <g2>Zamanlama</g2> sekmesi açılır."
   },
+  "f9536693258dfe06": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. On Windows, try the other one: choose <g1>View → Draw with → OpenGL</g1>, then quit MDM (<g2>Tasks → Exit</g2>) and start it again. <g3>View → Draw with → Direct3D</g3> goes back the same way.",
+   "text": "Windows'ta MDM pencerelerini Direct3D 12 ile çizer; Linux ve macOS'ta OpenGL ile. Bir grafik sürücüsü yine de yanlış davranabilir: saniyelerce donan, titreyen veya yanlış renkler ya da bloklar gösteren bir pencere. Windows'ta diğerini deneyin: <g1>Görünüm → Şununla çiz → OpenGL</g1> seçeneğini belirleyin, ardından MDM'den çıkın (<g2>Görevler → Çıkış</g2>) ve tekrar başlatın. <g3>Görünüm → Şununla çiz → Direct3D</g3> aynı şekilde geri döner."
+  },
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
    "text": "<g1>\"Genel\" kategorisi için varsayılan indirme dizini</g1> bölümünde, <g2>Gözat</g2>'a tıklayın ve bellekte bir klasör seçin, örneğin <x3/>."
@@ -9701,6 +9773,10 @@
   "fa1e28b3c6e2e46e": {
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
    "text": "Varsayılan olarak her indirme için sekiz bağlantı kullanır. Seçenekler → Bağlantı bölümünde 32'ye kadar seçebilir veya orada 32'den fazla bağlantıya izin ver seçeneğini işaretledikten sonra 128'e kadar kullanabilirsiniz. MDM, daha azını destekleyen sunucularda daha az bağlantı kullanır…"
+  },
+  "fa50579a78c9b2ef": {
+   "source": "If neither can start, MDM draws with Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "İkisi de başlayamazsa, MDM Microsoft'un yazılım oluşturucusuyla çizer, böylece pencere yine de açılır (Uzak Masaüstü, grafik sürücüsü olmayan bir sanal makine). Çalışır, ancak işlemciyi daha meşgul eder."
   },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",
@@ -9765,6 +9841,10 @@
   "fb3cc6240014e2b2": {
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, open its page in the Chrome Web Store and click Add to Chrome (Edge shows Get, and first asks to allow extensions from other stores). Can't use a store? Open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
    "text": "MDM'yi kurulum dosyasıyla yükleyin ve Tarayıcı entegrasyonunu ayarla seçeneğini işaretli bırakın. Firefox'ta, eklentinin addons.mozilla.org sayfasını açın ve Firefox'a Ekle'ye tıklayın. Chrome, Edge, Brave, Opera ve Vivaldi'de, Chrome Web Mağazası'ndaki sayfasını açın ve Chrome'a Ekle'ye tıklayın (Edge'de Yükle yazar ve önce diğer mağazalardan uzantılara izin vermenizi ister). Bir mağaza kullanamıyor musunuz? Tarayıcının uzantılar sayfasını açın, Geliştirici modunu açın, Paketlenmemiş uzantıyı yükle'yi seçin ve MDM klasöründeki extension\\chromium klasörünü seçin. Eğitim videosu bunu adım adım gösterir."
+  },
+  "fb7be2f77bb10a9c": {
+   "source": "MDM has to be running (it can sit in the notification area). The computer has to be asleep, not shut down.",
+   "text": "MDM'nin çalışıyor olması gerekir (bildirim alanında durabilir). Bilgisayarın kapalı değil, uyku modunda olması gerekir."
   },
   "fb833006931d511e": {
    "source": "Is MDM available in my language?",

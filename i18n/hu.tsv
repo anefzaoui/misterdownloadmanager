@@ -436,6 +436,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	Másik DNS...
+#. text in unix.rs
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+#, machine
+	Another program has set the computer's wake alarm	Egy másik program már beállította a számítógép ébresztési riasztását
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -744,6 +748,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Chad	Csád
+#. text in the Scheduler window
+#. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+#, machine
+	Change	Módosítás
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -1829,6 +1837,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Hong Kong	Hongkong
+#. text in the Scheduler window
+#. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+#, machine
+	How to allow it	Engedélyezés
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -2356,6 +2368,11 @@
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager belső hibába ütközött
+#. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Mister Download Manager is running the queue "{queue}"	Mister Download Manager futtatja a(z) „{queue}” várólistát
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -2767,9 +2784,17 @@
 #. a country's name (where a download's server is)
 #, machine
 	Oman	Omán
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+#, machine
+	On battery, Windows' power options don't allow wake timers	A Windows energiagazdálkodási beállításai akkumulátoros üzemmódban nem engedélyezik az ébresztési időzítőket
 #. text in a download's progress window
 #, machine
 	on download stop/resume	letöltés leállításakor/folytatásakor
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
+#, machine
+	On macOS, only an administrator can schedule a wake	macOS rendszeren csak rendszergazda ütemezhet ébresztést
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Egyszer ekkor:
@@ -2793,6 +2818,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Csak befejezett vagy még el nem indított letöltés helyezhető át. Először állítsa le és fejezze be.
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+#, machine
+	Only an administrator can allow this	Csak rendszergazda engedélyezheti
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -3860,6 +3889,15 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The computer could not be turned off: {error}	A számítógépet nem lehetett kikapcsolni: {error}
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue"
+#, machine
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	A számítógép egy perccel a kezdési idő előtt felébred, és ébren marad, amíg a várólista fut. Az Mister Download Manager programnak futnia kell (várhat az értesítési területen).
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	The computer will be woken on {date} at {time}	A számítógép ekkor ébred fel: {date}, {time}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4099,6 +4137,14 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	Ez a kategória vagy sor még nem tartalmaz letöltéseket.
+#. text in win32.rs
+#. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
+#, machine
+	This computer can't be woken by a timer	Ezt a számítógépet nem lehet időzítővel felébreszteni
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
+#, machine
+	This computer has no wake alarm that programs can set	Ez a számítógép nem rendelkezik olyan ébresztési riasztással, amelyet a programok beállíthatnak
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4182,6 +4228,10 @@
 #. text in the Scheduler window
 #, machine
 	Thursday	csütörtök
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+#, machine
+	Tick "Start download at" first: the computer is woken for the start time	Először jelölje be a „Letöltés indítása ekkor” jelölőnégyzetet: a számítógép a kezdési időpontra ébred fel
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Hátralévő idő
@@ -4580,6 +4630,10 @@
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	Várakozás: a letöltési korlát elérve (Ütemező)
+#. text in the Scheduler window
+#. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+#, machine
+	Wake the computer to run this queue	A számítógép felébresztése a várólista futtatásához
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4613,6 +4667,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	Helyettesítő karakter mérete
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
+#, machine
+	Windows allows wake timers only while plugged in	A Windows csak csatlakoztatott állapotban engedélyezi az ébresztési időzítőket
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4623,6 +4681,10 @@
 #. text in langpick.rs
 #, machine
 	Windows' language ({language})	Windows nyelve ({language})
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+#, machine
+	Windows' power options don't allow wake timers	A Windows energiagazdálkodási beállításai nem engedélyezik az ébresztési időzítőket
 #. message or event log entry in the main window
 #, machine
 	with Add URL	URL hozzáadásával

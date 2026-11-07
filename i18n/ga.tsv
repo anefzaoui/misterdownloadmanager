@@ -436,6 +436,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	DNS eile...
+#. text in unix.rs
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+#, machine
+	Another program has set the computer's wake alarm	Tá aláram múscailte an ríomhaire socraithe ag clár eile cheana féin
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -744,6 +748,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Chad	Sead
+#. text in the Scheduler window
+#. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+#, machine
+	Change	Athraigh
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -1829,6 +1837,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Hong Kong	Hong Cong
+#. text in the Scheduler window
+#. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+#, machine
+	How to allow it	Conas é a cheadú
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -2356,6 +2368,11 @@
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Bhuail Mister Download Manager earráid inmheánach
+#. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Mister Download Manager is running the queue "{queue}"	Tá Mister Download Manager ag rith an scuaine "{queue}"
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -2767,9 +2784,17 @@
 #. a country's name (where a download's server is)
 #, machine
 	Oman	Óman
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+#, machine
+	On battery, Windows' power options don't allow wake timers	Ar cheallraí, ní cheadaíonn roghanna cumhachta Windows lasc ama múscailte
 #. text in a download's progress window
 #, machine
 	on download stop/resume	ar stopadh/atosú íoslódála
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
+#, machine
+	On macOS, only an administrator can schedule a wake	Ar macOS, ní féidir ach le riarthóir múscailt a sceidealú
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Uair amháin ag
@@ -2793,6 +2818,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Ní féidir ach íoslódáil críochnaithe, nó ceann nár thosaigh fós, a bhogadh. Stop é agus críochnaigh é ar dtús.
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+#, machine
+	Only an administrator can allow this	Ní féidir ach le riarthóir é seo a cheadú
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -3860,6 +3889,15 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The computer could not be turned off: {error}	Níorbh fhéidir an ríomhaire a mhúchadh: {error}
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue"
+#, machine
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	Múisctear an ríomhaire nóiméad roimh an am tosaithe agus coinnítear ina dhúiseacht é fad a bhíonn an scuaine ag rith. Caithfidh Mister Download Manager a bheith ag rith (féadfaidh sé fanacht sa limistéar fógraí).
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	The computer will be woken on {date} at {time}	Múisctear an ríomhaire ar {date} ag {time}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4099,6 +4137,14 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	Níl aon íoslódálacha sa chatagóir nó sa scuaine seo fós.
+#. text in win32.rs
+#. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
+#, machine
+	This computer can't be woken by a timer	Ní féidir lasc ama a mhúscailt an ríomhaire seo
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
+#, machine
+	This computer has no wake alarm that programs can set	Níl aláram múscailte ag an ríomhaire seo is féidir le cláir a shocrú
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4182,6 +4228,10 @@
 #. text in the Scheduler window
 #, machine
 	Thursday	Déardaoin
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+#, machine
+	Tick "Start download at" first: the computer is woken for the start time	Cuir tic le "Tosaigh íoslódáil ag" ar dtús: múisctear an ríomhaire don am tosaithe
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Am fágtha
@@ -4580,6 +4630,10 @@
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	Ag fanacht: sroichtear an teorainn íoslódála (Sceidealóir)
+#. text in the Scheduler window
+#. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+#, machine
+	Wake the computer to run this queue	Múisc an ríomhaire chun an scuaine seo a rith
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4613,6 +4667,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	Méid an chárta fiáin
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
+#, machine
+	Windows allows wake timers only while plugged in	Ní cheadaíonn Windows lasc ama múscailte ach amháin agus é plugáilte isteach
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4623,6 +4681,10 @@
 #. text in langpick.rs
 #, machine
 	Windows' language ({language})	Teanga Windows ({language})
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+#, machine
+	Windows' power options don't allow wake timers	Ní cheadaíonn roghanna cumhachta Windows lasc ama múscailte
 #. message or event log entry in the main window
 #, machine
 	with Add URL	le Cuir URL leis

@@ -326,6 +326,10 @@
 #. Options → Connection → DNS: a DNS server the user types in
 #. the trailing ... means it is still going on: keep it
 	Another DNS...	Altro DNS...
+#. text in unix.rs
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+#, machine
+	Another program has set the computer's wake alarm	Un altro programma ha impostato la sveglia di riattivazione del computer
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 	Answered in {ms} ms: {ip}	Risposta in {ms} ms: {ip}
@@ -553,6 +557,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Chad	Ciad
+#. text in the Scheduler window
+#. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+#, machine
+	Change	Modifica
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 	Change folder for "{category}" category on last selected	Imposta come cartella della categoria "{category}" l'ultima selezionata
@@ -1350,6 +1358,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Hong Kong	Hong Kong
+#. text in the Scheduler window
+#. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+#, machine
+	How to allow it	Come consentirlo
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 	How to fix it	Come risolvere
@@ -1739,6 +1751,11 @@
 #. text in crashui.rs
 #. crash report window heading: an internal error, MDM still running
 	Mister Download Manager hit an internal error	Mister Download Manager ha riscontrato un errore interno
+#. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Mister Download Manager is running the queue "{queue}"	Mister Download Manager sta eseguendo la coda "{queue}"
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 	Mister Download Manager stopped responding	Mister Download Manager non risponde
@@ -2037,8 +2054,16 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Oman	Oman
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+#, machine
+	On battery, Windows' power options don't allow wake timers	A batteria, le opzioni di risparmio energia di Windows non consentono i timer di riattivazione
 #. text in a download's progress window
 	on download stop/resume	all'interruzione/ripresa del download
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
+#, machine
+	On macOS, only an administrator can schedule a wake	Su macOS, solo un amministratore può pianificare una riattivazione
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 	Once at	Una volta alle
 #. text in extension.rs
@@ -2055,6 +2080,10 @@
 	Only a finished download, or one not started yet, can be moved	Si può spostare solo un download completato o non ancora avviato
 #. message or event log entry in the main window
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Si può spostare solo un download completato o non ancora avviato. Prima interrompilo e portalo a termine.
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+#, machine
+	Only an administrator can allow this	Solo un amministratore può consentirlo
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 	Only MP4 and MKV videos can hold subtitles	Solo i video MP4 e MKV possono contenere sottotitoli
@@ -2839,6 +2868,15 @@
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 	The computer could not be turned off: {error}	Impossibile spegnere il computer: {error}
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue"
+#, machine
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	Il computer viene riattivato un minuto prima dell'ora di inizio e mantenuto attivo mentre la coda è in esecuzione. Mister Download Manager deve essere in esecuzione (può attendere nell'area di notifica).
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	The computer will be woken on {date} at {time}	Il computer verrà riattivato il {date} alle {time}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 	The computer will go to sleep in {n} seconds.	Il computer andrà in sospensione tra {n} secondi.
@@ -3011,6 +3049,14 @@
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 	This category or queue holds no downloads yet.	Questa categoria o coda non contiene ancora download.
+#. text in win32.rs
+#. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
+#, machine
+	This computer can't be woken by a timer	Questo computer non può essere riattivato da un timer
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
+#, machine
+	This computer has no wake alarm that programs can set	Questo computer non ha una sveglia di riattivazione che i programmi possono impostare
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 	this computer or the local network	questo computer o la rete locale
@@ -3070,6 +3116,10 @@
 	Through {service}	Tramite {service}
 #. text in the Scheduler window
 	Thursday	giovedì
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+#, machine
+	Tick "Start download at" first: the computer is woken for the start time	Seleziona prima "Avvia download alle": il computer viene riattivato per l'ora di inizio
 #. text in a download's progress window; text in the Scheduler window
 	Time left	Tempo rimanente
 #. text in countries.rs
@@ -3363,6 +3413,10 @@
 	Waiting	In attesa
 #. message or event log entry in the main window
 	Waiting: the download limit is reached (Scheduler)	In attesa: limite di download raggiunto (Pianificatore)
+#. text in the Scheduler window
+#. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+#, machine
+	Wake the computer to run this queue	Riattiva il computer per eseguire questa coda
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Wallis and Futuna	Wallis e Futuna
@@ -3387,6 +3441,10 @@
 	What's new:	Novità:
 #. text in the Batch download window
 	Wildcard size	Lunghezza del carattere jolly
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
+#, machine
+	Windows allows wake timers only while plugged in	Windows consente i timer di riattivazione solo quando è collegato all'alimentazione
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 	Windows refused	Windows ha rifiutato l'operazione
@@ -3394,6 +3452,10 @@
 	Windows' language	Lingua di Windows
 #. text in langpick.rs
 	Windows' language ({language})	Lingua di Windows ({language})
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+#, machine
+	Windows' power options don't allow wake timers	Le opzioni di risparmio energia di Windows non consentono i timer di riattivazione
 #. message or event log entry in the main window
 	with Add URL	con Aggiungi URL
 #. text in the Add torrent window

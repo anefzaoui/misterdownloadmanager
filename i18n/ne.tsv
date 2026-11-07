@@ -436,6 +436,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	अर्को DNS...
+#. text in unix.rs
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+#, machine
+	Another program has set the computer's wake alarm	अर्को कार्यक्रमले कम्प्युटरको वेक अलार्म सेट गरेको छ
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -744,6 +748,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Chad	चाड
+#. text in the Scheduler window
+#. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+#, machine
+	Change	परिवर्तन गर्नुहोस्
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -1829,6 +1837,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Hong Kong	हङकङ
+#. text in the Scheduler window
+#. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+#, machine
+	How to allow it	यसलाई कसरी अनुमति दिने
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -2356,6 +2368,11 @@
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager मा आन्तरिक त्रुटि भयो
+#. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Mister Download Manager is running the queue "{queue}"	Mister Download Manager ले "{queue}" कतार चलाइरहेको छ
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -2767,9 +2784,17 @@
 #. a country's name (where a download's server is)
 #, machine
 	Oman	ओमान
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+#, machine
+	On battery, Windows' power options don't allow wake timers	ब्याट्रीमा, Windows को पावर विकल्पहरूले वेक टाइमरहरूलाई अनुमति दिँदैन
 #. text in a download's progress window
 #, machine
 	on download stop/resume	डाउनलोड रोक्दा/पुनः सुरु गर्दा
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
+#, machine
+	On macOS, only an administrator can schedule a wake	macOS मा, केवल एक प्रशासकले वेक तालिका बनाउन सक्छ
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	एक पटक
@@ -2793,6 +2818,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	समाप्त भएको डाउनलोड, वा सुरु नभएको मात्र सार्न सकिन्छ। यसलाई पहिले रोक्नुहोस् र समाप्त गर्नुहोस्।
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+#, machine
+	Only an administrator can allow this	प्रशासकले मात्र यसलाई अनुमति दिन सक्छ
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -3860,6 +3889,15 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The computer could not be turned off: {error}	कम्प्युटर बन्द गर्न सकिएन: {error}
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue"
+#, machine
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	कम्प्युटर सुरु हुने समयभन्दा एक मिनेट अगाडि जगाइन्छ र कतार चल्दा जागा राखिन्छ। Mister Download Manager चलिरहेको हुनुपर्छ (यो सूचना क्षेत्रमा पर्खन सक्छ)।
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	The computer will be woken on {date} at {time}	कम्प्युटर {date} मा {time} बजे जगाइनेछ
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4099,6 +4137,14 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	यो श्रेणी वा लाममा अहिलेसम्म कुनै डाउनलोड छैन।
+#. text in win32.rs
+#. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
+#, machine
+	This computer can't be woken by a timer	यो कम्प्युटर टाइमरद्वारा जगाउन सकिँदैन
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
+#, machine
+	This computer has no wake alarm that programs can set	यो कम्प्युटरमा कुनै वेक अलार्म छैन जुन कार्यक्रमहरूले सेट गर्न सक्छन्
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4182,6 +4228,10 @@
 #. text in the Scheduler window
 #, machine
 	Thursday	बिहीबार
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+#, machine
+	Tick "Start download at" first: the computer is woken for the start time	पहिले "डाउनलोड सुरु गर्नुहोस्" मा टिक लगाउनुहोस्: कम्प्युटर सुरु हुने समयको लागि जगाइन्छ
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	बाँकी समय
@@ -4580,6 +4630,10 @@
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	प्रतीक्षा गर्दै: डाउनलोड सीमा पुग्यो (तालिकाकार)
+#. text in the Scheduler window
+#. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+#, machine
+	Wake the computer to run this queue	यो कतार चलाउन कम्प्युटर जगाउनुहोस्
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4613,6 +4667,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	वाइल्डकार्ड आकार
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
+#, machine
+	Windows allows wake timers only while plugged in	Windows ले प्लग इन गर्दा मात्र वेक टाइमरहरूलाई अनुमति दिन्छ
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4623,6 +4681,10 @@
 #. text in langpick.rs
 #, machine
 	Windows' language ({language})	Windows को भाषा ({language})
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+#, machine
+	Windows' power options don't allow wake timers	Windows को पावर विकल्पहरूले वेक टाइमरहरूलाई अनुमति दिँदैन
 #. message or event log entry in the main window
 #, machine
 	with Add URL	URL थप्नुहोस् सँग
