@@ -5,7 +5,8 @@
 # - A pushed tag vX.Y.Z (matching Cargo.toml's version) publishes a GitHub release with them and
 #   SHA256SUMS.txt, its notes from CHANGELOG.md (Help -> Check for updates sees it at once). The
 #   release waits for Windows and the extensions: a failed Linux or macOS build leaves those out.
-# - Run by hand (Actions -> Release -> Run workflow) it only builds and keeps them as artifacts.
+# - Run by hand (Actions -> Release -> Run workflow) it only builds and keeps them as artifacts:
+#   nothing is published, and nothing is sent to addons.mozilla.org or the Chrome Web Store.
 name: Release
 
 on:
@@ -116,7 +117,8 @@ jobs:
     # Every browser's extension as its own download: Chrome, Edge, Brave, Opera and Vivaldi
     # (unzip, then load the folder unpacked) and Firefox (.xpi).
     runs-on: ubuntu-latest
-    # The signing step below runs only when the key is there (a step's `if` sees the job's env).
+    # The store steps below run only for a pushed tag, and only when their key is there (a step's
+    # `if` sees the job's env): a run by hand never sends anything to a store.
     env:
       AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
       CWS_REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
@@ -148,7 +150,7 @@ jobs:
       # for review (not waited for); Firefox installs and updates it from its listing. The .xpi
       # in the release stays the unsigned one (for about:debugging).
       - name: Send the Firefox add-on to addons.mozilla.org
-        if: ${{ env.AMO_JWT_ISSUER != '' }}
+        if: ${{ startsWith(github.ref, 'refs/tags/') && env.AMO_JWT_ISSUER != '' }}
         env:
           AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
         shell: pwsh
@@ -170,7 +172,7 @@ jobs:
       # Chrome, Edge, Brave, Opera and Vivaldi update from the listing. A store refusal (a version
       # it has already) never fails the release.
       - name: Send the extension to the Chrome Web Store
-        if: ${{ env.CWS_REFRESH_TOKEN != '' }}
+        if: ${{ startsWith(github.ref, 'refs/tags/') && env.CWS_REFRESH_TOKEN != '' }}
         continue-on-error: true
         env:
           CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
