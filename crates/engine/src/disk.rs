@@ -16,6 +16,13 @@ pub const FAT32_MAX: u64 = (4 << 30) - 1;
 /// Free space and file system of the volume holding `path`.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Volume {
+    /// The bytes a new file may take, as each system counts them for the user: on Windows the
+    /// space this user may use, disk quotas included (GetDiskFreeSpaceExW); on Linux and other
+    /// Unix systems the blocks left to programs that aren't root (statvfs's `f_bavail`); on
+    /// macOS the volume's capacity "for important usage", which includes the purgeable space
+    /// (caches, local snapshots) the system frees as soon as a program writes. Finder shows the
+    /// same number; statvfs leaves the purgeable space out, and would refuse a download that
+    /// fits.
     pub free: u64,
     /// As the system names it (`NTFS`, `FAT32`, `exFAT`; `ext4`, `vfat`; `apfs`, `msdos`), or
     /// empty when it can't tell: the space is still checked.
@@ -158,11 +165,73 @@ mod imp {
         } else {
             st.f_bsize
         };
+        // The blocks a program may use (without the reserve kept for root).
+        let free = st.f_bavail.saturating_mul(block);
+        #[cfg(target_vendor = "apple")]
+        let free = apple::important_capacity(dir).unwrap_or(free);
         Some(super::Volume {
-            // The blocks a program may use (without the reserve kept for root).
-            free: st.f_bavail.saturating_mul(block),
+            free,
             file_system: file_system(dir),
         })
+    }
+
+    /// The capacity Apple's systems give "for important usage" (a download the user asked for
+    /// is one): the free space plus the purgeable space the system frees on demand, as Finder
+    /// shows it. Asked of the folder's volume only. `target_vendor` rather than `target_os =
+    /// "macos"`, as for the file system's name below: the key is on iOS (11+) too. It needs macOS
+    /// 10.13; the macOS build asks for 11.0 (build-macos.sh).
+    #[cfg(target_vendor = "apple")]
+    #[allow(unsafe_code)] // One call and its key; the engine's other unsafe code is in `crate::sparse`.
+    mod apple {
+        use std::path::Path;
+
+        use core_foundation::base::{CFType, TCFType};
+        use core_foundation::number::CFNumber;
+        use core_foundation::url::CFURL;
+        use core_foundation_sys::base::{Boolean, CFTypeRef};
+        use core_foundation_sys::error::CFErrorRef;
+        use core_foundation_sys::string::CFStringRef;
+        use core_foundation_sys::url::CFURLRef;
+
+        // Both are commented out in core-foundation-sys 0.8.
+        #[link(name = "CoreFoundation", kind = "framework")]
+        unsafe extern "C" {
+            static kCFURLVolumeAvailableCapacityForImportantUsageKey: CFStringRef;
+            fn CFURLCopyResourcePropertyForKey(
+                url: CFURLRef,
+                key: CFStringRef,
+                value: *mut CFTypeRef,
+                error: *mut CFErrorRef,
+            ) -> Boolean;
+        }
+
+        /// None when the system can't tell (the key unknown to the volume, a failed call): the
+        /// statvfs count is used then.
+        pub fn important_capacity(dir: &Path) -> Option<u64> {
+            let url = CFURL::from_path(dir, true)?;
+            let mut value: CFTypeRef = std::ptr::null();
+            // SAFETY: `url` is a live CFURL that outlives the call; the key is a constant
+            // CFString CoreFoundation exports (macOS 10.13+, iOS 11+); `value` is a writable
+            // pointer the call fills with a +1 reference or leaves null; the error output is
+            // optional and left null.
+            let ok = unsafe {
+                CFURLCopyResourcePropertyForKey(
+                    url.as_concrete_TypeRef(),
+                    kCFURLVolumeAvailableCapacityForImportantUsageKey,
+                    &mut value,
+                    std::ptr::null_mut(),
+                )
+            };
+            if ok == 0 || value.is_null() {
+                return None;
+            }
+            // SAFETY: a non-null `value` from a Copy function is ours to release: the CFType
+            // takes that reference and releases it when dropped.
+            let value = unsafe { CFType::wrap_under_create_rule(value) };
+            // A CFNumber (a 64-bit integer); anything else, or a negative count, is no answer.
+            let bytes = value.downcast::<CFNumber>()?.to_i64()?;
+            u64::try_from(bytes).ok()
+        }
     }
 
     /// Linux tells a file system by a number; the FAT check needs `vfat`'s, the others are
@@ -340,7 +409,9 @@ mod tests {
         let dir = tempfile::tempdir().unwrap();
         let v = volume_of(dir.path()).expect("the temp folder's volume");
         assert!(v.free > 0, "{v:?}");
-        // The volume sysinfo lists, give or take what other programs wrote meanwhile.
+        // The volume sysinfo lists, give or take what other programs wrote meanwhile. On macOS
+        // sysinfo counts the important-usage capacity too (purgeable space included), so the
+        // two agree there as well: statvfs alone fell short of it by more than 1 GiB on CI.
         if let Some((free, fs)) = listed(dir.path()) {
             assert!(
                 v.file_system.eq_ignore_ascii_case(&fs),

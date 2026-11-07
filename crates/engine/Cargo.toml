@@ -52,6 +52,12 @@ windows-sys.workspace = true
 # The free-space probe (src/disk.rs): statvfs and statfs, safely (already in the tree).
 rustix = { version = "1.1.6", features = ["fs"] }
 
+[target.'cfg(target_vendor = "apple")'.dependencies]
+# The free-space probe (src/disk.rs) asks for the space Finder shows, purgeable space included
+# (already in the tree through security-framework).
+core-foundation = "0.10.1"
+core-foundation-sys = "0.8.7"
+
 [dev-dependencies]
 # The free-space probe's test compares it with the volume list it replaced (#224).
 sysinfo.workspace = true
