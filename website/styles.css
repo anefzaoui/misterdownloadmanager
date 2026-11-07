@@ -615,7 +615,7 @@ tbody th { font-weight: 650; }
    so nothing moves while it loads; the day or night one shows as the page's theme does. */
 .prose .shot { width: fit-content; max-width: 100%; margin-block: 1.7em 1.9em; }
 .prose .shot img, .prose .steps img { max-width: 100%; height: auto; vertical-align: top; }
-.prose figcaption { max-width: 64ch; margin-top: 12px; font-size: 14.5px; line-height: 1.55; color: var(--ink-2); }
+.prose figcaption { max-width: 64ch; margin-top: 12px; font-size: 14px; line-height: 1.55; color: var(--ink-2); }
 /* A step strip: a flow in two to four pictures, each under what to do. The numbers are the
    sequence (it is one), in ink like the label's band. */
 .prose .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); align-items: start; gap: 28px 24px; margin-block: 1.7em 2em; padding: 0; list-style: none; counter-reset: step; }
@@ -627,10 +627,10 @@ tbody th { font-weight: 650; }
 .prose .pics .shot { margin: 0; }
 .prose .pics img { max-width: 100%; height: auto; vertical-align: top; }
 .prose .steps figure { display: flex; flex-direction: column; gap: 12px; margin: 0; }
-.prose .steps figcaption { display: flex; align-items: baseline; gap: 10px; margin: 0; color: var(--ink); font-size: 15.5px; }
+.prose .steps figcaption { display: flex; align-items: baseline; gap: 10px; margin: 0; color: var(--ink); font-size: 16.5px; }
 .prose .steps figcaption::before {
   content: counter(step); flex: none; display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%;
-  background: var(--ink); color: var(--paper); font-size: 13px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums;
+  background: var(--ink); color: var(--paper); font-size: 12px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums;
 }
 @media (max-width: 720px) { .prose .steps-4 { grid-template-columns: minmax(0, 1fr); } }
 .prose blockquote { margin-inline: 0; padding: 14px 18px; border-radius: 8px; background: var(--paper-2); }
