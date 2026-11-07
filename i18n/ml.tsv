@@ -183,6 +183,11 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	ഒരു ഡീബ്രിഡ് സേവനം നിങ്ങളുടെ സ്വന്തം പണമടച്ച അക്കൗണ്ട് ഉപയോഗിച്ച് ഒരു ഫയൽ ഹോസ്റ്റിന്റെ ലിങ്ക് ഡൗൺലോഡ് ചെയ്യുകയും MDM-ന് ഒരു നേരിട്ടുള്ള ലിങ്ക് നൽകുകയും ചെയ്യുന്നു. നിങ്ങളുടെ സ്വന്തം അക്കൗണ്ട് മാത്രം ഉപയോഗിക്കുക: ഒരു അക്കൗണ്ടോ അതിന്റെ ലിങ്കുകളോ പങ്കിടുന്നത് സേവനങ്ങളുടെ നിബന്ധനകൾ ലംഘിക്കുകയും അത് താൽക്കാലികമായി നിർത്തലാക്കാൻ ഇടയാക്കുകയും ചെയ്യും. ബ്രൗസർ ഇതിനകം ആരംഭിച്ച ഡൗൺലോഡുകൾ അതുപോലെ നിലനിൽക്കും.
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	A file of this torrent can't be saved safely: {name}	ഈ ടോറൻ്റിൻ്റെ ഒരു ഫയൽ സുരക്ഷിതമായി സേവ് ചെയ്യാൻ കഴിയില്ല: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -431,6 +436,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	മറ്റൊരു DNS...
+#. text in unix.rs
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+#, machine
+	Another program has set the computer's wake alarm	മറ്റൊരു പ്രോഗ്രാം കമ്പ്യൂട്ടറിന്റെ വേക്ക് അലാറം സജ്ജീകരിച്ചിട്ടുണ്ട്
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -739,6 +748,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Chad	ചാഡ്
+#. text in the Scheduler window
+#. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+#, machine
+	Change	മാറ്റുക
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -1179,6 +1192,10 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	ഈ അക്കൗണ്ടുകളിലൂടെ പിന്തുണയ്ക്കുന്ന ഫയൽ-ഹോസ്റ്റ് ലിങ്കുകൾ ഡൗൺലോഡ് ചെയ്യുക
+#. text in a dialog box
+#. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
+#, machine
+	Download through {service}	{service} വഴി ഡൗൺലോഡ് ചെയ്യുക
 #. window title in the Download video window
 #, machine
 	Download video from a page	ഒരു പേജിൽ നിന്ന് വീഡിയോ ഡൗൺലോഡ് ചെയ്യുക
@@ -1820,6 +1837,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Hong Kong	ഹോങ്കോങ്
+#. text in the Scheduler window
+#. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+#, machine
+	How to allow it	അനുവദിക്കുന്നത് എങ്ങനെ
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -2347,6 +2368,11 @@
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager-ന് ഒരു ആന്തരിക പിശക് സംഭവിച്ചു
+#. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Mister Download Manager is running the queue "{queue}"	Mister Download Manager "{queue}" ക്യൂ പ്രവർത്തിപ്പിക്കുന്നു
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -2758,9 +2784,17 @@
 #. a country's name (where a download's server is)
 #, machine
 	Oman	ഒമാൻ
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+#, machine
+	On battery, Windows' power options don't allow wake timers	ബാറ്ററിയിൽ പ്രവർത്തിക്കുമ്പോൾ, Windows-ന്റെ പവർ ഓപ്ഷനുകൾ വേക്ക് ടൈമറുകൾ അനുവദിക്കുന്നില്ല
 #. text in a download's progress window
 #, machine
 	on download stop/resume	ഡൗൺലോഡ് നിർത്തുക/പുനരാരംഭിക്കുക
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
+#, machine
+	On macOS, only an administrator can schedule a wake	macOS-ൽ, ഒരു അഡ്മിനിസ്ട്രേറ്റർക്ക് മാത്രമേ വേക്ക് ഷെഡ്യൂൾ ചെയ്യാൻ കഴിയൂ
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	ഒരിക്കൽ
@@ -2784,6 +2818,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	പൂർത്തിയാക്കിയ ഡൗൺലോഡ് അല്ലെങ്കിൽ ഇതുവരെ ആരംഭിക്കാത്ത ഡൗൺലോഡ് മാത്രമേ നീക്കാൻ കഴിയൂ. ആദ്യം അത് നിർത്തി പൂർത്തിയാക്കുക.
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+#, machine
+	Only an administrator can allow this	ഒരു അഡ്‌മിനിസ്ട്രേറ്റർക്ക് മാത്രമേ ഇത് അനുവദിക്കാൻ കഴിയൂ
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -3318,6 +3356,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	ഇതൊരു സുഹൃത്തിന് അയയ്ക്കുക:
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+#, machine
+	Send torrents and magnet links to the first account instead of to peers	ടോറന്റുകളും മാഗ്നറ്റ് ലിങ്കുകളും പിയറുകളിലേക്ക് അയയ്‌ക്കുന്നതിന് പകരം ആദ്യ അക്കൗണ്ടിന്റെ സേവനത്തിലേക്ക് അയയ്‌ക്കുക
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3364,6 +3406,14 @@
 #. button in Test browser integration: register MDM's helper with the browsers
 #, machine
 	Set it up	ഇത് സജ്ജീകരിക്കുക
+#. message or event log entry in the main window
+#. event log: File Properties: the download no longer goes through the debrid account
+#, machine
+	Set to download directly, not through the debrid account	ഡീബ്രിഡ് അക്കൗണ്ട് വഴിയല്ലാതെ നേരിട്ട് ഡൗൺലോഡ് ചെയ്യാൻ സജ്ജീകരിച്ചു
+#. message or event log entry in the main window
+#. event log: File Properties: the download goes through the debrid account again
+#, machine
+	Set to download through the debrid account	ഡീബ്രിഡ് അക്കൗണ്ട് വഴി ഡൗൺലോഡ് ചെയ്യാൻ സജ്ജീകരിച്ചു
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3644,7 +3694,7 @@
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	ഡൗൺലോഡ് നിർത്തുക
-#. button in playlistdlg.rs
+#. text in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
 	Stop listing	ലിസ്റ്റിംഗ് നിർത്തുക
@@ -3839,6 +3889,15 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The computer could not be turned off: {error}	കമ്പ്യൂട്ടർ ഓഫ് ചെയ്യാൻ കഴിഞ്ഞില്ല: {error}
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue"
+#, machine
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	ആരംഭിക്കുന്നതിന് ഒരു മിനിറ്റ് മുമ്പ് കമ്പ്യൂട്ടർ ഉണർത്തുകയും ക്യൂ പ്രവർത്തിക്കുമ്പോൾ ഉണർന്നിരിക്കുകയും ചെയ്യും. Mister Download Manager പ്രവർത്തിച്ചുകൊണ്ടിരിക്കണം (അത് നോട്ടിഫിക്കേഷൻ ഏരിയയിൽ കാത്തിരിക്കാം).
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	The computer will be woken on {date} at {time}	{date} ന് {time} ന് കമ്പ്യൂട്ടർ ഉണർത്തപ്പെടും
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4078,6 +4137,14 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	ഈ വിഭാഗത്തിലോ ക്യൂവിലോ ഇതുവരെ ഡൗൺലോഡുകളൊന്നുമില്ല.
+#. text in win32.rs
+#. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
+#, machine
+	This computer can't be woken by a timer	ഈ കമ്പ്യൂട്ടറിനെ ഒരു ടൈമർ ഉപയോഗിച്ച് ഉണർത്താൻ കഴിയില്ല
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
+#, machine
+	This computer has no wake alarm that programs can set	ഈ കമ്പ്യൂട്ടറിന് പ്രോഗ്രാമുകൾക്ക് സജ്ജീകരിക്കാൻ കഴിയുന്ന വേക്ക് അലാറം ഇല്ല
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4150,9 +4217,21 @@
 #. where a download's server is, when a proxy carries it: {country} is the proxy's country
 #, machine
 	through a proxy in {country}	{country} എന്നതിലെ ഒരു പ്രോക്സി വഴി
+#. text in a download's Properties window
+#. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
+#, machine
+	Through {service}	{service} വഴി
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+#, machine
+	Through {service}: the service downloads the torrent, then MDM its files	{service} വഴി: സേവനം ടോറന്റ് ഡൗൺലോഡ് ചെയ്യുന്നു, തുടർന്ന് MDM അതിന്റെ ഫയലുകൾ ഡൗൺലോഡ് ചെയ്യുന്നു
 #. text in the Scheduler window
 #, machine
 	Thursday	വ്യാഴം
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+#, machine
+	Tick "Start download at" first: the computer is woken for the start time	ആദ്യം "ഡൗൺലോഡ് ആരംഭിക്കുക" എന്ന് ടിക്ക് ചെയ്യുക: ആരംഭിക്കുന്ന സമയത്തിനായി കമ്പ്യൂട്ടർ ഉണർത്തപ്പെടും
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	ശേഷിക്കുന്ന സമയം
@@ -4184,6 +4263,7 @@
 	too many redirects	വളരെ അധികം റീഡയറക്റ്റുകൾ
 #. value in a column's filter list in the download list; text in the Add torrent window
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#. noun: label before the torrent file or magnet link
 #, machine
 	Torrent	ടോറന്റ്
 #. text in the download list (sizes, speeds, status)
@@ -4550,6 +4630,10 @@
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	കാത്തിരിക്കുന്നു: ഡൗൺലോഡ് പരിധിയിലെത്തി (ഷെഡ്യൂളർ)
+#. text in the Scheduler window
+#. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+#, machine
+	Wake the computer to run this queue	ഈ ക്യൂ പ്രവർത്തിപ്പിക്കാൻ കമ്പ്യൂട്ടർ ഉണർത്തുക
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4583,6 +4667,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	വൈൽഡ്കാർഡ് വലുപ്പം
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
+#, machine
+	Windows allows wake timers only while plugged in	പ്ലഗ് ഇൻ ചെയ്യുമ്പോൾ മാത്രമേ Windows വേക്ക് ടൈമറുകൾ അനുവദിക്കൂ
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4593,6 +4681,10 @@
 #. text in langpick.rs
 #, machine
 	Windows' language ({language})	Windows-ന്റെ ഭാഷ ({language})
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+#, machine
+	Windows' power options don't allow wake timers	Windows-ന്റെ പവർ ഓപ്ഷനുകൾ വേക്ക് ടൈമറുകൾ അനുവദിക്കുന്നില്ല
 #. message or event log entry in the main window
 #, machine
 	with Add URL	URL ചേർക്കുക എന്നതിനൊപ്പം
@@ -4815,6 +4907,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{total} എണ്ണത്തിൽ {n} തിരഞ്ഞെടുത്തു
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+#, machine
+	{percent} at {service}	{service} എന്നതിൽ {percent}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -4826,6 +4922,9 @@
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	{service} ആദ്യം ഈ കമ്പ്യൂട്ടറിന് അനുമതി നൽകാൻ ആവശ്യപ്പെടുന്നു: അതിന്റെ ഇമെയിൽ കാണുക
+#. text in errors.rs
+#, machine
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} ഈ ടോറൻ്റ് നേടാൻ കഴിയുന്നില്ല: ആരും ഇത് പങ്കിടുന്നില്ല, അല്ലെങ്കിൽ ഇതിൻ്റെ ലിങ്ക് വായിക്കാൻ കഴിയുന്നില്ല
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} ഇപ്പോൾ ഈ ഫയൽ ഹോസ്റ്റിൽ എത്താൻ കഴിയില്ല; MDM പിന്നീട് വീണ്ടും ശ്രമിക്കും
@@ -5342,12 +5441,20 @@ menu	Add category	വിഭാഗം ചേർക്കുക
 #, machine
 menu	Add trackers...	ട്രാക്കറുകൾ ചേർക്കുക...
 #. menu command in the main window
+#. View → Theme: a style theme's name (GNOME's look, the Linux desktop), a name: keep "Adwaita" as written
+#, machine
+menu	Adwaita	Adwaita
+#. menu command in the main window
 #. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
 #, machine
 menu	Applies the next time MDM starts	അടുത്ത തവണ MDM ആരംഭിക്കുമ്പോൾ ബാധകമാകും
 #. menu command in the main window
 #, machine
 menu	Arrange files	ഫയലുകൾ ക്രമീകരിക്കുക
+#. menu command in the main window
+#. View → Theme: a style theme's name (KDE Plasma's look, the Linux desktop), a name: keep "Breeze" as written
+#, machine
+menu	Breeze	Breeze
 #. menu command in the main window
 #. verb: opens this category's download folder
 #, machine
@@ -5457,7 +5564,7 @@ menu	Download &video from a page...	ഒരു പേജിൽ നിന്ന്
 #, machine
 menu	Download in order	ക്രമത്തിൽ ഡൗൺലോഡ് ചെയ്യുക
 #. menu command in the main window
-#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	ഇതുപയോഗിച്ച് വരയ്ക്കുക
 #. menu command in the main window
@@ -5508,6 +5615,26 @@ menu	Hide drop target	ഡ്രോപ്പ് ടാർഗറ്റ് മറ�
 #, machine
 menu	High contrast	ഉയർന്ന കോൺട്രാസ്റ്റ്
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+#, machine
+menu	It couldn't start: the log says why	ഇതിന് ആരംഭിക്കാൻ കഴിഞ്ഞില്ല: ലോഗ് കാരണം പറയുന്നു
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+#, machine
+menu	Its first frame didn't show within 10 seconds	ഇതിന്റെ ആദ്യ ഫ്രെയിം 10 സെക്കൻഡിനുള്ളിൽ കാണിച്ചില്ല
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+#, machine
+menu	Its last start ended before its first frame	ഇതിന്റെ അവസാന ആരംഭം ആദ്യ ഫ്രെയിമിന് മുമ്പ് അവസാനിച്ചു
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Apple's), usually kept as is
+#, machine
+menu	Metal	Metal
+#. menu command in the main window
+#. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Metal didn't start here: OpenGL draws	Metal ഇവിടെ ആരംഭിച്ചില്ല: OpenGL വരയ്ക്കുന്നു
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
 menu	Metro	മെട്രോ
@@ -5522,6 +5649,10 @@ menu	Move/Rename (Ctrl-M)	നീക്കുക/പേരുമാറ്റു�
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
 menu	Native	നേറ്റീവ്
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+#, machine
+menu	No graphics card here has a driver for it	ഇതിനായി ഒരു ഡ്രൈവർ ഉള്ള ഒരു ഗ്രാഫിക്സ് കാർഡും ഇവിടെയില്ല
 #. menu command in the main window
 #, machine
 menu	On Double click	ഇരട്ട ക്ലിക്കിൽ
@@ -5647,6 +5778,10 @@ menu	Support &MDM	MDM-നെ പിന്തുണയ്ക്കുക(&M)
 #, machine
 menu	Tell a &friend	ഒരു സുഹൃത്തിനോട് പറയുക(&f)
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+#, machine
+menu	The graphics card was lost twice in 10 minutes	ഗ്രാഫിക്സ് കാർഡ് 10 മിനിറ്റിനുള്ളിൽ രണ്ടുതവണ നഷ്ടപ്പെട്ടു
+#. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
 menu	Theme	തീം
@@ -5685,6 +5820,14 @@ menu	Turn of&f	ഓഫ് ചെയ്യുക(&f)
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Verify checksum...	ചെക്ക്സം പരിശോധിക്കുക...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+#, machine
+menu	Vulkan	Vulkan
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Vulkan didn't start here: OpenGL draws	Vulkan ഇവിടെ ആരംഭിച്ചില്ല: OpenGL വരയ്ക്കുന്നു
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

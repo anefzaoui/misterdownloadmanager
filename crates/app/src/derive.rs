@@ -348,6 +348,7 @@ pub fn derive(s: &Seeds) -> Palette {
         caption_text_inactive: mix(text, s.header, 0.45),
         caption_hot: with_alpha(text, 0x10),
         caption_pressed: with_alpha(text, 0x0a),
+        caption_button: Color32::TRANSPARENT,
         caption_close: Color32::from_rgb(0xc4, 0x2b, 0x1c),
         caption_close_text: Color32::WHITE,
         drop_edge: toward(bg, 0.4),

@@ -1809,6 +1809,16 @@ pub fn edit_focus_line(ui: &Ui, resp: &Response, rc: Rect) {
 /// frame, curving into the corners as Windows 11 draws it; dark: IDM's straight line.
 pub fn focus_bottom(p: &Painter, rc: Rect) {
     let h = crate::theme::metrics().focus_line;
+    // GNOME: a ring inside the box, the accent half seen through.
+    if crate::theme::current().controls.field_focus == crate::palette::FieldFocus::Ring {
+        p.rect_stroke(
+            rc,
+            control_radius(),
+            Stroke::new(2.0, accent().gamma_multiply(0.5)),
+            StrokeKind::Inside,
+        );
+        return;
+    }
     // Windows 8 and XP: the whole border in the accent, not a line along the bottom.
     if crate::theme::current().controls.field_focus == crate::palette::FieldFocus::Border {
         p.rect_stroke(
@@ -3420,6 +3430,16 @@ struct Face {
 /// A button's colours for `kind` in `state`, from `c` (a theme's variant). The states are
 /// decided here, once for every button: the pressed one flattens its bottom edge.
 fn button_colors(kind: ButtonKind, state: State, c: &crate::palette::Palette) -> Face {
+    button_colors_in(kind, state, c, crate::theme::current().controls.button)
+}
+
+/// [`button_colors`] in the button style `look`.
+fn button_colors_in(
+    kind: ButtonKind,
+    state: State,
+    c: &crate::palette::Palette,
+    look: crate::palette::ButtonLook,
+) -> Face {
     let pressed = state == State::Pressed;
     if kind == ButtonKind::Accent {
         // The accent filled, a shade lighter under the pointer and darker pressed.
@@ -3447,6 +3467,14 @@ fn button_colors(kind: ButtonKind, state: State, c: &crate::palette::Palette) ->
             (c.button_default_border, c.button_default_bottom)
         }
         ButtonKind::Disabled => (c.button_disabled_border, c.button_disabled_border),
+    };
+    // KDE: the edge in the accent under the pointer and pressed (its face tinted pressed, by
+    // the theme's colours).
+    let breeze = look == crate::palette::ButtonLook::Breeze;
+    let (border, bottom) = if breeze && matches!(state, State::Hot | State::Pressed) {
+        (c.accent, c.accent)
+    } else {
+        (border, bottom)
     };
     let face = Face {
         fill: match state {
@@ -3577,6 +3605,29 @@ pub fn focus_ring(p: &Painter, rc: Rect) {
         return;
     }
     let ink = crate::theme::colors().focus_ring;
+    // GNOME: a rounded ring, as wide as two points, the controls' corners.
+    match crate::theme::current().controls.focus {
+        crate::palette::FocusLook::Ring => {
+            p.rect_stroke(
+                rc,
+                control_radius(),
+                Stroke::new(2.0, ink),
+                StrokeKind::Inside,
+            );
+            return;
+        }
+        // KDE: a frame one point wide.
+        crate::palette::FocusLook::Frame => {
+            p.rect_stroke(
+                rc,
+                control_radius(),
+                Stroke::new(1.0, ink),
+                StrokeKind::Inside,
+            );
+            return;
+        }
+        crate::palette::FocusLook::Dotted => {}
+    }
     let (l, t, r, b) = (rc.left(), rc.top(), rc.right() - 1.0, rc.bottom() - 1.0);
     let mut x = l;
     while x <= r {
@@ -3701,6 +3752,60 @@ pub fn row_check(
 }
 
 pub fn check_box_glyph(p: &Painter, rc: Rect, checked: bool, state: State) {
+    // KDE: the box's edge in the accent under the pointer; checked, the accent's edge around
+    // its inside tinted with it, a tick in the text's colour.
+    if crate::theme::current().controls.check == crate::palette::CheckLook::Breeze {
+        let m = crate::theme::metrics();
+        let (fill_c, border) = breeze_box(state, checked);
+        if let Some(f) = fill_c {
+            p.rect_filled(rc, m.check_radius, f);
+        }
+        p.rect_stroke(
+            rc,
+            m.check_radius,
+            Stroke::new(m.border, border),
+            StrokeKind::Inside,
+        );
+        if checked {
+            p.line(
+                vec![
+                    pos2(rc.left() + 3.0, rc.top() + 6.5),
+                    pos2(rc.left() + 5.5, rc.top() + 9.0),
+                    pos2(rc.left() + 10.0, rc.top() + 4.0),
+                ],
+                Stroke::new(2.0, breeze_mark(state)),
+            );
+        }
+        return;
+    }
+    // GNOME: a 2-point border at rest (its inside tinted under the pointer), the accent filled
+    // with a light tick, 2 points wide, when checked.
+    if crate::theme::current().controls.check == crate::palette::CheckLook::Adwaita {
+        let m = crate::theme::metrics();
+        if checked {
+            p.rect_filled(rc, m.check_radius, fluent_accent(state));
+            p.line(
+                vec![
+                    pos2(rc.left() + 3.0, rc.top() + 6.5),
+                    pos2(rc.left() + 5.5, rc.top() + 9.0),
+                    pos2(rc.left() + 10.0, rc.top() + 4.0),
+                ],
+                Stroke::new(2.0, fluent_mark()),
+            );
+        } else {
+            let (fill_c, border) = fluent_box(state);
+            if let Some(f) = fill_c {
+                p.rect_filled(rc, m.check_radius, f);
+            }
+            p.rect_stroke(
+                rc,
+                m.check_radius,
+                Stroke::new(2.0, border),
+                StrokeKind::Inside,
+            );
+        }
+        return;
+    }
     // Windows 8: the box keeps its inside and border (the border in the accent under the
     // pointer), a tick in the accent.
     if crate::theme::current().controls.check == crate::palette::CheckLook::Square {
@@ -3825,6 +3930,35 @@ fn fluent_mark() -> Color32 {
     crate::theme::colors().check_mark
 }
 
+/// A KDE check box's or radio's inside (none when disabled) and edge: the accent's edge under
+/// the pointer or pressed, and when checked, around an inside tinted with the accent.
+fn breeze_box(state: State, checked: bool) -> (Option<Color32>, Color32) {
+    let c = crate::theme::colors();
+    let (fill_c, border) = fluent_box(state);
+    let edge = match state {
+        State::Disabled if checked => c.check_on_disabled,
+        State::Disabled => border,
+        _ if checked => fluent_accent(state),
+        State::Hot | State::Pressed => c.check_on_hot,
+        _ => border,
+    };
+    let inside = match (checked, fill_c) {
+        (true, Some(f)) => Some(crate::derive::mix(f, fluent_accent(state), 0.3)),
+        (_, f) => f,
+    };
+    (inside, edge)
+}
+
+/// The tick or dot on a checked KDE box or radio: the text's colour, greyed when disabled.
+fn breeze_mark(state: State) -> Color32 {
+    let c = crate::theme::colors();
+    if state == State::Disabled {
+        c.check_on_disabled
+    } else {
+        c.check_mark
+    }
+}
+
 /// An unchecked Windows 11 check box's or radio's fill (none when disabled) and border in
 /// `state`: darker fill under the pointer, darker still and a fainter border while pressed.
 fn fluent_box(state: State) -> (Option<Color32>, Color32) {
@@ -3893,7 +4027,17 @@ pub fn radio_light_until(
     );
     let c = glyph + vec2(6.5, 6.5);
     let state = State::of(&resp, enabled);
-    if selected {
+    // KDE: as its check box, round; the dot in the text's colour.
+    if crate::theme::current().controls.check == crate::palette::CheckLook::Breeze {
+        let (fill_c, edge) = breeze_box(state, selected);
+        if let Some(f) = fill_c {
+            p.circle_filled(c, 6.0, f);
+        }
+        p.circle_stroke(c, 6.0, Stroke::new(1.0, edge));
+        if selected {
+            p.circle_filled(c, 2.5, breeze_mark(state));
+        }
+    } else if selected {
         p.circle_filled(c, 6.5, fluent_accent(state));
         // Windows 11's dot grows under the pointer and shrinks while pressed.
         let dot = match state {
@@ -3907,9 +4051,15 @@ pub fn radio_light_until(
         if let Some(f) = fill_c {
             p.circle_filled(c, 6.0, f);
         }
-        p.circle_stroke(c, 6.0, Stroke::new(1.0, ring));
+        // GNOME's ring is two points wide, as its check boxes' edge.
+        let adwaita = crate::theme::current().controls.check == crate::palette::CheckLook::Adwaita;
+        if adwaita {
+            p.circle_stroke(c, 5.5, Stroke::new(2.0, ring));
+        } else {
+            p.circle_stroke(c, 6.0, Stroke::new(1.0, ring));
+        }
         // Pressed, Windows 11 shows the dot to come.
-        if state == State::Pressed {
+        if state == State::Pressed && !adwaita {
             p.circle_filled(c, 2.1, ring);
         }
     }
@@ -4865,6 +5015,8 @@ pub mod caption {
         /// Windows Terminal ships them (#0FFFFFFF / #09000000, #0AFFFFFF / #06000000).
         pub CAPTION_HOVER => caption_hot;
         pub CAPTION_PRESSED => caption_pressed;
+        /// A button at rest, where the style shows one (GNOME's round buttons).
+        CAPTION_BUTTON => caption_button;
         /// Close's hover red, and its glyph on it.
         CLOSE_HOVER => caption_close;
         CLOSE_INK => caption_close_text;
@@ -4885,6 +5037,65 @@ pub mod caption {
     pub const CAPTION_BUTTON_W: f32 = 46.0;
     /// Where the window's icon ends: the system menu's place in the title bar.
     pub const CAPTION_ICON_W: f32 = 32.0;
+
+    /// How the theme's title bar is laid out (`palette::CaptionLook`).
+    #[derive(Clone, Copy)]
+    struct Style {
+        /// One button's width, and the room after the last one at the window's end.
+        button_w: f32,
+        end: f32,
+        /// GNOME's round buttons (a circle this wide, tinted at rest), else Windows' tiles the
+        /// bar's height.
+        circle: Option<f32>,
+        /// The window's icon at the start (the system menu's place).
+        icon: bool,
+        /// The title centred in the bar (else after the icon), and in bold.
+        centred: bool,
+        bold: bool,
+        /// A button under the pointer or pressed draws its glyph in the bar's colour (KDE).
+        invert: bool,
+    }
+
+    fn style() -> Style {
+        use crate::palette::CaptionLook;
+        let windows = Style {
+            button_w: CAPTION_BUTTON_W,
+            end: 0.0,
+            circle: None,
+            icon: true,
+            centred: false,
+            bold: false,
+            invert: false,
+        };
+        match crate::theme::current().controls.caption {
+            CaptionLook::System => windows,
+            CaptionLook::Metro => Style {
+                centred: true,
+                ..windows
+            },
+            // libadwaita's header bar: 24-point round buttons 6 apart, no icon, a bold title.
+            CaptionLook::Adwaita => Style {
+                button_w: 30.0,
+                end: 4.0,
+                circle: Some(24.0),
+                icon: false,
+                centred: true,
+                bold: true,
+                invert: false,
+            },
+            // KDE's Breeze: the icon, the title centred, 18-point round buttons shown only
+            // under the pointer, in the title's colour with the glyph in the bar's.
+            CaptionLook::Breeze => Style {
+                button_w: 26.0,
+                end: 4.0,
+                circle: Some(18.0),
+                icon: true,
+                centred: true,
+                bold: false,
+                invert: true,
+            },
+        }
+    }
 
     /// A caption button of a title bar we draw ourselves, from the window's end inwards: Close,
     /// Maximize, Minimize, then ours.
@@ -4926,7 +5137,10 @@ pub mod caption {
         /// Its glyph: the theme's icon set's where it has one, else Segoe Fluent's shapes drawn
         /// as our own 1 px vectors, 10 px across (Restore's two squares while maximized).
         fn glyph(self, ui: &Ui, p: &Painter, c: Pos2, ink: Color32, maximized: bool) {
-            if let Some((src, _)) = crate::themeicons::source(self.need(maximized), 16.0) {
+            let px = 16.0 * ui.ctx().pixels_per_point();
+            if let Some((src, tint)) =
+                crate::themeicons::source(self.need(maximized), px, ink, true)
+            {
                 let rc = Rect::from_center_size(c, vec2(16.0, 16.0));
                 let img = egui::Image::new(src);
                 if let Ok(egui::load::TexturePoll::Ready { texture }) =
@@ -4936,7 +5150,7 @@ pub mod caption {
                         texture.id,
                         rc,
                         Rect::from_min_max(pos2(0.0, 0.0), pos2(1.0, 1.0)),
-                        ink,
+                        tint,
                     );
                     return;
                 }
@@ -5039,17 +5253,30 @@ pub mod caption {
         let hover = enabled && (resp.hovered() || frame_hot);
         let pressed = enabled && (resp.is_pointer_button_down_on() || frame_pressed);
         let close = b == CaptionButton::Close;
+        let st = style();
+        let circle = st.circle;
         let fill = match (pressed, hover, close) {
             (true, _, true) => Some(close_pressed()),
             (false, true, true) => Some(CLOSE_HOVER()),
             (true, _, false) => Some(CAPTION_PRESSED()),
             (false, true, false) => Some(CAPTION_HOVER()),
+            // GNOME's round buttons show at rest too.
+            _ if circle.is_some() && enabled => Some(CAPTION_BUTTON()),
             _ => None,
         };
         if let Some(f) = fill {
-            p.rect_filled(rc, 0.0, f);
+            match circle {
+                Some(d) => {
+                    p.circle_filled(rc.center(), d / 2.0, f);
+                }
+                None => {
+                    p.rect_filled(rc, 0.0, f);
+                }
+            }
         }
-        let ink = if close && pressed {
+        let ink = if st.invert && (hover || pressed) {
+            CAPTION_BG()
+        } else if close && pressed {
             CLOSE_INK().gamma_multiply(0.7)
         } else if close && hover {
             CLOSE_INK()
@@ -5060,7 +5287,11 @@ pub mod caption {
         };
         let maximized = ui.ctx().input(|i| i.viewport().maximized) == Some(true);
         b.glyph(ui, p, rc.center().round(), ink, maximized);
-        show_focus(ui, &resp, rc.shrink(3.0));
+        let ring = match circle {
+            Some(d) => Rect::from_center_size(rc.center(), vec2(d, d)),
+            None => rc.shrink(3.0),
+        };
+        show_focus(ui, &resp, ring);
         let clicked = resp.clicked();
         if b == CaptionButton::ToTray {
             resp.on_hover_text(name);
@@ -5093,13 +5324,14 @@ pub mod caption {
         p.rect_filled(rect, 0.0, CAPTION_BG());
         let mut pressed = None;
         let mut rects = Vec::with_capacity(buttons.len());
-        let bw = CAPTION_BUTTON_W;
+        let st = style();
+        let bw = st.button_w;
         for (i, (b, enabled)) in buttons.iter().enumerate() {
             let k = i as f32;
             let x0 = if rtl {
-                rect.left() + k * bw
+                rect.left() + st.end + k * bw
             } else {
-                rect.right() - (k + 1.0) * bw
+                rect.right() - st.end - (k + 1.0) * bw
             };
             let rc = Rect::from_min_size(pos2(x0, rect.top()), vec2(bw, rect.height()));
             if caption_button(ui, rc, *b, *enabled, active) {
@@ -5109,16 +5341,24 @@ pub mod caption {
         }
         // The frame's word on Maximize holds for this bar only.
         FRAME_MAX.with(|c| c.set((false, false)));
-        let buttons_w = bw * buttons.len() as f32;
-        let icon_c = if rtl {
-            pos2(rect.right() - 16.0, rect.center().y)
+        let buttons_w = st.end + bw * buttons.len() as f32;
+        // Without an icon, the title keeps a little room from the bar's start.
+        let icon_w = if st.icon { CAPTION_ICON_W } else { 12.0 };
+        if st.icon {
+            let icon_c = if rtl {
+                pos2(rect.right() - 16.0, rect.center().y)
+            } else {
+                pos2(rect.left() + 16.0, rect.center().y)
+            };
+            egui::Image::new(egui::include_image!("../assets/icons/app/mdm-32.png"))
+                .paint_at(ui, Rect::from_center_size(icon_c.round(), vec2(16.0, 16.0)));
+        }
+        let font = if st.bold {
+            FontId::new(segoe().size, egui::FontFamily::Name("tahoma-bold".into()))
         } else {
-            pos2(rect.left() + 16.0, rect.center().y)
+            segoe()
         };
-        egui::Image::new(egui::include_image!("../assets/icons/app/mdm-32.png"))
-            .paint_at(ui, Rect::from_center_size(icon_c.round(), vec2(16.0, 16.0)));
-        let font = segoe();
-        let room = rect.width() - CAPTION_ICON_W - buttons_w - 12.0;
+        let room = rect.width() - icon_w - buttons_w - 12.0;
         let shown = ellipsize(&p, &font, title, room.max(0.0));
         let ink = if active {
             CAPTION_INK()
@@ -5126,32 +5366,26 @@ pub mod caption {
             caption_ink_inactive()
         };
         let (anchor, x) = if rtl {
-            (egui::Align2::RIGHT_CENTER, rect.right() - CAPTION_ICON_W)
+            (egui::Align2::RIGHT_CENTER, rect.right() - icon_w)
         } else {
-            (egui::Align2::LEFT_CENTER, rect.left() + CAPTION_ICON_W)
+            (egui::Align2::LEFT_CENTER, rect.left() + icon_w)
         };
-        // Windows 8 centres the title in the bar (kept clear of the icon and the buttons).
-        let (anchor, x) =
-            if crate::theme::current().controls.caption == crate::palette::CaptionLook::Metro {
-                let half = text_width_font(&p, font.clone(), &shown) / 2.0;
-                let (lo, hi) = if rtl {
-                    (
-                        rect.left() + buttons_w + half,
-                        rect.right() - CAPTION_ICON_W - half,
-                    )
-                } else {
-                    (
-                        rect.left() + CAPTION_ICON_W + half,
-                        rect.right() - buttons_w - half,
-                    )
-                };
-                (
-                    egui::Align2::CENTER_CENTER,
-                    rect.center().x.clamp(lo.min(hi), hi.max(lo)),
-                )
+        // Windows 8 and GNOME centre the title in the bar (kept clear of the icon and the
+        // buttons).
+        let (anchor, x) = if st.centred {
+            let half = text_width_font(&p, font.clone(), &shown) / 2.0;
+            let (lo, hi) = if rtl {
+                (rect.left() + buttons_w + half, rect.right() - icon_w - half)
             } else {
-                (anchor, x)
+                (rect.left() + icon_w + half, rect.right() - buttons_w - half)
             };
+            (
+                egui::Align2::CENTER_CENTER,
+                rect.center().x.clamp(lo.min(hi), hi.max(lo)),
+            )
+        } else {
+            (anchor, x)
+        };
         let drawn = p.text(pos2(x, rect.center().y), anchor, &shown, font, ink);
         let label = ui.interact(drawn, widget_id(ui, "caption-title"), Sense::hover());
         // The window's own name says the title to screen readers (where the system speaks for
@@ -5164,7 +5398,11 @@ pub mod caption {
         if shown != title {
             label.on_hover_text(title);
         }
-        let icon = if rtl {
+        // Without an icon, no system-menu place (Alt+Space and a right-click on the bar still
+        // open the system menu).
+        let icon = if !st.icon {
+            Rect::from_min_size(rect.min, egui::Vec2::ZERO)
+        } else if rtl {
             Rect::from_min_max(pos2(rect.right() - CAPTION_ICON_W, rect.top()), rect.max)
         } else {
             Rect::from_min_size(rect.min, vec2(CAPTION_ICON_W, rect.height()))
@@ -5859,17 +6097,26 @@ mod tests {
         // Issue #7: pressed was #f5f5f5 against hot #f6f6f6, the same to the eye.
         for theme in crate::palette::builtins() {
             for c in [&theme.light, &theme.dark] {
-                button_states_differ(c);
+                button_states_differ(c, theme.controls.button);
             }
         }
     }
 
-    fn button_states_differ(c: &crate::palette::Palette) {
+    fn button_states_differ(c: &crate::palette::Palette, look: crate::palette::ButtonLook) {
+        let button_colors = |kind, state, c| button_colors_in(kind, state, c, look);
         {
             for kind in [ButtonKind::Normal, ButtonKind::Default] {
                 let rest = button_colors(kind, State::Normal, c);
                 let hot = button_colors(kind, State::Hot, c);
                 let pressed = button_colors(kind, State::Pressed, c);
+                // KDE: the edge takes the accent under the pointer, the face pressed; the label
+                // stays.
+                if look == crate::palette::ButtonLook::Breeze {
+                    assert_ne!(hot.border, rest.border, "hot takes the accent's edge");
+                    assert_ne!(pressed.fill, rest.fill, "pressed tints the face");
+                    assert_eq!(pressed.bottom, pressed.border, "one edge all round");
+                    continue;
+                }
                 assert_ne!(pressed.text, rest.text, "pressed dims the label");
                 assert_eq!(
                     pressed.bottom, pressed.border,

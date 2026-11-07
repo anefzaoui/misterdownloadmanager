@@ -48,6 +48,11 @@ pub(crate) fn fault_of(code: &str, message: &str) -> Fault {
         "LINK_TOO_MANY_DOWNLOADS" => F::TooManyActive,
         "LINK_DOWN" => F::FileUnavailable,
         "LINK_PASS_PROTECTED" => F::PasswordNeeded,
+        "MAGNET_MUST_BE_PREMIUM" => F::NotPremium,
+        "MAGNET_NO_SERVER" => F::IpRefused,
+        "MAGNET_TOO_MANY_ACTIVE" => F::TooManyActive,
+        "MAGNET_TOO_MANY" => F::LimitReached,
+        "MAGNET_INVALID_ID" => F::FileUnavailable,
         "NO_SERVER" => F::IpRefused,
         "MAINTENANCE" | "GENERIC" | "DELAYED_INVALID_ID" | "LINK_ERROR" => F::ServiceDown,
         _ if !message.is_empty() => F::Other(message.to_owned()),
@@ -194,6 +199,102 @@ pub(crate) async fn pin_check(http: &Http, pin: &Pin) -> Result<Option<String>, 
     let form = [("check", pin.check.as_str()), ("pin", pin.pin.as_str())];
     let c: PinCheck = call(http, http.post_form(&url, &form)).await?;
     Ok(c.apikey.filter(|k| c.activated && !k.is_empty()))
+}
+
+/// `POST v4/magnet/upload` (`magnets[]`): the magnet's id.
+pub(crate) async fn add_magnet(http: &Http, key: &str, magnet: &str) -> Result<String, Fault> {
+    #[derive(Deserialize)]
+    struct Uploaded {
+        #[serde(default)]
+        magnets: Vec<One>,
+    }
+    #[derive(Deserialize)]
+    struct One {
+        id: Option<i64>,
+        error: Option<ErrorBody>,
+    }
+    let url = http.services.ad.join("v4/magnet/upload").expect("relative");
+    let u: Uploaded = call(
+        http,
+        http.post_form(&url, &[("magnets[]", magnet)])
+            .bearer_auth(key),
+    )
+    .await?;
+    match u.magnets.into_iter().next() {
+        Some(One { id: Some(id), .. }) => Ok(id.to_string()),
+        Some(One { error: Some(e), .. }) => Err(fault_of(&e.code, &e.message)),
+        _ => Err(Fault::Service(mdm_engine::ServiceFault::ServiceDown)),
+    }
+}
+
+/// `POST v4.1/magnet/status` (`id`), then, once ready, `POST v4/magnet/files` (`id[]`).
+pub(crate) async fn magnet_status(
+    http: &Http,
+    key: &str,
+    id: &str,
+) -> Result<crate::torrents::Status, Fault> {
+    use crate::torrents::{AdMagnet, AdNode, Status};
+    #[derive(Deserialize)]
+    #[serde(untagged)]
+    enum OneOrMany {
+        Many(Vec<AdMagnet>),
+        One(AdMagnet),
+    }
+    #[derive(Deserialize)]
+    struct Magnets {
+        magnets: OneOrMany,
+    }
+    let id = crate::plain_id(id)?;
+    let url = http
+        .services
+        .ad
+        .join("v4.1/magnet/status")
+        .expect("relative");
+    let m: Magnets = call(http, http.post_form(&url, &[("id", id)]).bearer_auth(key)).await?;
+    let m = match m.magnets {
+        OneOrMany::One(m) => m,
+        OneOrMany::Many(v) => v
+            .into_iter()
+            .next()
+            .ok_or(Fault::Service(mdm_engine::ServiceFault::FileUnavailable))?,
+    };
+    if let Some(s) = crate::torrents::ad_status(&m) {
+        return Ok(s);
+    }
+    #[derive(Deserialize)]
+    struct Files {
+        #[serde(default)]
+        magnets: Vec<FilesOf>,
+    }
+    #[derive(Deserialize)]
+    struct FilesOf {
+        #[serde(default)]
+        files: Vec<AdNode>,
+        error: Option<ErrorBody>,
+    }
+    let url = http.services.ad.join("v4/magnet/files").expect("relative");
+    let f: Files = call(http, http.post_form(&url, &[("id[]", id)]).bearer_auth(key)).await?;
+    let Some(of) = f.magnets.into_iter().next() else {
+        return Err(Fault::Service(mdm_engine::ServiceFault::FileUnavailable));
+    };
+    if let Some(e) = of.error {
+        return Err(fault_of(&e.code, &e.message));
+    }
+    let mut files = Vec::new();
+    crate::torrents::ad_flatten(&of.files, "", &mut files);
+    Ok(Status::Ready {
+        name: m.filename,
+        files,
+    })
+}
+
+/// `POST v4/magnet/delete` (`id`).
+pub(crate) async fn magnet_delete(http: &Http, key: &str, id: &str) -> Result<(), Fault> {
+    let id = crate::plain_id(id)?;
+    let url = http.services.ad.join("v4/magnet/delete").expect("relative");
+    call::<serde_json::Value>(http, http.post_form(&url, &[("id", id)]).bearer_auth(key))
+        .await
+        .map(|_| ())
 }
 
 #[cfg(test)]
