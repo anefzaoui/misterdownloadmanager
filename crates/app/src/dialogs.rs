@@ -676,6 +676,9 @@ pub struct FileInfo {
     /// "Download through …" unticked: downloaded directly instead (`Item::direct`). Unticked
     /// from the start when the browser had already started the download.
     pub direct: bool,
+    /// Whether Save As names a folder, looked at off the window's thread: it is asked every
+    /// frame, and a folder on a network share that doesn't answer would freeze the window.
+    dest_dir: crate::launch::Asked<PathBuf, bool>,
 }
 
 pub enum Start {
@@ -730,6 +733,7 @@ impl FileInfo {
             None => (start_probe(rt, ctx, &new.url, &request), None),
         };
         FileInfo {
+            dest_dir: Default::default(),
             url_text: new.url.to_string(),
             url_bad: false,
             focused: false,
@@ -1166,10 +1170,23 @@ impl FileInfo {
                 let name_bad = {
                     let typed = self.save_as.trim();
                     let dest = self.dest();
+                    // A local disk answers within the wait; a share that doesn't reads as no
+                    // folder meanwhile (the download says so if it can't write there).
+                    let folder = || {
+                        self.dest_dir
+                            .get(
+                                &dest,
+                                std::time::Duration::from_secs(1),
+                                std::time::Duration::from_millis(50),
+                                Some(ui.ctx()),
+                                |d| d.is_dir(),
+                            )
+                            .unwrap_or(false)
+                    };
                     typed.is_empty()
                         || typed.ends_with(['\\', '/'])
                         || dest.file_name().is_none()
-                        || dest.is_dir()
+                        || folder()
                 };
                 let blocked = if self.url_bad {
                     Some("Invalid address")

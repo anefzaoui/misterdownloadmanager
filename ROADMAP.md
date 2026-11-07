@@ -13,6 +13,11 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ The window no longer freezes on Linux when the system's sleep service (logind) or keyring
+  (Secret Service) is slow or doesn't answer: keeping the computer awake for a woken queue is
+  asked in the background, a keyring that doesn't answer at start is waited for once instead of
+  once per saved password, and the tray check and Download File Info's Save As check no longer
+  wait on every frame (follows [#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222))
 - ✅ Linux: Dark Mode support follows the desktop's dark or light theme on XFCE, MATE and others
   without the portal's setting, and on GNOME without the portal, live
   ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156))
