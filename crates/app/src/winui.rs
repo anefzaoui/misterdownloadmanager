@@ -3591,7 +3591,7 @@ fn button_face(
     let state = State::of(&resp, enabled);
     let p = ui.painter();
     let face = button_colors(kind, state, crate::theme::colors());
-    let radius = paint_button(p, rc, kind, state, &face, false);
+    let radius = paint_button(p, rc, kind, state, &face, Shape::Push);
     // "&Start now": the letter after '&' is underlined and Alt+letter presses it.
     let (shown, mnemonic) = match label.split_once('&') {
         Some((before, after)) if !after.is_empty() => (format!("{before}{after}"), Some(before)),
@@ -3640,22 +3640,23 @@ fn button_face(
 }
 
 /// A push button's face, edge and bottom line in the theme's button style (`palette::ButtonLook`):
-/// flat (Windows 11, KDE), or shaded toward the theme's `gloss` (Luna, Aero, Aqua). `part`: a
-/// small button-like part (a spin box's halves, an icon button, a drop-down), whose corners stay
-/// the controls'. Every button and every part drawn as one comes here. Its corners' radius.
+/// flat (Windows 11, KDE), or shaded toward the theme's `gloss` (Luna, Aero, Aqua), as `shape`
+/// says it is used. Every button and every part drawn as one comes here. Its corners' radius.
 fn paint_button(
     p: &Painter,
     rc: Rect,
     kind: ButtonKind,
     state: State,
     face: &Face,
-    part: bool,
+    shape: Shape,
 ) -> f32 {
     use crate::palette::ButtonLook;
     let c = crate::theme::colors();
     let m = crate::theme::metrics();
     let look = crate::theme::current().controls.button;
+    let part = shape != Shape::Push;
     let radius = match look {
+        _ if shape == Shape::DropDown => control_radius(),
         _ if part => control_radius().min((rc.height() / 3.0).floor()),
         ButtonLook::Fluent | ButtonLook::Breeze => control_radius(),
         ButtonLook::Luna | ButtonLook::Aero => m.button_radius,
@@ -3670,8 +3671,10 @@ fn paint_button(
             Stroke::new(m.border, face.border),
             StrokeKind::Inside,
         );
-        if !part || rc.height() >= 14.0 {
-            let inset = if part { radius } else { 3.0 };
+        // The bottom edge: a push button's and a drop-down's 3 points in from its ends, a small
+        // part's from its corners (none on one too low for it).
+        if shape != Shape::Small || rc.height() >= 14.0 {
+            let inset = if shape == Shape::Small { radius } else { 3.0 };
             hline(
                 p,
                 rc.left() + inset,
@@ -3712,6 +3715,16 @@ fn paint_button(
         StrokeKind::Inside,
     );
     radius
+}
+
+/// What a face drawn by [`paint_button`] is: a push button, a small button-like part (a spin
+/// box's halves, an icon button: its corners no rounder than a third of its height) or a
+/// drop-down.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Shape {
+    Push,
+    Small,
+    DropDown,
 }
 
 /// A button's colours.
@@ -5120,7 +5133,7 @@ pub fn button_like(p: &Painter, rc: Rect, state: State) {
         ButtonKind::Normal
     };
     let face = button_colors(kind, state, crate::theme::colors());
-    paint_button(p, rc, kind, state, &face, true);
+    paint_button(p, rc, kind, state, &face, Shape::Small);
 }
 
 pub fn dropdown_frame_light(p: &Painter, rc: Rect, state: State) {
@@ -5147,7 +5160,7 @@ pub fn dropdown_frame_light(p: &Painter, rc: Rect, state: State) {
     } else {
         face
     };
-    paint_button(p, rc, kind, state, &face, true);
+    paint_button(p, rc, kind, state, &face, Shape::DropDown);
 }
 
 /// The accent (Windows' blue): borders of open and focused controls.
