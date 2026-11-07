@@ -593,6 +593,20 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   right-click menus and the drop-down lists opened in the middle of the screen, as the compositor
   placed them like windows. They are now menu windows no window manager places, as X11 menus are,
   so they open where MDM puts them, on every window manager.
+- **Linux: a missing window library is named, with how to install it**
+  ([#265](https://github.com/anefzaoui/misterdownloadmanager/issues/265)): from the tar.gz or the
+  AppImage, on a system without libxkbcommon-x11 (or another library X11 windows need), MDM
+  stopped at start with a crash. It now says which library is missing and the command that
+  installs it (apt, dnf, zypper, pacman or apk, by the distribution), on the terminal and in a
+  message box (zenity or kdialog, when there is one). In a Wayland session it opens its window
+  on Wayland instead, saying so.
+- **Linux: plain HTTP downloads work on a system without CA certificates**
+  ([#264](https://github.com/anefzaoui/misterdownloadmanager/issues/264)): on a minimal install
+  without the `ca-certificates` package (the tar.gz, the AppImage or a source build), no download
+  started, `http://` ones included ("No CA certificates were loaded from the system"). Plain HTTP
+  and FTP now work there, and each HTTPS or FTPS download fails at once, without retrying, saying
+  that the computer has no certificates to check the server with and to install
+  `ca-certificates`.
 - **Signed-in videos from YouTube Music and YouTube's mobile site**
   ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229)): the button over a
   video on music.youtube.com or m.youtube.com passed the page's cookies for that host only, while

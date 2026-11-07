@@ -1940,6 +1940,10 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	התקן אותו באופן ידני
+#. text in unix.rs
+#. Linux, after a missing library's name, on a distribution MDM doesn't know
+#, machine
+	Install what's missing from your distribution's packages.	התקן את מה שחסר מחבילות ההפצה שלך.
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -2379,6 +2383,10 @@
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
+#. text in unix.rs
+#. Linux, at start, on the terminal and in a message box: a library the window needs isn't installed; {libraries} = its file names (libxkbcommon-x11.so.0…), left as they are
+#, machine
+	Mister Download Manager can't open its window: this system lacks {libraries}.	לא ניתן לפתוח את החלון של Mister Download Manager: הספריות {libraries} חסרות במערכת זו.
 #. text in crashui.rs
 #. crash report window heading: MDM crashed and is gone
 #, machine
@@ -2418,6 +2426,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Mister Download Manager's own copy, version {version}	העותק של Mister Download Manager עצמו, גרסה {version}
+#. text in unix.rs
+#. Linux, at start, on the terminal: the libraries an X11 window needs aren't installed, so the window opens through Wayland instead, where menus can't be placed under what was clicked; {libraries} = their file names, left as they are
+#, machine
+	Mister Download Manager's X11 window needs {libraries}, which this system lacks: it opens on Wayland instead, where its menus may open away from their titles.	חלון ה-X11 של Mister Download Manager זקוק ל-{libraries}, שחסרים במערכת זו: הוא נפתח ב-Wayland במקום זאת, ושם התפריטים שלו עשויים להיפתח הרחק מהכותרות שלהם.
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -4234,6 +4246,10 @@
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
 	This computer can't be woken by a timer	מחשב זה אינו יכול להתעורר באמצעות טיימר
+#. text in errors.rs
+#. a download's error on a computer (a minimal Linux) without the certificates that secure connections check servers with; "ca-certificates" is the package's name, left as is
+#, machine
+	this computer has no certificates to check the server with: install the ca-certificates package, then try again	למחשב זה אין אישורים לבדיקת השרת: התקן את חבילת ca-certificates, ולאחר מכן נסה שוב
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 #, machine
@@ -4340,6 +4356,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Timor-Leste	טימור-לסטה
+#. text in unix.rs
+#. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
+#, machine
+	To install what's missing: {command}	כדי להתקין את מה שחסר: {command}
 #. text in the Batch download window
 #, machine
 	To:	אל:
