@@ -291,7 +291,7 @@ pub fn desktop_dark(ctx: &egui::Context) -> Option<bool> {
                         _ => 0,
                     };
                     if SCHEME.swap(scheme, Ordering::Relaxed) != scheme {
-                        ctx.request_repaint();
+                        desktop_changed(&ctx);
                     }
                     // No preference: the theme settings may still say (GNOME's "default" with
                     // a dark GTK theme, a portal that answers 0 for every desktop).
@@ -337,6 +337,25 @@ pub fn desktop_dark(ctx: &egui::Context) -> Option<bool> {
         _ => None,
     };
     known(SCHEME.load(Ordering::Relaxed)).or_else(|| known(SETTINGS.load(Ordering::Relaxed)))
+}
+
+/// How many times the desktop's light or dark, accent or contrast changed (the watchers here).
+/// The app's theme check runs every 2 s; a change seen here runs it at once ([`desktop_changed`]),
+/// so the window follows the desktop in the frame that the change wakes (#156).
+#[cfg(target_os = "linux")]
+static DESKTOP_GENERATION: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+
+/// See [`DESKTOP_GENERATION`].
+#[cfg(target_os = "linux")]
+pub fn desktop_generation() -> u64 {
+    DESKTOP_GENERATION.load(std::sync::atomic::Ordering::Relaxed)
+}
+
+/// The desktop's look changed: counted, and a frame woken to show it.
+#[cfg(target_os = "linux")]
+fn desktop_changed(ctx: &egui::Context) {
+    DESKTOP_GENERATION.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+    ctx.request_repaint();
 }
 
 // The portal's answer and the theme settings' (0: not known, 1: dark, 2: light).
@@ -495,7 +514,7 @@ fn watch_theme_settings(ctx: &egui::Context) {
                         ),
                         None => tracing::info!("desktop theme: no setting says"),
                     }
-                    ctx.request_repaint();
+                    desktop_changed(&ctx);
                 }
             }
         };
@@ -686,7 +705,7 @@ fn desktop_look(ctx: &egui::Context) -> (Option<egui::Color32>, bool) {
                         _ => {}
                     }
                     if *look != before {
-                        ctx.request_repaint();
+                        desktop_changed(&ctx);
                     }
                 };
                 let watch = || -> zbus::Result<()> {
