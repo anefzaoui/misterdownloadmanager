@@ -311,6 +311,11 @@ Everything below ships together, in one release, as version 0.3.0.
   inside the page ([#169](https://github.com/anefzaoui/misterdownloadmanager/issues/169))
 - ✅ Help opens the website's help pages, in the interface language when the website has it
   ([#227](https://github.com/anefzaoui/misterdownloadmanager/issues/227))
+- ✅ Website: a page for every feature, old and new, with its real window, where it is in the app
+  and what it can't do yet; tiles of them all on the home page; and a
+  [Themes](https://misterdownloadmanager.com/themes.html) page with every built-in theme, light and
+  dark, and how to make, try and share your own
+  ([#260](https://github.com/anefzaoui/misterdownloadmanager/issues/260))
 
 ### Being built
 

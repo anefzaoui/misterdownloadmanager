@@ -22,6 +22,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **The website: a page for every feature, and a Themes page**
+  ([#260](https://github.com/anefzaoui/misterdownloadmanager/issues/260)): each feature has a page
+  of its own, with the real window, where to find it in the app, since which version, and what it
+  can't do yet; the home page lists them all, by group. The Themes page shows every built-in theme
+  in its light and dark side, and how to make your own theme file, try it without building MDM,
+  and share it, with a prompt to give an AI assistant. What isn't in a release yet says so.
 - **Run MDM on a server** ([#157](https://github.com/anefzaoui/misterdownloadmanager/issues/157)):
   `misterdownloadmanager --headless` runs MDM without a window (a home server, a NAS, Docker,
   Unraid), its folders and port set by flags or the environment; a `Dockerfile`, a Compose file

@@ -254,6 +254,49 @@
     }, 2600);
   }
 
+  // ---- Themes: every tile in its light or its dark side, and the prompt to copy -----------------
+  // The tiles follow the site's light or dark at first; the switch shows them all in the other.
+  (function () {
+    var grid = document.querySelector("[data-variant-grid]");
+    var bar = document.querySelector("[data-variant-switch]");
+    if (!grid || !bar) return;
+    var buttons = bar.querySelectorAll("button[data-variant]");
+    function current() {
+      var set = root.getAttribute("data-theme");
+      if (set === "light" || set === "dark") return set;
+      return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    function show(v) {
+      grid.setAttribute("data-variant", v);
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].setAttribute("aria-pressed", String(buttons[i].getAttribute("data-variant") === v));
+      }
+    }
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].addEventListener("click", function () { show(this.getAttribute("data-variant")); });
+    }
+    show(current());
+    bar.hidden = false;
+  })();
+
+  each("[data-copy]", function (btn) {
+    var src = document.getElementById(btn.getAttribute("data-copy"));
+    var label = btn.querySelector("[data-copy-label]");
+    if (!src || !label || !navigator.clipboard) return;
+    var idle = label.textContent, timer = 0;
+    btn.hidden = false;
+    btn.addEventListener("click", function () {
+      navigator.clipboard.writeText(src.textContent.trim() + "\n").then(function () {
+        label.textContent = t("Copied");
+      }, function () {
+        label.textContent = t("Select the text and copy it");
+      }).then(function () {
+        clearTimeout(timer);
+        timer = setTimeout(function () { label.textContent = idle; }, 2200);
+      });
+    });
+  });
+
   // ---- Lightbox: any screenshot, big ----------------------------------------------------------
   // Images in [data-lightbox] groups (and every screenshot in a help article) open over the page
   // at their full resolution, fitted to the screen. Click or double-click switches to real pixels
