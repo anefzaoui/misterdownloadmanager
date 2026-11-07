@@ -7,9 +7,10 @@
 //!   for a form post that carries `FIELD=VALUE`
 //! - `GET /files/{name}` — a real file from `--files DIR` (Range too; 404 without it): archives
 //!   for the link grabber's tests
-//! - `GET /redirect?to=URL[&ttl_ms=N][&code=3xx]` — a redirect (302 unless `code` says) to `URL`
-//!   (cross-host redirects, credential scoping); with `ttl_ms` the target gets `expires=<unix ms>`
-//!   and answers 403 after it (signed CDN links)
+//! - `GET /redirect?to=URL[&ttl_ms=N][&uses=N][&code=3xx]` — a redirect (302 unless `code` says)
+//!   to `URL` (cross-host redirects, credential scoping); with `ttl_ms` the target gets
+//!   `expires=<unix ms>` and answers 403 after it (signed CDN links); with `uses` it is a link of
+//!   its own that answers 403 after N requests (a link that expires however slow the machine)
 //! - `GET /hop?to=URL&how=meta|header[&wait=S][&cookie=N=V]` — a page that sends the browser on to
 //!   `URL` itself (`<meta http-equiv="refresh">` or a `Refresh` header), as download sites' waiting pages do
 //! - `GET /page`, `/formpage`, `/cookie`, `/assets/*` — web pages for the browser tests (`pages`)
@@ -183,6 +184,8 @@ pub(crate) struct Shared {
     seq: AtomicU64,
     /// One-time links already used (path and query).
     used_once: Mutex<HashSet<String>>,
+    /// Requests each signed link with `uses` has served (path and query).
+    link_uses: Mutex<HashMap<String, u64>>,
     conn_reqs: Mutex<HashMap<SocketAddr, u64>>,
     active: Mutex<HashMap<IpAddr, u32>>,
     log: Mutex<Vec<LogEntry>>,
@@ -298,6 +301,7 @@ impl LabServer {
             requests: AtomicU64::new(0),
             seq: AtomicU64::new(0),
             used_once: Mutex::default(),
+            link_uses: Mutex::default(),
             conn_reqs: Mutex::default(),
             active: Mutex::default(),
             log: Mutex::default(),
@@ -457,10 +461,13 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
                    video/mp4, ...): a browser displays or plays it
     inline=bare    the real Content-Type and no Content-Disposition at all
     expires=UNIXMS 403 after that time (what /redirect?ttl_ms= adds)
+    uses=N         403 once this path and query has served N requests (what /redirect?uses= adds,
+                   with a link= of its own)
   faults (also server-wide with --faults; per-URL values override):
     rate=SIZE slow_every=N slow_rate=SIZE max_conns=N drop_after=SIZE drop_every=N
     fail_every=N fail_first=N no_range=1 no_range_every=N html=1 etag_change_every=N
     etag=weak|per-request|none latency_ms=N range_latency_ms=N (only requests with a Range)
+    range_rate=SIZE  the rate of answers to requests with a Range (instead of rate)
     stall_at=SIZE  never send the file's byte at that offset: a response stops there and waits
                    (until the server's faults change, from a test; a URL's own value stays)
     require_cookie=NAME=VALUE|NAME   403 unless the Cookie header has it
@@ -473,7 +480,7 @@ POST /form/{size}[/{name}]?need=FIELD=VALUE&see_other=1&<as /gen>
     (default need=token=abc): 405 to other methods, 403 to a form without it;
     see_other=1: 303 to /gen/{size}/{name}?<the rest of the query> instead
 GET /files/{name}   a real file from --files DIR (Range too; 404 without --files)
-GET /redirect?to=URL[&ttl_ms=N][&code=3xx]   302 (or code) to URL (not logged); ttl_ms: a signed link expiring after N ms
+GET /redirect?to=URL[&ttl_ms=N][&uses=N][&code=3xx]   302 (or code) to URL (not logged); ttl_ms: a signed link expiring after N ms; uses: a new link each time, expiring after N requests
 /rd/rest/1.0/{user,hosts/domains,unrestrict/link,disable_access_token}, /rd/oauth/v2/{device/code,device/credentials,token}
                                               a fake Real-Debrid (#44): tokens good (premium), free; links http://hoster.test/file/SIZE/NAME[?gone=1&down=1&chunks=N&ttl_ms=N&rate=SIZE]
 /ad/v4/{user,hosts/domains,link/unlock,link/delayed,pin/check}, /ad/v4.1/pin/get      a fake AllDebrid: the same tokens and links, plus delayed=N
@@ -588,8 +595,9 @@ async fn log_simple(
     resp
 }
 
-/// `/redirect?to=URL[&ttl_ms=N][&code=3xx]`: a redirect (302 unless `code` says) to `URL`; with
-/// `ttl_ms`, to a signed link that expires.
+/// `/redirect?to=URL[&ttl_ms=N][&uses=N][&code=3xx]`: a redirect (302 unless `code` says) to
+/// `URL`; with `ttl_ms`, to a signed link that expires; with `uses`, to a link of its own that
+/// expires after that many requests.
 async fn redirect(RawQuery(q): RawQuery) -> Response {
     let mut m = q
         .and_then(|q| serde_urlencoded::from_str::<HashMap<String, String>>(&q).ok())
@@ -600,6 +608,12 @@ async fn redirect(RawQuery(q): RawQuery) -> Response {
     if let Some(ttl) = m.get("ttl_ms").and_then(|t| t.parse::<u64>().ok()) {
         let sep = if to.contains('?') { '&' } else { '?' };
         to = format!("{to}{sep}expires={}", unix_ms() + ttl);
+    }
+    if let Some(uses) = m.get("uses").and_then(|n| n.parse::<u64>().ok()) {
+        static LINKS: AtomicU64 = AtomicU64::new(0);
+        let sep = if to.contains('?') { '&' } else { '?' };
+        let link = LINKS.fetch_add(1, Ordering::Relaxed);
+        to = format!("{to}{sep}uses={uses}&link={link}");
     }
     let code = m
         .get("code")
@@ -886,6 +900,8 @@ struct FileQuery {
     seed: u64,
     /// A signed link's end, unix ms.
     expires: Option<u64>,
+    /// The requests a signed link serves (`link` tells the links apart).
+    uses: Option<u64>,
     cd: Option<String>,
     cdstar: Option<String>,
     disposition: Disposition,
@@ -917,7 +933,14 @@ pub(crate) async fn serve(
         }
     };
     let seed = q.seed;
-    if q.expires.is_some_and(|t| unix_ms() > t) {
+    let used_up = q.uses.is_some_and(|uses| {
+        let key = format!("{}?{query}", entry.path);
+        let mut served = shared.link_uses.lock().unwrap();
+        let n = served.entry(key).or_insert(0);
+        *n += 1;
+        *n > uses
+    });
+    if used_up || q.expires.is_some_and(|t| unix_ms() > t) {
         shared.record(entry, 403, "expired");
         return (StatusCode::FORBIDDEN, "link expired\n").into_response();
     }
@@ -1062,6 +1085,8 @@ pub(crate) async fn serve(
 
     let rate = if every(n, f.slow_every) {
         f.slow_rate.or(f.rate)
+    } else if entry.range.is_some() {
+        f.range_rate.or(f.rate)
     } else {
         f.rate
     };
@@ -1166,6 +1191,7 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
     let mut out = FileQuery {
         seed: 0,
         expires: None,
+        uses: None,
         cd: None,
         cdstar: None,
         disposition: Disposition::Attachment,
@@ -1185,6 +1211,8 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
             "expires" => {
                 out.expires = Some(v.parse().map_err(|_| format!("invalid expires `{v}`\n"))?)
             }
+            "uses" => out.uses = Some(v.parse().map_err(|_| format!("invalid uses `{v}`\n"))?),
+            "link" => {}
             "cd" => out.cd = name(&k, v)?,
             "cdstar" => out.cdstar = name(&k, v)?,
             "inline" => {
