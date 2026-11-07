@@ -48,7 +48,7 @@ doesn't exist yet): a live snapshot saves the whole memory, and under Hyper-V (V
 mode, "VT-x is not available") it stalled with an empty .sav file and had to be killed.
 
 The VM's name, user and password come from MDM_VM, MDM_VM_USER and MDM_VM_PASSWORD (defaults:
-mdm-ubuntu, mdm, and the lab's throwaway password). Commands run with the desktop session's
+mdm-ubuntu and mdm; the password has no default). Commands run with the desktop session's
 DISPLAY and D-Bus, so GUI programs open on the VM's screen.
 #>
 param(
@@ -64,7 +64,16 @@ $ErrorActionPreference = 'Stop'
 $vbox = Join-Path $env:ProgramFiles 'Oracle\VirtualBox\VBoxManage.exe'
 $vm = if ($env:MDM_VM) { $env:MDM_VM } else { 'mdm-ubuntu' }
 $user = if ($env:MDM_VM_USER) { $env:MDM_VM_USER } else { 'mdm' }
-$pass = if ($env:MDM_VM_PASSWORD) { $env:MDM_VM_PASSWORD } else { 'mdm123456789' }
+$pass = $env:MDM_VM_PASSWORD
+# Or the developer key folder's vm-account.txt ("user: <name>" and "password: <word>" lines).
+$keys = Join-Path $env:USERPROFILE '.mdm-dev\vm-account.txt'
+if (-not $pass -and (Test-Path $keys)) {
+    foreach ($line in Get-Content $keys) {
+        if (-not $env:MDM_VM_USER -and $line -match '^\s*user:\s*(\S+)') { $user = $Matches[1] }
+        if ($line -match '^\s*password:\s*(\S+)') { $pass = $Matches[1] }
+    }
+}
+if (-not $pass) { throw "no VM account: set MDM_VM_USER and MDM_VM_PASSWORD" }
 $auth = @('--username', $user, '--password', $pass)
 
 function Invoke-Guest([string] $Command, [string] $On = $vm) {
