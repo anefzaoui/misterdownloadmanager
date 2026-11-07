@@ -70,6 +70,10 @@ pub struct LogEntry {
     /// The `Cookie` header, to check credentials don't follow cross-host redirects.
     #[serde(default)]
     pub cookie: Option<String>,
+    /// The `Host` header: which host a request through the lab as an HTTP proxy was for (its
+    /// absolute address, `GET http://www.youtube.com/…`, routed by its path like any other).
+    #[serde(default)]
+    pub host: Option<String>,
     /// The `Authorization` header, never in full: its scheme and first 4 characters ("Bearer
     /// good…"), to check a service token reaches its API only (#44).
     #[serde(default)]
@@ -263,6 +267,7 @@ impl Shared {
             if_range: header_str(headers, header::IF_RANGE),
             user_agent: header_str(headers, header::USER_AGENT),
             cookie: header_str(headers, header::COOKIE),
+            host: header_str(headers, header::HOST),
             authorization: header_str(headers, header::AUTHORIZATION)
                 .map(|a| a.chars().take(11).collect::<String>() + "…"),
             referer: header_str(headers, header::REFERER),

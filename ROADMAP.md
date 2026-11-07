@@ -16,6 +16,20 @@ Everything below ships together, in one release, as version 0.3.0.
 - ✅ **View → Interface size**: every window larger, 100 % to 200 %, with Ctrl + / Ctrl − / Ctrl 0
   as in a browser; a window larger than the screen scrolls. Sharper text on Windows (part of
   [#262](https://github.com/anefzaoui/misterdownloadmanager/issues/262))
+- ✅ Linux: Update now asks the package manager which package MDM is; a copy installed by
+  another package manager (pacman) is left to the system's updates, with a plain message
+- ✅ Linux: the guide says what uninstalling leaves in each user's home folder (the browsers' host
+  files, the list and settings) and how to remove it; a package can't
+  ([#266](https://github.com/anefzaoui/misterdownloadmanager/issues/266))
+- ✅ Linux: menus and drop-down lists open under what was clicked on tiling compositors (sway)
+  too, through XWayland, as on GNOME and KDE
+  ([#267](https://github.com/anefzaoui/misterdownloadmanager/issues/267))
+- ✅ Linux: a library the window needs that the system lacks (libxkbcommon-x11 and the other X11
+  ones, from the tar.gz and the AppImage) is named at start, on the terminal and in a message box,
+  with the command that installs it, instead of a crash; in a Wayland session the window opens
+  on Wayland instead ([#265](https://github.com/anefzaoui/misterdownloadmanager/issues/265))
+- ✅ Linux: plain HTTP downloads work on a system without CA certificates, and HTTPS ones say to
+  install them ([#264](https://github.com/anefzaoui/misterdownloadmanager/issues/264))
 - ✅ Update now finds the Linux and macOS release files whether or not their names end in
   "-experimental"
 - ✅ Linux packages checked in clean Ubuntu 24.04, Debian 12 and Fedora 45 systems: install, the
@@ -64,6 +78,9 @@ Everything below ships together, in one release, as version 0.3.0.
   ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192))
 - ✅ A menu of the menu bar shut with Escape opens again at the first click on its title (on
   Linux it took two; on Windows, Escape with the pointer on the title left the menu open)
+- ✅ Signed-in videos from YouTube Music and YouTube's mobile site: the browser's cookies reach
+  the YouTube host yt-dlp asks, each for the domain the browser keeps it for
+  ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229))
 - ✅ Cookies for video sites: yt-dlp can read a browser's cookies on this computer (Firefox,
   Chrome, Edge, Brave, Opera, Vivaldi, Chromium, Whale; Safari on macOS), so a pasted YouTube
   link that asks to "confirm you're not a bot" works when you're signed in there; and the button

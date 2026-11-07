@@ -405,11 +405,31 @@ impl Updates {
                             right,
                             "update-line",
                         );
-                        let have = crate::i18n::fmt(
-                            crate::i18n::t("You have version {version}."),
-                            &[("version", VERSION)],
+                        // A package of another package manager (pacman, …): that one updates it.
+                        let have = if install == mdm_tools::update::Install::System {
+                            crate::i18n::fmt(
+                                // i18n: Check for updates, under the new version's line, when MDM was installed by the Linux system's package manager (pacman, ...), which MDM can't update itself
+                                crate::i18n::t(
+                                    "You have version {version}, from your system's package manager: update it there.",
+                                ),
+                                &[("version", VERSION)],
+                            )
+                        } else {
+                            crate::i18n::fmt(
+                                crate::i18n::t("You have version {version}."),
+                                &[("version", VERSION)],
+                            )
+                        };
+                        winui::fit(
+                            ui,
+                            &p,
+                            o.x + 11.0,
+                            o.y + 42.0,
+                            &have,
+                            winui::MUTED(),
+                            right,
+                            "update-have",
                         );
-                        winui::text(&p, o.x + 11.0, o.y + 42.0, &have, winui::MUTED());
                         winui::text(
                             &p,
                             o.x + 11.0,
@@ -443,10 +463,12 @@ impl Updates {
                     crate::update::asset_for(install, &rel.version, &rel.assets)
                         .filter(|_| !matches!(self.status, Some(UpdateStatus::Failed(_))))
                 });
+                // Another package manager's copy: no Update now nor Download, the notes only.
+                let managed = install == mdm_tools::update::Install::System;
                 let close_label = if self.job.is_some() {
                     // i18n: button: stop downloading the update
                     crate::i18n::mark("Cancel")
-                } else if download.is_some() {
+                } else if download.is_some() && !managed {
                     // i18n: button: not now (download the update later)
                     crate::i18n::mark("Later")
                 } else {
@@ -456,7 +478,7 @@ impl Updates {
                 // version.
                 let first = if matches!(result, Some(Err(_))) {
                     Some("Retry")
-                } else if download.is_some() {
+                } else if download.is_some() && !managed {
                     Some(if asset.is_some() {
                         "Update now"
                     } else {
@@ -559,7 +581,7 @@ impl Updates {
                         enter = false;
                     }
                 }
-                if let Some(rel) = &download {
+                if let Some(rel) = download.as_ref().filter(|_| !managed) {
                     if let Some(asset) = asset {
                         let idle = self.job.is_none();
                         let kind = if idle {

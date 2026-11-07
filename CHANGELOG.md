@@ -599,6 +599,40 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   100 % and 125 %, which read as blurred.
 - Menus opened near the screen's right or bottom edge flip inside it at every display scale and
   interface size: the screen's edge was measured in pixels and the menu in points.
+- **Update now on Linux asks the package manager which package MDM is**: a copy in /usr/bin
+  was taken for the .deb on a Debian-like system and for the .rpm anywhere else, so a copy
+  installed with another package manager (pacman on Arch) would have fetched and opened an .rpm.
+  MDM now asks dpkg, rpm and pacman which one owns its program; the .deb and .rpm update as
+  before, and a copy of another package manager is left to the system's updates: Check for
+  updates shows the new version's notes and says to update it there.
+- **Linux: menus open under their title on tiling compositors**
+  ([#267](https://github.com/anefzaoui/misterdownloadmanager/issues/267)): under sway (through
+  XWayland, MDM's default in a Wayland session), the menu bar's menus, their submenus, the
+  right-click menus and the drop-down lists opened in the middle of the screen, as the compositor
+  placed them like windows. They are now menu windows no window manager places, as X11 menus are,
+  so they open where MDM puts them, on every window manager.
+- **Linux: a missing window library is named, with how to install it**
+  ([#265](https://github.com/anefzaoui/misterdownloadmanager/issues/265)): from the tar.gz or the
+  AppImage, on a system without libxkbcommon-x11 (or another library X11 windows need), MDM
+  stopped at start with a crash. It now says which library is missing and the command that
+  installs it (apt, dnf, zypper, pacman or apk, by the distribution), on the terminal and in a
+  message box (zenity or kdialog, when there is one). In a Wayland session it opens its window
+  on Wayland instead, saying so.
+- **Linux: plain HTTP downloads work on a system without CA certificates**
+  ([#264](https://github.com/anefzaoui/misterdownloadmanager/issues/264)): on a minimal install
+  without the `ca-certificates` package (the tar.gz, the AppImage or a source build), no download
+  started, `http://` ones included ("No CA certificates were loaded from the system"). Plain HTTP
+  and FTP now work there, and each HTTPS or FTPS download fails at once, without retrying, saying
+  that the computer has no certificates to check the server with and to install
+  `ca-certificates`.
+- **Signed-in videos from YouTube Music and YouTube's mobile site**
+  ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229)): the button over a
+  video on music.youtube.com or m.youtube.com passed the page's cookies for that host only, while
+  yt-dlp asks www.youtube.com, so the sign-in didn't reach it. The extension now sends each
+  cookie with the domain the browser keeps it for, and MDM gives yt-dlp each one for that domain:
+  youtube.com's sign-in reaches every YouTube host, and a host's own cookie stays with that host.
+  With an older extension, a YouTube page's cookies (or a site's mobile page's, m. and mobile.)
+  go to the whole site.
 - **Update now finds the Linux and macOS files by either name**: a release's AppImage, .deb,
   .rpm, .tar.gz and .dmg were named `…-experimental`; MDM now looks for the name without it
   first and still takes the older one, so Update now keeps working whichever a release uses.

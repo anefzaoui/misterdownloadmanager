@@ -471,10 +471,15 @@ fn connector(extra: &[Vec<u8>]) -> Result<tokio_rustls::TlsConnector, Error> {
 }
 
 /// MDM's own TLS client configuration (FTPS, DNS over TLS and HTTPS): the system's verifier, as
-/// reqwest uses for HTTPS, with `extra` certificates also trusted (the tests' own CA).
+/// reqwest uses for HTTPS, with `extra` certificates also trusted (the tests' own CA). On a
+/// system without certificates, one that refuses every server, saying why (#264): the DNS
+/// setting that holds it may still use plain DNS, and FTP stays plain FTP.
 pub(crate) fn client_config(extra: &[Vec<u8>]) -> Result<rustls::ClientConfig, rustls::Error> {
     use rustls_platform_verifier::Verifier;
-    let provider = Arc::new(rustls::crypto::aws_lc_rs::default_provider());
+    if extra.is_empty() && !crate::tls::system_has_roots() {
+        return Ok(crate::tls::no_roots_config());
+    }
+    let provider = crate::tls::provider();
     let verifier = if extra.is_empty() {
         Verifier::new(provider.clone())
     } else {
@@ -511,6 +516,9 @@ async fn within<T>(limit: Duration, f: impl Future<Output = Result<T, Error>>) -
 }
 
 fn net(kind: NetKind, cause: &str) -> Error {
+    if cause.contains(crate::tls::NO_ROOTS) {
+        return Error::NoCertificates;
+    }
     Error::Net {
         kind,
         cause: crate::download::strip_os_error_code(cause),

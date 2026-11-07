@@ -24,13 +24,22 @@ pub enum Install {
     Rpm,
     /// Linux, the plain programs.
     TarGz,
+    /// Linux, a package of another package manager (pacman, …): that package manager updates
+    /// it, never MDM.
+    System,
     /// Built here: never updated from a release.
     Source,
 }
 
 impl Install {
-    /// This copy's, from where its program is.
+    /// This copy's, from where its program is (found once: on Linux it asks the package
+    /// managers).
     pub fn detect() -> Install {
+        static FOUND: std::sync::OnceLock<Install> = std::sync::OnceLock::new();
+        *FOUND.get_or_init(Install::find)
+    }
+
+    fn find() -> Install {
         if cfg!(debug_assertions) {
             return Install::Source;
         }
@@ -59,14 +68,15 @@ impl Install {
         if std::env::var_os("APPIMAGE").is_some() {
             return Install::AppImage;
         }
-        if dir == Path::new("/usr/bin") {
-            return if Path::new("/etc/debian_version").exists() {
-                Install::Deb
-            } else {
-                Install::Rpm
-            };
-        }
-        Install::TarGz
+        linux_package(&exe, &|tool, args| {
+            std::process::Command::new(tool)
+                .args(args)
+                .stdin(std::process::Stdio::null())
+                .stdout(std::process::Stdio::null())
+                .stderr(std::process::Stdio::null())
+                .status()
+                .is_ok_and(|s| s.success())
+        })
     }
 
     /// As the bug report form words it (.github/ISSUE_TEMPLATE/bug.yml, "Installed with").
@@ -80,11 +90,12 @@ impl Install {
             Install::Deb => "The .deb",
             Install::Rpm => "The .rpm",
             Install::TarGz => "The .tar.gz",
+            Install::System => "Another package manager",
             Install::Source => "Built from source",
         }
     }
 
-    pub const ALL: [Install; 9] = [
+    pub const ALL: [Install; 10] = [
         Install::Installer,
         Install::PortableZip,
         Install::PlainZip,
@@ -93,6 +104,7 @@ impl Install {
         Install::Deb,
         Install::Rpm,
         Install::TarGz,
+        Install::System,
         Install::Source,
     ];
 
@@ -113,13 +125,35 @@ impl Install {
             Install::Deb => ("linux-x86_64", ".deb"),
             Install::Rpm => ("linux-x86_64", ".rpm"),
             Install::TarGz => ("linux-x86_64", ".tar.gz"),
-            Install::Source => return Vec::new(),
+            Install::System | Install::Source => return Vec::new(),
         };
         let name = |tail: &str| format!("MisterDownloadManager-{version}-{tail}{ext}");
         match self {
             Install::Installer | Install::PortableZip | Install::PlainZip => vec![name(tail)],
             _ => vec![name(tail), name(&format!("{tail}-experimental"))],
         }
+    }
+}
+
+/// Linux: which package manager's package `exe` is, asking each whether it owns the file
+/// (`owns(program, arguments)`: it ran and said yes). The .deb's (dpkg), the .rpm's (rpm), or
+/// another's (pacman; a program in /usr/bin none of them owns): those MDM leaves to the system's
+/// updates. Else the plain programs (.tar.gz), which MDM replaces itself. A path that isn't
+/// UTF-8 is never one of the packages'.
+fn linux_package(exe: &Path, owns: &dyn Fn(&str, &[&str]) -> bool) -> Install {
+    let Some(path) = exe.to_str() else {
+        return Install::TarGz;
+    };
+    if owns("dpkg-query", &["--search", path]) {
+        Install::Deb
+    } else if owns("rpm", &["--query", "--file", path]) {
+        Install::Rpm
+    } else if owns("pacman", &["--query", "--owns", path])
+        || exe.parent() == Some(Path::new("/usr/bin"))
+    {
+        Install::System
+    } else {
+        Install::TarGz
     }
 }
 
@@ -421,6 +455,41 @@ Connection: close
         assert!(Install::Source.assets("1.0.0").is_empty());
         let labels: std::collections::HashSet<_> = Install::ALL.iter().map(|i| i.label()).collect();
         assert_eq!(labels.len(), Install::ALL.len());
+    }
+
+    /// Linux: the package manager that owns the program decides; the plain programs elsewhere.
+    #[test]
+    fn a_linux_copy_knows_its_package_manager() {
+        let owner = |who: &'static str| {
+            move |tool: &str, args: &[&str]| {
+                assert_eq!(args.last(), Some(&"/usr/bin/misterdownloadmanager"));
+                tool == who
+            }
+        };
+        let exe = Path::new("/usr/bin/misterdownloadmanager");
+        assert_eq!(linux_package(exe, &owner("dpkg-query")), Install::Deb);
+        assert_eq!(linux_package(exe, &owner("rpm")), Install::Rpm);
+        // An Arch package (pacman), or in /usr/bin with no package manager MDM knows: the
+        // system's.
+        assert_eq!(linux_package(exe, &owner("pacman")), Install::System);
+        assert_eq!(linux_package(exe, &owner("none")), Install::System);
+        // On Debian with rpm's tools installed too: still the .deb's.
+        let both = |tool: &str, _: &[&str]| tool == "dpkg-query" || tool == "rpm";
+        assert_eq!(linux_package(exe, &both), Install::Deb);
+        // The .tar.gz unpacked in the home folder, /opt or /usr/local: MDM's own to replace.
+        let nobody = |_: &str, _: &[&str]| false;
+        let home = Path::new("/home/me/MisterDownloadManager/misterdownloadmanager");
+        assert_eq!(linux_package(home, &nobody), Install::TarGz);
+        assert_eq!(
+            linux_package(Path::new("/opt/mdm/misterdownloadmanager"), &nobody),
+            Install::TarGz
+        );
+        assert_eq!(
+            linux_package(Path::new("/usr/local/bin/misterdownloadmanager"), &nobody),
+            Install::TarGz
+        );
+        // MDM updates neither another package manager's copy nor a build of its own.
+        assert!(Install::System.assets("1.0.0").is_empty());
     }
 
     #[test]

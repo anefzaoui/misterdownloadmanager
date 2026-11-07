@@ -35,6 +35,12 @@ pub struct Command {
     /// From the browser: request context to reuse.
     pub referer: Option<String>,
     pub cookies: Option<String>,
+    /// From the browser: the same cookies, each with the domain, path and flags the browser
+    /// keeps for it, for yt-dlp's cookie file. yt-dlp may ask another host than the page's (a
+    /// YouTube Music page is looked up on www.youtube.com), and a cookie of `.youtube.com` goes
+    /// there too. An older extension sends `cookies` only.
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub cookie_jar: Vec<BrowserCookie>,
     pub user_agent: Option<String>,
     /// From the browser: where its redirects from `url` ended (`url` stays the address asked
     /// for, so an expired signed link can be renewed from it).
@@ -105,6 +111,26 @@ pub struct Command {
     /// From the browser's toolbar button: leave this site's downloads (a host name) to the
     /// browser from now on (Options → File types → excluded sites).
     pub exclude_site: Option<String>,
+}
+
+/// One cookie as the browser keeps it (`cookies.getAll`'s fields, under the extension's names
+/// too: `hostOnly`, `expirationDate`).
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, schemars::JsonSchema)]
+#[serde(default)]
+pub struct BrowserCookie {
+    pub name: String,
+    pub value: String,
+    /// `.youtube.com` (sent to its subdomains too) or a host name.
+    pub domain: String,
+    /// Sent to `domain` itself only, never its subdomains.
+    #[serde(alias = "hostOnly")]
+    pub host_only: bool,
+    pub path: String,
+    /// Sent over HTTPS only.
+    pub secure: bool,
+    /// When it expires, in seconds since 1970; none: when the browser closes.
+    #[serde(alias = "expirationDate")]
+    pub expires: Option<f64>,
 }
 
 impl Command {

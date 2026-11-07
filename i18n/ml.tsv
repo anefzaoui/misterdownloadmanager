@@ -1940,6 +1940,10 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	സ്വയമായി ഇൻസ്റ്റാൾ ചെയ്യുക
+#. text in unix.rs
+#. Linux, after a missing library's name, on a distribution MDM doesn't know
+#, machine
+	Install what's missing from your distribution's packages.	നിങ്ങളുടെ ലിനക്സ് വിതരണത്തിലെ പാക്കേജുകളിൽ നിന്ന് ഇല്ലാത്തത് ഇൻസ്റ്റാൾ ചെയ്യുക.
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -2382,6 +2386,10 @@
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
+#. text in unix.rs
+#. Linux, at start, on the terminal and in a message box: a library the window needs isn't installed; {libraries} = its file names (libxkbcommon-x11.so.0…), left as they are
+#, machine
+	Mister Download Manager can't open its window: this system lacks {libraries}.	Mister Download Manager-ന് അതിന്റെ വിൻഡോ തുറക്കാനാകുന്നില്ല: ഈ സിസ്റ്റത്തിൽ {libraries} ഇല്ല.
 #. text in crashui.rs
 #. crash report window heading: MDM crashed and is gone
 #, machine
@@ -2421,6 +2429,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Mister Download Manager's own copy, version {version}	Mister Download Manager-ന്റെ സ്വന്തം പകർപ്പ്, പതിപ്പ് {version}
+#. text in unix.rs
+#. Linux, at start, on the terminal: the libraries an X11 window needs aren't installed, so the window opens through Wayland instead, where menus can't be placed under what was clicked; {libraries} = their file names, left as they are
+#, machine
+	Mister Download Manager's X11 window needs {libraries}, which this system lacks: it opens on Wayland instead, where its menus may open away from their titles.	Mister Download Manager-ന്റെ X11 വിൻഡോയ്ക്ക് {libraries} ആവശ്യമാണ്, എന്നാൽ ഈ സിസ്റ്റത്തിൽ അവ ഇല്ല: പകരം Wayland-ൽ തുറക്കുന്നു, അവിടെ മെനുകൾ അവയുടെ ശീർഷകങ്ങളിൽ നിന്ന് അകലെയായി തുറന്നേക്കാം.
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -4237,6 +4249,10 @@
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
 	This computer can't be woken by a timer	ഈ കമ്പ്യൂട്ടറിനെ ഒരു ടൈമർ ഉപയോഗിച്ച് ഉണർത്താൻ കഴിയില്ല
+#. text in errors.rs
+#. a download's error on a computer (a minimal Linux) without the certificates that secure connections check servers with; "ca-certificates" is the package's name, left as is
+#, machine
+	this computer has no certificates to check the server with: install the ca-certificates package, then try again	ഈ കമ്പ്യൂട്ടറിൽ സെർവർ പരിശോധിക്കാൻ സർട്ടിഫിക്കറ്റുകളില്ല: ca-certificates പാക്കേജ് ഇൻസ്റ്റാൾ ചെയ്ത് വീണ്ടും ശ്രമിക്കുക
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 #, machine
@@ -4343,6 +4359,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Timor-Leste	ടിമോർ-ലെസ്‌തെ
+#. text in unix.rs
+#. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
+#, machine
+	To install what's missing: {command}	ഇല്ലാത്തവ ഇൻസ്റ്റാൾ ചെയ്യാൻ: {command}
 #. text in the Batch download window
 #, machine
 	To:	ലേക്ക്:

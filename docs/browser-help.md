@@ -35,6 +35,7 @@ The browser started MDM's helper, but it stopped before answering. Security soft
 - Allow `misterdownloadmanager-nmhost.exe` (in MDM's folder) in your antivirus or anti-malware program.
 - Reinstall MDM to restore its files.
 - On Linux, with Firefox or Chromium installed as a Snap, see [Flatpak and Snap browsers](#linux-sandbox).
+- Uninstalled MDM on Linux? Its browser files stay in your home folder: [remove them](getting-started.md#uninstall-linux), and the extension too.
 
 ## MDM doesn't accept this copy of the extension {#forbidden}
 

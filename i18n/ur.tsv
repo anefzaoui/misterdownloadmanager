@@ -1940,6 +1940,10 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	دستی طور پر انسٹال کریں
+#. text in unix.rs
+#. Linux, after a missing library's name, on a distribution MDM doesn't know
+#, machine
+	Install what's missing from your distribution's packages.	اپنی ڈسٹری بیوشن کے پیکجز میں سے مطلوبہ لائبریری انسٹال کریں۔
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -2382,6 +2386,10 @@
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
+#. text in unix.rs
+#. Linux, at start, on the terminal and in a message box: a library the window needs isn't installed; {libraries} = its file names (libxkbcommon-x11.so.0…), left as they are
+#, machine
+	Mister Download Manager can't open its window: this system lacks {libraries}.	Mister Download Manager اپنی ونڈو نہیں کھول سکتا: اس سسٹم میں {libraries} کی کمی ہے۔
 #. text in crashui.rs
 #. crash report window heading: MDM crashed and is gone
 #, machine
@@ -2421,6 +2429,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Mister Download Manager's own copy, version {version}	Mister Download Manager کی اپنی کاپی، ورژن {version}
+#. text in unix.rs
+#. Linux, at start, on the terminal: the libraries an X11 window needs aren't installed, so the window opens through Wayland instead, where menus can't be placed under what was clicked; {libraries} = their file names, left as they are
+#, machine
+	Mister Download Manager's X11 window needs {libraries}, which this system lacks: it opens on Wayland instead, where its menus may open away from their titles.	Mister Download Manager کی X11 ونڈو کو {libraries} کی ضرورت ہے، جو اس سسٹم میں موجود نہیں ہیں: اس کے بجائے یہ Wayland پر کھلتی ہے، جہاں اس کے مینیو اپنے عنوانات سے دور کھل سکتے ہیں۔
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -4237,6 +4249,10 @@
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
 	This computer can't be woken by a timer	اس کمپیوٹر کو ٹائمر کے ذریعے نہیں جگایا جا سکتا
+#. text in errors.rs
+#. a download's error on a computer (a minimal Linux) without the certificates that secure connections check servers with; "ca-certificates" is the package's name, left as is
+#, machine
+	this computer has no certificates to check the server with: install the ca-certificates package, then try again	اس کمپیوٹر میں سرور کو چیک کرنے کے لیے کوئی سرٹیفکیٹ نہیں ہیں: ca-certificates پیکیج انسٹال کریں، پھر دوبارہ کوشش کریں۔
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 #, machine
@@ -4343,6 +4359,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Timor-Leste	تیمور لیسٹے
+#. text in unix.rs
+#. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
+#, machine
+	To install what's missing: {command}	جو کمی ہے اسے انسٹال کرنے کے لیے: {command}
 #. text in the Batch download window
 #, machine
 	To:	بمطابق:

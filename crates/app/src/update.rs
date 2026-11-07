@@ -229,6 +229,7 @@ fn apply(install: Install, file: &Path) -> Result<Next, String> {
             open::that_detached(file).map_err(|e| e.to_string())?;
             Ok(Next::Opened)
         }
+        Install::System => Err("installed by the system's package manager: update it there".into()),
         Install::Source => Err("built from source: update it from the repository".into()),
     }
 }

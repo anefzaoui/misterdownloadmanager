@@ -1021,6 +1021,7 @@ pub fn from_browser(c: &mdm_ipc::Command) -> mdm_tools::proc::FromBrowser {
         referer: c.referer.clone(),
         user_agent: c.user_agent.clone(),
         cookies: c.cookies.clone(),
+        jar: c.cookie_jar.clone(),
     }
 }
 
