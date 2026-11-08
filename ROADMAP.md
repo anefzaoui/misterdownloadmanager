@@ -440,9 +440,6 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
-- 🔍 Download File Info and the progress window behind the browser on a Windows 11 Insider
-  build ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): they now open in
-  front of it (in 0.5.0); waiting on the reporter's confirmation
 - 🔍 A 10-second freeze of the window after a night left open
   ([#304](https://github.com/anefzaoui/misterdownloadmanager/issues/304)): most likely the
   computer waking from sleep; waiting on the reporter's full report
