@@ -53,8 +53,36 @@ fn own_capture() -> Option<HWND> {
     (!h.is_null()).then_some(h)
 }
 
-/// This process's top-level window with exactly `title`.
+/// The main window of this run, once it exists ([`set_main_window`]). 0: not known yet.
+static MAIN_WINDOW: std::sync::atomic::AtomicIsize = std::sync::atomic::AtomicIsize::new(0);
+
+/// Remember the window the app was made for: the one that stays. A way of drawing that fails
+/// (Direct3D with no usable adapter, renderer.rs) leaves its own window behind under the same
+/// title until the event loop next runs, and a dialog owned by that window goes down with it
+/// (#337).
+pub fn set_main_window(cc: &eframe::CreationContext<'_>) {
+    use raw_window_handle::{HasWindowHandle, RawWindowHandle};
+    if let Ok(RawWindowHandle::Win32(h)) = cc.window_handle().map(|h| h.as_raw()) {
+        MAIN_WINDOW.store(h.hwnd.get(), std::sync::atomic::Ordering::Relaxed);
+    }
+}
+
+/// This process's top-level window with exactly `title`; the main window by its handle.
 pub(crate) fn find_own_window(title: &str) -> Option<HWND> {
+    let known = MAIN_WINDOW.load(std::sync::atomic::Ordering::Relaxed);
+    own_window(
+        title,
+        (title == crate::MAIN_TITLE && known != 0).then_some(known as HWND),
+    )
+}
+
+/// `known` while that window exists, else the top-level window of this process titled `title`.
+fn own_window(title: &str, known: Option<HWND>) -> Option<HWND> {
+    use windows_sys::Win32::UI::WindowsAndMessaging::IsWindow;
+    // SAFETY: a plain query; any value is accepted as the handle.
+    if let Some(h) = known.filter(|h| unsafe { IsWindow(*h) } != 0) {
+        return Some(h);
+    }
     let mut f = Find {
         pid: unsafe { GetCurrentProcessId() },
         title: title.encode_utf16().collect(),
@@ -1459,6 +1487,58 @@ mod come_forward_tests {
             }
             DestroyWindow(a);
             DestroyWindow(b);
+        }
+    }
+}
+
+#[cfg(test)]
+mod main_window_tests {
+    use super::*;
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        CreateWindowExW, DefWindowProcW, DestroyWindow, RegisterClassW, WNDCLASSW,
+    };
+
+    /// #337: two windows under one title, the way a failed Direct3D start leaves them. The
+    /// window the app was made for is the one found, whichever is on top; and once it is gone
+    /// the search by title still answers.
+    #[test]
+    fn the_known_window_wins_over_its_namesake() {
+        let class: Vec<u16> = "mdm-main-window-test ".encode_utf16().collect();
+        let name = format!("mdm main window test {}", std::process::id());
+        let title: Vec<u16> = name.encode_utf16().chain(Some(0)).collect();
+        // SAFETY: a class registered with the system's own procedure, and hidden windows of it
+        // on this thread, destroyed below; the strings are NUL-terminated.
+        unsafe {
+            let mut wc: WNDCLASSW = zeroed();
+            wc.lpfnWndProc = Some(DefWindowProcW);
+            wc.lpszClassName = class.as_ptr();
+            RegisterClassW(&wc);
+            let make = || {
+                let h = CreateWindowExW(
+                    0,
+                    class.as_ptr(),
+                    title.as_ptr(),
+                    0,
+                    -20000,
+                    -20000,
+                    100,
+                    100,
+                    std::ptr::null_mut(),
+                    std::ptr::null_mut(),
+                    std::ptr::null_mut(),
+                    std::ptr::null(),
+                );
+                assert!(!h.is_null());
+                h
+            };
+            let (a, b) = (make(), make());
+            assert_eq!(own_window(&name, Some(a)), Some(a));
+            assert_eq!(own_window(&name, Some(b)), Some(b));
+            assert!(own_window(&name, None).is_some());
+            DestroyWindow(b);
+            assert_eq!(own_window(&name, Some(b)), Some(a), "gone: found by title");
+            DestroyWindow(a);
+            assert_eq!(own_window(&name, Some(a)), None);
         }
     }
 }
