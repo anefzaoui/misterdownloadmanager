@@ -14,7 +14,7 @@ Everything below ships together, in version 0.5.0.
 ### Done
 
 - ✅ The progress window's Download status tab: as much room above its first row as below its
-  last
+  last; where the server is says "this computer" or "the local network", each with its icon
 - ✅ **View → Interface size**: every window larger, 100 % to 200 %, with Ctrl + / Ctrl − / Ctrl 0
   as in a browser; a window larger than the screen scrolls. Sharper text on Windows (part of
   [#262](https://github.com/anefzaoui/misterdownloadmanager/issues/262))

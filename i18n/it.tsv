@@ -3196,6 +3196,9 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 	The list could not be saved: {error}	Impossibile salvare l'elenco: {error}
+#. text in whereis.rs
+#, machine
+	the local network	la rete locale
 #. text in errors.rs; text in torrent downloads
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 	the network adapter {adapter} is not connected	la scheda di rete {adapter} non è connessa
@@ -3301,6 +3304,9 @@
 #. text in the Options window
 #. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
 	This code can't be used any more.	Questo codice non è più valido.
+#. text in whereis.rs
+#, machine
+	this computer	questo computer
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 	This computer can't be woken by a timer	Questo computer non può essere riattivato da un timer
@@ -3313,9 +3319,6 @@
 #. text in the Options window
 #. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
 	This computer only (127.0.0.1)	Solo questo computer (127.0.0.1)
-#. text in whereis.rs
-#. where a download's server is: on this computer or the local network (no country)
-	this computer or the local network	questo computer o la rete locale
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 	This date has passed: the queue will not start	Questa data è già passata: la coda non partirà
@@ -4449,6 +4452,10 @@ menu	Add &batch download	Aggiungi download in &batch
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 menu	Add &magnet link...	Aggiungi link &magnet...
+#. menu command in the main window
+#. View → Theme: picks a theme file or a Base16 or pywal colour scheme, copies it into the themes folder and uses it
+#, machine
+menu	Add a theme file…	Aggiungi un file tema…
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Add batch download from &clipboard	Aggiungi download in batch dagli &Appunti

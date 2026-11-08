@@ -634,6 +634,9 @@ choose. And Linux, checked on a real desktop with every change.
 
 - **The progress window's Download status tab is balanced**: its rows sat 10 px below the
   tab's top edge but touched its bottom edge; there are now 7 px above and below.
+- **Where a download's server is says "this computer" or "the local network"**, each with its own
+  icon in the flag's place, instead of "this computer or the local network" with nothing; the dot
+  between the place and the time is round, where the font's thin "·" read as an apostrophe.
 - **Windows: a slow start no longer turns Direct3D off** (part of
   [#280](https://github.com/anefzaoui/misterdownloadmanager/issues/280)): MDM gives Direct3D 10
   seconds to show its first frame, and goes back to OpenGL when it doesn't. Those 10 seconds
