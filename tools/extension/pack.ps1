@@ -40,19 +40,12 @@ foreach ($kind in "chromium", "firefox") {
   [IO.File]::WriteAllText((Join-Path $dir "manifest.json"), $json, (New-Object Text.UTF8Encoding $false))
 }
 # The Chrome Web Store's copy of the chromium folder. The store signs it with its own key (it
-# refuses a manifest that carries "key"; the native host knows both IDs), and its policy forbids
-# downloading YouTube videos, so the button over videos stays off YouTube there. The app's own
-# Download video window still takes any page.
+# refuses a manifest that carries "key"; the native host knows both IDs).
 $store = Join-Path $out "chrome-store"
 if (Test-Path $store) { Remove-Item -LiteralPath $store -Recurse -Force }
 Copy-Item (Join-Path $out "chromium") $store -Recurse
 $manifest = Get-Content (Join-Path $store "manifest.json") -Raw | ConvertFrom-Json
 $manifest.PSObject.Properties.Remove("key")
-# The video button's entry, by its file (not its place in the list).
-$video = $manifest.content_scripts | Where-Object { $_.js -contains "video.js" } | Select-Object -First 1
-if (-not $video) { throw "no content script entry runs video.js" }
-$video | Add-Member -NotePropertyName exclude_matches -NotePropertyValue @(
-  "*://*.youtube.com/*", "*://*.youtube-nocookie.com/*", "*://youtu.be/*")
 $json = $manifest | ConvertTo-Json -Depth 10
 [IO.File]::WriteAllText((Join-Path $store "manifest.json"), $json, (New-Object Text.UTF8Encoding $false))
 Add-Type -AssemblyName System.IO.Compression, System.IO.Compression.FileSystem

@@ -159,8 +159,6 @@ If MDM can't be reached when you choose one of these, the help page opens at the
 
 Point at a video on a web page and a small **Download video** button appears at its edge. Click it and MDM's **Download video from a page** window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. When the button can't tell which one you mean, the toolbar button's [Media on this page](#media-on-this-page) lists them all. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.
 
-The copy of the extension from the Chrome Web Store doesn't show it on YouTube: [why, and what you can do](browser-help.md#store-youtube).
-
 It stays out of the way: it shows only while you point at a video (or the player has the keyboard's focus; **Tab** then moves to the button), fades when the pointer rests, and leaves out small videos and short muted loops (animated pictures, backgrounds). In fullscreen it follows the video when the player allows it. On a copy-protected video (DRM) it says that the video can't be saved.
 
 - **Move it**: drag it anywhere along the video's edge; it snaps to the nearest edge and stays there on that site.

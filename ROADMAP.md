@@ -426,16 +426,19 @@ Everything below ships together, in version 0.5.0.
   docs, the README and the website brought up to date
   ([#186](https://github.com/anefzaoui/misterdownloadmanager/issues/186))
 
+## Version 0.5.1
+
+- ✅ The Download video button on YouTube: the video playing now instead of the one before or a
+  whole list, Shorts included
+  ([#311](https://github.com/anefzaoui/misterdownloadmanager/issues/311))
+- ✅ The Download video button on YouTube in Chrome, Edge, Brave, Opera and Vivaldi
+
 ## Being worked on
 
 These ship in a later version, when they're ready.
 
 ### Being built
 
-- 🔄 The Download video button on YouTube: the video playing now instead of the one before or a
-  whole list, Shorts included
-  ([#311](https://github.com/anefzaoui/misterdownloadmanager/issues/311)); done, for the next
-  release of the add-on
 - 🔄 Linux, what's left ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
   screen readers (Orca) reading MDM's windows; browsers installed as a Flatpak (Firefox from
   Flathub may reach MDM through the desktop, as the Snap does: to check); native Wayland windows

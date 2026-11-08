@@ -3,12 +3,18 @@
 Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 `.github/workflows/release.yml`).
 
-## [Unreleased]
+## [0.5.1] - 2026-11-08
+
+YouTube fixes for the Download video button, and the button in Chrome, Edge and Brave.
+
+### Added
+
+- **The Download video button on YouTube in Chrome, Edge, Brave, Opera and Vivaldi:** the copy of the extension from the Chrome Web Store shows it now, as Firefox's does.
 
 ### Fixed
 
 - **The Download video button took the wrong video on YouTube** ([#311](https://github.com/anefzaoui/misterdownloadmanager/issues/311), thanks to [@mayankmohan1992](https://github.com/mayankmohan1992)): YouTube moves from one video to the next without loading a new page, and the browser kept naming the page it first loaded, so MDM got the video watched before. On the home page, a search or a channel it got that whole page instead, and offered about 50 videos. The button now sends the video playing in the player it's on, and a Short as the Short it is.
-- **Media on this page says why it's empty**: on a player that streams in pieces there's no file to list, and it says to use the button over the video instead of asking you to play it again. On YouTube, the Chrome Web Store's copy says that store's rules keep it off the site's videos ([what you can do](https://misterdownloadmanager.com/help/browser-help.html#store-youtube)).
+- **Media on this page says why it's empty**: on a player that streams in pieces there's no file to list, and it says to use the button over the video instead of asking you to play it again.
 - A page's own short sounds (a click, a voice-search chime) are no longer listed in **Media on this page**.
 
 ## [0.5.0] - 2026-11-08

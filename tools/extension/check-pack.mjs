@@ -2,7 +2,7 @@
 //   node tools/extension/check-pack.mjs
 // Each package carries the app's version and every file its manifest names; the unpacked copy's
 // key gives the ID the native host serves (crates/ipc/src/extension.rs); the Chrome Web Store's
-// copy has no key and no video button on YouTube; Firefox's has its add-on ID.
+// copy has no key; Firefox's has its add-on ID.
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import assert from "node:assert/strict";
@@ -38,7 +38,7 @@ for (const kind of ["chromium", "chrome-store", "firefox"]) {
   if (kind === "chrome-store") {
     assert.equal(m.key, undefined, "the store signs it with its own key");
     const video = m.content_scripts.find((c) => c.js.includes("video.js"));
-    assert.ok(video && (video.exclude_matches || []).some((p) => p.includes("youtube.com")), "no button on YouTube");
+    assert.ok(video && !(video.exclude_matches || []).length, "the video button runs everywhere, YouTube included");
   }
   if (kind === "firefox") assert.equal(m.browser_specific_settings.gecko.id, firefoxId);
 }

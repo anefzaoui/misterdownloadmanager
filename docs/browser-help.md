@@ -75,12 +75,9 @@ MDM also takes the file types the browser would show or play itself (a PDF, an M
 
 ## No Download video button on YouTube in Chrome, Edge or Brave {#store-youtube}
 
-The copy of the extension from the Chrome Web Store shows no **Download video** button on YouTube, and its **Media on this page** list says so: that store's policy forbids downloading from YouTube. Chrome, Edge, Brave, Opera and Vivaldi all install from that store, so all of them are affected. Firefox's copy, from its own add-ons store, shows the button.
+The copy of the extension from the Chrome Web Store showed no **Download video** button on YouTube before version 0.5.1. From 0.5.1 it shows it. Your browser updates extensions by itself; to get it sooner, open its extensions page and update them there.
 
-To save a YouTube video from one of those browsers:
-
-- In MDM, open **Tasks → Download video from a page** and paste the video's address.
-- Or use the copy of the extension in MDM's own folder instead of the store's, which shows the button: [install it by hand](browser-integration.md#chrome-edge-brave-opera-and-vivaldi).
+You can always save a video without the button: in MDM, open **Tasks → Download video from a page** and paste the video's address.
 
 ## The extension can't read this site {#site-access}
 
