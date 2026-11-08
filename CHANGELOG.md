@@ -843,6 +843,14 @@ choose. And Linux, checked on a real desktop with every change.
   lists still opened in the middle of the screen, as the compositor placed them like windows. They
   are now menu windows no window manager places, as X11 menus are, so they open where MDM puts
   them, on every window manager.
+- **Linux: menus appear at once, as menus, on compositors that animate windows** (Hyprland,
+  picom with fading, [#277](https://github.com/anefzaoui/misterdownloadmanager/issues/277)).
+  Before the fix above, Hyprland gave MDM's menus a window's border and slid each one down from
+  the top of the screen. And moving from title to title along the menu bar closed one menu
+  window and opened another, so such a compositor faded each menu out and the next one in at
+  every switch. The menu bar's menus now share one window that moves from title to title, as a
+  submenu's window already did from item to item, and each menu window says which menu it is (a
+  drop-down menu, a right-click menu, a drop-down list), as GTK's and Qt's do.
 - **Leaving a submenu no longer closes the whole menu**
   ([#250](https://github.com/anefzaoui/misterdownloadmanager/issues/250)): with a submenu open
   (Tasks → Import, Downloads → Speed Limiter), moving the pointer back onto its menu, to another

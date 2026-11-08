@@ -12,8 +12,8 @@ use mdm_engine::{Destination, Download, Options, Request};
 use reqwest::header::{AUTHORIZATION, HeaderMap, HeaderValue};
 
 use crate::chrome::{
-    self, IconKey, MenuBarEvent, MenuEntry, PopupResult, ShellIcons, ToolbarEvent, TreeEvent,
-    TreeRow,
+    self, IconKey, MenuBarEvent, MenuEntry, MenuKind, PopupResult, ShellIcons, ToolbarEvent,
+    TreeEvent, TreeRow,
 };
 use crate::dialogs::{self, AddUrl, Complete, FileInfo, Outcome, Start};
 use crate::icons::Icon;
@@ -6220,14 +6220,23 @@ impl App {
         if let Some(event) = chrome::menu_bar(ui, o, w, self.open_menu) {
             self.open_menu = chrome::menubar_next(self.open_menu, event);
         }
-        if let Some(i) = self.open_menu {
+        // A menu opened by Left or Right is drawn in the same pass as the one it replaces (a
+        // second turn): on X11 the bar's menus share one window (chrome::popup), and a pass
+        // without a menu closed it, a new window opening for the next (#277).
+        for _ in 0..2 {
+            let Some(i) = self.open_menu else { break };
             let x = chrome::menus(ui.painter())[i].1;
             let entries = self.menu_entries(i);
             // Under the item's leading edge (the menu's top-right in RTL).
             let at = pos2(winui::mx(o.x + x), o.y + chrome::MENU_H - 1.0);
-            let event = match chrome::popup(&ctx, &format!("menu-{i}"), at, &entries, &|c: &Cmd| {
-                c.hint()
-            }) {
+            let event = match chrome::popup(
+                &ctx,
+                MenuKind::Bar,
+                &format!("menu-{i}"),
+                at,
+                &entries,
+                &|c: &Cmd| c.hint(),
+            ) {
                 PopupResult::Open => None,
                 PopupResult::Neighbor(d) => {
                     let n = chrome::menus(ui.painter()).len() as i32;
@@ -6249,8 +6258,12 @@ impl App {
                     Some(MenuBarEvent::Dismissed { press_on_title })
                 }
             };
+            let neighbor = matches!(event, Some(MenuBarEvent::Open(_)));
             if let Some(event) = event {
                 self.open_menu = chrome::menubar_next(self.open_menu, event);
+            }
+            if !neighbor {
+                break;
             }
         }
 
@@ -6573,6 +6586,7 @@ impl App {
             };
             match chrome::popup(
                 &ctx,
+                MenuKind::Context,
                 &format!("popup-{serial}"),
                 pos,
                 &entries,

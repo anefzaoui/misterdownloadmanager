@@ -1280,6 +1280,37 @@ pub fn on_wayland() -> bool {
     window_system().wayland
 }
 
+/// Linux, X11 and XWayland (MDM's default): a menu's window as X11 menus are (GTK's, Qt's).
+/// Override-redirect: no window manager manages it, so it opens exactly where it's placed (a
+/// tiling compositor, sway, centred a managed one, #267), and compositors treat it as a menu:
+/// Hyprland gives it no border and doesn't slide or pop it in as it does a new window (it only
+/// fades it, as any X11 menu), where a managed one came down from the top of the screen (#277).
+/// Its type says which menu it is (`menu_window_type`), for the compositors that style each.
+/// Never activated either way: the main window keeps the keyboard, and the menu's keys reach it
+/// (chrome::popup). Native Wayland (`MDM_WAYLAND=1`) ignores both: winit 0.30 has no popup
+/// windows (xdg_popup) there, so a menu is a window the compositor places and animates as any.
+#[cfg(target_os = "linux")]
+pub fn menu_window(
+    builder: egui::ViewportBuilder,
+    kind: crate::chrome::MenuKind,
+) -> egui::ViewportBuilder {
+    builder
+        .with_override_redirect(true)
+        .with_window_type(menu_window_type(kind))
+}
+
+/// The X11 window type (`_NET_WM_WINDOW_TYPE`) of a menu's window: the menu bar's are drop-down
+/// menus, context menus popup menus, a drop-down list's choices a combo's.
+#[cfg(target_os = "linux")]
+fn menu_window_type(kind: crate::chrome::MenuKind) -> egui::X11WindowType {
+    use crate::chrome::MenuKind;
+    match kind {
+        MenuKind::Bar => egui::X11WindowType::DropdownMenu,
+        MenuKind::Context => egui::X11WindowType::PopupMenu,
+        MenuKind::List => egui::X11WindowType::Combo,
+    }
+}
+
 /// The family of distributions /etc/os-release (`os_release`) names: the index of its packages
 /// in `WindowLib::packages`, and how it installs one.
 #[cfg(target_os = "linux")]
@@ -1870,7 +1901,23 @@ fn set_xattr(path: &Path, name: &str, value: &str) {
 mod tests {
     use zbus::zvariant::Value;
 
-    use super::{WindowLib, X11_LIBS, choose_window_system, install_command};
+    use super::{WindowLib, X11_LIBS, choose_window_system, install_command, menu_window_type};
+
+    /// #277: each menu's window says which menu it is, as GTK's and Qt's do.
+    #[test]
+    fn menu_windows_have_their_x11_type() {
+        use crate::chrome::MenuKind;
+        use egui::X11WindowType;
+        assert_eq!(menu_window_type(MenuKind::Bar), X11WindowType::DropdownMenu);
+        assert_eq!(
+            menu_window_type(MenuKind::Context),
+            X11WindowType::PopupMenu
+        );
+        assert_eq!(menu_window_type(MenuKind::List), X11WindowType::Combo);
+        let b = super::menu_window(egui::ViewportBuilder::default(), MenuKind::Bar);
+        assert_eq!(b.override_redirect, Some(true));
+        assert_eq!(b.window_type, Some(X11WindowType::DropdownMenu));
+    }
 
     const X11_KEYBOARD: &str = "libxkbcommon-x11.so.0";
 

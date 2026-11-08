@@ -436,8 +436,10 @@ These ship when they're ready: in 0.5.0 when they make it, or in a later version
 - 🔍 Menus opening as the pointer crosses the menu bar on a tiling window manager
   ([#277](https://github.com/anefzaoui/misterdownloadmanager/issues/277)): after a command the
   bar waits for a click, as before the first one (now tested on Windows and Linux); once a menu is
-  open, the pointer moves it from title to title, as Windows' menu bars do. Whether a tiling
-  desktop should behave otherwise is being discussed with the reporter
+  open, the pointer moves it from title to title, as Windows' menu bars do. Under compositors that
+  animate windows (Hyprland), the menus now appear at once: they are menu windows the compositor
+  doesn't slide in, and going from title to title moves one window instead of closing one and
+  opening the next (each faded out and in). Waiting on the reporter's confirmation
 - 🔍 A freeze of the window on start ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
   the first window took over a minute while the graphics driver set up OpenGL; MDM now draws
   with Direct3D 12 by default and keeps it through a slow start, so 0.5.0 should not do

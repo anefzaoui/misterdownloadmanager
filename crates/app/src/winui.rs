@@ -2284,9 +2284,14 @@ pub fn copy_menu(resp: &Response, text: &str) {
         return;
     };
     let entries = [MenuEntry::Item("&Copy", (), !text.is_empty(), false)];
-    match crate::chrome::popup(&ctx, &format!("copy-{:?}", resp.id), at, &entries, &|_| {
-        None
-    }) {
+    match crate::chrome::popup(
+        &ctx,
+        crate::chrome::MenuKind::Context,
+        &format!("copy-{:?}", resp.id),
+        at,
+        &entries,
+        &|_| None,
+    ) {
         PopupResult::Open | PopupResult::Neighbor(_) => {}
         PopupResult::Chosen(()) => {
             crate::copy_text(&ctx, text.to_owned());
@@ -2411,7 +2416,14 @@ pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline:
         MenuEntry::Sep,
         MenuEntry::Item("Select &all", EditCmd::SelectAll, n > 0, false),
     ];
-    let cmd = match crate::chrome::popup(&ctx, &format!("edit-{id:?}"), at, &entries, &|_| None) {
+    let cmd = match crate::chrome::popup(
+        &ctx,
+        crate::chrome::MenuKind::Context,
+        &format!("edit-{id:?}"),
+        at,
+        &entries,
+        &|_| None,
+    ) {
         PopupResult::Open | PopupResult::Neighbor(_) => return,
         PopupResult::Dismissed => None,
         PopupResult::Chosen(c) => Some(c),
@@ -2754,7 +2766,14 @@ pub fn drop_list(
     } else {
         anchor.left_bottom()
     };
-    let menu = crate::chrome::popup(ui.ctx(), &format!("drop-{id}"), at, &entries, &|_| None);
+    let menu = crate::chrome::popup(
+        ui.ctx(),
+        crate::chrome::MenuKind::List,
+        &format!("drop-{id}"),
+        at,
+        &entries,
+        &|_| None,
+    );
     match menu {
         PopupResult::Chosen(i) => {
             *open = false;
@@ -5350,7 +5369,14 @@ pub fn combo_light(
         } else {
             rc.left_bottom()
         };
-        match crate::chrome::popup(ui.ctx(), &popup_id, at, &entries, &|_| None) {
+        match crate::chrome::popup(
+            ui.ctx(),
+            crate::chrome::MenuKind::List,
+            &popup_id,
+            at,
+            &entries,
+            &|_| None,
+        ) {
             PopupResult::Chosen(i) => {
                 open = false;
                 chosen = Some(i).filter(|i| *i != selected);
