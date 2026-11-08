@@ -3,6 +3,12 @@
 Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 `.github/workflows/release.yml`).
 
+## [Unreleased]
+
+### Fixed
+
+- Adding a link again after its finished file was moved or deleted starts a new download, instead of asking about a duplicate that isn't there ([#342](https://github.com/anefzaoui/misterdownloadmanager/issues/342)).
+
 ## [0.5.1] - 2026-11-08
 
 YouTube fixes for the Download video button, and the button in Chrome, Edge and Brave.
