@@ -5520,6 +5520,10 @@ extension	Browser extension	브라우저 확장
 #, machine
 extension	Button settings...	단추 설정...
 #. text in the browser extension
+#. shown briefly on the download button when nothing on the page says which video the player is playing, so nothing was sent
+#, machine
+extension	Can't tell which video this is: open its own page and try there	어떤 비디오인지 알 수 없습니다. 비디오 자체 페이지를 열어 다시 시도하세요
+#. text in the browser extension
 #. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
 #, machine
 extension	Connected to Mister Download Manager	Mister Download Manager에 연결됨
@@ -5730,6 +5734,10 @@ extension	Support MDM	MDM 지원
 #, machine
 extension	Take downloads from this browser	이 브라우저에서 다운로드 가져오기
 #. text in the browser extension
+#. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
+#, machine
+extension	The Chrome Web Store's rules keep this copy of the add-on away from this site's videos. Help says what you can do.	Chrome 웹 스토어 규칙에 따라 이 부가 기능 사본은 이 사이트의 비디오에서 작동하지 않습니다. 할 수 있는 방법은 도움말을 참조하세요.
+#. text in the browser extension
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
 extension	The connection to Mister Download Manager failed	Mister Download Manager에 대한 연결에 실패했습니다.
@@ -5757,6 +5765,10 @@ extension	This computer	이 컴퓨터
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	이 다운로드의 세부 정보가 너무 커서 전달할 수 없습니다.
+#. text in the browser extension
+#. in the toolbar button's popup, when the page's player plays from a stream built in the page (a blob:): the list of the page's media has nothing to show; Download video is the name of the button over videos
+#, machine
+extension	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.	이 페이지의 플레이어는 비디오를 조각으로 스트리밍하므로 목록에 표시할 파일이 없습니다. 비디오를 가리킨 다음 '비디오 다운로드' 버튼을 사용하세요.
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine

@@ -19,6 +19,10 @@ const DEFAULT_TYPES = "3GP 7Z AAC EXE ISO MP3 MP4 MSI PDF R0* RAR ZIP";
 function fakeApi({
   firefox,
   reply = { ok: true },
+  // What the page's own player says it plays (video.js's button on YouTube); undefined: it can't be read.
+  playing,
+  // The video button's exclude_matches (the Chrome Web Store's copy).
+  videoExcludes,
   types = DEFAULT_TYPES,
   host = true,
   finished,
@@ -137,7 +141,7 @@ function fakeApi({
       },
       getManifest: () => ({
         version: "0.2.5",
-        content_scripts: [{ js: ["video.js"] }, { js: ["page.js"] }],
+        content_scripts: [{ js: ["video.js"], ...(videoExcludes ? { exclude_matches: videoExcludes } : {}) }, { js: ["page.js"] }],
         permissions: ["downloads", ...(proxyPerm === "required" ? ["proxy"] : [])],
         ...(proxyPerm === "optional" ? { optional_permissions: ["proxy"] } : {}),
       }),
@@ -165,6 +169,10 @@ function fakeApi({
     },
     scripting: {
       executeScript: async ({ func }) => {
+        if (func && func.name === "playingAt") {
+          if (playing === undefined) throw new Error("Cannot access contents of the page");
+          return [{ result: playing }];
+        }
         if (func && func.name === "mediaElements") {
           if (!frames) throw new Error("Cannot access contents of the page");
           return Object.entries(frames).map(([frameId, result]) => ({ frameId: Number(frameId), result }));
@@ -1026,6 +1034,98 @@ const MPD = (protect) => `<?xml version="1.0"?>
   assert.equal(at("https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?start=5"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
   assert.equal(at("https://vimeo.com/123456789?list=abc"), "https://vimeo.com/123456789?list=abc");
   ok("#311: the button sends the video's own page, not the page playing it");
+}
+
+// A page that moves in place (history.pushState): the button sends the address it's at now, not
+// the one the document loaded at; the page's own player names the video on YouTube; nothing goes
+// when nothing names it (the page would be a list of ~50 to yt-dlp).
+{
+  const message = (listeners, m, sender) => new Promise((r) => listeners.message(m, sender, (x) => r(JSON.parse(JSON.stringify(x)))));
+  const yt = (url, tabUrl = url, frameId = 0) => ({ id: "ours", url, frameId, tab: { id: 9, url: tabUrl, incognito: false } });
+  const last = (calls) => natives(calls).filter((m) => m.video).at(-1);
+  // Any site: `sender.url` is stale in the top frame, the tab's isn't. A frame keeps its own.
+  {
+    const { api, calls, listeners } = fakeApi({ firefox: false });
+    load(api, false);
+    await message(listeners, { type: "video" }, { id: "ours", url: "https://news.test/first", frameId: 0, tab: { id: 2, url: "https://news.test/second" } });
+    assert.equal(last(calls).url, "https://news.test/second", "the tab's address, not the stale sender's");
+    await message(listeners, { type: "video" }, { id: "ours", url: "https://player.test/embed", frameId: 4, tab: { id: 2, url: "https://news.test/second" } });
+    assert.equal(last(calls).url, "https://player.test/embed", "a frame's own address");
+    // m. and music. are the same site as www.
+    await message(listeners, { type: "video", url: "https://www.mobile.test/watch?v=1" }, { id: "ours", url: "https://m.mobile.test/watch", frameId: 0, tab: { id: 2, url: "https://m.mobile.test/watch" } });
+    assert.equal(last(calls).url, "https://www.mobile.test/watch?v=1", "another host of the same site");
+  }
+  // YouTube: the player's own answer, over the address and whatever the DOM named.
+  {
+    const { api, calls, listeners } = fakeApi({ firefox: false, playing: "dQw4w9WgXcQ" });
+    load(api, false);
+    const page = "https://www.youtube.com/@someone";
+    assert.equal((await message(listeners, { type: "video", url: null, at: { x: 100, y: 80 } }, yt(page))).ok, true);
+    assert.equal(last(calls).url, "https://www.youtube.com/watch?v=dQw4w9WgXcQ", "the channel's player, named by the player");
+    assert.equal(last(calls).referrer, page);
+    await message(listeners, { type: "video", url: "https://www.youtube.com/watch?v=stale", at: { x: 1, y: 1 } }, yt("https://www.youtube.com/watch?v=stale"));
+    assert.equal(last(calls).url, "https://www.youtube.com/watch?v=dQw4w9WgXcQ", "the player over a DOM guess");
+  }
+  // The player can't be read: what the DOM named goes; with nothing named, nothing goes.
+  {
+    const { api, calls, listeners } = fakeApi({ firefox: false });
+    load(api, false);
+    await message(listeners, { type: "video", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", at: { x: 1, y: 1 } }, yt("https://www.youtube.com/shorts/dQw4w9WgXcQ"));
+    assert.equal(last(calls).url, "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+    const r = await message(listeners, { type: "video", url: null, at: { x: 1, y: 1 } }, yt("https://www.youtube.com/@someone/videos"));
+    assert.deepEqual([r.ok, r.why], [false, "unnamed"]);
+    assert.equal(natives(calls).filter((m) => m.video).length, 1, "the channel's list is never sent");
+  }
+  // The popup, on a site this copy leaves alone, and on a player that streams pieces.
+  {
+    const excludes = ["*://*.youtube.com/*", "*://*.youtube-nocookie.com/*", "*://youtu.be/*"];
+    const { api, listeners } = fakeApi({ firefox: false, videoExcludes: excludes, frames: { 0: { href: "https://www.youtube.com/watch?v=x", players: [{ src: "blob:https://www.youtube.com/1" }] } } });
+    api.tabs.get = async (id) => ({ id, url: id === 1 ? "https://www.youtube.com/watch?v=x" : "https://example.test/" });
+    load(api, false);
+    const popup = { id: "ours", url: api.runtime.getURL("popup.html") };
+    const on = await message(listeners, { type: "media", tab: 1 }, popup);
+    assert.deepEqual([on.keptOff, on.streamed, on.media], [true, true, []], "the store's copy on YouTube");
+    const off = await message(listeners, { type: "media", tab: 2 }, popup);
+    assert.deepEqual([off.keptOff, off.streamed], [false, true], "elsewhere it isn't kept off");
+  }
+  // A page's short sound isn't listed as its media (a click, a voice-search chime), a real file is.
+  {
+    const { api, listeners } = fakeApi({ firefox: false });
+    load(api, false);
+    const sound = (url, length) => listeners.responseStarted({ tabId: 3, frameId: 0, type: "media", url, statusCode: 200, responseHeaders: [{ name: "content-type", value: "audio/mpeg" }, { name: "content-length", value: String(length) }] });
+    sound("https://x.test/open.mp3", 6000);
+    sound("https://x.test/song.mp3", 5 << 20);
+    await settle();
+    const popup = { id: "ours", url: api.runtime.getURL("popup.html") };
+    const list = await message(listeners, { type: "media", tab: 3 }, popup);
+    assert.deepEqual(list.media.map((m) => m.url), ["https://x.test/song.mp3"]);
+  }
+  ok("in-place navigation and YouTube's player: the video playing now, or nothing");
+}
+
+// Shorts and live streams name their video in the path (video.js videoPage); the page is the
+// video's, not a list. Their addresses as yt-dlp reads them (the same video as watch?v=).
+{
+  const source = readFileSync(new URL("../../extension/video.js", import.meta.url), "utf8");
+  const start = source.indexOf("function videoPage(v) {");
+  let depth = 0;
+  let end = start;
+  for (let i = source.indexOf("{", start); i < source.length; i += 1) {
+    if (source[i] === "{") depth += 1;
+    if (source[i] === "}" && --depth === 0) {
+      end = i + 1;
+      break;
+    }
+  }
+  const named = (href) =>
+    new Function("location", "document", `${source.slice(start, end)}; return videoPage;`)({ href }, { querySelector: () => null })({ parentElement: null, querySelectorAll: () => [] });
+  assert.equal(named("https://www.youtube.com/shorts/cxkLg22mWco"), "https://www.youtube.com/watch?v=cxkLg22mWco");
+  assert.equal(named("https://www.youtube.com/shorts/cxkLg22mWco?feature=share"), "https://www.youtube.com/watch?v=cxkLg22mWco");
+  assert.equal(named("https://m.youtube.com/shorts/cxkLg22mWco"), "https://www.youtube.com/watch?v=cxkLg22mWco");
+  assert.equal(named("https://www.youtube.com/live/abc123XYZ_-"), "https://www.youtube.com/watch?v=abc123XYZ_-");
+  // The Shorts landing page, before it moves to the first one, names none.
+  assert.equal(named("https://www.youtube.com/shorts/"), null);
+  ok("video.js: Shorts and live pages name their video");
 }
 
 // No other download manager's name in what ships (the clean-room rule, CLAUDE.md).

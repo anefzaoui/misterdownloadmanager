@@ -5520,6 +5520,10 @@ extension	Browser extension	瀏覽器擴充功能
 #, machine
 extension	Button settings...	按鈕設定...
 #. text in the browser extension
+#. shown briefly on the download button when nothing on the page says which video the player is playing, so nothing was sent
+#, machine
+extension	Can't tell which video this is: open its own page and try there	無法判斷這是哪部影片：請開啟該影片本身的頁面再試一次
+#. text in the browser extension
 #. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
 #, machine
 extension	Connected to Mister Download Manager	已連線到 Mister Download Manager
@@ -5730,6 +5734,10 @@ extension	Support MDM	支援 MDM
 #, machine
 extension	Take downloads from this browser	從此瀏覽器接管下載
 #. text in the browser extension
+#. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
+#, machine
+extension	The Chrome Web Store's rules keep this copy of the add-on away from this site's videos. Help says what you can do.	Chrome 線上應用程式商店的規則使此擴充功能副本無法用於此網站的影片。請參閱「說明」以了解您可以怎麼做。
+#. text in the browser extension
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
 extension	The connection to Mister Download Manager failed	與 Mister Download Manager 的連線失敗
@@ -5757,6 +5765,10 @@ extension	This computer	這部電腦
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	此下載的詳細資料過大，無法移交
+#. text in the browser extension
+#. in the toolbar button's popup, when the page's player plays from a stream built in the page (a blob:): the list of the page's media has nothing to show; Download video is the name of the button over videos
+#, machine
+extension	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.	此頁面的播放器以分段方式串流影片，因此沒有可列出的檔案。請將指標移到影片上，然後使用其「下載影片」按鈕。
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine

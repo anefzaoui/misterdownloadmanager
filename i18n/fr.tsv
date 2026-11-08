@@ -5520,6 +5520,10 @@ extension	Browser extension	Extension de navigateur
 #, machine
 extension	Button settings...	Paramètres du bouton...
 #. text in the browser extension
+#. shown briefly on the download button when nothing on the page says which video the player is playing, so nothing was sent
+#, machine
+extension	Can't tell which video this is: open its own page and try there	Impossible de savoir de quelle vidéo il s'agit : ouvrez sa propre page et réessayez
+#. text in the browser extension
 #. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
 #, machine
 extension	Connected to Mister Download Manager	Connecté à Mister Download Manager
@@ -5730,6 +5734,10 @@ extension	Support MDM	Soutenir MDM
 #, machine
 extension	Take downloads from this browser	Prendre les téléchargements de ce navigateur
 #. text in the browser extension
+#. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
+#, machine
+extension	The Chrome Web Store's rules keep this copy of the add-on away from this site's videos. Help says what you can do.	Les règles du Chrome Web Store tiennent cette copie du module à l'écart des vidéos de ce site. L'aide indique ce que vous pouvez faire.
+#. text in the browser extension
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
 extension	The connection to Mister Download Manager failed	La connexion à Mister Download Manager a échoué
@@ -5757,6 +5765,10 @@ extension	This computer	Cet ordinateur
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	Les détails de ce téléchargement étaient trop volumineux pour être transférés
+#. text in the browser extension
+#. in the toolbar button's popup, when the page's player plays from a stream built in the page (a blob:): the list of the page's media has nothing to show; Download video is the name of the button over videos
+#, machine
+extension	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.	Le lecteur de cette page diffuse la vidéo par morceaux : il n'y a donc aucun fichier à lister. Pointez la vidéo et utilisez son bouton « Télécharger la vidéo ».
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine

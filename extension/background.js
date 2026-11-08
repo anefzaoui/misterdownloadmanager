@@ -475,6 +475,8 @@ const MEDIA_TABS = 50;
 const URL_MAX = 8192;
 // A player's own fetch of a whole file is listed from this size (smaller ones are pieces).
 const FETCHED_MIN = 1 << 20;
+// Less than this of a single file, played by the page itself: a page's sound effect (mediaKind).
+const SOUND_MIN = 64 << 10;
 const MANIFEST = /\.(m3u8|mpd)(?:[?#]|$)/i;
 const SEGMENT_TYPE = /^(video\/mp2t|video\/iso\.segment|audio\/iso\.segment)$/;
 const SEGMENT_EXT = /\.(ts|m4s|m4f|cmfv|cmfa|cmft)$/;
@@ -506,6 +508,10 @@ function mediaKind(d) {
     const len = Number(headerOf(d, "content-length"));
     return len > MANIFEST_MAX ? null : { kind: "maybe", mime, size: 0 };
   }
+  // A page's own short sound (a click, a voice-search chime: 6 kB on YouTube in Edge), not media
+  // anyone came for: the list would show nothing else on a page whose video is streamed.
+  const whole = Number(headerOf(d, "content-length"));
+  if (d.type === "media" && whole > 0 && whole < SOUND_MIN) return null;
   const typed = /^(video|audio)\//.test(mime) || mime === "application/ogg";
   const untyped = !mime || /^(application|binary)\/octet-stream$/.test(mime);
   if (!typed && !(ext && untyped)) return null;
@@ -815,6 +821,16 @@ function mediaElements() {
     drm: Boolean(v.mediaKeys),
   }));
   return { href: location.href, players };
+}
+
+// Whether a player in the tab plays from a blob: (a MediaSource fed by the page).
+async function playsStream(tabId) {
+  try {
+    const found = await withTimeout(ext.scripting.executeScript({ target: { tabId, allFrames: true }, func: mediaElements }), 3000);
+    return (found || []).some((f) => f && f.result && f.result.players.some((v) => /^blob:/i.test(v.src)));
+  } catch {
+    return false;
+  }
 }
 
 // The tab's media as the popup lists them: a stream's variants inside it, each with what is known
@@ -1694,19 +1710,32 @@ ext.runtime.onStartup.addListener(() => {
   showStatus();
 });
 
+// A match pattern's host and path as a test (`*://*.youtube.com/*`).
+function matcher(pattern) {
+  const [, host = "", path = "/*"] = /^[^:]+:\/\/([^/]*)(\/.*)?$/.exec(pattern) || [];
+  const glob = (s) => s.split("*").map((x) => x.replace(/[.+?^${}()|[\]\\]/g, "\\$&")).join(".*");
+  const h = host.startsWith("*.") ? new RegExp(`^(.*\\.)?${glob(host.slice(2))}$`, "i") : new RegExp(`^${glob(host)}$`, "i");
+  const pth = new RegExp(`^${glob(path)}$`);
+  return (u) => h.test(u.hostname) && pth.test(u.pathname + u.search);
+}
+
+// Whether this copy of the extension leaves the video button off `url` (the Chrome Web Store's
+// copy: its policy, tools/extension/pack.ps1). Read from its manifest, so the popup says what is true.
+function videoKeptOff(url) {
+  const entry = (ext.runtime.getManifest().content_scripts || []).find((e) => (e.js || []).includes("video.js"));
+  try {
+    const u = new URL(url);
+    return ((entry && entry.exclude_matches) || []).some((p) => matcher(p)(u));
+  } catch {
+    return false;
+  }
+}
+
 // Pages open before the extension was installed or updated get its scripts now (else the
 // button waits for a reload).
 async function injectOpenTabs() {
   if (!ext.scripting) return;
   const tabs = await ext.tabs.query({ url: ["http://*/*", "https://*/*"] }).catch(() => []);
-  // A match pattern's host and path as a test (`*://*.youtube.com/*`).
-  const matcher = (pattern) => {
-    const [, host = "", path = "/*"] = /^[^:]+:\/\/([^/]*)(\/.*)?$/.exec(pattern) || [];
-    const glob = (s) => s.split("*").map((x) => x.replace(/[.+?^${}()|[\]\\]/g, "\\$&")).join(".*");
-    const h = host.startsWith("*.") ? new RegExp(`^(.*\\.)?${glob(host.slice(2))}$`, "i") : new RegExp(`^${glob(host)}$`, "i");
-    const pth = new RegExp(`^${glob(path)}$`);
-    return (u) => h.test(u.hostname) && pth.test(u.pathname + u.search);
-  };
   for (const entry of ext.runtime.getManifest().content_scripts || []) {
     const excludes = (entry.exclude_matches || []).map(matcher);
     for (const tab of tabs) {
@@ -1741,10 +1770,70 @@ async function panelOn(page) {
   return Boolean(reply.ok);
 }
 
-// The page the message came from, as the browser knows it (never what the page says).
+// The page the message came from, as the browser knows it (never what the page says). The top
+// frame's is its tab's address, which follows a page that moves in place (history.pushState:
+// YouTube, most video sites). `sender.url` is the document's and goes stale there: in Chromium it
+// stays the address the document loaded at, in Firefox it lags a navigation behind, so the button
+// sent the video watched before this one.
 function senderPage(sender) {
-  const u = sender.url || (sender.tab && sender.tab.url) || "";
+  const top = sender.frameId === 0 && sender.tab && sender.tab.url;
+  const u = top || sender.url || (sender.tab && sender.tab.url) || "";
   return /^https?:/i.test(u) ? u : null;
+}
+
+// A YouTube page's player, asked for what it plays. In the page's own world, the only place its
+// player's API exists (content scripts are isolated from it, and an injected <script> is refused
+// by its Trusted Types; `scripting` isn't). Run in the page: no outside names, only its arguments.
+function playingAt(x, y) {
+  let best = null;
+  for (const v of document.querySelectorAll("video")) {
+    const r = v.getBoundingClientRect();
+    if (x < r.left || x > r.right || y < r.top || y > r.bottom) continue;
+    if (!best || r.width * r.height < best.area) best = { v, area: r.width * r.height };
+  }
+  const player = best && best.v.closest(".html5-video-player");
+  try {
+    return player && player.getVideoData ? String(player.getVideoData().video_id || "") : "";
+  } catch {
+    return "";
+  }
+}
+
+const isYouTube = (url) => /(^|\.)(youtube\.com|youtube-nocookie\.com|youtu\.be)$/i.test(siteOf(url));
+
+// The watch address of what the player at `at` (the video's middle, in the sender's frame) plays,
+// or "": a page without such a player, one too old for `world`, a page extensions may not read.
+async function playingVideo(sender, at) {
+  if (!at || !ext.scripting || !sender.tab) return "";
+  try {
+    const [found] = await withTimeout(
+      ext.scripting.executeScript({
+        target: { tabId: sender.tab.id, frameIds: [sender.frameId || 0] },
+        world: "MAIN",
+        func: playingAt,
+        args: [Number(at.x) || 0, Number(at.y) || 0],
+      }),
+      3000,
+    );
+    const id = found && found.result;
+    return /^[\w-]{6,32}$/.test(id || "") ? `https://www.youtube.com/watch?v=${id}` : "";
+  } catch {
+    return "";
+  }
+}
+
+// The address the app looks a video up by: the one video's, never a list's. On YouTube that is
+// what the player plays; else the address the content script named (video.js videoPage), if it is
+// this site's (www, m. and music. are the same site); else the page's. "" on a YouTube page where
+// nothing names the video: its own address is a list (the home page, a channel) to yt-dlp.
+async function videoAddress(m, page, sender) {
+  const named = typeof m.url === "string" && /^https?:/i.test(m.url) ? m.url : "";
+  if (isYouTube(page)) {
+    const playing = await playingVideo(sender, m.at);
+    return playing || (isYouTube(named) ? named : "");
+  }
+  const site = (u) => siteOf(u).replace(/^(www|m|music)\./, "");
+  return named && site(named) === site(page) ? named : page;
 }
 
 async function pageMessage(m, sender) {
@@ -1758,13 +1847,10 @@ async function pageMessage(m, sender) {
   if (m.type === "video" && page) {
     await mediaBack;
     const src = typeof m.src === "string" && /^https?:/i.test(m.src) ? m.src : await streamFor(sender);
-    // The video's own page when the content script names one of its site's (extension/video.js:
-    // a watch page in a playlist is the list in the address bar, but the video is one video);
-    // the tab's otherwise.
-    const own =
-      typeof m.url === "string" && /^https?:/i.test(m.url) && siteOf(m.url) === siteOf(page)
-        ? m.url
-        : page;
+    // A playing stream or file of its own still goes as `src`, with the page for its Referer.
+    const named = await videoAddress(m, page, sender);
+    if (!named && !src) return { ok: false, why: "unnamed" };
+    const own = named || page;
     const reply = await native({
       video: true,
       url: own,
@@ -1814,7 +1900,17 @@ async function popupMessage(m) {
   if (m.type === "open-app") return { ok: Boolean((await native({ open: true })).ok) };
   if (m.type === "open-options") return { ok: Boolean((await native({ openOptions: true, page: "general" })).ok) };
   // The media the popup's tab loaded (#38), and one of them handed to the app.
-  if (m.type === "media" && Number.isInteger(m.tab)) return { media: await mediaList(m.tab) };
+  if (m.type === "media" && Number.isInteger(m.tab)) {
+    const list = await mediaList(m.tab);
+    const tab = await ext.tabs.get(m.tab).catch(() => null);
+    return {
+      media: list,
+      // Why the list is empty, when there's more to say than "nothing yet": this copy keeps the
+      // video button off the site, or the player streams pieces (blob:) no address can name.
+      keptOff: Boolean(tab && videoKeptOff(tab.url)),
+      streamed: !list.length && (await playsStream(m.tab)),
+    };
+  }
   if (m.type === "media-download" && Number.isInteger(m.tab) && typeof m.url === "string") {
     const reply = await mediaDownload(m.tab, m.url);
     return { ok: Boolean(reply.ok), why: reply.why };

@@ -5520,6 +5520,10 @@ extension	Browser extension	浏览器扩展
 #, machine
 extension	Button settings...	按钮设置...
 #. text in the browser extension
+#. shown briefly on the download button when nothing on the page says which video the player is playing, so nothing was sent
+#, machine
+extension	Can't tell which video this is: open its own page and try there	无法判断这是哪个视频：请打开该视频自己的页面再试
+#. text in the browser extension
 #. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
 #, machine
 extension	Connected to Mister Download Manager	已连接到 Mister Download Manager
@@ -5730,6 +5734,10 @@ extension	Support MDM	支持 MDM
 #, machine
 extension	Take downloads from this browser	从此浏览器接管下载
 #. text in the browser extension
+#. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
+#, machine
+extension	The Chrome Web Store's rules keep this copy of the add-on away from this site's videos. Help says what you can do.	Chrome 应用商店的规则使此扩展副本不能用于此网站的视频。请查看“帮助”了解您可以怎么做。
+#. text in the browser extension
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
 extension	The connection to Mister Download Manager failed	与 Mister Download Manager 的连接失败
@@ -5757,6 +5765,10 @@ extension	This computer	此电脑
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	此下载的详细信息过大，无法移交
+#. text in the browser extension
+#. in the toolbar button's popup, when the page's player plays from a stream built in the page (a blob:): the list of the page's media has nothing to show; Download video is the name of the button over videos
+#, machine
+extension	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.	此页面的播放器以分片方式串流视频，因此没有可列出的文件。请将指针移到视频上，然后使用其“下载视频”按钮。
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine

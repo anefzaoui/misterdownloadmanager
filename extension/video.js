@@ -38,6 +38,7 @@
     video_failed: "Mister Download Manager isn't installed or didn't start",
     video_off: "The download button is off on this site",
     video_drm: "Protected video: it can't be saved",
+    video_unnamed: "Can't tell which video this is: open its own page and try there",
     video_drag: "Drag to move it along the video's edge",
   };
   // To the background. After the extension was updated or removed, this page's copy of the script
@@ -59,11 +60,11 @@
   // on. A watch page opened from a mix or a playlist has the same problem one level down
   // (…&list=…&index=…): its own page is watch?v=<id>, and nothing else.
   //
-  // Null when the page plays a video but doesn't name it: YouTube's channel masthead player has no
-  // video-id attribute, no link to the video inside the player and a blob: source, so there is
-  // nothing to read (its id lives in the page's own JavaScript, out of reach of a content script,
-  // and YouTube's Trusted Types rules out a script of ours reading it). The button stays away
-  // there rather than send the page, which is a whole channel to yt-dlp.
+  // Null when the page plays a video but its DOM doesn't name it: YouTube's channel masthead player
+  // has no video-id attribute, no link to the video inside the player and a blob: source. The page
+  // itself never goes to the app then (a channel is a whole list to yt-dlp): the background asks
+  // the player what it plays, in the page's own world (background.js playingVideo), and this
+  // answer is only what it falls back on.
   function videoPage(v) {
     const watch = (id) =>
       /^[\w-]+$/.test(id || "") ? `https://www.youtube.com/watch?v=${id}` : null;
@@ -78,6 +79,13 @@
         // An embed's own page is the video's (…/embed/<id>).
         if (url.pathname.startsWith("/embed/")) {
           const id = watch(url.pathname.split("/")[2]);
+          if (id) return id;
+        }
+        // A Short's or a live stream's own page (/shorts/<id>, /live/<id>). yt-dlp reads these as
+        // the same one video as watch?v=<id>.
+        const [, kind, pathId] = url.pathname.split("/");
+        if (kind === "shorts" || kind === "live") {
+          const id = watch(pathId);
           if (id) return id;
         }
         // The page is this video's own: a watch page, with or without a list on it.
@@ -112,16 +120,9 @@
     return location.href;
   }
 
-  // `videoPage` once per video element and address: it walks the DOM, and the pointer asks on
-  // every move. A page that navigates in place (YouTube) gives a different answer.
-  const namedAt = new WeakMap();
-  function videoPageOf(v) {
-    const seen = namedAt.get(v);
-    if (seen && seen.at === location.href) return seen.page;
-    const page = videoPage(v);
-    namedAt.set(v, { at: location.href, page });
-    return page;
-  }
+  // The address this page first loaded at (`download`: a page that moves in place keeps its first
+  // page's og:title).
+  const landedAt = location.href;
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // "Hide on this video": the video's address (players reuse one element for the next video),
@@ -288,9 +289,6 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
     if (audio ? !v.controls || r.width < MIN_W || r.height < MIN_AUDIO_H : r.width < MIN_W || r.height < MIN_H) {
       return false;
     }
-    // A video the page doesn't name (a player of its own with nothing around it to link to it):
-    // there is no address to hand the app, and the page's own would be a list.
-    if (videoPageOf(v) === null) return false;
     // A short muted loop without controls: a moving picture, not something to save.
     if (v.muted && v.loop && !v.controls && !(v.duration > CLIP_S)) return false;
     const s = getComputedStyle(v);
@@ -455,14 +453,16 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
       // Encrypted (DRM): no tool can save it; say so rather than send it.
       if (video.mediaKeys) return flash("err", t("video_drm"));
       const src = /^https?:/i.test(video.currentSrc || "") ? video.currentSrc : "";
-      const title = (document.querySelector('meta[property="og:title"]')?.content || document.title || "").trim();
-      const page = videoPageOf(video);
-      // The button stays away from a video the page doesn't name (`eligible`), so this is the
-      // guard: nothing is sent rather than the page, which is a list to yt-dlp.
-      if (!page) return;
-      const r = await send({ type: "video", src, title, url: page });
+      // A page that moved in place keeps its first page's og:title; its document title follows.
+      const og = location.href === landedAt ? document.querySelector('meta[property="og:title"]')?.content : "";
+      const title = (og || document.title || "").trim();
+      // The middle of the video: where the background asks the page's own player what it plays.
+      const box = video.getBoundingClientRect();
+      const at = { x: box.left + box.width / 2, y: box.top + box.height / 2 };
+      // Asked now, not kept: one <video> plays many videos at the same address (a feed's previews).
+      const r = await send({ type: "video", src, title, url: videoPage(video), at });
       if (r.gone) return;
-      flash(r.ok ? "ok" : "err", t(r.ok ? "video_sent" : r.why === "options" ? "video_off" : "video_failed"));
+      flash(r.ok ? "ok" : "err", t(r.ok ? "video_sent" : r.why === "options" ? "video_off" : r.why === "unnamed" ? "video_unnamed" : "video_failed"));
     } finally {
       busy = false;
     }

@@ -50,7 +50,8 @@ import { fileURLToPath } from "node:url";
 export const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 export const release = path.join(process.env.CARGO_TARGET_DIR ? path.resolve(process.env.CARGO_TARGET_DIR) : path.join(root, "target"), "release");
 export const exe = (name) => path.join(release, process.platform === "win32" ? `${name}.exe` : name);
-const work = path.join(root, "target", "e2e");
+// E2E_WORK: the run's own folder instead (its profiles, the instance's data and downloads).
+const work = process.env.E2E_WORK ? path.resolve(process.env.E2E_WORK) : path.join(root, "target", "e2e");
 const PORT = 8101;
 const LAB = `http://127.0.0.1:${PORT}`;
 // The proxy case (#42): a proxy on 127.0.0.1 that alone knows the name lab.mdm.test (the lab
@@ -1751,6 +1752,21 @@ const CASES = {
     } finally {
       await popup.close();
     }
+  },
+
+  // A page that moves in place (history.pushState, as YouTube does between videos): the button
+  // hands the app the address it is at now, not the one the document loaded at.
+  async inplace(t) {
+    await t.session.navigate(`${LAB}/page?video=${encodeURIComponent("/gen/1M/clip.mp4")}`);
+    // A blob: source, as a site's own player has (there's no file of its own to send).
+    await t.session.evaluate(`(() => { const v = document.querySelector("#video"); v.src = URL.createObjectURL(new MediaSource()); history.pushState({}, "", "/page?video=moved"); return true; })()`);
+    const v = await rect(t.session, "#video");
+    const b = await hover(t.session, v);
+    if (!b) throw new Error("no button over the player");
+    const address = await clickButton(t.session, b);
+    const want = `${LAB}/page?video=moved`;
+    if (address !== want) throw new Error(`the video window got ${address}, not ${want}`);
+    return `sent ${address.replace(LAB, "")}`;
   },
 
   async video(t) {
