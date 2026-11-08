@@ -98,6 +98,9 @@ Everything below ships together, in version 0.5.0.
   ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192))
 - ✅ A menu of the menu bar shut with Escape opens again at the first click on its title (on
   Linux it took two; on Windows, Escape with the pointer on the title left the menu open)
+- ✅ A YouTube look-up that fails with "Requested format is not available" (signed in, no
+  JavaScript runtime for yt-dlp) tries once more without the cookies; the video window says when
+  ffmpeg would bring the better qualities a page offers
 - ✅ Signed-in videos from YouTube Music and YouTube's mobile site: the browser's cookies reach
   the YouTube host yt-dlp asks, each for the domain the browser keeps it for
   ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229))

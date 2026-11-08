@@ -3,6 +3,13 @@
 Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 `.github/workflows/release.yml`).
 
+## [Unreleased]
+
+### Fixed
+
+- **YouTube's look-up failing with "Requested format is not available"** ([#352](https://github.com/anefzaoui/misterdownloadmanager/issues/352)): signed-in cookies make yt-dlp use only YouTube's players that need a JavaScript runtime, and without one no video is left. The page is now looked up again without the cookies, and lists its qualities.
+- **Download video offering only the sound, with no reason given** ([#351](https://github.com/anefzaoui/misterdownloadmanager/issues/351)): when a page's better videos need ffmpeg and it isn't installed, the window now says so.
+
 ## [0.5.1] - 2026-11-08
 
 YouTube fixes for the Download video button, and the button in Chrome, Edge and Brave.

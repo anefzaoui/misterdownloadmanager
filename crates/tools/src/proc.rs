@@ -136,12 +136,79 @@ pub fn browser_cookies() -> Option<BrowserCookies> {
 /// store is read only when nothing came: a pasted address, a link typed into Add URL, a
 /// playlist listed later. yt-dlp would merge the two if given both; it never is.
 fn browser_cookie_args(args: &[String], chosen: Option<&BrowserCookies>) -> Vec<String> {
-    let has_cookies = args
+    let settled = args
         .iter()
-        .any(|a| a == "--cookies" || a == "--cookies-from-browser");
+        .any(|a| a == "--cookies" || a == "--cookies-from-browser" || a == NO_COOKIES);
     match chosen {
-        Some(c) if !has_cookies => vec!["--cookies-from-browser".into(), c.spec()],
+        Some(c) if !settled => vec!["--cookies-from-browser".into(), c.spec()],
         _ => Vec::new(),
+    }
+}
+
+/// yt-dlp's "no cookies from any browser": a run told this gets none of the chosen browser's.
+const NO_COOKIES: &str = "--no-cookies-from-browser";
+
+/// `ours` for a look-up without cookies (#352): the cookie file taken out, the browser's store
+/// refused.
+fn without_cookies(ours: &[String]) -> Vec<String> {
+    let mut out = Vec::with_capacity(ours.len() + 1);
+    let mut args = ours.iter();
+    while let Some(a) = args.next() {
+        if a == "--cookies" || a == "--cookies-from-browser" {
+            args.next();
+        } else {
+            out.push(a.clone());
+        }
+    }
+    out.push(NO_COOKIES.to_owned());
+    out
+}
+
+/// Does a run with arguments `ours` have cookies (its own, or the chosen browser's)?
+fn with_cookies(ours: &[String], chosen: Option<&BrowserCookies>) -> bool {
+    chosen.is_some()
+        || ours
+            .iter()
+            .any(|a| a == "--cookies" || a == "--cookies-from-browser")
+}
+
+/// A page's `-J` output, and whether it took looking the page up without cookies.
+pub struct LookedUp {
+    pub json: Vec<u8>,
+    pub without_cookies: bool,
+}
+
+/// Look a page up (`yt-dlp -J`, `ours` holding its arguments). yt-dlp's `-J` chooses a format too,
+/// and fails when none is left. Signed-in cookies make that likely on YouTube (#352): yt-dlp then
+/// asks only the players that need a JavaScript runtime to decode their links, and without one
+/// (it looks for Deno alone) every video is dropped: "Requested format is not available". The
+/// same page without the cookies lists its qualities, so a look-up that fails this way and had
+/// cookies is made once more without them; if that fails too, the first error is the one told.
+pub fn look_up(
+    exe: &Path,
+    ours: &[String],
+    url: &str,
+    timeout: Duration,
+) -> Result<LookedUp, ProcError> {
+    let run = |args: &[String]| output(ytdlp(exe, &[], args, url)?, "yt-dlp", timeout);
+    match run(ours) {
+        Ok(json) => Ok(LookedUp {
+            json,
+            without_cookies: false,
+        }),
+        Err(first)
+            if with_cookies(ours, browser_cookies().as_ref())
+                && crate::servers::format_unavailable(&first.to_string()) =>
+        {
+            match run(&without_cookies(ours)) {
+                Ok(json) => Ok(LookedUp {
+                    json,
+                    without_cookies: true,
+                }),
+                Err(_) => Err(first),
+            }
+        }
+        Err(e) => Err(e),
     }
 }
 
@@ -939,6 +1006,30 @@ mod tests {
             cookie_browsers().contains(&"safari"),
             cfg!(target_os = "macos")
         );
+    }
+
+    /// #352: the second look-up has no cookies of any kind, and everything else the first had.
+    #[test]
+    fn a_look_up_without_cookies_keeps_the_rest() {
+        let ours: Vec<String> = [
+            "-J",
+            "--cookies",
+            "/tmp/c.txt",
+            "--referer",
+            "https://p.test/",
+        ]
+        .map(String::from)
+        .to_vec();
+        assert_eq!(
+            without_cookies(&ours),
+            ["-J", "--referer", "https://p.test/", NO_COOKIES]
+        );
+        let firefox = BrowserCookies::new("firefox", "").unwrap();
+        assert!(with_cookies(&ours, None));
+        assert!(with_cookies(&["-J".to_owned()], Some(&firefox)));
+        assert!(!with_cookies(&["-J".to_owned()], None));
+        // Told so, the chosen browser's cookies aren't read either.
+        assert_eq!(yt(Some(&firefox), &["-J", NO_COOKIES]), ["-J", NO_COOKIES]);
     }
 
     /// #229: why the browser's cookies didn't help stays on the failure's message.

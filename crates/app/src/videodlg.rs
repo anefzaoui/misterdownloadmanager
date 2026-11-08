@@ -249,6 +249,22 @@ impl VideoDialog {
         }
     }
 
+    /// A page like YouTube's when yt-dlp has no JavaScript runtime (#351): videos and sound
+    /// apart, nothing carrying both (`/show video-adaptive`).
+    pub fn show_sample_adaptive(&mut self) {
+        const SAMPLE: &str = r#"{"title": "A conference talk about download managers, recorded in Lisbon",
+            "duration": 1830, "language": "en", "formats": [
+            {"format_id": "140", "ext": "m4a", "vcodec": "none", "acodec": "mp4a", "filesize": 29000000},
+            {"format_id": "137", "ext": "mp4", "height": 1080, "vcodec": "avc1", "acodec": "none", "filesize": 412000000},
+            {"format_id": "136", "ext": "mp4", "height": 720, "vcodec": "avc1", "acodec": "none", "filesize": 201000000}]}"#;
+        if let Some(v) = mdm_tools::resolve::parse(SAMPLE.as_bytes()) {
+            self.page = "https://video.example/talk".into();
+            self.looked_up = self.page.clone();
+            self.auto_look = false;
+            self.set_video(v);
+        }
+    }
+
     /// A listed playlist, as [`crate::playlistdlg::PlaylistView::sample`] makes it, its quality
     /// the one at position `pick` (`/show video-playlist:7`).
     pub fn show_sample_list(&mut self, pick: &str) {
@@ -562,6 +578,15 @@ impl VideoDialog {
                 winui::buttons_to_right(&p, 489.0, 8.0, &[(label, 90.0)], 200.0)[0]
             });
         let status_right = install_at.map_or(489.0, |(x, _)| x - 9.0);
+        // #351: a page whose better videos need ffmpeg says so in place of its title (still in
+        // File name): YouTube without a JavaScript runtime leaves nothing but the sound to offer
+        // here, and the list alone gives no reason.
+        let merge_note = self
+            .video
+            .as_ref()
+            .filter(|(v, _)| ffmpeg.is_none() && mdm_tools::resolve::needs_merging(v))
+            .and(offer.as_ref())
+            .map(|(_, _, msg)| *msg);
         if let Some(t) = installing {
             crate::torrentdlg::spinner(ui, pos2(o.x + 18.0, line_y - 4.0), 6.0);
             let msg = if t == Tool::YtDlp {
@@ -581,6 +606,17 @@ impl VideoDialog {
             );
         } else if self.list.is_some() {
             // The list draws its own (PlaylistView::middle).
+        } else if let Some(msg) = merge_note {
+            winui::fit(
+                ui,
+                &p,
+                o.x + 11.0,
+                line_y,
+                msg,
+                winui::MUTED(),
+                o.x + status_right,
+                "video-offer",
+            );
         } else if let Some((v, _)) = &self.video {
             let (rect, cut) = winui::text_fit(
                 &p,
