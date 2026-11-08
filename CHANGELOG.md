@@ -3,7 +3,7 @@
 Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 `.github/workflows/release.yml`).
 
-## [0.5.0]
+## [0.5.0] - 2026-11-08
 
 MDM's biggest release so far. Nine looks for its windows, and an interface that grows to 200 %.
 The browser extension in the Chrome Web Store and on addons.mozilla.org. MDM on a server, and

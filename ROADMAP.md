@@ -13,6 +13,9 @@ Everything below ships together, in version 0.5.0.
 
 ### Done
 
+- ✅ Windows 11 Insider builds: no black band across the top of menus, the drop target, the
+  progress window and the windows whose title bar MDM draws (the style themes); the reporter
+  confirmed it ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
 - ✅ The progress window's Download status tab: as much room above its first row as below its
   last; where the server is says "this computer" or "the local network", each with its icon
 - ✅ **View → Interface size**: every window larger, 100 % to 200 %, with Ctrl + / Ctrl − / Ctrl 0
@@ -416,7 +419,7 @@ Everything below ships together, in version 0.5.0.
 
 ## Being worked on
 
-These ship when they're ready: in 0.5.0 when they make it, or in a later version.
+These ship in a later version, when they're ready.
 
 ### Being built
 
@@ -428,11 +431,12 @@ These ship when they're ready: in 0.5.0 when they make it, or in a later version
 
 ### Bugs being looked into
 
-- 🔍 Windows with a black band across their top on a Windows 11 Insider build
-  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): menus and the drop
-  target are plain pop-up windows now, as Windows' own are, and the reporter confirmed them fixed;
-  the progress window and every window whose title bar MDM draws (the style themes) are framed
-  without a title bar style too, their test build is with the reporter
+- 🔍 Download File Info and the progress window behind the browser on a Windows 11 Insider
+  build ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): they now open in
+  front of it (in 0.5.0); waiting on the reporter's confirmation
+- 🔍 A 10-second freeze of the window after a night left open
+  ([#304](https://github.com/anefzaoui/misterdownloadmanager/issues/304)): most likely the
+  computer waking from sleep; waiting on the reporter's full report
 - 🔍 Menus opening as the pointer crosses the menu bar on a tiling window manager
   ([#277](https://github.com/anefzaoui/misterdownloadmanager/issues/277)): after a command the
   bar waits for a click, as before the first one (now tested on Windows and Linux); once a menu is
