@@ -13,6 +13,8 @@ Everything below ships together, in version 0.5.0.
 
 ### Done
 
+- ✅ The progress window's Download status tab: as much room above its first row as below its
+  last; where the server is says "this computer" or "the local network", each with its icon
 - ✅ **View → Interface size**: every window larger, 100 % to 200 %, with Ctrl + / Ctrl − / Ctrl 0
   as in a browser; a window larger than the screen scrolls. Sharper text on Windows (part of
   [#262](https://github.com/anefzaoui/misterdownloadmanager/issues/262))
@@ -101,6 +103,9 @@ Everything below ships together, in version 0.5.0.
   MDM takes ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
 - ✅ More file types taken from the browser by default: DMG, PKG, DEB, RPM, APPIMAGE, MSIX, APPX,
   CAB, JAR, XZ, ZST, WEBM, FLAC, OPUS and others; a list never edited gains them
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
+- ✅ Windows: Download File Info and the progress window open in front of the browser, even when
+  Windows doesn't let MDM take the foreground; the keyboard stays where it was until a click
   ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
 - ✅ The window no longer freezes on Linux when the system's sleep service (logind) or keyring
   (Secret Service) is slow or doesn't answer: keeping the computer awake for a woken queue is

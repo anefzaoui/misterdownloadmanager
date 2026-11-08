@@ -272,6 +272,18 @@ pub fn banner(
     extra
 }
 
+/// A separator dot between two parts of a line ("Germany · about 35 ms"), at English `x`: a
+/// round 3 px dot on the middle of the lowercase letters. The font's "·" is a thin tick sitting
+/// high at small sizes, which reads as an apostrophe. Its rect on screen.
+pub fn separator_dot(p: &Painter, x: f32, baseline: f32, color: Color32) -> Rect {
+    let rc = rect(Rect::from_center_size(
+        pos2(x + 1.5, baseline - 2.5),
+        vec2(3.0, 3.0),
+    ));
+    p.circle_filled(rc.center(), 1.5, color);
+    rc
+}
+
 /// Draw `s` with its pen (its start) at English `x` and its baseline (last cap row) at
 /// `baseline`. Returns the text's advance rect on screen.
 pub fn text(p: &Painter, x: f32, baseline: f32, s: &str, color: Color32) -> Rect {

@@ -8638,6 +8638,10 @@
    "source": "(blue)",
    "text": "(blau)"
   },
+  "918f09ee3a8310c4": {
+   "source": "Sign-in secrets (debrid accounts, Sites Logins' and the proxy's passwords) live in the system's keychain (<x1/>, #44): Windows Credential Manager (<x2/>), the Secret Service on Linux or the macOS keychain (<x3/>). The settings keep a <x4/> reference in their place, written only once the keychain has confirmed the secret; without a keychain (or with a locked one, never unlocked for MDM) the secret stays in the settings as before.",
+   "text": "Anmeldegeheimnisse (Debrid-Konten, Anmeldedaten für Websites und Proxy-Passwörter) werden im System-Schlüsselbund gespeichert (<x1/>, #44): Windows Credential Manager (<x2/>), der Secret Service unter Linux oder der macOS-Schlüsselbund (<x3/>). Die Einstellungen behalten eine <x4/>-Referenz an ihrem Platz, die erst geschrieben wird, wenn der Schlüsselbund das Geheimnis bestätigt hat; ohne Schlüsselbund (oder mit einem gesperrten, der nie für MDM entsperrt wurde) bleibt das Geheimnis wie zuvor in den Einstellungen."
+  },
   "91aff26fd329cf93": {
    "source": "Mister Download Manager in 86 languages: picked by flag, switched at once, right to left for Arabic, Hebrew, Persian, Urdu and Uyghur.",
    "text": "Mister Download Manager in 86 Sprachen: nach Flagge ausgewählt, sofort umgeschaltet, von rechts nach links für Arabisch, Hebräisch, Persisch, Urdu und Uigurisch."
@@ -9821,6 +9825,10 @@
   "a4d974a7cf63b1e0": {
    "source": "Speed Limiter settings: Maximum download speed for one file, Always turn on Speed Limiter on startup, and Limit all downloads together to, with Only while I'm using the computer",
    "text": "Einstellungen des Geschwindigkeitsbegrenzers: Maximale Download-Geschwindigkeit für eine Datei, Geschwindigkeitsbegrenzer beim Start immer aktivieren und Alle Downloads zusammen begrenzen auf, mit Nur wenn ich den Computer benutze"
+  },
+  "a4ec7f409ec80484": {
+   "source": "The download list and settings are saved atomically to the data folder (<x1/>): <x2/> on Windows, <x3/> on Linux, <x4/> on macOS, a <x5/> folder beside a portable copy, or <x6/> (<x7/>). The browser host reads the same file for the capture rules, so a change in Options applies to the next captured download.",
+   "text": "Die Download-Liste und die Einstellungen werden atomar im Datenordner gespeichert (<x1/>): <x2/> unter Windows, <x3/> unter Linux, <x4/> unter macOS, ein <x5/>-Ordner neben einer portablen Kopie oder <x6/> (<x7/>). Der Browser-Host liest dieselbe Datei für die Erfassungsregeln, sodass eine Änderung in den Optionen für den nächsten erfassten Download gilt."
   },
   "a50025a18eca7051": {
    "source": "MDM's interface comes in 86 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
@@ -13022,6 +13030,10 @@
    "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
    "text": "Ein Proxy, für den eine Anmeldung erforderlich ist, die von der VPN-Erweiterung selbst vorgenommen wird, kann nicht gemeinsam genutzt werden: Kein anderes Programm verfügt über diese Anmeldedaten. Der Download wird dann mit einer entsprechenden Meldung beendet, statt ohne Proxy fortgesetzt zu werden. Verwenden Sie die eigene App des VPNs oder wählen Sie dessen Adapter unter <g1>Netzwerkadapter</g1>."
   },
+  "db773b614d9bb463": {
+   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default until real graphics cards have tried them, #206). View → Draw with picks one, from the next start. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open. A watched start with the system's API leaves a marker until its first frame is drawn: a start that ends before it (a crash inside the driver), one whose first frame doesn't come within 10 seconds (MDM then starts again with OpenGL), or a graphics card lost twice in 10 minutes is remembered with its reason, which the menu shows.",
+   "text": "Die Fenster werden mit OpenGL (eframe's glow) oder mit der systemeigenen Grafik-API über eframe's wgpu gezeichnet, und zwar nur mit einem Backend: Direct3D 12 unter Windows (dort die Standardeinstellung), Vulkan unter Linux, Metal unter macOS (dort gibt es Auswahlmöglichkeiten; OpenGL bleibt die Standardeinstellung, bis echte Grafikkarten sie ausprobiert haben, #206). Ansicht → Zeichnen mit wählt eines davon für den nächsten Start aus. Ein einziger Codepfad macht dies auf jedem System (<x1/>): Wenn das gewählte Backend nicht starten kann, wird das andere versucht, sodass die Fenster immer geöffnet werden. Ein überwachter Start mit der System-API hinterlässt eine Markierung, bis der erste Frame gezeichnet ist: Ein Start, der vorher endet (ein Absturz im Treiber), einer, dessen erster Frame nicht innerhalb von 10 Sekunden erscheint (MDM startet dann erneut mit OpenGL), oder eine Grafikkarte, die zweimal in 10 Minuten verloren geht, wird mit ihrem Grund vermerkt, den das Menü anzeigt."
+  },
   "db8b995c0ea581f5": {
    "source": "The keys are written down",
    "text": "Die Tasten sind dokumentiert"
@@ -14321,6 +14333,10 @@
   "f1ee92efff9ac821": {
    "source": "<g1>Menus on macOS and Linux</g1>: clicking a menu item did nothing (the click moved the focus to the menu's own window, which closed it first). The list's right-click menu and the toolbar's drop-downs had the same fault.",
    "text": "<g1>Menüs unter macOS und Linux</g1>: Ein Klick auf einen Menüeintrag bewirkte nichts, weil der Klick den Fokus auf das eigene Fenster des Menüs verschob und dieses dadurch zuerst geschlossen wurde. Derselbe Fehler trat beim Rechtsklick-Menü der Liste und bei den Dropdown-Listen der Symbolleiste auf."
+  },
+  "f1ffe13bf5cbb2c3": {
+   "source": "View → Interface size (<x1/>, #262) is egui's zoom factor over the display's own scale: every window is laid out in points, so it opens that much larger; one larger than the screen scrolls.",
+   "text": "Ansicht → Oberflächengröße (<x1/>, #262) ist der Zoomfaktor von egui über die eigene Skalierung des Displays: Jedes Fenster wird in Punkten angelegt, sodass es entsprechend größer geöffnet wird; ein Fenster, das größer als der Bildschirm ist, scrollt."
   },
   "f20112b73092bc18": {
    "source": "Installer",
