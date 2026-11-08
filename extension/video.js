@@ -58,6 +58,12 @@
   // an address as the list, so the app offered the whole feed instead of the video the button was
   // on. A watch page opened from a mix or a playlist has the same problem one level down
   // (…&list=…&index=…): its own page is watch?v=<id>, and nothing else.
+  //
+  // Null when the page plays a video but doesn't name it: YouTube's channel masthead player has no
+  // video-id attribute, no link to the video inside the player and a blob: source, so there is
+  // nothing to read (its id lives in the page's own JavaScript, out of reach of a content script,
+  // and YouTube's Trusted Types rules out a script of ours reading it). The button stays away
+  // there rather than send the page, which is a whole channel to yt-dlp.
   function videoPage(v) {
     const watch = (id) =>
       /^[\w-]+$/.test(id || "") ? `https://www.youtube.com/watch?v=${id}` : null;
@@ -79,23 +85,42 @@
         if (own && url.pathname.startsWith("/watch")) return own;
         const shown = watch(document.querySelector("ytd-watch-flexy")?.getAttribute("video-id"));
         if (shown && url.pathname.startsWith("/watch")) return shown;
-        // A player that isn't the page's own (a preview on the home page, a feed, a channel, a
-        // search): the card it plays in is a link to the video.
-        for (let node = v, i = 0; node && i < 8; i += 1, node = node.parentElement) {
-          const a = node.querySelector?.('a[href*="/watch?"], a[href*="youtu.be/"]');
-          if (!a) continue;
-          const link = new URL(a.href, location.href);
-          const id = link.hostname.endsWith("youtu.be")
-            ? link.pathname.split("/")[1]
-            : link.searchParams.get("v");
-          const page = watch(id);
-          if (page) return page;
+        const player = watch(document.querySelector("#movie_player")?.getAttribute("video-id"));
+        if (player) return player;
+        // A player inside the card it belongs to (a feed, a search, a playlist): the card links to
+        // the video. Only a container that names exactly one video counts — walking on into the
+        // page's column would find some other card's link and send the wrong video, which is worse
+        // than sending none.
+        for (let node = v, i = 0; node && i < 12; i += 1, node = node.parentElement) {
+          const ids = new Set();
+          for (const a of node.querySelectorAll?.('a[href*="/watch?"], a[href*="youtu.be/"]') || []) {
+            const link = new URL(a.href, location.href);
+            const id = link.hostname.endsWith("youtu.be")
+              ? link.pathname.split("/")[1]
+              : link.searchParams.get("v");
+            if (watch(id)) ids.add(id);
+          }
+          if (ids.size === 1) return watch([...ids][0]);
+          if (ids.size > 1) break;
         }
+        // A page that plays a video and names none: not the video's page, so not the app's.
+        return null;
       }
     } catch {
       // Not an address this page can reason about: its own follows.
     }
     return location.href;
+  }
+
+  // `videoPage` once per video element and address: it walks the DOM, and the pointer asks on
+  // every move. A page that navigates in place (YouTube) gives a different answer.
+  const namedAt = new WeakMap();
+  function videoPageOf(v) {
+    const seen = namedAt.get(v);
+    if (seen && seen.at === location.href) return seen.page;
+    const page = videoPage(v);
+    namedAt.set(v, { at: location.href, page });
+    return page;
   }
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -263,6 +288,9 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
     if (audio ? !v.controls || r.width < MIN_W || r.height < MIN_AUDIO_H : r.width < MIN_W || r.height < MIN_H) {
       return false;
     }
+    // A video the page doesn't name (a player of its own with nothing around it to link to it):
+    // there is no address to hand the app, and the page's own would be a list.
+    if (videoPageOf(v) === null) return false;
     // A short muted loop without controls: a moving picture, not something to save.
     if (v.muted && v.loop && !v.controls && !(v.duration > CLIP_S)) return false;
     const s = getComputedStyle(v);
@@ -428,7 +456,11 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
       if (video.mediaKeys) return flash("err", t("video_drm"));
       const src = /^https?:/i.test(video.currentSrc || "") ? video.currentSrc : "";
       const title = (document.querySelector('meta[property="og:title"]')?.content || document.title || "").trim();
-      const r = await send({ type: "video", src, title, url: videoPage(video) });
+      const page = videoPageOf(video);
+      // The button stays away from a video the page doesn't name (`eligible`), so this is the
+      // guard: nothing is sent rather than the page, which is a list to yt-dlp.
+      if (!page) return;
+      const r = await send({ type: "video", src, title, url: page });
       if (r.gone) return;
       flash(r.ok ? "ok" : "err", t(r.ok ? "video_sent" : r.why === "options" ? "video_off" : "video_failed"));
     } finally {
