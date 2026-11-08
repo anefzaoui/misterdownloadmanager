@@ -54,6 +54,10 @@
    "source": "Portable mode in detail →",
    "text": "便携模式详情 →"
   },
+  "01579d403b821195": {
+   "source": "<x1/> pull requests",
+   "text": "<x1/> 个拉取请求"
+  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "可以。MDM 会实时写入下载进度，因此在连接丢失、程序崩溃或重启后，它会从中断的地方继续。恢复下载前，它会检查服务器上的文件是否已更改。当下载地址过期时，您可以使用<g1>刷新下载地址</g1>来提供新的地址并保留已下载的数据。请参阅<g2>恢复中断的下载</g2>。"
@@ -185,6 +189,10 @@
   "03069bf346ba733c": {
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>帮助 → 关于 Mister Download Manager</g1>显示你拥有的版本。"
+  },
+  "030e42728ee6a418": {
+   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
+   "text": "<g1>拉取请求</g1><g2><x3/> 人</g2>"
   },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
@@ -1802,6 +1810,10 @@
    "source": "Add your account",
    "text": "添加您的帐户"
   },
+  "1e00cc7bf8c490d3": {
+   "source": "Last updated 2026-11-08",
+   "text": "上次更新：2026年11月8日"
+  },
   "1e06a14724b6ac4b": {
    "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
    "text": "MDM 使用 gallery-dl 下载图库（维基共享资源分类、Flickr 相册、DeviantArt 图库、Imgur 相册等）中的图片..."
@@ -1977,6 +1989,10 @@
   "216583d42da33e52": {
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "在 macOS 上，只有管理员才能安排唤醒，因此该选项是灰色的。MDM 不会要求管理员密码。管理员可以设置 Mac 在队列开始前一分钟每天唤醒，例如，对于晚上 11:00 开始的队列，在晚上 10:59 唤醒："
+  },
+  "216eae12c95fa610": {
+   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
+   "text": "感谢自版本 <x1/> 以来在 GitHub 上提交拉取请求、提出问题或发表评论的所有人。"
   },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
@@ -2682,10 +2698,6 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>国家</g1>来自 MDM 附带的地址范围表（<g2>DB-IP 的 IP to Country Lite</g2>，CC BY 4.0），在您的计算机上查询。MDM 绝不会将地址发送到任何地方进行查询。该表随每个版本更新；自上次更新后地址已更改的，可能会显示旧的国家。"
   },
-  "2cd03d5c814bd111": {
-   "source": "Last updated 2026-11-07",
-   "text": "最后更新：2026-11-07"
-  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>浏览</g1> — 在资源管理器中打开其文件夹。"
@@ -3086,6 +3098,10 @@
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on <g1>GitHub</g1>. Bug reports, translations and code are all welcome.",
    "text": "MDM 由独立开发者 Ahmed Nefzaoui 制作，并欢迎<g1>GitHub</g1>上的任何人贡献。欢迎提交错误报告、翻译和代码。"
   },
+  "34375264f395f109": {
+   "source": "Join them: the contributing guide",
+   "text": "加入他们：贡献指南"
+  },
   "343a94d738e764aa": {
    "source": "Each connection writes directly into the file's place on disk, in a part file next to the final one. There is no temporary folder and no joining step at the end: when the last part arrives, MDM checks the size and renames the file.",
    "text": "每个连接直接写入磁盘上文件所在的位置，写入最终文件旁边的部分文件。没有临时文件夹，也没有最后的合并步骤：当最后一个部分到达时，MDM 会检查大小并重命名文件。"
@@ -3469,6 +3485,10 @@
   "39f0061bac128459": {
    "source": "<g1>Options → Archives</g1> says whether 7-Zip was found. Without it, a 7z or RAR archive isn't extracted, and the <g2>7-Zip needed</g2> window says so, with a <g3>Get 7-Zip</g3> button.",
    "text": "<g1>选项 → 存档</g1> 会显示是否找到了 7-Zip。如果没有找到，7z 或 RAR 存档将不会被解压，并且 <g2>需要 7-Zip</g2> 窗口会提示，并带有一个<g3>获取 7-Zip</g3> 按钮。"
+  },
+  "39f69afa6e85f9d1": {
+   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
+   "text": "<g1>问题</g1><g2><x3/> 人</g2>"
   },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
@@ -5090,6 +5110,10 @@
    "source": "A small file",
    "text": "小文件"
   },
+  "55a523d7ca4b905f": {
+   "source": "Thanks to",
+   "text": "鸣谢"
+  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "粘贴播放列表 (<x1/>) 或频道视频 (<x2/>) 的地址，然后点击 <g3>查找</g3>。窗口不会显示单个视频的画质选项，而会列出播放列表中的视频及其时长。"
@@ -5205,6 +5229,10 @@
   "57a2e56d39e0a778": {
    "source": "<g1>Needs a login</g1>: the server wants a user name and password, or the page's cookies.",
    "text": "<g1>需要登录</g1>：服务器需要用户名和密码，或需要页面的 Cookie。"
+  },
+  "57df30288a29fe94": {
+   "source": "Made possible by these amazing humans",
+   "text": "由这些杰出人士倾力打造"
   },
   "57e101e4403fd046": {
    "source": "Command",
@@ -5325,6 +5353,10 @@
   "59cee3ff8dcef9d9": {
    "source": "Getting set up",
    "text": "开始设置"
+  },
+  "59d5983b5e65fbf4": {
+   "source": "reads who opened pull requests and issues, and who commented, from GitHub's public API (the maintainer, Claude and bots left out) for every place that thanks them: the website's home page, <x1/> and each release on the News page (<x2/>, on every build), each release's notes (<x3/>, the people active since the release before) and the README (<x4/> at each release's preparation: its round photos are committed in <x5/>, since GitHub can't round a picture in a README).",
+   "text": "从 GitHub 的公共 API 读取谁发起了拉取请求和问题，以及谁发表了评论（维护者、Claude 和机器人除外），用于感谢他们的所有地方：网站主页、<x1/> 和新闻页面上的每个版本（<x2/>，在每个构建中），每个版本的发布说明（<x3/>，自上一个版本以来活跃的人员）以及 README（<x4/> 在每个版本准备时：其圆形照片提交在 <x5/> 中，因为 GitHub 无法在 README 中将图片设为圆形）。"
   },
   "5a277738c32493f8": {
    "source": "Support MDM",
@@ -6201,6 +6233,10 @@
   "68b88047fcca2939": {
    "source": "Queue downloads for later →",
    "text": "将下载加入队列以便稍后下载 →"
+  },
+  "6934a2b5fa583b1e": {
+   "source": "Contributors — Mister Download Manager",
+   "text": "贡献者 — Mister Download Manager"
   },
   "693f3338267d1d6a": {
    "source": "Move without changing the selection",
@@ -7137,6 +7173,10 @@
   "79298af691e8bdd2": {
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "您需要拥有这些服务之一的付费账户：MDM 不出售或包含任何账户。共享账户或其链接会违反服务条款，并可能导致账户被暂停。"
+  },
+  "7931468b8d7d517a": {
+   "source": "<x1/> <g2>Everyone who helped</g2>",
+   "text": "<x1/> <g2>所有贡献者</g2>"
   },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
@@ -8614,6 +8654,10 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>加速与续传</g1><g2>文件可拆分为最多 32 个连接，重新拆分直到最后一个字节，并在任何崩溃后恢复下载。</g2>"
   },
+  "92055d4da1d101c5": {
+   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
+   "text": "<x1/> 在 GitHub 上提交拉取请求、报告问题或参与讨论的人们。 <g2>认识他们</g2>"
+  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "MDM 绘制的标题栏，当窗口非活动时（透明：如同活动时）"
@@ -8841,10 +8885,6 @@
   "95b8e4a4ea276d5d": {
    "source": "Downloads",
    "text": "下载"
-  },
-  "95bb2c4ecf20a6d7": {
-   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "最后更新日期：2026 年 11 月 7 日 · 适用于应用程序、浏览器扩展和 misterdownloadmanager.com"
   },
   "95c10421608930fc": {
    "source": "The proxy's password moves to the system's keychain: Windows Credential Manager, the keyring on Linux, the macOS keychain.",
@@ -9370,6 +9410,10 @@
    "source": "Send downloads from your browser",
    "text": "从浏览器发送下载"
   },
+  "9e23173a22cf615a": {
+   "source": "<x1/> comment",
+   "text": "<x1/> 条评论"
+  },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
    "text": "Windows 7 的感觉：光泽按钮、玻璃质感标题栏和光泽绿色进度条。"
@@ -9577,6 +9621,10 @@
   "a135171e6e928076": {
    "source": "Home",
    "text": "主页"
+  },
+  "a138862f6607942e": {
+   "source": "addresses (implicit TLS) don't start while an adapter is chosen; <x1/> with TLS is fine. Connections to this computer itself aren't bound, so a proxy running on this computer decides where your downloads go from there. On macOS, a VPN that reconnects may come back as a new interface (<x2/> instead of <x3/>): pick it again.",
+   "text": "如果选择了适配器，则地址（隐式 TLS）不会开始下载；<x1/> 使用 TLS 则可以。连接到此计算机本身的流量不受此限制，因此在此计算机上运行的代理会决定您的下载去向。在 macOS 上，重新连接的 VPN 可能会以新接口的形式出现（<x2/> 而不是 <x3/>）：请重新选择它。"
   },
   "a14e2ae7c647b70b": {
    "source": "<g1><g2>Debrid service accounts</g2></g1> — Real-Debrid, AllDebrid and Premiumize: file-host links through your own account.",
@@ -10562,6 +10610,10 @@
    "source": "Text",
    "text": "文本"
   },
+  "b23e4d23398b2d6f": {
+   "source": "Made possible by these amazing humans: everyone who sent a pull request, opened an issue or joined a conversation on GitHub. Thank you, every one of you.",
+   "text": "感谢这些杰出人士的贡献：每一位在 GitHub 上提交拉取请求、提出问题或参与讨论的朋友。衷心感谢你们每一个人。"
+  },
   "b23e9f6d4d6a6718": {
    "source": "Browser integration needs one more step in each browser: adding the extension. In Firefox, click <g1>Add to Firefox</g1> on <g2>its page on addons.mozilla.org</g2>; in Chrome, Edge, Brave, Opera and Vivaldi, <g3>Add to Chrome</g3> on <g4>its page in the Chrome Web Store</g4>. <g5>Browser integration</g5> shows how.",
    "text": "浏览器集成在每个浏览器中都需要多一步：添加扩展。在 Firefox 中，点击 <g2>addons.mozilla.org 上的页面</g2>中的<g1>添加到 Firefox</g1>；在 Chrome、Edge、Brave、Opera 和 Vivaldi 中，点击 <g4>Chrome 网上应用店中的页面</g4>中的<g3>添加到 Chrome</g3>。<g5>浏览器集成</g5>会展示具体操作。"
@@ -10597,6 +10649,10 @@
   "b27995b1d5cff0b2": {
    "source": "A calendar's day or arrow pressed",
    "text": "日历日期或箭头被按下时"
+  },
+  "b27e59917bb7f695": {
+   "source": "Last updated 2026-11-08 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "最后更新于 2026-11-08 · 适用于应用程序、浏览器扩展和 misterdownloadmanager.com"
   },
   "b298f93960114202": {
    "source": ", with or without <x1/>;",
@@ -11206,6 +11262,10 @@
    "source": "Yes. In IDM, export your list with <g1>Tasks → Export → To IDM export file</g1>. In MDM, choose <g2>Tasks → Import → From IDM export file</g2> and pick that <x3/> file: every download comes over with its address, referrer and cookies. A plain text file of links works too. See <g4>Adding downloads</g4>.",
    "text": "可以。在 IDM 中，选择<g1>任务 → 导出 → 导出到 IDM 文件</g1>来导出列表。在 MDM 中，选择<g2>任务 → 导入 → 从 IDM 导出文件</g2>，然后选择该<x3/>文件：所有下载任务都会保留其地址、来源页和 Cookie。纯文本格式的链接文件也可以。请参阅<g4>添加下载</g4>。"
   },
+  "bd08b0858bd72782": {
+   "source": "Contributors",
+   "text": "贡献者"
+  },
   "bd0d153b08edc05e": {
    "source": "MDM's page on a phone: an address box with Category and When, the queues with Start, and the downloads with their progress",
    "text": "MDM 在手机上的页面：带有类别和何时选项的地址框，带有开始按钮的队列，以及显示进度的下载任务"
@@ -11333,6 +11393,10 @@
   "bfcf797517e5c279": {
    "source": "MDM remembers the columns, their widths and the sort order.",
    "text": "MDM 会记住列、列宽和排序顺序。"
+  },
+  "bfd9e614f4714695": {
+   "source": "The people who made Mister Download Manager possible: everyone who sent a pull request, opened an issue or joined a conversation on GitHub.",
+   "text": "感谢这些杰出人士让 Mister Download Manager 成为可能：每一位在 GitHub 上提交拉取请求、提出问题或参与讨论的朋友。"
   },
   "bfdcb4c0c0e4bf80": {
    "source": "<g1>Site name/Download link/Parent web page/Referer</g1> — the address, the site's name and the page the download came from. Tick this to find everything from one site.",
@@ -12174,6 +12238,10 @@
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "链接抓取器和存档 — Mister Download Manager 帮助"
   },
+  "ce5bf471e6fccfb8": {
+   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
+   "text": "<g1>评论</g1><g2><x3/> 人</g2>"
+  },
   "ce6f1a716e6dad6d": {
    "source": "Or",
    "text": "或者"
@@ -12641,6 +12709,10 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager 与 IDM 并排比较。"
+  },
+  "d65efc937a364b03": {
+   "source": "<x1/> issue",
+   "text": "<x1/> 个问题"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -13546,6 +13618,10 @@
    "source": "A second copy of MDM watches the first. When MDM crashes, the report window says <g1>Mister Download Manager closed unexpectedly</g1>. When its window hasn't answered for 8 seconds, it says <g2>Mister Download Manager stopped responding</g2>, and <g3>End and restart MDM</g3> closes the frozen copy and starts a fresh one. If MDM comes back by itself, the window says so.",
    "text": "MDM 的第二个副本会监视第一个副本。当 MDM 崩溃时，报告窗口会显示<g1>Mister Download Manager 意外关闭</g1>。当其窗口在 8 秒内没有响应时，它会显示<g2>Mister Download Manager 已停止响应</g2>，并且<g3>结束并重启 MDM</g3>会关闭冻结的副本并启动一个新的。如果 MDM 自行恢复，窗口会显示此信息。"
   },
+  "e6e4ffbd1a17c7e8": {
+   "source": "<x1/> pull request",
+   "text": "<x1/> 个拉取请求"
+  },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
    "text": "永久免费：无试用、无广告、无密钥"
@@ -14306,6 +14382,10 @@
    "source": "<g1>Online</g1>: the server has the file.",
    "text": "<g1>在线</g1>：服务器上有该文件。"
   },
+  "f2d4f3ae1b5602bb": {
+   "source": "From GitHub's public record, <x1/>: people with pull requests first, then those who opened issues, then those who commented, each once. The maintainer and automated accounts aren't counted.",
+   "text": "根据 GitHub 的公开记录，<x1/>：首先是提交拉取请求的人，其次是提出问题的人，然后是发表评论的人，每人只计算一次。维护者和自动化账户不计入在内。"
+  },
   "f2fd829426a9d905": {
    "source": "Click <g1>Add URL</g1> on the toolbar, choose <g2>Tasks → Add new download</g2>, or press <g3>Ctrl+N</g3>.",
    "text": "点击工具栏上的<g1>添加 URL</g1>，选择<g2>任务 → 添加新下载</g2>，或按<g3>Ctrl+N</g3>。"
@@ -14550,6 +14630,10 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>共享时间达到以下时长后停止共享</g1> — 或者累计共享达到指定时长后停止。默认关闭。"
   },
+  "f821c9c149c3e050": {
+   "source": "<x1/> comments",
+   "text": "<x1/> 条评论"
+  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "除了其地址之外，页面可能通过其打开的名称"
@@ -14617,6 +14701,10 @@
   "f9954a428332a813": {
    "source": "<g1>Network adapter:</g1> while one is chosen (<g2>Options → Proxy / Socks → <g3>Network adapter</g3></g2>), galleries go through it too, as video pages do: MDM gives gallery-dl a proxy of its own on this computer, opens every connection through the adapter and looks the names up with the DNS you chose. When the adapter disconnects, the gallery stops with the other downloads; nothing goes out through your normal connection.",
    "text": "<g1>网络适配器：</g1> 如果选择了某个适配器（<g2>选项 → 代理/SOCKS → <g3>网络适配器</g3></g2>），图库也会像视频页面一样通过它下载：MDM 会在您的电脑上为 gallery-dl 提供一个自己的代理，所有连接都通过该适配器打开，并使用您选择的 DNS 进行名称查找。当适配器断开连接时，图库会与其他下载一起停止；不会通过您的常规连接传输任何数据。"
+  },
+  "f9a8db1326e07676": {
+   "source": "<x1/> issues",
+   "text": "<x1/> 个问题"
   },
   "f9ad81eb1765abbd": {
    "source": "In the browser extension's menu, <g1>Send downloads to → Another Mister Download Manager (a server)</g1>: type the server's address, open it once in that browser to accept its certificate, then enter a pairing code (<x2/> above). Downloads the extension catches, and <g3>Download with Mister Download Manager</g3> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",

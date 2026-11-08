@@ -54,6 +54,10 @@
    "source": "Portable mode in detail →",
    "text": "휴대용 모드 자세히 보기 →"
   },
+  "01579d403b821195": {
+   "source": "<x1/> pull requests",
+   "text": "<x1/>개의 풀 리퀘스트"
+  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "예. MDM은 다운로드 진행 상황을 기록하므로 연결이 끊기거나, 프로그램이 충돌하거나, 다시 시작한 후에도 중단된 지점부터 계속 다운로드합니다. 다시 시작하기 전에 서버의 파일이 변경되지 않았는지 확인합니다. 다운로드 주소가 만료된 경우 <g1>다운로드 주소 새로 고침</g1>을 사용해 새 주소를 입력하고 기존 데이터를 유지할 수 있습니다. <g2>중단된 다운로드 다시 시작</g2>을 참조하세요."
@@ -185,6 +189,10 @@
   "03069bf346ba733c": {
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>도움말 → Mister Download Manager 정보</g1>에서 현재 버전을 확인할 수 있습니다."
+  },
+  "030e42728ee6a418": {
+   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
+   "text": "<g1>풀 리퀘스트</g1><g2><x3/>명</g2>"
   },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
@@ -1798,6 +1806,10 @@
    "source": "Add your account",
    "text": "계정 추가"
   },
+  "1e00cc7bf8c490d3": {
+   "source": "Last updated 2026-11-08",
+   "text": "최종 업데이트: 2026년 11월 8일"
+  },
   "1e06a14724b6ac4b": {
    "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
    "text": "MDM은 gallery-dl을 사용하여 갤러리(위키미디어 공용 카테고리, Flickr 앨범, DeviantArt 갤러리, Imgur 앨범 등)의 사진을 다운로드합니다..."
@@ -1973,6 +1985,10 @@
   "216583d42da33e52": {
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "macOS에서는 관리자만 절전 모드 해제를 예약할 수 있으므로 옵션이 비활성화됩니다. MDM은 관리자 암호를 요청하지 않습니다. 관리자는 큐가 시작되기 1분 전, 예를 들어 오후 11시에 시작하는 큐라면 매일 오후 10시 59분에 Mac이 깨어나도록 설정할 수 있습니다."
+  },
+  "216eae12c95fa610": {
+   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
+   "text": "버전 <x1/> 이후 GitHub에서 풀 리퀘스트를 보내거나, 이슈를 열거나, 댓글을 남겨주신 모든 분들께 감사드립니다."
   },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
@@ -2678,10 +2694,6 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>국가</g1>는 MDM에 포함된 주소 범위 표(<g2>DB-IP의 IP to Country Lite</g2>, CC BY 4.0)를 컴퓨터에서 조회해 확인합니다. MDM은 주소의 위치를 확인하기 위해 주소를 어디에도 전송하지 않습니다. 표는 각 릴리스에서 업데이트됩니다. 이후 위치가 변경된 주소는 이전 국가로 표시될 수 있습니다."
   },
-  "2cd03d5c814bd111": {
-   "source": "Last updated 2026-11-07",
-   "text": "최종 업데이트: 2026-11-07"
-  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>찾아보기</g1> — 탐색기에서 해당 폴더를 엽니다."
@@ -3082,6 +3094,10 @@
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on <g1>GitHub</g1>. Bug reports, translations and code are all welcome.",
    "text": "MDM은 독립 개발자인 Ahmed Nefzaoui가 만들었으며, <g1>GitHub</g1>의 모든 사람의 기여를 환영합니다. 버그 보고서, 번역 및 코드는 모두 환영합니다."
   },
+  "34375264f395f109": {
+   "source": "Join them: the contributing guide",
+   "text": "참여하기: 기여 가이드"
+  },
   "343a94d738e764aa": {
    "source": "Each connection writes directly into the file's place on disk, in a part file next to the final one. There is no temporary folder and no joining step at the end: when the last part arrives, MDM checks the size and renames the file.",
    "text": "각 연결은 최종 파일 옆의 부분 파일에 직접 디스크의 파일 위치에 씁니다. 임시 폴더나 마지막에 결합하는 단계가 없습니다. 마지막 부분이 도착하면 MDM은 크기를 확인하고 파일 이름을 변경합니다."
@@ -3465,6 +3481,10 @@
   "39f0061bac128459": {
    "source": "<g1>Options → Archives</g1> says whether 7-Zip was found. Without it, a 7z or RAR archive isn't extracted, and the <g2>7-Zip needed</g2> window says so, with a <g3>Get 7-Zip</g3> button.",
    "text": "<g1>옵션 → 압축 파일</g1>에서 7-Zip이 발견되었는지 여부를 알려줍니다. 7-Zip이 없으면 7z 또는 RAR 압축 파일이 압축 해제되지 않으며, <g2>7-Zip 필요</g2> 창에 <g3>7-Zip 받기</g3> 버튼과 함께 해당 내용이 표시됩니다."
+  },
+  "39f69afa6e85f9d1": {
+   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
+   "text": "<g1>이슈</g1><g2><x3/>명</g2>"
   },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
@@ -5086,6 +5106,10 @@
    "source": "A small file",
    "text": "작은 파일"
   },
+  "55a523d7ca4b905f": {
+   "source": "Thanks to",
+   "text": "감사합니다"
+  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "재생 목록(<x1/>) 또는 채널 동영상(<x2/>) 주소를 붙여넣고 <g3>찾아보기</g3>를 클릭하세요. 이 창에는 단일 동영상의 품질 대신 목록의 동영상들이 각 동영상의 길이와 함께 표시됩니다."
@@ -5201,6 +5225,10 @@
   "57a2e56d39e0a778": {
    "source": "<g1>Needs a login</g1>: the server wants a user name and password, or the page's cookies.",
    "text": "<g1>로그인이 필요합니다</g1>: 서버에서 사용자 이름과 암호 또는 페이지의 쿠키를 요청합니다."
+  },
+  "57df30288a29fe94": {
+   "source": "Made possible by these amazing humans",
+   "text": "이 놀라운 분들 덕분에 가능했습니다."
   },
   "57e101e4403fd046": {
    "source": "Command",
@@ -5321,6 +5349,10 @@
   "59cee3ff8dcef9d9": {
    "source": "Getting set up",
    "text": "개발 환경 설정"
+  },
+  "59d5983b5e65fbf4": {
+   "source": "reads who opened pull requests and issues, and who commented, from GitHub's public API (the maintainer, Claude and bots left out) for every place that thanks them: the website's home page, <x1/> and each release on the News page (<x2/>, on every build), each release's notes (<x3/>, the people active since the release before) and the README (<x4/> at each release's preparation: its round photos are committed in <x5/>, since GitHub can't round a picture in a README).",
+   "text": "감사 인사를 전하는 모든 곳(웹사이트 홈페이지, <x1/>, 뉴스 페이지의 각 릴리스(<x2/>, 모든 빌드), 각 릴리스 노트(<x3/>, 이전 릴리스 이후 활동한 사람), README(<x4/>, 각 릴리스 준비 시: GitHub에서는 README에서 사진을 둥글게 처리할 수 없으므로 둥근 사진은 <x5/>에 커밋됨))에 대해 GitHub의 공개 API에서 풀 리퀘스트와 이슈를 열고 댓글을 단 사람을 읽어옵니다(유지 관리자, Claude 및 봇은 제외)."
   },
   "5a277738c32493f8": {
    "source": "Support MDM",
@@ -6197,6 +6229,10 @@
   "68b88047fcca2939": {
    "source": "Queue downloads for later →",
    "text": "나중에 다운로드할 파일 대기열에 추가하기 →"
+  },
+  "6934a2b5fa583b1e": {
+   "source": "Contributors — Mister Download Manager",
+   "text": "기여자 — Mister Download Manager"
   },
   "693f3338267d1d6a": {
    "source": "Move without changing the selection",
@@ -7133,6 +7169,10 @@
   "79298af691e8bdd2": {
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "이러한 서비스 중 하나에 유료 계정이 있어야 합니다. MDM은 계정을 판매하거나 포함하지 않습니다. 계정 또는 링크를 공유하는 것은 서비스 약관을 위반하며 계정이 정지될 수 있습니다."
+  },
+  "7931468b8d7d517a": {
+   "source": "<x1/> <g2>Everyone who helped</g2>",
+   "text": "<x1/> <g2>도움을 주신 모든 분</g2>"
   },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
@@ -8610,6 +8650,10 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>가속 및 재개</g1><g2>최대 32개 연결로 파일을 분할하고, 마지막 바이트까지 재분할하며, 충돌 후에도 재개합니다.</g2>"
   },
+  "92055d4da1d101c5": {
+   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
+   "text": "<x1/> GitHub에서 풀 리퀘스트를 보내거나, 문제를 보고하거나, 대화에 참여해 주신 분들입니다. <g2>모든 분을 만나보세요</g2>"
+  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "MDM이 그리는 제목 표시줄 (창이 활성화되지 않았을 때; 활성화되었을 때처럼 투명함)"
@@ -8837,10 +8881,6 @@
   "95b8e4a4ea276d5d": {
    "source": "Downloads",
    "text": "다운로드"
-  },
-  "95bb2c4ecf20a6d7": {
-   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "최종 업데이트: 2026년 11월 7일 · 앱, 브라우저 확장 프로그램 및 misterdownloadmanager.com에 적용됩니다."
   },
   "95c10421608930fc": {
    "source": "The proxy's password moves to the system's keychain: Windows Credential Manager, the keyring on Linux, the macOS keychain.",
@@ -9365,6 +9405,10 @@
   "9e18dba709154be4": {
    "source": "Send downloads from your browser",
    "text": "브라우저에서 다운로드 보내기"
+  },
+  "9e23173a22cf615a": {
+   "source": "<x1/> comment",
+   "text": "<x1/>개의 댓글"
   },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
@@ -10562,6 +10606,10 @@
    "source": "Text",
    "text": "텍스트"
   },
+  "b23e4d23398b2d6f": {
+   "source": "Made possible by these amazing humans: everyone who sent a pull request, opened an issue or joined a conversation on GitHub. Thank you, every one of you.",
+   "text": "GitHub에서 풀 리퀘스트를 보내고, 이슈를 열고, 대화에 참여해 주신 모든 분들 덕분에 Mister Download Manager가 가능했습니다. 모든 분들께 감사드립니다."
+  },
   "b23e9f6d4d6a6718": {
    "source": "Browser integration needs one more step in each browser: adding the extension. In Firefox, click <g1>Add to Firefox</g1> on <g2>its page on addons.mozilla.org</g2>; in Chrome, Edge, Brave, Opera and Vivaldi, <g3>Add to Chrome</g3> on <g4>its page in the Chrome Web Store</g4>. <g5>Browser integration</g5> shows how.",
    "text": "브라우저 통합을 위해서는 각 브라우저에서 한 단계 더 필요합니다: 확장 프로그램 추가. Firefox에서는 <g2>addons.mozilla.org 페이지</g2>에서 <g1>Firefox에 추가</g1>를 클릭하고, Chrome, Edge, Brave, Opera, Vivaldi에서는 <g4>Chrome 웹 스토어 페이지</g4>에서 <g3>Chrome에 추가</g3>를 클릭하세요. <g5>브라우저 통합</g5>에서 방법을 보여줍니다."
@@ -10597,6 +10645,10 @@
   "b27995b1d5cff0b2": {
    "source": "A calendar's day or arrow pressed",
    "text": "눌린 달력 날짜 또는 화살표"
+  },
+  "b27e59917bb7f695": {
+   "source": "Last updated 2026-11-08 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "최종 업데이트: 2026년 11월 8일 · 앱, 브라우저 확장 프로그램 및 misterdownloadmanager.com에 적용됩니다."
   },
   "b298f93960114202": {
    "source": ", with or without <x1/>;",
@@ -11206,6 +11258,10 @@
    "source": "Yes. In IDM, export your list with <g1>Tasks → Export → To IDM export file</g1>. In MDM, choose <g2>Tasks → Import → From IDM export file</g2> and pick that <x3/> file: every download comes over with its address, referrer and cookies. A plain text file of links works too. See <g4>Adding downloads</g4>.",
    "text": "예. IDM에서 <g1>작업 → 내보내기 → IDM 내보내기 파일</g1>을 사용하여 목록을 내보내세요. MDM에서는 <g2>작업 → 가져오기 → IDM 내보내기 파일에서</g2>를 선택하고 해당 <x3/> 파일을 선택하면 모든 다운로드가 주소, 리퍼러 및 쿠키와 함께 가져와집니다. 링크가 포함된 일반 텍스트 파일도 작동합니다. <g4>다운로드 추가</g4>를 참조하세요."
   },
+  "bd08b0858bd72782": {
+   "source": "Contributors",
+   "text": "기여자"
+  },
   "bd0d153b08edc05e": {
    "source": "MDM's page on a phone: an address box with Category and When, the queues with Start, and the downloads with their progress",
    "text": "휴대폰의 MDM 페이지: 범주 및 시기 선택 상자, 시작 버튼이 있는 대기열, 진행률이 표시된 다운로드 목록"
@@ -11333,6 +11389,10 @@
   "bfcf797517e5c279": {
    "source": "MDM remembers the columns, their widths and the sort order.",
    "text": "MDM은 열과 너비, 정렬 순서를 기억합니다."
+  },
+  "bfd9e614f4714695": {
+   "source": "The people who made Mister Download Manager possible: everyone who sent a pull request, opened an issue or joined a conversation on GitHub.",
+   "text": "Mister Download Manager를 가능하게 한 사람들: GitHub에서 풀 리퀘스트를 보내고, 이슈를 열고, 대화에 참여한 모든 분들."
   },
   "bfdcb4c0c0e4bf80": {
    "source": "<g1>Site name/Download link/Parent web page/Referer</g1> — the address, the site's name and the page the download came from. Tick this to find everything from one site.",
@@ -12174,6 +12234,10 @@
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "링크 그래버 및 압축 파일 — Mister Download Manager 도움말"
   },
+  "ce5bf471e6fccfb8": {
+   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
+   "text": "<g1>댓글</g1><g2><x3/>명</g2>"
+  },
   "ce6f1a716e6dad6d": {
    "source": "Or",
    "text": "또는"
@@ -12641,6 +12705,10 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager와 IDM, 나란히 비교"
+  },
+  "d65efc937a364b03": {
+   "source": "<x1/> issue",
+   "text": "<x1/>개의 이슈"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -13546,6 +13614,10 @@
    "source": "A second copy of MDM watches the first. When MDM crashes, the report window says <g1>Mister Download Manager closed unexpectedly</g1>. When its window hasn't answered for 8 seconds, it says <g2>Mister Download Manager stopped responding</g2>, and <g3>End and restart MDM</g3> closes the frozen copy and starts a fresh one. If MDM comes back by itself, the window says so.",
    "text": "MDM의 두 번째 복사본이 첫 번째 복사본을 감시합니다. MDM이 충돌하면 보고서 창에 <g1>Mister Download Manager이(가) 예기치 않게 종료되었습니다</g1>라고 표시됩니다. 창이 8초 동안 응답하지 않으면 <g2>Mister Download Manager이(가) 응답을 중지했습니다</g2>라고 표시되며, <g3>MDM 종료 및 다시 시작</g3>을 통해 멈춘 복사본을 닫고 새 복사본을 시작합니다. MDM이 자동으로 다시 시작되면 창에 해당 내용이 표시됩니다."
   },
+  "e6e4ffbd1a17c7e8": {
+   "source": "<x1/> pull request",
+   "text": "<x1/>개의 풀 리퀘스트"
+  },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
    "text": "계속 무료: 평가판, 광고, 라이선스 키 없음"
@@ -14306,6 +14378,10 @@
    "source": "<g1>Online</g1>: the server has the file.",
    "text": "<g1>온라인</g1>: 서버에 파일이 있습니다."
   },
+  "f2d4f3ae1b5602bb": {
+   "source": "From GitHub's public record, <x1/>: people with pull requests first, then those who opened issues, then those who commented, each once. The maintainer and automated accounts aren't counted.",
+   "text": "GitHub 공개 기록에 따르면, <x1/> 풀 리퀘스트를 보낸 사람, 이슈를 연 사람, 댓글을 남긴 사람 순으로 각각 한 번씩 집계됩니다. 관리자 및 자동화된 계정은 포함되지 않습니다."
+  },
   "f2fd829426a9d905": {
    "source": "Click <g1>Add URL</g1> on the toolbar, choose <g2>Tasks → Add new download</g2>, or press <g3>Ctrl+N</g3>.",
    "text": "도구 모음에서 <g1>URL 추가</g1>를 클릭하거나, <g2>작업 → 새 다운로드 추가</g2>를 선택하거나, <g3>Ctrl+N</g3>을 누르세요."
@@ -14550,6 +14626,10 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>다음 시간 동안 공유한 후 공유 중지: …분</g1> — 또는 모든 실행에서 해당 시간 동안 공유된 후 중지됩니다. 기본적으로 꺼져 있습니다."
   },
+  "f821c9c149c3e050": {
+   "source": "<x1/> comments",
+   "text": "<x1/>개의 댓글"
+  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "페이지를 열 수 있는 주소 외의 이름"
@@ -14617,6 +14697,10 @@
   "f9954a428332a813": {
    "source": "<g1>Network adapter:</g1> while one is chosen (<g2>Options → Proxy / Socks → <g3>Network adapter</g3></g2>), galleries go through it too, as video pages do: MDM gives gallery-dl a proxy of its own on this computer, opens every connection through the adapter and looks the names up with the DNS you chose. When the adapter disconnects, the gallery stops with the other downloads; nothing goes out through your normal connection.",
    "text": "<g1>네트워크 어댑터:</g1> <g2>옵션 → 프록시/SOCKS → <g3>네트워크 어댑터</g3></g2>에서 어댑터를 선택하면, 비디오 페이지와 마찬가지로 갤러리도 해당 어댑터를 통해 연결됩니다. MDM은 이 컴퓨터에서 gallery-dl에 자체 프록시를 제공하고, 모든 연결을 어댑터를 통해 열며, 선택한 DNS로 이름을 조회합니다. 어댑터 연결이 끊어지면 다른 다운로드와 함께 갤러리도 중지되며, 일반 연결을 통해 아무것도 전송되지 않습니다."
+  },
+  "f9a8db1326e07676": {
+   "source": "<x1/> issues",
+   "text": "<x1/>개의 이슈"
   },
   "f9ad81eb1765abbd": {
    "source": "In the browser extension's menu, <g1>Send downloads to → Another Mister Download Manager (a server)</g1>: type the server's address, open it once in that browser to accept its certificate, then enter a pairing code (<x2/> above). Downloads the extension catches, and <g3>Download with Mister Download Manager</g3> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",

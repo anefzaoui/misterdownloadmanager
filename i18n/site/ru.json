@@ -54,6 +54,10 @@
    "source": "Portable mode in detail →",
    "text": "Подробно о портативном режиме →"
   },
+  "01579d403b821195": {
+   "source": "<x1/> pull requests",
+   "text": "<x1/> запросов на слияние"
+  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "Да. MDM записывает ход загрузки по мере её выполнения, поэтому после потери соединения, сбоя или перезапуска он продолжает работу с того места, где остановился. Перед возобновлением он проверяет, не изменился ли файл на сервере. Когда срок действия адреса загрузки истёк, функция <g1>Обновить адрес загрузки</g1> позволяет указать новый и сохранить данные. См. <g2>Возобновить прерванную загрузку</g2>."
@@ -185,6 +189,10 @@
   "03069bf346ba733c": {
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>Справка → О Mister Download Manager</g1> показывает вашу текущую версию."
+  },
+  "030e42728ee6a418": {
+   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
+   "text": "<g1>Запросы на слияние</g1><g2><x3/> человека</g2>"
   },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
@@ -1802,6 +1810,10 @@
    "source": "Add your account",
    "text": "Добавить учетную запись"
   },
+  "1e00cc7bf8c490d3": {
+   "source": "Last updated 2026-11-08",
+   "text": "Последнее обновление: 8 ноября 2026 г."
+  },
   "1e06a14724b6ac4b": {
    "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
    "text": "MDM загружает изображения из галереи (категория Wikimedia Commons, альбом Flickr, галерея DeviantArt, альбом Imgur и многие другие) с помощью gallery-dl..."
@@ -1977,6 +1989,10 @@
   "216583d42da33e52": {
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "В macOS запланировать пробуждение может только администратор, поэтому параметр недоступен. MDM не запрашивает пароль администратора. Администратор может настроить Mac так, чтобы он каждый день выходил из спящего режима за минуту до начала очереди, например в 22:59, если очередь начинается в 23:00:"
+  },
+  "216eae12c95fa610": {
+   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
+   "text": "Всем, кто отправлял запросы на слияние, сообщал об ошибках или оставлял комментарии на GitHub с версии <x1/>."
   },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
@@ -2682,10 +2698,6 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>Страна</g1> определяется по таблице диапазонов адресов, которая поставляется с MDM (<g2>IP to Country Lite от DB-IP</g2>, CC BY 4.0) и ищется на вашем компьютере. MDM никогда не отправляет адрес куда-либо, чтобы узнать, где он находится. Таблица обновляется с каждым выпуском; адрес, который переместился с тех пор, может показывать свою старую страну."
   },
-  "2cd03d5c814bd111": {
-   "source": "Last updated 2026-11-07",
-   "text": "Последнее обновление: 07.11.2026"
-  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>Обзор</g1> — открыть ее папку в Проводнике."
@@ -3086,6 +3098,10 @@
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on <g1>GitHub</g1>. Bug reports, translations and code are all welcome.",
    "text": "MDM создан независимым разработчиком Ahmed Nefzaoui и открыт для всех желающих внести свой вклад на <g1>GitHub</g1>. Сообщения об ошибках, переводы и код — всё приветствуется."
   },
+  "34375264f395f109": {
+   "source": "Join them: the contributing guide",
+   "text": "Присоединяйтесь: руководство по участию"
+  },
   "343a94d738e764aa": {
    "source": "Each connection writes directly into the file's place on disk, in a part file next to the final one. There is no temporary folder and no joining step at the end: when the last part arrives, MDM checks the size and renames the file.",
    "text": "Каждое соединение записывает данные непосредственно в место файла на диске, в отдельный файл рядом с конечным. Нет временной папки и этапа объединения в конце: когда приходит последняя часть, MDM проверяет размер и переименовывает файл."
@@ -3469,6 +3485,10 @@
   "39f0061bac128459": {
    "source": "<g1>Options → Archives</g1> says whether 7-Zip was found. Without it, a 7z or RAR archive isn't extracted, and the <g2>7-Zip needed</g2> window says so, with a <g3>Get 7-Zip</g3> button.",
    "text": "В разделе <g1>Параметры → Архивы</g1> указано, найден ли 7-Zip. Без него архивы 7z и RAR не распаковываются. Об этом сообщит окно <g2>Требуется 7-Zip</g2> с кнопкой <g3>Получить 7-Zip</g3>."
+  },
+  "39f69afa6e85f9d1": {
+   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
+   "text": "<g1>Проблемы</g1><g2><x3/> человека</g2>"
   },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
@@ -5090,6 +5110,10 @@
    "source": "A small file",
    "text": "Небольшой файл"
   },
+  "55a523d7ca4b905f": {
+   "source": "Thanks to",
+   "text": "Благодарности"
+  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "Вставьте адрес плейлиста (<x1/>) или видео канала (<x2/>) и нажмите <g3>Найти</g3>. Вместо вариантов качества одного видео, в окне отображаются видео из списка, каждое со своей длиной."
@@ -5205,6 +5229,10 @@
   "57a2e56d39e0a778": {
    "source": "<g1>Needs a login</g1>: the server wants a user name and password, or the page's cookies.",
    "text": "<g1>Требуется вход</g1>: сервер запрашивает имя пользователя и пароль или файлы cookie страницы."
+  },
+  "57df30288a29fe94": {
+   "source": "Made possible by these amazing humans",
+   "text": "Стало возможным благодаря этим замечательным людям"
   },
   "57e101e4403fd046": {
    "source": "Command",
@@ -5329,6 +5357,10 @@
   "59cee3ff8dcef9d9": {
    "source": "Getting set up",
    "text": "Начало работы"
+  },
+  "59d5983b5e65fbf4": {
+   "source": "reads who opened pull requests and issues, and who commented, from GitHub's public API (the maintainer, Claude and bots left out) for every place that thanks them: the website's home page, <x1/> and each release on the News page (<x2/>, on every build), each release's notes (<x3/>, the people active since the release before) and the README (<x4/> at each release's preparation: its round photos are committed in <x5/>, since GitHub can't round a picture in a README).",
+   "text": "читает, кто открывал запросы на слияние и проблемы, и кто комментировал, из публичного API GitHub (без учета сопровождающего, Клода и ботов) для каждого места, где им выражается благодарность: домашняя страница веб-сайта, <x1/> и каждый выпуск на странице «Новости» (<x2/>, в каждой сборке), примечания к каждому выпуску (<x3/>, люди, активные с предыдущего выпуска) и README (<x4/> при подготовке каждого выпуска: его круглые фотографии фиксируются в <x5/>, так как GitHub не может округлить изображение в README)."
   },
   "5a277738c32493f8": {
    "source": "Support MDM",
@@ -6205,6 +6237,10 @@
   "68b88047fcca2939": {
    "source": "Queue downloads for later →",
    "text": "Поставить загрузки в очередь на потом →"
+  },
+  "6934a2b5fa583b1e": {
+   "source": "Contributors — Mister Download Manager",
+   "text": "Участники — Mister Download Manager"
   },
   "693f3338267d1d6a": {
    "source": "Move without changing the selection",
@@ -7141,6 +7177,10 @@
   "79298af691e8bdd2": {
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "Вам нужна собственная платная учетная запись в одном из этих сервисов: MDM не продает и не включает ее. Совместное использование учетной записи или ее ссылок нарушает условия сервисов и может привести к блокировке учетной записи."
+  },
+  "7931468b8d7d517a": {
+   "source": "<x1/> <g2>Everyone who helped</g2>",
+   "text": "<x1/> <g2>Все, кто помогал</g2>"
   },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
@@ -8610,6 +8650,10 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>Ускорение и докачка</g1><g2>Файл разбивается на 32 соединения, переразбивается до последнего байта и докачивается после любого сбоя.</g2>"
   },
+  "92055d4da1d101c5": {
+   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
+   "text": "<x1/> людям, которые отправляли запросы на изменение, сообщали о проблемах или участвовали в обсуждениях на GitHub. <g2>Познакомьтесь со всеми</g2>"
+  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "Заголовок окна, нарисованный MDM, когда окно неактивно (прозрачный: как при активности)"
@@ -8833,10 +8877,6 @@
   "95b8e4a4ea276d5d": {
    "source": "Downloads",
    "text": "Загрузки"
-  },
-  "95bb2c4ecf20a6d7": {
-   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "Последнее обновление 2026-11-07 · относится к приложению, расширению для браузера и сайту misterdownloadmanager.com"
   },
   "95c10421608930fc": {
    "source": "The proxy's password moves to the system's keychain: Windows Credential Manager, the keyring on Linux, the macOS keychain.",
@@ -9361,6 +9401,10 @@
   "9e18dba709154be4": {
    "source": "Send downloads from your browser",
    "text": "Отправка загрузок из браузера"
+  },
+  "9e23173a22cf615a": {
+   "source": "<x1/> comment",
+   "text": "<x1/> комментарий"
   },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
@@ -10554,6 +10598,10 @@
    "source": "Text",
    "text": "Текст"
   },
+  "b23e4d23398b2d6f": {
+   "source": "Made possible by these amazing humans: everyone who sent a pull request, opened an issue or joined a conversation on GitHub. Thank you, every one of you.",
+   "text": "Благодарим этих замечательных людей: всех, кто отправлял запросы на слияние, сообщал об ошибках или участвовал в обсуждениях на GitHub. Спасибо каждому из вас."
+  },
   "b23e9f6d4d6a6718": {
    "source": "Browser integration needs one more step in each browser: adding the extension. In Firefox, click <g1>Add to Firefox</g1> on <g2>its page on addons.mozilla.org</g2>; in Chrome, Edge, Brave, Opera and Vivaldi, <g3>Add to Chrome</g3> on <g4>its page in the Chrome Web Store</g4>. <g5>Browser integration</g5> shows how.",
    "text": "Интеграция с браузером требует ещё одного шага в каждом браузере: добавления расширения. В Firefox нажмите <g1>Добавить в Firefox</g1> на <g2>его странице на addons.mozilla.org</g2>; в Chrome, Edge, Brave, Opera и Vivaldi нажмите <g3>Добавить в Chrome</g3> на <g4>его странице в Chrome Web Store</g4>. Подробнее см. в разделе <g5>Интеграция с браузером</g5>."
@@ -10589,6 +10637,10 @@
   "b27995b1d5cff0b2": {
    "source": "A calendar's day or arrow pressed",
    "text": "День или стрелка календаря нажаты"
+  },
+  "b27e59917bb7f695": {
+   "source": "Last updated 2026-11-08 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Последнее обновление: 08.11.2026 · относится к приложению, расширению для браузера и сайту misterdownloadmanager.com"
   },
   "b298f93960114202": {
    "source": ", with or without <x1/>;",
@@ -11198,6 +11250,10 @@
    "source": "Yes. In IDM, export your list with <g1>Tasks → Export → To IDM export file</g1>. In MDM, choose <g2>Tasks → Import → From IDM export file</g2> and pick that <x3/> file: every download comes over with its address, referrer and cookies. A plain text file of links works too. See <g4>Adding downloads</g4>.",
    "text": "Да. В IDM экспортируйте список: <g1>Задачи → Экспорт → В IDM файл экспорта</g1>. В MDM выберите <g2>Задачи → Импорт → Из файла экспорта IDM</g2> и укажите этот <x3/> файл: для каждой загрузки будут сохранены адрес, источник перехода и файлы cookie. Также подойдет обычный текстовый файл со ссылками. См. <g4>Добавление загрузок</g4>."
   },
+  "bd08b0858bd72782": {
+   "source": "Contributors",
+   "text": "Участники"
+  },
   "bd0d153b08edc05e": {
    "source": "MDM's page on a phone: an address box with Category and When, the queues with Start, and the downloads with their progress",
    "text": "Страница MDM на телефоне: поле адреса с Категорией и Когда, очереди с кнопкой Начать, и загрузки с их прогрессом"
@@ -11325,6 +11381,10 @@
   "bfcf797517e5c279": {
    "source": "MDM remembers the columns, their widths and the sort order.",
    "text": "MDM запоминает столбцы, их ширину и порядок сортировки."
+  },
+  "bfd9e614f4714695": {
+   "source": "The people who made Mister Download Manager possible: everyone who sent a pull request, opened an issue or joined a conversation on GitHub.",
+   "text": "Люди, благодаря которым Mister Download Manager стал возможен: все, кто отправлял запросы на слияние, сообщал об ошибках или участвовал в обсуждениях на GitHub."
   },
   "bfdcb4c0c0e4bf80": {
    "source": "<g1>Site name/Download link/Parent web page/Referer</g1> — the address, the site's name and the page the download came from. Tick this to find everything from one site.",
@@ -12166,6 +12226,10 @@
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "Перехват ссылок и архивы — Справка Mister Download Manager"
   },
+  "ce5bf471e6fccfb8": {
+   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
+   "text": "<g1>Комментарии</g1><g2><x3/> человека</g2>"
+  },
   "ce6f1a716e6dad6d": {
    "source": "Or",
    "text": "Или"
@@ -12629,6 +12693,10 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager и IDM: сравнение"
+  },
+  "d65efc937a364b03": {
+   "source": "<x1/> issue",
+   "text": "<x1/> проблема"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -13530,6 +13598,10 @@
    "source": "A second copy of MDM watches the first. When MDM crashes, the report window says <g1>Mister Download Manager closed unexpectedly</g1>. When its window hasn't answered for 8 seconds, it says <g2>Mister Download Manager stopped responding</g2>, and <g3>End and restart MDM</g3> closes the frozen copy and starts a fresh one. If MDM comes back by itself, the window says so.",
    "text": "Вторая копия MDM следит за первой. Когда MDM аварийно завершает работу, в окне отчета отображается <g1>Mister Download Manager неожиданно закрылся</g1>. Если его окно не отвечает в течение 8 секунд, отображается <g2>Mister Download Manager перестал отвечать</g2>, а кнопка <g3>Завершить и перезапустить MDM</g3> закрывает зависшую копию и запускает новую. Если MDM восстанавливается самостоятельно, окно сообщает об этом."
   },
+  "e6e4ffbd1a17c7e8": {
+   "source": "<x1/> pull request",
+   "text": "<x1/> запрос на слияние"
+  },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
    "text": "Бесплатно навсегда: без пробного периода, рекламы, ключа"
@@ -14282,6 +14354,10 @@
    "source": "<g1>Online</g1>: the server has the file.",
    "text": "<g1>В сети</g1>: файл есть на сервере."
   },
+  "f2d4f3ae1b5602bb": {
+   "source": "From GitHub's public record, <x1/>: people with pull requests first, then those who opened issues, then those who commented, each once. The maintainer and automated accounts aren't counted.",
+   "text": "По данным общедоступной записи GitHub <x1/>: сначала люди с запросами на слияние, затем те, кто открывал проблемы, затем те, кто комментировал, каждый по одному разу. Сопровождающий и автоматические учетные записи не учитываются."
+  },
   "f2fd829426a9d905": {
    "source": "Click <g1>Add URL</g1> on the toolbar, choose <g2>Tasks → Add new download</g2>, or press <g3>Ctrl+N</g3>.",
    "text": "Нажмите <g1>Добавить URL</g1> на панели инструментов, выберите <g2>Задачи → Добавить новую загрузку</g2> или нажмите <g3>Ctrl+N</g3>."
@@ -14526,6 +14602,10 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>Остановить раздачу после раздачи в течение … минут</g1> — или как только он раздавался столько времени за все свои запуски. По умолчанию отключено."
   },
+  "f821c9c149c3e050": {
+   "source": "<x1/> comments",
+   "text": "<x1/> комментариев"
+  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "имена, помимо его адресов, по которым может быть открыта страница"
@@ -14593,6 +14673,10 @@
   "f9954a428332a813": {
    "source": "<g1>Network adapter:</g1> while one is chosen (<g2>Options → Proxy / Socks → <g3>Network adapter</g3></g2>), galleries go through it too, as video pages do: MDM gives gallery-dl a proxy of its own on this computer, opens every connection through the adapter and looks the names up with the DNS you chose. When the adapter disconnects, the gallery stops with the other downloads; nothing goes out through your normal connection.",
    "text": "<g1>Сетевой адаптер:</g1> если выбран один (<g2>Параметры → Прокси / Socks → <g3>Сетевой адаптер</g3></g2>), галереи также проходят через него, как и видеостраницы: MDM предоставляет gallery-dl собственный прокси на этом компьютере, открывает каждое соединение через адаптер и ищет имена с помощью выбранного вами DNS. Когда адаптер отключается, загрузка галереи останавливается вместе с другими загрузками; ничего не выходит через ваше обычное соединение."
+  },
+  "f9a8db1326e07676": {
+   "source": "<x1/> issues",
+   "text": "<x1/> проблем"
   },
   "f9ad81eb1765abbd": {
    "source": "In the browser extension's menu, <g1>Send downloads to → Another Mister Download Manager (a server)</g1>: type the server's address, open it once in that browser to accept its certificate, then enter a pairing code (<x2/> above). Downloads the extension catches, and <g3>Download with Mister Download Manager</g3> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
@@ -14693,6 +14777,10 @@
   "fac8fd8ff0bcb5f7": {
    "source": "Where reports are kept",
    "text": "Где хранятся отчеты"
+  },
+  "fadf100dc83489b4": {
+   "source": "The <g1>Categories</g1> pane will read as a tree, each category with its count, open or shut, and the menu bar and every right-click menu as menus whose items can be run. Screen readers will reach every row of a list, not only those in view, with its place (\"12 of 40\"), and lists such as Download video's qualities and Add torrent's files will read with their names and ticks. A window will show its contents the first time a screen reader reads it, and a drop-down's choice can be set by its text. In dark mode, grey notes and error texts will have the 4.5:1 contrast WCAG asks for. <g2>View → Theme</g2> adds <g3>High contrast</g3>: black and white, a bright accent, every edge drawn, text at 7:1 or more (see <g4>themes</g4>). <g5>View → Interface size</g5> will make every window larger, from 100 % to 200 % on top of the system's display scale, with <g6>Ctrl +</g6>, <g7>Ctrl −</g7> and <g8>Ctrl 0</g8> in any MDM window, as in a browser; a window larger than the screen scrolls the rest.",
+   "text": "Панель <g1>Категории</g1> будет читаться как дерево, каждая категория со своим количеством, открытая или закрытая, а строка меню и каждое контекстное меню — как меню, пункты которых можно запускать. Программы чтения с экрана будут достигать каждой строки списка, а не только тех, что видны, с указанием ее места («12 из 40»), а списки, такие как качества видео в окне «Скачать видео» и файлы в окне «Добавить торрент», будут читаться с их названиями и отметками. Окно покажет свое содержимое при первом чтении программой чтения с экрана, а выбор в выпадающем списке можно установить по его тексту. В темном режиме серые примечания и тексты ошибок будут иметь контрастность 4,5:1, требуемую WCAG. <g2>Вид → Тема</g2> добавляет <g3>Высокая контрастность</g3>: черно-белый, яркий акцент, каждая граница прорисована, текст с контрастностью 7:1 или более (см. <g4>темы</g4>). <g5>Вид → Размер интерфейса</g5> увеличит каждое окно от 100 % до 200 % сверх системного масштаба отображения, с помощью <g6>Ctrl +</g6>, <g7>Ctrl −</g7> и <g8>Ctrl 0</g8> в любом окне MDM, как в браузере; окно, превышающее размер экрана, будет прокручиваться."
   },
   "fafa608396fbddf1": {
    "source": "Under <g1>Category</g1>, choose <g2>General</g2>.",

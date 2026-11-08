@@ -54,6 +54,10 @@
    "source": "Portable mode in detail →",
    "text": "पोर्टेबल मोड विस्तार से →"
   },
+  "01579d403b821195": {
+   "source": "<x1/> pull requests",
+   "text": "<x1/> पुल रिक्वेस्ट"
+  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "हाँ। MDM डाउनलोड की प्रगति को लगातार सहेजता रहता है, इसलिए कनेक्शन टूटने, क्रैश होने या रीस्टार्ट होने के बाद डाउनलोड वहीं से जारी रहता है जहाँ रुका था। फिर से शुरू करने से पहले यह जाँचता है कि सर्वर पर फ़ाइल बदली तो नहीं है। डाउनलोड का पता समाप्त हो जाने पर <g1>डाउनलोड पता रीफ़्रेश करें</g1> से नया पता देकर डेटा सुरक्षित रखा जा सकता है। <g2>रुका हुआ डाउनलोड फिर से शुरू करें</g2> देखें।"
@@ -185,6 +189,10 @@
   "03069bf346ba733c": {
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>सहायता → Mister Download Manager के बारे में</g1> आपके पास मौजूद संस्करण दिखाता है।"
+  },
+  "030e42728ee6a418": {
+   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
+   "text": "<g1>पुल रिक्वेस्ट</g1><g2><x3/> लोग</g2>"
   },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
@@ -1802,6 +1810,10 @@
    "source": "Add your account",
    "text": "अपना खाता जोड़ें"
   },
+  "1e00cc7bf8c490d3": {
+   "source": "Last updated 2026-11-08",
+   "text": "अंतिम अपडेट: 2026-11-08"
+  },
   "1e06a14724b6ac4b": {
    "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
    "text": "MDM gallery-dl के साथ गैलरी की तस्वीरें डाउनलोड करता है। गैलरी Wikimedia Commons की श्रेणी, Flickr का एल्बम, DeviantArt की गैलरी, Imgur का एल्बम और ऐसी कई चीज़ें हो सकती हैं..."
@@ -1977,6 +1989,10 @@
   "216583d42da33e52": {
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "macOS पर वेक शेड्यूल केवल व्यवस्थापक ही कर सकता है, इसलिए यह विकल्प धूसर रहता है। MDM व्यवस्थापक का पासवर्ड नहीं माँगता। उदाहरण के लिए, व्यवस्थापक Mac को हर दिन कतार शुरू होने से एक मिनट पहले जगा सकता है। 11:00 PM पर शुरू होने वाली कतार के लिए समय 10:59 PM सेट किया जा सकता है:"
+  },
+  "216eae12c95fa610": {
+   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
+   "text": "हर उस व्यक्ति को जिसने संस्करण <x1/> के बाद से GitHub पर पुल रिक्वेस्ट भेजा, कोई समस्या उठाई या टिप्पणी की।"
   },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
@@ -2682,10 +2698,6 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>देश</g1> MDM के साथ आने वाली पता श्रेणियों की एक तालिका से आता है (<g2>DB-IP द्वारा IP to Country Lite</g2>, CC BY 4.0), जिसे आपके कंप्यूटर पर देखा जाता है। MDM कभी भी पता कहीं नहीं भेजता है यह पूछने के लिए कि वह कहाँ है। तालिका हर रिलीज़ के साथ अपडेट की जाती है; एक पता जो तब से बदल गया है, वह अपना पुराना देश दिखा सकता है।"
   },
-  "2cd03d5c814bd111": {
-   "source": "Last updated 2026-11-07",
-   "text": "आखिरी बार अपडेट किया गया: 2026-11-07"
-  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>ब्राउज़ करें</g1> — एक्सप्लोरर में उसका फ़ोल्डर खोलें।"
@@ -3086,6 +3098,10 @@
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on <g1>GitHub</g1>. Bug reports, translations and code are all welcome.",
    "text": "MDM को एक स्वतंत्र डेवलपर, Ahmed Nefzaoui ने बनाया है, और यह <g1>GitHub</g1> पर किसी के भी योगदान के लिए खुला है। बग रिपोर्ट, अनुवाद और कोड, सभी का स्वागत है।"
   },
+  "34375264f395f109": {
+   "source": "Join them: the contributing guide",
+   "text": "उनसे जुड़ें: योगदान मार्गदर्शिका"
+  },
   "343a94d738e764aa": {
    "source": "Each connection writes directly into the file's place on disk, in a part file next to the final one. There is no temporary folder and no joining step at the end: when the last part arrives, MDM checks the size and renames the file.",
    "text": "प्रत्येक कनेक्शन सीधे डिस्क पर फ़ाइल की जगह में लिखता है, अंतिम फ़ाइल के बगल में एक भाग फ़ाइल में। कोई अस्थायी फ़ोल्डर नहीं है और अंत में कोई जोड़ने वाला चरण नहीं है: जब अंतिम भाग आता है, तो MDM आकार की जाँच करता है और फ़ाइल का नाम बदल देता है।"
@@ -3469,6 +3485,10 @@
   "39f0061bac128459": {
    "source": "<g1>Options → Archives</g1> says whether 7-Zip was found. Without it, a 7z or RAR archive isn't extracted, and the <g2>7-Zip needed</g2> window says so, with a <g3>Get 7-Zip</g3> button.",
    "text": "<g1>विकल्प → संग्रह</g1> बताता है कि 7-Zip मिला या नहीं। इसके बिना, एक 7z या RAR संग्रह नहीं निकाला जाता है, और <g2>7-Zip की आवश्यकता है</g2> विंडो ऐसा कहती है, जिसमें <g3>7-Zip प्राप्त करें</g3> बटन होता है।"
+  },
+  "39f69afa6e85f9d1": {
+   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
+   "text": "<g1>समस्याएँ</g1><g2><x3/> लोग</g2>"
   },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
@@ -5090,6 +5110,10 @@
    "source": "A small file",
    "text": "एक छोटी फ़ाइल"
   },
+  "55a523d7ca4b905f": {
+   "source": "Thanks to",
+   "text": "धन्यवाद"
+  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "किसी प्लेलिस्ट (<x1/>) या चैनल के वीडियो (<x2/>) का पता चिपकाएँ और <g3>खोजें</g3> पर क्लिक करें। एक वीडियो की गुणवत्ता के बजाय, विंडो में प्लेलिस्ट के वीडियो और हर वीडियो की अवधि दिखाई जाती है।"
@@ -5206,6 +5230,10 @@
    "source": "<g1>Needs a login</g1>: the server wants a user name and password, or the page's cookies.",
    "text": "<g1>लॉगिन चाहिए</g1>: सर्वर एक उपयोगकर्ता नाम और पासवर्ड, या पृष्ठ की कुकीज़ चाहता है।"
   },
+  "57df30288a29fe94": {
+   "source": "Made possible by these amazing humans",
+   "text": "इन अद्भुत लोगों ने इसे संभव बनाया"
+  },
   "57e101e4403fd046": {
    "source": "Command",
    "text": "कमांड"
@@ -5278,6 +5306,10 @@
    "source": "<g1>MDM comes back as you left it</g1>: the window's place and size, the Categories pane, its open branches and the node shown.",
    "text": "<g1>MDM वैसे ही वापस आता है जैसे आपने इसे छोड़ा था</g1>: विंडो का स्थान और आकार, श्रेणियाँ फलक, उसकी खुली शाखाएँ और दिखाया गया नोड।"
   },
+  "59130ab4ecc47c65": {
+   "source": "<g1>Hide to the notification area</g1> (a short dash with an arrow down to the corner; on Windows in the title bar, left of Minimize) puts the window in the notification area; <g2>Downloads in progress</g2> in the tray icon's menu brings it back. See <g3>The tray icon</g3>.",
+   "text": "<g1>सूचना क्षेत्र में छिपाएँ</g1> (शीर्षक पट्टी में, छोटा करें के बाईं ओर एक तीर के साथ एक छोटा डैश; Windows पर) विंडो को सूचना क्षेत्र में रखता है; ट्रे आइकन के मेनू में <g2>प्रगति में डाउनलोड</g2> इसे वापस लाता है। <g3>ट्रे आइकन</g3> देखें।"
+  },
   "591498dd46bd5859": {
    "source": "<g1>A copy from elsewhere?</g1> Remove it and add the extension as MDM's <g2>Add Mister Download Manager to your browser</g2> window shows (see <g3>Browser integration</g3>).",
    "text": "<g1>क्या कॉपी कहीं और से मिली है?</g1> उसे हटाएँ और MDM की <g2>Mister Download Manager को अपने ब्राउज़र में जोड़ें</g2> विंडो में दिए निर्देशों के अनुसार एक्सटेंशन जोड़ें (<g3>ब्राउज़र एकीकरण</g3> देखें)।"
@@ -5325,6 +5357,10 @@
   "59cee3ff8dcef9d9": {
    "source": "Getting set up",
    "text": "सेटअप करना"
+  },
+  "59d5983b5e65fbf4": {
+   "source": "reads who opened pull requests and issues, and who commented, from GitHub's public API (the maintainer, Claude and bots left out) for every place that thanks them: the website's home page, <x1/> and each release on the News page (<x2/>, on every build), each release's notes (<x3/>, the people active since the release before) and the README (<x4/> at each release's preparation: its round photos are committed in <x5/>, since GitHub can't round a picture in a README).",
+   "text": "GitHub के सार्वजनिक API से यह पढ़ता है कि किसने पुल रिक्वेस्ट और इश्यू खोले, और किसने टिप्पणी की (रखरखावकर्ता, Claude और बॉट को छोड़कर), उन सभी जगहों के लिए जो उन्हें धन्यवाद देती हैं: वेबसाइट का होम पेज, <x1/> और समाचार पेज पर प्रत्येक रिलीज़ (<x2/>, हर बिल्ड पर), प्रत्येक रिलीज़ के नोट्स (<x3/>, पिछली रिलीज़ के बाद से सक्रिय लोग) और README (<x4/> प्रत्येक रिलीज़ की तैयारी में: इसकी गोल तस्वीरें <x5/> में कमिट की जाती हैं, क्योंकि GitHub README में किसी तस्वीर को गोल नहीं कर सकता)।"
   },
   "5a277738c32493f8": {
    "source": "Support MDM",
@@ -6201,6 +6237,10 @@
   "68b88047fcca2939": {
    "source": "Queue downloads for later →",
    "text": "बाद के लिए डाउनलोड कतारबद्ध करें →"
+  },
+  "6934a2b5fa583b1e": {
+   "source": "Contributors — Mister Download Manager",
+   "text": "योगदानकर्ता — Mister Download Manager"
   },
   "693f3338267d1d6a": {
    "source": "Move without changing the selection",
@@ -7137,6 +7177,10 @@
   "79298af691e8bdd2": {
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "आपको इनमें से किसी एक सेवा के साथ अपना सशुल्क खाता चाहिए: MDM एक को बेचता या शामिल नहीं करता है। एक खाते या उसके लिंक को साझा करना सेवाओं की शर्तों का उल्लंघन करता है और खाते को निलंबित कर सकता है।"
+  },
+  "7931468b8d7d517a": {
+   "source": "<x1/> <g2>Everyone who helped</g2>",
+   "text": "<x1/> <g2>सभी सहायक</g2>"
   },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
@@ -8614,6 +8658,10 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>तेज़ डाउनलोड और फिर से शुरू करना</g1><g2>एक फ़ाइल को 32 कनेक्शनों तक विभाजित किया जाता है, अंतिम बाइट तक फिर से विभाजित किया जाता है, और किसी भी क्रैश के बाद फिर से शुरू किया जाता है।</g2>"
   },
+  "92055d4da1d101c5": {
+   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
+   "text": "<x1/> जिन लोगों ने पुल रिक्वेस्ट भेजी, समस्या बताई या GitHub पर बातचीत में शामिल हुए। <g2>उन सभी से मिलें</g2>"
+  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "MDM द्वारा खींची गई शीर्षक पट्टी, जब उसकी विंडो सक्रिय न हो (पारदर्शी: जैसे सक्रिय होने पर)"
@@ -8841,10 +8889,6 @@
   "95b8e4a4ea276d5d": {
    "source": "Downloads",
    "text": "डाउनलोड"
-  },
-  "95bb2c4ecf20a6d7": {
-   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "आखिरी बार अपडेट: 2026-11-07 · ऐप, ब्राउज़र एक्सटेंशन और misterdownloadmanager.com पर लागू"
   },
   "95c10421608930fc": {
    "source": "The proxy's password moves to the system's keychain: Windows Credential Manager, the keyring on Linux, the macOS keychain.",
@@ -9369,6 +9413,10 @@
   "9e18dba709154be4": {
    "source": "Send downloads from your browser",
    "text": "अपने ब्राउज़र से डाउनलोड भेजें"
+  },
+  "9e23173a22cf615a": {
+   "source": "<x1/> comment",
+   "text": "<x1/> टिप्पणी"
   },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
@@ -10566,6 +10614,10 @@
    "source": "Text",
    "text": "टेक्स्ट"
   },
+  "b23e4d23398b2d6f": {
+   "source": "Made possible by these amazing humans: everyone who sent a pull request, opened an issue or joined a conversation on GitHub. Thank you, every one of you.",
+   "text": "इन अद्भुत लोगों ने इसे संभव बनाया: हर वह व्यक्ति जिसने पुल रिक्वेस्ट भेजी, कोई समस्या उठाई या GitHub पर किसी बातचीत में शामिल हुआ। आप सभी का धन्यवाद।"
+  },
   "b23e9f6d4d6a6718": {
    "source": "Browser integration needs one more step in each browser: adding the extension. In Firefox, click <g1>Add to Firefox</g1> on <g2>its page on addons.mozilla.org</g2>; in Chrome, Edge, Brave, Opera and Vivaldi, <g3>Add to Chrome</g3> on <g4>its page in the Chrome Web Store</g4>. <g5>Browser integration</g5> shows how.",
    "text": "ब्राउज़र इंटीग्रेशन के लिए हर ब्राउज़र में एक और कदम की ज़रूरत होती है: एक्सटेंशन जोड़ना। Firefox में, <g2>addons.mozilla.org पर इसके पेज</g2> पर <g1>Firefox में जोड़ें</g1> पर क्लिक करें; Chrome, Edge, Brave, Opera और Vivaldi में, <g4>Chrome वेब स्टोर में इसके पेज</g4> पर <g3>Chrome में जोड़ें</g3> पर क्लिक करें। <g5>ब्राउज़र इंटीग्रेशन</g5> बताता है कि यह कैसे करें।"
@@ -10601,6 +10653,10 @@
   "b27995b1d5cff0b2": {
    "source": "A calendar's day or arrow pressed",
    "text": "एक कैलेंडर का दिन या तीर दबाया गया"
+  },
+  "b27e59917bb7f695": {
+   "source": "Last updated 2026-11-08 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "अंतिम अपडेट: 2026-11-08 · ऐप, ब्राउज़र एक्सटेंशन और misterdownloadmanager.com पर लागू होता है"
   },
   "b298f93960114202": {
    "source": ", with or without <x1/>;",
@@ -11210,6 +11266,10 @@
    "source": "Yes. In IDM, export your list with <g1>Tasks → Export → To IDM export file</g1>. In MDM, choose <g2>Tasks → Import → From IDM export file</g2> and pick that <x3/> file: every download comes over with its address, referrer and cookies. A plain text file of links works too. See <g4>Adding downloads</g4>.",
    "text": "हाँ। IDM में, अपनी सूची को <g1>कार्य → निर्यात करें → IDM निर्यात फ़ाइल में</g1> के साथ निर्यात करें। MDM में, <g2>कार्य → आयात करें → IDM निर्यात फ़ाइल से</g2> चुनें और उस <x3/> फ़ाइल को चुनें: हर डाउनलोड अपने पते, रेफ़रर और कुकीज़ के साथ आ जाता है। लिंक की एक सादी टेक्स्ट फ़ाइल भी काम करती है। <g4>डाउनलोड जोड़ना</g4> देखें।"
   },
+  "bd08b0858bd72782": {
+   "source": "Contributors",
+   "text": "योगदानकर्ता"
+  },
   "bd0d153b08edc05e": {
    "source": "MDM's page on a phone: an address box with Category and When, the queues with Start, and the downloads with their progress",
    "text": "एक फ़ोन पर MDM का पेज: श्रेणी और कब के साथ एक पता बॉक्स, शुरू के साथ कतारें, और उनकी प्रगति के साथ डाउनलोड"
@@ -11337,6 +11397,10 @@
   "bfcf797517e5c279": {
    "source": "MDM remembers the columns, their widths and the sort order.",
    "text": "MDM कॉलम, उनकी चौड़ाई और सॉर्ट क्रम को याद रखता है।"
+  },
+  "bfd9e614f4714695": {
+   "source": "The people who made Mister Download Manager possible: everyone who sent a pull request, opened an issue or joined a conversation on GitHub.",
+   "text": "जिन लोगों ने Mister Download Manager को संभव बनाया: हर वह व्यक्ति जिसने पुल रिक्वेस्ट भेजी, कोई समस्या उठाई या GitHub पर किसी बातचीत में शामिल हुआ।"
   },
   "bfdcb4c0c0e4bf80": {
    "source": "<g1>Site name/Download link/Parent web page/Referer</g1> — the address, the site's name and the page the download came from. Tick this to find everything from one site.",
@@ -12178,6 +12242,10 @@
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "लिंक ग्रैबर और संग्रह — Mister Download Manager सहायता"
   },
+  "ce5bf471e6fccfb8": {
+   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
+   "text": "<g1>टिप्पणियाँ</g1><g2><x3/> लोग</g2>"
+  },
   "ce6f1a716e6dad6d": {
    "source": "Or",
    "text": "या"
@@ -12645,6 +12713,10 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager और IDM, साथ-साथ।"
+  },
+  "d65efc937a364b03": {
+   "source": "<x1/> issue",
+   "text": "<x1/> समस्या"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -13550,6 +13622,10 @@
    "source": "A second copy of MDM watches the first. When MDM crashes, the report window says <g1>Mister Download Manager closed unexpectedly</g1>. When its window hasn't answered for 8 seconds, it says <g2>Mister Download Manager stopped responding</g2>, and <g3>End and restart MDM</g3> closes the frozen copy and starts a fresh one. If MDM comes back by itself, the window says so.",
    "text": "MDM की एक दूसरी कॉपी पहली पर नज़र रखती है। जब MDM क्रैश होता है, तो रिपोर्ट विंडो कहती है <g1>Mister Download Manager अप्रत्याशित रूप से बंद हो गया</g1>। जब उसकी विंडो 8 सेकंड तक जवाब नहीं देती है, तो वह कहती है <g2>Mister Download Manager ने प्रतिक्रिया देना बंद कर दिया</g2>, और <g3>MDM को समाप्त करें और पुनरारंभ करें</g3> फ़्रीज़ हुई कॉपी को बंद कर देता है और एक नई शुरू करता है। यदि MDM अपने आप वापस आ जाता है, तो विंडो ऐसा कहती है।"
   },
+  "e6e4ffbd1a17c7e8": {
+   "source": "<x1/> pull request",
+   "text": "<x1/> पुल रिक्वेस्ट"
+  },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
    "text": "हमेशा के लिए मुफ्त: कोई ट्रायल नहीं, कोई विज्ञापन नहीं, कोई कुंजी नहीं"
@@ -14310,6 +14386,10 @@
    "source": "<g1>Online</g1>: the server has the file.",
    "text": "<g1>ऑनलाइन</g1>: फ़ाइल सर्वर पर मौजूद है।"
   },
+  "f2d4f3ae1b5602bb": {
+   "source": "From GitHub's public record, <x1/>: people with pull requests first, then those who opened issues, then those who commented, each once. The maintainer and automated accounts aren't counted.",
+   "text": "GitHub के सार्वजनिक रिकॉर्ड से, <x1/>: पहले पुल रिक्वेस्ट वाले लोग, फिर समस्या उठाने वाले, फिर टिप्पणी करने वाले, प्रत्येक एक बार। रखरखाव करने वाले और स्वचालित खातों की गणना नहीं की जाती है।"
+  },
   "f2fd829426a9d905": {
    "source": "Click <g1>Add URL</g1> on the toolbar, choose <g2>Tasks → Add new download</g2>, or press <g3>Ctrl+N</g3>.",
    "text": "टूलबार पर <g1>URL जोड़ें</g1> पर क्लिक करें, <g2>कार्य → नया डाउनलोड जोड़ें</g2> चुनें, या <g3>Ctrl+N</g3> दबाएँ।"
@@ -14554,6 +14634,10 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>इतने समय तक साझा करने के बाद साझा करना बंद करें … मिनट</g1> — या, जब कुल मिलाकर इतने समय तक साझा किया जा चुका हो, तो इसे साझा करना बंद करें। डिफ़ॉल्ट रूप से बंद।"
   },
+  "f821c9c149c3e050": {
+   "source": "<x1/> comments",
+   "text": "<x1/> टिप्पणियाँ"
+  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "इसके पतों के अलावा वे नाम जिनसे पेज खोला जा सकता है"
@@ -14621,6 +14705,10 @@
   "f9954a428332a813": {
    "source": "<g1>Network adapter:</g1> while one is chosen (<g2>Options → Proxy / Socks → <g3>Network adapter</g3></g2>), galleries go through it too, as video pages do: MDM gives gallery-dl a proxy of its own on this computer, opens every connection through the adapter and looks the names up with the DNS you chose. When the adapter disconnects, the gallery stops with the other downloads; nothing goes out through your normal connection.",
    "text": "<g1>नेटवर्क एडाप्टर:</g1> जब कोई एक चुना जाता है (<g2>विकल्प → प्रॉक्सी / SOCKS → <g3>नेटवर्क एडाप्टर</g3></g2>), तो गैलरी भी उसी के माध्यम से जाती हैं, जैसे वीडियो पेज जाते हैं: MDM इस कंप्यूटर पर gallery-dl को अपना प्रॉक्सी देता है, एडाप्टर के माध्यम से हर कनेक्शन खोलता है और आपके चुने हुए DNS के साथ नामों को देखता है। जब एडाप्टर डिस्कनेक्ट होता है, तो गैलरी अन्य डाउनलोड के साथ रुक जाती है; आपके सामान्य कनेक्शन के माध्यम से कुछ भी बाहर नहीं जाता है।"
+  },
+  "f9a8db1326e07676": {
+   "source": "<x1/> issues",
+   "text": "<x1/> समस्याएँ"
   },
   "f9ad81eb1765abbd": {
    "source": "In the browser extension's menu, <g1>Send downloads to → Another Mister Download Manager (a server)</g1>: type the server's address, open it once in that browser to accept its certificate, then enter a pairing code (<x2/> above). Downloads the extension catches, and <g3>Download with Mister Download Manager</g3> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
