@@ -3,6 +3,12 @@
 Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 `.github/workflows/release.yml`).
 
+## [Unreleased]
+
+### Fixed
+
+- Windows: no more crash when a screen is unplugged, turned off or rearranged while MDM runs ([#335](https://github.com/anefzaoui/misterdownloadmanager/issues/335)).
+
 ## [0.5.1] - 2026-11-08
 
 YouTube fixes for the Download video button, and the button in Chrome, Edge and Brave.
