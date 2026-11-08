@@ -73,6 +73,15 @@ Also check the extension's toolbar button: with **Take downloads from this brows
 
 MDM also takes the file types the browser would show or play itself (a PDF, an MP3), when they're listed in **Options → File types** and **Also take files the browser would open** is ticked in **Options → General → Keys...**. This needs a Chromium browser (Chrome, Edge, Brave, Opera, Vivaldi) version 128 or later, or Firefox. Sites in MDM's excluded sites keep opening them in the browser. Hold **Alt** while clicking a link to leave it to the browser: Firefox then opens it, while Chromium browsers download it themselves (Alt+click is their own "download link").
 
+## No Download video button on YouTube in Chrome, Edge or Brave {#store-youtube}
+
+The copy of the extension from the Chrome Web Store shows no **Download video** button on YouTube, and its **Media on this page** list says so: that store's policy forbids downloading from YouTube. Chrome, Edge, Brave, Opera and Vivaldi all install from that store, so all of them are affected. Firefox's copy, from its own add-ons store, shows the button.
+
+To save a YouTube video from one of those browsers:
+
+- In MDM, open **Tasks → Download video from a page** and paste the video's address.
+- Or use the copy of the extension in MDM's own folder instead of the store's, which shows the button: [install it by hand](browser-integration.md#chrome-edge-brave-opera-and-vivaldi).
+
 ## The extension can't read this site {#site-access}
 
 In Chrome, Edge and Brave you can limit an extension to some sites (right-click its toolbar button → **This can read and change site data**). On a site it may not read, the extension can't pass your sign-in on, so it leaves the download to the browser. Choose **On all sites** to let MDM take downloads everywhere.
