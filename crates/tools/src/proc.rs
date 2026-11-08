@@ -555,6 +555,57 @@ fn layers_with(
     Ok(())
 }
 
+/// The file named `name` (`name.exe` on Windows) in one of `dirs`.
+fn program_in(dirs: &[PathBuf], name: &str) -> Option<PathBuf> {
+    let file = format!("{name}{}", std::env::consts::EXE_SUFFIX);
+    dirs.iter().map(|d| d.join(&file)).find(|p| p.is_file())
+}
+
+/// Node.js from nvm (`~/.nvm/versions/node/<version>/bin/node`), the newest name first: a program
+/// started from the desktop doesn't have nvm's folders on its PATH (#360).
+fn nvm_node(home: &Path) -> Option<PathBuf> {
+    let mut versions: Vec<PathBuf> = std::fs::read_dir(home.join(".nvm/versions/node"))
+        .ok()?
+        .flatten()
+        .map(|e| e.path().join("bin"))
+        .collect();
+    versions.sort();
+    versions.reverse();
+    program_in(&versions, "node")
+}
+
+/// What yt-dlp should be told about JavaScript (#360, #352, #351): YouTube's formats need a
+/// runtime, and yt-dlp looks for Deno alone unless told of another. Deno found: nothing to say.
+/// Else Node.js or Bun, if there is one.
+fn js_runtime(dirs: &[PathBuf], home: Option<&Path>) -> Option<(&'static str, PathBuf)> {
+    if program_in(dirs, "deno").is_some() {
+        return None;
+    }
+    program_in(dirs, "node")
+        .or_else(|| home.and_then(nvm_node))
+        .map(|p| ("node", p))
+        .or_else(|| program_in(dirs, "bun").map(|p| ("bun", p)))
+}
+
+/// `--js-runtimes` for this computer's Node.js or Bun, looked for once.
+fn js_runtime_args() -> &'static [String] {
+    static ARGS: std::sync::OnceLock<Vec<String>> = std::sync::OnceLock::new();
+    ARGS.get_or_init(|| {
+        let dirs: Vec<PathBuf> = std::env::var_os("PATH")
+            .map(|p| std::env::split_paths(&p).collect())
+            .unwrap_or_default();
+        let home = std::env::var_os("HOME").map(PathBuf::from);
+        js_runtime(&dirs, home.as_deref())
+            .map(|(name, path)| {
+                vec![
+                    "--js-runtimes".to_owned(),
+                    format!("{name}:{}", path.display()),
+                ]
+            })
+            .unwrap_or_default()
+    })
+}
+
 /// `yt-dlp` with arguments in layers: `user` extras, then `ours` (then the chosen browser's
 /// cookies when neither brought any, [`layers`]), then the fixed ones last (so nothing can
 /// switch them off), then `--` and the URL (so a URL starting with `-` is never read as an
@@ -569,6 +620,7 @@ pub fn ytdlp(
     let route = through_adapter(&mut cmd, Helper::YtDlp)?;
     layers(&mut cmd, user, ours)?;
     cmd.args(["--ignore-config", "--no-exec", "--no-update"]);
+    cmd.args(js_runtime_args());
     cmd.args(UTF8);
     cmd.args(route);
     cmd.arg("--");
@@ -588,6 +640,7 @@ pub fn ytdlp_info(
     let route = through_adapter(&mut cmd, Helper::YtDlp)?;
     layers(&mut cmd, user, ours)?;
     cmd.args(["--ignore-config", "--no-exec", "--no-update"]);
+    cmd.args(js_runtime_args());
     cmd.args(UTF8);
     cmd.args(route);
     cmd.arg("--load-info-json");
@@ -1006,6 +1059,39 @@ mod tests {
             cookie_browsers().contains(&"safari"),
             cfg!(target_os = "macos")
         );
+    }
+
+    /// #360: yt-dlp is told of Node.js or Bun, from the PATH or nvm, and left alone with Deno.
+    #[test]
+    fn the_javascript_runtime_yt_dlp_is_told_of() {
+        let touch = |dir: &Path, name: &str| {
+            std::fs::create_dir_all(dir).unwrap();
+            std::fs::write(
+                dir.join(format!("{name}{}", std::env::consts::EXE_SUFFIX)),
+                b"",
+            )
+            .unwrap();
+        };
+        let root = tempfile::tempdir().unwrap();
+        let (path, home) = (root.path().join("bin"), root.path().join("home"));
+        let dirs = vec![path.clone()];
+        std::fs::create_dir_all(&path).unwrap();
+        assert_eq!(js_runtime(&dirs, Some(&home)), None);
+        for v in ["v20.1.0", "v22.3.0"] {
+            touch(&home.join(".nvm/versions/node").join(v).join("bin"), "node");
+        }
+        let (name, found) = js_runtime(&dirs, Some(&home)).unwrap();
+        assert_eq!(name, "node");
+        assert!(found.to_string_lossy().contains("v22.3.0"));
+        touch(&path, "bun");
+        assert_eq!(js_runtime(&dirs, None).unwrap().0, "bun");
+        touch(&path, "node");
+        assert_eq!(
+            js_runtime(&dirs, None).unwrap().1,
+            path.join(format!("node{}", std::env::consts::EXE_SUFFIX))
+        );
+        touch(&path, "deno");
+        assert_eq!(js_runtime(&dirs, Some(&home)), None);
     }
 
     /// #352: the second look-up has no cookies of any kind, and everything else the first had.
