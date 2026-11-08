@@ -688,6 +688,14 @@ choose. And Linux, checked on a real desktop with every change.
   resizes, snaps and maximizes as before, with a thin strip of its title bar's colour above it.
   Moving them by their title bar, their taskbar button, Alt+Tab and the window menu (Alt+Space,
   or a right-click on the title bar) work as before. Windows 10 keeps the frames it had.
+- **Windows: Download File Info and the progress window open in front of the browser**
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): a download handed over
+  by the browser could open its window behind the browser, and stay there. Windows lets a
+  program in the background take the foreground only with the browser's say-so, which the user's
+  next click or key ends, and a window refused it opens under the program in front. Every dialog
+  and progress window of MDM that opens without the foreground now goes above the other
+  programs' windows, without taking the keyboard from the one being typed in: a click on it does,
+  as with Download complete.
 - **A window closed with its title bar's × no longer turns black first**
   ([#207](https://github.com/anefzaoui/misterdownloadmanager/issues/207)): every dialog and the
   progress window turned black for a moment when closed with the × or Alt+F4, rather than with

@@ -102,6 +102,9 @@ Everything below ships together, in version 0.5.0.
 - ✅ More file types taken from the browser by default: DMG, PKG, DEB, RPM, APPIMAGE, MSIX, APPX,
   CAB, JAR, XZ, ZST, WEBM, FLAC, OPUS and others; a list never edited gains them
   ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
+- ✅ Windows: Download File Info and the progress window open in front of the browser, even when
+  Windows doesn't let MDM take the foreground; the keyboard stays where it was until a click
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
 - ✅ The window no longer freezes on Linux when the system's sleep service (logind) or keyring
   (Secret Service) is slow or doesn't answer: keeping the computer awake for a woken queue is
   asked in the background, a keyring that doesn't answer at start is waited for once instead of

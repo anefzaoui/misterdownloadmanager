@@ -141,6 +141,66 @@ pub fn keep_from_foreground() {
     }
 }
 
+/// Our window titled `title`, just shown (dialogs::keep_theme), in front of the other programs'
+/// windows if Windows didn't make it the foreground window (#208). Windows gives a program the
+/// foreground only when it may take it (the user's click is in it, or the browser's native host
+/// passed its right on, `AllowSetForegroundWindow`, which the user's next input elsewhere ends).
+/// Refused, the window is placed under the program in front, just above our own windows, and
+/// stays there: `HWND_TOP` and `BringWindowToTop` don't move it either. So a window opened at the
+/// browser's request (Download File Info, a progress window) could open behind the browser. A
+/// round trip through topmost puts it above every window that isn't topmost, as Download
+/// complete is (#77), without taking the keyboard from the program being typed in (a click on
+/// it does). None while it isn't shown yet (ask again in the next frame); else whether it was
+/// lifted.
+pub fn come_forward(title: &str) -> Option<bool> {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        GetForegroundWindow, IsIconic, IsWindowVisible, WS_EX_TOPMOST,
+    };
+    let hwnd = find_own_window(title)?;
+    // SAFETY: plain queries about our own window.
+    let (visible, foreground, topmost, minimized) = unsafe {
+        (
+            IsWindowVisible(hwnd) != 0,
+            GetForegroundWindow() == hwnd,
+            GetWindowLongPtrW(hwnd, GWL_EXSTYLE) as u32 & WS_EX_TOPMOST != 0,
+            IsIconic(hwnd) != 0,
+        )
+    };
+    if !visible {
+        return None;
+    }
+    let lift = lifted_when_shown(foreground, topmost, minimized);
+    if lift {
+        // SAFETY: our own window, on its thread.
+        unsafe { above_others(hwnd) };
+    }
+    Some(lift)
+}
+
+/// Whether a window just shown goes above the others ([`come_forward`]): it isn't the foreground
+/// window, isn't minimized, and isn't topmost already (a question, a notice: lifting it would
+/// end its topmost).
+fn lifted_when_shown(foreground: bool, topmost: bool, minimized: bool) -> bool {
+    !foreground && !topmost && !minimized
+}
+
+/// Window `hwnd` above every window that isn't topmost, not activated, nothing else changed (its
+/// size, place, frame and styles; its owner stays where it is).
+///
+/// # Safety
+/// `hwnd` is a window of this thread.
+unsafe fn above_others(hwnd: HWND) {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        HWND_NOTOPMOST, HWND_TOPMOST, SWP_NOOWNERZORDER, SWP_NOSIZE,
+    };
+    let flags = SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_NOOWNERZORDER;
+    // SAFETY: (the caller's) our own window; z-order changes only.
+    unsafe {
+        SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, flags);
+        SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, flags);
+    }
+}
+
 /// Give our window titled `title` IDM's modal-dialog frame (WS_EX_DLGMODALFRAME, no sizing
 /// frame: 3 px borders, 26 px caption) and resize it so the client stays `client` points, at
 /// `scale` pixels per point (the display's scaling times any zoom), with the frame measured for
@@ -1300,6 +1360,105 @@ mod caption_less_tests {
                 }
                 DestroyWindow(hwnd);
             }
+        }
+    }
+}
+
+#[cfg(test)]
+mod come_forward_tests {
+    use super::*;
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        CreateWindowExW, DefWindowProcW, DestroyWindow, GW_HWNDNEXT, GetClientRect, GetTopWindow,
+        GetWindow, GetWindowRect, RegisterClassW, WNDCLASSW, WS_EX_TOPMOST,
+    };
+
+    /// Lifted only when it didn't get the foreground, and never a topmost one (a question, a
+    /// notice) or a minimized one.
+    #[test]
+    fn only_a_window_left_behind_is_lifted() {
+        assert!(lifted_when_shown(false, false, false));
+        assert!(!lifted_when_shown(true, false, false));
+        assert!(!lifted_when_shown(false, true, false));
+        assert!(!lifted_when_shown(false, false, true));
+    }
+
+    /// Where `hwnd` is in the z-order of the top-level windows (0: the top).
+    fn z(hwnd: HWND) -> usize {
+        // SAFETY: plain queries walking the desktop's top-level windows.
+        unsafe {
+            let mut w = GetTopWindow(std::ptr::null_mut());
+            let mut i = 0;
+            while !w.is_null() && w != hwnd {
+                w = GetWindow(w, GW_HWNDNEXT);
+                i += 1;
+            }
+            assert!(!w.is_null(), "not a top-level window");
+            i
+        }
+    }
+
+    /// Two real (hidden, off-screen) windows with winit's styles for the progress window, one
+    /// framed by caption_less as on Windows 11: each in turn goes above the other, neither stays
+    /// topmost, and nothing else of it changes (styles, place, size, client: the frame #208's
+    /// first part made stays as it was).
+    #[test]
+    fn above_others_lifts_a_real_window_and_changes_nothing_else() {
+        const WINIT_PROGRESS: u32 = 0x04CE_0000;
+        const WINIT_EX: u32 = 0x0004_0100;
+        let class: Vec<u16> = "mdm-come-forward-test\0".encode_utf16().collect();
+        // SAFETY: a class registered with the system's own procedure, and hidden windows of it on
+        // this thread, destroyed below; the strings are NUL-terminated; plain queries, and
+        // z-order changes of our own windows.
+        unsafe {
+            let mut wc: WNDCLASSW = zeroed();
+            wc.lpfnWndProc = Some(DefWindowProcW);
+            wc.lpszClassName = class.as_ptr();
+            RegisterClassW(&wc);
+            let make = |n: u32| {
+                let title: Vec<u16> = format!("mdm come-forward test {n} {}", std::process::id())
+                    .encode_utf16()
+                    .chain(Some(0))
+                    .collect();
+                let h = CreateWindowExW(
+                    WINIT_EX,
+                    class.as_ptr(),
+                    title.as_ptr(),
+                    WINIT_PROGRESS,
+                    -20000,
+                    -20000,
+                    548,
+                    444,
+                    std::ptr::null_mut(),
+                    std::ptr::null_mut(),
+                    std::ptr::null_mut(),
+                    std::ptr::null(),
+                );
+                assert!(!h.is_null());
+                h
+            };
+            let (a, b) = (make(0), make(1));
+            caption_less(a, Drawn::Fixed);
+            let state = |h: HWND| {
+                let (mut w, mut c): (RECT, RECT) = (zeroed(), zeroed());
+                GetWindowRect(h, &mut w);
+                GetClientRect(h, &mut c);
+                (
+                    GetWindowLongPtrW(h, GWL_STYLE) as u32,
+                    GetWindowLongPtrW(h, GWL_EXSTYLE) as u32,
+                    [w.left, w.top, w.right, w.bottom],
+                    [c.right, c.bottom],
+                )
+            };
+            for (up, other) in [(a, b), (b, a), (a, b)] {
+                let before = state(up);
+                above_others(up);
+                assert!(z(up) < z(other), "lifted above the other window");
+                let after = state(up);
+                assert_eq!(after.1 & WS_EX_TOPMOST, 0, "left topmost");
+                assert_eq!(before, after, "only its place in the z-order changes");
+            }
+            DestroyWindow(a);
+            DestroyWindow(b);
         }
     }
 }
