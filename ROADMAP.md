@@ -447,6 +447,8 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 **Open folder** on a torrent still downloading
+  ([#354](https://github.com/anefzaoui/misterdownloadmanager/issues/354)): fix in review
 - 🔍 A 10-second freeze of the window after a night left open
   ([#304](https://github.com/anefzaoui/misterdownloadmanager/issues/304)): most likely the
   computer waking from sleep; waiting on the reporter's full report

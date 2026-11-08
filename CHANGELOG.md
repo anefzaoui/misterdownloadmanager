@@ -3,6 +3,12 @@
 Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 `.github/workflows/release.yml`).
 
+## [Unreleased]
+
+### Fixed
+
+- **Open folder** works on a torrent that is still downloading ([#354](https://github.com/anefzaoui/misterdownloadmanager/issues/354)).
+
 ## [0.5.1] - 2026-11-08
 
 YouTube fixes for the Download video button, and the button in Chrome, Edge and Brave.
