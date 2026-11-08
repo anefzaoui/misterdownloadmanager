@@ -1758,15 +1758,22 @@ async function pageMessage(m, sender) {
   if (m.type === "video" && page) {
     await mediaBack;
     const src = typeof m.src === "string" && /^https?:/i.test(m.src) ? m.src : await streamFor(sender);
+    // The video's own page when the content script names one of its site's (extension/video.js:
+    // a watch page in a playlist is the list in the address bar, but the video is one video);
+    // the tab's otherwise.
+    const own =
+      typeof m.url === "string" && /^https?:/i.test(m.url) && siteOf(m.url) === siteOf(page)
+        ? m.url
+        : page;
     const reply = await native({
       video: true,
-      url: page,
+      url: own,
       ...(src ? { src } : {}),
       title: typeof m.title === "string" ? m.title.slice(0, 300) : "",
-      referrer: tab.url && tab.url !== page ? tab.url : "",
+      referrer: tab.url && tab.url !== own ? tab.url : "",
       // The cookies of what yt-dlp is given (the app files them under its host): the stream's
       // own server may not be the page's, and the page's cookies are not for it.
-      ...(await videoCookies(src || page, { incognito: tab.incognito, storeId: tab.cookieStoreId })),
+      ...(await videoCookies(src || own, { incognito: tab.incognito, storeId: tab.cookieStoreId })),
       ...(tab.incognito ? { private: true } : {}),
     });
     return { ok: Boolean(reply.ok), why: reply.why };
