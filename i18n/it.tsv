@@ -196,8 +196,7 @@
 #. message or event log entry in the main window
 #. title of the file dialog of View → Theme → Add a theme file
 #. title of the message when View → Theme → Add a theme file fails
-#, machine
-	Add a theme file	Aggiungi un file tema
+	Add a theme file	Aggiungi un file di tema
 #. window title in the Options window
 #. window title: adding a debrid service account (Real-Debrid…)
 	Add an account	Aggiungi un account
@@ -3197,7 +3196,6 @@
 #. {error} = an error message (keep the braces as they are)
 	The list could not be saved: {error}	Impossibile salvare l'elenco: {error}
 #. text in whereis.rs
-#, machine
 	the local network	la rete locale
 #. text in errors.rs; text in torrent downloads
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
@@ -3279,7 +3277,6 @@
 	The web page from which this file was obtained:	La pagina web da cui proviene il file:
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
-#, machine
 	Themes and colour schemes	Temi e combinazioni di colori
 #. text in the Options window
 #. Options → Archives check box
@@ -3305,7 +3302,6 @@
 #. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
 	This code can't be used any more.	Questo codice non è più valido.
 #. text in whereis.rs
-#, machine
 	this computer	questo computer
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
@@ -3328,7 +3324,6 @@
 #. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
-#, machine
 	This file can't be used as a theme: {error}	Impossibile usare questo file come tema: {error}
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
@@ -3791,8 +3786,7 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, under the new version's line, when MDM was installed by the Linux system's package manager (pacman, ...), which MDM can't update itself
 #. {version} = a version number (keep the braces as they are)
-#, machine
-	You have version {version}, from your system's package manager: update it there.	Hai la versione {version}, dal gestore di pacchetti del sistema: aggiornala da lì.
+	You have version {version}, from your system's package manager: update it there.	Hai la versione {version}, installata dal gestore di pacchetti del sistema: aggiornala da lì.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 	You have version {version}.	Hai la versione {version}.
@@ -3808,7 +3802,6 @@
 #. text in helpers.rs
 #. Video helpers: the person's own gallery-dl is too old and not used; {version} = its version, {oldest} = the oldest MDM can use
 #. {version} = a version number (keep the braces as they are)
-#, machine
 	Your own program ({version}) is too old: MDM needs {oldest} or newer	Il tuo programma ({version}) è troppo vecchio: MDM richiede la versione {oldest} o successiva
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
@@ -3954,7 +3947,6 @@
 #. text in errors.rs
 #. error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
 #. {name} = a file name; {version} = a version number (keep the braces as they are)
-#, machine
 	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} è troppo vecchio: MDM richiede la versione {oldest} o successiva
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
@@ -4184,8 +4176,7 @@ extension	Mister Download Manager isn't installed, or its browser integration is
 extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager scaricherà così tramite lo stesso proxy di questo browser. Il browser ti chiederà l'autorizzazione una sola volta; disattivando l'opzione la revochi.
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension in Chrome, Edge and the other Chromium browsers (they ask for no permission at the switch); keep the name Mister Download Manager as it is
-#, machine
-extension	Mister Download Manager then downloads through the same proxy as this browser. While this is off, the extension doesn't read the browser's proxy.	Mister Download Manager scaricherà quindi tramite lo stesso proxy di questo browser. Quando è disattivata, l'estensione non legge il proxy del browser.
+extension	Mister Download Manager then downloads through the same proxy as this browser. While this is off, the extension doesn't read the browser's proxy.	Mister Download Manager scaricherà così tramite lo stesso proxy di questo browser. Quando l'opzione è disattivata, l'estensione non legge il proxy del browser.
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 extension	More options	Altre opzioni
@@ -4454,8 +4445,7 @@ menu	Add &batch download	Aggiungi download in &batch
 menu	Add &magnet link...	Aggiungi link &magnet...
 #. menu command in the main window
 #. View → Theme: picks a theme file or a Base16 or pywal colour scheme, copies it into the themes folder and uses it
-#, machine
-menu	Add a theme file…	Aggiungi un file tema…
+menu	Add a theme file…	Aggiungi un file di tema…
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Add batch download from &clipboard	Aggiungi download in batch dagli &Appunti
@@ -4660,7 +4650,6 @@ menu	OpenGL	OpenGL
 menu	Properties	Proprietà
 #. menu command in the main window
 #. View → Theme: the colours of pywal (a program making colour schemes from the wallpaper), followed as they change; a name: keep "pywal" as written
-#, machine
 menu	pywal	pywal
 #. menu command in the main window
 #. verb: download the file again from the start
