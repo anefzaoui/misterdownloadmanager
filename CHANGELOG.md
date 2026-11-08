@@ -92,7 +92,7 @@ Smaller additions worth knowing about.
 MDM got much lighter, and Linux is now supported like Windows.
 
 - Linux is no longer experimental: checked on GNOME, KDE Plasma, Xfce and Cinnamon, and on clean Ubuntu, Debian and Fedora.
-- Downloads are about half the size: setup.exe 23 → 12 MB, AppImage 36 → 16 MB, .deb 27 → 13 MB.
+- Downloads are smaller: setup.exe 23 → 16 MB, AppImage 36 → 20 MB, .deb 27 → 17 MB.
 - Under 10 MB of memory in the notification area on Windows, from about 50 MB.
 - Machine translations in all 85 languages were checked again against the English and corrected.
 - Downloads from the browser keep the name, size and type the browser saw, so downloads behind a sign-in show correctly right away.
@@ -640,10 +640,10 @@ This release tightens what MDM accepts from torrents.
 
 ##### Smaller and lighter
 
-- **MDM's programs are a third of their size, its download about half** ([#25](https://github.com/anefzaoui/misterdownloadmanager/issues/25)):
-  on Windows, the programs went from 93 MB to 33 MB (`misterdownloadmanager.exe` from 61 MB to
-  29 MB, the command line from 28 MB to a 0.2 MB launcher), and setup.exe from 23 MB to 12 MB.
-  On Linux the AppImage went from 36 MB to 16 MB, the .deb from 27 MB to 13 MB.
+- **MDM's programs and downloads are much smaller** ([#25](https://github.com/anefzaoui/misterdownloadmanager/issues/25)):
+  on Windows, the programs went from 93 MB to 41 MB (`misterdownloadmanager.exe` from 61 MB to
+  38 MB, the command line from 28 MB to a 0.2 MB launcher), and setup.exe from 23 MB to 16 MB.
+  On Linux the AppImage went from 36 MB to 20 MB, the .deb from 27 MB to 17 MB.
   - The command line runs in the app's own program, so the download engine ships once. Every
     command, `--json`, Ctrl+C and exit code work as before.
   - The translations (85 languages besides English) are packed, 12 MB of text in under 1 MB
@@ -661,8 +661,8 @@ This release tightens what MDM accepts from torrents.
     installer from 16.1 to 13.6 MB and the zips from 19.3 to 15.6 MB, with the same features and
     the same download speed.
 - **Two smaller macOS downloads** ([#25](https://github.com/anefzaoui/misterdownloadmanager/issues/25)):
-  a .dmg for Apple Silicon (`-macos-arm64`, about 10 MB) and one for Intel (`-macos-x86_64`,
-  about 13 MB) instead of one universal .dmg of 80 MB. From 0.2.4 or older, update once by hand:
+  a .dmg for Apple Silicon (`-macos-arm64`, about 14 MB) and one for Intel (`-macos-x86_64`,
+  about 16 MB) instead of one universal .dmg of 80 MB. From 0.2.4 or older, update once by hand:
   **Download** in Check for updates opens the release; pick your Mac's .dmg. **Update now**
   works again after that.
 - **Less memory in the notification area** ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72)):
