@@ -603,18 +603,22 @@ fn fonts(ctx: &egui::Context, code: &str, all: bool) {
     text_styles(ctx);
 }
 
-/// Windows' fonts drawn as sharp as Windows draws them (#262): each glyph grid-fitted across too
-/// (the fonts' own hinting, as Windows runs it for its grey text), and started on a whole pixel.
-/// egui hints only up and down by default and places glyphs at quarter pixels, which left the
-/// upright strokes of Segoe UI and Tahoma two pixels wide and grey at 9 pt: text read as blurred,
-/// most at 100 % and 125 %. Letters keep their unhinted advances, so a word can show a pixel more
-/// or less between two letters. Linux's and macOS's fonts keep egui's default (often unhinted
-/// fonts; a Mac's screen is dense enough).
+/// Windows' fonts fitted to whole pixels (#262), with hinting for egui's anti-aliased output.
+/// Mono hinting targets black-and-white bitmaps: at small sizes it can distort curves and make
+/// diagonals jagged. Smooth hinting keeps those outlines suited to coverage rendering, while
+/// allowing horizontal grid-fitting so Segoe UI and Tahoma's upright strokes stay sharp.
+/// Keep whole-pixel glyph origins and the shaper's advances, so this changes neither layout nor
+/// the interface size. Linux and macOS keep egui's defaults.
 #[cfg(windows)]
 fn sharp_text(defs: &mut egui::FontDefinitions) {
     for data in defs.font_data.values_mut() {
         let data = std::sync::Arc::make_mut(data);
-        data.tweak.hinting_target = egui::epaint::text::HintingTarget::Mono;
+        data.tweak.hinting_target =
+            egui::epaint::text::HintingTarget::Smooth(egui::epaint::text::SmoothHinting {
+                light: false,
+                symmetric_rendering: false,
+                preserve_linear_metrics: false,
+            });
         data.tweak.subpixel_binning = Some(false);
     }
 }

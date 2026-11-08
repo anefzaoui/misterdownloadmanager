@@ -3,6 +3,12 @@
 Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 `.github/workflows/release.yml`).
 
+## [Unreleased]
+
+### Fixed
+
+- **Smoother text on Windows:** small text uses hinting suited to anti-aliased rendering, reducing rough curves and diagonals while keeping upright strokes sharp and the existing interface sizes.
+
 ## [0.5.1] - 2026-11-08
 
 YouTube fixes for the Download video button, and the button in Chrome, Edge and Brave.
