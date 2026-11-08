@@ -13,6 +13,15 @@ Everything below ships together, in version 0.5.0.
 
 ### Done
 
+- ✅ Menus on compositors that animate windows (Hyprland): no border and no slide-in, and going from
+  title to title moves one window, so nothing fades; the reporter confirmed it
+  ([#277](https://github.com/anefzaoui/misterdownloadmanager/issues/277))
+- ✅ A very slow first window on Windows: MDM draws with Direct3D 12 by default and keeps it through
+  a slow start ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57))
+- ✅ A crash on Linux as Download File Info opens
+  ([#48](https://github.com/anefzaoui/misterdownloadmanager/issues/48))
+- ✅ Linux on GNOME Wayland: right-click menus open where you click, and windows fit their buttons
+  ([#29](https://github.com/anefzaoui/misterdownloadmanager/issues/29))
 - ✅ Windows 11 Insider builds: no black band across the top of menus, the drop target, the
   progress window and the windows whose title bar MDM draws (the style themes); the reporter
   confirmed it ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
@@ -437,22 +446,6 @@ These ship in a later version, when they're ready.
 - 🔍 A 10-second freeze of the window after a night left open
   ([#304](https://github.com/anefzaoui/misterdownloadmanager/issues/304)): most likely the
   computer waking from sleep; waiting on the reporter's full report
-- 🔍 Menus opening as the pointer crosses the menu bar on a tiling window manager
-  ([#277](https://github.com/anefzaoui/misterdownloadmanager/issues/277)): after a command the
-  bar waits for a click, as before the first one (now tested on Windows and Linux); once a menu is
-  open, the pointer moves it from title to title, as Windows' menu bars do. Under compositors that
-  animate windows (Hyprland), the menus now appear at once: they are menu windows the compositor
-  doesn't slide in, and going from title to title moves one window instead of closing one and
-  opening the next (each faded out and in). Waiting on the reporter's confirmation
-- 🔍 A freeze of the window on start ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
-  the first window took over a minute while the graphics driver set up OpenGL; MDM now draws
-  with Direct3D 12 by default and keeps it through a slow start, so 0.5.0 should not do
-  this
-- 🔍 A crash on Linux as Download File Info opens
-  ([#48](https://github.com/anefzaoui/misterdownloadmanager/issues/48)), likely fixed with #22
-- 🔍 Linux on GNOME Wayland: a right-click menu opening in the middle of the window, and buttons
-  cut off until the window is made larger
-  ([#29](https://github.com/anefzaoui/misterdownloadmanager/issues/29))
 
 ## Planned
 
