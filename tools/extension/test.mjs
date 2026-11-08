@@ -993,23 +993,34 @@ const MPD = (protect) => `<?xml version="1.0"?>
     }
   }
   // A page: its address, an optional ytd-watch-flexy video-id, and the cards a player can sit in
-  // (the links found on the way up from the video element).
+  // (each level on the way up from the video element names the video links it contains).
   const at = (href, { flexy = null, cards = [] } = {}) => {
-    const element = (link) => ({ parentElement: null, querySelector: () => (link ? { href: link } : null) });
+    const element = (links) => ({
+      parentElement: null,
+      querySelectorAll: () => (links || []).map((href) => ({ href })),
+    });
     const chain = cards.map(element);
     for (let i = 0; i < chain.length; i += 1) chain[i].parentElement = chain[i + 1] || null;
     const document = { querySelector: (sel) => (sel === "ytd-watch-flexy" && flexy ? { getAttribute: () => flexy } : null) };
     const fn = new Function("location", "document", `${source.slice(start, end)}; return videoPage;`)({ href }, document);
-    return fn(chain[0] || element(null));
+    return fn(chain[0] || element([]));
   };
   // A watch page from a mix or a playlist: the video's own address, without the list.
   assert.equal(at("https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
   assert.equal(at("https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=PL1234567890abcdef&index=12"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
   // A player that isn't the page's own: the card it sits in links to the video it is playing.
-  assert.equal(at("https://www.youtube.com/", { cards: [null, "https://www.youtube.com/watch?v=abc123XYZ_-&t=5s"] }), "https://www.youtube.com/watch?v=abc123XYZ_-");
-  assert.equal(at("https://www.youtube.com/results?search_query=rick+astley", { cards: [null, "https://www.youtube.com/watch?v=abc123XYZ_-"] }), "https://www.youtube.com/watch?v=abc123XYZ_-");
-  // Nothing to name the video with: the page's own address, as before (#311 doesn't guess).
-  assert.equal(at("https://www.youtube.com/@someone/videos", { flexy: "feat12345" }), "https://www.youtube.com/@someone/videos");
+  assert.equal(at("https://www.youtube.com/", { cards: [[], ["https://www.youtube.com/watch?v=abc123XYZ_-&t=5s"]] }), "https://www.youtube.com/watch?v=abc123XYZ_-");
+  // The card links to it twice (thumbnail and title): one video, still.
+  assert.equal(at("https://www.youtube.com/results?search_query=rick+astley", { cards: [[], ["https://www.youtube.com/watch?v=abc123XYZ_-", "https://www.youtube.com/watch?v=abc123XYZ_-&pp=1"]] }), "https://www.youtube.com/watch?v=abc123XYZ_-");
+  assert.equal(at("https://www.youtube.com/@someone", { cards: [[], [], ["https://www.youtube.com/watch?v=abc123XYZ_-"]] }), "https://www.youtube.com/watch?v=abc123XYZ_-");
+  // A page that plays a video and names none: no address at all, so no button and nothing sent
+  // (the page's own address — a channel's videos — would be a list of ~50 to yt-dlp).
+  assert.equal(at("https://www.youtube.com/@someone/videos"), null);
+  assert.equal(at("https://www.youtube.com/@someone/videos", { flexy: "feat12345" }), null);
+  assert.equal(at("https://www.youtube.com/"), null);
+  // A container naming two videos is the page's column, not a card: nothing is sent, rather than
+  // some other card's video.
+  assert.equal(at("https://www.youtube.com/@someone/videos", { cards: [[], ["https://www.youtube.com/watch?v=aaa", "https://www.youtube.com/watch?v=bbb"]] }), null);
   // Short links, embeds, and a site that isn't YouTube's (untouched).
   assert.equal(at("https://youtu.be/dQw4w9WgXcQ?t=10&list=PL999"), "https://youtu.be/dQw4w9WgXcQ");
   assert.equal(at("https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?start=5"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
