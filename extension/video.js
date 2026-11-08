@@ -52,6 +52,51 @@
     }
   };
   const host = location.hostname;
+  // The address the app looks the video up by — the video's, not the page's. Most pages that play
+  // a video are not the video's page: YouTube's home, a search, a channel or a playlist carries a
+  // list in its address ("recommended", the results, the channel's videos), and yt-dlp reads such
+  // an address as the list, so the app offered the whole feed instead of the video the button was
+  // on. A watch page opened from a mix or a playlist has the same problem one level down
+  // (…&list=…&index=…): its own page is watch?v=<id>, and nothing else.
+  function videoPage(v) {
+    const watch = (id) =>
+      /^[\w-]+$/.test(id || "") ? `https://www.youtube.com/watch?v=${id}` : null;
+    try {
+      const url = new URL(location.href);
+      const name = url.hostname.replace(/^(www|m|music)\./, "");
+      if (name === "youtu.be") {
+        const id = url.pathname.split("/")[1];
+        if (watch(id)) return `https://youtu.be/${id}`;
+      }
+      if (name === "youtube.com" || name === "youtube-nocookie.com") {
+        // An embed's own page is the video's (…/embed/<id>).
+        if (url.pathname.startsWith("/embed/")) {
+          const id = watch(url.pathname.split("/")[2]);
+          if (id) return id;
+        }
+        // The page is this video's own: a watch page, with or without a list on it.
+        const own = watch(url.searchParams.get("v"));
+        if (own && url.pathname.startsWith("/watch")) return own;
+        const shown = watch(document.querySelector("ytd-watch-flexy")?.getAttribute("video-id"));
+        if (shown && url.pathname.startsWith("/watch")) return shown;
+        // A player that isn't the page's own (a preview on the home page, a feed, a channel, a
+        // search): the card it plays in is a link to the video.
+        for (let node = v, i = 0; node && i < 8; i += 1, node = node.parentElement) {
+          const a = node.querySelector?.('a[href*="/watch?"], a[href*="youtu.be/"]');
+          if (!a) continue;
+          const link = new URL(a.href, location.href);
+          const id = link.hostname.endsWith("youtu.be")
+            ? link.pathname.split("/")[1]
+            : link.searchParams.get("v");
+          const page = watch(id);
+          if (page) return page;
+        }
+      }
+    } catch {
+      // Not an address this page can reason about: its own follows.
+    }
+    return location.href;
+  }
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // "Hide on this video": the video's address (players reuse one element for the next video),
@@ -383,7 +428,7 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
       if (video.mediaKeys) return flash("err", t("video_drm"));
       const src = /^https?:/i.test(video.currentSrc || "") ? video.currentSrc : "";
       const title = (document.querySelector('meta[property="og:title"]')?.content || document.title || "").trim();
-      const r = await send({ type: "video", src, title });
+      const r = await send({ type: "video", src, title, url: videoPage(video) });
       if (r.gone) return;
       flash(r.ok ? "ok" : "err", t(r.ok ? "video_sent" : r.why === "options" ? "video_off" : "video_failed"));
     } finally {
