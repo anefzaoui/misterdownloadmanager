@@ -237,15 +237,16 @@ fn info_file() -> PathBuf {
 /// asked for the page (`browser`: its Referer, User-Agent and cookies, `FromBrowser::args`).
 /// Without them (#229) a page that wants a sign-in, YouTube's "confirm you're not a bot", was
 /// refused here although the video window's look-up, which had them, had listed its qualities.
-fn look_up(exe: &Path, url: &str, browser: &[String]) -> Result<serde_json::Value, String> {
+fn look_up(exe: &Path, url: &str, browser: &[String]) -> Result<(serde_json::Value, bool), String> {
     let mut args: Vec<String> = ["-J", "--no-playlist", "--no-warnings"]
         .map(String::from)
         .to_vec();
     args.extend(browser.iter().cloned());
-    let cmd = proc::ytdlp(exe, &[], &args, url).map_err(|e| e.to_string())?;
-    let out = proc::output(cmd, "yt-dlp", std::time::Duration::from_secs(90))
+    let out = proc::look_up(exe, &args, url, std::time::Duration::from_secs(90))
         .map_err(|e| e.to_string())?;
-    serde_json::from_slice(&out).map_err(|_| "yt-dlp gave no video information".to_owned())
+    let info = serde_json::from_slice(&out.json)
+        .map_err(|_| "yt-dlp gave no video information".to_owned())?;
+    Ok((info, out.without_cookies))
 }
 
 type Child = Arc<Mutex<Option<proc::Spawned>>>;
@@ -638,7 +639,15 @@ fn attempt(
 ) -> Attempt {
     let failed = |error: String, rerouted: bool| Attempt::Failed { error, rerouted };
     let mut info = match look_up(exe, url, browser) {
-        Ok(v) => v,
+        Ok((v, without_cookies)) => {
+            if without_cookies {
+                note(
+                    progress,
+                    "The site offered no format with the browser's cookies; looked the page up without them".into(),
+                );
+            }
+            v
+        }
         Err(e) => return failed(e, false),
     };
     let changed = if reroute {
