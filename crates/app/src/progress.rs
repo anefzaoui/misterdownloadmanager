@@ -972,6 +972,8 @@ fn status_page(ui: &Ui, o: Pos2, item: &Item, snap: Option<&Snapshot>, frac: f64
         winui::copyable(ui, rect, key, s, cut);
     };
     let status = match item.status {
+        // A torrent reading and checking its files says so, not "Receiving data" (#39).
+        _ if let Some(checking) = item.torrent_checking() => checking,
         // A torrent its debrid service is downloading (#44).
         Status::Downloading if item.at_service().is_some() => item.at_service().unwrap_or_default(),
         Status::Downloading => {
@@ -1200,22 +1202,7 @@ impl Progress {
                     })
                     .collect();
                 let ticks: Vec<bool> = d.files.iter().map(|f| f.2).collect();
-                let clicked = table(
-                    ui,
-                    p,
-                    o,
-                    "t-files",
-                    // i18n: column titles: File (name), Size, Done (how much is downloaded)
-                    &[
-                        (25.0, crate::i18n::mark("File")),
-                        (335.0, crate::i18n::mark("Size")),
-                        (430.0, crate::i18n::mark("Done")),
-                    ],
-                    &[330.0, 425.0],
-                    &rows,
-                    true,
-                    Some(&ticks),
-                );
+                let clicked = files_table(ui, p, o, "t-files", &rows, &ticks, 6);
                 // A box ticked or unticked (#39): the torrent downloads those files from now
                 // on; the last one ticked can't be unticked (a torrent of nothing).
                 if let Some(row) = clicked {
@@ -1499,6 +1486,40 @@ fn piece_grid(p: &egui::Painter, o: Pos2, pieces: &[bool]) {
     }
 }
 
+/// The Files tab's table of a torrent's files, ticked or not: the progress window's (`shown`: 6
+/// rows) and the Files window's (torrentfiles.rs, taller). The row whose box was clicked.
+pub(crate) fn files_table(
+    ui: &mut Ui,
+    p: &egui::Painter,
+    o: Pos2,
+    id: &str,
+    rows: &[Vec<String>],
+    checks: &[bool],
+    shown: usize,
+) -> Option<usize> {
+    table_sized(
+        ui,
+        p,
+        o,
+        id,
+        &[
+            (25.0, crate::i18n::mark("File")),
+            (335.0, crate::i18n::mark("Size")),
+            (430.0, crate::i18n::mark("Done")),
+        ],
+        &[330.0, 425.0],
+        rows,
+        true,
+        Some(checks),
+        shown,
+    )
+}
+
+/// The height of a [`table_sized`] of `shown` rows' body (the progress window's 6: 100 px).
+pub(crate) fn table_body_height(shown: usize) -> f32 {
+    17.0 * shown as f32 - 2.0
+}
+
 /// A table in the connections table's frame: headers at x, column lines at `seps`, rows of
 /// text cut to their column (whole on hover), scrolled by the wheel. `checks`: a check box
 /// before each row's icon, ticked or not (the Files tab); the row whose box was clicked.
@@ -1514,15 +1535,40 @@ fn table(
     icons: bool,
     checks: Option<&[bool]>,
 ) -> Option<usize> {
+    table_sized(ui, p, o, id, heads, seps, rows, icons, checks, 6)
+}
+
+/// [`table`] showing `shown` rows: it grows down from the same top.
+#[allow(clippy::too_many_arguments)]
+fn table_sized(
+    ui: &mut Ui,
+    p: &egui::Painter,
+    o: Pos2,
+    id: &str,
+    heads: &[(f32, &str)],
+    seps: &[f32],
+    rows: &[Vec<String>],
+    icons: bool,
+    checks: Option<&[bool]>,
+    shown: usize,
+) -> Option<usize> {
     let mut clicked = None;
-    let outer = r(o, 17.0, 273.0, 513.0, 128.0);
+    let body_h = table_body_height(shown);
+    let outer = r(o, 17.0, 273.0, 513.0, body_h + 28.0);
     winui::solid(p, outer, winui::FIELD_EDGE());
     let (bg, head, line) = (
         winui::FIELD(),
         winui::LIST_HEADER(),
         crate::theme::colors().header_sep,
     );
-    fill(p, o.x + 18.0, o.y + 274.0, o.x + 528.0, o.y + 399.0, bg);
+    fill(
+        p,
+        o.x + 18.0,
+        o.y + 274.0,
+        o.x + 528.0,
+        o.y + 299.0 + body_h,
+        bg,
+    );
     fill(p, o.x + 19.0, o.y + 275.0, o.x + 527.0, o.y + 298.0, head);
     for x in seps {
         fill(p, o.x + x, o.y + 275.0, o.x + x, o.y + 298.0, line);
@@ -1530,7 +1576,7 @@ fn table(
     for (x, h) in heads {
         text(p, o.x + x, o.y + 290.0, crate::i18n::t(h), winui::TEXT());
     }
-    let visible = 6usize;
+    let visible = shown;
     // Per window: each progress window scrolls its own tables.
     let key = egui::Id::unique(("torrent-table", id, ui.ctx().viewport_id()));
     let max_first = rows.len().saturating_sub(visible);
@@ -1539,9 +1585,9 @@ fn table(
         .data(|d| d.get_temp::<usize>(key))
         .unwrap_or(0)
         .min(max_first);
-    let body = r(o, 19.0, 299.0, 508.0, 100.0);
+    let body = r(o, 19.0, 299.0, 508.0, body_h);
     if ui.rect_contains_pointer(body) {
-        let step = winui::wheel_steps(ui, key, 100.0 / visible as f32, visible as f32);
+        let step = winui::wheel_steps(ui, key, body_h / visible as f32, visible as f32);
         first = first.saturating_add_signed(step).min(max_first);
         ui.ctx().data_mut(|d| d.insert_temp(key, first));
     }
@@ -1587,7 +1633,7 @@ fn table(
         if crate::scrollbar::bar(
             ui,
             key.with("bar"),
-            r(o, 511.0, 275.0, 17.0, 124.0),
+            r(o, 511.0, 275.0, 17.0, body_h + 24.0),
             true,
             rows.len() as f32,
             visible as f32,

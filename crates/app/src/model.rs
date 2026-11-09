@@ -399,6 +399,9 @@ pub struct Item {
     pub remote: Option<RemoteSpec>,
     #[serde(skip)]
     pub live: Option<Live>,
+    /// The session's temporary view while a torrent is being checked; never saved.
+    #[serde(skip)]
+    pub torrent_check: Option<(u64, u64)>,
     /// The engine's last view of this download (segments, connections).
     #[serde(skip)]
     pub snap: Option<mdm_engine::Snapshot>,
@@ -698,6 +701,7 @@ impl Item {
             direct: false,
             remote: None,
             live: None,
+            torrent_check: None,
             snap: None,
             login: None,
             context: Default::default(),
@@ -846,6 +850,9 @@ impl Item {
                 }
                 self.notices = notices;
                 self.live = None;
+                // The session's last check numbers belong to the run just ended (a finished
+                // torrent leaves the session): not left saying "Checking" until the next tick.
+                self.torrent_check = None;
                 true
             }
             None => false,
@@ -890,9 +897,37 @@ impl Item {
         ))
     }
 
+    /// "Checking 42%" while a torrent's files are read and checked (added over files already
+    /// there, Recheck): a running one from its live numbers (librqbit counts the bytes checked),
+    /// one not running from the session's (`torrent_check`, every 2 s). Whole percents: the
+    /// list's Status column is narrow.
+    pub fn torrent_checking(&self) -> Option<String> {
+        self.torrent.as_ref()?;
+        let (checked, total) = match (&self.live, &self.snap) {
+            (Some(_), Some(s)) if s.state == State::Verifying => {
+                (s.downloaded, s.size.unwrap_or(0))
+            }
+            (Some(_), _) => return None,
+            (None, _) => self.torrent_check?,
+        };
+        let ratio = if total > 0 {
+            checked as f64 / total as f64
+        } else {
+            0.0
+        };
+        Some(crate::i18n::fmt(
+            // i18n: a torrent's status while its files are read and checked; {percent} is how much is checked, e.g. "42%"
+            crate::i18n::t("Checking {percent}"),
+            &[("percent", &crate::i18n::percent(ratio.min(1.0), 0))],
+        ))
+    }
+
     pub fn status_text(&self) -> String {
         if let Some(at) = self.at_service() {
             return at;
+        }
+        if let Some(checking) = self.torrent_checking() {
+            return checking;
         }
         if self
             .snap
