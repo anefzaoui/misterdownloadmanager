@@ -464,6 +464,11 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 macOS: video look-ups in a copy of MDM a browser downloaded, without the Terminal command
+  ([#330](https://github.com/anefzaoui/misterdownloadmanager/issues/330),
+  [#339](https://github.com/anefzaoui/misterdownloadmanager/issues/339)): yt-dlp's folder build,
+  unpacked once and checked against its signed list; built and checked on macOS, still to
+  confirm on a person's Mac
 - 🔄 Help: when an antivirus or VirusTotal flags MDM
 - 🔄 Linux, what's left ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
   screen readers (Orca) reading MDM's windows; browsers installed as a Flatpak (Firefox from
