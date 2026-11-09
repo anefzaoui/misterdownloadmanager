@@ -7,6 +7,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- The progress window of a video whose size isn't known says no percentage (it read 0 % in the title and 0.00 % on the Downloaded line), and **File size** stays the file's size at the end (it read 0.1 % too high while yt-dlp finished).
 - Windows: **Open folder** on a download opens the folder with the file manager set up to open folders (Directory Opus, for example), instead of always starting Windows Explorer. With Explorer it still selects the file ([#446](https://github.com/anefzaoui/misterdownloadmanager/issues/446)).
 
 ## [0.5.2] - 2026-11-09
