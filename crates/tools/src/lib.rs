@@ -7,6 +7,7 @@
 pub mod chosen;
 pub mod ffmpeg;
 pub mod gallery;
+mod macos;
 mod openpgp;
 pub mod pages;
 pub mod playlist;
@@ -75,12 +76,13 @@ pub fn tools_dir() -> Option<PathBuf> {
     mdm_ipc::data_dir().map(|d| d.join("tools"))
 }
 
-/// yt-dlp's file name for this platform in its releases.
+/// yt-dlp's file name for this platform in its releases. On macOS, its folder build: why, in
+/// `macos`.
 pub fn ytdlp_asset() -> &'static str {
     if cfg!(windows) {
         "yt-dlp.exe"
     } else if cfg!(target_os = "macos") {
-        "yt-dlp_macos"
+        "yt-dlp_macos.zip"
     } else {
         "yt-dlp_linux"
     }
@@ -235,6 +237,10 @@ pub fn installed(dir: &Path) -> Option<Installed> {
 fn own_ytdlp(dir: &Path) -> Option<Installed> {
     let text = std::fs::read(dir.join("yt-dlp").join("current.json")).ok()?;
     let i: Installed = serde_json::from_slice(&text).ok()?;
+    // macOS: the one-file build earlier versions installed can't run from a downloaded app (`macos`).
+    if cfg!(target_os = "macos") && macos::one_file_build(&i.exe) {
+        return None;
+    }
     i.exe.is_file().then_some(i)
 }
 
@@ -314,6 +320,9 @@ pub async fn install_latest(
     if Sha256::digest(&program).as_slice() != expected {
         return Err(Error::BadChecksum);
     }
+    #[cfg(target_os = "macos")]
+    return macos::put_folder(dir, &release.tag_name, &program);
+    #[cfg(not(target_os = "macos"))]
     put(dir, "yt-dlp", &release.tag_name, asset, &program, &exe_url)
 }
 
@@ -444,7 +453,7 @@ mod tests {
     #[test]
     fn installs_switch_and_keep_one_previous_version() {
         let dir = tempfile::tempdir().unwrap();
-        let name = ytdlp_asset();
+        let name = "yt-dlp-test-program";
         put(
             dir.path(),
             "yt-dlp",
@@ -472,6 +481,9 @@ mod tests {
             "https://x/",
         )
         .unwrap();
+        // macOS installs the folder build (`macos`), with a folder beside the program.
+        #[cfg(target_os = "macos")]
+        std::fs::create_dir_all(now.exe.with_file_name("_internal")).unwrap();
         assert_eq!(installed(dir.path()).unwrap(), now);
         assert_eq!(std::fs::read(&now.exe).unwrap(), b"three");
         let root = dir.path().join("yt-dlp");
