@@ -558,6 +558,7 @@ impl Progress {
         if let Some(i) = winui::tabs_light(ui, o, r(o, 18.0, 8.0, 514.0, 165.0), &light, current) {
             self.tab = tabs[i].0;
         }
+        self.tab_row_menu(ui, r(o, 18.0, 6.0, 514.0, 22.0));
         // MDM's (#63): IDM puts this in its title bar, which here is the system's own (it takes
         // no buttons of ours), so it sits at the tab row's end, over the page's corner.
         tab_button
@@ -569,6 +570,69 @@ impl Progress {
                 crate::i18n::mark("Hide to the notification area"),
             )
             .clicked()
+    }
+
+    /// The tab row's right-click menu (#326): "Show hidden tabs" puts back the tabs hidden in
+    /// this window, greyed while none is. From the keyboard too, on the focused tab: Shift+F10
+    /// or the Menu key.
+    fn tab_row_menu(&mut self, ui: &Ui, row: egui::Rect) {
+        use crate::chrome::{MenuEntry, MenuKind, PopupResult};
+        let ctx = ui.ctx();
+        let key = egui::Id::unique(("progress-tab-menu", self.id));
+        let by_pointer = ui.input(|i| {
+            i.pointer
+                .secondary_clicked()
+                .then(|| i.pointer.interact_pos())
+                .flatten()
+                .filter(|p| row.contains(*p))
+        });
+        let by_keys = || {
+            let tab = ctx
+                .memory(|m| m.focused())
+                .and_then(|f| ctx.read_response(f))
+                .map(|r| r.rect)
+                .filter(|r| row.contains(r.center()))?;
+            ui.input_mut(|i| {
+                i.consume_key(egui::Modifiers::SHIFT, egui::Key::F10)
+                    || i.consume_key(egui::Modifiers::NONE, egui::Key::Menu)
+            })
+            // Under the tab, from its leading edge (a menu's top-right in right to left).
+            .then(|| {
+                if winui::rtl() {
+                    tab.right_bottom()
+                } else {
+                    tab.left_bottom()
+                }
+            })
+        };
+        if let Some(at) = by_pointer.or_else(by_keys) {
+            ctx.data_mut(|d| d.insert_temp(key, at));
+        }
+        let Some(at) = ctx.data(|d| d.get_temp::<Pos2>(key)) else {
+            return;
+        };
+        let entries = [MenuEntry::Item(
+            // i18n: right-click menu of a download window's tab row: bring back the tabs taken off with "Hide tab"
+            "&Show hidden tabs",
+            (),
+            !self.hidden_tabs.is_empty(),
+            false,
+        )];
+        let id = format!("progress-tab-menu-{}", self.id);
+        match crate::chrome::popup(ctx, MenuKind::Context, &id, at, &entries, &|_| None) {
+            PopupResult::Open | PopupResult::Neighbor(_) => return,
+            PopupResult::Chosen(()) => {
+                self.show_hidden_tabs();
+                ctx.request_repaint();
+            }
+            PopupResult::Dismissed => {}
+        }
+        ctx.data_mut(|d| d.remove::<Pos2>(key));
+    }
+
+    /// Puts every tab hidden with "Hide tab" back on the strip, in its own place.
+    fn show_hidden_tabs(&mut self) {
+        self.hidden_tabs.clear();
     }
 
     /// Takes `tab` off the strip (its "Hide tab" button, #326) and shows Download status, which
@@ -1760,5 +1824,15 @@ mod tests {
         p.show_tab("limit");
         assert_eq!(p.tab, Tab::Limiter, "asked for, it comes back");
         assert_eq!(p.hidden_tabs, [Tab::Completion], "the other stays hidden");
+    }
+
+    #[test]
+    fn show_hidden_tabs_brings_them_all_back() {
+        let mut p = Progress::new(1, true);
+        p.hide(Tab::Limiter);
+        p.hide(Tab::Completion);
+        p.show_hidden_tabs();
+        assert!(p.hidden_tabs.is_empty(), "every tab back on the strip");
+        assert_eq!(p.tab, Tab::Status, "the page shown stays as it was");
     }
 }
