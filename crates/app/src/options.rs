@@ -434,6 +434,9 @@ impl OptionsDialog {
         if portable {
             s.launch_on_startup = false;
         }
+        // Greyed where no tray shows MDM's icon (some Linux desktops): nothing could bring the
+        // window back from there.
+        let tray = crate::tray::available();
         let checks: [(f32, &mut bool, &str); 6] = [
             (
                 94.0,
@@ -473,7 +476,6 @@ impl OptionsDialog {
         ];
         // Greyed where no tray shows MDM's icon (some Linux desktops): nothing could bring the
         // window back from there.
-        let tray = crate::tray::available();
         for (i, (y, v, label)) in checks.into_iter().enumerate() {
             // Portable: nothing is written to the registry, so no start with Windows. Manifest 2
             // extensions: an IDM-era Chrome policy with no meaning for MDM's extension (MV3):
@@ -493,13 +495,35 @@ impl OptionsDialog {
                 });
             }
         }
+        // MDM's: the × hides the window in the notification area, or quits. Its default follows
+        // the copy: an installed one hides (as IDM), a portable one quits, so the folder can be
+        // deleted (that is how a portable copy is uninstalled). Without an icon it minimizes to
+        // the taskbar instead, so the setting stays useful (and selectable) there too.
+        let mut close_to_tray = s.close_to_tray();
+        // i18n: checkbox: closing keeps MDM running, in the notification area when available or else the taskbar, instead of quitting
+        let check = winui::checkbox_light(
+            ui,
+            o + vec2(30.0, 210.0),
+            &mut close_to_tray,
+            crate::i18n::mark("Keep running when closing the window"),
+            true,
+        );
+        if check.clicked() {
+            s.close_to_tray = Some(close_to_tray);
+        }
+        if check.hovered() {
+            // i18n: tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
+            check.on_hover_text(crate::i18n::t(
+                "Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM",
+            ));
+        }
         group(
             ui,
             o,
             16.0,
-            215.0,
+            234.0,
             392.0,
-            179.0,
+            160.0,
             "Capture downloads from the following browsers:",
         );
         // Check list: one row per browser in the shared row list (Space ticks the selected
@@ -510,7 +534,7 @@ impl OptionsDialog {
         let ev = winui::row_list(
             ui,
             "browsers",
-            r(o, 30.0, 225.0, 362.0, 97.0),
+            r(o, 30.0, 244.0, 362.0, 78.0),
             browsers.len(),
             17.0,
             &mut self.browser_rows,

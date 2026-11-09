@@ -234,9 +234,9 @@ used, and how to make and share one.
 
 ## The tray icon
 
-Closing the main window doesn't quit MDM. It hides in the notification area, and downloads, queues and schedules carry on.
+Closing the main window doesn't quit MDM. It hides in the notification area, and downloads, queues and schedules carry on. An installed copy does this; a portable copy quits on close, so its folder can be deleted. **Options → General → Keep running when closing the window** changes that. If there is no icon for MDM at all — not in the notification area, nor behind the ^ hidden icons — keeping running minimizes the window to the taskbar instead, so downloads continue and there is a way back. An icon behind ^ can be clicked to bring the window back, and starting MDM again always does.
 
-On Linux this needs a tray, which most desktops have (KDE Plasma, Xfce, Cinnamon, Ubuntu's GNOME or GNOME with the AppIndicator extension, waybar's tray). On a desktop without one (some tiling window managers), closing the window quits MDM, since there would be nowhere to bring it back from.
+On Linux this needs a tray, which most desktops have (KDE Plasma, Xfce, Cinnamon, Ubuntu's GNOME or GNOME with the AppIndicator extension, waybar's tray). On a desktop without one (some tiling window managers), keeping MDM running minimizes the window to the taskbar instead of hiding it; a portable copy still quits on close.
 
 ![MDM's icon in the top bar of Ubuntu's GNOME, its menu open: Open Mister Download Manager, Add new download, Add batch download, Downloads in progress, Speed Limiter, Scheduler, the main queue, Options and Exit](images/tray-linux.webp)
 *The tray icon's menu on Ubuntu's GNOME.*

@@ -2788,8 +2788,24 @@ impl App {
     }
 
     /// Whether the tray icon is shown somewhere (Linux: a tray host is there; asked when the
-    /// window is closed, the host may come and go).
+    /// window is closed, the host may come and go). On Windows and macOS the icon itself is
+    /// asked: the shell can accept it and still show nothing, and a window hidden with no icon
+    /// to click has no way back. Cached for the per-frame minimize path.
     fn tray_shown(&self) -> bool {
+        #[cfg(any(target_os = "windows", target_os = "macos"))]
+        if let Some(tray) = &self.tray {
+            return tray.visible();
+        }
+        crate::tray::available()
+    }
+
+    /// [`tray_shown`] without the cache, for the close decision: an icon can disappear between
+    /// the cached answer and the close, and hiding then would be a ghost window.
+    fn tray_shown_now(&self) -> bool {
+        #[cfg(any(target_os = "windows", target_os = "macos"))]
+        if let Some(tray) = &self.tray {
+            return tray.visible_now();
+        }
         crate::tray::available()
     }
 
@@ -2905,16 +2921,27 @@ impl App {
             };
             self.run(cmd, None, ctx);
         }
-        // Closing hides the window in the tray; downloads and queues go on. On Linux only when a
-        // tray host shows the icon (#59: without one the window couldn't come back, nor close):
-        // otherwise closing closes, as any window's does.
-        if self.tray.is_some()
-            && !self.exiting
-            && ctx.input(|i| i.viewport().close_requested())
-            && self.tray_shown()
-        {
-            ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
-            self.hide_to_tray(ctx);
+        // Closing hides the window in the tray when the option says so and the shell really shows
+        // the icon; downloads and queues go on. When keeping running but no icon is shown, the
+        // window goes to the taskbar instead: still reachable, downloads still going. A copy that
+        // quits is left to close, as any window's close does.
+        if !self.exiting && ctx.input(|i| i.viewport().close_requested()) {
+            let close_to_tray = self.settings.close_to_tray();
+            if close_to_tray {
+                ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
+                if self.tray.is_some() && self.tray_shown_now() {
+                    tracing::info!("close: hidden to the notification area");
+                    self.hide_to_tray(ctx);
+                } else {
+                    // No icon to bring the window back from: keep the downloads going, but leave
+                    // the window reachable in the taskbar (the dock on macOS) instead of hiding.
+                    tracing::info!("close: no visible tray icon; minimizing to the taskbar");
+                    ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+                }
+            } else {
+                tracing::info!("close: quitting (close to tray false)");
+                self.exiting = true;
+            }
         }
         // Options → General → "Minimize to the notification area" (#63): Minimize hides the
         // window there too, where a tray shows the icon. Wayland can't hide a window: there it

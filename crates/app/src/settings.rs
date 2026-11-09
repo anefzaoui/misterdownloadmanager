@@ -140,6 +140,10 @@ pub struct Settings {
     /// notification area, as closing the main window does (#63). On by default (the
     /// maintainer's choice), for existing lists too. Only where a tray shows MDM's icon.
     pub minimize_to_tray: bool,
+    /// General: closing the main window hides it in the notification area (else closing quits).
+    /// None: the default, on for an installed copy and off for a portable one (deleting its
+    /// folder is the uninstall).
+    pub close_to_tray: Option<bool>,
     pub mv2_extensions: bool,
     pub advanced_integration: bool,
     /// General: "Capture downloads from the following browsers" (name, on).
@@ -328,6 +332,13 @@ pub const BROWSERS: [&str; 12] = [
 ];
 
 impl Settings {
+    /// Closing the main window hides it in the notification area: the option when set, else on
+    /// for an installed copy and off for a portable one (deleting its folder is the uninstall).
+    pub fn close_to_tray(&self) -> bool {
+        self.close_to_tray
+            .unwrap_or_else(|| mdm_ipc::portable_dir().is_none())
+    }
+
     /// A list saved before a browser was known gets it, captured (as an unlisted browser
     /// already is, capture::CaptureRules::captures), so Options shows it.
     pub fn list_known_browsers(&mut self) {
@@ -376,6 +387,7 @@ impl Default for Settings {
             extension_never_ask: false,
             clipboard_autostart: true,
             minimize_to_tray: true,
+            close_to_tray: None,
             mv2_extensions: true,
             advanced_integration: true,
             browsers: BROWSERS.iter().map(|b| (b.to_string(), true)).collect(),
@@ -1309,6 +1321,19 @@ pub(crate) mod sealed {
             let plain = serde_json::json!({ "site_logins": [["a.test", "u", "pw"]] });
             let old: crate::settings::Settings = serde_json::from_value(plain).unwrap();
             assert_eq!(old.site_logins[0].2, "pw");
+        }
+
+        #[test]
+        fn the_close_button_is_a_choice() {
+            let s: crate::settings::Settings =
+                serde_json::from_value(serde_json::json!({})).unwrap();
+            assert_eq!(s.close_to_tray, None, "no choice: the copy's default");
+            let s: crate::settings::Settings =
+                serde_json::from_value(serde_json::json!({ "close_to_tray": true })).unwrap();
+            assert_eq!(s.close_to_tray, Some(true));
+            let s: crate::settings::Settings =
+                serde_json::from_value(serde_json::json!({ "close_to_tray": false })).unwrap();
+            assert_eq!(s.close_to_tray, Some(false));
         }
     }
 }
