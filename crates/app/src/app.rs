@@ -2370,6 +2370,15 @@ impl App {
                 None if ua.is_empty() => Options::default().user_agent,
                 None => ua.to_owned(),
             },
+            // The browser's User-Agent may be refused on this connection (#372): MDM's own
+            // (Options' or the default) is tried once then, as Add URL would.
+            agent_fallback: context.user_agent.is_some().then(|| {
+                if ua.is_empty() {
+                    Options::default().user_agent
+                } else {
+                    ua.to_owned()
+                }
+            }),
             post: context.post.clone().map(|body| body.into_bytes().into()),
             on_file_created: Some(mark_hook(url, context.referer.as_deref())),
             ..Options::default()

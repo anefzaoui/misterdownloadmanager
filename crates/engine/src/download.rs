@@ -81,6 +81,11 @@ pub struct Options {
     /// The first retry is immediate (as IDM, lab S5); then this delay, doubling, capped at 30 s.
     pub retry_delay: Duration,
     pub user_agent: String,
+    /// Asked with instead of `user_agent` when the server refuses the first request with 403
+    /// (#372): a browser's User-Agent on a connection that isn't a browser's trips some sites'
+    /// bot checks (Cloudflare, seen on a public PDF), while MDM's own passes. Set when
+    /// `user_agent` is the browser's. A later 403 is left to the download.
+    pub agent_fallback: Option<String>,
     /// How often resume state is saved (IDM: "several times per minute").
     pub save_interval: Duration,
     /// Speed limit for this download, bytes/s (IDM's limiter is per file). None = unlimited.
@@ -209,6 +214,7 @@ impl Default for Options {
             max_retries: 5,
             retry_delay: Duration::from_secs(1),
             user_agent: DEFAULT_USER_AGENT.to_owned(),
+            agent_fallback: None,
             save_interval: Duration::from_secs(2),
             speed_limit: None,
             verify_overlap: 64,
@@ -813,15 +819,35 @@ pub async fn probe_kept(
     };
     let seen = Arc::new(crate::server::ServerSeen::default());
     let client = client(opts, &target, &as_get, &seen)?;
-    let (resp, headers, took) = get(
+    // A browser's User-Agent refused (#372): asked once more as MDM.
+    let (client, asked) = match get(
         &client,
-        target,
-        headers,
+        target.clone(),
+        headers.clone(),
         opts.post.as_ref(),
         &opts.user_agent,
         &CancellationToken::new(),
     )
-    .await?;
+    .await
+    {
+        Err(e) if agent_refused(&e) && opts.agent_fallback.is_some() => {
+            let mut plain = opts.clone();
+            plain.user_agent = opts.agent_fallback.clone().unwrap_or_default();
+            let client = self::client(&plain, &target, &as_get, &seen)?;
+            let asked = get(
+                &client,
+                target,
+                headers,
+                opts.post.as_ref(),
+                &plain.user_agent,
+                &CancellationToken::new(),
+            )
+            .await;
+            (client, asked)
+        }
+        asked => (client, asked),
+    };
+    let (resp, headers, took) = asked?;
     seen.answered(&resp);
     let final_url = resp.url().clone();
     let (size, from_zero) = match resp.status() {
@@ -1486,6 +1512,8 @@ async fn run_fresh(
     kept: Option<KeptAnswer>,
 ) -> Result<Outcome, Error> {
     let mut opts = opts;
+    // The first request had to give up the browser's User-Agent (#372).
+    let mut asked_as_mdm = false;
     shared.limiter.set(opts.speed_limit);
     let (shared, cancel) = (&shared, &cancel);
     shared.conn(0, |_| {});
@@ -1513,8 +1541,23 @@ async fn run_fresh(
             let as_get = AsGet::default();
             let seen = shared.seen.get_or_init(Default::default).clone();
             let client0 = client(&opts, &target, &as_get, &seen)?;
-            let (answer, ttfb) =
-                first_get(&client0, &target, &asked, &opts, shared, cancel).await?;
+            let (client0, first) = match first_get(&client0, &target, &asked, &opts, shared, cancel)
+                .await
+            {
+                Err(e) if agent_refused(&e) && opts.agent_fallback.is_some() => {
+                    // #372: the rest of the download goes as MDM too.
+                    opts.user_agent = opts.agent_fallback.take().unwrap_or_default();
+                    asked_as_mdm = true;
+                    shared.event(
+                            "The server refused the browser's User-Agent; asking as Mister Download Manager",
+                        );
+                    let client1 = client(&opts, &target, &as_get, &seen)?;
+                    let first = first_get(&client1, &target, &asked, &opts, shared, cancel).await;
+                    (client1, first)
+                }
+                first => (client0, first),
+            };
+            let (answer, ttfb) = first?;
             seen.answered(&answer.0);
             (as_get, client0, answer, ttfb)
         }
@@ -1614,6 +1657,7 @@ async fn run_fresh(
         saved.content_type = content_type.clone();
         saved.checksum = checksum.clone();
         saved.final_get = opts.post.is_some() && post.is_none();
+        saved.asked_as_mdm = asked_as_mdm;
         let ctx = Arc::new(Ctx {
             client: client0.clone(),
             validators: Mutex::new(validators),
@@ -1860,6 +1904,12 @@ async fn run_resume(
     shared: Arc<Shared>,
     cancel: CancellationToken,
 ) -> Result<Outcome, Error> {
+    let mut opts = opts;
+    if saved.asked_as_mdm
+        && let Some(agent) = opts.agent_fallback.take()
+    {
+        opts.user_agent = agent;
+    }
     shared.limiter.set(opts.speed_limit);
     let bad = |what: &str| Error::BadState(format!("{}: {what}", state_file.display()));
     if state_file != state_path(&saved.dest) {
@@ -2288,6 +2338,12 @@ async fn save_state(
         took: began.elapsed(),
     };
     Ok(())
+}
+
+/// A plain 403, which a browser's User-Agent may have brought on (#372). A site's bot check
+/// isn't asked again: that one stays the site's call (#376).
+fn agent_refused(e: &Error) -> bool {
+    matches!(e, Error::Status(s) if s.as_u16() == 403)
 }
 
 /// A plain `GET` (no Range), or a POST of `post`, that must answer 200 or 206. A GET follows

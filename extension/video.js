@@ -132,6 +132,9 @@
   const isDismissed = (v) => dismissed.has(v) || (v.currentSrc && dismissedSrc.has(v.currentSrc));
   let allowed = null; // asked once per page: may it show here?
   let place = { x: 1, y: 0 }; // where on the edge: fractions of the room, top right by default
+  let chosen = false; // the user put it where it is (dragged it, on this site): theirs, never moved for a page's control
+  let auto = { v: null, at: null, t: 0 }; // the spot found for this video, kept for a moment
+  const AUTO_MS = 400;
   let video = null; // the video it is over
   let lastMove = 0;
   let pointer = { x: -1, y: -1 };
@@ -317,12 +320,57 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
     return { r, w, h, roomX: Math.max(0, r.width - w - 2 * INSET), roomY: Math.max(0, r.height - h - 2 * INSET) };
   }
 
+  // Is a control of the page under this spot (a viewport rectangle)? What counts is something
+  // on top of the video that the user clicks and that is much smaller than the video: a button,
+  // a small link, a watch-later or menu button on a preview (#421); a link or layer over the
+  // whole video isn't one. On the video itself, and below it, is nothing to cover.
+  function onControl(b, video, videoRect) {
+    const area = (x) => Math.max(0, x.width) * Math.max(0, x.height);
+    const small = (el) => area(el.getBoundingClientRect()) < area(videoRect) / 5;
+    const points = [
+      [(b.left + b.right) / 2, (b.top + b.bottom) / 2],
+      [b.left + 4, b.top + 4],
+      [b.right - 4, b.top + 4],
+      [b.left + 4, b.bottom - 4],
+      [b.right - 4, b.bottom - 4],
+    ];
+    for (const [x, y] of points) {
+      for (const el of document.elementsFromPoint(x, y)) {
+        if (el === root) continue;
+        if (el === video || el.contains(video)) break;
+        const control = el.closest("button, [role=button], a[href], input, select, [onclick]");
+        if (control && !control.contains(video) && small(control)) return true;
+        if (small(el) && getComputedStyle(el).cursor === "pointer") return true;
+      }
+    }
+    return false;
+  }
+
+  // Where it goes now: the place the user gave it, else the default corner, or the next corner
+  // free of the page's own controls (a thumbnail's watch-later button at the top right, #421).
+  function spot(r, w, h, roomX, roomY) {
+    if (chosen) return place;
+    const now = Date.now();
+    if (auto.v === video && now - auto.t < AUTO_MS) return auto.at;
+    let at = place;
+    for (const c of [place, { x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }]) {
+      const left = r.left + INSET + c.x * roomX;
+      const top = r.top + INSET + c.y * roomY;
+      if (!onControl({ left, top, right: left + w, bottom: top + h }, video, r)) {
+        at = c;
+        break;
+      }
+    }
+    auto = { v: video, at, t: now };
+    return at;
+  }
+
   function position() {
     if (!video) return;
     const { r, w, roomX, roomY } = rects();
     // A narrow video gets the icon only.
     pill.classList.toggle("compact", r.width < 360);
-    const at = dragging ? dragging.at : place;
+    const at = dragging ? dragging.at : spot(r, w, pill.offsetHeight || 32, roomX, roomY);
     const left = r.left + INSET + at.x * roomX;
     // In the part of the video on screen: one scrolled half out keeps its button in view.
     const h = pill.offsetHeight || 32;
@@ -437,7 +485,10 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
     if (allowed) {
       try {
         const { positions } = await ext.storage.local.get({ positions: {} });
-        if (positions[host]) place = snap(positions[host]);
+        if (positions[host]) {
+          place = snap(positions[host]);
+          chosen = true;
+        }
       } catch {
         // Default spot.
       }
@@ -553,9 +604,9 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
       startX: e.clientX,
       startY: e.clientY,
       // Where in the button it was taken.
-      dx: e.clientX - (r.left + INSET + place.x * roomX),
-      dy: e.clientY - (r.top + INSET + place.y * roomY),
-      at: place,
+      dx: e.clientX - (r.left + INSET + (chosen ? place : auto.at || place).x * roomX),
+      dy: e.clientY - (r.top + INSET + (chosen ? place : auto.at || place).y * roomY),
+      at: chosen ? place : auto.at || place,
       moved: false,
     };
     go.setPointerCapture(e.pointerId);
@@ -587,6 +638,7 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
       return;
     }
     place = snap(d.at);
+    chosen = true;
     position();
     lastMove = Date.now();
     // Remembered per site, not in a private window (it would keep the site's name), and the
