@@ -931,6 +931,8 @@ static OWN_DNS: std::sync::RwLock<Option<mdm_engine::DnsChoice>> = std::sync::Rw
 
 /// Keep [`own_net`] on the settings' proxy (cheap when it didn't change).
 pub fn share_proxy(proxy: mdm_engine::Proxy) {
+    // yt-dlp and gallery-dl go through it too (#363).
+    mdm_tools::proc::set_proxy(proxy.clone());
     if OWN_PROXY.read().unwrap().as_ref() != Some(&proxy) {
         *OWN_PROXY.write().unwrap() = Some(proxy);
     }
