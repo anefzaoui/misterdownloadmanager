@@ -528,6 +528,7 @@ These ship in a later version, when they're ready.
   computer waking from sleep; waiting on the reporter's full report
 - 🔄 Crash reports: a monitor that cannot open its socket exits, and an unreachable one is
   cleaned up instead of staying beside MDM: fix in review
+  ([#458](https://github.com/anefzaoui/misterdownloadmanager/pull/458))
 
 ## Planned
 
