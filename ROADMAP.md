@@ -15,6 +15,8 @@ Everything below ships together, in version 0.5.0.
 
 - ✅ **Move/Rename** works on several selected downloads at once: pick a folder and they all go there
   ([#333](https://github.com/anefzaoui/misterdownloadmanager/issues/333))
+- ✅ Download video shows the size of a plain file (what the server says), not "size unknown"
+  (part of [#320](https://github.com/anefzaoui/misterdownloadmanager/issues/320))
 - ✅ Download video on pages whose player first loads a manifest's address answering something else
   (SVT Play): the real manifest goes to MDM, not that first answer
   ([#377](https://github.com/anefzaoui/misterdownloadmanager/issues/377))
@@ -130,6 +132,8 @@ Everything below ships together, in version 0.5.0.
 - ✅ Far more file types taken by default: AI models and datasets, 3D and CAD, design and camera
   RAW, ebooks, Office, disk images and split archives; a list never edited gains them
   ([#382](https://github.com/anefzaoui/misterdownloadmanager/issues/382))
+- ✅ The extension asks for a newer MDM only when a whole release separates them, not over a
+  bug-fix version
 - ✅ Add URL: a YouTube playlist opens the video window; Dailymotion's embedded player is looked
   up as the video's own page ([#338](https://github.com/anefzaoui/misterdownloadmanager/issues/338),
   [#359](https://github.com/anefzaoui/misterdownloadmanager/issues/359))

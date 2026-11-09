@@ -516,6 +516,16 @@ const ok = (what) => {
   ok("an older app: update-app");
 }
 
+// Only a bug-fix version apart (the store publishing the add-on first): no nudge, no update exists.
+{
+  const { api, store, listeners } = fakeApi({ firefox: false, rules: { version: "0.2.4" } });
+  load(api, false);
+  listeners.startup();
+  await settle();
+  assert.notEqual(store.status && store.status.why, "update-app");
+  ok("a bug-fix version behind: no update-app");
+}
+
 // Files the browser would open (a PDF): a session rule makes them downloads, for the listed types
 // only; none when the app says not to.
 {

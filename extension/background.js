@@ -163,10 +163,12 @@ async function remoteOff() {
 }
 
 // a < b, both "x.y.z".
+// Is version `a` an older release than `b`? Only the first two numbers count: the store can publish
+// a bug-fix add-on before its app is out, and nothing it offers needs that app.
 function older(a, b) {
   const pa = String(a).split(/[.-]/).map(Number);
   const pb = String(b).split(/[.-]/).map(Number);
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 2; i++) {
     if ((pa[i] || 0) !== (pb[i] || 0)) return (pa[i] || 0) < (pb[i] || 0);
   }
   return false;
