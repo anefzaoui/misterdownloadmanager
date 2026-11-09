@@ -321,7 +321,8 @@ pub fn category_folder(cat: Category, downloads: &Path, dirs: &[(String, String)
     let key = cat.key();
     dirs.iter()
         .find(|(c, _)| *c == *key)
-        .map(|(_, d)| PathBuf::from(d))
+        // A folder may be saved as shown, relative to the user's home.
+        .map(|(_, d)| crate::dialogs::resolve_path(d))
         .unwrap_or_else(|| cat.folder(downloads))
 }
 
@@ -1086,6 +1087,21 @@ mod size_tests {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_folder_saved_as_shown_is_under_home() {
+        let home = dirs::home_dir().unwrap();
+        let dirs = vec![("Video".to_owned(), "Downloads/Video".to_owned())];
+        let got = category_folder(Category::Video, Path::new("x"), &dirs);
+        assert_eq!(got, home.join("Downloads/Video"));
+        assert!(got.is_absolute());
+        let whole = home.join("Elsewhere").display().to_string();
+        let dirs = vec![("Video".to_owned(), whole.clone())];
+        assert_eq!(
+            category_folder(Category::Video, Path::new("x"), &dirs),
+            PathBuf::from(whole)
+        );
+    }
 
     #[test]
     fn categories() {
