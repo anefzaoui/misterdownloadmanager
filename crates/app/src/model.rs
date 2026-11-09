@@ -621,6 +621,21 @@ fn push_log(log: &mut Vec<(i64, String)>, at: i64, text: String) {
     log.push((at, text));
 }
 
+/// The size a row shows after a snapshot: the server's when it said one, else what was known. A
+/// download that ended without one is as long as what came down, not what the browser announced
+/// for the file it was going to fetch (#374).
+fn size_after(
+    state: State,
+    server: Option<u64>,
+    downloaded: u64,
+    known: Option<u64>,
+) -> Option<u64> {
+    match server {
+        None if state == State::Done => Some(downloaded),
+        server => server.or(known),
+    }
+}
+
 impl Item {
     /// Add an app-side event (added, started, stopped …) to the log.
     pub fn note(&mut self, text: impl Into<String>) {
@@ -704,7 +719,7 @@ impl Item {
             self.server = Some(crate::whereis::Seen::from(server));
         }
         self.downloaded = s.downloaded;
-        self.size = s.size.or(self.size);
+        self.size = size_after(s.state, s.size, s.downloaded, self.size);
         self.resumable = s.resumable.or(self.resumable);
         if let Some(f) = &s.file {
             // Named now: a later start from scratch keeps this name.
@@ -1046,6 +1061,25 @@ pub fn time(secs: f64) -> String {
         0..60 => format!("{s} sec"), // not translated: English path
         60..3600 => format!("{} min {} sec", s / 60, s % 60), // not translated: English path
         _ => format!("{} hour(s) {} min", s / 3600, (s % 3600) / 60), // not translated: English path
+    }
+}
+
+#[cfg(test)]
+mod size_tests {
+    use super::*;
+
+    #[test]
+    fn a_finished_download_is_as_long_as_what_came_down() {
+        // The browser announced 178 MB; the server sent a 15 KB page and no size.
+        assert_eq!(
+            size_after(State::Done, None, 14473, Some(186662440)),
+            Some(14473)
+        );
+        assert_eq!(
+            size_after(State::Downloading, None, 14473, Some(186662440)),
+            Some(186662440)
+        );
+        assert_eq!(size_after(State::Done, Some(100), 100, None), Some(100));
     }
 }
 
