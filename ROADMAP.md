@@ -451,6 +451,8 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 A crash when removing the last feed in the RSS feeds window
+  ([#321](https://github.com/anefzaoui/misterdownloadmanager/issues/321)): fix in review
 - 🔄 A duplicate prompt for a finished file that is gone
   ([#342](https://github.com/anefzaoui/misterdownloadmanager/issues/342)): fix in review
 - 🔍 A 10-second freeze of the window after a night left open
