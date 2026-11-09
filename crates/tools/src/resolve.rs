@@ -112,6 +112,20 @@ struct RawFormat {
     tbr: Option<f64>,
 }
 
+/// Whether `title` is only the last part of `page`'s address, which is what yt-dlp calls a video
+/// on a site it has no page reader for (#345: on some servers that part is a long hash).
+pub fn named_after_address(title: &str, page: &str) -> bool {
+    let Some(last) = url::Url::parse(page).ok().and_then(|u| {
+        u.path_segments()
+            .and_then(|mut p| p.next_back().map(str::to_owned))
+    }) else {
+        return false;
+    };
+    let last = percent_encoding::percent_decode_str(&last).decode_utf8_lossy();
+    let stem = last.rsplit_once('.').map_or(last.as_ref(), |(s, _)| s);
+    !stem.is_empty() && title.trim() == stem
+}
+
 /// Parse `yt-dlp -J` output.
 pub fn parse(json: &[u8]) -> Option<Video> {
     let raw: RawVideo = serde_json::from_slice(json).ok()?;
@@ -493,6 +507,19 @@ pub fn choices(v: &Video, can_merge: bool) -> Vec<Choice> {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn a_title_that_is_only_the_address() {
+        let hash = "SFp1NUcrZFRkRUVrUWlqM3paMitkakJIUW9JSFhOeEZkd0ZMNEc5UHpnZm5hRkY4Vis5MjlJU00xdDVqTk1vaw";
+        let page = format!("https://cdn.example/v/{hash}.mp4?sig=1");
+        assert!(named_after_address(hash, &page));
+        assert!(!named_after_address("A real title", &page));
+        assert!(!named_after_address("watch", "not an address"));
+        assert!(named_after_address(
+            "my clip",
+            "https://x.example/my%20clip.mp4"
+        ));
+    }
+
     use super::*;
 
     #[test]

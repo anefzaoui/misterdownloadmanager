@@ -169,9 +169,10 @@ impl VideoDialog {
     /// Opened for `page` (Add URL was given a video's page, or the browser's button was
     /// clicked with `context`): looks it up at once.
     pub fn for_page(folder: PathBuf, page: &str, context: mdm_ipc::Command) -> Self {
+        let page = mdm_tools::pages::video_address(page);
         VideoDialog {
-            page: page.to_owned(),
-            from_browser: page.to_owned(),
+            page: page.clone(),
+            from_browser: page,
             context,
             auto_look: true,
             ..Self::new(folder)
@@ -188,7 +189,15 @@ impl VideoDialog {
     }
 
     /// The choices for a looked-up video: merged qualities when ffmpeg is there.
-    fn set_video(&mut self, v: Video) {
+    fn set_video(&mut self, mut v: Video) {
+        // No page reader for this site: the page's own title rather than a hash (#345).
+        if let Some(title) = self.context.video_title.as_deref().map(str::trim)
+            && !title.is_empty()
+            && self.page.trim() == self.from_browser
+            && mdm_tools::resolve::named_after_address(&v.title, &self.page)
+        {
+            v.title = title.to_owned();
+        }
         let merge = self.tools.get_or_insert_with(tools).2.is_some();
         let choices = mdm_tools::resolve::choices(&v, merge);
         self.chosen = 0;
@@ -516,6 +525,8 @@ impl VideoDialog {
             && can_look
             && let Some(tool) = &ytdlp
         {
+            // A typed or pasted address too (#359); the box shows what is looked up.
+            self.page = mdm_tools::pages::video_address(self.page.trim());
             let slot: Slot<Looked> = Arc::new(Mutex::new(None));
             let (out, exe, page, ctx) = (
                 slot.clone(),

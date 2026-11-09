@@ -796,6 +796,13 @@ const MPD = (protect) => `<?xml version="1.0"?>
   await popupAsk(listeners, { type: "media-download", tab: 9, url: "https://files.test/movie.mp4" });
   const f = natives(calls).find((m) => m.url === "https://files.test/movie.mp4");
   assert.deepEqual([f.explicit, f.referrer, f.size, f.mime, f.video], [true, "https://watch.test/v/1", 52428800, "video/mp4", undefined]);
+  assert.equal(f.filename, "", "a file with a name of its own is named by its address");
+  // #345: an address that ends in a long hash names nothing: the tab's title does.
+  const hashed = "https://files.test/SFp1NUcrZFRkRUVrUWlqM3paMitkakJIUW9JSFhOeEZkd0ZMNEc5UHpnZm5hRkY4Vis5MjlJU00xdDVqTk1vaw.mp4";
+  listeners.responseStarted({ tabId: 9, frameId: 0, type: "media", url: hashed, responseHeaders: [{ name: "Content-Type", value: "video/mp4" }, { name: "Content-Length", value: "52428800" }] });
+  await settle();
+  await popupAsk(listeners, { type: "media-download", tab: 9, url: hashed });
+  assert.equal(natives(calls).find((m) => m.url === hashed).filename, "A film.mp4");
   const before = natives(calls).length;
   assert.deepEqual(await popupAsk(listeners, { type: "media-download", tab: 9, url: "https://drm.test/p/manifest.mpd" }), { ok: false, why: "drm" });
   assert.deepEqual(await popupAsk(listeners, { type: "media-download", tab: 9, url: "https://evil.test/x.mp4" }), { ok: false, why: "gone" });
@@ -805,7 +812,7 @@ const MPD = (protect) => `<?xml version="1.0"?>
   // A move within the page keeps the list; another page clears it; so does closing the tab.
   listeners.tabUpdated(9, { url: "https://watch.test/v/1#t=30" });
   await settle();
-  assert.equal((await popupAsk(listeners, { type: "media", tab: 9 })).media.length, 9);
+  assert.equal((await popupAsk(listeners, { type: "media", tab: 9 })).media.length, 10);
   listeners.tabUpdated(9, { url: "https://watch.test/v/2" });
   await settle();
   assert.equal((await popupAsk(listeners, { type: "media", tab: 9 })).media.length, 0);

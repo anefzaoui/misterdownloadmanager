@@ -125,6 +125,9 @@ Everything below ships together, in version 0.5.0.
 - ✅ Far more file types taken by default: AI models and datasets, 3D and CAD, design and camera
   RAW, ebooks, Office, disk images and split archives; a list never edited gains them
   ([#382](https://github.com/anefzaoui/misterdownloadmanager/issues/382))
+- ✅ Add URL: a YouTube playlist opens the video window; Dailymotion's embedded player is looked
+  up as the video's own page ([#338](https://github.com/anefzaoui/misterdownloadmanager/issues/338),
+  [#359](https://github.com/anefzaoui/misterdownloadmanager/issues/359))
 - ✅ Windows: Download File Info and the progress window open in front of the browser, even when
   Windows doesn't let MDM take the foreground; the keyboard stays where it was until a click
   ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
@@ -465,6 +468,9 @@ These ship in a later version, when they're ready.
 
 - 🔄 RSS feeds: the rule boxes losing the keyboard after each key
   ([#353](https://github.com/anefzaoui/misterdownloadmanager/issues/353)): fix in review
+- 🔄 Video progress at 100 % while still downloading, and long encoded strings as file names
+  ([#344](https://github.com/anefzaoui/misterdownloadmanager/issues/344),
+  [#345](https://github.com/anefzaoui/misterdownloadmanager/issues/345)): fix in review
 - 🔄 A page that starts a download by script being saved instead of the file
   ([#374](https://github.com/anefzaoui/misterdownloadmanager/issues/374)): fix in review
 - 🔍 A site's bot check refusing MDM's request (testfile.org, a Cloudflare challenge): the\n  message now says so ([#376](https://github.com/anefzaoui/misterdownloadmanager/issues/376)); a way to hand the download back to the browser is still to decide
