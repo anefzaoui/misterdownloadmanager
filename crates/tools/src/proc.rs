@@ -275,9 +275,10 @@ fn proxy_given(proxy: &mdm_engine::Proxy, url: Option<&url::Url>) -> ProxyGiven 
                 pac::routes(script, u)
                     .ok()?
                     .into_iter()
-                    .find_map(|r| match r {
-                        pac::Route::Direct => Some(None),
-                        pac::Route::Proxy(p) => Some(Some(p)),
+                    .next()
+                    .map(|r| match r {
+                        pac::Route::Direct => None,
+                        pac::Route::Proxy(p) => Some(p),
                     })
             });
             match first {
