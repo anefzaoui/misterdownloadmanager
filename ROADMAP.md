@@ -1,11 +1,11 @@
 # Roadmap
 
-What's done for version 0.5.0, what's being built, and what's planned. Each item links to its
+What's done for version 0.5.2, what's being built, and what's planned. Each item links to its
 issue, where the details and the discussion are. Released changes are in
 [CHANGELOG.md](CHANGELOG.md). Ideas and bug reports are welcome in
 [Issues](https://github.com/anefzaoui/misterdownloadmanager/issues).
 
-✅ done, coming in 0.5.0 · 🔄 being built · 📋 planned · 🔍 looking into it
+✅ done · 🔄 being built · 📋 planned · 🔍 looking into it
 
 ## Version 0.5.0
 
@@ -13,35 +13,6 @@ Everything below ships together, in version 0.5.0.
 
 ### Done
 
-- ✅ A link from the browser no longer ends in 403 where a site's bot check refuses the browser's
-  User-Agent: MDM asks once more as itself ([#372](https://github.com/anefzaoui/misterdownloadmanager/issues/372))
-- ✅ The video button no longer covers a control of the page (a preview's own button): it takes
-  a free corner, and dragging it keeps it where you put it
-  ([#421](https://github.com/anefzaoui/misterdownloadmanager/issues/421))
-- ✅ A background task stopping as MDM closes no longer shows a crash report
-  ([#422](https://github.com/anefzaoui/misterdownloadmanager/issues/422))
-- ✅ A freeze that was over before its dump was taken is reported as a freeze, not a crash in the
-  watchdog (part of [#420](https://github.com/anefzaoui/misterdownloadmanager/issues/420))
-- ✅ File names and titles in any script show their letters: the system font for a script
-  outside the interface language loads the first time it is needed, instead of boxes
-  ([#405](https://github.com/anefzaoui/misterdownloadmanager/issues/405))
-- ✅ yt-dlp and gallery-dl use the proxy set in Options → Proxy / Socks
-  ([#363](https://github.com/anefzaoui/misterdownloadmanager/issues/363))
-- ✅ The window keeps answering while reading the clipboard or removing a cancelled download's
-  files from a slow disk ([#418](https://github.com/anefzaoui/misterdownloadmanager/issues/418),
-  [#423](https://github.com/anefzaoui/misterdownloadmanager/issues/423))
-- ✅ Fast downloads keep going on a slow disk: flushing the resume state no longer holds up
-  the connections, and a connection is never replaced for the disk's wait
-  ([#361](https://github.com/anefzaoui/misterdownloadmanager/issues/361))
-- ✅ Freeze reports taken after the window has already answered say so, instead of blaming a deadlock
-  (part of [#355](https://github.com/anefzaoui/misterdownloadmanager/issues/355))
-- ✅ **Move/Rename** works on several selected downloads at once: pick a folder and they all go there
-  ([#333](https://github.com/anefzaoui/misterdownloadmanager/issues/333))
-- ✅ Download video shows the size of a plain file (what the server says), not "size unknown"
-  (part of [#320](https://github.com/anefzaoui/misterdownloadmanager/issues/320))
-- ✅ Download video on pages whose player first loads a manifest's address answering something else
-  (SVT Play): the real manifest goes to MDM, not that first answer
-  ([#377](https://github.com/anefzaoui/misterdownloadmanager/issues/377))
 - ✅ Menus on compositors that animate windows (Hyprland): no border and no slide-in, and going from
   title to title moves one window, so nothing fades; the reporter confirmed it
   ([#277](https://github.com/anefzaoui/misterdownloadmanager/issues/277))
@@ -59,9 +30,6 @@ Everything below ships together, in version 0.5.0.
 - ✅ **View → Interface size**: every window larger, 100 % to 200 %, with Ctrl + / Ctrl − / Ctrl 0
   as in a browser; a window larger than the screen scrolls. Sharper text on Windows (part of
   [#262](https://github.com/anefzaoui/misterdownloadmanager/issues/262))
-- ✅ Windows: sharp, evenly spaced text at every interface size: letters no longer run together
-  or drift apart ([#323](https://github.com/anefzaoui/misterdownloadmanager/issues/323),
-  [#334](https://github.com/anefzaoui/misterdownloadmanager/issues/334))
 - ✅ Linux: Update now asks the package manager which package MDM is; a copy installed by
   another package manager (pacman) is left to the system's updates, with a plain message
 - ✅ Linux: the .deb and .rpm install the browsers' host files for everyone and remove them on
@@ -151,16 +119,6 @@ Everything below ships together, in version 0.5.0.
 - ✅ More file types taken from the browser by default: DMG, PKG, DEB, RPM, APPIMAGE, MSIX, APPX,
   CAB, JAR, XZ, ZST, WEBM, FLAC, OPUS and others; a list never edited gains them
   ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
-- ✅ Far more file types taken by default: AI models and datasets, 3D and CAD, design and camera
-  RAW, ebooks, Office, disk images and split archives; a list never edited gains them
-  ([#382](https://github.com/anefzaoui/misterdownloadmanager/issues/382))
-- ✅ A save folder relative to the home folder is found where it really is
-- ✅ Browser link import: tighter handling of site data
-- ✅ The extension asks for a newer MDM only when a whole release separates them, not over a
-  bug-fix version
-- ✅ Add URL: a YouTube playlist opens the video window; Dailymotion's embedded player is looked
-  up as the video's own page ([#338](https://github.com/anefzaoui/misterdownloadmanager/issues/338),
-  [#359](https://github.com/anefzaoui/misterdownloadmanager/issues/359))
 - ✅ Windows: Download File Info and the progress window open in front of the browser, even when
   Windows doesn't let MDM take the foreground; the keyboard stays where it was until a click
   ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
@@ -472,6 +430,53 @@ Everything below ships together, in version 0.5.0.
 - ✅ Every screenshot taken again on Windows and Linux (smaller files, WebP), and every page of the
   docs, the README and the website brought up to date
   ([#186](https://github.com/anefzaoui/misterdownloadmanager/issues/186))
+
+## Version 0.5.2
+
+Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
+
+- ✅ A link from the browser no longer ends in 403 where a site refuses the browser's
+  User-Agent: MDM asks once more as itself ([#372](https://github.com/anefzaoui/misterdownloadmanager/issues/372))
+- ✅ The video button no longer covers a control of the page (a preview's own button): it takes
+  a free corner, and dragging it keeps it where you put it
+  ([#421](https://github.com/anefzaoui/misterdownloadmanager/issues/421))
+- ✅ A background task stopping as MDM closes no longer shows a crash report
+  ([#422](https://github.com/anefzaoui/misterdownloadmanager/issues/422))
+- ✅ A freeze that was over before its dump was taken is reported as a freeze, not a crash in the
+  watchdog (part of [#420](https://github.com/anefzaoui/misterdownloadmanager/issues/420))
+- ✅ File names and titles in any script show their letters: the system font for a script
+  outside the interface language loads the first time it is needed, instead of boxes
+  ([#405](https://github.com/anefzaoui/misterdownloadmanager/issues/405))
+- ✅ yt-dlp and gallery-dl use the proxy set in Options → Proxy / Socks
+  ([#363](https://github.com/anefzaoui/misterdownloadmanager/issues/363))
+- ✅ The window keeps answering while reading the clipboard or removing a cancelled download's
+  files from a slow disk ([#418](https://github.com/anefzaoui/misterdownloadmanager/issues/418),
+  [#423](https://github.com/anefzaoui/misterdownloadmanager/issues/423))
+- ✅ Fast downloads keep going on a slow disk: flushing the resume state no longer holds up
+  the connections, and a connection is never replaced for the disk's wait
+  ([#361](https://github.com/anefzaoui/misterdownloadmanager/issues/361))
+- ✅ Freeze reports taken after the window has already answered say so, instead of blaming a deadlock
+  (part of [#355](https://github.com/anefzaoui/misterdownloadmanager/issues/355))
+- ✅ **Move/Rename** works on several selected downloads at once: pick a folder and they all go there
+  ([#333](https://github.com/anefzaoui/misterdownloadmanager/issues/333))
+- ✅ Download video shows the size of a plain file (what the server says), not "size unknown"
+  (part of [#320](https://github.com/anefzaoui/misterdownloadmanager/issues/320))
+- ✅ Download video on pages whose player first loads a manifest's address answering something else
+  (SVT Play): the real manifest goes to MDM, not that first answer
+  ([#377](https://github.com/anefzaoui/misterdownloadmanager/issues/377))
+- ✅ Windows: sharp, evenly spaced text at every interface size: letters no longer run together
+  or drift apart ([#323](https://github.com/anefzaoui/misterdownloadmanager/issues/323),
+  [#334](https://github.com/anefzaoui/misterdownloadmanager/issues/334))
+- ✅ Far more file types taken by default: AI models and datasets, 3D and CAD, design and camera
+  RAW, ebooks, Office, disk images and split archives; a list never edited gains them
+  ([#382](https://github.com/anefzaoui/misterdownloadmanager/issues/382))
+- ✅ A save folder relative to the home folder is found where it really is
+- ✅ Browser link import: tighter handling of site data
+- ✅ The extension asks for a newer MDM only when a whole release separates them, not over a
+  bug-fix version
+- ✅ Add URL: a YouTube playlist opens the video window; Dailymotion's embedded player is looked
+  up as the video's own page ([#338](https://github.com/anefzaoui/misterdownloadmanager/issues/338),
+  [#359](https://github.com/anefzaoui/misterdownloadmanager/issues/359))
 
 ## Version 0.5.1
 
