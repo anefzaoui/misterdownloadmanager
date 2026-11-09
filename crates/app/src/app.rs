@@ -1905,6 +1905,12 @@ impl App {
                 ]));
             }
             "extension" => self.extension = Some(crate::extension::Extension::new()),
+            // The Safari row's "How to Add" steps, open (screenshots).
+            "safari-steps" => {
+                let mut offer = crate::extension::Extension::new();
+                offer.open_safari_steps();
+                self.extension = Some(offer);
+            }
             "language" => self.run(Cmd::ChooseLanguage, None, ctx),
             "shortcuts" => self.run(Cmd::Shortcuts, None, ctx),
             // The Help menu's windows and Download a gallery, for screenshots (#192). updates
@@ -5765,7 +5771,13 @@ impl App {
             // i18n: verb: opens the downloaded file
             I("Open", Cmd::Open, done, false),
             I("Open with...", Cmd::OpenWith, done, false),
-            I("Open folder", Cmd::OpenFolder, done, false),
+            // A torrent's folder is there while it downloads (#354).
+            I(
+                "Open folder",
+                Cmd::OpenFolder,
+                done || it.is_some_and(|i| i.torrent.is_some()),
+                false,
+            ),
             Sep,
             I("Move/Rename (Ctrl-M)", Cmd::MoveRename, movable, false),
             Sep,

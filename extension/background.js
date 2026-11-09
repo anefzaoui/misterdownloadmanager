@@ -15,8 +15,11 @@ const HOST = "com.misterdownloadmanager.host";
 const VERSION = ext.runtime.getManifest().version;
 const HELP = "https://misterdownloadmanager.com/help/browser-help.html";
 const action = ext.action ?? ext.browserAction;
+// Safari has no downloads API at all (nor proxy): it can't take a download from the browser, so
+// the links clicked in a page are handed over instead (`link`, below; page.js).
+const SAFARI = !ext.downloads;
 // Firefox has no pause before the file name (onDeterminingFilename): its own paths below.
-const FIREFOX = !ext.downloads.onDeterminingFilename;
+const FIREFOX = !SAFARI && !ext.downloads.onDeterminingFilename;
 // Brave and Opera say who they are only in the client hints, Firefox's forks (Zen, LibreWolf,
 // Floorp, Waterfox) only in runtime.getBrowserInfo, which only Firefox's family has. Both go to
 // the host as `brands` (Options lists them by name; crates/ipc capture::browser_named).
@@ -215,6 +218,8 @@ async function storedRules() {
 
 // One question at a time: callers meanwhile get its answer.
 let asking = null;
+// When Safari's page.js last had them asked for (once a minute at most, from every page).
+let rulesAskedAt = 0;
 function refreshRules() {
   asking = asking || askRules().finally(() => (asking = null));
   return asking;
@@ -241,6 +246,8 @@ async function askRules() {
   // keeps the files it would open).
   if (await remoteTarget()) {
     rules = { types: DEFAULT_TYPES, capture: true, excludedSites: "", excludedAddresses: [], opened: false, minKb: 0, at: Date.now() };
+    // Kept as the app's are: Safari's page.js holds links by the stored copy.
+    await ext.storage.local.set({ rules });
     return rules;
   }
   return null;
@@ -1283,6 +1290,38 @@ async function offer(item, url, name) {
   return Boolean(reply.ok);
 }
 
+// Safari: a link clicked in a page (page.js) that may be a download, offered as the browser's own
+// downloads are: through `candidate` (Options' rules, Alt, pause) then `offer`. `{taken: true}`
+// when the app took it; else page.js lets the click go on, so nothing is lost. The link's file
+// name is its `download` attribute's (`name`), else its address's (Safari names a download only
+// when it starts, which is too late).
+// The name an address gives, readable: the app saves a name as it is told it (the browsers' own
+// downloads come already named), so `My%20file.zip` would stay that.
+function addressName(url) {
+  const last = url.split(/[?#]/)[0].split("/").pop() || "";
+  try {
+    return decodeURIComponent(last);
+  } catch {
+    return last; // not valid percent-encoding
+  }
+}
+
+async function link(url, referrer, incognito, name) {
+  // What the browser opens itself (a PDF, a song) is taken only when Options say so (`opened`,
+  // "Also take files the browser would open"), as in the other browsers.
+  const r = await currentRules();
+  const type = extensionOf(name || url.split(/[?#]/)[0]).toUpperCase();
+  if (r && r.opened === false && OPENED[type]) return { taken: false };
+  const filename = name || addressName(url);
+  const item = { url, referrer, incognito, ...(filename ? { filename } : {}) };
+  const c = await candidate(item, url).catch(() => null);
+  if (!c || c.left) {
+    leftAlone(c, item, url);
+    return { taken: false };
+  }
+  return { taken: await offer(item, url, c.name).catch(() => false) };
+}
+
 // Tabs opened in the last seconds: one the download was opened in (a link opened in a new tab
 // or window, Shift+click) is closed with it, as when the browser keeps the download.
 const newTabs = new Map();
@@ -1326,7 +1365,9 @@ async function drop(item) {
   closeLeftTab([firstUrl(item), item.url, item.finalUrl].filter(Boolean)).catch(() => {});
 }
 
-if (!FIREFOX) {
+if (SAFARI) {
+  // Nothing to listen to: see `link`.
+} else if (!FIREFOX) {
   // Chromium: once the final file name is known (after redirects and Content-Disposition). The
   // download waits for `suggest`, writing nothing, while the app is asked: taken, it is
   // cancelled; else it goes on as the browser's. So it is never lost or kept by both (the app
@@ -1840,6 +1881,19 @@ async function pageMessage(m, sender) {
   const page = senderPage(sender);
   const tab = sender.tab || {};
   if (m.type === "panel") return { on: page ? await panelOn(page) : false };
+  if (m.type === "link" && typeof m.url === "string") {
+    const name = typeof m.name === "string" ? m.name.split(/[\\/]/).pop().slice(0, 255) : "";
+    return link(m.url, page || "", Boolean(tab.incognito), name);
+  }
+  // Safari's page.js, at each page: the rules it holds links by, refreshed when old (see `link`).
+  if (m.type === "rules") {
+    const r = await storedRules();
+    if ((!r || Date.now() - r.at > 60000) && Date.now() - rulesAskedAt > 60000) {
+      rulesAskedAt = Date.now();
+      refreshRules().catch(() => {});
+    }
+    return { ok: true };
+  }
   if (m.type === "bypass" && typeof m.url === "string") {
     bypass.set(m.url, { at: Date.now() });
     return { ok: true };

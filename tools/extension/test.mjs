@@ -18,6 +18,8 @@ const DEFAULT_TYPES = "3GP 7Z AAC EXE ISO MP3 MP4 MSI PDF R0* RAR ZIP";
 // whether it is granted (a required one always is), `proxyAnswer` what permissions.request says.
 function fakeApi({
   firefox,
+  // Safari: no downloads API at all (nor proxy and declarativeNetRequest).
+  safari,
   reply = { ok: true },
   // What the page's own player says it plays (video.js's button on YouTube); undefined: it can't be read.
   playing,
@@ -142,7 +144,8 @@ function fakeApi({
       getManifest: () => ({
         version: "0.2.5",
         content_scripts: [{ js: ["video.js"], ...(videoExcludes ? { exclude_matches: videoExcludes } : {}) }, { js: ["page.js"] }],
-        permissions: ["downloads", ...(proxyPerm === "required" ? ["proxy"] : [])],
+        permissions: [...(safari ? [] : ["downloads"]), ...(proxyPerm === "required" ? ["proxy"] : [])],
+        ...(safari ? { browser_specific_settings: { safari: {} } } : {}),
         ...(proxyPerm === "optional" ? { optional_permissions: ["proxy"] } : {}),
       }),
       onInstalled: event("installed"),
@@ -196,7 +199,8 @@ function fakeApi({
     // The browser's language: German here.
     i18n: { getMessage: (key) => ({ menu: "Mit Mister Download Manager herunterladen" })[key] ?? "" },
   };
-  if (!firefox) api.declarativeNetRequest = { getSessionRules: async () => [], updateSessionRules: async (r) => calls.push(["dnr", r]) };
+  if (safari) delete api.downloads;
+  if (!firefox && !safari) api.declarativeNetRequest = { getSessionRules: async () => [], updateSessionRules: async (r) => calls.push(["dnr", r]) };
   if (appName) api.runtime.getBrowserInfo = async () => ({ name: appName, vendor: "Mozilla", version: "1.0" });
   // `proxy`: what proxy.settings.get says (#42; Chromium {mode, rules, pacScript}, Firefox {proxyType, …}).
   if (proxy) api.proxy = { settings: { get: async () => ({ value: proxy, levelOfControl: "controlled_by_other_extensions" }) } };
@@ -1709,6 +1713,152 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   }
   assert.ok(english.status_remote, "status_remote");
   ok("another MDM: the app's file types, every pairing message");
+}
+// Safari has no downloads API: the extension still starts, and a link page.js holds (a file type
+// Options lists) is offered to the app as a browser's download is; the app taking it is told to
+// page.js, which lets the click go on when it isn't.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true, safari: true });
+  load(api, true);
+  const send = (m, sender) => new Promise((r) => listeners.message(m, sender, (v) => r(JSON.parse(JSON.stringify(v)))));
+  const sender = { id: "ours", frameId: 0, url: "https://page.test/", tab: { id: 3, url: "https://page.test/dl", incognito: false } };
+  assert.deepEqual(await send({ type: "link", url: "https://x.test/files/a.zip" }, sender), { taken: true });
+  const m = natives(calls)[0];
+  assert.deepEqual([m.url, m.filename, m.referrer, m.cookies], ["https://x.test/files/a.zip", "a.zip", "https://page.test/dl", "sid=1"]);
+  assert.ok(!("explicit" in m), "Options' rules apply, as for the browser's own downloads");
+  // Not a listed type: the click goes on, and MDM's log hears why.
+  calls.length = 0;
+  assert.deepEqual(await send({ type: "link", url: "https://x.test/page.html" }, sender), { taken: false });
+  await settle();
+  assert.deepEqual(natives(calls), []);
+  assert.deepEqual(notices(calls), [{ why: "file-type", name: "page.html", site: "x.test" }]);
+  // A `download` name (page.js sends it) decides the type and names the file.
+  calls.length = 0;
+  assert.deepEqual(await send({ type: "link", url: "https://x.test/dl?id=4", name: "b.iso" }, sender), { taken: true });
+  assert.equal(natives(calls)[0].filename, "b.iso");
+  // An address's own name reaches the app readable, not percent-encoded.
+  calls.length = 0;
+  assert.deepEqual(await send({ type: "link", url: "https://x.test/f/My%20Report.zip?x=1" }, sender), { taken: true });
+  assert.equal(natives(calls)[0].filename, "My Report.zip");
+  calls.length = 0;
+  assert.deepEqual(await send({ type: "link", url: "https://x.test/f/bad%ZZ.zip" }, sender), { taken: true });
+  assert.equal(natives(calls)[0].filename, "bad%ZZ.zip", "not percent-encoding: left as it is");
+  // page.js's "rules" at a page's start: fresh ones aren't asked for again.
+  calls.length = 0;
+  assert.deepEqual(await send({ type: "rules" }, sender), { ok: true });
+  await settle();
+  assert.deepEqual(natives(calls), []);
+  // A PDF is the browser's own to open unless Options say to take such files too.
+  const closed = fakeApi({ firefox: true, safari: true, rules: { opened: false } });
+  load(closed.api, true);
+  const closedAsk = (m) => new Promise((r) => closed.listeners.message(m, sender, (v) => r(JSON.parse(JSON.stringify(v)))));
+  assert.deepEqual(await closedAsk({ type: "link", url: "https://x.test/d.pdf" }, sender), { taken: false });
+  assert.deepEqual(await closedAsk({ type: "link", url: "https://x.test/d.zip" }, sender), { taken: true });
+  // The app says no: the click goes on.
+  const refused = fakeApi({ firefox: true, safari: true, reply: { ok: false } });
+  load(refused.api, true);
+  const ask = (m, sender) => new Promise((r) => refused.listeners.message(m, sender, (v) => r(JSON.parse(JSON.stringify(v)))));
+  assert.deepEqual(await ask({ type: "link", url: "https://x.test/b.iso" }, sender), { taken: false });
+  // Alt held: the browser's own (page.js sends `bypass`).
+  await ask({ type: "bypass", url: "https://x.test/c.zip" }, sender);
+  assert.deepEqual(await ask({ type: "link", url: "https://x.test/c.zip" }, sender), { taken: false });
+  ok("Safari: no downloads API; a held link is offered to the app, else the click goes on");
+}
+
+// page.js, in a page: Safari holds a plain click on a link to a listed file type, tells the app,
+// and (when it isn't taken) clicks again; Alt and other types are never held.
+{
+  const pageCode = readFileSync(new URL("../../extension/page.js", import.meta.url), "utf8");
+  const run = async ({ safari, taken, types = "ZIP ISO R0*", capture = true }) => {
+    const sent = [];
+    const handlers = {};
+    class Element {
+      constructor(href, attrs = {}) {
+        Object.assign(this, { href, attrs });
+        this.clicks = 0;
+      }
+      closest() {
+        return this;
+      }
+      getAttribute(n) {
+        return this.attrs[n] || "";
+      }
+      click() {
+        this.dispatchEvent(new MouseEvent("click", {}));
+      }
+      dispatchEvent(ev) {
+        this.clicks++;
+        this.again = ev;
+        handlers.click({ type: "click", button: 0, isTrusted: false, target: this, preventDefault() {} });
+      }
+    }
+    class MouseEvent {
+      constructor(type, init) {
+        Object.assign(this, { type }, init);
+      }
+    }
+    const stored = { rules: { types, capture } };
+    const api = {
+      runtime: {
+        id: "ours",
+        getManifest: () => (safari ? { browser_specific_settings: { safari: {} } } : {}),
+        sendMessage: async (m) => (sent.push(JSON.parse(JSON.stringify(m))), m.type === "link" ? { taken } : { ok: true }),
+      },
+      storage: { local: { get: async () => stored }, onChanged: { addListener() {}, removeListener() {} } },
+    };
+    vm.runInNewContext(pageCode, {
+      browser: api,
+      Element,
+      MouseEvent,
+      URL,
+      Promise,
+      addEventListener: (n, f) => (handlers[n] = f),
+      removeEventListener() {},
+    });
+    await settle();
+    const click = (href, extra = {}, attrs) => {
+      const a = new Element(href, attrs);
+      const e = { type: "click", button: 0, isTrusted: true, altKey: false, target: a, defaultPrevented: false, preventDefault() { this.defaultPrevented = true; }, ...extra };
+      handlers.click(e);
+      return { a, e };
+    };
+    return { click, sent, settle };
+  };
+  let t = await run({ safari: true, taken: true });
+  let { a, e } = t.click("https://x.test/f/a.zip");
+  await t.settle();
+  assert.ok(e.defaultPrevented && a.clicks === 0);
+  // At the page's start it has the rules refreshed when old (Safari's background sees no downloads).
+  assert.deepEqual(t.sent, [{ type: "rules" }, { type: "link", url: "https://x.test/f/a.zip" }]);
+  // R0* is a wildcard; the type is the last name's, the query is not part of it.
+  ({ e } = t.click("https://x.test/f/a.r07?x=1.html"));
+  assert.ok(e.defaultPrevented);
+  ({ e } = t.click("https://x.test/f/page.html"));
+  assert.ok(!e.defaultPrevented, "not a listed type");
+  ({ e } = t.click("https://x.test/f/a.zip", { altKey: true }));
+  assert.ok(!e.defaultPrevented, "Alt: the browser's");
+  assert.deepEqual(t.sent.at(-1), { type: "bypass", url: "https://x.test/f/a.zip" });
+  ({ e } = t.click("https://x.test/dl?id=4", {}, { download: "b.iso" }));
+  assert.ok(e.defaultPrevented, "a download attribute names the type");
+  assert.deepEqual(t.sent.at(-1), { type: "link", url: "https://x.test/dl?id=4", name: "b.iso" }, "and is sent with it");
+  ({ e } = t.click("https://x.test/f/a.zip", { button: 1 }));
+  assert.ok(!e.defaultPrevented, "only the primary button");
+  // The app doesn't take it: the same link is clicked again, untrusted, and let through.
+  t = await run({ safari: true, taken: false });
+  ({ a, e } = t.click("https://x.test/f/a.zip"));
+  await t.settle();
+  assert.ok(e.defaultPrevented && a.clicks === 1, "clicked again");
+  // Cmd held (a new tab): the click let through holds it too.
+  ({ a } = t.click("https://x.test/f/a.zip", { metaKey: true, shiftKey: false, ctrlKey: false }));
+  await t.settle();
+  assert.ok(a.clicks === 1 && a.again.metaKey === true && a.again.bubbles, "Cmd kept");
+  assert.equal(t.sent.filter((m) => m.type === "link").length, 2, "the clicks let through are not held");
+  // Capture off in Options, or another browser: nothing held.
+  t = await run({ safari: true, taken: true, capture: false });
+  assert.ok(!t.click("https://x.test/f/a.zip").e.defaultPrevented);
+  t = await run({ safari: false, taken: true });
+  assert.ok(!t.click("https://x.test/f/a.zip").e.defaultPrevented, "Chrome and Firefox take it from the downloads API");
+  ok("Safari: page.js holds a click on a listed file type, never Alt or other types");
 }
 assert.deepEqual(complaints, [], "nothing written to the console as an error or warning");
 
