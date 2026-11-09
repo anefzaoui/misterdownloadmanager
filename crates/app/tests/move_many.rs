@@ -128,6 +128,10 @@ fn a_selection_moves_to_one_folder() {
     assert_eq!(saved_place(&j, 3, root), "to/same (1).zip");
     assert_eq!(saved_place(&j, 4, root), "to/done-1.bin");
     assert_eq!(saved_place(&j, 5, root), "to/done-2.bin");
-    assert_eq!(saved_place(&j, 6, root), "dl/partial.bin", "part-way: it stays");
+    assert_eq!(
+        saved_place(&j, 6, root),
+        "dl/partial.bin",
+        "part-way: it stays"
+    );
     assert!(!dl.join("done-1.bin").exists());
 }
