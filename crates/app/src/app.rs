@@ -667,6 +667,20 @@ fn sent_referrer(url: &url::Url, referrer: &str) -> Option<String> {
     Some(format!("{}/", from.origin().ascii_serialization()))
 }
 
+/// What a link found on a page takes along from that page.
+fn page_data_for(link: &str, page: Option<&str>, data: Option<&str>) -> Option<String> {
+    let (link, page) = (url::Url::parse(link).ok()?, url::Url::parse(page?).ok()?);
+    let same_host = link.host_str().is_some()
+        && link
+            .host_str()
+            .map(str::to_ascii_lowercase)
+            .eq(&page.host_str().map(str::to_ascii_lowercase));
+    let downgrade = page.scheme() == "https" && link.scheme() != "https";
+    (same_host && !downgrade)
+        .then(|| data.map(str::to_owned))
+        .flatten()
+}
+
 /// Marks each file the engine starts writing as downloaded from the web (Mark-of-the-Web, macOS'
 /// quarantine: win32 / unix `mark_downloaded`), as browsers mark theirs. Only http(s) addresses
 /// (an FTP address may carry its login).
@@ -2149,7 +2163,7 @@ impl App {
                 .map(|url| crate::transfer::Imported {
                     url: url.clone(),
                     referer: cmd.referer.clone(),
-                    cookies: cmd.cookies.clone(),
+                    cookies: page_data_for(url, cmd.referer.as_deref(), cmd.cookies.as_deref()),
                     user_agent: cmd.user_agent.clone(),
                     private: cmd.private,
                 })
@@ -8753,5 +8767,35 @@ mod trim_tests {
             })
             .collect();
         assert_eq!(times, [2, 120, 720, 1320]);
+    }
+}
+
+#[cfg(test)]
+mod page_data_tests {
+    use super::page_data_for;
+
+    const PAGE: Option<&str> = Some("https://forum.example/thread/1");
+    const DATA: Option<&str> = Some("a=1");
+
+    #[test]
+    fn links_take_what_belongs_to_them() {
+        let got = |link| page_data_for(link, PAGE, DATA);
+        assert_eq!(got("https://forum.example/files/a.zip").as_deref(), DATA);
+        assert_eq!(got("https://FORUM.example/b.zip").as_deref(), DATA);
+        assert_eq!(got("https://other.test/a.zip"), None);
+        assert_eq!(got("https://forum.example.other.test/a.zip"), None);
+        assert_eq!(got("https://cdn.forum.example/a.zip"), None);
+        assert_eq!(got("http://forum.example/a.zip"), None);
+        assert_eq!(got("not an address"), None);
+    }
+
+    #[test]
+    fn no_page_or_nothing_to_take() {
+        assert_eq!(page_data_for("https://a.test/x", None, DATA), None);
+        assert_eq!(
+            page_data_for("https://a.test/x", Some("https://a.test/"), None),
+            None
+        );
+        assert_eq!(page_data_for("https://a.test/x", Some("nope"), DATA), None);
     }
 }
