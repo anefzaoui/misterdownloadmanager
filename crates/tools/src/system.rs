@@ -22,6 +22,8 @@ pub(crate) fn installed(name: &str) -> Option<Installed> {
 
 fn find_in(name: &str, dirs: impl IntoIterator<Item = PathBuf>) -> Option<PathBuf> {
     dirs.into_iter()
+        // Only absolute folders count: an empty or relative PATH entry names no fixed place.
+        .filter(|dir| dir.is_absolute())
         .map(|dir| dir.join(name))
         .find(|exe| runnable(exe))
 }
@@ -47,6 +49,25 @@ mod tests {
         std::fs::remove_file(&exe).unwrap();
         std::fs::create_dir(&exe).unwrap();
         assert_eq!(find_in("yt-dlp", [root.path().to_owned()]), None);
+    }
+
+    #[test]
+    fn only_absolute_folders_count() {
+        // Beside the working directory, so that the relative path really reaches a helper.
+        let root = tempfile::tempdir_in(".").unwrap();
+        let exe = root.path().join("yt-dlp");
+        std::fs::write(&exe, b"#!/bin/sh\nexit 0\n").unwrap();
+        std::fs::set_permissions(&exe, std::fs::Permissions::from_mode(0o755)).unwrap();
+        let relative = PathBuf::from(root.path().file_name().unwrap());
+        assert!(relative.is_relative() && runnable(&relative.join("yt-dlp")));
+        assert_eq!(find_in("yt-dlp", [relative.clone()]), None);
+        assert_eq!(find_in("yt-dlp", [PathBuf::new()]), None, "an empty entry");
+
+        let absolute = std::fs::canonicalize(root.path()).unwrap();
+        assert_eq!(
+            find_in("yt-dlp", [PathBuf::new(), relative, absolute.clone()]),
+            Some(absolute.join("yt-dlp"))
+        );
     }
 
     #[test]
