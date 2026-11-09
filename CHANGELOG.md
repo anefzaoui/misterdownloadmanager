@@ -7,6 +7,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Browser link import: tighter handling of site data.
 - Crash reports: a freeze that was over before its snapshot was taken says so, instead of calling it a deadlock in code that was only waiting for events ([#355](https://github.com/anefzaoui/misterdownloadmanager/issues/355)).
 - **Move/Rename** was greyed out with several downloads selected, for example a set just added to a queue. It now asks for a folder and moves them all there ([#333](https://github.com/anefzaoui/misterdownloadmanager/issues/333)).
 - The extension no longer asks you to update MDM when only a bug-fix version separates them, which it did even when there was no update to get.
