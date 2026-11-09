@@ -15,7 +15,7 @@
 //
 // The cases (per browser): link (a .zip link, throttled and not), ask (Firefox set to ask what to
 // do with each new type, as Waterfox is: caught before its dialog, #208), cookie (cookies and referrer
-// forwarded), names (Content-Disposition), redirect, form (POST, 303), alt (Alt+click leaves it
+// forwarded), names (Content-Disposition), redirect, leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
 // to the browser), opened (a PDF or MP3 the browser would show or play), csp (the video button
 // under a strict CSP), hls (the stream a player loaded), streams (HLS and DASH players handed over
 // by the button, the right-click menu and the media list, and read by yt-dlp; #155; also with no
@@ -1438,6 +1438,19 @@ const CASES = {
     await mdmRequests(`/gen/2M/${file}`);
     await keptNothing(t.dl);
     return "the address clicked kept, the file from its target";
+  },
+
+  // A page that goes to the file by script (#374): MDM gets the file's address, not the page's.
+  async leadon(t) {
+    const file = `e2e-leadon-${t.name}.zip`;
+    const page = `/leadon?to=${encodeURIComponent(`/gen/2M/${file}`)}`;
+    await t.session.navigate(`${LAB}${page}`);
+    const item = await arrived(file, 2 << 20);
+    if (item.url !== `${LAB}/gen/2M/${file}`) throw new Error(`MDM's address is ${item.url}, not the file's`);
+    const asked = await requests(page.split("?")[0]);
+    if (asked.length !== 1) throw new Error(`the page was asked ${asked.length} times (only the browser's expected)`);
+    await keptNothing(t.dl);
+    return "the file's address, the page asked by the browser only";
   },
 
   // A form's download: MDM posts it again with the form's body; one answered 303 too.
