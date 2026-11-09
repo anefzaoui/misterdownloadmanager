@@ -7,6 +7,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- A file name sent by a site in plain UTF-8 now reaches MDM readable from Firefox and browsers built on it, such as Floorp, Waterfox and Zen: an Arabic name was saved as unreadable symbols ([#447](https://github.com/anefzaoui/misterdownloadmanager/issues/447)). A name written with percent signs in the same header is decoded as well. The add-on carries the fix
 - A download saved under a numbered name because another file already had its name (`master (1).mp4`) now shows that name in the list and opens its own file, instead of keeping the old name and opening the other file ([#442](https://github.com/anefzaoui/misterdownloadmanager/issues/442)). Two downloads waiting under one name no longer collide when they start: the later one takes the next free name, instead of failing with "already being downloaded" or continuing the other one's data.
 - A link sent from the browser no longer fails with 403 on sites whose bot check refuses a browser's User-Agent on a connection that isn't a browser's: MDM asks once more with its own, as Add URL does ([#372](https://github.com/anefzaoui/misterdownloadmanager/issues/372)).
 - The video download button moves to a free corner instead of covering a control of the page, such as a thumbnail's watch-later button ([#421](https://github.com/anefzaoui/misterdownloadmanager/issues/421)). Dragging it still puts it where you want it.
