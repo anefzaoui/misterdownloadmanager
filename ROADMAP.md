@@ -13,6 +13,8 @@ Everything below ships together, in version 0.5.0.
 
 ### Done
 
+- ✅ macOS: Download File Info opens in front of the browser that asked for it, with the keyboard
+  in Save As ([#484](https://github.com/anefzaoui/misterdownloadmanager/issues/484))
 - ✅ A link from the browser no longer ends in 403 where a site's bot check refuses the browser's
   User-Agent: MDM asks once more as itself ([#372](https://github.com/anefzaoui/misterdownloadmanager/issues/372))
 - ✅ The video button no longer covers a control of the page (a preview's own button): it takes

@@ -444,9 +444,12 @@ fn dialog_window<T>(
         crate::theme::dark_surface(),
         matches!(out, Outcome::Open),
     );
-    // A question takes the focus once it is shown (not while hidden for its theme).
+    // A question takes the focus once it is shown (not while hidden for its theme), and so does
+    // Download File Info outside Windows (#484): asked for from the browser, it opened behind
+    // it. Windows lifts it in keep_theme instead.
     let focused = key.with("focus-sent");
-    if modal && matches!(out, Outcome::Open) && !crate::offscreen() {
+    let takes_focus = modal || (cfg!(not(windows)) && id == "file-info");
+    if takes_focus && matches!(out, Outcome::Open) && !crate::offscreen() {
         let shown = ctx.data(|d| d.get_temp::<bool>(key.with("shown")).unwrap_or(false));
         if shown && !ctx.data(|d| d.get_temp::<bool>(focused).unwrap_or(false)) {
             ctx.send_viewport_cmd_to(ViewportId::from_hash_of(id), egui::ViewportCommand::Focus);
