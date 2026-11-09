@@ -13,6 +13,8 @@ Everything below ships together, in version 0.5.0.
 
 ### Done
 
+- ✅ Download video shows the size of a plain file (what the server says), not "size unknown"
+  (part of [#320](https://github.com/anefzaoui/misterdownloadmanager/issues/320))
 - ✅ Menus on compositors that animate windows (Hyprland): no border and no slide-in, and going from
   title to title moves one window, so nothing fades; the reporter confirmed it
   ([#277](https://github.com/anefzaoui/misterdownloadmanager/issues/277))
