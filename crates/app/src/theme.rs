@@ -832,15 +832,35 @@ fn fonts(ctx: &egui::Context, code: &str, all: bool) {
 #[cfg(windows)]
 fn classic_text(ctx: &egui::Context) {
     use std::sync::atomic::{AtomicI8, Ordering};
-    static RTL: AtomicI8 = AtomicI8::new(-1);
+    static DRAWN: AtomicI8 = AtomicI8::new(-1);
     let rtl = crate::i18n::rtl();
-    if RTL.swap(i8::from(rtl), Ordering::Relaxed) != i8::from(rtl) {
+    let smooth = SMOOTH_TEXT.load(Ordering::Relaxed);
+    let now = i8::from(rtl) | (i8::from(smooth) << 1);
+    if DRAWN.swap(now, Ordering::Relaxed) != now {
         ctx.set_glyph_rasterizers(
-            crate::win32::text_rasterizer(font_dir(), rtl)
+            crate::win32::text_rasterizer(font_dir(), rtl, smooth)
                 .into_iter()
                 .collect(),
         );
     }
+}
+
+/// View → Text: smooth (DirectWrite's natural look, the default) or classic (hinted whole-pixel
+/// text, as Windows' old controls). Only Windows has the choice: elsewhere egui draws the text.
+static SMOOTH_TEXT: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(true);
+
+/// The setting's value, before the first frame (it is read at start).
+pub fn init_smooth_text(on: bool) {
+    SMOOTH_TEXT.store(on, std::sync::atomic::Ordering::Relaxed);
+}
+
+/// Draw the text smooth (`true`) or classic from now on, in every window.
+pub fn set_smooth_text(ctx: &egui::Context, on: bool) {
+    init_smooth_text(on);
+    #[cfg(windows)]
+    classic_text(ctx);
+    #[cfg(not(windows))]
+    let _ = ctx;
 }
 
 /// The text [`classic_text`] leaves to egui (Arabic, Hebrew, Indic, Thai, CJK; marks clustered

@@ -116,6 +116,9 @@ enum Cmd {
     DrawWith(crate::renderer::Api),
     /// View → Interface size → a size in percent (#262).
     InterfaceSize(u16),
+    /// View → Text → Smooth (`true`) or Classic (Windows).
+    #[cfg(windows)]
+    SmoothText(bool),
     /// View → Language: a catalog's code, or follow Windows (`None`).
     Language(Option<&'static str>),
     /// View → Language...: the language picker.
@@ -5053,6 +5056,12 @@ impl App {
             }
             // Every window at once (the frames after this one); saved by `follow_zoom`.
             Cmd::InterfaceSize(percent) => crate::scale::set(ctx, percent),
+            #[cfg(windows)]
+            Cmd::SmoothText(on) => {
+                crate::theme::set_smooth_text(ctx, on);
+                self.settings.smooth_text = on;
+                self.dirty = true;
+            }
             #[cfg(gpu)]
             Cmd::DrawWith(api) => {
                 // Chosen again after it failed here: its next start is tried.
@@ -5704,8 +5713,13 @@ impl App {
         {
             menu.insert(at + 1, self.theme_menu());
             menu.insert(at + 2, self.interface_size_menu());
+            #[cfg(windows)]
+            menu.insert(at + 3, self.text_menu());
             #[cfg(gpu)]
-            menu.insert(at + 3, self.draw_with_menu());
+            menu.insert(
+                at + if cfg!(windows) { 4 } else { 3 },
+                self.draw_with_menu(),
+            );
         }
         menu
     }
@@ -5781,6 +5795,20 @@ impl App {
             .collect();
         // i18n: View menu: submenu choosing how large MDM draws its windows and text (100 % to 200 %), as a browser's zoom
         MenuEntry::Sub("&Interface size", true, items)
+    }
+
+    /// View → Text (Windows): how the letters are drawn. Smooth is DirectWrite's natural look
+    /// (any size, each letter where it falls: easy to read on a dense screen); Classic is the
+    /// hinted whole-pixel look of Windows' old controls. Applies at once.
+    #[cfg(windows)]
+    fn text_menu(&self) -> MenuEntry<Cmd> {
+        let smooth = self.settings.smooth_text;
+        // i18n: View → Text: letters drawn smooth, as Windows' modern apps draw them, anti-aliased at any size
+        let a = MenuEntry::Radio("&Smooth", Cmd::SmoothText(true), true, smooth);
+        // i18n: View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
+        let b = MenuEntry::Radio("&Classic", Cmd::SmoothText(false), true, !smooth);
+        // i18n: View menu: submenu choosing how the text is drawn (smooth or classic)
+        MenuEntry::Sub("&Text", true, vec![a, b])
     }
 
     /// View → Draw with (#89, #206): OpenGL or the system's own graphics API (Direct3D on

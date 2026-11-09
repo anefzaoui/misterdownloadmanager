@@ -108,9 +108,12 @@ pub struct Settings {
     /// View → Draw with (#89): OpenGL or Direct3D (Windows only), used from the next start.
     /// None: MDM's default (`renderer::DEFAULT`), which may change.
     pub renderer: Option<crate::renderer::Api>,
-    /// View → Interface size (#262), percent: 100, 125, 150, 175 or 200 (crate::scale). Every
+    /// View → Interface size (#262), percent: one of `crate::scale::STEPS` (100 to 200). Every
     /// window drawn that much larger than the display's own scale makes it.
     pub interface_size: u16,
+    /// View → Text (Windows): smooth text as Windows' modern apps draw it (the default), or
+    /// the classic controls' hinted, whole-pixel look (`crate::theme::set_smooth_text`).
+    pub smooth_text: bool,
     /// Scheduler → Download limits: "Download no more than `limits_mb` MBytes every
     /// `limits_hours` hours" (IDM defaults 200 / 5), with a warning before stopping.
     pub limits_on: bool,
@@ -365,6 +368,7 @@ impl Default for Settings {
             theme: "classic".into(),
             renderer: None,
             interface_size: 100,
+            smooth_text: true,
             limits_on: false,
             limits_mb: 200,
             limits_hours: 5,
