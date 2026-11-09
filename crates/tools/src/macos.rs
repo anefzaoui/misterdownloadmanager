@@ -3,7 +3,7 @@
 //! yt-dlp publishes two macOS programs. The one-file `yt-dlp_macos` unpacks its Python into a new
 //! temporary folder at every start. An app still marked as downloaded by the browser passes that
 //! mark to what it and its children create, so the Python just unpacked carries it, and macOS
-//! refuses to load the ad-hoc signed library ("Python.framework is damaged", PYI-…): every
+//! refuses to load the library ("Python.framework is damaged", PYI-…): every
 //! look-up failed. MDM has no hand in that temporary folder.
 //!
 //! The folder build (`yt-dlp_macos.zip`) unpacks nothing when it runs: MDM unpacks it once, after
