@@ -13,6 +13,9 @@ Everything below ships together, in version 0.5.0.
 
 ### Done
 
+- ✅ The window keeps answering while reading the clipboard or removing a cancelled download's
+  files from a slow disk ([#418](https://github.com/anefzaoui/misterdownloadmanager/issues/418),
+  [#423](https://github.com/anefzaoui/misterdownloadmanager/issues/423))
 - ✅ Freeze reports taken after the window has already answered say so, instead of blaming a deadlock
   (part of [#355](https://github.com/anefzaoui/misterdownloadmanager/issues/355))
 - ✅ **Move/Rename** works on several selected downloads at once: pick a folder and they all go there
