@@ -5,7 +5,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ## [Unreleased]
 
-## [0.5.2] - 2026-11-10
+## [0.5.2] - 2026-11-09
 
 A big fixes release: YouTube and video downloads, crashes and freezes, downloads on slow disks, the Mac helper, plus a Safari extension, far more file types and a few new columns and options.
 
