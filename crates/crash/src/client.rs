@@ -137,7 +137,8 @@ mod tests {
         let exe = if cfg!(windows) {
             "whoami.exe"
         } else {
-            "/bin/true"
+            // macOS has no /bin/true: found on the PATH.
+            "true"
         };
         let started = Instant::now();
         assert!(Reporter::start(Path::new(exe), dir.path()).is_none());
