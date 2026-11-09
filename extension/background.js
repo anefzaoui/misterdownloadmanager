@@ -917,15 +917,19 @@ async function mediaList(tabId) {
   return out;
 }
 
-// A file's name from the tab's title when its address ends in a long hash (#345), else none: the
+// A file's name from the tab's title when its address ends in a long hash (#345); else, with the
+// popup's switch on (`includeOriginal`), the title before the address's own name; else none: the
 // app names it from the address, as for any download.
-function titledName(url, title) {
+function titledName(url, title, includeOriginal = false) {
   const last = pathOf(url).split("/").pop() || "";
   const dot = last.lastIndexOf(".");
   const stem = dot > 0 ? last.slice(0, dot) : last;
   const name = String(title || "").replace(/[\\/:*?"<>|]/g, " ").trim().slice(0, 150);
   const hash = stem.length >= 24 && /^[A-Za-z0-9=_-]+$/.test(stem) && (stem.match(/[-_]/g) || []).length <= 2;
-  return hash && name ? `${name}${dot > 0 ? last.slice(dot) : ""}` : "";
+  if (hash && name) return `${name}${dot > 0 ? last.slice(dot) : ""}`;
+  if (!includeOriginal || !name) return "";
+  const original = addressName(url).replace(/[\\/:*?"<>|\x00-\x1f]/g, " ").trim();
+  return original && original !== "." && original !== ".." ? `${name} - ${original}` : "";
 }
 
 // One of the tab's media, handed to the app as the popup asked: a stream to the Download video
@@ -960,7 +964,8 @@ async function mediaDownload(tabId, url) {
       ...(ctx.incognito ? { private: true } : {}),
     });
   }
-  return handOff({ url: it.url, referrer: page, size: it.size, mime: it.mime, explicit: true, filename: titledName(it.url, tab.title), ...ctx });
+  const { mediaTitleName } = await ext.storage.local.get({ mediaTitleName: false });
+  return handOff({ url: it.url, referrer: page, size: it.size, mime: it.mime, explicit: true, filename: titledName(it.url, tab.title, mediaTitleName), ...ctx });
 }
 
 // ---- the hand-off ------------------------------------------------------------------------

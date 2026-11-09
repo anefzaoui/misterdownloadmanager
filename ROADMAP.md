@@ -504,6 +504,10 @@ These ship in a later version, when they're ready.
   so a download a page starts by itself stays with Safari. Built and its relay to the helper
   checked in the sandbox Safari uses; still to check in Safari itself, signed with a Developer ID
 
+- 🔄 A torrent's peers and share ratio as columns in the download list
+  ([#357](https://github.com/anefzaoui/misterdownloadmanager/issues/357)): in review; its upload
+  speed is still to come
+- 🔄 The browser extension's media list naming a file after its page, as an option: in review
 - 🔄 Malay: a native speaker's check of the menus, toolbar and list columns: in review
 
 ### Bugs being looked into
@@ -524,6 +528,8 @@ These ship in a later version, when they're ready.
   [#345](https://github.com/anefzaoui/misterdownloadmanager/issues/345)): fix in review
 - 🔄 A page that starts a download by script being saved instead of the file
   ([#374](https://github.com/anefzaoui/misterdownloadmanager/issues/374)): fix in review
+- 🔄 "Hide tab" in a download's window only going back to Download status, the tab still
+  there ([#326](https://github.com/anefzaoui/misterdownloadmanager/issues/326)): fix in review
 - 🔍 A site's bot check refusing MDM's request (testfile.org, a Cloudflare challenge): the\n  message now says so ([#376](https://github.com/anefzaoui/misterdownloadmanager/issues/376)); a way to hand the download back to the browser is still to decide
 - 🔄 A download starting again by itself after Stop, when it is in a running queue\n  ([#341](https://github.com/anefzaoui/misterdownloadmanager/issues/341)): fix in review
 - 🔄 A crash when removing the last feed in the RSS feeds window
@@ -541,6 +547,9 @@ These ship in a later version, when they're ready.
 - 🔍 A 10-second freeze of the window after a night left open
   ([#304](https://github.com/anefzaoui/misterdownloadmanager/issues/304)): most likely the
   computer waking from sleep; waiting on the reporter's full report
+- 🔄 Crash reports: a monitor that cannot open its socket exits, and an unreachable one is
+  cleaned up instead of staying beside MDM: fix in review
+  ([#458](https://github.com/anefzaoui/misterdownloadmanager/pull/458))
 
 ## Planned
 

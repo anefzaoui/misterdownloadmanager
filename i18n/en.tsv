@@ -4096,11 +4096,17 @@ column	File Name	File Name
 #. column title in the download list in the download list
 column	Last Try Date	Last Try Date
 #. column title in the download list in the download list
+#. column title: how many peers a torrent is connected to now (seeders and leechers)
+column	Peers	Peers
+#. column title in the download list in the download list
 #. column title: one letter for Queue (the column is narrow)
 column	Q	Q
 #. column title in the main window; column title in the download list
 #. tooltip of the narrow "Q" column's title
 column	Queue	Queue
+#. column title in the download list in the download list
+#. column title: what a torrent has sent to peers against what it took
+column	Share ratio	Share ratio
 #. column title in the download list in the download list
 #. noun: the file's size
 column	Size	Size
@@ -4265,6 +4271,9 @@ extension	Pairing code	Pairing code
 #. text in the browser extension
 #. status when the user switched off taking downloads in the toolbar button's popup
 extension	Paused: downloads stay with the browser	Paused: downloads stay with the browser
+#. text in the browser extension
+#. Option in the browser extension media list: put the page title before the original file name when downloading a detected media file
+extension	Prefix media file names with the page title	Prefix media file names with the page title
 #. text in the browser extension
 #. shown instead of the Download button beside a copy-protected (DRM) stream in the toolbar button's popup: it can't be downloaded; short
 extension	Protected	Protected
@@ -4473,6 +4482,10 @@ menu	&RSS feeds...	&RSS feeds...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Scheduler and queues	&Scheduler and queues
+#. menu command in a download's progress window
+#. right-click menu of a download window's tab row: bring back the tabs taken off with "Hide tab"
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menu	&Show hidden tabs	&Show hidden tabs
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Stop All	&Stop All

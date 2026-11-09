@@ -31,6 +31,11 @@ pub struct TorrentSpec {
     /// Seconds it has spent sharing once finished, in all its runs.
     #[serde(default)]
     pub seeded_secs: u64,
+    /// Peers connected to it now (#357), for the list's "Peers" column; every connected peer,
+    /// seeders and leechers alike. Live only: never saved, and zero whenever there is no torrent
+    /// session or the session has no numbers for it.
+    #[serde(skip)]
+    pub peers: usize,
     /// Its own upload limit, bytes/s (None: only Torrent settings' limit for all torrents).
     #[serde(default)]
     pub upload_limit: Option<u64>,
@@ -86,7 +91,7 @@ pub fn sharing_limit_reached(
     done: u64,
     limits: SharingLimits,
 ) -> Option<Reached> {
-    let ratio = spec.uploaded as f64 / done.max(1) as f64;
+    let ratio = share_ratio(spec.uploaded, done);
     if let Some(r) = limits.ratio
         && done > 0
         && ratio >= r
@@ -99,6 +104,26 @@ pub fn sharing_limit_reached(
         return Some(Reached::Time(spec.seeded_secs));
     }
     None
+}
+
+/// No session is running: nothing is connected, whatever the list last showed (#357).
+pub fn clear_peers<'a>(specs: impl Iterator<Item = &'a mut TorrentSpec>) {
+    specs.for_each(|t| t.peers = 0);
+}
+
+/// A torrent's share ratio: what it sent to peers against what it has. Zero while it has nothing.
+pub fn share_ratio(sent: u64, done: u64) -> f64 {
+    if done == 0 {
+        0.0
+    } else {
+        sent as f64 / done as f64
+    }
+}
+
+/// [`share_ratio`] as the interface writes it, in the list and the progress window's General tab:
+/// two decimals, `0.00` while it has nothing.
+pub fn share_ratio_text(sent: u64, done: u64) -> String {
+    crate::i18n::decimal(share_ratio(sent, done), 2)
 }
 
 /// Adds up what each torrent sent, run after run: librqbit's count starts at 0 again each time
@@ -1012,6 +1037,64 @@ pub fn dest_for(meta: &mdm_torrent::Meta, dir: &Path, files: Option<&[usize]>) -
 mod tests {
     use super::*;
 
+    fn a_spec() -> TorrentSpec {
+        TorrentSpec {
+            hash: "h".into(),
+            files: None,
+            folder: "f".into(),
+            uploaded: 0,
+            seeded_secs: 0,
+            peers: 0,
+            upload_limit: None,
+            in_order: false,
+            ends_first: true,
+        }
+    }
+
+    /// #357: the ratio the list and the General tab share, and the seeding limit's.
+    #[test]
+    fn a_torrents_share_ratio() {
+        assert_eq!(share_ratio(0, 0), 0.0);
+        assert_eq!(share_ratio(500, 0), 0.0, "nothing taken: no ratio");
+        assert_eq!(share_ratio(500, 1000), 0.5);
+        assert_eq!(
+            share_ratio_text(0, 0),
+            "0.00",
+            "as the General tab writes it"
+        );
+        assert_eq!(share_ratio_text(500, 1000), "0.50");
+        assert_eq!(share_ratio_text(2000, 1000), "2.00");
+        assert_eq!(share_ratio_text(1, 3), "0.33");
+    }
+
+    /// #357: a torrent's live peer count isn't kept across a restart: it isn't saved and an old
+    /// value in the file is ignored, so a stopped torrent can't show a stale count.
+    #[test]
+    fn a_torrents_peers_are_not_saved() {
+        let mut t = a_spec();
+        t.peers = 7;
+        let saved = serde_json::to_value(&t).unwrap();
+        assert!(saved.get("peers").is_none(), "the count isn't written");
+        let mut with_old = saved.clone();
+        with_old["peers"] = 9.into();
+        with_old["seeders"] = 9.into();
+        let loaded: TorrentSpec = serde_json::from_value(with_old).unwrap();
+        assert_eq!(
+            loaded.peers, 0,
+            "an old value in the file doesn't come back"
+        );
+    }
+
+    /// #357: with no session running, the column says nobody is connected.
+    #[test]
+    fn no_session_means_no_peers() {
+        let mut specs = [a_spec(), a_spec()];
+        specs[0].peers = 3;
+        specs[1].peers = 12;
+        clear_peers(specs.iter_mut());
+        assert_eq!([specs[0].peers, specs[1].peers], [0, 0]);
+    }
+
     /// #39: what a torrent sent adds up across its runs: librqbit's count is 0 while paused
     /// and starts again at 0 on each resume.
     #[test]
@@ -1066,6 +1149,7 @@ mod tests {
             folder: "f".into(),
             uploaded,
             seeded_secs,
+            peers: 0,
             upload_limit: None,
             in_order: false,
             ends_first: true,

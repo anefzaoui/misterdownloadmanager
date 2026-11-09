@@ -873,6 +873,18 @@ fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
         // Added: the order of addition itself (ids only grow), exact even without a time.
         list::ADDED => (it.id as f64, String::new()),
         list::SOURCE => (f64::from(u8::from(it.torrent.is_some())), String::new()),
+        // A torrent's peers, and its share ratio (not the text: "10" would come before "9").
+        // Anything but a torrent, and a torrent that has taken nothing, sort as zero.
+        list::PEERS => (
+            it.torrent.as_ref().map_or(0.0, |t| t.peers as f64),
+            String::new(),
+        ),
+        list::RATIO => (
+            it.torrent.as_ref().map_or(0.0, |t| {
+                crate::torrents::share_ratio(t.uploaded, it.downloaded)
+            }),
+            String::new(),
+        ),
         _ => (0.0, it.description.to_lowercase()),
     }
 }
@@ -1387,6 +1399,14 @@ impl App {
                     // i18n: where a download comes from: a web or FTP server (shown on a small colored label)
                     "Web".into()
                 },
+                // A torrent's own numbers (#357): the peers it has, and what it gave back
+                // against what it took (as the progress window's General tab works it out).
+                it.torrent
+                    .as_ref()
+                    .map_or(String::new(), |t| crate::i18n::integer(t.peers as u64)),
+                it.torrent.as_ref().map_or(String::new(), |t| {
+                    crate::torrents::share_ratio_text(t.uploaded, it.downloaded)
+                }),
             ],
         }
     }
@@ -1789,6 +1809,7 @@ impl App {
             self.account_at += Duration::from_secs(dt);
         }
         let Some(t) = self.torrent_host.get() else {
+            crate::torrents::clear_peers(self.items.iter_mut().filter_map(|i| i.torrent.as_mut()));
             return;
         };
         let limits = self.settings.sharing_limits();
@@ -1800,6 +1821,7 @@ impl App {
             };
             hashes.insert(spec.hash.clone());
             let Ok(st) = t.stats(&spec.hash) else {
+                spec.peers = 0;
                 continue;
             };
             let sent = self.accountant.sent(&spec.hash, st.uploaded);
@@ -1807,6 +1829,9 @@ impl App {
                 spec.uploaded += sent;
                 changed = true;
             }
+            // The peers it has now, for the list's "Peers" column (#357). Not a reason to save:
+            // it changes as peers come and go, and the next tick brings the list up to date.
+            spec.peers = st.peers_live;
             if st.phase == mdm_torrent::Phase::Finished && dt > 0 {
                 spec.seeded_secs += dt;
                 changed = true;
@@ -3774,6 +3799,7 @@ impl App {
                 folder,
                 uploaded: 0,
                 seeded_secs: 0,
+                peers: 0,
                 upload_limit: None,
                 in_order: add.in_order,
                 ends_first: true,
