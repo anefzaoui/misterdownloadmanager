@@ -5,8 +5,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ## [Unreleased]
 
+### Added
+
+- Help: what to do when an antivirus or VirusTotal flags MDM, and how to check your copy is the real one.
+
 ### Fixed
 
+- Adding a link again after its finished file was moved or deleted starts a new download, instead of asking about a duplicate that isn't there ([#342](https://github.com/anefzaoui/misterdownloadmanager/issues/342)).
 - **Smoother text on Windows:** small text uses hinting suited to anti-aliased rendering, reducing rough curves and diagonals while keeping upright strokes sharp and the existing interface sizes.
 
 ## [0.5.1] - 2026-11-08

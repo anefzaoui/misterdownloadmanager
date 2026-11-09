@@ -439,6 +439,7 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 Help: when an antivirus or VirusTotal flags MDM
 - 🔄 Linux, what's left ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
   screen readers (Orca) reading MDM's windows; browsers installed as a Flatpak (Firefox from
   Flathub may reach MDM through the desktop, as the Snap does: to check); native Wayland windows
@@ -447,6 +448,8 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 A duplicate prompt for a finished file that is gone
+  ([#342](https://github.com/anefzaoui/misterdownloadmanager/issues/342)): fix in review
 - 🔍 A 10-second freeze of the window after a night left open
   ([#304](https://github.com/anefzaoui/misterdownloadmanager/issues/304)): most likely the
   computer waking from sleep; waiting on the reporter's full report
