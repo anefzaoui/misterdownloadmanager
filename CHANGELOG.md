@@ -7,6 +7,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- The extension no longer asks you to update MDM when only a bug-fix version separates them, which it did even when there was no update to get.
 - **Download video** shows a plain file's size, from its server, instead of "size unknown" ([#320](https://github.com/anefzaoui/misterdownloadmanager/issues/320)).
 - **Download video** finds the video on pages whose player loads a `.mpd` or `.m3u8` address that answers something else first, as SVT Play does ([#377](https://github.com/anefzaoui/misterdownloadmanager/issues/377)).
 - RSS feeds: the boxes on the **Download rules** tab (**Episodes**, **Must contain** and the others) keep the keyboard while you type, instead of losing it after each key ([#353](https://github.com/anefzaoui/misterdownloadmanager/issues/353)).

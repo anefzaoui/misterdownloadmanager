@@ -54,6 +54,8 @@ MDM's helper serves only its own extension. The browser says this copy isn't one
 
 Downloads still work, but some of the extension's features need a newer MDM. Update it with **Help → Check for updates...** in MDM.
 
+If MDM says it's up to date, there's nothing for you to do. The extension updates by itself through its store and can get ahead of the app for a while. Everything keeps working, and the message goes away with the next version of MDM.
+
 ## A download's details were too large {#too-large}
 
 A download carries its site's cookies (and a form's data) to MDM. A few sites set so many that together they exceed what MDM accepts from the browser (1 MB). The browser kept this one. Signing out and back in to the site usually trims them.
