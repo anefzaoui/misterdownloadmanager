@@ -374,7 +374,7 @@ impl TorrentDialog {
             winui::BG(),
             |ui, o| self.body(ui, o, rt),
         );
-        let folder = PathBuf::from(self.folder.trim());
+        let folder = crate::dialogs::resolve_path(&self.folder);
         let out = crate::dialogs::ensure_folder(ctx, &mut self.asking, out, &folder);
         // Then: files of the torrent's names already there would be written into (#40).
         let meta = &self.meta;
@@ -405,7 +405,7 @@ impl TorrentDialog {
                 Outcome::Done(TorrentAdd {
                     category: category_of(&meta),
                     meta,
-                    dir: PathBuf::from(self.folder.trim()),
+                    dir: crate::dialogs::resolve_path(&self.folder),
                     files,
                     start_now: self.start_now.unwrap_or(true),
                     from_magnet: self.from_magnet,
@@ -637,7 +637,7 @@ impl TorrentDialog {
             self.folder_edited = true;
         }
         if let Some(m) = &self.meta {
-            let goes = m.folder_in(&PathBuf::from(self.folder.trim()));
+            let goes = m.folder_in(&crate::dialogs::resolve_path(&self.folder));
             let s = crate::i18n::fmt(
                 // i18n: {folder} = the folder the torrent's files are saved in
                 crate::i18n::t("Files go to: {folder}"),

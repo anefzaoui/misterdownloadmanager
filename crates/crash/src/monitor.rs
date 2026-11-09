@@ -82,6 +82,9 @@ impl minidumper::ServerHandler for Handler {
     ) -> minidumper::LoopAction {
         let notes = self.notes();
         let kind = notes.dump_kind();
+        if let Ok(mut n) = self.notes.lock() {
+            n.dump_done();
+        }
         match result {
             Ok(mut bin) => {
                 use std::io::Write;

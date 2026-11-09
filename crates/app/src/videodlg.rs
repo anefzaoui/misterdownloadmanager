@@ -394,7 +394,7 @@ impl VideoDialog {
                 self.set_video(v);
             }
         }
-        let folder = PathBuf::from(self.folder.trim());
+        let folder = crate::dialogs::resolve_path(&self.folder);
         let out = crate::dialogs::ensure_folder(ctx, &mut self.asking, out, &folder);
         // A playlist's videos, each its own download.
         if let (Some(list), Outcome::Done(())) = (&self.list, &out) {
@@ -422,7 +422,7 @@ impl VideoDialog {
                 Outcome::Done(VideoOut::One(VideoAdd {
                     page,
                     selector: c.selector.clone(),
-                    dest: PathBuf::from(self.folder.trim()).join(name),
+                    dest: crate::dialogs::resolve_path(&self.folder).join(name),
                     size: c.size,
                     start_now: self.start_now.unwrap_or(true),
                     context: self.context(),

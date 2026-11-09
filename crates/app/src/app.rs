@@ -557,6 +557,8 @@ pub struct App {
     /// yet) and when.
     clip_seen: Option<Option<String>>,
     clip_checked: Option<Instant>,
+    /// The clipboard read under way, off the window thread (#418).
+    clip_reading: Option<ClipRead>,
     confirm_delete: Option<dialogs::ConfirmDelete>,
     /// Queue right-click → Delete, asking first: the queue and the question.
     confirm_queue_delete: Option<(usize, dialogs::Confirm)>,
@@ -747,6 +749,38 @@ pub fn auth_headers(login: Option<&(String, String)>) -> HeaderMap {
 fn seconds_now() -> u32 {
     use chrono::Timelike;
     chrono::Local::now().num_seconds_from_midnight()
+}
+
+/// A read of the clipboard on a thread of its own, its answer taken when it has come (#418).
+struct ClipRead(std::sync::Arc<std::sync::Mutex<Option<Option<String>>>>);
+
+impl ClipRead {
+    fn start(read: impl FnOnce() -> Option<String> + Send + 'static) -> Self {
+        let slot = std::sync::Arc::new(std::sync::Mutex::new(None));
+        let answer = slot.clone();
+        let _ = std::thread::Builder::new()
+            .name("clipboard read".into())
+            .spawn(move || {
+                *answer.lock().unwrap() = Some(read());
+            });
+        ClipRead(slot)
+    }
+
+    /// The text, once the read has answered; else the read, still waiting.
+    fn answer(self) -> Result<Option<String>, Self> {
+        let got = self.0.lock().unwrap().take();
+        got.ok_or(self)
+    }
+}
+
+/// A stopped download's files: its state and part files, and its finished file when it was
+/// complete (a Stop-then-remove of a download that finished meanwhile).
+fn remove_files_of(dest: &std::path::Path, complete: bool) {
+    let _ = std::fs::remove_file(state_path(dest));
+    let _ = std::fs::remove_file(mdm_engine::naming::part_path(dest));
+    if complete {
+        let _ = std::fs::remove_file(dest);
+    }
 }
 
 /// The icon for a file name's extension (empty: none).
@@ -1045,6 +1079,7 @@ impl App {
             limit_notice: None,
             clip_seen: None,
             clip_checked: None,
+            clip_reading: None,
             tray: None,
             tray_limiter: None,
             // Started with the session (#226): hidden from the first frame.
@@ -1495,21 +1530,30 @@ impl App {
             }
             let Some(item) = self.item(id) else { continue };
             let old = item.dest.clone();
-            let _ = std::fs::remove_file(state_path(&old));
-            let _ = std::fs::remove_file(mdm_engine::naming::part_path(&old));
             match then {
                 None => {
-                    // Cancelled: a file that finished meanwhile goes too, with its windows.
-                    if item.status == Status::Complete {
-                        let _ = std::fs::remove_file(&old);
-                    }
+                    // Cancelled: a file that finished meanwhile goes too, with its windows. On
+                    // another thread: a slow or stuck disk took the window with it (#423).
+                    let complete = item.status == Status::Complete;
+                    self.rt.spawn_blocking({
+                        let old = old.clone();
+                        move || remove_files_of(&old, complete)
+                    });
                     self.complete.retain(|c| c.id != id);
                     self.delete(id);
                 }
                 Some((dest, start)) => {
-                    if item.status == Status::Complete {
-                        let _ = std::fs::remove_file(&old);
+                    // A restart under another name: the old files go off the window thread
+                    // (#423). Under the same name they must be gone before the new start.
+                    let complete = item.status == Status::Complete;
+                    if dest == old {
+                        remove_files_of(&old, complete);
+                    } else {
+                        let old = old.clone();
+                        self.rt
+                            .spawn_blocking(move || remove_files_of(&old, complete));
                     }
+                    let item = self.item(id).expect("the download just found");
                     if let Some(name) = dest.file_name() {
                         item.file_name = name.to_string_lossy().into_owned();
                     }
@@ -2948,14 +2992,31 @@ impl App {
             return;
         }
         ctx.request_repaint_after(Duration::from_secs(1));
-        if self
-            .clip_checked
-            .is_some_and(|t| t.elapsed() < Duration::from_secs(1))
-        {
-            return;
-        }
-        self.clip_checked = Some(Instant::now());
-        let text = crate::clipboard_text().map(|t| t.trim().to_owned());
+        // One read at a time, on its own thread: the program that owns the clipboard may hang,
+        // and a read that waits for it took the window with it (#418). A read under way
+        // that never answers just means no new look at the clipboard.
+        let reading = self.clip_reading.take();
+        let text = match reading {
+            Some(read) => match read.answer() {
+                Ok(text) => text,
+                Err(still) => {
+                    self.clip_reading = Some(still);
+                    return;
+                }
+            },
+            None => {
+                if self
+                    .clip_checked
+                    .is_some_and(|t| t.elapsed() < Duration::from_secs(1))
+                {
+                    return;
+                }
+                self.clip_checked = Some(Instant::now());
+                self.clip_reading = Some(ClipRead::start(crate::clipboard_text));
+                return;
+            }
+        };
+        let text = text.map(|t| t.trim().to_owned());
         // The first look only notes what is there: turning it on doesn't grab an old link.
         let Some(before) = self.clip_seen.replace(text.clone()) else {
             return;
@@ -8797,5 +8858,52 @@ mod page_data_tests {
             None
         );
         assert_eq!(page_data_for("https://a.test/x", Some("nope"), DATA), None);
+    }
+}
+
+#[cfg(test)]
+mod window_thread_tests {
+    use super::*;
+
+    /// #418: a clipboard read that never answers (its owner hung) doesn't hold up the window:
+    /// its answer just isn't there yet; one that answers is taken.
+    #[test]
+    fn a_stuck_clipboard_owner_does_not_hold_the_window() {
+        let (release, wait) = std::sync::mpsc::channel::<()>();
+        let stuck = ClipRead::start(move || {
+            let _ = wait.recv();
+            Some("late".to_owned())
+        });
+        let started = Instant::now();
+        let Err(mut waiting) = stuck.answer() else {
+            panic!("no answer yet");
+        };
+        assert!(started.elapsed() < Duration::from_millis(500));
+        release.send(()).unwrap();
+        let text = loop {
+            match waiting.answer() {
+                Ok(text) => break text,
+                Err(still) => waiting = still,
+            }
+            std::thread::sleep(Duration::from_millis(2));
+        };
+        assert_eq!(text.as_deref(), Some("late"));
+    }
+
+    /// #423: the files of a stopped download go as a group, off the window's thread.
+    #[test]
+    fn a_stopped_downloads_files_are_removed_together() {
+        let dir = tempfile::tempdir().unwrap();
+        let dest = dir.path().join("file.bin");
+        let part = mdm_engine::naming::part_path(&dest);
+        let state = mdm_engine::state::state_path(&dest);
+        for f in [&dest, &part, &state] {
+            std::fs::write(f, b"x").unwrap();
+        }
+        remove_files_of(&dest, false);
+        assert!(!part.exists() && !state.exists());
+        assert!(dest.exists(), "a file that wasn't complete stays");
+        remove_files_of(&dest, true);
+        assert!(!dest.exists());
     }
 }

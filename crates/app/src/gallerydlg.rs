@@ -105,7 +105,7 @@ impl GalleryDialog {
             self.tool = None;
             self.checked = None;
         }
-        let folder = PathBuf::from(self.folder.trim());
+        let folder = crate::dialogs::resolve_path(&self.folder);
         match crate::dialogs::ensure_folder(ctx, &mut self.asking, out, &folder) {
             Outcome::Open => Outcome::Open,
             Outcome::Closed => Outcome::Closed,
