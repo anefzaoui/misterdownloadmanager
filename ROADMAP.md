@@ -98,6 +98,9 @@ Everything below ships together, in version 0.5.0.
   ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192))
 - ✅ A menu of the menu bar shut with Escape opens again at the first click on its title (on
   Linux it took two; on Windows, Escape with the pointer on the title left the menu open)
+- ✅ A YouTube look-up that fails with "Requested format is not available" (signed in, no
+  JavaScript runtime for yt-dlp) tries once more without the cookies; the video window says when
+  ffmpeg would bring the better qualities a page offers
 - ✅ Signed-in videos from YouTube Music and YouTube's mobile site: the browser's cookies reach
   the YouTube host yt-dlp asks, each for the domain the browser keeps it for
   ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229))
@@ -439,6 +442,7 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 Help: when an antivirus or VirusTotal flags MDM
 - 🔄 Linux, what's left ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
   screen readers (Orca) reading MDM's windows; browsers installed as a Flatpak (Firefox from
   Flathub may reach MDM through the desktop, as the Snap does: to check); native Wayland windows
@@ -449,6 +453,14 @@ These ship in a later version, when they're ready.
 
 - 🔄 **Open folder** on a torrent still downloading
   ([#354](https://github.com/anefzaoui/misterdownloadmanager/issues/354)): fix in review
+- 🔄 Alt and F10 opening the menu bar with a control focused
+  ([#328](https://github.com/anefzaoui/misterdownloadmanager/issues/328)): fix in review
+- 🔄 Crash on Windows when a window opens while MDM falls back from Direct3D to OpenGL
+  ([#337](https://github.com/anefzaoui/misterdownloadmanager/issues/337)): fix in review
+- 🔄 Crash on Windows when a screen goes away while MDM runs
+  ([#335](https://github.com/anefzaoui/misterdownloadmanager/issues/335)): fix in review
+- 🔄 A duplicate prompt for a finished file that is gone
+  ([#342](https://github.com/anefzaoui/misterdownloadmanager/issues/342)): fix in review
 - 🔍 A 10-second freeze of the window after a night left open
   ([#304](https://github.com/anefzaoui/misterdownloadmanager/issues/304)): most likely the
   computer waking from sleep; waiting on the reporter's full report
