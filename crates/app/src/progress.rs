@@ -94,6 +94,7 @@ impl Progress {
             _ => None,
         };
         if let Some(t) = top {
+            self.hidden_tabs.retain(|h| *h != t);
             self.tab = t;
             return;
         }
@@ -127,6 +128,8 @@ pub struct Progress {
     pub id: u64,
     details: bool,
     tab: Tab,
+    /// Tabs taken off the strip with their "Hide tab" button (#326), for this window.
+    hidden_tabs: Vec<Tab>,
     ttab: TTab,
     limiter: bool,
     /// KBytes/sec typed on the Speed Limiter tab.
@@ -195,6 +198,7 @@ impl Progress {
             id,
             details: true,
             tab: Tab::Status,
+            hidden_tabs: Vec::new(),
             ttab: TTab::Files,
             limiter: false,
             limit_kb: "10".into(),
@@ -401,12 +405,12 @@ impl Progress {
             Tab::Status => status_page(ui, o, item, snap, frac),
             Tab::Limiter => {
                 if self.limiter_page(ui, o, item) {
-                    self.tab = Tab::Status;
+                    self.hide(Tab::Limiter);
                 }
             }
             Tab::Completion => {
                 if self.completion_page(ui, o, item) {
-                    self.tab = Tab::Status;
+                    self.hide(Tab::Completion);
                 }
             }
         }
@@ -520,14 +524,17 @@ impl Progress {
     fn tabs(&mut self, ui: &mut Ui, o: Pos2) -> bool {
         // The shared tab strip (the torrent tabs' too): one look in both themes, one Tab stop with
         // the arrows, sized to the translated labels. It had two of its own (classic 3-D in dark).
-        let tabs = [
+        let tabs: Vec<(Tab, &str)> = [
             // i18n: tab title: how the download is going
             (Tab::Status, crate::i18n::mark("Download status")),
             // i18n: tab title: the tool that limits the download speed
             (Tab::Limiter, crate::i18n::mark("Speed Limiter")),
             // i18n: tab title: what happens when the download finishes
             (Tab::Completion, crate::i18n::mark("Options on completion")),
-        ];
+        ]
+        .into_iter()
+        .filter(|t| !self.hidden_tabs.contains(&t.0))
+        .collect();
         let p = ui.painter().clone();
         let english: Vec<&str> = tabs.iter().map(|t| t.1).collect();
         // The hide button sits here where the system draws the title bar (Linux, macOS; on
@@ -559,6 +566,15 @@ impl Progress {
                 crate::i18n::mark("Hide to the notification area"),
             )
             .clicked()
+    }
+
+    /// Takes `tab` off the strip (its "Hide tab" button, #326) and shows Download status, which
+    /// has no such button and so always stays.
+    fn hide(&mut self, tab: Tab) {
+        if tab != Tab::Status && !self.hidden_tabs.contains(&tab) {
+            self.hidden_tabs.push(tab);
+        }
+        self.tab = Tab::Status;
     }
 
     /// The Speed Limiter tab, live for this download. Returns true when "Hide tab" is pressed.
@@ -1715,5 +1731,30 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
             let first = (pos.round().max(0.0) as usize).min(max_first);
             ui.ctx().data_mut(|d| d.insert_temp(key, first));
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn hide_tab_takes_the_tab_off_the_strip() {
+        let mut p = Progress::new(1, true);
+        p.tab = Tab::Limiter;
+        p.hide(Tab::Limiter);
+        assert!(p.tab == Tab::Status, "back on Download status");
+        assert!(p.hidden_tabs == [Tab::Limiter], "Speed Limiter hidden");
+        p.hide(Tab::Limiter);
+        p.hide(Tab::Status);
+        assert!(
+            p.hidden_tabs == [Tab::Limiter],
+            "once each, never Download status"
+        );
+        p.show_tab("limit");
+        assert!(
+            p.tab == Tab::Limiter && p.hidden_tabs.is_empty(),
+            "asked for, it comes back"
+        );
     }
 }

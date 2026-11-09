@@ -491,6 +491,8 @@ These ship in a later version, when they're ready.
   [#345](https://github.com/anefzaoui/misterdownloadmanager/issues/345)): fix in review
 - 🔄 A page that starts a download by script being saved instead of the file
   ([#374](https://github.com/anefzaoui/misterdownloadmanager/issues/374)): fix in review
+- 🔄 "Hide tab" in a download's window only going back to Download status, the tab still
+  there ([#326](https://github.com/anefzaoui/misterdownloadmanager/issues/326)): fix in review
 - 🔍 A site's bot check refusing MDM's request (testfile.org, a Cloudflare challenge): the\n  message now says so ([#376](https://github.com/anefzaoui/misterdownloadmanager/issues/376)); a way to hand the download back to the browser is still to decide
 - 🔄 A download starting again by itself after Stop, when it is in a running queue\n  ([#341](https://github.com/anefzaoui/misterdownloadmanager/issues/341)): fix in review
 - 🔄 A crash when removing the last feed in the RSS feeds window
