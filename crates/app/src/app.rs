@@ -264,6 +264,50 @@ fn take_place(item: &mut Item, target: PathBuf) {
     item.dest = target;
 }
 
+/// The place a download about to start takes instead of its own, when its own belongs to
+/// another row (#442): two can wait under one name (nothing was on the disk when each was added,
+/// and they can start in the same moment, before the engine has reserved anything). None: it
+/// stays. A row with data of its own never moves, so a resume finds its pieces.
+fn place_to_take(item: &Item, items: &[Item]) -> Option<PathBuf> {
+    if item.downloaded > 0 || item.owns_resume_state() {
+        return None;
+    }
+    let dir = item.dest.parent()?;
+    let others = || {
+        items
+            .iter()
+            .filter(|o| o.id != item.id && o.dest.parent() == Some(dir))
+    };
+    let lower = |p: &std::path::Path| p.to_string_lossy().to_lowercase();
+    let stem = |o: &Item| {
+        o.dest
+            .file_stem()
+            .map(|s| s.to_string_lossy().to_lowercase())
+    };
+    if item.video.is_some() {
+        // yt-dlp takes any `<stem>.*` there as its own (#32): the stem has to be free.
+        others()
+            .any(|o| stem(o) == stem(item) && o.holds_place())
+            .then(|| {
+                mdm_engine::naming::stem_destination(dir, &item.file_name, |s| {
+                    let s = s.to_lowercase();
+                    others().any(|o| stem(o).as_ref() == Some(&s) && o.holds_place())
+                })
+            })
+    } else {
+        others()
+            .any(|o| lower(&o.dest) == lower(&item.dest) && o.holds_place())
+            .then(|| {
+                let mut taken: std::collections::HashSet<PathBuf> = others()
+                    .filter(|o| o.holds_place())
+                    .map(|o| o.dest.clone())
+                    .collect();
+                taken.insert(item.dest.clone());
+                place_in(dir, &item.file_name, &mut taken)
+            })
+    }
+}
+
 /// The status strip's height, under the list and the Categories pane.
 const STRIP_H: f32 = 22.0;
 
@@ -557,6 +601,8 @@ pub struct App {
     /// yet) and when.
     clip_seen: Option<Option<String>>,
     clip_checked: Option<Instant>,
+    /// The clipboard read under way, off the window thread (#418).
+    clip_reading: Option<ClipRead>,
     confirm_delete: Option<dialogs::ConfirmDelete>,
     /// Queue right-click → Delete, asking first: the queue and the question.
     confirm_queue_delete: Option<(usize, dialogs::Confirm)>,
@@ -747,6 +793,38 @@ pub fn auth_headers(login: Option<&(String, String)>) -> HeaderMap {
 fn seconds_now() -> u32 {
     use chrono::Timelike;
     chrono::Local::now().num_seconds_from_midnight()
+}
+
+/// A read of the clipboard on a thread of its own, its answer taken when it has come (#418).
+struct ClipRead(std::sync::Arc<std::sync::Mutex<Option<Option<String>>>>);
+
+impl ClipRead {
+    fn start(read: impl FnOnce() -> Option<String> + Send + 'static) -> Self {
+        let slot = std::sync::Arc::new(std::sync::Mutex::new(None));
+        let answer = slot.clone();
+        let _ = std::thread::Builder::new()
+            .name("clipboard read".into())
+            .spawn(move || {
+                *answer.lock().unwrap() = Some(read());
+            });
+        ClipRead(slot)
+    }
+
+    /// The text, once the read has answered; else the read, still waiting.
+    fn answer(self) -> Result<Option<String>, Self> {
+        let got = self.0.lock().unwrap().take();
+        got.ok_or(self)
+    }
+}
+
+/// A stopped download's files: its state and part files, and its finished file when it was
+/// complete (a Stop-then-remove of a download that finished meanwhile).
+fn remove_files_of(dest: &std::path::Path, complete: bool) {
+    let _ = std::fs::remove_file(state_path(dest));
+    let _ = std::fs::remove_file(mdm_engine::naming::part_path(dest));
+    if complete {
+        let _ = std::fs::remove_file(dest);
+    }
 }
 
 /// The icon for a file name's extension (empty: none).
@@ -1045,6 +1123,7 @@ impl App {
             limit_notice: None,
             clip_seen: None,
             clip_checked: None,
+            clip_reading: None,
             tray: None,
             tray_limiter: None,
             // Started with the session (#226): hidden from the first frame.
@@ -1495,21 +1574,30 @@ impl App {
             }
             let Some(item) = self.item(id) else { continue };
             let old = item.dest.clone();
-            let _ = std::fs::remove_file(state_path(&old));
-            let _ = std::fs::remove_file(mdm_engine::naming::part_path(&old));
             match then {
                 None => {
-                    // Cancelled: a file that finished meanwhile goes too, with its windows.
-                    if item.status == Status::Complete {
-                        let _ = std::fs::remove_file(&old);
-                    }
+                    // Cancelled: a file that finished meanwhile goes too, with its windows. On
+                    // another thread: a slow or stuck disk took the window with it (#423).
+                    let complete = item.status == Status::Complete;
+                    self.rt.spawn_blocking({
+                        let old = old.clone();
+                        move || remove_files_of(&old, complete)
+                    });
                     self.complete.retain(|c| c.id != id);
                     self.delete(id);
                 }
                 Some((dest, start)) => {
-                    if item.status == Status::Complete {
-                        let _ = std::fs::remove_file(&old);
+                    // A restart under another name: the old files go off the window thread
+                    // (#423). Under the same name they must be gone before the new start.
+                    let complete = item.status == Status::Complete;
+                    if dest == old {
+                        remove_files_of(&old, complete);
+                    } else {
+                        let old = old.clone();
+                        self.rt
+                            .spawn_blocking(move || remove_files_of(&old, complete));
                     }
+                    let item = self.item(id).expect("the download just found");
                     if let Some(name) = dest.file_name() {
                         item.file_name = name.to_string_lossy().into_owned();
                     }
@@ -2326,11 +2414,36 @@ impl App {
                 None if ua.is_empty() => Options::default().user_agent,
                 None => ua.to_owned(),
             },
+            // The browser's User-Agent may be refused on this connection (#372): MDM's own
+            // (Options' or the default) is tried once then, as Add URL would.
+            agent_fallback: context.user_agent.is_some().then(|| {
+                if ua.is_empty() {
+                    Options::default().user_agent
+                } else {
+                    ua.to_owned()
+                }
+            }),
             post: context.post.clone().map(|body| body.into_bytes().into()),
             on_file_created: Some(mark_hook(url, context.referer.as_deref())),
             ..Options::default()
         };
         RequestParts { headers, opts }
+    }
+
+    /// Before a download starts: into a free place of its own if its own is another row's
+    /// (`place_to_take`). The name stays the address's guess if it was one.
+    fn claim_place(&mut self, id: u64) {
+        let target = self
+            .items
+            .iter()
+            .find(|i| i.id == id)
+            .and_then(|i| place_to_take(i, &self.items));
+        if let (Some(target), Some(item)) = (target, self.item(id)) {
+            let guessed = item.name_from_url;
+            take_place(item, target);
+            item.name_from_url = guessed;
+            self.dirty = true;
+        }
     }
 
     /// Start or resume a download; `show` opens its progress dialog (IDM's default).
@@ -2404,6 +2517,7 @@ impl App {
         // The file's own remembered limit, else the Speed Limiter's.
         opts.speed_limit = own_limit.or(self.settings.speed_limit());
         opts.checksum = checksum;
+        self.claim_place(id);
         let Some(item) = self.item(id) else { return };
         let _guard = rt.enter();
         // Resume whenever there is something to resume. If that fails, say why and keep the
@@ -2948,14 +3062,31 @@ impl App {
             return;
         }
         ctx.request_repaint_after(Duration::from_secs(1));
-        if self
-            .clip_checked
-            .is_some_and(|t| t.elapsed() < Duration::from_secs(1))
-        {
-            return;
-        }
-        self.clip_checked = Some(Instant::now());
-        let text = crate::clipboard_text().map(|t| t.trim().to_owned());
+        // One read at a time, on its own thread: the program that owns the clipboard may hang,
+        // and a read that waits for it took the window with it (#418). A read under way
+        // that never answers just means no new look at the clipboard.
+        let reading = self.clip_reading.take();
+        let text = match reading {
+            Some(read) => match read.answer() {
+                Ok(text) => text,
+                Err(still) => {
+                    self.clip_reading = Some(still);
+                    return;
+                }
+            },
+            None => {
+                if self
+                    .clip_checked
+                    .is_some_and(|t| t.elapsed() < Duration::from_secs(1))
+                {
+                    return;
+                }
+                self.clip_checked = Some(Instant::now());
+                self.clip_reading = Some(ClipRead::start(crate::clipboard_text));
+                return;
+            }
+        };
+        let text = text.map(|t| t.trim().to_owned());
         // The first look only notes what is there: turning it on doesn't grab an old link.
         let Some(before) = self.clip_seen.replace(text.clone()) else {
             return;
@@ -3244,6 +3375,7 @@ impl App {
 
     /// Start a video item: yt-dlp (installed and verified) downloads it.
     fn start_video(&mut self, id: u64, show: bool) {
+        self.claim_place(id);
         let tools = mdm_tools::tools_dir();
         let tool = tools.as_deref().and_then(mdm_tools::installed);
         let ffmpeg = tools.as_deref().and_then(mdm_tools::ffmpeg::installed);
@@ -8630,6 +8762,93 @@ mod move_many_tests {
 }
 
 #[cfg(test)]
+mod same_name_tests {
+    use super::{Item, place_to_take};
+    use crate::model::{Category, Status};
+    use std::path::Path;
+
+    fn row(id: u64, dest: &Path, status: Status, downloaded: u64) -> Item {
+        let url = format!("http://files.test/{id}/master.mp4")
+            .parse()
+            .unwrap();
+        let mut i = Item::new(id, url, dest.to_owned(), Category::Video);
+        i.status = status;
+        i.downloaded = downloaded;
+        i
+    }
+
+    fn name(p: Option<std::path::PathBuf>) -> Option<String> {
+        p.map(|p| p.file_name().unwrap().to_string_lossy().into_owned())
+    }
+
+    /// #442: of two rows waiting under one name the first to start keeps it; the other goes to
+    /// the next free one, not to the same file. A row with its own data never moves.
+    #[test]
+    fn a_row_leaves_a_name_another_row_holds() {
+        let dir = tempfile::tempdir().unwrap();
+        let at = dir.path().join("master.mp4");
+        let waiting = |id| row(id, &at, Status::Queued, 0);
+        let free = Some("master (1).mp4");
+
+        // Both only waiting: nobody has it yet, the one starting stays.
+        let items = [waiting(1), waiting(2)];
+        assert_eq!(place_to_take(&items[0], &items), None);
+
+        // The other is part-way (its pieces and resume state are at that name).
+        let items = [row(1, &at, Status::Stopped, 500), waiting(2)];
+        assert_eq!(name(place_to_take(&items[1], &items)).as_deref(), free);
+        // And the part-way one resumes where it is, whoever else waits for the name.
+        assert_eq!(place_to_take(&items[0], &items), None);
+
+        // The other finished, its file there.
+        std::fs::write(&at, b"x").unwrap();
+        let items = [row(1, &at, Status::Complete, 1), waiting(2)];
+        assert_eq!(name(place_to_take(&items[1], &items)).as_deref(), free);
+        // Finished, but its file is gone: the name is free again.
+        std::fs::remove_file(&at).unwrap();
+        assert_eq!(place_to_take(&items[1], &items), None);
+
+        // A crash left the list's count at nothing, but the resume state says whose the pieces
+        // are: that row stays and resumes, the other leaves.
+        let state = mdm_engine::state::state_path(&at);
+        let mut items = [waiting(1), waiting(2)];
+        let url = items[0].url.clone();
+        mdm_engine::state::ResumeState::new(url.clone(), url, at.clone(), 9, Default::default())
+            .write(&state)
+            .unwrap();
+        assert_eq!(place_to_take(&items[0], &items), None);
+        assert_eq!(name(place_to_take(&items[1], &items)).as_deref(), free);
+        items[0].status = Status::Stopped;
+        assert_eq!(name(place_to_take(&items[1], &items)).as_deref(), free);
+        std::fs::remove_file(&state).unwrap();
+
+        // Another folder's row of that name is no clash.
+        let other = tempfile::tempdir().unwrap();
+        let there = other.path().join("master.mp4");
+        let items = [row(1, &there, Status::Stopped, 5), waiting(2)];
+        assert_eq!(place_to_take(&items[1], &items), None);
+    }
+
+    /// A video's stem has to be free whatever the extension: yt-dlp would take another file of
+    /// that stem for its own and call the video downloaded.
+    #[test]
+    fn a_video_leaves_a_stem_another_row_holds() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        let mut video = row(2, &d.join("master.mp4"), Status::Queued, 0);
+        video.video = Some(crate::model::VideoSpec {
+            selector: "b".into(),
+            subs: Default::default(),
+        });
+        let items = [row(1, &d.join("Master.webm"), Status::Stopped, 9), video];
+        assert_eq!(
+            name(place_to_take(&items[1], &items)).as_deref(),
+            Some("master (1).mp4")
+        );
+    }
+}
+
+#[cfg(test)]
 mod at_login_tests {
     use super::{AtLogin, TRAY_GRACE, at_login};
     use std::time::Duration;
@@ -8797,5 +9016,52 @@ mod page_data_tests {
             None
         );
         assert_eq!(page_data_for("https://a.test/x", Some("nope"), DATA), None);
+    }
+}
+
+#[cfg(test)]
+mod window_thread_tests {
+    use super::*;
+
+    /// #418: a clipboard read that never answers (its owner hung) doesn't hold up the window:
+    /// its answer just isn't there yet; one that answers is taken.
+    #[test]
+    fn a_stuck_clipboard_owner_does_not_hold_the_window() {
+        let (release, wait) = std::sync::mpsc::channel::<()>();
+        let stuck = ClipRead::start(move || {
+            let _ = wait.recv();
+            Some("late".to_owned())
+        });
+        let started = Instant::now();
+        let Err(mut waiting) = stuck.answer() else {
+            panic!("no answer yet");
+        };
+        assert!(started.elapsed() < Duration::from_millis(500));
+        release.send(()).unwrap();
+        let text = loop {
+            match waiting.answer() {
+                Ok(text) => break text,
+                Err(still) => waiting = still,
+            }
+            std::thread::sleep(Duration::from_millis(2));
+        };
+        assert_eq!(text.as_deref(), Some("late"));
+    }
+
+    /// #423: the files of a stopped download go as a group, off the window's thread.
+    #[test]
+    fn a_stopped_downloads_files_are_removed_together() {
+        let dir = tempfile::tempdir().unwrap();
+        let dest = dir.path().join("file.bin");
+        let part = mdm_engine::naming::part_path(&dest);
+        let state = mdm_engine::state::state_path(&dest);
+        for f in [&dest, &part, &state] {
+            std::fs::write(f, b"x").unwrap();
+        }
+        remove_files_of(&dest, false);
+        assert!(!part.exists() && !state.exists());
+        assert!(dest.exists(), "a file that wasn't complete stays");
+        remove_files_of(&dest, true);
+        assert!(!dest.exists());
     }
 }

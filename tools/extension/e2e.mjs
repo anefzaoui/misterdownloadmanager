@@ -16,7 +16,8 @@
 // The cases (per browser): link (a .zip link, throttled and not), ask (Firefox set to ask what to
 // do with each new type, as Waterfox is: caught before its dialog, #208), cookie (cookies and referrer
 // forwarded), names (Content-Disposition), redirect, leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
-// to the browser), opened (a PDF or MP3 the browser would show or play), csp (the video button
+// to the browser), opened (a PDF or MP3 the browser would show or play), spot (the video button
+// clear of the page's controls, #421), csp (the video button
 // under a strict CSP), hls (the stream a player loaded), streams (HLS and DASH players handed over
 // by the button, the right-click menu and the media list, and read by yt-dlp; #155; also with no
 // .m3u8 or .mpd, served as text/plain or octet-stream, #171), sniffed (#171 without yt-dlp: such
@@ -342,6 +343,10 @@ async function chromium(bin, profile, dl, page, ready) {
       major,
       evaluate,
       mouse,
+      screenshot: async (file) => {
+        const { data } = await cdp.send("Page.captureScreenshot", { format: "png" }, sessionId);
+        fs.writeFileSync(file, Buffer.from(data, "base64"));
+      },
       navigate,
       key,
       pill,
@@ -1555,6 +1560,33 @@ const CASES = {
     const want = `${LAB}/gen/1M/clip.mp4?inline=1`;
     if (address !== want) throw new Error(`the video window got ${address}, not ${want}`);
     return `styled (${Math.round(pill.h)}px, ${pill.image.slice(0, 15)}...), sent ${address.replace(LAB, "")}`;
+  },
+
+  // The button doesn't sit on a control of the page (#421: a thumbnail's watch-later button at
+  // the top right): it moves to a free corner.
+  async spot(t) {
+    // E2E_SPOT_SHOT: a screenshot of the page with the button shown, for a PR's body.
+    const shoot = async () => {
+      if (process.env.E2E_SPOT_SHOT && t.session.screenshot) await t.session.screenshot(process.env.E2E_SPOT_SHOT);
+    };
+    await t.session.navigate(`${LAB}/page?video=${encodeURIComponent("/gen/1M/clip.mp4")}`);
+    await t.session.evaluate(`(() => {
+      const r = document.querySelector("#video").getBoundingClientRect();
+      const c = document.createElement("button");
+      c.id = "page-control";
+      c.textContent = "x";
+      c.style.cssText = "position:fixed;left:" + (r.right - 44) + "px;top:" + (r.top + 4) + "px;width:40px;height:40px;z-index:9";
+      document.body.appendChild(c);
+      return true;
+    })()`);
+    const v = await rect(t.session, "#video");
+    const b = await hover(t.session, v);
+    if (!b) throw new Error("no button over the video");
+    await shoot();
+    const c = await rect(t.session, "#page-control");
+    const overlaps = b.l < c.r && b.r > c.l && b.t < c.b && b.b > c.t;
+    if (overlaps) throw new Error(`the button covers the page's control: ${JSON.stringify({ b, c })}`);
+    return `at ${Math.round(b.l - v.l)},${Math.round(b.t - v.t)}, clear of the page's control`;
   },
 
   // A player playing a stream (a blob: in the page): the button sends the manifest it loaded.

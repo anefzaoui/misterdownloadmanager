@@ -13,6 +13,26 @@ Everything below ships together, in version 0.5.0.
 
 ### Done
 
+- ✅ A link from the browser no longer ends in 403 where a site's bot check refuses the browser's
+  User-Agent: MDM asks once more as itself ([#372](https://github.com/anefzaoui/misterdownloadmanager/issues/372))
+- ✅ The video button no longer covers a control of the page (a preview's own button): it takes
+  a free corner, and dragging it keeps it where you put it
+  ([#421](https://github.com/anefzaoui/misterdownloadmanager/issues/421))
+- ✅ A background task stopping as MDM closes no longer shows a crash report
+  ([#422](https://github.com/anefzaoui/misterdownloadmanager/issues/422))
+- ✅ A freeze that was over before its dump was taken is reported as a freeze, not a crash in the
+  watchdog (part of [#420](https://github.com/anefzaoui/misterdownloadmanager/issues/420))
+- ✅ File names and titles in any script show their letters: the system font for a script
+  outside the interface language loads the first time it is needed, instead of boxes
+  ([#405](https://github.com/anefzaoui/misterdownloadmanager/issues/405))
+- ✅ yt-dlp and gallery-dl use the proxy set in Options → Proxy / Socks
+  ([#363](https://github.com/anefzaoui/misterdownloadmanager/issues/363))
+- ✅ The window keeps answering while reading the clipboard or removing a cancelled download's
+  files from a slow disk ([#418](https://github.com/anefzaoui/misterdownloadmanager/issues/418),
+  [#423](https://github.com/anefzaoui/misterdownloadmanager/issues/423))
+- ✅ Fast downloads keep going on a slow disk: flushing the resume state no longer holds up
+  the connections, and a connection is never replaced for the disk's wait
+  ([#361](https://github.com/anefzaoui/misterdownloadmanager/issues/361))
 - ✅ Freeze reports taken after the window has already answered say so, instead of blaming a deadlock
   (part of [#355](https://github.com/anefzaoui/misterdownloadmanager/issues/355))
 - ✅ **Move/Rename** works on several selected downloads at once: pick a folder and they all go there
@@ -469,6 +489,8 @@ These ship in a later version, when they're ready.
   [#339](https://github.com/anefzaoui/misterdownloadmanager/issues/339)): yt-dlp's folder build,
   unpacked once and checked against its signed list; built and checked on macOS, still to
   confirm on a person's Mac
+- 🔄 In English, the list's dates on the system's 12- or 24-hour clock
+  ([#392](https://github.com/anefzaoui/misterdownloadmanager/issues/392)): in review
 - 🔄 Help: when an antivirus or VirusTotal flags MDM
 - 🔄 Linux, what's left ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
   screen readers (Orca) reading MDM's windows; browsers installed as a Flatpak (Firefox from
@@ -482,8 +504,12 @@ These ship in a later version, when they're ready.
   so a download a page starts by itself stays with Safari. Built and its relay to the helper
   checked in the sandbox Safari uses; still to check in Safari itself, signed with a Developer ID
 
+- 🔄 Malay: a native speaker's check of the menus, toolbar and list columns: in review
+
 ### Bugs being looked into
 
+- 🔄 A file renamed to avoid a clash still showing and opening under its old name
+  ([#442](https://github.com/anefzaoui/misterdownloadmanager/issues/442)): fix in review
 - 🔄 RSS feeds: the rule boxes losing the keyboard after each key
   ([#353](https://github.com/anefzaoui/misterdownloadmanager/issues/353)): fix in review
 - 🔄 Video progress at 100 % while still downloading, and long encoded strings as file names

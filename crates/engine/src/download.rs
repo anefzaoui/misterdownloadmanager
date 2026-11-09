@@ -39,6 +39,11 @@ const BATCH: usize = 256 * 1024;
 /// Received bytes are written at least this often, so a slow connection shows progress and a
 /// pause keeps what arrived.
 const FLUSH_EVERY: Duration = Duration::from_secs(1);
+/// While the resume save flushes the part file to the disk (`Shared::flushing`), the connections
+/// keep what they receive in memory, at most this much for the whole download, instead of
+/// waiting on the disk (#361): on NTFS a file's writes wait for its flush, whatever their
+/// handle (measured: 8 connections' writes held for each whole flush, 3-10 s on a slow disk).
+const FLUSH_HOLD_MAX: usize = 256 << 20;
 
 /// Shedding a slow connection (`Options::shed_slow`): after `SHED_GRACE` on a response, a
 /// connection under 1/`SHED_RATIO` of the best speed one connection reached, with more than
@@ -76,6 +81,11 @@ pub struct Options {
     /// The first retry is immediate (as IDM, lab S5); then this delay, doubling, capped at 30 s.
     pub retry_delay: Duration,
     pub user_agent: String,
+    /// Asked with instead of `user_agent` when the server refuses the first request with 403
+    /// (#372): a browser's User-Agent on a connection that isn't a browser's trips some sites'
+    /// bot checks (Cloudflare, seen on a public PDF), while MDM's own passes. Set when
+    /// `user_agent` is the browser's. A later 403 is left to the download.
+    pub agent_fallback: Option<String>,
     /// How often resume state is saved (IDM: "several times per minute").
     pub save_interval: Duration,
     /// Speed limit for this download, bytes/s (IDM's limiter is per file). None = unlimited.
@@ -132,6 +142,19 @@ pub struct Options {
     /// name, so whatever the hook attaches to it — Windows' Mark of the Web stream, macOS'
     /// quarantine attribute — stays with the finished file.
     pub on_file_created: Option<FileHook>,
+    /// Tests: a disk whose flush takes this long and holds every write to the file meanwhile
+    /// (as NTFS does, #361). None: the real disk.
+    #[doc(hidden)]
+    pub slow_flush: Option<SlowFlush>,
+}
+
+/// A disk whose flush takes `takes` and, as NTFS's does, makes every write to the file wait for
+/// it: the gate is held exclusively for the flush and shared for each write (`Options::slow_flush`).
+#[doc(hidden)]
+#[derive(Clone, Debug)]
+pub struct SlowFlush {
+    pub takes: Duration,
+    pub gate: Arc<std::sync::RwLock<()>>,
 }
 
 /// A callback given the path of a file the engine created (`Options::on_file_created`).
@@ -191,6 +214,7 @@ impl Default for Options {
             max_retries: 5,
             retry_delay: Duration::from_secs(1),
             user_agent: DEFAULT_USER_AGENT.to_owned(),
+            agent_fallback: None,
             save_interval: Duration::from_secs(2),
             speed_limit: None,
             verify_overlap: 64,
@@ -209,6 +233,7 @@ impl Default for Options {
             extra_roots: Vec::new(),
             post: None,
             on_file_created: None,
+            slow_flush: None,
         }
     }
 }
@@ -794,15 +819,35 @@ pub async fn probe_kept(
     };
     let seen = Arc::new(crate::server::ServerSeen::default());
     let client = client(opts, &target, &as_get, &seen)?;
-    let (resp, headers, took) = get(
+    // A browser's User-Agent refused (#372): asked once more as MDM.
+    let (client, asked) = match get(
         &client,
-        target,
-        headers,
+        target.clone(),
+        headers.clone(),
         opts.post.as_ref(),
         &opts.user_agent,
         &CancellationToken::new(),
     )
-    .await?;
+    .await
+    {
+        Err(e) if agent_refused(&e) && opts.agent_fallback.is_some() => {
+            let mut plain = opts.clone();
+            plain.user_agent = opts.agent_fallback.clone().unwrap_or_default();
+            let client = self::client(&plain, &target, &as_get, &seen)?;
+            let asked = get(
+                &client,
+                target,
+                headers,
+                opts.post.as_ref(),
+                &plain.user_agent,
+                &CancellationToken::new(),
+            )
+            .await;
+            (client, asked)
+        }
+        asked => (client, asked),
+    };
+    let (resp, headers, took) = asked?;
     seen.answered(&resp);
     let final_url = resp.url().clone();
     let (size, from_zero) = match resp.status() {
@@ -965,6 +1010,8 @@ impl Download {
             planner: Mutex::new(None),
             limiter: Limiter::new(None),
             best_speed: Default::default(),
+            flushing: Default::default(),
+            held: Default::default(),
         });
         let task = tokio::spawn(f(shared.clone(), cancel.clone()));
         Download {
@@ -1048,6 +1095,12 @@ struct Shared {
     /// The best speed one connection of this download sustained (≥ 1 s), bytes/s: what a good
     /// connection to this server does, the yardstick for shedding.
     best_speed: std::sync::atomic::AtomicU64,
+    /// The resume save is flushing the part file to the disk right now (`save_state`): the
+    /// connections hold what they receive (`hold_cap`).
+    flushing: std::sync::atomic::AtomicBool,
+    /// Bytes received and claimed but not yet written, in the connections' buffers: shown as
+    /// downloaded (they are), but never saved as such.
+    held: std::sync::atomic::AtomicU64,
 }
 
 impl Shared {
@@ -1055,7 +1108,7 @@ impl Shared {
         let mut s = self.view.lock().unwrap().clone();
         s.server = self.seen.get().and_then(|seen| seen.get());
         if let Some(p) = self.planner.lock().unwrap().as_ref() {
-            s.downloaded = p.downloaded();
+            s.downloaded = p.downloaded() + self.held.load(Ordering::Relaxed);
             s.segments = p
                 .segments()
                 .iter()
@@ -1439,7 +1492,12 @@ async fn run(
     });
     let mut v = shared.view.lock().unwrap();
     v.state = match &result {
-        Ok(_) => State::Done,
+        Ok(o) => {
+            // Where it really is: `finish` numbers the name when another file took it meanwhile,
+            // and whoever reads the view (the app's row) goes by this.
+            v.file = Some(o.path.clone());
+            State::Done
+        }
         Err(Error::Cancelled) => State::Cancelled,
         Err(e) => {
             v.error = Some(e.to_string());
@@ -1459,6 +1517,8 @@ async fn run_fresh(
     kept: Option<KeptAnswer>,
 ) -> Result<Outcome, Error> {
     let mut opts = opts;
+    // The first request had to give up the browser's User-Agent (#372).
+    let mut asked_as_mdm = false;
     shared.limiter.set(opts.speed_limit);
     let (shared, cancel) = (&shared, &cancel);
     shared.conn(0, |_| {});
@@ -1486,8 +1546,23 @@ async fn run_fresh(
             let as_get = AsGet::default();
             let seen = shared.seen.get_or_init(Default::default).clone();
             let client0 = client(&opts, &target, &as_get, &seen)?;
-            let (answer, ttfb) =
-                first_get(&client0, &target, &asked, &opts, shared, cancel).await?;
+            let (client0, first) = match first_get(&client0, &target, &asked, &opts, shared, cancel)
+                .await
+            {
+                Err(e) if agent_refused(&e) && opts.agent_fallback.is_some() => {
+                    // #372: the rest of the download goes as MDM too.
+                    opts.user_agent = opts.agent_fallback.take().unwrap_or_default();
+                    asked_as_mdm = true;
+                    shared.event(
+                            "The server refused the browser's User-Agent; asking as Mister Download Manager",
+                        );
+                    let client1 = client(&opts, &target, &as_get, &seen)?;
+                    let first = first_get(&client1, &target, &asked, &opts, shared, cancel).await;
+                    (client1, first)
+                }
+                first => (client0, first),
+            };
+            let (answer, ttfb) = first?;
             seen.answered(&answer.0);
             (as_get, client0, answer, ttfb)
         }
@@ -1587,6 +1662,7 @@ async fn run_fresh(
         saved.content_type = content_type.clone();
         saved.checksum = checksum.clone();
         saved.final_get = opts.post.is_some() && post.is_none();
+        saved.asked_as_mdm = asked_as_mdm;
         let ctx = Arc::new(Ctx {
             client: client0.clone(),
             validators: Mutex::new(validators),
@@ -1833,6 +1909,12 @@ async fn run_resume(
     shared: Arc<Shared>,
     cancel: CancellationToken,
 ) -> Result<Outcome, Error> {
+    let mut opts = opts;
+    if saved.asked_as_mdm
+        && let Some(agent) = opts.agent_fallback.take()
+    {
+        opts.user_agent = agent;
+    }
     shared.limiter.set(opts.speed_limit);
     let bad = |what: &str| Error::BadState(format!("{}: {what}", state_file.display()));
     if state_file != state_path(&saved.dest) {
@@ -2102,6 +2184,7 @@ async fn segmented(
     let mut synced = Synced {
         at: std::time::Instant::now(),
         bytes: 0,
+        took: Duration::ZERO,
     };
     save_state(&ctx, &mut saved, &path, &mut synced, true).await?;
     let interval = ctx.opts.save_interval;
@@ -2148,25 +2231,49 @@ async fn segmented(
 }
 
 /// While downloading, the part file is flushed (and the state rewritten) only after 1/16 of
-/// the file (1–64 MiB) has arrived or this long, at most once per save tick, and always when
+/// the file (1-64 MiB) has arrived or this long, at most once per save tick, and always when
 /// the connections stop. Flushing every tick stalled HDDs and churned antivirus; IDM saves
-/// "several times per minute" [IDM-doc]. A crash costs at most that much re-download.
+/// "several times per minute" [IDM-doc].
+///
+/// A flush holds every write to the file for as long as it runs (NTFS, measured, #361), so on a
+/// disk where it takes seconds, flushing as often as the file grows left the download frozen
+/// most of the time. The next flush therefore waits nine times as long as the last one took,
+/// at most `SYNC_GAP_MAX`: at most a tenth of the time goes to flushing, and on a fast disk
+/// (a flush of a few milliseconds) nothing changes. What it gives up: after a power cut or a
+/// crash the bytes since the last flush are downloaded again, so on a slow disk up to
+/// `SYNC_GAP_MAX` of them (at 1 Gbit/s about 7 GB) instead of about 2 s of them. The saved
+/// positions still never claim bytes that weren't flushed.
 const SYNC_BYTES_MAX: u64 = 64 << 20;
 const SYNC_BYTES_MIN: u64 = 1 << 20;
 const SYNC_EVERY: Duration = Duration::from_secs(30);
+const SYNC_GAP_MAX: Duration = Duration::from_secs(60);
 
 fn sync_bytes(size: u64) -> u64 {
     (size / 16).clamp(SYNC_BYTES_MIN, SYNC_BYTES_MAX)
 }
 
-/// When the part file was last flushed, and how many bytes were on disk then.
+/// How long to wait after a flush that took `took` before the next.
+fn flush_gap(took: Duration) -> Duration {
+    took.saturating_mul(9).min(SYNC_GAP_MAX)
+}
+
+/// When the part file was last flushed, how many bytes were on disk then, and how long it took.
 struct Synced {
     at: std::time::Instant,
     bytes: u64,
+    took: Duration,
+}
+
+impl Synced {
+    /// Is a flush due with `bytes` on disk now, `elapsed` since the last one ended?
+    fn due(&self, bytes: u64, size: u64, elapsed: Duration) -> bool {
+        elapsed >= flush_gap(self.took)
+            && (bytes >= self.bytes.saturating_add(sync_bytes(size)) || elapsed >= SYNC_EVERY)
+    }
 }
 
 /// Save the resume state if it is due (`force`: always). `saved` is the state last written; it
-/// never claims bytes that weren't flushed (snapshot → flush → write).
+/// never claims bytes that weren't flushed (snapshot -> flush -> write).
 async fn save_state(
     ctx: &Ctx,
     saved: &mut ResumeState,
@@ -2182,9 +2289,7 @@ async fn save_state(
         || final_url != saved.final_url
         || final_get != saved.final_get;
     let bytes: u64 = segments.iter().map(|s| s.cursor - s.start).sum();
-    let due = force
-        || bytes >= synced.bytes.saturating_add(sync_bytes(ctx.size))
-        || synced.at.elapsed() >= SYNC_EVERY;
+    let due = force || synced.due(bytes, ctx.size, synced.at.elapsed());
     let file = ctx.file.clone();
     let path = path.to_owned();
     if !due {
@@ -2200,21 +2305,50 @@ async fn save_state(
         }
         return Ok(());
     }
-    *synced = Synced {
-        at: std::time::Instant::now(),
-        bytes,
-    };
     if segments == saved.segments && !meta_changed && path.exists() {
-        return Ok(()); // nothing new since the last write
+        // Nothing new since the last write.
+        *synced = Synced {
+            at: std::time::Instant::now(),
+            bytes,
+            took: Duration::ZERO,
+        };
+        return Ok(());
     }
     let mut s = saved.clone();
     s.validators = validators;
     s.final_url = final_url;
     s.final_get = final_get;
-    *saved = tokio::task::spawn_blocking(move || s.save(&path, segments, &file).map(|()| s))
-        .await
-        .expect("state writer panicked")?;
+    // Tests' slow disk (not for the forced saves at the start and the end).
+    let slow = if force {
+        None
+    } else {
+        ctx.opts.slow_flush.clone()
+    };
+    ctx.shared.flushing.store(true, Ordering::Release);
+    let began = std::time::Instant::now();
+    let done = tokio::task::spawn_blocking(move || {
+        if let Some(slow) = slow {
+            let _writes_wait = slow.gate.write().unwrap();
+            std::thread::sleep(slow.takes);
+        }
+        s.save(&path, segments, &file).map(|()| s)
+    })
+    .await
+    .expect("state writer panicked");
+    ctx.shared.flushing.store(false, Ordering::Release);
+    *saved = done?;
+    *synced = Synced {
+        at: std::time::Instant::now(),
+        bytes,
+        took: began.elapsed(),
+    };
     Ok(())
+}
+
+/// A plain 403, which a browser's User-Agent may have brought on (#372). A site's bot check
+/// isn't asked again: that one stays the site's call (#376).
+fn agent_refused(e: &Error) -> bool {
+    matches!(e, Error::Status(s) if s.as_u16() == 403)
 }
 
 /// A plain `GET` (no Range), or a POST of `post`, that must answer 200 or 206. A GET follows
@@ -2962,6 +3096,9 @@ async fn receive(
     let mut buf = Vec::with_capacity(BATCH);
     let mut flushed_at = std::time::Instant::now();
     let started = std::time::Instant::now();
+    // Time spent waiting for the disk (`flush`): a connection isn't slow for that (#361), it
+    // wasn't reading the network then.
+    let mut on_disk = Duration::ZERO;
     let mut received = 0u64;
     let mut checked = started;
     loop {
@@ -3054,16 +3191,22 @@ async fn receive(
                     limits.working(ctx.target().url.host_str().unwrap_or(""), now);
                 }
                 buf.extend_from_slice(&chunk[..n as usize]);
+                ctx.shared.held.fetch_add(n, Ordering::Relaxed);
                 received += n;
                 if checked.elapsed() >= Duration::from_millis(500) {
                     checked = std::time::Instant::now();
-                    let speed = (received as f64 / started.elapsed().as_secs_f64()) as u64;
+                    let on_net = started.elapsed().saturating_sub(on_disk);
+                    let speed = (received as f64 / on_net.as_secs_f64()) as u64;
                     ctx.shared.conn(id, |c| c.speed = speed);
-                    note_best(ctx, received, started);
-                    if should_shed(ctx, id, speed, started.elapsed(), pos + buf.len() as u64) {
+                    note_best(ctx, received, on_net);
+                    if should_shed(ctx, id, speed, on_net, pos + buf.len() as u64) {
                         flush(ctx, id, &mut pos, &mut buf).await?;
                         return Err(Error::SlowConnection);
                     }
+                }
+                if !full && buf.len() < hold_cap(ctx) && ctx.shared.flushing.load(Ordering::Acquire)
+                {
+                    continue; // the disk is busy flushing: this waits in memory (#361)
                 }
                 if buf.len() < BATCH && !full && flushed_at.elapsed() < FLUSH_EVERY {
                     continue;
@@ -3073,10 +3216,13 @@ async fn receive(
             Err(e) => (true, Some(e)),
             Ok(None) => (true, None),
         };
+        let waiting = std::time::Instant::now();
+        let flushed = flush(ctx, id, &mut pos, &mut buf).await?;
         flushed_at = std::time::Instant::now();
-        match flush(ctx, id, &mut pos, &mut buf).await? {
+        on_disk += flushed_at - waiting;
+        match flushed {
             Some(end) => {
-                note_best(ctx, received, started);
+                note_best(ctx, received, started.elapsed().saturating_sub(on_disk));
                 // A segment another connection shortened leaves an HTTP body far from its end
                 // (dropped); an FTP session is kept either way.
                 if err.is_none() && (pos >= to || matches!(body, Body::Ftp(_))) {
@@ -3094,10 +3240,16 @@ async fn receive(
     }
 }
 
+/// How much a connection may hold in memory while the part file is flushed (`FLUSH_HOLD_MAX`,
+/// shared by the connections this download may open).
+fn hold_cap(ctx: &Ctx) -> usize {
+    FLUSH_HOLD_MAX / ctx.opts.connections().max(1) as usize
+}
+
 /// Remember the speed of a response that carried enough (256 KiB) to say what this server can
-/// do over one connection.
-fn note_best(ctx: &Ctx, received: u64, started: std::time::Instant) {
-    let secs = started.elapsed().as_secs_f64();
+/// do over one connection (`on_net`: the time it took, waits for the disk not counted).
+fn note_best(ctx: &Ctx, received: u64, on_net: Duration) {
+    let secs = on_net.as_secs_f64();
     if received >= 256 * 1024 && secs > 0.0 {
         ctx.shared
             .best_speed
@@ -3134,9 +3286,15 @@ async fn flush(
     if n > 0 {
         let file = ctx.file.clone();
         let at = *pos;
-        tokio::task::spawn_blocking(move || write_all_at(&file, at, &data))
-            .await
-            .expect("writer panicked")?;
+        let slow = ctx.opts.slow_flush.clone();
+        let written = tokio::task::spawn_blocking(move || {
+            let _waits_for_flush = slow.as_ref().map(|s| s.gate.read().unwrap());
+            write_all_at(&file, at, &data)
+        })
+        .await
+        .expect("writer panicked");
+        ctx.shared.held.fetch_sub(n, Ordering::Relaxed);
+        written?;
     }
     *pos += n;
     ctx.shared.conn(id, |c| c.downloaded += n);
@@ -3327,6 +3485,28 @@ mod tests {
             header_str(&h, header::COOKIE),
             Some("a=1; session=new; xsrf=t")
         );
+    }
+
+    /// #361: a flush that took a while pushes the next one back, on a fast disk nothing changes.
+    #[test]
+    fn a_slow_flush_makes_the_next_one_wait() {
+        let s = Duration::from_secs;
+        let at = |took| Synced {
+            at: std::time::Instant::now(),
+            bytes: 0,
+            took,
+        };
+        let gb = 1u64 << 30;
+        // 3 s for the last flush: not again before 27 s, however many bytes came.
+        assert!(!at(s(3)).due(gb, 45 * gb, s(20)));
+        assert!(at(s(3)).due(gb, 45 * gb, s(27)));
+        // At most SYNC_GAP_MAX, whatever the flush took.
+        assert!(at(s(30)).due(gb, 45 * gb, s(61)));
+        // A flush of a few milliseconds: the old rules (each tick once 64 MiB have arrived).
+        assert!(at(Duration::from_millis(8)).due(128 << 20, 45 * gb, s(2)));
+        assert!(!at(Duration::from_millis(8)).due(1 << 20, 45 * gb, s(2)));
+        // Few bytes on a fast disk: still the long wait.
+        assert!(at(Duration::from_millis(8)).due(1 << 20, 45 * gb, s(30)));
     }
 
     #[test]
