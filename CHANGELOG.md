@@ -7,6 +7,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- A download saved under a numbered name because another file already had its name (`master (1).mp4`) now shows that name in the list and opens its own file, instead of keeping the old name and opening the other file ([#442](https://github.com/anefzaoui/misterdownloadmanager/issues/442)). Two downloads waiting under one name no longer collide when they start: the later one takes the next free name, instead of failing with "already being downloaded" or continuing the other one's data.
 - A save folder shown as `Downloads/Video` could be taken literally, asking to create it in the wrong place or failing with "Read-only file system" on macOS.
 - macOS: **Download video** no longer stops with a Python error and a "Python.framework is damaged" alert on a copy of MDM downloaded by a browser ([#330](https://github.com/anefzaoui/misterdownloadmanager/issues/330), [#339](https://github.com/anefzaoui/misterdownloadmanager/issues/339)). MDM now installs yt-dlp's folder build, which it unpacks once and checks against yt-dlp's signed list, instead of the single-program build that unpacks Python afresh at every start. The video window then offers to install it in place of a copy that came with an earlier version.
 - Browser link import: tighter handling of site data.
