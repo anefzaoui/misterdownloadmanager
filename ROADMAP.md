@@ -528,6 +528,8 @@ These ship in a later version, when they're ready.
   ([#447](https://github.com/anefzaoui/misterdownloadmanager/issues/447)): fix in review
 - 🔄 A file renamed to avoid a clash still showing and opening under its old name
   ([#442](https://github.com/anefzaoui/misterdownloadmanager/issues/442)): fix in review
+- 🔄 Download video's message when a site's bot check (Cloudflare) refuses yt-dlp
+  ([#317](https://github.com/anefzaoui/misterdownloadmanager/issues/317)): fix in review
 - 🔄 RSS feeds: the rule boxes losing the keyboard after each key
   ([#353](https://github.com/anefzaoui/misterdownloadmanager/issues/353)): fix in review
 - 🔄 Video progress at 100 % while still downloading, and long encoded strings as file names
