@@ -1,6 +1,8 @@
 # Builds the browser extension for each browser family from extension/ (one background.js):
 #   target/extension/chromium/  - manifest.json (Chrome, Edge, Brave, Opera, Vivaldi; load unpacked)
 #   target/extension/firefox/   - manifest.firefox.json as manifest.json
+#   target/extension/safari/    - manifest.safari.json as manifest.json (a folder only: tools/safari
+#                                 builds it into the app as Safari's extension, macOS)
 #   target/extension/mdm-chromium.zip - the chromium folder, zipped (a release download: unzip it
 #                                       and load the folder unpacked)
 #   target/extension/mdm-firefox.xpi  - the firefox folder, zipped (Firefox needs it signed by AMO
@@ -17,7 +19,7 @@ $version = [regex]::Match($cargo, '(?m)^version\s*=\s*"([^"]+)"').Groups[1].Valu
 if (-not $version) { throw "no version in Cargo.toml" }
 # The stores take one to four dot-separated numbers only (no "-rc.1").
 if ($version -notmatch '^\d+(\.\d+){0,3}$') { throw "version ${version}: browsers take only numbers like 1.2.3" }
-foreach ($kind in "chromium", "firefox") {
+foreach ($kind in "chromium", "firefox", "safari") {
   $dir = Join-Path $out $kind
   if (Test-Path $dir) { Remove-Item -LiteralPath $dir -Recurse -Force }
   New-Item -ItemType Directory -Force $dir | Out-Null
@@ -33,7 +35,7 @@ foreach ($kind in "chromium", "firefox") {
   if ($kind -eq "firefox" -and (Test-Path (Join-Path $dir "_locales/no"))) {
     Copy-Item (Join-Path $dir "_locales/no") (Join-Path $dir "_locales/nb") -Recurse
   }
-  $manifest = if ($kind -eq "firefox") { "manifest.firefox.json" } else { "manifest.json" }
+  $manifest = switch ($kind) { "firefox" { "manifest.firefox.json" } "safari" { "manifest.safari.json" } default { "manifest.json" } }
   $json = Get-Content (Join-Path $src $manifest) -Raw
   # The first "version" only (the manifest's own).
   $json = ([regex]'("version"\s*:\s*)"[^"]*"').Replace($json, "`${1}`"$version`"", 1)
@@ -63,4 +65,4 @@ foreach ($pair in @(@("chromium", "mdm-chromium.zip"), @("firefox", "mdm-firefox
     }
   } finally { $archive.Dispose() }
 }
-"built $out (chromium, firefox, chrome-store, mdm-chromium.zip, mdm-firefox.xpi, mdm-chrome-store.zip; version $version)"
+"built $out (chromium, firefox, safari, chrome-store, mdm-chromium.zip, mdm-firefox.xpi, mdm-chrome-store.zip; version $version)"
