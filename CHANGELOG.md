@@ -7,6 +7,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Download video** finds the video on pages whose player loads a `.mpd` or `.m3u8` address that answers something else first, as SVT Play does ([#377](https://github.com/anefzaoui/misterdownloadmanager/issues/377)).
 - **Open folder** works on a torrent that is still downloading ([#354](https://github.com/anefzaoui/misterdownloadmanager/issues/354)).
 - **Alt** and **F10** open the menu bar while a button or the list has the keyboard focus, not only when nothing does ([#328](https://github.com/anefzaoui/misterdownloadmanager/issues/328)).
 - Windows: no more crash on a computer where Direct3D can't start, when a window opened during the switch to OpenGL ([#337](https://github.com/anefzaoui/misterdownloadmanager/issues/337)).

@@ -486,6 +486,8 @@ const AUDIO_EXT = /^(mp3|m4a|aac|oga|ogg|opus|flac|wav|wma)$/;
 // file's, XML. Such an answer is only noted (`maybe`, MAYBE_MAX a tab), never listed unread.
 const MAYBE_TYPE = /^(text\/plain|(application|binary)\/octet-stream|(application|text)\/xml|)$/;
 const MAYBE_MAX = 20;
+// A manifest's own types: HLS's (Apple's and the x- ones), DASH's (and its older video/ name).
+const MANIFEST_TYPE = /mpegurl|dash\+xml|dash\.mpd/;
 const MANIFEST_MAX = 2 << 20;
 
 const pathOf = (url) => url.split(/[?#]/)[0];
@@ -498,6 +500,12 @@ function mediaKind(d) {
   if (d.statusCode && (d.statusCode < 200 || d.statusCode > 299)) return null;
   const mime = headerOf(d, "content-type").split(";")[0].trim().toLowerCase();
   const path = pathOf(d.url).toLowerCase();
+  // The address says manifest, the type says it isn't: a page or JSON that names one (SVT Play's
+  // switcher answers .../dash-full.mpd with JSON naming the real manifest; loaded first, it went
+  // to the app and yt-dlp found no video in it, #377). Read before believed, like any `maybe`.
+  if (/\.(m3u8|mpd)$/.test(path) && !MANIFEST_TYPE.test(mime) && !MAYBE_TYPE.test(mime)) {
+    return Number(headerOf(d, "content-length")) > MANIFEST_MAX ? null : { kind: "maybe", mime, size: 0 };
+  }
   if (/\.m3u8$/.test(path) || /mpegurl/.test(mime)) return { kind: "hls", mime, size: 0 };
   if (/\.mpd$/.test(path) || /dash\+xml/.test(mime)) return { kind: "dash", mime, size: 0 };
   if (SEGMENT_TYPE.test(mime) || SEGMENT_EXT.test(path)) return null;

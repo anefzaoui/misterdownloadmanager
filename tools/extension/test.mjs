@@ -924,6 +924,69 @@ const MPD = (protect) => `<?xml version="1.0"?>
   ok("#171: manifests without .m3u8/.mpd or their type: noted, read only when asked, listed");
 }
 {
+  // SVT Play (#377): the player first loads .../dash-full.mpd, a JSON answer naming the manifest,
+  // then the manifest itself from an address without .mpd. The button must send the manifest.
+  const SWITCHER = "https://switcher.test/resolve/1/dash-full.mpd";
+  const REAL = "https://api.test/manifest?manifestUrl=x";
+  served = { [SWITCHER]: { body: '{"location":"https://cdn.test/dash-full.mpd"}' } };
+  const blob = { 0: { href: "https://watch.test/v/5", players: [{ src: "blob:https://watch.test/a", w: 0, h: 0, duration: 0, drm: false }] } };
+  const tabs = { 9: { id: 9, url: "https://watch.test/v/5", title: "Clip", incognito: false } };
+  const sender = { id: "ours", url: "https://watch.test/v/5", frameId: 0, tab: { id: 9, url: "https://watch.test/v/5" } };
+  {
+    const { api, calls, listeners } = fakeApi({ firefox: false, frames: blob, tabs });
+    load(api, false);
+    listeners.tabUpdated(9, { url: "https://watch.test/v/5" });
+    await settle();
+    fetched.length = 0;
+    listeners.responseStarted(res(SWITCHER, "xmlhttprequest", H("application/json")));
+    listeners.responseStarted(res(REAL, "xmlhttprequest", H("application/dash+xml")));
+    await settle();
+    await new Promise((r) => listeners.message({ type: "video", src: "" }, sender, r));
+    assert.equal(natives(calls).find((x) => x.video).src, REAL, "the manifest, not the JSON that names it");
+    assert.ok(!fetched.some(([u]) => u === SWITCHER), "a real stream known: the other isn't even read");
+  }
+  {
+    // Alone, it is read when a stream is asked for: JSON is no stream, so nothing goes as one.
+    const { api, calls, listeners } = fakeApi({ firefox: false, frames: blob, tabs });
+    load(api, false);
+    listeners.tabUpdated(9, { url: "https://watch.test/v/5" });
+    await settle();
+    fetched.length = 0;
+    listeners.responseStarted(res(SWITCHER, "xmlhttprequest", H("application/json")));
+    await settle();
+    await new Promise((r) => listeners.message({ type: "video", src: "" }, sender, r));
+    const m = natives(calls).find((x) => x.video);
+    assert.equal(m.url, "https://watch.test/v/5", "the page goes");
+    assert.equal(m.src, undefined, "no stream");
+    assert.ok(fetched.some(([u]) => u === SWITCHER), "read before believed");
+  }
+  {
+    // What keeps working: a .m3u8 or .mpd served as its own type, as text or as a file, is a stream
+    // on sight; one served as something else is a stream too once read and found to be one.
+    const OK_HLS = "https://cdn.test/a/index.m3u8";
+    const TXT_MPD = "https://cdn.test/b/stream.mpd";
+    const ODD = "https://cdn.test/c/odd.m3u8";
+    served = { [ODD]: { body: "#EXTM3U"+String.fromCharCode(10)+"#EXT-X-ENDLIST"+String.fromCharCode(10) } };
+    const { api, calls, listeners } = fakeApi({ firefox: false, frames: blob, tabs });
+    load(api, false);
+    listeners.tabUpdated(9, { url: "https://watch.test/v/5" });
+    await settle();
+    fetched.length = 0;
+    listeners.responseStarted(res(OK_HLS, "xmlhttprequest", H("application/vnd.apple.mpegurl")));
+    listeners.responseStarted(res(TXT_MPD, "xmlhttprequest", H("text/plain")));
+    await settle();
+    assert.equal(fetched.length, 0, "not read to be believed");
+    assert.deepEqual((await popupAsk(listeners, { type: "media", tab: 9 })).media.map((m) => m.url).sort(), [OK_HLS, TXT_MPD].sort());
+    listeners.tabUpdated(9, { url: "https://watch.test/v/6" });
+    await settle();
+    listeners.responseStarted(res(ODD, "xmlhttprequest", H("video/mp2t")));
+    await settle();
+    await new Promise((r) => listeners.message({ type: "video", src: "" }, { ...sender, url: "https://watch.test/v/6", tab: { id: 9, url: "https://watch.test/v/6" } }, r));
+    assert.equal(natives(calls).filter((x) => x.video).pop().src, ODD, "read, and it is one");
+  }
+  ok("#377: a .mpd or .m3u8 address answering JSON is no stream: read first, the real manifest goes");
+}
+{
   // The popup reads nothing for a frame whose players have files of their own (no MediaSource).
   served = { "https://cdn.test/p/playlist?id=8": { body: "#EXTM3U\n#EXT-X-ENDLIST\n" } };
   const files = { 0: { href: "https://watch.test/v/4", players: [{ src: "https://files.test/movie.mp4", w: 0, h: 0, duration: 0, drm: false }] } };

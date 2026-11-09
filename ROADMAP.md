@@ -13,6 +13,9 @@ Everything below ships together, in version 0.5.0.
 
 ### Done
 
+- ✅ Download video on pages whose player first loads a manifest's address answering something else
+  (SVT Play): the real manifest goes to MDM, not that first answer
+  ([#377](https://github.com/anefzaoui/misterdownloadmanager/issues/377))
 - ✅ Menus on compositors that animate windows (Hyprland): no border and no slide-in, and going from
   title to title moves one window, so nothing fades; the reporter confirmed it
   ([#277](https://github.com/anefzaoui/misterdownloadmanager/issues/277))
