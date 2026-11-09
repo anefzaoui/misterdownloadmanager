@@ -49,7 +49,9 @@ pub(crate) fn put_folder(dir: &Path, version: &str, zip: &[u8]) -> Result<Instal
             if unpacking.join(PROGRAM).is_file() && unpacking.join(INTERNAL).is_dir() {
                 Ok(())
             } else {
-                Err(Error::Missing(format!("{PROGRAM} in the release's archive")))
+                Err(Error::Missing(format!(
+                    "{PROGRAM} in the release's archive"
+                )))
             }
         })
         .and_then(|()| {
