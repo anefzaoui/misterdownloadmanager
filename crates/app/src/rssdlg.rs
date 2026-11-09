@@ -12,6 +12,7 @@ use crate::rss::{Article, Rule, Store};
 use crate::winui::{self, ButtonKind, r, text};
 
 /// What the window asks of the app.
+#[derive(Debug, PartialEq, Eq)]
 pub enum Act {
     /// The store changed: save it.
     Saved,
@@ -263,6 +264,7 @@ impl RssWindow {
             self.articles = Default::default();
             act = Some(Act::Saved);
         }
+        let sel = self.feeds.selected.filter(|i| *i < store.feeds.len());
         // The selected feed's articles.
         let articles: Vec<Article> = sel
             .map(|i| store.feeds[i].articles.clone())
@@ -790,6 +792,7 @@ impl RssWindow {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::rss::Parsed;
     use egui::{Event, Modifiers, PointerButton, Rect, vec2};
     use std::cell::RefCell;
     use std::rc::Rc;
@@ -867,5 +870,97 @@ mod tests {
     fn typing_in_the_words_boxes_keeps_their_focus() {
         assert_eq!(typed_into(102.0, "linux").must, "linux");
         assert_eq!(typed_into(130.0, "cam").must_not, "cam");
+    }
+
+    /// #321: removing a feed in the RSS feeds window (including the last one) updates the
+    /// selection for the rest of the frame instead of indexing `store.feeds` with the old row.
+    #[test]
+    fn removing_a_feed_including_the_last_one_does_not_panic() {
+        let mut store = Store::default();
+        let first = store.add_feed("https://a.example/rss.xml").unwrap();
+        let second = store.add_feed("https://b.example/rss.xml").unwrap();
+        store.fetched(
+            first,
+            Parsed {
+                title: "First".into(),
+                articles: vec![Article {
+                    id: "1".into(),
+                    title: "One".into(),
+                    torrent: "magnet:?xt=urn:btih:1".into(),
+                    ..Default::default()
+                }],
+            },
+            100,
+        );
+        store.fetched(
+            second,
+            Parsed {
+                title: "Second".into(),
+                articles: vec![Article {
+                    id: "2".into(),
+                    title: "Two".into(),
+                    torrent: "magnet:?xt=urn:btih:2".into(),
+                    ..Default::default()
+                }],
+            },
+            100,
+        );
+
+        let ctx = egui::Context::default();
+        let mut defs = egui::FontDefinitions::default();
+        winui::install_fonts(&mut defs, None);
+        ctx.set_fonts(defs);
+
+        let mut win = RssWindow::new(&store, false);
+        let busy = HashSet::new();
+        let remove_at = pos2(196.0, 424.0);
+        let click_remove = |win: &mut RssWindow, store: &mut Store| -> Option<Act> {
+            let mut run = |events: Vec<egui::Event>, store: &mut Store| -> Option<Act> {
+                let mut act = None;
+                let input = egui::RawInput {
+                    screen_rect: Some(egui::Rect::from_min_size(
+                        Pos2::ZERO,
+                        egui::vec2(760.0, 500.0),
+                    )),
+                    events,
+                    ..Default::default()
+                };
+                let mut out = ctx.run_ui(input, |ui| {
+                    act = win.feeds_page(ui, Pos2::ZERO, store, &busy);
+                });
+                out.textures_delta.clear();
+                act
+            };
+            run(vec![egui::Event::PointerMoved(remove_at)], store);
+            run(
+                vec![egui::Event::PointerButton {
+                    pos: remove_at,
+                    button: egui::PointerButton::Primary,
+                    pressed: true,
+                    modifiers: egui::Modifiers::NONE,
+                }],
+                store,
+            );
+            run(
+                vec![egui::Event::PointerButton {
+                    pos: remove_at,
+                    button: egui::PointerButton::Primary,
+                    pressed: false,
+                    modifiers: egui::Modifiers::NONE,
+                }],
+                store,
+            )
+        };
+
+        // Removing the first of two feeds selects the remaining one without indexing out of bounds.
+        assert_eq!(click_remove(&mut win, &mut store), Some(Act::Saved));
+        assert_eq!(store.feeds.len(), 1);
+        assert_eq!(store.feeds[0].id, second);
+        assert_eq!(win.feeds.selected, Some(0));
+
+        // Removing the last (only) feed leaves no selection and does not panic (#321).
+        assert_eq!(click_remove(&mut win, &mut store), Some(Act::Saved));
+        assert!(store.feeds.is_empty());
+        assert_eq!(win.feeds.selected, None);
     }
 }
