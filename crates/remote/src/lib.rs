@@ -16,6 +16,7 @@
 pub mod addrs;
 pub mod devices;
 mod http;
+pub mod linkswift;
 pub mod pairing;
 pub mod tls;
 

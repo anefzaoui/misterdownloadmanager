@@ -93,6 +93,14 @@ misterdownloadmanager-cli --json get https://example.com/big.iso -o D:\Downloads
 {"event":"done","path":"D:\\Downloads\\big.iso","size":1073741824,"seconds":20.4}
 ```
 
+## Push downloads from LinkSwift
+
+In MDM's desktop app, open **Options → Remote → LinkSwift settings**, allow LinkSwift to add downloads and click **Done**, then **OK** in Options. Reopen LinkSwift settings to copy the service key. In LinkSwift's Aria2 service settings, set the host to `http://127.0.0.1` (or `http://localhost`), the port to `16881` and the path to `/jsonrpc`. Paste the required service key, leave the save folder blank, and test the connection. Use LinkSwift's single or bulk Aria2 push and check the downloads in MDM.
+
+The endpoint is off by default, listens only on IPv4 loopback, and requires its own key for both `aria2.getVersion` and `aria2.addUri`. Its key is separate from the automation API token. Each push submits one HTTP(S) download. MDM uses the supplied file name, Cookie, Referer and User-Agent where present, and applies its normal destination, duplicate and Referer rules. A successful push confirms receipt of the command. Use MDM's list to check download progress. Use that list in place of LinkSwift's external Aria2 task pages, which can include the service key.
+
+If the standalone LinkSwift bridge is already using port `16881`, stop it and apply MDM's Options again. Paste the key shown by MDM into LinkSwift.
+
 ## The automation API
 
 Other programs can ask the running app what it is downloading, and pause, start, remove or delete downloads. The API is **off by default**; turn it on with `misterdownloadmanager-cli api on` (and off with `api off`).

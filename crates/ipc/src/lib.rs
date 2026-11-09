@@ -159,6 +159,15 @@ impl Sink {
         Sink { tx, wake }
     }
 
+    /// Queue a desktop command and wake the app. This only acknowledges delivery to the queue.
+    pub fn submit(&self, cmd: Command) -> bool {
+        if self.tx.send(Incoming { cmd, reply: None }).is_err() {
+            return false;
+        }
+        (self.wake)();
+        true
+    }
+
     /// Hand `cmd` to the app and wait up to `wait` for its one-line answer (blocking). None:
     /// the app is quitting or didn't answer in time.
     pub fn ask(&self, cmd: Command, wait: Duration) -> Option<String> {

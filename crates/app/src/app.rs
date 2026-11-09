@@ -461,6 +461,7 @@ pub struct App {
     torrent_host: crate::torrents::Host,
     /// The remote control (#141): paired phones and computers on the local network.
     pub remote: Option<mdm_remote::Remote>,
+    linkswift: Option<mdm_remote::linkswift::Bridge>,
     /// Torrents a paired device sent, their files being looked up (`remote::poll_torrents`).
     pub remote_torrents: Vec<crate::remote::Lookup>,
     /// Free space where downloads go, and when it was last looked up (`free_space`).
@@ -770,6 +771,20 @@ impl App {
         self
     }
 
+    /// Start the optional LinkSwift endpoint for a desktop instance.
+    pub fn with_linkswift(mut self, sink: ipc::Sink) -> Self {
+        self.linkswift = mdm_ipc::data_dir().map(|dir| {
+            let bridge = mdm_remote::linkswift::Bridge::new(
+                self.rt.clone(),
+                dir.join("linkswift-rpc-key"),
+                sink,
+            );
+            bridge.apply(self.settings.linkswift_rpc);
+            bridge
+        });
+        self
+    }
+
     /// Asked to quit (File → Exit, `/exit`, the Scheduler's "Exit when done").
     pub fn wants_exit(&self) -> bool {
         self.exiting || self.exit_requested
@@ -968,6 +983,7 @@ impl App {
             torrents_started: false,
             torrent_host: crate::torrents::Host::new(),
             remote,
+            linkswift: None,
             remote_torrents: Vec::new(),
             free_space: Default::default(),
             netwatch: Default::default(),
@@ -4387,6 +4403,9 @@ impl App {
             crate::unix::set_run_at_startup(new.launch_on_startup);
         }
         self.settings = new;
+        if let Some(bridge) = &self.linkswift {
+            bridge.apply(self.settings.linkswift_rpc);
+        }
         crate::regional::set(&self.settings.regional);
         // Options → Remote: listening started, stopped or moved.
         if let Some(r) = &self.remote {
@@ -4988,7 +5007,8 @@ impl App {
                             &self.downloads,
                             self.host_limits.learned(),
                         )
-                        .with_remote(self.remote.clone()),
+                        .with_remote(self.remote.clone())
+                        .with_linkswift(self.linkswift.clone()),
                     );
                 } else {
                     dialogs::raise(ctx, dialogs::dialog_viewport("options"));

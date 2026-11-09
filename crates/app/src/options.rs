@@ -52,6 +52,8 @@ enum Sub {
     Account(AccountEdit),
     /// Remote → Pair a device...: the code shown, until a device pairs or it is closed.
     Pair,
+    /// Remote → LinkSwift: local Aria2 compatibility and its service key.
+    LinkSwift,
 }
 
 /// Options → Remote's page number (the tabs' numbers).
@@ -214,6 +216,7 @@ pub struct OptionsDialog {
     /// Remote (#141): the running remote control (its state, paired devices, pairing), the
     /// port as typed, and the paired devices list's scroll and selection.
     remote: Option<mdm_remote::Remote>,
+    linkswift: Option<mdm_remote::linkswift::Bridge>,
     port: String,
     device_rows: winui::RowList,
     /// Test browser integration → Set it up's runs seen finished (crate::extension).
@@ -234,6 +237,11 @@ impl OptionsDialog {
     /// With the app's remote control (Remote: its state, devices and pairing).
     pub fn with_remote(mut self, remote: Option<mdm_remote::Remote>) -> Self {
         self.remote = remote;
+        self
+    }
+
+    pub fn with_linkswift(mut self, bridge: Option<mdm_remote::linkswift::Bridge>) -> Self {
+        self.linkswift = bridge;
         self
     }
 
@@ -293,6 +301,7 @@ impl OptionsDialog {
             seven_zip: crate::extractq::seven_zip(),
             adapters: None,
             remote: None,
+            linkswift: None,
             port: settings.remote_port.to_string(),
             device_rows: Default::default(),
             cookie_browser: cookie_browser_at(settings),
@@ -2795,6 +2804,21 @@ impl OptionsDialog {
         )
         .clicked()
             || del_key;
+        if winui::button_light(
+            ui,
+            r(o, 252.0, 398.0, 156.0, 21.0),
+            crate::i18n::mark("LinkSwift settings..."),
+            if self.linkswift.is_some() {
+                ButtonKind::Normal
+            } else {
+                ButtonKind::Disabled
+            },
+            false,
+        )
+        .clicked()
+        {
+            self.sub = Some(Sub::LinkSwift);
+        }
         if pair && on {
             self.pair();
         }
@@ -2981,9 +3005,129 @@ impl OptionsDialog {
         matches!(out, Outcome::Open)
     }
 
+    fn linkswift_window(&mut self, ctx: &egui::Context) -> bool {
+        use mdm_remote::linkswift::{PATH, PORT, Status};
+        let Some(bridge) = &self.linkswift else {
+            return false;
+        };
+        let out: Outcome<()> = window(
+            ctx,
+            "opt-linkswift",
+            "LinkSwift",
+            [410.0, 247.0],
+            false,
+            LIGHT_BG(),
+            |ui, o| {
+                let p = ui.painter().clone();
+                winui::checkbox_light(
+                    ui,
+                    o + vec2(16.0, 21.0),
+                    &mut self.s.linkswift_rpc,
+                    crate::i18n::mark("Allow LinkSwift to add downloads on this computer"),
+                    true,
+                );
+                let running = bridge.status();
+                let status = if self.s.linkswift_rpc != self.from.linkswift_rpc {
+                    crate::i18n::t("Click OK in Options to apply the change.")
+                } else {
+                    match running {
+                        Status::Off => crate::i18n::t("The local LinkSwift endpoint is off."),
+                        Status::Listening => {
+                            crate::i18n::t("LinkSwift is listening on this computer.")
+                        }
+                        Status::PortInUse => {
+                            crate::i18n::t("LinkSwift could not start because its port is in use.")
+                        }
+                        Status::Failed => crate::i18n::t("LinkSwift could not start."),
+                    }
+                };
+                winui::paragraph(
+                    &p,
+                    o.x + 16.0,
+                    o.y + 50.0,
+                    status,
+                    LIGHT_TEXT(),
+                    o.x + 394.0,
+                    14.0,
+                );
+                group(
+                    ui,
+                    o,
+                    12.0,
+                    79.0,
+                    386.0,
+                    116.0,
+                    "Aria2 settings in LinkSwift",
+                );
+                for (y, label, value) in [
+                    (
+                        106.0,
+                        crate::i18n::t("Host:"),
+                        "http://127.0.0.1".to_owned(),
+                    ),
+                    (125.0, crate::i18n::t("Port:"), PORT.to_string()),
+                    (144.0, crate::i18n::t("Path:"), PATH.to_owned()),
+                ] {
+                    text(&p, o.x + 24.0, o.y + y, label, LIGHT_TEXT());
+                    text(
+                        &p,
+                        o.x + 160.0,
+                        o.y + y,
+                        &crate::i18n::ltr(&value),
+                        LIGHT_TEXT(),
+                    );
+                }
+                text(
+                    &p,
+                    o.x + 24.0,
+                    o.y + 174.0,
+                    crate::i18n::t("The service key is required."),
+                    LIGHT_TEXT(),
+                );
+                let can_copy = self.s.linkswift_rpc && matches!(running, Status::Listening);
+                if winui::button_light(
+                    ui,
+                    r(o, 222.0, 159.0, 164.0, 23.0),
+                    crate::i18n::mark("Copy service key"),
+                    if can_copy {
+                        ButtonKind::Normal
+                    } else {
+                        ButtonKind::Disabled
+                    },
+                    false,
+                )
+                .clicked()
+                    && let Some(key) = bridge.key()
+                {
+                    crate::copy_text(ctx, key);
+                }
+                if winui::button_light(
+                    ui,
+                    r(o, 323.0, 212.0, 73.0, 22.0),
+                    "Done",
+                    ButtonKind::Default,
+                    false,
+                )
+                .clicked()
+                    || winui::escape_pressed(ui)
+                {
+                    Outcome::Closed
+                } else {
+                    Outcome::Open
+                }
+            },
+        );
+        matches!(out, Outcome::Open)
+    }
+
     fn sub_dialog(&mut self, ctx: &egui::Context) {
         let Some(sub) = self.sub.take() else { return };
         match sub {
+            Sub::LinkSwift => {
+                if self.linkswift_window(ctx) {
+                    self.sub = Some(Sub::LinkSwift);
+                }
+            }
             Sub::Pair => {
                 if self.pair_window(ctx) {
                     self.sub = Some(Sub::Pair);

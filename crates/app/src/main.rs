@@ -403,7 +403,8 @@ fn app() -> eframe::Result {
         scale::start(&cc.egui_ctx, z);
         let _ = window.set(cc.egui_ctx.clone());
         renderer::test_slow_start();
-        app::App::new(&cc.egui_ctx, handle, commands, sink, loaded, start)
+        app::App::new(&cc.egui_ctx, handle, commands, sink.clone(), loaded, start)
+            .with_linkswift(sink)
     });
     crash::clean_exit();
     result

@@ -233,6 +233,8 @@ pub struct Settings {
     /// The local automation API (beyond IDM): status queries over the command channel. Off by
     /// default; `misterdownloadmanager-cli api on` turns it on.
     pub automation_api: bool,
+    /// Desktop-only Aria2 RPC compatibility for LinkSwift. Off by default.
+    pub linkswift_rpc: bool,
     /// Options → Remote (#141, beyond IDM): paired phones and computers on the local network
     /// add and control downloads (crates/remote). Off by default.
     pub remote_on: bool,
@@ -426,6 +428,7 @@ impl Default for Settings {
             debrid_torrents: false,
             sounds: Default::default(),
             automation_api: false,
+            linkswift_rpc: false,
             remote_on: false,
             remote_port: mdm_remote::PORT,
             remote_listen: String::new(),
