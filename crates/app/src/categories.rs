@@ -381,6 +381,10 @@ pub fn restored_names() -> String {
 
 #[cfg(test)]
 mod tests {
+    // Whole paths on the system the tests run on.
+    const SONGS: &str = if cfg!(windows) { "E:\Songs" } else { "/mnt/Songs" };
+    const ALL: &str = if cfg!(windows) { "F:\All" } else { "/mnt/All" };
+
     use super::*;
 
     /// The category registry is the process's: its tests take turns.
@@ -407,7 +411,7 @@ mod tests {
         let downloads = Path::new(r"C:\Users\u\Downloads");
         apply(
             &mut s,
-            edit(Category::Music, "Songs", "MP3 FLAC", r"E:\Songs"),
+            edit(Category::Music, "Songs", "MP3 FLAC", rSONGS),
             downloads,
         );
         assert_eq!(Category::Music.label(), "Songs");
@@ -425,7 +429,7 @@ mod tests {
         );
         assert_eq!(
             s.category_dir(Category::Music, downloads),
-            Path::new(r"E:\Songs")
+            Path::new(rSONGS)
         );
         assert_eq!(
             Category::Music.default_folder(downloads),
@@ -486,7 +490,7 @@ mod tests {
             },
             downloads,
         );
-        s.set_category_dir(Category::General, Some(r"F:\All".into()));
+        s.set_category_dir(Category::General, Some(rALL.into()));
         restore(&mut s);
         assert!(!Category::Video.deleted());
         assert_eq!(Category::Video.label(), "Video");
@@ -497,7 +501,7 @@ mod tests {
         );
         assert_eq!(
             s.category_dir(Category::General, downloads),
-            Path::new(r"F:\All")
+            Path::new(rALL)
         );
         assert!(Category::all().contains(&books));
         s = Settings::default();
