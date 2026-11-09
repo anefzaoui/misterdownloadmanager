@@ -20,6 +20,23 @@ pub struct Video {
     pub automatic: Vec<Track>,
     /// The language the video is spoken in, when the site says (`en`, `pt-BR`).
     pub language: Option<String>,
+    /// A plain file at this address, not a page or a stream (yt-dlp's `direct`). yt-dlp says
+    /// nothing of its size then: the server is asked (`needs_size`, #320).
+    pub direct: bool,
+}
+
+impl Video {
+    /// A plain file whose size nobody has said yet.
+    pub fn needs_size(&self) -> bool {
+        self.direct && self.formats.iter().all(|f| f.size.is_none())
+    }
+
+    /// The size the file's server said.
+    pub fn set_size(&mut self, size: u64) {
+        for f in &mut self.formats {
+            f.size = Some(size);
+        }
+    }
 }
 
 /// One language of subtitles a page has (#68).
@@ -67,6 +84,8 @@ struct RawVideo {
     #[serde(default)]
     automatic_captions: Option<std::collections::BTreeMap<String, Vec<RawSub>>>,
     language: Option<String>,
+    #[serde(default)]
+    direct: bool,
 }
 
 /// One file of a subtitle language (its formats: srt, vtt, json3…); only the name is read.
@@ -112,6 +131,20 @@ struct RawFormat {
     tbr: Option<f64>,
 }
 
+/// Whether `title` is only the last part of `page`'s address, which is what yt-dlp calls a video
+/// on a site it has no page reader for (#345: on some servers that part is a long hash).
+pub fn named_after_address(title: &str, page: &str) -> bool {
+    let Some(last) = url::Url::parse(page).ok().and_then(|u| {
+        u.path_segments()
+            .and_then(|mut p| p.next_back().map(str::to_owned))
+    }) else {
+        return false;
+    };
+    let last = percent_encoding::percent_decode_str(&last).decode_utf8_lossy();
+    let stem = last.rsplit_once('.').map_or(last.as_ref(), |(s, _)| s);
+    !stem.is_empty() && title.trim() == stem
+}
+
 /// Parse `yt-dlp -J` output.
 pub fn parse(json: &[u8]) -> Option<Video> {
     let raw: RawVideo = serde_json::from_slice(json).ok()?;
@@ -138,6 +171,7 @@ pub fn parse(json: &[u8]) -> Option<Video> {
         subtitles: tracks(raw.subtitles),
         automatic: tracks(raw.automatic_captions),
         language: raw.language,
+        direct: raw.direct,
     })
 }
 
@@ -493,6 +527,19 @@ pub fn choices(v: &Video, can_merge: bool) -> Vec<Choice> {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn a_title_that_is_only_the_address() {
+        let hash = "SFp1NUcrZFRkRUVrUWlqM3paMitkakJIUW9JSFhOeEZkd0ZMNEc5UHpnZm5hRkY4Vis5MjlJU00xdDVqTk1vaw";
+        let page = format!("https://cdn.example/v/{hash}.mp4?sig=1");
+        assert!(named_after_address(hash, &page));
+        assert!(!named_after_address("A real title", &page));
+        assert!(!named_after_address("watch", "not an address"));
+        assert!(named_after_address(
+            "my clip",
+            "https://x.example/my%20clip.mp4"
+        ));
+    }
+
     use super::*;
 
     #[test]
@@ -518,6 +565,7 @@ mod tests {
             subtitles: Vec::new(),
             automatic: Vec::new(),
             language: None,
+            direct: false,
         };
         let labels: Vec<String> = choices(&v, true)
             .into_iter()
@@ -613,6 +661,26 @@ mod tests {
             v.formats.len()
         );
         assert!(!heights.is_empty(), "no video in {:?}", v.title);
+    }
+
+    /// #320: yt-dlp's answer for a plain file (real output, 2026.10.26) says `direct` and no size.
+    #[test]
+    fn a_direct_file_takes_the_size_the_server_said() {
+        let json = r#"{"title": "clip", "direct": true, "ext": "mp4", "formats": [
+            {"format_id": "mp4", "ext": "mp4", "vcodec": null, "acodec": null}]}"#;
+        let mut v = parse(json.as_bytes()).unwrap();
+        assert!(v.needs_size());
+        assert_eq!(choices(&v, true)[0].size, None);
+        v.set_size(430_019_588);
+        assert!(!v.needs_size());
+        assert_eq!(choices(&v, true)[0].size, Some(430_019_588));
+        // A page's video: no such look (its sizes are the site's to say, or estimated).
+        let page = r#"{"title": "t", "formats": [{"format_id": "18", "ext": "mp4"}]}"#;
+        assert!(!parse(page.as_bytes()).unwrap().needs_size());
+        // A file whose size yt-dlp said keeps it.
+        let sized =
+            r#"{"title": "t", "direct": true, "formats": [{"format_id": "mp4", "filesize": 9}]}"#;
+        assert!(!parse(sized.as_bytes()).unwrap().needs_size());
     }
 
     /// #351: what yt-dlp lists on YouTube with no JavaScript runtime (real output, 2026.10.26):

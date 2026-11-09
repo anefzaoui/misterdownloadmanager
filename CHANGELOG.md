@@ -8,21 +8,36 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 ### Fixed
 
 - Crash reports: a freeze that was over before its snapshot was taken says so, instead of calling it a deadlock in code that was only waiting for events ([#355](https://github.com/anefzaoui/misterdownloadmanager/issues/355)).
+- **Move/Rename** was greyed out with several downloads selected, for example a set just added to a queue. It now asks for a folder and moves them all there ([#333](https://github.com/anefzaoui/misterdownloadmanager/issues/333)).
+- The extension no longer asks you to update MDM when only a bug-fix version separates them, which it did even when there was no update to get.
+- **Download video** shows a plain file's size, from its server, instead of "size unknown" ([#320](https://github.com/anefzaoui/misterdownloadmanager/issues/320)).
+- **Download video** finds the video on pages whose player loads a `.mpd` or `.m3u8` address that answers something else first, as SVT Play does ([#377](https://github.com/anefzaoui/misterdownloadmanager/issues/377)).
+- RSS feeds: the boxes on the **Download rules** tab (**Episodes**, **Must contain** and the others) keep the keyboard while you type, instead of losing it after each key ([#353](https://github.com/anefzaoui/misterdownloadmanager/issues/353)).
+- A download refused by a site's bot check (Cloudflare's challenge) says so and how to get the file, instead of "the server answered 403 Forbidden" ([#376](https://github.com/anefzaoui/misterdownloadmanager/issues/376)).
 - **Open folder** works on a torrent that is still downloading ([#354](https://github.com/anefzaoui/misterdownloadmanager/issues/354)).
 - **Alt** and **F10** open the menu bar while a button or the list has the keyboard focus, not only when nothing does ([#328](https://github.com/anefzaoui/misterdownloadmanager/issues/328)).
 - Windows: no more crash on a computer where Direct3D can't start, when a window opened during the switch to OpenGL ([#337](https://github.com/anefzaoui/misterdownloadmanager/issues/337)).
 - Windows: no more crash when a screen is unplugged, turned off or rearranged while MDM runs ([#335](https://github.com/anefzaoui/misterdownloadmanager/issues/335)).
 ### Added
 
+- **Far more file types taken from the browser by default** ([#382](https://github.com/anefzaoui/misterdownloadmanager/issues/382)): AI models and datasets (GGUF, SAFETENSORS, CKPT, PT, ONNX, PARQUET...), 3D and CAD (GLB, FBX, OBJ, STL, BLEND, STEP...), design and camera RAW files, ebooks, Office files, DAT, disk images and split archives. A list you never edited gains them; one you edited stays yours.
+- **A Safari extension, inside the Mac app:** a click on a link to a file type MDM takes goes to MDM, and so do the right-click items, the button over videos and **Media on this page**, as in the other browsers. Safari gives extensions no access to its downloads, so a download a page starts by itself stays with Safari, and the browser's proxy is not shared. See [Browser integration](docs/browser-integration.md#safari-macos).
 - **Far more file types taken from the browser by default** ([#382](https://github.com/anefzaoui/misterdownloadmanager/issues/382)): AI models and datasets (GGUF, SAFETENSORS, CKPT, PT, ONNX, PARQUET...), 3D and CAD (GLB, FBX, OBJ, STL, BLEND, STEP...), design and camera RAW files, ebooks, Office files, disk images and split archives. A list you never edited gains them; one you edited stays yours.
 - Help: what to do when an antivirus or VirusTotal flags MDM, and how to check your copy is the real one.
 
 ### Fixed
 
+- Video downloads: the progress no longer says 100 % while a video is still coming, when the site gives no total size, or between a video and its separate sound ([#344](https://github.com/anefzaoui/misterdownloadmanager/issues/344)). A video yt-dlp only knows by its address is named after the page, not a long hash ([#345](https://github.com/anefzaoui/misterdownloadmanager/issues/345)).
+- **A YouTube playlist in Add URL** ([#338](https://github.com/anefzaoui/misterdownloadmanager/issues/338)) opens the video window with its videos, instead of saving the page as a file named "playlist".
+- **Dailymotion's embedded player** ([#359](https://github.com/anefzaoui/misterdownloadmanager/issues/359)): its address is looked up as the video's own page, so the download button works on sites that embed one.
+- A download that a page starts by script (a thank-you page going to the installer, as obsproject.com's does) gets the file's address, not the page's, so MDM no longer saves that page under the installer's name ([#374](https://github.com/anefzaoui/misterdownloadmanager/issues/374)). A finished download also shows what really came down when the server gives no size.
+- **Stop** on a download in a running queue stays stopped, instead of the queue starting it again a moment later; **Stop All** too ([#341](https://github.com/anefzaoui/misterdownloadmanager/issues/341)).
+- Removing the last feed in the RSS feeds window no longer crashes the app ([#321](https://github.com/anefzaoui/misterdownloadmanager/issues/321)).
 - **YouTube formats with Node.js or Bun installed** ([#360](https://github.com/anefzaoui/misterdownloadmanager/issues/360)): yt-dlp needs a JavaScript runtime for them and looks for Deno alone, so MDM now tells it about Node.js (nvm's too) or Bun when there is no Deno.
 - **YouTube's look-up failing with "Requested format is not available"** ([#352](https://github.com/anefzaoui/misterdownloadmanager/issues/352)): signed-in cookies make yt-dlp use only YouTube's players that need a JavaScript runtime, and without one no video is left. The page is now looked up again without the cookies, and lists its qualities.
 - **Download video offering only the sound, with no reason given** ([#351](https://github.com/anefzaoui/misterdownloadmanager/issues/351)): when a page's better videos need ffmpeg and it isn't installed, the window now says so.
 - Adding a link again after its finished file was moved or deleted starts a new download, instead of asking about a duplicate that isn't there ([#342](https://github.com/anefzaoui/misterdownloadmanager/issues/342)).
+- **Sharp, evenly spaced text on Windows:** letters no longer run together or drift apart. English and other Latin, Greek and Cyrillic text is drawn the way Windows draws its own classic controls, with each letter's shape and width fitted together; every other script uses hinting suited to anti-aliased rendering ([#323](https://github.com/anefzaoui/misterdownloadmanager/issues/323), [#334](https://github.com/anefzaoui/misterdownloadmanager/issues/334)).
 
 ## [0.5.1] - 2026-11-08
 
