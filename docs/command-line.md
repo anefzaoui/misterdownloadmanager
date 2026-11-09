@@ -99,7 +99,9 @@ In MDM's desktop app, open **Options → Remote → LinkSwift settings**, allow 
 
 The endpoint is off by default, listens only on IPv4 loopback, and requires its own key for both `aria2.getVersion` and `aria2.addUri`. Its key is separate from the automation API token. Each push submits one HTTP(S) download. MDM uses the supplied file name, Cookie, Referer and User-Agent where present, and applies its normal destination, duplicate and Referer rules. A successful push confirms receipt of the command. Use MDM's list to check download progress. Use that list in place of LinkSwift's external Aria2 task pages, which can include the service key.
 
-If the standalone LinkSwift bridge is already using port `16881`, stop it and apply MDM's Options again. Paste the key shown by MDM into LinkSwift.
+Pushed downloads start in MDM's list without opening a progress window for each file. **Generate new key** in LinkSwift settings replaces the service key at once; paste the new one into LinkSwift. A damaged key file is replaced by a new key the same way.
+
+If another program, such as the standalone LinkSwift bridge, is using port `16881`, MDM says so and tries again by itself until the port is free: stop that program and MDM starts listening. Paste the key shown by MDM into LinkSwift.
 
 ## The automation API
 

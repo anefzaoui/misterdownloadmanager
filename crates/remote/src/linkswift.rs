@@ -13,14 +13,20 @@ use axum::response::{IntoResponse, Response};
 use axum::{Json, Router, routing::post};
 use serde_json::{Value, json};
 
+use crate::tls::PlainListener;
+
 pub const PORT: u16 = 16881;
 pub const PATH: &str = "/jsonrpc";
 const MAX_BODY: usize = 128 * 1024;
 
-#[derive(Clone, Copy)]
+/// How long a taken port waits before the next try (`Bridge::apply`).
+const RETRY: Duration = Duration::from_secs(15);
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Status {
     Off,
     Listening,
+    /// Another program holds the port; it is tried again every [`RETRY`].
     PortInUse,
     Failed,
 }
@@ -30,7 +36,18 @@ pub struct Bridge {
     rt: tokio::runtime::Handle,
     key_path: PathBuf,
     sink: mdm_ipc::Sink,
-    state: Arc<Mutex<(Status, Option<Running>)>>,
+    port: u16,
+    retry: Duration,
+    state: Arc<Mutex<Inner>>,
+}
+
+struct Inner {
+    status: Status,
+    running: Option<Running>,
+    /// The port was taken: the task trying again.
+    retrying: Option<tokio::task::JoinHandle<()>>,
+    /// The port was found taken and nobody was told yet ([`Bridge::take_port_notice`]).
+    port_notice: bool,
 }
 
 struct Running {
@@ -47,69 +64,162 @@ impl Drop for Running {
 
 struct Endpoint {
     port: u16,
-    key: String,
+    key: Mutex<String>,
     sink: mdm_ipc::Sink,
     enabled: Mutex<bool>,
 }
 
 impl Bridge {
     pub fn new(rt: tokio::runtime::Handle, key_path: PathBuf, sink: mdm_ipc::Sink) -> Self {
+        Self::on_port(rt, key_path, sink, PORT, RETRY)
+    }
+
+    fn on_port(
+        rt: tokio::runtime::Handle,
+        key_path: PathBuf,
+        sink: mdm_ipc::Sink,
+        port: u16,
+        retry: Duration,
+    ) -> Self {
         Self {
             rt,
             key_path,
             sink,
-            state: Arc::new(Mutex::new((Status::Off, None))),
+            port,
+            retry,
+            state: Arc::new(Mutex::new(Inner {
+                status: Status::Off,
+                running: None,
+                retrying: None,
+                port_notice: false,
+            })),
         }
     }
 
+    /// Started or stopped. A port another program holds is tried again until it is free, or
+    /// until this is turned off.
     pub fn apply(&self, enabled: bool) {
         let mut state = self.state.lock().unwrap();
         if !enabled {
-            *state = (Status::Off, None);
-        } else if state
-            .1
-            .as_ref()
-            .is_none_or(|running| running.task.is_finished())
+            if let Some(retrying) = state.retrying.take() {
+                retrying.abort();
+            }
+            state.running = None;
+            state.status = Status::Off;
+            state.port_notice = false;
+        } else if state.retrying.is_none()
+            && state
+                .running
+                .as_ref()
+                .is_none_or(|running| running.task.is_finished())
         {
-            *state = match self.start() {
-                Ok(running) => (Status::Listening, Some(running)),
-                Err(e) if e.kind() == io::ErrorKind::AddrInUse => (Status::PortInUse, None),
-                Err(_) => (Status::Failed, None),
-            };
+            self.try_start(&mut state);
+            if state.status == Status::PortInUse {
+                let bridge = self.clone();
+                state.retrying = Some(self.rt.spawn(async move {
+                    loop {
+                        tokio::time::sleep(bridge.retry).await;
+                        if bridge.retried() {
+                            return;
+                        }
+                    }
+                }));
+            }
+        }
+    }
+
+    /// One more try at a taken port; false while it is still taken.
+    fn retried(&self) -> bool {
+        let mut state = self.state.lock().unwrap();
+        if state.status != Status::PortInUse {
+            state.retrying = None;
+            return true;
+        }
+        self.try_start(&mut state);
+        if state.status == Status::PortInUse {
+            return false;
+        }
+        state.retrying = None;
+        true
+    }
+
+    fn try_start(&self, state: &mut Inner) {
+        match self.start() {
+            Ok(running) => {
+                state.running = Some(running);
+                state.status = Status::Listening;
+                tracing::info!("LinkSwift: listening on port {}", self.port);
+            }
+            Err(e) if e.kind() == io::ErrorKind::AddrInUse => {
+                state.running = None;
+                // Once, though it is tried again every few seconds.
+                if state.status != Status::PortInUse {
+                    tracing::warn!(
+                        "LinkSwift: port {} is used by another program; trying again every {} s",
+                        self.port,
+                        self.retry.as_secs()
+                    );
+                    state.port_notice = true;
+                }
+                state.status = Status::PortInUse;
+            }
+            Err(e) => {
+                state.running = None;
+                state.status = Status::Failed;
+                tracing::warn!("LinkSwift: could not start: {e}");
+            }
         }
     }
 
     pub fn status(&self) -> Status {
         let state = self.state.lock().unwrap();
         if state
-            .1
+            .running
             .as_ref()
             .is_some_and(|running| running.task.is_finished())
         {
             Status::Failed
         } else {
-            state.0
+            state.status
         }
+    }
+
+    /// True once each time the port is found taken, for the notice saying so.
+    pub fn take_port_notice(&self) -> bool {
+        std::mem::take(&mut self.state.lock().unwrap().port_notice)
     }
 
     pub fn key(&self) -> Option<String> {
         let state = self.state.lock().unwrap();
         state
-            .1
+            .running
             .as_ref()
             .filter(|running| !running.task.is_finished())
-            .map(|running| running.request.key.clone())
+            .map(|running| running.request.key.lock().unwrap().clone())
+    }
+
+    /// Replaces the service key: the old one is refused from the next request on.
+    pub fn new_key(&self) -> io::Result<()> {
+        let key = make_key(&self.key_path)?;
+        if let Some(running) = &self.state.lock().unwrap().running {
+            *running.request.key.lock().unwrap() = key;
+        }
+        Ok(())
     }
 
     fn start(&self) -> io::Result<Running> {
-        let listener = TcpListener::bind((Ipv4Addr::LOCALHOST, PORT))?;
+        let listener = TcpListener::bind((Ipv4Addr::LOCALHOST, self.port))?;
         listener.set_nonblocking(true)?;
         let key = load_key(&self.key_path)?;
         let _runtime = self.rt.enter();
-        let listener = tokio::net::TcpListener::from_std(listener)?;
+        let listener = PlainListener::new(
+            tokio::net::TcpListener::from_std(listener)?,
+            crate::tls::MAX_CONNECTIONS,
+            crate::tls::IDLE,
+        );
         let request = Arc::new(Endpoint {
-            port: PORT,
-            key,
+            port: self.port,
+            key: Mutex::new(key),
             sink: self.sink.clone(),
             enabled: Mutex::new(true),
         });
@@ -121,23 +231,38 @@ impl Bridge {
     }
 }
 
+fn valid_key(key: &str) -> bool {
+    key.len() == 64 && key.bytes().all(|byte| byte.is_ascii_hexdigit())
+}
+
+/// A new key, saved where only this user can read it.
+fn make_key(path: &Path) -> io::Result<String> {
+    let key = hex::encode(crate::devices::random(32));
+    mdm_ipc::private_write(path, key.as_bytes())?;
+    Ok(key)
+}
+
+/// The kept key; a new one when there is none or the file is damaged (the person only has to
+/// paste the new one into LinkSwift, there is nothing else to lose).
 fn load_key(path: &Path) -> io::Result<String> {
-    let key = match std::fs::read_to_string(path) {
-        Ok(key) => key.trim().to_owned(),
-        Err(e) if e.kind() == io::ErrorKind::NotFound => {
-            let key = hex::encode(crate::devices::random(32));
-            mdm_ipc::private_write(path, key.as_bytes())?;
-            key
-        }
+    let kept = match std::fs::read(path) {
+        Ok(bytes) => Some(bytes),
+        Err(e) if e.kind() == io::ErrorKind::NotFound => None,
         Err(e) => return Err(e),
     };
-    if key.len() != 64 || !key.bytes().all(|byte| byte.is_ascii_hexdigit()) {
-        return Err(io::Error::new(
-            io::ErrorKind::InvalidData,
-            "invalid RPC key",
-        ));
+    match kept {
+        None => make_key(path),
+        Some(bytes) => {
+            let key = String::from_utf8_lossy(&bytes);
+            let key = key.trim();
+            if valid_key(key) {
+                Ok(key.to_owned())
+            } else {
+                tracing::warn!("LinkSwift: the service key file was damaged; made a new key");
+                make_key(path)
+            }
+        }
     }
-    Ok(key)
 }
 
 fn router(state: Arc<Endpoint>) -> Router {
@@ -155,6 +280,14 @@ async fn handle(State(state): State<Arc<Endpoint>>, request: Request) -> Respons
                 || host.eq_ignore_ascii_case(&format!("localhost:{}", state.port))
         })
     {
+        return StatusCode::FORBIDDEN.into_response();
+    }
+    // A web page is refused even if it has the key; the script manager LinkSwift runs in isn't.
+    let own = [
+        format!("http://127.0.0.1:{}", state.port),
+        format!("http://localhost:{}", state.port),
+    ];
+    if !crate::http::own_origin(request.headers(), &own) {
         return StatusCode::FORBIDDEN.into_response();
     }
     let body = match tokio::time::timeout(
@@ -204,17 +337,17 @@ fn dispatch(state: &Endpoint, request: &Value) -> Result<Value, RpcError> {
         .and_then(|s| s.strip_prefix("token:"))
         .ok_or((-32001, "RPC secret required"))?
         .trim();
-    if secret.len() != state.key.len()
+    let key = state.key.lock().unwrap().clone();
+    if secret.len() != key.len()
         || secret
             .bytes()
-            .zip(state.key.bytes())
+            .zip(key.bytes())
             .fold(0u8, |difference, (a, b)| difference | (a ^ b))
             != 0
     {
         return Err((-32001, "Incorrect RPC secret"));
     }
-    let enabled = state.enabled.lock().unwrap();
-    if !*enabled {
+    if !*state.enabled.lock().unwrap() {
         return Err((-32002, "Local RPC disabled"));
     }
     match request["method"].as_str() {
@@ -258,6 +391,7 @@ fn add_command(args: &[Value]) -> Result<mdm_ipc::Command, RpcError> {
     let mut command = mdm_ipc::Command {
         url: Some(address.to_owned()),
         silent: true,
+        no_window: true,
         ..Default::default()
     };
     if let Some(name) = options.get("out").filter(|v| !v.is_null()) {
@@ -344,8 +478,8 @@ mod tests {
         let key = "a".repeat(64);
         let endpoint = Arc::new(Endpoint {
             port: addr.port(),
-            key: key.clone(),
-            sink: mdm_ipc::Sink::new(tx, || {}),
+            key: Mutex::new(key.clone()),
+            sink: mdm_ipc::Sink::new(tx, Arc::new(|| {})),
             enabled: Mutex::new(true),
         });
         let app = router(endpoint.clone());
@@ -407,6 +541,7 @@ mod tests {
             assert_eq!(answer["result"].as_str().unwrap().len(), 16);
             let command = rx.try_recv().unwrap().cmd;
             assert!(command.silent);
+            assert!(command.no_window, "a push opens no window");
             assert_eq!(command.url.unwrap(), format!("https://example.test/{path}"));
             assert_eq!(command.name.as_deref(), Some("测试.txt"));
             assert_eq!(command.cookies.as_deref(), Some("a=b; c=d"));
@@ -439,5 +574,209 @@ mod tests {
         assert_eq!(disabled["error"]["code"], -32002);
         assert!(rx.try_recv().is_err());
         task.abort();
+    }
+
+    /// `Host`, `Origin` and `Sec-Fetch-Site` as a browser's page or extension would send them.
+    async fn answer(
+        client: &reqwest::Client,
+        addr: std::net::SocketAddr,
+        origin: Option<&str>,
+        fetch_site: Option<&str>,
+        token: &str,
+    ) -> reqwest::Response {
+        let mut request = client
+            .post(format!("http://{addr}{PATH}"))
+            .header(header::HOST, format!("127.0.0.1:{}", addr.port()))
+            .body(
+                json!({"jsonrpc": "2.0", "id": 1, "method": "aria2.getVersion", "params": [token]})
+                    .to_string(),
+            );
+        if let Some(origin) = origin {
+            request = request.header(header::ORIGIN, origin);
+        }
+        if let Some(fetch_site) = fetch_site {
+            request = request.header("sec-fetch-site", fetch_site);
+        }
+        request.send().await.unwrap()
+    }
+
+    fn test_sink() -> (mdm_ipc::Sink, std::sync::mpsc::Receiver<mdm_ipc::Incoming>) {
+        let (tx, rx) = std::sync::mpsc::channel();
+        (mdm_ipc::Sink::new(tx, Arc::new(|| {})), rx)
+    }
+
+    #[tokio::test]
+    async fn web_pages_are_refused_and_script_managers_are_not() {
+        let listener = tokio::net::TcpListener::bind((Ipv4Addr::LOCALHOST, 0))
+            .await
+            .unwrap();
+        let addr = listener.local_addr().unwrap();
+        let (sink, _rx) = test_sink();
+        let key = "b".repeat(64);
+        let endpoint = Arc::new(Endpoint {
+            port: addr.port(),
+            key: Mutex::new(key.clone()),
+            sink,
+            enabled: Mutex::new(true),
+        });
+        let task = tokio::spawn(async move {
+            axum::serve(listener, router(endpoint)).await.unwrap();
+        });
+        let client = reqwest::Client::builder().no_proxy().build().unwrap();
+        let token = format!("token:{key}");
+        // With the right key, none of these may be served.
+        for (origin, fetch_site) in [
+            (Some("https://example.test"), None),
+            (Some("http://example.test"), None),
+            (Some("http://127.0.0.1:1"), None),
+            (Some("null"), None),
+            (None, Some("cross-site")),
+            (Some("https://example.test"), Some("cross-site")),
+        ] {
+            let got = answer(&client, addr, origin, fetch_site, &token).await;
+            assert_eq!(
+                got.status(),
+                StatusCode::FORBIDDEN,
+                "{origin:?} {fetch_site:?}"
+            );
+        }
+        // Extensions, script managers and programs that are no browser.
+        let own = format!("http://localhost:{}", addr.port());
+        for (origin, fetch_site) in [
+            (None, None),
+            (None, Some("none")),
+            (Some(own.as_str()), None),
+            (Some("chrome-extension://abcdefghijklmnop"), Some("none")),
+            (
+                Some("chrome-extension://abcdefghijklmnop"),
+                Some("cross-site"),
+            ),
+            (Some("moz-extension://0a1b2c3d"), None),
+            (Some("safari-web-extension://0a1b2c3d"), None),
+        ] {
+            let got = answer(&client, addr, origin, fetch_site, &token).await;
+            assert_eq!(got.status(), StatusCode::OK, "{origin:?} {fetch_site:?}");
+            let body: Value = got.json().await.unwrap();
+            assert!(body["result"]["version"].is_string());
+        }
+        task.abort();
+    }
+
+    #[test]
+    fn a_damaged_key_file_is_replaced() {
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("key");
+        let first = load_key(&path).unwrap();
+        assert!(valid_key(&first));
+        assert_eq!(load_key(&path).unwrap(), first, "the same key each start");
+        for damaged in [&b"short"[..], &[0xff, 0xfe, 0x00, 0xc3, 0x28], &[b'g'; 64]] {
+            std::fs::write(&path, damaged).unwrap();
+            let new = load_key(&path).unwrap();
+            assert!(valid_key(&new), "a damaged file makes a usable key");
+            assert_eq!(std::fs::read_to_string(&path).unwrap(), new);
+        }
+    }
+
+    /// A port free right now on the loopback.
+    fn free_port() -> u16 {
+        let probe = TcpListener::bind((Ipv4Addr::LOCALHOST, 0)).unwrap();
+        probe.local_addr().unwrap().port()
+    }
+
+    async fn wait_for(bridge: &Bridge, wanted: Status) -> bool {
+        for _ in 0..200 {
+            if bridge.status() == wanted {
+                return true;
+            }
+            tokio::time::sleep(Duration::from_millis(10)).await;
+        }
+        false
+    }
+
+    #[tokio::test]
+    async fn a_taken_port_is_said_and_tried_again() {
+        let port = free_port();
+        let dir = tempfile::tempdir().unwrap();
+        let (sink, _rx) = test_sink();
+        let bridge = Bridge::on_port(
+            tokio::runtime::Handle::current(),
+            dir.path().join("key"),
+            sink,
+            port,
+            Duration::from_millis(50),
+        );
+        let held = TcpListener::bind((Ipv4Addr::LOCALHOST, port)).unwrap();
+        bridge.apply(true);
+        assert_eq!(bridge.status(), Status::PortInUse);
+        assert!(bridge.key().is_none());
+        assert!(bridge.take_port_notice(), "told once");
+        tokio::time::sleep(Duration::from_millis(120)).await;
+        assert_eq!(bridge.status(), Status::PortInUse, "still taken");
+        assert!(!bridge.take_port_notice(), "not told again");
+
+        drop(held);
+        assert!(wait_for(&bridge, Status::Listening).await);
+        assert!(bridge.key().is_some());
+
+        // Turned off while it waits for the port: it doesn't start after all.
+        bridge.apply(false);
+        assert!(wait_for(&bridge, Status::Off).await);
+        tokio::time::sleep(Duration::from_millis(50)).await;
+        let held = TcpListener::bind((Ipv4Addr::LOCALHOST, port));
+        let held = match held {
+            Ok(held) => held,
+            // The task that listened is aborted a moment later than the status changes.
+            Err(_) => {
+                tokio::time::sleep(Duration::from_millis(200)).await;
+                TcpListener::bind((Ipv4Addr::LOCALHOST, port)).unwrap()
+            }
+        };
+        bridge.apply(true);
+        assert_eq!(bridge.status(), Status::PortInUse);
+        bridge.apply(false);
+        drop(held);
+        tokio::time::sleep(Duration::from_millis(150)).await;
+        assert_eq!(bridge.status(), Status::Off, "off stops the retries");
+        assert!(bridge.key().is_none());
+    }
+
+    #[tokio::test]
+    async fn a_new_key_replaces_the_old_one_at_once() {
+        let port = free_port();
+        let dir = tempfile::tempdir().unwrap();
+        let (sink, _rx) = test_sink();
+        let bridge = Bridge::on_port(
+            tokio::runtime::Handle::current(),
+            dir.path().join("key"),
+            sink,
+            port,
+            Duration::from_millis(50),
+        );
+        bridge.apply(true);
+        assert_eq!(bridge.status(), Status::Listening);
+        let old = bridge.key().unwrap();
+        bridge.new_key().unwrap();
+        let new = bridge.key().unwrap();
+        assert_ne!(old, new);
+        assert_eq!(
+            std::fs::read_to_string(dir.path().join("key")).unwrap(),
+            new
+        );
+
+        let client = reqwest::Client::builder().no_proxy().build().unwrap();
+        let addr = (Ipv4Addr::LOCALHOST, port).into();
+        let refused: Value = answer(&client, addr, None, None, &format!("token:{old}"))
+            .await
+            .json()
+            .await
+            .unwrap();
+        assert_eq!(refused["error"]["code"], -32001);
+        let accepted: Value = answer(&client, addr, None, None, &format!("token:{new}"))
+            .await
+            .json()
+            .await
+            .unwrap();
+        assert!(accepted["result"]["version"].is_string());
+        bridge.apply(false);
     }
 }

@@ -217,6 +217,8 @@ pub struct OptionsDialog {
     /// port as typed, and the paired devices list's scroll and selection.
     remote: Option<mdm_remote::Remote>,
     linkswift: Option<mdm_remote::linkswift::Bridge>,
+    /// What Generate new key said (and whether it failed), until LinkSwift's window closes.
+    linkswift_note: Option<(String, bool)>,
     port: String,
     device_rows: winui::RowList,
     /// Test browser integration → Set it up's runs seen finished (crate::extension).
@@ -249,6 +251,13 @@ impl OptionsDialog {
     pub fn with_pairing(mut self) -> Self {
         self.page = REMOTE_PAGE;
         self.pair();
+        self
+    }
+
+    /// With Remote → LinkSwift settings... open (`/show options:linkswift`).
+    pub fn with_linkswift_open(mut self) -> Self {
+        self.page = REMOTE_PAGE;
+        self.sub = Some(Sub::LinkSwift);
         self
     }
 
@@ -302,6 +311,7 @@ impl OptionsDialog {
             adapters: None,
             remote: None,
             linkswift: None,
+            linkswift_note: None,
             port: settings.remote_port.to_string(),
             device_rows: Default::default(),
             cookie_browser: cookie_browser_at(settings),
@@ -3007,14 +3017,14 @@ impl OptionsDialog {
 
     fn linkswift_window(&mut self, ctx: &egui::Context) -> bool {
         use mdm_remote::linkswift::{PATH, PORT, Status};
-        let Some(bridge) = &self.linkswift else {
+        let Some(bridge) = self.linkswift.clone() else {
             return false;
         };
         let out: Outcome<()> = window(
             ctx,
             "opt-linkswift",
             "LinkSwift",
-            [410.0, 247.0],
+            [410.0, 272.0],
             false,
             LIGHT_BG(),
             |ui, o| {
@@ -3027,46 +3037,62 @@ impl OptionsDialog {
                     true,
                 );
                 let running = bridge.status();
-                let status = if self.s.linkswift_rpc != self.from.linkswift_rpc {
-                    crate::i18n::t("Click OK in Options to apply the change.")
+                let (status, ok) = if self.s.linkswift_rpc != self.from.linkswift_rpc {
+                    (
+                        crate::i18n::t("Click OK in Options to apply the change.").to_owned(),
+                        true,
+                    )
+                } else if let Some((note, failed)) = &self.linkswift_note {
+                    (note.clone(), !*failed)
                 } else {
                     match running {
-                        Status::Off => crate::i18n::t("The local LinkSwift endpoint is off."),
-                        Status::Listening => {
-                            crate::i18n::t("LinkSwift is listening on this computer.")
-                        }
-                        Status::PortInUse => {
-                            crate::i18n::t("LinkSwift could not start because its port is in use.")
-                        }
-                        Status::Failed => crate::i18n::t("LinkSwift could not start."),
+                        Status::Off => (
+                            crate::i18n::t("The local LinkSwift endpoint is off.").to_owned(),
+                            true,
+                        ),
+                        Status::Listening => (
+                            crate::i18n::t("LinkSwift is listening on this computer.").to_owned(),
+                            true,
+                        ),
+                        Status::PortInUse => (
+                            crate::i18n::fmt(
+                                // i18n: LinkSwift window: another program holds the port; MDM keeps trying; {port} = its number
+                                crate::i18n::t(
+                                    "Port {port} is used by another program. MDM tries again by itself.",
+                                ),
+                                &[("port", &PORT.to_string())],
+                            ),
+                            false,
+                        ),
+                        Status::Failed => (
+                            crate::i18n::t("LinkSwift could not start.").to_owned(),
+                            false,
+                        ),
                     }
                 };
-                winui::paragraph(
-                    &p,
-                    o.x + 16.0,
-                    o.y + 50.0,
-                    status,
-                    LIGHT_TEXT(),
-                    o.x + 394.0,
-                    14.0,
-                );
+                let ink = if ok {
+                    LIGHT_TEXT()
+                } else {
+                    crate::theme::colors().error_strong
+                };
+                winui::paragraph(&p, o.x + 16.0, o.y + 50.0, &status, ink, o.x + 394.0, 14.0);
                 group(
                     ui,
                     o,
                     12.0,
-                    79.0,
+                    86.0,
                     386.0,
-                    116.0,
+                    140.0,
                     "Aria2 settings in LinkSwift",
                 );
                 for (y, label, value) in [
                     (
-                        106.0,
+                        112.0,
                         crate::i18n::t("Host:"),
                         "http://127.0.0.1".to_owned(),
                     ),
-                    (125.0, crate::i18n::t("Port:"), PORT.to_string()),
-                    (144.0, crate::i18n::t("Path:"), PATH.to_owned()),
+                    (131.0, crate::i18n::t("Port:"), PORT.to_string()),
+                    (150.0, crate::i18n::t("Path:"), PATH.to_owned()),
                 ] {
                     text(&p, o.x + 24.0, o.y + y, label, LIGHT_TEXT());
                     text(
@@ -3077,17 +3103,19 @@ impl OptionsDialog {
                         LIGHT_TEXT(),
                     );
                 }
-                text(
+                winui::paragraph(
                     &p,
                     o.x + 24.0,
-                    o.y + 174.0,
+                    o.y + 183.0,
                     crate::i18n::t("The service key is required."),
                     LIGHT_TEXT(),
+                    o.x + 212.0,
+                    14.0,
                 );
                 let can_copy = self.s.linkswift_rpc && matches!(running, Status::Listening);
                 if winui::button_light(
                     ui,
-                    r(o, 222.0, 159.0, 164.0, 23.0),
+                    r(o, 222.0, 168.0, 164.0, 23.0),
                     crate::i18n::mark("Copy service key"),
                     if can_copy {
                         ButtonKind::Normal
@@ -3101,9 +3129,42 @@ impl OptionsDialog {
                 {
                     crate::copy_text(ctx, key);
                 }
+                // Turned on (and saved): the key file exists or is made here.
+                let can_generate = !matches!(running, Status::Off);
                 if winui::button_light(
                     ui,
-                    r(o, 323.0, 212.0, 73.0, 22.0),
+                    r(o, 222.0, 195.0, 164.0, 23.0),
+                    // i18n: LinkSwift window: replaces the service key; LinkSwift needs the new one
+                    crate::i18n::mark("Generate new key"),
+                    if can_generate {
+                        ButtonKind::Normal
+                    } else {
+                        ButtonKind::Disabled
+                    },
+                    false,
+                )
+                .clicked()
+                {
+                    self.linkswift_note = Some(match bridge.new_key() {
+                        Ok(()) => (
+                            // i18n: LinkSwift window: after Generate new key
+                            crate::i18n::t("A new key was made. Paste it into LinkSwift.")
+                                .to_owned(),
+                            false,
+                        ),
+                        Err(e) => (
+                            crate::i18n::fmt(
+                                // i18n: LinkSwift window: Generate new key failed; {error} = the system's reason
+                                crate::i18n::t("The new key could not be saved: {error}"),
+                                &[("error", &e.to_string())],
+                            ),
+                            true,
+                        ),
+                    });
+                }
+                if winui::button_light(
+                    ui,
+                    r(o, 323.0, 234.0, 73.0, 22.0),
                     "Done",
                     ButtonKind::Default,
                     false,
@@ -3126,6 +3187,8 @@ impl OptionsDialog {
             Sub::LinkSwift => {
                 if self.linkswift_window(ctx) {
                     self.sub = Some(Sub::LinkSwift);
+                } else {
+                    self.linkswift_note = None;
                 }
             }
             Sub::Pair => {

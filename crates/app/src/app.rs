@@ -2094,7 +2094,7 @@ impl App {
                     "archives" => 10,
                     "sounds" => 8,
                     "regional" => 9,
-                    "remote" | "pair" => 11,
+                    "remote" | "pair" | "linkswift" => 11,
                     _ => 0,
                 };
                 self.run(Cmd::Options, None, ctx);
@@ -2109,6 +2109,10 @@ impl App {
                 // Remote → Pair a device... (the docs' screenshots, #141).
                 if tab == "pair" {
                     self.options = self.options.take().map(|o| o.with_pairing());
+                }
+                // Remote → LinkSwift settings... (screenshots of its window).
+                if tab == "linkswift" {
+                    self.options = self.options.take().map(|o| o.with_linkswift_open());
                 }
             }
             _ => {}
@@ -2279,12 +2283,13 @@ impl App {
                 crate::i18n::mark("from the command line")
             };
             let size = cmd.size;
+            let show = !cmd.no_window;
             let id = self.push_item(url, dest, category, String::new(), size, None, cmd, source);
             self.name_guessed(id, guessed);
             if later {
                 self.queues[queue].items.push(id);
             } else {
-                self.start(id, true);
+                self.start(id, show);
             }
         } else {
             self.open_file_info(dialogs::NewUrl { url, login: None }, cmd, ctx);
@@ -2354,6 +2359,11 @@ impl App {
         self.stopped_by_hand.remove(&id);
         let rt = self.rt.clone();
         let Some(item) = self.item(id) else { return };
+        // Started by hand with its window: it shows like any other from then on, also its
+        // Download complete box (a push from LinkSwift opens neither by itself).
+        if show {
+            item.context.no_window = false;
+        }
         // A finished gallery may start again: it fetches the files not there yet (#58).
         if item.live.is_some() || (item.status == Status::Complete && item.gallery.is_none()) {
             return;
@@ -4368,6 +4378,26 @@ impl App {
         })
     }
 
+    /// LinkSwift's port was found taken: said once, as the listener keeps trying by itself.
+    fn poll_linkswift(&mut self) {
+        if self
+            .linkswift
+            .as_ref()
+            .is_some_and(|b| b.take_port_notice())
+        {
+            self.notice = Some((
+                crate::i18n::mark("LinkSwift"),
+                crate::i18n::fmt(
+                    // i18n: LinkSwift's port: another program holds it; MDM keeps trying; {port} = its number
+                    crate::i18n::t(
+                        "Port {port} is used by another program. MDM tries again by itself.",
+                    ),
+                    &[("port", &mdm_remote::linkswift::PORT.to_string())],
+                ),
+            ));
+        }
+    }
+
     /// The torrents a paired device sent whose files are known now: added with every file
     /// (into the category's folder), as an RSS rule adds one; never over files already there.
     fn poll_remote_torrents(&mut self) {
@@ -5267,7 +5297,10 @@ impl App {
             }
             if self.settings.show_complete
                 && this_file
-                && let Some(i) = self.items.iter().find(|i| i.id == id)
+                && let Some(i) = self
+                    .items
+                    .iter()
+                    .find(|i| i.id == id && !i.context.no_window)
             {
                 self.complete.push(Complete {
                     id,
@@ -8385,6 +8418,7 @@ impl App {
         self.debrid_tick();
         self.poll(ctx);
         self.poll_remote_torrents();
+        self.poll_linkswift();
         // What failed in any window, told here (dialogs::tell).
         if let Some((title, text)) = dialogs::told().pop() {
             self.notice = Some((title, text));

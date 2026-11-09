@@ -171,29 +171,35 @@ async fn guard(s: S, req: Request, next: Next) -> Response {
 /// No `Origin`, or this server's own (`https://` + the `Host` asked for); and not a request a
 /// browser marks as sent from another site.
 fn same_origin(headers: &HeaderMap, host: &str) -> bool {
+    own_origin(headers, &[format!("https://{host}")])
+}
+
+/// Sent by a page of this server (`own`) or by a browser extension or script manager, not by a
+/// web page elsewhere (`Origin`, `Sec-Fetch-Site`). A request from no browser has neither.
+pub(crate) fn own_origin(headers: &HeaderMap, own: &[String]) -> bool {
     let cross = headers
         .get("sec-fetch-site")
         .and_then(|v| v.to_str().ok())
         .is_some_and(|v| v.eq_ignore_ascii_case("cross-site"));
-    let origin = headers.get(header::ORIGIN).and_then(|o| o.to_str().ok());
-    // MDM's browser extension (#157): its requests carry its own origin, which no web page can
-    // send, and a token like any other.
-    if origin.is_some_and(|o| {
-        [
-            "chrome-extension://",
-            "moz-extension://",
-            "safari-web-extension://",
-        ]
-        .iter()
-        .any(|p| o.starts_with(p))
-    }) {
+    let Some(origin) = headers.get(header::ORIGIN) else {
+        return !cross;
+    };
+    let Ok(origin) = origin.to_str() else {
+        return false;
+    };
+    // MDM's browser extension (#157) and script managers: their requests carry their own origin,
+    // which no web page can send, and a token like any other.
+    if [
+        "chrome-extension://",
+        "moz-extension://",
+        "safari-web-extension://",
+    ]
+    .iter()
+    .any(|p| origin.starts_with(p))
+    {
         return true;
     }
-    let origin_ok = match origin {
-        None => true,
-        Some(o) => o.eq_ignore_ascii_case(&format!("https://{host}")),
-    };
-    origin_ok && !cross
+    own.iter().any(|o| origin.eq_ignore_ascii_case(o)) && !cross
 }
 
 /// A request from a paired device: its id.

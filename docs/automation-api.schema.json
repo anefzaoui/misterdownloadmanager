@@ -425,6 +425,10 @@
             "null"
           ]
         },
+        "no_window": {
+          "description": "Started without its progress window (a bulk push from LinkSwift: one window per file\nwould be hundreds).",
+          "type": "boolean"
+        },
         "pair": {
           "default": false,
           "description": "The remote control (#157, `misterdownloadmanager-cli pair`): show a new pairing code;\nanswered with it, the page's addresses and a QR code to scan ([`api::PairAnswer`]).",

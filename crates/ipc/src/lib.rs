@@ -30,6 +30,10 @@ pub struct Command {
     pub later: bool,
     /// `/n`: silent — no Download File Info dialog.
     pub silent: bool,
+    /// Started without its progress window (a bulk push from LinkSwift: one window per file
+    /// would be hundreds).
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    pub no_window: bool,
     /// `/s`: start the main queue.
     pub start_queue: bool,
     /// From the browser: request context to reuse.

@@ -23,12 +23,12 @@ use tokio_rustls::server::TlsStream;
 const VALID_DAYS: i64 = 800;
 const RENEW_DAYS: i64 = 30;
 /// Connections open at once on one listener; more wait to be accepted.
-const MAX_CONNECTIONS: usize = 64;
+pub const MAX_CONNECTIONS: usize = 64;
 /// Time a client gets for the TLS handshake (or a plain HTTP request's head).
 const HANDSHAKE: Duration = Duration::from_secs(10);
 /// A connection that sends and receives nothing this long is closed, so connections held open
 /// doing nothing can't take every place (`MAX_CONNECTIONS`) from the devices using the page.
-const IDLE: Duration = Duration::from_secs(60);
+pub const IDLE: Duration = Duration::from_secs(60);
 
 /// The certificate in use: the server's TLS settings and the fingerprint people compare.
 #[derive(Clone)]
@@ -140,14 +140,14 @@ fn make(names: &[String]) -> Result<(Vec<u8>, Vec<u8>), String> {
     Ok((cert.der().to_vec(), key.serialize_der()))
 }
 
-/// One accepted connection: TLS, closed once idle for [`IDLE`], and its place among the
-/// listener's `MAX_CONNECTIONS`.
-pub struct Conn {
-    io: Idle<TlsStream<TcpStream>>,
+/// One accepted connection (TLS unless [`PlainListener`] made it), closed once idle for
+/// [`IDLE`], and its place among the listener's `MAX_CONNECTIONS`.
+pub struct Conn<T = TlsStream<TcpStream>> {
+    io: Idle<T>,
     _slot: OwnedSemaphorePermit,
 }
 
-impl AsyncRead for Conn {
+impl<T: AsyncRead + Unpin> AsyncRead for Conn<T> {
     fn poll_read(
         mut self: Pin<&mut Self>,
         cx: &mut Context<'_>,
@@ -157,7 +157,7 @@ impl AsyncRead for Conn {
     }
 }
 
-impl AsyncWrite for Conn {
+impl<T: AsyncWrite + Unpin> AsyncWrite for Conn<T> {
     fn poll_write(
         mut self: Pin<&mut Self>,
         cx: &mut Context<'_>,
@@ -330,6 +330,52 @@ impl axum::serve::Listener for Listener {
     }
 }
 
+/// A listener without TLS, for a service on this computer only (crate::linkswift): at most
+/// `max` connections open at once, more wait to be accepted, and one idle for `idle` is closed.
+pub struct PlainListener {
+    tcp: TcpListener,
+    slots: Arc<Semaphore>,
+    idle: Duration,
+}
+
+impl PlainListener {
+    pub fn new(tcp: TcpListener, max: usize, idle: Duration) -> PlainListener {
+        PlainListener {
+            tcp,
+            slots: Arc::new(Semaphore::new(max)),
+            idle,
+        }
+    }
+}
+
+impl axum::serve::Listener for PlainListener {
+    type Io = Conn<TcpStream>;
+    type Addr = SocketAddr;
+
+    async fn accept(&mut self) -> (Self::Io, Self::Addr) {
+        loop {
+            let Ok(slot) = self.slots.clone().acquire_owned().await else {
+                // Never closed: this listener keeps its semaphore.
+                std::future::pending::<()>().await;
+                continue;
+            };
+            match self.tcp.accept().await {
+                Ok((tcp, peer)) => {
+                    let _ = tcp.set_nodelay(true);
+                    let io = Idle::new(tcp, self.idle);
+                    return (Conn { io, _slot: slot }, peer);
+                }
+                // Out of file handles and the like: try again in a moment.
+                Err(_) => tokio::time::sleep(Duration::from_millis(100)).await,
+            }
+        }
+    }
+
+    fn local_addr(&self) -> io::Result<Self::Addr> {
+        self.tcp.local_addr()
+    }
+}
+
 /// A plain `http://` request: answered with a redirect to the same address over HTTPS (to a
 /// name this server answers to only), then closed.
 async fn redirect(mut tcp: TcpStream, port: u16, host_ok: &(dyn Fn(&str) -> bool + Send + Sync)) {
@@ -398,6 +444,47 @@ mod tests {
         // Then nothing: the read fails once the limit has passed.
         let err = server.read(&mut buf).await.unwrap_err();
         assert_eq!(err.kind(), io::ErrorKind::TimedOut);
+    }
+
+    /// With its one place taken by a connection doing nothing, a second connection waits, and is
+    /// served once the idle one was closed for its silence.
+    #[tokio::test]
+    async fn a_plain_listener_limits_connections_and_closes_idle_ones() {
+        use tokio::io::{AsyncReadExt, AsyncWriteExt};
+        let tcp = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let addr = tcp.local_addr().unwrap();
+        let listener = PlainListener::new(tcp, 1, Duration::from_millis(400));
+        let app = axum::Router::new().route("/", axum::routing::get(|| async { "served" }));
+        let server = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+
+        let mut first = TcpStream::connect(addr).await.unwrap();
+        // Accepted by the server, holding its one place, sending nothing.
+        tokio::time::sleep(Duration::from_millis(50)).await;
+        let mut second = TcpStream::connect(addr).await.unwrap();
+        second
+            .write_all(b"GET / HTTP/1.1\r\nHost: x\r\nConnection: close\r\n\r\n")
+            .await
+            .unwrap();
+        let mut answer = String::new();
+        let waited = tokio::time::timeout(
+            Duration::from_millis(150),
+            second.read_to_string(&mut answer),
+        )
+        .await;
+        assert!(
+            waited.is_err(),
+            "served while the place was taken: {answer}"
+        );
+
+        // The idle one is closed for its silence, and the second one gets its answer.
+        let mut gone = [0u8; 1];
+        let closed = tokio::time::timeout(Duration::from_secs(3), first.read(&mut gone)).await;
+        assert!(closed.is_ok(), "the idle connection stayed open");
+        let done =
+            tokio::time::timeout(Duration::from_secs(3), second.read_to_string(&mut answer)).await;
+        assert!(done.is_ok(), "the waiting connection was never served");
+        assert!(answer.contains("served"), "{answer}");
+        server.abort();
     }
 
     #[test]

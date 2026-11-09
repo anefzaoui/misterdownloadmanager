@@ -150,6 +150,9 @@
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
 	A file of this torrent can't be saved safely: {name}	A file of this torrent can't be saved safely: {name}
+#. text in the Options window
+#. LinkSwift window: after Generate new key
+	A new key was made. Paste it into LinkSwift.	A new key was made. Paste it into LinkSwift.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	A NextDNS configuration ID is six letters and digits (0-9, a-f).
@@ -1337,6 +1340,9 @@
 #. tab title: general settings
 #. tab title: general information
 	General	General
+#. text in the Options window
+#. LinkSwift window: replaces the service key; LinkSwift needs the new one
+	Generate new key	Generate new key
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Georgia	Georgia
@@ -1703,10 +1709,8 @@
 #. in Import, where the addresses came from: a page in the browser
 #. in Link grabber, where the addresses came from: a page in the browser
 	Links from the browser	Links from the browser
-#. window title in the Options window
+#. message or event log entry in the main window; window title in the Options window
 	LinkSwift	LinkSwift
-#. text in the Options window
-	LinkSwift could not start because its port is in use.	LinkSwift could not start because its port is in use.
 #. text in the Options window
 	LinkSwift could not start.	LinkSwift could not start.
 #. text in the Options window
@@ -2432,6 +2436,10 @@
 	Poland	Poland
 #. label in the Options window
 	Port	Port
+#. message or event log entry in the main window; text in the Options window
+#. LinkSwift's port: another program holds it; MDM keeps trying; {port} = its number
+#. LinkSwift window: another program holds the port; MDM keeps trying; {port} = its number
+	Port {port} is used by another program. MDM tries again by itself.	Port {port} is used by another program. MDM tries again by itself.
 #. text in the Options window
 #. Options → Remote → Status: another program uses the port; {port} = its number
 	Port {port} is used by another program: choose another.	Port {port} is used by another program: choose another.
@@ -3250,6 +3258,10 @@
 #. text in errors.rs; text in torrent downloads
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 	the network adapter {adapter} is not connected	the network adapter {adapter} is not connected
+#. text in the Options window
+#. LinkSwift window: Generate new key failed; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
+	The new key could not be saved: {error}	The new key could not be saved: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 	the password is wrong	the password is wrong
