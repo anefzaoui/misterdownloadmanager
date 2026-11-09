@@ -2883,7 +2883,7 @@ impl App {
             return;
         };
         let name = mdm_engine::naming::file_name(None, &url);
-        if mdm_engine::supported(&url) && self.settings.auto_type(&name) {
+        if mdm_engine::supported(&url) && self.settings.clipboard_type(&name) {
             let cmd = ipc::Command {
                 url: Some(text),
                 ..Default::default()
