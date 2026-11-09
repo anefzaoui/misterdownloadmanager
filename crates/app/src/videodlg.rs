@@ -442,6 +442,11 @@ impl VideoDialog {
         }
     }
 
+    /// The Save to folder: the one a playlist's own folder goes under, too.
+    pub fn save_folder(&self) -> PathBuf {
+        crate::dialogs::resolve_path(&self.folder)
+    }
+
     fn name_from_choice(&mut self) {
         if let Some((v, choices)) = &self.video
             && let Some(c) = choices.get(self.chosen)
