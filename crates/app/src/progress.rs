@@ -75,7 +75,7 @@ fn seg_rows() -> impl Iterator<Item = (Color32, Color32, Color32)> {
     (0..13).map(|i| (s.missing[i], s.done[i], s.start[i]))
 }
 
-#[derive(Clone, Copy, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum Tab {
     Status,
     Limiter,
@@ -85,7 +85,7 @@ enum Tab {
 impl Progress {
     /// Open on a tab by its English name in lower case: a top tab ("status", "limit", "done") or
     /// a torrent's details tab ("peers"; /show progress:peers, for the docs' screenshots and the
-    /// fit audit); any other name leaves it as it is.
+    /// fit audit); any other name leaves it as it is. A top tab hidden with "Hide tab" comes back.
     pub fn show_tab(&mut self, name: &str) {
         let top = match name {
             "status" => Some(Tab::Status),
@@ -1743,18 +1743,19 @@ mod tests {
         let mut p = Progress::new(1, true);
         p.tab = Tab::Limiter;
         p.hide(Tab::Limiter);
-        assert!(p.tab == Tab::Status, "back on Download status");
-        assert!(p.hidden_tabs == [Tab::Limiter], "Speed Limiter hidden");
+        assert_eq!(p.tab, Tab::Status, "back on Download status");
+        assert_eq!(p.hidden_tabs, [Tab::Limiter], "Speed Limiter off the strip");
         p.hide(Tab::Limiter);
         p.hide(Tab::Status);
-        assert!(
-            p.hidden_tabs == [Tab::Limiter],
+        assert_eq!(
+            p.hidden_tabs,
+            [Tab::Limiter],
             "once each, never Download status"
         );
+        p.hide(Tab::Completion);
+        assert_eq!(p.hidden_tabs, [Tab::Limiter, Tab::Completion]);
         p.show_tab("limit");
-        assert!(
-            p.tab == Tab::Limiter && p.hidden_tabs.is_empty(),
-            "asked for, it comes back"
-        );
+        assert_eq!(p.tab, Tab::Limiter, "asked for, it comes back");
+        assert_eq!(p.hidden_tabs, [Tab::Completion], "the other stays hidden");
     }
 }
