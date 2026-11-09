@@ -504,6 +504,7 @@ These ship in a later version, when they're ready.
 
 - 🔄 Windows: closing the main window follows a setting: a portable copy quits, an installed one
   keeps running, and with no tray icon the window goes to the taskbar instead of vanishing: fix in review
+  ([#457](https://github.com/anefzaoui/misterdownloadmanager/pull/457))
 - 🔄 RSS feeds: the rule boxes losing the keyboard after each key
   ([#353](https://github.com/anefzaoui/misterdownloadmanager/issues/353)): fix in review
 - 🔄 Video progress at 100 % while still downloading, and long encoded strings as file names
