@@ -246,9 +246,8 @@ pub fn look_up(exe: &Path, url: &str, browser: &proc::FromBrowser) -> Result<Loo
     // Kept until yt-dlp has answered.
     let (theirs, _cookies) = browser.args(url)?;
     args.extend(theirs);
-    let cmd = proc::ytdlp(exe, &[], &args, url)?;
-    let out = proc::output(cmd, "yt-dlp", Duration::from_secs(90))?;
-    parse_looked(&out).ok_or_else(|| ProcError::Failed {
+    let out = proc::look_up(exe, &args, url, Duration::from_secs(90))?;
+    parse_looked(&out.json).ok_or_else(|| ProcError::Failed {
         tool: "yt-dlp".into(),
         message: "it gave no video information".into(),
     })
@@ -344,6 +343,20 @@ pub fn holds_subtitles(c: &Choice) -> bool {
         c.ext.to_ascii_lowercase().as_str(),
         "mp4" | "mkv" | "mov" | "m4v"
     )
+}
+
+/// Would merging (ffmpeg) bring a better video than the ones already carrying their sound (#351)?
+/// YouTube's only such format is 360p, and without a JavaScript runtime yt-dlp often has none:
+/// the list then holds the sound alone, so the window must say why.
+pub fn needs_merging(v: &Video) -> bool {
+    let best = |merging: bool| {
+        v.formats
+            .iter()
+            .filter(|f| f.video && (merging || f.audio))
+            .filter_map(|f| f.height)
+            .max()
+    };
+    best(true) > best(false)
 }
 
 /// The choices, best first: each resolution (merged with the best audio when ffmpeg is there,
@@ -567,6 +580,66 @@ mod tests {
         let labels: Vec<&str> = plain.iter().map(|c| c.label.as_str()).collect();
         assert_eq!(labels, ["360p MP4", "Audio only original M4A"]);
         assert_eq!(plain[0].selector, "b[height=360]");
+    }
+
+    /// Live (#352): `MDM_LIVE_YTDLP=<yt-dlp> MDM_LIVE_PAGE=<video page> cargo test -p mdm-tools
+    /// live_look_up -- --ignored --nocapture`. A look-up given cookies; with a yt-dlp that fails
+    /// the way a signed-in session does (a wrapper forcing `web_embedded,tv_samsung,web` when it
+    /// sees `--cookies`), the second look-up, without them, lists the page's videos.
+    #[test]
+    #[ignore]
+    fn live_look_up_with_cookies() {
+        let exe =
+            std::path::PathBuf::from(std::env::var("MDM_LIVE_YTDLP").expect("MDM_LIVE_YTDLP"));
+        let page = std::env::var("MDM_LIVE_PAGE").expect("MDM_LIVE_PAGE");
+        let browser = proc::FromBrowser {
+            cookies: Some("YSC=test".into()),
+            ..Default::default()
+        };
+        let (mut args, _file) = browser.args(&page).unwrap();
+        args.insert(0, "-J".to_owned());
+        args.push("--no-playlist".to_owned());
+        let out = proc::look_up(&exe, &args, &page, Duration::from_secs(120)).unwrap();
+        let v = parse(&out.json).unwrap();
+        let heights: std::collections::BTreeSet<u32> = v
+            .formats
+            .iter()
+            .filter(|f| f.video)
+            .filter_map(|f| f.height)
+            .collect();
+        println!(
+            "without_cookies: {}, {} formats, video heights {heights:?}",
+            out.without_cookies,
+            v.formats.len()
+        );
+        assert!(!heights.is_empty(), "no video in {:?}", v.title);
+    }
+
+    /// #351: what yt-dlp lists on YouTube with no JavaScript runtime (real output, 2026.10.26):
+    /// video-only streams and sound, nothing carrying both. Without ffmpeg only the sound is
+    /// offered, and the window has to say that ffmpeg brings the qualities.
+    #[test]
+    fn only_the_sound_without_ffmpeg_and_a_muxed_format() {
+        let json = r#"{"title": "T", "formats": [
+            {"format_id": "sb0", "ext": "mhtml", "vcodec": "none", "acodec": "none"},
+            {"format_id": "140-0", "ext": "m4a", "vcodec": "none", "acodec": "mp4a.40.2", "filesize": 900},
+            {"format_id": "312", "ext": "mp4", "height": 1080, "vcodec": "avc1.64002A", "acodec": "none", "filesize": 9000},
+            {"format_id": "230", "ext": "mp4", "height": 360, "vcodec": "avc1.4D401E", "acodec": "none", "filesize": 1000}]}"#;
+        let v = parse(json.as_bytes()).unwrap();
+        let without: Vec<String> = choices(&v, false).into_iter().map(|c| c.label).collect();
+        assert_eq!(without, ["Audio only original M4A"]);
+        assert!(needs_merging(&v));
+        let with: Vec<String> = choices(&v, true).into_iter().map(|c| c.label).collect();
+        assert_eq!(&with[..2], ["1080p MP4", "360p MP4"]);
+        // A format carrying both, as good as any video: nothing more to get from merging.
+        let muxed = r#"{"title": "T", "formats": [
+            {"format_id": "18", "ext": "mp4", "height": 360, "vcodec": "avc1", "acodec": "mp4a"},
+            {"format_id": "230", "ext": "mp4", "height": 360, "vcodec": "avc1", "acodec": "none"}]}"#;
+        assert!(!needs_merging(&parse(muxed.as_bytes()).unwrap()));
+        // Sound alone: nothing to merge.
+        let sound = r#"{"title": "T", "formats": [
+            {"format_id": "140", "ext": "m4a", "vcodec": "none", "acodec": "mp4a"}]}"#;
+        assert!(!needs_merging(&parse(sound.as_bytes()).unwrap()));
     }
 
     /// #70: what each audio choice converts to; the original and videos convert nothing.
