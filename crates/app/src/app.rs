@@ -5746,7 +5746,13 @@ impl App {
             // i18n: verb: opens the downloaded file
             I("Open", Cmd::Open, done, false),
             I("Open with...", Cmd::OpenWith, done, false),
-            I("Open folder", Cmd::OpenFolder, done, false),
+            // A torrent's folder is there while it downloads (#354).
+            I(
+                "Open folder",
+                Cmd::OpenFolder,
+                done || it.is_some_and(|i| i.torrent.is_some()),
+                false,
+            ),
             Sep,
             I("Move/Rename (Ctrl-M)", Cmd::MoveRename, movable, false),
             Sep,

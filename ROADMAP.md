@@ -456,6 +456,8 @@ These ship in a later version, when they're ready.
 
 - 🔄 A page that starts a download by script being saved instead of the file
   ([#374](https://github.com/anefzaoui/misterdownloadmanager/issues/374)): fix in review
+- 🔄 **Open folder** on a torrent still downloading
+  ([#354](https://github.com/anefzaoui/misterdownloadmanager/issues/354)): fix in review
 - 🔄 Alt and F10 opening the menu bar with a control focused
   ([#328](https://github.com/anefzaoui/misterdownloadmanager/issues/328)): fix in review
 - 🔄 Crash on Windows when a window opens while MDM falls back from Direct3D to OpenGL
