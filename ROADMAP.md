@@ -439,6 +439,7 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 Help: when an antivirus or VirusTotal flags MDM
 - 🔄 Linux, what's left ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
   screen readers (Orca) reading MDM's windows; browsers installed as a Flatpak (Firefox from
   Flathub may reach MDM through the desktop, as the Snap does: to check); native Wayland windows
