@@ -169,9 +169,10 @@ impl VideoDialog {
     /// Opened for `page` (Add URL was given a video's page, or the browser's button was
     /// clicked with `context`): looks it up at once.
     pub fn for_page(folder: PathBuf, page: &str, context: mdm_ipc::Command) -> Self {
+        let page = mdm_tools::pages::video_address(page);
         VideoDialog {
-            page: page.to_owned(),
-            from_browser: page.to_owned(),
+            page: page.clone(),
+            from_browser: page,
             context,
             auto_look: true,
             ..Self::new(folder)
@@ -188,7 +189,15 @@ impl VideoDialog {
     }
 
     /// The choices for a looked-up video: merged qualities when ffmpeg is there.
-    fn set_video(&mut self, v: Video) {
+    fn set_video(&mut self, mut v: Video) {
+        // No page reader for this site: the page's own title rather than a hash (#345).
+        if let Some(title) = self.context.video_title.as_deref().map(str::trim)
+            && !title.is_empty()
+            && self.page.trim() == self.from_browser
+            && mdm_tools::resolve::named_after_address(&v.title, &self.page)
+        {
+            v.title = title.to_owned();
+        }
         let merge = self.tools.get_or_insert_with(tools).2.is_some();
         let choices = mdm_tools::resolve::choices(&v, merge);
         self.chosen = 0;
@@ -385,7 +394,7 @@ impl VideoDialog {
                 self.set_video(v);
             }
         }
-        let folder = PathBuf::from(self.folder.trim());
+        let folder = crate::dialogs::resolve_path(&self.folder);
         let out = crate::dialogs::ensure_folder(ctx, &mut self.asking, out, &folder);
         // A playlist's videos, each its own download.
         if let (Some(list), Outcome::Done(())) = (&self.list, &out) {
@@ -413,7 +422,7 @@ impl VideoDialog {
                 Outcome::Done(VideoOut::One(VideoAdd {
                     page,
                     selector: c.selector.clone(),
-                    dest: PathBuf::from(self.folder.trim()).join(name),
+                    dest: crate::dialogs::resolve_path(&self.folder).join(name),
                     size: c.size,
                     start_now: self.start_now.unwrap_or(true),
                     context: self.context(),
@@ -516,18 +525,28 @@ impl VideoDialog {
             && can_look
             && let Some(tool) = &ytdlp
         {
+            // A typed or pasted address too (#359); the box shows what is looked up.
+            self.page = mdm_tools::pages::video_address(self.page.trim());
             let slot: Slot<Looked> = Arc::new(Mutex::new(None));
-            let (out, exe, page, ctx) = (
+            let (out, exe, page, ctx, rt) = (
                 slot.clone(),
                 tool.exe.clone(),
                 self.page.trim().to_owned(),
                 ui.ctx().clone(),
+                rt.clone(),
             );
             let browser = from_browser(&self.context());
             self.looking = Some((exe.clone(), browser.clone()));
             std::thread::spawn(move || {
-                let res =
+                let mut res =
                     mdm_tools::resolve::look_up(&exe, &page, &browser).map_err(|e| e.to_string());
+                // A plain file: yt-dlp doesn't say its size, its server does (#320).
+                if let Ok(Looked::Video(v)) = &mut res
+                    && v.needs_size()
+                    && let Some(size) = direct_size(&rt, &page, &browser)
+                {
+                    v.set_size(size);
+                }
                 *out.lock().unwrap() = Some(res);
                 ctx.request_repaint();
             });
@@ -1059,6 +1078,31 @@ pub fn from_browser(c: &mdm_ipc::Command) -> mdm_tools::proc::FromBrowser {
         cookies: c.cookies.clone(),
         jar: c.cookie_jar.clone(),
     }
+}
+
+/// The size the server says for a plain file at `page`, asked as the browser would (its Referer,
+/// its cookies, its user agent). None when it won't say: the window then says "size unknown", as
+/// it always did. A cookie jar (a whole site's cookies, for yt-dlp) isn't used: the header is.
+fn direct_size(
+    rt: &tokio::runtime::Handle,
+    page: &str,
+    browser: &mdm_tools::proc::FromBrowser,
+) -> Option<u64> {
+    use reqwest::header::{COOKIE, HeaderMap, HeaderValue, REFERER};
+    let url = url::Url::parse(page).ok()?;
+    let mut headers = HeaderMap::new();
+    for (name, value) in [(REFERER, &browser.referer), (COOKIE, &browser.cookies)] {
+        if let Some(v) = value.as_deref().and_then(|v| HeaderValue::from_str(v).ok()) {
+            headers.insert(name, v);
+        }
+    }
+    let mut opts = crate::settings::own_net();
+    if let Some(agent) = &browser.user_agent {
+        opts.user_agent = agent.clone();
+    }
+    rt.block_on(mdm_engine::probe(url, headers, &opts))
+        .ok()?
+        .size
 }
 
 /// A browser's name as people know it, from yt-dlp's (`chrome`: Chrome).

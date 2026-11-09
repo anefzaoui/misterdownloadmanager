@@ -15,8 +15,11 @@ const HOST = "com.misterdownloadmanager.host";
 const VERSION = ext.runtime.getManifest().version;
 const HELP = "https://misterdownloadmanager.com/help/browser-help.html";
 const action = ext.action ?? ext.browserAction;
+// Safari has no downloads API at all (nor proxy): it can't take a download from the browser, so
+// the links clicked in a page are handed over instead (`link`, below; page.js).
+const SAFARI = !ext.downloads;
 // Firefox has no pause before the file name (onDeterminingFilename): its own paths below.
-const FIREFOX = !ext.downloads.onDeterminingFilename;
+const FIREFOX = !SAFARI && !ext.downloads.onDeterminingFilename;
 // Brave and Opera say who they are only in the client hints, Firefox's forks (Zen, LibreWolf,
 // Floorp, Waterfox) only in runtime.getBrowserInfo, which only Firefox's family has. Both go to
 // the host as `brands` (Options lists them by name; crates/ipc capture::browser_named).
@@ -125,7 +128,7 @@ async function remoteSend(target, message) {
 // The file types the app takes by default (mdm_ipc::capture::DEFAULT_AUTO_TYPES; a test keeps
 // them the same): what is caught for another MDM when this computer has none to ask.
 const DEFAULT_TYPES =
-  "00* 3DM 3DS 3GP 3MF 7Z AAB AAC ABC ACE AFDESIGN AFPHOTO AI AIF AIFF APE APK APKM APKS APPIMAGE APPX APPXBUNDLE ARJ ARROW ARW ASF AU AVI AVRO AZW AZW3 BAK BAM BIN BLEND BZ BZ2 C4D CAB CAF CBR CBZ CCD CHD CKPT CPIO CR2 CR3 CRAM CSO DAE DCM DDS DEB DFF DIVX DJVU DMG DNG DOC DOCX DSF DWG DXF EPS EPUB EXE EXR F3D F4V FASTA FASTQ FB2 FBX FEATHER FIG FITS FLAC FLATPAK FQ GCODE GCZ GEM GGML GGUF GLB GLTF GPKG GRIB GRIB2 GZ GZIP H5 HDF5 HDR IGES IGS IMG INDD IPA ISO ISZ JAR JOBLIB JSONL KERAS KRA LAS LAZ LLAMAFILE LWO LZ LZ4 LZH LZMA M2T M2TS M2V M4A M4B M4V MA MAT MAX MB MBTILES MDF MDS MID MIDI MKA MKV MLMODEL MOBI MOV MP3 MP4 MPA MPE MPEG MPG MSI MSIX MSIXBUNDLE MSP MSU MTS MXF NC NDJSON NEF NEMO NII NPY NPZ NRG NSP NSZ NUPKG OBJ ODP ODS ODT OGG OGM OGV ONNX OPUS ORC ORF OTF OVA OVF PAK PARQUET PB PBF PDF PICKLE PK3 PK4 PKG PKL PLJ PLY POTX PPS PPSX PPT PPTX PSB PSD PT PTH QCOW QCOW2 QT R0* R1* R2* R3* R4* R5* R6* R7* R8* R9* RA RAF RAR RDS RM RMVB RPM RTF RUN RVZ RW2 SAFETENSORS SEA SF2 SFZ SHP SIT SITX SKETCH SKP SLDASM SLDPRT SNAP SQLITE SQLITE3 STEP STL STP TAR TBZ TBZ2 TFLITE TGA TGZ TIF TIFF TLZ TORRENT TTA TTC TTF TXZ TZST UNITYPACKAGE USD USDA USDC USDZ VDB VDI VHD VHDX VMDK VOB VPK VSIX WAV WBFS WEBM WHL WIM WMA WMV WRL WTV WUA WV X3D XAPK XCF XCI XLS XLSB XLSM XLSX XZ Z Z0* ZIP ZIPX ZPR ZST ZTL";
+  "00* 3DM 3DS 3GP 3MF 7Z AAB AAC ABC ACE AFDESIGN AFPHOTO AI AIF AIFF APE APK APKM APKS APPIMAGE APPX APPXBUNDLE ARJ ARROW ARW ASF AU AVI AVRO AZW AZW3 BAK BAM BIN BLEND BZ BZ2 C4D CAB CAF CBR CBZ CCD CHD CKPT CPIO CR2 CR3 CRAM CSO DAE DAT DCM DDS DEB DFF DIVX DJVU DMG DNG DOC DOCX DSF DWG DXF EPS EPUB EXE EXR F3D F4V FASTA FASTQ FB2 FBX FEATHER FIG FITS FLAC FLATPAK FQ GCODE GCZ GEM GGML GGUF GLB GLTF GPKG GRIB GRIB2 GZ GZIP H5 HDF5 HDR IGES IGS IMG INDD IPA ISO ISZ JAR JOBLIB JSONL KERAS KRA LAS LAZ LLAMAFILE LWO LZ LZ4 LZH LZMA M2T M2TS M2V M4A M4B M4V MA MAT MAX MB MBTILES MDF MDS MID MIDI MKA MKV MLMODEL MOBI MOV MP3 MP4 MPA MPE MPEG MPG MSI MSIX MSIXBUNDLE MSP MSU MTS MXF NC NDJSON NEF NEMO NII NPY NPZ NRG NSP NSZ NUPKG OBJ ODP ODS ODT OGG OGM OGV ONNX OPUS ORC ORF OTF OVA OVF PAK PARQUET PB PBF PDF PICKLE PK3 PK4 PKG PKL PLJ PLY POTX PPS PPSX PPT PPTX PSB PSD PT PTH QCOW QCOW2 QT R0* R1* R2* R3* R4* R5* R6* R7* R8* R9* RA RAF RAR RDS RM RMVB RPM RTF RUN RVZ RW2 SAFETENSORS SEA SF2 SFZ SHP SIT SITX SKETCH SKP SLDASM SLDPRT SNAP SQLITE SQLITE3 STEP STL STP TAR TBZ TBZ2 TFLITE TGA TGZ TIF TIFF TLZ TORRENT TTA TTC TTF TXZ TZST UNITYPACKAGE USD USDA USDC USDZ VDB VDI VHD VHDX VMDK VOB VPK VSIX WAV WBFS WEBM WHL WIM WMA WMV WRL WTV WUA WV X3D XAPK XCF XCI XLS XLSB XLSM XLSX XZ Z Z0* ZIP ZIPX ZPR ZST ZTL";
 
 // Pair with the MDM at `address` with a code it shows; {ok} or {ok: false, why, left}.
 async function remotePair(address, code) {
@@ -160,10 +163,12 @@ async function remoteOff() {
 }
 
 // a < b, both "x.y.z".
+// Is version `a` an older release than `b`? Only the first two numbers count: the store can publish
+// a bug-fix add-on before its app is out, and nothing it offers needs that app.
 function older(a, b) {
   const pa = String(a).split(/[.-]/).map(Number);
   const pb = String(b).split(/[.-]/).map(Number);
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 2; i++) {
     if ((pa[i] || 0) !== (pb[i] || 0)) return (pa[i] || 0) < (pb[i] || 0);
   }
   return false;
@@ -215,6 +220,8 @@ async function storedRules() {
 
 // One question at a time: callers meanwhile get its answer.
 let asking = null;
+// When Safari's page.js last had them asked for (once a minute at most, from every page).
+let rulesAskedAt = 0;
 function refreshRules() {
   asking = asking || askRules().finally(() => (asking = null));
   return asking;
@@ -241,6 +248,8 @@ async function askRules() {
   // keeps the files it would open).
   if (await remoteTarget()) {
     rules = { types: DEFAULT_TYPES, capture: true, excludedSites: "", excludedAddresses: [], opened: false, minKb: 0, at: Date.now() };
+    // Kept as the app's are: Safari's page.js holds links by the stored copy.
+    await ext.storage.local.set({ rules });
     return rules;
   }
   return null;
@@ -448,10 +457,18 @@ if (ext.webRequest && ext.webRequest.onBeforeRedirect) {
   );
 }
 
+// Pages the browser loaded in a tab or frame (two minutes), by address (the listener below).
+const loadedPages = new Map();
+
 // The address a download was first asked for: the browser's own (Chromium), else the start of
-// the redirects that led to it.
+// the redirects that led to it. Chromium also counts the page a script or a meta refresh left
+// from as a download's start (#374: a thank-you page setting location.href to the installer);
+// that page isn't the file, and asking it again would save the page under the file's name.
 function firstUrl(item) {
-  if (item.finalUrl && item.finalUrl !== item.url) return item.url;
+  if (item.finalUrl && item.finalUrl !== item.url) {
+    const page = loadedPages.get(item.url);
+    return page && Date.now() - page.at < 120000 ? item.finalUrl : item.url;
+  }
   const r = redirected.get(item.url);
   return r && Date.now() - r.at < 120000 ? r.from : item.url;
 }
@@ -486,6 +503,8 @@ const AUDIO_EXT = /^(mp3|m4a|aac|oga|ogg|opus|flac|wav|wma)$/;
 // file's, XML. Such an answer is only noted (`maybe`, MAYBE_MAX a tab), never listed unread.
 const MAYBE_TYPE = /^(text\/plain|(application|binary)\/octet-stream|(application|text)\/xml|)$/;
 const MAYBE_MAX = 20;
+// A manifest's own types: HLS's (Apple's and the x- ones), DASH's (and its older video/ name).
+const MANIFEST_TYPE = /mpegurl|dash\+xml|dash\.mpd/;
 const MANIFEST_MAX = 2 << 20;
 
 const pathOf = (url) => url.split(/[?#]/)[0];
@@ -498,6 +517,12 @@ function mediaKind(d) {
   if (d.statusCode && (d.statusCode < 200 || d.statusCode > 299)) return null;
   const mime = headerOf(d, "content-type").split(";")[0].trim().toLowerCase();
   const path = pathOf(d.url).toLowerCase();
+  // The address says manifest, the type says it isn't: a page or JSON that names one (SVT Play's
+  // switcher answers .../dash-full.mpd with JSON naming the real manifest; loaded first, it went
+  // to the app and yt-dlp found no video in it, #377). Read before believed, like any `maybe`.
+  if (/\.(m3u8|mpd)$/.test(path) && !MANIFEST_TYPE.test(mime) && !MAYBE_TYPE.test(mime)) {
+    return Number(headerOf(d, "content-length")) > MANIFEST_MAX ? null : { kind: "maybe", mime, size: 0 };
+  }
   if (/\.m3u8$/.test(path) || /mpegurl/.test(mime)) return { kind: "hls", mime, size: 0 };
   if (/\.mpd$/.test(path) || /dash\+xml/.test(mime)) return { kind: "dash", mime, size: 0 };
   if (SEGMENT_TYPE.test(mime) || SEGMENT_EXT.test(path)) return null;
@@ -648,10 +673,18 @@ function sniffTab(tabId, frames) {
 if (ext.webRequest && ext.webRequest.onResponseStarted) {
   ext.webRequest.onResponseStarted.addListener(
     (d) => {
+      if (d.type === "main_frame" || d.type === "sub_frame") {
+        const type = (d.responseHeaders || []).find((h) => h.name.toLowerCase() === "content-type");
+        if (d.statusCode === 200 && type && /^\s*(text\/html|application\/xhtml)/i.test(type.value || "")) {
+          forget(loadedPages, 120000);
+          loadedPages.set(d.url, { at: Date.now() });
+        }
+        return;
+      }
       const found = mediaKind(d);
       if (found) mediaBack.then(() => (found.kind === "maybe" ? noteMaybe(d, found) : noteMedia(d, found)));
     },
-    { urls: ["<all_urls>"], types: ["xmlhttprequest", "media", "other"] },
+    { urls: ["<all_urls>"], types: ["main_frame", "sub_frame", "xmlhttprequest", "media", "other"] },
     ["responseHeaders"],
   );
 }
@@ -884,6 +917,17 @@ async function mediaList(tabId) {
   return out;
 }
 
+// A file's name from the tab's title when its address ends in a long hash (#345), else none: the
+// app names it from the address, as for any download.
+function titledName(url, title) {
+  const last = pathOf(url).split("/").pop() || "";
+  const dot = last.lastIndexOf(".");
+  const stem = dot > 0 ? last.slice(0, dot) : last;
+  const name = String(title || "").replace(/[\\/:*?"<>|]/g, " ").trim().slice(0, 150);
+  const hash = stem.length >= 24 && /^[A-Za-z0-9=_-]+$/.test(stem) && (stem.match(/[-_]/g) || []).length <= 2;
+  return hash && name ? `${name}${dot > 0 ? last.slice(dot) : ""}` : "";
+}
+
 // One of the tab's media, handed to the app as the popup asked: a stream to the Download video
 // window (yt-dlp), a file as a download; with the page that played it (the referrer), the cookies
 // its own server gets, and the browser's User-Agent (`native`). A protected one is never sent.
@@ -916,7 +960,7 @@ async function mediaDownload(tabId, url) {
       ...(ctx.incognito ? { private: true } : {}),
     });
   }
-  return handOff({ url: it.url, referrer: page, size: it.size, mime: it.mime, explicit: true, ...ctx });
+  return handOff({ url: it.url, referrer: page, size: it.size, mime: it.mime, explicit: true, filename: titledName(it.url, tab.title), ...ctx });
 }
 
 // ---- the hand-off ------------------------------------------------------------------------
@@ -1283,6 +1327,38 @@ async function offer(item, url, name) {
   return Boolean(reply.ok);
 }
 
+// Safari: a link clicked in a page (page.js) that may be a download, offered as the browser's own
+// downloads are: through `candidate` (Options' rules, Alt, pause) then `offer`. `{taken: true}`
+// when the app took it; else page.js lets the click go on, so nothing is lost. The link's file
+// name is its `download` attribute's (`name`), else its address's (Safari names a download only
+// when it starts, which is too late).
+// The name an address gives, readable: the app saves a name as it is told it (the browsers' own
+// downloads come already named), so `My%20file.zip` would stay that.
+function addressName(url) {
+  const last = url.split(/[?#]/)[0].split("/").pop() || "";
+  try {
+    return decodeURIComponent(last);
+  } catch {
+    return last; // not valid percent-encoding
+  }
+}
+
+async function link(url, referrer, incognito, name) {
+  // What the browser opens itself (a PDF, a song) is taken only when Options say so (`opened`,
+  // "Also take files the browser would open"), as in the other browsers.
+  const r = await currentRules();
+  const type = extensionOf(name || url.split(/[?#]/)[0]).toUpperCase();
+  if (r && r.opened === false && OPENED[type]) return { taken: false };
+  const filename = name || addressName(url);
+  const item = { url, referrer, incognito, ...(filename ? { filename } : {}) };
+  const c = await candidate(item, url).catch(() => null);
+  if (!c || c.left) {
+    leftAlone(c, item, url);
+    return { taken: false };
+  }
+  return { taken: await offer(item, url, c.name).catch(() => false) };
+}
+
 // Tabs opened in the last seconds: one the download was opened in (a link opened in a new tab
 // or window, Shift+click) is closed with it, as when the browser keeps the download.
 const newTabs = new Map();
@@ -1326,7 +1402,9 @@ async function drop(item) {
   closeLeftTab([firstUrl(item), item.url, item.finalUrl].filter(Boolean)).catch(() => {});
 }
 
-if (!FIREFOX) {
+if (SAFARI) {
+  // Nothing to listen to: see `link`.
+} else if (!FIREFOX) {
   // Chromium: once the final file name is known (after redirects and Content-Disposition). The
   // download waits for `suggest`, writing nothing, while the app is asked: taken, it is
   // cancelled; else it goes on as the browser's. So it is never lost or kept by both (the app
@@ -1840,6 +1918,19 @@ async function pageMessage(m, sender) {
   const page = senderPage(sender);
   const tab = sender.tab || {};
   if (m.type === "panel") return { on: page ? await panelOn(page) : false };
+  if (m.type === "link" && typeof m.url === "string") {
+    const name = typeof m.name === "string" ? m.name.split(/[\\/]/).pop().slice(0, 255) : "";
+    return link(m.url, page || "", Boolean(tab.incognito), name);
+  }
+  // Safari's page.js, at each page: the rules it holds links by, refreshed when old (see `link`).
+  if (m.type === "rules") {
+    const r = await storedRules();
+    if ((!r || Date.now() - r.at > 60000) && Date.now() - rulesAskedAt > 60000) {
+      rulesAskedAt = Date.now();
+      refreshRules().catch(() => {});
+    }
+    return { ok: true };
+  }
   if (m.type === "bypass" && typeof m.url === "string") {
     bypass.set(m.url, { at: Date.now() });
     return { ok: true };
