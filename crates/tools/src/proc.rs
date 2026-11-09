@@ -1174,10 +1174,14 @@ mod tests {
             "-https://x/",
         )
         .unwrap();
-        let args: Vec<String> = cmd
+        let mut args: Vec<String> = cmd
             .get_args()
             .map(|a| a.to_string_lossy().into_owned())
             .collect();
+        // This computer's Node.js or Bun, if it has one (#360); tested on its own below.
+        if let Some(i) = args.iter().position(|a| a == "--js-runtimes") {
+            args.drain(i..=i + 1);
+        }
         assert_eq!(
             args,
             [
