@@ -489,6 +489,8 @@ These ship in a later version, when they're ready.
   [#339](https://github.com/anefzaoui/misterdownloadmanager/issues/339)): yt-dlp's folder build,
   unpacked once and checked against its signed list; built and checked on macOS, still to
   confirm on a person's Mac
+- 🔄 In English, the list's dates on the system's 12- or 24-hour clock
+  ([#392](https://github.com/anefzaoui/misterdownloadmanager/issues/392)): in review
 - 🔄 Help: when an antivirus or VirusTotal flags MDM
 - 🔄 Linux, what's left ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
   screen readers (Orca) reading MDM's windows; browsers installed as a Flatpak (Firefox from
@@ -502,10 +504,14 @@ These ship in a later version, when they're ready.
   so a download a page starts by itself stays with Safari. Built and its relay to the helper
   checked in the sandbox Safari uses; still to check in Safari itself, signed with a Developer ID
 
+- 🔄 Malay: a native speaker's check of the menus, toolbar and list columns: in review
+
 ### Bugs being looked into
 
 - 🔄 Download File Info staying open but invisible, with later browser downloads waiting behind
   it ([#440](https://github.com/anefzaoui/misterdownloadmanager/issues/440)): fix in review
+- 🔄 Arabic and other non-Latin file names saved unreadable, from Firefox and browsers built on it
+  ([#447](https://github.com/anefzaoui/misterdownloadmanager/issues/447)): fix in review
 - 🔄 A file renamed to avoid a clash still showing and opening under its old name
   ([#442](https://github.com/anefzaoui/misterdownloadmanager/issues/442)): fix in review
 - 🔄 RSS feeds: the rule boxes losing the keyboard after each key

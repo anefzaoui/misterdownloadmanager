@@ -70,9 +70,10 @@ pub const ADDED: usize = 8;
 /// The "Source" column's data slot: its cell is "Web" or "Torrent", painted as a chip.
 pub const SOURCE: usize = 9;
 
-/// IDM's default column widths (and ours for Added and Source).
+/// IDM's default column widths (and ours for Added, room for a 12-hour clock's
+/// `Oct 28 9:05:01 AM 2026`, and Source).
 pub const DEFAULT_WIDTHS: [f32; COLS] = [
-    150.0, 20.0, 75.0, 65.0, 75.0, 95.0, 65.0, 200.0, 125.0, 62.0,
+    150.0, 20.0, 75.0, 65.0, 75.0, 95.0, 65.0, 200.0, 145.0, 62.0,
 ];
 /// Default display order: Source first, then IDM's, with Added after Last Try Date.
 const DEFAULT_ORDER: [usize; COLS] = [SOURCE, 0, 1, 2, 3, 4, 5, 6, ADDED, 7];
