@@ -4657,6 +4657,109 @@ mod classic_text {
     }
 }
 
+/// The program Windows runs to open folders, when that isn't Explorer (a file manager such as
+/// Directory Opus set up to replace it, #446); None for Explorer, or when Windows doesn't say.
+pub fn folder_opener() -> Option<String> {
+    use windows_sys::Win32::UI::Shell::{ASSOCF_NONE, ASSOCSTR_EXECUTABLE, AssocQueryStringW};
+    other_folder_opener(|class, verb| {
+        let wide = |s: &str| s.encode_utf16().chain(Some(0)).collect::<Vec<u16>>();
+        let class = wide(class);
+        let verb = verb.map(wide);
+        let mut out = vec![0u16; 1024];
+        let mut len = out.len() as u32;
+        // SAFETY: the strings end in NUL and outlive the call; `len` is `out`'s size in
+        // characters, and the call writes at most that many.
+        let hr = unsafe {
+            AssocQueryStringW(
+                ASSOCF_NONE,
+                ASSOCSTR_EXECUTABLE,
+                class.as_ptr(),
+                verb.as_ref().map_or(std::ptr::null(), |v| v.as_ptr()),
+                out.as_mut_ptr(),
+                &mut len,
+            )
+        };
+        (hr == 0).then(|| {
+            let end = out.iter().position(|&c| c == 0).unwrap_or(out.len());
+            String::from_utf16_lossy(&out[..end])
+        })
+    })
+}
+
+/// Who opens a folder, asked of `executable_for(class, verb)` as the shell reads it: a folder is
+/// a `Directory` first (where a replacement registers its verb, as the default or as `open`),
+/// then a `Folder` (where Windows registers Explorer). An installed program's other verbs there
+/// ("Open with Code") are not the default and aren't asked for.
+fn other_folder_opener(
+    executable_for: impl Fn(&str, Option<&str>) -> Option<String>,
+) -> Option<String> {
+    let opener = [
+        ("Directory", None),
+        ("Directory", Some("open")),
+        ("Folder", None),
+    ]
+    .into_iter()
+    .find_map(|(class, verb)| executable_for(class, verb))?;
+    let name = opener.rsplit(['\\', '/']).next().unwrap_or(&opener);
+    (!name.is_empty() && !name.eq_ignore_ascii_case("explorer.exe")).then_some(opener)
+}
+
+#[cfg(test)]
+mod folder_opener_tests {
+    use super::other_folder_opener;
+
+    const EXPLORER: &str = r"C:\Windows\Explorer.exe";
+    const OPUS: &str = r"C:\Program Files\GPSoftware\Directory Opus\dopusrt.exe";
+
+    /// #446: as Windows is shipped (what `reg query` shows on a clean system), Explorer it is.
+    #[test]
+    fn explorer_as_shipped_is_no_other_opener() {
+        let shipped =
+            |c: &str, v: Option<&str>| (c == "Folder" && v.is_none()).then(|| EXPLORER.to_owned());
+        assert_eq!(other_folder_opener(shipped), None);
+    }
+
+    /// A replacement's default verb on `Directory` wins over Explorer on `Folder`.
+    #[test]
+    fn a_replacement_on_directory_is_the_opener() {
+        let opus = |c: &str, v: Option<&str>| match (c, v) {
+            ("Directory", None) => Some(OPUS.to_owned()),
+            ("Folder", None) => Some(EXPLORER.to_owned()),
+            _ => None,
+        };
+        assert_eq!(other_folder_opener(opus).as_deref(), Some(OPUS));
+    }
+
+    /// One that replaces `Directory`'s `open` verb, or `Folder`'s own.
+    #[test]
+    fn a_replaced_open_verb_or_folder_is_the_opener() {
+        let open = |c: &str, v: Option<&str>| match (c, v) {
+            ("Directory", Some("open")) => Some(r"C:\Apps\files.exe".to_owned()),
+            ("Folder", None) => Some(EXPLORER.to_owned()),
+            _ => None,
+        };
+        assert_eq!(
+            other_folder_opener(open).as_deref(),
+            Some(r"C:\Apps\files.exe")
+        );
+        let folder = |c: &str, v: Option<&str>| {
+            (c == "Folder" && v.is_none()).then(|| r"C:\Apps\tc.exe".to_owned())
+        };
+        assert_eq!(
+            other_folder_opener(folder).as_deref(),
+            Some(r"C:\Apps\tc.exe")
+        );
+    }
+
+    /// Explorer written any way stays Explorer; nothing registered, nothing to say.
+    #[test]
+    fn explorer_any_case_or_no_answer_is_no_other_opener() {
+        let upper = |_: &str, _: Option<&str>| Some(r"C:\WINDOWS\EXPLORER.EXE".to_owned());
+        assert_eq!(other_folder_opener(upper), None);
+        assert_eq!(other_folder_opener(|_, _| None), None);
+    }
+}
+
 #[cfg(test)]
 mod classic_text_tests {
     use egui::FontFamily;
