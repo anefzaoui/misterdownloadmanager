@@ -121,6 +121,10 @@ fn hook_panics() {
             backtrace: std::backtrace::Backtrace::force_capture().to_string(),
         };
         tracing::error!("panic: {} at {} ({})", p.message, p.location, p.thread);
+        if !panic_reported(CLOSING.load(Ordering::Acquire), &p.thread) {
+            default(info);
+            return;
+        }
         if let Some(r) = REPORTER.get()
             && !PANICKED.swap(true, Ordering::AcqRel)
         {
@@ -205,8 +209,18 @@ pub fn state(downloads: usize, running: usize, queues: usize, scale: f32) {
     });
 }
 
+/// MDM has started closing normally: what panics on the runtime's own threads now (a task's
+/// timer once the runtime is shutting down, #422) is the runtime going away, not a problem.
+static CLOSING: AtomicBool = AtomicBool::new(false);
+
+/// Is this panic worth a report? Not one on a runtime worker while MDM is closing (#422).
+fn panic_reported(closing: bool, thread: &str) -> bool {
+    !(closing && thread.starts_with("tokio"))
+}
+
 /// MDM is closing normally: the monitor leaves without a report.
 pub fn clean_exit() {
+    CLOSING.store(true, Ordering::Release);
     if let Some(r) = REPORTER.get() {
         tracing::info!("closing");
         r.clean();
@@ -377,4 +391,16 @@ fn crash_test_freeze() {
     let lock = std::sync::Mutex::new(());
     let _held = lock.lock();
     let _never = lock.lock();
+}
+
+#[cfg(test)]
+mod closing_tests {
+    /// #422: a Tokio task panicking while MDM closes is no crash; the window thread's would be.
+    #[test]
+    fn a_runtime_panic_while_closing_is_not_reported() {
+        use super::panic_reported;
+        assert!(!panic_reported(true, "tokio-rt-worker"));
+        assert!(panic_reported(false, "tokio-rt-worker"));
+        assert!(panic_reported(true, "main"));
+    }
 }

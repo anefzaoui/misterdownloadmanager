@@ -13,6 +13,11 @@ Everything below ships together, in version 0.5.0.
 
 ### Done
 
+- ✅ The video button no longer covers a control of the page (a preview's own button): it takes
+  a free corner, and dragging it keeps it where you put it
+  ([#421](https://github.com/anefzaoui/misterdownloadmanager/issues/421))
+- ✅ A background task stopping as MDM closes no longer shows a crash report
+  ([#422](https://github.com/anefzaoui/misterdownloadmanager/issues/422))
 - ✅ A freeze that was over before its dump was taken is reported as a freeze, not a crash in the
   watchdog (part of [#420](https://github.com/anefzaoui/misterdownloadmanager/issues/420))
 - ✅ File names and titles in any script show their letters: the system font for a script
