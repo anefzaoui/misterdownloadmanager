@@ -30,6 +30,9 @@ Everything below ships together, in version 0.5.0.
 - ✅ **View → Interface size**: every window larger, 100 % to 200 %, with Ctrl + / Ctrl − / Ctrl 0
   as in a browser; a window larger than the screen scrolls. Sharper text on Windows (part of
   [#262](https://github.com/anefzaoui/misterdownloadmanager/issues/262))
+- ✅ Windows: sharp, evenly spaced text at every interface size: letters no longer run together
+  or drift apart ([#323](https://github.com/anefzaoui/misterdownloadmanager/issues/323),
+  [#334](https://github.com/anefzaoui/misterdownloadmanager/issues/334))
 - ✅ Linux: Update now asks the package manager which package MDM is; a copy installed by
   another package manager (pacman) is left to the system's updates, with a plain message
 - ✅ Linux: the .deb and .rpm install the browsers' host files for everyone and remove them on
@@ -122,6 +125,9 @@ Everything below ships together, in version 0.5.0.
 - ✅ Far more file types taken by default: AI models and datasets, 3D and CAD, design and camera
   RAW, ebooks, Office, disk images and split archives; a list never edited gains them
   ([#382](https://github.com/anefzaoui/misterdownloadmanager/issues/382))
+- ✅ Add URL: a YouTube playlist opens the video window; Dailymotion's embedded player is looked
+  up as the video's own page ([#338](https://github.com/anefzaoui/misterdownloadmanager/issues/338),
+  [#359](https://github.com/anefzaoui/misterdownloadmanager/issues/359))
 - ✅ Windows: Download File Info and the progress window open in front of the browser, even when
   Windows doesn't let MDM take the foreground; the keyboard stays where it was until a click
   ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
@@ -452,11 +458,23 @@ These ship in a later version, when they're ready.
   (`MDM_WAYLAND=1`) placing their menus, which needs popup windows the window library doesn't
   have yet, so XWayland stays the default; Vulkan as the default renderer (below)
 
+- 🔄 The Safari extension (macOS), part of the app: a click on a link to a listed file type, the
+  right-click items, the button over videos, Media on this page and the toolbar button, from one
+  source with the other browsers' extension. Safari gives extensions no way to see its downloads,
+  so a download a page starts by itself stays with Safari. Built and its relay to the helper
+  checked in the sandbox Safari uses; still to check in Safari itself, signed with a Developer ID
+
 ### Bugs being looked into
 
 - 🔄 Video progress at 100 % while still downloading, and long encoded strings as file names
   ([#344](https://github.com/anefzaoui/misterdownloadmanager/issues/344),
   [#345](https://github.com/anefzaoui/misterdownloadmanager/issues/345)): fix in review
+- 🔄 A page that starts a download by script being saved instead of the file
+  ([#374](https://github.com/anefzaoui/misterdownloadmanager/issues/374)): fix in review
+- 🔍 A site's bot check refusing MDM's request (testfile.org, a Cloudflare challenge): the\n  message now says so ([#376](https://github.com/anefzaoui/misterdownloadmanager/issues/376)); a way to hand the download back to the browser is still to decide
+- 🔄 A download starting again by itself after Stop, when it is in a running queue\n  ([#341](https://github.com/anefzaoui/misterdownloadmanager/issues/341)): fix in review
+- 🔄 A crash when removing the last feed in the RSS feeds window
+  ([#321](https://github.com/anefzaoui/misterdownloadmanager/issues/321)): fix in review
 - 🔄 **Open folder** on a torrent still downloading
   ([#354](https://github.com/anefzaoui/misterdownloadmanager/issues/354)): fix in review
 - 🔄 Alt and F10 opening the menu bar with a control focused
