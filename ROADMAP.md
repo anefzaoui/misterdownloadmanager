@@ -13,6 +13,9 @@ Everything below ships together, in version 0.5.0.
 
 ### Done
 
+- ✅ The video button fades after a mouse click on the player, including in fullscreen,
+  and stays available while using the keyboard
+  ([#480](https://github.com/anefzaoui/misterdownloadmanager/issues/480))
 - ✅ A link from the browser no longer ends in 403 where a site's bot check refuses the browser's
   User-Agent: MDM asks once more as itself ([#372](https://github.com/anefzaoui/misterdownloadmanager/issues/372))
 - ✅ The video button no longer covers a control of the page (a preview's own button): it takes
