@@ -1547,3 +1547,49 @@ async fn a_one_time_link_is_read_from_the_kept_answer() {
     };
     assert!(Download::start(req, fast_opts()).wait().await.is_err());
 }
+
+/// #361: a flush that holds up every write (as on NTFS) must not hold up the download: the
+/// connections keep receiving meanwhile and none of them reconnects for it. Before: the
+/// connections stood still during each 1.5 s flush, one per save tick, and were then told apart
+/// as slow (reconnections, on top of the stalls).
+#[tokio::test]
+async fn a_slow_flush_does_not_stop_the_transfer() {
+    let s = server("rate=20M").await; // 8 connections, about 160 MB/s together
+    let dir = tempfile::tempdir().unwrap();
+    let opts = Options {
+        save_interval: std::time::Duration::from_millis(100),
+        slow_flush: Some(mdm_engine::download::SlowFlush {
+            takes: std::time::Duration::from_millis(1500),
+            gate: Default::default(),
+        }),
+        ..fast_opts()
+    };
+    let started = std::time::Instant::now();
+    let out = Download::start(
+        Request {
+            url: s.url("/gen/160M/a.bin?seed=361").parse().unwrap(),
+            headers: Default::default(),
+            dest: Destination::Dir(dir.path().to_owned()),
+        },
+        opts,
+    )
+    .wait()
+    .await
+    .expect("download succeeds");
+    let took = started.elapsed();
+    assert_eq!(out.size, 160 << 20);
+    let data = std::fs::read(&out.path).unwrap();
+    let mut want = vec![0; data.len()];
+    content::fill(361, 0, &mut want);
+    assert!(data == want, "content mismatch");
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("every request ends");
+    let log = s.log();
+    // Unobstructed: about a second, flush included. Before the fix: every tick's flush stalled
+    // all writes for 1.5 s, well over 5 s in all.
+    assert!(took < std::time::Duration::from_secs(4), "took {took:?}");
+    // No connection reconnected because of the disk's stall: the probe, seven more, and the
+    // planner's closing splits only.
+    assert!(log.len() < 24, "{} requests: {log:?}", log.len());
+}
