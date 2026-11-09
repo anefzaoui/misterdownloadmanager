@@ -434,10 +434,7 @@ impl OptionsDialog {
         if portable {
             s.launch_on_startup = false;
         }
-        // Greyed where no tray shows MDM's icon (some Linux desktops): nothing could bring the
-        // window back from there.
-        let tray = crate::tray::available();
-        let checks: [(f32, &mut bool, &str); 6] = [
+        let checks: [(f32, &mut bool, &str); 7] = [
             (
                 94.0,
                 &mut s.launch_on_startup,
@@ -473,14 +470,22 @@ impl OptionsDialog {
                 // i18n: checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
                 crate::i18n::mark("Minimize to the notification area"),
             ),
+            // MDM's: the × hides the window in the notification area, or quits.
+            (
+                210.0,
+                &mut s.close_to_tray,
+                // i18n: checkbox: closing keeps MDM running, in the notification area when available or else the taskbar, instead of quitting
+                crate::i18n::mark("Keep running when closing the window"),
+            ),
         ];
         // Greyed where no tray shows MDM's icon (some Linux desktops): nothing could bring the
         // window back from there.
+        let tray = crate::tray::available();
         for (i, (y, v, label)) in checks.into_iter().enumerate() {
             // Portable: nothing is written to the registry, so no start with Windows. Manifest 2
             // extensions: an IDM-era Chrome policy with no meaning for MDM's extension (MV3):
             // shown as IDM has it, greyed (D-021).
-            let enabled = !(portable && i == 0) && i != 2 && (i != 5 || tray);
+            let enabled = !(portable && i == 0) && i != 2 && (i < 5 || tray);
             let check = winui::checkbox_light(ui, o + vec2(30.0, y), v, label, enabled);
             // Where a start with the session leaves the window (#226).
             if i == 0 && enabled && check.hovered() {
@@ -493,29 +498,12 @@ impl OptionsDialog {
                         "Started with the computer, it starts minimized: no notification area shows its icon here",
                     )
                 });
+            } else if i == 6 && check.hovered() {
+                // i18n: tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
+                check.on_hover_text(crate::i18n::t(
+                    "Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM",
+                ));
             }
-        }
-        // MDM's: the × hides the window in the notification area, or quits. Its default follows
-        // the copy: an installed one hides (as IDM), a portable one quits, so the folder can be
-        // deleted (that is how a portable copy is uninstalled). Without an icon it minimizes to
-        // the taskbar instead, so the setting stays useful (and selectable) there too.
-        let mut close_to_tray = s.close_to_tray();
-        // i18n: checkbox: closing keeps MDM running, in the notification area when available or else the taskbar, instead of quitting
-        let check = winui::checkbox_light(
-            ui,
-            o + vec2(30.0, 210.0),
-            &mut close_to_tray,
-            crate::i18n::mark("Keep running when closing the window"),
-            true,
-        );
-        if check.clicked() {
-            s.close_to_tray = Some(close_to_tray);
-        }
-        if check.hovered() {
-            // i18n: tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
-            check.on_hover_text(crate::i18n::t(
-                "Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM",
-            ));
         }
         group(
             ui,

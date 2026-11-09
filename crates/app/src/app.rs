@@ -2991,25 +2991,24 @@ impl App {
             };
             self.run(cmd, None, ctx);
         }
-        // Closing hides the window in the tray when the option says so and the shell really shows
-        // the icon; downloads and queues go on. When keeping running but no icon is shown, the
-        // window goes to the taskbar instead: still reachable, downloads still going. A copy that
-        // quits is left to close, as any window's close does.
+        // Closing hides the window in the tray; downloads and queues go on. With no icon the shell
+        // shows (Windows, macOS: a tray that exists but says it has none) the window goes to the
+        // taskbar or the Dock instead: still reachable, downloads still going. Everywhere else
+        // closing closes, as any window's does: Options' "Keep running when closing the window"
+        // off, no tray at all, or Linux with no tray host (#59: a hidden window couldn't come
+        // back, and one that merely minimized could never be closed).
         if !self.exiting && ctx.input(|i| i.viewport().close_requested()) {
-            let close_to_tray = self.settings.close_to_tray();
-            if close_to_tray {
+            let keep = self.tray.is_some() && self.settings.close_to_tray;
+            if keep && self.tray_shown_now() {
+                tracing::info!("close: hidden to the notification area");
                 ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
-                if self.tray.is_some() && self.tray_shown_now() {
-                    tracing::info!("close: hidden to the notification area");
-                    self.hide_to_tray(ctx);
-                } else {
-                    // No icon to bring the window back from: keep the downloads going, but leave
-                    // the window reachable in the taskbar (the dock on macOS) instead of hiding.
-                    tracing::info!("close: no visible tray icon; minimizing to the taskbar");
-                    ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
-                }
+                self.hide_to_tray(ctx);
+            } else if keep && cfg!(not(target_os = "linux")) {
+                tracing::info!("close: no visible tray icon; minimizing to the taskbar");
+                ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
+                ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
             } else {
-                tracing::info!("close: quitting (close to tray false)");
+                tracing::info!("close: quitting");
                 self.exiting = true;
             }
         }

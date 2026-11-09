@@ -1,8 +1,9 @@
 //! The close button follows Options' close-to-tray choice and the icon the shell really shows:
-//! off quits; on hides; on with no visible icon, or with no tray object at all, minimizes to the
-//! taskbar instead (downloads continue, and the window stays reachable). The real app, off the
-//! screens, with data folders of its own; a tray object whose visibility MDM_TEST_TRAY_VISIBLE
-//! decides, or no tray object. Windows only (WM_CLOSE), so it runs on request:
+//! off quits; on hides; on with no visible icon minimizes to the taskbar instead (downloads
+//! continue, and the window stays reachable); with no tray at all it quits, as ever. The real app,
+//! off the screens, with data folders of its own; a tray object whose visibility
+//! MDM_TEST_TRAY_VISIBLE decides, or no tray object. Windows only (WM_CLOSE), so it runs on
+//! request:
 //! `cargo test -p mdm-app --test close_without_tray -- --ignored`.
 
 #![cfg(windows)]
@@ -171,11 +172,7 @@ fn closing_follows_the_option_and_the_tray_icon() {
     assert!(close_main(app.id()), "no main window to close");
     let status = wait_exit(&mut app, Duration::from_secs(20));
     assert!(status.success(), "{status}");
-    assert!(
-        log(&data1).contains("close: quitting (close to tray false)"),
-        "{}",
-        log(&data1)
-    );
+    assert!(log(&data1).contains("close: quitting"), "{}", log(&data1));
 
     // The option on and the icon there: closing hides it, and /exit still quits.
     let data2 = data(dir.path(), "on", true);
@@ -218,23 +215,13 @@ fn closing_follows_the_option_and_the_tray_icon() {
         .status();
     let _ = wait_exit(&mut app, Duration::from_secs(20));
 
-    // No tray object at all, and keeping running: the same taskbar fallback.
+    // No tray at all: closing quits, whatever the option says (#59: nothing could bring a hidden
+    // window back, and scripts ending an off-screen copy rely on it).
     let data4 = data(dir.path(), "no-tray", true);
     let mut app = Process(env_no_tray(&mut Command::new(APP), &data4).spawn().unwrap());
     wait_for(&mut app, &data4, "first frame drawn", wait);
     assert!(close_main(app.id()), "no main window to close");
-    wait_for(
-        &mut app,
-        &data4,
-        "close: no visible tray icon; minimizing to the taskbar",
-        Duration::from_secs(10),
-    );
-    assert!(
-        app.try_wait().unwrap().is_none(),
-        "the app quit instead of minimizing"
-    );
-    let _ = env_no_tray(&mut Command::new(APP), &data4)
-        .arg("/exit")
-        .status();
-    let _ = wait_exit(&mut app, Duration::from_secs(20));
+    let status = wait_exit(&mut app, Duration::from_secs(20));
+    assert!(status.success(), "{status}");
+    assert!(log(&data4).contains("close: quitting"), "{}", log(&data4));
 }

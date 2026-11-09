@@ -508,8 +508,8 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
-- 🔄 Windows: closing the main window follows a setting: a portable copy quits, an installed one
-  keeps running, and with no tray icon the window goes to the taskbar instead of vanishing: fix in review
+- 🔄 Closing the main window follows a setting (on by default, MDM keeps running), and with no
+  tray icon the window goes to the taskbar instead of vanishing: fix in review
   ([#457](https://github.com/anefzaoui/misterdownloadmanager/pull/457))
 - 🔄 A file renamed to avoid a clash still showing and opening under its old name
   ([#442](https://github.com/anefzaoui/misterdownloadmanager/issues/442)): fix in review
