@@ -7,6 +7,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Crash reports: a freeze that was over before its snapshot was taken says so, instead of calling it a deadlock in code that was only waiting for events ([#355](https://github.com/anefzaoui/misterdownloadmanager/issues/355)).
 - **Open folder** works on a torrent that is still downloading ([#354](https://github.com/anefzaoui/misterdownloadmanager/issues/354)).
 - **Alt** and **F10** open the menu bar while a button or the list has the keyboard focus, not only when nothing does ([#328](https://github.com/anefzaoui/misterdownloadmanager/issues/328)).
 - Windows: no more crash on a computer where Direct3D can't start, when a window opened during the switch to OpenGL ([#337](https://github.com/anefzaoui/misterdownloadmanager/issues/337)).
