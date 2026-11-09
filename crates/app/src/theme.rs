@@ -513,6 +513,8 @@ pub fn interface_fonts(ctx: &egui::Context) {
 }
 
 fn load_fonts(ctx: &egui::Context, all: bool) {
+    #[cfg(windows)]
+    classic_text(ctx);
     let code = crate::i18n::code().to_owned();
     let mut loaded = LOADED.lock().unwrap();
     // Only the script fonts depend on the language: rebuild when that set changes.
@@ -603,12 +605,32 @@ fn fonts(ctx: &egui::Context, code: &str, all: bool) {
     text_styles(ctx);
 }
 
-/// Windows' fonts fitted to whole pixels (#262), with hinting for egui's anti-aliased output.
+/// Latin, Greek and Cyrillic text drawn the way Windows' classic controls draw it (#262, #323,
+/// #334), by DirectWrite ([`crate::win32::text_rasterizer`]): the fonts' shapes and, with them,
+/// whole-pixel widths, so a letter's width and the place it is drawn for finally agree. That
+/// disagreement is what glued some letters together and pushed others apart. Set again when the
+/// interface's direction changes: a right-to-left line needs its brackets mirrored by the shaper.
+#[cfg(windows)]
+fn classic_text(ctx: &egui::Context) {
+    use std::sync::atomic::{AtomicI8, Ordering};
+    static RTL: AtomicI8 = AtomicI8::new(-1);
+    let rtl = crate::i18n::rtl();
+    if RTL.swap(i8::from(rtl), Ordering::Relaxed) != i8::from(rtl) {
+        ctx.set_glyph_rasterizers(
+            crate::win32::text_rasterizer(font_dir(), rtl)
+                .into_iter()
+                .collect(),
+        );
+    }
+}
+
+/// The text [`classic_text`] leaves to egui (Arabic, Hebrew, Indic, Thai, CJK; marks clustered
+/// with their letter), fitted to whole pixels (#262) with hinting for egui's anti-aliased output.
 /// Mono hinting targets black-and-white bitmaps: at small sizes it can distort curves and make
 /// diagonals jagged. Smooth hinting keeps those outlines suited to coverage rendering, while
-/// allowing horizontal grid-fitting so Segoe UI and Tahoma's upright strokes stay sharp.
-/// Keep whole-pixel glyph origins and the shaper's advances, so this changes neither layout nor
-/// the interface size. Linux and macOS keep egui's defaults.
+/// allowing horizontal grid-fitting so upright strokes stay sharp. Keep whole-pixel glyph origins
+/// and the shaper's advances, so this changes neither layout nor the interface size. Linux and
+/// macOS keep egui's defaults.
 #[cfg(windows)]
 fn sharp_text(defs: &mut egui::FontDefinitions) {
     for data in defs.font_data.values_mut() {
