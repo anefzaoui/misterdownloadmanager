@@ -1873,6 +1873,13 @@ impl App {
                     }
                 }
             }
+            // A page whose videos need ffmpeg (#351): without it the list has only the sound.
+            "video-adaptive" => {
+                self.run(Cmd::VideoPage, None, ctx);
+                if let Some(v) = &mut self.video_dlg {
+                    v.show_sample_adaptive();
+                }
+            }
             // A sample playlist (#69), its quality by its place in the list: `video-playlist:7`.
             "video-playlist" => {
                 self.run(Cmd::VideoPage, None, ctx);
@@ -6686,14 +6693,21 @@ impl App {
         if std::mem::take(&mut self.duplicate_cleared) {
             return true;
         }
-        let Some((dup, name)) = self
-            .items
-            .iter()
-            .find(|i| i.url == *url)
-            .map(|i| (i.id, i.file_name.clone()))
-        else {
+        let Some((dup, name, gone)) = self.items.iter().find(|i| i.url == *url).map(|i| {
+            (
+                i.id,
+                i.file_name.clone(),
+                model::finished_file_gone(i.status, &i.dest),
+            )
+        }) else {
             return true;
         };
+        // #342: its file was moved or deleted, so there is nothing to duplicate: the old row
+        // goes and this is an ordinary new download.
+        if gone {
+            self.overwrite(dup);
+            return true;
+        }
         match self.settings.duplicate_action {
             1 => true,
             2 => {

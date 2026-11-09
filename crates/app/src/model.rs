@@ -1113,3 +1113,32 @@ mod address_tests {
         assert!(super::parse_address("not an address").is_err());
     }
 }
+
+/// A finished download whose file was moved or deleted (#342). Not when its folder is gone too:
+/// that is more likely a drive that is unplugged, and the file may come back.
+pub fn finished_file_gone(status: Status, dest: &std::path::Path) -> bool {
+    status == Status::Complete && !dest.exists() && dest.parent().is_some_and(|d| d.is_dir())
+}
+
+#[cfg(test)]
+mod finished_file_gone_tests {
+    use super::*;
+
+    #[test]
+    fn only_a_finished_file_gone_from_a_folder_that_is_there() {
+        let dir = std::env::temp_dir().join(format!("mdm-342-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let there = dir.join("there.bin");
+        std::fs::write(&there, b"x").unwrap();
+        assert!(!finished_file_gone(Status::Complete, &there));
+        assert!(finished_file_gone(Status::Complete, &dir.join("gone.bin")));
+        // Not finished: its file isn't expected yet.
+        assert!(!finished_file_gone(Status::Queued, &dir.join("gone.bin")));
+        // Its folder is gone too: maybe a drive that is unplugged.
+        assert!(!finished_file_gone(
+            Status::Complete,
+            &dir.join("no").join("gone.bin")
+        ));
+        std::fs::remove_dir_all(&dir).unwrap();
+    }
+}

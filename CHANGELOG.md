@@ -8,6 +8,17 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 ### Fixed
 
 - Windows: no more crash on a computer where Direct3D can't start, when a window opened during the switch to OpenGL ([#337](https://github.com/anefzaoui/misterdownloadmanager/issues/337)).
+- Windows: no more crash when a screen is unplugged, turned off or rearranged while MDM runs ([#335](https://github.com/anefzaoui/misterdownloadmanager/issues/335)).
+### Added
+
+- Help: what to do when an antivirus or VirusTotal flags MDM, and how to check your copy is the real one.
+
+### Fixed
+
+- **YouTube formats with Node.js or Bun installed** ([#360](https://github.com/anefzaoui/misterdownloadmanager/issues/360)): yt-dlp needs a JavaScript runtime for them and looks for Deno alone, so MDM now tells it about Node.js (nvm's too) or Bun when there is no Deno.
+- **YouTube's look-up failing with "Requested format is not available"** ([#352](https://github.com/anefzaoui/misterdownloadmanager/issues/352)): signed-in cookies make yt-dlp use only YouTube's players that need a JavaScript runtime, and without one no video is left. The page is now looked up again without the cookies, and lists its qualities.
+- **Download video offering only the sound, with no reason given** ([#351](https://github.com/anefzaoui/misterdownloadmanager/issues/351)): when a page's better videos need ffmpeg and it isn't installed, the window now says so.
+- Adding a link again after its finished file was moved or deleted starts a new download, instead of asking about a duplicate that isn't there ([#342](https://github.com/anefzaoui/misterdownloadmanager/issues/342)).
 
 ## [0.5.1] - 2026-11-08
 
