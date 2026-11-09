@@ -391,6 +391,225 @@ fn font_dir() -> std::path::PathBuf {
     return std::path::PathBuf::from("/System/Library/Fonts");
 }
 
+/// The fonts for scripts outside the interface language, loaded the first time a character
+/// needs one (#405): a file or video named in Bangla, Japanese, Thai... The interface language's
+/// own script fonts are loaded up front ([`SCRIPT_FONTS`], kept small for #72); anything else
+/// comes from the system on demand, only when text in that script is shown.
+///
+/// Windows and macOS: the blocks below name the system's font for each script. Linux: fontconfig
+/// is asked for a font that has the character (`:charset=`), one question per Unicode block.
+struct ScriptFallback;
+
+/// One script's fonts on demand: a key, its code points, the files to try (in order).
+#[cfg(any(windows, target_os = "macos"))]
+struct FallbackFont {
+    key: &'static str,
+    ranges: &'static [(u32, u32)],
+    files: &'static [&'static str],
+}
+
+/// Windows' fonts for the scripts egui's fonts and Segoe UI don't cover.
+#[cfg(windows)]
+const FALLBACK_FONTS: &[FallbackFont] = &[
+    FallbackFont {
+        key: "indic",
+        ranges: &[(0x0900, 0x0DFF), (0x1C50, 0x1C7F)],
+        files: &["Nirmala.ttc", "Nirmala.ttf"],
+    },
+    FallbackFont {
+        key: "thai-lao-khmer",
+        ranges: &[(0x0E00, 0x0EFF), (0x1780, 0x17FF), (0x19E0, 0x19FF)],
+        files: &["LeelawUI.ttf", "leelawdb.ttf", "tahoma.ttf"],
+    },
+    FallbackFont {
+        key: "myanmar",
+        ranges: &[(0x1000, 0x109F), (0xA9E0, 0xA9FF), (0xAA70, 0xAA7F)],
+        files: &["mmrtext.ttf"],
+    },
+    FallbackFont {
+        key: "tibetan",
+        ranges: &[(0x0F00, 0x0FFF)],
+        files: &["himalaya.ttf"],
+    },
+    FallbackFont {
+        key: "ethiopic",
+        ranges: &[(0x1200, 0x139F), (0x2D80, 0x2DDF), (0xAB00, 0xAB2F)],
+        files: &["ebrima.ttf"],
+    },
+    FallbackFont {
+        key: "cherokee",
+        ranges: &[(0x13A0, 0x13FF), (0xAB70, 0xABBF)],
+        files: &["gadugi.ttf"],
+    },
+    FallbackFont {
+        key: "hangul",
+        ranges: &[
+            (0x1100, 0x11FF),
+            (0x3130, 0x318F),
+            (0xA960, 0xA97F),
+            (0xAC00, 0xD7FF),
+        ],
+        files: &["malgun.ttf"],
+    },
+    FallbackFont {
+        key: "japanese",
+        ranges: &[(0x3040, 0x30FF), (0x31F0, 0x31FF), (0xFF66, 0xFF9F)],
+        files: &["YuGothM.ttc", "meiryo.ttc", "msgothic.ttc"],
+    },
+    FallbackFont {
+        key: "han",
+        ranges: &[
+            (0x2E80, 0x2FFF),
+            (0x3000, 0x303F),
+            (0x3100, 0x312F),
+            (0x31A0, 0x31BF),
+            (0x3200, 0x33FF),
+            (0x3400, 0x4DBF),
+            (0x4E00, 0x9FFF),
+            (0xF900, 0xFAFF),
+            (0xFE30, 0xFE4F),
+            (0xFF00, 0xFF65),
+            (0xFFE0, 0xFFEF),
+            (0x20000, 0x3FFFF),
+        ],
+        files: &["msyh.ttc", "msjh.ttc", "YuGothM.ttc", "msgothic.ttc"],
+    },
+];
+
+/// macOS's fonts for the same scripts; Arial Unicode for what isn't listed.
+#[cfg(target_os = "macos")]
+const FALLBACK_FONTS: &[FallbackFont] = &[
+    FallbackFont {
+        key: "japanese",
+        ranges: &[(0x3040, 0x30FF), (0x31F0, 0x31FF), (0xFF66, 0xFF9F)],
+        files: &["ヒラギノ角ゴシック W3.ttc", "Hiragino Sans GB.ttc"],
+    },
+    FallbackFont {
+        key: "hangul",
+        ranges: &[
+            (0x1100, 0x11FF),
+            (0x3130, 0x318F),
+            (0xA960, 0xA97F),
+            (0xAC00, 0xD7FF),
+        ],
+        files: &["AppleSDGothicNeo.ttc"],
+    },
+    FallbackFont {
+        key: "han",
+        ranges: &[
+            (0x2E80, 0x303F),
+            (0x3100, 0x312F),
+            (0x3200, 0x4DBF),
+            (0x4E00, 0x9FFF),
+            (0xF900, 0xFAFF),
+            (0xFE30, 0xFE4F),
+            (0xFF00, 0xFFEF),
+            (0x20000, 0x3FFFF),
+        ],
+        files: &["PingFang.ttc", "Supplemental/Songti.ttc"],
+    },
+    FallbackFont {
+        key: "khmer",
+        ranges: &[(0x1780, 0x17FF), (0x19E0, 0x19FF)],
+        files: &["Supplemental/Khmer Sangam MN.ttf"],
+    },
+    FallbackFont {
+        key: "lao",
+        ranges: &[(0x0E80, 0x0EFF)],
+        files: &["Supplemental/Lao Sangam MN.ttf"],
+    },
+    FallbackFont {
+        key: "ethiopic",
+        ranges: &[(0x1200, 0x139F), (0x2D80, 0x2DDF), (0xAB00, 0xAB2F)],
+        files: &["Supplemental/Kefa.ttc", "Kefa.ttc"],
+    },
+    FallbackFont {
+        key: "unicode",
+        ranges: &[(0x0900, 0x13FF), (0x1800, 0x1FFF)],
+        files: &["Supplemental/Arial Unicode.ttf"],
+    },
+];
+
+/// The bytes of the font for `c`, loaded once per font, shared by every family that asks.
+fn fallback_font(c: char) -> Option<(String, egui::FontData)> {
+    use std::collections::HashMap;
+    use std::sync::Mutex;
+    static LOADED: Mutex<Option<HashMap<String, Option<egui::FontData>>>> = Mutex::new(None);
+
+    #[cfg(any(windows, target_os = "macos"))]
+    let (key, files): (String, Vec<std::path::PathBuf>) = {
+        let cp = c as u32;
+        let font = FALLBACK_FONTS
+            .iter()
+            .find(|f| f.ranges.iter().any(|&(a, b)| (a..=b).contains(&cp)))?;
+        let dir = font_dir();
+        (
+            format!("fallback:{}", font.key),
+            font.files.iter().map(|f| dir.join(f)).collect(),
+        )
+    };
+    #[cfg(not(any(windows, target_os = "macos")))]
+    let (key, files): (String, Vec<std::path::PathBuf>) = {
+        // One question per Unicode block: a script's letters don't each need an fc-match.
+        let block = (c as u32) >> 8;
+        (
+            format!("fallback:{block:x}"),
+            fc_lookup(&format!(":charset={:x}", c as u32))
+                .into_iter()
+                .collect(),
+        )
+    };
+
+    let mut loaded = LOADED.lock().unwrap_or_else(|e| e.into_inner());
+    let loaded = loaded.get_or_insert_with(HashMap::new);
+    let font = loaded
+        .entry(key.clone())
+        .or_insert_with(|| {
+            let bytes = files.iter().find_map(|f| std::fs::read(f).ok())?;
+            let mut tweak = egui::FontTweak::default();
+            tweak.set_baseline_fallback(true);
+            #[cfg(windows)]
+            {
+                tweak.hinting_target =
+                    egui::epaint::text::HintingTarget::Smooth(egui::epaint::text::SmoothHinting {
+                        light: false,
+                        symmetric_rendering: false,
+                        preserve_linear_metrics: false,
+                    });
+                tweak.subpixel_binning = Some(false);
+            }
+            Some(egui::FontData::from_owned(bytes).tweak(tweak))
+        })
+        .clone()?;
+    Some((key, font))
+}
+
+/// `fc-match` for one pattern, asked right now (Linux, a character no loaded font has).
+#[cfg(not(any(windows, target_os = "macos")))]
+fn fc_lookup(pattern: &str) -> Option<std::path::PathBuf> {
+    let out = std::process::Command::new("fc-match")
+        .args(["-f", "%{file}", pattern])
+        .output()
+        .ok()?;
+    let file = String::from_utf8(out.stdout).ok()?;
+    let file = file.trim();
+    (out.status.success() && !file.is_empty()).then(|| file.into())
+}
+
+impl egui::FontProvider for ScriptFallback {
+    fn font_for(&self, request: &egui::FallbackRequest<'_>) -> Option<egui::FontInsert> {
+        let c = request.cluster.chars().next()?;
+        let (key, data) = fallback_font(c)?;
+        Some(egui::FontInsert::new(&key, data, Vec::new()))
+    }
+}
+
+/// Tell the text system where the scripts outside the interface language come from, once.
+fn add_script_fallback(ctx: &egui::Context) {
+    static ADDED: std::sync::Once = std::sync::Once::new();
+    ADDED.call_once(|| ctx.add_font_provider(std::sync::Arc::new(ScriptFallback)));
+}
+
 /// The interface font: Segoe UI as IDM has it on Windows, the system's own elsewhere.
 fn ui_font() -> Option<Vec<u8>> {
     #[cfg(windows)]
@@ -662,6 +881,7 @@ fn text_styles(ctx: &egui::Context) {
 }
 
 pub fn apply(ctx: &egui::Context) {
+    add_script_fallback(ctx);
     load_fonts(ctx, false);
     // A press held for a while is still a click when let go over the control, as in Windows
     // (egui gives it up after 0.8 s).
@@ -749,6 +969,27 @@ mod mode_tests {
 /// "✔ Connected" in the browser offer window; "→" on Linux).
 #[cfg(test)]
 mod glyph_tests {
+
+    /// #405: a script the interface language doesn't use: Bangla in a file name, Japanese in a
+    /// playlist, under an English interface. Before: nothing loaded it, so boxes.
+    #[cfg(windows)]
+    #[test]
+    fn text_in_other_scripts_gets_its_font_on_demand() {
+        use egui::epaint::text::{Fonts, TextOptions};
+        use egui::{FontFamily, FontId};
+        let mut fonts = Fonts::new(TextOptions::default(), egui::FontDefinitions::default())
+            .with_font_providers(vec![std::sync::Arc::new(super::ScriptFallback)]);
+        let id = FontId::new(13.0, FontFamily::Proportional);
+        for text in [
+            "\u{09AC}\u{09BE}\u{0982}\u{09B2}\u{09BE}", // Bangla
+            "\u{65E5}\u{672C}\u{8A9E}\u{306E}\u{30BF}\u{30A4}\u{30C8}\u{30EB}", // Japanese
+            "\u{D55C}\u{AD6D}\u{C5B4}",                 // Korean
+            "\u{0E44}\u{0E17}\u{0E22}",                 // Thai
+            "\u{4E2D}\u{6587}",                         // Chinese
+        ] {
+            assert!(fonts.has_glyphs(&id, text), "no font for {text}");
+        }
+    }
     use std::collections::{BTreeMap, BTreeSet};
     use std::path::Path;
     use unicode_segmentation::UnicodeSegmentation;

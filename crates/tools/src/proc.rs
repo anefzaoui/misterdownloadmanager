@@ -231,6 +231,110 @@ pub fn cookie_trouble(line: &str) -> bool {
     .any(|k| l.contains(k))
 }
 
+/// Options -> Proxy / Socks for the helpers (#363): yt-dlp and gallery-dl go through the same proxy
+/// as MDM's downloads. The app shares it as it changes ([`set_proxy`]).
+static PROXY: std::sync::RwLock<mdm_engine::Proxy> =
+    std::sync::RwLock::new(mdm_engine::Proxy::None);
+
+/// The proxy every helper run goes through (the app's setting).
+pub fn set_proxy(proxy: mdm_engine::Proxy) {
+    if *PROXY.read().unwrap() != proxy {
+        *PROXY.write().unwrap() = proxy;
+    }
+}
+
+/// How the proxy for a helper's run is given to it. A login is never put on the command line,
+/// where other programs can read it (the cookies neither): only in the environment.
+#[derive(Debug, PartialEq, Eq)]
+enum ProxyGiven {
+    /// Nothing: yt-dlp keeps doing what it always did (the system's and the environment's).
+    Nothing,
+    /// `--proxy URL`.
+    Argument(String),
+    /// `HTTP_PROXY` and the like: the address with its login.
+    Environment(String),
+}
+
+/// The proxy for `url` under `proxy`, as a helper takes it. `None` proxy and an address the
+/// setting doesn't cover (Manual with its scheme unticked; a script that says DIRECT): nothing,
+/// so the helper does what it did before. A script that gives no usable answer leaves it to the
+/// system's settings, as for a download.
+fn proxy_given(proxy: &mdm_engine::Proxy, url: Option<&url::Url>) -> ProxyGiven {
+    use mdm_engine::{Proxy, pac};
+    let system = |url: Option<&url::Url>| {
+        // A helper's run with no address known yet (a page's looked-up info) asks for any.
+        let any = url::Url::parse("https://example.com/").expect("a valid address");
+        mdm_engine::net::system_proxy(url.unwrap_or(&any))
+    };
+    let plain = |p: Option<String>| p.map_or(ProxyGiven::Nothing, ProxyGiven::Argument);
+    match proxy {
+        Proxy::None => ProxyGiven::Nothing,
+        Proxy::System => plain(system(url)),
+        Proxy::Pac { script } => {
+            let first = url.and_then(|u| {
+                pac::routes(script, u)
+                    .ok()?
+                    .into_iter()
+                    .next()
+                    .map(|r| match r {
+                        pac::Route::Direct => None,
+                        pac::Route::Proxy(p) => Some(p),
+                    })
+            });
+            match first {
+                Some(Some(p)) => ProxyGiven::Argument(p),
+                Some(None) => ProxyGiven::Nothing,
+                None => plain(system(url)),
+            }
+        }
+        Proxy::Manual {
+            url: address,
+            login,
+            http,
+            https,
+        } => {
+            let https_page = url.is_none_or(|u| u.scheme() == "https");
+            if !(if https_page { *https } else { *http }) {
+                return ProxyGiven::Nothing;
+            }
+            match login {
+                None => ProxyGiven::Argument(address.clone()),
+                Some((user, pass)) => {
+                    let Ok(mut u) = url::Url::parse(address) else {
+                        return ProxyGiven::Nothing;
+                    };
+                    let _ = u.set_username(user);
+                    let _ = u.set_password(Some(pass));
+                    ProxyGiven::Environment(u.to_string())
+                }
+            }
+        }
+    }
+}
+
+/// Give `helper` the proxy for `url`: returns the arguments to pass (before `--`).
+fn through_proxy(cmd: &mut Command, url: Option<&str>) -> Vec<String> {
+    let page = url.and_then(|u| url::Url::parse(u).ok());
+    match proxy_given(&PROXY.read().unwrap(), page.as_ref()) {
+        ProxyGiven::Nothing => Vec::new(),
+        ProxyGiven::Argument(p) => vec!["--proxy".into(), p],
+        ProxyGiven::Environment(p) => {
+            for var in [
+                "HTTP_PROXY",
+                "HTTPS_PROXY",
+                "ALL_PROXY",
+                "http_proxy",
+                "https_proxy",
+                "all_proxy",
+            ] {
+                cmd.env(var, &p);
+            }
+            cmd.env_remove("NO_PROXY").env_remove("no_proxy");
+            Vec::new()
+        }
+    }
+}
+
 /// The helpers' relay, started on first use.
 fn relay() -> Result<Arc<crate::relay::Relay>, ProcError> {
     let mut slot = RELAY.lock().unwrap();
@@ -265,9 +369,14 @@ enum Helper {
 /// - gallery-dl: `--proxy`.
 /// - Both, and anything they start: `HTTP_PROXY`, `HTTPS_PROXY` and `ALL_PROXY` (curl, aria2c,
 ///   gallery-dl's Python), with `NO_PROXY` taken away so no host is let around it.
-fn through_adapter(cmd: &mut Command, helper: Helper) -> Result<Vec<String>, ProcError> {
+fn through_adapter(
+    cmd: &mut Command,
+    helper: Helper,
+    url: Option<&str>,
+) -> Result<Vec<String>, ProcError> {
     match route() {
-        mdm_engine::Route::Any => Ok(Vec::new()),
+        // No adapter: Options -> Proxy / Socks (#363).
+        mdm_engine::Route::Any => Ok(through_proxy(cmd, url)),
         mdm_engine::Route::Down { label } => Err(mdm_engine::NetError::Down { label }.into()),
         mdm_engine::Route::Bound(_) => {
             let url = relay()?.url();
@@ -321,7 +430,7 @@ pub fn gallery_dl(
     url: &str,
 ) -> Result<Command, ProcError> {
     let mut cmd = Command::new(&tool.exe);
-    let route = through_adapter(&mut cmd, Helper::GalleryDl)?;
+    let route = through_adapter(&mut cmd, Helper::GalleryDl, Some(url))?;
     cmd.env("PYTHONIOENCODING", "utf-8");
     for a in ours {
         cmd.arg(safe(a)?);
@@ -617,7 +726,7 @@ pub fn ytdlp(
     url: &str,
 ) -> Result<Command, ProcError> {
     let mut cmd = ytdlp_command(exe);
-    let route = through_adapter(&mut cmd, Helper::YtDlp)?;
+    let route = through_adapter(&mut cmd, Helper::YtDlp, Some(url))?;
     layers(&mut cmd, user, ours)?;
     cmd.args(["--ignore-config", "--no-exec", "--no-update"]);
     cmd.args(js_runtime_args());
@@ -637,7 +746,7 @@ pub fn ytdlp_info(
     info: &Path,
 ) -> Result<Command, ProcError> {
     let mut cmd = ytdlp_command(exe);
-    let route = through_adapter(&mut cmd, Helper::YtDlp)?;
+    let route = through_adapter(&mut cmd, Helper::YtDlp, None)?;
     layers(&mut cmd, user, ours)?;
     cmd.args(["--ignore-config", "--no-exec", "--no-update"]);
     cmd.args(js_runtime_args());
@@ -1003,6 +1112,101 @@ mod tests {
         );
         // A page with no address of its own (none parsed) still gets the jar's.
         assert!(b.args("not a url").unwrap().1.is_some());
+    }
+
+    fn args_of(cmd: &Command) -> Vec<String> {
+        cmd.get_args()
+            .map(|a| a.to_string_lossy().into_owned())
+            .collect()
+    }
+
+    fn proxied(cmd: &Command) -> Option<String> {
+        cmd.get_envs()
+            .find(|(k, _)| k.to_string_lossy() == "HTTPS_PROXY")
+            .and_then(|(_, v)| v.map(|v| v.to_string_lossy().into_owned()))
+    }
+
+    /// #363: Options -> Proxy / Socks reaches yt-dlp: the address on the command line, a login
+    /// only in the environment, never as an argument; a manual proxy only for its ticked
+    /// schemes; "no proxy" and a script's DIRECT: nothing added, so yt-dlp's own default stays.
+    #[test]
+    fn a_helper_is_given_the_proxy_of_the_settings() {
+        use mdm_engine::Proxy;
+        let manual = |login: Option<(&str, &str)>, http, https| Proxy::Manual {
+            url: "http://127.0.0.1:10808".into(),
+            login: login.map(|(u, p)| (u.to_owned(), p.to_owned())),
+            http,
+            https,
+        };
+        let youtube = url::Url::parse("https://www.youtube.com/watch?v=x").unwrap();
+        assert_eq!(
+            proxy_given(&Proxy::None, Some(&youtube)),
+            ProxyGiven::Nothing
+        );
+        assert_eq!(
+            proxy_given(&manual(None, true, true), Some(&youtube)),
+            ProxyGiven::Argument("http://127.0.0.1:10808".into())
+        );
+        assert_eq!(
+            proxy_given(&manual(None, true, false), Some(&youtube)),
+            ProxyGiven::Nothing,
+            "https unticked: this https page isn't covered"
+        );
+        // A login: in the environment, encoded, never an argument.
+        assert_eq!(
+            proxy_given(&manual(Some(("u@me", "p:ss")), true, true), Some(&youtube)),
+            ProxyGiven::Environment("http://u%40me:p%3Ass@127.0.0.1:10808/".into())
+        );
+        let pac = |script: &str| Proxy::Pac {
+            script: std::sync::Arc::from(script),
+        };
+        assert_eq!(
+            proxy_given(
+                &pac("function FindProxyForURL(u,h){return 'PROXY 10.0.0.1:3128';}"),
+                Some(&youtube)
+            ),
+            ProxyGiven::Argument("http://10.0.0.1:3128".into())
+        );
+        assert_eq!(
+            proxy_given(
+                &pac("function FindProxyForURL(u,h){return 'DIRECT';}"),
+                Some(&youtube)
+            ),
+            ProxyGiven::Nothing
+        );
+    }
+
+    /// #363, the wiring: the setting reaches a real command line.
+    #[test]
+    fn yt_dlp_runs_through_the_settings_proxy() {
+        use mdm_engine::Proxy;
+        let url = "https://www.youtube.com/watch?v=x";
+        let exe = std::path::Path::new("yt-dlp");
+        set_proxy(Proxy::Manual {
+            url: "http://127.0.0.1:10808".into(),
+            login: None,
+            http: true,
+            https: true,
+        });
+        let plain = args_of(&ytdlp(exe, &[], &["-J".into()], url).unwrap());
+        let at = plain.iter().position(|a| a == "--proxy").expect("--proxy");
+        assert_eq!(plain[at + 1], "http://127.0.0.1:10808");
+        assert!(at < plain.iter().position(|a| a == "--").unwrap());
+        set_proxy(Proxy::Manual {
+            url: "http://127.0.0.1:10808".into(),
+            login: Some(("me".into(), "secret".into())),
+            http: true,
+            https: true,
+        });
+        let cmd = ytdlp(exe, &[], &["-J".into()], url).unwrap();
+        assert!(!args_of(&cmd).iter().any(|a| a.contains("secret")));
+        assert_eq!(
+            proxied(&cmd).as_deref(),
+            Some("http://me:secret@127.0.0.1:10808/")
+        );
+        set_proxy(Proxy::None);
+        let none = args_of(&ytdlp(exe, &[], &["-J".into()], url).unwrap());
+        assert!(!none.iter().any(|a| a == "--proxy"));
     }
 
     fn yt(chosen: Option<&BrowserCookies>, ours: &[&str]) -> Vec<String> {
