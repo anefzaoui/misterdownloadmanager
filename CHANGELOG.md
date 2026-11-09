@@ -7,7 +7,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+### Fixed
+
 - The **Download video** window remembers the folder you save into, per **Options → Save to**'s "Change folder for this category on last selected", as **Download File Info** does: it no longer goes back to the Video category's folder each time ([#475](https://github.com/anefzaoui/misterdownloadmanager/issues/475)).
+- Windows: **Open folder** on a download opens the folder with the file manager set up to open folders (Directory Opus, for example), instead of always starting Windows Explorer. With Explorer it still selects the file ([#446](https://github.com/anefzaoui/misterdownloadmanager/issues/446)).
+
 
 ## [0.5.2] - 2026-11-09
 
