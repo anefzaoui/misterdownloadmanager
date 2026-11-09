@@ -15,6 +15,9 @@ pub mod proc;
 pub mod relay;
 pub mod resolve;
 pub mod servers;
+// System helper discovery is for Linux and macOS; Windows keeps its verified managed copies.
+#[cfg(unix)]
+mod system;
 pub mod update;
 pub mod video;
 
@@ -229,9 +232,13 @@ pub fn sum_for(sums: &str, name: &str) -> Option<[u8; 32]> {
 }
 
 /// The yt-dlp to use: the person's own (`chosen`), else MDM's install in `dir`
-/// (`dir/yt-dlp/current.json`), if any and still there.
+/// (`dir/yt-dlp/current.json`), if any and still there; on Linux and macOS, else the system's.
 pub fn installed(dir: &Path) -> Option<Installed> {
-    chosen::chosen(dir, chosen::Helper::YtDlp).or_else(|| own_ytdlp(dir))
+    let own = chosen::chosen(dir, chosen::Helper::YtDlp).or_else(|| own_ytdlp(dir));
+    #[cfg(unix)]
+    return own.or_else(|| system::installed("yt-dlp"));
+    #[cfg(not(unix))]
+    own
 }
 
 fn own_ytdlp(dir: &Path) -> Option<Installed> {
@@ -274,6 +281,15 @@ pub async fn install_latest(
     if let Some(mine) = chosen::chosen(dir, chosen::Helper::YtDlp) {
         return Ok(mine);
     }
+    let current = own_ytdlp(dir);
+    // A package-manager copy is theirs to update too (#452). In particular, the video
+    // window's background refresh must not install a managed copy over the one just found.
+    #[cfg(unix)]
+    if current.is_none()
+        && let Some(system) = system::installed("yt-dlp")
+    {
+        return Ok(system);
+    }
     let client = mdm_engine::net::client_builder(&net.dns, &net.route, RELEASES)?
         .user_agent(USER_AGENT)
         .build()?;
@@ -286,7 +302,7 @@ pub async fn install_latest(
         .await?;
     let release: Release =
         serde_json::from_slice(&body).map_err(|e| Error::BadRelease(e.to_string()))?;
-    if let Some(current) = own_ytdlp(dir)
+    if let Some(current) = current
         && !newer(&release.tag_name, &current.version)
     {
         return Ok(current); // never the same again, never older
