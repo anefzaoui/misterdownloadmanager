@@ -122,6 +122,9 @@ Everything below ships together, in version 0.5.0.
 - ✅ Far more file types taken by default: AI models and datasets, 3D and CAD, design and camera
   RAW, ebooks, Office, disk images and split archives; a list never edited gains them
   ([#382](https://github.com/anefzaoui/misterdownloadmanager/issues/382))
+- ✅ Add URL: a YouTube playlist opens the video window; Dailymotion's embedded player is looked
+  up as the video's own page ([#338](https://github.com/anefzaoui/misterdownloadmanager/issues/338),
+  [#359](https://github.com/anefzaoui/misterdownloadmanager/issues/359))
 - ✅ Windows: Download File Info and the progress window open in front of the browser, even when
   Windows doesn't let MDM take the foreground; the keyboard stays where it was until a click
   ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))

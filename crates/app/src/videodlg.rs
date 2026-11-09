@@ -169,9 +169,10 @@ impl VideoDialog {
     /// Opened for `page` (Add URL was given a video's page, or the browser's button was
     /// clicked with `context`): looks it up at once.
     pub fn for_page(folder: PathBuf, page: &str, context: mdm_ipc::Command) -> Self {
+        let page = mdm_tools::pages::video_address(page);
         VideoDialog {
-            page: page.to_owned(),
-            from_browser: page.to_owned(),
+            page: page.clone(),
+            from_browser: page,
             context,
             auto_look: true,
             ..Self::new(folder)
@@ -516,6 +517,8 @@ impl VideoDialog {
             && can_look
             && let Some(tool) = &ytdlp
         {
+            // A typed or pasted address too (#359); the box shows what is looked up.
+            self.page = mdm_tools::pages::video_address(self.page.trim());
             let slot: Slot<Looked> = Arc::new(Mutex::new(None));
             let (out, exe, page, ctx) = (
                 slot.clone(),
