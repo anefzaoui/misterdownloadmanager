@@ -401,18 +401,21 @@ impl Progress {
     ) -> Action {
         let p = ui.painter().clone();
         let hide = self.tabs(ui, o);
-        match self.tab {
-            Tab::Status => status_page(ui, o, item, snap, frac),
-            Tab::Limiter => {
-                if self.limiter_page(ui, o, item) {
-                    self.hide(Tab::Limiter);
-                }
+        let hide_tab = match self.tab {
+            Tab::Status => {
+                status_page(ui, o, item, snap, frac);
+                false
             }
-            Tab::Completion => {
-                if self.completion_page(ui, o, item) {
-                    self.hide(Tab::Completion);
-                }
-            }
+            Tab::Limiter => self.limiter_page(ui, o, item),
+            Tab::Completion => self.completion_page(ui, o, item),
+        };
+        if hide_tab {
+            self.hide(self.tab);
+            // The strip above was drawn with the tab still on it: draw the window again at once,
+            // without showing this pass, so the tab goes in one step. A download's window
+            // otherwise waits for its next timed repaint (250 ms while it downloads) on the old page.
+            ui.ctx().request_discard("Hide tab");
+            ui.ctx().request_repaint();
         }
 
         // The progress bar: IDM's green on the shared, themed track.
