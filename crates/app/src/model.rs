@@ -704,6 +704,25 @@ impl Item {
             notices: Vec::new(),
         }
     }
+    /// This row's resume state is at its place. `downloaded` can't say: after a crash the list
+    /// holds what it held at its last save, often nothing.
+    pub fn owns_resume_state(&self) -> bool {
+        let state = mdm_engine::state::state_path(&self.dest);
+        mdm_engine::state::ResumeState::load(&state).is_ok_and(|s| s.url == self.url)
+    }
+
+    /// Whether this row has its place on the disk: running, part-way (its pieces and resume
+    /// state are there), or finished with the file still there. A row not started yet holds
+    /// nothing: several may wait under one name, and the first to start keeps it.
+    pub fn holds_place(&self) -> bool {
+        self.live.is_some()
+            || if self.status == Status::Complete {
+                self.dest.exists()
+            } else {
+                self.downloaded > 0 || self.owns_resume_state()
+            }
+    }
+
     /// Pull the engine's snapshot into the row. Returns true when the download just ended.
     pub fn poll(&mut self) -> bool {
         let Some(live) = &mut self.live else {
