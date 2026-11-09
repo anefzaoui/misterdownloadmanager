@@ -511,6 +511,10 @@ These ship in a later version, when they're ready.
 - 🔄 Closing the main window follows a setting (on by default, MDM keeps running), and with no
   tray icon the window goes to the taskbar instead of vanishing: fix in review
   ([#457](https://github.com/anefzaoui/misterdownloadmanager/pull/457))
+- 🔄 Download File Info staying open but invisible, with later browser downloads waiting behind
+  it ([#440](https://github.com/anefzaoui/misterdownloadmanager/issues/440)): fix in review
+- 🔄 Arabic and other non-Latin file names saved unreadable, from Firefox and browsers built on it
+  ([#447](https://github.com/anefzaoui/misterdownloadmanager/issues/447)): fix in review
 - 🔄 A file renamed to avoid a clash still showing and opening under its old name
   ([#442](https://github.com/anefzaoui/misterdownloadmanager/issues/442)): fix in review
 - 🔄 RSS feeds: the rule boxes losing the keyboard after each key
