@@ -704,6 +704,25 @@ impl Item {
             notices: Vec::new(),
         }
     }
+    /// This row's resume state is at its place. `downloaded` can't say: after a crash the list
+    /// holds what it held at its last save, often nothing.
+    pub fn owns_resume_state(&self) -> bool {
+        let state = mdm_engine::state::state_path(&self.dest);
+        mdm_engine::state::ResumeState::load(&state).is_ok_and(|s| s.url == self.url)
+    }
+
+    /// Whether this row has its place on the disk: running, part-way (its pieces and resume
+    /// state are there), or finished with the file still there. A row not started yet holds
+    /// nothing: several may wait under one name, and the first to start keeps it.
+    pub fn holds_place(&self) -> bool {
+        self.live.is_some()
+            || if self.status == Status::Complete {
+                self.dest.exists()
+            } else {
+                self.downloaded > 0 || self.owns_resume_state()
+            }
+    }
+
     /// Pull the engine's snapshot into the row. Returns true when the download just ended.
     pub fn poll(&mut self) -> bool {
         let Some(live) = &mut self.live else {
@@ -927,32 +946,43 @@ pub fn stamp_time(stored: &str) -> Option<chrono::NaiveDateTime> {
 }
 
 /// A stored stamp as the list shows it: in the formats chosen in Options → Regional; else IDM's
-/// own text in English, and the user's Windows region format in other languages (its digits and
-/// order; month names would be in the region's language).
+/// own text in English (on the system's 12- or 24-hour clock), and the user's Windows region
+/// format in other languages (its digits and order; month names would be in the region's
+/// language).
 pub fn date_text(stored: &str) -> String {
     let Some(t) = stamp_time(stored) else {
         return stored.to_owned();
     };
-    if english() && !crate::regional::current().custom {
-        return stored.to_owned();
-    }
     when_text(t)
 }
 
 /// A local time as the interface writes dates and times (Options → Regional; IDM's text in
-/// English; the Windows region's elsewhere).
+/// English, on the system's clock; the Windows region's elsewhere).
 pub fn when_text(t: chrono::NaiveDateTime) -> String {
-    if crate::regional::current().custom {
+    let formats = crate::regional::current();
+    if formats.custom {
         return crate::i18n::ltr(&crate::regional::short_date_time(t));
     }
     if english() {
-        return t.format(STAMP).to_string();
+        return stamp_text(t, formats.clock24);
     }
     #[cfg(windows)]
     if let Some(s) = crate::win32::local_date_time(t) {
         return crate::i18n::ltr(&s);
     }
     crate::i18n::ltr(&crate::regional::short_date_time(t))
+}
+
+/// IDM's text for a time, as stored (`Oct 28 21:44:12 2026`) on a 24-hour clock, and with the
+/// system's 12-hour clock (#392) `Oct 28 9:44:12 PM 2026`.
+fn stamp_text(t: chrono::NaiveDateTime, clock24: bool) -> String {
+    use chrono::Timelike;
+    format!(
+        "{} {} {}",
+        t.format("%b %d"),
+        crate::regional::time_text(t.hour(), t.minute(), t.second(), clock24),
+        t.format("%Y")
+    )
 }
 
 /// Whether numbers are written IDM's way (English): `7.05 MB`, `13.38%`, `1 min 22 sec`.
@@ -1132,6 +1162,28 @@ mod stamp_tests {
         let oct = super::stamp_time("Oct 28 21:44:12 2026").unwrap();
         assert!(oct < apr, "October 2026 comes before April 2027");
         assert!(super::stamp_time("not a date").is_none());
+    }
+
+    #[test]
+    fn english_stamps_follow_the_clock() {
+        let at = |s| super::stamp_time(s).unwrap();
+        // 24-hour: exactly as stored.
+        for s in ["Oct 28 21:44:12 2026", "Jan 01 00:05:09 2027"] {
+            assert_eq!(super::stamp_text(at(s), true), s);
+        }
+        // 12-hour (#392): midnight and noon are 12.
+        assert_eq!(
+            super::stamp_text(at("Oct 28 21:44:12 2026"), false),
+            "Oct 28 9:44:12 PM 2026"
+        );
+        assert_eq!(
+            super::stamp_text(at("Jan 01 00:05:09 2027"), false),
+            "Jan 01 12:05:09 AM 2027"
+        );
+        assert_eq!(
+            super::stamp_text(at("Jun 15 12:00:00 2027"), false),
+            "Jun 15 12:00:00 PM 2027"
+        );
     }
 }
 
