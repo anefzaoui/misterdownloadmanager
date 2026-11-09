@@ -7,6 +7,10 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Text in a script outside the interface language (a video title in Bangla, a playlist in Japanese) now shows its letters, instead of boxes: the font for that script is loaded the first time it is needed ([#405](https://github.com/anefzaoui/misterdownloadmanager/issues/405)).
+- Options → Proxy / Socks now applies to yt-dlp and gallery-dl too, so video look-ups and downloads no longer go straight out when a proxy is set ([#363](https://github.com/anefzaoui/misterdownloadmanager/issues/363)).
+- The window no longer freezes while watching the clipboard when the program holding it hangs, or while a cancelled download's files are removed from a slow disk ([#418](https://github.com/anefzaoui/misterdownloadmanager/issues/418), [#423](https://github.com/anefzaoui/misterdownloadmanager/issues/423)).
+- Downloads at full speed no longer stop and go on a slow disk: writing the resume state flushed the file to the disk so often that every connection waited for it, and were then replaced as slow ([#361](https://github.com/anefzaoui/misterdownloadmanager/issues/361)).
 - A save folder shown as `Downloads/Video` could be taken literally, asking to create it in the wrong place or failing with "Read-only file system" on macOS.
 - macOS: **Download video** no longer stops with a Python error and a "Python.framework is damaged" alert on a copy of MDM downloaded by a browser ([#330](https://github.com/anefzaoui/misterdownloadmanager/issues/330), [#339](https://github.com/anefzaoui/misterdownloadmanager/issues/339)). MDM now installs yt-dlp's folder build, which it unpacks once and checks against yt-dlp's signed list, instead of the single-program build that unpacks Python afresh at every start. The video window then offers to install it in place of a copy that came with an earlier version.
 - Browser link import: tighter handling of site data.

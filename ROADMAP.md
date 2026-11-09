@@ -15,6 +15,17 @@ Everything below ships together, in version 0.5.0.
 
 - ✅ **LinkSwift** can push single and bulk downloads to MDM over its Aria2 option: on this computer
   only, off by default, with its own key (Options → Remote → LinkSwift settings)
+- ✅ File names and titles in any script show their letters: the system font for a script
+  outside the interface language loads the first time it is needed, instead of boxes
+  ([#405](https://github.com/anefzaoui/misterdownloadmanager/issues/405))
+- ✅ yt-dlp and gallery-dl use the proxy set in Options → Proxy / Socks
+  ([#363](https://github.com/anefzaoui/misterdownloadmanager/issues/363))
+- ✅ The window keeps answering while reading the clipboard or removing a cancelled download's
+  files from a slow disk ([#418](https://github.com/anefzaoui/misterdownloadmanager/issues/418),
+  [#423](https://github.com/anefzaoui/misterdownloadmanager/issues/423))
+- ✅ Fast downloads keep going on a slow disk: flushing the resume state no longer holds up
+  the connections, and a connection is never replaced for the disk's wait
+  ([#361](https://github.com/anefzaoui/misterdownloadmanager/issues/361))
 - ✅ Freeze reports taken after the window has already answered say so, instead of blaming a deadlock
   (part of [#355](https://github.com/anefzaoui/misterdownloadmanager/issues/355))
 - ✅ **Move/Rename** works on several selected downloads at once: pick a folder and they all go there
