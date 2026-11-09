@@ -614,6 +614,9 @@ pub struct App {
     queues: Vec<Queue>,
     /// Failure time and count per download, for queue retries.
     failures: HashMap<u64, (Instant, u32)>,
+    /// Stopped by hand while they could have run: a running queue leaves them alone until
+    /// they are started again or the queue is started anew (#341).
+    stopped_by_hand: std::collections::HashSet<u64>,
     /// Seconds since local midnight at the last scheduler tick.
     clock: u32,
     /// Scheduler → "Wake the computer to run this queue": the wake set with the system (#142).
@@ -1072,6 +1075,7 @@ impl App {
             last_layout: None,
             queues,
             failures: HashMap::new(),
+            stopped_by_hand: Default::default(),
             clock: seconds_now(),
             wake: Default::default(),
             commands,
@@ -1941,6 +1945,12 @@ impl App {
                 ]));
             }
             "extension" => self.extension = Some(crate::extension::Extension::new()),
+            // The Safari row's "How to Add" steps, open (screenshots).
+            "safari-steps" => {
+                let mut offer = crate::extension::Extension::new();
+                offer.open_safari_steps();
+                self.extension = Some(offer);
+            }
             "language" => self.run(Cmd::ChooseLanguage, None, ctx),
             "move-rename" => self.run(Cmd::MoveRename, None, ctx),
             "shortcuts" => self.run(Cmd::Shortcuts, None, ctx),
@@ -2311,6 +2321,7 @@ impl App {
 
     /// Start or resume a download; `show` opens its progress dialog (IDM's default).
     fn start(&mut self, id: u64, show: bool) {
+        self.stopped_by_hand.remove(&id);
         let rt = self.rt.clone();
         let Some(item) = self.item(id) else { return };
         // A finished gallery may start again: it fetches the files not there yet (#58).
@@ -2452,11 +2463,21 @@ impl App {
         }
     }
 
+    /// The user's Stop (or Pause): it stays stopped, even in a queue that is running (#341).
+    fn stop_by_hand(&mut self, id: u64) {
+        self.stop(id);
+        self.stopped_by_hand.insert(id);
+    }
+
     fn stop_all(&mut self) {
-        for i in &self.items {
-            if let Some(l) = &i.live {
-                l.dl.cancel();
-            }
+        let running: Vec<u64> = self
+            .items
+            .iter()
+            .filter(|i| i.live.is_some())
+            .map(|i| i.id)
+            .collect();
+        for id in running {
+            self.stop_by_hand(id);
         }
     }
 
@@ -4397,7 +4418,7 @@ impl App {
             let why = match action {
                 "pause" if !running => Some("not running"),
                 "pause" => {
-                    self.stop(id);
+                    self.stop_by_hand(id);
                     None
                 }
                 "start" if running => Some("already running"),
@@ -4515,6 +4536,9 @@ impl App {
             self.sound(2);
         }
         self.queues[q].running = true;
+        for id in &self.queues[q].items {
+            self.stopped_by_hand.remove(id);
+        }
         self.tick_queues();
     }
 
@@ -4537,6 +4561,7 @@ impl App {
     fn member_of(&self, i: &Item, now: Instant) -> Member {
         let id = i.id;
         match i.status {
+            Status::Stopped if self.stopped_by_hand.contains(&id) => Member::Held,
             Status::Queued | Status::Stopped => Member::Waiting,
             Status::Downloading => Member::Running,
             Status::Complete => Member::Complete,
@@ -4723,7 +4748,7 @@ impl App {
             Cmd::Stop => {
                 for id in many {
                     if self.item(id).is_some_and(|i| i.live.is_some()) {
-                        self.stop(id);
+                        self.stop_by_hand(id);
                     }
                 }
             }
@@ -8219,7 +8244,7 @@ impl App {
         for (id, a) in actions {
             match a {
                 progress::Action::None => {}
-                progress::Action::Pause => self.stop(id),
+                progress::Action::Pause => self.stop_by_hand(id),
                 progress::Action::Resume => self.start(id, true),
                 progress::Action::Cancel => {
                     self.stop(id);
