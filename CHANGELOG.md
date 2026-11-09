@@ -5,6 +5,10 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ## [Unreleased]
 
+### Fixed
+
+- A **gofile** share link (`gofile.io/d/...`) now says it is a web page to open in your browser, instead of saving that page as if it were the file ([#346](https://github.com/anefzaoui/misterdownloadmanager/issues/346)).
+
 ## [0.5.2] - 2026-11-09
 
 A big fixes release: YouTube and video downloads, crashes and freezes, downloads on slow disks, the Mac helper, plus a Safari extension, far more file types and a few new columns and options.
