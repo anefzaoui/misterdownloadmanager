@@ -526,6 +526,8 @@ These ship in a later version, when they're ready.
 - 🔍 A 10-second freeze of the window after a night left open
   ([#304](https://github.com/anefzaoui/misterdownloadmanager/issues/304)): most likely the
   computer waking from sleep; waiting on the reporter's full report
+- 🔄 Crash reports: a monitor that cannot open its socket exits, and an unreachable one is
+  cleaned up instead of staying beside MDM: fix in review
 
 ## Planned
 
