@@ -7,6 +7,8 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Crash reports: no report any more when one of the download engine's background tasks panics while MDM is already closing ([#422](https://github.com/anefzaoui/misterdownloadmanager/issues/422)).
+- Crash reports: a freeze whose window had recovered by the time its dump was taken is reported as a freeze, not as a crash in MDM's own watchdog ([#420](https://github.com/anefzaoui/misterdownloadmanager/issues/420)).
 - Text in a script outside the interface language (a video title in Bangla, a playlist in Japanese) now shows its letters, instead of boxes: the font for that script is loaded the first time it is needed ([#405](https://github.com/anefzaoui/misterdownloadmanager/issues/405)).
 - Options → Proxy / Socks now applies to yt-dlp and gallery-dl too, so video look-ups and downloads no longer go straight out when a proxy is set ([#363](https://github.com/anefzaoui/misterdownloadmanager/issues/363)).
 - The window no longer freezes while watching the clipboard when the program holding it hangs, or while a cancelled download's files are removed from a slow disk ([#418](https://github.com/anefzaoui/misterdownloadmanager/issues/418), [#423](https://github.com/anefzaoui/misterdownloadmanager/issues/423)).
