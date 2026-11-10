@@ -819,6 +819,12 @@ const MPD = (protect) => `<?xml version="1.0"?>
   assert.equal(natives(calls).filter((m) => m.url === hashed).at(-1).filename, "A film.mp4");
   await api.storage.local.set({ mediaTitleName: false });
   assert.equal(natives(calls).find((m) => m.url === hashed).filename, "A film.mp4");
+  // #493: X's video server names each file with a short random id: the tab's title names it.
+  const random = "https://video.twimg.com/ext_tw_video/1900000000000000000/pu/vid/avc1/720x1280/7HbL0kYxzF-fGjqd.mp4?tag=12";
+  listeners.responseStarted({ tabId: 9, frameId: 0, type: "media", url: random, responseHeaders: [{ name: "Content-Type", value: "video/mp4" }, { name: "Content-Length", value: "52428800" }] });
+  await settle();
+  await popupAsk(listeners, { type: "media-download", tab: 9, url: random });
+  assert.equal(natives(calls).find((m) => m.url === random).filename, "A film.mp4");
   const before = natives(calls).length;
   assert.deepEqual(await popupAsk(listeners, { type: "media-download", tab: 9, url: "https://drm.test/p/manifest.mpd" }), { ok: false, why: "drm" });
   assert.deepEqual(await popupAsk(listeners, { type: "media-download", tab: 9, url: "https://evil.test/x.mp4" }), { ok: false, why: "gone" });
@@ -828,7 +834,7 @@ const MPD = (protect) => `<?xml version="1.0"?>
   // A move within the page keeps the list; another page clears it; so does closing the tab.
   listeners.tabUpdated(9, { url: "https://watch.test/v/1#t=30" });
   await settle();
-  assert.equal((await popupAsk(listeners, { type: "media", tab: 9 })).media.length, 10);
+  assert.equal((await popupAsk(listeners, { type: "media", tab: 9 })).media.length, 11);
   listeners.tabUpdated(9, { url: "https://watch.test/v/2" });
   await settle();
   assert.equal((await popupAsk(listeners, { type: "media", tab: 9 })).media.length, 0);
