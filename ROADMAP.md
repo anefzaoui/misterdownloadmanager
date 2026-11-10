@@ -521,6 +521,7 @@ These ship in a later version, when they're ready.
 
 - 🔄 The video button vanishing over a hover-to-play preview (YouTube's thumbnails) before it
   can be clicked ([#503](https://github.com/anefzaoui/misterdownloadmanager/issues/503)): fix in review
+- 🔄 The video button staying on screen after a click on the player, in fullscreen too\n  ([#480](https://github.com/anefzaoui/misterdownloadmanager/issues/480)): fix in review
 - 🔄 A freeze when a video finishes, while its file is marked as downloaded from the web
   ([#510](https://github.com/anefzaoui/misterdownloadmanager/issues/510)): fix in review
 - 🔄 Linux: Dark Mode support on window managers such as Hyprland and sway, which often have no
