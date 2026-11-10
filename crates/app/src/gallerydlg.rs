@@ -99,7 +99,7 @@ impl GalleryDialog {
             |ui, o| self.body(ui, o, rt),
         );
         if let Some(h) = &mut self.helpers
-            && !matches!(h.show(ctx), Outcome::Open)
+            && !matches!(h.show(ctx, rt), Outcome::Open)
         {
             self.helpers = None;
             self.tool = None;

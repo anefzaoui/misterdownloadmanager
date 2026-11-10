@@ -491,6 +491,7 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 Linux and macOS: the system's yt-dlp used when MDM has none of its own, with Helpers able\n  to switch to MDM's copy ([#452](https://github.com/anefzaoui/misterdownloadmanager/issues/452)): in review
 - 🔄 macOS: video look-ups in a copy of MDM a browser downloaded, without the Terminal command
   ([#330](https://github.com/anefzaoui/misterdownloadmanager/issues/330),
   [#339](https://github.com/anefzaoui/misterdownloadmanager/issues/339)): yt-dlp's folder build,
@@ -521,7 +522,23 @@ These ship in a later version, when they're ready.
 
 - 🔄 The video button vanishing over a hover-to-play preview (YouTube's thumbnails) before it
   can be clicked ([#503](https://github.com/anefzaoui/misterdownloadmanager/issues/503)): fix in review
+- 🔄 Add URL's **Use authorization** empty for an address with a login in Options → Sites
+  Logins, though the download used it
+  ([#511](https://github.com/anefzaoui/misterdownloadmanager/issues/511)): fix in review
+- 🔄 Two tests that fail now and then on busy CI runners
+  ([#518](https://github.com/anefzaoui/misterdownloadmanager/issues/518)): the slow-flush one in review
+- 🔄 The window not answering for a few seconds while Windows makes a snapshot of the disk
+  (a restore point or a backup) ([#513](https://github.com/anefzaoui/misterdownloadmanager/issues/513)):
+  the log and the RSS feeds are now written beside the window, as the list already was; fix in
+  review, to confirm on the reporter's computer
+- 🔄 Video look-ups failing with "WinError 448 ... untrusted mount point" when a folder on PATH
+  goes through a junction Windows won't let yt-dlp cross
+  ([#508](https://github.com/anefzaoui/misterdownloadmanager/issues/508)): fix in review
+- 🔄 Dailymotion's embedded player from the browser's button: no formats, the embedding site's
+  Referer refused ([#359](https://github.com/anefzaoui/misterdownloadmanager/issues/359)): fix in review
 - 🔄 The video button staying on screen after a click on the player, in fullscreen too\n  ([#480](https://github.com/anefzaoui/misterdownloadmanager/issues/480)): fix in review
+- 🔄 A magnet link handed over while Add torrent is already open being dropped without a word
+  ([#507](https://github.com/anefzaoui/misterdownloadmanager/issues/507)): fix in review
 - 🔄 A freeze when a video finishes, while its file is marked as downloaded from the web
   ([#510](https://github.com/anefzaoui/misterdownloadmanager/issues/510)): fix in review
 - 🔄 Linux: Dark Mode support on window managers such as Hyprland and sway, which often have no
