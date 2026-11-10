@@ -3038,6 +3038,15 @@ impl App {
                     self.show_window(ctx);
                     continue;
                 }
+                TrayCmd::Toggle => {
+                    let minimized = ctx.input(|i| i.viewport().minimized == Some(true));
+                    if self.hidden || minimized {
+                        self.show_window(ctx);
+                    } else {
+                        self.hide_to_tray(ctx);
+                    }
+                    continue;
+                }
                 TrayCmd::AddUrl => Cmd::AddUrl,
                 TrayCmd::Batch => Cmd::Batch(false),
                 TrayCmd::LimiterOn => Cmd::LimiterOn,
