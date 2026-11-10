@@ -499,18 +499,31 @@ impl Host {
                 Ok(Done::Rechecking)
             }
             Act::Reannounce => {
-                if let Some(t) = self.get() {
+                if let Some(t) = self.get().filter(|t| t.has(hash)) {
                     t.reannounce(hash).await.map_err(err)?;
                 }
                 Ok(Done::Reannounced)
             }
             Act::Choose { files, pause } => {
-                if let Some(t) = self.get().filter(|t| t.has(hash)) {
+                if let Some(t) = self.get() {
+                    if !t.has(hash) {
+                        let file = torrent_file(hash).ok_or(crate::i18n::t("no data folder"))?;
+                        let bytes = std::fs::read(&file)
+                            .map_err(|_| crate::i18n::t("the .torrent file kept for it is gone"))?;
+                        t.add(&bytes, &spec.folder, Some(files.clone()), Vec::new(), pause)
+                            .await
+                            .map_err(err)?;
+                        return Ok(Done::Chosen);
+                    }
                     t.choose(hash, &files.into_iter().collect())
                         .await
                         .map_err(err)?;
                     if pause {
-                        t.pause(hash).await.map_err(err)?;
+                        if t.stats(hash).is_ok_and(|s| s.phase == Phase::Finished) {
+                            t.remove(hash, false).await.map_err(err)?;
+                        } else {
+                            t.pause(hash).await.map_err(err)?;
+                        }
                     }
                 }
                 Ok(Done::Chosen)
@@ -648,7 +661,7 @@ impl Host {
                 let _ = if on {
                     t.resume(&h).await
                 } else {
-                    t.pause(&h).await
+                    t.remove(&h, false).await
                 };
             }
         });
@@ -892,6 +905,13 @@ impl Run {
             RunState::Ready(t) => t.clone(),
         };
         let Ok(st) = t.stats(&self.hash) else {
+            let (done, size) = *self.last.lock().unwrap();
+            if size.is_some_and(|total| total > 0 && done >= total) {
+                s.state = State::Done;
+                s.downloaded = done;
+                s.size = size;
+                return s;
+            }
             s.state = State::Failed;
             // i18n: an error: the torrent is gone from the torrent session
             s.error = Some(crate::i18n::t("the torrent is no longer there").into());
@@ -912,7 +932,7 @@ impl Run {
         // Done: it stops sharing (a download manager finishes downloads; D-018), unless the
         // person chose to keep sharing.
         if s.state == State::Done && !self.keep_sharing {
-            self.pause_in_background(&t);
+            self.remove_in_background(&t);
         }
         s
     }
@@ -924,11 +944,24 @@ impl Run {
         });
     }
 
-    /// Stop: pause it (the pieces stay; starting again continues).
+    fn remove_in_background(&self, t: &Arc<Torrents>) {
+        let (t, hash) = (t.clone(), self.hash.clone());
+        self.rt.spawn(async move {
+            let _ = t.remove(&hash, false).await;
+        });
+    }
+
+    /// Stop: a completed run leaves the session; an incomplete one pauses to resume later.
     pub fn cancel(&self) {
         *self.stopped.lock().unwrap() = true;
         if let Some(t) = self.session() {
-            self.pause_in_background(&t);
+            if t.stats(&self.hash)
+                .is_ok_and(|s| s.phase == Phase::Finished)
+            {
+                self.remove_in_background(&t);
+            } else {
+                self.pause_in_background(&t);
+            }
         }
     }
 
