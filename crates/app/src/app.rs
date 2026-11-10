@@ -2279,10 +2279,7 @@ impl App {
         // page up at once. The main window stays where it is (hidden, minimized): only the
         // dialog opens, as its window is its own.
         if let Some(page) = cmd.video_page.as_deref() {
-            let minimized = ctx.input(|i| i.viewport().minimized == Some(true));
-            if !self.hidden && !minimized {
-                self.show_window(ctx);
-            }
+            self.show_for_dialog(ctx);
             let dir = self.settings.category_dir(Category::Video, &self.downloads);
             crate::videodlg::refresh_ytdlp(&self.rt);
             let page = page.to_owned();
@@ -2301,7 +2298,7 @@ impl App {
         }
         // The browser's right-click menu: a page's (or a selection's) links, to tick in Import.
         if !cmd.links.is_empty() {
-            self.show_window(ctx);
+            self.show_for_dialog(ctx);
             let found = cmd
                 .links
                 .iter()
@@ -2336,7 +2333,7 @@ impl App {
                     && std::path::Path::new(u.trim_matches('"')).is_file())
         }) {
             let m = m.trim().to_owned();
-            self.show_window(ctx);
+            self.show_for_dialog(ctx);
             self.open_torrent_dialog(Some(m), ctx);
             return;
         }
@@ -2364,7 +2361,7 @@ impl App {
         };
         if !cmd.silent && (torrent(&url) || final_url.as_ref().is_some_and(torrent)) {
             let parts = self.request_parts(&url, None, &cmd, crate::debrid::browser_started(&cmd));
-            self.show_window(ctx);
+            self.show_for_dialog(ctx);
             self.open_torrent_dialog_with(
                 Some(url.to_string()),
                 Some(crate::torrents::Remote { url, parts }),
@@ -2911,6 +2908,15 @@ impl App {
         ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(false));
         if !crate::offscreen() {
             ctx.send_viewport_cmd(egui::ViewportCommand::Focus);
+        }
+    }
+
+    /// Before a handoff's dialog: the main window stays where it is (hidden, minimized) and
+    /// only the dialog opens, as dialogs are windows of their own.
+    fn show_for_dialog(&mut self, ctx: &egui::Context) {
+        let minimized = ctx.input(|i| i.viewport().minimized == Some(true));
+        if !self.hidden && !minimized {
+            self.show_window(ctx);
         }
     }
 
