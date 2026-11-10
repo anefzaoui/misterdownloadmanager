@@ -571,6 +571,9 @@ These ship in a later version, when they're ready.
 - 🔄 Crash reports: a monitor that cannot open its socket exits, and an unreachable one is
   cleaned up instead of staying beside MDM: fix in review
   ([#458](https://github.com/anefzaoui/misterdownloadmanager/pull/458))
+- 🔄 Left click on the tray icon toggles the main window, and browser downloads open only
+  their dialog when the main window is hidden or minimized: fix in review
+  ([#520](https://github.com/anefzaoui/misterdownloadmanager/pull/520))
 
 ## Planned
 

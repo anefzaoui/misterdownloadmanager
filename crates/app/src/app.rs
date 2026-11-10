@@ -369,6 +369,31 @@ fn next_trim(done: u32) -> Duration {
 /// before it shows minimized.
 const TRAY_GRACE: Duration = Duration::from_secs(30);
 
+/// How long after the main window loses focus a tray toggle still counts it as in
+/// front (#520): clicking the icon makes the taskbar the foreground window first,
+/// so `focused` is always false by the time Toggle runs on Windows. Unknown focus
+/// (`None`) never counts: unsure means show, never hide.
+const TRAY_TOGGLE_GRACE: Duration = Duration::from_millis(500);
+
+/// Whether a tray left-click hides the window instead of showing it: hidden or
+/// minimized never hides; a focused window does; an unfocused one does only when
+/// it just lost the focus (the click itself took it), else it is behind other
+/// windows and comes forward. Unknown focus never hides.
+fn tray_toggle_hide(
+    hidden: bool,
+    minimized: bool,
+    focused: Option<bool>,
+    since_focused: Option<Duration>,
+) -> bool {
+    if hidden || minimized {
+        return false;
+    }
+    if focused == Some(true) {
+        return true;
+    }
+    focused == Some(false) && since_focused.is_some_and(|d| d < TRAY_TOGGLE_GRACE)
+}
+
 /// Where a start with the session (#226) leaves the window, decided here alone.
 #[derive(Debug, PartialEq)]
 enum AtLogin {
@@ -584,6 +609,11 @@ pub struct App {
     /// a real exit under way (closing the window otherwise only hides it, as IDM does).
     tray: Option<crate::tray::Tray>,
     tray_limiter: Option<bool>,
+    /// When the main window was last seen focused: a tray click steals the focus first
+    /// (the taskbar becomes foreground), so a click on a frontmost window reads as
+    /// unfocused by the time Toggle runs. Within [`TRAY_TOGGLE_GRACE`] it still counts
+    /// as in front.
+    tray_last_focused: Option<Instant>,
     hidden: bool,
     /// Hidden to the tray: when to hand the window's memory back to the system next (#72), and
     /// how many times it was since the window hid.
@@ -1138,6 +1168,7 @@ impl App {
             clip_reading: None,
             tray: None,
             tray_limiter: None,
+            tray_last_focused: None,
             // Started with the session (#226): hidden from the first frame.
             hidden: start == crate::Start::Session,
             trim_when_hidden: (start == crate::Start::Session)
@@ -3029,6 +3060,11 @@ impl App {
             t.set_downloads(&running);
         }
         self.settle_at_login(ctx);
+        // When the window was last focused, for Toggle below. Kept every frame:
+        // by the time a tray click arrives the taskbar already took the focus.
+        if ctx.input(|i| i.viewport().focused) == Some(true) {
+            self.tray_last_focused = Some(Instant::now());
+        }
         let cmds = self.tray.as_ref().map(|t| t.poll()).unwrap_or_default();
         for c in cmds {
             use crate::tray::TrayCmd;
@@ -3041,12 +3077,15 @@ impl App {
                 TrayCmd::Toggle => {
                     let minimized = ctx.input(|i| i.viewport().minimized == Some(true));
                     // Behind other windows it still reads as shown: only hide when
-                    // frontmost (#516), otherwise bring it forward.
-                    let focused = ctx.input(|i| i.viewport().focused) == Some(true);
-                    if self.hidden || minimized || !focused {
-                        self.show_window(ctx);
-                    } else {
+                    // frontmost, otherwise bring it forward. On Windows the tray
+                    // click itself takes the focus first, so a window focused just
+                    // now still counts as in front (#520).
+                    let focus = ctx.input(|i| i.viewport().focused);
+                    let since_focused = self.tray_last_focused.map(|t| t.elapsed());
+                    if tray_toggle_hide(self.hidden, minimized, focus, since_focused) {
                         self.hide_to_tray(ctx);
+                    } else {
+                        self.show_window(ctx);
                     }
                     continue;
                 }
@@ -9052,6 +9091,42 @@ mod at_login_tests {
         // No icon at all (the tray couldn't be made): the grace from the start.
         assert_eq!(at_login(TRAY_GRACE, None, false), AtLogin::Minimize);
         assert_eq!(at_login(s(60), None, true), AtLogin::Minimize);
+    }
+}
+
+#[cfg(test)]
+mod tray_toggle_tests {
+    use super::{TRAY_TOGGLE_GRACE, tray_toggle_hide};
+    use std::time::Duration;
+
+    /// Left click toggles: hidden or minimized shows; frontmost hides; behind
+    /// shows; a click that just took the focus (Windows) still hides (#520).
+    #[test]
+    fn only_a_frontmost_window_hides() {
+        let ms = Duration::from_millis;
+        // Hidden or minimized: always shows.
+        assert!(!tray_toggle_hide(true, false, Some(false), None));
+        assert!(!tray_toggle_hide(false, true, Some(true), None));
+        // Frontmost: hides.
+        assert!(tray_toggle_hide(false, false, Some(true), None));
+        // Behind other windows: shows.
+        assert!(!tray_toggle_hide(
+            false,
+            false,
+            Some(false),
+            Some(TRAY_TOGGLE_GRACE + ms(1))
+        ));
+        assert!(!tray_toggle_hide(false, false, Some(false), None));
+        // The click stole the focus just now (Windows): still hides.
+        assert!(tray_toggle_hide(
+            false,
+            false,
+            Some(false),
+            Some(TRAY_TOGGLE_GRACE - ms(1))
+        ));
+        // Unknown focus: unsure means show, never hide.
+        assert!(!tray_toggle_hide(false, false, None, None));
+        assert!(!tray_toggle_hide(false, false, None, Some(Duration::ZERO)));
     }
 }
 
