@@ -489,6 +489,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A speed limit raised or turned off applies at once, to the connections already waiting
+  under the old one too ([#621](https://github.com/anefzaoui/misterdownloadmanager/issues/621))
 - ✅ The build and release workflows: each job gets only the permissions it needs, and every
   action and release tool is pinned to an exact version
 - ✅ A freeze on a slow disk, the data folder looked up on every tick
