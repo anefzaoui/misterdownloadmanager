@@ -532,6 +532,9 @@ These ship in a later version, when they're ready.
   (a restore point or a backup) ([#513](https://github.com/anefzaoui/misterdownloadmanager/issues/513)):
   the log and the RSS feeds are now written beside the window, as the list already was; fix in
   review, to confirm on the reporter's computer
+- 🔄 The window not answering while Windows took seconds to look up the time zone for the
+  queues' schedules ([#536](https://github.com/anefzaoui/misterdownloadmanager/issues/536)):
+  looked up beside the window now; fix in review
 - 🔄 Video look-ups failing with "WinError 448 ... untrusted mount point" when a folder on PATH
   goes through a junction Windows won't let yt-dlp cross
   ([#508](https://github.com/anefzaoui/misterdownloadmanager/issues/508)): fix in review

@@ -651,7 +651,6 @@ impl Item {
 
     /// The last `n` log entries as tooltip lines ("14:02:11  Connected to …").
     pub fn log_lines(&self, n: usize) -> String {
-        use chrono::TimeZone;
         self.log
             .iter()
             .rev()
@@ -659,9 +658,8 @@ impl Item {
             .rev()
             .map(|(at, text)| {
                 // In the interface's way (English month names in every language before).
-                let t = chrono::Local
-                    .timestamp_opt(*at, 0)
-                    .single()
+                // With the offset of now (crate::clock, #536).
+                let t = crate::clock::local_at(*at)
                     .map(|t| when_text(t.naive_local()))
                     .unwrap_or_default();
                 format!("{t}  {text}")
@@ -970,7 +968,7 @@ impl Item {
 /// The "Last Try Date" and "Added" columns as stored, e.g. `Oct 28 21:44:12 2026` (the list's
 /// format; read back by `stamp_time`).
 pub fn now_stamp() -> String {
-    chrono::Local::now().format(STAMP).to_string()
+    crate::clock::now().format(STAMP).to_string()
 }
 
 const STAMP: &str = "%b %d %H:%M:%S %Y";

@@ -5,6 +5,7 @@ mod batch;
 mod categories;
 mod checksum;
 mod chrome;
+mod clock;
 mod countries;
 mod crash;
 mod crashui;
@@ -223,6 +224,8 @@ fn main() -> std::process::ExitCode {
     if std::env::args().nth(1).as_deref() == Some("--forget-sign-ins") {
         return secrets::forget_all();
     }
+    // The local time's offset, asked on a thread of its own from now on (#536).
+    clock::start();
     // A server (#157): the app without a window.
     let all: Vec<String> = std::env::args().skip(1).collect();
     let code = if headless::asked(&all) {

@@ -2015,7 +2015,7 @@ pub struct LimitNotice {
 
 impl LimitNotice {
     pub fn new(mb: u32, hours: u32, wait: std::time::Duration) -> Self {
-        let at = chrono::Local::now()
+        let at = crate::clock::now()
             + chrono::Duration::from_std(wait).unwrap_or_else(|_| chrono::Duration::zero());
         LimitNotice {
             lines: [
