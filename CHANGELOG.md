@@ -5,9 +5,19 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ## [Unreleased]
 
+### Added
+
+- Linux and macOS: a yt-dlp installed by the system (a package manager, Homebrew) is found and used when MDM has none of its own; **Helpers** can still switch to MDM's own copy, kept up to date ([#452](https://github.com/anefzaoui/misterdownloadmanager/issues/452)).
+
 ### Fixed
 
+- The browser's **video button** over a hover-to-play preview (YouTube's thumbnails) no longer vanishes as the pointer goes to it: it stays where it was while the pointer is on it, a click downloads that video, and it fades once the pointer leaves ([#503](https://github.com/anefzaoui/misterdownloadmanager/issues/503)).
+- **Enter new address to download**: an address with a login in **Options → Sites Logins** shows that login under **Use authorization** (ticked, the user name and the password), the one the download uses; it was used but the box stayed empty. A login typed there still goes first ([#511](https://github.com/anefzaoui/misterdownloadmanager/issues/511)).
+- The window no longer waits for the disk to write MDM's log or to save the RSS feeds: while Windows held every write on the disk to make a snapshot of it (a restore point or a backup), the window could stop answering until the writes were let go. Both are now written beside the window, as the download list already was (part of [#513](https://github.com/anefzaoui/misterdownloadmanager/issues/513)).
+- Windows: video and gallery look-ups no longer fail with "[WinError 448] The path cannot be traversed because it contains an untrusted mount point" when a folder on PATH goes through a junction Windows won't let yt-dlp cross (one an app installed for itself, Codex's for example): yt-dlp, gallery-dl and the ffmpeg they start get that folder's real place instead, and no folder that can't be opened ([#508](https://github.com/anefzaoui/misterdownloadmanager/issues/508)).
+- **Download video** from Dailymotion's player embedded in another site: the look-up no longer sends that site as the Referer, which Dailymotion refused with 403, so its formats are found as with the video's own address ([#359](https://github.com/anefzaoui/misterdownloadmanager/issues/359)).
 - The video button fades again after a click on the player, in fullscreen too, and stays while you use the keyboard ([#480](https://github.com/anefzaoui/misterdownloadmanager/issues/480)).
+- A magnet link or a .torrent handed to MDM while **Add torrent** is already open is no longer dropped without a word: it waits, and Add torrent opens again for it when you close the first ([#507](https://github.com/anefzaoui/misterdownloadmanager/issues/507)).
 - The window no longer freezes when a video or a gallery finishes: marking its files as downloaded from the web, which can wait on the disk and the antivirus for a while with a big video, now happens beside the window ([#510](https://github.com/anefzaoui/misterdownloadmanager/issues/510)).
 - Linux: **View → Dark Mode support** turns dark on window managers such as Hyprland and sway when only GNOME's setting says so (`gsettings set org.gnome.desktop.interface color-scheme prefer-dark`), as it did when a desktop portal answered ([#324](https://github.com/anefzaoui/misterdownloadmanager/issues/324)).
 - Dark mode no longer draws a bright white line under the menu bar, across the whole window, in the Classic and Native themes ([#379](https://github.com/anefzaoui/misterdownloadmanager/issues/379)).

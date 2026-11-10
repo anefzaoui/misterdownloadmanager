@@ -121,6 +121,8 @@ fn hook_panics() {
             backtrace: std::backtrace::Backtrace::force_capture().to_string(),
         };
         tracing::error!("panic: {} at {} ({})", p.message, p.location, p.thread);
+        // In the file before the report reads the log's end (the log writes on its own thread).
+        mdm_crash::logs::flush(LOG_FOR_A_REPORT);
         if !panic_reported(CLOSING.load(Ordering::Acquire), &p.thread) {
             default(info);
             return;
@@ -225,7 +227,13 @@ pub fn clean_exit() {
         tracing::info!("closing");
         r.clean();
     }
+    // Some ends exit at once after this: the log's last lines first.
+    mdm_crash::logs::flush(LOG_FOR_A_REPORT);
 }
+
+/// How long a report (or an exit) waits for the log's last lines to be in the file: the log
+/// writes on its own thread (#513), and a disk held longer than this leaves them out.
+const LOG_FOR_A_REPORT: Duration = Duration::from_secs(1);
 
 /// Watch the window's frames: a stretch of one (its logic or its UI) running past FREEZE_AFTER
 /// is reported once. Time the computer spent asleep (this loop's own tick much longer than
@@ -289,6 +297,7 @@ fn watchdog() {
                 b.faults
             );
         }
+        mdm_crash::logs::flush(LOG_FOR_A_REPORT);
         if let Some(r) = REPORTER.get() {
             r.freeze(&Freeze {
                 ui_thread: ui,

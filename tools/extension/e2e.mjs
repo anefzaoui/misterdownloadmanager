@@ -17,7 +17,8 @@
 // do with each new type, as Waterfox is: caught before its dialog, #208), cookie (cookies and referrer
 // forwarded), names (Content-Disposition), redirect, leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
 // to the browser), opened (a PDF or MP3 the browser would show or play), spot (the video button
-// clear of the page's controls, #421), csp (the video button
+// clear of the page's controls, #421), preview (the video button kept over a hover-to-play
+// preview the page stopped as the pointer went to it, #503), csp (the video button
 // under a strict CSP), hls (the stream a player loaded), streams (HLS and DASH players handed over
 // by the button, the right-click menu and the media list, and read by yt-dlp; #155; also with no
 // .m3u8 or .mpd, served as text/plain or octet-stream, #171), sniffed (#171 without yt-dlp: such
@@ -223,6 +224,8 @@ async function chromium(bin, profile, dl, page, ready) {
       "--ignore-certificate-errors",
       // Linux: no keyring prompt for the test profile.
       ...(WIN ? [] : ["--password-store=basic"]),
+      // E2E_CHROMIUM_ARGS: more switches, space separated (screenshots: --lang=de, --force-dark-mode).
+      ...(process.env.E2E_CHROMIUM_ARGS || "").split(" ").filter(Boolean),
       "about:blank",
     ],
     { env: process.env, stdio: ["ignore", "ignore", "ignore", "pipe", "pipe"], windowsHide: true },
@@ -1669,6 +1672,51 @@ const CASES = {
     const overlaps = b.l < c.r && b.r > c.l && b.t < c.b && b.b > c.t;
     if (overlaps) throw new Error(`the button covers the page's control: ${JSON.stringify({ b, c })}`);
     return `at ${Math.round(b.l - v.l)},${Math.round(b.t - v.t)}, clear of the page's control`;
+  },
+
+  // #503: a hover-to-play preview (YouTube's thumbnails) stops as soon as the pointer leaves the
+  // video for the button, the page seeing the pointer go: hidden, or taken out of the page. The
+  // button stays where it was while the pointer is on it, a click sends the video it was over,
+  // and it fades once the pointer leaves.
+  async preview(t) {
+    // E2E_PREVIEW_SHOT: screenshots of the page with the preview stopped, for a PR's body.
+    const shoot = async (name) => {
+      if (process.env.E2E_PREVIEW_SHOT && t.session.screenshot) await t.session.screenshot(`${process.env.E2E_PREVIEW_SHOT}-${name}.png`);
+    };
+    const done = [];
+    for (const stop of ["hidden", "removed"]) {
+      await t.session.navigate(`${LAB}/page?video=${encodeURIComponent("/gen/1M/clip.mp4")}`);
+      await t.session.evaluate(`(() => {
+        const v = document.querySelector("#video");
+        v.addEventListener("mouseleave", () => {
+          if (${JSON.stringify(stop)} === "hidden") v.style.display = "none"; else v.remove();
+          document.body.dataset.preview = "stopped";
+        });
+        return true;
+      })()`);
+      const v = await rect(t.session, "#video");
+      const b = await hover(t.session, v);
+      if (!b) throw new Error(`${stop}: no button over the video`);
+      // Onto the button: the page stops its preview.
+      await t.session.mouse(b.l + 14, (b.t + b.b) / 2);
+      await until(`${stop}: the page's preview stopped`, 3000, () => t.session.evaluate(`document.body.dataset.preview === "stopped"`));
+      await sleep(500);
+      await shoot(stop);
+      const kept = await rect(t.session, "mdm-video-button");
+      if (!kept) throw new Error(`${stop}: the button went with the preview`);
+      near(kept.l, b.l, `${stop}: kept, left edge`);
+      near(kept.t, b.t, `${stop}: kept, top`);
+      // Still there with the pointer resting on it, past the time the pointer is given to reach it.
+      await sleep(2000);
+      if (!(await rect(t.session, "mdm-video-button"))) throw new Error(`${stop}: the button went while the pointer rested on it`);
+      const address = await clickButton(t.session, kept);
+      if (address !== `${LAB}/gen/1M/clip.mp4`) throw new Error(`${stop}: the video window got ${address}`);
+      // The pointer leaves: it fades, as over any video.
+      await t.session.mouse(5, 5);
+      await until(`${stop}: the button gone after the pointer left`, 3000, async () => !(await rect(t.session, "mdm-video-button")));
+      done.push(`${stop}: kept, sent ${address.replace(LAB, "")}, gone after`);
+    }
+    return done.join("; ");
   },
 
   // A player playing a stream (a blob: in the page): the button sends the manifest it loaded.
