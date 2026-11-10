@@ -491,6 +491,9 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 Videos sent in pieces (HLS, DASH) downloading several pieces at once, as many as a file's
+  connections ([#531](https://github.com/anefzaoui/misterdownloadmanager/issues/531)): in review;
+  a video in one file (most of YouTube's) still comes over one connection
 - 🔄 Linux and macOS: the system's yt-dlp used when MDM has none of its own, with Helpers able\n  to switch to MDM's copy ([#452](https://github.com/anefzaoui/misterdownloadmanager/issues/452)): in review
 - 🔄 macOS: video look-ups in a copy of MDM a browser downloaded, without the Terminal command
   ([#330](https://github.com/anefzaoui/misterdownloadmanager/issues/330),
@@ -512,9 +515,8 @@ These ship in a later version, when they're ready.
   so a download a page starts by itself stays with Safari. Built and its relay to the helper
   checked in the sandbox Safari uses; still to check in Safari itself, signed with a Developer ID
 
-- 🔄 A torrent's peers and share ratio as columns in the download list
-  ([#357](https://github.com/anefzaoui/misterdownloadmanager/issues/357)): in review; its upload
-  speed is still to come
+- 🔄 A torrent's upload speed, peers and share ratio as columns in the download list
+  ([#357](https://github.com/anefzaoui/misterdownloadmanager/issues/357)): the last one in review
 - 🔄 The browser extension's media list naming a file after its page, as an option: in review
 - 🔄 Malay: a native speaker's check of the menus, toolbar and list columns: in review
 
@@ -522,8 +524,20 @@ These ship in a later version, when they're ready.
 
 - 🔄 The video button still showing after it was switched off, or its site listed, in Options
   ([#532](https://github.com/anefzaoui/misterdownloadmanager/issues/532)): fix in review
+- 🔄 macOS: Persian and other Arabic-script file names drawn as boxes in the download list
+  ([#533](https://github.com/anefzaoui/misterdownloadmanager/issues/533)): fix in review, to
+  confirm on a Mac
+- 🔄 macOS: Download File Info opening behind the browser that asked for it\n  ([#484](https://github.com/anefzaoui/misterdownloadmanager/issues/484)): fix in review
+- 🔄 The browser tests: the video button's focus case ran after the one that turns the button
+  off for the test site, and timed out in a full run ([#480](https://github.com/anefzaoui/misterdownloadmanager/issues/480)): fix in review
+- 🔄 The video button vanishing over a hover-to-play preview (YouTube's thumbnails) before it
+  can be clicked ([#503](https://github.com/anefzaoui/misterdownloadmanager/issues/503)): fix in review
+- 🔄 Add URL's **Use authorization** empty for an address with a login in Options → Sites
+  Logins, though the download used it
+  ([#511](https://github.com/anefzaoui/misterdownloadmanager/issues/511)): fix in review
 - 🔄 Two tests that fail now and then on busy CI runners
-  ([#518](https://github.com/anefzaoui/misterdownloadmanager/issues/518)): the slow-flush one in review
+  ([#518](https://github.com/anefzaoui/misterdownloadmanager/issues/518)): the slow-flush one fixed;
+  the crash-and-resume one found a real delay in saving a new download's progress, fix in review
 - 🔄 The window not answering for a few seconds while Windows makes a snapshot of the disk
   (a restore point or a backup) ([#513](https://github.com/anefzaoui/misterdownloadmanager/issues/513)):
   the log and the RSS feeds are now written beside the window, as the list already was; fix in
@@ -534,6 +548,8 @@ These ship in a later version, when they're ready.
 - 🔄 Dailymotion's embedded player from the browser's button: no formats, the embedding site's
   Referer refused ([#359](https://github.com/anefzaoui/misterdownloadmanager/issues/359)): fix in review
 - 🔄 The video button staying on screen after a click on the player, in fullscreen too\n  ([#480](https://github.com/anefzaoui/misterdownloadmanager/issues/480)): fix in review
+- 🔄 A magnet link handed over while Add torrent is already open being dropped without a word
+  ([#507](https://github.com/anefzaoui/misterdownloadmanager/issues/507)): fix in review
 - 🔄 A freeze when a video finishes, while its file is marked as downloaded from the web
   ([#510](https://github.com/anefzaoui/misterdownloadmanager/issues/510)): fix in review
 - 🔄 Linux: Dark Mode support on window managers such as Hyprland and sway, which often have no
