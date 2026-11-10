@@ -308,6 +308,8 @@ Everything below ships together, in version 0.5.0.
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 - ✅ Debrid accounts: torrents and magnet links through the service, their files downloaded over
   HTTP, no peer connections ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
+- ✅ Debrid accounts (experimental): TorBox, for file-host links and torrents
+  ([#391](https://github.com/anefzaoui/misterdownloadmanager/issues/391))
 - ✅ Sign-ins in the system's keychain: Windows Credential Manager, the Secret Service keyring on
   Linux, the macOS keychain; for debrid accounts, Sites Logins and the proxy
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))

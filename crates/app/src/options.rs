@@ -3858,19 +3858,27 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
         let left = until
             .saturating_duration_since(std::time::Instant::now())
             .as_secs();
-        winui::paragraph(
+        // The page's address isn't shown: it opened in the browser ("Open the page" opens it again).
+        let lines = winui::paragraph(
             &p,
             o.x + 14.0,
             o.y + 120.0,
+            // i18n: Options → Add an account: the service's sign-in page has opened in the browser; the user types the code shown above it there
+            crate::i18n::t(
+                "Type this code on the page that opened in your browser, then allow MDM there.",
+            ),
+            LIGHT_TEXT(),
+            o.x + 406.0,
+            14.0,
+        );
+        winui::paragraph(
+            &p,
+            o.x + 14.0,
+            o.y + 120.0 + 14.0 * lines as f32,
             &crate::i18n::fmt(
-                // i18n: Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
-                crate::i18n::t(
-                    "Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).",
-                ),
-                &[
-                    ("page", &crate::i18n::ltr(page)),
-                    ("time", &format!("{}:{:02}", left / 60, left % 60)),
-                ],
+                // i18n: Options → Add an account: waiting while the user types the sign-in code in the browser; {time} minutes:seconds left
+                crate::i18n::t("Waiting for you (the code expires in {time})."),
+                &[("time", &format!("{}:{:02}", left / 60, left % 60))],
             ),
             LIGHT_TEXT(),
             o.x + 406.0,

@@ -50,12 +50,12 @@ impl Unlocker for Fake {
     fn unlock<'a>(
         &'a self,
         _url: &'a Url,
-        note: &'a (dyn Fn(String) + Send + Sync),
+        note: &'a (dyn Fn(String, Option<f32>) + Send + Sync),
         _cancel: &'a CancellationToken,
     ) -> BoxFuture<'a, Result<Option<Unlocked>, ServiceFault>> {
         Box::pin(async move {
             self.calls.fetch_add(1, Ordering::SeqCst);
-            note("Fake-Debrid is preparing the link".into());
+            note("Fake-Debrid is preparing the link".into(), None);
             match self.answer.lock().unwrap().clone().expect("an answer") {
                 Answer::Declined => Ok(None),
                 Answer::Refused(f) => Err(f),

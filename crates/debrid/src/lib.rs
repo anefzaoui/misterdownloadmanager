@@ -8,12 +8,14 @@
 //! (`mdm_engine::Options::unlocker`). Secrets (tokens) are kept by the app, in the system's
 //! keychain; here they are only in memory, and never written to a log.
 //!
-//! The services: Real-Debrid (`realdebrid`), AllDebrid (`alldebrid`) and Premiumize
-//! (`premiumize`), each from its own public API documentation, on one interface (`ServiceKind`).
+//! The services: Real-Debrid (`realdebrid`), AllDebrid (`alldebrid`), Premiumize (`premiumize`)
+//! and TorBox (`torbox`), each from its own public API documentation, on one interface
+//! (`ServiceKind`).
 
 pub mod alldebrid;
 pub mod premiumize;
 pub mod realdebrid;
+pub mod torbox;
 pub mod torrents;
 
 use std::collections::HashMap;
@@ -33,14 +35,16 @@ pub enum ServiceKind {
     RealDebrid,
     AllDebrid,
     Premiumize,
+    TorBox,
 }
 
 impl ServiceKind {
     /// Every service, in the order Options lists them.
-    pub const ALL: [ServiceKind; 3] = [
+    pub const ALL: [ServiceKind; 4] = [
         ServiceKind::RealDebrid,
         ServiceKind::AllDebrid,
         ServiceKind::Premiumize,
+        ServiceKind::TorBox,
     ];
 
     /// The service's name, as it writes it (not translated).
@@ -49,6 +53,7 @@ impl ServiceKind {
             ServiceKind::RealDebrid => "Real-Debrid",
             ServiceKind::AllDebrid => "AllDebrid",
             ServiceKind::Premiumize => "Premiumize",
+            ServiceKind::TorBox => "TorBox",
         }
     }
 
@@ -58,22 +63,26 @@ impl ServiceKind {
             ServiceKind::RealDebrid => "https://real-debrid.com/apitoken",
             ServiceKind::AllDebrid => "https://alldebrid.com/apikeys",
             ServiceKind::Premiumize => "https://www.premiumize.me/account",
+            ServiceKind::TorBox => "https://torbox.app/settings",
         }
     }
 
-    /// Whether it signs in by code in the browser (Real-Debrid's device flow, AllDebrid's PIN).
-    /// Premiumize's needs a client registered by MDM's maintainer: its API key is pasted.
+    /// Whether it signs in by code in the browser (Real-Debrid's device flow, AllDebrid's PIN,
+    /// TorBox's device code). Premiumize's needs a client registered by MDM's maintainer: its API
+    /// key is pasted.
     pub fn signs_in_by_code(self) -> bool {
         !matches!(self, ServiceKind::Premiumize)
     }
 
     /// The requests a minute MDM allows itself (each service's published limit, halved or more:
-    /// Real-Debrid 250 a minute, AllDebrid 600; Premiumize publishes none).
+    /// Real-Debrid 250 a minute, AllDebrid 600, TorBox 300 for adding; Premiumize publishes
+    /// none).
     fn per_minute(self) -> usize {
         match self {
             ServiceKind::RealDebrid => 120,
             ServiceKind::AllDebrid => 300,
             ServiceKind::Premiumize => 60,
+            ServiceKind::TorBox => 120,
         }
     }
 }
@@ -84,6 +93,7 @@ pub struct Services {
     pub rd: realdebrid::Endpoints,
     pub ad: Url,
     pub pm: Url,
+    pub tb: Url,
 }
 
 impl Default for Services {
@@ -92,6 +102,7 @@ impl Default for Services {
             rd: realdebrid::Endpoints::default(),
             ad: Url::parse(alldebrid::BASE).expect("constant"),
             pm: Url::parse(premiumize::BASE).expect("constant"),
+            tb: Url::parse(torbox::BASE).expect("constant"),
         }
     }
 }
@@ -103,6 +114,7 @@ impl Services {
             rd: realdebrid::Endpoints::at(base),
             ad: base.join("ad/").expect("relative"),
             pm: base.join("pm/api/").expect("relative"),
+            tb: base.join("tb/v1/api/").expect("relative"),
         }
     }
 }
@@ -266,6 +278,14 @@ impl Http {
         Err(f)
     }
 
+    fn post_json(&self, url: &Url, body: &serde_json::Value) -> reqwest::RequestBuilder {
+        self.client
+            .post(url.clone())
+            .header(reqwest::header::USER_AGENT, USER_AGENT)
+            .header(reqwest::header::CONTENT_TYPE, "application/json")
+            .body(body.to_string())
+    }
+
     fn post_form(&self, url: &Url, form: &[(&str, &str)]) -> reqwest::RequestBuilder {
         let body = url::form_urlencoded::Serializer::new(String::new())
             .extend_pairs(form)
@@ -387,7 +407,7 @@ impl Session {
     async fn unlock(
         &self,
         link: &Url,
-        note: &(dyn Fn(String) + Send + Sync),
+        note: &(dyn Fn(String, Option<f32>) + Send + Sync),
         cancel: &CancellationToken,
     ) -> Result<Option<Unlocked>, Fault> {
         let not_a_file = || {
@@ -421,10 +441,13 @@ impl Session {
                         if Instant::now() >= until {
                             return Err(Fault::Service(ServiceFault::ServiceDown));
                         }
-                        note(format!(
-                            "AllDebrid is preparing the link (about {} s)",
-                            d.time_left.max(0)
-                        ));
+                        note(
+                            format!(
+                                "AllDebrid is preparing the link (about {} s)",
+                                d.time_left.max(0)
+                            ),
+                            None,
+                        );
                         let wait = Duration::from_secs((d.time_left.max(0) as u64 / 4).max(5));
                         tokio::select! {
                             _ = tokio::time::sleep(wait) => {}
@@ -459,6 +482,64 @@ impl Session {
                     url,
                     file_name: Some(name).filter(|n| !n.trim().is_empty()),
                     size: (entry.size > 0).then_some(entry.size as u64),
+                    max_connections: None,
+                }))
+            }
+            ServiceKind::TorBox => {
+                use torbox::Kind;
+                let key = self.token(false).await?;
+                let id = match torbox::create(&self.http, &key, Kind::Web, "link", link.as_str())
+                    .await
+                {
+                    Ok(id) => id,
+                    Err(Fault::Unsupported) => return Ok(None),
+                    Err(e) => return Err(e),
+                };
+                // TorBox fetches the file to its servers first (at once when it has it already):
+                // asked every 5 s, up to an hour, said in the event log, stopped with the download.
+                let until = Instant::now() + Duration::from_secs(3600);
+                let mut said = String::new();
+                let item = loop {
+                    let i = torbox::item(&self.http, &key, Kind::Web, id).await?;
+                    match torbox::state(&i) {
+                        None => break i,
+                        Some(torrents::Status::Failed(f)) => return Err(Fault::Service(f)),
+                        Some(torrents::Status::Working { progress, what }) => {
+                            let line = format!(
+                                "TorBox is fetching the file: {what}, {}%",
+                                (progress.unwrap_or(0.0) * 100.0) as u32 / 10 * 10
+                            );
+                            if line != said {
+                                note(line.clone(), progress);
+                                said = line;
+                            }
+                        }
+                        Some(torrents::Status::Ready { .. }) => unreachable!("state() never says"),
+                    }
+                    if Instant::now() >= until {
+                        return Err(Fault::Service(ServiceFault::ServiceDown));
+                    }
+                    tokio::select! {
+                        _ = tokio::time::sleep(Duration::from_secs(5)) => {}
+                        _ = cancel.cancelled() => {
+                            return Err(Fault::Service(ServiceFault::Other("cancelled".into())));
+                        }
+                    }
+                };
+                // One file per host link; several are a folder (as Premiumize: not a file).
+                let [file] = item.files.as_slice() else {
+                    return Err(not_a_file());
+                };
+                let url = torbox::link(&self.http, &key, Kind::Web, id, file.id).await?;
+                let name = if file.short_name.trim().is_empty() {
+                    file.name.rsplit('/').next().unwrap_or("").to_owned()
+                } else {
+                    file.short_name.clone()
+                };
+                Ok(Some(Unlocked {
+                    url,
+                    file_name: Some(name).filter(|n| !n.trim().is_empty()),
+                    size: (file.size > 0).then_some(file.size),
                     max_connections: None,
                 }))
             }
@@ -582,6 +663,7 @@ impl Debrid {
                     Ok(t) => premiumize::domains(&s.http, &t).await,
                     Err(e) => Err(e),
                 },
+                ServiceKind::TorBox => torbox::domains(&s.http).await,
             };
             match list {
                 Ok(list) => {
@@ -681,6 +763,22 @@ async fn account_info(s: &Session) -> Result<AccountInfo, Fault> {
                 },
             })
         }
+        ServiceKind::TorBox => {
+            let u = torbox::user(&s.http, &s.token(false).await?).await?;
+            let left = u
+                .premium_expires_at
+                .as_deref()
+                .and_then(torbox::unix_of)
+                .map(|t| t - now_unix())
+                .filter(|l| *l > 0);
+            Ok(AccountInfo {
+                // Plan 0 is the free one.
+                premium: u.plan > 0 && left.is_some(),
+                premium_left: left.map(|l| Duration::from_secs(l as u64)),
+                // TorBox gives no user name: the account's email stands for it.
+                user: u.email,
+            })
+        }
     }
 }
 
@@ -736,7 +834,7 @@ impl mdm_engine::Unlocker for AccountUnlocker {
     fn unlock<'a>(
         &'a self,
         url: &'a Url,
-        note: &'a (dyn Fn(String) + Send + Sync),
+        note: &'a (dyn Fn(String, Option<f32>) + Send + Sync),
         cancel: &'a CancellationToken,
     ) -> BoxFuture<'a, Result<Option<Unlocked>, ServiceFault>> {
         Box::pin(async move {
@@ -748,8 +846,8 @@ impl mdm_engine::Unlocker for AccountUnlocker {
     }
 }
 
-/// Sign-in by code: Real-Debrid's device flow, AllDebrid's PIN. The code to show and the page to
-/// type it at, then a poll until the user allowed MDM there.
+/// Sign-in by code: Real-Debrid's device flow, AllDebrid's PIN, TorBox's device code. The code to
+/// show and the page to type it at, then a poll until the user allowed MDM there.
 pub mod signin {
     use super::*;
 
@@ -770,6 +868,7 @@ pub mod signin {
     enum Inner {
         Rd(realdebrid::DeviceCode),
         Ad(alldebrid::Pin),
+        Tb(torbox::DeviceCode),
     }
 
     /// Step 1: a code from `service` (one that signs in by code).
@@ -796,6 +895,28 @@ pub mod signin {
                     inner: Inner::Ad(p),
                 })
             }
+            ServiceKind::TorBox => {
+                let c = torbox::device_start(http).await?;
+                let left = c
+                    .expires_at
+                    .as_deref()
+                    .and_then(torbox::unix_of)
+                    .map(|t| t - now_unix())
+                    .filter(|l| *l > 0);
+                let page = [&c.verification_url, &c.friendly_verification_url]
+                    .into_iter()
+                    .find(|p| !p.is_empty())
+                    .cloned()
+                    .unwrap_or_else(|| "https://tor.box/link".into());
+                Ok(Code {
+                    shown: c.code.clone(),
+                    page,
+                    // The docs: ask every `interval` seconds; 5 or more, as the others.
+                    interval: c.interval.max(5),
+                    expires_in: left.map_or(600, |l| l as u64),
+                    inner: Inner::Tb(c),
+                })
+            }
             ServiceKind::Premiumize => Err(Fault::Service(ServiceFault::Other(
                 "Premiumize signs in with its API key".into(),
             ))),
@@ -818,6 +939,9 @@ pub mod signin {
                 }))
             }
             Inner::Ad(p) => Ok(alldebrid::pin_check(http, p)
+                .await?
+                .map(|token| Credential::Token { token })),
+            Inner::Tb(c) => Ok(torbox::device_token(http, &c.device_code)
                 .await?
                 .map(|token| Credential::Token { token })),
         }

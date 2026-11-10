@@ -730,6 +730,9 @@ pub struct Snapshot {
     /// What happened, oldest first (the last `EVENTS`): the download's event log. Never
     /// cookies or credentials.
     pub events: Vec<Event>,
+    /// While a service account prepares the file's link (#44): the service, and how far it is
+    /// (0 to 1) when it says. The list shows it instead of "Connecting...".
+    pub at_service: Option<(String, Option<f32>)>,
     /// Where its server is, as its connections saw it (#140).
     pub server: Option<crate::Server>,
 }
@@ -917,14 +920,21 @@ async fn unlock_origin(
     if opts.post.is_some() || !matches!(url.scheme(), "http" | "https") {
         return Ok(None);
     }
-    let note = |s: String| {
+    let note = |s: String, progress: Option<f32>| {
         if let Some(sh) = shared {
             sh.event(s);
+            sh.view.lock().unwrap().at_service = Some((u.name().to_owned(), progress));
         }
     };
-    match u.unlock(url, &note, cancel).await {
+    let out = u.unlock(url, &note, cancel).await;
+    if let Some(sh) = shared {
+        sh.view.lock().unwrap().at_service = None;
+    }
+    match out {
         Ok(Some(x)) => {
-            note(crate::unlock::note_unlocked(u.name(), &x));
+            if let Some(sh) = shared {
+                sh.event(crate::unlock::note_unlocked(u.name(), &x));
+            }
             Ok(Some(x))
         }
         Ok(None) => Ok(None),
@@ -1013,6 +1023,7 @@ impl Download {
                 failure: None,
                 events: Vec::new(),
                 server: None,
+                at_service: None,
             }),
             seen: Default::default(),
             planner: Mutex::new(None),
@@ -2110,7 +2121,7 @@ async fn refresh_final_url(
     // Through a service account (#44): the service gives today's direct link (the host's link
     // itself leads to its web page); the host's cookies and logins stay with the host.
     let unlocked = match unlocker.filter(|_| post.is_none()) {
-        Some(u) => u.unlock(origin, &|_| {}, cancel).await.ok().flatten(),
+        Some(u) => u.unlock(origin, &|_, _| {}, cancel).await.ok().flatten(),
         None => None,
     };
     let (target, mut asked) = match &unlocked {

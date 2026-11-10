@@ -8,6 +8,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 ### Added
 
 - Videos a site sends in pieces (HLS and DASH streams, as many sites other than YouTube do) download several pieces at once, as many as **Options → Connection** gives a file (8 by default): against a test server that slows each connection, 4 at once took under a third of the time, 8 under a fifth. With a speed limit on, they still come one at a time, so the limit holds; a video in one file, as most of YouTube's are, is unchanged. The command line's `video-get` and `playlist-get` take `-c` for it ([#531](https://github.com/anefzaoui/misterdownloadmanager/issues/531)).
+- **TorBox** debrid accounts (experimental), in **Options → Accounts**, signed in in the browser or with your API key: file-host links, torrents and magnet links through your account ([#391](https://github.com/anefzaoui/misterdownloadmanager/issues/391)).
 - Linux and macOS: a yt-dlp installed by the system (a package manager, Homebrew) is found and used when MDM has none of its own; **Helpers** can still switch to MDM's own copy, kept up to date ([#452](https://github.com/anefzaoui/misterdownloadmanager/issues/452)).
 
 ### Fixed
