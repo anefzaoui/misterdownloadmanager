@@ -1812,35 +1812,39 @@ mod tests {
 
     #[test]
     fn categories_without_their_own_folder_follow_general() {
-        let dl = std::path::Path::new("/Users/test/Downloads");
+        // Absolute on every system (a path like "/Volumes/…" is drive-relative on Windows).
+        let root = std::env::temp_dir().join("mdm-554");
+        let at = |p: &str| root.join(p).display().to_string();
+        let dl = root.join("Users/test/Downloads");
         assert_eq!(
-            category_folder(Category::Torrents, dl, &[]),
-            PathBuf::from("/Users/test/Downloads/Torrents")
+            category_folder(Category::Torrents, &dl, &[]),
+            dl.join("Torrents")
         );
-        let general_only = vec![("General".to_owned(), "/Volumes/Data/Downloads".to_owned())];
+        let general_only = vec![("General".to_owned(), at("Volumes/Data/Downloads"))];
+        let general = root.join("Volumes/Data/Downloads");
         assert_eq!(
-            category_folder(Category::General, dl, &general_only),
-            PathBuf::from("/Volumes/Data/Downloads")
+            category_folder(Category::General, &dl, &general_only),
+            general
         );
         assert_eq!(
-            category_folder(Category::Torrents, dl, &general_only),
-            PathBuf::from("/Volumes/Data/Downloads/Torrents")
+            category_folder(Category::Torrents, &dl, &general_only),
+            general.join("Torrents")
         );
         assert_eq!(
-            category_folder(Category::Video, dl, &general_only),
-            PathBuf::from("/Volumes/Data/Downloads/Video")
+            category_folder(Category::Video, &dl, &general_only),
+            general.join("Video")
         );
         let both = vec![
-            ("General".to_owned(), "/Volumes/Data/Downloads".to_owned()),
-            ("Torrents".to_owned(), "/Volumes/NAS/Torrents".to_owned()),
+            ("General".to_owned(), at("Volumes/Data/Downloads")),
+            ("Torrents".to_owned(), at("Volumes/NAS/Torrents")),
         ];
         assert_eq!(
-            category_folder(Category::Torrents, dl, &both),
-            PathBuf::from("/Volumes/NAS/Torrents")
+            category_folder(Category::Torrents, &dl, &both),
+            root.join("Volumes/NAS/Torrents")
         );
         assert_eq!(
-            category_folder(Category::Video, dl, &both),
-            PathBuf::from("/Volumes/Data/Downloads/Video")
+            category_folder(Category::Video, &dl, &both),
+            general.join("Video")
         );
     }
 }
