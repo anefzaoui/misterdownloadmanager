@@ -2276,9 +2276,13 @@ impl App {
             cmd.url = Some(file);
         }
         // The browser's download button over a video: the Download video window, looking the
-        // page up at once.
+        // page up at once. The main window stays where it is (hidden, minimized): only the
+        // dialog opens, as its window is its own.
         if let Some(page) = cmd.video_page.as_deref() {
-            self.show_window(ctx);
+            let minimized = ctx.input(|i| i.viewport().minimized == Some(true));
+            if !self.hidden && !minimized {
+                self.show_window(ctx);
+            }
             let dir = self.settings.category_dir(Category::Video, &self.downloads);
             crate::videodlg::refresh_ytdlp(&self.rt);
             let page = page.to_owned();
