@@ -845,9 +845,9 @@ fn classic_text(ctx: &egui::Context) {
     }
 }
 
-/// View → Text: smooth (DirectWrite's natural look, the default) or classic (hinted whole-pixel
-/// text, as Windows' old controls). Only Windows has the choice: elsewhere egui draws the text.
-static SMOOTH_TEXT: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(true);
+/// View → Text: smooth (DirectWrite's natural look) or classic (hinted whole-pixel text, as
+/// Windows' old controls, the default). Only Windows has the choice: elsewhere egui draws the text.
+static SMOOTH_TEXT: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
 
 /// The setting's value, before the first frame (it is read at start).
 pub fn init_smooth_text(on: bool) {

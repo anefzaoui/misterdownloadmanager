@@ -59,9 +59,9 @@ Everything below ships together, in version 0.5.0.
 - ✅ **View → Interface size**: every window larger, 100 % to 200 %, with Ctrl + / Ctrl − / Ctrl 0
   as in a browser; a window larger than the screen scrolls. Sharper text on Windows (part of
   [#262](https://github.com/anefzaoui/misterdownloadmanager/issues/262))
-- ✅ Windows: **View → Text → Smooth** (the default) draws the text anti-aliased at its own size,
-  not as thick, hard-edged whole-pixel letters that read badly on a 1440p screen; **Classic**
-  keeps the old hinted look. **Interface size** gains 110 %, 115 % and 120 % between 100 % and
+- ✅ Windows: **View → Text → Smooth** draws the text anti-aliased at its own size, not as
+  thick, hard-edged whole-pixel letters that read badly on a 1440p screen; **Classic**, the
+  default, keeps the hinted look MDM had. **Interface size** gains 110 %, 115 % and 120 % between 100 % and
   125 %
 - ✅ Windows: sharp, evenly spaced text at every interface size: letters no longer run together
   or drift apart ([#323](https://github.com/anefzaoui/misterdownloadmanager/issues/323),
