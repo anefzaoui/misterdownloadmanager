@@ -25,6 +25,10 @@ use windows_sys::Win32::UI::WindowsAndMessaging::{
 struct Find {
     pid: u32,
     title: Vec<u16>,
+    /// Where each window's title is read: as long as the title looked for, one more unit and the
+    /// NUL, so a longer title reads longer, never the same. A fixed 256 units cut every title to
+    /// 255, and a window named after a long file was never found (#540).
+    buf: Vec<u16>,
     found: HWND,
 }
 
@@ -36,9 +40,9 @@ unsafe extern "system" fn enum_cb(hwnd: HWND, lparam: LPARAM) -> windows_sys::co
     if pid != f.pid {
         return 1;
     }
-    let mut buf = [0u16; 256];
-    let n = unsafe { GetWindowTextW(hwnd, buf.as_mut_ptr(), buf.len() as i32) };
-    if n > 0 && buf[..n as usize] == f.title[..] {
+    // SAFETY: GetWindowTextW writes at most buf.len() units, the NUL included.
+    let n = unsafe { GetWindowTextW(hwnd, f.buf.as_mut_ptr(), f.buf.len() as i32) };
+    if n > 0 && f.buf[..n as usize] == f.title[..] {
         f.found = hwnd;
         return 0;
     }
@@ -83,9 +87,11 @@ fn own_window(title: &str, known: Option<HWND>) -> Option<HWND> {
     if let Some(h) = known.filter(|h| unsafe { IsWindow(*h) } != 0) {
         return Some(h);
     }
+    let title: Vec<u16> = title.encode_utf16().collect();
     let mut f = Find {
         pid: unsafe { GetCurrentProcessId() },
-        title: title.encode_utf16().collect(),
+        buf: vec![0; title.len() + 2],
+        title,
         found: std::ptr::null_mut(),
     };
     unsafe { EnumWindows(Some(enum_cb), &mut f as *mut Find as LPARAM) };
@@ -1414,6 +1420,61 @@ mod caption_less_tests {
 }
 
 #[cfg(test)]
+mod find_own_window_tests {
+    use super::*;
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        CreateWindowExW, DefWindowProcW, DestroyWindow, RegisterClassW, WNDCLASSW,
+    };
+
+    /// Our windows are found by their whole title, however long (a progress window is named
+    /// after its file, #540), and never by a title that only starts the same.
+    #[test]
+    fn a_window_is_found_by_its_whole_title_however_long() {
+        let class: Vec<u16> = "mdm-find-own-window-test\0".encode_utf16().collect();
+        // SAFETY: a class registered with the system's own procedure, and hidden windows of it
+        // on this thread, destroyed below; the strings are NUL-terminated.
+        unsafe {
+            let mut wc: WNDCLASSW = zeroed();
+            wc.lpfnWndProc = Some(DefWindowProcW);
+            wc.lpszClassName = class.as_ptr();
+            RegisterClassW(&wc);
+            let make = |title: &str| {
+                let t: Vec<u16> = title.encode_utf16().chain(Some(0)).collect();
+                let h = CreateWindowExW(
+                    0,
+                    class.as_ptr(),
+                    t.as_ptr(),
+                    0,
+                    -20000,
+                    -20000,
+                    100,
+                    100,
+                    std::ptr::null_mut(),
+                    std::ptr::null_mut(),
+                    std::ptr::null_mut(),
+                    std::ptr::null(),
+                );
+                assert!(!h.is_null());
+                h
+            };
+            for len in [40, 255, 256, 300, 1000] {
+                let head = format!("mdm find test {} {len} ", std::process::id());
+                let title = format!("{head}{}", "x".repeat(len - head.len()));
+                assert_eq!(title.encode_utf16().count(), len);
+                // One title longer by a unit, made first: found first, were it taken for ours.
+                let longer = make(&format!("{title}x"));
+                let window = make(&title);
+                assert_eq!(find_own_window(&title), Some(window), "{len} units");
+                DestroyWindow(window);
+                assert_eq!(find_own_window(&title), None, "{len} units, gone");
+                assert_eq!(find_own_window(&format!("{title}x")), Some(longer));
+                DestroyWindow(longer);
+            }
+        }
+    }
+}
+
+#[cfg(test)]
 mod come_forward_tests {
     use super::*;
     use windows_sys::Win32::UI::WindowsAndMessaging::{
@@ -1630,6 +1691,42 @@ pub fn main_minimize_to_tray(ctx: &egui::Context, enabled: bool) -> bool {
         m.enabled = enabled;
         std::mem::take(&mut m.asked)
     })
+}
+
+/// The highest icon id [`tray_icon_held`] tries. tray-icon gives each icon an id of its own
+/// from a counter it shares with its icon names, and doesn't say which (a program's first icon
+/// has 2).
+const TRAY_ICON_IDS: u32 = 16;
+
+/// Whether the shell holds a notification-area icon of `hwnd` (the tray's own hidden window,
+/// which has one icon), and its id: `known` first, else each id up to [`TRAY_ICON_IDS`]. An
+/// empty `NIM_MODIFY` changes nothing and succeeds only for an icon the shell has, wherever it
+/// shows it: in the taskbar or in the hidden icons behind ^. Shell_NotifyIconGetRect isn't
+/// enough: it can fail for an icon behind ^ (#545, #534, #527: Windows 10 and 11, the icon
+/// there and MDM sure it had none; Windows 11 build 26200 gives such an icon the rect of ^
+/// itself). This fails, as that does, when Explorer isn't running or the icon was refused or
+/// lost.
+pub fn tray_icon_held(hwnd: HWND, known: Option<u32>) -> Option<u32> {
+    use windows_sys::Win32::UI::Shell::{NIM_MODIFY, NOTIFYICONDATAW, Shell_NotifyIconW};
+    let held = |id: u32| {
+        let nid = NOTIFYICONDATAW {
+            cbSize: size_of::<NOTIFYICONDATAW>() as u32,
+            hWnd: hwnd,
+            uID: id,
+            uFlags: 0,
+            // SAFETY: a plain C struct; all zero is its empty value.
+            ..unsafe { zeroed() }
+        };
+        // SAFETY: nid lives for the call; the shell only reads it.
+        unsafe { Shell_NotifyIconW(NIM_MODIFY, &nid) != 0 }
+    };
+    if hwnd.is_null() {
+        return None;
+    }
+    known
+        .into_iter()
+        .chain(1..=TRAY_ICON_IDS)
+        .find(|id| held(*id))
 }
 
 /// What a borderless window of ours is, for [`popup_window`]: every one is a plain popup
@@ -2044,15 +2141,96 @@ impl raw_window_handle::HasWindowHandle for OwnWindow {
     }
 }
 
+/// A drag out of Download complete is under way ([`drag_file_out`]): one at a time, the mouse
+/// holds only one.
+static DRAGGING: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+/// When the last drag out ended.
+static DRAG_ENDED: std::sync::Mutex<Option<std::time::Instant>> = std::sync::Mutex::new(None);
+
+/// A drag out is under way, or ended a moment ago. Its keys are its own: Escape cancels the
+/// drag in OLE's loop, on the drag's thread, while the window (whose thread the keys go to)
+/// sees them too, often after the drag already ended, and must not take Escape as Close.
+pub fn dragging_out() -> bool {
+    use std::sync::atomic::Ordering;
+    DRAGGING.load(Ordering::Acquire)
+        || DRAG_ENDED
+            .lock()
+            .ok()
+            .and_then(|t| *t)
+            .is_some_and(|t| t.elapsed() < std::time::Duration::from_millis(500))
+}
+
 /// Start dragging `file` out of our window (to Explorer, a mail, a chat…), like IDM's Download
 /// complete grip. The drag preview is the file's shell icon. The window is the one holding the
 /// mouse (the button is down on its grip: winit captured the mouse for it), so it is the right
 /// one when several show the same title; else our window titled `title`, given in the interface
 /// language, as it shows.
+///
+/// The drag runs on a thread of its own (#561): OLE's drag loop lasts as long as the button is
+/// held, and each step calls the program under the pointer (its drop target, in its own process),
+/// so on the window thread a busy or hung target, or a target that copies the file before it
+/// answers the drop, froze every window until it answered. That thread shares the window
+/// thread's input ([`with_shared_input`]): OLE reads the held button and takes the mouse from
+/// there, as it did from the window thread.
 pub fn drag_file_out(title: &str, file: &std::path::Path) -> Result<(), String> {
+    use std::sync::atomic::Ordering;
     let hwnd = own_capture()
         .or_else(|| find_own_window(title))
-        .ok_or("window not found")?;
+        .ok_or("window not found")? as isize;
+    if DRAGGING.swap(true, Ordering::AcqRel) {
+        return Ok(());
+    }
+    let file = file.to_path_buf();
+    let started = with_shared_input("drag out", move |shared| {
+        if !shared {
+            tracing::warn!("drag out: the window's input isn't shared");
+        }
+        let result = drag_on_this_thread(hwnd as HWND, &file);
+        if let Ok(mut t) = DRAG_ENDED.lock() {
+            *t = Some(std::time::Instant::now());
+        }
+        DRAGGING.store(false, Ordering::Release);
+        // OLE's drag loop took the button's release, so the window never saw it: without it
+        // the next press on the grip only ended the drag the window still thought was on, and
+        // the grip worked every other time.
+        release_button(hwnd as HWND);
+        if let Err(e) = result {
+            tracing::warn!("drag out: {e}");
+        }
+    });
+    if started.is_err() {
+        DRAGGING.store(false, Ordering::Release);
+    }
+    started
+}
+
+/// Tell `hwnd` the left button is up, at the pointer, as Windows would have done had OLE's
+/// drag loop not taken the release. A move first: the pointer left the window during the drag,
+/// and a release with no pointer position is dropped before it reaches the interface.
+fn release_button(hwnd: HWND) {
+    use windows_sys::Win32::Foundation::POINT;
+    use windows_sys::Win32::Graphics::Gdi::ScreenToClient;
+    // The left button's flag in a mouse message's wParam (MK_LBUTTON, winuser.h).
+    const MK_LBUTTON: usize = 0x0001;
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        GetCursorPos, PostMessageW, WM_LBUTTONUP, WM_MOUSEMOVE,
+    };
+    let mut pt = POINT { x: 0, y: 0 };
+    // SAFETY: reads into a local; `hwnd` is our own window (a closed one fails harmlessly).
+    unsafe {
+        GetCursorPos(&mut pt);
+        ScreenToClient(hwnd, &mut pt);
+    }
+    let lparam = (((pt.y as u16 as u32) << 16) | pt.x as u16 as u32) as isize;
+    // SAFETY: messages posted to our own window.
+    unsafe {
+        PostMessageW(hwnd, WM_MOUSEMOVE, MK_LBUTTON, lparam);
+        PostMessageW(hwnd, WM_LBUTTONUP, 0, lparam);
+    }
+}
+
+/// The drag itself, on the thread [`drag_file_out`] started (OLE initialised there).
+fn drag_on_this_thread(hwnd: HWND, file: &std::path::Path) -> Result<(), String> {
     let name = file.file_name().and_then(|n| n.to_str()).unwrap_or("");
     let what = crate::fileicons::What::of(crate::fileicons::Kind::File(name));
     let preview = file_icon(&what, 32)
@@ -2075,6 +2253,92 @@ pub fn drag_file_out(title: &str, file: &std::path::Path) -> Result<(), String> 
         drag::Options::default(),
     )
     .map_err(|e| e.to_string())
+}
+
+/// Run `work` on a new thread named `name`, with OLE (a single-threaded apartment) and the
+/// calling thread's input state: the keys and mouse buttons held, the mouse capture and the
+/// focus (AttachThreadInput), as a modal loop like OLE's drag needs when the button went down in
+/// the caller's window. `work` is told whether the input is shared. Returns at once; the input
+/// is detached and OLE closed when `work` ends. The caller has a message queue (a window thread).
+fn with_shared_input(name: &str, work: impl FnOnce(bool) + Send + 'static) -> Result<(), String> {
+    use windows_sys::Win32::System::Threading::{AttachThreadInput, GetCurrentThreadId};
+    use windows_sys::Win32::UI::WindowsAndMessaging::{MSG, PM_NOREMOVE, PeekMessageW};
+    #[link(name = "ole32")]
+    unsafe extern "system" {
+        fn OleInitialize(reserved: *mut c_void) -> i32;
+        fn OleUninitialize();
+    }
+    // SAFETY: a plain query.
+    let caller = unsafe { GetCurrentThreadId() };
+    std::thread::Builder::new()
+        .name(name.to_owned())
+        .spawn(move || {
+            // SAFETY: OLE for this new thread, closed below on the same thread when it took.
+            let ole = unsafe { OleInitialize(std::ptr::null_mut()) } >= 0;
+            // A thread is given its message queue by its first window call, and only threads
+            // with one can share input: a look at the (empty) queue makes it.
+            // SAFETY: a read into a local MSG; nothing is removed.
+            let mut msg: MSG = unsafe { zeroed() };
+            unsafe { PeekMessageW(&mut msg, std::ptr::null_mut(), 0, 0, PM_NOREMOVE) };
+            // SAFETY: plain calls with two live threads of this process; undone below.
+            let me = unsafe { GetCurrentThreadId() };
+            let attached = unsafe { AttachThreadInput(me, caller, 1) } != 0;
+            work(attached);
+            if attached {
+                // SAFETY: as above.
+                unsafe { AttachThreadInput(me, caller, 0) };
+            }
+            if ole {
+                // SAFETY: matches the OleInitialize above, on this thread.
+                unsafe { OleUninitialize() };
+            }
+        })
+        .map(drop)
+        .map_err(|e| e.to_string())
+}
+
+#[cfg(test)]
+mod drag_thread_tests {
+    use super::*;
+
+    /// The drag's thread (#561): another thread than the window's, which goes on at once, in a
+    /// single-threaded apartment (OLE's drag needs one), sharing the window thread's input.
+    #[test]
+    fn the_drag_runs_beside_the_window_thread_with_its_input() {
+        use windows_sys::Win32::System::Com::{APTTYPE, APTTYPEQUALIFIER, CoGetApartmentType};
+        use windows_sys::Win32::System::Threading::GetCurrentThreadId;
+        use windows_sys::Win32::UI::WindowsAndMessaging::{MSG, PM_NOREMOVE, PeekMessageW};
+        // This test's thread stands for the window thread: it has a message queue.
+        // SAFETY: a read into a local MSG; nothing is removed.
+        let mut msg: MSG = unsafe { zeroed() };
+        unsafe { PeekMessageW(&mut msg, std::ptr::null_mut(), 0, 0, PM_NOREMOVE) };
+        // SAFETY: a plain query.
+        let window_thread = unsafe { GetCurrentThreadId() };
+        let (tx, rx) = std::sync::mpsc::channel();
+        let (go_tx, go_rx) = std::sync::mpsc::channel::<()>();
+        with_shared_input("drag test", move |shared| {
+            // Held until the caller has gone on: the work doesn't hold the caller up.
+            go_rx.recv().unwrap();
+            let mut kind: APTTYPE = 0;
+            let mut qualifier: APTTYPEQUALIFIER = 0;
+            // SAFETY: reads into two locals.
+            let hr = unsafe { CoGetApartmentType(&mut kind, &mut qualifier) };
+            // SAFETY: a plain query.
+            let me = unsafe { GetCurrentThreadId() };
+            tx.send((me, shared, hr, kind)).unwrap();
+        })
+        .unwrap();
+        go_tx.send(()).unwrap();
+        let (me, shared, hr, kind) = rx.recv_timeout(std::time::Duration::from_secs(10)).unwrap();
+        assert_ne!(me, window_thread);
+        assert!(shared, "the input is shared with the window thread");
+        assert_eq!(hr, 0);
+        // APTTYPE_STA (0); the first apartment of the process would be APTTYPE_MAINSTA (3).
+        assert!(
+            kind == 0 || kind == 3,
+            "a single-threaded apartment, not {kind}"
+        );
+    }
 }
 
 /// Windows' "Choose your app mode": true when apps should be dark (`AppsUseLightTheme` = 0).
@@ -4702,6 +4966,109 @@ mod classic_text {
                 is_color: false,
             })
         }
+    }
+}
+
+/// The program Windows runs to open folders, when that isn't Explorer (a file manager such as
+/// Directory Opus set up to replace it, #446); None for Explorer, or when Windows doesn't say.
+pub fn folder_opener() -> Option<String> {
+    use windows_sys::Win32::UI::Shell::{ASSOCF_NONE, ASSOCSTR_EXECUTABLE, AssocQueryStringW};
+    other_folder_opener(|class, verb| {
+        let wide = |s: &str| s.encode_utf16().chain(Some(0)).collect::<Vec<u16>>();
+        let class = wide(class);
+        let verb = verb.map(wide);
+        let mut out = vec![0u16; 1024];
+        let mut len = out.len() as u32;
+        // SAFETY: the strings end in NUL and outlive the call; `len` is `out`'s size in
+        // characters, and the call writes at most that many.
+        let hr = unsafe {
+            AssocQueryStringW(
+                ASSOCF_NONE,
+                ASSOCSTR_EXECUTABLE,
+                class.as_ptr(),
+                verb.as_ref().map_or(std::ptr::null(), |v| v.as_ptr()),
+                out.as_mut_ptr(),
+                &mut len,
+            )
+        };
+        (hr == 0).then(|| {
+            let end = out.iter().position(|&c| c == 0).unwrap_or(out.len());
+            String::from_utf16_lossy(&out[..end])
+        })
+    })
+}
+
+/// Who opens a folder, asked of `executable_for(class, verb)` as the shell reads it: a folder is
+/// a `Directory` first (where a replacement registers its verb, as the default or as `open`),
+/// then a `Folder` (where Windows registers Explorer). An installed program's other verbs there
+/// ("Open with Code") are not the default and aren't asked for.
+fn other_folder_opener(
+    executable_for: impl Fn(&str, Option<&str>) -> Option<String>,
+) -> Option<String> {
+    let opener = [
+        ("Directory", None),
+        ("Directory", Some("open")),
+        ("Folder", None),
+    ]
+    .into_iter()
+    .find_map(|(class, verb)| executable_for(class, verb))?;
+    let name = opener.rsplit(['\\', '/']).next().unwrap_or(&opener);
+    (!name.is_empty() && !name.eq_ignore_ascii_case("explorer.exe")).then_some(opener)
+}
+
+#[cfg(test)]
+mod folder_opener_tests {
+    use super::other_folder_opener;
+
+    const EXPLORER: &str = r"C:\Windows\Explorer.exe";
+    const OPUS: &str = r"C:\Program Files\GPSoftware\Directory Opus\dopusrt.exe";
+
+    /// #446: as Windows is shipped (what `reg query` shows on a clean system), Explorer it is.
+    #[test]
+    fn explorer_as_shipped_is_no_other_opener() {
+        let shipped =
+            |c: &str, v: Option<&str>| (c == "Folder" && v.is_none()).then(|| EXPLORER.to_owned());
+        assert_eq!(other_folder_opener(shipped), None);
+    }
+
+    /// A replacement's default verb on `Directory` wins over Explorer on `Folder`.
+    #[test]
+    fn a_replacement_on_directory_is_the_opener() {
+        let opus = |c: &str, v: Option<&str>| match (c, v) {
+            ("Directory", None) => Some(OPUS.to_owned()),
+            ("Folder", None) => Some(EXPLORER.to_owned()),
+            _ => None,
+        };
+        assert_eq!(other_folder_opener(opus).as_deref(), Some(OPUS));
+    }
+
+    /// One that replaces `Directory`'s `open` verb, or `Folder`'s own.
+    #[test]
+    fn a_replaced_open_verb_or_folder_is_the_opener() {
+        let open = |c: &str, v: Option<&str>| match (c, v) {
+            ("Directory", Some("open")) => Some(r"C:\Apps\files.exe".to_owned()),
+            ("Folder", None) => Some(EXPLORER.to_owned()),
+            _ => None,
+        };
+        assert_eq!(
+            other_folder_opener(open).as_deref(),
+            Some(r"C:\Apps\files.exe")
+        );
+        let folder = |c: &str, v: Option<&str>| {
+            (c == "Folder" && v.is_none()).then(|| r"C:\Apps\tc.exe".to_owned())
+        };
+        assert_eq!(
+            other_folder_opener(folder).as_deref(),
+            Some(r"C:\Apps\tc.exe")
+        );
+    }
+
+    /// Explorer written any way stays Explorer; nothing registered, nothing to say.
+    #[test]
+    fn explorer_any_case_or_no_answer_is_no_other_opener() {
+        let upper = |_: &str, _: Option<&str>| Some(r"C:\WINDOWS\EXPLORER.EXE".to_owned());
+        assert_eq!(other_folder_opener(upper), None);
+        assert_eq!(other_folder_opener(|_, _| None), None);
     }
 }
 

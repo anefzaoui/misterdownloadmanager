@@ -917,16 +917,18 @@ async function mediaList(tabId) {
   return out;
 }
 
-// A file's name from the tab's title when its address ends in a long hash (#345); else, with the
-// popup's switch on (`includeOriginal`), the title before the address's own name; else none: the
-// app names it from the address, as for any download.
+// A file's name from the tab's title when its address ends in a long hash (#345) or is on a
+// server whose names are all random ids (#493: X's video.twimg.com, too short for the hash test);
+// else, with the popup's switch on (`includeOriginal`), the title before the address's own name;
+// else none: the app names it from the address, as for any download.
 function titledName(url, title, includeOriginal = false) {
   const last = pathOf(url).split("/").pop() || "";
   const dot = last.lastIndexOf(".");
   const stem = dot > 0 ? last.slice(0, dot) : last;
   const name = String(title || "").replace(/[\\/:*?"<>|]/g, " ").trim().slice(0, 150);
   const hash = stem.length >= 24 && /^[A-Za-z0-9=_-]+$/.test(stem) && (stem.match(/[-_]/g) || []).length <= 2;
-  if (hash && name) return `${name}${dot > 0 ? last.slice(dot) : ""}`;
+  const randomServer = siteOf(url).toLowerCase() === "video.twimg.com";
+  if ((hash || randomServer) && name) return `${name}${dot > 0 ? last.slice(dot) : ""}`;
   if (!includeOriginal || !name) return "";
   const original = addressName(url).replace(/[\\/:*?"<>|\x00-\x1f]/g, " ").trim();
   return original && original !== "." && original !== ".." ? `${name} - ${original}` : "";
@@ -1407,6 +1409,19 @@ async function drop(item) {
   closeLeftTab([firstUrl(item), item.url, item.finalUrl].filter(Boolean)).catch(() => {});
 }
 
+// A download left to the browser keeps the name it has, or the one another extension gives it
+// (Save In's folders, #578; a `downloads.download` with a `filename`). Chromium counts every
+// listener's answer as a name of its own, an empty one too: `suggest()` without a suggestion
+// reaches it as an empty name with no conflict action, and when the most recently installed
+// extension answers so, its empty name wins and the others' are dropped (the download lands in
+// the Downloads folder, and the browser may warn of a conflict). Only an answer with
+// "uniquify" and no name is no suggestion at all (downloads_api.cc, DeterminerCallback), and
+// the binding lets no empty name through: a name the browser refuses, which it empties after
+// counting the answer, is how a listener gives one ("Invalid filename" is logged once).
+function noName(suggest) {
+  suggest({ filename: "..", conflictAction: "uniquify" });
+}
+
 if (SAFARI) {
   // Nothing to listen to: see `link`.
 } else if (!FIREFOX) {
@@ -1421,10 +1436,10 @@ if (SAFARI) {
         const taken = Boolean(c && c.name && !c.left) && (await offer(item, url, c.name));
         if (taken) return drop(item);
         // The browser goes on first; why is said after.
-        suggest();
+        noName(suggest);
         leftAlone(c, item, url);
       })
-      .catch(() => suggest());
+      .catch(() => noName(suggest));
     return true; // suggest() comes later
   });
 } else {
@@ -1864,17 +1879,25 @@ async function injectOpenTabs() {
 // ---- messages from the page (video.js, page.js) and the popup (popup.js) -------------------
 
 // The download button over videos asks: may it show on this page, the button was clicked, its
-// menu. The app decides through the native host; its answer for a site is kept a minute (one
-// question per page load at most). A failure to reach it isn't kept.
+// menu. The app decides through the native host, from Options as saved now; its answer for a
+// site is kept a few seconds (the page's frames ask together, and each page asks again when its
+// answer is older: video.js ASK_MS), so a change in Options reaches the pages already open
+// (#532: it was kept a minute, and by the page for good). A failure to reach it isn't kept.
+// `top`: the tab's address, when the frame asking is another page's (a player embedded from
+// another site): the button stays off there too when the tab's site is listed.
+const PANEL_KEEP_MS = 5000;
 const panelCache = new Map();
-async function panelOn(page) {
+async function panelOn(page, top) {
   // The host name without a port: as video.js names the site, and as the app matches sites.
   const site = new URL(page).hostname;
-  forget(panelCache, 60000);
-  const kept = panelCache.get(site);
+  const tabSite = top ? new URL(top).hostname : "";
+  const key = tabSite && tabSite !== site ? `${site} ${tabSite}` : site;
+  forget(panelCache, PANEL_KEEP_MS);
+  if (panelCache.get(site)?.hidden) return false;
+  const kept = panelCache.get(key);
   if (kept) return kept.on;
-  const reply = await native({ panel: true, url: page });
-  if (reply.ok || !reply.why) panelCache.set(site, { on: Boolean(reply.ok), at: Date.now() });
+  const reply = await native({ panel: true, url: page, ...(key !== site ? { referrer: top } : {}) });
+  if (reply.ok || !reply.why) panelCache.set(key, { on: Boolean(reply.ok), at: Date.now() });
   return Boolean(reply.ok);
 }
 
@@ -1947,7 +1970,10 @@ async function videoAddress(m, page, sender) {
 async function pageMessage(m, sender) {
   const page = senderPage(sender);
   const tab = sender.tab || {};
-  if (m.type === "panel") return { on: page ? await panelOn(page) : false };
+  if (m.type === "panel") {
+    const top = tab.url && /^https?:/i.test(tab.url) ? tab.url : "";
+    return { on: page ? await panelOn(page, top) : false };
+  }
   if (m.type === "link" && typeof m.url === "string") {
     const name = typeof m.name === "string" ? m.name.split(/[\\/]/).pop().slice(0, 255) : "";
     return link(m.url, page || "", Boolean(tab.incognito), name);
@@ -1987,7 +2013,8 @@ async function pageMessage(m, sender) {
   }
   if (m.type === "hide-site" && page) {
     const host = new URL(page).hostname;
-    panelCache.set(host, { on: false, at: Date.now() });
+    // Off at once on this site, whatever the tab around it, while the app saves it.
+    panelCache.set(host, { on: false, hidden: true, at: Date.now() });
     const reply = await native({ hideSite: host });
     return { ok: Boolean(reply.ok) };
   }

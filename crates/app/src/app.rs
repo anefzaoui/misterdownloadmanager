@@ -156,6 +156,7 @@ enum Cmd {
     TorrentInOrder,
     TorrentEndsFirst,
     TorrentAddTrackers,
+    TorrentFiles,
     TorrentCopyMagnet,
     /// Tasks → RSS feeds… (also the Add Torrent button's arrow), #39: true opens it on its
     /// Download rules tab.
@@ -510,9 +511,15 @@ pub struct App {
     /// Download a gallery (#58).
     gallery_dlg: Option<crate::gallerydlg::GalleryDialog>,
     torrent_dlg: Option<crate::torrentdlg::TorrentDialog>,
+    /// Magnet links and .torrents handed over while Add torrent was open (#507), oldest first:
+    /// each opens in Add torrent when the one before it closes.
+    torrent_waiting: std::collections::VecDeque<(String, Option<crate::torrents::Remote>)>,
+    /// Add torrent closed this frame: the next waiting one opens after a frame without it.
+    torrent_closed: bool,
     torrent_settings: Option<crate::torrentdlg::TorrentSettings>,
     /// Right-click → Torrent → Add trackers… (#39).
     add_trackers: Option<crate::torrentdlg::AddTrackers>,
+    torrent_files: Option<crate::torrentfiles::TorrentFiles>,
     /// RSS feeds and their download rules (#39, rss.rs), kept in rss.json; the window; the
     /// feeds being fetched; what the fetches and look-ups sent back (`rss_tick`).
     rss: crate::rss::Store,
@@ -624,6 +631,8 @@ pub struct App {
     last_save: Instant,
     /// Writes the list off the window's thread.
     saver: store::Saver,
+    /// Writes `rss.json` off the window's thread: the feeds' timer saves it by itself (#513).
+    rss_saver: store::Saver,
     /// When the light/dark mode was last checked against Windows' app mode.
     theme_checked: Option<Instant>,
     /// The zoom (View → Interface size, #262) the windows were last drawn at: a change is saved,
@@ -666,8 +675,9 @@ pub struct App {
     /// Stopped by hand while they could have run: a running queue leaves them alone until
     /// they are started again or the queue is started anew (#341).
     stopped_by_hand: std::collections::HashSet<u64>,
-    /// Seconds since local midnight at the last scheduler tick.
-    clock: u32,
+    /// Seconds since local midnight at the last scheduler tick (`None` until the clock's first
+    /// answer, #536).
+    clock: Option<u32>,
     /// Scheduler → "Wake the computer to run this queue": the wake set with the system (#142).
     wake: crate::wake::Waker,
     /// Commands from ipc.rs (command line, second launch, browser).
@@ -728,6 +738,29 @@ fn page_data_for(link: &str, page: Option<&str>, data: Option<&str>) -> Option<S
     (same_host && !downgrade)
         .then(|| data.map(str::to_owned))
         .flatten()
+}
+
+/// Marks finished files (a video's and its subtitles, a gallery's pictures) as downloaded from the
+/// web, as `mark_hook` does for the engine's, on a thread of their own: writing the mark has the
+/// antivirus read the whole file again, and on a big video that kept the window waiting (#510). A
+/// file moved or removed meanwhile is left alone: marking its old path would create an empty
+/// file there.
+pub(crate) fn mark_finished(
+    files: Vec<std::path::PathBuf>,
+    url: String,
+    referrer: Option<String>,
+) -> Option<std::thread::JoinHandle<()>> {
+    std::thread::Builder::new()
+        .name("mark-downloaded".into())
+        .spawn(move || {
+            for f in files.iter().filter(|f| f.is_file()) {
+                #[cfg(windows)]
+                crate::win32::mark_downloaded(f, &url, referrer.as_deref());
+                #[cfg(unix)]
+                crate::unix::mark_downloaded(f, &url, referrer.as_deref());
+            }
+        })
+        .ok()
 }
 
 /// Marks each file the engine starts writing as downloaded from the web (Mark-of-the-Web, macOS'
@@ -792,12 +825,6 @@ pub fn auth_headers(login: Option<&(String, String)>) -> HeaderMap {
     h
 }
 
-/// Seconds since local midnight (for queue schedules).
-fn seconds_now() -> u32 {
-    use chrono::Timelike;
-    chrono::Local::now().num_seconds_from_midnight()
-}
-
 /// A read of the clipboard on a thread of its own, its answer taken when it has come (#418).
 struct ClipRead(std::sync::Arc<std::sync::Mutex<Option<Option<String>>>>);
 
@@ -841,10 +868,7 @@ fn file_icon(name: &str) -> IconKey {
 /// Sort key for list column col: numbers where IDM sorts numerically, else text.
 /// `queued`: the download is in a queue (the Q column's mark).
 fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
-    let frac = it
-        .size
-        .filter(|s| *s > 0)
-        .map_or(0.0, |s| it.downloaded as f64 / s as f64);
+    let frac = it.fraction().unwrap_or(0.0);
     match col {
         0 => (0.0, it.file_name.to_lowercase()),
         // As the column shows it: in a queue or not.
@@ -876,8 +900,13 @@ fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
         // Added: the order of addition itself (ids only grow), exact even without a time.
         list::ADDED => (it.id as f64, String::new()),
         list::SOURCE => (f64::from(u8::from(it.torrent.is_some())), String::new()),
-        // A torrent's peers, and its share ratio (not the text: "10" would come before "9").
-        // Anything but a torrent, and a torrent that has taken nothing, sort as zero.
+        // A torrent's upload, its peers, and its share ratio (not the text: "10" would come
+        // before "9"). Anything but a torrent, and a torrent that has taken nothing, sorts as
+        // zero.
+        list::UPLOAD => (
+            it.torrent.as_ref().map_or(0.0, |t| t.up_speed),
+            String::new(),
+        ),
         list::PEERS => (
             it.torrent.as_ref().map_or(0.0, |t| t.peers as f64),
             String::new(),
@@ -1097,8 +1126,11 @@ impl App {
             video_dlg: None,
             gallery_dlg: None,
             torrent_dlg: None,
+            torrent_waiting: Default::default(),
+            torrent_closed: false,
             torrent_settings: None,
             add_trackers: None,
+            torrent_files: None,
             rss: crate::rss::Store::path()
                 .map(|p| crate::rss::Store::load(&p))
                 .unwrap_or_default(),
@@ -1162,6 +1194,7 @@ impl App {
             secrets_confirmed: 0,
             last_save: Instant::now(),
             saver: store::Saver::new(),
+            rss_saver: store::Saver::writing("rss saver", crate::rss::write),
             theme_checked: None,
             zoom,
             fitted: false,
@@ -1184,7 +1217,7 @@ impl App {
             queues,
             failures: HashMap::new(),
             stopped_by_hand: Default::default(),
-            clock: seconds_now(),
+            clock: None,
             wake: Default::default(),
             commands,
         }
@@ -1402,14 +1435,18 @@ impl App {
                     // i18n: where a download comes from: a web or FTP server (shown on a small colored label)
                     "Web".into()
                 },
-                // A torrent's own numbers (#357): the peers it has, and what it gave back
-                // against what it took (as the progress window's General tab works it out).
+                // A torrent's own numbers (#357), in their slots' order (list::PEERS, RATIO, then
+                // UPLOAD, added last so saved layouts keep their meaning): the peers it has, what
+                // it gave back against what it took (as the General tab works it out), what it sends.
                 it.torrent
                     .as_ref()
                     .map_or(String::new(), |t| crate::i18n::integer(t.peers as u64)),
                 it.torrent.as_ref().map_or(String::new(), |t| {
                     crate::torrents::share_ratio_text(t.uploaded, it.downloaded)
                 }),
+                it.torrent
+                    .as_ref()
+                    .map_or(String::new(), |t| model::rate(t.up_speed)),
             ],
         }
     }
@@ -1458,10 +1495,9 @@ impl App {
     fn add(&mut self, fi: &mut FileInfo, start: Start) {
         // Only a folder other than the category's becomes its new one (an unchanged folder
         // stays "the default", following Downloads).
-        if let Some((cat, dir)) = fi.remembered()
-            && std::path::Path::new(&dir) != self.settings.category_dir(cat, &self.downloads)
-        {
-            self.settings.set_category_dir(cat, Some(dir));
+        if let Some((cat, dir)) = fi.remembered() {
+            self.settings
+                .keep_category_dir(cat, std::path::Path::new(&dir), &self.downloads);
         }
         let id = self.push_item(
             fi.url.clone(),
@@ -1528,10 +1564,9 @@ impl App {
 
     /// Download File Info closed with Start / Later on a download that started early.
     fn adopt_early(&mut self, fi: &FileInfo, id: u64, start: Start) {
-        if let Some((cat, dir)) = fi.remembered()
-            && std::path::Path::new(&dir) != self.settings.category_dir(cat, &self.downloads)
-        {
-            self.settings.set_category_dir(cat, Some(dir));
+        if let Some((cat, dir)) = fi.remembered() {
+            self.settings
+                .keep_category_dir(cat, std::path::Path::new(&dir), &self.downloads);
         }
         let dest = fi.dest();
         let now = matches!(start, Start::Now);
@@ -1812,7 +1847,12 @@ impl App {
             self.account_at += Duration::from_secs(dt);
         }
         let Some(t) = self.torrent_host.get() else {
-            crate::torrents::clear_peers(self.items.iter_mut().filter_map(|i| i.torrent.as_mut()));
+            // No session: no check is running, whatever the last numbers said.
+            self.torrent_resync.clear();
+            for i in self.items.iter_mut() {
+                i.torrent_check = None;
+            }
+            crate::torrents::clear_live(self.items.iter_mut().filter_map(|i| i.torrent.as_mut()));
             return;
         };
         let limits = self.settings.sharing_limits();
@@ -1824,9 +1864,16 @@ impl App {
             };
             hashes.insert(spec.hash.clone());
             let Ok(st) = t.stats(&spec.hash) else {
+                // Out of the session (released when it finished): no check is running.
+                i.torrent_check = None;
                 spec.peers = 0;
+                spec.up_speed = 0.0;
                 continue;
             };
+            // Keep the session's in-memory checking progress visible for stopped/complete
+            // torrents too; normal download progress is restored when initialization ends.
+            i.torrent_check = (st.phase == mdm_torrent::Phase::Checking)
+                .then_some((st.checked.unwrap_or(st.done), st.total));
             let sent = self.accountant.sent(&spec.hash, st.uploaded);
             if sent > 0 {
                 spec.uploaded += sent;
@@ -1835,6 +1882,7 @@ impl App {
             // The peers it has now, for the list's "Peers" column (#357). Not a reason to save:
             // it changes as peers come and go, and the next tick brings the list up to date.
             spec.peers = st.peers_live;
+            spec.up_speed = st.up_speed;
             if st.phase == mdm_torrent::Phase::Finished && dt > 0 {
                 spec.seeded_secs += dt;
                 changed = true;
@@ -1847,12 +1895,14 @@ impl App {
             {
                 let (t2, hash) = (t.clone(), spec.hash.clone());
                 self.rt.spawn(async move {
-                    let _ = t2.pause(&hash).await;
+                    let _ = t2.remove(&hash, false).await;
                 });
                 stopped = Some(why);
                 changed = true;
             }
             let (hash, up) = (spec.hash.clone(), spec.upload_limit);
+            let stop_after_recheck = !self.settings.torrent_keep_sharing
+                || crate::torrents::sharing_limit_reached(spec, st.done, limits).is_some();
             if i.live.is_none() {
                 let _ = t.set_torrent_limits(&hash, None, up);
             }
@@ -1883,6 +1933,12 @@ impl App {
                     let whole = st.total > 0 && st.done >= st.total;
                     if whole {
                         i.status = Status::Complete;
+                        if report && i.live.is_none() && stop_after_recheck {
+                            let t2 = t.clone();
+                            self.rt.spawn(async move {
+                                let _ = t2.remove(&hash, false).await;
+                            });
+                        }
                     } else if i.status == Status::Complete {
                         i.status = Status::Stopped;
                         let t2 = t.clone();
@@ -1921,7 +1977,18 @@ impl App {
                 .items
                 .iter()
                 .any(|i| i.torrent.is_some() && i.status == Status::Complete);
+        // A torrent being checked (a Recheck of one that isn't running, its action still going,
+        // or its result not read yet) needs the session too: stopped as idle after a minute,
+        // the check died where it was and the list said "Checking 17%" for good.
+        let checking = !self.torrent_resync.is_empty()
+            || self.items.iter().any(|i| {
+                i.torrent_check.is_some()
+                    || i.torrent
+                        .as_ref()
+                        .is_some_and(|t| self.torrent_host.busy(&t.hash))
+            });
         let busy = sharing
+            || checking
             || self.torrent_dlg.is_some()
             || self
                 .items
@@ -2453,6 +2520,8 @@ impl App {
             }),
             post: context.post.clone().map(|body| body.into_bytes().into()),
             on_file_created: Some(mark_hook(url, context.referer.as_deref())),
+            // The browser's own download's type: a web page instead is an error (#533).
+            expected_type: context.mime.clone(),
             ..Options::default()
         };
         RequestParts { headers, opts }
@@ -2886,8 +2955,24 @@ impl App {
     }
 
     /// Whether the tray icon is shown somewhere (Linux: a tray host is there; asked when the
-    /// window is closed, the host may come and go).
+    /// window is closed, the host may come and go). On Windows and macOS the icon itself is
+    /// asked: the shell can accept it and still show nothing, and a window hidden with no icon
+    /// to click has no way back. Cached for the per-frame minimize path.
     fn tray_shown(&self) -> bool {
+        #[cfg(any(target_os = "windows", target_os = "macos"))]
+        if let Some(tray) = &self.tray {
+            return tray.visible();
+        }
+        crate::tray::available()
+    }
+
+    /// [`tray_shown`] without the cache, for the close decision: an icon can disappear between
+    /// the cached answer and the close, and hiding then would be a ghost window.
+    fn tray_shown_now(&self) -> bool {
+        #[cfg(any(target_os = "windows", target_os = "macos"))]
+        if let Some(tray) = &self.tray {
+            return tray.visible_now();
+        }
         crate::tray::available()
     }
 
@@ -2941,13 +3026,7 @@ impl App {
         let wanted =
             !crate::offscreen() || std::env::var_os("MDM_TEST_TRAY").is_some_and(|v| v == "1");
         if self.tray.is_none() && self.tray_limiter.is_none() && wanted {
-            let icon = crate::app_icon();
-            self.tray = crate::tray::Tray::new(
-                ctx,
-                icon.rgba.clone(),
-                icon.width,
-                self.settings.speed_limit_on,
-            );
+            self.tray = crate::tray::Tray::new(ctx, self.settings.speed_limit_on);
             self.tray_limiter = Some(self.settings.speed_limit_on);
             if self.tray.is_some() {
                 tracing::info!("tray icon shown");
@@ -3003,16 +3082,35 @@ impl App {
             };
             self.run(cmd, None, ctx);
         }
-        // Closing hides the window in the tray; downloads and queues go on. On Linux only when a
-        // tray host shows the icon (#59: without one the window couldn't come back, nor close):
-        // otherwise closing closes, as any window's does.
-        if self.tray.is_some()
-            && !self.exiting
-            && ctx.input(|i| i.viewport().close_requested())
-            && self.tray_shown()
-        {
-            ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
-            self.hide_to_tray(ctx);
+        // Closing hides the window in the tray; downloads and queues go on. With no icon the shell
+        // shows (Windows, macOS: a tray that exists but says it has none) the window goes to the
+        // taskbar or the Dock instead: still reachable, downloads still going. Everywhere else
+        // closing closes, as any window's does: Options' "Keep running when closing the window"
+        // off, no tray at all, or Linux with no tray host (#59: a hidden window couldn't come
+        // back, and one that merely minimized could never be closed).
+        if !self.exiting && ctx.input(|i| i.viewport().close_requested()) {
+            use crate::tray::OnClose;
+            let keep = self.settings.close_to_tray;
+            let tray = self.tray.is_some();
+            // The shell is asked afresh, and only when its answer matters.
+            let shown = keep && tray && self.tray_shown_now();
+            let taskbar = cfg!(not(target_os = "linux"));
+            match crate::tray::on_close(keep, tray, shown, taskbar) {
+                OnClose::Hide => {
+                    tracing::info!("close: hidden to the notification area");
+                    ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
+                    self.hide_to_tray(ctx);
+                }
+                OnClose::Minimize => {
+                    tracing::info!("close: no visible tray icon; minimizing to the taskbar");
+                    ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
+                    ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+                }
+                OnClose::Quit => {
+                    tracing::info!("close: quitting");
+                    self.exiting = true;
+                }
+            }
         }
         // Options → General → "Minimize to the notification area" (#63): Minimize hides the
         // window there too, where a tray shows the icon. Wayland can't hide a window: there it
@@ -3408,6 +3506,12 @@ impl App {
         let tool = tools.as_deref().and_then(mdm_tools::installed);
         let ffmpeg = tools.as_deref().and_then(mdm_tools::ffmpeg::installed);
         let rate = self.settings.speed_limit();
+        // A stream in pieces (HLS, DASH): as many at once as a file's connections (#531).
+        let fragments = self
+            .items
+            .iter()
+            .find(|i| i.id == id)
+            .map_or(1, |i| self.settings.connections_for(&i.url));
         let Some(item) = self.item(id) else { return };
         let Some(spec) = item.video.clone() else {
             return;
@@ -3437,6 +3541,7 @@ impl App {
             &folder,
             &stem,
             rate,
+            fragments,
             ffmpeg.as_ref().map(|f| f.exe.as_path()),
             item.size,
             &crate::videodlg::from_browser(&item.context),
@@ -3554,10 +3659,27 @@ impl App {
         }
     }
 
-    /// The info hashes of the torrents in the list (the torrent session keeps only these).
+    /// The info hashes of every torrent in the list (also used to prevent duplicate adds).
     fn torrent_hashes(&self) -> std::collections::HashSet<String> {
         self.items
             .iter()
+            .filter_map(|i| i.torrent.as_ref().map(|t| t.hash.clone()))
+            .collect()
+    }
+
+    /// The hashes librqbit should keep or restore in its session.
+    fn session_hashes(&self) -> std::collections::HashSet<String> {
+        let limits = self.settings.sharing_limits();
+        self.items
+            .iter()
+            .filter(|i| {
+                i.status != Status::Complete
+                    || (self.settings.torrent_keep_sharing
+                        && i.torrent.as_ref().is_some_and(|spec| {
+                            crate::torrents::sharing_limit_reached(spec, i.downloaded, limits)
+                                .is_none()
+                        }))
+            })
             .filter_map(|i| i.torrent.as_ref().map(|t| t.hash.clone()))
             .collect()
     }
@@ -3606,14 +3728,26 @@ impl App {
             self.show_window(ctx);
             return;
         }
-        if self.torrent_dlg.is_some() {
+        if let Some(open) = &self.torrent_dlg {
+            // One Add torrent at a time: a torrent handed over meanwhile waits its turn (#507).
+            // Add torrent… from the menu with it open (no source) has nothing to wait for.
+            if let Some(source) = source
+                && open.source() != source
+                && !self.torrent_waiting.iter().any(|(s, _)| *s == source)
+            {
+                tracing::info!(
+                    "Add torrent is open: a torrent waits ({} waiting)",
+                    self.torrent_waiting.len() + 1
+                );
+                self.torrent_waiting.push_back((source, remote));
+            }
             return;
         }
         self.torrent_dlg = Some(crate::torrentdlg::TorrentDialog::new(
             source,
             remote,
             self.torrent_host.clone(),
-            self.torrent_hashes(),
+            self.session_hashes(),
             self.downloads.clone(),
             self.settings.category_dirs.clone(),
             &self.rt,
@@ -3777,6 +3911,7 @@ impl App {
                 uploaded: 0,
                 seeded_secs: 0,
                 peers: 0,
+                up_speed: 0.0,
                 upload_limit: None,
                 in_order: add.in_order,
                 ends_first: true,
@@ -3815,11 +3950,17 @@ impl App {
 
     /// Start a torrent: the session adds or resumes it.
     fn start_torrent(&mut self, id: u64, show: bool) {
-        let known = self.torrent_hashes();
-        let share = self.settings.torrent_keep_sharing;
+        let auto_share = self.settings.torrent_keep_sharing;
+        let known = self.session_hashes();
         let limit = self.settings.speed_limit();
         let (host, rt) = (self.torrent_host.clone(), self.rt.clone());
         let Some(item) = self.item(id) else { return };
+        // An explicit Start on a completed download means seed it, even when automatic
+        // keep sharing is off. It remains in the session until Stop or a sharing limit.
+        let share = auto_share
+            || item
+                .size
+                .is_some_and(|size| size > 0 && item.downloaded >= size);
         // Its own remembered limit first, as a file download's (#39).
         let limit = item.own_limit.or(limit);
         let Some(spec) = item.torrent.clone() else {
@@ -3886,13 +4027,19 @@ impl App {
         if save {
             self.save_rss();
         }
+        if let Some(Err(e)) = self.rss_saver.outcome() {
+            tracing::warn!("rss: not saved: {e}");
+        }
     }
 
+    /// On the RSS saver's thread; how it went is logged at the next tick (`rss_tick`).
     fn save_rss(&self) {
-        if let Some(path) = crate::rss::Store::path()
-            && let Err(e) = self.rss.save(&path)
-        {
-            tracing::warn!("rss: {} not saved: {e}", path.display());
+        let Some(path) = crate::rss::Store::path() else {
+            return;
+        };
+        match self.rss.encode() {
+            Ok(json) => self.rss_saver.queue(path, json),
+            Err(e) => tracing::warn!("rss: {} not saved: {e}", path.display()),
         }
     }
 
@@ -3934,7 +4081,7 @@ impl App {
     fn rss_look_up(&mut self, rule: u64, feed: u64, article: crate::rss::Article) {
         let (host, known, out) = (
             self.torrent_host.clone(),
-            self.torrent_hashes(),
+            self.session_hashes(),
             self.rss_events.clone(),
         );
         self.rt.spawn(async move {
@@ -4092,7 +4239,7 @@ impl App {
     }
 
     fn torrent_act(&mut self, id: u64, act: crate::torrents::Act) {
-        let known = self.torrent_hashes();
+        let known = self.session_hashes();
         let Some(spec) = self
             .items
             .iter()
@@ -4442,7 +4589,7 @@ impl App {
             let (out, host, known) = (
                 slot.clone(),
                 self.torrent_host.clone(),
-                self.torrent_hashes(),
+                self.session_hashes(),
             );
             self.rt.spawn(async move {
                 let res = match host.session(known).await {
@@ -4750,24 +4897,29 @@ impl App {
 
     /// Scheduler times, then start what running queues allow (notes/ENGINE.md §5).
     fn tick_queues(&mut self) {
-        use chrono::Datelike;
-        let now_s = seconds_now();
-        let prev = std::mem::replace(&mut self.clock, now_s);
-        let today = chrono::Local::now().date_naive();
-        let weekday = today.weekday().num_days_from_sunday() as usize;
-        let date = (today.year(), today.month(), today.day());
-        for q in 0..self.queues.len() {
-            let sch = self.queues[q].schedule.clone();
-            if let Some(t) = sch.start_at
-                && sch.starts_on(date, weekday)
-                && queue::crossed(t, prev, now_s)
-            {
-                self.queues[q].running = true;
-            }
-            if let Some(t) = sch.stop_at
-                && queue::crossed(t, prev, now_s)
-            {
-                self.stop_queue(q);
+        use chrono::{Datelike, Timelike};
+        // The local time with the offset the clock's thread keeps: asking Windows here held the
+        // window for 8 s (#536). Until its first answer, schedules wait.
+        let local = crate::clock::now_known();
+        let now_s = local.map(|t| t.num_seconds_from_midnight());
+        let prev = std::mem::replace(&mut self.clock, now_s).or(now_s);
+        if let (Some(local), Some(now_s), Some(prev)) = (local, now_s, prev) {
+            let today = local.date_naive();
+            let weekday = today.weekday().num_days_from_sunday() as usize;
+            let date = (today.year(), today.month(), today.day());
+            for q in 0..self.queues.len() {
+                let sch = self.queues[q].schedule.clone();
+                if let Some(t) = sch.start_at
+                    && sch.starts_on(date, weekday)
+                    && queue::crossed(t, prev, now_s)
+                {
+                    self.queues[q].running = true;
+                }
+                if let Some(t) = sch.stop_at
+                    && queue::crossed(t, prev, now_s)
+                {
+                    self.stop_queue(q);
+                }
             }
         }
         let now = Instant::now();
@@ -5208,6 +5360,12 @@ impl App {
                 {
                     self.add_trackers =
                         Some(crate::torrentdlg::AddTrackers::new(i.id, &i.file_name));
+                }
+            }
+            Cmd::TorrentFiles => {
+                if let Some(item) = target.and_then(|id| self.items.iter().find(|i| i.id == id)) {
+                    self.torrent_files =
+                        crate::torrentfiles::TorrentFiles::new(item, &self.torrent_host);
                 }
             }
             Cmd::TorrentCopyMagnet => {
@@ -6104,6 +6262,9 @@ impl App {
                     "Torrent",
                     true,
                     vec![
+                        // i18n: right-click → Torrent submenu: open the selected torrent's file list
+                        I("Files...", Cmd::TorrentFiles, true, false),
+                        Sep,
                         // i18n: right-click → Torrent: read every piece of the torrent's files again and check it
                         I(
                             "Recheck files",
@@ -7995,7 +8156,7 @@ impl App {
             }
         }
         if let Some(d) = &mut self.add_url {
-            let out = d.show(ctx);
+            let out = d.show(ctx, |url| self.settings.site_login(url));
             // Every address that goes on is remembered for the Address drop list.
             if let Outcome::Done(new) = &out {
                 crate::settings::remember(&mut self.settings.url_history, new.url.as_str());
@@ -8098,6 +8259,7 @@ impl App {
             }
         }
         let mut changes = Vec::new();
+        let mut files_requested = Vec::new();
         let items = &self.items;
         let icons = &mut self.icons;
         self.properties.retain_mut(|pr| {
@@ -8105,7 +8267,12 @@ impl App {
                 return false;
             };
             match pr.show(ctx, icons, item) {
-                Outcome::Open => true,
+                Outcome::Open => {
+                    if pr.take_files_requested() {
+                        files_requested.push(pr.id);
+                    }
+                    true
+                }
                 Outcome::Closed => false,
                 Outcome::Done(c) => {
                     changes.push(c);
@@ -8115,6 +8282,12 @@ impl App {
         });
         for c in changes {
             self.apply_properties(c);
+        }
+        for id in files_requested {
+            if let Some(item) = self.items.iter().find(|i| i.id == id) {
+                self.torrent_files =
+                    crate::torrentfiles::TorrentFiles::new(item, &self.torrent_host);
+            }
         }
         let mut hashes = Vec::new();
         self.checksums.retain_mut(|c| match c.show(ctx) {
@@ -8165,7 +8338,7 @@ impl App {
             if self.settings.torrent_keep_sharing {
                 self.torrent_host.set_sharing(
                     &self.rt,
-                    self.torrent_hashes(),
+                    self.session_hashes(),
                     self.complete_torrents(),
                     true,
                 );
@@ -8204,7 +8377,7 @@ impl App {
                     {
                         self.torrent_host.set_sharing(
                             &self.rt,
-                            self.torrent_hashes(),
+                            self.session_hashes(),
                             self.complete_torrents(),
                             true,
                         );
@@ -8213,7 +8386,7 @@ impl App {
                         self.settings.torrent_keep_sharing = share;
                         self.torrent_host.set_sharing(
                             &self.rt,
-                            self.torrent_hashes(),
+                            self.session_hashes(),
                             self.complete_torrents(),
                             share,
                         );
@@ -8275,14 +8448,49 @@ impl App {
                 }
             }
         }
+        let mut torrent_files_selection = None;
+        if let Some(d) = &mut self.torrent_files {
+            match d.show(ctx) {
+                Outcome::Open => {
+                    torrent_files_selection = d.take_selection().map(|selection| (d.id, selection));
+                }
+                Outcome::Closed => self.torrent_files = None,
+                Outcome::Done(_) => self.torrent_files = None,
+            }
+        }
+        if let Some((id, (files, all, size))) = torrent_files_selection {
+            self.choose_files(id, files, all, size);
+        }
+        // The next torrent handed over while Add torrent was open (#507), a frame after it
+        // closed: that frame without it closes its window, and the next one opens as a window
+        // of its own (opened in the same frame, the closed window would only change its
+        // contents). One that goes to the debrid account opens nothing, and the one after it
+        // is next.
+        if self.torrent_dlg.is_none() && !self.torrent_waiting.is_empty() {
+            if std::mem::take(&mut self.torrent_closed) {
+                ctx.request_repaint();
+            } else {
+                while self.torrent_dlg.is_none()
+                    && let Some((source, remote)) = self.torrent_waiting.pop_front()
+                {
+                    self.open_torrent_dialog_with(Some(source), remote, ctx);
+                }
+            }
+        }
         if let Some(t) = &mut self.torrent_dlg {
-            match t.show(ctx, &self.rt) {
-                Outcome::Open => {}
-                Outcome::Closed => self.torrent_dlg = None,
+            let closed = match t.show(ctx, &self.rt) {
+                Outcome::Open => false,
+                Outcome::Closed => true,
                 Outcome::Done(add) => {
                     self.torrent_dlg = None;
                     self.add_torrent(add);
+                    true
                 }
+            };
+            if closed {
+                self.torrent_dlg = None;
+                self.torrent_closed = true;
+                ctx.request_repaint();
             }
         }
         if let Some(g) = &mut self.gallery_dlg {
@@ -8300,6 +8508,17 @@ impl App {
                 Outcome::Open => {}
                 Outcome::Closed => self.video_dlg = None,
                 Outcome::Done(out) => {
+                    // Options' "Change folder for this category on last selected", which
+                    // Download File Info follows through its box (#475).
+                    if self.settings.change_folder_on_last
+                        && self.settings.keep_category_dir(
+                            Category::Video,
+                            &v.save_folder(),
+                            &self.downloads,
+                        )
+                    {
+                        self.dirty = true;
+                    }
                     self.video_dlg = None;
                     match out {
                         crate::videodlg::VideoOut::One(add) => self.add_video(add),
@@ -8743,6 +8962,8 @@ impl Drop for App {
         // No wake for a queue MDM won't be there to start (Linux's alarm would outlive it).
         self.wake.clear();
         self.keep_unseen();
+        // The feeds as last handed to their saver.
+        self.rss_saver.flush();
         // What the saver has in hand first, then the last state, written here and now.
         self.saver.flush();
         let _ = store::save(
@@ -9117,5 +9338,35 @@ mod window_thread_tests {
         assert!(dest.exists(), "a file that wasn't complete stays");
         remove_files_of(&dest, true);
         assert!(!dest.exists());
+    }
+}
+
+#[cfg(test)]
+mod mark_finished_tests {
+    /// #510: finished files are marked away from the window's thread; a file gone from its path
+    /// meanwhile (moved, deleted) isn't created again by the mark.
+    #[test]
+    fn a_finished_file_is_marked_and_a_gone_one_is_not_created() {
+        let dir = tempfile::tempdir().unwrap();
+        let here = dir.path().join("video.mp4");
+        std::fs::write(&here, b"x").unwrap();
+        let gone = dir.path().join("moved.mp4");
+        super::mark_finished(
+            vec![here.clone(), gone.clone()],
+            "https://videos.test/v".into(),
+            None,
+        )
+        .unwrap()
+        .join()
+        .unwrap();
+        assert!(!gone.exists(), "a moved file's old path stays empty");
+        #[cfg(windows)]
+        {
+            let mut stream = here.as_os_str().to_owned();
+            stream.push(":Zone.Identifier");
+            let zone = std::fs::read_to_string(stream).unwrap();
+            assert!(zone.contains("ZoneId=3"), "{zone}");
+            assert!(zone.contains("HostUrl=https://videos.test/v"), "{zone}");
+        }
     }
 }

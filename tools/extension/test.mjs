@@ -134,8 +134,8 @@ function fakeApi({
           return { ok: true, version: "0.2.5", types, capture: true, excludedSites: "*.update.microsoft.com", excludedAddresses: [], opened: true, ...rules };
         }
         calls.push(["native", name, m]);
-        // The video button: "may it show" follows `panelOn`.
-        if (m.panel) return { ok: panelOn !== false };
+        // The video button: "may it show" follows `panelOn` (a function: the app's answer now).
+        if (m.panel) return { ok: typeof panelOn === "function" ? panelOn(m) : panelOn !== false };
         // A notice of a download left alone (#208): an older host, which knows none, takes it
         // for an address it can't download (`noticeReply`).
         if (m.declined) return noticeReply || { ok: true };
@@ -231,7 +231,8 @@ async function fakeFetch(url, opts) {
 const complaints = [];
 const quietConsole = { ...console, error: (...a) => complaints.push(["error", ...a]), warn: (...a) => complaints.push(["warn", ...a]) };
 
-function load(api, firefox) {
+// `extra`: more of the script's globals (a `Date` whose clock the test moves).
+function load(api, firefox, extra = {}) {
   const ctx = {
     fetch: fakeFetch,
     navigator: { userAgent: "UA", userAgentData: { brands: [{ brand: "Chromium" }, { brand: "Brave" }] } },
@@ -245,6 +246,7 @@ function load(api, firefox) {
   };
   if (firefox) ctx.browser = api;
   else ctx.chrome = api;
+  Object.assign(ctx, extra);
   vm.runInNewContext(code, ctx);
 }
 
@@ -370,6 +372,52 @@ const ok = (what) => {
   assert.ok(suggested);
   assert.deepEqual(steps(calls), []);
   ok("Chrome: declined, the browser's own");
+}
+
+// Chrome, #578: a download left to the browser keeps another extension's name. What Chromium
+// does with each listener's answer (downloads_custom_bindings.js, then downloads_api.cc
+// DetermineFilename and DeterminerCallback): no valid suggestion goes as an empty name with no
+// conflict action, which counts as a name; a name the browser refuses is emptied after the
+// answer is counted, and only an empty name with "uniquify" is no name at all. The newest
+// extension's name wins (here MDM's, updated after Save In was installed).
+{
+  const answer = (s) => {
+    const valid = s && typeof s === "object" && typeof s.filename === "string" && s.filename.length > 0;
+    const [name, action] = valid ? [s.filename, s.conflictAction || ""] : ["", ""];
+    const safe = name && !name.split(/[\/]/).some((p) => p === "" || p === "." || p === "..") && !/^[a-z]:|^[\/]/i.test(name);
+    const filename = safe ? name : "";
+    return filename || action !== "uniquify" ? { filename } : null; // null: no suggestion
+  };
+  // The determination of one download: `answers` in install order, oldest first.
+  const determined = (creator, answers) => {
+    let name = creator;
+    let by = -1;
+    answers.forEach((a, i) => {
+      const s = answer(a);
+      if (s && i >= by) [name, by] = [s.filename, i];
+    });
+    return name;
+  };
+  for (const [what, item, creator] of [
+    ["its own listener's folder (Save In)", { id: 70, url: "https://img.test/cat.jpg", filename: "cat.jpg", byExtensionId: "savein" }, ""],
+    ["a downloads.download filename", { id: 71, url: "https://img.test/dog.jpg", filename: "dog.jpg", byExtensionId: "savein" }, "Pic/OthersW/dog.jpg"],
+    ["a page's download", { id: 72, url: "https://x/page.html", filename: "page.html" }, ""],
+  ]) {
+    const { api, listeners } = fakeApi({ firefox: false });
+    load(api, false);
+    const other = item.byExtensionId && !creator ? { filename: `Pic/OthersW/${item.filename}` } : undefined;
+    let mdm = "none";
+    listeners.determining(item, (s) => (mdm = s));
+    await settle();
+    assert.notEqual(mdm, "none", `${what}: answered, the download doesn't wait`);
+    const want = other ? other.filename : creator;
+    assert.equal(determined(creator, other ? [other, mdm] : [mdm]), want, `${what}: MDM's answer gives no name of its own`);
+  }
+  // The model, checked: Chromium's own cases.
+  assert.equal(determined("Pic/a.jpg", [undefined]), "", "suggest() empties the creator's name");
+  assert.equal(determined("", [{ filename: "Pic/b.jpg" }, undefined]), "", "and the older extension's");
+  assert.equal(determined("", [undefined, { filename: "Pic/b.jpg" }]), "Pic/b.jpg", "an older suggest() loses");
+  ok("Chrome: a download left alone keeps another extension's name and folder (#578)");
 }
 
 // Firefox: a small file finished before it could be stopped: the browser's copy is removed.
@@ -676,6 +724,44 @@ const ok = (what) => {
   assert.ok(calls.some((c) => c[0] === "cookies" && c[1].url === "https://other.test/x/main.mpd"), "the button: the stream's cookies");
   ok("#155: the right-click menu on a stream's player sends its manifest; cookies of the stream");
 }
+// #532: Options changed while a page with a video is open: the app's answer is kept a few
+// seconds, not a minute, so the button follows (the page asks again: video.js ASK_MS). An
+// embedded player asks with its tab's address, so the site in the address bar counts too.
+{
+  const clock = { t: Date.now() };
+  class FakeDate extends Date {
+    static now() {
+      return clock.t;
+    }
+  }
+  let appSays = true;
+  const { api, calls, listeners } = fakeApi({ firefox: false, panelOn: () => appSays });
+  load(api, false, { Date: FakeDate });
+  const embed = { id: "ours", url: "https://tube.test/embed/1", frameId: 3, tab: { url: "https://blog.test/post" } };
+  const top = { id: "ours", url: "https://tube.test/watch", frameId: 0, tab: { url: "https://tube.test/watch" } };
+  const ask = (sender) =>
+    new Promise((r) => listeners.message({ type: "panel" }, sender, (v) => r(JSON.parse(JSON.stringify(v)))));
+  assert.deepEqual(await ask(embed), { on: true });
+  const asked = () => natives(calls).filter((m) => m.panel);
+  assert.equal(asked()[0].referrer, "https://blog.test/post", "the tab's address with an embedded player's question");
+  assert.deepEqual(await ask(top), { on: true });
+  assert.equal(asked()[1].referrer, undefined, "none for the tab's own page");
+  appSays = false;
+  clock.t += 1000;
+  assert.deepEqual(await ask(top), { on: true }, "kept a moment (the page's frames ask together)");
+  assert.equal(asked().length, 2);
+  clock.t += 5000;
+  assert.deepEqual(await ask(top), { on: false }, "switched off in Options: the next question has it");
+  assert.deepEqual(await ask(embed), { on: false });
+  appSays = true;
+  clock.t += 6000;
+  assert.deepEqual(await ask(embed), { on: true }, "and on again");
+  // "Never on this site" from the embed: off at once, in its tab and in any other.
+  await new Promise((r) => listeners.message({ type: "hide-site" }, embed, r));
+  assert.deepEqual(await ask(embed), { on: false });
+  assert.deepEqual(await ask({ ...embed, tab: { url: "https://news.test/" } }), { on: false }, "whatever the tab");
+  ok("#532: the video button follows Options within seconds; an embed asks with its tab's address");
+}
 {
   const { api, listeners } = fakeApi({ firefox: true, panelOn: false });
   load(api, true);
@@ -819,6 +905,12 @@ const MPD = (protect) => `<?xml version="1.0"?>
   assert.equal(natives(calls).filter((m) => m.url === hashed).at(-1).filename, "A film.mp4");
   await api.storage.local.set({ mediaTitleName: false });
   assert.equal(natives(calls).find((m) => m.url === hashed).filename, "A film.mp4");
+  // #493: X's video server names each file with a short random id: the tab's title names it.
+  const random = "https://video.twimg.com/ext_tw_video/1900000000000000000/pu/vid/avc1/720x1280/7HbL0kYxzF-fGjqd.mp4?tag=12";
+  listeners.responseStarted({ tabId: 9, frameId: 0, type: "media", url: random, responseHeaders: [{ name: "Content-Type", value: "video/mp4" }, { name: "Content-Length", value: "52428800" }] });
+  await settle();
+  await popupAsk(listeners, { type: "media-download", tab: 9, url: random });
+  assert.equal(natives(calls).find((m) => m.url === random).filename, "A film.mp4");
   const before = natives(calls).length;
   assert.deepEqual(await popupAsk(listeners, { type: "media-download", tab: 9, url: "https://drm.test/p/manifest.mpd" }), { ok: false, why: "drm" });
   assert.deepEqual(await popupAsk(listeners, { type: "media-download", tab: 9, url: "https://evil.test/x.mp4" }), { ok: false, why: "gone" });
@@ -828,7 +920,7 @@ const MPD = (protect) => `<?xml version="1.0"?>
   // A move within the page keeps the list; another page clears it; so does closing the tab.
   listeners.tabUpdated(9, { url: "https://watch.test/v/1#t=30" });
   await settle();
-  assert.equal((await popupAsk(listeners, { type: "media", tab: 9 })).media.length, 10);
+  assert.equal((await popupAsk(listeners, { type: "media", tab: 9 })).media.length, 11);
   listeners.tabUpdated(9, { url: "https://watch.test/v/2" });
   await settle();
   assert.equal((await popupAsk(listeners, { type: "media", tab: 9 })).media.length, 0);
