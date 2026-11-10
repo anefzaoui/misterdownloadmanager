@@ -8,6 +8,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 ### Fixed
 
 - The window no longer freezes when a video or a gallery finishes: marking its files as downloaded from the web, which can wait on the disk and the antivirus for a while with a big video, now happens beside the window ([#510](https://github.com/anefzaoui/misterdownloadmanager/issues/510)).
+- Linux: **View → Dark Mode support** turns dark on window managers such as Hyprland and sway when only GNOME's setting says so (`gsettings set org.gnome.desktop.interface color-scheme prefer-dark`), as it did when a desktop portal answered ([#324](https://github.com/anefzaoui/misterdownloadmanager/issues/324)).
+- Dark mode no longer draws a bright white line under the menu bar, across the whole window, in the Classic and Native themes ([#379](https://github.com/anefzaoui/misterdownloadmanager/issues/379)).
+### Added
+
+- Options → General → **Customize MDM Download panels in browsers**: Export... and Import... for the sites the download button stays off, a plain text file with one site a line ([#424](https://github.com/anefzaoui/misterdownloadmanager/issues/424)).
+
+### Fixed
+
 - The progress window of a video whose size isn't known says no percentage (it read 0 % in the title and 0.00 % on the Downloaded line), and **File size** stays the file's size at the end (it read 0.1 % too high while yt-dlp finished).
 - A **gofile** share link (`gofile.io/d/...`) now says it is a web page to open in your browser, instead of saving that page as if it were the file ([#346](https://github.com/anefzaoui/misterdownloadmanager/issues/346)).
 - **Download video**: when a site's bot check (Cloudflare) turns yt-dlp away, the message says so and what to try, instead of yt-dlp's cut-off words ([#317](https://github.com/anefzaoui/misterdownloadmanager/issues/317)).

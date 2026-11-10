@@ -521,6 +521,10 @@ These ship in a later version, when they're ready.
 
 - 🔄 A freeze when a video finishes, while its file is marked as downloaded from the web
   ([#510](https://github.com/anefzaoui/misterdownloadmanager/issues/510)): fix in review
+- 🔄 Linux: Dark Mode support on window managers such as Hyprland and sway, which often have no
+  desktop portal to say dark or light ([#324](https://github.com/anefzaoui/misterdownloadmanager/issues/324)): fix in review
+- 🔄 A bright white line under the menu bar in dark mode
+  ([#379](https://github.com/anefzaoui/misterdownloadmanager/issues/379)): fix in review
 - 🔄 Closing the main window follows a setting (on by default, MDM keeps running), and with no
   tray icon the window goes to the taskbar instead of vanishing: fix in review
   ([#457](https://github.com/anefzaoui/misterdownloadmanager/pull/457))
@@ -551,6 +555,8 @@ These ship in a later version, when they're ready.
   ([#321](https://github.com/anefzaoui/misterdownloadmanager/issues/321)): fix in review
 - 🔄 **Open folder** on a torrent still downloading
   ([#354](https://github.com/anefzaoui/misterdownloadmanager/issues/354)): fix in review
+- 🔄 Export and Import for the sites the download button stays off
+  ([#424](https://github.com/anefzaoui/misterdownloadmanager/issues/424)): fix in review
 - 🔄 Videos in the progress window: no percentage when the size isn't known, and the real file
   size at the end: fix in review
 - 🔄 X (Twitter) videos from the media list named after the tab instead of a random file name
