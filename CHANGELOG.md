@@ -12,6 +12,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- A freeze when the disk was slow: MDM looked on the disk for a portable data folder on every tick of the window; it now works the data folder out once ([#565](https://github.com/anefzaoui/misterdownloadmanager/issues/565)).
 - macOS 15 and later: Chinese names and text find the PingFang font again, which moved into the system's font assets, with Hiragino Sans GB and STHeiti as fallbacks ([#541](https://github.com/anefzaoui/misterdownloadmanager/issues/541)).
 - The video button follows **Options → General → Customize MDM Download panels in browsers** in the pages already open: switched off, or its site listed, it goes within a few seconds, without reloading the page (it stayed until a reload, and on YouTube, which never reloads, for good). A site listed as `example.com` now takes `www.example.com` and its other subdomains too, and a player embedded from another site follows the site in the address bar ([#532](https://github.com/anefzaoui/misterdownloadmanager/issues/532)).
 - macOS: file names in Persian, Arabic, Urdu, Hebrew or Armenian show their letters in the download list and windows instead of boxes, whatever the interface language: these scripts now get the font for them that comes with macOS (Arial Unicode), the first time one is needed ([#533](https://github.com/anefzaoui/misterdownloadmanager/issues/533)).
