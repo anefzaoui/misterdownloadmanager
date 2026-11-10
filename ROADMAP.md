@@ -519,6 +519,10 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 The window not answering for a few seconds while Windows makes a snapshot of the disk
+  (a restore point or a backup) ([#513](https://github.com/anefzaoui/misterdownloadmanager/issues/513)):
+  the log and the RSS feeds are now written beside the window, as the list already was; fix in
+  review, to confirm on the reporter's computer
 - 🔄 A freeze when a video finishes, while its file is marked as downloaded from the web
   ([#510](https://github.com/anefzaoui/misterdownloadmanager/issues/510)): fix in review
 - 🔄 Linux: Dark Mode support on window managers such as Hyprland and sway, which often have no

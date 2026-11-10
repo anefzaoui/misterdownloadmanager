@@ -303,7 +303,9 @@ fn write(p: &Path, json: &[u8]) -> std::io::Result<()> {
 /// Saves the list on a thread of its own. The write ends with a flush to the disk, which waited
 /// for every byte a big download had written meanwhile: on the window's thread it froze MDM for
 /// seconds (a crash report caught it: "freeze in store::save"). The newest list waiting replaces
-/// an older one not yet written.
+/// an older one not yet written. Any file the window keeps saving goes the same way
+/// ([`Saver::writing`]): Windows holding every write on C: for a shadow copy held the window
+/// with it (#513).
 pub struct Saver {
     shared: std::sync::Arc<(std::sync::Mutex<SaverState>, std::sync::Condvar)>,
 }
@@ -317,14 +319,21 @@ struct SaverState {
 }
 
 impl Saver {
+    /// The download list's.
     pub fn new() -> Saver {
+        Saver::writing("list saver", write)
+    }
+
+    /// A saver thread of its own, `name`, writing what it is handed with `write` (the RSS feeds',
+    /// rss.rs).
+    pub fn writing(name: &str, write: fn(&Path, &[u8]) -> std::io::Result<()>) -> Saver {
         let shared = std::sync::Arc::new((
             std::sync::Mutex::new(SaverState::default()),
             std::sync::Condvar::new(),
         ));
         let worker = shared.clone();
         let _ = std::thread::Builder::new()
-            .name("list saver".into())
+            .name(name.into())
             .spawn(move || {
                 let (lock, cv) = &*worker;
                 loop {
@@ -361,7 +370,8 @@ impl Saver {
         Ok(())
     }
 
-    fn queue(&self, p: std::path::PathBuf, json: Vec<u8>) {
+    /// Hand `json` to the saver thread, to be written as `p`.
+    pub fn queue(&self, p: std::path::PathBuf, json: Vec<u8>) {
         let (lock, cv) = &*self.shared;
         lock.lock().unwrap_or_else(|e| e.into_inner()).waiting = Some((p, json));
         cv.notify_all();
@@ -414,6 +424,40 @@ mod tests {
         saver.flush();
         assert_eq!(saver.outcome(), Some(Ok(())));
         assert_eq!(load_from(&p, empty()).next_id, 5);
+    }
+
+    /// #513: handing a file to a saver never waits for the disk (Windows held every write on C:
+    /// for 8 s while it made a shadow copy, and the window with them when it wrote itself); it
+    /// is written once the disk lets go, the newest handed over.
+    #[test]
+    fn a_saver_hands_over_at_once_while_the_disk_holds_its_writes() {
+        use std::sync::{Condvar, Mutex};
+        static HELD: (Mutex<bool>, Condvar) = (Mutex::new(true), Condvar::new());
+        fn held_write(p: &Path, bytes: &[u8]) -> std::io::Result<()> {
+            let (held, cv) = &HELD;
+            let mut held = held.lock().unwrap();
+            while *held {
+                held = cv.wait(held).unwrap();
+            }
+            crate::rss::write(p, bytes)
+        }
+        let dir = tempfile::tempdir().unwrap();
+        let p = dir.path().join("rss.json");
+        let saver = Saver::writing("test saver", held_write);
+        let start = std::time::Instant::now();
+        for n in 0..50u8 {
+            saver.queue(p.clone(), vec![b'0' + n % 10]);
+        }
+        assert!(start.elapsed() < Duration::from_secs(1));
+        assert!(
+            !p.exists() && saver.outcome().is_none(),
+            "the disk holds it"
+        );
+        *HELD.0.lock().unwrap() = false;
+        HELD.1.notify_all();
+        saver.flush();
+        assert_eq!(saver.outcome(), Some(Ok(())));
+        assert_eq!(std::fs::read(&p).unwrap(), b"9");
     }
 
     #[test]

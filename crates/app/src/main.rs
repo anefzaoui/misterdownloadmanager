@@ -225,18 +225,25 @@ fn main() -> std::process::ExitCode {
     }
     // A server (#157): the app without a window.
     let all: Vec<String> = std::env::args().skip(1).collect();
-    if headless::asked(&all) {
-        return headless::main(all);
-    }
-    match app() {
-        Ok(()) => std::process::ExitCode::SUCCESS,
-        // As `main` returning the error would.
-        Err(e) => {
-            eprintln!("Error: {e:?}");
-            std::process::ExitCode::FAILURE
+    let code = if headless::asked(&all) {
+        headless::main(all)
+    } else {
+        match app() {
+            Ok(()) => std::process::ExitCode::SUCCESS,
+            // As `main` returning the error would.
+            Err(e) => {
+                eprintln!("Error: {e:?}");
+                std::process::ExitCode::FAILURE
+            }
         }
-    }
+    };
+    // The log's last lines, still on their way to the file (its own thread, #513).
+    mdm_crash::logs::flush(LOG_AT_THE_END);
+    code
 }
+
+/// How long MDM's end waits for its log's last lines (a disk that holds them longer loses them).
+const LOG_AT_THE_END: std::time::Duration = std::time::Duration::from_secs(2);
 
 fn app() -> eframe::Result {
     // MDM's crash monitor (crash.rs started it): the report window when the app crashes or
