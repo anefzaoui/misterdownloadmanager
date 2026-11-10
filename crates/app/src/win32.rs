@@ -2146,10 +2146,42 @@ impl raw_window_handle::HasWindowHandle for OwnWindow {
 /// mouse (the button is down on its grip: winit captured the mouse for it), so it is the right
 /// one when several show the same title; else our window titled `title`, given in the interface
 /// language, as it shows.
+///
+/// The drag runs on a thread of its own (#561): OLE's drag loop lasts as long as the button is
+/// held, and each step calls the program under the pointer (its drop target, in its own process),
+/// so on the window thread a busy or hung target, or a target that copies the file before it
+/// answers the drop, froze every window until it answered. That thread shares the window
+/// thread's input ([`with_shared_input`]): OLE reads the held button and takes the mouse from
+/// there, as it did from the window thread.
 pub fn drag_file_out(title: &str, file: &std::path::Path) -> Result<(), String> {
+    use std::sync::atomic::{AtomicBool, Ordering};
+    // One drag at a time: the mouse holds only one.
+    static DRAGGING: AtomicBool = AtomicBool::new(false);
     let hwnd = own_capture()
         .or_else(|| find_own_window(title))
-        .ok_or("window not found")?;
+        .ok_or("window not found")? as isize;
+    if DRAGGING.swap(true, Ordering::AcqRel) {
+        return Ok(());
+    }
+    let file = file.to_path_buf();
+    let started = with_shared_input("drag out", move |shared| {
+        if !shared {
+            tracing::warn!("drag out: the window's input isn't shared");
+        }
+        let result = drag_on_this_thread(hwnd as HWND, &file);
+        DRAGGING.store(false, Ordering::Release);
+        if let Err(e) = result {
+            tracing::warn!("drag out: {e}");
+        }
+    });
+    if started.is_err() {
+        DRAGGING.store(false, Ordering::Release);
+    }
+    started
+}
+
+/// The drag itself, on the thread [`drag_file_out`] started (OLE initialised there).
+fn drag_on_this_thread(hwnd: HWND, file: &std::path::Path) -> Result<(), String> {
     let name = file.file_name().and_then(|n| n.to_str()).unwrap_or("");
     let what = crate::fileicons::What::of(crate::fileicons::Kind::File(name));
     let preview = file_icon(&what, 32)
@@ -2172,6 +2204,92 @@ pub fn drag_file_out(title: &str, file: &std::path::Path) -> Result<(), String> 
         drag::Options::default(),
     )
     .map_err(|e| e.to_string())
+}
+
+/// Run `work` on a new thread named `name`, with OLE (a single-threaded apartment) and the
+/// calling thread's input state: the keys and mouse buttons held, the mouse capture and the
+/// focus (AttachThreadInput), as a modal loop like OLE's drag needs when the button went down in
+/// the caller's window. `work` is told whether the input is shared. Returns at once; the input
+/// is detached and OLE closed when `work` ends. The caller has a message queue (a window thread).
+fn with_shared_input(name: &str, work: impl FnOnce(bool) + Send + 'static) -> Result<(), String> {
+    use windows_sys::Win32::System::Threading::{AttachThreadInput, GetCurrentThreadId};
+    use windows_sys::Win32::UI::WindowsAndMessaging::{MSG, PM_NOREMOVE, PeekMessageW};
+    #[link(name = "ole32")]
+    unsafe extern "system" {
+        fn OleInitialize(reserved: *mut c_void) -> i32;
+        fn OleUninitialize();
+    }
+    // SAFETY: a plain query.
+    let caller = unsafe { GetCurrentThreadId() };
+    std::thread::Builder::new()
+        .name(name.to_owned())
+        .spawn(move || {
+            // SAFETY: OLE for this new thread, closed below on the same thread when it took.
+            let ole = unsafe { OleInitialize(std::ptr::null_mut()) } >= 0;
+            // A thread is given its message queue by its first window call, and only threads
+            // with one can share input: a look at the (empty) queue makes it.
+            // SAFETY: a read into a local MSG; nothing is removed.
+            let mut msg: MSG = unsafe { zeroed() };
+            unsafe { PeekMessageW(&mut msg, std::ptr::null_mut(), 0, 0, PM_NOREMOVE) };
+            // SAFETY: plain calls with two live threads of this process; undone below.
+            let me = unsafe { GetCurrentThreadId() };
+            let attached = unsafe { AttachThreadInput(me, caller, 1) } != 0;
+            work(attached);
+            if attached {
+                // SAFETY: as above.
+                unsafe { AttachThreadInput(me, caller, 0) };
+            }
+            if ole {
+                // SAFETY: matches the OleInitialize above, on this thread.
+                unsafe { OleUninitialize() };
+            }
+        })
+        .map(drop)
+        .map_err(|e| e.to_string())
+}
+
+#[cfg(test)]
+mod drag_thread_tests {
+    use super::*;
+
+    /// The drag's thread (#561): another thread than the window's, which goes on at once, in a
+    /// single-threaded apartment (OLE's drag needs one), sharing the window thread's input.
+    #[test]
+    fn the_drag_runs_beside_the_window_thread_with_its_input() {
+        use windows_sys::Win32::System::Com::{APTTYPE, APTTYPEQUALIFIER, CoGetApartmentType};
+        use windows_sys::Win32::System::Threading::GetCurrentThreadId;
+        use windows_sys::Win32::UI::WindowsAndMessaging::{MSG, PM_NOREMOVE, PeekMessageW};
+        // This test's thread stands for the window thread: it has a message queue.
+        // SAFETY: a read into a local MSG; nothing is removed.
+        let mut msg: MSG = unsafe { zeroed() };
+        unsafe { PeekMessageW(&mut msg, std::ptr::null_mut(), 0, 0, PM_NOREMOVE) };
+        // SAFETY: a plain query.
+        let window_thread = unsafe { GetCurrentThreadId() };
+        let (tx, rx) = std::sync::mpsc::channel();
+        let (go_tx, go_rx) = std::sync::mpsc::channel::<()>();
+        with_shared_input("drag test", move |shared| {
+            // Held until the caller has gone on: the work doesn't hold the caller up.
+            go_rx.recv().unwrap();
+            let mut kind: APTTYPE = 0;
+            let mut qualifier: APTTYPEQUALIFIER = 0;
+            // SAFETY: reads into two locals.
+            let hr = unsafe { CoGetApartmentType(&mut kind, &mut qualifier) };
+            // SAFETY: a plain query.
+            let me = unsafe { GetCurrentThreadId() };
+            tx.send((me, shared, hr, kind)).unwrap();
+        })
+        .unwrap();
+        go_tx.send(()).unwrap();
+        let (me, shared, hr, kind) = rx.recv_timeout(std::time::Duration::from_secs(10)).unwrap();
+        assert_ne!(me, window_thread);
+        assert!(shared, "the input is shared with the window thread");
+        assert_eq!(hr, 0);
+        // APTTYPE_STA (0); the first apartment of the process would be APTTYPE_MAINSTA (3).
+        assert!(
+            kind == 0 || kind == 3,
+            "a single-threaded apartment, not {kind}"
+        );
+    }
 }
 
 /// Windows' "Choose your app mode": true when apps should be dark (`AppsUseLightTheme` = 0).
