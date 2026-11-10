@@ -415,8 +415,10 @@ fn supervise(
     }
 }
 
-/// The most the bar shows while yt-dlp still works.
-const MAX_WHILE_RUNNING: f64 = 0.999;
+/// The most the bar shows while yt-dlp still works: all the bytes in is not the end, another
+/// stream or the merge may follow (#344). The window's percentage takes it from here; the sizes
+/// stay what they are.
+pub const MAX_WHILE_RUNNING: f64 = 0.999;
 
 /// yt-dlp's progress lines (`MDMP <downloaded> <total> <estimate> <speed>`) made into one
 /// steady figure. Each stream of a merged download (video, then audio) reports from 0 with its
@@ -485,15 +487,17 @@ impl Meter {
             p.total = None;
             return;
         }
-        // 100 % is for the end (State::Done): another stream or the merge may still follow.
         let frac = (downloaded as f64 / whole as f64).min(MAX_WHILE_RUNNING);
-        // When the estimate grew, the bar stays where it was rather than move back.
-        self.frac = self.frac.max(frac);
-        p.total = Some(
-            (downloaded as f64 / self.frac)
+        // When the estimate grew, the bar stays where it was rather than move back. Otherwise
+        // the total is the whole, as big as it is: at the end it isn't inflated to read 99.9 %.
+        p.total = Some(if frac >= self.frac {
+            self.frac = frac;
+            whole
+        } else {
+            ((downloaded as f64 / self.frac)
                 .round()
-                .max(whole.min(downloaded + 1) as f64) as u64,
-        );
+                .max(whole.min(downloaded + 1) as f64)) as u64
+        });
     }
 }
 
@@ -1141,8 +1145,18 @@ mod tests {
             assert!(w[1] >= w[0] - 1e-9, "went back: {f:?}");
         }
         let last = run(Some(1800), &lines).pop().unwrap();
-        assert_eq!(last.0, 1800);
-        assert!(f[f.len() - 1] > 0.99 && f[f.len() - 1] < 1.0, "{f:?}");
+        assert_eq!(last, (1800, Some(1800)));
+        assert!(f[f.len() - 1] > 0.99, "{f:?}");
+    }
+
+    /// The file size stays the file's size at the end: holding the bar short of 100 % is the
+    /// window's (`Item::fraction`), not a total made 0.1 % too big (100.100 MB for 100 MB).
+    #[test]
+    fn the_size_is_not_inflated_at_the_end() {
+        let m = 1 << 20;
+        let line = format!("{} {} NA 900000", 100 * m, 100 * m);
+        let v = run(Some(100 * m), &[line.as_str()]);
+        assert_eq!(v, vec![(100 * m, Some(100 * m))]);
     }
 
     /// #344: with no size known from the start, the second stream brings the bar back from
@@ -1156,7 +1170,6 @@ mod tests {
             "400 500 NA 5",
         ];
         let f = fractions(&run(None, &lines));
-        assert!(f.iter().all(|x| *x < 1.0), "100 % before the end: {f:?}");
         assert!(f[2] < 0.75, "the first stream's 100 % stayed: {f:?}");
         assert!(f[3] > f[2], "{f:?}");
     }

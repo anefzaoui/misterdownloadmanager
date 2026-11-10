@@ -254,6 +254,35 @@ pub fn add_site(sites: &str, host: &str) -> String {
     out
 }
 
+/// The sites a list holds (space-separated), as a file: one a line (Options → Download panels,
+/// #424).
+pub fn sites_to_text(sites: &str) -> String {
+    sites.split_whitespace().fold(String::new(), |mut out, s| {
+        out.push_str(s);
+        out.push('\n');
+        out
+    })
+}
+
+/// `sites` with the patterns of a file (one or more names a line, or space-separated) added, those
+/// not there already whatever their case, and how many that was. A name holding anything else
+/// than a host pattern's characters is left out.
+pub fn merge_sites(sites: &str, text: &str) -> (String, usize) {
+    let mut out: Vec<String> = sites.split_whitespace().map(str::to_owned).collect();
+    let mut added = 0;
+    for name in text.split_whitespace().take(5000) {
+        let usable = name.len() <= 253
+            && name.chars().all(|c| {
+                c.is_alphanumeric() || matches!(c, '.' | '-' | '_' | ':' | '[' | ']' | '*' | '/')
+            });
+        if usable && !out.iter().any(|s| s.eq_ignore_ascii_case(name)) {
+            out.push(name.to_owned());
+            added += 1;
+        }
+    }
+    (out.join(" "), added)
+}
+
 /// Does `name`'s extension appear in `types` (Options → File types: `EXE ZIP R0*`)?
 pub fn type_listed(types: &str, name: &str) -> bool {
     let Some((_, ext)) = name.rsplit_once('.') else {
@@ -404,6 +433,21 @@ mod tests {
     const CHROME: &str = "Google Chrome";
     const EDGE: &str = "Microsoft Edge";
     const FIREFOX: &str = "Mozilla Firefox";
+
+    /// #424: the list of sites as a file and back: one a line, duplicates (whatever their case)
+    /// not added, what isn't a site left out.
+    #[test]
+    fn sites_export_and_import() {
+        assert_eq!(sites_to_text("a.test *.b.test"), "a.test\n*.b.test\n");
+        assert_eq!(sites_to_text(""), "");
+        let (merged, added) = merge_sites(
+            "a.test b.test",
+            "A.TEST\r\nc.test  d.test\n*.e.test\nbad<name\n",
+        );
+        assert_eq!(merged, "a.test b.test c.test d.test *.e.test");
+        assert_eq!(added, 3);
+        assert_eq!(merge_sites("a.test", "").0, "a.test");
+    }
 
     #[test]
     fn browsers_by_name() {

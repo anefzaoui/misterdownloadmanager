@@ -521,6 +521,10 @@ These ship in a later version, when they're ready.
 
 - 🔄 Dailymotion's embedded player from the browser's button: no formats, the embedding site's
   Referer refused ([#359](https://github.com/anefzaoui/misterdownloadmanager/issues/359)): fix in review
+- 🔄 Linux: Dark Mode support on window managers such as Hyprland and sway, which often have no
+  desktop portal to say dark or light ([#324](https://github.com/anefzaoui/misterdownloadmanager/issues/324)): fix in review
+- 🔄 A bright white line under the menu bar in dark mode
+  ([#379](https://github.com/anefzaoui/misterdownloadmanager/issues/379)): fix in review
 - 🔄 Closing the main window follows a setting (on by default, MDM keeps running), and with no
   tray icon the window goes to the taskbar instead of vanishing: fix in review
   ([#457](https://github.com/anefzaoui/misterdownloadmanager/pull/457))
@@ -541,6 +545,8 @@ These ship in a later version, when they're ready.
   [#345](https://github.com/anefzaoui/misterdownloadmanager/issues/345)): fix in review
 - 🔄 A page that starts a download by script being saved instead of the file
   ([#374](https://github.com/anefzaoui/misterdownloadmanager/issues/374)): fix in review
+- 🔄 A gofile share link saving a web page instead of the file
+  ([#346](https://github.com/anefzaoui/misterdownloadmanager/issues/346)): fix in review
 - 🔄 "Hide tab" in a download's window only going back to Download status, the tab still
   there ([#326](https://github.com/anefzaoui/misterdownloadmanager/issues/326)): fix in review
 - 🔍 A site's bot check refusing MDM's request (testfile.org, a Cloudflare challenge): the\n  message now says so ([#376](https://github.com/anefzaoui/misterdownloadmanager/issues/376)); a way to hand the download back to the browser is still to decide
@@ -549,6 +555,10 @@ These ship in a later version, when they're ready.
   ([#321](https://github.com/anefzaoui/misterdownloadmanager/issues/321)): fix in review
 - 🔄 **Open folder** on a torrent still downloading
   ([#354](https://github.com/anefzaoui/misterdownloadmanager/issues/354)): fix in review
+- 🔄 Export and Import for the sites the download button stays off
+  ([#424](https://github.com/anefzaoui/misterdownloadmanager/issues/424)): fix in review
+- 🔄 Videos in the progress window: no percentage when the size isn't known, and the real file
+  size at the end: fix in review
 - 🔄 X (Twitter) videos from the media list named after the tab instead of a random file name
   ([#493](https://github.com/anefzaoui/misterdownloadmanager/issues/493)): fix in review
 - 🔄 **Open folder** on Windows always starting Explorer, even with another file manager set up
