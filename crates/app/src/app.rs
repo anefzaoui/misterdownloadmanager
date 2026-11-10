@@ -1458,10 +1458,9 @@ impl App {
     fn add(&mut self, fi: &mut FileInfo, start: Start) {
         // Only a folder other than the category's becomes its new one (an unchanged folder
         // stays "the default", following Downloads).
-        if let Some((cat, dir)) = fi.remembered()
-            && std::path::Path::new(&dir) != self.settings.category_dir(cat, &self.downloads)
-        {
-            self.settings.set_category_dir(cat, Some(dir));
+        if let Some((cat, dir)) = fi.remembered() {
+            self.settings
+                .keep_category_dir(cat, std::path::Path::new(&dir), &self.downloads);
         }
         let id = self.push_item(
             fi.url.clone(),
@@ -1528,10 +1527,9 @@ impl App {
 
     /// Download File Info closed with Start / Later on a download that started early.
     fn adopt_early(&mut self, fi: &FileInfo, id: u64, start: Start) {
-        if let Some((cat, dir)) = fi.remembered()
-            && std::path::Path::new(&dir) != self.settings.category_dir(cat, &self.downloads)
-        {
-            self.settings.set_category_dir(cat, Some(dir));
+        if let Some((cat, dir)) = fi.remembered() {
+            self.settings
+                .keep_category_dir(cat, std::path::Path::new(&dir), &self.downloads);
         }
         let dest = fi.dest();
         let now = matches!(start, Start::Now);
@@ -8388,6 +8386,17 @@ impl App {
                 Outcome::Open => {}
                 Outcome::Closed => self.video_dlg = None,
                 Outcome::Done(out) => {
+                    // Options' "Change folder for this category on last selected", which
+                    // Download File Info follows through its box (#475).
+                    if self.settings.change_folder_on_last
+                        && self.settings.keep_category_dir(
+                            Category::Video,
+                            &v.save_folder(),
+                            &self.downloads,
+                        )
+                    {
+                        self.dirty = true;
+                    }
                     self.video_dlg = None;
                     match out {
                         crate::videodlg::VideoOut::One(add) => self.add_video(add),
