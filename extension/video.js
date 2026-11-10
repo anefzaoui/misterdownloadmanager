@@ -736,6 +736,9 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
     }
     place = snap(d.at);
     chosen = true;
+    // It snaps to its corner although the pointer is still on it (#560's pin is for a video
+    // that changes under a still pointer, not for the user's own move).
+    pinned = null;
     position();
     lastMove = Date.now();
     // Remembered per site, not in a private window (it would keep the site's name), and the
