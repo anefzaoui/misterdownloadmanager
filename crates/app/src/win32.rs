@@ -2141,6 +2141,25 @@ impl raw_window_handle::HasWindowHandle for OwnWindow {
     }
 }
 
+/// A drag out of Download complete is under way ([`drag_file_out`]): one at a time, the mouse
+/// holds only one.
+static DRAGGING: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+/// When the last drag out ended.
+static DRAG_ENDED: std::sync::Mutex<Option<std::time::Instant>> = std::sync::Mutex::new(None);
+
+/// A drag out is under way, or ended a moment ago. Its keys are its own: Escape cancels the
+/// drag in OLE's loop, on the drag's thread, while the window (whose thread the keys go to)
+/// sees them too, often after the drag already ended, and must not take Escape as Close.
+pub fn dragging_out() -> bool {
+    use std::sync::atomic::Ordering;
+    DRAGGING.load(Ordering::Acquire)
+        || DRAG_ENDED
+            .lock()
+            .ok()
+            .and_then(|t| *t)
+            .is_some_and(|t| t.elapsed() < std::time::Duration::from_millis(500))
+}
+
 /// Start dragging `file` out of our window (to Explorer, a mail, a chat…), like IDM's Download
 /// complete grip. The drag preview is the file's shell icon. The window is the one holding the
 /// mouse (the button is down on its grip: winit captured the mouse for it), so it is the right
@@ -2154,9 +2173,7 @@ impl raw_window_handle::HasWindowHandle for OwnWindow {
 /// thread's input ([`with_shared_input`]): OLE reads the held button and takes the mouse from
 /// there, as it did from the window thread.
 pub fn drag_file_out(title: &str, file: &std::path::Path) -> Result<(), String> {
-    use std::sync::atomic::{AtomicBool, Ordering};
-    // One drag at a time: the mouse holds only one.
-    static DRAGGING: AtomicBool = AtomicBool::new(false);
+    use std::sync::atomic::Ordering;
     let hwnd = own_capture()
         .or_else(|| find_own_window(title))
         .ok_or("window not found")? as isize;
@@ -2169,6 +2186,9 @@ pub fn drag_file_out(title: &str, file: &std::path::Path) -> Result<(), String> 
             tracing::warn!("drag out: the window's input isn't shared");
         }
         let result = drag_on_this_thread(hwnd as HWND, &file);
+        if let Ok(mut t) = DRAG_ENDED.lock() {
+            *t = Some(std::time::Instant::now());
+        }
         DRAGGING.store(false, Ordering::Release);
         // OLE's drag loop took the button's release, so the window never saw it: without it
         // the next press on the grip only ended the drag the window still thought was on, and
