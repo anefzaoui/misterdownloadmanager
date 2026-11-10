@@ -902,8 +902,13 @@ fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
         // Added: the order of addition itself (ids only grow), exact even without a time.
         list::ADDED => (it.id as f64, String::new()),
         list::SOURCE => (f64::from(u8::from(it.torrent.is_some())), String::new()),
-        // A torrent's peers, and its share ratio (not the text: "10" would come before "9").
-        // Anything but a torrent, and a torrent that has taken nothing, sort as zero.
+        // A torrent's upload, its peers, and its share ratio (not the text: "10" would come
+        // before "9"). Anything but a torrent, and a torrent that has taken nothing, sorts as
+        // zero.
+        list::UPLOAD => (
+            it.torrent.as_ref().map_or(0.0, |t| t.up_speed),
+            String::new(),
+        ),
         list::PEERS => (
             it.torrent.as_ref().map_or(0.0, |t| t.peers as f64),
             String::new(),
@@ -1432,14 +1437,18 @@ impl App {
                     // i18n: where a download comes from: a web or FTP server (shown on a small colored label)
                     "Web".into()
                 },
-                // A torrent's own numbers (#357): the peers it has, and what it gave back
-                // against what it took (as the progress window's General tab works it out).
+                // A torrent's own numbers (#357), in their slots' order (list::PEERS, RATIO, then
+                // UPLOAD, added last so saved layouts keep their meaning): the peers it has, what
+                // it gave back against what it took (as the General tab works it out), what it sends.
                 it.torrent
                     .as_ref()
                     .map_or(String::new(), |t| crate::i18n::integer(t.peers as u64)),
                 it.torrent.as_ref().map_or(String::new(), |t| {
                     crate::torrents::share_ratio_text(t.uploaded, it.downloaded)
                 }),
+                it.torrent
+                    .as_ref()
+                    .map_or(String::new(), |t| model::rate(t.up_speed)),
             ],
         }
     }
@@ -1845,7 +1854,7 @@ impl App {
             for i in self.items.iter_mut() {
                 i.torrent_check = None;
             }
-            crate::torrents::clear_peers(self.items.iter_mut().filter_map(|i| i.torrent.as_mut()));
+            crate::torrents::clear_live(self.items.iter_mut().filter_map(|i| i.torrent.as_mut()));
             return;
         };
         let limits = self.settings.sharing_limits();
@@ -1860,6 +1869,7 @@ impl App {
                 // Out of the session (released when it finished): no check is running.
                 i.torrent_check = None;
                 spec.peers = 0;
+                spec.up_speed = 0.0;
                 continue;
             };
             // Keep the session's in-memory checking progress visible for stopped/complete
@@ -1874,6 +1884,7 @@ impl App {
             // The peers it has now, for the list's "Peers" column (#357). Not a reason to save:
             // it changes as peers come and go, and the next tick brings the list up to date.
             spec.peers = st.peers_live;
+            spec.up_speed = st.up_speed;
             if st.phase == mdm_torrent::Phase::Finished && dt > 0 {
                 spec.seeded_secs += dt;
                 changed = true;
@@ -3890,6 +3901,7 @@ impl App {
                 uploaded: 0,
                 seeded_secs: 0,
                 peers: 0,
+                up_speed: 0.0,
                 upload_limit: None,
                 in_order: add.in_order,
                 ends_first: true,

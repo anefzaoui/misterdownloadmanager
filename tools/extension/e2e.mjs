@@ -1944,14 +1944,15 @@ const CASES = {
     return `sent ${address.replace(LAB, "")}`;
   },
 
-  async video(t) {
-    return videoButton(t.session, t.last);
-  },
-
+  // Before `video`: its last step turns the button off for the lab's site in the last browser.
   async videoFocus(t) {
     // Headless Firefox refuses the player's fullscreen request and Tab's focus on it here.
     if (t.kind === "firefox") throw new Skip("headless Firefox denies fullscreen and keyboard focus to the test page");
     return videoFocus(t.session);
+  },
+
+  async video(t) {
+    return videoButton(t.session, t.last);
   },
 
   // MDM not running: the host starts it (off the screens, with the test's data folder: both
