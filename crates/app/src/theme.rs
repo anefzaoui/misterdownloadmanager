@@ -185,9 +185,8 @@ pub fn apply_mode(ctx: &egui::Context) {
         egui::epaint::FontColorTransferFunction::LIGHT_MODE_DEFAULT
     };
     ctx.all_styles_mut(|s| s.visuals.text_options.color_transfer_function = tf);
-    // eframe applies egui's theme preference to every window's caption; keep it in step so it
-    // doesn't reset the captions to the system theme. egui's dark or light style is the mode's
-    // variant (`apply_theme` puts each variant into its egui theme).
+    // egui's dark or light style is the mode's variant (`apply_theme` puts each variant into its
+    // egui theme). It leaves the windows' captions alone (`apply`: `sync_window_theme`).
     ctx.set_theme(if dark() {
         egui::ThemePreference::Dark
     } else {
@@ -944,6 +943,11 @@ pub fn apply(ctx: &egui::Context) {
         // Ctrl + / Ctrl − / Ctrl 0 step through View → Interface size and are saved (scale.rs),
         // not egui's own 10 % steps.
         o.zoom_with_keyboard = false;
+        // Every window's theme (its caption) is MDM's to give: the main window's in
+        // `apply_mode`, each dialog's in `dialogs::keep_theme`, the caption the theme's surface.
+        // egui's own would set the mode's instead, behind them, and the caption would have to
+        // be checked with DWM again and again (#633).
+        o.sync_window_theme = false;
     });
     egui_extras::install_image_loaders(ctx);
     apply_theme(ctx);

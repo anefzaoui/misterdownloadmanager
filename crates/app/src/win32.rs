@@ -17,7 +17,7 @@ use windows_sys::Win32::UI::Shell::{
 };
 use windows_sys::Win32::UI::WindowsAndMessaging::{
     DestroyIcon, EnumWindows, GWL_EXSTYLE, GWL_STYLE, GetIconInfo, GetWindowLongPtrW,
-    GetWindowTextW, GetWindowThreadProcessId, ICONINFO, NCCALCSIZE_PARAMS, SWP_FRAMECHANGED,
+    GetWindowThreadProcessId, ICONINFO, InternalGetWindowText, NCCALCSIZE_PARAMS, SWP_FRAMECHANGED,
     SWP_NOACTIVATE, SWP_NOMOVE, SWP_NOZORDER, SetWindowLongPtrW, SetWindowPos, WM_NCCALCSIZE,
     WM_NCHITTEST, WS_EX_DLGMODALFRAME, WS_THICKFRAME,
 };
@@ -40,8 +40,11 @@ unsafe extern "system" fn enum_cb(hwnd: HWND, lparam: LPARAM) -> windows_sys::co
     if pid != f.pid {
         return 1;
     }
-    // SAFETY: GetWindowTextW writes at most buf.len() units, the NUL included.
-    let n = unsafe { GetWindowTextW(hwnd, f.buf.as_mut_ptr(), f.buf.len() as i32) };
+    // The title as the window keeps it, read without a message: GetWindowTextW sends WM_GETTEXT
+    // to a window of this process, and one whose thread is busy (on a stalled disk: the file
+    // icons' COM window) held the window's thread until it answered (#583).
+    // SAFETY: InternalGetWindowText writes at most buf.len() units, the NUL included.
+    let n = unsafe { InternalGetWindowText(hwnd, f.buf.as_mut_ptr(), f.buf.len() as i32) };
     if n > 0 && f.buf[..n as usize] == f.title[..] {
         f.found = hwnd;
         return 0;
@@ -1472,6 +1475,90 @@ mod find_own_window_tests {
             }
         }
     }
+
+    /// A hidden test window of this thread titled `title`, destroyed by the caller.
+    fn test_window(title: &str) -> HWND {
+        let class: Vec<u16> = "mdm-find-own-window-test-2\0".encode_utf16().collect();
+        let t: Vec<u16> = title.encode_utf16().chain(Some(0)).collect();
+        // SAFETY: a class registered with the system's own procedure (again: a no-op), and a
+        // hidden window of it on this thread; the strings are NUL-terminated.
+        unsafe {
+            let mut wc: WNDCLASSW = zeroed();
+            wc.lpfnWndProc = Some(DefWindowProcW);
+            wc.lpszClassName = class.as_ptr();
+            RegisterClassW(&wc);
+            let h = CreateWindowExW(
+                0,
+                class.as_ptr(),
+                t.as_ptr(),
+                0,
+                -20000,
+                -20000,
+                100,
+                100,
+                std::ptr::null_mut(),
+                std::ptr::null_mut(),
+                std::ptr::null_mut(),
+                std::ptr::null(),
+            );
+            assert!(!h.is_null());
+            h
+        }
+    }
+
+    /// #583: looking for our window doesn't wait for another thread of this process whose window
+    /// isn't answering (busy, on a stalled disk): the titles are read without a message.
+    #[test]
+    fn a_busy_threads_window_does_not_hold_the_search() {
+        let pid = std::process::id();
+        let (made, window_made) = std::sync::mpsc::channel();
+        let (release, released) = std::sync::mpsc::channel::<()>();
+        let busy = std::thread::spawn(move || {
+            let h = test_window(&format!("mdm busy window {pid}"));
+            made.send(()).unwrap();
+            // Busy: no message is taken until the test is done.
+            let _ = released.recv();
+            // SAFETY: the window made above, on this thread.
+            unsafe { DestroyWindow(h) };
+        });
+        window_made.recv().unwrap();
+        let (answer, answered) = std::sync::mpsc::channel();
+        std::thread::spawn(move || {
+            let _ = answer.send(find_own_window(&format!("mdm no such window {pid}")).is_some());
+        });
+        let got = answered.recv_timeout(std::time::Duration::from_secs(3));
+        release.send(()).unwrap();
+        busy.join().unwrap();
+        assert_eq!(
+            got,
+            Ok(false),
+            "the search waited for the busy thread's window"
+        );
+    }
+
+    /// #633: DWM is asked for a window's caption once per change, not each time it's re-asserted.
+    #[test]
+    fn the_caption_goes_to_dwm_only_when_it_changes() {
+        use std::sync::atomic::Ordering::Relaxed;
+        let title = format!("mdm caption test {}", std::process::id());
+        let h = test_window(&title);
+        let calls = || CAPTION_DWM_CALLS.load(Relaxed);
+        let before = calls();
+        for _ in 0..50 {
+            assert!(caption_dark(&title, true));
+        }
+        assert_eq!(calls() - before, 1, "dark, asked once");
+        for _ in 0..50 {
+            assert!(caption_dark(&title, false));
+        }
+        assert_eq!(calls() - before, 2, "light, once more");
+        assert!(caption_dark(&title, true));
+        assert_eq!(calls() - before, 3, "dark again");
+        // SAFETY: the window made above, on this thread.
+        unsafe { DestroyWindow(h) };
+        assert!(!caption_dark(&title, true), "gone: not found");
+        assert_eq!(calls() - before, 3);
+    }
 }
 
 #[cfg(test)]
@@ -2087,27 +2174,53 @@ pub fn menu_text_width(text: &str) -> i32 {
     w
 }
 
+thread_local! {
+    /// The caption each of our windows was last given by [`caption_dark`] (dark: true).
+    static CAPTION_DARK: std::cell::RefCell<std::collections::HashMap<isize, bool>> =
+        Default::default();
+}
+
+/// Whether DWM is to be told `dark` for window `hwnd`: not when that is what it was last told.
+/// Windows that are gone are forgotten.
+fn caption_news(hwnd: isize, dark: bool, alive: impl Fn(isize) -> bool) -> bool {
+    CAPTION_DARK.with(|m| {
+        let Ok(mut m) = m.try_borrow_mut() else {
+            return true;
+        };
+        if m.get(&hwnd) == Some(&dark) {
+            return false;
+        }
+        m.retain(|h, _| alive(*h));
+        m.insert(hwnd, dark);
+        true
+    })
+}
+
+/// How many times [`caption_dark`] has asked DWM, for the tests.
+#[cfg(test)]
+static CAPTION_DWM_CALLS: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+
 /// Give our window titled `title` a dark or light caption (DWM). Returns false if not found.
+/// DWM is asked only when the window's caption changes, never again for the same one: a call
+/// into DWM waits on a system that is stalled (its disk, its memory), and the window's thread
+/// waited with it, every 2 s (#633). Callers call it when the theme changes and for a new window.
 pub fn caption_dark(title: &str, dark: bool) -> bool {
     use windows_sys::Win32::Graphics::Dwm::{DWMWA_USE_IMMERSIVE_DARK_MODE, DwmSetWindowAttribute};
+    use windows_sys::Win32::Graphics::Gdi::{RDW_FRAME, RDW_INVALIDATE, RedrawWindow};
+    use windows_sys::Win32::UI::WindowsAndMessaging::IsWindow;
     let Some(hwnd) = find_own_window(title) else {
         return false;
     };
-    use windows_sys::Win32::Graphics::Dwm::DwmGetWindowAttribute;
-    use windows_sys::Win32::Graphics::Gdi::{RDW_FRAME, RDW_INVALIDATE, RedrawWindow};
+    // SAFETY: a plain query; any value is accepted as the handle.
+    let alive = |h: isize| unsafe { IsWindow(h as HWND) } != 0;
+    if !caption_news(hwnd as isize, dark, alive) {
+        return true;
+    }
+    #[cfg(test)]
+    CAPTION_DWM_CALLS.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
     let v: i32 = dark.into();
     // SAFETY: documented attribute with a 4-byte BOOL value.
     unsafe {
-        let mut cur: i32 = -1;
-        DwmGetWindowAttribute(
-            hwnd,
-            DWMWA_USE_IMMERSIVE_DARK_MODE as u32,
-            &mut cur as *mut i32 as *mut c_void,
-            size_of::<i32>() as u32,
-        );
-        if cur == v {
-            return true;
-        }
         DwmSetWindowAttribute(
             hwnd,
             DWMWA_USE_IMMERSIVE_DARK_MODE as u32,

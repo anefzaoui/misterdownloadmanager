@@ -535,6 +535,10 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 Windows: the window stopping on a stalled system while it checked its title bar's colours
+  ([#633](https://github.com/anefzaoui/misterdownloadmanager/issues/633),
+  [#583](https://github.com/anefzaoui/misterdownloadmanager/issues/583)): the colours are now set
+  once, when a window opens or the theme changes; fix in review
 - 🔄 The window not answering while a file was dragged out of Download complete, for as long as
   the program under the pointer took ([#561](https://github.com/anefzaoui/misterdownloadmanager/issues/561)): the drag now runs beside the window; fix
   in review, to check with a real drag

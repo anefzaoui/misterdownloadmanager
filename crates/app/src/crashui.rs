@@ -190,6 +190,10 @@ struct ReportWindow {
     icon: Option<egui::TextureHandle>,
     /// Windows' caption follows the window's theme (set once the window exists).
     caption_set: bool,
+    /// DWM gave the caption its light or dark (once: asked every second, it caught the window's
+    /// thread in a stalled system, #633).
+    #[cfg(windows)]
+    caption_dwm: bool,
     /// Brought inside the screen once it exists (scale::fit_window, #262).
     fitted: bool,
 }
@@ -208,6 +212,8 @@ impl ReportWindow {
             told: None,
             icon: None,
             caption_set: false,
+            #[cfg(windows)]
+            caption_dwm: false,
             fitted: false,
         }
     }
@@ -325,12 +331,14 @@ impl eframe::App for ReportWindow {
             let layout = egui::vec2(CLIENT[0], CLIENT[1]);
             crate::scale::fit_window(ui.ctx(), egui::vec2(120.0, 120.0), Some(layout));
         }
-        // Re-asserted as the main window does (winit can set it back from Windows' own mode).
+        // And through DWM, as the main window's, once the window is there.
         #[cfg(windows)]
-        crate::win32::caption_dark(
-            crate::i18n::t("Mister Download Manager crash report"),
-            crate::theme::dark_surface(),
-        );
+        if !self.caption_dwm {
+            self.caption_dwm = crate::win32::caption_dark(
+                crate::i18n::t("Mister Download Manager crash report"),
+                crate::theme::dark_surface(),
+            );
+        }
         while let Ok(e) = self.events.try_recv() {
             if matches!(e, Event::Recovered) {
                 self.recovered = true;
