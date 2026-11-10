@@ -522,6 +522,8 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 A freeze on a slow disk, the data folder looked up on every tick
+  ([#565](https://github.com/anefzaoui/misterdownloadmanager/issues/565)): fix in review
 - 🔄 A progress window's title bar buttons not answering
   ([#540](https://github.com/anefzaoui/misterdownloadmanager/issues/540)): a window with a title of
   256 characters or more got the system's title bar above MDM's own; that part is fixed, in review.
