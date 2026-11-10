@@ -502,6 +502,8 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 Linux and macOS: the system's gallery-dl used when MDM has none of its own, as yt-dlp is
+  ([#571](https://github.com/anefzaoui/misterdownloadmanager/issues/571)): in review
 - 🔄 Videos sent in pieces (HLS, DASH) downloading several pieces at once, as many as a file's
   connections ([#531](https://github.com/anefzaoui/misterdownloadmanager/issues/531)): in review;
   a video in one file (most of YouTube's) still comes over one connection
@@ -536,6 +538,8 @@ These ship in a later version, when they're ready.
 - 🔄 Chromium browsers: another extension's file names and folders (Save In's) lost while MDM's
   extension was on, for downloads it left to the browser
   ([#578](https://github.com/anefzaoui/misterdownloadmanager/issues/578)): fix in review
+- 🔄 Without ffmpeg, YouTube's sound alone saved as `.mp4` though it was raw AAC from HLS pieces,
+  which no player opened ([#569](https://github.com/anefzaoui/misterdownloadmanager/issues/569)): fix in review
 - 🔄 A progress window's title bar buttons not answering
   ([#540](https://github.com/anefzaoui/misterdownloadmanager/issues/540)): a window with a title of
   256 characters or more got the system's title bar above MDM's own; that part is fixed, in review.

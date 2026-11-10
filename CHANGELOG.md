@@ -7,11 +7,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- Linux and macOS: a gallery-dl installed by the system (a package manager, Homebrew, pip) is found and used when MDM has none of its own, as yt-dlp is; **Helpers** can switch to MDM's own copy where MDM has one (Windows and Linux x86-64) ([#571](https://github.com/anefzaoui/misterdownloadmanager/issues/571)).
 - Videos a site sends in pieces (HLS and DASH streams, as many sites other than YouTube do) download several pieces at once, as many as **Options → Connection** gives a file (8 by default): against a test server that slows each connection, 4 at once took under a third of the time, 8 under a fifth. With a speed limit on, they still come one at a time, so the limit holds; a video in one file, as most of YouTube's are, is unchanged. The command line's `video-get` and `playlist-get` take `-c` for it ([#531](https://github.com/anefzaoui/misterdownloadmanager/issues/531)).
 - Linux and macOS: a yt-dlp installed by the system (a package manager, Homebrew) is found and used when MDM has none of its own; **Helpers** can still switch to MDM's own copy, kept up to date ([#452](https://github.com/anefzaoui/misterdownloadmanager/issues/452)).
 
 ### Fixed
 
+- **Download video** without ffmpeg (on macOS and Linux, where MDM doesn't install it): the sound alone comes from a format the site sends as one file when it has one, and a sound or video that came as an HLS stream's pieces is saved as what it is (`.aac`, `.ts`) instead of `.mp4`, which players refused to open ([#569](https://github.com/anefzaoui/misterdownloadmanager/issues/569)).
 - A freeze when the disk was slow: MDM looked on the disk for a portable data folder on every tick of the window; it now works the data folder out once ([#565](https://github.com/anefzaoui/misterdownloadmanager/issues/565)).
 - macOS 15 and later: Chinese names and text find the PingFang font again, which moved into the system's font assets, with Hiragino Sans GB and STHeiti as fallbacks ([#541](https://github.com/anefzaoui/misterdownloadmanager/issues/541)).
 - The video button follows **Options → General → Customize MDM Download panels in browsers** in the pages already open: switched off, or its site listed, it goes within a few seconds, without reloading the page (it stayed until a reload, and on YouTube, which never reloads, for good). A site listed as `example.com` now takes `www.example.com` and its other subdomains too, and a player embedded from another site follows the site in the address bar ([#532](https://github.com/anefzaoui/misterdownloadmanager/issues/532)).
