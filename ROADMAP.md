@@ -532,6 +532,9 @@ These ship in a later version, when they're ready.
   ([#357](https://github.com/anefzaoui/misterdownloadmanager/issues/357)): the last one in review
 - 🔄 The browser extension's media list naming a file after its page, as an option: in review
 - 🔄 Malay: a native speaker's check of the menus, toolbar and list columns: in review
+- 🔄 Cancel in Download File Info asking whether the downloads waiting behind it are cancelled
+  too (a browser selection's arrive one by one)
+  ([#394](https://github.com/anefzaoui/misterdownloadmanager/issues/394)): in review
 
 ### Bugs being looked into
 

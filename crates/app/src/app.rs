@@ -8563,6 +8563,9 @@ impl App {
         }
         if let Some(mut fi) = self.file_info.take() {
             self.start_early(&mut fi);
+            // The downloads waiting their turn behind this one (a browser selection's arrive
+            // one by one): Cancel asks whether they are cancelled too (#394).
+            fi.waiting = self.file_info_waiting.len();
             let out = fi.show(ctx, &mut self.icons);
             if std::mem::take(&mut fi.new_category) {
                 self.category_for_file_info = true;
@@ -8593,6 +8596,12 @@ impl App {
             match out {
                 Outcome::Open => self.file_info = Some(fi),
                 Outcome::Closed => {
+                    if fi.cancel_all {
+                        // #394: "Yes" to "Cancel them too?": the browser's links waiting
+                        // behind this one are cancelled with it (the browser gave its own copy
+                        // up, and Download File Info was their step).
+                        self.file_info_waiting.clear();
+                    }
                     if let Some(id) = fi.early {
                         self.stop(id);
                         self.after_stop.push((id, None));
