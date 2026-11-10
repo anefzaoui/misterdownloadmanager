@@ -19,7 +19,8 @@
 // forwarded), names (Content-Disposition), redirect, leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
 // to the browser), opened (a PDF or MP3 the browser would show or play), spot (the video button
 // clear of the page's controls, #421), preview (the video button kept over a hover-to-play
-// preview the page stopped as the pointer went to it, #503), csp (the video button
+// preview the page stopped as the pointer went to it, #503), steady (the video button keeping one place over
+// a preview that grows and shows its own buttons while hovered, #560), csp (the video button
 // under a strict CSP), hls (the stream a player loaded), streams (HLS and DASH players handed over
 // by the button, the right-click menu and the media list, and read by yt-dlp; #155; also with no
 // .m3u8 or .mpd, served as text/plain or octet-stream, #171), sniffed (#171 without yt-dlp: such
@@ -1816,6 +1817,81 @@ const CASES = {
       done.push(`${stop}: kept, sent ${address.replace(LAB, "")}, gone after`);
     }
     return done.join("; ");
+  },
+
+  // #560: YouTube's thumbnail previews grow while the pointer is over them and show their own
+  // sound button at the top right, and shrink back and hide it once the pointer leaves for the
+  // button. The button keeps one place as the pointer goes to it and rests on it, and a click
+  // sends the video.
+  async steady(t) {
+    await t.session.navigate(`${LAB}/page?video=${encodeURIComponent("/gen/1M/clip.mp4")}`);
+    await t.session.evaluate(`(() => {
+      const v = document.querySelector("#video");
+      v.style.transition = "transform 150ms linear";
+      let timer = 0;
+      v.addEventListener("mouseenter", () => {
+        v.style.transform = "scale(1.08)";
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          const r = v.getBoundingClientRect();
+          const c = document.createElement("button");
+          c.id = "preview-sound";
+          c.textContent = "sound";
+          c.style.cssText = "position:fixed;left:" + (r.right - 48) + "px;top:" + (r.top + 6) + "px;width:40px;height:40px;z-index:9";
+          document.body.appendChild(c);
+        }, 300);
+      });
+      v.addEventListener("mouseleave", () => {
+        clearTimeout(timer);
+        v.style.transform = "";
+        document.getElementById("preview-sound")?.remove();
+        document.body.dataset.left = String(Number(document.body.dataset.left || 0) + 1);
+      });
+      return true;
+    })()`);
+    const v0 = await rect(t.session, "#video");
+    const first = await hover(t.session, v0);
+    if (!first) throw new Error("no button over the preview");
+    // The preview grown, its sound button shown: the button takes a free corner.
+    await until("the preview's sound button", 3000, () => t.session.evaluate(`Boolean(document.getElementById("preview-sound"))`));
+    await sleep(900);
+    const c = await rect(t.session, "#preview-sound");
+    const b = await rect(t.session, "mdm-video-button");
+    if (!b) throw new Error("the button went as the preview started");
+    if (b.l < c.r && b.r > c.l && b.t < c.b && b.b > c.t) throw new Error(`the button covers the preview's sound button: ${JSON.stringify({ b, c })}`);
+    // The pointer goes to it in steps, then rests on it: the page shrinks the preview and hides
+    // its sound button. Where the button is, every step and every 100 ms while it rests.
+    const v = await rect(t.session, "#video");
+    const from = [(v.l + v.r) / 2, (v.t + v.b) / 2];
+    const to = [b.l + 14, (b.t + b.b) / 2];
+    const seen = [];
+    const at = async (what) => {
+      const r = await rect(t.session, "mdm-video-button");
+      seen.push(r ? `${what} ${Math.round(r.l)},${Math.round(r.t)}` : `${what} gone`);
+      return r;
+    };
+    for (let i = 1; i <= 8; i++) {
+      await t.session.mouse(from[0] + ((to[0] - from[0]) * i) / 8, from[1] + ((to[1] - from[1]) * i) / 8);
+      await sleep(60);
+      await at(`step ${i}`);
+    }
+    await until("the page saw the pointer leave the preview", 3000, () => t.session.evaluate(`Number(document.body.dataset.left || 0) > 0`));
+    const landed = await at("on it");
+    for (let i = 0; i < 25; i++) {
+      await sleep(100);
+      await at(`rest ${i}`);
+    }
+    // E2E_STEADY_SHOT: a screenshot after the pointer rested on it, for a PR's body.
+    if (process.env.E2E_STEADY_SHOT && t.session.screenshot) await t.session.screenshot(process.env.E2E_STEADY_SHOT);
+    const moved = seen.filter((x) => {
+      const m = /(-?\d+),(-?\d+)$/.exec(x);
+      return !m || !landed || Math.abs(m[1] - landed.l) > 2 || Math.abs(m[2] - landed.t) > 2;
+    });
+    if (!landed || moved.length) throw new Error(`the button moved: ${seen.join("; ")} (landed at ${landed ? `${Math.round(landed.l)},${Math.round(landed.t)}` : "none"})`);
+    const address = await clickButton(t.session, landed);
+    if (address !== `${LAB}/gen/1M/clip.mp4`) throw new Error(`the video window got ${address}`);
+    await t.session.mouse(5, 5);
+    return `${Math.abs(first.l - b.l) > 2 || Math.abs(first.t - b.t) > 2 ? "moved" : "stayed"} off the preview's sound button, at ${Math.round(b.l - v.l)},${Math.round(b.t - v.t)}; then still for ${seen.length} looks (8 steps there, 2.5 s on it while the preview shrank and hid its button), sent ${address.replace(LAB, "")}`;
   },
 
   // A player playing a stream (a blob: in the page): the button sends the manifest it loaded.
