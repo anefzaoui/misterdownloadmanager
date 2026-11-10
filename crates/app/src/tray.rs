@@ -329,6 +329,14 @@ fn picture() -> Result<tray_icon::Icon, String> {
 mod tests {
     use super::*;
 
+    #[test]
+    fn menu_names_are_shortened_and_keep_their_ampersands() {
+        assert_eq!(short("a & b.zip"), "a && b.zip");
+        let s = short(&"x".repeat(60));
+        assert_eq!(s.chars().count(), MENU_NAME_MAX + 1);
+        assert!(s.ends_with('…'));
+    }
+
     /// #529: the tray's picture is a real one on every system, macOS's menu bar included (where
     /// the window icon, `app_icon`, is empty on purpose).
     #[test]
@@ -344,13 +352,5 @@ mod tests {
             0,
             "the Dock keeps the bundle's icon"
         );
-    }
-
-    #[test]
-    fn menu_names_are_shortened_and_keep_their_ampersands() {
-        assert_eq!(short("a & b.zip"), "a && b.zip");
-        let s = short(&"x".repeat(60));
-        assert_eq!(s.chars().count(), MENU_NAME_MAX + 1);
-        assert!(s.ends_with('…'));
     }
 }
