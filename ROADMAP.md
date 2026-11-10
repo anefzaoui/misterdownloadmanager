@@ -485,14 +485,22 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
   ([#311](https://github.com/anefzaoui/misterdownloadmanager/issues/311))
 - ✅ The Download video button on YouTube in Chrome, Edge, Brave, Opera and Vivaldi
 
+## Done since 0.5.2
+
+These ship in the next version.
+
+- ✅ The build and release workflows: each job gets only the permissions it needs, and every
+  action and release tool is pinned to an exact version
+- ✅ A freeze on a slow disk, the data folder looked up on every tick
+  ([#565](https://github.com/anefzaoui/misterdownloadmanager/issues/565))
+- ✅ A `funding.json` file, the open format funds use to find projects and what they need
+
 ## Being worked on
 
 These ship in a later version, when they're ready.
 
 ### Being built
 
-- 🔄 The build and release workflows: each job gets only the permissions it needs, and every
-  action and release tool is pinned to an exact version: in review
 - 🔄 Videos sent in pieces (HLS, DASH) downloading several pieces at once, as many as a file's
   connections ([#531](https://github.com/anefzaoui/misterdownloadmanager/issues/531)): in review;
   a video in one file (most of YouTube's) still comes over one connection
@@ -524,8 +532,6 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
-- 🔄 A freeze on a slow disk, the data folder looked up on every tick
-  ([#565](https://github.com/anefzaoui/misterdownloadmanager/issues/565)): fix in review
 - 🔄 A progress window's title bar buttons not answering
   ([#540](https://github.com/anefzaoui/misterdownloadmanager/issues/540)): a window with a title of
   256 characters or more got the system's title bar above MDM's own; that part is fixed, in review.
