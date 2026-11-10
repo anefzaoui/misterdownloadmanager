@@ -100,14 +100,14 @@ type Tools = (
 /// stops working. Once per session, when the video window opens and yt-dlp is installed, the
 /// newest release is fetched in the background (mdm_tools::install_latest: signed by yt-dlp's
 /// developers, never older, switched atomically, the previous version kept). Quiet: a failure
-/// leaves the installed version in use.
+/// leaves the installed version in use. A system copy is left to its package manager.
 pub fn refresh_ytdlp(rt: &tokio::runtime::Handle) {
     use std::sync::atomic::{AtomicBool, Ordering};
     static DONE: AtomicBool = AtomicBool::new(false);
     let Some(dir) = mdm_tools::tools_dir() else {
         return;
     };
-    if mdm_tools::installed(&dir).is_none() || DONE.swap(true, Ordering::SeqCst) {
+    if !mdm_tools::refreshable(&dir) || DONE.swap(true, Ordering::SeqCst) {
         return;
     }
     rt.spawn(async move {
@@ -168,8 +168,14 @@ impl VideoDialog {
 
     /// Opened for `page` (Add URL was given a video's page, or the browser's button was
     /// clicked with `context`): looks it up at once.
-    pub fn for_page(folder: PathBuf, page: &str, context: mdm_ipc::Command) -> Self {
-        let page = mdm_tools::pages::video_address(page);
+    pub fn for_page(folder: PathBuf, page: &str, mut context: mdm_ipc::Command) -> Self {
+        let own = mdm_tools::pages::video_address(page);
+        // An embedded player taken to the video's own page (#359): the site that embedded it
+        // isn't that page's referer, and Dailymotion refuses its own page asked with one (403).
+        if own != page {
+            context.referer = None;
+        }
+        let page = own;
         VideoDialog {
             page: page.clone(),
             from_browser: page,
@@ -386,7 +392,7 @@ impl VideoDialog {
         );
         // Helpers... open: on Close, the helpers are read again (another program, or MDM's own).
         if let Some(h) = &mut self.helpers
-            && !matches!(h.show(ctx), Outcome::Open)
+            && !matches!(h.show(ctx, rt), Outcome::Open)
         {
             self.helpers = None;
             self.tools = None;
@@ -1255,6 +1261,27 @@ pub(crate) fn choice_label(label: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #359: a Dailymotion player embedded in another site is looked up at the video's own page,
+    /// without that site as its Referer (Dailymotion answers 403); any other page keeps it.
+    #[test]
+    fn an_embedded_player_taken_to_its_page_drops_the_embedding_sites_referer() {
+        let from = |page: &str| {
+            let context = mdm_ipc::Command {
+                referer: Some("https://news.test/article".into()),
+                ..Default::default()
+            };
+            VideoDialog::for_page(PathBuf::from("v"), page, context)
+        };
+        let embed = from("https://geo.dailymotion.com/player/x1abc.html?video=x9xyz12");
+        assert_eq!(embed.page, "https://www.dailymotion.com/video/x9xyz12");
+        assert_eq!(embed.context().referer, None);
+        let plain = from("https://player.vimeo.test/video/1");
+        assert_eq!(
+            plain.context().referer.as_deref(),
+            Some("https://news.test/article")
+        );
+    }
 
     /// #317: Cloudflare's check in plain words, saying what to try for each kind of cookies had.
     #[test]
