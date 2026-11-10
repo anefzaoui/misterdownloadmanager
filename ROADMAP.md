@@ -494,6 +494,7 @@ These ship in the next version.
 - ✅ A freeze on a slow disk, the data folder looked up on every tick
   ([#565](https://github.com/anefzaoui/misterdownloadmanager/issues/565))
 - ✅ A `funding.json` file, the open format funds use to find projects and what they need
+- ✅ The tools that send the browser extension to the stores, at their current versions
 
 ## Being worked on
 
