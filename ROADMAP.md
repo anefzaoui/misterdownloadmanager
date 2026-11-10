@@ -495,6 +495,8 @@ These ship in the next version.
   ([#565](https://github.com/anefzaoui/misterdownloadmanager/issues/565))
 - ✅ A `funding.json` file, the open format funds use to find projects and what they need
 - ✅ The tools that send the browser extension to the stores, at their current versions
+- ✅ macOS: downloads to a network volume (SMB, AFP, NFS), refused for "0 bytes free"
+  ([#623](https://github.com/anefzaoui/misterdownloadmanager/issues/623))
 
 ## Being worked on
 
