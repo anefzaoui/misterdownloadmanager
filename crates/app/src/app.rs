@@ -508,6 +508,11 @@ pub struct App {
     /// Download a gallery (#58).
     gallery_dlg: Option<crate::gallerydlg::GalleryDialog>,
     torrent_dlg: Option<crate::torrentdlg::TorrentDialog>,
+    /// Magnet links and .torrents handed over while Add torrent was open (#507), oldest first:
+    /// each opens in Add torrent when the one before it closes.
+    torrent_waiting: std::collections::VecDeque<(String, Option<crate::torrents::Remote>)>,
+    /// Add torrent closed this frame: the next waiting one opens after a frame without it.
+    torrent_closed: bool,
     torrent_settings: Option<crate::torrentdlg::TorrentSettings>,
     /// Right-click → Torrent → Add trackers… (#39).
     add_trackers: Option<crate::torrentdlg::AddTrackers>,
@@ -1116,6 +1121,8 @@ impl App {
             video_dlg: None,
             gallery_dlg: None,
             torrent_dlg: None,
+            torrent_waiting: Default::default(),
+            torrent_closed: false,
             torrent_settings: None,
             add_trackers: None,
             torrent_files: None,
@@ -3697,7 +3704,19 @@ impl App {
             self.show_window(ctx);
             return;
         }
-        if self.torrent_dlg.is_some() {
+        if let Some(open) = &self.torrent_dlg {
+            // One Add torrent at a time: a torrent handed over meanwhile waits its turn (#507).
+            // Add torrent… from the menu with it open (no source) has nothing to wait for.
+            if let Some(source) = source
+                && open.source() != source
+                && !self.torrent_waiting.iter().any(|(s, _)| *s == source)
+            {
+                tracing::info!(
+                    "Add torrent is open: a torrent waits ({} waiting)",
+                    self.torrent_waiting.len() + 1
+                );
+                self.torrent_waiting.push_back((source, remote));
+            }
             return;
         }
         self.torrent_dlg = Some(crate::torrentdlg::TorrentDialog::new(
@@ -8381,14 +8400,36 @@ impl App {
         if let Some((id, (files, all, size))) = torrent_files_selection {
             self.choose_files(id, files, all, size);
         }
+        // The next torrent handed over while Add torrent was open (#507), a frame after it
+        // closed: that frame without it closes its window, and the next one opens as a window
+        // of its own (opened in the same frame, the closed window would only change its
+        // contents). One that goes to the debrid account opens nothing, and the one after it
+        // is next.
+        if self.torrent_dlg.is_none() && !self.torrent_waiting.is_empty() {
+            if std::mem::take(&mut self.torrent_closed) {
+                ctx.request_repaint();
+            } else {
+                while self.torrent_dlg.is_none()
+                    && let Some((source, remote)) = self.torrent_waiting.pop_front()
+                {
+                    self.open_torrent_dialog_with(Some(source), remote, ctx);
+                }
+            }
+        }
         if let Some(t) = &mut self.torrent_dlg {
-            match t.show(ctx, &self.rt) {
-                Outcome::Open => {}
-                Outcome::Closed => self.torrent_dlg = None,
+            let closed = match t.show(ctx, &self.rt) {
+                Outcome::Open => false,
+                Outcome::Closed => true,
                 Outcome::Done(add) => {
                     self.torrent_dlg = None;
                     self.add_torrent(add);
+                    true
                 }
+            };
+            if closed {
+                self.torrent_dlg = None;
+                self.torrent_closed = true;
+                ctx.request_repaint();
             }
         }
         if let Some(g) = &mut self.gallery_dlg {
