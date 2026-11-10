@@ -491,6 +491,8 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 The build and release workflows: each job gets only the permissions it needs, and every
+  action and release tool is pinned to an exact version: in review
 - 🔄 Videos sent in pieces (HLS, DASH) downloading several pieces at once, as many as a file's
   connections ([#531](https://github.com/anefzaoui/misterdownloadmanager/issues/531)): in review;
   a video in one file (most of YouTube's) still comes over one connection
