@@ -696,12 +696,93 @@ fn js_runtime(dirs: &[PathBuf], home: Option<&Path>) -> Option<(&'static str, Pa
         .or_else(|| program_in(dirs, "bun").map(|p| ("bun", p)))
 }
 
-/// `--js-runtimes` for this computer's Node.js or Bun, looked for once.
+/// The folders of `path` (a PATH value) a helper can walk, in their order (#508): yt-dlp looks
+/// through the PATH folders, and one Windows refused to open ("[WinError 448] The path cannot be
+/// traversed because it contains an untrusted mount point": a junction Redirection Guard
+/// doesn't trust) ended the look-up. A folder MDM can't open (gone, refused, not a folder) is
+/// left out; one reached through a junction or link is given as the folder it leads to, so the
+/// helper crosses no mount point on its way, even when Windows holds the helper to stricter
+/// rules than MDM. Every other folder stays as it was written.
+fn usable_dirs(path: &std::ffi::OsStr) -> Vec<PathBuf> {
+    std::env::split_paths(path)
+        .filter_map(|dir| usable_dir(&dir))
+        .collect()
+}
+
+fn usable_dir(dir: &Path) -> Option<PathBuf> {
+    if !std::fs::metadata(dir).ok()?.is_dir() {
+        return None;
+    }
+    // Only Windows refuses mount points (Redirection Guard); elsewhere a link is just followed.
+    #[cfg(windows)]
+    if dir.is_absolute()
+        && dir.ancestors().any(reparse_point)
+        && let Ok(real) = std::fs::canonicalize(dir)
+    {
+        return Some(without_verbatim(real));
+    }
+    Some(dir.to_owned())
+}
+
+/// A junction, a link or a mounted volume's folder.
+#[cfg(windows)]
+fn reparse_point(p: &Path) -> bool {
+    use std::os::windows::fs::MetadataExt;
+    const FILE_ATTRIBUTE_REPARSE_POINT: u32 = 0x400;
+    std::fs::symlink_metadata(p)
+        .is_ok_and(|m| m.file_attributes() & FILE_ATTRIBUTE_REPARSE_POINT != 0)
+}
+
+/// `\\?\C:\x` as `C:\x` and `\\?\UNC\server\share` as `\\server\share`, the way PATH writes
+/// them (`canonicalize` gives the long forms).
+#[cfg(windows)]
+fn without_verbatim(p: PathBuf) -> PathBuf {
+    let s = p.to_string_lossy();
+    if let Some(unc) = s.strip_prefix(r"\\?\UNC\") {
+        return PathBuf::from(format!(r"\\{unc}"));
+    }
+    match s.strip_prefix(r"\\?\") {
+        Some(rest) if rest.as_bytes().get(1) == Some(&b':') => PathBuf::from(rest),
+        _ => p.clone(),
+    }
+}
+
+/// The PATH a helper gets ([`usable_dirs`] of `path`); `None` when it can't be written back
+/// (then it's left as it was).
+fn child_path(path: &std::ffi::OsStr) -> Option<std::ffi::OsString> {
+    std::env::join_paths(usable_dirs(path)).ok()
+}
+
+/// Give `cmd` the PATH of [`child_path`]: of the one it was given, else of MDM's own. Every
+/// helper starts here ([`spawn`]), and ffmpeg, started by yt-dlp, inherits it.
+fn with_usable_path(cmd: &mut Command) {
+    let is_path = |k: &std::ffi::OsStr| {
+        if cfg!(windows) {
+            k.eq_ignore_ascii_case("PATH")
+        } else {
+            k == "PATH"
+        }
+    };
+    let path = match cmd.get_envs().find(|(k, _)| is_path(k)) {
+        Some((_, Some(given))) => given.to_owned(),
+        Some((_, None)) => return,
+        None => match std::env::var_os("PATH") {
+            Some(own) => own,
+            None => return,
+        },
+    };
+    if let Some(usable) = child_path(&path) {
+        cmd.env("PATH", usable);
+    }
+}
+
+/// `--js-runtimes` for this computer's Node.js or Bun, looked for once in the PATH folders a
+/// helper gets ([`usable_dirs`]): a node.exe behind a junction is named by its real folder.
 fn js_runtime_args() -> &'static [String] {
     static ARGS: std::sync::OnceLock<Vec<String>> = std::sync::OnceLock::new();
     ARGS.get_or_init(|| {
         let dirs: Vec<PathBuf> = std::env::var_os("PATH")
-            .map(|p| std::env::split_paths(&p).collect())
+            .map(|p| usable_dirs(&p))
             .unwrap_or_default();
         let home = std::env::var_os("HOME").map(PathBuf::from);
         js_runtime(&dirs, home.as_deref())
@@ -853,8 +934,9 @@ fn with_cookie_trouble(message: String, warnings: &[String], tail: &VecDeque<Str
 }
 
 /// Start `cmd` supervised: no window, in the job, stdout piped for the caller, stderr kept as a
-/// tail.
+/// tail, with a PATH it can walk ([`with_usable_path`], #508).
 pub fn spawn(mut cmd: Command, name: &str) -> Result<Spawned, ProcError> {
+    with_usable_path(&mut cmd);
     cmd.stdin(Stdio::null())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped());
@@ -1296,6 +1378,122 @@ mod tests {
         );
         touch(&path, "deno");
         assert_eq!(js_runtime(&dirs, Some(&home)), None);
+    }
+
+    /// #508: a helper's PATH keeps its folders in their order and leaves out those that can't be
+    /// opened (missing, a file); a plain PATH comes through unchanged.
+    #[test]
+    fn a_helpers_path_leaves_out_the_folders_it_cant_open() {
+        let root = tempfile::tempdir().unwrap();
+        let (a, b, gone, file) = (
+            root.path().join("a"),
+            root.path().join("b"),
+            root.path().join("gone"),
+            root.path().join("file"),
+        );
+        std::fs::create_dir_all(&a).unwrap();
+        std::fs::create_dir_all(&b).unwrap();
+        std::fs::write(&file, b"").unwrap();
+        let join = |dirs: &[&PathBuf]| std::env::join_paths(dirs).unwrap();
+
+        let plain = join(&[&b, &a]);
+        assert_eq!(child_path(&plain).unwrap(), plain);
+        assert_eq!(
+            child_path(&join(&[&gone, &b, &file, &a])).unwrap(),
+            join(&[&b, &a])
+        );
+
+        let mut cmd = Command::new("x");
+        cmd.env("PATH", join(&[&a, &gone]));
+        with_usable_path(&mut cmd);
+        let given: Vec<_> = cmd.get_envs().filter(|(k, _)| *k == "PATH").collect();
+        assert_eq!(given, [(std::ffi::OsStr::new("PATH"), Some(a.as_os_str()))]);
+    }
+
+    /// #508 as it happened: Windows refuses a junction to a process held to Redirection Guard
+    /// ("[WinError 448] ... untrusted mount point"). A stand-in for yt-dlp (PowerShell turning
+    /// the guard on for itself, then opening each PATH folder) fails on a PATH through a
+    /// junction made here, and passes once started as MDM starts helpers: given the junction's
+    /// real folder, in the same place.
+    #[cfg(windows)]
+    #[test]
+    fn a_helper_held_to_redirection_guard_walks_its_path() {
+        let root = tempfile::tempdir().unwrap();
+        let (real, junction) = (root.path().join("real"), root.path().join("bin"));
+        std::fs::create_dir_all(&real).unwrap();
+        std::fs::write(real.join("tool.txt"), b"").unwrap();
+        let made = Command::new("cmd")
+            .arg("/C")
+            .arg("mklink")
+            .arg("/J")
+            .arg(&junction)
+            .arg(&real)
+            .output()
+            .unwrap();
+        assert!(made.status.success(), "{made:?}");
+
+        let system = PathBuf::from(std::env::var_os("SystemRoot").unwrap()).join("System32");
+        let path = std::env::join_paths([&system, &junction]).unwrap();
+        let usable = child_path(&path).unwrap();
+        let mut dirs: Vec<PathBuf> = std::env::split_paths(&usable).collect();
+        assert_eq!(dirs.len(), 2);
+        let found = dirs.pop().unwrap();
+        assert!(
+            std::fs::canonicalize(&found).unwrap() == std::fs::canonicalize(&real).unwrap()
+                && !found.to_string_lossy().starts_with(r"\\?\")
+                && !found.ancestors().any(reparse_point),
+            "{found:?}"
+        );
+        assert_eq!(dirs, std::slice::from_ref(&system));
+
+        let script = root.path().join("standin.ps1");
+        std::fs::write(
+            &script,
+            r#"
+Add-Type -TypeDefinition 'using System; using System.Runtime.InteropServices;
+public static class Guard { [DllImport("kernel32.dll", SetLastError=true)]
+public static extern bool SetProcessMitigationPolicy(int policy, ref uint flags, UIntPtr size); }'
+[uint32]$enforce = 1
+if (-not [Guard]::SetProcessMitigationPolicy(16, [ref]$enforce, [UIntPtr]::new([uint32]4))) {
+  'no guard here'; exit 0
+}
+foreach ($d in $env:PATH.Split(';')) {
+  if ($d) {
+    try { [void][IO.Directory]::GetFiles($d, 'tool.txt') }
+    catch { [Console]::Error.WriteLine('ERROR: WinError ' + ($_.Exception.InnerException.HResult -band 0xFFFF) + ' ' + $d); exit 1 }
+  }
+}
+'walked'
+"#,
+        )
+        .unwrap();
+        let standin = || {
+            let mut cmd = Command::new(system.join(r"WindowsPowerShell\v1.0\powershell.exe"));
+            cmd.args(["-NoProfile", "-ExecutionPolicy", "Bypass", "-File"])
+                .arg(&script)
+                .env("PATH", &path);
+            cmd
+        };
+        let raw = standin().output().unwrap();
+        let said = String::from_utf8_lossy(&raw.stdout).trim().to_owned();
+        if said == "no guard here" {
+            eprintln!("this Windows has no Redirection Guard: the stand-in can't be held to it");
+            return;
+        }
+        if raw.status.success() && said == "walked" {
+            // A junction an administrator made is trusted (CI runs as one): nothing to refuse.
+            eprintln!(
+                "this junction is trusted here (made as an administrator): nothing to refuse"
+            );
+            return;
+        }
+        let refused = String::from_utf8_lossy(&raw.stderr);
+        assert!(
+            !raw.status.success() && refused.contains("WinError 448"),
+            "the junction is refused as it was on #508: {said} {refused}"
+        );
+        let out = output(standin(), "stand-in", Duration::from_secs(60)).unwrap();
+        assert_eq!(String::from_utf8_lossy(&out).trim(), "walked");
     }
 
     /// #352: the second look-up has no cookies of any kind, and everything else the first had.

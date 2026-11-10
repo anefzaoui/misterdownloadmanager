@@ -623,6 +623,8 @@ pub struct App {
     last_save: Instant,
     /// Writes the list off the window's thread.
     saver: store::Saver,
+    /// Writes `rss.json` off the window's thread: the feeds' timer saves it by itself (#513).
+    rss_saver: store::Saver,
     /// When the light/dark mode was last checked against Windows' app mode.
     theme_checked: Option<Instant>,
     /// The zoom (View → Interface size, #262) the windows were last drawn at: a change is saved,
@@ -1182,6 +1184,7 @@ impl App {
             secrets_confirmed: 0,
             last_save: Instant::now(),
             saver: store::Saver::new(),
+            rss_saver: store::Saver::writing("rss saver", crate::rss::write),
             theme_checked: None,
             zoom,
             fitted: false,
@@ -3983,13 +3986,19 @@ impl App {
         if save {
             self.save_rss();
         }
+        if let Some(Err(e)) = self.rss_saver.outcome() {
+            tracing::warn!("rss: not saved: {e}");
+        }
     }
 
+    /// On the RSS saver's thread; how it went is logged at the next tick (`rss_tick`).
     fn save_rss(&self) {
-        if let Some(path) = crate::rss::Store::path()
-            && let Err(e) = self.rss.save(&path)
-        {
-            tracing::warn!("rss: {} not saved: {e}", path.display());
+        let Some(path) = crate::rss::Store::path() else {
+            return;
+        };
+        match self.rss.encode() {
+            Ok(json) => self.rss_saver.queue(path, json),
+            Err(e) => tracing::warn!("rss: {} not saved: {e}", path.display()),
         }
     }
 
@@ -8860,6 +8869,8 @@ impl Drop for App {
         // No wake for a queue MDM won't be there to start (Linux's alarm would outlive it).
         self.wake.clear();
         self.keep_unseen();
+        // The feeds as last handed to their saver.
+        self.rss_saver.flush();
         // What the saver has in hand first, then the last state, written here and now.
         self.saver.flush();
         let _ = store::save(
