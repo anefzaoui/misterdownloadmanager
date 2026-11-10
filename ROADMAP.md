@@ -13,9 +13,6 @@ Everything below ships together, in version 0.5.0.
 
 ### Done
 
-- ✅ Linux and macOS: use the system's yt-dlp when no chosen or MDM-managed copy is installed,
-  and leave its updates to the package manager
-  ([#452](https://github.com/anefzaoui/misterdownloadmanager/issues/452))
 - ✅ Menus on compositors that animate windows (Hyprland): no border and no slide-in, and going from
   title to title moves one window, so nothing fades; the reporter confirmed it
   ([#277](https://github.com/anefzaoui/misterdownloadmanager/issues/277))
@@ -494,6 +491,7 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 Linux and macOS: the system's yt-dlp used when MDM has none of its own, with Helpers able\n  to switch to MDM's copy ([#452](https://github.com/anefzaoui/misterdownloadmanager/issues/452)): in review
 - 🔄 macOS: video look-ups in a copy of MDM a browser downloaded, without the Terminal command
   ([#330](https://github.com/anefzaoui/misterdownloadmanager/issues/330),
   [#339](https://github.com/anefzaoui/misterdownloadmanager/issues/339)): yt-dlp's folder build,
