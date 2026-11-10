@@ -2,8 +2,8 @@
 //! Supports 2-key (one modifier + key, e.g. `Cmd+U`, `Alt+Space`) and 3-key (two modifiers + key,
 //! e.g. `Cmd+Shift+M`, `Ctrl+Alt+D`) combinations.
 
-use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
+use std::sync::atomic::{AtomicBool, Ordering};
 
 /// A global key combination: one or more modifiers (`Ctrl`, `Alt`, `Shift`, `Cmd`) and a main key.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -773,8 +773,8 @@ impl GlobalHotkey {
 mod macos {
     use super::Shortcut;
     use std::ffi::c_void;
-    use std::sync::atomic::{AtomicBool, Ordering};
     use std::sync::Arc;
+    use std::sync::atomic::{AtomicBool, Ordering};
 
     type OSStatus = i32;
     type EventTargetRef = *mut c_void;
@@ -938,12 +938,12 @@ mod macos {
 #[allow(unsafe_code)]
 mod win {
     use super::Shortcut;
-    use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
     use std::sync::Arc;
+    use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
     use windows_sys::Win32::System::Threading::GetCurrentThreadId;
     use windows_sys::Win32::UI::Input::KeyboardAndMouse::{RegisterHotKey, UnregisterHotKey};
     use windows_sys::Win32::UI::WindowsAndMessaging::{
-        GetMessageW, PostThreadMessageW, MSG, WM_HOTKEY, WM_QUIT,
+        GetMessageW, MSG, PostThreadMessageW, WM_HOTKEY, WM_QUIT,
     };
 
     pub struct WinHotKey {

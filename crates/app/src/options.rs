@@ -536,11 +536,7 @@ impl OptionsDialog {
             winui::full_on_hover(ui, lbl_rc, ("general-hotkey", 243), hk_label);
         }
         let box_rc = r(o, box_x, 229.0, box_w, 21.0);
-        let box_resp = ui.interact(
-            box_rc,
-            egui::Id::unique("hotkey-recorder"),
-            Sense::click(),
-        );
+        let box_resp = ui.interact(box_rc, egui::Id::unique("hotkey-recorder"), Sense::click());
         box_resp.ctx.accesskit_node_builder(box_resp.id, |node| {
             node.set_role(egui::accesskit::Role::Button);
             node.set_label(hk_label.trim_end_matches(':').trim().to_owned());
@@ -593,8 +589,10 @@ impl OptionsDialog {
         } else if s.show_hide_hotkey.is_empty() {
             (crate::i18n::t("None").to_owned(), winui::MUTED())
         } else {
-            let shown = crate::hotkey::Shortcut::parse(&s.show_hide_hotkey)
-                .map_or_else(|| s.show_hide_hotkey.clone(), crate::hotkey::Shortcut::display);
+            let shown = crate::hotkey::Shortcut::parse(&s.show_hide_hotkey).map_or_else(
+                || s.show_hide_hotkey.clone(),
+                crate::hotkey::Shortcut::display,
+            );
             (crate::i18n::ltr(&shown), LIGHT_TEXT())
         };
         winui::fit(
