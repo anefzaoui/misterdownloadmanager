@@ -13,37 +13,6 @@ Everything below ships together, in version 0.5.0.
 
 ### Done
 
-- ✅ macOS: Download File Info opens in front of the browser that asked for it, with the keyboard
-  in Save As ([#484](https://github.com/anefzaoui/misterdownloadmanager/issues/484))
-- ✅ A link from the browser no longer ends in 403 where a site's bot check refuses the browser's
-  User-Agent: MDM asks once more as itself ([#372](https://github.com/anefzaoui/misterdownloadmanager/issues/372))
-- ✅ The video button no longer covers a control of the page (a preview's own button): it takes
-  a free corner, and dragging it keeps it where you put it
-  ([#421](https://github.com/anefzaoui/misterdownloadmanager/issues/421))
-- ✅ A background task stopping as MDM closes no longer shows a crash report
-  ([#422](https://github.com/anefzaoui/misterdownloadmanager/issues/422))
-- ✅ A freeze that was over before its dump was taken is reported as a freeze, not a crash in the
-  watchdog (part of [#420](https://github.com/anefzaoui/misterdownloadmanager/issues/420))
-- ✅ File names and titles in any script show their letters: the system font for a script
-  outside the interface language loads the first time it is needed, instead of boxes
-  ([#405](https://github.com/anefzaoui/misterdownloadmanager/issues/405))
-- ✅ yt-dlp and gallery-dl use the proxy set in Options → Proxy / Socks
-  ([#363](https://github.com/anefzaoui/misterdownloadmanager/issues/363))
-- ✅ The window keeps answering while reading the clipboard or removing a cancelled download's
-  files from a slow disk ([#418](https://github.com/anefzaoui/misterdownloadmanager/issues/418),
-  [#423](https://github.com/anefzaoui/misterdownloadmanager/issues/423))
-- ✅ Fast downloads keep going on a slow disk: flushing the resume state no longer holds up
-  the connections, and a connection is never replaced for the disk's wait
-  ([#361](https://github.com/anefzaoui/misterdownloadmanager/issues/361))
-- ✅ Freeze reports taken after the window has already answered say so, instead of blaming a deadlock
-  (part of [#355](https://github.com/anefzaoui/misterdownloadmanager/issues/355))
-- ✅ **Move/Rename** works on several selected downloads at once: pick a folder and they all go there
-  ([#333](https://github.com/anefzaoui/misterdownloadmanager/issues/333))
-- ✅ Download video shows the size of a plain file (what the server says), not "size unknown"
-  (part of [#320](https://github.com/anefzaoui/misterdownloadmanager/issues/320))
-- ✅ Download video on pages whose player first loads a manifest's address answering something else
-  (SVT Play): the real manifest goes to MDM, not that first answer
-  ([#377](https://github.com/anefzaoui/misterdownloadmanager/issues/377))
 - ✅ Menus on compositors that animate windows (Hyprland): no border and no slide-in, and going from
   title to title moves one window, so nothing fades; the reporter confirmed it
   ([#277](https://github.com/anefzaoui/misterdownloadmanager/issues/277))
@@ -550,6 +519,7 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 macOS: Download File Info opening behind the browser that asked for it\n  ([#484](https://github.com/anefzaoui/misterdownloadmanager/issues/484)): fix in review
 - 🔄 Linux: Dark Mode support on window managers such as Hyprland and sway, which often have no
   desktop portal to say dark or light ([#324](https://github.com/anefzaoui/misterdownloadmanager/issues/324)): fix in review
 - 🔄 A bright white line under the menu bar in dark mode
