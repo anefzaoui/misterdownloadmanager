@@ -2170,6 +2170,10 @@ pub fn drag_file_out(title: &str, file: &std::path::Path) -> Result<(), String> 
         }
         let result = drag_on_this_thread(hwnd as HWND, &file);
         DRAGGING.store(false, Ordering::Release);
+        // OLE's drag loop took the button's release, so the window never saw it: without it
+        // the next press on the grip only ended the drag the window still thought was on, and
+        // the grip worked every other time.
+        release_button(hwnd as HWND);
         if let Err(e) = result {
             tracing::warn!("drag out: {e}");
         }
@@ -2178,6 +2182,31 @@ pub fn drag_file_out(title: &str, file: &std::path::Path) -> Result<(), String> 
         DRAGGING.store(false, Ordering::Release);
     }
     started
+}
+
+/// Tell `hwnd` the left button is up, at the pointer, as Windows would have done had OLE's
+/// drag loop not taken the release. A move first: the pointer left the window during the drag,
+/// and a release with no pointer position is dropped before it reaches the interface.
+fn release_button(hwnd: HWND) {
+    use windows_sys::Win32::Foundation::POINT;
+    use windows_sys::Win32::Graphics::Gdi::ScreenToClient;
+    // The left button's flag in a mouse message's wParam (MK_LBUTTON, winuser.h).
+    const MK_LBUTTON: usize = 0x0001;
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        GetCursorPos, PostMessageW, WM_LBUTTONUP, WM_MOUSEMOVE,
+    };
+    let mut pt = POINT { x: 0, y: 0 };
+    // SAFETY: reads into a local; `hwnd` is our own window (a closed one fails harmlessly).
+    unsafe {
+        GetCursorPos(&mut pt);
+        ScreenToClient(hwnd, &mut pt);
+    }
+    let lparam = (((pt.y as u16 as u32) << 16) | pt.x as u16 as u32) as isize;
+    // SAFETY: messages posted to our own window.
+    unsafe {
+        PostMessageW(hwnd, WM_MOUSEMOVE, MK_LBUTTON, lparam);
+        PostMessageW(hwnd, WM_LBUTTONUP, 0, lparam);
+    }
 }
 
 /// The drag itself, on the thread [`drag_file_out`] started (OLE initialised there).
