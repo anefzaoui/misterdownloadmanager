@@ -30,6 +30,13 @@ Everything below ships together, in version 0.5.0.
 - ✅ **View → Interface size**: every window larger, 100 % to 200 %, with Ctrl + / Ctrl − / Ctrl 0
   as in a browser; a window larger than the screen scrolls. Sharper text on Windows (part of
   [#262](https://github.com/anefzaoui/misterdownloadmanager/issues/262))
+- ✅ Windows: **View → Text → Smooth** draws the text anti-aliased at its own size, not as
+  thick, hard-edged whole-pixel letters that read badly on a 1440p screen; **Classic**, the
+  default, keeps the hinted look MDM had. **Interface size** gains 110 %, 115 % and 120 % between 100 % and
+  125 %
+- ✅ Windows: sharp, evenly spaced text at every interface size: letters no longer run together
+  or drift apart ([#323](https://github.com/anefzaoui/misterdownloadmanager/issues/323),
+  [#334](https://github.com/anefzaoui/misterdownloadmanager/issues/334))
 - ✅ Linux: Update now asks the package manager which package MDM is; a copy installed by
   another package manager (pacman) is left to the system's updates, with a plain message
 - ✅ Linux: the .deb and .rpm install the browsers' host files for everyone and remove them on
@@ -222,6 +229,11 @@ Everything below ships together, in version 0.5.0.
 - ✅ Themes: Base16 and pywal colour schemes imported as themes (View → Theme → Add a theme
   file…, or the themes folder); **pywal** follows `wal` as it writes new colours, text kept
   readable (4.5:1) ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ Themes: Emerald (a white canvas, one near-black ink, emerald
+  fills carrying near-black text, 6-point corners, Metro's one-colour icons); its theme file
+  gives a few seeds per variant and derives every other colour, so a role added later arrives
+  in this look rather than the classic one
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ Dark mode: grey notes and error texts readable (4.5:1), Options' failed checks no longer dark
   red on the dark dialog ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ A minimized MDM keeps working: queues, the Scheduler, download limits, the kill switch and
@@ -538,6 +550,10 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 Categories without their own folder following General's folder (`Video`, `Music`, `Torrents`
+  inside it), and Add torrent starting with the Torrents category's folder instead of flipping
+  from General when metadata arrives ([#556](https://github.com/anefzaoui/misterdownloadmanager/issues/556),
+  [#550](https://github.com/anefzaoui/misterdownloadmanager/issues/550)): fix in review
 - 🔄 The window not answering while a file was dragged out of Download complete, for as long as
   the program under the pointer took ([#561](https://github.com/anefzaoui/misterdownloadmanager/issues/561)): the drag now runs beside the window; fix
   in review, to check with a real drag
