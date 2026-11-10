@@ -16,7 +16,8 @@ use tray_icon::{MouseButton, MouseButtonState, TrayIcon, TrayIconBuilder, TrayIc
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum TrayCmd {
     Show,
-    /// Left click on the icon: the window back when hidden, hidden there when shown.
+    /// Left click on the icon: the window back when hidden or behind other
+    /// windows, hidden there when frontmost.
     Toggle,
     AddUrl,
     Batch,

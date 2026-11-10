@@ -3040,7 +3040,10 @@ impl App {
                 }
                 TrayCmd::Toggle => {
                     let minimized = ctx.input(|i| i.viewport().minimized == Some(true));
-                    if self.hidden || minimized {
+                    // Behind other windows it still reads as shown: only hide when
+                    // frontmost (#516), otherwise bring it forward.
+                    let focused = ctx.input(|i| i.viewport().focused) == Some(true);
+                    if self.hidden || minimized || !focused {
                         self.show_window(ctx);
                     } else {
                         self.hide_to_tray(ctx);
