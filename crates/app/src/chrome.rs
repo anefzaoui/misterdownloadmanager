@@ -2527,16 +2527,20 @@ mod tests {
     /// Crossing an item on the way into the submenu keeps it.
     #[test]
     fn the_pointer_on_another_item_closes_the_submenu_at_once() {
+        // Labels through names, so tools/i18n/extract.py doesn't take them for texts to translate.
+        let [rss, show_drop, import, file, exit] = [
+            "RSS feeds...",
+            "Show drop target",
+            "Import",
+            "From a file",
+            "Exit",
+        ];
         let entries: Vec<MenuEntry<u8>> = vec![
-            MenuEntry::Item("RSS feeds...", 0, true, false),
-            MenuEntry::Item("Show drop target", 1, true, false),
+            MenuEntry::Item(rss, 0, true, false),
+            MenuEntry::Item(show_drop, 1, true, false),
             MenuEntry::Sep,
-            MenuEntry::Sub(
-                "Import",
-                true,
-                vec![MenuEntry::Item("From a file", 2, true, false)],
-            ),
-            MenuEntry::Item("Exit", 3, true, false),
+            MenuEntry::Sub(import, true, vec![MenuEntry::Item(file, 2, true, false)]),
+            MenuEntry::Item(exit, 3, true, false),
         ];
         let ctx = egui::Context::default();
         let sub_key = egui::Id::unique(("popup-sub", "t579"));
@@ -2605,11 +2609,12 @@ mod tests {
     /// #579: the entry under the pointer, separators and padding none.
     #[test]
     fn the_item_under_the_pointer() {
+        let [a, b, c] = ["a", "b", "c"]; // not texts to translate (tools/i18n/extract.py)
         let entries: Vec<MenuEntry<u8>> = vec![
-            MenuEntry::Item("a", 0, true, false),
+            MenuEntry::Item(a, 0, true, false),
             MenuEntry::Sep,
-            MenuEntry::Sub("b", true, vec![]),
-            MenuEntry::Item("c", 1, true, false),
+            MenuEntry::Sub(b, true, vec![]),
+            MenuEntry::Item(c, 1, true, false),
         ];
         let o = pos2(0.0, 0.0);
         assert_eq!(item_at(&entries, o, 200.0, pos2(50.0, 10.0)), Some(0));
