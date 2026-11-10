@@ -2522,6 +2522,8 @@ impl App {
             }),
             post: context.post.clone().map(|body| body.into_bytes().into()),
             on_file_created: Some(mark_hook(url, context.referer.as_deref())),
+            // The browser's own download's type: a web page instead is an error (#533).
+            expected_type: context.mime.clone(),
             ..Options::default()
         };
         RequestParts { headers, opts }
