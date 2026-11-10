@@ -522,6 +522,10 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 Categories without their own folder following General's folder (`Video`, `Music`, `Torrents`
+  inside it), and Add torrent starting with the Torrents category's folder instead of flipping
+  from General when metadata arrives ([#556](https://github.com/anefzaoui/misterdownloadmanager/issues/556),
+  [#550](https://github.com/anefzaoui/misterdownloadmanager/issues/550)): fix in review
 - 🔄 The video button still showing after it was switched off, or its site listed, in Options
   ([#532](https://github.com/anefzaoui/misterdownloadmanager/issues/532)): fix in review
 - 🔄 macOS: Persian and other Arabic-script file names drawn as boxes in the download list

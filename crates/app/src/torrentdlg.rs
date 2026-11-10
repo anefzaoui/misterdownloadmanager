@@ -224,7 +224,7 @@ impl TorrentDialog {
                 .map(|t| t.trim().to_owned())
                 .unwrap_or_default()
         });
-        let folder = category_folder(Category::General, &downloads, &category_dirs);
+        let folder = category_folder(Category::Torrents, &downloads, &category_dirs);
         let mut d = TorrentDialog {
             source,
             folder: folder.display().to_string(),
@@ -1808,5 +1808,39 @@ mod tests {
         assert_eq!(rows.len(), 1);
         assert_eq!(t[rows[0]].name, "debian.iso");
         assert_eq!(t[rows[0]].files, [0]);
+    }
+
+    #[test]
+    fn categories_without_their_own_folder_follow_general() {
+        let dl = std::path::Path::new("/Users/test/Downloads");
+        assert_eq!(
+            category_folder(Category::Torrents, dl, &[]),
+            PathBuf::from("/Users/test/Downloads/Torrents")
+        );
+        let general_only = vec![("General".to_owned(), "/Volumes/Data/Downloads".to_owned())];
+        assert_eq!(
+            category_folder(Category::General, dl, &general_only),
+            PathBuf::from("/Volumes/Data/Downloads")
+        );
+        assert_eq!(
+            category_folder(Category::Torrents, dl, &general_only),
+            PathBuf::from("/Volumes/Data/Downloads/Torrents")
+        );
+        assert_eq!(
+            category_folder(Category::Video, dl, &general_only),
+            PathBuf::from("/Volumes/Data/Downloads/Video")
+        );
+        let both = vec![
+            ("General".to_owned(), "/Volumes/Data/Downloads".to_owned()),
+            ("Torrents".to_owned(), "/Volumes/NAS/Torrents".to_owned()),
+        ];
+        assert_eq!(
+            category_folder(Category::Torrents, dl, &both),
+            PathBuf::from("/Volumes/NAS/Torrents")
+        );
+        assert_eq!(
+            category_folder(Category::Video, dl, &both),
+            PathBuf::from("/Volumes/Data/Downloads/Video")
+        );
     }
 }

@@ -8454,6 +8454,13 @@ impl App {
                 Outcome::Open => false,
                 Outcome::Closed => true,
                 Outcome::Done(add) => {
+                    if self.settings.change_folder_on_last
+                        && self
+                            .settings
+                            .keep_category_dir(add.category, &add.dir, &self.downloads)
+                    {
+                        self.dirty = true;
+                    }
                     self.torrent_dlg = None;
                     self.add_torrent(add);
                     true
