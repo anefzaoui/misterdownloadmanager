@@ -295,7 +295,12 @@ const SCRIPT_FONTS: &[(&str, &[&str], &[&str])] = &[
 const SCRIPT_FONTS: &[(&str, &[&str], &[&str])] = &[
     (
         "han",
-        &["PingFang.ttc", "Supplemental/Songti.ttc"],
+        &[
+            "PingFang.ttc",
+            "Hiragino Sans GB.ttc",
+            "STHeiti Light.ttc",
+            "Supplemental/Songti.ttc",
+        ],
         &["zh-hans", "zh-hant"],
     ),
     ("japanese", &["ヒラギノ角ゴシック W3.ttc"], &["ja"]),
@@ -391,6 +396,31 @@ fn font_dir() -> std::path::PathBuf {
     return std::path::PathBuf::from("/System/Library/Fonts");
 }
 
+/// Resolves a font file path in `dir`. On macOS 15+ (Sequoia / Tahoe), `PingFang.ttc` moved out
+/// of `/System/Library/Fonts/PingFang.ttc` into `/System/Library/AssetsV2/com_apple_MobileAsset_Font*`.
+#[cfg(any(windows, target_os = "macos"))]
+fn font_path(dir: &std::path::Path, rel: &str) -> std::path::PathBuf {
+    let direct = dir.join(rel);
+    #[cfg(target_os = "macos")]
+    if rel == "PingFang.ttc" && !direct.exists() {
+        for base in [
+            "/System/Library/AssetsV2/com_apple_MobileAsset_Font8",
+            "/System/Library/AssetsV2/com_apple_MobileAsset_Font7",
+            "/System/Library/AssetsV2/com_apple_MobileAsset_Font6",
+        ] {
+            if let Ok(entries) = std::fs::read_dir(base) {
+                for entry in entries.flatten() {
+                    let p = entry.path().join("AssetData/PingFang.ttc");
+                    if p.is_file() {
+                        return p;
+                    }
+                }
+            }
+        }
+    }
+    direct
+}
+
 /// The fonts for scripts outside the interface language, loaded the first time a character
 /// needs one (#405): a file or video named in Bangla, Japanese, Thai... The interface language's
 /// own script fonts are loaded up front ([`SCRIPT_FONTS`], kept small for #72); anything else
@@ -401,7 +431,7 @@ fn font_dir() -> std::path::PathBuf {
 struct ScriptFallback;
 
 /// One script's fonts on demand: a key, its code points, the files to try (in order).
-#[cfg(any(windows, target_os = "macos"))]
+#[cfg_attr(not(any(windows, target_os = "macos")), allow(dead_code))]
 struct FallbackFont {
     key: &'static str,
     ranges: &'static [(u32, u32)],
@@ -476,9 +506,12 @@ const FALLBACK_FONTS: &[FallbackFont] = &[
     },
 ];
 
-/// macOS's fonts for the same scripts; Arial Unicode for what isn't listed.
+/// macOS's fonts for the same scripts; Arial Unicode for what isn't listed. Compiled everywhere,
+/// so the tests check it on every system.
 #[cfg(target_os = "macos")]
-const FALLBACK_FONTS: &[FallbackFont] = &[
+const FALLBACK_FONTS: &[FallbackFont] = MACOS_FALLBACK_FONTS;
+#[cfg_attr(not(target_os = "macos"), allow(dead_code))]
+const MACOS_FALLBACK_FONTS: &[FallbackFont] = &[
     FallbackFont {
         key: "japanese",
         ranges: &[(0x3040, 0x30FF), (0x31F0, 0x31FF), (0xFF66, 0xFF9F)],
@@ -506,7 +539,12 @@ const FALLBACK_FONTS: &[FallbackFont] = &[
             (0xFF00, 0xFFEF),
             (0x20000, 0x3FFFF),
         ],
-        files: &["PingFang.ttc", "Supplemental/Songti.ttc"],
+        files: &[
+            "PingFang.ttc",
+            "Hiragino Sans GB.ttc",
+            "STHeiti Light.ttc",
+            "Supplemental/Songti.ttc",
+        ],
     },
     FallbackFont {
         key: "khmer",
@@ -523,12 +561,29 @@ const FALLBACK_FONTS: &[FallbackFont] = &[
         ranges: &[(0x1200, 0x139F), (0x2D80, 0x2DDF), (0xAB00, 0xAB2F)],
         files: &["Supplemental/Kefa.ttc", "Kefa.ttc"],
     },
+    // Armenian, Hebrew and the Arabic script (Persian, Urdu: #533) too: the system font (SF)
+    // has none of them, and Windows' Segoe UI, which has them, isn't there. The same font an
+    // Arabic or Persian interface loads ([`SCRIPT_FONTS`]).
     FallbackFont {
         key: "unicode",
-        ranges: &[(0x0900, 0x13FF), (0x1800, 0x1FFF)],
+        ranges: &[
+            (0x0530, 0x13FF),
+            (0x1800, 0x1FFF),
+            (0xFB1D, 0xFDFF),
+            (0xFE70, 0xFEFF),
+        ],
         files: &["Supplemental/Arial Unicode.ttf"],
     },
 ];
+
+/// The font in `fonts` for `c`: the first that lists its code point.
+#[cfg_attr(not(any(windows, target_os = "macos")), allow(dead_code))]
+fn fallback_entry(fonts: &'static [FallbackFont], c: char) -> Option<&'static FallbackFont> {
+    let cp = c as u32;
+    fonts
+        .iter()
+        .find(|f| f.ranges.iter().any(|&(a, b)| (a..=b).contains(&cp)))
+}
 
 /// The bytes of the font for `c`, loaded once per font, shared by every family that asks.
 fn fallback_font(c: char) -> Option<(String, egui::FontData)> {
@@ -538,14 +593,11 @@ fn fallback_font(c: char) -> Option<(String, egui::FontData)> {
 
     #[cfg(any(windows, target_os = "macos"))]
     let (key, files): (String, Vec<std::path::PathBuf>) = {
-        let cp = c as u32;
-        let font = FALLBACK_FONTS
-            .iter()
-            .find(|f| f.ranges.iter().any(|&(a, b)| (a..=b).contains(&cp)))?;
+        let font = fallback_entry(FALLBACK_FONTS, c)?;
         let dir = font_dir();
         (
             format!("fallback:{}", font.key),
-            font.files.iter().map(|f| dir.join(f)).collect(),
+            font.files.iter().map(|f| font_path(&dir, f)).collect(),
         )
     };
     #[cfg(not(any(windows, target_os = "macos")))]
@@ -633,7 +685,9 @@ fn script_fonts(code: &str, all: bool) -> Vec<(String, Vec<u8>)> {
             // The first file there is used (older systems name some differently); a .ttc's
             // first face is the regular one.
             .filter_map(|(key, files, _)| {
-                let bytes = files.iter().find_map(|f| std::fs::read(dir.join(f)).ok())?;
+                let bytes = files
+                    .iter()
+                    .find_map(|f| std::fs::read(font_path(&dir, f)).ok())?;
                 Some(((*key).to_owned(), bytes))
             })
             .collect()
@@ -987,6 +1041,51 @@ mod glyph_tests {
             "\u{0E44}\u{0E17}\u{0E22}",                 // Thai
             "\u{4E2D}\u{6587}",                         // Chinese
         ] {
+            assert!(fonts.has_glyphs(&id, text), "no font for {text}");
+        }
+    }
+
+    /// Names in the Arabic script (a Persian file name, #533), Hebrew and Armenian, under an
+    /// English interface on macOS: its system font has none of them, so the fallback must name a
+    /// font for every letter. Before, macOS's list started at Devanagari, and they were boxes.
+    /// Checked on every system (the table is data); the font itself in the macOS test below.
+    const OTHER_SCRIPTS: [&str; 5] = [
+        "\u{0641}\u{0627}\u{06CC}\u{0644} \u{067E}\u{0698}\u{0648}\u{0647}\u{0634}\u{06CC} \u{06F1}\u{06F4}\u{06F0}\u{06F3}", // Persian, with Persian digits
+        "\u{06AF}\u{0632}\u{0627}\u{0631}\u{0634} \u{0686}\u{06A9}", // Persian
+        "\u{0645}\u{0644}\u{0641}",                                  // Arabic
+        "\u{05E7}\u{05D5}\u{05D1}\u{05E5}",                          // Hebrew
+        "\u{0586}\u{0561}\u{0575}\u{056C}",                          // Armenian
+    ];
+
+    #[test]
+    fn macos_names_a_font_for_the_arabic_script() {
+        for text in OTHER_SCRIPTS {
+            for c in text.chars().filter(|c| !c.is_whitespace()) {
+                let font = super::fallback_entry(super::MACOS_FALLBACK_FONTS, c)
+                    .unwrap_or_else(|| panic!("no macOS font for U+{:04X} in {text}", c as u32));
+                // The file macOS ships (/System/Library/Fonts/Supplemental), which an Arabic or
+                // Persian interface already loads.
+                assert!(
+                    font.files.contains(&"Supplemental/Arial Unicode.ttf"),
+                    "U+{:04X}: {:?}",
+                    c as u32,
+                    font.files
+                );
+            }
+        }
+    }
+
+    /// The same names drawn with macOS's own fonts: the fallback finds a file that is there and
+    /// has the letters.
+    #[cfg(target_os = "macos")]
+    #[test]
+    fn persian_names_get_a_font_on_macos() {
+        use egui::epaint::text::{Fonts, TextOptions};
+        use egui::{FontFamily, FontId};
+        let mut fonts = Fonts::new(TextOptions::default(), egui::FontDefinitions::default())
+            .with_font_providers(vec![std::sync::Arc::new(super::ScriptFallback)]);
+        let id = FontId::new(13.0, FontFamily::Proportional);
+        for text in OTHER_SCRIPTS {
             assert!(fonts.has_glyphs(&id, text), "no font for {text}");
         }
     }

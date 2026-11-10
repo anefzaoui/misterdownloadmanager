@@ -123,6 +123,11 @@ enum Cmd {
         /// Put the subtitles into the video file instead of beside it (needs ffmpeg; MP4/MKV).
         #[arg(long)]
         embed_subs: bool,
+        /// A stream in pieces (HLS, DASH): this many pieces at once (1 to 128), as `get`'s
+        /// connections; a plain file is one connection whatever this says.
+        #[arg(short, long, default_value_t = Options::default().max_connections,
+              value_parser = clap::value_parser!(u32).range(1..=MAX_CONNECTIONS_UNLOCKED as i64))]
+        connections: u32,
         /// The network adapter yt-dlp (and the ffmpeg it starts) goes through (#35), as
         /// `get --adapter`.
         #[arg(long)]
@@ -150,6 +155,11 @@ enum Cmd {
         /// Folder to save into: a folder named after the list is made there.
         #[arg(short, long, default_value = ".")]
         output: PathBuf,
+        /// A stream in pieces (HLS, DASH): this many pieces at once (1 to 128), as `get`'s
+        /// connections; a plain file is one connection whatever this says.
+        #[arg(short, long, default_value_t = Options::default().max_connections,
+              value_parser = clap::value_parser!(u32).range(1..=MAX_CONNECTIONS_UNLOCKED as i64))]
+        connections: u32,
         /// The first entry (from 1).
         #[arg(long, default_value_t = 1)]
         from: u64,
@@ -536,7 +546,11 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                 None => anyhow::anyhow!("gallery-dl is not installed: run install-gallery-dl"),
             })?;
             if let Some(why) = &old {
-                eprintln!("{why}: using MDM's own copy, {}", tool.version);
+                if tool.is_system() {
+                    eprintln!("{why}: using the system's, {}", tool.exe.display());
+                } else {
+                    eprintln!("{why}: using MDM's own copy, {}", tool.version);
+                }
             }
             if !mdm_tools::gallery::handles(&tool, &url)? {
                 anyhow::bail!("gallery-dl can't read this address");
@@ -685,6 +699,7 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             url,
             format,
             output,
+            connections,
             from,
             count,
         } => {
@@ -734,6 +749,7 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                     &folder,
                     &stem,
                     None,
+                    connections,
                     ffmpeg.as_deref(),
                     None,
                     &Default::default(),
@@ -901,6 +917,7 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             subs,
             auto_subs,
             embed_subs,
+            connections,
             adapter,
         } => {
             if let Some(a) = adapter {
@@ -931,6 +948,7 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                 &output,
                 &stem,
                 None,
+                connections,
                 ffmpeg.as_deref(),
                 // No size shown here: the progress steadies itself (video::Meter).
                 None,

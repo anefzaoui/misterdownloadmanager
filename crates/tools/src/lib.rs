@@ -15,6 +15,9 @@ pub mod proc;
 pub mod relay;
 pub mod resolve;
 pub mod servers;
+// System helper discovery is for Linux and macOS; Windows keeps its verified managed copies.
+#[cfg(unix)]
+mod system;
 pub mod update;
 pub mod video;
 
@@ -69,6 +72,16 @@ pub enum Error {
 pub struct Installed {
     pub version: String,
     pub exe: PathBuf,
+}
+
+/// `Installed::version` of a program found on the system: its package manager's, not asked (#452).
+const SYSTEM: &str = "system";
+
+impl Installed {
+    /// Whether this is the system's copy (Linux and macOS), kept current by its package manager.
+    pub fn is_system(&self) -> bool {
+        self.version == SYSTEM
+    }
 }
 
 /// `<data dir>/tools`.
@@ -229,9 +242,13 @@ pub fn sum_for(sums: &str, name: &str) -> Option<[u8; 32]> {
 }
 
 /// The yt-dlp to use: the person's own (`chosen`), else MDM's install in `dir`
-/// (`dir/yt-dlp/current.json`), if any and still there.
+/// (`dir/yt-dlp/current.json`), if any and still there; on Linux and macOS, else the system's.
 pub fn installed(dir: &Path) -> Option<Installed> {
-    chosen::chosen(dir, chosen::Helper::YtDlp).or_else(|| own_ytdlp(dir))
+    let own = chosen::chosen(dir, chosen::Helper::YtDlp).or_else(|| own_ytdlp(dir));
+    #[cfg(unix)]
+    return own.or_else(|| system::installed("yt-dlp"));
+    #[cfg(not(unix))]
+    own
 }
 
 fn own_ytdlp(dir: &Path) -> Option<Installed> {
@@ -262,9 +279,16 @@ struct Asset {
     browser_download_url: String,
 }
 
+/// Whether the once-per-session update has a yt-dlp to refresh: not the system's, which is its
+/// package manager's to update (#452), and which only an explicit [`install_latest`] replaces.
+pub fn refreshable(dir: &Path) -> bool {
+    installed(dir).is_some_and(|i| !i.is_system())
+}
+
 /// Install the latest yt-dlp release into `dir` unless the installed one is as new, the program
 /// downloaded with MDM's engine (`net`), counted into `progress`. Returns what is installed
-/// afterwards.
+/// afterwards. A system copy doesn't count as installed here: this is the way to get MDM's own
+/// instead (Helpers), and MDM's own then wins ([`installed`]).
 pub async fn install_latest(
     dir: &Path,
     net: &mdm_engine::Options,

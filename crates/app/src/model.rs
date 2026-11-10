@@ -651,7 +651,6 @@ impl Item {
 
     /// The last `n` log entries as tooltip lines ("14:02:11  Connected to …").
     pub fn log_lines(&self, n: usize) -> String {
-        use chrono::TimeZone;
         self.log
             .iter()
             .rev()
@@ -659,9 +658,8 @@ impl Item {
             .rev()
             .map(|(at, text)| {
                 // In the interface's way (English month names in every language before).
-                let t = chrono::Local
-                    .timestamp_opt(*at, 0)
-                    .single()
+                // With the offset of now (crate::clock, #536).
+                let t = crate::clock::local_at(*at)
                     .map(|t| when_text(t.naive_local()))
                     .unwrap_or_default();
                 format!("{t}  {text}")
@@ -815,20 +813,11 @@ impl Item {
                         .map(|p| sub_notice(p, site))
                         .collect();
                     let side = done.side_files;
-                    for f in s.file.iter().chain(side.iter()) {
-                        #[cfg(windows)]
-                        crate::win32::mark_downloaded(
-                            f,
-                            url.as_str(),
-                            self.context.referer.as_deref(),
-                        );
-                        #[cfg(unix)]
-                        crate::unix::mark_downloaded(
-                            f,
-                            url.as_str(),
-                            self.context.referer.as_deref(),
-                        );
-                    }
+                    crate::app::mark_finished(
+                        s.file.iter().chain(side.iter()).cloned().collect(),
+                        url.to_string(),
+                        self.context.referer.clone(),
+                    );
                 }
                 // A gallery's files (#58), each marked as downloaded from the web, as above.
                 if status == Status::Complete
@@ -838,12 +827,7 @@ impl Item {
                     }) = &self.live
                     && matches!(url.scheme(), "http" | "https")
                 {
-                    for f in &job.saved() {
-                        #[cfg(windows)]
-                        crate::win32::mark_downloaded(f, url.as_str(), None);
-                        #[cfg(unix)]
-                        crate::unix::mark_downloaded(f, url.as_str(), None);
-                    }
+                    crate::app::mark_finished(job.saved(), url.to_string(), None);
                 }
                 for n in &notices {
                     self.note(n.clone());
@@ -984,7 +968,7 @@ impl Item {
 /// The "Last Try Date" and "Added" columns as stored, e.g. `Oct 28 21:44:12 2026` (the list's
 /// format; read back by `stamp_time`).
 pub fn now_stamp() -> String {
-    chrono::Local::now().format(STAMP).to_string()
+    crate::clock::now().format(STAMP).to_string()
 }
 
 const STAMP: &str = "%b %d %H:%M:%S %Y";
