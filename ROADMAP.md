@@ -491,6 +491,7 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 Linux and macOS: the system's yt-dlp used when MDM has none of its own, with Helpers able\n  to switch to MDM's copy ([#452](https://github.com/anefzaoui/misterdownloadmanager/issues/452)): in review
 - 🔄 macOS: video look-ups in a copy of MDM a browser downloaded, without the Terminal command
   ([#330](https://github.com/anefzaoui/misterdownloadmanager/issues/330),
   [#339](https://github.com/anefzaoui/misterdownloadmanager/issues/339)): yt-dlp's folder build,
@@ -521,6 +522,9 @@ These ship in a later version, when they're ready.
 
 - 🔄 Dailymotion's embedded player from the browser's button: no formats, the embedding site's
   Referer refused ([#359](https://github.com/anefzaoui/misterdownloadmanager/issues/359)): fix in review
+- 🔄 The video button staying on screen after a click on the player, in fullscreen too\n  ([#480](https://github.com/anefzaoui/misterdownloadmanager/issues/480)): fix in review
+- 🔄 A freeze when a video finishes, while its file is marked as downloaded from the web
+  ([#510](https://github.com/anefzaoui/misterdownloadmanager/issues/510)): fix in review
 - 🔄 Linux: Dark Mode support on window managers such as Hyprland and sway, which often have no
   desktop portal to say dark or light ([#324](https://github.com/anefzaoui/misterdownloadmanager/issues/324)): fix in review
 - 🔄 A bright white line under the menu bar in dark mode

@@ -815,20 +815,11 @@ impl Item {
                         .map(|p| sub_notice(p, site))
                         .collect();
                     let side = done.side_files;
-                    for f in s.file.iter().chain(side.iter()) {
-                        #[cfg(windows)]
-                        crate::win32::mark_downloaded(
-                            f,
-                            url.as_str(),
-                            self.context.referer.as_deref(),
-                        );
-                        #[cfg(unix)]
-                        crate::unix::mark_downloaded(
-                            f,
-                            url.as_str(),
-                            self.context.referer.as_deref(),
-                        );
-                    }
+                    crate::app::mark_finished(
+                        s.file.iter().chain(side.iter()).cloned().collect(),
+                        url.to_string(),
+                        self.context.referer.clone(),
+                    );
                 }
                 // A gallery's files (#58), each marked as downloaded from the web, as above.
                 if status == Status::Complete
@@ -838,12 +829,7 @@ impl Item {
                     }) = &self.live
                     && matches!(url.scheme(), "http" | "https")
                 {
-                    for f in &job.saved() {
-                        #[cfg(windows)]
-                        crate::win32::mark_downloaded(f, url.as_str(), None);
-                        #[cfg(unix)]
-                        crate::unix::mark_downloaded(f, url.as_str(), None);
-                    }
+                    crate::app::mark_finished(job.saved(), url.to_string(), None);
                 }
                 for n in &notices {
                     self.note(n.clone());
