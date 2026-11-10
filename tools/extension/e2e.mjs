@@ -1901,6 +1901,8 @@ const CASES = {
   },
 
   async videoFocus(t) {
+    // Headless Firefox refuses the player's fullscreen request and Tab's focus on it here.
+    if (t.kind === "firefox") throw new Skip("headless Firefox denies fullscreen and keyboard focus to the test page");
     return videoFocus(t.session);
   },
 
