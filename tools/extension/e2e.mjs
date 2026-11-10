@@ -1835,6 +1835,8 @@ const CASES = {
       await sleep(100);
       await at(`rest ${i}`);
     }
+    // E2E_STEADY_SHOT: a screenshot after the pointer rested on it, for a PR's body.
+    if (process.env.E2E_STEADY_SHOT && t.session.screenshot) await t.session.screenshot(process.env.E2E_STEADY_SHOT);
     const moved = seen.filter((x) => {
       const m = /(-?\d+),(-?\d+)$/.exec(x);
       return !m || !landed || Math.abs(m[1] - landed.l) > 2 || Math.abs(m[2] - landed.t) > 2;
