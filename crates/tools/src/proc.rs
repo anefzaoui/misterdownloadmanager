@@ -1480,6 +1480,13 @@ foreach ($d in $env:PATH.Split(';')) {
             eprintln!("this Windows has no Redirection Guard: the stand-in can't be held to it");
             return;
         }
+        if raw.status.success() && said == "walked" {
+            // A junction an administrator made is trusted (CI runs as one): nothing to refuse.
+            eprintln!(
+                "this junction is trusted here (made as an administrator): nothing to refuse"
+            );
+            return;
+        }
         let refused = String::from_utf8_lossy(&raw.stderr);
         assert!(
             !raw.status.success() && refused.contains("WinError 448"),
