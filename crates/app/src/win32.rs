@@ -1632,6 +1632,42 @@ pub fn main_minimize_to_tray(ctx: &egui::Context, enabled: bool) -> bool {
     })
 }
 
+/// The highest icon id [`tray_icon_held`] tries. tray-icon gives each icon an id of its own
+/// from a counter it shares with its icon names, and doesn't say which (a program's first icon
+/// has 2).
+const TRAY_ICON_IDS: u32 = 16;
+
+/// Whether the shell holds a notification-area icon of `hwnd` (the tray's own hidden window,
+/// which has one icon), and its id: `known` first, else each id up to [`TRAY_ICON_IDS`]. An
+/// empty `NIM_MODIFY` changes nothing and succeeds only for an icon the shell has, wherever it
+/// shows it: in the taskbar or in the hidden icons behind ^. Shell_NotifyIconGetRect isn't
+/// enough: it can fail for an icon behind ^ (#545, #534, #527: Windows 10 and 11, the icon
+/// there and MDM sure it had none; Windows 11 build 26200 gives such an icon the rect of ^
+/// itself). This fails, as that does, when Explorer isn't running or the icon was refused or
+/// lost.
+pub fn tray_icon_held(hwnd: HWND, known: Option<u32>) -> Option<u32> {
+    use windows_sys::Win32::UI::Shell::{NIM_MODIFY, NOTIFYICONDATAW, Shell_NotifyIconW};
+    let held = |id: u32| {
+        let nid = NOTIFYICONDATAW {
+            cbSize: size_of::<NOTIFYICONDATAW>() as u32,
+            hWnd: hwnd,
+            uID: id,
+            uFlags: 0,
+            // SAFETY: a plain C struct; all zero is its empty value.
+            ..unsafe { zeroed() }
+        };
+        // SAFETY: nid lives for the call; the shell only reads it.
+        unsafe { Shell_NotifyIconW(NIM_MODIFY, &nid) != 0 }
+    };
+    if hwnd.is_null() {
+        return None;
+    }
+    known
+        .into_iter()
+        .chain(1..=TRAY_ICON_IDS)
+        .find(|id| held(*id))
+}
+
 /// What a borderless window of ours is, for [`popup_window`]: every one is a plain popup
 /// ([`popup_style`], #208); they differ in how they take the pointer and how they look.
 #[derive(Clone, Copy, Debug, PartialEq)]

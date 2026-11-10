@@ -527,6 +527,11 @@ These ship in a later version, when they're ready.
 - 🔄 Add URL's **Use authorization** empty for an address with a login in Options → Sites
   Logins, though the download used it
   ([#511](https://github.com/anefzaoui/misterdownloadmanager/issues/511)): fix in review
+- 🔄 Windows: closing the window left MDM in the taskbar instead of the notification area
+  when its icon was among the hidden icons behind ^
+  ([#545](https://github.com/anefzaoui/misterdownloadmanager/issues/545),
+  [#534](https://github.com/anefzaoui/misterdownloadmanager/issues/534),
+  [#527](https://github.com/anefzaoui/misterdownloadmanager/issues/527)): fix in review
 - 🔄 Two tests that fail now and then on busy CI runners
   ([#518](https://github.com/anefzaoui/misterdownloadmanager/issues/518)): the slow-flush one in review
 - 🔄 The window not answering for a few seconds while Windows makes a snapshot of the disk

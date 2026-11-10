@@ -3095,18 +3095,27 @@ impl App {
         // off, no tray at all, or Linux with no tray host (#59: a hidden window couldn't come
         // back, and one that merely minimized could never be closed).
         if !self.exiting && ctx.input(|i| i.viewport().close_requested()) {
-            let keep = self.tray.is_some() && self.settings.close_to_tray;
-            if keep && self.tray_shown_now() {
-                tracing::info!("close: hidden to the notification area");
-                ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
-                self.hide_to_tray(ctx);
-            } else if keep && cfg!(not(target_os = "linux")) {
-                tracing::info!("close: no visible tray icon; minimizing to the taskbar");
-                ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
-                ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
-            } else {
-                tracing::info!("close: quitting");
-                self.exiting = true;
+            use crate::tray::OnClose;
+            let keep = self.settings.close_to_tray;
+            let tray = self.tray.is_some();
+            // The shell is asked afresh, and only when its answer matters.
+            let shown = keep && tray && self.tray_shown_now();
+            let taskbar = cfg!(not(target_os = "linux"));
+            match crate::tray::on_close(keep, tray, shown, taskbar) {
+                OnClose::Hide => {
+                    tracing::info!("close: hidden to the notification area");
+                    ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
+                    self.hide_to_tray(ctx);
+                }
+                OnClose::Minimize => {
+                    tracing::info!("close: no visible tray icon; minimizing to the taskbar");
+                    ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
+                    ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+                }
+                OnClose::Quit => {
+                    tracing::info!("close: quitting");
+                    self.exiting = true;
+                }
             }
         }
         // Options → General → "Minimize to the notification area" (#63): Minimize hides the

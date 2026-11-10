@@ -38,6 +38,56 @@ pub fn available() -> bool {
     true
 }
 
+/// What the shell says of MDM's icon, asked by [`Tray::visible_now`] (Windows and macOS).
+#[cfg(any(target_os = "windows", target_os = "macos"))]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct ShellIcon {
+    /// It says where the icon is (Windows: Shell_NotifyIconGetRect; macOS: the menu bar item's
+    /// frame).
+    pub placed: bool,
+    /// It holds the icon (Windows: `win32::tray_icon_held`), wherever it shows it.
+    pub held: bool,
+}
+
+#[cfg(any(target_os = "windows", target_os = "macos"))]
+impl ShellIcon {
+    /// Whether the icon can bring a hidden window back. One the shell holds is reachable even
+    /// where the shell gives no place for it: the hidden icons behind ^, where Windows puts a
+    /// new icon (#545, #534, #527: MDM took a missing place for a missing icon and left the
+    /// window in the taskbar).
+    pub fn reachable(self) -> bool {
+        self.placed || self.held
+    }
+}
+
+/// What closing the main window does.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum OnClose {
+    /// Hidden in the notification area (the menu bar on macOS); downloads go on.
+    Hide,
+    /// Left in the taskbar (the Dock on macOS), minimized: the tray has no icon to come back
+    /// from; downloads go on.
+    Minimize,
+    Quit,
+}
+
+/// What closing the main window does: `keep_running` is Options' "Keep running when closing the
+/// window", `tray` whether a tray object exists, `shown` whether its icon is reachable
+/// ([`ShellIcon::reachable`]; Linux: a tray host runs), `taskbar` whether a window can wait in
+/// the taskbar or the Dock instead (not Linux: #59, a window there that merely minimized could
+/// never be closed). Never a hidden window with no icon to bring it back.
+pub fn on_close(keep_running: bool, tray: bool, shown: bool, taskbar: bool) -> OnClose {
+    if !(keep_running && tray) {
+        OnClose::Quit
+    } else if shown {
+        OnClose::Hide
+    } else if taskbar {
+        OnClose::Minimize
+    } else {
+        OnClose::Quit
+    }
+}
+
 /// The longest download name in the tray menu, in characters (the rest ends in "…").
 const MENU_NAME_MAX: usize = 48;
 
@@ -62,6 +112,12 @@ pub struct Tray {
     /// shell shouldn't be asked that often (a second of staleness is enough).
     #[cfg(any(target_os = "windows", target_os = "macos"))]
     visible_checked: std::cell::Cell<Option<(bool, std::time::Instant)>>,
+    /// The shell's last answer, logged when it changes.
+    #[cfg(any(target_os = "windows", target_os = "macos"))]
+    answer: std::cell::Cell<Option<ShellIcon>>,
+    /// The icon's id with the shell, once found (`win32::tray_icon_held`).
+    #[cfg(windows)]
+    icon_id: std::cell::Cell<Option<u32>>,
 }
 
 /// A menu entry whose text is translated.
@@ -72,10 +128,10 @@ enum Entry {
 }
 
 impl Tray {
-    /// Whether the shell is really showing the icon. `tray-icon` ignores a failed
+    /// Whether the shell really has the icon, to click. `tray-icon` ignores a failed
     /// `Shell_NotifyIcon(NIM_ADD)` (it waits for the taskbar to be recreated), so `Tray::new`
-    /// returning `Some` doesn't mean the user can see or click the icon. Asking for its rect is
-    /// the only way to know. Linux has no such query: its [`available`] stands for it.
+    /// returning `Some` doesn't mean the user can see or click the icon: the shell is asked
+    /// ([`ShellIcon`]). Linux has no such query: its [`available`] stands for it.
     #[cfg(any(target_os = "windows", target_os = "macos"))]
     pub fn visible(&self) -> bool {
         // Off-screen tests can't make the shell answer reliably: the variable says what to
@@ -98,10 +154,39 @@ impl Tray {
         if let Some(v) = std::env::var_os("MDM_TEST_TRAY_VISIBLE") {
             return v == "1";
         }
-        let shown = self.tray.rect().is_some();
+        let icon = self.shell_icon();
+        if self.answer.replace(Some(icon)) != Some(icon) {
+            tracing::info!(
+                "tray icon: placed {}, held by the shell {}",
+                icon.placed,
+                icon.held
+            );
+        }
+        let shown = icon.reachable();
         self.visible_checked
             .set(Some((shown, std::time::Instant::now())));
         shown
+    }
+
+    /// What the shell says of the icon now.
+    #[cfg(any(target_os = "windows", target_os = "macos"))]
+    fn shell_icon(&self) -> ShellIcon {
+        // MDM_TEST_TRAY_RECT=0: the shell gives no place for the icon, as the reporters' did for
+        // one behind ^ (the close test, with a real icon the shell holds).
+        let placed = self.tray.rect().is_some()
+            && std::env::var_os("MDM_TEST_TRAY_RECT").is_none_or(|v| v != "0");
+        #[cfg(windows)]
+        let held = {
+            let id = crate::win32::tray_icon_held(self.tray.window_handle(), self.icon_id.get());
+            if id.is_some() {
+                self.icon_id.set(id);
+            }
+            id.is_some()
+        };
+        // macOS has no other question: the menu bar item's frame is the answer.
+        #[cfg(not(windows))]
+        let held = false;
+        ShellIcon { placed, held }
     }
 
     /// The icon and its menu; events wake `ctx`. None if the shell refuses the icon.
@@ -221,6 +306,10 @@ impl Tray {
             labels,
             #[cfg(any(target_os = "windows", target_os = "macos"))]
             visible_checked: Default::default(),
+            #[cfg(any(target_os = "windows", target_os = "macos"))]
+            answer: Default::default(),
+            #[cfg(windows)]
+            icon_id: Default::default(),
         })
     }
 
@@ -304,6 +393,51 @@ fn short(name: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// The close decision without a shell (#545, #534, #527), with the shell's answers as
+    /// Windows gives them. Measured on Windows 11 (build 26200), a new icon behind ^: placed (the
+    /// rect of ^ itself) and held; the same icon once removed: neither. The reporters' Windows
+    /// (10 and 11) gave an icon behind ^ no place: the icon there, the window left in the taskbar.
+    #[cfg(any(target_os = "windows", target_os = "macos"))]
+    #[test]
+    fn closing_hides_to_an_icon_the_shell_holds_even_with_no_place() {
+        let held_no_place = ShellIcon {
+            placed: false,
+            held: true,
+        };
+        let held_placed = ShellIcon {
+            placed: true,
+            held: true,
+        };
+        let none = ShellIcon {
+            placed: false,
+            held: false,
+        };
+        for icon in [held_no_place, held_placed] {
+            assert!(icon.reachable(), "{icon:?}");
+            assert_eq!(on_close(true, true, icon.reachable(), true), OnClose::Hide);
+        }
+        // No icon the shell holds (Explorer not running, the icon refused or lost): the
+        // taskbar, never a hidden window with no way back.
+        assert!(!none.reachable());
+        assert_eq!(
+            on_close(true, true, none.reachable(), true),
+            OnClose::Minimize
+        );
+    }
+
+    /// The rest of the close decision, on every system (#457, #59).
+    #[test]
+    fn closing_quits_with_the_option_off_no_tray_or_nowhere_to_wait() {
+        // No icon and no taskbar to wait in (Linux with no tray host): quit.
+        assert_eq!(on_close(true, true, false, false), OnClose::Quit);
+        assert_eq!(on_close(true, true, true, false), OnClose::Hide);
+        // The option off, or no tray object at all: closing quits, whatever the shell says.
+        for shown in [true, false] {
+            assert_eq!(on_close(false, true, shown, true), OnClose::Quit);
+            assert_eq!(on_close(true, false, shown, true), OnClose::Quit);
+        }
+    }
 
     #[test]
     fn menu_names_are_shortened_and_keep_their_ampersands() {
