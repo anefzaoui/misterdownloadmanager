@@ -522,6 +522,8 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 macOS 15 and later: PingFang moved into the system's font assets, so Chinese text lost its
+  font ([#541](https://github.com/anefzaoui/misterdownloadmanager/issues/541)): fix in review
 - 🔄 The video button still showing after it was switched off, or its site listed, in Options
   ([#532](https://github.com/anefzaoui/misterdownloadmanager/issues/532)): fix in review
 - 🔄 macOS: Persian and other Arabic-script file names drawn as boxes in the download list
