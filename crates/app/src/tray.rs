@@ -128,6 +128,27 @@ enum Entry {
 }
 
 impl Tray {
+    /// What the shell says of the icon now.
+    #[cfg(any(target_os = "windows", target_os = "macos"))]
+    fn shell_icon(&self) -> ShellIcon {
+        // MDM_TEST_TRAY_RECT=0: the shell gives no place for the icon, as the reporters' did for
+        // one behind ^ (the close test, with a real icon the shell holds).
+        let placed = self.tray.rect().is_some()
+            && std::env::var_os("MDM_TEST_TRAY_RECT").is_none_or(|v| v != "0");
+        #[cfg(windows)]
+        let held = {
+            let id = crate::win32::tray_icon_held(self.tray.window_handle(), self.icon_id.get());
+            if id.is_some() {
+                self.icon_id.set(id);
+            }
+            id.is_some()
+        };
+        // macOS has no other question: the menu bar item's frame is the answer.
+        #[cfg(not(windows))]
+        let held = false;
+        ShellIcon { placed, held }
+    }
+
     /// Whether the shell really has the icon, to click. `tray-icon` ignores a failed
     /// `Shell_NotifyIcon(NIM_ADD)` (it waits for the taskbar to be recreated), so `Tray::new`
     /// returning `Some` doesn't mean the user can see or click the icon: the shell is asked
@@ -166,27 +187,6 @@ impl Tray {
         self.visible_checked
             .set(Some((shown, std::time::Instant::now())));
         shown
-    }
-
-    /// What the shell says of the icon now.
-    #[cfg(any(target_os = "windows", target_os = "macos"))]
-    fn shell_icon(&self) -> ShellIcon {
-        // MDM_TEST_TRAY_RECT=0: the shell gives no place for the icon, as the reporters' did for
-        // one behind ^ (the close test, with a real icon the shell holds).
-        let placed = self.tray.rect().is_some()
-            && std::env::var_os("MDM_TEST_TRAY_RECT").is_none_or(|v| v != "0");
-        #[cfg(windows)]
-        let held = {
-            let id = crate::win32::tray_icon_held(self.tray.window_handle(), self.icon_id.get());
-            if id.is_some() {
-                self.icon_id.set(id);
-            }
-            id.is_some()
-        };
-        // macOS has no other question: the menu bar item's frame is the answer.
-        #[cfg(not(windows))]
-        let held = false;
-        ShellIcon { placed, held }
     }
 
     /// The icon and its menu; events wake `ctx`. None if the shell refuses the icon.
