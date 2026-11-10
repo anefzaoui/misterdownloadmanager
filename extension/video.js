@@ -150,7 +150,8 @@
     Boolean(shadow.activeElement && shadow.activeElement.matches(":focus-visible")) || playerFocused();
   let focusedPlayer = null;
   const playerFocused = () =>
-    Boolean(video && focusedPlayer && document.activeElement === focusedPlayer && focusedPlayer.contains(video));
+    Boolean(video && focusedPlayer && document.activeElement === focusedPlayer &&
+      focusedPlayer.contains(video) && focusedPlayer.matches(":focus-visible"));
 
   // ---- the button: a closed shadow tree the page's styles and scripts can't reach ----------
   const root = document.createElement("mdm-video-button");
