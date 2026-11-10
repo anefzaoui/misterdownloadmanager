@@ -12,6 +12,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 ### Fixed
 
 - macOS: **Download File Info** opens in front of the browser that asked for it ([#484](https://github.com/anefzaoui/misterdownloadmanager/issues/484)).
+- macOS: MDM's icon shows in the menu bar, so closing the window keeps MDM running there instead of quitting; the icon was never made, for want of a picture ([#529](https://github.com/anefzaoui/misterdownloadmanager/issues/529)).
 - The browser's **video button** over a hover-to-play preview (YouTube's thumbnails) no longer vanishes as the pointer goes to it: it stays where it was while the pointer is on it, a click downloads that video, and it fades once the pointer leaves ([#503](https://github.com/anefzaoui/misterdownloadmanager/issues/503)).
 - **Enter new address to download**: an address with a login in **Options → Sites Logins** shows that login under **Use authorization** (ticked, the user name and the password), the one the download uses; it was used but the box stayed empty. A login typed there still goes first ([#511](https://github.com/anefzaoui/misterdownloadmanager/issues/511)).
 - The window no longer waits for the disk to write MDM's log or to save the RSS feeds: while Windows held every write on the disk to make a snapshot of it (a restore point or a backup), the window could stop answering until the writes were let go. Both are now written beside the window, as the download list already was (part of [#513](https://github.com/anefzaoui/misterdownloadmanager/issues/513)).

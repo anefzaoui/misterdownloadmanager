@@ -104,8 +104,8 @@ impl Tray {
         shown
     }
 
-    /// The icon and its menu; events wake `ctx`. None if the shell refuses the icon.
-    pub fn new(ctx: &egui::Context, rgba: Vec<u8>, size: u32, limiter: bool) -> Option<Tray> {
+    /// The icon and its menu; events wake `ctx`. None if the shell refuses the icon (logged).
+    pub fn new(ctx: &egui::Context, limiter: bool) -> Option<Tray> {
         let menu = Menu::new();
         let mut items = Vec::new();
         let mut labels = Vec::new();
@@ -159,14 +159,26 @@ impl Tray {
         items.push((limiter_on.id().clone(), TrayCmd::LimiterOn));
         items.push((limiter_off.id().clone(), TrayCmd::LimiterOff));
 
-        let icon = tray_icon::Icon::from_rgba(rgba, size, size).ok()?;
-        let tray = TrayIconBuilder::new()
+        let icon = match picture() {
+            Ok(icon) => icon,
+            Err(e) => {
+                tracing::warn!("tray icon: no picture: {e}");
+                return None;
+            }
+        };
+        let tray = match TrayIconBuilder::new()
             .with_menu(Box::new(menu))
             .with_menu_on_left_click(false)
             .with_tooltip(crate::MAIN_TITLE)
             .with_icon(icon)
             .build()
-            .ok()?;
+        {
+            Ok(tray) => tray,
+            Err(e) => {
+                tracing::warn!("tray icon: not made: {e}");
+                return None;
+            }
+        };
 
         let (tx, rx) = channel();
         let wake = |tx: &Sender<TrayCmd>, ctx: &egui::Context| (tx.clone(), ctx.clone());
@@ -301,9 +313,38 @@ fn short(name: &str) -> String {
     s.replace('&', "&&")
 }
 
+/// The icon's picture: the app icon's ([`crate::app_picture`]), square. Never an empty one:
+/// tray-icon takes a 0×0 picture, and macOS then fails to make the menu bar item of it (it
+/// encodes the picture as a PNG, which can't be 0 wide), so before #529 macOS had no menu bar
+/// icon and closing the window quit.
+fn picture() -> Result<tray_icon::Icon, String> {
+    let p = crate::app_picture();
+    if p.width == 0 || p.width != p.height {
+        return Err(format!("{}×{} px", p.width, p.height));
+    }
+    tray_icon::Icon::from_rgba(p.rgba.clone(), p.width, p.height).map_err(|e| e.to_string())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #529: the tray's picture is a real one on every system, macOS's menu bar included (where
+    /// the window icon, `app_icon`, is empty on purpose).
+    #[test]
+    fn the_tray_picture_is_never_empty() {
+        let p = crate::app_picture();
+        assert_eq!((p.width, p.height), (256, 256));
+        assert_eq!(p.rgba.len(), 256 * 256 * 4);
+        assert!(p.rgba.chunks(4).any(|px| px[3] > 0), "a blank picture");
+        assert!(picture().is_ok());
+        #[cfg(target_os = "macos")]
+        assert_eq!(
+            crate::app_icon().width,
+            0,
+            "the Dock keeps the bundle's icon"
+        );
+    }
 
     #[test]
     fn menu_names_are_shortened_and_keep_their_ampersands() {

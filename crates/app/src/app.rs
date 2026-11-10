@@ -3026,13 +3026,7 @@ impl App {
         let wanted =
             !crate::offscreen() || std::env::var_os("MDM_TEST_TRAY").is_some_and(|v| v == "1");
         if self.tray.is_none() && self.tray_limiter.is_none() && wanted {
-            let icon = crate::app_icon();
-            self.tray = crate::tray::Tray::new(
-                ctx,
-                icon.rgba.clone(),
-                icon.width,
-                self.settings.speed_limit_on,
-            );
+            self.tray = crate::tray::Tray::new(ctx, self.settings.speed_limit_on);
             self.tray_limiter = Some(self.settings.speed_limit_on);
             if self.tray.is_some() {
                 tracing::info!("tray icon shown");
