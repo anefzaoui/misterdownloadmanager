@@ -522,6 +522,9 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 The video button jumping between corners over YouTube's thumbnail previews, out of the
+  pointer's reach ([#560](https://github.com/anefzaoui/misterdownloadmanager/issues/560)): fix in
+  review
 - 🔄 A progress window's title bar buttons not answering
   ([#540](https://github.com/anefzaoui/misterdownloadmanager/issues/540)): a window with a title of
   256 characters or more got the system's title bar above MDM's own; that part is fixed, in review.
