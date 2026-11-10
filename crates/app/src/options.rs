@@ -3184,9 +3184,18 @@ impl OptionsDialog {
                             LIGHT_TEXT(),
                         );
                         // The list as a file, to keep or carry to a new installation (#424).
+                        let [export_at, import_at] = winui::button_row(
+                            &p,
+                            &[("Export...", 212.0, 73.0), ("Import...", 293.0, 73.0)],
+                            8.0,
+                            160.0,
+                            140.0,
+                        )[..] else {
+                            unreachable!("two buttons")
+                        };
                         if winui::button_light(
                             ui,
-                            r(o, 212.0, 128.0, 73.0, 21.0),
+                            r(o, export_at.0, 128.0, export_at.1, 21.0),
                             "Export...",
                             ButtonKind::Normal,
                             false,
@@ -3204,7 +3213,7 @@ impl OptionsDialog {
                         }
                         if winui::button_light(
                             ui,
-                            r(o, 293.0, 128.0, 73.0, 21.0),
+                            r(o, import_at.0, 128.0, import_at.1, 21.0),
                             "Import...",
                             ButtonKind::Normal,
                             false,
