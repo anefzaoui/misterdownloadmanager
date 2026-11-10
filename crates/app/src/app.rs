@@ -533,6 +533,11 @@ pub struct App {
     /// Download a gallery (#58).
     gallery_dlg: Option<crate::gallerydlg::GalleryDialog>,
     torrent_dlg: Option<crate::torrentdlg::TorrentDialog>,
+    /// Magnet links and .torrents handed over while Add torrent was open (#507), oldest first:
+    /// each opens in Add torrent when the one before it closes.
+    torrent_waiting: std::collections::VecDeque<(String, Option<crate::torrents::Remote>)>,
+    /// Add torrent closed this frame: the next waiting one opens after a frame without it.
+    torrent_closed: bool,
     torrent_settings: Option<crate::torrentdlg::TorrentSettings>,
     /// Right-click → Torrent → Add trackers… (#39).
     add_trackers: Option<crate::torrentdlg::AddTrackers>,
@@ -653,6 +658,8 @@ pub struct App {
     last_save: Instant,
     /// Writes the list off the window's thread.
     saver: store::Saver,
+    /// Writes `rss.json` off the window's thread: the feeds' timer saves it by itself (#513).
+    rss_saver: store::Saver,
     /// When the light/dark mode was last checked against Windows' app mode.
     theme_checked: Option<Instant>,
     /// The zoom (View → Interface size, #262) the windows were last drawn at: a change is saved,
@@ -695,8 +702,9 @@ pub struct App {
     /// Stopped by hand while they could have run: a running queue leaves them alone until
     /// they are started again or the queue is started anew (#341).
     stopped_by_hand: std::collections::HashSet<u64>,
-    /// Seconds since local midnight at the last scheduler tick.
-    clock: u32,
+    /// Seconds since local midnight at the last scheduler tick (`None` until the clock's first
+    /// answer, #536).
+    clock: Option<u32>,
     /// Scheduler → "Wake the computer to run this queue": the wake set with the system (#142).
     wake: crate::wake::Waker,
     /// Commands from ipc.rs (command line, second launch, browser).
@@ -759,6 +767,29 @@ fn page_data_for(link: &str, page: Option<&str>, data: Option<&str>) -> Option<S
         .flatten()
 }
 
+/// Marks finished files (a video's and its subtitles, a gallery's pictures) as downloaded from the
+/// web, as `mark_hook` does for the engine's, on a thread of their own: writing the mark has the
+/// antivirus read the whole file again, and on a big video that kept the window waiting (#510). A
+/// file moved or removed meanwhile is left alone: marking its old path would create an empty
+/// file there.
+pub(crate) fn mark_finished(
+    files: Vec<std::path::PathBuf>,
+    url: String,
+    referrer: Option<String>,
+) -> Option<std::thread::JoinHandle<()>> {
+    std::thread::Builder::new()
+        .name("mark-downloaded".into())
+        .spawn(move || {
+            for f in files.iter().filter(|f| f.is_file()) {
+                #[cfg(windows)]
+                crate::win32::mark_downloaded(f, &url, referrer.as_deref());
+                #[cfg(unix)]
+                crate::unix::mark_downloaded(f, &url, referrer.as_deref());
+            }
+        })
+        .ok()
+}
+
 /// Marks each file the engine starts writing as downloaded from the web (Mark-of-the-Web, macOS'
 /// quarantine: win32 / unix `mark_downloaded`), as browsers mark theirs. Only http(s) addresses
 /// (an FTP address may carry its login).
@@ -819,12 +850,6 @@ pub fn auth_headers(login: Option<&(String, String)>) -> HeaderMap {
         }
     }
     h
-}
-
-/// Seconds since local midnight (for queue schedules).
-fn seconds_now() -> u32 {
-    use chrono::Timelike;
-    chrono::Local::now().num_seconds_from_midnight()
 }
 
 /// A read of the clipboard on a thread of its own, its answer taken when it has come (#418).
@@ -902,8 +927,13 @@ fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
         // Added: the order of addition itself (ids only grow), exact even without a time.
         list::ADDED => (it.id as f64, String::new()),
         list::SOURCE => (f64::from(u8::from(it.torrent.is_some())), String::new()),
-        // A torrent's peers, and its share ratio (not the text: "10" would come before "9").
-        // Anything but a torrent, and a torrent that has taken nothing, sort as zero.
+        // A torrent's upload, its peers, and its share ratio (not the text: "10" would come
+        // before "9"). Anything but a torrent, and a torrent that has taken nothing, sorts as
+        // zero.
+        list::UPLOAD => (
+            it.torrent.as_ref().map_or(0.0, |t| t.up_speed),
+            String::new(),
+        ),
         list::PEERS => (
             it.torrent.as_ref().map_or(0.0, |t| t.peers as f64),
             String::new(),
@@ -1123,6 +1153,8 @@ impl App {
             video_dlg: None,
             gallery_dlg: None,
             torrent_dlg: None,
+            torrent_waiting: Default::default(),
+            torrent_closed: false,
             torrent_settings: None,
             add_trackers: None,
             torrent_files: None,
@@ -1190,6 +1222,7 @@ impl App {
             secrets_confirmed: 0,
             last_save: Instant::now(),
             saver: store::Saver::new(),
+            rss_saver: store::Saver::writing("rss saver", crate::rss::write),
             theme_checked: None,
             zoom,
             fitted: false,
@@ -1212,7 +1245,7 @@ impl App {
             queues,
             failures: HashMap::new(),
             stopped_by_hand: Default::default(),
-            clock: seconds_now(),
+            clock: None,
             wake: Default::default(),
             commands,
         }
@@ -1430,14 +1463,18 @@ impl App {
                     // i18n: where a download comes from: a web or FTP server (shown on a small colored label)
                     "Web".into()
                 },
-                // A torrent's own numbers (#357): the peers it has, and what it gave back
-                // against what it took (as the progress window's General tab works it out).
+                // A torrent's own numbers (#357), in their slots' order (list::PEERS, RATIO, then
+                // UPLOAD, added last so saved layouts keep their meaning): the peers it has, what
+                // it gave back against what it took (as the General tab works it out), what it sends.
                 it.torrent
                     .as_ref()
                     .map_or(String::new(), |t| crate::i18n::integer(t.peers as u64)),
                 it.torrent.as_ref().map_or(String::new(), |t| {
                     crate::torrents::share_ratio_text(t.uploaded, it.downloaded)
                 }),
+                it.torrent
+                    .as_ref()
+                    .map_or(String::new(), |t| model::rate(t.up_speed)),
             ],
         }
     }
@@ -1843,7 +1880,7 @@ impl App {
             for i in self.items.iter_mut() {
                 i.torrent_check = None;
             }
-            crate::torrents::clear_peers(self.items.iter_mut().filter_map(|i| i.torrent.as_mut()));
+            crate::torrents::clear_live(self.items.iter_mut().filter_map(|i| i.torrent.as_mut()));
             return;
         };
         let limits = self.settings.sharing_limits();
@@ -1858,6 +1895,7 @@ impl App {
                 // Out of the session (released when it finished): no check is running.
                 i.torrent_check = None;
                 spec.peers = 0;
+                spec.up_speed = 0.0;
                 continue;
             };
             // Keep the session's in-memory checking progress visible for stopped/complete
@@ -1872,6 +1910,7 @@ impl App {
             // The peers it has now, for the list's "Peers" column (#357). Not a reason to save:
             // it changes as peers come and go, and the next tick brings the list up to date.
             spec.peers = st.peers_live;
+            spec.up_speed = st.up_speed;
             if st.phase == mdm_torrent::Phase::Finished && dt > 0 {
                 spec.seeded_secs += dt;
                 changed = true;
@@ -2510,6 +2549,8 @@ impl App {
             }),
             post: context.post.clone().map(|body| body.into_bytes().into()),
             on_file_created: Some(mark_hook(url, context.referer.as_deref())),
+            // The browser's own download's type: a web page instead is an error (#533).
+            expected_type: context.mime.clone(),
             ..Options::default()
         };
         RequestParts { headers, opts }
@@ -3023,13 +3064,7 @@ impl App {
         let wanted =
             !crate::offscreen() || std::env::var_os("MDM_TEST_TRAY").is_some_and(|v| v == "1");
         if self.tray.is_none() && self.tray_limiter.is_none() && wanted {
-            let icon = crate::app_icon();
-            self.tray = crate::tray::Tray::new(
-                ctx,
-                icon.rgba.clone(),
-                icon.width,
-                self.settings.speed_limit_on,
-            );
+            self.tray = crate::tray::Tray::new(ctx, self.settings.speed_limit_on);
             self.tray_limiter = Some(self.settings.speed_limit_on);
             if self.tray.is_some() {
                 tracing::info!("tray icon shown");
@@ -3112,18 +3147,27 @@ impl App {
         // off, no tray at all, or Linux with no tray host (#59: a hidden window couldn't come
         // back, and one that merely minimized could never be closed).
         if !self.exiting && ctx.input(|i| i.viewport().close_requested()) {
-            let keep = self.tray.is_some() && self.settings.close_to_tray;
-            if keep && self.tray_shown_now() {
-                tracing::info!("close: hidden to the notification area");
-                ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
-                self.hide_to_tray(ctx);
-            } else if keep && cfg!(not(target_os = "linux")) {
-                tracing::info!("close: no visible tray icon; minimizing to the taskbar");
-                ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
-                ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
-            } else {
-                tracing::info!("close: quitting");
-                self.exiting = true;
+            use crate::tray::OnClose;
+            let keep = self.settings.close_to_tray;
+            let tray = self.tray.is_some();
+            // The shell is asked afresh, and only when its answer matters.
+            let shown = keep && tray && self.tray_shown_now();
+            let taskbar = cfg!(not(target_os = "linux"));
+            match crate::tray::on_close(keep, tray, shown, taskbar) {
+                OnClose::Hide => {
+                    tracing::info!("close: hidden to the notification area");
+                    ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
+                    self.hide_to_tray(ctx);
+                }
+                OnClose::Minimize => {
+                    tracing::info!("close: no visible tray icon; minimizing to the taskbar");
+                    ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
+                    ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+                }
+                OnClose::Quit => {
+                    tracing::info!("close: quitting");
+                    self.exiting = true;
+                }
             }
         }
         // Options → General → "Minimize to the notification area" (#63): Minimize hides the
@@ -3520,6 +3564,12 @@ impl App {
         let tool = tools.as_deref().and_then(mdm_tools::installed);
         let ffmpeg = tools.as_deref().and_then(mdm_tools::ffmpeg::installed);
         let rate = self.settings.speed_limit();
+        // A stream in pieces (HLS, DASH): as many at once as a file's connections (#531).
+        let fragments = self
+            .items
+            .iter()
+            .find(|i| i.id == id)
+            .map_or(1, |i| self.settings.connections_for(&i.url));
         let Some(item) = self.item(id) else { return };
         let Some(spec) = item.video.clone() else {
             return;
@@ -3549,6 +3599,7 @@ impl App {
             &folder,
             &stem,
             rate,
+            fragments,
             ffmpeg.as_ref().map(|f| f.exe.as_path()),
             item.size,
             &crate::videodlg::from_browser(&item.context),
@@ -3735,7 +3786,19 @@ impl App {
             self.show_window(ctx);
             return;
         }
-        if self.torrent_dlg.is_some() {
+        if let Some(open) = &self.torrent_dlg {
+            // One Add torrent at a time: a torrent handed over meanwhile waits its turn (#507).
+            // Add torrent… from the menu with it open (no source) has nothing to wait for.
+            if let Some(source) = source
+                && open.source() != source
+                && !self.torrent_waiting.iter().any(|(s, _)| *s == source)
+            {
+                tracing::info!(
+                    "Add torrent is open: a torrent waits ({} waiting)",
+                    self.torrent_waiting.len() + 1
+                );
+                self.torrent_waiting.push_back((source, remote));
+            }
             return;
         }
         self.torrent_dlg = Some(crate::torrentdlg::TorrentDialog::new(
@@ -3906,6 +3969,7 @@ impl App {
                 uploaded: 0,
                 seeded_secs: 0,
                 peers: 0,
+                up_speed: 0.0,
                 upload_limit: None,
                 in_order: add.in_order,
                 ends_first: true,
@@ -4021,13 +4085,19 @@ impl App {
         if save {
             self.save_rss();
         }
+        if let Some(Err(e)) = self.rss_saver.outcome() {
+            tracing::warn!("rss: not saved: {e}");
+        }
     }
 
+    /// On the RSS saver's thread; how it went is logged at the next tick (`rss_tick`).
     fn save_rss(&self) {
-        if let Some(path) = crate::rss::Store::path()
-            && let Err(e) = self.rss.save(&path)
-        {
-            tracing::warn!("rss: {} not saved: {e}", path.display());
+        let Some(path) = crate::rss::Store::path() else {
+            return;
+        };
+        match self.rss.encode() {
+            Ok(json) => self.rss_saver.queue(path, json),
+            Err(e) => tracing::warn!("rss: {} not saved: {e}", path.display()),
         }
     }
 
@@ -4885,24 +4955,29 @@ impl App {
 
     /// Scheduler times, then start what running queues allow (notes/ENGINE.md §5).
     fn tick_queues(&mut self) {
-        use chrono::Datelike;
-        let now_s = seconds_now();
-        let prev = std::mem::replace(&mut self.clock, now_s);
-        let today = chrono::Local::now().date_naive();
-        let weekday = today.weekday().num_days_from_sunday() as usize;
-        let date = (today.year(), today.month(), today.day());
-        for q in 0..self.queues.len() {
-            let sch = self.queues[q].schedule.clone();
-            if let Some(t) = sch.start_at
-                && sch.starts_on(date, weekday)
-                && queue::crossed(t, prev, now_s)
-            {
-                self.queues[q].running = true;
-            }
-            if let Some(t) = sch.stop_at
-                && queue::crossed(t, prev, now_s)
-            {
-                self.stop_queue(q);
+        use chrono::{Datelike, Timelike};
+        // The local time with the offset the clock's thread keeps: asking Windows here held the
+        // window for 8 s (#536). Until its first answer, schedules wait.
+        let local = crate::clock::now_known();
+        let now_s = local.map(|t| t.num_seconds_from_midnight());
+        let prev = std::mem::replace(&mut self.clock, now_s).or(now_s);
+        if let (Some(local), Some(now_s), Some(prev)) = (local, now_s, prev) {
+            let today = local.date_naive();
+            let weekday = today.weekday().num_days_from_sunday() as usize;
+            let date = (today.year(), today.month(), today.day());
+            for q in 0..self.queues.len() {
+                let sch = self.queues[q].schedule.clone();
+                if let Some(t) = sch.start_at
+                    && sch.starts_on(date, weekday)
+                    && queue::crossed(t, prev, now_s)
+                {
+                    self.queues[q].running = true;
+                }
+                if let Some(t) = sch.stop_at
+                    && queue::crossed(t, prev, now_s)
+                {
+                    self.stop_queue(q);
+                }
             }
         }
         let now = Instant::now();
@@ -8114,7 +8189,7 @@ impl App {
             }
         }
         if let Some(d) = &mut self.add_url {
-            let out = d.show(ctx);
+            let out = d.show(ctx, |url| self.settings.site_login(url));
             // Every address that goes on is remembered for the Address drop list.
             if let Outcome::Done(new) = &out {
                 crate::settings::remember(&mut self.settings.url_history, new.url.as_str());
@@ -8419,14 +8494,36 @@ impl App {
         if let Some((id, (files, all, size))) = torrent_files_selection {
             self.choose_files(id, files, all, size);
         }
+        // The next torrent handed over while Add torrent was open (#507), a frame after it
+        // closed: that frame without it closes its window, and the next one opens as a window
+        // of its own (opened in the same frame, the closed window would only change its
+        // contents). One that goes to the debrid account opens nothing, and the one after it
+        // is next.
+        if self.torrent_dlg.is_none() && !self.torrent_waiting.is_empty() {
+            if std::mem::take(&mut self.torrent_closed) {
+                ctx.request_repaint();
+            } else {
+                while self.torrent_dlg.is_none()
+                    && let Some((source, remote)) = self.torrent_waiting.pop_front()
+                {
+                    self.open_torrent_dialog_with(Some(source), remote, ctx);
+                }
+            }
+        }
         if let Some(t) = &mut self.torrent_dlg {
-            match t.show(ctx, &self.rt) {
-                Outcome::Open => {}
-                Outcome::Closed => self.torrent_dlg = None,
+            let closed = match t.show(ctx, &self.rt) {
+                Outcome::Open => false,
+                Outcome::Closed => true,
                 Outcome::Done(add) => {
                     self.torrent_dlg = None;
                     self.add_torrent(add);
+                    true
                 }
+            };
+            if closed {
+                self.torrent_dlg = None;
+                self.torrent_closed = true;
+                ctx.request_repaint();
             }
         }
         if let Some(g) = &mut self.gallery_dlg {
@@ -8898,6 +8995,8 @@ impl Drop for App {
         // No wake for a queue MDM won't be there to start (Linux's alarm would outlive it).
         self.wake.clear();
         self.keep_unseen();
+        // The feeds as last handed to their saver.
+        self.rss_saver.flush();
         // What the saver has in hand first, then the last state, written here and now.
         self.saver.flush();
         let _ = store::save(
@@ -9308,5 +9407,35 @@ mod window_thread_tests {
         assert!(dest.exists(), "a file that wasn't complete stays");
         remove_files_of(&dest, true);
         assert!(!dest.exists());
+    }
+}
+
+#[cfg(test)]
+mod mark_finished_tests {
+    /// #510: finished files are marked away from the window's thread; a file gone from its path
+    /// meanwhile (moved, deleted) isn't created again by the mark.
+    #[test]
+    fn a_finished_file_is_marked_and_a_gone_one_is_not_created() {
+        let dir = tempfile::tempdir().unwrap();
+        let here = dir.path().join("video.mp4");
+        std::fs::write(&here, b"x").unwrap();
+        let gone = dir.path().join("moved.mp4");
+        super::mark_finished(
+            vec![here.clone(), gone.clone()],
+            "https://videos.test/v".into(),
+            None,
+        )
+        .unwrap()
+        .join()
+        .unwrap();
+        assert!(!gone.exists(), "a moved file's old path stays empty");
+        #[cfg(windows)]
+        {
+            let mut stream = here.as_os_str().to_owned();
+            stream.push(":Zone.Identifier");
+            let zone = std::fs::read_to_string(stream).unwrap();
+            assert!(zone.contains("ZoneId=3"), "{zone}");
+            assert!(zone.contains("HostUrl=https://videos.test/v"), "{zone}");
+        }
     }
 }

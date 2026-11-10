@@ -142,6 +142,10 @@ pub struct Options {
     /// name, so whatever the hook attaches to it — Windows' Mark of the Web stream, macOS'
     /// quarantine attribute — stays with the finished file.
     pub on_file_created: Option<FileHook>,
+    /// From the browser: the MIME type its own download had. A web page where it had another
+    /// type is the server refusing MDM (a firewall's "The requested URL was rejected"), an error
+    /// and never saved as the file (#533, `expects_other_file`).
+    pub expected_type: Option<String>,
     /// Tests: a disk whose flush takes this long and holds every write to the file meanwhile
     /// (as NTFS does, #361). None: the real disk.
     #[doc(hidden)]
@@ -233,6 +237,7 @@ impl Default for Options {
             extra_roots: Vec::new(),
             post: None,
             on_file_created: None,
+            expected_type: None,
             slow_flush: None,
         }
     }
@@ -819,6 +824,7 @@ pub async fn probe_kept(
     };
     let seen = Arc::new(crate::server::ServerSeen::default());
     let client = client(opts, &target, &as_get, &seen)?;
+    let expects = expects_other_file(opts.expected_type.as_deref(), None, &url);
     // A browser's User-Agent refused (#372): asked once more as MDM.
     let (client, asked) = match get(
         &client,
@@ -826,6 +832,7 @@ pub async fn probe_kept(
         headers.clone(),
         opts.post.as_ref(),
         &opts.user_agent,
+        expects,
         &CancellationToken::new(),
     )
     .await
@@ -840,6 +847,7 @@ pub async fn probe_kept(
                 headers,
                 opts.post.as_ref(),
                 &plain.user_agent,
+                expects,
                 &CancellationToken::new(),
             )
             .await;
@@ -1524,7 +1532,18 @@ async fn run_fresh(
     shared.conn(0, |_| {});
     // Probe on connection 0: a plain GET (or the form's POST) whose body becomes the segment
     // starting at 0; or the look's answer kept for it (#28), not asked for again.
-    let kept = kept.filter(|k| k.url == req.url && k.at.elapsed() < KEEP_ANSWER_FOR);
+    // A web page where the download expects another kind of file is an error (#533): the look's
+    // answer, asked before the file's name was settled, is asked for again then (`get` says so).
+    let expects = expects_other_file(
+        opts.expected_type.as_deref(),
+        dest_name(&req.dest),
+        &req.url,
+    );
+    let kept = kept.filter(|k| {
+        k.url == req.url
+            && k.at.elapsed() < KEEP_ANSWER_FOR
+            && !(expects && is_web_page(k.resp.headers()) && !named(k.resp.headers()))
+    });
     let mut unlocked = kept.as_ref().and_then(|k| k.unlocked.clone());
     let (as_get, client0, (resp, headers), ttfb) = match kept {
         Some(k) => {
@@ -1546,8 +1565,10 @@ async fn run_fresh(
             let as_get = AsGet::default();
             let seen = shared.seen.get_or_init(Default::default).clone();
             let client0 = client(&opts, &target, &as_get, &seen)?;
-            let (client0, first) = match first_get(&client0, &target, &asked, &opts, shared, cancel)
-                .await
+            let (client0, first) = match first_get(
+                &client0, &target, &asked, &opts, expects, shared, cancel,
+            )
+            .await
             {
                 Err(e) if agent_refused(&e) && opts.agent_fallback.is_some() => {
                     // #372: the rest of the download goes as MDM too.
@@ -1557,7 +1578,8 @@ async fn run_fresh(
                             "The server refused the browser's User-Agent; asking as Mister Download Manager",
                         );
                     let client1 = client(&opts, &target, &as_get, &seen)?;
-                    let first = first_get(&client1, &target, &asked, &opts, shared, cancel).await;
+                    let first =
+                        first_get(&client1, &target, &asked, &opts, expects, shared, cancel).await;
                     (client1, first)
                 }
                 first => (client0, first),
@@ -1697,8 +1719,16 @@ async fn run_fresh(
                 *shared.planner.lock().unwrap() = None;
                 shared.view.lock().unwrap().resumable = Some(false);
                 let agent = &opts.user_agent;
-                let (resp, ..) =
-                    get(&client0, final_url, headers, post.as_ref(), agent, cancel).await?;
+                let (resp, ..) = get(
+                    &client0,
+                    final_url,
+                    headers,
+                    post.as_ref(),
+                    agent,
+                    expects,
+                    cancel,
+                )
+                .await?;
                 let body = Body::Http(resp);
                 single_stream(body, &file, shared, opts.global.as_deref(), cancel).await?
             }
@@ -2088,7 +2118,9 @@ async fn refresh_final_url(
         None => (origin.clone(), headers.clone()),
     };
     asked.insert(header::RANGE, HeaderValue::from_static("bytes=0-0"));
-    let (resp, mut headers, _) = get(client, target, asked, post, agent, cancel).await.ok()?;
+    let (resp, mut headers, _) = get(client, target, asked, post, agent, false, cancel)
+        .await
+        .ok()?;
     headers.remove(header::RANGE);
     if resp.status() != StatusCode::PARTIAL_CONTENT {
         return None;
@@ -2237,12 +2269,12 @@ async fn segmented(
 ///
 /// A flush holds every write to the file for as long as it runs (NTFS, measured, #361), so on a
 /// disk where it takes seconds, flushing as often as the file grows left the download frozen
-/// most of the time. The next flush therefore waits nine times as long as the last one took,
-/// at most `SYNC_GAP_MAX`: at most a tenth of the time goes to flushing, and on a fast disk
-/// (a flush of a few milliseconds) nothing changes. What it gives up: after a power cut or a
-/// crash the bytes since the last flush are downloaded again, so on a slow disk up to
-/// `SYNC_GAP_MAX` of them (at 1 Gbit/s about 7 GB) instead of about 2 s of them. The saved
-/// positions still never claim bytes that weren't flushed.
+/// most of the time. The next flush therefore waits nine times as long as the last flush during
+/// the transfer took (`forced_gap`), at most `SYNC_GAP_MAX`: at most a tenth of the time goes
+/// to flushing, and on a fast disk (a flush of a few milliseconds) nothing changes. What it
+/// gives up: after a power cut or a crash the bytes since the last flush are downloaded again,
+/// so on a slow disk up to `SYNC_GAP_MAX` of them (at 1 Gbit/s about 7 GB) instead of about 2 s
+/// of them. The saved positions still never claim bytes that weren't flushed.
 const SYNC_BYTES_MAX: u64 = 64 << 20;
 const SYNC_BYTES_MIN: u64 = 1 << 20;
 const SYNC_EVERY: Duration = Duration::from_secs(30);
@@ -2340,9 +2372,17 @@ async fn save_state(
     *synced = Synced {
         at: std::time::Instant::now(),
         bytes,
-        took: began.elapsed(),
+        took: forced_gap(force, began.elapsed()),
     };
     Ok(())
+}
+
+/// The flush time that spaces out the next flush. A forced save runs while no connection
+/// writes (before they start, after they stop), so it holds no transfer up and doesn't push the
+/// next save back: the first one at the start, which also pays for creating the part file, once
+/// delayed the first save of progress past the end of a short download (#518).
+fn forced_gap(force: bool, took: Duration) -> Duration {
+    if force { Duration::ZERO } else { took }
 }
 
 /// A plain 403, which a browser's User-Agent may have brought on (#372). A site's bot check
@@ -2361,17 +2401,21 @@ fn agent_refused(e: &Error) -> bool {
 /// A site whose links aren't the file's address (`sites`, #34: Google Drive) is asked its own
 /// way: its link goes to the file's address first, its pages say where to go next or why it
 /// refuses (`Error::Refused`), and a page of its where the file was expected is an error, never
-/// the file.
+/// the file. So is any web page when the download `expects` another kind of file (#533,
+/// `expects_other_file`): a server's refusal, a sign-in wall. A small answer without a type is
+/// looked into then, and asked for again if it isn't a page.
 ///
 /// With the answer, `headers` as the download goes on with them at the address it ended at:
 /// credentials scoped to it (`scoped_headers`), the pages' cookies added; and how long the last
 /// request took to answer (a page's wait and its own request not counted: the time to first byte).
+#[allow(clippy::too_many_arguments)]
 async fn get(
     client: &Client,
     url: Url,
     headers: HeaderMap,
     post: Option<&Bytes>,
     agent: &str,
+    expects: bool,
     cancel: &CancellationToken,
 ) -> Result<(Response, HeaderMap, Duration), Error> {
     let (mut url, mut headers) = (url, headers);
@@ -2445,8 +2489,16 @@ async fn get(
         let site_page = post.is_none()
             && resp.status() == StatusCode::OK
             && is_web_page(resp.headers())
-            && !resp.headers().contains_key(header::CONTENT_DISPOSITION)
-            && sites::expects_file(&from);
+            && !named(resp.headers())
+            && (sites::expects_file(&from) || expects);
+        // No type said where another kind of file is expected (#533): small, it is looked into.
+        let untyped = post.is_none()
+            && expects
+            && hops < MAX_PAGE_REDIRECTS
+            && resp.status() == StatusCode::OK
+            && !resp.headers().contains_key(header::CONTENT_TYPE)
+            && !named(resp.headers())
+            && resp.content_length().is_none_or(|n| n <= PAGE_PEEK as u64);
         // A form is never posted again, and a page's own redirects end somewhere.
         if post.is_some() || resp.status() != StatusCode::OK || hops >= MAX_PAGE_REDIRECTS {
             if site_page {
@@ -2466,11 +2518,19 @@ async fn get(
             next
         } else if let Some(next) = site_link {
             (Duration::ZERO, next)
-        } else if is_web_page(resp.headers())
+        } else if (is_web_page(resp.headers()) || untyped)
             // A web page small enough to look into (larger ones aren't waiting pages).
             && resp.content_length().is_none_or(|n| n <= PAGE_PEEK as u64)
         {
             let page = read_up_to(resp, PAGE_PEEK, cancel).await?;
+            // Without a type and not a page: the file, asked for again as is.
+            let site_page = site_page || (untyped && sniffs_as_html(&page));
+            if untyped && !site_page {
+                add_cookies(&mut headers, &cookies);
+                url = from;
+                hops = MAX_PAGE_REDIRECTS;
+                continue;
+            }
             match sites::read_page(&from, &page) {
                 PageSays::Next(next) => (Duration::ZERO, next),
                 PageSays::Refused(r) => match sites::second_look(&from).filter(|_| !looked) {
@@ -2629,6 +2689,7 @@ async fn first_get(
     url: &Url,
     headers: &HeaderMap,
     opts: &Options,
+    expects: bool,
     shared: &Shared,
     cancel: &CancellationToken,
 ) -> Result<((Response, HeaderMap), Duration), Error> {
@@ -2639,6 +2700,7 @@ async fn first_get(
             headers.clone(),
             opts.post.as_ref(),
             &opts.user_agent,
+            expects,
             cancel,
         )
     })
@@ -3064,6 +3126,136 @@ fn is_web_page(h: &HeaderMap) -> bool {
 fn is_web_page_type(content_type: &str) -> bool {
     let mime = content_type.split(';').next().unwrap_or("").trim();
     mime.eq_ignore_ascii_case("text/html") || mime.eq_ignore_ascii_case("application/xhtml+xml")
+}
+
+/// The server names what it sends (`Content-Disposition`): its own file, page or not.
+fn named(h: &HeaderMap) -> bool {
+    h.contains_key(header::CONTENT_DISPOSITION)
+}
+
+/// Where a download is saved under a name of its own (the browser's, the user's), that name.
+fn dest_name(dest: &Destination) -> Option<&str> {
+    match dest {
+        Destination::File(p) => p.file_name().and_then(|n| n.to_str()),
+        Destination::Dir(_) => None,
+    }
+}
+
+/// Types of file a web page never is, by extension: documents, archives, programs, disk images,
+/// audio, video and pictures. A name without one of these (a page's `.php`, no extension at all)
+/// says nothing.
+const FILE_EXTENSIONS: &[&str] = &[
+    "doc",
+    "docx",
+    "docm",
+    "dot",
+    "dotx",
+    "xls",
+    "xlsx",
+    "xlsm",
+    "xlsb",
+    "ppt",
+    "pptx",
+    "pps",
+    "ppsx",
+    "odt",
+    "ods",
+    "odp",
+    "rtf",
+    "pdf",
+    "epub",
+    "mobi",
+    "djvu",
+    "zip",
+    "rar",
+    "7z",
+    "gz",
+    "tgz",
+    "bz2",
+    "xz",
+    "zst",
+    "tar",
+    "cab",
+    "arj",
+    "lz",
+    "lzh",
+    "exe",
+    "msi",
+    "msix",
+    "msixbundle",
+    "appx",
+    "apk",
+    "deb",
+    "rpm",
+    "appimage",
+    "dmg",
+    "pkg",
+    "jar",
+    "iso",
+    "img",
+    "vhd",
+    "vhdx",
+    "mp3",
+    "m4a",
+    "aac",
+    "flac",
+    "wav",
+    "wma",
+    "ogg",
+    "opus",
+    "mp4",
+    "m4v",
+    "mkv",
+    "avi",
+    "mov",
+    "wmv",
+    "flv",
+    "webm",
+    "mpg",
+    "mpeg",
+    "jpg",
+    "jpeg",
+    "png",
+    "gif",
+    "bmp",
+    "webp",
+    "tif",
+    "tiff",
+    "psd",
+    "torrent",
+];
+
+/// The download expects a kind of file a web page isn't (#533): the browser's own download had
+/// another type (`expected_type`), or its name (`name`, else the address's) is a file's. A web
+/// page in its place, without a name of the server's, is an error (`Error::GotWebPage`). A page
+/// the browser saved as one (`text/html`), a `.html` link, or a server's own type for the file
+/// (`application/octet-stream`) are downloads like any other.
+fn expects_other_file(expected_type: Option<&str>, name: Option<&str>, url: &Url) -> bool {
+    if let Some(t) = expected_type.map(str::trim).filter(|t| !t.is_empty()) {
+        return !is_web_page_type(t);
+    }
+    let name = name.map_or_else(|| naming::file_name(None, url), str::to_owned);
+    Path::new(&name)
+        .extension()
+        .and_then(|e| e.to_str())
+        .is_some_and(|e| FILE_EXTENSIONS.iter().any(|x| e.eq_ignore_ascii_case(x)))
+}
+
+/// Bytes that start as an HTML document (after a byte order mark and white space).
+fn sniffs_as_html(body: &[u8]) -> bool {
+    let body = body.strip_prefix(b"\xEF\xBB\xBF").unwrap_or(body);
+    let start = body
+        .iter()
+        .position(|b| !b.is_ascii_whitespace())
+        .unwrap_or(body.len());
+    let head: Vec<u8> = body[start..]
+        .iter()
+        .take(16)
+        .map(u8::to_ascii_lowercase)
+        .collect();
+    ["<!doctype html", "<html", "<head", "<body", "<title"]
+        .iter()
+        .any(|t| head.starts_with(t.as_bytes()))
 }
 
 /// Whether the download is itself a web page (it was served as one, or is named like one).
@@ -3507,6 +3699,21 @@ mod tests {
         assert!(!at(Duration::from_millis(8)).due(1 << 20, 45 * gb, s(2)));
         // Few bytes on a fast disk: still the long wait.
         assert!(at(Duration::from_millis(8)).due(1 << 20, 45 * gb, s(30)));
+    }
+
+    /// #518: when the forced save at the start (no connection writing yet) takes 0.5 s on a busy
+    /// disk, the first save of progress still comes at the first tick, not 4.5 s later.
+    #[test]
+    fn a_forced_save_does_not_push_the_next_back() {
+        let at = |took| Synced {
+            at: std::time::Instant::now(),
+            bytes: 0,
+            took,
+        };
+        let (slow, tick) = (Duration::from_millis(500), Duration::from_secs(2));
+        assert!(at(forced_gap(true, slow)).due(15 << 20, 24 << 20, tick));
+        // A save during the transfer still does.
+        assert!(!at(forced_gap(false, slow)).due(15 << 20, 24 << 20, tick));
     }
 
     #[test]

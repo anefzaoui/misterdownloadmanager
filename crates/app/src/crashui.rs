@@ -382,7 +382,7 @@ impl ReportWindow {
 
         // The app's icon and the heading.
         let icon = self.icon.get_or_insert_with(|| {
-            let i = crate::app_icon();
+            let i = crate::app_picture();
             let img = egui::ColorImage::from_rgba_unmultiplied(
                 [i.width as usize, i.height as usize],
                 &i.rgba,

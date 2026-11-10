@@ -993,6 +993,10 @@
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Downloading and verifying yt-dlp...	Downloading and verifying yt-dlp...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+	Downloading MDM's own copy...	Downloading MDM's own copy...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 	Downloading the update... {percent}	Downloading the update... {percent}
@@ -4156,6 +4160,9 @@ column	Status	Status
 column	Time left	Time left
 #. column title in the download list in the download list
 column	Transfer rate	Transfer rate
+#. column title in the download list in the download list
+#. column title: what a torrent sends to peers, bytes per second
+column	Upload speed	Upload speed
 #. text in the browser extension
 #. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
 extension	Another Mister Download Manager (a server)	Another Mister Download Manager (a server)

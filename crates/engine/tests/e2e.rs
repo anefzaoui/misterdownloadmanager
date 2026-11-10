@@ -1629,6 +1629,28 @@ async fn a_one_time_link_is_read_from_the_kept_answer() {
 async fn a_slow_flush_does_not_stop_the_transfer() {
     let s = server("rate=20M").await; // 8 connections, about 160 MB/s together
     let dir = tempfile::tempdir().unwrap();
+    // The same download with a disk that never stalls, on this machine at this moment: the
+    // yardstick the slow flush is measured against (#518: a fixed limit failed on busy runners).
+    let started = std::time::Instant::now();
+    Download::start(
+        Request {
+            url: s.url("/gen/160M/a.bin?seed=518").parse().unwrap(),
+            headers: Default::default(),
+            dest: Destination::Dir(dir.path().to_owned()),
+        },
+        Options {
+            save_interval: std::time::Duration::from_millis(100),
+            ..fast_opts()
+        },
+    )
+    .wait()
+    .await
+    .expect("the yardstick download succeeds");
+    let yardstick = started.elapsed();
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("every request ends");
+    let before = s.log().len();
     let opts = Options {
         save_interval: std::time::Duration::from_millis(100),
         slow_flush: Some(mdm_engine::download::SlowFlush {
@@ -1658,10 +1680,14 @@ async fn a_slow_flush_does_not_stop_the_transfer() {
     tokio::time::timeout(SETTLE, s.settled())
         .await
         .expect("every request ends");
-    let log = s.log();
-    // Unobstructed: about a second, flush included, up to 4 s when the whole suite shares the
-    // machine. Before the fix: every tick's flush stalled all writes for 1.5 s, 7.6 s measured.
-    assert!(took < std::time::Duration::from_secs(6), "took {took:?}");
+    let log = s.log().split_off(before);
+    // At most one 1.5 s flush more than the yardstick, with room for a busy machine. Before the
+    // fix every tick's flush stalled all writes for 1.5 s: 7.6 s measured against about 1 s, and
+    // more ticks the slower the machine, so the gap only grows.
+    assert!(
+        took < yardstick + std::time::Duration::from_millis(4500),
+        "took {took:?}, the same download without the slow flush {yardstick:?}"
+    );
     // No connection reconnected because of the disk's stall: the probe, seven more, and the
     // planner's closing splits only.
     assert!(log.len() < 48, "{} requests: {log:?}", log.len());
