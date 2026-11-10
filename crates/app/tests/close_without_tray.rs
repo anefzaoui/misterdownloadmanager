@@ -2,8 +2,9 @@
 //! off quits; on hides; on with no visible icon minimizes to the taskbar instead (downloads
 //! continue, and the window stays reachable); with no tray at all it quits, as ever. The real app,
 //! off the screens, with data folders of its own; a tray object whose visibility
-//! MDM_TEST_TRAY_VISIBLE decides, or no tray object. Windows only (WM_CLOSE), so it runs on
-//! request:
+//! MDM_TEST_TRAY_VISIBLE decides, or no tray object; and a real icon, the shell asked for real,
+//! hides the window even when the shell gives it no place (an icon behind ^, #545). Windows only
+//! (WM_CLOSE), so it runs on request:
 //! `cargo test -p mdm-app --test close_without_tray -- --ignored`.
 
 #![cfg(windows)]
@@ -224,4 +225,56 @@ fn closing_follows_the_option_and_the_tray_icon() {
     let status = wait_exit(&mut app, Duration::from_secs(20));
     assert!(status.success(), "{status}");
     assert!(log(&data4).contains("close: quitting"), "{}", log(&data4));
+}
+
+/// The app's environment with its real tray icon, the shell asked for real; `placed` false says
+/// the shell gives the icon no place (MDM_TEST_TRAY_RECT=0), as the reporters' did for an icon
+/// behind ^ (#545, #534, #527).
+fn env_real<'a>(cmd: &'a mut Command, data: &Path, placed: bool) -> &'a mut Command {
+    cmd.env("MDM_DATA_DIR", data)
+        .env("MDM_OFFSCREEN", "1")
+        .env("MDM_TEST_TRAY", "1")
+        .env("MDM_TEST_TRAY_RECT", if placed { "1" } else { "0" })
+}
+
+/// Closing with a real icon the shell holds: hidden there, whether or not the shell says where
+/// the icon is (a new icon goes behind ^, where the shell may give it none). The shell is this
+/// machine's: its icon is added for the test and removed when the app exits.
+#[test]
+#[ignore = "opens the app's windows (off-screen) and a tray icon: run with --ignored"]
+fn closing_hides_to_an_icon_the_shell_holds() {
+    let dir = tempfile::tempdir().unwrap();
+    let wait = Duration::from_secs(60);
+    for (name, placed) in [("placed", true), ("no-place", false)] {
+        let data = data(dir.path(), name, true);
+        let mut app = Process(
+            env_real(&mut Command::new(APP), &data, placed)
+                .spawn()
+                .unwrap(),
+        );
+        wait_for(&mut app, &data, "first frame drawn", wait);
+        wait_for(&mut app, &data, "tray icon shown", wait);
+        assert!(close_main(app.id()), "no main window to close");
+        wait_for(
+            &mut app,
+            &data,
+            "close: hidden to the notification area",
+            Duration::from_secs(10),
+        );
+        let text = log(&data);
+        assert!(
+            text.contains(&format!(
+                "tray icon: placed {placed}, held by the shell true"
+            )),
+            "{text}"
+        );
+        assert!(
+            app.try_wait().unwrap().is_none(),
+            "the app quit instead of hiding"
+        );
+        let _ = env_real(&mut Command::new(APP), &data, placed)
+            .arg("/exit")
+            .status();
+        let _ = wait_exit(&mut app, Duration::from_secs(20));
+    }
 }

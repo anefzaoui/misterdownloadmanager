@@ -81,12 +81,22 @@ pub const MAIN_TITLE: &str = concat!("Mister Download Manager ", env!("CARGO_PKG
 /// icon (AppIcon.icns, every size, tools/installer/build-macos.sh), which an icon set at run
 /// time would replace.
 pub fn app_icon() -> std::sync::Arc<egui::IconData> {
+    if cfg!(target_os = "macos") {
+        // eframe takes an empty icon as "none" (AppTitleIconSetter).
+        static NONE: std::sync::OnceLock<std::sync::Arc<egui::IconData>> =
+            std::sync::OnceLock::new();
+        return NONE.get_or_init(Default::default).clone();
+    }
+    app_picture()
+}
+
+/// The app icon's picture, the 256 px size, on every system: what MDM draws or hands over as a
+/// picture (the tray's icon, macOS's menu bar item; the crash report window's heading). Not
+/// [`app_icon`], empty on macOS: an empty picture can't be made into the menu bar item, so macOS
+/// had none and closing the window quit (#529).
+pub fn app_picture() -> std::sync::Arc<egui::IconData> {
     static ICON: std::sync::OnceLock<std::sync::Arc<egui::IconData>> = std::sync::OnceLock::new();
     ICON.get_or_init(|| {
-        if cfg!(target_os = "macos") {
-            // eframe takes an empty icon as "none" (AppTitleIconSetter).
-            return std::sync::Arc::new(egui::IconData::default());
-        }
         let png = include_bytes!("../assets/icons/app/mdm-256.png");
         std::sync::Arc::new(eframe::icon_data::from_png_bytes(png).unwrap_or_default())
     })

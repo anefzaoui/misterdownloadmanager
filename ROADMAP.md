@@ -526,12 +526,17 @@ These ship in a later version, when they're ready.
   ([#540](https://github.com/anefzaoui/misterdownloadmanager/issues/540)): a window with a title of
   256 characters or more got the system's title bar above MDM's own; that part is fixed, in review.
   Still to find: whether the reporter's window was one of them
+- 🔄 macOS 15 and later: PingFang moved into the system's font assets, so Chinese text lost its
+  font ([#541](https://github.com/anefzaoui/misterdownloadmanager/issues/541)): fix in review
 - 🔄 The video button still showing after it was switched off, or its site listed, in Options
   ([#532](https://github.com/anefzaoui/misterdownloadmanager/issues/532)): fix in review
 - 🔄 macOS: Persian and other Arabic-script file names drawn as boxes in the download list
   ([#533](https://github.com/anefzaoui/misterdownloadmanager/issues/533)): fix in review, to
   confirm on a Mac
 - 🔄 macOS: Download File Info opening behind the browser that asked for it\n  ([#484](https://github.com/anefzaoui/misterdownloadmanager/issues/484)): fix in review
+- 🔄 macOS: no icon in the menu bar, so closing the window quit MDM
+  ([#529](https://github.com/anefzaoui/misterdownloadmanager/issues/529)): fix in review, still to
+  confirm on a Mac
 - 🔄 The browser tests: the video button's focus case ran after the one that turns the button
   off for the test site, and timed out in a full run ([#480](https://github.com/anefzaoui/misterdownloadmanager/issues/480)): fix in review
 - 🔄 The video button vanishing over a hover-to-play preview (YouTube's thumbnails) before it
@@ -539,6 +544,11 @@ These ship in a later version, when they're ready.
 - 🔄 Add URL's **Use authorization** empty for an address with a login in Options → Sites
   Logins, though the download used it
   ([#511](https://github.com/anefzaoui/misterdownloadmanager/issues/511)): fix in review
+- 🔄 Windows: closing the window left MDM in the taskbar instead of the notification area
+  when its icon was among the hidden icons behind ^
+  ([#545](https://github.com/anefzaoui/misterdownloadmanager/issues/545),
+  [#534](https://github.com/anefzaoui/misterdownloadmanager/issues/534),
+  [#527](https://github.com/anefzaoui/misterdownloadmanager/issues/527)): fix in review
 - 🔄 Two tests that fail now and then on busy CI runners
   ([#518](https://github.com/anefzaoui/misterdownloadmanager/issues/518)): the slow-flush one fixed;
   the crash-and-resume one found a real delay in saving a new download's progress, fix in review
