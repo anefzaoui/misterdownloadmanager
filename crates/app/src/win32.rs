@@ -25,6 +25,10 @@ use windows_sys::Win32::UI::WindowsAndMessaging::{
 struct Find {
     pid: u32,
     title: Vec<u16>,
+    /// Where each window's title is read: as long as the title looked for, one more unit and the
+    /// NUL, so a longer title reads longer, never the same. A fixed 256 units cut every title to
+    /// 255, and a window named after a long file was never found (#540).
+    buf: Vec<u16>,
     found: HWND,
 }
 
@@ -36,9 +40,9 @@ unsafe extern "system" fn enum_cb(hwnd: HWND, lparam: LPARAM) -> windows_sys::co
     if pid != f.pid {
         return 1;
     }
-    let mut buf = [0u16; 256];
-    let n = unsafe { GetWindowTextW(hwnd, buf.as_mut_ptr(), buf.len() as i32) };
-    if n > 0 && buf[..n as usize] == f.title[..] {
+    // SAFETY: GetWindowTextW writes at most buf.len() units, the NUL included.
+    let n = unsafe { GetWindowTextW(hwnd, f.buf.as_mut_ptr(), f.buf.len() as i32) };
+    if n > 0 && f.buf[..n as usize] == f.title[..] {
         f.found = hwnd;
         return 0;
     }
@@ -83,9 +87,11 @@ fn own_window(title: &str, known: Option<HWND>) -> Option<HWND> {
     if let Some(h) = known.filter(|h| unsafe { IsWindow(*h) } != 0) {
         return Some(h);
     }
+    let title: Vec<u16> = title.encode_utf16().collect();
     let mut f = Find {
         pid: unsafe { GetCurrentProcessId() },
-        title: title.encode_utf16().collect(),
+        buf: vec![0; title.len() + 2],
+        title,
         found: std::ptr::null_mut(),
     };
     unsafe { EnumWindows(Some(enum_cb), &mut f as *mut Find as LPARAM) };
@@ -1408,6 +1414,61 @@ mod caption_less_tests {
                     );
                 }
                 DestroyWindow(hwnd);
+            }
+        }
+    }
+}
+
+#[cfg(test)]
+mod find_own_window_tests {
+    use super::*;
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        CreateWindowExW, DefWindowProcW, DestroyWindow, RegisterClassW, WNDCLASSW,
+    };
+
+    /// Our windows are found by their whole title, however long (a progress window is named
+    /// after its file, #540), and never by a title that only starts the same.
+    #[test]
+    fn a_window_is_found_by_its_whole_title_however_long() {
+        let class: Vec<u16> = "mdm-find-own-window-test\0".encode_utf16().collect();
+        // SAFETY: a class registered with the system's own procedure, and hidden windows of it
+        // on this thread, destroyed below; the strings are NUL-terminated.
+        unsafe {
+            let mut wc: WNDCLASSW = zeroed();
+            wc.lpfnWndProc = Some(DefWindowProcW);
+            wc.lpszClassName = class.as_ptr();
+            RegisterClassW(&wc);
+            let make = |title: &str| {
+                let t: Vec<u16> = title.encode_utf16().chain(Some(0)).collect();
+                let h = CreateWindowExW(
+                    0,
+                    class.as_ptr(),
+                    t.as_ptr(),
+                    0,
+                    -20000,
+                    -20000,
+                    100,
+                    100,
+                    std::ptr::null_mut(),
+                    std::ptr::null_mut(),
+                    std::ptr::null_mut(),
+                    std::ptr::null(),
+                );
+                assert!(!h.is_null());
+                h
+            };
+            for len in [40, 255, 256, 300, 1000] {
+                let head = format!("mdm find test {} {len} ", std::process::id());
+                let title = format!("{head}{}", "x".repeat(len - head.len()));
+                assert_eq!(title.encode_utf16().count(), len);
+                // One title longer by a unit, made first: found first, were it taken for ours.
+                let longer = make(&format!("{title}x"));
+                let window = make(&title);
+                assert_eq!(find_own_window(&title), Some(window), "{len} units");
+                DestroyWindow(window);
+                assert_eq!(find_own_window(&title), None, "{len} units, gone");
+                assert_eq!(find_own_window(&format!("{title}x")), Some(longer));
+                DestroyWindow(longer);
             }
         }
     }

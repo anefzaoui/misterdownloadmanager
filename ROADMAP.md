@@ -522,6 +522,10 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 A progress window's title bar buttons not answering
+  ([#540](https://github.com/anefzaoui/misterdownloadmanager/issues/540)): a window with a title of
+  256 characters or more got the system's title bar above MDM's own; that part is fixed, in review.
+  Still to find: whether the reporter's window was one of them
 - 🔄 The video button still showing after it was switched off, or its site listed, in Options
   ([#532](https://github.com/anefzaoui/misterdownloadmanager/issues/532)): fix in review
 - 🔄 macOS: Persian and other Arabic-script file names drawn as boxes in the download list
