@@ -522,6 +522,9 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 Chromium browsers: another extension's file names and folders (Save In's) lost while MDM's
+  extension was on, for downloads it left to the browser
+  ([#578](https://github.com/anefzaoui/misterdownloadmanager/issues/578)): fix in review
 - 🔄 A progress window's title bar buttons not answering
   ([#540](https://github.com/anefzaoui/misterdownloadmanager/issues/540)): a window with a title of
   256 characters or more got the system's title bar above MDM's own; that part is fixed, in review.

@@ -13,7 +13,8 @@
 // place). E2E_FIREFOX_ASK=1: Firefox's family asks what to do with each new type in every case
 // (Waterfox's default), not only in the ask case.
 //
-// The cases (per browser): link (a .zip link, throttled and not), ask (Firefox set to ask what to
+// The cases (per browser): folders (another extension's download in a folder of its own keeps
+// it, #578), link (a .zip link, throttled and not), ask (Firefox set to ask what to
 // do with each new type, as Waterfox is: caught before its dialog, #208), cookie (cookies and referrer
 // forwarded), names (Content-Disposition), redirect, leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
 // to the browser), opened (a PDF or MP3 the browser would show or play), spot (the video button
@@ -386,10 +387,10 @@ async function chromium(bin, profile, dl, page, ready) {
       // that tab's `evaluate` and `close` (the proxy case's stand-in VPN extension sets the
       // browser's proxy there, as one does). A page, not its service worker: the browser may
       // stop an idle worker, a page keeps its extension API while open.
-      loadExtension: async (dir, page) => {
+      loadExtension: async (dir, page, api = "proxy") => {
         const { id: other } = await cdp.send("Extensions.loadUnpacked", { path: dir });
         const t = await tab(`chrome-extension://${other}/${page}`);
-        await until("the other extension's page", 10000, () => t.evaluate("document.readyState === 'complete' && typeof chrome === 'object' && Boolean(chrome.proxy)").catch(() => false));
+        await until("the other extension's page", 10000, () => t.evaluate(`document.readyState === 'complete' && typeof chrome === 'object' && Boolean(chrome.${api})`).catch(() => false));
         return t;
       },
       close: () => {
@@ -1253,6 +1254,19 @@ function vpnExtension() {
   return dir;
 }
 
+// #578's stand-in for an extension that saves files in folders of its own (Save In): it starts
+// a download with `downloads.download` and a `filename` in a folder. Its page, driven over DevTools.
+function folderExtension() {
+  const dir = path.join(work, "folder-extension");
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(
+    path.join(dir, "manifest.json"),
+    JSON.stringify({ manifest_version: 3, name: "MDM e2e stand-in Save In", version: "1.0", permissions: ["downloads"], host_permissions: ["<all_urls>"] }),
+  );
+  fs.writeFileSync(path.join(dir, "page.html"), "<!doctype html><title>stand-in Save In</title>");
+  return dir;
+}
+
 // Firefox's stand-in VPN add-on: it sends the lab's host (lab.mdm.test) through the test proxy
 // per request (proxy.onRequest), leaving the browser's proxy settings alone.
 function firefoxVpnExtension() {
@@ -1371,6 +1385,38 @@ async function proxyInChromium(t) {
 }
 
 const CASES = {
+  // #578: a download another extension starts in a folder of its own, of a type MDM doesn't
+  // take, lands in that folder. Chromium only (Firefox has no onDeterminingFilename): MDM's
+  // listener answers for every download, and an answer that names nothing must not empty the
+  // other extension's name.
+  async folders(t) {
+    if (t.kind !== "chromium") throw new Skip("Chromium's onDeterminingFilename only");
+    const page = await t.session.loadExtension(folderExtension(), "page.html", "downloads");
+    try {
+      const file = `e2e-folders-${t.name}.png`;
+      const sub = path.join("Pic", "OthersW");
+      const id = await page.evaluate(`chrome.downloads.download({ url: ${JSON.stringify(`${LAB}/gen/64K/${file}`)}, filename: ${JSON.stringify(`Pic/OthersW/${file}`)} })`);
+      const want = path.join(t.dl, sub, file);
+      const where = () => {
+        const found = [];
+        const walk = (d) => fs.readdirSync(d, { withFileTypes: true }).forEach((e) => (e.isDirectory() ? walk(path.join(d, e.name)) : found.push(path.relative(t.dl, path.join(d, e.name)))));
+        walk(t.dl);
+        return found;
+      };
+      try {
+        await until(`${file} in the stand-in's folder`, 20000, () => fs.existsSync(want) && fs.statSync(want).size === 64 << 10);
+      } catch {
+        throw new Error(`the browser saved it as ${JSON.stringify(where())} (want ${path.join(sub, file)})`);
+      }
+      const mdm = (await mdmList().catch(() => [])).filter((d) => d.file === file);
+      if (mdm.length) throw new Error(`MDM took it too: ${JSON.stringify(mdm)}`);
+      const got = (await requests(`/gen/64K/${file}`)).map(brief);
+      for (const f of fs.readdirSync(t.dl)) fs.rmSync(path.join(t.dl, f), { force: true, recursive: true });
+      return `download ${id} saved in ${path.join(sub, file)}, MDM left it (the lab's log: ${got.join("; ")})`;
+    } finally {
+      await page.close();
+    }
+  },
   // #42: the browser behind a proxy (a VPN or proxy extension's). The file's host (lab.mdm.test) is
   // known to that proxy only, so MDM can download it only through the same proxy, which the
   // extension hands over with the download, once the user switched that on: the popup's switch
