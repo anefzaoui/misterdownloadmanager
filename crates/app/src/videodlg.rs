@@ -168,8 +168,14 @@ impl VideoDialog {
 
     /// Opened for `page` (Add URL was given a video's page, or the browser's button was
     /// clicked with `context`): looks it up at once.
-    pub fn for_page(folder: PathBuf, page: &str, context: mdm_ipc::Command) -> Self {
-        let page = mdm_tools::pages::video_address(page);
+    pub fn for_page(folder: PathBuf, page: &str, mut context: mdm_ipc::Command) -> Self {
+        let own = mdm_tools::pages::video_address(page);
+        // An embedded player taken to the video's own page (#359): the site that embedded it
+        // isn't that page's referer, and Dailymotion refuses its own page asked with one (403).
+        if own != page {
+            context.referer = None;
+        }
+        let page = own;
         VideoDialog {
             page: page.clone(),
             from_browser: page,
@@ -1255,6 +1261,27 @@ pub(crate) fn choice_label(label: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #359: a Dailymotion player embedded in another site is looked up at the video's own page,
+    /// without that site as its Referer (Dailymotion answers 403); any other page keeps it.
+    #[test]
+    fn an_embedded_player_taken_to_its_page_drops_the_embedding_sites_referer() {
+        let from = |page: &str| {
+            let context = mdm_ipc::Command {
+                referer: Some("https://news.test/article".into()),
+                ..Default::default()
+            };
+            VideoDialog::for_page(PathBuf::from("v"), page, context)
+        };
+        let embed = from("https://geo.dailymotion.com/player/x1abc.html?video=x9xyz12");
+        assert_eq!(embed.page, "https://www.dailymotion.com/video/x9xyz12");
+        assert_eq!(embed.context().referer, None);
+        let plain = from("https://player.vimeo.test/video/1");
+        assert_eq!(
+            plain.context().referer.as_deref(),
+            Some("https://news.test/article")
+        );
+    }
 
     /// #317: Cloudflare's check in plain words, saying what to try for each kind of cookies had.
     #[test]

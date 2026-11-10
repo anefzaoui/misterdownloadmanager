@@ -519,6 +519,8 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 Dailymotion's embedded player from the browser's button: no formats, the embedding site's
+  Referer refused ([#359](https://github.com/anefzaoui/misterdownloadmanager/issues/359)): fix in review
 - 🔄 Closing the main window follows a setting (on by default, MDM keeps running), and with no
   tray icon the window goes to the taskbar instead of vanishing: fix in review
   ([#457](https://github.com/anefzaoui/misterdownloadmanager/pull/457))
