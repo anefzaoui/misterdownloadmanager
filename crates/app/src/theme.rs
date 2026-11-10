@@ -908,13 +908,12 @@ pub fn init_smooth_text(on: bool) {
     SMOOTH_TEXT.store(on, std::sync::atomic::Ordering::Relaxed);
 }
 
-/// Draw the text smooth (`true`) or classic from now on, in every window.
+/// Draw the text smooth (`true`) or classic from now on, in every window. Windows only: View →
+/// Text exists only there, where DirectWrite draws the text; elsewhere egui draws it.
+#[cfg(windows)]
 pub fn set_smooth_text(ctx: &egui::Context, on: bool) {
     init_smooth_text(on);
-    #[cfg(windows)]
     classic_text(ctx);
-    #[cfg(not(windows))]
-    let _ = ctx;
 }
 
 /// The text [`classic_text`] leaves to egui (Arabic, Hebrew, Indic, Thai, CJK; marks clustered
