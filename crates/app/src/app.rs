@@ -8076,7 +8076,7 @@ impl App {
             }
         }
         if let Some(d) = &mut self.add_url {
-            let out = d.show(ctx);
+            let out = d.show(ctx, |url| self.settings.site_login(url));
             // Every address that goes on is remembered for the Address drop list.
             if let Outcome::Done(new) = &out {
                 crate::settings::remember(&mut self.settings.url_history, new.url.as_str());
