@@ -8,6 +8,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 ### Added
 
 - Options → General → **Customize MDM Download panels in browsers**: Export... and Import... for the sites the download button stays off, a plain text file with one site a line ([#424](https://github.com/anefzaoui/misterdownloadmanager/issues/424)).
+- **Emerald** among the built-in looks in **View → Theme**: a white canvas with one near-black ink and a ladder of neutral greys for structure, emerald fills that carry near-black text rather than white, 6-point corners and Metro's one-colour icons. Its theme file names a few seeds per side and derives every other colour, so a role added later arrives in this look instead of the classic one ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)).
 
 ### Fixed
 

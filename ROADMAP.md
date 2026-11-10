@@ -222,6 +222,11 @@ Everything below ships together, in version 0.5.0.
 - ✅ Themes: Base16 and pywal colour schemes imported as themes (View → Theme → Add a theme
   file…, or the themes folder); **pywal** follows `wal` as it writes new colours, text kept
   readable (4.5:1) ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ Themes: Emerald (a white canvas, one near-black ink, emerald
+  fills carrying near-black text, 6-point corners, Metro's one-colour icons); its theme file
+  gives a few seeds per variant and derives every other colour, so a role added later arrives
+  in this look rather than the classic one
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ Dark mode: grey notes and error texts readable (4.5:1), Options' failed checks no longer dark
   red on the dark dialog ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ A minimized MDM keeps working: queues, the Scheduler, download limits, the kill switch and

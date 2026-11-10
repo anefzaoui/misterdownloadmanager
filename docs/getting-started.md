@@ -210,8 +210,11 @@ MDM follows your system: when Windows (or your desktop's light/dark preference o
 - **Aqua**: Mac OS X's look: gel buttons round at the ends (the default one blue), glossy check
   boxes, a blue focus ring, a blue gel progress bar, a grey title bar with small round buttons
   (on Windows), and icons drawn for MDM in that manner.
+- **Emerald**: a white canvas with one near-black ink and a ladder of
+  neutral greys for structure, emerald fills that always carry near-black text rather than white,
+  6-point corners on every control, and Metro's one-colour icons.
 
-![View → Theme open: Classic, Native, High contrast, Metro, Adwaita, Breeze, Luna, Aero and Aqua, and Open themes folder](images/help/view-theme.webp)
+![View → Theme open: Classic, Native, High contrast, Metro, Adwaita, Breeze, Luna, Aero, Aqua and Emerald, and Open themes folder](images/help/view-theme.webp)
 *View → Theme switches at once, keeping the layout.*
 
 <!-- pictures -->
