@@ -3867,6 +3867,7 @@ impl App {
             return;
         }
         let meta = &add.meta;
+        crate::torrent_rename::on_add_torrent(meta);
         if let Err(e) = crate::torrents::save_torrent(&meta.info_hash, &meta.torrent) {
             self.notice = Some((
                 crate::i18n::mark("Add torrent"),

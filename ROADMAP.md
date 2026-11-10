@@ -491,6 +491,7 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 **Add torrent**: a **Rename** row (main name and extension) to rename a single-file torrent or a multi-file torrent's folder before the download starts ([#517](https://github.com/anefzaoui/misterdownloadmanager/issues/517)): in review
 - 🔄 Videos sent in pieces (HLS, DASH) downloading several pieces at once, as many as a file's
   connections ([#531](https://github.com/anefzaoui/misterdownloadmanager/issues/531)): in review;
   a video in one file (most of YouTube's) still comes over one connection
