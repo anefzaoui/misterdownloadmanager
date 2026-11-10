@@ -489,6 +489,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Left click on the tray icon toggles the main window (on Windows also with the icon under
+  the taskbar's ^), and browser downloads open only their dialog when the main window is
+  hidden or minimized ([#520](https://github.com/anefzaoui/misterdownloadmanager/pull/520))
 - ✅ The build and release workflows: each job gets only the permissions it needs, and every
   action and release tool is pinned to an exact version
 - ✅ A freeze on a slow disk, the data folder looked up on every tick
@@ -654,9 +657,6 @@ These ship in a later version, when they're ready.
 - 🔄 Crash reports: a monitor that cannot open its socket exits, and an unreachable one is
   cleaned up instead of staying beside MDM: fix in review
   ([#458](https://github.com/anefzaoui/misterdownloadmanager/pull/458))
-- 🔄 Left click on the tray icon toggles the main window, and browser downloads open only
-  their dialog when the main window is hidden or minimized: fix in review
-  ([#520](https://github.com/anefzaoui/misterdownloadmanager/pull/520))
 
 ## Planned
 

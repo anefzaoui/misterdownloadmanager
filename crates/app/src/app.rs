@@ -3117,7 +3117,16 @@ impl App {
                     // now still counts as in front (#520).
                     let focus = ctx.input(|i| i.viewport().focused);
                     let since_focused = self.tray_last_focused.map(|t| t.elapsed());
-                    if tray_toggle_hide(self.hidden, minimized, focus, since_focused) {
+                    // With the icon under the taskbar's ^, the flyout took the focus well
+                    // before the click: Windows is asked whether anything covers the window.
+                    #[cfg(windows)]
+                    let in_front = crate::win32::main_window_in_front() == Some(true);
+                    // Elsewhere focus is all there is to go by (sway, KDE's tray).
+                    #[cfg(not(windows))]
+                    let in_front = false;
+                    if tray_toggle_hide(self.hidden, minimized, focus, since_focused)
+                        || (!self.hidden && !minimized && in_front)
+                    {
                         self.hide_to_tray(ctx);
                     } else {
                         self.show_window(ctx);

@@ -60,6 +60,77 @@ fn own_capture() -> Option<HWND> {
 /// The main window of this run, once it exists ([`set_main_window`]). 0: not known yet.
 static MAIN_WINDOW: std::sync::atomic::AtomicIsize = std::sync::atomic::AtomicIsize::new(0);
 
+/// Whether the main window is in front: no visible window of another program covers any part
+/// of it from above. A tray click asks (#520): the click itself takes the focus first, and with
+/// the icon under the taskbar's ^ the focus went to the flyout well before, so focus alone
+/// can't tell. The taskbar and its flyout, always on top, don't count, nor do hidden, minimized
+/// or cloaked windows (another virtual desktop, a suspended app) or this program's own (its
+/// dialogs over it). None: the main window isn't known yet.
+pub fn main_window_in_front() -> Option<bool> {
+    use windows_sys::Win32::Graphics::Dwm::{DWMWA_CLOAKED, DwmGetWindowAttribute};
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        GW_HWNDPREV, GetWindow, GetWindowRect, IsIconic, IsWindowVisible, WS_EX_TOPMOST,
+    };
+    let main = MAIN_WINDOW.load(std::sync::atomic::Ordering::Relaxed) as HWND;
+    if main.is_null() {
+        return None;
+    }
+    let rect = |h: HWND| {
+        let mut r = RECT {
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+        };
+        // SAFETY: a read into a local; a gone window fails harmlessly.
+        (unsafe { GetWindowRect(h, &mut r) } != 0 && r.right > r.left && r.bottom > r.top)
+            .then_some(r)
+    };
+    let m = rect(main)?;
+    // SAFETY: plain queries about windows, walking the z-order up from ours.
+    let me = unsafe { GetCurrentProcessId() };
+    let mut h = unsafe { GetWindow(main, GW_HWNDPREV) };
+    // A bound, in case windows come and go under the walk.
+    for _ in 0..4096 {
+        if h.is_null() {
+            break;
+        }
+        let mut pid = 0;
+        // SAFETY: as above.
+        let (visible, topmost) = unsafe {
+            GetWindowThreadProcessId(h, &mut pid);
+            (
+                IsWindowVisible(h) != 0 && IsIconic(h) == 0,
+                GetWindowLongPtrW(h, GWL_EXSTYLE) as u32 & WS_EX_TOPMOST != 0,
+            )
+        };
+        if visible && !topmost && pid != me {
+            let mut cloaked: u32 = 0;
+            // SAFETY: a u32 read into a local of that size.
+            let known = unsafe {
+                DwmGetWindowAttribute(
+                    h,
+                    DWMWA_CLOAKED as _,
+                    (&mut cloaked as *mut u32).cast(),
+                    std::mem::size_of::<u32>() as u32,
+                )
+            } >= 0;
+            if !(known && cloaked != 0)
+                && let Some(r) = rect(h)
+                && r.left < m.right
+                && m.left < r.right
+                && r.top < m.bottom
+                && m.top < r.bottom
+            {
+                return Some(false);
+            }
+        }
+        // SAFETY: as above.
+        h = unsafe { GetWindow(h, GW_HWNDPREV) };
+    }
+    Some(true)
+}
+
 /// Remember the window the app was made for: the one that stays. A way of drawing that fails
 /// (Direct3D with no usable adapter, renderer.rs) leaves its own window behind under the same
 /// title until the event loop next runs, and a dialog owned by that window goes down with it
@@ -1776,7 +1847,6 @@ fn popup_ex_style(ex: u32, no_activate: bool) -> u32 {
 #[cfg(test)]
 mod popup_style_tests {
     use super::*;
-    use windows_sys::Win32::Foundation::RECT;
     use windows_sys::Win32::UI::WindowsAndMessaging::{
         AdjustWindowRectEx, WS_CLIPCHILDREN, WS_CLIPSIBLINGS, WS_EX_APPWINDOW, WS_EX_NOACTIVATE,
         WS_EX_TOOLWINDOW, WS_EX_TOPMOST, WS_POPUP, WS_VISIBLE,
