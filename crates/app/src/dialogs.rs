@@ -1622,7 +1622,7 @@ fn cancel_waiting(ctx: &egui::Context, n: usize) -> Outcome<bool> {
             let o = o + vec2(0.0, extra);
             let yes = winui::button(
                 ui,
-                r(o, 94.0, 86.0, 73.0, 21.0),
+                r(o, 94.0, 63.0, 73.0, 21.0),
                 "Yes",
                 ButtonKind::Default,
                 false,
@@ -1631,7 +1631,7 @@ fn cancel_waiting(ctx: &egui::Context, n: usize) -> Outcome<bool> {
             .clicked();
             let no = winui::button(
                 ui,
-                r(o, 207.0, 86.0, 73.0, 21.0),
+                r(o, 207.0, 63.0, 73.0, 21.0),
                 "No",
                 ButtonKind::Normal,
                 false,
