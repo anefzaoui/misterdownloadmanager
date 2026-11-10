@@ -5901,12 +5901,7 @@ impl App {
         // i18n: View → Theme: a style theme's name (Mac OS X's look), a name: keep "Aqua" as written
         items.push(Radio("Aqua", Cmd::Theme("aqua"), true, on("aqua")));
         // i18n: View → Theme: a style theme's name (a white canvas, emerald fills, 6-point corners), a name: keep "Emerald" as written
-        items.push(Radio(
-            "Emerald",
-            Cmd::Theme("emerald"),
-            true,
-            on("emerald"),
-        ));
+        items.push(Radio("Emerald", Cmd::Theme("emerald"), true, on("emerald")));
         let wal = crate::themefile::PYWAL;
         for e in self.theme_list.iter().filter(|e| e.path.is_some()) {
             if !files {
