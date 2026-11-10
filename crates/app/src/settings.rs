@@ -785,6 +785,21 @@ impl Settings {
         }
     }
 
+    /// The folder just saved into becomes the category's, when it is another one (an unchanged
+    /// folder stays "the default", following Downloads). True when the folder changed.
+    pub fn keep_category_dir(
+        &mut self,
+        cat: crate::model::Category,
+        dir: &std::path::Path,
+        downloads: &std::path::Path,
+    ) -> bool {
+        if dir.as_os_str().is_empty() || dir == self.category_dir(cat, downloads) {
+            return false;
+        }
+        self.set_category_dir(cat, Some(dir.display().to_string()));
+        true
+    }
+
     /// Both category registries (the user's and the built-in ones' edits) from these settings,
     /// for code that only has a `Category`.
     pub fn publish_categories(&self) {
@@ -1000,6 +1015,29 @@ pub fn own_net() -> mdm_engine::Options {
 
 #[cfg(test)]
 mod tests {
+    use std::path::Path;
+
+    /// #475: a folder chosen for a video is the Video category's next time; the category's own
+    /// folder stays "the default", following Downloads, and other categories stay as they were.
+    #[test]
+    fn a_folder_saved_into_becomes_the_categorys() {
+        use crate::model::Category;
+        let root = std::env::temp_dir();
+        let downloads = root.join("Downloads");
+        let downloads = downloads.as_path();
+        let mut s = super::Settings::default();
+        let default_video = s.category_dir(Category::Video, downloads);
+        assert!(!s.keep_category_dir(Category::Video, &default_video, downloads));
+        assert!(s.category_dirs.is_empty(), "the default stays the default");
+        assert!(!s.keep_category_dir(Category::Video, Path::new(""), downloads));
+        let chosen = root.join("clips");
+        let chosen = chosen.as_path();
+        assert!(s.keep_category_dir(Category::Video, chosen, downloads));
+        assert_eq!(s.category_dir(Category::Video, downloads), chosen);
+        assert_ne!(s.category_dir(Category::Music, downloads), chosen);
+        assert!(!s.keep_category_dir(Category::Video, chosen, downloads));
+    }
+
     #[test]
     fn a_dialog_keeps_what_changed_elsewhere_meanwhile() {
         let from = super::Settings::default();
