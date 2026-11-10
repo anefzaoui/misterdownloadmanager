@@ -295,7 +295,12 @@ const SCRIPT_FONTS: &[(&str, &[&str], &[&str])] = &[
 const SCRIPT_FONTS: &[(&str, &[&str], &[&str])] = &[
     (
         "han",
-        &["PingFang.ttc", "Supplemental/Songti.ttc"],
+        &[
+            "PingFang.ttc",
+            "Hiragino Sans GB.ttc",
+            "STHeiti Light.ttc",
+            "Supplemental/Songti.ttc",
+        ],
         &["zh-hans", "zh-hant"],
     ),
     ("japanese", &["ヒラギノ角ゴシック W3.ttc"], &["ja"]),
@@ -389,6 +394,31 @@ fn font_dir() -> std::path::PathBuf {
         .unwrap_or_else(|| std::path::PathBuf::from(r"C:\Windows\Fonts"));
     #[cfg(target_os = "macos")]
     return std::path::PathBuf::from("/System/Library/Fonts");
+}
+
+/// Resolves a font file path in `dir`. On macOS 15+ (Sequoia / Tahoe), `PingFang.ttc` moved out
+/// of `/System/Library/Fonts/PingFang.ttc` into `/System/Library/AssetsV2/com_apple_MobileAsset_Font*`.
+#[cfg(any(windows, target_os = "macos"))]
+fn font_path(dir: &std::path::Path, rel: &str) -> std::path::PathBuf {
+    let direct = dir.join(rel);
+    #[cfg(target_os = "macos")]
+    if rel == "PingFang.ttc" && !direct.exists() {
+        for base in [
+            "/System/Library/AssetsV2/com_apple_MobileAsset_Font8",
+            "/System/Library/AssetsV2/com_apple_MobileAsset_Font7",
+            "/System/Library/AssetsV2/com_apple_MobileAsset_Font6",
+        ] {
+            if let Ok(entries) = std::fs::read_dir(base) {
+                for entry in entries.flatten() {
+                    let p = entry.path().join("AssetData/PingFang.ttc");
+                    if p.is_file() {
+                        return p;
+                    }
+                }
+            }
+        }
+    }
+    direct
 }
 
 /// The fonts for scripts outside the interface language, loaded the first time a character
@@ -509,7 +539,12 @@ const MACOS_FALLBACK_FONTS: &[FallbackFont] = &[
             (0xFF00, 0xFFEF),
             (0x20000, 0x3FFFF),
         ],
-        files: &["PingFang.ttc", "Supplemental/Songti.ttc"],
+        files: &[
+            "PingFang.ttc",
+            "Hiragino Sans GB.ttc",
+            "STHeiti Light.ttc",
+            "Supplemental/Songti.ttc",
+        ],
     },
     FallbackFont {
         key: "khmer",
@@ -562,7 +597,7 @@ fn fallback_font(c: char) -> Option<(String, egui::FontData)> {
         let dir = font_dir();
         (
             format!("fallback:{}", font.key),
-            font.files.iter().map(|f| dir.join(f)).collect(),
+            font.files.iter().map(|f| font_path(&dir, f)).collect(),
         )
     };
     #[cfg(not(any(windows, target_os = "macos")))]
@@ -650,7 +685,9 @@ fn script_fonts(code: &str, all: bool) -> Vec<(String, Vec<u8>)> {
             // The first file there is used (older systems name some differently); a .ttc's
             // first face is the regular one.
             .filter_map(|(key, files, _)| {
-                let bytes = files.iter().find_map(|f| std::fs::read(dir.join(f)).ok())?;
+                let bytes = files
+                    .iter()
+                    .find_map(|f| std::fs::read(font_path(&dir, f)).ok())?;
                 Some(((*key).to_owned(), bytes))
             })
             .collect()
