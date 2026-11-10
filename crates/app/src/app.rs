@@ -729,6 +729,29 @@ fn page_data_for(link: &str, page: Option<&str>, data: Option<&str>) -> Option<S
         .flatten()
 }
 
+/// Marks finished files (a video's and its subtitles, a gallery's pictures) as downloaded from the
+/// web, as `mark_hook` does for the engine's, on a thread of their own: writing the mark has the
+/// antivirus read the whole file again, and on a big video that kept the window waiting (#510). A
+/// file moved or removed meanwhile is left alone: marking its old path would create an empty
+/// file there.
+pub(crate) fn mark_finished(
+    files: Vec<std::path::PathBuf>,
+    url: String,
+    referrer: Option<String>,
+) -> Option<std::thread::JoinHandle<()>> {
+    std::thread::Builder::new()
+        .name("mark-downloaded".into())
+        .spawn(move || {
+            for f in files.iter().filter(|f| f.is_file()) {
+                #[cfg(windows)]
+                crate::win32::mark_downloaded(f, &url, referrer.as_deref());
+                #[cfg(unix)]
+                crate::unix::mark_downloaded(f, &url, referrer.as_deref());
+            }
+        })
+        .ok()
+}
+
 /// Marks each file the engine starts writing as downloaded from the web (Mark-of-the-Web, macOS'
 /// quarantine: win32 / unix `mark_downloaded`), as browsers mark theirs. Only http(s) addresses
 /// (an FTP address may carry its login).
@@ -9211,5 +9234,35 @@ mod window_thread_tests {
         assert!(dest.exists(), "a file that wasn't complete stays");
         remove_files_of(&dest, true);
         assert!(!dest.exists());
+    }
+}
+
+#[cfg(test)]
+mod mark_finished_tests {
+    /// #510: finished files are marked away from the window's thread; a file gone from its path
+    /// meanwhile (moved, deleted) isn't created again by the mark.
+    #[test]
+    fn a_finished_file_is_marked_and_a_gone_one_is_not_created() {
+        let dir = tempfile::tempdir().unwrap();
+        let here = dir.path().join("video.mp4");
+        std::fs::write(&here, b"x").unwrap();
+        let gone = dir.path().join("moved.mp4");
+        super::mark_finished(
+            vec![here.clone(), gone.clone()],
+            "https://videos.test/v".into(),
+            None,
+        )
+        .unwrap()
+        .join()
+        .unwrap();
+        assert!(!gone.exists(), "a moved file's old path stays empty");
+        #[cfg(windows)]
+        {
+            let mut stream = here.as_os_str().to_owned();
+            stream.push(":Zone.Identifier");
+            let zone = std::fs::read_to_string(stream).unwrap();
+            assert!(zone.contains("ZoneId=3"), "{zone}");
+            assert!(zone.contains("HostUrl=https://videos.test/v"), "{zone}");
+        }
     }
 }
