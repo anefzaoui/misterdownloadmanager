@@ -524,10 +524,14 @@ These ship in a later version, when they're ready.
   ([#457](https://github.com/anefzaoui/misterdownloadmanager/pull/457))
 - 🔄 Download File Info staying open but invisible, with later browser downloads waiting behind
   it ([#440](https://github.com/anefzaoui/misterdownloadmanager/issues/440)): fix in review
+- 🔄 The Download video window not remembering the folder you saved into
+  ([#475](https://github.com/anefzaoui/misterdownloadmanager/issues/475)): fix in review
 - 🔄 Arabic and other non-Latin file names saved unreadable, from Firefox and browsers built on it
   ([#447](https://github.com/anefzaoui/misterdownloadmanager/issues/447)): fix in review
 - 🔄 A file renamed to avoid a clash still showing and opening under its old name
   ([#442](https://github.com/anefzaoui/misterdownloadmanager/issues/442)): fix in review
+- 🔄 Download video's message when a site's bot check (Cloudflare) refuses yt-dlp
+  ([#317](https://github.com/anefzaoui/misterdownloadmanager/issues/317)): fix in review
 - 🔄 RSS feeds: the rule boxes losing the keyboard after each key
   ([#353](https://github.com/anefzaoui/misterdownloadmanager/issues/353)): fix in review
 - 🔄 Video progress at 100 % while still downloading, and long encoded strings as file names
@@ -545,6 +549,8 @@ These ship in a later version, when they're ready.
   ([#321](https://github.com/anefzaoui/misterdownloadmanager/issues/321)): fix in review
 - 🔄 **Open folder** on a torrent still downloading
   ([#354](https://github.com/anefzaoui/misterdownloadmanager/issues/354)): fix in review
+- 🔄 X (Twitter) videos from the media list named after the tab instead of a random file name
+  ([#493](https://github.com/anefzaoui/misterdownloadmanager/issues/493)): fix in review
 - 🔄 **Open folder** on Windows always starting Explorer, even with another file manager set up
   to open folders ([#446](https://github.com/anefzaoui/misterdownloadmanager/issues/446)): fix in review
 - 🔄 Alt and F10 opening the menu bar with a control focused
