@@ -76,6 +76,12 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 @plural	{n} selected|{n} selected	{n} selected|{n} selected
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+@plural	{n} site added from the file.|{n} sites added from the file.	{n} site added from the file.|{n} sites added from the file.
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+@plural	{n} site saved to the file.|{n} sites saved to the file.	{n} site saved to the file.|{n} sites saved to the file.
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -1126,8 +1132,11 @@
 #. text in the Options window
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 	Export	Export
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+	Export...	Export...
 #. text in the Options window
 	Extend the availability of Manifest 2 Chrome extensions	Extend the availability of Manifest 2 Chrome extensions
 #. text in categories.rs
@@ -1475,8 +1484,11 @@
 	If it can't be reached, use the system's DNS	If it can't be reached, use the system's DNS
 #. checkbox in the Options window
 	Ignore file modification time changes when resuming a download	Ignore file modification time changes when resuming a download
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 	Import	Import
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+	Import...	Import...
 #. value in a column's filter list in the download list
 	In a queue	In a queue
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -3197,7 +3209,7 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 	The file could not be moved: {error}	The file could not be moved: {error}
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 	The file could not be read: {error}	The file could not be read: {error}
 #. text in the Checksum window
@@ -3233,7 +3245,7 @@
 #. text in extension.rs
 #. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
 	The helper program the browsers start is missing	The helper program the browsers start is missing
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 	The list could not be saved: {error}	The list could not be saved: {error}
 #. text in whereis.rs
