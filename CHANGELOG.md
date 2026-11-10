@@ -7,6 +7,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- X (Twitter) videos sent from the browser's media list are named after the tab, not the random name of their file on X's video server ([#493](https://github.com/anefzaoui/misterdownloadmanager/issues/493)).
 - Windows: **Open folder** on a download opens the folder with the file manager set up to open folders (Directory Opus, for example), instead of always starting Windows Explorer. With Explorer it still selects the file ([#446](https://github.com/anefzaoui/misterdownloadmanager/issues/446)).
 
 ## [0.5.2] - 2026-11-09

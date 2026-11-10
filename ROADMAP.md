@@ -543,6 +543,8 @@ These ship in a later version, when they're ready.
   ([#321](https://github.com/anefzaoui/misterdownloadmanager/issues/321)): fix in review
 - 🔄 **Open folder** on a torrent still downloading
   ([#354](https://github.com/anefzaoui/misterdownloadmanager/issues/354)): fix in review
+- 🔄 X (Twitter) videos from the media list named after the tab instead of a random file name
+  ([#493](https://github.com/anefzaoui/misterdownloadmanager/issues/493)): fix in review
 - 🔄 **Open folder** on Windows always starting Explorer, even with another file manager set up
   to open folders ([#446](https://github.com/anefzaoui/misterdownloadmanager/issues/446)): fix in review
 - 🔄 Alt and F10 opening the menu bar with a control focused
