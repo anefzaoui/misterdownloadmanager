@@ -221,9 +221,15 @@ pub struct OptionsDialog {
     /// Sites Logins → Cookies for video sites (#229): the browser in the list (an index into
     /// `mdm_tools::proc::cookie_browsers`), kept while Off is chosen.
     cookie_browser: usize,
+    /// General → Shortcut to show or hide window (#558): waiting for a key combination.
+    recording_hotkey: bool,
 }
 
 impl OptionsDialog {
+    /// True while the user is recording a new global shortcut in General (#558).
+    pub fn is_recording_hotkey(&self) -> bool {
+        self.recording_hotkey
+    }
     /// Open on tab `page` (the numbers in `tabs`: 0 General … 4 Connection, 5 Proxy / Socks,
     /// 6 Sites Logins, 7 Accounts, 8 Sounds, 9 Regional, 10 Archives); for `/show options:<tab>`.
     pub fn on_page(mut self, page: usize) -> Self {
@@ -297,12 +303,16 @@ impl OptionsDialog {
             port: settings.remote_port.to_string(),
             device_rows: Default::default(),
             cookie_browser: cookie_browser_at(settings),
+            recording_hotkey: false,
         }
     }
 
     /// `Done(settings)` on OK.
     pub fn show(&mut self, ctx: &egui::Context, downloads: &std::path::Path) -> Outcome<Settings> {
         let modal = self.sub.is_some() || self.cat_edit.is_some() || self.restore_ask.is_some();
+        if modal || self.page != 0 {
+            self.recording_hotkey = false;
+        }
         let outcome = window(
             ctx,
             "options",
@@ -506,13 +516,121 @@ impl OptionsDialog {
                 ));
             }
         }
+        // MDM's (#558): global keyboard shortcut (2-key or 3-key combination) to show or hide
+        // the main window.
+        let (clear_x, clear_w) =
+            winui::buttons_to_right(&p, 392.0, 0.0, &[("Clear", 56.0)], 110.0)[0];
+        let box_w = 126.0;
+        let box_x = clear_x - 6.0 - box_w;
+        // i18n: Options → General: label for the global keyboard shortcut that shows or hides MDM's main window (#558)
+        let hk_label = crate::i18n::t("Shortcut to show or hide window:");
+        let (lbl_rc, lbl_cut) = winui::text_fit(
+            &p,
+            o.x + 30.0,
+            o.y + 243.0,
+            hk_label,
+            LIGHT_TEXT(),
+            o.x + box_x - 6.0,
+        );
+        if lbl_cut {
+            winui::full_on_hover(ui, lbl_rc, ("general-hotkey", 243), hk_label);
+        }
+        let box_rc = r(o, box_x, 229.0, box_w, 21.0);
+        let box_resp = ui.interact(
+            box_rc,
+            egui::Id::unique("hotkey-recorder"),
+            Sense::click(),
+        );
+        box_resp.ctx.accesskit_node_builder(box_resp.id, |node| {
+            node.set_role(egui::accesskit::Role::Button);
+            node.set_label(hk_label.trim_end_matches(':').trim().to_owned());
+        });
+        if box_resp.clicked() {
+            self.recording_hotkey = !self.recording_hotkey;
+        }
+        if self.recording_hotkey {
+            match ui.input(crate::hotkey::capture_from_egui) {
+                crate::hotkey::CaptureEvent::Recorded(sc) => {
+                    s.show_hide_hotkey = sc.canonical();
+                    self.recording_hotkey = false;
+                    winui::take_key(ui, egui::Key::Escape);
+                    winui::take_key(ui, egui::Key::Enter);
+                }
+                crate::hotkey::CaptureEvent::Clear => {
+                    s.show_hide_hotkey.clear();
+                    self.recording_hotkey = false;
+                    winui::take_key(ui, egui::Key::Escape);
+                }
+                crate::hotkey::CaptureEvent::Cancel => {
+                    self.recording_hotkey = false;
+                    winui::take_key(ui, egui::Key::Escape);
+                }
+                crate::hotkey::CaptureEvent::None => {
+                    if ui.input(|i| i.pointer.any_pressed()) && !box_resp.hovered() {
+                        self.recording_hotkey = false;
+                    }
+                }
+            }
+        }
+        p.rect_filled(box_rc, 0.0, winui::FIELD());
+        let border = if self.recording_hotkey {
+            winui::SELECTION()
+        } else {
+            winui::FIELD_EDGE()
+        };
+        p.rect_stroke(
+            box_rc,
+            0.0,
+            egui::Stroke::new(1.0, border),
+            egui::StrokeKind::Inside,
+        );
+        let (hk_text, hk_ink) = if self.recording_hotkey {
+            match ui.input(|i| crate::hotkey::pending_modifiers_preview(i.modifiers)) {
+                Some(mods) => (crate::i18n::ltr(&mods), LIGHT_TEXT()),
+                // i18n: Options → General: shown inside the shortcut recorder box while waiting for the user to press a 2-key or 3-key shortcut (#558)
+                None => (crate::i18n::t("Press keys...").to_owned(), winui::MUTED()),
+            }
+        } else if s.show_hide_hotkey.is_empty() {
+            (crate::i18n::t("None").to_owned(), winui::MUTED())
+        } else {
+            let shown = crate::hotkey::Shortcut::parse(&s.show_hide_hotkey)
+                .map_or_else(|| s.show_hide_hotkey.clone(), crate::hotkey::Shortcut::display);
+            (crate::i18n::ltr(&shown), LIGHT_TEXT())
+        };
+        winui::fit(
+            ui,
+            &p,
+            o.x + box_x + 6.0,
+            o.y + 243.0,
+            &hk_text,
+            hk_ink,
+            o.x + box_x + box_w - 6.0,
+            "hotkey-value",
+        );
+        let clear_kind = if !s.show_hide_hotkey.is_empty() || self.recording_hotkey {
+            ButtonKind::Normal
+        } else {
+            ButtonKind::Disabled
+        };
+        if winui::button_light(
+            ui,
+            r(o, clear_x, 229.0, clear_w, 21.0),
+            "Clear",
+            clear_kind,
+            false,
+        )
+        .clicked()
+        {
+            s.show_hide_hotkey.clear();
+            self.recording_hotkey = false;
+        }
         group(
             ui,
             o,
             16.0,
-            234.0,
+            256.0,
             392.0,
-            160.0,
+            138.0,
             "Capture downloads from the following browsers:",
         );
         // Check list: one row per browser in the shared row list (Space ticks the selected
@@ -523,7 +641,7 @@ impl OptionsDialog {
         let ev = winui::row_list(
             ui,
             "browsers",
-            r(o, 30.0, 244.0, 362.0, 78.0),
+            r(o, 30.0, 266.0, 362.0, 56.0),
             browsers.len(),
             17.0,
             &mut self.browser_rows,

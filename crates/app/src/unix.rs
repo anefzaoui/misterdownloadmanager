@@ -1944,6 +1944,149 @@ fn set_xattr(path: &Path, name: &str, value: &str) {
     };
 }
 
+/// macOS: whether `NSApplication.sharedApplication` is currently the active foreground app with a
+/// visible, non-minimized titled window (#558).
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+pub fn macos_is_active_and_visible() -> bool {
+    use objc2::msg_send;
+    use objc2::runtime::{AnyClass, AnyObject, Bool};
+    // SAFETY: called on the main UI thread; queries `NSApplication.sharedApplication`.
+    unsafe {
+        let Some(cls) = AnyClass::get(c"NSApplication") else {
+            return false;
+        };
+        let app: *mut AnyObject = msg_send![cls, sharedApplication];
+        if app.is_null() {
+            return false;
+        }
+        let active: Bool = msg_send![app, isActive];
+        if !active.as_bool() {
+            return false;
+        }
+        let hidden: Bool = msg_send![app, isHidden];
+        if hidden.as_bool() {
+            return false;
+        }
+        let windows: *mut AnyObject = msg_send![app, windows];
+        if windows.is_null() {
+            return false;
+        }
+        let count: usize = msg_send![windows, count];
+        for i in 0..count {
+            let win: *mut AnyObject = msg_send![windows, objectAtIndex: i];
+            if win.is_null() {
+                continue;
+            }
+            let style: usize = msg_send![win, styleMask];
+            // NSWindowStyleMaskTitled = 1 << 0 (skips borderless status bar / internal windows).
+            if (style & 1) == 0 {
+                continue;
+            }
+            let visible: Bool = msg_send![win, isVisible];
+            let mini: Bool = msg_send![win, isMiniaturized];
+            if visible.as_bool() && !mini.as_bool() {
+                return true;
+            }
+        }
+        false
+    }
+}
+
+/// macOS: orders out the main window and hides the application when no other titled window is
+/// visible, so focus returns cleanly to the previously active app (#558).
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+pub fn macos_hide_window() {
+    use objc2::msg_send;
+    use objc2::runtime::{AnyClass, AnyObject, Bool};
+    // SAFETY: called on the main UI thread; orders out titled windows and hides `NSApp`.
+    unsafe {
+        let Some(cls) = AnyClass::get(c"NSApplication") else {
+            return;
+        };
+        let app: *mut AnyObject = msg_send![cls, sharedApplication];
+        if app.is_null() {
+            return;
+        }
+        let null_obj: *mut AnyObject = std::ptr::null_mut();
+        let windows: *mut AnyObject = msg_send![app, windows];
+        let mut visible_titled = 0usize;
+        if !windows.is_null() {
+            let count: usize = msg_send![windows, count];
+            for i in 0..count {
+                let win: *mut AnyObject = msg_send![windows, objectAtIndex: i];
+                if win.is_null() {
+                    continue;
+                }
+                let style: usize = msg_send![win, styleMask];
+                if (style & 1) == 0 {
+                    continue;
+                }
+                let visible: Bool = msg_send![win, isVisible];
+                let mini: Bool = msg_send![win, isMiniaturized];
+                if visible.as_bool() && !mini.as_bool() {
+                    visible_titled += 1;
+                    let _: () = msg_send![win, orderOut: null_obj];
+                }
+            }
+        }
+        if visible_titled <= 1 {
+            let _: () = msg_send![app, hide: null_obj];
+        }
+    }
+}
+
+/// macOS: brings MDM and its windows to the topmost foreground in front of all other apps when
+/// woken from the menu bar icon or the global hotkey (#558).
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+pub fn macos_activate_and_show() {
+    use objc2::msg_send;
+    use objc2::runtime::{AnyClass, AnyObject, Bool};
+    // SAFETY: called on the main UI thread; activates `NSRunningApplication.currentApplication` and
+    // `NSApplication.sharedApplication`, and orders all titled windows to the front.
+    unsafe {
+        let Some(cls) = AnyClass::get(c"NSApplication") else {
+            return;
+        };
+        let app: *mut AnyObject = msg_send![cls, sharedApplication];
+        if app.is_null() {
+            return;
+        }
+        let null_obj: *mut AnyObject = std::ptr::null_mut();
+        let _: () = msg_send![app, unhide: null_obj];
+        if let Some(run_cls) = AnyClass::get(c"NSRunningApplication") {
+            let cur: *mut AnyObject = msg_send![run_cls, currentApplication];
+            if !cur.is_null() {
+                // NSApplicationActivateAllWindows (1) | NSApplicationActivateIgnoringOtherApps (2) = 3
+                let _: Bool = msg_send![cur, activateWithOptions: 3usize];
+            }
+        }
+        let _: () = msg_send![app, activateIgnoringOtherApps: Bool::YES];
+        let windows: *mut AnyObject = msg_send![app, windows];
+        if !windows.is_null() {
+            let count: usize = msg_send![windows, count];
+            for i in 0..count {
+                let win: *mut AnyObject = msg_send![windows, objectAtIndex: i];
+                if win.is_null() {
+                    continue;
+                }
+                let style: usize = msg_send![win, styleMask];
+                if (style & 1) == 0 {
+                    continue;
+                }
+                let mini: Bool = msg_send![win, isMiniaturized];
+                if mini.as_bool() {
+                    let _: () = msg_send![win, deminiaturize: null_obj];
+                }
+                let _: () = msg_send![win, makeKeyAndOrderFront: null_obj];
+                let _: () = msg_send![win, orderFrontRegardless];
+            }
+        }
+    }
+}
+
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
     use zbus::zvariant::Value;

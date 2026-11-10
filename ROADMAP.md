@@ -519,6 +519,7 @@ These ship in a later version, when they're ready.
   ([#357](https://github.com/anefzaoui/misterdownloadmanager/issues/357)): the last one in review
 - 🔄 The browser extension's media list naming a file after its page, as an option: in review
 - 🔄 Malay: a native speaker's check of the menus, toolbar and list columns: in review
+- 🔄 **Options → General → Shortcut to show or hide window**: a customizable 2-key or 3-key global shortcut to show or hide MDM's window ([#558](https://github.com/anefzaoui/misterdownloadmanager/issues/558)): in review
 
 ### Bugs being looked into
 
