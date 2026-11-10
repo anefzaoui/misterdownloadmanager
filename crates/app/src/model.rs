@@ -399,6 +399,9 @@ pub struct Item {
     pub remote: Option<RemoteSpec>,
     #[serde(skip)]
     pub live: Option<Live>,
+    /// The session's temporary view while a torrent is being checked; never saved.
+    #[serde(skip)]
+    pub torrent_check: Option<(u64, u64)>,
     /// The engine's last view of this download (segments, connections).
     #[serde(skip)]
     pub snap: Option<mdm_engine::Snapshot>,
@@ -698,6 +701,7 @@ impl Item {
             direct: false,
             remote: None,
             live: None,
+            torrent_check: None,
             snap: None,
             login: None,
             context: Default::default(),
@@ -846,6 +850,9 @@ impl Item {
                 }
                 self.notices = notices;
                 self.live = None;
+                // The session's last check numbers belong to the run just ended (a finished
+                // torrent leaves the session): not left saying "Checking" until the next tick.
+                self.torrent_check = None;
                 true
             }
             None => false,
@@ -864,6 +871,20 @@ impl Item {
 
     pub fn rate(&self) -> f64 {
         self.live.as_ref().map_or(0.0, |l| l.rate)
+    }
+
+    /// How much has come, 0 to 1, or None without a size to take a share of (a live stream,
+    /// some HLS, a server that doesn't say): no percentage rather than 0 %. A video reads at
+    /// most 99.9 % until the file is finished: another stream or the merge may still follow
+    /// (#344), and the sizes beside it stay the real ones.
+    pub fn fraction(&self) -> Option<f64> {
+        let total = self.size.filter(|t| *t > 0)?;
+        let f = (self.downloaded as f64 / total as f64).clamp(0.0, 1.0);
+        Some(if self.video.is_some() && self.status != Status::Complete {
+            f.min(mdm_tools::video::MAX_WHILE_RUNNING)
+        } else {
+            f
+        })
     }
 
     /// The Status column: `13.38%`, `Complete`, `Error`, or blank.
@@ -890,9 +911,37 @@ impl Item {
         ))
     }
 
+    /// "Checking 42%" while a torrent's files are read and checked (added over files already
+    /// there, Recheck): a running one from its live numbers (librqbit counts the bytes checked),
+    /// one not running from the session's (`torrent_check`, every 2 s). Whole percents: the
+    /// list's Status column is narrow.
+    pub fn torrent_checking(&self) -> Option<String> {
+        self.torrent.as_ref()?;
+        let (checked, total) = match (&self.live, &self.snap) {
+            (Some(_), Some(s)) if s.state == State::Verifying => {
+                (s.downloaded, s.size.unwrap_or(0))
+            }
+            (Some(_), _) => return None,
+            (None, _) => self.torrent_check?,
+        };
+        let ratio = if total > 0 {
+            checked as f64 / total as f64
+        } else {
+            0.0
+        };
+        Some(crate::i18n::fmt(
+            // i18n: a torrent's status while its files are read and checked; {percent} is how much is checked, e.g. "42%"
+            crate::i18n::t("Checking {percent}"),
+            &[("percent", &crate::i18n::percent(ratio.min(1.0), 0))],
+        ))
+    }
+
     pub fn status_text(&self) -> String {
         if let Some(at) = self.at_service() {
             return at;
+        }
+        if let Some(checking) = self.torrent_checking() {
+            return checking;
         }
         if self
             .snap
@@ -910,8 +959,8 @@ impl Item {
             // says what the download is doing.
             // i18n: a download's status (state it is in, not a command): waiting in a queue for its turn
             Status::Queued if self.downloaded == 0 => crate::i18n::t("Waiting").into(),
-            _ => match (self.size, self.status) {
-                (Some(t), _) if t > 0 => percent(self.downloaded as f64 / t as f64),
+            _ => match (self.fraction(), self.status) {
+                (Some(f), _) => percent(f),
                 // i18n: a download's status (state it is in, not a command): stopped by the user
                 (_, Status::Stopped) => crate::i18n::t("Stopped").into(),
                 (_, Status::Queued) => crate::i18n::t("Waiting").into(),
@@ -1117,6 +1166,41 @@ mod size_tests {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn video_item(size: Option<u64>, downloaded: u64, status: Status) -> Item {
+        let url = Url::parse("https://example.org/a.mp4").unwrap();
+        let mut it = Item::new(1, url, PathBuf::from("a.mp4"), Category::Video);
+        it.size = size;
+        it.downloaded = downloaded;
+        it.status = status;
+        it.video = Some(VideoSpec {
+            selector: "18".into(),
+            subs: Default::default(),
+        });
+        it
+    }
+
+    /// Without a size there's no share to show: no 0 % (from #384).
+    #[test]
+    fn no_size_no_percentage() {
+        let it = video_item(None, 5_000_000, Status::Downloading);
+        assert_eq!(it.fraction(), None);
+        assert_eq!(video_item(Some(0), 5, Status::Downloading).fraction(), None);
+    }
+
+    /// A video with all its bytes in may still be merging: 99.9 % until the file is finished,
+    /// with the real sizes beside it.
+    #[test]
+    fn a_video_reads_100_only_when_finished() {
+        let m = 1 << 20;
+        let running = video_item(Some(100 * m), 100 * m, Status::Downloading);
+        assert_eq!(running.fraction(), Some(0.999));
+        let done = video_item(Some(100 * m), 100 * m, Status::Complete);
+        assert_eq!(done.fraction(), Some(1.0));
+        let mut file = video_item(Some(100), 100, Status::Downloading);
+        file.video = None;
+        assert_eq!(file.fraction(), Some(1.0));
+    }
 
     #[test]
     fn a_folder_saved_as_shown_is_under_home() {

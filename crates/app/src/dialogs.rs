@@ -2426,6 +2426,16 @@ pub fn show_in_folder(path: &Path) {
             }
             return;
         }
+        // Another file manager set up to open folders (#446): Explorer's `/select` would start
+        // Explorer anyway. The folder goes to the system, which runs that one; it can't be told
+        // which file to select in a way every file manager reads.
+        if let Some(opener) = crate::win32::folder_opener() {
+            tracing::info!("show in folder: folders open with {opener}");
+            if let Some(dir) = path.parent().filter(|d| d.is_dir()) {
+                crate::launch::open(dir);
+                return;
+            }
+        }
         // Explorer reads `/select,"C:\a b\c.mp4"` — quoted after the comma. Rust's own quoting
         // would wrap the whole argument ("/select,C:\a b\c.mp4"), which Explorer doesn't
         // understand: it opened its default folder for any path with a space (user report

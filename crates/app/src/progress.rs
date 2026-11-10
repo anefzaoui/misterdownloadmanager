@@ -26,6 +26,17 @@ const TITLE_H: f32 = if cfg!(windows) {
 /// and its system menu's "Hide to the notification area" (translated, when there is one).
 type Framed = ([f32; 2], u32, Option<String>);
 
+/// The window's title: IDM truncates the percentage in it (44.51 % → "44%"); without a size to
+/// take a share of, only the name. The name keeps its own direction (an Arabic one doesn't pull
+/// the percentage after it).
+fn window_title(frac: Option<f64>, name: &str) -> String {
+    let name = crate::i18n::isolate(name);
+    match frac {
+        Some(f) => format!("{}% {name}", (f * 100.0).floor() as u32),
+        None => name,
+    }
+}
+
 /// The title bar's buttons, from the window's end: Close, Maximize (greyed: a fixed size, as
 /// IDM's), Minimize, and with a tray our "hide to the notification area". None where the system
 /// draws the title bar.
@@ -225,17 +236,8 @@ impl Progress {
 
     pub fn show(&mut self, ctx: &egui::Context, item: &Item, snap: Option<&Snapshot>) -> Action {
         crate::crash::window("progress");
-        let frac = item
-            .size
-            .filter(|t| *t > 0)
-            .map_or(0.0, |t| (item.downloaded as f64 / t as f64).clamp(0.0, 1.0));
-        // IDM truncates the percentage in the title (44.51 % → "44%").
-        // The name keeps its own direction (an Arabic one doesn't pull the percentage after it).
-        let title = format!(
-            "{}% {}",
-            (frac * 100.0).floor() as u32,
-            crate::i18n::isolate(&item.file_name)
-        );
+        let frac = item.fraction();
+        let title = window_title(frac, &item.file_name);
         let body = if self.details {
             [548.0, 412.0 + torrent_drop(item)]
         } else {
@@ -397,7 +399,7 @@ impl Progress {
         o: Pos2,
         item: &Item,
         snap: Option<&Snapshot>,
-        frac: f64,
+        frac: Option<f64>,
     ) -> Action {
         let p = ui.painter().clone();
         let hide = self.tabs(ui, o);
@@ -419,7 +421,11 @@ impl Progress {
         }
 
         // The progress bar: IDM's green on the shared, themed track.
-        winui::meter(&p, r(o, 17.0, 180.0, 513.0, 16.0), frac as f32);
+        winui::meter(
+            &p,
+            r(o, 17.0, 180.0, 513.0, 16.0),
+            frac.unwrap_or(0.0) as f32,
+        );
 
         let mut action = if hide { Action::Hide } else { Action::None };
         let details_label = if self.details {
@@ -964,7 +970,7 @@ const PAGE_TEXT_RIGHT: f32 = 520.0;
 
 // The rows sit 7 px inside the page's frame at the top and at the bottom (the Server row's
 // descent included), with a slightly wider break after Status, as before.
-fn status_page(ui: &Ui, o: Pos2, item: &Item, snap: Option<&Snapshot>, frac: f64) {
+fn status_page(ui: &Ui, o: Pos2, item: &Item, snap: Option<&Snapshot>, frac: Option<f64>) {
     let p = &ui.painter().clone();
     // Long values are cut with "..." at the page edge and shown whole on hover.
     let fit = |key: &str, x: f32, base: f32, s: &str, color| {
@@ -972,6 +978,8 @@ fn status_page(ui: &Ui, o: Pos2, item: &Item, snap: Option<&Snapshot>, frac: f64
         winui::copyable(ui, rect, key, s, cut);
     };
     let status = match item.status {
+        // A torrent reading and checking its files says so, not "Receiving data" (#39).
+        _ if let Some(checking) = item.torrent_checking() => checking,
         // A torrent its debrid service is downloading (#44).
         Status::Downloading if item.at_service().is_some() => item.at_service().unwrap_or_default(),
         Status::Downloading => {
@@ -1026,14 +1034,17 @@ fn status_page(ui: &Ui, o: Pos2, item: &Item, snap: Option<&Snapshot>, frac: f64
             crate::i18n::mark("Downloaded"),
             96.0,
             135.0,
-            if crate::i18n::code() == "en" {
-                format!("{} ( {:.2} % )", size3(item.downloaded), frac * 100.0) // not translated: English path (IDM's spacing)
-            } else {
-                format!(
+            match frac {
+                // No size: only how much has come, no 0 % that never moves.
+                None => size3(item.downloaded),
+                Some(frac) if crate::i18n::code() == "en" => {
+                    format!("{} ( {:.2} % )", size3(item.downloaded), frac * 100.0) // not translated: English path (IDM's spacing)
+                }
+                Some(frac) => format!(
                     "{} ( {} )",
                     size3(item.downloaded),
                     crate::i18n::percent(frac, 2)
-                )
+                ),
             },
         ),
         (
@@ -1200,22 +1211,7 @@ impl Progress {
                     })
                     .collect();
                 let ticks: Vec<bool> = d.files.iter().map(|f| f.2).collect();
-                let clicked = table(
-                    ui,
-                    p,
-                    o,
-                    "t-files",
-                    // i18n: column titles: File (name), Size, Done (how much is downloaded)
-                    &[
-                        (25.0, crate::i18n::mark("File")),
-                        (335.0, crate::i18n::mark("Size")),
-                        (430.0, crate::i18n::mark("Done")),
-                    ],
-                    &[330.0, 425.0],
-                    &rows,
-                    true,
-                    Some(&ticks),
-                );
+                let clicked = files_table(ui, p, o, "t-files", &rows, &ticks, 6);
                 // A box ticked or unticked (#39): the torrent downloads those files from now
                 // on; the last one ticked can't be unticked (a torrent of nothing).
                 if let Some(row) = clicked {
@@ -1499,6 +1495,40 @@ fn piece_grid(p: &egui::Painter, o: Pos2, pieces: &[bool]) {
     }
 }
 
+/// The Files tab's table of a torrent's files, ticked or not: the progress window's (`shown`: 6
+/// rows) and the Files window's (torrentfiles.rs, taller). The row whose box was clicked.
+pub(crate) fn files_table(
+    ui: &mut Ui,
+    p: &egui::Painter,
+    o: Pos2,
+    id: &str,
+    rows: &[Vec<String>],
+    checks: &[bool],
+    shown: usize,
+) -> Option<usize> {
+    table_sized(
+        ui,
+        p,
+        o,
+        id,
+        &[
+            (25.0, crate::i18n::mark("File")),
+            (335.0, crate::i18n::mark("Size")),
+            (430.0, crate::i18n::mark("Done")),
+        ],
+        &[330.0, 425.0],
+        rows,
+        true,
+        Some(checks),
+        shown,
+    )
+}
+
+/// The height of a [`table_sized`] of `shown` rows' body (the progress window's 6: 100 px).
+pub(crate) fn table_body_height(shown: usize) -> f32 {
+    17.0 * shown as f32 - 2.0
+}
+
 /// A table in the connections table's frame: headers at x, column lines at `seps`, rows of
 /// text cut to their column (whole on hover), scrolled by the wheel. `checks`: a check box
 /// before each row's icon, ticked or not (the Files tab); the row whose box was clicked.
@@ -1514,15 +1544,40 @@ fn table(
     icons: bool,
     checks: Option<&[bool]>,
 ) -> Option<usize> {
+    table_sized(ui, p, o, id, heads, seps, rows, icons, checks, 6)
+}
+
+/// [`table`] showing `shown` rows: it grows down from the same top.
+#[allow(clippy::too_many_arguments)]
+fn table_sized(
+    ui: &mut Ui,
+    p: &egui::Painter,
+    o: Pos2,
+    id: &str,
+    heads: &[(f32, &str)],
+    seps: &[f32],
+    rows: &[Vec<String>],
+    icons: bool,
+    checks: Option<&[bool]>,
+    shown: usize,
+) -> Option<usize> {
     let mut clicked = None;
-    let outer = r(o, 17.0, 273.0, 513.0, 128.0);
+    let body_h = table_body_height(shown);
+    let outer = r(o, 17.0, 273.0, 513.0, body_h + 28.0);
     winui::solid(p, outer, winui::FIELD_EDGE());
     let (bg, head, line) = (
         winui::FIELD(),
         winui::LIST_HEADER(),
         crate::theme::colors().header_sep,
     );
-    fill(p, o.x + 18.0, o.y + 274.0, o.x + 528.0, o.y + 399.0, bg);
+    fill(
+        p,
+        o.x + 18.0,
+        o.y + 274.0,
+        o.x + 528.0,
+        o.y + 299.0 + body_h,
+        bg,
+    );
     fill(p, o.x + 19.0, o.y + 275.0, o.x + 527.0, o.y + 298.0, head);
     for x in seps {
         fill(p, o.x + x, o.y + 275.0, o.x + x, o.y + 298.0, line);
@@ -1530,7 +1585,7 @@ fn table(
     for (x, h) in heads {
         text(p, o.x + x, o.y + 290.0, crate::i18n::t(h), winui::TEXT());
     }
-    let visible = 6usize;
+    let visible = shown;
     // Per window: each progress window scrolls its own tables.
     let key = egui::Id::unique(("torrent-table", id, ui.ctx().viewport_id()));
     let max_first = rows.len().saturating_sub(visible);
@@ -1539,9 +1594,9 @@ fn table(
         .data(|d| d.get_temp::<usize>(key))
         .unwrap_or(0)
         .min(max_first);
-    let body = r(o, 19.0, 299.0, 508.0, 100.0);
+    let body = r(o, 19.0, 299.0, 508.0, body_h);
     if ui.rect_contains_pointer(body) {
-        let step = winui::wheel_steps(ui, key, 100.0 / visible as f32, visible as f32);
+        let step = winui::wheel_steps(ui, key, body_h / visible as f32, visible as f32);
         first = first.saturating_add_signed(step).min(max_first);
         ui.ctx().data_mut(|d| d.insert_temp(key, first));
     }
@@ -1587,7 +1642,7 @@ fn table(
         if crate::scrollbar::bar(
             ui,
             key.with("bar"),
-            r(o, 511.0, 275.0, 17.0, 124.0),
+            r(o, 511.0, 275.0, 17.0, body_h + 24.0),
             true,
             rows.len() as f32,
             visible as f32,
@@ -1800,6 +1855,13 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// A download of unknown size has no percentage in its title (from #384).
+    #[test]
+    fn the_title_has_a_percentage_only_with_a_size() {
+        assert!(!window_title(None, "clip.mp4").contains('%'));
+        assert!(window_title(Some(0.445), "clip.mp4").starts_with("44% "));
+    }
 
     #[test]
     fn hide_tab_takes_the_tab_off_the_strip() {
