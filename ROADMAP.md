@@ -524,10 +524,14 @@ These ship in a later version, when they're ready.
   ([#457](https://github.com/anefzaoui/misterdownloadmanager/pull/457))
 - 🔄 Download File Info staying open but invisible, with later browser downloads waiting behind
   it ([#440](https://github.com/anefzaoui/misterdownloadmanager/issues/440)): fix in review
+- 🔄 The Download video window not remembering the folder you saved into
+  ([#475](https://github.com/anefzaoui/misterdownloadmanager/issues/475)): fix in review
 - 🔄 Arabic and other non-Latin file names saved unreadable, from Firefox and browsers built on it
   ([#447](https://github.com/anefzaoui/misterdownloadmanager/issues/447)): fix in review
 - 🔄 A file renamed to avoid a clash still showing and opening under its old name
   ([#442](https://github.com/anefzaoui/misterdownloadmanager/issues/442)): fix in review
+- 🔄 Download video's message when a site's bot check (Cloudflare) refuses yt-dlp
+  ([#317](https://github.com/anefzaoui/misterdownloadmanager/issues/317)): fix in review
 - 🔄 RSS feeds: the rule boxes losing the keyboard after each key
   ([#353](https://github.com/anefzaoui/misterdownloadmanager/issues/353)): fix in review
 - 🔄 Video progress at 100 % while still downloading, and long encoded strings as file names
@@ -535,6 +539,8 @@ These ship in a later version, when they're ready.
   [#345](https://github.com/anefzaoui/misterdownloadmanager/issues/345)): fix in review
 - 🔄 A page that starts a download by script being saved instead of the file
   ([#374](https://github.com/anefzaoui/misterdownloadmanager/issues/374)): fix in review
+- 🔄 A gofile share link saving a web page instead of the file
+  ([#346](https://github.com/anefzaoui/misterdownloadmanager/issues/346)): fix in review
 - 🔄 "Hide tab" in a download's window only going back to Download status, the tab still
   there ([#326](https://github.com/anefzaoui/misterdownloadmanager/issues/326)): fix in review
 - 🔍 A site's bot check refusing MDM's request (testfile.org, a Cloudflare challenge): the\n  message now says so ([#376](https://github.com/anefzaoui/misterdownloadmanager/issues/376)); a way to hand the download back to the browser is still to decide
@@ -545,6 +551,8 @@ These ship in a later version, when they're ready.
   ([#354](https://github.com/anefzaoui/misterdownloadmanager/issues/354)): fix in review
 - 🔄 Videos in the progress window: no percentage when the size isn't known, and the real file
   size at the end: fix in review
+- 🔄 X (Twitter) videos from the media list named after the tab instead of a random file name
+  ([#493](https://github.com/anefzaoui/misterdownloadmanager/issues/493)): fix in review
 - 🔄 **Open folder** on Windows always starting Explorer, even with another file manager set up
   to open folders ([#446](https://github.com/anefzaoui/misterdownloadmanager/issues/446)): fix in review
 - 🔄 Alt and F10 opening the menu bar with a control focused

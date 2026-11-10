@@ -8,7 +8,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 ### Fixed
 
 - The progress window of a video whose size isn't known says no percentage (it read 0 % in the title and 0.00 % on the Downloaded line), and **File size** stays the file's size at the end (it read 0.1 % too high while yt-dlp finished).
+- A **gofile** share link (`gofile.io/d/...`) now says it is a web page to open in your browser, instead of saving that page as if it were the file ([#346](https://github.com/anefzaoui/misterdownloadmanager/issues/346)).
+- **Download video**: when a site's bot check (Cloudflare) turns yt-dlp away, the message says so and what to try, instead of yt-dlp's cut-off words ([#317](https://github.com/anefzaoui/misterdownloadmanager/issues/317)).
+- The **Download video** window remembers the folder you save into, per **Options → Save to**'s "Change folder for this category on last selected", as **Download File Info** does: it no longer goes back to the Video category's folder each time ([#475](https://github.com/anefzaoui/misterdownloadmanager/issues/475)).
+- X (Twitter) videos sent from the browser's media list are named after the tab, not the random name of their file on X's video server ([#493](https://github.com/anefzaoui/misterdownloadmanager/issues/493)).
 - Windows: **Open folder** on a download opens the folder with the file manager set up to open folders (Directory Opus, for example), instead of always starting Windows Explorer. With Explorer it still selects the file ([#446](https://github.com/anefzaoui/misterdownloadmanager/issues/446)).
+
 
 ## [0.5.2] - 2026-11-09
 
