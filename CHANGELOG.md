@@ -7,6 +7,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Windows: video and gallery look-ups no longer fail with "[WinError 448] The path cannot be traversed because it contains an untrusted mount point" when a folder on PATH goes through a junction Windows won't let yt-dlp cross (one an app installed for itself, Codex's for example): yt-dlp, gallery-dl and the ffmpeg they start get that folder's real place instead, and no folder that can't be opened ([#508](https://github.com/anefzaoui/misterdownloadmanager/issues/508)).
 - The window no longer freezes when a video or a gallery finishes: marking its files as downloaded from the web, which can wait on the disk and the antivirus for a while with a big video, now happens beside the window ([#510](https://github.com/anefzaoui/misterdownloadmanager/issues/510)).
 - Linux: **View → Dark Mode support** turns dark on window managers such as Hyprland and sway when only GNOME's setting says so (`gsettings set org.gnome.desktop.interface color-scheme prefer-dark`), as it did when a desktop portal answered ([#324](https://github.com/anefzaoui/misterdownloadmanager/issues/324)).
 - Dark mode no longer draws a bright white line under the menu bar, across the whole window, in the Classic and Native themes ([#379](https://github.com/anefzaoui/misterdownloadmanager/issues/379)).
