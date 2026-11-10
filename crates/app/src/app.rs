@@ -672,8 +672,9 @@ pub struct App {
     /// Stopped by hand while they could have run: a running queue leaves them alone until
     /// they are started again or the queue is started anew (#341).
     stopped_by_hand: std::collections::HashSet<u64>,
-    /// Seconds since local midnight at the last scheduler tick.
-    clock: u32,
+    /// Seconds since local midnight at the last scheduler tick (`None` until the clock's first
+    /// answer, #536).
+    clock: Option<u32>,
     /// Scheduler → "Wake the computer to run this queue": the wake set with the system (#142).
     wake: crate::wake::Waker,
     /// Commands from ipc.rs (command line, second launch, browser).
@@ -819,12 +820,6 @@ pub fn auth_headers(login: Option<&(String, String)>) -> HeaderMap {
         }
     }
     h
-}
-
-/// Seconds since local midnight (for queue schedules).
-fn seconds_now() -> u32 {
-    use chrono::Timelike;
-    chrono::Local::now().num_seconds_from_midnight()
 }
 
 /// A read of the clipboard on a thread of its own, its answer taken when it has come (#418).
@@ -1219,7 +1214,7 @@ impl App {
             queues,
             failures: HashMap::new(),
             stopped_by_hand: Default::default(),
-            clock: seconds_now(),
+            clock: None,
             wake: Default::default(),
             commands,
         }
@@ -2522,6 +2517,8 @@ impl App {
             }),
             post: context.post.clone().map(|body| body.into_bytes().into()),
             on_file_created: Some(mark_hook(url, context.referer.as_deref())),
+            // The browser's own download's type: a web page instead is an error (#533).
+            expected_type: context.mime.clone(),
             ..Options::default()
         };
         RequestParts { headers, opts }
@@ -4894,24 +4891,29 @@ impl App {
 
     /// Scheduler times, then start what running queues allow (notes/ENGINE.md §5).
     fn tick_queues(&mut self) {
-        use chrono::Datelike;
-        let now_s = seconds_now();
-        let prev = std::mem::replace(&mut self.clock, now_s);
-        let today = chrono::Local::now().date_naive();
-        let weekday = today.weekday().num_days_from_sunday() as usize;
-        let date = (today.year(), today.month(), today.day());
-        for q in 0..self.queues.len() {
-            let sch = self.queues[q].schedule.clone();
-            if let Some(t) = sch.start_at
-                && sch.starts_on(date, weekday)
-                && queue::crossed(t, prev, now_s)
-            {
-                self.queues[q].running = true;
-            }
-            if let Some(t) = sch.stop_at
-                && queue::crossed(t, prev, now_s)
-            {
-                self.stop_queue(q);
+        use chrono::{Datelike, Timelike};
+        // The local time with the offset the clock's thread keeps: asking Windows here held the
+        // window for 8 s (#536). Until its first answer, schedules wait.
+        let local = crate::clock::now_known();
+        let now_s = local.map(|t| t.num_seconds_from_midnight());
+        let prev = std::mem::replace(&mut self.clock, now_s).or(now_s);
+        if let (Some(local), Some(now_s), Some(prev)) = (local, now_s, prev) {
+            let today = local.date_naive();
+            let weekday = today.weekday().num_days_from_sunday() as usize;
+            let date = (today.year(), today.month(), today.day());
+            for q in 0..self.queues.len() {
+                let sch = self.queues[q].schedule.clone();
+                if let Some(t) = sch.start_at
+                    && sch.starts_on(date, weekday)
+                    && queue::crossed(t, prev, now_s)
+                {
+                    self.queues[q].running = true;
+                }
+                if let Some(t) = sch.stop_at
+                    && queue::crossed(t, prev, now_s)
+                {
+                    self.stop_queue(q);
+                }
             }
         }
         let now = Instant::now();

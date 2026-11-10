@@ -522,6 +522,8 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 The video button still showing after it was switched off, or its site listed, in Options
+  ([#532](https://github.com/anefzaoui/misterdownloadmanager/issues/532)): fix in review
 - 🔄 macOS: Persian and other Arabic-script file names drawn as boxes in the download list
   ([#533](https://github.com/anefzaoui/misterdownloadmanager/issues/533)): fix in review, to
   confirm on a Mac
@@ -540,6 +542,9 @@ These ship in a later version, when they're ready.
   (a restore point or a backup) ([#513](https://github.com/anefzaoui/misterdownloadmanager/issues/513)):
   the log and the RSS feeds are now written beside the window, as the list already was; fix in
   review, to confirm on the reporter's computer
+- 🔄 The window not answering while Windows took seconds to look up the time zone for the
+  queues' schedules ([#536](https://github.com/anefzaoui/misterdownloadmanager/issues/536)):
+  looked up beside the window now; fix in review
 - 🔄 Video look-ups failing with "WinError 448 ... untrusted mount point" when a folder on PATH
   goes through a junction Windows won't let yt-dlp cross
   ([#508](https://github.com/anefzaoui/misterdownloadmanager/issues/508)): fix in review
@@ -576,6 +581,9 @@ These ship in a later version, when they're ready.
   ([#374](https://github.com/anefzaoui/misterdownloadmanager/issues/374)): fix in review
 - 🔄 A gofile share link saving a web page instead of the file
   ([#346](https://github.com/anefzaoui/misterdownloadmanager/issues/346)): fix in review
+- 🔄 A server's refusal page saved under the document's name and shown as complete, where the
+  browser had the file (part of [#533](https://github.com/anefzaoui/misterdownloadmanager/issues/533)):
+  fix in review
 - 🔄 "Hide tab" in a download's window only going back to Download status, the tab still
   there ([#326](https://github.com/anefzaoui/misterdownloadmanager/issues/326)): fix in review
 - 🔍 A site's bot check refusing MDM's request (testfile.org, a Cloudflare challenge): the\n  message now says so ([#376](https://github.com/anefzaoui/misterdownloadmanager/issues/376)); a way to hand the download back to the browser is still to decide
