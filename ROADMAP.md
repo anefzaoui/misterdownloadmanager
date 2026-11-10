@@ -535,6 +535,9 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 Windows: a crash when the clipboard was read in two places at once (the clipboard monitor and
+  Add URL) ([#629](https://github.com/anefzaoui/misterdownloadmanager/issues/629)): every read and
+  write of the clipboard now goes one at a time; fix in review
 - 🔄 The window not answering while a file was dragged out of Download complete, for as long as
   the program under the pointer took ([#561](https://github.com/anefzaoui/misterdownloadmanager/issues/561)): the drag now runs beside the window; fix
   in review, to check with a real drag
