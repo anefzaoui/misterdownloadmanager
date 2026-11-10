@@ -38,7 +38,7 @@ enum Sub {
     /// Connection → New / Edit exception: (row, server, number).
     Exception(Option<usize>, String, String),
     /// General → Download panels → Edit...: (the button over videos on, the sites it stays off).
-    Panels(bool, String),
+    Panels(bool, String, String),
     /// General → Keys...: (also take the files the browser would open).
     Keys(bool),
     /// General → Test browser integration...: the checks, as found when it opened.
@@ -249,6 +249,7 @@ impl OptionsDialog {
         self.sub = Some(Sub::Panels(
             self.s.video_panel,
             self.s.video_panel_sites.clone(),
+            String::new(),
         ));
         self
     }
@@ -646,6 +647,7 @@ impl OptionsDialog {
             self.sub = Some(Sub::Panels(
                 self.s.video_panel,
                 self.s.video_panel_sites.clone(),
+                String::new(),
             ));
         }
     }
@@ -3140,7 +3142,7 @@ impl OptionsDialog {
                     Outcome::Closed => {}
                 }
             }
-            Sub::Panels(mut on, mut sites) => {
+            Sub::Panels(mut on, mut sites, mut said) => {
                 let out = window(
                     ctx,
                     "opt-panels",
@@ -3181,11 +3183,103 @@ impl OptionsDialog {
                             crate::i18n::t("(separate names by spaces)"),
                             LIGHT_TEXT(),
                         );
+                        // The list as a file, to keep or carry to a new installation (#424).
+                        let [export_at, import_at] = winui::button_row(
+                            &p,
+                            &[("Export...", 212.0, 73.0), ("Import...", 293.0, 73.0)],
+                            8.0,
+                            160.0,
+                            140.0,
+                        )[..] else {
+                            unreachable!("two buttons")
+                        };
+                        if winui::button_light(
+                            ui,
+                            r(o, export_at.0, 128.0, export_at.1, 21.0),
+                            "Export...",
+                            ButtonKind::Normal,
+                            false,
+                        )
+                        .clicked()
+                        {
+                            let title = crate::i18n::t("Export").to_owned();
+                            winui::start_pick(ui.ctx(), "opt-panels-export", move || {
+                                rfd::FileDialog::new()
+                                    .set_title(title)
+                                    .add_filter("TXT", &["txt"])
+                                    .set_file_name("sites.txt")
+                                    .save_file()
+                            });
+                        }
+                        if winui::button_light(
+                            ui,
+                            r(o, import_at.0, 128.0, import_at.1, 21.0),
+                            "Import...",
+                            ButtonKind::Normal,
+                            false,
+                        )
+                        .clicked()
+                        {
+                            let title = crate::i18n::t("Import").to_owned();
+                            winui::start_pick(ui.ctx(), "opt-panels-import", move || {
+                                rfd::FileDialog::new()
+                                    .set_title(title)
+                                    .add_filter("TXT", &["txt"])
+                                    .pick_file()
+                            });
+                        }
+                        if let Some(path) = winui::picked(ui.ctx(), "opt-panels-export") {
+                            said = match std::fs::write(
+                                &path,
+                                mdm_ipc::capture::sites_to_text(&sites),
+                            ) {
+                                Ok(()) => crate::i18n::tn(
+                                    sites.split_whitespace().count() as u64,
+                                    "{n} site saved to the file.",
+                                    "{n} sites saved to the file.",
+                                ),
+                                Err(e) => crate::i18n::fmt(
+                                    crate::i18n::t("The list could not be saved: {error}"),
+                                    &[("error", &e.to_string())],
+                                ),
+                            };
+                        }
+                        if let Some(path) = winui::picked(ui.ctx(), "opt-panels-import") {
+                            said = match read_sites_file(&path) {
+                                Ok(text) => {
+                                    let (merged, added) =
+                                        mdm_ipc::capture::merge_sites(&sites, &text);
+                                    sites = merged;
+                                    crate::i18n::tn(
+                                        added as u64,
+                                        "{n} site added from the file.",
+                                        "{n} sites added from the file.",
+                                    )
+                                }
+                                Err(e) => crate::i18n::fmt(
+                                    crate::i18n::t("The file could not be read: {error}"),
+                                    &[("error", &e.to_string())],
+                                ),
+                            };
+                        }
+                        if !said.is_empty() {
+                            let (rect, cut) = winui::text_fit(
+                                &p,
+                                o.x + 14.0,
+                                o.y + 163.0,
+                                &said,
+                                LIGHT_TEXT(),
+                                o.x + 205.0,
+                            );
+                            if cut {
+                                winui::full_on_hover(ui, rect, "opt-panels-said", &said);
+                            }
+                        }
                         ok_cancel(ui, o, 212.0, 157.0, true)
                     },
                 );
                 match out {
-                    Outcome::Open => self.sub = Some(Sub::Panels(on, sites)),
+                    Outcome::Open => self.sub = Some(Sub::Panels(on, sites, said)),
                     Outcome::Done(()) => {
                         self.s.video_panel = on;
                         self.s.video_panel_sites =
@@ -3894,6 +3988,17 @@ fn open_page(url: &str) {
     }
 }
 
+/// A list of sites from a file (Download panels' Import, #424): text, and no more than a list
+/// could be.
+fn read_sites_file(path: &std::path::Path) -> std::io::Result<String> {
+    use std::io::Read as _;
+    let mut text = Vec::new();
+    std::fs::File::open(path)?
+        .take(1 << 20)
+        .read_to_end(&mut text)?;
+    String::from_utf8(text).map_err(|e| std::io::Error::new(std::io::ErrorKind::InvalidData, e))
+}
+
 fn ok_cancel(ui: &mut Ui, o: Pos2, x: f32, y: f32, valid: bool) -> Outcome<()> {
     let kind = if valid {
         ButtonKind::Default
@@ -4458,4 +4563,23 @@ fn kept_text(kept: crate::secrets::Kept) -> Option<&'static str> {
             "No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.",
         ),
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// #424: the list written and read back through a real file: nothing lost, nothing doubled.
+    #[test]
+    fn sites_round_trip_through_a_file() {
+        let dir = tempfile::tempdir().unwrap();
+        let file = dir.path().join("sites.txt");
+        let sites = "a.test *.b.test";
+        std::fs::write(&file, mdm_ipc::capture::sites_to_text(sites)).unwrap();
+        let text = read_sites_file(&file).unwrap();
+        assert_eq!(text, "a.test\n*.b.test\n");
+        let (back, added) = mdm_ipc::capture::merge_sites("", &text);
+        assert_eq!((back.as_str(), added), (sites, 2));
+        assert_eq!(mdm_ipc::capture::merge_sites(sites, &text).1, 0);
+    }
 }

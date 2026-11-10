@@ -917,16 +917,18 @@ async function mediaList(tabId) {
   return out;
 }
 
-// A file's name from the tab's title when its address ends in a long hash (#345); else, with the
-// popup's switch on (`includeOriginal`), the title before the address's own name; else none: the
-// app names it from the address, as for any download.
+// A file's name from the tab's title when its address ends in a long hash (#345) or is on a
+// server whose names are all random ids (#493: X's video.twimg.com, too short for the hash test);
+// else, with the popup's switch on (`includeOriginal`), the title before the address's own name;
+// else none: the app names it from the address, as for any download.
 function titledName(url, title, includeOriginal = false) {
   const last = pathOf(url).split("/").pop() || "";
   const dot = last.lastIndexOf(".");
   const stem = dot > 0 ? last.slice(0, dot) : last;
   const name = String(title || "").replace(/[\\/:*?"<>|]/g, " ").trim().slice(0, 150);
   const hash = stem.length >= 24 && /^[A-Za-z0-9=_-]+$/.test(stem) && (stem.match(/[-_]/g) || []).length <= 2;
-  if (hash && name) return `${name}${dot > 0 ? last.slice(dot) : ""}`;
+  const randomServer = siteOf(url).toLowerCase() === "video.twimg.com";
+  if ((hash || randomServer) && name) return `${name}${dot > 0 ? last.slice(dot) : ""}`;
   if (!includeOriginal || !name) return "";
   const original = addressName(url).replace(/[\\/:*?"<>|\x00-\x1f]/g, " ").trim();
   return original && original !== "." && original !== ".." ? `${name} - ${original}` : "";
