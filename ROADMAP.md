@@ -519,6 +519,8 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 A freeze when a video finishes, while its file is marked as downloaded from the web
+  ([#510](https://github.com/anefzaoui/misterdownloadmanager/issues/510)): fix in review
 - 🔄 Closing the main window follows a setting (on by default, MDM keeps running), and with no
   tray icon the window goes to the taskbar instead of vanishing: fix in review
   ([#457](https://github.com/anefzaoui/misterdownloadmanager/pull/457))
