@@ -60,8 +60,9 @@ fn check(root: &std::path::Path) {
         root.join("bin/ffmpeg")
     );
 
-    // A background refresh must not fetch a managed copy over the system's. A down adapter
-    // refuses network setup too, so a regression cannot contact a real release server.
+    // The background refresh leaves the system's copy alone, and asks nothing to say so. Only an
+    // explicit install goes to the network: a down adapter refuses network setup, so a regression
+    // cannot contact a real release server.
     let rt = tokio::runtime::Runtime::new().unwrap();
     let net = mdm_engine::Options {
         route: mdm_engine::Route::Down {
@@ -69,11 +70,16 @@ fn check(root: &std::path::Path) {
         },
         ..Default::default()
     };
-    let updated = rt
-        .block_on(mdm_tools::install_latest(&dir, &net, None))
-        .unwrap();
-    assert_eq!(updated, system);
+    assert!(!mdm_tools::refreshable(&dir), "system copy not refreshed");
     assert!(!dir.join("yt-dlp").exists(), "system helper left unmanaged");
+    assert!(
+        matches!(
+            rt.block_on(mdm_tools::install_latest(&dir, &net, None)),
+            Err(mdm_tools::Error::Adapter(mdm_engine::NetError::Down { .. }))
+        ),
+        "the explicit way to MDM's own copy goes to the network"
+    );
+    assert!(!dir.join("yt-dlp").exists(), "nothing installed on the way");
 
     // A managed copy still wins, and the explicit choice wins over both.
     let own = Installed {
@@ -90,6 +96,7 @@ fn check(root: &std::path::Path) {
     )
     .unwrap();
     assert_eq!(mdm_tools::installed(&dir), Some(own.clone()));
+    assert!(mdm_tools::refreshable(&dir), "a managed copy is refreshed");
     assert!(
         matches!(
             rt.block_on(mdm_tools::install_latest(&dir, &net, None)),

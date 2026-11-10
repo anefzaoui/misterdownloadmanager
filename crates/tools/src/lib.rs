@@ -74,6 +74,16 @@ pub struct Installed {
     pub exe: PathBuf,
 }
 
+/// `Installed::version` of a program found on the system: its package manager's, not asked (#452).
+const SYSTEM: &str = "system";
+
+impl Installed {
+    /// Whether this is the system's copy (Linux and macOS), kept current by its package manager.
+    pub fn is_system(&self) -> bool {
+        self.version == SYSTEM
+    }
+}
+
 /// `<data dir>/tools`.
 pub fn tools_dir() -> Option<PathBuf> {
     mdm_ipc::data_dir().map(|d| d.join("tools"))
@@ -269,9 +279,16 @@ struct Asset {
     browser_download_url: String,
 }
 
+/// Whether the once-per-session update has a yt-dlp to refresh: not the system's, which is its
+/// package manager's to update (#452), and which only an explicit [`install_latest`] replaces.
+pub fn refreshable(dir: &Path) -> bool {
+    installed(dir).is_some_and(|i| !i.is_system())
+}
+
 /// Install the latest yt-dlp release into `dir` unless the installed one is as new, the program
 /// downloaded with MDM's engine (`net`), counted into `progress`. Returns what is installed
-/// afterwards.
+/// afterwards. A system copy doesn't count as installed here: this is the way to get MDM's own
+/// instead (Helpers), and MDM's own then wins ([`installed`]).
 pub async fn install_latest(
     dir: &Path,
     net: &mdm_engine::Options,
@@ -280,15 +297,6 @@ pub async fn install_latest(
     // The person's own copy: theirs to update (#51).
     if let Some(mine) = chosen::chosen(dir, chosen::Helper::YtDlp) {
         return Ok(mine);
-    }
-    let current = own_ytdlp(dir);
-    // A package-manager copy is theirs to update too (#452). In particular, the video
-    // window's background refresh must not install a managed copy over the one just found.
-    #[cfg(unix)]
-    if current.is_none()
-        && let Some(system) = system::installed("yt-dlp")
-    {
-        return Ok(system);
     }
     let client = mdm_engine::net::client_builder(&net.dns, &net.route, RELEASES)?
         .user_agent(USER_AGENT)
@@ -302,7 +310,7 @@ pub async fn install_latest(
         .await?;
     let release: Release =
         serde_json::from_slice(&body).map_err(|e| Error::BadRelease(e.to_string()))?;
-    if let Some(current) = current
+    if let Some(current) = own_ytdlp(dir)
         && !newer(&release.tag_name, &current.version)
     {
         return Ok(current); // never the same again, never older

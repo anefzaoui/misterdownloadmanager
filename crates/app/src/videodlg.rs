@@ -100,14 +100,14 @@ type Tools = (
 /// stops working. Once per session, when the video window opens and yt-dlp is installed, the
 /// newest release is fetched in the background (mdm_tools::install_latest: signed by yt-dlp's
 /// developers, never older, switched atomically, the previous version kept). Quiet: a failure
-/// leaves the installed version in use.
+/// leaves the installed version in use. A system copy is left to its package manager.
 pub fn refresh_ytdlp(rt: &tokio::runtime::Handle) {
     use std::sync::atomic::{AtomicBool, Ordering};
     static DONE: AtomicBool = AtomicBool::new(false);
     let Some(dir) = mdm_tools::tools_dir() else {
         return;
     };
-    if mdm_tools::installed(&dir).is_none() || DONE.swap(true, Ordering::SeqCst) {
+    if !mdm_tools::refreshable(&dir) || DONE.swap(true, Ordering::SeqCst) {
         return;
     }
     rt.spawn(async move {
@@ -386,7 +386,7 @@ impl VideoDialog {
         );
         // Helpers... open: on Close, the helpers are read again (another program, or MDM's own).
         if let Some(h) = &mut self.helpers
-            && !matches!(h.show(ctx), Outcome::Open)
+            && !matches!(h.show(ctx, rt), Outcome::Open)
         {
             self.helpers = None;
             self.tools = None;

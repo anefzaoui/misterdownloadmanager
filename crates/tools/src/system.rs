@@ -15,7 +15,7 @@ pub(crate) fn installed(name: &str) -> Option<Installed> {
             .chain(["/opt/homebrew/bin", "/usr/local/bin", "/usr/bin"].map(PathBuf::from)),
     )
     .map(|exe| Installed {
-        version: "system".into(),
+        version: crate::SYSTEM.into(),
         exe,
     })
 }
