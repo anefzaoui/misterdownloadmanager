@@ -1198,7 +1198,7 @@ const MPD = (protect) => `<?xml version="1.0"?>
   }
   // A page: its address, an optional ytd-watch-flexy video-id, and the cards a player can sit in
   // (each level on the way up from the video element names the video links it contains).
-  const at = (href, { flexy = null, cards = [], musicId = null, musicThumbnail = null } = {}) => {
+  const at = (href, { flexy = null, cards = [], musicApiId = null, musicId = null, musicThumbnail = null } = {}) => {
     const element = (links) => ({
       parentElement: null,
       querySelectorAll: () => (links || []).map((href) => ({ href })),
@@ -1208,6 +1208,9 @@ const MPD = (protect) => `<?xml version="1.0"?>
     const document = {
       querySelector: (sel) => {
         if (sel === "ytd-watch-flexy" && flexy) return { getAttribute: () => flexy };
+        if (sel === "#movie_player" && musicApiId) {
+          return { getVideoData: () => ({ video_id: musicApiId }) };
+        }
         if (sel === "ytmusic-player" && musicId) {
           return { getAttribute: (name) => (name === "video-id" ? musicId : null) };
         }
@@ -1230,6 +1233,10 @@ const MPD = (protect) => `<?xml version="1.0"?>
   assert.equal(at("https://music.youtube.com/watch?v=dQw4w9WgXcQ&list=RDAMVMdQw4w9WgXcQ"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
   assert.equal(at("https://music.youtube.com/"), null);
   // On the Music home/library page, use the current track from the player, not the feed URL.
+  assert.equal(
+    at("https://music.youtube.com/", { musicApiId: "abc123XYZ_-" }),
+    "https://www.youtube.com/watch?v=abc123XYZ_-",
+  );
   assert.equal(
     at("https://music.youtube.com/", { musicId: "abc123XYZ_-" }),
     "https://www.youtube.com/watch?v=abc123XYZ_-",
