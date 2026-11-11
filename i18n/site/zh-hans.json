@@ -12854,6 +12854,10 @@
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
    "text": "<g1>添加种子</g1>窗口打开。将磁力链接粘贴到<g2>种子</g2>中，或点击<g3>...</g3>选择一个 <x4/> 文件，然后点击<g5>查找</g5>。"
   },
+  "c3e94db31bd7ff31": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: a video the site sends in pieces (HLS, DASH) comes down this many pieces at once (8 by default, 1 to 128); a video in one file is one connection whatever it says. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). <x19/> sends yt-dlp's connections (and ffmpeg's) through one network adapter, as for <x20/>; when it isn't connected, nothing starts.",
+   "text": "下载视频；<x1/> 从 <x2/> 中选择画质（<x3/> = 最佳单一文件；<x4/> = 网站提供的纯音频，不转换；<x5/>、<x6/>、<x7/> 或 <x8/> = 该比特率的 MP3 音频，<x9/> 为最佳可变比特率；<x10/> = Opus 格式；<x11/> = FLAC 格式，无损但音质不优于网站源；转换需要 ffmpeg）。<x12/>：网站分段发送的视频（HLS、DASH）将同时下载这么多片段（默认为 8 个，范围 1 到 128）；单个文件的视频无论设置如何都只使用一个连接。<x13/> 将字幕保存到视频旁边：语言代码来自 <x14/>（<x15/>），或 <x16/> 表示下载上传者提供的所有字幕；<x17/> 则下载网站的自动生成字幕；<x18/> 将字幕嵌入视频中（需要 ffmpeg，MP4 或 MKV 格式）。<x19/> 将 yt-dlp 的连接（和 ffmpeg 的）通过一个网络适配器发送，与 <x20/> 的用法相同；如果未连接，则不开始下载。"
+  },
   "c4102de250d826ec": {
    "source": "50 MiB, every 2nd connection cut after 2 MiB, 4 MB/s",
    "text": "50 MiB，每隔一个连接在 2 MiB 后中断，4 MB/秒"
@@ -16081,6 +16085,10 @@
   "f638ef4dd0b007f8": {
    "source": "Every change in detail",
    "text": "所有详细更改"
+  },
+  "f669d1970c8b3f96": {
+   "source": "a stream sent in many small pieces (HLS, DASH), for now;",
+   "text": "目前以许多小片段发送的流（HLS、DASH）；"
   },
   "f6a660460c7cc189": {
    "source": "Downloads from the browser keep the name, size and type the browser saw, so downloads behind a sign-in show correctly right away.",

@@ -12850,6 +12850,10 @@
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
    "text": "<g1>토렌트 추가</g1> 창이 열립니다. 마그넷 링크를 <g2>토렌트</g2>에 붙여넣거나 <g3>...</g3>을 클릭해 <x4/> 파일을 선택한 다음 <g5>찾아보기</g5>를 클릭합니다."
   },
+  "c3e94db31bd7ff31": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: a video the site sends in pieces (HLS, DASH) comes down this many pieces at once (8 by default, 1 to 128); a video in one file is one connection whatever it says. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). <x19/> sends yt-dlp's connections (and ffmpeg's) through one network adapter, as for <x20/>; when it isn't connected, nothing starts.",
+   "text": "동영상을 다운로드합니다. <x1/>는 <x2/>에서 화질 선택자를 가져옵니다(<x3/> = 가장 좋은 단일 파일; <x4/> = 사이트의 원본 사운드, 변환 없음; <x5/>, <x6/>, <x7/> 또는 <x8/> = 해당 비트레이트의 MP3 사운드, <x9/>는 최고 가변 비트레이트; <x10/> = Opus; <x11/> = FLAC, 무손실이지만 사이트 사운드보다 좋지는 않음; 변환에는 ffmpeg 필요). <x12/>: 사이트에서 조각으로 전송되는 동영상(HLS, DASH)은 이 개수만큼 동시에 다운로드됩니다(기본값 8개, 1~128개); 단일 파일 동영상은 설정과 관계없이 하나의 연결로 다운로드됩니다. <x13/>는 자막을 함께 저장합니다: <x14/>(<x15/>)의 언어 코드, 또는 업로더가 제공한 모든 자막에 대해 <x16/>; <x17/>는 대신 사이트의 자동 생성 자막을 가져옵니다; <x18/>는 자막을 동영상에 삽입합니다(ffmpeg, MP4 또는 MKV 필요). <x19/>는 <x20/>와 같이 yt-dlp의 연결(및 ffmpeg의 연결)을 하나의 네트워크 어댑터를 통해 보냅니다; 연결되지 않으면 아무것도 시작되지 않습니다."
+  },
   "c4102de250d826ec": {
    "source": "50 MiB, every 2nd connection cut after 2 MiB, 4 MB/s",
    "text": "50 MiB, 두 번째 연결마다 2 MiB 후 연결 끊김, 4 MB/s"
@@ -16077,6 +16081,10 @@
   "f638ef4dd0b007f8": {
    "source": "Every change in detail",
    "text": "모든 변경 사항 상세 보기"
+  },
+  "f669d1970c8b3f96": {
+   "source": "a stream sent in many small pieces (HLS, DASH), for now;",
+   "text": "현재로서는 많은 작은 조각으로 전송되는 스트림(HLS, DASH);"
   },
   "f6a660460c7cc189": {
    "source": "Downloads from the browser keep the name, size and type the browser saw, so downloads behind a sign-in show correctly right away.",

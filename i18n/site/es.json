@@ -12854,6 +12854,10 @@
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
    "text": "Se abre <g1>Añadir torrent</g1>. Pega un enlace magnet en <g2>Torrent</g2> o haz clic en <g3>...</g3> para elegir un archivo <x4/>. Después, haz clic en <g5>Buscar</g5>."
   },
+  "c3e94db31bd7ff31": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: a video the site sends in pieces (HLS, DASH) comes down this many pieces at once (8 by default, 1 to 128); a video in one file is one connection whatever it says. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). <x19/> sends yt-dlp's connections (and ffmpeg's) through one network adapter, as for <x20/>; when it isn't connected, nothing starts.",
+   "text": "Descarga un vídeo; <x1/> toma un selector de calidad de <x2/> (<x3/> = el mejor archivo único; <x4/> = solo el sonido tal como lo tiene el sitio, sin convertir; <x5/>, <x6/>, <x7/> o <x8/> = el sonido como MP3 a esa tasa de bits, <x9/> a su mejor tasa variable; <x10/> = como Opus; <x11/> = como FLAC, sin pérdidas pero no mejor que el sonido del sitio; las conversiones necesitan ffmpeg). <x12/>: un vídeo que el sitio envía en partes (HLS, DASH) se descarga con esta cantidad de partes a la vez (8 por defecto, de 1 a 128); un vídeo en un solo archivo es una conexión, diga lo que diga. <x13/> guarda los subtítulos junto a él: códigos de idioma de <x14/> (<x15/>), o <x16/> para todos los que el cargador proporcionó; <x17/> toma los subtítulos automáticos del sitio en su lugar; <x18/> los incrusta en el vídeo (necesita ffmpeg, MP4 o MKV). <x19/> envía las conexiones de yt-dlp (y las de ffmpeg) a través de un adaptador de red, como en <x20/>; cuando no está conectado, no se inicia nada."
+  },
   "c4102de250d826ec": {
    "source": "50 MiB, every 2nd connection cut after 2 MiB, 4 MB/s",
    "text": "50 MiB, cada 2ª conexión cortada después de 2 MiB, 4 MB/s"
@@ -16081,6 +16085,10 @@
   "f638ef4dd0b007f8": {
    "source": "Every change in detail",
    "text": "Todos los cambios en detalle"
+  },
+  "f669d1970c8b3f96": {
+   "source": "a stream sent in many small pieces (HLS, DASH), for now;",
+   "text": "una transmisión enviada en muchos trozos pequeños (HLS, DASH), por ahora;"
   },
   "f6a660460c7cc189": {
    "source": "Downloads from the browser keep the name, size and type the browser saw, so downloads behind a sign-in show correctly right away.",

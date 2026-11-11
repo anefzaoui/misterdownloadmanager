@@ -12858,6 +12858,10 @@
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
    "text": "Cửa sổ <g1>Thêm torrent</g1> mở ra. Dán liên kết magnet vào <g2>Torrent</g2>, hoặc nhấp vào <g3>...</g3> để chọn tệp <x4/>, sau đó nhấp vào <g5>Tra cứu</g5>."
   },
+  "c3e94db31bd7ff31": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: a video the site sends in pieces (HLS, DASH) comes down this many pieces at once (8 by default, 1 to 128); a video in one file is one connection whatever it says. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). <x19/> sends yt-dlp's connections (and ffmpeg's) through one network adapter, as for <x20/>; when it isn't connected, nothing starts.",
+   "text": "Tải xuống một video; <x1/> chọn bộ chọn chất lượng từ <x2/> (<x3/> = tệp đơn tốt nhất; <x4/> = chỉ âm thanh như trang web cung cấp, không chuyển đổi; <x5/>, <x6/>, <x7/> hoặc <x8/> = âm thanh dưới dạng MP3 ở tốc độ bit đó, <x9/> ở tốc độ bit biến đổi tốt nhất; <x10/> = dưới dạng Opus; <x11/> = dưới dạng FLAC, không mất dữ liệu nhưng không tốt hơn âm thanh của trang web; chuyển đổi cần ffmpeg). <x12/>: một video mà trang web gửi theo từng phần (HLS, DASH) sẽ được tải xuống từng này phần cùng lúc (mặc định là 8, từ 1 đến 128); một video trong một tệp là một kết nối bất kể nó nói gì. <x13/> lưu phụ đề bên cạnh: mã ngôn ngữ từ <x14/> (<x15/>), hoặc <x16/> cho mọi phụ đề mà người tải lên đã cung cấp; <x17/> thay vào đó lấy phụ đề tự động của trang web; <x18/> đặt chúng vào video (cần ffmpeg, MP4 hoặc MKV). <x19/> gửi các kết nối của yt-dlp (và ffmpeg) qua một bộ điều hợp mạng, như đối với <x20/>; khi nó không được kết nối, không có gì bắt đầu."
+  },
   "c4102de250d826ec": {
    "source": "50 MiB, every 2nd connection cut after 2 MiB, 4 MB/s",
    "text": "50 MiB, cứ mỗi 2 MiB thì ngắt kết nối thứ 2, 4 MB/giây"
@@ -16085,6 +16089,10 @@
   "f638ef4dd0b007f8": {
    "source": "Every change in detail",
    "text": "Mọi thay đổi chi tiết"
+  },
+  "f669d1970c8b3f96": {
+   "source": "a stream sent in many small pieces (HLS, DASH), for now;",
+   "text": "một luồng được gửi thành nhiều đoạn nhỏ (HLS, DASH), hiện tại;"
   },
   "f6a660460c7cc189": {
    "source": "Downloads from the browser keep the name, size and type the browser saw, so downloads behind a sign-in show correctly right away.",
