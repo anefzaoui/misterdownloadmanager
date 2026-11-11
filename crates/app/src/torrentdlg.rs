@@ -224,7 +224,7 @@ impl TorrentDialog {
                 .map(|t| t.trim().to_owned())
                 .unwrap_or_default()
         });
-        let folder = category_folder(Category::General, &downloads, &category_dirs);
+        let folder = category_folder(Category::Torrents, &downloads, &category_dirs);
         let mut d = TorrentDialog {
             source,
             folder: folder.display().to_string(),
@@ -1808,5 +1808,43 @@ mod tests {
         assert_eq!(rows.len(), 1);
         assert_eq!(t[rows[0]].name, "debian.iso");
         assert_eq!(t[rows[0]].files, [0]);
+    }
+
+    #[test]
+    fn categories_without_their_own_folder_follow_general() {
+        // Absolute on every system (a path like "/Volumes/…" is drive-relative on Windows).
+        let root = std::env::temp_dir().join("mdm-554");
+        let at = |p: &str| root.join(p).display().to_string();
+        let dl = root.join("Users/test/Downloads");
+        assert_eq!(
+            category_folder(Category::Torrents, &dl, &[]),
+            dl.join("Torrents")
+        );
+        let general_only = vec![("General".to_owned(), at("Volumes/Data/Downloads"))];
+        let general = root.join("Volumes/Data/Downloads");
+        assert_eq!(
+            category_folder(Category::General, &dl, &general_only),
+            general
+        );
+        assert_eq!(
+            category_folder(Category::Torrents, &dl, &general_only),
+            general.join("Torrents")
+        );
+        assert_eq!(
+            category_folder(Category::Video, &dl, &general_only),
+            general.join("Video")
+        );
+        let both = vec![
+            ("General".to_owned(), at("Volumes/Data/Downloads")),
+            ("Torrents".to_owned(), at("Volumes/NAS/Torrents")),
+        ];
+        assert_eq!(
+            category_folder(Category::Torrents, &dl, &both),
+            root.join("Volumes/NAS/Torrents")
+        );
+        assert_eq!(
+            category_folder(Category::Video, &dl, &both),
+            general.join("Video")
+        );
     }
 }
