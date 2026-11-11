@@ -76,10 +76,8 @@
         if (watch(id)) return `https://youtu.be/${id}`;
       }
       if (name === "facebook.com" || name === "fb.watch") {
-        // Facebook feeds keep one page address while their video cards link to individual
-        // reels, watch pages or posts. Prefer links inside the video card; never send the feed
-        // itself to yt-dlp. A post permalink is a valid fallback when Facebook exposes no
-        // dedicated video URL in the card.
+        // A feed keeps its own page URL while each video card links to a reel, a watch page or
+        // /<page>/videos/<id>. fb.watch is a short video URL and must remain a valid source too.
         const facebookLink = (href) => {
           let link;
           try {
@@ -87,21 +85,22 @@
           } catch {
             return null;
           }
-          if (!["facebook.com", "fb.watch"].some((host) =>
-            link.hostname === host || link.hostname.endsWith("." + host)
-          )) return null;
+          const host = link.hostname.toLowerCase();
+          if (!(host === "facebook.com" || host.endsWith(".facebook.com") || host === "fb.watch")) {
+            return null;
+          }
           const path = link.pathname.replace(/\/+$/, "") || "/";
-          const shortLink = link.hostname === "fb.watch" || link.hostname.endsWith(".fb.watch");
           const videoPath =
-            (shortLink && path !== "/") ||
-            /^\/(?:reel|watch|videos)\/[^/]+/i.test(path) ||
-            /^\/watch\/?$/i.test(path) && link.searchParams.has("v") ||
-            /^\/video\.php$/i.test(path) && link.searchParams.has("v");
+            /^\/(?:reel|watch|videos)\/[^/]+/i.test(path)
+            || /^\/[^/]+\/videos\/[^/]+/i.test(path)
+            || /^\/watch\/?$/i.test(path) && link.searchParams.has("v")
+            || /^\/video\.php$/i.test(path) && link.searchParams.has("v")
+            || host === "fb.watch" && /^\/[^/]+$/i.test(path);
           const postPath =
-            /^\/(?:[^/]+\/)?posts\/[^/]+/i.test(path) ||
-            /^\/(?:[^/]+\/)?permalink\/[^/]+/i.test(path) ||
-            /^\/permalink\.php$/i.test(path) && link.searchParams.has("story_fbid") ||
-            /^\/story\.php$/i.test(path) && link.searchParams.has("story_fbid");
+            /^\/(?:[^/]+\/)?posts\/[^/]+/i.test(path)
+            || /^\/(?:[^/]+\/)?permalink\/[^/]+/i.test(path)
+            || /^\/permalink\.php$/i.test(path) && link.searchParams.has("story_fbid")
+            || /^\/story\.php$/i.test(path) && link.searchParams.has("story_fbid");
           if (!videoPath && !postPath) return null;
           // Strip tracking parameters while preserving the identifiers yt-dlp needs.
           for (const key of [...link.searchParams.keys()]) {
@@ -117,7 +116,7 @@
         for (let node = v, depth = 0; node && depth < 10; depth += 1, node = node.parentElement) {
           const links = new Map();
           for (const a of node.querySelectorAll?.("a[href]") || []) {
-            const found = facebookLink(a.getAttribute("href") || a.href);
+            const found = facebookLink(a.getAttribute?.("href") || a.href);
             if (!found) continue;
             const rect = a.getBoundingClientRect?.();
             const videoRect = v.getBoundingClientRect?.();
