@@ -980,6 +980,10 @@ fn status_page(ui: &Ui, o: Pos2, item: &Item, snap: Option<&Snapshot>, frac: Opt
     let status = match item.status {
         // A torrent reading and checking its files says so, not "Receiving data" (#39).
         _ if let Some(checking) = item.torrent_checking() => checking,
+        // A completed transfer may still be verifying on disk (#736).
+        _ if snap.is_some_and(|s| s.state == mdm_engine::download::State::Verifying) => {
+            crate::i18n::t("Verifying...").to_owned()
+        }
         // A torrent its debrid service is downloading (#44).
         Status::Downloading if item.at_service().is_some() => item.at_service().unwrap_or_default(),
         Status::Downloading
