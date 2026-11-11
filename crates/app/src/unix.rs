@@ -2343,22 +2343,29 @@ mod host_copy_tests {
         assert_eq!(left.len(), 2, "{left:?}");
     }
 
-    /// #253: a browser still runs the old copy (writing over a running program fails with "Text
-    /// file busy"): the new one replaces it all the same, and the old one keeps running.
+    /// #253: a browser keeps executing the old helper while its path is atomically replaced.
     #[test]
     fn the_helper_is_replaced_while_a_browser_runs_it() {
+        // The child runs this same test binary from the helper path. That avoids depending on
+        // /bin/sleep being a standalone executable or a particular multicall applet dispatcher.
+        if std::env::var_os("MDM_HOST_COPY_TEST_CHILD").is_some() {
+            std::thread::sleep(std::time::Duration::from_secs(30));
+            return;
+        }
         let t = tempfile::tempdir().unwrap();
         let dir = t.path().join("browser-host");
         std::fs::create_dir_all(&dir).unwrap();
-        // A real program (a script would run as the shell, its file only read).
         let old = dir.join(HOST);
-        std::fs::copy("/bin/sleep", &old).unwrap();
-        // /bin/sleep may be a multicall coreutils binary: keep argv[0] as its applet name
-        // even though the executable itself is copied under the browser helper's name.
-        use std::os::unix::process::CommandExt;
-        let mut command = std::process::Command::new(&old);
-        command.arg0("sleep").arg("30");
-        let mut running = command.spawn().unwrap();
+        std::fs::copy(std::env::current_exe().unwrap(), &old).unwrap();
+        let mut running = std::process::Command::new(&old)
+            .arg("--exact")
+            .arg("unix::host_copy_tests::the_helper_is_replaced_while_a_browser_runs_it")
+            .env("MDM_HOST_COPY_TEST_CHILD", "1")
+            .stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .spawn()
+            .unwrap();
         std::thread::sleep(std::time::Duration::from_millis(200));
         // Keep the old process alive while installing a replacement. Whether a filesystem
         // permits opening an executing file for writing varies (notably on overlay filesystems);
