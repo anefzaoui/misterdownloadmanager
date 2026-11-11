@@ -42,7 +42,10 @@ jobs:
       matrix:
         include:
           - os: windows-latest
-          - os: ubuntu-latest
+          # ubuntu-latest (26.04) runners couldn't reach any Ubuntu package mirror on 2026-11-11
+          # (every apt download failed to resolve), so the Linux build runs on 24.04 until
+          # they can; the Linux downloads already build on 22.04 (release.yml).
+          - os: ubuntu-24.04
           - os: macos-latest
             experimental: true
     runs-on: ${{ matrix.os }}
