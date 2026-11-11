@@ -75,6 +75,69 @@
         const id = url.pathname.split("/")[1];
         if (watch(id)) return `https://youtu.be/${id}`;
       }
+      if (name === "facebook.com" || name === "fb.watch") {
+        // A feed keeps its own page URL while each video card links to a reel, a watch page or
+        // /<page>/videos/<id>. fb.watch is a short video URL and must remain a valid source too.
+        const facebookLink = (href) => {
+          let link;
+          try {
+            link = new URL(href, location.href);
+          } catch {
+            return null;
+          }
+          const host = link.hostname.toLowerCase();
+          if (!(host === "facebook.com" || host.endsWith(".facebook.com") || host === "fb.watch")) {
+            return null;
+          }
+          const path = link.pathname.replace(/\/+$/, "") || "/";
+          const videoPath =
+            /^\/(?:reel|watch|videos)\/[^/]+/i.test(path)
+            || /^\/[^/]+\/videos\/[^/]+/i.test(path)
+            || /^\/watch\/?$/i.test(path) && link.searchParams.has("v")
+            || /^\/video\.php$/i.test(path) && link.searchParams.has("v")
+            || host === "fb.watch" && /^\/[^/]+$/i.test(path);
+          const postPath =
+            /^\/(?:[^/]+\/)?posts\/[^/]+/i.test(path)
+            || /^\/(?:[^/]+\/)?permalink\/[^/]+/i.test(path)
+            || /^\/permalink\.php$/i.test(path) && link.searchParams.has("story_fbid")
+            || /^\/story\.php$/i.test(path) && link.searchParams.has("story_fbid");
+          if (!videoPath && !postPath) return null;
+          // Strip tracking parameters while preserving the identifiers yt-dlp needs.
+          for (const key of [...link.searchParams.keys()]) {
+            if (!["v", "story_fbid", "id"].includes(key)) link.searchParams.delete(key);
+          }
+          link.hash = "";
+          return { href: link.href, video: videoPath };
+        };
+        const own = facebookLink(location.href);
+        if (own) return own.href;
+        // Walk only the video and its nearby card ancestors. Searching the whole document can
+        // accidentally pick a neighbouring reel or an unrelated post in the feed.
+        for (let node = v, depth = 0; node && depth < 10; depth += 1, node = node.parentElement) {
+          const links = new Map();
+          for (const a of node.querySelectorAll?.("a[href]") || []) {
+            const found = facebookLink(a.getAttribute?.("href") || a.href);
+            if (!found) continue;
+            const rect = a.getBoundingClientRect?.();
+            const videoRect = v.getBoundingClientRect?.();
+            const distance = rect && videoRect
+              ? Math.abs(rect.top - videoRect.top) + Math.abs(rect.left - videoRect.left)
+              : 0;
+            const previous = links.get(found.href);
+            if (!previous || distance < previous.distance) {
+              links.set(found.href, { ...found, distance });
+            }
+          }
+          if (links.size) {
+            const candidates = [...links.values()];
+            candidates.sort((a, b) =>
+              Number(b.video) - Number(a.video) || a.distance - b.distance
+            );
+            return candidates[0].href;
+          }
+        }
+        return null;
+      }
       if (name === "youtube.com" || name === "youtube-nocookie.com") {
         // An embed's own page is the video's (…/embed/<id>).
         if (url.pathname.startsWith("/embed/")) {
