@@ -501,10 +501,6 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
-- ✅ macOS: helpers opened from Finder find Homebrew's Deno and ffmpeg, so YouTube formats
-  load ([#659](https://github.com/anefzaoui/misterdownloadmanager/issues/659))
-- ✅ The website is named as the official one in the README, the browser add-on and the
-  site's data for search engines
 - ✅ Left click on the tray icon toggles the main window (on Windows also with the icon under
   the taskbar's ^), and browser downloads open only their dialog when the main window is
   hidden or minimized ([#520](https://github.com/anefzaoui/misterdownloadmanager/pull/520))
@@ -565,18 +561,16 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
-- 🔄 Torrents: magnet links without trackers finding no peers where the DHT's first nodes didn't
-  answer ([#650](https://github.com/anefzaoui/misterdownloadmanager/issues/650)): four public
-  routers asked together, the ones that never answer left alone once one has, the IPv6 nodes kept
-  for the next start too, and the port picked kept from one start to the next; fix in review
 - 🔄 Windows: the window stopping on a stalled system while it checked its title bar's colours
   ([#633](https://github.com/anefzaoui/misterdownloadmanager/issues/633),
   [#583](https://github.com/anefzaoui/misterdownloadmanager/issues/583)): the colours are now set
   once, when a window opens or the theme changes; fix in review
+- 🔄 Windows and Unix: opening a browser from the extension dialog no longer blocks the window thread ([#609](https://github.com/anefzaoui/misterdownloadmanager/issues/609)): fix in review; Unix/macOS path added for parity
 - 🔄 Downloads from FileHippo failing at once with 412 Precondition Failed
   ([#630](https://github.com/anefzaoui/misterdownloadmanager/issues/630)): a link the site refuses
   to MDM now goes on from where the browser's own download of it had reached; fix in review, still
   to check on FileHippo itself. A link pasted into Add URL has no such address to go on from
+- 🔄 APKMirror: when a direct request meets a marked browser-only challenge, try once the final URL reached by the browser, keeping cookies scoped to the same site ([#645](https://github.com/anefzaoui/misterdownloadmanager/issues/645)): fix in review; still to confirm on APKMirror
 - 🔄 Windows: a crash when the clipboard was read in two places at once (the clipboard monitor and
   Add URL) ([#629](https://github.com/anefzaoui/misterdownloadmanager/issues/629)): every read and
   write of the clipboard now goes one at a time; fix in review
@@ -592,9 +586,11 @@ These ship in a later version, when they're ready.
   review
 - 🔄 A submenu staying open, its item lit beside the one under the pointer, while the pointer
   moved on through the menu ([#579](https://github.com/anefzaoui/misterdownloadmanager/issues/579)): fix in review
+- 🔄 Invoking a file chooser closes only the menu viewports that were actually opened, avoiding phantom submenu windows ([#615](https://github.com/anefzaoui/misterdownloadmanager/issues/615)): fix in review; needs macOS, Windows and X11 confirmation
 - 🔄 Chromium browsers: another extension's file names and folders (Save In's) lost while MDM's
   extension was on, for downloads it left to the browser
   ([#578](https://github.com/anefzaoui/misterdownloadmanager/issues/578)): fix in review
+- 🔄 Firefox: refresh a download from the page that started it, without inventing a Referer when Referrer-Policy omitted it ([#607](https://github.com/anefzaoui/misterdownloadmanager/issues/607)): fix in review
 - 🔄 Without ffmpeg, YouTube's sound alone saved as `.mp4` though it was raw AAC from HLS pieces,
   which no player opened ([#569](https://github.com/anefzaoui/misterdownloadmanager/issues/569)): fix in review
 - 🔄 A progress window's title bar buttons not answering
@@ -605,6 +601,7 @@ These ship in a later version, when they're ready.
   font ([#541](https://github.com/anefzaoui/misterdownloadmanager/issues/541)): fix in review
 - 🔄 The video button still showing after it was switched off, or its site listed, in Options
   ([#532](https://github.com/anefzaoui/misterdownloadmanager/issues/532)): fix in review
+- 🔄 Facebook's video button uses the card's video permalink, including page videos and fb.watch short links, instead of the feed ([#643](https://github.com/anefzaoui/misterdownloadmanager/issues/643)): fix in review
 - 🔄 macOS: Persian and other Arabic-script file names drawn as boxes in the download list
   ([#533](https://github.com/anefzaoui/misterdownloadmanager/issues/533)): fix in review, to
   confirm on a Mac
@@ -666,8 +663,10 @@ These ship in a later version, when they're ready.
 - 🔄 Video progress at 100 % while still downloading, and long encoded strings as file names
   ([#344](https://github.com/anefzaoui/misterdownloadmanager/issues/344),
   [#345](https://github.com/anefzaoui/misterdownloadmanager/issues/345)): fix in review
+- 🔄 Video downloads show a distinct post-processing phase, keep CLI downloads active while merging, and normalise media extensions before naming videos and subtitle sidecars ([#622](https://github.com/anefzaoui/misterdownloadmanager/issues/622)): fix in review
 - 🔄 A page that starts a download by script being saved instead of the file
   ([#374](https://github.com/anefzaoui/misterdownloadmanager/issues/374)): fix in review
+- 🔄 Google Colab: only tokenized runtime-proxy transfers stay with the browser; ordinary notebook links remain capturable ([#603](https://github.com/anefzaoui/misterdownloadmanager/issues/603)): fix in review
 - 🔄 A gofile share link saving a web page instead of the file
   ([#346](https://github.com/anefzaoui/misterdownloadmanager/issues/346)): fix in review
 - 🔄 A server's refusal page saved under the document's name and shown as complete, where the

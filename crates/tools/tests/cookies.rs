@@ -81,7 +81,7 @@ fn download(exe: &std::path::Path, url: &str, browser: &FromBrowser) -> (State, 
     let end = Instant::now() + Duration::from_secs(120);
     let p = loop {
         let p = job.progress();
-        if p.state != State::Running || Instant::now() > end {
+        if !matches!(&p.state, State::Running | State::Processing) || Instant::now() > end {
             break p;
         }
         std::thread::sleep(Duration::from_millis(200));

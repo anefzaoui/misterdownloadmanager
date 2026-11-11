@@ -2411,12 +2411,13 @@ fn forced_gap(force: bool, took: Duration) -> Duration {
     if force { Duration::ZERO } else { took }
 }
 
-/// A refusal of the address asked for that the browser's own download got past (#630): 401
-/// and 403 (a token bound to the browser's session), 404 and 410 (a one-time link the browser
-/// already spent, which some servers then forget, others call gone), 412 (FileHippo's answer
-/// to whatever isn't a browser). A site's bot check stays the site's call (#376).
+/// A refusal of the first address that the browser's own download got past (#630): 401 and
+/// 403 (a session-bound link), 404 and 410 (a one-time link the browser already spent), 412
+/// (FileHippo), and a marked bot challenge. The caller tries only the final URL the browser
+/// itself reached, once; it does not solve or retry the site's challenge at the original URL.
 fn link_refused(e: &Error) -> bool {
-    matches!(e, Error::Status(s) if matches!(s.as_u16(), 401 | 403 | 404 | 410 | 412))
+    matches!(e, Error::BotCheck)
+        || matches!(e, Error::Status(s) if matches!(s.as_u16(), 401 | 403 | 404 | 410 | 412))
 }
 
 /// What a download's first request needs besides its address, headers and options.
@@ -3948,6 +3949,23 @@ mod tests {
             ),
             None
         );
+    }
+
+    #[test]
+    fn a_marked_bot_challenge_can_fall_back_to_the_browsers_final_address() {
+        // The caller still requires browser_final to be present and different from the first
+        // address, so this only follows a URL the user's browser already reached.
+        assert!(link_refused(&Error::BotCheck));
+        for status in [
+            StatusCode::UNAUTHORIZED,
+            StatusCode::FORBIDDEN,
+            StatusCode::NOT_FOUND,
+            StatusCode::GONE,
+            StatusCode::PRECONDITION_FAILED,
+        ] {
+            assert!(link_refused(&Error::Status(status)), "{status}");
+        }
+        assert!(!link_refused(&Error::Status(StatusCode::BAD_REQUEST)));
     }
 
     #[test]

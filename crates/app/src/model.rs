@@ -489,6 +489,7 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
     use mdm_tools::video::State as V;
     let (state, file, error) = match p.state {
         V::Running => (State::Downloading, None, None),
+        V::Processing => (State::Completing, None, None),
         V::Done(f) => (State::Done, Some(f), None),
         V::Failed(e) => (State::Failed, None, Some(e)),
         V::Stopped => (State::Cancelled, None, None),
@@ -775,7 +776,12 @@ impl Item {
             }
         }
         let dt = live.sample.0.elapsed().as_secs_f64();
-        if dt >= 0.5 {
+        if self.video.is_some() && s.state == State::Completing {
+            // A merge/remux doesn't receive more network bytes; don't show a stale transfer rate
+            // or an ETA for the final processing phase.
+            live.rate = 0.0;
+            live.sample = (Instant::now(), s.downloaded);
+        } else if dt >= 0.5 {
             let inst = s.downloaded.saturating_sub(live.sample.1) as f64 / dt;
             live.rate = if live.rate == 0.0 {
                 inst
@@ -947,6 +953,15 @@ impl Item {
             .is_some_and(|s| s.state == State::Verifying)
         {
             return crate::i18n::t("Verifying...").into();
+        }
+        if self.video.is_some()
+            && self
+                .snap
+                .as_ref()
+                .is_some_and(|s| s.state == State::Completing)
+        {
+            // i18n: a video is being merged or otherwise processed after its data has arrived
+            return crate::i18n::t("Processing...").into();
         }
         match self.status {
             // i18n: a download's status (state it is in, not a command): finished
@@ -1198,6 +1213,25 @@ mod tests {
         let mut file = video_item(Some(100), 100, Status::Downloading);
         file.video = None;
         assert_eq!(file.fraction(), Some(1.0));
+    }
+
+    #[test]
+    fn a_video_shows_processing_while_yt_dlp_finishes() {
+        let url = Url::parse("https://video.example/watch?v=clip").unwrap();
+        let progress = mdm_tools::video::Progress {
+            state: mdm_tools::video::State::Processing,
+            downloaded: 100,
+            total: Some(100),
+            speed: 0.0,
+            events: Vec::new(),
+            side_files: Vec::new(),
+            sub_problems: Vec::new(),
+        };
+        let mut item = video_item(Some(100), 100, Status::Downloading);
+        item.snap = Some(tool_snapshot(progress, &url));
+        assert_eq!(item.status_text(), crate::i18n::t("Processing..."));
+        assert_eq!(item.fraction(), Some(0.999));
+        assert_eq!(item.time_left(), "");
     }
 
     #[test]

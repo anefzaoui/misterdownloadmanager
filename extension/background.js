@@ -417,7 +417,16 @@ if (ext.webRequest) {
       if (FIREFOX) {
         forget(referrers, 120000);
         const ref = header("referer");
-        if (ref && ref.value) referrers.set(d.requestId, { url: ref.value, at: Date.now() });
+        // Firefox's originUrl is more precise than a reduced Referer, but it must never create
+        // a Referer that the page's Referrer-Policy deliberately omitted (#607).
+        if (ref && ref.value) {
+          const origin = typeof d.originUrl === "string"
+            && /^https?:/i.test(d.originUrl)
+            && d.originUrl !== d.url
+            ? d.originUrl
+            : "";
+          referrers.set(d.requestId, { url: origin || ref.value, at: Date.now() });
+        }
       }
       if (d.method !== "POST") return;
       const p = posts.get(d.url);
@@ -1277,6 +1286,26 @@ async function handOff(d) {
   return native(message);
 }
 
+// Colab's runtime proxy uses an ephemeral token tied to the browser's partitioned session.
+// Only the actual proxy transfer URL is left to the browser: a normal file linked from a Colab
+// notebook must still be capturable by MDM (#603).
+function colabRuntimeProxy(...urls) {
+  return urls.some((value) => {
+    if (!value) return false;
+    try {
+      const u = new URL(value);
+      const host = u.hostname.toLowerCase();
+      const proxyHost =
+        host === "prod.r.colab.dev"
+        || host.endsWith(".prod.r.colab.dev")
+        || /(?:^|[-.])colab\.googleusercontent\.com$/.test(host);
+      return proxyHost && u.searchParams.has("colab-runtime-proxy-token");
+    } catch {
+      return false;
+    }
+  });
+}
+
 // The file name to offer the app the download under (`{name}`), or why Options leave it to
 // the browser (`{left, name}`), or null: the browser keeps it and there is nothing to say (not a
 // web address, paused, Alt held, a form that can't be posted again, MDM not reached).
@@ -1288,6 +1317,7 @@ async function candidate(item, url) {
   if (bypass.has(item.url) || bypass.has(url)) return null;
   const first = firstUrl(item);
   if (bypass.has(first) || postOf(first) === null) return null; // Alt; a form not to post again
+  if (colabRuntimeProxy(first, url)) return null;
   const r = await currentRules();
   if (!r) return null;
   const name = (item.filename || "").split(/[\\/]/).pop() || url.split(/[?#]/)[0].split("/").pop() || "";
@@ -1963,7 +1993,11 @@ async function videoAddress(m, page, sender) {
     const playing = await playingVideo(sender, m.at);
     return playing || (isYouTube(named) ? named : "");
   }
-  const site = (u) => siteOf(u).replace(/^(www|m|music)\./, "");
+  const site = (u) => {
+    const host = siteOf(u).replace(/^(www|m|music)\./, "");
+    // Facebook's short-link host names videos on the same service as facebook.com (#643).
+    return host === "fb.watch" ? "facebook.com" : host;
+  };
   return named && site(named) === site(page) ? named : page;
 }
 

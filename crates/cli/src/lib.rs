@@ -758,7 +758,10 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                 let state = loop {
                     tokio::time::sleep(std::time::Duration::from_millis(500)).await;
                     let s = job.progress().state;
-                    if s != mdm_tools::video::State::Running {
+                    if !matches!(
+                        &s,
+                        mdm_tools::video::State::Running | mdm_tools::video::State::Processing
+                    ) {
                         break s;
                     }
                 };
@@ -974,7 +977,7 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                     );
                 }
                 match p.state {
-                    mdm_tools::video::State::Running => {}
+                    mdm_tools::video::State::Running | mdm_tools::video::State::Processing => {}
                     mdm_tools::video::State::Done(f) => {
                         // Subtitles the site refused: the video is saved all the same (#68).
                         let problems: Vec<(String, String, String, bool)> = p
