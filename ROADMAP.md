@@ -539,6 +539,9 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 Helium: MDM offers it the extension on Linux and macOS, through Helium's own services, the
+  Linux packages' helper files cover it, and the docs say how to add the extension in Helium
+  ([#685](https://github.com/anefzaoui/misterdownloadmanager/issues/685)); in review
 - 🔄 A freeze of the window while torrents ran on a busy or slow disk: it waited for the torrent
   engine, which holds a torrent while its writes to the disk end
   ([#693](https://github.com/anefzaoui/misterdownloadmanager/issues/693)): the torrents' numbers

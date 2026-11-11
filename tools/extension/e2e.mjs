@@ -7,7 +7,7 @@
 // browser kept nothing.
 //
 //   cargo build --release -p mdm-app -p mdm-nmhost -p mdm-labserver; tools\extension\pack.ps1
-//   node tools/extension/e2e.mjs [chrome] [brave] [edge] [firefox] [waterfox] [--only=case,case]
+//   node tools/extension/e2e.mjs [chrome] [brave] [edge] [helium] [firefox] [waterfox] [--only=case,case]
 //
 // Waterfox runs with Firefox's driver (E2E_WATERFOX: its program, when not installed in the usual
 // place). E2E_FIREFOX_ASK=1: Firefox's family asks what to do with each new type in every case
@@ -86,6 +86,8 @@ const BROWSERS = WIN
       chrome: ["chromium", [`${pf}\\Google\\Chrome\\Application\\chrome.exe`, `${local}\\Google\\Chrome\\Application\\chrome.exe`]],
       brave: ["chromium", [`${pf}\\BraveSoftware\\Brave-Browser\\Application\\brave.exe`, `${local}\\BraveSoftware\\Brave-Browser\\Application\\brave.exe`]],
       edge: ["chromium", [`${pf86}\\Microsoft\\Edge\\Application\\msedge.exe`, `${pf}\\Microsoft\\Edge\\Application\\msedge.exe`]],
+      // Helium (#685): installed for the user by its setup, or its zip unpacked anywhere (E2E_HELIUM).
+      helium: ["chromium", [process.env.E2E_HELIUM || "", `${local}\\imput\\Helium\\Application\\chrome.exe`].filter(Boolean)],
       firefox: ["firefox", [`${pf}\\Mozilla Firefox\\firefox.exe`, `${pf86}\\Mozilla Firefox\\firefox.exe`]],
       // Firefox's family: the same driver (E2E_WATERFOX: a copy unpacked elsewhere).
       waterfox: ["firefox", [process.env.E2E_WATERFOX || "", `${pf}\\Waterfox\\waterfox.exe`].filter(Boolean)],
@@ -95,6 +97,8 @@ const BROWSERS = WIN
       chrome: ["chromium", ["/usr/bin/google-chrome", "/opt/google/chrome/chrome"]],
       brave: ["chromium", ["/usr/bin/brave-browser"]],
       edge: ["chromium", ["/usr/bin/microsoft-edge"]],
+      // Helium's .deb (helium-bin), else its tarball or AppImage unpacked anywhere (E2E_HELIUM).
+      helium: ["chromium", [process.env.E2E_HELIUM || "", "/usr/bin/helium", "/opt/helium/helium"].filter(Boolean)],
       // A .deb or tarball Firefox; else Ubuntu's Snap.
       firefox: ["firefox", ["/usr/lib/firefox/firefox", "/opt/firefox/firefox", "/snap/bin/firefox"]],
       waterfox: ["firefox", [process.env.E2E_WATERFOX || "", "/usr/lib/waterfox/waterfox", "/opt/waterfox/waterfox"].filter(Boolean)],
@@ -2528,6 +2532,8 @@ const TEST_HOST_KEYS = {
   chrome: "Software\\Google\\Chrome\\NativeMessagingHosts",
   brave: "Software\\BraveSoftware\\Brave-Browser\\NativeMessagingHosts",
   edge: "Software\\Microsoft\\Edge\\NativeMessagingHosts",
+  // Helium is built with Chromium's branding: it reads Chromium's key, then Chrome's (#685).
+  helium: "Software\\Chromium\\NativeMessagingHosts",
   // Firefox's forks read Mozilla's key too.
   firefox: "Software\\Mozilla\\NativeMessagingHosts",
   waterfox: "Software\\Mozilla\\NativeMessagingHosts",
