@@ -1090,7 +1090,7 @@ fn menu_viewport(kind: MenuKind, id: &str, depth: usize, bar_shared: bool) -> eg
 /// an id for a submenu that was not drawn: egui creates a viewport when it is addressed (#615).
 fn menu_depths_to_close(opened: &[usize], first_depth: usize) -> Vec<usize> {
     let mut depths: Vec<_> = opened.iter().copied().filter(|d| *d >= first_depth).collect();
-    depths.sort_unstable();
+    depths.sort_unstable_by(|a, b| b.cmp(a));
     depths.dedup();
     depths
 }
@@ -2339,7 +2339,7 @@ mod tests {
     #[test]
     fn only_opened_menu_levels_are_closed() {
         assert_eq!(menu_depths_to_close(&[0], 0), [0]);
-        assert_eq!(menu_depths_to_close(&[0, 1], 0), [0, 1]);
+        assert_eq!(menu_depths_to_close(&[0, 1], 0), [1, 0]);
         // Switching between menu-bar titles keeps the shared root viewport, closing only submenus.
         assert_eq!(menu_depths_to_close(&[0, 1], 1), [1]);
         // A deeper viewport which was never drawn is never addressed or created.
