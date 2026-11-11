@@ -483,6 +483,9 @@ pub fn default_browser() -> Option<mdm_engine::agent::Found> {
         .map(|b| b.to_string_lossy().into_owned());
     let browser = Browser::named(&desktop).or_else(|| base.as_deref().and_then(Browser::named))?;
     let firefox = matches!(browser, Browser::Firefox | Browser::FirefoxFork);
+    // A Flatpak's launcher would start its sandbox, and its files are inside it: its version
+    // stays unknown (MDM's estimate of today's).
+    let program = program.filter(|_| base.as_deref() != Some("flatpak"));
     let install = program
         .as_deref()
         .filter(|_| firefox)
@@ -492,10 +495,7 @@ pub fn default_browser() -> Option<mdm_engine::agent::Found> {
         .and_then(|d| std::fs::read_to_string(d.join("application.ini")).ok())
         .and_then(|t| ini_value(&t, "App", "Version"))
         .or_else(|| {
-            // A Flatpak's launcher would start the sandbox: its version stays unknown.
-            let program = program
-                .as_deref()
-                .filter(|_| base.as_deref() != Some("flatpak"))?;
+            let program = program.as_deref()?;
             version_in(&printed_within(Command::new(program).arg("--version"), 10)?)
         });
     // Ubuntu's own Firefox (its snap) says so in its User-Agent, and its distribution file
