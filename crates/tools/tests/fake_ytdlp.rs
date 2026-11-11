@@ -314,7 +314,10 @@ fn download_as(
         std::thread::sleep(Duration::from_millis(100));
     };
     if mode.starts_with("quiet:") {
-        assert!(saw_processing, "the quiet post-process phase was not reported");
+        assert!(
+            saw_processing,
+            "the quiet post-process phase was not reported"
+        );
     }
     let mut files: Vec<String> = std::fs::read_dir(out.path())
         .unwrap()

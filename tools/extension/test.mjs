@@ -1296,6 +1296,11 @@ const MPD = (protect) => `<?xml version="1.0"?>
   };
   assert.equal(facebook("https://www.facebook.com/"), null);
   assert.equal(
+    facebook("https://fb.watch/abc123/"),
+    "https://fb.watch/abc123/",
+    "a direct fb.watch short link is a video page",
+  );
+  assert.equal(
     facebook("https://www.facebook.com/", {
       links: [
         { href: "/reel/123456789/", top: 20 },
