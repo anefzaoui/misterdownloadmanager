@@ -1901,6 +1901,80 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   assert.equal(listeners.headersReceived, undefined);
   ok("#208 Chromium: answers aren't held");
 }
+// #603: only a tokenized Colab runtime-proxy transfer stays with the browser. A normal
+// download linked from a Colab notebook is still offered to MDM.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  await settle();
+  let suggested;
+  listeners.determining(
+    {
+      id: 91,
+      url: "https://us-west1-colab.googleusercontent.com/files/out.zip?colab-runtime-proxy-token=secret",
+      finalUrl: "https://us-west1-colab.googleusercontent.com/files/out.zip?colab-runtime-proxy-token=secret",
+      referrer: "https://colab.research.google.com/drive/abc",
+      filename: "out.zip",
+      totalBytes: 1024,
+      mime: "application/zip",
+    },
+    (value) => (suggested = value),
+  );
+  await settle();
+  assert.ok(suggested, "the browser keeps the authenticated runtime-proxy download");
+  assert.equal(natives(calls).length, 0);
+  ok("#603 Chromium: tokenized Colab runtime-proxy download stays in the browser");
+}
+{
+  const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  await settle();
+  listeners.determining(
+    {
+      id: 92,
+      url: "https://github.com/example/data/archive/refs/heads/main.zip",
+      finalUrl: "https://github.com/example/data/archive/refs/heads/main.zip",
+      referrer: "https://colab.research.google.com/drive/abc",
+      filename: "data.zip",
+      totalBytes: 4096,
+      mime: "application/zip",
+    },
+    () => {},
+  );
+  await settle();
+  assert.equal(natives(calls).length, 1, "ordinary notebook links remain capturable");
+  ok("#603 Chromium: a GitHub file linked from Colab is still handed to MDM");
+}
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true });
+  load(api, true);
+  await settle();
+  const url = "https://us-west1.prod.r.colab.dev/files/out.zip?colab-runtime-proxy-token=secret";
+  listeners.beforeSendHeaders({
+    requestId: "r-colab",
+    method: "GET",
+    type: "main_frame",
+    url,
+    originUrl: "https://colab.research.google.com/drive/abc",
+    requestHeaders: [],
+  });
+  const response = await held(
+    listeners,
+    answer(
+      url,
+      {
+        "Content-Type": "application/zip",
+        "Content-Disposition": "attachment; filename=out.zip",
+        "Content-Length": "1024",
+      },
+      { requestId: "r-colab" },
+    ),
+  );
+  assert.deepEqual(response, {});
+  assert.equal(natives(calls).length, 0, "Firefox leaves the authenticated transfer to the browser");
+  ok("#603 Firefox: tokenized Colab runtime-proxy download stays in the browser");
+}
+
 // The manifests (#42): "proxy" optional in Firefox's, required in Chrome's (it can't be optional
 // there); the popup's switch: the permission in Firefox, the extension's own setting in Chrome.
 {
