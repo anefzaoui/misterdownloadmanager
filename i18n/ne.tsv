@@ -187,6 +187,10 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	एक डिब्रिड सेवाले तपाईंको आफ्नै सशुल्क खाता प्रयोग गरेर फाइल होस्टको लिङ्क डाउनलोड गर्छ र MDM लाई सिधा लिङ्क दिन्छ। आफ्नो मात्र खाता प्रयोग गर्नुहोस्: खाता वा यसका लिङ्कहरू साझेदारी गर्दा सेवाका सर्तहरू उल्लङ्घन हुन्छ र यसलाई निलम्बन गर्न सकिन्छ। ब्राउजरले पहिले नै सुरु गरिसकेका डाउनलोडहरू जस्ताको तस्तै रहन्छन्।
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name ends with a period
+#, machine
+	A file name cannot end with a dot	फाइलको नाम थोप्लोमा टुङ्गिन सक्दैन
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
@@ -216,6 +220,10 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	यस कम्प्युटरमा रहेको सर्भरले डाउनलोडलाई अन्यत्र पठायो, जुन {adapter} मार्फत जाँदैनथ्यो
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box for a single-file torrent while Keep sharing is enabled
+#, machine
+	A single-file torrent keeps its name while Keep sharing is on	साझेदारी जारी राख्नुहोस् अन हुँदा एकल-फाइल टोरेन्टले आफ्नो नाम कायम राख्छ
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -3970,6 +3978,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	गति सीमितकर्ता सेटिङहरू
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
+#, machine
+	Split archive volumes keep their names for extraction	विभाजित संग्रहका खण्डहरूले निकाल्नका लागि आफ्ना नाम कायम राख्छन्
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4398,6 +4410,10 @@
 #. text in whereis.rs
 #, machine
 	the local network	स्थानीय नेटवर्क
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name exceeds the length limit
+#, machine
+	The name is too long	नाम धेरै लामो छ
 #. text in errors.rs; text in torrent downloads
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
@@ -4538,6 +4554,9 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	यो श्रेणी वा लाममा अहिलेसम्म कुनै डाउनलोड छैन।
+#. text in a download's progress window
+#, machine
+	This character is not allowed in a file name	फाइलको नाममा यो वर्ण प्रयोग गर्न अनुमति छैन
 #. text in the Options window
 #. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
 #, machine
@@ -4581,6 +4600,10 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	यो फोल्डर अवस्थित छैन:
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the folder holds another download or is a save/category folder
+#, machine
+	This folder is shared with another download or save folder	यो फोल्डर अर्को डाउनलोड वा सेभ फोल्डरसँग साझा गरिएको छ
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
@@ -4608,6 +4631,10 @@
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
 	This magnet link names no trackers and the DHT is off, so no peer can be found.	यो म्याग्नेट लिङ्कले कुनै ट्र्याकरहरू नाम गर्दैन र DHT बन्द छ, त्यसैले कुनै पियर फेला पार्न सकिँदैन।
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name is a reserved device name on Windows (CON, NUL, COM1…)
+#, machine
+	This name is reserved by Windows	यो नाम Windows द्वारा सुरक्षित गरिएको छ
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine

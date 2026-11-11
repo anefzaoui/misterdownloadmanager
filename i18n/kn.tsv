@@ -187,6 +187,10 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	ಡಿಬ್ರಿಡ್ ಸೇವೆ ನಿಮ್ಮ ಸ್ವಂತ ಪಾವತಿಸಿದ ಖಾತೆಯೊಂದಿಗೆ ಫೈಲ್ ಹೋಸ್ಟ್‌ನ ಲಿಂಕ್ ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ ಮತ್ತು MDM ಗೆ ನೇರ ಲಿಂಕ್ ಅನ್ನು ನೀಡುತ್ತದೆ. ನಿಮ್ಮ ಸ್ವಂತ ಖಾತೆಯನ್ನು ಮಾತ್ರ ಬಳಸಿ: ಖಾತೆಯನ್ನು ಅಥವಾ ಅದರ ಲಿಂಕ್‌ಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳುವುದು ಸೇವೆಗಳ ನಿಯಮಗಳನ್ನು ಉಲ್ಲಂಘಿಸುತ್ತದೆ ಮತ್ತು ಅದನ್ನು ಅಮಾನತುಗೊಳಿಸಬಹುದು. ಬ್ರೌಸರ್ ಈಗಾಗಲೇ ಪ್ರಾರಂಭಿಸಿದ ಡೌನ್‌ಲೋಡ್‌ಗಳು ಹಾಗೆಯೇ ಉಳಿಯುತ್ತವೆ.
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name ends with a period
+#, machine
+	A file name cannot end with a dot	ಫೈಲ್ ಹೆಸರು ಚುಕ್ಕೆಯೊಂದಿಗೆ ಕೊನೆಗೊಳ್ಳುವಂತಿಲ್ಲ
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
@@ -216,6 +220,10 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	ಈ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿರುವ ಸರ್ವರ್ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಬೇರೆಡೆಗೆ ಕಳುಹಿಸಿದೆ, ಅದು {adapter} ಮೂಲಕ ಹೋಗುವುದಿಲ್ಲ
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box for a single-file torrent while Keep sharing is enabled
+#, machine
+	A single-file torrent keeps its name while Keep sharing is on	ಹಂಚಿಕೆ ಮುಂದುವರಿಸಿ ಆನ್ ಆಗಿರುವಾಗ ಏಕ-ಫೈಲ್ ಟೊರೆಂಟ್ ತನ್ನ ಹೆಸರನ್ನು ಉಳಿಸಿಕೊಳ್ಳುತ್ತದೆ
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -3970,6 +3978,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	ವೇಗ ಮಿತಿ ಸೆಟ್ಟಿಂಗ್‌ಗಳು
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
+#, machine
+	Split archive volumes keep their names for extraction	ವಿಭಜಿತ ಆರ್ಕೈವ್ ಭಾಗಗಳು ಹೊರತೆಗೆಯಲು ತಮ್ಮ ಹೆಸರುಗಳನ್ನು ಉಳಿಸಿಕೊಳ್ಳುತ್ತವೆ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4398,6 +4410,10 @@
 #. text in whereis.rs
 #, machine
 	the local network	ಸ್ಥಳೀಯ ನೆಟ್‌ವರ್ಕ್
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name exceeds the length limit
+#, machine
+	The name is too long	ಹೆಸರು ತುಂಬಾ ಉದ್ದವಾಗಿದೆ
 #. text in errors.rs; text in torrent downloads
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
@@ -4538,6 +4554,9 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	ಈ ವರ್ಗ ಅಥವಾ ಕ್ಯೂ ಇನ್ನೂ ಯಾವುದೇ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಹೊಂದಿಲ್ಲ.
+#. text in a download's progress window
+#, machine
+	This character is not allowed in a file name	ಫೈಲ್ ಹೆಸರಿನಲ್ಲಿ ಈ ಅಕ್ಷರಕ್ಕೆ ಅನುಮತಿಯಿಲ್ಲ
 #. text in the Options window
 #. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
 #, machine
@@ -4581,6 +4600,10 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	ಈ ಫೋಲ್ಡರ್ ಅಸ್ತಿತ್ವದಲ್ಲಿಲ್ಲ:
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the folder holds another download or is a save/category folder
+#, machine
+	This folder is shared with another download or save folder	ಈ ಫೋಲ್ಡರ್ ಅನ್ನು ಮತ್ತೊಂದು ಡೌನ್‌ಲೋಡ್ ಅಥವಾ ಉಳಿಸುವ ಫೋಲ್ಡರ್ ಜೊತೆ ಹಂಚಿಕೊಳ್ಳಲಾಗಿದೆ
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
@@ -4608,6 +4631,10 @@
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
 	This magnet link names no trackers and the DHT is off, so no peer can be found.	ಈ ಮ್ಯಾಗ್ನೆಟ್ ಲಿಂಕ್‌ನಲ್ಲಿ ಯಾವುದೇ ಟ್ರ್ಯಾಕರ್‌ಗಳಿಲ್ಲ ಮತ್ತು DHT ಆಫ್ ಆಗಿದೆ, ಆದ್ದರಿಂದ ಯಾವುದೇ ಪೀರ್ ಅನ್ನು ಕಂಡುಹಿಡಿಯಲಾಗುವುದಿಲ್ಲ.
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name is a reserved device name on Windows (CON, NUL, COM1…)
+#, machine
+	This name is reserved by Windows	ಈ ಹೆಸರನ್ನು Windows ಕಾಯ್ದಿರಿಸಿದೆ
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine

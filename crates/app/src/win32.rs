@@ -4379,6 +4379,34 @@ pub fn mark_downloaded(path: &std::path::Path, url: &str, referrer: Option<&str>
     let _ = std::fs::write(stream, text);
 }
 
+/// Rename `from` to `to` without ever replacing an existing entry (`MoveFileExW` without
+/// `MOVEFILE_REPLACE_EXISTING`, returning `ErrorKind::AlreadyExists` when `to` is already there).
+pub fn rename_no_replace(from: &std::path::Path, to: &std::path::Path) -> std::io::Result<()> {
+    use std::os::windows::ffi::OsStrExt;
+    use windows_sys::Win32::Storage::FileSystem::MoveFileExW;
+    let encode = |p: &std::path::Path| -> std::io::Result<Vec<u16>> {
+        let mut wide: Vec<u16> = p.as_os_str().encode_wide().collect();
+        if wide.contains(&0) {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "interior NUL",
+            ));
+        }
+        wide.push(0);
+        Ok(wide)
+    };
+    let from_w = encode(from)?;
+    let to_w = encode(to)?;
+    // SAFETY: both UTF-16 buffers are NUL-terminated and live through the call; flags = 0 refuses
+    // cross-volume copies and refuses replacing an existing destination.
+    let ok = unsafe { MoveFileExW(from_w.as_ptr(), to_w.as_ptr(), 0) };
+    if ok != 0 {
+        Ok(())
+    } else {
+        Err(std::io::Error::last_os_error())
+    }
+}
+
 /// Where browser integration stands: a browser looking for the native host (Chrome's key,
 /// which Chromium browsers read; Firefox's) finds a manifest that exists, for this user or for
 /// everyone, naming a helper program that is there (Options → General → Test browser

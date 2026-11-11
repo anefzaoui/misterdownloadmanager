@@ -501,7 +501,7 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
-- ✅ **Deferred Rename** on a download's **Download status** tab: rename any in-flight download (HTTP/FTP, cloud-drive `unknown` links, videos, galleries, torrents and magnets) safely on completion, keeping the finalized file's real extension
+- ✅ **Deferred Rename** on a download's **Download status** tab: save a new name while downloading to rename the finished file's stem (and video subtitles) or an exclusive finished folder on completion, leaving shared/save folders, split-archive volumes and seeding single-file torrents under their original names ([#655](https://github.com/anefzaoui/misterdownloadmanager/pull/655))
 - ✅ Left click on the tray icon toggles the main window (on Windows also with the icon under
   the taskbar's ^), and browser downloads open only their dialog when the main window is
   hidden or minimized ([#520](https://github.com/anefzaoui/misterdownloadmanager/pull/520))

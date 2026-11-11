@@ -187,6 +187,10 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Desbridatze-zerbitzu batek fitxategi-ostatu baten esteka deskargatzen du zure ordainpeko kontuarekin eta esteka zuzen bat ematen dio MDMri. Erabili zure kontua soilik: kontu bat edo haren estekak partekatzeak zerbitzuen baldintzak hausten ditu eta kontua eten dezake. Nabigatzaileak dagoeneko hasitako deskargak bere horretan geratzen dira.
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name ends with a period
+#, machine
+	A file name cannot end with a dot	Fitxategi-izen batek ezin du puntu batekin amaitu
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
@@ -216,6 +220,10 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	ordenagailu honetako zerbitzari batek deskarga beste nonbaitera bidali du, eta ez litzateke {adapter} bidez joango
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box for a single-file torrent while Keep sharing is enabled
+#, machine
+	A single-file torrent keeps its name while Keep sharing is on	Fitxategi bakarreko torrent batek bere izena mantentzen du Jarraitu partekatzen aktibatuta dagoen bitartean
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -3970,6 +3978,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	Abiadura-mugatzailearen ezarpenak
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
+#, machine
+	Split archive volumes keep their names for extraction	Zatitutako artxiboen bolumenek beren izenak mantentzen dituzte erauzketarako
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4398,6 +4410,10 @@
 #. text in whereis.rs
 #, machine
 	the local network	sare lokala
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name exceeds the length limit
+#, machine
+	The name is too long	Izena luzeegia da
 #. text in errors.rs; text in torrent downloads
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
@@ -4538,6 +4554,9 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	Kategoria edo ilara honek ez du deskargatzerik oraindik.
+#. text in a download's progress window
+#, machine
+	This character is not allowed in a file name	Karaktere hau ez da onartzen fitxategi-izenetan
 #. text in the Options window
 #. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
 #, machine
@@ -4581,6 +4600,10 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Karpeta hau ez da existitzen:
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the folder holds another download or is a save/category folder
+#, machine
+	This folder is shared with another download or save folder	Karpeta hau beste deskarga edo gordetzeko karpeta batekin partekatzen da
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
@@ -4608,6 +4631,10 @@
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
 	This magnet link names no trackers and the DHT is off, so no peer can be found.	Magnet esteka honek ez du jarraitzailerik adierazten, eta DHT desaktibatuta dago; beraz, ezin da parekorik aurkitu.
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name is a reserved device name on Windows (CON, NUL, COM1…)
+#, machine
+	This name is reserved by Windows	Izen hau Windows-ek erreserbatuta dago
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine

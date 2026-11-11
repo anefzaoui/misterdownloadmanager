@@ -545,6 +545,97 @@ impl Host {
         self.busy.lock().unwrap().contains(hash)
     }
 
+    /// Rename a finished torrent's file or folder on disk through the host's busy guard.
+    ///
+    /// Returns `Err(hold)` when another host action is currently busy with `spec.hash` so the
+    /// caller can retry on a later tick. When `keep_sharing` is on:
+    /// - a renamed multi-file folder torrent is re-attached at the new folder with its saved
+    ///   piece bitmap, rate limits and piece order;
+    /// - if the rename fails after detaching, the torrent is re-attached at `spec.folder` so
+    ///   sharing does not stop.
+    #[allow(clippy::too_many_arguments)]
+    pub fn rename_finished(
+        &self,
+        rt: &tokio::runtime::Handle,
+        spec: &TorrentSpec,
+        from: PathBuf,
+        initial_to: PathBuf,
+        hold: Option<mdm_engine::naming::Reservation>,
+        is_dir: bool,
+        keep_sharing: bool,
+        tx: std::sync::mpsc::Sender<Result<PathBuf, String>>,
+    ) -> Result<(), Option<mdm_engine::naming::Reservation>> {
+        {
+            let mut busy = self.busy.lock().unwrap();
+            if busy.contains(&spec.hash) {
+                return Err(hold);
+            }
+            busy.insert(spec.hash.clone());
+        }
+        let (host, spec) = (self.clone(), spec.clone());
+        rt.spawn(async move {
+            let session = host.get();
+            let detached = match &session {
+                Some(t) => t.detach(&spec.hash).await.ok().flatten(),
+                None => None,
+            };
+            let mut res = crate::deferred_rename::rename_entry_io(&from, &initial_to);
+            for _ in 1..6 {
+                match &res {
+                    Ok(()) => break,
+                    Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => break,
+                    Err(_) => {
+                        tokio::time::sleep(std::time::Duration::from_millis(40)).await;
+                        res = crate::deferred_rename::rename_entry_io(&from, &initial_to);
+                    }
+                }
+            }
+            let final_res = match res {
+                Ok(()) => {
+                    drop(hold);
+                    Ok(initial_to)
+                }
+                Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => {
+                    crate::deferred_rename::rename_reserved_or_number(
+                        &from, initial_to, hold, is_dir,
+                    )
+                    .map_err(|e| e.to_string())
+                }
+                Err(e) => {
+                    drop(hold);
+                    Err(e.to_string())
+                }
+            };
+            if keep_sharing
+                && let Some(t) = &session
+                && let Some(bytes) = torrent_file(&spec.hash).and_then(|f| std::fs::read(f).ok())
+            {
+                match &final_res {
+                    Ok(actual_to) if is_dir => {
+                        let _ = t
+                            .attach(&spec.hash, &bytes, actual_to, spec.files.clone(), detached)
+                            .await;
+                    }
+                    Err(_) if detached.is_some() => {
+                        let _ = t
+                            .attach(
+                                &spec.hash,
+                                &bytes,
+                                &spec.folder,
+                                spec.files.clone(),
+                                detached,
+                            )
+                            .await;
+                    }
+                    _ => {}
+                }
+            }
+            host.busy.lock().unwrap().remove(&spec.hash);
+            let _ = tx.send(final_res);
+        });
+        Ok(())
+    }
+
     /// The finished actions' outcomes since last asked, by info hash.
     pub fn take_outcomes(&self) -> Vec<Outcome> {
         std::mem::take(&mut *self.outcomes.lock().unwrap())

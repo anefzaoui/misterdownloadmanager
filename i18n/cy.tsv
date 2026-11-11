@@ -187,6 +187,10 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Mae gwasanaeth dadfridio yn lawrlwytho dolen gwesteiwr ffeil gyda'ch cyfrif taledig eich hun ac yn rhoi dolen uniongyrchol i MDM. Defnyddiwch eich cyfrif eich hun yn unig: mae rhannu cyfrif neu ei ddolenni yn torri telerau'r gwasanaethau a gall arwain at ei atal. Mae lawrlwythiadau y mae'r porwr eisoes wedi'u cychwyn yn aros fel y maent.
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name ends with a period
+#, machine
+	A file name cannot end with a dot	Ni all enw ffeil orffen gyda dot
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
@@ -216,6 +220,10 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	anfonodd gweinydd ar y cyfrifiadur hwn y lawrlwythiad i rywle arall, na fyddai’n mynd drwy {adapter}
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box for a single-file torrent while Keep sharing is enabled
+#, machine
+	A single-file torrent keeps its name while Keep sharing is on	Mae torrent ffeil sengl yn cadw ei enw tra bod Parhau i rannu ymlaen
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -3970,6 +3978,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	Gosodiadau Cyfyngydd Cyflymder
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
+#, machine
+	Split archive volumes keep their names for extraction	Mae cyfrolau archif hollt yn cadw eu henwau ar gyfer echdynnu
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4398,6 +4410,10 @@
 #. text in whereis.rs
 #, machine
 	the local network	y rhwydwaith lleol
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name exceeds the length limit
+#, machine
+	The name is too long	Mae'r enw yn rhy hir
 #. text in errors.rs; text in torrent downloads
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
@@ -4538,6 +4554,9 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	Nid oes unrhyw lawrlwythiadau yn y categori neu'r ciw hwn eto.
+#. text in a download's progress window
+#, machine
+	This character is not allowed in a file name	Nid yw'r nod hwn yn cael ei ganiatáu mewn enw ffeil
 #. text in the Options window
 #. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
 #, machine
@@ -4581,6 +4600,10 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Nid yw'r ffolder hon yn bodoli:
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the folder holds another download or is a save/category folder
+#, machine
+	This folder is shared with another download or save folder	Mae'r ffolder hon yn cael ei rhannu gyda llwyth arall neu ffolder cadw
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
@@ -4608,6 +4631,10 @@
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
 	This magnet link names no trackers and the DHT is off, so no peer can be found.	Nid yw'r ddolen magnet hon yn enwi unrhyw dracwyr ac mae DHT wedi'i ddiffodd, felly ni ellir dod o hyd i unrhyw gymar.
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name is a reserved device name on Windows (CON, NUL, COM1…)
+#, machine
+	This name is reserved by Windows	Mae'r enw hwn wedi'i gadw gan Windows
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine

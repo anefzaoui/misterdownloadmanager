@@ -411,8 +411,8 @@ pub struct Item {
     /// (or its one file, once known).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub remote: Option<RemoteSpec>,
-    /// Safe deferred main name chosen in the progress window (or inherited from Add torrent):
-    /// applied in place once the download reaches `Status::Complete`.
+    /// Safe deferred main name chosen in the progress window: applied in place once the
+    /// download reaches `Status::Complete`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub rename_on_complete: Option<String>,
     #[serde(skip)]
@@ -433,6 +433,20 @@ pub struct Item {
     /// #68), in the interface language; memory only.
     #[serde(skip)]
     pub notices: Vec<String>,
+    /// Finished video / subtitle / gallery paths waiting to be marked as downloaded from the
+    /// web once any deferred rename in `App::poll` has moved them to their final names.
+    #[serde(skip)]
+    pub(crate) pending_mark: Option<PendingMark>,
+}
+
+/// Files saved by `yt-dlp` or `gallery-dl` waiting for Mark-of-the-Web after deferred rename.
+#[derive(Clone, Debug)]
+pub(crate) struct PendingMark {
+    pub main_file: Option<PathBuf>,
+    pub side_files: Vec<PathBuf>,
+    pub gallery_files: Vec<PathBuf>,
+    pub url: String,
+    pub referer: Option<String>,
 }
 
 /// A Link grabber package, as each of its downloads keeps it (#37).
@@ -723,6 +737,7 @@ impl Item {
             login: None,
             context: Default::default(),
             notices: Vec::new(),
+            pending_mark: None,
         }
     }
     /// This row's resume state is at its place. `downloaded` can't say: after a crash the list
@@ -813,7 +828,7 @@ impl Item {
                     self.downloaded = self.size.unwrap_or(self.downloaded);
                 }
                 // A video and its subtitles (#68), marked as downloaded from the web once
-                // yt-dlp has saved them, as the engine's files are as they are created.
+                // yt-dlp has saved them (and after any deferred rename in `App::poll`).
                 let mut notices = Vec::new();
                 if status == Status::Complete
                     && let Some(Live {
@@ -831,14 +846,16 @@ impl Item {
                         .iter()
                         .map(|p| sub_notice(p, site))
                         .collect();
-                    let side = done.side_files;
-                    crate::app::mark_finished(
-                        s.file.iter().chain(side.iter()).cloned().collect(),
-                        url.to_string(),
-                        self.context.referer.clone(),
-                    );
+                    self.pending_mark = Some(PendingMark {
+                        main_file: s.file.clone(),
+                        side_files: done.side_files,
+                        gallery_files: Vec::new(),
+                        url: url.to_string(),
+                        referer: self.context.referer.clone(),
+                    });
                 }
-                // A gallery's files (#58), each marked as downloaded from the web, as above.
+                // A gallery's files (#58), each marked as downloaded from the web after any
+                // deferred folder rename in `App::poll`.
                 if status == Status::Complete
                     && let Some(Live {
                         dl: Job::Gallery { job, url },
@@ -846,7 +863,13 @@ impl Item {
                     }) = &self.live
                     && matches!(url.scheme(), "http" | "https")
                 {
-                    crate::app::mark_finished(job.saved(), url.to_string(), None);
+                    self.pending_mark = Some(PendingMark {
+                        main_file: None,
+                        side_files: Vec::new(),
+                        gallery_files: job.saved(),
+                        url: url.to_string(),
+                        referer: None,
+                    });
                 }
                 for n in &notices {
                     self.note(n.clone());

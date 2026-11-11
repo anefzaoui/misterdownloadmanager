@@ -187,6 +187,9 @@ pub struct Progress {
     rename_edited_at: Option<std::time::Instant>,
     rename_show_saved: bool,
     pending_rename: Option<Option<String>>,
+    /// Translated reason key when deferred rename is unavailable for this download (shared or
+    /// save folder, split archive volume, or single-file torrent with Keep sharing on).
+    pub rename_disabled_reason: Option<&'static str>,
 }
 
 pub enum Action {
@@ -250,11 +253,20 @@ impl Progress {
             rename_edited_at: None,
             rename_show_saved: false,
             pending_rename: None,
+            rename_disabled_reason: None,
         }
     }
 
-    /// Synchronise the Rename box from `item.rename_on_complete` on first display (inheriting any
-    /// rename set in Add torrent or an earlier window) and whenever `item` changes while idle.
+    fn status_drop(&self) -> f32 {
+        if self.tab == Tab::Status {
+            RENAME_DROP
+        } else {
+            0.0
+        }
+    }
+
+    /// Synchronise the Rename box from `item.rename_on_complete` on first display and whenever
+    /// `item` changes while idle.
     pub fn sync_rename_from_item(&mut self, item: &Item) {
         let idle = self.rename_edited_at.is_none() && self.pending_rename.is_none();
         if !self.rename_init || (idle && self.rename_saved != item.rename_on_complete) {
@@ -312,31 +324,21 @@ impl Progress {
         }
     }
 
-    /// Flush any pending or valid unsaved rename when the progress window closes/hides or when
-    /// the download reaches 100% before the 3-second timer fires.
-    pub fn take_unsaved_valid_rename(&mut self) -> Option<Option<String>> {
-        if let Some(pending) = self.pending_rename.take() {
-            return Some(pending);
-        }
-        let norm = crate::deferred_rename::validate_name(&self.rename_text).ok()?;
-        if norm != self.rename_saved {
-            self.rename_saved = norm.clone();
-            self.rename_edited_at = None;
-            self.rename_show_saved = norm.is_some();
-            Some(norm)
-        } else {
-            None
-        }
+    /// Flush any rename that was already confirmed (Confirm, Enter, assistive input, or the
+    /// 3-second idle auto-save); half-typed unconfirmed text is never applied.
+    pub fn take_confirmed_rename(&mut self) -> Option<Option<String>> {
+        self.pending_rename.take()
     }
 
     pub fn show(&mut self, ctx: &egui::Context, item: &Item, snap: Option<&Snapshot>) -> Action {
         crate::crash::window("progress");
         let frac = item.fraction();
         let title = window_title(frac, &item.file_name);
+        let drop = self.status_drop();
         let body = if self.details {
-            [548.0, 412.0 + RENAME_DROP + torrent_drop(item)]
+            [548.0, 412.0 + drop + torrent_drop(item)]
         } else {
-            [548.0, 241.0 + RENAME_DROP]
+            [548.0, 241.0 + drop]
         };
         // Windows: the title bar is ours (#63), drawn in the client above IDM's layout, so the
         // hide button sits in it, left of Minimize, as in IDM. Elsewhere the system draws it.
@@ -360,7 +362,7 @@ impl Progress {
             .with_resizable(cfg!(windows))
             .with_icon(crate::app_icon())
             .with_maximize_button(false);
-        if let Some(p) = crate::dialogs::place(ctx, key, [548.0, 412.0 + RENAME_DROP]) {
+        if let Some(p) = crate::dialogs::place(ctx, key, [548.0, 412.0 + drop]) {
             builder = builder.with_position(p);
         }
         // Minimize hides it in the notification area when asked (and a tray can bring it back).
@@ -527,7 +529,7 @@ impl Progress {
             ui.ctx().request_repaint();
         }
 
-        let lower = o + vec2(0.0, RENAME_DROP);
+        let lower = o + vec2(0.0, self.status_drop());
 
         // The progress bar: IDM's green on the shared, themed track.
         winui::meter(
@@ -669,15 +671,15 @@ impl Progress {
             })
             .collect();
         let current = tabs.iter().position(|t| t.0 == self.tab).unwrap_or(0);
-        // The page: x 18..529, y 28..(171 + RENAME_DROP) (tabs_light's pane starts 20 px under its top).
-        if let Some(i) = winui::tabs_light(
-            ui,
-            o,
-            r(o, 18.0, 8.0, 514.0, 165.0 + RENAME_DROP),
-            &light,
-            current,
-        ) {
+        let drop = self.status_drop();
+        // The page: x 18..529, y 28..(171 + drop) (tabs_light's pane starts 20 px under its top).
+        if let Some(i) =
+            winui::tabs_light(ui, o, r(o, 18.0, 8.0, 514.0, 165.0 + drop), &light, current)
+            && tabs[i].0 != self.tab
+        {
             self.tab = tabs[i].0;
+            ui.ctx().request_discard("Tab height");
+            ui.ctx().request_repaint();
         }
         self.tab_row_menu(ui, r(o, 18.0, 6.0, 514.0, 22.0));
         // MDM's (#63): IDM puts this in its title bar, which here is the system's own (it takes
@@ -1067,13 +1069,13 @@ impl Progress {
     }
 }
 
-/// "Hide tab" (401,135 + RENAME_DROP,96,21) with its 1 px #f9f9f9 focus ring.
+/// "Hide tab" (401,135,96,21) with its 1 px #f9f9f9 focus ring.
 fn hide_tab(ui: &mut Ui, o: Pos2) -> bool {
     // A longer translation ("Registerkarte ausblenden") widens it to the left, into the free
     // room right of the Remember caption (which ends before x 300).
     let rc = winui::button_rect_for(
         ui.painter(),
-        r(o, 401.0, 135.0 + RENAME_DROP, 96.0, 21.0),
+        r(o, 401.0, 135.0, 96.0, 21.0),
         "Hide tab",
         190.0,
     );
@@ -1275,7 +1277,10 @@ impl Progress {
         let edit_x = column.max(33.0 + winui::text_width(p, rename_label).ceil() + 6.0);
         let edit_w = (btn_x - 6.0 - edit_x).max(100.0);
 
-        let enabled = item.status != Status::Complete;
+        let disabled_reason = (item.status != Status::Complete)
+            .then_some(self.rename_disabled_reason)
+            .flatten();
+        let enabled = item.status != Status::Complete && disabled_reason.is_none();
         let edit_rc = r(o, edit_x, top, edit_w, 21.0);
         let edit_resp = winui::edit(ui, edit_rc, &mut self.rename_text, enabled, false);
         if edit_resp.changed() {
@@ -1287,7 +1292,12 @@ impl Progress {
         }
 
         let validated = crate::deferred_rename::validate_name(&self.rename_text);
-        if enabled && validated.is_err() {
+        let error_reason = if enabled {
+            validated.as_ref().err().copied().map(rename_error_message)
+        } else {
+            None
+        };
+        if error_reason.is_some() {
             winui::error_frame(p, edit_rc);
         }
 
@@ -1303,17 +1313,37 @@ impl Progress {
         } else {
             ButtonKind::Disabled
         };
-        let clicked = winui::button(
+        let btn_resp = winui::button(
             ui,
             r(o, btn_x, top, btn_w, 21.0),
             confirm_key,
             btn_kind,
             false,
             None,
-        )
-        .clicked();
+        );
+        let clicked = btn_resp.clicked();
         let enter = edit_resp.has_focus() && winui::take_key(ui, egui::Key::Enter);
         let assistive = winui::value_set_by_assistive(&edit_resp);
+
+        if let Some(reason_key) = error_reason.or(disabled_reason) {
+            let why = crate::i18n::t(reason_key);
+            ui.interact(
+                edit_rc,
+                egui::Id::unique(("progress-rename-reason", self.id)),
+                egui::Sense::hover(),
+            )
+            .on_hover_text(why);
+            edit_resp
+                .clone()
+                .on_hover_text(why)
+                .on_disabled_hover_text(why);
+            btn_resp.on_hover_text(why);
+            if error_reason.is_some() && edit_resp.has_focus() {
+                egui::Tooltip::for_widget(&edit_resp).show(|ui| {
+                    ui.label(why);
+                });
+            }
+        }
 
         if enabled
             && (clicked || enter || assistive)
@@ -1323,9 +1353,25 @@ impl Progress {
             self.commit_rename(norm);
         }
 
-        if self.rename_show_saved {
+        if enabled && self.rename_show_saved {
             text(p, o.x + saved_x, o.y + base, saved_text, winui::SUCCESS());
         }
+    }
+}
+
+fn rename_error_message(err: crate::deferred_rename::RenameError) -> &'static str {
+    use crate::deferred_rename::RenameError;
+    match err {
+        // i18n: reason shown on the Rename box when the entered name ends with a period
+        RenameError::TrailingDot => crate::i18n::mark("A file name cannot end with a dot"),
+        // i18n: reason shown on the Rename box when the entered name exceeds the length limit
+        RenameError::TooLong => crate::i18n::mark("The name is too long"),
+        // i18n: reason shown on the Rename box when the entered name has a forbidden character
+        RenameError::InvalidChar => {
+            crate::i18n::mark("This character is not allowed in a file name")
+        }
+        // i18n: reason shown on the Rename box when the entered name is a reserved device name on Windows (CON, NUL, COM1…)
+        RenameError::ReservedDevice => crate::i18n::mark("This name is reserved by Windows"),
     }
 }
 
@@ -2098,24 +2144,29 @@ mod tests {
     }
 
     #[test]
-    fn inherits_saved_rename_and_autosaves_after_three_seconds() {
+    fn syncs_saved_rename_autosaves_and_ignores_unconfirmed_typing() {
         let mut item = Item::new(
             7,
             "https://example.com/unknown".parse().unwrap(),
             std::path::PathBuf::from("/tmp/unknown"),
             crate::model::Category::General,
         );
-        item.rename_on_complete = Some("TorrentPack".into());
+        item.rename_on_complete = Some("ArchivePack".into());
 
         let mut p = Progress::new(7, true);
         p.sync_rename_from_item(&item);
-        assert_eq!(p.rename_text, "TorrentPack");
-        assert!(p.rename_show_saved, "inherited torrent rename shows Saved");
+        assert_eq!(p.rename_text, "ArchivePack");
+        assert!(p.rename_show_saved, "saved rename shows Saved");
 
         let t0 = std::time::Instant::now();
         p.rename_text = "Episode 02".into();
         p.on_rename_text_changed(t0);
         assert!(!p.rename_show_saved, "editing hides Saved until confirmed");
+        assert_eq!(
+            p.take_confirmed_rename(),
+            None,
+            "half-typed unconfirmed text before 3s is never promoted"
+        );
         assert!(
             p.poll_rename_autosave(t0 + std::time::Duration::from_secs(2))
                 .is_some(),
@@ -2127,18 +2178,24 @@ mod tests {
             "3 seconds elapsed: auto-saves"
         );
         assert!(p.rename_show_saved, "Saved turns green after 3s idle");
-        assert_eq!(p.pending_rename.take(), Some(Some("Episode 02".into())));
-
-        // Closing or finishing before 3s flushes valid text, but never invalid path characters.
-        p.rename_text = "Episode 03".into();
-        p.on_rename_text_changed(t0);
-        assert_eq!(
-            p.take_unsaved_valid_rename(),
-            Some(Some("Episode 03".into()))
-        );
+        assert_eq!(p.take_confirmed_rename(), Some(Some("Episode 02".into())));
 
         p.rename_text = "bad/name".into();
         p.on_rename_text_changed(t0);
-        assert_eq!(p.take_unsaved_valid_rename(), None);
+        assert_eq!(
+            p.poll_rename_autosave(t0 + std::time::Duration::from_secs(5)),
+            None
+        );
+        assert_eq!(p.take_confirmed_rename(), None);
+    }
+
+    #[test]
+    fn status_drop_applies_only_on_download_status_tab() {
+        let mut p = Progress::new(1, true);
+        assert_eq!(p.status_drop(), RENAME_DROP);
+        p.tab = Tab::Limiter;
+        assert_eq!(p.status_drop(), 0.0);
+        p.tab = Tab::Completion;
+        assert_eq!(p.status_drop(), 0.0);
     }
 }

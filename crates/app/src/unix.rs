@@ -1944,6 +1944,66 @@ fn set_xattr(path: &Path, name: &str, value: &str) {
     };
 }
 
+/// Rename `from` to `to` without ever replacing an existing entry (`ErrorKind::AlreadyExists`
+/// when `to` is already there).
+#[allow(unsafe_code)]
+pub fn rename_no_replace(from: &Path, to: &Path) -> std::io::Result<()> {
+    use std::ffi::CString;
+    use std::os::unix::ffi::OsStrExt;
+    let from_c = CString::new(from.as_os_str().as_bytes())
+        .map_err(|_| std::io::Error::new(std::io::ErrorKind::InvalidInput, "interior NUL"))?;
+    let to_c = CString::new(to.as_os_str().as_bytes())
+        .map_err(|_| std::io::Error::new(std::io::ErrorKind::InvalidInput, "interior NUL"))?;
+
+    #[cfg(target_os = "macos")]
+    {
+        // SAFETY: both paths are valid NUL-terminated C strings alive for the call.
+        let rc = unsafe { libc::renamex_np(from_c.as_ptr(), to_c.as_ptr(), libc::RENAME_EXCL) };
+        if rc == 0 {
+            Ok(())
+        } else {
+            Err(std::io::Error::last_os_error())
+        }
+    }
+
+    #[cfg(not(target_os = "macos"))]
+    {
+        #[cfg(target_os = "linux")]
+        {
+            // SAFETY: AT_FDCWD with two valid NUL-terminated C strings and RENAME_NOREPLACE.
+            let rc = unsafe {
+                libc::syscall(
+                    libc::SYS_renameat2,
+                    libc::AT_FDCWD,
+                    from_c.as_ptr(),
+                    libc::AT_FDCWD,
+                    to_c.as_ptr(),
+                    libc::RENAME_NOREPLACE as libc::c_uint,
+                )
+            };
+            if rc == 0 {
+                return Ok(());
+            }
+            let err = std::io::Error::last_os_error();
+            if !matches!(err.raw_os_error(), Some(libc::ENOSYS | libc::EINVAL)) {
+                return Err(err);
+            }
+        }
+
+        if std::fs::symlink_metadata(to).is_ok() {
+            return Err(std::io::Error::from(std::io::ErrorKind::AlreadyExists));
+        }
+        if from.is_file() && std::fs::hard_link(from, to).is_ok() {
+            if let Err(e) = std::fs::remove_file(from) {
+                let _ = std::fs::remove_file(to);
+                return Err(e);
+            }
+            return Ok(());
+        }
+        std::fs::rename(from, to)
+    }
+}
+
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
     use zbus::zvariant::Value;

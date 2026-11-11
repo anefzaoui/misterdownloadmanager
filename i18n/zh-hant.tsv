@@ -187,6 +187,10 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	解鎖服務會使用您自己的付費帳戶下載檔案主機的連結，並提供 MDM 直接連結。請僅使用您自己的帳戶：共用帳戶或其連結會違反服務條款，並可能導致帳戶遭到停用。瀏覽器已開始的下載會維持原狀。
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name ends with a period
+#, machine
+	A file name cannot end with a dot	檔案名稱不能以句點結尾
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
@@ -216,6 +220,10 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	此電腦上的伺服器將下載傳送到其他位置，無法透過 {adapter} 傳送
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box for a single-file torrent while Keep sharing is enabled
+#, machine
+	A single-file torrent keeps its name while Keep sharing is on	開啟繼續分享時，單一檔案種子需保留原檔名
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -3965,6 +3973,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	速度限制器設定
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
+#, machine
+	Split archive volumes keep their names for extraction	分割壓縮檔需保留原檔名以便解壓縮
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4393,6 +4405,10 @@
 #. text in whereis.rs
 #, machine
 	the local network	本機網路
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name exceeds the length limit
+#, machine
+	The name is too long	名稱過長
 #. text in errors.rs; text in torrent downloads
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
@@ -4533,6 +4549,9 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	此類別或佇列尚無下載項目。
+#. text in a download's progress window
+#, machine
+	This character is not allowed in a file name	檔案名稱中不允許包含此字元
 #. text in the Options window
 #. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
 #, machine
@@ -4576,6 +4595,10 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	此資料夾不存在：
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the folder holds another download or is a save/category folder
+#, machine
+	This folder is shared with another download or save folder	此資料夾正與其他下載項目或儲存資料夾共用
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
@@ -4603,6 +4626,10 @@
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
 	This magnet link names no trackers and the DHT is off, so no peer can be found.	此磁力連結未指定任何追蹤器，且 DHT 已關閉，因此找不到任何對等點。
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name is a reserved device name on Windows (CON, NUL, COM1…)
+#, machine
+	This name is reserved by Windows	此名稱為 Windows 保留名稱
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine

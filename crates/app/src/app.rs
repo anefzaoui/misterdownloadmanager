@@ -274,6 +274,150 @@ fn take_place(item: &mut Item, target: PathBuf) {
     item.dest = target;
 }
 
+/// Update `item.pending_mark` after `from` has been renamed to `actual_to` (including renaming
+/// `yt-dlp` sidecar subtitle files alongside a video, or rewriting saved file paths inside a
+/// renamed gallery folder) so `flush_pending_mark` marks the final paths on disk.
+fn apply_renamed_paths_to_pending_mark(
+    item: &mut Item,
+    from: &std::path::Path,
+    actual_to: &std::path::Path,
+    is_dir: bool,
+) {
+    let Some(pm) = item.pending_mark.as_mut() else {
+        return;
+    };
+    if is_dir {
+        for gf in &mut pm.gallery_files {
+            if let Ok(rel) = gf.strip_prefix(from) {
+                *gf = actual_to.join(rel);
+            }
+        }
+    } else {
+        if pm.main_file.is_some() {
+            pm.main_file = Some(actual_to.to_path_buf());
+        }
+        if !pm.side_files.is_empty() {
+            pm.side_files =
+                crate::deferred_rename::rename_video_side_files(from, actual_to, &pm.side_files);
+        }
+    }
+}
+
+/// Whether `folder` is a root/category/save folder or contains another download's files, making a
+/// folder-level deferred rename unsafe for `id`.
+fn is_protected_or_shared_folder_with(
+    id: u64,
+    folder: &std::path::Path,
+    downloads: &std::path::Path,
+    settings: &Settings,
+    rss: &crate::rss::Store,
+    items: &[Item],
+) -> bool {
+    use crate::deferred_rename::{path_is_at_or_inside_dir, paths_refer_to_same_dir};
+
+    if paths_refer_to_same_dir(folder, downloads)
+        || paths_refer_to_same_dir(
+            folder,
+            &settings.category_dir(model::Category::General, downloads),
+        )
+    {
+        return true;
+    }
+    for cat in model::Category::BUILT_IN {
+        if paths_refer_to_same_dir(folder, &settings.category_dir(cat, downloads)) {
+            return true;
+        }
+    }
+    for (_, dir) in &settings.category_dirs {
+        if !dir.is_empty() && paths_refer_to_same_dir(folder, std::path::Path::new(dir)) {
+            return true;
+        }
+    }
+    for c in &settings.custom_categories {
+        if paths_refer_to_same_dir(
+            folder,
+            &settings.category_dir(model::Category::Custom(c.id), downloads),
+        ) {
+            return true;
+        }
+        if let Some(dir) = c.folder.as_deref().filter(|d| !d.is_empty())
+            && paths_refer_to_same_dir(folder, std::path::Path::new(dir))
+        {
+            return true;
+        }
+    }
+    for dir in &settings.folder_history {
+        if !dir.is_empty() && paths_refer_to_same_dir(folder, std::path::Path::new(dir)) {
+            return true;
+        }
+    }
+    for rule in &rss.rules {
+        if !rule.folder.is_empty()
+            && paths_refer_to_same_dir(folder, std::path::Path::new(&rule.folder))
+        {
+            return true;
+        }
+    }
+    for sys in [
+        dirs::home_dir(),
+        dirs::desktop_dir(),
+        dirs::download_dir(),
+        dirs::document_dir(),
+    ]
+    .into_iter()
+    .flatten()
+    {
+        if paths_refer_to_same_dir(folder, &sys) {
+            return true;
+        }
+    }
+    items.iter().filter(|o| o.id != id).any(|other| {
+        path_is_at_or_inside_dir(&other.dest, folder)
+            || other
+                .torrent
+                .as_ref()
+                .is_some_and(|t| path_is_at_or_inside_dir(&t.folder, folder))
+            || other
+                .remote
+                .as_ref()
+                .is_some_and(|r| path_is_at_or_inside_dir(&r.folder, folder))
+    })
+}
+
+/// Translated reason key explaining why deferred rename is unavailable for `item`, or `None`
+/// when `item` can be renamed safely on completion.
+fn deferred_rename_disabled_reason_with(
+    item: &Item,
+    downloads: &std::path::Path,
+    settings: &Settings,
+    rss: &crate::rss::Store,
+    items: &[Item],
+) -> Option<&'static str> {
+    if crate::deferred_rename::is_folder_target(item) {
+        if is_protected_or_shared_folder_with(item.id, &item.dest, downloads, settings, rss, items)
+        {
+            // i18n: tooltip on the disabled Rename box when the folder holds another download or is a save/category folder
+            return Some(crate::i18n::mark(
+                "This folder is shared with another download or save folder",
+            ));
+        }
+        return None;
+    }
+    if crate::deferred_rename::is_split_archive_volume(item, items) {
+        // i18n: tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
+        return Some(crate::i18n::mark(
+            "Split archive volumes keep their names for extraction",
+        ));
+    }
+    if item.torrent.is_some() && settings.torrent_keep_sharing {
+        // i18n: tooltip on the disabled Rename box for a single-file torrent while Keep sharing is enabled
+        return Some(crate::i18n::mark(
+            "A single-file torrent keeps its name while Keep sharing is on",
+        ));
+    }
+    None
+}
+
 /// The place a download about to start takes instead of its own, when its own belongs to
 /// another row (#442): two can wait under one name (nothing was on the disk when each was added,
 /// and they can start in the same moment, before the engine has reserved anything). None: it
@@ -607,6 +751,15 @@ pub struct App {
     save_failed: Option<String>,
     /// Finished files being moved (Move/Rename, Properties → Move): where to, and the answer.
     moving: Vec<(u64, PathBuf, MoveDone)>,
+    /// Finished torrents whose deferred rename is running asynchronously through `torrent_host`.
+    #[allow(clippy::type_complexity)]
+    renaming_torrents: Vec<(
+        u64,
+        PathBuf,
+        std::sync::mpsc::Receiver<Result<PathBuf, String>>,
+    )>,
+    /// Finished torrents whose deferred rename is waiting for `torrent_host` to stop being busy.
+    deferred_torrent_queue: Vec<(u64, String)>,
     /// A finished queue asked to turn the computer off: the countdown, cancellable.
     turn_off: Option<dialogs::TurnOffCountdown>,
     /// A finished queue asked to exit.
@@ -1198,6 +1351,8 @@ impl App {
             notice: None,
             save_failed: None,
             moving: Vec::new(),
+            renaming_torrents: Vec::new(),
+            deferred_torrent_queue: Vec::new(),
             turn_off: None,
             exit_requested: false,
             global: std::sync::Arc::new(mdm_engine::limiter::Limiter::new(None)),
@@ -3450,71 +3605,92 @@ impl App {
         }
     }
 
-    /// Apply any deferred rename (`Item::rename_on_complete`) once download `id` completes.
-    fn apply_deferred_rename(&mut self, id: u64) {
-        let unsaved = self
+    /// Apply any confirmed deferred rename (`Item::rename_on_complete`) once download `id`
+    /// completes. Returns `true` when an asynchronous torrent rename is still in flight (or
+    /// queued behind a busy `torrent_host`), so archive auto-extraction waits for the final path.
+    fn apply_deferred_rename(&mut self, id: u64) -> bool {
+        let confirmed = self
             .progress
             .iter_mut()
             .find(|p| p.id == id)
-            .and_then(Progress::take_unsaved_valid_rename);
-        if let Some(unsaved) = unsaved
+            .and_then(Progress::take_confirmed_rename);
+        if let Some(confirmed) = confirmed
             && let Some(item) = self.item(id)
         {
-            item.rename_on_complete = unsaved;
+            item.rename_on_complete = confirmed;
         }
-        let Some((desired, from, is_dir, torrent_spec)) = self.item(id).and_then(|item| {
-            let desired = item.rename_on_complete.take()?;
-            let from = item.dest.clone();
-            let is_dir = crate::deferred_rename::is_folder_target(item);
-            let torrent_spec = item.torrent.clone();
-            Some((desired, from, is_dir, torrent_spec))
-        }) else {
-            return;
+        let Some(desired) = self.item(id).and_then(|i| i.rename_on_complete.take()) else {
+            return false;
         };
-        let Some(target) = crate::deferred_rename::resolved_target_path(&from, &desired, is_dir)
+        self.start_deferred_rename(id, desired)
+    }
+
+    fn start_deferred_rename(&mut self, id: u64, desired: String) -> bool {
+        let Some((from, is_dir, torrent_spec, disabled)) =
+            self.items.iter().find(|i| i.id == id).map(|item| {
+                let from = item.dest.clone();
+                let is_dir = crate::deferred_rename::is_folder_target(item);
+                let torrent_spec = item.torrent.clone();
+                let disabled = deferred_rename_disabled_reason_with(
+                    item,
+                    &self.downloads,
+                    &self.settings,
+                    &self.rss,
+                    &self.items,
+                );
+                (from, is_dir, torrent_spec, disabled)
+            })
+        else {
+            return false;
+        };
+        if let Some(reason_key) = disabled {
+            if let Some(item) = self.item(id) {
+                item.note(crate::i18n::t(reason_key));
+            }
+            self.dirty = true;
+            return false;
+        }
+        let Some((initial_to, hold)) =
+            crate::deferred_rename::reserve_target_path(&from, &desired, is_dir)
         else {
             self.dirty = true;
-            return;
+            return false;
         };
-        if let Some(spec) = torrent_spec
-            && let Some(t) = self.torrent_host.get()
-        {
+        if let Some(spec) = torrent_spec {
             let (tx, rx) = std::sync::mpsc::channel();
-            let to = target.clone();
-            let keep_sharing = self.settings.torrent_keep_sharing;
-            self.rt.spawn(async move {
-                let _ = t.remove(&spec.hash, false).await;
-                let mut res = crate::deferred_rename::rename_entry(&from, &to);
-                for _ in 1..6 {
-                    if res.is_ok() {
-                        break;
-                    }
-                    tokio::time::sleep(Duration::from_millis(40)).await;
-                    res = crate::deferred_rename::rename_entry(&from, &to);
+            match self.torrent_host.rename_finished(
+                &self.rt,
+                &spec,
+                from.clone(),
+                initial_to,
+                hold,
+                is_dir,
+                self.settings.torrent_keep_sharing,
+                tx,
+            ) {
+                Ok(()) => {
+                    self.renaming_torrents.push((id, from, rx));
+                    self.dirty = true;
+                    return true;
                 }
-                if res.is_ok()
-                    && keep_sharing
-                    && is_dir
-                    && let Some(bytes) = crate::torrents::torrent_file(&spec.hash)
-                        .and_then(|p| std::fs::read(p).ok())
-                {
-                    let _ = t.add(&bytes, &to, spec.files, Vec::new(), false).await;
-                    let _ = t.set_torrent_limits(&spec.hash, None, spec.upload_limit);
+                Err(hold) => {
+                    drop(hold);
+                    self.deferred_torrent_queue.push((id, desired));
+                    self.dirty = true;
+                    return true;
                 }
-                let _ = tx.send(res);
-            });
-            self.moving.push((id, target, rx));
-            self.dirty = true;
-            return;
+            }
         }
-        match crate::deferred_rename::rename_entry(&from, &target) {
-            Ok(()) => {
+        match crate::deferred_rename::rename_reserved_or_number(&from, initial_to, hold, is_dir) {
+            Ok(actual_to) => {
                 if let Some(item) = self.item(id) {
-                    take_place(item, target);
+                    apply_renamed_paths_to_pending_mark(item, &from, &actual_to, is_dir);
+                    take_place(item, actual_to);
                 }
                 self.dirty = true;
             }
             Err(e) => {
+                let err = e.to_string();
                 if let Some(item) = self.item(id) {
                     item.note(crate::i18n::t("The file could not be moved"));
                 }
@@ -3522,11 +3698,90 @@ impl App {
                     crate::i18n::mark("Move/Rename"),
                     crate::i18n::fmt(
                         crate::i18n::t("The file could not be moved: {error}"),
-                        &[("error", &e)],
+                        &[("error", &err)],
                     ),
                 ));
                 self.dirty = true;
             }
+        }
+        false
+    }
+
+    /// Retry queued deferred torrent renames once `torrent_host` is free, and apply finished ones.
+    fn poll_deferred_torrent_renames(&mut self) {
+        if !self.deferred_torrent_queue.is_empty() {
+            let queued = std::mem::take(&mut self.deferred_torrent_queue);
+            for (id, desired) in queued {
+                let busy = self
+                    .items
+                    .iter()
+                    .find(|i| i.id == id)
+                    .and_then(|i| i.torrent.as_ref())
+                    .is_some_and(|spec| self.torrent_host.busy(&spec.hash));
+                if busy {
+                    self.deferred_torrent_queue.push((id, desired));
+                } else {
+                    let _ = self.start_deferred_rename(id, desired);
+                }
+            }
+        }
+
+        let mut done = Vec::new();
+        self.renaming_torrents
+            .retain(|(id, from, rx)| match rx.try_recv() {
+                Ok(r) => {
+                    done.push((*id, from.clone(), r));
+                    false
+                }
+                Err(std::sync::mpsc::TryRecvError::Empty) => true,
+                Err(_) => false,
+            });
+        for (id, from, r) in done {
+            match r {
+                Ok(actual_to) => {
+                    if let Some(item) = self.item(id) {
+                        let is_dir = crate::deferred_rename::is_folder_target(item);
+                        apply_renamed_paths_to_pending_mark(item, &from, &actual_to, is_dir);
+                        take_place(item, actual_to.clone());
+                    }
+                    for c in &mut self.complete {
+                        if c.id == id {
+                            c.path = actual_to.clone();
+                        }
+                    }
+                    self.dirty = true;
+                }
+                Err(e) => {
+                    if let Some(item) = self.item(id) {
+                        item.note(crate::i18n::t("The file could not be moved"));
+                    }
+                    self.notice = Some((
+                        crate::i18n::mark("Move/Rename"),
+                        crate::i18n::fmt(
+                            crate::i18n::t("The file could not be moved: {error}"),
+                            &[("error", &e)],
+                        ),
+                    ));
+                    self.dirty = true;
+                }
+            }
+            self.flush_pending_mark(id);
+            self.extracts.finished(id, &self.items, &self.settings);
+        }
+    }
+
+    fn flush_pending_mark(&mut self, id: u64) {
+        let Some(pm) = self.item(id).and_then(|i| i.pending_mark.take()) else {
+            return;
+        };
+        let files: Vec<PathBuf> = pm
+            .main_file
+            .into_iter()
+            .chain(pm.side_files)
+            .chain(pm.gallery_files)
+            .collect();
+        if !files.is_empty() {
+            mark_finished(files, pm.url, pm.referer);
         }
     }
 
@@ -5686,7 +5941,11 @@ impl App {
     /// Pull engine progress into the rows; open "Download complete" when one finishes.
     fn poll(&mut self, ctx: &egui::Context) {
         self.poll_moves();
-        if !self.moving.is_empty() {
+        self.poll_deferred_torrent_renames();
+        if !self.moving.is_empty()
+            || !self.renaming_torrents.is_empty()
+            || !self.deferred_torrent_queue.is_empty()
+        {
             ctx.request_repaint_after(Duration::from_millis(200));
         }
         let mut finished = Vec::new();
@@ -5720,9 +5979,12 @@ impl App {
         }
         for id in &finished {
             self.failures.remove(id);
-            self.apply_deferred_rename(*id);
-            // Its archive, when it is to be extracted and its last volume is in (#37).
-            self.extracts.finished(*id, &self.items, &self.settings);
+            let torrent_renaming = self.apply_deferred_rename(*id);
+            if !torrent_renaming {
+                self.flush_pending_mark(*id);
+                // Its archive, when it is to be extracted and its last volume is in (#37).
+                self.extracts.finished(*id, &self.items, &self.settings);
+            }
             // Finished files leave download queues (synchronization queues keep them).
             for q in self.queues.iter_mut().filter(|q| !q.sync) {
                 q.items.retain(|x| x != id);
@@ -8845,6 +9107,13 @@ impl App {
             }
             p.hidden = false;
             if let Some(item) = self.items.iter().find(|i| i.id == p.id) {
+                p.rename_disabled_reason = deferred_rename_disabled_reason_with(
+                    item,
+                    &self.downloads,
+                    &self.settings,
+                    &self.rss,
+                    &self.items,
+                );
                 actions.push((p.id, p.show(ctx, item, item.snap.as_ref())));
             }
         }
@@ -8864,12 +9133,12 @@ impl App {
                     }
                 }
                 progress::Action::Close => {
-                    let unsaved = self
+                    let confirmed = self
                         .progress
                         .iter_mut()
                         .find(|p| p.id == id)
-                        .and_then(Progress::take_unsaved_valid_rename);
-                    if let Some(name) = unsaved
+                        .and_then(Progress::take_confirmed_rename);
+                    if let Some(name) = confirmed
                         && let Some(item) = self.item(id)
                     {
                         item.rename_on_complete = name;
@@ -8878,12 +9147,12 @@ impl App {
                     self.progress.retain(|p| p.id != id);
                 }
                 progress::Action::Hide => {
-                    let mut unsaved = None;
+                    let mut confirmed = None;
                     if let Some(p) = self.progress.iter_mut().find(|p| p.id == id) {
-                        unsaved = p.take_unsaved_valid_rename();
+                        confirmed = p.take_confirmed_rename();
                         p.hidden = true;
                     }
-                    if let Some(name) = unsaved
+                    if let Some(name) = confirmed
                         && let Some(item) = self.item(id)
                     {
                         item.rename_on_complete = name;
@@ -9617,5 +9886,203 @@ mod mark_finished_tests {
             assert!(zone.contains("ZoneId=3"), "{zone}");
             assert!(zone.contains("HostUrl=https://videos.test/v"), "{zone}");
         }
+    }
+}
+
+#[cfg(test)]
+mod deferred_rename_guard_tests {
+    use super::*;
+
+    fn test_item(id: u64, dest: PathBuf) -> Item {
+        Item::new(
+            id,
+            "https://example.com/item".parse().unwrap(),
+            dest,
+            model::Category::General,
+        )
+    }
+
+    #[test]
+    fn refuses_shared_category_and_save_folders_but_allows_exclusive_folder() {
+        let dir = tempfile::tempdir().unwrap();
+        let downloads = dir.path().join("Downloads");
+        let video_cat = downloads.join("Video");
+        let saved_dir = dir.path().join("SavedAlbums");
+        let shared_gallery = downloads.join("pixiv");
+        let exclusive_gallery = downloads.join("gallery-42");
+        for d in [
+            &downloads,
+            &video_cat,
+            &saved_dir,
+            &shared_gallery,
+            &exclusive_gallery,
+        ] {
+            std::fs::create_dir_all(d).unwrap();
+        }
+
+        let mut settings = Settings::default();
+        settings
+            .folder_history
+            .push(saved_dir.display().to_string());
+        let rss = crate::rss::Store::default();
+
+        let mut g_root = test_item(1, downloads.clone());
+        g_root.gallery = Some(Default::default());
+
+        let mut g_cat = test_item(2, video_cat.clone());
+        g_cat.gallery = Some(Default::default());
+
+        let mut g_saved = test_item(3, saved_dir.clone());
+        g_saved.gallery = Some(Default::default());
+
+        let mut g_shared_a = test_item(4, shared_gallery.clone());
+        g_shared_a.gallery = Some(Default::default());
+        let g_shared_b = test_item(5, shared_gallery.join("other.jpg"));
+
+        let mut g_exclusive = test_item(6, exclusive_gallery.clone());
+        g_exclusive.gallery = Some(Default::default());
+
+        let items = vec![g_root, g_cat, g_saved, g_shared_a, g_shared_b, g_exclusive];
+
+        for idx in [0usize, 1, 2, 3] {
+            let blocked = &items[idx];
+            assert_eq!(
+                deferred_rename_disabled_reason_with(blocked, &downloads, &settings, &rss, &items),
+                Some("This folder is shared with another download or save folder"),
+                "expected {} to be refused",
+                blocked.dest.display()
+            );
+        }
+        assert_eq!(
+            deferred_rename_disabled_reason_with(&items[5], &downloads, &settings, &rss, &items),
+            None,
+            "an exclusive gallery subfolder can be renamed safely"
+        );
+    }
+
+    #[test]
+    fn guards_split_archives_and_seeding_single_file_torrents() {
+        let dir = tempfile::tempdir().unwrap();
+        let downloads = dir.path().join("Downloads");
+        std::fs::create_dir_all(&downloads).unwrap();
+        let mut settings = Settings::default();
+        let rss = crate::rss::Store::default();
+
+        let part1 = test_item(1, downloads.join("backup.part1.rar"));
+        let standalone_rar = test_item(2, downloads.join("standalone.rar"));
+
+        let mut single_torrent = test_item(3, downloads.join("ubuntu.iso"));
+        single_torrent.torrent = Some(crate::torrents::TorrentSpec {
+            hash: "0123456789abcdef0123456789abcdef01234567".into(),
+            folder: downloads.clone(),
+            files: None,
+            uploaded: 0,
+            seeded_secs: 0,
+            peers: 0,
+            up_speed: 0.0,
+            upload_limit: None,
+            in_order: false,
+            ends_first: false,
+        });
+
+        let pack_dir = downloads.join("PackFolder");
+        std::fs::create_dir_all(&pack_dir).unwrap();
+        let mut folder_torrent = test_item(4, pack_dir.clone());
+        folder_torrent.torrent = Some(crate::torrents::TorrentSpec {
+            hash: "fedcba9876543210fedcba9876543210fedcba98".into(),
+            folder: pack_dir,
+            files: None,
+            uploaded: 0,
+            seeded_secs: 0,
+            peers: 0,
+            up_speed: 0.0,
+            upload_limit: None,
+            in_order: false,
+            ends_first: false,
+        });
+
+        let items = vec![part1, standalone_rar, single_torrent, folder_torrent];
+
+        assert_eq!(
+            deferred_rename_disabled_reason_with(&items[0], &downloads, &settings, &rss, &items),
+            Some("Split archive volumes keep their names for extraction")
+        );
+        assert_eq!(
+            deferred_rename_disabled_reason_with(&items[1], &downloads, &settings, &rss, &items),
+            None
+        );
+
+        settings.torrent_keep_sharing = true;
+        assert_eq!(
+            deferred_rename_disabled_reason_with(&items[2], &downloads, &settings, &rss, &items),
+            Some("A single-file torrent keeps its name while Keep sharing is on")
+        );
+        assert_eq!(
+            deferred_rename_disabled_reason_with(&items[3], &downloads, &settings, &rss, &items),
+            None,
+            "an exclusive multi-file torrent folder can be renamed and re-attached"
+        );
+
+        settings.torrent_keep_sharing = false;
+        assert_eq!(
+            deferred_rename_disabled_reason_with(&items[2], &downloads, &settings, &rss, &items),
+            None,
+            "single-file torrent can be renamed when Keep sharing is off"
+        );
+    }
+
+    #[test]
+    fn pending_mark_updates_video_subtitles_and_gallery_paths_after_rename() {
+        let dir = tempfile::tempdir().unwrap();
+        let from_vid = dir.path().join("raw_id.mp4");
+        let sub_en = dir.path().join("raw_id.en.srt");
+        std::fs::write(&from_vid, b"v").unwrap();
+        std::fs::write(&sub_en, b"s").unwrap();
+
+        let mut vid_item = test_item(1, from_vid.clone());
+        vid_item.pending_mark = Some(model::PendingMark {
+            main_file: Some(from_vid.clone()),
+            side_files: vec![sub_en.clone()],
+            gallery_files: Vec::new(),
+            url: "https://videos.test/watch".into(),
+            referer: None,
+        });
+
+        let (initial_to, hold) =
+            crate::deferred_rename::reserve_target_path(&from_vid, "Talk 01", false).unwrap();
+        let actual_to =
+            crate::deferred_rename::rename_reserved_or_number(&from_vid, initial_to, hold, false)
+                .unwrap();
+        apply_renamed_paths_to_pending_mark(&mut vid_item, &from_vid, &actual_to, false);
+        let pm = vid_item.pending_mark.unwrap();
+        assert_eq!(pm.main_file, Some(dir.path().join("Talk 01.mp4")));
+        assert_eq!(pm.side_files, vec![dir.path().join("Talk 01.en.srt")]);
+        assert!(dir.path().join("Talk 01.en.srt").exists());
+        assert!(!sub_en.exists());
+
+        let old_gal = dir.path().join("gal_raw");
+        std::fs::create_dir_all(old_gal.join("sub")).unwrap();
+        let img = old_gal.join("sub").join("01.png");
+        std::fs::write(&img, b"img").unwrap();
+        let mut gal_item = test_item(2, old_gal.clone());
+        gal_item.gallery = Some(Default::default());
+        gal_item.pending_mark = Some(model::PendingMark {
+            main_file: None,
+            side_files: Vec::new(),
+            gallery_files: vec![img],
+            url: "https://gallery.test/a".into(),
+            referer: None,
+        });
+        let (g_to, g_hold) =
+            crate::deferred_rename::reserve_target_path(&old_gal, "Album 01", true).unwrap();
+        let actual_gal =
+            crate::deferred_rename::rename_reserved_or_number(&old_gal, g_to, g_hold, true)
+                .unwrap();
+        apply_renamed_paths_to_pending_mark(&mut gal_item, &old_gal, &actual_gal, true);
+        let gpm = gal_item.pending_mark.unwrap();
+        assert_eq!(
+            gpm.gallery_files,
+            vec![dir.path().join("Album 01").join("sub").join("01.png")]
+        );
     }
 }

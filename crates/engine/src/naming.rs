@@ -132,7 +132,7 @@ fn decode_plain(v: &str) -> String {
 pub fn sanitize(name: &str) -> String {
     let cleaned: String = name
         .chars()
-        .filter(|c| !is_format(*c))
+        .filter(|c| !is_format_char(*c))
         .map(|c| {
             if c.is_control() || r#"<>:"/\|?*"#.contains(c) {
                 '_'
@@ -145,13 +145,24 @@ pub fn sanitize(name: &str) -> String {
     if cleaned.is_empty() {
         return "download".to_owned();
     }
-    let stem = cleaned
+    if is_windows_reserved(&cleaned) {
+        format!("_{cleaned}")
+    } else {
+        cleaned
+    }
+}
+
+/// Whether `name` (with or without an extension) names one of Windows' reserved DOS devices
+/// (`CON`, `PRN`, `AUX`, `NUL`, `CONIN$`, `CONOUT$`, `COM0`–`COM9`, `LPT0`–`LPT9`, and the
+/// superscripted `COM¹`–`COM³` / `LPT¹`–`LPT³`).
+pub fn is_windows_reserved(name: &str) -> bool {
+    let stem = name
         .split('.')
         .next()
         .unwrap_or_default()
+        .trim()
         .to_ascii_uppercase();
-    // Windows' reserved device names, with or without an extension (COM¹ … use superscripts).
-    let reserved = matches!(
+    matches!(
         stem.as_str(),
         "CON" | "PRN" | "AUX" | "NUL" | "CONIN$" | "CONOUT$"
     ) || ((stem.starts_with("COM") || stem.starts_with("LPT"))
@@ -159,18 +170,13 @@ pub fn sanitize(name: &str) -> String {
         && stem
             .chars()
             .nth(3)
-            .is_some_and(|c| c.is_ascii_digit() || matches!(c, '¹' | '²' | '³')));
-    if reserved {
-        format!("_{cleaned}")
-    } else {
-        cleaned
-    }
+            .is_some_and(|c| c.is_ascii_digit() || matches!(c, '¹' | '²' | '³')))
 }
 
 /// Unicode's format characters (general category Cf): bidirectional marks, embeddings,
 /// overrides and isolates, zero-width spaces and joiners, the byte order mark, the soft
 /// hyphen, invisible operators, tags.
-fn is_format(c: char) -> bool {
+pub fn is_format_char(c: char) -> bool {
     matches!(c,
         '\u{AD}'
         | '\u{600}'..='\u{605}'
