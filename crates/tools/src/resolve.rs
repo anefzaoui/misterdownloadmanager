@@ -148,10 +148,25 @@ struct RawFormat {
     fps: Option<f64>,
     vcodec: Option<String>,
     acodec: Option<String>,
+    #[serde(default, deserialize_with = "size")]
     filesize: Option<u64>,
+    #[serde(default, deserialize_with = "size")]
     filesize_approx: Option<u64>,
     tbr: Option<f64>,
     protocol: Option<String>,
+}
+
+/// A size as yt-dlp gives it: a count of bytes, or nothing known. Wikimedia Commons' transcodes
+/// come with a negative estimate (`filesize_approx: -79319`, its bitrate unknown), which made
+/// the whole page unreadable ("it gave no video information"): no size then, as for any other
+/// that isn't a positive number.
+fn size<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Option<u64>, D::Error> {
+    let v = Option::<serde_json::Value>::deserialize(d)?;
+    Ok(v.and_then(|v| {
+        v.as_u64()
+            .or_else(|| v.as_f64().filter(|f| *f > 0.0).map(|f| f as u64))
+    })
+    .filter(|n| *n > 0))
 }
 
 /// Whether `title` is only the last part of `page`'s address, which is what yt-dlp calls a video
@@ -631,6 +646,20 @@ mod tests {
     }
 
     use super::*;
+
+    /// Wikimedia Commons' transcodes say a negative size (#769's Commons check): read as none,
+    /// not as a page with no video.
+    #[test]
+    fn a_negative_size_is_no_size() {
+        let page = br#"{"title": "Clip", "duration": 10.0, "formats": [
+            {"format_id": "2", "ext": "webm", "height": 480, "vcodec": "vp9", "acodec": "opus",
+             "filesize_approx": -79319, "tbr": 1218},
+            {"format_id": "source", "ext": "webm", "filesize": 2964839055}]}"#;
+        let v = parse(page).expect("a video");
+        assert_eq!(v.formats.len(), 2);
+        assert_ne!(v.formats[0].size, Some(0));
+        assert_eq!(v.formats[1].size, Some(2964839055));
+    }
 
     #[test]
     fn a_streams_variants_by_bitrate() {

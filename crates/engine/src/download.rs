@@ -1693,6 +1693,9 @@ async fn run_fresh(
             && !(expects && is_web_page(&k.head.headers) && !named(&k.head.headers))
     });
     let mut unlocked = kept.as_ref().and_then(|k| k.unlocked.clone());
+    // Where the first request went: a service's (or a helper's, #769) direct link when one gave
+    // it, which isn't a redirect.
+    let mut first_at = req.url.clone();
     // The browser-like connection the download goes on with, when only it got through (#668).
     let mut browser: Option<Arc<crate::browserlike::Browser>> = None;
     let (as_get, client0, (head, body), headers, ttfb) = match kept {
@@ -1718,6 +1721,7 @@ async fn run_fresh(
             if let Some(cap) = opts.cap() {
                 asked.insert(header::RANGE, range_value(0, cap));
             }
+            first_at = target.clone();
             let as_get = AsGet::default();
             let seen = shared.seen.get_or_init(Default::default).clone();
             let as_given = opts.clone();
@@ -1819,7 +1823,7 @@ async fn run_fresh(
     shared.event(format!(
         "Connected to {}{}: {}, size {}",
         final_url.host_str().unwrap_or("?"),
-        if final_url != req.url {
+        if final_url != first_at {
             " (redirected)"
         } else {
             ""
