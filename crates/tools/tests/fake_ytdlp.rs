@@ -132,8 +132,30 @@ fn fake_ytdlp() -> ExitCode {
         );
         return ExitCode::FAILURE;
     }
+    // The production job must request yt-dlp's postprocess progress hook; otherwise these
+    // synthetic MDMPOST lines would not be emitted by the real tool.
+    let has_postprocess_template = args.windows(2).any(|pair| {
+        pair[0] == "--progress-template" && pair[1].starts_with("postprocess:MDMPOST ")
+    });
+    if mode == "processing" && !has_postprocess_template {
+        eprintln!("ERROR: the postprocess progress template was not supplied");
+        return ExitCode::FAILURE;
+    }
+    // yt-dlp may run a post-processor before downloading (for example subtitle conversion).
+    if mode == "processing" {
+        println!("MDMPOST convert-subs");
+        std::thread::sleep(Duration::from_millis(200));
+    }
     println!("MDMP 1024 4096 NA 1000");
     println!("MDMQ 18 640x360");
+    if mode == "processing" {
+        // A second post-processor runs after the transfer; a later MDMP line means downloading
+        // is active again. The pauses let the test observe both states.
+        std::thread::sleep(Duration::from_millis(200));
+        println!("MDMPOST ffmpeg");
+        std::thread::sleep(Duration::from_millis(500));
+        println!("MDMP 2048 4096 NA 0");
+    }
     // #79: it falls over mid-way, leaving a helper running (Windows: the launcher's child).
     if mode == "crash" {
         let me = std::env::current_exe().unwrap();
@@ -155,16 +177,7 @@ fn fake_ytdlp() -> ExitCode {
     }
     // #79: silent for a while, as when ffmpeg merges a long video.
     if let Some(secs) = mode.strip_prefix("quiet:") {
-        assert!(
-            args.windows(2).any(|pair| {
-                pair[0] == "--progress-template" && pair[1].starts_with("postprocess:MDMPOST ")
-            }),
-            "the app supplied yt-dlp's post-process progress template: {args:?}",
-        );
-        // Simulate a long FFmpeg merge after the media bytes have arrived.
-        println!("MDMPOST FFmpegMerger started");
         std::thread::sleep(Duration::from_secs(secs.trim().parse().unwrap_or(1)));
-        println!("MDMPOST FFmpegMerger finished");
     }
     let langs = after("--sub-langs").unwrap_or_default();
     for lang in langs.split(',').filter(|l| !l.is_empty()) {
@@ -303,22 +316,14 @@ fn download_as(
     )
     .expect("started");
     let end = Instant::now() + Duration::from_secs(120);
-    let mut saw_processing = false;
     let p = loop {
         let p = job.progress();
-        saw_processing |= p.state == State::Processing;
         if !matches!(&p.state, State::Running | State::Processing) {
             break p;
         }
         assert!(Instant::now() < end, "still running: {p:?}");
         std::thread::sleep(Duration::from_millis(100));
     };
-    if mode.starts_with("quiet:") {
-        assert!(
-            saw_processing,
-            "the quiet post-process phase was not reported"
-        );
-    }
     let mut files: Vec<String> = std::fs::read_dir(out.path())
         .unwrap()
         .filter_map(Result::ok)
@@ -367,6 +372,73 @@ fn job_checks(me: &Path) {
     let (p, files, _o) = download_as(me, "", &none, "ba", "Talk");
     assert!(matches!(p.state, State::Done(_)), "plain: {:?}", p.state);
     assert_eq!(files, ["Talk.mp4"]);
+
+    // A title already ending in a media extension is normalised before yt-dlp builds its
+    // output template; the video and its subtitle sidecar share the same clean stem.
+    let with_subs = Subs {
+        langs: vec!["en".to_owned()],
+        automatic: true,
+        embed: false,
+    };
+    let (p, files, _o) = download_as(me, "", &with_subs, "b", "Dropbox.mp4");
+    assert!(
+        matches!(&p.state, State::Done(_)),
+        "duplicate extension: {:?}",
+        p.state
+    );
+    assert_eq!(files, ["Dropbox.en.srt", "Dropbox.mp4"]);
+
+    // A pre-download post-processor must not leave the job stuck in Processing; after a later
+    // post-process, the next MDMP line returns it to Running until the file is finished.
+    let tools = tempfile::tempdir().unwrap();
+    let out = tempfile::tempdir().unwrap();
+    std::fs::write(out.path().join("mode.txt"), "processing").unwrap();
+    let exe = fake_in(me, tools.path());
+    let job = VideoJob::start(
+        &exe,
+        "https://video.example/talk",
+        "b",
+        out.path(),
+        "Processing",
+        None,
+        1,
+        None,
+        None,
+        &Default::default(),
+        &none,
+    )
+    .expect("started");
+    let end = Instant::now() + Duration::from_secs(20);
+    let (mut saw_processing, mut saw_running_after_processing) = (false, false);
+    let p = loop {
+        let p = job.progress();
+        if p.state == State::Processing {
+            saw_processing = true;
+        } else if saw_processing && p.state == State::Running {
+            saw_running_after_processing = true;
+        }
+        if !matches!(&p.state, State::Running | State::Processing) {
+            break p;
+        }
+        assert!(
+            Instant::now() < end,
+            "processing state did not finish: {p:?}"
+        );
+        std::thread::sleep(Duration::from_millis(20));
+    };
+    assert!(
+        saw_processing,
+        "post-process hook was not reflected in progress"
+    );
+    assert!(
+        saw_running_after_processing,
+        "download progress did not leave Processing"
+    );
+    assert!(
+        matches!(&p.state, State::Done(_)),
+        "processing: {:?}",
+        p.state
+    );
 
     // It falls over mid-way: the failure is told, and what it left running is ended with it
     // (Windows: the job; elsewhere yt-dlp is one process, so there's no child to leave).
