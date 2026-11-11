@@ -489,7 +489,6 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
     use mdm_tools::video::State as V;
     let (state, file, error) = match p.state {
         V::Running => (State::Downloading, None, None),
-        // A yt-dlp post-process phase is still active, but the media bytes have arrived.
         V::Processing => (State::Completing, None, None),
         V::Done(f) => (State::Done, Some(f), None),
         V::Failed(e) => (State::Failed, None, Some(e)),
@@ -961,6 +960,7 @@ impl Item {
                 .as_ref()
                 .is_some_and(|s| s.state == State::Completing)
         {
+            // i18n: a video is being merged or otherwise processed after its data has arrived
             return crate::i18n::t("Processing...").into();
         }
         match self.status {
@@ -1201,9 +1201,23 @@ mod tests {
         assert_eq!(video_item(Some(0), 5, Status::Downloading).fraction(), None);
     }
 
+    /// A video with all its bytes in may still be merging: 99.9 % until the file is finished,
+    /// with the real sizes beside it.
     #[test]
-    fn a_video_reports_processing_while_yt_dlp_merges() {
-        let url = Url::parse("https://example.org/watch?v=clip").unwrap();
+    fn a_video_reads_100_only_when_finished() {
+        let m = 1 << 20;
+        let running = video_item(Some(100 * m), 100 * m, Status::Downloading);
+        assert_eq!(running.fraction(), Some(0.999));
+        let done = video_item(Some(100 * m), 100 * m, Status::Complete);
+        assert_eq!(done.fraction(), Some(1.0));
+        let mut file = video_item(Some(100), 100, Status::Downloading);
+        file.video = None;
+        assert_eq!(file.fraction(), Some(1.0));
+    }
+
+    #[test]
+    fn a_video_shows_processing_while_yt_dlp_finishes() {
+        let url = Url::parse("https://video.example/watch?v=clip").unwrap();
         let progress = mdm_tools::video::Progress {
             state: mdm_tools::video::State::Processing,
             downloaded: 100,
@@ -1218,20 +1232,6 @@ mod tests {
         assert_eq!(item.status_text(), crate::i18n::t("Processing..."));
         assert_eq!(item.fraction(), Some(0.999));
         assert_eq!(item.time_left(), "");
-    }
-
-    /// A video with all its bytes in may still be merging: 99.9 % until the file is finished,
-    /// with the real sizes beside it.
-    #[test]
-    fn a_video_reads_100_only_when_finished() {
-        let m = 1 << 20;
-        let running = video_item(Some(100 * m), 100 * m, Status::Downloading);
-        assert_eq!(running.fraction(), Some(0.999));
-        let done = video_item(Some(100 * m), 100 * m, Status::Complete);
-        assert_eq!(done.fraction(), Some(1.0));
-        let mut file = video_item(Some(100), 100, Status::Downloading);
-        file.video = None;
-        assert_eq!(file.fraction(), Some(1.0));
     }
 
     #[test]
