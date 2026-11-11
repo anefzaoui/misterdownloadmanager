@@ -1109,6 +1109,13 @@ impl Progress {
             Status::Downloading if item.at_service().is_some() => {
                 item.at_service().unwrap_or_default()
             }
+            Status::Downloading
+                if item.video.is_some()
+                    && snap.is_some_and(|s| s.state == mdm_engine::download::State::Completing) =>
+            {
+                // i18n: a video is being merged or otherwise processed after its data has arrived
+                crate::i18n::t("Processing...").to_owned()
+            }
             Status::Downloading => {
                 // A video (yt-dlp) has no engine connections: data arriving is the sign.
                 let receiving = snap.is_some_and(|s| {

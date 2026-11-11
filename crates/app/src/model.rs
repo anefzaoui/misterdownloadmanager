@@ -515,6 +515,7 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
     use mdm_tools::video::State as V;
     let (state, file, error) = match p.state {
         V::Running => (State::Downloading, None, None),
+        V::Processing => (State::Completing, None, None),
         V::Done(f) => (State::Done, Some(f), None),
         V::Failed(e) => (State::Failed, None, Some(e)),
         V::Stopped => (State::Cancelled, None, None),
@@ -1013,6 +1014,15 @@ impl Item {
         {
             return crate::i18n::t("Verifying...").into();
         }
+        if self.video.is_some()
+            && self
+                .snap
+                .as_ref()
+                .is_some_and(|s| s.state == State::Completing)
+        {
+            // i18n: a video is being merged or otherwise processed after its data has arrived
+            return crate::i18n::t("Processing...").into();
+        }
         match self.status {
             // i18n: a download's status (state it is in, not a command): finished
             Status::Complete => crate::i18n::t("Complete").into(),
@@ -1263,6 +1273,25 @@ mod tests {
         let mut file = video_item(Some(100), 100, Status::Downloading);
         file.video = None;
         assert_eq!(file.fraction(), Some(1.0));
+    }
+
+    #[test]
+    fn a_video_shows_processing_while_yt_dlp_finishes() {
+        let url = Url::parse("https://video.example/watch?v=clip").unwrap();
+        let progress = mdm_tools::video::Progress {
+            state: mdm_tools::video::State::Processing,
+            downloaded: 100,
+            total: Some(100),
+            speed: 0.0,
+            events: Vec::new(),
+            side_files: Vec::new(),
+            sub_problems: Vec::new(),
+        };
+        let mut item = video_item(Some(100), 100, Status::Downloading);
+        item.snap = Some(tool_snapshot(progress, &url));
+        assert_eq!(item.status_text(), crate::i18n::t("Processing..."));
+        assert_eq!(item.fraction(), Some(0.999));
+        assert_eq!(item.time_left(), "");
     }
 
     #[test]
