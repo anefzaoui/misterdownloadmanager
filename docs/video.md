@@ -2,7 +2,7 @@
 
 [← Back to docs index](README.md)
 
-MDM downloads videos from their web pages: YouTube, Vimeo, Dailymotion, Twitch, TikTok, X, Instagram, Facebook, Reddit, SoundCloud and well over a thousand other sites. It does this with **yt-dlp**, an open-source program whose community keeps it working as sites change.
+MDM downloads videos from their web pages: YouTube, Vimeo, Dailymotion, Twitch, TikTok, X, Instagram, Facebook, Reddit, SoundCloud and well over a thousand other sites. **yt-dlp**, an open-source program whose community keeps it working as sites change, finds the video on the page; MDM's own downloader then brings it in, the way it downloads any file.
 
 ## Start a video download
 
@@ -26,7 +26,7 @@ MDM offers its two helpers on its first start, and again the first time they are
 downloads them from their official releases with its own downloader, so a cut connection
 resumes, and uses your proxy settings:
 
-- **yt-dlp** (about 23 MB) looks the page up and downloads the video. The first time, click **Install yt-dlp**. MDM checks the download against the signature yt-dlp's developers publish before it uses it.
+- **yt-dlp** (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them ([How a video comes down](#how-a-video-comes-down)). The first time, click **Install yt-dlp**. MDM checks the download against the signature yt-dlp's developers publish before it uses it.
 - **ffmpeg** (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click **Install ffmpeg** when MDM offers it. MDM checks it against the checksums its release publishes.
 
 Both are kept in a `tools` folder in MDM's data folder.
@@ -52,7 +52,28 @@ Already have yt-dlp or ffmpeg for another program? Use those instead of a second
 4. Choose **Subtitles** if you want them (see below).
 5. Click **Download Now**, or **Later** to add it to the list without starting.
 
-The video then downloads like any other file, with its own row in the list and its progress window. yt-dlp brings it in over one stream of its own, so the window's connections table stays empty.
+The video then downloads like any other file, with its own row in the list and its progress window.
+
+## How a video comes down
+
+yt-dlp looks the page up and picks the quality's video and sound. MDM's own downloader then brings each of them in, one after the other, the way it downloads any file:
+
+- **Over several connections**: as many as **Options → Connection** gives a file. The progress window's connections table shows each one, and the segment map shows the video and then its sound.
+- **Under your speed limits**: the **Speed Limiter**'s, the video's own (its progress window's **Speed Limiter** tab), and the limit for all downloads together. A change applies at once.
+- **Paused and resumed** like a file, also after quitting MDM: it carries on from the bytes already saved.
+- **When an address stops working**: a video's addresses are signed and expire after a few hours (YouTube's after six). MDM asks yt-dlp for a fresh one for the same quality and carries on from where it stopped.
+
+Then yt-dlp does what it does after a download: it joins the video and its sound with ffmpeg into one MP4, saves or embeds the subtitles, and converts the sound for an MP3, Opus or FLAC choice.
+
+YouTube serves each connection's long requests slowly, so MDM asks for the video in pieces of 10 MB at most, as yt-dlp does, and several at once.
+
+Some videos yt-dlp still downloads by itself, over its own connection, and the progress window says so:
+
+- a live stream still being recorded;
+- a stream sent in many small pieces (HLS, DASH), for now;
+- a stream sent over RTMP, RTSP, MMS or FTP.
+
+For those, a new speed limit starts the download again with it, from where it was.
 
 ## Subtitles
 
@@ -90,7 +111,7 @@ A page address that points at one video inside a playlist or a mix (for example 
 
 ## Through a VPN's adapter
 
-With **Options → Proxy / Socks → [Network adapter](options.md#proxy--socks)** set, video downloads go through that adapter too, with the same kill switch as other downloads: MDM hands yt-dlp (and the ffmpeg it starts) a proxy of its own on this computer, and opens every connection through the adapter, looking the names up with the DNS you chose in **Options → Connection** (without an adapter, yt-dlp uses the system's DNS). When the adapter disconnects, the video download stops, and it starts again when the adapter is back. Formats sent over RTMP, RTSP, MMS or FTP can't go through it and are refused.
+With **Options → Proxy / Socks → [Network adapter](options.md#proxy--socks)** set, video downloads go through that adapter too, with the same kill switch as other downloads. MDM's own downloader opens its connections through the adapter as for any file; for yt-dlp's look-ups (and what it downloads itself, with the ffmpeg it starts) MDM hands it a proxy of its own on this computer, and opens every connection through the adapter, looking the names up with the DNS you chose in **Options → Connection** (without an adapter, yt-dlp uses the system's DNS). When the adapter disconnects, the video download stops, and it starts again when the adapter is back. Formats sent over RTMP, RTSP, MMS or FTP can't go through it and are refused.
 
 ## Sites that want you signed in
 

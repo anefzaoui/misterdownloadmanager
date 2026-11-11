@@ -503,6 +503,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Videos in one file (YouTube's qualities and their sound, most sites' MP4s) come down through
+  MDM's own downloader: yt-dlp finds them, then every connection Options → Connection gives, the
+  speed limits (a change applies at once), pause and resume like a file, after a restart too,
+  and a fresh address from yt-dlp when one expires (part of
+  [#769](https://github.com/anefzaoui/misterdownloadmanager/issues/769))
 - ✅ The browser's Download video button in right-to-left languages: its corners and divider follow the text direction, so its outline stays whole
 - ✅ **Deferred Rename** on a download's **Download status** tab: save a new name while downloading to rename the finished file's stem (and video subtitles) or an exclusive finished folder on completion, leaving shared/save or pre-existing folders, split-archive volumes and single-file torrents under their original names ([#655](https://github.com/anefzaoui/misterdownloadmanager/pull/655))
 - ✅ Links added by hand go with the User-Agent of your default browser, at the version you have
@@ -558,7 +563,10 @@ These ship in a later version, when they're ready.
   ([#571](https://github.com/anefzaoui/misterdownloadmanager/issues/571)): in review
 - 🔄 Videos sent in pieces (HLS, DASH) downloading several pieces at once, as many as a file's
   connections ([#531](https://github.com/anefzaoui/misterdownloadmanager/issues/531)): in review;
-  a video in one file (most of YouTube's) still comes over one connection
+  a video in one file (most of YouTube's) now comes through MDM's own downloader
+- 🔄 Videos in pieces (HLS, DASH) and image galleries through MDM's own downloader too, yt-dlp
+  and gallery-dl only finding the addresses
+  ([#769](https://github.com/anefzaoui/misterdownloadmanager/issues/769)): in progress
 - 🔄 Linux and macOS: the system's yt-dlp used when MDM has none of its own, with Helpers able\n  to switch to MDM's copy ([#452](https://github.com/anefzaoui/misterdownloadmanager/issues/452)): in review
 - 🔄 macOS: video look-ups in a copy of MDM a browser downloaded, without the Terminal command
   ([#330](https://github.com/anefzaoui/misterdownloadmanager/issues/330),

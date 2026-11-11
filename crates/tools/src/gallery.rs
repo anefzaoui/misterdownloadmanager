@@ -283,6 +283,8 @@ impl Default for Progress {
             events: Vec::new(),
             side_files: Vec::new(),
             sub_problems: Vec::new(),
+            engine: None,
+            helper: None,
         }
     }
 }

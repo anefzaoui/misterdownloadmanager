@@ -19,6 +19,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Videos come down through MDM's own downloader:** yt-dlp now finds a video and its sound, and MDM downloads them the way it downloads any file: over as many connections as **Options → Connection** gives (8 by default; the progress window's connections table and segment map show them), under the speed limits (a change applies at once), paused and resumed like a file, also after quitting MDM, and with a fresh address asked of yt-dlp when one expires. yt-dlp then joins them and adds the subtitles as before. YouTube's qualities, its sound and most sites' MP4s come this way; live streams, streams in pieces (HLS, DASH, for now) and RTMP, RTSP, MMS or FTP streams are still yt-dlp's to download, and the progress window says so ([#769](https://github.com/anefzaoui/misterdownloadmanager/issues/769)).
 - Building from source needs Rust 1.98 or later, CMake and libclang (and NASM on Windows): the browser-like connection is built on BoringSSL ([#668](https://github.com/anefzaoui/misterdownloadmanager/issues/668)).
 - Debrid accounts: signing in by code opens the page only when it is the service's own site, over https.
 

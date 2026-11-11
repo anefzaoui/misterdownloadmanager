@@ -4368,7 +4368,8 @@ impl App {
         ); // not translated: a log line
     }
 
-    /// Start a video item: yt-dlp (installed and verified) downloads it.
+    /// Start a video item: yt-dlp (installed and verified) finds it, MDM's engine downloads its
+    /// streams (#769).
     fn start_video(&mut self, id: u64, show: bool) {
         self.claim_place(id);
         let tools = mdm_tools::tools_dir();
@@ -4381,6 +4382,17 @@ impl App {
             .iter()
             .find(|i| i.id == id)
             .map_or(1, |i| self.settings.connections_for(&i.url));
+        // The engine downloads the streams with what a file from the page gets (#769): Options'
+        // connections, proxy, network adapter and DNS, the limit for all downloads, the hosts'
+        // learned limits; the video's own speed limit, else the Speed Limiter's for one file.
+        let engine = self.items.iter().find(|i| i.id == id).map(|i| {
+            let mut opts = self.request_parts(&i.url, None, &i.context, true).opts;
+            opts.speed_limit = i.own_limit.or(rate);
+            mdm_tools::streams::Engine {
+                handle: self.rt.clone(),
+                opts,
+            }
+        });
         let Some(item) = self.item(id) else { return };
         let Some(spec) = item.video.clone() else {
             return;
@@ -4422,6 +4434,7 @@ impl App {
             &crate::videodlg::from_browser(&item.context),
             &spec.subs,
             preloaded,
+            engine,
         );
         match started {
             Ok(job) => {
@@ -10729,6 +10742,7 @@ mod duplicate_tests {
             None,
             &Default::default(),
             &Default::default(),
+            None,
         )
         .unwrap();
         running.live = Some(Live::new(model::Job::Video { job, url: page() }, 0));
