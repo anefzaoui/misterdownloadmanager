@@ -36,7 +36,7 @@ use serde::{Deserialize, Serialize};
 mod win32;
 
 const HOST_NAME: &str = "com.misterdownloadmanager.host";
-use mdm_ipc::extension::{FIREFOX_ID, STORE_ID, STORE_UPDATE_URL, chromium_ids, store_id};
+use mdm_ipc::extension::{FIREFOX_ID, STORE_ID, chromium_ids, store_id};
 /// Where each Chromium browser looks for native messaging hosts on Windows, under HKCU (one
 /// user) or HKLM (everyone). Chromium-branded builds (Chromium, Helium, Thorium, and Brave and
 /// Brave Origin with every channel) read Chromium's first, then Chrome's, as most other forks do
@@ -53,7 +53,9 @@ const REGISTRY_KEYS: [&str; 4] = [
 const FIREFOX_KEY: &str = r"Software\Mozilla\NativeMessagingHosts";
 /// Chrome's external extensions: an entry naming the store's extension makes Chrome offer it at
 /// its next start ("New extension added"), the user turning it on there. HKLM's is read from the
-/// 32-bit view on 64-bit Windows, hence /reg:32 (HKCU has one view).
+/// 32-bit view on 64-bit Windows, hence /reg:32 (HKCU has one view). Helium reads it too, but
+/// asks Google's address without the browser's version, and Google answers "no update": nothing
+/// is offered there (#685), the app's window opens the store's page in Helium instead.
 #[cfg(windows)]
 const CHROME_EXTERNAL_KEY: &str = r"Software\Google\Chrome\Extensions";
 
@@ -824,7 +826,7 @@ fn register(all_users: bool) -> Result<(), String> {
             "/t",
             "REG_SZ",
             "/d",
-            STORE_UPDATE_URL,
+            mdm_ipc::extension::STORE_UPDATE_URL,
             "/f",
             "/reg:32",
         ])?;
@@ -886,32 +888,20 @@ fn host_dirs(all_users: bool, host: Option<&std::path::Path>) -> Vec<(PathBuf, b
         .collect()
 }
 
-/// Linux and macOS: the folder Chrome reads external extensions from (an `<id>.json` naming
-/// the store's update service makes Chrome offer that extension at its next start), when
-/// Chrome is there. macOS has one per user and one for everyone; Linux Chrome reads only the
-/// system's, so a per-user registration there leaves it to the app's own offer (extension.rs).
+/// Linux and macOS: the folders the browsers there read external extensions from (an
+/// `<id>.json` naming the store's update service makes the browser offer that extension at its
+/// next start), for those that are there, each with the service's address as that browser names
+/// it (`mdm_ipc::browsers::external_dirs`: Chrome's, and Helium's own, #685). Linux Chrome reads
+/// only the system's, so a per-user registration there leaves Chrome to the app's own offer
+/// (extension.rs).
 #[cfg(not(windows))]
-fn chrome_external_dir(all_users: bool) -> Option<PathBuf> {
+fn external_dirs(all_users: bool) -> Vec<(PathBuf, &'static str)> {
     let home = PathBuf::from(std::env::var_os("HOME").unwrap_or_default());
-    let (dir, chrome) = if cfg!(target_os = "macos") {
-        if all_users {
-            (
-                PathBuf::from("/Library/Application Support/Google/Chrome/External Extensions"),
-                PathBuf::from("/Applications/Google Chrome.app"),
-            )
-        } else {
-            let chrome = home.join("Library/Application Support/Google/Chrome");
-            (chrome.join("External Extensions"), chrome)
-        }
-    } else if all_users {
-        (
-            PathBuf::from("/usr/share/google-chrome/extensions"),
-            PathBuf::from("/opt/google/chrome"),
-        )
-    } else {
-        return None;
-    };
-    chrome.exists().then_some(dir)
+    let config = std::env::var_os("XDG_CONFIG_HOME")
+        .map(PathBuf::from)
+        .filter(|p| p.is_absolute())
+        .unwrap_or_else(|| home.join(".config"));
+    mdm_ipc::browsers::external_dirs(&home, &config, cfg!(target_os = "macos"), all_users)
 }
 
 /// Linux: this program runs from inside an AppImage's mount (`APPDIR`), which is gone once the
@@ -982,13 +972,21 @@ fn register(all_users: bool) -> Result<(), String> {
     if !failed.is_empty() {
         return Err(failed.join("; "));
     }
-    if let (Some(dir), Some(id)) = (chrome_external_dir(all_users), store_id()) {
-        std::fs::create_dir_all(&dir).map_err(|e| format!("{}: {e}", dir.display()))?;
-        write_json(
-            &dir.join(format!("{id}.json")),
-            &serde_json::json!({ "external_update_url": STORE_UPDATE_URL }),
-        )?;
-        println!("offered the extension to Chrome in {}", dir.display());
+    // Linux, the .deb's or .rpm's helper for one user: no offer in the home folder, which the
+    // package manager couldn't take away with the package (#266); the app's window offers it.
+    #[cfg(target_os = "linux")]
+    let offer = all_users || program != std::path::Path::new(PACKAGED_HOST);
+    #[cfg(not(target_os = "linux"))]
+    let offer = true;
+    if let Some(id) = store_id().filter(|_| offer) {
+        for (dir, update_url) in external_dirs(all_users) {
+            std::fs::create_dir_all(&dir).map_err(|e| format!("{}: {e}", dir.display()))?;
+            write_json(
+                &dir.join(format!("{id}.json")),
+                &serde_json::json!({ "external_update_url": update_url }),
+            )?;
+            println!("offered the extension in {}", dir.display());
+        }
     }
     Ok(())
 }
@@ -998,7 +996,7 @@ fn unregister(all_users: bool) -> Result<(), String> {
     for (dir, _) in host_dirs(all_users, None) {
         let _ = std::fs::remove_file(dir.join(format!("{HOST_NAME}.json")));
     }
-    if let Some(dir) = chrome_external_dir(all_users) {
+    for (dir, _) in external_dirs(all_users) {
         let _ = std::fs::remove_file(dir.join(format!("{STORE_ID}.json")));
     }
     println!("unregistered {HOST_NAME}");

@@ -1175,27 +1175,22 @@ const MPD = (protect) => `<?xml version="1.0"?>
   ok("video button logo");
 }
 
+// video.js's videoPage, with what it calls (from it to its end mark), run against `location` and
+// `document`: the address the button hands the app for a <video>.
+const videoPageOn = (() => {
+  const source = readFileSync(new URL("../../extension/video.js", import.meta.url), "utf8");
+  const start = source.indexOf("function videoPage(v) {");
+  const end = source.indexOf("// ---- the video's own address: end.");
+  assert.ok(start > 0 && end > start, "video.js has videoPage and its end mark");
+  const body = `${source.slice(start, end)}; return videoPage;`;
+  return (location, document) => new Function("location", "document", body)(location, document);
+})();
+
 // The address the button hands the app (video.js's videoPage): the video's own page, not the page
 // that plays it. YouTube's home, a search, a channel or a playlist is a list to yt-dlp, and a watch
 // page opened from a mix carries the list in its address: the button sent either, and the app
 // offered the whole feed (~50 videos) instead of the one playing. #311.
 {
-  const source = readFileSync(new URL("../../extension/video.js", import.meta.url), "utf8");
-  const start = source.indexOf("function videoPage(v) {");
-  assert.ok(start > 0, "video.js has videoPage");
-  // The function's own braces, so a test never runs a half of it.
-  let depth = 0;
-  let end = start;
-  for (let i = source.indexOf("{", start); i < source.length; i += 1) {
-    if (source[i] === "{") depth += 1;
-    if (source[i] === "}") {
-      depth -= 1;
-      if (depth === 0) {
-        end = i + 1;
-        break;
-      }
-    }
-  }
   // A page: its address, an optional ytd-watch-flexy video-id, and the cards a player can sit in
   // (each level on the way up from the video element names the video links it contains).
   const at = (href, { flexy = null, cards = [] } = {}) => {
@@ -1206,8 +1201,7 @@ const MPD = (protect) => `<?xml version="1.0"?>
     const chain = cards.map(element);
     for (let i = 0; i < chain.length; i += 1) chain[i].parentElement = chain[i + 1] || null;
     const document = { querySelector: (sel) => (sel === "ytd-watch-flexy" && flexy ? { getAttribute: () => flexy } : null) };
-    const fn = new Function("location", "document", `${source.slice(start, end)}; return videoPage;`)({ href }, document);
-    return fn(chain[0] || element([]));
+    return videoPageOn({ href }, document)(chain[0] || element([]));
   };
   // A watch page from a mix or a playlist: the video's own address, without the list.
   assert.equal(at("https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
@@ -1299,22 +1293,212 @@ const MPD = (protect) => `<?xml version="1.0"?>
   ok("in-place navigation and YouTube's player: the video playing now, or nothing");
 }
 
+// A small DOM for the sample pages (tools/extension/feeds): elements with their attributes, open
+// shadow roots (<template shadowrootmode>), `a.href`, and querySelector(All) with the simple
+// selectors video.js uses (a tag, #id, [attr], [attr="v"], [attr*="v"], [attr^="v"], lists).
+function samplePage(html) {
+  const VOID = new Set(["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"]);
+  const ENTITY = { amp: "&", lt: "<", gt: ">", quot: '"', "#39": "'" };
+  const decode = (s) => s.replace(/&(amp|lt|gt|quot|#39);/g, (_, e) => ENTITY[e]);
+  let base = "about:blank";
+  // Descendants in document order, not into shadow roots (as the DOM's own).
+  const descendants = function* (n) {
+    for (const c of n.children) {
+      yield c;
+      yield* descendants(c);
+    }
+  };
+  const compound = (sel) => {
+    const m = /^([a-z][\w-]*)?(?:#([\w-]+))?((?:\[[^\]]+\])*)$/i.exec(sel.trim());
+    assert.ok(m, `a selector the sample DOM reads: ${sel}`);
+    const attrs = [...m[3].matchAll(/\[([\w-]+)(?:([*^]?=)"([^"]*)")?\]/g)].map((a) => ({ name: a[1], op: a[2], value: a[3] }));
+    return (el) =>
+      (!m[1] || el.localName === m[1].toLowerCase()) &&
+      (!m[2] || el.getAttribute("id") === m[2]) &&
+      attrs.every(({ name, op, value }) => {
+        const v = el.getAttribute(name);
+        if (v === null) return false;
+        return !op || (op === "=" ? v === value : op === "*=" ? v.includes(value) : v.startsWith(value));
+      });
+  };
+  const finder = {
+    querySelectorAll(sel) {
+      const any = sel.split(",").map(compound);
+      return [...descendants(this)].filter((el) => any.some((f) => f(el)));
+    },
+    querySelector(sel) {
+      return this.querySelectorAll(sel)[0] || null;
+    },
+  };
+  class Element {
+    constructor(name, attributes, parent) {
+      this.localName = name;
+      this.attributes = attributes;
+      this.children = [];
+      this.parentNode = parent;
+      this.shadowRoot = null;
+    }
+    get parentElement() {
+      return this.parentNode instanceof Element ? this.parentNode : null;
+    }
+    getAttribute(name) {
+      const a = this.attributes.find((x) => x.name === name);
+      return a ? a.value : null;
+    }
+    get href() {
+      return new URL(this.getAttribute("href"), base).href;
+    }
+  }
+  Object.assign(Element.prototype, finder);
+  const doc = { children: [], localName: "#document", ...finder };
+  const stack = [doc];
+  const tags = /<!--[\s\S]*?-->|<!doctype[^>]*>|<\/([\w-]+)\s*>|<([\w-]+)((?:\s+[^\s=/>]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+))?)*)\s*\/?>/gi;
+  for (const t of html.matchAll(tags)) {
+    if (t[1]) {
+      const name = t[1].toLowerCase();
+      const at = stack.findLastIndex((n) => n.localName === name || (name === "template" && n.isShadow));
+      if (at > 0) stack.length = at;
+      continue;
+    }
+    if (!t[2]) continue;
+    const name = t[2].toLowerCase();
+    const attributes = [...(t[3] || "").matchAll(/([^\s=/>]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+)))?/g)].map((a) => ({
+      name: a[1].toLowerCase(),
+      value: decode(a[2] ?? a[3] ?? a[4] ?? ""),
+    }));
+    const parent = stack[stack.length - 1];
+    // A declarative shadow root: what follows, up to its </template>, is the host's shadow tree.
+    if (name === "template" && attributes.some((a) => a.name === "shadowrootmode" && a.value === "open")) {
+      const root = { children: [], localName: "#shadow-root", isShadow: true, host: parent, ...finder };
+      parent.shadowRoot = root;
+      stack.push(root);
+      continue;
+    }
+    const el = new Element(name, attributes, parent);
+    parent.children.push(el);
+    if (!VOID.has(name)) stack.push(el);
+  }
+  // Every element, into shadow roots too (the button finds the videos there).
+  const all = function* (n) {
+    for (const c of n.children) {
+      yield c;
+      if (c.shadowRoot) yield* all(c.shadowRoot);
+      yield* all(c);
+    }
+  };
+  const page = doc.querySelector('meta[name="mdm-page"]').getAttribute("content");
+  base = page;
+  return { document: doc, page, videos: [...all(doc)].filter((e) => e.localName === "video") };
+}
+
+// #689, #643: a video in a feed names the post it sits in, never the feed. Each sample page (our
+// own, reduced to what names a post on each site; tools/extension/feeds) says what each of its
+// videos must name: an address ({origin}: the page's own), "page" (the page is the video's) or
+// "none" (nothing names it: the feed is not sent; its own plain file is, when it has one).
+{
+  const dir = new URL("feeds/", import.meta.url);
+  const pages = readdirSync(dir).filter((f) => f.endsWith(".html"));
+  assert.ok(pages.length >= 12, "the sample pages");
+  // Each page at its own address, and at the big sites' other hosts too.
+  const OTHER = {
+    "x.html": ["https://twitter.com/home", "https://mobile.x.com/home"],
+    "reddit.html": ["https://sh.reddit.com/"],
+    "linkedin.html": ["https://linkedin.com/feed/foryou/"],
+    "facebook.html": ["https://web.facebook.com/", "https://m.facebook.com/"],
+  };
+  let checked = 0;
+  for (const file of pages) {
+    const { document, page, videos } = samplePage(readFileSync(new URL(file, dir), "utf8"));
+    assert.ok(videos.length, `${file}: its videos`);
+    for (const at of [page, ...(OTHER[file] || [])]) {
+      const location = new URL(at);
+      const videoPage = videoPageOn(location, document);
+      for (const [i, v] of videos.entries()) {
+        const expect = v.getAttribute("data-expect");
+        const want = expect === "page" ? location.href : expect === "none" ? null : expect.replaceAll("{origin}", location.origin);
+        const got = videoPage(v);
+        assert.equal(got, want, `${file} at ${at}: video ${i + 1}`);
+        // Never the page itself, unless it is the video's own.
+        if (expect !== "page") assert.notEqual(got, location.href, `${file}: video ${i + 1} named the page`);
+        checked += 1;
+      }
+    }
+  }
+  ok(`#689: a video in a feed names its post, never the feed (${pages.length} sample pages, ${checked} videos)`);
+}
+
+// What the resolvers build is a form yt-dlp's extractors read (their _VALID_URL, yt-dlp
+// 2026.08.19), so the app's lookup finds the one video.
+{
+  const YTDLP = [
+    /^https?:\/\/(?:www\.)?linkedin\.com\/feed\/update\/urn:li:activity:(\d+)/,
+    /^https?:\/\/(?:[\w-]+\.)?facebook\.com\/(?:(?:permalink\.php|video\.php|watch\/?)\?(?:.*?)(?:v|story_fbid)=|[^/]+\/videos\/(?:[^/]+\/)?|[^/]+\/posts\/|groups\/[^/]+\/(?:permalink|posts)\/|reel\/)(pfbid[A-Za-z0-9]+|\d+)/,
+    /^https?:\/\/(?:(?:www|m(?:obile)?)\.)?(?:twitter|x)\.com\/(?:(?:i\/web|[^/]+)\/status|statuses)\/(\d+)/,
+    /^https?:\/\/(?:www\.)?instagram\.com(?:\/[^/?#]+)?\/(?:p|tv|reels?)\/([^/?#&]+)/,
+    /^https?:\/\/(?:\w+\.)?reddit\.com\/(?:(?:r|user)\/[^/]+\/)?comments\/([^/?#&]+)/,
+    /^https?:\/\/www\.tiktok\.com\/@[\w.-]+\/video\/(\d+)/,
+    /^https?:\/\/vimeo\.com\/(\d+)(?:\/[\da-f]{10})?$/,
+    /^https?:\/\/www\.dailymotion\.com\/video\/([^/?_&#]+)/,
+  ];
+  const dir = new URL("feeds/", import.meta.url);
+  let checked = 0;
+  for (const file of readdirSync(dir).filter((f) => f.endsWith(".html") && !/^(social|article)\.html$/.test(f))) {
+    const { page, videos } = samplePage(readFileSync(new URL(file, dir), "utf8"));
+    for (const v of videos) {
+      const expect = v.getAttribute("data-expect").replaceAll("{origin}", new URL(page).origin);
+      // fb.watch's short links lead to the video's page; a LinkedIn post known by its ugcPost
+      // URN is its public page, which yt-dlp's generic reader reads.
+      if (expect === "none" || expect === "page" || expect.startsWith("https://fb.watch/") || /urn:li:ugcPost:/.test(expect)) continue;
+      assert.ok(YTDLP.some((r) => r.test(expect)), `${file}: ${expect} is a form yt-dlp reads`);
+      checked += 1;
+    }
+  }
+  ok(`#689: the ${checked} addresses built are forms yt-dlp's extractors read`);
+}
+
+// #689: what the background does with what video.js named on a feed. A post: it goes alone (no
+// stream the tab loaded, which may be another video's, nor the feed's title), the feed as its
+// Referer. Nothing named: never the feed; the video's own plain file when it has one (the feed
+// as its Referer), else nothing and the button says to open the post.
+{
+  const message = (listeners, m, sender) => new Promise((r) => listeners.message(m, sender, (x) => r(JSON.parse(JSON.stringify(x)))));
+  const at = (url) => ({ id: "ours", url, frameId: 0, tab: { id: 4, url, incognito: false } });
+  const videos = (calls) => natives(calls).filter((m) => m.video);
+  const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  const feed = "https://www.linkedin.com/feed/";
+  // A stream the feed loaded (another video's, as far as anyone knows).
+  listeners.responseStarted({ tabId: 4, frameId: 0, url: "https://cdn.test/feed/master.m3u8", responseHeaders: [] });
+  const post = "https://www.linkedin.com/feed/update/urn:li:activity:7390000000000000001/";
+  assert.equal((await message(listeners, { type: "video", url: post, src: "", title: "Feed | LinkedIn" }, at(feed))).ok, true);
+  assert.deepEqual(
+    (({ url, src, title, referrer }) => ({ url, src, title, referrer }))(videos(calls).at(-1)),
+    { url: post, src: undefined, title: "", referrer: feed },
+    "the post alone, the feed as its Referer",
+  );
+  // Nothing names it, no file of its own: nothing goes, and the button says why.
+  const r = await message(listeners, { type: "video", url: null, src: "", title: "Feed | LinkedIn" }, at(feed));
+  assert.deepEqual([r.ok, r.why], [false, "feed"]);
+  assert.equal(videos(calls).length, 1, "the feed is never sent");
+  // Nothing names it, its own plain file: that file, the feed as its Referer, no title.
+  await message(listeners, { type: "video", url: null, src: "https://media.test/clip.mp4", title: "Home" }, at("https://social.test/home"));
+  const file = videos(calls).at(-1);
+  assert.deepEqual([file.src, file.url, file.title], ["https://media.test/clip.mp4", "https://social.test/home", ""]);
+  // Another host of the same site is the site's (Facebook's short links, X's old name).
+  await message(listeners, { type: "video", url: "https://fb.watch/sAmPlE7x/", src: "" }, at("https://web.facebook.com/"));
+  assert.equal(videos(calls).at(-1).url, "https://fb.watch/sAmPlE7x/");
+  await message(listeners, { type: "video", url: "https://x.com/someone/status/1", src: "" }, at("https://twitter.com/home"));
+  assert.equal(videos(calls).at(-1).url, "https://x.com/someone/status/1");
+  // Another site's address named by a page is not taken: the page's own goes, as before.
+  await message(listeners, { type: "video", url: "https://elsewhere.test/v/1", src: "" }, at("https://news.test/story"));
+  assert.equal(videos(calls).at(-1).url, "https://news.test/story");
+  ok("#689: a post alone, the video's own file, or nothing; never the feed");
+}
+
 // Shorts and live streams name their video in the path (video.js videoPage); the page is the
 // video's, not a list. Their addresses as yt-dlp reads them (the same video as watch?v=).
 {
-  const source = readFileSync(new URL("../../extension/video.js", import.meta.url), "utf8");
-  const start = source.indexOf("function videoPage(v) {");
-  let depth = 0;
-  let end = start;
-  for (let i = source.indexOf("{", start); i < source.length; i += 1) {
-    if (source[i] === "{") depth += 1;
-    if (source[i] === "}" && --depth === 0) {
-      end = i + 1;
-      break;
-    }
-  }
-  const named = (href) =>
-    new Function("location", "document", `${source.slice(start, end)}; return videoPage;`)({ href }, { querySelector: () => null })({ parentElement: null, querySelectorAll: () => [] });
+  const named = (href) => videoPageOn({ href }, { querySelector: () => null })({ parentElement: null, querySelectorAll: () => [] });
   assert.equal(named("https://www.youtube.com/shorts/cxkLg22mWco"), "https://www.youtube.com/watch?v=cxkLg22mWco");
   assert.equal(named("https://www.youtube.com/shorts/cxkLg22mWco?feature=share"), "https://www.youtube.com/watch?v=cxkLg22mWco");
   assert.equal(named("https://m.youtube.com/shorts/cxkLg22mWco"), "https://www.youtube.com/watch?v=cxkLg22mWco");
@@ -1818,6 +2002,386 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   assert.deepEqual(steps(calls), []);
   ok("#208 Firefox: a type not taken goes on to the browser, said once");
 }
+// Pages, pictures, feeds, add-ons, redirects, pieces and errors are never held; an inline PDF
+// opens when Options don't take the files the browser would open; a type the browser can't show
+// is a download even without "attachment".
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true, rules: { opened: false } });
+  load(api, true);
+  await settle();
+  for (const [url, headers, more] of [
+    ["https://x.test/", { "Content-Type": "text/html; charset=utf-8" }],
+    ["https://x.test/p.png", { "Content-Type": "image/png" }],
+    ["https://x.test/doc.pdf", { "Content-Type": "application/pdf" }],
+    ["https://x.test/a.json", { "Content-Type": "application/json" }],
+    ["https://x.test/feed", { "Content-Type": "application/rss+xml" }],
+    ["https://x.test/addon.xpi", { "Content-Type": "application/x-xpinstall" }],
+    ["https://x.test/old.zip", { "Content-Type": "application/zip", Location: "https://x.test/new.zip" }, { statusCode: 302 }],
+    ["https://x.test/part.zip", { "Content-Type": "application/zip" }, { statusCode: 206 }],
+    ["https://x.test/gone.zip", { "Content-Type": "application/zip" }, { statusCode: 404 }],
+    ["https://x.test/untyped", {}],
+  ]) {
+    assert.deepEqual(await held(listeners, answer(url, headers, more)), {}, url);
+  }
+  assert.deepEqual(natives(calls), []);
+  assert.deepEqual(notices(calls), []);
+  assert.deepEqual(await held(listeners, answer("https://x.test/dl/setup.exe", { "Content-Type": "application/x-msdownload", "Content-Length": "10" })), { cancel: true });
+  assert.equal(natives(calls)[0].filename, "setup.exe");
+  ok("#208 Firefox: pages, pictures, redirects, inline PDFs untouched; an unshowable type taken");
+}
+// A PDF the browser would show is taken when Options say so; the app saying no lets the browser
+// go on.
+{
+  const taken = fakeApi({ firefox: true });
+  load(taken.api, true);
+  await settle();
+  assert.deepEqual(await held(taken.listeners, answer("https://x.test/doc.pdf", { "Content-Type": "application/pdf" })), { cancel: true });
+  const refused = fakeApi({ firefox: true, reply: { ok: false } });
+  load(refused.api, true);
+  await settle();
+  assert.deepEqual(await held(refused.listeners, answer("https://x.test/a.zip", { "Content-Type": "application/zip" })), {});
+  assert.equal(natives(refused.calls).length, 1);
+  ok("#208 Firefox: a PDF taken when Options say so; the app's no lets the browser go on");
+}
+// Alt held, Options' excluded sites, a file under the minimum size, a form that can't be posted
+// again, paused: the browser keeps it, nothing asked.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true, rules: { excludedSites: "*.skip.test", minKb: 100 } });
+  load(api, true);
+  await settle();
+  const send = ask(listeners);
+  const zip = { "Content-Type": "application/zip" };
+  await send({ type: "bypass", url: "https://x.test/alt.zip" }, { id: "ours", url: "https://x.test/", tab: { url: "https://x.test/" } });
+  assert.deepEqual(await held(listeners, answer("https://x.test/alt.zip", zip)), {});
+  assert.deepEqual(await held(listeners, answer("https://dl.skip.test/a.zip", zip)), {});
+  assert.deepEqual(await held(listeners, answer("https://x.test/small.zip", { ...zip, "Content-Length": "2048" })), {});
+  listeners.beforeRequest({ method: "POST", url: "https://x.test/upload", requestId: "p1", requestBody: { raw: [{ file: "C:\\f" }] } });
+  const upload = answer("https://x.test/upload", { ...zip, "Content-Disposition": "attachment; filename=r.zip" }, { method: "POST", requestId: "p1" });
+  assert.deepEqual(await held(listeners, upload), {});
+  assert.deepEqual(natives(calls), []);
+  await send({ type: "pause", paused: true }, { id: "ours", url: "chrome-extension://ours/popup.html" });
+  assert.deepEqual(await held(listeners, answer("https://x.test/paused.zip", zip)), {});
+  assert.deepEqual(natives(calls), []);
+  ok("#208 Firefox: Alt, excluded sites, small files, file uploads and pause stay the browser's");
+}
+// A private window's download goes as one; a tab opened only for it closes with it.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true });
+  load(api, true);
+  await settle();
+  listeners.tabCreated({ id: 12 });
+  const res = await held(listeners, answer("https://x.test/p.zip", { "Content-Type": "application/zip" }, { incognito: true, tabId: 12 }));
+  assert.deepEqual(res, { cancel: true });
+  await settle();
+  assert.equal(natives(calls)[0].private, true);
+  assert.ok(calls.some((c) => c[0] === "closeTab" && c[1] === 12));
+  ok("#208 Firefox: private stays private; a tab opened for the download closes");
+}
+// Chromium has its own pause (onDeterminingFilename): no answer is held there.
+{
+  const { api, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  await settle();
+  assert.equal(listeners.headersReceived, undefined);
+  ok("#208 Chromium: answers aren't held");
+}
+// #603: only a tokenized Colab runtime-proxy transfer stays with the browser. A normal
+// download linked from a Colab notebook is still offered to MDM.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  await settle();
+  let suggested;
+  listeners.determining(
+    {
+      id: 91,
+      url: "https://us-west1-colab.googleusercontent.com/files/out.zip?colab-runtime-proxy-token=secret",
+      finalUrl: "https://us-west1-colab.googleusercontent.com/files/out.zip?colab-runtime-proxy-token=secret",
+      referrer: "https://colab.research.google.com/drive/abc",
+      filename: "out.zip",
+      totalBytes: 1024,
+      mime: "application/zip",
+    },
+    (value) => (suggested = value),
+  );
+  await settle();
+  assert.ok(suggested, "the browser keeps the authenticated runtime-proxy download");
+  assert.equal(natives(calls).length, 0);
+  ok("#603 Chromium: tokenized Colab runtime-proxy download stays in the browser");
+}
+{
+  const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  await settle();
+  listeners.determining(
+    {
+      id: 92,
+      url: "https://github.com/example/data/archive/refs/heads/main.zip",
+      finalUrl: "https://github.com/example/data/archive/refs/heads/main.zip",
+      referrer: "https://colab.research.google.com/drive/abc",
+      filename: "data.zip",
+      totalBytes: 4096,
+      mime: "application/zip",
+    },
+    () => {},
+  );
+  await settle();
+  assert.equal(natives(calls).length, 1, "ordinary notebook links remain capturable");
+  ok("#603 Chromium: a GitHub file linked from Colab is still handed to MDM");
+}
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true });
+  load(api, true);
+  await settle();
+  const url = "https://us-west1.prod.r.colab.dev/files/out.zip?colab-runtime-proxy-token=secret";
+  listeners.beforeSendHeaders({
+    requestId: "r-colab",
+    method: "GET",
+    type: "main_frame",
+    url,
+    originUrl: "https://colab.research.google.com/drive/abc",
+    requestHeaders: [],
+  });
+  const response = await held(
+    listeners,
+    answer(
+      url,
+      {
+        "Content-Type": "application/zip",
+        "Content-Disposition": "attachment; filename=out.zip",
+        "Content-Length": "1024",
+      },
+      { requestId: "r-colab" },
+    ),
+  );
+  assert.deepEqual(response, {});
+  assert.equal(natives(calls).length, 0, "Firefox leaves the authenticated transfer to the browser");
+  ok("#603 Firefox: tokenized Colab runtime-proxy download stays in the browser");
+}
+
+// A token alone is not enough: unrelated hosts must still be captured.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  await settle();
+  listeners.determining(
+    {
+      id: 93,
+      url: "https://downloads.example/data.zip?colab-runtime-proxy-token=not-colab",
+      finalUrl: "https://downloads.example/data.zip?colab-runtime-proxy-token=not-colab",
+      referrer: "https://colab.research.google.com/drive/abc",
+      filename: "data.zip",
+      totalBytes: 4096,
+      mime: "application/zip",
+    },
+    () => {},
+  );
+  await settle();
+  assert.equal(natives(calls).length, 1, "a token on a non-proxy host must not bypass MDM");
+  ok("#603 Chromium: tokenized non-Colab URLs remain capturable");
+}
+{
+  const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  await settle();
+  listeners.determining(
+    {
+      id: 94,
+      url: "https://prod.r.colab.dev/files/out.zip",
+      finalUrl: "https://prod.r.colab.dev/files/out.zip",
+      referrer: "https://colab.research.google.com/drive/abc",
+      filename: "out.zip",
+      totalBytes: 4096,
+      mime: "application/zip",
+    },
+    () => {},
+  );
+  await settle();
+  assert.equal(natives(calls).length, 1, "a proxy host without its token must not bypass MDM");
+  ok("#603 Chromium: an un-tokenized Colab host remains capturable");
+}
+
+// The manifests (#42): "proxy" optional in Firefox's, required in Chrome's (it can't be optional
+// there); the popup's switch: the permission in Firefox, the extension's own setting in Chrome.
+{
+  const chrome = JSON.parse(readFileSync(new URL("../../extension/manifest.json", import.meta.url), "utf8"));
+  const firefox = JSON.parse(readFileSync(new URL("../../extension/manifest.firefox.json", import.meta.url), "utf8"));
+  assert.ok((chrome.permissions || []).includes("proxy") && !(chrome.optional_permissions || []).includes("proxy"), "Chrome: proxy required");
+  assert.ok(!(firefox.permissions || []).includes("proxy"), "Firefox: proxy not required");
+  assert.deepEqual(firefox.optional_permissions, ["proxy"], "Firefox: proxy optional");
+  const popup = readFileSync(new URL("../../extension/popup.js", import.meta.url), "utf8");
+  assert.ok(/optional_permissions \|\| \[\]\)\.includes\("proxy"\)/.test(popup), "Firefox's switch where proxy is optional");
+  assert.ok(/permissions\.request\(PROXY\)/.test(popup) && /permissions\.remove\(PROXY\)/.test(popup), "asked for and taken back on the switch");
+  assert.ok(/storage\.local\s*\.get\(\{ proxyOn: false \}\)/.test(popup) && /storage\.local\.set\(\{ proxyOn: box\.checked \}\)/.test(popup), "Chrome's switch: its own setting");
+  assert.ok(/const PROXY_SWITCH = "proxyOn"/.test(code), "the same setting in background.js");
+  const en = JSON.parse(readFileSync(new URL("../../extension/_locales/en/messages.json", import.meta.url), "utf8"));
+  assert.ok(en.popup_proxy && en.popup_proxy_title && en.popup_proxy_title_chromium, "the switch's texts");
+  ok("manifests: proxy optional in Firefox, required in Chrome; the popup's switch in each");
+}
+// Another MDM (#157): the file types caught for it are the app's defaults, and every message
+// the pairing can end with is there.
+{
+  const capture = readFileSync(new URL("../../crates/ipc/src/capture.rs", import.meta.url), "utf8");
+  const app = /pub const DEFAULT_AUTO_TYPES: &str = "([^"]+)"/.exec(capture)[1];
+  const ours = /const DEFAULT_TYPES =\s*"([^"]+)"/.exec(code)[1];
+  assert.equal(ours, app, "DEFAULT_TYPES is the app's DEFAULT_AUTO_TYPES");
+  const english = JSON.parse(readFileSync(new URL("../../extension/_locales/en/messages.json", import.meta.url), "utf8"));
+  for (const why of ["address", "unreachable", "wrong_code", "no_code", "too_soon", "failed", "device_name"]) {
+    assert.ok(english[`remote_${why}`], `remote_${why}`);
+  }
+  assert.ok(english.status_remote, "status_remote");
+  ok("another MDM: the app's file types, every pairing message");
+}
+// Safari has no downloads API: the extension still starts, and a link page.js holds (a file type
+// Options lists) is offered to the app as a browser's download is; the app taking it is told to
+// page.js, which lets the click go on when it isn't.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true, safari: true });
+  load(api, true);
+  const send = (m, sender) => new Promise((r) => listeners.message(m, sender, (v) => r(JSON.parse(JSON.stringify(v)))));
+  const sender = { id: "ours", frameId: 0, url: "https://page.test/", tab: { id: 3, url: "https://page.test/dl", incognito: false } };
+  assert.deepEqual(await send({ type: "link", url: "https://x.test/files/a.zip" }, sender), { taken: true });
+  const m = natives(calls)[0];
+  assert.deepEqual([m.url, m.filename, m.referrer, m.cookies], ["https://x.test/files/a.zip", "a.zip", "https://page.test/dl", "sid=1"]);
+  assert.ok(!("explicit" in m), "Options' rules apply, as for the browser's own downloads");
+  // Not a listed type: the click goes on, and MDM's log hears why.
+  calls.length = 0;
+  assert.deepEqual(await send({ type: "link", url: "https://x.test/page.html" }, sender), { taken: false });
+  await settle();
+  assert.deepEqual(natives(calls), []);
+  assert.deepEqual(notices(calls), [{ why: "file-type", name: "page.html", site: "x.test" }]);
+  // A `download` name (page.js sends it) decides the type and names the file.
+  calls.length = 0;
+  assert.deepEqual(await send({ type: "link", url: "https://x.test/dl?id=4", name: "b.iso" }, sender), { taken: true });
+  assert.equal(natives(calls)[0].filename, "b.iso");
+  // An address's own name reaches the app readable, not percent-encoded.
+  calls.length = 0;
+  assert.deepEqual(await send({ type: "link", url: "https://x.test/f/My%20Report.zip?x=1" }, sender), { taken: true });
+  assert.equal(natives(calls)[0].filename, "My Report.zip");
+  calls.length = 0;
+  assert.deepEqual(await send({ type: "link", url: "https://x.test/f/bad%ZZ.zip" }, sender), { taken: true });
+  assert.equal(natives(calls)[0].filename, "bad%ZZ.zip", "not percent-encoding: left as it is");
+  // page.js's "rules" at a page's start: fresh ones aren't asked for again.
+  calls.length = 0;
+  assert.deepEqual(await send({ type: "rules" }, sender), { ok: true });
+  await settle();
+  assert.deepEqual(natives(calls), []);
+  // A PDF is the browser's own to open unless Options say to take such files too.
+  const closed = fakeApi({ firefox: true, safari: true, rules: { opened: false } });
+  load(closed.api, true);
+  const closedAsk = (m) => new Promise((r) => closed.listeners.message(m, sender, (v) => r(JSON.parse(JSON.stringify(v)))));
+  assert.deepEqual(await closedAsk({ type: "link", url: "https://x.test/d.pdf" }, sender), { taken: false });
+  assert.deepEqual(await closedAsk({ type: "link", url: "https://x.test/d.zip" }, sender), { taken: true });
+  // The app says no: the click goes on.
+  const refused = fakeApi({ firefox: true, safari: true, reply: { ok: false } });
+  load(refused.api, true);
+  const ask = (m, sender) => new Promise((r) => refused.listeners.message(m, sender, (v) => r(JSON.parse(JSON.stringify(v)))));
+  assert.deepEqual(await ask({ type: "link", url: "https://x.test/b.iso" }, sender), { taken: false });
+  // Alt held: the browser's own (page.js sends `bypass`).
+  await ask({ type: "bypass", url: "https://x.test/c.zip" }, sender);
+  assert.deepEqual(await ask({ type: "link", url: "https://x.test/c.zip" }, sender), { taken: false });
+  ok("Safari: no downloads API; a held link is offered to the app, else the click goes on");
+}
+
+// page.js, in a page: Safari holds a plain click on a link to a listed file type, tells the app,
+// and (when it isn't taken) clicks again; Alt and other types are never held.
+{
+  const pageCode = readFileSync(new URL("../../extension/page.js", import.meta.url), "utf8");
+  const run = async ({ safari, taken, types = "ZIP ISO R0*", capture = true }) => {
+    const sent = [];
+    const handlers = {};
+    class Element {
+      constructor(href, attrs = {}) {
+        Object.assign(this, { href, attrs });
+        this.clicks = 0;
+      }
+      closest() {
+        return this;
+      }
+      getAttribute(n) {
+        return this.attrs[n] || "";
+      }
+      click() {
+        this.dispatchEvent(new MouseEvent("click", {}));
+      }
+      dispatchEvent(ev) {
+        this.clicks++;
+        this.again = ev;
+        handlers.click({ type: "click", button: 0, isTrusted: false, target: this, preventDefault() {} });
+      }
+    }
+    class MouseEvent {
+      constructor(type, init) {
+        Object.assign(this, { type }, init);
+      }
+    }
+    const stored = { rules: { types, capture } };
+    const api = {
+      runtime: {
+        id: "ours",
+        getManifest: () => (safari ? { browser_specific_settings: { safari: {} } } : {}),
+        sendMessage: async (m) => (sent.push(JSON.parse(JSON.stringify(m))), m.type === "link" ? { taken } : { ok: true }),
+      },
+      storage: { local: { get: async () => stored }, onChanged: { addListener() {}, removeListener() {} } },
+    };
+    vm.runInNewContext(pageCode, {
+      browser: api,
+      Element,
+      MouseEvent,
+      URL,
+      Promise,
+      addEventListener: (n, f) => (handlers[n] = f),
+      removeEventListener() {},
+    });
+    await settle();
+    const click = (href, extra = {}, attrs) => {
+      const a = new Element(href, attrs);
+      const e = { type: "click", button: 0, isTrusted: true, altKey: false, target: a, defaultPrevented: false, preventDefault() { this.defaultPrevented = true; }, ...extra };
+      handlers.click(e);
+      return { a, e };
+    };
+    return { click, sent, settle };
+  };
+  let t = await run({ safari: true, taken: true });
+  let { a, e } = t.click("https://x.test/f/a.zip");
+  await t.settle();
+  assert.ok(e.defaultPrevented && a.clicks === 0);
+  // At the page's start it has the rules refreshed when old (Safari's background sees no downloads).
+  assert.deepEqual(t.sent, [{ type: "rules" }, { type: "link", url: "https://x.test/f/a.zip" }]);
+  // R0* is a wildcard; the type is the last name's, the query is not part of it.
+  ({ e } = t.click("https://x.test/f/a.r07?x=1.html"));
+  assert.ok(e.defaultPrevented);
+  ({ e } = t.click("https://x.test/f/page.html"));
+  assert.ok(!e.defaultPrevented, "not a listed type");
+  ({ e } = t.click("https://x.test/f/a.zip", { altKey: true }));
+  assert.ok(!e.defaultPrevented, "Alt: the browser's");
+  assert.deepEqual(t.sent.at(-1), { type: "bypass", url: "https://x.test/f/a.zip" });
+  ({ e } = t.click("https://x.test/dl?id=4", {}, { download: "b.iso" }));
+  assert.ok(e.defaultPrevented, "a download attribute names the type");
+  assert.deepEqual(t.sent.at(-1), { type: "link", url: "https://x.test/dl?id=4", name: "b.iso" }, "and is sent with it");
+  ({ e } = t.click("https://x.test/f/a.zip", { button: 1 }));
+  assert.ok(!e.defaultPrevented, "only the primary button");
+  // The app doesn't take it: the same link is clicked again, untrusted, and let through.
+  t = await run({ safari: true, taken: false });
+  ({ a, e } = t.click("https://x.test/f/a.zip"));
+  await t.settle();
+  assert.ok(e.defaultPrevented && a.clicks === 1, "clicked again");
+  // Cmd held (a new tab): the click let through holds it too.
+  ({ a } = t.click("https://x.test/f/a.zip", { metaKey: true, shiftKey: false, ctrlKey: false }));
+  await t.settle();
+  assert.ok(a.clicks === 1 && a.again.metaKey === true && a.again.bubbles, "Cmd kept");
+  assert.equal(t.sent.filter((m) => m.type === "link").length, 2, "the clicks let through are not held");
+  // Capture off in Options, or another browser: nothing held.
+  t = await run({ safari: true, taken: true, capture: false });
+  assert.ok(!t.click("https://x.test/f/a.zip").e.defaultPrevented);
+  t = await run({ safari: false, taken: true });
+  assert.ok(!t.click("https://x.test/f/a.zip").e.defaultPrevented, "Chrome and Firefox take it from the downloads API");
+  ok("Safari: page.js holds a click on a listed file type, never Alt or other types");
+}
+assert.deepEqual(complaints, [], "nothing written to the console as an error or warning");
+
+console.log(`extension: ${passed} checks passed`);
+
 // #607: Firefox may use originUrl to improve a sent Referer, but must not invent one when
 // Referrer-Policy suppressed the header.
 {
@@ -2139,3 +2703,4 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
 assert.deepEqual(complaints, [], "nothing written to the console as an error or warning");
 
 console.log(`extension: ${passed} checks passed`);
+
