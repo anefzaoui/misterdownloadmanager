@@ -1856,6 +1856,34 @@ pub fn main_minimize_to_tray(ctx: &egui::Context, enabled: bool) -> bool {
 /// has 2).
 const TRAY_ICON_IDS: u32 = 16;
 
+/// Probe from the tray's worker, never from the window thread: both shell calls below may
+/// wait for Explorer. The window value is passed across threads as an integer; no TrayIcon
+/// is used outside its owning thread.
+pub fn tray_shell_icon(hwnd: isize, known: Option<u32>) -> (crate::tray::ShellIcon, Option<u32>) {
+    use windows_sys::Win32::UI::Shell::{NOTIFYICONIDENTIFIER, Shell_NotifyIconGetRect};
+    let hwnd = hwnd as HWND;
+    let id = tray_icon_held(hwnd, known);
+    let placed = id.is_some_and(|id| {
+        let ident = NOTIFYICONIDENTIFIER {
+            cbSize: size_of::<NOTIFYICONIDENTIFIER>() as u32,
+            hWnd: hwnd,
+            uID: id,
+            // SAFETY: a plain C struct; a zero GUID selects the window/id pair.
+            ..unsafe { zeroed() }
+        };
+        // SAFETY: both structures live for the call. A destroyed window simply fails.
+        let mut rect = unsafe { zeroed() };
+        unsafe { Shell_NotifyIconGetRect(&ident, &mut rect) >= 0 }
+    }) && std::env::var_os("MDM_TEST_TRAY_RECT").is_none_or(|v| v != "0");
+    (
+        crate::tray::ShellIcon {
+            placed,
+            held: id.is_some(),
+        },
+        id,
+    )
+}
+
 /// Whether the shell holds a notification-area icon of `hwnd` (the tray's own hidden window,
 /// which has one icon), and its id: `known` first, else each id up to [`TRAY_ICON_IDS`]. An
 /// empty `NIM_MODIFY` changes nothing and succeeds only for an icon the shell has, wherever it
