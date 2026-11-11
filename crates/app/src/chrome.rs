@@ -2358,12 +2358,12 @@ mod tests {
     #[test]
     fn menu_depth_includes_nested_submenus() {
         let entries: Vec<MenuEntry<()>> = vec![MenuEntry::Sub(
-            "First",
+            "Open",
             true,
             vec![MenuEntry::Sub(
-                "Second",
+                "Open folder",
                 true,
-                vec![MenuEntry::Item("Run", (), true, false)],
+                vec![MenuEntry::Item("Open", (), true, false)],
             )],
         )];
         assert_eq!(menu_depth(&entries), 2);
