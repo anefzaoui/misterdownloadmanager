@@ -505,6 +505,8 @@ These ship in the next version.
 
 - ✅ Sites behind Akamai's bot check (a 403 page for MDM, the file for a browser) download, through the
   browser-like connection ([#771](https://github.com/anefzaoui/misterdownloadmanager/issues/771))
+- ✅ Crash and freeze reports no longer have their log's end filled with warnings about the
+  file-type icons ([#767](https://github.com/anefzaoui/misterdownloadmanager/issues/767))
 - ✅ Videos and image galleries keep to the speed limits (for one file, their own, and all
   downloads together), and start again with a new one when it changes; one started while the
   Scheduler's download limit is reached waits
