@@ -573,6 +573,15 @@ These ship in a later version, when they're ready.
 - 🔄 In English, the list's dates on the system's 12- or 24-hour clock
   ([#392](https://github.com/anefzaoui/misterdownloadmanager/issues/392)): in review
 - 🔄 Help: when an antivirus or VirusTotal flags MDM
+- 🔄 The Download video button lists the video's qualities, with their sizes, in a menu on the
+  page, video and audio in their own tabs: the one picked downloads at once with only its progress
+  window, MDM's main window staying where it is; "Open in Mister Download Manager…" keeps the
+  Download video window. A stream the page plays (HLS) is listed at once, read by MDM itself; the
+  same video asked again within 10 minutes opens at once; the pick starts without looking the
+  video up a second time: in review
+- 🔄 Picking a video quality already in the list (the menu over a video, the Download video window)
+  follows Options' duplicate setting instead of downloading it again: in review
+- 🔄 The progress window's bar glides instead of moving in steps: in review
 - 🔄 Linux, what's left ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
   screen readers (Orca) reading MDM's windows; browsers installed as a Flatpak (Firefox from
   Flathub may reach MDM through the desktop, as the Snap does: to check); native Wayland windows
@@ -671,11 +680,15 @@ These ship in a later version, when they're ready.
 - 🔄 Add URL's **Use authorization** empty for an address with a login in Options → Sites
   Logins, though the download used it
   ([#511](https://github.com/anefzaoui/misterdownloadmanager/issues/511)): fix in review
-- 🔄 Windows: closing the window left MDM in the taskbar instead of the notification area
-  when its icon was among the hidden icons behind ^
-  ([#545](https://github.com/anefzaoui/misterdownloadmanager/issues/545),
-  [#534](https://github.com/anefzaoui/misterdownloadmanager/issues/534),
-  [#527](https://github.com/anefzaoui/misterdownloadmanager/issues/527)): fix in review
+- 🔄 Windows: closing the window left MDM minimized in the taskbar instead of the notification
+  area while its icon was there, among the hidden icons behind ^ (0.5.2;
+  [#750](https://github.com/anefzaoui/misterdownloadmanager/issues/750), [#718](https://github.com/anefzaoui/misterdownloadmanager/issues/718),
+  [#754](https://github.com/anefzaoui/misterdownloadmanager/issues/754), [#545](https://github.com/anefzaoui/misterdownloadmanager/issues/545),
+  [#534](https://github.com/anefzaoui/misterdownloadmanager/issues/534), [#527](https://github.com/anefzaoui/misterdownloadmanager/issues/527)): MDM
+  now keeps the window in the taskbar only when Windows says it has no icon of MDM's, not when
+  Windows can't say where the icon is; fix in review, to confirm on Windows 10
+- 🔄 The window freezing while Explorer was slow to answer about MDM's notification-area icon
+  ([#747](https://github.com/anefzaoui/misterdownloadmanager/issues/747)): asked beside the window now; fix in review
 - 🔄 Two tests that fail now and then on busy CI runners
   ([#518](https://github.com/anefzaoui/misterdownloadmanager/issues/518)): the slow-flush one
   now measures the transfer instead of how fast the runner's disk takes in the file (Windows
@@ -752,6 +765,7 @@ These ship in a later version, when they're ready.
   ([#335](https://github.com/anefzaoui/misterdownloadmanager/issues/335)): fix in review
 - 🔄 A duplicate prompt for a finished file that is gone
   ([#342](https://github.com/anefzaoui/misterdownloadmanager/issues/342)): fix in review
+- 🔄 No size for a stream's qualities (HLS) in the Download video window: fix in review
 - 🔍 A 10-second freeze of the window after a night left open
   ([#304](https://github.com/anefzaoui/misterdownloadmanager/issues/304)): most likely the
   computer waking from sleep; waiting on the reporter's full report

@@ -951,6 +951,15 @@ pub fn http_client(opts: &Options, url: &Url) -> Result<Client, Error> {
     client(opts, url, &AsGet::default(), &Default::default())
 }
 
+/// A client for one request to `url`'s server, as [`http_client`]'s, that follows no redirect
+/// and adds no `Referer` of its own: its caller follows each hop itself, with a client for that
+/// hop's server (its proxy and adapter checks are that server's), and decides which of its
+/// headers go there (the browser's quality menu reading a stream's manifest, mdm-tools'
+/// `manifest`: the browser's cookie never reaches another server).
+pub fn hop_client(opts: &Options, url: &Url) -> Result<Client, Error> {
+    client_with(opts, url, &AsGet::default(), &Default::default(), false)
+}
+
 /// The file's name: the server's (Content-Disposition), else the service's (#44), else the
 /// address's.
 fn name_for(cd: Option<&str>, url: &Url, unlocked: Option<&crate::unlock::Unlocked>) -> String {
@@ -1441,6 +1450,17 @@ fn client(
     as_get: &AsGet,
     seen: &Arc<crate::server::ServerSeen>,
 ) -> Result<Client, Error> {
+    client_with(opts, url, as_get, seen, true)
+}
+
+/// [`client`], following redirects (`follow`) or none at all ([`hop_client`]).
+fn client_with(
+    opts: &Options,
+    url: &Url,
+    as_get: &AsGet,
+    seen: &Arc<crate::server::ServerSeen>,
+    follow: bool,
+) -> Result<Client, Error> {
     let port = url.port_or_known_default().unwrap_or(443);
     let route = &opts.route;
     // An IP address in the URL never reaches the resolver, which drops what the chosen adapter
@@ -1559,7 +1579,11 @@ fn client(
         Some(_) => as_get.policy(),
         None => get_policy(),
     };
-    let builder = if route.is_any() {
+    let builder = if !follow {
+        builder
+            .redirect(reqwest::redirect::Policy::none())
+            .referer(false)
+    } else if route.is_any() {
         builder.redirect(inner)
     } else {
         let route = route.clone();

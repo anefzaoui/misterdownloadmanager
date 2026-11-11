@@ -24,7 +24,8 @@ pub mod verify;
 pub use dns::{Dns, DnsChoice, DnsError};
 pub use download::{
     Destination, Download, Error, Event, FileHook, KeptAnswer, NetKind, Options, Outcome,
-    ProbeInfo, Proxy, Request, Snapshot, fetch, http_client, probe, probe_kept, supported,
+    ProbeInfo, Proxy, Request, Snapshot, fetch, hop_client, http_client, probe, probe_kept,
+    supported,
 };
 pub use net::{NetError, Route};
 pub use server::Server;

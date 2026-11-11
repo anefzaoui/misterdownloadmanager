@@ -5662,9 +5662,21 @@ column	Transfer rate	Overføringshastighet
 #, machine
 column	Upload speed	Opplastingshastighet
 #. text in the browser extension
+#. in the menu under the download button over a video: the page is a list of videos (a playlist), whose videos are chosen in the app's window; keep the name Mister Download Manager as it is
+#, machine
+extension	A list of videos: choose them in Mister Download Manager	En liste med videoer: velg dem i Mister Download Manager
+#. text in the browser extension
+#. shown briefly on the download button over a video after a quality was picked: the download was added to the app's download queue, to start later
+#, machine
+extension	Added to the queue	Lagt til i køen
+#. text in the browser extension
 #. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
 #, machine
 extension	Another Mister Download Manager (a server)	En annen Mister Download Manager (en server)
+#. text in the browser extension
+#. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
+#, machine
+extension	Audio	Lyd
 #. text in the browser extension
 #. the name this browser gets in the other MDM's list of paired devices
 #, machine
@@ -5687,6 +5699,10 @@ extension	Connected to Mister Download Manager	Tilkoblet Mister Download Manager
 #. {version} = a version number (keep the braces as they are)
 #, machine
 extension	Connected to Mister Download Manager {version}	Tilkoblet Mister Download Manager {version}
+#. text in the browser extension
+#. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
+#, machine
+extension	Could not look it up	Kunne ikke slå det opp
 #. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
@@ -5778,6 +5794,14 @@ extension	Left to the browser: {name}	Beholdt av nettleseren: {name}
 #, machine
 extension	Live	Direkte
 #. text in the browser extension
+#. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
+#, machine
+extension	Looking up the qualities…	Finner kvalitetene…
+#. text in the browser extension
+#. in the menu under the download button over a video: the app took more than a minute to find the video's qualities, so the menu stopped waiting
+#, machine
+extension	Looking up took too long	Oppslaget tok for lang tid
+#. text in the browser extension
 #. heading in the toolbar button's popup over the list of the videos, sounds and streams the current web page has loaded
 #, machine
 extension	Media on this page	Medier på denne siden
@@ -5794,6 +5818,10 @@ extension	Mister Download Manager didn't start in time	Mister Download Manager s
 #, machine
 extension	Mister Download Manager doesn't accept this copy of the extension	Mister Download Manager godtar ikke denne kopien av utvidelsen
 #. text in the browser extension
+#. in the menu under the download button over a video: the app is already looking up other videos and can't look this one up now; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager is busy with other videos	Mister Download Manager er opptatt med andre videoer
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager er ikke installert eller startet ikke
@@ -5801,6 +5829,10 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager er ikke installert, eller nettleserintegrasjonen er ikke konfigurert
+#. text in the browser extension
+#. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager needs yt-dlp for this video	Mister Download Manager trenger yt-dlp for denne videoen
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
@@ -5828,9 +5860,17 @@ extension	Never take downloads from {site}	Aldri ta nedlastinger fra {site}
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	Ingen video eller lyd funnet på denne siden ennå. Spill den av, og åpne dette igjen.
 #. text in the browser extension
+#. in the menu under the download button over a video: the app found no quality of the video it could download
+#, machine
+extension	No video to download here	Ingen video å laste ned her
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Ikke nådd. Åpne adressen én gang i denne nettleseren og godta sertifikatet, og prøv deretter igjen.
+#. text in the browser extension
+#. last command of the menu of qualities under the download button over a video: opens the app's Download video window for this video instead; keep the name Mister Download Manager as it is
+#, machine
+extension	Open in Mister Download Manager…	Åpne i Mister Download Manager…
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -5939,6 +5979,10 @@ extension	Update Mister Download Manager to use everything this extension offers
 #. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
 #, machine
 extension	Use advanced browser integration is off in Options → General.	Bruk avansert nettleserintegrasjon er deaktivert i Alternativer → Generelt.
+#. text in the browser extension
+#. tab above the list of qualities in the menu under the download button over a video: the choices that include picture (video with sound); short, one word
+#, machine
+extension	Video	Video
 #. text in the browser extension
 #. pairing failed: codes tried too fast
 #, machine

@@ -4307,9 +4307,21 @@ column	Transfer rate	معدل النقل
 #, machine
 column	Upload speed	سرعة الرفع
 #. text in the browser extension
+#. in the menu under the download button over a video: the page is a list of videos (a playlist), whose videos are chosen in the app's window; keep the name Mister Download Manager as it is
+#, machine
+extension	A list of videos: choose them in Mister Download Manager	قائمة فيديوهات: اختر منها في Mister Download Manager
+#. text in the browser extension
+#. shown briefly on the download button over a video after a quality was picked: the download was added to the app's download queue, to start later
+#, machine
+extension	Added to the queue	تمت الإضافة إلى قائمة الانتظار
+#. text in the browser extension
 #. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
 #, machine
 extension	Another Mister Download Manager (a server)	Mister Download Manager آخر (خادم)
+#. text in the browser extension
+#. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
+#, machine
+extension	Audio	صوت
 #. text in the browser extension
 #. the name this browser gets in the other MDM's list of paired devices
 #, machine
@@ -4329,6 +4341,10 @@ extension	Connected to Mister Download Manager	متصل بـ Mister Download Man
 #. the toolbar button's status when the browser reaches the app, with the app's version number; keep the name Mister Download Manager as it is
 #. {version} = a version number (keep the braces as they are)
 extension	Connected to Mister Download Manager {version}	متصل بـ Mister Download Manager {version}
+#. text in the browser extension
+#. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
+#, machine
+extension	Could not look it up	تعذر البحث
 #. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 extension	Download	تنزيل
@@ -4407,6 +4423,14 @@ extension	Left to the browser: {name}	متروك للمتصفح: {name}
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 extension	Live	مباشر
 #. text in the browser extension
+#. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
+#, machine
+extension	Looking up the qualities…	يجري البحث عن الجودات…
+#. text in the browser extension
+#. in the menu under the download button over a video: the app took more than a minute to find the video's qualities, so the menu stopped waiting
+#, machine
+extension	Looking up took too long	استغرق البحث وقتا طويلا
+#. text in the browser extension
 #. heading in the toolbar button's popup over the list of the videos, sounds and streams the current web page has loaded
 extension	Media on this page	الوسائط في هذه الصفحة
 #. text in the browser extension
@@ -4419,11 +4443,19 @@ extension	Mister Download Manager didn't start in time	لم يبدأ Mister Down
 #. status when the app refuses this copy of the extension (another copy is installed, or it came from another store); keep the name Mister Download Manager as it is
 extension	Mister Download Manager doesn't accept this copy of the extension	لا يقبل Mister Download Manager هذه النسخة من الملحق
 #. text in the browser extension
+#. in the menu under the download button over a video: the app is already looking up other videos and can't look this one up now; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager is busy with other videos	Mister Download Manager مشغول بفيديوهات أخرى
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 extension	Mister Download Manager isn't installed or didn't start	لم يتم تثبيت Mister Download Manager أو لم يبدأ
 #. text in the browser extension
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	لم يتم تثبيت Mister Download Manager، أو لم يتم إعداد الربط بالمستعرض الخاص به
+#. text in the browser extension
+#. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager needs yt-dlp for this video	يحتاج Mister Download Manager إلى yt-dlp لهذا الفيديو
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	يجري Mister Download Manager التنزيل بعد ذلك عبر الوكيل نفسه الذي يستخدمه هذا المستعرض. يطلب منك المستعرض مرة واحدة السماح بذلك؛ وإيقاف هذا يلغي ذلك.
@@ -4446,9 +4478,17 @@ extension	Never take downloads from {site}	عدم التقاط التنزيلا�
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 extension	No video or sound found on this page yet. Play it, then open this again.	لم يتم العثور على أي فيديو أو صوت في هذه الصفحة بعد. ابدأ تشغيله، ثم افتح هذا مرة أخرى.
 #. text in the browser extension
+#. in the menu under the download button over a video: the app found no quality of the video it could download
+#, machine
+extension	No video to download here	لا يوجد فيديو للتنزيل هنا
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	لم يتم الوصول إليه. افتح عنوانه مرة واحدة في هذا المتصفح واقبل شهادته، ثم حاول مرة أخرى.
+#. text in the browser extension
+#. last command of the menu of qualities under the download button over a video: opens the app's Download video window for this video instead; keep the name Mister Download Manager as it is
+#, machine
+extension	Open in Mister Download Manager…	فتح في Mister Download Manager…
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -4544,6 +4584,10 @@ extension	Update Mister Download Manager to use everything this extension offers
 #. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
 #, machine
 extension	Use advanced browser integration is off in Options → General.	استخدام تكامل المتصفح المتقدم معطل في خيارات ← عام.
+#. text in the browser extension
+#. tab above the list of qualities in the menu under the download button over a video: the choices that include picture (video with sound); short, one word
+#, machine
+extension	Video	فيديو
 #. text in the browser extension
 #. pairing failed: codes tried too fast
 #, machine

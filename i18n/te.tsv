@@ -5662,9 +5662,21 @@ column	Transfer rate	బదిలీ రేటు
 #, machine
 column	Upload speed	అప్‌లోడ్ వేగం
 #. text in the browser extension
+#. in the menu under the download button over a video: the page is a list of videos (a playlist), whose videos are chosen in the app's window; keep the name Mister Download Manager as it is
+#, machine
+extension	A list of videos: choose them in Mister Download Manager	వీడియోల జాబితా: వాటిని Mister Download Managerలో ఎంచుకోండి
+#. text in the browser extension
+#. shown briefly on the download button over a video after a quality was picked: the download was added to the app's download queue, to start later
+#, machine
+extension	Added to the queue	క్యూకి జోడించబడింది
+#. text in the browser extension
 #. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
 #, machine
 extension	Another Mister Download Manager (a server)	మరొక Mister Download Manager (ఒక సర్వర్)
+#. text in the browser extension
+#. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
+#, machine
+extension	Audio	ఆడియో
 #. text in the browser extension
 #. the name this browser gets in the other MDM's list of paired devices
 #, machine
@@ -5687,6 +5699,10 @@ extension	Connected to Mister Download Manager	Mister Download Managerకి క
 #. {version} = a version number (keep the braces as they are)
 #, machine
 extension	Connected to Mister Download Manager {version}	Mister Download Manager {version}కి కనెక్ట్ చేయబడింది
+#. text in the browser extension
+#. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
+#, machine
+extension	Could not look it up	వెతకడం సాధ్యం కాలేదు
 #. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
@@ -5778,6 +5794,14 @@ extension	Left to the browser: {name}	బ్రౌజర్‌కు వది�
 #, machine
 extension	Live	ప్రత్యక్ష ప్రసారం
 #. text in the browser extension
+#. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
+#, machine
+extension	Looking up the qualities…	నాణ్యతలను వెతుకుతోంది…
+#. text in the browser extension
+#. in the menu under the download button over a video: the app took more than a minute to find the video's qualities, so the menu stopped waiting
+#, machine
+extension	Looking up took too long	వెతకడానికి చాలా సమయం పట్టింది
+#. text in the browser extension
 #. heading in the toolbar button's popup over the list of the videos, sounds and streams the current web page has loaded
 #, machine
 extension	Media on this page	ఈ పేజీలోని మీడియా
@@ -5794,6 +5818,10 @@ extension	Mister Download Manager didn't start in time	Mister Download Manager �
 #, machine
 extension	Mister Download Manager doesn't accept this copy of the extension	Mister Download Manager పొడిగింపు యొక్క ఈ కాపీని అంగీకరించదు
 #. text in the browser extension
+#. in the menu under the download button over a video: the app is already looking up other videos and can't look this one up now; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager is busy with other videos	Mister Download Manager ఇతర వీడియోలతో బిజీగా ఉంది
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager ఇన్‌స్టాల్ చేయబడలేదు లేదా ప్రారంభం కాలేదు
@@ -5801,6 +5829,10 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager ఇన్‌స్టాల్ చేయబడలేదు లేదా దాని బ్రౌజర్ అనుసంధానం సెటప్ చేయబడలేదు
+#. text in the browser extension
+#. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager needs yt-dlp for this video	ఈ వీడియో కోసం Mister Download Managerకి yt-dlp అవసరం
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
@@ -5828,9 +5860,17 @@ extension	Never take downloads from {site}	{site} నుండి డౌన్�
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	ఈ పేజీలో ఇంకా వీడియో లేదా ఆడియో కనుగొనబడలేదు. ప్లే చేసి, ఆపై దీన్ని మళ్ళీ తెరవండి.
 #. text in the browser extension
+#. in the menu under the download button over a video: the app found no quality of the video it could download
+#, machine
+extension	No video to download here	ఇక్కడ డౌన్‌లోడ్ చేయడానికి వీడియో లేదు
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	చేరలేదు. ఈ బ్రౌజర్‌లో దాని చిరునామాను ఒకసారి తెరిచి, దాని సర్టిఫికేట్‌ను ఆమోదించి, ఆపై మళ్లీ ప్రయత్నించండి.
+#. text in the browser extension
+#. last command of the menu of qualities under the download button over a video: opens the app's Download video window for this video instead; keep the name Mister Download Manager as it is
+#, machine
+extension	Open in Mister Download Manager…	Mister Download Managerలో తెరువు…
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -5939,6 +5979,10 @@ extension	Update Mister Download Manager to use everything this extension offers
 #. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
 #, machine
 extension	Use advanced browser integration is off in Options → General.	ఎంపికలు → సాధారణలో అధునాతన బ్రౌజర్ ఇంటిగ్రేషన్‌ను ఉపయోగించు అనేది ఆఫ్ చేయబడింది.
+#. text in the browser extension
+#. tab above the list of qualities in the menu under the download button over a video: the choices that include picture (video with sound); short, one word
+#, machine
+extension	Video	వీడియో
 #. text in the browser extension
 #. pairing failed: codes tried too fast
 #, machine

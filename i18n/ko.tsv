@@ -5662,9 +5662,21 @@ column	Transfer rate	전송 속도
 #, machine
 column	Upload speed	업로드 속도
 #. text in the browser extension
+#. in the menu under the download button over a video: the page is a list of videos (a playlist), whose videos are chosen in the app's window; keep the name Mister Download Manager as it is
+#, machine
+extension	A list of videos: choose them in Mister Download Manager	비디오 목록: Mister Download Manager에서 선택하세요
+#. text in the browser extension
+#. shown briefly on the download button over a video after a quality was picked: the download was added to the app's download queue, to start later
+#, machine
+extension	Added to the queue	대기열에 추가되었습니다
+#. text in the browser extension
 #. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
 #, machine
 extension	Another Mister Download Manager (a server)	다른 Mister Download Manager (서버)
+#. text in the browser extension
+#. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
+#, machine
+extension	Audio	오디오
 #. text in the browser extension
 #. the name this browser gets in the other MDM's list of paired devices
 #, machine
@@ -5687,6 +5699,10 @@ extension	Connected to Mister Download Manager	Mister Download Manager에 연결
 #. {version} = a version number (keep the braces as they are)
 #, machine
 extension	Connected to Mister Download Manager {version}	Mister Download Manager {version}에 연결됨
+#. text in the browser extension
+#. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
+#, machine
+extension	Could not look it up	찾지 못했습니다
 #. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
@@ -5778,6 +5794,14 @@ extension	Left to the browser: {name}	브라우저에 남겨짐: {name}
 #, machine
 extension	Live	라이브
 #. text in the browser extension
+#. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
+#, machine
+extension	Looking up the qualities…	화질을 찾는 중…
+#. text in the browser extension
+#. in the menu under the download button over a video: the app took more than a minute to find the video's qualities, so the menu stopped waiting
+#, machine
+extension	Looking up took too long	찾는 데 시간이 너무 오래 걸렸습니다
+#. text in the browser extension
 #. heading in the toolbar button's popup over the list of the videos, sounds and streams the current web page has loaded
 #, machine
 extension	Media on this page	이 페이지의 미디어
@@ -5794,6 +5818,10 @@ extension	Mister Download Manager didn't start in time	Mister Download Manager�
 #, machine
 extension	Mister Download Manager doesn't accept this copy of the extension	Mister Download Manager이(가) 이 확장 프로그램 복사본을 허용하지 않습니다.
 #. text in the browser extension
+#. in the menu under the download button over a video: the app is already looking up other videos and can't look this one up now; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager is busy with other videos	Mister Download Manager가 다른 비디오를 처리하는 중입니다
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager이(가) 설치되지 않았거나 시작되지 않았습니다.
@@ -5801,6 +5829,10 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager이(가) 설치되지 않았거나 브라우저 통합이 설정되지 않았습니다.
+#. text in the browser extension
+#. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager needs yt-dlp for this video	이 비디오에는 Mister Download Manager에 yt-dlp가 필요합니다
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
@@ -5828,9 +5860,17 @@ extension	Never take downloads from {site}	{site}에서 다운로드하지 않�
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	이 페이지에서 아직 비디오나 오디오를 찾을 수 없습니다. 재생한 다음 다시 여세요.
 #. text in the browser extension
+#. in the menu under the download button over a video: the app found no quality of the video it could download
+#, machine
+extension	No video to download here	여기에는 다운로드할 비디오가 없습니다
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	연결할 수 없습니다. 이 브라우저에서 해당 주소를 한 번 열고 인증서를 수락한 다음 다시 시도하세요.
+#. text in the browser extension
+#. last command of the menu of qualities under the download button over a video: opens the app's Download video window for this video instead; keep the name Mister Download Manager as it is
+#, machine
+extension	Open in Mister Download Manager…	Mister Download Manager에서 열기…
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -5939,6 +5979,10 @@ extension	Update Mister Download Manager to use everything this extension offers
 #. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
 #, machine
 extension	Use advanced browser integration is off in Options → General.	옵션 → 일반에서 고급 브라우저 통합 사용이 꺼져 있습니다.
+#. text in the browser extension
+#. tab above the list of qualities in the menu under the download button over a video: the choices that include picture (video with sound); short, one word
+#, machine
+extension	Video	비디오
 #. text in the browser extension
 #. pairing failed: codes tried too fast
 #, machine

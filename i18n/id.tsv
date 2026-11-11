@@ -5662,9 +5662,21 @@ column	Transfer rate	Laju transfer
 #, machine
 column	Upload speed	Kecepatan unggah
 #. text in the browser extension
+#. in the menu under the download button over a video: the page is a list of videos (a playlist), whose videos are chosen in the app's window; keep the name Mister Download Manager as it is
+#, machine
+extension	A list of videos: choose them in Mister Download Manager	Daftar video: pilih di Mister Download Manager
+#. text in the browser extension
+#. shown briefly on the download button over a video after a quality was picked: the download was added to the app's download queue, to start later
+#, machine
+extension	Added to the queue	Ditambahkan ke antrean
+#. text in the browser extension
 #. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
 #, machine
 extension	Another Mister Download Manager (a server)	Mister Download Manager lain (server)
+#. text in the browser extension
+#. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
+#, machine
+extension	Audio	Audio
 #. text in the browser extension
 #. the name this browser gets in the other MDM's list of paired devices
 #, machine
@@ -5687,6 +5699,10 @@ extension	Connected to Mister Download Manager	Terhubung ke Mister Download Mana
 #. {version} = a version number (keep the braces as they are)
 #, machine
 extension	Connected to Mister Download Manager {version}	Terhubung ke Mister Download Manager {version}
+#. text in the browser extension
+#. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
+#, machine
+extension	Could not look it up	Gagal mencarinya
 #. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
@@ -5778,6 +5794,14 @@ extension	Left to the browser: {name}	Diserahkan ke browser: {name}
 #, machine
 extension	Live	Langsung
 #. text in the browser extension
+#. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
+#, machine
+extension	Looking up the qualities…	Mencari kualitas…
+#. text in the browser extension
+#. in the menu under the download button over a video: the app took more than a minute to find the video's qualities, so the menu stopped waiting
+#, machine
+extension	Looking up took too long	Pencarian memakan waktu terlalu lama
+#. text in the browser extension
 #. heading in the toolbar button's popup over the list of the videos, sounds and streams the current web page has loaded
 #, machine
 extension	Media on this page	Media di halaman ini
@@ -5794,6 +5818,10 @@ extension	Mister Download Manager didn't start in time	Mister Download Manager t
 #, machine
 extension	Mister Download Manager doesn't accept this copy of the extension	Mister Download Manager tidak menerima salinan ekstensi ini
 #. text in the browser extension
+#. in the menu under the download button over a video: the app is already looking up other videos and can't look this one up now; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager is busy with other videos	Mister Download Manager sedang sibuk dengan video lain
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager tidak terinstal atau tidak dimulai
@@ -5801,6 +5829,10 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager tidak terinstal, atau integrasi browsernya tidak diatur
+#. text in the browser extension
+#. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager needs yt-dlp for this video	Mister Download Manager memerlukan yt-dlp untuk video ini
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
@@ -5828,9 +5860,17 @@ extension	Never take downloads from {site}	Jangan pernah mengambil unduhan dari 
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	Belum ada video atau suara yang ditemukan di halaman ini. Putar media, lalu buka ini lagi.
 #. text in the browser extension
+#. in the menu under the download button over a video: the app found no quality of the video it could download
+#, machine
+extension	No video to download here	Tidak ada video untuk diunduh di sini
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Tidak terjangkau. Buka alamatnya sekali di browser ini dan terima sertifikatnya, lalu coba lagi.
+#. text in the browser extension
+#. last command of the menu of qualities under the download button over a video: opens the app's Download video window for this video instead; keep the name Mister Download Manager as it is
+#, machine
+extension	Open in Mister Download Manager…	Buka di Mister Download Manager…
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -5939,6 +5979,10 @@ extension	Update Mister Download Manager to use everything this extension offers
 #. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
 #, machine
 extension	Use advanced browser integration is off in Options → General.	Integrasi browser lanjutan tidak aktif di Opsi → Umum.
+#. text in the browser extension
+#. tab above the list of qualities in the menu under the download button over a video: the choices that include picture (video with sound); short, one word
+#, machine
+extension	Video	Video
 #. text in the browser extension
 #. pairing failed: codes tried too fast
 #, machine

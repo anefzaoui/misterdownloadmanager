@@ -5662,9 +5662,21 @@ column	Transfer rate	കൈമാറ്റ നിരക്ക്
 #, machine
 column	Upload speed	അപ്‌ലോഡ് വേഗത
 #. text in the browser extension
+#. in the menu under the download button over a video: the page is a list of videos (a playlist), whose videos are chosen in the app's window; keep the name Mister Download Manager as it is
+#, machine
+extension	A list of videos: choose them in Mister Download Manager	വീഡിയോകളുടെ ഒരു പട്ടിക: അവ Mister Download Manager-ൽ തിരഞ്ഞെടുക്കുക
+#. text in the browser extension
+#. shown briefly on the download button over a video after a quality was picked: the download was added to the app's download queue, to start later
+#, machine
+extension	Added to the queue	ക്യൂവിലേക്ക് ചേർത്തു
+#. text in the browser extension
 #. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
 #, machine
 extension	Another Mister Download Manager (a server)	മറ്റൊരു Mister Download Manager (ഒരു സെർവർ)
+#. text in the browser extension
+#. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
+#, machine
+extension	Audio	ഓഡിയോ
 #. text in the browser extension
 #. the name this browser gets in the other MDM's list of paired devices
 #, machine
@@ -5687,6 +5699,10 @@ extension	Connected to Mister Download Manager	Mister Download Manager എന്
 #. {version} = a version number (keep the braces as they are)
 #, machine
 extension	Connected to Mister Download Manager {version}	Mister Download Manager {version} എന്നതുമായി ബന്ധിപ്പിച്ചു
+#. text in the browser extension
+#. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
+#, machine
+extension	Could not look it up	തിരയാൻ കഴിഞ്ഞില്ല
 #. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
@@ -5778,6 +5794,14 @@ extension	Left to the browser: {name}	ബ്രൗസറിനായി വി�
 #, machine
 extension	Live	തത്സമയം
 #. text in the browser extension
+#. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
+#, machine
+extension	Looking up the qualities…	ക്വാളിറ്റികൾ തിരയുന്നു…
+#. text in the browser extension
+#. in the menu under the download button over a video: the app took more than a minute to find the video's qualities, so the menu stopped waiting
+#, machine
+extension	Looking up took too long	തിരയാൻ വളരെയധികം സമയമെടുത്തു
+#. text in the browser extension
 #. heading in the toolbar button's popup over the list of the videos, sounds and streams the current web page has loaded
 #, machine
 extension	Media on this page	ഈ പേജിലെ മീഡിയ
@@ -5794,6 +5818,10 @@ extension	Mister Download Manager didn't start in time	Mister Download Manager �
 #, machine
 extension	Mister Download Manager doesn't accept this copy of the extension	Mister Download Manager ഈ എക്സ്റ്റൻഷൻ കോപ്പി സ്വീകരിക്കുന്നില്ല
 #. text in the browser extension
+#. in the menu under the download button over a video: the app is already looking up other videos and can't look this one up now; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager is busy with other videos	Mister Download Manager മറ്റ് വീഡിയോകളിൽ തിരക്കിലാണ്
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല അല്ലെങ്കിൽ ആരംഭിച്ചില്ല
@@ -5801,6 +5829,10 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല, അല്ലെങ്കിൽ അതിന്റെ ബ്രൗസർ സംയോജനം സജ്ജീകരിച്ചിട്ടില്ല
+#. text in the browser extension
+#. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager needs yt-dlp for this video	ഈ വീഡിയോയ്ക്ക് Mister Download Manager-ന് yt-dlp ആവശ്യമാണ്
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
@@ -5828,9 +5860,17 @@ extension	Never take downloads from {site}	{site} ൽ നിന്നുള്�
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	ഈ പേജിൽ ഇതുവരെ വീഡിയോയോ ശബ്ദമോ കണ്ടെത്തിയിട്ടില്ല. ഇത് പ്ലേ ചെയ്ത ശേഷം വീണ്ടും തുറക്കുക.
 #. text in the browser extension
+#. in the menu under the download button over a video: the app found no quality of the video it could download
+#, machine
+extension	No video to download here	ഇവിടെ ഡൗൺലോഡ് ചെയ്യാൻ വീഡിയോ ഒന്നുമില്ല
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	എത്തിച്ചേർന്നില്ല. ഈ ബ്രൗസറിൽ അതിൻ്റെ വിലാസം ഒരിക്കൽ തുറന്ന് അതിൻ്റെ സർട്ടിഫിക്കറ്റ് സ്വീകരിക്കുക, തുടർന്ന് വീണ്ടും ശ്രമിക്കുക.
+#. text in the browser extension
+#. last command of the menu of qualities under the download button over a video: opens the app's Download video window for this video instead; keep the name Mister Download Manager as it is
+#, machine
+extension	Open in Mister Download Manager…	Mister Download Manager-ൽ തുറക്കുക…
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -5939,6 +5979,10 @@ extension	Update Mister Download Manager to use everything this extension offers
 #. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
 #, machine
 extension	Use advanced browser integration is off in Options → General.	ഓപ്ഷനുകൾ → പൊതുവായത് എന്നതിൽ വിപുലമായ ബ്രൗസർ സംയോജനം ഉപയോഗിക്കുക എന്നത് ഓഫാണ്.
+#. text in the browser extension
+#. tab above the list of qualities in the menu under the download button over a video: the choices that include picture (video with sound); short, one word
+#, machine
+extension	Video	വീഡിയോ
 #. text in the browser extension
 #. pairing failed: codes tried too fast
 #, machine

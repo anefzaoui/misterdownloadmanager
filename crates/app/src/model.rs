@@ -443,6 +443,10 @@ pub struct Item {
     /// #68), in the interface language; memory only.
     #[serde(skip)]
     pub notices: Vec<String>,
+    /// A video chosen in the browser's quality menu: the menu's look-up, for its first run only
+    /// (taken then); memory only, never written (its links are signed).
+    #[serde(skip)]
+    pub preloaded: Option<mdm_tools::video::Preloaded>,
     /// Finished video / subtitle / gallery paths waiting to be marked as downloaded from the
     /// web once any deferred rename in `App::poll` has moved them to their final names.
     #[serde(skip)]
@@ -770,6 +774,7 @@ impl Item {
             login: None,
             context: Default::default(),
             notices: Vec::new(),
+            preloaded: None,
             pending_mark: None,
             written_files: None,
         }
