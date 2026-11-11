@@ -594,7 +594,11 @@ mod tests {
         std::fs::write(&exe, b"x").unwrap();
         let json = serde_json::json!({ "gallery-dl": { "version": "1.17.0", "exe": exe } });
         std::fs::write(dir.path().join("programs.json"), json.to_string()).unwrap();
-        assert_eq!(installed(dir.path()), None, "not the old one");
+        // Not the old one: on Linux and macOS a gallery-dl the system has may stand in (#571).
+        assert!(
+            installed(dir.path()).is_none_or(|i| i.version != "1.17.0"),
+            "not the old one"
+        );
         assert_eq!(
             chosen_too_old(dir.path()).map(|i| i.version).as_deref(),
             Some("1.17.0")
