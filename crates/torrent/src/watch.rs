@@ -248,9 +248,9 @@ mod tests {
         entered
             .recv_timeout(Duration::from_secs(5))
             .expect("the reading reached the held lock");
-        let at = Instant::now();
-        let mut frames = 0;
-        while at.elapsed() < Duration::from_millis(500) {
+        // Twenty frames while the lock is held: each takes the last numbers at once (a busy
+        // runner may sleep longer between them; only the frames themselves are timed).
+        for _ in 0..20 {
             let frame = Instant::now();
             let got = w.get("AA").expect("the torrent as last read");
             assert_eq!(got.stats.done, 11, "the reading before the stall");
@@ -259,10 +259,8 @@ mod tests {
                 "a frame waited {:?} on the engine",
                 frame.elapsed()
             );
-            frames += 1;
             std::thread::sleep(Duration::from_millis(16));
         }
-        assert!(frames >= 20, "only {frames} frames in 0.5 s");
         // The lock let go: the numbers move again.
         release.send(()).unwrap();
         let at = Instant::now();
