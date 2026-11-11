@@ -2351,11 +2351,18 @@ mod host_copy_tests {
         let t = tempfile::tempdir().unwrap();
         let dir = t.path().join("browser-host");
         std::fs::create_dir_all(&dir).unwrap();
-        // A real program (a script would run as the shell, its file only read).
+        // A real program (a script would run as the shell, its file only read). The shell, which
+        // runs under any name: Ubuntu 26.04's `sleep` is one program for every core tool, telling
+        // them apart by the name it's started under, so a copy of it named after the helper ended
+        // at once. `; :` keeps the shell from replacing itself with `sleep`.
         let old = dir.join(HOST);
-        std::fs::copy("/bin/sleep", &old).unwrap();
-        let mut running = std::process::Command::new(&old).arg("30").spawn().unwrap();
+        std::fs::copy("/bin/sh", &old).unwrap();
+        let mut running = std::process::Command::new(&old)
+            .args(["-c", "sleep 30; :"])
+            .spawn()
+            .unwrap();
         std::thread::sleep(std::time::Duration::from_millis(200));
+        assert!(running.try_wait().unwrap().is_none(), "the old copy runs");
         assert!(
             std::fs::write(&old, b"x").is_err() || cfg!(target_os = "macos"),
             "Linux refuses to write over a running program"
