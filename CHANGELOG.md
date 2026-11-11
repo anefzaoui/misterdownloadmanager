@@ -24,6 +24,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Crash and freeze reports keep the log lines that explain them: 25 of the file-type icons carried a style MDM's SVG reader warned about each time they were drawn, three lines per shape, and those warnings filled the end of the log a report includes ([#767](https://github.com/anefzaoui/misterdownloadmanager/issues/767)). The icons look the same.
 - **Sizes for a stream's qualities:** HLS qualities showed no size; each is now estimated from its bitrate and the video's length, in the Download video window and in the download list.
 - **A video already in the list is no longer downloaded again without a word:** picking the same quality of the same video, from the menu over a video or the Download video window, now follows Options → Downloads ("If a duplicate download link is added": ask, a numbered name, overwrite, or open / resume the one there). Another quality of the same video is not a duplicate.
 - The progress window's bar glides as the download goes, instead of moving in steps four times a second.
