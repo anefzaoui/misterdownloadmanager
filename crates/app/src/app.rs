@@ -8973,7 +8973,12 @@ impl App {
                 {
                     self.caption_set =
                         crate::win32::caption_dark(crate::MAIN_TITLE, crate::theme::dark_surface());
+                    // The menus Windows draws (the tray icon's, the window menu) too (#682).
+                    crate::win32::menus_dark(crate::theme::dark_surface());
                 }
+                // Linux: the tray's menu is drawn by the desktop's StatusNotifierItem host (ksni
+                // sends only its items), in the desktop's theme; no app can colour it. macOS: the
+                // menu bar item's menu follows the menu bar's appearance, the system's.
                 #[cfg(not(windows))]
                 {
                     self.caption_set = true;

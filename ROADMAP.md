@@ -596,6 +596,9 @@ These ship in a later version, when they're ready.
 - 🔄 Torrents: a pause landing while a piece was being checked leaving the torrent one piece short
   until MDM restarted ([#706](https://github.com/anefzaoui/misterdownloadmanager/issues/706)): the
   piece is now downloaded again after the pause; fix in review
+- 🔄 Windows: the tray icon's menu light while MDM is dark
+  ([#682](https://github.com/anefzaoui/misterdownloadmanager/issues/682)): it now follows MDM's
+  look, dark or light, on Windows 10 and 11; fix in review
 - 🔄 Torrents: magnet links without trackers finding no peers where the DHT's first nodes didn't
   answer ([#650](https://github.com/anefzaoui/misterdownloadmanager/issues/650)): four public
   routers asked together, the ones that never answer left alone once one has, the IPv6 nodes kept
