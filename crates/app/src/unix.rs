@@ -2361,9 +2361,9 @@ mod host_copy_tests {
             .arg("--exact")
             .arg("unix::host_copy_tests::the_helper_is_replaced_while_a_browser_runs_it")
             .env("MDM_HOST_COPY_TEST_CHILD", "1")
-            .stdin(Stdio::null())
-            .stdout(Stdio::null())
-            .stderr(Stdio::null())
+            .stdin(std::process::Stdio::null())
+            .stdout(std::process::Stdio::null())
+            .stderr(std::process::Stdio::null())
             .spawn()
             .unwrap();
         std::thread::sleep(std::time::Duration::from_millis(200));
