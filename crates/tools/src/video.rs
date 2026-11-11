@@ -685,9 +685,53 @@ fn content_ext(head: &[u8]) -> Option<&'static str> {
     None
 }
 
+/// Remove an extension repeated by the output template (for example `clip.mp4.mp4`).
+/// The final extension is the one yt-dlp selected; a same-extension suffix in the title is not
+/// needed a second time. Never overwrite an existing file.
+fn strip_repeated_media_extension(f: PathBuf) -> PathBuf {
+    let Some(ext) = f.extension().and_then(|e| e.to_str()) else {
+        return f;
+    };
+    let lower = ext.to_ascii_lowercase();
+    if !matches!(
+        lower.as_str(),
+        "mp4" | "mkv" | "webm" | "mov" | "m4v" | "m4a" | "mp3" | "opus" | "ogg"
+            | "oga" | "flac" | "wav" | "aac" | "flv" | "3gp"
+    ) {
+        return f;
+    }
+    let Some(stem) = f.file_stem().map(|s| s.to_string_lossy().into_owned()) else {
+        return f;
+    };
+    let Some((base, repeated)) = stem.rsplit_once('.') else {
+        return f;
+    };
+    if !repeated.eq_ignore_ascii_case(ext) {
+        return f;
+    }
+    for n in 1..100 {
+        let name = if n == 1 {
+            format!("{base}.{ext}")
+        } else {
+            format!("{base} ({n}).{ext}")
+        };
+        let target = f.with_file_name(name);
+        if target.exists() {
+            continue;
+        }
+        return if std::fs::rename(&f, &target).is_ok() {
+            target
+        } else {
+            f
+        };
+    }
+    f
+}
+
 /// `f`, renamed for what it holds when its MP4 name is wrong ([`content_ext`]); as it was
 /// otherwise, or when the rename fails (the file is kept).
 fn named_for_content(f: PathBuf) -> PathBuf {
+    let f = strip_repeated_media_extension(f);
     let named = f
         .extension()
         .map(|e| e.to_string_lossy().to_ascii_lowercase());
@@ -1148,6 +1192,18 @@ mod tests {
         let real = dir.path().join("Real.mp4");
         std::fs::write(&real, &mp4).unwrap();
         assert_eq!(named_for_content(real.clone()), real);
+        // A video title that already ends in its actual extension must not become .mp4.mp4.
+        let doubled = dir.path().join("Dropbox.mp4.mp4");
+        std::fs::write(&doubled, &mp4).unwrap();
+        let single = dir.path().join("Dropbox.mp4");
+        assert_eq!(named_for_content(doubled), single);
+        assert!(single.is_file());
+        // Keep both files if the unduplicated name already exists.
+        let doubled = dir.path().join("Dropbox.mp4.mp4");
+        std::fs::write(&doubled, &mp4).unwrap();
+        let second = dir.path().join("Dropbox (2).mp4");
+        assert_eq!(named_for_content(doubled), second);
+        assert!(second.is_file());
         let named = dir.path().join("Talk.aac");
         assert_eq!(named_for_content(named.clone()), named);
     }
