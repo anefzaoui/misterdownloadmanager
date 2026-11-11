@@ -852,9 +852,12 @@ button {
 .pill:has(button:focus-visible) { outline: 2px solid var(--tx); outline-offset: 2px; }
 button:focus-visible { outline: none; }
 .more:focus-visible, .x:focus-visible, .act:focus-visible { box-shadow: 0 0 0 1px var(--tx) inset; }
-.grip { display: none; grid-template-columns: repeat(2, 2px); gap: 2px; align-content: center; padding-inline-start: 1px; }
+/* Its grip: there all along (the tab keeps its width: the arrow and ✕ never move from under the
+   pointer), seen while the pointer is on it. */
+.grip { display: grid; visibility: hidden; grid-template-columns: repeat(2, 2px); gap: 2px; align-content: center; padding-inline-start: 1px; }
 .grip i { display: block; width: 2px; height: 2px; border-radius: 1px; background: currentColor; opacity: .55; }
-.pill:not(.bare):hover .grip, .pill.dragging .grip { display: grid; }
+.pill:not(.bare):hover .grip, .pill.dragging .grip { visibility: visible; }
+.pill.bare .grip { display: none; }
 .icon { display: flex; align-items: center; justify-content: center; width: 18px; height: 18px; flex: none; }
 .icon > * { display: none; }
 .icon img { width: 18px; height: 18px; }
