@@ -339,6 +339,7 @@ fn app() -> eframe::Result {
     // screenshots, the windows' sizing at high display scaling). The window is made before the
     // zoom applies: its sizes are given zoomed here.
     let z = scale::startup(loaded.settings.interface_size);
+    theme::init_smooth_text(loaded.settings.smooth_text);
     // The log (release builds too) and the crash monitor.
     if let Some(data) = mdm_ipc::data_dir() {
         mdm_crash::logs::init(&data, mdm_crash::logs::APP);

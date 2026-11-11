@@ -373,7 +373,13 @@ fn audio_container(ext: &str) -> bool {
 
 /// A choice that saves only the sound (no picture to show subtitles on, #68).
 pub fn is_audio(c: &Choice) -> bool {
-    c.selector == "ba" || audio_conversion(&c.selector).is_some() || audio_container(&c.ext)
+    sound_only(&c.selector, &c.ext)
+}
+
+/// A selector and file type that save only the sound: a choice ([`is_audio`]) or a playlist's
+/// quality (saved in the Music category's folder, #611).
+pub fn sound_only(selector: &str, ext: &str) -> bool {
+    selector == "ba" || audio_conversion(selector).is_some() || audio_container(ext)
 }
 
 /// A choice whose file can hold subtitles put into it (yt-dlp's `--embed-subs` with SRT).
