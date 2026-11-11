@@ -3487,11 +3487,58 @@ fn header_str(h: &HeaderMap, name: header::HeaderName) -> Option<&str> {
     h.get(name).and_then(|v| v.to_str().ok())
 }
 
-/// A site's bot check turning the request away (#376), as Cloudflare marks it.
+/// A site's bot check turning the request away: Cloudflare's, which marks it
+/// (`cf-mitigated: challenge`, #376), or Akamai's, whose edge answers a connection it takes for a
+/// program's with its own 403 page ("Access Denied", served by `AkamaiGHost`, #771), where a
+/// browser gets the file. The site's own 403 behind Akamai comes from its servers, not the edge's
+/// page, and stays a plain refusal.
 pub(crate) fn is_bot_check(status: StatusCode, h: &HeaderMap) -> bool {
     status == StatusCode::FORBIDDEN
-        && h.get("cf-mitigated")
+        && (h
+            .get("cf-mitigated")
             .is_some_and(|v| v.as_bytes().eq_ignore_ascii_case(b"challenge"))
+            || (header_str(h, header::SERVER)
+                .is_some_and(|s| s.trim().eq_ignore_ascii_case("AkamaiGHost"))
+                && is_web_page(h)))
+}
+
+#[cfg(test)]
+mod bot_check_tests {
+    use super::*;
+
+    fn headers(pairs: &[(&'static str, &'static str)]) -> HeaderMap {
+        let mut h = HeaderMap::new();
+        for (k, v) in pairs {
+            h.insert(*k, header::HeaderValue::from_static(v));
+        }
+        h
+    }
+
+    /// Cloudflare's challenge and Akamai's edge refusal (#771) are bot checks; a 403 from the site
+    /// itself, or Akamai's edge sending something other than its page, is not.
+    #[test]
+    fn bot_checks_are_cloudflares_challenge_and_akamais_edge_page() {
+        let forbidden = StatusCode::FORBIDDEN;
+        assert!(is_bot_check(
+            forbidden,
+            &headers(&[("cf-mitigated", "challenge")])
+        ));
+        let akamai = headers(&[("server", "AkamaiGHost"), ("content-type", "text/html")]);
+        assert!(is_bot_check(forbidden, &akamai));
+        assert!(!is_bot_check(StatusCode::NOT_FOUND, &akamai));
+        assert!(!is_bot_check(
+            forbidden,
+            &headers(&[
+                ("server", "AkamaiGHost"),
+                ("content-type", "application/pdf")
+            ])
+        ));
+        assert!(!is_bot_check(
+            forbidden,
+            &headers(&[("server", "nginx"), ("content-type", "text/html")])
+        ));
+        assert!(!is_bot_check(forbidden, &HeaderMap::new()));
+    }
 }
 
 pub(crate) fn is_web_page(h: &HeaderMap) -> bool {
