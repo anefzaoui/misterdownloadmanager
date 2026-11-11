@@ -1212,6 +1212,9 @@ const MPD = (protect) => `<?xml version="1.0"?>
   // A watch page from a mix or a playlist: the video's own address, without the list.
   assert.equal(at("https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
   assert.equal(at("https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=PL1234567890abcdef&index=12"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+  // YouTube Music is a YouTube host too: give yt-dlp the canonical video URL, not the music feed.
+  assert.equal(at("https://music.youtube.com/watch?v=dQw4w9WgXcQ&list=RDAMVMdQw4w9WgXcQ"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+  assert.equal(at("https://music.youtube.com/"), null);
   // A player that isn't the page's own: the card it sits in links to the video it is playing.
   assert.equal(at("https://www.youtube.com/", { cards: [[], ["https://www.youtube.com/watch?v=abc123XYZ_-&t=5s"]] }), "https://www.youtube.com/watch?v=abc123XYZ_-");
   // The card links to it twice (thumbnail and title): one video, still.
