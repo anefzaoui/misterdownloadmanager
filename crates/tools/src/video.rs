@@ -1085,7 +1085,7 @@ impl VideoJob {
                     // Given up: nothing may go on downloading unseen (#79).
                     end(&child);
                     let mut p = progress.lock().unwrap_or_else(|e| e.into_inner());
-                    if matches!(p.state, State::Running | State::Processing) {
+                    if matches!(&p.state, State::Running | State::Processing) {
                         p.speed = 0.0;
                         p.state =
                             State::Failed("the video download stopped on an internal error".into());
@@ -1192,7 +1192,7 @@ mod tests {
         let end = std::time::Instant::now() + std::time::Duration::from_secs(180);
         let p = loop {
             let p = job.progress();
-            if !matches!(p.state, State::Running | State::Processing)
+            if !matches!(&p.state, State::Running | State::Processing)
                 || std::time::Instant::now() > end
             {
                 break p;
