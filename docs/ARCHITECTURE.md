@@ -67,9 +67,10 @@ toolbar, key and IPC commands into actions. Each dialog is its own module and re
 their Linux and macOS counterparts to `unix.rs` (starting with the session, the browsers' host,
 sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system:
 Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (`theme.rs`). On Windows, Latin,
-Greek and Cyrillic text is drawn by DirectWrite in GDI-classic mode (`win32.rs`, through egui's
-glyph rasterizer hook), so each letter's hinted shape and whole-pixel width come together; other
-scripts are shaped and drawn by egui.
+Greek and Cyrillic text is drawn by DirectWrite (`win32.rs`, through egui's glyph rasterizer hook):
+View → Text → Smooth in its natural mode, anti-aliased at the size asked for and placed at quarter
+pixels with the font's own advances; Classic (the default) in GDI-classic mode, so each letter's
+hinted shape and whole-pixel width come together. Other scripts are shaped and drawn by egui.
 
 ### Themes
 

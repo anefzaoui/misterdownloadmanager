@@ -121,8 +121,29 @@ pub fn clipboard_text() -> Option<String> {
     })
 }
 
+/// How long a read or write of the clipboard waits for the one under way in this process.
+/// Ours take milliseconds; one that waits on a program that owns the clipboard and hangs
+/// (#418) is given up on, so the window's thread is never held by it for longer.
+const CLIPBOARD_WAIT: std::time::Duration = std::time::Duration::from_millis(500);
+
+/// One use of the clipboard at a time in the whole process, egui's copy and paste included
+/// (the same lock, `egui_winit::clipboard::lock_system_clipboard`): Windows lets the threads
+/// of a process open it at the same time, and two reads at once (the clipboard monitor's and
+/// Add URL's) corrupted the heap and ended MDM (#629). None: the wait ran out.
+fn clipboard_lock() -> Option<egui_winit::clipboard::SystemClipboardLock> {
+    let lock = egui_winit::clipboard::lock_system_clipboard(CLIPBOARD_WAIT);
+    if lock.is_none() {
+        tracing::warn!("clipboard: still in use elsewhere in MDM, not read or written");
+    }
+    lock
+}
+
 fn read_clipboard(off: bool, read: impl FnOnce() -> Option<String>) -> Option<String> {
-    if off { None } else { read() }
+    if off {
+        return None;
+    }
+    let _lock = clipboard_lock()?;
+    read()
 }
 
 /// Put `text` on the clipboard (egui hands it to the system after the frame). An off-screen
@@ -137,9 +158,11 @@ pub fn copy_text(ctx: &egui::Context, text: String) {
 /// and true).
 pub fn set_clipboard(text: &str) -> bool {
     match write_clipboard(offscreen(), text.to_owned()) {
-        Some(text) => arboard::Clipboard::new()
-            .and_then(|mut c| c.set_text(text))
-            .is_ok(),
+        Some(text) => clipboard_lock().is_some_and(|_lock| {
+            arboard::Clipboard::new()
+                .and_then(|mut c| c.set_text(text))
+                .is_ok()
+        }),
         None => true,
     }
 }
@@ -339,6 +362,7 @@ fn app() -> eframe::Result {
     // screenshots, the windows' sizing at high display scaling). The window is made before the
     // zoom applies: its sizes are given zoomed here.
     let z = scale::startup(loaded.settings.interface_size);
+    theme::init_smooth_text(loaded.settings.smooth_text);
     // The log (release builds too) and the crash monitor.
     if let Some(data) = mdm_ipc::data_dir() {
         mdm_crash::logs::init(&data, mdm_crash::logs::APP);
@@ -467,5 +491,58 @@ mod tests {
             super::write_clipboard(false, "magnet:?xt=urn:btih:ab".into()),
             Some("magnet:?xt=urn:btih:ab".into())
         );
+    }
+
+    /// #629: two reads of the clipboard at the same moment (the clipboard monitor's thread and
+    /// Add URL on the window's) corrupted the heap. Every read waits for the one under way.
+    #[test]
+    fn clipboard_reads_are_one_at_a_time() {
+        use std::sync::atomic::{AtomicUsize, Ordering};
+        let inside = std::sync::Arc::new(AtomicUsize::new(0));
+        let most = std::sync::Arc::new(AtomicUsize::new(0));
+        let threads: Vec<_> = (0..8)
+            .map(|_| {
+                let (inside, most) = (inside.clone(), most.clone());
+                std::thread::spawn(move || {
+                    for _ in 0..25 {
+                        super::read_clipboard(false, || {
+                            let now = inside.fetch_add(1, Ordering::SeqCst) + 1;
+                            most.fetch_max(now, Ordering::SeqCst);
+                            std::thread::sleep(std::time::Duration::from_millis(1));
+                            inside.fetch_sub(1, Ordering::SeqCst);
+                            None
+                        });
+                    }
+                })
+            })
+            .collect();
+        for t in threads {
+            t.join().unwrap();
+        }
+        assert_eq!(most.load(Ordering::SeqCst), 1, "reads at the same moment");
+    }
+
+    /// #629 on the real clipboard: several threads read it at once for a few seconds, and the
+    /// process lives. Ignored by default (it reads the clipboard of the person at the computer;
+    /// it never writes it, and what it reads is dropped unseen):
+    /// `cargo test -p mdm-app --bin misterdownloadmanager -- --ignored real_clipboard`.
+    #[test]
+    #[ignore = "reads the real clipboard"]
+    fn real_clipboard_reads_from_many_threads_live() {
+        let until = std::time::Instant::now() + std::time::Duration::from_secs(3);
+        let threads: Vec<_> = (0..6)
+            .map(|_| {
+                std::thread::spawn(move || {
+                    let mut reads = 0u32;
+                    while std::time::Instant::now() < until {
+                        std::hint::black_box(super::clipboard_text().map(|t| t.len()));
+                        reads += 1;
+                    }
+                    reads
+                })
+            })
+            .collect();
+        let reads: u32 = threads.into_iter().map(|t| t.join().unwrap()).sum();
+        assert!(reads > 0);
     }
 }

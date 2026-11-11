@@ -30,6 +30,13 @@ Everything below ships together, in version 0.5.0.
 - ✅ **View → Interface size**: every window larger, 100 % to 200 %, with Ctrl + / Ctrl − / Ctrl 0
   as in a browser; a window larger than the screen scrolls. Sharper text on Windows (part of
   [#262](https://github.com/anefzaoui/misterdownloadmanager/issues/262))
+- ✅ Windows: **View → Text → Smooth** draws the text anti-aliased at its own size, not as
+  thick, hard-edged whole-pixel letters that read badly on a 1440p screen; **Classic**, the
+  default, keeps the hinted look MDM had. **Interface size** gains 110 %, 115 % and 120 % between 100 % and
+  125 %
+- ✅ Windows: sharp, evenly spaced text at every interface size: letters no longer run together
+  or drift apart ([#323](https://github.com/anefzaoui/misterdownloadmanager/issues/323),
+  [#334](https://github.com/anefzaoui/misterdownloadmanager/issues/334))
 - ✅ Linux: Update now asks the package manager which package MDM is; a copy installed by
   another package manager (pacman) is left to the system's updates, with a plain message
 - ✅ Linux: the .deb and .rpm install the browsers' host files for everyone and remove them on
@@ -494,12 +501,20 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Left click on the tray icon toggles the main window (on Windows also with the icon under
+  the taskbar's ^), and browser downloads open only their dialog when the main window is
+  hidden or minimized ([#520](https://github.com/anefzaoui/misterdownloadmanager/pull/520))
+- ✅ Debrid accounts: signing in by code opens only the service's own page
+- ✅ A speed limit raised or turned off applies at once, to the connections already waiting
+  under the old one too ([#621](https://github.com/anefzaoui/misterdownloadmanager/issues/621))
 - ✅ The build and release workflows: each job gets only the permissions it needs, and every
   action and release tool is pinned to an exact version
 - ✅ A freeze on a slow disk, the data folder looked up on every tick
   ([#565](https://github.com/anefzaoui/misterdownloadmanager/issues/565))
 - ✅ A `funding.json` file, the open format funds use to find projects and what they need
 - ✅ The tools that send the browser extension to the stores, at their current versions
+- ✅ macOS: downloads to a network volume (SMB, AFP, NFS), refused for "0 bytes free"
+  ([#623](https://github.com/anefzaoui/misterdownloadmanager/issues/623))
 
 ## Being worked on
 
@@ -507,6 +522,9 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 Download video: a sound-only choice (MP3, a playlist as sound) saved in the Music folder and
+  listed under Music ([#611](https://github.com/anefzaoui/misterdownloadmanager/issues/611)):
+  in review
 - 🔄 Linux and macOS: the system's gallery-dl used when MDM has none of its own, as yt-dlp is
   ([#571](https://github.com/anefzaoui/misterdownloadmanager/issues/571)): in review
 - 🔄 Videos sent in pieces (HLS, DASH) downloading several pieces at once, as many as a file's
@@ -537,6 +555,9 @@ These ship in a later version, when they're ready.
   ([#357](https://github.com/anefzaoui/misterdownloadmanager/issues/357)): the last one in review
 - 🔄 The browser extension's media list naming a file after its page, as an option: in review
 - 🔄 Malay: a native speaker's check of the menus, toolbar and list columns: in review
+- 🔄 Cancel in Download File Info asking whether the downloads waiting behind it are cancelled
+  too (a browser selection's arrive one by one)
+  ([#394](https://github.com/anefzaoui/misterdownloadmanager/issues/394)): in review
 
 ### Bugs being looked into
 
@@ -544,6 +565,9 @@ These ship in a later version, when they're ready.
   ([#630](https://github.com/anefzaoui/misterdownloadmanager/issues/630)): a link the site refuses
   to MDM now goes on from where the browser's own download of it had reached; fix in review, still
   to check on FileHippo itself. A link pasted into Add URL has no such address to go on from
+- 🔄 Windows: a crash when the clipboard was read in two places at once (the clipboard monitor and
+  Add URL) ([#629](https://github.com/anefzaoui/misterdownloadmanager/issues/629)): every read and
+  write of the clipboard now goes one at a time; fix in review
 - 🔄 Categories without their own folder following General's folder (`Video`, `Music`, `Torrents`
   inside it), and Add torrent starting with the Torrents category's folder instead of flipping
   from General when metadata arrives ([#556](https://github.com/anefzaoui/misterdownloadmanager/issues/556),
@@ -667,9 +691,6 @@ These ship in a later version, when they're ready.
 - 🔄 Crash reports: a monitor that cannot open its socket exits, and an unreachable one is
   cleaned up instead of staying beside MDM: fix in review
   ([#458](https://github.com/anefzaoui/misterdownloadmanager/pull/458))
-- 🔄 Left click on the tray icon toggles the main window, and browser downloads open only
-  their dialog when the main window is hidden or minimized: fix in review
-  ([#520](https://github.com/anefzaoui/misterdownloadmanager/pull/520))
 
 ## Planned
 
