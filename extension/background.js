@@ -417,7 +417,16 @@ if (ext.webRequest) {
       if (FIREFOX) {
         forget(referrers, 120000);
         const ref = header("referer");
-        if (ref && ref.value) referrers.set(d.requestId, { url: ref.value, at: Date.now() });
+        // Firefox's originUrl is more precise than a reduced Referer, but it must never create
+        // a Referer that the page's Referrer-Policy deliberately omitted (#607).
+        if (ref && ref.value) {
+          const origin = typeof d.originUrl === "string"
+            && /^https?:/i.test(d.originUrl)
+            && d.originUrl !== d.url
+            ? d.originUrl
+            : "";
+          referrers.set(d.requestId, { url: origin || ref.value, at: Date.now() });
+        }
       }
       if (d.method !== "POST") return;
       const p = posts.get(d.url);
