@@ -1286,6 +1286,11 @@ const MPD = (protect) => `<?xml version="1.0"?>
     "https://fb.watch/abc123/",
     "a feed button can retain an fb.watch link",
   );
+  assert.equal(
+    facebook("https://www.facebook.com/", ["https://fb.watch/abc123/?mibextid=tracking"]),
+    "https://fb.watch/abc123/",
+    "tracking parameters are removed from fb.watch links",
+  );
   ok("#643: Facebook page video paths and fb.watch links are resolved");
 }
 
