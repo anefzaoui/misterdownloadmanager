@@ -501,6 +501,13 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Linux freeze and crash reports name MDM's functions again, and the right ones: the stack of
+  a program whose code begins a page after its start (0.5.0's) was read at the wrong place, so
+  reports showed only system libraries, or names from elsewhere in MDM
+  ([#661](https://github.com/anefzaoui/misterdownloadmanager/issues/661))
+- ✅ Windows: a freeze in the C runtime's memory routines, where the window hardly ran, is
+  reported as a computer too busy or slow to load MDM from disk, not as a deadlock
+  ([#663](https://github.com/anefzaoui/misterdownloadmanager/issues/663))
 - ✅ macOS: helpers opened from Finder find Homebrew's Deno and ffmpeg, so YouTube formats
   load ([#659](https://github.com/anefzaoui/misterdownloadmanager/issues/659))
 - ✅ The website is named as the official one in the README, the browser add-on and the
