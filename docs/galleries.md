@@ -17,7 +17,7 @@ The gallery gets one row in the list. Its size grows as the pictures arrive, and
 
 gallery-dl lists the gallery's pictures: where each one comes from and the name it gets in the folder. MDM's own downloader then brings them in, 4 at a time (fewer when the site answers that it's busy, as Wikimedia's does), under your speed limits (a change applies at once), and the progress window's connections table shows each one. gallery-dl then runs as before: it finds those pictures already there and fetches only what MDM couldn't have, such as a picture from a site that wants a sign-in or headers of its own. The log says how many each saved.
 
-A gallery-dl older than 1.26 can't list the pictures this way: it downloads them all itself, one a second, as before.
+A gallery-dl older than 1.32 (a Linux distribution's, often) can't list the pictures this way: it downloads them all itself, one a second, as before.
 
 ## Get the new pictures later
 

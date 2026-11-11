@@ -13,7 +13,7 @@
 //! path it would save it to (`--print prepare-after:…`, nothing downloaded), the engine brings
 //! them in several at once into those paths, under the speed limits, and gallery-dl then runs as
 //! before: it finds them there and fetches only what the engine couldn't have (a site that wants
-//! headers of its own, a sign-in). A gallery-dl too old to list (before 1.26) downloads them all
+//! headers of its own, a sign-in). A gallery-dl too old to list them (before 1.32) downloads them all
 //! itself, as before.
 
 use std::io::{BufRead, BufReader};
@@ -77,8 +77,10 @@ pub struct Accepts {
     pub no_input: bool,
     /// `--user-agent` (1.24.0); before it, the same setting as `-o user-agent=…`.
     pub user_agent: bool,
-    /// `--print` with its `prepare-after` event (1.26.0): the files listed without downloading,
-    /// for MDM's engine (#769).
+    /// `--print` with its `prepare-after` event and the file's `{_url}` and `{_path}` (1.32.0):
+    /// the files listed without downloading, for MDM's engine (#769). Asked of each release
+    /// (2026-11-11): 1.27.0 has no `--print`; 1.27.7 to 1.29.0 print `None` for both and download
+    /// the files; 1.31.0 prints `None`; 1.32.0 lists them.
     pub print: bool,
 }
 
@@ -99,7 +101,7 @@ impl Accepts {
         Accepts {
             no_input: at_least("1.27.1"),
             user_agent: at_least("1.24.0"),
-            print: at_least("1.26.0"),
+            print: at_least("1.32.0"),
         }
     }
 }
@@ -835,6 +837,10 @@ mod tests {
         assert_eq!(accepts("unknown"), (true, true));
         // The system's, not asked (#571): what every release from 1.20.0 accepts.
         assert_eq!(accepts("system"), (false, false));
+        // #769: the files listed for MDM's engine, from 1.32.0 (earlier ones printed `None`).
+        let print = |v: &str| Accepts::of(v).print;
+        assert!(!print("1.27.7") && !print("1.31.0") && !print("system"));
+        assert!(print("1.32.0") && print("1.32.19") && print("unknown"));
         assert!(!too_old("system"));
         assert!(too_old("1.17.0") && too_old("1.19.3") && too_old("0.9"));
         assert!(!too_old("1.20.0") && !too_old("1.26.9") && !too_old("unknown"));

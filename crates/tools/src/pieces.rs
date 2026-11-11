@@ -1055,7 +1055,9 @@ mod tests {
                 key: None,
             })
             .collect();
-        let paths: Vec<PathBuf> = (0..n).map(|i| dir.path().join(format!("{i}.jpg"))).collect();
+        let paths: Vec<PathBuf> = (0..n)
+            .map(|i| dir.path().join(format!("{i}.jpg")))
+            .collect();
         let shared = Arc::new(Shared::default());
         let opts = mdm_engine::Options {
             max_connections: 4,
