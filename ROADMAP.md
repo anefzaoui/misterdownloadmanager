@@ -503,6 +503,21 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Links added by hand go with the User-Agent of your default browser, at the version you have
+  (Chrome, Edge, Brave, Opera, Vivaldi, Firefox, Safari), instead of a years-old one; **Automatic**
+  in Options, or one you type (part of
+  [#668](https://github.com/anefzaoui/misterdownloadmanager/issues/668))
+- ✅ Linux freeze and crash reports name MDM's functions again, and the right ones: the stack of
+  a program whose code begins a page after its start (0.5.0's) was read at the wrong place, so
+  reports showed only system libraries, or names from elsewhere in MDM
+  ([#661](https://github.com/anefzaoui/misterdownloadmanager/issues/661))
+- ✅ Windows: a freeze in the C runtime's memory routines, where the window hardly ran, is
+  reported as a computer too busy or slow to load MDM from disk, not as a deadlock
+  ([#663](https://github.com/anefzaoui/misterdownloadmanager/issues/663))
+- ✅ macOS: helpers opened from Finder find Homebrew's Deno and ffmpeg, so YouTube formats
+  load ([#659](https://github.com/anefzaoui/misterdownloadmanager/issues/659))
+- ✅ The website is named as the official one in the README, the browser add-on and the
+  site's data for search engines
 - ✅ Left click on the tray icon toggles the main window (on Windows also with the icon under
   the taskbar's ^), and browser downloads open only their dialog when the main window is
   hidden or minimized ([#520](https://github.com/anefzaoui/misterdownloadmanager/pull/520))
@@ -524,6 +539,9 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 Sites with bot protection (Cloudflare and similar) refusing MDM: when a site still answers
+  with a bot check, asking again the way a browser connects
+  ([#668](https://github.com/anefzaoui/misterdownloadmanager/issues/668))
 - 🔄 Download video: a sound-only choice (MP3, a playlist as sound) saved in the Music folder and
   listed under Music ([#611](https://github.com/anefzaoui/misterdownloadmanager/issues/611)):
   in review
@@ -563,6 +581,10 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 Torrents: magnet links without trackers finding no peers where the DHT's first nodes didn't
+  answer ([#650](https://github.com/anefzaoui/misterdownloadmanager/issues/650)): four public
+  routers asked together, the ones that never answer left alone once one has, the IPv6 nodes kept
+  for the next start too, and the port picked kept from one start to the next; fix in review
 - 🔄 Windows: the window stopping on a stalled system while it checked its title bar's colours
   ([#633](https://github.com/anefzaoui/misterdownloadmanager/issues/633),
   [#583](https://github.com/anefzaoui/misterdownloadmanager/issues/583)): the colours are now set
@@ -574,6 +596,10 @@ These ship in a later version, when they're ready.
 - 🔄 Windows: a crash when the clipboard was read in two places at once (the clipboard monitor and
   Add URL) ([#629](https://github.com/anefzaoui/misterdownloadmanager/issues/629)): every read and
   write of the clipboard now goes one at a time; fix in review
+- 🔄 The window waiting on the program that owns the clipboard when it doesn't answer (Linux
+  especially; follows [#418](https://github.com/anefzaoui/misterdownloadmanager/issues/418)): a
+  text box's right-click menu, Add URL, Add batch download, Add torrent and Download video now
+  read the clipboard beside the window, and fill in a copied link when it comes; fix in review
 - 🔄 Categories without their own folder following General's folder (`Video`, `Music`, `Torrents`
   inside it), and Add torrent starting with the Torrents category's folder instead of flipping
   from General when metadata arrives ([#556](https://github.com/anefzaoui/misterdownloadmanager/issues/556),

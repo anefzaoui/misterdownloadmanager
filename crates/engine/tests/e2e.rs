@@ -690,7 +690,7 @@ async fn probe_is_a_plain_get() {
     assert_eq!(log.iter().filter(|e| e.range.is_none()).count(), 1);
     assert!(
         log.iter()
-            .all(|e| e.user_agent.as_deref() == Some(mdm_engine::download::DEFAULT_USER_AGENT))
+            .all(|e| e.user_agent.as_deref() == Some(mdm_engine::agent::automatic().as_str()))
     );
 }
 
@@ -1768,6 +1768,7 @@ async fn a_refused_browser_agent_is_asked_again_as_mdm() {
         },
         Options {
             user_agent: browser.to_owned(),
+            automatic_agent: false,
             ..fast_opts()
         },
     )
@@ -1786,6 +1787,7 @@ async fn a_refused_browser_agent_is_asked_again_as_mdm() {
         },
         Options {
             user_agent: browser.to_owned(),
+            automatic_agent: false,
             agent_fallback: Some("MDM-test".to_owned()),
             ..fast_opts()
         },
