@@ -662,6 +662,7 @@ These ship in a later version, when they're ready.
   [#345](https://github.com/anefzaoui/misterdownloadmanager/issues/345)): fix in review
 - 🔄 A page that starts a download by script being saved instead of the file
   ([#374](https://github.com/anefzaoui/misterdownloadmanager/issues/374)): fix in review
+- 🔄 Google Colab: only tokenized runtime-proxy transfers stay with the browser; ordinary notebook links remain capturable ([#603](https://github.com/anefzaoui/misterdownloadmanager/issues/603)): fix in review
 - 🔄 A gofile share link saving a web page instead of the file
   ([#346](https://github.com/anefzaoui/misterdownloadmanager/issues/346)): fix in review
 - 🔄 A server's refusal page saved under the document's name and shown as complete, where the
