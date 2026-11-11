@@ -501,6 +501,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ macOS: helpers opened from Finder find Homebrew's Deno and ffmpeg, so YouTube formats
+  load ([#659](https://github.com/anefzaoui/misterdownloadmanager/issues/659))
+- ✅ The website is named as the official one in the README, the browser add-on and the
+  site's data for search engines
 - ✅ Left click on the tray icon toggles the main window (on Windows also with the icon under
   the taskbar's ^), and browser downloads open only their dialog when the main window is
   hidden or minimized ([#520](https://github.com/anefzaoui/misterdownloadmanager/pull/520))
@@ -561,6 +565,10 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 Torrents: magnet links without trackers finding no peers where the DHT's first nodes didn't
+  answer ([#650](https://github.com/anefzaoui/misterdownloadmanager/issues/650)): four public
+  routers asked together, the ones that never answer left alone once one has, the IPv6 nodes kept
+  for the next start too, and the port picked kept from one start to the next; fix in review
 - 🔄 Windows: the window stopping on a stalled system while it checked its title bar's colours
   ([#633](https://github.com/anefzaoui/misterdownloadmanager/issues/633),
   [#583](https://github.com/anefzaoui/misterdownloadmanager/issues/583)): the colours are now set
