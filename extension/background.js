@@ -417,7 +417,16 @@ if (ext.webRequest) {
       if (FIREFOX) {
         forget(referrers, 120000);
         const ref = header("referer");
-        if (ref && ref.value) referrers.set(d.requestId, { url: ref.value, at: Date.now() });
+        // For a top-level link navigation Firefox's originUrl is the document that contained
+        // the clicked link. Referer can be reduced to a site's root or rewritten by the site;
+        // prefer the more precise source page for "Refresh download address" (#607).
+        const origin = typeof d.originUrl === "string"
+          && /^https?:/i.test(d.originUrl)
+          && d.originUrl !== d.url
+          ? d.originUrl
+          : "";
+        const source = origin || (ref && ref.value) || "";
+        if (source) referrers.set(d.requestId, { url: source, at: Date.now() });
       }
       if (d.method !== "POST") return;
       const p = posts.get(d.url);
