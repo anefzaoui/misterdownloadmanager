@@ -589,8 +589,6 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
-### Bugs being looked into
-
 - 🔄 Opening a browser from the download dialog no longer blocks MDM's window while the browser starts on Windows, macOS and Linux ([#609](https://github.com/anefzaoui/misterdownloadmanager/issues/609)): fix in review; needs platform confirmation
 
 - 🔄 The browser's video button over a video in a feed sending the feed's address, where yt-dlp
