@@ -2518,7 +2518,10 @@ impl App {
                 headers.insert(name, v);
             }
         }
-        let ua = self.settings.user_agent.trim();
+        // The browser's own User-Agent when it handed the download over, else the one set in
+        // Options, else the automatic one (the default browser's, #668).
+        let own = self.settings.own_user_agent();
+        let given = context.user_agent.as_deref().or(own);
         let opts = Options {
             max_connections: self.settings.connections_for(url),
             proxy: self.settings.proxy_for(context),
@@ -2531,20 +2534,17 @@ impl App {
             ignore_mtime: self.settings.ignore_mtime,
             server_time: self.settings.set_creation_date,
             ftp_passive: self.settings.ftp_passive,
-            user_agent: match context.user_agent.as_deref() {
-                Some(browser) => browser.to_owned(),
-                None if ua.is_empty() => Options::default().user_agent,
-                None => ua.to_owned(),
+            user_agent: given.map_or_else(mdm_engine::agent::automatic, str::to_owned),
+            automatic_agent: given.is_none(),
+            // A browser's User-Agent (handed over, or the automatic one) may be refused on this
+            // connection (#372): the one set in Options, else MDM's former one (Internet
+            // Explorer 11's, which such bot checks let through), is tried once then. One the
+            // user set is the user's choice: no other.
+            agent_fallback: match (context.user_agent.is_some(), own) {
+                (true, Some(own)) => Some(own.to_owned()),
+                (_, None) => Some(mdm_engine::agent::IE11_USER_AGENT.to_owned()),
+                (false, Some(_)) => None,
             },
-            // The browser's User-Agent may be refused on this connection (#372): MDM's own
-            // (Options' or the default) is tried once then, as Add URL would.
-            agent_fallback: context.user_agent.is_some().then(|| {
-                if ua.is_empty() {
-                    Options::default().user_agent
-                } else {
-                    ua.to_owned()
-                }
-            }),
             // Where the browser's own download of it ended: asked when the link itself is
             // refused (#630, a one-time or session-bound token the browser already used).
             browser_final: context

@@ -501,6 +501,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Links added by hand go with the User-Agent of your default browser, at the version you have
+  (Chrome, Edge, Brave, Opera, Vivaldi, Firefox, Safari), instead of a years-old one; **Automatic**
+  in Options, or one you type (part of
+  [#668](https://github.com/anefzaoui/misterdownloadmanager/issues/668))
 - ✅ macOS: helpers opened from Finder find Homebrew's Deno and ffmpeg, so YouTube formats
   load ([#659](https://github.com/anefzaoui/misterdownloadmanager/issues/659))
 - ✅ The website is named as the official one in the README, the browser add-on and the
@@ -526,6 +530,9 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 Sites with bot protection (Cloudflare and similar) refusing MDM: when a site still answers
+  with a bot check, asking again the way a browser connects
+  ([#668](https://github.com/anefzaoui/misterdownloadmanager/issues/668))
 - 🔄 Download video: a sound-only choice (MP3, a playlist as sound) saved in the Music folder and
   listed under Music ([#611](https://github.com/anefzaoui/misterdownloadmanager/issues/611)):
   in review

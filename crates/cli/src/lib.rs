@@ -1082,9 +1082,12 @@ fn subs_arg(langs: &str, automatic: bool, embed: bool) -> mdm_tools::video::Subs
     }
 }
 
+/// A download's options: the app's defaults (the default browser's User-Agent, #668, and MDM's
+/// former one once if a site refuses it, #372).
 fn opts(connections: u32) -> Options {
     Options {
         max_connections: connections,
+        agent_fallback: Some(mdm_engine::agent::IE11_USER_AGENT.to_owned()),
         ..Options::default()
     }
 }
