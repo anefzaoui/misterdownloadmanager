@@ -259,6 +259,18 @@ const MORE_AT = `function () {
   const r = m && m.getBoundingClientRect();
   return JSON.stringify(r && r.width ? { x: r.left + r.width / 2, y: r.top + r.height / 2 } : null);
 }`;
+// A click on the button's arrow, as a person makes it: the pointer onto it first, a moment (the tab
+// shows its grip as the pointer comes, and keeps its end where it was), then the click where the
+// arrow is now.
+async function clickArrow(session) {
+  const first = await session.pill(MORE_AT);
+  if (!first) return null;
+  await session.mouse(first.x, first.y);
+  await sleep(300);
+  const at = (await session.pill(MORE_AT)) || first;
+  await session.mouse(at.x, at.y, "click");
+  return at;
+}
 // The button's state (ready, looking, sending, sent, warn, err, off, drm), its words and its
 // buttons ("Show", "Retry"…), each with where a click lands.
 const PILL_STATE = `function () {
@@ -1190,16 +1202,19 @@ async function openInMdm(session, pid, b = null) {
     if (!at && b) await session.mouse((b.l + b.r) / 2 + (Date.now() % 2), b.b + 24);
     return at;
   });
-  await session.mouse(more.x, more.y, "click");
+  await clickArrow(session);
   for (let i = 0; i < 5; i += 1) {
+    // Its look-up ended (the lines below "Download best" came), or, while it still runs (a site
+    // yt-dlp takes long over), as it is: "All qualities…" stays where it is until it ends.
     const m = await until("the menu, its look-up ended", 30000, async () => {
       const p = await session.picks("open");
       return p && !p.busy ? p : null;
-    });
+    }).catch(() => session.picks("open"));
+    if (!m) throw new Error("the menu didn't open");
     await session.mouse(m.open.x, m.open.y, "click");
     const opened = await until("the Download video window", 3000, () => appWindows(pid).includes(VIDEO_WINDOW)).catch(() => false);
     if (opened) return "menu";
-    if (!(await session.picks())) await session.mouse(more.x, more.y, "click");
+    if (!(await session.picks())) await clickArrow(session);
   }
   throw new Error(`"All qualities and subtitles…" opened no window`);
 }
@@ -1303,8 +1318,7 @@ async function videoButton(session, never) {
   };
   // Its menu by keyboard: open (its arrow), to "Never on 127.0.0.1" (the last but one), Enter.
   const neverHere = async () => {
-    const more = await session.pill(MORE_AT);
-    await session.mouse(more.x, more.y, "click");
+    await clickArrow(session);
     await sleep(200);
     await session.key("End");
     await session.key("ArrowUp");
@@ -2528,8 +2542,7 @@ const CASES = {
         return p && p.state === "ready" && p.chip ? p : null;
       });
       // Its menu: the arrow.
-      const more = await t.session.pill(MORE_AT);
-      await t.session.mouse(more.x, more.y, "click");
+      await clickArrow(t.session);
       const clicked = Date.now();
       // Pictures for a pull request (E2E_SHOTS, see the top): the player and the menu together.
       const shots = process.env.E2E_SHOTS && t.session.shot ? path.resolve(process.env.E2E_SHOTS) : "";
