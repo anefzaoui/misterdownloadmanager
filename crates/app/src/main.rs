@@ -458,6 +458,17 @@ fn app() -> eframe::Result {
 mod tests {
     use super::{Start, start_mode};
 
+    /// The tests that take the process-wide clipboard lock, one at a time: they run in parallel
+    /// in one process, and the reads of one waited out the others' (more than the 500 ms a read
+    /// waits), so a read meant to go through came back empty.
+    static CLIPBOARD_TESTS: std::sync::Mutex<()> = std::sync::Mutex::new(());
+
+    fn clipboard_test() -> std::sync::MutexGuard<'static, ()> {
+        CLIPBOARD_TESTS
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+    }
+
     /// Started with the session (#226): hidden (the tray decided by the app), or minimized
     /// where a window can't be hidden; a start by the user shows the window.
     #[test]
@@ -472,6 +483,7 @@ mod tests {
     /// nor writes it (Copy magnet link, Copy…): it logs what it would have copied.
     #[test]
     fn offscreen_runs_leave_the_clipboard_alone() {
+        let _one = clipboard_test();
         let mut asked = false;
         let got = super::read_clipboard(true, || {
             asked = true;
@@ -497,6 +509,7 @@ mod tests {
     /// Add URL on the window's) corrupted the heap. Every read waits for the one under way.
     #[test]
     fn clipboard_reads_are_one_at_a_time() {
+        let _one = clipboard_test();
         use std::sync::atomic::{AtomicUsize, Ordering};
         let inside = std::sync::Arc::new(AtomicUsize::new(0));
         let most = std::sync::Arc::new(AtomicUsize::new(0));
@@ -529,6 +542,7 @@ mod tests {
     #[test]
     #[ignore = "reads the real clipboard"]
     fn real_clipboard_reads_from_many_threads_live() {
+        let _one = clipboard_test();
         let until = std::time::Instant::now() + std::time::Duration::from_secs(3);
         let threads: Vec<_> = (0..6)
             .map(|_| {
