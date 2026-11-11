@@ -149,10 +149,21 @@ struct RawFormat {
     fps: Option<f64>,
     vcodec: Option<String>,
     acodec: Option<String>,
+    #[serde(default, deserialize_with = "bytes")]
     filesize: Option<u64>,
+    #[serde(default, deserialize_with = "bytes")]
     filesize_approx: Option<u64>,
     tbr: Option<f64>,
     protocol: Option<String>,
+}
+
+/// A size as yt-dlp writes it: a whole number, a fraction, or an estimate below zero (its
+/// `filesize_approx` for a Wikimedia Commons file, `-79319`), which says nothing.
+fn bytes<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Option<u64>, D::Error> {
+    let v = Option::<serde_json::Value>::deserialize(d)?;
+    Ok(v.and_then(|v| v.as_f64())
+        .filter(|n| n.is_finite() && *n > 0.0)
+        .map(|n| n as u64))
 }
 
 /// Whether `title` is only the last part of `page`'s address, which is what yt-dlp calls a video
@@ -722,6 +733,14 @@ mod tests {
         );
         let v = parse(commons.as_bytes()).expect("a direct of null");
         assert!(!v.direct);
+        // …and an estimate below zero for a size: none.
+        let odd = HLS.replacen(
+            r#""tbr": 800.0"#,
+            r#""tbr": 800.0, "filesize_approx": -79319"#,
+            1,
+        );
+        let v = parse(odd.as_bytes()).expect("a size below zero");
+        assert!(v.formats.iter().all(|f| f.size != Some(0)));
     }
 
     #[test]
