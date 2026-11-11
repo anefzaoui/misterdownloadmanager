@@ -226,7 +226,7 @@ impl TorrentDialog {
                 .map(|t| t.trim().to_owned())
                 .unwrap_or_default()
         });
-        let folder = category_folder(Category::General, &downloads, &category_dirs);
+        let folder = category_folder(Category::Torrents, &downloads, &category_dirs);
         let mut d = TorrentDialog {
             source,
             folder: folder.display().to_string(),
@@ -510,6 +510,8 @@ impl TorrentDialog {
         }
 
         // Status: looking up (with a spinner and the seconds) / name and size / what went wrong.
+        let rename_err = self.rename.candidate_error();
+        let shown_err = self.error.as_deref().or(rename_err.as_deref());
         let line = o.y + 50.0;
         if busy {
             spinner(ui, pos2(o.x + 18.0, line - 4.0), 6.0);
@@ -524,7 +526,7 @@ impl TorrentDialog {
                 crate::i18n::t("Reading the torrent...").to_owned()
             };
             text(&p, o.x + 31.0, line, &msg, winui::TEXT());
-        } else if let Some(e) = &self.error {
+        } else if let Some(e) = shown_err {
             let (rect, cut) = winui::text_fit(&p, o.x + 11.0, line, e, winui::ERROR(), o.x + 589.0);
             if cut {
                 winui::full_on_hover(ui, rect, "torrent-error", e);
@@ -691,7 +693,11 @@ impl TorrentDialog {
             has,
             Some(o.x + now_at.0),
         );
-        let ready = has && count > 0 && !self.folder.trim().is_empty() && !busy;
+        let ready = has
+            && count > 0
+            && !self.folder.trim().is_empty()
+            && !busy
+            && self.rename.candidate_error().is_none();
         let now = winui::button(
             ui,
             r(o, now_at.0, 456.0, now_at.1, 21.0),
@@ -1823,5 +1829,43 @@ mod tests {
         assert_eq!(rows.len(), 1);
         assert_eq!(t[rows[0]].name, "debian.iso");
         assert_eq!(t[rows[0]].files, [0]);
+    }
+
+    #[test]
+    fn categories_without_their_own_folder_follow_general() {
+        // Absolute on every system (a path like "/Volumes/…" is drive-relative on Windows).
+        let root = std::env::temp_dir().join("mdm-554");
+        let at = |p: &str| root.join(p).display().to_string();
+        let dl = root.join("Users/test/Downloads");
+        assert_eq!(
+            category_folder(Category::Torrents, &dl, &[]),
+            dl.join("Torrents")
+        );
+        let general_only = vec![("General".to_owned(), at("Volumes/Data/Downloads"))];
+        let general = root.join("Volumes/Data/Downloads");
+        assert_eq!(
+            category_folder(Category::General, &dl, &general_only),
+            general
+        );
+        assert_eq!(
+            category_folder(Category::Torrents, &dl, &general_only),
+            general.join("Torrents")
+        );
+        assert_eq!(
+            category_folder(Category::Video, &dl, &general_only),
+            general.join("Video")
+        );
+        let both = vec![
+            ("General".to_owned(), at("Volumes/Data/Downloads")),
+            ("Torrents".to_owned(), at("Volumes/NAS/Torrents")),
+        ];
+        assert_eq!(
+            category_folder(Category::Torrents, &dl, &both),
+            root.join("Volumes/NAS/Torrents")
+        );
+        assert_eq!(
+            category_folder(Category::Video, &dl, &both),
+            general.join("Video")
+        );
     }
 }

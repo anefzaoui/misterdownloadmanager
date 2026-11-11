@@ -28,6 +28,12 @@ fn load_disk_map(session_dir: &Path) -> HashMap<String, String> {
     std::fs::read_to_string(&path)
         .ok()
         .and_then(|s| serde_json::from_str::<HashMap<String, String>>(&s).ok())
+        .map(|mut map| {
+            map.retain(|k, v| {
+                !k.trim().is_empty() && crate::check_relative_path(Path::new(v.trim())).is_ok()
+            });
+            map
+        })
         .unwrap_or_default()
 }
 
@@ -61,11 +67,27 @@ pub fn original_single_file_path(torrent: &[u8]) -> Option<PathBuf> {
     Some(first)
 }
 
+/// Extract the original torrent name from bencoded `.torrent` bytes.
+pub fn original_torrent_name(torrent: &[u8]) -> Option<String> {
+    let meta = librqbit::torrent_from_bytes(torrent).ok()?;
+    let info = meta.info.data.validate().ok()?;
+    info.name().map(|n| n.to_string())
+}
+
+/// Load and validate all saved renames from `renames.json` in `session_dir` into memory.
+pub fn load_into_memory(session_dir: &Path) {
+    let map = load_disk_map(session_dir);
+    let mut mem = memory_map().lock().unwrap();
+    for (k, v) in map {
+        mem.insert(k.trim().to_ascii_lowercase(), v.trim().to_owned());
+    }
+}
+
 /// Record a custom relative file name for a single-file torrent `hash`.
 pub fn set_renamed_file(session_dir: &Path, hash: &str, relative_path: &str) {
     let key = hash.trim().to_ascii_lowercase();
     let val = relative_path.trim().to_owned();
-    if key.is_empty() || val.is_empty() {
+    if key.is_empty() || crate::check_relative_path(Path::new(&val)).is_err() {
         return;
     }
     memory_map()
@@ -282,5 +304,30 @@ mod tests {
         remove_renamed_file(dir.path(), hash);
         assert_eq!(get_renamed_file(dir.path(), hash), None);
         assert!(!dir.path().join(RENAMES_FILE).exists());
+    }
+
+    #[test]
+    fn loading_renames_json_rejects_absolute_paths_and_dot_dot() {
+        let dir = tempfile::tempdir().unwrap();
+        let bad_abs = "1111111111111111111111111111111111111111";
+        let bad_win = "2222222222222222222222222222222222222222";
+        let bad_rel = "3333333333333333333333333333333333333333";
+        let good = "4444444444444444444444444444444444444444";
+        let raw = serde_json::json!({
+            bad_abs: "/etc/passwd",
+            bad_win: r"C:\Windows\System32\cmd.exe",
+            bad_rel: "../escape.mkv",
+            good: "SafeName.mkv",
+        });
+        std::fs::write(dir.path().join(RENAMES_FILE), raw.to_string()).unwrap();
+        clear_memory_for_test();
+
+        assert_eq!(get_renamed_file(dir.path(), bad_abs), None);
+        assert_eq!(get_renamed_file(dir.path(), bad_win), None);
+        assert_eq!(get_renamed_file(dir.path(), bad_rel), None);
+        assert_eq!(
+            get_renamed_file(dir.path(), good),
+            Some(PathBuf::from("SafeName.mkv"))
+        );
     }
 }

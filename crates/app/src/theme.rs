@@ -295,7 +295,12 @@ const SCRIPT_FONTS: &[(&str, &[&str], &[&str])] = &[
 const SCRIPT_FONTS: &[(&str, &[&str], &[&str])] = &[
     (
         "han",
-        &["PingFang.ttc", "Supplemental/Songti.ttc"],
+        &[
+            "PingFang.ttc",
+            "Hiragino Sans GB.ttc",
+            "STHeiti Light.ttc",
+            "Supplemental/Songti.ttc",
+        ],
         &["zh-hans", "zh-hant"],
     ),
     ("japanese", &["ヒラギノ角ゴシック W3.ttc"], &["ja"]),
@@ -389,6 +394,31 @@ fn font_dir() -> std::path::PathBuf {
         .unwrap_or_else(|| std::path::PathBuf::from(r"C:\Windows\Fonts"));
     #[cfg(target_os = "macos")]
     return std::path::PathBuf::from("/System/Library/Fonts");
+}
+
+/// Resolves a font file path in `dir`. On macOS 15+ (Sequoia / Tahoe), `PingFang.ttc` moved out
+/// of `/System/Library/Fonts/PingFang.ttc` into `/System/Library/AssetsV2/com_apple_MobileAsset_Font*`.
+#[cfg(any(windows, target_os = "macos"))]
+fn font_path(dir: &std::path::Path, rel: &str) -> std::path::PathBuf {
+    let direct = dir.join(rel);
+    #[cfg(target_os = "macos")]
+    if rel == "PingFang.ttc" && !direct.exists() {
+        for base in [
+            "/System/Library/AssetsV2/com_apple_MobileAsset_Font8",
+            "/System/Library/AssetsV2/com_apple_MobileAsset_Font7",
+            "/System/Library/AssetsV2/com_apple_MobileAsset_Font6",
+        ] {
+            if let Ok(entries) = std::fs::read_dir(base) {
+                for entry in entries.flatten() {
+                    let p = entry.path().join("AssetData/PingFang.ttc");
+                    if p.is_file() {
+                        return p;
+                    }
+                }
+            }
+        }
+    }
+    direct
 }
 
 /// The fonts for scripts outside the interface language, loaded the first time a character
@@ -509,7 +539,12 @@ const MACOS_FALLBACK_FONTS: &[FallbackFont] = &[
             (0xFF00, 0xFFEF),
             (0x20000, 0x3FFFF),
         ],
-        files: &["PingFang.ttc", "Supplemental/Songti.ttc"],
+        files: &[
+            "PingFang.ttc",
+            "Hiragino Sans GB.ttc",
+            "STHeiti Light.ttc",
+            "Supplemental/Songti.ttc",
+        ],
     },
     FallbackFont {
         key: "khmer",
@@ -562,7 +597,7 @@ fn fallback_font(c: char) -> Option<(String, egui::FontData)> {
         let dir = font_dir();
         (
             format!("fallback:{}", font.key),
-            font.files.iter().map(|f| dir.join(f)).collect(),
+            font.files.iter().map(|f| font_path(&dir, f)).collect(),
         )
     };
     #[cfg(not(any(windows, target_os = "macos")))]
@@ -650,7 +685,9 @@ fn script_fonts(code: &str, all: bool) -> Vec<(String, Vec<u8>)> {
             // The first file there is used (older systems name some differently); a .ttc's
             // first face is the regular one.
             .filter_map(|(key, files, _)| {
-                let bytes = files.iter().find_map(|f| std::fs::read(dir.join(f)).ok())?;
+                let bytes = files
+                    .iter()
+                    .find_map(|f| std::fs::read(font_path(&dir, f)).ok())?;
                 Some(((*key).to_owned(), bytes))
             })
             .collect()
@@ -849,15 +886,34 @@ fn fonts(ctx: &egui::Context, code: &str, all: bool) {
 #[cfg(windows)]
 fn classic_text(ctx: &egui::Context) {
     use std::sync::atomic::{AtomicI8, Ordering};
-    static RTL: AtomicI8 = AtomicI8::new(-1);
+    static DRAWN: AtomicI8 = AtomicI8::new(-1);
     let rtl = crate::i18n::rtl();
-    if RTL.swap(i8::from(rtl), Ordering::Relaxed) != i8::from(rtl) {
+    let smooth = SMOOTH_TEXT.load(Ordering::Relaxed);
+    let now = i8::from(rtl) | (i8::from(smooth) << 1);
+    if DRAWN.swap(now, Ordering::Relaxed) != now {
         ctx.set_glyph_rasterizers(
-            crate::win32::text_rasterizer(font_dir(), rtl)
+            crate::win32::text_rasterizer(font_dir(), rtl, smooth)
                 .into_iter()
                 .collect(),
         );
     }
+}
+
+/// View → Text: smooth (DirectWrite's natural look) or classic (hinted whole-pixel text, as
+/// Windows' old controls, the default). Only Windows has the choice: elsewhere egui draws the text.
+static SMOOTH_TEXT: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
+/// The setting's value, before the first frame (it is read at start).
+pub fn init_smooth_text(on: bool) {
+    SMOOTH_TEXT.store(on, std::sync::atomic::Ordering::Relaxed);
+}
+
+/// Draw the text smooth (`true`) or classic from now on, in every window. Windows only: View →
+/// Text exists only there, where DirectWrite draws the text; elsewhere egui draws it.
+#[cfg(windows)]
+pub fn set_smooth_text(ctx: &egui::Context, on: bool) {
+    init_smooth_text(on);
+    classic_text(ctx);
 }
 
 /// The text [`classic_text`] leaves to egui (Arabic, Hebrew, Indic, Thai, CJK; marks clustered

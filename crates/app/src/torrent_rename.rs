@@ -104,17 +104,14 @@ impl TorrentRenamePlugin {
         }
     }
 
-    /// Compute the effective target name and apply it to `Meta`.
-    pub fn apply_to_meta(&self, meta: &mut Meta) -> String {
+    fn raw_candidate(&self) -> String {
         if self.is_dir {
             let folder_name = sanitize_part(&self.stem);
-            let effective = if folder_name.is_empty() {
+            if folder_name.is_empty() {
                 self.orig_stem.clone()
             } else {
                 folder_name
-            };
-            meta.name = effective.clone();
-            effective
+            }
         } else {
             let stem_part = sanitize_part(&self.stem);
             let stem_effective = if stem_part.is_empty() {
@@ -123,19 +120,74 @@ impl TorrentRenamePlugin {
                 stem_part
             };
             let ext_part = sanitize_part(self.ext.trim().trim_start_matches('.'));
-            let file_name = if ext_part.is_empty() {
+            if ext_part.is_empty() {
                 stem_effective
             } else {
                 format!("{stem_effective}.{ext_part}")
+            }
+        }
+    }
+
+    fn orig_file_name(&self) -> String {
+        if self.orig_ext.is_empty() {
+            self.orig_stem.clone()
+        } else {
+            format!("{}.{}", self.orig_stem, self.orig_ext)
+        }
+    }
+
+    /// Check the candidate name through `mdm_torrent::check_relative_path` (`names::check`),
+    /// returning the formatted error message if the name is unsafe on this system (e.g. `CON.mkv`
+    /// on Windows).
+    pub fn candidate_error(&self) -> Option<String> {
+        let candidate = self.raw_candidate();
+        if candidate.is_empty() {
+            return None;
+        }
+        let rel = match (&self.orig_parent, self.is_dir) {
+            (Some(parent), false) => parent.join(&candidate),
+            _ => PathBuf::from(&candidate),
+        };
+        mdm_torrent::check_relative_path(&rel)
+            .err()
+            .map(|u| crate::errors::torrent(&mdm_torrent::TorrentError::UnsafeName(u)))
+    }
+
+    /// Compute the effective target name and apply it to `Meta`.
+    pub fn apply_to_meta(&self, meta: &mut Meta) -> String {
+        let candidate = self.raw_candidate();
+        if self.is_dir {
+            let effective = if candidate.is_empty()
+                || mdm_torrent::check_relative_path(Path::new(&candidate)).is_err()
+            {
+                self.orig_stem.clone()
+            } else {
+                candidate
+            };
+            meta.name = effective.clone();
+            effective
+        } else {
+            let candidate_rel = match &self.orig_parent {
+                Some(parent) => parent.join(&candidate),
+                None => PathBuf::from(&candidate),
+            };
+            let (file_name, rel_path) = if !candidate.is_empty()
+                && mdm_torrent::check_relative_path(&candidate_rel).is_ok()
+            {
+                (candidate, candidate_rel)
+            } else {
+                let orig = self.orig_file_name();
+                let rel = match &self.orig_parent {
+                    Some(parent) => parent.join(&orig),
+                    None => PathBuf::from(&orig),
+                };
+                (orig, rel)
             };
             meta.name = file_name.clone();
             if let Some(idx) = self.single_idx
                 && let Some(entry) = meta.files.get_mut(idx)
             {
-                entry.path = match &self.orig_parent {
-                    Some(parent) => parent.join(&file_name),
-                    None => PathBuf::from(&file_name),
-                };
+                entry.path = rel_path;
             }
             file_name
         }
@@ -206,17 +258,33 @@ pub fn ensure_loaded() {
     static INIT: Once = Once::new();
     INIT.call_once(|| {
         if let Some(dir) = session_dir() {
-            let path = dir.join("renames.json");
-            if let Ok(text) = std::fs::read_to_string(&path)
-                && let Ok(map) =
-                    serde_json::from_str::<std::collections::HashMap<String, String>>(&text)
-            {
-                for (hash, rel) in map {
-                    mdm_torrent::rename_plugin::set_renamed_file(&dir, &hash, &rel);
-                }
-            }
+            mdm_torrent::rename_plugin::load_into_memory(&dir);
         }
     });
+}
+
+/// Return the custom file or folder name chosen in Add torrent when it differs from the
+/// torrent's original name.
+pub fn renamed_target(meta: &Meta) -> Option<String> {
+    let non_padding: Vec<&mdm_torrent::FileEntry> =
+        meta.files.iter().filter(|f| !f.padding).collect();
+    if let [single] = non_padding.as_slice() {
+        let changed = mdm_torrent::rename_plugin::original_single_file_path(&meta.torrent)
+            .is_none_or(|orig| orig != single.path);
+        changed
+            .then(|| {
+                single
+                    .path
+                    .file_name()
+                    .map(|n| n.to_string_lossy().into_owned())
+            })
+            .flatten()
+            .filter(|n| !n.is_empty())
+    } else {
+        let changed = mdm_torrent::rename_plugin::original_torrent_name(&meta.torrent)
+            .is_none_or(|orig| orig != meta.name);
+        changed.then(|| meta.name.clone()).filter(|n| !n.is_empty())
+    }
 }
 
 /// Persist single-file torrent rename when adding a torrent from `TorrentDialog`,

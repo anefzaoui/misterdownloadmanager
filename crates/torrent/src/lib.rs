@@ -26,7 +26,31 @@ pub mod blocklist;
 mod names;
 pub mod rename_plugin;
 pub mod trackers;
-pub use names::UnsafeName;
+pub use names::{UnsafeName, check as check_names};
+
+/// Check that a relative file or folder path has no root, prefix, `.` or `..`, and passes
+/// [`names::check`] for this system.
+pub fn check_relative_path(path: &Path) -> Result<(), UnsafeName> {
+    let raw = path.to_string_lossy();
+    let has_drive_prefix = raw
+        .split(['/', '\\'])
+        .next()
+        .is_some_and(|first| first.as_bytes().get(1) == Some(&b':'));
+    if path.is_absolute()
+        || raw.starts_with(['/', '\\'])
+        || has_drive_prefix
+        || path
+            .components()
+            .any(|c| !matches!(c, std::path::Component::Normal(_)))
+    {
+        return Err(UnsafeName {
+            path: raw.into_owned(),
+            why: "an empty, `.` or `..` name",
+        });
+    }
+    let parts: Vec<String> = raw.split(['/', '\\']).map(str::to_owned).collect();
+    names::check([parts])
+}
 
 #[derive(Debug, thiserror::Error)]
 pub enum TorrentError {
