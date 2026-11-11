@@ -589,7 +589,6 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
-  ([#578](https://github.com/anefzaoui/misterdownloadmanager/issues/578)): fix in review
 - 🔄 Firefox: refresh a download from the page that started it, without inventing a Referer when Referrer-Policy omitted it ([#607](https://github.com/anefzaoui/misterdownloadmanager/issues/607)): fix in review
 
 - 🔄 The browser's video button over a video in a feed sending the feed's address, where yt-dlp
