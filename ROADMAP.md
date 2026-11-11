@@ -589,6 +589,7 @@ These ship in a later version, when they're ready.
 - 🔄 Chromium browsers: another extension's file names and folders (Save In's) lost while MDM's
   extension was on, for downloads it left to the browser
   ([#578](https://github.com/anefzaoui/misterdownloadmanager/issues/578)): fix in review
+- 🔄 Firefox: refresh a download from the page that started it, without inventing a Referer when Referrer-Policy omitted it ([#607](https://github.com/anefzaoui/misterdownloadmanager/issues/607)): fix in review
 - 🔄 Without ffmpeg, YouTube's sound alone saved as `.mp4` though it was raw AAC from HLS pieces,
   which no player opened ([#569](https://github.com/anefzaoui/misterdownloadmanager/issues/569)): fix in review
 - 🔄 A progress window's title bar buttons not answering
