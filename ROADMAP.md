@@ -563,6 +563,7 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 Opening a browser from the download dialog no longer blocks MDM's window while the browser starts on Windows, macOS and Linux ([#609](https://github.com/anefzaoui/misterdownloadmanager/issues/609)): fix in review; needs platform confirmation
 - 🔄 Windows: the window stopping on a stalled system while it checked its title bar's colours
   ([#633](https://github.com/anefzaoui/misterdownloadmanager/issues/633),
   [#583](https://github.com/anefzaoui/misterdownloadmanager/issues/583)): the colours are now set
