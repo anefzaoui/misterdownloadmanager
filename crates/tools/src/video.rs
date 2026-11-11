@@ -557,7 +557,7 @@ fn run(
             Err(e) => return Err(e.to_string()),
         }
     };
-    // A retry or a new server attempt starts a fresh transfer phase. Stop always wins.
+    // A retry starts a fresh transfer phase. Stop always wins.
     {
         let mut p = progress.lock().unwrap();
         if p.state != State::Stopped {
@@ -582,10 +582,6 @@ fn run(
         let line = text.trim_end_matches(['\r', '\n']);
         if let Some(rest) = line.strip_prefix("MDMF ") {
             saved = Some(PathBuf::from(rest.trim()));
-            let mut p = progress.lock().unwrap();
-            if p.state == State::Processing {
-                p.state = State::Running;
-            }
         } else if line.starts_with("MDMPOST ") {
             let mut p = progress.lock().unwrap();
             if p.state != State::Stopped {
@@ -594,10 +590,16 @@ fn run(
             }
         } else if let Some(rest) = line.strip_prefix("MDMQ ") {
             quality = Some(rest.trim().to_owned());
-        } else if let Some(rest) = line.strip_prefix("MDMP ")
-            && let Some(m) = meter.as_deref_mut()
-        {
-            m.line(rest, &mut progress.lock().unwrap());
+        } else if let Some(rest) = line.strip_prefix("MDMP ") {
+            let mut p = progress.lock().unwrap();
+            // A post-processor may run before the media transfer (for example subtitle conversion).
+            // The next download progress line means the transfer is active again.
+            if p.state == State::Processing {
+                p.state = State::Running;
+            }
+            if let Some(m) = meter.as_deref_mut() {
+                m.line(rest, &mut p);
+            }
         }
     }
     // Poll (the lock is free in between, so stop() can still kill it).
@@ -685,66 +687,9 @@ fn content_ext(head: &[u8]) -> Option<&'static str> {
     None
 }
 
-/// Remove an extension repeated by the output template (for example `clip.mp4.mp4`).
-/// The final extension is the one yt-dlp selected; a same-extension suffix in the title is not
-/// needed a second time. Never overwrite an existing file.
-fn strip_repeated_media_extension(f: PathBuf) -> PathBuf {
-    let Some(ext) = f.extension().and_then(|e| e.to_str()) else {
-        return f;
-    };
-    let lower = ext.to_ascii_lowercase();
-    if !matches!(
-        lower.as_str(),
-        "mp4"
-            | "mkv"
-            | "webm"
-            | "mov"
-            | "m4v"
-            | "m4a"
-            | "mp3"
-            | "opus"
-            | "ogg"
-            | "oga"
-            | "flac"
-            | "wav"
-            | "aac"
-            | "flv"
-            | "3gp"
-    ) {
-        return f;
-    }
-    let Some(stem) = f.file_stem().map(|s| s.to_string_lossy().into_owned()) else {
-        return f;
-    };
-    let Some((base, repeated)) = stem.rsplit_once('.') else {
-        return f;
-    };
-    if !repeated.eq_ignore_ascii_case(ext) {
-        return f;
-    }
-    for n in 1..100 {
-        let name = if n == 1 {
-            format!("{base}.{ext}")
-        } else {
-            format!("{base} ({n}).{ext}")
-        };
-        let target = f.with_file_name(name);
-        if target.exists() {
-            continue;
-        }
-        return if std::fs::rename(&f, &target).is_ok() {
-            target
-        } else {
-            f
-        };
-    }
-    f
-}
-
 /// `f`, renamed for what it holds when its MP4 name is wrong ([`content_ext`]); as it was
 /// otherwise, or when the rename fails (the file is kept).
 fn named_for_content(f: PathBuf) -> PathBuf {
-    let f = strip_repeated_media_extension(f);
     let named = f
         .extension()
         .map(|e| e.to_string_lossy().to_ascii_lowercase());
@@ -966,6 +911,23 @@ impl Drop for Remove {
     }
 }
 
+/// Remove a media extension already present at the end of a page title before yt-dlp builds
+/// the output name. This also keeps subtitle side files from inheriting a duplicate extension.
+fn without_media_extension(stem: &str) -> &str {
+    const MEDIA_EXTENSIONS: &[&str] = &[
+        "mp4", "mkv", "webm", "mov", "m4v", "m4a", "mp3", "opus", "ogg", "oga", "flac", "wav",
+        "aac", "flv", "3gp", "ts", "avi", "wmv", "mpg", "mpeg", "m2ts",
+    ];
+    let Some((base, ext)) = stem.rsplit_once('.') else {
+        return stem;
+    };
+    if !base.is_empty() && MEDIA_EXTENSIONS.iter().any(|e| ext.eq_ignore_ascii_case(e)) {
+        base
+    } else {
+        stem
+    }
+}
+
 /// `%` would be read as a template field by yt-dlp.
 fn template_text(s: &str) -> String {
     s.replace('%', "%%")
@@ -986,8 +948,7 @@ pub fn pace_args(rate: Option<u64>, fragments: u32) -> Vec<String> {
 
 /// Our progress line: `MDMP <downloaded> <total> <estimate> <speed>` (`NA` when unknown).
 const PROGRESS: &str = "download:MDMP %(progress.downloaded_bytes)s %(progress.total_bytes)s %(progress.total_bytes_estimate)s %(progress.speed)s";
-/// yt-dlp's post-process hook: `MDMPOST <postprocessor> <status>`. This is separate from bytes
-/// downloaded, so a long FFmpeg merge can be shown as processing instead of a fake 99.9% transfer.
+/// yt-dlp's post-process hook: the media bytes have arrived; the tool is merging or converting.
 const POSTPROCESS: &str = "postprocess:MDMPOST %(progress._default_template)s";
 /// The final file: `MDMF <path>`.
 const FINAL: &str = "after_move:MDMF %(filepath)s";
@@ -1017,7 +978,10 @@ impl VideoJob {
         subs: &Subs,
     ) -> Result<VideoJob, ProcError> {
         proc::safe(url)?;
-        let output = dir.join(format!("{}.%(ext)s", template_text(stem)));
+        let output = dir.join(format!(
+            "{}.%(ext)s",
+            template_text(without_media_extension(stem))
+        ));
         // An MP3, Opus or FLAC choice (#32, #70): the best sound, converted by ffmpeg.
         let convert = crate::resolve::audio_conversion(selector);
         let format = if convert.is_some() {
@@ -1205,18 +1169,6 @@ mod tests {
         let real = dir.path().join("Real.mp4");
         std::fs::write(&real, &mp4).unwrap();
         assert_eq!(named_for_content(real.clone()), real);
-        // A video title that already ends in its actual extension must not become .mp4.mp4.
-        let doubled = dir.path().join("Dropbox.mp4.mp4");
-        std::fs::write(&doubled, &mp4).unwrap();
-        let single = dir.path().join("Dropbox.mp4");
-        assert_eq!(named_for_content(doubled), single);
-        assert!(single.is_file());
-        // Keep both files if the unduplicated name already exists.
-        let doubled = dir.path().join("Dropbox.mp4.mp4");
-        std::fs::write(&doubled, &mp4).unwrap();
-        let second = dir.path().join("Dropbox (2).mp4");
-        assert_eq!(named_for_content(doubled), second);
-        assert!(second.is_file());
         let named = dir.path().join("Talk.aac");
         assert_eq!(named_for_content(named.clone()), named);
     }
@@ -1224,6 +1176,18 @@ mod tests {
     /// #531: a stream in pieces comes down several at once, as many as a file's connections;
     /// with a speed limit one at a time, as yt-dlp's limit holds for each piece (measured
     /// against the lab server: `--limit-rate 512K -N 4` took a quarter of the time).
+    #[test]
+    fn a_media_extension_at_the_end_of_a_title_is_removed_before_template_creation() {
+        assert_eq!(without_media_extension("Dropbox.mp4"), "Dropbox");
+        assert_eq!(without_media_extension("Talk.MKV"), "Talk");
+        assert_eq!(without_media_extension("clip.part.webm"), "clip.part");
+        assert_eq!(
+            without_media_extension("a title with no media suffix"),
+            "a title with no media suffix"
+        );
+        assert_eq!(without_media_extension(".mp4"), ".mp4");
+    }
+
     #[test]
     fn fragments_at_once_unless_the_speed_is_limited() {
         let s = |v: Vec<String>| v.join(" ");
