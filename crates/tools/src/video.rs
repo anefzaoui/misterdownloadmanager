@@ -978,7 +978,10 @@ impl VideoJob {
         subs: &Subs,
     ) -> Result<VideoJob, ProcError> {
         proc::safe(url)?;
-        let output = dir.join(format!("{}.%(ext)s", template_text(without_media_extension(stem))));
+        let output = dir.join(format!(
+            "{}.%(ext)s",
+            template_text(without_media_extension(stem))
+        ));
         // An MP3, Opus or FLAC choice (#32, #70): the best sound, converted by ffmpeg.
         let convert = crate::resolve::audio_conversion(selector);
         let format = if convert.is_some() {
@@ -1178,7 +1181,10 @@ mod tests {
         assert_eq!(without_media_extension("Dropbox.mp4"), "Dropbox");
         assert_eq!(without_media_extension("Talk.MKV"), "Talk");
         assert_eq!(without_media_extension("clip.part.webm"), "clip.part");
-        assert_eq!(without_media_extension("a title with no media suffix"), "a title with no media suffix");
+        assert_eq!(
+            without_media_extension("a title with no media suffix"),
+            "a title with no media suffix"
+        );
         assert_eq!(without_media_extension(".mp4"), ".mp4");
     }
 
