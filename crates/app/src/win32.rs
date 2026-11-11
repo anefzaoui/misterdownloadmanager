@@ -381,15 +381,10 @@ pub fn dialog_frame(title: &str, client: [f32; 2], light: bool, scale: f32) -> b
     true
 }
 
-/// How much of the standard 8 px sizing border IDM's progress window does not have: its frame
-/// is 2 px (1 px border + 1 px frame line) left, right and bottom (spec "Conventions").
-const THIN_TRIM: i32 = 6;
-
 /// Hit-test results (winuser.h).
 const HTCLIENT: LRESULT = 1;
 const HTCAPTION: LRESULT = 2;
 const HTSYSMENU: LRESULT = 3;
-const HTBORDER: LRESULT = 18;
 
 /// The system menu's "Hide to the notification area" (#63): a command id of ours (below
 /// 0xF000, its low 4 bits clear, as WM_SYSCOMMAND wants).
@@ -462,71 +457,6 @@ fn frame_hit(x: i32, y: i32, hits: &CaptionHits) -> LRESULT {
     } else {
         HTCLIENT
     }
-}
-
-/// IDM's progress-window frame (2 px borders, fixed size) with the title bar ours (#63, the
-/// approach Windows Terminal, Zed and WezTerm take): the window keeps its system frame and
-/// WS_CAPTION (Aero Snap, shake, the system menu and Alt+Space, the DWM shadow and rounded
-/// corners), its caption given to the client, which draws it; the hit test reads where the
-/// drawn parts are.
-unsafe extern "system" fn thin_frame_proc(
-    hwnd: HWND,
-    msg: u32,
-    wparam: WPARAM,
-    lparam: LPARAM,
-    _id: usize,
-    _data: usize,
-) -> LRESULT {
-    use windows_sys::Win32::UI::WindowsAndMessaging::{WM_NCACTIVATE, WM_SYSCOMMAND};
-    if msg == WM_NCCALCSIZE && wparam != 0 {
-        // SAFETY: with wParam TRUE, lParam points to NCCALCSIZE_PARAMS (Win32 contract).
-        let p = unsafe { &mut *(lparam as *mut NCCALCSIZE_PARAMS) };
-        let top = p.rgrc[0].top;
-        let res = unsafe { DefSubclassProc(hwnd, msg, wparam, lparam) };
-        p.rgrc[0].left -= THIN_TRIM;
-        p.rgrc[0].right += THIN_TRIM;
-        p.rgrc[0].bottom += THIN_TRIM;
-        // No system caption: the client starts at the window's top.
-        p.rgrc[0].top = top;
-        return res;
-    }
-    // Activation changes repaint the non-client area: with lParam -1 the system skips that,
-    // so its own caption never flashes over ours.
-    if msg == WM_NCACTIVATE {
-        return unsafe { DefSubclassProc(hwnd, msg, wparam, -1) };
-    }
-    if msg == WM_SYSCOMMAND && (wparam & 0xFFF0) == SC_HIDE_TO_TRAY {
-        HIDE_ASKED.with(|s| {
-            if let Ok(mut s) = s.try_borrow_mut() {
-                s.insert(hwnd as isize);
-            }
-        });
-        return 0;
-    }
-    let res = unsafe { DefSubclassProc(hwnd, msg, wparam, lparam) };
-    if msg == WM_NCHITTEST {
-        // Fixed size, like IDM's: the sizing edges (HTLEFT..HTBOTTOMRIGHT) act as plain border.
-        if (10..=17).contains(&res) {
-            return HTBORDER;
-        }
-        if res == HTCLIENT {
-            use windows_sys::Win32::Foundation::POINT;
-            use windows_sys::Win32::Graphics::Gdi::ScreenToClient;
-            let mut pt = POINT {
-                x: (lparam & 0xffff) as i16 as i32,
-                y: ((lparam >> 16) & 0xffff) as i16 as i32,
-            };
-            // SAFETY: our own window; the point is a local.
-            unsafe { ScreenToClient(hwnd, &mut pt) };
-            let hit = CAPTION_HITS.with(|m| {
-                m.try_borrow()
-                    .ok()
-                    .and_then(|m| m.get(&(hwnd as isize)).map(|h| frame_hit(pt.x, pt.y, h)))
-            });
-            return hit.unwrap_or(HTCLIENT);
-        }
-    }
-    res
 }
 
 /// The Maximize button of a resizable window whose title bar is ours: under the pointer, or
@@ -724,7 +654,7 @@ unsafe extern "system" fn drawn_frame_proc(
 pub fn drawn_frame(title: &str, on: bool) -> Option<isize> {
     use windows_sys::Win32::UI::Shell::RemoveWindowSubclass;
     let hwnd = find_own_window(title)?;
-    if caption_less_frames() {
+    if windows_11() {
         // SAFETY: our own window, on its thread.
         unsafe {
             if on {
@@ -763,8 +693,8 @@ pub fn drawn_frame(title: &str, on: bool) -> Option<isize> {
     Some(hwnd as isize)
 }
 
-/// Give our window titled `title` IDM's thin progress-window frame with its title bar drawn by
-/// us (winui::caption, #63): 2 px borders, no system caption, the client staying `client`
+/// Give our window titled `title`, whose title bar is drawn by us (winui::caption, #63), its fixed
+/// frame without a caption style ([`caption_less`], #208, #620), the client staying `client`
 /// points (the drawn title bar included) at `scale` pixels per point. With `hide_item` (the
 /// translated "Hide to the notification area"), the system menu gets it, Alt+Space reaching it
 /// from the keyboard; None takes it out. Call while the window is still hidden, and again when
@@ -775,18 +705,22 @@ pub fn thin_frame(
     scale: f32,
     hide_item: Option<&str>,
 ) -> Option<isize> {
-    use windows_sys::Win32::UI::HiDpi::GetDpiForWindow;
+    use windows_sys::Win32::UI::HiDpi::{AdjustWindowRectExForDpi, GetDpiForWindow};
     use windows_sys::Win32::UI::WindowsAndMessaging::{
         AppendMenuW, DeleteMenu, GetSystemMenu, MF_BYCOMMAND, MF_STRING,
     };
     let hwnd = find_own_window(title)?;
-    let plain = caption_less_frames();
+    // Windows 11 draws its 1 px border round a window without a caption style; Windows 10 draws
+    // none, so there it has the system's own (WS_BORDER).
+    let kind = if windows_11() {
+        Drawn::Fixed
+    } else {
+        Drawn::Edged
+    };
+    // SAFETY: our own window, on its thread; the menu text and the rectangle are locals read
+    // during the calls.
     unsafe {
-        if plain {
-            caption_less(hwnd, Drawn::Fixed);
-        } else {
-            SetWindowSubclass(hwnd, Some(thin_frame_proc), 0x1d6, 0);
-        }
+        caption_less(hwnd, kind);
         let menu = GetSystemMenu(hwnd, 0);
         if !menu.is_null() {
             DeleteMenu(menu, SC_HIDE_TO_TRAY as u32, MF_BYCOMMAND);
@@ -795,29 +729,40 @@ pub fn thin_frame(
                 AppendMenuW(menu, MF_STRING, SC_HIDE_TO_TRAY, w.as_ptr());
             }
         }
-        // The thin frame's 2 px each side but the top, or none: a plain window is all client
-        // (Windows 11 draws its 1 px border over the client's edge).
-        let dpi = GetDpiForWindow(hwnd).max(96) as f32 / 96.0;
-        let (fw, fh) = if plain { (0.0, 0.0) } else { (4.0, 2.0) };
+        // The window is the client and the frame its styles describe round it, for its own DPI:
+        // none on Windows 11, the 1 px border on Windows 10.
+        let style = GetWindowLongPtrW(hwnd, GWL_STYLE) as u32;
+        let ex = GetWindowLongPtrW(hwnd, GWL_EXSTYLE) as u32;
+        let mut rc = RECT {
+            left: 0,
+            top: 0,
+            right: (client[0] * scale).round() as i32,
+            bottom: (client[1] * scale).round() as i32,
+        };
+        AdjustWindowRectExForDpi(&mut rc, style, 0, ex, GetDpiForWindow(hwnd).max(96));
         SetWindowPos(
             hwnd,
             std::ptr::null_mut(),
             0,
             0,
-            (client[0] * scale + fw * dpi).round() as i32,
-            (client[1] * scale + fh * dpi).round() as i32,
+            rc.right - rc.left,
+            rc.bottom - rc.top,
             SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE,
         );
     }
     Some(hwnd as isize)
 }
 
-/// Whether the windows whose title bar is ours are framed without a caption style
-/// ([`caption_less`], #208): on Windows 11 (build 22000 on), which rounds such a window when asked
-/// and draws its border. Windows 10 does neither for a window without a caption style, so it
-/// keeps the frames above (the caption style, its caption given to the client): the band they
-/// showed was seen on a Windows 11 build only.
-fn caption_less_frames() -> bool {
+/// Windows 11 (build 22000 on). Every window whose title bar is ours and that keeps its size
+/// (the progress window, a style theme's dialogs) is framed without a caption style on every
+/// version ([`thin_frame`]): with the caption style hidden by our WM_NCCALCSIZE, a Windows 11
+/// Insider build (#208) and Windows 10 22H2 (#620) showed the window's picture where the style's
+/// client would have been, a black band a title bar tall above it, every click landing above what
+/// it showed. The resizable main window with a style theme is framed so on Windows 11 only
+/// ([`drawn_frame`]), which colours the sizing frame's strip above its title bar
+/// ([`caption_colour`]); Windows 10 can't (DWMWA_CAPTION_COLOR is Windows 11's), so there it keeps
+/// its caption style, given to the client.
+fn windows_11() -> bool {
     use windows_sys::Win32::System::Registry::HKEY_LOCAL_MACHINE;
     static ON: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
     *ON.get_or_init(|| {
@@ -835,8 +780,12 @@ fn caption_less_frames() -> bool {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) enum Drawn {
     /// A fixed size (the progress window, a dialog with a style theme's title bar): a plain
-    /// popup, all client, as the drop target and the menus are (#210, #231).
+    /// popup, all client, as the drop target and the menus are (#210, #231). Windows 11 draws
+    /// its border, over the client's edge.
     Fixed,
+    /// The same with the system's 1 px border round the client (WS_BORDER): Windows 10, which
+    /// draws no border round a window without a caption style (#620).
+    Edged,
     /// Resizable (the main window with a style theme): a popup with the system's sizing frame,
     /// for resizing on every edge, Aero Snap and Snap Layouts, the shadow, and maximizing.
     Sizable,
@@ -850,6 +799,15 @@ impl Drawn {
         match self {
             Drawn::Fixed => 0,
             Drawn::Sizable => 1,
+            Drawn::Edged => 2,
+        }
+    }
+
+    fn of(data: usize) -> Drawn {
+        match data {
+            1 => Drawn::Sizable,
+            2 => Drawn::Edged,
+            _ => Drawn::Fixed,
         }
     }
 }
@@ -863,10 +821,12 @@ impl Drawn {
 /// drop target (#231). Here what the styles describe is what the window is: the system's own
 /// WM_NCCALCSIZE frames it, no other reading can differ.
 pub(crate) fn drawn_style(style: u32, kind: Drawn) -> u32 {
-    use windows_sys::Win32::UI::WindowsAndMessaging::{WS_CAPTION, WS_POPUP};
+    use windows_sys::Win32::UI::WindowsAndMessaging::{WS_BORDER, WS_CAPTION, WS_POPUP};
+    // WS_CAPTION is WS_BORDER | WS_DLGFRAME: both go, and the border comes back where wanted.
     let plain = (style & !(WS_CAPTION | WS_THICKFRAME)) | WS_POPUP;
     match kind {
         Drawn::Fixed => plain,
+        Drawn::Edged => plain | WS_BORDER,
         Drawn::Sizable => plain | WS_THICKFRAME,
     }
 }
@@ -978,7 +938,7 @@ thread_local! {
 /// a caption style in its caption colour). Cheap: DWM is asked only when it changes.
 pub fn caption_colour(hwnd: isize, rgb: [u8; 3]) {
     use windows_sys::Win32::Graphics::Dwm::{DWMWA_CAPTION_COLOR, DwmSetWindowAttribute};
-    if !caption_less_frames() {
+    if !windows_11() {
         return;
     }
     let colour = u32::from_le_bytes([rgb[0], rgb[1], rgb[2], 0]);
@@ -1073,12 +1033,8 @@ unsafe extern "system" fn caption_less_proc(
         WM_STYLECHANGING, WM_SYSCOMMAND,
     };
     const HT_MAX: LRESULT = HTMAXBUTTON as LRESULT;
-    let sizable = data == Drawn::Sizable.data();
-    let kind = if sizable {
-        Drawn::Sizable
-    } else {
-        Drawn::Fixed
-    };
+    let kind = Drawn::of(data);
+    let sizable = kind == Drawn::Sizable;
     let at = |lp: LPARAM| {
         (
             (lp & 0xffff) as i16 as i32,
@@ -1312,7 +1268,8 @@ mod caption_less_tests {
     use super::*;
     use windows_sys::Win32::UI::WindowsAndMessaging::{
         AdjustWindowRectEx, CreateWindowExW, DestroyWindow, GetClientRect, GetWindowRect,
-        MINMAXINFO, SendMessageW, WM_GETMINMAXINFO, WS_CAPTION, WS_EX_APPWINDOW, WS_POPUP,
+        MINMAXINFO, SendMessageW, WM_GETMINMAXINFO, WS_BORDER, WS_CAPTION, WS_EX_APPWINDOW,
+        WS_POPUP,
     };
 
     /// The styles winit gives the progress window (a caption, a sizing frame trimmed by us, a
@@ -1342,6 +1299,13 @@ mod caption_less_tests {
         // The system menu and Minimize stay (Alt+Space, the taskbar's commands).
         assert_eq!(fixed & 0x000A_0000, 0x000A_0000);
         assert_eq!(styles_frame(fixed, drawn_ex_style(WINIT_EX)), [0, 0, 0, 0]);
+        // Windows 10's (#620): the same with the system's 1 px border, the same on every side.
+        let edged = drawn_style(WINIT_PROGRESS, Drawn::Edged);
+        assert_eq!(edged & WS_CAPTION, WS_BORDER);
+        assert_eq!(edged & WS_THICKFRAME, 0);
+        assert_ne!(edged & WS_POPUP, 0);
+        assert_eq!(edged & 0x000A_0000, 0x000A_0000);
+        assert_eq!(styles_frame(edged, drawn_ex_style(WINIT_EX)), [1, 1, 1, 1]);
         // Resizable: the sizing frame, the same on every side (none taller at the top).
         let sizable = drawn_style(WINIT_MAIN, Drawn::Sizable);
         assert_eq!(sizable & WS_CAPTION, 0);
@@ -1351,6 +1315,10 @@ mod caption_less_tests {
         assert!(l > 0 && l == t && t == r && r == b, "{l} {t} {r} {b}");
         // Applied again (winit setting its own styles once more), nothing changes.
         assert_eq!(drawn_style(fixed, Drawn::Fixed), fixed);
+        assert_eq!(drawn_style(edged, Drawn::Edged), edged);
+        for kind in [Drawn::Fixed, Drawn::Edged, Drawn::Sizable] {
+            assert_eq!(Drawn::of(kind.data()), kind);
+        }
         assert_eq!(drawn_style(sizable, Drawn::Sizable), sizable);
         // IDM's dialog frame goes; the taskbar button stays.
         let ex = drawn_ex_style(WINIT_EX | WS_EX_DLGMODALFRAME);
@@ -1365,9 +1333,13 @@ mod caption_less_tests {
     #[test]
     fn caption_less_frames_a_real_window_as_its_styles_say() {
         use windows_sys::Win32::UI::WindowsAndMessaging::{HTBOTTOMRIGHT, HTLEFT, HTTOP};
-        for (n, (style, kind)) in [(WINIT_PROGRESS, Drawn::Fixed), (WINIT_MAIN, Drawn::Sizable)]
-            .into_iter()
-            .enumerate()
+        for (n, (style, kind)) in [
+            (WINIT_PROGRESS, Drawn::Fixed),
+            (WINIT_PROGRESS, Drawn::Edged),
+            (WINIT_MAIN, Drawn::Sizable),
+        ]
+        .into_iter()
+        .enumerate()
         {
             let title = format!("mdm caption-less test {n} {}", std::process::id());
             let wide: Vec<u16> = title.encode_utf16().chain(Some(0)).collect();
