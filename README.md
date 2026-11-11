@@ -157,7 +157,7 @@ right-to-left window.
 <img src="crates/app/assets/flags/za.svg" width="28" height="21" alt="Afrikaans" title="Afrikaans">
 <img src="crates/app/assets/flags/al.svg" width="28" height="21" alt="Shqip (Albanian)" title="Shqip (Albanian)">
 <img src="crates/app/assets/flags/et.svg" width="28" height="21" alt="አማርኛ (Amharic)" title="አማርኛ (Amharic)">
-<img src="crates/app/assets/flags/sa.svg" width="28" height="21" alt="العربية (Arabic)" title="العربية (Arabic)">
+<img src="crates/app/assets/flags/iq.svg" width="28" height="21" alt="العربية (Arabic)" title="العربية (Arabic)">
 <img src="crates/app/assets/flags/am.svg" width="28" height="21" alt="Հայերեն (Armenian)" title="Հայերեն (Armenian)">
 <img src="crates/app/assets/flags/in.svg" width="28" height="21" alt="অসমীয়া (Assamese)" title="অসমীয়া (Assamese)">
 <img src="crates/app/assets/flags/az.svg" width="28" height="21" alt="Azərbaycan (Azerbaijani)" title="Azərbaycan (Azerbaijani)">
