@@ -1232,6 +1232,63 @@ const MPD = (protect) => `<?xml version="1.0"?>
   ok("#311: the button sends the video's own page, not the page playing it");
 }
 
+// Facebook's feed URL is not a video URL: use the card's video permalink, including
+// /<page>/videos/<id>, and keep fb.watch links as the same Facebook source.
+{
+  const source = readFileSync(new URL("../../extension/video.js", import.meta.url), "utf8");
+  const start = source.indexOf("function videoPage(v) {");
+  let depth = 0;
+  let end = start;
+  for (let i = source.indexOf("{", start); i < source.length; i += 1) {
+    if (source[i] === "{") depth += 1;
+    if (source[i] === "}" && --depth === 0) {
+      end = i + 1;
+      break;
+    }
+  }
+  const facebook = (href, links = []) => {
+    const video = {
+      parentElement: null,
+      getBoundingClientRect: () => ({ top: 10, left: 10 }),
+      querySelectorAll: (selector) =>
+        selector === "a[href]"
+          ? links.map((link) => ({
+              href: new URL(link, href).href,
+              getAttribute: () => link,
+              getBoundingClientRect: () => ({ top: 10, left: 10 }),
+            }))
+          : [],
+    };
+    const fn = new Function("location", "document", source.slice(start, end) + "; return videoPage;")(
+      { href },
+      { querySelector: () => null },
+    );
+    return fn(video);
+  };
+  assert.equal(facebook("https://www.facebook.com/"), null);
+  assert.equal(
+    facebook("https://www.facebook.com/profile/videos/123456789"),
+    "https://www.facebook.com/profile/videos/123456789",
+    "a page videos path is a video",
+  );
+  assert.equal(
+    facebook("https://fb.watch/abc123/"),
+    "https://fb.watch/abc123/",
+    "an fb.watch short link is a video",
+  );
+  assert.equal(
+    facebook("https://www.facebook.com/", ["/profile/videos/123456789"]),
+    "https://www.facebook.com/profile/videos/123456789",
+    "a feed button resolves the page video permalink",
+  );
+  assert.equal(
+    facebook("https://www.facebook.com/", ["https://fb.watch/abc123/"]),
+    "https://fb.watch/abc123/",
+    "a feed button can retain an fb.watch link",
+  );
+  ok("#643: Facebook page video paths and fb.watch links are resolved");
+}
+
 // A page that moves in place (history.pushState): the button sends the address it's at now, not
 // the one the document loaded at; the page's own player names the video on YouTube; nothing goes
 // when nothing names it (the page would be a list of ~50 to yt-dlp).
@@ -1272,6 +1329,13 @@ const MPD = (protect) => `<?xml version="1.0"?>
     assert.deepEqual([r.ok, r.why], [false, "unnamed"]);
     assert.equal(natives(calls).filter((m) => m.video).length, 1, "the channel's list is never sent");
   }
+  // Facebook's short host is an alias of facebook.com, not a different site to discard.
+  await message(
+    listeners,
+    { type: "video", url: "https://fb.watch/abc123/" },
+    yt("https://www.facebook.com/"),
+  );
+  assert.equal(last(calls).url, "https://fb.watch/abc123/", "fb.watch is accepted as Facebook's video address");
   // The popup, on a site this copy leaves alone, and on a player that streams pieces.
   {
     const excludes = ["*://*.youtube.com/*", "*://*.youtube-nocookie.com/*", "*://youtu.be/*"];
