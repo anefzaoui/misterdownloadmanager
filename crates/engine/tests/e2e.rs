@@ -2044,3 +2044,99 @@ async fn a_spent_link_goes_on_where_the_browser_download_ended() {
         "{refused:?}"
     );
 }
+
+/// The span a ranged request asked for (`bytes=a-b`), in bytes.
+fn asked_len(range: &str) -> Option<u64> {
+    let (a, b) = range.strip_prefix("bytes=")?.split_once('-')?;
+    Some(b.parse::<u64>().ok()? - a.parse::<u64>().ok()? + 1)
+}
+
+/// #769: a server that slows long answers down (YouTube's media servers, yt-dlp's
+/// `http_chunk_size`): under `request_cap` every request, the first one too, asks for at most
+/// that many bytes, one after another on each connection, and the file comes whole.
+#[tokio::test]
+async fn requests_stay_within_the_cap() {
+    let s = server("rate=8M").await;
+    const CAP: u64 = 256 * 1024;
+    let opts = Options {
+        request_cap: Some(CAP),
+        max_connections: 4,
+        ..fast_opts()
+    };
+    let (log, size) = fetch(&s, "/gen/3M/capped.bin?seed=769", 769, opts).await;
+    assert_eq!(size, 3 << 20);
+    let file: Vec<&LogEntry> = log.iter().filter(|e| e.path.starts_with("/gen/")).collect();
+    assert!(
+        file.iter().all(|e| e.status == 206),
+        "every answer is a range"
+    );
+    let spans: Vec<u64> = file
+        .iter()
+        .map(|e| e.range.as_deref().and_then(asked_len).expect("a range"))
+        .collect();
+    assert!(
+        spans.iter().all(|n| *n <= CAP),
+        "a request over the cap: {spans:?}"
+    );
+    // 3 MB in pieces of 256 KB at most: twelve requests or more, kept alive on few connections.
+    assert!(spans.len() >= 12, "{} requests", spans.len());
+    assert!(
+        file.iter().any(|e| e.conn_req > 1),
+        "the next piece goes on the same connection"
+    );
+    assert!(max_concurrent(&log) >= 2, "connections ran in parallel");
+}
+
+/// #769: a capped download stopped half-way resumes with capped requests and comes whole.
+#[tokio::test]
+async fn a_capped_download_resumes_within_the_cap() {
+    let s = server("rate=2M").await;
+    const CAP: u64 = 128 * 1024;
+    let dir = tempfile::tempdir().unwrap();
+    let dest = dir.path().join("capped-resume.bin");
+    let opts = Options {
+        request_cap: Some(CAP),
+        max_connections: 3,
+        save_interval: std::time::Duration::from_millis(100),
+        ..fast_opts()
+    };
+    let req = Request {
+        url: s.url("/gen/2M/r.bin?seed=770").parse().unwrap(),
+        headers: Default::default(),
+        dest: Destination::File(dest.clone()),
+    };
+    let dl = Download::start(req, opts.clone());
+    loop {
+        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+        if dl.snapshot().downloaded > 600 * 1024 {
+            break;
+        }
+    }
+    dl.cancel();
+    let _ = dl.wait().await;
+    let state = mdm_engine::state::state_path(&dest);
+    assert!(state.exists(), "the resume state is kept");
+    s.clear_log();
+    let out = Download::resume(state, Default::default(), opts)
+        .expect("resumes")
+        .wait()
+        .await
+        .expect("completes");
+    let data = std::fs::read(&out.path).unwrap();
+    let mut want = vec![0; data.len()];
+    content::fill(770, 0, &mut want);
+    assert!(data.len() == 2 << 20 && data == want, "content mismatch");
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("every request ends");
+    let spans: Vec<u64> = s
+        .log()
+        .iter()
+        .filter(|e| e.path.starts_with("/gen/"))
+        .filter_map(|e| e.range.as_deref().and_then(asked_len))
+        .collect();
+    assert!(
+        !spans.is_empty() && spans.iter().all(|n| *n <= CAP),
+        "{spans:?}"
+    );
+}

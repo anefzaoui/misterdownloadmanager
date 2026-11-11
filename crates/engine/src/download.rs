@@ -159,6 +159,12 @@ pub struct Options {
     /// type is the server refusing MDM (a firewall's "The requested URL was rejected"), an error
     /// and never saved as the file (#533, `expects_other_file`).
     pub expected_type: Option<String>,
+    /// The most one request asks for (bytes): every request, the first one too, is a range of
+    /// at most this many, the next one following on the same connection. For servers that slow
+    /// a long answer down (YouTube's media servers serve 10 MB ranges at full speed and a whole
+    /// file at a fraction of it: yt-dlp's `http_chunk_size`, #769). None: each connection asks
+    /// for its whole part at once. HTTP only, never with a POST.
+    pub request_cap: Option<u64>,
     /// Tests: a disk whose flush takes this long and holds every write to the file meanwhile
     /// (as NTFS does, #361). None: the real disk.
     #[doc(hidden)]
@@ -249,6 +255,7 @@ impl Default for Options {
             post: None,
             on_file_created: None,
             expected_type: None,
+            request_cap: None,
             slow_flush: None,
         }
     }
@@ -271,6 +278,11 @@ impl Options {
     /// `1..=MAX_CONNECTIONS_UNLOCKED` (a hand-edited setting can hold anything).
     pub fn connections(&self) -> u32 {
         self.max_connections.clamp(1, MAX_CONNECTIONS_UNLOCKED)
+    }
+
+    /// `request_cap`, when it applies: some bytes, without a form's POST.
+    fn cap(&self) -> Option<u64> {
+        self.request_cap.filter(|c| *c > 0 && self.post.is_none())
     }
 }
 
@@ -1009,7 +1021,7 @@ async fn unlock_noted(
     if let Some(sh) = shared {
         sh.view.lock().unwrap().at_service = None;
         if let Ok(Some(x)) = &out {
-            sh.event(crate::unlock::note_unlocked(u.name(), x));
+            sh.event(u.noted(x));
         }
     }
     out
@@ -1681,6 +1693,9 @@ async fn run_fresh(
             && !(expects && is_web_page(&k.head.headers) && !named(&k.head.headers))
     });
     let mut unlocked = kept.as_ref().and_then(|k| k.unlocked.clone());
+    // Where the first request went: a service's (or a helper's, #769) direct link when one gave
+    // it, which isn't a redirect.
+    let mut first_at = req.url.clone();
     // The browser-like connection the download goes on with, when only it got through (#668).
     let mut browser: Option<Arc<crate::browserlike::Browser>> = None;
     let (as_get, client0, (head, body), headers, ttfb) = match kept {
@@ -1697,10 +1712,16 @@ async fn run_fresh(
             // or logins. The host's link stays the download's origin, asked again (through the
             // service) when the direct link dies.
             unlocked = unlock_origin(&opts, &req.url, Some(shared), cancel).await?;
-            let (target, asked) = match &unlocked {
-                Some(u) => (u.url.clone(), HeaderMap::new()),
+            let (target, mut asked) = match &unlocked {
+                Some(u) => (u.url.clone(), u.headers.clone()),
                 None => (req.url.clone(), req.headers.clone()),
             };
+            // A server that slows long answers down (`request_cap`): the first request is a
+            // range of that size too, its total the file's size.
+            if let Some(cap) = opts.cap() {
+                asked.insert(header::RANGE, range_value(0, cap));
+            }
+            first_at = target.clone();
             let as_get = AsGet::default();
             let seen = shared.seen.get_or_init(Default::default).clone();
             let as_given = opts.clone();
@@ -1802,7 +1823,7 @@ async fn run_fresh(
     shared.event(format!(
         "Connected to {}{}: {}, size {}",
         final_url.host_str().unwrap_or("?"),
-        if final_url != req.url {
+        if final_url != first_at {
             " (redirected)"
         } else {
             ""
@@ -1811,8 +1832,9 @@ async fn run_fresh(
         size.map_or("unknown".to_owned(), disk::human),
     ));
     // Credentials stay with the host they were given for, with the cookies pages set on the way
-    // (`get`).
+    // (`get`); the first request's own range (`request_cap`) isn't theirs.
     let mut headers = headers;
+    headers.remove(header::RANGE);
     // A POST stays one if its redirects kept it (307, 308); it is sent again only once the
     // server has answered a range (206): `Accept-Ranges` alone isn't proof, and a form may do
     // something each time it is posted (an export, an order).
@@ -2345,7 +2367,7 @@ async fn refresh_final_url(
         None => None,
     };
     let (target, mut asked) = match &unlocked {
-        Some(u) => (u.url.clone(), HeaderMap::new()),
+        Some(u) => (u.url.clone(), u.headers.clone()),
         None => (origin.clone(), headers.clone()),
     };
     asked.insert(header::RANGE, HeaderValue::from_static("bytes=0-0"));
@@ -3230,15 +3252,17 @@ async fn worker(ctx: Arc<Ctx>, id: WorkerId, mut first: Option<Body>) -> Result<
             a.written.min(ctx.opts.verify_overlap)
         };
         let result = match first.take() {
-            Some(body) if a.from == 0 => Ok(body),
+            Some(body) if a.from == 0 => {
+                let to = request_end(&ctx, id, 0).unwrap_or(a.to);
+                receive_all(&ctx, id, &target, Some(body), 0, to, 0, whole).await
+            }
             Some(_) => Err(Error::BadRange(
                 "probe segment no longer starts at 0".into(),
             )),
-            None => request(&ctx, &target, a.from - overlap, a.to).await,
-        };
-        let result = match result {
-            Ok(body) => receive(&ctx, id, body, a.from, a.to, overlap, whole).await,
-            Err(e) => Err(e),
+            None => {
+                let to = request_end(&ctx, id, a.from).unwrap_or(a.to);
+                receive_all(&ctx, id, &target, None, a.from, to, overlap, false).await
+            }
         };
         match result {
             Ok(Some(end)) => {
@@ -3343,6 +3367,72 @@ async fn worker(ctx: Arc<Ctx>, id: WorkerId, mut first: Option<Body>) -> Result<
             }
         }
     }
+}
+
+/// `Range: bytes=<from>-<from + len - 1>`.
+fn range_value(from: u64, len: u64) -> HeaderValue {
+    HeaderValue::from_str(&format!("bytes={from}-{}", from + len - 1)).expect("ascii")
+}
+
+/// Where connection `id`'s next request starting at `from` ends: its segment's end, or sooner
+/// under `request_cap` (HTTP). None: the segment is no longer its own.
+fn request_end(ctx: &Ctx, id: WorkerId, from: u64) -> Option<u64> {
+    let end = from + ctx.shared.with_planner(|p| p.room(id, from))?;
+    Some(match ctx.opts.cap().filter(|_| ctx.ftp.is_none()) {
+        Some(cap) => end.min(from.saturating_add(cap)),
+        None => end,
+    })
+}
+
+/// Connection `id`'s part from `from`: `body` (the first answer) or a request for `[from, to)`;
+/// then, under `request_cap`, one request after another on the same connection until its
+/// segment is complete. As [`receive`]: the segment's end, or None when it was taken over.
+#[allow(clippy::too_many_arguments)]
+async fn receive_all(
+    ctx: &Ctx,
+    id: WorkerId,
+    target: &Target,
+    body: Option<Body>,
+    from: u64,
+    to: u64,
+    overlap: u64,
+    whole: bool,
+) -> Result<Option<u64>, Error> {
+    let (mut from, mut to, mut overlap, mut whole) = (from, to, overlap, whole);
+    let mut body = body;
+    loop {
+        let b = match body.take() {
+            Some(b) => b,
+            None => {
+                // The bytes re-read to check the resume (`overlap`) count in the cap too.
+                if let Some(cap) = ctx.opts.cap().filter(|c| overlap < *c && ctx.ftp.is_none()) {
+                    to = to.min(from - overlap + cap);
+                }
+                request(ctx, target, from - overlap, to).await?
+            }
+        };
+        match receive(ctx, id, b, from, to, overlap, whole).await? {
+            Received::Complete(end) => return Ok(Some(end)),
+            Received::Lost => return Ok(None),
+            // The capped request came whole, its segment goes on: the next piece of it.
+            Received::More(pos) => {
+                let Some(end) = request_end(ctx, id, pos) else {
+                    return Ok(None);
+                };
+                (from, to, overlap, whole) = (pos, end, 0, false);
+            }
+        }
+    }
+}
+
+/// How one answer's body ended in [`receive`].
+enum Received {
+    /// The segment is complete, at this end.
+    Complete(u64),
+    /// Another connection took the segment over.
+    Lost,
+    /// All of a capped request (`request_cap`) came, up to here; the segment goes on.
+    More(u64),
 }
 
 /// `GET` bytes `[from, to)`; checks the server returned exactly that range of the same file.
@@ -3705,7 +3795,7 @@ async fn receive(
     to: u64,
     mut verify: u64,
     whole: bool,
-) -> Result<Option<u64>, Error> {
+) -> Result<Received, Error> {
     ctx.shared.conn(id, |c| c.status = ConnStatus::Receiving);
     // Written and committed up to `pos`; `buf` holds claimed bytes not yet written.
     let mut pos = from;
@@ -3792,7 +3882,7 @@ async fn receive(
                 };
                 let Some((n, full)) = claimed else {
                     refund(want);
-                    return Ok(None);
+                    return Ok(Received::Lost);
                 };
                 if n < want {
                     refund(want - n);
@@ -3848,7 +3938,11 @@ async fn receive(
                         () = body.done(ended) => {}
                     }
                 }
-                return Ok(Some(end));
+                return Ok(Received::Complete(end));
+            }
+            // A capped request (`request_cap`) answered in full: the next one goes on.
+            None if ended && err.is_none() && pos >= to && ctx.opts.cap().is_some() => {
+                return Ok(Received::More(pos));
             }
             None if ended => return Err(err.unwrap_or(Error::ShortBody)),
             None => {}
@@ -3876,11 +3970,13 @@ fn note_best(ctx: &Ctx, received: u64, on_net: Duration) {
 /// Whether connection `id` (at `speed` for `elapsed` on this response, next byte `at`) should
 /// reconnect: far slower than the best a connection of this download sustained (comparing
 /// with the others fails once they are all stuck on slow paths), with a lot left at its pace.
-/// Never while a speed limit makes connections slow on purpose.
+/// Never while a speed limit makes connections slow on purpose, nor under `request_cap`: each
+/// request ends soon by itself, and the server's pace varies from one to the next (YouTube's,
+/// #769: reconnecting cost more than it won).
 fn should_shed(ctx: &Ctx, id: WorkerId, speed: u64, elapsed: Duration, at: u64) -> bool {
     let limited = ctx.shared.limiter.get().is_some()
         || ctx.opts.global.as_ref().is_some_and(|g| g.get().is_some());
-    if !ctx.opts.shed_slow || limited || elapsed < SHED_GRACE {
+    if !ctx.opts.shed_slow || limited || ctx.opts.cap().is_some() || elapsed < SHED_GRACE {
         return false;
     }
     let best = ctx.shared.best_speed.load(Ordering::Relaxed);

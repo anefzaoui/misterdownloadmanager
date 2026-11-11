@@ -40,6 +40,11 @@
 #, machine
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Хәзер {n} мәкалә туры килә (ул яңаларын гына өсти):
 #. count in a dialog box
+#. Cancel in Download File Info with downloads waiting behind it
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	Тагын {n} йөкләү көтә. Аны да туктатыргамы?
+#. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -95,6 +100,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} сайланган
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	Файлдан {n} сайт өстәлде.
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	{n} сайт файлга сакланды.
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -169,6 +182,9 @@
 #. window title: 7-Zip (a program's name) must be installed
 #, machine
 	7-Zip needed	7-Zip кирәк
+#. tab in the main window
+#, machine
+	720p	720p
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
@@ -1343,6 +1359,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying yt-dlp...	yt-dlp йөкләнә һәм тикшерелә...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	MDM-ның үз күчермәсе йөкләнә...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1534,6 +1555,10 @@
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	Экспортлау
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	Экспортлау...
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	Manifest 2 Chrome киңәйтмәләрен куллану мөмкинлеген озайту
@@ -2011,6 +2036,10 @@
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	Импортлау
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	Импортлау...
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Чиратта
@@ -4111,6 +4140,10 @@
 #, machine
 	Stopped: the network adapter changed; starting again	Туктатылды: челтәр адаптеры үзгәрде; яңадан башланды
 #. message or event log entry in the main window
+#. event log entry: a video or gallery download stopped to start again at the new speed limit (its helper program takes a limit only as it starts)
+#, machine
+	Stopped: the speed limit changed; starting again with it	Туктатылды: тизлек чикләве үзгәрде; яңадан башланды
+#. message or event log entry in the main window
 #. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
 #, machine
 	Stopped: {adapter} is not connected; it goes on when it is back	Туктатылды: {adapter} тоташмаган; ул кире кайткач дәвам ителә
@@ -4497,6 +4530,18 @@
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Сайт сезнең {browser} кукилары булса да, сезнең керүегезне сорый. {browser}да керү ясагыз, аннары битне кабат карагыз.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though the browser's extension passed the page's cookies
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with your browser's cookies for this page. Try again later, or from another browser.	Сайтның бот тикшерүе (Cloudflare) yt-dlp-ны кире какты, хәтта сезнең браузерның бу бит өчен cookie-файллары белән дә. Соңрак яки башка браузердан кабатлап карагыз.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though it had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	Сайтның бот тикшерүе (Cloudflare) yt-dlp-ны кире какты, хәтта {browser} cookie-файллары белән дә. {browser} эчендә видео өстендәге Видеоны йөкләү төймәсен кулланыгыз, яки битне соңрак кабатлап карагыз.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Сайтның бот тикшерүе (Cloudflare) yt-dlp-ны кире какты. Әгәр бит сезнең браузерда ачылса, Көйләүләр → Сайтларга керү → Видео сайтлар өчен cookie-файллар бүлегендә шул браузерны сайлагыз һәм битне яңадан карагыз, яки видео өстендәге Видеоны йөкләү төймәсен кулланыгыз.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4694,6 +4739,11 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Бу видеоны карау өчен аккаунтка кергән булырга кирәк. Браузерыгыздагы видео өстендәге «Видеоны йөкләү» төймәсен кулланыгыз: ул керү мәгълүматларын тапшыра. Яки Көйләүләр → Сайтларга керү → Видео сайтлар өчен cookie-файллар бүлегендә браузерыгызны сайлагыз.
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	бу {site} сылтамасы веб-бит, файл түгел: аны браузерыгызда ачыгыз һәм аннан йөкләгез
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -5315,6 +5365,26 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp {browser} кукиларын укый алмады: {error}
+#. text in a download's progress window
+#. progress window, a video's line: the helper program yt-dlp gave no address MDM's own downloader could use
+#, machine
+	yt-dlp downloads it itself	yt-dlp аны үзе йөкли
+#. text in a download's progress window
+#. progress window, a video's line: MDM's own downloader can't take a live broadcast, so the helper program yt-dlp records it
+#, machine
+	yt-dlp downloads it itself: a live stream	yt-dlp аны үзе йөкли: туры эфир
+#. text in a download's progress window
+#. progress window, a video's line: a stream sent in many small pieces (HLS, DASH), which the helper program yt-dlp downloads itself for now
+#, machine
+	yt-dlp downloads it itself: a stream in pieces	yt-dlp аны үзе йөкли: кисәкләрдәге агым
+#. text in a download's progress window
+#. progress window, a video's line: the stream is copy-protected (DRM), left to the helper program yt-dlp, which refuses it
+#, machine
+	yt-dlp downloads it itself: protected (DRM)	yt-dlp аны үзе йөкли: сакланган (DRM)
+#. text in a download's progress window
+#. progress window, a video's line: {protocol} = a streaming protocol's short name (rtmp, rtsp, mms); MDM's own downloader doesn't speak it, so the helper program yt-dlp downloads it
+#, machine
+	yt-dlp downloads it itself: {protocol}	yt-dlp аны үзе йөкли: {protocol}
 #. text in the Download video window
 #. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
 #, machine
@@ -5662,6 +5732,14 @@ column	Transfer rate	Күчерү тизлеге
 #, machine
 column	Upload speed	Йөкләү тизлеге
 #. text in the browser extension
+#. in the menu under the download button over a video: the page is a list of videos (a playlist), whose videos are chosen in the app's window; keep the name Mister Download Manager as it is
+#, machine
+extension	A list of videos: choose them in Mister Download Manager	Видеолар исемлеге: аларны Mister Download Manager эчендә сайлагыз
+#. text in the browser extension
+#. shown briefly on the download button over a video after a quality was picked: the download was added to the app's download queue, to start later
+#, machine
+extension	Added to the queue	Чиратка өстәлде
+#. text in the browser extension
 #. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
 #, machine
 extension	Another Mister Download Manager (a server)	Башка Mister Download Manager (сервер)
@@ -5691,6 +5769,10 @@ extension	Connected to Mister Download Manager	Mister Download Manager белә�
 #. {version} = a version number (keep the braces as they are)
 #, machine
 extension	Connected to Mister Download Manager {version}	Mister Download Manager {version} белән тоташтырылган
+#. text in the browser extension
+#. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
+#, machine
+extension	Could not look it up	Карап булмады
 #. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
@@ -5782,6 +5864,14 @@ extension	Left to the browser: {name}	Браузерга калдырылды: {
 #, machine
 extension	Live	Тура эфир
 #. text in the browser extension
+#. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
+#, machine
+extension	Looking up the qualities…	Сыйфатлар эзләнә…
+#. text in the browser extension
+#. in the menu under the download button over a video: the app took more than a minute to find the video's qualities, so the menu stopped waiting
+#, machine
+extension	Looking up took too long	Эзләү бик озакка сузылды
+#. text in the browser extension
 #. heading in the toolbar button's popup over the list of the videos, sounds and streams the current web page has loaded
 #, machine
 extension	Media on this page	Бу биттәге медиа
@@ -5798,6 +5888,10 @@ extension	Mister Download Manager didn't start in time	Mister Download Manager �
 #, machine
 extension	Mister Download Manager doesn't accept this copy of the extension	Mister Download Manager киңәйтмәнең бу күчермәсен кабул итми
 #. text in the browser extension
+#. in the menu under the download button over a video: the app is already looking up other videos and can't look this one up now; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager is busy with other videos	Mister Download Manager башка видеолар белән мәшгуль
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager урнаштырылмаган яки башланмаган
@@ -5805,6 +5899,10 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager урнаштырылмаган, яки аның браузер интеграциясе урнаштырылмаган
+#. text in the browser extension
+#. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager needs yt-dlp for this video	Mister Download Manager бу видео өчен yt-dlp кирәк
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
@@ -5832,9 +5930,17 @@ extension	Never take downloads from {site}	{site}дан йөкләүләрне �
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	Бу биттә әле видео яки тавыш табылмады. Аны уйнатыгыз, аннары моны яңадан ачыгыз.
 #. text in the browser extension
+#. in the menu under the download button over a video: the app found no quality of the video it could download
+#, machine
+extension	No video to download here	Монда йөкләргә видео юк
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Кереп булмады. Бу браузерда аның адресын бер тапкыр ачыгыз һәм сертификатын кабул итегез, аннары кабатлап карагыз.
+#. text in the browser extension
+#. last command of the menu of qualities under the download button over a video: opens the app's Download video window for this video instead; keep the name Mister Download Manager as it is
+#, machine
+extension	Open in Mister Download Manager…	Mister Download Manager эчендә ачу…
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -5847,6 +5953,7 @@ extension	Open its address once and accept its certificate, then enter a code fr
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
 extension	Open Mister Download Manager	Mister Download Managerны ачу
+#. text in the browser extension
 #. shown briefly on the download button over a video in a feed (a social site's home page, a timeline) when nothing in the feed gives that video's own address, so nothing was sent: the user should open the post the video belongs to and click the button on that page; short
 #, machine
 extension	Open the post, then use the button there	Язманы ачыгыз, аннары андагы төймәне кулланыгыз
@@ -6068,6 +6175,11 @@ menu	&Add new download	Яңа йөкләү өстәү(&A)
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	&Add new download...	Яңа йөкләү өс&тәү...
+#. menu command in the main window
+#. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Classic	&Классик
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6155,6 +6267,11 @@ menu	&Scheduler and queues	Планлаштыручы һәм чиратлар(&S
 #, machine
 menu	&Show hidden tabs	Яшерелгән битләрне күрсәтү(&S)
 #. menu command in the main window
+#. View → Text: letters drawn smooth, as Windows' modern apps draw them, anti-aliased at any size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Smooth	&Шомшак
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop All	Барысын туктату(&S)
@@ -6162,6 +6279,11 @@ menu	&Stop All	Барысын туктату(&S)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	Йөкләүне туктату(&S)
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Text	&Текст
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6345,6 +6467,10 @@ menu	E&xport	Э&кспортлау
 #. menu command in the main window
 #, machine
 menu	Edit queue	Чиратны үзгәртү
+#. menu command in the main window
+#. View → Theme: a style theme's name (a white canvas, emerald fills, 6-point corners), a name: keep "Emerald" as written
+#, machine
+menu	Emerald	Эмералд
 #. menu command in the main window
 #. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
 #, machine

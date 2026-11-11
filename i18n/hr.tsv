@@ -40,6 +40,11 @@
 #, machine
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Trenutačno odgovara {n} članku (dodaje samo nove):|Trenutačno odgovara {n} članka (dodaje samo nove):|Trenutačno odgovara {n} članaka (dodaje samo nove):
 #. count in a dialog box
+#. Cancel in Download File Info with downloads waiting behind it
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	Čeka još {n} preuzimanje. Želite li ga i njega otkazati?|Čekaju još {n} preuzimanja. Želite li ih i njih otkazati?|Čeka još {n} preuzimanja. Želite li ih i njih otkazati?
+#. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -95,6 +100,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} odabrano|{n} odabrana|{n} odabrano
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	{n} web-mjesto dodano iz datoteke.|{n} web-mjesta dodana iz datoteke.|{n} web-mjesta dodano iz datoteke.
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	{n} web-mjesto spremljeno u datoteku.|{n} web-mjesta spremljena u datoteku.|{n} web-mjesta spremljeno u datoteku.
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -169,6 +182,9 @@
 #. window title: 7-Zip (a program's name) must be installed
 #, machine
 	7-Zip needed	Potreban je 7-Zip
+#. tab in the main window
+#, machine
+	720p	720p
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
@@ -4107,6 +4123,10 @@
 #, machine
 	Stopped: the network adapter changed; starting again	Zaustavljeno: mrežni prilagodnik je promijenjen; ponovno pokretanje
 #. message or event log entry in the main window
+#. event log entry: a video or gallery download stopped to start again at the new speed limit (its helper program takes a limit only as it starts)
+#, machine
+	Stopped: the speed limit changed; starting again with it	Zaustavljeno: promijenjeno je ograničenje brzine; ponovno pokretanje s novim ograničenjem
+#. message or event log entry in the main window
 #. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
 #, machine
 	Stopped: {adapter} is not connected; it goes on when it is back	Zaustavljeno: {adapter} nije povezan; nastavlja se kada se ponovno poveže.
@@ -4493,6 +4513,18 @@
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Web-mjesto traži da se prijavite, čak i s kolačićima preglednika {browser}. Prijavite se na njega u pregledniku {browser}, a zatim ponovno potražite stranicu.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though the browser's extension passed the page's cookies
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with your browser's cookies for this page. Try again later, or from another browser.	Provjera bota web-mjesta (Cloudflare) odbila je yt-dlp, čak i s kolačićima vašeg preglednika za ovu stranicu. Pokušajte ponovno kasnije ili iz drugog preglednika.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though it had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	Provjera bota web-mjesta (Cloudflare) odbila je yt-dlp, čak i s kolačićima preglednika {browser}. Upotrijebite gumb Preuzmi videozapis iznad videozapisa u pregledniku {browser} ili pokušajte ponovno kasnije.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Provjera bota web-mjesta (Cloudflare) odbila je yt-dlp. Ako se stranica otvara u vašem pregledniku, odaberite taj preglednik u Postavke → Prijave na web-mjesta → Kolačići za video web-mjesta i ponovno potražite stranicu ili upotrijebite gumb Preuzmi videozapis iznad videozapisa.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4690,6 +4722,11 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Za ovaj videozapis morate biti prijavljeni. Koristite gumb Preuzmi videozapis iznad njega u svom pregledniku, koji prosljeđuje vašu prijavu, ili odaberite svoj preglednik u Mogućnosti → Prijave na web-mjesta → Kolačići za videozapise.
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	ova veza {site} je web-stranica, a ne datoteka: otvorite je u pregledniku i preuzmite od tamo
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -5311,6 +5348,26 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp nije mogao pročitati kolačiće preglednika {browser}: {error}
+#. text in a download's progress window
+#. progress window, a video's line: the helper program yt-dlp gave no address MDM's own downloader could use
+#, machine
+	yt-dlp downloads it itself	yt-dlp ga sam preuzima
+#. text in a download's progress window
+#. progress window, a video's line: MDM's own downloader can't take a live broadcast, so the helper program yt-dlp records it
+#, machine
+	yt-dlp downloads it itself: a live stream	yt-dlp ga sam preuzima: prijenos uživo
+#. text in a download's progress window
+#. progress window, a video's line: a stream sent in many small pieces (HLS, DASH), which the helper program yt-dlp downloads itself for now
+#, machine
+	yt-dlp downloads it itself: a stream in pieces	yt-dlp ga sam preuzima: prijenos u dijelovima
+#. text in a download's progress window
+#. progress window, a video's line: the stream is copy-protected (DRM), left to the helper program yt-dlp, which refuses it
+#, machine
+	yt-dlp downloads it itself: protected (DRM)	yt-dlp ga sam preuzima: zaštićeno (DRM)
+#. text in a download's progress window
+#. progress window, a video's line: {protocol} = a streaming protocol's short name (rtmp, rtsp, mms); MDM's own downloader doesn't speak it, so the helper program yt-dlp downloads it
+#, machine
+	yt-dlp downloads it itself: {protocol}	yt-dlp ga sam preuzima: {protocol}
 #. text in the Download video window
 #. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
 #, machine
@@ -5879,6 +5936,7 @@ extension	Open its address once and accept its certificate, then enter a code fr
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
 extension	Open Mister Download Manager	Otvori Mister Download Manager
+#. text in the browser extension
 #. shown briefly on the download button over a video in a feed (a social site's home page, a timeline) when nothing in the feed gives that video's own address, so nothing was sent: the user should open the post the video belongs to and click the button on that page; short
 #, machine
 extension	Open the post, then use the button there	Otvorite objavu, a zatim upotrijebite gumb tamo
@@ -6100,6 +6158,11 @@ menu	&Add new download	&Dodaj novo preuzimanje
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	&Add new download...	&Dodaj novo preuzimanje...
+#. menu command in the main window
+#. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Classic	&Klasično
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6187,6 +6250,11 @@ menu	&Scheduler and queues	&Planer i redovi čekanja
 #, machine
 menu	&Show hidden tabs	Prikaži skrivene &kartice
 #. menu command in the main window
+#. View → Text: letters drawn smooth, as Windows' modern apps draw them, anti-aliased at any size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Smooth	&Glatko
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop All	&Zaustavi sve
@@ -6194,6 +6262,11 @@ menu	&Stop All	&Zaustavi sve
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	&Zaustavi preuzimanje
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Text	&Tekst
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6377,6 +6450,10 @@ menu	E&xport	I&zvezi
 #. menu command in the main window
 #, machine
 menu	Edit queue	Uredi red čekanja
+#. menu command in the main window
+#. View → Theme: a style theme's name (a white canvas, emerald fills, 6-point corners), a name: keep "Emerald" as written
+#, machine
+menu	Emerald	Emerald
 #. menu command in the main window
 #. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
 #, machine

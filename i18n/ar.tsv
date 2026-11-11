@@ -33,6 +33,11 @@
 #. {n} = a number (keep the braces as they are)
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	تطابق القاعدة {n} مقال الآن (لا تضيف إلا الجديد):|تطابق القاعدة {n} مقال الآن (لا تضيف إلا الجديد):|تطابق القاعدة {n} مقالان الآن (لا تضيف إلا الجديد):|تطابق القاعدة {n} مقالات الآن (لا تضيف إلا الجديد):|تطابق القاعدة {n} مقالا الآن (لا تضيف إلا الجديد):|تطابق القاعدة {n} مقال الآن (لا تضيف إلا الجديد):
 #. count in a dialog box
+#. Cancel in Download File Info with downloads waiting behind it
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	توجد {n} عملية تنزيل أخرى في قائمة الانتظار. هل تريد إلغاءها أيضا؟|توجد {n} عملية تنزيل أخرى في قائمة الانتظار. هل تريد إلغاءها أيضا؟|توجد {n} عمليتا تنزيل أخريان في قائمة الانتظار. هل تريد إلغاءهما أيضا؟|توجد {n} عمليتا تنزيل أخريان في قائمة الانتظار. هل تريد إلغاءهما أيضا؟|توجد {n} عمليات تنزيل أخرى في قائمة الانتظار. هل تريد إلغاءها أيضا؟|توجد {n} عملية تنزيل أخرى في قائمة الانتظار. هل تريد إلغاءها أيضا؟
+#. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
 @plural	and {n} other file|and {n} other files	و{n} ملف آخر|و{n} ملف آخر|و{n} ملفان آخران|و{n} ملفات أخرى|و{n} ملفا آخر|و{n} ملف آخر
@@ -76,6 +81,14 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 @plural	{n} selected|{n} selected	{n} محدد|{n} محدد|{n} محدد|{n} محدد|{n} محدد|{n} محدد
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	تمت إضافة موقع {n} من الملف.|تمت إضافة موقع {n} من الملف.|تمت إضافة موقعين {n} من الملف.|تمت إضافة {n} مواقع من الملف.|تمت إضافة {n} موقعا من الملف.|تمت إضافة موقع {n} من الملف.
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	تم حفظ موقع {n} في الملف.|تم حفظ موقع {n} في الملف.|تم حفظ موقعين {n} في الملف.|تم حفظ {n} مواقع في الملف.|تم حفظ {n} موقعا في الملف.|تم حفظ موقع {n} في الملف.
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -134,6 +147,9 @@
 #. window title in extracting archives (a download's log, the Archive password window)
 #. window title: 7-Zip (a program's name) must be installed
 	7-Zip needed	يلزم 7-Zip
+#. tab in the main window
+#, machine
+	720p	720p
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 	7z and RAR archives are extracted by 7-Zip ({path}).	يستخرج 7-Zip أرشيفات 7z وRAR ({path}).
@@ -1020,6 +1036,11 @@
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Downloading and verifying yt-dlp...	قيد تنزيل yt-dlp والتحقق منه...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	قيد تنزيل نسخة MDM الخاصة...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 	Downloading the update... {percent}	قيد تنزيل التحديث... {percent}
@@ -1163,6 +1184,10 @@
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	تجريبي: مبني على وثائق API العامة للخدمات، ولم يتم تأكيده بعد بحسابات حقيقية.
 #. message or event log entry in the main window; text in the Options window
 	Export	تصدير
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	تصدير...
 #. text in the Options window
 	Extend the availability of Manifest 2 Chrome extensions	توسيع إتاحة ملحقات Chrome Manifest 2
 #. text in categories.rs
@@ -1517,6 +1542,10 @@
 	Ignore file modification time changes when resuming a download	تجاهل تغييرات وقت تعديل الملف عند متابعة التنزيل
 #. message or event log entry in the main window; text in the Options window
 	Import	استيراد
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	استيراد...
 #. value in a column's filter list in the download list
 	In a queue	في قائمة انتظار
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -3113,6 +3142,10 @@
 #. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
 	Stopped: the network adapter changed; starting again	تم الإيقاف: تغير محول الشبكة؛ قيد البدء مرة أخرى
 #. message or event log entry in the main window
+#. event log entry: a video or gallery download stopped to start again at the new speed limit (its helper program takes a limit only as it starts)
+#, machine
+	Stopped: the speed limit changed; starting again with it	توقف: تغير حد السرعة؛ سيبدأ مجددا بهذا الحد
+#. message or event log entry in the main window
 #. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
 	Stopped: {adapter} is not connected; it goes on when it is back	تم الإيقاف: {adapter} غير متصل؛ سيستمر عند عودته
 #. text in a download's progress window
@@ -3402,6 +3435,18 @@
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	يطلب الموقع تسجيل الدخول، حتى مع ملفات تعريف الارتباط الخاصة بـ {browser}. سجل الدخول إليه في {browser}، ثم ابحث عن الصفحة مرة أخرى.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though the browser's extension passed the page's cookies
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with your browser's cookies for this page. Try again later, or from another browser.	رفض فحص الروبوت الخاص بالموقع (Cloudflare) برنامج yt-dlp، حتى مع ملفات تعريف الارتباط الخاصة بمستعرضك لهذه الصفحة. حاول مرة أخرى لاحقا، أو من مستعرض آخر.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though it had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	رفض فحص الروبوت الخاص بالموقع (Cloudflare) برنامج yt-dlp، حتى مع ملفات تعريف الارتباط الخاصة بـ {browser}. استخدم زر تنزيل الفيديو الموجود فوق الفيديو في {browser}، أو حاول فتح الصفحة مرة أخرى لاحقا.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	رفض فحص الروبوت الخاص بالموقع (Cloudflare) برنامج yt-dlp. إذا فتحت الصفحة في مستعرضك، فاختر هذا المستعرض في الخيارات ← تسجيلات دخول المواقع ← ملفات تعريف الارتباط لمواقع الفيديو وابحث عن الصفحة مرة أخرى، أو استخدم زر تنزيل الفيديو الموجود فوق الفيديو.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	تعذر جلب الرموز: تظهر بعض أسطر التقرير عناوين بدلا من الأسماء (لا يزال بإمكان المطورين قراءتها).
@@ -3561,6 +3606,11 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	يتطلب هذا الفيديو تسجيل دخولك. استخدم زر تنزيل الفيديو الموجود فوقه في مستعرضك، والذي ينقل تسجيل دخولك، أو اختر مستعرضك في الخيارات ← تسجيلات دخول المواقع ← ملفات تعريف الارتباط لمواقع الفيديو.
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	رابط {site} هذا هو صفحة ويب، وليس الملف: افتحه في مستعرضك ونزل منه
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 	through a proxy	عبر وكيل
@@ -4037,6 +4087,26 @@
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
 #. {error} = an error message (keep the braces as they are)
 	yt-dlp couldn't read {browser}'s cookies: {error}	لم يتمكن yt-dlp من قراءة ملفات تعريف الارتباط الخاصة بـ {browser}: {error}
+#. text in a download's progress window
+#. progress window, a video's line: the helper program yt-dlp gave no address MDM's own downloader could use
+#, machine
+	yt-dlp downloads it itself	ينزله yt-dlp بنفسه
+#. text in a download's progress window
+#. progress window, a video's line: MDM's own downloader can't take a live broadcast, so the helper program yt-dlp records it
+#, machine
+	yt-dlp downloads it itself: a live stream	ينزله yt-dlp بنفسه: بث مباشر
+#. text in a download's progress window
+#. progress window, a video's line: a stream sent in many small pieces (HLS, DASH), which the helper program yt-dlp downloads itself for now
+#, machine
+	yt-dlp downloads it itself: a stream in pieces	ينزله yt-dlp بنفسه: بث مجزأ
+#. text in a download's progress window
+#. progress window, a video's line: the stream is copy-protected (DRM), left to the helper program yt-dlp, which refuses it
+#, machine
+	yt-dlp downloads it itself: protected (DRM)	ينزله yt-dlp بنفسه: محمي (DRM)
+#. text in a download's progress window
+#. progress window, a video's line: {protocol} = a streaming protocol's short name (rtmp, rtsp, mms); MDM's own downloader doesn't speak it, so the helper program yt-dlp downloads it
+#, machine
+	yt-dlp downloads it itself: {protocol}	ينزله yt-dlp بنفسه: {protocol}
 #. text in the Download video window
 #. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
 	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	لم يعثر yt-dlp على ملفات تعريف ارتباط لـ {browser} على هذا الكمبيوتر. تحقق من المستعرض وملف التعريف الخاص به في الخيارات ← تسجيلات دخول المواقع.
@@ -4500,6 +4570,7 @@ extension	Open its address once and accept its certificate, then enter a code fr
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 extension	Open Mister Download Manager	فتح Mister Download Manager
+#. text in the browser extension
 #. shown briefly on the download button over a video in a feed (a social site's home page, a timeline) when nothing in the feed gives that video's own address, so nothing was sent: the user should open the post the video belongs to and click the button on that page; short
 #, machine
 extension	Open the post, then use the button there	افتح المنشور، ثم استخدم الزر هناك
@@ -4683,6 +4754,11 @@ menu	&Add new download	&إضافة تنزيل جديد
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 menu	&Add new download...	إضافة تنزيل &جديد...
+#. menu command in the main window
+#. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Classic	كلا&سيكي
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Copy	&نسخ
@@ -4753,11 +4829,21 @@ menu	&Scheduler and queues	&المجدول وقوائم الانتظار
 #, machine
 menu	&Show hidden tabs	إظهار علامات التبويب الم&خفية
 #. menu command in the main window
+#. View → Text: letters drawn smooth, as Windows' modern apps draw them, anti-aliased at any size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Smooth	&سلس
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Stop All	&إيقاف الكل
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Stop Download	إيقاف الت&نزيل
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Text	&نص
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Tray icon	أيقونة &علبة النظام
@@ -4898,6 +4984,10 @@ menu	Draw with	الرسم باستخدام
 menu	E&xport	ت&صدير
 #. menu command in the main window
 menu	Edit queue	تحرير قائمة الانتظار
+#. menu command in the main window
+#. View → Theme: a style theme's name (a white canvas, emerald fills, 6-point corners), a name: keep "Emerald" as written
+#, machine
+menu	Emerald	زمردي
 #. menu command in the main window
 #. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
 menu	Extract	استخراج

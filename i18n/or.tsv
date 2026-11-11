@@ -40,6 +40,11 @@
 #, machine
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	ବର୍ତ୍ତମାନ {n}ଟି ଆର୍ଟିକିଲ୍‌ ସହ ମେଳ ଖାଉଛି (କେବଳ ନୂଆଗୁଡ଼ିକୁ ଯୋଡ଼ିବ):|ବର୍ତ୍ତମାନ {n}ଟି ଆର୍ଟିକିଲ୍‌ ସହ ମେଳ ଖାଉଛି (କେବଳ ନୂଆଗୁଡ଼ିକୁ ଯୋଡ଼ିବ):
 #. count in a dialog box
+#. Cancel in Download File Info with downloads waiting behind it
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	ଆଉ {n}ଟି ଡାଉନଲୋଡ୍ ଅପେକ୍ଷା କରିଛି। ଏହାକୁ ମଧ୍ୟ ବାତିଲ୍ କରିବେ କି?|ଆଉ {n}ଟି ଡାଉନଲୋଡ୍ ଅପେକ୍ଷା କରିଛନ୍ତି। ଏଗୁଡ଼ିକୁ ମଧ୍ୟ ବାତିଲ୍ କରିବେ କି?
+#. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -95,6 +100,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n}ଟି ଚୟନ କରାଯାଇଛି|{n}ଟି ଚୟନ କରାଯାଇଛି
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	ଫାଇଲରୁ {n}ଟି ସାଇଟ୍ ଯୋଡ଼ାଗଲା।|ଫାଇଲରୁ {n}ଟି ସାଇଟ୍ ଯୋଡ଼ାଗଲା।
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	ଫାଇଲରେ {n}ଟି ସାଇଟ୍ ସେଭ୍ ହେଲା।|ଫାଇଲରେ {n}ଟି ସାଇଟ୍ ସେଭ୍ ହେଲା।
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -169,6 +182,9 @@
 #. window title: 7-Zip (a program's name) must be installed
 #, machine
 	7-Zip needed	7-Zip ଆବଶ୍ୟକ
+#. tab in the main window
+#, machine
+	720p	720p
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
@@ -1343,6 +1359,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying yt-dlp...	yt-dlp ଡାଉନଲୋଡ୍ ଏବଂ ଯାଞ୍ଚ କରାଯାଉଛି...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	MDMର ନିଜସ୍ୱ କପି ଡାଉନଲୋଡ୍ କରୁଛି...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1534,6 +1555,10 @@
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	ଏକ୍ସପୋର୍ଟ
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	ଏକ୍ସପୋର୍ଟ କରନ୍ତୁ...
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	ମାନିଫେଷ୍ଟ 2 Chrome ଏକ୍ସଟେନ୍ସନ୍‍ଗୁଡ଼ିକର ଉପଲବ୍ଧତା ବଢ଼ାନ୍ତୁ
@@ -2011,6 +2036,10 @@
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	ଆମଦାନୀ
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	ଇମ୍ପୋର୍ଟ କରନ୍ତୁ...
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	କ୍ୟୁରେ
@@ -4111,6 +4140,10 @@
 #, machine
 	Stopped: the network adapter changed; starting again	ବନ୍ଦ ହୋଇଛି: ନେଟୱର୍କ ଆଡାପ୍ଟର ପରିବର୍ତ୍ତିତ ହୋଇଛି; ପୁନର୍ବାର ଆରମ୍ଭ ହେଉଛି
 #. message or event log entry in the main window
+#. event log entry: a video or gallery download stopped to start again at the new speed limit (its helper program takes a limit only as it starts)
+#, machine
+	Stopped: the speed limit changed; starting again with it	ବନ୍ଦ ହେଲା: ସ୍ପିଡ୍ ସୀମା ବଦଳିଲା; ଏହା ସହିତ ପୁଣି ଆରମ୍ଭ ହେଉଛି
+#. message or event log entry in the main window
 #. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
 #, machine
 	Stopped: {adapter} is not connected; it goes on when it is back	ବନ୍ଦ ହୋଇଛି: {adapter} ସଂଯୁକ୍ତ ନାହିଁ; ପୁଣି ସଂଯୁକ୍ତ ହେଲେ ଡାଉନଲୋଡ୍ ଚାଲିବ
@@ -4497,6 +4530,18 @@
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	ସାଇଟ୍ ଆପଣଙ୍କୁ ସାଇନ୍ ଇନ୍ କରିବାକୁ ଚାହୁଁଛି, {browser}ର କୁକିଜ୍ ସହିତ ମଧ୍ୟ। {browser}ରେ ଏଥିରେ ସାଇନ୍ ଇନ୍ କରନ୍ତୁ, ତାପରେ ପୃଷ୍ଠାକୁ ପୁଣି ଖୋଜନ୍ତୁ।
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though the browser's extension passed the page's cookies
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with your browser's cookies for this page. Try again later, or from another browser.	ସାଇଟର ବଟ୍ ଯାଞ୍ଚ (Cloudflare) yt-dlpକୁ ପ୍ରତ୍ୟାଖ୍ୟାନ କଲା, ଏପରିକି ଏହି ପୃଷ୍ଠା ପାଇଁ ଆପଣଙ୍କ ବ୍ରାଉଜରର କୁକିଜ୍ ସହିତ ମଧ୍ୟ। ପରେ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ, କିମ୍ବା ଅନ୍ୟ ଏକ ବ୍ରାଉଜରରୁ।
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though it had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	ସାଇଟର ବଟ୍ ଯାଞ୍ଚ (Cloudflare) yt-dlpକୁ ପ୍ରତ୍ୟାଖ୍ୟାନ କଲା, ଏପରିକି {browser}ର କୁକିଜ୍ ସହିତ ମଧ୍ୟ। {browser}ରେ ଭିଡିଓ ଉପରେ ଥିବା ଡାଉନଲୋଡ୍ ଭିଡିଓ ବଟନ୍ ବ୍ୟବହାର କରନ୍ତୁ, କିମ୍ବା ପରେ ପୃଷ୍ଠାକୁ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	ସାଇଟର ବଟ୍ ଯାଞ୍ଚ (Cloudflare) yt-dlpକୁ ପ୍ରତ୍ୟାଖ୍ୟାନ କଲା। ଯଦି ପୃଷ୍ଠା ଆପଣଙ୍କ ବ୍ରାଉଜରରେ ଖୋଲୁଛି, ତେବେ Options → Sites Logins → Cookies for video sitesରେ ସେହି ବ୍ରାଉଜରକୁ ବାଛନ୍ତୁ ଏବଂ ପୃଷ୍ଠାକୁ ପୁଣି ଖୋଜନ୍ତୁ, କିମ୍ବା ଭିଡିଓ ଉପରେ ଥିବା ଡାଉନଲୋଡ୍ ଭିଡିଓ ବଟନ୍ ବ୍ୟବହାର କରନ୍ତୁ।
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4694,6 +4739,11 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	ଏହି ଭିଡିଓ ପାଇଁ ଆପଣଙ୍କୁ ସାଇନ୍ ଇନ୍ କରିବାକୁ ପଡିବ। ଆପଣଙ୍କ ବ୍ରାଉଜରରେ ଏହା ଉପରେ ଥିବା ଡାଉନଲୋଡ୍ ଭିଡିଓ ବଟନ୍ ବ୍ୟବହାର କରନ୍ତୁ, ଯାହା ଆପଣଙ୍କ ସାଇନ୍-ଇନ୍ ପାସ୍ କରେ, କିମ୍ବା Options → Sites Logins → Cookies for video sites ରେ ଆପଣଙ୍କ ବ୍ରାଉଜର ବାଛନ୍ତୁ।
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	ଏହି {site} ଲିଙ୍କ୍ ଏକ ୱେବ୍ ପୃଷ୍ଠା, ଫାଇଲ୍ ନୁହେଁ: ଏହାକୁ ଆପଣଙ୍କ ବ୍ରାଉଜରରେ ଖୋଲନ୍ତୁ ଏବଂ ସେଠାରୁ ଡାଉନଲୋଡ୍ କରନ୍ତୁ
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -5315,6 +5365,26 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp {browser}ର କୁକିଜ୍ ପଢ଼ିପାରିଲା ନାହିଁ: {error}
+#. text in a download's progress window
+#. progress window, a video's line: the helper program yt-dlp gave no address MDM's own downloader could use
+#, machine
+	yt-dlp downloads it itself	yt-dlp ଏହାକୁ ନିଜେ ଡାଉନଲୋଡ୍ କରେ
+#. text in a download's progress window
+#. progress window, a video's line: MDM's own downloader can't take a live broadcast, so the helper program yt-dlp records it
+#, machine
+	yt-dlp downloads it itself: a live stream	yt-dlp ଏହାକୁ ନିଜେ ଡାଉନଲୋଡ୍ କରେ: ଏକ ଲାଇଭ୍ ଷ୍ଟ୍ରିମ୍
+#. text in a download's progress window
+#. progress window, a video's line: a stream sent in many small pieces (HLS, DASH), which the helper program yt-dlp downloads itself for now
+#, machine
+	yt-dlp downloads it itself: a stream in pieces	yt-dlp ଏହାକୁ ନିଜେ ଡାଉନଲୋଡ୍ କରେ: ଖଣ୍ଡ ଖଣ୍ଡରେ ଏକ ଷ୍ଟ୍ରିମ୍
+#. text in a download's progress window
+#. progress window, a video's line: the stream is copy-protected (DRM), left to the helper program yt-dlp, which refuses it
+#, machine
+	yt-dlp downloads it itself: protected (DRM)	yt-dlp ଏହାକୁ ନିଜେ ଡାଉନଲୋଡ୍ କରେ: ସୁରକ୍ଷିତ (DRM)
+#. text in a download's progress window
+#. progress window, a video's line: {protocol} = a streaming protocol's short name (rtmp, rtsp, mms); MDM's own downloader doesn't speak it, so the helper program yt-dlp downloads it
+#, machine
+	yt-dlp downloads it itself: {protocol}	yt-dlp ଏହାକୁ ନିଜେ ଡାଉନଲୋଡ୍ କରେ: {protocol}
 #. text in the Download video window
 #. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
 #, machine
@@ -5662,6 +5732,14 @@ column	Transfer rate	ସ୍ଥାନାନ୍ତର ହାର
 #, machine
 column	Upload speed	ଅପଲୋଡ୍ ଗତି
 #. text in the browser extension
+#. in the menu under the download button over a video: the page is a list of videos (a playlist), whose videos are chosen in the app's window; keep the name Mister Download Manager as it is
+#, machine
+extension	A list of videos: choose them in Mister Download Manager	ଭିଡିଓଗୁଡ଼ିକର ଏକ ତାଲିକା: Mister Download Managerରେ ସେଗୁଡ଼ିକୁ ବାଛନ୍ତୁ
+#. text in the browser extension
+#. shown briefly on the download button over a video after a quality was picked: the download was added to the app's download queue, to start later
+#, machine
+extension	Added to the queue	କ୍ୟୁରେ ଯୋଡ଼ାଗଲା
+#. text in the browser extension
 #. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
 #, machine
 extension	Another Mister Download Manager (a server)	ଅନ୍ୟ ଏକ Mister Download Manager (ଏକ ସର୍ଭର)
@@ -5691,6 +5769,10 @@ extension	Connected to Mister Download Manager	Mister Download Manager ସହି
 #. {version} = a version number (keep the braces as they are)
 #, machine
 extension	Connected to Mister Download Manager {version}	Mister Download Manager {version} ସହିତ ସଂଯୁକ୍ତ
+#. text in the browser extension
+#. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
+#, machine
+extension	Could not look it up	ଏହାକୁ ଖୋଜି ହେଲା ନାହିଁ
 #. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
@@ -5782,6 +5864,10 @@ extension	Left to the browser: {name}	ବ୍ରାଉଜରକୁ ଛଡାଯ�
 #, machine
 extension	Live	ଲାଇଭ୍
 #. text in the browser extension
+#. in the menu under the download button over a video: the app took more than a minute to find the video's qualities, so the menu stopped waiting
+#, machine
+extension	Looking up took too long	ଖୋଜିବାକୁ ଅଧିକ ସମୟ ଲାଗିଲା
+#. text in the browser extension
 #. heading in the toolbar button's popup over the list of the videos, sounds and streams the current web page has loaded
 #, machine
 extension	Media on this page	ଏହି ପୃଷ୍ଠାରେ ଥିବା ମିଡିଆ
@@ -5798,6 +5884,10 @@ extension	Mister Download Manager didn't start in time	Mister Download Manager �
 #, machine
 extension	Mister Download Manager doesn't accept this copy of the extension	Mister Download Manager ଏକ୍ସଟେନ୍ସନ୍‌ର ଏହି କପିକୁ ଗ୍ରହଣ କରୁନାହିଁ
 #. text in the browser extension
+#. in the menu under the download button over a video: the app is already looking up other videos and can't look this one up now; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager is busy with other videos	Mister Download Manager ଅନ୍ୟ ଭିଡିଓଗୁଡ଼ିକରେ ବ୍ୟସ୍ତ ଅଛି
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager ସ୍ଥାପିତ ହୋଇନାହିଁ କିମ୍ବା ଆରମ୍ଭ ହୋଇନାହିଁ
@@ -5805,6 +5895,10 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager ସ୍ଥାପିତ ହୋଇନାହିଁ, କିମ୍ବା ଏହାର ବ୍ରାଉଜର୍ ଇଣ୍ଟିଗ୍ରେସନ୍ ସେଟ୍ ଅପ୍ ହୋଇନାହିଁ
+#. text in the browser extension
+#. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager needs yt-dlp for this video	ଏହି ଭିଡିଓ ପାଇଁ Mister Download Managerକୁ yt-dlp ଆବଶ୍ୟକ
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
@@ -5832,6 +5926,10 @@ extension	Never take downloads from {site}	{site}ରୁ ଆଉ ଡାଉନଲ�
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	ଏହି ପୃଷ୍ଠାରେ ଏଯାଏଁ କୌଣସି ଭିଡିଓ କିମ୍ବା ଶବ୍ଦ ମିଳିଲା ନାହିଁ। ଏହାକୁ ଚଲାନ୍ତୁ, ତା’ପରେ ଏହାକୁ ପୁଣି ଖୋଲନ୍ତୁ।
 #. text in the browser extension
+#. in the menu under the download button over a video: the app found no quality of the video it could download
+#, machine
+extension	No video to download here	ଏଠାରେ ଡାଉନଲୋଡ୍ କରିବାକୁ କୌଣସି ଭିଡିଓ ନାହିଁ
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	ପହଞ୍ଚିଲା ନାହିଁ। ଏହି ବ୍ରାଉଜର୍‌ରେ ଥରେ ଏହାର ଠିକଣା ଖୋଲନ୍ତୁ ଏବଂ ଏହାର ସାର୍ଟିଫିକେଟ୍ ଗ୍ରହଣ କରନ୍ତୁ, ତା’ପରେ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।
@@ -5847,6 +5945,7 @@ extension	Open its address once and accept its certificate, then enter a code fr
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
 extension	Open Mister Download Manager	Mister Download Manager ଖୋଲନ୍ତୁ
+#. text in the browser extension
 #. shown briefly on the download button over a video in a feed (a social site's home page, a timeline) when nothing in the feed gives that video's own address, so nothing was sent: the user should open the post the video belongs to and click the button on that page; short
 #, machine
 extension	Open the post, then use the button there	ପୋଷ୍ଟ ଖୋଲନ୍ତୁ, ତା’ପରେ ସେଠାରେ ଥିବା ବଟନ୍ ବ୍ୟବହାର କରନ୍ତୁ
@@ -6068,6 +6167,11 @@ menu	&Add new download	ନୂଆ ଡାଉନଲୋଡ୍ ଯୋଗ କରନ୍
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	&Add new download...	ନୂଆ ଡାଉନଲୋଡ୍ ଯୋଗ କରନ୍ତୁ(&A)...
+#. menu command in the main window
+#. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Classic	&କ୍ଲାସିକ୍
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6155,6 +6259,11 @@ menu	&Scheduler and queues	ସିଡ୍ୟୁଲର୍ ଏବଂ କ୍ୟୁ(&S
 #, machine
 menu	&Show hidden tabs	ଲୁକ୍କାୟିତ ଟାବ୍‍ଗୁଡ଼ିକୁ ଦେଖାନ୍ତୁ(&S)
 #. menu command in the main window
+#. View → Text: letters drawn smooth, as Windows' modern apps draw them, anti-aliased at any size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Smooth	&ସ୍ମୁଥ୍
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop All	ସମସ୍ତ ଡାଉନଲୋଡ୍ ବନ୍ଦ କରନ୍ତୁ(&S)
@@ -6162,6 +6271,11 @@ menu	&Stop All	ସମସ୍ତ ଡାଉନଲୋଡ୍ ବନ୍ଦ କରନ�
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	ଡାଉନଲୋଡ୍ ବନ୍ଦ କରନ୍ତୁ(&S)
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Text	&ଟେକ୍ସଟ୍
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6345,6 +6459,10 @@ menu	E&xport	ଏକ୍ସପୋର୍ଟ କରନ୍ତୁ(&x)
 #. menu command in the main window
 #, machine
 menu	Edit queue	କ୍ୟୁ ସମ୍ପାଦନା କରନ୍ତୁ
+#. menu command in the main window
+#. View → Theme: a style theme's name (a white canvas, emerald fills, 6-point corners), a name: keep "Emerald" as written
+#, machine
+menu	Emerald	ଏମେରାଲ୍ଡ
 #. menu command in the main window
 #. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
 #, machine

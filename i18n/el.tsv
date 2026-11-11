@@ -40,6 +40,11 @@
 #, machine
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Αντιστοιχεί τώρα {n} άρθρο (προστίθενται μόνο νέα):|Αντιστοιχούν τώρα {n} άρθρα (προστίθενται μόνο νέα):
 #. count in a dialog box
+#. Cancel in Download File Info with downloads waiting behind it
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	Υπάρχει {n} ακόμη λήψη σε αναμονή. Θέλετε να την ακυρώσετε κι αυτή;|Υπάρχουν {n} ακόμη λήψεις σε αναμονή. Θέλετε να τις ακυρώσετε κι αυτές;
+#. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -95,6 +100,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} επιλεγμένο|{n} επιλεγμένα
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	Προστέθηκε {n} τοποθεσία από το αρχείο.|Προστέθηκαν {n} τοποθεσίες από το αρχείο.
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	Αποθηκεύτηκε {n} τοποθεσία στο αρχείο.|Αποθηκεύτηκαν {n} τοποθεσίες στο αρχείο.
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -169,6 +182,9 @@
 #. window title: 7-Zip (a program's name) must be installed
 #, machine
 	7-Zip needed	Απαιτείται το 7-Zip
+#. tab in the main window
+#, machine
+	720p	720p
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
@@ -1343,6 +1359,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying yt-dlp...	Λήψη και επαλήθευση του yt-dlp...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	Γίνεται λήψη του αντιγράφου του MDM...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1534,6 +1555,10 @@
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	Εξαγωγή
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	Εξαγωγή...
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	Παράταση της διαθεσιμότητας των επεκτάσεων Chrome Manifest 2
@@ -2011,6 +2036,10 @@
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	Εισαγωγή
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	Εισαγωγή...
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Στην ουρά
@@ -4111,6 +4140,10 @@
 #, machine
 	Stopped: the network adapter changed; starting again	Διακόπηκε: ο προσαρμογέας δικτύου άλλαξε. Ξεκινά ξανά
 #. message or event log entry in the main window
+#. event log entry: a video or gallery download stopped to start again at the new speed limit (its helper program takes a limit only as it starts)
+#, machine
+	Stopped: the speed limit changed; starting again with it	Διακόπηκε: το όριο ταχύτητας άλλαξε. Γίνεται επανεκκίνηση με το νέο όριο
+#. message or event log entry in the main window
 #. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
 #, machine
 	Stopped: {adapter} is not connected; it goes on when it is back	Διακόπηκε: ο {adapter} δεν είναι συνδεδεμένος. Συνεχίζεται όταν επανέλθει
@@ -4497,6 +4530,18 @@
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Ο ιστότοπος θέλει να είστε συνδεδεμένοι, ακόμα και με τα cookies του {browser}. Συνδεθείτε σε αυτόν στο {browser} και, στη συνέχεια, αναζητήστε ξανά τη σελίδα.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though the browser's extension passed the page's cookies
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with your browser's cookies for this page. Try again later, or from another browser.	Ο έλεγχος bot της τοποθεσίας (Cloudflare) απέρριψε το yt-dlp, ακόμη και με τα cookie του προγράμματος περιήγησής σας για αυτήν τη σελίδα. Δοκιμάστε ξανά αργότερα ή από άλλο πρόγραμμα περιήγησης.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though it had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	Ο έλεγχος bot της τοποθεσίας (Cloudflare) απέρριψε το yt-dlp, ακόμη και με τα cookie του {browser}. Χρησιμοποιήστε το κουμπί «Λήψη βίντεο» πάνω από το βίντεο στο {browser} ή δοκιμάστε ξανά τη σελίδα αργότερα.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Ο έλεγχος bot της τοποθεσίας (Cloudflare) απέρριψε το yt-dlp. Εάν η σελίδα ανοίγει στο πρόγραμμα περιήγησής σας, επιλέξτε αυτό το πρόγραμμα περιήγησης στις «Επιλογές» → «Συνδέσεις τοποθεσιών» → «Cookie για τοποθεσίες βίντεο» και αναζητήστε ξανά τη σελίδα ή χρησιμοποιήστε το κουμπί «Λήψη βίντεο» πάνω από το βίντεο.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4694,6 +4739,11 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Αυτό το βίντεο απαιτεί να είστε συνδεδεμένοι. Χρησιμοποιήστε το κουμπί Λήψη βίντεο πάνω από αυτό στο πρόγραμμα περιήγησής σας, το οποίο μεταβιβάζει τη σύνδεσή σας, ή επιλέξτε το πρόγραμμα περιήγησής σας στις Επιλογές → Σύνδεση σε ιστότοπους → Cookies για ιστοτόπους βίντεο.
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	αυτός ο σύνδεσμος προς το {site} είναι μια ιστοσελίδα, όχι το αρχείο: ανοίξτε τον στο πρόγραμμα περιήγησής σας και κάντε λήψη από εκεί
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -5315,6 +5365,26 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	yt-dlp couldn't read {browser}'s cookies: {error}	Το yt-dlp δεν μπόρεσε να διαβάσει τα cookies του {browser}: {error}
+#. text in a download's progress window
+#. progress window, a video's line: the helper program yt-dlp gave no address MDM's own downloader could use
+#, machine
+	yt-dlp downloads it itself	Το yt-dlp το κατεβάζει μόνο του
+#. text in a download's progress window
+#. progress window, a video's line: MDM's own downloader can't take a live broadcast, so the helper program yt-dlp records it
+#, machine
+	yt-dlp downloads it itself: a live stream	Το yt-dlp το κατεβάζει μόνο του: ζωντανή ροή
+#. text in a download's progress window
+#. progress window, a video's line: a stream sent in many small pieces (HLS, DASH), which the helper program yt-dlp downloads itself for now
+#, machine
+	yt-dlp downloads it itself: a stream in pieces	Το yt-dlp το κατεβάζει μόνο του: ροή σε κομμάτια
+#. text in a download's progress window
+#. progress window, a video's line: the stream is copy-protected (DRM), left to the helper program yt-dlp, which refuses it
+#, machine
+	yt-dlp downloads it itself: protected (DRM)	Το yt-dlp το κατεβάζει μόνο του: προστατευμένο (DRM)
+#. text in a download's progress window
+#. progress window, a video's line: {protocol} = a streaming protocol's short name (rtmp, rtsp, mms); MDM's own downloader doesn't speak it, so the helper program yt-dlp downloads it
+#, machine
+	yt-dlp downloads it itself: {protocol}	Το yt-dlp το κατεβάζει μόνο του: {protocol}
 #. text in the Download video window
 #. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
 #, machine
@@ -5883,6 +5953,7 @@ extension	Open its address once and accept its certificate, then enter a code fr
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
 extension	Open Mister Download Manager	Άνοιγμα Mister Download Manager
+#. text in the browser extension
 #. shown briefly on the download button over a video in a feed (a social site's home page, a timeline) when nothing in the feed gives that video's own address, so nothing was sent: the user should open the post the video belongs to and click the button on that page; short
 #, machine
 extension	Open the post, then use the button there	Ανοίξτε την ανάρτηση και μετά χρησιμοποιήστε το κουμπί εκεί
@@ -6104,6 +6175,11 @@ menu	&Add new download	Προσθήκη &νέας λήψης
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	&Add new download...	Π&ροσθήκη νέας λήψης...
+#. menu command in the main window
+#. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Classic	Κλα&σικό
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6191,6 +6267,11 @@ menu	&Scheduler and queues	&Προγραμματιστής και ουρές
 #, machine
 menu	&Show hidden tabs	Εμφάνιση κρυφών καρτελών(&S)
 #. menu command in the main window
+#. View → Text: letters drawn smooth, as Windows' modern apps draw them, anti-aliased at any size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Smooth	&Ομαλό
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop All	&Διακοπή όλων
@@ -6198,6 +6279,11 @@ menu	&Stop All	&Διακοπή όλων
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	&Διακοπή λήψης
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Text	&Κείμενο
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

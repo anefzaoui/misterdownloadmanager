@@ -40,6 +40,11 @@
 #, machine
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Hiện khớp {n} bài viết (chỉ thêm bài viết mới):
 #. count in a dialog box
+#. Cancel in Download File Info with downloads waiting behind it
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	Có {n} lượt tải xuống khác đang chờ. Hủy luôn không?
+#. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -95,6 +100,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} đã chọn
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	Đã thêm {n} trang web từ tệp.
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	Đã lưu {n} trang web vào tệp.
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -169,6 +182,9 @@
 #. window title: 7-Zip (a program's name) must be installed
 #, machine
 	7-Zip needed	Cần 7-Zip
+#. tab in the main window
+#, machine
+	720p	720p
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
@@ -1343,6 +1359,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying yt-dlp...	Đang tải xuống và xác minh yt-dlp...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	Đang tải xuống bản sao của MDM...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1534,6 +1555,10 @@
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	Xuất
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	Xuất...
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	Mở rộng tính khả dụng của tiện ích mở rộng Manifest 2 Chrome
@@ -2011,6 +2036,10 @@
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	Nhập
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	Nhập...
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Trong hàng đợi
@@ -4111,6 +4140,10 @@
 #, machine
 	Stopped: the network adapter changed; starting again	Đã dừng: bộ điều hợp mạng đã thay đổi; đang khởi động lại
 #. message or event log entry in the main window
+#. event log entry: a video or gallery download stopped to start again at the new speed limit (its helper program takes a limit only as it starts)
+#, machine
+	Stopped: the speed limit changed; starting again with it	Đã dừng: giới hạn tốc độ đã thay đổi; đang khởi động lại với giới hạn mới
+#. message or event log entry in the main window
 #. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
 #, machine
 	Stopped: {adapter} is not connected; it goes on when it is back	Đã dừng: {adapter} không được kết nối; nó sẽ tiếp tục khi được kết nối lại
@@ -4497,6 +4530,18 @@
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Trang web muốn bạn đăng nhập, ngay cả với cookie của {browser}. Đăng nhập vào trang đó trong {browser}, sau đó tìm lại trang.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though the browser's extension passed the page's cookies
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with your browser's cookies for this page. Try again later, or from another browser.	Kiểm tra bot của trang web (Cloudflare) đã từ chối yt-dlp, ngay cả với cookie của trình duyệt bạn cho trang này. Thử lại sau hoặc từ một trình duyệt khác.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though it had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	Kiểm tra bot của trang web (Cloudflare) đã từ chối yt-dlp, ngay cả với cookie của {browser}. Sử dụng nút Tải xuống video trên video trong {browser} hoặc thử lại trang sau.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Kiểm tra bot của trang web (Cloudflare) đã từ chối yt-dlp. Nếu trang mở trong trình duyệt của bạn, hãy chọn trình duyệt đó trong Tùy chọn → Đăng nhập trang web → Cookie cho các trang video và tìm lại trang, hoặc sử dụng nút Tải xuống video trên video.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4694,6 +4739,11 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Video này yêu cầu bạn phải đăng nhập. Sử dụng nút Tải xuống video trên video đó trong trình duyệt của bạn, nút này sẽ chuyển thông tin đăng nhập của bạn, hoặc chọn trình duyệt của bạn trong Tùy chọn → Đăng nhập trang web → Cookie cho các trang web video.
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	liên kết {site} này là một trang web, không phải tệp: hãy mở nó trong trình duyệt của bạn và tải xuống từ đó
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -5315,6 +5365,26 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp không thể đọc cookie của {browser}: {error}
+#. text in a download's progress window
+#. progress window, a video's line: the helper program yt-dlp gave no address MDM's own downloader could use
+#, machine
+	yt-dlp downloads it itself	yt-dlp tự tải xuống
+#. text in a download's progress window
+#. progress window, a video's line: MDM's own downloader can't take a live broadcast, so the helper program yt-dlp records it
+#, machine
+	yt-dlp downloads it itself: a live stream	yt-dlp tự tải xuống: một luồng trực tiếp
+#. text in a download's progress window
+#. progress window, a video's line: a stream sent in many small pieces (HLS, DASH), which the helper program yt-dlp downloads itself for now
+#, machine
+	yt-dlp downloads it itself: a stream in pieces	yt-dlp tự tải xuống: luồng phân mảnh
+#. text in a download's progress window
+#. progress window, a video's line: the stream is copy-protected (DRM), left to the helper program yt-dlp, which refuses it
+#, machine
+	yt-dlp downloads it itself: protected (DRM)	yt-dlp tự tải xuống: được bảo vệ (DRM)
+#. text in a download's progress window
+#. progress window, a video's line: {protocol} = a streaming protocol's short name (rtmp, rtsp, mms); MDM's own downloader doesn't speak it, so the helper program yt-dlp downloads it
+#, machine
+	yt-dlp downloads it itself: {protocol}	yt-dlp tự tải xuống: {protocol}
 #. text in the Download video window
 #. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
 #, machine
@@ -5883,6 +5953,7 @@ extension	Open its address once and accept its certificate, then enter a code fr
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
 extension	Open Mister Download Manager	Mở Mister Download Manager
+#. text in the browser extension
 #. shown briefly on the download button over a video in a feed (a social site's home page, a timeline) when nothing in the feed gives that video's own address, so nothing was sent: the user should open the post the video belongs to and click the button on that page; short
 #, machine
 extension	Open the post, then use the button there	Mở bài đăng, sau đó dùng nút ở đó
@@ -6104,6 +6175,11 @@ menu	&Add new download	&Thêm bản tải xuống mới
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	&Add new download...	&Thêm tải xuống mới...
+#. menu command in the main window
+#. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Classic	Cổ &điển
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6191,6 +6267,11 @@ menu	&Scheduler and queues	&Bộ lập lịch và hàng đợi
 #, machine
 menu	&Show hidden tabs	Hiển thị các thẻ đã &ẩn
 #. menu command in the main window
+#. View → Text: letters drawn smooth, as Windows' modern apps draw them, anti-aliased at any size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Smooth	&Mượt
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop All	&Dừng tất cả
@@ -6198,6 +6279,11 @@ menu	&Stop All	&Dừng tất cả
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	&Dừng tải xuống
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Text	&Văn bản
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6381,6 +6467,10 @@ menu	E&xport	&Xuất
 #. menu command in the main window
 #, machine
 menu	Edit queue	Sửa hàng đợi
+#. menu command in the main window
+#. View → Theme: a style theme's name (a white canvas, emerald fills, 6-point corners), a name: keep "Emerald" as written
+#, machine
+menu	Emerald	Emerald
 #. menu command in the main window
 #. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
 #, machine

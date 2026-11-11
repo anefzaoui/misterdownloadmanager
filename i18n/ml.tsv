@@ -95,6 +95,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} തിരഞ്ഞെടുത്തു|{n} തിരഞ്ഞെടുത്തു
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	ഫയലിൽ നിന്ന് {n} സൈറ്റ് ചേർത്തു.|ഫയലിൽ നിന്ന് {n} സൈറ്റുകൾ ചേർത്തു.
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	ഫയലിൽ {n} സൈറ്റ് സംരക്ഷിച്ചു.|ഫയലിൽ {n} സൈറ്റുകൾ സംരക്ഷിച്ചു.
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -169,6 +177,9 @@
 #. window title: 7-Zip (a program's name) must be installed
 #, machine
 	7-Zip needed	7-Zip ആവശ്യമാണ്
+#. tab in the main window
+#, machine
+	720p	720p
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
@@ -1343,6 +1354,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying yt-dlp...	yt-dlp ഡൗൺലോഡ് ചെയ്യുകയും പരിശോധിക്കുകയും ചെയ്യുന്നു...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	MDM-ന്റെ സ്വന്തം പകർപ്പ് ഡൗൺലോഡ് ചെയ്യുന്നു...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1534,6 +1550,10 @@
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	എക്‌സ്‌പോർട്ട് ചെയ്യുക
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	എക്‌സ്‌പോർട്ട് ചെയ്യുക...
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	Manifest 2 Chrome എക്സ്റ്റൻഷനുകളുടെ ലഭ്യത വർദ്ധിപ്പിക്കുക
@@ -2011,6 +2031,10 @@
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	ഇറക്കുമതി ചെയ്യുക
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	ഇംപോർട്ട് ചെയ്യുക...
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	ഒരു ക്യൂവിൽ
@@ -4111,6 +4135,10 @@
 #, machine
 	Stopped: the network adapter changed; starting again	നിർത്തി: നെറ്റ്‌വർക്ക് അഡാപ്റ്റർ മാറി; വീണ്ടും ആരംഭിക്കുന്നു
 #. message or event log entry in the main window
+#. event log entry: a video or gallery download stopped to start again at the new speed limit (its helper program takes a limit only as it starts)
+#, machine
+	Stopped: the speed limit changed; starting again with it	നിർത്തി: വേഗത പരിധി മാറി; പുതിയ വേഗത പരിധിയിൽ വീണ്ടും ആരംഭിക്കുന്നു
+#. message or event log entry in the main window
 #. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
 #, machine
 	Stopped: {adapter} is not connected; it goes on when it is back	നിർത്തി: {adapter} കണക്റ്റ് ചെയ്തിട്ടില്ല; അത് തിരികെ വരുമ്പോൾ തുടരും
@@ -4497,6 +4525,18 @@
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	{browser}-ന്റെ കുക്കികൾ നൽകിയിട്ടും സൈറ്റിൽ സൈൻ ഇൻ ചെയ്യേണ്ടതുണ്ട്. {browser}-ൽ സൈൻ ഇൻ ചെയ്ത ശേഷം പേജ് വീണ്ടും കണ്ടെത്തുക.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though the browser's extension passed the page's cookies
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with your browser's cookies for this page. Try again later, or from another browser.	ഈ പേജിനായുള്ള നിങ്ങളുടെ ബ്രൗസറിന്റെ കുക്കികൾ ഉപയോഗിച്ചിട്ടും, സൈറ്റിന്റെ ബോട്ട് പരിശോധന (Cloudflare) yt-dlp-യെ നിരസിച്ചു. പിന്നീട് വീണ്ടും ശ്രമിക്കുക, അല്ലെങ്കിൽ മറ്റൊരു ബ്രൗസറിൽ നിന്ന് ശ്രമിക്കുക.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though it had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	{browser}-ന്റെ കുക്കികൾ ഉപയോഗിച്ചിട്ടും, സൈറ്റിന്റെ ബോട്ട് പരിശോധന (Cloudflare) yt-dlp-യെ നിരസിച്ചു. {browser}-ലെ വീഡിയോയ്ക്ക് മുകളിലുള്ള ഡൗൺലോഡ് വീഡിയോ ബട്ടൺ ഉപയോഗിക്കുക, അല്ലെങ്കിൽ പിന്നീട് പേജ് വീണ്ടും ശ്രമിക്കുക.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	സൈറ്റിന്റെ ബോട്ട് പരിശോധന (Cloudflare) yt-dlp-യെ നിരസിച്ചു. പേജ് നിങ്ങളുടെ ബ്രൗസറിൽ തുറക്കുകയാണെങ്കിൽ, ഓപ്ഷനുകൾ → സൈറ്റുകൾ ലോഗിനുകൾ → വീഡിയോ സൈറ്റുകൾക്കുള്ള കുക്കികൾ എന്നതിൽ ആ ബ്രൗസർ തിരഞ്ഞെടുത്ത് പേജ് വീണ്ടും തിരയുക, അല്ലെങ്കിൽ വീഡിയോയ്ക്ക് മുകളിലുള്ള ഡൗൺലോഡ് വീഡിയോ ബട്ടൺ ഉപയോഗിക്കുക.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4694,6 +4734,11 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	ഈ വീഡിയോ കാണാൻ നിങ്ങൾ സൈൻ ഇൻ ചെയ്യേണ്ടതുണ്ട്. നിങ്ങളുടെ ബ്രൗസറിലെ വീഡിയോയ്ക്ക് മുകളിലുള്ള ഡൗൺലോഡ് വീഡിയോ ബട്ടൺ ഉപയോഗിക്കുക, അത് നിങ്ങളുടെ സൈൻ-ഇൻ കൈമാറും, അല്ലെങ്കിൽ ഓപ്ഷനുകൾ → സൈറ്റുകൾ ലോഗിനുകൾ → വീഡിയോ സൈറ്റുകൾക്കായുള്ള കുക്കികൾ എന്നതിൽ നിങ്ങളുടെ ബ്രൗസർ തിരഞ്ഞെടുക്കുക.
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	ഈ {site} ലിങ്ക് ഒരു വെബ് പേജാണ്, ഫയലല്ല: നിങ്ങളുടെ ബ്രൗസറിൽ തുറന്ന് അവിടെ നിന്ന് ഡൗൺലോഡ് ചെയ്യുക
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -5315,6 +5360,26 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp-ക്ക് {browser}-ന്റെ കുക്കികൾ വായിക്കാൻ കഴിഞ്ഞില്ല: {error}
+#. text in a download's progress window
+#. progress window, a video's line: the helper program yt-dlp gave no address MDM's own downloader could use
+#, machine
+	yt-dlp downloads it itself	yt-dlp തന്നെയാണ് ഇത് ഡൗൺലോഡ് ചെയ്യുന്നത്
+#. text in a download's progress window
+#. progress window, a video's line: MDM's own downloader can't take a live broadcast, so the helper program yt-dlp records it
+#, machine
+	yt-dlp downloads it itself: a live stream	yt-dlp തന്നെയാണ് ഇത് ഡൗൺലോഡ് ചെയ്യുന്നത്: തത്സമയ സ്ട്രീം
+#. text in a download's progress window
+#. progress window, a video's line: a stream sent in many small pieces (HLS, DASH), which the helper program yt-dlp downloads itself for now
+#, machine
+	yt-dlp downloads it itself: a stream in pieces	yt-dlp തന്നെയാണ് ഇത് ഡൗൺലോഡ് ചെയ്യുന്നത്: കഷണങ്ങളായുള്ള സ്ട്രീം
+#. text in a download's progress window
+#. progress window, a video's line: the stream is copy-protected (DRM), left to the helper program yt-dlp, which refuses it
+#, machine
+	yt-dlp downloads it itself: protected (DRM)	yt-dlp തന്നെയാണ് ഇത് ഡൗൺലോഡ് ചെയ്യുന്നത്: പകർപ്പവകാശ സംരക്ഷിതം (DRM)
+#. text in a download's progress window
+#. progress window, a video's line: {protocol} = a streaming protocol's short name (rtmp, rtsp, mms); MDM's own downloader doesn't speak it, so the helper program yt-dlp downloads it
+#, machine
+	yt-dlp downloads it itself: {protocol}	yt-dlp ഇത് സ്വയം ഡൗൺലോഡ് ചെയ്യുന്നു: {protocol}
 #. text in the Download video window
 #. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
 #, machine
@@ -5883,6 +5948,7 @@ extension	Open its address once and accept its certificate, then enter a code fr
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
 extension	Open Mister Download Manager	Mister Download Manager തുറക്കുക
+#. text in the browser extension
 #. shown briefly on the download button over a video in a feed (a social site's home page, a timeline) when nothing in the feed gives that video's own address, so nothing was sent: the user should open the post the video belongs to and click the button on that page; short
 #, machine
 extension	Open the post, then use the button there	പോസ്റ്റ് തുറക്കുക, എന്നിട്ട് അവിടെയുള്ള ബട്ടൺ ഉപയോഗിക്കുക
@@ -6104,6 +6170,11 @@ menu	&Add new download	പുതിയ ഡൗൺലോഡ് ചേർക്ക�
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	&Add new download...	പുതിയ ഡൗൺലോഡ് &ചേർക്കുക...
+#. menu command in the main window
+#. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Classic	ക്ലാസിക്(&C)
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6191,6 +6262,11 @@ menu	&Scheduler and queues	ഷെഡ്യൂളറും ക്യൂകളു�
 #, machine
 menu	&Show hidden tabs	മറച്ച ടാബുകൾ കാണിക്കുക(&S)
 #. menu command in the main window
+#. View → Text: letters drawn smooth, as Windows' modern apps draw them, anti-aliased at any size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Smooth	സ്മൂത്ത്(&S)
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop All	എല്ലാം നിർത്തുക(&S)
@@ -6198,6 +6274,11 @@ menu	&Stop All	എല്ലാം നിർത്തുക(&S)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	ഡൗൺലോഡ് നിർത്തുക(&S)
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Text	ടെക്സ്റ്റ്(&T)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6381,6 +6462,10 @@ menu	E&xport	&എക്സ്പോർട്ട് ചെയ്യുക
 #. menu command in the main window
 #, machine
 menu	Edit queue	ക്യൂ എഡിറ്റ് ചെയ്യുക
+#. menu command in the main window
+#. View → Theme: a style theme's name (a white canvas, emerald fills, 6-point corners), a name: keep "Emerald" as written
+#, machine
+menu	Emerald	എമറാൾഡ്
 #. menu command in the main window
 #. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
 #, machine
