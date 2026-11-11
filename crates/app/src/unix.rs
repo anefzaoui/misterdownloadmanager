@@ -2344,21 +2344,29 @@ mod host_copy_tests {
         assert_eq!(left.len(), 2, "{left:?}");
     }
 
-    /// #253: a browser still runs the old copy (writing over a running program can fail with
-    /// "Text file busy"): the new one replaces it all the same, and the old one keeps running.
+    /// #253: a browser still runs the old copy (writing over a running program fails with "Text
+    /// file busy"): the new one replaces it all the same, and the old one keeps running.
     #[test]
     fn the_helper_is_replaced_while_a_browser_runs_it() {
         let t = tempfile::tempdir().unwrap();
         let dir = t.path().join("browser-host");
         std::fs::create_dir_all(&dir).unwrap();
-        // A real program (a script would run as the shell, its file only read).
+        // A real program (a script would run as the shell, its file only read). The shell, which
+        // runs under any name: Ubuntu 26.04's `sleep` is one program for every core tool, telling
+        // them apart by the name it's started under, so a copy of it named after the helper ended
+        // at once. `; :` keeps the shell from replacing itself with `sleep`.
         let old = dir.join(HOST);
-        std::fs::copy("/bin/sleep", &old).unwrap();
-        let mut running = std::process::Command::new(&old).arg("30").spawn().unwrap();
+        std::fs::copy("/bin/sh", &old).unwrap();
+        let mut running = std::process::Command::new(&old)
+            .args(["-c", "sleep 30; :"])
+            .spawn()
+            .unwrap();
         std::thread::sleep(std::time::Duration::from_millis(200));
-        // Writing over it may fail with "Text file busy" (Linux until recently) or not (newer
-        // kernels, such as GitHub's Ubuntu 26.04 image, and macOS): the copy is replaced either
-        // way, never written into.
+        assert!(running.try_wait().unwrap().is_none(), "the old copy runs");
+        assert!(
+            std::fs::write(&old, b"x").is_err() || cfg!(target_os = "macos"),
+            "Linux refuses to write over a running program"
+        );
         let from = program(t.path(), "new-host", "echo two");
         let copy = install_host_copy(&from, &dir, Path::new("/x.AppImage")).unwrap();
         assert_eq!(std::fs::read(&copy).unwrap(), std::fs::read(&from).unwrap());
