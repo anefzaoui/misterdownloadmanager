@@ -666,6 +666,7 @@ pub fn popup<C: Clone>(
     hint: &dyn Fn(&C) -> Option<&'static str>,
 ) -> PopupResult<C> {
     let sub_key = egui::Id::unique(("popup-sub", id));
+    let opened_depths = sub_key.with("opened-depths");
     // The control that has the keys while the menu is open (a drop-down list, a text box): the
     // menu's windows never take them, so Escape reached its window, and egui let them go there
     // (Escape drops the focus). Escape closing the menu gives them back.
@@ -688,6 +689,20 @@ pub fn popup<C: Clone>(
         }
     };
     if let Some(r) = keyboard(ctx, entries, sub_key) {
+        let depths = ctx.data_mut(|d| {
+            let depths = d.get_temp::<Vec<usize>>(opened_depths).unwrap_or_default();
+            d.remove::<Vec<usize>>(opened_depths);
+            depths
+        });
+        let first_depth = if matches!(&r, PopupResult::Neighbor(_))
+            && kind == MenuKind::Bar
+            && bar_shares_window()
+        {
+            1 // The shared X11 menu-bar window stays open while the next title takes it.
+        } else {
+            0
+        };
+        close_menu_viewports(ctx, kind, id, &depths, first_depth);
         ctx.data_mut(|d| {
             d.remove::<usize>(sub_key);
             d.remove::<(Option<usize>, Option<usize>)>(sub_key.with("kb"));
@@ -701,7 +716,11 @@ pub fn popup<C: Clone>(
     let mut result = None;
     // Set by the menu's windows as they draw (popup_level) when one of them has the focus.
     let window_focus = sub_key.with("window-focus");
-    ctx.data_mut(|d| d.insert_temp(window_focus, false));
+    ctx.data_mut(|d| {
+        d.insert_temp(window_focus, false);
+        // popup_level records only levels whose viewport it actually creates this frame.
+        d.insert_temp(opened_depths, Vec::<usize>::new());
+    });
     popup_level(
         ctx,
         kind,
@@ -715,6 +734,12 @@ pub fn popup<C: Clone>(
         hint,
     );
     if let Some(c) = result {
+        let depths = ctx.data_mut(|d| {
+            let depths = d.get_temp::<Vec<usize>>(opened_depths).unwrap_or_default();
+            d.remove::<Vec<usize>>(opened_depths);
+            depths
+        });
+        close_menu_viewports(ctx, kind, id, &depths, 0);
         ctx.data_mut(|d| {
             d.remove::<usize>(sub_key);
             d.remove::<(Option<usize>, Option<usize>)>(sub_key.with("kb"));
@@ -763,13 +788,17 @@ pub fn popup<C: Clone>(
         // the data lock (asking the context inside it deadlocks).
         let press = ctx.input(|i| i.pointer.press_origin().filter(|_| i.pointer.any_pressed()));
         let dismissed = dismissed_at_key(ctx);
-        ctx.data_mut(|d| {
+        let depths = ctx.data_mut(|d| {
+            let depths = d.get_temp::<Vec<usize>>(opened_depths).unwrap_or_default();
+            d.remove::<Vec<usize>>(opened_depths);
             d.remove::<usize>(sub_key);
             d.remove::<(Option<usize>, Option<usize>)>(sub_key.with("kb"));
             if let Some(at) = press {
                 d.insert_temp(dismissed, at);
             }
+            depths
         });
+        close_menu_viewports(ctx, kind, id, &depths, 0);
         give_back(ctx);
         return PopupResult::Dismissed;
     }
@@ -1057,6 +1086,31 @@ fn menu_viewport(kind: MenuKind, id: &str, depth: usize, bar_shared: bool) -> eg
     egui::ViewportId::from_hash_of(("menu", key, depth))
 }
 
+/// The levels whose immediate viewports were actually opened by popup_level. Never manufacture
+/// an id for a submenu that was not drawn: egui creates a viewport when it is addressed (#615).
+fn menu_depths_to_close(opened: &[usize], first_depth: usize) -> Vec<usize> {
+    let mut depths: Vec<_> = opened.iter().copied().filter(|d| *d >= first_depth).collect();
+    depths.sort_unstable();
+    depths.dedup();
+    depths
+}
+
+fn close_menu_viewports(
+    ctx: &egui::Context,
+    kind: MenuKind,
+    id: &str,
+    opened: &[usize],
+    first_depth: usize,
+) {
+    let shared = bar_shares_window();
+    for depth in menu_depths_to_close(opened, first_depth) {
+        ctx.send_viewport_cmd_to(
+            menu_viewport(kind, id, depth, shared),
+            egui::ViewportCommand::Close,
+        );
+    }
+}
+
 /// The entry under `p` in a menu drawn at `o`, `w` wide: its index, none on a separator or the
 /// padding (the slots as `popup_level` lays them out).
 fn item_at<C>(entries: &[MenuEntry<C>], o: Pos2, w: f32, p: Pos2) -> Option<usize> {
@@ -1106,6 +1160,12 @@ fn popup_level<C: Clone>(
     depth: usize,
     hint: &dyn Fn(&C) -> Option<&'static str>,
 ) {
+    ctx.data_mut(|d| {
+        let depths = d.get_temp_mut_or_default::<Vec<usize>>(sub_key.with("opened-depths"));
+        if !depths.contains(&depth) {
+            depths.push(depth);
+        }
+    });
     let size = menu_size(ctx, entries, hint);
     let kb_key = sub_key.with("kb");
     let kb: Option<usize> = ctx
@@ -2272,9 +2332,20 @@ fn chevron(p: &egui::Painter, ox: f32, top: f32, open: bool, bright: bool) {
 mod tests {
     use super::{
         FOCUS_GRACE, FocusVerdict, MenuBarEvent, MenuEntry, MenuFocus, MenuKind, heading_into,
-        item_at, menu_viewport, menubar_next,
+        item_at, menu_depths_to_close, menu_viewport, menubar_next,
     };
     use egui::{Rect, pos2};
+
+    #[test]
+    fn only_opened_menu_levels_are_closed() {
+        assert_eq!(menu_depths_to_close(&[0], 0), [0]);
+        assert_eq!(menu_depths_to_close(&[0, 1], 0), [0, 1]);
+        // Switching between menu-bar titles keeps the shared root viewport, closing only submenus.
+        assert_eq!(menu_depths_to_close(&[0, 1], 1), [1]);
+        // A deeper viewport which was never drawn is never addressed or created.
+        assert_eq!(menu_depths_to_close(&[0, 1], 0), [0, 1]);
+        assert!(menu_depths_to_close(&[0, 1], 2).is_empty());
+    }
 
     /// #277: on X11 the menu bar's menus share one window per level, so going from title to
     /// title moves it (a compositor has no new window to fade in); elsewhere, and for every
