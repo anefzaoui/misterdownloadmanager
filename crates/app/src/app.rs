@@ -2545,6 +2545,13 @@ impl App {
                     ua.to_owned()
                 }
             }),
+            // Where the browser's own download of it ended: asked when the link itself is
+            // refused (#630, a one-time or session-bound token the browser already used).
+            browser_final: context
+                .final_url
+                .as_deref()
+                .and_then(|u| url::Url::parse(u).ok())
+                .filter(|f| f != url && mdm_engine::supported(f)),
             post: context.post.clone().map(|body| body.into_bytes().into()),
             on_file_created: Some(mark_hook(url, context.referer.as_deref())),
             // The browser's own download's type: a web page instead is an error (#533).
@@ -3349,6 +3356,8 @@ impl App {
                 saved.final_url = url.clone();
                 let _ = saved.write(&state);
             }
+            // Where the browser's download of the old address ended isn't this one's (#630).
+            item.context.final_url = None;
             item.note(crate::i18n::fmt(
                 crate::i18n::t("Address changed to {host}"),
                 &[("host", &crate::i18n::ltr(url.host_str().unwrap_or("?")))],

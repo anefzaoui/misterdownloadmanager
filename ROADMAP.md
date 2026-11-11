@@ -565,6 +565,10 @@ These ship in a later version, when they're ready.
   ([#633](https://github.com/anefzaoui/misterdownloadmanager/issues/633),
   [#583](https://github.com/anefzaoui/misterdownloadmanager/issues/583)): the colours are now set
   once, when a window opens or the theme changes; fix in review
+- 🔄 Downloads from FileHippo failing at once with 412 Precondition Failed
+  ([#630](https://github.com/anefzaoui/misterdownloadmanager/issues/630)): a link the site refuses
+  to MDM now goes on from where the browser's own download of it had reached; fix in review, still
+  to check on FileHippo itself. A link pasted into Add URL has no such address to go on from
 - 🔄 Windows: a crash when the clipboard was read in two places at once (the clipboard monitor and
   Add URL) ([#629](https://github.com/anefzaoui/misterdownloadmanager/issues/629)): every read and
   write of the clipboard now goes one at a time; fix in review

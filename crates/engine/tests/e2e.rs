@@ -1805,3 +1805,114 @@ async fn a_refused_browser_agent_is_asked_again_as_mdm() {
         "{log:?}"
     );
 }
+
+/// A download handed over by the browser: `link` with a session cookie and the page as Referer,
+/// and where the browser's own download of it ended (`browser_final`).
+async fn handed_over(
+    link: String,
+    browser_final: Option<&str>,
+    dir: &std::path::Path,
+) -> Result<mdm_engine::Outcome, mdm_engine::Error> {
+    let mut headers = reqwest::header::HeaderMap::new();
+    headers.insert(reqwest::header::COOKIE, "sid=1".parse().unwrap());
+    headers.insert(
+        reqwest::header::REFERER,
+        "http://127.0.0.1/program/".parse().unwrap(),
+    );
+    Download::start(
+        Request {
+            url: link.parse().unwrap(),
+            headers,
+            dest: Destination::Dir(dir.to_owned()),
+        },
+        Options {
+            browser_final: browser_final.map(|u| u.parse().unwrap()),
+            ..fast_opts()
+        },
+    )
+    .wait()
+    .await
+}
+
+/// #630: a site that refuses MDM the link (FileHippo's 412) while the browser's own download of
+/// it ended on another host (its CDN): the download goes on from there, without the link's
+/// cookie (another host) but with the page as Referer.
+#[tokio::test]
+async fn a_refused_link_goes_on_where_the_browser_download_ended() {
+    let s = server("rate=20M").await;
+    let port = s.addr().port();
+    let link = s.url("/gen/2M/fh.bin?seed=630&refuse=412");
+    let cdn = format!("http://localhost:{port}/gen/2M/fh.bin?seed=630");
+    let dir = tempfile::tempdir().unwrap();
+    // Without the browser's address, the 412 is the end of it (what 0.5.2 did).
+    let refused = handed_over(link.clone(), None, dir.path()).await;
+    assert!(
+        matches!(refused, Err(mdm_engine::Error::Status(s)) if s.as_u16() == 412),
+        "{refused:?}"
+    );
+    let out = handed_over(link, Some(&cdn), dir.path())
+        .await
+        .expect("the download goes on where the browser's ended");
+    let mut want = vec![0; 2 << 20];
+    content::fill(630, 0, &mut want);
+    assert!(
+        std::fs::read(&out.path).unwrap() == want,
+        "content mismatch"
+    );
+    assert_eq!(out.path.file_name().unwrap(), "fh.bin");
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("every request ends");
+    let log = s.log();
+    assert_eq!(
+        log.iter().filter(|e| e.outcome == "fault:refuse").count(),
+        2,
+        "the link was asked once per download: {log:?}"
+    );
+    let served: Vec<_> = log
+        .iter()
+        .filter(|e| e.status == 200 || e.status == 206)
+        .collect();
+    assert!(!served.is_empty());
+    for e in served {
+        assert!(
+            e.host
+                .as_deref()
+                .is_some_and(|h| h.starts_with("localhost")),
+            "{e:?}"
+        );
+        assert_eq!(e.cookie, None, "the link's cookie reached another host");
+        assert_eq!(e.referer.as_deref(), Some("http://127.0.0.1/program/"));
+    }
+}
+
+/// #630: a one-time link the browser already spent (410) is followed on the same site, where
+/// the session's cookie still goes; when the browser's address is refused too, the link's own
+/// refusal is the one told.
+#[tokio::test]
+async fn a_spent_link_goes_on_where_the_browser_download_ended() {
+    let s = server("rate=20M").await;
+    let link = s.url("/gen/1M/once.bin?seed=631&once=1");
+    // The browser's own download used it up.
+    let spent = reqwest::get(&link).await.unwrap();
+    assert_eq!(spent.status(), 200);
+    drop(spent.bytes().await);
+    let dir = tempfile::tempdir().unwrap();
+    let final_url = s.url("/gen/1M/once.bin?seed=631&require_cookie=sid=1");
+    let out = handed_over(link.clone(), Some(&final_url), dir.path())
+        .await
+        .expect("the download goes on where the browser's ended");
+    let mut want = vec![0; 1 << 20];
+    content::fill(631, 0, &mut want);
+    assert!(
+        std::fs::read(&out.path).unwrap() == want,
+        "content mismatch"
+    );
+    // Both refused: the link's 410 is told, not the other address's 403.
+    let gone = s.url("/gen/1M/once.bin?seed=631&refuse=403");
+    let refused = handed_over(link, Some(&gone), dir.path()).await;
+    assert!(
+        matches!(refused, Err(mdm_engine::Error::Status(s)) if s.as_u16() == 410),
+        "{refused:?}"
+    );
+}
