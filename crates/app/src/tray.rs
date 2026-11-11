@@ -7,6 +7,9 @@
 use std::sync::mpsc::{Receiver, Sender, channel};
 use std::sync::{Arc, Mutex};
 
+#[cfg(windows)]
+mod probe;
+
 use tray_icon::menu::{
     CheckMenuItem, Menu, MenuEvent, MenuId, MenuItem, PredefinedMenuItem, Submenu,
 };
@@ -114,14 +117,16 @@ pub struct Tray {
     labels: Vec<(Entry, &'static str)>,
     /// What [`Tray::visible`] last saw and when: the minimize path asks every frame, and the
     /// shell shouldn't be asked that often (a second of staleness is enough).
-    #[cfg(any(target_os = "windows", target_os = "macos"))]
+    #[cfg(target_os = "macos")]
     visible_checked: std::cell::Cell<Option<(bool, std::time::Instant)>>,
     /// The shell's last answer, logged when it changes.
     #[cfg(any(target_os = "windows", target_os = "macos"))]
     answer: std::cell::Cell<Option<ShellIcon>>,
-    /// The icon's id with the shell, once found (`win32::tray_icon_held`).
+    /// Windows shell queries can block on Explorer; only the worker may make them.
     #[cfg(windows)]
-    icon_id: std::cell::Cell<Option<u32>>,
+    visibility: probe::Probe<ShellIcon>,
+    #[cfg(windows)]
+    ctx: egui::Context,
 }
 
 /// A menu entry whose text is translated.
@@ -133,22 +138,13 @@ enum Entry {
 
 impl Tray {
     /// What the shell says of the icon now.
-    #[cfg(any(target_os = "windows", target_os = "macos"))]
+    #[cfg(target_os = "macos")]
     fn shell_icon(&self) -> ShellIcon {
         // MDM_TEST_TRAY_RECT=0: the shell gives no place for the icon, as the reporters' did for
         // one behind ^ (the close test, with a real icon the shell holds).
         let placed = self.tray.rect().is_some()
             && std::env::var_os("MDM_TEST_TRAY_RECT").is_none_or(|v| v != "0");
-        #[cfg(windows)]
-        let held = {
-            let id = crate::win32::tray_icon_held(self.tray.window_handle(), self.icon_id.get());
-            if id.is_some() {
-                self.icon_id.set(id);
-            }
-            id.is_some()
-        };
         // macOS has no other question: the menu bar item's frame is the answer.
-        #[cfg(not(windows))]
         let held = false;
         ShellIcon { placed, held }
     }
@@ -164,6 +160,7 @@ impl Tray {
         if let Some(v) = std::env::var_os("MDM_TEST_TRAY_VISIBLE") {
             return v == "1";
         }
+        #[cfg(target_os = "macos")]
         if let Some((shown, checked)) = self.visible_checked.get()
             && checked.elapsed() < std::time::Duration::from_secs(1)
         {
@@ -179,6 +176,15 @@ impl Tray {
         if let Some(v) = std::env::var_os("MDM_TEST_TRAY_VISIBLE") {
             return v == "1";
         }
+        #[cfg(windows)]
+        let icon = {
+            self.ctx.request_repaint_after(probe::INTERVAL);
+            let Some(icon) = self.visibility.latest() else {
+                return false;
+            };
+            icon
+        };
+        #[cfg(target_os = "macos")]
         let icon = self.shell_icon();
         if self.answer.replace(Some(icon)) != Some(icon) {
             tracing::info!(
@@ -188,6 +194,7 @@ impl Tray {
             );
         }
         let shown = icon.reachable();
+        #[cfg(target_os = "macos")]
         self.visible_checked
             .set(Some((shown, std::time::Instant::now())));
         shown
@@ -269,6 +276,28 @@ impl Tray {
             }
         };
 
+        #[cfg(windows)]
+        let visibility = {
+            // Pass just the native window value, never TrayIcon (which belongs to this thread).
+            let hwnd = tray.window_handle() as isize;
+            let wake = ctx.clone();
+            let mut known = None;
+            match probe::Probe::new(
+                move || {
+                    let (icon, id) = crate::win32::tray_shell_icon(hwnd, known);
+                    known = id;
+                    icon
+                },
+                move || wake.request_repaint(),
+            ) {
+                Ok(probe) => probe,
+                Err(e) => {
+                    tracing::warn!("tray icon: visibility worker not made: {e}");
+                    return None;
+                }
+            }
+        };
+
         let (tx, rx) = channel();
         let wake = |tx: &Sender<TrayCmd>, ctx: &egui::Context| (tx.clone(), ctx.clone());
         let (icon_tx, icon_ctx) = wake(&tx, ctx);
@@ -320,12 +349,14 @@ impl Tray {
             shown_downloads: Default::default(),
             download_ids,
             labels,
-            #[cfg(any(target_os = "windows", target_os = "macos"))]
+            #[cfg(target_os = "macos")]
             visible_checked: Default::default(),
             #[cfg(any(target_os = "windows", target_os = "macos"))]
             answer: Default::default(),
             #[cfg(windows)]
-            icon_id: Default::default(),
+            visibility,
+            #[cfg(windows)]
+            ctx: ctx.clone(),
         })
     }
 
