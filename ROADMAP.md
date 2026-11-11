@@ -540,6 +540,10 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 Downloads from FileHippo failing at once with 412 Precondition Failed
+  ([#630](https://github.com/anefzaoui/misterdownloadmanager/issues/630)): a link the site refuses
+  to MDM now goes on from where the browser's own download of it had reached; fix in review, still
+  to check on FileHippo itself. A link pasted into Add URL has no such address to go on from
 - 🔄 Categories without their own folder following General's folder (`Video`, `Music`, `Torrents`
   inside it), and Add torrent starting with the Torrents category's folder instead of flipping
   from General when metadata arrives ([#556](https://github.com/anefzaoui/misterdownloadmanager/issues/556),

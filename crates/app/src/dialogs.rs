@@ -1034,6 +1034,7 @@ impl FileInfo {
                 self.context.post = None;
                 self.context.post_type = None;
                 self.request.opts.post = None;
+                self.request.opts.browser_final = None;
                 self.request.headers.remove(reqwest::header::CONTENT_TYPE);
                 // Another address isn't the download the browser had started: it goes through
                 // the debrid account that takes its host (#44), unless the user unticked it.

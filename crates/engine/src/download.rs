@@ -86,6 +86,13 @@ pub struct Options {
     /// bot checks (Cloudflare, seen on a public PDF), while MDM's own passes. Set when
     /// `user_agent` is the browser's. A later 403 is left to the download.
     pub agent_fallback: Option<String>,
+    /// From the browser: the address its own download of this file ended at, its redirects
+    /// followed. When the address asked for is refused before any byte (`link_refused`: a
+    /// one-time link the browser already spent, a token bound to its session, a site that
+    /// turns away whatever isn't that browser), the download asks there once instead (#630),
+    /// the address's cookies and logins going only if it is the same site (`scoped_headers`).
+    /// Never for a form's POST (its body goes where it was given) or through a service account.
+    pub browser_final: Option<Url>,
     /// How often resume state is saved (IDM: "several times per minute").
     pub save_interval: Duration,
     /// Speed limit for this download, bytes/s (IDM's limiter is per file). None = unlimited.
@@ -219,6 +226,7 @@ impl Default for Options {
             retry_delay: Duration::from_secs(1),
             user_agent: DEFAULT_USER_AGENT.to_owned(),
             agent_fallback: None,
+            browser_final: None,
             save_interval: Duration::from_secs(2),
             speed_limit: None,
             verify_overlap: 64,
@@ -1564,26 +1572,44 @@ async fn run_fresh(
             };
             let as_get = AsGet::default();
             let seen = shared.seen.get_or_init(Default::default).clone();
-            let client0 = client(&opts, &target, &as_get, &seen)?;
-            let (client0, first) = match first_get(
-                &client0, &target, &asked, &opts, expects, shared, cancel,
-            )
-            .await
-            {
-                Err(e) if agent_refused(&e) && opts.agent_fallback.is_some() => {
-                    // #372: the rest of the download goes as MDM too.
-                    opts.user_agent = opts.agent_fallback.take().unwrap_or_default();
-                    asked_as_mdm = true;
-                    shared.event(
-                            "The server refused the browser's User-Agent; asking as Mister Download Manager",
-                        );
-                    let client1 = client(&opts, &target, &as_get, &seen)?;
-                    let first =
-                        first_get(&client1, &target, &asked, &opts, expects, shared, cancel).await;
-                    (client1, first)
-                }
-                first => (client0, first),
+            let as_given = opts.clone();
+            let ask = FirstAsk {
+                as_get: &as_get,
+                seen: &seen,
+                expects,
+                shared,
+                cancel,
             };
+            let (mut client0, mut first, as_mdm) = ask.at(&mut opts, &target, &asked).await?;
+            asked_as_mdm = as_mdm;
+            // #630: the link refused, where the browser's own download of it ended is asked
+            // once, as the link was (the browser's User-Agent first). The link's refusal is
+            // the one told if that fails too.
+            if let Err(e) = &first
+                && link_refused(e)
+                && unlocked.is_none()
+                && opts.post.is_none()
+                && let Some(other) = opts.browser_final.clone().filter(|o| *o != target)
+            {
+                shared.event(format!(
+                    "{}: {e}; asking where the browser's download ended ({})",
+                    target.host_str().unwrap_or("?"),
+                    other.host_str().unwrap_or("?"),
+                ));
+                let mut again = as_given;
+                let headers = scoped_headers(&asked, &target, &other);
+                match ask.at(&mut again, &other, &headers).await {
+                    Ok((client1, Ok(answer), as_mdm)) => {
+                        (opts, client0, first, asked_as_mdm) = (again, client1, Ok(answer), as_mdm);
+                    }
+                    Ok((_, Err(Error::Cancelled), _)) | Err(Error::Cancelled) => {
+                        return Err(Error::Cancelled);
+                    }
+                    Ok((_, Err(e), _)) | Err(e) => {
+                        shared.event(format!("{}: {e}", other.host_str().unwrap_or("?")));
+                    }
+                }
+            }
             let (answer, ttfb) = first?;
             seen.answered(&answer.0);
             (as_get, client0, answer, ttfb)
@@ -2383,6 +2409,57 @@ async fn save_state(
 /// delayed the first save of progress past the end of a short download (#518).
 fn forced_gap(force: bool, took: Duration) -> Duration {
     if force { Duration::ZERO } else { took }
+}
+
+/// A refusal of the address asked for that the browser's own download got past (#630): 401
+/// and 403 (a token bound to the browser's session), 404 and 410 (a one-time link the browser
+/// already spent, which some servers then forget, others call gone), 412 (FileHippo's answer
+/// to whatever isn't a browser). A site's bot check stays the site's call (#376).
+fn link_refused(e: &Error) -> bool {
+    matches!(e, Error::Status(s) if matches!(s.as_u16(), 401 | 403 | 404 | 410 | 412))
+}
+
+/// What a download's first request needs besides its address, headers and options.
+struct FirstAsk<'a> {
+    as_get: &'a AsGet,
+    seen: &'a Arc<crate::server::ServerSeen>,
+    expects: bool,
+    shared: &'a Shared,
+    cancel: &'a CancellationToken,
+}
+
+/// A first request's client, its answer (or why not) and whether it went as MDM (#372).
+type FirstAnswer = (
+    Client,
+    Result<((Response, HeaderMap), Duration), Error>,
+    bool,
+);
+
+impl FirstAsk<'_> {
+    /// `first_get` at `url` with its client; asked once more as MDM when the browser's
+    /// User-Agent is refused (#372, `opts` then goes on as MDM: the third value says so).
+    async fn at(
+        &self,
+        opts: &mut Options,
+        url: &Url,
+        headers: &HeaderMap,
+    ) -> Result<FirstAnswer, Error> {
+        let (shared, cancel, expects) = (self.shared, self.cancel, self.expects);
+        let client0 = client(opts, url, self.as_get, self.seen)?;
+        match first_get(&client0, url, headers, opts, expects, shared, cancel).await {
+            Err(e) if agent_refused(&e) && opts.agent_fallback.is_some() => {
+                // #372: the rest of the download goes as MDM too.
+                opts.user_agent = opts.agent_fallback.take().unwrap_or_default();
+                shared.event(
+                    "The server refused the browser's User-Agent; asking as Mister Download Manager",
+                );
+                let client1 = client(opts, url, self.as_get, self.seen)?;
+                let first = first_get(&client1, url, headers, opts, expects, shared, cancel).await;
+                Ok((client1, first, true))
+            }
+            first => Ok((client0, first, false)),
+        }
+    }
 }
 
 /// A plain 403, which a browser's User-Agent may have brought on (#372). A site's bot check
