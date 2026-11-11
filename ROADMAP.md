@@ -586,6 +586,7 @@ These ship in a later version, when they're ready.
   review
 - 🔄 A submenu staying open, its item lit beside the one under the pointer, while the pointer
   moved on through the menu ([#579](https://github.com/anefzaoui/misterdownloadmanager/issues/579)): fix in review
+- 🔄 Invoking a file chooser closes only the menu viewports that were actually opened, avoiding phantom submenu windows ([#615](https://github.com/anefzaoui/misterdownloadmanager/issues/615)): fix in review; needs macOS, Windows and X11 confirmation
 - 🔄 Chromium browsers: another extension's file names and folders (Save In's) lost while MDM's
   extension was on, for downloads it left to the browser
   ([#578](https://github.com/anefzaoui/misterdownloadmanager/issues/578)): fix in review
