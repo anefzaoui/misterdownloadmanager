@@ -24,6 +24,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Sites behind Akamai that let only browsers through (a 403 "Access Denied" page for MDM, the file for a browser, such as HPE's documentation PDFs) now download: MDM takes Akamai's refusal for the bot check it is and tries again the way a browser connects, as it does for Cloudflare's ([#771](https://github.com/anefzaoui/misterdownloadmanager/issues/771)).
 - **Sizes for a stream's qualities:** HLS qualities showed no size; each is now estimated from its bitrate and the video's length, in the Download video window and in the download list.
 - **A video already in the list is no longer downloaded again without a word:** picking the same quality of the same video, from the menu over a video or the Download video window, now follows Options → Downloads ("If a duplicate download link is added": ask, a numbered name, overwrite, or open / resume the one there). Another quality of the same video is not a duplicate.
 - The progress window's bar glides as the download goes, instead of moving in steps four times a second.

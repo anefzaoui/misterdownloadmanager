@@ -503,6 +503,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Sites behind Akamai's bot check (a 403 page for MDM, the file for a browser) download, through the
+  browser-like connection ([#771](https://github.com/anefzaoui/misterdownloadmanager/issues/771))
 - ✅ The browser's Download video button in right-to-left languages: its corners and divider follow the text direction, so its outline stays whole
 - ✅ **Deferred Rename** on a download's **Download status** tab: save a new name while downloading to rename the finished file's stem (and video subtitles) or an exclusive finished folder on completion, leaving shared/save or pre-existing folders, split-archive volumes and single-file torrents under their original names ([#655](https://github.com/anefzaoui/misterdownloadmanager/pull/655))
 - ✅ Links added by hand go with the User-Agent of your default browser, at the version you have
