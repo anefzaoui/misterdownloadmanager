@@ -2305,6 +2305,7 @@ async fn segmented(
         tokio::pin!(saver, supervisor);
         tokio::select! {
             r = &mut supervisor => {
+                if ctx.size == (160 << 20) { eprintln!("DBG t={:?} connections done", dbg_t()); }
                 // The connections stopped: let a save under way finish. Its error, if any, is
                 // the final save's to report (it writes the same file, forced, just below).
                 stop.cancel();
@@ -2377,6 +2378,7 @@ async fn save_state(
     synced: &mut Synced,
     force: bool,
 ) -> Result<(), Error> {
+    let big = ctx.size == (160 << 20);
     let segments = ctx.shared.with_planner(|p| p.save());
     let validators = ctx.validators.lock().unwrap().clone();
     let target = ctx.target();
@@ -2422,12 +2424,28 @@ async fn save_state(
     };
     ctx.shared.flushing.store(true, Ordering::Release);
     let began = std::time::Instant::now();
+    if big {
+        eprintln!(
+            "DBG t={:?} save start force={force} bytes={}",
+            dbg_t(),
+            bytes >> 20
+        );
+    }
     let done = tokio::task::spawn_blocking(move || {
         if let Some(slow) = slow {
+            let g0 = std::time::Instant::now();
             let _writes_wait = slow.gate.write().unwrap();
+            if big {
+                eprintln!("DBG t={:?} save got gate after {:?}", dbg_t(), g0.elapsed());
+            }
             std::thread::sleep(slow.takes);
         }
-        s.save(&path, segments, &file).map(|()| s)
+        let f0 = std::time::Instant::now();
+        let r = s.save(&path, segments, &file).map(|()| s);
+        if big {
+            eprintln!("DBG t={:?} save sync+write {:?}", dbg_t(), f0.elapsed());
+        }
+        r
     })
     .await
     .expect("state writer panicked");
@@ -2439,6 +2457,11 @@ async fn save_state(
         took: forced_gap(force, began.elapsed()),
     };
     Ok(())
+}
+
+fn dbg_t() -> Duration {
+    static T: std::sync::OnceLock<std::time::Instant> = std::sync::OnceLock::new();
+    T.get_or_init(std::time::Instant::now).elapsed()
 }
 
 /// The flush time that spaces out the next flush. A forced save runs while no connection
@@ -3397,6 +3420,7 @@ async fn receive(
     mut verify: u64,
     whole: bool,
 ) -> Result<Option<u64>, Error> {
+    let big = ctx.size == (160 << 20);
     ctx.shared.conn(id, |c| c.status = ConnStatus::Receiving);
     // Written and committed up to `pos`; `buf` holds claimed bytes not yet written.
     let mut pos = from;
@@ -3507,6 +3531,9 @@ async fn receive(
                     ctx.shared.conn(id, |c| c.speed = speed);
                     note_best(ctx, received, on_net);
                     if should_shed(ctx, id, speed, on_net, pos + buf.len() as u64) {
+                        if big {
+                            eprintln!("DBG t={:?} conn={id:?} SHED speed={speed}", dbg_t());
+                        }
                         flush(ctx, id, &mut pos, &mut buf).await?;
                         return Err(Error::SlowConnection);
                     }
@@ -3514,6 +3541,13 @@ async fn receive(
                 if !full && buf.len() < hold_cap(ctx) && ctx.shared.flushing.load(Ordering::Acquire)
                 {
                     continue; // the disk is busy flushing: this waits in memory (#361)
+                }
+                if big && ctx.shared.flushing.load(Ordering::Acquire) {
+                    eprintln!(
+                        "DBG t={:?} conn={id:?} writes during flush: full={full} buf={} KiB",
+                        dbg_t(),
+                        buf.len() >> 10
+                    );
                 }
                 if buf.len() < BATCH && !full && flushed_at.elapsed() < FLUSH_EVERY {
                     continue;
@@ -3588,15 +3622,26 @@ async fn flush(
     pos: &mut u64,
     buf: &mut Vec<u8>,
 ) -> Result<Option<u64>, Error> {
+    let big = ctx.size == (160 << 20);
     let data = std::mem::replace(buf, Vec::with_capacity(BATCH));
     let n = data.len() as u64;
     if n > 0 {
         let file = ctx.file.clone();
         let at = *pos;
         let slow = ctx.opts.slow_flush.clone();
+        let asked = std::time::Instant::now();
         let written = tokio::task::spawn_blocking(move || {
+            let sched = asked.elapsed();
+            let g0 = std::time::Instant::now();
             let _waits_for_flush = slow.as_ref().map(|s| s.gate.read().unwrap());
-            write_all_at(&file, at, &data)
+            let gate = g0.elapsed();
+            let w0 = std::time::Instant::now();
+            let r = write_all_at(&file, at, &data);
+            let wr = w0.elapsed();
+            if sched + gate + wr > Duration::from_millis(200) {
+                if big { eprintln!("DBG t={:?} conn={id:?} write {} KiB: sched {sched:?} gate {gate:?} write {wr:?}", dbg_t(), data.len() >> 10); }
+            }
+            r
         })
         .await
         .expect("writer panicked");

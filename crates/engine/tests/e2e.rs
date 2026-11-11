@@ -1676,6 +1676,32 @@ async fn a_one_time_link_is_read_from_the_kept_answer() {
     assert!(Download::start(req, fast_opts()).wait().await.is_err());
 }
 
+async fn received_by(
+    d: Download,
+    size: u64,
+) -> (
+    Result<mdm_engine::Outcome, mdm_engine::Error>,
+    std::time::Duration,
+) {
+    let t = std::time::Instant::now();
+    loop {
+        let v = d.snapshot();
+        if v.downloaded >= size
+            || matches!(
+                v.state,
+                mdm_engine::download::State::Done
+                    | mdm_engine::download::State::Failed
+                    | mdm_engine::download::State::Cancelled
+            )
+        {
+            break;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(5)).await;
+    }
+    let recv = t.elapsed();
+    (d.wait().await, recv)
+}
+
 /// #361: a flush that holds up every write (as on NTFS) must not hold up the download: the
 /// connections keep receiving meanwhile and none of them reconnects for it. Before: the
 /// connections stood still during each 1.5 s flush, one per save tick, and were then told apart
@@ -1687,20 +1713,22 @@ async fn a_slow_flush_does_not_stop_the_transfer() {
     // The same download with a disk that never stalls, on this machine at this moment: the
     // yardstick the slow flush is measured against (#518: a fixed limit failed on busy runners).
     let started = std::time::Instant::now();
-    Download::start(
-        Request {
-            url: s.url("/gen/160M/a.bin?seed=518").parse().unwrap(),
-            headers: Default::default(),
-            dest: Destination::Dir(dir.path().to_owned()),
-        },
-        Options {
-            save_interval: std::time::Duration::from_millis(100),
-            ..fast_opts()
-        },
+    let (r, y_recv) = received_by(
+        Download::start(
+            Request {
+                url: s.url("/gen/160M/a.bin?seed=518").parse().unwrap(),
+                headers: Default::default(),
+                dest: Destination::Dir(dir.path().to_owned()),
+            },
+            Options {
+                save_interval: std::time::Duration::from_millis(100),
+                ..fast_opts()
+            },
+        ),
+        160 << 20,
     )
-    .wait()
-    .await
-    .expect("the yardstick download succeeds");
+    .await;
+    r.expect("the yardstick download succeeds");
     let yardstick = started.elapsed();
     tokio::time::timeout(SETTLE, s.settled())
         .await
@@ -1715,18 +1743,23 @@ async fn a_slow_flush_does_not_stop_the_transfer() {
         ..fast_opts()
     };
     let started = std::time::Instant::now();
-    let out = Download::start(
-        Request {
-            url: s.url("/gen/160M/a.bin?seed=361").parse().unwrap(),
-            headers: Default::default(),
-            dest: Destination::Dir(dir.path().to_owned()),
-        },
-        opts,
+    let (out, s_recv) = received_by(
+        Download::start(
+            Request {
+                url: s.url("/gen/160M/a.bin?seed=361").parse().unwrap(),
+                headers: Default::default(),
+                dest: Destination::Dir(dir.path().to_owned()),
+            },
+            opts,
+        ),
+        160 << 20,
     )
-    .wait()
-    .await
-    .expect("download succeeds");
+    .await;
+    let out = out.expect("download succeeds");
     let took = started.elapsed();
+    eprintln!(
+        "TIMING yardstick={yardstick:?} (received {y_recv:?}) took={took:?} (received {s_recv:?})"
+    );
     assert_eq!(out.size, 160 << 20);
     let data = std::fs::read(&out.path).unwrap();
     let mut want = vec![0; data.len()];
@@ -1736,6 +1769,15 @@ async fn a_slow_flush_does_not_stop_the_transfer() {
         .await
         .expect("every request ends");
     let log = s.log().split_off(before);
+    let span = |l: &[LogEntry]| {
+        l.iter().map(|e| e.t_end_ms).max().unwrap() - l.iter().map(|e| e.t_start_ms).min().unwrap()
+    };
+    eprintln!(
+        "TIMING requests={} net yardstick={}ms slow={}ms",
+        log.len(),
+        span(&s.log()[..before]),
+        span(&log)
+    );
     // At most one 1.5 s flush more than the yardstick, with room for a busy machine: 4.5 s, or
     // most of the yardstick again when it is long (a busy runner slows this run as much as the
     // yardstick's; 10.3 s against 5.8 s failed the fixed 4.5 s once). Before the fix every

@@ -1,0 +1,44 @@
+# Temporary: timing evidence for the slow-flush test on GitHub's Windows runners (removed before merge).
+name: Diag slow flush
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  diag:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Toolchain
+        run: rustup show active-toolchain || rustup toolchain install
+      - uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
+      - name: Build
+        run: cargo test -p mdm-engine --test e2e --no-run
+      - name: Whole e2e suite, 15 times
+        shell: bash
+        run: |
+          for i in $(seq 1 15); do
+            echo "=== suite run $i"
+            cargo test -q -p mdm-engine --test e2e -- --nocapture 2>&1 | grep -E "DBG|TIMING|test result|panicked|took " || true
+          done
+      - name: The test alone, 10 times
+        shell: bash
+        run: |
+          for i in $(seq 1 10); do
+            echo "=== alone run $i"
+            cargo test -q -p mdm-engine --test e2e a_slow_flush -- --nocapture 2>&1 | grep -E "DBG|TIMING|test result|panicked|took " || true
+          done
