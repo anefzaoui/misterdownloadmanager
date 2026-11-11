@@ -986,6 +986,7 @@ fn status_page(ui: &Ui, o: Pos2, item: &Item, snap: Option<&Snapshot>, frac: Opt
             if item.video.is_some()
                 && snap.is_some_and(|s| s.state == mdm_engine::download::State::Completing) =>
         {
+            // i18n: a video is being merged or otherwise processed after its data has arrived
             crate::i18n::t("Processing...").to_owned()
         }
         Status::Downloading => {
