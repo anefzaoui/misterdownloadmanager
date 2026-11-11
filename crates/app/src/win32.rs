@@ -2920,10 +2920,13 @@ pub fn default_browser() -> Option<mdm_engine::agent::Found> {
     use mdm_engine::agent::{Browser, Found};
     use windows_sys::Win32::System::Registry::HKEY_CLASSES_ROOT;
     const HTTPS: &str = r"Software\Microsoft\Windows\Shell\Associations\UrlAssociations\https";
-    // Windows 11 keeps the choice in UserChoiceLatest since 2025 (UserChoice stays, older).
-    let prog_id = ["UserChoiceLatest", "UserChoice"].iter().find_map(|k| {
-        reg_string(&format!(r"{HTTPS}\{k}"), "ProgId").filter(|p| !p.trim().is_empty())
-    })?;
+    // Windows 11 keeps the choice in UserChoiceLatest since 2025, its ProgId in a key of its
+    // own (UserChoiceLatest\ProgId's ProgId); UserChoice stays, and may be an older choice.
+    let prog_id = [r"UserChoiceLatest\ProgId", "UserChoiceLatest", "UserChoice"]
+        .iter()
+        .find_map(|k| {
+            reg_string(&format!(r"{HTTPS}\{k}"), "ProgId").filter(|p| !p.trim().is_empty())
+        })?;
     let command = reg_string_in(
         HKEY_CLASSES_ROOT,
         &format!(r"{prog_id}\shell\open\command"),

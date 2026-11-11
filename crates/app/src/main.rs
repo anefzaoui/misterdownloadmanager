@@ -250,8 +250,11 @@ fn main() -> std::process::ExitCode {
     if let Some(cli) = mdm_cli::launched(std::env::args_os().collect()) {
         // The default browser's User-Agent (#668): a command's download starts at once, so it
         // waits for it a moment (Windows reads it from the registry; Linux and macOS may ask the
-        // browser its version).
-        defaultbrowser::wait(&defaultbrowser::start(), std::time::Duration::from_secs(3));
+        // browser its version). Only `get` and `resume` download with it: the others don't wait.
+        let found = defaultbrowser::start();
+        if mdm_cli::downloads(&cli.args) {
+            defaultbrowser::wait(&found, std::time::Duration::from_secs(3));
+        }
         // A windowed program has no console: the launcher's, unless the output goes to a file
         // or a pipe. On Linux and macOS the launcher became this process, terminal and all.
         #[cfg(windows)]

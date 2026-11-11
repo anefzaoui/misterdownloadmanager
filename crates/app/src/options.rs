@@ -1154,10 +1154,7 @@ impl OptionsDialog {
             .to_owned(),
             None => crate::i18n::t("Looking for your default browser...").to_owned(),
         };
-        let tip = format!(
-            "{tip}
-{agent}"
-        );
+        let tip = format!("{tip}\n{agent}");
         let was = self.ua_auto;
         winui::checkbox_light(
             ui,
