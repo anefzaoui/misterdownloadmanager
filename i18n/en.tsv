@@ -77,6 +77,10 @@
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
 @plural	{n} peer|{n} peers	{n} peer|{n} peers
+#. count in searchdlg.rs
+#. torrent search: how many results a source gave ("Internet Archive: 12 results")
+#. {n} = a number (keep the braces as they are)
+@plural	{n} result|{n} results	{n} result|{n} results
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 @plural	{n} selected|{n} selected	{n} selected|{n} selected
@@ -203,6 +207,10 @@
 	Add	Add
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Add a download (Add URL)	Add a download (Add URL)
+#. button in searchdlg.rs
+#. torrent search: shows the folder a provider file goes in
+#. the trailing ... means it opens a window: keep it
+	Add a source...	Add a source...
 #. message or event log entry in the main window
 #. title of the file dialog of View → Theme → Add a theme file
 #. title of the message when View → Theme → Add a theme file fails
@@ -421,6 +429,9 @@
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
 	Asking the service...	Asking the service...
+#. text in searchdlg.rs
+#. torrent search: the sources are still being asked
+	Asking the sources	Asking the sources
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -689,11 +700,12 @@
 	Client	Client
 #. text in the Options window
 	Clock:	Clock:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in standard windows
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in searchdlg.rs; button in torrentfiles.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
 #. verb: closes the filter box
+#. the dialog's Close button
 #. button that closes the torrent file list window
 #. a window's title-bar button: closes the window
 	Close	Close
@@ -917,7 +929,8 @@
 #. button in the Options window
 #. button (short): move the account down the list
 	Down	Down
-#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in searchdlg.rs
+#. torrent search: opens Add torrent on the chosen result
 	Download	Download
 #. message or event log entry in the main window
 #. {name} = a file name (keep the braces as they are)
@@ -2013,7 +2026,8 @@
 #. text in a download's progress window
 #. column title: connection number (abbreviation of Number)
 	N.	N.
-#. text in the Link grabber window; text in the Add torrent window
+#. text in the Link grabber window; text in searchdlg.rs; text in the Add torrent window
+#. torrent search: the results list's columns
 #. column title: file name
 	Name	Name
 #. text in categories.rs; text in the Link grabber window; text in rssdlg.rs
@@ -2695,6 +2709,11 @@
 #. noun: the tool that starts and stops queues on time
 #. noun: opens the Scheduler (the tool that starts queues on time)
 	Scheduler	Scheduler
+#. button in searchdlg.rs
+#. torrent search: the button that asks the sources
+	Search	Search
+#. text in searchdlg.rs
+	Search for:	Search for:
 #. text in langpick.rs
 	Search:	Search:
 #. text in the Batch download window
@@ -2878,7 +2897,7 @@
 	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.
 #. text in helpers.rs
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.
-#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in searchdlg.rs; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
 	Size	Size
@@ -2918,6 +2937,8 @@
 #. the kind of file the Open dialog lists (sound files)
 #. tab title: sound settings
 	Sounds	Sounds
+#. text in searchdlg.rs
+	Source	Source
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Source code	Source code
 #. text in the Link grabber window
@@ -3125,6 +3146,8 @@
 	the .torrent file kept for it is gone	the .torrent file kept for it is gone
 #. text in a download's Properties window
 	The address must be an http(s) or ftp(s) address	The address must be an http(s) or ftp(s) address
+#. text in search.rs
+	the answer has no results where the provider says	the answer has no results where the provider says
 #. text in extracting archives (a download's log, the Archive password window)
 	The archive could not be moved to the Recycle Bin: it was kept	The archive could not be moved to the Recycle Bin: it was kept
 #. text in extracting archives (a download's log, the Archive password window)
@@ -3494,6 +3517,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Tonga	Tonga
+#. message or event log entry in the main window
+#. torrent search: an answer too large to read
+	too large an answer to read	too large an answer to read
 #. text in errors.rs
 	too many redirects	too many redirects
 #. value in a column's filter list in the download list; text in the Add torrent window
@@ -3506,6 +3532,9 @@
 #. the kind of file the Open dialog lists
 #. title of the separate window listing a torrent's files
 	Torrent files	Torrent files
+#. window title in searchdlg.rs
+#. torrent search window: its title
+	Torrent search	Torrent search
 #. window title in the Add torrent window
 	Torrent settings	Torrent settings
 #. text in torrent downloads
@@ -3613,6 +3642,9 @@
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 	Type what to find, and tick at least one place to look	Type what to find, and tick at least one place to look
+#. text in searchdlg.rs
+#. torrent search: what to do before anything is searched
+	Type what you are looking for and press Search.	Type what you are looking for and press Search.
 #. text in a download's Properties window
 	Type:	Type:
 #. text in countries.rs
@@ -4872,6 +4904,10 @@ menu	Toolbar	Toolbar
 #. menu command in the main window
 #. right-click menu: the submenu of a torrent's own commands
 menu	Torrent	Torrent
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+menu	Torrent &search...	Torrent &search...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

@@ -48,6 +48,8 @@ mod scale;
 mod scheduler;
 mod schemes;
 mod scrollbar;
+mod search;
+mod searchdlg;
 mod secrets;
 mod selection;
 mod settings;

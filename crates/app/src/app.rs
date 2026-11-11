@@ -161,6 +161,8 @@ enum Cmd {
     /// Tasks → RSS feeds… (also the Add Torrent button's arrow), #39: true opens it on its
     /// Download rules tab.
     RssFeeds(bool),
+    /// Torrent search: the window that asks the sources.
+    TorrentSearch,
     /// Right-click → Refresh download address: open the source page, edit the address.
     RefreshAddress,
     /// Right-click → Verify checksum… (beyond IDM).
@@ -183,6 +185,12 @@ enum Cmd {
     /// Header right-click → Reset columns.
     ResetColumns,
     None,
+}
+
+/// What a search source sends back to the app (the torrent search window).
+enum SearchEvent {
+    /// The source's name and what it answered.
+    Found(String, Result<Vec<crate::search::Hit>, String>),
 }
 
 /// What an RSS fetch or look-up sends back to the app (`App::rss_tick`).
@@ -551,6 +559,9 @@ pub struct App {
     rss_dlg: Option<crate::rssdlg::RssWindow>,
     rss_busy: std::collections::HashSet<u64>,
     rss_events: std::sync::Arc<std::sync::Mutex<Vec<RssEvent>>>,
+    /// Torrent search: what the sources answered, for the window.
+    search_events: std::sync::Arc<std::sync::Mutex<Vec<SearchEvent>>>,
+    search_dlg: Option<crate::searchdlg::SearchWindow>,
     /// Torrents whose list numbers wait for the session after an action (Recheck, files
     /// chosen; `torrent_resync`), by info hash: true when what the check found goes in the
     /// event log.
@@ -1167,6 +1178,8 @@ impl App {
             rss_dlg: None,
             rss_busy: Default::default(),
             rss_events: Default::default(),
+            search_events: Default::default(),
+            search_dlg: None,
             torrent_resync: HashMap::new(),
             torrent_idle_since: None,
             accountant: Default::default(),
@@ -4166,6 +4179,49 @@ impl App {
         });
     }
 
+    /// Torrent search: asks one source for `query` in the background; what it answered goes back
+    /// to the window through `search_events`.
+    fn search_ask(&mut self, provider: crate::search::Provider, query: String) {
+        let out = self.search_events.clone();
+        self.rt.spawn(async move {
+            let url = crate::search::query_url(&provider, &query);
+            let res = match url::Url::parse(&url) {
+                Ok(url) => {
+                    let remote = crate::torrents::Remote {
+                        url,
+                        parts: crate::app::RequestParts {
+                            headers: Default::default(),
+                            opts: crate::settings::own_net(),
+                        },
+                    };
+                    match crate::torrents::fetch_small(remote, crate::search::MAX_ANSWER).await {
+                        Ok(Some(bytes)) => {
+                            crate::search::parse(&provider, &String::from_utf8_lossy(&bytes))
+                        }
+                        // i18n: torrent search: an answer too large to read
+                        Ok(None) => Err(crate::i18n::t("too large an answer to read").to_owned()),
+                        Err(e) => Err(e),
+                    }
+                }
+                Err(e) => Err(e.to_string()),
+            };
+            out.lock()
+                .unwrap()
+                .push(SearchEvent::Found(provider.name.clone(), res));
+        });
+    }
+
+    /// Torrent search: what the sources answered goes to the window.
+    fn search_tick(&mut self) {
+        let events = std::mem::take(&mut *self.search_events.lock().unwrap());
+        for ev in events {
+            let SearchEvent::Found(name, res) = ev;
+            if let Some(w) = &mut self.search_dlg {
+                w.found(&name, res);
+            }
+        }
+    }
+
     /// A rule took an article: what its torrent holds is looked up (a magnet asks the swarm, a
     /// .torrent's address is fetched), then `rss_add` adds it.
     fn rss_look_up(&mut self, rule: u64, feed: u64, article: crate::rss::Article) {
@@ -5422,6 +5478,15 @@ impl App {
                     self.rss_dlg = Some(crate::rssdlg::RssWindow::new(&self.rss, rules));
                 }
             }
+            // Torrent search: its sources are read as it opens, so a provider file added since
+            // the last search is there.
+            Cmd::TorrentSearch => {
+                if self.search_dlg.is_none() {
+                    self.search_dlg = Some(crate::searchdlg::SearchWindow::new(
+                        crate::search::providers(),
+                    ));
+                }
+            }
             Cmd::TorrentRecheck => {
                 if let Some(id) = target {
                     self.torrent_act(id, crate::torrents::Act::Recheck);
@@ -5769,6 +5834,7 @@ impl App {
                 I("&Link grabber...", Cmd::LinkGrabber, true, false),
                 // i18n: Tasks menu: the RSS feeds window (feeds of torrents, and rules that add them)
                 I("&RSS feeds...", Cmd::RssFeeds(false), true, false),
+                I("Torrent &search...", Cmd::TorrentSearch, true, false),
                 Sep,
                 I(
                     "Show &drop target",
@@ -7110,6 +7176,7 @@ impl App {
                         MenuEntry::Item("Open &torrent file...", Cmd::OpenTorrentFile, true, false),
                         MenuEntry::Item("Add &magnet link...", Cmd::AddMagnet, true, false),
                         MenuEntry::Item("&RSS feeds...", Cmd::RssFeeds(false), true, false),
+                        MenuEntry::Item("Torrent &search...", Cmd::TorrentSearch, true, false),
                         MenuEntry::Sep,
                         MenuEntry::Item("Torrent setti&ngs...", Cmd::TorrentSettings, true, false),
                     ],
@@ -8114,6 +8181,8 @@ impl App {
     }
 
     fn dialogs(&mut self, ctx: &egui::Context) {
+        // Torrent search: what the sources answered, before the window draws them.
+        self.search_tick();
         self.help_dialogs(ctx);
         if self.duplicate.is_none() {
             self.duplicate = self.duplicates_waiting.pop_front();
@@ -8513,6 +8582,44 @@ impl App {
                             url,
                         });
                     self.open_torrent_dialog_with(Some(link), remote, ctx);
+                }
+            }
+        }
+        // Torrent search: its window, and what it asks of the app.
+        if let Some(mut w) = self.search_dlg.take() {
+            let outcome = w.show(ctx);
+            self.search_dlg = Some(w);
+            match outcome {
+                Outcome::Open => {}
+                Outcome::Closed => self.search_dlg = None,
+                Outcome::Done(crate::searchdlg::Act::Search(query, providers)) => {
+                    if let Some(w) = &mut self.search_dlg {
+                        w.searching(providers.len());
+                    }
+                    for p in providers {
+                        self.search_ask(p, query.clone());
+                    }
+                }
+                // By hand: Add torrent, as for any address (a .torrent's is fetched).
+                Outcome::Done(crate::searchdlg::Act::Download(link)) => {
+                    let remote = url::Url::parse(&link)
+                        .ok()
+                        .filter(|u| matches!(u.scheme(), "http" | "https"))
+                        .map(|url| crate::torrents::Remote {
+                            parts: crate::app::RequestParts {
+                                headers: Default::default(),
+                                opts: crate::settings::own_net(),
+                            },
+                            url,
+                        });
+                    self.open_torrent_dialog_with(Some(link), remote, ctx);
+                }
+                // Where a source file goes: the folder, so one can be dropped in it.
+                Outcome::Done(crate::searchdlg::Act::OpenSources) => {
+                    if let Some(dir) = crate::search::dir() {
+                        let _ = std::fs::create_dir_all(&dir);
+                        crate::dialogs::open_with(&dir);
+                    }
                 }
             }
         }
