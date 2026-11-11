@@ -14,6 +14,8 @@ use crate::servers;
 #[derive(Clone, Debug, PartialEq)]
 pub enum State {
     Running,
+    /// yt-dlp has fetched the media and is merging, remuxing or otherwise post-processing it.
+    Processing,
     Done(PathBuf),
     Failed(String),
     Stopped,
@@ -555,6 +557,14 @@ fn run(
             Err(e) => return Err(e.to_string()),
         }
     };
+    // A retry or a new server attempt starts a fresh transfer phase. Stop always wins.
+    {
+        let mut p = progress.lock().unwrap();
+        if p.state != State::Stopped {
+            p.state = State::Running;
+            p.speed = 0.0;
+        }
+    }
     let mut saved = None;
     let mut quality = None;
     // Every line to the end, read as bytes (#79): a line that isn't UTF-8 (a title in a legacy
@@ -572,6 +582,16 @@ fn run(
         let line = text.trim_end_matches(['\r', '\n']);
         if let Some(rest) = line.strip_prefix("MDMF ") {
             saved = Some(PathBuf::from(rest.trim()));
+            let mut p = progress.lock().unwrap();
+            if p.state == State::Processing {
+                p.state = State::Running;
+            }
+        } else if line.starts_with("MDMPOST ") {
+            let mut p = progress.lock().unwrap();
+            if p.state != State::Stopped {
+                p.state = State::Processing;
+                p.speed = 0.0;
+            }
         } else if let Some(rest) = line.strip_prefix("MDMQ ") {
             quality = Some(rest.trim().to_owned());
         } else if let Some(rest) = line.strip_prefix("MDMP ")
@@ -909,6 +929,9 @@ pub fn pace_args(rate: Option<u64>, fragments: u32) -> Vec<String> {
 
 /// Our progress line: `MDMP <downloaded> <total> <estimate> <speed>` (`NA` when unknown).
 const PROGRESS: &str = "download:MDMP %(progress.downloaded_bytes)s %(progress.total_bytes)s %(progress.total_bytes_estimate)s %(progress.speed)s";
+/// yt-dlp's post-process hook: `MDMPOST <postprocessor> <status>`. This is separate from bytes
+/// downloaded, so a long FFmpeg merge can be shown as processing instead of a fake 99.9% transfer.
+const POSTPROCESS: &str = "postprocess:MDMPOST %(progress._default_template)s";
 /// The final file: `MDMF <path>`.
 const FINAL: &str = "after_move:MDMF %(filepath)s";
 /// The quality yt-dlp chose, before it downloads: `MDMQ <format id> <resolution>` (the log names
@@ -967,6 +990,8 @@ impl VideoJob {
             "--no-mtime".into(),
             "--progress-template".into(),
             PROGRESS.into(),
+            "--progress-template".into(),
+            POSTPROCESS.into(),
             "--print".into(),
             FINAL.into(),
             "--print".into(),
@@ -1060,7 +1085,7 @@ impl VideoJob {
                     // Given up: nothing may go on downloading unseen (#79).
                     end(&child);
                     let mut p = progress.lock().unwrap_or_else(|e| e.into_inner());
-                    if p.state == State::Running {
+                    if matches!(p.state, State::Running | State::Processing) {
                         p.speed = 0.0;
                         p.state =
                             State::Failed("the video download stopped on an internal error".into());
@@ -1167,7 +1192,9 @@ mod tests {
         let end = std::time::Instant::now() + std::time::Duration::from_secs(180);
         let p = loop {
             let p = job.progress();
-            if p.state != State::Running || std::time::Instant::now() > end {
+            if !matches!(p.state, State::Running | State::Processing)
+                || std::time::Instant::now() > end
+            {
                 break p;
             }
             std::thread::sleep(std::time::Duration::from_millis(200));
