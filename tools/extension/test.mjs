@@ -1855,6 +1855,7 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   listeners.beforeSendHeaders({
     requestId: "r2",
     method: "GET",
+    type: "main_frame",
     url: "https://dl.test/get?id=2",
     originUrl: "https://site.test/download-page",
     requestHeaders: [{ name: "Referer", value: "https://site.test/" }],
