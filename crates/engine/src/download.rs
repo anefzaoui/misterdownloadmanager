@@ -2433,11 +2433,7 @@ async fn save_state(
     }
     let done = tokio::task::spawn_blocking(move || {
         if let Some(slow) = slow {
-            let g0 = std::time::Instant::now();
             let _writes_wait = slow.gate.write().unwrap();
-            if big {
-                eprintln!("DBG t={:?} save got gate after {:?}", dbg_t(), g0.elapsed());
-            }
             std::thread::sleep(slow.takes);
         }
         let f0 = std::time::Instant::now();
