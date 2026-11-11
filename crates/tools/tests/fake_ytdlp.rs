@@ -132,6 +132,15 @@ fn fake_ytdlp() -> ExitCode {
         );
         return ExitCode::FAILURE;
     }
+    // The production job must request yt-dlp's postprocess progress hook; otherwise these
+    // synthetic MDMPOST lines would not be emitted by the real tool.
+    let has_postprocess_template = args.windows(2).any(|pair| {
+        pair[0] == "--progress-template" && pair[1].starts_with("postprocess:MDMPOST ")
+    });
+    if mode == "processing" && !has_postprocess_template {
+        eprintln!("ERROR: the postprocess progress template was not supplied");
+        return ExitCode::FAILURE;
+    }
     // yt-dlp may run a post-processor before downloading (for example subtitle conversion).
     if mode == "processing" {
         println!("MDMPOST convert-subs");
