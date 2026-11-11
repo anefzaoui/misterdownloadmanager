@@ -90,16 +90,16 @@
           if (!["facebook.com", "fb.watch"].some((host) =>
             link.hostname === host || link.hostname.endsWith("." + host)
           )) return null;
-          const path = link.pathname.replace(/\\/+$/, "") || "/";
+          const path = link.pathname.replace(/\/+$/, "") || "/";
           const videoPath =
-            /^\\/(?:reel|watch|videos)\\/[^/]+/i.test(path) ||
-            /^\\/watch\\/?$/i.test(path) && link.searchParams.has("v") ||
-            /^\\/video\\.php$/i.test(path) && link.searchParams.has("v");
+            /^\/(?:reel|watch|videos)\/[^/]+/i.test(path) ||
+            /^\/watch\/?$/i.test(path) && link.searchParams.has("v") ||
+            /^\/video\.php$/i.test(path) && link.searchParams.has("v");
           const postPath =
-            /^\\/(?:[^/]+\\/)?posts\\/[^/]+/i.test(path) ||
-            /^\\/(?:[^/]+\\/)?permalink\\/[^/]+/i.test(path) ||
-            /^\\/permalink\\.php$/i.test(path) && link.searchParams.has("story_fbid") ||
-            /^\\/story\\.php$/i.test(path) && link.searchParams.has("story_fbid");
+            /^\/(?:[^/]+\/)?posts\/[^/]+/i.test(path) ||
+            /^\/(?:[^/]+\/)?permalink\/[^/]+/i.test(path) ||
+            /^\/permalink\.php$/i.test(path) && link.searchParams.has("story_fbid") ||
+            /^\/story\.php$/i.test(path) && link.searchParams.has("story_fbid");
           if (!videoPath && !postPath) return null;
           // Strip tracking parameters while preserving the identifiers yt-dlp needs.
           for (const key of [...link.searchParams.keys()]) {
