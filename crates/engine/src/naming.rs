@@ -382,7 +382,15 @@ pub fn part_path(dest: &Path) -> PathBuf {
 /// `dir/name`, or `dir/stem (N).ext` with the lowest N that is free — IDM's default for a
 /// duplicate link is "add the duplicate with a numbered file name" (notes/ENGINE.md §6).
 pub fn unique_path(dir: &Path, name: &str) -> PathBuf {
-    let taken = |p: &Path| p.exists() || part_path(p).exists() || is_reserved(p);
+    // A resume state beside the name is data too: another row's unfinished download, or one a
+    // Delete kept. Starting a new download there would resume that link instead of this one, so
+    // the name counts as taken and the new download gets its own (#597).
+    let taken = |p: &Path| {
+        p.exists()
+            || part_path(p).exists()
+            || crate::state::state_path(p).exists()
+            || is_reserved(p)
+    };
     let first = dir.join(name);
     if !taken(&first) {
         return first;
@@ -429,6 +437,19 @@ pub fn reserve(dest: &Path) -> Option<Reservation> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #597: a resume state beside the name is data, even with no file and no part left: a new
+    /// download must not start there and resume that link instead of its own.
+    #[test]
+    fn a_resume_state_makes_the_name_taken() {
+        let dir = tempfile::tempdir().unwrap();
+        let state = crate::state::state_path(&dir.path().join("song.mp3"));
+        std::fs::write(&state, b"{}").unwrap();
+        assert_eq!(
+            destination(dir.path(), "song.mp3"),
+            dir.path().join("song (1).mp3")
+        );
+    }
 
     /// #32: a video's stem is free for every extension, on disk (any letter case) and among
     /// the other downloads.

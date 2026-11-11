@@ -860,6 +860,13 @@ impl AddUrl {
 
 // ---- Download File Info (client 570 × 208) -------------------------------------------------
 
+/// Save As shows the plain name in its folder, before the engine numbers it at download start
+/// and at finish: keeps the path-length fitting `destination` does, without claiming a ` (1)`
+/// the download may never need (#597).
+fn save_as_in(folder: &Path, name: &str) -> PathBuf {
+    folder.join(mdm_engine::naming::fit_name(folder, name).unwrap_or_else(|| name.to_owned()))
+}
+
 pub struct FileInfo {
     pub url: Url,
     pub login: Option<(String, String)>,
@@ -954,7 +961,7 @@ impl FileInfo {
             .unwrap_or_else(|| mdm_engine::naming::file_name(None, &new.url));
         let category = Category::of(&name);
         let folder = crate::model::category_folder(category, &downloads, &dirs);
-        let save_as = display_path(&mdm_engine::naming::destination(&folder, &name));
+        let save_as = display_path(&save_as_in(&folder, &name));
         let (probe, info) = match from_browser {
             Some(file_name) => (
                 Arc::new(Mutex::new(None)),
@@ -1050,7 +1057,7 @@ impl FileInfo {
                     self.category = Category::of(&name);
                     let dir =
                         crate::model::category_folder(self.category, &self.downloads, &self.dirs);
-                    self.save_as = display_path(&mdm_engine::naming::destination(&dir, &name));
+                    self.save_as = display_path(&save_as_in(&dir, &name));
                 }
                 // Another address: the browser's name, size and form are not its own, and on
                 // another site neither are its cookies and page (never sent there).
@@ -1088,7 +1095,7 @@ impl FileInfo {
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_default();
         // Fitted to the new folder too (#28): a deeper one leaves a long name less room.
-        self.save_as = display_path(&mdm_engine::naming::destination(folder, &name));
+        self.save_as = display_path(&save_as_in(folder, &name));
         self.edited = true;
     }
 
@@ -1140,7 +1147,7 @@ impl FileInfo {
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_default();
         let folder = crate::model::category_folder(c, &self.downloads, &self.dirs);
-        self.save_as = display_path(&mdm_engine::naming::destination(&folder, &name));
+        self.save_as = display_path(&save_as_in(&folder, &name));
     }
 
     /// The dialog; Start (or Download Later) waits for a missing folder to be created.
@@ -1196,7 +1203,7 @@ impl FileInfo {
             if let (Ok(pi), false) = (&res, self.edited) {
                 self.category = Category::of(&pi.file_name);
                 let dir = crate::model::category_folder(self.category, &self.downloads, &self.dirs);
-                self.save_as = display_path(&mdm_engine::naming::destination(&dir, &pi.file_name));
+                self.save_as = display_path(&save_as_in(&dir, &pi.file_name));
             }
             self.info = Some(res);
         }
@@ -3628,6 +3635,18 @@ mod tests {
         assert_eq!(
             painted[1], painted[0],
             "the pass that closes the dialog paints it as the one before"
+        );
+    }
+
+    /// #597: Save As shows the plain name even when a file of that name is already in the
+    /// folder: numbering belongs to the engine at download start and at finish, not the dialog.
+    #[test]
+    fn save_as_keeps_the_plain_name_when_the_folder_holds_it() {
+        let dir = tempfile::tempdir().unwrap();
+        std::fs::write(dir.path().join("song.mp3"), "earlier download").unwrap();
+        assert_eq!(
+            save_as_in(dir.path(), "song.mp3"),
+            dir.path().join("song.mp3")
         );
     }
 }

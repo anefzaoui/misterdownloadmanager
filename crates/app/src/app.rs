@@ -2838,6 +2838,23 @@ impl App {
         self.claim_place(id);
         let Some(item) = self.item(id) else { return };
         let _guard = rt.enter();
+        // The row takes its place before the engine has it (#597): a name that is taken on the
+        // disk (a finished file, a part, or a resume state a plain Delete kept) is numbered here,
+        // so the row and the progress window show the file's own name from the first byte instead
+        // of the engine's renumbering it only when it finishes; and a state this row does not own
+        // is another download's data, which would have resumed that link under this row's name.
+        // A row that owns its state resumes it as it is, so the pieces are found again.
+        if !item.owns_resume_state() {
+            let dir = item
+                .dest
+                .parent()
+                .unwrap_or(std::path::Path::new("."))
+                .to_path_buf();
+            let target = mdm_engine::naming::destination(&dir, &item.file_name);
+            if target != item.dest {
+                take_place(item, target);
+            }
+        }
         // Resume whenever there is something to resume. If that fails, say why and keep the
         // data: starting over would overwrite it, and that is only ever the user's choice.
         let state = state_path(&item.dest);
