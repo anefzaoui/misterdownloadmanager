@@ -3823,15 +3823,17 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
     if let S::Waiting { code, page, until } = &state {
         // The code, large, to type at the service's page.
         let code_font = egui::FontId::monospace(crate::theme::metrics().font_code);
+        let code_w = winui::text_width_font(&p, code_font.clone(), code);
+        // At the leading edge: mirrored in a right-to-left interface, as the buttons are.
         p.text(
-            o + vec2(14.0, 78.0),
+            winui::at(o + vec2(14.0, 78.0), code_w),
             egui::Align2::LEFT_TOP,
             code,
-            code_font.clone(),
+            code_font,
             LIGHT_TEXT(),
         );
         // The buttons as wide as their labels in this language (#192), short of the code.
-        let code_end = 14.0 + winui::text_width_font(&p, code_font, code);
+        let code_end = 14.0 + code_w;
         let [copy_at, open_at] = winui::button_row(
             &p,
             &[("Copy code", 200.0, 90.0), ("Open the page", 296.0, 110.0)],
