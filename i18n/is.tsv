@@ -95,6 +95,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} valið|{n} valin
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	{n} síða bætt við úr skránni.|{n} síður bættar við úr skránni.
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	{n} síða vistuð í skrána.|{n} síður vistaðar í skrána.
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -169,6 +177,9 @@
 #. window title: 7-Zip (a program's name) must be installed
 #, machine
 	7-Zip needed	7-Zip vantar
+#. tab in the main window
+#, machine
+	720p	720p
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
@@ -1343,6 +1354,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying yt-dlp...	Sæki og staðfesti yt-dlp...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	Sæki afrit MDM...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1534,6 +1550,10 @@
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	Flytja út
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	Flytja út...
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	Framlengja framboð Manifest 2 Chrome viðbóta
@@ -2011,6 +2031,10 @@
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	Flytja inn
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	Flytja inn...
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Í biðröð
@@ -4111,6 +4135,10 @@
 #, machine
 	Stopped: the network adapter changed; starting again	Stöðvað: netkortið breyttist; byrjar aftur
 #. message or event log entry in the main window
+#. event log entry: a video or gallery download stopped to start again at the new speed limit (its helper program takes a limit only as it starts)
+#, machine
+	Stopped: the speed limit changed; starting again with it	Stöðvað: hraðatakmörkun breytt; byrja aftur með hana
+#. message or event log entry in the main window
 #. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
 #, machine
 	Stopped: {adapter} is not connected; it goes on when it is back	Stöðvað: {adapter} er ekki tengt; það heldur áfram þegar það er komið aftur
@@ -4497,6 +4525,18 @@
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Síðan vill að þú sért innskráður, jafnvel með vafrakökum {browser}. Skráðu þig inn á hana í {browser} og leitaðu síðan aftur að síðunni.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though the browser's extension passed the page's cookies
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with your browser's cookies for this page. Try again later, or from another browser.	Botvörn vefsvæðisins (Cloudflare) hafnaði yt-dlp, þrátt fyrir vafrakökur vafrans þíns fyrir þessa síðu. Reyndu aftur síðar eða í öðrum vafra.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though it had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	Botvörn vefsvæðisins (Cloudflare) hafnaði yt-dlp, þrátt fyrir vafrakökur {browser}. Notaðu hnappinn „Sækja myndskeið“ yfir myndskeiðinu í {browser} eða reyndu síðuna aftur síðar.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Botvörn vefsvæðisins (Cloudflare) hafnaði yt-dlp. Ef síðan opnast í vafranum þínum skaltu velja þann vafra í Stillingar → Innskráningar vefsvæða → Vafrakökur fyrir myndskeiðssíður og leita síðan aftur að síðunni eða nota hnappinn „Sækja myndskeið“ yfir myndskeiðinu.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4694,6 +4734,11 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Þetta myndband krefst þess að þú sért innskráður. Notaðu „Hlaða niður myndbandi“ hnappinn fyrir ofan það í vafranum þínum, sem sendir innskráninguna þína áfram, eða veldu vafrann þinn í Valkostir → Innskráningar á síður → Vafrakökur fyrir myndbandasíður.
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	Þessi {site} tengill er vefsíða, ekki skráin: opnaðu hana í vafranum þínum og sæktu skrána þaðan
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -5315,6 +5360,26 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp gat ekki lesið vafrakökur {browser}: {error}
+#. text in a download's progress window
+#. progress window, a video's line: the helper program yt-dlp gave no address MDM's own downloader could use
+#, machine
+	yt-dlp downloads it itself	yt-dlp sækir það sjálft
+#. text in a download's progress window
+#. progress window, a video's line: MDM's own downloader can't take a live broadcast, so the helper program yt-dlp records it
+#, machine
+	yt-dlp downloads it itself: a live stream	yt-dlp sækir það sjálft: beint streymi
+#. text in a download's progress window
+#. progress window, a video's line: a stream sent in many small pieces (HLS, DASH), which the helper program yt-dlp downloads itself for now
+#, machine
+	yt-dlp downloads it itself: a stream in pieces	yt-dlp sækir það sjálft: streymi í bitum
+#. text in a download's progress window
+#. progress window, a video's line: the stream is copy-protected (DRM), left to the helper program yt-dlp, which refuses it
+#, machine
+	yt-dlp downloads it itself: protected (DRM)	yt-dlp sækir það sjálft: varið (DRM)
+#. text in a download's progress window
+#. progress window, a video's line: {protocol} = a streaming protocol's short name (rtmp, rtsp, mms); MDM's own downloader doesn't speak it, so the helper program yt-dlp downloads it
+#, machine
+	yt-dlp downloads it itself: {protocol}	yt-dlp sækir það sjálft: {protocol}
 #. text in the Download video window
 #. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
 #, machine
@@ -5662,6 +5727,14 @@ column	Transfer rate	Flutningshraði
 #, machine
 column	Upload speed	Sendihraði
 #. text in the browser extension
+#. in the menu under the download button over a video: the page is a list of videos (a playlist), whose videos are chosen in the app's window; keep the name Mister Download Manager as it is
+#, machine
+extension	A list of videos: choose them in Mister Download Manager	Listi yfir myndskeið: veldu þau í Mister Download Manager
+#. text in the browser extension
+#. shown briefly on the download button over a video after a quality was picked: the download was added to the app's download queue, to start later
+#, machine
+extension	Added to the queue	Bætt við biðröð
+#. text in the browser extension
 #. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
 #, machine
 extension	Another Mister Download Manager (a server)	Annar Mister Download Manager (þjónn)
@@ -5691,6 +5764,10 @@ extension	Connected to Mister Download Manager	Tengt við Mister Download Manage
 #. {version} = a version number (keep the braces as they are)
 #, machine
 extension	Connected to Mister Download Manager {version}	Tengt við Mister Download Manager {version}
+#. text in the browser extension
+#. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
+#, machine
+extension	Could not look it up	Ekki tókst að fletta upp
 #. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
@@ -5782,6 +5859,14 @@ extension	Left to the browser: {name}	Skilið eftir fyrir vafrann: {name}
 #, machine
 extension	Live	Beint
 #. text in the browser extension
+#. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
+#, machine
+extension	Looking up the qualities…	Leita að gæðum…
+#. text in the browser extension
+#. in the menu under the download button over a video: the app took more than a minute to find the video's qualities, so the menu stopped waiting
+#, machine
+extension	Looking up took too long	Uppflettingin tók of langan tíma
+#. text in the browser extension
 #. heading in the toolbar button's popup over the list of the videos, sounds and streams the current web page has loaded
 #, machine
 extension	Media on this page	Miðlar á þessari síðu
@@ -5798,6 +5883,10 @@ extension	Mister Download Manager didn't start in time	Mister Download Manager r
 #, machine
 extension	Mister Download Manager doesn't accept this copy of the extension	Mister Download Manager samþykkir ekki þetta eintak af viðbótinni
 #. text in the browser extension
+#. in the menu under the download button over a video: the app is already looking up other videos and can't look this one up now; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager is busy with other videos	Mister Download Manager er upptekið við önnur myndskeið
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager er ekki uppsett eða ræstist ekki
@@ -5805,6 +5894,10 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager er ekki uppsett, eða samþætting vafra er ekki sett upp
+#. text in the browser extension
+#. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager needs yt-dlp for this video	Mister Download Manager þarf yt-dlp fyrir þetta myndskeið
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
@@ -5832,9 +5925,17 @@ extension	Never take downloads from {site}	Aldrei taka niðurhal frá {site}
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	Ekkert myndskeið eða hljóð fannst á þessari síðu ennþá. Spilaðu það og opnaðu þetta svo aftur.
 #. text in the browser extension
+#. in the menu under the download button over a video: the app found no quality of the video it could download
+#, machine
+extension	No video to download here	Ekkert myndskeið til að sækja hér
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Ekki náðst. Opnaðu vistfangið einu sinni í þessum vafra og samþykktu vottorð þess, reyndu svo aftur.
+#. text in the browser extension
+#. last command of the menu of qualities under the download button over a video: opens the app's Download video window for this video instead; keep the name Mister Download Manager as it is
+#, machine
+extension	Open in Mister Download Manager…	Opna í Mister Download Manager…
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -5847,6 +5948,7 @@ extension	Open its address once and accept its certificate, then enter a code fr
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
 extension	Open Mister Download Manager	Opna Mister Download Manager
+#. text in the browser extension
 #. shown briefly on the download button over a video in a feed (a social site's home page, a timeline) when nothing in the feed gives that video's own address, so nothing was sent: the user should open the post the video belongs to and click the button on that page; short
 #, machine
 extension	Open the post, then use the button there	Opnaðu færsluna og notaðu síðan hnappinn þar
@@ -6068,6 +6170,11 @@ menu	&Add new download	&Bæta við nýju niðurhali
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	&Add new download...	&Bæta við nýrri niðurhalsskrá...
+#. menu command in the main window
+#. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Classic	&Klassískt
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6155,6 +6262,11 @@ menu	&Scheduler and queues	&Tímaáætlun og biðraðir
 #, machine
 menu	&Show hidden tabs	Sýna faldar flipa(&S)
 #. menu command in the main window
+#. View → Text: letters drawn smooth, as Windows' modern apps draw them, anti-aliased at any size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Smooth	&Slétt
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop All	&Stöðva allt
@@ -6162,6 +6274,11 @@ menu	&Stop All	&Stöðva allt
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	&Stöðva niðurhal
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Text	&Texti
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6345,6 +6462,10 @@ menu	E&xport	&Flytja út
 #. menu command in the main window
 #, machine
 menu	Edit queue	Breyta biðröð
+#. menu command in the main window
+#. View → Theme: a style theme's name (a white canvas, emerald fills, 6-point corners), a name: keep "Emerald" as written
+#, machine
+menu	Emerald	Emerald
 #. menu command in the main window
 #. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
 #, machine
