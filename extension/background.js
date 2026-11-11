@@ -1286,6 +1286,27 @@ async function handOff(d) {
   return native(message);
 }
 
+// Colab downloads are signed by an ephemeral runtime proxy and partitioned browser session.
+// The native host cannot reproduce that sandboxed request reliably; leave these transfers with
+// the browser rather than intercepting them and returning a predictable 403/404 (#603).
+function colabTransfer(...urls) {
+  return urls.some((value) => {
+    if (!value) return false;
+    try {
+      const u = new URL(value);
+      const host = u.hostname.toLowerCase();
+      return u.searchParams.has("colab-runtime-proxy-token")
+        || host === "colab.research.google.com"
+        || host.endsWith(".colab.research.google.com")
+        || host === "prod.r.colab.dev"
+        || host.endsWith(".prod.r.colab.dev")
+        || /(?:^|-)colab\.googleusercontent\.com$/.test(host);
+    } catch {
+      return false;
+    }
+  });
+}
+
 // The file name to offer the app the download under (`{name}`), or why Options leave it to
 // the browser (`{left, name}`), or null: the browser keeps it and there is nothing to say (not a
 // web address, paused, Alt held, a form that can't be posted again, MDM not reached).
@@ -1297,6 +1318,7 @@ async function candidate(item, url) {
   if (bypass.has(item.url) || bypass.has(url)) return null;
   const first = firstUrl(item);
   if (bypass.has(first) || postOf(first) === null) return null; // Alt; a form not to post again
+  if (colabTransfer(first, url, item.referrer)) return null;
   const r = await currentRules();
   if (!r) return null;
   const name = (item.filename || "").split(/[\\/]/).pop() || url.split(/[?#]/)[0].split("/").pop() || "";
