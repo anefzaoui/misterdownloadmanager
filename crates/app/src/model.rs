@@ -581,8 +581,15 @@ impl Job {
         }
     }
 
-    /// The speed limit can change while a file downloads; yt-dlp takes it at the start; a
-    /// torrent's applies to the whole torrent session.
+    /// A helper program downloads it (yt-dlp, gallery-dl): it takes a speed limit only as it
+    /// starts, so a new limit starts it again (#708, `App::reapply_helper_limits`).
+    pub fn is_helper(&self) -> bool {
+        matches!(self, Job::Video { .. } | Job::Gallery { .. })
+    }
+
+    /// The speed limit can change while a file downloads; yt-dlp and gallery-dl take it at the
+    /// start (the app starts them again, `is_helper`); a torrent's applies to the whole torrent
+    /// session.
     pub fn set_speed_limit(&self, rate: Option<u64>) {
         match self {
             Job::File(d) => d.set_speed_limit(rate),
