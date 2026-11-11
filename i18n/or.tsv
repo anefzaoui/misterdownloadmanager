@@ -221,9 +221,9 @@
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	ଏହି କମ୍ପ୍ୟୁଟରରେ ଥିବା ଏକ ସର୍ଭର୍ ଡାଉନଲୋଡ୍‌କୁ ଅନ୍ୟତ୍ର ପଠାଇଛି, ଯାହା {adapter} ଦେଇ ଯିବ ନାହିଁ
 #. message or event log entry in the main window
-#. tooltip on the disabled Rename box for a single-file torrent while Keep sharing is enabled
+#. tooltip on the disabled Rename box for a single-file torrent
 #, machine
-	A single-file torrent keeps its name while Keep sharing is on	ଅଂଶୀଦାର ଜାରି ରଖନ୍ତୁ ଅନ୍ ଥିବା ସମୟରେ ଏକକ-ଫାଇଲ୍ ଟରେଣ୍ଟ ନିଜର ନାମ ବଜାୟ ରଖେ
+	A single-file torrent keeps its name	ଏକକ-ଫାଇଲ୍ ଟରେଣ୍ଟ ନିଜର ନାମ ବଜାୟ ରଖେ
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -3784,6 +3784,11 @@
 #. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
 #, machine
 	Sharing stopped: the share ratio reached {ratio}	ସେୟାର୍ କରିବା ବନ୍ଦ ହେଲା: ସେୟାର୍ ଅନୁପାତ {ratio} ରେ ପହଞ୍ଚିଲା
+#. message or event log entry in the main window
+#. event log entry on a finished torrent when re-attaching it to keep sharing failed; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Sharing stopped: {error}	ସେୟାର୍ କରିବା ବନ୍ଦ ହେଲା: {error}
 #. text in the download list
 #, machine
 	Show	ଦେଖାନ୍ତୁ

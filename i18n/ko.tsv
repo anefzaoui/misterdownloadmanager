@@ -221,9 +221,9 @@
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	이 컴퓨터의 서버가 다운로드를 다른 곳으로 보냈습니다. {adapter}를 통해 전송되지 않습니다.
 #. message or event log entry in the main window
-#. tooltip on the disabled Rename box for a single-file torrent while Keep sharing is enabled
+#. tooltip on the disabled Rename box for a single-file torrent
 #, machine
-	A single-file torrent keeps its name while Keep sharing is on	계속 공유가 켜져 있는 동안 단일 파일 토렌트는 원래 이름을 유지합니다
+	A single-file torrent keeps its name	단일 파일 토렌트는 원래 이름을 유지합니다
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -3784,6 +3784,11 @@
 #. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
 #, machine
 	Sharing stopped: the share ratio reached {ratio}	공유가 중지되었습니다. 공유 비율이 {ratio}에 도달했습니다.
+#. message or event log entry in the main window
+#. event log entry on a finished torrent when re-attaching it to keep sharing failed; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Sharing stopped: {error}	공유가 중지되었습니다: {error}
 #. text in the download list
 #, machine
 	Show	표시

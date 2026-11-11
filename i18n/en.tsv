@@ -182,8 +182,8 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	a server on this computer sent the download elsewhere, which would not go through {adapter}
 #. message or event log entry in the main window
-#. tooltip on the disabled Rename box for a single-file torrent while Keep sharing is enabled
-	A single-file torrent keeps its name while Keep sharing is on	A single-file torrent keeps its name while Keep sharing is on
+#. tooltip on the disabled Rename box for a single-file torrent
+	A single-file torrent keeps its name	A single-file torrent keeps its name
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 	A tracker on this computer or the local network is never contacted: {line}	A tracker on this computer or the local network is never contacted: {line}
@@ -2818,6 +2818,10 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
 	Sharing stopped: the share ratio reached {ratio}	Sharing stopped: the share ratio reached {ratio}
+#. message or event log entry in the main window
+#. event log entry on a finished torrent when re-attaching it to keep sharing failed; {error} = why
+#. {error} = an error message (keep the braces as they are)
+	Sharing stopped: {error}	Sharing stopped: {error}
 #. text in the download list
 	Show	Show
 #. message or event log entry in the main window

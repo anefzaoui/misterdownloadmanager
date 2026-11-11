@@ -221,9 +221,9 @@
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	このコンピューター上のサーバーがダウンロードを別の場所に送信しましたが、{adapter} を経由しない場所です
 #. message or event log entry in the main window
-#. tooltip on the disabled Rename box for a single-file torrent while Keep sharing is enabled
+#. tooltip on the disabled Rename box for a single-file torrent
 #, machine
-	A single-file torrent keeps its name while Keep sharing is on	単一ファイルのトレントは共有を続けるがオンの間は名前を維持します
+	A single-file torrent keeps its name	単一ファイルのトレントは名前を維持します
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -3784,6 +3784,11 @@
 #. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
 #, machine
 	Sharing stopped: the share ratio reached {ratio}	共有を停止しました: 共有比率が{ratio}に達しました
+#. message or event log entry in the main window
+#. event log entry on a finished torrent when re-attaching it to keep sharing failed; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Sharing stopped: {error}	共有を停止しました: {error}
 #. text in the download list
 #, machine
 	Show	表示

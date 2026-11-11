@@ -557,13 +557,14 @@ impl Host {
     pub fn rename_finished(
         &self,
         rt: &tokio::runtime::Handle,
+        known: HashSet<String>,
         spec: &TorrentSpec,
         from: PathBuf,
         initial_to: PathBuf,
         hold: Option<mdm_engine::naming::Reservation>,
         is_dir: bool,
         keep_sharing: bool,
-        tx: std::sync::mpsc::Sender<Result<PathBuf, String>>,
+        tx: std::sync::mpsc::Sender<(Result<PathBuf, String>, Option<String>)>,
     ) -> Result<(), Option<mdm_engine::naming::Reservation>> {
         {
             let mut busy = self.busy.lock().unwrap();
@@ -574,7 +575,18 @@ impl Host {
         }
         let (host, spec) = (self.clone(), spec.clone());
         rt.spawn(async move {
-            let session = host.get();
+            let mut sharing_error: Option<String> = None;
+            let session = if keep_sharing && is_dir {
+                match host.session(known).await {
+                    Ok(t) => Some(t),
+                    Err(e) => {
+                        sharing_error = Some(e);
+                        None
+                    }
+                }
+            } else {
+                host.get()
+            };
             let detached = match &session {
                 Some(t) => t.detach(&spec.hash).await.ok().flatten(),
                 None => None,
@@ -606,32 +618,35 @@ impl Host {
                     Err(e.to_string())
                 }
             };
+            let reattach_at = match &final_res {
+                Ok(actual_to) if is_dir => Some(actual_to.as_path()),
+                Err(_) if detached.is_some() => Some(spec.folder.as_path()),
+                _ => None,
+            };
             if keep_sharing
                 && let Some(t) = &session
-                && let Some(bytes) = torrent_file(&spec.hash).and_then(|f| std::fs::read(f).ok())
+                && let Some(folder) = reattach_at
             {
-                match &final_res {
-                    Ok(actual_to) if is_dir => {
-                        let _ = t
-                            .attach(&spec.hash, &bytes, actual_to, spec.files.clone(), detached)
-                            .await;
+                let bytes = match torrent_file(&spec.hash) {
+                    None => Err(crate::i18n::t("no data folder").to_owned()),
+                    Some(file) => std::fs::read(&file).map_err(|_| {
+                        crate::i18n::t("the .torrent file kept for it is gone").to_owned()
+                    }),
+                };
+                match bytes {
+                    Ok(bytes) => {
+                        if let Err(e) = t
+                            .attach(&spec.hash, &bytes, folder, spec.files.clone(), detached)
+                            .await
+                        {
+                            sharing_error = Some(crate::errors::torrent(&e));
+                        }
                     }
-                    Err(_) if detached.is_some() => {
-                        let _ = t
-                            .attach(
-                                &spec.hash,
-                                &bytes,
-                                &spec.folder,
-                                spec.files.clone(),
-                                detached,
-                            )
-                            .await;
-                    }
-                    _ => {}
+                    Err(why) => sharing_error = Some(why),
                 }
             }
             host.busy.lock().unwrap().remove(&spec.hash);
-            let _ = tx.send(final_res);
+            let _ = tx.send((final_res, sharing_error));
         });
         Ok(())
     }

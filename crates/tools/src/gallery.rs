@@ -269,6 +269,8 @@ struct Shared {
     there: u64,
     /// The files saved this run (at most `KEEP_PATHS`).
     files: Vec<PathBuf>,
+    /// Every file gallery-dl reported for this gallery (`Saved` + `There`, at most `KEEP_PATHS`).
+    known: Vec<PathBuf>,
 }
 
 impl Default for Progress {
@@ -340,6 +342,11 @@ impl GalleryJob {
     /// The files saved so far this run (asked once, at the end: not every frame).
     pub fn saved(&self) -> Vec<PathBuf> {
         self.shared.lock().unwrap().files.clone()
+    }
+
+    /// Every file gallery-dl reported for this gallery (`Saved` + `There` across resumed runs).
+    pub fn known_files(&self) -> Vec<PathBuf> {
+        self.shared.lock().unwrap().known.clone()
     }
 
     /// End gallery-dl and all it started; what was saved stays.
@@ -427,10 +434,18 @@ fn read(stdout: impl std::io::Read, shared: &Mutex<Shared>) {
                 sh.saved += 1;
                 sh.progress.downloaded += std::fs::metadata(&p).map_or(0, |m| m.len());
                 if sh.files.len() < KEEP_PATHS {
-                    sh.files.push(p);
+                    sh.files.push(p.clone());
+                }
+                if sh.known.len() < KEEP_PATHS {
+                    sh.known.push(p);
                 }
             }
-            Line::There(_) => sh.there += 1,
+            Line::There(p) => {
+                sh.there += 1;
+                if sh.known.len() < KEEP_PATHS {
+                    sh.known.push(p);
+                }
+            }
         }
         let secs = started.elapsed().as_secs_f64().max(0.5);
         sh.progress.speed = sh.progress.downloaded as f64 / secs;

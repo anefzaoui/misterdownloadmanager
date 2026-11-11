@@ -221,9 +221,9 @@
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	un servidor d’aquest ordinador ha enviat la baixada a un altre lloc, que no passaria per {adapter}
 #. message or event log entry in the main window
-#. tooltip on the disabled Rename box for a single-file torrent while Keep sharing is enabled
+#. tooltip on the disabled Rename box for a single-file torrent
 #, machine
-	A single-file torrent keeps its name while Keep sharing is on	Un torrent d'un sol fitxer conserva el nom mentre Continua compartint està activat
+	A single-file torrent keeps its name	Un torrent d'un sol fitxer conserva el nom
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -3784,6 +3784,11 @@
 #. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
 #, machine
 	Sharing stopped: the share ratio reached {ratio}	S'ha aturat l'ús compartit: la relació de compartició ha arribat a {ratio}
+#. message or event log entry in the main window
+#. event log entry on a finished torrent when re-attaching it to keep sharing failed; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Sharing stopped: {error}	S'ha aturat l'ús compartit: {error}
 #. text in the download list
 #, machine
 	Show	Mostra

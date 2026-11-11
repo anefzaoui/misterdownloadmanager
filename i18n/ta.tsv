@@ -221,9 +221,9 @@
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	இந்தக் கணினியில் உள்ள ஒரு சேவையகம் பதிவிறக்கத்தை வேறு இடத்திற்கு அனுப்பியது; அது {adapter} வழியாகச் செல்லாது
 #. message or event log entry in the main window
-#. tooltip on the disabled Rename box for a single-file torrent while Keep sharing is enabled
+#. tooltip on the disabled Rename box for a single-file torrent
 #, machine
-	A single-file torrent keeps its name while Keep sharing is on	பகிர்வதைத் தொடர் இயக்கத்தில் இருக்கும்போது ஒற்றைக் கோப்பு டொரண்ட் தன் பெயரைத் தக்கவைத்துக் கொள்ளும்
+	A single-file torrent keeps its name	ஒற்றைக் கோப்பு டொரண்ட் தன் பெயரைத் தக்கவைத்துக் கொள்ளும்
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -3784,6 +3784,11 @@
 #. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
 #, machine
 	Sharing stopped: the share ratio reached {ratio}	பகிர்வு நிறுத்தப்பட்டது: பகிர்வு விகிதம் {ratio} ஐ எட்டியது
+#. message or event log entry in the main window
+#. event log entry on a finished torrent when re-attaching it to keep sharing failed; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Sharing stopped: {error}	பகிர்வு நிறுத்தப்பட்டது: {error}
 #. text in the download list
 #, machine
 	Show	காட்டு

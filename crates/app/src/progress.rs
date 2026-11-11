@@ -188,8 +188,11 @@ pub struct Progress {
     rename_show_saved: bool,
     pending_rename: Option<Option<String>>,
     /// Translated reason key when deferred rename is unavailable for this download (shared or
-    /// save folder, split archive volume, or single-file torrent with Keep sharing on).
+    /// save folder, split archive volume, or single-file torrent).
     pub rename_disabled_reason: Option<&'static str>,
+    /// In-memory state stamp for `rename_disabled_reason`, so disk checks run only when the
+    /// window opens, when a download completes, or when list/folder settings change.
+    pub rename_guard_stamp: Option<u64>,
 }
 
 pub enum Action {
@@ -254,15 +257,13 @@ impl Progress {
             rename_show_saved: false,
             pending_rename: None,
             rename_disabled_reason: None,
+            rename_guard_stamp: None,
         }
     }
 
     fn status_drop(&self) -> f32 {
-        if self.tab == Tab::Status {
-            RENAME_DROP
-        } else {
-            0.0
-        }
+        let _ = self;
+        RENAME_DROP
     }
 
     /// Synchronise the Rename box from `item.rename_on_complete` on first display and whenever
@@ -678,8 +679,6 @@ impl Progress {
             && tabs[i].0 != self.tab
         {
             self.tab = tabs[i].0;
-            ui.ctx().request_discard("Tab height");
-            ui.ctx().request_repaint();
         }
         self.tab_row_menu(ui, r(o, 18.0, 6.0, 514.0, 22.0));
         // MDM's (#63): IDM puts this in its title bar, which here is the system's own (it takes
@@ -1069,13 +1068,13 @@ impl Progress {
     }
 }
 
-/// "Hide tab" (401,135,96,21) with its 1 px #f9f9f9 focus ring.
+/// "Hide tab" anchored at the bottom-right corner of the tab pane (`135 + RENAME_DROP`).
 fn hide_tab(ui: &mut Ui, o: Pos2) -> bool {
     // A longer translation ("Registerkarte ausblenden") widens it to the left, into the free
     // room right of the Remember caption (which ends before x 300).
     let rc = winui::button_rect_for(
         ui.painter(),
-        r(o, 401.0, 135.0, 96.0, 21.0),
+        r(o, 401.0, 135.0 + RENAME_DROP, 96.0, 21.0),
         "Hide tab",
         190.0,
     );
@@ -2190,12 +2189,12 @@ mod tests {
     }
 
     #[test]
-    fn status_drop_applies_only_on_download_status_tab() {
+    fn switching_tabs_keeps_window_height_constant() {
         let mut p = Progress::new(1, true);
         assert_eq!(p.status_drop(), RENAME_DROP);
         p.tab = Tab::Limiter;
-        assert_eq!(p.status_drop(), 0.0);
+        assert_eq!(p.status_drop(), RENAME_DROP);
         p.tab = Tab::Completion;
-        assert_eq!(p.status_drop(), 0.0);
+        assert_eq!(p.status_drop(), RENAME_DROP);
     }
 }

@@ -415,6 +415,10 @@ pub struct Item {
     /// download reaches `Status::Complete`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub rename_on_complete: Option<String>,
+    /// True when a folder download's destination already held files before MDM added it, so
+    /// folder-level deferred rename refuses to sweep untracked files along.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub preexisting_folder: bool,
     #[serde(skip)]
     pub live: Option<Live>,
     /// The session's temporary view while a torrent is being checked; never saved.
@@ -437,6 +441,9 @@ pub struct Item {
     /// web once any deferred rename in `App::poll` has moved them to their final names.
     #[serde(skip)]
     pub(crate) pending_mark: Option<PendingMark>,
+    /// Files known to belong to a finished gallery or debrid folder download; memory only.
+    #[serde(skip)]
+    pub(crate) written_files: Option<Vec<PathBuf>>,
 }
 
 /// Files saved by `yt-dlp` or `gallery-dl` waiting for Mark-of-the-Web after deferred rename.
@@ -731,6 +738,7 @@ impl Item {
             direct: false,
             remote: None,
             rename_on_complete: None,
+            preexisting_folder: false,
             live: None,
             torrent_check: None,
             snap: None,
@@ -738,6 +746,7 @@ impl Item {
             context: Default::default(),
             notices: Vec::new(),
             pending_mark: None,
+            written_files: None,
         }
     }
     /// This row's resume state is at its place. `downloaded` can't say: after a crash the list
@@ -861,15 +870,27 @@ impl Item {
                         dl: Job::Gallery { job, url },
                         ..
                     }) = &self.live
-                    && matches!(url.scheme(), "http" | "https")
                 {
-                    self.pending_mark = Some(PendingMark {
-                        main_file: None,
-                        side_files: Vec::new(),
-                        gallery_files: job.saved(),
-                        url: url.to_string(),
-                        referer: None,
-                    });
+                    self.written_files = Some(job.known_files());
+                    if matches!(url.scheme(), "http" | "https") {
+                        self.pending_mark = Some(PendingMark {
+                            main_file: None,
+                            side_files: Vec::new(),
+                            gallery_files: job.saved(),
+                            url: url.to_string(),
+                            referer: None,
+                        });
+                    }
+                }
+                if status == Status::Complete
+                    && let Some(Live {
+                        dl: Job::Remote(r), ..
+                    }) = &self.live
+                {
+                    if r.preexisting_folder() {
+                        self.preexisting_folder = true;
+                    }
+                    self.written_files = Some(r.saved_files());
                 }
                 for n in &notices {
                     self.note(n.clone());

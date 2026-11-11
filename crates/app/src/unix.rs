@@ -1990,17 +1990,43 @@ pub fn rename_no_replace(from: &Path, to: &Path) -> std::io::Result<()> {
             }
         }
 
-        if std::fs::symlink_metadata(to).is_ok() {
-            return Err(std::io::Error::from(std::io::ErrorKind::AlreadyExists));
+        fallback_rename_no_replace(from, to)
+    }
+}
+
+/// Non-replacing POSIX fallback when `RENAME_NOREPLACE` is unavailable (`ENOSYS` / `EINVAL` or
+/// non-Linux Unix):
+/// - Directories claim `to` atomically via `create_dir(to)` (`EEXIST` -> `AlreadyExists` even if
+///   `to` is an empty folder), then `fs::rename(from, to)` replaces only our own placeholder.
+/// - Files link atomically via `hard_link(from, to)` (`EEXIST` -> `AlreadyExists` without ever
+///   falling through to `fs::rename`), falling back to `symlink_metadata` + `fs::rename` only on
+///   filesystems that reject hard links (`EXDEV` / `EOPNOTSUPP` / `EPERM`).
+#[cfg_attr(target_os = "macos", allow(dead_code))]
+pub(crate) fn fallback_rename_no_replace(from: &Path, to: &Path) -> std::io::Result<()> {
+    let meta = std::fs::symlink_metadata(from)?;
+    if meta.is_dir() {
+        std::fs::create_dir(to)?;
+        if let Err(e) = std::fs::rename(from, to) {
+            let _ = std::fs::remove_dir(to);
+            return Err(e);
         }
-        if from.is_file() && std::fs::hard_link(from, to).is_ok() {
+        return Ok(());
+    }
+    match std::fs::hard_link(from, to) {
+        Ok(()) => {
             if let Err(e) = std::fs::remove_file(from) {
                 let _ = std::fs::remove_file(to);
                 return Err(e);
             }
-            return Ok(());
+            Ok(())
         }
-        std::fs::rename(from, to)
+        Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => Err(e),
+        Err(_) => {
+            if std::fs::symlink_metadata(to).is_ok() {
+                return Err(std::io::Error::from(std::io::ErrorKind::AlreadyExists));
+            }
+            std::fs::rename(from, to)
+        }
     }
 }
 

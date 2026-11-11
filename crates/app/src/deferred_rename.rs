@@ -267,6 +267,64 @@ pub fn path_is_at_or_inside_dir(candidate: &Path, dir: &Path) -> bool {
     false
 }
 
+/// Whether `dir` already exists on disk and contains at least one entry.
+pub fn folder_has_any_entries(dir: &Path) -> bool {
+    std::fs::read_dir(dir).is_ok_and(|mut rd| rd.next().is_some())
+}
+
+/// Whether `dir` holds any file or subfolder outside `allowed_files` (files this download wrote
+/// or that belong to its torrent manifest).
+pub fn folder_has_untracked_files(dir: &Path, allowed_files: &[PathBuf]) -> bool {
+    use std::collections::HashSet;
+    if !dir.exists() {
+        return false;
+    }
+    let root = std::fs::canonicalize(dir).unwrap_or_else(|_| trim_trailing_sep(dir));
+    let mut allowed = HashSet::with_capacity(allowed_files.len());
+    let mut allowed_dirs = HashSet::new();
+    allowed_dirs.insert(root.clone());
+    for f in allowed_files {
+        let norm = std::fs::canonicalize(f).unwrap_or_else(|_| trim_trailing_sep(f));
+        let mut anc = norm.parent();
+        while let Some(d) = anc {
+            if d == root || !d.starts_with(&root) {
+                break;
+            }
+            if !allowed_dirs.insert(d.to_path_buf()) {
+                break;
+            }
+            anc = d.parent();
+        }
+        allowed.insert(norm);
+    }
+
+    let mut stack = vec![dir.to_path_buf()];
+    while let Some(cur) = stack.pop() {
+        let Ok(rd) = std::fs::read_dir(&cur) else {
+            return cur.exists();
+        };
+        for entry in rd {
+            let Ok(entry) = entry else {
+                return true;
+            };
+            let Ok(ft) = entry.file_type() else {
+                return true;
+            };
+            let path = entry.path();
+            let norm = std::fs::canonicalize(&path).unwrap_or_else(|_| trim_trailing_sep(&path));
+            if ft.is_dir() {
+                if !allowed_dirs.contains(&norm) {
+                    return true;
+                }
+                stack.push(path);
+            } else if !allowed.contains(&norm) {
+                return true;
+            }
+        }
+    }
+    false
+}
+
 fn entry_taken(p: &Path) -> bool {
     p.exists() || mdm_engine::naming::part_path(p).exists()
 }
@@ -293,7 +351,10 @@ pub fn reserve_target_path(
     }
     let cur_name = current_dest.file_name()?.to_string_lossy();
     let raw_wanted = build_renamed_file_name(&cur_name, &clean, is_dir);
-    let wanted = mdm_engine::naming::fit_name(parent, &raw_wanted).unwrap_or(raw_wanted);
+    let wanted = mdm_engine::naming::fit_name(parent, &raw_wanted)
+        .unwrap_or(raw_wanted)
+        .trim_end_matches(['.', ' '])
+        .to_owned();
     if !is_plain_single_component(OsStr::new(&wanted)) || wanted == cur_name.as_ref() {
         return None;
     }
@@ -379,9 +440,16 @@ pub fn rename_entry_io(from: &Path, to: &Path) -> std::io::Result<()> {
     for k in 0..16u32 {
         let hop = parent.join(format!(".mdm-rename-{stamp}-{k}.tmp"));
         if !hop.exists() && os_rename_no_replace(from, &hop).is_ok() {
-            return os_rename_no_replace(&hop, to).inspect_err(|_| {
-                let _ = os_rename_no_replace(&hop, from);
-            });
+            return match os_rename_no_replace(&hop, to) {
+                Ok(()) => Ok(()),
+                Err(e) => match os_rename_no_replace(&hop, from) {
+                    Ok(()) => Err(e),
+                    Err(back_err) => Err(std::io::Error::new(
+                        e.kind(),
+                        format!("{e} (left as {}: {back_err})", hop.display()),
+                    )),
+                },
+            };
         }
     }
     Err(std::io::Error::new(
@@ -714,5 +782,55 @@ mod tests {
         );
         assert_eq!(std::fs::read(&moved[0]).unwrap(), b"en");
         assert_eq!(std::fs::read(&moved[1]).unwrap(), b"zh");
+    }
+
+    #[test]
+    fn detects_untracked_files_and_subfolders_inside_download_folder() {
+        let dir = tempfile::tempdir().unwrap();
+        let folder = dir.path().join("gallery_pack");
+        let sub = folder.join("part1");
+        std::fs::create_dir_all(&sub).unwrap();
+        let a = folder.join("01.jpg");
+        let b = sub.join("02.jpg");
+        std::fs::write(&a, b"a").unwrap();
+        std::fs::write(&b, b"b").unwrap();
+
+        let allowed = vec![a.clone(), b.clone()];
+        assert!(!folder_has_untracked_files(&folder, &allowed));
+
+        let extra_dir = folder.join("unrelated_empty_dir");
+        std::fs::create_dir(&extra_dir).unwrap();
+        assert!(folder_has_untracked_files(&folder, &allowed));
+        std::fs::remove_dir(&extra_dir).unwrap();
+
+        let foreign = folder.join("leftover_from_removed_download.png");
+        std::fs::write(&foreign, b"x").unwrap();
+        assert!(folder_has_untracked_files(&folder, &allowed));
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn unix_fallback_never_replaces_existing_empty_folder_or_file() {
+        let dir = tempfile::tempdir().unwrap();
+        let src_dir = dir.path().join("src_folder");
+        std::fs::create_dir_all(&src_dir).unwrap();
+        std::fs::write(src_dir.join("inside.txt"), b"mine").unwrap();
+
+        let empty_target = dir.path().join("empty_folder");
+        std::fs::create_dir(&empty_target).unwrap();
+        let err = crate::unix::fallback_rename_no_replace(&src_dir, &empty_target).unwrap_err();
+        assert_eq!(err.kind(), std::io::ErrorKind::AlreadyExists);
+        assert!(src_dir.join("inside.txt").exists());
+        assert!(
+            std::fs::read_dir(&empty_target).unwrap().next().is_none(),
+            "existing empty folder must remain untouched"
+        );
+
+        let moved_dir = dir.path().join("fresh_folder");
+        crate::unix::fallback_rename_no_replace(&src_dir, &moved_dir).unwrap();
+        assert_eq!(
+            std::fs::read(moved_dir.join("inside.txt")).unwrap(),
+            b"mine"
+        );
     }
 }
