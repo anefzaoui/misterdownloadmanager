@@ -156,11 +156,10 @@ pub struct DeviceCode {
     pub device_code: String,
     /// What the user types (6 digits).
     pub code: String,
-    /// The page that shows the app's name; `friendly_verification_url` is its short address.
+    /// The page that shows the app's name (on torbox.app; `tor.box/link`, TorBox's short
+    /// address for it, is another domain and isn't opened).
     #[serde(default)]
     pub verification_url: String,
-    #[serde(default)]
-    pub friendly_verification_url: String,
     #[serde(default)]
     pub interval: u64,
     /// RFC 3339 (the docs: 10 minutes).

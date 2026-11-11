@@ -546,7 +546,11 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                 None => anyhow::anyhow!("gallery-dl is not installed: run install-gallery-dl"),
             })?;
             if let Some(why) = &old {
-                eprintln!("{why}: using MDM's own copy, {}", tool.version);
+                if tool.is_system() {
+                    eprintln!("{why}: using the system's, {}", tool.exe.display());
+                } else {
+                    eprintln!("{why}: using MDM's own copy, {}", tool.version);
+                }
             }
             if !mdm_tools::gallery::handles(&tool, &url)? {
                 anyhow::bail!("gallery-dl can't read this address");
