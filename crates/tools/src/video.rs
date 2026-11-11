@@ -915,8 +915,8 @@ impl Drop for Remove {
 /// the output name. This also keeps subtitle side files from inheriting a duplicate extension.
 fn without_media_extension(stem: &str) -> &str {
     const MEDIA_EXTENSIONS: &[&str] = &[
-        "mp4", "mkv", "webm", "mov", "m4v", "m4a", "mp3", "opus", "ogg", "oga", "flac",
-        "wav", "aac", "flv", "3gp", "ts", "avi", "wmv", "mpg", "mpeg", "m2ts",
+        "mp4", "mkv", "webm", "mov", "m4v", "m4a", "mp3", "opus", "ogg", "oga", "flac", "wav",
+        "aac", "flv", "3gp", "ts", "avi", "wmv", "mpg", "mpeg", "m2ts",
     ];
     let Some((base, ext)) = stem.rsplit_once('.') else {
         return stem;
