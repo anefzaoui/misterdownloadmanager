@@ -1730,9 +1730,10 @@ async fn watch(
 ///
 /// It measures the transfer, not the disk: the bytes received while the flush runs, and the
 /// time until every byte arrived. The time until the download completes also counts the real
-/// disk taking in 160 MB, which on GitHub's Windows runners took seconds longer after the slow
-/// flush than in the same download without it (the file flushed at the end rather than along
-/// the way) and failed a wall-clock bound now and then, every byte received on time (#518).
+/// disk taking in 160 MB: on GitHub's Windows runners that alone took 1 s to over 13 s (Windows
+/// held the writes into its cache to the disk's pace: 19 MB writes took up to 5.9 s with no
+/// flush running), and failed the old wall-clock bound now and then (#518): 7.9 s against
+/// 2.6 s, with every byte received in 1.4 s against 1.0 s.
 #[tokio::test]
 async fn a_slow_flush_does_not_stop_the_transfer() {
     const SIZE: u64 = 160 << 20;
@@ -1796,17 +1797,11 @@ async fn a_slow_flush_does_not_stop_the_transfer() {
     let log = s.log().split_off(before);
     // The connections kept receiving while the flush held their writes: 16 MiB in its 1.5 s
     // (or the rest of the file), where connections waiting for the disk take in a batch each at
-    // most (8 x 256 KiB).
+    // most (8 x 256 KiB). Measured: 143 MB; with the connections writing during the flush, 0.6
+    // to 2.8 MB (and every byte in 2.2 s against 1.0 s, which the bound below lets through).
     let (grew, left) = slowed
         .during_flush
         .expect("a slow flush ran while the connections received");
-    eprintln!(
-        "TIMING2 received yardstick={:?} slow={:?} during_flush grew={} left={}",
-        yardstick.received,
-        slowed.received,
-        grew >> 20,
-        left >> 20
-    );
     assert!(
         grew >= (16 << 20).min(left),
         "{grew} bytes received during the slow flush ({left} left when it began)"
