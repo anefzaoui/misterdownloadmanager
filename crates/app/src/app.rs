@@ -116,6 +116,9 @@ enum Cmd {
     DrawWith(crate::renderer::Api),
     /// View → Interface size → a size in percent (#262).
     InterfaceSize(u16),
+    /// View → Text → Smooth (`true`) or Classic (Windows).
+    #[cfg(windows)]
+    SmoothText(bool),
     /// View → Language: a catalog's code, or follow Windows (`None`).
     Language(Option<&'static str>),
     /// View → Language...: the language picker.
@@ -369,6 +372,31 @@ fn next_trim(done: u32) -> Duration {
 /// before it shows minimized.
 const TRAY_GRACE: Duration = Duration::from_secs(30);
 
+/// How long after the main window loses focus a tray toggle still counts it as in
+/// front (#520): clicking the icon makes the taskbar the foreground window first,
+/// so `focused` is always false by the time Toggle runs on Windows. Unknown focus
+/// (`None`) never counts: unsure means show, never hide.
+const TRAY_TOGGLE_GRACE: Duration = Duration::from_millis(500);
+
+/// Whether a tray left-click hides the window instead of showing it: hidden or
+/// minimized never hides; a focused window does; an unfocused one does only when
+/// it just lost the focus (the click itself took it), else it is behind other
+/// windows and comes forward. Unknown focus never hides.
+fn tray_toggle_hide(
+    hidden: bool,
+    minimized: bool,
+    focused: Option<bool>,
+    since_focused: Option<Duration>,
+) -> bool {
+    if hidden || minimized {
+        return false;
+    }
+    if focused == Some(true) {
+        return true;
+    }
+    focused == Some(false) && since_focused.is_some_and(|d| d < TRAY_TOGGLE_GRACE)
+}
+
 /// Where a start with the session (#226) leaves the window, decided here alone.
 #[derive(Debug, PartialEq)]
 enum AtLogin {
@@ -590,6 +618,11 @@ pub struct App {
     tray: Option<crate::tray::Tray>,
     tray_limiter: Option<bool>,
     hotkey: Option<crate::hotkey::GlobalHotkey>,
+    /// When the main window was last seen focused: a tray click steals the focus first
+    /// (the taskbar becomes foreground), so a click on a frontmost window reads as
+    /// unfocused by the time Toggle runs. Within [`TRAY_TOGGLE_GRACE`] it still counts
+    /// as in front.
+    tray_last_focused: Option<Instant>,
     hidden: bool,
     /// Hidden to the tray: when to hand the window's memory back to the system next (#72), and
     /// how many times it was since the window hid.
@@ -1172,6 +1205,7 @@ impl App {
             tray: None,
             tray_limiter: None,
             hotkey: None,
+            tray_last_focused: None,
             // Started with the session (#226): hidden from the first frame.
             hidden: start == crate::Start::Session,
             trim_when_hidden: (start == crate::Start::Session)
@@ -2317,16 +2351,12 @@ impl App {
             cmd.url = Some(file);
         }
         // The browser's download button over a video: the Download video window, looking the
-        // page up at once.
+        // page up at once. The main window stays where it is (hidden, minimized): only the
+        // dialog opens, as its window is its own.
         if let Some(page) = cmd.video_page.as_deref() {
-            self.show_window(ctx);
-            let dir = self.settings.category_dir(Category::Video, &self.downloads);
-            crate::videodlg::refresh_ytdlp(&self.rt);
+            self.show_for_dialog(ctx);
             let page = page.to_owned();
-            self.video_dlg = Some(
-                crate::videodlg::VideoDialog::for_page(dir, &page, cmd)
-                    .with_subs(self.settings.video_subs.clone()),
-            );
+            self.video_dlg = Some(self.video_dialog(Some((&page, cmd))));
             return;
         }
         // Its menu: never on this site.
@@ -2338,7 +2368,7 @@ impl App {
         }
         // The browser's right-click menu: a page's (or a selection's) links, to tick in Import.
         if !cmd.links.is_empty() {
-            self.show_window(ctx);
+            self.show_for_dialog(ctx);
             let found = cmd
                 .links
                 .iter()
@@ -2373,7 +2403,7 @@ impl App {
                     && std::path::Path::new(u.trim_matches('"')).is_file())
         }) {
             let m = m.trim().to_owned();
-            self.show_window(ctx);
+            self.show_for_dialog(ctx);
             self.open_torrent_dialog(Some(m), ctx);
             return;
         }
@@ -2401,7 +2431,7 @@ impl App {
         };
         if !cmd.silent && (torrent(&url) || final_url.as_ref().is_some_and(torrent)) {
             let parts = self.request_parts(&url, None, &cmd, crate::debrid::browser_started(&cmd));
-            self.show_window(ctx);
+            self.show_for_dialog(ctx);
             self.open_torrent_dialog_with(
                 Some(url.to_string()),
                 Some(crate::torrents::Remote { url, parts }),
@@ -2928,10 +2958,6 @@ impl App {
             return;
         }
         ctx.send_viewport_cmd(egui::ViewportCommand::Visible(false));
-        #[cfg(target_os = "macos")]
-        if !crate::offscreen() {
-            crate::unix::macos_hide_window();
-        }
         self.hidden = true;
         self.start_trimming();
     }
@@ -2954,8 +2980,6 @@ impl App {
         ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(false));
         if !crate::offscreen() {
             ctx.send_viewport_cmd(egui::ViewportCommand::Focus);
-            #[cfg(target_os = "macos")]
-            crate::unix::macos_activate_and_show();
         }
         ctx.request_repaint();
     }
@@ -2972,10 +2996,27 @@ impl App {
             !self.hidden && !minimized && ctx.input(|i| i.viewport().focused.unwrap_or(true));
         if !active_and_visible {
             self.show_window(ctx);
+            #[cfg(target_os = "macos")]
+            if !crate::offscreen() {
+                crate::unix::macos_activate_and_show();
+            }
         } else if self.tray.is_some() && self.tray_shown_now() {
             self.hide_to_tray(ctx);
+            #[cfg(target_os = "macos")]
+            if !crate::offscreen() {
+                crate::unix::macos_hide_window();
+            }
         } else {
             ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+        }
+    }
+
+    /// Before a handoff's dialog: the main window stays where it is (hidden, minimized) and
+    /// only the dialog opens, as dialogs are windows of their own.
+    fn show_for_dialog(&mut self, ctx: &egui::Context) {
+        let minimized = ctx.input(|i| i.viewport().minimized == Some(true));
+        if !self.hidden && !minimized {
+            self.show_window(ctx);
         }
     }
 
@@ -3058,7 +3099,13 @@ impl App {
             }
         }
         if !crate::offscreen() {
-            let spec = self.settings.show_hide_hotkey.clone();
+            let spec = self
+                .options
+                .as_ref()
+                .map_or(self.settings.show_hide_hotkey.as_str(), |o| {
+                    o.draft_hotkey()
+                })
+                .to_owned();
             let recording = self
                 .options
                 .as_ref()
@@ -3067,6 +3114,10 @@ impl App {
                 .hotkey
                 .get_or_insert_with(|| crate::hotkey::GlobalHotkey::new(ctx, &spec));
             hk.apply(ctx, &spec);
+            let taken = hk.is_taken();
+            if let Some(o) = &mut self.options {
+                o.set_hotkey_taken(taken);
+            }
             if hk.take_fired() && !recording {
                 self.toggle_window(ctx);
             }
@@ -3096,6 +3147,11 @@ impl App {
             t.set_downloads(&running);
         }
         self.settle_at_login(ctx);
+        // When the window was last focused, for Toggle below. Kept every frame:
+        // by the time a tray click arrives the taskbar already took the focus.
+        if ctx.input(|i| i.viewport().focused) == Some(true) {
+            self.tray_last_focused = Some(Instant::now());
+        }
         let cmds = self.tray.as_ref().map(|t| t.poll()).unwrap_or_default();
         for c in cmds {
             use crate::tray::TrayCmd;
@@ -3103,6 +3159,30 @@ impl App {
             let cmd = match c {
                 TrayCmd::Show => {
                     self.show_window(ctx);
+                    continue;
+                }
+                TrayCmd::Toggle => {
+                    let minimized = ctx.input(|i| i.viewport().minimized == Some(true));
+                    // Behind other windows it still reads as shown: only hide when
+                    // frontmost, otherwise bring it forward. On Windows the tray
+                    // click itself takes the focus first, so a window focused just
+                    // now still counts as in front (#520).
+                    let focus = ctx.input(|i| i.viewport().focused);
+                    let since_focused = self.tray_last_focused.map(|t| t.elapsed());
+                    // With the icon under the taskbar's ^, the flyout took the focus well
+                    // before the click: Windows is asked whether anything covers the window.
+                    #[cfg(windows)]
+                    let in_front = crate::win32::main_window_in_front() == Some(true);
+                    // Elsewhere focus is all there is to go by (sway, KDE's tray).
+                    #[cfg(not(windows))]
+                    let in_front = false;
+                    if tray_toggle_hide(self.hidden, minimized, focus, since_focused)
+                        || (!self.hidden && !minimized && in_front)
+                    {
+                        self.hide_to_tray(ctx);
+                    } else {
+                        self.show_window(ctx);
+                    }
                     continue;
                 }
                 TrayCmd::AddUrl => Cmd::AddUrl,
@@ -3431,6 +3511,22 @@ impl App {
         }
     }
 
+    /// Download video from a page, opened for a page (looked up at once) or from the menu: Save
+    /// to is the Video category's folder, the Music category's while a sound-only choice is
+    /// chosen (#611; not when the user deleted Music).
+    fn video_dialog(&self, page: Option<(&str, mdm_ipc::Command)>) -> crate::videodlg::VideoDialog {
+        crate::videodlg::refresh_ytdlp(&self.rt);
+        let dir = self.settings.category_dir(Category::Video, &self.downloads);
+        let music = (!Category::Music.deleted())
+            .then(|| self.settings.category_dir(Category::Music, &self.downloads));
+        match page {
+            Some((page, cmd)) => crate::videodlg::VideoDialog::for_page(dir, page, cmd),
+            None => crate::videodlg::VideoDialog::new(dir),
+        }
+        .with_subs(self.settings.video_subs.clone())
+        .with_music_folder(music)
+    }
+
     /// Download video from a page → Download Now / Later.
     fn add_video(&mut self, add: crate::videodlg::VideoAdd) {
         let folder = add
@@ -3457,7 +3553,7 @@ impl App {
         let id = self.push_item(
             add.page,
             dest,
-            Category::Video,
+            add.category,
             String::new(),
             add.size,
             None,
@@ -3505,7 +3601,7 @@ impl App {
             let id = self.push_item(
                 page,
                 dest,
-                Category::Video,
+                add.category,
                 String::new(),
                 None,
                 None,
@@ -5247,6 +5343,12 @@ impl App {
             }
             // Every window at once (the frames after this one); saved by `follow_zoom`.
             Cmd::InterfaceSize(percent) => crate::scale::set(ctx, percent),
+            #[cfg(windows)]
+            Cmd::SmoothText(on) => {
+                crate::theme::set_smooth_text(ctx, on);
+                self.settings.smooth_text = on;
+                self.dirty = true;
+            }
             #[cfg(gpu)]
             Cmd::DrawWith(api) => {
                 // Chosen again after it failed here: its next start is tried.
@@ -5335,12 +5437,7 @@ impl App {
             },
             Cmd::VideoPage => {
                 if self.video_dlg.is_none() {
-                    let dir = self.settings.category_dir(Category::Video, &self.downloads);
-                    crate::videodlg::refresh_ytdlp(&self.rt);
-                    self.video_dlg = Some(
-                        crate::videodlg::VideoDialog::new(dir)
-                            .with_subs(self.settings.video_subs.clone()),
-                    );
+                    self.video_dlg = Some(self.video_dialog(None));
                 }
             }
             Cmd::AddMagnet => self.open_torrent_dialog(None, ctx),
@@ -5904,8 +6001,13 @@ impl App {
         {
             menu.insert(at + 1, self.theme_menu());
             menu.insert(at + 2, self.interface_size_menu());
+            #[cfg(windows)]
+            menu.insert(at + 3, self.text_menu());
             #[cfg(gpu)]
-            menu.insert(at + 3, self.draw_with_menu());
+            menu.insert(
+                at + if cfg!(windows) { 4 } else { 3 },
+                self.draw_with_menu(),
+            );
         }
         menu
     }
@@ -5942,6 +6044,8 @@ impl App {
         items.push(Radio("Aero", Cmd::Theme("aero"), true, on("aero")));
         // i18n: View → Theme: a style theme's name (Mac OS X's look), a name: keep "Aqua" as written
         items.push(Radio("Aqua", Cmd::Theme("aqua"), true, on("aqua")));
+        // i18n: View → Theme: a style theme's name (a white canvas, emerald fills, 6-point corners), a name: keep "Emerald" as written
+        items.push(Radio("Emerald", Cmd::Theme("emerald"), true, on("emerald")));
         let wal = crate::themefile::PYWAL;
         for e in self.theme_list.iter().filter(|e| e.path.is_some()) {
             if !files {
@@ -5981,6 +6085,20 @@ impl App {
             .collect();
         // i18n: View menu: submenu choosing how large MDM draws its windows and text (100 % to 200 %), as a browser's zoom
         MenuEntry::Sub("&Interface size", true, items)
+    }
+
+    /// View → Text (Windows): how the letters are drawn. Smooth is DirectWrite's natural look
+    /// (any size, each letter where it falls: easy to read on a dense screen); Classic is the
+    /// hinted whole-pixel look of Windows' old controls. Applies at once.
+    #[cfg(windows)]
+    fn text_menu(&self) -> MenuEntry<Cmd> {
+        let smooth = self.settings.smooth_text;
+        // i18n: View → Text: letters drawn smooth, as Windows' modern apps draw them, anti-aliased at any size
+        let a = MenuEntry::Radio("&Smooth", Cmd::SmoothText(true), true, smooth);
+        // i18n: View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
+        let b = MenuEntry::Radio("&Classic", Cmd::SmoothText(false), true, !smooth);
+        // i18n: View menu: submenu choosing how the text is drawn (smooth or classic)
+        MenuEntry::Sub("&Text", true, vec![a, b])
     }
 
     /// View → Draw with (#89, #206): OpenGL or the system's own graphics API (Direct3D on
@@ -8201,16 +8319,8 @@ impl App {
                 // A video's page, not a file (YouTube, Vimeo…): the video window looks it up.
                 Outcome::Done(new) if mdm_tools::pages::is_video_page(&new.url) => {
                     self.add_url = None;
-                    let dir = self.settings.category_dir(Category::Video, &self.downloads);
-                    crate::videodlg::refresh_ytdlp(&self.rt);
-                    self.video_dlg = Some(
-                        crate::videodlg::VideoDialog::for_page(
-                            dir,
-                            new.url.as_str(),
-                            Default::default(),
-                        )
-                        .with_subs(self.settings.video_subs.clone()),
-                    );
+                    self.video_dlg =
+                        Some(self.video_dialog(Some((new.url.as_str(), Default::default()))));
                 }
                 // An image gallery's page (Wikimedia Commons, Flickr…): gallery-dl (#58).
                 Outcome::Done(new) if mdm_tools::pages::is_gallery_page(&new.url) => {
@@ -8496,6 +8606,13 @@ impl App {
                 Outcome::Open => false,
                 Outcome::Closed => true,
                 Outcome::Done(add) => {
+                    if self.settings.change_folder_on_last
+                        && self
+                            .settings
+                            .keep_category_dir(add.category, &add.dir, &self.downloads)
+                    {
+                        self.dirty = true;
+                    }
                     self.torrent_dlg = None;
                     self.add_torrent(add);
                     true
@@ -8523,10 +8640,11 @@ impl App {
                 Outcome::Closed => self.video_dlg = None,
                 Outcome::Done(out) => {
                     // Options' "Change folder for this category on last selected", which
-                    // Download File Info follows through its box (#475).
+                    // Download File Info follows through its box (#475): Music's for a
+                    // sound-only choice (#611).
                     if self.settings.change_folder_on_last
                         && self.settings.keep_category_dir(
-                            Category::Video,
+                            v.category(),
                             &v.save_folder(),
                             &self.downloads,
                         )
@@ -8605,6 +8723,9 @@ impl App {
         }
         if let Some(mut fi) = self.file_info.take() {
             self.start_early(&mut fi);
+            // The downloads waiting their turn behind this one (a browser selection's arrive
+            // one by one): Cancel asks whether they are cancelled too (#394).
+            fi.waiting = self.file_info_waiting.len();
             let out = fi.show(ctx, &mut self.icons);
             if std::mem::take(&mut fi.new_category) {
                 self.category_for_file_info = true;
@@ -8635,6 +8756,12 @@ impl App {
             match out {
                 Outcome::Open => self.file_info = Some(fi),
                 Outcome::Closed => {
+                    if fi.cancel_all {
+                        // #394: "Yes" to "Cancel them too?": the browser's links waiting
+                        // behind this one are cancelled with it (the browser gave its own copy
+                        // up, and Download File Info was their step).
+                        self.file_info_waiting.clear();
+                    }
                     if let Some(id) = fi.early {
                         self.stop(id);
                         self.after_stop.push((id, None));
@@ -9171,6 +9298,42 @@ mod at_login_tests {
         // No icon at all (the tray couldn't be made): the grace from the start.
         assert_eq!(at_login(TRAY_GRACE, None, false), AtLogin::Minimize);
         assert_eq!(at_login(s(60), None, true), AtLogin::Minimize);
+    }
+}
+
+#[cfg(test)]
+mod tray_toggle_tests {
+    use super::{TRAY_TOGGLE_GRACE, tray_toggle_hide};
+    use std::time::Duration;
+
+    /// Left click toggles: hidden or minimized shows; frontmost hides; behind
+    /// shows; a click that just took the focus (Windows) still hides (#520).
+    #[test]
+    fn only_a_frontmost_window_hides() {
+        let ms = Duration::from_millis;
+        // Hidden or minimized: always shows.
+        assert!(!tray_toggle_hide(true, false, Some(false), None));
+        assert!(!tray_toggle_hide(false, true, Some(true), None));
+        // Frontmost: hides.
+        assert!(tray_toggle_hide(false, false, Some(true), None));
+        // Behind other windows: shows.
+        assert!(!tray_toggle_hide(
+            false,
+            false,
+            Some(false),
+            Some(TRAY_TOGGLE_GRACE + ms(1))
+        ));
+        assert!(!tray_toggle_hide(false, false, Some(false), None));
+        // The click stole the focus just now (Windows): still hides.
+        assert!(tray_toggle_hide(
+            false,
+            false,
+            Some(false),
+            Some(TRAY_TOGGLE_GRACE - ms(1))
+        ));
+        // Unknown focus: unsure means show, never hide.
+        assert!(!tray_toggle_hide(false, false, None, None));
+        assert!(!tray_toggle_hide(false, false, None, Some(Duration::ZERO)));
     }
 }
 

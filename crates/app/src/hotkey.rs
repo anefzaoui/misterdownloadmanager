@@ -489,8 +489,28 @@ impl Shortcut {
         self.modifier_count() + 1
     }
 
+    /// True if this combination is safe to register system-wide: requires at least one of `Ctrl`,
+    /// `Alt`, or `Cmd` (never `Shift` alone, which would swallow uppercase letters or shifted keys
+    /// across all applications), and refuses everyday single-modifier editing shortcuts (`Ctrl+A`,
+    /// `Ctrl+C`, `Ctrl+V`, `Ctrl+X`, `Ctrl+Z`, and `Cmd+A/C/V/X/Z`).
+    pub fn is_allowed(self) -> bool {
+        if !(self.ctrl || self.alt || self.cmd) {
+            return false;
+        }
+        let single_ctrl_or_cmd = !self.alt && !self.shift && (self.ctrl != self.cmd);
+        if single_ctrl_or_cmd
+            && matches!(
+                self.key,
+                HotKeyCode::A | HotKeyCode::C | HotKeyCode::V | HotKeyCode::X | HotKeyCode::Z
+            )
+        {
+            return false;
+        }
+        true
+    }
+
     /// Parse a saved shortcut string such as `"Cmd+U"`, `"Cmd+Shift+M"`, `"Ctrl+Alt+D"`, or
-    /// `"Alt+Space"`. Requires at least 1 modifier (2-key or 3-key combination).
+    /// `"Alt+Space"`. Requires at least 1 non-Shift modifier (2-key or 3-key combination).
     pub fn parse(raw: &str) -> Option<Self> {
         let trimmed = raw.trim();
         if trimmed.is_empty() {
@@ -525,7 +545,7 @@ impl Shortcut {
             cmd,
             key,
         };
-        (s.modifier_count() >= 1).then_some(s)
+        s.is_allowed().then_some(s)
     }
 
     /// Canonical string stored in `Settings::show_hide_hotkey` (e.g. `"Cmd+Shift+M"`).
@@ -659,7 +679,7 @@ pub fn capture_from_egui(input: &egui::InputState) -> CaptureEvent {
                 cmd: modifiers.mac_cmd,
                 key: code,
             };
-            if shortcut.modifier_count() >= 1 {
+            if shortcut.is_allowed() {
                 return CaptureEvent::Recorded(shortcut);
             }
         }
@@ -704,18 +724,21 @@ pub fn pending_modifiers_preview(modifiers: egui::Modifiers) -> Option<String> {
 pub struct GlobalHotkey {
     current: String,
     fired: Arc<AtomicBool>,
+    taken: Arc<AtomicBool>,
     #[cfg(target_os = "macos")]
-    inner: Option<macos::CarbonHotKey>,
+    inner: Option<crate::unix::GlobalHotKeyOs>,
     #[cfg(windows)]
-    inner: Option<win::WinHotKey>,
+    inner: Option<crate::win32::GlobalHotKeyOs>,
 }
 
 impl GlobalHotkey {
     pub fn new(ctx: &egui::Context, spec: &str) -> Self {
         let fired = Arc::new(AtomicBool::new(false));
+        let taken = Arc::new(AtomicBool::new(false));
         let mut h = Self {
             current: String::new(),
             fired,
+            taken,
             #[cfg(target_os = "macos")]
             inner: None,
             #[cfg(windows)]
@@ -732,7 +755,7 @@ impl GlobalHotkey {
             .unwrap_or_default();
         if self.current == normalized {
             #[cfg(target_os = "macos")]
-            if normalized.is_empty() || self.inner.is_some() {
+            if normalized.is_empty() || self.inner.is_some() || self.taken.load(Ordering::SeqCst) {
                 return;
             }
             #[cfg(not(target_os = "macos"))]
@@ -740,13 +763,18 @@ impl GlobalHotkey {
         }
         self.current = normalized.clone();
         self.fired.store(false, Ordering::SeqCst);
+        self.taken.store(false, Ordering::SeqCst);
 
         #[cfg(target_os = "macos")]
         {
             self.inner = None;
             if let Some(shortcut) = Shortcut::parse(&normalized) {
-                self.inner =
-                    macos::CarbonHotKey::register(shortcut, self.fired.clone(), ctx.clone());
+                self.inner = crate::unix::GlobalHotKeyOs::register(
+                    shortcut,
+                    self.fired.clone(),
+                    self.taken.clone(),
+                    ctx.clone(),
+                );
             }
         }
 
@@ -754,7 +782,12 @@ impl GlobalHotkey {
         {
             self.inner = None;
             if let Some(shortcut) = Shortcut::parse(&normalized) {
-                self.inner = win::WinHotKey::register(shortcut, self.fired.clone(), ctx.clone());
+                self.inner = crate::win32::GlobalHotKeyOs::register(
+                    shortcut,
+                    self.fired.clone(),
+                    self.taken.clone(),
+                    ctx.clone(),
+                );
             }
         }
 
@@ -766,242 +799,10 @@ impl GlobalHotkey {
     pub fn take_fired(&self) -> bool {
         self.fired.swap(false, Ordering::SeqCst)
     }
-}
 
-#[cfg(target_os = "macos")]
-#[allow(unsafe_code)]
-mod macos {
-    use super::Shortcut;
-    use std::ffi::c_void;
-    use std::sync::Arc;
-    use std::sync::atomic::{AtomicBool, Ordering};
-
-    type OSStatus = i32;
-    type EventTargetRef = *mut c_void;
-    type EventHandlerCallRef = *mut c_void;
-    type EventRef = *mut c_void;
-    type EventHandlerRef = *mut c_void;
-    type EventHotKeyRef = *mut c_void;
-    type EventHandlerUPP =
-        unsafe extern "C" fn(EventHandlerCallRef, EventRef, *mut c_void) -> OSStatus;
-
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    struct EventTypeSpec {
-        event_class: u32,
-        event_kind: u32,
-    }
-
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    struct EventHotKeyID {
-        signature: u32,
-        id: u32,
-    }
-
-    const K_EVENT_CLASS_KEYBOARD: u32 = u32::from_be_bytes(*b"keyb");
-    const K_EVENT_HOT_KEY_PRESSED: u32 = 5;
-    const HOTKEY_SIGNATURE: u32 = u32::from_be_bytes(*b"MDMH");
-
-    #[link(name = "Carbon", kind = "framework")]
-    unsafe extern "C" {
-        fn GetApplicationEventTarget() -> EventTargetRef;
-        fn InstallEventHandler(
-            in_target: EventTargetRef,
-            in_handler: EventHandlerUPP,
-            in_num_types: u32,
-            in_list: *const EventTypeSpec,
-            in_user_data: *mut c_void,
-            out_ref: *mut EventHandlerRef,
-        ) -> OSStatus;
-        fn RemoveEventHandler(in_handler_ref: EventHandlerRef) -> OSStatus;
-        fn RegisterEventHotKey(
-            in_hot_key_code: u32,
-            in_hot_key_modifiers: u32,
-            in_hot_key_id: EventHotKeyID,
-            in_target: EventTargetRef,
-            in_options: u32,
-            out_ref: *mut EventHotKeyRef,
-        ) -> OSStatus;
-        fn UnregisterEventHotKey(in_hot_key_ref: EventHotKeyRef) -> OSStatus;
-    }
-
-    struct CallbackCtx {
-        fired: Arc<AtomicBool>,
-        ctx: egui::Context,
-    }
-
-    unsafe extern "C" fn hotkey_handler(
-        _next: EventHandlerCallRef,
-        _event: EventRef,
-        user_data: *mut c_void,
-    ) -> OSStatus {
-        if !user_data.is_null() {
-            // SAFETY: `user_data` points to `Box<CallbackCtx>` owned by `CarbonHotKey` until after
-            // `RemoveEventHandler` completes in `Drop`.
-            let cb = unsafe { &*(user_data as *const CallbackCtx) };
-            cb.fired.store(true, Ordering::SeqCst);
-            cb.ctx.request_ui_pass(egui::ViewportId::ROOT);
-            cb.ctx.request_repaint();
-        }
-        0
-    }
-
-    pub struct CarbonHotKey {
-        hotkey_ref: EventHotKeyRef,
-        handler_ref: EventHandlerRef,
-        _cb: Box<CallbackCtx>,
-    }
-
-    impl CarbonHotKey {
-        pub fn register(
-            shortcut: Shortcut,
-            fired: Arc<AtomicBool>,
-            ctx: egui::Context,
-        ) -> Option<Self> {
-            let mut cb = Box::new(CallbackCtx { fired, ctx });
-            let user_data = (&mut *cb as *mut CallbackCtx).cast::<c_void>();
-            let spec = EventTypeSpec {
-                event_class: K_EVENT_CLASS_KEYBOARD,
-                event_kind: K_EVENT_HOT_KEY_PRESSED,
-            };
-            let mut handler_ref: EventHandlerRef = std::ptr::null_mut();
-            let mut hotkey_ref: EventHotKeyRef = std::ptr::null_mut();
-
-            // SAFETY: called on the main UI thread; installs a Carbon application event handler
-            // and registers the global hotkey with HIToolbox.
-            unsafe {
-                let target = GetApplicationEventTarget();
-                if target.is_null() {
-                    return None;
-                }
-                let status = InstallEventHandler(
-                    target,
-                    hotkey_handler,
-                    1,
-                    &spec,
-                    user_data,
-                    &mut handler_ref,
-                );
-                if status != 0 || handler_ref.is_null() {
-                    tracing::warn!("global hotkey: InstallEventHandler failed ({status})");
-                    return None;
-                }
-                let id = EventHotKeyID {
-                    signature: HOTKEY_SIGNATURE,
-                    id: 1,
-                };
-                let reg_status = RegisterEventHotKey(
-                    shortcut.key.carbon_vk(),
-                    shortcut.carbon_modifiers(),
-                    id,
-                    target,
-                    0,
-                    &mut hotkey_ref,
-                );
-                if reg_status != 0 || hotkey_ref.is_null() {
-                    let _ = RemoveEventHandler(handler_ref);
-                    tracing::warn!(
-                        "global hotkey: RegisterEventHotKey({}) failed ({reg_status})",
-                        shortcut.canonical()
-                    );
-                    return None;
-                }
-            }
-            tracing::info!("global hotkey registered: {}", shortcut.canonical());
-            Some(Self {
-                hotkey_ref,
-                handler_ref,
-                _cb: cb,
-            })
-        }
-    }
-
-    impl Drop for CarbonHotKey {
-        fn drop(&mut self) {
-            // SAFETY: unregisters the hotkey and removes the handler before `_cb` is dropped.
-            unsafe {
-                if !self.hotkey_ref.is_null() {
-                    let _ = UnregisterEventHotKey(self.hotkey_ref);
-                    self.hotkey_ref = std::ptr::null_mut();
-                }
-                if !self.handler_ref.is_null() {
-                    let _ = RemoveEventHandler(self.handler_ref);
-                    self.handler_ref = std::ptr::null_mut();
-                }
-            }
-        }
-    }
-}
-
-#[cfg(windows)]
-#[allow(unsafe_code)]
-mod win {
-    use super::Shortcut;
-    use std::sync::Arc;
-    use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
-    use windows_sys::Win32::System::Threading::GetCurrentThreadId;
-    use windows_sys::Win32::UI::Input::KeyboardAndMouse::{RegisterHotKey, UnregisterHotKey};
-    use windows_sys::Win32::UI::WindowsAndMessaging::{
-        GetMessageW, MSG, PostThreadMessageW, WM_HOTKEY, WM_QUIT,
-    };
-
-    pub struct WinHotKey {
-        thread_id: Arc<AtomicU32>,
-        handle: Option<std::thread::JoinHandle<()>>,
-    }
-
-    impl WinHotKey {
-        pub fn register(
-            shortcut: Shortcut,
-            fired: Arc<AtomicBool>,
-            ctx: egui::Context,
-        ) -> Option<Self> {
-            let thread_id = Arc::new(AtomicU32::new(0));
-            let tid_clone = thread_id.clone();
-            let vk = shortcut.key.win32_vk();
-            let mods = shortcut.win32_modifiers();
-            let handle = std::thread::Builder::new()
-                .name("mdm-global-hotkey".into())
-                .spawn(move || {
-                    // SAFETY: standard Win32 message queue thread for `RegisterHotKey`.
-                    unsafe {
-                        tid_clone.store(GetCurrentThreadId(), Ordering::SeqCst);
-                        if RegisterHotKey(std::ptr::null_mut(), 1, mods, vk) == 0 {
-                            return;
-                        }
-                        let mut msg: MSG = std::mem::zeroed();
-                        while GetMessageW(&mut msg, std::ptr::null_mut(), 0, 0) > 0 {
-                            if msg.message == WM_HOTKEY {
-                                fired.store(true, Ordering::SeqCst);
-                                ctx.request_ui_pass(egui::ViewportId::ROOT);
-                                ctx.request_repaint();
-                            }
-                        }
-                        let _ = UnregisterHotKey(std::ptr::null_mut(), 1);
-                    }
-                })
-                .ok()?;
-            Some(Self {
-                thread_id,
-                handle: Some(handle),
-            })
-        }
-    }
-
-    impl Drop for WinHotKey {
-        fn drop(&mut self) {
-            let tid = self.thread_id.load(Ordering::SeqCst);
-            if tid != 0 {
-                // SAFETY: posts `WM_QUIT` to our own hotkey listener thread.
-                unsafe {
-                    let _ = PostThreadMessageW(tid, WM_QUIT, 0, 0);
-                }
-            }
-            if let Some(h) = self.handle.take() {
-                let _ = h.join();
-            }
-        }
+    /// Returns `true` if the chosen shortcut could not be registered because another program holds it.
+    pub fn is_taken(&self) -> bool {
+        self.taken.load(Ordering::SeqCst)
     }
 }
 
@@ -1042,5 +843,33 @@ mod tests {
         assert!(Shortcut::parse("U").is_none());
         assert!(Shortcut::parse("Space").is_none());
         assert!(Shortcut::parse("").is_none());
+    }
+
+    #[test]
+    fn rejects_shift_alone_and_everyday_editing_shortcuts() {
+        for forbidden in [
+            "Shift+A",
+            "Shift+1",
+            "Shift+Enter",
+            "Ctrl+A",
+            "Ctrl+C",
+            "Ctrl+V",
+            "Ctrl+X",
+            "Ctrl+Z",
+            "Cmd+A",
+            "Cmd+C",
+            "Cmd+V",
+            "Cmd+X",
+            "Cmd+Z",
+        ] {
+            assert!(
+                Shortcut::parse(forbidden).is_none(),
+                "{forbidden} should be rejected"
+            );
+        }
+        // Two-modifier combinations with Shift or Alt remain allowed.
+        assert!(Shortcut::parse("Ctrl+Shift+A").is_some());
+        assert!(Shortcut::parse("Cmd+Shift+C").is_some());
+        assert!(Shortcut::parse("Ctrl+Alt+V").is_some());
     }
 }

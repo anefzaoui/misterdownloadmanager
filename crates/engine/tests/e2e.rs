@@ -1499,6 +1499,61 @@ async fn stop_is_prompt_under_a_low_limit() {
     );
 }
 
+/// #621: a limit raised or removed while connections wait under the old one applies to those
+/// waits at once. Here they wait at 256 bytes/s, where a chunk owes half a minute (the wait used
+/// to be sat out: 1 MiB took 29 s after the limit went up), then the limit goes away (the global
+/// cap) or up four million times (this download's).
+#[tokio::test]
+async fn a_raised_limit_wakes_the_connections_waiting() {
+    let s = server("").await;
+    for (seed, global) in [(44u64, true), (43, false)] {
+        let dir = tempfile::tempdir().unwrap();
+        let req = Request {
+            url: s
+                .url(&format!("/gen/1M/raised.bin?seed={seed}"))
+                .parse()
+                .unwrap(),
+            headers: Default::default(),
+            dest: Destination::Dir(dir.path().to_owned()),
+        };
+        let cap = std::sync::Arc::new(mdm_engine::limiter::Limiter::new(Some(256)));
+        let opts = Options {
+            speed_limit: (!global).then_some(256),
+            global: global.then(|| cap.clone()),
+            ..fast_opts()
+        };
+        let dl = Download::start(req, opts);
+        // Long enough for the connections to be waiting their turn.
+        tokio::time::sleep(std::time::Duration::from_secs(2)).await;
+        let before = dl.snapshot().downloaded;
+        let raised = std::time::Instant::now();
+        if global {
+            cap.set(None);
+        } else {
+            dl.set_speed_limit(Some(1 << 30));
+        }
+        let out = tokio::time::timeout(std::time::Duration::from_secs(60), dl.wait())
+            .await
+            .expect("still waiting a minute after the limit went up")
+            .expect("download succeeds");
+        let took = raised.elapsed();
+        println!("global: {global}, {before} bytes before, the rest in {took:?}");
+        assert_eq!(out.size, 1 << 20);
+        let mut want = vec![0; 1 << 20];
+        content::fill(seed, 0, &mut want);
+        assert!(
+            std::fs::read(&out.path).unwrap() == want,
+            "content mismatch"
+        );
+        // Unlimited, 1 MiB from this machine takes well under a second; the slack is for a
+        // busy one. The old waits took a minute.
+        assert!(
+            took < std::time::Duration::from_secs(10),
+            "global: {global}, took {took:?} after the limit went up"
+        );
+    }
+}
+
 #[tokio::test]
 async fn the_finished_file_can_take_the_servers_date() {
     // Options → Downloads → "Set file creation date as provided by the server": the lab server

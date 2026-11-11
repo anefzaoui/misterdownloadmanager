@@ -2087,6 +2087,177 @@ pub fn macos_activate_and_show() {
     }
 }
 
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+mod macos_hotkey {
+    use crate::hotkey::Shortcut;
+    use std::ffi::c_void;
+    use std::sync::Arc;
+    use std::sync::atomic::{AtomicBool, Ordering};
+
+    type OSStatus = i32;
+    type EventTargetRef = *mut c_void;
+    type EventHandlerCallRef = *mut c_void;
+    type EventRef = *mut c_void;
+    type EventHandlerRef = *mut c_void;
+    type EventHotKeyRef = *mut c_void;
+    type EventHandlerUPP =
+        unsafe extern "C" fn(EventHandlerCallRef, EventRef, *mut c_void) -> OSStatus;
+
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    struct EventTypeSpec {
+        event_class: u32,
+        event_kind: u32,
+    }
+
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    struct EventHotKeyID {
+        signature: u32,
+        id: u32,
+    }
+
+    const K_EVENT_CLASS_KEYBOARD: u32 = u32::from_be_bytes(*b"keyb");
+    const K_EVENT_HOT_KEY_PRESSED: u32 = 5;
+    const HOTKEY_SIGNATURE: u32 = u32::from_be_bytes(*b"MDMH");
+
+    #[link(name = "Carbon", kind = "framework")]
+    unsafe extern "C" {
+        fn GetApplicationEventTarget() -> EventTargetRef;
+        fn InstallEventHandler(
+            in_target: EventTargetRef,
+            in_handler: EventHandlerUPP,
+            in_num_types: u32,
+            in_list: *const EventTypeSpec,
+            in_user_data: *mut c_void,
+            out_ref: *mut EventHandlerRef,
+        ) -> OSStatus;
+        fn RemoveEventHandler(in_handler_ref: EventHandlerRef) -> OSStatus;
+        fn RegisterEventHotKey(
+            in_hot_key_code: u32,
+            in_hot_key_modifiers: u32,
+            in_hot_key_id: EventHotKeyID,
+            in_target: EventTargetRef,
+            in_options: u32,
+            out_ref: *mut EventHotKeyRef,
+        ) -> OSStatus;
+        fn UnregisterEventHotKey(in_hot_key_ref: EventHotKeyRef) -> OSStatus;
+    }
+
+    struct CallbackCtx {
+        fired: Arc<AtomicBool>,
+        ctx: egui::Context,
+    }
+
+    unsafe extern "C" fn hotkey_handler(
+        _next: EventHandlerCallRef,
+        _event: EventRef,
+        user_data: *mut c_void,
+    ) -> OSStatus {
+        if !user_data.is_null() {
+            // SAFETY: `user_data` points to `Box<CallbackCtx>` owned by `GlobalHotKeyOs` until
+            // after `RemoveEventHandler` completes in `Drop`.
+            let cb = unsafe { &*(user_data as *const CallbackCtx) };
+            cb.fired.store(true, Ordering::SeqCst);
+            cb.ctx.request_ui_pass(egui::ViewportId::ROOT);
+            cb.ctx.request_repaint();
+        }
+        0
+    }
+
+    pub struct GlobalHotKeyOs {
+        hotkey_ref: EventHotKeyRef,
+        handler_ref: EventHandlerRef,
+        _cb: Box<CallbackCtx>,
+    }
+
+    impl GlobalHotKeyOs {
+        pub fn register(
+            shortcut: Shortcut,
+            fired: Arc<AtomicBool>,
+            taken: Arc<AtomicBool>,
+            ctx: egui::Context,
+        ) -> Option<Self> {
+            let mut cb = Box::new(CallbackCtx { fired, ctx });
+            let user_data = (&mut *cb as *mut CallbackCtx).cast::<c_void>();
+            let spec = EventTypeSpec {
+                event_class: K_EVENT_CLASS_KEYBOARD,
+                event_kind: K_EVENT_HOT_KEY_PRESSED,
+            };
+            let mut handler_ref: EventHandlerRef = std::ptr::null_mut();
+            let mut hotkey_ref: EventHotKeyRef = std::ptr::null_mut();
+
+            // SAFETY: called on the main UI thread; installs a Carbon application event handler
+            // and registers the global hotkey with HIToolbox.
+            unsafe {
+                let target = GetApplicationEventTarget();
+                if target.is_null() {
+                    return None;
+                }
+                let status = InstallEventHandler(
+                    target,
+                    hotkey_handler,
+                    1,
+                    &spec,
+                    user_data,
+                    &mut handler_ref,
+                );
+                if status != 0 || handler_ref.is_null() {
+                    tracing::warn!("global hotkey: InstallEventHandler failed ({status})");
+                    return None;
+                }
+                let id = EventHotKeyID {
+                    signature: HOTKEY_SIGNATURE,
+                    id: 1,
+                };
+                let reg_status = RegisterEventHotKey(
+                    shortcut.key.carbon_vk(),
+                    shortcut.carbon_modifiers(),
+                    id,
+                    target,
+                    0,
+                    &mut hotkey_ref,
+                );
+                if reg_status != 0 || hotkey_ref.is_null() {
+                    let _ = RemoveEventHandler(handler_ref);
+                    taken.store(true, Ordering::SeqCst);
+                    tracing::warn!(
+                        "global hotkey: RegisterEventHotKey({}) failed ({reg_status})",
+                        shortcut.canonical()
+                    );
+                    return None;
+                }
+            }
+            tracing::info!("global hotkey registered: {}", shortcut.canonical());
+            Some(Self {
+                hotkey_ref,
+                handler_ref,
+                _cb: cb,
+            })
+        }
+    }
+
+    impl Drop for GlobalHotKeyOs {
+        fn drop(&mut self) {
+            // SAFETY: unregisters the hotkey and removes the handler before `_cb` is dropped.
+            unsafe {
+                if !self.hotkey_ref.is_null() {
+                    let _ = UnregisterEventHotKey(self.hotkey_ref);
+                    self.hotkey_ref = std::ptr::null_mut();
+                }
+                if !self.handler_ref.is_null() {
+                    let _ = RemoveEventHandler(self.handler_ref);
+                    self.handler_ref = std::ptr::null_mut();
+                }
+            }
+        }
+    }
+}
+
+#[cfg(target_os = "macos")]
+pub use macos_hotkey::GlobalHotKeyOs;
+
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
     use zbus::zvariant::Value;
