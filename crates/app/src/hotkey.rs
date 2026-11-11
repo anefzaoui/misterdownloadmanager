@@ -476,6 +476,7 @@ impl HotKeyCode {
 
 impl Shortcut {
     /// Number of modifiers in this shortcut (1 = 2-key combo, 2 = 3-key combo).
+    #[cfg(test)]
     pub fn modifier_count(self) -> usize {
         usize::from(self.ctrl)
             + usize::from(self.alt)
