@@ -78,8 +78,9 @@ pub struct VideoDialog {
     video: Option<(Video, Vec<Choice>)>,
     chosen: usize,
     /// First choice shown (the list scrolls by whole rows).
-    /// The choices list's scroll and selection.
+    /// The choices list's scroll and selection: the Video box's, when Audio has its own.
     rows: winui::RowList,
+    audio_rows: winui::RowList,
     error: Option<String>,
     focused: bool,
     /// Download Now (true) or Later, once chosen.
@@ -170,6 +171,7 @@ impl VideoDialog {
             video: None,
             chosen: 0,
             rows: Default::default(),
+            audio_rows: Default::default(),
             error: None,
             focused: false,
             start_now: None,
@@ -239,6 +241,7 @@ impl VideoDialog {
         let choices = mdm_tools::resolve::choices(&v, merge);
         self.chosen = 0;
         self.rows = Default::default();
+        self.audio_rows = Default::default();
         self.error = choices
             .is_empty()
             .then(|| crate::i18n::t("No video this can download on that page").into());
@@ -332,15 +335,23 @@ impl VideoDialog {
                         .strip_prefix("audio only ")
                         .is_some_and(|l| l.starts_with(&prefix))
             })?;
-            let row = choice_rows(choices)
-                .iter()
-                .position(|r| *r == Row::Choice(i));
-            Some((i, row.unwrap_or(i)))
+            let (video, audio) = sections(choices);
+            let split = !video.is_empty() && !audio.is_empty();
+            let row = |ids: &[usize]| ids.iter().position(|&c| c == i);
+            Some(match row(&audio).filter(|_| split) {
+                Some(row) => (i, row, true),
+                None => (i, row(&video).unwrap_or(i), false),
+            })
         });
-        if let Some((i, row)) = found {
+        if let Some((i, row, audio)) = found {
             self.chosen = i;
-            // The list shows 8 rows.
-            self.rows.show_row(row, 8);
+            let st = if audio {
+                &mut self.audio_rows
+            } else {
+                &mut self.rows
+            };
+            // The boxes show 7 rows (one box alone, 8): 7 shows the row in either.
+            st.show_row(row, 7);
             self.name_from_choice();
         }
     }
@@ -813,88 +824,47 @@ impl VideoDialog {
             // The status line stops short of an Install button beside it.
             list.middle(ui, o, installing.is_none().then_some(status_right));
         } else {
-            // The choices: the shared row list.
+            // The choices: one box, or with both kinds a Video box and an Audio box side by
+            // side, each under its heading, one choice selected across them.
             let list = r(o, 11.0, 94.0, 478.0, 150.0);
-            let mut picked = None;
             let choices = self.video.as_ref().map_or(&[][..], |(_, c)| c.as_slice());
-            // The video choices under a "Video" heading, the audio ones under "Audio".
-            let rows = choice_rows(choices);
-            let at = rows.iter().position(|r| *r == Row::Choice(self.chosen));
-            self.rows.selected = at;
-            // i18n: what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
-            self.rows.name = crate::i18n::t("Quality");
-            let ev = winui::row_list(
-                ui,
-                "video-choices",
-                list,
-                rows.len(),
-                17.0,
-                &mut self.rows,
-                |ui, clip, i, row, look| {
-                    let c = match rows[i] {
-                        Row::Choice(c) => &choices[c],
-                        Row::Head(audio) => {
-                            let head = if audio {
-                                // i18n: heading over the sound-only choices in Download video's list of formats
-                                crate::i18n::t("Audio")
-                            } else {
-                                // i18n: heading over the video choices (1080p, 720p…) in Download video's list of formats
-                                crate::i18n::t("Video")
-                            };
-                            text(
-                                clip,
-                                row.left() + 4.0,
-                                row.top() + 12.0,
-                                head,
-                                winui::MUTED(),
-                            );
-                            look.name = head.to_owned();
-                            return;
-                        }
-                    };
-                    // The icon of the file this choice gives, then the format ("1080p mp4, 60
-                    // fps", left to right); its size at the trailing edge.
-                    let file = format!("video.{}", c.ext);
-                    let kind = crate::fileicons::Kind::File(&file);
-                    crate::fileicons::paint_at(
-                        ui,
-                        clip,
-                        kind,
-                        pos2(row.left() + 4.0, row.top()),
-                        16.0,
-                    );
-                    let label = section_label(&c.label);
-                    let x = row.left() + 4.0 + crate::fileicons::INDENT;
-                    text(clip, x, row.top() + 12.0, &label, look.ink);
-                    let size = c
-                        .size
-                        // i18n: the video's file size is not known
-                        .map_or(
-                            crate::i18n::t("size unknown").into(),
-                            crate::dialogs::dialog_size,
-                        );
-                    // Read as the format and its size (#95: the choices were blank to a screen reader
-                    // and alike to UI Automation), in the user's language, as drawn.
-                    look.name = format!("{label}, {size}");
-                    winui::text_right(clip, row.right() - 6.0, row.top() + 12.0, &size, look.ink);
-                },
-            );
-            if ev.focused
-                && self
-                    .rows
-                    .type_to(ui, "video-choices", rows.len(), |i| match rows[i] {
-                        // As shown: typing "mp3" finds the MP3 choices.
-                        Row::Choice(c) => section_label(&choices[c].label),
-                        Row::Head(_) => String::new(),
-                    })
-            {
-                picked = self.rows.selected;
-            }
-            if let Some(i) = ev.picked {
-                picked = Some(i);
-            }
-            // A heading picked (a click, Up or Down onto it): the choice past it.
-            if let Some(c) = picked.and_then(|i| choice_at(&rows, i, at)) {
+            let (video, audio) = sections(choices);
+            let picked = if video.is_empty() || audio.is_empty() {
+                let all: Vec<usize> = (0..choices.len()).collect();
+                // i18n: what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
+                self.rows.name = crate::i18n::t("Quality");
+                let st = &mut self.rows;
+                choice_list(
+                    ui,
+                    "video-choices",
+                    list,
+                    choices,
+                    &all,
+                    self.chosen,
+                    true,
+                    st,
+                )
+            } else {
+                // i18n: heading over the video choices (1080p, 720p…) in Download video's list of formats
+                let v = crate::i18n::t("Video");
+                // i18n: heading over the sound-only choices (MP3, original M4A…) in Download video, beside the video ones
+                let a = crate::i18n::t("Audio");
+                text(&p, o.x + 12.0, o.y + 105.0, v, winui::MUTED());
+                text(&p, o.x + 254.0, o.y + 105.0, a, winui::MUTED());
+                self.rows.name = v;
+                self.audio_rows.name = a;
+                let (vl, al) = (
+                    r(o, 11.0, 110.0, 236.0, 134.0),
+                    r(o, 253.0, 110.0, 236.0, 134.0),
+                );
+                let chosen = self.chosen;
+                let st = &mut self.rows;
+                let pv = choice_list(ui, "video-choices", vl, choices, &video, chosen, false, st);
+                let st = &mut self.audio_rows;
+                let pa = choice_list(ui, "audio-choices", al, choices, &audio, chosen, false, st);
+                pv.or(pa)
+            };
+            if let Some(c) = picked {
                 self.chosen = c;
                 self.name_from_choice();
             }
@@ -1353,47 +1323,62 @@ fn lookup_error(e: &str, sent: bool, store: Option<&mdm_tools::proc::BrowserCook
     crate::i18n::t(plain).to_owned()
 }
 
-/// One row of Download video's list of formats: a section's heading (true: Audio), or a choice
-/// (its index in the choices).
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-enum Row {
-    Head(bool),
-    Choice(usize),
+/// Download video's choices in two sections, their indexes in `choices`: the video ones, then
+/// the sound-only ones.
+fn sections(choices: &[Choice]) -> (Vec<usize>, Vec<usize>) {
+    (0..choices.len()).partition(|&i| !choices[i].label.starts_with(mdm_tools::resolve::AUDIO_ONLY))
 }
 
-/// The list's rows: the video choices under a Video heading, then the audio ones under an Audio
-/// heading; a section without choices has no heading.
-fn choice_rows(choices: &[Choice]) -> Vec<Row> {
-    let audio = |c: &Choice| c.label.starts_with(mdm_tools::resolve::AUDIO_ONLY);
-    let mut rows = Vec::with_capacity(choices.len() + 2);
-    for section in [false, true] {
-        let mut head = Some(Row::Head(section));
-        for (i, _) in choices
-            .iter()
-            .enumerate()
-            .filter(|(_, c)| audio(c) == section)
-        {
-            rows.extend(head.take());
-            rows.push(Row::Choice(i));
+/// One box of Download video's choices: those of `ids` (indexes in `choices`), `chosen`
+/// selected when it is one of them. `full`: labelled "Audio only…", no Audio heading over the
+/// box. Returns the choice clicked, moved to with the keys or typed.
+#[allow(clippy::too_many_arguments)]
+fn choice_list(
+    ui: &mut Ui,
+    id: &str,
+    rc: egui::Rect,
+    choices: &[Choice],
+    ids: &[usize],
+    chosen: usize,
+    full: bool,
+    st: &mut winui::RowList,
+) -> Option<usize> {
+    let label = |c: &Choice| {
+        if full {
+            choice_label(&c.label)
+        } else {
+            section_label(&c.label)
         }
-    }
-    rows
-}
-
-/// The choice row `i` stands for: its own, or for a heading the nearest choice the way the
-/// selection moved from row `from` (so Up and Down pass over headings, Home lands on a choice).
-fn choice_at(rows: &[Row], i: usize, from: Option<usize>) -> Option<usize> {
-    let choice = |r: &Row| match r {
-        Row::Choice(c) => Some(*c),
-        Row::Head(_) => None,
     };
-    let after = rows.get(i..)?.iter().find_map(choice);
-    let before = rows[..i].iter().rev().find_map(choice);
-    if from.is_some_and(|f| f > i) {
-        before.or(after)
-    } else {
-        after.or(before)
+    st.selected = ids.iter().position(|&c| c == chosen);
+    let ev = winui::row_list(ui, id, rc, ids.len(), 17.0, st, |ui, clip, i, row, look| {
+        let c = &choices[ids[i]];
+        // The icon of the file this choice gives, then the format ("1080p mp4, 60 fps", left
+        // to right); its size at the trailing edge.
+        let file = format!("video.{}", c.ext);
+        let kind = crate::fileicons::Kind::File(&file);
+        crate::fileicons::paint_at(ui, clip, kind, pos2(row.left() + 4.0, row.top()), 16.0);
+        let label = label(c);
+        let x = row.left() + 4.0 + crate::fileicons::INDENT;
+        text(clip, x, row.top() + 12.0, &label, look.ink);
+        let size = c
+            .size
+            // i18n: the video's file size is not known
+            .map_or(
+                crate::i18n::t("size unknown").into(),
+                crate::dialogs::dialog_size,
+            );
+        // Read as the format and its size (#95: the choices were blank to a screen reader and
+        // alike to UI Automation), in the user's language, as drawn.
+        look.name = format!("{label}, {size}");
+        winui::text_right(clip, row.right() - 6.0, row.top() + 12.0, &size, look.ink);
+    });
+    let mut picked = None;
+    // As shown: typing "mp3" finds the MP3 choices.
+    if ev.focused && st.type_to(ui, id, ids.len(), |i| label(&choices[ids[i]])) {
+        picked = st.selected;
     }
+    ev.picked.or(picked).map(|i| ids[i])
 }
 
 /// A choice's label in its section of Download video's list: an audio choice without the "Audio
@@ -1447,36 +1432,14 @@ mod tests {
         };
         let both = [
             c("1080p MP4"),
-            c("720p MP4"),
             c("Audio only original M4A"),
+            c("720p MP4"),
             c("Audio only MP3 VBR"),
         ];
-        let rows = choice_rows(&both);
-        use Row::{Choice as C, Head as H};
-        assert_eq!(rows, [H(false), C(0), C(1), H(true), C(2), C(3)]);
-        // A section without choices has no heading.
-        assert_eq!(choice_rows(&both[..2]), [H(false), C(0), C(1)]);
-        assert_eq!(choice_rows(&both[2..]), [H(true), C(0), C(1)]);
-        assert!(choice_rows(&[]).is_empty());
-        // A choice is itself; a heading, the choice the way the selection moved.
-        assert_eq!(choice_at(&rows, 4, Some(4)), Some(2));
-        assert_eq!(
-            choice_at(&rows, 3, Some(2)),
-            Some(2),
-            "Down onto Audio: its first choice"
-        );
-        assert_eq!(
-            choice_at(&rows, 3, Some(4)),
-            Some(1),
-            "Up onto Audio: the last video"
-        );
-        assert_eq!(
-            choice_at(&rows, 0, Some(1)),
-            Some(0),
-            "Home, or Up at the top: the first"
-        );
-        assert_eq!(choice_at(&rows, 0, None), Some(0));
-        assert_eq!(choice_at(&rows, 9, None), None);
+        // Each kind in its own box, in the order looked up.
+        assert_eq!(sections(&both), (vec![0, 2], vec![1, 3]));
+        assert_eq!(sections(&both[..1]), (vec![0], vec![]));
+        assert_eq!(sections(&[]), (vec![], vec![]));
         // Each labelled for its section: no "Audio only" under the Audio heading.
         let ltr = crate::i18n::ltr;
         assert_eq!(section_label("1080p MP4"), ltr("1080p MP4"));
