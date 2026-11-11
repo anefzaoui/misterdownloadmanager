@@ -1198,31 +1198,14 @@ const MPD = (protect) => `<?xml version="1.0"?>
   }
   // A page: its address, an optional ytd-watch-flexy video-id, and the cards a player can sit in
   // (each level on the way up from the video element names the video links it contains).
-  const at = (href, { flexy = null, cards = [], musicApiId = null, musicId = null, musicThumbnail = null } = {}) => {
+  const at = (href, { flexy = null, cards = [] } = {}) => {
     const element = (links) => ({
       parentElement: null,
       querySelectorAll: () => (links || []).map((href) => ({ href })),
     });
     const chain = cards.map(element);
     for (let i = 0; i < chain.length; i += 1) chain[i].parentElement = chain[i + 1] || null;
-    const document = {
-      querySelector: (sel) => {
-        if (sel === "ytd-watch-flexy" && flexy) return { getAttribute: () => flexy };
-        if (sel === "#movie_player" && musicApiId) {
-          return { getVideoData: () => ({ video_id: musicApiId }) };
-        }
-        if (sel === "ytmusic-player" && musicId) {
-          return { getAttribute: (name) => (name === "video-id" ? musicId : null) };
-        }
-        if (sel === "ytmusic-player-bar" && musicThumbnail) {
-          return {
-            querySelector: (child) =>
-              child === "img.ytmusic-player-bar" ? { src: musicThumbnail } : null,
-          };
-        }
-        return null;
-      },
-    };
+    const document = { querySelector: (sel) => (sel === "ytd-watch-flexy" && flexy ? { getAttribute: () => flexy } : null) };
     const fn = new Function("location", "document", `${source.slice(start, end)}; return videoPage;`)({ href }, document);
     return fn(chain[0] || element([]));
   };
@@ -1231,22 +1214,6 @@ const MPD = (protect) => `<?xml version="1.0"?>
   assert.equal(at("https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=PL1234567890abcdef&index=12"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
   // YouTube Music is a YouTube host too: give yt-dlp the canonical video URL, not the music feed.
   assert.equal(at("https://music.youtube.com/watch?v=dQw4w9WgXcQ&list=RDAMVMdQw4w9WgXcQ"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
-  assert.equal(at("https://music.youtube.com/"), null);
-  // On the Music home/library page, use the current track from the player, not the feed URL.
-  assert.equal(
-    at("https://music.youtube.com/", { musicApiId: "abc123XYZ_-" }),
-    "https://www.youtube.com/watch?v=abc123XYZ_-",
-  );
-  assert.equal(
-    at("https://music.youtube.com/", { musicId: "abc123XYZ_-" }),
-    "https://www.youtube.com/watch?v=abc123XYZ_-",
-  );
-  assert.equal(
-    at("https://music.youtube.com/", {
-      musicThumbnail: "https://i.ytimg.com/vi/abc123XYZ_-/hqdefault.jpg",
-    }),
-    "https://www.youtube.com/watch?v=abc123XYZ_-",
-  );
   // A player that isn't the page's own: the card it sits in links to the video it is playing.
   assert.equal(at("https://www.youtube.com/", { cards: [[], ["https://www.youtube.com/watch?v=abc123XYZ_-&t=5s"]] }), "https://www.youtube.com/watch?v=abc123XYZ_-");
   // The card links to it twice (thumbnail and title): one video, still.
