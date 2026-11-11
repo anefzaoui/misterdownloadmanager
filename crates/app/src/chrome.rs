@@ -692,6 +692,19 @@ pub fn popup<C: Clone>(
             d.remove::<usize>(sub_key);
             d.remove::<(Option<usize>, Option<usize>)>(sub_key.with("kb"));
         });
+        // On macOS a menu is an always-on-top native window. Leaving it alive while a command
+        // opens Finder (for example Add a theme) leaves an orphan floating menu (#615).
+        // X11 shares the menu-bar viewport between neighbouring titles: keep that root open
+        // while the next title is drawn in the same pass, but close any old submenu.
+        let first_depth = if matches!(&r, PopupResult::Neighbor(_))
+            && kind == MenuKind::Bar
+            && bar_shares_window()
+        {
+            1
+        } else {
+            0
+        };
+        close_menu_viewports(ctx, kind, id, entries, first_depth);
         give_back(ctx);
         return r;
     }
@@ -719,6 +732,7 @@ pub fn popup<C: Clone>(
             d.remove::<usize>(sub_key);
             d.remove::<(Option<usize>, Option<usize>)>(sub_key.with("kb"));
         });
+        close_menu_viewports(ctx, kind, id, entries, 0);
         give_back(ctx);
         return PopupResult::Chosen(c);
     }
@@ -770,6 +784,7 @@ pub fn popup<C: Clone>(
                 d.insert_temp(dismissed, at);
             }
         });
+        close_menu_viewports(ctx, kind, id, entries, 0);
         give_back(ctx);
         return PopupResult::Dismissed;
     }
@@ -1055,6 +1070,36 @@ fn menu_viewport(kind: MenuKind, id: &str, depth: usize, bar_shared: bool) -> eg
         id
     };
     egui::ViewportId::from_hash_of(("menu", key, depth))
+}
+
+/// The deepest submenu level that can be open for these entries (the root is level zero).
+fn menu_depth<C>(entries: &[MenuEntry<C>]) -> usize {
+    entries
+        .iter()
+        .filter_map(|entry| match entry {
+            MenuEntry::Sub(_, _, children) => Some(1 + menu_depth(children)),
+            _ => None,
+        })
+        .max()
+        .unwrap_or(0)
+}
+
+/// Explicitly close every viewport belonging to a menu tree when it is chosen or dismissed.
+/// Immediate viewports can otherwise remain above a native file picker on macOS (#615).
+fn close_menu_viewports<C>(
+    ctx: &egui::Context,
+    kind: MenuKind,
+    id: &str,
+    entries: &[MenuEntry<C>],
+    first_depth: usize,
+) {
+    let shared = bar_shares_window();
+    for depth in first_depth..=menu_depth(entries) {
+        ctx.send_viewport_cmd_to(
+            menu_viewport(kind, id, depth, shared),
+            egui::ViewportCommand::Close,
+        );
+    }
 }
 
 /// The entry under `p` in a menu drawn at `o`, `w` wide: its index, none on a separator or the
@@ -2272,7 +2317,7 @@ fn chevron(p: &egui::Painter, ox: f32, top: f32, open: bool, bright: bool) {
 mod tests {
     use super::{
         FOCUS_GRACE, FocusVerdict, MenuBarEvent, MenuEntry, MenuFocus, MenuKind, heading_into,
-        item_at, menu_viewport, menubar_next,
+        item_at, menu_depth, menu_viewport, menubar_next,
     };
     use egui::{Rect, pos2};
 
@@ -2308,6 +2353,21 @@ mod tests {
                 egui::ViewportId::from_hash_of(("menu", "popup-1", 0usize))
             );
         }
+    }
+
+    #[test]
+    fn menu_depth_includes_nested_submenus() {
+        let entries: Vec<MenuEntry<()>> = vec![MenuEntry::Sub(
+            "First",
+            true,
+            vec![MenuEntry::Sub(
+                "Second",
+                true,
+                vec![MenuEntry::Item("Run", (), true, false)],
+            )],
+        )];
+        assert_eq!(menu_depth(&entries), 2);
+        assert_eq!(menu_depth::<()>(&[]), 0);
     }
 
     /// Runs `events` from no menu open; the open menu after each.
