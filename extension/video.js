@@ -39,6 +39,7 @@
     video_off: "The download button is off on this site",
     video_drm: "Protected video: it can't be saved",
     video_unnamed: "Can't tell which video this is: open its own page and try there",
+    video_open_post: "Open the post, then use the button there",
     video_drag: "Drag to move it along the video's edge",
   };
   // To the background. After the extension was updated or removed, this page's copy of the script
@@ -65,6 +66,15 @@
   // itself never goes to the app then (a channel is a whole list to yt-dlp): the background asks
   // the player what it plays, in the page's own world (background.js playingVideo), and this
   // answer is only what it falls back on.
+  //
+  // Elsewhere the same, generalised (#689, #643): a video in a feed (LinkedIn's, Facebook's, X's,
+  // Reddit's…) sits in the post it belongs to, and that post names its own address (its
+  // permalink, its timestamp link, the post id the page gives it); `ownAddress` finds it the way
+  // a person would. Null there too when nothing names it: a feed's address is never the video's.
+  //
+  // ---- the video's own address: from here to its end mark, run as is on saved pages by
+  // tools/extension/test.mjs (only `location`, `document` and the elements' parentElement,
+  // parentNode.host, localName, getAttribute, querySelector(All) with simple selectors).
   function videoPage(v) {
     const watch = (id) =>
       /^[\w-]+$/.test(id || "") ? `https://www.youtube.com/watch?v=${id}` : null;
@@ -114,11 +124,350 @@
         // A page that plays a video and names none: not the video's page, so not the app's.
         return null;
       }
+      return ownAddress(v, url);
     } catch {
       // Not an address this page can reason about: its own follows.
     }
     return location.href;
   }
+
+  // Up from a node: its parent, or the element whose shadow root holds it (Reddit's player keeps
+  // its <video> in one).
+  const upFrom = (n) => n.parentElement || (n.parentNode && n.parentNode.host) || null;
+
+  // `href` as an address (relative to the page), or null.
+  function linkTo(href) {
+    try {
+      return href ? new URL(href, location.href) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  // The nearest container around the video that names its post: `read(node)` gives what a
+  // container names, { sure, maybe } (Maps of an id to the address it stands for), `sure` the
+  // post's or the video's own ids, `maybe` weaker ones (a link that may be the post's). The
+  // innermost container naming anything decides, and only when it names exactly one: one naming
+  // two has taken in the next post or the page's column, and a wrong video is worse than none.
+  // The walk ends at the page's column (a feed, role="feed") and at a container holding another
+  // video: from there up, what it names may be that one's (a post naming nothing next to one
+  // that names its own). A page that breaks a reader's expectations names nothing (never the
+  // page's own address instead).
+  function nearest(v, read) {
+    try {
+      for (let node = v, i = 0; node && i < 16; i += 1, node = upFrom(node)) {
+        if (node.localName === "body" || node.localName === "html") break;
+        if (node !== v && (node.getAttribute?.("role") === "feed" || manyVideos(node))) break;
+        const { sure, maybe } = read(node);
+        if (sure.size) return sure.size === 1 ? [...sure.values()][0] : null;
+        if (maybe.size) return maybe.size === 1 ? [...maybe.values()][0] : null;
+      }
+    } catch {
+      // Nothing named.
+    }
+    return null;
+  }
+
+  const decoded = (s) => {
+    try {
+      return decodeURIComponent(s);
+    } catch {
+      return s;
+    }
+  };
+
+  // The links in a container (the container itself when it is one), as addresses, with whether
+  // each holds a <time> (a timestamp link: a post's own permalink).
+  function linksIn(node, sel = "a[href]") {
+    const found = [];
+    const own = node.localName === "a" ? [node] : [];
+    for (const a of [...own, ...(node.querySelectorAll ? node.querySelectorAll(sel) : [])]) {
+      const u = linkTo(a.getAttribute && a.getAttribute("href"));
+      if (u && /^https?:$/.test(u.protocol)) found.push({ u, time: Boolean(a.querySelector && a.querySelector("time")) });
+    }
+    return found;
+  }
+
+  // The page's site without its www. or mobile host (old.reddit.com is reddit.com).
+  const siteName = (host) => host.replace(/^(www|m|mobile|web|touch|old|new|sh|music|geo|player)\./, "");
+
+  // A video's own address on this page, by site; the page's own when it is that one video's page;
+  // null when the page is a feed, a list or a search and nothing names the video.
+  function ownAddress(v, url) {
+    const site = SITES.find((s) => s.hosts.test(siteName(url.hostname)));
+    if (site) {
+      // A site's own player in another page (an embed) is its video's page: its address holds
+      // what the links around it may lack (a private video's key).
+      if (site.embed && site.embed(url)) return location.href;
+      const found = nearest(v, (node) => site.read(node, url));
+      if (found) return found;
+      return site.own(url) ? location.href : null;
+    }
+    // Any other site: a player embedded in another page (its own frame), or the one video of its
+    // page, is its video's own page, as before.
+    if (framed() || (!inFeed(v) && document.querySelectorAll?.("video").length <= 1)) return location.href;
+    // A page of many videos: the post around this one, when one names it; else the page in
+    // general (an article with two players is still theirs to yt-dlp), but never a feed's
+    // (role="feed") or a page whose address is a feed's, a home's or a search's.
+    const found = nearest(v, (node) => genericRead(node, url));
+    if (found) return found;
+    return inFeed(v) || FEED_PATH.test(url.pathname) ? null : location.href;
+  }
+
+  // A feed's, a home page's, a search's address: many videos, none of them the page's.
+  const FEED_PATH = /^\/(?:$|home\/?$|feed|explore|search|discover|trending|popular|latest|timeline|for-?you|following|watch\/?$)/i;
+  // The video sits in a feed (role="feed": Mastodon's, the accessible feeds).
+  function inFeed(v) {
+    for (let node = upFrom(v); node; node = upFrom(node)) if (node.getAttribute?.("role") === "feed") return true;
+    return false;
+  }
+
+  const framed = () => {
+    try {
+      return window.top !== window;
+    } catch {
+      return false;
+    }
+  };
+  const manyVideos = (node) => Boolean(node.querySelectorAll && node.querySelectorAll("video").length > 1);
+
+  // Any other site: a link of this site that has a post's or a video's shape, or that holds the
+  // post's timestamp (Mastodon's, a forum's), and isn't the page itself.
+  function genericRead(node, url) {
+    const sure = new Map();
+    const maybe = new Map();
+    const here = `${url.origin}${url.pathname}${url.search}`;
+    for (const { u, time } of linksIn(node)) {
+      if (siteName(u.hostname) !== siteName(url.hostname)) continue;
+      const address = `${u.origin}${u.pathname}${u.search}`;
+      if (address === here) continue;
+      if (time) sure.set(address, address);
+      else if (/\/(?:status|statuses|videos?|watch|posts?|p|reels?|comments|clips?|v)(?:\/|\?|$)/i.test(u.pathname + (u.search ? "?" : ""))) maybe.set(address, address);
+    }
+    const permalink = linkTo(node.getAttribute?.("data-permalink"));
+    if (permalink && siteName(permalink.hostname) === siteName(url.hostname)) sure.set(permalink.href, permalink.href);
+    return { sure, maybe };
+  }
+
+  // LinkedIn's comment tools' key: base64url of a protobuf naming the post (field 1 its
+  // activity, field 2 its ugcPost), whose one field is the id as a zigzag varint. [kind, id] or
+  // null.
+  function commentToolsUrn(key) {
+    try {
+      const bytes = [...atob(key.replace(/-/g, "+").replace(/_/g, "/"))].map((c) => c.charCodeAt(0));
+      const kind = { 10: "activity", 18: "ugcPost" }[bytes[0]];
+      if (!kind || bytes[1] !== bytes.length - 2 || bytes[2] !== 8) return null;
+      let n = 0n;
+      let shift = 0n;
+      for (let i = 3; i < bytes.length; i += 1) {
+        n |= BigInt(bytes[i] & 0x7f) << shift;
+        shift += 7n;
+        if (!(bytes[i] & 0x80)) {
+          if (i !== bytes.length - 1 || n & 1n) return null;
+          const id = String(n >> 1n);
+          return /^\d{15,20}$/.test(id) ? [kind, id] : null;
+        }
+      }
+    } catch {
+      // Not such a key.
+    }
+    return null;
+  }
+
+  // The big sites with feeds: what names a post in their pages, the address yt-dlp reads it by
+  // (its extractors' own address shapes), and their pages that are one video's own.
+  const SITES = [
+    {
+      // A post's container carries its URN (data-urn, data-id); its links name it too. yt-dlp's
+      // LinkedIn extractor reads /feed/update/urn:li:activity:<id>/ (and /posts/…); a post known
+      // only by its ugcPost URN goes as /feed/update/urn:li:ugcPost:<id>/, the same public page,
+      // where yt-dlp's generic reader finds the video.
+      //
+      // LinkedIn's feed since 2026 (its server-driven app: role="listitem" posts in a
+      // data-testid="mainFeed" list) names a post nowhere near its video, only in the keys of
+      // the post's parts (componentkey): its comments' URNs (urn:li:comment:(activity:<id>,…)),
+      // its text's translation key (…userGeneratedContentId=<id>…, its ugcPost), and its comment
+      // tools' key, <base64>-replaceableCommentTools, a protobuf of the post's URN (field 1 its
+      // activity, field 2 its ugcPost, the id zigzag-encoded). Checked against a signed-in feed:
+      // each decodes to the post its comments name, and each ugcPost's page plays the video.
+      hosts: /^linkedin\.com$/,
+      embed: (u) => /^\/embed\//.test(u.pathname),
+      read(node) {
+        const sure = new Map();
+        const maybe = new Map();
+        const post = (kind, id) =>
+          (kind === "activity" ? sure : maybe).set(`${kind}:${id}`, `https://www.linkedin.com/feed/update/urn:li:${kind}:${id}/`);
+        const add = (s) => {
+          s = String(s || "");
+          for (const m of s.matchAll(/urn:li:(?:comment:\()?(activity|ugcPost|share):(\d{6,})/g)) post(m[1], m[2]);
+          for (const m of s.matchAll(/\b(userGeneratedContent|share|activity)Id=(\d{6,})/g)) post(m[1] === "userGeneratedContent" ? "ugcPost" : m[1], m[2]);
+          // A post's public address: /posts/<who>_<words>-activity-<id>-<four>.
+          const p = /\/posts\/[^/?#]*-(activity|ugcPost)-(\d{6,})-\w{4}/.exec(s);
+          if (p) post(p[1], p[2]);
+          const k = /^([\w-]{12,40})-replaceableCommentTools/.exec(s);
+          const urn = k && commentToolsUrn(k[1]);
+          if (urn) post(urn[0], urn[1]);
+        };
+        // The container's own attributes, whatever their names (the page renames them), and its
+        // insides' known ones.
+        for (const a of node.attributes || []) add(a.value);
+        for (const el of node.querySelectorAll?.("[data-urn], [data-id], [data-activity-urn], [data-entity-urn], [componentkey]") || []) {
+          for (const a of ["data-urn", "data-id", "data-activity-urn", "data-entity-urn", "componentkey"]) add(el.getAttribute?.(a));
+        }
+        for (const { u } of linksIn(node)) if (/linkedin\.com$/.test(u.hostname)) add(decoded(u.pathname));
+        return { sure, maybe };
+      },
+      own: (u) => /^\/(?:feed\/update\/urn:li:|posts\/|embed\/feed\/update\/|events\/|learning\/)/.test(u.pathname),
+    },
+    {
+      // A video's own links (a reel, a watch page, a page's video, data-video-id) before a post's
+      // (its permalink); fb.watch short links as they are (they lead to the video's page).
+      hosts: /^(?:[\w-]+\.)?facebook\.com$/,
+      embed: (u) => /^\/plugins\/video\.php$/.test(u.pathname),
+      read(node) {
+        const sure = new Map();
+        const maybe = new Map();
+        const video = (id) => sure.set(`v:${id}`, `https://www.facebook.com/watch/?v=${id}`);
+        const id = node.getAttribute?.("data-video-id");
+        if (/^\d{6,}$/.test(id || "")) video(id);
+        for (const el of node.querySelectorAll?.("[data-video-id]") || []) {
+          const d = el.getAttribute("data-video-id");
+          if (/^\d{6,}$/.test(d || "")) video(d);
+        }
+        for (const { u } of linksIn(node)) {
+          if (u.hostname === "fb.watch") {
+            const code = u.pathname.split("/")[1];
+            if (/^\w+$/.test(code || "")) sure.set(`w:${code}`, `https://fb.watch/${code}/`);
+            continue;
+          }
+          if (!/(^|\.)facebook\.com$/.test(u.hostname)) continue;
+          const p = u.pathname;
+          let m;
+          if ((m = /^\/reel\/(\d+)/.exec(p))) sure.set(`v:${m[1]}`, `https://www.facebook.com/reel/${m[1]}/`);
+          else if (/^\/watch\/?$/.test(p) && /^\d+$/.test(u.searchParams.get("v") || "")) video(u.searchParams.get("v"));
+          else if (/^\/video\.php$/.test(p) && /^\d+$/.test(u.searchParams.get("v") || "")) video(u.searchParams.get("v"));
+          else if ((m = /^\/[^/]+\/videos\/(?:[^/]+\/)?(\d+)/.exec(p))) video(m[1]);
+          else if ((m = /^\/([^/]+)\/posts\/(pfbid\w+|\d+)/.exec(p))) maybe.set(`p:${m[2]}`, `https://www.facebook.com/${m[1]}/posts/${m[2]}`);
+          else if ((m = /^\/groups\/([^/]+)\/(?:permalink|posts)\/(\d+)/.exec(p))) maybe.set(`p:${m[2]}`, `https://www.facebook.com/groups/${m[1]}/posts/${m[2]}/`);
+          else if (/^\/(?:permalink|story)\.php$/.test(p) && /^(?:pfbid\w+|\d+)$/.test(u.searchParams.get("story_fbid") || "")) {
+            const story = u.searchParams.get("story_fbid");
+            const owner = u.searchParams.get("id");
+            maybe.set(`p:${story}`, `https://www.facebook.com/permalink.php?story_fbid=${story}${/^\d+$/.test(owner || "") ? `&id=${owner}` : ""}`);
+          }
+        }
+        return { sure, maybe };
+      },
+      own: (u) =>
+        /^\/(?:reel\/\d|watch\/?$|video\.php$|[^/]+\/videos\/|[^/]+\/posts\/|permalink\.php$|story\.php$|groups\/[^/]+\/(?:permalink|posts)\/|plugins\/video\.php$|share\/[vrp]\/)/.test(u.pathname) &&
+        (!/^\/watch\/?$/.test(u.pathname) || /^\d+$/.test(u.searchParams.get("v") || "")),
+    },
+    {
+      // A post's timestamp links to it (/<user>/status/<id>); other status links (a quoted post,
+      // its photos and its analytics) count only when there is no timestamp.
+      hosts: /^(?:x|twitter)\.com$/,
+      read(node) {
+        const sure = new Map();
+        const maybe = new Map();
+        for (const { u, time } of linksIn(node, 'a[href*="/status/"]')) {
+          const m = /^\/(\w{1,15}|i\/web)\/status\/(\d+)/.exec(u.pathname);
+          if (!m || !/(^|\.)(?:x|twitter)\.com$/.test(u.hostname)) continue;
+          (time ? sure : maybe).set(m[2], `${location.origin}/${m[1]}/status/${m[2]}`);
+        }
+        return { sure, maybe };
+      },
+      own: (u) => /^\/(?:\w{1,15}|i\/web)\/status\/\d+|^\/i\/(?:broadcasts|spaces)\//.test(u.pathname),
+    },
+    {
+      // A post's links (/p/<code>/, a reel's /reel/<code>/): its timestamp, its comments.
+      hosts: /^instagram\.com$/,
+      embed: (u) => /\/embed\/?$/.test(u.pathname),
+      read(node) {
+        const sure = new Map();
+        for (const { u } of linksIn(node)) {
+          // Not a reel's sound (/reels/audio/<id>/, the other reels using it).
+          const m = /^(?:\/[\w.]+)?\/(p|tv|reels?)\/(?!audio\/)([\w-]{5,})/.exec(u.pathname);
+          if (!m || !/instagram\.com$/.test(u.hostname)) continue;
+          sure.set(m[2], `https://www.instagram.com/${m[1] === "tv" ? "p" : m[1].replace(/s$/, "")}/${m[2]}/`);
+        }
+        return { sure, maybe: new Map() };
+      },
+      own: (u) => /^(?:\/[\w.]+)?\/(?:p|tv|reels?)\/[\w-]{5,}|^\/stories\/[^/]+\/\d/.test(u.pathname),
+    },
+    {
+      // A post (shreddit-post, old Reddit's .thing) names its permalink in its attributes; its
+      // links (title, comments) name the same /comments/<id>/.
+      hosts: /^reddit\.com$/,
+      read(node) {
+        const sure = new Map();
+        const add = (s) => {
+          const m = /^(\/(?:r|u|user)\/[^/]+)?\/comments\/(\w+)/.exec(linkTo(s)?.pathname || "");
+          if (m) sure.set(m[2], `${location.origin}${m[1] || ""}/comments/${m[2]}/`);
+        };
+        add(node.getAttribute?.("permalink"));
+        add(node.getAttribute?.("data-permalink"));
+        for (const el of node.querySelectorAll?.("[permalink], [data-permalink]") || []) {
+          add(el.getAttribute("permalink"));
+          add(el.getAttribute("data-permalink"));
+        }
+        for (const { u } of linksIn(node, 'a[href*="/comments/"]')) if (/reddit\.com$/.test(u.hostname)) add(u.href);
+        return { sure, maybe: new Map() };
+      },
+      own: (u) => /\/comments\/\w+|^\/r\/[^/]+\/s\/\w+/.test(u.pathname),
+    },
+    {
+      // A video's link (/@<user>/video/<id>); else its player's id (xgwrapper-<n>-<id>), sent in
+      // yt-dlp's own form for a video whose author isn't known (/@_/video/<id>).
+      hosts: /^tiktok\.com$/,
+      embed: (u) => /^\/embed\//.test(u.pathname),
+      read(node) {
+        const sure = new Map();
+        for (const { u } of linksIn(node, 'a[href*="/video/"]')) {
+          const m = /^\/@([\w.-]+)\/video\/(\d+)/.exec(u.pathname);
+          if (m && /tiktok\.com$/.test(u.hostname)) sure.set(m[2], `https://www.tiktok.com/@${m[1]}/video/${m[2]}`);
+        }
+        if (!sure.size) {
+          for (const el of [node, ...(node.querySelectorAll?.('[id^="xgwrapper-"]') || [])]) {
+            const m = /^xgwrapper-\d+-(\d{15,})$/.exec(el.getAttribute?.("id") || "");
+            if (m) sure.set(m[1], `https://www.tiktok.com/@_/video/${m[1]}`);
+          }
+        }
+        return { sure, maybe: new Map() };
+      },
+      own: (u) => /^\/@[\w.-]+\/(?:video|photo)\/\d+|^\/embed\//.test(u.pathname),
+    },
+    {
+      // A clip's links: vimeo.com/<id> (with an unlisted video's hash), in a channel, a group, a
+      // showcase.
+      hosts: /^(?:player\.)?vimeo\.com$/,
+      embed: (u) => u.hostname.startsWith("player."),
+      read(node) {
+        const sure = new Map();
+        for (const { u } of linksIn(node)) {
+          if (!/(^|\.)vimeo\.com$/.test(u.hostname)) continue;
+          const m = /^(?:\/video|\/channels\/[^/]+|\/groups\/[^/]+\/videos|\/showcase\/[^/]+\/video)?\/(\d{4,})(\/[\da-f]{10})?\/?$/.exec(u.pathname);
+          if (m) sure.set(m[1], `https://vimeo.com/${m[1]}${m[2] || ""}`);
+        }
+        return { sure, maybe: new Map() };
+      },
+      own: (u) =>
+        u.hostname.startsWith("player.") ||
+        /^(?:\/channels\/[^/]+|\/groups\/[^/]+\/videos|\/showcase\/[^/]+\/video|\/[^/]+\/review)?\/\d{4,}|^\/ondemand\//.test(u.pathname),
+    },
+    {
+      hosts: /^(?:geo\.)?dailymotion\.com$/,
+      embed: (u) => u.hostname.startsWith("geo.") || /^\/(?:embed|player)\b/.test(u.pathname),
+      read(node) {
+        const sure = new Map();
+        for (const { u } of linksIn(node, 'a[href*="/video/"]')) {
+          const m = /^\/(?:embed\/)?video\/([a-z0-9]+)/i.exec(u.pathname);
+          if (m && /dailymotion\.com$/.test(u.hostname)) sure.set(m[1], `https://www.dailymotion.com/video/${m[1]}`);
+        }
+        return { sure, maybe: new Map() };
+      },
+      own: (u) => u.hostname.startsWith("geo.") || /^\/(?:embed\/)?video\/[a-z0-9]+|^\/player/i.test(u.pathname),
+    },
+  ];
+  // ---- the video's own address: end.
 
   // The address this page first loaded at (`download`: a page that moves in place keeps its first
   // page's og:title).
@@ -488,10 +837,15 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
 
   // What the button sends for `v` (its rectangle `r`): see `download`.
   function describe(v, r) {
+    const url = videoPage(v);
+    // Its own plain file (not a stream the page assembles, blob:). Not beside a post a big site's
+    // reader knows (#689): the app would take the file over the post, its title and qualities.
+    const file = /^https?:/i.test(v.currentSrc || "") ? v.currentSrc : "";
+    const post = Boolean(url) && url !== location.href && SITES.some((s) => s.hosts.test(siteName(host)));
     return {
       drm: Boolean(v.mediaKeys),
-      src: /^https?:/i.test(v.currentSrc || "") ? v.currentSrc : "",
-      url: videoPage(v),
+      src: post ? "" : file,
+      url,
       // The middle of the video: where the background asks the page's own player what it plays.
       at: { x: r.left + r.width / 2, y: r.top + r.height / 2 },
     };
@@ -600,7 +954,8 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
       const title = (og || document.title || "").trim();
       const r = await send({ type: "video", src, title, url, at });
       if (r.gone) return;
-      flash(r.ok ? "ok" : "err", t(r.ok ? "video_sent" : r.why === "options" ? "video_off" : r.why === "unnamed" ? "video_unnamed" : "video_failed"));
+      const why = { options: "video_off", unnamed: "video_unnamed", feed: "video_open_post" }[r.why];
+      flash(r.ok ? "ok" : "err", t(r.ok ? "video_sent" : why || "video_failed"));
     } finally {
       busy = false;
     }

@@ -147,6 +147,10 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	تجلب خدمة Debrid رابط موقع الاستضافة بحسابك المدفوع، ثم تمنح MDM رابطا مباشرا. استخدم حسابك فقط: مشاركة حساب أو روابطه تخالف شروط الخدمات وقد تؤدي إلى تعليقه. تظل التنزيلات التي بدأها المستعرض كما هي.
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name ends with a period
+#, machine
+	A file name cannot end with a dot	لا يمكن أن ينتهي اسم الملف بنقطة
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
@@ -169,6 +173,10 @@
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	أرسل خادم على هذا الكمبيوتر التنزيل إلى مكان آخر، ولن يمر عبر {adapter}
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box for a single-file torrent
+#, machine
+	A single-file torrent keeps its name	يحتفظ التورنت ذو الملف الواحد باسمه
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 	A tracker on this computer or the local network is never contacted: {line}	لا يتصل MDM أبدا بمتتبع على هذا الكمبيوتر أو الشبكة المحلية: {line}
@@ -440,6 +448,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Austria	النمسا
+#. checkbox in the Options window; text in the Options window
+#. checkbox: the User-Agent is the default browser's, which MDM finds itself
+#, machine
+	Automatic	تلقائي
 #. text in remote.rs
 #. remote control page (on a phone): category choice: the category follows the file's type
 #, machine
@@ -729,6 +741,10 @@
 #. text in the Options window
 #. Options → DNS settings: NextDNS's own configuration ID (optional)
 	Configuration ID:	معرف الضبط:
+#. text in a download's progress window
+#. verb: button that saves the deferred rename in the progress window
+#, machine
+	Confirm	تأكيد
 #. text in the Options window
 	Confirm before deleting downloads	تأكيد قبل حذف التنزيلات
 #. window title in a dialog box
@@ -1145,7 +1161,7 @@
 #. text in the Options window
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	تجريبي: مبني على وثائق API العامة للخدمات، ولم يتم تأكيده بعد بحسابات حقيقية.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 	Export	تصدير
 #. text in the Options window
 	Extend the availability of Manifest 2 Chrome extensions	توسيع إتاحة ملحقات Chrome Manifest 2
@@ -1499,7 +1515,7 @@
 	If it can't be reached, use the system's DNS	إذا تعذر الوصول إليه، فاستخدم DNS الخاص بالنظام
 #. checkbox in the Options window
 	Ignore file modification time changes when resuming a download	تجاهل تغييرات وقت تعديل الملف عند متابعة التنزيل
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 	Import	استيراد
 #. value in a column's filter list in the download list
 	In a queue	في قائمة انتظار
@@ -1786,6 +1802,10 @@
 #. text in crashui.rs
 #. crash report window: looking on GitHub for an issue about the same problem
 	Looking for this problem on GitHub…	قيد البحث عن هذه المشكلة على GitHub…
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking for your default browser...	قيد البحث عن مستعرضك الافتراضي...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Looking the page up...	قيد البحث عن الصفحة...
@@ -2629,6 +2649,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Remove {name} from the list?	إزالة {name} من القائمة؟
+#. text in a download's progress window
+#. noun: label before the deferred new file or folder name in the progress window
+#, machine
+	Rename	إعادة التسمية
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 	Replace asterisk to	استبدال النجمة بـ
@@ -2729,6 +2753,10 @@
 #. Link grabber: the folder the package's files go to (a label before its box)
 #. RSS feeds window, Download rules: the folder the rule's torrents go to
 	Save to:	حفظ في:
+#. text in a download's progress window
+#. status shown in green beside the Rename box once the new name is saved
+#, machine
+	Saved	تم الحفظ
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 	Saved in	محفوظ في
@@ -2848,6 +2876,11 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
 	Sharing stopped: the share ratio reached {ratio}	توقف البذر: بلغت نسبة المشاركة {ratio}
+#. message or event log entry in the main window
+#. event log entry on a finished torrent when re-attaching it to keep sharing failed; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Sharing stopped: {error}	توقف البذر: {error}
 #. text in the download list
 	Show	إظهار
 #. message or event log entry in the main window
@@ -2989,6 +3022,10 @@
 	Speed Limiter	محدد السرعة
 #. window title in a dialog box
 	Speed Limiter settings	إعدادات محدد السرعة
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
+#, machine
+	Split archive volumes keep their names for extraction	تحتفظ أجزاء الأرشيف المقسم بأسمائها من أجل الاستخراج
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Sri Lanka	سريلانكا
@@ -3268,7 +3305,7 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 	The file could not be moved: {error}	تعذر نقل الملف: {error}
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 	The file could not be read: {error}	تعذر قراءة الملف: {error}
 #. text in the Checksum window
@@ -3305,12 +3342,16 @@
 #. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
 #, machine
 	The helper program the browsers start is missing	برنامج المساعد الذي تبدأه المستعرضات مفقود
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 	The list could not be saved: {error}	تعذر حفظ القائمة: {error}
 #. text in whereis.rs
 #, machine
 	the local network	الشبكة المحلية
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name exceeds the length limit
+#, machine
+	The name is too long	الاسم طويل جدا
 #. text in errors.rs; text in torrent downloads
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 	the network adapter {adapter} is not connected	محول الشبكة {adapter} غير متصل
@@ -3413,6 +3454,9 @@
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 	This category or queue holds no downloads yet.	هذه الفئة أو قائمة الانتظار لا تحتوي على تنزيلات بعد.
+#. text in a download's progress window
+#, machine
+	This character is not allowed in a file name	هذا الحرف غير مسموح به في اسم الملف
 #. text in the Options window
 #. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
 #, machine
@@ -3452,6 +3496,14 @@
 	This file is too large to be a torrent.	هذا الملف كبير جدا ليكون ملف تورنت.
 #. text in a dialog box
 	This folder does not exist:	هذا المجلد غير موجود:
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the folder already holds files this download did not write
+#, machine
+	This folder holds files from outside this download	يحتوي هذا المجلد على ملفات من خارج هذا التنزيل
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the folder holds another download or is a save/category folder
+#, machine
+	This folder is shared with another download or save folder	هذا المجلد مشترك مع تنزيل آخر أو مجلد حفظ
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	يتطلب ملف Google Drive هذا تسجيل الدخول: سجل الدخول إلى Google في مستعرضك، ثم نزله من هناك
@@ -3473,6 +3525,10 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 	This magnet link names no trackers and the DHT is off, so no peer can be found.	لا يحدد هذا الرابط المغناطيسي أي متتبعات وDHT متوقف، لذلك لا يمكن العثور على أي قرين.
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name is a reserved device name on Windows (CON, NUL, COM1…)
+#, machine
+	This name is reserved by Windows	هذا الاسم محجوز بواسطة Windows
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 	This needs ffmpeg	يتطلب هذا ffmpeg
@@ -3946,6 +4002,13 @@
 #. text in extension.rs
 #. a row of the browser extension's window when no browser was found by name
 	Your browser	المستعرض الخاص بك
+#. text in the Options window
+#, machine
+	Your default browser isn't one MDM knows: a current Chrome's User-Agent	مستعرضك الافتراضي ليس واحدا من المستعرضات التي يعرفها MDM: User-Agent لـ Chrome الحالي
+#. text in the Options window
+#. tooltip; {browser} is a browser and its version, e.g. "Brave 157"
+#, machine
+	Your default browser's User-Agent: {browser}	User-Agent لمستعرضك الافتراضي: {browser}
 #. text in the settings
 #. Options → DNS: the name of a DNS the user typed in, in messages: "your DNS (DNS over TLS)"
 	your DNS ({how})	DNS الخاص بك ({how})
@@ -4035,6 +4098,11 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{done} من {size}
+#. text in deferred_rename.rs
+#. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{error} (left as {path}: {rollback_error})	{error} (ترك باسم {path}: {rollback_error})
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 	{ext} File	ملف {ext}
@@ -4392,6 +4460,9 @@ extension	Open its address once and accept its certificate, then enter a code fr
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 extension	Open Mister Download Manager	فتح Mister Download Manager
+#. shown briefly on the download button over a video in a feed (a social site's home page, a timeline) when nothing in the feed gives that video's own address, so nothing was sent: the user should open the post the video belongs to and click the button on that page; short
+#, machine
+extension	Open the post, then use the button there	افتح المنشور، ثم استخدم الزر هناك
 #. text in the browser extension
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it
