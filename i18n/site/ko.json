@@ -14,10 +14,6 @@
    "source": "Every message to MDM also says which browser it comes from (its name, as the browser tells it) and the extension's version.",
    "text": "MDM으로 보내는 모든 메시지에는 메시지를 보낸 브라우저의 이름(브라우저가 알려주는 이름)과 확장 프로그램 버전도 포함됩니다."
   },
-  "0022aa34a898269c": {
-   "source": "<g1>A YouTube playlist in Add URL</g1> (<g2>#338</g2>) opens the video window with its videos, instead of saving the page as a file named \"playlist\".",
-   "text": "<g1>URL 추가</g1>에서 YouTube 재생 목록을 추가하면 페이지를 \"playlist\"라는 파일로 저장하는 대신, 해당 동영상들이 포함된 동영상 창이 열립니다(<g2>#338</g2>)."
-  },
   "0025b509f2663050": {
    "source": "Runs on most distributions: make it executable (<x1/>) and run it. It updates itself in place (<g2>Help → Check for updates</g2>).",
    "text": "대부분의 배포판에서 실행됩니다. 실행 가능하게 만들고(<x1/>) 실행하세요. 자체적으로 업데이트됩니다(<g2>도움말 → 업데이트 확인</g2>)."
@@ -86,10 +82,6 @@
    "source": "A page address that points at one video inside a playlist or a mix (for example <x1/>) downloads that one video, never the whole list.",
    "text": "재생 목록이나 믹스에 포함된 비디오 하나를 가리키는 페이지 주소(예: <x1/>)를 입력하면 해당 비디오만 다운로드하며, 재생 목록 전체를 다운로드하지 않습니다."
   },
-  "01bff8c60e4100a3": {
-   "source": "<g1>Torrent → Files…</g1>: the list of a torrent's files for any torrent, running, stopped or finished, with a box to choose each (also a Files… button in File Properties).",
-   "text": "<g1>토렌트 → 파일…</g1>: 실행 중이거나 중지되었거나 완료된 모든 토렌트의 파일 목록을 각 파일을 선택할 수 있는 상자와 함께 표시합니다 (파일 속성에도 파일… 버튼이 있습니다)."
-  },
   "01c4c1faa63db5e5": {
    "source": "Add it to the main download queue without starting it.",
    "text": "시작하지 않고 메인 다운로드 대기열에 추가합니다."
@@ -113,6 +105,10 @@
   "02134bd4a394a140": {
    "source": "Torrents and magnet links, in the list you already use.",
    "text": "익숙한 목록에서 토렌트 및 마그넷 링크를 다운로드하세요."
+  },
+  "021dced76e91e8e1": {
+   "source": "<g1>Where it comes from:</g1> MDM downloads gallery-dl from its releases on Codeberg. It accepts it only when the release's checksum list is signed by gallery-dl's author's key, pinned in MDM, and the program matches that list. It keeps the previous version and never goes back to an older one. On Windows and on Linux (x86-64) MDM installs it; on macOS, install it with Homebrew (<x2/>) or pip and choose it in <g3>Helpers...</g3>.",
+   "text": "<g1>출처:</g1> MDM은 Codeberg의 릴리스에서 gallery-dl을 다운로드합니다. MDM에 고정된 gallery-dl 작성자의 키로 릴리스의 체크섬 목록이 서명되고 프로그램이 해당 목록과 일치할 때만 허용합니다. 이전 버전을 유지하며 더 오래된 버전으로 돌아가지 않습니다. Windows 및 Linux(x86-64)에서는 MDM이 설치합니다. macOS에서는 Homebrew(<x2/>) 또는 pip로 설치하고 <g3>도우미...</g3>에서 선택하세요."
   },
   "022606906a44694b": {
    "source": "<g1>Download Mister Download Manager</g1> and install it; keep <g2>Set up browser integration</g2> ticked.",
@@ -218,10 +214,6 @@
    "source": "MDM on Ubuntu's GNOME desktop, with the desktop's own file icons.",
    "text": "Ubuntu GNOME 데스크톱에서 MDM이 데스크톱의 파일 아이콘과 함께 표시됩니다."
   },
-  "032f38898f839833": {
-   "source": "<g1>Move/Rename</g1> was greyed out with several downloads selected, for example a set just added to a queue. It now asks for a folder and moves them all there (<g2>#333</g2>).",
-   "text": "여러 다운로드가 선택되었을 때(예: 대기열에 방금 추가된 세트) <g1>이동/이름 바꾸기</g1>가 회색으로 비활성화되었습니다. 이제 폴더를 요청하고 모든 파일을 해당 폴더로 이동합니다 (<g2>#333</g2>)."
-  },
   "033cc1f2a579cf52": {
    "source": "Architecture",
    "text": "아키텍처"
@@ -245,10 +237,6 @@
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Mister Download Manager에 대한 답변: 무료인지, 안전한지, IDM과의 비교, 브라우저, 비디오, 토렌트, 속도, Mac 및 Linux 등."
-  },
-  "03f6065d45b64f00": {
-   "source": "Windows: no more crash on a computer where Direct3D can't start, when a window opened during the switch to OpenGL (<g1>#337</g1>).",
-   "text": "Windows: Direct3D를 시작할 수 없는 컴퓨터에서 OpenGL로 전환하는 동안 창이 열렸을 때 더 이상 충돌이 발생하지 않습니다(<g1>#337</g1>)."
   },
   "03f8c46be74abce4": {
    "source": "<g1>Where a download's server is</g1> (<g2>#140</g2>): <g3>Download File Info</g3>, the progress window and <g4>Properties</g4> show the server's country, with its flag, and its round trip, such as <g5>about 24 ms (near)</g5>, in green, amber or red. The country comes from a table that ships with MDM (<g6>IP to Country Lite by DB-IP</g6>, CC BY 4.0, refreshed with each release), looked up on the computer: no address is sent anywhere. The time is measured from the download's own connections, with nothing extra sent. Through a proxy MDM says so instead of guessing, and a CDN's server (Cloudflare, CloudFront, Fastly, Akamai and others) is said to be the CDN's, not the site owner's. Properties keeps what the last run saw. MDM is about 770 KB larger (the table 674 KB, the flags 95 KB).",
@@ -310,10 +298,6 @@
    "source": "Don't make MDM reachable from the internet (a router's port forwarding): the remote control is made for your home network. To reach it while away, use a VPN to your home network instead (WireGuard, Tailscale): with Tailscale, choose its address in <g1>Listen on</g1>.",
    "text": "MDM이 인터넷에서 연결할 수 있도록 설정하지 마세요(라우터의 포트 포워딩). 원격 제어는 홈 네트워크용으로 만들어졌습니다. 외부에 있을 때 연결하려면 대신 홈 네트워크로 VPN(WireGuard, Tailscale)을 사용하세요. Tailscale을 사용하는 경우 <g1>수신 위치</g1>에서 해당 주소를 선택하세요."
   },
-  "050988a5d66f5eb1": {
-   "source": "A big fixes release: YouTube and video downloads, crashes and freezes, downloads on slow disks, the Mac helper, plus a Safari extension, far more file types and a few new columns and options.",
-   "text": "YouTube 및 비디오 다운로드, 충돌 및 멈춤 현상, 느린 디스크에서의 다운로드, Mac 도우미, Safari 확장 프로그램, 더 많은 파일 형식, 몇 가지 새로운 열과 옵션 등 다양한 버그 수정이 포함된 릴리스입니다."
-  },
   "050edc04316dd70a": {
    "source": "On the command line",
    "text": "명령줄에서"
@@ -345,10 +329,6 @@
   "05496369e6596ec5": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, Refresh download address lets you give it a fresh one and keep the data. See Resume a broken download.",
    "text": "예. MDM은 진행 상황을 계속 기록하므로, 연결이 끊기거나, 프로그램이 충돌하거나, 컴퓨터를 다시 시작한 후에도 중단된 지점부터 이어서 다운로드합니다. 다시 시작하기 전에 서버의 파일이 변경되지 않았는지 확인합니다. 다운로드 주소가 만료된 경우, 다운로드 주소 새로 고침 기능을 사용하여 새 주소를 입력하고 기존 데이터를 유지할 수 있습니다. 중단된 다운로드 다시 시작을 참조하세요."
-  },
-  "05519de6cf4ebfd7": {
-   "source": "Downloads at full speed no longer stop and go on a slow disk: writing the resume state flushed the file to the disk so often that every connection waited for it, and were then replaced as slow (<g1>#361</g1>).",
-   "text": "느린 디스크에서 최대 속도로 다운로드할 때 더 이상 멈췄다 다시 시작하지 않습니다. 재개 상태를 기록할 때 파일을 디스크에 너무 자주 플러시하여 모든 연결이 이를 기다렸고, 그 후 느리다고 교체되었던 현상이 수정되었습니다 (<g1>#361</g1>)."
   },
   "0554081950609ac4": {
    "source": "A debrid service downloads files from file hosts on its own servers and hands back a plain link, without the host's waits, speed caps and captchas. With your account in MDM, that link is downloaded like any file.",
@@ -694,10 +674,6 @@
    "source": "Played in real time.",
    "text": "실시간으로 실행했습니다."
   },
-  "0a9f626e2ee9f591": {
-   "source": "You need Windows 10 or 11 and Rust stable 1.98 or later (the MSVC toolchain), and CMake, LLVM and NASM for BoringSSL, which the engine's browser-like connection builds from source (<x1/>).",
-   "text": "Windows 10 또는 11, Rust 안정 버전 1.98 이상(MSVC 툴체인), 그리고 엔진의 브라우저와 유사한 연결이 소스에서 빌드하는 BoringSSL을 위한 CMake, LLVM, NASM이 필요합니다(<x1/>)."
-  },
   "0ab4df8c5a8bb5b2": {
    "source": "Benchmark: Mister Download Manager vs IDM, timed to the millisecond",
    "text": "벤치마크: Mister Download Manager vs IDM, 밀리초 단위 측정"
@@ -858,17 +834,9 @@
    "source": "The Subtitles list of the video window, with Put them into the video",
    "text": "비디오 창의 자막 목록, 비디오에 포함 포함"
   },
-  "0d440d3ec80b9026": {
-   "source": "Version 0.5.2 · free and open source · no ads, no spyware, nothing bundled. <g1>What's new</g1>",
-   "text": "버전 0.5.2 · 무료 오픈 소스 · 광고, 스파이웨어, 번들 없음. <g1>새로운 기능</g1>"
-  },
   "0d54c9b5da3174db": {
    "source": "Download image galleries with gallery-dl",
    "text": "gallery-dl로 이미지 갤러리 다운로드"
-  },
-  "0d67aefa3cd0b918": {
-   "source": "The extension's <g1>Media on this page</g1> can name a file after its page: <g2>Prefix media file names with the page title</g2> puts the page's title before the file's own name. Off as installed.",
-   "text": "확장 프로그램의 <g1>이 페이지의 미디어</g1>는 파일 이름을 페이지 제목으로 지정할 수 있습니다. <g2>미디어 파일 이름 앞에 페이지 제목 추가</g2>를 선택하면 파일 이름 앞에 페이지 제목이 붙습니다. 기본적으로는 꺼져 있습니다."
   },
   "0d7f42041638ea02": {
    "source": "Portable: the <x1/> folder next to <x2/>.",
@@ -966,6 +934,10 @@
    "source": "Make the selection longer or shorter",
    "text": "선택 영역을 길게 또는 짧게 만들기"
   },
+  "0f7aa29dcfefad04": {
+   "source": "<g1>Its menu</g1> (the arrow next to it): <g2>Hide on this video</g2>, <g3>Never on</g3> the site (MDM remembers the site), and <g4>Button settings...</g4>, which opens MDM's Options.",
+   "text": "<g1>메뉴</g1>(옆의 화살표): <g2>이 비디오에서 숨기기</g2>, 해당 사이트에서 <g3>절대 표시 안 함</g3>(MDM이 사이트를 기억함), MDM의 옵션을 여는 <g4>단추 설정...</g4>이 있습니다."
+  },
   "0f7bff98a3ced2ac": {
    "source": "Yes. Put downloads in a queue and let the Scheduler start it at a set time, stop it at another, and even shut down or put the computer to sleep when the queue is done. See Download overnight.",
    "text": "예. 다운로드를 대기열에 넣고 예약 관리자가 정해진 시간에 시작하고 다른 시간에 중지하며, 대기열이 완료되면 컴퓨터를 종료하거나 절전 모드로 전환할 수도 있습니다. 밤새 다운로드를 참조하세요."
@@ -1018,17 +990,9 @@
    "source": "<g1>SHA-256 checksums</g1><g2>for every file</g2>",
    "text": "<g1>SHA-256 체크섬</g1><g2>모든 파일에 제공</g2>"
   },
-  "10bdcf11e769391b": {
-   "source": "Options → Proxy / Socks now applies to yt-dlp and gallery-dl too, so video look-ups and downloads no longer go straight out when a proxy is set (<g1>#363</g1>).",
-   "text": "옵션 → 프록시/SOCKS가 이제 yt-dlp 및 gallery-dl에도 적용되므로, 프록시가 설정된 경우 비디오 조회 및 다운로드가 더 이상 직접 외부로 나가지 않습니다 (<g1>#363</g1>)."
-  },
   "10ca015a9dddb547": {
    "source": "A minimized MDM keeps running its queues and Scheduler.",
    "text": "최소화된 MDM은 큐와 예약 관리자를 계속 실행합니다."
-  },
-  "10cc202f7a0cd1f1": {
-   "source": "<g1>Control styles.</g1> <x2/> names each control's shape (text boxes, check boxes, buttons, progress bars, scroll bars, the focus mark, the title bar); the style themes (Metro, Adwaita, Breeze, Luna, Aero, Aqua, Emerald) pick theirs, and on Windows MDM then draws the title bar itself (the <x3/> roles).",
-   "text": "<g1>컨트롤 스타일.</g1> <x2/>는 각 컨트롤의 모양(텍스트 상자, 확인란, 버튼, 진행률 표시줄, 스크롤 막대, 포커스 표시, 제목 표시줄)을 지정합니다. 스타일 테마(메트로, Adwaita, Breeze, Luna, Aero, Aqua, Emerald)는 자체 스타일을 선택하며, Windows에서는 MDM이 제목 표시줄 자체를 그립니다(<x3/> 역할)."
   },
   "10cc758c6a4201c4": {
    "source": "In the app",
@@ -1117,10 +1081,6 @@
   "118eef5ce1eacd13": {
    "source": "Torrents and magnet links",
    "text": "토렌트 및 마그넷 링크"
-  },
-  "11b797cc9ec0d3b5": {
-   "source": "10 built-in themes · light and dark",
-   "text": "10가지 내장 테마 · 밝은 모드와 어두운 모드"
   },
   "11c2e6a758e059a3": {
    "source": "Space",
@@ -1249,6 +1209,10 @@
   "13bdd66fc5e4c600": {
    "source": "Server allowing 2 connections",
    "text": "2개 연결을 허용하는 서버"
+  },
+  "13c0cbe9a49058cb": {
+   "source": "Last updated 2026-11-09 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "최종 업데이트: 2026-11-09 · 앱, 브라우저 확장 프로그램 및 misterdownloadmanager.com에 적용됩니다."
   },
   "13c8ca45329dbe19": {
    "source": "Windows, Mac and Linux",
@@ -1398,10 +1362,6 @@
    "source": "Most translations were written by machine and are waiting for a native speaker to check them, so some wording may sound wrong. A text not translated yet shows in English. If you speak a language well, you can fix it: each one is a plain text file in the repository, and the <g1>translation guide</g1> shows how to send changes, as a pull request or an issue.",
    "text": "대부분의 번역은 기계 번역되었으며 원어민의 검토를 기다리고 있으므로 일부 표현이 어색하게 들릴 수 있습니다. 아직 번역되지 않은 텍스트는 영어로 표시됩니다. 언어에 능통하다면 직접 수정할 수 있습니다. 각 언어는 저장소에 일반 텍스트 파일로 있으며, <g1>번역 가이드</g1>는 풀 리퀘스트 또는 이슈로 변경 사항을 보내는 방법을 안내합니다."
   },
-  "15cbb55671681ebe": {
-   "source": "<g1><g2>Themes</g2></g1> — the built-in looks (Classic, Native, High contrast, Metro, Adwaita, Breeze, Luna, Aero, Aqua, Emerald), and how to make your own in a text file.",
-   "text": "<g1><g2>테마</g2></g1> — 내장된 모양(클래식, 기본, 고대비, Metro, Adwaita, Breeze, Luna, Aero, Aqua, Emerald) 및 텍스트 파일로 직접 만드는 방법."
-  },
   "15ce0de13b8b0839": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "예. MDM은 IDM의 익숙한 명령줄 스위치를 지원하며, 터미널에서 다운로드할 수 있는 misterdownloadmanager-cli를 제공하고, 로컬 토큰 보호 자동화 API를 갖추고 있습니다."
@@ -1426,10 +1386,6 @@
    "source": "MDM in Arabic",
    "text": "아랍어 MDM"
   },
-  "165ea5e73977b362": {
-   "source": "In English, the <g1>Last Try Date</g1> and <g2>Added</g2> columns follow the system's 12- or 24-hour clock: <x3/> when Windows uses a 12-hour clock, and <g4>Added</g4> starts wide enough for it (<g5>#392</g5>).",
-   "text": "영어에서 <g1>마지막 시도 날짜</g1> 및 <g2>추가됨</g2> 열은 시스템의 12시간 또는 24시간 시계를 따릅니다. <x3/> Windows가 12시간 시계를 사용할 때, <g4>추가됨</g4> 열은 충분히 넓게 시작합니다 (<g5>#392</g5>)."
-  },
   "167b6aef6b7c3e2d": {
    "source": "On Linux and macOS, MDM sets browser integration up itself each time it starts: start MDM once. <g1>Test browser integration</g1> says what went wrong if it couldn't, such as <g2>The helper program the browsers start is missing</g2>: <g3>Set it up</g3> puts it back.",
    "text": "Linux와 macOS에서는 MDM이 시작할 때마다 브라우저 통합을 자동으로 설정합니다. MDM을 한 번 시작해 보세요. <g1>브라우저 통합 테스트</g1>에서 <g2>브라우저가 시작하는 도우미 프로그램이 없습니다</g2>와 같은 오류가 발생하면 <g3>설정</g3>을 클릭하여 다시 설정할 수 있습니다."
@@ -1437,6 +1393,10 @@
   "167e0568310b7eb2": {
    "source": "Download video from a page: the qualities on offer, from 2160p 60fps down, with their sizes.",
    "text": "페이지에서 비디오 다운로드: 2160p 60fps부터 그 이하까지 제공되는 품질과 크기입니다."
+  },
+  "168f5a002ae6d1c7": {
+   "source": "<g1>Coming with version 0.5.2</g1> <g2>It's in the source code now, not yet in the download (version 0.5.0).</g2>",
+   "text": "<g1>버전 0.5.2에 포함될 예정입니다.</g1> <g2>현재 소스 코드에는 있지만, 아직 다운로드(버전 0.5.0)에는 없습니다.</g2>"
   },
   "1691dcacfd0943ed": {
    "source": "Text on a chip",
@@ -1469,10 +1429,6 @@
   "16cc6550e7f6316d": {
    "source": "In the <g1>Categories</g1> pane: the selected category's menu (<g2>Properties</g2>, <g3>Add category</g3>, <g4>Delete</g4>)",
    "text": "<g1>범주</g1> 창에서: 선택한 범주의 메뉴(<g2>속성</g2>, <g3>범주 추가</g3>, <g4>삭제</g4>)"
-  },
-  "16d0c80f66d0e4a4": {
-   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades 1.5 seconds after the pointer stops and at once when it leaves the video, and leaves out small videos and short muted loops (animated pictures, backgrounds). Playing or pausing the video doesn't bring it back. On a video under 360 pixels wide, or where its words wouldn't fit, it is only its round button and its arrow. In fullscreen it follows the video when the player allows it.",
-   "text": "방해가 되지 않도록 표시됩니다. 포인터를 비디오 위로 이동할 때만 표시되며(또는 플레이어가 키보드 초점을 가질 때; <g1>Tab</g1> 키를 누르면 버튼으로 이동), 포인터가 멈춘 후 1.5초 후에 사라지고 비디오를 벗어나면 즉시 사라집니다. 작은 비디오와 짧은 음소거 루프(애니메이션 그림, 배경)는 제외됩니다. 비디오를 재생하거나 일시 중지해도 다시 나타나지 않습니다. 너비가 360픽셀 미만이거나 글자가 들어갈 공간이 없는 비디오에서는 둥근 버튼과 화살표만 표시됩니다. 전체 화면에서는 플레이어가 허용하는 경우 비디오를 따라갑니다."
   },
   "16d498a3a477d64c": {
    "source": "<g1>Dark mode has day mode's sizes and places</g1>: the menu bar, the toolbar, the panes, the list's lines and selection, buttons and the progress window's table measure the same in both modes. Only the colours change.",
@@ -1658,10 +1614,6 @@
    "source": "Downloads no longer fail with \"part file still in use\" on a busy computer.",
    "text": "바쁜 컴퓨터에서 \"part file still in use\" 오류로 다운로드가 실패하는 일이 더 이상 없습니다."
   },
-  "19d15279ff89ebf1": {
-   "source": "<g1>YouTube's look-up failing with \"Requested format is not available\"</g1> (<g2>#352</g2>): signed-in cookies make yt-dlp use only YouTube's players that need a JavaScript runtime, and without one no video is left. The page is now looked up again without the cookies, and lists its qualities.",
-   "text": "<g1>\"요청한 형식을 사용할 수 없음\" 오류로 YouTube 조회 실패</g1>(<g2>#352</g2>): 로그인된 쿠키는 yt-dlp가 JavaScript 런타임이 필요한 YouTube 플레이어만 사용하게 하며, 런타임이 없으면 비디오가 남지 않습니다. 이제 쿠키 없이 페이지를 다시 조회하고 품질 목록을 표시합니다."
-  },
   "19ef176da302a2b4": {
    "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
    "text": "브라우저가 다운로드를 MDM에 넘길 수 없으면 브라우저에서 계속 다운로드하므로 파일을 놓치지 않습니다. 이때 확장 프로그램의 도구 모음 버튼에 빨간색 !가 표시됩니다. 클릭하세요..."
@@ -1713,10 +1665,6 @@
   "1aafdbaf510c3af8": {
    "source": "<g1>It's free, for good.</g1> No trial that runs out, no licence key, no ads. The GNU GPL guarantees it stays free.",
    "text": "<g1>영원히 무료입니다.</g1> 만료되는 평가판, 라이선스 키, 광고가 없습니다. GNU GPL은 무료를 보장합니다."
-  },
-  "1abcbaa5fe5d513a": {
-   "source": "To find peers without trackers, MDM joins the DHT through four public routers (<x1/>, <x2/>, <x3/> and <x4/>); any one that answers is enough. It keeps the DHT nodes it found for the next start, so later starts don't depend on those routers.",
-   "text": "트래커 없이 피어를 찾기 위해 MDM은 네 개의 공개 라우터(<x1/>, <x2/>, <x3/>, <x4/>)를 통해 DHT에 연결합니다. 이 중 하나라도 응답하면 충분합니다. MDM은 다음 시작을 위해 찾은 DHT 노드를 저장하므로, 이후 시작 시에는 해당 라우터에 의존하지 않습니다."
   },
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
@@ -1838,6 +1786,10 @@
    "source": "Open (GPL-3.0)",
    "text": "오픈 (GPL-3.0)"
   },
+  "1c3940e67bea5a25": {
+   "source": "<g1>The gallery-dl of your Linux distribution:</g1> chosen in <g2>Helpers...</g2>, the one your distribution ships works too, from 1.20 (Ubuntu 22.04) on: MDM passes only the options that version knows. One older than that (Debian 11's 1.17) is refused, saying which version MDM needs.",
+   "text": "<g1>Linux 배포판의 gallery-dl:</g1> <g2>도우미...</g2>에서 선택하면 배포판에 포함된 gallery-dl도 1.20 버전(Ubuntu 22.04)부터 작동합니다. MDM은 해당 버전이 아는 옵션만 전달합니다. 그보다 오래된 버전(Debian 11의 1.17)은 MDM이 필요한 버전을 알려주며 거부됩니다."
+  },
   "1c41a815ee54b7d7": {
    "source": "MDM has <g1>no analytics, no automatic crash reporting, no telemetry and no advertising</g1> (a crash report goes only where you send it yourself). It never sends us your download list, the addresses you download, or anything else.",
    "text": "MDM에는 <g1>분석 기능, 자동 오류 보고, 원격 측정 또는 광고가 없습니다</g1>(오류 보고서는 직접 보내는 경우에만 전송됩니다). 다운로드 목록, 다운로드 주소 또는 그 밖의 어떤 정보도 당사에 보내지 않습니다."
@@ -1922,10 +1874,6 @@
    "source": "The download's log (hover over it in the list) says what happened: <g1>Extracted 12 files to …</g1>, or why not, for example <g2>Couldn't extract movie.7z.001: volume 3 of it is missing</g2>. An encrypted archive without its password opens the <g3>Archive password</g3> window. Type the password and click <g4>Extract</g4>, or <g5>Cancel</g5> to leave the archive as it is.",
    "text": "다운로드 로그(목록에서 마우스를 가져다 대면 표시됨)는 발생한 상황을 알려줍니다. 예를 들어 <g1>12개 파일을 …에 추출했습니다</g1> 또는 <g2>movie.7z.001을 추출할 수 없습니다: 볼륨 3이 없습니다</g2>와 같이 이유를 알려줍니다. 암호화된 압축 파일에 암호가 없으면 <g3>압축 파일 암호</g3> 창이 열립니다. 암호를 입력하고 <g4>추출</g4>을 클릭하거나 <g5>취소</g5>를 클릭하여 압축 파일을 그대로 둡니다."
   },
-  "1d4ee2f96c724f0f": {
-   "source": "A torrent: what it sends to peers, while it runs.",
-   "text": "토렌트: 실행 중 다른 피어에게 보내는 데이터 속도."
-  },
   "1d5d3ee024011a5e": {
    "source": "When a torrent's files are already in the folder, MDM asks before writing into them.",
    "text": "토렌트 파일이 이미 폴더에 있는 경우, MDM은 덮어쓰기 전에 확인합니다."
@@ -1937,10 +1885,6 @@
   "1d6ccabe01271561": {
    "source": "The progress window: speed, time left and each connection's share of the file",
    "text": "진행 창: 속도, 남은 시간 및 각 연결의 파일 점유율"
-  },
-  "1d7e46d70dc708ef": {
-   "source": "<g1>Download video</g1> shows a plain file's size, from its server, instead of \"size unknown\" (<g2>#320</g2>).",
-   "text": "<g1>비디오 다운로드</g1>가 \"크기 알 수 없음\" 대신 서버에서 가져온 일반 파일 크기를 표시합니다 (<g2>#320</g2>)."
   },
   "1d85dd539e3bd32f": {
    "source": "<g1>macOS</g1>: in the login keychain (<g2>Keychain Access</g2>), service <x3/>. macOS may ask once whether MDM may use them, after an update.",
@@ -2081,10 +2025,6 @@
   "1ff665eea9f98ed3": {
    "source": "Experimental, and said so",
    "text": "실험적 기능, 명시됨"
-  },
-  "2003c61514c69a1b": {
-   "source": "Download Mister Download Manager 0.5.2 — free for Windows, macOS and Linux",
-   "text": "Mister Download Manager 0.5.2 다운로드 — Windows, macOS, Linux용 무료"
   },
   "205082935db97950": {
    "source": "It works with assistants that support MCP, the Model Context Protocol: Claude Desktop, Claude Code, Cursor, VS Code and others.",
@@ -2250,10 +2190,6 @@
    "source": "<g1>FTP</g1><g2>and FTPS</g2>",
    "text": "<g1>FTP</g1><g2>및 FTPS</g2>"
   },
-  "225937cd2337f950": {
-   "source": "<g1><g2>Debrid service accounts</g2></g1> — Real-Debrid, AllDebrid, Premiumize and TorBox: file-host links through your own account.",
-   "text": "<g1><g2>디브리드 서비스 계정</g2></g1> — Real-Debrid, AllDebrid, Premiumize, TorBox: 사용자 계정을 통한 파일 호스트 링크."
-  },
   "228586c26511a211": {
    "source": "Open the add-on's page on addons.mozilla.org, <g1>Mister Download Manager</g1>, and click <g2>Add to Firefox</g2>. Zen and LibreWolf use the same page.",
    "text": "addons.mozilla.org에서 부가 기능 페이지인 <g1>Mister Download Manager</g1>를 열고 <g2>Firefox에 추가</g2>를 클릭합니다. Zen과 LibreWolf에서도 같은 페이지를 사용합니다."
@@ -2310,10 +2246,6 @@
    "source": "<g1>Home</g1> / <g2>End</g2>",
    "text": "<g1>Home</g1> / <g2>End</g2>"
   },
-  "235c06966eea3298": {
-   "source": "In Torrent settings you can turn off <g1>Accept incoming connections</g1> and <g2>Map the port on the router (UPnP)</g2>, or the DHT. Downloads still work, sometimes more slowly. With the <g3>Port</g3> box empty, MDM picks a port the first time and keeps it (another one if a program has taken it since), so firewall and router rules keep working; a port typed there is always the one used. These changes apply the next time the engine starts, so when no torrent is running.",
-   "text": "토렌트 설정에서 <g1>들어오는 연결 수락</g1>과 <g2>라우터에서 포트 매핑(UPnP)</g2> 또는 DHT를 끌 수 있습니다. 다운로드는 계속 작동하지만 때로는 더 느려질 수 있습니다. <g3>포트</g3> 입력란이 비어 있으면 MDM이 처음 실행될 때 포트를 선택하고 이를 유지합니다(다른 프로그램이 사용 중인 경우 다른 포트를 선택). 따라서 방화벽 및 라우터 규칙이 계속 작동합니다. 여기에 입력된 포트는 항상 사용됩니다. 이러한 변경 사항은 엔진이 다음에 시작될 때, 즉 토렌트가 실행되고 있지 않을 때 적용됩니다."
-  },
   "2365e47d5b9e0466": {
    "source": "Accounts: your debrid accounts.",
    "text": "계정: 디브리드 계정."
@@ -2362,6 +2294,10 @@
    "source": "<g1>Cookies for video sites</g1> — for videos that play only when you're signed in (YouTube's \"Sign in to confirm you're not a bot\"):",
    "text": "<g1>동영상 사이트용 쿠키</g1> — 로그인해야만 재생되는 동영상(YouTube의 \"로봇이 아님을 확인하려면 로그인하세요\")의 경우:"
   },
+  "23ef688c7090c192": {
+   "source": "MDM keeps Internet Download Manager's compact sizes. On a large or high-resolution screen, choose <g1>View → Interface size</g1> (125 %, 150 %, 175 % or 200 %), or press <g2>Ctrl +</g2> and <g3>Ctrl −</g3> in any MDM window, as in a browser; <g4>Ctrl 0</g4> goes back to 100 %. Every window follows at once, and MDM starts at that size next time. It comes on top of Windows' own display scale (<g5>Settings → System → Display → Scale</g5>).",
+   "text": "MDM은 Internet Download Manager의 간결한 크기를 유지합니다. 크거나 고해상도 화면에서는 <g1>보기 → 인터페이스 크기</g1> (125%, 150%, 175% 또는 200%)를 선택하거나, 브라우저에서처럼 MDM 창에서 <g2>Ctrl +</g2> 및 <g3>Ctrl −</g3>를 누르세요. <g4>Ctrl 0</g4>을 누르면 100%로 돌아갑니다. 모든 창에 즉시 적용되며, 다음 실행 시 MDM은 해당 크기로 시작합니다. 이는 Windows 자체의 디스플레이 배율 (<g5>설정 → 시스템 → 디스플레이 → 배율</g5>) 위에 적용됩니다."
+  },
   "23ef6c00b8edc91d": {
    "source": "The torrent library is updated (librqbit 9.1.0).",
    "text": "토렌트 라이브러리가 업데이트되었습니다 (librqbit 9.1.0)."
@@ -2393,6 +2329,10 @@
   "24689db86cd6a24a": {
    "source": "Click <g1>Resume</g1>. The download continues from where it stopped, using the new address.",
    "text": "<g1>다시 시작</g1>을 클릭합니다. 새 주소를 사용해 다운로드가 중단된 지점부터 계속됩니다."
+  },
+  "246a46d1bb74469c": {
+   "source": "MDM 0.5.0",
+   "text": "MDM 0.5.0"
   },
   "246a8479dc13c005": {
    "source": "<g1>File</g1> — the selected download: <g2>Stop Download</g2>, <g3>Remove</g3>, <g4>Download Now</g4>, <g5>Redownload</g5>.",
@@ -2730,10 +2670,6 @@
    "source": "<g1>AppImage tools support:</g1> the AppImage can update through them, downloading only what changed.",
    "text": "<g1>AppImage 도구 지원:</g1> AppImage는 이를 통해 변경된 내용만 다운로드하여 업데이트할 수 있습니다."
   },
-  "298bf4135e080b41": {
-   "source": "<g1>Upload speed for torrents</g1>, next to <g2>Transfer rate</g2> (part of <g3>#357</g3>): what a torrent sends to peers, in bytes per second, blank for anything but a torrent. A layout saved before it gets it between <g4>Transfer rate</g4> and <g5>Peers</g5>.",
-   "text": "<g1>토렌트 업로드 속도</g1>가 <g2>전송률</g2> 옆에 표시됩니다 (<g3>#357</g3>의 일부): 토렌트가 피어에게 보내는 바이트/초 단위의 속도로, 토렌트가 아닌 다른 항목에는 비어 있습니다. 이전에 저장된 레이아웃은 이 열을 <g4>전송률</g4>과 <g5>피어</g5> 사이에 배치합니다."
-  },
   "298c9f2b74a2990f": {
    "source": "How it works",
    "text": "작동 방식"
@@ -2830,10 +2766,6 @@
    "source": "An encrypted archive without its password opens the <g1>Archive password</g1> window. Hover over the download in the list to read what happened: how many files were extracted and where, or why not.",
    "text": "암호가 없는 암호화된 압축 파일은 <g1>압축 파일 암호</g1> 창을 엽니다. 목록에서 다운로드 위에 마우스를 올리면 추출된 파일 수와 위치, 또는 추출되지 않은 이유 등 발생한 상황을 확인할 수 있습니다."
   },
-  "2b1b4f2777615ee9": {
-   "source": "<g1>Alt</g1> and <g2>F10</g2> open the menu bar while a button or the list has the keyboard focus, not only when nothing does (<g3>#328</g3>).",
-   "text": "<g1>Alt</g1>와 <g2>F10</g2>은 아무것도 선택되지 않았을 때뿐만 아니라 버튼이나 목록에 키보드 포커스가 있을 때도 메뉴 모음을 엽니다(<g3>#328</g3>)."
-  },
   "2b1f05dd303b4a14": {
    "source": "<g1>Resume capability</g1> — <g2>Yes</g2> if the server lets MDM continue the download later, <g3>No</g3> if it doesn't.",
    "text": "<g1>다시 시작 기능</g1> — 서버가 MDM이 나중에 다운로드를 계속하도록 허용하면 <g2>예</g2>, 허용하지 않으면 <g3>아니요</g3>."
@@ -2873,10 +2805,6 @@
   "2b7807a59c407729": {
    "source": "Right-click any text box for <g1>Undo</g1>, <g2>Cut</g2>, <g3>Copy</g3>, <g4>Paste</g4>, <g5>Delete</g5> and <g6>Select all</g6>. A read-only value (an address, a path, a version) copies with <g7>Ctrl+C</g7> or its right-click menu.",
    "text": "텍스트 상자를 마우스 오른쪽 버튼으로 클릭하면 <g1>실행 취소</g1>, <g2>잘라내기</g2>, <g3>복사</g3>, <g4>붙여넣기</g4>, <g5>삭제</g5>, <g6>모두 선택</g6>을 사용할 수 있습니다. 주소, 경로, 버전과 같은 읽기 전용 값은 <g7>Ctrl+C</g7>를 누르거나 마우스 오른쪽 버튼 메뉴에서 복사할 수 있습니다."
-  },
-  "2b85e42ae79f0732": {
-   "source": "<g1>Off on this site</g1> (grey): after <g2>Never on</g2> the site, or when Options keep it off there. <g3>Turn on</g3> shows it on the site again.",
-   "text": "<g1>이 사이트에서 해제됨</g1>(회색): 해당 사이트에서 <g2>이 사이트에서 항상 해제</g2>를 선택했거나 옵션에서 해제된 경우입니다. <g3>켜기</g3>를 클릭하면 해당 사이트에서 다시 표시됩니다."
   },
   "2bb32fb9b3228a28": {
    "source": "Once every file is here, MDM removes the torrent from the account's list. On Premiumize, only the transfer's record goes: its files stay in your cloud.",
@@ -3090,10 +3018,6 @@
    "source": "Press <g1>Ctrl+F</g1> (or <g2>Downloads → Find</g2>). <g3>Find file</g3> opens.",
    "text": "<g1>Ctrl+F</g1>를 누르거나(<g2>다운로드 → 찾기</g2>) <g3>파일 찾기</g3>를 엽니다."
   },
-  "2eaf686f72e160f0": {
-   "source": "TorBox first downloads the file to its own servers (at once when it has it already). MDM waits for it, up to an hour, and the list says how far it is, such as <g1>40% at TorBox</g1>. Once the download is done, or taken off MDM's list, it leaves your account's list of web downloads on TorBox; a paused one keeps its place there, to go on with.",
-   "text": "TorBox는 먼저 파일을 자체 서버로 다운로드합니다 (이미 파일이 있으면 즉시 다운로드합니다). MDM은 최대 한 시간 동안 기다리며, 목록에는 <g1>TorBox에서 40%</g1>와 같이 진행 상황이 표시됩니다. 다운로드가 완료되거나 MDM 목록에서 제거되면 TorBox의 웹 다운로드 계정 목록에서 사라집니다. 일시 중지된 다운로드는 계속 진행할 수 있도록 그 자리에 유지됩니다."
-  },
   "2ec944a2affab0d5": {
    "source": "Adding downloads",
    "text": "다운로드 추가"
@@ -3178,10 +3102,6 @@
    "source": "MDM splits a file into parts and downloads them over several connections at once:",
    "text": "MDM은 파일을 여러 부분으로 나누고 여러 연결을 동시에 사용해 다운로드합니다:"
   },
-  "2f9ba2b25e96700f": {
-   "source": "Last updated 2026-11-11 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "최종 업데이트: 2026년 11월 11일 · 앱, 브라우저 확장 프로그램 및 misterdownloadmanager.com에 적용됩니다."
-  },
   "2faa21cc3fd58687": {
    "source": "When you click a download, the extension checks MDM's Options:",
    "text": "다운로드를 클릭하면 확장 프로그램이 MDM의 옵션을 확인합니다:"
@@ -3197,10 +3117,6 @@
   "2fc104cd75088e2c": {
    "source": "Internet Download Manager is the long-established paid download manager for Windows, and the design we grew up with. Here is what can be checked. Where it's ahead, we say so.",
    "text": "Internet Download Manager는 Windows용으로 오랫동안 자리 잡은 유료 다운로드 관리자이며, 우리가 익숙한 디자인입니다. 여기에서 확인할 수 있는 사항들을 비교했습니다. MDM이 앞서는 부분은 명시했습니다."
-  },
-  "2fc8613b95008d65": {
-   "source": "With no tray icon to come back from, closing or minimizing the main window now leaves it in the taskbar, with downloads still going, instead of hiding it with no way back. <g1>Options → General → Keep running when closing the window</g1> (on by default) makes closing quit MDM when unticked (<g2>#457</g2>).",
-   "text": "트레이 아이콘이 없으므로, 이제 메인 창을 닫거나 최소화하면 작업 표시줄에 남아 다운로드가 계속 진행되며, 숨겨져서 다시 돌아올 수 없던 현상이 사라집니다. <g1>옵션 → 일반 → 창을 닫을 때 계속 실행</g1> (기본적으로 켜짐)을 선택 해제하면 창을 닫을 때 MDM이 종료됩니다 (<g2>#457</g2>)."
   },
   "2fcb7506d45a47ba": {
    "source": "Options on its Accounts page: debrid service accounts",
@@ -3225,10 +3141,6 @@
   "2ff7afa29d96da6b": {
    "source": "The selected download",
    "text": "선택한 다운로드"
-  },
-  "300fe42c6f7d0e75": {
-   "source": "Help: what to do when an antivirus or VirusTotal flags MDM, and how to check your copy is the real one.",
-   "text": "도움말: 백신 프로그램이나 VirusTotal이 MDM을 플래그할 때 대처하는 방법과, 복사본이 정품인지 확인하는 방법."
   },
   "301fb01942b6c3a7": {
    "source": "<g1>macOS Intel</g1><g2>.dmg · Macs with an Intel processor · experimental</g2>",
@@ -3302,6 +3214,10 @@
    "source": "<g1>VPN and proxy support:</g1> send downloads through the browser's proxy or VPN extension (off until you turn it on).",
    "text": "<g1>VPN 및 프록시 지원:</g1> 브라우저의 프록시 또는 VPN 확장 프로그램을 통해 다운로드를 보낼 수 있습니다 (켜기 전까지는 비활성화됨)."
   },
+  "31bcbc7cc33e4d8c": {
+   "source": "View → Theme open: Classic, Native, High contrast, Metro, Adwaita, Breeze, Luna, Aero and Aqua, and Open themes folder",
+   "text": "보기 → 테마 열기: 클래식, 기본, 고대비, 메트로, Adwaita, Breeze, Luna, Aero 및 Aqua, 그리고 테마 폴더 열기"
+  },
   "31c727cb512fbff6": {
    "source": "<g1>Download all links</g1> and <g2>Download selected links</g2> send a page's links to <g3>Link grabber</g3>.",
    "text": "<g1>모든 링크 다운로드</g1> 및 <g2>선택한 링크 다운로드</g2>는 페이지의 링크를 <g3>링크 그래버</g3>로 보냅니다."
@@ -3337,6 +3253,10 @@
   "3252d1ce7fc8c7ea": {
    "source": "<g1>Allow more than 32 connections</g1> in <g2>Options → Connection</g2> raises the limit to 128 per download, for server exceptions too. The command line's <x3/> takes 1 to 128.",
    "text": "<g2>옵션 → 연결</g2>에서 <g1>32개 이상의 연결 허용</g1>을 선택하면 다운로드당 최대 128개로 제한이 늘어나며, 서버 예외에도 적용됩니다. 명령줄의 <x3/>는 1에서 128까지의 값을 가집니다."
+  },
+  "325fffdb646d841f": {
+   "source": "Get Mister Download Manager 0.5.0",
+   "text": "Mister Download Manager 0.5.0 다운로드"
   },
   "326233a6912ae49d": {
    "source": "A user's systemd timer can't wake the computer, and <x1/> needs root, so without this setting MDM can't wake the computer. MDM never asks for an administrator's password.",
@@ -3397,10 +3317,6 @@
   "33cb6035f72e6370": {
    "source": "Choose the subtitles; tick Put them into the video to keep them inside the file.",
    "text": "자막을 선택하고 파일에 자막을 포함하려면 비디오에 포함을 선택하세요."
-  },
-  "33cd34762a5593c2": {
-   "source": "It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. When the button can't tell which one you mean, the toolbar button's <g1>Media on this page</g1> lists them all. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
-   "text": "클릭한 비디오를 가져옵니다. 일반 파일을 재생하는 경우 해당 파일 자체를 가져오고, 그렇지 않으면 플레이어가 로드한 스트림(HLS 또는 DASH)을 가져오며, 그 외에는 페이지를 가져옵니다. 버튼이 어떤 것을 의미하는지 알 수 없을 때, 도구 모음 버튼의 <g1>이 페이지의 미디어</g1>에 모든 미디어가 나열됩니다. 임베디드 플레이어도 작동하며, 해당 사이트의 로그인 정보, 플레이어를 임베드한 페이지 및 브라우저의 사용자 에이전트가 함께 전송되므로 회원 전용 비디오나 플레이어를 임베드한 사이트에서만 재생되는 비디오도 다운로드할 수 있습니다. 오디오 플레이어에도 버튼이 나타납니다."
   },
   "33e74c2131bce5b0": {
    "source": "Torrents share the cap fairly",
@@ -3570,6 +3486,10 @@
    "source": "Sign in to the site in that browser first. MDM never logs or shows the cookies; the download's log names only the browser they came from.",
    "text": "먼저 해당 브라우저에서 사이트에 로그인하세요. MDM은 쿠키를 기록하거나 표시하지 않으며, 다운로드 로그에는 쿠키가 가져온 브라우저 이름만 표시됩니다."
   },
+  "3679968376b2ea8c": {
+   "source": "<g1>Control styles.</g1> <x2/> names each control's shape (text boxes, check boxes, buttons, progress bars, scroll bars, the focus mark, the title bar); the style themes (Metro, Adwaita, Breeze, Luna, Aero, Aqua) pick theirs, and on Windows MDM then draws the title bar itself (the <x3/> roles).",
+   "text": "<g1>컨트롤 스타일.</g1> <x2/>은 각 컨트롤의 모양(텍스트 상자, 확인란, 버튼, 진행률 표시줄, 스크롤 막대, 포커스 표시, 제목 표시줄)을 지정합니다. 스타일 테마(메트로, Adwaita, Breeze, Luna, Aero, Aqua)는 자체 스타일을 선택하며, Windows에서는 MDM이 제목 표시줄 자체를 그립니다(<x3/> 역할)."
+  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "목록의 빈 공간을 마우스 오른쪽 버튼으로 클릭하면 <g1>새 다운로드 추가</g1>, <g2>모두 선택</g2>, <g3>파일 정렬</g3>, <g4>모든 필터 지우기</g4>, <g5>완료된 항목 모두 삭제</g5>를 사용할 수 있습니다."
@@ -3638,6 +3558,10 @@
    "source": "Numbers your language's way, and buttons that fit",
    "text": "언어에 맞는 숫자 표기 및 버튼 크기 조정"
   },
+  "3769158c48774122": {
+   "source": "<g1>Mister Download Manager 0.5.0</g1><g2>The facts</g2>",
+   "text": "<g1>Mister Download Manager 0.5.0</g1><g2>주요 정보</g2>"
+  },
   "376a47aa5154da76": {
    "source": "Moving between computers",
    "text": "컴퓨터 간 이동"
@@ -3657,6 +3581,10 @@
   "37a82a5012e58c8d": {
    "source": "(the lighter background)",
    "text": "(더 밝은 배경)"
+  },
+  "37c057891d2cf283": {
+   "source": "Your debrid service accounts (Real-Debrid, AllDebrid, Premiumize; experimental): <g1>Add...</g1> signs in by code in the browser or with your API token or key; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See <g2>Debrid service accounts</g2>.",
+   "text": "디브리드 서비스 계정(Real-Debrid, AllDebrid, Premiumize; 실험적): <g1>추가...</g1>를 누르면 브라우저에서 코드로 로그인하거나 API 토큰 또는 키를 사용할 수 있습니다. 이후 해당 서비스가 지원하는 호스트의 링크는 서비스를 통해 다운로드됩니다. 계정은 목록에 표시된 순서대로 시도됩니다. <g2>디브리드 서비스 계정</g2>을 참조하세요."
   },
   "37c74a0e1edd492c": {
    "source": "<g1>Unfinished</g1> — downloads that aren't complete yet, by category.",
@@ -3822,6 +3750,10 @@
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
    "text": "비디오 페이지의 경우, MDM은 처음 사용할 때 yt-dlp (그리고 병합된 품질을 원하면 ffmpeg)를 다운로드합니다."
   },
+  "39b196f386c16245": {
+   "source": "<g1><g2>Browser integration</g2></g1> — the extension for Firefox (from addons.mozilla.org), Chrome, Edge, Brave, Opera and Vivaldi (from the Chrome Web Store), which downloads it takes, and what happens when MDM isn't running.",
+   "text": "<g1><g2>브라우저 통합</g2></g1> — Firefox(addons.mozilla.org에서), Chrome, Edge, Brave, Opera, Vivaldi(Chrome 웹 스토어에서)용 확장 프로그램, 확장 프로그램이 가져오는 다운로드, MDM이 실행되고 있지 않을 때의 동작을 설명합니다."
+  },
   "39ba3311a16e6d4d": {
    "source": "Real-Debrid, AllDebrid and Premiumize accounts",
    "text": "Real-Debrid, AllDebrid 및 Premiumize 계정"
@@ -3829,6 +3761,10 @@
   "39c6e3069cb8cc85": {
    "source": "Click <g1>OK</g1>.",
    "text": "<g1>확인</g1>을 클릭하세요."
+  },
+  "39d64bf0fc4125f0": {
+   "source": "Version 0.5.0 · free and open source · no ads, no spyware, nothing bundled. <g1>What's new</g1>",
+   "text": "버전 0.5.0 · 무료 오픈 소스 · 광고, 스파이웨어, 번들 없음. <g1>새로운 기능</g1>"
   },
   "39f0061bac128459": {
    "source": "<g1>Options → Archives</g1> says whether 7-Zip was found. Without it, a 7z or RAR archive isn't extracted, and the <g2>7-Zip needed</g2> window says so, with a <g3>Get 7-Zip</g3> button.",
@@ -4366,10 +4302,6 @@
    "source": "Yes: ftp://, and FTP over TLS both ways (ftpes:// and ftps://), with several connections at once, resume, and logins from the address or from Sites Logins.…",
    "text": "예: ftp:// 및 두 방식의 TLS 기반 FTP(ftpes:// 및 ftps://)를 지원합니다. 여러 연결을 동시에 사용하고 다운로드를 이어받을 수 있으며, 주소에 포함된 로그인 정보나 사이트 로그인 정보를 사용할 수 있습니다.…"
   },
-  "41afc8da9523f7b7": {
-   "source": "<g1>Where it comes from:</g1> MDM downloads gallery-dl from its releases on Codeberg. It accepts it only when the release's checksum list is signed by gallery-dl's author's key, pinned in MDM, and the program matches that list. It keeps the previous version and never goes back to an older one. On Windows and on Linux (x86-64) MDM installs it; on macOS, install it with Homebrew (<x2/>) or pip.",
-   "text": "<g1>다운로드 출처:</g1> MDM은 Codeberg 릴리스에서 gallery-dl을 다운로드합니다. MDM에 고정된 gallery-dl 작성자의 키로 릴리스의 체크섬 목록이 서명되고 프로그램이 해당 목록과 일치하는 경우에만 허용합니다. 이전 버전을 유지하며 더 오래된 버전으로 되돌아가지 않습니다. Windows 및 Linux(x86-64)에서는 MDM이 설치하고, macOS에서는 Homebrew(<x2/>) 또는 pip으로 설치합니다."
-  },
   "41b21e6f6cf70f57": {
    "source": "<g1>Drag on blank space</g1> to draw a box around downloads.",
    "text": "<g1>빈 공간을 드래그</g1>하여 다운로드를 둘러싸는 상자를 그립니다."
@@ -4478,10 +4410,6 @@
    "source": "Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (<x1/>)",
    "text": "yt-dlp와 ffmpeg를 사용한 비디오 페이지 처리, gallery-dl을 사용한 이미지 갤러리 처리(별도 프로그램으로 실행). 네트워크 어댑터를 선택하면 MDM의 127.0.0.1 프록시를 통해 연결해 해당 어댑터를 사용합니다(<x1/>)."
   },
-  "43ad4ee2e95fdb1f": {
-   "source": "A page's own short sounds (a click, a voice-search chime) are no longer listed in <g1>Media on this page</g1>.",
-   "text": "페이지 자체의 짧은 소리(클릭, 음성 검색 차임)는 더 이상 <g1>이 페이지의 미디어</g1>에 나열되지 않습니다."
-  },
   "43b468d3bb0d57bb": {
    "source": "Sites Logins: a user name and password per site.",
    "text": "사이트 로그인: 사이트별 사용자 이름과 비밀번호."
@@ -4554,10 +4482,6 @@
    "source": "Preliminary results from {date}. A full re-run is under way; these numbers will be replaced when it finishes.",
    "text": "{date}의 예비 결과입니다. 전체 재실행이 진행 중이며, 완료되면 이 수치는 교체됩니다."
   },
-  "44c2ef53e14c6f1a": {
-   "source": "A save folder shown as <x1/> could be taken literally, asking to create it in the wrong place or failing with \"Read-only file system\" on macOS.",
-   "text": "<x1/>로 표시된 저장 폴더가 문자 그대로 해석되어 잘못된 위치에 생성하려 하거나 macOS에서 \"읽기 전용 파일 시스템\" 오류로 실패할 수 있었습니다."
-  },
   "44c881667b5a140f": {
    "source": "The pane on the left has four branches. <g1>All Downloads</g1> holds everything, <g2>Unfinished</g2> what isn't complete yet and <g3>Finished</g3> what is, each by category. <g4>Queues</g4> lists each queue. The top branches show how many downloads they hold, and right-click → <g5>Browse</g5> opens a category's folder.",
    "text": "왼쪽 창에는 네 가지 분류가 있습니다. <g1>모든 다운로드</g1>에는 모든 항목이, <g2>미완료</g2>에는 아직 완료되지 않은 항목이, <g3>완료됨</g3>에는 완료된 항목이 각 범주별로 표시됩니다. <g4>대기열</g4>에는 각 대기열이 나열됩니다. 상위 분류에는 포함된 다운로드 수가 표시되며, 마우스 오른쪽 버튼 클릭 → <g5>찾아보기</g5>를 통해 범주 폴더를 열 수 있습니다."
@@ -4606,6 +4530,10 @@
    "source": "A greyed label in the progress window",
    "text": "진행 창의 회색 레이블"
   },
+  "45a51693491a43ec": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/> saves subtitles beside it: language codes from <x13/> (<x14/>), or <x15/> for every one the uploader gave; <x16/> takes the site's automatic captions instead; <x17/> puts them into the video (needs ffmpeg, MP4 or MKV). <x18/> sends yt-dlp's connections (and ffmpeg's) through one network adapter, as for <x19/>; when it isn't connected, nothing starts.",
+   "text": "동영상을 다운로드합니다. <x1/>는 <x2/>에서 화질 선택자를 가져옵니다(<x3/> = 최고 화질의 단일 파일, <x4/> = 사이트에 있는 오디오만 변환 없이 다운로드, <x5/>, <x6/>, <x7/> 또는 <x8/> = 지정된 비트레이트의 MP3 오디오, <x9/> = 최고 가변 비트레이트의 MP3 오디오, <x10/> = Opus 오디오, <x11/> = FLAC 오디오. 무손실 형식이지만 사이트 오디오보다 음질이 더 좋지는 않습니다. 변환하려면 ffmpeg가 필요합니다). <x12/>는 자막을 동영상 파일 옆에 저장합니다. <x13/>(<x14/>)에서 언어 코드를 지정하거나, 업로더가 제공한 모든 자막을 받으려면 <x15/>를 사용합니다. <x16/>는 대신 사이트의 자동 자막을 가져옵니다. <x17/>는 자막을 동영상에 포함합니다(ffmpeg, MP4 또는 MKV 필요). <x18/>는 <x19/>와 마찬가지로 yt-dlp와 ffmpeg의 연결을 단일 네트워크 어댑터로 보냅니다. 어댑터가 연결되지 않으면 다운로드가 시작되지 않습니다."
+  },
   "45bc5ceaa76685a9": {
    "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
    "text": "브라우저가 이미 시작한 다운로드(MDM이 브라우저에서 인계받은 다운로드)는 호스트가 이미 파일을 보내고 있으므로 그대로 다운로드됩니다."
@@ -4642,10 +4570,6 @@
    "source": "Source",
    "text": "원본"
   },
-  "465aa7792ebfb03e": {
-   "source": "On Linux and macOS, MDM finds yt-dlp, ffmpeg and gallery-dl on your <x1/> and in the usual package-manager folders, including Homebrew's. A program you selected yourself takes priority, followed by MDM's own installed copy. The system copy is used when neither is present, and your package manager keeps it up to date: MDM never downloads over it on its own. If your distribution's yt-dlp is old, <g2>Use MDM's own copy</g2> in Helpers downloads MDM's, which keeps itself current and is used from then on.",
-   "text": "Linux와 macOS에서 MDM은 <x1/>에 있는 yt-dlp, ffmpeg, gallery-dl과 Homebrew를 포함한 일반적인 패키지 관리자 폴더에서 이들을 찾습니다. 직접 선택한 프로그램이 우선하며, 그 다음으로 MDM이 설치한 자체 복사본이 사용됩니다. 둘 다 없는 경우 시스템 복사본이 사용되며, 패키지 관리자가 이를 최신 상태로 유지합니다. MDM은 자체적으로 시스템 복사본을 덮어쓰지 않습니다. 배포판의 yt-dlp가 오래된 경우, <g2>MDM 자체 복사본 사용</g2>을 선택하면 MDM의 yt-dlp가 다운로드되어 최신 상태를 유지하며 이후부터 사용됩니다."
-  },
   "465c0ee9455d1a69": {
    "source": "<g1>Downloads</g1>: the Windows installer, a portable zip and a plain zip, the browser extension on its own (a zip for Chromium browsers, an <x2/> for Firefox, always the app's version), and <g3>macOS and Linux to try</g3>: a universal <x4/> and an AppImage, <x5/>, <x6/> and <x7/>, marked <x8/> because they are untested by us. There, MDM connects itself to Chrome, Edge, Brave, Vivaldi and Firefox, has its tray icon, follows the system's light or dark look and uses the system's fonts and ffmpeg. Tell us how they work for you.",
    "text": "<g1>다운로드</g1>: Windows 설치 프로그램, 포터블 zip 및 일반 zip, 브라우저 확장 프로그램만 따로 다운로드할 수 있습니다(Chromium 브라우저용 zip, Firefox용 <x2/>, 항상 앱과 같은 버전). 또한 <g3>시험용 macOS 및 Linux 빌드</g3>도 제공됩니다. 범용 <x4/>와 AppImage, <x5/>, <x6/>, <x7/>가 있으며, 직접 테스트하지 않아 <x8/>로 표시되어 있습니다. macOS와 Linux에서는 MDM이 Chrome, Edge, Brave, Vivaldi, Firefox에 직접 연결되고, 시스템 트레이 아이콘을 표시하며, 시스템의 밝은 모드 또는 어두운 모드를 따르고 시스템 글꼴과 ffmpeg을 사용합니다. 사용해 보신 결과를 알려주세요."
@@ -4669,10 +4593,6 @@
   "46ac1f2e09bce7b0": {
    "source": "When something breaks, you see why.",
    "text": "문제가 발생하면 원인을 알 수 있습니다."
-  },
-  "46b00f4ec20af91a": {
-   "source": "<g1>Helium</g1> installs the extension from the same page in the Chrome Web Store: click <g2>Add to Chrome</g2>. Helium fetches extensions through its own services, so this works only while they're allowed. If Helium says <g3>Extension downloads are disabled</g3>, open <x4/> (<g5>Settings → Privacy and security → Helium services</g5>), turn on <g6>Allow connecting to Helium services</g6> and <g7>Proxy extension downloads and updates</g7>, and click <g8>Add to Chrome</g8> again. With those off, load the extension by hand instead, as above (<x9/> works in Helium too).",
-   "text": "<g1>Helium</g1>은 Chrome 웹 스토어의 동일한 페이지에서 확장 프로그램을 설치합니다. <g2>Chrome에 추가</g2>를 클릭하세요. Helium은 자체 서비스를 통해 확장 프로그램을 가져오므로, 이 기능은 해당 서비스가 허용될 때만 작동합니다. Helium이 <g3>확장 프로그램 다운로드가 비활성화되었습니다</g3>라고 표시하면 <x4/>(<g5>설정 → 개인 정보 보호 및 보안 → Helium 서비스</g5>)를 열고 <g6>Helium 서비스 연결 허용</g6> 및 <g7>확장 프로그램 다운로드 및 업데이트 프록시</g7>를 켠 다음 <g8>Chrome에 추가</g8>를 다시 클릭하세요. 이 옵션들이 꺼져 있으면 위에서 설명한 대로 수동으로 확장 프로그램을 로드하세요(<x9/>도 Helium에서 작동합니다)."
   },
   "46ef61df795090ff": {
    "source": "<g1>Start download at</g1> — a time, then either:",
@@ -4782,10 +4702,6 @@
    "source": "<g1>Downloaded file names are cleaned</g1> before they become paths, so a server can't write outside the folder you chose.",
    "text": "<g1>다운로드된 파일 이름은 정리됩니다</g1> 경로가 되기 전에, 서버가 선택한 폴더 외부로 쓸 수 없도록 합니다."
   },
-  "48db2533df9dc7a0": {
-   "source": "Last updated 2026-11-11",
-   "text": "최종 업데이트: 2026-11-11"
-  },
   "48f2a56d5061d294": {
    "source": "Browser extension: <g1><x2/>Add to Firefox</g1> <g3><x4/>Add to Chrome</g3>, for Edge, Brave and Opera too. <g5><g6><x7/>Chrome</g6> <g8><x9/>Edge</g8> <g10><x11/>Brave</g10> <g12><x13/>Opera</g12></g5>",
    "text": "브라우저 확장 프로그램: <g1><x2/>Firefox에 추가</g1> <g3><x4/>Chrome에 추가</g3>, Edge, Brave, Opera도 지원합니다. <g5><g6><x7/>Chrome</g6> <g8><x9/>Edge</g8> <g10><x11/>Brave</g10> <g12><x13/>Opera</g12></g5>"
@@ -4861,6 +4777,10 @@
   "49faa92737cc6b16": {
    "source": "Without Docker",
    "text": "Docker 없이"
+  },
+  "4a00097c01a81fa7": {
+   "source": "9 built-in looks for Mister Download Manager, each light and dark: Classic, Native, High contrast, Metro, Adwaita, Breeze, Luna, Aero, Aqua. Or make your own in a text file.",
+   "text": "Mister Download Manager를 위한 9가지 내장 테마(각각 밝은 테마와 어두운 테마): 클래식, 기본, 고대비, 메트로, Adwaita, Breeze, Luna, Aero, Aqua. 또는 텍스트 파일로 직접 만들 수 있습니다."
   },
   "4a07096e6a9abc54": {
    "source": "The download list in detail →",
@@ -5074,10 +4994,6 @@
    "source": "Quit MDM with <g1>Tasks → Exit</g1> before you unplug the stick, so it saves the list.",
    "text": "USB 메모리를 뽑기 전에 <g1>작업 → 끝내기</g1>로 MDM을 종료해 목록을 저장하세요."
   },
-  "4d7641a944d6ac96": {
-   "source": "Upload speed",
-   "text": "업로드 속도"
-  },
   "4d7daf5f5a647783": {
    "source": "Double-click the download to open its progress window.",
    "text": "다운로드를 두 번 클릭하여 진행 상황 창을 엽니다."
@@ -5205,10 +5121,6 @@
   "4ffb28494afc5681": {
    "source": "With the list selected, type the first letters of a name to jump straight to it.",
    "text": "목록이 선택된 상태에서 이름의 첫 글자를 입력하여 해당 항목으로 바로 이동합니다."
-  },
-  "5002ef0265a457da": {
-   "source": "The built-in themes are <g1>Classic</g1> (MDM's own look, the default), <g2>Native</g2> (your system's accent colour and contrast), <g3>High contrast</g3>, and the style themes <g4>Metro</g4>, <g5>Adwaita</g5>, <g6>Breeze</g6>, <g7>Luna</g7>, <g8>Aero</g8>, <g9>Aqua</g9> and <g10>Emerald</g10>, each with its own control shapes and icons, and on Windows its own title bar. <g11>Getting started</g11> describes each one; the website's <g12>Themes page</g12> shows them all, light and dark.",
-   "text": "내장 테마는 <g1>클래식</g1>(MDM 고유의 기본 모양), <g2>기본</g2>(시스템의 강조 색상 및 대비), <g3>고대비</g3>와 스타일 테마인 <g4>메트로</g4>, <g5>Adwaita</g5>, <g6>Breeze</g6>, <g7>Luna</g7>, <g8>Aero</g8>, <g9>Aqua</g9>, <g10>Emerald</g10>입니다. 각 테마는 고유한 컨트롤 모양과 아이콘을 가지며, Windows에서는 고유한 제목 표시줄을 가집니다. <g11>시작하기</g11>에서 각 테마에 대해 설명하며, 웹사이트의 <g12>테마 페이지</g12>에서 모든 테마의 밝은 모드와 어두운 모드를 볼 수 있습니다."
   },
   "502153a741b65e5f": {
    "source": "<g1>Mister Download Manager (MDM)</g1> is a free, open-source download manager for Windows 10 and 11, with builds for Linux and macOS. It looks and works like Internet Download Manager (IDM), but it is free (GPL-3.0), downloaded a 1 GiB file 5.4 times faster than IDM 6.42 in our published benchmark, and also downloads torrents, magnet links and videos from web pages. A browser extension for Chrome, Edge, Brave, Opera, Vivaldi and Firefox hands downloads to it.",
@@ -5350,10 +5262,6 @@
    "source": "What it shows",
    "text": "표시 내용"
   },
-  "51f9118b92c21123": {
-   "source": "Crash reports: a freeze whose window had recovered by the time its dump was taken is reported as a freeze, not as a crash in MDM's own watchdog (<g1>#420</g1>).",
-   "text": "충돌 보고서: 덤프가 생성될 때 창이 복구된 멈춤 현상은 MDM 자체 감시자의 충돌이 아닌 멈춤으로 보고됩니다 (<g1>#420</g1>)."
-  },
   "520aefa6e9637970": {
    "source": "Open source, GNU GPL 3.0",
    "text": "오픈 소스, GNU GPL 3.0"
@@ -5393,10 +5301,6 @@
   "52568481c8f45946": {
    "source": "Classic",
    "text": "클래식"
-  },
-  "52779ac6724617b1": {
-   "source": "After a click it says what happened, in its own colour:",
-   "text": "클릭 후 발생한 상황을 자체 색상으로 표시합니다."
   },
   "52ceae361fb11f6c": {
    "source": "A list's, a table's or a box's outline",
@@ -5570,10 +5474,6 @@
    "source": "Our benchmark: IDM 6.42 (licensed copy) and MDM on the same PC, against the same local test server, in alternating runs; medians, Mann-Whitney p &lt; 0.001 · <g1>charts, report and raw data</g1>",
    "text": "벤치마크 방법: 동일한 PC에서 라이선스가 있는 IDM 6.42와 MDM을 동일한 로컬 테스트 서버에 번갈아 실행했습니다. 중앙값, Mann-Whitney p &lt; 0.001 · <g1>차트, 보고서 및 원시 데이터</g1>"
   },
-  "5539afff7b3b82bd": {
-   "source": "MDM's log (<x1/> in <g2>MDM's data folder</g2>) says where it listens, for example <x3/>. That is one socket for IPv4 and IPv6, so on Windows <x4/> (IPv4 only) doesn't list it; <x5/> or <x6/> does, under <x7/> or <x8/>.",
-   "text": "MDM의 로그(<g2>MDM 데이터 폴더</g2>의 <x1/>)에는 MDM이 수신 대기하는 위치가 표시됩니다(예: <x3/>). 이는 IPv4 및 IPv6용 소켓 하나이므로, Windows의 <x4/>(IPv4 전용)에는 표시되지 않고, <x5/> 또는 <x6/>의 <x7/> 또는 <x8/> 아래에 표시됩니다."
-  },
   "55486df1f8a8e07c": {
    "source": "The focused row's dotted outline on a selected row",
    "text": "선택된 행의 포커스된 행 점선 윤곽선"
@@ -5606,6 +5506,10 @@
    "source": "Thanks to",
    "text": "감사합니다"
   },
+  "55d1512f7b2971e2": {
+   "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). On Windows, Latin, Greek and Cyrillic text is drawn by DirectWrite in GDI-classic mode (<x6/>, through egui's glyph rasterizer hook), so each letter's hinted shape and whole-pixel width come together; other scripts are shaped and drawn by egui.",
+   "text": "고정된 픽셀 좌표에 그려지는 하나의 egui 창과 대화 상자당 하나의 즉시 뷰포트가 있습니다. <x1/>는 상태(다운로드, 대기열, 설정, 목록 선택)를 유지하고 메뉴, 도구 모음, 키 및 IPC 명령을 작업으로 전환합니다. 각 대화 상자는 자체 모듈이며 <x2/>(열림, 닫힘, 값으로 완료됨)를 반환합니다. Windows 전용 호출은 <x3/>에, Linux 및 macOS 호출은 <x4/>에 제한됩니다(세션 시작, 브라우저 호스트, 소리, 폴더에 표시, 충돌 처리기). 다른 모든 파일은 안전하고 이식 가능한 Rust입니다. 글꼴은 시스템에서 가져옵니다. Windows의 글꼴 폴더, macOS의 시스템 글꼴, Linux의 fontconfig(<x5/>). Windows에서는 라틴어, 그리스어, 키릴어 텍스트가 GDI-클래식 모드의 DirectWrite(<x6/>, egui의 글리프 래스터라이저 후크를 통해)로 그려지므로 각 문자의 힌트 모양과 전체 픽셀 너비가 함께 나타납니다. 다른 스크립트는 egui로 모양이 지정되고 그려집니다."
+  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "재생 목록(<x1/>) 또는 채널 동영상(<x2/>) 주소를 붙여넣고 <g3>찾아보기</g3>를 클릭하세요. 이 창에는 단일 동영상의 품질 대신 목록의 동영상들이 각 동영상의 길이와 함께 표시됩니다."
@@ -5622,6 +5526,10 @@
    "source": "MDM can open a file, such as a sound or a script, exit, or turn the computer off with <g1>Shut down</g1>, <g2>Sleep</g2> or <g3>Hibernate</g3>. A 30-second countdown comes first, so if you are still at the computer, <g4>Cancel</g4> stops it.",
    "text": "MDM은 소리나 스크립트와 같은 파일을 열거나, 종료하거나, <g1>시스템 종료</g1>, <g2>절전</g2> 또는 <g3>최대 절전 모드</g3>로 컴퓨터를 끌 수 있습니다. 30초 카운트다운이 먼저 시작되므로, 컴퓨터를 사용 중이라면 <g4>취소</g4>를 눌러 중지할 수 있습니다."
   },
+  "5639bb705f1b19f2": {
+   "source": "With the MDM extension, clicking a download link in your browser hands the download to MDM. MDM gets the address together with the page it came from (the referrer), your cookies for the site and the browser's User-Agent, so downloads that need you to be signed in still work.",
+   "text": "MDM 확장 프로그램을 사용하면 브라우저에서 다운로드 링크를 클릭할 때 다운로드가 MDM으로 전달됩니다. MDM은 다운로드 주소와 함께 다운로드가 시작된 페이지(리퍼러), 해당 사이트의 쿠키 및 브라우저의 User-Agent를 가져오므로 로그인해야 하는 다운로드도 계속 작동합니다."
+  },
   "56417f54e14c905b": {
    "source": "Have the links already, in a text file? <g1>Tasks → Import → From text file</g1> reads every web address in it, and you untick the ones you don't want. <g2>From IDM export file</g2> reads an <x3/> list, with each download's referrer and cookies, so a list exported from IDM comes over with what its downloads need. You can also drop a <x4/> or <x5/> list on the download list.",
    "text": "텍스트 파일에 이미 링크가 있습니까? <g1>작업 → 가져오기 → 텍스트 파일에서</g1>는 파일 안의 모든 웹 주소를 읽어오며, 원하지 않는 주소는 선택을 해제할 수 있습니다. <g2>IDM 내보내기 파일에서</g2>는 각 다운로드의 리퍼러와 쿠키를 포함하는 <x3/> 목록을 읽어오므로, IDM에서 내보낸 목록은 다운로드에 필요한 정보와 함께 가져올 수 있습니다. <x4/> 또는 <x5/> 목록을 다운로드 목록에 끌어다 놓을 수도 있습니다."
@@ -5637,10 +5545,6 @@
   "5690cb4f1434f4bc": {
    "source": "Open Windows <g1>Settings → Apps</g1>, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder. On Linux, remove the package with your package manager, or delete the AppImage; <g2>Uninstall on Linux</g2> says what stays in your home folder and how to remove it.",
    "text": "Windows <g1>설정 → 앱</g1>을 열고 Mister Download Manager를 찾아 제거를 선택하세요. 제거 프로그램은 다운로드 목록과 설정도 삭제할지 묻습니다. 다운로드한 파일은 절대 건드리지 않습니다. 휴대용 버전의 경우 해당 폴더를 삭제하세요. Linux에서는 패키지 관리자로 패키지를 제거하거나 AppImage를 삭제하세요. <g2>Linux에서 제거</g2>는 홈 폴더에 남아 있는 것과 제거 방법을 설명합니다."
-  },
-  "5696bc1cc94d2b78": {
-   "source": "MDM's setup registers the helper where Helium looks for it, on Windows, Linux and macOS. On Linux and macOS MDM also offers the extension to Helium, through Helium's own services, so with them allowed it arrives by itself at Helium's next start (on macOS Helium asks first: <g1>New extension added</g1> in its menu, where you turn it on). The Linux packages (.deb, .rpm) leave that to the window below, writing nothing in your home folder. On Windows Helium can't be offered the extension this way: MDM's <g2>Add Mister Download Manager to your browser</g2> window opens the store's page in Helium when Helium was installed with its setup; Helium from its zip isn't found there, so open the store's page in it yourself. Helium presents itself as Google Chrome, on purpose, so in <g3>Options → General → Capture downloads from the following browsers</g3> it is <g4>Google Chrome</g4>.",
-   "text": "MDM 설치 프로그램은 Windows, Linux, macOS에서 Helium이 찾는 위치에 도우미를 등록합니다. Linux 및 macOS에서는 MDM이 Helium 자체 서비스를 통해 확장 프로그램을 Helium에 제공하므로, 해당 서비스가 허용되면 Helium이 다음에 시작할 때 자동으로 설치됩니다(macOS에서는 Helium이 먼저 메뉴에 <g1>새 확장 프로그램이 추가되었습니다</g1>라고 표시하며, 여기서 켤 수 있습니다). Linux 패키지(.deb, .rpm)는 아래 창에 맡겨지며 홈 폴더에는 아무것도 기록하지 않습니다. Windows에서는 MDM이 이런 방식으로 확장 프로그램을 제공할 수 없습니다. MDM의 <g2>브라우저에 Mister Download Manager 추가</g2> 창은 Helium이 설치 프로그램으로 설치된 경우 Helium에서 스토어 페이지를 엽니다. zip 파일로 설치된 Helium은 거기서 찾을 수 없으므로 직접 스토어 페이지를 여세요. Helium은 의도적으로 Google Chrome으로 자신을 표시하므로, <g3>옵션 → 일반 → 다음 브라우저에서 다운로드 캡처</g3>에서는 <g4>Google Chrome</g4>입니다."
   },
   "569b5b4f390246d8": {
    "source": "Command line and automation",
@@ -5661,14 +5565,6 @@
   "56cc0ee76be4673e": {
    "source": "You can add your own queues in the Scheduler, or with <g1>Create new queue</g1> in a download's right-click menu.",
    "text": "예약 관리자에서 또는 다운로드의 마우스 오른쪽 버튼 메뉴에서 <g1>새 큐 만들기</g1>를 사용하여 자신만의 대기열을 추가할 수 있습니다."
-  },
-  "56e24f6222e629f5": {
-   "source": "is the theme yours starts from: <x1/> (the default), <x2/>, <x3/>, <x4/>, <x5/>, <x6/>, <x7/>, <x8/>, <x9/>, or another theme file in the same folder.",
-   "text": "는 <x1/>(기본값), <x2/>, <x3/>, <x4/>, <x5/>, <x6/>, <x7/>, <x8/>, <x9/> 또는 같은 폴더에 있는 다른 테마 파일에서 시작하는 테마입니다."
-  },
-  "56efd2641fb36334": {
-   "source": "With the MDM extension, clicking a download link in your browser hands the download to MDM. MDM gets the address together with the page it came from (the referrer), your cookies for the site and the browser's User-Agent, so downloads that need you to be signed in still work. It also gets the address the browser's own download had reached: when a site refuses MDM the link itself (a one-time link the browser has already used, or a site that lets only browsers ask for its links), MDM goes on from there once, without your cookies if it is another site. When a site's bot check (Cloudflare's, for one) or its refusal of programs (FileHippo's <g1>412 Precondition Failed</g1>) turns MDM's own connection away, MDM asks once more connecting the way your browser does (the same handshake, settings and order of headers), with your browser's User-Agent and its cookies for that site only, and downloads on that one connection; your proxy, network adapter and speed limits apply as usual. It solves no challenge: a site that still wants one answered refuses again, and MDM says <g2>this site lets only browsers through</g2>; Alt+click the link to leave the download to the browser.",
-   "text": "MDM 확장 기능을 사용하면 브라우저에서 다운로드 링크를 클릭할 때 MDM이 다운로드를 처리합니다. MDM은 다운로드 링크 주소와 함께 해당 페이지(리퍼러), 해당 사이트의 쿠키, 브라우저의 사용자 에이전트를 가져오므로 로그인해야 하는 다운로드도 작동합니다. 또한 브라우저 자체 다운로드가 도달한 주소도 가져옵니다. 사이트가 MDM에 링크 자체를 거부하는 경우(브라우저가 이미 사용한 일회성 링크 또는 브라우저만 링크를 요청하도록 허용하는 사이트) MDM은 해당 지점부터 한 번 진행하며, 다른 사이트인 경우 쿠키 없이 진행합니다. 사이트의 봇 확인(예: Cloudflare) 또는 프로그램 거부(FileHippo의 <g1>412 Precondition Failed</g1>)로 인해 MDM 자체 연결이 거부되면 MDM은 브라우저가 연결하는 방식(동일한 핸드셰이크, 설정 및 헤더 순서)으로 한 번 더 연결을 요청하며, 해당 사이트에 대한 브라우저의 사용자 에이전트와 쿠키만 사용하고 해당 연결에서 다운로드합니다. 프록시, 네트워크 어댑터 및 속도 제한은 평소와 같이 적용됩니다. 이는 문제를 해결하지 않습니다. 여전히 응답을 원하는 사이트는 다시 거부하며, MDM은 <g2>이 사이트는 브라우저만 허용합니다</g2>라고 표시합니다. Alt+클릭으로 링크를 클릭하면 브라우저가 다운로드를 처리합니다."
   },
   "56f407c985b086ad": {
    "source": "Adds a download, as the command line's <x1/> do (<x2/> is <x3/>); <x4/>. <x5/> (a key from the list's <x6/>) puts it in that category's folder instead of the one its type picks; <x7/> (a queue's name) is the queue it waits in with <x8/>. Also with the API off, like the command line.",
@@ -5742,10 +5638,6 @@
    "source": "Command",
    "text": "명령"
   },
-  "57e8a79811198d54": {
-   "source": "<g1>The gallery-dl of your Linux distribution:</g1> the one your distribution ships works too, from 1.20 (Ubuntu 22.04) on. Found on its own, it gets only the options every one of those versions knows; chosen in <g2>Helpers...</g2>, the ones its version knows. One older than that (Debian 11's 1.17) is refused when you choose it, saying which version MDM needs; found on its own, its galleries fail, and <g3>Use MDM's own copy</g3> is the way out.",
-   "text": "<g1>Linux 배포판의 gallery-dl:</g1> 배포판에 포함된 gallery-dl도 1.20(Ubuntu 22.04)부터 작동합니다. 자체적으로 발견된 경우 해당 버전이 아는 옵션만 가져오고, <g2>도우미...</g2>에서 선택된 경우 해당 버전이 아는 옵션을 가져옵니다. 그보다 오래된 버전(Debian 11의 1.17)은 선택 시 MDM이 필요한 버전을 알려주며 거부됩니다. 자체적으로 발견된 경우 해당 갤러리가 실패하며, <g3>MDM 자체 복사본 사용</g3>이 해결책입니다."
-  },
   "57f708f18604d10d": {
    "source": "(and Sheets, Slides, Drawings).",
    "text": "(및 Sheets, Slides, Drawings)."
@@ -5765,10 +5657,6 @@
   "5825a9c27ba24869": {
    "source": "<g1><g2>Keyboard shortcuts</g2></g1> — every key the main window answers, and screen readers.",
    "text": "<g1><g2>바로 가기 키</g2></g1> — 주 창에서 사용되는 모든 키보드 단축키 및 화면 판독기 사용법을 설명합니다."
-  },
-  "584697d876791ed0": {
-   "source": "<g1>Download video</g1> finds the video on pages whose player loads a <x2/> or <x3/> address that answers something else first, as SVT Play does (<g4>#377</g4>).",
-   "text": "<g1>비디오 다운로드</g1>는 SVT Play처럼 <x2/> 또는 <x3/> 주소를 먼저 로드하는 페이지에서 비디오를 찾습니다(<g4>#377</g4>)."
   },
   "584cc45dc137daf3": {
    "source": "One asterisk, a whole series",
@@ -6178,6 +6066,10 @@
    "source": "Every release is built from the public source code by <g1>GitHub Actions</g1>, on GitHub's servers; the build logs are public.",
    "text": "모든 릴리스는 GitHub 서버에서 <g1>GitHub Actions</g1>에 의해 공개 소스 코드로부터 빌드됩니다. 빌드 로그는 공개됩니다."
   },
+  "5ecbcb580e32c28b": {
+   "source": "Last updated 2026-11-09",
+   "text": "최종 업데이트: 2026-11-09"
+  },
   "5ecd9e0a59e0c6c6": {
    "source": "RSS feeds for torrents, with download rules",
    "text": "토렌트 RSS 피드 및 다운로드 규칙"
@@ -6193,10 +6085,6 @@
   "5ef406f45fdd5c6f": {
    "source": "<g1>What were you doing when it happened?</g1> is optional. A few words, such as \"I opened Add URL\", help a lot.",
    "text": "<g1>문제가 발생했을 때 무엇을 하고 있었나요?</g1>는 선택 사항입니다. \"URL 추가를 열었습니다\"처럼 몇 마디만 적어도 큰 도움이 됩니다."
-  },
-  "5f1b601e1d32be59": {
-   "source": "Crash reports: a crash monitor that can't open its connection no longer makes MDM wait five seconds at start or stays behind as a second process (<g1>#458</g1>).",
-   "text": "충돌 보고서: 연결을 열 수 없는 충돌 모니터가 더 이상 시작 시 MDM을 5초 동안 기다리게 하거나 두 번째 프로세스로 남아 있지 않습니다 (<g1>#458</g1>)."
   },
   "5f246a6b539a96be": {
    "source": "Edit this page on GitHub",
@@ -6342,14 +6230,6 @@
    "source": "<g1>GNU GPL 3.0</g1><g2>free software, for good</g2>",
    "text": "<g1>GNU GPL 3.0</g1><g2>영원히 무료 소프트웨어</g2>"
   },
-  "60db104b0c4ca856": {
-   "source": "MDM asks each service well under its request limit: Real-Debrid at most 120 times a minute (it allows 250), AllDebrid 300 (it allows 600), Premiumize 60 (it publishes no limit), TorBox 120 (it allows 300 a minute, and 60 new web downloads an hour). When a service says it's asked too often, MDM waits.",
-   "text": "MDM은 각 서비스에 요청 제한보다 훨씬 적게 요청합니다. Real-Debrid는 분당 최대 120회 (허용 250회), AllDebrid는 300회 (허용 600회), Premiumize는 60회 (제한 없음), TorBox는 120회 (분당 300회, 시간당 60개의 새 웹 다운로드 허용)입니다. 서비스에서 너무 자주 요청했다고 응답하면 MDM은 기다립니다."
-  },
-  "60e4ea08eb29abeb": {
-   "source": "<g1>Stop</g1> on a download in a running queue stays stopped, instead of the queue starting it again a moment later; <g2>Stop All</g2> too (<g3>#341</g3>).",
-   "text": "실행 중인 대기열에서 다운로드를 <g1>중지</g1>하면 잠시 후 대기열이 다시 시작하는 대신 중지 상태를 유지합니다. <g2>모두 중지</g2>도 마찬가지입니다(<g3>#341</g3>)."
-  },
   "60f3c58ee8c2af81": {
    "source": "<g1>Options where you expect them</g1> Every setting where an IDM user looks first: connections, proxies, folders, sounds.",
    "text": "<g1>익숙한 위치에 있는 옵션</g1> IDM 사용자가 가장 먼저 찾는 연결, 프록시, 폴더, 소리 설정을 모두 제공합니다."
@@ -6426,10 +6306,6 @@
    "source": "No more black band across menus and windows on Windows 11 Insider builds.",
    "text": "Windows 11 Insider 빌드에서 메뉴와 창에 검은색 띠가 더 이상 나타나지 않습니다."
   },
-  "61d6c2c5f915ca8e": {
-   "source": "<g1>Added to MDM</g1> (green), with the quality: <g2>Show</g2> brings MDM's window up with that download selected.",
-   "text": "<g1>MDM에 추가됨</g1>(녹색), 화질과 함께 표시됩니다. <g2>표시</g2>를 클릭하면 MDM 창이 해당 다운로드가 선택된 상태로 나타납니다."
-  },
   "61dfb9258d4ae7c3": {
    "source": "The first time, Windows may ask whether to let MDM communicate on networks: allow it on private networks, or the phone can't reach MDM.",
    "text": "처음에는 Windows에서 MDM이 네트워크에서 통신하도록 허용할지 물을 수 있습니다. 개인 네트워크에서 허용해야 휴대폰이 MDM에 연결할 수 있습니다."
@@ -6501,6 +6377,10 @@
   "634ba66c06a04968": {
    "source": "Your download list, settings, logins you save in <g1>Sites Logins</g1>, the history of each download and the files you download are stored only on your computer: in <x2/> on Windows (or the <x3/> folder of the portable copy), and in the usual application-data folder on macOS and Linux. Nothing is uploaded anywhere. Uninstalling offers to delete them. From version 0.5.0, the passwords of Sites Logins, the proxy and debrid accounts go into the system's keychain instead (Windows Credential Manager, the keyring on Linux, the macOS keychain), still on your computer, when one is there and unlocked.",
    "text": "다운로드 목록, 설정, <g1>사이트 로그인</g1>에 저장한 로그인 정보, 각 다운로드 기록 및 다운로드한 파일은 사용자 컴퓨터에만 저장됩니다. Windows에서는 <x2/>(또는 휴대용 버전의 <x3/> 폴더)에, macOS 및 Linux에서는 일반적인 애플리케이션 데이터 폴더에 저장됩니다. 어떤 것도 어디에도 업로드되지 않습니다. 제거 시 삭제할지 묻습니다. 버전 0.5.0부터는 사이트 로그인, 프록시 및 디브리드 계정의 비밀번호가 시스템 키체인(Windows 자격 증명 관리자, Linux의 키링, macOS 키체인)에 저장되며, 키체인이 존재하고 잠금 해제된 경우 여전히 사용자 컴퓨터에 저장됩니다."
+  },
+  "6358a6dba2b7cf5f": {
+   "source": "You need Windows 10 or 11 and Rust stable 1.95 or later (the MSVC toolchain).",
+   "text": "Windows 10 또는 11과 Rust stable 1.95 이상(MSVC 툴체인)이 필요합니다."
   },
   "635f40f1db7e086a": {
    "source": "Pause running downloads, or start (resume) stopped, queued or failed ones, in the running app.",
@@ -6658,10 +6538,6 @@
    "source": "Linux, another package manager's package (pacman, ...)",
    "text": "Linux, 다른 패키지 관리자의 패키지 (pacman, ...)"
   },
-  "65cb5200a6c6b9ad": {
-   "source": "The video download button moves to a free corner instead of covering a control of the page, such as a thumbnail's watch-later button (<g1>#421</g1>). Dragging it still puts it where you want it.",
-   "text": "비디오 다운로드 버튼이 페이지의 컨트롤(예: 썸네일의 나중에 보기 버튼)을 가리지 않고 빈 모서리로 이동합니다 (<g1>#421</g1>). 드래그하여 원하는 위치에 놓을 수 있습니다."
-  },
   "65da44cc551abd0f": {
    "source": "<g1>Download complete</g1> shows the file's size, its address and where it was saved. Choose <g2>Open</g2>, <g3>Open with...</g3>, <g4>Open folder</g4> or <g5>Close</g5>. On Windows you can also drag the small box at the bottom right into Explorer, an email or a chat to drop the file there. The window shows above your other programs until you click it, without taking the keyboard from the one you're typing in.",
    "text": "<g1>다운로드 완료</g1> 창에는 파일 크기, 주소, 저장 위치가 표시됩니다. <g2>열기</g2>, <g3>다른 이름으로 열기...</g3>, <g4>폴더 열기</g4> 또는 <g5>닫기</g5>를 선택하세요. Windows에서는 오른쪽 아래의 작은 상자를 탐색기, 이메일 또는 채팅 창으로 끌어다 놓아 파일을 첨부할 수도 있습니다. 이 창은 클릭할 때까지 다른 프로그램 위에 표시되지만, 입력 중인 프로그램의 키보드 포커스를 빼앗지는 않습니다."
@@ -6697,10 +6573,6 @@
   "66b76acd18192191": {
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
    "text": "<g1>속성</g1> — 이름, 파일 형식 및 폴더를 변경합니다. 일반 및 토렌트는 폴더만 변경합니다. 이름이 변경된 범주는 폴더를 유지하며, 기본 제공 범주는 이름을 변경하기 전까지 해당 언어로 된 이름을 유지합니다."
-  },
-  "66bed96fa5191ffc": {
-   "source": "The main window in the Emerald theme",
-   "text": "에메랄드 테마의 메인 창"
   },
   "66c4836883cab606": {
    "source": "<g1>Made possible by these amazing humans</g1>: the home page's first view thanks everyone who sent a pull request, opened an issue or joined a conversation on GitHub, with their round photos; the new <g2>Contributors</g2> page shows what each one did; each release, on the News page and in its notes on GitHub, ends with the people who helped since the one before; and the README thanks everyone too.",
@@ -6846,10 +6718,6 @@
    "source": "Typing the start of a name while the list has the focus jumps to the first download whose name starts with it.",
    "text": "목록에 포커스가 있을 때 이름의 앞부분을 입력하면 해당 부분으로 시작하는 이름의 첫 다운로드로 이동합니다."
   },
-  "69993806a2016916": {
-   "source": "MDM keeps Internet Download Manager's compact sizes. On a large or high-resolution screen, choose <g1>View → Interface size</g1> (110 %, 115 %, 120 %, 125 %, 150 %, 175 % or 200 %), or press <g2>Ctrl +</g2> and <g3>Ctrl −</g3> in any MDM window, as in a browser; <g4>Ctrl 0</g4> goes back to 100 %. Every window follows at once, and MDM starts at that size next time. It comes on top of Windows' own display scale (<g5>Settings → System → Display → Scale</g5>).",
-   "text": "MDM은 Internet Download Manager의 간결한 크기를 유지합니다. 크거나 고해상도 화면에서는 <g1>보기 → 인터페이스 크기</g1>(110%, 115%, 120%, 125%, 150%, 175% 또는 200%)를 선택하거나, 브라우저에서처럼 MDM 창에서 <g2>Ctrl +</g2> 및 <g3>Ctrl −</g3>를 누르세요. <g4>Ctrl 0</g4>은 100%로 돌아갑니다. 모든 창이 즉시 적용되며, 다음 실행 시 MDM은 해당 크기로 시작합니다. 이는 Windows 자체의 디스플레이 배율(<g5>설정 → 시스템 → 디스플레이 → 배율</g5>) 위에 적용됩니다."
-  },
   "69ab29dd8d37ba1a": {
    "source": "A key MDM doesn't know, or a value it can't read, is skipped and written to MDM's log (the <x1/> folder beside the themes folder), so a file made for a newer MDM still loads. A file that isn't valid TOML or JSON doesn't load, and the log says why. A file named like a built-in theme (<x2/>) is passed over: give yours a name of its own.",
    "text": "MDM이 알 수 없거나 읽을 수 없는 키 또는 값은 건너뛰고 MDM 로그(테마 폴더 옆의 <x1/> 폴더)에 기록되므로, 최신 MDM용으로 만들어진 파일도 로드됩니다. 유효한 TOML 또는 JSON 형식이 아닌 파일은 로드되지 않으며, 로그에 이유가 표시됩니다. 내장 테마와 이름이 같은 파일(<x2/>)은 건너뛰어지므로, 고유한 이름을 사용하세요."
@@ -6945,6 +6813,10 @@
   "6ac6201c0a62d927": {
    "source": "If the DNS can't be reached, the download stops with a message naming it, unless you allow falling back to the system's DNS. Your hosts file and local names stay with the system's DNS, and video pages and torrent trackers still use it. The command line's <x1/> takes <x2/>.",
    "text": "DNS에 연결할 수 없는 경우, 시스템 DNS로 대체하는 것을 허용하지 않으면 다운로드가 해당 메시지와 함께 중지됩니다. 호스트 파일과 로컬 이름은 시스템 DNS를 따르며, 비디오 페이지와 토렌트 트래커도 여전히 시스템 DNS를 사용합니다. 명령줄의 <x1/>은 <x2/>를 사용합니다."
+  },
+  "6aca763652509bde": {
+   "source": "A debrid service, such as Real-Debrid, AllDebrid or Premiumize, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without the host's waits, speed caps and captchas. With your account in MDM, a link from a host your service supports is unlocked through the service, then downloaded by MDM like any file: all its connections, pause and resume.",
+   "text": "Real-Debrid, AllDebrid, Premiumize와 같은 디브리드 서비스는 파일 호스트에서 자체 서버로 파일을 다운로드하는 유료 계정입니다. 호스트의 대기 시간, 속도 제한 및 캡차 없이 일반적인 직접 링크를 제공합니다. MDM에 계정을 등록하면 서비스가 지원하는 호스트의 링크가 서비스를 통해 잠금 해제된 다음, MDM이 다른 파일처럼 모든 연결, 일시 중지 및 재개를 사용하여 다운로드합니다."
   },
   "6add747d087cfb25": {
    "source": "Adds an http, https, ftp or ftps address and starts it, or only queues it. It can say which folder and file name to use. A magnet link opens <g1>Add torrent</g1> in MDM, for you to choose the files.",
@@ -7042,10 +6914,6 @@
    "source": "It covers downloads and FTP, torrents (peers, trackers, the DHT and the listening port), video pages and image galleries, the DNS you chose, MDM's own downloads and its update check. The command line's <x1/>, <x2/> and <x3/> take <x4/>, with the adapter's name, such as <x5/> or <x6/>, or one of its addresses.",
    "text": "다운로드 및 FTP, 토렌트(피어, 트래커, DHT 및 수신 포트), 비디오 페이지 및 이미지 갤러리, 선택한 DNS, MDM 자체 다운로드 및 업데이트 확인을 포함합니다. 명령줄의 <x1/>, <x2/> 및 <x3/>는 <x4/>를 사용하며, <x5/> 또는 <x6/>와 같은 어댑터 이름이나 해당 주소 중 하나를 사용합니다."
   },
-  "6c5231013d543f43": {
-   "source": "A download that a page starts by script (a thank-you page going to the installer, as obsproject.com's does) gets the file's address, not the page's, so MDM no longer saves that page under the installer's name (<g1>#374</g1>). A finished download also shows what really came down when the server gives no size.",
-   "text": "페이지가 스크립트로 시작하는 다운로드(obsproject.com처럼 설치 프로그램으로 이동하는 감사 페이지)는 페이지 주소가 아닌 파일 주소를 가져오므로, MDM은 더 이상 해당 페이지를 설치 프로그램 이름으로 저장하지 않습니다(<g1>#374</g1>). 서버에서 크기를 제공하지 않을 때 완료된 다운로드도 실제로 다운로드된 내용을 표시합니다."
-  },
   "6c5432e7c23b854e": {
    "source": "egui's widgets at rest",
    "text": "정지 상태의 egui 위젯"
@@ -7065,10 +6933,6 @@
   "6c8e32cd2774b905": {
    "source": "Torrents — Mister Download Manager help",
    "text": "토렌트 — Mister Download Manager 도움말"
-  },
-  "6cbd30742f3005de": {
-   "source": "Download a playlist's or channel's videos one after another, into a folder named after the list inside <x1/>. <x2/> is one quality for all, as for <x3/> (by default each video's best; <x4/> = up to 720p; <x5/> = the original sound; <x6/>, <x7/>, <x8/> as for <x9/>). <x10/> as for <x11/>.",
-   "text": "재생 목록 또는 채널의 동영상을 <x1/> 내의 목록 이름으로 된 폴더에 순서대로 다운로드합니다. <x2/>는 <x3/>와 같이 모든 동영상에 동일한 화질을 적용합니다(기본값은 각 동영상의 최고 화질; <x4/> = 최대 720p; <x5/> = 원본 사운드; <x6/>, <x7/>, <x8/>는 <x9/>와 동일). <x10/>는 <x11/>와 동일합니다."
   },
   "6cf66bb7f58412f7": {
    "source": "<g1>Downloads from a browser behind a VPN or proxy extension go through it too</g1> (<g2>#42</g2>): the browser extension passes the proxy the browser uses for a download (an extension's, or its settings' manual proxy or auto-config script) with it. MDM downloads through the same proxy while <g3>Options → Proxy / Socks → Use proxy/socks from a browser's request</g3> is on, which is the default. A proxy that needs the VPN extension's own login can't be shared: the download says so rather than going without it. It is an opt-in, off as installed: <g4>Send downloads through this browser's proxy or VPN extension</g4> in the extension's popup. In Firefox the switch asks for the browser's <g5>proxy</g5> permission (to read the browser's proxy, never to change it). Chrome, Edge, Brave, Opera and Vivaldi can't make that permission optional, so their extension has it from the install; Chrome counts it under the access to every site the extension already has, so the update asks for nothing new. There the extension reads the browser's proxy settings: the server for the download's scheme (honouring their bypass list), or their auto-config script. Addresses on this computer (localhost, 127.0.0.1) go straight to it, as the browser sends them.",
@@ -7194,10 +7058,6 @@
    "source": "<g1>The video window opens instead:</g1> the address is a video's page. See <g2>Download a video from a page</g2>.",
    "text": "<g1>대신 비디오 창이 열림:</g1> 주소가 비디오 페이지입니다. <g2>페이지에서 비디오 다운로드</g2>를 참조하세요."
   },
-  "6e76463077ae88ff": {
-   "source": "Browser link import: tighter handling of site data.",
-   "text": "브라우저 링크 가져오기: 사이트 데이터 처리 강화."
-  },
   "6e889ba993e6995d": {
    "source": "The categories tree's background",
    "text": "카테고리 트리의 배경"
@@ -7278,6 +7138,10 @@
    "source": "Numbers and dates",
    "text": "숫자 및 날짜"
   },
+  "6f93f457f41d4fa3": {
+   "source": "<g1>User-Agent for manually added downloads</g1> — how MDM names itself to servers for downloads you add yourself. Downloads from the browser use the browser's own User-Agent.",
+   "text": "<g1>직접 추가한 다운로드의 User-Agent</g1> — 직접 추가한 다운로드에서 MDM이 서버에 자신을 알리는 방식입니다. 브라우저에서 가져온 다운로드에는 브라우저 자체의 User-Agent를 사용합니다."
+  },
   "6fd265830dad2b39": {
    "source": "Untick the folders or files you don't want. <g1>Select all</g1> and <g2>Select none</g2> help with big torrents. <g3>Selected</g3> shows how many files and how much data you picked.",
    "text": "원하지 않는 폴더나 파일의 선택을 해제합니다. <g1>모두 선택</g1>과 <g2>선택 안 함</g2>은 용량이 큰 토렌트에서 유용합니다. <g3>선택됨</g3>에는 선택한 파일 수와 데이터 용량이 표시됩니다."
@@ -7293,10 +7157,6 @@
   "6fe2dcd2583ba8b7": {
    "source": "MDM closed with an internal error when a window opened while the main window was minimized or hidden in the notification area, for example Download File Info for a download from the browser, or Add torrent for a magnet link opened in the browser (<g1>#22</g1>, <g2>#145</g2>). The cause was in egui, the toolkit MDM is drawn with (<g3>emilk/egui#8470</g3>), and is fixed in MDM's copy of it.",
    "text": "메인 창이 최소화되거나 알림 영역에 숨겨져 있을 때 창이 열리면 MDM이 내부 오류로 종료되었습니다. 예를 들어 브라우저에서 다운로드한 파일 정보 다운로드 또는 브라우저에서 열린 마그넷 링크의 토렌트 추가가 해당됩니다 (<g1>#22</g1>, <g2>#145</g2>). 원인은 MDM이 그려지는 툴킷인 egui에 있었으며 (<g3>emilk/egui#8470</g3>), MDM의 복사본에서 수정되었습니다."
-  },
-  "6ff6bb70b136e59c": {
-   "source": "A download refused by a site's bot check (Cloudflare's challenge) says so and how to get the file, instead of \"the server answered 403 Forbidden\" (<g1>#376</g1>).",
-   "text": "사이트의 봇 확인(Cloudflare 챌린지)으로 인해 다운로드가 거부된 경우, \"서버에서 403 Forbidden 응답\" 대신 거부 사유와 파일을 얻는 방법을 표시합니다(<g1>#376</g1>)."
   },
   "6ffa7e77fe9e6b56": {
    "source": "The <g1>Q</g1> column shows which downloads are in a queue. Under <g2>Queues</g2> in the categories pane, select a queue to see only its downloads.",
@@ -7365,6 +7225,10 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM은 창 없이 다음 세 가지 방법으로 실행할 수 있습니다."
+  },
+  "70d186b49585dfff": {
+   "source": "is the theme yours starts from: <x1/> (the default), <x2/>, <x3/>, <x4/>, <x5/>, <x6/>, <x7/>, <x8/>, or another theme file in the same folder.",
+   "text": "테마가 시작되는 기반입니다: <x1/>(기본값), <x2/>, <x3/>, <x4/>, <x5/>, <x6/>, <x7/>, <x8/> 또는 같은 폴더에 있는 다른 테마 파일."
   },
   "70d42911cc360e5b": {
    "source": "On Linux",
@@ -7546,10 +7410,6 @@
    "source": "9 built-in looks in <g1>View → Theme</g1>: Classic, Native, High contrast, Metro, Adwaita, Breeze, Luna, Aero, Aqua.",
    "text": "<g1>보기 → 테마</g1>에서 9가지 내장 테마: 클래식, 기본, 고대비, Metro, Adwaita, Breeze, Luna, Aero, Aqua."
   },
-  "737f9556375bf1e9": {
-   "source": "<g1>Smooth text on Windows, and finer interface sizes:</g1> <g2>View → Text → Smooth</g2> draws letters anti-aliased at their own size instead of as thick, whole-pixel letters that are hard to read on a 1440p screen; <g3>Classic</g3>, the default, keeps the look MDM had. <g4>View → Interface size</g4> now offers 110 %, 115 % and 120 % between 100 % and 125 %.",
-   "text": "<g1>Windows에서 부드러운 텍스트와 더 세밀한 인터페이스 크기:</g1> <g2>보기 → 텍스트 → 부드럽게</g2>는 1440p 화면에서 읽기 어려운 두껍고 전체 픽셀 문자로 그리는 대신 자체 크기로 안티앨리어싱된 문자를 그립니다. 기본값인 <g3>클래식</g3>은 MDM의 기존 모양을 유지합니다. <g4>보기 → 인터페이스 크기</g4>는 이제 100%와 125% 사이에 110%, 115%, 120%를 제공합니다."
-  },
   "7389126159a9a4d4": {
    "source": "MDM didn't answer in time",
    "text": "MDM이 제때 응답하지 않았습니다."
@@ -7626,10 +7486,6 @@
    "source": "<g1>Turn off computer when done</g1> — choose <g2>Shut down</g2>, <g3>Sleep</g3> or <g4>Hibernate</g4>.",
    "text": "<g1>완료 시 컴퓨터 끄기</g1> — <g2>시스템 종료</g2>, <g3>절전</g3> 또는 <g4>최대 절전 모드</g4>를 선택합니다."
   },
-  "74d31efcb7fb0d99": {
-   "source": "Crash reports: no report any more when one of the download engine's background tasks panics while MDM is already closing (<g1>#422</g1>).",
-   "text": "충돌 보고서: MDM이 이미 종료되는 동안 다운로드 엔진의 백그라운드 작업 중 하나가 패닉 상태에 빠져도 더 이상 보고서가 생성되지 않습니다 (<g1>#422</g1>)."
-  },
   "74e4bcc556e44723": {
    "source": "Add torrent on Linux, with the torrent's files",
    "text": "Linux에서 토렌트 파일이 있는 토렌트 추가 창"
@@ -7678,10 +7534,6 @@
    "source": "End-to-end medians with interquartile ranges, the ratio with its 95% interval, and the Mann–Whitney test, as <x1/> writes them.",
    "text": "종단 간 중앙값과 사분위 범위, 95% 구간을 포함한 비율, 그리고 <x1/>에 따라 작성된 Mann–Whitney 테스트입니다."
   },
-  "75c5e88776534271": {
-   "source": "Adding a link again after its finished file was moved or deleted starts a new download, instead of asking about a duplicate that isn't there (<g1>#342</g1>).",
-   "text": "완료된 파일이 이동되거나 삭제된 후 링크를 다시 추가하면 존재하지 않는 중복 파일에 대해 묻는 대신 새 다운로드를 시작합니다(<g1>#342</g1>)."
-  },
   "75d11e79303ec689": {
    "source": "A network adapter",
    "text": "네트워크 어댑터"
@@ -7689,14 +7541,6 @@
   "75f7cfcbf2ebf842": {
    "source": "A <x1/> file's web address works too: paste it into <g2>Add URL</g2> or <g3>Torrent</g3>, or let the browser hand the download over. MDM fetches the file, with the browser's cookies when the browser sent it, and <g4>Add torrent</g4> shows what it holds. The browser hands <x5/> downloads over because <x6/> is in <g7>Options → File types</g7>. It's there by default; a list you had before this version keeps what it had, so add <x8/> to it yourself. <g9>Download with Mister Download Manager</g9> on a link always hands it over. A command line with <x10/> (silent) saves the <x11/> file itself, like any file. MDM fetches at most 10 MB: anything bigger isn't a <x12/> file.",
    "text": "<x1/> 파일의 웹 주소도 사용할 수 있습니다. <g2>URL 추가</g2> 또는 <g3>토렌트</g3>에 붙여넣거나 브라우저에서 다운로드를 넘겨받을 수 있습니다. MDM은 브라우저가 전송한 경우 브라우저 쿠키를 사용해 파일을 가져오고, <g4>토렌트 추가</g4>에 파일 내용이 표시됩니다. <x5/> 다운로드는 <x6/>가 <g7>옵션 → 파일 형식</g7>에 있으므로 브라우저에서 MDM으로 전달됩니다. 기본적으로 목록에 포함되어 있습니다. 이전 버전에서 사용하던 목록은 그대로 유지되므로 <x8/>를 직접 추가해야 합니다. 링크에서 <g9>Mister Download Manager으로 다운로드</g9>를 선택하면 항상 MDM으로 전달됩니다. <x10/> (자동) 명령줄을 사용하면 다른 파일처럼 <x11/> 파일 자체가 저장됩니다. MDM은 최대 10 MB까지만 가져오며, 이보다 큰 파일은 <x12/> 파일로 처리되지 않습니다."
-  },
-  "75f9444b4e7a7e44": {
-   "source": "The real app, version 0.5.2 on Windows 11 · every screenshot on this site is unretouched.",
-   "text": "실제 앱, Windows 11 버전 0.5.2 · 이 사이트의 모든 스크린샷은 수정되지 않았습니다."
-  },
-  "760cc3b840fe565d": {
-   "source": "<g1>The Download video button took the wrong video on YouTube</g1> (<g2>#311</g2>, thanks to <g3>@mayankmohan1992</g3>): YouTube moves from one video to the next without loading a new page, and the browser kept naming the page it first loaded, so MDM got the video watched before. On the home page, a search or a channel it got that whole page instead, and offered about 50 videos. The button now sends the video playing in the player it's on, and a Short as the Short it is.",
-   "text": "<g1>YouTube에서 비디오 다운로드 버튼이 잘못된 비디오를 가져옴</g1>(<g2>#311</g2>, <g3>@mayankmohan1992</g3>님께 감사드립니다): YouTube는 새 페이지를 로드하지 않고 한 비디오에서 다음 비디오로 이동하며, 브라우저는 처음에 로드한 페이지 이름을 계속 지정하여 MDM이 이전에 시청한 비디오를 가져왔습니다. 홈 페이지, 검색 또는 채널에서는 전체 페이지를 가져와 약 50개의 비디오를 제공했습니다. 이제 버튼은 플레이어에서 재생 중인 비디오를 보내고, Short는 Short로 보냅니다."
   },
   "76215a248670b754": {
    "source": "<g1><g2>Troubleshooting</g2></g1> — what to check when a download fails, the browser doesn't hand over a download, or a schedule doesn't start.",
@@ -7966,10 +7810,6 @@
    "source": "Native",
    "text": "기본"
   },
-  "7aad71c792353898": {
-   "source": "<g1>Open folder</g1> works on a torrent that is still downloading (<g2>#354</g2>).",
-   "text": "<g1>폴더 열기</g1>는 아직 다운로드 중인 토렌트에서도 작동합니다(<g2>#354</g2>)."
-  },
   "7ab13cf63ca91547": {
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "모든 릴리스는 <g1>SHA256SUMS.txt</g1>에 각 파일의 SHA-256 체크섬을 나열합니다. Windows에서는 <x2/>와 비교하고, macOS 및 Linux에서는 <x3/>와 비교합니다. 모든 파일은 GitHub Actions에 의해 공개 소스에서 빌드됩니다. 빌드 로그는 <g4>GitHub</g4>에서 확인할 수 있습니다."
@@ -8073,10 +7913,6 @@
   "7c20476510c27bb9": {
    "source": "<g1></g1>Open (GPL-3.0)",
    "text": "<g1></g1>오픈 소스 (GPL-3.0)"
-  },
-  "7c4ecfb6f966c30e": {
-   "source": "Emerald",
-   "text": "에메랄드"
   },
   "7c5a4c12e8dbea2f": {
    "source": "Apple Silicon",
@@ -8222,10 +8058,6 @@
    "source": "In dialogs",
    "text": "대화 상자에서"
   },
-  "7e34624a653bd43b": {
-   "source": "A file name sent by a site in plain UTF-8 now reaches MDM readable from Firefox and browsers built on it, such as Floorp, Waterfox and Zen: an Arabic name was saved as unreadable symbols (<g1>#447</g1>). A name written with percent signs in the same header is decoded as well. The add-on carries the fix",
-   "text": "사이트에서 일반 UTF-8로 보낸 파일 이름이 이제 Firefox 및 Floorp, Waterfox, Zen과 같은 Firefox 기반 브라우저에서 읽을 수 있게 MDM에 도달합니다. 아랍어 이름이 읽을 수 없는 기호로 저장되었던 현상이 수정되었습니다 (<g1>#447</g1>). 동일한 헤더에 퍼센트 기호로 작성된 이름도 디코딩됩니다. 이 수정 사항은 애드온에 포함됩니다."
-  },
   "7e48cc23f12b2ed9": {
    "source": "Download",
    "text": "다운로드"
@@ -8253,10 +8085,6 @@
   "7e7bffb22a4c1aa5": {
    "source": "<g1>Adwaita</g1>: GNOME's look: round corners, flat grey buttons, a rounded focus ring, GNOME's check boxes, a header bar with the title in bold and round buttons (on Windows, where MDM draws it), and GNOME's Adwaita icons, in colour for files and categories, one colour in the toolbar.",
    "text": "<g1>Adwaita</g1>: GNOME 스타일입니다. 모서리는 둥글고 버튼은 평평한 회색이며, 포커스 링은 둥급니다. GNOME 확인란과 제목이 굵게 표시되고 둥근 버튼이 있는 헤더 표시줄(MDM이 그리는 Windows에서), GNOME의 Adwaita 아이콘이 특징입니다. 파일과 범주 아이콘은 컬러이고 도구 모음 아이콘은 단색입니다."
-  },
-  "7e92ca3591a44f50": {
-   "source": "Helium installs it from the same page, as long as Helium may download extensions: see <g1>Helium</g1>.",
-   "text": "Helium이 확장 프로그램을 다운로드할 수 있는 한, Helium은 동일한 페이지에서 확장 프로그램을 설치합니다. <g1>Helium</g1>을 참조하세요."
   },
   "7e997f3f6fbc646c": {
    "source": "The extension can't read this site",
@@ -8341,10 +8169,6 @@
   "7f7a3a1407a0d05e": {
    "source": "Download for macOS",
    "text": "macOS용 다운로드"
-  },
-  "7f7bfe78bf5b687c": {
-   "source": "The window no longer freezes while watching the clipboard when the program holding it hangs, or while a cancelled download's files are removed from a slow disk (<g1>#418</g1>, <g2>#423</g2>).",
-   "text": "클립보드를 잡고 있는 프로그램이 멈추거나, 취소된 다운로드 파일이 느린 디스크에서 제거되는 동안 창이 더 이상 멈추지 않습니다 (<g1>#418</g1>, <g2>#423</g2>)."
   },
   "7f9e86d9863d7f96": {
    "source": "A report holds the error, where it happened, MDM's recent log, and your system: MDM's version, how it was installed, your operating system, the processor, the language and theme, and how many downloads and queues you have, as counts only.",
@@ -8586,10 +8410,6 @@
    "source": "In <g1>Downloads → Speed Limiter → Settings...</g1>, tick <g2>Limit all downloads together to</g2> and type a speed in KBytes/sec. However many files are downloading, together they stay under it. It works on its own: there is nothing else to turn on. About two thirds of your connection's speed is a good start.",
    "text": "<g1>다운로드 → 속도 제한 → 설정...</g1>에서 <g2>모든 다운로드 제한</g2>을 선택하고 KB/초 단위로 속도를 입력합니다. 몇 개의 파일이 다운로드 중이든, 전체 다운로드 속도는 이 제한을 넘지 않습니다. 이 기능은 별도로 켤 필요 없이 자동으로 작동합니다. 연결 속도의 약 3분의 2 정도가 좋은 시작점입니다."
   },
-  "8322754bd95444e4": {
-   "source": "A link sent from the browser no longer fails with 403 on sites that refuse a browser's User-Agent on a connection that isn't a browser's: MDM asks once more with its own, as Add URL does (<g1>#372</g1>).",
-   "text": "브라우저에서 보낸 링크가 브라우저가 아닌 연결에서 브라우저의 User-Agent를 거부하는 사이트에서 403 오류로 실패하지 않습니다. MDM은 URL 추가와 마찬가지로 자체 User-Agent로 한 번 더 요청합니다 (<g1>#372</g1>)."
-  },
   "8337a28091a4683a": {
    "source": "Every run is a dot.",
    "text": "실행마다 점 하나"
@@ -8662,9 +8482,9 @@
    "source": "Themes",
    "text": "테마"
   },
-  "83e9466693815a01": {
-   "source": "<g1>YouTube formats with Node.js or Bun installed</g1> (<g2>#360</g2>): yt-dlp needs a JavaScript runtime for them and looks for Deno alone, so MDM now tells it about Node.js (nvm's too) or Bun when there is no Deno.",
-   "text": "<g1>Node.js 또는 Bun이 설치된 YouTube 형식</g1>(<g2>#360</g2>): yt-dlp는 이를 위해 JavaScript 런타임이 필요하며 Deno만 찾으므로, Deno가 없을 때 MDM은 Node.js(nvm 포함) 또는 Bun에 대해 yt-dlp에 알립니다."
+  "83d81da9ed13c6e6": {
+   "source": "MDM asks each service well under its request limit: Real-Debrid at most 120 times a minute (it allows 250), AllDebrid 300 (it allows 600), Premiumize 60 (it publishes no limit). When a service says it's asked too often, MDM waits.",
+   "text": "MDM은 각 서비스에 요청 제한보다 훨씬 적게 요청합니다. Real-Debrid는 분당 최대 120회 (250회 허용), AllDebrid는 300회 (600회 허용), Premiumize는 60회 (제한 없음). 서비스에서 너무 자주 요청했다고 하면 MDM은 기다립니다."
   },
   "83f9afcb67f234d6": {
    "source": "A clean, simple app for HTTP, FTP, BitTorrent and magnet links, built on aria2",
@@ -8805,10 +8625,6 @@
   "863c349998a9b962": {
    "source": "No mouse needed",
    "text": "마우스 필요 없음"
-  },
-  "868240440e25a7a4": {
-   "source": "<g1>Far more file types taken from the browser by default</g1> (<g2>#382</g2>): AI models and datasets (GGUF, SAFETENSORS, CKPT, PT, ONNX, PARQUET...), 3D and CAD (GLB, FBX, OBJ, STL, BLEND, STEP...), design and camera RAW files, ebooks, Office files, DAT, disk images and split archives. A list you never edited gains them; one you edited stays yours.",
-   "text": "<g1>기본적으로 브라우저에서 가져오는 파일 형식 대폭 증가</g1> (<g2>#382</g2>): AI 모델 및 데이터셋 (GGUF, SAFETENSORS, CKPT, PT, ONNX, PARQUET...), 3D 및 CAD (GLB, FBX, OBJ, STL, BLEND, STEP...), 디자인 및 카메라 RAW 파일, 전자책, Office 파일, DAT, 디스크 이미지 및 분할 압축 파일. 편집하지 않은 목록에는 이 파일 형식들이 추가되며, 편집한 목록은 그대로 유지됩니다."
   },
   "86924bf8861bc5fa": {
    "source": "<g1><g2>Yes</g2></g1><g3>through add-ons</g3>",
@@ -9330,17 +9146,9 @@
    "source": "<g1>RSS feeds</g1><g2>Follow torrent feeds, and let rules add the new episodes you want, each one only once.</g2>",
    "text": "<g1>RSS 피드</g1><g2>토렌트 피드를 팔로우하고, 규칙을 설정하여 원하는 새 에피소드를 각각 한 번만 추가합니다.</g2>"
   },
-  "8f11311d78b1263e": {
-   "source": "<g1>Media on this page says why it's empty</g1>: on a player that streams in pieces there's no file to list, and it says to use the button over the video instead of asking you to play it again.",
-   "text": "<g1>이 페이지의 미디어</g1>가 비어 있는 이유를 설명합니다. 조각으로 스트리밍되는 플레이어에는 나열할 파일이 없으며, 다시 재생하도록 요청하는 대신 비디오 위의 버튼을 사용하라고 표시합니다."
-  },
   "8f28e007e7328371": {
    "source": "<g1>Theme files</g1>: every colour and size MDM's controls are drawn with (corner radii, borders, font sizes, the list's row height, the icons' ink) comes from the theme, by role; the classic look is that theme, unchanged pixel for pixel. A theme file (TOML or JSON in the data folder's <x2/> folder) can change any role, choose each control's style (<x3/>) and an icon set, and a theme can be a folder that brings its own icons. An icon set can mix PNG pictures with SVG drawings, and one-colour icons (<x4/>, <x5/>, drawn in the theme's text colour) with coloured ones, and hold pictures at 32 and 48 pixels, used on a screen scaled to 150 % and more: the style themes' pictures stay sharp there.",
    "text": "<g1>테마 파일</g1>: MDM 컨트롤이 그려지는 모든 색상과 크기(모서리 반경, 테두리, 글꼴 크기, 목록의 행 높이, 아이콘의 잉크)는 역할에 따라 테마에서 가져옵니다. 클래식 모양은 픽셀 단위로 변경되지 않은 해당 테마입니다. 데이터 폴더의 <x2/> 폴더에 있는 테마 파일(TOML 또는 JSON)은 모든 역할을 변경하고, 각 컨트롤의 스타일(<x3/>)과 아이콘 세트를 선택할 수 있으며, 테마는 자체 아이콘을 가져오는 폴더일 수 있습니다. 아이콘 세트는 PNG 그림과 SVG 드로잉을 혼합할 수 있으며, 단색 아이콘(<x4/>, <x5/>, 테마의 텍스트 색상으로 그려짐)과 컬러 아이콘을 혼합할 수 있고, 32픽셀 및 48픽셀 크기의 그림을 포함하여 150% 이상으로 확대된 화면에서 사용됩니다. 스타일 테마의 그림은 거기서도 선명하게 유지됩니다."
-  },
-  "8f425dccc6a74df8": {
-   "source": "macOS: <g1>Download video</g1> no longer stops with a Python error and a \"Python.framework is damaged\" alert on a copy of MDM downloaded by a browser (<g2>#330</g2>, <g3>#339</g3>). MDM now installs yt-dlp's folder build, which it unpacks once and checks against yt-dlp's signed list, instead of the single-program build that unpacks Python afresh at every start. The video window then offers to install it in place of a copy that came with an earlier version.",
-   "text": "macOS: 브라우저로 다운로드된 MDM 복사본에서 <g1>비디오 다운로드</g1>가 더 이상 Python 오류 및 \"Python.framework가 손상되었습니다\" 경고와 함께 중지되지 않습니다 (<g2>#330</g2>, <g3>#339</g3>). MDM은 이제 시작할 때마다 Python을 새로 압축 해제하는 단일 프로그램 빌드 대신, 한 번 압축 해제하고 yt-dlp의 서명된 목록과 대조하여 확인하는 yt-dlp의 폴더 빌드를 설치합니다. 그러면 비디오 창에서 이전 버전과 함께 제공된 복사본 대신 이를 설치하도록 제안합니다."
   },
   "8f5bc00256713559": {
    "source": "Nothing: the window says so, and your system's updates bring the new version.",
@@ -9362,9 +9170,9 @@
    "source": "<g1>BitTorrent</g1><g2>DHT and trackers</g2>",
    "text": "<g1>BitTorrent</g1><g2>DHT 및 트래커</g2>"
   },
-  "8f9b78589fda95ad": {
-   "source": "A finished torrent that isn't being shared lets go of its files, so they can be moved or deleted while MDM runs.",
-   "text": "공유되지 않는 완료된 토렌트는 파일을 해제하여 MDM이 실행되는 동안에도 이동하거나 삭제할 수 있습니다."
+  "8f90808f450bcadf": {
+   "source": "Download Mister Download Manager 0.5.0 — free for Windows, macOS and Linux",
+   "text": "Mister Download Manager 0.5.0 다운로드 — Windows, macOS, Linux용 무료"
   },
   "8fabf2cac610e9a8": {
    "source": "Cinnamon.",
@@ -9450,10 +9258,6 @@
    "source": "The queues are on the left, with <g1>Download limits</g1> below them. The right side shows the selected queue on two tabs, <g2>Schedule</g2> and <g3>Files in the queue</g3>.",
    "text": "대기열은 왼쪽에 있으며, 그 아래에 <g1>다운로드 제한</g1>이 있습니다. 오른쪽에는 선택한 대기열이 <g2>예약</g2> 및 <g3>큐의 파일</g3> 두 탭으로 표시됩니다."
   },
-  "911ed19c29ee37d9": {
-   "source": "What's new in version 0.5.2 <g1>2026-11-09</g1>",
-   "text": "버전 0.5.2의 새로운 기능 <g1>2026-11-09</g1>"
-  },
   "91211638d5845d9d": {
    "source": "Moving from Internet Download Manager? Export your list there and import it in MDM. Every download comes over with its address, referrer and cookies, into a window laid out the way you know.",
    "text": "Internet Download Manager에서 전환하시나요? 거기서 목록을 내보내고 MDM으로 가져오세요. 모든 다운로드는 주소, 리퍼러, 쿠키와 함께 익숙한 방식의 창으로 가져와집니다."
@@ -9482,10 +9286,6 @@
    "source": "Inside a container, the address MDM finds is the container's own: give it the one you open, the <g1>server's</g1> address with the port you published, as <x2/>, and the log and the QR code show that one. Then pair as <g3>Control MDM from your phone</g3> says. For another code, at any time:",
    "text": "컨테이너 내부에서 MDM이 찾는 주소는 컨테이너 자체의 주소입니다. <x2/>와 같이 게시한 포트와 함께 <g1>서버</g1> 주소를 열 주소로 지정하면 로그와 QR 코드가 해당 주소를 보여줍니다. 그런 다음 <g3>휴대폰에서 MDM 제어</g3>에 따라 페어링합니다. 언제든지 다른 코드를 얻으려면:"
   },
-  "917d7eacd7afdb1b": {
-   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Interface size</g6> (every window larger, 100 % to 200 %; <g7>Ctrl +</g7>, <g8>Ctrl −</g8> and <g9>Ctrl 0</g9> too), <g10>Text</g10> (Windows: smooth or classic letters), <g11>Draw with</g11> (OpenGL, or Direct3D on Windows, Vulkan on Linux, Metal on macOS) and <g12>Language</g12>.",
-   "text": "<g1>보기</g1> — 카테고리 표시 또는 숨기기, 목록 정렬(<g2>파일 정렬</g2>), <g3>다크 모드 지원</g3>, <g4>항상 어둡게</g4>, <g5>테마</g5>, <g6>인터페이스 크기</g6>(모든 창을 100%에서 200%까지 확대; <g7>Ctrl +</g7>, <g8>Ctrl −</g8> 및 <g9>Ctrl 0</g9>도 가능), <g10>텍스트</g10>(Windows: 부드럽거나 클래식 글꼴), <g11>다음으로 그리기</g11>(OpenGL, Windows에서는 Direct3D, Linux에서는 Vulkan, macOS에서는 Metal) 및 <g12>언어</g12>."
-  },
   "9189b83bf9497166": {
    "source": "On <g1>Status</g1>, tick only <g2>Error</g2> to see the downloads that failed.",
    "text": "<g1>상태</g1>에서 <g2>오류</g2>만 선택하여 실패한 다운로드를 확인합니다."
@@ -9505,6 +9305,10 @@
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
    "text": "<g1><g2>파일 다운로드</g2></g1> — 링크를 복사하고 추가한 뒤 파일을 엽니다."
+  },
+  "91ebb9f0dfb7f3d7": {
+   "source": "A debrid service, such as Real-Debrid, AllDebrid or Premiumize, is a paid account that downloads files from file hosts on its own servers. It hands back a…",
+   "text": "Real-Debrid, AllDebrid, Premiumize와 같은 디브리드 서비스는 파일 호스트에서 자체 서버로 파일을 다운로드하는 유료 계정입니다. 호스트의 대기 시간, 속도 제한 및 캡차 없이 일반적인 직접 링크를 제공합니다. MDM에 계정을 등록하면 서비스가 지원하는 호스트의 링크가 서비스를 통해 잠금 해제된 다음, MDM이 다른 파일처럼 모든 연결, 일시 중지 및 재개를 사용하여 다운로드합니다."
   },
   "91f7b61e72ddf0bc": {
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
@@ -9585,6 +9389,10 @@
   "930feb0e4574a769": {
    "source": "Start a video download",
    "text": "비디오 다운로드 시작"
+  },
+  "9316e4d2c1db93a8": {
+   "source": "The built-in themes are <g1>Classic</g1> (MDM's own look, the default), <g2>Native</g2> (your system's accent colour and contrast), <g3>High contrast</g3>, and the style themes <g4>Metro</g4>, <g5>Adwaita</g5>, <g6>Breeze</g6>, <g7>Luna</g7>, <g8>Aero</g8> and <g9>Aqua</g9>, each with its own control shapes and icons, and on Windows its own title bar. <g10>Getting started</g10> describes each one; the website's <g11>Themes page</g11> shows them all, light and dark.",
+   "text": "내장 테마는 <g1>클래식</g1>(MDM 자체 모양, 기본값), <g2>기본</g2>(시스템의 강조 색상 및 대비), <g3>고대비</g3>와 스타일 테마인 <g4>메트로</g4>, <g5>Adwaita</g5>, <g6>Breeze</g6>, <g7>Luna</g7>, <g8>Aero</g8>, <g9>Aqua</g9>입니다. 각 테마는 고유한 컨트롤 모양과 아이콘을 가지며, Windows에서는 고유한 제목 표시줄을 가집니다. <g10>시작하기</g10>에서 각 테마를 설명하고, 웹사이트의 <g11>테마 페이지</g11>에서 모든 테마의 밝은 모드와 어두운 모드를 볼 수 있습니다."
   },
   "931872eeef27a13d": {
    "source": "<g1><g2>Your first download</g2></g1> — a two-minute walk-through from copied link to opened file.",
@@ -9698,10 +9506,6 @@
    "source": "Options → Connection: the DNS list at the bottom.",
    "text": "옵션 → 연결: 하단의 DNS 목록."
   },
-  "94a7f71ab168f4df": {
-   "source": "Debrid accounts (#44): the services' official APIs (Real-Debrid, AllDebrid, Premiumize, TorBox) turn a file host's link into a direct one the engine downloads",
-   "text": "Debrid 계정(#44): 서비스의 공식 API(Real-Debrid, AllDebrid, Premiumize, TorBox)가 파일 호스트 링크를 엔진이 다운로드하는 직접 링크로 변환합니다."
-  },
   "94d1813016d4945e": {
    "source": "Where there is no tray",
    "text": "트레이가 없는 경우"
@@ -9729,10 +9533,6 @@
   "9520db8ce6669bde": {
    "source": "Windows 10/11; macOS and Linux to try",
    "text": "Windows 10/11; macOS 및 Linux 시험판"
-  },
-  "9525905f481b0709": {
-   "source": "A white canvas, one near-black ink, emerald fills with near-black text, 6-point corners.",
-   "text": "하얀 캔버스에 거의 검은색 잉크, 에메랄드색 채우기에 거의 검은색 텍스트, 6포인트 모서리."
   },
   "953a64f3542b5742": {
    "source": "Correct the translation in the third column and delete the row's <x1/> line.",
@@ -9934,6 +9734,10 @@
    "source": "What other people can see",
    "text": "다른 사람들이 볼 수 있는 것"
   },
+  "9808fa9b8d4c51e1": {
+   "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. When the button can't tell which one you mean, the toolbar button's <g3>Media on this page</g3> lists them all. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
+   "text": "웹 페이지의 비디오에 마우스를 가져가면 작은 <g1>비디오 다운로드</g1> 버튼이 가장자리에 나타납니다. 이 버튼을 클릭하면 MDM의 <g2>페이지에서 비디오 다운로드</g2> 창이 열리고 다운로드할 수 있는 품질을 찾습니다. 클릭한 비디오를 가져옵니다. 자체 파일을 재생하는 경우 자체 파일, 또는 플레이어가 로드한 스트림(HLS 또는 DASH), 그렇지 않으면 페이지를 가져옵니다. 버튼이 어떤 것을 의미하는지 알 수 없을 때, 도구 모음 버튼의 <g3>이 페이지의 미디어</g3>가 모든 것을 나열합니다. 임베디드 플레이어도 작동하며, 사이트 로그인 정보, 플레이어를 임베드한 페이지, 브라우저의 User-Agent가 함께 전송되므로 회원 전용 비디오 또는 임베드된 사이트에서만 재생되는 비디오도 다운로드할 수 있습니다. 사운드 플레이어에도 버튼이 나타납니다."
+  },
   "981faeae41148137": {
    "source": "Check the folder, then Start Download.",
    "text": "폴더를 확인한 다음 다운로드 시작을 클릭하세요."
@@ -9946,10 +9750,6 @@
    "source": "<g1>Status</g1> — what it is doing, the address to open on the phone, and the certificate's fingerprint.",
    "text": "<g1>상태</g1> — 현재 수행 중인 작업, 휴대폰에서 열 주소 및 인증서의 지문."
   },
-  "9844e8e8905cd325": {
-   "source": "<g1>A Safari extension, inside the Mac app:</g1> a click on a link to a file type MDM takes goes to MDM, and so do the right-click items, the button over videos and <g2>Media on this page</g2>, as in the other browsers. Safari gives extensions no access to its downloads, so a download a page starts by itself stays with Safari, and the browser's proxy is not shared. See <g3>Browser integration</g3>.",
-   "text": "<g1>Mac 앱 내의 Safari 확장 프로그램:</g1> MDM이 처리하는 파일 형식 링크를 클릭하면 MDM으로 이동하며, 다른 브라우저와 마찬가지로 마우스 오른쪽 버튼 항목, 비디오 위의 버튼 및 <g2>이 페이지의 미디어</g2>도 MDM으로 이동합니다. Safari는 확장 프로그램에 다운로드 접근 권한을 주지 않으므로, 페이지에서 자체적으로 시작하는 다운로드는 Safari에 남아 있으며, 브라우저의 프록시는 공유되지 않습니다. <g3>브라우저 통합</g3>을 참조하세요."
-  },
   "986078c297ce304f": {
    "source": "Download scheduler and queues",
    "text": "다운로드 예약 관리자 및 대기열"
@@ -9957,10 +9757,6 @@
   "9869286e1f319519": {
    "source": "The same care goes into what MDM fetches for itself. The helpers it can install for videos are verified before they run: yt-dlp against its developers' signing key, ffmpeg against its published checksums. MDM's own updates install only files listed in a checksum list signed with MDM's release key, which every release carries.",
    "text": "MDM이 자체적으로 가져오는 것에도 동일한 주의를 기울입니다. 비디오용으로 설치할 수 있는 도우미는 실행 전에 확인됩니다. yt-dlp는 개발자의 서명 키에 대해, ffmpeg는 게시된 체크섬에 대해 확인됩니다. MDM 자체 업데이트는 모든 릴리스에 포함된 MDM 릴리스 키로 서명된 체크섬 목록에 있는 파일만 설치합니다."
-  },
-  "986d7c04b3768a5c": {
-   "source": "<g1>Mister Download Manager 0.5.2</g1><g2>The free IDM alternative</g2>",
-   "text": "<g1>Mister Download Manager 0.5.2</g1><g2>무료 IDM 대체 프로그램</g2>"
   },
   "98740eb10c0bdfdd": {
    "source": "The crash data file (<x1/>) helps the developers most, but it can hold pieces of what MDM had in memory, such as addresses, cookies and saved passwords. It is attached only when you tick <g2>Also attach the crash data</g2>.",
@@ -10018,10 +9814,6 @@
    "source": "<g1>Stable</g1><g2>Recommended</g2>",
    "text": "<g1>안정 버전</g1><g2>권장</g2>"
   },
-  "98f4c63ffc4e2e0d": {
-   "source": "Removing the last feed in the RSS feeds window no longer crashes the app (<g1>#321</g1>).",
-   "text": "RSS 피드 창에서 마지막 피드를 제거해도 앱이 더 이상 충돌하지 않습니다(<g1>#321</g1>)."
-  },
   "98fb5e5b449dc77b": {
    "source": "Each column title has a faint funnel. Click it to filter the list by that column:",
    "text": "각 열 제목에는 희미한 깔때기 아이콘이 있습니다. 이 아이콘을 클릭하여 해당 열로 목록을 필터링할 수 있습니다."
@@ -10046,6 +9838,10 @@
    "source": "The same programs without an installer. It keeps its data in <x1/>, like an installed copy.",
    "text": "설치 프로그램이 없는 동일한 프로그램입니다. 설치된 버전과 마찬가지로 <x1/>에 데이터를 보관합니다."
   },
+  "99711c45fa3147e5": {
+   "source": "<g1>0.5.0</g1> <g2>16.9 MB</g2>",
+   "text": "<g1>0.5.0</g1> <g2>16.9MB</g2>"
+  },
   "997cc2f8f3474ae1": {
    "source": "Windows<g1><g2>3</g2></g1>",
    "text": "Windows<g1><g2>3</g2></g1>"
@@ -10069,10 +9865,6 @@
   "99c3f60a725ee399": {
    "source": "<g1><g2>Video downloads</g2></g1> — download a video from its page (YouTube, Vimeo and many more) with yt-dlp.",
    "text": "<g1><g2>비디오 다운로드</g2></g1> — yt-dlp를 사용해 비디오 페이지(YouTube, Vimeo 등)에서 비디오를 다운로드합니다."
-  },
-  "99d899e1714af677": {
-   "source": "MDM supports four services: <g1>Real-Debrid</g1>, <g2>AllDebrid</g2>, <g3>Premiumize</g3> and <g4>TorBox</g4>.",
-   "text": "MDM은 <g1>Real-Debrid</g1>, <g2>AllDebrid</g2>, <g3>Premiumize</g3>, <g4>TorBox</g4> 네 가지 서비스를 지원합니다."
   },
   "99e549b640c7f008": {
    "source": "Light while it waits",
@@ -10210,9 +10002,9 @@
    "source": "<g1>The host connection limit test tells a reconnect from a connection too many</g1> (<g2>#224</g2>). A server sees that a client dropped an answer only when it next writes to it, so on a busy computer a connection that reconnects can be refused once while the server still counts its old answer. The lab server now logs, with each refusal, how far the answers holding the client's slots had been sent; the test fails only for a refusal none of them explains.",
    "text": "<g1>호스트 연결 제한 테스트는 재연결과 너무 많은 연결을 구분합니다</g1> (<g2>#224</g2>). 서버는 클라이언트가 응답을 삭제했음을 다음에 쓸 때만 알 수 있으므로, 바쁜 컴퓨터에서는 재연결하는 연결이 서버가 이전 응답을 계속 계산하는 동안 한 번 거부될 수 있습니다. 이제 랩 서버는 각 거부와 함께 클라이언트의 슬롯을 보유하는 응답이 얼마나 전송되었는지 기록합니다. 테스트는 그 중 어느 것도 설명할 수 없는 거부에 대해서만 실패합니다."
   },
-  "9c2961b57c0e8e8f": {
-   "source": "Helium",
-   "text": "Helium"
+  "9c2403ff122a188e": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Interface size</g6> (every window larger, 100 % to 200 %; <g7>Ctrl +</g7>, <g8>Ctrl −</g8> and <g9>Ctrl 0</g9> too), <g10>Draw with</g10> (OpenGL, or Direct3D on Windows, Vulkan on Linux, Metal on macOS) and <g11>Language</g11>.",
+   "text": "<g1>보기</g1> — 카테고리 표시 또는 숨기기, 목록 정렬(<g2>파일 정렬</g2>), <g3>다크 모드 지원</g3>, <g4>항상 어둡게</g4>, <g5>테마</g5>, <g6>인터페이스 크기</g6>(모든 창을 100%에서 200%까지 확대; <g7>Ctrl +</g7>, <g8>Ctrl −</g8> 및 <g9>Ctrl 0</g9>도 포함), <g10>다음으로 그리기</g10>(OpenGL, Windows에서는 Direct3D, Linux에서는 Vulkan, macOS에서는 Metal) 및 <g11>언어</g11>."
   },
   "9c29a3e8e53ea368": {
    "source": "Real-Debrid, AllDebrid and Premiumize accounts — Mister Download Manager",
@@ -10558,10 +10350,6 @@
    "source": "<g1><g2>Command line and automation</g2></g1> — IDM's command-line switches, the <x3/> tool, and the automation API other programs can use.",
    "text": "<g1><g2>명령줄 및 자동화</g2></g1> — IDM의 명령줄 스위치, <x3/> 도구, 다른 프로그램에서 사용할 수 있는 자동화 API를 설명합니다."
   },
-  "a12e87e4f58e6e09": {
-   "source": "<g1>Dailymotion's embedded player</g1> (<g2>#359</g2>): its address is looked up as the video's own page, so the download button works on sites that embed one.",
-   "text": "<g1>Dailymotion의 임베디드 플레이어</g1>(<g2>#359</g2>): 해당 주소를 비디오 자체 페이지로 조회하여 임베디드 플레이어가 있는 사이트에서도 다운로드 버튼이 작동합니다."
-  },
   "a135171e6e928076": {
    "source": "Home",
    "text": "홈"
@@ -10570,6 +10358,10 @@
    "source": "addresses (implicit TLS) don't start while an adapter is chosen; <x1/> with TLS is fine. Connections to this computer itself aren't bound, so a proxy running on this computer decides where your downloads go from there. On macOS, a VPN that reconnects may come back as a new interface (<x2/> instead of <x3/>): pick it again.",
    "text": "어댑터가 선택된 동안 주소(암시적 TLS)는 시작되지 않습니다. TLS가 있는 <x1/>는 괜찮습니다. 이 컴퓨터 자체에 대한 연결은 바인딩되지 않으므로, 이 컴퓨터에서 실행되는 프록시가 다운로드 경로를 결정합니다. macOS에서는 다시 연결되는 VPN이 새 인터페이스(<x2/> 대신 <x3/>)로 돌아올 수 있습니다. 다시 선택하세요."
   },
+  "a14e2ae7c647b70b": {
+   "source": "<g1><g2>Debrid service accounts</g2></g1> — Real-Debrid, AllDebrid and Premiumize: file-host links through your own account.",
+   "text": "<g1><g2>디브리드 서비스 계정</g2></g1> — Real-Debrid, AllDebrid 및 Premiumize: 사용자 계정을 통한 파일 호스트 링크를 지원합니다."
+  },
   "a16824942383eb7f": {
    "source": "A theme is one small text file, in <g1>TOML</g1> (or JSON). It names only what it changes; everything else comes from the theme it builds on. You don't need to build MDM or know how to program.",
    "text": "테마는 <g1>TOML</g1>(또는 JSON) 형식의 작은 텍스트 파일입니다. 변경할 내용만 지정하며, 나머지는 기반이 되는 테마에서 가져옵니다. MDM을 빌드하거나 프로그래밍 지식이 필요하지 않습니다."
@@ -10577,6 +10369,10 @@
   "a17e4947dde607f9": {
    "source": "<x1/> <g2>Free</g2>",
    "text": "<x1/> <g2>무료</g2>"
+  },
+  "a1830d504a2509ba": {
+   "source": "<g1>All files and checksums</g1><g2>Version 0.5.0 on GitHub Releases, with SHA256SUMS.txt</g2>",
+   "text": "<g1>모든 파일 및 체크섬</g1><g2>SHA256SUMS.txt가 포함된 GitHub Releases의 버전 0.5.0</g2>"
   },
   "a186c2ecb83c1705": {
    "source": "Keep some speed for everything else",
@@ -10770,6 +10566,10 @@
    "source": "Which browsers does it work with? — Mister Download Manager",
    "text": "어떤 브라우저에서 작동하나요? — Mister Download Manager"
   },
+  "a46fb61fd2fea6f9": {
+   "source": "<g1>Delivery options</g1><g2>Version 0.5.0 · free for everyone</g2>",
+   "text": "<g1>배포 옵션</g1><g2>버전 0.5.0 · 모두에게 무료</g2>"
+  },
   "a4a44a5a7d528e25": {
    "source": "MDM opens where you left it: the window's place and size, the Categories pane, its open branches and the category or queue you were looking at.",
    "text": "MDM은 마지막으로 사용한 상태로 열립니다. 창의 위치와 크기, 범주 창, 펼쳐 둔 항목, 마지막으로 보고 있던 범주나 대기열이 복원됩니다."
@@ -10913,10 +10713,6 @@
   "a69a751090bb15c5": {
    "source": "7. Names and logos",
    "text": "7. 이름 및 로고"
-  },
-  "a6ac4d259ebcd222": {
-   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; under <g3>Download</g3>, every quality with its file type and size, the best one marked (video and sound in their own tabs when there are both); <g4>All qualities and subtitles...</g4>, which opens the <g5>Download video from a page</g5> window; then <g6>Hide on this video</g6> (<g7>Esc</g7>), <g8>Never on</g8> the site (MDM remembers the site), and <g9>Button settings...</g9>, which opens MDM's Options. The arrow keys move through it, <g10>Enter</g10> picks, <g11>Esc</g11> closes it.",
-   "text": "<g1>메뉴</g1>(옆의 화살표 또는 버튼이 키보드 초점을 가질 때 <g2>↓</g2>): 비디오의 제목, 길이 및 사이트; <g3>다운로드</g3> 아래에는 파일 형식과 크기가 있는 모든 화질이 표시되며, 최고 화질이 표시됩니다(비디오와 오디오가 모두 있는 경우 자체 탭에 표시됨). <g4>모든 화질 및 자막...</g4>은 <g5>페이지에서 비디오 다운로드</g5> 창을 엽니다. 그 다음 <g6>이 비디오에서 숨기기</g6>(<g7>Esc</g7>), 해당 사이트에서 <g8>항상 해제</g8>(MDM이 사이트를 기억함), <g9>단추 설정...</g9>이 있으며, 이는 MDM의 옵션을 엽니다. 화살표 키로 이동하고, <g10>Enter</g10>로 선택하며, <g11>Esc</g11>로 닫습니다."
   },
   "a6b0e6db519b23bf": {
    "source": "Is Mister Download Manager really free? — Mister Download Manager",
@@ -11270,10 +11066,6 @@
    "source": "Select the text and copy it",
    "text": "텍스트를 선택하고 복사하세요"
   },
-  "abe7ed5d6eb405a8": {
-   "source": "<g1>MDM didn't answer</g1> (red): MDM isn't installed or didn't start. <g2>Get MDM</g2> opens its download page; <g3>Retry</g3> tries again.",
-   "text": "<g1>MDM이 응답하지 않음</g1>(빨간색): MDM이 설치되지 않았거나 시작되지 않았습니다. <g2>MDM 받기</g2>는 다운로드 페이지를 엽니다. <g3>다시 시도</g3>는 다시 시도합니다."
-  },
   "abffd3b4ede055a8": {
    "source": "Video from web pages",
    "text": "웹 페이지 비디오"
@@ -11321,10 +11113,6 @@
   "acb8437ecc383f9f": {
    "source": "Opens the checked package in your system's package installer, which asks for your password.",
    "text": "확인된 패키지를 시스템의 패키지 설치 프로그램으로 엽니다. 이 프로그램은 암호를 요청합니다."
-  },
-  "accd90bb9771b608": {
-   "source": "Crash reports: a freeze that was over before its snapshot was taken says so, instead of calling it a deadlock in code that was only waiting for events (<g1>#355</g1>).",
-   "text": "충돌 보고서: 스냅샷이 찍히기 전에 끝난 멈춤 현상은 단순히 이벤트를 기다리던 코드의 교착 상태가 아닌 멈춤으로 보고됩니다 (<g1>#355</g1>)."
   },
   "acd70b3db02ac756": {
    "source": "5.4× faster on 1 GiB, 106× on small files, 2 connections instead of 480. Every run, the raw data and the method.",
@@ -11389,10 +11177,6 @@
   "adbf2cdd5f87d0b6": {
    "source": "Transfer: first request to last byte",
    "text": "전송: 첫 요청부터 마지막 바이트까지"
-  },
-  "adc99f39f820cbb6": {
-   "source": "A debrid service, such as Real-Debrid, AllDebrid, Premiumize or TorBox, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without the host's waits, speed caps and captchas. With your account in MDM, a link from a host your service supports is unlocked through the service, then downloaded by MDM like any file: all its connections, pause and resume.",
-   "text": "Real-Debrid, AllDebrid, Premiumize, TorBox와 같은 디브리드 서비스는 유료 계정으로, 파일 호스트의 파일을 자체 서버로 다운로드합니다. 이 서비스는 호스트의 대기 시간, 속도 제한, 캡차 없이 일반적인 직접 링크를 제공합니다. MDM에 계정을 추가하면 서비스가 지원하는 호스트의 링크가 서비스를 통해 잠금 해제되고, MDM이 다른 파일처럼 모든 연결, 일시 중지 및 재개 기능을 사용하여 다운로드합니다."
   },
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
@@ -11474,10 +11258,6 @@
    "source": "<g1>Address</g1> (Add URL) and <g2>Save As</g2> (Download File Info) list the last 20 addresses and folders from their arrows; <g3>...</g3> beside Save As chooses a folder, <g4>+</g4> beside Category makes one.",
    "text": "<g1>주소</g1>(URL 추가)와 <g2>다른 이름으로 저장</g2>(파일 정보 다운로드)의 화살표를 누르면 최근 주소와 폴더 20개가 표시됩니다. 다른 이름으로 저장 옆의 <g3>...</g3>를 누르면 폴더를 선택하고, 범주 옆의 <g4>+</g4>를 누르면 범주를 추가합니다."
   },
-  "aeebdabfd4045b05": {
-   "source": "<g1>Emerald</g1>: a white canvas with one near-black ink and a ladder of neutral greys for structure, emerald fills that always carry near-black text rather than white, 6-point corners on every control, and Metro's one-colour icons.",
-   "text": "<g1>에메랄드</g1>: 거의 검은색 잉크와 구조를 위한 중립 회색 계단이 있는 흰색 캔버스, 흰색 대신 거의 검은색 텍스트를 항상 사용하는 에메랄드 채우기, 모든 컨트롤에 6포인트 모서리, 그리고 메트로의 단색 아이콘."
-  },
   "aef4941497a48310": {
    "source": "A first start, a slow disk, or an antivirus scanning MDM can take that long. Next time it is usually quick.",
    "text": "처음 시작할 때거나 디스크가 느리거나 백신 프로그램이 MDM을 검사하는 경우 오래 걸릴 수 있습니다. 다음부터는 보통 빠르게 시작됩니다."
@@ -11489,10 +11269,6 @@
   "af2d311733924046": {
    "source": "IDM",
    "text": "IDM"
-  },
-  "af32589cc5d46b71": {
-   "source": "MDM 0.5.2",
-   "text": "MDM 0.5.2"
   },
   "af3db50095e6e22e": {
    "source": "News feed",
@@ -11550,25 +11326,13 @@
    "source": "The Scheduler's choices for when the queue is done, Turn off computer when done among them",
    "text": "대기열 완료 시 예약 관리자의 선택 사항, 완료 시 컴퓨터 끄기 포함"
   },
-  "b08e516b19471d83": {
-   "source": "<g1>All files and checksums</g1><g2>Version 0.5.2 on GitHub Releases, with SHA256SUMS.txt</g2>",
-   "text": "<g1>모든 파일 및 체크섬</g1><g2>SHA256SUMS.txt가 포함된 GitHub Releases의 버전 0.5.2</g2>"
-  },
   "b0c0ef4ee0008226": {
    "source": "— FTP secured with TLS from the start of the session (explicit FTPS, <x1/>, usually port 21). Use it when the server says it supports TLS.",
    "text": "— 세션 시작부터 TLS로 보호되는 FTP(명시적 FTPS, <x1/>, 일반적으로 포트 21). 서버가 TLS를 지원한다고 표시할 때 사용하세요."
   },
-  "b0c48cfa88a9866d": {
-   "source": "<g1>Your system's copy:</g1> on Linux and macOS, MDM finds a gallery-dl on your <x2/> and in the usual package-manager folders, including Homebrew's, as it does yt-dlp. A program you chose yourself comes first, then MDM's own copy; the system's is used when neither is there, and your package manager keeps it up to date. If yours is too old for a site, <g3>Use MDM's own copy</g3> in <g4>Helpers...</g4> downloads MDM's (Windows and Linux x86-64), used from then on.",
-   "text": "<g1>시스템의 복사본:</g1> Linux 및 macOS에서 MDM은 yt-dlp와 마찬가지로 <x2/> 및 Homebrew를 포함한 일반적인 패키지 관리자 폴더에서 gallery-dl을 찾습니다. 사용자가 직접 선택한 프로그램이 먼저 사용되고, 그 다음 MDM 자체 복사본이 사용됩니다. 둘 다 없는 경우 시스템의 복사본이 사용되며, 패키지 관리자가 이를 최신 상태로 유지합니다. 특정 사이트에 대해 시스템의 복사본이 너무 오래된 경우, <g4>도우미...</g4>에서 <g3>MDM 자체 복사본 사용</g3>을 선택하면 MDM의 복사본(Windows 및 Linux x86-64)이 다운로드되어 그 이후부터 사용됩니다."
-  },
   "b0c69399ed328758": {
    "source": "<g1>Claude Desktop</g1>: <g2>Settings → Developer → Edit Config</g2> opens <x3/>. Add the server, then restart Claude Desktop:",
    "text": "<g1>Claude Desktop</g1>: <g2>설정 → 개발자 → 구성 편집</g2>을 열면 <x3/>이 나타납니다. 서버를 추가한 다음 Claude Desktop을 다시 시작하세요:"
-  },
-  "b0c6f5fdd687a099": {
-   "source": "<g1>Mister Download Manager 0.5.2</g1><g2>The facts</g2>",
-   "text": "<g1>Mister Download Manager 0.5.2</g1><g2>주요 정보</g2>"
   },
   "b0caf1d0b4055b78": {
    "source": "Is it IDM?",
@@ -11854,10 +11618,6 @@
    "source": "Dependencies point inward: <x1/>, <x2/>, <x3/>, <x4/> and <x5/> use <x6/> and <x7/>; the engine knows nothing of the UI. The app sees the engine only through its events (progress, segment table snapshots, finished, failed).",
    "text": "종속성은 내부를 향합니다: <x1/>, <x2/>, <x3/>, <x4/> 및 <x5/>는 <x6/> 및 <x7/>을 사용합니다. 엔진은 UI에 대해 아무것도 모릅니다. 앱은 엔진의 이벤트(진행 상황, 세그먼트 테이블 스냅샷, 완료됨, 실패함)를 통해서만 엔진을 봅니다."
   },
-  "b447f1f754eac87e": {
-   "source": "Text in a script outside the interface language (a video title in Bangla, a playlist in Japanese) now shows its letters, instead of boxes: the font for that script is loaded the first time it is needed (<g1>#405</g1>).",
-   "text": "인터페이스 언어 외의 스크립트(방글라데시어 비디오 제목, 일본어 재생 목록)의 텍스트가 더 이상 상자 대신 문자로 표시됩니다. 해당 스크립트의 글꼴은 처음 필요할 때 로드됩니다 (<g1>#405</g1>)."
-  },
   "b447fbc7b60ab7d5": {
    "source": "On Linux, Vulkan needs your graphics card's Vulkan driver: Mesa's (<x1/> on Ubuntu and Debian, <x2/> or <x3/> on Arch) for AMD and Intel, NVIDIA's own driver for NVIDIA.",
    "text": "Linux에서 Vulkan을 사용하려면 그래픽 카드용 Vulkan 드라이버가 필요합니다. AMD와 Intel 그래픽 카드에는 Mesa 드라이버(<x1/> Ubuntu 및 Debian, <x2/> 또는 <x3/> Arch)를, NVIDIA 그래픽 카드에는 NVIDIA 전용 드라이버를 사용하세요."
@@ -11869,10 +11629,6 @@
   "b46a6cff0a89e843": {
    "source": "<g1>Stopping a download under a low speed limit took seconds</g1>: each connection first waited for its turn under the limit. Stop now ends those waits at once.",
    "text": "<g1>낮은 속도 제한에서 다운로드를 중지하는 데 몇 초가 걸리는 문제</g1>: 각 연결이 제한 내에서 차례를 기다렸습니다. 이제 중지하면 이러한 대기가 즉시 종료됩니다."
-  },
-  "b46f093f1aea3d25": {
-   "source": "<g1>Download video offering only the sound, with no reason given</g1> (<g2>#351</g2>): when a page's better videos need ffmpeg and it isn't installed, the window now says so.",
-   "text": "<g1>비디오 다운로드에서 이유 없이 사운드만 제공</g1>(<g2>#351</g2>): 페이지의 더 나은 비디오에 ffmpeg가 필요하지만 설치되지 않은 경우, 이제 창에 해당 내용이 표시됩니다."
   },
   "b4a4c0ad4f18dcdb": {
    "source": "Mister Download Manager",
@@ -11934,10 +11690,6 @@
    "source": "<g1><x2/></g1> — corner radii, border widths, font sizes and row heights, in pixels.",
    "text": "<g1><x2/></g1> — 픽셀 단위의 모서리 반경, 테두리 너비, 글꼴 크기 및 행 높이입니다."
   },
-  "b56249ccff9fb163": {
-   "source": "Get Mister Download Manager 0.5.2",
-   "text": "Mister Download Manager 0.5.2 다운로드"
-  },
   "b585eac57a3ace26": {
    "source": "On another computer",
    "text": "다른 컴퓨터에서"
@@ -11985,10 +11737,6 @@
   "b68461ac7025e237": {
    "source": "then signs out and in again. The setting stays after a restart. The computer has one wake alarm: if another program has set it, MDM leaves it alone and says so.",
    "text": "그런 다음 로그아웃했다가 다시 로그인합니다. 이 설정은 컴퓨터를 다시 시작한 후에도 유지됩니다. 컴퓨터에는 절전 모드 해제 알람을 하나만 설정할 수 있습니다. 다른 프로그램이 알람을 설정한 경우 MDM은 그대로 두고 그 사실을 알립니다."
-  },
-  "b68b9d62355a1a70": {
-   "source": "Download File Info no longer stays open but out of sight, with every later download waiting behind it (<g1>#440</g1>). The next one after answering <g2>Create folder</g2> came up as an invisible window, and on Windows one hidden with a minimized main window is now shown again, as is the duplicate question",
-   "text": "파일 정보 다운로드가 더 이상 보이지 않게 열려 있지 않으며, 이후의 모든 다운로드가 그 뒤에서 기다리지 않습니다 (<g1>#440</g1>). <g2>폴더 만들기</g2>에 응답한 후 다음 다운로드가 보이지 않는 창으로 나타났던 현상이 수정되었으며, Windows에서 최소화된 메인 창으로 숨겨진 창은 이제 다시 표시되고, 중복 질문도 마찬가지입니다."
   },
   "b68fb1f513d1da2c": {
    "source": "9. Changes",
@@ -12094,17 +11842,9 @@
    "source": "<g1><g2>Run MDM on a server</g2></g1> — MDM without a window on a home server or NAS (Docker, Unraid), downloading into its folders; send it downloads from your phone or browser.",
    "text": "<g1><g2>서버에서 MDM 실행</g2></g1> — 홈 서버 또는 NAS(Docker, Unraid)에서 창 없이 MDM을 실행하여 해당 폴더로 다운로드하고, 휴대폰이나 브라우저에서 다운로드를 보냅니다."
   },
-  "b841e874966572b8": {
-   "source": "<g1>Two columns for torrents in the download list</g1> (<g2>#357</g2>): <g3>Peers</g3> (those a torrent has connected while it runs, seeders and leechers alike) and <g4>Share ratio</g4> (what it has sent against what it took), after <g5>Transfer rate</g5>. A layout saved before them gets them there.",
-   "text": "<g1>다운로드 목록에 토렌트용 두 개의 열 추가</g1> (<g2>#357</g2>): <g3>피어</g3> (토렌트가 실행되는 동안 연결된 시더 및 리처) 및 <g4>공유 비율</g4> (받은 양 대비 보낸 양)이 <g5>전송률</g5> 뒤에 표시됩니다. 이전에 저장된 레이아웃은 이 열들을 포함합니다."
-  },
   "b84ada2c25ba9d3b": {
    "source": "Install with the setup",
    "text": "설치 프로그램으로 설치"
-  },
-  "b8544619a7ae8ec9": {
-   "source": "YouTube fixes for the Download video button, and the button in Chrome, Edge and Brave.",
-   "text": "YouTube 비디오 다운로드 버튼 및 Chrome, Edge, Brave의 버튼 수정."
   },
   "b86face263e9f2af": {
    "source": "We'd rather you knew. IDM has a site grabber that follows a whole website's pages (MDM's link grabber takes the links of one page), and many years of polish and compatibility fixes. MDM is new; if something you rely on is missing, <g1>ask for it</g1>.",
@@ -12170,10 +11910,6 @@
    "source": "Played in real time from the medians.",
    "text": "중앙값으로 실시간 재생되었습니다."
   },
-  "b929974c90dc30da": {
-   "source": "Video downloads: the progress no longer says 100 % while a video is still coming, when the site gives no total size, or between a video and its separate sound (<g1>#344</g1>). A video yt-dlp only knows by its address is named after the page, not a long hash (<g2>#345</g2>).",
-   "text": "비디오 다운로드: 사이트에서 총 크기를 제공하지 않거나 비디오와 사운드가 분리된 경우, 비디오가 아직 다운로드 중일 때 진행률이 더 이상 100%로 표시되지 않습니다(<g1>#344</g1>). yt-dlp가 주소로만 아는 비디오는 긴 해시 대신 페이지 이름으로 표시됩니다(<g2>#345</g2>)."
-  },
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
    "text": "86개 언어, RTL 지원"
@@ -12205,10 +11941,6 @@
   "b98f45db485a2719": {
    "source": "Options: Remote",
    "text": "옵션: 원격"
-  },
-  "b9a51e6448b28bb1": {
-   "source": "Pick the service, then either: - <g1>Sign in in the browser</g1> (Real-Debrid, AllDebrid and TorBox): MDM shows a code and opens the service's page (TorBox's is also at <x2/>). Type the code there (AllDebrid's page already has it) and allow MDM. The dialog notices on its own. - or paste your <g3>API token</g3> (<g4>Find my token</g4> opens the service's page that shows it), then <g5>Use the token</g5>. Premiumize signs in this way only: paste the API key from its Account page.",
-   "text": "서비스를 선택한 다음 다음 중 하나를 수행하세요. - <g1>브라우저에서 로그인</g1> (Real-Debrid, AllDebrid, TorBox): MDM이 코드를 표시하고 서비스 페이지를 엽니다 (TorBox는 <x2/>에서도 가능합니다). 여기에 코드를 입력하고 (AllDebrid 페이지에는 이미 입력되어 있습니다) MDM을 허용합니다. 대화 상자가 자동으로 이를 감지합니다. - 또는 <g3>API 토큰</g3>을 붙여넣은 다음 (<g4>내 토큰 찾기</g4>를 클릭하면 토큰이 표시되는 서비스 페이지가 열립니다) <g5>토큰 사용</g5>을 클릭합니다. Premiumize는 이 방법으로만 로그인할 수 있습니다. 계정 페이지에서 API 키를 붙여넣으세요."
   },
   "b9bee71f3466bfea": {
    "source": "Change it at any time, no restart",
@@ -12262,6 +11994,10 @@
    "source": "6. Limitation of liability",
    "text": "6. 책임의 제한"
   },
+  "bb1244178952e02b": {
+   "source": "Set up the extension once, and every download link you click in Firefox, Chrome, Edge, Brave, Opera or Vivaldi goes to MDM.",
+   "text": "확장 프로그램을 한 번 설정하면 Firefox, Chrome, Edge, Brave, Opera 또는 Vivaldi에서 클릭하는 모든 다운로드 링크가 MDM으로 이동합니다."
+  },
   "bb1f21fe59e69934": {
    "source": "<g1>Web</g1> (a web server) or <g2>Torrent</g2>.",
    "text": "<g1>웹</g1> (웹 서버) 또는 <g2>토렌트</g2>."
@@ -12285,10 +12021,6 @@
   "bb66b5a231ef607c": {
    "source": "<g1>The time</g1> is measured from the download's own connections, as each one opens: MDM sends nothing extra to the server. It is an estimate (the time to open a connection, divided by its round trips: one for http, two for https), so it says <g2>about</g2>. The quickest connection counts.",
    "text": "<g1>시간</g1>은 다운로드가 연결을 열 때마다 다운로드에 사용되는 연결을 통해 측정합니다. MDM은 서버에 추가 데이터를 보내지 않습니다. 추정값이므로 <g2>약</g2>이라고 표시합니다. 연결을 여는 데 걸린 시간을 왕복 횟수로 나누어 계산합니다(HTTP는 1회, HTTPS는 2회). 가장 빠른 연결을 기준으로 합니다."
-  },
-  "bb7529bf5491688a": {
-   "source": "A debrid service, such as Real-Debrid, AllDebrid, Premiumize or TorBox, is a paid account that downloads files from file hosts on its own servers. It hands…",
-   "text": "Real-Debrid, AllDebrid, Premiumize, TorBox와 같은 디브리드 서비스는 유료 계정으로, 파일 호스트의 파일을 자체 서버로 다운로드합니다. 이 서비스는..."
   },
   "bb7ddff510dd3161": {
    "source": "If your network gives a proxy auto-config (PAC) script, type its address, or pick the file, under <g1>Use automatic configuration script</g1>. MDM fetches it and asks it which way each download goes (<x2/>, <x3/> or <x4/>), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.",
@@ -12381,10 +12113,6 @@
   "bcb9a067330c23b6": {
    "source": "Switch between light and dark",
    "text": "밝은 모드와 어두운 모드 전환"
-  },
-  "bcbfeb0968ed1426": {
-   "source": "A torrent says <g1>Checking 42%</g1> while its files are read and checked, and a Recheck no longer stops partway and stays there.",
-   "text": "토렌트는 파일을 읽고 확인하는 동안 <g1>확인 중 42%</g1>를 표시하며, 재확인이 중간에 멈추거나 그 상태로 유지되지 않습니다."
   },
   "bcf14ec27beee1ce": {
    "source": "Unzip the portable copy anywhere, a USB stick included. The download list, the settings, the video helpers and torrent data stay in a <x1/> folder next to the program, and nothing is written to the registry. Two things need the installer instead: starting with Windows, and taking downloads from the browser, since both go through the registry. <g2>Carry MDM on a USB stick</g2> shows the set-up.",
@@ -12522,10 +12250,6 @@
    "source": "Under a data cap",
    "text": "데이터 제한 내에서"
   },
-  "bf65e2eb8f9aed86": {
-   "source": "<g1>Move it</g1>: drag it by its dots along the video's edge; while you drag, the edge and the spots it snaps to (the corners and the middle) show. It stays there on that site.",
-   "text": "<g1>이동</g1>: 점을 따라 비디오 가장자리를 따라 드래그합니다. 드래그하는 동안 가장자리와 스냅되는 지점(모서리 및 중앙)이 표시됩니다. 해당 사이트에서 그 위치에 유지됩니다."
-  },
   "bf6c448169dc52d7": {
    "source": "<g1>A magnet link could wait minutes for its file list</g1> (<g2>#92</g2>): in 0.2.4 on Windows, the DHT (how MDM finds peers without trackers) could stop for the rest of the session once a computer it asked was gone, so a magnet its trackers didn't serve never got its file list. The updated torrent library keeps going, and a test keeps it that way. <g3>Add torrent</g3> now shows the wait: the peers found, from the trackers, the DHT or the local network, and how many answered. After 30 seconds without an answer, it says what may be in the way.",
    "text": "<g1>마그넷 링크가 파일 목록을 기다리는 데 몇 분이 걸리는 문제</g1> (<g2>#92</g2>): Windows 0.2.4에서 DHT(MDM이 트래커 없이 피어를 찾는 방법)는 요청한 컴퓨터가 사라지면 세션의 나머지 기간 동안 중지될 수 있었으므로, 트래커가 제공하지 않는 마그넷은 파일 목록을 얻지 못했습니다. 업데이트된 토렌트 라이브러리는 계속 작동하며, 테스트를 통해 이를 유지합니다. 이제 <g3>토렌트 추가</g3>는 대기 시간을 표시합니다. 트래커, DHT 또는 로컬 네트워크에서 찾은 피어와 응답한 피어의 수를 표시합니다. 30초 동안 응답이 없으면 방해가 될 수 있는 요소를 알려줍니다."
@@ -12553,10 +12277,6 @@
   "bfb5be5f11fb070f": {
    "source": "Your browsers hand it their downloads, and proven open-source tools do the specialist work. <g1>Set up the extension</g1>.",
    "text": "브라우저가 다운로드를 MDM에 전달하고, 검증된 오픈 소스 도구가 전문적인 작업을 수행합니다. <g1>확장 프로그램 설정</g1>."
-  },
-  "bfccf2cc495dc164": {
-   "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). On Windows, Latin, Greek and Cyrillic text is drawn by DirectWrite (<x6/>, through egui's glyph rasterizer hook): View → Text → Smooth in its natural mode, anti-aliased at the size asked for and placed at quarter pixels with the font's own advances; Classic (the default) in GDI-classic mode, so each letter's hinted shape and whole-pixel width come together. Other scripts are shaped and drawn by egui.",
-   "text": "고정된 픽셀 좌표에 그려지는 하나의 egui 창과 대화 상자당 하나의 즉시 뷰포트가 있습니다. <x1/>는 상태(다운로드, 대기열, 설정, 목록 선택)를 유지하고 메뉴, 도구 모음, 키 및 IPC 명령을 작업으로 변환합니다. 각 대화 상자는 자체 모듈이며 <x2/>(열림, 닫힘, 값으로 완료됨)를 반환합니다. Windows 전용 호출은 <x3/>로 제한되며, Linux 및 macOS의 해당 호출은 <x4/>(세션 시작, 브라우저 호스트, 소리, 폴더에서 표시, 충돌 처리기)로 제한됩니다. 다른 모든 파일은 안전하고 이식 가능한 Rust입니다. 글꼴은 시스템에서 가져옵니다. Windows의 글꼴 폴더, macOS의 시스템 글꼴, Linux의 fontconfig(<x5/>)입니다. Windows에서는 라틴어, 그리스어 및 키릴어 텍스트가 DirectWrite(<x6/>, egui의 글리프 래스터라이저 후크를 통해)로 그려집니다. 보기 → 텍스트 → 자연 모드에서는 부드럽게, 요청된 크기로 안티앨리어싱되고 글꼴 자체의 진행에 따라 쿼터 픽셀에 배치됩니다. 클래식(기본값)은 GDI-클래식 모드에서 각 문자의 힌트 모양과 전체 픽셀 너비가 함께 나타납니다. 다른 스크립트는 egui에 의해 모양이 지정되고 그려집니다."
   },
   "bfcf797517e5c279": {
    "source": "MDM remembers the columns, their widths and the sort order.",
@@ -12686,6 +12406,10 @@
    "source": "Already installed? Open MDM, then <g1>Options → General → Test browser integration</g1>, and click <g2>Set it up</g2> if it offers to.",
    "text": "이미 설치했나요? MDM을 연 다음 <g1>옵션 → 일반 → 브라우저 통합 테스트</g1>로 이동해 제안이 표시되면 <g2>설정</g2>을 클릭하세요."
   },
+  "c1d36b87b24557b5": {
+   "source": "It stays out of the way: it shows only while you point at a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades when the pointer rests, and leaves out small videos and short muted loops (animated pictures, backgrounds). In fullscreen it follows the video when the player allows it. On a copy-protected video (DRM) it says that the video can't be saved.",
+   "text": "방해가 되지 않습니다. 비디오에 마우스를 가져갈 때만 표시되고(또는 플레이어가 키보드 포커스를 가질 때; <g1>Tab</g1>을 누르면 버튼으로 이동), 포인터가 멈추면 흐려지며, 작은 비디오와 짧은 음소거 루프(애니메이션 그림, 배경)는 제외됩니다. 전체 화면에서는 플레이어가 허용하는 경우 비디오를 따라갑니다. 복사 방지된 비디오(DRM)에서는 비디오를 저장할 수 없다고 표시됩니다."
+  },
   "c1d77bb835bb6ef4": {
    "source": "Debrid service accounts",
    "text": "디브리드 서비스 계정"
@@ -12733,6 +12457,10 @@
   "c2b17f921c10d685": {
    "source": ", beside the app",
    "text": ", 앱과 함께"
+  },
+  "c2b8a1e1935d623a": {
+   "source": "In Torrent settings you can turn off <g1>Accept incoming connections</g1> and <g2>Map the port on the router (UPnP)</g2>, or the DHT. Downloads still work, sometimes more slowly. A fixed <g3>Port</g3> keeps firewall and router rules working. These changes apply the next time the engine starts, so when no torrent is running.",
+   "text": "토렌트 설정에서 <g1>들어오는 연결 수락</g1> 및 <g2>라우터에서 포트 매핑(UPnP)</g2> 또는 DHT를 끌 수 있습니다. 다운로드는 여전히 작동하지만 때로는 더 느리게 작동합니다. 고정된 <g3>포트</g3>는 방화벽 및 라우터 규칙이 작동하도록 유지합니다. 이러한 변경 사항은 엔진이 다음에 시작될 때 적용되므로 토렌트가 실행되지 않을 때 적용됩니다."
   },
   "c2c996a2e4f44678": {
    "source": "<g1>Accessibility</g1><g2>Mister Download Manager</g2>",
@@ -12805,10 +12533,6 @@
   "c3e54652a3021b62": {
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
    "text": "<g1>토렌트 추가</g1> 창이 열립니다. 마그넷 링크를 <g2>토렌트</g2>에 붙여넣거나 <g3>...</g3>을 클릭해 <x4/> 파일을 선택한 다음 <g5>찾아보기</g5>를 클릭합니다."
-  },
-  "c3e94db31bd7ff31": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: a video the site sends in pieces (HLS, DASH) comes down this many pieces at once (8 by default, 1 to 128); a video in one file is one connection whatever it says. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). <x19/> sends yt-dlp's connections (and ffmpeg's) through one network adapter, as for <x20/>; when it isn't connected, nothing starts.",
-   "text": "동영상을 다운로드합니다. <x1/>는 <x2/>에서 화질 선택자를 가져옵니다(<x3/> = 가장 좋은 단일 파일; <x4/> = 사이트에 있는 그대로 변환되지 않은 사운드만; <x5/>, <x6/>, <x7/> 또는 <x8/> = 해당 비트레이트의 MP3 사운드, <x9/>는 최고 가변 비트레이트; <x10/> = Opus; <x11/> = FLAC, 무손실이지만 사이트 사운드보다 좋지 않음; 변환에는 ffmpeg 필요). <x12/>: 사이트에서 조각으로 보내는 동영상(HLS, DASH)은 이 개수만큼 동시에 다운로드됩니다(기본값 8개, 1~128개); 단일 파일 동영상은 설정과 관계없이 하나의 연결로 다운로드됩니다. <x13/>는 자막을 함께 저장합니다: <x14/>(<x15/>)의 언어 코드 또는 업로더가 제공한 모든 자막에 대해 <x16/>; <x17/>는 대신 사이트의 자동 생성 자막을 가져옵니다; <x18/>는 자막을 동영상에 삽입합니다(ffmpeg, MP4 또는 MKV 필요). <x19/>는 <x20/>와 같이 yt-dlp의 연결(및 ffmpeg의 연결)을 하나의 네트워크 어댑터를 통해 보냅니다; 연결되지 않으면 아무것도 시작되지 않습니다."
   },
   "c4102de250d826ec": {
    "source": "50 MiB, every 2nd connection cut after 2 MiB, 4 MB/s",
@@ -12909,10 +12633,6 @@
   "c57753035a57cd80": {
    "source": "Network",
    "text": "네트워크"
-  },
-  "c58f1ece184bd11b": {
-   "source": "View → Theme open: Classic, Native, High contrast, Metro, Adwaita, Breeze, Luna, Aero, Aqua and Emerald, and Open themes folder",
-   "text": "보기 → 테마 열기: 클래식, 기본, 고대비, 메트로, Adwaita, Breeze, Luna, Aero, Aqua 및 Emerald, 그리고 테마 폴더 열기"
   },
   "c5951459908e695f": {
    "source": "A table with one row per connection: its number, how much it has downloaded, and what it is doing right now.",
@@ -13146,6 +12866,10 @@
    "source": "The plain programs, for any distribution.",
    "text": "모든 배포판용 일반 프로그램입니다."
   },
+  "c956a6b2d5bfd754": {
+   "source": "<g1><g2>Themes</g2></g1> — the built-in looks (Classic, Native, High contrast, Metro, Adwaita, Breeze, Luna, Aero, Aqua), and how to make your own in a text file.",
+   "text": "<g1><g2>테마</g2></g1> — 내장된 테마(클래식, 기본, 고대비, 메트로, Adwaita, Breeze, Luna, Aero, Aqua) 및 텍스트 파일로 나만의 테마를 만드는 방법을 설명합니다."
+  },
   "c95c74ca9e673240": {
    "source": "<g1>Video downloads</g1><g2>Videos from YouTube, Vimeo, TikTok and well over a thousand other sites, in the quality you choose.</g2>",
    "text": "<g1>비디오 다운로드</g1><g2>YouTube, Vimeo, TikTok 및 1,000개 이상의 다른 사이트에서 원하는 품질의 비디오를 다운로드합니다.</g2>"
@@ -13266,10 +12990,6 @@
    "source": "Can I download without the browser extension?",
    "text": "브라우저 확장 프로그램 없이 다운로드할 수 있나요?"
   },
-  "cb3fee6871e1183d": {
-   "source": "<g1>0.5.2</g1> <g2>17.1 MB</g2>",
-   "text": "<g1>0.5.2</g1> <g2>17.1 MB</g2>"
-  },
   "cb565e5b28b1036b": {
    "source": "<g1><x2/> Add to Firefox</g1><g3><x4/> Add to Chrome</g3>",
    "text": "<g1><x2/> Firefox에 추가</g1><g3><x4/> Chrome에 추가</g3>"
@@ -13281,10 +13001,6 @@
   "cb75f147f406ef80": {
    "source": "Check the download's own <g1>Speed Limiter</g1> tab in its progress window.",
    "text": "진행 창에서 다운로드 자체의 <g1>속도 제한</g1> 탭을 확인하세요."
-  },
-  "cb76e318892b8302": {
-   "source": "<g1>Sharp, evenly spaced text on Windows:</g1> letters no longer run together or drift apart. English and other Latin, Greek and Cyrillic text is drawn the way Windows draws its own classic controls, with each letter's shape and width fitted together; every other script uses hinting suited to anti-aliased rendering (<g2>#323</g2>, <g3>#334</g3>).",
-   "text": "<g1>Windows에서 선명하고 균일한 간격의 텍스트:</g1> 글자가 더 이상 붙거나 떨어지지 않습니다. 영어 및 기타 라틴어, 그리스어, 키릴어 텍스트는 Windows가 자체 클래식 컨트롤을 그리는 방식과 같이 각 글자의 모양과 너비가 맞춰져 그려집니다. 다른 모든 스크립트는 안티앨리어싱 렌더링에 적합한 힌팅을 사용합니다(<g2>#323</g2>, <g3>#334</g3>)."
   },
   "cb785894ee2a8daa": {
    "source": "Unzip it where you want MDM to live, for example <x1/> on a USB stick.",
@@ -13462,10 +13178,6 @@
    "source": "Confirm deletion of downloads, with Also delete the file from disk",
    "text": "다운로드 삭제 확인, 디스크에서 파일도 삭제 포함"
   },
-  "cde750e1701b7cab": {
-   "source": "(or <x1/>) removes the programs, and the small files that tell your browsers where MDM's helper is: the .deb and .rpm install those for everyone (in <x2/> and <x3/>), for Chrome, Chromium, Edge, Brave, Vivaldi, Helium and Firefox (the Snap too), so MDM doesn't write them in your home folder. For the AppImage or the tar.gz, delete the file or the folder.",
-   "text": "(또는 <x1/>)는 프로그램을 제거하고, MDM 도우미가 브라우저에 어디에 있는지 알려주는 작은 파일들을 제거합니다. .deb 및 .rpm은 Chrome, Chromium, Edge, Brave, Vivaldi, Helium 및 Firefox(Snap 포함)용으로 모든 사용자( <x2/> 및 <x3/> 에)에게 설치하므로 MDM은 홈 폴더에 이 파일들을 쓰지 않습니다. AppImage 또는 tar.gz의 경우 파일이나 폴더를 삭제하세요."
-  },
   "ce0f02140b74cd6a": {
    "source": "<g1>Videos that need a sign-in</g1> (<g2>#229</g2>):",
    "text": "<g1>로그인이 필요한 동영상</g1> (<g2>#229</g2>):"
@@ -13569,10 +13281,6 @@
   "cf998b5c9b5858ae": {
    "source": "MDM asks the server for the file's name and size, and shows them in <g1>Download File Info</g1>:",
    "text": "MDM은 서버에 파일 이름과 크기를 요청한 뒤 <g1>파일 정보 다운로드</g1>에 표시합니다."
-  },
-  "cf9a4308fb39b852": {
-   "source": "<g1>The Download video button on YouTube in Chrome, Edge, Brave, Opera and Vivaldi:</g1> the copy of the extension from the Chrome Web Store shows it now, as Firefox's does.",
-   "text": "<g1>Chrome, Edge, Brave, Opera, Vivaldi의 YouTube 비디오 다운로드 버튼:</g1> Chrome 웹 스토어에서 가져온 확장 프로그램 사본이 이제 Firefox처럼 이 버튼을 표시합니다."
   },
   "cfaa5bfbcc905b41": {
    "source": "when its package says <g1>Extract when done</g1>,",
@@ -13770,10 +13478,6 @@
    "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.",
    "text": "Mister Download Manager, 브라우저 확장 프로그램 및 이 웹사이트의 사용자 데이터 처리 방식: 앱과 확장 프로그램은 데이터를 수집하지 않으며, 웹사이트는 Statcounter로 방문 횟수를 집계합니다."
   },
-  "d32ec5dc098dcc58": {
-   "source": "10 built-in looks for Mister Download Manager, each light and dark: Classic, Native, High contrast, Metro, Adwaita, Breeze, Luna, Aero, Aqua, Emerald. Or make your own in a text file.",
-   "text": "Mister Download Manager를 위한 10가지 내장 테마(각각 밝은 모드와 어두운 모드): 클래식, 기본, 고대비, 메트로, Adwaita, Breeze, Luna, Aero, Aqua, 에메랄드. 또는 텍스트 파일로 직접 만들 수 있습니다."
-  },
   "d3307022fb2a4fa4": {
    "source": "<g1>Accessibility</g1><g2>Works with Narrator and NVDA, and everything can be done from the keyboard, menus and dialogs included.</g2>",
    "text": "<g1>접근성</g1><g2>내레이터 및 NVDA와 함께 작동하며, 메뉴 및 대화 상자를 포함한 모든 작업을 키보드로 수행할 수 있습니다.</g2>"
@@ -13781,6 +13485,10 @@
   "d3341e67090165f9": {
    "source": "The default button's border",
    "text": "기본 버튼 테두리"
+  },
+  "d33efd98b45a4482": {
+   "source": "Download Mister Download Manager 0.5.0, the free, open-source download manager: Windows installer and portable zip, macOS .dmg and Linux AppImage, .deb and .rpm, plus the browser extension. No ads, no bundled software.",
+   "text": "무료 오픈 소스 다운로드 관리자인 Mister Download Manager 0.5.0을 다운로드하세요. Windows 설치 프로그램 및 휴대용 zip, macOS .dmg 및 Linux AppImage, .deb 및 .rpm, 그리고 브라우저 확장 프로그램이 있습니다. 광고나 번들 소프트웨어는 없습니다."
   },
   "d351cad9276045ed": {
    "source": "<g1>Classic</g1>: MDM's own look, the default.",
@@ -13825,10 +13533,6 @@
   "d3cfb6fc9e5456d7": {
    "source": "Run MDM on a home server, NAS, Docker or Unraid",
    "text": "홈 서버, NAS, Docker 또는 Unraid에서 MDM 실행"
-  },
-  "d3da8c9dc89aaa97": {
-   "source": "What's new in version 0.5.1 <g1>2026-11-08</g1>",
-   "text": "버전 0.5.1 <g1>2026-11-08</g1>의 새로운 기능"
   },
   "d41f38f4d7112625": {
    "source": "Corner radius of a tinted part (an arrow zone, a spin button)",
@@ -13925,10 +13629,6 @@
   "d523b3399c313ed9": {
    "source": "<g1>Finished</g1> — complete downloads, by category.",
    "text": "<g1>완료됨</g1> — 완료된 다운로드를 범주별로 표시합니다."
-  },
-  "d525aa3b9edf0d5f": {
-   "source": "<g1>Hide tab</g1> in a download's window takes the Speed Limiter or Options on completion tab off its tab row, instead of only going back to Download status. Right-click the tab row and choose <g2>Show hidden tabs</g2> to bring them back (<g3>#326</g3>).",
-   "text": "다운로드 창에서 <g1>탭 숨기기</g1>를 선택하면, 단순히 다운로드 상태로 돌아가는 대신 속도 제한 또는 완료 시 옵션 탭이 탭 행에서 제거됩니다. 탭 행을 마우스 오른쪽 버튼으로 클릭하고 <g2>숨겨진 탭 표시</g2>를 선택하여 다시 표시할 수 있습니다(<g3>#326</g3>)."
   },
   "d56f952e1fe6178b": {
    "source": "A whole gallery at once. Only new pictures next time.",
@@ -14202,10 +13902,6 @@
    "source": "Does it work on Mac and Linux?",
    "text": "Mac과 Linux에서 작동하나요?"
   },
-  "d94b3dd782154f61": {
-   "source": "Set up the extension once, and every download link you click in Firefox, Chrome, Edge, Brave, Opera, Vivaldi or Helium goes to MDM.",
-   "text": "확장 프로그램을 한 번만 설정하면 Firefox, Chrome, Edge, Brave, Opera, Vivaldi 또는 Helium에서 클릭하는 모든 다운로드 링크가 MDM으로 전송됩니다."
-  },
   "d94f1c99aee6b6e7": {
    "source": "<g1>Credentials stay with their site.</g1> Logins and cookies are sent only to the host they belong to, even across redirects.",
    "text": "<g1>자격 증명은 해당 사이트에 유지됩니다.</g1> 로그인 및 쿠키는 리디렉션을 거치더라도 해당 호스트에만 전송됩니다."
@@ -14314,6 +14010,10 @@
    "source": "Request sent",
    "text": "요청 보냄"
   },
+  "db0d1e3050cb7b43": {
+   "source": "MDM supports three services: <g1>Real-Debrid</g1>, <g2>AllDebrid</g2> and <g3>Premiumize</g3>.",
+   "text": "MDM은 <g1>Real-Debrid</g1>, <g2>AllDebrid</g2>, <g3>Premiumize</g3> 세 가지 서비스를 지원합니다."
+  },
   "db2ddcfc7e327586": {
    "source": "Remote Control and Headless Mode Support",
    "text": "원격 제어 및 헤드리스 모드 지원"
@@ -14385,10 +14085,6 @@
   "dc1a2189e80bed74": {
    "source": "<g1>Downloads in progress</g1> lists the running downloads. Choose one to see its progress window.",
    "text": "<g1>진행 중인 다운로드</g1>에는 진행 중인 다운로드가 표시됩니다. 항목을 선택하면 진행 창을 볼 수 있습니다."
-  },
-  "dc31d8975851fca3": {
-   "source": "Windows: no more crash when a screen is unplugged, turned off or rearranged while MDM runs (<g1>#335</g1>).",
-   "text": "Windows: MDM이 실행되는 동안 화면이 분리되거나, 꺼지거나, 재배열될 때 더 이상 충돌이 발생하지 않습니다(<g1>#335</g1>)."
   },
   "dc75431952fc8673": {
    "source": "Today's files marked <x1/> are for macOS 11 and later, on Apple Silicon or Intel, and for Linux on x86-64: an AppImage for most distributions, a <x2/> for Ubuntu, Debian, Mint and Pop!_OS, an <x3/> for Fedora, openSUSE and RHEL, and a <x4/> of the plain programs. Please <g5>tell us how it went</g5>, good or bad.",
@@ -14646,10 +14342,6 @@
    "source": "Up to 128 connections per download, if you turn it on.",
    "text": "활성화하면 다운로드당 최대 128개 연결을 사용할 수 있습니다."
   },
-  "e1c4966640b1a378": {
-   "source": "The extension no longer asks you to update MDM when only a bug-fix version separates them, which it did even when there was no update to get.",
-   "text": "확장 프로그램이 버그 수정 버전만 차이가 날 때 MDM 업데이트를 요청하지 않습니다. 이전에는 업데이트할 것이 없어도 요청했습니다."
-  },
   "e1cb5a9a23d26236": {
    "source": "The video window listing a playlist's videos, each with its length and a box to tick, and one quality for all",
    "text": "재생 목록의 비디오 목록을 표시하는 비디오 창. 각 비디오의 길이와 선택란, 모든 비디오에 적용되는 화질"
@@ -14854,6 +14546,10 @@
    "source": "<g1>The download stops with an error:</g1> see <g2>Resume a broken download</g2>.",
    "text": "<g1>다운로드가 오류로 중지됨:</g1> <g2>손상된 다운로드 다시 시작</g2>을 참조하세요."
   },
+  "e4f8ff1052a7e6da": {
+   "source": "The real app, version 0.5.0 on Windows 11 · every screenshot on this site is unretouched.",
+   "text": "실제 앱, Windows 11 버전 0.5.0 · 이 사이트의 모든 스크린샷은 수정되지 않았습니다."
+  },
   "e51724ef605dc50f": {
    "source": "A theme changes how MDM looks and keeps everything where it was: the same windows, menus and buttons in the same places, drawn in other colours, shapes and…",
    "text": "테마는 MDM의 모양을 변경하며 모든 것을 원래 위치에 유지합니다. 즉, 동일한 창, 메뉴, 버튼이 같은 위치에 다른 색상, 모양 등으로 그려집니다."
@@ -14910,9 +14606,17 @@
    "source": "<g1><g2>Find a download in a long list</g2></g1> — Find, Find Next and column filters.",
    "text": "<g1><g2>긴 목록에서 다운로드 찾기</g2></g1> — 찾기, 다음 찾기 및 열 필터."
   },
+  "e5adca4541fc0443": {
+   "source": "Pick the service, then either: - <g1>Sign in in the browser</g1> (Real-Debrid and AllDebrid): MDM shows a code and opens the service's page. Type the code there (AllDebrid's page already has it) and allow MDM. The dialog notices on its own. - or paste your <g2>API token</g2> (<g3>Find my token</g3> opens the service's page that shows it), then <g4>Use the token</g4>. Premiumize signs in this way only: paste the API key from its Account page.",
+   "text": "서비스를 선택한 다음 다음 중 한 가지 방법으로 로그인합니다. - <g1>브라우저에서 로그인</g1> (Real-Debrid 및 AllDebrid): MDM이 코드를 표시하고 서비스 페이지를 엽니다. 페이지에 코드를 입력하고 MDM 사용을 허용합니다. (AllDebrid 페이지에는 코드가 이미 입력되어 있습니다.) 대화 상자가 자동으로 로그인 상태를 확인합니다. - 또는 <g2>API 토큰</g2>을 붙여넣습니다. (<g3>내 토큰 찾기</g3>를 선택하면 토큰이 표시된 서비스 페이지가 열립니다.) 그런 다음 <g4>토큰 사용</g4>을 선택합니다. Premiumize는 이 방법으로만 로그인할 수 있습니다. 계정 페이지에서 API 키를 복사해 붙여넣으세요."
+  },
   "e5bf409662bbdd78": {
    "source": "Its title and glyphs",
    "text": "제목 및 글리프"
+  },
+  "e5c18c89ba8f7efe": {
+   "source": "<g1>Move it</g1>: drag it anywhere along the video's edge; it snaps to the nearest edge and stays there on that site.",
+   "text": "<g1>이동</g1>: 비디오 가장자리를 따라 어디든지 드래그할 수 있습니다. 가장 가까운 가장자리에 스냅되어 해당 사이트에 고정됩니다."
   },
   "e5ec839cf7e9287e": {
    "source": "MDM downloads the pictures of a gallery, a Flickr album, a DeviantArt gallery, a Wikimedia Commons category and many more, with gallery-dl, a free program that reads several hundred sites.",
@@ -14969,10 +14673,6 @@
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
    "text": "링크 그래버: 여러 링크를 붙여넣으면 MDM이 링크를 그룹화하고, 온라인 상태인지 확인하며, 도착 시 압축 파일을 추출합니다."
-  },
-  "e6fb82648103901a": {
-   "source": "Point at a video on a web page and a <g1>Download video</g1> button appears at its edge, in dark frosted glass that stays readable over any picture. As it appears, MDM looks the video up (when MDM is running), and the button then names the best quality it found (<g2>1080p</g2>, <g3>4K</g3>). Click it and that quality downloads at once, with only its progress window; MDM's main window stays where it is (with <g4>Do not start downloading, only add files to the queue</g4> on in Options, it goes in the queue instead). Clicking while MDM is still looking works too: it takes the best quality as soon as it is known. A video that plays a plain file (not a stream) needs no look-up: the button shows its picture size and downloads the file itself. When nothing could be looked up (MDM wasn't running, yt-dlp isn't installed, the page is a playlist, or you send downloads to another MDM), a click opens the <g5>Download video from a page</g5> window, which says why and offers what to do.",
-   "text": "웹 페이지의 비디오에 포인터를 가져가면 비디오 가장자리에 <g1>비디오 다운로드</g1> 버튼이 나타납니다. 이 버튼은 어떤 그림 위에서도 읽을 수 있도록 어두운 반투명 유리로 되어 있습니다. 버튼이 나타나면 MDM은 비디오를 조회하고(MDM이 실행 중일 때), 버튼은 찾은 최고 화질(예: <g2>1080p</g2>, <g3>4K</g3>)을 표시합니다. 클릭하면 해당 화질이 즉시 다운로드되며, 진행 창만 나타납니다. MDM의 기본 창은 그대로 유지됩니다(옵션에서 <g4>다운로드를 시작하지 않고 파일만 대기열에 추가</g4>가 켜져 있으면 대신 대기열에 추가됩니다). MDM이 아직 조회 중일 때 클릭해도 작동합니다. 최고 화질이 확인되는 즉시 다운로드가 시작됩니다. 일반 파일(스트림 아님)을 재생하는 비디오는 조회할 필요가 없습니다. 버튼은 그림 크기를 표시하고 파일 자체를 다운로드합니다. 아무것도 조회할 수 없는 경우(MDM이 실행 중이 아니거나, yt-dlp가 설치되지 않았거나, 페이지가 재생 목록이거나, 다른 MDM으로 다운로드를 보내는 경우) 클릭하면 <g5>페이지에서 비디오 다운로드</g5> 창이 열리며, 이유를 설명하고 수행할 작업을 제안합니다."
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
@@ -15166,10 +14866,6 @@
    "source": "Video pages (yt-dlp) and image galleries need their helpers, which the image doesn't include.",
    "text": "비디오 페이지(yt-dlp) 및 이미지 갤러리는 도우미가 필요하며, 이미지에는 포함되어 있지 않습니다."
   },
-  "e96fd5ce65ea0012": {
-   "source": "Download Mister Download Manager 0.5.2, the free, open-source download manager: Windows installer and portable zip, macOS .dmg and Linux AppImage, .deb and .rpm, plus the browser extension. No ads, no bundled software.",
-   "text": "무료 오픈 소스 다운로드 관리자인 Mister Download Manager 0.5.2를 다운로드하세요. Windows 설치 프로그램 및 휴대용 zip, macOS .dmg 및 Linux AppImage, .deb 및 .rpm, 그리고 브라우저 확장 프로그램이 있습니다. 광고나 번들 소프트웨어는 없습니다."
-  },
   "e98377c8fd21d3c7": {
    "source": "Receiving",
    "text": "수신 중"
@@ -15201,10 +14897,6 @@
   "ea0bba35c9b81040": {
    "source": "A tooltip's top padding",
    "text": "도구 설명의 위쪽 여백"
-  },
-  "ea282dea9c9a7014": {
-   "source": "If it says <g1>this site lets only browsers through</g1>, the site's bot check (Cloudflare's, for one) turned MDM away. MDM has already asked once more connecting the way your browser does, with your browser's cookies for that site, and the site still wants its check answered in a browser. Open the site in your browser (passing its check there can be enough: click the link again), or hold <g2>Alt</g2> as you click the link to leave that download to the browser. See <g3>Browser integration</g3>.",
-   "text": "“<g1>이 사이트는 브라우저만 허용합니다</g1>”라는 메시지가 표시되면, 해당 사이트의 봇 확인(예: Cloudflare)으로 인해 MDM이 차단된 것입니다. MDM은 이미 브라우저와 동일한 방식으로 해당 사이트의 쿠키를 사용하여 다시 연결을 시도했지만, 사이트에서 여전히 브라우저 내에서 확인 절차를 완료하기를 요구하는 경우입니다. 브라우저에서 해당 사이트를 열거나(여기서 확인 절차를 통과하는 것만으로 충분할 수 있습니다: 링크를 다시 클릭하세요), <g2>Alt</g2> 키를 누른 채 링크를 클릭하여 해당 다운로드를 브라우저에 맡기세요. <g3>브라우저 통합</g3>을 참조하세요."
   },
   "ea2b2840bdb83f99": {
    "source": "Ctrl+0",
@@ -15286,10 +14978,6 @@
    "source": "Choose <g1>Tasks → Torrent settings...</g1> (or the arrow next to <g2>Add Torrent</g2>):",
    "text": "<g1>작업 → 토렌트 설정...</g1>을 선택합니다 (<g2>토렌트 추가</g2> 옆의 화살표도 가능):"
   },
-  "eb1e3724d60ad6dd": {
-   "source": "<g1>User-Agent for manually added downloads</g1> — how MDM names itself to servers for downloads you add yourself. With <g2>Automatic</g2> ticked (the default), MDM introduces itself as your default browser: the User-Agent that browser sends, at the version you have installed (Chrome, Edge, Brave, Opera, Vivaldi, Firefox or Safari). The box shows it, and pointing at it names the browser. When MDM doesn't recognise your default browser, it sends a current Chrome's. Untick <g3>Automatic</g3> to type your own; tick it again to go back. Downloads from the browser use that browser's own User-Agent. If a site turns a browser's User-Agent away, MDM asks once more with its own.",
-   "text": "<g1>수동으로 추가한 다운로드의 User-Agent</g1> — 직접 추가한 다운로드에 대해 MDM이 서버에 자신을 알리는 방식입니다. <g2>자동</g2>을 선택하면(기본값), MDM은 기본 브라우저로 자신을 소개합니다. 즉, 설치된 버전의 브라우저(Chrome, Edge, Brave, Opera, Vivaldi, Firefox 또는 Safari)가 보내는 User-Agent를 사용합니다. 상자에 표시되며, 마우스를 가져가면 브라우저 이름이 나타납니다. MDM이 기본 브라우저를 인식하지 못하면 현재 Chrome의 User-Agent를 보냅니다. 직접 입력하려면 <g3>자동</g3>을 선택 해제하고, 다시 선택하면 원래대로 돌아갑니다. 브라우저에서 시작된 다운로드는 해당 브라우저의 User-Agent를 사용합니다. 사이트에서 브라우저의 User-Agent를 거부하면 MDM은 자체 User-Agent로 다시 요청합니다."
-  },
   "eb2157973bc61b4f": {
    "source": "<g1>View → Theme</g1> changes MDM's look at once, keeping its layout:",
    "text": "<g1>보기 → 테마</g1>에서 레이아웃은 유지하면서 MDM의 모양을 바로 바꿀 수 있습니다."
@@ -15325,6 +15013,10 @@
   "ebd4dfa7b5dfc4d3": {
    "source": "All of this needs a notification area that shows MDM's icon. Windows and macOS have one, and so do most Linux desktops (KDE, GNOME with its AppIndicator extension, waybar's tray). On a desktop without one, MDM starts minimized instead, closing the window quits MDM, and <g1>Minimize to the notification area</g1> is greyed. In a Wayland session the main window stays minimized in the dock, because Wayland can't hide a window.",
    "text": "이 모든 기능은 MDM 아이콘을 표시하는 알림 영역이 필요합니다. Windows 및 macOS에는 알림 영역이 있으며, 대부분의 Linux 데스크톱(KDE, AppIndicator 확장이 있는 GNOME, waybar의 트레이)도 마찬가지입니다. 알림 영역이 없는 데스크톱에서는 MDM이 대신 최소화된 상태로 시작하고, 창을 닫으면 MDM이 종료되며, <g1>알림 영역으로 최소화</g1> 옵션은 회색으로 표시됩니다. Wayland 세션에서는 Wayland가 창을 숨길 수 없으므로 기본 창이 독에 최소화된 상태로 유지됩니다."
+  },
+  "ebd6ca683255217b": {
+   "source": "9 built-in themes · light and dark",
+   "text": "9가지 내장 테마 · 밝은 모드 및 어두운 모드"
   },
   "ebe2a18d31052b9b": {
    "source": "Browsers",
@@ -15498,10 +15190,6 @@
    "source": "A computer that is asleep doesn't run anything until it wakes, unless the queue has <g1>Wake the computer to run this queue</g1> ticked (on Windows it needs <g2>Allow wake timers</g2> in the power plan; the Scheduler says when it's off). See <g3>Wake the computer to run a queue</g3>.",
    "text": "컴퓨터가 절전 모드일 때는 <g1>이 큐를 실행하기 위해 컴퓨터 절전 모드 해제</g1>가 선택되어 있지 않으면 아무것도 실행되지 않습니다 (Windows에서는 전원 관리 옵션에서 <g2>절전 모드 해제 타이머 허용</g2>이 필요하며, 예약 관리자에서 꺼져 있는지 확인할 수 있습니다). <g3>큐 실행을 위해 컴퓨터 절전 모드 해제</g3>를 참조하세요."
   },
-  "ee6f42906303457a": {
-   "source": "<g1><g2>Browser integration</g2></g1> — the extension for Firefox (from addons.mozilla.org), Chrome, Edge, Brave, Opera, Vivaldi and Helium (from the Chrome Web Store), which downloads it takes, and what happens when MDM isn't running.",
-   "text": "<g1><g2>브라우저 통합</g2></g1> — Firefox(addons.mozilla.org), Chrome, Edge, Brave, Opera, Vivaldi, Helium(Chrome 웹 스토어)용 확장 프로그램, 어떤 다운로드를 가져오는지, MDM이 실행되고 있지 않을 때 어떻게 되는지."
-  },
   "ee6f7b9e469f83a7": {
    "source": "<g1>Download limits</g1> keeps a capped internet plan in check: no more than a set number of megabytes every few hours. When the limit is reached, downloads wait, and they carry on by themselves when the period is over.",
    "text": "<g1>다운로드 제한</g1>은 데이터 제한이 있는 인터넷 요금제를 관리합니다. 몇 시간마다 설정된 메가바이트를 초과하지 않도록 합니다. 제한에 도달하면 다운로드는 대기 상태가 되고, 기간이 끝나면 자동으로 다시 시작됩니다."
@@ -15654,10 +15342,6 @@
    "source": "<g1>System keychain support:</g1> passwords and account sign-ins are now kept in your system's keychain, not in MDM's settings.",
    "text": "<g1>시스템 키체인 지원:</g1> 암호와 계정 로그인은 이제 MDM 설정이 아닌 시스템 키체인에 저장됩니다."
   },
-  "f019d7a91e057d16": {
-   "source": "A download saved under a numbered name because another file already had its name (<x1/>) now shows that name in the list and opens its own file, instead of keeping the old name and opening the other file (<g2>#442</g2>). Two downloads waiting under one name no longer collide when they start: the later one takes the next free name, instead of failing with \"already being downloaded\" or continuing the other one's data.",
-   "text": "다른 파일이 이미 같은 이름을 가지고 있어 번호가 붙은 이름으로 저장된 다운로드 (<x1/>)는 이제 목록에 해당 이름을 표시하고 자신의 파일을 엽니다. 이전 이름을 유지하고 다른 파일을 열던 현상이 수정되었습니다 (<g2>#442</g2>). 하나의 이름으로 대기 중인 두 개의 다운로드가 시작될 때 더 이상 충돌하지 않습니다. 나중에 시작된 다운로드는 \"이미 다운로드 중\" 오류로 실패하거나 다른 다운로드의 데이터를 계속하는 대신 다음 사용 가능한 이름을 가져옵니다."
-  },
   "f01b0d771d8f75e6": {
    "source": "<g1>View → Theme → Add a theme file…</g1> does it for you: pick a file anywhere, and MDM copies it into the themes folder and uses it at once. A file that isn't a theme stays out, and MDM says why.",
    "text": "<g1>보기 → 테마 → 테마 파일 추가…</g1>를 선택하면 됩니다. 파일을 선택하면 MDM이 테마 폴더에 복사하고 즉시 적용합니다. 테마 파일이 아닌 경우 MDM이 이유를 알려주며 추가되지 않습니다."
@@ -15677,6 +15361,10 @@
   "f037bd6ae0bfb52b": {
    "source": "<g1>Keyboard everywhere</g1>: arrow keys in radio groups and tab strips, Ctrl+Tab between tabs, type a name to jump to it in any list or drop-down, Up/Down through Add URL's and Save As' history, Home/End in menus, Tab between the Categories tree and the list (the tree answers the arrows), F2 to rename, held arrows repeat, the date picker's calendar works from the keyboard and has Today.",
    "text": "<g1>어디서나 키보드 사용</g1>: 라디오 그룹과 탭 표시줄에서 화살표 키 사용, Ctrl+Tab으로 탭 간 이동, 목록이나 드롭다운에서 이름을 입력해 해당 항목으로 이동, URL 추가 및 다른 이름으로 저장의 기록에서 위쪽/아래쪽 화살표 키 사용, 메뉴에서 Home/End 키 사용, Tab 키로 범주 트리와 목록 간 이동(트리에서는 화살표 키 사용), F2 키로 이름 변경, 화살표 키를 누르고 있으면 반복 입력, 키보드로 날짜 선택기 달력 사용 및 오늘 날짜 선택"
+  },
+  "f03979e4c32fbfd7": {
+   "source": "Debrid accounts (#44): the services' official APIs (Real-Debrid, AllDebrid, Premiumize) turn a file host's link into a direct one the engine downloads",
+   "text": "Debrid 계정(#44): 서비스의 공식 API(Real-Debrid, AllDebrid, Premiumize)가 파일 호스트 링크를 엔진이 다운로드하는 직접 링크로 변환합니다."
   },
   "f03aff69718cb1f3": {
    "source": "<g1>The AppImage updates through AppImage tools too</g1> (<g2>#24</g2>): it carries the address of its updates, and each release has its <x3/>, so AppImageLauncher, Gear Lever and AppImageUpdate download only the parts that changed. <g4>Update now</g4> works as before.",
@@ -15709,10 +15397,6 @@
   "f09d8a183f62958e": {
    "source": "The computer has to be asleep, not shut down. On Windows the power plan must allow wake timers: the Scheduler says when it doesn't, and <g1>Change</g1> opens the setting. On Linux an administrator allows it once. On macOS only an administrator can schedule a wake, so the option is greyed there. MDM never asks for an administrator's password.",
    "text": "컴퓨터는 종료된 상태가 아니라 절전 모드 상태여야 합니다. Windows에서는 전원 관리 옵션에서 절전 모드 해제 타이머를 허용해야 합니다. 예약 관리자는 허용되지 않을 때 이를 알려주며, <g1>변경</g1>을 클릭하면 설정이 열립니다. Linux에서는 관리자가 한 번 허용해야 합니다. macOS에서는 관리자만 절전 모드 해제를 예약할 수 있으므로, 해당 옵션은 비활성화됩니다. MDM은 관리자 암호를 요청하지 않습니다."
-  },
-  "f0d4d5fcac6fda0c": {
-   "source": "<g1>Protected video · can't be saved</g1> (grey, with a lock): a copy-protected video (DRM), which no tool may save.",
-   "text": "<g1>보호된 동영상 · 저장할 수 없음</g1>(회색, 잠금 아이콘): 복사 방지된 비디오(DRM)로, 어떤 도구로도 저장할 수 없습니다."
   },
   "f0e933d37db8b9a1": {
    "source": "<g1>Cursor</g1>: the same <x2/> entry as Claude Desktop's, in <x3/> (or add it in Cursor's MCP settings).",
@@ -15838,10 +15522,6 @@
    "source": "<g1>Online</g1>: the server has the file.",
    "text": "<g1>온라인</g1>: 서버에 파일이 있습니다."
   },
-  "f2d28115d77cafab": {
-   "source": "Download Mister Download Manager 0.5.2",
-   "text": "Mister Download Manager 0.5.2 다운로드"
-  },
   "f2d4f3ae1b5602bb": {
    "source": "From GitHub's public record, <x1/>: people with pull requests first, then those who opened issues, then those who commented, each once. The maintainer and automated accounts aren't counted.",
    "text": "GitHub 공개 기록에 따르면, <x1/> 풀 리퀘스트를 보낸 사람, 이슈를 연 사람, 댓글을 남긴 사람 순으로 각각 한 번씩 집계됩니다. 관리자 및 자동화된 계정은 포함되지 않습니다."
@@ -15890,6 +15570,10 @@
    "source": "The list shows the order they will run in. Use the arrow buttons under it to move a download up or down.",
    "text": "목록은 실행될 순서를 보여줍니다. 아래의 화살표 버튼을 사용하여 다운로드를 위아래로 이동시킵니다."
   },
+  "f3b524db1e28fbe7": {
+   "source": "Download Mister Download Manager 0.5.0",
+   "text": "Mister Download Manager 0.5.0 다운로드"
+  },
   "f3d19efbbf46e57b": {
    "source": "Archives extracted",
    "text": "압축 파일 추출됨"
@@ -15926,6 +15610,10 @@
    "source": "Yes: every release has builds for Linux and macOS. Today's are marked experimental; from version 0.5.0, Linux isn't, after checks on four desktops, and macOS stays experimental. Windows 10 and 11 are the main platform. <g1>More</g1>",
    "text": "예, 모든 릴리스에 Linux 및 macOS용 빌드가 있습니다. 현재는 실험적이라고 표시되어 있지만, 버전 0.5.0부터는 4가지 데스크톱 환경에서 확인을 거쳐 Linux는 더 이상 실험적이지 않습니다. macOS는 계속 실험적입니다. Windows 10 및 11이 주요 플랫폼입니다. <g1>더 보기</g1>"
   },
+  "f433d571cb30a759": {
+   "source": "(or <x1/>) removes the programs, and the small files that tell your browsers where MDM's helper is: the .deb and .rpm install those for everyone (in <x2/> and <x3/>), for Chrome, Chromium, Edge, Brave, Vivaldi and Firefox (the Snap too), so MDM doesn't write them in your home folder. For the AppImage or the tar.gz, delete the file or the folder.",
+   "text": "(또는 <x1/>)는 프로그램과 브라우저에 MDM 도우미의 위치를 알려주는 작은 파일을 제거합니다. .deb 및 .rpm은 Chrome, Chromium, Edge, Brave, Vivaldi 및 Firefox(Snap 포함)를 위해 모든 사용자( <x2/> 및 <x3/>에)에게 이 파일을 설치하므로 MDM은 홈 폴더에 이 파일을 작성하지 않습니다. AppImage 또는 tar.gz의 경우 파일 또는 폴더를 삭제하세요."
+  },
   "f43b6e23ff05315a": {
    "source": "Switches can start with <x1/> or <x2/>, in any case. If MDM is running, the command goes to it; if not, MDM starts and carries it out. For example:",
    "text": "스위치는 <x1/> 또는 <x2/>로 시작할 수 있으며, 대소문자를 구분하지 않습니다. MDM이 실행 중이면 명령이 MDM으로 전달되고, 실행 중이 아니면 MDM이 시작되어 명령을 수행합니다. 예시:"
@@ -15949,10 +15637,6 @@
   "f4c91787ed2b3160": {
    "source": "Seven downloads, each run at least seven times by IDM 6.42 and Mister Download Manager from the same test server: MDM was 5.4× faster on 1 GiB and 106× on small files. Charts, raw data and the method.",
    "text": "IDM 6.42와 Mister Download Manager가 동일한 테스트 서버에서 각각 7회 이상 실행한 7가지 다운로드: MDM은 1GiB 파일에서 5.4배, 작은 파일에서 106배 빨랐습니다. 차트, 원본 데이터 및 방법."
-  },
-  "f4cb21e3d3b5a953": {
-   "source": "<g1>Delivery options</g1><g2>Version 0.5.2 · free for everyone</g2>",
-   "text": "<g1>배포 옵션</g1><g2>버전 0.5.2 · 모두에게 무료</g2>"
   },
   "f4d85c8c73304ea4": {
    "source": "A video won't download",
@@ -16058,6 +15742,10 @@
    "source": "KDE Plasma's look: rounded corners, controls that take the accent's edge, KDE's icons.",
    "text": "KDE Plasma의 디자인: 둥근 모서리, 강조색이 적용된 컨트롤, KDE 아이콘."
   },
+  "f732dda13e2acab4": {
+   "source": "<g1>Mister Download Manager 0.5.0</g1><g2>The free IDM alternative</g2>",
+   "text": "<g1>Mister Download Manager 0.5.0</g1><g2>무료 IDM 대체 프로그램</g2>"
+  },
   "f763bb66cf2403ec": {
    "source": "<g1>Numbers</g1> are typed in one kind of box everywhere: arrows step them, a value out of range is outlined in red and set right when you leave the box (some were changed silently before).",
    "text": "<g1>숫자</g1>는 어디서나 같은 종류의 상자에 입력합니다. 화살표 키로 값을 조정하고, 범위를 벗어난 값은 빨간색 윤곽선으로 표시되며 상자를 벗어나면 올바른 값으로 설정됩니다(이전에는 일부 값이 알리지 않고 바뀌었습니다)."
@@ -16074,13 +15762,13 @@
    "source": "Not offered on its website<g1><g2>3</g2></g1>",
    "text": "웹사이트에서 제공되지 않음<g1><g2>3</g2></g1>"
   },
-  "f79d1bba86369d73": {
-   "source": "Your debrid service accounts (Real-Debrid, AllDebrid, Premiumize, TorBox; experimental): <g1>Add...</g1> signs in by code in the browser or with your API token or key; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See <g2>Debrid service accounts</g2>.",
-   "text": "디브리드 서비스 계정(Real-Debrid, AllDebrid, Premiumize, TorBox; 실험적): <g1>추가...</g1>를 통해 브라우저에서 코드로 로그인하거나 API 토큰 또는 키로 로그인할 수 있습니다. 그러면 서비스가 지원하는 호스트의 링크가 해당 서비스를 통해 다운로드됩니다. 목록의 순서는 계정이 요청되는 순서입니다. <g2>디브리드 서비스 계정</g2>을 참조하세요."
-  },
   "f7a4f8dcbb4812c2": {
    "source": "In Chrome, Edge and Brave you can limit an extension to some sites (right-click its toolbar button → <g1>This can read and change site data</g1>). On a site it may not read, the extension can't pass your sign-in on, so it leaves the download to the browser. Choose <g2>On all sites</g2> to let MDM take downloads everywhere.",
    "text": "Chrome, Edge, Brave에서는 확장 프로그램이 접근할 수 있는 사이트를 제한할 수 있습니다(도구 모음 버튼을 마우스 오른쪽 버튼으로 클릭 → <g1>이 사이트의 데이터를 읽고 변경할 수 있음</g1>). 확장 프로그램이 접근할 수 없는 사이트에서는 로그인 정보를 전달할 수 없으므로 다운로드를 브라우저에서 진행합니다. MDM이 모든 사이트에서 다운로드를 가져오게 하려면 <g2>모든 사이트에서</g2>를 선택하세요."
+  },
+  "f7a564cd33c36a16": {
+   "source": "Download a playlist's or channel's videos one after another, into a folder named after the list inside <x1/>. <x2/> is one quality for all, as for <x3/> (by default each video's best; <x4/> = up to 720p; <x5/> = the original sound; <x6/>, <x7/>, <x8/> as for <x9/>).",
+   "text": "재생목록이나 채널의 동영상을 차례로 다운로드하고, <x1/> 안에 목록 이름으로 폴더를 만듭니다. <x2/>로 모든 동영상에 동일한 화질을 지정할 수 있습니다(<x3/>와 같습니다. 기본값은 동영상마다 최고 화질입니다. <x4/> = 최대 720p, <x5/> = 원본 오디오, <x6/>, <x7/>, <x8/>는 <x9/>와 같습니다)."
   },
   "f7b804b244f90c19": {
    "source": "Does it keep uploading after a torrent finishes?",
@@ -16370,10 +16058,6 @@
    "source": "Make your own theme",
    "text": "나만의 테마 만들기"
   },
-  "fb3db059de68f3ae": {
-   "source": "<g1>Open the post to download it</g1> (amber): the video sits in a feed and can't be downloaded from there. <g2>Open post</g2> opens the post in a new tab, when the button knows it; use the button there.",
-   "text": "<g1>게시물을 열어 다운로드</g1>(황색): 비디오가 피드에 있어 거기서 다운로드할 수 없습니다. <g2>게시물 열기</g2>는 버튼이 게시물을 아는 경우 새 탭에서 게시물을 엽니다. 거기서 버튼을 사용하세요."
-  },
   "fb3ecd729cffd5f6": {
    "source": "Paste a link from a file host your service supports, in <g1>Add URL</g1>, from the browser's <g2>Download with Mister Download Manager</g2>, or in a batch download. MDM unlocks it through your account, then downloads it with all its connections, pause and resume. When the direct link expires, MDM asks the service for a new one.",
    "text": "서비스가 지원하는 파일 호스트의 링크를 <g1>URL 추가</g1>에 붙여넣거나, 브라우저의 <g2>Mister Download Manager으로 다운로드</g2>를 통해 또는 일괄 다운로드로 추가하세요. MDM은 계정을 통해 링크를 잠금 해제한 다음, 모든 연결을 사용하여 일시 중지 및 재개 기능으로 다운로드합니다. 직접 링크가 만료되면 MDM은 서비스에 새 링크를 요청합니다."
@@ -16533,10 +16217,6 @@
   "fd85658f6fcfe216": {
    "source": "MDM",
    "text": "MDM"
-  },
-  "fd8d00a1a895c664": {
-   "source": "RSS feeds: the boxes on the <g1>Download rules</g1> tab (<g2>Episodes</g2>, <g3>Must contain</g3> and the others) keep the keyboard while you type, instead of losing it after each key (<g4>#353</g4>).",
-   "text": "RSS 피드: <g1>다운로드 규칙</g1> 탭의 상자(<g2>에피소드</g2>, <g3>포함해야 하는 단어</g3> 등)는 각 키를 누른 후 키보드 포커스를 잃지 않고 입력하는 동안 유지합니다(<g4>#353</g4>)."
   },
   "fd9104eaf35b319b": {
    "source": "Run in the notification area: start hidden, hide progress windows — Mister Download Manager",
