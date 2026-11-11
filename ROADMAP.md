@@ -599,6 +599,7 @@ These ship in a later version, when they're ready.
   font ([#541](https://github.com/anefzaoui/misterdownloadmanager/issues/541)): fix in review
 - 🔄 The video button still showing after it was switched off, or its site listed, in Options
   ([#532](https://github.com/anefzaoui/misterdownloadmanager/issues/532)): fix in review
+- 🔄 Facebook's video button uses the card's video permalink, including page videos and fb.watch short links, instead of the feed ([#643](https://github.com/anefzaoui/misterdownloadmanager/issues/643)): fix in review
 - 🔄 macOS: Persian and other Arabic-script file names drawn as boxes in the download list
   ([#533](https://github.com/anefzaoui/misterdownloadmanager/issues/533)): fix in review, to
   confirm on a Mac
