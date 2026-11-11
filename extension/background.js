@@ -1277,6 +1277,26 @@ async function handOff(d) {
   return native(message);
 }
 
+// Colab's runtime proxy uses an ephemeral token tied to the browser's partitioned session.
+// Only the actual proxy transfer URL is left to the browser: a normal file linked from a Colab
+// notebook must still be capturable by MDM (#603).
+function colabRuntimeProxy(...urls) {
+  return urls.some((value) => {
+    if (!value) return false;
+    try {
+      const u = new URL(value);
+      const host = u.hostname.toLowerCase();
+      const proxyHost =
+        host === "prod.r.colab.dev"
+        || host.endsWith(".prod.r.colab.dev")
+        || /(?:^|[-.])colab\\.googleusercontent\\.com$/.test(host);
+      return proxyHost && u.searchParams.has("colab-runtime-proxy-token");
+    } catch {
+      return false;
+    }
+  });
+}
+
 // The file name to offer the app the download under (`{name}`), or why Options leave it to
 // the browser (`{left, name}`), or null: the browser keeps it and there is nothing to say (not a
 // web address, paused, Alt held, a form that can't be posted again, MDM not reached).
@@ -1288,6 +1308,7 @@ async function candidate(item, url) {
   if (bypass.has(item.url) || bypass.has(url)) return null;
   const first = firstUrl(item);
   if (bypass.has(first) || postOf(first) === null) return null; // Alt; a form not to post again
+  if (colabRuntimeProxy(first, url)) return null;
   const r = await currentRules();
   if (!r) return null;
   const name = (item.filename || "").split(/[\\/]/).pop() || url.split(/[?#]/)[0].split("/").pop() || "";
