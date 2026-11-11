@@ -420,11 +420,20 @@ fn job_checks(me: &Path) {
         if !matches!(&p.state, State::Running | State::Processing) {
             break p;
         }
-        assert!(Instant::now() < end, "processing state did not finish: {p:?}");
+        assert!(
+            Instant::now() < end,
+            "processing state did not finish: {p:?}"
+        );
         std::thread::sleep(Duration::from_millis(20));
     };
-    assert!(saw_processing, "post-process hook was not reflected in progress");
-    assert!(saw_running_after_processing, "download progress did not leave Processing");
+    assert!(
+        saw_processing,
+        "post-process hook was not reflected in progress"
+    );
+    assert!(
+        saw_running_after_processing,
+        "download progress did not leave Processing"
+    );
     assert!(
         matches!(&p.state, State::Done(_)),
         "processing: {:?}",
