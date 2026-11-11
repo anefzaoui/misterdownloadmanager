@@ -2344,8 +2344,9 @@ mod host_copy_tests {
         assert_eq!(left.len(), 2, "{left:?}");
     }
 
-    /// #253: a browser still runs the old copy (writing over a running program fails with "Text
-    /// file busy"): the new one replaces it all the same, and the old one keeps running.
+    /// #253: a browser still runs the old copy (Linux before 6.11 refuses to write over a running
+    /// program, "Text file busy"; later kernels allow it, which would change the running file):
+    /// the new one replaces it through a rename all the same, and the old one keeps running.
     #[test]
     fn the_helper_is_replaced_while_a_browser_runs_it() {
         let t = tempfile::tempdir().unwrap();
@@ -2356,13 +2357,18 @@ mod host_copy_tests {
         std::fs::copy("/bin/sleep", &old).unwrap();
         let mut running = std::process::Command::new(&old).arg("30").spawn().unwrap();
         std::thread::sleep(std::time::Duration::from_millis(200));
-        assert!(
-            std::fs::write(&old, b"x").is_err() || cfg!(target_os = "macos"),
-            "Linux refuses to write over a running program"
-        );
         let from = program(t.path(), "new-host", "echo two");
         let copy = install_host_copy(&from, &dir, Path::new("/x.AppImage")).unwrap();
         assert_eq!(std::fs::read(&copy).unwrap(), std::fs::read(&from).unwrap());
+        // Replaced, not written over: the running program's file left the folder.
+        #[cfg(target_os = "linux")]
+        assert!(
+            std::fs::read_link(format!("/proc/{}/exe", running.id()))
+                .unwrap()
+                .to_string_lossy()
+                .ends_with(" (deleted)"),
+            "the old copy was renamed over, not written into"
+        );
         assert!(
             running.try_wait().unwrap().is_none(),
             "the old copy still runs"
