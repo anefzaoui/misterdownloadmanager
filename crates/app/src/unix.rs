@@ -232,9 +232,8 @@ fn host_program() -> Result<PathBuf, String> {
 
 /// The AppImage's helper `from` copied into `dir`, with the AppImage's path (`image`) beside it
 /// in `app-path`; each written only when it differs. A copy is written under a temporary name,
-/// made executable, then renamed over the old one: a browser still running the old copy keeps it
-/// (writing over a running program fails with "Text file busy"), and the manifest never names a
-/// half-written file.
+/// made executable, then renamed over the old one: a browser already running the old inode keeps
+/// it, and the manifest never names a half-written file.
 fn install_host_copy(from: &Path, dir: &Path, image: &Path) -> Result<PathBuf, String> {
     let failed = |what: &Path, e: std::io::Error| format!("{}: {e}", what.display());
     std::fs::create_dir_all(dir).map_err(|e| failed(dir, e))?;
@@ -2356,10 +2355,9 @@ mod host_copy_tests {
         std::fs::copy("/bin/sleep", &old).unwrap();
         let mut running = std::process::Command::new(&old).arg("30").spawn().unwrap();
         std::thread::sleep(std::time::Duration::from_millis(200));
-        assert!(
-            std::fs::write(&old, b"x").is_err() || cfg!(target_os = "macos"),
-            "Linux refuses to write over a running program"
-        );
+        // Keep the old process alive while installing a replacement. Whether a filesystem
+        // permits opening an executing file for writing varies (notably on overlay filesystems);
+        // the invariant we rely on is atomic replacement of the path while the old process runs.
         let from = program(t.path(), "new-host", "echo two");
         let copy = install_host_copy(&from, &dir, Path::new("/x.AppImage")).unwrap();
         assert_eq!(std::fs::read(&copy).unwrap(), std::fs::read(&from).unwrap());
