@@ -156,8 +156,7 @@ enum Cmd {
         /// Folder to save into: a folder named after the list is made there.
         #[arg(short, long, default_value = ".")]
         output: PathBuf,
-        /// A stream in pieces (HLS, DASH): this many pieces at once (1 to 128), as `get`'s
-        /// connections; a plain file is one connection whatever this says.
+        /// Connections per stream (1 to 128), as for `video-get`.
         #[arg(short, long, default_value_t = Options::default().max_connections,
               value_parser = clap::value_parser!(u32).range(1..=MAX_CONNECTIONS_UNLOCKED as i64))]
         connections: u32,
