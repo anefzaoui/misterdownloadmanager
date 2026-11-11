@@ -846,6 +846,12 @@ impl AddUrl {
 
 // ---- Download File Info (client 570 × 208) -------------------------------------------------
 
+/// A name that fits the path limit but has not yet been checked against the destination drive.
+fn provisional_destination(dir: &Path, name: &str) -> PathBuf {
+    let name = mdm_engine::naming::fit_name(dir, name).unwrap_or_else(|| name.to_owned());
+    dir.join(name)
+}
+
 pub struct FileInfo {
     pub url: Url,
     pub login: Option<(String, String)>,
@@ -905,6 +911,12 @@ pub struct FileInfo {
     /// Whether Save As names a folder, looked at off the window's thread: it is asked every
     /// frame, and a folder on a network share that doesn't answer would freeze the window.
     dest_dir: crate::launch::Asked<PathBuf, bool>,
+    /// Whether the auto-chosen file name is free on its destination drive, checked off-thread.
+    dest_name: crate::launch::Asked<(PathBuf, String, u64), PathBuf>,
+    /// An automatic path is provisional until its background collision check returns.
+    auto_destination: bool,
+    /// Distinguishes repeated requests for the same folder/name from an earlier cached answer.
+    dest_generation: u64,
 }
 
 pub enum Start {
@@ -940,7 +952,7 @@ impl FileInfo {
             .unwrap_or_else(|| mdm_engine::naming::file_name(None, &new.url));
         let category = Category::of(&name);
         let folder = crate::model::category_folder(category, &downloads, &dirs);
-        let save_as = display_path(&mdm_engine::naming::destination(&folder, &name));
+        let save_as = display_path(&provisional_destination(&folder, &name));
         let (probe, info) = match from_browser {
             Some(file_name) => (
                 Arc::new(Mutex::new(None)),
@@ -960,6 +972,9 @@ impl FileInfo {
         };
         FileInfo {
             dest_dir: Default::default(),
+            dest_name: Default::default(),
+            auto_destination: true,
+            dest_generation: 0,
             url_text: new.url.to_string(),
             url_bad: false,
             focused: false,
@@ -1036,7 +1051,7 @@ impl FileInfo {
                     self.category = Category::of(&name);
                     let dir =
                         crate::model::category_folder(self.category, &self.downloads, &self.dirs);
-                    self.save_as = display_path(&mdm_engine::naming::destination(&dir, &name));
+                    self.set_auto_destination(&dir, &name);
                 }
                 // Another address: the browser's name, size and form are not its own, and on
                 // another site neither are its cookies and page (never sent there).
@@ -1074,7 +1089,7 @@ impl FileInfo {
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_default();
         // Fitted to the new folder too (#28): a deeper one leaves a long name less room.
-        self.save_as = display_path(&mdm_engine::naming::destination(folder, &name));
+        self.set_auto_destination(folder, &name);
         self.edited = true;
     }
 
@@ -1119,6 +1134,42 @@ impl FileInfo {
         resolve_path(&self.save_as)
     }
 
+    /// Set a fitted provisional name. The disk collision check is done by Asked on its worker.
+    fn set_auto_destination(&mut self, dir: &Path, name: &str) {
+        self.save_as = display_path(&provisional_destination(dir, name));
+        self.auto_destination = true;
+        self.dest_generation = self.dest_generation.wrapping_add(1);
+    }
+
+    /// Resolve an automatic destination without letting a slow, sleeping or network drive block
+    /// the window thread. Start stays disabled until the answer for this exact request arrives.
+    fn resolve_auto_destination(&mut self, ctx: &egui::Context) {
+        if !self.auto_destination {
+            return;
+        }
+        let current = self.dest();
+        let Some(dir) = current.parent().map(Path::to_path_buf) else {
+            return;
+        };
+        let Some(name) = current.file_name().map(|n| n.to_string_lossy().into_owned()) else {
+            return;
+        };
+        let generation = self.dest_generation;
+        let key = (dir.clone(), name.clone(), generation);
+        if let Some(destination) = self.dest_name.get(
+            &key,
+            std::time::Duration::from_secs(3600),
+            std::time::Duration::ZERO,
+            Some(ctx),
+            |(dir, name, _)| mdm_engine::naming::destination(dir, name),
+        ) {
+            if self.dest_generation == generation && self.dest() == dir.join(&name) {
+                self.save_as = display_path(&destination);
+                self.auto_destination = false;
+            }
+        }
+    }
+
     pub(crate) fn set_category(&mut self, c: Category) {
         self.category = c;
         let name = Path::new(&self.save_as)
@@ -1126,7 +1177,7 @@ impl FileInfo {
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_default();
         let folder = crate::model::category_folder(c, &self.downloads, &self.dirs);
-        self.save_as = display_path(&mdm_engine::naming::destination(&folder, &name));
+        self.set_auto_destination(&folder, &name);
     }
 
     /// The dialog; Start (or Download Later) waits for a missing folder to be created.
@@ -1182,10 +1233,11 @@ impl FileInfo {
             if let (Ok(pi), false) = (&res, self.edited) {
                 self.category = Category::of(&pi.file_name);
                 let dir = crate::model::category_folder(self.category, &self.downloads, &self.dirs);
-                self.save_as = display_path(&mdm_engine::naming::destination(&dir, &pi.file_name));
+                self.set_auto_destination(&dir, &pi.file_name);
             }
             self.info = Some(res);
         }
+        self.resolve_auto_destination(ctx);
         self.follow_route(ctx);
         // The "Download through" line (#44) takes a row of its own while an account takes the
         // address: the window grows by it.
@@ -1263,6 +1315,7 @@ impl FileInfo {
                 }
                 if save.changed() {
                     self.edited = true;
+                    self.auto_destination = false;
                 }
                 // The arrow: the folders saved to before.
                 if winui::combo_arrow(ui, save_rc, "save-as", self.folders_open).clicked()
@@ -1450,6 +1503,7 @@ impl FileInfo {
                     typed.is_empty()
                         || typed.ends_with(['\\', '/'])
                         || dest.file_name().is_none()
+                        || self.auto_destination
                         || folder()
                 };
                 let blocked = if self.url_bad {
