@@ -158,10 +158,15 @@
         // YouTube Music keeps playing while its URL stays on the home, library or browse page.
         // Its player bar exposes the current track even when the address has no /watch?v= id.
         const musicPlayer = document.querySelector("#movie_player");
-        const musicData = musicPlayer && typeof musicPlayer.getVideoData === "function"
-          ? musicPlayer.getVideoData()
-          : null;
-        const musicApi = watch(musicData?.video_id);
+        let musicApi = null;
+        try {
+          const musicData = musicPlayer && typeof musicPlayer.getVideoData === "function"
+            ? musicPlayer.getVideoData()
+            : null;
+          musicApi = watch(musicData?.video_id);
+        } catch {
+          // The player may not have its API ready yet; try its DOM attributes below.
+        }
         if (musicApi) return musicApi;
         const musicId = watch(document.querySelector("ytmusic-player")?.getAttribute("video-id"));
         if (musicId) return musicId;
