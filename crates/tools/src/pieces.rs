@@ -391,6 +391,8 @@ pub type Relist = Arc<dyn Fn() -> Result<Vec<Piece>, String> + Send + Sync>;
 enum PieceError {
     Dead(String),
     Again(String),
+    /// 429 or 503: the server wants fewer requests (for this long, when it says).
+    Busy(String, Option<Duration>),
     Stopped,
 }
 
@@ -402,6 +404,10 @@ struct Run {
     /// Bumped when the list is asked again: a piece of an older list asks again with the new.
     generation: AtomicU64,
     next: AtomicUsize,
+    /// Pieces a connection gave back (it closed for the server's sake): taken before `next`.
+    given_back: Mutex<Vec<usize>>,
+    /// Connections still going.
+    going: AtomicUsize,
     keys: tokio::sync::Mutex<HashMap<Url, [u8; 16]>>,
     dir: PathBuf,
     /// Each piece a file of its own (`Target::Files`): one that fails is left out, not fatal.
@@ -506,6 +512,8 @@ pub async fn download(
         pieces: Mutex::new(pieces),
         generation: AtomicU64::new(0),
         next: AtomicUsize::new(0),
+        given_back: Default::default(),
+        going: AtomicUsize::new(connections),
         keys: Default::default(),
         dir: dir.clone(),
         files,
@@ -537,7 +545,9 @@ pub async fn download(
     }
     match failure {
         Some(PieceError::Stopped) => return Ended::Stopped,
-        Some(PieceError::Dead(e) | PieceError::Again(e)) => return Ended::Failed(e),
+        Some(PieceError::Dead(e) | PieceError::Again(e) | PieceError::Busy(e, _)) => {
+            return Ended::Failed(e);
+        }
         None if run.cancel.is_cancelled() => return Ended::Stopped,
         None => {}
     }
@@ -575,13 +585,15 @@ fn join(dir: &Path, n: usize, path: &Path) -> std::io::Result<u64> {
 /// One connection: the next piece not taken, until none is left.
 async fn connection(run: Arc<Run>, c: usize) -> Result<(), PieceError> {
     loop {
-        let i = run.next.fetch_add(1, Ordering::SeqCst);
+        let given_back = run.given_back.lock().unwrap().pop();
+        let i = given_back.unwrap_or_else(|| run.next.fetch_add(1, Ordering::SeqCst));
         let n = run.pieces.lock().unwrap().len();
         if i >= n {
             set_conn(&run, c, |v| {
                 v.status = ConnStatus::Finished;
                 v.speed = 0;
             });
+            run.going.fetch_sub(1, Ordering::SeqCst);
             return Ok(());
         }
         if run.file(i).exists() {
@@ -603,6 +615,52 @@ async fn connection(run: Arc<Run>, c: usize) -> Result<(), PieceError> {
                     run.shared
                         .note(format!("File {}: {e}; left for gallery-dl", i + 1));
                     break;
+                }
+                // The server wants fewer requests (Wikimedia's 429): while others go on, this
+                // connection closes and gives its piece back; the last one waits as it asks.
+                Err(PieceError::Busy(e, _))
+                    if run
+                        .going
+                        .try_update(Ordering::SeqCst, Ordering::SeqCst, |g| {
+                            (g > 1).then(|| g - 1)
+                        })
+                        .is_ok() =>
+                {
+                    run.given_back.lock().unwrap().push(i);
+                    run.shared.note(format!(
+                        "Connection {}: {e}; closed, the others go on",
+                        c + 1
+                    ));
+                    set_conn(&run, c, |v| {
+                        v.status = ConnStatus::Finished;
+                        v.speed = 0;
+                    });
+                    return Ok(());
+                }
+                Err(PieceError::Busy(e, wait)) => {
+                    failures += 1;
+                    if failures > run.max_retries {
+                        if run.files.is_some() {
+                            run.shared
+                                .note(format!("File {}: {e}; left for gallery-dl", i + 1));
+                            break;
+                        }
+                        return Err(PieceError::Again(format!("piece {}: {e}", i + 1)));
+                    }
+                    let backoff = run.retry_delay * 2u32.saturating_pow(failures - 1);
+                    let wait = wait
+                        .unwrap_or(backoff)
+                        .max(backoff)
+                        .min(Duration::from_secs(60));
+                    run.shared.note(format!(
+                        "Connection {}: {e}; again in {} s",
+                        c + 1,
+                        wait.as_secs().max(1)
+                    ));
+                    tokio::select! {
+                        _ = run.cancel.cancelled() => return Err(PieceError::Stopped),
+                        _ = tokio::time::sleep(wait) => {}
+                    }
                 }
                 Err(PieceError::Again(e)) if run.files.is_some() && failures >= run.max_retries => {
                     run.shared
@@ -702,7 +760,11 @@ async fn key_of(run: &Run, uri: &Url) -> Result<[u8; 16], PieceError> {
         .map_err(|e| PieceError::Again(format!("the key: {e}")))?;
     let status = resp.status();
     if !status.is_success() {
-        return Err(dead_or_again(status.as_u16(), "the key"));
+        return Err(dead_or_again(
+            status.as_u16(),
+            "the key",
+            retry_after(&resp),
+        ));
     }
     let body = resp
         .bytes()
@@ -716,13 +778,25 @@ async fn key_of(run: &Run, uri: &Url) -> Result<[u8; 16], PieceError> {
     Ok(key)
 }
 
-fn dead_or_again(status: u16, what: &str) -> PieceError {
+fn dead_or_again(status: u16, what: &str, retry_after: Option<Duration>) -> PieceError {
     let e = format!("{what}: the server answered {status}");
-    if matches!(status, 401 | 403 | 404 | 410) {
-        PieceError::Dead(e)
-    } else {
-        PieceError::Again(e)
+    match status {
+        401 | 403 | 404 | 410 => PieceError::Dead(e),
+        429 | 503 => PieceError::Busy(e, retry_after),
+        _ => PieceError::Again(e),
     }
+}
+
+/// `Retry-After` in seconds (a date isn't read: the backoff stands then).
+fn retry_after(resp: &reqwest::Response) -> Option<Duration> {
+    resp.headers()
+        .get(reqwest::header::RETRY_AFTER)?
+        .to_str()
+        .ok()?
+        .trim()
+        .parse::<u64>()
+        .ok()
+        .map(Duration::from_secs)
 }
 
 /// Piece `i` on connection `c`: downloaded under the limits, decrypted, saved whole.
@@ -742,7 +816,7 @@ async fn fetch_piece(run: &Run, c: usize, i: usize, piece: &Piece) -> Result<(),
     let mut resp = sent.map_err(|e| PieceError::Again(e.to_string()))?;
     let status = resp.status().as_u16();
     if !(200..300).contains(&status) {
-        return Err(dead_or_again(status, run.one()));
+        return Err(dead_or_again(status, run.one(), retry_after(&resp)));
     }
     let len = resp.content_length();
     let mut body = Vec::with_capacity(len.unwrap_or(0) as usize);
@@ -957,5 +1031,57 @@ mod tests {
         assert_eq!(decrypt(&sealed[..15], &key, &iv), None);
         assert_eq!(iv_of("0x1"), Some(sequence_iv(1)));
         assert_eq!(iv_of("12"), None);
+    }
+
+    /// A gallery's files (#769), each its own: a server that takes one connection at a time
+    /// (503 to the others) has the extra connections close and give their files back, and every
+    /// file comes whole, at its own path.
+    #[test]
+    fn a_busy_server_gets_fewer_connections() {
+        let rt = tokio::runtime::Runtime::new().unwrap();
+        let lab = rt
+            .block_on(mdm_labserver::LabServer::start(Default::default()))
+            .unwrap();
+        let dir = tempfile::tempdir().unwrap();
+        let n = 6u64;
+        let pieces: Vec<Piece> = (0..n)
+            .map(|i| Piece {
+                url: Url::parse(&lab.url(&format!(
+                    "/gen/128K/g{i}.jpg?seed={}&max_conns=1&rate=1M",
+                    40 + i
+                )))
+                .unwrap(),
+                range: None,
+                key: None,
+            })
+            .collect();
+        let paths: Vec<PathBuf> = (0..n).map(|i| dir.path().join(format!("{i}.jpg"))).collect();
+        let shared = Arc::new(Shared::default());
+        let opts = mdm_engine::Options {
+            max_connections: 4,
+            retry_delay: Duration::from_millis(50),
+            ..Default::default()
+        };
+        let ended = rt.block_on(download(
+            pieces,
+            Target::Files(paths.clone()),
+            HeaderMap::new(),
+            opts,
+            Arc::new(Limiter::new(None)),
+            CancellationToken::new(),
+            shared.clone(),
+            Arc::new(|| Err("listed once".into())),
+        ));
+        assert!(matches!(ended, Ended::Done(_)), "{ended:?}");
+        for (i, p) in paths.iter().enumerate() {
+            let mut want = vec![0; 128 * 1024];
+            mdm_labserver::content::fill(40 + i as u64, 0, &mut want);
+            assert!(std::fs::read(p).unwrap() == want, "file {i}");
+        }
+        let notes = shared.take_notes();
+        assert!(
+            notes.iter().any(|n| n.contains("closed, the others go on")),
+            "{notes:?}"
+        );
     }
 }
