@@ -624,6 +624,8 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     fail_every=N fail_first=N no_range=1 no_range_every=N html=1 etag_change_every=N
     etag=weak|per-request|none latency_ms=N range_latency_ms=N (only requests with a Range)
     range_rate=SIZE  the rate of answers to requests with a Range (instead of rate)
+    burst=SIZE     with a rate, a link: a response the client stopped reading catches up with
+                   at most SIZE at once (by default all it fell behind by)
     stall_at=SIZE  never send the file's byte at that offset: a response stops there and waits
                    (until the server's faults change, from a test; a URL's own value stays)
     require_cookie=NAME=VALUE|NAME   403 unless the Cookie header has it
@@ -1395,6 +1397,7 @@ pub(crate) async fn serve(
         pos: start,
         end,
         rate,
+        burst: f.burst,
         drop_at,
         // A URL's own stall stays; the server's is lifted with `set_faults`.
         stall_at: f.stall_at.filter(|at| (start..end).contains(at)),
@@ -1531,6 +1534,7 @@ struct Transfer {
     pos: u64,
     end: u64,
     rate: Option<u64>,
+    burst: Option<u64>,
     drop_at: Option<u64>,
     /// The file offset this response stops at (`stall_at`), and whether `set_faults` can lift it.
     stall_at: Option<u64>,
@@ -1569,6 +1573,15 @@ impl Transfer {
             }
             if let Some(r) = t.rate.filter(|r| *r > 0) {
                 n = n.min((r / 20).max(1024));
+                if let Some(b) = t.burst {
+                    // A link doesn't bank what the client didn't take: catch up with `b` at most.
+                    let paced = t.started + Duration::from_secs_f64(t.sent as f64 / r as f64);
+                    let ahead = Duration::from_secs_f64(b as f64 / r as f64);
+                    let behind = Instant::now().saturating_duration_since(paced);
+                    if behind > ahead {
+                        t.started += behind - ahead;
+                    }
+                }
                 let due = Duration::from_secs_f64((t.sent + n) as f64 / r as f64);
                 tokio::time::sleep_until((t.started + due).into()).await;
             }

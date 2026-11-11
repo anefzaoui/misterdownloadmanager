@@ -159,19 +159,10 @@ pub struct Options {
     /// type is the server refusing MDM (a firewall's "The requested URL was rejected"), an error
     /// and never saved as the file (#533, `expects_other_file`).
     pub expected_type: Option<String>,
-    /// Tests: a disk whose flush takes this long and holds every write to the file meanwhile
-    /// (as NTFS does, #361). None: the real disk.
+    /// Tests and measurements: a disk slower than the network, behind a write cache, whose
+    /// flush holds every write to the file (as NTFS's does, #361, #782). None: the real disk.
     #[doc(hidden)]
-    pub slow_flush: Option<SlowFlush>,
-}
-
-/// A disk whose flush takes `takes` and, as NTFS's does, makes every write to the file wait for
-/// it: the gate is held exclusively for the flush and shared for each write (`Options::slow_flush`).
-#[doc(hidden)]
-#[derive(Clone, Debug)]
-pub struct SlowFlush {
-    pub takes: Duration,
-    pub gate: Arc<std::sync::RwLock<()>>,
+    pub slow_disk: Option<crate::slowdisk::SlowDisk>,
 }
 
 /// A callback given the path of a file the engine created (`Options::on_file_created`).
@@ -249,7 +240,7 @@ impl Default for Options {
             post: None,
             on_file_created: None,
             expected_type: None,
-            slow_flush: None,
+            slow_disk: None,
         }
     }
 }
@@ -2581,20 +2572,13 @@ async fn save_state(
     s.validators = validators;
     s.final_url = final_url;
     s.final_get = final_get;
-    // Tests' slow disk (not for the forced saves at the start and the end).
-    let slow = if force {
-        None
-    } else {
-        ctx.opts.slow_flush.clone()
-    };
+    // Tests' slow disk (its extra flush time not for the forced saves at the start and the end).
+    let slow = ctx.opts.slow_disk.clone();
     ctx.shared.flushing.store(true, Ordering::Release);
     let began = std::time::Instant::now();
-    let done = tokio::task::spawn_blocking(move || {
-        if let Some(slow) = slow {
-            let _writes_wait = slow.gate.write().unwrap();
-            std::thread::sleep(slow.takes);
-        }
-        s.save(&path, segments, &file).map(|()| s)
+    let done = tokio::task::spawn_blocking(move || match slow {
+        Some(disk) => disk.flush(!force, || s.save(&path, segments, &file).map(|()| s)),
+        None => s.save(&path, segments, &file).map(|()| s),
     })
     .await
     .expect("state writer panicked");
@@ -3902,10 +3886,10 @@ async fn flush(
     if n > 0 {
         let file = ctx.file.clone();
         let at = *pos;
-        let slow = ctx.opts.slow_flush.clone();
-        let written = tokio::task::spawn_blocking(move || {
-            let _waits_for_flush = slow.as_ref().map(|s| s.gate.read().unwrap());
-            write_all_at(&file, at, &data)
+        let slow = ctx.opts.slow_disk.clone();
+        let written = tokio::task::spawn_blocking(move || match slow {
+            Some(disk) => disk.write(n, || write_all_at(&file, at, &data)),
+            None => write_all_at(&file, at, &data),
         })
         .await
         .expect("writer panicked");

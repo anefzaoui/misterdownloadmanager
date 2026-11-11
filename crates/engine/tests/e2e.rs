@@ -1800,14 +1800,11 @@ async fn a_slow_flush_does_not_stop_the_transfer() {
         .await
         .expect("every request ends");
     let before = s.log().len();
-    let slow = mdm_engine::download::SlowFlush {
-        takes: std::time::Duration::from_millis(1500),
-        gate: Default::default(),
-    };
+    let slow = mdm_engine::slowdisk::SlowDisk::slow_flush(std::time::Duration::from_millis(1500));
     let gate = slow.gate.clone();
     let opts = Options {
         save_interval: std::time::Duration::from_millis(100),
-        slow_flush: Some(slow),
+        slow_disk: Some(slow),
         ..fast_opts()
     };
     let (out, slowed) = watch(
