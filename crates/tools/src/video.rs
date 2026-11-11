@@ -695,8 +695,21 @@ fn strip_repeated_media_extension(f: PathBuf) -> PathBuf {
     let lower = ext.to_ascii_lowercase();
     if !matches!(
         lower.as_str(),
-        "mp4" | "mkv" | "webm" | "mov" | "m4v" | "m4a" | "mp3" | "opus" | "ogg"
-            | "oga" | "flac" | "wav" | "aac" | "flv" | "3gp"
+        "mp4"
+            | "mkv"
+            | "webm"
+            | "mov"
+            | "m4v"
+            | "m4a"
+            | "mp3"
+            | "opus"
+            | "ogg"
+            | "oga"
+            | "flac"
+            | "wav"
+            | "aac"
+            | "flv"
+            | "3gp"
     ) {
         return f;
     }
