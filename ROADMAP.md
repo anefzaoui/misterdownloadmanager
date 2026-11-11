@@ -581,6 +581,9 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 Torrents: a pause landing while a piece was being checked leaving the torrent one piece short
+  until MDM restarted ([#706](https://github.com/anefzaoui/misterdownloadmanager/issues/706)): the
+  piece is now downloaded again after the pause; fix in review
 - 🔄 Torrents: magnet links without trackers finding no peers where the DHT's first nodes didn't
   answer ([#650](https://github.com/anefzaoui/misterdownloadmanager/issues/650)): four public
   routers asked together, the ones that never answer left alone once one has, the IPv6 nodes kept
