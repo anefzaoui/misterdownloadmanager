@@ -589,6 +589,8 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 APKMirror: when the direct request meets a marked browser-only challenge, try once the final URL reached by the browser, keeping cookies scoped to the same site ([#645](https://github.com/anefzaoui/misterdownloadmanager/issues/645)): fix in review; still to confirm on APKMirror
+
 - 🔄 The browser's video button over a video in a feed sending the feed's address, where yt-dlp
   finds nothing (LinkedIn, Facebook, and other sites with feeds;
   [#689](https://github.com/anefzaoui/misterdownloadmanager/issues/689),

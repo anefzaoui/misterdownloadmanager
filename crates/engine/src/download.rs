@@ -2454,7 +2454,8 @@ fn forced_gap(force: bool, took: Duration) -> Duration {
 /// already spent, which some servers then forget, others call gone), 412 (FileHippo's answer
 /// to whatever isn't a browser). A site's bot check stays the site's call (#376).
 fn link_refused(e: &Error) -> bool {
-    matches!(e, Error::Status(s) if matches!(s.as_u16(), 401 | 403 | 404 | 410 | 412))
+    matches!(e, Error::BotCheck)
+        || matches!(e, Error::Status(s) if matches!(s.as_u16(), 401 | 403 | 404 | 410 | 412))
 }
 
 /// What a download's first request needs besides its address, headers and options.
@@ -3995,6 +3996,23 @@ mod tests {
         let mut fallback = Options::default();
         fallback.speak_as(crate::agent::IE11_USER_AGENT.to_owned());
         assert!(fallback.site_agent());
+    }
+
+    #[test]
+    fn a_marked_bot_challenge_can_fall_back_to_the_browsers_final_address() {
+        // The caller still requires browser_final to be present and different from the first
+        // address, so this only follows a URL the user's browser already reached.
+        assert!(link_refused(&Error::BotCheck));
+        for status in [
+            StatusCode::UNAUTHORIZED,
+            StatusCode::FORBIDDEN,
+            StatusCode::NOT_FOUND,
+            StatusCode::GONE,
+            StatusCode::PRECONDITION_FAILED,
+        ] {
+            assert!(link_refused(&Error::Status(status)), "{status}");
+        }
+        assert!(!link_refused(&Error::Status(StatusCode::BAD_REQUEST)));
     }
 
     #[test]
