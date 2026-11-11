@@ -2913,6 +2913,78 @@ pub fn windows_version() -> String {
     format!("{product}{release} (build {build})")
 }
 
+/// The default browser (#668): the program https links open with (the user's choice in Default
+/// apps, `UserChoice`'s ProgId, and that ProgId's `shell\open\command`), and its file's version.
+/// None when it isn't a browser MDM knows (MDM then speaks as Chrome).
+pub fn default_browser() -> Option<mdm_engine::agent::Found> {
+    use mdm_engine::agent::{Browser, Found};
+    use windows_sys::Win32::System::Registry::HKEY_CLASSES_ROOT;
+    const HTTPS: &str = r"Software\Microsoft\Windows\Shell\Associations\UrlAssociations\https";
+    // Windows 11 keeps the choice in UserChoiceLatest since 2025, its ProgId in a key of its
+    // own (UserChoiceLatest\ProgId's ProgId); UserChoice stays, and may be an older choice.
+    let prog_id = [r"UserChoiceLatest\ProgId", "UserChoiceLatest", "UserChoice"]
+        .iter()
+        .find_map(|k| {
+            reg_string(&format!(r"{HTTPS}\{k}"), "ProgId").filter(|p| !p.trim().is_empty())
+        })?;
+    let command = reg_string_in(
+        HKEY_CLASSES_ROOT,
+        &format!(r"{prog_id}\shell\open\command"),
+        "",
+    )?;
+    let exe = std::path::PathBuf::from(crate::defaultbrowser::windows_program(&command)?);
+    let stem = exe.file_stem()?.to_string_lossy().into_owned();
+    // Opera starts through its launcher.exe, in a folder named after it ("Opera", "Opera GX").
+    let name = if stem.eq_ignore_ascii_case("launcher") {
+        exe.parent()?.file_name()?.to_string_lossy().into_owned()
+    } else {
+        stem
+    };
+    let browser = Browser::named(&name).or_else(|| Browser::named(&prog_id))?;
+    Some(Found {
+        browser,
+        version: file_version(&exe),
+        ubuntu: false,
+    })
+}
+
+/// A program's file version ("157.1.99.55"): its version resource's fixed part.
+fn file_version(exe: &std::path::Path) -> Option<String> {
+    use std::os::windows::ffi::OsStrExt;
+    use windows_sys::Win32::Storage::FileSystem::{
+        GetFileVersionInfoSizeW, GetFileVersionInfoW, VS_FIXEDFILEINFO, VerQueryValueW,
+    };
+    let path: Vec<u16> = exe.as_os_str().encode_wide().chain(Some(0)).collect();
+    // SAFETY: a NUL-terminated path; the handle argument is optional and ignored.
+    let size = unsafe { GetFileVersionInfoSizeW(path.as_ptr(), std::ptr::null_mut()) };
+    if size == 0 {
+        return None;
+    }
+    let mut data = vec![0u8; size as usize];
+    // SAFETY: `data` holds `size` bytes, as GetFileVersionInfoSizeW asked.
+    if unsafe { GetFileVersionInfoW(path.as_ptr(), 0, size, data.as_mut_ptr().cast()) } == 0 {
+        return None;
+    }
+    let root: Vec<u16> = "\\".encode_utf16().chain(Some(0)).collect();
+    let (mut info, mut len) = (std::ptr::null_mut::<c_void>(), 0u32);
+    // SAFETY: `data` is the version block just read; the pointer returned points into it.
+    let ok = unsafe { VerQueryValueW(data.as_ptr().cast(), root.as_ptr(), &mut info, &mut len) };
+    if ok == 0 || info.is_null() || (len as usize) < size_of::<VS_FIXEDFILEINFO>() {
+        return None;
+    }
+    // SAFETY: VerQueryValueW returned a VS_FIXEDFILEINFO of `len` bytes inside `data`, which is
+    // still alive; read unaligned, as a byte buffer promises no alignment.
+    let fixed = unsafe { std::ptr::read_unaligned(info.cast::<VS_FIXEDFILEINFO>()) };
+    let (ms, ls) = (fixed.dwFileVersionMS, fixed.dwFileVersionLS);
+    Some(format!(
+        "{}.{}.{}.{}",
+        ms >> 16,
+        ms & 0xffff,
+        ls >> 16,
+        ls & 0xffff
+    ))
+}
+
 fn reg_string_in(
     root: windows_sys::Win32::System::Registry::HKEY,
     key: &str,

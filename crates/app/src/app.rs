@@ -271,6 +271,13 @@ fn take_place(item: &mut Item, target: PathBuf) {
     {
         spec.folder = target.clone();
     }
+    if let Some(files) = item.written_files.as_mut() {
+        for p in files {
+            if let Ok(rel) = p.strip_prefix(&old_dest) {
+                *p = target.join(rel);
+            }
+        }
+    }
     item.dest = target;
 }
 
@@ -425,11 +432,16 @@ fn deferred_rename_disabled_reason_with(
 ) -> Option<&'static str> {
     if crate::deferred_rename::is_folder_target(item) {
         if is_protected_or_shared_folder_with(item.id, &item.dest, downloads, settings, rss, items)
-            || folder_has_untracked_item_files(item)
         {
             // i18n: tooltip on the disabled Rename box when the folder holds another download or is a save/category folder
             return Some(crate::i18n::mark(
                 "This folder is shared with another download or save folder",
+            ));
+        }
+        if folder_has_untracked_item_files(item) {
+            // i18n: tooltip on the disabled Rename box when the folder already holds files this download did not write
+            return Some(crate::i18n::mark(
+                "This folder holds files from outside this download",
             ));
         }
         return None;
@@ -830,8 +842,8 @@ pub struct App {
     /// yet) and when.
     clip_seen: Option<Option<String>>,
     clip_checked: Option<Instant>,
-    /// The clipboard read under way, off the window thread (#418).
-    clip_reading: Option<ClipRead>,
+    /// The monitor's ask for the clipboard, its read off the window thread (#418).
+    clip_asked: Option<crate::clipboard::Ask>,
     confirm_delete: Option<dialogs::ConfirmDelete>,
     /// Queue right-click → Delete, asking first: the queue and the question.
     confirm_queue_delete: Option<(usize, dialogs::Confirm)>,
@@ -1042,28 +1054,6 @@ pub fn auth_headers(login: Option<&(String, String)>) -> HeaderMap {
         }
     }
     h
-}
-
-/// A read of the clipboard on a thread of its own, its answer taken when it has come (#418).
-struct ClipRead(std::sync::Arc<std::sync::Mutex<Option<Option<String>>>>);
-
-impl ClipRead {
-    fn start(read: impl FnOnce() -> Option<String> + Send + 'static) -> Self {
-        let slot = std::sync::Arc::new(std::sync::Mutex::new(None));
-        let answer = slot.clone();
-        let _ = std::thread::Builder::new()
-            .name("clipboard read".into())
-            .spawn(move || {
-                *answer.lock().unwrap() = Some(read());
-            });
-        ClipRead(slot)
-    }
-
-    /// The text, once the read has answered; else the read, still waiting.
-    fn answer(self) -> Result<Option<String>, Self> {
-        let got = self.0.lock().unwrap().take();
-        got.ok_or(self)
-    }
 }
 
 /// A stopped download's files: its state and part files, and its finished file when it was
@@ -1396,7 +1386,7 @@ impl App {
             limit_notice: None,
             clip_seen: None,
             clip_checked: None,
-            clip_reading: None,
+            clip_asked: None,
             tray: None,
             tray_limiter: None,
             tray_last_focused: None,
@@ -2714,7 +2704,10 @@ impl App {
                 headers.insert(name, v);
             }
         }
-        let ua = self.settings.user_agent.trim();
+        // The browser's own User-Agent when it handed the download over, else the one set in
+        // Options, else the automatic one (the default browser's, #668).
+        let own = self.settings.own_user_agent();
+        let given = context.user_agent.as_deref().or(own);
         let opts = Options {
             max_connections: self.settings.connections_for(url),
             proxy: self.settings.proxy_for(context),
@@ -2727,20 +2720,17 @@ impl App {
             ignore_mtime: self.settings.ignore_mtime,
             server_time: self.settings.set_creation_date,
             ftp_passive: self.settings.ftp_passive,
-            user_agent: match context.user_agent.as_deref() {
-                Some(browser) => browser.to_owned(),
-                None if ua.is_empty() => Options::default().user_agent,
-                None => ua.to_owned(),
+            user_agent: given.map_or_else(mdm_engine::agent::automatic, str::to_owned),
+            automatic_agent: given.is_none(),
+            // A browser's User-Agent (handed over, or the automatic one) may be refused on this
+            // connection (#372): the one set in Options, else MDM's former one (Internet
+            // Explorer 11's, which such bot checks let through), is tried once then. One the
+            // user set is the user's choice: no other.
+            agent_fallback: match (context.user_agent.is_some(), own) {
+                (true, Some(own)) => Some(own.to_owned()),
+                (_, None) => Some(mdm_engine::agent::IE11_USER_AGENT.to_owned()),
+                (false, Some(_)) => None,
             },
-            // The browser's User-Agent may be refused on this connection (#372): MDM's own
-            // (Options' or the default) is tried once then, as Add URL would.
-            agent_fallback: context.user_agent.is_some().then(|| {
-                if ua.is_empty() {
-                    Options::default().user_agent
-                } else {
-                    ua.to_owned()
-                }
-            }),
             // Where the browser's own download of it ended: asked when the link itself is
             // refused (#630, a one-time or session-bound token the browser already used).
             browser_final: context
@@ -3456,17 +3446,16 @@ impl App {
             return;
         }
         ctx.request_repaint_after(Duration::from_secs(1));
-        // One read at a time, on its own thread: the program that owns the clipboard may hang,
-        // and a read that waits for it took the window with it (#418). A read under way
-        // that never answers just means no new look at the clipboard.
-        let reading = self.clip_reading.take();
-        let text = match reading {
-            Some(read) => match read.answer() {
-                Ok(text) => text,
-                Err(still) => {
-                    self.clip_reading = Some(still);
-                    return;
+        // Read off the window's thread (clipboard.rs): the program that owns the clipboard may
+        // hang, and a read that waits for it took the window with it (#418). An ask that is
+        // never answered just means no new look at the clipboard.
+        let text = match self.clip_asked {
+            Some(ask) => match crate::clipboard::answer(ask) {
+                Some(text) => {
+                    self.clip_asked = None;
+                    text
                 }
+                None => return,
             },
             None => {
                 if self
@@ -3476,7 +3465,7 @@ impl App {
                     return;
                 }
                 self.clip_checked = Some(Instant::now());
-                self.clip_reading = Some(ClipRead::start(crate::clipboard_text));
+                self.clip_asked = Some(crate::clipboard::ask());
                 return;
             }
         };
@@ -3757,6 +3746,11 @@ impl App {
                 tx,
             ) {
                 Ok(()) => {
+                    // Clear before the background rename moves the folder so an abrupt exit
+                    // never leaves a stale `rename_on_complete` pointing at the old `dest`.
+                    if let Some(item) = self.item(id) {
+                        item.rename_on_complete = None;
+                    }
                     self.renaming_torrents.push((id, from, rx));
                     self.dirty = true;
                     return true;
@@ -3764,7 +3758,7 @@ impl App {
                 Err(hold) => {
                     drop(hold);
                     // Keep `item.rename_on_complete` persisted in `downloads.json` while waiting
-                    // for `torrent_host` so quitting MDM before it finishes does not lose it.
+                    // for `torrent_host` so quitting MDM before it starts does not lose it.
                     if !self.deferred_torrent_queue.contains(&id) {
                         self.deferred_torrent_queue.push(id);
                     }
@@ -3797,6 +3791,60 @@ impl App {
             }
         }
         false
+    }
+
+    fn apply_finished_torrent_rename(
+        &mut self,
+        id: u64,
+        from: &std::path::Path,
+        r: Result<PathBuf, String>,
+        sharing_error: Option<String>,
+        notify_ui: bool,
+    ) {
+        match r {
+            Ok(actual_to) => {
+                if let Some(item) = self.item(id) {
+                    item.rename_on_complete = None;
+                    let is_dir = crate::deferred_rename::is_folder_target(item);
+                    apply_renamed_paths_to_pending_mark(item, from, &actual_to, is_dir);
+                    take_place(item, actual_to.clone());
+                }
+                for c in &mut self.complete {
+                    if c.id == id {
+                        c.path = actual_to.clone();
+                    }
+                }
+                self.dirty = true;
+            }
+            Err(e) => {
+                let msg = crate::i18n::fmt(
+                    crate::i18n::t("The file could not be moved: {error}"),
+                    &[("error", &e)],
+                );
+                if let Some(item) = self.item(id) {
+                    item.rename_on_complete = None;
+                    item.note(msg.clone());
+                }
+                if notify_ui {
+                    self.notice = Some((crate::i18n::mark("Move/Rename"), msg));
+                }
+                self.dirty = true;
+            }
+        }
+        if let Some(why) = sharing_error
+            && let Some(item) = self.item(id)
+        {
+            item.note(crate::i18n::fmt(
+                // i18n: event log entry on a finished torrent when re-attaching it to keep sharing failed; {error} = why
+                crate::i18n::t("Sharing stopped: {error}"),
+                &[("error", &why)],
+            ));
+            self.dirty = true;
+        }
+        self.flush_pending_mark(id);
+        if notify_ui {
+            self.extracts.finished(id, &self.items, &self.settings);
+        }
     }
 
     /// Retry queued deferred torrent renames once `torrent_host` is free, and apply finished ones.
@@ -3835,46 +3883,7 @@ impl App {
                 Err(_) => false,
             });
         for (id, from, (r, sharing_error)) in done {
-            match r {
-                Ok(actual_to) => {
-                    if let Some(item) = self.item(id) {
-                        item.rename_on_complete = None;
-                        let is_dir = crate::deferred_rename::is_folder_target(item);
-                        apply_renamed_paths_to_pending_mark(item, &from, &actual_to, is_dir);
-                        take_place(item, actual_to.clone());
-                    }
-                    for c in &mut self.complete {
-                        if c.id == id {
-                            c.path = actual_to.clone();
-                        }
-                    }
-                    self.dirty = true;
-                }
-                Err(e) => {
-                    let msg = crate::i18n::fmt(
-                        crate::i18n::t("The file could not be moved: {error}"),
-                        &[("error", &e)],
-                    );
-                    if let Some(item) = self.item(id) {
-                        item.rename_on_complete = None;
-                        item.note(msg.clone());
-                    }
-                    self.notice = Some((crate::i18n::mark("Move/Rename"), msg));
-                    self.dirty = true;
-                }
-            }
-            if let Some(why) = sharing_error
-                && let Some(item) = self.item(id)
-            {
-                item.note(crate::i18n::fmt(
-                    // i18n: event log entry on a finished torrent when re-attaching it to keep sharing failed; {error} = why
-                    crate::i18n::t("Sharing stopped: {error}"),
-                    &[("error", &why)],
-                ));
-                self.dirty = true;
-            }
-            self.flush_pending_mark(id);
-            self.extracts.finished(id, &self.items, &self.settings);
+            self.apply_finished_torrent_rename(id, &from, r, sharing_error, true);
         }
     }
 
@@ -9579,6 +9588,12 @@ impl App {
 
 impl Drop for App {
     fn drop(&mut self) {
+        // Let any in-flight torrent folder rename finish and update `item.dest` before saving.
+        for (id, from, rx) in std::mem::take(&mut self.renaming_torrents) {
+            if let Ok((r, sharing_error)) = rx.recv_timeout(Duration::from_secs(2)) {
+                self.apply_finished_torrent_rename(id, &from, r, sharing_error, false);
+            }
+        }
         // An archive being extracted stops; its staging folder goes with it.
         self.extracts.stop();
         // No wake for a queue MDM won't be there to start (Linux's alarm would outlive it).
@@ -9956,31 +9971,6 @@ mod page_data_tests {
 mod window_thread_tests {
     use super::*;
 
-    /// #418: a clipboard read that never answers (its owner hung) doesn't hold up the window:
-    /// its answer just isn't there yet; one that answers is taken.
-    #[test]
-    fn a_stuck_clipboard_owner_does_not_hold_the_window() {
-        let (release, wait) = std::sync::mpsc::channel::<()>();
-        let stuck = ClipRead::start(move || {
-            let _ = wait.recv();
-            Some("late".to_owned())
-        });
-        let started = Instant::now();
-        let Err(mut waiting) = stuck.answer() else {
-            panic!("no answer yet");
-        };
-        assert!(started.elapsed() < Duration::from_millis(500));
-        release.send(()).unwrap();
-        let text = loop {
-            match waiting.answer() {
-                Ok(text) => break text,
-                Err(still) => waiting = still,
-            }
-            std::thread::sleep(Duration::from_millis(2));
-        };
-        assert_eq!(text.as_deref(), Some("late"));
-    }
-
     /// #423: the files of a stopped download go as a group, off the window's thread.
     #[test]
     fn a_stopped_downloads_files_are_removed_together() {
@@ -10099,7 +10089,9 @@ mod deferred_rename_guard_tests {
             "an exclusive gallery subfolder can be renamed safely"
         );
 
-        let mut g_preexisting = test_item(7, exclusive_gallery.clone());
+        let reused_gallery = downloads.join("gallery-reused");
+        std::fs::create_dir_all(&reused_gallery).unwrap();
+        let mut g_preexisting = test_item(7, reused_gallery.clone());
         g_preexisting.gallery = Some(Default::default());
         g_preexisting.preexisting_folder = true;
         assert_eq!(
@@ -10110,18 +10102,51 @@ mod deferred_rename_guard_tests {
                 &rss,
                 &items,
             ),
-            Some("This folder is shared with another download or save folder"),
+            Some("This folder holds files from outside this download"),
             "a reused folder that already held untracked files is refused"
         );
 
-        std::fs::write(exclusive_gallery.join("foreign.txt"), b"leftover").unwrap();
-        let mut g_untracked = test_item(8, exclusive_gallery.clone());
+        std::fs::write(reused_gallery.join("foreign.txt"), b"leftover").unwrap();
+        let mut g_untracked = test_item(8, reused_gallery.clone());
         g_untracked.gallery = Some(Default::default());
         g_untracked.written_files = Some(Vec::new());
         assert_eq!(
             deferred_rename_disabled_reason_with(&g_untracked, &downloads, &settings, &rss, &items),
-            Some("This folder is shared with another download or save folder"),
+            Some("This folder holds files from outside this download"),
             "a folder containing files the download did not write is refused"
+        );
+
+        // Persisted across restart (`serde_json`) and updated when `take_place` renames the folder.
+        let tracked = reused_gallery.join("01.jpg");
+        std::fs::write(&tracked, b"ok").unwrap();
+        let mut g_persisted = test_item(9, reused_gallery.clone());
+        g_persisted.gallery = Some(Default::default());
+        g_persisted.written_files = Some(vec![tracked]);
+        let reloaded: Item =
+            serde_json::from_str(&serde_json::to_string(&g_persisted).unwrap()).unwrap();
+        assert_eq!(
+            deferred_rename_disabled_reason_with(&reloaded, &downloads, &settings, &rss, &items),
+            Some("This folder holds files from outside this download"),
+            "persisted written_files still catches foreign.txt after restart"
+        );
+
+        std::fs::remove_file(reused_gallery.join("foreign.txt")).unwrap();
+        assert_eq!(
+            deferred_rename_disabled_reason_with(&reloaded, &downloads, &settings, &rss, &items),
+            None
+        );
+
+        let moved_gallery = downloads.join("gallery-reused-renamed");
+        std::fs::rename(&reused_gallery, &moved_gallery).unwrap();
+        let mut moved_item = reloaded;
+        take_place(&mut moved_item, moved_gallery.clone());
+        assert_eq!(
+            moved_item.written_files,
+            Some(vec![moved_gallery.join("01.jpg")])
+        );
+        assert_eq!(
+            deferred_rename_disabled_reason_with(&moved_item, &downloads, &settings, &rss, &items),
+            None
         );
     }
 

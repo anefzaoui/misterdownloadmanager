@@ -580,6 +580,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Austria	অষ্ট্ৰিয়া
+#. checkbox in the Options window; text in the Options window
+#. checkbox: the User-Agent is the default browser's, which MDM finds itself
+#, machine
+	Automatic	স্বয়ংক্ৰিয়
 #. text in remote.rs
 #. remote control page (on a phone): category choice: the category follows the file's type
 #, machine
@@ -2381,6 +2385,10 @@
 #. crash report window: looking on GitHub for an issue about the same problem
 #, machine
 	Looking for this problem on GitHub…	GitHub ত এই সমস্যাটো বিচাৰি আছে…
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking for your default browser...	আপোনাৰ ডিফল্ট ব্ৰাউজাৰ বিচাৰি আছে...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -4606,6 +4614,10 @@
 #, machine
 	This folder does not exist:	এই ফোল্ডাৰটো বিদ্যমান নহয়:
 #. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the folder already holds files this download did not write
+#, machine
+	This folder holds files from outside this download	এই ফোল্ডাৰটোত এই ডাউনলোডৰ বাহিৰৰ ফাইল আছে
+#. message or event log entry in the main window
 #. tooltip on the disabled Rename box when the folder holds another download or is a save/category folder
 #, machine
 	This folder is shared with another download or save folder	এই ফোল্ডাৰটো আন এটা ডাউনলোড বা সংৰক্ষণ ফোল্ডাৰৰ সৈতে অংশীদাৰী
@@ -5261,6 +5273,13 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	আপোনাৰ ব্ৰাউজাৰ
+#. text in the Options window
+#, machine
+	Your default browser isn't one MDM knows: a current Chrome's User-Agent	আপোনাৰ ডিফল্ট ব্ৰাউজাৰ MDM-এ জনা ব্ৰাউজাৰ নহয়: এটা বৰ্তমানৰ Chrome-ৰ User-Agent
+#. text in the Options window
+#. tooltip; {browser} is a browser and its version, e.g. "Brave 157"
+#, machine
+	Your default browser's User-Agent: {browser}	আপোনাৰ ডিফল্ট ব্ৰাউজাৰৰ User-Agent: {browser}
 #. text in the settings
 #. Options → DNS: the name of a DNS the user typed in, in messages: "your DNS (DNS over TLS)"
 #, machine
@@ -5374,6 +5393,11 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{size} ৰ {done}
+#. text in deferred_rename.rs
+#. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{error} (left as {path}: {rollback_error})	{error} ({path} হিচাপে এৰি দিয়া হ'ল: {rollback_error})
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine

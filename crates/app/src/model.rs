@@ -441,8 +441,9 @@ pub struct Item {
     /// web once any deferred rename in `App::poll` has moved them to their final names.
     #[serde(skip)]
     pub(crate) pending_mark: Option<PendingMark>,
-    /// Files known to belong to a finished gallery or debrid folder download; memory only.
-    #[serde(skip)]
+    /// Files known to belong to a finished gallery or debrid folder download, kept across
+    /// restarts so a requeued or resumed folder rename still checks for untracked files.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub(crate) written_files: Option<Vec<PathBuf>>,
 }
 
@@ -871,7 +872,13 @@ impl Item {
                         ..
                     }) = &self.live
                 {
-                    self.written_files = Some(job.known_files());
+                    let known = job.known_files();
+                    let list = self.written_files.get_or_insert_with(Vec::new);
+                    for p in known {
+                        if !list.contains(&p) {
+                            list.push(p);
+                        }
+                    }
                     if matches!(url.scheme(), "http" | "https") {
                         self.pending_mark = Some(PendingMark {
                             main_file: None,
@@ -890,7 +897,13 @@ impl Item {
                     if r.preexisting_folder() {
                         self.preexisting_folder = true;
                     }
-                    self.written_files = Some(r.saved_files());
+                    let saved = r.saved_files();
+                    let list = self.written_files.get_or_insert_with(Vec::new);
+                    for p in saved {
+                        if !list.contains(&p) {
+                            list.push(p);
+                        }
+                    }
                 }
                 for n in &notices {
                     self.note(n.clone());

@@ -448,6 +448,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Austria	Austria
+#. checkbox in the Options window; text in the Options window
+#. checkbox: the User-Agent is the default browser's, which MDM finds itself
+	Automatic	Automatic
 #. text in remote.rs
 #. remote control page (on a phone): category choice: the category follows the file's type
 	Automatic (by file type)	Automatic (by file type)
@@ -1785,6 +1788,9 @@
 #. text in crashui.rs
 #. crash report window: looking on GitHub for an issue about the same problem
 	Looking for this problem on GitHub…	Looking for this problem on GitHub…
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+	Looking for your default browser...	Looking for your default browser...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Looking the page up...	Looking the page up...
@@ -3428,6 +3434,9 @@
 #. text in a dialog box
 	This folder does not exist:	This folder does not exist:
 #. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the folder already holds files this download did not write
+	This folder holds files from outside this download	This folder holds files from outside this download
+#. message or event log entry in the main window
 #. tooltip on the disabled Rename box when the folder holds another download or is a save/category folder
 	This folder is shared with another download or save folder	This folder is shared with another download or save folder
 #. text in errors.rs
@@ -3916,6 +3925,11 @@
 #. text in extension.rs
 #. a row of the browser extension's window when no browser was found by name
 	Your browser	Your browser
+#. text in the Options window
+	Your default browser isn't one MDM knows: a current Chrome's User-Agent	Your default browser isn't one MDM knows: a current Chrome's User-Agent
+#. text in the Options window
+#. tooltip; {browser} is a browser and its version, e.g. "Brave 157"
+	Your default browser's User-Agent: {browser}	Your default browser's User-Agent: {browser}
 #. text in the settings
 #. Options → DNS: the name of a DNS the user typed in, in messages: "your DNS (DNS over TLS)"
 	your DNS ({how})	your DNS ({how})
@@ -4002,6 +4016,10 @@
 #. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 	{done} of {size}	{done} of {size}
+#. text in deferred_rename.rs
+#. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
+#. {error} = an error message (keep the braces as they are)
+	{error} (left as {path}: {rollback_error})	{error} (left as {path}: {rollback_error})
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 	{ext} File	{ext} File

@@ -446,7 +446,15 @@ pub fn rename_entry_io(from: &Path, to: &Path) -> std::io::Result<()> {
                     Ok(()) => Err(e),
                     Err(back_err) => Err(std::io::Error::new(
                         e.kind(),
-                        format!("{e} (left as {}: {back_err})", hop.display()),
+                        crate::i18n::fmt(
+                            // i18n: appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
+                            crate::i18n::t("{error} (left as {path}: {rollback_error})"),
+                            &[
+                                ("error", &e.to_string()),
+                                ("path", &hop.display().to_string()),
+                                ("rollback_error", &back_err.to_string()),
+                            ],
+                        ),
                     )),
                 },
             };

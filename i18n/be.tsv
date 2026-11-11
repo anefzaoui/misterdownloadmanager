@@ -580,6 +580,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Austria	Аўстрыя
+#. checkbox in the Options window; text in the Options window
+#. checkbox: the User-Agent is the default browser's, which MDM finds itself
+#, machine
+	Automatic	Аўтаматычна
 #. text in remote.rs
 #. remote control page (on a phone): category choice: the category follows the file's type
 #, machine
@@ -2381,6 +2385,10 @@
 #. crash report window: looking on GitHub for an issue about the same problem
 #, machine
 	Looking for this problem on GitHub…	Пошук гэтай праблемы на GitHub…
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking for your default browser...	Пошук браўзера па змаўчанні...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -4606,6 +4614,10 @@
 #, machine
 	This folder does not exist:	Гэтай папкі не існуе:
 #. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the folder already holds files this download did not write
+#, machine
+	This folder holds files from outside this download	У гэтай папцы ёсць файлы па-за межамі гэтай спампоўкі
+#. message or event log entry in the main window
 #. tooltip on the disabled Rename box when the folder holds another download or is a save/category folder
 #, machine
 	This folder is shared with another download or save folder	Гэта папка выкарыстоўваецца іншай спампоўкай або папкай захавання
@@ -5261,6 +5273,13 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Ваш браўзер
+#. text in the Options window
+#, machine
+	Your default browser isn't one MDM knows: a current Chrome's User-Agent	Браўзер па змаўчанні не распазнаны MDM: User-Agent актуальнай версіі Chrome
+#. text in the Options window
+#. tooltip; {browser} is a browser and its version, e.g. "Brave 157"
+#, machine
+	Your default browser's User-Agent: {browser}	User-Agent вашага браўзера па змаўчанні: {browser}
 #. text in the settings
 #. Options → DNS: the name of a DNS the user typed in, in messages: "your DNS (DNS over TLS)"
 #, machine
@@ -5374,6 +5393,11 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{done} з {size}
+#. text in deferred_rename.rs
+#. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{error} (left as {path}: {rollback_error})	{error} (пакінута як {path}: {rollback_error})
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
