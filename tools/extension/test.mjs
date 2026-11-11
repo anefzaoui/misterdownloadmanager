@@ -1325,6 +1325,13 @@ const MPD = (protect) => `<?xml version="1.0"?>
   );
   assert.equal(
     facebook("https://www.facebook.com/", {
+      links: [{ href: "https://fb.watch/abc123/?mibextid=tracking", top: 5 }],
+    }),
+    "https://fb.watch/abc123/",
+    "a feed card's fb.watch short link is treated as the video's address",
+  );
+  assert.equal(
+    facebook("https://www.facebook.com/", {
       links: [{ href: "/profile/posts/123456789", top: 5 }],
     }),
     "https://www.facebook.com/profile/posts/123456789",
