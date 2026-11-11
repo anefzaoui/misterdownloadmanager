@@ -23,6 +23,8 @@ pub struct CategoryEdit {
     pub target: Target,
     pub name: String,
     pub types: String,
+    /// The sites the category is limited to, as typed (`a.com *.a.com`); empty: every site.
+    pub sites: String,
     /// The folder typed (empty: the default one).
     pub folder: String,
 }
@@ -31,6 +33,7 @@ pub struct CategoryDialog {
     target: Target,
     name: String,
     types: String,
+    sites: String,
     folder: String,
     /// Name has been given the focus (once, when the dialog opens).
     focused: bool,
@@ -42,6 +45,7 @@ impl CategoryDialog {
             target: Target::New,
             name: String::new(),
             types: String::new(),
+            sites: String::new(),
             folder: String::new(),
             focused: false,
         }
@@ -59,6 +63,12 @@ impl CategoryDialog {
                     .map(|c| c.types)
                     .unwrap_or_default(),
                 c => c.types_text(),
+            },
+            sites: match cat {
+                Category::Custom(id) => crate::model::custom(id)
+                    .map(|c| c.sites)
+                    .unwrap_or_default(),
+                _ => String::new(),
             },
             folder: folder.display().to_string(),
             focused: false,
@@ -81,7 +91,7 @@ impl CategoryDialog {
             ctx,
             "category-edit",
             title,
-            [420.0, 196.0],
+            [420.0, 248.0],
             false,
             LIGHT_BG(),
             |ui, o| {
@@ -120,20 +130,41 @@ impl CategoryDialog {
                     o.x + 408.0,
                     "category-types-hint",
                 );
-                label(112.0, crate::i18n::mark("Folder:"));
+                // The sites the category is limited to (#385): empty takes files from anywhere.
+                label(112.0, crate::i18n::mark("Sites:"));
+                winui::edit_light(
+                    ui,
+                    r(o, 98.0, 98.0, 310.0, 23.0),
+                    &mut self.sites,
+                    !built_in,
+                    false,
+                );
+                winui::fit(
+                    ui,
+                    &p,
+                    o.x + 98.0,
+                    o.y + 135.0,
+                    crate::i18n::t(
+                        "Addresses separated by spaces, for example a.com *.a.com; empty takes files from every site",
+                    ),
+                    LIGHT_DISABLED(),
+                    o.x + 408.0,
+                    "category-sites-hint",
+                );
+                label(167.0, crate::i18n::mark("Folder:"));
                 // Browse as wide as its label in this language (#192); the box ends 8 px before.
                 let (browse_x, browse_w) =
                     winui::buttons_to_right(&p, 408.0, 8.0, &[("Browse...", 73.0)], 160.0)[0];
                 winui::edit_light(
                     ui,
-                    r(o, 98.0, 98.0, browse_x - 8.0 - 98.0, 23.0),
+                    r(o, 98.0, 153.0, browse_x - 8.0 - 98.0, 23.0),
                     &mut self.folder,
                     true,
                     false,
                 );
                 if winui::button_light(
                     ui,
-                    r(o, browse_x, 99.0, browse_w, 21.0),
+                    r(o, browse_x, 154.0, browse_w, 21.0),
                     "Browse...",
                     ButtonKind::Normal,
                     false,
@@ -171,7 +202,7 @@ impl CategoryDialog {
                         ui,
                         &p,
                         o.x + 98.0,
-                        o.y + 142.0,
+                        o.y + 197.0,
                         e,
                         winui::ERROR(),
                         o.x + 408.0,
@@ -181,7 +212,7 @@ impl CategoryDialog {
                 let valid = built_in || (!name.is_empty() && !taken);
                 let ok = winui::button_light(
                     ui,
-                    r(o, 254.0, 164.0, 73.0, 21.0),
+                    r(o, 254.0, 219.0, 73.0, 21.0),
                     "OK",
                     if valid {
                         ButtonKind::Default
@@ -199,7 +230,7 @@ impl CategoryDialog {
                 .clicked();
                 let cancel = winui::button_light(
                     ui,
-                    r(o, 335.0, 164.0, 73.0, 21.0),
+                    r(o, 335.0, 219.0, 73.0, 21.0),
                     "Cancel",
                     ButtonKind::Normal,
                     false,
@@ -221,6 +252,7 @@ impl CategoryDialog {
                 target: self.target,
                 name: self.name.trim().to_owned(),
                 types: normalize_types(&self.types),
+                sites: crate::model::split_sites(&self.sites).join(" "),
                 folder: self.folder.trim().to_owned(),
             }),
         }
@@ -297,6 +329,7 @@ pub fn apply(settings: &mut Settings, e: CategoryEdit, downloads: &Path) -> Cate
             if let Some(c) = settings.custom_categories.iter_mut().find(|c| c.id == id) {
                 c.name = e.name.clone();
                 c.types = e.types.clone();
+                c.sites = e.sites.clone();
             }
             Category::Custom(id)
         }
@@ -328,6 +361,7 @@ pub fn apply(settings: &mut Settings, e: CategoryEdit, downloads: &Path) -> Cate
                 id,
                 name: e.name.clone(),
                 types: e.types.clone(),
+                sites: e.sites.clone(),
                 folder: None,
             });
             Category::Custom(id)
@@ -408,6 +442,7 @@ mod tests {
             target: Target::Edit(cat),
             name: name.into(),
             types: types.into(),
+            sites: String::new(),
             folder: folder.into(),
         }
     }
@@ -492,6 +527,7 @@ mod tests {
                 target: Target::New,
                 name: "Books".into(),
                 types: "EPUB".into(),
+                sites: String::new(),
                 folder: String::new(),
             },
             downloads,
@@ -529,6 +565,7 @@ mod tests {
             target: Target::New,
             name: "Books".into(),
             types: "EPUB MOBI".into(),
+            sites: String::new(),
             folder: String::new(),
         };
         let cat = apply(&mut s, e, downloads);
@@ -542,6 +579,7 @@ mod tests {
             target: Target::Edit(cat),
             name: "Books".into(),
             types: "EPUB".into(),
+            sites: String::new(),
             folder: r"D:\Library".into(),
         };
         apply(&mut s, e, downloads);
@@ -554,6 +592,59 @@ mod tests {
         let mut items: Vec<crate::model::Item> = Vec::new();
         delete(&mut s, cat, &mut items);
         assert_eq!(Category::of("novel.epub"), Category::General);
+        crate::model::set_custom(&[]);
+    }
+
+    /// #385: a category that names sites takes its file types only from those hosts; the same
+    /// file from another site goes where it would have gone anyway.
+    #[test]
+    fn a_category_can_be_limited_to_sites() {
+        let _turn = registry();
+        let mut s = Settings::default();
+        let downloads = Path::new(r"C:\Users\u\Downloads");
+        let e = CategoryEdit {
+            target: Target::New,
+            name: "Site videos".into(),
+            types: "MP4".into(),
+            sites: "https://www.a.com/x *.a.com".into(),
+            folder: String::new(),
+        };
+        let cat = apply(&mut s, e, downloads);
+        assert_eq!(
+            cat.sites(),
+            ["a.com", "*.a.com"],
+            "the sites are read as hosts"
+        );
+        assert_eq!(Category::of_site("film.mp4", "https://a.com/watch/1"), cat);
+        assert_eq!(
+            Category::of_site("film.mp4", "https://x.a.com/watch/1"),
+            cat
+        );
+        assert_eq!(
+            Category::of_site("film.mp4", "https://b.com/watch/1"),
+            Category::Video,
+            "another site's mp4 goes to Video, as it always did"
+        );
+        assert_eq!(
+            Category::of_site("film.mp4", "magnet:?xt=urn:btih:x"),
+            Category::Video,
+            "an address with no host cannot be a site's"
+        );
+        assert_eq!(
+            Category::of_site("film.zip", "https://a.com/watch/1"),
+            Category::Compressed,
+            "a file type it does not list goes to that type's own category"
+        );
+        // Naming no site takes the file from anywhere, as before.
+        let e = CategoryEdit {
+            target: Target::Edit(cat),
+            name: "Site videos".into(),
+            types: "MP4".into(),
+            sites: String::new(),
+            folder: String::new(),
+        };
+        apply(&mut s, e, downloads);
+        assert_eq!(Category::of_site("film.mp4", "https://b.com/watch/1"), cat);
         crate::model::set_custom(&[]);
     }
 

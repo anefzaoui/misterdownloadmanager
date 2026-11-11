@@ -95,6 +95,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} ᎠᏑᏰᏛ|{n} ᎠᏑᏰᏛ
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	{n} ᏌᎢᏔ ᏫᎢᎵ ᏂᎨᏒᎢ ᏚᏩᏍᎪᎢ.|{n} ᏌᎢᏔ ᏫᎢᎵ ᏂᎨᏒᎢ ᎤᏂᏩᏍᎪᎢ.
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	{n} ᏌᎢᏔ ᏫᎢᎵ ᎠᏂ ᏚᏅᏎᎢ.|{n} ᏌᎢᏔ ᏫᎢᎵ ᎠᏂ ᎤᏂᏅᏎᎢ.
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -370,6 +378,9 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	ᎤᎾᏙᏢᏒᎢ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ
+#. text in categories.rs
+#, machine
+	Addresses separated by spaces, for example a.com *.a.com; empty takes files from every site	ᎠᏓᏅᏙ ᎤᏍᏗ ᎤᏂᎩᏍᏗ ᎢᎦᏓᏅ ᎨᏐ, ᎤᏤᎵᏛ a.com *.a.com; ᎤᏯᏛᏓ ᎨᏐ ᏂᎨᏒᎢ ᏂᎦᏛ ᏌᎢᏔ ᏂᎨᏒ ᏫᎢᎵ ᎤᏂᏅᏍᏗ
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1331,6 +1342,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying yt-dlp...	ᎠᎾᏛᏗ ᎠᎴ ᎠᎾᏙᎴᎰᏍᎬ yt-dlp...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	MDM ᎤᏪᏘ ᏧᏂᏅ ᏓᏆᏂᎩᏍᎬ...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1519,9 +1535,13 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	ᎠᎴᏂᏍᎬᎢ: ᏚᎾᏙᏢᏒ ᎤᏂᎪᎵᏰᏗ ᏗᏟᎶᏍᏔᏅᎢ, ᎥᏝ ᎠᏏ ᏱᏚᎾᏙᏢᏒ ᎤᏙᎯᏳᏒ ᏗᎦᏃᎮᏗ.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	ᎦᎴᏴᏔᏅ
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	ᎤᏪᏎᏍᏗ...
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	ᎠᏤᎵᏛ ᎢᏗᏢ Manifest 2 Chrome extensions
@@ -1996,9 +2016,13 @@
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	ᏗᏓᎴᏂᏍᏗ
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	ᎠᏂᎩᏍᏗ...
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ
@@ -3868,6 +3892,10 @@
 #, machine
 	Site/path:	ᎦᏟᏗ/ᎦᏅᏅᎢ:
 #. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Sites "{category}" takes files from (empty: every site):	ᏌᎢᏔ ᎨᏒᎢ "{category}" ᏫᎢᎵ ᎤᏂᏅᏍᏗ (ᏂᎨᏒᎢ: ᏂᎦᏛ ᏌᎢᏔ):
+#. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	ᎦᏟᏗ ᏗᏙᎳᏅᏍᎩ
@@ -3877,6 +3905,9 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	ᏂᏚᎾᏓᏁᎸᎢ ᏓᏓᏁᏟᏴᏍᎪᎢ ᎤᏟᏍᏗ ᏗᏟᎶᏍᏔᏅᎯ ᎠᎴ ᏗᎧᏃᎩᏍᏗ. ffmpeg ᏓᏓᏁᏟᏴᏍᎪᎢ ᎢᏧᎳ ᏌᏉ ᏗᏓᏂᏱᏍᎩ ᏗᏟᎶᏍᏔᏅᎯ ᏂᎦᎥ ᎢᏗᎬᏔᏅᎯ.
+#. text in categories.rs
+#, machine
+	Sites:	ᏌᎢᏔ:
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -4338,7 +4369,7 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be moved: {error}	ᏗᏓᏟᎶᏍᏗ ᏂᎨᏒᎾ ᎢᏗᎬᏔᏅᎯ: {error}
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be read: {error}	ᎾᏍᎩ ᏗᏟᎶᏍᏔᏅᎯ ᎥᏝ ᏰᎵ ᏱᎦᎪᎵᏰᏍᎦ: {error}
@@ -4387,7 +4418,7 @@
 #. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
 #, machine
 	The helper program the browsers start is missing	ᎠᎵᏍᏕᎸᏗ ᎢᏗᏢ ᎾᏍᎩ ᏗᏓᎴᏅᏗᏍᎩ ᎤᎵᏛᏔᏅ
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	ᎾᏍᎩ ᏗᎦᏁᏟᏴᏍᏗ ᎥᏝ ᏰᎵ ᏱᎦᎴᏅᏍᎦ: {error}
@@ -4464,6 +4495,18 @@
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ, ᎢᏗᏴᏔᏅ {browser} ᎢᏗᏴᏔᏅ. ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ {browser}, ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though the browser's extension passed the page's cookies
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with your browser's cookies for this page. Try again later, or from another browser.	ᏌᎢᏔ ᏧᏩᏛ ᏄᏓᏍᏛ ᎤᎵᏍᎨᏓ (Cloudflare) ᏭᏲᎮᎴ yt-dlp, Ꮭ ᎾᏍᎩ ᎤᏩᏒᎢ ᏧᎩᎦᎢᏍ ᎾᏍᎩ ᏆᏫᏎ ᏂᎨᏒ ᎪᎯ ᎤᎪᏗᏗ. ᎢᎦ ᎾᏍᎩ ᏧᏓᎴᏅᏛ ᏓᎦᎳ, ᎾᏍᎩ ᏧᏙᎢ ᏆᏫᏎ ᎨᏒᎢ.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though it had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	ᏌᎢᏔ ᏧᏩᏛ ᏄᏓᏍᏛ ᎤᎵᏍᎨᏓ (Cloudflare) ᏭᏲᎮᎴ yt-dlp, Ꮭ ᎤᏩᏒᎢ {browser} ᏧᎩᎦᎢᏍ ᏂᎨᏒᎢ. ᎠᎴᏂ ᏫᏗᏲ ᏓᏆᏂᎩᏍᏗ ᏚᏙᎥ {browser} ᏂᎨᏒ ᎾᏍᎩ ᏫᏗᏲ ᎬᏂᎨᏒ, ᎾᏍᎩ ᎢᎦ ᎾᏍᎩ ᎤᎪᏗᏗ ᏓᎦᎳ ᎤᎾᏓᏅᏛ.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	ᏌᎢᏔ ᏧᏩᏛ ᏄᏓᏍᏛ ᎤᎵᏍᎨᏓ (Cloudflare) ᏭᏲᎮᎴ yt-dlp. ᎢᎦᏛ ᎤᎪᏗᏗ ᏗᏔᏍᎦ ᎾᏍᎩ ᎠᏂᏩᏍᎦ ᏆᏫᏎ ᏂᎨᏒᎢ, ᎢᎦᏘ ᏆᏫᏎ ᎠᎴᏂ ᏧᏩᏛᏓ ᎬᏂ → ᏌᎢᏔ ᏧᎵᏍᏛ → ᏫᏗᏲ ᏌᎢᏔ ᏧᎩᎦᎢᏍ ᏂᎨᏒ, ᎾᏍᎩ ᎤᎪᏗᏗ ᏧᏅᏍᏗ ᏧᏅᏍᏗ, ᎾᏍᎩ ᏫᏗᏲ ᏓᏆᏂᎩᏍᏗ ᏚᏙᎥ ᎠᎴᏂ.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4646,6 +4689,11 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	ᎯᎠ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ. ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ, ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ.
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	ᎪᎯ {site} ᏧᎵᏍᏛ ᎤᎪᏗᏗ ᏂᎨᏒᎢ, Ꮭ ᏫᎢᎵ ᏂᎨᏒ: ᏗᏔᏍᎦ ᎾᏍᎩ ᎠᏂᏩᏍᎦ ᏆᏫᏎ ᏂᎨᏒ ᎾᏍᎩ ᏓᏆᏂᎩ ᎾᎿ.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine

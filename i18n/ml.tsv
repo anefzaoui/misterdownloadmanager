@@ -95,6 +95,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} തിരഞ്ഞെടുത്തു|{n} തിരഞ്ഞെടുത്തു
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	{n} സൈറ്റ് ഫയലിൽ നിന്ന് ചേർത്തു.|{n} സൈറ്റുകൾ ഫയലിൽ നിന്ന് ചേർത്തു.
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	{n} സൈറ്റ് ഫയലിലേക്ക് സംരക്ഷിച്ചു.|{n} സൈറ്റുകൾ ഫയലിലേക്ക് സംരക്ഷിച്ചു.
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -370,6 +378,9 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	ബ്രൗസറിനായി മാറ്റിവെച്ച വിലാസങ്ങൾ
+#. text in categories.rs
+#, machine
+	Addresses separated by spaces, for example a.com *.a.com; empty takes files from every site	വിടവിടയായി സ്പേസുകൾ കൊണ്ട് വേർതിരിച്ച വിലാസങ്ങൾ, ഉദാഹരണത്തിന് a.com *.a.com; ശൂന്യമായാൽ എല്ലാ സൈറ്റുകളിൽ നിന്നുമുള്ള ഫയലുകൾ എടുക്കും
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1331,6 +1342,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying yt-dlp...	yt-dlp ഡൗൺലോഡ് ചെയ്യുകയും പരിശോധിക്കുകയും ചെയ്യുന്നു...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	MDM-ന്റെ സ്വന്തം പകർപ്പ് ഡൗൺലോഡ് ചെയ്യുന്നു...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1519,9 +1535,13 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	പരീക്ഷണാത്മകം: സേവനങ്ങളുടെ പൊതു API ഡോക്യുമെന്റേഷനിൽ നിന്ന് നിർമ്മിച്ചത്, യഥാർത്ഥ അക്കൗണ്ടുകൾ ഉപയോഗിച്ച് ഇതുവരെ സ്ഥിരീകരിച്ചിട്ടില്ല.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	എക്‌സ്‌പോർട്ട് ചെയ്യുക
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	കയറ്റുമതി ചെയ്യുക...
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	Manifest 2 Chrome എക്സ്റ്റൻഷനുകളുടെ ലഭ്യത വർദ്ധിപ്പിക്കുക
@@ -1996,9 +2016,13 @@
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	ഒരു ഡൗൺലോഡ് പുനരാരംഭിക്കുമ്പോൾ ഫയൽ പരിഷ്കരണ സമയ മാറ്റങ്ങൾ അവഗണിക്കുക
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	ഇറക്കുമതി ചെയ്യുക
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	ഇംപോർട്ട് ചെയ്യുക...
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	ഒരു ക്യൂവിൽ
@@ -3868,6 +3892,10 @@
 #, machine
 	Site/path:	സൈറ്റ്/പാത:
 #. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Sites "{category}" takes files from (empty: every site):	"{category}" സൈറ്റുകൾ ഫയലുകൾ എടുക്കുന്നു (ശൂന്യമായാൽ: എല്ലാ സൈറ്റുകളും):
+#. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	സൈറ്റുകളിലെ ലോഗിൻ വിവരങ്ങൾ
@@ -3877,6 +3905,9 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	സൈറ്റുകൾ അവയുടെ മികച്ച ഗുണനിലവാരം പ്രത്യേക വീഡിയോയും ഓഡിയോയും ആയി അയയ്ക്കുന്നു. ffmpeg അവയെ എവിടെയും പ്ലേ ചെയ്യാൻ കഴിയുന്ന ഒരു ഫയലായി ഒരുമിപ്പിക്കുന്നു.
+#. text in categories.rs
+#, machine
+	Sites:	സൈറ്റുകൾ:
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -4338,7 +4369,7 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be moved: {error}	ഫയൽ നീക്കാൻ കഴിഞ്ഞില്ല: {error}
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be read: {error}	ഫയൽ വായിക്കാൻ കഴിഞ്ഞില്ല: {error}
@@ -4387,7 +4418,7 @@
 #. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
 #, machine
 	The helper program the browsers start is missing	ബ്രൗസറുകൾ ആരംഭിക്കുന്ന സഹായ പ്രോഗ്രാം കാണുന്നില്ല
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	ലിസ്റ്റ് സേവ് ചെയ്യാൻ കഴിഞ്ഞില്ല: {error}
@@ -4464,6 +4495,18 @@
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	{browser}-ന്റെ കുക്കികൾ നൽകിയിട്ടും സൈറ്റിൽ സൈൻ ഇൻ ചെയ്യേണ്ടതുണ്ട്. {browser}-ൽ സൈൻ ഇൻ ചെയ്ത ശേഷം പേജ് വീണ്ടും കണ്ടെത്തുക.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though the browser's extension passed the page's cookies
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with your browser's cookies for this page. Try again later, or from another browser.	സൈറ്റിന്റെ ബോട്ട് പരിശോധന (Cloudflare) yt-dlp-നെ നിരസിച്ചു, ഈ പേജിന്റെ നിങ്ങളുടെ ബ്രൗസർ കുക്കികളുമുണ്ടെങ്കിലും. പിന്നീട് വീണ്ടും ശ്രമിക്കുക, അല്ലെങ്കിൽ മറ്റൊരു ബ്രൗസറിൽ നിന്ന് ശ്രമിക്കുക.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though it had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	സൈറ്റിന്റെ ബോട്ട് പരിശോധന (Cloudflare) yt-dlp-നെ നിരസിച്ചു, {browser}'ന്റെ കുക്കികളുമുണ്ടെങ്കിലും. {browser}‑ലുള്ള വീഡിയോയുടെ മുകളിൽ ഡൗൺലോഡ് വീഡിയോ ബട്ടൺ ഉപയോഗിക്കുക, അല്ലെങ്കിൽ പിന്നീട് പേജ് വീണ്ടും ശ്രമിക്കുക.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	സൈറ്റിന്റെ ബോട്ട് പരിശോധന (Cloudflare) yt-dlp-നെ നിരസിച്ചു. പേജ് നിങ്ങളുടെ ബ്രൗസറിൽ തുറന്നാൽ, Options → Sites Logins → Cookies for video sites എന്നിടത്ത് ആ ബ്രൗസർ തിരഞ്ഞെടുക്കുക, പിന്നെ പേജ് വീണ്ടും തുറക്കുക, അല്ലെങ്കിൽ വീഡിയോയുടെ മുകളിൽ ഡൗൺലോഡ് വീഡിയോ ബട്ടൺ ഉപയോഗിക്കുക.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4646,6 +4689,11 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	ഈ വീഡിയോ കാണാൻ നിങ്ങൾ സൈൻ ഇൻ ചെയ്യേണ്ടതുണ്ട്. നിങ്ങളുടെ ബ്രൗസറിലെ വീഡിയോയ്ക്ക് മുകളിലുള്ള ഡൗൺലോഡ് വീഡിയോ ബട്ടൺ ഉപയോഗിക്കുക, അത് നിങ്ങളുടെ സൈൻ-ഇൻ കൈമാറും, അല്ലെങ്കിൽ ഓപ്ഷനുകൾ → സൈറ്റുകൾ ലോഗിനുകൾ → വീഡിയോ സൈറ്റുകൾക്കായുള്ള കുക്കികൾ എന്നതിൽ നിങ്ങളുടെ ബ്രൗസർ തിരഞ്ഞെടുക്കുക.
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	ഈ {site} ലിങ്ക് ഒരു വെബ് പേജാണ്, ഫയൽ അല്ല: അത് നിങ്ങളുടെ ബ്രൗസറിൽ തുറന്ന് അവിടെ നിന്ന് ഡൗൺലോഡ് ചെയ്യുക
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine

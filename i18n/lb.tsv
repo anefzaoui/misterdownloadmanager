@@ -95,6 +95,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} ausgewielt|{n} ausgewielt
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	{n} Websäit aus der Datei derbäigesat.|{n} Websäiten aus der Datei derbäigesat.
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	{n} Websäit an der Datei gespäichert.|{n} Websäiten an der Datei gespäichert.
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -370,6 +378,9 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	Adresse fir de Browser
+#. text in categories.rs
+#, machine
+	Addresses separated by spaces, for example a.com *.a.com; empty takes files from every site	Adressen duerch Espaacen getrennt, zum Beispill a.com *.a.com; eidel hëlt Dateien vun all Websäit
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1331,6 +1342,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying yt-dlp...	Lueden an iwwerpréiwen yt-dlp...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	MDM seng eege Kopie gëtt erofgelueden...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1519,9 +1535,13 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Experimentell: baséiert op den ëffentlechen API-Dokumentatioune vun de Servicer a bis elo net mat richtege Konten getest.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	Exportéieren
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	Exportéieren...
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	D'Disponibilitéit vu Manifest 2 Chrome Extensiounen ausbauen
@@ -1996,9 +2016,13 @@
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	Ännerunge vun der Datei-Modifikatiounszäit ignoréieren beim Weiderféiere vun engem Download
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	Importéieren
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	Importéieren...
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	An enger Schlaang
@@ -3868,6 +3892,10 @@
 #, machine
 	Site/path:	Säit/Pad:
 #. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Sites "{category}" takes files from (empty: every site):	Websäiten "{category}" huelen Dateien vun (eidel: all Websäiten):
+#. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	Säiten-Login
@@ -3877,6 +3905,9 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Siten schécken hir bescht Qualitéit als separat Video an Audio. ffmpeg setzt se zesummen an eng Datei, déi iwwerall spillt.
+#. text in categories.rs
+#, machine
+	Sites:	Websäiten:
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -4338,7 +4369,7 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be moved: {error}	D'Datei konnt net geréckelt ginn: {error}
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be read: {error}	D'Datei konnt net gelies ginn: {error}
@@ -4387,7 +4418,7 @@
 #. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
 #, machine
 	The helper program the browsers start is missing	Den Hëllefsprogramm, deen d'Browser starten, feelt
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	D'Lëscht konnt net gespäichert ginn: {error}
@@ -4464,6 +4495,18 @@
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	D'Säit wëll, datt Dir ageloggt sidd, och mat de Cookië vun {browser}. Loggt Iech an {browser} an, a sicht d'Säit dann nach eng Kéier op.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though the browser's extension passed the page's cookies
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with your browser's cookies for this page. Try again later, or from another browser.	D'Websäit seng Bot-Prüfung (Cloudflare) huet yt-dlp refuséiert, och wann Är Browser-Cookies fir dës Säit verfügbar waren. Probéiert et méi spéit nach eng Kéier, oder vun engem anere Browser aus.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though it had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	D'Websäit seng Bot-Prüfung (Cloudflare) huet yt-dlp refuséiert, och wann {browser}s Cookies. Benotzt de Knäppchen „Video eroflueden“ iwwert dem Video an {browser}, oder probéiert d'Säit méi spéit nach eng Kéier.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	D'Websäit seng Bot-Prüfung (Cloudflare) huet yt-dlp refuséiert. Wann d'Säit an Ärem Browser opmaacht, wielt dësen Browser an den Astellungen → Websäiten-Logins → Cookies fir Video-Websäiten a probéiert d'Säit nach eng Kéier, oder benotzt de Knäppchen „Video eroflueden“ iwwert dem Video.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4646,6 +4689,11 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Dëse Video erfuerdert, datt Dir ageloggt sidd. Benotzt de Video eroflueden Knäppchen iwwer dem Video an Ärem Browser, deen Ären Login weidergëtt, oder wielt Äre Browser an Optiounen → Säiten Logins → Cookië fir Videosäiten.
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	Dëse {site}-Link ass eng Websäit, net d'Datei: maacht en an Ärem Browser op an eroflued vun do aus.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine

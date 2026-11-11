@@ -292,6 +292,8 @@
 #. window title in the Options window
 #. window title: the addresses whose downloads stay with the browser
 	Addresses left to the browser	Addresses left to the browser
+#. text in categories.rs
+	Addresses separated by spaces, for example a.com *.a.com; empty takes files from every site	Addresses separated by spaces, for example a.com *.a.com; empty takes files from every site
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 	Advanced / Socks...	Advanced / Socks...
@@ -2878,12 +2880,17 @@
 #. text in the Options window
 	Site/path:	Site/path:
 #. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+	Sites "{category}" takes files from (empty: every site):	Sites "{category}" takes files from (empty: every site):
+#. text in the Options window
 #. tab title: user names and passwords for sites
 	Sites Logins	Sites Logins
 #. text in helpers.rs
 	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.
 #. text in helpers.rs
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.
+#. text in categories.rs
+	Sites:	Sites:
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size

@@ -311,7 +311,7 @@ impl OptionsDialog {
             ctx,
             "options",
             "Mister Download Manager Configuration",
-            [430.0, 506.0],
+            [430.0, 548.0],
             false,
             LIGHT_BG(),
             |ui, o| {
@@ -796,7 +796,7 @@ impl OptionsDialog {
             58.0,
             398.0,
         );
-        group(ui, o, 21.0, 94.0, 380.0, 201.0, "Save To...");
+        group(ui, o, 21.0, 94.0, 380.0, 245.0, "Save To...");
         // i18n: noun: label before the list of categories
         text(
             &p,
@@ -870,16 +870,23 @@ impl OptionsDialog {
         winui::text_in_window(ui, &p, o.x + 31.0, o.y + 178.0, &line, LIGHT_TEXT());
         let types = cat.types_text();
         readonly(ui, r(o, 31.0, 185.0, 362.0, 23.0), &types);
+        // #385: the sites the category is limited to (empty: every site).
+        let sites_line = with_category(crate::i18n::t(
+            "Sites \"{category}\" takes files from (empty: every site):",
+        ));
+        winui::text_in_window(ui, &p, o.x + 31.0, o.y + 220.0, &sites_line, LIGHT_TEXT());
+        let sites = cat.sites().join(" ");
+        readonly(ui, r(o, 31.0, 227.0, 362.0, 23.0), &sites);
         let dir_line = with_category(crate::i18n::t(
             "Default download directory for \"{category}\" category",
         ));
-        winui::text_in_window(ui, &p, o.x + 30.0, o.y + 230.0, &dir_line, LIGHT_TEXT());
+        winui::text_in_window(ui, &p, o.x + 30.0, o.y + 268.0, &dir_line, LIGHT_TEXT());
         // Browse as wide as its label in this language (#192); the box ends 7 px before it.
         let (browse_x, browse_w) =
             winui::buttons_to_right(&p, 392.0, 0.0, &[("Browse", 73.0)], 160.0)[0];
         winui::edit_light_on(
             ui,
-            r(o, 31.0, 239.0, browse_x - 7.0 - 31.0, 23.0),
+            r(o, 31.0, 277.0, browse_x - 7.0 - 31.0, 23.0),
             &mut self.cat_dir,
             true,
             false,
@@ -887,7 +894,7 @@ impl OptionsDialog {
         );
         if winui::button_light(
             ui,
-            r(o, browse_x, 240.0, browse_w, 21.0),
+            r(o, browse_x, 278.0, browse_w, 21.0),
             // i18n: verb: choose a folder
             "Browse",
             ButtonKind::Normal,
@@ -912,28 +919,28 @@ impl OptionsDialog {
         ));
         winui::checkbox_light(
             ui,
-            o + vec2(33.0, 271.0),
+            o + vec2(33.0, 311.0),
             &mut self.s.change_folder_on_last,
             &line,
             true,
         );
         winui::checkbox_light(
             ui,
-            o + vec2(33.0, 306.0),
+            o + vec2(33.0, 348.0),
             &mut self.s.set_creation_date,
             "Set file creation date as provided by the server",
             true,
         );
-        group(ui, o, 21.0, 334.0, 380.0, 118.0, "Temporary directory");
+        group(ui, o, 21.0, 376.0, 380.0, 118.0, "Temporary directory");
         // D-004: no temporary directory — parts are written next to the file, so there is
         // nothing to assemble at the end.
         let none = crate::i18n::t("Not used: file parts are written next to the file");
         let (browse_x, browse_w) =
             winui::buttons_to_right(&p, 390.0, 0.0, &[("Browse", 73.0)], 160.0)[0];
-        readonly(ui, r(o, 30.0, 349.0, browse_x - 6.0 - 30.0, 23.0), none);
+        readonly(ui, r(o, 30.0, 391.0, browse_x - 6.0 - 30.0, 23.0), none);
         winui::button_light(
             ui,
-            r(o, browse_x, 350.0, browse_w, 21.0),
+            r(o, browse_x, 392.0, browse_w, 21.0),
             // i18n: verb: choose a folder
             "Browse",
             ButtonKind::Disabled,
@@ -942,7 +949,7 @@ impl OptionsDialog {
         winui::paragraph(
             &p,
             o.x + 30.0,
-            o.y + 387.0,
+            o.y + 429.0,
             crate::i18n::t(
                 "Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.",
             ),
@@ -953,7 +960,7 @@ impl OptionsDialog {
         // #93: the built-in categories by file type as shipped again (beside OK, on this page).
         if winui::button_light(
             ui,
-            r(o, 21.0, 477.0, 232.0, 21.0),
+            r(o, 21.0, 519.0, 232.0, 21.0),
             "Restore the built-in categories",
             ButtonKind::Normal,
             false,

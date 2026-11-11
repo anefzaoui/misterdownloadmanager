@@ -952,7 +952,7 @@ impl FileInfo {
         let name = from_browser
             .clone()
             .unwrap_or_else(|| mdm_engine::naming::file_name(None, &new.url));
-        let category = Category::of(&name);
+        let category = Category::of_site(&name, new.url.as_str());
         let folder = crate::model::category_folder(category, &downloads, &dirs);
         let save_as = display_path(&mdm_engine::naming::destination(&folder, &name));
         let (probe, info) = match from_browser {
@@ -1047,7 +1047,7 @@ impl FileInfo {
                 let from_browser = crate::debrid::browser_started(&self.context);
                 if !self.edited {
                     let name = mdm_engine::naming::file_name(None, &url);
-                    self.category = Category::of(&name);
+                    self.category = Category::of_site(&name, url.as_str());
                     let dir =
                         crate::model::category_folder(self.category, &self.downloads, &self.dirs);
                     self.save_as = display_path(&mdm_engine::naming::destination(&dir, &name));
@@ -1194,7 +1194,7 @@ impl FileInfo {
                 pi
             });
             if let (Ok(pi), false) = (&res, self.edited) {
-                self.category = Category::of(&pi.file_name);
+                self.category = Category::of_site(&pi.file_name, pi.final_url.as_str());
                 let dir = crate::model::category_folder(self.category, &self.downloads, &self.dirs);
                 self.save_as = display_path(&mdm_engine::naming::destination(&dir, &pi.file_name));
             }

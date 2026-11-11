@@ -95,6 +95,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} izabrano|{n} izabrana|{n} izabrano
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	{n} sajt dodat iz datoteke.|{n} sajta dodat iz datoteke.|{n} sajtova dodat iz datoteke.
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	{n} sajt sačuvan u datoteku.|{n} sajta sačuvano u datoteku.|{n} sajtova sačuvano u datoteku.
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -370,6 +378,9 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	Adrese prepuštene pregledaču
+#. text in categories.rs
+#, machine
+	Addresses separated by spaces, for example a.com *.a.com; empty takes files from every site	Adrese odvojene razmacima, na primer a.com *.a.com; prazno uzima datoteke sa svakog sajta
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1331,6 +1342,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying yt-dlp...	Preuzimanje i verifikacija yt-dlp-a...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	Preuzimam sopstvenu kopiju MDM‑a...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1519,9 +1535,13 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Eksperimentalno: napravljeno na osnovu javne API dokumentacije servisa, još uvek nije potvrđeno na stvarnim nalozima.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	Izvezi
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	Izvezi...
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	Proširi dostupnost Manifest 2 Chrome ekstenzija
@@ -1996,9 +2016,13 @@
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	Zanemari promene vremena izmene datoteke prilikom nastavljanja preuzimanja
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	Uvezi
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	Uvezi...
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	U redu čekanja
@@ -3868,6 +3892,10 @@
 #, machine
 	Site/path:	Sajt/putanja:
 #. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Sites "{category}" takes files from (empty: every site):	Sajtovi "{category}" preuzimaju datoteke sa (prazno: svaki sajt):
+#. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	Prijave za sajtove
@@ -3877,6 +3905,9 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Sajtovi šalju svoj najbolji kvalitet kao zaseban video i audio. ffmpeg ih spaja u jednu datoteku koja se može reprodukovati bilo gde.
+#. text in categories.rs
+#, machine
+	Sites:	Sajtovi:
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -4338,7 +4369,7 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be moved: {error}	Datoteka nije mogla da se premesti: {error}
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be read: {error}	Datoteku nije bilo moguće pročitati: {error}
@@ -4387,7 +4418,7 @@
 #. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
 #, machine
 	The helper program the browsers start is missing	Nedostaje pomoćni program koji pregledači pokreću
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	Lista nije mogla biti sačuvana: {error}
@@ -4464,6 +4495,18 @@
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Sajt zahteva da budete prijavljeni, čak i sa kolačićima pregledača {browser}. Prijavite se na sajt u pregledaču {browser}, pa ponovo potražite stranicu.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though the browser's extension passed the page's cookies
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with your browser's cookies for this page. Try again later, or from another browser.	Provera botova sajta (Cloudflare) je odbila yt-dlp, čak i uz kolačiće vašeg pregledača za ovu stranicu. Pokušajte ponovo kasnije, ili iz drugog pregledača.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though it had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	Provera botova sajta (Cloudflare) je odbila yt-dlp, čak i uz kolačiće iz {browser}. Koristite dugme „Preuzmi video“ iznad videa u {browser}, ili pokušajte ponovo kasnije.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Provera botova sajta (Cloudflare) je odbila yt-dlp. Ako se stranica otvori u vašem pregledaču, izaberite taj pregledač u Opcije → Prijave na sajtove → Kolačići za video sajtove i ponovo učitajte stranicu, ili koristite dugme „Preuzmi video“ iznad videa.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4646,6 +4689,11 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Za ovaj video je potrebno da budete prijavljeni. Koristite dugme Preuzmi video iznad njega u svom pregledaču, koje prosleđuje vašu prijavu, ili izaberite svoj pregledač u Opcije → Prijave na sajtove → Kolačići za video sajtove.
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	Ovaj {site} link je veb stranica, a ne datoteka: otvorite ga u vašem pregledaču i preuzmite odatle
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine

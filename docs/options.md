@@ -39,6 +39,7 @@ See [Browser integration](browser-integration.md).
 - **New** — make your own category. **Edit...** changes the selected one: its name, file types and folder. The built-in categories (Compressed, Documents, Music, Programs, Video) can be renamed, given other file types and deleted like your own; a renamed one keeps its folder. General and Torrents change only their folder.
 - **Restore the built-in categories** — brings the built-in categories back as they came, after you renamed, retyped or deleted them.
 - **Automatically put in "…" category the following file types** — the file types that go to this category.
+- **Sites "…" takes files from (empty: every site)** — limits the category to files from those addresses, so the same file type from another site still goes to its own category. Separate the addresses by spaces; `*.example.com` covers the site and every part of it, and a plain `example.com` is that host alone. Empty takes files from every site.
 - **Default download directory for "…" category** — the category's folder. Type a path or click **Browse**.
 - **Change folder for "…" category on last selected** — when you pick another folder in **Download File Info**, it becomes the category's folder from then on. On by default. (It sets the first state of **Remember this path** in that window.)
 - **Set file creation date as provided by the server** — give finished files the date the server reports, not the date you downloaded them.

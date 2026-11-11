@@ -298,7 +298,9 @@ impl Grabber {
     /// did); "Extract when done" when it holds an archive.
     fn settle(&mut self, k: usize) {
         let links: Vec<&Link> = self.links.iter().filter(|l| l.pkg == k).collect();
-        let mut cats = links.iter().map(|l| Category::of(&l.name));
+        let mut cats = links
+            .iter()
+            .map(|l| Category::of_site(&l.name, l.url.as_str()));
         let first = cats.next().unwrap_or(Category::General);
         let folder = if cats.all(|c| c == first) {
             category_folder(first, &self.downloads, &self.dirs)

@@ -95,6 +95,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} वटा चयन गरिए|{n} वटा चयन गरिए
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	{n} साइट फाइलबाट थपियो।|{n} साइटहरू फाइलबाट थपिए।
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	{n} साइट फाइलमा सुरक्षित गरियो।|{n} साइटहरू फाइलमा सुरक्षित गरिए।
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -370,6 +378,9 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	ब्राउजरमा छोडिएका ठेगानाहरू
+#. text in categories.rs
+#, machine
+	Addresses separated by spaces, for example a.com *.a.com; empty takes files from every site	स्पेसले अलग गरिएका ठेगानाहरू, उदाहरणका लागि a.com *.a.com; खाली भएमा सबै साइटहरूबाट फाइलहरू लिन्छ।
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1331,6 +1342,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying yt-dlp...	yt-dlp डाउनलोड र प्रमाणित गर्दै...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	MDM को आफ्नै प्रतिलिपि डाउनलोड गर्दै...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1519,9 +1535,13 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	प्रयोगात्मक: सेवाहरूको सार्वजनिक API कागजातबाट निर्मित, वास्तविक खाताहरूसँग अझै पुष्टि भएको छैन।
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	निर्यात गर्नुहोस्
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	निर्यात...
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	Manifest 2 Chrome एक्सटेन्सनहरूको उपलब्धता विस्तार गर्नुहोस्
@@ -1996,9 +2016,13 @@
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	डाउनलोड पुनः सुरु गर्दा फाइल परिमार्जन समय परिवर्तनहरूलाई बेवास्ता गर्नुहोस्
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	आयात गर्नुहोस्
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	आयात...
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	एक लाममा
@@ -3868,6 +3892,10 @@
 #, machine
 	Site/path:	साइट/पथ:
 #. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Sites "{category}" takes files from (empty: every site):	साइटहरू "{category}" ले फाइलहरू लिन्छ (खाली: सबै साइट):
+#. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	साइट लगइनहरू
@@ -3877,6 +3905,9 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	साइटहरूले तिनीहरूको उत्कृष्ट गुणस्तरलाई छुट्टै भिडियो र अडियोको रूपमा पठाउँछन्। ffmpeg ले तिनीहरूलाई एक फाइलमा एकसाथ राख्छ जुन जहाँ पनि प्ले हुन्छ।
+#. text in categories.rs
+#, machine
+	Sites:	साइटहरू:
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -4338,7 +4369,7 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be moved: {error}	फाइल सार्न सकिएन: {error}
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be read: {error}	फाइल पढ्न सकिएन: {error}
@@ -4387,7 +4418,7 @@
 #. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
 #, machine
 	The helper program the browsers start is missing	ब्राउजरहरूले सुरु गर्ने सहयोगी कार्यक्रम हराइरहेको छ
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	सूची बचत गर्न सकिएन: {error}
@@ -4464,6 +4495,18 @@
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	साइटले तपाईंलाई साइन इन गर्न चाहन्छ, {browser} को कुकीहरूसँग पनि। {browser} मा साइन इन गर्नुहोस्, त्यसपछि पृष्ठ फेरि हेर्नुहोस्।
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though the browser's extension passed the page's cookies
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with your browser's cookies for this page. Try again later, or from another browser.	साइटको बोट जाँच (Cloudflare) ले yt-dlp लाई अस्वीकार गर्यो, यस पृष्ठको लागि तपाईंको ब्राउजरको कुकीहरू भए पनि। पछि पुन: प्रयास गर्नुहोस्, वा अर्को ब्राउजरबाट।
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though it had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	साइटको बोट जाँच (Cloudflare) ले yt-dlp लाई अस्वीकार गर्यो, {browser} को कुकीहरू भए पनि। {browser} मा भिडियोको माथि डाउनलोड भिडियो बटन प्रयोग गर्नुहोस्, वा पछि पृष्ठ पुन: प्रयास गर्नुहोस्।
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	साइटको बोट जाँच (Cloudflare) ले yt-dlp लाई अस्वीकार गर्यो। यदि पृष्ठ तपाईंको ब्राउजरमा खुल्छ, विकल्पहरू → साइट लगइनहरू → भिडियो साइटहरूको कुकीहरूमा सो ब्राउजर चयन गर्नुहोस् र पृष्ठ फेरि खोल्नुहोस्, वा भिडियोको माथि डाउनलोड भिडियो बटन प्रयोग गर्नुहोस्।
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4646,6 +4689,11 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	यो भिडियोलाई तपाईं साइन इन भएको हुनुपर्छ। आफ्नो ब्राउजरमा भिडियो माथिको डाउनलोड भिडियो बटन प्रयोग गर्नुहोस्, जसले तपाईंको साइन-इन पास गर्छ, वा विकल्पहरू → साइट लगइनहरू → भिडियो साइटहरूको लागि कुकीहरूमा आफ्नो ब्राउजर छान्नुहोस्।
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	यो {site} लिङ्क वेब पृष्ठ हो, फाइल होइन: यसलाई तपाईंको ब्राउजरमा खोल्नुहोस् र त्यहाँबाट डाउनलोड गर्नुहोस्।
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine

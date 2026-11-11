@@ -95,6 +95,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} таңдалды|{n} таңдалды
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	{n} сайт файлдан қосылды.|{n} сайт файлдан қосылды.
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	{n} сайт файлға сақталды.|{n} сайт файлға сақталды.
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -370,6 +378,9 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	Браузерге қалдырылған мекенжайлар
+#. text in categories.rs
+#, machine
+	Addresses separated by spaces, for example a.com *.a.com; empty takes files from every site	Мекенжайлар бос орынмен бөлінеді, мысалы a.com *.a.com; бос болса барлық сайттардан файлдарды алады
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1331,6 +1342,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying yt-dlp...	yt-dlp жүктелуде және тексерілуде...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	MDM-нің өз көшірмесін жүктеп алу...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1519,9 +1535,13 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Эксперименттік: қызметтердің жалпыға қолжетімді API құжаттамасынан құрастырылған, әлі нақты тіркелгілермен расталмаған.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	Экспорттау
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	Экспорттау...
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	Manifest 2 Chrome кеңейтімдерінің қолжетімділігін кеңейту
@@ -1996,9 +2016,13 @@
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	Жүктеп алуды жалғастырғанда файлдың өзгертілген уақытындағы өзгерістерді елемеу
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	Импорттау
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	Импорттау...
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Кезекте
@@ -3868,6 +3892,10 @@
 #, machine
 	Site/path:	Сайт/жол:
 #. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Sites "{category}" takes files from (empty: every site):	"{category}" санатындағы сайттар файлдарды алады (бос: барлық сайттар):
+#. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	Сайттарға кіру
@@ -3877,6 +3905,9 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Сайттар ең жақсы сапаны бөлек бейне және аудио ретінде жібереді. ffmpeg оларды кез келген жерде ойнатылатын бір файлға біріктіреді.
+#. text in categories.rs
+#, machine
+	Sites:	Сайттар:
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -4338,7 +4369,7 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be moved: {error}	Файлды жылжыту мүмкін болмады: {error}
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be read: {error}	Файлды оқу мүмкін болмады: {error}
@@ -4387,7 +4418,7 @@
 #. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
 #, machine
 	The helper program the browsers start is missing	Браузерлер іске қосатын көмекші бағдарлама жоқ
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	Тізімді сақтау мүмкін болмады: {error}
@@ -4464,6 +4495,18 @@
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Сайт {browser} cookie файлдарымен де жүйеге кіруді сұрайды. {browser} ішінде сайтқа кіріп, содан кейін бетті қайта іздеңіз.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though the browser's extension passed the page's cookies
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with your browser's cookies for this page. Try again later, or from another browser.	Сайттың бот тексеруі (Cloudflare) yt-dlp-ны браузердің осы беттегі cookies-терімен де қабылдамады. Кейінірек немесе басқа браузерден қайта көріңіз.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though it had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	Сайттың бот тексеруі (Cloudflare) yt-dlp-ны {browser} браузерінің cookies-терімен де қабылдамады. {browser} браузерінде видеоның үстіне «Видео жүктеп алу» батырмасын қолданыңыз, немесе кейінірек бетті қайта көріңіз.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Сайттың бот тексеруі (Cloudflare) yt-dlp-ны қабылдамады. Бет браузеріңізде ашылса, Options → Sites Logins → Cookies for video sites бөлімінде сол браузерді таңдаңыз және бетті қайта ашыңыз, немесе видеоның үстіне «Видео жүктеп алу» батырмасын қолданыңыз.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4646,6 +4689,11 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Бұл бейнені көру үшін жүйеге кіруіңіз қажет. Жүйеге кіру деректеріңізді беру үшін шолғышыңыздағы «Бейнені жүктеп алу» түймесін пайдаланыңыз немесе Параметрлер → Сайттарға кіру → Бейне сайттарына арналған cookie файлдары бөлімінен шолғышыңызды таңдаңыз.
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	Бұл {site} сілтемесі веб-бет, файл емес: оны браузерде ашып, сол жерден жүктеп алыңыз
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine

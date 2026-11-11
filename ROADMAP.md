@@ -573,6 +573,8 @@ These ship in a later version, when they're ready.
 
 - 🔄 A torrent's upload speed, peers and share ratio as columns in the download list
   ([#357](https://github.com/anefzaoui/misterdownloadmanager/issues/357)): the last one in review
+- 🔄 A Save to category limited to the sites it takes files from
+  ([#385](https://github.com/anefzaoui/misterdownloadmanager/issues/385)): in review
 - 🔄 The browser extension's media list naming a file after its page, as an option: in review
 - 🔄 Malay: a native speaker's check of the menus, toolbar and list columns: in review
 - 🔄 Cancel in Download File Info asking whether the downloads waiting behind it are cancelled

@@ -95,6 +95,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} gekies|{n} gekies
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	{n} werf bygevoeg vanaf die lêer.|{n} werwe bygevoeg vanaf die lêer.
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	{n} werf gestoor in die lêer.|{n} werwe gestoor in die lêer.
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -370,6 +378,9 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	Adresse wat aan die blaaier oorgelaat is
+#. text in categories.rs
+#, machine
+	Addresses separated by spaces, for example a.com *.a.com; empty takes files from every site	Adresse geskei deur spasies, byvoorbeeld a.com *.a.com; leeg neem lêers van elke werf
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1331,6 +1342,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying yt-dlp...	Laai yt-dlp af en verifieer dit...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	Laai MDM se eie kopie af...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1519,9 +1535,13 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Eksperimenteel: gebou op grond van die dienste se openbare API-dokumentasie, nog nie met regte rekeninge bevestig nie.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	Uitvoer
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	Eksporteer...
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	Verleng die beskikbaarheid van Manifest 2 Chrome-uitbreidings
@@ -1996,9 +2016,13 @@
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	Ignoreer lêerwysigingstydveranderinge wanneer 'n aflaai hervat word
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	Invoer
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	Importeer...
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	In 'n tou
@@ -3868,6 +3892,10 @@
 #, machine
 	Site/path:	Werf/pad:
 #. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Sites "{category}" takes files from (empty: every site):	Werwe "{category}" neem lêers van (leeg: elke werf):
+#. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	Werfaanmeldings
@@ -3877,6 +3905,9 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Werwe stuur hul beste kwaliteit as aparte video en oudio. ffmpeg voeg dit saam in een lêer wat enige plek speel.
+#. text in categories.rs
+#, machine
+	Sites:	Werwe:
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -4338,7 +4369,7 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be moved: {error}	Die lêer kon nie geskuif word nie: {error}
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be read: {error}	Die lêer kon nie gelees word nie: {error}
@@ -4387,7 +4418,7 @@
 #. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
 #, machine
 	The helper program the browsers start is missing	Die helperprogram wat die blaaiers begin, ontbreek
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	Die lys kon nie gestoor word nie: {error}
@@ -4464,6 +4495,18 @@
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Die webwerf wil hê jy moet aangemeld wees, selfs met {browser} se koekies. Meld daarby aan in {browser} en soek dan weer die bladsy op.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though the browser's extension passed the page's cookies
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with your browser's cookies for this page. Try again later, or from another browser.	Die werf se botkontrole (Cloudflare) het yt-dlp geweier, selfs met jou blaaier se koekies vir hierdie blad. Probeer later weer, of vanaf ’n ander blaaier.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though it had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	Die werf se botkontrole (Cloudflare) het yt-dlp geweier, selfs met {browser} se koekies. Gebruik die Aflaai video‑knoppie bo die video in {browser}, of probeer die bladsy later weer.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Die werf se botkontrole (Cloudflare) het yt-dlp geweier. As die bladsy in jou blaaier oopmaak, kies daardie blaaier in Opsies → Werf‑aantekeninge → Koekies vir videosites en besoek die bladsy weer, of gebruik die Aflaai‑video‑knoppie bo die video.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4646,6 +4689,11 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Hierdie video vereis dat jy aangemeld is. Gebruik die Laai video af-knoppie daaroor in jou blaaier, wat jou aanmelding deurgee, of kies jou blaaier in Opsies → Werf-aanmeldings → Koekies vir videowebwerwe.
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	hierdie {site} skakel is ’n webblad, nie die lêer nie: maak dit in jou blaaier oop en laai dit vanaf daar af
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine

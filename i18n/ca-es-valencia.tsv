@@ -95,6 +95,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} seleccionat|{n} seleccionats
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	{n} lloc afegit des del fitxer.|{n} llocs afegits des del fitxer.
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	{n} lloc desat al fitxer.|{n} llocs desats al fitxer.
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -370,6 +378,9 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	Adreces que es deixen al navegador
+#. text in categories.rs
+#, machine
+	Addresses separated by spaces, for example a.com *.a.com; empty takes files from every site	Adreces separades per espais, per exemple a.com *.a.com; en blanc s’obtenen fitxers de tots els llocs
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1331,6 +1342,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying yt-dlp...	S'està baixant i verificant yt-dlp...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	Descarregant la còpia pròpia de MDM...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1519,9 +1535,13 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Experimental: creat a partir de la documentació pública de l'API dels serveis, encara no s'ha confirmat amb comptes reals.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	Exporta
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	Exporta...
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	Amplia la disponibilitat de les extensions de Chrome de Manifest 2
@@ -1996,9 +2016,13 @@
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	Ignora els canvis en l’hora de modificació del fitxer en reprendre una baixada
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	Importa
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	Importa...
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	En una cua
@@ -3868,6 +3892,10 @@
 #, machine
 	Site/path:	Lloc/ruta:
 #. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Sites "{category}" takes files from (empty: every site):	Els llocs "{category}" agafen fitxers de (en blanc: tots els llocs):
+#. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	Inicis de sessió de llocs
@@ -3877,6 +3905,9 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Els llocs envien la seua millor qualitat com a vídeo i àudio separats. ffmpeg els uneix en un sol fitxer que es pot reproduir en qualsevol lloc.
+#. text in categories.rs
+#, machine
+	Sites:	Llocs:
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -4338,7 +4369,7 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be moved: {error}	El fitxer no s'ha pogut moure: {error}
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be read: {error}	No s'ha pogut llegir el fitxer: {error}
@@ -4387,7 +4418,7 @@
 #. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
 #, machine
 	The helper program the browsers start is missing	Falta el programa auxiliar que inicien els navegadors
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	No s'ha pogut guardar la llista: {error}
@@ -4464,6 +4495,18 @@
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	El lloc vol que inicieu sessió, fins i tot amb les galetes de {browser}. Inicieu sessió en {browser} i torneu a buscar la pàgina.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though the browser's extension passed the page's cookies
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with your browser's cookies for this page. Try again later, or from another browser.	La comprovació de bot del lloc (Cloudflare) ha refusat yt-dlp, encara amb les galetes del teu navegador per a esta pàgina. Torna a intentar-ho més tard, o des d'un altre navegador.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though it had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	La comprovació de bot del lloc (Cloudflare) ha refusat yt-dlp, encara amb les galetes de {browser}. Utilitza el botó Baixa el vídeo sobre el vídeo a {browser}, o intenta la pàgina de nou més tard.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	La comprovació de bot del lloc (Cloudflare) ha refusat yt-dlp. Si la pàgina s'obre al teu navegador, tria aquest navegador a Opcions → Inicis de llocs → Galetes per a llocs de vídeo i torna a buscar la pàgina, o utilitza el botó Baixa el vídeo sobre el vídeo.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4646,6 +4689,11 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Este vídeo necessita que inicies sessió. Usa el botó Baixa el vídeo que hi ha damunt d'ell en el navegador, que transmet la teua sessió, o tria el navegador en Opcions → Inicis de sessió dels llocs → Galetes per a llocs de vídeo.
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	Aquest enllaç de {site} és una pàgina web, no el fitxer: obre‑la al teu navegador i descarrega‑la des d’allí
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine

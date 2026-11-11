@@ -95,6 +95,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} επιλεγμένο|{n} επιλεγμένα
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	{n} ιστότοπος προστέθηκε από το αρχείο.|{n} ιστότοποι προστέθηκαν από το αρχείο.
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	{n} ιστότοπος αποθηκεύτηκε στο αρχείο.|{n} ιστότοποι αποθηκεύτηκαν στο αρχείο.
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -370,6 +378,9 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	Διευθύνσεις που παραμένουν στο πρόγραμμα περιήγησης
+#. text in categories.rs
+#, machine
+	Addresses separated by spaces, for example a.com *.a.com; empty takes files from every site	Διευθύνσεις χωρισμένες με κενά, π.χ. a.com *.a.com· το κενό παίρνει αρχεία από κάθε ιστότοπο
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1331,6 +1342,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying yt-dlp...	Λήψη και επαλήθευση του yt-dlp...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	Λήψη του αντιγράφου του MDM...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1519,9 +1535,13 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Πειραματικό: δημιουργήθηκε από τη δημόσια τεκμηρίωση API των υπηρεσιών, δεν έχει επιβεβαιωθεί ακόμη με πραγματικούς λογαριασμούς.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	Εξαγωγή
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	Εξαγωγή...
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	Παράταση της διαθεσιμότητας των επεκτάσεων Chrome Manifest 2
@@ -1996,9 +2016,13 @@
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	Παράβλεψη αλλαγών ώρας τροποποίησης αρχείου κατά τη συνέχιση μιας λήψης
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	Εισαγωγή
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	Εισαγωγή...
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Στην ουρά
@@ -3868,6 +3892,10 @@
 #, machine
 	Site/path:	Τοποθεσία/διαδρομή:
 #. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Sites "{category}" takes files from (empty: every site):	Ιστότοποι "{category}" λαμβάνουν αρχεία από (κενό: κάθε ιστότοπος):
+#. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	Συνδέσεις τοποθεσιών
@@ -3877,6 +3905,9 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Οι τοποθεσίες στέλνουν την καλύτερη ποιότητα ως ξεχωριστό βίντεο και ήχο. Το ffmpeg τα ενώνει σε ένα αρχείο που παίζει οπουδήποτε.
+#. text in categories.rs
+#, machine
+	Sites:	Ιστότοποι:
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -4338,7 +4369,7 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be moved: {error}	Το αρχείο δεν μπόρεσε να μετακινηθεί: {error}
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be read: {error}	Το αρχείο δεν ήταν δυνατό να διαβαστεί: {error}
@@ -4387,7 +4418,7 @@
 #. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
 #, machine
 	The helper program the browsers start is missing	Το βοηθητικό πρόγραμμα που εκκινούν τα προγράμματα περιήγησης λείπει
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	Η λίστα δεν ήταν δυνατό να αποθηκευτεί: {error}
@@ -4646,6 +4677,11 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Αυτό το βίντεο απαιτεί να είστε συνδεδεμένοι. Χρησιμοποιήστε το κουμπί Λήψη βίντεο πάνω από αυτό στο πρόγραμμα περιήγησής σας, το οποίο μεταβιβάζει τη σύνδεσή σας, ή επιλέξτε το πρόγραμμα περιήγησής σας στις Επιλογές → Σύνδεση σε ιστότοπους → Cookies για ιστοτόπους βίντεο.
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	Αυτός ο σύνδεσμος {site} είναι μια ιστοσελίδα, όχι το αρχείο: ανοίξτε τον στο πρόγραμμα περιήγησής σας και κάντε λήψη από εκεί.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine

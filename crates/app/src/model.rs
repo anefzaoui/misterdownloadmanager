@@ -25,13 +25,17 @@ pub enum Category {
     Custom(u32),
 }
 
-/// A category the user made: its name, file types (`MP4 R0*`…, as Options lists them) and
-/// folder (None: `Downloads\<name>`).
+/// A category the user made: its name, file types (`MP4 R0*`…, as Options lists them), the
+/// sites it is limited to (Options → Save to → Sites; empty: every site) and folder (None:
+/// `Downloads\<name>`).
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct CustomCategory {
     pub id: u32,
     pub name: String,
     pub types: String,
+    /// Space-separated hosts (`a.com *.a.com`); empty: the category takes files from anywhere.
+    #[serde(default)]
+    pub sites: String,
     pub folder: Option<String>,
 }
 
@@ -97,6 +101,46 @@ fn type_matches(pattern: &str, ext: &str) -> bool {
     match pattern.strip_suffix('*') {
         Some(prefix) => ext.starts_with(prefix),
         None => ext == pattern,
+    }
+}
+
+/// The host an address names, lower-cased: `https://www.A.com:8080/x` → `www.a.com`. None when
+/// the address is not a URL with a host (a magnet link, a plain file name).
+fn host_of(url: &str) -> Option<String> {
+    Url::parse(url).ok().and_then(|u| {
+        u.host_str()
+            .map(|h| h.strip_prefix("www.").unwrap_or(h).to_ascii_lowercase())
+    })
+}
+
+/// Options' Sites box as the matching reads it: one host per word, without the scheme, port,
+/// path or "www." people type by habit (`https://a.com/x a.com` → `a.com a.com`).
+pub fn split_sites(typed: &str) -> Vec<String> {
+    typed
+        .split(|c: char| c.is_whitespace() || c == ',' || c == ';')
+        .map(|s| {
+            let s = s.trim().trim_end_matches('.');
+            let s = s
+                .strip_prefix("https://")
+                .or_else(|| s.strip_prefix("http://"))
+                .unwrap_or(s);
+            let host = s.split(['/', ':']).next().unwrap_or("");
+            host.strip_prefix("www.")
+                .unwrap_or(host)
+                .to_ascii_lowercase()
+        })
+        .filter(|h| !h.is_empty())
+        .collect()
+}
+
+/// Whether `host` is one of the sites a category names: an exact host (`a.com`) or, with a
+/// leading `*`, that host and everything under it (`*.a.com` takes `a.com` and `x.a.com`).
+fn site_matches(pattern: &str, host: &str) -> bool {
+    let p = pattern.trim().trim_end_matches('.').to_ascii_lowercase();
+    let h = host.trim_start_matches("www.").to_ascii_lowercase();
+    match p.strip_prefix("*.") {
+        Some(base) => h == base || h.ends_with(&format!(".{base}")),
+        None => h == p,
     }
 }
 
@@ -256,8 +300,19 @@ impl Category {
     }
 
     /// The category a file name falls into: the user's categories first (that is why they made
-    /// one), then IDM's; Torrents only by source, never by name.
+    /// one), then IDM's; Torrents only by source, never by name. Tests only: the app always has
+    /// the address, so it calls `of_site`.
+    #[cfg(test)]
     pub fn of(file_name: &str) -> Category {
+        Self::of_site(file_name, "")
+    }
+
+    /// The category a download falls into, by its file name and the address it came from: the
+    /// user's categories first, then IDM's. A category that names sites (Options → Save to →
+    /// Sites, #385) takes a file only from those hosts, so a category made for one site leaves
+    /// the same file type from another to the category it would have gone to anyway.
+    pub fn of_site(file_name: &str, url: &str) -> Category {
+        let host = host_of(url);
         let Some((_, ext)) = file_name.rsplit_once('.') else {
             return Category::General;
         };
@@ -272,8 +327,33 @@ impl Category {
         custom
             .into_iter()
             .chain(Category::BUILT_IN.into_iter().filter(|c| !c.deleted()))
-            .find(|c| c.extensions().iter().any(|p| type_matches(p, &ext)))
+            .find(|c| {
+                c.extensions().iter().any(|p| type_matches(p, &ext)) && c.site_ok(host.as_deref())
+            })
             .unwrap_or(Category::General)
+    }
+
+    /// The sites this category is limited to, as Options writes them; empty: every site. The
+    /// built-in ones have none (their file types are all they look at).
+    pub fn sites(&self) -> Vec<String> {
+        match self {
+            Category::Custom(id) => custom(*id)
+                .map(|c| split_sites(&c.sites))
+                .unwrap_or_default(),
+            _ => Vec::new(),
+        }
+    }
+
+    /// Whether a download from `host` (the address's host, when it has one) may go to this
+    /// category. A category that names no site takes files from anywhere; one that names sites
+    /// cannot take a file whose address has no host (a magnet link, say).
+    fn site_ok(&self, host: Option<&str>) -> bool {
+        let sites = self.sites();
+        if sites.is_empty() {
+            return true;
+        }
+        let Some(host) = host else { return false };
+        sites.iter().any(|p| site_matches(p, host))
     }
 
     /// Default folder: `Downloads\` for General, `Downloads\<Category>\` otherwise (a user's
@@ -771,7 +851,7 @@ impl Item {
                 // The guess's category was the address's: the real name's now (the file stays
                 // in the folder it was started in).
                 if guessed {
-                    self.category = Category::of(&self.file_name);
+                    self.category = Category::of_site(&self.file_name, self.url.as_str());
                 }
             }
         }
@@ -1201,6 +1281,32 @@ mod tests {
         let mut file = video_item(Some(100), 100, Status::Downloading);
         file.video = None;
         assert_eq!(file.fraction(), Some(1.0));
+    }
+
+    /// #385: the Sites box reads as hosts, and a site pattern matches a host.
+    #[test]
+    fn typed_sites_are_hosts_and_match() {
+        assert_eq!(
+            split_sites("https://www.a.com/x  b.com:8080  *.c.com"),
+            ["a.com", "b.com", "*.c.com"]
+        );
+        assert!(site_matches("a.com", "a.com"));
+        assert!(
+            site_matches("a.com", "www.a.com"),
+            "the habit of typing www"
+        );
+        assert!(
+            !site_matches("a.com", "x.a.com"),
+            "an exact host is just that host"
+        );
+        assert!(site_matches("*.a.com", "x.a.com"));
+        assert!(site_matches("*.a.com", "a.com"), "the bare host too");
+        assert!(!site_matches("*.a.com", "a.com.evil"));
+        assert_eq!(
+            host_of("https://www.A.com:8080/x").as_deref(),
+            Some("a.com")
+        );
+        assert_eq!(host_of("magnet:?xt=urn:btih:x"), None);
     }
 
     #[test]
