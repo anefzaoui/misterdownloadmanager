@@ -1874,11 +1874,23 @@ fn is_snap(p: &Path) -> bool {
 }
 
 /// Open `url` in the browser whose program is `program` (from `browsers`).
+///
+/// Starting a browser can block briefly while the desktop launches it (or checks the app).
+/// This is called from the extension dialog's UI callback, so keep process creation off the
+/// window's thread, as on Windows (#609).
 pub fn open_in(program: &Path, url: &str) {
-    if cfg!(target_os = "macos") {
-        spawn(Command::new("open").arg("-a").arg(program).arg(url));
-    } else {
-        spawn(Command::new(program).arg(url));
+    let (program, url) = (program.to_owned(), url.to_owned());
+    if let Err(e) = std::thread::Builder::new()
+        .name("mdm-open-browser".into())
+        .spawn(move || {
+            if cfg!(target_os = "macos") {
+                spawn(Command::new("open").arg("-a").arg(program).arg(url));
+            } else {
+                spawn(Command::new(program).arg(url));
+            }
+        })
+    {
+        tracing::warn!("could not start browser launch thread: {e}");
     }
 }
 
