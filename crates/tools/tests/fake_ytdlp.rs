@@ -155,6 +155,8 @@ fn fake_ytdlp() -> ExitCode {
         println!("MDMPOST ffmpeg");
         std::thread::sleep(Duration::from_millis(500));
         println!("MDMP 2048 4096 NA 0");
+        // Keep the resumed-transfer state observable before the fake process exits.
+        std::thread::sleep(Duration::from_millis(200));
     }
     // #79: it falls over mid-way, leaving a helper running (Windows: the launcher's child).
     if mode == "crash" {
@@ -409,13 +411,21 @@ fn job_checks(me: &Path) {
     )
     .expect("started");
     let end = Instant::now() + Duration::from_secs(20);
-    let (mut saw_processing, mut saw_running_after_processing) = (false, false);
+    let (mut processing_phases, mut in_processing, mut resumed_after_second) = (0, false, false);
     let p = loop {
         let p = job.progress();
-        if p.state == State::Processing {
-            saw_processing = true;
-        } else if saw_processing && p.state == State::Running {
-            saw_running_after_processing = true;
+        match &p.state {
+            State::Processing if !in_processing => {
+                processing_phases += 1;
+                in_processing = true;
+            }
+            State::Running if in_processing => {
+                if processing_phases >= 2 {
+                    resumed_after_second = true;
+                }
+                in_processing = false;
+            }
+            _ => {}
         }
         if !matches!(&p.state, State::Running | State::Processing) {
             break p;
@@ -426,13 +436,13 @@ fn job_checks(me: &Path) {
         );
         std::thread::sleep(Duration::from_millis(20));
     };
-    assert!(
-        saw_processing,
-        "post-process hook was not reflected in progress"
+    assert_eq!(
+        processing_phases, 2,
+        "expected separate pre-download and post-download processing phases"
     );
     assert!(
-        saw_running_after_processing,
-        "download progress did not leave Processing"
+        resumed_after_second,
+        "download progress did not resume after the post-download processor"
     );
     assert!(
         matches!(&p.state, State::Done(_)),
