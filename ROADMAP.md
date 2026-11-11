@@ -503,6 +503,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows: MDM starts on a PC without Microsoft's Visual C++ runtime, or with the wrong copy of it
+  (0xc000007b at setup's end): the runtime is inside MDM's programs
+  ([#785](https://github.com/anefzaoui/misterdownloadmanager/issues/785))
 - ✅ Sites behind Akamai's bot check (a 403 page for MDM, the file for a browser) download, through the
   browser-like connection ([#771](https://github.com/anefzaoui/misterdownloadmanager/issues/771))
 - ✅ Crash and freeze reports no longer have their log's end filled with warnings about the
