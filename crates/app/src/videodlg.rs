@@ -325,18 +325,22 @@ impl VideoDialog {
     pub fn pick(&mut self, prefix: &str) {
         let prefix = prefix.to_lowercase();
         let found = self.video.as_ref().and_then(|(_, choices)| {
-            choices.iter().position(|c| {
+            let i = choices.iter().position(|c| {
                 let label = c.label.to_lowercase();
                 label.starts_with(&prefix)
                     || label
                         .strip_prefix("audio only ")
                         .is_some_and(|l| l.starts_with(&prefix))
-            })
+            })?;
+            let row = choice_rows(choices)
+                .iter()
+                .position(|r| *r == Row::Choice(i));
+            Some((i, row.unwrap_or(i)))
         });
-        if let Some(i) = found {
+        if let Some((i, row)) = found {
             self.chosen = i;
             // The list shows 8 rows.
-            self.rows.show_row(i, 8);
+            self.rows.show_row(row, 8);
             self.name_from_choice();
         }
     }
@@ -813,18 +817,41 @@ impl VideoDialog {
             let list = r(o, 11.0, 94.0, 478.0, 150.0);
             let mut picked = None;
             let choices = self.video.as_ref().map_or(&[][..], |(_, c)| c.as_slice());
-            self.rows.selected = Some(self.chosen).filter(|c| *c < choices.len());
+            // The video choices under a "Video" heading, the audio ones under "Audio".
+            let rows = choice_rows(choices);
+            let at = rows.iter().position(|r| *r == Row::Choice(self.chosen));
+            self.rows.selected = at;
             // i18n: what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
             self.rows.name = crate::i18n::t("Quality");
             let ev = winui::row_list(
                 ui,
                 "video-choices",
                 list,
-                choices.len(),
+                rows.len(),
                 17.0,
                 &mut self.rows,
                 |ui, clip, i, row, look| {
-                    let c = &choices[i];
+                    let c = match rows[i] {
+                        Row::Choice(c) => &choices[c],
+                        Row::Head(audio) => {
+                            let head = if audio {
+                                // i18n: heading over the sound-only choices in Download video's list of formats
+                                crate::i18n::t("Audio")
+                            } else {
+                                // i18n: heading over the video choices (1080p, 720p…) in Download video's list of formats
+                                crate::i18n::t("Video")
+                            };
+                            text(
+                                clip,
+                                row.left() + 4.0,
+                                row.top() + 12.0,
+                                head,
+                                winui::MUTED(),
+                            );
+                            look.name = head.to_owned();
+                            return;
+                        }
+                    };
                     // The icon of the file this choice gives, then the format ("1080p mp4, 60
                     // fps", left to right); its size at the trailing edge.
                     let file = format!("video.{}", c.ext);
@@ -836,7 +863,7 @@ impl VideoDialog {
                         pos2(row.left() + 4.0, row.top()),
                         16.0,
                     );
-                    let label = choice_label(&c.label);
+                    let label = section_label(&c.label);
                     let x = row.left() + 4.0 + crate::fileicons::INDENT;
                     text(clip, x, row.top() + 12.0, &label, look.ink);
                     let size = c
@@ -853,17 +880,22 @@ impl VideoDialog {
                 },
             );
             if ev.focused
-                && self.rows.type_to(ui, "video-choices", choices.len(), |i| {
-                    choices[i].label.clone()
-                })
+                && self
+                    .rows
+                    .type_to(ui, "video-choices", rows.len(), |i| match rows[i] {
+                        // As shown: typing "mp3" finds the MP3 choices.
+                        Row::Choice(c) => section_label(&choices[c].label),
+                        Row::Head(_) => String::new(),
+                    })
             {
                 picked = self.rows.selected;
             }
             if let Some(i) = ev.picked {
                 picked = Some(i);
             }
-            if let Some(i) = picked {
-                self.chosen = i;
+            // A heading picked (a click, Up or Down onto it): the choice past it.
+            if let Some(c) = picked.and_then(|i| choice_at(&rows, i, at)) {
+                self.chosen = c;
                 self.name_from_choice();
             }
             // Wrapped in the empty list (#317).
@@ -1321,6 +1353,65 @@ fn lookup_error(e: &str, sent: bool, store: Option<&mdm_tools::proc::BrowserCook
     crate::i18n::t(plain).to_owned()
 }
 
+/// One row of Download video's list of formats: a section's heading (true: Audio), or a choice
+/// (its index in the choices).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Row {
+    Head(bool),
+    Choice(usize),
+}
+
+/// The list's rows: the video choices under a Video heading, then the audio ones under an Audio
+/// heading; a section without choices has no heading.
+fn choice_rows(choices: &[Choice]) -> Vec<Row> {
+    let audio = |c: &Choice| c.label.starts_with(mdm_tools::resolve::AUDIO_ONLY);
+    let mut rows = Vec::with_capacity(choices.len() + 2);
+    for section in [false, true] {
+        let mut head = Some(Row::Head(section));
+        for (i, _) in choices
+            .iter()
+            .enumerate()
+            .filter(|(_, c)| audio(c) == section)
+        {
+            rows.extend(head.take());
+            rows.push(Row::Choice(i));
+        }
+    }
+    rows
+}
+
+/// The choice row `i` stands for: its own, or for a heading the nearest choice the way the
+/// selection moved from row `from` (so Up and Down pass over headings, Home lands on a choice).
+fn choice_at(rows: &[Row], i: usize, from: Option<usize>) -> Option<usize> {
+    let choice = |r: &Row| match r {
+        Row::Choice(c) => Some(*c),
+        Row::Head(_) => None,
+    };
+    let after = rows.get(i..)?.iter().find_map(choice);
+    let before = rows[..i].iter().rev().find_map(choice);
+    if from.is_some_and(|f| f > i) {
+        before.or(after)
+    } else {
+        after.or(before)
+    }
+}
+
+/// A choice's label in its section of Download video's list: an audio choice without the "Audio
+/// only" its heading already says ("MP3 320 kbps", "Original M4A"), a video choice as it is.
+fn section_label(label: &str) -> String {
+    if let Some(kind) = label.strip_prefix(mdm_tools::resolve::AUDIO_ORIGINAL) {
+        return crate::i18n::fmt(
+            // i18n: a choice under the Audio heading in Download video: the site's own sound file as it is (not converted); {type} is WEBM, M4A…
+            crate::i18n::t("Original {type}"),
+            &[("type", &crate::i18n::ltr(kind.trim()))],
+        );
+    }
+    let kind = label
+        .strip_prefix(mdm_tools::resolve::AUDIO_ONLY)
+        .unwrap_or(label);
+    crate::i18n::ltr(kind.trim())
+}
+
 /// A choice's label in the user's language: the audio choice's words translated, the rest (a
 /// resolution, a type) as they are, kept left to right.
 pub(crate) fn choice_label(label: &str) -> String {
@@ -1344,6 +1435,60 @@ pub(crate) fn choice_label(label: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// The list of formats in two sections: Video, then Audio; a heading is never a choice.
+    #[test]
+    fn the_formats_are_listed_under_video_and_audio_headings() {
+        let c = |label: &str| Choice {
+            label: label.into(),
+            selector: String::new(),
+            ext: "mp4".into(),
+            size: None,
+        };
+        let both = [
+            c("1080p MP4"),
+            c("720p MP4"),
+            c("Audio only original M4A"),
+            c("Audio only MP3 VBR"),
+        ];
+        let rows = choice_rows(&both);
+        use Row::{Choice as C, Head as H};
+        assert_eq!(rows, [H(false), C(0), C(1), H(true), C(2), C(3)]);
+        // A section without choices has no heading.
+        assert_eq!(choice_rows(&both[..2]), [H(false), C(0), C(1)]);
+        assert_eq!(choice_rows(&both[2..]), [H(true), C(0), C(1)]);
+        assert!(choice_rows(&[]).is_empty());
+        // A choice is itself; a heading, the choice the way the selection moved.
+        assert_eq!(choice_at(&rows, 4, Some(4)), Some(2));
+        assert_eq!(
+            choice_at(&rows, 3, Some(2)),
+            Some(2),
+            "Down onto Audio: its first choice"
+        );
+        assert_eq!(
+            choice_at(&rows, 3, Some(4)),
+            Some(1),
+            "Up onto Audio: the last video"
+        );
+        assert_eq!(
+            choice_at(&rows, 0, Some(1)),
+            Some(0),
+            "Home, or Up at the top: the first"
+        );
+        assert_eq!(choice_at(&rows, 0, None), Some(0));
+        assert_eq!(choice_at(&rows, 9, None), None);
+        // Each labelled for its section: no "Audio only" under the Audio heading.
+        let ltr = crate::i18n::ltr;
+        assert_eq!(section_label("1080p MP4"), ltr("1080p MP4"));
+        assert_eq!(
+            section_label("Audio only MP3 320 kbps"),
+            ltr("MP3 320 kbps")
+        );
+        assert_eq!(
+            section_label("Audio only original M4A"),
+            format!("Original {}", ltr("M4A"))
+        );
+    }
 
     /// #359: a Dailymotion player embedded in another site is looked up at the video's own page,
     /// without that site as its Referer (Dailymotion answers 403); any other page keeps it.

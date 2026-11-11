@@ -522,6 +522,13 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 Facebook from the browser's button: a video in the signed-in feed, a reel or a group post
+  reaches yt-dlp as its own address, not the feed's; the button is smaller, and an older copy of
+  the extension no longer draws a second one over it: in review
+- 🔄 Windows: yt-dlp's folder build, which starts about three times faster than the one-file
+  program, so a video look-up takes about a second and a half less: in review, still to build
+- 🔄 Download video: the formats listed under a Video and an Audio heading: in review, still to
+  build
 - 🔄 Download video: a sound-only choice (MP3, a playlist as sound) saved in the Music folder and
   listed under Music ([#611](https://github.com/anefzaoui/misterdownloadmanager/issues/611)):
   in review
