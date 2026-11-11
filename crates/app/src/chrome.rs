@@ -1089,7 +1089,11 @@ fn menu_viewport(kind: MenuKind, id: &str, depth: usize, bar_shared: bool) -> eg
 /// The levels whose immediate viewports were actually opened by popup_level. Never manufacture
 /// an id for a submenu that was not drawn: egui creates a viewport when it is addressed (#615).
 fn menu_depths_to_close(opened: &[usize], first_depth: usize) -> Vec<usize> {
-    let mut depths: Vec<_> = opened.iter().copied().filter(|d| *d >= first_depth).collect();
+    let mut depths: Vec<_> = opened
+        .iter()
+        .copied()
+        .filter(|d| *d >= first_depth)
+        .collect();
     depths.sort_unstable_by(|a, b| b.cmp(a));
     depths.dedup();
     depths
