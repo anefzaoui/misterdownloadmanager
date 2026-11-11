@@ -156,6 +156,9 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name ends with a period
+	A file name cannot end with a dot	A file name cannot end with a dot
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
@@ -178,6 +181,9 @@
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	a server on this computer sent the download elsewhere, which would not go through {adapter}
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box for a single-file torrent
+	A single-file torrent keeps its name	A single-file torrent keeps its name
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 	A tracker on this computer or the local network is never contacted: {line}	A tracker on this computer or the local network is never contacted: {line}
@@ -442,6 +448,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Austria	Austria
+#. checkbox in the Options window; text in the Options window
+#. checkbox: the User-Agent is the default browser's, which MDM finds itself
+	Automatic	Automatic
 #. text in remote.rs
 #. remote control page (on a phone): category choice: the category follows the file's type
 	Automatic (by file type)	Automatic (by file type)
@@ -724,6 +733,9 @@
 #. text in the Options window
 #. Options → DNS settings: NextDNS's own configuration ID (optional)
 	Configuration ID:	Configuration ID:
+#. text in a download's progress window
+#. verb: button that saves the deferred rename in the progress window
+	Confirm	Confirm
 #. text in the Options window
 	Confirm before deleting downloads	Confirm before deleting downloads
 #. window title in a dialog box
@@ -1776,6 +1788,9 @@
 #. text in crashui.rs
 #. crash report window: looking on GitHub for an issue about the same problem
 	Looking for this problem on GitHub…	Looking for this problem on GitHub…
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+	Looking for your default browser...	Looking for your default browser...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Looking the page up...	Looking the page up...
@@ -2586,6 +2601,9 @@
 #. remote control page (on a phone): question before removing a download; {name} its file name
 #. {name} = a file name (keep the braces as they are)
 	Remove {name} from the list?	Remove {name} from the list?
+#. text in a download's progress window
+#. noun: label before the deferred new file or folder name in the progress window
+	Rename	Rename
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 	Replace asterisk to	Replace asterisk to
@@ -2685,6 +2703,9 @@
 #. Link grabber: the folder the package's files go to (a label before its box)
 #. RSS feeds window, Download rules: the folder the rule's torrents go to
 	Save to:	Save to:
+#. text in a download's progress window
+#. status shown in green beside the Rename box once the new name is saved
+	Saved	Saved
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 	Saved in	Saved in
@@ -2803,6 +2824,10 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
 	Sharing stopped: the share ratio reached {ratio}	Sharing stopped: the share ratio reached {ratio}
+#. message or event log entry in the main window
+#. event log entry on a finished torrent when re-attaching it to keep sharing failed; {error} = why
+#. {error} = an error message (keep the braces as they are)
+	Sharing stopped: {error}	Sharing stopped: {error}
 #. text in the download list
 	Show	Show
 #. message or event log entry in the main window
@@ -2944,6 +2969,9 @@
 	Speed Limiter	Speed Limiter
 #. window title in a dialog box
 	Speed Limiter settings	Speed Limiter settings
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
+	Split archive volumes keep their names for extraction	Split archive volumes keep their names for extraction
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Sri Lanka	Sri Lanka
@@ -3258,6 +3286,9 @@
 	The list could not be saved: {error}	The list could not be saved: {error}
 #. text in whereis.rs
 	the local network	the local network
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name exceeds the length limit
+	The name is too long	The name is too long
 #. text in errors.rs; text in torrent downloads
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 	the network adapter {adapter} is not connected	the network adapter {adapter} is not connected
@@ -3368,6 +3399,8 @@
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 	This category or queue holds no downloads yet.	This category or queue holds no downloads yet.
+#. text in a download's progress window
+	This character is not allowed in a file name	This character is not allowed in a file name
 #. text in the Options window
 #. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
 	This code can't be used any more.	This code can't be used any more.
@@ -3400,6 +3433,12 @@
 	This file is too large to be a torrent.	This file is too large to be a torrent.
 #. text in a dialog box
 	This folder does not exist:	This folder does not exist:
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the folder already holds files this download did not write
+	This folder holds files from outside this download	This folder holds files from outside this download
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the folder holds another download or is a save/category folder
+	This folder is shared with another download or save folder	This folder is shared with another download or save folder
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there
@@ -3420,6 +3459,9 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 	This magnet link names no trackers and the DHT is off, so no peer can be found.	This magnet link names no trackers and the DHT is off, so no peer can be found.
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name is a reserved device name on Windows (CON, NUL, COM1…)
+	This name is reserved by Windows	This name is reserved by Windows
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 	This needs ffmpeg	This needs ffmpeg
@@ -3883,6 +3925,11 @@
 #. text in extension.rs
 #. a row of the browser extension's window when no browser was found by name
 	Your browser	Your browser
+#. text in the Options window
+	Your default browser isn't one MDM knows: a current Chrome's User-Agent	Your default browser isn't one MDM knows: a current Chrome's User-Agent
+#. text in the Options window
+#. tooltip; {browser} is a browser and its version, e.g. "Brave 157"
+	Your default browser's User-Agent: {browser}	Your default browser's User-Agent: {browser}
 #. text in the settings
 #. Options → DNS: the name of a DNS the user typed in, in messages: "your DNS (DNS over TLS)"
 	your DNS ({how})	your DNS ({how})
@@ -3969,6 +4016,10 @@
 #. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 	{done} of {size}	{done} of {size}
+#. text in deferred_rename.rs
+#. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
+#. {error} = an error message (keep the braces as they are)
+	{error} (left as {path}: {rollback_error})	{error} (left as {path}: {rollback_error})
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 	{ext} File	{ext} File
@@ -4305,6 +4356,9 @@ extension	Open its address once and accept its certificate, then enter a code fr
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 extension	Open Mister Download Manager	Open Mister Download Manager
+#. text in the browser extension
+#. shown briefly on the download button over a video in a feed (a social site's home page, a timeline) when nothing in the feed gives that video's own address, so nothing was sent: the user should open the post the video belongs to and click the button on that page; short
+extension	Open the post, then use the button there	Open the post, then use the button there
 #. text in the browser extension
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it

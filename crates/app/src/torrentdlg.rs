@@ -84,6 +84,8 @@ pub struct TorrentDialog {
     /// A .torrent on the web (#39, Add URL or the browser): the request it is fetched with
     /// (the browser's cookies). One typed in the box goes as MDM's own downloads do.
     remote: Option<crate::torrents::Remote>,
+    /// The clipboard's magnet link, read off the window's thread (#661).
+    clip: crate::clipboard::Prefill,
 }
 
 /// The category of a torrent: its largest file's.
@@ -206,7 +208,7 @@ impl TorrentDialog {
 
     /// `source`: a magnet link, a .torrent path or a .torrent's web address (`remote`: how to
     /// ask for it) to look up at once, or None (the clipboard's magnet, if any, is offered and
-    /// looked up).
+    /// looked up on the frame it comes: the clipboard is read off the window's thread).
     #[allow(clippy::too_many_arguments)]
     pub fn new(
         source: Option<String>,
@@ -218,12 +220,12 @@ impl TorrentDialog {
         rt: &tokio::runtime::Handle,
         ctx: &egui::Context,
     ) -> Self {
-        let source = source.unwrap_or_else(|| {
-            crate::clipboard_text()
-                .filter(|t| Source::magnet(t).is_some())
-                .map(|t| t.trim().to_owned())
-                .unwrap_or_default()
-        });
+        let clip = if source.is_none() {
+            crate::clipboard::Prefill::ask()
+        } else {
+            Default::default()
+        };
+        let source = source.unwrap_or_default();
         let folder = category_folder(Category::Torrents, &downloads, &category_dirs);
         let mut d = TorrentDialog {
             source,
@@ -250,11 +252,22 @@ impl TorrentDialog {
             asking: None,
             asking_files: None,
             remote,
+            clip,
         };
         if !d.source.is_empty() {
             d.look_up(rt, ctx);
         }
         d
+    }
+
+    /// The clipboard's magnet link in the box, when it holds one and the box is still empty
+    /// (nothing typed meanwhile); whether it was put there (and is to be looked up).
+    fn fill_from_clipboard(&mut self, clip: &str) -> bool {
+        let fill = self.source.is_empty() && Source::magnet(clip).is_some();
+        if fill {
+            clip.trim().clone_into(&mut self.source);
+        }
+        fill
     }
 
     fn look_up(&mut self, rt: &tokio::runtime::Handle, ctx: &egui::Context) {
@@ -343,6 +356,11 @@ impl TorrentDialog {
         ctx: &egui::Context,
         rt: &tokio::runtime::Handle,
     ) -> Outcome<TorrentAdd> {
+        if let Some(clip) = self.clip.take()
+            && self.fill_from_clipboard(&clip)
+        {
+            self.look_up(rt, ctx);
+        }
         let looked = self.lookup.as_ref().and_then(|s| s.lock().unwrap().take());
         if let Some(res) = looked {
             self.lookup = None;
