@@ -28,6 +28,28 @@ pub mod rename_plugin;
 pub mod trackers;
 pub use names::{UnsafeName, check as check_names};
 
+/// Check that a single file or folder name (one path component, with no `/` or `\`) is safe to
+/// write on this system (`names::check`). When `folder_rules` is true, characters and trailing
+/// dots that [`Meta::folder_in`] would otherwise rewrite are also refused so the chosen folder
+/// name matches what is created on disk.
+pub fn check_single_name(name: &str, folder_rules: bool) -> Result<(), UnsafeName> {
+    if folder_rules {
+        if name.chars().any(|c| r#":<>"|?*"#.contains(c)) {
+            return Err(UnsafeName {
+                path: name.to_owned(),
+                why: "a character Windows doesn't allow in a name",
+            });
+        }
+        if name.ends_with(['.', ' ']) {
+            return Err(UnsafeName {
+                path: name.to_owned(),
+                why: "a name ending with a dot or a space",
+            });
+        }
+    }
+    names::check([[name.to_owned()]])
+}
+
 /// Check that a relative file or folder path has no root, prefix, `.` or `..`, and passes
 /// [`names::check`] for this system.
 pub fn check_relative_path(path: &Path) -> Result<(), UnsafeName> {
