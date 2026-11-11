@@ -25,6 +25,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Videos on Wikimedia Commons can be looked up again: MDM said "it gave no video information" (in the Download video window too) for yt-dlp's answer there, which marks the page's kind and one of its sizes in a way MDM didn't read.
 - The Download video button no longer comes back when you play or pause the video: only moving the pointer over it shows it. It fades 1.5 seconds after the pointer stops (2.6 before), and at once when the pointer leaves the video (part of [#741](https://github.com/anefzaoui/misterdownloadmanager/issues/741)).
 - **Sizes for a stream's qualities:** HLS qualities showed no size; each is now estimated from its bitrate and the video's length, in the Download video window and in the download list.
 - **A video already in the list is no longer downloaded again without a word:** picking the same quality of the same video, from the menu over a video or the Download video window, now follows Options → Downloads ("If a duplicate download link is added": ask, a numbered name, overwrite, or open / resume the one there). Another quality of the same video is not a duplicate.
