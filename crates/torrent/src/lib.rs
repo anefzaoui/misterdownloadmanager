@@ -520,7 +520,8 @@ fn saved_port(state_dir: &Path) -> Option<u16> {
 
 /// Where the session listens, in MDM's log (#650): a listener on every address is one IPv6
 /// socket that takes IPv4 too, which Windows' `netstat -p tcp` (IPv4 only) doesn't list.
-fn log_network(session: &Session) {
+/// `saved_nodes`: the DHT started from the nodes the last session saved (`dht.json`).
+fn log_network(session: &Session, saved_nodes: bool) {
     match session.listen_addr() {
         Some(a) if a.ip().is_unspecified() && a.is_ipv6() => tracing::info!(
             "torrents: listening for peers on TCP port {} (every address, IPv4 and IPv6: {a})",
@@ -530,11 +531,14 @@ fn log_network(session: &Session) {
         None => tracing::info!("torrents: not listening for peers (Torrent settings or a proxy)"),
     }
     if let Some(dht) = session.get_dht() {
-        let (v4, v6) = dht.with_routing_tables(|v4, v6| (v4.len(), v6.len()));
         tracing::info!(
-            "torrents: DHT on UDP {}, {} nodes from the last session",
+            "torrents: DHT on UDP {}, starting from {}",
             dht.listen_addr(),
-            v4 + v6
+            if saved_nodes {
+                "the nodes the last session saved, and the bootstrap nodes"
+            } else {
+                "the bootstrap nodes"
+            }
         );
     }
 }
@@ -642,6 +646,7 @@ impl Torrents {
             ..Default::default()
         };
         prepare_saved(&cfg.state_dir.join("session"), proxied);
+        let saved_nodes = dht_on && cfg.state_dir.join("dht.json").is_file();
         let output = cfg.state_dir.join("unsorted");
         let port = cfg.port.or(saved).unwrap_or(0);
         let session = match Session::new_with_opts(output.clone(), opts(port)).await {
@@ -658,7 +663,7 @@ impl Torrents {
         // With its causes: "error starting listeners: error binding: …" says why (an adapter's
         // address gone, #143).
         .map_err(|e| engine(format!("{e:#}")))?;
-        log_network(&session);
+        log_network(&session, saved_nodes);
         if let (true, None, Some(addr)) = (listening, cfg.port, session.listen_addr())
             && saved != Some(addr.port())
         {
