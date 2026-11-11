@@ -1820,6 +1820,35 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   assert.deepEqual(steps(calls), []);
   ok("#208 Firefox: a download caught from its answer, before the browser's dialog");
 }
+// #607: Firefox's originUrl identifies the actual page containing the clicked download link.
+// The Referer header may be reduced to the site's homepage; Refresh download address must reopen
+// the page that initiated this request, not that less precise header value.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true });
+  load(api, true);
+  await settle();
+  listeners.beforeSendHeaders({
+    requestId: "r2",
+    method: "GET",
+    url: "https://dl.test/get?id=2",
+    originUrl: "https://site.test/download-page",
+    requestHeaders: [{ name: "Referer", value: "https://site.test/" }],
+  });
+  await held(
+    listeners,
+    answer(
+      "https://dl.test/get?id=2",
+      {
+        "Content-Type": "application/octet-stream",
+        "Content-Disposition": "attachment; filename=package.zip",
+        "Content-Length": "4096",
+      },
+      { requestId: "r2" },
+    ),
+  );
+  assert.equal(natives(calls)[0].referrer, "https://site.test/download-page");
+  ok("#607 Firefox: the download's source page comes from originUrl");
+}
 // #447: Firefox hands a header's value over byte for byte, each byte one character. A name sent as
 // raw UTF-8 is read as UTF-8; bytes that aren't valid UTF-8 (ISO-8859-1) and a real percent sign stay.
 {
