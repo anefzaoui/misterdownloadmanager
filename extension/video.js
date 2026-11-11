@@ -25,8 +25,6 @@
   const IDLE_MS = 2600;
   const INSET = 10;
   const DRAG_PX = 4;
-  // Our app icon (extension/icons/icon-48.png, as data: no extension file is exposed to pages).
-  const LOGO = "data:image/png;base64,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";
 
   const t = (key, ...subs) => ext.i18n.getMessage(key, subs) || FALLBACK[key] || key;
   const FALLBACK = {
@@ -68,6 +66,53 @@
   function videoPage(v) {
     const watch = (id) =>
       /^[\w-]+$/.test(id || "") ? `https://www.youtube.com/watch?v=${id}` : null;
+    // The one video the card around the player links to (a feed, a search, a playlist). Only a
+    // container that names exactly one video counts — walking on into the page's column would
+    // find some other card's link and send the wrong video, which is worse than sending none.
+    const inCard = (selector, pick, depth = 12) => {
+      for (let node = v, i = 0; node && i < depth; i += 1, node = node.parentElement) {
+        const found = new Set();
+        for (const a of node.querySelectorAll?.(selector) || []) {
+          const got = pick(new URL(a.href, location.href));
+          if (got) found.add(got);
+        }
+        if (found.size === 1) return [...found][0];
+        if (found.size > 1) break;
+      }
+      return null;
+    };
+    // A Facebook video's own address (a reel, /watch/?v=, video.php?v=, …/videos/[slug/]<id>), on
+    // the link's own host, without the tracking query Facebook adds to its links.
+    const fbVideo = (u) => {
+      if (!/(^|\.)facebook\.com$/i.test(u.hostname)) return null;
+      const segs = u.pathname.split("/").filter(Boolean);
+      const id = (s) => (/^\d{5,}$/.test(s || "") ? s : null);
+      if (segs[0] === "reel" && id(segs[1])) return `${u.origin}/reel/${segs[1]}`;
+      const vid =
+        ((segs[0] === "watch" || segs[0] === "video.php") && id(u.searchParams.get("v"))) ||
+        (segs.includes("videos") && segs.slice(segs.indexOf("videos") + 1).find(id));
+      return vid ? `${u.origin}/watch/?v=${vid}` : null;
+    };
+    // A Facebook post's own address (…/posts/<id>, groups/<g>/permalink/<id>, permalink.php,
+    // story.php), without its tracking query and comment anchors. On m.facebook.com: yt-dlp finds
+    // no video in a post's www page (a group's, 2026.10), but finds it in the mobile one.
+    const fbPost = (u) => {
+      if (!/(^|\.)facebook\.com$/i.test(u.hostname)) return null;
+      const m = "https://m.facebook.com";
+      const segs = u.pathname.split("/").filter(Boolean);
+      const id = (s) => /^(pfbid\w+|\d{5,})$/.test(s || "");
+      const at = segs.findIndex((s) => s === "posts" || s === "permalink");
+      if (at > 0 && id(segs[at + 1])) return `${m}/${segs.slice(0, at + 2).join("/")}`;
+      const story = u.searchParams.get("story_fbid");
+      const owner = u.searchParams.get("id");
+      if ((segs[0] === "permalink.php" || segs[0] === "story.php") && id(story) && /^\d+$/.test(owner || ""))
+        return `${m}/${segs[0]}?story_fbid=${story}&id=${owner}`;
+      // A group feed's post link (groups/<g>/?multi_permalinks=<post>): yt-dlp reads its permalink.
+      const multi = u.searchParams.get("multi_permalinks");
+      if (segs[0] === "groups" && segs.length === 2 && /^\d{5,}$/.test(multi || ""))
+        return `${m}/groups/${segs[1]}/permalink/${multi}`;
+      return null;
+    };
     try {
       const url = new URL(location.href);
       const name = url.hostname.replace(/^(www|m|music)\./, "");
@@ -95,24 +140,25 @@
         if (shown && url.pathname.startsWith("/watch")) return shown;
         const player = watch(document.querySelector("#movie_player")?.getAttribute("video-id"));
         if (player) return player;
-        // A player inside the card it belongs to (a feed, a search, a playlist): the card links to
-        // the video. Only a container that names exactly one video counts — walking on into the
-        // page's column would find some other card's link and send the wrong video, which is worse
-        // than sending none.
-        for (let node = v, i = 0; node && i < 12; i += 1, node = node.parentElement) {
-          const ids = new Set();
-          for (const a of node.querySelectorAll?.('a[href*="/watch?"], a[href*="youtu.be/"]') || []) {
-            const link = new URL(a.href, location.href);
-            const id = link.hostname.endsWith("youtu.be")
-              ? link.pathname.split("/")[1]
-              : link.searchParams.get("v");
-            if (watch(id)) ids.add(id);
-          }
-          if (ids.size === 1) return watch([...ids][0]);
-          if (ids.size > 1) break;
-        }
-        // A page that plays a video and names none: not the video's page, so not the app's.
-        return null;
+        // A player inside the card it belongs to: the card links to the video. A page that plays
+        // a video and names none is not the video's page, so not the app's (null).
+        return inCard('a[href*="/watch?"], a[href*="youtu.be/"]', (link) =>
+          watch(link.hostname.endsWith("youtu.be") ? link.pathname.split("/")[1] : link.searchParams.get("v")),
+        );
+      }
+      // Facebook plays videos in its feed, groups, profiles and /watch: the page's address is
+      // then no video's, and yt-dlp finds none in it. The video's own page, or its post's link.
+      if (fbVideo(url)) return fbVideo(url);
+      if (/(^|\.)facebook\.com$/i.test(url.hostname)) {
+        // Its post sits some 30 levels above the <video>. The video's link first, else the post's
+        // (yt-dlp finds the video in a post).
+        const card =
+          inCard('a[href*="/videos/"], a[href*="/watch"], a[href*="/reel/"], a[href*="video.php"]', fbVideo, 40) ||
+          inCard('a[href*="/posts/"], a[href*="permalink"], a[href*="story.php"], a[href*="multi_permalinks"]', fbPost, 40);
+        if (card) return card;
+        // The page itself, when it is a post; else none (a feed, or a sponsored post: nothing to
+        // name, and the feed is no video to yt-dlp).
+        return fbPost(url);
       }
     } catch {
       // Not an address this page can reason about: its own follows.
@@ -181,53 +227,64 @@
     all: "initial", position: "fixed", "z-index": "2147483647", left: "0", top: "0", display: "none",
     contain: "layout style", opacity: "1", visibility: "visible", "pointer-events": "auto",
   })) root.style.setProperty(k, v, "important");
+  // One button over a video, however many copies of the extension the browser runs: an older
+  // version's (unmarked) is taken out, a second copy of this one gives way to the first (`show`).
+  root.dataset.mdm = "1";
+  const oust = () => {
+    for (const el of document.querySelectorAll("mdm-video-button:not([data-mdm])")) el.remove();
+  };
+  new MutationObserver(oust).observe(document.documentElement, { childList: true });
   const shadow = root.attachShadow({ mode: "closed" });
   const CSS = `
 :host { all: initial; }
 * { box-sizing: border-box; }
-/* A light, glossy panel that stands out over a dark video, with our icon: the classic download
-   button's feel, made modern (rounded, crisp type, soft shadow and motion). */
+/* A small dark glass chip with a download arrow: quiet over any video, words only to answer a
+   click (sent, or why not). */
 .pill {
-  display: flex; align-items: stretch; height: 34px; border-radius: 9px;
-  background: linear-gradient(#ffffff, #f1f4f8 48%, #e3e8ef 52%, #eef2f6);
-  color: #17324d; border: 1px solid rgba(23, 50, 77, .28);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, .32), 0 1px 0 rgba(255, 255, 255, .9) inset;
-  font: 600 13px/1 "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
-  opacity: 0; transform: translateY(-3px) scale(.98);
-  transition: opacity .16s ease-out, transform .16s ease-out, filter .12s;
+  display: flex; align-items: stretch; height: 22px; border-radius: 11px;
+  background: rgba(18, 20, 24, .62); color: #fff;
+  -webkit-backdrop-filter: blur(10px) saturate(1.4); backdrop-filter: blur(10px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, .16);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .28);
+  font: 600 11px/1 "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  opacity: 0; transform: translateY(-2px) scale(.96);
+  transition: opacity .14s ease-out, transform .14s ease-out, background-color .12s;
   user-select: none; -webkit-user-select: none; touch-action: none; white-space: nowrap;
 }
 .pill.shown { opacity: 1; transform: none; }
-.pill.dragging { cursor: grabbing; box-shadow: 0 10px 28px rgba(0, 0, 0, .45); transition: none; }
+.pill:hover { background: rgba(18, 20, 24, .82); }
+.pill.dragging { cursor: grabbing; box-shadow: 0 6px 18px rgba(0, 0, 0, .4); transition: none; }
 .pill.dragging .go { cursor: grabbing; }
-.pill.ok { background: linear-gradient(#f2fff6, #d4f3df); border-color: #2f9a5b; color: #135c33; }
-.pill.err { background: linear-gradient(#fff4f4, #f6d6d6); border-color: #c24848; color: #7d1f1f; }
+.pill.ok { background: rgba(22, 128, 70, .9); }
+.pill.err { background: rgba(178, 40, 40, .9); }
 button {
   /* all: unset resets box-sizing too, past the rule above: without it a menu item's 100 % width
      plus its padding ran past the menu's edge (#81). */
-  all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 8px;
+  all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 5px;
   color: inherit; cursor: pointer; font: inherit;
 }
-.go { padding: 0 12px 0 8px; border-radius: 8px 0 0 8px; cursor: grab; }
-.more { padding: 0 9px; border-left: 1px solid rgba(23, 50, 77, .18); border-radius: 0 8px 8px 0; }
-.go:hover, .more:hover { background: linear-gradient(rgba(214, 232, 255, .9), rgba(182, 212, 250, .9)); }
-.go:active, .more:active { background: rgba(160, 196, 242, .9); }
-button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
-.go img { width: 22px; height: 22px; flex: none; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .25)); }
-.more svg { width: 12px; height: 12px; color: #3b5876; }
-.compact .label { display: none; }
-.compact .go { padding: 0 6px; border-radius: 8px 0 0 8px; }
+.go { padding: 0 6px 0 7px; border-radius: 11px 0 0 11px; cursor: grab; }
+.more { padding: 0 6px 0 3px; border-radius: 0 11px 11px 0; opacity: .6; }
+.more:hover, .more[aria-expanded="true"] { opacity: 1; }
+.go:hover, .more:hover { background: rgba(255, 255, 255, .12); }
+.go:active, .more:active { background: rgba(255, 255, 255, .2); }
+button:focus-visible { outline: 2px solid #7fb2ff; outline-offset: -2px; }
+.go svg { width: 12px; height: 12px; flex: none; }
+.more svg { width: 8px; height: 8px; }
+.label { display: none; }
+.pill.ok .label, .pill.err .label { display: inline; padding-right: 2px; }
 .menu {
-  position: absolute; min-width: 210px; padding: 4px; border-radius: 9px;
-  background: #fbfcfe; color: #17324d; border: 1px solid rgba(23, 50, 77, .22);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, .35);
-  font: 400 13px/1.2 "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  position: absolute; min-width: 190px; padding: 4px; border-radius: 10px;
+  background: rgba(24, 26, 31, .94); color: #f2f4f7; border: 1px solid rgba(255, 255, 255, .12);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .4);
+  font: 400 12px/1.2 "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
   display: none;
 }
 .menu.open { display: block; }
-.menu button { display: block; width: 100%; padding: 8px 12px; border-radius: 6px; cursor: default; }
-.menu button:hover, .menu button:focus-visible { background: #dceafb; outline: none; }
-.menu hr { border: 0; border-top: 1px solid rgba(23, 50, 77, .12); margin: 4px 2px; }
+.menu button { display: block; width: 100%; padding: 7px 10px; border-radius: 6px; cursor: default; }
+.menu button:hover, .menu button:focus-visible { background: rgba(255, 255, 255, .1); outline: none; }
+.menu hr { border: 0; border-top: 1px solid rgba(255, 255, 255, .1); margin: 4px 2px; }
 @media (prefers-reduced-motion: reduce) { .pill { transition: none; transform: none; } }
 `;
   // A constructed sheet: a page whose Content-Security-Policy refuses inline styles can't strip
@@ -244,12 +301,13 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
   shadow.innerHTML += `
 <div class="pill" part="pill">
   <button class="go" type="button">
-    <img alt="" draggable="false">
+    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7"
+      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 1.5v6.5M3.2 5.4 6 8.2l2.8-2.8M2 10.5h8"/></svg>
     <span class="label"></span>
   </button>
   <button class="more" type="button" aria-haspopup="menu" aria-expanded="false">
     <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"
-      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4.5 6 7.5l3-3"/></svg>
+      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>
   </button>
 </div>
 <div class="menu" role="menu">
@@ -260,7 +318,6 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
   <hr>
   <button role="menuitem" data-act="settings"></button>
 </div>`;
-  shadow.querySelector(".go img").src = LOGO;
   const pill = shadow.querySelector(".pill");
   const go = shadow.querySelector(".go");
   const label = shadow.querySelector(".label");
@@ -425,8 +482,9 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
   // whichever of its sides is nearer the video's middle.
   function placeMenu(top, left, w) {
     const h = menu.offsetHeight;
-    const below = top + 36 + h < innerHeight;
-    menu.style.top = below ? "36px" : `${-h - 4}px`;
+    const gap = pill.offsetHeight + 2;
+    const below = top + gap + h < innerHeight;
+    menu.style.top = below ? `${gap}px` : `${-h - 4}px`;
     const { r } = rects();
     const rightHalf = left + w / 2 > r.left + r.width / 2;
     menu.style.left = rightHalf ? "" : "0";
@@ -456,6 +514,9 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
   }
 
   function show(v) {
+    // An older version's button already on the page before this one came (it never re-adds itself).
+    oust();
+    if ([...document.querySelectorAll("mdm-video-button[data-mdm]")].some((el) => el !== root)) return;
     if (video !== v) {
       video = v;
       held = null;
@@ -585,11 +646,29 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
   }
 
   // ---- acting ---------------------------------------------------------------------------------
+  // Facebook writes a post's real links (its time, its video) only once the pointer or the focus
+  // reaches them; until then they read "#" or "?__cft__…". Woken here before the address is read.
+  async function wakeLinks(v) {
+    if (!/(^|\.)facebook\.com$/i.test(location.hostname)) return;
+    const post = v.closest('[aria-posinset], [role="article"]');
+    const hidden = post ? [...post.querySelectorAll('a[href^="?"], a[href="#"]')] : [];
+    if (!hidden.length) return;
+    for (const a of hidden) {
+      a.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+      a.dispatchEvent(new FocusEvent("focusin", { bubbles: true }));
+    }
+    await new Promise((r) => setTimeout(r, 250));
+  }
+
   async function download() {
     if (busy || !video) return;
     busy = true;
     try {
       closeMenu();
+      if (!held) {
+        await wakeLinks(video);
+        if (!video) return;
+      }
       // Asked now, not kept: one <video> plays many videos at the same address (a feed's
       // previews). A video gone from under the button: what it played then (#503).
       const { drm, src, url, at } = held ? held.d : describe(video, video.getBoundingClientRect());

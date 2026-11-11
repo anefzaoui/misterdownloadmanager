@@ -18,6 +18,7 @@ pub fn is_video_page(url: &Url) -> bool {
     let host = host
         .strip_prefix("www.")
         .or_else(|| host.strip_prefix("m."))
+        .or_else(|| host.strip_prefix("web."))
         .unwrap_or(&host);
     let path = url.path();
     let segs: Vec<&str> = path.split('/').filter(|s| !s.is_empty()).collect();
@@ -41,8 +42,12 @@ pub fn is_video_page(url: &Url) -> bool {
         "x.com" | "twitter.com" => matches!(segs.as_slice(), [_, "status", _, ..]),
         "instagram.com" => matches!(segs.as_slice(), ["reel" | "reels" | "p" | "tv", _, ..]),
         "facebook.com" => {
-            (path == "/watch" || path == "/watch/") && query("v")
-                || matches!(segs.as_slice(), [_, "videos", ..] | ["reel", _, ..])
+            (matches!(path, "/watch" | "/watch/" | "/video.php") && query("v"))
+                // `share/v` and `share/r`: what Facebook's own "Copy link" gives for a video or reel.
+                || matches!(
+                    segs.as_slice(),
+                    [_, "videos", ..] | ["videos" | "reel", _, ..] | ["share", "v" | "r", _, ..]
+                )
         }
         "fb.watch" => segs.len() == 1,
         "reddit.com" | "old.reddit.com" => matches!(segs.as_slice(), ["r", _, "comments", _, ..]),
@@ -199,6 +204,18 @@ mod tests {
             "https://www.reddit.com/r/videos/comments/abc123/title/"
         ));
         assert!(page("https://soundcloud.com/artist/track"));
+        for fb in [
+            "https://www.facebook.com/watch/?v=10153231379946729",
+            "https://web.facebook.com/watch?v=10153231379946729",
+            "https://m.facebook.com/video.php?v=10153231379946729",
+            "https://www.facebook.com/facebook/videos/10153231379946729/",
+            "https://www.facebook.com/videos/10153231379946729/",
+            "https://www.facebook.com/reel/1234567890123",
+            "https://www.facebook.com/share/v/1AbCdEf/",
+            "https://www.facebook.com/share/r/1AbCdEf/",
+        ] {
+            assert!(page(fb), "{fb}");
+        }
     }
 
     #[test]
@@ -231,6 +248,9 @@ mod tests {
         assert!(!page("https://vimeo.com/channels/staffpicks"));
         assert!(!page("https://example.com/video.mp4"));
         assert!(!page("https://x.com/someone"));
+        assert!(!page("https://www.facebook.com/"));
+        assert!(!page("https://www.facebook.com/watch/"));
+        assert!(!page("https://www.facebook.com/share/p/1AbCdEf/"));
         assert!(!page("ftp://youtube.com/watch?v=x"));
     }
 }

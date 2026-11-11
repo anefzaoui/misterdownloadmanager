@@ -1915,12 +1915,25 @@ function senderPage(sender) {
 // A YouTube page's player, asked for what it plays. In the page's own world, the only place its
 // player's API exists (content scripts are isolated from it, and an injected <script> is refused
 // by its Trusted Types; `scripting` isn't). Run in the page: no outside names, only its arguments.
-function playingAt(x, y) {
+// Facebook's feed names no video in its DOM (blob: source, post links filled in on hover): its
+// React props around the <video> do (videoID).
+function playingAt(x, y, facebook) {
   let best = null;
   for (const v of document.querySelectorAll("video")) {
     const r = v.getBoundingClientRect();
     if (x < r.left || x > r.right || y < r.top || y > r.bottom) continue;
     if (!best || r.width * r.height < best.area) best = { v, area: r.width * r.height };
+  }
+  if (best && facebook) {
+    const key = Object.keys(best.v).find((k) => k.startsWith("__reactFiber$"));
+    // In the props or one level in (coreVideoPlayerMetaData.videoFBID, Facebook in 2026).
+    const named = (o) => o && typeof o === "object" && String(o.videoFBID || o.videoID || o.videoId || "");
+    for (let f = key && best.v[key], i = 0; f && i < 120; f = f.return, i += 1) {
+      const p = f.memoizedProps;
+      if (!p || typeof p !== "object") continue;
+      for (const id of [named(p), ...Object.values(p).map(named)]) if (/^\d{5,}$/.test(id || "")) return id;
+    }
+    return "";
   }
   const player = best && best.v.closest(".html5-video-player");
   try {
@@ -1931,10 +1944,11 @@ function playingAt(x, y) {
 }
 
 const isYouTube = (url) => /(^|\.)(youtube\.com|youtube-nocookie\.com|youtu\.be)$/i.test(siteOf(url));
+const isFacebook = (url) => /(^|\.)facebook\.com$/i.test(siteOf(url));
 
 // The watch address of what the player at `at` (the video's middle, in the sender's frame) plays,
 // or "": a page without such a player, one too old for `world`, a page extensions may not read.
-async function playingVideo(sender, at) {
+async function playingVideo(sender, at, facebook = false) {
   if (!at || !ext.scripting || !sender.tab) return "";
   try {
     const [found] = await withTimeout(
@@ -1942,11 +1956,12 @@ async function playingVideo(sender, at) {
         target: { tabId: sender.tab.id, frameIds: [sender.frameId || 0] },
         world: "MAIN",
         func: playingAt,
-        args: [Number(at.x) || 0, Number(at.y) || 0],
+        args: [Number(at.x) || 0, Number(at.y) || 0, facebook],
       }),
       3000,
     );
     const id = found && found.result;
+    if (facebook) return /^\d{5,}$/.test(id || "") ? `https://www.facebook.com/watch/?v=${id}` : "";
     return /^[\w-]{6,32}$/.test(id || "") ? `https://www.youtube.com/watch?v=${id}` : "";
   } catch {
     return "";
@@ -1963,7 +1978,13 @@ async function videoAddress(m, page, sender) {
     const playing = await playingVideo(sender, m.at);
     return playing || (isYouTube(named) ? named : "");
   }
-  const site = (u) => siteOf(u).replace(/^(www|m|music)\./, "");
+  if (isFacebook(page)) {
+    const playing = await playingVideo(sender, m.at, true);
+    // Nothing named (a feed's sponsored post): not the feed, which holds no video for yt-dlp.
+    if (playing || !named) return playing;
+  }
+  // web. is Facebook's www. in some countries.
+  const site = (u) => siteOf(u).replace(/^(www|m|web|music)\./, "");
   return named && site(named) === site(page) ? named : page;
 }
 

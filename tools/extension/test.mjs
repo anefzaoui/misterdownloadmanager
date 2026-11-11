@@ -1168,13 +1168,6 @@ const MPD = (protect) => `<?xml version="1.0"?>
 }
 
 // The button's logo is the extension's own icon, kept in video.js as data.
-{
-  const video = readFileSync(new URL("../../extension/video.js", import.meta.url), "utf8");
-  const icon = readFileSync(new URL("../../extension/icons/icon-48.png", import.meta.url)).toString("base64");
-  assert.ok(video.includes(`"data:image/png;base64,${icon}"`), "video.js's LOGO is extension/icons/icon-48.png");
-  ok("video button logo");
-}
-
 // The address the button hands the app (video.js's videoPage): the video's own page, not the page
 // that plays it. YouTube's home, a search, a channel or a playlist is a list to yt-dlp, and a watch
 // page opened from a mix carries the list in its address: the button sent either, and the app
@@ -1229,6 +1222,26 @@ const MPD = (protect) => `<?xml version="1.0"?>
   assert.equal(at("https://youtu.be/dQw4w9WgXcQ?t=10&list=PL999"), "https://youtu.be/dQw4w9WgXcQ");
   assert.equal(at("https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?start=5"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
   assert.equal(at("https://vimeo.com/123456789?list=abc"), "https://vimeo.com/123456789?list=abc");
+  // Facebook: a video's own page (its tracking query dropped), a feed's post linking to its video
+  // (twice, and with a profile's link beside it), a feed naming none (its own address, as before).
+  assert.equal(at("https://www.facebook.com/watch/?v=10153231379946729&__tn__=x"), "https://www.facebook.com/watch/?v=10153231379946729");
+  assert.equal(at("https://www.facebook.com/reel/1234567890123/?s=x"), "https://www.facebook.com/reel/1234567890123");
+  assert.equal(at("https://web.facebook.com/facebook/videos/how-to/10153231379946729/"), "https://web.facebook.com/watch/?v=10153231379946729");
+  const post = ["https://www.facebook.com/facebook?__cft__[0]=a", "https://www.facebook.com/facebook/videos/10153231379946729/?__cft__[0]=a", "https://www.facebook.com/watch/?v=10153231379946729"];
+  assert.equal(at("https://www.facebook.com/", { cards: [[], post] }), "https://www.facebook.com/watch/?v=10153231379946729");
+  assert.equal(at("https://www.facebook.com/groups/123/", { cards: [[], ["https://www.facebook.com/reel/111111", "https://www.facebook.com/reel/222222"]] }), null);
+  // A feed naming none (a sponsored post): nothing, not the feed; a post's own page: itself.
+  assert.equal(at("https://www.facebook.com/"), null);
+  assert.equal(at("https://www.facebook.com/groups/77/permalink/1234567/?ref=x"), "https://m.facebook.com/groups/77/permalink/1234567");
+  // A post 30 levels up naming no video link: its own address (and a comment's is the same post).
+  const deep = (links) => [...Array(30).fill([]), links];
+  assert.equal(at("https://www.facebook.com/", { cards: deep(["https://www.facebook.com/someone", "https://www.facebook.com/someone/posts/pfbid02AbC?__cft__[0]=x", "https://www.facebook.com/someone/posts/pfbid02AbC?comment_id=9"]) }), "https://m.facebook.com/someone/posts/pfbid02AbC");
+  assert.equal(at("https://web.facebook.com/", { cards: deep(["https://web.facebook.com/groups/77/permalink/1234567/"]) }), "https://m.facebook.com/groups/77/permalink/1234567");
+  assert.equal(at("https://www.facebook.com/", { cards: deep(["https://www.facebook.com/permalink.php?story_fbid=1234567&id=99&__cft__=x"]) }), "https://m.facebook.com/permalink.php?story_fbid=1234567&id=99");
+  // A group feed's post link, as Facebook writes it once hovered.
+  assert.equal(at("https://www.facebook.com/", { cards: deep(["https://www.facebook.com/groups/1125412866073956/?multi_permalinks=1517743850174187&hoisted_section_header_type=recently_seen"]) }), "https://m.facebook.com/groups/1125412866073956/permalink/1517743850174187");
+  // A video's link wins over its post's.
+  assert.equal(at("https://www.facebook.com/", { cards: deep(["https://www.facebook.com/someone/posts/pfbid02AbC", "https://www.facebook.com/reel/1234567890"]) }), "https://www.facebook.com/reel/1234567890");
   ok("#311: the button sends the video's own page, not the page playing it");
 }
 
@@ -1271,6 +1284,21 @@ const MPD = (protect) => `<?xml version="1.0"?>
     const r = await message(listeners, { type: "video", url: null, at: { x: 1, y: 1 } }, yt("https://www.youtube.com/@someone/videos"));
     assert.deepEqual([r.ok, r.why], [false, "unnamed"]);
     assert.equal(natives(calls).filter((m) => m.video).length, 1, "the channel's list is never sent");
+  }
+  // Facebook: the feed's player names its video; else the post's link, web. being www.
+  {
+    const { api, calls, listeners } = fakeApi({ firefox: false, playing: "10153231379946729" });
+    load(api, false);
+    await message(listeners, { type: "video", url: "https://www.facebook.com/", at: { x: 1, y: 1 } }, yt("https://www.facebook.com/"));
+    assert.equal(last(calls).url, "https://www.facebook.com/watch/?v=10153231379946729", "the feed's player");
+  }
+  {
+    const { api, calls, listeners } = fakeApi({ firefox: false });
+    load(api, false);
+    await message(listeners, { type: "video", url: "https://www.facebook.com/watch/?v=1234567", at: { x: 1, y: 1 } }, yt("https://web.facebook.com/"));
+    assert.equal(last(calls).url, "https://www.facebook.com/watch/?v=1234567", "web.facebook.com is facebook.com");
+    const r = await message(listeners, { type: "video", url: null, at: { x: 1, y: 1 } }, yt("https://www.facebook.com/"));
+    assert.deepEqual([r.ok, r.why], [false, "unnamed"], "a feed's unnamed video: said, not sent");
   }
   // The popup, on a site this copy leaves alone, and on a player that streams pieces.
   {
