@@ -1818,6 +1818,64 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   assert.deepEqual(steps(calls), []);
   ok("#208 Firefox: a type not taken goes on to the browser, said once");
 }
+// #607: Firefox may use originUrl to improve a sent Referer, but must not invent one when
+// Referrer-Policy suppressed the header.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true });
+  load(api, true);
+  await settle();
+  const url = "https://dl.test/get?id=2";
+  listeners.beforeSendHeaders({
+    requestId: "r-origin",
+    method: "GET",
+    type: "main_frame",
+    url,
+    originUrl: "https://site.test/download-page",
+    requestHeaders: [{ name: "Referer", value: "https://site.test/" }],
+  });
+  await held(
+    listeners,
+    answer(
+      url,
+      {
+        "Content-Type": "application/octet-stream",
+        "Content-Disposition": "attachment; filename=package.zip",
+        "Content-Length": "4096",
+      },
+      { requestId: "r-origin" },
+    ),
+  );
+  assert.equal(natives(calls)[0].referrer, "https://site.test/download-page");
+  ok("#607 Firefox: originUrl refines a Referer the page actually sent");
+}
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true });
+  load(api, true);
+  await settle();
+  const url = "https://dl.test/private.zip";
+  listeners.beforeSendHeaders({
+    requestId: "r-no-referrer",
+    method: "GET",
+    type: "main_frame",
+    url,
+    originUrl: "https://private.test/no-referrer",
+    requestHeaders: [],
+  });
+  await held(
+    listeners,
+    answer(
+      url,
+      {
+        "Content-Type": "application/octet-stream",
+        "Content-Disposition": "attachment; filename=private.zip",
+        "Content-Length": "4096",
+      },
+      { requestId: "r-no-referrer" },
+    ),
+  );
+  assert.equal(natives(calls)[0].referrer, "", "do not invent a Referer when Firefox sent none");
+  ok("#607 Firefox: no-referrer remains no-referrer");
+}
 // Pages, pictures, feeds, add-ons, redirects, pieces and errors are never held; an inline PDF
 // opens when Options don't take the files the browser would open; a type the browser can't show
 // is a download even without "attachment".
