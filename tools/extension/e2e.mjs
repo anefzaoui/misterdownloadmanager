@@ -385,7 +385,7 @@ async function chromium(bin, profile, dl, page, ready) {
       fs.mkdirSync(path.dirname(file), { recursive: true });
       fs.writeFileSync(file, Buffer.from(data, "base64"));
     };
-    const KEYS = { ArrowDown: 40, ArrowUp: 38, Enter: 13, Tab: 9 };
+    const KEYS = { ArrowDown: 40, ArrowUp: 38, Enter: 13, Tab: 9, End: 35, Home: 36 };
     const key = async (k) => {
       for (const type of ["keyDown", "keyUp"]) {
         // Enter carries its text, as a real key press does.
@@ -587,7 +587,7 @@ async function firefox(bin, profile, dl, page, ready) {
       await bidi.send("input.performActions", { context, actions: sources });
     };
     // WebDriver key codes.
-    const KEYS = { ArrowDown: "\uE015", ArrowUp: "\uE013", Enter: "\uE007", Tab: "\uE004" };
+    const KEYS = { ArrowDown: "\uE015", ArrowUp: "\uE013", Enter: "\uE007", Tab: "\uE004", End: "\uE010", Home: "\uE011" };
     const key = (k) =>
       bidi.send("input.performActions", {
         context,
@@ -1173,8 +1173,14 @@ async function hover(session, v) {
 // user does, which opens the app's Download video window (#703: what the button's click did
 // before). Once the video's look-up ended (its rows came): then "All qualities…" stays where it
 // is. "menu" once the window opened.
-async function openInMdm(session, pid) {
-  const more = await until("the button's arrow", 5000, () => session.pill(MORE_AT));
+async function openInMdm(session, pid, b = null) {
+  // The button again first, when it faded meanwhile (1.5 s after the pointer rests): the pointer
+  // moves over its video, just under it.
+  const more = await until("the button's arrow", 8000, async () => {
+    const at = await session.pill(MORE_AT);
+    if (!at && b) await session.mouse((b.l + b.r) / 2 + (Date.now() % 2), b.b + 24);
+    return at;
+  });
   await session.mouse(more.x, more.y, "click");
   for (let i = 0; i < 5; i += 1) {
     const m = await until("the menu, its look-up ended", 30000, async () => {
@@ -1208,7 +1214,7 @@ async function clickButton(session, b, shot = "") {
   const pid = appPid();
   appWindows(pid, VIDEO_WINDOW);
   await until("the Download video window closed", 5000, () => !appWindows(pid).includes(VIDEO_WINDOW));
-  await openInMdm(session, pid);
+  await openInMdm(session, pid, b);
   await until("the Download video window", 15000, () => appWindows(pid).includes(VIDEO_WINDOW));
   const address = await until("the Download video window's address", 10000, () => videoAddress(pid));
   if (shot) {
@@ -1232,10 +1238,15 @@ async function videoButton(session, never) {
   near(b.r, v.r - 14, "button's right edge");
   near(b.t, v.t + 14, "button's top");
   // #703: a click on its main part downloads the video's own plain file at once (no look-up, no
-  // window), then says so in green, with "Show" (MDM's window, the download selected).
+  // window), then says so in green, with "Show" (MDM's window, the download selected). An earlier
+  // browser's download of it off the list first: a duplicate would be asked about.
+  const earlier = (await mdmList()).filter((d) => d.url === `${LAB}/gen/1M/clip.mp4`).map((d) => d.id);
+  if (earlier.length) await ipc({ action: "delete", ids: earlier });
   const before = new Set((await mdmList()).map((d) => d.id));
   await session.mouse(await mainPart(session, b), (b.t + b.b) / 2, "click");
-  const added = await until("the video's file in MDM's list", 15000, async () => (await mdmList()).find((d) => !before.has(d.id)));
+  const added = await until("the video's file in MDM's list", 15000, async () => (await mdmList()).find((d) => !before.has(d.id))).catch(async (e) => {
+    throw new Error(`${e.message} (the button: ${JSON.stringify(await session.pill(PILL_STATE))})`);
+  });
   if (added.url !== `${LAB}/gen/1M/clip.mp4`) throw new Error(`MDM downloads ${added.url}`);
   const sent = await until("the button's green state", 5000, async () => {
     const p = await session.pill(PILL_STATE);
@@ -1252,7 +1263,9 @@ async function videoButton(session, never) {
   // Its menu's "All qualities and subtitles…": the app's Download video window for the file.
   const address = await clickButton(session, b);
   if (address !== `${LAB}/gen/1M/clip.mp4`) throw new Error(`the video window got ${address}`);
-  // Drag it to the bottom left: it snaps to that corner.
+  // Drag it to the bottom left: it snaps to that corner. (Shown again first: it fades 1.5 s after
+  // the pointer rests, #741, and the window's steps take longer.)
+  b = await hover(session, v);
   await session.mouse(b.l + 14, (b.t + b.b) / 2, "down");
   await session.mouse(b.l + 30, (b.t + b.b) / 2 + 20);
   await session.mouse(v.l + 40, v.b - 30);
@@ -2493,9 +2506,13 @@ const CASES = {
       const v = await rect(t.session, "#player");
       const b = await hover(t.session, v);
       if (!b) throw new Error("no button over the stream's player");
+      // An earlier browser's downloads of this stream off the list (with their files): the same
+      // quality again would be a duplicate, which Options' default asks about.
+      const earlier = (await mdmList()).filter((d) => d.url.startsWith(`${LAB}/hls/`)).map((d) => d.id);
+      if (earlier.length) await ipc({ action: "delete", ids: earlier });
       const before = new Set((await mdmList()).map((d) => d.id));
       // What the page's own shortcuts would see (a player's Space and arrows).
-      await t.session.evaluate('window.__mdmKeys = 0; document.addEventListener("keydown", () => { window.__mdmKeys += 1; }); 0');
+      await t.session.evaluate('(() => { window.__mdmKeys = 0; document.addEventListener("keydown", () => { window.__mdmKeys += 1; }); return 0; })()');
       // #703: the look-up starts as the button shows; its chip then names the best quality.
       const chipped = await until("the best quality on the button's chip", 60000, async () => {
         const p = await t.session.pill(PILL_STATE);
