@@ -22,6 +22,9 @@ const TITLE_H: f32 = if cfg!(windows) {
     0.0
 };
 
+/// Extra height added to the top tab pane for the deferred Rename row on Download status.
+const RENAME_DROP: f32 = 28.0;
+
 /// The frame applied to a progress window (Windows): its client size, pixels per point × 1000
 /// and its system menu's "Hide to the notification area" (translated, when there is one).
 type Framed = ([f32; 2], u32, Option<String>);
@@ -176,6 +179,20 @@ pub struct Progress {
     turn_off_on: bool,
     turn_off: usize,
     force: bool,
+    /// Deferred rename on Download status: initialised from `Item::rename_on_complete`, saved
+    /// by clicking Confirm, pressing Enter, or leaving the box idle for 3 seconds.
+    rename_init: bool,
+    rename_text: String,
+    rename_saved: Option<String>,
+    rename_edited_at: Option<std::time::Instant>,
+    rename_show_saved: bool,
+    pending_rename: Option<Option<String>>,
+    /// Translated reason key when deferred rename is unavailable for this download (shared or
+    /// save folder, split archive volume, or single-file torrent).
+    pub rename_disabled_reason: Option<&'static str>,
+    /// In-memory state stamp for `rename_disabled_reason`, so disk checks run only when the
+    /// window opens, when a download completes, or when list/folder settings change.
+    pub rename_guard_stamp: Option<u64>,
 }
 
 pub enum Action {
@@ -196,6 +213,8 @@ pub enum Action {
         all: bool,
         size: u64,
     },
+    /// Set or clear the deferred rename (`Item::rename_on_complete`).
+    Rename(Option<String>),
     /// Close the dialog, keep downloading.
     Close,
     /// Hide the dialog in the notification area, keep downloading (#63).
@@ -231,17 +250,96 @@ impl Progress {
             turn_off_on: false,
             turn_off: 0,
             force: false,
+            rename_init: false,
+            rename_text: String::new(),
+            rename_saved: None,
+            rename_edited_at: None,
+            rename_show_saved: false,
+            pending_rename: None,
+            rename_disabled_reason: None,
+            rename_guard_stamp: None,
         }
+    }
+
+    fn status_drop(&self) -> f32 {
+        let _ = self;
+        RENAME_DROP
+    }
+
+    /// Synchronise the Rename box from `item.rename_on_complete` on first display and whenever
+    /// `item` changes while idle.
+    pub fn sync_rename_from_item(&mut self, item: &Item) {
+        let idle = self.rename_edited_at.is_none() && self.pending_rename.is_none();
+        if !self.rename_init || (idle && self.rename_saved != item.rename_on_complete) {
+            self.rename_init = true;
+            self.rename_saved = item.rename_on_complete.clone();
+            self.rename_text = item.rename_on_complete.clone().unwrap_or_default();
+            self.rename_show_saved = self.rename_saved.is_some();
+        }
+    }
+
+    fn commit_rename(&mut self, norm: Option<String>) {
+        self.rename_saved = norm.clone();
+        self.rename_edited_at = None;
+        self.rename_show_saved = norm.is_some();
+        self.pending_rename = Some(norm);
+    }
+
+    fn on_rename_text_changed(&mut self, now: std::time::Instant) {
+        match crate::deferred_rename::validate_name(&self.rename_text) {
+            Ok(norm) => {
+                if norm == self.rename_saved {
+                    self.rename_edited_at = None;
+                    self.rename_show_saved = self.rename_saved.is_some();
+                } else {
+                    self.rename_show_saved = false;
+                    self.rename_edited_at = Some(now);
+                }
+            }
+            Err(_) => {
+                self.rename_show_saved = false;
+                self.rename_edited_at = None;
+            }
+        }
+    }
+
+    /// Check whether the 3-second idle auto-save timer has elapsed; returns the remaining wait if
+    /// still counting down so the UI schedules a repaint.
+    fn poll_rename_autosave(&mut self, now: std::time::Instant) -> Option<std::time::Duration> {
+        let edited_at = self.rename_edited_at?;
+        let Ok(norm) = crate::deferred_rename::validate_name(&self.rename_text) else {
+            self.rename_edited_at = None;
+            return None;
+        };
+        if norm == self.rename_saved {
+            self.rename_edited_at = None;
+            self.rename_show_saved = self.rename_saved.is_some();
+            return None;
+        }
+        let elapsed = now.saturating_duration_since(edited_at);
+        if elapsed >= crate::deferred_rename::AUTOSAVE_DELAY {
+            self.commit_rename(norm);
+            None
+        } else {
+            Some(crate::deferred_rename::AUTOSAVE_DELAY - elapsed)
+        }
+    }
+
+    /// Flush any rename that was already confirmed (Confirm, Enter, assistive input, or the
+    /// 3-second idle auto-save); half-typed unconfirmed text is never applied.
+    pub fn take_confirmed_rename(&mut self) -> Option<Option<String>> {
+        self.pending_rename.take()
     }
 
     pub fn show(&mut self, ctx: &egui::Context, item: &Item, snap: Option<&Snapshot>) -> Action {
         crate::crash::window("progress");
         let frac = item.fraction();
         let title = window_title(frac, &item.file_name);
+        let drop = self.status_drop();
         let body = if self.details {
-            [548.0, 412.0 + torrent_drop(item)]
+            [548.0, 412.0 + drop + torrent_drop(item)]
         } else {
-            [548.0, 241.0]
+            [548.0, 241.0 + drop]
         };
         // Windows: the title bar is ours (#63), drawn in the client above IDM's layout, so the
         // hide button sits in it, left of Minimize, as in IDM. Elsewhere the system draws it.
@@ -265,7 +363,7 @@ impl Progress {
             .with_resizable(cfg!(windows))
             .with_icon(crate::app_icon())
             .with_maximize_button(false);
-        if let Some(p) = crate::dialogs::place(ctx, key, [548.0, 412.0]) {
+        if let Some(p) = crate::dialogs::place(ctx, key, [548.0, 412.0 + drop]) {
             builder = builder.with_position(p);
         }
         // Minimize hides it in the notification area when asked (and a tray can bring it back).
@@ -376,6 +474,13 @@ impl Progress {
             Action::None => self.pending_choose.take().unwrap_or(Action::None),
             a => a,
         };
+        let action = match action {
+            Action::None => self
+                .pending_rename
+                .take()
+                .map_or(Action::None, Action::Rename),
+            a => a,
+        };
         if matches!(action, Action::Close | Action::Cancel) {
             crate::dialogs::forget_place(ctx, key);
         }
@@ -402,10 +507,15 @@ impl Progress {
         frac: Option<f64>,
     ) -> Action {
         let p = ui.painter().clone();
+        self.sync_rename_from_item(item);
+        if let Some(wait) = self.poll_rename_autosave(std::time::Instant::now()) {
+            ui.ctx()
+                .request_repaint_after(wait + std::time::Duration::from_millis(15));
+        }
         let hide = self.tabs(ui, o);
         let hide_tab = match self.tab {
             Tab::Status => {
-                status_page(ui, o, item, snap, frac);
+                self.status_page(ui, o, item, snap, frac);
                 false
             }
             Tab::Limiter => self.limiter_page(ui, o, item),
@@ -420,10 +530,12 @@ impl Progress {
             ui.ctx().request_repaint();
         }
 
+        let lower = o + vec2(0.0, self.status_drop());
+
         // The progress bar: IDM's green on the shared, themed track.
         winui::meter(
             &p,
-            r(o, 17.0, 180.0, 513.0, 16.0),
+            r(lower, 17.0, 180.0, 513.0, 16.0),
             frac.unwrap_or(0.0) as f32,
         );
 
@@ -461,7 +573,7 @@ impl Progress {
         };
         if winui::button(
             ui,
-            r(o, details_at.0, 206.0, details_at.1, 22.0),
+            r(lower, details_at.0, 206.0, details_at.1, 22.0),
             details_label,
             kind,
             false,
@@ -484,7 +596,7 @@ impl Progress {
         };
         if winui::button(
             ui,
-            r(o, pause_at.0, 206.0, pause_at.1, 22.0),
+            r(lower, pause_at.0, 206.0, pause_at.1, 22.0),
             label,
             pkind,
             false,
@@ -500,7 +612,7 @@ impl Progress {
         }
         if winui::button(
             ui,
-            r(o, cancel_at.0, 206.0, cancel_at.1, 22.0),
+            r(lower, cancel_at.0, 206.0, cancel_at.1, 22.0),
             "Cancel",
             ButtonKind::Normal,
             false,
@@ -512,18 +624,18 @@ impl Progress {
         }
 
         if self.details && item.torrent.is_some() {
-            self.torrent_details(ui, &p, o + egui::vec2(0.0, torrent_drop(item)), item);
+            self.torrent_details(ui, &p, lower + vec2(0.0, torrent_drop(item)), item);
         } else if self.details {
             winui::text_in_window(
                 ui,
                 &p,
-                o.x + 137.0,
-                o.y + 242.0,
+                lower.x + 137.0,
+                lower.y + 242.0,
                 crate::i18n::t("Start positions and download progress by connections"),
                 winui::TEXT(),
             );
-            segment_bar(&p, o, item, snap);
-            connections(ui, &p, o, snap);
+            segment_bar(&p, lower, item, snap);
+            connections(ui, &p, lower, snap);
         }
         action
     }
@@ -560,8 +672,12 @@ impl Progress {
             })
             .collect();
         let current = tabs.iter().position(|t| t.0 == self.tab).unwrap_or(0);
-        // The page: x 18..529, y 28..171 (tabs_light's pane starts 20 px under its top).
-        if let Some(i) = winui::tabs_light(ui, o, r(o, 18.0, 8.0, 514.0, 165.0), &light, current) {
+        let drop = self.status_drop();
+        // The page: x 18..529, y 28..(171 + drop) (tabs_light's pane starts 20 px under its top).
+        if let Some(i) =
+            winui::tabs_light(ui, o, r(o, 18.0, 8.0, 514.0, 165.0 + drop), &light, current)
+            && tabs[i].0 != self.tab
+        {
             self.tab = tabs[i].0;
         }
         self.tab_row_menu(ui, r(o, 18.0, 6.0, 514.0, 22.0));
@@ -952,13 +1068,13 @@ impl Progress {
     }
 }
 
-/// "Hide tab" (401,135,96,21) with its 1 px #f9f9f9 focus ring.
+/// "Hide tab" anchored at the bottom-right corner of the tab pane (`135 + RENAME_DROP`).
 fn hide_tab(ui: &mut Ui, o: Pos2) -> bool {
     // A longer translation ("Registerkarte ausblenden") widens it to the left, into the free
     // room right of the Remember caption (which ends before x 300).
     let rc = winui::button_rect_for(
         ui.painter(),
-        r(o, 401.0, 135.0, 96.0, 21.0),
+        r(o, 401.0, 135.0 + RENAME_DROP, 96.0, 21.0),
         "Hide tab",
         190.0,
     );
@@ -968,161 +1084,293 @@ fn hide_tab(ui: &mut Ui, o: Pos2) -> bool {
 /// Right end for text on the tab page (its frame is x 18..529).
 const PAGE_TEXT_RIGHT: f32 = 520.0;
 
-// The rows sit 7 px inside the page's frame at the top and at the bottom (the Server row's
-// descent included), with a slightly wider break after Status, as before.
-fn status_page(ui: &Ui, o: Pos2, item: &Item, snap: Option<&Snapshot>, frac: Option<f64>) {
-    let p = &ui.painter().clone();
-    // Long values are cut with "..." at the page edge and shown whole on hover.
-    let fit = |key: &str, x: f32, base: f32, s: &str, color| {
-        let (rect, cut) = winui::text_fit(p, o.x + x, o.y + base, s, color, o.x + PAGE_TEXT_RIGHT);
-        winui::copyable(ui, rect, key, s, cut);
-    };
-    let status = match item.status {
-        // A torrent reading and checking its files says so, not "Receiving data" (#39).
-        _ if let Some(checking) = item.torrent_checking() => checking,
-        // A torrent its debrid service is downloading (#44).
-        Status::Downloading if item.at_service().is_some() => item.at_service().unwrap_or_default(),
-        Status::Downloading => {
-            // A video (yt-dlp) has no engine connections: data arriving is the sign.
-            let receiving = snap.is_some_and(|s| {
-                s.connections
-                    .iter()
-                    .any(|c| matches!(c.status, ConnStatus::Receiving))
-            }) || ((item.video.is_some() || item.torrent.is_some())
-                && item.rate() > 0.0);
-            if receiving {
-                crate::i18n::t("Receiving data...")
-            } else {
-                crate::i18n::t("Connecting...")
-            }
-            .to_owned()
-        }
-        // i18n: a download's status (state it is in, not a command): finished
-        Status::Complete => crate::i18n::t("Complete").to_owned(),
-        // i18n: a download's status (state it is in, not a command): stopped for now
-        Status::Stopped => crate::i18n::t("Paused").to_owned(),
-        // i18n: a download's status (state it is in, not a command): waiting in a queue
-        Status::Queued => crate::i18n::t("Waiting").to_owned(),
-        Status::Error => crate::i18n::fmt(
-            // i18n: a download's status: it failed, with the reason
-            crate::i18n::t("Error: {error}"),
-            &[(
-                "error",
-                // i18n: the reason a download failed is not known
-                item.error.as_deref().unwrap_or(crate::i18n::t("unknown")),
-            )],
-        ),
-    };
-    fit(
-        "url",
-        33.0,
-        44.0,
-        &crate::i18n::ltr(item.url.as_str()),
-        winui::TEXT(),
-    );
-    let rows: [(&str, f32, f32, String); 6] = [
-        // i18n: noun: label before the download's state
-        (crate::i18n::mark("Status"), 61.0, 102.0, status),
-        (
-            crate::i18n::mark("File size"),
-            80.0,
-            135.0,
-            item.size.map_or(String::new(), size3),
-        ),
-        (
-            // i18n: label before the amount received so far
-            crate::i18n::mark("Downloaded"),
-            96.0,
-            135.0,
-            match frac {
-                // No size: only how much has come, no 0 % that never moves.
-                None => size3(item.downloaded),
-                Some(frac) if crate::i18n::code() == "en" => {
-                    format!("{} ( {:.2} % )", size3(item.downloaded), frac * 100.0) // not translated: English path (IDM's spacing)
-                }
-                Some(frac) => format!(
-                    "{} ( {} )",
-                    size3(item.downloaded),
-                    crate::i18n::percent(frac, 2)
-                ),
-            },
-        ),
-        (
-            crate::i18n::mark("Transfer rate"),
-            112.0,
-            135.0,
-            if item.status == Status::Downloading {
-                model::rate(item.rate())
-            } else {
-                String::new()
-            },
-        ),
-        (
-            crate::i18n::mark("Time left"),
-            128.0,
-            135.0,
-            item.time_left(),
-        ),
-        (
-            // i18n: label: whether the server lets a stopped download continue (Yes / No)
-            crate::i18n::mark("Resume capability"),
-            145.0,
-            135.0,
-            match item.resumable {
-                Some(true) => crate::i18n::t("Yes"),
-                Some(false) => crate::i18n::t("No"),
-                None => "",
-            }
-            .to_owned(),
-        ),
-    ];
-    // A value starts 6 px after its label at the least (a long translation); the rows that share
-    // the column at 135 (all but Status) keep sharing one.
-    let after = |label: &str| 33.0 + winui::text_width(p, crate::i18n::t(label)).ceil() + 6.0;
-    let column = rows
-        .iter()
-        .filter(|r| r.2 == 135.0)
-        .map(|r| after(r.0))
-        .fold(135.0, f32::max);
-    for (label, base, vx, value) in rows {
-        let vx = if vx == 135.0 {
-            column
-        } else {
-            vx.max(after(label))
+impl Progress {
+    // The rows sit 7 px inside the page's frame at the top and at the bottom (with Rename right
+    // below Server), with a slightly wider break after Status, as before.
+    fn status_page(
+        &mut self,
+        ui: &mut Ui,
+        o: Pos2,
+        item: &Item,
+        snap: Option<&Snapshot>,
+        frac: Option<f64>,
+    ) {
+        let p = &ui.painter().clone();
+        // Long values are cut with "..." at the page edge and shown whole on hover.
+        let fit = |ui: &Ui, key: &str, x: f32, base: f32, s: &str, color| {
+            let (rect, cut) =
+                winui::text_fit(p, o.x + x, o.y + base, s, color, o.x + PAGE_TEXT_RIGHT);
+            winui::copyable(ui, rect, key, s, cut);
         };
-        text(
-            p,
-            o.x + 33.0,
-            o.y + base,
-            crate::i18n::t(label),
+        let status = match item.status {
+            // A torrent reading and checking its files says so, not "Receiving data" (#39).
+            _ if let Some(checking) = item.torrent_checking() => checking,
+            // A torrent its debrid service is downloading (#44).
+            Status::Downloading if item.at_service().is_some() => {
+                item.at_service().unwrap_or_default()
+            }
+            Status::Downloading => {
+                // A video (yt-dlp) has no engine connections: data arriving is the sign.
+                let receiving = snap.is_some_and(|s| {
+                    s.connections
+                        .iter()
+                        .any(|c| matches!(c.status, ConnStatus::Receiving))
+                }) || ((item.video.is_some() || item.torrent.is_some())
+                    && item.rate() > 0.0);
+                if receiving {
+                    crate::i18n::t("Receiving data...")
+                } else {
+                    crate::i18n::t("Connecting...")
+                }
+                .to_owned()
+            }
+            // i18n: a download's status (state it is in, not a command): finished
+            Status::Complete => crate::i18n::t("Complete").to_owned(),
+            // i18n: a download's status (state it is in, not a command): stopped for now
+            Status::Stopped => crate::i18n::t("Paused").to_owned(),
+            // i18n: a download's status (state it is in, not a command): waiting in a queue
+            Status::Queued => crate::i18n::t("Waiting").to_owned(),
+            Status::Error => crate::i18n::fmt(
+                // i18n: a download's status: it failed, with the reason
+                crate::i18n::t("Error: {error}"),
+                &[(
+                    "error",
+                    // i18n: the reason a download failed is not known
+                    item.error.as_deref().unwrap_or(crate::i18n::t("unknown")),
+                )],
+            ),
+        };
+        fit(
+            ui,
+            "url",
+            33.0,
+            44.0,
+            &crate::i18n::ltr(item.url.as_str()),
             winui::TEXT(),
         );
-        // Light mode shows the status value in pure blue (light-dialogs.md).
-        let vc = if label == "Status" {
-            crate::theme::colors().status_value
-        } else {
-            winui::TEXT()
-        };
-        fit(label, vx, base, &value, vc);
+        let rows: [(&str, f32, f32, String); 6] = [
+            // i18n: noun: label before the download's state
+            (crate::i18n::mark("Status"), 61.0, 102.0, status),
+            (
+                crate::i18n::mark("File size"),
+                80.0,
+                135.0,
+                item.size.map_or(String::new(), size3),
+            ),
+            (
+                // i18n: label before the amount received so far
+                crate::i18n::mark("Downloaded"),
+                96.0,
+                135.0,
+                match frac {
+                    // No size: only how much has come, no 0 % that never moves.
+                    None => size3(item.downloaded),
+                    Some(frac) if crate::i18n::code() == "en" => {
+                        format!("{} ( {:.2} % )", size3(item.downloaded), frac * 100.0) // not translated: English path (IDM's spacing)
+                    }
+                    Some(frac) => format!(
+                        "{} ( {} )",
+                        size3(item.downloaded),
+                        crate::i18n::percent(frac, 2)
+                    ),
+                },
+            ),
+            (
+                crate::i18n::mark("Transfer rate"),
+                112.0,
+                135.0,
+                if item.status == Status::Downloading {
+                    model::rate(item.rate())
+                } else {
+                    String::new()
+                },
+            ),
+            (
+                crate::i18n::mark("Time left"),
+                128.0,
+                135.0,
+                item.time_left(),
+            ),
+            (
+                // i18n: label: whether the server lets a stopped download continue (Yes / No)
+                crate::i18n::mark("Resume capability"),
+                145.0,
+                135.0,
+                match item.resumable {
+                    Some(true) => crate::i18n::t("Yes"),
+                    Some(false) => crate::i18n::t("No"),
+                    None => "",
+                }
+                .to_owned(),
+            ),
+        ];
+        // A value starts 6 px after its label at the least (a long translation); the rows that share
+        // the column at 135 (all but Status) keep sharing one.
+        let after = |label: &str| 33.0 + winui::text_width(p, crate::i18n::t(label)).ceil() + 6.0;
+        let column = rows
+            .iter()
+            .filter(|r| r.2 == 135.0)
+            .map(|r| after(r.0))
+            .fold(135.0, f32::max);
+        for (label, base, vx, value) in rows {
+            let vx = if vx == 135.0 {
+                column
+            } else {
+                vx.max(after(label))
+            };
+            text(
+                p,
+                o.x + 33.0,
+                o.y + base,
+                crate::i18n::t(label),
+                winui::TEXT(),
+            );
+            // Light mode shows the status value in pure blue (light-dialogs.md).
+            let vc = if label == "Status" {
+                crate::theme::colors().status_value
+            } else {
+                winui::TEXT()
+            };
+            fit(ui, label, vx, base, &value, vc);
+        }
+        // Where its server is (#140): a file download's (a torrent, a video or a gallery has no
+        // single server of MDM's own). As the running download sees it, else as its last run did.
+        if item.torrent.is_none() && item.video.is_none() && item.gallery.is_none() {
+            // i18n: label before where a download's server is (its country and round trip)
+            let label = crate::i18n::t("Server");
+            text(p, o.x + 33.0, o.y + 161.0, label, winui::TEXT());
+            let seen = snap
+                .and_then(|s| s.server.as_ref())
+                .map(crate::whereis::Seen::from)
+                .or_else(|| item.server.clone());
+            crate::whereis::line(
+                ui,
+                o.x + column.max(33.0 + winui::text_width(p, label).ceil() + 6.0),
+                o.y + 161.0,
+                o.x + PAGE_TEXT_RIGHT,
+                seen.as_ref(),
+                &format!("progress-{}", item.id),
+            );
+        }
+        self.rename_row(ui, p, o, column, item);
     }
-    // Where its server is (#140): a file download's (a torrent, a video or a gallery has no
-    // single server of MDM's own). As the running download sees it, else as its last run did.
-    if item.torrent.is_none() && item.video.is_none() && item.gallery.is_none() {
-        // i18n: label before where a download's server is (its country and round trip)
-        let label = crate::i18n::t("Server");
-        text(p, o.x + 33.0, o.y + 161.0, label, winui::TEXT());
-        let seen = snap
-            .and_then(|s| s.server.as_ref())
-            .map(crate::whereis::Seen::from)
-            .or_else(|| item.server.clone());
-        crate::whereis::line(
+
+    fn rename_row(&mut self, ui: &mut Ui, p: &egui::Painter, o: Pos2, column: f32, item: &Item) {
+        let top = 171.0;
+        let base = top + 13.0;
+        // i18n: noun: label before the deferred new file or folder name in the progress window
+        let rename_label = crate::i18n::t("Rename");
+        // i18n: verb: button that saves the deferred rename in the progress window
+        let confirm_key = crate::i18n::mark("Confirm");
+        // i18n: status shown in green beside the Rename box once the new name is saved
+        let saved_text = crate::i18n::t("Saved");
+
+        text(p, o.x + 33.0, o.y + base, rename_label, winui::TEXT());
+
+        let saved_w = winui::text_width(p, saved_text).ceil().max(38.0);
+        let btn_w = (winui::text_width(p, crate::i18n::t(confirm_key)) + 20.0)
+            .ceil()
+            .max(52.0);
+        let saved_x = PAGE_TEXT_RIGHT - saved_w;
+        let btn_x = saved_x - 8.0 - btn_w;
+        let edit_x = column.max(33.0 + winui::text_width(p, rename_label).ceil() + 6.0);
+        let edit_w = (btn_x - 6.0 - edit_x).max(100.0);
+
+        let disabled_reason = (item.status != Status::Complete)
+            .then_some(self.rename_disabled_reason)
+            .flatten();
+        let enabled = item.status != Status::Complete && disabled_reason.is_none();
+        let edit_rc = r(o, edit_x, top, edit_w, 21.0);
+        let edit_resp = winui::edit(ui, edit_rc, &mut self.rename_text, enabled, false);
+        if edit_resp.changed() {
+            self.on_rename_text_changed(std::time::Instant::now());
+            if let Some(wait) = self.poll_rename_autosave(std::time::Instant::now()) {
+                ui.ctx()
+                    .request_repaint_after(wait + std::time::Duration::from_millis(15));
+            }
+        }
+
+        let validated = crate::deferred_rename::validate_name(&self.rename_text);
+        let error_reason = if enabled {
+            validated.as_ref().err().copied().map(rename_error_message)
+        } else {
+            None
+        };
+        if error_reason.is_some() {
+            winui::error_frame(p, edit_rc);
+        }
+
+        let dirty = match &validated {
+            Ok(norm) => *norm != self.rename_saved,
+            Err(_) => false,
+        };
+        let can_confirm = enabled
+            && validated.is_ok()
+            && (dirty || (!self.rename_text.trim().is_empty() && !self.rename_show_saved));
+        let btn_kind = if can_confirm {
+            ButtonKind::Normal
+        } else {
+            ButtonKind::Disabled
+        };
+        let btn_resp = winui::button(
             ui,
-            o.x + column.max(33.0 + winui::text_width(p, label).ceil() + 6.0),
-            o.y + 161.0,
-            o.x + PAGE_TEXT_RIGHT,
-            seen.as_ref(),
-            &format!("progress-{}", item.id),
+            r(o, btn_x, top, btn_w, 21.0),
+            confirm_key,
+            btn_kind,
+            false,
+            None,
         );
+        let clicked = btn_resp.clicked();
+        let enter = edit_resp.has_focus() && winui::take_key(ui, egui::Key::Enter);
+        let assistive = winui::value_set_by_assistive(&edit_resp);
+
+        if let Some(reason_key) = error_reason.or(disabled_reason) {
+            let why = crate::i18n::t(reason_key);
+            ui.interact(
+                edit_rc,
+                egui::Id::unique(("progress-rename-reason", self.id)),
+                egui::Sense::hover(),
+            )
+            .on_hover_text(why);
+            edit_resp
+                .clone()
+                .on_hover_text(why)
+                .on_disabled_hover_text(why);
+            btn_resp.on_hover_text(why);
+            if error_reason.is_some() && edit_resp.has_focus() {
+                egui::Tooltip::for_widget(&edit_resp).show(|ui| {
+                    ui.label(why);
+                });
+            }
+        }
+
+        if enabled
+            && (clicked || enter || assistive)
+            && let Ok(norm) = validated
+            && (dirty || norm.is_some())
+        {
+            self.commit_rename(norm);
+        }
+
+        if enabled && self.rename_show_saved {
+            text(p, o.x + saved_x, o.y + base, saved_text, winui::SUCCESS());
+        }
+    }
+}
+
+fn rename_error_message(err: crate::deferred_rename::RenameError) -> &'static str {
+    use crate::deferred_rename::RenameError;
+    match err {
+        // i18n: reason shown on the Rename box when the entered name ends with a period
+        RenameError::TrailingDot => crate::i18n::mark("A file name cannot end with a dot"),
+        // i18n: reason shown on the Rename box when the entered name exceeds the length limit
+        RenameError::TooLong => crate::i18n::mark("The name is too long"),
+        // i18n: reason shown on the Rename box when the entered name has a forbidden character
+        RenameError::InvalidChar => {
+            crate::i18n::mark("This character is not allowed in a file name")
+        }
+        // i18n: reason shown on the Rename box when the entered name is a reserved device name on Windows (CON, NUL, COM1…)
+        RenameError::ReservedDevice => crate::i18n::mark("This name is reserved by Windows"),
     }
 }
 
@@ -1892,5 +2140,61 @@ mod tests {
         p.show_hidden_tabs();
         assert!(p.hidden_tabs.is_empty(), "every tab back on the strip");
         assert_eq!(p.tab, Tab::Status, "the page shown stays as it was");
+    }
+
+    #[test]
+    fn syncs_saved_rename_autosaves_and_ignores_unconfirmed_typing() {
+        let mut item = Item::new(
+            7,
+            "https://example.com/unknown".parse().unwrap(),
+            std::path::PathBuf::from("/tmp/unknown"),
+            crate::model::Category::General,
+        );
+        item.rename_on_complete = Some("ArchivePack".into());
+
+        let mut p = Progress::new(7, true);
+        p.sync_rename_from_item(&item);
+        assert_eq!(p.rename_text, "ArchivePack");
+        assert!(p.rename_show_saved, "saved rename shows Saved");
+
+        let t0 = std::time::Instant::now();
+        p.rename_text = "Episode 02".into();
+        p.on_rename_text_changed(t0);
+        assert!(!p.rename_show_saved, "editing hides Saved until confirmed");
+        assert_eq!(
+            p.take_confirmed_rename(),
+            None,
+            "half-typed unconfirmed text before 3s is never promoted"
+        );
+        assert!(
+            p.poll_rename_autosave(t0 + std::time::Duration::from_secs(2))
+                .is_some(),
+            "still waiting before 3 seconds"
+        );
+        assert!(
+            p.poll_rename_autosave(t0 + std::time::Duration::from_secs(3))
+                .is_none(),
+            "3 seconds elapsed: auto-saves"
+        );
+        assert!(p.rename_show_saved, "Saved turns green after 3s idle");
+        assert_eq!(p.take_confirmed_rename(), Some(Some("Episode 02".into())));
+
+        p.rename_text = "bad/name".into();
+        p.on_rename_text_changed(t0);
+        assert_eq!(
+            p.poll_rename_autosave(t0 + std::time::Duration::from_secs(5)),
+            None
+        );
+        assert_eq!(p.take_confirmed_rename(), None);
+    }
+
+    #[test]
+    fn switching_tabs_keeps_window_height_constant() {
+        let mut p = Progress::new(1, true);
+        assert_eq!(p.status_drop(), RENAME_DROP);
+        p.tab = Tab::Limiter;
+        assert_eq!(p.status_drop(), RENAME_DROP);
+        p.tab = Tab::Completion;
+        assert_eq!(p.status_drop(), RENAME_DROP);
     }
 }

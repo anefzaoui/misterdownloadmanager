@@ -146,6 +146,10 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Un servizio debrid scarica il collegamento di un file hosting con il tuo account a pagamento e fornisce a MDM un collegamento diretto. Usa solo il tuo account: condividere un account o i suoi collegamenti viola i termini dei servizi e può causarne la sospensione. I download già avviati dal browser restano invariati.
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name ends with a period
+#, machine
+	A file name cannot end with a dot	Il nome di un file non può terminare con un punto
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
@@ -168,6 +172,10 @@
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	un server su questo computer ha reindirizzato il download altrove, dove non passerebbe tramite {adapter}
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box for a single-file torrent
+#, machine
+	A single-file torrent keeps its name	Un torrent a file singolo mantiene il proprio nome
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 	A tracker on this computer or the local network is never contacted: {line}	Un tracker su questo computer o sulla rete locale non viene mai contattato: {line}
@@ -433,6 +441,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Austria	Austria
+#. checkbox in the Options window; text in the Options window
+#. checkbox: the User-Agent is the default browser's, which MDM finds itself
+#, machine
+	Automatic	Automatico
 #. text in remote.rs
 #. remote control page (on a phone): category choice: the category follows the file's type
 	Automatic (by file type)	Automatico (per tipo di file)
@@ -717,6 +729,10 @@
 #. text in the Options window
 #. Options → DNS settings: NextDNS's own configuration ID (optional)
 	Configuration ID:	ID configurazione:
+#. text in a download's progress window
+#. verb: button that saves the deferred rename in the progress window
+#, machine
+	Confirm	Conferma
 #. text in the Options window
 	Confirm before deleting downloads	Chiedi conferma prima di eliminare i download
 #. window title in a dialog box
@@ -1129,7 +1145,7 @@
 #. text in the Options window
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Sperimentale: basato sulla documentazione pubblica delle API dei servizi, non ancora verificato con account reali.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 	Export	Esporta
 #. text in the Options window
 	Extend the availability of Manifest 2 Chrome extensions	Estendi la disponibilità delle estensioni Chrome Manifest 2
@@ -1480,7 +1496,7 @@
 	If it can't be reached, use the system's DNS	Se non è raggiungibile, usa il DNS di sistema
 #. checkbox in the Options window
 	Ignore file modification time changes when resuming a download	Ignora i cambiamenti della data di modifica del file quando si riprende un download
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 	Import	Importa
 #. value in a column's filter list in the download list
 	In a queue	In una coda
@@ -1762,6 +1778,10 @@
 #. text in crashui.rs
 #. crash report window: looking on GitHub for an issue about the same problem
 	Looking for this problem on GitHub…	Ricerca del problema su GitHub…
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking for your default browser...	Ricerca del browser predefinito in corso...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Looking the page up...	Analisi della pagina...
@@ -2574,6 +2594,10 @@
 #. remote control page (on a phone): question before removing a download; {name} its file name
 #. {name} = a file name (keep the braces as they are)
 	Remove {name} from the list?	Rimuovere {name} dall'elenco?
+#. text in a download's progress window
+#. noun: label before the deferred new file or folder name in the progress window
+#, machine
+	Rename	Rinomina
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 	Replace asterisk to	Sostituisci l'asterisco con
@@ -2674,6 +2698,10 @@
 #. Link grabber: the folder the package's files go to (a label before its box)
 #. RSS feeds window, Download rules: the folder the rule's torrents go to
 	Save to:	Salva in:
+#. text in a download's progress window
+#. status shown in green beside the Rename box once the new name is saved
+#, machine
+	Saved	Salvato
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 	Saved in	Salvato in
@@ -2792,6 +2820,11 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
 	Sharing stopped: the share ratio reached {ratio}	Condivisione interrotta: il rapporto di condivisione ha raggiunto {ratio}
+#. message or event log entry in the main window
+#. event log entry on a finished torrent when re-attaching it to keep sharing failed; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Sharing stopped: {error}	Condivisione interrotta: {error}
 #. text in the download list
 	Show	Mostra
 #. message or event log entry in the main window
@@ -2933,6 +2966,10 @@
 	Speed Limiter	Limitatore di velocità
 #. window title in a dialog box
 	Speed Limiter settings	Impostazioni del limitatore di velocità
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
+#, machine
+	Split archive volumes keep their names for extraction	I volumi degli archivi suddivisi mantengono i propri nomi per l'estrazione
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Sri Lanka	Sri Lanka
@@ -3210,7 +3247,7 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 	The file could not be moved: {error}	Impossibile spostare il file: {error}
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 	The file could not be read: {error}	Impossibile leggere il file: {error}
 #. text in the Checksum window
@@ -3246,11 +3283,15 @@
 #. text in extension.rs
 #. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
 	The helper program the browsers start is missing	Manca il programma di supporto che i browser avviano
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 	The list could not be saved: {error}	Impossibile salvare l'elenco: {error}
 #. text in whereis.rs
 	the local network	la rete locale
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name exceeds the length limit
+#, machine
+	The name is too long	Il nome è troppo lungo
 #. text in errors.rs; text in torrent downloads
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 	the network adapter {adapter} is not connected	la scheda di rete {adapter} non è connessa
@@ -3352,6 +3393,9 @@
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 	This category or queue holds no downloads yet.	Questa categoria o coda non contiene ancora download.
+#. text in a download's progress window
+#, machine
+	This character is not allowed in a file name	Questo carattere non è consentito in un nome di file
 #. text in the Options window
 #. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
 	This code can't be used any more.	Questo codice non è più valido.
@@ -3384,6 +3428,14 @@
 	This file is too large to be a torrent.	Questo file è troppo grande per essere un torrent.
 #. text in a dialog box
 	This folder does not exist:	Questa cartella non esiste:
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the folder already holds files this download did not write
+#, machine
+	This folder holds files from outside this download	Questa cartella contiene file estranei a questo download
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the folder holds another download or is a save/category folder
+#, machine
+	This folder is shared with another download or save folder	Questa cartella è condivisa con un altro download o una cartella di salvataggio
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	questo file di Google Drive richiede l'accesso: accedi a Google nel browser, quindi scaricalo da lì
@@ -3404,6 +3456,10 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 	This magnet link names no trackers and the DHT is off, so no peer can be found.	Questo link magnet non indica tracker e la DHT è disattivata, quindi non si possono trovare peer.
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name is a reserved device name on Windows (CON, NUL, COM1…)
+#, machine
+	This name is reserved by Windows	Questo nome è riservato da Windows
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 	This needs ffmpeg	Serve ffmpeg
@@ -3868,6 +3924,13 @@
 #. text in extension.rs
 #. a row of the browser extension's window when no browser was found by name
 	Your browser	Il tuo browser
+#. text in the Options window
+#, machine
+	Your default browser isn't one MDM knows: a current Chrome's User-Agent	Il tuo browser predefinito non è uno che MDM conosce: un User-Agent di Chrome attuale
+#. text in the Options window
+#. tooltip; {browser} is a browser and its version, e.g. "Brave 157"
+#, machine
+	Your default browser's User-Agent: {browser}	User-Agent del tuo browser predefinito: {browser}
 #. text in the settings
 #. Options → DNS: the name of a DNS the user typed in, in messages: "your DNS (DNS over TLS)"
 	your DNS ({how})	il tuo DNS ({how})
@@ -3954,6 +4017,11 @@
 #. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 	{done} of {size}	{done} di {size}
+#. text in deferred_rename.rs
+#. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{error} (left as {path}: {rollback_error})	{error} (lasciato come {path}: {rollback_error})
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 	{ext} File	File {ext}
@@ -4293,6 +4361,9 @@ extension	Open its address once and accept its certificate, then enter a code fr
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 extension	Open Mister Download Manager	Apri Mister Download Manager
+#. shown briefly on the download button over a video in a feed (a social site's home page, a timeline) when nothing in the feed gives that video's own address, so nothing was sent: the user should open the post the video belongs to and click the button on that page; short
+#, machine
+extension	Open the post, then use the button there	Apri il post, poi usa il pulsante lì
 #. text in the browser extension
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it

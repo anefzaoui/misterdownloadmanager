@@ -2308,6 +2308,97 @@ pub fn caption_dark(title: &str, dark: bool) -> bool {
     true
 }
 
+/// The popup menus Windows draws for us — the notification-area icon's (tray-icon's), the
+/// window menu of a drawn title bar — in MDM's mode, not Windows' (#682): dark on a dark surface
+/// (dark mode, a dark theme), light otherwise, whatever Windows' own app mode says. Windows has
+/// no documented way: uxtheme's SetPreferredAppMode (ordinal 135, ForceDark 2 / ForceLight 3)
+/// sets the process's mode and FlushMenuThemes (ordinal 136) makes menus read it again, as the
+/// win32-darkmode project and the apps built on it do. They exist from Windows 10 1903 (build
+/// 18362) on; 1809 has another function at 135 and older builds no dark menus, so there menus
+/// stay as Windows draws them. Called when the mode changes; asks uxtheme only when it is news.
+pub fn menus_dark(dark: bool) {
+    use std::sync::atomic::{AtomicU8, Ordering};
+    static TOLD: AtomicU8 = AtomicU8::new(u8::MAX);
+    let mode: i32 = if dark { 2 } else { 3 };
+    if TOLD.swap(mode as u8, Ordering::Relaxed) == mode as u8 {
+        return;
+    }
+    let Some(f) = menu_mode_fns() else {
+        return;
+    };
+    // SAFETY: the functions behind these ordinals on build 18362 and later (menu_mode_fns),
+    // SetPreferredAppMode(int) -> int and FlushMenuThemes(void); process-wide, any thread.
+    unsafe {
+        (f.set_preferred_app_mode)(mode);
+        (f.flush_menu_themes)();
+    }
+}
+
+/// uxtheme's functions that set the mode of the menus Windows draws ([`menus_dark`]).
+#[derive(Clone, Copy)]
+struct MenuModeFns {
+    set_preferred_app_mode: unsafe extern "system" fn(i32) -> i32,
+    flush_menu_themes: unsafe extern "system" fn(),
+}
+
+/// [`MenuModeFns`], looked up once: None before Windows 10 1903 or if uxtheme lacks them.
+fn menu_mode_fns() -> Option<MenuModeFns> {
+    use windows_sys::Win32::System::LibraryLoader::{
+        GetProcAddress, LOAD_LIBRARY_SEARCH_SYSTEM32, LoadLibraryExW,
+    };
+    use windows_sys::Win32::System::Registry::HKEY_LOCAL_MACHINE;
+    static FNS: std::sync::OnceLock<Option<MenuModeFns>> = std::sync::OnceLock::new();
+    *FNS.get_or_init(|| {
+        let build = reg_string_in(
+            HKEY_LOCAL_MACHINE,
+            r"SOFTWARE\Microsoft\Windows NT\CurrentVersion",
+            "CurrentBuild",
+        )
+        .and_then(|b| b.parse::<u32>().ok())?;
+        if build < 18362 {
+            return None;
+        }
+        let name: Vec<u16> = "uxtheme.dll\0".encode_utf16().collect();
+        // SAFETY: a NUL-terminated name, loaded from System32 only; the module stays loaded for
+        // the process's life (never freed), so the pointers taken from it stay valid. An ordinal
+        // goes as the name pointer's low word (MAKEINTRESOURCEA).
+        unsafe {
+            let module = LoadLibraryExW(
+                name.as_ptr(),
+                std::ptr::null_mut(),
+                LOAD_LIBRARY_SEARCH_SYSTEM32,
+            );
+            if module.is_null() {
+                return None;
+            }
+            let set = GetProcAddress(module, 135usize as *const u8)?;
+            let flush = GetProcAddress(module, 136usize as *const u8)?;
+            Some(MenuModeFns {
+                set_preferred_app_mode: std::mem::transmute::<
+                    unsafe extern "system" fn() -> isize,
+                    unsafe extern "system" fn(i32) -> i32,
+                >(set),
+                flush_menu_themes: std::mem::transmute::<
+                    unsafe extern "system" fn() -> isize,
+                    unsafe extern "system" fn(),
+                >(flush),
+            })
+        }
+    })
+}
+
+#[cfg(test)]
+mod menus_dark_tests {
+    /// #682: uxtheme has the menu mode functions on every Windows MDM is tested on (10 1903 and
+    /// later, Server 2022's runner included), and setting the mode either way returns.
+    #[test]
+    fn the_menu_mode_functions_are_found_and_answer() {
+        assert!(super::menu_mode_fns().is_some());
+        super::menus_dark(true);
+        super::menus_dark(false);
+    }
+}
+
 /// One of our windows by handle, for crates that take a `raw-window-handle` window.
 struct OwnWindow(HWND);
 
@@ -2911,6 +3002,78 @@ pub fn windows_version() -> String {
         .map(|v| format!(" {v}"))
         .unwrap_or_default();
     format!("{product}{release} (build {build})")
+}
+
+/// The default browser (#668): the program https links open with (the user's choice in Default
+/// apps, `UserChoice`'s ProgId, and that ProgId's `shell\open\command`), and its file's version.
+/// None when it isn't a browser MDM knows (MDM then speaks as Chrome).
+pub fn default_browser() -> Option<mdm_engine::agent::Found> {
+    use mdm_engine::agent::{Browser, Found};
+    use windows_sys::Win32::System::Registry::HKEY_CLASSES_ROOT;
+    const HTTPS: &str = r"Software\Microsoft\Windows\Shell\Associations\UrlAssociations\https";
+    // Windows 11 keeps the choice in UserChoiceLatest since 2025, its ProgId in a key of its
+    // own (UserChoiceLatest\ProgId's ProgId); UserChoice stays, and may be an older choice.
+    let prog_id = [r"UserChoiceLatest\ProgId", "UserChoiceLatest", "UserChoice"]
+        .iter()
+        .find_map(|k| {
+            reg_string(&format!(r"{HTTPS}\{k}"), "ProgId").filter(|p| !p.trim().is_empty())
+        })?;
+    let command = reg_string_in(
+        HKEY_CLASSES_ROOT,
+        &format!(r"{prog_id}\shell\open\command"),
+        "",
+    )?;
+    let exe = std::path::PathBuf::from(crate::defaultbrowser::windows_program(&command)?);
+    let stem = exe.file_stem()?.to_string_lossy().into_owned();
+    // Opera starts through its launcher.exe, in a folder named after it ("Opera", "Opera GX").
+    let name = if stem.eq_ignore_ascii_case("launcher") {
+        exe.parent()?.file_name()?.to_string_lossy().into_owned()
+    } else {
+        stem
+    };
+    let browser = Browser::named(&name).or_else(|| Browser::named(&prog_id))?;
+    Some(Found {
+        browser,
+        version: file_version(&exe),
+        ubuntu: false,
+    })
+}
+
+/// A program's file version ("157.1.99.55"): its version resource's fixed part.
+fn file_version(exe: &std::path::Path) -> Option<String> {
+    use std::os::windows::ffi::OsStrExt;
+    use windows_sys::Win32::Storage::FileSystem::{
+        GetFileVersionInfoSizeW, GetFileVersionInfoW, VS_FIXEDFILEINFO, VerQueryValueW,
+    };
+    let path: Vec<u16> = exe.as_os_str().encode_wide().chain(Some(0)).collect();
+    // SAFETY: a NUL-terminated path; the handle argument is optional and ignored.
+    let size = unsafe { GetFileVersionInfoSizeW(path.as_ptr(), std::ptr::null_mut()) };
+    if size == 0 {
+        return None;
+    }
+    let mut data = vec![0u8; size as usize];
+    // SAFETY: `data` holds `size` bytes, as GetFileVersionInfoSizeW asked.
+    if unsafe { GetFileVersionInfoW(path.as_ptr(), 0, size, data.as_mut_ptr().cast()) } == 0 {
+        return None;
+    }
+    let root: Vec<u16> = "\\".encode_utf16().chain(Some(0)).collect();
+    let (mut info, mut len) = (std::ptr::null_mut::<c_void>(), 0u32);
+    // SAFETY: `data` is the version block just read; the pointer returned points into it.
+    let ok = unsafe { VerQueryValueW(data.as_ptr().cast(), root.as_ptr(), &mut info, &mut len) };
+    if ok == 0 || info.is_null() || (len as usize) < size_of::<VS_FIXEDFILEINFO>() {
+        return None;
+    }
+    // SAFETY: VerQueryValueW returned a VS_FIXEDFILEINFO of `len` bytes inside `data`, which is
+    // still alive; read unaligned, as a byte buffer promises no alignment.
+    let fixed = unsafe { std::ptr::read_unaligned(info.cast::<VS_FIXEDFILEINFO>()) };
+    let (ms, ls) = (fixed.dwFileVersionMS, fixed.dwFileVersionLS);
+    Some(format!(
+        "{}.{}.{}.{}",
+        ms >> 16,
+        ms & 0xffff,
+        ls >> 16,
+        ls & 0xffff
+    ))
 }
 
 fn reg_string_in(
@@ -4388,6 +4551,34 @@ pub fn mark_downloaded(path: &std::path::Path, url: &str, referrer: Option<&str>
     let mut stream = path.as_os_str().to_owned();
     stream.push(":Zone.Identifier");
     let _ = std::fs::write(stream, text);
+}
+
+/// Rename `from` to `to` without ever replacing an existing entry (`MoveFileExW` without
+/// `MOVEFILE_REPLACE_EXISTING`, returning `ErrorKind::AlreadyExists` when `to` is already there).
+pub fn rename_no_replace(from: &std::path::Path, to: &std::path::Path) -> std::io::Result<()> {
+    use std::os::windows::ffi::OsStrExt;
+    use windows_sys::Win32::Storage::FileSystem::MoveFileExW;
+    let encode = |p: &std::path::Path| -> std::io::Result<Vec<u16>> {
+        let mut wide: Vec<u16> = p.as_os_str().encode_wide().collect();
+        if wide.contains(&0) {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "interior NUL",
+            ));
+        }
+        wide.push(0);
+        Ok(wide)
+    };
+    let from_w = encode(from)?;
+    let to_w = encode(to)?;
+    // SAFETY: both UTF-16 buffers are NUL-terminated and live through the call; flags = 0 refuses
+    // cross-volume copies and refuses replacing an existing destination.
+    let ok = unsafe { MoveFileExW(from_w.as_ptr(), to_w.as_ptr(), 0) };
+    if ok != 0 {
+        Ok(())
+    } else {
+        Err(std::io::Error::last_os_error())
+    }
 }
 
 /// Where browser integration stands: a browser looking for the native host (Chrome's key,
