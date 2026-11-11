@@ -1225,7 +1225,7 @@ fn direct_size(
     }
     let mut opts = crate::settings::own_net();
     if let Some(agent) = &browser.user_agent {
-        opts.user_agent = agent.clone();
+        opts.speak_as(agent.clone());
     }
     rt.block_on(mdm_engine::probe(url, headers, &opts))
         .ok()?

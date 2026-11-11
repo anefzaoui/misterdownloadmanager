@@ -320,6 +320,8 @@ Everything below ships together, in version 0.5.0.
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 - ✅ Debrid accounts: torrents and magnet links through the service, their files downloaded over
   HTTP, no peer connections ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
+- ✅ Debrid accounts (experimental): TorBox, for file-host links and torrents
+  ([#391](https://github.com/anefzaoui/misterdownloadmanager/issues/391))
 - ✅ Sign-ins in the system's keychain: Windows Credential Manager, the Secret Service keyring on
   Linux, the macOS keychain; for debrid accounts, Sites Logins and the proxy
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
@@ -501,6 +503,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Links added by hand go with the User-Agent of your default browser, at the version you have
+  (Chrome, Edge, Brave, Opera, Vivaldi, Firefox, Safari), instead of a years-old one; **Automatic**
+  in Options, or one you type (part of
+  [#668](https://github.com/anefzaoui/misterdownloadmanager/issues/668))
 - ✅ Linux freeze and crash reports name MDM's functions again, and the right ones: the stack of
   a program whose code begins a page after its start (0.5.0's) was read at the wrong place, so
   reports showed only system libraries, or names from elsewhere in MDM
@@ -537,6 +543,9 @@ These ship in a later version, when they're ready.
   engine, which holds a torrent while its writes to the disk end
   ([#693](https://github.com/anefzaoui/misterdownloadmanager/issues/693)): the torrents' numbers
   are now read beside the window; fix in review
+- 🔄 Sites with bot protection (Cloudflare and similar) refusing MDM: when a site still answers
+  with a bot check, asking again the way a browser connects
+  ([#668](https://github.com/anefzaoui/misterdownloadmanager/issues/668))
 - 🔄 Download video: a sound-only choice (MP3, a playlist as sound) saved in the Music folder and
   listed under Music ([#611](https://github.com/anefzaoui/misterdownloadmanager/issues/611)):
   in review

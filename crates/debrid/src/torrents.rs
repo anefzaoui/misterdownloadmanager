@@ -13,6 +13,8 @@
 //! - Premiumize: `transfer/create` (`src`), `transfer/list`, `folder/list` (walked) or
 //!   `item/details` for a single file, `transfer/delete`; its files' links are direct links to
 //!   the user's own cloud.
+//! - TorBox: `torrents/createtorrent` (`magnet`), `torrents/mylist?id=`, `torrents/requestdl` for
+//!   each file (a direct link), `torrents/controltorrent` (`delete`).
 
 use std::path::{Component, Path, PathBuf};
 use std::sync::{Arc, Mutex};
@@ -24,7 +26,7 @@ use serde::Deserialize;
 use tokio_util::sync::CancellationToken;
 use url::Url;
 
-use crate::{Debrid, Fault, ServiceKind, Session, alldebrid, premiumize, realdebrid};
+use crate::{Debrid, Fault, ServiceKind, Session, alldebrid, premiumize, realdebrid, torbox};
 
 /// How the service is doing with a torrent.
 #[derive(Clone, Debug, PartialEq)]
@@ -70,6 +72,12 @@ impl Session {
             ServiceKind::Premiumize => {
                 premiumize::create(&self.http, &self.token(false).await?, magnet).await
             }
+            ServiceKind::TorBox => {
+                let key = self.token(false).await?;
+                let id = torbox::create(&self.http, &key, torbox::Kind::Torrent, "magnet", magnet)
+                    .await?;
+                Ok(id.to_string())
+            }
         }
     }
 
@@ -86,6 +94,18 @@ impl Session {
             }
             ServiceKind::Premiumize => {
                 premiumize::transfer_status(&self.http, &self.token(false).await?, id).await
+            }
+            ServiceKind::TorBox => {
+                let (kind, n) = (torbox::Kind::Torrent, torbox::torrent_id(id)?);
+                let key = self.token(false).await?;
+                let i = torbox::item(&self.http, &key, kind, n).await?;
+                match torbox::state(&i) {
+                    Some(s) => Ok(s),
+                    None => Ok(Status::Ready {
+                        files: torbox::files(&self.http, &key, kind, n, &i).await?,
+                        name: i.name,
+                    }),
+                }
             }
         }
     }
@@ -104,6 +124,16 @@ impl Session {
             ServiceKind::Premiumize => {
                 premiumize::transfer_delete(&self.http, &self.token(false).await?, id).await
             }
+            ServiceKind::TorBox => {
+                let n = torbox::torrent_id(id)?;
+                torbox::delete(
+                    &self.http,
+                    &self.token(false).await?,
+                    torbox::Kind::Torrent,
+                    n,
+                )
+                .await
+            }
         }
     }
 }
@@ -118,7 +148,7 @@ impl Debrid {
             .map(|s| (s.account.id, s.account.service))
     }
 
-    fn session(&self, id: u64) -> Option<Arc<Session>> {
+    pub(crate) fn session(&self, id: u64) -> Option<Arc<Session>> {
         self.sessions
             .read()
             .unwrap()
@@ -301,9 +331,9 @@ impl RemoteTorrent {
         let total: u64 = files.iter().map(|f| f.size).sum();
         self.shared.lock().unwrap().total = (total > 0).then_some(total);
         // Real-Debrid's and AllDebrid's links are their hoster links: unlocked through the
-        // account, as any. Premiumize's are direct.
+        // account, as any. Premiumize's and TorBox's are direct.
         let unlocker = match s.account.service {
-            ServiceKind::Premiumize => None,
+            ServiceKind::Premiumize | ServiceKind::TorBox => None,
             _ => Some(Arc::new(crate::AccountUnlocker { session: s.clone() })
                 as Arc<dyn mdm_engine::Unlocker>),
         };
@@ -318,6 +348,11 @@ impl RemoteTorrent {
         };
         let within = |path: &str| {
             let t = path.trim_start_matches(['/', '\\']);
+            // The one file by its name, whatever folder the service keeps it in (TorBox's
+            // `<torrent>/<file>`).
+            if files.len() == 1 {
+                return t.rsplit(['/', '\\']).next().unwrap_or(t).to_owned();
+            }
             match t.split_once(['/', '\\']) {
                 Some((first, rest)) if files.len() > 1 && first.trim() == name.trim() => {
                     rest.to_owned()
@@ -468,6 +503,8 @@ impl RemoteTorrent {
             (State::Probing, Some(_)) => State::Downloading,
             (s, _) => s,
         };
+        // A file whose link the service prepares (AllDebrid's delayed links).
+        let at_service = cur.as_ref().and_then(|c| c.at_service.clone());
         let (connections, server, running) = match cur {
             Some(c) => (
                 c.connections,
@@ -516,6 +553,7 @@ impl RemoteTorrent {
             }),
             events,
             server,
+            at_service,
         }
     }
 }

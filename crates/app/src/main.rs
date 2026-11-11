@@ -11,6 +11,7 @@ mod countries;
 mod crash;
 mod crashui;
 mod debrid;
+mod defaultbrowser;
 mod derive;
 mod dialogs;
 mod droptarget;
@@ -247,6 +248,13 @@ fn main() -> std::process::ExitCode {
     // misterdownloadmanager-cli's commands (crates/cli): its launcher starts this program for
     // them. Nothing of the app's runs: no window, instance, crash monitor or crash log.
     if let Some(cli) = mdm_cli::launched(std::env::args_os().collect()) {
+        // The default browser's User-Agent (#668): a command's download starts at once, so it
+        // waits for it a moment (Windows reads it from the registry; Linux and macOS may ask the
+        // browser its version). Only `get` and `resume` download with it: the others don't wait.
+        let found = defaultbrowser::start();
+        if mdm_cli::downloads(&cli.args) {
+            defaultbrowser::wait(&found, std::time::Duration::from_secs(3));
+        }
         // A windowed program has no console: the launcher's, unless the output goes to a file
         // or a pipe. On Linux and macOS the launcher became this process, terminal and all.
         #[cfg(windows)]
@@ -373,6 +381,11 @@ fn app() -> eframe::Result {
             help::VERSION,
             help::COMMIT
         );
+    }
+    // The default browser, looked for once on a thread of its own (logged): its User-Agent is
+    // the one links added by hand go with (#668).
+    defaultbrowser::start();
+    if let Some(data) = mdm_ipc::data_dir() {
         crash::start(
             &data,
             crash::session(

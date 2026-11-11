@@ -525,6 +525,7 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
             .collect(),
         // yt-dlp's and gallery-dl's connections are theirs: not seen here (#140).
         server: None,
+        at_service: None,
     }
 }
 
@@ -886,16 +887,18 @@ impl Item {
     }
 
     /// The Status column: `13.38%`, `Complete`, `Error`, or blank.
-    /// A torrent at its debrid service (#44), before its files come: "45% at Real-Debrid" (the
-    /// percentage first: the list's Status column is narrow).
+    /// A torrent at its debrid service (#44), before its files come, or a file-host link whose file
+    /// the service fetches first (TorBox): "45% at Real-Debrid" (the percentage first: the list's
+    /// Status column is narrow).
     pub fn at_service(&self) -> Option<String> {
-        let Some(Live {
-            dl: Job::Remote(r), ..
-        }) = &self.live
-        else {
-            return None;
+        let (service, progress) = match &self.live {
+            Some(Live {
+                dl: Job::Remote(r), ..
+            }) => r.at_service().map(|(s, p)| (s.to_owned(), p))?,
+            Some(_) => self.snap.as_ref()?.at_service.clone()?,
+            None => return None,
         };
-        let (service, progress) = r.at_service()?;
+        let service = service.as_str();
         Some(crate::i18n::fmt(
             // i18n: a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
             crate::i18n::t("{percent} at {service}"),
