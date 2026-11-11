@@ -81,6 +81,17 @@ pub struct LogEntry {
     /// The `Referer` header.
     #[serde(default)]
     pub referer: Option<String>,
+    /// The `Sec-Fetch-Mode` header, which browsers send and programs don't (`browser_only`).
+    #[serde(default)]
+    pub sec_fetch_mode: Option<String>,
+    /// The `Accept-Encoding` header.
+    #[serde(default)]
+    pub accept_encoding: Option<String>,
+    /// Over HTTPS (`Config::tls`): whether the connection's TLS ClientHello was a browser's as
+    /// `browser_only` tells it, with GREASE values among its cipher suites (as Chrome's and
+    /// every Chromium browser's are; programs' TLS libraries send none). None over plain HTTP.
+    #[serde(default)]
+    pub browser_tls: Option<bool>,
     /// The request's `Content-Type` (a form post's encoding).
     #[serde(default)]
     pub req_content_type: Option<String>,
@@ -172,6 +183,9 @@ pub struct Config {
     pub files: Option<std::path::PathBuf>,
     /// The folder whose .torrent files /rss/dir.xml lists (`feeds`).
     pub rss_dir: Option<std::path::PathBuf>,
+    /// Serve HTTPS instead of HTTP, as `localhost`, with a certificate from a test CA made at
+    /// start (`LabServer::ca_der`): `browser_only` then looks at the TLS handshake too (#668).
+    pub tls: bool,
 }
 
 impl Default for Config {
@@ -182,6 +196,7 @@ impl Default for Config {
             on_log: None,
             files: None,
             rss_dir: None,
+            tls: false,
         }
     }
 }
@@ -212,6 +227,9 @@ pub(crate) struct Shared {
     /// The fake Drive's virus-scan pages' `uuid`s handed out (`drive`).
     pub(crate) drive_uuids: Mutex<HashSet<String>>,
     files: Option<std::path::PathBuf>,
+    /// Over HTTPS: each connection's ClientHello, browser-like or not (`LogEntry::browser_tls`),
+    /// by the client's address.
+    browser_tls: Mutex<HashMap<SocketAddr, bool>>,
 }
 
 impl Shared {
@@ -271,6 +289,9 @@ impl Shared {
             authorization: header_str(headers, header::AUTHORIZATION)
                 .map(|a| a.chars().take(11).collect::<String>() + "…"),
             referer: header_str(headers, header::REFERER),
+            sec_fetch_mode: header_str(headers, header::HeaderName::from_static("sec-fetch-mode")),
+            accept_encoding: header_str(headers, header::ACCEPT_ENCODING),
+            browser_tls: self.browser_tls.lock().unwrap().get(&peer).copied(),
             req_content_type: header_str(headers, header::CONTENT_TYPE),
             req_body_len: has_body.then_some(body.len() as u64),
             req_body_sha256: has_body.then(|| hex::encode(Sha256::digest(body))),
@@ -307,6 +328,8 @@ pub struct LabServer {
     addr: SocketAddr,
     shared: Arc<Shared>,
     task: JoinHandle<()>,
+    /// Over HTTPS (`Config::tls`): the test CA's certificate (DER).
+    ca: Option<Vec<u8>>,
 }
 
 impl LabServer {
@@ -329,7 +352,12 @@ impl LabServer {
             on_log: cfg.on_log,
             drive_uuids: Mutex::default(),
             files: cfg.files,
+            browser_tls: Mutex::default(),
         });
+        let tls = match cfg.tls {
+            true => Some(crate::ftp::certificate().map_err(io::Error::other)?),
+            false => None,
+        };
         // Routes answered from memory, logged by `log_simple`.
         let simple = Router::new()
             .route("/page", get(pages::page))
@@ -478,13 +506,30 @@ impl LabServer {
             // Every other address: the fake Google Drive's, by the Host header (`drive`).
             .fallback(drive::handle)
             .with_state(shared.clone());
-        let task = tokio::spawn(async move {
-            let svc = app.into_make_service_with_connect_info::<SocketAddr>();
-            if let Err(e) = axum::serve(listener, svc).await {
-                eprintln!("labserver: {e}");
+        let ca = tls.as_ref().map(|(_, ca)| ca.clone());
+        let task = match tls {
+            None => tokio::spawn(async move {
+                let svc = app.into_make_service_with_connect_info::<SocketAddr>();
+                if let Err(e) = axum::serve(listener, svc).await {
+                    eprintln!("labserver: {e}");
+                }
+            }),
+            Some((config, _)) => {
+                tokio::spawn(serve_tls(listener, app, Arc::new(config), shared.clone()))
             }
-        });
-        Ok(LabServer { addr, shared, task })
+        };
+        Ok(LabServer {
+            addr,
+            shared,
+            task,
+            ca,
+        })
+    }
+
+    /// Over HTTPS (`Config::tls`): the test CA's certificate (DER); a client trusting it trusts
+    /// this server as `localhost`.
+    pub fn ca_der(&self) -> Option<Vec<u8>> {
+        self.ca.clone()
     }
 
     pub fn addr(&self) -> SocketAddr {
@@ -492,8 +537,13 @@ impl LabServer {
     }
 
     /// `http://<addr><path>`; `path` starts with `/`.
+    /// The address of `path` (starting with `/`): `http://127.0.0.1:port`, or over HTTPS
+    /// `https://localhost:port` (the certificate's name).
     pub fn url(&self, path: &str) -> String {
-        format!("http://{}{}", self.addr, path)
+        match self.ca {
+            None => format!("http://{}{}", self.addr, path),
+            Some(_) => format!("https://localhost:{}{}", self.addr.port(), path),
+        }
     }
 
     pub fn log(&self) -> Vec<LogEntry> {
@@ -581,6 +631,10 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     refuse_agent=TEXT                403 when the User-Agent contains TEXT
     refuse=STATUS  every request answered with that 4xx or 5xx status, before any byte (a site
                    that turns away whatever isn't a browser: FileHippo's 412, #630)
+    browser_only=1 a bot check: 403 with cf-mitigated: challenge and a challenge page unless the
+                   request carries a browser's Sec-Fetch-Mode header and, over HTTPS (--tls),
+                   came on a TLS handshake with GREASE, as Chrome's has (#668)
+    refuse_programs=STATUS  the same check answering STATUS, empty (FileHippo's 412, #630)
     once=1         a one-time link: the first request for this path and query is served, every
                    later one (HEAD and ranges too) gets 410 Gone; vary seed= for a fresh link
   "every Nth" counts file requests (/gen and /form) only.
@@ -1061,6 +1115,53 @@ struct FileQuery {
     faults: Faults,
 }
 
+/// The lab server over HTTPS (`Config::tls`): each connection's ClientHello is read first, and
+/// whether it is a browser's noted for `browser_only` (`LogEntry::browser_tls`), then its
+/// requests are served as over HTTP (HTTP/1.1).
+async fn serve_tls(
+    listener: TcpListener,
+    app: Router,
+    config: Arc<tokio_rustls::rustls::ServerConfig>,
+    shared: Arc<Shared>,
+) {
+    use hyper_util::rt::{TokioExecutor, TokioIo};
+    loop {
+        let Ok((tcp, peer)) = listener.accept().await else {
+            continue;
+        };
+        let (app, config, shared) = (app.clone(), config.clone(), shared.clone());
+        tokio::spawn(async move {
+            let accepting = tokio_rustls::LazyConfigAcceptor::new(
+                tokio_rustls::rustls::server::Acceptor::default(),
+                tcp,
+            );
+            let Ok(start) = accepting.await else {
+                return;
+            };
+            let grease = start
+                .client_hello()
+                .cipher_suites()
+                .iter()
+                .any(|c| is_grease(u16::from(*c)));
+            shared.browser_tls.lock().unwrap().insert(peer, grease);
+            let Ok(tls) = start.into_stream(config).await else {
+                return;
+            };
+            let svc = app.layer(axum::Extension(ConnectInfo(peer)));
+            let svc = hyper_util::service::TowerToHyperService::new(svc);
+            let _ = hyper_util::server::conn::auto::Builder::new(TokioExecutor::new())
+                .serve_connection(TokioIo::new(tls), svc)
+                .await;
+        });
+    }
+}
+
+/// A GREASE value (RFC 8701: 0x0A0A, 0x1A1A … 0xFAFA), which Chrome's TLS puts among its
+/// cipher suites and extensions so that servers keep tolerating unknown ones.
+fn is_grease(v: u16) -> bool {
+    v & 0x0f0f == 0x0a0a && v >> 8 == v & 0xff
+}
+
 /// Serves the generated file `size`/`name` for a request whose log entry is `entry`.
 pub(crate) async fn serve(
     shared: Arc<Shared>,
@@ -1099,6 +1200,28 @@ pub(crate) async fn serve(
     }
     let f = shared.faults().overridden_by(&q.faults);
 
+    // The bot check stands in front of the site, as Cloudflare's does: before its own checks.
+    let a_program = entry.sec_fetch_mode.is_none() || entry.browser_tls == Some(false);
+    if let Some(status) = f
+        .refuse_programs
+        .and_then(|c| StatusCode::from_u16(c).ok())
+        .filter(|s| a_program && (s.is_client_error() || s.is_server_error()))
+    {
+        shared.record(entry, status.as_u16(), "fault:refuse_programs");
+        return (status, [(header::RETRY_AFTER, "0")]).into_response();
+    }
+    if f.browser_only == Some(true) && a_program {
+        shared.record(entry, 403, "fault:browser_only");
+        return (
+            StatusCode::FORBIDDEN,
+            [
+                ("cf-mitigated", "challenge"),
+                ("content-type", "text/html; charset=UTF-8"),
+            ],
+            "<!DOCTYPE html><title>Just a moment...</title>\n",
+        )
+            .into_response();
+    }
     if let Some(want) = &f.require_cookie
         && !has_cookie(entry.cookie.as_deref(), want)
     {

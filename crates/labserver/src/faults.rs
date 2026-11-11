@@ -60,6 +60,14 @@ pub struct Faults {
     /// turns away whatever isn't a browser (FileHippo's 412, #630), or a link the browser
     /// already spent.
     pub refuse: Option<u16>,
+    /// A bot check that lets only browsers through (#668): 403 with Cloudflare's
+    /// `cf-mitigated: challenge` and a challenge page to every file request that doesn't carry
+    /// the headers every current browser sends with a navigation (`Sec-Fetch-Mode`).
+    #[serde(deserialize_with = "flag_opt")]
+    pub browser_only: Option<bool>,
+    /// The same check answering this status instead, empty, with `Retry-After: 0` (FileHippo's
+    /// 412 to whatever isn't a browser, #630, #668).
+    pub refuse_programs: Option<u16>,
     /// A one-time link: the first request for this path and query is served, every later one
     /// (HEAD and ranges included) gets 410 Gone.
     #[serde(deserialize_with = "flag_opt")]
@@ -98,6 +106,8 @@ impl Faults {
             require_cookie: over.require_cookie.clone().or(self.require_cookie.clone()),
             refuse_agent: over.refuse_agent.clone().or(self.refuse_agent.clone()),
             refuse: over.refuse.or(self.refuse),
+            browser_only: over.browser_only.or(self.browser_only),
+            refuse_programs: over.refuse_programs.or(self.refuse_programs),
             require_referer: over
                 .require_referer
                 .clone()
@@ -172,8 +182,10 @@ mod tests {
 
     #[test]
     fn flags_and_refusals() {
-        let f = Faults::parse("once=1&html=0&no_range=true&require_cookie=sid=1").unwrap();
+        let f = Faults::parse("once=1&html=0&no_range=true&require_cookie=sid=1&browser_only=1")
+            .unwrap();
         assert_eq!(f.once, Some(true));
+        assert_eq!(f.browser_only, Some(true));
         assert_eq!(f.html, Some(false));
         assert_eq!(f.no_range, Some(true));
         assert_eq!(f.require_cookie.as_deref(), Some("sid=1"));

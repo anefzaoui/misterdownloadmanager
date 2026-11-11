@@ -3432,26 +3432,36 @@ impl App {
         }
     }
 
-    /// Whether the tray icon is shown somewhere (Linux: a tray host is there; asked when the
-    /// window is closed, the host may come and go). On Windows and macOS the icon itself is
-    /// asked: the shell can accept it and still show nothing, and a window hidden with no icon
-    /// to click has no way back. Cached for the per-frame minimize path.
-    fn tray_shown(&self) -> bool {
+    /// What the shell says of the tray icon (Linux: there when a tray host is, asked each time:
+    /// the host may come and go). On Windows and macOS the icon itself is asked: the shell can
+    /// accept it and still show nothing, and a window hidden with no icon to click has no way
+    /// back. Windows' answer comes from a thread of its own and is never waited for (#747);
+    /// macOS's is a second old at most, for the per-frame minimize path.
+    fn tray_icon(&self) -> crate::tray::Icon {
         #[cfg(any(target_os = "windows", target_os = "macos"))]
         if let Some(tray) = &self.tray {
-            return tray.visible();
+            return tray.icon();
         }
-        crate::tray::available()
+        Self::tray_host()
     }
 
-    /// [`tray_shown`] without the cache, for the close decision: an icon can disappear between
-    /// the cached answer and the close, and hiding then would be a ghost window.
-    fn tray_shown_now(&self) -> bool {
+    /// [`tray_icon`] for the close decision: on macOS asked afresh, as an icon can disappear
+    /// between the cached answer and the close, and hiding then would be a ghost window.
+    fn tray_icon_now(&self) -> crate::tray::Icon {
         #[cfg(any(target_os = "windows", target_os = "macos"))]
         if let Some(tray) = &self.tray {
-            return tray.visible_now();
+            return tray.icon_now();
         }
-        crate::tray::available()
+        Self::tray_host()
+    }
+
+    /// Whether a tray shows icons at all, as [`crate::tray::available`] says.
+    fn tray_host() -> crate::tray::Icon {
+        if crate::tray::available() {
+            crate::tray::Icon::There
+        } else {
+            crate::tray::Icon::Gone
+        }
     }
 
     /// Started with the session (#226): once a second, until it is known, where the window goes
@@ -3473,7 +3483,8 @@ impl App {
         }
         let icon = self.at_login_icon.map(|t| t.elapsed());
         let since = started.elapsed();
-        match at_login(since, icon, icon.is_some() && self.tray_shown()) {
+        let shown = icon.is_some() && self.tray_icon() == crate::tray::Icon::There;
+        match at_login(since, icon, shown) {
             AtLogin::Wait => {}
             AtLogin::Tray => {
                 tracing::info!(
@@ -3535,6 +3546,21 @@ impl App {
             t.set_downloads(&running);
         }
         self.settle_at_login(ctx);
+        // Hidden in the notification area, and the shell, running and answering, has said for
+        // some seconds that it has no icon of MDM's (lost, and not added back): the window comes
+        // back to the taskbar, minimized. Never on no answer, or while Explorer isn't running
+        // (it gives the icon back as it starts again).
+        #[cfg(windows)]
+        if self.hidden && self.at_login.is_none() && self.tray.as_ref().is_some_and(|t| t.rescue())
+        {
+            tracing::info!(
+                "hidden, and the shell has no tray icon of MDM's: back in the taskbar, minimized"
+            );
+            self.hidden = false;
+            self.trim_when_hidden = None;
+            ctx.send_viewport_cmd(egui::ViewportCommand::Visible(true));
+            ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+        }
         // When the window was last focused, for Toggle below. Kept every frame:
         // by the time a tray click arrives the taskbar already took the focus.
         if ctx.input(|i| i.viewport().focused) == Some(true) {
@@ -3589,9 +3615,10 @@ impl App {
             };
             self.run(cmd, None, ctx);
         }
-        // Closing hides the window in the tray; downloads and queues go on. With no icon the shell
-        // shows (Windows, macOS: a tray that exists but says it has none) the window goes to the
-        // taskbar or the Dock instead: still reachable, downloads still going. Everywhere else
+        // Closing hides the window in the tray; downloads and queues go on. When the shell says it
+        // has no icon (Windows, macOS: a tray that exists, and the shell says it has none) the
+        // window goes to the taskbar or the Dock instead: still reachable, downloads still going.
+        // No answer from the shell is not such a "no" (#750, `tray::on_close`). Everywhere else
         // closing closes, as any window's does: Options' "Keep running when closing the window"
         // off, no tray at all, or Linux with no tray host (#59: a hidden window couldn't come
         // back, and one that merely minimized could never be closed).
@@ -3599,12 +3626,16 @@ impl App {
             use crate::tray::OnClose;
             let keep = self.settings.close_to_tray;
             let tray = self.tray.is_some();
-            // The shell is asked afresh, and only when its answer matters.
-            let shown = keep && tray && self.tray_shown_now();
+            // The shell's answer, only when it matters (macOS: asked afresh).
+            let icon = if keep && tray {
+                self.tray_icon_now()
+            } else {
+                crate::tray::Icon::Gone
+            };
             let taskbar = cfg!(not(target_os = "linux"));
-            match crate::tray::on_close(keep, tray, shown, taskbar) {
+            match crate::tray::on_close(keep, tray, icon, taskbar) {
                 OnClose::Hide => {
-                    tracing::info!("close: hidden to the notification area");
+                    tracing::info!("close: hidden to the notification area (tray icon: {icon:?})");
                     ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
                     self.hide_to_tray(ctx);
                 }
@@ -3630,7 +3661,7 @@ impl App {
             && self.settings.minimize_to_tray
             && can_hide
             && !self.exiting
-            && self.tray_shown();
+            && self.tray_icon() != crate::tray::Icon::Gone;
         // Windows: the minimize command itself is caught (win32), so the window goes straight to
         // the tray, never minimized (an idle app runs no frame while minimized: it wouldn't see).
         #[cfg(windows)]

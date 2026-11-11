@@ -503,6 +503,7 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The browser's Download video button in right-to-left languages: its corners and divider follow the text direction, so its outline stays whole
 - ✅ **Deferred Rename** on a download's **Download status** tab: save a new name while downloading to rename the finished file's stem (and video subtitles) or an exclusive finished folder on completion, leaving shared/save or pre-existing folders, split-archive volumes and single-file torrents under their original names ([#655](https://github.com/anefzaoui/misterdownloadmanager/pull/655))
 - ✅ Links added by hand go with the User-Agent of your default browser, at the version you have
   (Chrome, Edge, Brave, Opera, Vivaldi, Firefox, Safari), instead of a years-old one; **Automatic**
@@ -547,9 +548,9 @@ These ship in a later version, when they're ready.
   engine, which holds a torrent while its writes to the disk end
   ([#693](https://github.com/anefzaoui/misterdownloadmanager/issues/693)): the torrents' numbers
   are now read beside the window; fix in review
-- 🔄 Sites with bot protection (Cloudflare and similar) refusing MDM: when a site still answers
-  with a bot check, asking again the way a browser connects
-  ([#668](https://github.com/anefzaoui/misterdownloadmanager/issues/668))
+- 🔄 Sites that let only browsers through (a bot check, or FileHippo's 412): one more try
+  connecting the way the browser does, with its cookies for that site
+  ([#668](https://github.com/anefzaoui/misterdownloadmanager/issues/668)): in review
 - 🔄 Download video: a sound-only choice (MP3, a playlist as sound) saved in the Music folder and
   listed under Music ([#611](https://github.com/anefzaoui/misterdownloadmanager/issues/611)):
   in review
@@ -677,11 +678,15 @@ These ship in a later version, when they're ready.
 - 🔄 Add URL's **Use authorization** empty for an address with a login in Options → Sites
   Logins, though the download used it
   ([#511](https://github.com/anefzaoui/misterdownloadmanager/issues/511)): fix in review
-- 🔄 Windows: closing the window left MDM in the taskbar instead of the notification area
-  when its icon was among the hidden icons behind ^
-  ([#545](https://github.com/anefzaoui/misterdownloadmanager/issues/545),
-  [#534](https://github.com/anefzaoui/misterdownloadmanager/issues/534),
-  [#527](https://github.com/anefzaoui/misterdownloadmanager/issues/527)): fix in review
+- 🔄 Windows: closing the window left MDM minimized in the taskbar instead of the notification
+  area while its icon was there, among the hidden icons behind ^ (0.5.2;
+  [#750](https://github.com/anefzaoui/misterdownloadmanager/issues/750), [#718](https://github.com/anefzaoui/misterdownloadmanager/issues/718),
+  [#754](https://github.com/anefzaoui/misterdownloadmanager/issues/754), [#545](https://github.com/anefzaoui/misterdownloadmanager/issues/545),
+  [#534](https://github.com/anefzaoui/misterdownloadmanager/issues/534), [#527](https://github.com/anefzaoui/misterdownloadmanager/issues/527)): MDM
+  now keeps the window in the taskbar only when Windows says it has no icon of MDM's, not when
+  Windows can't say where the icon is; fix in review, to confirm on Windows 10
+- 🔄 The window freezing while Explorer was slow to answer about MDM's notification-area icon
+  ([#747](https://github.com/anefzaoui/misterdownloadmanager/issues/747)): asked beside the window now; fix in review
 - 🔄 Two tests that fail now and then on busy CI runners
   ([#518](https://github.com/anefzaoui/misterdownloadmanager/issues/518)): the slow-flush one
   now measures the transfer instead of how fast the runner's disk takes in the file (Windows

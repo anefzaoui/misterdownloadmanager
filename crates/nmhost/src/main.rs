@@ -681,18 +681,30 @@ const POLL_EVERY: Duration = Duration::from_millis(100);
 /// `ask`'s answer once it is no longer `pending`, asked again every `every`, for `wait` at most
 /// (then `pending` as it is).
 fn until_settled(
-    mut ask: impl FnMut() -> mdm_ipc::api::VideoLookupAnswer,
+    ask: impl FnMut() -> mdm_ipc::api::VideoLookupAnswer,
     wait: Duration,
     every: Duration,
 ) -> mdm_ipc::api::VideoLookupAnswer {
-    let end = std::time::Instant::now() + wait;
+    let start = std::time::Instant::now();
+    until_settled_on(ask, wait, every, || start.elapsed(), std::thread::sleep)
+}
+
+/// [`until_settled`] on any clock: `elapsed` is the time since the first question, `sleep`
+/// waits. The tests run it on a clock of their own, so how often it asks doesn't depend on how
+/// busy the machine is (a loaded CI runner oversleeps and asks less often).
+fn until_settled_on(
+    mut ask: impl FnMut() -> mdm_ipc::api::VideoLookupAnswer,
+    wait: Duration,
+    every: Duration,
+    elapsed: impl Fn() -> Duration,
+    mut sleep: impl FnMut(Duration),
+) -> mdm_ipc::api::VideoLookupAnswer {
     loop {
         let answer = ask();
-        if answer.state != mdm_ipc::api::lookup::PENDING || std::time::Instant::now() + every > end
-        {
+        if answer.state != mdm_ipc::api::lookup::PENDING || elapsed() + every > wait {
             return answer;
         }
-        std::thread::sleep(every);
+        sleep(every);
     }
 }
 
@@ -1920,9 +1932,13 @@ mod tests {
         use mdm_ipc::SendError;
         use mdm_ipc::api::lookup;
         let ready = r#"{"state":"ready","token":"t1","title":"A talk","choices":[{"label":"720p MP4","ext":"mp4","size":null,"audio":false},{"label":"Audio only MP3 320 kbps","ext":"mp3","size":null,"audio":true}]}"#;
+        // A clock of the test's own: asking every 20 ms, the answer is ready at the third
+        // question, 40 ms in.
+        let now = std::cell::Cell::new(Duration::ZERO);
+        let elapsed = || now.get();
+        let sleep = |d: Duration| now.set(now.get() + d);
         let mut asked = 0;
-        let start = std::time::Instant::now();
-        let answer = until_settled(
+        let answer = until_settled_on(
             || {
                 asked += 1;
                 let got = if asked < 3 {
@@ -1934,39 +1950,48 @@ mod tests {
             },
             POLL_WAIT,
             Duration::from_millis(20),
+            elapsed,
+            sleep,
         );
         assert_eq!((answer.state.as_str(), asked), (lookup::READY, 3));
-        assert!(start.elapsed() < Duration::from_millis(500));
+        assert_eq!(now.get(), Duration::from_millis(40));
         let json = serde_json::to_string(&Reply::lookup(answer)).unwrap();
         assert!(
             json.contains(r#""ext":"mp4","size":null,"audio":false"#)
                 && json.contains(r#""ext":"mp3","size":null,"audio":true"#),
             "{json}"
         );
-        // Still running after the wait: `pending`, having asked every tenth of a second.
+        // Still running after the wait: `pending`, having asked every tenth of a second (at 0,
+        // 100, 200 and 300 ms) and never waited past the 300 ms.
+        now.set(Duration::ZERO);
         let mut asked = 0;
-        let start = std::time::Instant::now();
-        let answer = until_settled(
+        let answer = until_settled_on(
             || {
                 asked += 1;
                 mdm_ipc::api::VideoLookupAnswer::pending("t1")
             },
             Duration::from_millis(300),
             Duration::from_millis(100),
+            elapsed,
+            sleep,
         );
         assert_eq!(answer.state, lookup::PENDING);
-        assert!((3..=4).contains(&asked), "{asked}");
-        assert!(start.elapsed() < Duration::from_millis(600));
-        // Anything else at once.
+        assert_eq!(asked, 4);
+        assert_eq!(now.get(), Duration::from_millis(300));
+        // Anything else at once, without waiting.
+        now.set(Duration::ZERO);
         let mut asked = 0;
-        let gone = until_settled(
+        let gone = until_settled_on(
             || {
                 asked += 1;
                 mdm_ipc::api::VideoLookupAnswer::of(lookup::GONE)
             },
             POLL_WAIT,
             POLL_EVERY,
+            elapsed,
+            sleep,
         );
+        assert_eq!(now.get(), Duration::ZERO);
         assert_eq!((gone.state.as_str(), asked), (lookup::GONE, 1));
     }
 
