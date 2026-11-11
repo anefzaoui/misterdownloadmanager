@@ -1667,6 +1667,13 @@ fn table_sized(
     clicked
 }
 
+/// Map a segment's absolute byte range to the bar's inclusive columns. The cursor is an
+/// absolute file offset, not the segment's length (the distinction matters after connection 1).
+fn segment_columns(total: u64, start: u64, cursor: u64) -> (f32, f32) {
+    let col = |v: u64| (v.min(total) as f64 / total as f64 * 511.0).floor() as f32;
+    (col(start), col(cursor))
+}
+
 /// The custom-drawn segment bar (spec "Segment bar"): 13-row gradients, red start columns.
 fn segment_bar(p: &egui::Painter, o: Pos2, item: &Item, snap: Option<&Snapshot>) {
     let (x0, y0) = (o.x + 17.0, o.y + 249.0);
@@ -1702,20 +1709,20 @@ fn segment_bar(p: &egui::Painter, o: Pos2, item: &Item, snap: Option<&Snapshot>)
     let Some(total) = item.size.filter(|t| *t > 0) else {
         return;
     };
-    let col = |v: u64| (v as f64 / total as f64 * 511.0).floor() as f32;
     let segments: Vec<(u64, u64)> = match snap {
         Some(s) if !s.segments.is_empty() => s
             .segments
             .iter()
-            .map(|g| (g.start, g.cursor - g.start))
+            .map(|g| (g.start, g.cursor))
             .collect(),
         _ => vec![(0, item.downloaded)],
     };
-    for (start, done) in segments {
-        let sx = ix + col(start);
-        let n = col(done);
-        if n > 1.0 {
-            run(sx + 1.0, (sx + n - 1.0).min(ix + 510.0), 1);
+    for (start, cursor) in segments {
+        let (start_col, end_col) = segment_columns(total, start, cursor);
+        let sx = ix + start_col;
+        let ex = ix + end_col;
+        if ex - sx > 1.0 {
+            run(sx + 1.0, (ex - 1.0).min(ix + 510.0), 1);
         }
         run(sx, sx, 2);
     }
@@ -1866,6 +1873,12 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn each_connection_segment_ends_at_its_absolute_cursor() {
+        assert_eq!(segment_columns(1000, 0, 500), (0.0, 255.0));
+        assert_eq!(segment_columns(1000, 500, 1000), (255.0, 511.0));
+    }
 
     /// A download of unknown size has no percentage in its title (from #384).
     #[test]
