@@ -2353,7 +2353,12 @@ mod host_copy_tests {
         // A real program (a script would run as the shell, its file only read).
         let old = dir.join(HOST);
         std::fs::copy("/bin/sleep", &old).unwrap();
-        let mut running = std::process::Command::new(&old).arg("30").spawn().unwrap();
+        // /bin/sleep may be a multicall coreutils binary: keep argv[0] as its applet name
+        // even though the executable itself is copied under the browser helper's name.
+        use std::os::unix::process::CommandExt;
+        let mut command = std::process::Command::new(&old);
+        command.arg0("sleep").arg("30");
+        let mut running = command.spawn().unwrap();
         std::thread::sleep(std::time::Duration::from_millis(200));
         // Keep the old process alive while installing a replacement. Whether a filesystem
         // permits opening an executing file for writing varies (notably on overlay filesystems);
