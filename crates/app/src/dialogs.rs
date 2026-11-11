@@ -1165,11 +1165,11 @@ impl FileInfo {
             std::time::Duration::ZERO,
             Some(ctx),
             |(dir, name, _)| mdm_engine::naming::destination(dir, name),
-        ) {
-            if self.dest_generation == generation && self.dest() == dir.join(&name) {
-                self.save_as = display_path(&destination);
-                self.auto_destination = false;
-            }
+        ) && self.dest_generation == generation
+            && self.dest() == dir.join(&name)
+        {
+            self.save_as = display_path(&destination);
+            self.auto_destination = false;
         }
     }
 
