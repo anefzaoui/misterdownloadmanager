@@ -3962,6 +3962,21 @@
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
 #. {error} = an error message (keep the braces as they are)
 	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp couldn't read {browser}'s cookies: {error}
+#. text in a download's progress window
+#. progress window, a video's line: the helper program yt-dlp gave no address MDM's own downloader could use
+	yt-dlp downloads it itself	yt-dlp downloads it itself
+#. text in a download's progress window
+#. progress window, a video's line: MDM's own downloader can't take a live broadcast, so the helper program yt-dlp records it
+	yt-dlp downloads it itself: a live stream	yt-dlp downloads it itself: a live stream
+#. text in a download's progress window
+#. progress window, a video's line: a stream sent in many small pieces (HLS, DASH), which the helper program yt-dlp downloads itself for now
+	yt-dlp downloads it itself: a stream in pieces	yt-dlp downloads it itself: a stream in pieces
+#. text in a download's progress window
+#. progress window, a video's line: the stream is copy-protected (DRM), left to the helper program yt-dlp, which refuses it
+	yt-dlp downloads it itself: protected (DRM)	yt-dlp downloads it itself: protected (DRM)
+#. text in a download's progress window
+#. progress window, a video's line: {protocol} = a streaming protocol's short name (rtmp, rtsp, mms); MDM's own downloader doesn't speak it, so the helper program yt-dlp downloads it
+	yt-dlp downloads it itself: {protocol}	yt-dlp downloads it itself: {protocol}
 #. text in the Download video window
 #. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
 	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.

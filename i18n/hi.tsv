@@ -95,6 +95,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} चयनित|{n} चयनित
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	फ़ाइल से {n} साइट जोड़ी गई।|फ़ाइल से {n} साइटें जोड़ी गईं।
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	फ़ाइल में {n} साइट सहेजी गई।|फ़ाइल में {n} साइटें सहेजी गईं।
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -169,6 +177,9 @@
 #. window title: 7-Zip (a program's name) must be installed
 #, machine
 	7-Zip needed	7-Zip की आवश्यकता है
+#. tab in the main window
+#, machine
+	720p	720p
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
@@ -1343,6 +1354,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying yt-dlp...	yt-dlp डाउनलोड और सत्यापित किया जा रहा है...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	MDM की अपनी कॉपी डाउनलोड की जा रही है...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1534,6 +1550,10 @@
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	निर्यात करें
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	निर्यात करें...
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	Manifest 2 Chrome एक्सटेंशन की उपलब्धता बढ़ाएँ
@@ -2011,6 +2031,10 @@
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	आयात किया गया।
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	आयात करें...
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	एक कतार में
@@ -4111,6 +4135,10 @@
 #, machine
 	Stopped: the network adapter changed; starting again	रुका: नेटवर्क एडाप्टर बदल गया; फिर से शुरू हो रहा है
 #. message or event log entry in the main window
+#. event log entry: a video or gallery download stopped to start again at the new speed limit (its helper program takes a limit only as it starts)
+#, machine
+	Stopped: the speed limit changed; starting again with it	बंद किया गया: गति सीमा बदली; नई सीमा के साथ फिर से शुरू किया जा रहा है
+#. message or event log entry in the main window
 #. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
 #, machine
 	Stopped: {adapter} is not connected; it goes on when it is back	रुका: {adapter} कनेक्टेड नहीं है; यह वापस आने पर जारी रहेगा
@@ -4497,6 +4525,18 @@
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	{browser} की कुकीज़ होने पर भी साइट आपसे साइन इन करने को कह रही है। {browser} में उस साइट पर साइन इन करें, फिर से पेज खोजें।
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though the browser's extension passed the page's cookies
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with your browser's cookies for this page. Try again later, or from another browser.	साइट के बॉट चेक (Cloudflare) ने yt-dlp को अस्वीकार कर दिया, भले ही आपके ब्राउज़र की इस पेज के लिए कुकीज़ थीं। बाद में या किसी अन्य ब्राउज़र से फिर से प्रयास करें।
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though it had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	साइट के बॉट चेक (Cloudflare) ने yt-dlp को अस्वीकार कर दिया, {browser} की कुकीज़ होने के बावजूद। {browser} में वीडियो पर “वीडियो डाउनलोड करें” बटन का उपयोग करें, या बाद में पेज को फिर से लोड करें।
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	साइट के बॉट चेक (Cloudflare) ने yt-dlp को अस्वीकार कर दिया। यदि पेज आपके ब्राउज़र में खुलता है, तो विकल्प → साइट लॉगिन → वीडियो साइटों के लिए कुकीज़ में उस ब्राउज़र को चुनें और पेज को फिर से लोड करें, या वीडियो पर “वीडियो डाउनलोड करें” बटन का उपयोग करें।
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4694,6 +4734,11 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	इस वीडियो के लिए आपको साइन इन करना होगा। अपने ब्राउज़र में इसके ऊपर डाउनलोड वीडियो बटन का उपयोग करें, जो आपके साइन-इन को पास करता है, या विकल्प → साइट लॉगिन → वीडियो साइटों के लिए कुकीज़ में अपना ब्राउज़र चुनें।
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	यह {site} लिंक एक वेब पेज है, फ़ाइल नहीं: इसे अपने ब्राउज़र में खोलें और वहाँ से डाउनलोड करें
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -5315,6 +5360,26 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp {browser} की कुकीज़ नहीं पढ़ सका: {error}
+#. text in a download's progress window
+#. progress window, a video's line: the helper program yt-dlp gave no address MDM's own downloader could use
+#, machine
+	yt-dlp downloads it itself	yt-dlp इसे स्वयं डाउनलोड करता है
+#. text in a download's progress window
+#. progress window, a video's line: MDM's own downloader can't take a live broadcast, so the helper program yt-dlp records it
+#, machine
+	yt-dlp downloads it itself: a live stream	yt-dlp इसे स्वयं डाउनलोड करता है: एक लाइव स्ट्रीम
+#. text in a download's progress window
+#. progress window, a video's line: a stream sent in many small pieces (HLS, DASH), which the helper program yt-dlp downloads itself for now
+#, machine
+	yt-dlp downloads it itself: a stream in pieces	yt-dlp इसे स्वयं डाउनलोड करता है: टुकड़ों में एक स्ट्रीम
+#. text in a download's progress window
+#. progress window, a video's line: the stream is copy-protected (DRM), left to the helper program yt-dlp, which refuses it
+#, machine
+	yt-dlp downloads it itself: protected (DRM)	yt-dlp इसे स्वयं डाउनलोड करता है: सुरक्षित (DRM)
+#. text in a download's progress window
+#. progress window, a video's line: {protocol} = a streaming protocol's short name (rtmp, rtsp, mms); MDM's own downloader doesn't speak it, so the helper program yt-dlp downloads it
+#, machine
+	yt-dlp downloads it itself: {protocol}	yt-dlp इसे स्वयं डाउनलोड करता है: {protocol}
 #. text in the Download video window
 #. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
 #, machine
@@ -5883,6 +5948,7 @@ extension	Open its address once and accept its certificate, then enter a code fr
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
 extension	Open Mister Download Manager	Mister Download Manager खोलें
+#. text in the browser extension
 #. shown briefly on the download button over a video in a feed (a social site's home page, a timeline) when nothing in the feed gives that video's own address, so nothing was sent: the user should open the post the video belongs to and click the button on that page; short
 #, machine
 extension	Open the post, then use the button there	पोस्ट खोलें, फिर वहां बटन का उपयोग करें
@@ -6104,6 +6170,11 @@ menu	&Add new download	नया डाउनलोड &जोड़ें
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	&Add new download...	नया डाउनलोड जोड़ें(&A)...
+#. menu command in the main window
+#. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Classic	क्लासिक(&C)
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6191,6 +6262,11 @@ menu	&Scheduler and queues	&शेड्यूलर और कतारें
 #, machine
 menu	&Show hidden tabs	छिपे हुए टैब दिखाएँ(&S)
 #. menu command in the main window
+#. View → Text: letters drawn smooth, as Windows' modern apps draw them, anti-aliased at any size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Smooth	स्मूथ(&S)
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop All	सभी &रोकें
@@ -6198,6 +6274,11 @@ menu	&Stop All	सभी &रोकें
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	डाउनलोड &रोकें
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Text	टेक्स्ट(&T)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6381,6 +6462,10 @@ menu	E&xport	निर्यात करें(&x)
 #. menu command in the main window
 #, machine
 menu	Edit queue	कतार संपादित करें
+#. menu command in the main window
+#. View → Theme: a style theme's name (a white canvas, emerald fills, 6-point corners), a name: keep "Emerald" as written
+#, machine
+menu	Emerald	एमरल्ड
 #. menu command in the main window
 #. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
 #, machine

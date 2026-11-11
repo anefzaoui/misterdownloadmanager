@@ -40,6 +40,11 @@
 #, machine
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	E ōrite ana ki ngā tuhinga {n} ināianei (ka tāpiri noa i ngā mea hōu):
 #. count in a dialog box
+#. Cancel in Download File Info with downloads waiting behind it
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	E {n} anō ngā tikiake e tatari ana. Me whakakore hoki ēnei?
+#. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -95,6 +100,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} i kōwhiria
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	E {n} ngā pae i tāpirihia mai i te kōnae.
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	E {n} ngā pae i tiakina ki te kōnae.
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -169,6 +182,9 @@
 #. window title: 7-Zip (a program's name) must be installed
 #, machine
 	7-Zip needed	E hiahiatia ana a 7-Zip
+#. tab in the main window
+#, machine
+	720p	720p
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
@@ -1343,6 +1359,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying yt-dlp...	E tango ana, e manatoko ana i te yt-dlp...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	Kei te tikiake i te kape a MDM...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1534,6 +1555,10 @@
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	Kaweake
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	Kaweake...
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	Whakaroa te wātea o ngā toronga Chrome Manifest 2
@@ -2011,6 +2036,10 @@
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	Kawemai
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	Kawemai...
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	I roto i te rārangi
@@ -4111,6 +4140,10 @@
 #, machine
 	Stopped: the network adapter changed; starting again	Kua mutu: i hurihia te pūurutau whatunga; ka tīmata anō
 #. message or event log entry in the main window
+#. event log entry: a video or gallery download stopped to start again at the new speed limit (its helper program takes a limit only as it starts)
+#, machine
+	Stopped: the speed limit changed; starting again with it	I mutu: i hurihia te tepe tere; kei te tīmata anō me taua tepe
+#. message or event log entry in the main window
 #. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
 #, machine
 	Stopped: {adapter} is not connected; it goes on when it is back	Kua mutu: kāore a {adapter} i te hono; ka haere tonu ina hoki mai
@@ -4497,6 +4530,18 @@
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	E hiahia ana te pae kia takiuru koe, ahakoa ngā pihikete a {browser}. Takiuru ki reira i {browser}, kātahi ka rapu anō i te whārangi.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though the browser's extension passed the page's cookies
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with your browser's cookies for this page. Try again later, or from another browser.	I whakahē te tirotiro karetao a te pae (Cloudflare) i a yt-dlp, ahakoa ngā pihikete o tō pūtirotiro mō tēnei whārangi. Whakamātau anō ā muri ake, i tētahi atu pūtirotiro rānei.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though it had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	I whakahē te tirotiro karetao a te pae (Cloudflare) i a yt-dlp, ahakoa ngā pihikete a {browser}. Whakamahia te pātene Tikiake ataata i runga i te ataata i {browser}, whakamātau anō rānei i te whārangi ā muri ake.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	I whakahē te tirotiro karetao a te pae (Cloudflare) i a yt-dlp. Mēnā ka tuwhera te whārangi i tō pūtirotiro, kōwhiria taua pūtirotiro i Ngā Kōwhiringa → Ngā Takiuru Pae → Ngā Pihikete mō ngā pae ataata ka rapu anō i te whārangi, whakamahia rānei te pātene Tikiake ataata i runga i te ataata.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4694,6 +4739,11 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Me takiuru koe kia tirohia tēnei ataata. Whakamahia te pātene Tikiake ataata i runga ake i te ataata i tō pūtirotiro, e tuku ana i tō takiuru, ka kōwhiri rānei i tō pūtirotiro i Ngā Kōwhiringa → Takiuru Pae → Ngā pihikete mō ngā pae ataata.
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	He whārangi tukutuku tēnei hononga o {site}, ehara i te kōnae: whakatuwheratia i tō pūtirotiro ka tikiake mai i reira
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -5315,6 +5365,26 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	yt-dlp couldn't read {browser}'s cookies: {error}	Kāore i taea e yt-dlp te pānui i ngā pihikete a {browser}: {error}
+#. text in a download's progress window
+#. progress window, a video's line: the helper program yt-dlp gave no address MDM's own downloader could use
+#, machine
+	yt-dlp downloads it itself	Ka tikiake a yt-dlp i a ia anō
+#. text in a download's progress window
+#. progress window, a video's line: MDM's own downloader can't take a live broadcast, so the helper program yt-dlp records it
+#, machine
+	yt-dlp downloads it itself: a live stream	Ka tikiake a yt-dlp i a ia anō: he awa ora
+#. text in a download's progress window
+#. progress window, a video's line: a stream sent in many small pieces (HLS, DASH), which the helper program yt-dlp downloads itself for now
+#, machine
+	yt-dlp downloads it itself: a stream in pieces	Ka tikiake a yt-dlp i a ia anō: he awa i roto i ngā wāhanga
+#. text in a download's progress window
+#. progress window, a video's line: the stream is copy-protected (DRM), left to the helper program yt-dlp, which refuses it
+#, machine
+	yt-dlp downloads it itself: protected (DRM)	Ka tikiake a yt-dlp i a ia anō: he mea tiaki (DRM)
+#. text in a download's progress window
+#. progress window, a video's line: {protocol} = a streaming protocol's short name (rtmp, rtsp, mms); MDM's own downloader doesn't speak it, so the helper program yt-dlp downloads it
+#, machine
+	yt-dlp downloads it itself: {protocol}	Ka tikiake a yt-dlp i a ia anō: {protocol}
 #. text in the Download video window
 #. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
 #, machine
@@ -5662,6 +5732,14 @@ column	Transfer rate	Reiti whakawhiti
 #, machine
 column	Upload speed	Tere tuku
 #. text in the browser extension
+#. in the menu under the download button over a video: the page is a list of videos (a playlist), whose videos are chosen in the app's window; keep the name Mister Download Manager as it is
+#, machine
+extension	A list of videos: choose them in Mister Download Manager	He rārangi ataata: kōwhiria i Mister Download Manager
+#. text in the browser extension
+#. shown briefly on the download button over a video after a quality was picked: the download was added to the app's download queue, to start later
+#, machine
+extension	Added to the queue	Kua tāpirihia ki te rārangi tatari
+#. text in the browser extension
 #. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
 #, machine
 extension	Another Mister Download Manager (a server)	Tētahi atu Mister Download Manager (he tūmau)
@@ -5691,6 +5769,10 @@ extension	Connected to Mister Download Manager	Kua hono ki a Mister Download Man
 #. {version} = a version number (keep the braces as they are)
 #, machine
 extension	Connected to Mister Download Manager {version}	Kua hono ki a Mister Download Manager {version}
+#. text in the browser extension
+#. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
+#, machine
+extension	Could not look it up	Kāore i taea te rapu
 #. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
@@ -5782,6 +5864,14 @@ extension	Left to the browser: {name}	I waiho ki te pūtirotiro: {name}
 #, machine
 extension	Live	Ora
 #. text in the browser extension
+#. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
+#, machine
+extension	Looking up the qualities…	Kei te rapu i ngā kounga…
+#. text in the browser extension
+#. in the menu under the download button over a video: the app took more than a minute to find the video's qualities, so the menu stopped waiting
+#, machine
+extension	Looking up took too long	He roa rawa te rapu
+#. text in the browser extension
 #. heading in the toolbar button's popup over the list of the videos, sounds and streams the current web page has loaded
 #, machine
 extension	Media on this page	Pāpāho i tēnei whārangi
@@ -5798,6 +5888,10 @@ extension	Mister Download Manager didn't start in time	Kāore a Mister Download 
 #, machine
 extension	Mister Download Manager doesn't accept this copy of the extension	Kāore a Mister Download Manager e whakaae ki tēnei tārua o te toronga
 #. text in the browser extension
+#. in the menu under the download button over a video: the app is already looking up other videos and can't look this one up now; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager is busy with other videos	Kei te pukumahi a Mister Download Manager ki ētahi atu ataata
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed or didn't start	Kāore a Mister Download Manager i whakaurua, kāore rānei i tīmata
@@ -5805,6 +5899,10 @@ extension	Mister Download Manager isn't installed or didn't start	Kāore a Miste
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Kāore a Mister Download Manager i whakaurua, kāore rānei i whakatūria tōna whakauru pūtirotiro
+#. text in the browser extension
+#. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager needs yt-dlp for this video	Me yt-dlp a Mister Download Manager mō tēnei ataata
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
@@ -5832,9 +5930,17 @@ extension	Never take downloads from {site}	Kaua rawa e tango tikiake mai i a {si
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	Kāore anō kia kitea he ataata, he oro rānei i tēnei whārangi. Purei, kātahi ka whakatuwhera anō i tēnei.
 #. text in the browser extension
+#. in the menu under the download button over a video: the app found no quality of the video it could download
+#, machine
+extension	No video to download here	Kāore he ataata hei tikiake i konei
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Kāore i tae. Whakatuwheratia tōna wāhitau kotahi i roto i tēnei pūtirotiro ka whakaae ki tōna tiwhikete, kātahi ka whakamātauria anō.
+#. text in the browser extension
+#. last command of the menu of qualities under the download button over a video: opens the app's Download video window for this video instead; keep the name Mister Download Manager as it is
+#, machine
+extension	Open in Mister Download Manager…	Whakatuwheratia ki Mister Download Manager…
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -5847,6 +5953,7 @@ extension	Open its address once and accept its certificate, then enter a code fr
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
 extension	Open Mister Download Manager	Whakatuwhera Mister Download Manager
+#. text in the browser extension
 #. shown briefly on the download button over a video in a feed (a social site's home page, a timeline) when nothing in the feed gives that video's own address, so nothing was sent: the user should open the post the video belongs to and click the button on that page; short
 #, machine
 extension	Open the post, then use the button there	Whakatuwheratia te pou, kātahi ka whakamahi i te pātene kei reira
@@ -6068,6 +6175,11 @@ menu	&Add new download	Tāpiri &tikiake hōu
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	&Add new download...	Tā&piri tikiake hōu...
+#. menu command in the main window
+#. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Classic	&Tauhira
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6155,6 +6267,11 @@ menu	&Scheduler and queues	&Kairātaka me ngā rārangi
 #, machine
 menu	&Show hidden tabs	Whakaatu &ripa huna
 #. menu command in the main window
+#. View → Text: letters drawn smooth, as Windows' modern apps draw them, anti-aliased at any size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Smooth	&Māeneene
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop All	&Kati Katoa
@@ -6162,6 +6279,11 @@ menu	&Stop All	&Kati Katoa
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	&Kati Tikiake
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Text	&Kuputuhi
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6345,6 +6467,10 @@ menu	E&xport	T&aumai
 #. menu command in the main window
 #, machine
 menu	Edit queue	Whakatika rārangi
+#. menu command in the main window
+#. View → Theme: a style theme's name (a white canvas, emerald fills, 6-point corners), a name: keep "Emerald" as written
+#, machine
+menu	Emerald	Emerald
 #. menu command in the main window
 #. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
 #, machine

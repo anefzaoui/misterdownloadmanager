@@ -123,13 +123,14 @@ enum Cmd {
         /// Put the subtitles into the video file instead of beside it (needs ffmpeg; MP4/MKV).
         #[arg(long)]
         embed_subs: bool,
-        /// A stream in pieces (HLS, DASH): this many pieces at once (1 to 128), as `get`'s
-        /// connections; a plain file is one connection whatever this says.
+        /// Connections per stream (1 to 128), as `get`'s: MDM's engine downloads the streams
+        /// yt-dlp finds (#769); a stream yt-dlp downloads itself in pieces (HLS, DASH) takes
+        /// this many pieces at once.
         #[arg(short, long, default_value_t = Options::default().max_connections,
               value_parser = clap::value_parser!(u32).range(1..=MAX_CONNECTIONS_UNLOCKED as i64))]
         connections: u32,
-        /// The network adapter yt-dlp (and the ffmpeg it starts) goes through (#35), as
-        /// `get --adapter`.
+        /// The network adapter the downloads go through (#35), as `get --adapter`: the
+        /// engine's connections, and yt-dlp's (and the ffmpeg it starts).
         #[arg(long)]
         adapter: Option<String>,
     },
@@ -155,8 +156,7 @@ enum Cmd {
         /// Folder to save into: a folder named after the list is made there.
         #[arg(short, long, default_value = ".")]
         output: PathBuf,
-        /// A stream in pieces (HLS, DASH): this many pieces at once (1 to 128), as `get`'s
-        /// connections; a plain file is one connection whatever this says.
+        /// Connections per stream (1 to 128), as for `video-get`.
         #[arg(short, long, default_value_t = Options::default().max_connections,
               value_parser = clap::value_parser!(u32).range(1..=MAX_CONNECTIONS_UNLOCKED as i64))]
         connections: u32,
@@ -761,6 +761,7 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                     None,
                     &Default::default(),
                     &Default::default(),
+                    Some(video_engine(connections, None)),
                 )?;
                 let state = loop {
                     tokio::time::sleep(std::time::Duration::from_millis(500)).await;
@@ -927,11 +928,10 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             connections,
             adapter,
         } => {
-            if let Some(a) = adapter {
-                mdm_tools::proc::set_route(mdm_engine::net::route_for(
-                    &a,
-                    &mdm_engine::net::adapters(),
-                ));
+            let route =
+                adapter.map(|a| mdm_engine::net::route_for(&a, &mdm_engine::net::adapters()));
+            if let Some(r) = &route {
+                mdm_tools::proc::set_route(r.clone());
             }
             let subs = subs_arg(&subs, auto_subs, embed_subs);
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
@@ -961,6 +961,7 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                 None,
                 &Default::default(),
                 &subs,
+                Some(video_engine(connections, route)),
             )?;
             loop {
                 tokio::time::sleep(std::time::Duration::from_millis(500)).await;
@@ -1086,6 +1087,17 @@ fn subs_arg(langs: &str, automatic: bool, embed: bool) -> mdm_tools::video::Subs
         langs,
         automatic,
         embed,
+    }
+}
+
+/// MDM's engine for a video's streams (#769): this many connections each, through `route`.
+fn video_engine(connections: u32, route: Option<mdm_engine::Route>) -> mdm_tools::streams::Engine {
+    mdm_tools::streams::Engine {
+        handle: tokio::runtime::Handle::current(),
+        opts: Options {
+            route: route.unwrap_or_default(),
+            ..opts(connections)
+        },
     }
 }
 

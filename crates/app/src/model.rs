@@ -520,7 +520,9 @@ pub struct GallerySpec {
 }
 
 /// A helper's progress (yt-dlp's, gallery-dl's) as the engine's view: one segment when its size
-/// is known, no connections, its notes as events.
+/// is known, no connections, its notes as events. A video whose streams MDM's engine downloads
+/// (#769) shows the engine's own: the streams' segments one after another, the connections of
+/// the one under way, its server.
 fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapshot {
     use mdm_tools::video::State as V;
     let (state, file, error) = match p.state {
@@ -530,6 +532,19 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
         V::Stopped => (State::Cancelled, None, None),
     };
     let size = p.total;
+    let engine = p.engine.unwrap_or_default();
+    let segments = if engine.segments.is_empty() {
+        size.map(|t| {
+            vec![mdm_engine::download::SegmentView {
+                start: 0,
+                cursor: p.downloaded.min(t),
+                end: t,
+            }]
+        })
+        .unwrap_or_default()
+    } else {
+        engine.segments
+    };
     mdm_engine::Snapshot {
         state,
         url: url.clone(),
@@ -537,16 +552,8 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
         size,
         downloaded: p.downloaded,
         resumable: Some(true),
-        segments: size
-            .map(|t| {
-                vec![mdm_engine::download::SegmentView {
-                    start: 0,
-                    cursor: p.downloaded.min(t),
-                    end: t,
-                }]
-            })
-            .unwrap_or_default(),
-        connections: Vec::new(),
+        segments,
+        connections: engine.connections,
         error,
         failure: None,
         events: p
@@ -559,8 +566,9 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
                 text: text.clone(),
             })
             .collect(),
-        // yt-dlp's and gallery-dl's connections are theirs: not seen here (#140).
-        server: None,
+        // yt-dlp's and gallery-dl's connections are theirs: not seen here (#140); the engine's
+        // are (#769).
+        server: engine.server,
         at_service: None,
     }
 }
@@ -587,21 +595,27 @@ impl Job {
         }
     }
 
-    /// A helper program downloads it (yt-dlp, gallery-dl): it takes a speed limit only as it
-    /// starts, so a new limit starts it again (#708, `App::reapply_helper_limits`).
+    /// A helper program downloads it, and takes a speed limit only as it starts, so a new limit
+    /// starts it again (#708, `App::reapply_helper_limits`): gallery-dl, and yt-dlp for a video
+    /// MDM's engine doesn't download (#769: a live stream, RTMP…).
     pub fn is_helper(&self) -> bool {
-        matches!(self, Job::Video { .. } | Job::Gallery { .. })
+        match self {
+            Job::Video { job, .. } => job.helper().is_some(),
+            Job::Gallery { .. } => true,
+            _ => false,
+        }
     }
 
-    /// The speed limit can change while a file downloads; yt-dlp and gallery-dl take it at the
-    /// start (the app starts them again, `is_helper`); a torrent's applies to the whole torrent
-    /// session.
+    /// The speed limit can change while a file downloads, and while the engine downloads a
+    /// video's streams (#769); gallery-dl, and yt-dlp downloading by itself, take it at the start
+    /// (the app starts them again, `is_helper`); a torrent's applies to the whole torrent session.
     pub fn set_speed_limit(&self, rate: Option<u64>) {
         match self {
             Job::File(d) => d.set_speed_limit(rate),
             Job::Torrent(t) => t.set_speed_limit(rate),
             Job::Remote(r) => r.set_speed_limit(rate),
-            Job::Video { .. } | Job::Gallery { .. } => {}
+            Job::Video { job, .. } => job.set_speed_limit(rate),
+            Job::Gallery { .. } => {}
         }
     }
 
@@ -609,7 +623,8 @@ impl Job {
         match self {
             Job::File(d) => d.speed_limit(),
             Job::Torrent(t) => t.speed_limit(),
-            Job::Remote(_) | Job::Video { .. } | Job::Gallery { .. } => None,
+            Job::Video { job, .. } => job.speed_limit(),
+            Job::Remote(_) | Job::Gallery { .. } => None,
         }
     }
 }
@@ -953,6 +968,18 @@ impl Item {
                 true
             }
             None => false,
+        }
+    }
+
+    /// Why yt-dlp downloads this running video itself (#769), once it has found out: MDM's engine
+    /// downloads every other one.
+    pub fn video_helper(&self) -> Option<mdm_tools::streams::Helper> {
+        match &self.live {
+            Some(Live {
+                dl: Job::Video { job, .. },
+                ..
+            }) => job.helper(),
+            _ => None,
         }
     }
 
