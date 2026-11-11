@@ -589,6 +589,8 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 Invoking a file chooser closes only the menu viewports that were actually opened, avoiding phantom submenu windows ([#615](https://github.com/anefzaoui/misterdownloadmanager/issues/615)): fix in review; needs macOS, Windows and X11 confirmation
+
 - 🔄 The browser's video button over a video in a feed sending the feed's address, where yt-dlp
   finds nothing (LinkedIn, Facebook, and other sites with feeds;
   [#689](https://github.com/anefzaoui/misterdownloadmanager/issues/689),
