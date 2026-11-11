@@ -1265,86 +1265,68 @@ const MPD = (protect) => `<?xml version="1.0"?>
   assert.equal(at("https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?start=5"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
   assert.equal(at("https://vimeo.com/123456789?list=abc"), "https://vimeo.com/123456789?list=abc");
   ok("#311: the button sends the video's own page, not the page playing it");
+}
 
-  // Facebook feeds keep the same tab URL while video cards link to their own reels or posts.
-  const facebook = (href, { videoTop = 0, links = [] } = {}) => {
-    const document = {
-      querySelector: () => null,
-      querySelectorAll: (selector) =>
-        selector === "a[href]"
-          ? links.map(({ href, top = 0, left = 0 }) => ({
-              href: new URL(href, "https://www.facebook.com/").href,
-              getAttribute: () => href,
-              getBoundingClientRect: () => ({ top, left }),
-            }))
-          : [],
-    };
+// Facebook's feed URL is not a video URL: use the card's video permalink, including
+// /<page>/videos/<id>, and keep fb.watch links as the same Facebook source.
+{
+  const source = readFileSync(new URL("../../extension/video.js", import.meta.url), "utf8");
+  const start = source.indexOf("function videoPage(v) {");
+  let depth = 0;
+  let end = start;
+  for (let i = source.indexOf("{", start); i < source.length; i += 1) {
+    if (source[i] === "{") depth += 1;
+    if (source[i] === "}" && --depth === 0) {
+      end = i + 1;
+      break;
+    }
+  }
+  const facebook = (href, links = []) => {
     const video = {
       parentElement: null,
-      getBoundingClientRect: () => ({ top: videoTop, left: 0 }),
+      getBoundingClientRect: () => ({ top: 10, left: 10 }),
       querySelectorAll: (selector) =>
         selector === "a[href]"
-          ? links.map(({ href, top = 0, left = 0 }) => ({
-              href: new URL(href, "https://www.facebook.com/").href,
-              getAttribute: () => href,
-              getBoundingClientRect: () => ({ top, left }),
+          ? links.map((link) => ({
+              href: new URL(link, href).href,
+              getAttribute: () => link,
+              getBoundingClientRect: () => ({ top: 10, left: 10 }),
             }))
           : [],
     };
-    const fn = new Function("location", "document", source.slice(start, end) + "; return videoPage;")({ href }, document);
+    const fn = new Function("location", "document", source.slice(start, end) + "; return videoPage;")(
+      { href },
+      { querySelector: () => null },
+    );
     return fn(video);
   };
   assert.equal(facebook("https://www.facebook.com/"), null);
   assert.equal(
+    facebook("https://www.facebook.com/profile/videos/123456789"),
+    "https://www.facebook.com/profile/videos/123456789",
+    "a page videos path is a video",
+  );
+  assert.equal(
     facebook("https://fb.watch/abc123/"),
     "https://fb.watch/abc123/",
-    "a direct fb.watch short link is a video page",
+    "an fb.watch short link is a video",
   );
   assert.equal(
-    facebook("https://www.facebook.com/", {
-      links: [
-        { href: "/reel/123456789/", top: 20 },
-        { href: "/watch/?v=987654321", top: 400 },
-      ],
-      videoTop: 18,
-    }),
-    "https://www.facebook.com/reel/123456789/",
-    "prefer the nearest reel link in the feed",
+    facebook("https://www.facebook.com/", ["/profile/videos/123456789"]),
+    "https://www.facebook.com/profile/videos/123456789",
+    "a feed button resolves the page video permalink",
   );
   assert.equal(
-    facebook("https://www.facebook.com/", {
-      links: [{ href: "/watch/?v=123456789&ref=sharing", top: 5 }],
-    }),
-    "https://www.facebook.com/watch/?v=123456789",
-    "preserve the video ID and remove tracking parameters",
-  );
-  assert.equal(
-    facebook("https://www.facebook.com/reel/123456789/?mibextid=abc"),
-    "https://www.facebook.com/reel/123456789/",
-    "a reel's own page is used instead of the feed",
-  );
-  assert.equal(
-    facebook("https://www.facebook.com/", {
-      links: [{ href: "https://fb.watch/abc123/?mibextid=tracking", top: 5 }],
-    }),
+    facebook("https://www.facebook.com/", ["https://fb.watch/abc123/"]),
     "https://fb.watch/abc123/",
-    "a feed card's fb.watch short link is treated as the video's address",
+    "a feed button can retain an fb.watch link",
   );
   assert.equal(
-    facebook("https://www.facebook.com/", {
-      links: [{ href: "/profile/posts/123456789", top: 5 }],
-    }),
-    "https://www.facebook.com/profile/posts/123456789",
-    "use a post permalink when Facebook exposes no dedicated video link",
+    facebook("https://www.facebook.com/", ["https://fb.watch/abc123/?mibextid=tracking"]),
+    "https://fb.watch/abc123/",
+    "a feed card's tracked fb.watch short link is normalized",
   );
-  assert.equal(
-    facebook("https://www.facebook.com/", {
-      links: [{ href: "/help/", top: 5 }],
-    }),
-    null,
-    "ignore unrelated links",
-  );
-  ok("#643: the button sends a Facebook video's permalink, not the feed");
+  ok("#643: Facebook page video paths and fb.watch links are resolved");
 }
 
 // A page that moves in place (history.pushState): the button sends the address it's at now, not
@@ -1386,6 +1368,18 @@ const MPD = (protect) => `<?xml version="1.0"?>
     const r = await message(listeners, { type: "video", url: null, at: { x: 1, y: 1 } }, yt("https://www.youtube.com/@someone/videos"));
     assert.deepEqual([r.ok, r.why], [false, "unnamed"]);
     assert.equal(natives(calls).filter((m) => m.video).length, 1, "the channel's list is never sent");
+  }
+  // Facebook's short host is an alias of facebook.com, not a different site to discard.
+  {
+    const { api, calls, listeners } = fakeApi({ firefox: false });
+    load(api, false);
+    await settle();
+    await message(
+      listeners,
+      { type: "video", url: "https://fb.watch/abc123/" },
+      yt("https://www.facebook.com/"),
+    );
+    assert.equal(last(calls).url, "https://fb.watch/abc123/", "fb.watch is accepted as Facebook's video address");
   }
   // The popup, on a site this copy leaves alone, and on a player that streams pieces.
   {
@@ -1864,89 +1858,6 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   assert.deepEqual(steps(calls), []);
   ok("#208 Firefox: a download caught from its answer, before the browser's dialog");
 }
-// #607: Firefox's originUrl identifies the actual page containing the clicked download link.
-// The Referer header may be reduced to the site's homepage; Refresh download address must reopen
-// the page that initiated this request, not that less precise header value.
-{
-  const { api, calls, listeners } = fakeApi({ firefox: true });
-  load(api, true);
-  await settle();
-  listeners.beforeSendHeaders({
-    requestId: "r2",
-    method: "GET",
-    type: "main_frame",
-    url: "https://dl.test/get?id=2",
-    originUrl: "https://site.test/download-page",
-    requestHeaders: [{ name: "Referer", value: "https://site.test/" }],
-  });
-  await held(
-    listeners,
-    answer(
-      "https://dl.test/get?id=2",
-      {
-        "Content-Type": "application/octet-stream",
-        "Content-Disposition": "attachment; filename=package.zip",
-        "Content-Length": "4096",
-      },
-      { requestId: "r2" },
-    ),
-  );
-  assert.equal(natives(calls)[0].referrer, "https://site.test/download-page");
-  ok("#607 Firefox: the download's source page comes from originUrl");
-}
-// #603: Colab's runtime proxy is tied to its ephemeral browser session. Keep these downloads in
-// the browser rather than handing a URL without its sandboxed session state to the native host.
-{
-  const { api, calls, listeners } = fakeApi({ firefox: false });
-  load(api, false);
-  await settle();
-  let suggested;
-  listeners.determining(
-    {
-      id: 91,
-      url: "https://us-west1-colab.googleusercontent.com/files/out.zip?colab-runtime-proxy-token=secret",
-      finalUrl: "https://us-west1-colab.googleusercontent.com/files/out.zip?colab-runtime-proxy-token=secret",
-      referrer: "https://colab.research.google.com/drive/abc",
-      filename: "out.zip",
-      totalBytes: 1024,
-      mime: "application/zip",
-    },
-    (value) => (suggested = value),
-  );
-  await settle();
-  assert.ok(suggested, "Chrome leaves the browser's own download name in place");
-  assert.equal(natives(calls).length, 0, "Colab transfers are not sent to MDM");
-  ok("#603 Chromium: Colab runtime-proxy downloads stay with the browser");
-}
-{
-  const { api, calls, listeners } = fakeApi({ firefox: true });
-  load(api, true);
-  await settle();
-  const url = "https://us-west1.prod.r.colab.dev/files/out.zip?colab-runtime-proxy-token=secret";
-  listeners.beforeSendHeaders({
-    requestId: "r-colab",
-    method: "GET",
-    type: "main_frame",
-    url,
-    originUrl: "https://colab.research.google.com/drive/abc",
-    requestHeaders: [],
-  });
-  const response = await held(
-    listeners,
-    answer(
-      url,
-      {
-        "Content-Type": "application/zip",
-        "Content-Disposition": "attachment; filename=out.zip",
-        "Content-Length": "1024",
-      },
-      { requestId: "r-colab" },
-    ),
-  );
-  assert.deepEqual(response, {});
-  assert.equal(natives(calls).length, 0, "Firefox leaves Colab's authenticated transfer to the browser");
-  ok("#603 Firefox: Colab runtime-proxy downloads stay with the browser");
-}
 // #447: Firefox hands a header's value over byte for byte, each byte one character. A name sent as
 // raw UTF-8 is read as UTF-8; bytes that aren't valid UTF-8 (ISO-8859-1) and a real percent sign stay.
 {
@@ -2016,6 +1927,65 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   assert.deepEqual(steps(calls), []);
   ok("#208 Firefox: a type not taken goes on to the browser, said once");
 }
+// #607: Firefox may use originUrl to improve a sent Referer, but must not invent one when
+// Referrer-Policy suppressed the header.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true });
+  load(api, true);
+  await settle();
+  const url = "https://dl.test/get?id=2";
+  listeners.beforeSendHeaders({
+    requestId: "r-origin",
+    method: "GET",
+    type: "main_frame",
+    url,
+    originUrl: "https://site.test/download-page",
+    requestHeaders: [{ name: "Referer", value: "https://site.test/" }],
+  });
+  await held(
+    listeners,
+    answer(
+      url,
+      {
+        "Content-Type": "application/octet-stream",
+        "Content-Disposition": "attachment; filename=package.zip",
+        "Content-Length": "4096",
+      },
+      { requestId: "r-origin" },
+    ),
+  );
+  assert.equal(natives(calls)[0].referrer, "https://site.test/download-page");
+  ok("#607 Firefox: originUrl refines a Referer the page actually sent");
+}
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true });
+  load(api, true);
+  await settle();
+  const url = "https://dl.test/private.zip";
+  listeners.beforeSendHeaders({
+    requestId: "r-no-referrer",
+    method: "GET",
+    type: "main_frame",
+    url,
+    originUrl: "https://private.test/no-referrer",
+    requestHeaders: [],
+  });
+  await held(
+    listeners,
+    answer(
+      url,
+      {
+        "Content-Type": "application/octet-stream",
+        "Content-Disposition": "attachment; filename=private.zip",
+        "Content-Length": "4096",
+      },
+      { requestId: "r-no-referrer" },
+    ),
+  );
+  assert.equal(natives(calls)[0].referrer, "", "do not invent a Referer when Firefox sent none");
+  ok("#607 Firefox: no-referrer remains no-referrer");
+}
+
 // Pages, pictures, feeds, add-ons, redirects, pieces and errors are never held; an inline PDF
 // opens when Options don't take the files the browser would open; a type the browser can't show
 // is a download even without "attachment".
@@ -2099,6 +2069,80 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   assert.equal(listeners.headersReceived, undefined);
   ok("#208 Chromium: answers aren't held");
 }
+// #603: only a tokenized Colab runtime-proxy transfer stays with the browser. A normal
+// download linked from a Colab notebook is still offered to MDM.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  await settle();
+  let suggested;
+  listeners.determining(
+    {
+      id: 91,
+      url: "https://us-west1-colab.googleusercontent.com/files/out.zip?colab-runtime-proxy-token=secret",
+      finalUrl: "https://us-west1-colab.googleusercontent.com/files/out.zip?colab-runtime-proxy-token=secret",
+      referrer: "https://colab.research.google.com/drive/abc",
+      filename: "out.zip",
+      totalBytes: 1024,
+      mime: "application/zip",
+    },
+    (value) => (suggested = value),
+  );
+  await settle();
+  assert.ok(suggested, "the browser keeps the authenticated runtime-proxy download");
+  assert.equal(natives(calls).length, 0);
+  ok("#603 Chromium: tokenized Colab runtime-proxy download stays in the browser");
+}
+{
+  const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  await settle();
+  listeners.determining(
+    {
+      id: 92,
+      url: "https://github.com/example/data/archive/refs/heads/main.zip",
+      finalUrl: "https://github.com/example/data/archive/refs/heads/main.zip",
+      referrer: "https://colab.research.google.com/drive/abc",
+      filename: "data.zip",
+      totalBytes: 4096,
+      mime: "application/zip",
+    },
+    () => {},
+  );
+  await settle();
+  assert.equal(natives(calls).length, 1, "ordinary notebook links remain capturable");
+  ok("#603 Chromium: a GitHub file linked from Colab is still handed to MDM");
+}
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true });
+  load(api, true);
+  await settle();
+  const url = "https://us-west1.prod.r.colab.dev/files/out.zip?colab-runtime-proxy-token=secret";
+  listeners.beforeSendHeaders({
+    requestId: "r-colab",
+    method: "GET",
+    type: "main_frame",
+    url,
+    originUrl: "https://colab.research.google.com/drive/abc",
+    requestHeaders: [],
+  });
+  const response = await held(
+    listeners,
+    answer(
+      url,
+      {
+        "Content-Type": "application/zip",
+        "Content-Disposition": "attachment; filename=out.zip",
+        "Content-Length": "1024",
+      },
+      { requestId: "r-colab" },
+    ),
+  );
+  assert.deepEqual(response, {});
+  assert.equal(natives(calls).length, 0, "Firefox leaves the authenticated transfer to the browser");
+  ok("#603 Firefox: tokenized Colab runtime-proxy download stays in the browser");
+}
+
 // The manifests (#42): "proxy" optional in Firefox's, required in Chrome's (it can't be optional
 // there); the popup's switch: the permission in Firefox, the extension's own setting in Chrome.
 {
