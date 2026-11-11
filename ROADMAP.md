@@ -503,6 +503,8 @@ These ship in the next version.
 
 - ✅ macOS: helpers opened from Finder find Homebrew's Deno and ffmpeg, so YouTube formats
   load ([#659](https://github.com/anefzaoui/misterdownloadmanager/issues/659))
+- ✅ The website is named as the official one in the README, the browser add-on and the
+  site's data for search engines
 - ✅ Left click on the tray icon toggles the main window (on Windows also with the icon under
   the taskbar's ^), and browser downloads open only their dialog when the main window is
   hidden or minimized ([#520](https://github.com/anefzaoui/misterdownloadmanager/pull/520))
