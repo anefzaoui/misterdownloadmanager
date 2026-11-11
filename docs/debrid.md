@@ -73,10 +73,12 @@ the list:
   and the list says so.
 - TorBox first downloads the file to its own servers (at once when it has it already). MDM
   waits for it, up to an hour, and the list says how far it is, such as **40% at TorBox**.
+  Once the download is done, or taken off MDM's list, it leaves your account's list of web
+  downloads on TorBox; a paused one keeps its place there, to go on with.
 - MDM asks each service well under its request limit: Real-Debrid at most 120 times a minute
   (it allows 250), AllDebrid 300 (it allows 600), Premiumize 60 (it publishes no limit), TorBox
-  120 (it allows 300 for adding downloads). When
-  a service says it's asked too often, MDM waits.
+  120 (it allows 300 a minute, and 60 new web downloads an hour). When a service says it's
+  asked too often, MDM waits.
 
 ## Download one link directly instead
 

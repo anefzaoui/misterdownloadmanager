@@ -275,6 +275,23 @@ async fn torbox_links_come_through_the_account_once_it_has_the_file() {
     assert_eq!(dl.snapshot().at_service, None, "cleared once the link came");
     let p = dl.wait().await.unwrap().path;
     assert!(same(&p, "/file/2M/b.bin"));
+    // Done: the web download leaves the account's TorBox list (found by its link); again, a
+    // no-op. Only this test makes web downloads in this binary.
+    let held = || async {
+        let body = reqwest::get(lab.url("/_debrid/torrents"))
+            .await
+            .unwrap()
+            .bytes()
+            .await
+            .unwrap();
+        serde_json::from_slice::<Vec<String>>(&body).unwrap()
+    };
+    let before = held().await;
+    d.release(&url).await.unwrap();
+    let after = held().await;
+    assert!(after.len() < before.len(), "{before:?} → {after:?}");
+    d.release(&url).await.unwrap();
+    assert_eq!(held().await, after);
     let log = lab.log();
     assert!(
         log.iter()

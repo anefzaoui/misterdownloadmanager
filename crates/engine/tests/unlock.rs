@@ -179,12 +179,33 @@ async fn an_expired_direct_link_is_unlocked_again_and_the_download_completes() {
         max_connections: 2,
         ..options(u.clone())
     };
-    let out = Download::start(request(dir.path(), false), opts)
+    let dl = Download::start(request(dir.path(), false), opts);
+    // The service's note, each time it is asked: the first link, and the refreshed one too
+    // (the event log keeps the last 50 events, so they are gathered as they come).
+    let mut notes = std::collections::BTreeSet::new();
+    loop {
+        let s = dl.snapshot();
+        notes.extend(
+            s.events
+                .iter()
+                .filter(|e| e.text == "Fake-Debrid is preparing the link")
+                .map(|e| e.seq),
+        );
+        if matches!(
+            s.state,
+            mdm_engine::download::State::Done | mdm_engine::download::State::Failed
+        ) {
+            break;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+    }
+    let out = dl
         .wait()
         .await
         .expect("unlocked again when the link expired");
     let data = std::fs::read(&out.path).unwrap();
     assert!(same(&data, 45), "content after the link changed");
+    assert!(notes.len() >= 2, "the refresh is noted too: {notes:?}");
     assert!(
         u.calls.load(Ordering::SeqCst) >= 2,
         "{}",

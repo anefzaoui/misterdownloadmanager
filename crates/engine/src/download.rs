@@ -928,6 +928,22 @@ async fn unlock_origin(
     if opts.post.is_some() || !matches!(url.scheme(), "http" | "https") {
         return Ok(None);
     }
+    unlock_noted(u, url, shared, cancel).await.map_err(|fault| {
+        Error::Refused(Refusal::Service {
+            service: u.name().to_owned(),
+            fault,
+        })
+    })
+}
+
+/// `u`'s link for `url`, its waits told in the event log and the list's status ("40% at
+/// TorBox") meanwhile, and the link it gave noted (never the link itself).
+async fn unlock_noted(
+    u: &Arc<dyn crate::unlock::Unlocker>,
+    url: &Url,
+    shared: Option<&Shared>,
+    cancel: &CancellationToken,
+) -> Result<Option<crate::unlock::Unlocked>, crate::unlock::ServiceFault> {
     let note = |s: String, progress: Option<f32>| {
         if let Some(sh) = shared {
             sh.event(s);
@@ -937,20 +953,11 @@ async fn unlock_origin(
     let out = u.unlock(url, &note, cancel).await;
     if let Some(sh) = shared {
         sh.view.lock().unwrap().at_service = None;
-    }
-    match out {
-        Ok(Some(x)) => {
-            if let Some(sh) = shared {
-                sh.event(crate::unlock::note_unlocked(u.name(), &x));
-            }
-            Ok(Some(x))
+        if let Ok(Some(x)) = &out {
+            sh.event(crate::unlock::note_unlocked(u.name(), x));
         }
-        Ok(None) => Ok(None),
-        Err(fault) => Err(Error::Refused(Refusal::Service {
-            service: u.name().to_owned(),
-            fault,
-        })),
     }
+    out
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -1312,6 +1319,7 @@ impl Ctx {
             self.size,
             &self.cancel,
             self.opts.unlocker.as_ref(),
+            &self.shared,
         )
         .await
         .filter(|(u, _)| *u != self.target.lock().unwrap().url) else {
@@ -2018,6 +2026,7 @@ async fn run_resume(
             saved.size,
             &cancel,
             opts.unlocker.as_ref(),
+            &shared,
         )
         .await
     } else {
@@ -2143,11 +2152,15 @@ async fn refresh_final_url(
     size: u64,
     cancel: &CancellationToken,
     unlocker: Option<&Arc<dyn crate::unlock::Unlocker>>,
+    shared: &Shared,
 ) -> Option<(Url, HeaderMap)> {
     // Through a service account (#44): the service gives today's direct link (the host's link
     // itself leads to its web page); the host's cookies and logins stay with the host.
     let unlocked = match unlocker.filter(|_| post.is_none()) {
-        Some(u) => u.unlock(origin, &|_, _| {}, cancel).await.ok().flatten(),
+        Some(u) => unlock_noted(u, origin, Some(shared), cancel)
+            .await
+            .ok()
+            .flatten(),
         None => None,
     };
     let (target, mut asked) = match &unlocked {

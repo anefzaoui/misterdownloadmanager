@@ -75,8 +75,10 @@ impl ServiceKind {
     }
 
     /// The requests a minute MDM allows itself (each service's published limit, halved or more:
-    /// Real-Debrid 250 a minute, AllDebrid 600, TorBox 300 for adding; Premiumize publishes
-    /// none).
+    /// Real-Debrid 250 a minute, AllDebrid 600; Premiumize publishes none). TorBox: 300 a minute
+    /// for each endpoint, per API key, and 60 new web downloads (or uncached torrents) an hour
+    /// (https://support.torbox.app/en/articles/13726368-api-rate-limits); a refused request
+    /// pauses it as any "too many requests" does.
     fn per_minute(self) -> usize {
         match self {
             ServiceKind::RealDebrid => 120,
@@ -712,6 +714,19 @@ impl Debrid {
             .find(|s| s.account.id == id)?
             .clone();
         Some(Arc::new(AccountUnlocker { session }))
+    }
+
+    /// A download of `url` through an account ended (done, or taken off MDM's list): on TorBox,
+    /// its web downloads leave the account's list, as a torrent does once downloaded. The other
+    /// services keep no list of unlocked links.
+    pub async fn release(&self, url: &Url) -> Result<(), Fault> {
+        let Some((id, ServiceKind::TorBox)) = self.account_for(url) else {
+            return Ok(());
+        };
+        let Some(s) = self.session(id) else {
+            return Ok(());
+        };
+        torbox::release(&s.http, &s.token(false).await?, url).await
     }
 
     /// Ask the service about account `id` (Options, after signing in).

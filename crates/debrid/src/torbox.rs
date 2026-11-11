@@ -241,7 +241,12 @@ pub(crate) async fn create(
 #[derive(Debug, Deserialize)]
 pub(crate) struct Item {
     #[serde(default)]
+    pub id: u64,
+    #[serde(default)]
     pub name: String,
+    /// The link it was made from (a web download's file-host link).
+    #[serde(default)]
+    pub original_url: String,
     #[serde(default)]
     pub download_state: String,
     /// 0 to 1.
@@ -282,6 +287,28 @@ pub(crate) async fn item(http: &Http, key: &str, kind: Kind, id: u64) -> Result<
         Value::Object(_) => data(d),
         _ => Err(Fault::Service(mdm_engine::ServiceFault::FileUnavailable)),
     }
+}
+
+/// A download of `link` ended (done, or taken off MDM's list): its web downloads leave the
+/// account's TorBox list, as a torrent does once downloaded. Found by the link they were made
+/// from, so those made before a restart, or by a refreshed link, go too.
+pub(crate) async fn release(http: &Http, key: &str, link: &Url) -> Result<(), Fault> {
+    // shortcut: only the first 1000 entries (TorBox's default limit), page through them if
+    // accounts hold more.
+    let mut u = url(http, "webdl/mylist");
+    u.query_pairs_mut().append_pair("bypass_cache", "true");
+    let list: Vec<Item> = match call(http, http.get(&u).bearer_auth(key)).await {
+        Ok(d) => data(d)?,
+        // An empty list: nothing to remove.
+        Err(Fault::Service(mdm_engine::ServiceFault::FileUnavailable)) => return Ok(()),
+        Err(e) => return Err(e),
+    };
+    for i in list {
+        if Url::parse(&i.original_url).is_ok_and(|o| o == *link) {
+            delete(http, key, Kind::Web, i.id).await?;
+        }
+    }
+    Ok(())
 }
 
 /// How TorBox is doing with `i`: still at it, failed, or finished (its files, not yet linked).
@@ -411,7 +438,9 @@ mod tests {
     #[test]
     fn list_states_mean_what_they_say() {
         let i = |state: &str, done: bool, error: Option<&str>| Item {
+            id: 1,
             name: "x".into(),
+            original_url: String::new(),
             download_state: state.into(),
             progress: 0.25,
             download_finished: done,

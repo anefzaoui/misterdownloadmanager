@@ -148,7 +148,7 @@ impl Debrid {
             .map(|s| (s.account.id, s.account.service))
     }
 
-    fn session(&self, id: u64) -> Option<Arc<Session>> {
+    pub(crate) fn session(&self, id: u64) -> Option<Arc<Session>> {
         self.sessions
             .read()
             .unwrap()

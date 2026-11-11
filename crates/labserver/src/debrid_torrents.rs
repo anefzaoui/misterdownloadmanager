@@ -140,7 +140,15 @@ fn token_ok(headers: &HeaderMap) -> bool {
 
 /// `GET /_debrid/torrents`: the ids the fake accounts still hold.
 pub async fn held() -> Response {
-    let ids: Vec<String> = with(|m| m.keys().cloned().collect());
+    let mut ids: Vec<String> = with(|m| m.keys().cloned().collect());
+    // TorBox's web downloads too.
+    ids.extend(
+        TB_WEB
+            .lock()
+            .unwrap()
+            .iter()
+            .flat_map(|m| m.keys().map(u64::to_string)),
+    );
     axum::Json(json!(ids)).into_response()
 }
 
@@ -447,8 +455,9 @@ pub async fn pm_delete(headers: HeaderMap, body: Bytes) -> Response {
 // (Bearer; `requestdl` takes `?token=`). Web downloads of the fake host's links and torrents (the
 // store above, service "tb"), each ready after two `mylist` polls; every file's link is the lab's own direct one.
 
-/// A web download: (its polls so far, the file's size, name and direct link).
-type Web = (u32, u64, String, String);
+/// A web download: (its polls so far, the file's size, name and direct link, the link it was
+/// made from).
+type Web = (u32, u64, String, String, String);
 static TB_WEB: Mutex<Option<HashMap<u64, Web>>> = Mutex::new(None);
 
 fn tb_ok(data: Value) -> Response {
@@ -584,7 +593,7 @@ pub async fn tb_web_create(headers: HeaderMap, body: Bytes) -> Response {
         .lock()
         .unwrap()
         .get_or_insert_with(HashMap::new)
-        .insert(id, (0, size, name, direct));
+        .insert(id, (0, size, name, direct, link.to_string()));
     tb_ok(json!({"hash": "h", "webdownload_id": id, "auth_id": "a"}))
 }
 
@@ -615,7 +624,23 @@ pub async fn tb_list(
     let id: u64 = q.get("id").and_then(|i| i.parse().ok()).unwrap_or(0);
     if kind == "webdl" {
         let mut all = TB_WEB.lock().unwrap();
-        let Some((polls, size, name, _)) = all.get_or_insert_with(HashMap::new).get_mut(&id) else {
+        let all = all.get_or_insert_with(HashMap::new);
+        // No id: the whole list, each with the link it was made from.
+        if !q.contains_key("id") {
+            if all.is_empty() {
+                return tb_not_found();
+            }
+            let list: Vec<Value> = all
+                .iter()
+                .map(|(id, (polls, _, name, _, link))| {
+                    let mut v = tb_item(*id, name, *polls, false, vec![]);
+                    v["original_url"] = json!(link);
+                    v
+                })
+                .collect();
+            return tb_ok(json!(list));
+        }
+        let Some((polls, size, name, _, _)) = all.get_mut(&id) else {
             return tb_not_found();
         };
         *polls += 1;
@@ -663,7 +688,7 @@ pub async fn tb_requestdl(
     if kind == "webdl" {
         let all = TB_WEB.lock().unwrap();
         return match all.as_ref().and_then(|m| m.get(&id)) {
-            Some((_, _, _, direct)) => tb_ok(json!(direct)),
+            Some((_, _, _, direct, _)) => tb_ok(json!(direct)),
             None => tb_not_found(),
         };
     }

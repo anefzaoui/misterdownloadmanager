@@ -2758,10 +2758,35 @@ impl App {
         self.selection.after_removal(&before, &after);
     }
 
+    /// Download `id` went through a debrid account and ended (done, or taken off the list): the
+    /// service forgets its link (TorBox's list of web downloads, #391). A paused one keeps it,
+    /// to go on with.
+    fn release_link(&self, id: u64) {
+        let Some(i) = self.items.iter().find(|i| i.id == id) else {
+            return;
+        };
+        if !self.settings.debrid_on
+            || i.direct
+            || i.remote.is_some()
+            || i.torrent.is_some()
+            || i.video.is_some()
+            || i.gallery.is_some()
+        {
+            return;
+        }
+        let (debrid, url) = (self.debrid.clone(), i.url.clone());
+        self.rt.spawn(async move {
+            if let Err(e) = debrid.release(&url).await {
+                tracing::warn!("debrid: the link stays in the service's list: {e:?}");
+            }
+        });
+    }
+
     /// Take a download off the list (not while it runs); with `files`, its file goes from disk
     /// too: a finished file, or the data so far (a torrent's files when its session runs).
     fn remove_download(&mut self, id: u64, files: bool) {
         if self.item(id).is_some_and(|i| i.live.is_none()) {
+            self.release_link(id);
             if let Some(spec) = self.item(id).and_then(|i| i.torrent.clone()) {
                 self.torrent_host.forget(&self.rt, &spec.hash, files);
             } else if files
@@ -5628,6 +5653,7 @@ impl App {
             }
         }
         for id in &finished {
+            self.release_link(*id);
             self.failures.remove(id);
             // Its archive, when it is to be extracted and its last volume is in (#37).
             self.extracts.finished(*id, &self.items, &self.settings);
