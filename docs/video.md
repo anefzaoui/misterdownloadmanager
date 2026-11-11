@@ -73,7 +73,7 @@ Some videos yt-dlp still downloads by itself, over its own connection, and the p
 - a stream sent in many small pieces (HLS, DASH), for now;
 - a stream sent over RTMP, RTSP, MMS or FTP.
 
-For those, a new speed limit starts the download again with it, from where it was.
+For those, a new speed limit starts the download again with it, from where it was ([Speed limits](#speed-limits)).
 
 ## Subtitles
 
@@ -108,6 +108,12 @@ Paste the address of a playlist (`youtube.com/playlist?list=…`) or a channel's
 MDM lists at most 20,000 videos of one list.
 
 A page address that points at one video inside a playlist or a mix (for example `watch?v=…&list=…`) downloads that one video, never the whole list.
+
+## Speed limits
+
+Videos keep to the [Speed Limiter](connections-and-speed.md#speed-limiter): the limit for one file, a video's own limit (the **Speed Limiter** tab of its progress window), and the limit for all downloads together, which they share with every other download. MDM's own downloader brings them in, so a change applies at once, as for a file.
+
+A video yt-dlp downloads by itself ([How a video comes down](#how-a-video-comes-down)) takes a limit only as it starts: when you turn the limiter on or off, change its settings or the video's own limit, MDM stops it and starts it again with the new limit, and it goes on from where it was (the log says "Stopped: the speed limit changed; starting again with it"). Under the limit for all downloads, such videos share it evenly: when another starts, the ones running with more than their share start again with it; when one ends, the others keep theirs. Image galleries do the same with gallery-dl, which skips the files already saved. Other changes (torrents taking more or less of the limit for all downloads, **Only while I'm using the computer**) apply to the next one that starts.
 
 ## Through a VPN's adapter
 

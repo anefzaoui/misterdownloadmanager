@@ -395,6 +395,12 @@ pub struct Item {
     /// Content-Disposition), as a browser does (#28). Cleared once the file is made.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub name_from_url: bool,
+    /// Its name was given without waiting for its folder to be looked at (Download File Info:
+    /// a sleeping drive or a network folder can take seconds to answer, #743): nothing of its
+    /// own is on the disk yet, and it starts under that name or the next free numbered one, as
+    /// the engine finds as it starts (`Destination::Free`). Cleared once the file is made.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub number_at_start: bool,
     /// The Link grabber package it came in (#37): its archives are extracted together once
     /// every volume is there.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -589,9 +595,20 @@ impl Job {
         }
     }
 
+    /// A helper program downloads it, and takes a speed limit only as it starts, so a new limit
+    /// starts it again (#708, `App::reapply_helper_limits`): gallery-dl, and yt-dlp for a video
+    /// MDM's engine doesn't download (#769: a live stream, RTMP…).
+    pub fn is_helper(&self) -> bool {
+        match self {
+            Job::Video { job, .. } => job.helper().is_some(),
+            Job::Gallery { .. } => true,
+            _ => false,
+        }
+    }
+
     /// The speed limit can change while a file downloads, and while the engine downloads a
-    /// video's streams (#769); gallery-dl, and yt-dlp downloading by itself, take it at the
-    /// start; a torrent's applies to the whole torrent session.
+    /// video's streams (#769); gallery-dl, and yt-dlp downloading by itself, take it at the start
+    /// (the app starts them again, `is_helper`); a torrent's applies to the whole torrent session.
     pub fn set_speed_limit(&self, rate: Option<u64>) {
         match self {
             Job::File(d) => d.set_speed_limit(rate),
@@ -724,6 +741,22 @@ impl Item {
             .join("\n")
     }
 
+    /// What tells where this row's files are (its place, its kind, the files it wrote), for a
+    /// look at the disk on a thread other than the window's (#743): no live download, no log.
+    pub fn place_copy(&self) -> Item {
+        let mut c = Item::new(self.id, self.url.clone(), self.dest.clone(), self.category);
+        c.file_name.clone_from(&self.file_name);
+        c.status = self.status;
+        c.downloaded = self.downloaded;
+        c.video.clone_from(&self.video);
+        c.torrent.clone_from(&self.torrent);
+        c.gallery.clone_from(&self.gallery);
+        c.remote.clone_from(&self.remote);
+        c.preexisting_folder = self.preexisting_folder;
+        c.written_files.clone_from(&self.written_files);
+        c
+    }
+
     /// A new, not yet started download (queued state, nothing on disk).
     pub fn new(id: u64, url: Url, dest: PathBuf, category: Category) -> Self {
         Item {
@@ -750,6 +783,7 @@ impl Item {
             gallery: None,
             log: Vec::new(),
             name_from_url: false,
+            number_at_start: false,
             package: None,
             server: None,
             direct: false,
@@ -805,8 +839,9 @@ impl Item {
         self.size = size_after(s.state, s.size, s.downloaded, self.size);
         self.resumable = s.resumable.or(self.resumable);
         if let Some(f) = &s.file {
-            // Named now: a later start from scratch keeps this name.
+            // Named now: a later start from scratch keeps this name, and its file is its own.
             let guessed = std::mem::take(&mut self.name_from_url);
+            self.number_at_start = false;
             if *f != self.dest {
                 // The file as saved (a video's real extension, a numbered duplicate, the name
                 // the server gave).
