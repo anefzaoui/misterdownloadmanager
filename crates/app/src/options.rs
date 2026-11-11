@@ -976,10 +976,15 @@ impl OptionsDialog {
         let Some(&cat) = cats.get(self.category) else {
             return;
         };
-        let default = display_dir(&cat.default_folder(downloads));
+        let base = if cat == Category::General {
+            std::borrow::Cow::Borrowed(downloads)
+        } else {
+            crate::model::default_downloads(downloads, &self.s.category_dirs)
+        };
+        let default = display_dir(&cat.default_folder(&base));
         let typed = self.cat_dir.trim();
         let own = (!typed.is_empty()
-            && typed.trim_end_matches('\\') != default.trim_end_matches('\\'))
+            && typed.trim_end_matches(['\\', '/']) != default.trim_end_matches(['\\', '/']))
         .then(|| typed.to_owned());
         self.s.set_category_dir(cat, own);
     }
