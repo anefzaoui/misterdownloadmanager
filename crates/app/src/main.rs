@@ -5,6 +5,7 @@ mod batch;
 mod categories;
 mod checksum;
 mod chrome;
+mod clipboard;
 mod clock;
 mod countries;
 mod crash;
@@ -114,7 +115,8 @@ pub fn offscreen() -> bool {
 
 /// The clipboard's text, if any. Never read in an off-screen run ([`offscreen`]): its windows
 /// open from scripts, and the clipboard belongs to the person at the computer (Add URL's
-/// address came from it, and was fetched).
+/// address came from it, and was fetched). It may wait for the clipboard's owner for ever:
+/// never called on the window's thread, only by `clipboard`'s reader (#418, #661).
 pub fn clipboard_text() -> Option<String> {
     read_clipboard(offscreen(), || {
         arboard::Clipboard::new().ok()?.get_text().ok()
@@ -447,6 +449,7 @@ fn app() -> eframe::Result {
         win32::set_main_window(cc);
         scale::start(&cc.egui_ctx, z);
         let _ = window.set(cc.egui_ctx.clone());
+        clipboard::wake(&cc.egui_ctx);
         renderer::test_slow_start();
         app::App::new(&cc.egui_ctx, handle, commands, sink, loaded, start)
     });

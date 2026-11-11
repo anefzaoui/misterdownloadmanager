@@ -641,8 +641,8 @@ pub struct App {
     /// yet) and when.
     clip_seen: Option<Option<String>>,
     clip_checked: Option<Instant>,
-    /// The clipboard read under way, off the window thread (#418).
-    clip_reading: Option<ClipRead>,
+    /// The monitor's ask for the clipboard, its read off the window thread (#418).
+    clip_asked: Option<crate::clipboard::Ask>,
     confirm_delete: Option<dialogs::ConfirmDelete>,
     /// Queue right-click → Delete, asking first: the queue and the question.
     confirm_queue_delete: Option<(usize, dialogs::Confirm)>,
@@ -853,28 +853,6 @@ pub fn auth_headers(login: Option<&(String, String)>) -> HeaderMap {
         }
     }
     h
-}
-
-/// A read of the clipboard on a thread of its own, its answer taken when it has come (#418).
-struct ClipRead(std::sync::Arc<std::sync::Mutex<Option<Option<String>>>>);
-
-impl ClipRead {
-    fn start(read: impl FnOnce() -> Option<String> + Send + 'static) -> Self {
-        let slot = std::sync::Arc::new(std::sync::Mutex::new(None));
-        let answer = slot.clone();
-        let _ = std::thread::Builder::new()
-            .name("clipboard read".into())
-            .spawn(move || {
-                *answer.lock().unwrap() = Some(read());
-            });
-        ClipRead(slot)
-    }
-
-    /// The text, once the read has answered; else the read, still waiting.
-    fn answer(self) -> Result<Option<String>, Self> {
-        let got = self.0.lock().unwrap().take();
-        got.ok_or(self)
-    }
 }
 
 /// A stopped download's files: its state and part files, and its finished file when it was
@@ -1200,7 +1178,7 @@ impl App {
             limit_notice: None,
             clip_seen: None,
             clip_checked: None,
-            clip_reading: None,
+            clip_asked: None,
             tray: None,
             tray_limiter: None,
             tray_last_focused: None,
@@ -3260,17 +3238,16 @@ impl App {
             return;
         }
         ctx.request_repaint_after(Duration::from_secs(1));
-        // One read at a time, on its own thread: the program that owns the clipboard may hang,
-        // and a read that waits for it took the window with it (#418). A read under way
-        // that never answers just means no new look at the clipboard.
-        let reading = self.clip_reading.take();
-        let text = match reading {
-            Some(read) => match read.answer() {
-                Ok(text) => text,
-                Err(still) => {
-                    self.clip_reading = Some(still);
-                    return;
+        // Read off the window's thread (clipboard.rs): the program that owns the clipboard may
+        // hang, and a read that waits for it took the window with it (#418). An ask that is
+        // never answered just means no new look at the clipboard.
+        let text = match self.clip_asked {
+            Some(ask) => match crate::clipboard::answer(ask) {
+                Some(text) => {
+                    self.clip_asked = None;
+                    text
                 }
+                None => return,
             },
             None => {
                 if self
@@ -3280,7 +3257,7 @@ impl App {
                     return;
                 }
                 self.clip_checked = Some(Instant::now());
-                self.clip_reading = Some(ClipRead::start(crate::clipboard_text));
+                self.clip_asked = Some(crate::clipboard::ask());
                 return;
             }
         };
@@ -9427,31 +9404,6 @@ mod page_data_tests {
 #[cfg(test)]
 mod window_thread_tests {
     use super::*;
-
-    /// #418: a clipboard read that never answers (its owner hung) doesn't hold up the window:
-    /// its answer just isn't there yet; one that answers is taken.
-    #[test]
-    fn a_stuck_clipboard_owner_does_not_hold_the_window() {
-        let (release, wait) = std::sync::mpsc::channel::<()>();
-        let stuck = ClipRead::start(move || {
-            let _ = wait.recv();
-            Some("late".to_owned())
-        });
-        let started = Instant::now();
-        let Err(mut waiting) = stuck.answer() else {
-            panic!("no answer yet");
-        };
-        assert!(started.elapsed() < Duration::from_millis(500));
-        release.send(()).unwrap();
-        let text = loop {
-            match waiting.answer() {
-                Ok(text) => break text,
-                Err(still) => waiting = still,
-            }
-            std::thread::sleep(Duration::from_millis(2));
-        };
-        assert_eq!(text.as_deref(), Some("late"));
-    }
 
     /// #423: the files of a stopped download go as a group, off the window's thread.
     #[test]

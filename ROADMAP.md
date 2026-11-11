@@ -580,6 +580,10 @@ These ship in a later version, when they're ready.
 - 🔄 Windows: a crash when the clipboard was read in two places at once (the clipboard monitor and
   Add URL) ([#629](https://github.com/anefzaoui/misterdownloadmanager/issues/629)): every read and
   write of the clipboard now goes one at a time; fix in review
+- 🔄 The window waiting on the program that owns the clipboard when it doesn't answer (Linux
+  especially; follows [#418](https://github.com/anefzaoui/misterdownloadmanager/issues/418)): a
+  text box's right-click menu, Add URL, Add batch download, Add torrent and Download video now
+  read the clipboard beside the window, and fill in a copied link when it comes; fix in review
 - 🔄 Categories without their own folder following General's folder (`Video`, `Music`, `Torrents`
   inside it), and Add torrent starting with the Torrents category's folder instead of flipping
   from General when metadata arrives ([#556](https://github.com/anefzaoui/misterdownloadmanager/issues/556),
