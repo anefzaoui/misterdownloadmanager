@@ -508,6 +508,10 @@ These ship in the next version.
   speed limits (a change applies at once), pause and resume like a file, after a restart too,
   and a fresh address from yt-dlp when one expires (part of
   [#769](https://github.com/anefzaoui/misterdownloadmanager/issues/769))
+- ✅ Videos sent in pieces (HLS, DASH) through MDM's own downloader too, several pieces at once
+  (as many as a file's connections), AES-128 pieces decrypted, expired pieces' addresses asked of
+  yt-dlp again ([#531](https://github.com/anefzaoui/misterdownloadmanager/issues/531), part of
+  [#769](https://github.com/anefzaoui/misterdownloadmanager/issues/769))
 - ✅ Videos and image galleries keep to the speed limits (for one file, their own, and all
   downloads together), and start again with a new one when it changes; one started while the
   Scheduler's download limit is reached waits
@@ -570,11 +574,7 @@ These ship in a later version, when they're ready.
   in review
 - 🔄 Linux and macOS: the system's gallery-dl used when MDM has none of its own, as yt-dlp is
   ([#571](https://github.com/anefzaoui/misterdownloadmanager/issues/571)): in review
-- 🔄 Videos sent in pieces (HLS, DASH) downloading several pieces at once, as many as a file's
-  connections ([#531](https://github.com/anefzaoui/misterdownloadmanager/issues/531)): in review;
-  a video in one file (most of YouTube's) now comes through MDM's own downloader
-- 🔄 Videos in pieces (HLS, DASH) and image galleries through MDM's own downloader too, yt-dlp
-  and gallery-dl only finding the addresses
+- 🔄 Image galleries through MDM's own downloader too, gallery-dl only finding the addresses
   ([#769](https://github.com/anefzaoui/misterdownloadmanager/issues/769)): in progress
 - 🔄 Linux and macOS: the system's yt-dlp used when MDM has none of its own, with Helpers able\n  to switch to MDM's copy ([#452](https://github.com/anefzaoui/misterdownloadmanager/issues/452)): in review
 - 🔄 macOS: video look-ups in a copy of MDM a browser downloaded, without the Terminal command

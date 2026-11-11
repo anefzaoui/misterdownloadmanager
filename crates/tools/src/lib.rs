@@ -11,6 +11,7 @@ mod macos;
 pub mod manifest;
 mod openpgp;
 pub mod pages;
+pub mod pieces;
 pub mod playlist;
 pub mod proc;
 pub mod relay;
