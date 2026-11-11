@@ -1963,7 +1963,11 @@ async function videoAddress(m, page, sender) {
     const playing = await playingVideo(sender, m.at);
     return playing || (isYouTube(named) ? named : "");
   }
-  const site = (u) => siteOf(u).replace(/^(www|m|music)\./, "");
+  const site = (u) => {
+    const host = siteOf(u).replace(/^(www|m|music)\./, "");
+    // Facebook's short-link host names videos on the same service as facebook.com (#643).
+    return host === "fb.watch" ? "facebook.com" : host;
+  };
   return named && site(named) === site(page) ? named : page;
 }
 
