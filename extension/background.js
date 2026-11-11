@@ -1953,18 +1953,29 @@ async function playingVideo(sender, at) {
   }
 }
 
+// A site's name for comparing two addresses: without its www., mobile or other front host
+// (old.reddit.com is reddit.com), its short-link hosts as the site (fb.watch is Facebook's,
+// twitter.com is x.com).
+const SITE_ALIASES = { "fb.watch": "facebook.com", "twitter.com": "x.com" };
+function siteKey(url) {
+  const host = siteOf(url).replace(/^(www|m|mobile|web|touch|old|new|sh|music|geo|player)\./, "");
+  return SITE_ALIASES[host] || host;
+}
+
 // The address the app looks a video up by: the one video's, never a list's. On YouTube that is
-// what the player plays; else the address the content script named (video.js videoPage), if it is
-// this site's (www, m. and music. are the same site); else the page's. "" on a YouTube page where
-// nothing names the video: its own address is a list (the home page, a channel) to yt-dlp.
+// what the player plays; else the address the content script named (video.js videoPage: the post
+// the video sits in on a feed, #689), if it is this site's; else the page's. "" where nothing
+// names the video: on YouTube (its own address is a list, the home page, a channel, to yt-dlp),
+// and on a feed (`url` null: video.js found the page is many videos', LinkedIn's or Facebook's
+// home, and no post around the video naming it).
 async function videoAddress(m, page, sender) {
   const named = typeof m.url === "string" && /^https?:/i.test(m.url) ? m.url : "";
   if (isYouTube(page)) {
     const playing = await playingVideo(sender, m.at);
     return playing || (isYouTube(named) ? named : "");
   }
-  const site = (u) => siteOf(u).replace(/^(www|m|music)\./, "");
-  return named && site(named) === site(page) ? named : page;
+  if (m.url === null) return "";
+  return named && siteKey(named) === siteKey(page) ? named : page;
 }
 
 async function pageMessage(m, sender) {
@@ -1993,16 +2004,25 @@ async function pageMessage(m, sender) {
   }
   if (m.type === "video" && page) {
     await mediaBack;
-    const src = typeof m.src === "string" && /^https?:/i.test(m.src) ? m.src : await streamFor(sender);
-    // A playing stream or file of its own still goes as `src`, with the page for its Referer.
     const named = await videoAddress(m, page, sender);
-    if (!named && !src) return { ok: false, why: "unnamed" };
+    const youtube = isYouTube(page);
+    // The post a video in a feed sits in (#689): the app looks that up. Nothing names it (`url`
+    // null): the feed is never sent as its page, only the video's own plain file, if it has one.
+    // Either way no stream the tab loaded goes with it (a feed's first stream may be another
+    // video's), nor the page's title (the feed's).
+    const post = !youtube && Boolean(named) && named !== page;
+    const feed = !youtube && m.url === null;
+    // The video's own file (video.js leaves it out beside a post a big site's reader knows), or a
+    // stream it plays, still goes as `src`, with the page for its Referer.
+    const file = typeof m.src === "string" && /^https?:/i.test(m.src) ? m.src : "";
+    const src = file || (post || feed ? "" : await streamFor(sender));
+    if (!named && !src) return { ok: false, why: youtube ? "unnamed" : "feed" };
     const own = named || page;
     const reply = await native({
       video: true,
       url: own,
       ...(src ? { src } : {}),
-      title: typeof m.title === "string" ? m.title.slice(0, 300) : "",
+      title: typeof m.title === "string" && !post && !feed ? m.title.slice(0, 300) : "",
       referrer: tab.url && tab.url !== own ? tab.url : "",
       // The cookies of what yt-dlp is given (the app files them under its host): the stream's
       // own server may not be the page's, and the page's cookies are not for it.

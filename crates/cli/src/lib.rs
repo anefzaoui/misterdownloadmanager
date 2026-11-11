@@ -1314,7 +1314,7 @@ mod tests {
         fn unlock<'a>(
             &'a self,
             _: &'a url::Url,
-            _: &'a (dyn Fn(String) + Send + Sync),
+            _: &'a (dyn Fn(String, Option<f32>) + Send + Sync),
             _: &'a tokio_util::sync::CancellationToken,
         ) -> std::pin::Pin<
             Box<

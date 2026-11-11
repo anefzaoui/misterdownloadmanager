@@ -431,6 +431,44 @@ impl LabServer {
                 "/pm/api/transfer/delete",
                 post(crate::debrid_torrents::pm_delete),
             )
+            // A fake TorBox: web downloads and torrents (`debrid_torrents`).
+            .route("/tb/v1/api/user/me", get(crate::debrid_torrents::tb_user))
+            .route(
+                "/tb/v1/api/user/auth/device/start",
+                get(crate::debrid_torrents::tb_device_start),
+            )
+            .route(
+                "/tb/v1/api/user/auth/device/token",
+                post(crate::debrid_torrents::tb_device_token),
+            )
+            .route(
+                "/tb/v1/api/webdl/hosters",
+                get(crate::debrid_torrents::tb_hosters),
+            )
+            .route(
+                "/tb/v1/api/webdl/createwebdownload",
+                post(crate::debrid_torrents::tb_web_create),
+            )
+            .route(
+                "/tb/v1/api/torrents/createtorrent",
+                post(crate::debrid_torrents::tb_torrent_create),
+            )
+            .route(
+                "/tb/v1/api/{kind}/mylist",
+                get(crate::debrid_torrents::tb_list),
+            )
+            .route(
+                "/tb/v1/api/{kind}/requestdl",
+                get(crate::debrid_torrents::tb_requestdl),
+            )
+            .route(
+                "/tb/v1/api/webdl/controlwebdownload",
+                post(crate::debrid_torrents::tb_control),
+            )
+            .route(
+                "/tb/v1/api/torrents/controltorrent",
+                post(crate::debrid_torrents::tb_control),
+            )
             .route("/_debrid/torrents", get(crate::debrid_torrents::held))
             // RSS feeds for the app's RSS tests (#39, `feeds`).
             .route("/rss/shows.xml", get(crate::feeds::shows))
@@ -556,6 +594,8 @@ GET /redirect?to=URL[&ttl_ms=N][&uses=N][&code=3xx]   302 (or code) to URL (not 
                                               a fake Real-Debrid (#44): tokens good (premium), free; links http://hoster.test/file/SIZE/NAME[?gone=1&down=1&chunks=N&ttl_ms=N&rate=SIZE]
 /ad/v4/{user,hosts/domains,link/unlock,link/delayed,pin/check}, /ad/v4.1/pin/get      a fake AllDebrid: the same tokens and links, plus delayed=N
 /pm/api/{account/info,services/list,transfer/directdl}      a fake Premiumize: the same tokens and links
+/tb/v1/api/{user/me,user/auth/device/{start,token},webdl/hosters,webdl/createwebdownload,torrents/createtorrent,*/mylist,*/requestdl,*/control*}
+                                              a fake TorBox: the same tokens and links (ready after 2 polls), and torrents
 GET /hop?to=URL&how=meta|header[&wait=S][&cookie=N=V]   a page that sends the browser on to URL (meta refresh or Refresh header)
 
 RSS    made-up feeds for the RSS feeds window (#39); never real ones

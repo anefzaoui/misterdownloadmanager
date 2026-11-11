@@ -320,6 +320,8 @@ Everything below ships together, in version 0.5.0.
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 - ✅ Debrid accounts: torrents and magnet links through the service, their files downloaded over
   HTTP, no peer connections ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
+- ✅ Debrid accounts (experimental): TorBox, for file-host links and torrents
+  ([#391](https://github.com/anefzaoui/misterdownloadmanager/issues/391))
 - ✅ Sign-ins in the system's keychain: Windows Credential Manager, the Secret Service keyring on
   Linux, the macOS keychain; for debrid accounts, Sites Logins and the proxy
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
@@ -538,6 +540,13 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 Helium: MDM offers it the extension on Linux and macOS, through Helium's own services, the
+  Linux packages' helper files cover it, and the docs say how to add the extension in Helium
+  ([#685](https://github.com/anefzaoui/misterdownloadmanager/issues/685)); in review
+- 🔄 A freeze of the window while torrents ran on a busy or slow disk: it waited for the torrent
+  engine, which holds a torrent while its writes to the disk end
+  ([#693](https://github.com/anefzaoui/misterdownloadmanager/issues/693)): the torrents' numbers
+  are now read beside the window; fix in review
 - 🔄 Sites with bot protection (Cloudflare and similar) refusing MDM: when a site still answers
   with a bot check, asking again the way a browser connects
   ([#668](https://github.com/anefzaoui/misterdownloadmanager/issues/668))
@@ -580,6 +589,17 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔄 The browser's video button over a video in a feed sending the feed's address, where yt-dlp
+  finds nothing (LinkedIn, Facebook, and other sites with feeds;
+  [#689](https://github.com/anefzaoui/misterdownloadmanager/issues/689),
+  [#643](https://github.com/anefzaoui/misterdownloadmanager/issues/643)): it now sends the post the
+  video sits in (LinkedIn, Facebook, X, Instagram, Reddit, TikTok, Vimeo, Dailymotion, and a
+  post's own link on other sites), else the video's own file, else it says to open the post; fix
+  in review, checked on a signed-in LinkedIn feed and Facebook's video page; Facebook's feed
+  posts still to check
+- 🔄 Torrents: a pause landing while a piece was being checked leaving the torrent one piece short
+  until MDM restarted ([#706](https://github.com/anefzaoui/misterdownloadmanager/issues/706)): the
+  piece is now downloaded again after the pause; fix in review
 - 🔄 Torrents: magnet links without trackers finding no peers where the DHT's first nodes didn't
   answer ([#650](https://github.com/anefzaoui/misterdownloadmanager/issues/650)): four public
   routers asked together, the ones that never answer left alone once one has, the IPv6 nodes kept

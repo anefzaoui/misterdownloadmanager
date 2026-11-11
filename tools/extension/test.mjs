@@ -1175,27 +1175,22 @@ const MPD = (protect) => `<?xml version="1.0"?>
   ok("video button logo");
 }
 
+// video.js's videoPage, with what it calls (from it to its end mark), run against `location` and
+// `document`: the address the button hands the app for a <video>.
+const videoPageOn = (() => {
+  const source = readFileSync(new URL("../../extension/video.js", import.meta.url), "utf8");
+  const start = source.indexOf("function videoPage(v) {");
+  const end = source.indexOf("// ---- the video's own address: end.");
+  assert.ok(start > 0 && end > start, "video.js has videoPage and its end mark");
+  const body = `${source.slice(start, end)}; return videoPage;`;
+  return (location, document) => new Function("location", "document", body)(location, document);
+})();
+
 // The address the button hands the app (video.js's videoPage): the video's own page, not the page
 // that plays it. YouTube's home, a search, a channel or a playlist is a list to yt-dlp, and a watch
 // page opened from a mix carries the list in its address: the button sent either, and the app
 // offered the whole feed (~50 videos) instead of the one playing. #311.
 {
-  const source = readFileSync(new URL("../../extension/video.js", import.meta.url), "utf8");
-  const start = source.indexOf("function videoPage(v) {");
-  assert.ok(start > 0, "video.js has videoPage");
-  // The function's own braces, so a test never runs a half of it.
-  let depth = 0;
-  let end = start;
-  for (let i = source.indexOf("{", start); i < source.length; i += 1) {
-    if (source[i] === "{") depth += 1;
-    if (source[i] === "}") {
-      depth -= 1;
-      if (depth === 0) {
-        end = i + 1;
-        break;
-      }
-    }
-  }
   // A page: its address, an optional ytd-watch-flexy video-id, and the cards a player can sit in
   // (each level on the way up from the video element names the video links it contains).
   const at = (href, { flexy = null, cards = [] } = {}) => {
@@ -1206,8 +1201,7 @@ const MPD = (protect) => `<?xml version="1.0"?>
     const chain = cards.map(element);
     for (let i = 0; i < chain.length; i += 1) chain[i].parentElement = chain[i + 1] || null;
     const document = { querySelector: (sel) => (sel === "ytd-watch-flexy" && flexy ? { getAttribute: () => flexy } : null) };
-    const fn = new Function("location", "document", `${source.slice(start, end)}; return videoPage;`)({ href }, document);
-    return fn(chain[0] || element([]));
+    return videoPageOn({ href }, document)(chain[0] || element([]));
   };
   // A watch page from a mix or a playlist: the video's own address, without the list.
   assert.equal(at("https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
@@ -1299,22 +1293,212 @@ const MPD = (protect) => `<?xml version="1.0"?>
   ok("in-place navigation and YouTube's player: the video playing now, or nothing");
 }
 
+// A small DOM for the sample pages (tools/extension/feeds): elements with their attributes, open
+// shadow roots (<template shadowrootmode>), `a.href`, and querySelector(All) with the simple
+// selectors video.js uses (a tag, #id, [attr], [attr="v"], [attr*="v"], [attr^="v"], lists).
+function samplePage(html) {
+  const VOID = new Set(["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"]);
+  const ENTITY = { amp: "&", lt: "<", gt: ">", quot: '"', "#39": "'" };
+  const decode = (s) => s.replace(/&(amp|lt|gt|quot|#39);/g, (_, e) => ENTITY[e]);
+  let base = "about:blank";
+  // Descendants in document order, not into shadow roots (as the DOM's own).
+  const descendants = function* (n) {
+    for (const c of n.children) {
+      yield c;
+      yield* descendants(c);
+    }
+  };
+  const compound = (sel) => {
+    const m = /^([a-z][\w-]*)?(?:#([\w-]+))?((?:\[[^\]]+\])*)$/i.exec(sel.trim());
+    assert.ok(m, `a selector the sample DOM reads: ${sel}`);
+    const attrs = [...m[3].matchAll(/\[([\w-]+)(?:([*^]?=)"([^"]*)")?\]/g)].map((a) => ({ name: a[1], op: a[2], value: a[3] }));
+    return (el) =>
+      (!m[1] || el.localName === m[1].toLowerCase()) &&
+      (!m[2] || el.getAttribute("id") === m[2]) &&
+      attrs.every(({ name, op, value }) => {
+        const v = el.getAttribute(name);
+        if (v === null) return false;
+        return !op || (op === "=" ? v === value : op === "*=" ? v.includes(value) : v.startsWith(value));
+      });
+  };
+  const finder = {
+    querySelectorAll(sel) {
+      const any = sel.split(",").map(compound);
+      return [...descendants(this)].filter((el) => any.some((f) => f(el)));
+    },
+    querySelector(sel) {
+      return this.querySelectorAll(sel)[0] || null;
+    },
+  };
+  class Element {
+    constructor(name, attributes, parent) {
+      this.localName = name;
+      this.attributes = attributes;
+      this.children = [];
+      this.parentNode = parent;
+      this.shadowRoot = null;
+    }
+    get parentElement() {
+      return this.parentNode instanceof Element ? this.parentNode : null;
+    }
+    getAttribute(name) {
+      const a = this.attributes.find((x) => x.name === name);
+      return a ? a.value : null;
+    }
+    get href() {
+      return new URL(this.getAttribute("href"), base).href;
+    }
+  }
+  Object.assign(Element.prototype, finder);
+  const doc = { children: [], localName: "#document", ...finder };
+  const stack = [doc];
+  const tags = /<!--[\s\S]*?-->|<!doctype[^>]*>|<\/([\w-]+)\s*>|<([\w-]+)((?:\s+[^\s=/>]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+))?)*)\s*\/?>/gi;
+  for (const t of html.matchAll(tags)) {
+    if (t[1]) {
+      const name = t[1].toLowerCase();
+      const at = stack.findLastIndex((n) => n.localName === name || (name === "template" && n.isShadow));
+      if (at > 0) stack.length = at;
+      continue;
+    }
+    if (!t[2]) continue;
+    const name = t[2].toLowerCase();
+    const attributes = [...(t[3] || "").matchAll(/([^\s=/>]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+)))?/g)].map((a) => ({
+      name: a[1].toLowerCase(),
+      value: decode(a[2] ?? a[3] ?? a[4] ?? ""),
+    }));
+    const parent = stack[stack.length - 1];
+    // A declarative shadow root: what follows, up to its </template>, is the host's shadow tree.
+    if (name === "template" && attributes.some((a) => a.name === "shadowrootmode" && a.value === "open")) {
+      const root = { children: [], localName: "#shadow-root", isShadow: true, host: parent, ...finder };
+      parent.shadowRoot = root;
+      stack.push(root);
+      continue;
+    }
+    const el = new Element(name, attributes, parent);
+    parent.children.push(el);
+    if (!VOID.has(name)) stack.push(el);
+  }
+  // Every element, into shadow roots too (the button finds the videos there).
+  const all = function* (n) {
+    for (const c of n.children) {
+      yield c;
+      if (c.shadowRoot) yield* all(c.shadowRoot);
+      yield* all(c);
+    }
+  };
+  const page = doc.querySelector('meta[name="mdm-page"]').getAttribute("content");
+  base = page;
+  return { document: doc, page, videos: [...all(doc)].filter((e) => e.localName === "video") };
+}
+
+// #689, #643: a video in a feed names the post it sits in, never the feed. Each sample page (our
+// own, reduced to what names a post on each site; tools/extension/feeds) says what each of its
+// videos must name: an address ({origin}: the page's own), "page" (the page is the video's) or
+// "none" (nothing names it: the feed is not sent; its own plain file is, when it has one).
+{
+  const dir = new URL("feeds/", import.meta.url);
+  const pages = readdirSync(dir).filter((f) => f.endsWith(".html"));
+  assert.ok(pages.length >= 12, "the sample pages");
+  // Each page at its own address, and at the big sites' other hosts too.
+  const OTHER = {
+    "x.html": ["https://twitter.com/home", "https://mobile.x.com/home"],
+    "reddit.html": ["https://sh.reddit.com/"],
+    "linkedin.html": ["https://linkedin.com/feed/foryou/"],
+    "facebook.html": ["https://web.facebook.com/", "https://m.facebook.com/"],
+  };
+  let checked = 0;
+  for (const file of pages) {
+    const { document, page, videos } = samplePage(readFileSync(new URL(file, dir), "utf8"));
+    assert.ok(videos.length, `${file}: its videos`);
+    for (const at of [page, ...(OTHER[file] || [])]) {
+      const location = new URL(at);
+      const videoPage = videoPageOn(location, document);
+      for (const [i, v] of videos.entries()) {
+        const expect = v.getAttribute("data-expect");
+        const want = expect === "page" ? location.href : expect === "none" ? null : expect.replaceAll("{origin}", location.origin);
+        const got = videoPage(v);
+        assert.equal(got, want, `${file} at ${at}: video ${i + 1}`);
+        // Never the page itself, unless it is the video's own.
+        if (expect !== "page") assert.notEqual(got, location.href, `${file}: video ${i + 1} named the page`);
+        checked += 1;
+      }
+    }
+  }
+  ok(`#689: a video in a feed names its post, never the feed (${pages.length} sample pages, ${checked} videos)`);
+}
+
+// What the resolvers build is a form yt-dlp's extractors read (their _VALID_URL, yt-dlp
+// 2026.08.19), so the app's lookup finds the one video.
+{
+  const YTDLP = [
+    /^https?:\/\/(?:www\.)?linkedin\.com\/feed\/update\/urn:li:activity:(\d+)/,
+    /^https?:\/\/(?:[\w-]+\.)?facebook\.com\/(?:(?:permalink\.php|video\.php|watch\/?)\?(?:.*?)(?:v|story_fbid)=|[^/]+\/videos\/(?:[^/]+\/)?|[^/]+\/posts\/|groups\/[^/]+\/(?:permalink|posts)\/|reel\/)(pfbid[A-Za-z0-9]+|\d+)/,
+    /^https?:\/\/(?:(?:www|m(?:obile)?)\.)?(?:twitter|x)\.com\/(?:(?:i\/web|[^/]+)\/status|statuses)\/(\d+)/,
+    /^https?:\/\/(?:www\.)?instagram\.com(?:\/[^/?#]+)?\/(?:p|tv|reels?)\/([^/?#&]+)/,
+    /^https?:\/\/(?:\w+\.)?reddit\.com\/(?:(?:r|user)\/[^/]+\/)?comments\/([^/?#&]+)/,
+    /^https?:\/\/www\.tiktok\.com\/@[\w.-]+\/video\/(\d+)/,
+    /^https?:\/\/vimeo\.com\/(\d+)(?:\/[\da-f]{10})?$/,
+    /^https?:\/\/www\.dailymotion\.com\/video\/([^/?_&#]+)/,
+  ];
+  const dir = new URL("feeds/", import.meta.url);
+  let checked = 0;
+  for (const file of readdirSync(dir).filter((f) => f.endsWith(".html") && !/^(social|article)\.html$/.test(f))) {
+    const { page, videos } = samplePage(readFileSync(new URL(file, dir), "utf8"));
+    for (const v of videos) {
+      const expect = v.getAttribute("data-expect").replaceAll("{origin}", new URL(page).origin);
+      // fb.watch's short links lead to the video's page; a LinkedIn post known by its ugcPost
+      // URN is its public page, which yt-dlp's generic reader reads.
+      if (expect === "none" || expect === "page" || expect.startsWith("https://fb.watch/") || /urn:li:ugcPost:/.test(expect)) continue;
+      assert.ok(YTDLP.some((r) => r.test(expect)), `${file}: ${expect} is a form yt-dlp reads`);
+      checked += 1;
+    }
+  }
+  ok(`#689: the ${checked} addresses built are forms yt-dlp's extractors read`);
+}
+
+// #689: what the background does with what video.js named on a feed. A post: it goes alone (no
+// stream the tab loaded, which may be another video's, nor the feed's title), the feed as its
+// Referer. Nothing named: never the feed; the video's own plain file when it has one (the feed
+// as its Referer), else nothing and the button says to open the post.
+{
+  const message = (listeners, m, sender) => new Promise((r) => listeners.message(m, sender, (x) => r(JSON.parse(JSON.stringify(x)))));
+  const at = (url) => ({ id: "ours", url, frameId: 0, tab: { id: 4, url, incognito: false } });
+  const videos = (calls) => natives(calls).filter((m) => m.video);
+  const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  const feed = "https://www.linkedin.com/feed/";
+  // A stream the feed loaded (another video's, as far as anyone knows).
+  listeners.responseStarted({ tabId: 4, frameId: 0, url: "https://cdn.test/feed/master.m3u8", responseHeaders: [] });
+  const post = "https://www.linkedin.com/feed/update/urn:li:activity:7390000000000000001/";
+  assert.equal((await message(listeners, { type: "video", url: post, src: "", title: "Feed | LinkedIn" }, at(feed))).ok, true);
+  assert.deepEqual(
+    (({ url, src, title, referrer }) => ({ url, src, title, referrer }))(videos(calls).at(-1)),
+    { url: post, src: undefined, title: "", referrer: feed },
+    "the post alone, the feed as its Referer",
+  );
+  // Nothing names it, no file of its own: nothing goes, and the button says why.
+  const r = await message(listeners, { type: "video", url: null, src: "", title: "Feed | LinkedIn" }, at(feed));
+  assert.deepEqual([r.ok, r.why], [false, "feed"]);
+  assert.equal(videos(calls).length, 1, "the feed is never sent");
+  // Nothing names it, its own plain file: that file, the feed as its Referer, no title.
+  await message(listeners, { type: "video", url: null, src: "https://media.test/clip.mp4", title: "Home" }, at("https://social.test/home"));
+  const file = videos(calls).at(-1);
+  assert.deepEqual([file.src, file.url, file.title], ["https://media.test/clip.mp4", "https://social.test/home", ""]);
+  // Another host of the same site is the site's (Facebook's short links, X's old name).
+  await message(listeners, { type: "video", url: "https://fb.watch/sAmPlE7x/", src: "" }, at("https://web.facebook.com/"));
+  assert.equal(videos(calls).at(-1).url, "https://fb.watch/sAmPlE7x/");
+  await message(listeners, { type: "video", url: "https://x.com/someone/status/1", src: "" }, at("https://twitter.com/home"));
+  assert.equal(videos(calls).at(-1).url, "https://x.com/someone/status/1");
+  // Another site's address named by a page is not taken: the page's own goes, as before.
+  await message(listeners, { type: "video", url: "https://elsewhere.test/v/1", src: "" }, at("https://news.test/story"));
+  assert.equal(videos(calls).at(-1).url, "https://news.test/story");
+  ok("#689: a post alone, the video's own file, or nothing; never the feed");
+}
+
 // Shorts and live streams name their video in the path (video.js videoPage); the page is the
 // video's, not a list. Their addresses as yt-dlp reads them (the same video as watch?v=).
 {
-  const source = readFileSync(new URL("../../extension/video.js", import.meta.url), "utf8");
-  const start = source.indexOf("function videoPage(v) {");
-  let depth = 0;
-  let end = start;
-  for (let i = source.indexOf("{", start); i < source.length; i += 1) {
-    if (source[i] === "{") depth += 1;
-    if (source[i] === "}" && --depth === 0) {
-      end = i + 1;
-      break;
-    }
-  }
-  const named = (href) =>
-    new Function("location", "document", `${source.slice(start, end)}; return videoPage;`)({ href }, { querySelector: () => null })({ parentElement: null, querySelectorAll: () => [] });
+  const named = (href) => videoPageOn({ href }, { querySelector: () => null })({ parentElement: null, querySelectorAll: () => [] });
   assert.equal(named("https://www.youtube.com/shorts/cxkLg22mWco"), "https://www.youtube.com/watch?v=cxkLg22mWco");
   assert.equal(named("https://www.youtube.com/shorts/cxkLg22mWco?feature=share"), "https://www.youtube.com/watch?v=cxkLg22mWco");
   assert.equal(named("https://m.youtube.com/shorts/cxkLg22mWco"), "https://www.youtube.com/watch?v=cxkLg22mWco");

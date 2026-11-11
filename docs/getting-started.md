@@ -75,9 +75,9 @@ And on the other desktops it was checked on:
 
 `sudo apt remove misterdownloadmanager` (or `sudo dnf remove misterdownloadmanager`) removes the
 programs, and the small files that tell your browsers where MDM's helper is: the .deb and .rpm
-install those for everyone (in `/etc` and `/usr/lib`), for Chrome, Chromium, Edge, Brave, Vivaldi
-and Firefox (the Snap too), so MDM doesn't write them in your home folder. For the AppImage or the
-tar.gz, delete the file or the folder.
+install those for everyone (in `/etc` and `/usr/lib`), for Chrome, Chromium, Edge, Brave, Vivaldi,
+Helium and Firefox (the Snap too), so MDM doesn't write them in your home folder. For the AppImage
+or the tar.gz, delete the file or the folder.
 
 What MDM keeps in your home folder stays, as with any package: your list and settings
 (`~/.local/share/misterdownloadmanager`), the AppImage's and the tar.gz's browser files, and

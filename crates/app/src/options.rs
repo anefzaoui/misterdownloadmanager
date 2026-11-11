@@ -3366,7 +3366,10 @@ impl OptionsDialog {
                     "opt-account",
                     // i18n: window title: adding a debrid service account (Real-Debrid…)
                     "Add an account",
-                    [420.0, 300.0],
+                    [
+                        420.0,
+                        300.0 + crate::dialogs::grow_extra(ctx, "opt-account"),
+                    ],
                     false,
                     LIGHT_BG(),
                     |ui, o| account_dialog(ui, o, &mut e),
@@ -3804,11 +3807,22 @@ fn dns_dialog(ui: &mut Ui, o: Pos2, e: &mut DnsEdit) -> Outcome<()> {
 }
 
 /// Accounts → Add...: the service, a token typed in, and the sign-in on its thread (#44).
-#[derive(Default)]
 struct AccountEdit {
     service: mdm_debrid::ServiceKind,
     token: String,
     signin: crate::debrid::SignIn,
+}
+
+/// It starts on the first service Options lists (not `ServiceKind`'s default, Real-Debrid,
+/// which saved accounts fall back to).
+impl Default for AccountEdit {
+    fn default() -> Self {
+        AccountEdit {
+            service: mdm_debrid::ServiceKind::ALL[0],
+            token: String::new(),
+            signin: Default::default(),
+        }
+    }
 }
 
 /// Accounts → Add...: sign in by code in the browser (Real-Debrid's device flow, AllDebrid's PIN),
@@ -3819,6 +3833,8 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
     let ctx = ui.ctx().clone();
     let state = e.signin.get();
     let busy = matches!(state, S::Starting | S::Waiting { .. } | S::Checking);
+    // What the sign-in text took beyond its three lines: everything under it moves down.
+    let extra = crate::dialogs::grow_extra(&ctx, "opt-account");
     // i18n: Options → Add an account: label before the choice of debrid service
     text(
         &p,
@@ -3870,15 +3886,17 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
     if let S::Waiting { code, page, until } = &state {
         // The code, large, to type at the service's page.
         let code_font = egui::FontId::monospace(crate::theme::metrics().font_code);
+        let code_w = winui::text_width_font(&p, code_font.clone(), code);
+        // At the leading edge: mirrored in a right-to-left interface, as the buttons are.
         p.text(
-            o + vec2(14.0, 78.0),
+            winui::at(o + vec2(14.0, 78.0), code_w),
             egui::Align2::LEFT_TOP,
             code,
-            code_font.clone(),
+            code_font,
             LIGHT_TEXT(),
         );
         // The buttons as wide as their labels in this language (#192), short of the code.
-        let code_end = 14.0 + winui::text_width_font(&p, code_font, code);
+        let code_end = 14.0 + code_w;
         let [copy_at, open_at] = winui::button_row(
             &p,
             &[("Copy code", 200.0, 90.0), ("Open the page", 296.0, 110.0)],
@@ -3915,7 +3933,7 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
         let left = until
             .saturating_duration_since(std::time::Instant::now())
             .as_secs();
-        winui::paragraph(
+        let lines = winui::paragraph(
             &p,
             o.x + 14.0,
             o.y + 120.0,
@@ -3933,7 +3951,11 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
             o.x + 406.0,
             14.0,
         );
+        // Three lines fit above the token's label; a longer page or language grows the dialog.
+        crate::dialogs::grow_px(&ctx, "opt-account", lines.saturating_sub(3) as f32 * 14.0);
         ctx.request_repaint_after(std::time::Duration::from_secs(1));
+    } else {
+        crate::dialogs::grow_px(&ctx, "opt-account", 0.0);
     }
     let label = if by_code {
         // i18n: Options → Add an account: label before the field for the service's API token (the other way to sign in)
@@ -3942,20 +3964,20 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
         // i18n: Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
         crate::i18n::t("Paste your API key (from the service's Account page):")
     };
-    text(&p, o.x + 14.0, o.y + 178.0, label, LIGHT_TEXT());
+    text(&p, o.x + 14.0, o.y + 178.0 + extra, label, LIGHT_TEXT());
     // As wide as its label in this language (#192); the box ends 6 px before it.
     let (use_x, use_w) =
         winui::buttons_to_right(&p, 406.0, 0.0, &[("Use the token", 106.0)], 200.0)[0];
     winui::password_light(
         ui,
-        r(o, 14.0, 186.0, use_x - 6.0 - 14.0, 21.0),
+        r(o, 14.0, 186.0 + extra, use_x - 6.0 - 14.0, 21.0),
         &mut e.token,
         !busy,
     );
     // i18n: button: sign in with the token typed in
     if winui::button_light(
         ui,
-        r(o, use_x, 186.0, use_w, 21.0),
+        r(o, use_x, 186.0 + extra, use_w, 21.0),
         "Use the token",
         kind(!busy && !e.token.trim().is_empty()),
         false,
@@ -3970,7 +3992,7 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
         r(
             o,
             14.0,
-            212.0,
+            212.0 + extra,
             winui::button_fit_width(&p, "Find my token", 160.0, 392.0),
             21.0,
         ),
@@ -4004,7 +4026,7 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
     let (rect, cut) = winui::label_into(
         &p,
         o.x + 14.0,
-        o.y + 252.0,
+        o.y + 252.0 + extra,
         &line,
         color,
         o.x + 406.0,
@@ -4014,7 +4036,7 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
         winui::full_on_hover(ui, rect, "opt-account-state", &line);
     }
     let done = matches!(state, S::Done { .. });
-    match ok_cancel(ui, o, 252.0, 266.0, done) {
+    match ok_cancel(ui, o, 252.0, 266.0 + extra, done) {
         Outcome::Done(()) => match state {
             S::Done {
                 user,
