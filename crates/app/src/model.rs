@@ -956,7 +956,10 @@ impl Item {
             return crate::i18n::t("Verifying...").into();
         }
         if self.video.is_some()
-            && self.snap.as_ref().is_some_and(|s| s.state == State::Completing)
+            && self
+                .snap
+                .as_ref()
+                .is_some_and(|s| s.state == State::Completing)
         {
             return crate::i18n::t("Processing...").into();
         }
