@@ -3009,8 +3009,8 @@ impl App {
         crate::tray::available()
     }
 
-    /// [`tray_shown`] without the cache, for the close decision: an icon can disappear between
-    /// the cached answer and the close, and hiding then would be a ghost window.
+    /// The latest tray answer for closing. Windows reads its background probe without waiting
+    /// for Explorer; no recent answer means minimizing to the taskbar. macOS bypasses its cache.
     fn tray_shown_now(&self) -> bool {
         #[cfg(any(target_os = "windows", target_os = "macos"))]
         if let Some(tray) = &self.tray {
@@ -3100,6 +3100,16 @@ impl App {
             t.set_downloads(&running);
         }
         self.settle_at_login(ctx);
+        // The asynchronous Windows probe can lose its answer after a window was hidden.
+        // Keep a way back if Explorer goes away or stops answering.
+        #[cfg(windows)]
+        if self.hidden && self.at_login.is_none() && self.tray.is_some() && !self.tray_shown() {
+            self.hidden = false;
+            self.trim_when_hidden = None;
+            ctx.send_viewport_cmd(egui::ViewportCommand::Visible(true));
+            ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+            tracing::info!("tray stopped answering: minimized to the taskbar");
+        }
         // When the window was last focused, for Toggle below. Kept every frame:
         // by the time a tray click arrives the taskbar already took the focus.
         if ctx.input(|i| i.viewport().focused) == Some(true) {
