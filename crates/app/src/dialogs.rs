@@ -1151,7 +1151,10 @@ impl FileInfo {
         let Some(dir) = current.parent().map(Path::to_path_buf) else {
             return;
         };
-        let Some(name) = current.file_name().map(|n| n.to_string_lossy().into_owned()) else {
+        let Some(name) = current
+            .file_name()
+            .map(|n| n.to_string_lossy().into_owned())
+        else {
             return;
         };
         let generation = self.dest_generation;
@@ -1223,9 +1226,12 @@ impl FileInfo {
         ctx: &egui::Context,
         icons: &mut crate::chrome::ShellIcons,
     ) -> Outcome<Start> {
-        if self.info.is_none()
-            && let Some(res) = self.probe.lock().unwrap().take()
-        {
+        let pending = if self.info.is_none() {
+            self.probe.lock().unwrap().take()
+        } else {
+            None
+        };
+        if let Some(res) = pending {
             let res = res.map(|(pi, kept)| {
                 self.kept = kept;
                 pi
