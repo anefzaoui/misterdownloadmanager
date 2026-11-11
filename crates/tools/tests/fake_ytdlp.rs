@@ -372,7 +372,11 @@ fn job_checks(me: &Path) {
         embed: false,
     };
     let (p, files, _o) = download_as(me, "", &with_subs, "b", "Dropbox.mp4");
-    assert!(matches!(p.state, State::Done(_)), "duplicate extension: {:?}", p.state);
+    assert!(
+        matches!(&p.state, State::Done(_)),
+        "duplicate extension: {:?}",
+        p.state
+    );
     assert_eq!(files, ["Dropbox.en.srt", "Dropbox.mp4"]);
 
     // A pre-download post-processor must not leave the job stuck in Processing; after a later
@@ -412,7 +416,11 @@ fn job_checks(me: &Path) {
     };
     assert!(saw_processing, "post-process hook was not reflected in progress");
     assert!(saw_running_after_processing, "download progress did not leave Processing");
-    assert!(matches!(p.state, State::Done(_)), "processing: {:?}", p.state);
+    assert!(
+        matches!(&p.state, State::Done(_)),
+        "processing: {:?}",
+        p.state
+    );
 
     // It falls over mid-way: the failure is told, and what it left running is ended with it
     // (Windows: the job; elsewhere yt-dlp is one process, so there's no child to leave).
