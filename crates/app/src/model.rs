@@ -489,6 +489,8 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
     use mdm_tools::video::State as V;
     let (state, file, error) = match p.state {
         V::Running => (State::Downloading, None, None),
+        // A yt-dlp post-process phase is still active, but the media bytes have arrived.
+        V::Processing => (State::Completing, None, None),
         V::Done(f) => (State::Done, Some(f), None),
         V::Failed(e) => (State::Failed, None, Some(e)),
         V::Stopped => (State::Cancelled, None, None),
@@ -775,7 +777,12 @@ impl Item {
             }
         }
         let dt = live.sample.0.elapsed().as_secs_f64();
-        if dt >= 0.5 {
+        if self.video.is_some() && s.state == State::Completing {
+            // A merge/remux doesn't receive more network bytes; don't show a stale transfer rate
+            // or an ETA for the final processing phase.
+            live.rate = 0.0;
+            live.sample = (Instant::now(), s.downloaded);
+        } else if dt >= 0.5 {
             let inst = s.downloaded.saturating_sub(live.sample.1) as f64 / dt;
             live.rate = if live.rate == 0.0 {
                 inst
@@ -947,6 +954,11 @@ impl Item {
             .is_some_and(|s| s.state == State::Verifying)
         {
             return crate::i18n::t("Verifying...").into();
+        }
+        if self.video.is_some()
+            && self.snap.as_ref().is_some_and(|s| s.state == State::Completing)
+        {
+            return crate::i18n::t("Processing...").into();
         }
         match self.status {
             // i18n: a download's status (state it is in, not a command): finished
@@ -1184,6 +1196,25 @@ mod tests {
         let it = video_item(None, 5_000_000, Status::Downloading);
         assert_eq!(it.fraction(), None);
         assert_eq!(video_item(Some(0), 5, Status::Downloading).fraction(), None);
+    }
+
+    #[test]
+    fn a_video_reports_processing_while_yt_dlp_merges() {
+        let url = Url::parse("https://example.org/watch?v=clip").unwrap();
+        let progress = mdm_tools::video::Progress {
+            state: mdm_tools::video::State::Processing,
+            downloaded: 100,
+            total: Some(100),
+            speed: 0.0,
+            events: Vec::new(),
+            side_files: Vec::new(),
+            sub_problems: Vec::new(),
+        };
+        let mut item = video_item(Some(100), 100, Status::Downloading);
+        item.snap = Some(tool_snapshot(progress, &url));
+        assert_eq!(item.status_text(), crate::i18n::t("Processing..."));
+        assert_eq!(item.fraction(), Some(0.999));
+        assert_eq!(item.time_left(), "");
     }
 
     /// A video with all its bytes in may still be merging: 99.9 % until the file is finished,

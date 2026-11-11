@@ -1198,20 +1198,55 @@ const MPD = (protect) => `<?xml version="1.0"?>
   }
   // A page: its address, an optional ytd-watch-flexy video-id, and the cards a player can sit in
   // (each level on the way up from the video element names the video links it contains).
-  const at = (href, { flexy = null, cards = [] } = {}) => {
+  const at = (href, { flexy = null, cards = [], musicApiId = null, musicId = null, musicThumbnail = null } = {}) => {
     const element = (links) => ({
       parentElement: null,
       querySelectorAll: () => (links || []).map((href) => ({ href })),
     });
     const chain = cards.map(element);
     for (let i = 0; i < chain.length; i += 1) chain[i].parentElement = chain[i + 1] || null;
-    const document = { querySelector: (sel) => (sel === "ytd-watch-flexy" && flexy ? { getAttribute: () => flexy } : null) };
+    const document = {
+      querySelector: (sel) => {
+        if (sel === "ytd-watch-flexy" && flexy) return { getAttribute: () => flexy };
+        if (sel === "#movie_player" && musicApiId) {
+          return { getVideoData: () => ({ video_id: musicApiId }) };
+        }
+        if (sel === "ytmusic-player" && musicId) {
+          return { getAttribute: (name) => (name === "video-id" ? musicId : null) };
+        }
+        if (sel === "ytmusic-player-bar" && musicThumbnail) {
+          return {
+            querySelector: (child) =>
+              child === "img.ytmusic-player-bar" ? { src: musicThumbnail } : null,
+          };
+        }
+        return null;
+      },
+    };
     const fn = new Function("location", "document", `${source.slice(start, end)}; return videoPage;`)({ href }, document);
     return fn(chain[0] || element([]));
   };
   // A watch page from a mix or a playlist: the video's own address, without the list.
   assert.equal(at("https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
   assert.equal(at("https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=PL1234567890abcdef&index=12"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+  // YouTube Music is a YouTube host too: give yt-dlp the canonical video URL, not the music feed.
+  assert.equal(at("https://music.youtube.com/watch?v=dQw4w9WgXcQ&list=RDAMVMdQw4w9WgXcQ"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+  assert.equal(at("https://music.youtube.com/"), null);
+  // On the Music home/library page, use the current track from the player, not the feed URL.
+  assert.equal(
+    at("https://music.youtube.com/", { musicApiId: "abc123XYZ_-" }),
+    "https://www.youtube.com/watch?v=abc123XYZ_-",
+  );
+  assert.equal(
+    at("https://music.youtube.com/", { musicId: "abc123XYZ_-" }),
+    "https://www.youtube.com/watch?v=abc123XYZ_-",
+  );
+  assert.equal(
+    at("https://music.youtube.com/", {
+      musicThumbnail: "https://i.ytimg.com/vi/abc123XYZ_-/hqdefault.jpg",
+    }),
+    "https://www.youtube.com/watch?v=abc123XYZ_-",
+  );
   // A player that isn't the page's own: the card it sits in links to the video it is playing.
   assert.equal(at("https://www.youtube.com/", { cards: [[], ["https://www.youtube.com/watch?v=abc123XYZ_-&t=5s"]] }), "https://www.youtube.com/watch?v=abc123XYZ_-");
   // The card links to it twice (thumbnail and title): one video, still.
@@ -1230,6 +1265,74 @@ const MPD = (protect) => `<?xml version="1.0"?>
   assert.equal(at("https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?start=5"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
   assert.equal(at("https://vimeo.com/123456789?list=abc"), "https://vimeo.com/123456789?list=abc");
   ok("#311: the button sends the video's own page, not the page playing it");
+
+  // Facebook feeds keep the same tab URL while video cards link to their own reels or posts.
+  const facebook = (href, { videoTop = 0, links = [] } = {}) => {
+    const document = {
+      querySelector: () => null,
+      querySelectorAll: (selector) =>
+        selector === "a[href]"
+          ? links.map(({ href, top = 0, left = 0 }) => ({
+              href: new URL(href, "https://www.facebook.com/").href,
+              getAttribute: () => href,
+              getBoundingClientRect: () => ({ top, left }),
+            }))
+          : [],
+    };
+    const video = {
+      parentElement: null,
+      getBoundingClientRect: () => ({ top: videoTop, left: 0 }),
+      querySelectorAll: (selector) =>
+        selector === "a[href]"
+          ? links.map(({ href, top = 0, left = 0 }) => ({
+              href: new URL(href, "https://www.facebook.com/").href,
+              getAttribute: () => href,
+              getBoundingClientRect: () => ({ top, left }),
+            }))
+          : [],
+    };
+    const fn = new Function("location", "document", source.slice(start, end) + "; return videoPage;")({ href }, document);
+    return fn(video);
+  };
+  assert.equal(facebook("https://www.facebook.com/"), null);
+  assert.equal(
+    facebook("https://www.facebook.com/", {
+      links: [
+        { href: "/reel/123456789/", top: 20 },
+        { href: "/watch/?v=987654321", top: 400 },
+      ],
+      videoTop: 18,
+    }),
+    "https://www.facebook.com/reel/123456789/",
+    "prefer the nearest reel link in the feed",
+  );
+  assert.equal(
+    facebook("https://www.facebook.com/", {
+      links: [{ href: "/watch/?v=123456789&ref=sharing", top: 5 }],
+    }),
+    "https://www.facebook.com/watch/?v=123456789",
+    "preserve the video ID and remove tracking parameters",
+  );
+  assert.equal(
+    facebook("https://www.facebook.com/reel/123456789/?mibextid=abc"),
+    "https://www.facebook.com/reel/123456789/",
+    "a reel's own page is used instead of the feed",
+  );
+  assert.equal(
+    facebook("https://www.facebook.com/", {
+      links: [{ href: "/profile/posts/123456789", top: 5 }],
+    }),
+    "https://www.facebook.com/profile/posts/123456789",
+    "use a post permalink when Facebook exposes no dedicated video link",
+  );
+  assert.equal(
+    facebook("https://www.facebook.com/", {
+      links: [{ href: "/help/", top: 5 }],
+    }),
+    null,
+    "ignore unrelated links",
+  );
+  ok("#643: the button sends a Facebook video's permalink, not the feed");
 }
 
 // A page that moves in place (history.pushState): the button sends the address it's at now, not
@@ -1748,6 +1851,89 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   assert.equal(natives(calls).length, 1);
   assert.deepEqual(steps(calls), []);
   ok("#208 Firefox: a download caught from its answer, before the browser's dialog");
+}
+// #607: Firefox's originUrl identifies the actual page containing the clicked download link.
+// The Referer header may be reduced to the site's homepage; Refresh download address must reopen
+// the page that initiated this request, not that less precise header value.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true });
+  load(api, true);
+  await settle();
+  listeners.beforeSendHeaders({
+    requestId: "r2",
+    method: "GET",
+    type: "main_frame",
+    url: "https://dl.test/get?id=2",
+    originUrl: "https://site.test/download-page",
+    requestHeaders: [{ name: "Referer", value: "https://site.test/" }],
+  });
+  await held(
+    listeners,
+    answer(
+      "https://dl.test/get?id=2",
+      {
+        "Content-Type": "application/octet-stream",
+        "Content-Disposition": "attachment; filename=package.zip",
+        "Content-Length": "4096",
+      },
+      { requestId: "r2" },
+    ),
+  );
+  assert.equal(natives(calls)[0].referrer, "https://site.test/download-page");
+  ok("#607 Firefox: the download's source page comes from originUrl");
+}
+// #603: Colab's runtime proxy is tied to its ephemeral browser session. Keep these downloads in
+// the browser rather than handing a URL without its sandboxed session state to the native host.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  await settle();
+  let suggested;
+  listeners.determining(
+    {
+      id: 91,
+      url: "https://us-west1-colab.googleusercontent.com/files/out.zip?colab-runtime-proxy-token=secret",
+      finalUrl: "https://us-west1-colab.googleusercontent.com/files/out.zip?colab-runtime-proxy-token=secret",
+      referrer: "https://colab.research.google.com/drive/abc",
+      filename: "out.zip",
+      totalBytes: 1024,
+      mime: "application/zip",
+    },
+    (value) => (suggested = value),
+  );
+  await settle();
+  assert.ok(suggested, "Chrome leaves the browser's own download name in place");
+  assert.equal(natives(calls).length, 0, "Colab transfers are not sent to MDM");
+  ok("#603 Chromium: Colab runtime-proxy downloads stay with the browser");
+}
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true });
+  load(api, true);
+  await settle();
+  const url = "https://us-west1.prod.r.colab.dev/files/out.zip?colab-runtime-proxy-token=secret";
+  listeners.beforeSendHeaders({
+    requestId: "r-colab",
+    method: "GET",
+    type: "main_frame",
+    url,
+    originUrl: "https://colab.research.google.com/drive/abc",
+    requestHeaders: [],
+  });
+  const response = await held(
+    listeners,
+    answer(
+      url,
+      {
+        "Content-Type": "application/zip",
+        "Content-Disposition": "attachment; filename=out.zip",
+        "Content-Length": "1024",
+      },
+      { requestId: "r-colab" },
+    ),
+  );
+  assert.deepEqual(response, {});
+  assert.equal(natives(calls).length, 0, "Firefox leaves Colab's authenticated transfer to the browser");
+  ok("#603 Firefox: Colab runtime-proxy downloads stay with the browser");
 }
 // #447: Firefox hands a header's value over byte for byte, each byte one character. A name sent as
 // raw UTF-8 is read as UTF-8; bytes that aren't valid UTF-8 (ISO-8859-1) and a real percent sign stay.
