@@ -1686,6 +1686,12 @@ impl VideoJob {
         for a in ours.iter().chain(&choose) {
             proc::safe(a)?;
         }
+        // The engine's streams are there before yt-dlp's run: it fixes them up all the same
+        // (`--fixup force`; by default only what it downloaded itself), as after its own
+        // download: a DASH M4A sound, HLS pieces' MPEG-TS in an MP4.
+        if engine.is_some() {
+            ours.extend(["--fixup".into(), "force".into()]);
+        }
         // Whose cookies yt-dlp has, for the log (#229): the browser's name only, never a
         // cookie or the profile (a folder may name the person).
         let events = match proc::browser_cookies() {
