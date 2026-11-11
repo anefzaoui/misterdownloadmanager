@@ -155,7 +155,23 @@
         if (own && url.pathname.startsWith("/watch")) return own;
         const shown = watch(document.querySelector("ytd-watch-flexy")?.getAttribute("video-id"));
         if (shown && url.pathname.startsWith("/watch")) return shown;
-        const player = watch(document.querySelector("#movie_player")?.getAttribute("video-id"));
+        // YouTube Music keeps playing while its URL stays on the home, library or browse page.
+        // Its player bar exposes the current track even when the address has no /watch?v= id.
+        const musicPlayer = document.querySelector("#movie_player");
+        const musicData = musicPlayer && typeof musicPlayer.getVideoData === "function"
+          ? musicPlayer.getVideoData()
+          : null;
+        const musicApi = watch(musicData?.video_id);
+        if (musicApi) return musicApi;
+        const musicId = watch(document.querySelector("ytmusic-player")?.getAttribute("video-id"));
+        if (musicId) return musicId;
+        const thumbnail = document
+          .querySelector("ytmusic-player-bar")
+          ?.querySelector("img.ytmusic-player-bar")?.src || "";
+        const thumbnailId = thumbnail.match(/\/vi\/([\w-]{11})\/|\/hqdefault\.([\w-]{11})_/);
+        const musicThumbnail = watch(thumbnailId?.[1] || thumbnailId?.[2]);
+        if (musicThumbnail) return musicThumbnail;
+        const player = watch(musicPlayer?.getAttribute("video-id"));
         if (player) return player;
         // A player inside the card it belongs to (a feed, a search, a playlist): the card links to
         // the video. Only a container that names exactly one video counts — walking on into the
