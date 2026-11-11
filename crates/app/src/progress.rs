@@ -1712,7 +1712,7 @@ fn segment_bar(p: &egui::Painter, o: Pos2, item: &Item, snap: Option<&Snapshot>)
     let segments: Vec<(u64, u64)> = match snap {
         Some(s) if !s.segments.is_empty() => {
             s.segments.iter().map(|g| (g.start, g.cursor)).collect()
-        },
+        }
         _ => vec![(0, item.downloaded)],
     };
     for (start, cursor) in segments {
