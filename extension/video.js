@@ -91,7 +91,9 @@
             link.hostname === host || link.hostname.endsWith("." + host)
           )) return null;
           const path = link.pathname.replace(/\/+$/, "") || "/";
+          const shortLink = link.hostname === "fb.watch" || link.hostname.endsWith(".fb.watch");
           const videoPath =
+            (shortLink && path !== "/") ||
             /^\/(?:reel|watch|videos)\/[^/]+/i.test(path) ||
             /^\/watch\/?$/i.test(path) && link.searchParams.has("v") ||
             /^\/video\.php$/i.test(path) && link.searchParams.has("v");
