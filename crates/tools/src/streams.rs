@@ -469,6 +469,17 @@ impl Current {
     pub fn busy(&self) -> bool {
         self.busy.load(Ordering::Acquire)
     }
+
+    /// Pieces under way (a gallery's files, #769), stopped by [`Current::cancel`].
+    pub fn set_pieces(&self, token: Option<CancellationToken>) {
+        self.busy.store(token.is_some(), Ordering::Release);
+        *self.pieces.lock().unwrap() = token;
+    }
+
+    /// The download's own speed limit, shared by its pieces' connections.
+    pub fn limiter(&self) -> Arc<mdm_engine::limiter::Limiter> {
+        self.limiter.clone()
+    }
 }
 
 /// What the engine's part showed last: the streams' segments one after another, the
@@ -717,7 +728,7 @@ fn fetch_pieces(
     let shared = Arc::new(crate::pieces::Shared::default());
     let task = engine.handle.spawn(crate::pieces::download(
         list,
-        s.path.clone(),
+        crate::pieces::Target::Join(s.path.clone()),
         header_map(&s.headers),
         engine.opts.clone(),
         current.limiter.clone(),

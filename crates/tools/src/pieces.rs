@@ -10,6 +10,10 @@
 //!
 //! A piece refused (401, 403, 404, 410: its signed address expired) has the list asked of yt-dlp
 //! again (`relink`), and the pieces go on from the new one.
+//!
+//! The same connections bring a gallery's files in (gallery-dl's list, #769): each piece is then a
+//! file of its own ([`Target::Files`]), saved where gallery-dl would save it, and one that can't
+//! be had is left for gallery-dl rather than failing the others.
 
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
@@ -259,6 +263,17 @@ pub fn decrypt(data: &[u8], key: &[u8; 16], iv: &[u8; 16]) -> Option<Vec<u8>> {
     Some(buf)
 }
 
+/// The most files of a gallery downloaded at once (#769): Wikimedia's servers answer 429 Too
+/// Many Requests to more (measured: 8 at once, 2 of them refused, again and again).
+pub const GALLERY_AT_ONCE: u32 = 4;
+
+/// Where the pieces go: joined into one file (a stream's), or each a file of its own (a gallery's).
+#[derive(Clone, Debug)]
+pub enum Target {
+    Join(PathBuf),
+    Files(Vec<PathBuf>),
+}
+
 /// Where a stream's pieces wait until they are joined: `<file>.mdm.pieces`.
 pub fn folder(path: &Path) -> PathBuf {
     let mut s = path.as_os_str().to_owned();
@@ -269,6 +284,25 @@ pub fn folder(path: &Path) -> PathBuf {
 /// A piece's file in the folder: `<index>` once whole.
 fn piece_file(dir: &Path, i: usize) -> PathBuf {
     dir.join(format!("{i:06}"))
+}
+
+impl Run {
+    /// "the piece", or "the file" for a gallery's.
+    fn one(&self) -> &'static str {
+        if self.files.is_some() {
+            "the file"
+        } else {
+            "the piece"
+        }
+    }
+
+    /// Where piece `i` is saved once whole.
+    fn file(&self, i: usize) -> PathBuf {
+        match &self.files {
+            Some(f) => f[i].clone(),
+            None => piece_file(&self.dir, i),
+        }
+    }
 }
 
 /// What the pieces show while they come: bytes in, the pieces whole, each connection.
@@ -370,6 +404,8 @@ struct Run {
     next: AtomicUsize,
     keys: tokio::sync::Mutex<HashMap<Url, [u8; 16]>>,
     dir: PathBuf,
+    /// Each piece a file of its own (`Target::Files`): one that fails is left out, not fatal.
+    files: Option<Vec<PathBuf>>,
     limiter: Arc<Limiter>,
     global: Option<Arc<Limiter>>,
     cancel: CancellationToken,
@@ -380,13 +416,14 @@ struct Run {
     relisted: tokio::sync::Mutex<(u32, Option<Instant>)>,
 }
 
-/// Download `pieces` into `dir` (a piece already whole there is kept), `connections` at once,
-/// with `headers`, under `limiter` (the download's own limit) and the engine's `opts` (its
-/// client, the limit for all downloads, retries); then join them in order into `path`.
+/// Download `pieces` (a piece already whole is kept), `connections` at once, with `headers`,
+/// under `limiter` (the download's own limit) and the engine's `opts` (its client, the limit for
+/// all downloads, retries); then join them in order into the `target` file, or leave each in its
+/// own (a gallery's: a file already there isn't counted as downloaded now).
 #[allow(clippy::too_many_arguments)]
 pub async fn download(
     pieces: Vec<Piece>,
-    path: PathBuf,
+    target: Target,
     headers: HeaderMap,
     opts: mdm_engine::Options,
     limiter: Arc<Limiter>,
@@ -394,9 +431,24 @@ pub async fn download(
     shared: Arc<Shared>,
     relist: Relist,
 ) -> Ended {
-    let dir = folder(&path);
+    let (path, files) = match target {
+        Target::Join(p) => (Some(p), None),
+        Target::Files(f) => (None, Some(f)),
+    };
+    let dir = match (&path, &files) {
+        (Some(p), _) => folder(p),
+        (None, Some(f)) => f
+            .first()
+            .and_then(|f| f.parent())
+            .map(Path::to_owned)
+            .unwrap_or_default(),
+        (None, None) => unreachable!(),
+    };
     if let Err(e) = std::fs::create_dir_all(&dir) {
         return Ended::Failed(format!("Cannot make the pieces' folder: {e}"));
+    }
+    if files.as_ref().is_some_and(|f| f.len() != pieces.len()) {
+        return Ended::Failed("a file for each piece".into());
     }
     let Some(first) = pieces.first() else {
         return Ended::Failed("no pieces".into());
@@ -411,6 +463,10 @@ pub async fn download(
         let mut each = shared.each.lock().unwrap();
         *each = vec![(0, None); n];
         for (i, slot) in each.iter_mut().enumerate() {
+            // A gallery's file already there is gallery-dl's to tell ("already there").
+            if files.is_some() {
+                break;
+            }
             if let Ok(m) = std::fs::metadata(piece_file(&dir, i)) {
                 *slot = (m.len(), Some(m.len()));
                 shared.downloaded.fetch_add(m.len(), Ordering::Relaxed);
@@ -423,9 +479,17 @@ pub async fn download(
     if had > 0 {
         shared.note(format!("Resuming: {had} of {n} pieces on disk"));
     }
-    let connections = opts.connections().min(n as u32).max(1) as usize;
+    // A gallery's files: at most `GALLERY_AT_ONCE` at once, gentle with the sites (Wikimedia's
+    // answer 429 to more).
+    let most = if files.is_some() {
+        GALLERY_AT_ONCE
+    } else {
+        u32::MAX
+    };
+    let connections = opts.connections().min(most).min(n as u32).max(1) as usize;
+    let noun = if files.is_some() { "files" } else { "pieces" };
     shared.note(format!(
-        "{n} pieces, {connections} at once, from {}",
+        "{n} {noun}, {connections} at once, from {}",
         first.url.host_str().unwrap_or("?")
     ));
     *shared.conns.lock().unwrap() = (0..connections)
@@ -444,6 +508,7 @@ pub async fn download(
         next: AtomicUsize::new(0),
         keys: Default::default(),
         dir: dir.clone(),
+        files,
         limiter,
         global: opts.global.clone(),
         cancel,
@@ -476,6 +541,9 @@ pub async fn download(
         None if run.cancel.is_cancelled() => return Ended::Stopped,
         None => {}
     }
+    let Some(path) = path else {
+        return Ended::Done(shared.downloaded());
+    };
     let joined = tokio::task::spawn_blocking(move || join(&dir, n, &path)).await;
     match joined {
         Ok(Ok(size)) => Ended::Done(size),
@@ -516,7 +584,7 @@ async fn connection(run: Arc<Run>, c: usize) -> Result<(), PieceError> {
             });
             return Ok(());
         }
-        if piece_file(&run.dir, i).exists() {
+        if run.file(i).exists() {
             continue;
         }
         let mut failures = 0u32;
@@ -530,6 +598,17 @@ async fn connection(run: Arc<Run>, c: usize) -> Result<(), PieceError> {
             match fetch_piece(&run, c, i, &piece).await {
                 Ok(()) => break,
                 Err(PieceError::Stopped) => return Err(PieceError::Stopped),
+                // A gallery's file that can't be had is left for gallery-dl.
+                Err(PieceError::Dead(e)) if run.files.is_some() => {
+                    run.shared
+                        .note(format!("File {}: {e}; left for gallery-dl", i + 1));
+                    break;
+                }
+                Err(PieceError::Again(e)) if run.files.is_some() && failures >= run.max_retries => {
+                    run.shared
+                        .note(format!("File {}: {e}; left for gallery-dl", i + 1));
+                    break;
+                }
                 Err(PieceError::Dead(e)) => {
                     run.shared.note(format!("Piece {}: {e}", i + 1));
                     if !relist(&run, generation).await {
@@ -663,7 +742,7 @@ async fn fetch_piece(run: &Run, c: usize, i: usize, piece: &Piece) -> Result<(),
     let mut resp = sent.map_err(|e| PieceError::Again(e.to_string()))?;
     let status = resp.status().as_u16();
     if !(200..300).contains(&status) {
-        return Err(dead_or_again(status, "the piece"));
+        return Err(dead_or_again(status, run.one()));
     }
     let len = resp.content_length();
     let mut body = Vec::with_capacity(len.unwrap_or(0) as usize);
@@ -717,7 +796,7 @@ async fn fetch_piece(run: &Run, c: usize, i: usize, piece: &Piece) -> Result<(),
     }
     if len.is_some_and(|l| l != got) {
         undo(got);
-        return Err(PieceError::Again("the piece came short".into()));
+        return Err(PieceError::Again(format!("{} came short", run.one())));
     }
     set_conn(run, c, |v| v.speed = 0);
     let data = match &piece.key {
@@ -728,8 +807,12 @@ async fn fetch_piece(run: &Run, c: usize, i: usize, piece: &Piece) -> Result<(),
         }
         None => body,
     };
-    let file = piece_file(&run.dir, i);
-    let part = file.with_extension("part");
+    let file = run.file(i);
+    let part = {
+        let mut s = file.as_os_str().to_owned();
+        s.push(".mdm.part");
+        PathBuf::from(s)
+    };
     let size = data.len() as u64;
     let written = tokio::task::spawn_blocking(move || {
         std::fs::write(&part, &data).and_then(|_| std::fs::rename(&part, &file))
@@ -737,7 +820,7 @@ async fn fetch_piece(run: &Run, c: usize, i: usize, piece: &Piece) -> Result<(),
     .await;
     if !matches!(written, Ok(Ok(()))) {
         undo(got);
-        return Err(PieceError::Dead("the piece can't be saved".into()));
+        return Err(PieceError::Dead(format!("{} can't be saved", run.one())));
     }
     run.shared.whole_bytes.fetch_add(size, Ordering::Relaxed);
     run.shared.whole.fetch_add(1, Ordering::Relaxed);

@@ -4663,6 +4663,18 @@ impl App {
             .as_deref()
             .and_then(mdm_tools::gallery::installed);
         let rate = self.helper_starts(id);
+        // The engine downloads the files gallery-dl lists (#769), as a file from the page would
+        // be (Options' connections, proxy, network adapter, DNS, the limit for all downloads),
+        // under the gallery's own limit, else the Speed Limiter's for one file.
+        let one_file = self.helper_limits(id).0;
+        let engine = self.items.iter().find(|i| i.id == id).map(|i| {
+            let mut opts = self.request_parts(&i.url, None, &i.context, true).opts;
+            opts.speed_limit = one_file;
+            mdm_tools::streams::Engine {
+                handle: self.rt.clone(),
+                opts,
+            }
+        });
         let Some(item) = self.item(id) else { return };
         let Some(spec) = item.gallery.clone() else {
             return;
@@ -4689,6 +4701,7 @@ impl App {
             &item.dest,
             &ask,
             &crate::videodlg::from_browser(&item.context),
+            engine,
         );
         match started {
             Ok(job) => {
