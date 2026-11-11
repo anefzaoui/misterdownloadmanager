@@ -539,6 +539,10 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 A freeze of the window while torrents ran on a busy or slow disk: it waited for the torrent
+  engine, which holds a torrent while its writes to the disk end
+  ([#693](https://github.com/anefzaoui/misterdownloadmanager/issues/693)): the torrents' numbers
+  are now read beside the window; fix in review
 - 🔄 Sites with bot protection (Cloudflare and similar) refusing MDM: when a site still answers
   with a bot check, asking again the way a browser connects
   ([#668](https://github.com/anefzaoui/misterdownloadmanager/issues/668))

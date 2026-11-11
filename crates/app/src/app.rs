@@ -1872,7 +1872,8 @@ impl App {
                 continue;
             };
             hashes.insert(spec.hash.clone());
-            let Ok(st) = t.stats(&spec.hash) else {
+            // As last read: the window's thread never waits on librqbit (#693).
+            let Some(st) = t.seen(&spec.hash) else {
                 // Out of the session (released when it finished): no check is running.
                 i.torrent_check = None;
                 spec.peers = 0;
@@ -6334,7 +6335,7 @@ impl App {
             let going = self
                 .torrent_host
                 .get()
-                .and_then(|t| t.stats(&spec.hash).ok())
+                .and_then(|t| t.seen(&spec.hash))
                 .is_some_and(|s| {
                     matches!(
                         s.phase,
