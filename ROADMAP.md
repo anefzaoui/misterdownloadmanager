@@ -547,9 +547,9 @@ These ship in a later version, when they're ready.
   engine, which holds a torrent while its writes to the disk end
   ([#693](https://github.com/anefzaoui/misterdownloadmanager/issues/693)): the torrents' numbers
   are now read beside the window; fix in review
-- 🔄 Sites with bot protection (Cloudflare and similar) refusing MDM: when a site still answers
-  with a bot check, asking again the way a browser connects
-  ([#668](https://github.com/anefzaoui/misterdownloadmanager/issues/668))
+- 🔄 Sites that let only browsers through (a bot check, or FileHippo's 412): one more try
+  connecting the way the browser does, with its cookies for that site
+  ([#668](https://github.com/anefzaoui/misterdownloadmanager/issues/668)): in review
 - 🔄 Download video: a sound-only choice (MP3, a playlist as sound) saved in the Music folder and
   listed under Music ([#611](https://github.com/anefzaoui/misterdownloadmanager/issues/611)):
   in review

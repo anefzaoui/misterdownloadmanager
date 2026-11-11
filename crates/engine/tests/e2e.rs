@@ -1941,11 +1941,24 @@ async fn a_refused_link_goes_on_where_the_browser_download_ended() {
         .await
         .expect("every request ends");
     let log = s.log();
+    let refused = |browser_like: bool| {
+        log.iter()
+            .filter(|e| e.outcome == "fault:refuse" && e.sec_fetch_mode.is_some() == browser_like)
+            .count()
+    };
     assert_eq!(
-        log.iter().filter(|e| e.outcome == "fault:refuse").count(),
+        refused(false),
         2,
         "the link was asked once per download: {log:?}"
     );
+    // Without the browser's address, it was asked once more the way a browser connects (#668),
+    // refused too; with it, the browser's address got the file first.
+    let once_more = if cfg!(feature = "browser-connection") {
+        1
+    } else {
+        0
+    };
+    assert_eq!(refused(true), once_more, "{log:?}");
     let served: Vec<_> = log
         .iter()
         .filter(|e| e.status == 200 || e.status == 206)

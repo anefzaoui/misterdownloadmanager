@@ -355,7 +355,12 @@ working, not a copy of anyone's software.
 <details>
 <summary><b>Build from source</b></summary>
 
-Requires Rust stable 1.95 or later (the MSVC toolchain on Windows).
+Requires Rust stable 1.98 or later (the MSVC toolchain on Windows), and for the engine's
+browser-like connection (BoringSSL, built from source): CMake, LLVM's libclang and, on Windows,
+NASM (`winget install Kitware.CMake LLVM.LLVM NASM.NASM`; on Linux `cmake` and
+`libclang-dev`; on macOS Xcode's command line tools and `cmake`).
+`cargo build -p mdm-app --no-default-features` builds the app without it (a site that refuses MDM's
+own connection then stays refused).
 
 ```
 cargo build --release
