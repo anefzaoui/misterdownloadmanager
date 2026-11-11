@@ -1289,7 +1289,7 @@ function colabRuntimeProxy(...urls) {
       const proxyHost =
         host === "prod.r.colab.dev"
         || host.endsWith(".prod.r.colab.dev")
-        || /(?:^|[-.])colab\\.googleusercontent\\.com$/.test(host);
+        || /(?:^|[-.])colab\.googleusercontent\.com$/.test(host);
       return proxyHost && u.searchParams.has("colab-runtime-proxy-token");
     } catch {
       return false;
