@@ -88,6 +88,10 @@ MDM lists at most 20,000 videos of one list.
 
 A page address that points at one video inside a playlist or a mix (for example `watch?v=…&list=…`) downloads that one video, never the whole list.
 
+## Speed limits
+
+Videos keep to the [Speed Limiter](connections-and-speed.md#speed-limiter): the limit for one file, a video's own limit (the **Speed Limiter** tab of its progress window), and the limit for all downloads together, which the videos running share evenly. yt-dlp takes a limit only as it starts, so when you turn the limiter on or off, change its settings or a video's own limit, MDM stops the videos under way and starts them again with the new limit; they go on from where they were (the log says "Stopped: the speed limit changed; starting again with it"). When another video starts under the limit for all downloads, the ones running with more than their share now start again with it; when one ends, the others keep theirs. Image galleries do the same with gallery-dl, which skips the files already saved. Other changes (torrents taking more or less of the limit for all downloads, **Only while I'm using the computer**) apply to the next video that starts. File downloads change speed at once instead; [#769](https://github.com/anefzaoui/misterdownloadmanager/issues/769) moves video downloads to MDM's own downloader, where they will too.
+
 ## Through a VPN's adapter
 
 With **Options → Proxy / Socks → [Network adapter](options.md#proxy--socks)** set, video downloads go through that adapter too, with the same kill switch as other downloads: MDM hands yt-dlp (and the ffmpeg it starts) a proxy of its own on this computer, and opens every connection through the adapter, looking the names up with the DNS you chose in **Options → Connection** (without an adapter, yt-dlp uses the system's DNS). When the adapter disconnects, the video download stops, and it starts again when the adapter is back. Formats sent over RTMP, RTSP, MMS or FTP can't go through it and are refused.

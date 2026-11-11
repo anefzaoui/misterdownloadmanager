@@ -940,6 +940,17 @@ pub struct App {
     debrid_from: u64,
     route: mdm_engine::Route,
     adapter_paused: Vec<u64>,
+    /// Videos and galleries (#708): yt-dlp and gallery-dl take a speed limit only as they start
+    /// (`--limit-rate`). The limits each running one was started under (`helper_limits`), the limit
+    /// set in its progress window without Remember (it lasts until it is stopped), and the ones
+    /// stopped to start again at a new limit, started once their jobs have ended
+    /// (`limit_restart_tick`). #769 moves their downloads to the engine, whose limits follow a
+    /// change by themselves.
+    helper_rates: HashMap<u64, (Option<u64>, Option<u64>)>,
+    /// The rate each running video and gallery was started with (`helper_rate`).
+    helper_started: HashMap<u64, Option<u64>>,
+    helper_own: HashMap<u64, Option<u64>>,
+    limit_restarts: Vec<u64>,
     find: Option<crate::find::Find>,
     /// The last search, for Find Next.
     last_find: Option<crate::find::Query>,
@@ -1573,6 +1584,10 @@ impl App {
             debrid_from: 0,
             route: mdm_engine::Route::Any,
             adapter_paused: Vec::new(),
+            helper_rates: HashMap::new(),
+            helper_started: HashMap::new(),
+            helper_own: HashMap::new(),
+            limit_restarts: Vec::new(),
             find: None,
             last_find: None,
             notice: None,
@@ -1934,6 +1949,7 @@ impl App {
         );
         self.name_guessed(id, fi.name_guessed());
         self.set_direct(id, fi.direct);
+        self.number_at_start(id);
         self.selection.set(id);
         if matches!(start, Start::Now) {
             // Later: the answer is closed (its download starts some other time).
@@ -1955,10 +1971,13 @@ impl App {
         if !self.settings.start_immediately || fi.early.is_some() || !fi.probed() {
             return;
         }
-        let dest = fi.dest();
-        if !dest.parent().is_some_and(std::path::Path::is_dir) {
-            return; // a folder still to be created waits for the dialog's question
+        // Once Save As has been looked at off the window's thread (#743): its name numbered in
+        // its folder, and the folder there. A folder still to be created waits for the dialog's
+        // question; a look still under way, for its answer.
+        if fi.folder_found() != Some(true) {
+            return;
         }
+        let dest = fi.dest();
         let id = self.push_item(
             fi.url.clone(),
             dest,
@@ -1974,6 +1993,7 @@ impl App {
             },
         );
         self.set_direct(id, fi.direct);
+        self.number_at_start(id);
         fi.early = Some(id);
         if let Some(k) = fi.take_kept() {
             self.kept_answers.insert(id, k);
@@ -2020,6 +2040,7 @@ impl App {
                         dont_show: false,
                         notices: i.notices.clone(),
                         seen: false,
+                        opening: None,
                     });
                 }
             } else if !live {
@@ -2081,6 +2102,8 @@ impl App {
                     item.dest = dest;
                     item.downloaded = 0;
                     item.status = Status::Stopped;
+                    // Download File Info's place, given without waiting for the disk (#743).
+                    item.number_at_start = true;
                     if start {
                         self.start(id, true);
                     }
@@ -2139,6 +2162,15 @@ impl App {
     fn set_direct(&mut self, id: u64, direct: bool) {
         if let Some(item) = self.item(id) {
             item.direct = direct;
+        }
+    }
+
+    /// Download `id`'s name was given without waiting for its folder to be looked at (Download
+    /// File Info, #743): it starts under it, or the next free numbered name if it is taken by
+    /// then (`Item::number_at_start`).
+    fn number_at_start(&mut self, id: u64) {
+        if let Some(item) = self.item(id) {
+            item.number_at_start = true;
         }
     }
 
@@ -2975,17 +3007,8 @@ impl App {
         if item.live.is_some() || (item.status == Status::Complete && item.gallery.is_none()) {
             return;
         }
-        // A video from a page: yt-dlp, not the engine.
-        if self.item(id).is_some_and(|i| i.video.is_some()) {
-            self.start_video(id, show);
-            return;
-        }
-        // An image gallery: gallery-dl.
-        if self.item(id).is_some_and(|i| i.gallery.is_some()) {
-            self.start_gallery(id, show);
-            return;
-        }
-        // The download limit is reached: it starts when the window has room again.
+        // The download limit is reached: it starts when the window has room again (a video or a
+        // gallery too, #708: their bytes count toward it).
         if self.settings.limits_on && self.quota.blocked {
             if !self.quota.held.contains(&id) {
                 self.quota.held.push(id);
@@ -2997,6 +3020,18 @@ impl App {
                 ));
             }
             self.dirty = true;
+            return;
+        }
+        // A video from a page: yt-dlp, not the engine.
+        if self.item(id).is_some_and(|i| i.video.is_some()) {
+            self.start_video(id, show);
+            self.share_with_new_helper(id);
+            return;
+        }
+        // An image gallery: gallery-dl.
+        if self.item(id).is_some_and(|i| i.gallery.is_some()) {
+            self.start_gallery(id, show);
+            self.share_with_new_helper(id);
             return;
         }
         if self.item(id).is_some_and(|i| i.torrent.is_some()) {
@@ -3037,13 +3072,19 @@ impl App {
         // The file's own remembered limit, else the Speed Limiter's.
         opts.speed_limit = own_limit.or(self.settings.speed_limit());
         opts.checksum = checksum;
-        self.claim_place(id);
+        // A new download from Download File Info has nothing of its own on the disk yet: nothing
+        // to resume, and no place to claim from another row (the engine takes the next free
+        // name as it starts). Its start never waits for the disk on the window's thread (#743).
+        let fresh = self.item(id).is_some_and(|i| i.number_at_start);
+        if !fresh {
+            self.claim_place(id);
+        }
         let Some(item) = self.item(id) else { return };
         let _guard = rt.enter();
         // Resume whenever there is something to resume. If that fails, say why and keep the
         // data: starting over would overwrite it, and that is only ever the user's choice.
         let state = state_path(&item.dest);
-        let dl = if state.exists() {
+        let dl = if !fresh && state.exists() {
             match Download::resume(state, headers, opts) {
                 Ok(dl) => dl,
                 Err(e) => {
@@ -3057,13 +3098,15 @@ impl App {
         } else {
             // Nothing to resume. A missing folder is created by the engine; a removed drive is
             // reported without touching the progress shown for the data on it.
-            if item.dest.parent().is_none_or(std::path::Path::is_dir) {
+            if fresh || item.dest.parent().is_none_or(std::path::Path::is_dir) {
                 item.downloaded = 0;
             }
             // A name nobody gave (the address's guess) is the server's to give: into the folder,
-            // under its Content-Disposition name (#28); the row follows the file made.
+            // under its Content-Disposition name (#28); the row follows the file made. A name
+            // given before its folder was looked at is numbered on there if it is taken (#743).
             let dest = match item.dest.parent() {
                 Some(dir) if item.name_from_url => Destination::Dir(dir.to_owned()),
+                _ if fresh => Destination::Free(item.dest.clone()),
                 _ => Destination::File(item.dest.clone()),
             };
             Download::start_with(
@@ -3095,14 +3138,127 @@ impl App {
     }
 
     /// Apply the Speed Limiter's "for one file" setting to every running download, file or
-    /// torrent; one with a remembered limit of its own keeps it, as when it starts.
-    fn apply_speed_limit(&self) {
+    /// torrent; one with a remembered limit of its own keeps it, as when it starts. Videos and
+    /// galleries start again at their new limit (`reapply_helper_limits`).
+    fn apply_speed_limit(&mut self) {
         let limit = self.settings.speed_limit();
         for i in &self.items {
             if let Some(l) = &i.live {
                 l.dl.set_speed_limit(i.own_limit.or(limit));
             }
         }
+        self.reapply_helper_limits();
+    }
+
+    /// The limits a video or a gallery (#708) is under, as a file download's are set: its own
+    /// limit (set in its progress window, else remembered), else the Speed Limiter's for one
+    /// file; and the limit for all downloads together, when on. A change of these starts it
+    /// again (`reapply_helper_limits`).
+    fn helper_limits(&self, id: u64) -> (Option<u64>, Option<u64>) {
+        let own = self
+            .helper_own
+            .get(&id)
+            .copied()
+            .unwrap_or_else(|| self.items.iter().find(|i| i.id == id)?.own_limit);
+        let s = &self.settings;
+        (
+            own.or(s.speed_limit()),
+            s.global_limit_on.then(|| s.global_limit_kb.max(1) * 1024),
+        )
+    }
+
+    /// The speed limit a video or a gallery (#708) starts with, bytes/s: the lower of its limit
+    /// for one file (`helper_limits`) and an even share, with the other videos and galleries
+    /// running, of the limit for all downloads together as file downloads have it now
+    /// (`apply_global_limit`: what torrents leave of it).
+    fn helper_rate(&self, id: u64) -> Option<u64> {
+        let (one, _) = self.helper_limits(id);
+        let others = self
+            .items
+            .iter()
+            .filter(|i| i.id != id && i.live.as_ref().is_some_and(|l| l.dl.is_helper()))
+            .count() as u64;
+        helper_rate(one, self.global.get(), others)
+    }
+
+    /// The speed limits changed (the Speed Limiter turned on or off, its settings, a download's
+    /// own limit): every running video and gallery whose limit is now another is stopped and
+    /// started again with it (#708). yt-dlp continues its partial file, gallery-dl skips the
+    /// files already saved, as when the network adapter changes.
+    fn reapply_helper_limits(&mut self) {
+        let changed: Vec<u64> = self
+            .items
+            .iter()
+            .filter(|i| i.live.as_ref().is_some_and(|l| l.dl.is_helper()))
+            .filter(|i| self.helper_rates.get(&i.id).copied() != Some(self.helper_limits(i.id)))
+            .map(|i| i.id)
+            .collect();
+        self.restart_helpers(changed);
+    }
+
+    /// A video or a gallery `id` has started under the limit for all downloads (#708): the
+    /// others running that were started with more than their even share now are started again
+    /// with it, so together they keep to the limit. Starting several at once (a queue, a
+    /// playlist) restarts only the ones started a moment before, still looking their page up;
+    /// one that ends leaves the others as they are (under the limit).
+    fn share_with_new_helper(&mut self, id: u64) {
+        if self.global.get().is_none() || !self.item(id).is_some_and(|i| i.live.is_some()) {
+            return;
+        }
+        let over: Vec<u64> = self
+            .items
+            .iter()
+            .filter(|i| i.id != id && i.live.as_ref().is_some_and(|l| l.dl.is_helper()))
+            .filter(|i| {
+                let now = self.helper_rate(i.id);
+                match (self.helper_started.get(&i.id).copied().flatten(), now) {
+                    (Some(had), Some(now)) => had > now,
+                    (None, Some(_)) => true,
+                    _ => false,
+                }
+            })
+            .map(|i| i.id)
+            .collect();
+        self.restart_helpers(over);
+    }
+
+    /// Stop the videos and galleries `ids` to start them again with their speed limit now
+    /// (`limit_restart_tick`).
+    fn restart_helpers(&mut self, ids: Vec<u64>) {
+        for id in ids {
+            if let Some(i) = self.items.iter_mut().find(|i| i.id == id)
+                && let Some(l) = &i.live
+            {
+                l.dl.cancel();
+                i.note(
+                    // i18n: event log entry: a video or gallery download stopped to start again at the new speed limit (its helper program takes a limit only as it starts)
+                    crate::i18n::t("Stopped: the speed limit changed; starting again with it")
+                        .to_owned(),
+                );
+            }
+            if !self.limit_restarts.contains(&id) {
+                self.limit_restarts.push(id);
+            }
+        }
+    }
+
+    /// Videos and galleries stopped for a new speed limit, started again once their jobs have
+    /// ended (#708).
+    fn limit_restart_tick(&mut self) {
+        if self.limit_restarts.is_empty() {
+            return;
+        }
+        let ready: Vec<u64> = self
+            .limit_restarts
+            .iter()
+            .copied()
+            .filter(|id| self.items.iter().any(|i| i.id == *id && i.live.is_none()))
+            .collect();
+        for &id in &ready {
+            self.start(id, false);
+        }
+        self.limit_restarts
+            .retain(|id| self.items.iter().any(|i| i.id == *id) && !ready.contains(id));
     }
 
     fn stop(&mut self, id: u64) {
@@ -4368,13 +4524,29 @@ impl App {
         ); // not translated: a log line
     }
 
+    /// The speed limit a video or gallery starts with now (`helper_rate`); the limits it is under
+    /// are kept to tell a change (`reapply_helper_limits`). A limit set in its progress window lasts until it is stopped:
+    /// a start other than for a new limit forgets it.
+    fn helper_starts(&mut self, id: u64) -> Option<u64> {
+        // Started again for a new limit (by `limit_restart_tick`, or its queue first): done.
+        if let Some(at) = self.limit_restarts.iter().position(|x| *x == id) {
+            self.limit_restarts.remove(at);
+        } else {
+            self.helper_own.remove(&id);
+        }
+        self.helper_rates.insert(id, self.helper_limits(id));
+        let rate = self.helper_rate(id);
+        self.helper_started.insert(id, rate);
+        rate
+    }
+
     /// Start a video item: yt-dlp (installed and verified) downloads it.
     fn start_video(&mut self, id: u64, show: bool) {
         self.claim_place(id);
         let tools = mdm_tools::tools_dir();
         let tool = tools.as_deref().and_then(mdm_tools::installed);
         let ffmpeg = tools.as_deref().and_then(mdm_tools::ffmpeg::installed);
-        let rate = self.settings.speed_limit();
+        let rate = self.helper_starts(id);
         // A stream in pieces (HLS, DASH): as many at once as a file's connections (#531).
         let fragments = self
             .items
@@ -4481,7 +4653,7 @@ impl App {
         let tool = mdm_tools::tools_dir()
             .as_deref()
             .and_then(mdm_tools::gallery::installed);
-        let rate = self.settings.speed_limit();
+        let rate = self.helper_starts(id);
         let Some(item) = self.item(id) else { return };
         let Some(spec) = item.gallery.clone() else {
             return;
@@ -6549,6 +6721,7 @@ impl App {
                 dont_show: false,
                 notices: i.notices.clone(),
                 seen: false,
+                opening: None,
             });
         }
     }
@@ -8233,6 +8406,7 @@ impl App {
                 dont_show: false,
                 notices: i.notices.clone(),
                 seen: false,
+                opening: None,
             });
         } else if i.live.is_none() {
             self.start(id, true);
@@ -9680,14 +9854,39 @@ impl App {
                     p.rename_disabled_reason = None;
                     p.rename_guard_stamp = Some(rename_stamp);
                 } else if p.rename_guard_stamp != Some(rename_stamp) {
-                    p.rename_disabled_reason = deferred_rename_disabled_reason_with(
-                        item,
-                        &self.downloads,
-                        &self.settings,
-                        &self.rss,
-                        &self.items,
-                    );
-                    p.rename_guard_stamp = Some(rename_stamp);
+                    // Looked at off the window's thread (#743), with copies of the rows' places.
+                    if p.rename_guard
+                        .as_ref()
+                        .is_none_or(|(s, _)| *s != rename_stamp)
+                    {
+                        let asked = crate::launch::Asked::default();
+                        let (item, items) = (
+                            item.place_copy(),
+                            self.items.iter().map(Item::place_copy).collect::<Vec<_>>(),
+                        );
+                        let (downloads, settings, rss) = (
+                            self.downloads.clone(),
+                            self.settings.clone(),
+                            self.rss.clone(),
+                        );
+                        let _ = asked.get(
+                            &rename_stamp,
+                            Duration::MAX,
+                            Duration::ZERO,
+                            Some(ctx),
+                            move |_| {
+                                deferred_rename_disabled_reason_with(
+                                    &item, &downloads, &settings, &rss, &items,
+                                )
+                            },
+                        );
+                        p.rename_guard = Some((rename_stamp, asked));
+                    }
+                    if let Some(reason) = p.rename_guard.as_ref().and_then(|(s, a)| a.answer(s)) {
+                        p.rename_disabled_reason = reason;
+                        p.rename_guard_stamp = Some(rename_stamp);
+                        p.rename_guard = None;
+                    }
                 }
                 actions.push((p.id, p.show(ctx, item, item.snap.as_ref())));
             }
@@ -9735,13 +9934,20 @@ impl App {
                     }
                 }
                 progress::Action::Limit(limit, remember) => {
+                    let mut helper = false;
                     if let Some(item) = self.item(id) {
                         if let Some(l) = item.live.as_ref() {
                             l.dl.set_speed_limit(limit);
+                            helper = l.dl.is_helper();
                         }
                         // Remembered, it applies again after a stop or a restart.
                         item.own_limit = if remember { limit } else { None };
                         self.dirty = true;
+                    }
+                    // A video or a gallery starts again with it (#708).
+                    if helper {
+                        self.helper_own.insert(id, limit);
+                        self.reapply_helper_limits();
                     }
                 }
                 progress::Action::UploadLimit(limit) => {
@@ -9858,6 +10064,7 @@ impl App {
             self.follow_assistive_technology(ctx);
         }
         self.network_adapter_tick(ctx);
+        self.limit_restart_tick();
         self.debrid_tick();
         self.poll(ctx);
         self.poll_remote_torrents();
@@ -10096,6 +10303,17 @@ fn sharing_stopped_note(why: crate::torrents::Reached) -> String {
 /// other uses `other`: half of it at least, and what the other leaves when that is more; never
 /// under 1 KB/s (the limiter takes 0 as no limit).
 ///
+/// A video's or a gallery's speed limit as it starts (#708): the lower of `one` (its own limit,
+/// else the one for one file) and an even share of `global` (the limit for all downloads as file
+/// downloads have it now) with the `others` running; never under 1 KB/s.
+fn helper_rate(one: Option<u64>, global: Option<u64>, others: u64) -> Option<u64> {
+    let share = global.map(|g| (g / (others + 1)).max(1024));
+    match (one, share) {
+        (Some(a), Some(b)) => Some(a.min(b)),
+        (a, b) => a.or(b),
+    }
+}
+
 /// An other side within 15% of its half counts as using its half: measured speeds wobble, and
 /// taking every dip as room to grow kept both sides over their halves (measured: 463 + 398
 /// KB/s under an 800 KB/s cap).
@@ -10330,7 +10548,29 @@ mod tray_toggle_tests {
 
 #[cfg(test)]
 mod global_cap_tests {
-    use super::share;
+    use super::{helper_rate, share};
+
+    /// #708: a video's or a gallery's limit as it starts: its own (or the one for one file), and
+    /// an even share of the limit for all downloads with the other helpers running.
+    #[test]
+    fn a_helper_starts_under_both_limits() {
+        const K: u64 = 1024;
+        assert_eq!(helper_rate(None, None, 0), None);
+        assert_eq!(helper_rate(Some(500 * K), None, 3), Some(500 * K));
+        assert_eq!(helper_rate(None, Some(500 * K), 0), Some(500 * K));
+        assert_eq!(
+            helper_rate(None, Some(500 * K), 1),
+            Some(250 * K),
+            "shared by two"
+        );
+        assert_eq!(helper_rate(Some(200 * K), Some(500 * K), 1), Some(200 * K));
+        assert_eq!(helper_rate(Some(400 * K), Some(500 * K), 1), Some(250 * K));
+        assert_eq!(
+            helper_rate(None, Some(2 * K), 9),
+            Some(K),
+            "never under 1 KB/s"
+        );
+    }
 
     #[test]
     fn each_side_gets_half_and_what_the_other_leaves() {
