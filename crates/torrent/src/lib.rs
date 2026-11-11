@@ -2158,7 +2158,15 @@ mod tests {
         }
         let st = session.seen(&hash).unwrap();
         assert_eq!((st.done, st.total), (128 * 1024, 128 * 1024));
-        assert_eq!(st.file_done, [96 * 1024, 32 * 1024]);
+        // Per file, in the torrent's order (the folder's listing order, which differs by system).
+        let sizes: Vec<u64> = session
+            .seen_files(&hash)
+            .unwrap()
+            .0
+            .iter()
+            .map(|f| f.size)
+            .collect();
+        assert_eq!(st.file_done, sizes);
         // Its details come with the next reading once asked for.
         session.seen_swarm(&hash);
         let deadline = std::time::Instant::now() + Duration::from_secs(5);
