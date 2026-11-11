@@ -39,12 +39,13 @@ pub enum ServiceKind {
 }
 
 impl ServiceKind {
-    /// Every service, in the order Options lists them.
+    /// Every service, in the order Options lists them: the most asked for first. Add an account
+    /// starts on the first.
     pub const ALL: [ServiceKind; 4] = [
+        ServiceKind::TorBox,
         ServiceKind::RealDebrid,
         ServiceKind::AllDebrid,
         ServiceKind::Premiumize,
-        ServiceKind::TorBox,
     ];
 
     /// The service's name, as it writes it (not translated).

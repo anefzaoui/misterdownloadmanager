@@ -3755,11 +3755,22 @@ fn dns_dialog(ui: &mut Ui, o: Pos2, e: &mut DnsEdit) -> Outcome<()> {
 }
 
 /// Accounts → Add...: the service, a token typed in, and the sign-in on its thread (#44).
-#[derive(Default)]
 struct AccountEdit {
     service: mdm_debrid::ServiceKind,
     token: String,
     signin: crate::debrid::SignIn,
+}
+
+/// It starts on the first service Options lists (not `ServiceKind`'s default, Real-Debrid,
+/// which saved accounts fall back to).
+impl Default for AccountEdit {
+    fn default() -> Self {
+        AccountEdit {
+            service: mdm_debrid::ServiceKind::ALL[0],
+            token: String::new(),
+            signin: Default::default(),
+        }
+    }
 }
 
 /// Accounts → Add...: sign in by code in the browser (Real-Debrid's device flow, AllDebrid's PIN),
