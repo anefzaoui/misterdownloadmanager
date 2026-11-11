@@ -557,15 +557,15 @@ button {
   all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 8px;
   color: inherit; cursor: pointer; font: inherit;
 }
-.go { padding: 0 12px 0 8px; border-radius: 8px 0 0 8px; cursor: grab; }
-.more { padding: 0 9px; border-left: 1px solid rgba(23, 50, 77, .18); border-radius: 0 8px 8px 0; }
+.go { padding-block: 0; padding-inline: 8px 12px; border-start-start-radius: 8px; border-end-start-radius: 8px; cursor: grab; }
+.more { padding: 0 9px; border-inline-start: 1px solid rgba(23, 50, 77, .18); border-start-end-radius: 8px; border-end-end-radius: 8px; }
 .go:hover, .more:hover { background: linear-gradient(rgba(214, 232, 255, .9), rgba(182, 212, 250, .9)); }
 .go:active, .more:active { background: rgba(160, 196, 242, .9); }
 button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
 .go img { width: 22px; height: 22px; flex: none; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .25)); }
 .more svg { width: 12px; height: 12px; color: #3b5876; }
 .compact .label { display: none; }
-.compact .go { padding: 0 6px; border-radius: 8px 0 0 8px; }
+.compact .go { padding: 0 6px; border-start-start-radius: 8px; border-end-start-radius: 8px; }
 .menu {
   position: absolute; min-width: 210px; padding: 4px; border-radius: 9px;
   background: #fbfcfe; color: #17324d; border: 1px solid rgba(23, 50, 77, .22);
