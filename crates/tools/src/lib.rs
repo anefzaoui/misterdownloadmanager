@@ -89,11 +89,11 @@ pub fn tools_dir() -> Option<PathBuf> {
     mdm_ipc::data_dir().map(|d| d.join("tools"))
 }
 
-/// yt-dlp's file name for this platform in its releases. On macOS, its folder build: why, in
-/// `macos`.
+/// yt-dlp's file name for this platform in its releases. On macOS and Windows, its folder build:
+/// why, in `macos`.
 pub fn ytdlp_asset() -> &'static str {
     if cfg!(windows) {
-        "yt-dlp.exe"
+        "yt-dlp_win.zip"
     } else if cfg!(target_os = "macos") {
         "yt-dlp_macos.zip"
     } else {
@@ -310,10 +310,13 @@ pub async fn install_latest(
         .await?;
     let release: Release =
         serde_json::from_slice(&body).map_err(|e| Error::BadRelease(e.to_string()))?;
+    // Never the same again, never older; but on Windows the one-file build earlier versions
+    // installed is replaced by the same version's folder build (faster to start, `macos`).
     if let Some(current) = own_ytdlp(dir)
         && !newer(&release.tag_name, &current.version)
+        && !(cfg!(windows) && macos::one_file_build(&current.exe))
     {
-        return Ok(current); // never the same again, never older
+        return Ok(current);
     }
     let url = |name: &str| {
         release
@@ -344,9 +347,9 @@ pub async fn install_latest(
     if Sha256::digest(&program).as_slice() != expected {
         return Err(Error::BadChecksum);
     }
-    #[cfg(target_os = "macos")]
+    #[cfg(any(target_os = "macos", windows))]
     return macos::put_folder(dir, &release.tag_name, &program);
-    #[cfg(not(target_os = "macos"))]
+    #[cfg(not(any(target_os = "macos", windows)))]
     put(dir, "yt-dlp", &release.tag_name, asset, &program, &exe_url)
 }
 

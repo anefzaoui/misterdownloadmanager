@@ -9,15 +9,19 @@
 //! The folder build (`yt-dlp_macos.zip`) unpacks nothing when it runs: MDM unpacks it once, after
 //! checking the archive against yt-dlp's signed checksum list, into its own tools folder. The
 //! mark is taken off those files and no others: never the app, never a download (they are marked
-//! on purpose: `mark_downloaded`), never a program the person chose. Linux and Windows use the
-//! single-program builds and don't compile the install (`#[cfg]` below); the unpacking is
-//! portable and tested everywhere.
+//! on purpose: `mark_downloaded`), never a program the person chose. Windows uses the folder build
+//! too (`yt-dlp_win.zip`), for speed: the one-file `yt-dlp.exe` unpacks some 25 MB at every start,
+//! about 2 s of each video's look-up. Linux uses the single program and doesn't compile the
+//! install (`#[cfg]` below); the unpacking is portable and tested everywhere.
 
 use std::path::{Component, Path};
 
 use crate::{Error, Installed, make_current};
 
 /// The folder build's program, beside its `_internal` folder.
+#[cfg(windows)]
+pub(crate) const PROGRAM: &str = "yt-dlp.exe";
+#[cfg(not(windows))]
 pub(crate) const PROGRAM: &str = "yt-dlp_macos";
 /// What the folder build keeps beside its program; the one-file build has none.
 const INTERNAL: &str = "_internal";
@@ -35,7 +39,7 @@ pub(crate) fn one_file_build(exe: &Path) -> bool {
 /// Install the verified archive `zip` as `version` of yt-dlp (`dir/yt-dlp/<version>/`), the mark
 /// taken off the files just unpacked, and make it current. Unpacked to one side first, so a
 /// failure leaves what was installed.
-#[cfg_attr(not(target_os = "macos"), allow(dead_code))]
+#[cfg_attr(not(any(target_os = "macos", windows)), allow(dead_code))]
 pub(crate) fn put_folder(dir: &Path, version: &str, zip: &[u8]) -> Result<Installed, Error> {
     if version.is_empty() || version.contains(['/', '\\', ':']) || version.starts_with('.') {
         return Err(Error::BadRelease(format!("version {version:?}")));
