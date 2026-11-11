@@ -10,6 +10,7 @@ mod countries;
 mod crash;
 mod crashui;
 mod debrid;
+mod deferred_rename;
 mod derive;
 mod dialogs;
 mod droptarget;

@@ -258,12 +258,18 @@ fn place_in(
 /// A download's new place (its name from it). A name the user gave is no longer the address's
 /// guess (`Item::name_from_url`); another folder alone keeps the server's say.
 fn take_place(item: &mut Item, target: PathBuf) {
+    let old_dest = item.dest.clone();
     if let Some(name) = target.file_name() {
         let name = name.to_string_lossy().into_owned();
         if name != item.file_name {
             item.name_from_url = false;
         }
         item.file_name = name;
+    }
+    if let Some(spec) = item.torrent.as_mut()
+        && spec.folder == old_dest
+    {
+        spec.folder = target.clone();
     }
     item.dest = target;
 }
@@ -3419,7 +3425,12 @@ impl App {
             match r {
                 Ok(()) => {
                     if let Some(item) = self.item(id) {
-                        take_place(item, target);
+                        take_place(item, target.clone());
+                    }
+                    for c in &mut self.complete {
+                        if c.id == id {
+                            c.path = target.clone();
+                        }
                     }
                     self.dirty = true;
                 }
@@ -3435,6 +3446,86 @@ impl App {
                         ),
                     ));
                 }
+            }
+        }
+    }
+
+    /// Apply any deferred rename (`Item::rename_on_complete`) once download `id` completes.
+    fn apply_deferred_rename(&mut self, id: u64) {
+        let unsaved = self
+            .progress
+            .iter_mut()
+            .find(|p| p.id == id)
+            .and_then(Progress::take_unsaved_valid_rename);
+        if let Some(unsaved) = unsaved
+            && let Some(item) = self.item(id)
+        {
+            item.rename_on_complete = unsaved;
+        }
+        let Some((desired, from, is_dir, torrent_spec)) = self.item(id).and_then(|item| {
+            let desired = item.rename_on_complete.take()?;
+            let from = item.dest.clone();
+            let is_dir = crate::deferred_rename::is_folder_target(item);
+            let torrent_spec = item.torrent.clone();
+            Some((desired, from, is_dir, torrent_spec))
+        }) else {
+            return;
+        };
+        let Some(target) = crate::deferred_rename::resolved_target_path(&from, &desired, is_dir)
+        else {
+            self.dirty = true;
+            return;
+        };
+        if let Some(spec) = torrent_spec
+            && let Some(t) = self.torrent_host.get()
+        {
+            let (tx, rx) = std::sync::mpsc::channel();
+            let to = target.clone();
+            let keep_sharing = self.settings.torrent_keep_sharing;
+            self.rt.spawn(async move {
+                let _ = t.remove(&spec.hash, false).await;
+                let mut res = crate::deferred_rename::rename_entry(&from, &to);
+                for _ in 1..6 {
+                    if res.is_ok() {
+                        break;
+                    }
+                    tokio::time::sleep(Duration::from_millis(40)).await;
+                    res = crate::deferred_rename::rename_entry(&from, &to);
+                }
+                if res.is_ok()
+                    && keep_sharing
+                    && is_dir
+                    && let Some(bytes) = crate::torrents::torrent_file(&spec.hash)
+                        .and_then(|p| std::fs::read(p).ok())
+                {
+                    let _ = t.add(&bytes, &to, spec.files, Vec::new(), false).await;
+                    let _ = t.set_torrent_limits(&spec.hash, None, spec.upload_limit);
+                }
+                let _ = tx.send(res);
+            });
+            self.moving.push((id, target, rx));
+            self.dirty = true;
+            return;
+        }
+        match crate::deferred_rename::rename_entry(&from, &target) {
+            Ok(()) => {
+                if let Some(item) = self.item(id) {
+                    take_place(item, target);
+                }
+                self.dirty = true;
+            }
+            Err(e) => {
+                if let Some(item) = self.item(id) {
+                    item.note(crate::i18n::t("The file could not be moved"));
+                }
+                self.notice = Some((
+                    crate::i18n::mark("Move/Rename"),
+                    crate::i18n::fmt(
+                        crate::i18n::t("The file could not be moved: {error}"),
+                        &[("error", &e)],
+                    ),
+                ));
+                self.dirty = true;
             }
         }
     }
@@ -5629,6 +5720,7 @@ impl App {
         }
         for id in &finished {
             self.failures.remove(id);
+            self.apply_deferred_rename(*id);
             // Its archive, when it is to be extracted and its last volume is in (#37).
             self.extracts.finished(*id, &self.items, &self.settings);
             // Finished files leave download queues (synchronization queues keep them).
@@ -8765,10 +8857,37 @@ impl App {
                     self.stop(id);
                     self.progress.retain(|p| p.id != id);
                 }
-                progress::Action::Close => self.progress.retain(|p| p.id != id),
+                progress::Action::Rename(name) => {
+                    if let Some(item) = self.item(id) {
+                        item.rename_on_complete = name;
+                        self.dirty = true;
+                    }
+                }
+                progress::Action::Close => {
+                    let unsaved = self
+                        .progress
+                        .iter_mut()
+                        .find(|p| p.id == id)
+                        .and_then(Progress::take_unsaved_valid_rename);
+                    if let Some(name) = unsaved
+                        && let Some(item) = self.item(id)
+                    {
+                        item.rename_on_complete = name;
+                        self.dirty = true;
+                    }
+                    self.progress.retain(|p| p.id != id);
+                }
                 progress::Action::Hide => {
+                    let mut unsaved = None;
                     if let Some(p) = self.progress.iter_mut().find(|p| p.id == id) {
+                        unsaved = p.take_unsaved_valid_rename();
                         p.hidden = true;
+                    }
+                    if let Some(name) = unsaved
+                        && let Some(item) = self.item(id)
+                    {
+                        item.rename_on_complete = name;
+                        self.dirty = true;
                     }
                 }
                 progress::Action::Limit(limit, remember) => {

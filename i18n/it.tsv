@@ -717,6 +717,10 @@
 #. text in the Options window
 #. Options → DNS settings: NextDNS's own configuration ID (optional)
 	Configuration ID:	ID configurazione:
+#. text in a download's progress window
+#. verb: button that saves the deferred rename in the progress window
+#, machine
+	Confirm	Conferma
 #. text in the Options window
 	Confirm before deleting downloads	Chiedi conferma prima di eliminare i download
 #. window title in a dialog box
@@ -1129,7 +1133,7 @@
 #. text in the Options window
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Sperimentale: basato sulla documentazione pubblica delle API dei servizi, non ancora verificato con account reali.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 	Export	Esporta
 #. text in the Options window
 	Extend the availability of Manifest 2 Chrome extensions	Estendi la disponibilità delle estensioni Chrome Manifest 2
@@ -1480,7 +1484,7 @@
 	If it can't be reached, use the system's DNS	Se non è raggiungibile, usa il DNS di sistema
 #. checkbox in the Options window
 	Ignore file modification time changes when resuming a download	Ignora i cambiamenti della data di modifica del file quando si riprende un download
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 	Import	Importa
 #. value in a column's filter list in the download list
 	In a queue	In una coda
@@ -2574,6 +2578,10 @@
 #. remote control page (on a phone): question before removing a download; {name} its file name
 #. {name} = a file name (keep the braces as they are)
 	Remove {name} from the list?	Rimuovere {name} dall'elenco?
+#. text in a download's progress window
+#. noun: label before the deferred new file or folder name in the progress window
+#, machine
+	Rename	Rinomina
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 	Replace asterisk to	Sostituisci l'asterisco con
@@ -2674,6 +2682,10 @@
 #. Link grabber: the folder the package's files go to (a label before its box)
 #. RSS feeds window, Download rules: the folder the rule's torrents go to
 	Save to:	Salva in:
+#. text in a download's progress window
+#. status shown in green beside the Rename box once the new name is saved
+#, machine
+	Saved	Salvato
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 	Saved in	Salvato in
@@ -3210,7 +3222,7 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 	The file could not be moved: {error}	Impossibile spostare il file: {error}
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 	The file could not be read: {error}	Impossibile leggere il file: {error}
 #. text in the Checksum window
@@ -3246,7 +3258,7 @@
 #. text in extension.rs
 #. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
 	The helper program the browsers start is missing	Manca il programma di supporto che i browser avviano
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 	The list could not be saved: {error}	Impossibile salvare l'elenco: {error}
 #. text in whereis.rs

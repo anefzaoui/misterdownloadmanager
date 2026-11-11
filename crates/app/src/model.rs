@@ -411,6 +411,10 @@ pub struct Item {
     /// (or its one file, once known).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub remote: Option<RemoteSpec>,
+    /// Safe deferred main name chosen in the progress window (or inherited from Add torrent):
+    /// applied in place once the download reaches `Status::Complete`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub rename_on_complete: Option<String>,
     #[serde(skip)]
     pub live: Option<Live>,
     /// The session's temporary view while a torrent is being checked; never saved.
@@ -712,6 +716,7 @@ impl Item {
             server: None,
             direct: false,
             remote: None,
+            rename_on_complete: None,
             live: None,
             torrent_check: None,
             snap: None,

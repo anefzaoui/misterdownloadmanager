@@ -951,6 +951,10 @@
 #. Options → DNS settings: NextDNS's own configuration ID (optional)
 #, machine
 	Configuration ID:	Auðkenni stillingar:
+#. text in a download's progress window
+#. verb: button that saves the deferred rename in the progress window
+#, machine
+	Confirm	Staðfesta
 #. text in the Options window
 #, machine
 	Confirm before deleting downloads	Staðfesta áður en niðurhal er eytt
@@ -1515,7 +1519,7 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Tilraunakennt: byggt á opinberum API-skjölum þjónustanna, ekki enn staðfest með raunverulegum reikningum.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	Flytja út
 #. text in the Options window
@@ -1992,7 +1996,7 @@
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	Hunsa breytingar á breytingartíma skráar þegar haldið er áfram með niðurhal
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	Flytja inn
 #. value in a column's filter list in the download list
@@ -3471,6 +3475,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Remove {name} from the list?	Fjarlægja {name} af listanum?
+#. text in a download's progress window
+#. noun: label before the deferred new file or folder name in the progress window
+#, machine
+	Rename	Endurnefna
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -3604,6 +3612,10 @@
 #. RSS feeds window, Download rules: the folder the rule's torrents go to
 #, machine
 	Save to:	Vista í:
+#. text in a download's progress window
+#. status shown in green beside the Rename box once the new name is saved
+#, machine
+	Saved	Vistað
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
@@ -4330,7 +4342,7 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be moved: {error}	Ekki tókst að færa skrána: {error}
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be read: {error}	Ekki tókst að lesa skrána: {error}
@@ -4379,7 +4391,7 @@
 #. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
 #, machine
 	The helper program the browsers start is missing	Hjálparforritið sem vafrarnir ræsa vantar
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	Ekki tókst að vista listann: {error}
