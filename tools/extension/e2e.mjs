@@ -239,8 +239,17 @@ const PICKS = (reveal = "") => `function () {
     box: { l: box.left, t: box.top, r: box.right, b: box.bottom },
     busy: Boolean(m.querySelector(".rows .skrow")),
     note: note.hidden ? "" : note.textContent,
-    tabs: m.querySelector(".tabs").hidden ? [] : [...m.querySelectorAll(".tabs [data-tab]")].map((b) => ({ tab: b.dataset.tab, name: b.textContent, selected: b.getAttribute("aria-selected") === "true", ...at(b) })),
-    rows: [...m.querySelectorAll(".rows button[data-choice], .rows button[data-row]")].map((b) => ({ name: [b.querySelector(".q").textContent, b.querySelector(".meta").firstChild ? b.querySelector(".meta").firstChild.textContent : ""].filter(Boolean).join(" "), size: b.querySelector(".size").textContent, choice: b.dataset.choice ?? null, ...at(b) })),
+    caps: [...m.querySelectorAll(".rows .cap")].map((c) => c.textContent),
+    // Each line: "Download best" first (top), then the numbered ones under VIDEO and AUDIO.
+    rows: (() => { const out = []; let kind = "top";
+      for (const e of m.querySelectorAll(".rows > *")) {
+        if (e.classList.contains("cap")) { kind = e.dataset.kind; continue; }
+        if (e.localName !== "button") continue;
+        const f = e.querySelector(".f");
+        out.push({ kind: e.classList.contains("top") ? "top" : kind, name: [(e.querySelector(".q") || e.querySelector(".lead")).textContent, f && f.firstChild ? f.firstChild.textContent : ""].filter(Boolean).join(" "),
+          size: (e.querySelector(".z") || {}).textContent || "", choice: e.dataset.choice ?? null, ...at(e) });
+      }
+      return out; })(),
     open: { text: open.textContent, ...at(open) },
   });
 }`;
@@ -1235,8 +1244,8 @@ async function videoButton(session, never) {
   const v = await rect(session, "#video");
   let b = await hover(session, v);
   if (!b) throw new Error("no button over the video");
-  near(b.r, v.r - 14, "button's right edge");
-  near(b.t, v.t + 14, "button's top");
+  near(b.r, v.r - 8, "button's right edge");
+  near(b.t, v.t + 8, "button's top");
   // #703: a click on its main part downloads the video's own plain file at once (no look-up, no
   // window), then says so in green, with "Show" (MDM's window, the download selected). An earlier
   // browser's download of it off the list first: a duplicate would be asked about.
@@ -1272,8 +1281,8 @@ async function videoButton(session, never) {
   await session.mouse(v.l + 40, v.b - 30, "up");
   await sleep(300);
   b = await rect(session, "mdm-video-button");
-  near(b.l, v.l + 14, "dragged: left edge");
-  near(b.b, v.b - 14, "dragged: bottom");
+  near(b.l, v.l + 8, "dragged: left edge");
+  near(b.b, v.b - 8, "dragged: bottom");
   if (appWindows(appPid()).includes(VIDEO_WINDOW)) throw new Error("a drag opened the video window");
   if (await session.picks()) throw new Error("a drag opened the qualities' menu");
   // Remembered for the site.
@@ -1281,8 +1290,8 @@ async function videoButton(session, never) {
   await session.navigate(page);
   b = await hover(session, v);
   if (!b) throw new Error("no button after a reload");
-  near(b.l, v.l + 14, "after a reload: left edge");
-  near(b.b, v.b - 14, "after a reload: bottom");
+  near(b.l, v.l + 8, "after a reload: left edge");
+  near(b.b, v.b - 8, "after a reload: bottom");
   if (!never) return "shown, clicked (its file downloaded, Show), its menu's window, dragged, kept";
   const listed = () => {
     try {
@@ -2097,14 +2106,14 @@ const CASES = {
     const v = await rect(t.session, "#video");
     const b = await hover(t.session, v);
     if (!b) throw new Error("no button over the video under csp=strict");
-    near(b.b - b.t, 38, "the button's height");
+    near(b.b - b.t, 30, "the button's height");
     const pill = await t.session.pill();
     if (!pill) throw new Error("the button's pill wasn't found");
-    if (Math.abs(pill.h - 38) > 2 || !/rgba\(16, 20, 28, 0\.74\)/.test(pill.color)) throw new Error(`the pill isn't styled: ${JSON.stringify(pill)}`);
+    if (Math.abs(pill.h - 30) > 2 || !/linear-gradient/.test(pill.image)) throw new Error(`the tab isn't styled: ${JSON.stringify(pill)}`);
     const address = await clickButton(t.session, b);
     const want = `${LAB}/gen/1M/clip.mp4?inline=1`;
     if (address !== want) throw new Error(`the video window got ${address}, not ${want}`);
-    return `styled (${Math.round(pill.h)}px, ${pill.color}), sent ${address.replace(LAB, "")}`;
+    return `styled (${Math.round(pill.h)}px, ${pill.image.slice(0, 15)}...), sent ${address.replace(LAB, "")}`;
   },
 
   // The button doesn't sit on a control of the page (#421: a thumbnail's watch-later button at
@@ -2551,32 +2560,18 @@ const CASES = {
       await t.session.key("ArrowUp");
       const heard = await t.session.evaluate("window.__mdmKeys");
       if (heard !== 0) throw new Error(`the page heard ${heard} keys the menu used`);
-      // Video and Audio tabs (the ffmpeg gives MP3, Opus and FLAC rows beside the picture's): the
-      // Video one first, each listing only its kind.
-      const tabNames = m.tabs.map((x) => x.tab).join(",");
-      if (tabNames !== "video,audio") throw new Error(`the tabs are "${tabNames}", not video,audio: ${JSON.stringify(m.tabs.map((x) => x.name))}`);
-      if (m.tabs.some((x) => !x.name)) throw new Error("a tab has no text");
-      if (!m.tabs[0].selected || m.tabs[1].selected) throw new Error("the Video tab isn't the one shown first");
+      // "Download best" first, then the picture's qualities under VIDEO and the sound's under AUDIO
+      // (the ffmpeg gives MP3, Opus and FLAC beside the picture's), each line its own kind.
+      if (m.caps.length !== 2) throw new Error(`the captions are ${JSON.stringify(m.caps)}, not VIDEO and AUDIO`);
+      if (m.rows[0].kind !== "top" || !m.rows[0].name) throw new Error(`the first line isn't "Download best": ${JSON.stringify(m.rows[0])}`);
       const picture = /\b\d{3,4}p\b/;
-      if (m.rows.some((r) => !picture.test(r.name))) throw new Error(`the Video tab lists a sound: ${JSON.stringify(m.rows.map((r) => r.name))}`);
-      // Rows that just came take no click in their first 300 ms (video.js).
+      const pictures = { rows: m.rows.filter((r) => r.kind === "video") };
+      const sounds = { rows: m.rows.filter((r) => r.kind === "audio") };
+      if (!pictures.rows.length || pictures.rows.some((r) => !picture.test(r.name))) throw new Error(`VIDEO lists a sound: ${JSON.stringify(pictures.rows.map((r) => r.name))}`);
+      if (!sounds.rows.length || sounds.rows.some((r) => picture.test(r.name))) throw new Error(`AUDIO lists a picture: ${JSON.stringify(sounds.rows.map((r) => r.name))}`);
       await sleep(500);
-      if (shots) await snap("video-tab", await t.session.picks());
-      const tab = async (kind) => {
-        const now = await t.session.picks("row");
-        const x = now.tabs.find((y) => y.tab === kind);
-        await t.session.mouse(x.x, x.y, "click");
-        return until(`the ${kind} tab's qualities`, 5000, async () => {
-          const p = await t.session.picks("row");
-          return p && p.tabs.find((y) => y.tab === kind)?.selected && p.rows.length ? p : null;
-        });
-      };
-      const sounds = await tab("audio");
-      if (shots) await snap("audio-tab", await t.session.picks());
-      if (sounds.rows.some((r) => picture.test(r.name))) throw new Error(`the Audio tab lists a picture: ${JSON.stringify(sounds.rows.map((r) => r.name))}`);
-      if (sounds.rows.some((r) => m.rows.some((v) => v.name === r.name))) throw new Error("a quality is in both tabs");
-      const pictures = await tab("video");
-      // 360p from the Video tab (the click later takes the best, 720p: not the same download).
+      if (shots) await snap("list", await t.session.picks());
+      // 360p from VIDEO (the click later takes the best, 720p: not the same download).
       const row = pictures.rows.find((r) => /\b360p\b/.test(r.name));
       if (!row) throw new Error(`no 360p in the Video tab: ${JSON.stringify(pictures.rows.map((r) => r.name))}`);
       const picked = Date.now();
@@ -2606,7 +2601,7 @@ const CASES = {
       if (!green.acts.some((a) => a.act === "show")) throw new Error(`no "Show": ${JSON.stringify(green)}`);
       if (appWindows(pid).includes(VIDEO_WINDOW)) throw new Error("the click opened the Download video window");
       const list = (rs) => rs.map((r) => `${r.name}${r.size ? ` ${r.size}` : ""}`).join(", ");
-      return `chip "${chipped.chip}"; the click: ${best.file} (${green.text} · Show); ${looked ? "looking, then " : ""}Video tab ${pictures.rows.length} (${list(pictures.rows)}), Audio tab ${sounds.rows.length} (${list(sounds.rows)}); "${row.name}" picked: ${item.file} (${item.status}) with its progress window "${opened}" only, the main window hidden; click to rows ${rowsMs} ms, pick to first progress ${startMs} ms`;
+      return `chip "${chipped.chip}"; the click: ${best.file} (${green.text} · Show); ${looked ? "looking, then " : ""}VIDEO ${pictures.rows.length} (${list(pictures.rows)}), AUDIO ${sounds.rows.length} (${list(sounds.rows)}); "${row.name}" picked: ${item.file} (${item.status}) with its progress window "${opened}" only, the main window hidden; click to rows ${rowsMs} ms, pick to first progress ${startMs} ms`;
     } finally {
       // The next case starts MDM as usual.
       await stopApp();

@@ -1897,7 +1897,7 @@ function samplePage(html) {
   // The page's own controls: a key the open menu used doesn't reach the page, and the button (and
   // so its menu) stays where it is while the menu is open.
   const keys = source.slice(source.indexOf('shadow.addEventListener("keydown"'), source.indexOf("// The main part: a click downloads"));
-  assert.equal(keys.match(/e\.stopPropagation\(\)/g).length, 6, "Escape (the menu, the button), Enter and Space, the tabs' arrows, the rows' arrows, ↓ on the button: not the page's too");
+  assert.equal(keys.match(/e\.stopPropagation\(\)/g).length, 5, "Escape (the menu, the button), Enter and Space, the arrows, ↓ on the button: not the page's too");
   assert.ok(fn("spot").includes("if (menuOpen && auto.v === video && auto.at) return auto.at;"), "spot: still while its menu is open");
   assert.equal(source.match(/innerHTML/g).length, 1, "markup only for the fixed parts");
   assert.ok(!/insertAdjacentHTML|outerHTML|setInterval/.test(source));
@@ -1918,7 +1918,7 @@ function samplePage(html) {
   const english = JSON.parse(readFileSync(new URL("../../extension/_locales/en/messages.json", import.meta.url), "utf8"));
   for (const key of ["video_looking", "video_all_qualities", "video_no_choices", "video_playlist", "video_no_ytdlp", "video_too_long", "video_busy", "video_queued", "video_failed_lookup",
     "video_off", "video_drm", "video_cant_save", "video_open_post", "video_open_post_button", "video_drag_dots", "video_tip_best", "video_sending", "video_added", "video_show",
-    "video_no_answer", "video_get_mdm", "video_retry", "video_turn_on", "video_section", "video_best", "video_best_quality"]) {
+    "video_no_answer", "video_get_mdm", "video_retry", "video_turn_on", "video_download_best", "video_best"]) {
     assert.ok(english[key], key);
     assert.ok(source.includes(`${key}: ${JSON.stringify(english[key].message)}`), `video.js FALLBACK: ${key}`);
     assert.ok(source.includes(`t("${key}")`), `video.js uses ${key}`);
