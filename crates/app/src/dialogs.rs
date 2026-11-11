@@ -878,6 +878,14 @@ pub struct FileInfo {
     folders_open: bool,
     /// "+" was clicked: the app opens the new-category window.
     pub new_category: bool,
+    /// The downloads waiting their turn behind this one (a browser selection's arrive one by
+    /// one): Cancel asks whether they are cancelled too (#394). The app sets it each frame.
+    pub waiting: usize,
+    /// Cancel was pressed while some waited: the question is up, this dialog waits for it.
+    cancel_ask: bool,
+    /// The question's answer was Yes: the waiting ones are cancelled with this one (`Closed`
+    /// comes with it; the app clears the waiting ones).
+    pub cancel_all: bool,
     /// The debrid accounts (#44): which one this address goes through, if any.
     route: crate::debrid::Route,
     /// The account that takes the address ("Real-Debrid (labuser)"), as last looked at: the
@@ -968,6 +976,9 @@ impl FileInfo {
             folders: Vec::new(),
             folders_open: false,
             new_category: false,
+            waiting: 0,
+            cancel_ask: false,
+            cancel_all: false,
             route,
             through,
             direct,
@@ -1121,7 +1132,30 @@ impl FileInfo {
             .map(Path::to_path_buf)
             .unwrap_or_default();
         let out = self.dialog(ctx, icons);
-        ensure_folder(ctx, &mut self.asking, out, &folder)
+        let out = ensure_folder(ctx, &mut self.asking, out, &folder);
+        // #394: more downloads wait their turn behind this one (the browser's selected links):
+        // Cancel (the button, Escape, the window's ×) asks whether they are cancelled too.
+        if matches!(out, Outcome::Closed) && self.waiting > 0 && !self.cancel_ask {
+            self.cancel_ask = true;
+        }
+        if self.cancel_ask {
+            // The question answers for the dialog: a Start pressed meanwhile waits for it, as
+            // with the Create folder question.
+            return match cancel_waiting(ctx, self.waiting) {
+                Outcome::Done(all) => {
+                    self.cancel_ask = false;
+                    self.cancel_all = all;
+                    Outcome::Closed
+                }
+                // The question's own ×: as No, this one alone is skipped.
+                Outcome::Closed => {
+                    self.cancel_ask = false;
+                    Outcome::Closed
+                }
+                Outcome::Open => Outcome::Open,
+            };
+        }
+        out
     }
 
     fn dialog(
@@ -1551,6 +1585,68 @@ impl FileInfo {
             },
         )
     }
+}
+
+/// Cancel in Download File Info while more downloads wait their turn behind it (#394): are
+/// those cancelled too? `Done(true)`: yes; `Done(false)`: this one alone is skipped.
+fn cancel_waiting(ctx: &egui::Context, n: usize) -> Outcome<bool> {
+    let extra = grow_extra(ctx, "cancel-waiting");
+    question(
+        ctx,
+        "cancel-waiting",
+        "Mister Download Manager",
+        [374.0, 100.0 + extra],
+        false,
+        winui::BG(),
+        |ui, o| {
+            let p = ui.painter().clone();
+            let text = crate::i18n::fmt(
+                // i18n: Cancel in Download File Info with downloads waiting behind it
+                &crate::i18n::tn(
+                    n as u64,
+                    "There is {n} more download waiting. Cancel it too?",
+                    "There are {n} more downloads waiting. Cancel them too?",
+                ),
+                &[("n", &crate::i18n::integer(n as u64))],
+            );
+            let lines = winui::paragraph(
+                &p,
+                o.x + 11.0,
+                o.y + 21.0,
+                &text,
+                winui::TEXT(),
+                o.x + 362.0,
+                13.0,
+            );
+            grow_to(ui.ctx(), "cancel-waiting", lines, 2);
+            let o = o + vec2(0.0, extra);
+            let yes = winui::button(
+                ui,
+                r(o, 94.0, 63.0, 73.0, 21.0),
+                "Yes",
+                ButtonKind::Default,
+                false,
+                None,
+            )
+            .clicked();
+            let no = winui::button(
+                ui,
+                r(o, 207.0, 63.0, 73.0, 21.0),
+                "No",
+                ButtonKind::Normal,
+                false,
+                None,
+            )
+            .clicked();
+            if no || winui::escape_pressed(ui) {
+                Outcome::Done(false)
+            } else if yes || winui::enter_pressed(ui) {
+                Outcome::Done(true)
+            } else {
+                Outcome::Open
+            }
+        },
+    )
 }
 
 /// Look `url` up in the background (name, size) as the download will ask it (`request`), the
@@ -3205,6 +3301,64 @@ mod tests {
         assert!(!pass(true), "again, first its theme");
         assert!(pass(true), "and then it is shown");
         assert!(!pass(true));
+    }
+
+    /// #394: the question's answers: Enter ("Yes", the default) cancels the waiting ones too,
+    /// Escape ("No") skips this one alone, and with no answer nothing is decided.
+    #[test]
+    fn cancel_waiting_answers_enter_escape_and_nothing() {
+        // The key a pass presses, delivered to the window that renders the question (a
+        // thread-local: the renderer is global, and another test's window must see no key).
+        thread_local! {
+            static KEY: std::cell::Cell<Option<egui::Key>> = const { std::cell::Cell::new(None) };
+        }
+        egui::Context::set_immediate_viewport_renderer(move |ctx, viewport| {
+            let events = KEY.with(|k| {
+                k.take().map(|key| {
+                    vec![egui::Event::Key {
+                        key,
+                        physical_key: None,
+                        pressed: true,
+                        repeat: false,
+                        modifiers: egui::Modifiers::default(),
+                    }]
+                })
+            });
+            let input = egui::RawInput {
+                viewport_id: viewport.ids.this,
+                events: events.unwrap_or_default(),
+                viewports: std::iter::once((viewport.ids.this, egui::ViewportInfo::default()))
+                    .collect(),
+                screen_rect: Some(egui::Rect::from_min_size(Pos2::ZERO, vec2(400.0, 120.0))),
+                ..Default::default()
+            };
+            let mut ui_cb = viewport.viewport_ui_cb;
+            let mut out = ctx.run_ui(input, |ui| ui_cb(ui));
+            out.textures_delta.clear();
+        });
+        let ctx = egui::Context::default();
+        ctx.set_embed_viewports(false);
+        // A pass of the question, with a key pressed in it (or not); the answer it gave.
+        let pass = |key: Option<egui::Key>, answer: &std::cell::Cell<Option<Outcome<bool>>>| {
+            KEY.with(|k| k.set(key));
+            let mut out = ctx.run_ui(egui::RawInput::default(), |ui| {
+                answer.set(Some(cancel_waiting(ui.ctx(), 2)));
+            });
+            out.textures_delta.clear();
+            answer.take()
+        };
+        let answer = std::cell::Cell::new(None);
+        assert!(matches!(pass(None, &answer), Some(Outcome::Open)));
+        assert!(matches!(
+            pass(Some(egui::Key::Enter), &answer),
+            Some(Outcome::Done(true))
+        ));
+        // Opened again: a new question.
+        assert!(matches!(pass(None, &answer), Some(Outcome::Open)));
+        assert!(matches!(
+            pass(Some(egui::Key::Escape), &answer),
+            Some(Outcome::Done(false))
+        ));
     }
 
     /// Add URL opens and its address box takes the focus, frame after frame, without the app

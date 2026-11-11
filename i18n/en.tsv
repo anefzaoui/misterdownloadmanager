@@ -33,6 +33,10 @@
 #. {n} = a number (keep the braces as they are)
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):
 #. count in a dialog box
+#. Cancel in Download File Info with downloads waiting behind it
+#. {n} = a number (keep the braces as they are)
+@plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?
+#. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
 @plural	and {n} other file|and {n} other files	and {n} other file|and {n} other files
@@ -4462,6 +4466,10 @@ menu	&Add new download	&Add new download
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 menu	&Add new download...	&Add new download...
+#. menu command in the main window
+#. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menu	&Classic	&Classic
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Copy	&Copy
@@ -4530,11 +4538,19 @@ menu	&Scheduler and queues	&Scheduler and queues
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Show hidden tabs	&Show hidden tabs
 #. menu command in the main window
+#. View → Text: letters drawn smooth, as Windows' modern apps draw them, anti-aliased at any size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menu	&Smooth	&Smooth
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Stop All	&Stop All
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Stop Download	&Stop Download
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menu	&Text	&Text
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Tray icon	&Tray icon
@@ -4672,6 +4688,9 @@ menu	Draw with	Draw with
 menu	E&xport	E&xport
 #. menu command in the main window
 menu	Edit queue	Edit queue
+#. menu command in the main window
+#. View → Theme: a style theme's name (a white canvas, emerald fills, 6-point corners), a name: keep "Emerald" as written
+menu	Emerald	Emerald
 #. menu command in the main window
 #. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
 menu	Extract	Extract

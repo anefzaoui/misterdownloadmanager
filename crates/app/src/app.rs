@@ -116,6 +116,9 @@ enum Cmd {
     DrawWith(crate::renderer::Api),
     /// View → Interface size → a size in percent (#262).
     InterfaceSize(u16),
+    /// View → Text → Smooth (`true`) or Classic (Windows).
+    #[cfg(windows)]
+    SmoothText(bool),
     /// View → Language: a catalog's code, or follow Windows (`None`).
     Language(Option<&'static str>),
     /// View → Language...: the language picker.
@@ -2350,13 +2353,8 @@ impl App {
         // dialog opens, as its window is its own.
         if let Some(page) = cmd.video_page.as_deref() {
             self.show_for_dialog(ctx);
-            let dir = self.settings.category_dir(Category::Video, &self.downloads);
-            crate::videodlg::refresh_ytdlp(&self.rt);
             let page = page.to_owned();
-            self.video_dlg = Some(
-                crate::videodlg::VideoDialog::for_page(dir, &page, cmd)
-                    .with_subs(self.settings.video_subs.clone()),
-            );
+            self.video_dlg = Some(self.video_dialog(Some((&page, cmd))));
             return;
         }
         // Its menu: never on this site.
@@ -3117,7 +3115,16 @@ impl App {
                     // now still counts as in front (#520).
                     let focus = ctx.input(|i| i.viewport().focused);
                     let since_focused = self.tray_last_focused.map(|t| t.elapsed());
-                    if tray_toggle_hide(self.hidden, minimized, focus, since_focused) {
+                    // With the icon under the taskbar's ^, the flyout took the focus well
+                    // before the click: Windows is asked whether anything covers the window.
+                    #[cfg(windows)]
+                    let in_front = crate::win32::main_window_in_front() == Some(true);
+                    // Elsewhere focus is all there is to go by (sway, KDE's tray).
+                    #[cfg(not(windows))]
+                    let in_front = false;
+                    if tray_toggle_hide(self.hidden, minimized, focus, since_focused)
+                        || (!self.hidden && !minimized && in_front)
+                    {
                         self.hide_to_tray(ctx);
                     } else {
                         self.show_window(ctx);
@@ -3450,6 +3457,22 @@ impl App {
         }
     }
 
+    /// Download video from a page, opened for a page (looked up at once) or from the menu: Save
+    /// to is the Video category's folder, the Music category's while a sound-only choice is
+    /// chosen (#611; not when the user deleted Music).
+    fn video_dialog(&self, page: Option<(&str, mdm_ipc::Command)>) -> crate::videodlg::VideoDialog {
+        crate::videodlg::refresh_ytdlp(&self.rt);
+        let dir = self.settings.category_dir(Category::Video, &self.downloads);
+        let music = (!Category::Music.deleted())
+            .then(|| self.settings.category_dir(Category::Music, &self.downloads));
+        match page {
+            Some((page, cmd)) => crate::videodlg::VideoDialog::for_page(dir, page, cmd),
+            None => crate::videodlg::VideoDialog::new(dir),
+        }
+        .with_subs(self.settings.video_subs.clone())
+        .with_music_folder(music)
+    }
+
     /// Download video from a page → Download Now / Later.
     fn add_video(&mut self, add: crate::videodlg::VideoAdd) {
         let folder = add
@@ -3476,7 +3499,7 @@ impl App {
         let id = self.push_item(
             add.page,
             dest,
-            Category::Video,
+            add.category,
             String::new(),
             add.size,
             None,
@@ -3524,7 +3547,7 @@ impl App {
             let id = self.push_item(
                 page,
                 dest,
-                Category::Video,
+                add.category,
                 String::new(),
                 None,
                 None,
@@ -5266,6 +5289,12 @@ impl App {
             }
             // Every window at once (the frames after this one); saved by `follow_zoom`.
             Cmd::InterfaceSize(percent) => crate::scale::set(ctx, percent),
+            #[cfg(windows)]
+            Cmd::SmoothText(on) => {
+                crate::theme::set_smooth_text(ctx, on);
+                self.settings.smooth_text = on;
+                self.dirty = true;
+            }
             #[cfg(gpu)]
             Cmd::DrawWith(api) => {
                 // Chosen again after it failed here: its next start is tried.
@@ -5354,12 +5383,7 @@ impl App {
             },
             Cmd::VideoPage => {
                 if self.video_dlg.is_none() {
-                    let dir = self.settings.category_dir(Category::Video, &self.downloads);
-                    crate::videodlg::refresh_ytdlp(&self.rt);
-                    self.video_dlg = Some(
-                        crate::videodlg::VideoDialog::new(dir)
-                            .with_subs(self.settings.video_subs.clone()),
-                    );
+                    self.video_dlg = Some(self.video_dialog(None));
                 }
             }
             Cmd::AddMagnet => self.open_torrent_dialog(None, ctx),
@@ -5923,8 +5947,13 @@ impl App {
         {
             menu.insert(at + 1, self.theme_menu());
             menu.insert(at + 2, self.interface_size_menu());
+            #[cfg(windows)]
+            menu.insert(at + 3, self.text_menu());
             #[cfg(gpu)]
-            menu.insert(at + 3, self.draw_with_menu());
+            menu.insert(
+                at + if cfg!(windows) { 4 } else { 3 },
+                self.draw_with_menu(),
+            );
         }
         menu
     }
@@ -5961,6 +5990,8 @@ impl App {
         items.push(Radio("Aero", Cmd::Theme("aero"), true, on("aero")));
         // i18n: View → Theme: a style theme's name (Mac OS X's look), a name: keep "Aqua" as written
         items.push(Radio("Aqua", Cmd::Theme("aqua"), true, on("aqua")));
+        // i18n: View → Theme: a style theme's name (a white canvas, emerald fills, 6-point corners), a name: keep "Emerald" as written
+        items.push(Radio("Emerald", Cmd::Theme("emerald"), true, on("emerald")));
         let wal = crate::themefile::PYWAL;
         for e in self.theme_list.iter().filter(|e| e.path.is_some()) {
             if !files {
@@ -6000,6 +6031,20 @@ impl App {
             .collect();
         // i18n: View menu: submenu choosing how large MDM draws its windows and text (100 % to 200 %), as a browser's zoom
         MenuEntry::Sub("&Interface size", true, items)
+    }
+
+    /// View → Text (Windows): how the letters are drawn. Smooth is DirectWrite's natural look
+    /// (any size, each letter where it falls: easy to read on a dense screen); Classic is the
+    /// hinted whole-pixel look of Windows' old controls. Applies at once.
+    #[cfg(windows)]
+    fn text_menu(&self) -> MenuEntry<Cmd> {
+        let smooth = self.settings.smooth_text;
+        // i18n: View → Text: letters drawn smooth, as Windows' modern apps draw them, anti-aliased at any size
+        let a = MenuEntry::Radio("&Smooth", Cmd::SmoothText(true), true, smooth);
+        // i18n: View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
+        let b = MenuEntry::Radio("&Classic", Cmd::SmoothText(false), true, !smooth);
+        // i18n: View menu: submenu choosing how the text is drawn (smooth or classic)
+        MenuEntry::Sub("&Text", true, vec![a, b])
     }
 
     /// View → Draw with (#89, #206): OpenGL or the system's own graphics API (Direct3D on
@@ -8220,16 +8265,8 @@ impl App {
                 // A video's page, not a file (YouTube, Vimeo…): the video window looks it up.
                 Outcome::Done(new) if mdm_tools::pages::is_video_page(&new.url) => {
                     self.add_url = None;
-                    let dir = self.settings.category_dir(Category::Video, &self.downloads);
-                    crate::videodlg::refresh_ytdlp(&self.rt);
-                    self.video_dlg = Some(
-                        crate::videodlg::VideoDialog::for_page(
-                            dir,
-                            new.url.as_str(),
-                            Default::default(),
-                        )
-                        .with_subs(self.settings.video_subs.clone()),
-                    );
+                    self.video_dlg =
+                        Some(self.video_dialog(Some((new.url.as_str(), Default::default()))));
                 }
                 // An image gallery's page (Wikimedia Commons, Flickr…): gallery-dl (#58).
                 Outcome::Done(new) if mdm_tools::pages::is_gallery_page(&new.url) => {
@@ -8515,6 +8552,13 @@ impl App {
                 Outcome::Open => false,
                 Outcome::Closed => true,
                 Outcome::Done(add) => {
+                    if self.settings.change_folder_on_last
+                        && self
+                            .settings
+                            .keep_category_dir(add.category, &add.dir, &self.downloads)
+                    {
+                        self.dirty = true;
+                    }
                     self.torrent_dlg = None;
                     self.add_torrent(add);
                     true
@@ -8542,10 +8586,11 @@ impl App {
                 Outcome::Closed => self.video_dlg = None,
                 Outcome::Done(out) => {
                     // Options' "Change folder for this category on last selected", which
-                    // Download File Info follows through its box (#475).
+                    // Download File Info follows through its box (#475): Music's for a
+                    // sound-only choice (#611).
                     if self.settings.change_folder_on_last
                         && self.settings.keep_category_dir(
-                            Category::Video,
+                            v.category(),
                             &v.save_folder(),
                             &self.downloads,
                         )
@@ -8624,6 +8669,9 @@ impl App {
         }
         if let Some(mut fi) = self.file_info.take() {
             self.start_early(&mut fi);
+            // The downloads waiting their turn behind this one (a browser selection's arrive
+            // one by one): Cancel asks whether they are cancelled too (#394).
+            fi.waiting = self.file_info_waiting.len();
             let out = fi.show(ctx, &mut self.icons);
             if std::mem::take(&mut fi.new_category) {
                 self.category_for_file_info = true;
@@ -8654,6 +8702,12 @@ impl App {
             match out {
                 Outcome::Open => self.file_info = Some(fi),
                 Outcome::Closed => {
+                    if fi.cancel_all {
+                        // #394: "Yes" to "Cancel them too?": the browser's links waiting
+                        // behind this one are cancelled with it (the browser gave its own copy
+                        // up, and Download File Info was their step).
+                        self.file_info_waiting.clear();
+                    }
                     if let Some(id) = fi.early {
                         self.stop(id);
                         self.after_stop.push((id, None));

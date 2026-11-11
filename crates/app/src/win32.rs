@@ -60,6 +60,77 @@ fn own_capture() -> Option<HWND> {
 /// The main window of this run, once it exists ([`set_main_window`]). 0: not known yet.
 static MAIN_WINDOW: std::sync::atomic::AtomicIsize = std::sync::atomic::AtomicIsize::new(0);
 
+/// Whether the main window is in front: no visible window of another program covers any part
+/// of it from above. A tray click asks (#520): the click itself takes the focus first, and with
+/// the icon under the taskbar's ^ the focus went to the flyout well before, so focus alone
+/// can't tell. The taskbar and its flyout, always on top, don't count, nor do hidden, minimized
+/// or cloaked windows (another virtual desktop, a suspended app) or this program's own (its
+/// dialogs over it). None: the main window isn't known yet.
+pub fn main_window_in_front() -> Option<bool> {
+    use windows_sys::Win32::Graphics::Dwm::{DWMWA_CLOAKED, DwmGetWindowAttribute};
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        GW_HWNDPREV, GetWindow, GetWindowRect, IsIconic, IsWindowVisible, WS_EX_TOPMOST,
+    };
+    let main = MAIN_WINDOW.load(std::sync::atomic::Ordering::Relaxed) as HWND;
+    if main.is_null() {
+        return None;
+    }
+    let rect = |h: HWND| {
+        let mut r = RECT {
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+        };
+        // SAFETY: a read into a local; a gone window fails harmlessly.
+        (unsafe { GetWindowRect(h, &mut r) } != 0 && r.right > r.left && r.bottom > r.top)
+            .then_some(r)
+    };
+    let m = rect(main)?;
+    // SAFETY: plain queries about windows, walking the z-order up from ours.
+    let me = unsafe { GetCurrentProcessId() };
+    let mut h = unsafe { GetWindow(main, GW_HWNDPREV) };
+    // A bound, in case windows come and go under the walk.
+    for _ in 0..4096 {
+        if h.is_null() {
+            break;
+        }
+        let mut pid = 0;
+        // SAFETY: as above.
+        let (visible, topmost) = unsafe {
+            GetWindowThreadProcessId(h, &mut pid);
+            (
+                IsWindowVisible(h) != 0 && IsIconic(h) == 0,
+                GetWindowLongPtrW(h, GWL_EXSTYLE) as u32 & WS_EX_TOPMOST != 0,
+            )
+        };
+        if visible && !topmost && pid != me {
+            let mut cloaked: u32 = 0;
+            // SAFETY: a u32 read into a local of that size.
+            let known = unsafe {
+                DwmGetWindowAttribute(
+                    h,
+                    DWMWA_CLOAKED as _,
+                    (&mut cloaked as *mut u32).cast(),
+                    std::mem::size_of::<u32>() as u32,
+                )
+            } >= 0;
+            if !(known && cloaked != 0)
+                && let Some(r) = rect(h)
+                && r.left < m.right
+                && m.left < r.right
+                && r.top < m.bottom
+                && m.top < r.bottom
+            {
+                return Some(false);
+            }
+        }
+        // SAFETY: as above.
+        h = unsafe { GetWindow(h, GW_HWNDPREV) };
+    }
+    Some(true)
+}
+
 /// Remember the window the app was made for: the one that stays. A way of drawing that fails
 /// (Direct3D with no usable adapter, renderer.rs) leaves its own window behind under the same
 /// title until the event loop next runs, and a dialog owned by that window goes down with it
@@ -1776,7 +1847,6 @@ fn popup_ex_style(ex: u32, no_activate: bool) -> u32 {
 #[cfg(test)]
 mod popup_style_tests {
     use super::*;
-    use windows_sys::Win32::Foundation::RECT;
     use windows_sys::Win32::UI::WindowsAndMessaging::{
         AdjustWindowRectEx, WS_CLIPCHILDREN, WS_CLIPSIBLINGS, WS_EX_APPWINDOW, WS_EX_NOACTIVATE,
         WS_EX_TOOLWINDOW, WS_EX_TOPMOST, WS_POPUP, WS_VISIBLE,
@@ -4686,6 +4756,12 @@ pub fn keep_awake(reason: Option<&str>) -> bool {
 /// to whole pixels while the letters themselves were fitted to pixels: the two disagreed by up to
 /// a pixel, so letters touched in one place ("download") and stood apart in another ("Resum e").
 ///
+/// `smooth` picks how a letter is drawn: `false`, the classic controls' look (hinted in both
+/// directions at a whole pixel size, letters on whole pixels: crisp, and coarse on a large,
+/// dense screen), or `true`, DirectWrite's natural look (the size as it is, hinted up and down
+/// only, each letter where it falls between two pixels, with all 256 levels of grey: the text of
+/// Windows' own modern apps, much easier to read at 1440p).
+///
 /// `None` from DirectWrite's factory or a font's file keeps egui's rasterizer. A cluster it isn't
 /// for ([`classic_char`]) is left to egui too, which shapes it. The rasterizer is told the
 /// interface's direction: a bracket in a right-to-left line is mirrored by the shaper, so those
@@ -4693,6 +4769,7 @@ pub fn keep_awake(reason: Option<&str>) -> bool {
 pub fn text_rasterizer(
     font_dir: std::path::PathBuf,
     rtl: bool,
+    smooth: bool,
 ) -> Option<egui::epaint::text::GlyphRasterizer> {
     let glyphs = classic_text::Glyphs::new(font_dir)
         .map_err(|e| tracing::warn!("text: DirectWrite unavailable, egui draws the text ({e})"))
@@ -4702,7 +4779,7 @@ pub fn text_rasterizer(
         egui::epaint::text::GlyphRasterizer::new(
             "mdm::win32::classic_text",
             move |req: &egui::epaint::text::GlyphRasterizerRequest<'_>| {
-                glyphs.lock().ok()?.glyph(req, rtl)
+                glyphs.lock().ok()?.glyph(req, rtl, smooth)
             },
         )
         .with_priority(egui::epaint::text::FontPriority::Highest),
@@ -4759,9 +4836,13 @@ mod classic_text {
         DWRITE_FACTORY_TYPE_SHARED, DWRITE_FONT_FACE_TYPE_TRUETYPE, DWRITE_FONT_METRICS,
         DWRITE_FONT_SIMULATIONS_NONE, DWRITE_GLYPH_METRICS, DWRITE_GLYPH_OFFSET, DWRITE_GLYPH_RUN,
         DWRITE_GRID_FIT_MODE_ENABLED, DWRITE_MEASURING_MODE_GDI_CLASSIC,
-        DWRITE_RENDERING_MODE_GDI_CLASSIC, DWRITE_TEXT_ANTIALIAS_MODE_GRAYSCALE,
+        DWRITE_MEASURING_MODE_NATURAL, DWRITE_RENDERING_MODE_GDI_CLASSIC,
+        DWRITE_RENDERING_MODE_NATURAL_SYMMETRIC, DWRITE_TEXT_ANTIALIAS_MODE_GRAYSCALE,
         DWRITE_TEXTURE_ALIASED_1x1, DWriteCreateFactory, IDWriteFactory2, IDWriteFontFace,
     };
+
+    /// How much the smooth look thins its edges: 1.0 keeps DirectWrite's coverage as it is.
+    const SMOOTH_COVERAGE_GAMMA: f32 = 1.8;
 
     pub struct Glyphs {
         factory: IDWriteFactory2,
@@ -4819,6 +4900,7 @@ mod classic_text {
             &mut self,
             req: &GlyphRasterizerRequest<'_>,
             rtl: bool,
+            smooth: bool,
         ) -> Option<RasterizedGlyph> {
             let mut chars = req.cluster.chars();
             let ch = chars.next()?;
@@ -4829,8 +4911,12 @@ mod classic_text {
                 return None;
             }
             let face = self.face(super::classic_font_file(req.family)?)?;
-            // GDI's sizes are whole pixels.
-            let em = req.font_size_px.round();
+            // GDI's sizes are whole pixels; the natural look keeps the size it is asked for.
+            let em = if smooth {
+                req.font_size_px
+            } else {
+                req.font_size_px.round()
+            };
             let mut id = 0u16;
             let mut metrics = DWRITE_GLYPH_METRICS::default();
             let mut font = DWRITE_FONT_METRICS::default();
@@ -4840,32 +4926,49 @@ mod classic_text {
                 if id == 0 {
                     return None;
                 }
-                face.GetGdiCompatibleGlyphMetrics(
-                    em,
-                    1.0,
-                    None,
-                    false,
-                    &id,
-                    1,
-                    &mut metrics,
-                    false,
-                )
-                .ok()?;
+                if smooth {
+                    face.GetDesignGlyphMetrics(&id, 1, &mut metrics, false)
+                        .ok()?;
+                } else {
+                    face.GetGdiCompatibleGlyphMetrics(
+                        em,
+                        1.0,
+                        None,
+                        false,
+                        &id,
+                        1,
+                        &mut metrics,
+                        false,
+                    )
+                    .ok()?;
+                }
                 face.GetMetrics(&mut font);
             }
-            let advance_px =
-                (metrics.advanceWidth as f32 * em / f32::from(font.designUnitsPerEm)).round();
-            let bitmap = self.draw(face, id, em).unwrap_or(GlyphBitmap {
-                // A space: egui still wants a bitmap to carry the advance.
-                image: ColorImage::new([1, 1], vec![Color32::TRANSPARENT]),
-                offset_px: egui::vec2(0.0, 0.0),
-                is_color: false,
-            });
+            let advance = metrics.advanceWidth as f32 * em / f32::from(font.designUnitsPerEm);
+            // Smooth: the font's own width, as egui lays a line out by it (and places each letter
+            // at a quarter pixel). Classic: the whole pixels GDI's hinting gives.
+            let advance_px = if smooth { advance } else { advance.round() };
+            let origin = if smooth { req.subpixel_offset_px } else { 0.0 };
+            let bitmap = self
+                .draw(face, id, em, smooth, origin)
+                .unwrap_or(GlyphBitmap {
+                    // A space: egui still wants a bitmap to carry the advance.
+                    image: ColorImage::new([1, 1], vec![Color32::TRANSPARENT]),
+                    offset_px: egui::vec2(0.0, 0.0),
+                    is_color: false,
+                });
             Some(RasterizedGlyph { bitmap, advance_px })
         }
 
         /// The glyph in grey, placed from its origin; `None` when it has no ink.
-        fn draw(&self, face: IDWriteFontFace, id: u16, em: f32) -> Option<GlyphBitmap> {
+        fn draw(
+            &self,
+            face: IDWriteFontFace,
+            id: u16,
+            em: f32,
+            smooth: bool,
+            origin_x: f32,
+        ) -> Option<GlyphBitmap> {
             let (ids, advances, offsets) = ([id], [0f32], [DWRITE_GLYPH_OFFSET::default()]);
             let run = DWRITE_GLYPH_RUN {
                 fontFace: std::mem::ManuallyDrop::new(Some(face)),
@@ -4884,11 +4987,19 @@ mod classic_text {
                     .CreateGlyphRunAnalysis(
                         &run,
                         None,
-                        DWRITE_RENDERING_MODE_GDI_CLASSIC,
-                        DWRITE_MEASURING_MODE_GDI_CLASSIC,
+                        if smooth {
+                            DWRITE_RENDERING_MODE_NATURAL_SYMMETRIC
+                        } else {
+                            DWRITE_RENDERING_MODE_GDI_CLASSIC
+                        },
+                        if smooth {
+                            DWRITE_MEASURING_MODE_NATURAL
+                        } else {
+                            DWRITE_MEASURING_MODE_GDI_CLASSIC
+                        },
                         DWRITE_GRID_FIT_MODE_ENABLED,
                         DWRITE_TEXT_ANTIALIAS_MODE_GRAYSCALE,
-                        0.0,
+                        origin_x,
                         0.0,
                     )
                     .and_then(|a| {
@@ -4908,9 +5019,16 @@ mod classic_text {
                 return None;
             }
             // White with alpha, premultiplied (`GlyphBitmap`).
+            // Smooth: less ink at the edges, so the weight matches what Windows' own
+            // DirectWrite text shows (WPF's grey-scale text, compared side by side): coverage
+            // blended as it is reads bolder, most of all light on dark.
+            let gamma = if smooth { SMOOTH_COVERAGE_GAMMA } else { 1.0 };
             let pixels = coverage
                 .into_iter()
-                .map(|a| Color32::from_rgba_premultiplied(a, a, a, a))
+                .map(|a| {
+                    let a = ((f32::from(a) / 255.0).powf(gamma) * 255.0).round() as u8;
+                    Color32::from_rgba_premultiplied(a, a, a, a)
+                })
                 .collect();
             Some(GlyphBitmap {
                 image: ColorImage::new([w, h], pixels),
@@ -5054,7 +5172,7 @@ mod classic_text_tests {
             for size in [11.0, 12.0, 13.2, 15.0, 16.5, 18.0, 24.0] {
                 for ch in "downloadefaultakeDRsum".chars() {
                     let text = ch.to_string();
-                    let glyph = g.glyph(&req(&text, &family, size), false).unwrap();
+                    let glyph = g.glyph(&req(&text, &family, size), false, false).unwrap();
                     assert_eq!(glyph.advance_px.fract(), 0.0, "{ch} at {size}");
                     assert!(glyph.advance_px >= 1.0, "{ch} at {size}");
                     let right = glyph.bitmap.offset_px.x + glyph.bitmap.image.size[0] as f32;
@@ -5068,11 +5186,36 @@ mod classic_text_tests {
         }
     }
 
+    /// The smooth look keeps the font's own width and draws more levels of grey than the
+    /// classic one, whose letters are fitted to whole pixels.
+    #[test]
+    fn smooth_letters_keep_their_width_and_their_greys() {
+        let mut g = glyphs();
+        let f = FontFamily::Proportional;
+        let levels = |glyph: &egui::epaint::text::RasterizedGlyph| {
+            let mut l: Vec<u8> = glyph.bitmap.image.pixels.iter().map(|p| p.a()).collect();
+            l.sort_unstable();
+            l.dedup();
+            l.len()
+        };
+        let classic = g.glyph(&req("o", &f, 13.2), false, false).unwrap();
+        let smooth = g.glyph(&req("o", &f, 13.2), false, true).unwrap();
+        assert_eq!(classic.advance_px.fract(), 0.0);
+        assert!(smooth.advance_px.fract() != 0.0, "{}", smooth.advance_px);
+        assert!(levels(&smooth) > levels(&classic));
+        // A quarter pixel to the right changes the picture, not the width.
+        let mut shifted = req("o", &f, 13.2);
+        shifted.subpixel_offset_px = 0.5;
+        let moved = g.glyph(&shifted, false, true).unwrap();
+        assert_eq!(moved.advance_px, smooth.advance_px);
+        assert_ne!(moved.bitmap.image.pixels, smooth.bitmap.image.pixels);
+    }
+
     #[test]
     fn a_space_keeps_its_advance() {
         let mut g = glyphs();
         let s = g
-            .glyph(&req(" ", &FontFamily::Proportional, 12.0), false)
+            .glyph(&req(" ", &FontFamily::Proportional, 12.0), false, false)
             .unwrap();
         assert!(s.advance_px > 0.0);
     }
@@ -5089,13 +5232,16 @@ mod classic_text_tests {
             "e\u{301}",
             "\u{1F600}",
         ] {
-            assert!(g.glyph(&req(not, &f, 12.0), false).is_none(), "{not:?}");
+            assert!(
+                g.glyph(&req(not, &f, 12.0), false, false).is_none(),
+                "{not:?}"
+            );
         }
         // A bracket is mirrored by the shaper in a right-to-left line, only.
-        assert!(g.glyph(&req("(", &f, 12.0), false).is_some());
-        assert!(g.glyph(&req("(", &f, 12.0), true).is_none());
+        assert!(g.glyph(&req("(", &f, 12.0), false, false).is_some());
+        assert!(g.glyph(&req("(", &f, 12.0), true, false).is_none());
         // A family it isn't told about stays with egui.
         let other = FontFamily::Name("other".into());
-        assert!(g.glyph(&req("a", &other, 12.0), false).is_none());
+        assert!(g.glyph(&req("a", &other, 12.0), false, false).is_none());
     }
 }
