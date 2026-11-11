@@ -1975,6 +1975,48 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   ok("#603 Firefox: tokenized Colab runtime-proxy download stays in the browser");
 }
 
+// A token alone is not enough: unrelated hosts must still be captured.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  await settle();
+  listeners.determining(
+    {
+      id: 93,
+      url: "https://downloads.example/data.zip?colab-runtime-proxy-token=not-colab",
+      finalUrl: "https://downloads.example/data.zip?colab-runtime-proxy-token=not-colab",
+      referrer: "https://colab.research.google.com/drive/abc",
+      filename: "data.zip",
+      totalBytes: 4096,
+      mime: "application/zip",
+    },
+    () => {},
+  );
+  await settle();
+  assert.equal(natives(calls).length, 1, "a token on a non-proxy host must not bypass MDM");
+  ok("#603 Chromium: tokenized non-Colab URLs remain capturable");
+}
+{
+  const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  await settle();
+  listeners.determining(
+    {
+      id: 94,
+      url: "https://prod.r.colab.dev/files/out.zip",
+      finalUrl: "https://prod.r.colab.dev/files/out.zip",
+      referrer: "https://colab.research.google.com/drive/abc",
+      filename: "out.zip",
+      totalBytes: 4096,
+      mime: "application/zip",
+    },
+    () => {},
+  );
+  await settle();
+  assert.equal(natives(calls).length, 1, "a proxy host without its token must not bypass MDM");
+  ok("#603 Chromium: an un-tokenized Colab host remains capturable");
+}
+
 // The manifests (#42): "proxy" optional in Firefox's, required in Chrome's (it can't be optional
 // there); the popup's switch: the permission in Firefox, the extension's own setting in Chrome.
 {
