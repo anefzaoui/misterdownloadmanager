@@ -527,6 +527,7 @@ These ship in a later version, when they're ready.
 - 🔄 Download video: a sound-only choice (MP3, a playlist as sound) saved in the Music folder and
   listed under Music ([#611](https://github.com/anefzaoui/misterdownloadmanager/issues/611)):
   in review
+- 🔄 Video downloads show a distinct post-processing phase, keep CLI downloads active while merging, and normalise media extensions before naming videos and subtitle sidecars ([#622](https://github.com/anefzaoui/misterdownloadmanager/issues/622)): fix in review
 - 🔄 Linux and macOS: the system's gallery-dl used when MDM has none of its own, as yt-dlp is
   ([#571](https://github.com/anefzaoui/misterdownloadmanager/issues/571)): in review
 - 🔄 Videos sent in pieces (HLS, DASH) downloading several pieces at once, as many as a file's
