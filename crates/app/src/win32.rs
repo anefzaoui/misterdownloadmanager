@@ -4521,8 +4521,19 @@ pub fn browsers() -> Vec<(String, std::path::PathBuf)> {
 }
 
 /// Open `url` in the browser whose program is `program` (from `browsers`).
+///
+/// Process creation can block on Windows (for example while Defender inspects the executable).
+/// This is called from the extension dialog's UI callback, so do it off the UI thread (#609).
 pub fn open_in(program: &std::path::Path, url: &str) {
-    let _ = std::process::Command::new(program).arg(url).spawn();
+    let (program, url) = (program.to_owned(), url.to_owned());
+    if let Err(e) = std::thread::Builder::new()
+        .name("mdm-open-browser".into())
+        .spawn(move || {
+            let _ = std::process::Command::new(program).arg(url).spawn();
+        })
+    {
+        tracing::warn!("could not start browser launch thread: {e}");
+    }
 }
 
 /// Mark-of-the-Web on a file being downloaded from `url` (`referrer`'s page): the zone stream
