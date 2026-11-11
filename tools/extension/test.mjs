@@ -1230,6 +1230,74 @@ const MPD = (protect) => `<?xml version="1.0"?>
   assert.equal(at("https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?start=5"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
   assert.equal(at("https://vimeo.com/123456789?list=abc"), "https://vimeo.com/123456789?list=abc");
   ok("#311: the button sends the video's own page, not the page playing it");
+
+  // Facebook feeds keep the same tab URL while video cards link to their own reels or posts.
+  const facebook = (href, { videoTop = 0, links = [] } = {}) => {
+    const document = {
+      querySelector: () => null,
+      querySelectorAll: (selector) =>
+        selector === "a[href]"
+          ? links.map(({ href, top = 0, left = 0 }) => ({
+              href: new URL(href, "https://www.facebook.com/").href,
+              getAttribute: () => href,
+              getBoundingClientRect: () => ({ top, left }),
+            }))
+          : [],
+    };
+    const video = {
+      parentElement: null,
+      getBoundingClientRect: () => ({ top: videoTop, left: 0 }),
+      querySelectorAll: (selector) =>
+        selector === "a[href]"
+          ? links.map(({ href, top = 0, left = 0 }) => ({
+              href: new URL(href, "https://www.facebook.com/").href,
+              getAttribute: () => href,
+              getBoundingClientRect: () => ({ top, left }),
+            }))
+          : [],
+    };
+    const fn = new Function("location", "document", source.slice(start, end) + "; return videoPage;")({ href }, document);
+    return fn(video);
+  };
+  assert.equal(facebook("https://www.facebook.com/"), null);
+  assert.equal(
+    facebook("https://www.facebook.com/", {
+      links: [
+        { href: "/reel/123456789/", top: 20 },
+        { href: "/watch/?v=987654321", top: 400 },
+      ],
+      videoTop: 18,
+    }),
+    "https://www.facebook.com/reel/123456789/",
+    "prefer the nearest reel link in the feed",
+  );
+  assert.equal(
+    facebook("https://www.facebook.com/", {
+      links: [{ href: "/watch/?v=123456789&ref=sharing", top: 5 }],
+    }),
+    "https://www.facebook.com/watch/?v=123456789",
+    "preserve the video ID and remove tracking parameters",
+  );
+  assert.equal(
+    facebook("https://www.facebook.com/reel/123456789/?mibextid=abc"),
+    "https://www.facebook.com/reel/123456789/",
+    "a reel's own page is used instead of the feed",
+  );
+  assert.equal(
+    facebook("https://www.facebook.com/", {
+      links: [{ href: "/profile/posts/123456789", top: 5 }],
+    }),
+    "https://www.facebook.com/profile/posts/123456789",
+    "use a post permalink when Facebook exposes no dedicated video link",
+  );
+  assert.equal(
+    facebook("https://www.facebook.com/", {
+      links: [{ href: "/help/", top: 5 }],
+    }),
+    null,
+    "ignore unrelated links",
+  );
+  ok("#643: the button sends a Facebook video's permalink, not the feed");
 }
 
 // A page that moves in place (history.pushState): the button sends the address it's at now, not
