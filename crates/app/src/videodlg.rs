@@ -90,7 +90,7 @@ pub struct VideoDialog {
     /// Look the page up as soon as yt-dlp is there (opened from Add URL).
     auto_look: bool,
     /// Asking to create a missing folder.
-    asking: Option<(crate::dialogs::CreateFolder, ())>,
+    asking: crate::dialogs::FolderGate<()>,
     /// Helpers...: where yt-dlp and ffmpeg come from (#51).
     helpers: Option<crate::helpers::Programs>,
     /// The looked-up video's subtitle languages (#68) and the one chosen in the Subtitles list
@@ -187,7 +187,7 @@ impl VideoDialog {
             focused: false,
             start_now: None,
             auto_look: false,
-            asking: None,
+            asking: Default::default(),
             helpers: None,
             subs: Vec::new(),
             sub_pick: 0,
