@@ -561,6 +561,10 @@ These ship in the next version.
   video window, the menu over a video and the command line say to install Node.js or Deno, with
   a link to the help page's commands for each system
   ([#852](https://github.com/anefzaoui/misterdownloadmanager/issues/852))
+- ✅ Linux: no freeze of the window where the session bus doesn't answer (a session started
+  without D-Bus, a bus that hangs): the tray icon is set up beside the window, which carries on
+  without it until the bus answers, and gets it then, however late
+  ([#828](https://github.com/anefzaoui/misterdownloadmanager/issues/828))
 - ✅ Looking up a new video (put online in the last two days) no longer fails with "Permission
   denied" in MDM's install folder: the helpers run in your temporary folder, or MDM's own if
   that one can't be written ([#834](https://github.com/anefzaoui/misterdownloadmanager/issues/834))
