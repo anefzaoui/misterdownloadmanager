@@ -172,10 +172,12 @@ fn with_cookies(ours: &[String], chosen: Option<&BrowserCookies>) -> bool {
             .any(|a| a == "--cookies" || a == "--cookies-from-browser")
 }
 
-/// A page's `-J` output, and whether it took looking the page up without cookies.
+/// A page's `-J` output, whether it took looking the page up without cookies, and yt-dlp's
+/// `WARNING:` lines on the way (#852: the one saying it has no JavaScript runtime).
 pub struct LookedUp {
     pub json: Vec<u8>,
     pub without_cookies: bool,
+    pub warnings: Vec<String>,
 }
 
 /// Look a page up (`yt-dlp -J`, `ours` holding its arguments). yt-dlp's `-J` chooses a format too,
@@ -192,27 +194,55 @@ pub fn look_up(
 ) -> Result<LookedUp, ProcError> {
     // A plain file a server's program sends gets its real type (#695).
     let run = |args: &[String]| {
-        output(ytdlp(exe, &[], args, url)?, "yt-dlp", timeout).map(crate::resolve::typed_scripts)
+        output_warned(ytdlp(exe, &[], args, url)?, "yt-dlp", timeout)
+            .map(|(json, warnings)| (crate::resolve::typed_scripts(json), warnings))
     };
     match run(ours) {
-        Ok(json) => Ok(LookedUp {
+        Ok((json, warnings)) => Ok(LookedUp {
             json,
             without_cookies: false,
+            warnings,
         }),
         Err(first)
             if with_cookies(ours, browser_cookies().as_ref())
                 && crate::servers::format_unavailable(&first.to_string()) =>
         {
             match run(&without_cookies(ours)) {
-                Ok(json) => Ok(LookedUp {
+                Ok((json, warnings)) => Ok(LookedUp {
                     json,
                     without_cookies: true,
+                    warnings,
                 }),
                 Err(_) => Err(first),
             }
         }
         Err(e) => Err(e),
     }
+}
+
+/// Did yt-dlp's look-up say YouTube's qualities went missing for want of a JavaScript runtime
+/// (#852)? yt-dlp needs Deno, Node.js or Bun to solve YouTube's challenges; without one it asks
+/// only the players that need none, and their list is short (on some days only the sound and a
+/// low quality). Its own words, `warnings` as [`Spawned::warnings`] gives them:
+/// - "No supported JavaScript runtime could be found. [...] some formats may be missing" (when
+///   it looks a YouTube video up without one);
+/// - "n challenge solving failed" / "Signature solving failed: Some formats may be missing"
+///   (signed in, it asks the players that need one all the same): a runtime's want only when
+///   this computer has none (`runtime_here`); otherwise its solver script is what failed.
+pub fn missing_js_runtime(warnings: &[String], runtime_here: bool) -> bool {
+    warnings.iter().any(|w| {
+        let w = w.to_ascii_lowercase();
+        w.contains("no supported javascript runtime")
+            || (!runtime_here
+                && (w.contains("challenge solving failed")
+                    || w.contains("signature solving failed")))
+    })
+}
+
+/// Has this computer a JavaScript runtime yt-dlp can use (Deno, Node.js or Bun), where the
+/// helpers' runs look for one ([`js_runtime_found`])?
+pub fn js_runtime_here() -> bool {
+    js_runtime_found().is_some()
 }
 
 /// Does yt-dlp's `WARNING:` (or `ERROR:`) line say it couldn't read the browser's cookies?
@@ -687,16 +717,49 @@ fn nvm_node(home: &Path) -> Option<PathBuf> {
 }
 
 /// What yt-dlp should be told about JavaScript (#360, #352, #351): YouTube's formats need a
-/// runtime, and yt-dlp looks for Deno alone unless told of another. Deno found: nothing to say.
-/// Else Node.js or Bun, if there is one.
-fn js_runtime(dirs: &[PathBuf], home: Option<&Path>) -> Option<(&'static str, PathBuf)> {
+/// runtime, and yt-dlp looks for Deno alone, on the PATH, unless told of another. Deno on the
+/// PATH (`dirs`): nothing to say. Else Deno where its own installer puts it
+/// (`~/.deno/bin`, #852: no PATH of a program started from the desktop has it), or in `more`
+/// (folders a runtime installed after MDM started is in, [`runtime_dirs`]); else Node.js or Bun.
+fn js_runtime(
+    dirs: &[PathBuf],
+    more: &[PathBuf],
+    home: Option<&Path>,
+) -> Option<(&'static str, PathBuf)> {
     if program_in(dirs, "deno").is_some() {
         return None;
     }
-    program_in(dirs, "node")
-        .or_else(|| home.and_then(nvm_node))
-        .map(|p| ("node", p))
+    let own_deno = home.map(|h| h.join(".deno").join("bin"));
+    program_in(own_deno.as_slice(), "deno")
+        .or_else(|| program_in(more, "deno"))
+        .map(|p| ("deno", p))
+        .or_else(|| {
+            program_in(dirs, "node")
+                .or_else(|| home.and_then(nvm_node))
+                .or_else(|| program_in(more, "node"))
+                .map(|p| ("node", p))
+        })
         .or_else(|| program_in(dirs, "bun").map(|p| ("bun", p)))
+}
+
+/// Where Windows' installers put a JavaScript runtime (#852): winget's links (Deno, Node.js) and
+/// Node.js's own installer. They add these to the PATH of programs started after them, not to
+/// MDM's own, so a runtime installed while MDM runs is found here when the video is looked up
+/// again. None elsewhere: a package manager's folder is on the PATH already ([`usable_dirs`]).
+fn runtime_dirs() -> Vec<PathBuf> {
+    #[cfg(windows)]
+    {
+        let under = |var: &str, rel: &str| std::env::var_os(var).map(|v| Path::new(&v).join(rel));
+        [
+            under("LOCALAPPDATA", r"Microsoft\WinGet\Links"),
+            under("ProgramFiles", "nodejs"),
+        ]
+        .into_iter()
+        .flatten()
+        .collect()
+    }
+    #[cfg(not(windows))]
+    Vec::new()
 }
 
 /// The folders of `path` (a PATH value) a helper can walk, in their order (#508): yt-dlp looks
@@ -793,24 +856,40 @@ fn with_usable_path(cmd: &mut Command) {
     }
 }
 
-/// `--js-runtimes` for this computer's Node.js or Bun, looked for once in the PATH folders a
-/// helper gets ([`usable_dirs`]): a node.exe behind a junction is named by its real folder.
-fn js_runtime_args() -> &'static [String] {
-    static ARGS: std::sync::OnceLock<Vec<String>> = std::sync::OnceLock::new();
-    ARGS.get_or_init(|| {
+/// This computer's JavaScript runtime for yt-dlp ([`js_runtime`]): `Some` with the arguments
+/// that tell yt-dlp of it (none for Deno on the PATH, which it finds itself), in the PATH
+/// folders a helper gets ([`usable_dirs`]: a node.exe behind a junction is named by its real
+/// folder). Kept once found; while there is none it is looked for again at each run, so one
+/// installed meanwhile counts at the next look-up (#852).
+fn js_runtime_found() -> Option<Vec<String>> {
+    static FOUND: Mutex<Option<Vec<String>>> = Mutex::new(None);
+    let mut found = FOUND
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner);
+    if found.is_none() {
         let dirs: Vec<PathBuf> = std::env::var_os("PATH")
             .map(|p| usable_dirs(&p))
             .unwrap_or_default();
-        let home = std::env::var_os("HOME").map(PathBuf::from);
-        js_runtime(&dirs, home.as_deref())
-            .map(|(name, path)| {
+        let home = std::env::var_os("HOME")
+            .or_else(|| std::env::var_os("USERPROFILE"))
+            .map(PathBuf::from);
+        *found = if program_in(&dirs, "deno").is_some() {
+            Some(Vec::new())
+        } else {
+            js_runtime(&dirs, &runtime_dirs(), home.as_deref()).map(|(name, path)| {
                 vec![
                     "--js-runtimes".to_owned(),
                     format!("{name}:{}", path.display()),
                 ]
             })
-            .unwrap_or_default()
-    })
+        };
+    }
+    found.clone()
+}
+
+/// `--js-runtimes` for this computer's runtime, when yt-dlp must be told of it.
+fn js_runtime_args() -> Vec<String> {
+    js_runtime_found().unwrap_or_default()
 }
 
 /// `yt-dlp` with arguments in layers: `user` extras, then `ours` (then the chosen browser's
@@ -905,15 +984,22 @@ impl Spawned {
         self.warnings.lock().unwrap().clone()
     }
 
+    /// Once it has ended: wait for its last stderr lines (the reader is another thread, and on
+    /// a busy machine it comes after the exit was seen), up to two seconds, as something it
+    /// started may keep stderr open.
+    fn settle(&self) {
+        let end = Instant::now() + Duration::from_secs(2);
+        while !self.stderr_done.load(std::sync::atomic::Ordering::Acquire) && Instant::now() < end {
+            std::thread::sleep(Duration::from_millis(10));
+        }
+    }
+
     /// A failure with what the tool said (its last `ERROR:` line, else its last line). Called
     /// once it has ended: its last lines are waited for (the stderr reader is another thread, and
     /// on a busy machine it came after the exit was seen: "stopped without saying why"), up to
     /// two seconds, as something it started may keep stderr open.
     pub fn failure(&self) -> ProcError {
-        let end = Instant::now() + Duration::from_secs(2);
-        while !self.stderr_done.load(std::sync::atomic::Ordering::Acquire) && Instant::now() < end {
-            std::thread::sleep(Duration::from_millis(10));
-        }
+        self.settle();
         let tail = self.tail.lock().unwrap();
         let message = tail
             .iter()
@@ -1010,6 +1096,15 @@ pub fn spawn(mut cmd: Command, name: &str) -> Result<Spawned, ProcError> {
 
 /// Run `cmd` to the end within `timeout` and return its stdout (killed on timeout).
 pub fn output(cmd: Command, name: &str, timeout: Duration) -> Result<Vec<u8>, ProcError> {
+    output_warned(cmd, name, timeout).map(|(out, _)| out)
+}
+
+/// [`output`], with the `WARNING:` lines it wrote ([`Spawned::warnings`]).
+pub fn output_warned(
+    cmd: Command,
+    name: &str,
+    timeout: Duration,
+) -> Result<(Vec<u8>, Vec<String>), ProcError> {
     let mut s = spawn(cmd, name)?;
     let mut out = s.child.stdout.take().expect("piped");
     let reader = std::thread::spawn(move || {
@@ -1023,7 +1118,8 @@ pub fn output(cmd: Command, name: &str, timeout: Duration) -> Result<Vec<u8>, Pr
             Ok(Some(status)) => {
                 let stdout = reader.join().unwrap_or_default();
                 return if status.success() {
-                    Ok(stdout)
+                    s.settle();
+                    Ok((stdout, s.warnings()))
                 } else {
                     // `failure` waits for the stderr reader's last lines.
                     Err(s.failure())
@@ -1381,22 +1477,78 @@ mod tests {
         let (path, home) = (root.path().join("bin"), root.path().join("home"));
         let dirs = vec![path.clone()];
         std::fs::create_dir_all(&path).unwrap();
-        assert_eq!(js_runtime(&dirs, Some(&home)), None);
+        assert_eq!(js_runtime(&dirs, &[], Some(&home)), None);
         for v in ["v20.1.0", "v22.3.0"] {
             touch(&home.join(".nvm/versions/node").join(v).join("bin"), "node");
         }
-        let (name, found) = js_runtime(&dirs, Some(&home)).unwrap();
+        let (name, found) = js_runtime(&dirs, &[], Some(&home)).unwrap();
         assert_eq!(name, "node");
         assert!(found.to_string_lossy().contains("v22.3.0"));
         touch(&path, "bun");
-        assert_eq!(js_runtime(&dirs, None).unwrap().0, "bun");
+        assert_eq!(js_runtime(&dirs, &[], None).unwrap().0, "bun");
         touch(&path, "node");
         assert_eq!(
-            js_runtime(&dirs, None).unwrap().1,
+            js_runtime(&dirs, &[], None).unwrap().1,
             path.join(format!("node{}", std::env::consts::EXE_SUFFIX))
         );
+        // #852: Deno from its own installer (`~/.deno/bin`), or one in a folder a runtime
+        // installed after MDM started is in (Windows: winget's links), named to yt-dlp; Node.js
+        // there when there is nothing else.
+        let more = root.path().join("winget-links");
+        let exe =
+            |dir: &Path, name: &str| dir.join(format!("{name}{}", std::env::consts::EXE_SUFFIX));
+        touch(&more, "node");
+        assert_eq!(
+            js_runtime(&[], std::slice::from_ref(&more), None),
+            Some(("node", exe(&more, "node")))
+        );
+        touch(&more, "deno");
+        assert_eq!(
+            js_runtime(&dirs, std::slice::from_ref(&more), None),
+            Some(("deno", exe(&more, "deno")))
+        );
+        touch(&home.join(".deno/bin"), "deno");
+        assert_eq!(
+            js_runtime(&dirs, &[], Some(&home)),
+            Some(("deno", exe(&home.join(".deno/bin"), "deno")))
+        );
+        // Deno on the PATH: yt-dlp finds it itself.
         touch(&path, "deno");
-        assert_eq!(js_runtime(&dirs, Some(&home)), None);
+        assert_eq!(js_runtime(&dirs, &[], Some(&home)), None);
+    }
+
+    /// #852: what yt-dlp 2026.10.26 wrote looking a YouTube video up (`-J`, its stderr as is):
+    /// with no runtime on the PATH; asking a player that needs one with none there (as when
+    /// signed in); and with Node.js.
+    #[test]
+    fn a_youtube_look_up_without_a_javascript_runtime_is_told_apart() {
+        let warnings = |stderr: &str| -> Vec<String> {
+            stderr
+                .lines()
+                .filter_map(|l| l.strip_prefix("WARNING:"))
+                .map(|w| w.trim().to_owned())
+                .collect()
+        };
+        let none = warnings(include_str!(
+            "../tests/fixtures/ytdlp-js-runtime/no-runtime.stderr"
+        ));
+        let unsolved = warnings(include_str!(
+            "../tests/fixtures/ytdlp-js-runtime/challenge-failed.stderr"
+        ));
+        let node = warnings(include_str!(
+            "../tests/fixtures/ytdlp-js-runtime/with-node.stderr"
+        ));
+        assert_eq!((none.len(), unsolved.len(), node.len()), (1, 3, 1));
+        // Its own words say it, whatever MDM found.
+        assert!(missing_js_runtime(&none, false));
+        assert!(missing_js_runtime(&none, true));
+        // A challenge left unsolved is a runtime's want only when this computer has none: with
+        // one, the solver script is what failed, and installing Node.js wouldn't help.
+        assert!(missing_js_runtime(&unsolved, false));
+        assert!(!missing_js_runtime(&unsolved, true));
+        // A look-up that had one says nothing of the kind.
+        assert!(!missing_js_runtime(&node, false));
+        assert!(!missing_js_runtime(&[], false));
     }
 
     /// #508: a helper's PATH keeps its folders in their order and leaves out those that can't be

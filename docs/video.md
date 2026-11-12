@@ -40,6 +40,21 @@ Already have yt-dlp or ffmpeg for another program? Use those instead of a second
 ![The video helpers window: yt-dlp and ffmpeg, each with its version and Use another program...](images/help/video-helpers.webp)
 *Helpers...: use your own yt-dlp or ffmpeg instead.*
 
+### A JavaScript runtime for YouTube {#javascript-runtime}
+
+YouTube hides most of a video's qualities behind small puzzles that yt-dlp solves with a JavaScript runtime: **Deno**, **Node.js** or **Bun**. Without one, the list is short, sometimes only the sound and a low quality, and MDM says so: *YouTube needs a JavaScript runtime to list its video qualities*. Other sites don't need one.
+
+Install one of them, either works, then look the video up again. MDM finds Deno, Node.js (also one installed with nvm) and Bun by itself. If it still says so, the new program's folder isn't on the `PATH` MDM started with (Windows' installers add it for programs started after them): quit MDM (**Tasks → Exit**) and start it again.
+
+- **Windows**: `winget install DenoLand.Deno`, or `winget install OpenJS.NodeJS.LTS`. The installers on [deno.com](https://deno.com) and [nodejs.org](https://nodejs.org) work too.
+- **Ubuntu and Debian**: `sudo apt install nodejs`
+- **Fedora**: `sudo dnf install nodejs`
+- **Arch**: `sudo pacman -S nodejs`, or `sudo pacman -S deno`
+- **macOS**: `brew install deno`, or `brew install node`
+- **Any system**, Deno for your user alone: `curl -fsSL https://deno.land/install.sh | sh` (on Windows, in PowerShell: `irm https://deno.land/install.ps1 | iex`)
+
+A distribution's yt-dlp can also be too old for YouTube: if the list stays short, click **Use MDM's own copy** beside yt-dlp in **Helpers...**.
+
 ## Choose the quality
 
 1. Wait for the list. It shows each quality with its size, best first, then the sound alone:

@@ -22,7 +22,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex, MutexGuard, PoisonError};
 use std::time::{Duration, Instant};
 
-use mdm_ipc::api::{VideoChoice, VideoLookupAnswer, lookup};
+use mdm_ipc::api::{VideoChoice, VideoLookupAnswer, VideoNotice, lookup};
 use mdm_tools::resolve::{Choice, Looked, Video};
 use mdm_tools::video::{InfoSlot, LOOKUP_WAIT, Preloaded, Subs};
 
@@ -442,18 +442,31 @@ fn menu_choice(c: &Choice) -> VideoChoice {
     }
 }
 
+/// What the menu says with video `v`'s choices, as the Download video window says it (#852:
+/// YouTube looked up without a JavaScript runtime), with its help page in MDM's language.
+fn notice(v: &Video) -> Option<VideoNotice> {
+    v.needs_js_runtime.then(|| VideoNotice {
+        text: crate::videodlg::js_runtime_note().to_owned(),
+        // i18n: link in the browser's video menu, after the note that YouTube needs a JavaScript runtime: opens the help page that says how to install Node.js or Deno
+        link: crate::i18n::t("How to install one").to_owned(),
+        url: crate::help::page_url(crate::videodlg::JS_RUNTIME_HELP, crate::i18n::code()),
+    })
+}
+
 /// The answer for look-up `token` as it stands: the choices labelled in MDM's language, an
 /// error in its words (as the Download video window says them).
 fn answer(token: &str, s: &Search) -> VideoLookupAnswer {
     match &*lock(&s.found) {
         Found::Looking => VideoLookupAnswer::pending(token),
-        Found::Video(_, choices) if choices.is_empty() => {
-            VideoLookupAnswer::failed(lookup::NO_CHOICES, None)
-        }
+        Found::Video(v, choices) if choices.is_empty() => VideoLookupAnswer {
+            notice: notice(v),
+            ..VideoLookupAnswer::failed(lookup::NO_CHOICES, None)
+        },
         Found::Video(v, choices) => VideoLookupAnswer {
             token: Some(token.to_owned()),
             title: Some(cut(title_of(v, &s.address, &s.context), TITLE_MAX)),
             choices: choices.iter().take(CHOICES).map(menu_choice).collect(),
+            notice: notice(v),
             ..VideoLookupAnswer::of(lookup::READY)
         },
         Found::List => VideoLookupAnswer::of(lookup::LIST),
@@ -716,6 +729,7 @@ mod tests {
         assert_eq!(ready.choices[0].ext, "mp4");
         assert_eq!(ready.choices[0].size, Some(60 * 2500 * 125), "estimated");
         assert!(ready.choices.iter().all(|c| !c.audio), "videos");
+        assert_eq!(ready.notice, None, "nothing lacked");
         assert_eq!(l.poll(&b.token, now).state, lookup::PENDING, "its own");
         // The choice takes the look-up's context and MDM's selector for that place.
         let p = l
@@ -1025,6 +1039,7 @@ mod tests {
                 Some(mdm_tools::proc::LookedUp {
                     json: STREAM.as_bytes().to_vec(),
                     without_cookies: false,
+                    warnings: Vec::new(),
                 }),
             )
         };
@@ -1432,5 +1447,48 @@ mod tests {
         );
         let vbr = a.iter().find(|c| c.label.contains("VBR")).unwrap();
         assert_eq!(vbr.kbps, None, "VBR says no rate");
+    }
+
+    /// #852: YouTube looked up without a JavaScript runtime: the menu says so with its
+    /// qualities, as the Download video window does, with the help page's section; a look-up
+    /// that left nothing to offer says it too.
+    #[test]
+    fn a_look_up_without_a_javascript_runtime_says_so_in_the_menu() {
+        let mut l = Lookups::default();
+        let now = Instant::now();
+        let a = l
+            .begin(&look(PAGE, None, None), &sent(false, "a=1"), false, now)
+            .unwrap();
+        let mut v = match mdm_tools::resolve::parse_looked(STREAM.as_bytes()).unwrap() {
+            Looked::Video(v) => v,
+            Looked::List(_) => unreachable!(),
+        };
+        v.needs_js_runtime = true;
+        *lock(&a.found) = Found::of(Ok(Looked::Video(v.clone())), false);
+        let ready = l.poll(&a.token, now);
+        assert_eq!(ready.state, lookup::READY);
+        let notice = ready.notice.expect("the notice");
+        assert_eq!(notice.text, crate::videodlg::js_runtime_note());
+        assert!(
+            notice.text.contains("JavaScript runtime"),
+            "{}",
+            notice.text
+        );
+        assert!(!notice.link.is_empty());
+        assert!(
+            notice.url.starts_with("https://misterdownloadmanager.com/")
+                && notice.url.ends_with("/help/video.html#javascript-runtime"),
+            "{}",
+            notice.url
+        );
+        // Nothing to offer at all: said with the reason.
+        v.formats.clear();
+        *lock(&a.found) = Found::of(Ok(Looked::Video(v)), false);
+        let none = l.poll(&a.token, now);
+        assert_eq!(
+            (none.state.as_str(), none.reason.as_deref()),
+            (lookup::FAILED, Some(lookup::NO_CHOICES))
+        );
+        assert!(none.notice.is_some());
     }
 }
