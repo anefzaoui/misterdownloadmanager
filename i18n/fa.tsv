@@ -1768,6 +1768,11 @@
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	تکمیل‌شده
+#. text in a download's progress window
+#. a download's status: every byte is in, the file is being written out and given its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Finishing...	در حال اتمام...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2647,6 +2652,15 @@
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
 	medium	متوسط
+#. text in the download list (sizes, speeds, status)
+#. a video's status while its picture and sound are joined into one file (ffmpeg)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Merging...	در حال ادغام...
+#. text in the download list (sizes, speeds, status)
+#. a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
+#, machine
+	Merging... ({percent})	در حال ادغام... ({percent})
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5260,9 +5274,14 @@
 #, machine
 	Verify checksum	تأیید جمع کنترلی
 #. text in the download list (sizes, speeds, status)
+#. a download's status while the finished file is checked against its checksum
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Verifying...	در حال تأیید...
+#. text in the download list (sizes, speeds, status)
+#. a download's status while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%"
+#, machine
+	Verifying... ({percent})	در حال تأیید... ({percent})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -5370,6 +5389,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows زمان‌سنج‌های بیدارباش را فقط در حالت اتصال به برق مجاز می‌داند
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Windows
+#, machine
+	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows فایل‌های علامت‌گذاری‌شده را بررسی می‌کند: SmartScreen پیش از اجرای اولیه برنامه، Protected View آفیس پیش از باز شدن سند. اگر علامت نخورده باشد، یا تحت خط‌مشی Windows «اطلاعات منطقه را در پیوست‌های فایل حفظ نکنید»، هیچ بارگیری‌ای علامت‌گذاری نمی‌شود.
 #. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine

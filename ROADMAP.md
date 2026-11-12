@@ -557,6 +557,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ After the last byte, the progress window and the list say **Verifying… (45%)** or
+  **Merging… (45%)**, the bar showing it in the accent colour, and **Finishing…** rather than
+  **Connecting…**; a finished download's map of parts has no gaps
+  ([#736](https://github.com/anefzaoui/misterdownloadmanager/issues/736))
 - ✅ Windows: **Open with...** shows Windows' "Select an app to open this file" again, for
   files whose name or folder has a space too
   ([#720](https://github.com/anefzaoui/misterdownloadmanager/issues/720))
