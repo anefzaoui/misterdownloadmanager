@@ -79,6 +79,10 @@ pub struct Settings {
     pub many_connections: bool,
     /// Show the "Download complete" dialog (Options → Downloads).
     pub show_complete: bool,
+    /// Download complete snoozed until then (unix seconds; its window's Snooze menu, #741):
+    /// `show_complete` stays as it is. A snooze until MDM restarts is not saved.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub complete_snoozed_until: Option<i64>,
     /// List right-click → On Double click: Open (true) or Properties (IDM default).
     pub double_click_open: bool,
     /// Ask before deleting downloads ("Don't show this dialog again" clears it).
@@ -176,6 +180,9 @@ pub struct Settings {
     pub url_history: Vec<String>,
     pub folder_history: Vec<String>,
     pub set_creation_date: bool,
+    /// Downloads → "Mark downloaded files as coming from the internet" (#813): Windows' Mark of
+    /// the Web, macOS' quarantine, Linux's origin attributes (`webmark`).
+    pub mark_downloads: bool,
     /// Downloads.
     pub show_start_dialog: bool,
     pub only_add_to_queue: bool,
@@ -364,6 +371,7 @@ impl Default for Settings {
             max_connections: 8,
             many_connections: false,
             show_complete: true,
+            complete_snoozed_until: None,
             double_click_open: false,
             confirm_delete: true,
             delete_files_too: false,
@@ -407,6 +415,7 @@ impl Default for Settings {
             url_history: Vec::new(),
             folder_history: Vec::new(),
             set_creation_date: false,
+            mark_downloads: true,
             show_start_dialog: true,
             only_add_to_queue: false,
             start_immediately: true,

@@ -542,7 +542,7 @@ fn preloaded_checks(me: &Path) {
         let job = VideoJob::start_with(
             &exe,
             "https://video.example/talk",
-            "b[height=360]",
+            "18/b[height=360]",
             out.path(),
             "Talk",
             None,
@@ -578,7 +578,7 @@ fn preloaded_checks(me: &Path) {
         }
         Some(Preloaded {
             slot,
-            selector: "b[height=360]".into(),
+            selector: "18/b[height=360]".into(),
             label: label.into(),
             merge: false,
         })
@@ -587,7 +587,7 @@ fn preloaded_checks(me: &Path) {
     let note =
         "The site offered no format with the browser's cookies; looked the page up without them";
 
-    let (p, looked, _) = run("", menu("360p MP4", Some(true)));
+    let (p, looked, _) = run("", menu("360p · H.264", Some(true)));
     assert!(matches!(p.state, State::Done(_)), "{:?}", p.state);
     assert_eq!(looked, 0, "the menu's look-up, not another");
     assert!(log_of(&p).iter().any(|t| t == note), "{:?}", log_of(&p));
@@ -598,14 +598,17 @@ fn preloaded_checks(me: &Path) {
     assert_eq!(looked, 1);
 
     // The menu's look-up doesn't offer that choice under that label, or failed: afresh.
-    for menu in [menu("720p MP4", Some(false)), menu("360p MP4", None)] {
+    for menu in [
+        menu("720p · H.264", Some(false)),
+        menu("360p · H.264", None),
+    ] {
         let (p, looked, _) = run("", menu);
         assert!(matches!(p.state, State::Done(_)), "{:?}", p.state);
         assert_eq!(looked, 1);
     }
 
     // The first run fails (a server stopped resolving): the second reads the page afresh.
-    let (p, looked, _) = run("dns-once", menu("360p MP4", Some(false)));
+    let (p, looked, _) = run("dns-once", menu("360p · H.264", Some(false)));
     assert!(matches!(p.state, State::Done(_)), "{:?}", p.state);
     assert_eq!(looked, 1, "the retry's");
 
@@ -623,7 +626,7 @@ fn preloaded_checks(me: &Path) {
         &format!(r#""acodec": "mp4a", "protocol": "https", "url": "{dead}"}}"#),
     );
     assert!(page.contains(dead));
-    let (p, looked, loaded) = run("", menu_of(&page, "360p MP4", Some(false)));
+    let (p, looked, loaded) = run("", menu_of(&page, "360p · H.264", Some(false)));
     assert!(matches!(p.state, State::Done(_)), "{:?}", p.state);
     assert_eq!(looked, 0, "the menu's look-up, moved");
     assert!(

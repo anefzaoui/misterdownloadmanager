@@ -3289,7 +3289,19 @@ fn reg_string_in(
 }
 
 fn reg_dword(key: &str, name: &str) -> Option<u32> {
-    use windows_sys::Win32::System::Registry::{HKEY_CURRENT_USER, RRF_RT_REG_DWORD, RegGetValueW};
+    reg_dword_in(
+        windows_sys::Win32::System::Registry::HKEY_CURRENT_USER,
+        key,
+        name,
+    )
+}
+
+fn reg_dword_in(
+    root: windows_sys::Win32::System::Registry::HKEY,
+    key: &str,
+    name: &str,
+) -> Option<u32> {
+    use windows_sys::Win32::System::Registry::{RRF_RT_REG_DWORD, RegGetValueW};
     let key: Vec<u16> = key.encode_utf16().chain(Some(0)).collect();
     let name: Vec<u16> = name.encode_utf16().chain(Some(0)).collect();
     let mut value: u32 = 0;
@@ -3297,7 +3309,7 @@ fn reg_dword(key: &str, name: &str) -> Option<u32> {
     // SAFETY: plain registry read into a u32 of the stated size.
     let rc = unsafe {
         RegGetValueW(
-            HKEY_CURRENT_USER,
+            root,
             key.as_ptr(),
             name.as_ptr(),
             RRF_RT_REG_DWORD,
@@ -4708,10 +4720,52 @@ pub fn open_in(program: &std::path::Path, url: &str) {
     let _ = std::process::Command::new(program).arg(url).spawn();
 }
 
+/// Windows' Group Policy "Do not preserve zone information in file attachments" (#813), as
+/// (the computer's, the user's) `SaveZoneInformation` values: 1 keeps no zone information, 2
+/// keeps it; None where it isn't set. Browsers save their downloads through Windows'
+/// attachment services, which follow it; `webmark::keeps_zones` decides the same way. Two
+/// registry reads: for a thread other than the window's (the download's, as it starts).
+pub fn zone_policy() -> (Option<u32>, Option<u32>) {
+    use windows_sys::Win32::System::Registry::{HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE};
+    const KEY: &str = r"Software\Microsoft\Windows\CurrentVersion\Policies\Attachments";
+    const NAME: &str = "SaveZoneInformation";
+    (
+        reg_dword_in(HKEY_LOCAL_MACHINE, KEY, NAME),
+        reg_dword_in(HKEY_CURRENT_USER, KEY, NAME),
+    )
+}
+
+#[cfg(test)]
+mod zone_policy_tests {
+    use super::*;
+    use windows_sys::Win32::System::Registry::HKEY_LOCAL_MACHINE;
+
+    /// The policy's values are read as Windows keeps them (a DWORD under either root), and one
+    /// that isn't set reads as none. The policy key itself is the administrators' to write, even
+    /// the user's: a DWORD every Windows 10 and 11 has stands in for it.
+    #[test]
+    fn a_dword_is_read_and_a_missing_value_is_none() {
+        let key = r"SOFTWARE\Microsoft\Windows NT\CurrentVersion";
+        assert_eq!(
+            reg_dword_in(HKEY_LOCAL_MACHINE, key, "CurrentMajorVersionNumber"),
+            Some(10)
+        );
+        assert_eq!(
+            reg_dword_in(HKEY_LOCAL_MACHINE, key, "NoSuchValueOfMdm"),
+            None
+        );
+        // A string isn't taken for a number.
+        assert_eq!(reg_dword_in(HKEY_LOCAL_MACHINE, key, "ProductName"), None);
+        // Whatever this PC's policy is, it is read without failing.
+        let _ = zone_policy();
+    }
+}
+
 /// Mark-of-the-Web on a file being downloaded from `url` (`referrer`'s page): the zone stream
 /// browsers write, so SmartScreen checks a program, Office opens a document in Protected View and
 /// archive tools pass the mark on, as for the browser's own download. Written on the part file
-/// as it is created (the engine renames it, the stream going along).
+/// as it is created (the engine renames it, the stream going along). Through `webmark::mark`,
+/// which asks the option and Windows' policy first.
 pub fn mark_downloaded(path: &std::path::Path, url: &str, referrer: Option<&str>) {
     // Only addresses from the web: never a login's password (the engine has none in `url`).
     let clean = |u: &str| u.split(['\r', '\n']).next().unwrap_or("").to_owned();

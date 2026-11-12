@@ -25,6 +25,8 @@ pub enum TrayCmd {
     Toggle,
     AddUrl,
     Batch,
+    /// Add batch download from clipboard (#709).
+    BatchClipboard,
     LimiterOn,
     LimiterOff,
     Scheduler,
@@ -214,6 +216,12 @@ impl Tray {
         let mark = crate::i18n::mark;
         add(&menu, mark("Add new download"), TrayCmd::AddUrl);
         add(&menu, mark("Add batch download"), TrayCmd::Batch);
+        // i18n: tray menu: the links copied to the clipboard, to tick in Link grabber (as Tasks → Add batch download from clipboard)
+        add(
+            &menu,
+            mark("Add batch download from clipboard"),
+            TrayCmd::BatchClipboard,
+        );
         // i18n: tray menu: a submenu of the downloads now running; choosing one shows its progress window
         let downloads_label = mark("Downloads in progress");
         let downloads = Submenu::new(crate::i18n::t(downloads_label), false);

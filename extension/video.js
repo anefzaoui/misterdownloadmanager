@@ -195,11 +195,18 @@
     }
   }
 
+  // A quality's size: exactly the bytes of the streams it downloads, or "~" before one the app
+  // only estimates (`approx`, #801: "~532 MB"); "" when unknown.
+  function choiceSize(c, lang) {
+    const size = sizeText(c && c.size, lang);
+    return size && c.approx === true ? `~${size}` : size;
+  }
+
   // What a quality's row says: the app's name for it (in the app's language) and its size. Only
   // ever set as text, never as markup.
   function rowText(choice, lang) {
     const c = choice && typeof choice === "object" ? choice : {};
-    return { name: String(c.label ?? "").slice(0, 200), size: sizeText(c.size, lang) };
+    return { name: String(c.label ?? "").slice(0, 200), size: choiceSize(c, lang) };
   }
 
   // Which of the app's qualities go in which tab: `choice.audio === true` is sound only, anything
@@ -650,8 +657,8 @@
 
   // ---- the button's words (its chip, its tip, the menu's rows): plain functions, run as they are
   // by tools/extension/test.mjs. A quality is one of the app's choices (`label`, `ext`, `size`,
-  // `audio`, and from a newer app `height`, `fps`, `kbps`); the video's own plain file is
-  // {file: true, height, ext}.
+  // `audio`, and from a newer app `height`, `fps`, `kbps`, then `codec`, `range`, `approx`); the
+  // video's own plain file is {file: true, height, ext}.
 
   // A quality's short name: 4K and 8K as people say them, else the picture's height, the sound,
   // or the app's own label (a file known only by its type).
@@ -666,16 +673,22 @@
     return String(c.label ?? "").slice(0, 200);
   }
 
-  // What else the menu says of a quality: its file type, its frame rate, its sound's bitrate.
-  // An older app's choice (no height) says it all in its label: nothing more.
+  // What else the menu says of a quality: its file type, its codec, its frame rate and its
+  // range (#755: "VP9 · 60 fps · HDR"), its sound's bitrate. The type goes without saying when
+  // it is MP4 and the codec is said (every merged video is an MP4). An older app's choice (no
+  // height) says it all in its label: nothing more.
   function qualityMeta(c, t) {
     if (!c || typeof c !== "object") return "";
     // The sound's rows say what they are in their label; their bitrate when the app says it.
-    // (fps and kbps are the same in every language.)
+    // (fps, kbps, codecs and HDR are the same in every language.)
     if (c.audio === true) return Number(c.kbps) > 0 ? `${Math.round(c.kbps)} kbps` : "";
     if (!c.height && !c.file) return "";
-    const parts = [String(c.ext || "").toUpperCase()];
+    const word = (x) => (typeof x === "string" ? x.trim().slice(0, 24) : "");
+    const codec = word(c.codec);
+    const ext = String(c.ext || "").toUpperCase();
+    const parts = [codec && ext === "MP4" ? "" : ext, codec];
     if (Number(c.fps) > 0) parts.push(`${Math.round(c.fps)} fps`);
+    parts.push(word(c.range));
     return parts.filter(Boolean).join(" · ");
   }
 
@@ -702,7 +715,7 @@
     if (!c) return look && look.state === "pending" ? t("video_tip_best") : t("video_download");
     const name = qualityName(c, t);
     const what = c.height || c.file ? [name, String(c.ext || "").toUpperCase()].filter(Boolean).join(" ") : name;
-    const size = sizeText(c.size, lang);
+    const size = choiceSize(c, lang);
     return t("video_tip", size ? `${what} · ${size}` : what);
   }
 
@@ -1823,7 +1836,7 @@ button:focus-visible { outline: none; }
     mi.append(arrowIcon.cloneNode(true));
     const name = c ? [qualityName(c, t), c.height || c.file ? String(c.ext || "").toUpperCase() : ""].filter(Boolean).join(" ") : "";
     const what = [name, c && c.fps ? `${Math.round(c.fps)} fps` : ""].filter(Boolean).join(" · ");
-    b.append(mi, span("lead", t("video_download_best")), span("f", what), span("z", c ? sizeText(c.size, lang) : ""));
+    b.append(mi, span("lead", t("video_download_best")), span("f", what), span("z", c ? choiceSize(c, lang) : ""));
     return b;
   }
   const arrowIcon = $(".tpl svg");

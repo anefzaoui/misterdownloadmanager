@@ -3,8 +3,8 @@
 //! limit runs out, on Windows until a program that hands its copy over late does so, which a
 //! hung program never does. Read on the window's thread, that wait froze the window.
 //!
-//! One thread reads, for everyone: the clipboard monitor, a text box's Paste and the dialogs
-//! that open with a copied link ([`Prefill`]) ask ([`ask`]) and take the answer on a later
+//! One thread reads, for everyone: the clipboard monitor, a text box's Paste, the dialogs
+//! that open with a copied link and Add batch download from clipboard ([`Prefill`]) ask ([`ask`]) and take the answer on a later
 //! frame ([`answer`]); the window is woken when it comes. A read that never answers holds up
 //! nothing but the next read.
 
@@ -173,10 +173,16 @@ impl Prefill {
     /// The clipboard's text, on the frame it comes, once (None before and after; and when the
     /// clipboard holds no text).
     pub fn take(&mut self) -> Option<String> {
+        self.answer().flatten()
+    }
+
+    /// The read's answer, on the frame it comes, once: `Some(None)` when the clipboard holds no
+    /// text (Add batch download from clipboard says so, #709); None before and after.
+    pub fn answer(&mut self) -> Option<Option<String>> {
         let (ask, reader) = self.0?;
         let got = reader.answer(ask)?;
         self.0 = None;
-        got
+        Some(got)
     }
 }
 

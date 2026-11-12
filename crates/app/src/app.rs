@@ -288,8 +288,11 @@ enum Cmd {
     Scheduler,
     /// Downloads → Options (also the toolbar button).
     Options,
-    /// File → Add batch download (true: from the clipboard).
-    Batch(bool),
+    /// Tasks → Add batch download: an address with a `*` over a range.
+    Batch,
+    /// Tasks → Add batch download from clipboard (#709): the copied text's links in Link
+    /// grabber, or a copied numbered address in Batch download.
+    BatchClipboard,
     /// Tasks → Download video from a page… (yt-dlp, M9).
     VideoPage,
     /// Add torrent → Add magnet link… (M15): the Add torrent dialog, empty or with the
@@ -663,6 +666,7 @@ impl Cmd {
     fn hint(&self) -> Option<&'static str> {
         Some(match self {
             Cmd::AddUrl => "Ctrl+N",
+            Cmd::BatchClipboard => "Ctrl+B",
             Cmd::Find => "Ctrl+F",
             Cmd::FindNext => "F3",
             Cmd::MoveRename => "Ctrl+M",
@@ -846,6 +850,17 @@ pub struct App {
     /// ([`progress::SHOWN_WHOLE`]) before it gives way to Download complete: each one's id, and
     /// when it finished.
     finishing: Vec<(u64, Instant)>,
+    /// Groups of downloads added together (#766) of which one finished or failed since their
+    /// last summary: looked at each frame until all theirs are done.
+    groups_open: std::collections::BTreeSet<u64>,
+    /// Downloads of a group that finished: their group's summary speaks for them, they open no
+    /// Download complete of their own (their progress window may still be closing).
+    group_finished: std::collections::HashSet<u64>,
+    /// Groups done: their summaries (Downloads complete).
+    summaries: Vec<dialogs::GroupDone>,
+    /// Download complete snoozed (#741), and how many finished meanwhile (the tray icon's tip).
+    snooze: crate::finish::Snooze,
+    snoozed_finished: u64,
     settings: Settings,
     speed_settings: Option<dialogs::SpeedSettings>,
     scheduler: Option<crate::scheduler::Scheduler>,
@@ -956,6 +971,8 @@ pub struct App {
     last_find: Option<crate::find::Query>,
     /// A message with OK: its window title and message: "Cannot find …", an export that failed…
     notice: Option<(&'static str, String)>,
+    /// The list files Import is reading, beside the window (#805).
+    importing: crate::transfer::Importing,
     /// Why the last save of the download list failed (told once per reason).
     save_failed: Option<String>,
     /// Finished files being moved (Move/Rename, Properties → Move): where to, and the answer.
@@ -1012,6 +1029,8 @@ pub struct App {
     clip_checked: Option<Instant>,
     /// The monitor's ask for the clipboard, its read off the window thread (#418).
     clip_asked: Option<crate::clipboard::Ask>,
+    /// Add batch download from clipboard (#709): its read, until it answers.
+    batch_clip: Option<crate::clipboard::Prefill>,
     confirm_delete: Option<dialogs::ConfirmDelete>,
     /// Queue right-click → Delete, asking first: the queue and the question.
     confirm_queue_delete: Option<(usize, dialogs::Confirm)>,
@@ -1152,29 +1171,22 @@ pub(crate) fn mark_finished(
         .name("mark-downloaded".into())
         .spawn(move || {
             for f in files.iter().filter(|f| f.is_file()) {
-                #[cfg(windows)]
-                crate::win32::mark_downloaded(f, &url, referrer.as_deref());
-                #[cfg(unix)]
-                crate::unix::mark_downloaded(f, &url, referrer.as_deref());
+                crate::webmark::mark(f, &url, referrer.as_deref());
             }
         })
         .ok()
 }
 
 /// Marks each file the engine starts writing as downloaded from the web (Mark-of-the-Web, macOS'
-/// quarantine: win32 / unix `mark_downloaded`), as browsers mark theirs. Only http(s) addresses
-/// (an FTP address may carry its login).
+/// quarantine: `webmark::mark`, as the option and Windows' policy say), as browsers mark theirs.
+/// Only http(s) addresses (an FTP address may carry its login).
 pub(crate) fn mark_hook(url: &url::Url, referrer: Option<&str>) -> mdm_engine::FileHook {
     let web = matches!(url.scheme(), "http" | "https");
     let (url, referrer) = (url.to_string(), referrer.map(str::to_owned));
     mdm_engine::FileHook::new(move |path: &std::path::Path| {
-        if !web {
-            return;
+        if web {
+            crate::webmark::mark(path, &url, referrer.as_deref());
         }
-        #[cfg(windows)]
-        crate::win32::mark_downloaded(path, &url, referrer.as_deref());
-        #[cfg(unix)]
-        crate::unix::mark_downloaded(path, &url, referrer.as_deref());
     })
 }
 
@@ -1410,6 +1422,7 @@ impl App {
         crate::i18n::set_lang(settings.language.as_deref());
         crate::theme::language_fonts(ctx);
         crate::regional::set(&settings.regional);
+        crate::webmark::set(settings.mark_downloads);
         if settings.proxy_mode == 2 {
             crate::pacfetch::refresh(&settings.proxy_script, &rt);
         }
@@ -1531,6 +1544,11 @@ impl App {
             progress: Vec::new(),
             complete: Vec::new(),
             finishing: Vec::new(),
+            groups_open: Default::default(),
+            group_finished: Default::default(),
+            summaries: Vec::new(),
+            snooze: crate::finish::Snooze::from_saved(settings.complete_snoozed_until, unix_now()),
+            snoozed_finished: 0,
             settings,
             speed_settings: None,
             scheduler: None,
@@ -1590,6 +1608,7 @@ impl App {
             find: None,
             last_find: None,
             notice: None,
+            importing: Default::default(),
             save_failed: None,
             moving: Vec::new(),
             renaming_torrents: Vec::new(),
@@ -1603,6 +1622,7 @@ impl App {
             clip_seen: None,
             clip_checked: None,
             clip_asked: None,
+            batch_clip: None,
             tray: None,
             tray_limiter: None,
             tray_last_focused: None,
@@ -1773,7 +1793,23 @@ impl App {
             o.x + w / 2.0,
             "strip-left",
         );
-        if let Some(right) = self.activity() {
+        // A list file Import is reading (#805), before what runs.
+        let reading = self.importing.pending().next().map(|path| {
+            let file = path
+                .file_name()
+                .map(|n| n.to_string_lossy().into_owned())
+                .unwrap_or_default();
+            crate::i18n::fmt(
+                // i18n: the status strip while Tasks → Import reads a file; {file} is its name
+                crate::i18n::t("Reading {file}..."),
+                &[("file", &crate::i18n::isolate(&file))],
+            )
+        });
+        let right = match (reading, self.activity()) {
+            (Some(r), Some(a)) => Some(format!("{r}   {a}")),
+            (r, a) => r.or(a),
+        };
+        if let Some(right) = right {
             winui::text_right(p, o.x + w - 10.0, baseline, &right, winui::MUTED());
         }
     }
@@ -2028,19 +2064,8 @@ impl App {
                 });
             if complete {
                 // It finished behind the dialog: its box now.
-                if self.settings.show_complete
-                    && let Some(i) = self.items.iter().find(|i| i.id == id)
-                {
-                    self.complete.push(Complete {
-                        id,
-                        url: i.url.to_string(),
-                        path: i.dest.clone(),
-                        size: i.size.unwrap_or(i.downloaded),
-                        dont_show: false,
-                        notices: i.notices.clone(),
-                        seen: false,
-                        opening: None,
-                    });
+                if self.settings.show_complete {
+                    self.complete_window(id);
                 }
             } else if !live {
                 self.start(id, true);
@@ -2123,6 +2148,19 @@ impl App {
             self.queue_pick = Some((ids, dialogs::QueuePick::new(names)));
         } else {
             self.queues[0].items.extend(ids);
+        }
+        self.dirty = true;
+    }
+
+    /// Downloads added together (a playlist, a batch, Link grabber's links) become a group
+    /// (#766): one summary once all are done. A single one stays alone.
+    fn group(&mut self, ids: &[u64]) {
+        let Some(g) = crate::finish::group_of(ids) else {
+            return;
+        };
+        let ids: std::collections::HashSet<u64> = ids.iter().copied().collect();
+        for i in self.items.iter_mut().filter(|i| ids.contains(&i.id)) {
+            i.group = Some(g);
         }
         self.dirty = true;
     }
@@ -2467,7 +2505,10 @@ impl App {
             "addurl" => self.run(Cmd::AddUrl, None, ctx),
             // MDM_CRASH_TEST=1 only (crash.rs): the crash reports' own check.
             "crash-test" => crate::crash::test(tab),
-            "batch" => self.run(Cmd::Batch(false), None, ctx),
+            "batch" => self.run(Cmd::Batch, None, ctx),
+            // Tasks → Add batch download from clipboard (#709's checks: off-screen, the
+            // clipboard is MDM_TEST_CLIPBOARD's file).
+            "batch-clipboard" => self.run(Cmd::BatchClipboard, None, ctx),
             "find" => self.run(Cmd::Find, None, ctx),
             "scheduler" => self.run(Cmd::Scheduler, None, ctx),
             "about" => self.run(Cmd::About, None, ctx),
@@ -2638,6 +2679,9 @@ impl App {
             "theme-add" => {
                 self.add_theme_file(std::path::Path::new(tab), ctx);
             }
+            // Tasks → Import, as its dialog answers: `import:<path>` (tests of a large or wrong
+            // file without the system's dialog, #805).
+            "import" => self.import_file(std::path::Path::new(tab)),
             // View → Theme → a theme, as the menu picks it (#45): `theme:native` (tests of the
             // live switch without a click).
             "theme" => {
@@ -3686,10 +3730,15 @@ impl App {
             t.set_queue(q.running);
         }
         if let Some(t) = &self.tray {
-            let tip = match self.activity() {
+            let mut tip = match self.activity() {
                 Some(a) => format!("{}\n{a}", crate::MAIN_TITLE),
                 None => crate::MAIN_TITLE.to_owned(),
             };
+            // Download complete snoozed (#741): what finished meanwhile.
+            if self.snoozed_finished > 0 && self.snooze.active(unix_now()) {
+                tip.push('\n');
+                tip.push_str(&dialogs::finished_count(self.snoozed_finished));
+            }
             t.set_tooltip(&tip);
             // "Downloads in progress": each running download, to show its progress window (#63).
             let running: Vec<(u64, String)> = self
@@ -3755,7 +3804,8 @@ impl App {
                     continue;
                 }
                 TrayCmd::AddUrl => Cmd::AddUrl,
-                TrayCmd::Batch => Cmd::Batch(false),
+                TrayCmd::Batch => Cmd::Batch,
+                TrayCmd::BatchClipboard => Cmd::BatchClipboard,
                 TrayCmd::LimiterOn => Cmd::LimiterOn,
                 TrayCmd::LimiterOff => Cmd::LimiterOff,
                 TrayCmd::Scheduler => Cmd::Scheduler,
@@ -3912,6 +3962,12 @@ impl App {
         let Some(text) = text.filter(|t| Some(t) != before.as_ref()) else {
             return;
         };
+        // Several links (or words) are not one address: the address parser drops line breaks,
+        // and made one address of a copied list (#709). They are for Tasks → Add batch download
+        // from clipboard.
+        if text.contains(char::is_whitespace) {
+            return;
+        }
         let Ok(url) = url::Url::parse(&text) else {
             return;
         };
@@ -4550,6 +4606,7 @@ impl App {
             ids.push(id);
         }
         let Some(&first) = ids.first() else { return };
+        self.group(&ids);
         self.selection.set(first);
         if add.start_now {
             self.queues[0].items.extend(ids.iter().copied());
@@ -4976,14 +5033,15 @@ impl App {
     }
 
     /// Add torrent → Download Now / Later. Through the debrid account when torrents go there
-    /// (#44): the .torrent's magnet link (its hash, name and trackers), all its files.
-    fn add_torrent(&mut self, add: crate::torrentdlg::TorrentAdd) {
+    /// (#44): the .torrent's magnet link (its hash, name and trackers), all its files. The
+    /// download added, if one was (not when the debrid account takes it).
+    fn add_torrent(&mut self, add: crate::torrentdlg::TorrentAdd) -> Option<u64> {
         if self.torrent_account().is_some()
             && let Some(magnet) =
                 mdm_torrent::magnet_link(&add.meta.torrent).and_then(|m| url::Url::parse(&m).ok())
         {
             self.add_remote_torrent(magnet, add.dir.clone(), add.category, add.start_now);
-            return;
+            return None;
         }
         let meta = &add.meta;
         if let Err(e) = crate::torrents::save_torrent(&meta.info_hash, &meta.torrent) {
@@ -4994,7 +5052,7 @@ impl App {
                     &[("error", &e.to_string())],
                 ),
             ));
-            return;
+            return None;
         }
         let folder = meta.folder_in(&add.dir);
         let dest = crate::torrents::dest_for(meta, &add.dir, add.files.as_deref());
@@ -5058,6 +5116,7 @@ impl App {
             self.queue_later(vec![id], self.settings.queue_panel_later);
         }
         self.dirty = true;
+        Some(id)
     }
 
     /// Right-click → Torrent → Download in order (`in_order`), or its first and last pieces
@@ -5481,6 +5540,45 @@ impl App {
         }
     }
 
+    /// Add batch download from clipboard (#709), once the clipboard's text came (`None`: no
+    /// text): its links in Link grabber (with those there already), a numbered address in Batch
+    /// download, or a note that says why nothing opens.
+    fn batch_from_clipboard(&mut self, text: Option<&str>, ctx: &egui::Context) {
+        let why = match crate::clipbatch::read(text) {
+            crate::clipbatch::Clip::Links(found) => {
+                tracing::info!("add batch download from clipboard: {} links", found.len());
+                // i18n: Link grabber: where the links came from: the clipboard (Tasks → Add batch download from clipboard)
+                let source = crate::i18n::t("Clipboard").to_owned();
+                self.show_import(found, source);
+                dialogs::raise(ctx, dialogs::dialog_viewport("grabber"));
+                return;
+            }
+            crate::clipbatch::Clip::Pattern(p) => {
+                tracing::info!(
+                    "add batch download from clipboard: the pattern {}",
+                    p.address
+                );
+                if self.batch.is_none() {
+                    self.batch = Some(crate::batch::Batch::with_pattern(p));
+                }
+                dialogs::raise(ctx, dialogs::dialog_viewport("batch"));
+                return;
+            }
+            crate::clipbatch::Clip::Empty => crate::i18n::t(
+                "The clipboard holds no text. Copy some links, or a text with links in it, and try again.",
+            ),
+            crate::clipbatch::Clip::NoLinks => crate::i18n::t(
+                "No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.",
+            ),
+        };
+        tracing::info!("add batch download from clipboard: nothing to download");
+        self.notice = Some((
+            // i18n: title of the note when Tasks → Add batch download from clipboard finds nothing to download
+            crate::i18n::mark("Add batch download from clipboard"),
+            why.to_owned(),
+        ));
+    }
+
     /// Batch download → OK: every address goes to the main download queue (IDM's default; its
     /// queue selection panel is not built yet).
     fn add_batch(&mut self, added: crate::batch::Added) {
@@ -5503,6 +5601,7 @@ impl App {
             self.name_guessed(id, true);
             ids.push(id);
         }
+        self.group(&ids);
         self.queue_later(ids, self.settings.queue_panel_batch);
         self.dirty = true;
     }
@@ -5724,27 +5823,15 @@ impl App {
             None => mdm_torrent::Source::magnet(text.trim()).map(|m| (m, true)),
         };
         if let Some((source, from_magnet)) = torrent {
-            let slot: crate::remote::Slot = Default::default();
-            let (out, host, known) = (
-                slot.clone(),
-                self.torrent_host.clone(),
-                self.session_hashes(),
-            );
-            self.rt.spawn(async move {
-                let res = match host.session(known).await {
-                    Ok(t) => t
-                        .metadata(&source, crate::torrentdlg::METADATA_WAIT, None)
-                        .await
-                        .map_err(|e| crate::errors::torrent(&e)),
-                    Err(e) => Err(e),
-                };
-                *out.lock().unwrap() = Some(res);
-            });
+            let slot = self.look_up_torrent(source);
             self.remote_torrents.push(crate::remote::Lookup {
                 slot,
                 category,
                 queue,
                 from_magnet,
+                dir: None,
+                group: None,
+                tell: false,
             });
             return line(&AddAnswer {
                 id: None,
@@ -5799,35 +5886,81 @@ impl App {
         })
     }
 
-    /// The torrents a paired device sent whose files are known now: added with every file
-    /// (into the category's folder), as an RSS rule adds one; never over files already there.
+    /// A torrent's files looked up on the runtime (a magnet link asks the swarm); the answer
+    /// comes in the slot.
+    fn look_up_torrent(&self, source: mdm_torrent::Source) -> crate::remote::Slot {
+        let slot: crate::remote::Slot = Default::default();
+        let (out, host, known) = (
+            slot.clone(),
+            self.torrent_host.clone(),
+            self.session_hashes(),
+        );
+        self.rt.spawn(async move {
+            let res = match host.session(known).await {
+                Ok(t) => t
+                    .metadata(&source, crate::torrentdlg::METADATA_WAIT, None)
+                    .await
+                    .map_err(|e| crate::errors::torrent(&e)),
+                Err(e) => Err(e),
+            };
+            *out.lock().unwrap() = Some(res);
+        });
+        slot
+    }
+
+    /// The torrents a paired device sent, or Link grabber's magnet links (#709), whose files
+    /// are known now: added with every file (into the category's folder, or the package's), as
+    /// an RSS rule adds one; never over files already there.
     fn poll_remote_torrents(&mut self) {
         let mut ready = Vec::new();
-        self.remote_torrents
-            .retain(|l| match l.slot.lock().unwrap().take() {
-                Some(res) => {
-                    ready.push((res, l.category, l.queue, l.from_magnet));
-                    false
-                }
-                None => true,
-            });
-        for (res, category, queue, from_magnet) in ready {
+        for l in std::mem::take(&mut self.remote_torrents) {
+            let res = l.slot.lock().unwrap().take();
+            match res {
+                Some(res) => ready.push((res, l)),
+                None => self.remote_torrents.push(l),
+            }
+        }
+        for (res, l) in ready {
+            let crate::remote::Lookup {
+                category,
+                queue,
+                from_magnet,
+                dir,
+                group,
+                tell,
+                ..
+            } = l;
             let meta = match res {
                 Ok(meta) => meta,
                 Err(e) => {
                     tracing::warn!("remote control: a torrent could not be read: {e}");
+                    if tell {
+                        self.notice = Some((
+                            crate::i18n::mark("Link grabber"),
+                            crate::i18n::fmt(
+                                // i18n: Link grabber added a magnet link whose torrent could not be found; {error} says why
+                                crate::i18n::t(
+                                    "A magnet link's files could not be looked up: {error}",
+                                ),
+                                &[("error", &e)],
+                            ),
+                        ));
+                    }
                     continue;
                 }
             };
             if self.torrent_hashes().contains(&meta.info_hash) {
+                tracing::info!("{}: this torrent is in the list already", meta.name);
                 continue;
             }
             let category = category.unwrap_or_else(|| crate::torrentdlg::category_of(&meta));
-            let dir = crate::model::category_folder(
-                category,
-                &self.downloads,
-                &self.settings.category_dirs,
-            );
+            let dir = dir.unwrap_or_else(|| {
+                crate::model::category_folder(
+                    category,
+                    &self.downloads,
+                    &self.settings.category_dirs,
+                )
+            });
             if !meta.existing_in(&dir).is_empty() {
                 tracing::warn!(
                     "remote control: {}: its files are already in {}",
@@ -5836,7 +5969,7 @@ impl App {
                 );
                 continue;
             }
-            self.add_torrent(crate::torrentdlg::TorrentAdd {
+            let id = self.add_torrent(crate::torrentdlg::TorrentAdd {
                 meta,
                 dir,
                 files: None,
@@ -5847,6 +5980,11 @@ impl App {
                 queue,
                 quiet: true,
             });
+            if let (Some(g), Some(id)) = (group, id)
+                && let Some(i) = self.item(id)
+            {
+                i.group = Some(g);
+            }
         }
     }
 
@@ -5919,6 +6057,7 @@ impl App {
         }
         self.settings = new;
         crate::regional::set(&self.settings.regional);
+        crate::webmark::set(self.settings.mark_downloads);
         // Options → Remote: listening started, stopped or moved.
         if let Some(r) = &self.remote {
             r.apply(crate::remote::config(&self.settings));
@@ -6522,11 +6661,14 @@ impl App {
                         .pick_file()
                 });
             }
-            Cmd::Batch(clipboard) => {
+            Cmd::Batch => {
                 if self.batch.is_none() {
-                    self.batch = Some(crate::batch::Batch::new(clipboard));
+                    self.batch = Some(crate::batch::Batch::new());
                 }
             }
+            // Read now, off the window's thread; what it holds opens a window when it comes
+            // (`batch_from_clipboard`).
+            Cmd::BatchClipboard => self.batch_clip = Some(crate::clipboard::Prefill::ask()),
             Cmd::Options => {
                 if self.options.is_none() {
                     self.options = Some(
@@ -6673,6 +6815,20 @@ impl App {
         if !failed.is_empty() {
             self.sound(1);
         }
+        // Downloads added together (#766): their group is looked at until all of it is done, and
+        // its summary speaks for the finished ones (no Download complete each).
+        for (id, ok) in finished
+            .iter()
+            .map(|id| (*id, true))
+            .chain(failed.iter().map(|id| (*id, false)))
+        {
+            if let Some(g) = self.items.iter().find(|i| i.id == id).and_then(|i| i.group) {
+                self.groups_open.insert(g);
+                if ok {
+                    self.group_finished.insert(id);
+                }
+            }
+        }
         for id in failed {
             let e = self.failures.entry(id).or_insert((now, 0));
             *e = (now, e.1 + 1);
@@ -6714,6 +6870,17 @@ impl App {
         );
         for id in close {
             self.close_finished(id, early);
+        }
+        self.settle_groups();
+        // A snooze over (#741): Download complete shows again.
+        if self.snooze.expire(unix_now()) {
+            tracing::info!("download complete: the snooze is over");
+            self.snoozed_finished = 0;
+            self.settings.complete_snoozed_until = None;
+            self.dirty = true;
+        }
+        if let Some(left) = self.snooze.left(unix_now()) {
+            ctx.request_repaint_after(Duration::from_secs(left.unsigned_abs().min(60)));
         }
         // The next one's moment ends without a frame of its own otherwise (nothing runs).
         if let Some(&(_, at)) = self.finishing.iter().min_by_key(|(_, at)| *at) {
@@ -6772,21 +6939,140 @@ impl App {
         if Some(id) == early {
             return;
         }
-        if self.settings.show_complete
-            && this_file
-            && let Some(i) = self.items.iter().find(|i| i.id == id)
-        {
-            self.complete.push(Complete {
-                id,
-                url: i.url.to_string(),
-                path: i.dest.clone(),
-                size: i.size.unwrap_or(i.downloaded),
-                dont_show: false,
-                notices: i.notices.clone(),
-                seen: false,
-                opening: None,
-            });
+        // One of a group: its summary speaks for it (#766).
+        if self.group_finished.remove(&id) {
+            return;
         }
+        if self.settings.show_complete && this_file {
+            self.complete_window(id);
+        }
+    }
+
+    /// Download complete for `id`, unless it is snoozed (#741): then the tray icon's tip counts
+    /// it instead.
+    fn complete_window(&mut self, id: u64) {
+        if self.snooze.active(unix_now()) {
+            self.snoozed_finished += 1;
+            return;
+        }
+        if let Some(i) = self.items.iter().find(|i| i.id == id) {
+            self.complete.push(Complete::of(i));
+        }
+    }
+
+    /// Where a group's download stands (#766): running, or waiting in a running queue for its
+    /// turn (or for the download limits' window), the group isn't done; stopped, or waiting in
+    /// a queue that doesn't run, it is left out of the summary.
+    fn group_standing(
+        &self,
+        i: &Item,
+        running: &std::collections::HashSet<u64>,
+    ) -> crate::finish::Standing {
+        use crate::finish::Standing;
+        if i.live.is_some() || i.status == Status::Downloading || self.quota.held.contains(&i.id) {
+            return Standing::Pending;
+        }
+        match i.status {
+            Status::Complete => Standing::Finished,
+            Status::Error => Standing::Failed,
+            Status::Queued | Status::Stopped
+                if running.contains(&i.id) && !self.stopped_by_hand.contains(&i.id) =>
+            {
+                Standing::Pending
+            }
+            _ => Standing::Idle,
+        }
+    }
+
+    /// Groups whose downloads are all done (#766): one summary each, or Download complete when
+    /// only one of them finished; nothing while Download complete is snoozed or turned off. The
+    /// downloads summed up leave their group.
+    fn settle_groups(&mut self) {
+        if self.groups_open.is_empty() {
+            return;
+        }
+        let running: std::collections::HashSet<u64> = self
+            .queues
+            .iter()
+            .filter(|q| q.running)
+            .flat_map(|q| q.items.iter().copied())
+            .collect();
+        let members: Vec<(u64, u64, crate::finish::Standing)> = self
+            .items
+            .iter()
+            .filter_map(|i| {
+                let g = i.group.filter(|g| self.groups_open.contains(g))?;
+                Some((i.id, g, self.group_standing(i, &running)))
+            })
+            .collect();
+        for done in crate::finish::settle(&mut self.groups_open, members) {
+            for id in done.finished.iter().chain(&done.failed) {
+                if let Some(i) = self.item(*id) {
+                    i.group = None;
+                }
+            }
+            self.dirty = true;
+            tracing::info!(
+                "group {} done: {} finished, {} failed",
+                done.group,
+                done.finished.len(),
+                done.failed.len()
+            );
+            if self.snooze.active(unix_now()) {
+                self.snoozed_finished += done.finished.len() as u64;
+                continue;
+            }
+            if !self.settings.show_complete {
+                continue;
+            }
+            match crate::finish::shown(done) {
+                crate::finish::Shown::One(id) => self.complete_window(id),
+                crate::finish::Shown::Summary(s) => {
+                    self.summaries.push(dialogs::GroupDone::new(
+                        s.group,
+                        &s.finished,
+                        &s.failed,
+                        &self.items,
+                    ));
+                }
+            }
+        }
+    }
+
+    /// Download complete snoozed for a while (#741): its setting stays as it is.
+    fn start_snooze(&mut self, choice: crate::finish::SnoozeFor) {
+        self.snooze.start(choice, unix_now());
+        self.settings.complete_snoozed_until = self.snooze.saved();
+        self.snoozed_finished = 0;
+        self.dirty = true;
+        tracing::info!("download complete snoozed: {choice:?}");
+    }
+
+    /// Options, Downloads, Resume now: Download complete shows again.
+    fn resume_snooze(&mut self) {
+        self.snooze.resume();
+        self.settings.complete_snoozed_until = None;
+        self.snoozed_finished = 0;
+        self.dirty = true;
+        tracing::info!("download complete: the snooze ended by hand");
+    }
+
+    /// A group's summary's Show in list: the main window shown, its downloads selected (in All
+    /// Downloads when the view shown hides one), the first scrolled to.
+    fn show_in_list(&mut self, ids: &[u64], ctx: &egui::Context) {
+        self.show_window(ctx);
+        let ids: Vec<u64> = ids
+            .iter()
+            .copied()
+            .filter(|id| self.items.iter().any(|i| i.id == *id))
+            .collect();
+        let Some(&first) = ids.first() else { return };
+        let shown = self.shown_ids();
+        if ids.iter().any(|id| !shown.contains(id)) {
+            self.view = View::All;
+        }
+        self.selection.set_many(&ids);
+        self.list.scroll_to = self.shown_ids().iter().position(|x| *x == first);
     }
 
     /// A list that can't be saved says so, once for each reason (not every second); it was
@@ -6832,10 +7118,10 @@ impl App {
                 I("Open &torrent file...", Cmd::OpenTorrentFile, true, false),
                 I("Add &magnet link...", Cmd::AddMagnet, true, false),
                 I("Torrent setti&ngs...", Cmd::TorrentSettings, true, false),
-                I("Add &batch download", Cmd::Batch(false), true, false),
+                I("Add &batch download", Cmd::Batch, true, false),
                 I(
                     "Add batch download from &clipboard",
-                    Cmd::Batch(true),
+                    Cmd::BatchClipboard,
                     true,
                     false,
                 ),
@@ -8222,14 +8508,17 @@ impl App {
                 PopupResult::Dismissed => self.popup = None,
             }
         }
-        // Ctrl+F finds, F3 finds the next match (Downloads menu); Ctrl+N adds a download (not
-        // in IDM). The full list: Help → Keyboard shortcuts (`shortcuts.rs`).
+        // Ctrl+F finds, F3 finds the next match (Downloads menu); Ctrl+N adds a download and
+        // Ctrl+B the links in the clipboard (#709), neither in IDM. Not Ctrl+Shift+V for that: the
+        // windowing library answers the paste keys by reading the clipboard on the window's
+        // thread (#418). The full list: Help → Keyboard shortcuts (`help.rs`).
         if chosen.is_none() && self.popup.is_none() && self.open_menu.is_none() {
-            let (find, next, add) = ctx.input_mut(|i| {
+            let (find, next, add, clip) = ctx.input_mut(|i| {
                 (
                     i.consume_key(egui::Modifiers::COMMAND, egui::Key::F),
                     i.consume_key(egui::Modifiers::NONE, egui::Key::F3),
                     i.consume_key(egui::Modifiers::COMMAND, egui::Key::N),
+                    i.consume_key(egui::Modifiers::COMMAND, egui::Key::B),
                 )
             });
             // Ctrl+M as IDM; F2 as renaming in Explorer.
@@ -8245,6 +8534,8 @@ impl App {
                 chosen = Some((Cmd::FindNext, None));
             } else if add {
                 chosen = Some((Cmd::AddUrl, None));
+            } else if clip {
+                chosen = Some((Cmd::BatchClipboard, None));
             }
         }
         // Delete removes the selected downloads, Shift+Delete with their files (both ask first);
@@ -8461,16 +8752,8 @@ impl App {
         };
         self.selection.set(id);
         if i.status == Status::Complete {
-            self.complete.push(Complete {
-                id,
-                url: i.url.to_string(),
-                path: i.dest.clone(),
-                size: i.size.unwrap_or(i.downloaded),
-                dont_show: false,
-                notices: i.notices.clone(),
-                seen: false,
-                opening: None,
-            });
+            // Asked for: shown even while Download complete is snoozed.
+            self.complete.push(Complete::of(i));
         } else if i.live.is_none() {
             self.start(id, true);
         } else if !self.progress.iter().any(|p| p.id == id) {
@@ -8825,20 +9108,52 @@ impl App {
         }
     }
 
-    /// The addresses in a list file, shown in Import to tick before adding.
+    /// The addresses in a list file, shown in Import to tick before adding. The file is read and
+    /// searched beside the window (#805): a large one, or one that isn't a list (a video, an
+    /// archive picked by mistake), froze it. The status strip says "Reading …" meanwhile.
     fn import_file(&mut self, path: &std::path::Path) {
+        self.importing.start(path, Some(&self.ui_ctx));
+    }
+
+    /// Each frame, never waiting: the list files read since, into Import (`import_file`).
+    fn poll_imports(&mut self) {
+        for (path, read) in self.importing.finished() {
+            self.imported(&path, read);
+        }
+    }
+
+    /// A list file read: its addresses into Import, or why there are none.
+    fn imported(&mut self, path: &std::path::Path, read: crate::transfer::ListRead) {
+        use crate::transfer::ListRead;
         let file = path
             .file_name()
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_default();
-        let found = match std::fs::read(path) {
-            Ok(bytes) => crate::transfer::import(&String::from_utf8_lossy(&bytes)),
-            Err(e) => {
+        let found = match read {
+            ListRead::Found(found) => found,
+            ListRead::TooBig(size) => {
+                self.notice = Some((
+                    crate::i18n::mark("Import"),
+                    crate::i18n::fmt(
+                        // i18n: Import refused a file; {size} = its size and {limit} = the largest Import reads, like "4.50 GB" and "64.00 MB"
+                        crate::i18n::t(
+                            "{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.",
+                        ),
+                        &[
+                            ("file", &crate::i18n::isolate(&file)),
+                            ("size", &model::size(size)),
+                            ("limit", &model::size(crate::transfer::IMPORT_LIMIT)),
+                        ],
+                    ),
+                ));
+                return;
+            }
+            ListRead::Failed(e) => {
                 self.notice = Some((
                     crate::i18n::mark("Import"),
                     crate::i18n::fmt(
                         crate::i18n::t("The file could not be read: {error}"),
-                        &[("error", &e.to_string())],
+                        &[("error", &e)],
                     ),
                 ));
                 return;
@@ -8878,7 +9193,9 @@ impl App {
 
     /// Link grabber's ticked links: each package's to its folder, tagged with the package (its
     /// archives are extracted when all are in), into the main queue; started too on Start (else
-    /// only queued, as IDM's import).
+    /// only queued, as IDM's import). A magnet link's torrent is added once its files are known
+    /// (#709), with every file, in the package's folder when it has one. All of them are one
+    /// group (#766): one summary when the last is done.
     fn add_grabbed(&mut self, start: bool, packages: Vec<crate::grabber::Picked>) {
         // Package numbers after those in the list.
         let last = self
@@ -8888,6 +9205,7 @@ impl App {
             .max()
             .unwrap_or(0);
         let mut added = Vec::new();
+        let mut magnets = Vec::new();
         for (id, pk) in (last + 1..).zip(packages) {
             let tag = crate::model::PackageTag {
                 id,
@@ -8897,6 +9215,11 @@ impl App {
                 password: pk.password.clone(),
             };
             for (d, name, size) in pk.links {
+                if let Some(magnet) = mdm_torrent::Source::magnet(&d.url) {
+                    let dir = (!pk.folder.as_os_str().is_empty()).then(|| pk.folder.clone());
+                    magnets.push((magnet, dir));
+                    continue;
+                }
                 let Ok(url) = url::Url::parse(&d.url) else {
                     continue;
                 };
@@ -8934,6 +9257,28 @@ impl App {
                 self.queues[0].items.push(id);
                 added.push(id);
             }
+        }
+        // The torrents join the others' group when their files come (a group of one
+        // download's summary is its own Download complete).
+        let group = (added.len() + magnets.len() > 1)
+            .then(|| added.first().copied())
+            .flatten();
+        if let Some(g) = group {
+            for i in self.items.iter_mut().filter(|i| added.contains(&i.id)) {
+                i.group = Some(g);
+            }
+        }
+        for (source, dir) in magnets {
+            let slot = self.look_up_torrent(source);
+            self.remote_torrents.push(crate::remote::Lookup {
+                slot,
+                category: None,
+                queue: (!start).then_some(0),
+                from_magnet: true,
+                dir,
+                group,
+                tell: true,
+            });
         }
         self.dirty = true;
         // Start runs the main queue (its files at once, as Options → Queue sets).
@@ -9768,6 +10113,10 @@ impl App {
                 }
             }
         }
+        if let Some(got) = self.batch_clip.as_mut().and_then(|p| p.answer()) {
+            self.batch_clip = None;
+            self.batch_from_clipboard(got.as_deref(), ctx);
+        }
         if let Some(b) = &mut self.batch {
             match b.show(ctx) {
                 Outcome::Open => {}
@@ -9778,7 +10127,16 @@ impl App {
                 }
             }
         }
+        // Options, Downloads, Resume now (#741), clicked in the frame before.
+        if self
+            .options
+            .as_mut()
+            .is_some_and(|d| std::mem::take(&mut d.resume_snooze))
+        {
+            self.resume_snooze();
+        }
         if let Some(d) = &mut self.options {
+            d.snoozed_until = self.snooze.until(unix_now());
             match d.show(ctx, &self.downloads) {
                 Outcome::Open => {}
                 Outcome::Closed => {
@@ -10040,11 +10398,39 @@ impl App {
                         self.settings.show_complete = false;
                         self.dirty = true;
                     }
+                    if let Some(choice) = c.snooze {
+                        self.start_snooze(choice);
+                    }
                 }
             }
         }
         self.complete = keep;
+        // Groups' summaries (#766).
+        let mut keep = Vec::new();
+        for mut g in std::mem::take(&mut self.summaries) {
+            let outcome = g.show(ctx);
+            if matches!(outcome, Outcome::Open) {
+                keep.push(g);
+                continue;
+            }
+            if g.dont_show {
+                self.settings.show_complete = false;
+                self.dirty = true;
+            }
+            if let Some(choice) = g.snooze {
+                self.start_snooze(choice);
+            }
+            if let Outcome::Done(dialogs::GroupAction::ShowInList) = outcome {
+                self.show_in_list(&g.ids, ctx);
+            }
+        }
+        self.summaries = keep;
     }
+}
+
+/// The wall clock, in unix seconds (a snooze's end, #741).
+fn unix_now() -> i64 {
+    chrono::Utc::now().timestamp()
 }
 
 /// The finished downloads whose progress windows close at `now` (then Download complete opens):
@@ -10191,6 +10577,7 @@ impl App {
         // Incoming commands and the clock (downloads, queues, Scheduler, saving…): `logic`, just
         // before, which runs minimized too.
         self.poll_picks(&ctx);
+        self.poll_imports();
         self.drop_target(&ctx);
         self.main_drops(&ctx);
         self.remember_layout(&ctx);
