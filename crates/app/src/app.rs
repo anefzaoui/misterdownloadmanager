@@ -1152,29 +1152,22 @@ pub(crate) fn mark_finished(
         .name("mark-downloaded".into())
         .spawn(move || {
             for f in files.iter().filter(|f| f.is_file()) {
-                #[cfg(windows)]
-                crate::win32::mark_downloaded(f, &url, referrer.as_deref());
-                #[cfg(unix)]
-                crate::unix::mark_downloaded(f, &url, referrer.as_deref());
+                crate::webmark::mark(f, &url, referrer.as_deref());
             }
         })
         .ok()
 }
 
 /// Marks each file the engine starts writing as downloaded from the web (Mark-of-the-Web, macOS'
-/// quarantine: win32 / unix `mark_downloaded`), as browsers mark theirs. Only http(s) addresses
-/// (an FTP address may carry its login).
+/// quarantine: `webmark::mark`, as the option and Windows' policy say), as browsers mark theirs.
+/// Only http(s) addresses (an FTP address may carry its login).
 pub(crate) fn mark_hook(url: &url::Url, referrer: Option<&str>) -> mdm_engine::FileHook {
     let web = matches!(url.scheme(), "http" | "https");
     let (url, referrer) = (url.to_string(), referrer.map(str::to_owned));
     mdm_engine::FileHook::new(move |path: &std::path::Path| {
-        if !web {
-            return;
+        if web {
+            crate::webmark::mark(path, &url, referrer.as_deref());
         }
-        #[cfg(windows)]
-        crate::win32::mark_downloaded(path, &url, referrer.as_deref());
-        #[cfg(unix)]
-        crate::unix::mark_downloaded(path, &url, referrer.as_deref());
     })
 }
 
@@ -1410,6 +1403,7 @@ impl App {
         crate::i18n::set_lang(settings.language.as_deref());
         crate::theme::language_fonts(ctx);
         crate::regional::set(&settings.regional);
+        crate::webmark::set(settings.mark_downloads);
         if settings.proxy_mode == 2 {
             crate::pacfetch::refresh(&settings.proxy_script, &rt);
         }
@@ -5919,6 +5913,7 @@ impl App {
         }
         self.settings = new;
         crate::regional::set(&self.settings.regional);
+        crate::webmark::set(self.settings.mark_downloads);
         // Options → Remote: listening started, stopped or moved.
         if let Some(r) = &self.remote {
             r.apply(crate::remote::config(&self.settings));

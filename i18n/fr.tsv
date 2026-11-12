@@ -1629,6 +1629,10 @@
 #. noun: a file of no known type
 #, machine
 	File	Fichier
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Linux
+#, machine
+	File managers show where the files marked this way came from. Unticked, no download is marked.	Les gestionnaires de fichiers affichent la provenance des fichiers marqués de cette façon. Si cette option n’est pas cochée, aucun téléchargement n’est marqué.
 #. text in the Scheduler window
 #, machine
 	File Name	Nom du fichier
@@ -2430,6 +2434,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Macau	Macao
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on macOS
+#, machine
+	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS vérifie les fichiers marqués de cette façon : Gatekeeper avant la première ouverture d’un programme. Si cette option n’est pas cochée, aucun téléchargement n’est marqué.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2477,6 +2485,9 @@
 #. text in the Scheduler window
 #, machine
 	March	Mars
+#. checkbox in the Options window
+#, machine
+	Mark downloaded files as coming from the internet	Marquer les fichiers téléchargés comme provenant d’Internet
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5243,6 +5254,10 @@
 #, machine
 	Windows allows wake timers only while plugged in	Windows autorise les minuteurs de sortie de veille uniquement lorsque l’ordinateur est branché
 #. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Windows
+#, machine
+	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows vérifie les fichiers marqués de cette façon : SmartScreen avant la première exécution d’un programme, Affichage protégé d’Office avant l’ouverture d’un document. Si cette option n’est pas cochée, ou si la stratégie Windows « Ne pas conserver les informations de zone dans les pièces jointes » est activée, aucun téléchargement n’est marqué.
+#. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine
 	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Le Gestionnaire d’informations d’identification Windows n’a pas répondu. Les identifiants et mots de passe sont donc conservés dans les paramètres de MDM, chiffrés pour votre compte Windows.
@@ -5374,7 +5389,7 @@
 #, machine
 	yt-dlp downloads it itself: a live stream	yt-dlp le télécharge lui-même : un flux en direct
 #. text in a download's progress window
-#. progress window, a video's line: a stream sent in many small pieces (HLS, DASH), which the helper program yt-dlp downloads itself for now
+#. progress window, a video's line: a stream sent in many small pieces of a rare kind (Adobe HDS, Smooth Streaming), which the helper program yt-dlp downloads itself
 #, machine
 	yt-dlp downloads it itself: a stream in pieces	yt-dlp le télécharge lui-même : un flux en plusieurs parties
 #. text in a download's progress window
@@ -5736,9 +5751,18 @@ column	Upload speed	Vitesse d'envoi
 #, machine
 extension	A list of videos: choose them in Mister Download Manager	Une liste de vidéos : choisissez-les dans Mister Download Manager
 #. text in the browser extension
+#. on the download button (green) over a video after the app added and started the download; a quality may follow ('· 1080p') and a 'Show' button; MDM is the app's short name, keep it; short
+#, machine
+extension	Added to MDM	Ajouté à MDM
+#. text in the browser extension
 #. shown briefly on the download button over a video after a quality was picked: the download was added to the app's download queue, to start later
 #, machine
 extension	Added to the queue	Ajouté à la file d’attente
+#. text in the browser extension
+#. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	All qualities and subtitles...	Toutes les qualités et les sous-titres...
 #. text in the browser extension
 #. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
 #, machine
@@ -5748,6 +5772,10 @@ extension	Another Mister Download Manager (a server)	Un autre Mister Download Ma
 #, machine
 extension	Audio	Audio
 #. text in the browser extension
+#. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
+#, machine
+extension	best	meilleure
+#. text in the browser extension
 #. the name this browser gets in the other MDM's list of paired devices
 #, machine
 extension	Browser extension	Extension de navigateur
@@ -5756,6 +5784,10 @@ extension	Browser extension	Extension de navigateur
 #. the trailing ... means it is still going on: keep it
 #, machine
 extension	Button settings...	Paramètres du bouton...
+#. text in the browser extension
+#. on the download button over a copy-protected video, after 'Protected video ·': it can't be downloaded; short, lower case
+#, machine
+extension	can't be saved	ne peut pas être enregistré
 #. text in the browser extension
 #. shown briefly on the download button when nothing on the page says which video the player is playing, so nothing was sent
 #, machine
@@ -5782,9 +5814,17 @@ extension	Download	Télécharger
 #, machine
 extension	Download all links with Mister Download Manager	Télécharger tous les liens avec Mister Download Manager
 #. text in the browser extension
+#. first line of the list under the download button over a video: downloads the best quality at once; the quality, its file type and size follow on the same line; short
+#, machine
+extension	Download best	Télécharger la meilleure qualité
+#. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 #, machine
 extension	Download selected links with Mister Download Manager	Télécharger les liens sélectionnés avec Mister Download Manager
+#. text in the browser extension
+#. first line of the tooltip of the download button over a video while the app is still finding its qualities
+#, machine
+extension	Download the best quality	Télécharger la meilleure qualité
 #. text in the browser extension
 #. the button over a video on a web page that downloads it; verb; short (it sits on the video)
 #, machine
@@ -5793,6 +5833,10 @@ extension	Download video	Télécharger la vidéo
 #. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
 #, machine
 extension	Download with Mister Download Manager	Télécharger avec Mister Download Manager
+#. text in the browser extension
+#. first line of the tooltip of the download button over a video: what one click downloads; $what$ is a quality, a file type and a size, e.g. '1080p MP4 · 412 MB'
+#, machine
+extension	Download {what}	Télécharger {what}
 #. text in the browser extension
 #. shown in the toolbar button's popup after the site was excluded
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -5803,13 +5847,17 @@ extension	Downloads from {site} stay with the browser	Les téléchargements de {
 #, machine
 extension	Downloads go to {address}	Les téléchargements vont vers {address}
 #. text in the browser extension
-#. tooltip of the download button over a video: it can be dragged to another place on the video's edge
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
 #, machine
-extension	Drag to move it along the video's edge	Faites glisser pour le déplacer le long du bord de la vidéo
+extension	Drag the dots to move it along the edge	Faites glisser les points pour le déplacer le long du bord
 #. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
 extension	Enter its https:// address.	Entrez son adresse https://.
+#. text in the browser extension
+#. button on the download button over a video when the app didn't answer: opens the app's download page; MDM is the app's short name, keep it; very short
+#, machine
+extension	Get MDM	Obtenir MDM
 #. text in the browser extension
 #. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
 #, machine
@@ -5871,6 +5919,10 @@ extension	Looking up the qualities…	Recherche des qualités…
 #. in the menu under the download button over a video: the app took more than a minute to find the video's qualities, so the menu stopped waiting
 #, machine
 extension	Looking up took too long	La recherche a pris trop de temps
+#. text in the browser extension
+#. on the download button (red) over a video when the app isn't installed or didn't start; 'Get MDM' and 'Retry' buttons follow; MDM is the app's short name, keep it; short
+#, machine
+extension	MDM didn't answer	MDM n’a pas répondu
 #. text in the browser extension
 #. heading in the toolbar button's popup over the list of the videos, sounds and streams the current web page has loaded
 #, machine
@@ -5938,9 +5990,9 @@ extension	No video to download here	Aucune vidéo à télécharger ici
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Non atteint. Ouvrez son adresse une fois dans ce navigateur et acceptez son certificat, puis réessayez.
 #. text in the browser extension
-#. last command of the menu of qualities under the download button over a video: opens the app's Download video window for this video instead; keep the name Mister Download Manager as it is
+#. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
 #, machine
-extension	Open in Mister Download Manager…	Ouvrir dans Mister Download Manager…
+extension	Off on this site	Désactivé sur ce site
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -5954,14 +6006,22 @@ extension	Open its address once and accept its certificate, then enter a code fr
 #, machine
 extension	Open Mister Download Manager	Ouvrir Mister Download Manager
 #. text in the browser extension
-#. shown briefly on the download button over a video in a feed (a social site's home page, a timeline) when nothing in the feed gives that video's own address, so nothing was sent: the user should open the post the video belongs to and click the button on that page; short
+#. button on the download button over a video in a feed: opens the post the video belongs to in a new tab; verb; very short
 #, machine
-extension	Open the post, then use the button there	Ouvrez la publication, puis utilisez le bouton
+extension	Open post	Ouvrir la publication
+#. text in the browser extension
+#. on the download button (amber) over a video in a feed (a social site's home page, a timeline) that can't be downloaded from there: the user should open the post the video belongs to; short
+#, machine
+extension	Open the post to download it	Ouvrez la publication pour la télécharger
 #. text in the browser extension
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it
 #, machine
 extension	Options...	Options...
+#. text in the browser extension
+#. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
+#, machine
+extension	original	original
 #. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
@@ -5983,9 +6043,13 @@ extension	Prefix media file names with the page title	Ajouter le titre de la pag
 #, machine
 extension	Protected	Protégé
 #. text in the browser extension
-#. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
+#. on the download button over a copy-protected (DRM) video, which no tool can download; 'can't be saved' follows it after a dot; short
 #, machine
-extension	Protected video: it can't be saved	Vidéo protégée : impossible de l’enregistrer
+extension	Protected video	Vidéo protégée
+#. text in the browser extension
+#. button on the download button over a video when the app didn't answer: try again; verb; very short
+#, machine
+extension	Retry	Réessayer
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
@@ -5995,9 +6059,18 @@ extension	Send downloads through this browser's proxy or VPN extension	Envoyer l
 #, machine
 extension	Send downloads to	Envoyer les téléchargements vers
 #. text in the browser extension
+#. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Sending to MDM...	Envoi vers MDM...
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Envoyé à Mister Download Manager
+#. text in the browser extension
+#. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
+#, machine
+extension	Show	Afficher
 #. text in the browser extension
 #. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
 #, machine
@@ -6014,10 +6087,6 @@ extension	The Chrome Web Store's rules keep this copy of the add-on away from th
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
 extension	The connection to Mister Download Manager failed	La connexion à Mister Download Manager a échoué
-#. text in the browser extension
-#. shown briefly on the download button over a video when the app's settings keep the button off on this web site
-#, machine
-extension	The download button is off on this site	Le bouton de téléchargement est désactivé sur ce site
 #. text in the browser extension
 #. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
 #, machine
@@ -6042,6 +6111,10 @@ extension	This download's details were too large to hand over	Les détails de ce
 #. in the toolbar button's popup, when the page's player plays from a stream built in the page (a blob:): the list of the page's media has nothing to show; Download video is the name of the button over videos
 #, machine
 extension	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.	Le lecteur de cette page diffuse la vidéo par morceaux : il n'y a donc aucun fichier à lister. Pointez la vidéo et utilisez son bouton « Télécharger la vidéo ».
+#. text in the browser extension
+#. button on the download button over a video when it is off on this web site: turns it on again here; verb; very short
+#, machine
+extension	Turn on	Activer
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
@@ -6815,85 +6888,3 @@ unit	{n} MB	{n} Mo
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} Mo/s
-#. text in the browser extension
-#. on the download button (green) over a video after the app added and started the download; a quality may follow ('· 1080p') and a 'Show' button; MDM is the app's short name, keep it; short
-#, machine
-extension	Added to MDM	Ajouté à MDM
-#. text in the browser extension
-#. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
-#. the trailing ... means it is still going on: keep it
-#, machine
-extension	All qualities and subtitles...	Toutes les qualités et les sous-titres...
-#. text in the browser extension
-#. first row of the menu of the download button over a video while the app is still finding its qualities: downloads the best one as soon as it is known; short
-#, machine
-extension	Best quality	Meilleure qualité
-#. text in the browser extension
-#. first line of the tooltip of the download button over a video while the app is still finding its qualities
-#, machine
-extension	Download the best quality	Télécharger la meilleure qualité
-#. text in the browser extension
-#. first line of the tooltip of the download button over a video: what one click downloads; $what$ is a quality, a file type and a size, e.g. '1080p MP4 · 412 MB'
-#, machine
-extension	Download {what}	Télécharger {what}
-#. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
-#, machine
-extension	Drag the dots to move it along the edge	Faites glisser les points pour le déplacer le long du bord
-#. text in the browser extension
-#. button on the download button over a video when the app didn't answer: opens the app's download page; MDM is the app's short name, keep it; very short
-#, machine
-extension	Get MDM	Obtenir MDM
-#. text in the browser extension
-#. on the download button (red) over a video when the app isn't installed or didn't start; 'Get MDM' and 'Retry' buttons follow; MDM is the app's short name, keep it; short
-#, machine
-extension	MDM didn't answer	MDM n’a pas répondu
-#. text in the browser extension
-#. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
-#, machine
-extension	Off on this site	Désactivé sur ce site
-#. text in the browser extension
-#. button on the download button over a video in a feed: opens the post the video belongs to in a new tab; verb; very short
-#, machine
-extension	Open post	Ouvrir la publication
-#. text in the browser extension
-#. on the download button (amber) over a video in a feed (a social site's home page, a timeline) that can't be downloaded from there: the user should open the post the video belongs to; short
-#, machine
-extension	Open the post to download it	Ouvrez la publication pour la télécharger
-#. text in the browser extension
-#. on the download button over a copy-protected (DRM) video, which no tool can download; 'can't be saved' follows it after a dot; short
-#, machine
-extension	Protected video	Vidéo protégée
-#. text in the browser extension
-#. button on the download button over a video when the app didn't answer: try again; verb; very short
-#, machine
-extension	Retry	Réessayer
-#. text in the browser extension
-#. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
-#. the trailing ... means it is still going on: keep it
-#, machine
-extension	Sending to MDM...	Envoi vers MDM...
-#. text in the browser extension
-#. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
-#, machine
-extension	Show	Afficher
-#. text in the browser extension
-#. button on the download button over a video when it is off on this web site: turns it on again here; verb; very short
-#, machine
-extension	Turn on	Activer
-#. text in the browser extension
-#. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
-#, machine
-extension	best	meilleure
-#. text in the browser extension
-#. on the download button over a copy-protected video, after 'Protected video ·': it can't be downloaded; short, lower case
-#, machine
-extension	can't be saved	ne peut pas être enregistré
-#. text in the browser extension
-#. first line of the list under the download button over a video: downloads the best quality at once; the quality, its file type and size follow on the same line; short
-#, machine
-extension	Download best	Télécharger la meilleure qualité
-#. text in the browser extension
-#. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
-#, machine
-extension	original	original
