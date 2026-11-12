@@ -2145,7 +2145,7 @@ fn helper_line(why: &mdm_tools::streams::Helper) -> String {
         // i18n: progress window, a video's line: MDM's own downloader can't take a live broadcast, so the helper program yt-dlp records it
         Helper::Live => crate::i18n::t("yt-dlp downloads it itself: a live stream").to_owned(),
         Helper::Pieces(_) => {
-            // i18n: progress window, a video's line: a stream sent in many small pieces (HLS, DASH), which the helper program yt-dlp downloads itself for now
+            // i18n: progress window, a video's line: a stream sent in many small pieces of a rare kind (Adobe HDS, Smooth Streaming), which the helper program yt-dlp downloads itself
             crate::i18n::t("yt-dlp downloads it itself: a stream in pieces").to_owned()
         }
         Helper::Protocol(protocol) => crate::i18n::fmt(

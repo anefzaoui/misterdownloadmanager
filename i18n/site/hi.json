@@ -1038,6 +1038,10 @@
    "source": "A minimized MDM keeps running its queues and Scheduler.",
    "text": "एक छोटा किया गया MDM अपनी कतारें और शेड्यूलर चलाता रहता है।"
   },
+  "10cc202f7a0cd1f1": {
+   "source": "<g1>Control styles.</g1> <x2/> names each control's shape (text boxes, check boxes, buttons, progress bars, scroll bars, the focus mark, the title bar); the style themes (Metro, Adwaita, Breeze, Luna, Aero, Aqua, Emerald) pick theirs, and on Windows MDM then draws the title bar itself (the <x3/> roles).",
+   "text": "<g1>नियंत्रण शैलियाँ।</g1> <x2/> प्रत्येक नियंत्रण के आकार (टेक्स्ट बॉक्स, चेक बॉक्स, बटन, प्रगति बार, स्क्रॉल बार, फोकस मार्क, शीर्षक बार) का नाम देता है; शैली थीम (Metro, Adwaita, Breeze, Luna, Aero, Aqua, Emerald) अपनी पसंद चुनते हैं, और Windows पर MDM फिर शीर्षक बार को स्वयं खींचता है (<x3/> भूमिकाएँ)।"
+  },
   "10cc758c6a4201c4": {
    "source": "In the app",
    "text": "ऐप में"
@@ -2625,6 +2629,10 @@
   "278b137e16d025a9": {
    "source": "What the page does",
    "text": "पेज क्या करता है"
+  },
+  "278efae7472c5c89": {
+   "source": "the rare streams in pieces of other kinds (Adobe's HDS, Microsoft's Smooth Streaming), and one whose key the site hands yt-dlp directly.",
+   "text": "अन्य प्रकार के भागों में दुर्लभ स्ट्रीम (Adobe का HDS, Microsoft का स्मूथ स्ट्रीमिंग), और एक जिसकी कुंजी साइट सीधे yt-dlp को देती है।"
   },
   "279fabf85cf86d75": {
    "source": "Native speakers are very welcome to check and improve a language.",
@@ -8538,6 +8546,10 @@
    "source": "MDM's interface comes in 86 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for…",
    "text": "MDM का इंटरफ़ेस 86 भाषाओं में आता है: Windows 11 द्वारा प्रदान की जाने वाली हर डिस्प्ले भाषा, अफ्रीकी से वियतनामी तक, जिसमें दोनों चीनी लिपियाँ, स्पेनिश शामिल हैं…"
   },
+  "81e129770ec4dcbd": {
+   "source": "a stream sent over RTMP, RTSP, MMS or FTP;",
+   "text": "RTMP, RTSP, MMS या FTP पर भेजी गई स्ट्रीम;"
+  },
   "81ea369617c129d6": {
    "source": "Options → Save to →",
    "text": "विकल्प → इसमें सहेजें →"
@@ -12590,6 +12602,10 @@
    "source": "Your browsers hand it their downloads, and proven open-source tools do the specialist work. <g1>Set up the extension</g1>.",
    "text": "आपके ब्राउज़र इसे अपने डाउनलोड देते हैं, और सिद्ध ओपन-सोर्स टूल विशेषज्ञ का काम करते हैं। <g1>एक्सटेंशन सेट करें</g1>।"
   },
+  "bfccf2cc495dc164": {
+   "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). On Windows, Latin, Greek and Cyrillic text is drawn by DirectWrite (<x6/>, through egui's glyph rasterizer hook): View → Text → Smooth in its natural mode, anti-aliased at the size asked for and placed at quarter pixels with the font's own advances; Classic (the default) in GDI-classic mode, so each letter's hinted shape and whole-pixel width come together. Other scripts are shaped and drawn by egui.",
+   "text": "एक egui विंडो को निश्चित पिक्सेल निर्देशांक पर पेंट किया जाता है, साथ ही प्रति संवाद एक तत्काल व्यूपोर्ट भी होता है। <x1/> स्थिति (डाउनलोड, कतारें, सेटिंग्स, सूची का चयन) को रखता है और मेनू, टूलबार, कुंजी और IPC कमांड को क्रियाओं में बदलता है। प्रत्येक संवाद अपना मॉड्यूल होता है और एक <x2/> (खुला, बंद, एक मान के साथ पूरा) लौटाता है। केवल Windows के लिए कॉल <x3/> तक सीमित हैं और उनके Linux और macOS समकक्ष <x4/> तक सीमित हैं (सत्र के साथ शुरू करना, ब्राउज़र का होस्ट, ध्वनियाँ, फ़ोल्डर में दिखाना, क्रैश हैंडलर); हर दूसरी फ़ाइल सुरक्षित, पोर्टेबल Rust है। फ़ॉन्ट सिस्टम से आते हैं: Windows का फ़ॉन्ट फ़ोल्डर, macOS के सिस्टम फ़ॉन्ट, Linux पर fontconfig (<x5/>)। Windows पर, लैटिन, ग्रीक और सिरिलिक टेक्स्ट DirectWrite (<x6/>, egui के ग्लिफ़ रास्टराइज़र हुक के माध्यम से) द्वारा खींचा जाता है: View → Text → Smooth अपने प्राकृतिक मोड में, मांगे गए आकार पर एंटी-एलियास किया गया और फ़ॉन्ट के अपने अग्रिमों के साथ क्वार्टर पिक्सेल पर रखा गया; Classic (डिफ़ॉल्ट) GDI-क्लासिक मोड में, ताकि प्रत्येक अक्षर का संकेतित आकार और पूरे-पिक्सेल की चौड़ाई एक साथ आए। अन्य स्क्रिप्ट egui द्वारा आकारित और खींची जाती हैं।"
+  },
   "bfcf797517e5c279": {
    "source": "MDM remembers the columns, their widths and the sort order.",
    "text": "MDM कॉलम, उनकी चौड़ाई और सॉर्ट क्रम को याद रखता है।"
@@ -15206,10 +15222,6 @@
    "source": "Video pages (yt-dlp) and image galleries need their helpers, which the image doesn't include.",
    "text": "वीडियो पेज (yt-dlp) और इमेज गैलरी को अपने सहायकों की ज़रूरत होती है, जो इमेज में शामिल नहीं हैं।"
   },
-  "e93cc4bc200a5ffe": {
-   "source": "a stream sent over RTMP, RTSP, MMS or FTP.",
-   "text": "एक स्ट्रीम RTMP, RTSP, MMS या FTP पर भेजी गई।"
-  },
   "e96fd5ce65ea0012": {
    "source": "Download Mister Download Manager 0.5.2, the free, open-source download manager: Windows installer and portable zip, macOS .dmg and Linux AppImage, .deb and .rpm, plus the browser extension. No ads, no bundled software.",
    "text": "Mister Download Manager 0.5.2 डाउनलोड करें, मुफ़्त, ओपन-सोर्स डाउनलोड मैनेजर: Windows इंस्टॉलर और पोर्टेबल ज़िप, macOS .dmg और Linux AppImage, .deb और .rpm, साथ ही ब्राउज़र एक्सटेंशन। कोई विज्ञापन नहीं, कोई बंडल सॉफ़्टवेयर नहीं।"
@@ -16466,6 +16478,10 @@
    "source": "A text box's bottom line while it can be typed in",
    "text": "एक टेक्स्ट बॉक्स की निचली रेखा जब उसमें टाइप किया जा सकता हो"
   },
+  "fbc41fd4efa0fd9a": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). <x19/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x20/>; when it isn't connected, nothing starts.",
+   "text": "एक वीडियो डाउनलोड करें; <x1/> <x2/> से गुणवत्ता चयनकर्ता लेता है (<x3/> = सबसे अच्छी एकल फ़ाइल; <x4/> = साइट पर उपलब्ध ध्वनि, परिवर्तित नहीं; <x5/>, <x6/>, <x7/> या <x8/> = उस बिटरेट पर MP3 के रूप में ध्वनि, <x9/> अपनी सर्वोत्तम परिवर्तनीय गुणवत्ता पर; <x10/> = Opus के रूप में; <x11/> = FLAC के रूप में, दोषरहित लेकिन साइट की ध्वनि से बेहतर नहीं; रूपांतरणों के लिए ffmpeg की आवश्यकता होती है)। <x12/>: MDM का अपना डाउनलोडर yt-dlp द्वारा पाए गए प्रत्येक स्ट्रीम को इतने कनेक्शनों (डिफ़ॉल्ट रूप से 8, 1 से 128 तक) पर लाता है, एक स्ट्रीम को टुकड़ों में (HLS, DASH) एक साथ इतने टुकड़ों में। <x13/> इसके साथ उपशीर्षक सहेजता है: <x14/> (<x15/>) से भाषा कोड, या अपलोडर द्वारा दिए गए प्रत्येक के लिए <x16/>; <x17/> इसके बजाय साइट के स्वचालित कैप्शन लेता है; <x18/> उन्हें वीडियो में डालता है (ffmpeg, MP4 या MKV की आवश्यकता होती है)। <x19/> डाउनलोड के कनेक्शन, और yt-dlp के (और ffmpeg के), एक नेटवर्क एडाप्टर के माध्यम से भेजता है, जैसे <x20/> के लिए; जब यह कनेक्ट नहीं होता है, तो कुछ भी शुरू नहीं होता है।"
+  },
   "fbc5c79e5fad811f": {
    "source": "<g1>VS Code</g1>: in <x2/>, or <g3>MCP: Add Server</g3> in the command palette:",
    "text": "<g1>VS Code</g1>: <x2/> में, या कमांड पैलेट में <g3>MCP: सर्वर जोड़ें</g3>:"
@@ -16473,6 +16489,10 @@
   "fbfc7053be3080ea": {
    "source": "What it colours",
    "text": "यह क्या रंगता है"
+  },
+  "fc0380f46b815fa6": {
+   "source": "<g1>A stream sent in many small pieces</g1> (HLS, DASH, as most sites other than YouTube send theirs) comes down that many pieces at once, each kept on disk as it arrives, then joined in order into one file, as yt-dlp joins them. Pieces encrypted with AES-128 are decrypted with the key the stream's playlist names. When their addresses expire, MDM asks yt-dlp for the stream's new list and carries on with the pieces still missing.",
+   "text": "<g1>एक स्ट्रीम जो कई छोटे भागों में भेजी जाती है</g1> (HLS, DASH, जैसा कि YouTube के अलावा अधिकांश साइटें भेजती हैं) उतने ही भागों में एक साथ डाउनलोड होती है, प्रत्येक भाग आते ही डिस्क पर रखा जाता है, फिर yt-dlp की तरह एक फ़ाइल में क्रम से जोड़ा जाता है। AES-128 से एन्क्रिप्ट किए गए भागों को स्ट्रीम की प्लेलिस्ट में दिए गए कुंजी से डिक्रिप्ट किया जाता है। जब उनके पते समाप्त हो जाते हैं, तो MDM yt-dlp से स्ट्रीम की नई सूची मांगता है और अभी भी गायब भागों के साथ जारी रखता है।"
   },
   "fc08963d3bab24c0": {
    "source": "On Ubuntu's GNOME desktop, with the desktop's own file icons.",

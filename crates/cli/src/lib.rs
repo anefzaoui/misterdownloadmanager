@@ -124,8 +124,7 @@ enum Cmd {
         #[arg(long)]
         embed_subs: bool,
         /// Connections per stream (1 to 128), as `get`'s: MDM's engine downloads the streams
-        /// yt-dlp finds (#769); a stream yt-dlp downloads itself in pieces (HLS, DASH) takes
-        /// this many pieces at once.
+        /// yt-dlp finds (#769), one in pieces (HLS, DASH) this many pieces at once.
         #[arg(short, long, default_value_t = Options::default().max_connections,
               value_parser = clap::value_parser!(u32).range(1..=MAX_CONNECTIONS_UNLOCKED as i64))]
         connections: u32,
@@ -756,7 +755,6 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                     &folder,
                     &stem,
                     None,
-                    connections,
                     ffmpeg.as_deref(),
                     None,
                     &Default::default(),
@@ -955,7 +953,6 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                 &output,
                 &stem,
                 None,
-                connections,
                 ffmpeg.as_deref(),
                 // No size shown here: the progress steadies itself (video::Meter).
                 None,

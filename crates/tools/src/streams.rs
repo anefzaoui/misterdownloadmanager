@@ -7,6 +7,9 @@
 //! embeds the subtitles and the metadata, converts the sound. Its post-processing stays the one
 //! source of truth for the finished file; only the bytes come down through the engine.
 //!
+//! A stream in pieces (HLS, DASH) comes down piece by piece, several at once, and is joined into
+//! that file as yt-dlp's own downloaders join it ([`crate::pieces`]).
+//!
 //! What the engine can't download stays yt-dlp's to download ([`Helper`]): a live stream still
 //! being recorded, a protocol other than HTTP (RTMP, RTSP, MMS, FTP…), protected streams.
 //!
@@ -33,7 +36,8 @@ use url::Url;
 pub enum Helper {
     /// A live stream still being recorded: it has no end to download to.
     Live,
-    /// Pieces of a stream (HLS, DASH), yt-dlp's name for its protocol.
+    /// Pieces of a stream the engine doesn't list (Adobe's HDS, Microsoft's Smooth Streaming, a
+    /// DASH stream made as it plays), yt-dlp's name for its protocol.
     Pieces(String),
     /// A protocol the engine doesn't speak (RTMP, RTSP, MMS, FTP…), yt-dlp's name for it.
     Protocol(String),
@@ -69,8 +73,23 @@ pub struct Stream {
     pub url: Url,
     /// yt-dlp's headers for it (`http_headers`) and the cookies it would send (`Cookie`).
     pub headers: Vec<(String, String)>,
-    /// yt-dlp's `http_chunk_size`: the most each request asks for (`Options::request_cap`).
-    pub chunk: Option<u64>,
+    pub kind: Kind,
+}
+
+/// How a stream comes down.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum Kind {
+    /// One file (`http`, `https`), in requests of at most `chunk` bytes (yt-dlp's
+    /// `http_chunk_size`, `Options::request_cap`).
+    File { chunk: Option<u64> },
+    /// An HLS media playlist at the stream's address (`m3u8_native`, `m3u8`), read as yt-dlp's
+    /// hlsnative reads it, with yt-dlp's extra queries for its pieces and keys.
+    Hls {
+        extra: Option<String>,
+        extra_key: Option<String>,
+    },
+    /// DASH's pieces (`http_dash_segments`), as yt-dlp lists them.
+    Dash(Vec<crate::pieces::Piece>),
 }
 
 /// A choice as the engine downloads it: its streams, one after another, and the file yt-dlp makes
@@ -200,20 +219,36 @@ fn stream(f: &Value, path: PathBuf) -> Result<Stream, Helper> {
     let fragments = f
         .get("fragments")
         .is_some_and(|v| !v.is_null() && v.as_array().is_none_or(|a| !a.is_empty()));
-    match protocol.as_str() {
-        "http" | "https" if !fragments => {}
+    let kind = match protocol.as_str() {
+        "http" | "https" if !fragments => Kind::File {
+            chunk: f
+                .get("downloader_options")
+                .and_then(|o| number(o, "http_chunk_size")),
+        },
+        // A key of the site's own (`hls_aes`) stays yt-dlp's.
+        "m3u8" | "m3u8_native" if f.get("hls_aes").is_none_or(Value::is_null) => Kind::Hls {
+            extra: text(f, "extra_param_to_segment_url").map(str::to_owned),
+            extra_key: text(f, "extra_param_to_key_url").map(str::to_owned),
+        },
+        "http_dash_segments" => {
+            Kind::Dash(crate::pieces::dash(f).ok_or_else(|| Helper::Pieces(protocol.clone()))?)
+        }
         "m3u8"
         | "m3u8_native"
-        | "http_dash_segments"
         | "http_dash_segments_generator"
         | "f4m"
         | "ism"
         | "https"
         | "http" => return Err(Helper::Pieces(protocol)),
         _ => return Err(Helper::Protocol(protocol)),
-    }
+    };
+    // DASH's address is its manifest's (or none): its first piece's stands for it.
     let url = text(f, "url")
         .and_then(|u| Url::parse(u).ok())
+        .or_else(|| match &kind {
+            Kind::Dash(p) => p.first().map(|p| p.url.clone()),
+            _ => None,
+        })
         .filter(|u| matches!(u.scheme(), "http" | "https"))
         .ok_or(Helper::NoAddress)?;
     let exact = number(f, "filesize");
@@ -224,9 +259,7 @@ fn stream(f: &Value, path: PathBuf) -> Result<Stream, Helper> {
         exact: exact.is_some(),
         url,
         headers: headers_of(f),
-        chunk: f
-            .get("downloader_options")
-            .and_then(|o| number(o, "http_chunk_size")),
+        kind,
     })
 }
 
@@ -261,19 +294,21 @@ pub fn plan(selected: &Value) -> Result<Plan, Helper> {
     Ok(Plan { output, streams })
 }
 
-/// The chosen format `id` in yt-dlp's choice `selected` (a look-up chosen again with `-f <id>`):
-/// its address and headers.
-pub fn format_link(selected: &Value, id: &str) -> Option<(Url, Vec<(String, String)>)> {
+/// The chosen format `id` in yt-dlp's choice `selected` (a look-up chosen again with `-f <id>`).
+pub fn format_of<'a>(selected: &'a Value, id: &str) -> Option<&'a Value> {
     let formats = selected
         .get("requested_formats")
         .and_then(Value::as_array)
         .map(|a| a.iter().collect::<Vec<_>>())
         .unwrap_or_else(|| vec![selected]);
-    let f = formats
+    formats
         .into_iter()
-        .find(|f| text(f, "format_id") == Some(id))?;
-    let s = stream(f, PathBuf::new()).ok()?;
-    Some((s.url, s.headers))
+        .find(|f| text(f, "format_id") == Some(id))
+}
+
+/// A format as yt-dlp gives it (a look-up's, again): its stream (no file of its own).
+pub fn stream_of(format: &Value) -> Option<Stream> {
+    stream(format, PathBuf::new()).ok()
 }
 
 fn header_map(headers: &[(String, String)]) -> HeaderMap {
@@ -289,8 +324,8 @@ fn header_map(headers: &[(String, String)]) -> HeaderMap {
     map
 }
 
-/// Looks the page up again for today's address of a format (blocking: yt-dlp runs).
-pub type Relink = Arc<dyn Fn(&str) -> Result<(Url, Vec<(String, String)>), String> + Send + Sync>;
+/// Looks the page up again for a format as yt-dlp gives it today (blocking: yt-dlp runs).
+pub type Relink = Arc<dyn Fn(&str) -> Result<Value, String> + Send + Sync>;
 
 /// A stream's address, from yt-dlp (#769): the engine's [`Unlocker`] for a stream. The first ask
 /// takes the address this run's look-up gave; every later one (the address died, the download
@@ -356,8 +391,12 @@ impl Unlocker for StreamLink {
             let got = tokio::task::spawn_blocking(move || relink(&id))
                 .await
                 .map_err(|_| ServiceFault::Other("yt-dlp stopped".into()))?;
-            match got {
-                Ok((url, headers)) => Ok(Some(unlocked(url, &headers, self.size))),
+            match got.map(|f| stream_of(&f)) {
+                Ok(Some(s)) => Ok(Some(unlocked(s.url, &s.headers, self.size))),
+                Ok(None) => Err(ServiceFault::Other(format!(
+                    "yt-dlp gave no address for format {}",
+                    self.format_id
+                ))),
                 Err(e) => Err(ServiceFault::Other(e)),
             }
         })
@@ -383,10 +422,13 @@ pub struct Engine {
 
 /// The engine's download under way and its speed limit, shared with [`crate::video::VideoJob`]:
 /// a new limit applies to it at once, and Stop cancels it.
-#[derive(Default)]
 pub struct Current {
     dl: Mutex<Option<Download>>,
+    /// A stream in pieces under way: Stop cancels it.
+    pieces: Mutex<Option<CancellationToken>>,
     limit: Mutex<Option<u64>>,
+    /// The pieces' own speed limit (the download's), shared by their connections.
+    limiter: Arc<mdm_engine::limiter::Limiter>,
     /// An engine download is under way or ending: its resume state isn't saved yet.
     busy: AtomicBool,
 }
@@ -394,13 +436,17 @@ pub struct Current {
 impl Current {
     pub fn new(limit: Option<u64>) -> Current {
         Current {
+            dl: Mutex::new(None),
+            pieces: Mutex::new(None),
             limit: Mutex::new(limit),
-            ..Default::default()
+            limiter: Arc::new(mdm_engine::limiter::Limiter::new(limit)),
+            busy: AtomicBool::new(false),
         }
     }
 
     pub fn set_limit(&self, rate: Option<u64>) {
         *self.limit.lock().unwrap() = rate;
+        self.limiter.set(rate);
         if let Some(dl) = self.dl.lock().unwrap().as_ref() {
             dl.set_speed_limit(rate);
         }
@@ -413,6 +459,9 @@ impl Current {
     pub fn cancel(&self) {
         if let Some(dl) = self.dl.lock().unwrap().as_ref() {
             dl.cancel();
+        }
+        if let Some(t) = self.pieces.lock().unwrap().as_ref() {
+            t.cancel();
         }
     }
 
@@ -438,6 +487,8 @@ pub enum Fetched {
     Done,
     Stopped,
     Failed(String),
+    /// A stream turned out to be yt-dlp's to download (a playlist without an end yet: live).
+    Helper(Helper),
 }
 
 /// What [`fetch`] reports as it goes: bytes in, the total, the speed (bytes/s), the view, and the
@@ -514,9 +565,18 @@ pub fn fetch(
         if let Some(dir) = s.path.parent() {
             let _ = std::fs::create_dir_all(dir);
         }
+        let chunk = match &s.kind {
+            Kind::File { chunk } => *chunk,
+            Kind::Hls { .. } | Kind::Dash(_) => {
+                match fetch_pieces(plan, i, &mut known, engine, relink, current, report) {
+                    Fetched::Done => continue,
+                    other => return other,
+                }
+            }
+        };
         let mut opts = engine.opts.clone();
         opts.unlocker = Some(Arc::new(StreamLink::new(s, relink.clone())));
-        opts.request_cap = s.chunk;
+        opts.request_cap = chunk;
         opts.speed_limit = current.limit();
         // yt-dlp's headers are the stream's: no other User-Agent, address, type or form.
         if let Some((_, ua)) = s
@@ -576,6 +636,143 @@ pub fn fetch(
         }
     }
     Fetched::Done
+}
+
+/// Why a stream's pieces couldn't be listed.
+enum Unlisted {
+    /// It is yt-dlp's to download.
+    Helper(Helper),
+    Failed(String),
+}
+
+/// The pieces of stream `s` (an HLS playlist fetched and read, DASH's as yt-dlp listed them).
+async fn list_pieces(
+    s: &Stream,
+    opts: &mdm_engine::Options,
+) -> Result<Vec<crate::pieces::Piece>, Unlisted> {
+    use crate::pieces::Unlisted as U;
+    let (extra, extra_key) = match &s.kind {
+        Kind::Dash(p) => return Ok(p.clone()),
+        Kind::Hls { extra, extra_key } => (extra.as_deref(), extra_key.as_deref()),
+        Kind::File { .. } => return Err(Unlisted::Failed("not a stream in pieces".into())),
+    };
+    let failed = |e: String| Unlisted::Failed(format!("the playlist: {e}"));
+    let client = mdm_engine::http_client(opts, &s.url).map_err(|e| failed(e.to_string()))?;
+    let resp = client
+        .get(s.url.clone())
+        .headers(header_map(&s.headers))
+        .send()
+        .await
+        .map_err(|e| failed(e.to_string()))?;
+    if !resp.status().is_success() {
+        return Err(failed(format!("the server answered {}", resp.status())));
+    }
+    // Its pieces' addresses are taken from where it ended up, as hlsnative takes them.
+    let base = resp.url().clone();
+    let text = resp.text().await.map_err(|e| failed(e.to_string()))?;
+    crate::pieces::hls(&text, &base, extra, extra_key).map_err(|e| match e {
+        U::Live => Unlisted::Helper(Helper::Live),
+        U::Protected(_) => Unlisted::Helper(Helper::Protected),
+        U::NoPieces => Unlisted::Failed("the playlist lists no pieces".into()),
+    })
+}
+
+/// Stream `i` of `plan`, in pieces: listed, downloaded several at once into its pieces' folder
+/// (a stop keeps the pieces whole), joined into its file. A piece refused has the stream asked of
+/// yt-dlp again (`relink`) for today's list.
+fn fetch_pieces(
+    plan: &Plan,
+    i: usize,
+    known: &mut [Option<u64>],
+    engine: &Engine,
+    relink: &Relink,
+    current: &Current,
+    report: &dyn Report,
+) -> Fetched {
+    let s = &plan.streams[i];
+    let list = match engine.handle.block_on(list_pieces(s, &engine.opts)) {
+        Ok(l) => l,
+        Err(Unlisted::Helper(why)) => return Fetched::Helper(why),
+        Err(Unlisted::Failed(e)) => return Fetched::Failed(e),
+    };
+    let n = list.len();
+    let relist: crate::pieces::Relist = {
+        let (relink, id, opts) = (relink.clone(), s.format_id.clone(), engine.opts.clone());
+        let handle = engine.handle.clone();
+        Arc::new(move || {
+            let f = relink(&id)?;
+            let s =
+                stream_of(&f).ok_or_else(|| format!("yt-dlp gave no address for format {id}"))?;
+            handle
+                .block_on(list_pieces(&s, &opts))
+                .map_err(|e| match e {
+                    Unlisted::Failed(e) => e,
+                    Unlisted::Helper(h) => h.english(),
+                })
+        })
+    };
+    let token = CancellationToken::new();
+    *current.pieces.lock().unwrap() = Some(token.clone());
+    current.busy.store(true, Ordering::Release);
+    let shared = Arc::new(crate::pieces::Shared::default());
+    let task = engine.handle.spawn(crate::pieces::download(
+        list,
+        s.path.clone(),
+        header_map(&s.headers),
+        engine.opts.clone(),
+        current.limiter.clone(),
+        token.clone(),
+        shared.clone(),
+        relist,
+    ));
+    let mut cancelled = false;
+    while !task.is_finished() {
+        for note in shared.take_notes() {
+            report.note(format!("Format {}: {note}", s.format_id));
+        }
+        known[i] = shared.total(n, s.size);
+        let sizes = sizes(plan, known);
+        let before: u64 = sizes[..i].iter().map(|s| s.unwrap_or(0)).sum();
+        let total = sizes.iter().copied().sum::<Option<u64>>();
+        let connections = shared.connections();
+        let speed: u64 = connections.iter().map(|c| c.speed).sum();
+        let here = shared.segments(known[i].unwrap_or(0));
+        report.progress(
+            before + shared.downloaded(),
+            total,
+            speed as f64,
+            View {
+                segments: segments(&sizes, i, &here),
+                connections,
+                server: None,
+            },
+        );
+        if report.stopped() && !cancelled {
+            cancelled = true;
+            token.cancel();
+        }
+        std::thread::sleep(Duration::from_millis(200));
+    }
+    let ended = engine.handle.block_on(task);
+    for note in shared.take_notes() {
+        report.note(format!("Format {}: {note}", s.format_id));
+    }
+    *current.pieces.lock().unwrap() = None;
+    current.busy.store(false, Ordering::Release);
+    match ended {
+        Ok(crate::pieces::Ended::Done(size)) => {
+            known[i] = Some(size);
+            report.note(format!(
+                "Format {}: {n} pieces joined into {}",
+                s.format_id,
+                s.path.display()
+            ));
+            Fetched::Done
+        }
+        Ok(crate::pieces::Ended::Stopped) => Fetched::Stopped,
+        Ok(crate::pieces::Ended::Failed(e)) => Fetched::Failed(e),
+        Err(_) => Fetched::Failed("the pieces stopped on an internal error".into()),
+    }
 }
 
 fn fresh(page: &Url, s: &Stream, opts: mdm_engine::Options) -> Download {
@@ -700,16 +897,22 @@ mod tests {
         assert_eq!(v.format_id, "399");
         assert_eq!(v.path, Path::new("/v/Big Buck.f399.mp4"));
         assert_eq!((v.size, v.exact), (Some(124386876), true));
-        assert_eq!(v.chunk, Some(10485760));
+        assert_eq!(
+            v.kind,
+            Kind::File {
+                chunk: Some(10485760)
+            }
+        );
         assert!(v.headers.contains(&("User-Agent".into(), "UA/1".into())));
         assert_eq!(a.path, Path::new("/v/Big Buck.f258.m4a"));
-        assert_eq!((a.size, a.exact, a.chunk), (Some(30767602), false, None));
+        assert_eq!((a.size, a.exact), (Some(30767602), false));
+        assert_eq!(a.kind, Kind::File { chunk: None });
         assert!(a.headers.contains(&("Cookie".into(), "SID=s".into())));
         assert_eq!(p.total(), Some(124386876 + 30767602));
-        let (url, headers) = format_link(&youtube(), "258").unwrap();
-        assert!(url.as_str().ends_with("itag=258"));
-        assert!(headers.iter().any(|(k, _)| k == "Cookie"));
-        assert!(format_link(&youtube(), "137").is_none());
+        let again = stream_of(format_of(&youtube(), "258").unwrap()).unwrap();
+        assert!(again.url.as_str().ends_with("itag=258"));
+        assert!(again.headers.iter().any(|(k, _)| k == "Cookie"));
+        assert!(format_of(&youtube(), "137").is_none());
     }
 
     #[test]
@@ -721,7 +924,7 @@ mod tests {
         let p = plan(&one).unwrap();
         assert_eq!(p.streams.len(), 1);
         assert_eq!(p.streams[0].path, Path::new("/v/Talk.mp4"));
-        assert_eq!(p.streams[0].chunk, None);
+        assert_eq!(p.streams[0].kind, Kind::File { chunk: None });
         // No protocol said: the address's.
         let mut bare = one.clone();
         bare.as_object_mut().unwrap().remove("protocol");
@@ -736,17 +939,22 @@ mod tests {
             plan(&f)
         };
         assert_eq!(
-            with("protocol", json!("m3u8_native")),
-            Err(Helper::Pieces("m3u8_native".into()))
-        );
-        assert_eq!(
             with("protocol", json!("http_dash_segments")),
-            Err(Helper::Pieces("http_dash_segments".into()))
+            Err(Helper::Pieces("http_dash_segments".into())),
+            "DASH without its pieces listed"
         );
         assert_eq!(
             with("fragments", json!([{"url": "a"}])),
             Err(Helper::Pieces("https".into()))
         );
+        assert_eq!(
+            with("protocol", json!("f4m")),
+            Err(Helper::Pieces("f4m".into()))
+        );
+        let mut aes = youtube();
+        aes["requested_formats"][1]["protocol"] = json!("m3u8_native");
+        aes["requested_formats"][1]["hls_aes"] = json!({"key": "00"});
+        assert_eq!(plan(&aes), Err(Helper::Pieces("m3u8_native".into())));
         assert_eq!(
             with("protocol", json!("rtmp")),
             Err(Helper::Protocol("rtmp".into()))
@@ -762,6 +970,35 @@ mod tests {
         let mut unnamed = youtube();
         unnamed.as_object_mut().unwrap().remove("filename");
         assert_eq!(plan(&unnamed), Err(Helper::NoAddress));
+    }
+
+    /// #769: HLS and DASH streams are the engine's, in pieces.
+    #[test]
+    fn streams_in_pieces_are_the_engines() {
+        let mut f = youtube();
+        f["requested_formats"][0]["protocol"] = json!("m3u8_native");
+        f["requested_formats"][0]["url"] = json!("https://cdn.example/v/index.m3u8");
+        f["requested_formats"][0]["extra_param_to_segment_url"] = json!("tok=1");
+        f["requested_formats"][1]["protocol"] = json!("http_dash_segments");
+        f["requested_formats"][1]["fragment_base_url"] = json!("https://cdn.example/a/");
+        f["requested_formats"][1]["fragments"] = json!([{"path": "init.mp4"}, {"path": "s1.m4s"}]);
+        f["requested_formats"][1]
+            .as_object_mut()
+            .unwrap()
+            .remove("url");
+        let p = plan(&f).unwrap();
+        assert_eq!(
+            p.streams[0].kind,
+            Kind::Hls {
+                extra: Some("tok=1".into()),
+                extra_key: None
+            }
+        );
+        let Kind::Dash(pieces) = &p.streams[1].kind else {
+            panic!("{:?}", p.streams[1].kind)
+        };
+        assert_eq!(pieces.len(), 2);
+        assert_eq!(p.streams[1].url.as_str(), "https://cdn.example/a/init.mp4");
     }
 
     #[test]

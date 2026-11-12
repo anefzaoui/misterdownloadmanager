@@ -59,6 +59,7 @@ The video then downloads like any other file, with its own row in the list and i
 yt-dlp looks the page up and picks the quality's video and sound. MDM's own downloader then brings each of them in, one after the other, the way it downloads any file:
 
 - **Over several connections**: as many as **Options → Connection** gives a file. The progress window's connections table shows each one, and the segment map shows the video and then its sound.
+- **A stream sent in many small pieces** (HLS, DASH, as most sites other than YouTube send theirs) comes down that many pieces at once, each kept on disk as it arrives, then joined in order into one file, as yt-dlp joins them. Pieces encrypted with AES-128 are decrypted with the key the stream's playlist names. When their addresses expire, MDM asks yt-dlp for the stream's new list and carries on with the pieces still missing.
 - **Under your speed limits**: the **Speed Limiter**'s, the video's own (its progress window's **Speed Limiter** tab), and the limit for all downloads together. A change applies at once.
 - **Paused and resumed** like a file, also after quitting MDM: it carries on from the bytes already saved.
 - **When an address stops working**: a video's addresses are signed and expire after a few hours (YouTube's after six). MDM asks yt-dlp for a fresh one for the same quality and carries on from where it stopped.
@@ -70,8 +71,8 @@ YouTube serves each connection's long requests slowly, so MDM asks for the video
 Some videos yt-dlp still downloads by itself, over its own connection, and the progress window says so:
 
 - a live stream still being recorded;
-- a stream sent in many small pieces (HLS, DASH), for now;
-- a stream sent over RTMP, RTSP, MMS or FTP.
+- a stream sent over RTMP, RTSP, MMS or FTP;
+- the rare streams in pieces of other kinds (Adobe's HDS, Microsoft's Smooth Streaming), and one whose key the site hands yt-dlp directly.
 
 For those, a new speed limit starts the download again with it, from where it was ([Speed limits](#speed-limits)).
 

@@ -2630,6 +2630,10 @@
    "source": "What the page does",
    "text": "ページでできること"
   },
+  "278efae7472c5c89": {
+   "source": "the rare streams in pieces of other kinds (Adobe's HDS, Microsoft's Smooth Streaming), and one whose key the site hands yt-dlp directly.",
+   "text": "他の種類のピース (Adobe の HDS、Microsoft の Smooth Streaming) で構成される珍しいストリーム、およびサイトが yt-dlp に直接キーを渡すストリーム。"
+  },
   "279fabf85cf86d75": {
    "source": "Native speakers are very welcome to check and improve a language.",
    "text": "ネイティブスピーカーによる言語の確認と改善にご協力ください。"
@@ -8537,6 +8541,10 @@
   "81ce8b1ef8bffcb0": {
    "source": "MDM's interface comes in 86 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for…",
    "text": "MDMのインターフェースは86言語に対応しています。Windows 11が提供する表示言語すべて、アフリカーンス語からベトナム語まで、中国語の2つの表記、スペイン語などを含みます。"
+  },
+  "81e129770ec4dcbd": {
+   "source": "a stream sent over RTMP, RTSP, MMS or FTP;",
+   "text": "RTMP、RTSP、MMS、または FTP 経由で送信されるストリーム。"
   },
   "81ea369617c129d6": {
    "source": "Options → Save to →",
@@ -15202,10 +15210,6 @@
    "source": "Video pages (yt-dlp) and image galleries need their helpers, which the image doesn't include.",
    "text": "ビデオページ（yt-dlp）や画像ギャラリーにはヘルパーが必要ですが、イメージには含まれていません。"
   },
-  "e93cc4bc200a5ffe": {
-   "source": "a stream sent over RTMP, RTSP, MMS or FTP.",
-   "text": "RTMP、RTSP、MMS、または FTP 経由で送信されるストリーム。"
-  },
   "e96fd5ce65ea0012": {
    "source": "Download Mister Download Manager 0.5.2, the free, open-source download manager: Windows installer and portable zip, macOS .dmg and Linux AppImage, .deb and .rpm, plus the browser extension. No ads, no bundled software.",
    "text": "無料のオープンソース ダウンロード マネージャー、Mister Download Manager 0.5.2 をダウンロード: Windows インストーラーとポータブル zip、macOS .dmg、Linux AppImage、.deb、.rpm、さらにブラウザー拡張機能。広告なし、バンドル ソフトウェアなし。"
@@ -16462,6 +16466,10 @@
    "source": "A text box's bottom line while it can be typed in",
    "text": "入力可能なテキスト ボックスの下線"
   },
+  "fbc41fd4efa0fd9a": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). <x19/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x20/>; when it isn't connected, nothing starts.",
+   "text": "動画をダウンロードします。<x1/> は <x2/> から品質セレクターを取得します (<x3/> = 最高の単一ファイル; <x4/> = サイトにあるままの音声、変換なし; <x5/>、<x6/>、<x7/>、<x8/> = そのビットレートの MP3 形式の音声、<x9/> は最高の可変ビットレート; <x10/> = Opus 形式; <x11/> = FLAC 形式、ロスレスですがサイトの音声より良くはありません; 変換には ffmpeg が必要です)。<x12/>: MDM 独自のダウンローダーは、yt-dlp が見つけた各ストリームをこの数の接続 (デフォルトは 8、1 から 128) で取得し、ストリームを一度にこの数のピース (HLS、DASH) で取得します。<x13/> は字幕をその横に保存します: <x14/> (<x15/>) からの言語コード、またはアップローダーが提供したすべての字幕には <x16/> を指定します。<x17/> は代わりにサイトの自動キャプションを取得します。<x18/> はそれらを動画に埋め込みます (ffmpeg、MP4 または MKV が必要です)。<x19/> は、ダウンロードの接続と yt-dlp (および ffmpeg) の接続を、<x20/> のように 1 つのネットワーク アダプター経由で送信します。接続されていない場合、何も開始されません。"
+  },
   "fbc5c79e5fad811f": {
    "source": "<g1>VS Code</g1>: in <x2/>, or <g3>MCP: Add Server</g3> in the command palette:",
    "text": "<g1>VS Code</g1>: <x2/>で設定するか、コマンドパレットで<g3>MCP: サーバーを追加</g3>を実行します。"
@@ -16469,6 +16477,10 @@
   "fbfc7053be3080ea": {
    "source": "What it colours",
    "text": "色付けの対象"
+  },
+  "fc0380f46b815fa6": {
+   "source": "<g1>A stream sent in many small pieces</g1> (HLS, DASH, as most sites other than YouTube send theirs) comes down that many pieces at once, each kept on disk as it arrives, then joined in order into one file, as yt-dlp joins them. Pieces encrypted with AES-128 are decrypted with the key the stream's playlist names. When their addresses expire, MDM asks yt-dlp for the stream's new list and carries on with the pieces still missing.",
+   "text": "<g1>多数の小さなピースに分割されて送信されるストリーム</g1> (YouTube 以外のほとんどのサイトが使用する HLS、DASH) は、一度に多数のピースとしてダウンロードされ、到着した順にディスクに保存された後、yt-dlp が結合するように 1 つのファイルに結合されます。AES-128 で暗号化されたピースは、ストリームのプレイリストに指定されたキーで復号されます。アドレスの有効期限が切れると、MDM は yt-dlp にストリームの新しいリストを要求し、不足しているピースのダウンロードを続行します。"
   },
   "fc08963d3bab24c0": {
    "source": "On Ubuntu's GNOME desktop, with the desktop's own file icons.",

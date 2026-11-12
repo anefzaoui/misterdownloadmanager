@@ -2630,6 +2630,10 @@
    "source": "What the page does",
    "text": "Qué hace la página"
   },
+  "278efae7472c5c89": {
+   "source": "the rare streams in pieces of other kinds (Adobe's HDS, Microsoft's Smooth Streaming), and one whose key the site hands yt-dlp directly.",
+   "text": "las raras transmisiones en piezas de otros tipos (HDS de Adobe, Smooth Streaming de Microsoft) y una cuya clave el sitio le entrega directamente a yt-dlp."
+  },
   "279fabf85cf86d75": {
    "source": "Native speakers are very welcome to check and improve a language.",
    "text": "Se agradece mucho que los hablantes nativos revisen y mejoren las traducciones."
@@ -8541,6 +8545,10 @@
   "81ce8b1ef8bffcb0": {
    "source": "MDM's interface comes in 86 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for…",
    "text": "La interfaz de MDM está disponible en 86 idiomas: todos los idiomas de visualización que ofrece Windows 11, desde el afrikáans hasta el vietnamita, incluyendo ambos alfabetos chinos, español para…"
+  },
+  "81e129770ec4dcbd": {
+   "source": "a stream sent over RTMP, RTSP, MMS or FTP;",
+   "text": "una transmisión enviada por RTMP, RTSP, MMS o FTP;"
   },
   "81ea369617c129d6": {
    "source": "Options → Save to →",
@@ -15210,10 +15218,6 @@
    "source": "Video pages (yt-dlp) and image galleries need their helpers, which the image doesn't include.",
    "text": "Las páginas de vídeo (yt-dlp) y las galerías de imágenes necesitan sus asistentes, que la imagen no incluye."
   },
-  "e93cc4bc200a5ffe": {
-   "source": "a stream sent over RTMP, RTSP, MMS or FTP.",
-   "text": "una transmisión enviada por RTMP, RTSP, MMS o FTP."
-  },
   "e96fd5ce65ea0012": {
    "source": "Download Mister Download Manager 0.5.2, the free, open-source download manager: Windows installer and portable zip, macOS .dmg and Linux AppImage, .deb and .rpm, plus the browser extension. No ads, no bundled software.",
    "text": "Descarga Mister Download Manager 0.5.2, el gestor de descargas gratuito y de código abierto: instalador y zip portable para Windows, .dmg para macOS y AppImage, .deb y .rpm para Linux, además de la extensión para navegador. Sin anuncios ni software incluido."
@@ -16466,6 +16470,10 @@
    "source": "A text box's bottom line while it can be typed in",
    "text": "La línea inferior de un cuadro de texto mientras se puede escribir en él"
   },
+  "fbc41fd4efa0fd9a": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). <x19/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x20/>; when it isn't connected, nothing starts.",
+   "text": "Descargar un vídeo; <x1/> toma un selector de calidad de <x2/> (<x3/> = el mejor archivo único; <x4/> = solo el sonido tal como lo tiene el sitio, sin convertir; <x5/>, <x6/>, <x7/> o <x8/> = el sonido como MP3 a esa tasa de bits, <x9/> a su mejor tasa variable; <x10/> = como Opus; <x11/> = como FLAC, sin pérdidas, pero no mejor que el sonido del sitio; las conversiones necesitan ffmpeg). <x12/>: el propio descargador de MDM trae cada flujo que encuentra yt-dlp a través de esta cantidad de conexiones (8 por defecto, de 1 a 128), un flujo en fragmentos (HLS, DASH) esta cantidad de fragmentos a la vez. <x13/> guarda los subtítulos junto a él: códigos de idioma de <x14/> (<x15/>), o <x16/> para cada uno que el cargador proporcionó; <x17/> toma los subtítulos automáticos del sitio en su lugar; <x18/> los incrusta en el vídeo (necesita ffmpeg, MP4 o MKV). <x19/> envía las conexiones de las descargas, y las de yt-dlp (y ffmpeg), a través de un adaptador de red, como para <x20/>; cuando no está conectado, no se inicia nada."
+  },
   "fbc5c79e5fad811f": {
    "source": "<g1>VS Code</g1>: in <x2/>, or <g3>MCP: Add Server</g3> in the command palette:",
    "text": "<g1>VS Code</g1>: en <x2/>, o <g3>MCP: Añadir servidor</g3> en la paleta de comandos:"
@@ -16473,6 +16481,10 @@
   "fbfc7053be3080ea": {
    "source": "What it colours",
    "text": "Qué colorea"
+  },
+  "fc0380f46b815fa6": {
+   "source": "<g1>A stream sent in many small pieces</g1> (HLS, DASH, as most sites other than YouTube send theirs) comes down that many pieces at once, each kept on disk as it arrives, then joined in order into one file, as yt-dlp joins them. Pieces encrypted with AES-128 are decrypted with the key the stream's playlist names. When their addresses expire, MDM asks yt-dlp for the stream's new list and carries on with the pieces still missing.",
+   "text": "<g1>Una transmisión enviada en muchas piezas pequeñas</g1> (HLS, DASH, como la mayoría de los sitios que no son YouTube envían las suyas) se descarga en tantas piezas a la vez, cada una se guarda en el disco a medida que llega y luego se unen en orden en un solo archivo, como las une yt-dlp. Las piezas cifradas con AES-128 se descifran con la clave que nombra la lista de reproducción de la transmisión. Cuando sus direcciones caducan, MDM le pide a yt-dlp la nueva lista de la transmisión y continúa con las piezas que aún faltan."
   },
   "fc08963d3bab24c0": {
    "source": "On Ubuntu's GNOME desktop, with the desktop's own file icons.",

@@ -2630,6 +2630,10 @@
    "source": "What the page does",
    "text": "Sayfa ne yapar"
   },
+  "278efae7472c5c89": {
+   "source": "the rare streams in pieces of other kinds (Adobe's HDS, Microsoft's Smooth Streaming), and one whose key the site hands yt-dlp directly.",
+   "text": "diğer türden parçalar halinde nadir akışlar (Adobe'un HDS'si, Microsoft'un Smooth Streaming'i) ve anahtarını sitenin doğrudan yt-dlp'ye verdiği bir akış."
+  },
   "279fabf85cf86d75": {
    "source": "Native speakers are very welcome to check and improve a language.",
    "text": "Ana dili konuşanlar, bir dili kontrol etmek ve geliştirmek için çok hoş karşılanır."
@@ -8537,6 +8541,10 @@
   "81ce8b1ef8bffcb0": {
    "source": "MDM's interface comes in 86 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for…",
    "text": "MDM'nin arayüzü 86 dilde kullanılabilir: Windows 11'in sunduğu Afrikaans'tan Vietnamcaya tüm görüntüleme dilleri; her iki Çince yazı sistemi ve İspanyolca için…"
+  },
+  "81e129770ec4dcbd": {
+   "source": "a stream sent over RTMP, RTSP, MMS or FTP;",
+   "text": "RTMP, RTSP, MMS veya FTP üzerinden gönderilen bir akış;"
   },
   "81ea369617c129d6": {
    "source": "Options → Save to →",
@@ -15210,10 +15218,6 @@
    "source": "Video pages (yt-dlp) and image galleries need their helpers, which the image doesn't include.",
    "text": "Video sayfaları (yt-dlp) ve resim galerileri, görüntünün içermediği yardımcılarına ihtiyaç duyar."
   },
-  "e93cc4bc200a5ffe": {
-   "source": "a stream sent over RTMP, RTSP, MMS or FTP.",
-   "text": "RTMP, RTSP, MMS veya FTP üzerinden gönderilen bir yayın."
-  },
   "e96fd5ce65ea0012": {
    "source": "Download Mister Download Manager 0.5.2, the free, open-source download manager: Windows installer and portable zip, macOS .dmg and Linux AppImage, .deb and .rpm, plus the browser extension. No ads, no bundled software.",
    "text": "Mister Download Manager 0.5.2'yi indirin, ücretsiz, açık kaynaklı indirme yöneticisi: Windows yükleyici ve taşınabilir zip, macOS .dmg ve Linux AppImage, .deb ve .rpm, ayrıca tarayıcı uzantısı. Reklamsız, ek yazılımsız."
@@ -16470,6 +16474,10 @@
    "source": "A text box's bottom line while it can be typed in",
    "text": "Yazılabilir durumdayken metin kutusunun alt çizgisi"
   },
+  "fbc41fd4efa0fd9a": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). <x19/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x20/>; when it isn't connected, nothing starts.",
+   "text": "Bir video indir; <x1/>, <x2/> içinden bir kalite seçici alır (<x3/> = en iyi tek dosya; <x4/> = sitenin sunduğu haliyle, dönüştürülmemiş sadece ses; <x5/>, <x6/>, <x7/> veya <x8/> = o bit hızında MP3 olarak ses, <x9/> en iyi değişken bit hızında; <x10/> = Opus olarak; <x11/> = FLAC olarak, kayıpsız ama sitenin sesinden daha iyi değil; dönüştürmeler için ffmpeg gerekir). <x12/>: MDM'nin kendi indiricisi, yt-dlp'nin bulduğu her akışı bu kadar bağlantı üzerinden (varsayılan 8, 1 ila 128), bir akışı parçalar halinde (HLS, DASH) aynı anda bu kadar parça halinde getirir. <x13/> altyazıları yanına kaydeder: <x14/> (<x15/>) dil kodları veya yükleyicinin verdiği her biri için <x16/>; <x17/> bunun yerine sitenin otomatik altyazılarını alır; <x18/> bunları videoya yerleştirir (ffmpeg, MP4 veya MKV gerekir). <x19/> indirmelerin bağlantılarını ve yt-dlp'nin (ve ffmpeg'in) bağlantılarını, <x20/> için olduğu gibi tek bir ağ bağdaştırıcısı üzerinden gönderir; bağlı değilse hiçbir şey başlamaz."
+  },
   "fbc5c79e5fad811f": {
    "source": "<g1>VS Code</g1>: in <x2/>, or <g3>MCP: Add Server</g3> in the command palette:",
    "text": "<g1>VS Code</g1>: <x2/> içinde veya komut paletinde <g3>MCP: Sunucu Ekle</g3>:"
@@ -16477,6 +16485,10 @@
   "fbfc7053be3080ea": {
    "source": "What it colours",
    "text": "Ne renklendirir"
+  },
+  "fc0380f46b815fa6": {
+   "source": "<g1>A stream sent in many small pieces</g1> (HLS, DASH, as most sites other than YouTube send theirs) comes down that many pieces at once, each kept on disk as it arrives, then joined in order into one file, as yt-dlp joins them. Pieces encrypted with AES-128 are decrypted with the key the stream's playlist names. When their addresses expire, MDM asks yt-dlp for the stream's new list and carries on with the pieces still missing.",
+   "text": "<g1>Çok sayıda küçük parça halinde gönderilen bir akış</g1> (HLS, DASH, çoğu sitenin YouTube dışındaki akışları gibi) aynı anda o kadar çok parça halinde iner, her biri geldikçe diske kaydedilir, ardından yt-dlp'nin birleştirdiği gibi sırayla tek bir dosyada birleştirilir. AES-128 ile şifrelenmiş parçalar, akışın oynatma listesinde belirtilen anahtarla şifreleri çözülür. Adresleri sona erdiğinde, MDM yt-dlp'den akışın yeni listesini ister ve eksik parçalarla devam eder."
   },
   "fc08963d3bab24c0": {
    "source": "On Ubuntu's GNOME desktop, with the desktop's own file icons.",

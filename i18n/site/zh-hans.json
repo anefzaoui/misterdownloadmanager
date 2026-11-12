@@ -2630,6 +2630,10 @@
    "source": "What the page does",
    "text": "页面功能"
   },
+  "278efae7472c5c89": {
+   "source": "the rare streams in pieces of other kinds (Adobe's HDS, Microsoft's Smooth Streaming), and one whose key the site hands yt-dlp directly.",
+   "text": "其他类型（Adobe 的 HDS、Microsoft 的 Smooth Streaming）的稀有分块流，以及网站直接将密钥交给 yt-dlp 的流。"
+  },
   "279fabf85cf86d75": {
    "source": "Native speakers are very welcome to check and improve a language.",
    "text": "欢迎母语人士校对和改进各语言翻译。"
@@ -4649,6 +4653,10 @@
   "463b9f136ff41944": {
    "source": "Source",
    "text": "源"
+  },
+  "465aa7792ebfb03e": {
+   "source": "On Linux and macOS, MDM finds yt-dlp, ffmpeg and gallery-dl on your <x1/> and in the usual package-manager folders, including Homebrew's. A program you selected yourself takes priority, followed by MDM's own installed copy. The system copy is used when neither is present, and your package manager keeps it up to date: MDM never downloads over it on its own. If your distribution's yt-dlp is old, <g2>Use MDM's own copy</g2> in Helpers downloads MDM's, which keeps itself current and is used from then on.",
+   "text": "在 Linux 和 macOS 上，MDM 会在您的 <x1/> 以及包括 Homebrew 在内的常用包管理器文件夹中查找 yt-dlp、ffmpeg 和 gallery-dl。您自己选择的程序优先，其次是 MDM 自己安装的副本。当两者都不存在时，将使用系统副本，并且您的包管理器会使其保持最新：MDM 绝不会自行覆盖它。如果您的发行版中的 yt-dlp 过旧，请在“帮助程序”中勾选<g2>使用 MDM 自带的副本</g2>，MDM 将下载并使用自己的副本，该副本会自行保持最新。"
   },
   "465c0ee9455d1a69": {
    "source": "<g1>Downloads</g1>: the Windows installer, a portable zip and a plain zip, the browser extension on its own (a zip for Chromium browsers, an <x2/> for Firefox, always the app's version), and <g3>macOS and Linux to try</g3>: a universal <x4/> and an AppImage, <x5/>, <x6/> and <x7/>, marked <x8/> because they are untested by us. There, MDM connects itself to Chrome, Edge, Brave, Vivaldi and Firefox, has its tray icon, follows the system's light or dark look and uses the system's fonts and ffmpeg. Tell us how they work for you.",
@@ -8533,6 +8541,10 @@
   "81ce8b1ef8bffcb0": {
    "source": "MDM's interface comes in 86 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for…",
    "text": "MDM 界面支持 86 种语言：Windows 11 提供的所有显示语言，从南非荷兰语到越南语，包括两种中文字体、西班牙语等…"
+  },
+  "81e129770ec4dcbd": {
+   "source": "a stream sent over RTMP, RTSP, MMS or FTP;",
+   "text": "通过 RTMP、RTSP、MMS 或 FTP 发送的流；"
   },
   "81ea369617c129d6": {
    "source": "Options → Save to →",
@@ -15206,10 +15218,6 @@
    "source": "Video pages (yt-dlp) and image galleries need their helpers, which the image doesn't include.",
    "text": "视频页面 (yt-dlp) 和图片库需要其辅助程序，而镜像中不包含这些程序。"
   },
-  "e93cc4bc200a5ffe": {
-   "source": "a stream sent over RTMP, RTSP, MMS or FTP.",
-   "text": "通过 RTMP、RTSP、MMS 或 FTP 发送的流。"
-  },
   "e96fd5ce65ea0012": {
    "source": "Download Mister Download Manager 0.5.2, the free, open-source download manager: Windows installer and portable zip, macOS .dmg and Linux AppImage, .deb and .rpm, plus the browser extension. No ads, no bundled software.",
    "text": "下载 Mister Download Manager 0.5.2，这款免费、开源的下载管理器：提供 Windows 安装程序和便携版 zip、macOS .dmg 以及 Linux AppImage、.deb 和 .rpm，另有浏览器扩展。无广告，无捆绑软件。"
@@ -16466,6 +16474,10 @@
    "source": "A text box's bottom line while it can be typed in",
    "text": "可输入时文本框的底线"
   },
+  "fbc41fd4efa0fd9a": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). <x19/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x20/>; when it isn't connected, nothing starts.",
+   "text": "下载视频；<x1/> 从 <x2/> 获取画质选择器（<x3/> = 最佳单一文件；<x4/> = 网站提供的纯音频，不转换；<x5/>、<x6/>、<x7/> 或 <x8/> = 该比特率的 MP3 音频，<x9/> 为最佳可变比特率；<x10/> = Opus 格式；<x11/> = FLAC 格式，无损但音质不优于网站源；转换需要 ffmpeg）。<x12/>：MDM 自己的下载器通过这么多连接（默认 8 个，1 到 128 个）下载 yt-dlp 找到的每个流，HLS、DASH 等分段流则同时下载这么多片段。<x13/> 将字幕保存到旁边：语言代码来自 <x14/>（<x15/>），或 <x16/> 表示上传者提供的所有字幕；<x17/> 改为获取网站的自动字幕；<x18/> 将字幕嵌入视频中（需要 ffmpeg，MP4 或 MKV 格式）。<x19/> 通过一个网络适配器发送下载连接以及 yt-dlp（和 ffmpeg）的连接，如 <x20/>；如果未连接，则不开始任何操作。"
+  },
   "fbc5c79e5fad811f": {
    "source": "<g1>VS Code</g1>: in <x2/>, or <g3>MCP: Add Server</g3> in the command palette:",
    "text": "<g1>VS Code</g1>：在<x2/>中，或在命令面板中选择<g3>MCP: 添加服务器</g3>："
@@ -16473,6 +16485,10 @@
   "fbfc7053be3080ea": {
    "source": "What it colours",
    "text": "着色对象"
+  },
+  "fc0380f46b815fa6": {
+   "source": "<g1>A stream sent in many small pieces</g1> (HLS, DASH, as most sites other than YouTube send theirs) comes down that many pieces at once, each kept on disk as it arrives, then joined in order into one file, as yt-dlp joins them. Pieces encrypted with AES-128 are decrypted with the key the stream's playlist names. When their addresses expire, MDM asks yt-dlp for the stream's new list and carries on with the pieces still missing.",
+   "text": "<g1>以许多小分块发送的流</g1>（HLS、DASH，大多数网站（YouTube 除外）都采用这种方式）会同时下载许多分块，每个分块在到达时都保存在磁盘上，然后按顺序合并成一个文件，就像 yt-dlp 合并它们一样。用 AES-128 加密的分块会用流播放列表指定的密钥解密。当它们的地址过期时，MDM 会向 yt-dlp 请求流的新列表，并继续下载仍缺失的分块。"
   },
   "fc08963d3bab24c0": {
    "source": "On Ubuntu's GNOME desktop, with the desktop's own file icons.",

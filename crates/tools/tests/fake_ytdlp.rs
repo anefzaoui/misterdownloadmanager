@@ -404,7 +404,6 @@ fn download_as(
         out.path(),
         stem,
         None,
-        1,
         None,
         None,
         &Default::default(),
@@ -547,7 +546,6 @@ fn preloaded_checks(me: &Path) {
             out.path(),
             "Talk",
             None,
-            1,
             None,
             None,
             &Default::default(),
@@ -837,7 +835,6 @@ fn engine_checks(me: &Path) {
             out,
             "Talk",
             None,
-            1,
             None,
             None,
             &Default::default(),
@@ -976,15 +973,11 @@ fn engine_checks(me: &Path) {
         "{log:?}"
     );
 
-    // A stream in pieces: yt-dlp downloads the choice itself, and the log says why.
+    // A protocol the engine doesn't speak: yt-dlp downloads the choice itself, and says why.
     let (tools, out) = (tempfile::tempdir().unwrap(), tempfile::tempdir().unwrap());
     std::fs::write(
         tools.path().join("page.json"),
-        page(
-            "/gen/3M/v.mp4?seed=1",
-            "/gen/1M/a.m4a?seed=2",
-            "m3u8_native",
-        ),
+        page("/gen/3M/v.mp4?seed=1", "/gen/1M/a.m4a?seed=2", "rtmp"),
     )
     .unwrap();
     let job = start(tools.path(), out.path(), 2);
@@ -993,12 +986,190 @@ fn engine_checks(me: &Path) {
     assert!(matches!(p.state, State::Done(_)), "{:?}: {log:?}", p.state);
     assert_eq!(
         p.helper,
-        Some(mdm_tools::streams::Helper::Pieces("m3u8_native".into()))
+        Some(mdm_tools::streams::Helper::Protocol("rtmp".into()))
     );
     assert!(
         log.iter()
-            .any(|t| t == "yt-dlp downloads this video itself: a stream in pieces (m3u8_native)"),
+            .any(|t| t == "yt-dlp downloads this video itself: its protocol (rtmp)"),
         "{log:?}"
     );
+    pieces_checks(me, &rt, &lab, &engine, &expected_audio());
     println!("fake_ytdlp: the engine's checks ok");
+}
+
+/// The sound every page of the engine's checks has (format 140, the lab's `/gen/1M/a.m4a`).
+fn expected_audio() -> Vec<u8> {
+    let mut a = vec![0; 1 << 20];
+    mdm_labserver::content::fill(2, 0, &mut a);
+    a
+}
+
+/// #769: streams in pieces through the engine: an HLS playlist (plain, and AES-128 with the
+/// playlist's key), DASH's pieces as yt-dlp lists them, and pieces whose addresses expire,
+/// asked of yt-dlp again. Each comes whole, in order, joined as yt-dlp's own downloaders join
+/// them, then merged with the sound.
+fn pieces_checks(
+    me: &Path,
+    rt: &tokio::runtime::Runtime,
+    lab: &mdm_labserver::LabServer,
+    engine: &dyn Fn(u32) -> mdm_tools::streams::Engine,
+    audio: &[u8],
+) {
+    let get = |path: &str| -> Vec<u8> {
+        let url = lab.url(path);
+        rt.block_on(async {
+            reqwest::get(url)
+                .await
+                .unwrap()
+                .bytes()
+                .await
+                .unwrap()
+                .to_vec()
+        })
+    };
+    let audio_format = format!(
+        r#"{{"format_id": "140", "ext": "m4a", "protocol": "https", "filesize": {},
+          "vcodec": "none", "acodec": "mp4a", "url": "{}"}}"#,
+        1 << 20,
+        lab.url("/gen/1M/a.m4a?seed=2")
+    );
+    let run = |video: String, connections: u32| {
+        let (tools, out) = (tempfile::tempdir().unwrap(), tempfile::tempdir().unwrap());
+        std::fs::write(
+            tools.path().join("page.json"),
+            format!(
+                r#"{{"id": "talk", "title": "Talk", "ext": "mp4", "formats": [{video}, {audio_format}]}}"#
+            ),
+        )
+        .unwrap();
+        let exe = fake_in(me, tools.path());
+        let job = VideoJob::start(
+            &exe,
+            "https://video.example/talk",
+            "bv*+ba/b",
+            out.path(),
+            "Talk",
+            None,
+            None,
+            None,
+            &Default::default(),
+            &Subs::default(),
+            Some(engine(connections)),
+        )
+        .expect("started");
+        let end = Instant::now() + Duration::from_secs(120);
+        let mut most = 0;
+        let p = loop {
+            let p = job.progress();
+            if let Some(e) = &p.engine {
+                most = most.max(e.connections.len());
+            }
+            if p.state != State::Running {
+                break p;
+            }
+            assert!(Instant::now() < end, "still running: {:?}", log_of(&p));
+            std::thread::sleep(Duration::from_millis(50));
+        };
+        let log = log_of(&p);
+        assert!(matches!(p.state, State::Done(_)), "{:?}: {log:?}", p.state);
+        assert!(p.helper.is_none(), "{:?}", p.helper);
+        // Named for what it holds (#569): TS pieces joined without ffmpeg are a `.ts`.
+        let State::Done(file) = &p.state else {
+            unreachable!()
+        };
+        let saved = std::fs::read(file).unwrap();
+        let left: Vec<String> = std::fs::read_dir(out.path())
+            .unwrap()
+            .filter_map(Result::ok)
+            .map(|e| e.file_name().to_string_lossy().into_owned())
+            .filter(|n| n.contains(".mdm"))
+            .collect();
+        assert!(left.is_empty(), "left behind: {left:?}");
+        (saved, log, most)
+    };
+    let hls = |playlist: &str, extra: &str| {
+        format!(
+            r#"{{"format_id": "hls-720p", "ext": "mp4", "protocol": "m3u8_native",
+              "vcodec": "avc1", "acodec": "none", "url": "{}"{extra}}}"#,
+            lab.url(playlist)
+        )
+    };
+    let plain: Vec<u8> = (0..3)
+        .flat_map(|i| get(&format!("/hls/720p/seg{i}.ts")))
+        .chain(audio.iter().copied())
+        .collect();
+
+    // HLS: three pieces, two at once, joined in order.
+    let (saved, log, most) = run(hls("/hls/720p/index.m3u8", ""), 2);
+    assert!(saved == plain, "HLS pieces joined in order");
+    assert!(most >= 2, "pieces at once: {most}");
+    assert!(
+        log.iter()
+            .any(|t| t.starts_with("Format hls-720p: 3 pieces, 2 at once")),
+        "{log:?}"
+    );
+
+    // AES-128: the playlist's key, the first piece's own IV and the others' sequence numbers.
+    let (saved, log, _) = run(hls("/hls/720p/enc.m3u8", ""), 3);
+    assert!(saved == plain, "decrypted as the plain pieces: {log:?}");
+
+    // DASH: yt-dlp's list (an init section and three pieces, from its base address).
+    let dash = format!(
+        r#"{{"format_id": "dash-720p", "ext": "mp4", "protocol": "http_dash_segments",
+          "vcodec": "avc1", "acodec": "none", "url": "{}",
+          "fragment_base_url": "{}",
+          "fragments": [{{"path": "init.mp4"}}, {{"path": "seg1.m4s"}}, {{"path": "seg2.m4s"}},
+                        {{"url": "{}"}}]}}"#,
+        lab.url("/dash/manifest.mpd"),
+        lab.url("/dash/720p/"),
+        lab.url("/dash/720p/seg3.m4s")
+    );
+    let want: Vec<u8> = ["init.mp4", "seg1.m4s", "seg2.m4s", "seg3.m4s"]
+        .iter()
+        .flat_map(|f| get(&format!("/dash/720p/{f}")))
+        .chain(audio.iter().copied())
+        .collect();
+    let (saved, _, _) = run(dash, 4);
+    assert!(saved == want, "DASH pieces joined in order");
+
+    // Pieces whose addresses expire 1.5 s after each look-up, one at a time at 256 KB/s: yt-dlp
+    // is asked for the list again, and the pieces go on from the new one.
+    let pieces: Vec<String> = (1..=4)
+        .map(|i| {
+            format!(
+                r#"{{"url": "{}"}}"#,
+                lab.url(&format!(
+                    "/gen/256K/p{i}?seed={}&rate=256K&expires={{EXPIRES}}",
+                    20 + i
+                ))
+            )
+        })
+        .collect();
+    let expiring = format!(
+        r#"{{"format_id": "dash-exp", "ext": "mp4", "protocol": "http_dash_segments",
+          "vcodec": "avc1", "acodec": "none", "url": "{}", "fragments": [{}]}}"#,
+        lab.url("/dash/manifest.mpd"),
+        pieces.join(", ")
+    );
+    let want: Vec<u8> = (1..=4u64)
+        .flat_map(|i| {
+            let mut b = vec![0; 256 * 1024];
+            mdm_labserver::content::fill(20 + i, 0, &mut b);
+            b
+        })
+        .chain(audio.iter().copied())
+        .collect();
+    let (saved, log, _) = run(expiring, 1);
+    let first = saved.iter().zip(&want).position(|(a, b)| a != b);
+    assert!(
+        saved == want,
+        "whole across new lists: {} vs {} bytes, first difference at {first:?}: {log:?}",
+        saved.len(),
+        want.len()
+    );
+    assert!(
+        log.iter()
+            .any(|t| t == "Format dash-exp: Asking yt-dlp for the pieces' new addresses"),
+        "{log:?}"
+    );
 }

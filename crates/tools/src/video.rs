@@ -773,10 +773,6 @@ pub const MAX_WHILE_RUNNING: f64 = 0.999;
 /// is the next stream, never counted as one of `MDMQ`'s, and the window's size holds the total.
 /// Subtitle files come before the video with lines of their own, `NA` (#68): what they brought
 /// leaves the bar when the first stream's line comes.
-///
-/// Pieces fetched several at once ([`pace_args`]) report from each at its turn: the count can
-/// step back a little, which isn't a new stream (#531: one taken for it added a 25 MB estimate,
-/// and a 6 MB video read 66 MB). Then only a fall to under half of it, by 64 KB or more, is.
 struct Meter {
     expected: Option<u64>,
     /// `MDMQ`'s format id and resolution (`137+140 1920x1080`), once yt-dlp has said.
@@ -788,8 +784,6 @@ struct Meter {
     all_at_once: bool,
     /// Every line so far said `NA` for its format id (subtitle files).
     only_na: bool,
-    /// Pieces at once: the count may step back.
-    at_once: bool,
     /// The streams already finished, and the current one's last total and bytes.
     finished: u64,
     last_total: u64,
@@ -799,7 +793,7 @@ struct Meter {
 }
 
 impl Meter {
-    fn new(expected: Option<u64>, at_once: bool) -> Self {
+    fn new(expected: Option<u64>) -> Self {
         Meter {
             expected: expected.filter(|e| *e > 0),
             quality: None,
@@ -807,7 +801,6 @@ impl Meter {
             started: 0,
             all_at_once: false,
             only_na: true,
-            at_once,
             finished: 0,
             last_total: 0,
             last_got: 0,
@@ -899,13 +892,7 @@ impl Meter {
             }
             // As before: back near 0 is the next stream.
             None => {
-                // Pieces at once (#531): the count may step back a little within a stream;
-                // only a fall to under half of it, by 64 KB or more, is the next stream.
-                let back = if self.at_once {
-                    got.saturating_mul(2) < self.last_got && self.last_got - got >= 64 * 1024
-                } else {
-                    got < self.last_got
-                };
+                let back = got < self.last_got;
                 if back && self.last_got > 0 {
                     self.next_stream();
                 }
@@ -1250,8 +1237,7 @@ fn attempt(
             Engined::Failed(error) => return failed(error, rerouted),
         }
     }
-    let at_once = ours.iter().any(|a| a == "--concurrent-fragments");
-    let mut meter = Meter::new(expected, at_once);
+    let mut meter = Meter::new(expected);
     // The streams are in place: what yt-dlp says of them isn't the download's progress.
     let meter = (!by_engine).then_some(&mut meter);
     let ran = match run(exe, ours, &file, progress, child, meter) {
@@ -1479,12 +1465,14 @@ impl ByEngine {
             crate::streams::Fetched::Done => Engined::Ready,
             crate::streams::Fetched::Stopped => Engined::Stopped,
             crate::streams::Fetched::Failed(e) => Engined::Failed(e),
+            crate::streams::Fetched::Helper(why) => Engined::Helper(why),
         }
     }
 }
 
-/// Today's address and headers of format `id` on the page: looked up again (as the browser
-/// asked, `browser`), its servers moved as the run moved them, and chosen with `-f <id>`.
+/// Format `id` on the page as yt-dlp gives it today (its address, headers, pieces): looked up
+/// again (as the browser asked, `browser`), its servers moved as the run moved them, and chosen
+/// with `-f <id>`.
 fn relink(
     exe: &Path,
     url: &str,
@@ -1493,7 +1481,7 @@ fn relink(
     dead: &std::collections::BTreeSet<String>,
     reroute: bool,
     id: &str,
-) -> Result<(url::Url, Vec<(String, String)>), String> {
+) -> Result<serde_json::Value, String> {
     let (mut info, _) = look_up(exe, url, browser)?;
     moved(&mut info, dead, reroute);
     let file = info_file();
@@ -1501,7 +1489,8 @@ fn relink(
         .map_err(|e| format!("Cannot write the video information: {e}"))?;
     let _cleanup = Remove(file.clone());
     let chosen = choose(exe, &with_selector(choose_args, id), &file)?;
-    crate::streams::format_link(&chosen, id)
+    crate::streams::format_of(&chosen, id)
+        .cloned()
         .ok_or_else(|| format!("the page no longer offers format {id}"))
 }
 
@@ -1536,17 +1525,11 @@ fn template_text(s: &str) -> String {
     s.replace('%', "%%")
 }
 
-/// yt-dlp's speed: at most `rate` bytes/s; a stream in pieces (HLS, DASH) `fragments` pieces at
-/// once, as a file comes down over several connections (Options → Connection, #531). yt-dlp uses
-/// that for such streams only (a plain file stays one connection), and its limit holds for each
-/// piece, not for them together: with a limit, one piece at a time, so the limit stays the
-/// download's, whatever the format turns out to be.
-pub fn pace_args(rate: Option<u64>, fragments: u32) -> Vec<String> {
-    match rate {
-        Some(r) => vec!["--limit-rate".into(), r.to_string()],
-        None if fragments > 1 => vec!["--concurrent-fragments".into(), fragments.to_string()],
-        None => Vec::new(),
-    }
+/// yt-dlp's speed when it downloads by itself (#708; MDM's engine downloads every other video,
+/// #769): at most `rate` bytes/s.
+pub fn limit_args(rate: Option<u64>) -> Vec<String> {
+    rate.map(|r| vec!["--limit-rate".into(), r.to_string()])
+        .unwrap_or_default()
 }
 
 /// Our progress line: `MDMP <downloaded> <total> <estimate> <speed> <format id>` (`NA` when
@@ -1559,8 +1542,8 @@ const FINAL: &str = "after_move:MDMF %(filepath)s";
 const QUALITY: &str = "video:MDMQ %(format_id)s %(resolution)s";
 
 impl VideoJob {
-    /// Download `url` in format `selector` to `dir/<stem>.<ext>`, at most `rate` bytes/s, a
-    /// stream in pieces `fragments` pieces at once ([`pace_args`]); `ffmpeg` (its exe) merges separate video and audio into an MP4. `expected`: the size the
+    /// Download `url` in format `selector` to `dir/<stem>.<ext>`; when yt-dlp downloads it by
+    /// itself, at most `rate` bytes/s ([`limit_args`]). `ffmpeg` (its exe) merges separate video and audio into an MP4. `expected`: the size the
     /// choice was shown with (every stream), so the progress starts from the whole. `browser`:
     /// what the browser's request for the page carried (proc::FromBrowser). `subs`: the
     /// subtitles to save with it (#68; none for a sound alone, which has no picture to put them
@@ -1574,7 +1557,6 @@ impl VideoJob {
         dir: &Path,
         stem: &str,
         rate: Option<u64>,
-        fragments: u32,
         ffmpeg: Option<&Path>,
         expected: Option<u64>,
         browser: &proc::FromBrowser,
@@ -1582,8 +1564,7 @@ impl VideoJob {
         engine: Option<crate::streams::Engine>,
     ) -> Result<VideoJob, ProcError> {
         Self::start_with(
-            exe, url, selector, dir, stem, rate, fragments, ffmpeg, expected, browser, subs, None,
-            engine,
+            exe, url, selector, dir, stem, rate, ffmpeg, expected, browser, subs, None, engine,
         )
     }
 
@@ -1597,7 +1578,6 @@ impl VideoJob {
         dir: &Path,
         stem: &str,
         rate: Option<u64>,
-        fragments: u32,
         ffmpeg: Option<&Path>,
         expected: Option<u64>,
         browser: &proc::FromBrowser,
@@ -1651,7 +1631,7 @@ impl VideoJob {
             "--print".into(),
             QUALITY.into(),
         ];
-        ours.extend(pace_args(rate, fragments));
+        ours.extend(limit_args(rate));
         // A subtitles-only second run, for the ones a site refuses (#68): the same output name.
         let mut retry_base: Vec<String> = vec![
             "-o".into(),
@@ -1686,6 +1666,13 @@ impl VideoJob {
                 "--ffmpeg-location".into(),
                 dir.to_string_lossy().into_owned(),
             ]);
+        }
+        // With the engine, every HLS stream is yt-dlp's hlsnative's (`--hls-prefer-native`): the
+        // engine joins its pieces as hlsnative does, and yt-dlp's fixups after it then follow
+        // (a live one hlsnative hands to ffmpeg, as before).
+        if engine.is_some() {
+            ours.push("--hls-prefer-native".into());
+            choose.push("--hls-prefer-native".into());
         }
         let retry = with_subs.then(|| SubsRetry {
             automatic: subs.automatic,
@@ -1937,16 +1924,11 @@ mod tests {
         assert_eq!(named_for_content(named.clone()), named);
     }
 
-    /// #531: a stream in pieces comes down several at once, as many as a file's connections;
-    /// with a speed limit one at a time, as yt-dlp's limit holds for each piece (measured
-    /// against the lab server: `--limit-rate 512K -N 4` took a quarter of the time).
     #[test]
-    fn fragments_at_once_unless_the_speed_is_limited() {
+    fn a_limit_for_yt_dlp_downloading_by_itself() {
         let s = |v: Vec<String>| v.join(" ");
-        assert_eq!(s(pace_args(None, 8)), "--concurrent-fragments 8");
-        assert_eq!(s(pace_args(None, 1)), "");
-        assert_eq!(s(pace_args(None, 0)), "");
-        assert_eq!(s(pace_args(Some(524_288), 8)), "--limit-rate 524288");
+        assert_eq!(s(limit_args(None)), "");
+        assert_eq!(s(limit_args(Some(524_288))), "--limit-rate 524288");
     }
 
     /// Live (network, yt-dlp): `MDM_LIVE_YTDLP=<yt-dlp.exe> MDM_LIVE_PAGE=<video page>
@@ -1976,7 +1958,6 @@ mod tests {
             dir.path(),
             "a",
             None,
-            1,
             ffmpeg.as_deref(),
             None,
             &Default::default(),
@@ -2034,7 +2015,6 @@ mod tests {
             dir.path(),
             "clip",
             None,
-            1,
             None,
             None,
             &Default::default(),
@@ -2065,7 +2045,6 @@ mod tests {
             dir.path(),
             "clip",
             None,
-            1,
             None,
             None,
             &Default::default(),
@@ -2087,11 +2066,7 @@ mod tests {
     }
 
     fn run(expected: Option<u64>, lines: &[&str]) -> Vec<(u64, Option<u64>)> {
-        run_with(expected, false, lines)
-    }
-
-    fn run_with(expected: Option<u64>, at_once: bool, lines: &[&str]) -> Vec<(u64, Option<u64>)> {
-        let mut m = Meter::new(expected, at_once);
+        let mut m = Meter::new(expected);
         let mut p = Progress {
             state: State::Running,
             downloaded: 0,
@@ -2148,42 +2123,6 @@ mod tests {
         let last = run(Some(1800), &lines).pop().unwrap();
         assert_eq!(last, (1800, Some(1800)));
         assert!(f[f.len() - 1] > 0.99, "{f:?}");
-    }
-
-    /// #531: yt-dlp's lines with 8 pieces at once (real ones, from the lab server's HLS stream of
-    /// 6 MB), its count stepping back now and then: never more than the file, and the end is
-    /// the file. A second stream (the sound after the picture) still adds up.
-    #[test]
-    fn pieces_at_once_step_back_without_a_new_stream() {
-        let lines = [
-            "30720 NA 6905856.0 5636",
-            "26624 NA 6905856.0 5636",
-            "1304576 NA 37576704.0 911582",
-            "1961984 NA 25104384.0 911582",
-            "1830912 NA 25104384.0 911582",
-            "4061184 NA 8382464.0 1683967",
-            "3929088 NA 8382464.0 1683967",
-            "6289408 NA 7704576.0 1883540",
-            "6158336 NA 7704576.0 1883540",
-            "6291456 NA 6553600.0 1883540",
-        ];
-        let v = run_with(None, true, &lines);
-        for (d, _) in &v {
-            assert!(*d <= 6_291_456, "more than the file: {v:?}");
-        }
-        assert_eq!(v.last().unwrap().0, 6_291_456);
-        // Before, the first step back counted the 6.9 MB estimate as a finished stream.
-        assert!(run(None, &lines).iter().any(|(d, _)| *d > 6_291_456));
-        let two = run_with(
-            None,
-            true,
-            &[
-                "4000000 4000000 NA 5",
-                "1024 NA 900000 5",
-                "900000 900000 NA 5",
-            ],
-        );
-        assert_eq!(two.last().unwrap().0, 4_900_000, "{two:?}");
     }
 
     /// The file size stays the file's size at the end: holding the bar short of 100 % is the
@@ -2466,7 +2405,7 @@ mod tests {
     /// nothing is named before yt-dlp has said, nor `NA`.
     #[test]
     fn the_streams_are_named_by_their_format_ids() {
-        let mut m = Meter::new(None, false);
+        let mut m = Meter::new(None);
         assert_eq!(m.named(Some("137")), None);
         let cases: [(&str, &[&str], &[&str]); 4] = [
             (
