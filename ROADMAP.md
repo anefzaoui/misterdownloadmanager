@@ -559,6 +559,15 @@ These ship in the next version.
 - ✅ WinGet in the install steps: the README, the help and the website's download page give
   `winget install AhmedNefzaoui.MisterDownloadManager` and `winget upgrade`
   ([#798](https://github.com/anefzaoui/misterdownloadmanager/issues/798))
+- ✅ The Download video button, redesigned ([#703](https://github.com/anefzaoui/misterdownloadmanager/issues/703)): MDM looks the video up as the
+  button appears and the button names the best quality, which one click downloads; a plain file
+  downloads as a file; its menu lists every quality; after a click it says what happened in its
+  own colour, with Show, Open post, Get MDM and Retry, or Turn on
+- ✅ The video button no longer comes back on play or pause, and fades sooner (part of
+  [#741](https://github.com/anefzaoui/misterdownloadmanager/issues/741))
+- ✅ No freeze of the window while it checks Windows' light or dark mode and the registry takes
+  seconds to answer: the system's look and the theme files are read beside the window
+  ([#719](https://github.com/anefzaoui/misterdownloadmanager/issues/719))
 - ✅ Windows 10: no black band above the progress window's title bar, and clicks land on its
   buttons again ([#620](https://github.com/anefzaoui/misterdownloadmanager/issues/620),
   [#772](https://github.com/anefzaoui/misterdownloadmanager/issues/772)): the progress window and

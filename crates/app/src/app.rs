@@ -1039,11 +1039,10 @@ pub struct App {
     zoom: f32,
     /// The main window was brought inside the screen after the start (scale::fit_window).
     fitted: bool,
-    /// View → Theme's choices (#45), and when the themes folder last changed (read again then).
+    /// View → Theme's choices (#45), and the number of the theme watcher's answer they come from
+    /// (`lookwatch::theme_files`: taken again when it changes).
     theme_list: Vec<crate::themefile::Entry>,
-    themes_changed: Option<std::time::SystemTime>,
-    /// pywal's colours were there at the last check (View → Theme → pywal listed then).
-    pywal_there: bool,
+    theme_files_seen: u64,
     /// When `logic`'s every-2-seconds work last ran (crash state, torrents, #174).
     ticked: Option<Instant>,
     /// The main window's caption matches the mode.
@@ -1632,9 +1631,9 @@ impl App {
             theme_checked: None,
             zoom,
             fitted: false,
-            theme_list: crate::themefile::list(),
-            themes_changed: crate::themefile::changed(),
-            pywal_there: crate::themefile::pywal_file().is_some_and(|p| p.is_file()),
+            // The built-ins until the watcher's first look at the themes folder (#719).
+            theme_list: crate::themefile::list_in(None, None),
+            theme_files_seen: 0,
             ticked: None,
             caption_set: false,
             // The system's title bar is the frame's own: nothing to apply for it.
@@ -2769,6 +2768,14 @@ impl App {
             cmd.video_page = None;
             cmd.url = Some(file);
         }
+        // The button over a video that plays a plain file (#703): downloaded as any file, at
+        // once and without a window (its page the referrer), as Download File Info's Start would.
+        if cmd.video_direct
+            && let Some(file) = cmd.video_page.take()
+        {
+            cmd.url = Some(file);
+            cmd.silent = true;
+        }
         // The browser's download button over a video: the Download video window, looking the
         // page up at once. The main window stays where it is (hidden, minimized): only the
         // dialog opens, as its window is its own.
@@ -2783,6 +2790,19 @@ impl App {
             self.settings.video_panel_sites =
                 mdm_ipc::capture::add_site(&self.settings.video_panel_sites, host);
             self.dirty = true;
+            return;
+        }
+        // Its "Turn on": on this site again.
+        if let Some(host) = cmd.panel_show_site.as_deref() {
+            self.settings.video_panel_sites =
+                mdm_ipc::capture::remove_site(&self.settings.video_panel_sites, host);
+            self.dirty = true;
+            return;
+        }
+        // Its "Show" after a download was added: the main window, that download selected.
+        if let Some(address) = cmd.show_download.as_deref() {
+            self.show_window(ctx);
+            self.select_download_of(address);
             return;
         }
         // The browser's right-click menu: a page's (or a selection's) links, to tick in Import.
@@ -4413,6 +4433,27 @@ impl App {
             VideoGoes::MainQueue => self.queue_later(vec![id], false),
         }
         self.dirty = true;
+    }
+
+    /// The newest download of `address` (a video's page as it was looked up, or its file),
+    /// selected and scrolled to, in All Downloads when the view shown hides it (the button's
+    /// "Show", #703).
+    fn select_download_of(&mut self, address: &str) {
+        let looked = mdm_tools::pages::video_address(address.trim());
+        let found = self
+            .items
+            .iter()
+            .rev()
+            .find(|i| i.url.as_str() == address.trim() || i.url.as_str() == looked)
+            .map(|i| i.id);
+        let Some(id) = found else {
+            return;
+        };
+        if !self.shown_ids().contains(&id) {
+            self.view = View::All;
+        }
+        self.selection.set(id);
+        self.list.scroll_to = self.shown_ids().iter().position(|x| *x == id);
     }
 
     /// The browser's quality menu over a video (crates/nmhost, videolookup.rs): a look-up
@@ -8765,7 +8806,7 @@ impl App {
     fn add_theme_file(&mut self, path: &std::path::Path, ctx: &egui::Context) {
         match crate::themefile::add(path) {
             Ok(id) => {
-                self.themes_changed = crate::themefile::changed();
+                // Listed at once (the watcher would at its next look).
                 self.theme_list = crate::themefile::list();
                 self.run(Cmd::Theme(crate::chrome::label(&id)), None, ctx);
             }
@@ -10164,13 +10205,14 @@ impl App {
         {
             self.theme_checked = Some(Instant::now());
             // A theme file added, removed or renamed, pywal's colours written or taken away:
-            // View → Theme lists it.
-            let changed = crate::themefile::changed();
-            let wal = crate::themefile::pywal_file().is_some_and(|p| p.is_file());
-            if changed != self.themes_changed || wal != self.pywal_there {
-                self.themes_changed = changed;
-                self.pywal_there = wal;
-                self.theme_list = crate::themefile::list();
+            // View → Theme lists it. Nothing here reads the registry or the disk: `lookwatch`'s
+            // threads do, and this takes what they found last (#719).
+            let files = crate::lookwatch::theme_files(&ctx);
+            if let Some((seen, found)) = &files
+                && *seen != self.theme_files_seen
+            {
+                self.theme_files_seen = *seen;
+                self.theme_list = found.list.clone();
             }
             let changed = crate::theme::update(
                 self.settings.dark_mode_support,
@@ -10179,7 +10221,9 @@ impl App {
             );
             // Native follows the system's accent and contrast as they change, a theme made from
             // pywal's colours the colours `wal` writes for each new wallpaper.
-            let changed = if crate::theme::follow_system(&ctx) || crate::theme::follow_pywal() {
+            let changed = if crate::theme::follow_system(&ctx)
+                || crate::theme::follow_pywal(files.as_ref().map(|(_, f)| f))
+            {
                 crate::theme::apply_theme(&ctx);
                 true
             } else {
