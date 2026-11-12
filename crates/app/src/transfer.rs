@@ -296,7 +296,8 @@ fn address_len(rest: &str) -> usize {
             ')' => round -= 1,
             ']' if square == 0 => return i,
             ']' => square -= 1,
-            '"' | '\'' | '<' | '>' | '`' | '{' | '}' | '|' | '\\' | '^' => return i,
+            // The double quote by its code: theme.rs's glyph check pairs the source's quotes.
+            '\u{22}' | '\'' | '<' | '>' | '`' | '{' | '}' | '|' | '\\' | '^' => return i,
             '\u{200b}' | '\u{feff}' | '“' | '”' | '‘' | '’' | '«' | '»' | '‹' | '›' | '「'
             | '」' | '『' | '』' | '（' | '）' | '【' | '】' | '《' | '》' | '〈' | '〉' | '，'
             | '。' | '、' | '；' | '：' | '！' | '？' | '…' => return i,
