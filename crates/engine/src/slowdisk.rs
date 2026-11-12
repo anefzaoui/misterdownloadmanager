@@ -70,17 +70,9 @@ impl SlowDisk {
     pub fn write<T>(&self, n: u64, write: impl FnOnce() -> T) -> T {
         let began = Instant::now();
         let _flush_over = self.gate.read().unwrap();
-        while self.rate > 0 {
-            let wait = {
-                let mut b = self.backlog();
-                let after = b.bytes + n as f64;
-                if b.bytes == 0.0 || after <= self.cache as f64 {
-                    b.bytes = after;
-                    break;
-                }
-                (after - self.cache as f64) / self.rate as f64
-            };
-            std::thread::sleep(Duration::from_secs_f64(wait).min(Duration::from_millis(20)));
+        // A disk of `rate` 0 takes everything at once.
+        while let Some(wait) = (self.rate > 0).then(|| self.room_in(n)).flatten() {
+            std::thread::sleep(wait.min(Duration::from_millis(20)));
         }
         let waited = began.elapsed();
         if waited >= Duration::from_millis(1) {
@@ -95,7 +87,9 @@ impl SlowDisk {
     /// (the saves while the connections run, not the forced ones at the start and the end).
     pub fn flush<T>(&self, extra: bool, flush: impl FnOnce() -> T) -> T {
         let began = Instant::now();
-        let _writes_wait = self.gate.write().unwrap();
+        // A forced save of a disk only slow to flush is a plain one (the gate tells tests a slow
+        // flush runs).
+        let _writes_wait = (extra || self.rate > 0).then(|| self.gate.write().unwrap());
         let left = if self.rate > 0 {
             Duration::from_secs_f64(self.backlog().bytes / self.rate as f64)
         } else {
@@ -112,6 +106,19 @@ impl SlowDisk {
         let done = flush();
         self.stats.lock().unwrap().flushes.push(began.elapsed());
         done
+    }
+
+    /// Take `n` bytes into the cache if they fit (or it is empty), else how long until they do.
+    fn room_in(&self, n: u64) -> Option<Duration> {
+        let mut b = self.backlog();
+        let after = b.bytes + n as f64;
+        if b.bytes == 0.0 || after <= self.cache as f64 {
+            b.bytes = after;
+            return None;
+        }
+        Some(Duration::from_secs_f64(
+            (after - self.cache as f64) / self.rate as f64,
+        ))
     }
 
     /// The cache's backlog now (the disk wrote `rate` bytes/s of it since last time).

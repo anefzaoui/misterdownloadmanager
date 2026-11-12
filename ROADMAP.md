@@ -503,6 +503,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Fast downloads to a hard disk keep going past the first gigabytes: no more freezes of 7 to
+  10 s once the system's cache is full, and no connection replaced as "much slower" for waiting on
+  the disk; a disk slower than the network slows the download down evenly
+  ([#782](https://github.com/anefzaoui/misterdownloadmanager/issues/782))
 - ✅ Sites behind Akamai's bot check (a 403 page for MDM, the file for a browser) download, through the
   browser-like connection ([#771](https://github.com/anefzaoui/misterdownloadmanager/issues/771))
 - ✅ Crash and freeze reports no longer have their log's end filled with warnings about the
