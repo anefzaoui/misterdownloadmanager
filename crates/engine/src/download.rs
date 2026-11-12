@@ -818,6 +818,9 @@ pub struct ProbeInfo {
     pub file_name: String,
     /// Where the server is, as the look saw it (#140).
     pub server: Option<crate::Server>,
+    /// The answer was a web page (HTML the server didn't name as a file of its own): Link
+    /// grabber reads an address given on its own for its links ([`page_links`], #705).
+    pub web_page: bool,
 }
 
 /// One plain `GET` (or `Options::post`'s POST) to learn the final URL, size and name, through
@@ -879,6 +882,7 @@ pub async fn probe_kept(
                 final_url: url,
                 size: facts.size,
                 server: None,
+                web_page: false,
             },
             None,
         ));
@@ -984,6 +988,7 @@ pub async fn probe_kept(
         size: size.or(unlocked.as_ref().and_then(|u| u.size)),
         file_name,
         server: seen.get(),
+        web_page: is_web_page(&head.headers) && !named(&head.headers),
     };
     let kept = from_zero.then(|| KeptAnswer {
         url,
@@ -3147,6 +3152,41 @@ async fn read_up_to(
     }
     body.truncate(max);
     Ok(body)
+}
+
+/// The most of a web page [`page_links`] reads.
+const PAGE_LINKS_MAX: usize = 8 << 20;
+
+/// The links on the web page at `url`, for Link grabber (#705): an address given on its own
+/// (pasted, copied, in a list) that is a page lists the page's links, as the browser's
+/// "Download all links" does. Asked as a download's look asks (`get`: the user's proxy and
+/// agent, the redirects and waiting pages it follows), read up to `PAGE_LINKS_MAX`, and its
+/// links found by [`html::links`] against the address the page came from, which comes back
+/// too. An answer that isn't a web page has no links (its body isn't read).
+pub async fn page_links(
+    url: Url,
+    headers: HeaderMap,
+    opts: &Options,
+) -> Result<(Url, Vec<Url>), Error> {
+    let cancel = CancellationToken::new();
+    let client = http_client(opts, &url)?;
+    let (resp, _, _) = get(
+        &client,
+        url,
+        headers,
+        None,
+        opts.site_agent(),
+        false,
+        &cancel,
+    )
+    .await?;
+    let at = resp.url().clone();
+    if !is_web_page(resp.headers()) {
+        return Ok((at, Vec::new()));
+    }
+    let page = read_up_to(resp, PAGE_LINKS_MAX, &cancel).await?;
+    let links = html::links(&String::from_utf8_lossy(&page), &at);
+    Ok((at, links))
 }
 
 /// Where a page leads on to and after how long, from its `Refresh` value or a meta refresh's

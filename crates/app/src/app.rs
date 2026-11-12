@@ -9330,11 +9330,22 @@ impl App {
     }
 
     /// Link grabber's look-ups (Options → Archives → "Check links"): the next links, each
-    /// with its own request (the page's referer and cookies), on the runtime.
+    /// with its own request (the page's referer and cookies), on the runtime. Then the web pages
+    /// given on their own that the look-ups found, each read for its links (#705), which join.
     fn grabber_checks(&mut self, ctx: &egui::Context) {
+        let read = self
+            .grabber
+            .as_mut()
+            .map(|g| g.pages_read())
+            .unwrap_or_default();
+        for found in read {
+            // The same rule as every link added: one in the download list comes unticked.
+            self.show_import(found, String::new());
+        }
         if !self.settings.grabber_check {
             return;
         }
+        self.grabber_reads(ctx);
         let Some(g) = &self.grabber else { return };
         for (i, url, d) in g.to_check() {
             let context = ipc::Command {
@@ -9355,6 +9366,51 @@ impl App {
             });
             if let Some(g) = &mut self.grabber {
                 g.checking(i, slot);
+            }
+        }
+    }
+
+    /// Link grabber's web pages to read for their links (#705), each with its own request, on
+    /// the runtime: the page's links come back with the page as their referer (the package is
+    /// named after it), the agent and private mark the page had. Not the page's cookies, which
+    /// are its own site's.
+    fn grabber_reads(&mut self, ctx: &egui::Context) {
+        let Some(g) = &self.grabber else { return };
+        for (i, url, d) in g.to_read() {
+            let context = ipc::Command {
+                referer: d.referer.clone(),
+                cookies: d.cookies.clone(),
+                user_agent: d.user_agent.clone(),
+                ..Default::default()
+            };
+            let parts = self.request_parts(&url, None, &context, false);
+            let slot: std::sync::Arc<std::sync::Mutex<Option<_>>> = Default::default();
+            let (out, ctx) = (slot.clone(), ctx.clone());
+            self.rt.spawn(async move {
+                let found = match mdm_engine::page_links(url, parts.headers, &parts.opts).await {
+                    Ok((at, links)) => {
+                        tracing::info!("link grabber: {} links on a page", links.len());
+                        links
+                            .into_iter()
+                            .map(|u| crate::transfer::Imported {
+                                url: u.into(),
+                                referer: Some(at.to_string()),
+                                user_agent: d.user_agent.clone(),
+                                private: d.private,
+                                ..Default::default()
+                            })
+                            .collect()
+                    }
+                    Err(e) => {
+                        tracing::info!("link grabber: a page couldn't be read: {e}");
+                        Vec::new()
+                    }
+                };
+                *out.lock().unwrap() = Some(found);
+                ctx.request_repaint();
+            });
+            if let Some(g) = &mut self.grabber {
+                g.reading(i, slot);
             }
         }
     }
