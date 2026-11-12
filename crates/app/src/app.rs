@@ -2811,6 +2811,8 @@ impl App {
         if let Some(file) = drive_file_behind_player(&cmd) {
             cmd.video_page = None;
             cmd.url = Some(file);
+            // Drive names its file itself; its page's title ("… - Google Drive") doesn't.
+            cmd.video_title = None;
         }
         // The button over a video that plays a plain file (#703): downloaded as any file, at
         // once and without a window (its page the referrer), as Download File Info's Start would.
@@ -2932,7 +2934,7 @@ impl App {
             let name = cmd
                 .name
                 .clone()
-                .unwrap_or_else(|| mdm_engine::naming::file_name(None, &url));
+                .unwrap_or_else(|| crate::model::browser_guess(&url, &cmd));
             let name = mdm_engine::naming::sanitize(&name);
             // The automation API's `category` (by its key) and `queue` (by name), when given.
             let category = cmd
@@ -3041,6 +3043,9 @@ impl App {
             on_file_created: Some(mark_hook(url, context.referer.as_deref())),
             // The browser's own download's type: a web page instead is an error (#533).
             expected_type: context.mime.clone(),
+            // The page a media file was played on (#800): a file whose address names nothing
+            // (a script, a bare id) is named by its title when the engine names it.
+            page_title: context.video_title.clone(),
             ..Options::default()
         };
         RequestParts { headers, opts }
@@ -10685,7 +10690,7 @@ impl App {
             let name = context
                 .name
                 .clone()
-                .unwrap_or_else(|| mdm_engine::naming::file_name(None, &url));
+                .unwrap_or_else(|| crate::model::browser_guess(&url, &context));
             let name = mdm_engine::naming::sanitize(&name);
             let category = Category::of(&name);
             let dir = self.settings.category_dir(category, &self.downloads);

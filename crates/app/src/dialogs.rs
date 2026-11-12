@@ -1089,7 +1089,7 @@ impl FileInfo {
             .filter(|n| !n.is_empty());
         let name = from_browser
             .clone()
-            .unwrap_or_else(|| mdm_engine::naming::file_name(None, &new.url));
+            .unwrap_or_else(|| crate::model::browser_guess(&new.url, &context));
         let category = Category::of(&name);
         let folder = crate::model::category_folder(category, &downloads, &dirs);
         let mut place = SaveAsPlace::new(Some(ctx));

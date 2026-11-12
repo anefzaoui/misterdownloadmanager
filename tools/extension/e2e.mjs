@@ -28,6 +28,8 @@
 // .m3u8 or .mpd, served as text/plain or octet-stream, #171), sniffed (#171 without yt-dlp: such
 // streams found only when asked, by the button and the media list, a text decoy never), media (the
 // toolbar button's list of the media a tab loaded: streams, files, a protected stream; #38),
+// scripted (a video a server's program sends, named after its page with its real type: the list,
+// the button, the Download video window; #695, #800),
 // qualities (the button's menu: a stream's qualities looked up by MDM, with their sizes; the one
 // picked downloads with its progress window only, MDM's main window hidden), page (the menu on a
 // real video page, E2E_VIDEO_PAGE, and the line E2E_VIDEO_PICK downloaded: off by default), video (shown,
@@ -42,7 +44,8 @@
 // Screenshots for a pull request (Chromium only): E2E_LANG=de (or ar, ...) starts the browser in that
 // language, so the extension shows its _locales text of it; with E2E_SHOTS=<folder> the `qualities`
 // case saves <lang>-looking.png, <lang>-video-tab.png and <lang>-audio-tab.png there (the player and
-// the menu), before the pick. Neither changes anything when unset.
+// the menu), before the pick, and the `scripted` case <lang>-media-list.png (the popup's list) and
+// <lang>-video-window.png. Neither changes anything when unset.
 //
 // Windows: the host is registered for the current user while it runs (nmhost --register, as the
 // installer does) and unregistered at the end. Every registry key that touches (the browsers'
@@ -445,7 +448,21 @@ async function chromium(bin, profile, dl, page, ready) {
         if (r.exceptionDetails) throw new Error(`evaluate: ${r.exceptionDetails.text} ${expression}`);
         return r.result.value;
       };
-      return { evaluate: ev, close: () => cdp.send("Target.closeTarget", { targetId: tid }).catch(() => {}) };
+      // A picture of its page, cut to the body (the popup's 300 px), for a PR's body; in
+      // E2E_COLOR_SCHEME's colours (light or dark) when set, else the system's.
+      const shot = async (file) => {
+        const scheme = process.env.E2E_COLOR_SCHEME;
+        if (scheme) {
+          await cdp.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-color-scheme", value: scheme }] }, s);
+          await sleep(300);
+        }
+        const r = JSON.parse(await ev("JSON.stringify(document.body.getBoundingClientRect())"));
+        // Its margin as much on each side as above it (a right-to-left page's body is at the right).
+        const clip = { x: Math.max(0, r.left - r.top), y: 0, width: Math.ceil(r.width + 2 * r.top), height: Math.ceil(r.bottom + r.top), scale: 2 };
+        const { data } = await cdp.send("Page.captureScreenshot", { format: "png", clip }, s);
+        fs.writeFileSync(file, Buffer.from(data, "base64"));
+      };
+      return { evaluate: ev, shot, close: () => cdp.send("Target.closeTarget", { targetId: tid }).catch(() => {}) };
     };
     // The tab's requests to `hosts` (http and https) answered here, never by the network:
     // `respond(url)` gives { status, type, body }, or null for the network's own answer.
@@ -1018,6 +1035,28 @@ foreach ($w in $A::RootElement.FindAll([System.Windows.Automation.TreeScope]::Ch
 
 const VIDEO_WINDOW = "Download video from a page";
 
+// The Download video window's "Download Now", pressed through UI Automation (its Invoke, as a
+// screen reader does: no pointer, nothing on the screen). Whether it was there to press.
+function videoDownloadNow(pid) {
+  if (!WIN) throw new Skip(NO_UIA);
+  const script = `
+Add-Type -AssemblyName UIAutomationClient; Add-Type -AssemblyName UIAutomationTypes
+$A = [System.Windows.Automation.AutomationElement]
+$pid_ = New-Object System.Windows.Automation.PropertyCondition($A::ProcessIdProperty, ${pid})
+$now = New-Object System.Windows.Automation.AndCondition(
+  (New-Object System.Windows.Automation.PropertyCondition($A::ControlTypeProperty, [System.Windows.Automation.ControlType]::Button)),
+  (New-Object System.Windows.Automation.PropertyCondition($A::NameProperty, 'Download Now')))
+$edit = New-Object System.Windows.Automation.AndCondition(
+  (New-Object System.Windows.Automation.PropertyCondition($A::ControlTypeProperty, [System.Windows.Automation.ControlType]::Edit)),
+  (New-Object System.Windows.Automation.PropertyCondition($A::NameProperty, 'Page address')))
+foreach ($w in $A::RootElement.FindAll([System.Windows.Automation.TreeScope]::Children, $pid_)) {
+  if (-not $w.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $edit)) { continue }
+  $b = $w.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $now)
+  if ($b -and $b.Current.IsEnabled) { $b.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke(); 'PRESSED'; break }
+}`;
+  return /PRESSED/.test(spawnSync("powershell", ["-NoProfile", "-Command", script], { encoding: "utf8" }).stdout);
+}
+
 // Whether the Download video window's "Download Now" is enabled: yt-dlp looked the address up
 // and offered something to download (#155). null while the window isn't open.
 function videoReady(pid) {
@@ -1235,7 +1274,8 @@ const mainPart = async (session, b) => {
 // The button's menu, then "All qualities and subtitles…" in it (openInMdm): the app's Download
 // video window opens; the address it shows.
 // `shot`: a picture of that window first (PrintWindow: off the screens too), for a PR's body.
-async function clickButton(session, b, shot = "") {
+// `open`: the window is left open (closed otherwise).
+async function clickButton(session, b, shot = "", open = false) {
   const pid = appPid();
   appWindows(pid, VIDEO_WINDOW);
   await until("the Download video window closed", 5000, () => !appWindows(pid).includes(VIDEO_WINDOW));
@@ -1246,7 +1286,7 @@ async function clickButton(session, b, shot = "") {
     await sleep(1500);
     spawnSync("powershell", ["-NoProfile", "-File", path.join(root, "tools", "lab", "cap-own.ps1"), "-ProcessId", String(pid), "-Title", VIDEO_WINDOW, "-Out", shot]);
   }
-  appWindows(pid, VIDEO_WINDOW);
+  if (!open) appWindows(pid, VIDEO_WINDOW);
   return address;
 }
 
@@ -2486,6 +2526,80 @@ const CASES = {
     } finally {
       await popup.close();
     }
+  },
+
+  // #695, #800: a video a server's program sends (/remote_control.php, /stream.php as video/mp4,
+  // no Content-Disposition), on a page titled "Lab lecture: week N". The toolbar button's list
+  // names it after the page with its type ("Lab lecture week 1.mp4 · MP4", never
+  // "remote_control.php · PHP"), and MDM saves it so from there; the button over its player (a
+  // plain file) saves "Lab lecture week 2.mp4"; with yt-dlp, the Download video window lists a
+  // `stream.php?file=` video as MP4 and saves an .mp4 (yt-dlp refused a .php). E2E_SHOTS:
+  // <lang>-media-list.png (the popup's list) and <lang>-video-window.png (that window, Windows).
+  async scripted(t) {
+    const shots = process.env.E2E_SHOTS ? path.resolve(process.env.E2E_SHOTS) : "";
+    const lang = process.env.E2E_LANG || "en";
+    const page = (week, src) => `${LAB}/page?title=${encodeURIComponent(`Lab lecture: week ${week}`)}&video=${encodeURIComponent(src)}`;
+    const said = [];
+    // An earlier browser's files of the same names off the list and the disk: they'd be numbered.
+    const earlier = (await mdmList()).filter((d) => /^Lab lecture/.test(d.file)).map((d) => d.id);
+    if (earlier.length) await ipc({ action: "delete", ids: earlier });
+    // The list: named after the page, typed by its server.
+    await t.session.navigate(page(1, `/remote_control.php?id=${t.name}&seed=11`));
+    const at = await t.session.evaluate("location.href");
+    const popup = await t.session.tab(`${t.session.base}popup.html?page=${encodeURIComponent(at)}`);
+    const first = "Lab lecture week 1.mp4";
+    try {
+      const rows = () =>
+        popup.evaluate(`[...document.querySelectorAll("#media-list li")].map((li) => ({
+          tag: li.querySelector(".tag").textContent, name: li.querySelector(".name").textContent }))`);
+      const listed = await until("the popup's media list", 15000, async () => {
+        const r = await rows().catch(() => []);
+        return r.length >= 1 && r;
+      });
+      await sleep(500);
+      if (shots && popup.shot) await popup.shot(path.join(shots, `${lang}-media-list.png`));
+      if (listed.length !== 1 || listed[0].tag !== "MP4" || listed[0].name !== first) {
+        throw new Error(`the list shows ${JSON.stringify(listed)}, not MP4 ${first}`);
+      }
+      await popup.evaluate(`(() => { document.querySelector("#media-list li button").click(); return true; })()`);
+      await arrived(first, 1 << 20, "Video");
+      said.push(`list: MP4 ${first}, saved as it`);
+    } finally {
+      await popup.close();
+    }
+    // The button over its player: the file at once, named the same way.
+    await t.session.navigate(page(2, `/stream.php?id=${t.name}&seed=12`));
+    const v = await rect(t.session, "#video");
+    const b = await hover(t.session, v);
+    if (!b) throw new Error("no button over the video");
+    await t.session.mouse(await mainPart(t.session, b), (b.t + b.b) / 2, "click");
+    await arrived("Lab lecture week 2.mp4", 1 << 20, "Video");
+    said.push("button: Lab lecture week 2.mp4");
+    // The Download video window (#695): yt-dlp's look-up of a `file=` address, typed MP4.
+    if (!WIN || !ytdlp) return `${said.join("; ")} (no Download video window: ${WIN ? "no yt-dlp" : NO_UIA})`;
+    const file = `/stream.php?file=e2e-${t.name}.mp4&token=x&seed=13`;
+    await t.session.navigate(page(3, file));
+    const v3 = await rect(t.session, "#video");
+    const b3 = await hover(t.session, v3);
+    if (!b3) throw new Error("no button over the third video");
+    const address = await clickButton(t.session, b3, "", true);
+    if (address !== `${LAB}${file}`) throw new Error(`the video window got ${address}`);
+    const pid = appPid();
+    await until("yt-dlp's lookup (Download Now enabled)", 60000, () => videoReady(pid));
+    await sleep(1000);
+    if (shots) spawnSync("powershell", ["-NoProfile", "-File", path.join(root, "tools", "lab", "cap-own.ps1"), "-ProcessId", String(pid), "-Title", VIDEO_WINDOW, "-Out", path.join(shots, `${lang}-video-window.png`)]);
+    const before = new Set((await mdmList()).map((d) => d.id));
+    if (!videoDownloadNow(pid)) throw new Error("no Download Now to press");
+    const done = await until("the Download video window's download", 60000, async () => {
+      const d = (await mdmList()).find((x) => !before.has(x.id));
+      if (d && d.status === "Error") throw new Error(`it failed: ${d.error}`);
+      return d && d.status === "Complete" ? d : null;
+    });
+    if (!/\.mp4$/.test(done.file) || path.dirname(path.resolve(done.path)) !== path.join(downloads, "Video")) {
+      throw new Error(`the window saved ${done.path}`);
+    }
+    said.push(`window: ${done.file}`);
+    return said.join("; ");
   },
 
   // A page that moves in place (history.pushState, as YouTube does between videos): the button
