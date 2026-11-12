@@ -560,6 +560,10 @@ These ship in the next version.
 - ✅ Windows: **Open with...** shows Windows' "Select an app to open this file" again, for
   files whose name or folder has a space too
   ([#720](https://github.com/anefzaoui/misterdownloadmanager/issues/720))
+- ✅ A YouTube video that lists only the sound says why: yt-dlp has no JavaScript runtime. The
+  video window, the menu over a video and the command line say to install Node.js or Deno, with
+  a link to the help page's commands for each system
+  ([#852](https://github.com/anefzaoui/misterdownloadmanager/issues/852))
 - ✅ Linux: no freeze of the window where the session bus doesn't answer (a session started
   without D-Bus, a bus that hangs): the tray icon is set up beside the window, which carries on
   without it until the bus answers, and gets it then, however late

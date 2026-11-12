@@ -2072,6 +2072,11 @@
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
 	How to fix it	Kaip tai ištaisyti
+#. text in the Download video window; text in videolookup.rs
+#. link after the note that YouTube needs a JavaScript runtime: opens the help page that says how to install Node.js or Deno
+#. link in the browser's video menu, after the note that YouTube needs a JavaScript runtime: opens the help page that says how to install Node.js or Deno
+#, machine
+	How to install one	Kaip įdiegti
 #. checkbox in the Options window
 #, machine
 	http	HTTP
@@ -3526,6 +3531,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	Nuskaitomas „torrent“...
+#. message or event log entry in the main window
+#. the status strip while Tasks → Import reads a file; {file} is its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading {file}...	Nuskaitoma {file}...
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Nuskaito puslapį ir pateikia visų svetainės siūlomų kokybių sąrašą, iki 4K, iš „YouTube“, „Vimeo“ ir daugiau nei tūkstančio kitų svetainių.
@@ -5460,6 +5470,10 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	Jūsų sistemos: {path}
+#. text in the Download video window
+#. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
+#, machine
+	YouTube needs a JavaScript runtime to list its video qualities: install Node.js or Deno, then look it up again	„YouTube“ reikia „JavaScript“ vykdymo aplinkos, kad būtų galima išvardyti vaizdo įrašų kokybę: įdiekite „Node.js“ arba „Deno“, tada ieškokite dar kartą
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 #, machine

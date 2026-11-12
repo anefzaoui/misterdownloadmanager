@@ -2072,6 +2072,11 @@
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
 	How to fix it	როგორ გამოვასწოროთ
+#. text in the Download video window; text in videolookup.rs
+#. link after the note that YouTube needs a JavaScript runtime: opens the help page that says how to install Node.js or Deno
+#. link in the browser's video menu, after the note that YouTube needs a JavaScript runtime: opens the help page that says how to install Node.js or Deno
+#, machine
+	How to install one	როგორ დავაყენოთ
 #. checkbox in the Options window
 #, machine
 	http	http
@@ -3526,6 +3531,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	ტორენტის კითხვა...
+#. message or event log entry in the main window
+#. the status strip while Tasks → Import reads a file; {file} is its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading {file}...	{file} იკითხება...
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	კითხულობს გვერდს და ჩამოთვლის ყველა ხარისხს, რომელსაც საიტი გთავაზობთ, 4K-მდე, YouTube-დან, Vimeo-დან და ათასზე მეტი სხვა საიტიდან.
@@ -5460,6 +5470,10 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	თქვენი სისტემის: {path}
+#. text in the Download video window
+#. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
+#, machine
+	YouTube needs a JavaScript runtime to list its video qualities: install Node.js or Deno, then look it up again	YouTube-ს ვიდეოს ხარისხის ჩამოსათვლელად სჭირდება JavaScript-ის გაშვების გარემო: დააინსტალირეთ Node.js ან Deno, შემდეგ ხელახლა მოძებნეთ
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 #, machine
