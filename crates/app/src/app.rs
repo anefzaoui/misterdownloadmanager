@@ -4474,6 +4474,7 @@ impl App {
             None => crate::videodlg::VideoDialog::new(dir),
         }
         .with_subs(self.settings.video_subs.clone())
+        .with_chapters(self.settings.video_chapters)
         .with_music_folder(music)
     }
 
@@ -10144,6 +10145,13 @@ impl App {
                     {
                         self.dirty = true;
                     }
+                    // Embed chapters is kept for the next video (#827), and the videos added
+                    // now start with it.
+                    if self.settings.video_chapters != v.chapters() {
+                        self.settings.video_chapters = v.chapters();
+                        crate::settings::share_video_settings(&self.settings);
+                        self.dirty = true;
+                    }
                     self.video_dlg = None;
                     match out {
                         crate::videodlg::VideoOut::One(add) => {
@@ -10549,7 +10557,7 @@ impl App {
         // the taskbar's progress all stood still until the window was restored.
         crate::settings::share_proxy(self.settings.proxy());
         crate::settings::share_dns(self.settings.dns());
-        crate::settings::share_video_cookies(&self.settings);
+        crate::settings::share_video_settings(&self.settings);
         if !self.headless {
             self.follow_assistive_technology(ctx);
         }

@@ -1498,6 +1498,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	E-mail
+#. text in the Download video window
+#. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
+#, machine
+	Embed chapters	Încorporați capitolele
 #. text in gallerydlg.rs
 #. in Download a gallery, after the "Files at most" box
 #, machine
@@ -2799,6 +2803,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Mozambique	Mozambic
+#. text in the Download video window
+#. why "Embed chapters" is greyed in Download video: the choice is a sound converted to MP3, Opus or FLAC, which MDM saves without chapters
+#, machine
+	MP3, Opus and FLAC files are saved without chapters	Fișierele MP3, Opus și FLAC sunt salvate fără capitole
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	mult mai lentă decât celelalte conexiuni; se reconectează
@@ -4812,6 +4820,7 @@
 #, machine
 	This name is reserved by Windows	Acest nume este rezervat de Windows
 #. tooltip (why a control is greyed) in the Download video window
+#. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Aceasta necesită ffmpeg

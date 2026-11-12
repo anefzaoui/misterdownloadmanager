@@ -1139,6 +1139,10 @@
 	El Salvador	El Salvador
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Email	E-mail
+#. text in the Download video window
+#. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
+#, machine
+	Embed chapters	Incorpora capitoli
 #. text in gallerydlg.rs
 #. in Download a gallery, after the "Files at most" box
 	Empty: all of them. On most sites the newest come first.	Vuoto: tutti. Sulla maggior parte dei siti i più recenti compaiono per primi.
@@ -2114,6 +2118,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Mozambique	Mozambico
+#. text in the Download video window
+#. why "Embed chapters" is greyed in Download video: the choice is a sound converted to MP3, Opus or FLAC, which MDM saves without chapters
+#, machine
+	MP3, Opus and FLAC files are saved without chapters	I file MP3, Opus e FLAC vengono salvati senza capitoli
 #. text in errors.rs
 	much slower than the other connections; reconnecting	molto più lenta delle altre connessioni; nuova connessione in corso
 #. text in the download list (sizes, speeds, status)
@@ -3622,6 +3630,7 @@
 #, machine
 	This name is reserved by Windows	Questo nome è riservato da Windows
 #. tooltip (why a control is greyed) in the Download video window
+#. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 	This needs ffmpeg	Serve ffmpeg
 #. text in the Options window

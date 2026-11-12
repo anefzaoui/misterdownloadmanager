@@ -99,11 +99,17 @@ pub struct VideoDialog {
     sub_pick: usize,
     /// Put the subtitles into the video rather than beside it.
     embed: bool,
+    /// Embed chapters (#827; settings.video_chapters).
+    chapters: bool,
     /// The last video's choice (settings.video_subs), applied to each video looked up.
     pref: Subs,
     /// The clipboard's page address, read off the window's thread (#661).
     clip: crate::clipboard::Prefill,
 }
+
+/// The top of the window's bottom row of buttons (Helpers..., Download Now, Later, Cancel),
+/// under Embed chapters.
+const BUTTONS_Y: f32 = 389.0;
 
 /// What is installed in the tools folder: (folder, yt-dlp, ffmpeg).
 type Tools = (
@@ -192,9 +198,16 @@ impl VideoDialog {
             subs: Vec::new(),
             sub_pick: 0,
             embed: false,
+            chapters: true,
             pref: Subs::default(),
             clip: Default::default(),
         }
+    }
+
+    /// Embed chapters ticked or not (settings.video_chapters, #827).
+    pub fn with_chapters(mut self, on: bool) -> Self {
+        self.chapters = on;
+        self
     }
 
     /// Offer `pref` (the last video's subtitles, settings.video_subs) for the videos looked up.
@@ -417,7 +430,7 @@ impl VideoDialog {
             ctx,
             "video-page",
             "Download video from a page",
-            [500.0, 391.0],
+            [500.0, 422.0],
             false,
             winui::BG(),
             |ui, o| self.body(ui, o, rt),
@@ -958,6 +971,7 @@ impl VideoDialog {
             };
             label(ui, 328.0, labels[2], shade);
         }
+        self.chapters_row(ui, o, bx, ffmpeg.is_some());
 
         // The choices belong to the address looked up: an edited address is looked up first
         // (it downloaded the new page with the old one's format and name).
@@ -998,7 +1012,7 @@ impl VideoDialog {
         // Where yt-dlp and ffmpeg come from: MDM's own copies or the person's (#51).
         if winui::button(
             ui,
-            r(o, helpers_at.0, 358.0, helpers_at.1, 21.0),
+            r(o, helpers_at.0, BUTTONS_Y, helpers_at.1, 21.0),
             // i18n: button in Download video: where MDM takes yt-dlp and ffmpeg from
             "Helpers...",
             ButtonKind::Normal,
@@ -1011,7 +1025,7 @@ impl VideoDialog {
         }
         let now = winui::button(
             ui,
-            r(o, now_at.0, 358.0, now_at.1, 21.0),
+            r(o, now_at.0, BUTTONS_Y, now_at.1, 21.0),
             "Download Now",
             kind(true),
             false,
@@ -1024,7 +1038,7 @@ impl VideoDialog {
             || (ready && winui::enter_pressed(ui));
         let later = winui::button(
             ui,
-            r(o, later_at.0, 358.0, later_at.1, 21.0),
+            r(o, later_at.0, BUTTONS_Y, later_at.1, 21.0),
             // i18n: button: add it now, start downloading later
             "Later",
             kind(false),
@@ -1034,7 +1048,7 @@ impl VideoDialog {
         .clicked();
         let cancel = winui::button(
             ui,
-            r(o, cancel_at.0, 358.0, cancel_at.1, 21.0),
+            r(o, cancel_at.0, BUTTONS_Y, cancel_at.1, 21.0),
             "Cancel",
             ButtonKind::Normal,
             false,
@@ -1067,6 +1081,51 @@ impl VideoDialog {
 }
 
 impl VideoDialog {
+    /// Embed chapters (#827), under Subtitles, for a video and a playlist alike: the chapters a
+    /// video's page lists go into its file (ffmpeg writes them; on by default). Greyed without
+    /// ffmpeg, and for a choice converted to MP3, Opus or FLAC; its tick stays as it was.
+    fn chapters_row(&mut self, ui: &mut Ui, o: Pos2, bx: f32, ffmpeg: bool) {
+        let converts = match &self.list {
+            Some(list) => list.converts(),
+            None => self
+                .video
+                .as_ref()
+                .and_then(|(_, c)| c.get(self.chosen))
+                .is_some_and(|c| mdm_tools::resolve::audio_conversion(&c.selector).is_some()),
+        };
+        let can = ffmpeg && !converts;
+        let mut on = self.chapters && can;
+        let resp = winui::checkbox_until(
+            ui,
+            pos2(o.x + bx, o.y + 350.0),
+            &mut on,
+            // i18n: checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
+            "Embed chapters",
+            can,
+            Some(o.x + 489.0),
+        );
+        let resp = winui::why_disabled(
+            resp,
+            !ffmpeg,
+            // i18n: why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+            "This needs ffmpeg",
+        );
+        winui::why_disabled(
+            resp,
+            ffmpeg && converts,
+            // i18n: why "Embed chapters" is greyed in Download video: the choice is a sound converted to MP3, Opus or FLAC, which MDM saves without chapters
+            "MP3, Opus and FLAC files are saved without chapters",
+        );
+        if can {
+            self.chapters = on;
+        }
+    }
+
+    /// Embed chapters' tick, for the settings (`video_chapters`).
+    pub fn chapters(&self) -> bool {
+        self.chapters
+    }
+
     /// Subtitles (#68): a language the video has, from the uploader or the site's automatic
     /// captions, saved beside the video (`<name>.<language>.srt`) or put into it (ffmpeg).
     /// The list starts at `bx`, after the labels' column; true when it can be chosen from (its

@@ -1153,6 +1153,10 @@
 	El Salvador	السلفادور
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Email	بريد إلكتروني
+#. text in the Download video window
+#. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
+#, machine
+	Embed chapters	تضمين الفصول
 #. text in gallerydlg.rs
 #. in Download a gallery, after the "Files at most" box
 	Empty: all of them. On most sites the newest come first.	فارغ: جميعها. في معظم المواقع، الأحدث يأتي أولا.
@@ -2149,6 +2153,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Mozambique	موزمبيق
+#. text in the Download video window
+#. why "Embed chapters" is greyed in Download video: the choice is a sound converted to MP3, Opus or FLAC, which MDM saves without chapters
+#, machine
+	MP3, Opus and FLAC files are saved without chapters	يتم حفظ ملفات MP3 وOpus وFLAC بدون فصول
 #. text in errors.rs
 	much slower than the other connections; reconnecting	أبطأ بكثير من الاتصالات الأخرى؛ قيد إعادة الاتصال
 #. text in the download list (sizes, speeds, status)
@@ -3691,6 +3699,7 @@
 #, machine
 	This name is reserved by Windows	هذا الاسم محجوز بواسطة Windows
 #. tooltip (why a control is greyed) in the Download video window
+#. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 	This needs ffmpeg	يتطلب هذا ffmpeg
 #. text in the Options window
