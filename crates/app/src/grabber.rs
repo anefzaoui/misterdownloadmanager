@@ -222,11 +222,16 @@ impl Grabber {
     /// package; one the download list has (`known`) comes unticked under "Already in the list";
     /// a link here already is not added again.
     pub fn add(&mut self, found: Vec<Imported>, source: String, known: impl Fn(&Url) -> bool) {
+        // The addresses already here, looked up once: a list of 10,000 compared each link with
+        // every other one, and its packages' defaults were worked out again for each (#805).
+        let mut here: std::collections::HashSet<Url> =
+            self.links.iter().map(|l| address_key(&l.url)).collect();
+        let mut settle = Vec::new();
         for d in found {
             let Ok(url) = Url::parse(&d.url) else {
                 continue;
             };
-            if self.links.iter().any(|l| same_address(&l.url, &url)) {
+            if !here.insert(address_key(&url)) {
                 continue;
             }
             let magnet = url.scheme() == "magnet";
@@ -254,6 +259,11 @@ impl Grabber {
                 magnet,
                 check: None,
             });
+            if !settle.contains(&pkg) {
+                settle.push(pkg);
+            }
+        }
+        for pkg in settle {
             self.settle(pkg);
         }
         if !source.is_empty() && !self.source.split(", ").any(|s| s == source) {
@@ -1051,21 +1061,17 @@ impl Grabber {
     }
 }
 
-/// Two addresses for one file: the same but for case in the host, a default port or a
-/// `#fragment`; two magnet links to one torrent.
-fn same_address(a: &Url, b: &Url) -> bool {
-    if let (Some(x), Some(y)) = (
-        crate::transfer::magnet_hash(a.as_str()),
-        crate::transfer::magnet_hash(b.as_str()),
-    ) {
-        return x == y;
+/// A link's address as Link grabber tells links apart: without its `#fragment` (the same file);
+/// a magnet link by its torrent's hash alone (its name and trackers aside).
+fn address_key(u: &Url) -> Url {
+    if let Some(hash) = crate::transfer::magnet_hash(u.as_str())
+        && let Ok(key) = Url::parse(&format!("magnet:?xt=urn:btih:{hash}"))
+    {
+        return key;
     }
-    let norm = |u: &Url| {
-        let mut u = u.clone();
-        u.set_fragment(None);
-        u
-    };
-    norm(a) == norm(b)
+    let mut u = u.clone();
+    u.set_fragment(None);
+    u
 }
 
 /// What looking a link up found, as its row says it.
@@ -1116,6 +1122,32 @@ mod tests {
 
     fn grabber() -> Grabber {
         Grabber::new(PathBuf::from("D:\\dl"), Vec::new(), true, false)
+    }
+
+    #[test]
+    fn a_long_list_is_added_at_once_each_link_once() {
+        // #805: 20,000 links, each compared with every other, held the window's thread.
+        let many: Vec<Imported> = (0..20_000)
+            .map(|i| link(&format!("https://dl.example.com/f/{i}.zip"), None))
+            .collect();
+        let mut g = grabber();
+        let t = std::time::Instant::now();
+        g.add(many.clone(), "list.txt".into(), |_| false);
+        // Added again (and with a #fragment): nothing more.
+        let again: Vec<Imported> = many
+            .iter()
+            .map(|d| link(&format!("{}#again", d.url), None))
+            .collect();
+        g.add(again, "list.txt".into(), |_| false);
+        assert_eq!(g.links.len(), 20_000);
+        assert!(
+            t.elapsed() < std::time::Duration::from_secs(10),
+            "{:?}",
+            t.elapsed()
+        );
+        // Settled as before: one package of archives, to extract.
+        assert_eq!(g.packages.len(), 1);
+        assert!(g.packages[0].extract);
     }
 
     #[test]

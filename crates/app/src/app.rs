@@ -971,6 +971,8 @@ pub struct App {
     last_find: Option<crate::find::Query>,
     /// A message with OK: its window title and message: "Cannot find …", an export that failed…
     notice: Option<(&'static str, String)>,
+    /// The list files Import is reading, beside the window (#805).
+    importing: crate::transfer::Importing,
     /// Why the last save of the download list failed (told once per reason).
     save_failed: Option<String>,
     /// Finished files being moved (Move/Rename, Properties → Move): where to, and the answer.
@@ -1612,6 +1614,7 @@ impl App {
             find: None,
             last_find: None,
             notice: None,
+            importing: Default::default(),
             save_failed: None,
             moving: Vec::new(),
             renaming_torrents: Vec::new(),
@@ -1796,7 +1799,23 @@ impl App {
             o.x + w / 2.0,
             "strip-left",
         );
-        if let Some(right) = self.activity() {
+        // A list file Import is reading (#805), before what runs.
+        let reading = self.importing.pending().next().map(|path| {
+            let file = path
+                .file_name()
+                .map(|n| n.to_string_lossy().into_owned())
+                .unwrap_or_default();
+            crate::i18n::fmt(
+                // i18n: the status strip while Tasks → Import reads a file; {file} is its name
+                crate::i18n::t("Reading {file}..."),
+                &[("file", &crate::i18n::isolate(&file))],
+            )
+        });
+        let right = match (reading, self.activity()) {
+            (Some(r), Some(a)) => Some(format!("{r}   {a}")),
+            (r, a) => r.or(a),
+        };
+        if let Some(right) = right {
             winui::text_right(p, o.x + w - 10.0, baseline, &right, winui::MUTED());
         }
     }
@@ -2666,6 +2685,9 @@ impl App {
             "theme-add" => {
                 self.add_theme_file(std::path::Path::new(tab), ctx);
             }
+            // Tasks → Import, as its dialog answers: `import:<path>` (tests of a large or wrong
+            // file without the system's dialog, #805).
+            "import" => self.import_file(std::path::Path::new(tab)),
             // View → Theme → a theme, as the menu picks it (#45): `theme:native` (tests of the
             // live switch without a click).
             "theme" => {
@@ -9091,20 +9113,52 @@ impl App {
         }
     }
 
-    /// The addresses in a list file, shown in Import to tick before adding.
+    /// The addresses in a list file, shown in Import to tick before adding. The file is read and
+    /// searched beside the window (#805): a large one, or one that isn't a list (a video, an
+    /// archive picked by mistake), froze it. The status strip says "Reading …" meanwhile.
     fn import_file(&mut self, path: &std::path::Path) {
+        self.importing.start(path, Some(&self.ui_ctx));
+    }
+
+    /// Each frame, never waiting: the list files read since, into Import (`import_file`).
+    fn poll_imports(&mut self) {
+        for (path, read) in self.importing.finished() {
+            self.imported(&path, read);
+        }
+    }
+
+    /// A list file read: its addresses into Import, or why there are none.
+    fn imported(&mut self, path: &std::path::Path, read: crate::transfer::ListRead) {
+        use crate::transfer::ListRead;
         let file = path
             .file_name()
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_default();
-        let found = match std::fs::read(path) {
-            Ok(bytes) => crate::transfer::import(&String::from_utf8_lossy(&bytes)),
-            Err(e) => {
+        let found = match read {
+            ListRead::Found(found) => found,
+            ListRead::TooBig(size) => {
+                self.notice = Some((
+                    crate::i18n::mark("Import"),
+                    crate::i18n::fmt(
+                        // i18n: Import refused a file; {size} = its size and {limit} = the largest Import reads, like "4.50 GB" and "64.00 MB"
+                        crate::i18n::t(
+                            "{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.",
+                        ),
+                        &[
+                            ("file", &crate::i18n::isolate(&file)),
+                            ("size", &model::size(size)),
+                            ("limit", &model::size(crate::transfer::IMPORT_LIMIT)),
+                        ],
+                    ),
+                ));
+                return;
+            }
+            ListRead::Failed(e) => {
                 self.notice = Some((
                     crate::i18n::mark("Import"),
                     crate::i18n::fmt(
                         crate::i18n::t("The file could not be read: {error}"),
-                        &[("error", &e.to_string())],
+                        &[("error", &e)],
                     ),
                 ));
                 return;
@@ -10528,6 +10582,7 @@ impl App {
         // Incoming commands and the clock (downloads, queues, Scheduler, saving…): `logic`, just
         // before, which runs minimized too.
         self.poll_picks(&ctx);
+        self.poll_imports();
         self.drop_target(&ctx);
         self.main_drops(&ctx);
         self.remember_layout(&ctx);

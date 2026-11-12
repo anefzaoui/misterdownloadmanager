@@ -3515,6 +3515,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	टॉरंट वाचत आहे...
+#. message or event log entry in the main window
+#. the status strip while Tasks → Import reads a file; {file} is its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading {file}...	{file} वाचत आहे...
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	एक पृष्ठ वाचते आणि YouTube, Vimeo आणि एक हजारहून अधिक इतर साइट्सवरून 4K पर्यंत साइट ऑफर करत असलेल्या प्रत्येक गुणवत्तेची यादी करते.
@@ -5579,6 +5584,11 @@
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} आता जिथे जतन केली होती तिथे नाही (हलवली किंवा हटवली आहे). उजवे-क्लिक मेनूमधील पुन्हा डाउनलोड करा हा पर्याय ती पुन्हा डाउनलोड करतो.
+#. message or event log entry in the main window
+#. Import refused a file; {size} = its size and {limit} = the largest Import reads, like "4.50 GB" and "64.00 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} पत्त्यांची यादी होण्यासाठी खूप मोठी आहे ({size})। आयात {limit} पर्यंतच्या मजकूर फाइल्स, वेब पृष्ठे आणि .ef2 निर्यात वाचते।
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

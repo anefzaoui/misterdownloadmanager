@@ -3515,6 +3515,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	正在讀取 torrent...
+#. message or event log entry in the main window
+#. the status strip while Tasks → Import reads a file; {file} is its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading {file}...	正在讀取 {file}...
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	讀取頁面並列出網站提供的所有品質，最高可達 4K，來自 YouTube、Vimeo 和其他一千多個網站。
@@ -5579,6 +5584,11 @@
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} 已不在原本的儲存位置（已移動或刪除）。在右鍵功能表中選取「重新下載」，即可再次下載。
+#. message or event log entry in the main window
+#. Import refused a file; {size} = its size and {limit} = the largest Import reads, like "4.50 GB" and "64.00 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} ({size}) 過大，無法作為位址清單。匯入功能可讀取文字檔、網頁和 .ef2 匯出檔，最大為 {limit}。
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

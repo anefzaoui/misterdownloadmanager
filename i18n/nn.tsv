@@ -1404,6 +1404,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying yt-dlp...	Lastar ned og verifiserer yt-dlp...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	Lastar ned MDM sin eigen kopi ...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1599,6 +1604,10 @@
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	Eksporter
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	Eksporter ...
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	Utvid tilgjengelegheita for Manifest 2 Chrome-utvidingar
@@ -2092,6 +2101,10 @@
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	Importer
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	Importer ...
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	I ei kø
@@ -3502,6 +3515,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	Les torrenten...
+#. message or event log entry in the main window
+#. the status strip while Tasks → Import reads a file; {file} is its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading {file}...	Les {file} ...
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Les ei side og listar opp alle kvalitetar nettstaden tilbyr, opp til 4K, frå YouTube, Vimeo og over tusen andre nettstader.
@@ -5566,6 +5584,11 @@
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} er ikkje lenger der ho vart lagra (flytta eller sletta). Last ned på nytt i høgreklikkmenyen lastar henne ned igjen.
+#. message or event log entry in the main window
+#. Import refused a file; {size} = its size and {limit} = the largest Import reads, like "4.50 GB" and "64.00 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} er for stor til å vere ei adresseliste ({size}). Import les tekstfiler, nettsider og .ef2-eksportar på opptil {limit}.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
