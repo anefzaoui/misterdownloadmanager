@@ -350,7 +350,7 @@ impl VideoDialog {
             } else {
                 &mut self.rows
             };
-            // The boxes show 7 rows (one box alone, 8): 7 shows the row in either.
+            // A tab's list shows 7 rows (one list alone, 8): 7 shows the row in either.
             st.show_row(row, 7);
             self.name_from_choice();
         }
@@ -824,8 +824,7 @@ impl VideoDialog {
             // The status line stops short of an Install button beside it.
             list.middle(ui, o, installing.is_none().then_some(status_right));
         } else {
-            // The choices: one box, or with both kinds a Video box and an Audio box side by
-            // side, each under its heading, one choice selected across them.
+            // The choices: one box, or with both kinds a Video tab and an Audio tab.
             let list = r(o, 11.0, 94.0, 478.0, 150.0);
             let choices = self.video.as_ref().map_or(&[][..], |(_, c)| c.as_slice());
             let (video, audio) = sections(choices);
@@ -845,24 +844,46 @@ impl VideoDialog {
                     st,
                 )
             } else {
-                // i18n: heading over the video choices (1080p, 720p…) in Download video's list of formats
-                let v = crate::i18n::t("Video");
-                // i18n: heading over the sound-only choices (MP3, original M4A…) in Download video, beside the video ones
-                let a = crate::i18n::t("Audio");
-                text(&p, o.x + 12.0, o.y + 105.0, v, winui::MUTED());
-                text(&p, o.x + 254.0, o.y + 105.0, a, winui::MUTED());
-                self.rows.name = v;
-                self.audio_rows.name = a;
-                let (vl, al) = (
-                    r(o, 11.0, 110.0, 236.0, 134.0),
-                    r(o, 253.0, 110.0, 236.0, 134.0),
-                );
-                let chosen = self.chosen;
-                let st = &mut self.rows;
-                let pv = choice_list(ui, "video-choices", vl, choices, &video, chosen, false, st);
-                let st = &mut self.audio_rows;
-                let pa = choice_list(ui, "audio-choices", al, choices, &audio, chosen, false, st);
-                pv.or(pa)
+                // A Video tab and an Audio tab, each its own list: choosing a tab picks its
+                // best format, and with it Save to (Video's folder or Music's, #611).
+                const TABS: [&str; 2] = [
+                    // i18n: tab in Download video over the video formats (1080p, 720p…)
+                    crate::i18n::mark("Video"),
+                    // i18n: tab in Download video over the sound-only formats (MP3, original M4A…)
+                    crate::i18n::mark("Audio"),
+                ];
+                let tabs: Vec<winui::LightTab> = winui::tab_row(&p, &TABS, 13.0, 486.0, 2.0, 8.0)
+                    .into_iter()
+                    .zip(TABS)
+                    .map(|((x0, x1, _), label)| winui::LightTab {
+                        label,
+                        sel: (x0 - 2.0, x1 + 2.0),
+                        unsel: (x0, x1),
+                    })
+                    .collect();
+                let on = usize::from(audio.contains(&self.chosen));
+                let tab = winui::tabs_light(ui, o, list, &tabs, on);
+                let (ids, st, id) = if on == 1 {
+                    (&audio, &mut self.audio_rows, "audio-choices")
+                } else {
+                    (&video, &mut self.rows, "video-choices")
+                };
+                st.name = crate::i18n::t(TABS[on]);
+                // Inside the tab's pane (x 11..486, y 114..242): 7 rows.
+                let inner = r(o, 15.0, 118.0, 467.0, 120.0);
+                let row = choice_list(ui, id, inner, choices, ids, self.chosen, false, st);
+                match tab {
+                    Some(i) => {
+                        let (ids, st) = if i == 1 {
+                            (&audio, &mut self.audio_rows)
+                        } else {
+                            (&video, &mut self.rows)
+                        };
+                        st.show_row(0, 7);
+                        ids.first().copied()
+                    }
+                    None => row,
+                }
             };
             if let Some(c) = picked {
                 self.chosen = c;
