@@ -503,6 +503,13 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A video quality's size is the size of what downloads: each line of the Download video window
+  and of the browser's menu is the very video and sound it was sized from, and a size that is
+  only an estimate shows as about ("~532 MB"); a portrait 4K video showed 3.79 GB and downloaded
+  532 MB ([#801](https://github.com/anefzaoui/misterdownloadmanager/issues/801))
+- ✅ Video qualities show their codec, frame rate and HDR (`2160p · VP9 · 60 fps · HDR`), and AV1,
+  VP9 and H.264, HDR and SDR of one resolution are each their own choice; the best stays first
+  ([#755](https://github.com/anefzaoui/misterdownloadmanager/issues/755))
 - ✅ Windows 10: no black band above the progress window's title bar, and clicks land on its
   buttons again ([#620](https://github.com/anefzaoui/misterdownloadmanager/issues/620),
   [#772](https://github.com/anefzaoui/misterdownloadmanager/issues/772)): the progress window and

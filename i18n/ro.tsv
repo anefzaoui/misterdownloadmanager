@@ -255,6 +255,11 @@
 #. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
 #, machine
 	about {ms} ms ({reach})	aproximativ {ms} ms ({reach})
+#. text in the Download video window
+#. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	about {size}	aproximativ {size}
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 #, machine
@@ -3936,6 +3941,7 @@
 #, machine
 	Size	Dimensiune
 #. text in the Download video window
+#. the video's file size is not known
 #, machine
 	size unknown	dimensiune necunoscută
 #. text in a download's Properties window
@@ -5373,7 +5379,7 @@
 #, machine
 	yt-dlp downloads it itself: a live stream	yt-dlp îl descarcă singur: un flux live
 #. text in a download's progress window
-#. progress window, a video's line: a stream sent in many small pieces (HLS, DASH), which the helper program yt-dlp downloads itself for now
+#. progress window, a video's line: a stream sent in many small pieces of a rare kind (Adobe HDS, Smooth Streaming), which the helper program yt-dlp downloads itself
 #, machine
 	yt-dlp downloads it itself: a stream in pieces	yt-dlp îl descarcă singur: un flux în bucăți
 #. text in a download's progress window
@@ -5735,9 +5741,18 @@ column	Upload speed	Viteză de trimitere
 #, machine
 extension	A list of videos: choose them in Mister Download Manager	O listă de videoclipuri: alegeți-le în Mister Download Manager
 #. text in the browser extension
+#. on the download button (green) over a video after the app added and started the download; a quality may follow ('· 1080p') and a 'Show' button; MDM is the app's short name, keep it; short
+#, machine
+extension	Added to MDM	Adăugat la MDM
+#. text in the browser extension
 #. shown briefly on the download button over a video after a quality was picked: the download was added to the app's download queue, to start later
 #, machine
 extension	Added to the queue	Adăugat la coadă
+#. text in the browser extension
+#. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	All qualities and subtitles...	Toate calitățile și subtitrările...
 #. text in the browser extension
 #. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
 #, machine
@@ -5747,6 +5762,10 @@ extension	Another Mister Download Manager (a server)	Alt Mister Download Manager
 #, machine
 extension	Audio	Audio
 #. text in the browser extension
+#. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
+#, machine
+extension	best	cea mai bună
+#. text in the browser extension
 #. the name this browser gets in the other MDM's list of paired devices
 #, machine
 extension	Browser extension	Extensie de browser
@@ -5755,6 +5774,10 @@ extension	Browser extension	Extensie de browser
 #. the trailing ... means it is still going on: keep it
 #, machine
 extension	Button settings...	Setări buton...
+#. text in the browser extension
+#. on the download button over a copy-protected video, after 'Protected video ·': it can't be downloaded; short, lower case
+#, machine
+extension	can't be saved	nu poate fi salvat
 #. text in the browser extension
 #. shown briefly on the download button when nothing on the page says which video the player is playing, so nothing was sent
 #, machine
@@ -5781,9 +5804,17 @@ extension	Download	Descărcați
 #, machine
 extension	Download all links with Mister Download Manager	Descărcați toate linkurile cu Mister Download Manager
 #. text in the browser extension
+#. first line of the list under the download button over a video: downloads the best quality at once; the quality, its file type and size follow on the same line; short
+#, machine
+extension	Download best	Descărcați cea mai bună calitate
+#. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 #, machine
 extension	Download selected links with Mister Download Manager	Descărcați linkurile selectate cu Mister Download Manager
+#. text in the browser extension
+#. first line of the tooltip of the download button over a video while the app is still finding its qualities
+#, machine
+extension	Download the best quality	Descărcați cea mai bună calitate
 #. text in the browser extension
 #. the button over a video on a web page that downloads it; verb; short (it sits on the video)
 #, machine
@@ -5792,6 +5823,10 @@ extension	Download video	Descărcați videoclipul
 #. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
 #, machine
 extension	Download with Mister Download Manager	Descărcați cu Mister Download Manager
+#. text in the browser extension
+#. first line of the tooltip of the download button over a video: what one click downloads; $what$ is a quality, a file type and a size, e.g. '1080p MP4 · 412 MB'
+#, machine
+extension	Download {what}	Descărcați {what}
 #. text in the browser extension
 #. shown in the toolbar button's popup after the site was excluded
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -5802,13 +5837,17 @@ extension	Downloads from {site} stay with the browser	Descărcările de pe {site
 #, machine
 extension	Downloads go to {address}	Descărcările merg la {address}
 #. text in the browser extension
-#. tooltip of the download button over a video: it can be dragged to another place on the video's edge
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
 #, machine
-extension	Drag to move it along the video's edge	Trageți pentru a-l muta de-a lungul marginii videoclipului
+extension	Drag the dots to move it along the edge	Trageți punctele pentru a-l muta de-a lungul marginii
 #. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
 extension	Enter its https:// address.	Introduceți adresa https://.
+#. text in the browser extension
+#. button on the download button over a video when the app didn't answer: opens the app's download page; MDM is the app's short name, keep it; very short
+#, machine
+extension	Get MDM	Obțineți MDM
 #. text in the browser extension
 #. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
 #, machine
@@ -5870,6 +5909,10 @@ extension	Looking up the qualities…	Se caută calitățile…
 #. in the menu under the download button over a video: the app took more than a minute to find the video's qualities, so the menu stopped waiting
 #, machine
 extension	Looking up took too long	Căutarea a durat prea mult
+#. text in the browser extension
+#. on the download button (red) over a video when the app isn't installed or didn't start; 'Get MDM' and 'Retry' buttons follow; MDM is the app's short name, keep it; short
+#, machine
+extension	MDM didn't answer	MDM nu a răspuns
 #. text in the browser extension
 #. heading in the toolbar button's popup over the list of the videos, sounds and streams the current web page has loaded
 #, machine
@@ -5937,9 +5980,9 @@ extension	No video to download here	Nu există niciun videoclip de descărcat ai
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Nu s-a ajuns la destinație. Deschideți adresa o dată în acest browser și acceptați certificatul, apoi încercați din nou.
 #. text in the browser extension
-#. last command of the menu of qualities under the download button over a video: opens the app's Download video window for this video instead; keep the name Mister Download Manager as it is
+#. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
 #, machine
-extension	Open in Mister Download Manager…	Deschideți în Mister Download Manager…
+extension	Off on this site	Dezactivat pe acest site
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -5953,14 +5996,22 @@ extension	Open its address once and accept its certificate, then enter a code fr
 #, machine
 extension	Open Mister Download Manager	Deschideți Mister Download Manager
 #. text in the browser extension
-#. shown briefly on the download button over a video in a feed (a social site's home page, a timeline) when nothing in the feed gives that video's own address, so nothing was sent: the user should open the post the video belongs to and click the button on that page; short
+#. button on the download button over a video in a feed: opens the post the video belongs to in a new tab; verb; very short
 #, machine
-extension	Open the post, then use the button there	Deschideți postarea, apoi utilizați butonul de acolo
+extension	Open post	Deschideți postarea
+#. text in the browser extension
+#. on the download button (amber) over a video in a feed (a social site's home page, a timeline) that can't be downloaded from there: the user should open the post the video belongs to; short
+#, machine
+extension	Open the post to download it	Deschideți postarea pentru a o descărca
 #. text in the browser extension
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it
 #, machine
 extension	Options...	Opțiuni...
+#. text in the browser extension
+#. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
+#, machine
+extension	original	original
 #. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
@@ -5982,9 +6033,13 @@ extension	Prefix media file names with the page title	Adaugă titlul paginii în
 #, machine
 extension	Protected	Protejat
 #. text in the browser extension
-#. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
+#. on the download button over a copy-protected (DRM) video, which no tool can download; 'can't be saved' follows it after a dot; short
 #, machine
-extension	Protected video: it can't be saved	Videoclip protejat: nu poate fi salvat
+extension	Protected video	Videoclip protejat
+#. text in the browser extension
+#. button on the download button over a video when the app didn't answer: try again; verb; very short
+#, machine
+extension	Retry	Reîncercați
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
@@ -5994,9 +6049,18 @@ extension	Send downloads through this browser's proxy or VPN extension	Trimiteț
 #, machine
 extension	Send downloads to	Trimite descărcările la
 #. text in the browser extension
+#. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Sending to MDM...	Se trimite către MDM...
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Trimis la Mister Download Manager
+#. text in the browser extension
+#. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
+#, machine
+extension	Show	Afișați
 #. text in the browser extension
 #. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
 #, machine
@@ -6013,10 +6077,6 @@ extension	The Chrome Web Store's rules keep this copy of the add-on away from th
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
 extension	The connection to Mister Download Manager failed	Conexiunea la Mister Download Manager a eșuat
-#. text in the browser extension
-#. shown briefly on the download button over a video when the app's settings keep the button off on this web site
-#, machine
-extension	The download button is off on this site	Butonul de descărcare este dezactivat pe acest site
 #. text in the browser extension
 #. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
 #, machine
@@ -6041,6 +6101,10 @@ extension	This download's details were too large to hand over	Detaliile acestei 
 #. in the toolbar button's popup, when the page's player plays from a stream built in the page (a blob:): the list of the page's media has nothing to show; Download video is the name of the button over videos
 #, machine
 extension	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.	Playerul acestei pagini transmite videoclipul pe bucăți, așa că nu există niciun fișier de afișat. Indicați videoclipul și folosiți butonul său „Descărcați videoclipul”.
+#. text in the browser extension
+#. button on the download button over a video when it is off on this web site: turns it on again here; verb; very short
+#, machine
+extension	Turn on	Activați
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
@@ -6814,85 +6878,3 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/s
-#. text in the browser extension
-#. on the download button (green) over a video after the app added and started the download; a quality may follow ('· 1080p') and a 'Show' button; MDM is the app's short name, keep it; short
-#, machine
-extension	Added to MDM	Adăugat la MDM
-#. text in the browser extension
-#. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
-#. the trailing ... means it is still going on: keep it
-#, machine
-extension	All qualities and subtitles...	Toate calitățile și subtitrările...
-#. text in the browser extension
-#. first row of the menu of the download button over a video while the app is still finding its qualities: downloads the best one as soon as it is known; short
-#, machine
-extension	Best quality	Cea mai bună calitate
-#. text in the browser extension
-#. first line of the tooltip of the download button over a video while the app is still finding its qualities
-#, machine
-extension	Download the best quality	Descărcați cea mai bună calitate
-#. text in the browser extension
-#. first line of the tooltip of the download button over a video: what one click downloads; $what$ is a quality, a file type and a size, e.g. '1080p MP4 · 412 MB'
-#, machine
-extension	Download {what}	Descărcați {what}
-#. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
-#, machine
-extension	Drag the dots to move it along the edge	Trageți punctele pentru a-l muta de-a lungul marginii
-#. text in the browser extension
-#. button on the download button over a video when the app didn't answer: opens the app's download page; MDM is the app's short name, keep it; very short
-#, machine
-extension	Get MDM	Obțineți MDM
-#. text in the browser extension
-#. on the download button (red) over a video when the app isn't installed or didn't start; 'Get MDM' and 'Retry' buttons follow; MDM is the app's short name, keep it; short
-#, machine
-extension	MDM didn't answer	MDM nu a răspuns
-#. text in the browser extension
-#. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
-#, machine
-extension	Off on this site	Dezactivat pe acest site
-#. text in the browser extension
-#. button on the download button over a video in a feed: opens the post the video belongs to in a new tab; verb; very short
-#, machine
-extension	Open post	Deschideți postarea
-#. text in the browser extension
-#. on the download button (amber) over a video in a feed (a social site's home page, a timeline) that can't be downloaded from there: the user should open the post the video belongs to; short
-#, machine
-extension	Open the post to download it	Deschideți postarea pentru a o descărca
-#. text in the browser extension
-#. on the download button over a copy-protected (DRM) video, which no tool can download; 'can't be saved' follows it after a dot; short
-#, machine
-extension	Protected video	Videoclip protejat
-#. text in the browser extension
-#. button on the download button over a video when the app didn't answer: try again; verb; very short
-#, machine
-extension	Retry	Reîncercați
-#. text in the browser extension
-#. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
-#. the trailing ... means it is still going on: keep it
-#, machine
-extension	Sending to MDM...	Se trimite către MDM...
-#. text in the browser extension
-#. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
-#, machine
-extension	Show	Afișați
-#. text in the browser extension
-#. button on the download button over a video when it is off on this web site: turns it on again here; verb; very short
-#, machine
-extension	Turn on	Activați
-#. text in the browser extension
-#. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
-#, machine
-extension	best	cea mai bună
-#. text in the browser extension
-#. on the download button over a copy-protected video, after 'Protected video ·': it can't be downloaded; short, lower case
-#, machine
-extension	can't be saved	nu poate fi salvat
-#. text in the browser extension
-#. first line of the list under the download button over a video: downloads the best quality at once; the quality, its file type and size follow on the same line; short
-#, machine
-extension	Download best	Descărcați cea mai bună calitate
-#. text in the browser extension
-#. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
-#, machine
-extension	original	original

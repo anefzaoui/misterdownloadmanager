@@ -624,7 +624,18 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             if json {
                 let choices: Vec<_> = choices
                     .iter()
-                    .map(|c| json!({ "label": c.label, "format": c.selector, "size": c.size }))
+                    .map(|c| {
+                        json!({
+                            "label": c.label,
+                            "format": c.selector,
+                            "size": c.size,
+                            "approx": c.approx,
+                            "height": c.height,
+                            "fps": c.fps,
+                            "codec": c.codec,
+                            "range": c.range,
+                        })
+                    })
                     .collect();
                 let subs: Vec<_> = subs
                     .iter()
@@ -635,9 +646,11 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             }
             println!("{}", v.title);
             for c in choices {
+                // The streams' own bytes, or "~" before an estimate (#801).
+                let about = if c.approx { "~" } else { "" };
                 let size = c
                     .size
-                    .map_or(String::new(), |s| format!("  ~{} MB", s / 1_000_000));
+                    .map_or(String::new(), |s| format!("  {about}{} MB", s / 1_000_000));
                 println!("  {}{size}    -f \"{}\"", c.label, c.selector);
             }
             if !subs.is_empty() {

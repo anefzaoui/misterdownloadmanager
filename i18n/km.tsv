@@ -255,6 +255,11 @@
 #. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
 #, machine
 	about {ms} ms ({reach})	ប្រហែល {ms} ម.វ. ( {reach} )
+#. text in the Download video window
+#. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	about {size}	ប្រហែល {size}
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 #, machine
@@ -3937,6 +3942,7 @@
 #, machine
 	Size	ទំហំ
 #. text in the Download video window
+#. the video's file size is not known
 #, machine
 	size unknown	មិនស្គាល់ទំហំ
 #. text in a download's Properties window
@@ -5374,7 +5380,7 @@
 #, machine
 	yt-dlp downloads it itself: a live stream	yt-dlp ទាញយកវាដោយខ្លួនឯង៖ ការផ្សាយផ្ទាល់
 #. text in a download's progress window
-#. progress window, a video's line: a stream sent in many small pieces (HLS, DASH), which the helper program yt-dlp downloads itself for now
+#. progress window, a video's line: a stream sent in many small pieces of a rare kind (Adobe HDS, Smooth Streaming), which the helper program yt-dlp downloads itself
 #, machine
 	yt-dlp downloads it itself: a stream in pieces	yt-dlp ទាញយកវាដោយខ្លួនឯង៖ ការផ្សាយជាបំណែកៗ
 #. text in a download's progress window
@@ -5736,9 +5742,18 @@ column	Upload speed	ល្បឿនបង្ហោះ
 #, machine
 extension	A list of videos: choose them in Mister Download Manager	បញ្ជីវីដេអូ៖ ជ្រើសរើសវីដេអូនៅក្នុង Mister Download Manager
 #. text in the browser extension
+#. on the download button (green) over a video after the app added and started the download; a quality may follow ('· 1080p') and a 'Show' button; MDM is the app's short name, keep it; short
+#, machine
+extension	Added to MDM	បានបន្ថែមទៅ MDM
+#. text in the browser extension
 #. shown briefly on the download button over a video after a quality was picked: the download was added to the app's download queue, to start later
 #, machine
 extension	Added to the queue	បានបន្ថែមទៅជួររង់ចាំ
+#. text in the browser extension
+#. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	All qualities and subtitles...	គុណភាព និងចំណងជើងរងទាំងអស់...
 #. text in the browser extension
 #. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
 #, machine
@@ -5748,6 +5763,10 @@ extension	Another Mister Download Manager (a server)	Mister Download Manager ម
 #, machine
 extension	Audio	សំឡេង
 #. text in the browser extension
+#. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
+#, machine
+extension	best	ល្អបំផុត
+#. text in the browser extension
 #. the name this browser gets in the other MDM's list of paired devices
 #, machine
 extension	Browser extension	ផ្នែក​បន្ថែម​កម្មវិធី​រុករក
@@ -5756,6 +5775,10 @@ extension	Browser extension	ផ្នែក​បន្ថែម​កម្ម�
 #. the trailing ... means it is still going on: keep it
 #, machine
 extension	Button settings...	ការកំណត់ប៊ូតុង...
+#. text in the browser extension
+#. on the download button over a copy-protected video, after 'Protected video ·': it can't be downloaded; short, lower case
+#, machine
+extension	can't be saved	មិនអាចរក្សាទុកបានទេ
 #. text in the browser extension
 #. shown briefly on the download button when nothing on the page says which video the player is playing, so nothing was sent
 #, machine
@@ -5782,9 +5805,17 @@ extension	Download	ទាញយក
 #, machine
 extension	Download all links with Mister Download Manager	ទាញយកតំណទាំងអស់ជាមួយ Mister Download Manager
 #. text in the browser extension
+#. first line of the list under the download button over a video: downloads the best quality at once; the quality, its file type and size follow on the same line; short
+#, machine
+extension	Download best	ទាញយកគុណភាពល្អបំផុត
+#. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 #, machine
 extension	Download selected links with Mister Download Manager	ទាញយកតំណដែលបានជ្រើសរើសជាមួយ Mister Download Manager
+#. text in the browser extension
+#. first line of the tooltip of the download button over a video while the app is still finding its qualities
+#, machine
+extension	Download the best quality	ទាញយកគុណភាពល្អបំផុត
 #. text in the browser extension
 #. the button over a video on a web page that downloads it; verb; short (it sits on the video)
 #, machine
@@ -5793,6 +5824,10 @@ extension	Download video	ទាញយកវីដេអូ
 #. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
 #, machine
 extension	Download with Mister Download Manager	ទាញយកជាមួយ Mister Download Manager
+#. text in the browser extension
+#. first line of the tooltip of the download button over a video: what one click downloads; $what$ is a quality, a file type and a size, e.g. '1080p MP4 · 412 MB'
+#, machine
+extension	Download {what}	ទាញយក {what}
 #. text in the browser extension
 #. shown in the toolbar button's popup after the site was excluded
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -5803,13 +5838,17 @@ extension	Downloads from {site} stay with the browser	ការទាញយក�
 #, machine
 extension	Downloads go to {address}	ការ​ទាញ​យក​ទៅ {address}
 #. text in the browser extension
-#. tooltip of the download button over a video: it can be dragged to another place on the video's edge
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
 #, machine
-extension	Drag to move it along the video's edge	អូសដើម្បីផ្លាស់ទីវាតាមគែមវីដេអូ
+extension	Drag the dots to move it along the edge	អូសចំណុចដើម្បីផ្លាស់ទីវាតាមគែម
 #. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
 extension	Enter its https:// address.	បញ្ចូល​អាសយដ្ឋាន https:// របស់​វា។
+#. text in the browser extension
+#. button on the download button over a video when the app didn't answer: opens the app's download page; MDM is the app's short name, keep it; very short
+#, machine
+extension	Get MDM	ទទួល MDM
 #. text in the browser extension
 #. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
 #, machine
@@ -5867,6 +5906,10 @@ extension	Live	ផ្ទាល់
 #. in the menu under the download button over a video: the app took more than a minute to find the video's qualities, so the menu stopped waiting
 #, machine
 extension	Looking up took too long	ការស្វែងរកចំណាយពេលយូរពេក
+#. text in the browser extension
+#. on the download button (red) over a video when the app isn't installed or didn't start; 'Get MDM' and 'Retry' buttons follow; MDM is the app's short name, keep it; short
+#, machine
+extension	MDM didn't answer	MDM មិនឆ្លើយតប
 #. text in the browser extension
 #. heading in the toolbar button's popup over the list of the videos, sounds and streams the current web page has loaded
 #, machine
@@ -5934,6 +5977,10 @@ extension	No video to download here	គ្មានវីដេអូសម្�
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	មិន​អាច​ទៅ​ដល់​បាន​ទេ។ សូម​បើក​អាសយដ្ឋាន​របស់​វា​ម្ដង​ក្នុង​កម្មវិធី​រុករក​នេះ ហើយ​ទទួល​យក​វិញ្ញាបនបត្រ​របស់​វា រួច​ព្យាយាម​ម្ដង​ទៀត។
 #. text in the browser extension
+#. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
+#, machine
+extension	Off on this site	បិទនៅលើគេហទំព័រនេះ
+#. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
 extension	Open it	បើក​វា
@@ -5946,14 +5993,22 @@ extension	Open its address once and accept its certificate, then enter a code fr
 #, machine
 extension	Open Mister Download Manager	បើក Mister Download Manager
 #. text in the browser extension
-#. shown briefly on the download button over a video in a feed (a social site's home page, a timeline) when nothing in the feed gives that video's own address, so nothing was sent: the user should open the post the video belongs to and click the button on that page; short
+#. button on the download button over a video in a feed: opens the post the video belongs to in a new tab; verb; very short
 #, machine
-extension	Open the post, then use the button there	បើកប្រកាស រួចប្រើប៊ូតុងនៅទីនោះ
+extension	Open post	បើកប្រកាស
+#. text in the browser extension
+#. on the download button (amber) over a video in a feed (a social site's home page, a timeline) that can't be downloaded from there: the user should open the post the video belongs to; short
+#, machine
+extension	Open the post to download it	បើកប្រកាសដើម្បីទាញយកវា
 #. text in the browser extension
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it
 #, machine
 extension	Options...	ជម្រើស...
+#. text in the browser extension
+#. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
+#, machine
+extension	original	ដើម
 #. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
@@ -5975,9 +6030,13 @@ extension	Prefix media file names with the page title	ដាក់ចំណង�
 #, machine
 extension	Protected	ការពារ
 #. text in the browser extension
-#. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
+#. on the download button over a copy-protected (DRM) video, which no tool can download; 'can't be saved' follows it after a dot; short
 #, machine
-extension	Protected video: it can't be saved	វីដេអូដែលបានការពារ៖ វាមិនអាចរក្សាទុកបានទេ
+extension	Protected video	វីដេអូការពារ
+#. text in the browser extension
+#. button on the download button over a video when the app didn't answer: try again; verb; very short
+#, machine
+extension	Retry	ព្យាយាមម្តងទៀត
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
@@ -5987,9 +6046,18 @@ extension	Send downloads through this browser's proxy or VPN extension	ផ្ញ
 #, machine
 extension	Send downloads to	ផ្ញើ​ការ​ទាញ​យក​ទៅ
 #. text in the browser extension
+#. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Sending to MDM...	កំពុងផ្ញើទៅ MDM...
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	បានផ្ញើទៅ Mister Download Manager
+#. text in the browser extension
+#. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
+#, machine
+extension	Show	បង្ហាញ
 #. text in the browser extension
 #. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
 #, machine
@@ -6006,10 +6074,6 @@ extension	The Chrome Web Store's rules keep this copy of the add-on away from th
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
 extension	The connection to Mister Download Manager failed	ការតភ្ជាប់ទៅ Mister Download Manager បានបរាជ័យ
-#. text in the browser extension
-#. shown briefly on the download button over a video when the app's settings keep the button off on this web site
-#, machine
-extension	The download button is off on this site	ប៊ូតុងទាញយកត្រូវបានបិទនៅលើគេហទំព័រនេះ
 #. text in the browser extension
 #. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
 #, machine
@@ -6034,6 +6098,10 @@ extension	This download's details were too large to hand over	ព័ត៌មា
 #. in the toolbar button's popup, when the page's player plays from a stream built in the page (a blob:): the list of the page's media has nothing to show; Download video is the name of the button over videos
 #, machine
 extension	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.	កម្មវិធីចាក់របស់ទំព័រនេះផ្សាយវីដេអូជាបំណែកៗ ដូច្នេះគ្មានឯកសារដើម្បីរាយបញ្ជីទេ។ ចង្អុលទៅវីដេអូ ហើយប្រើប៊ូតុងទាញយកវីដេអូរបស់វា។
+#. text in the browser extension
+#. button on the download button over a video when it is off on this web site: turns it on again here; verb; very short
+#, machine
+extension	Turn on	បើក
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
@@ -6167,6 +6235,11 @@ menu	&Add new download	បន្ថែមការទាញយកថ្មី(&A
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	&Add new download...	បន្ថែមការទាញយកថ្មី(&A)...
+#. menu command in the main window
+#. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Classic	បុរាណ(&C)
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6798,85 +6871,3 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/វិនាទី
-#. text in the browser extension
-#. on the download button (green) over a video after the app added and started the download; a quality may follow ('· 1080p') and a 'Show' button; MDM is the app's short name, keep it; short
-#, machine
-extension	Added to MDM	បានបន្ថែមទៅ MDM
-#. text in the browser extension
-#. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
-#. the trailing ... means it is still going on: keep it
-#, machine
-extension	All qualities and subtitles...	គុណភាព និងចំណងជើងរងទាំងអស់...
-#. text in the browser extension
-#. first row of the menu of the download button over a video while the app is still finding its qualities: downloads the best one as soon as it is known; short
-#, machine
-extension	Best quality	គុណភាពល្អបំផុត
-#. text in the browser extension
-#. first line of the tooltip of the download button over a video while the app is still finding its qualities
-#, machine
-extension	Download the best quality	ទាញយកគុណភាពល្អបំផុត
-#. text in the browser extension
-#. first line of the tooltip of the download button over a video: what one click downloads; $what$ is a quality, a file type and a size, e.g. '1080p MP4 · 412 MB'
-#, machine
-extension	Download {what}	ទាញយក {what}
-#. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
-#, machine
-extension	Drag the dots to move it along the edge	អូសចំណុចដើម្បីផ្លាស់ទីវាតាមគែម
-#. text in the browser extension
-#. button on the download button over a video when the app didn't answer: opens the app's download page; MDM is the app's short name, keep it; very short
-#, machine
-extension	Get MDM	ទទួល MDM
-#. text in the browser extension
-#. on the download button (red) over a video when the app isn't installed or didn't start; 'Get MDM' and 'Retry' buttons follow; MDM is the app's short name, keep it; short
-#, machine
-extension	MDM didn't answer	MDM មិនឆ្លើយតប
-#. text in the browser extension
-#. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
-#, machine
-extension	Off on this site	បិទនៅលើគេហទំព័រនេះ
-#. text in the browser extension
-#. button on the download button over a video in a feed: opens the post the video belongs to in a new tab; verb; very short
-#, machine
-extension	Open post	បើកប្រកាស
-#. text in the browser extension
-#. on the download button (amber) over a video in a feed (a social site's home page, a timeline) that can't be downloaded from there: the user should open the post the video belongs to; short
-#, machine
-extension	Open the post to download it	បើកប្រកាសដើម្បីទាញយកវា
-#. text in the browser extension
-#. on the download button over a copy-protected (DRM) video, which no tool can download; 'can't be saved' follows it after a dot; short
-#, machine
-extension	Protected video	វីដេអូការពារ
-#. text in the browser extension
-#. button on the download button over a video when the app didn't answer: try again; verb; very short
-#, machine
-extension	Retry	ព្យាយាមម្តងទៀត
-#. text in the browser extension
-#. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
-#. the trailing ... means it is still going on: keep it
-#, machine
-extension	Sending to MDM...	កំពុងផ្ញើទៅ MDM...
-#. text in the browser extension
-#. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
-#, machine
-extension	Show	បង្ហាញ
-#. text in the browser extension
-#. button on the download button over a video when it is off on this web site: turns it on again here; verb; very short
-#, machine
-extension	Turn on	បើក
-#. text in the browser extension
-#. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
-#, machine
-extension	best	ល្អបំផុត
-#. text in the browser extension
-#. on the download button over a copy-protected video, after 'Protected video ·': it can't be downloaded; short, lower case
-#, machine
-extension	can't be saved	មិនអាចរក្សាទុកបានទេ
-#. text in the browser extension
-#. first line of the list under the download button over a video: downloads the best quality at once; the quality, its file type and size follow on the same line; short
-#, machine
-extension	Download best	ទាញយកគុណភាពល្អបំផុត
-#. text in the browser extension
-#. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
-#, machine
-extension	original	ដើម
