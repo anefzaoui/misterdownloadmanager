@@ -2777,6 +2777,8 @@ const CASES = {
       await sleep(500);
       if (shots) await snap("page-list", await t.session.picks());
       const lines = m.rows.map((r) => `${r.name} = ${r.size}`);
+      // #852: what the menu says above them (YouTube without a JavaScript runtime).
+      if (m.note) lines.unshift(`note: ${m.note}`);
       const pick = process.env.E2E_VIDEO_PICK;
       if (!pick) return lines.join("; ");
       const wanted = new RegExp(pick);

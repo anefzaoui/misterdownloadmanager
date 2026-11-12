@@ -771,6 +771,17 @@
             "null"
           ]
         },
+        "notice": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VideoNotice"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "`ready` (and `failed` with [`lookup::NO_CHOICES`]): what the look-up lacked and how to\nmend it, shown with the choices (#852: YouTube's qualities need a JavaScript runtime).\nNone from an app older than the field."
+        },
         "reason": {
           "description": "`failed`: [`lookup::NO_YTDLP`], [`lookup::NO_CHOICES`] or [`lookup::ERROR`].",
           "type": [
@@ -796,6 +807,27 @@
             "string",
             "null"
           ]
+        }
+      },
+      "type": "object"
+    },
+    "VideoNotice": {
+      "description": "A word in the browser's quality menu on what the look-up lacked (#852), in MDM's language.",
+      "properties": {
+        "link": {
+          "default": "",
+          "description": "The link's words (\"How to install one\").",
+          "type": "string"
+        },
+        "text": {
+          "default": "",
+          "description": "What is wrong and what to do (\"YouTube needs a JavaScript runtime…\").",
+          "type": "string"
+        },
+        "url": {
+          "default": "",
+          "description": "The help page it opens, on MDM's website.",
+          "type": "string"
         }
       },
       "type": "object"
