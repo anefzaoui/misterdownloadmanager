@@ -934,6 +934,10 @@
    "source": "The thin edge around a country's flag",
    "text": "国旗の周りの細い枠線"
   },
+  "0ea74b188ec2ca88": {
+   "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
+   "text": "「<g1>サイトがファイルの代わりにウェブページを送信しました</g1>」と表示される場合、リンクはサイト自身のページにつながっています。ファイルホストのカウントダウン、CAPTCHA、押すべき<g2>ダウンロード</g2>ボタン、またはサインインページなどです。MDM はそのページをファイルとして保存することはありません。ダウンロードの進行状況ウィンドウで<g3>ブラウザーで開く</g3>をクリックするか（または自分でリンクを開くか）、そこで操作を完了してください。ブラウザーが実際のダウンロードを開始すると、MDM の拡張機能がそれを MDM に渡します。拡張機能がない場合は、ブラウザーでダウンロードさせてください。"
+  },
   "0ebbf5cc3fb70cd9": {
    "source": "Downloads from a private window use that window's cookies, never the normal ones, and aren't kept in MDM's list after it closes.",
    "text": "プライベート ウィンドウからのダウンロードでは、そのウィンドウの Cookie が使われ、通常のウィンドウの Cookie は使われません。また、ウィンドウを閉じるとMDMの一覧から削除されます。"
@@ -4498,10 +4502,6 @@
    "source": "Browser integration — Mister Download Manager help",
    "text": "ブラウザー統合 — Mister Download Manager ヘルプ"
   },
-  "439e42205d062684": {
-   "source": "Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (<x1/>)",
-   "text": "yt-dlp と ffmpeg による動画ページの処理、gallery-dl による画像ギャラリーの処理 (それぞれ別のプログラムとして実行)。ネットワークアダプターが選択されている間、これらの接続は 127.0.0.1 上にある MDM のプロキシを経由し、そのアダプターを使用します (<x1/>)"
-  },
   "43ad4ee2e95fdb1f": {
    "source": "A page's own short sounds (a click, a voice-search chime) are no longer listed in <g1>Media on this page</g1>.",
    "text": "ページの短いサウンド (クリック音、音声検索チャイム) は、<g1>このページのメディア</g1>にリストされなくなりました。"
@@ -5657,6 +5657,10 @@
   "567f61dda0920579": {
    "source": "A greyed unchecked box's border",
    "text": "グレー表示されたチェックなしのボックスの境界線"
+  },
+  "5688be9c6942376d": {
+   "source": "Files MDM downloads from the browser are marked as coming from the internet, as the browser marks its own: Windows checks a program with SmartScreen before it runs and Office opens a document in Protected View. Like the browser, MDM leaves the mark out when Windows' Group Policy <g1>Do not preserve zone information in file attachments</g1> is on; <g2>Options → Save to</g2> can turn it off for MDM alone.",
+   "text": "MDM がブラウザーからダウンロードするファイルは、ブラウザーがダウンロードするファイルと同様に、インターネットからのものとしてマークされます。Windows はプログラムを実行する前に SmartScreen でチェックし、Office はドキュメントを保護ビューで開きます。ブラウザーと同様に、Windows のグループ ポリシー「<g1>添付ファイルにゾーン情報を保存しない</g1>」がオンの場合、MDM はマークを付けません。<g2>オプション → 保存先</g2> で MDM のみオフにできます。"
   },
   "5690cb4f1434f4bc": {
    "source": "Open Windows <g1>Settings → Apps</g1>, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder. On Linux, remove the package with your package manager, or delete the AppImage; <g2>Uninstall on Linux</g2> says what stays in your home folder and how to remove it.",
@@ -9222,10 +9226,6 @@
    "source": "Downloads and torrents in one app, stable on Android",
    "text": "ダウンロードとトレントを1つのアプリで、Androidで安定動作"
   },
-  "8c699effe606d133": {
-   "source": "Files MDM downloads from the browser are marked as coming from the internet, as the browser marks its own: Windows checks a program with SmartScreen before it runs and Office opens a document in Protected View.",
-   "text": "MDMがブラウザーからダウンロードしたファイルには、ブラウザーが付けるのと同じように、インターネットから取得したことを示すマークが付きます。Windowsでは、プログラムの実行前にSmartScreenで確認され、Officeではドキュメントが保護されたビューで開きます。"
-  },
   "8c7321b31cd98d97": {
    "source": "<g1>Toolbar.</g1> <g2>Add URL</g2>, <g3>Add Torrent</g3>, <g4>Resume</g4>, <g5>Stop</g5>, <g6>Stop All</g6>, <g7>Delete</g7>, <g8>Delete Completed</g8>, <g9>Options</g9>, <g10>Scheduler</g10>, <g11>Start Queue</g11>, <g12>Stop Queue</g12>. The small arrow next to <g13>Add Torrent</g13>, <g14>Start Queue</g14> and <g15>Stop Queue</g15> opens more choices.",
    "text": "<g1>ツールバー。</g1> <g2>URL を追加</g2>、<g3>Torrent を追加</g3>、<g4>再開</g4>、<g5>停止</g5>、<g6>すべて停止</g6>、<g7>削除</g7>、<g8>完了したものを削除</g8>、<g9>オプション</g9>、<g10>スケジューラ</g10>、<g11>キューの開始</g11>、<g12>キューの停止</g12>。<g13>Torrent を追加</g13>、<g14>キューの開始</g14>、<g15>キューの停止</g15>の横にある小さな矢印をクリックすると、さらに選択肢が開きます。"
@@ -10886,6 +10886,10 @@
    "source": "Add downloads with <g1>Add URL</g1>, the clipboard (<g2>Options → General → Offer to download links copied to the clipboard</g2>) or the drop target (<g3>Tasks → Show drop target</g3>).",
    "text": "<g1>URL を追加</g1>、クリップボード（<g2>オプション → 一般 → クリップボードにコピーされたリンクをダウンロードするよう提案する</g2>）、またはドロップターゲット（<g3>タスク → ドロップ ターゲットを表示</g3>）でダウンロードを追加します。"
   },
+  "a54a319c4a29ff03": {
+   "source": "Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (<x1/>); each runs in a folder it can write, also its TEMP (<x2/>)",
+   "text": "yt-dlp と ffmpeg を介したビデオ ページ、gallery-dl を介した画像ギャラリー (それぞれ別のプログラムとして実行されます)。ネットワーク アダプターが選択されている間、それらの接続は MDM の 127.0.0.1 上のプロキシを介して行われ、MDM にバインドされます (<x1/>)。それぞれが書き込み可能なフォルダーで実行され、そのフォルダーが TEMP となります (<x2/>)"
+  },
   "a54ad83afe939ad1": {
    "source": "yt-dlp looks the page up and picks the quality's video and sound. MDM's own downloader then brings each of them in, one after the other, the way it downloads any file:",
    "text": "yt-dlp はページを検索し、品質の動画と音声を選択します。MDM 独自のダウンローダーは、他のファイルをダウンロードするのと同じ方法で、それらを 1 つずつ取り込みます。"
@@ -12522,6 +12526,10 @@
    "source": "3. Use it",
    "text": "3. 使用する"
   },
+  "be205ab8272dead7": {
+   "source": "Start the video first: the list fills as the page loads things, and it's emptied when the tab goes to another page. Each file is listed under the name it will be saved with. A file the site sends through a program's address (<x1/>, <x2/>, <x3/>, a bare number) has no name of its own: it's named after the page (<x4/>), or after the <x5/> name in its address when there is one, with the type its server says it is (MP4, not PHP). With <g6>Prefix media file names with the page title</g6> on, a file with a name of its own is named after the page, then that name (<x7/>). Click <g8>Download</g8> beside one: a stream opens MDM's <g9>Download video from a page</g9> window, which reads its qualities (yt-dlp does the work); a file goes to MDM's list like any other download. Your cookies for its server, the page as the referrer and your browser's User-Agent go with it, as they do for a link you click.",
+   "text": "まずビデオを再生してください。ページがコンテンツを読み込むにつれてリストが埋まり、タブが別のページに移動するとリストは空になります。各ファイルは保存されるファイル名で表示されます。サイトがプログラムのアドレス (<x1/>、<x2/>、<x3/>、単なる数字) を介して送信するファイルには、それ自体の名前がありません。その場合、ページ名 (<x4/>) またはアドレス内の <x5/> 名に基づいて、サーバーが示す種類 (PHP ではなく MP4) で名前が付けられます。<g6>メディアファイル名の前にページのタイトルを付ける</g6> がオンの場合、それ自体の名前を持つファイルは、ページ名、次にその名前 (<x7/>) の順で名前が付けられます。いずれかの横にある <g8>ダウンロード</g8> をクリックすると、ストリームは MDM の <g9>ページからビデオをダウンロード</g9> ウィンドウを開き、その品質を読み取ります (yt-dlp が処理します)。ファイルは他のダウンロードと同様に MDM のリストに追加されます。クリックしたリンクの場合と同様に、そのサーバーのクッキー、リファラーとしてのページ、およびブラウザーのユーザーエージェントが一緒に送信されます。"
+  },
   "be3fe1b3f5a5749a": {
    "source": "Yes, completely. Mister Download Manager (MDM) is free and open-source software under the GNU General Public License, version 3. There is no trial period…",
    "text": "はい、完全に無料です。Mister Download Manager (MDM) は、GNU General Public License バージョン3の下で提供される、無料のオープンソースソフトウェアです。試用期間はありません…"
@@ -12826,10 +12834,6 @@
    "source": "A greyed button's face",
    "text": "グレー表示されたボタンの面"
   },
-  "c30f4658e7e28160": {
-   "source": "Start the video first: the list fills as the page loads things, and it's emptied when the tab goes to another page. With <g1>Prefix media file names with the page title</g1> on, a file from the list is named after the page, then its own name (<x2/>). Click <g3>Download</g3> beside one: a stream opens MDM's <g4>Download video from a page</g4> window, which reads its qualities (yt-dlp does the work); a file goes to MDM's list like any other download. Your cookies for its server, the page as the referrer and your browser's User-Agent go with it, as they do for a link you click.",
-   "text": "まず動画を再生してください。リストはページがコンテンツを読み込むにつれて埋められ、タブが別のページに移動すると空になります。<g1>メディアファイル名の前にページのタイトルを付ける</g1>がオンの場合、リストからのファイルはページ名、次にそのファイル自身の名前 (<x2/>) で命名されます。いずれかの横にある<g3>ダウンロード</g3>をクリックします。ストリームは MDM の<g4>ページからビデオをダウンロード</g4>ウィンドウを開き、その品質を読み取ります (yt-dlp が処理します)。ファイルは他のダウンロードと同様に MDM のリストに追加されます。そのサーバーのクッキー、リファラーとしてのページ、およびブラウザーのユーザーエージェントは、クリックしたリンクの場合と同様に、それに付随します。"
-  },
   "c31622b1a542c888": {
    "source": "<g1>.dmg</g1> for Intel Macs",
    "text": "Intel Mac向け<g1>.dmg</g1>"
@@ -13009,6 +13013,10 @@
   "c5fa121420a2cd5d": {
    "source": "Opera",
    "text": "Opera"
+  },
+  "c608b90547be8d53": {
+   "source": "Wait for the list. It shows each quality with its size, best first, then the sound alone: - A video's line says its resolution, its codec, its frame rate and whether it is HDR: <x1/>. A resolution that comes in several (AV1, VP9 and H.264, HDR and SDR) has a line for each: AV1 makes the smallest file, H.264 plays on the most devices, and an HDR video looks washed out on a screen without HDR. <x2/> is said only beside an HDR line of the same resolution. - The size is that of exactly what downloads, the video and its sound. A size with <x3/> before it (<x4/>) is only an estimate: the site didn't say the size, so it comes from the stream's bitrate and length. - <g5>Audio only, original</g5>: the site's own file, not converted, once for each type the site has it in (WebM with Opus inside, M4A), the best first. The best sound there is, in the smallest file. - <g6>Audio only MP3</g6> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g7>Audio only OPUS</g7>: an <x8/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g9>Audio only FLAC</g9>: a lossless <x10/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
+   "text": "リストが表示されるまでお待ちください。各品質がサイズとともに表示され、最適なものから順に、次に音声のみが表示されます。- 動画の行には、解像度、コーデック、フレームレート、HDR かどうかが表示されます: <x1/>。複数の形式（AV1、VP9、H.264、HDR、SDR）で提供される解像度には、それぞれ個別の行があります。AV1 は最もファイルサイズが小さく、H.264 はほとんどのデバイスで再生でき、HDR のない画面では HDR 動画は色あせて見えます。<x2/> は、同じ解像度の HDR 行の横にのみ表示されます。- サイズは、ダウンロードされる動画と音声の正確なサイズです。<x3/> が前にあるサイズ（<x4/>）は推定値です。サイトがサイズを提示しなかったため、ストリームのビットレートと長さから算出されます。- <g5>音声のみ（オリジナル）</g5>: サイト独自のファイルで、変換されません。サイトが提供する各タイプ（Opus を含む WebM、M4A）ごとに 1 つずつ、最適なものから順に表示されます。最小のファイルで最高の音質です。- <g6>音声のみ MP3</g6>: 最高の可変ビットレート（VBR）と、320、256、192、128 kbps で提供され、MP3 のみをサポートするプレーヤー向けです。- <g7>音声のみ OPUS</g7>: <x8/> ファイルです。サイトの音声がすでに Opus の場合（YouTube は通常そうです）、変換されずにそのファイルに移動されるだけなので、何も失われません。- <g9>音声のみ FLAC</g9>: ロスレスの <x10/> ファイルで、ライブラリや FLAC を必要とするプログラム向けです。品質を追加することはできません。サイトの音声はすでに損失を伴う圧縮がされており、FLAC はそれをそのまま、数倍大きなファイルに保持します。選択するとウィンドウにその旨が表示されます。"
   },
   "c616fb0beefab805": {
    "source": "<g1>No site-specific shortcuts around rules.</g1> MDM treats sites the same way. It has no features made for getting around a particular site's terms, paywall or limits.",
@@ -13729,10 +13737,6 @@
   "d1417c9f51076273": {
    "source": "A button's face under the pointer",
    "text": "ポインターの下にあるボタンの面"
-  },
-  "d1595b21d176c816": {
-   "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
-   "text": "トレントからのファイルには、ブラウザーでダウンロードしたファイルと同様に、<g1>インターネットからダウンロードされた</g1>ことを示すマークが付けられます。Windows SmartScreenはプログラムを初めて実行する前にチェックし、Officeはドキュメントを保護ビューで開きます。MacではGatekeeperがアプリをチェックします。"
   },
   "d172eb15bbafbde6": {
    "source": "Release signatures are checked by MDM's own small verifier instead of a full OpenPGP library.",
@@ -14566,6 +14570,10 @@
    "source": "Minimize hides the main window there too, while <g1>Minimize to the notification area</g1> is on in <g2>Options → General</g2>. It is on by default; where the tray has no icon, Minimize sends the window to the taskbar instead.",
    "text": "<g2>オプション → 一般</g2> で <g1>通知領域に最小化する</g1> がオンになっている場合、［最小化］もメイン ウィンドウをそこに隠します。これは既定でオンになっています。通知領域にアイコンがない場合、［最小化］はウィンドウを代わりにタスクバーに送ります。"
   },
+  "dec637e2ec402a0d": {
+   "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps. <g2>Options → Save to → Mark downloaded files as coming from the internet</g2> turns it off, and so does Windows' policy <g3>Do not preserve zone information in file attachments</g3>.",
+   "text": "トレントからのファイルは、ブラウザでダウンロードされたファイルと同様に、<g1>インターネットからダウンロードされたもの</g1>としてマークされます。Windows SmartScreen はプログラムが最初に実行される前にチェックし、Office は保護ビューでドキュメントを開きます。Mac では Gatekeeper がアプリをチェックします。<g2>オプション → 保存先 → ダウンロードしたファイルをインターネットからのものとしてマークする</g2> でこの機能をオフにできます。また、Windows のポリシー <g3>添付ファイルにゾーン情報を保存しない</g3> でもオフにできます。"
+  },
   "dee4ab42b514acda": {
    "source": "The language list on first start: every language with its flag, its own name and its English name",
    "text": "初回起動時の言語リスト: 各言語がその旗、自国語名、英語名とともに表示されます"
@@ -14777,6 +14785,10 @@
   "e2b96614efaa036c": {
    "source": "The drop target's edge at rest",
    "text": "ドロップ ターゲットの静止時のエッジ"
+  },
+  "e2d0adb596fd4c4b": {
+   "source": "<g1>Mark downloaded files as coming from the internet</g1> — on by default. Every file MDM downloads (from the browser, a link you add, a video, a gallery, a torrent, and the files extracted from an archive) carries the mark a browser's downloads carry. On Windows that is the Mark of the Web: SmartScreen checks a program before it first runs, and Office opens a document in Protected View. On a Mac it is the quarantine attribute Gatekeeper checks; on Linux, where the file came from, which file managers show. Unticked, no download is marked. On Windows, MDM also follows the Group Policy <g2>Do not preserve zone information in file attachments</g2>, as browsers do: when it is on (for the computer or for you), no download is marked, whatever this box says.",
+   "text": "<g1>ダウンロードしたファイルをインターネットからのものとしてマークする</g1> — 既定でオン。MDM がダウンロードするすべてのファイル (ブラウザーから、追加したリンク、ビデオ、ギャラリー、トレント、アーカイブから抽出されたファイル) には、ブラウザーのダウンロードが持つマークが付けられます。Windows では、これは Mark of the Web です。SmartScreen はプログラムが最初に実行される前にチェックし、Office はドキュメントを保護ビューで開きます。Mac では、Gatekeeper がチェックする隔離属性です。Linux では、ファイルマネージャーが表示するファイルの出所です。オフにすると、ダウンロードはマークされません。Windows では、MDM はブラウザーと同様にグループ ポリシー <g2>添付ファイルにゾーン情報を保存しない</g2> にも従います。これがオンの場合 (コンピューターまたはユーザーに対して)、このチェックボックスの設定に関係なく、ダウンロードはマークされません。"
   },
   "e2e30d683ce66b3d": {
    "source": "<g1>Zen on Windows:</g1> Zen 1.21.15b and later have a bug of their own that keeps add-ons from reaching their helper program (<g2>zen-browser/desktop#15432</g2>), with any add-on that uses one. Until Zen fixes it, Zen 1.21.14b works.",

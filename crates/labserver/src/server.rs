@@ -627,6 +627,12 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
   faults (also server-wide with --faults; per-URL values override):
     rate=SIZE slow_every=N slow_rate=SIZE max_conns=N drop_after=SIZE drop_every=N
     fail_every=N fail_first=N no_range=1 no_range_every=N html=1 etag_change_every=N
+    html=1         a small web page (a sign-in wall, a file host's waiting page) instead of the
+                   file, text/html; with html_type=TYPE|none the page comes as TYPE (none: no
+                   Content-Type), with html_cd=1 under the file's name (Content-Disposition)
+    html_after=N   the first N requests for this path and query get the file, every later one
+                   the page (as html=1 with html_type and html_cd): a link that leads to a
+                   waiting page once the download is resumed; vary seed= for a fresh link
     etag=weak|per-request|none latency_ms=N range_latency_ms=N (only requests with a Range)
     range_rate=SIZE  the rate of answers to requests with a Range (instead of rate)
     burst=SIZE     with a rate, a link: a response the client stopped reading catches up with
@@ -1319,13 +1325,16 @@ pub(crate) async fn serve(
         shared.record(entry, 503, "fault:fail_first");
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     }
-    if f.html == Some(true) {
+    let page_now = f.html_after.is_some_and(|after| {
+        let key = format!("html_after:{}?{query}", entry.path);
+        let mut served = shared.link_uses.lock().unwrap();
+        let n = served.entry(key).or_insert(0);
+        *n += 1;
+        *n > after
+    });
+    if f.html == Some(true) || page_now {
         shared.record(entry, 200, "fault:html");
-        return (
-            [(header::CONTENT_TYPE, "text/html; charset=utf-8")],
-            "<!doctype html><title>Sign in</title><form>Please sign in</form>\n",
-        )
-            .into_response();
+        return web_page(&f, name, size);
     }
     let slot = {
         let mut active = shared.active.lock().unwrap();
@@ -1464,6 +1473,45 @@ pub(crate) async fn serve(
     builder
         .body(Body::from_stream(transfer.into_stream()))
         .unwrap()
+}
+
+/// `html=1`'s page: a sign-in wall, or (with `html_type` or `html_cd`) a file host's waiting page
+/// as it comes, its blank lines first (#701).
+fn web_page(f: &Faults, name: Option<&str>, size: u64) -> Response {
+    if f.html_type.is_none() && f.html_cd != Some(true) {
+        return (
+            [(header::CONTENT_TYPE, "text/html; charset=utf-8")],
+            "<!doctype html><title>Sign in</title><form>Please sign in</form>\n",
+        )
+            .into_response();
+    }
+    let mut builder = Response::builder().status(StatusCode::OK);
+    match f.html_type.as_deref() {
+        Some("none") => {}
+        Some(t) => builder = builder.header(header::CONTENT_TYPE, t),
+        None => builder = builder.header(header::CONTENT_TYPE, "text/html; charset=utf-8"),
+    }
+    if f.html_cd == Some(true) {
+        let name = name.unwrap_or("file.zip").replace(['"', '\\'], "_");
+        builder = builder.header(
+            header::CONTENT_DISPOSITION,
+            format!("attachment; filename=\"{name}\""),
+        );
+    }
+    let mut page = String::from(
+        "\r\n\r\n<!DOCTYPE html>\n<html><head><title>Your file is almost ready</title></head>\
+         <body><p>Please wait 30 seconds, then prove you are not a robot.</p>\
+         <form method=post><input type=submit value=\"Create download link\"></form>\
+         </body></html>\n",
+    );
+    // As long as the path's size says, up to 64 KiB (the report's page: 37 KB).
+    let want = size.min(64 << 10) as usize;
+    if want > page.len() + 8 {
+        page.push_str("<!--");
+        page.push_str(&" ".repeat(want - page.len() - 8));
+        page.push_str("-->\n");
+    }
+    builder.body(Body::from(page)).unwrap()
 }
 
 /// RFC 8187 `attr-char`: what `filename*=` leaves unencoded.

@@ -307,6 +307,9 @@ pub struct Settings {
     /// Download video from a page: the subtitles last chosen (#68), offered again for the
     /// next video when it has that language (none at first).
     pub video_subs: mdm_tools::video::Subs,
+    /// Download video from a page → Embed chapters (#827): a video's chapters go into its file
+    /// (with ffmpeg). On; a settings file from before has none: on.
+    pub video_chapters: bool,
     /// Options → Sites Logins → Cookies for video sites (#229): the browser whose cookies
     /// yt-dlp reads on this computer when the extension passed none (yt-dlp's name: `firefox`,
     /// `chrome`...; empty: off, the default), and its profile (a name or a folder; empty: the
@@ -476,6 +479,7 @@ impl Default for Settings {
             drop_target: false,
             drop_target_pos: None,
             video_subs: Default::default(),
+            video_chapters: true,
             video_cookies: String::new(),
             video_cookies_profile: String::new(),
             extract_auto: false,
@@ -1025,9 +1029,11 @@ impl Settings {
     }
 }
 
-/// Keep every yt-dlp run on Options' cookies for video sites (cheap when they didn't change).
-pub fn share_video_cookies(s: &Settings) {
+/// Keep every yt-dlp run on Options' cookies for video sites (cheap when they didn't change),
+/// and every video started on Embed chapters (#827).
+pub fn share_video_settings(s: &Settings) {
     mdm_tools::proc::set_browser_cookies(s.video_cookies());
+    mdm_tools::video::set_chapters(s.video_chapters);
 }
 
 /// The network adapter MDM's connections go through now (#35).

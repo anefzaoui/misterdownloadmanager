@@ -1,6 +1,7 @@
 //! Link grabber (#37): the links of a page (the browser's "Download all links"), of a list file
 //! (Tasks → Import), copied (Tasks → Add batch download from clipboard, #709), dropped or
-//! pasted, gathered into packages to tick before they are added.
+//! pasted, gathered into packages to tick before they are added. An address that came on its own
+//! and turns out to be a web page is read for its links, which join as that page's (#705).
 //! It grew out of the Import window and keeps its ways (IDM's "Download all links": every link
 //! looked up for its name and size, Check all / Uncheck all, "Hide web pages", OK adds the
 //! ticked ones to the queue); the packages come from JDownloader's link grabber: a split
@@ -24,6 +25,8 @@ const BUTTONS_Y: f32 = 446.0;
 /// Links looked up at once, and at once from one host.
 const CHECKS: usize = 8;
 const CHECKS_PER_HOST: usize = 4;
+/// Web pages read for their links at once.
+const READS: usize = 2;
 
 crate::theme::themed! {
     // The lists' header colour (winui::LIST_HEADER), as Add torrent's file list.
@@ -137,9 +140,28 @@ pub struct Link {
     /// A magnet link (#709): a torrent, added once its files are known; never looked up here.
     magnet: bool,
     check: Option<Check>,
+    /// Its look-up found a web page (`ProbeInfo::web_page`).
+    page: bool,
+    /// Reading it for its links (#705): asked (`Some`), and its answer once it came.
+    read: Option<Read>,
 }
 
 impl Link {
+    /// A web page, as its look-up found or its name says (IDM's "Hide HTML files").
+    fn is_page(&self) -> bool {
+        self.page || web_page(&self.name)
+    }
+
+    /// A web page given on its own (pasted, copied, typed, in a list), not found on a page: one
+    /// to read for its links (#705). A page's own links aren't read in turn.
+    fn to_read(&self) -> bool {
+        self.page
+            && self.state == LinkState::Online
+            && self.found.referer.is_none()
+            && self.read.is_none()
+            && !self.known
+    }
+
     /// Its files' category: a torrent's are Torrents, whatever its name says.
     fn category(&self) -> Category {
         if self.magnet {
@@ -161,6 +183,9 @@ fn magnet_name(url: &Url) -> String {
 }
 
 type Check = Arc<Mutex<Option<Result<mdm_engine::ProbeInfo, LinkState>>>>;
+/// A page's links as they were read (`None` until then; empty when it had none or couldn't be
+/// read).
+type Read = Arc<Mutex<Option<Vec<Imported>>>>;
 
 /// A package's ticked links, as the window hands them over.
 pub struct Picked {
@@ -258,6 +283,8 @@ impl Grabber {
                 known,
                 magnet,
                 check: None,
+                page: false,
+                read: None,
             });
             if !settle.contains(&pkg) {
                 settle.push(pkg);
@@ -361,7 +388,7 @@ impl Grabber {
 
     /// Shown (not a hidden web page)?
     fn shows(&self, l: &Link) -> bool {
-        !(self.hide_pages && web_page(&l.name))
+        !(self.hide_pages && l.is_page())
     }
 
     fn visible_rows(&self) -> Vec<Row> {
@@ -423,6 +450,46 @@ impl Grabber {
         }
     }
 
+    /// Web pages to read for their links now (#705), at most `READS` at once: the caller reads
+    /// each ([`Grabber::reading`]) with the page's request.
+    pub fn to_read(&self) -> Vec<(usize, Url, Imported)> {
+        let busy = self
+            .links
+            .iter()
+            .filter(|l| l.read.as_ref().is_some_and(|r| r.lock().unwrap().is_none()))
+            .count();
+        self.links
+            .iter()
+            .enumerate()
+            .filter(|(_, l)| l.to_read())
+            .take(READS.saturating_sub(busy))
+            .map(|(i, l)| (i, l.url.clone(), l.found.clone()))
+            .collect()
+    }
+
+    /// Page `i` is being read; its links come in `slot`.
+    pub fn reading(&mut self, i: usize, slot: Read) {
+        if let Some(l) = self.links.get_mut(i) {
+            l.read = Some(slot);
+        }
+    }
+
+    /// The links of the pages read since the last call, each page's as one list. A page that
+    /// had links is unticked: its links were what was wanted, not the page.
+    pub fn pages_read(&mut self) -> Vec<Vec<Imported>> {
+        let mut out = Vec::new();
+        for l in &mut self.links {
+            let Some(found) = l.read.as_ref().and_then(|r| r.lock().unwrap().take()) else {
+                continue;
+            };
+            if !found.is_empty() {
+                l.on = false;
+                out.push(found);
+            }
+        }
+        out
+    }
+
     /// Answers that came: the server's name and size, or why the link is no good.
     fn take_answers(&mut self) {
         let mut moved = Vec::new();
@@ -435,6 +502,7 @@ impl Grabber {
             match answer {
                 Ok(info) => {
                     l.state = LinkState::Online;
+                    l.page = info.web_page;
                     l.size = info.size;
                     let named = mdm_engine::naming::sanitize(&info.file_name);
                     if !named.is_empty() && named != l.name {
@@ -467,7 +535,7 @@ impl Grabber {
         let to = on < n;
         let hide = self.hide_pages;
         for l in self.links.iter_mut().filter(|l| l.pkg == k) {
-            if !(hide && web_page(&l.name)) {
+            if !(hide && l.is_page()) {
                 l.on = to;
             }
         }
@@ -587,7 +655,7 @@ impl Grabber {
         if picks[0].clicked() {
             let hide = self.hide_pages;
             for l in &mut self.links {
-                l.on = !(hide && web_page(&l.name));
+                l.on = !(hide && l.is_page());
             }
         }
         if picks[1].clicked() {
@@ -1255,6 +1323,81 @@ mod tests {
             None,
         );
         assert!(a.same(&c));
+    }
+
+    #[test]
+    fn a_page_given_on_its_own_is_read_for_its_links() {
+        let mut g = grabber();
+        let page = "https://example.com/water/epanet";
+        let found_on = "https://example.com/files/setup.exe";
+        g.add(
+            vec![
+                link(page, None),
+                link(found_on, Some("https://example.com/other")),
+            ],
+            "Pasted".into(),
+            |_| false,
+        );
+        assert!(
+            g.to_read().is_empty(),
+            "nothing is read before it is looked up"
+        );
+        // The look-ups: the address is a web page, and so is the link found on a page.
+        for (i, url, _) in g.to_check() {
+            let slot: Check = Default::default();
+            *slot.lock().unwrap() = Some(Ok(mdm_engine::ProbeInfo {
+                final_url: url.clone(),
+                size: None,
+                file_name: "epanet.html".into(),
+                server: None,
+                web_page: true,
+            }));
+            g.checking(i, slot);
+        }
+        g.take_answers();
+        // Hidden as a web page, though its address doesn't end in one.
+        assert!(g.links.iter().all(|l| !g.shows(l)));
+        // Only the page given on its own is read, once.
+        let reads = g.to_read();
+        assert_eq!(reads.len(), 1);
+        assert_eq!(reads[0].1.as_str(), page);
+        let slot: Read = Default::default();
+        g.reading(reads[0].0, slot.clone());
+        assert!(g.to_read().is_empty());
+        assert!(g.pages_read().is_empty(), "nothing came yet");
+        let on_page = |u: &str| Imported {
+            url: u.into(),
+            referer: Some(page.into()),
+            ..Default::default()
+        };
+        *slot.lock().unwrap() = Some(vec![
+            on_page("https://dl.example.org/epanet2.2_setup.exe"),
+            on_page("https://dl.example.org/epanet2.2.zip"),
+        ]);
+        let read = g.pages_read();
+        assert_eq!(read.len(), 1);
+        g.add(read.into_iter().flatten().collect(), String::new(), |_| {
+            false
+        });
+        assert!(g.pages_read().is_empty() && g.to_read().is_empty());
+        // The page's links, as one package named after the page; the page itself unticked.
+        let shown: Vec<&str> = g
+            .links
+            .iter()
+            .filter(|l| g.shows(l))
+            .map(|l| l.name.as_str())
+            .collect();
+        assert_eq!(shown, ["epanet2.2_setup.exe", "epanet2.2.zip"]);
+        let page_link = g.links.iter().find(|l| l.url.as_str() == page).unwrap();
+        assert!(!page_link.on);
+        let pkg = g
+            .links
+            .iter()
+            .find(|l| l.name == "epanet2.2.zip")
+            .unwrap()
+            .pkg;
+        assert!(g.links.iter().filter(|l| l.pkg == pkg).count() == 2);
+        assert!(g.source.contains("Pasted"));
     }
 
     #[test]

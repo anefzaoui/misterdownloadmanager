@@ -65,8 +65,9 @@ pub fn describe(e: &Error) -> String {
             t("the path is too long for Windows: {path}"),
             &[("path", &ltr(&path.display().to_string()))],
         ),
+        // i18n: why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
         Error::GotWebPage => t(
-            "the server sent a web page instead of the file (sign-in needed or the link expired?)",
+            "the site sent a web page instead of the file (a waiting page, a captcha or a sign-in): open the link in your browser, finish there, and the download comes back to MDM",
         )
         .to_owned(),
         Error::RangesUnavailable => t("the server did not send the requested part").to_owned(),
