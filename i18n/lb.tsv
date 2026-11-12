@@ -40,6 +40,11 @@
 #, machine
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Passt elo op {n} Artikel (et gëtt nëmmen nei derbäi):|Passt elo op {n} Artikelen (et gëtt nëmmen nei derbäi):
 #. count in a dialog box
+#. Cancel in Download File Info with downloads waiting behind it
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	Et gëtt nach {n} Download deen waart. Och dësen ofbriechen?|Et ginn nach {n} Downloader déi waarden. Och dës ofbriechen?
+#. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -95,6 +100,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} ausgewielt|{n} ausgewielt
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	{n} Site aus der Datei derbäigesat.|{n} Siten aus der Datei derbäigesat.
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	{n} Site an d'Datei gespäichert.|{n} Siten an d'Datei gespäichert.
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -169,6 +182,9 @@
 #. window title: 7-Zip (a program's name) must be installed
 #, machine
 	7-Zip needed	7-Zip gebraucht
+#. tab in the main window
+#, machine
+	720p	720p
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
@@ -187,6 +203,10 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	En Debrid-Service lued e Fichier-Host-Link mat Ärem eegene bezuelte Kont erof a gëtt dem MDM en direkten Link. Benotzt nëmmen Ären eegene Kont: d'Deelen vun engem Kont oder senge Linke verstéisst géint d'Konditioune vun de Servicer a kann dozou féieren, datt en suspendéiert gëtt. Downloads, déi de Browser scho gestart huet, bleiwen esou, wéi se sinn.
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name ends with a period
+#, machine
+	A file name cannot end with a dot	En Dateinumm däerf net mat engem Punkt ophalen
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
@@ -216,6 +236,10 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	e Server op dësem Computer huet den Download op eng aner Plaz geschéckt, wou en net iwwer {adapter} géif lafen
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box for a single-file torrent
+#, machine
+	A single-file torrent keeps its name	En Eenzeldatei-Torrent behält säin Numm
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -955,6 +979,10 @@
 #. Options → DNS settings: NextDNS's own configuration ID (optional)
 #, machine
 	Configuration ID:	Konfiguratiouns-ID:
+#. text in a download's progress window
+#. verb: button that saves the deferred rename in the progress window
+#, machine
+	Confirm	Confirméieren
 #. text in the Options window
 #, machine
 	Confirm before deleting downloads	Virum Läsche vun Downloads confirméieren
@@ -1331,6 +1359,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying yt-dlp...	Lueden an iwwerpréiwen yt-dlp...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	Dem MDM seng eege Kopie gëtt erofgelueden...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1519,9 +1552,13 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Experimentell: baséiert op den ëffentlechen API-Dokumentatioune vun de Servicer a bis elo net mat richtege Konten getest.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	Exportéieren
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	Exportéieren...
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	D'Disponibilitéit vu Manifest 2 Chrome Extensiounen ausbauen
@@ -1996,9 +2033,13 @@
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	Ännerunge vun der Datei-Modifikatiounszäit ignoréieren beim Weiderféiere vun engem Download
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	Importéieren
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	Importéieren...
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	An enger Schlaang
@@ -3479,6 +3520,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Remove {name} from the list?	{name} vun der Lëscht erofhuelen?
+#. text in a download's progress window
+#. noun: label before the deferred new file or folder name in the progress window
+#, machine
+	Rename	Ëmbenennen
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -3612,6 +3657,10 @@
 #. RSS feeds window, Download rules: the folder the rule's torrents go to
 #, machine
 	Save to:	Späicheren an:
+#. text in a download's progress window
+#. status shown in green beside the Rename box once the new name is saved
+#, machine
+	Saved	Gespäichert
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
@@ -3772,6 +3821,11 @@
 #. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
 #, machine
 	Sharing stopped: the share ratio reached {ratio}	Deelen gestoppt: De Share-Verhältnis huet {ratio} erreecht
+#. message or event log entry in the main window
+#. event log entry on a finished torrent when re-attaching it to keep sharing failed; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Sharing stopped: {error}	Deelen gestoppt: {error}
 #. text in the download list
 #, machine
 	Show	Weisen
@@ -3966,6 +4020,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	Vitesselimiter-Astellungen
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
+#, machine
+	Split archive volumes keep their names for extraction	Opgedeelt Archiv-Deeler behalen hir Nimm fir d'Entpaken
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4081,6 +4139,10 @@
 #. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
 #, machine
 	Stopped: the network adapter changed; starting again	Gestoppt: den Netzwierkadapter huet geännert; start nei
+#. message or event log entry in the main window
+#. event log entry: a video or gallery download stopped to start again at the new speed limit (its helper program takes a limit only as it starts)
+#, machine
+	Stopped: the speed limit changed; starting again with it	Gestoppt: D'Vitesslimit gouf geännert; gëtt mat der neier Limit nees gestart
 #. message or event log entry in the main window
 #. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
 #, machine
@@ -4338,7 +4400,7 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be moved: {error}	D'Datei konnt net geréckelt ginn: {error}
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The file could not be read: {error}	D'Datei konnt net gelies ginn: {error}
@@ -4387,13 +4449,17 @@
 #. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
 #, machine
 	The helper program the browsers start is missing	Den Hëllefsprogramm, deen d'Browser starten, feelt
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Options window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	D'Lëscht konnt net gespäichert ginn: {error}
 #. text in whereis.rs
 #, machine
 	the local network	dat lokalt Netzwierk
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name exceeds the length limit
+#, machine
+	The name is too long	Den Numm ass ze laang
 #. text in errors.rs; text in torrent downloads
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
@@ -4464,6 +4530,18 @@
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	D'Säit wëll, datt Dir ageloggt sidd, och mat de Cookië vun {browser}. Loggt Iech an {browser} an, a sicht d'Säit dann nach eng Kéier op.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though the browser's extension passed the page's cookies
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with your browser's cookies for this page. Try again later, or from another browser.	De Bot-Check vum Site (Cloudflare) huet yt-dlp refuséiert, och mat de Cookië vun Ärem Browser fir dës Säit. Probéiert et méi spéit nach eng Kéier, oder vun engem anere Browser.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though it had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	De Bot-Check vum Site (Cloudflare) huet yt-dlp refuséiert, och mat de Cookië vun {browser}. Benotzt de „Video eroflueden“-Knäppchen iwwert dem Video an {browser}, oder probéiert d'Säit méi spéit nach eng Kéier.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	De Bot-Check vum Site (Cloudflare) huet yt-dlp refuséiert. Wann d'Säit an Ärem Browser opgeet, wielt dee Browser an Optiounen → Site-Logins → Cookië fir Video-Siten a sicht d'Säit nach eng Kéier, oder benotzt de „Video eroflueden“-Knäppchen iwwert dem Video.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4534,6 +4612,9 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	Dës Kategorie oder Schlaang enthält nach keng Downloads.
+#. text in a download's progress window
+#, machine
+	This character is not allowed in a file name	Dëst Zeechen ass an engem Dateinumm net erlaabt
 #. text in the Options window
 #. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
 #, machine
@@ -4577,6 +4658,14 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Dësen Dossier existéiert net:
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the folder already holds files this download did not write
+#, machine
+	This folder holds files from outside this download	Dësen Dossier enthält Dateie vu baussent dësem Download
+#. message or event log entry in the main window
+#. tooltip on the disabled Rename box when the folder holds another download or is a save/category folder
+#, machine
+	This folder is shared with another download or save folder	Dësen Dossier gëtt mat engem aneren Download oder Späicherdossier gedeelt
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
@@ -4604,6 +4693,10 @@
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
 	This magnet link names no trackers and the DHT is off, so no peer can be found.	Dëse Magnet-Link nennt keng Tracker an den DHT ass aus, sou datt kee Peer fonnt ka ginn.
+#. text in a download's progress window
+#. reason shown on the Rename box when the entered name is a reserved device name on Windows (CON, NUL, COM1…)
+#, machine
+	This name is reserved by Windows	Dësen Numm ass vu Windows reservéiert
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -4646,6 +4739,11 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Dëse Video erfuerdert, datt Dir ageloggt sidd. Benotzt de Video eroflueden Knäppchen iwwer dem Video an Ärem Browser, deen Ären Login weidergëtt, oder wielt Äre Browser an Optiounen → Säiten Logins → Cookië fir Videosäiten.
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	Dëse {site}-Link ass eng Websäit, net d'Datei: Maacht se an Ärem Browser op an luet se vun do erof
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -5267,6 +5365,26 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp konnt d'Cookië vun {browser} net liesen: {error}
+#. text in a download's progress window
+#. progress window, a video's line: the helper program yt-dlp gave no address MDM's own downloader could use
+#, machine
+	yt-dlp downloads it itself	yt-dlp lued et selwer erof
+#. text in a download's progress window
+#. progress window, a video's line: MDM's own downloader can't take a live broadcast, so the helper program yt-dlp records it
+#, machine
+	yt-dlp downloads it itself: a live stream	yt-dlp lued et selwer erof: e Live-Stream
+#. text in a download's progress window
+#. progress window, a video's line: a stream sent in many small pieces (HLS, DASH), which the helper program yt-dlp downloads itself for now
+#, machine
+	yt-dlp downloads it itself: a stream in pieces	yt-dlp lued et selwer erof: e Stream an Deeler
+#. text in a download's progress window
+#. progress window, a video's line: the stream is copy-protected (DRM), left to the helper program yt-dlp, which refuses it
+#, machine
+	yt-dlp downloads it itself: protected (DRM)	yt-dlp lued et selwer erof: geschützt (DRM)
+#. text in a download's progress window
+#. progress window, a video's line: {protocol} = a streaming protocol's short name (rtmp, rtsp, mms); MDM's own downloader doesn't speak it, so the helper program yt-dlp downloads it
+#, machine
+	yt-dlp downloads it itself: {protocol}	yt-dlp lued et selwer erof: {protocol}
 #. text in the Download video window
 #. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
 #, machine
@@ -5345,6 +5463,11 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{done} vun {size}
+#. text in deferred_rename.rs
+#. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{error} (left as {path}: {rollback_error})	{error} (gelooss als {path}: {rollback_error})
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
@@ -5609,9 +5732,21 @@ column	Transfer rate	Transfertstaux
 #, machine
 column	Upload speed	الوploadd-Geschwindegkeet
 #. text in the browser extension
+#. in the menu under the download button over a video: the page is a list of videos (a playlist), whose videos are chosen in the app's window; keep the name Mister Download Manager as it is
+#, machine
+extension	A list of videos: choose them in Mister Download Manager	Eng Lëscht vu Videoen: wielt se an Mister Download Manager aus
+#. text in the browser extension
+#. shown briefly on the download button over a video after a quality was picked: the download was added to the app's download queue, to start later
+#, machine
+extension	Added to the queue	An d'Schlaang gesat
+#. text in the browser extension
 #. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
 #, machine
 extension	Another Mister Download Manager (a server)	En anere Mister Download Manager (e Server)
+#. text in the browser extension
+#. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
+#, machine
+extension	Audio	Audio
 #. text in the browser extension
 #. the name this browser gets in the other MDM's list of paired devices
 #, machine
@@ -5634,6 +5769,10 @@ extension	Connected to Mister Download Manager	Mat Mister Download Manager verbo
 #. {version} = a version number (keep the braces as they are)
 #, machine
 extension	Connected to Mister Download Manager {version}	Mat Mister Download Manager {version} verbonnen
+#. text in the browser extension
+#. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
+#, machine
+extension	Could not look it up	Konnt net nogekuckt ginn
 #. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
@@ -5725,6 +5864,14 @@ extension	Left to the browser: {name}	Am Browser gelooss: {name}
 #, machine
 extension	Live	Live
 #. text in the browser extension
+#. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
+#, machine
+extension	Looking up the qualities…	Qualitéite ginn iwwerpréift…
+#. text in the browser extension
+#. in the menu under the download button over a video: the app took more than a minute to find the video's qualities, so the menu stopped waiting
+#, machine
+extension	Looking up took too long	D'Sich huet ze laang gedauert
+#. text in the browser extension
 #. heading in the toolbar button's popup over the list of the videos, sounds and streams the current web page has loaded
 #, machine
 extension	Media on this page	Medien op dëser Säit
@@ -5741,6 +5888,10 @@ extension	Mister Download Manager didn't start in time	Mister Download Manager a
 #, machine
 extension	Mister Download Manager doesn't accept this copy of the extension	Mister Download Manager akzeptéiert dës Kopie vun der Extensioun net
 #. text in the browser extension
+#. in the menu under the download button over a video: the app is already looking up other videos and can't look this one up now; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager is busy with other videos	Mister Download Manager ass mat anere Videoen beschäftegt
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager ass net installéiert oder ass net gestart
@@ -5748,6 +5899,10 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager ass net installéiert, oder seng Browser-Integratioun ass net ageriicht
+#. text in the browser extension
+#. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager needs yt-dlp for this video	Mister Download Manager brauch yt-dlp fir dëse Video
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
@@ -5775,9 +5930,17 @@ extension	Never take downloads from {site}	Downloads vun {site} net méi iwwerhu
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	Nach kee Video oder Toun op dëser Säit fonnt. Ofspillen, an dann dëst nach eng Kéier opmaachen.
 #. text in the browser extension
+#. in the menu under the download button over a video: the app found no quality of the video it could download
+#, machine
+extension	No video to download here	Kee Video fir hei erofzelueden
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Net erreecht. Maacht seng Adress eemol an dësem Browser op an akzeptéiert säin Zertifikat, da probéiert nach eng Kéier.
+#. text in the browser extension
+#. last command of the menu of qualities under the download button over a video: opens the app's Download video window for this video instead; keep the name Mister Download Manager as it is
+#, machine
+extension	Open in Mister Download Manager…	Am Mister Download Manager opmaachen…
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -5790,6 +5953,7 @@ extension	Open its address once and accept its certificate, then enter a code fr
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
 extension	Open Mister Download Manager	Mister Download Manager opmaachen
+#. text in the browser extension
 #. shown briefly on the download button over a video in a feed (a social site's home page, a timeline) when nothing in the feed gives that video's own address, so nothing was sent: the user should open the post the video belongs to and click the button on that page; short
 #, machine
 extension	Open the post, then use the button there	Maacht de Post op, da benotzt de Knäppchen do
@@ -5886,6 +6050,10 @@ extension	Update Mister Download Manager to use everything this extension offers
 #. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
 #, machine
 extension	Use advanced browser integration is off in Options → General.	„Erweidert Browser-Integratioun benotzen“ ass an den Optiounen → Allgemeng ausgeschalt.
+#. text in the browser extension
+#. tab above the list of qualities in the menu under the download button over a video: the choices that include picture (video with sound); short, one word
+#, machine
+extension	Video	Video
 #. text in the browser extension
 #. pairing failed: codes tried too fast
 #, machine
@@ -6007,6 +6175,11 @@ menu	&Add new download	&Neien Download derbäisetzen
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	&Add new download...	&Neien Download derbäisetzen...
+#. menu command in the main window
+#. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Classic	&Klassesch
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6094,6 +6267,11 @@ menu	&Scheduler and queues	&Scheduler a Schlaangen
 #, machine
 menu	&Show hidden tabs	&Verstoppten Tabs uweisen
 #. menu command in the main window
+#. View → Text: letters drawn smooth, as Windows' modern apps draw them, anti-aliased at any size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Smooth	&Glatt
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop All	&All Stoppen
@@ -6101,6 +6279,11 @@ menu	&Stop All	&All Stoppen
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	&Download stoppen
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Text	&Text
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6284,6 +6467,10 @@ menu	E&xport	E&xportéieren
 #. menu command in the main window
 #, machine
 menu	Edit queue	Schlaang änneren
+#. menu command in the main window
+#. View → Theme: a style theme's name (a white canvas, emerald fills, 6-point corners), a name: keep "Emerald" as written
+#, machine
+menu	Emerald	Emerald
 #. menu command in the main window
 #. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
 #, machine

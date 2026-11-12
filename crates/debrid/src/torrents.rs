@@ -219,6 +219,8 @@ struct Shared {
     total: Option<u64>,
     current: Option<Download>,
     folder: Option<PathBuf>,
+    saved_files: Vec<PathBuf>,
+    preexisting_folder: bool,
 }
 
 /// A torrent going through the service, then its files downloading: what the list shows as one
@@ -360,6 +362,12 @@ impl RemoteTorrent {
                 _ => t.to_owned(),
             }
         };
+        if files.len() > 1
+            && order.transfer.is_none()
+            && std::fs::read_dir(&folder).is_ok_and(|mut rd| rd.next().is_some())
+        {
+            self.shared.lock().unwrap().preexisting_folder = true;
+        }
         std::fs::create_dir_all(&folder)
             .map_err(|e| Fault::Service(ServiceFault::Other(e.to_string())))?;
         for f in &files {
@@ -386,7 +394,9 @@ impl RemoteTorrent {
                 && !mdm_engine::state::state_path(&dest).exists()
             {
                 // Done in an earlier run.
-                self.shared.lock().unwrap().done += f.size;
+                let mut sh = self.shared.lock().unwrap();
+                sh.done += f.size;
+                sh.saved_files.push(dest);
                 continue;
             }
             let opts = mdm_engine::Options {
@@ -441,6 +451,7 @@ impl RemoteTorrent {
             })?;
             let mut sh = self.shared.lock().unwrap();
             sh.done += out.size;
+            sh.saved_files.push(out.path.clone());
             // One file: the download is that file.
             if files.len() == 1 {
                 sh.folder = Some(out.path);
@@ -460,6 +471,16 @@ impl RemoteTorrent {
             sh.folder = Some(folder);
         }
         Ok(())
+    }
+
+    /// The files written for this torrent, for checking whether its folder holds untracked files.
+    pub fn saved_files(&self) -> Vec<PathBuf> {
+        self.shared.lock().unwrap().saved_files.clone()
+    }
+
+    /// True when the multi-file folder already existed with files before this transfer started.
+    pub fn preexisting_folder(&self) -> bool {
+        self.shared.lock().unwrap().preexisting_folder
     }
 
     /// Its id at the service, once sent (the app keeps it, to continue after a restart).

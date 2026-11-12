@@ -1851,40 +1851,133 @@ pub fn main_minimize_to_tray(ctx: &egui::Context, enabled: bool) -> bool {
     })
 }
 
-/// The highest icon id [`tray_icon_held`] tries. tray-icon gives each icon an id of its own
+/// The highest icon id [`tray_icon_ask`] tries. tray-icon gives each icon an id of its own
 /// from a counter it shares with its icon names, and doesn't say which (a program's first icon
 /// has 2).
 const TRAY_ICON_IDS: u32 = 16;
 
-/// Whether the shell holds a notification-area icon of `hwnd` (the tray's own hidden window,
-/// which has one icon), and its id: `known` first, else each id up to [`TRAY_ICON_IDS`]. An
-/// empty `NIM_MODIFY` changes nothing and succeeds only for an icon the shell has, wherever it
-/// shows it: in the taskbar or in the hidden icons behind ^. Shell_NotifyIconGetRect isn't
-/// enough: it can fail for an icon behind ^ (#545, #534, #527: Windows 10 and 11, the icon
-/// there and MDM sure it had none; Windows 11 build 26200 gives such an icon the rect of ^
-/// itself). This fails, as that does, when Explorer isn't running or the icon was refused or
-/// lost.
-pub fn tray_icon_held(hwnd: HWND, known: Option<u32>) -> Option<u32> {
-    use windows_sys::Win32::UI::Shell::{NIM_MODIFY, NOTIFYICONDATAW, Shell_NotifyIconW};
-    let held = |id: u32| {
-        let nid = NOTIFYICONDATAW {
-            cbSize: size_of::<NOTIFYICONDATAW>() as u32,
-            hWnd: hwnd,
-            uID: id,
-            uFlags: 0,
-            // SAFETY: a plain C struct; all zero is its empty value.
-            ..unsafe { zeroed() }
-        };
-        // SAFETY: nid lives for the call; the shell only reads it.
-        unsafe { Shell_NotifyIconW(NIM_MODIFY, &nid) != 0 }
-    };
+/// Longer than the shell takes to answer about an icon: a "no" that took this long is
+/// Shell_NotifyIcon giving up on a busy Explorer, not the shell's answer.
+const TRAY_SLOW: std::time::Duration = std::time::Duration::from_millis(1500);
+
+/// What the shell said of MDM's notification-area icon ([`tray_icon_ask`]).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum TrayAnswer {
+    /// No taskbar (no `Shell_TrayWnd` window): Explorer isn't running, or a shell without a
+    /// notification area is.
+    NoTaskbar,
+    /// The taskbar is there but didn't answer: Windows says it stopped responding, or the
+    /// question took as long as a timeout.
+    Silent,
+    /// The shell answered: the icon's id when it holds it (wherever it shows it), and whether it
+    /// gives the icon a place on screen.
+    Answered { held: Option<u32>, placed: bool },
+}
+
+/// Ask the shell about the notification-area icon of `hwnd` (the tray's own hidden window, which
+/// has one icon); `known` is its id once found. Both questions wait for Explorer, for seconds when
+/// it is busy (#747: 8 s), so this runs on the tray's watcher thread (tray.rs), never on the
+/// window's.
+///
+/// - Held: an empty `NIM_MODIFY` changes nothing and succeeds only for an icon the shell has, in
+///   the taskbar or among the hidden icons behind ^ (`known` first, else each id up to
+///   [`TRAY_ICON_IDS`]).
+/// - Placed: `Shell_NotifyIconGetRect`. Not enough on its own: Windows 10 and Windows 11 builds
+///   before 26200 give an icon behind ^ no place (#750, #718, #754: 0.5.2 asked only this, and
+///   left the window in the taskbar with the icon there); build 26200 gives it the place of ^.
+///
+/// `rect_withheld` answers "no place" without asking (MDM_TEST_TRAY_RECT=0: the reporters' case,
+/// on a Windows that gives one).
+pub fn tray_icon_ask(hwnd: isize, known: Option<u32>, rect_withheld: bool) -> TrayAnswer {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{FindWindowW, IsHungAppWindow};
+    let hwnd = hwnd as HWND;
     if hwnd.is_null() {
-        return None;
+        return TrayAnswer::Answered {
+            held: None,
+            placed: false,
+        };
     }
-    known
-        .into_iter()
-        .chain(1..=TRAY_ICON_IDS)
-        .find(|id| held(*id))
+    let class: Vec<u16> = "Shell_TrayWnd\0".encode_utf16().collect();
+    // SAFETY: a NUL-ended class name and no title: no window is sent a message.
+    let taskbar = unsafe { FindWindowW(class.as_ptr(), std::ptr::null()) };
+    if taskbar.is_null() {
+        return TrayAnswer::NoTaskbar;
+    }
+    // SAFETY: reads the window's state; never waits for it.
+    if unsafe { IsHungAppWindow(taskbar) } != 0 {
+        return TrayAnswer::Silent;
+    }
+    let start = std::time::Instant::now();
+    let ids = || {
+        known
+            .into_iter()
+            .chain((1..=TRAY_ICON_IDS).filter(move |id| Some(*id) != known))
+    };
+    let held = ids().find(|id| tray_icon_held(hwnd, *id));
+    // An icon it doesn't hold is asked for its place too, under each id: should an empty
+    // NIM_MODIFY fail on some Windows for an icon it has, its place still says it is there.
+    let placed = !rect_withheld
+        && match held {
+            Some(id) => tray_icon_placed(hwnd, id),
+            None => ids().any(|id| tray_icon_placed(hwnd, id)),
+        };
+    if held.is_none() && !placed && start.elapsed() >= TRAY_SLOW {
+        return TrayAnswer::Silent;
+    }
+    TrayAnswer::Answered { held, placed }
+}
+
+/// Whether the shell holds icon `id` of `hwnd`: an empty `NIM_MODIFY`.
+fn tray_icon_held(hwnd: HWND, id: u32) -> bool {
+    use windows_sys::Win32::UI::Shell::{NIM_MODIFY, NOTIFYICONDATAW, Shell_NotifyIconW};
+    let nid = NOTIFYICONDATAW {
+        cbSize: size_of::<NOTIFYICONDATAW>() as u32,
+        hWnd: hwnd,
+        uID: id,
+        uFlags: 0,
+        // SAFETY: a plain C struct; all zero is its empty value.
+        ..unsafe { zeroed() }
+    };
+    // SAFETY: nid lives for the call; the shell only reads it.
+    unsafe { Shell_NotifyIconW(NIM_MODIFY, &nid) != 0 }
+}
+
+/// Whether the shell gives icon `id` of `hwnd` a place on screen.
+fn tray_icon_placed(hwnd: HWND, id: u32) -> bool {
+    use windows_sys::Win32::UI::Shell::{NOTIFYICONIDENTIFIER, Shell_NotifyIconGetRect};
+    let ident = NOTIFYICONIDENTIFIER {
+        cbSize: size_of::<NOTIFYICONIDENTIFIER>() as u32,
+        hWnd: hwnd,
+        uID: id,
+        // SAFETY: a plain C struct; with a zero GUID the icon is named by its window and id.
+        ..unsafe { zeroed() }
+    };
+    // SAFETY: a plain C struct, written by the call.
+    let mut rect: RECT = unsafe { zeroed() };
+    // SAFETY: both live for the call.
+    unsafe { Shell_NotifyIconGetRect(&ident, &mut rect) >= 0 }
+}
+
+/// Set the tip of icon `id` of `hwnd` (127 characters at most, the rest cut). Waits for Explorer
+/// as [`tray_icon_ask`] does, so it too runs on the tray's watcher thread. False when the shell
+/// didn't take it (no such icon, or no answer).
+pub fn tray_icon_tip(hwnd: isize, id: u32, tip: &str) -> bool {
+    use windows_sys::Win32::UI::Shell::{NIF_TIP, NIM_MODIFY, NOTIFYICONDATAW, Shell_NotifyIconW};
+    let mut nid = NOTIFYICONDATAW {
+        cbSize: size_of::<NOTIFYICONDATAW>() as u32,
+        hWnd: hwnd as HWND,
+        uID: id,
+        uFlags: NIF_TIP,
+        // SAFETY: a plain C struct; all zero is its empty value.
+        ..unsafe { zeroed() }
+    };
+    // The last unit stays the NUL that ends it.
+    let room = nid.szTip.len() - 1;
+    for (slot, unit) in nid.szTip.iter_mut().zip(tip.encode_utf16().take(room)) {
+        *slot = unit;
+    }
+    // SAFETY: nid lives for the call; the shell only reads it.
+    unsafe { Shell_NotifyIconW(NIM_MODIFY, &nid) != 0 }
 }
 
 /// What a borderless window of ours is, for [`popup_window`]: every one is a plain popup
@@ -2308,6 +2401,97 @@ pub fn caption_dark(title: &str, dark: bool) -> bool {
     true
 }
 
+/// The popup menus Windows draws for us — the notification-area icon's (tray-icon's), the
+/// window menu of a drawn title bar — in MDM's mode, not Windows' (#682): dark on a dark surface
+/// (dark mode, a dark theme), light otherwise, whatever Windows' own app mode says. Windows has
+/// no documented way: uxtheme's SetPreferredAppMode (ordinal 135, ForceDark 2 / ForceLight 3)
+/// sets the process's mode and FlushMenuThemes (ordinal 136) makes menus read it again, as the
+/// win32-darkmode project and the apps built on it do. They exist from Windows 10 1903 (build
+/// 18362) on; 1809 has another function at 135 and older builds no dark menus, so there menus
+/// stay as Windows draws them. Called when the mode changes; asks uxtheme only when it is news.
+pub fn menus_dark(dark: bool) {
+    use std::sync::atomic::{AtomicU8, Ordering};
+    static TOLD: AtomicU8 = AtomicU8::new(u8::MAX);
+    let mode: i32 = if dark { 2 } else { 3 };
+    if TOLD.swap(mode as u8, Ordering::Relaxed) == mode as u8 {
+        return;
+    }
+    let Some(f) = menu_mode_fns() else {
+        return;
+    };
+    // SAFETY: the functions behind these ordinals on build 18362 and later (menu_mode_fns),
+    // SetPreferredAppMode(int) -> int and FlushMenuThemes(void); process-wide, any thread.
+    unsafe {
+        (f.set_preferred_app_mode)(mode);
+        (f.flush_menu_themes)();
+    }
+}
+
+/// uxtheme's functions that set the mode of the menus Windows draws ([`menus_dark`]).
+#[derive(Clone, Copy)]
+struct MenuModeFns {
+    set_preferred_app_mode: unsafe extern "system" fn(i32) -> i32,
+    flush_menu_themes: unsafe extern "system" fn(),
+}
+
+/// [`MenuModeFns`], looked up once: None before Windows 10 1903 or if uxtheme lacks them.
+fn menu_mode_fns() -> Option<MenuModeFns> {
+    use windows_sys::Win32::System::LibraryLoader::{
+        GetProcAddress, LOAD_LIBRARY_SEARCH_SYSTEM32, LoadLibraryExW,
+    };
+    use windows_sys::Win32::System::Registry::HKEY_LOCAL_MACHINE;
+    static FNS: std::sync::OnceLock<Option<MenuModeFns>> = std::sync::OnceLock::new();
+    *FNS.get_or_init(|| {
+        let build = reg_string_in(
+            HKEY_LOCAL_MACHINE,
+            r"SOFTWARE\Microsoft\Windows NT\CurrentVersion",
+            "CurrentBuild",
+        )
+        .and_then(|b| b.parse::<u32>().ok())?;
+        if build < 18362 {
+            return None;
+        }
+        let name: Vec<u16> = "uxtheme.dll\0".encode_utf16().collect();
+        // SAFETY: a NUL-terminated name, loaded from System32 only; the module stays loaded for
+        // the process's life (never freed), so the pointers taken from it stay valid. An ordinal
+        // goes as the name pointer's low word (MAKEINTRESOURCEA).
+        unsafe {
+            let module = LoadLibraryExW(
+                name.as_ptr(),
+                std::ptr::null_mut(),
+                LOAD_LIBRARY_SEARCH_SYSTEM32,
+            );
+            if module.is_null() {
+                return None;
+            }
+            let set = GetProcAddress(module, 135usize as *const u8)?;
+            let flush = GetProcAddress(module, 136usize as *const u8)?;
+            Some(MenuModeFns {
+                set_preferred_app_mode: std::mem::transmute::<
+                    unsafe extern "system" fn() -> isize,
+                    unsafe extern "system" fn(i32) -> i32,
+                >(set),
+                flush_menu_themes: std::mem::transmute::<
+                    unsafe extern "system" fn() -> isize,
+                    unsafe extern "system" fn(),
+                >(flush),
+            })
+        }
+    })
+}
+
+#[cfg(test)]
+mod menus_dark_tests {
+    /// #682: uxtheme has the menu mode functions on every Windows MDM is tested on (10 1903 and
+    /// later, Server 2022's runner included), and setting the mode either way returns.
+    #[test]
+    fn the_menu_mode_functions_are_found_and_answer() {
+        assert!(super::menu_mode_fns().is_some());
+        super::menus_dark(true);
+        super::menus_dark(false);
+    }
+}
+
 /// One of our windows by handle, for crates that take a `raw-window-handle` window.
 struct OwnWindow(HWND);
 
@@ -2368,7 +2552,12 @@ pub fn drag_file_out(title: &str, file: &std::path::Path) -> Result<(), String> 
         if !shared {
             tracing::warn!("drag out: the window's input isn't shared");
         }
-        let result = drag_on_this_thread(hwnd as HWND, &file);
+        // Looked for here, beside the window (#743): a drive slow to answer doesn't hold it.
+        let result = if file.exists() {
+            drag_on_this_thread(hwnd as HWND, &file)
+        } else {
+            Ok(())
+        };
         if let Ok(mut t) = DRAG_ENDED.lock() {
             *t = Some(std::time::Instant::now());
         }
@@ -4562,6 +4751,34 @@ pub fn mark_downloaded(path: &std::path::Path, url: &str, referrer: Option<&str>
     let mut stream = path.as_os_str().to_owned();
     stream.push(":Zone.Identifier");
     let _ = std::fs::write(stream, text);
+}
+
+/// Rename `from` to `to` without ever replacing an existing entry (`MoveFileExW` without
+/// `MOVEFILE_REPLACE_EXISTING`, returning `ErrorKind::AlreadyExists` when `to` is already there).
+pub fn rename_no_replace(from: &std::path::Path, to: &std::path::Path) -> std::io::Result<()> {
+    use std::os::windows::ffi::OsStrExt;
+    use windows_sys::Win32::Storage::FileSystem::MoveFileExW;
+    let encode = |p: &std::path::Path| -> std::io::Result<Vec<u16>> {
+        let mut wide: Vec<u16> = p.as_os_str().encode_wide().collect();
+        if wide.contains(&0) {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "interior NUL",
+            ));
+        }
+        wide.push(0);
+        Ok(wide)
+    };
+    let from_w = encode(from)?;
+    let to_w = encode(to)?;
+    // SAFETY: both UTF-16 buffers are NUL-terminated and live through the call; flags = 0 refuses
+    // cross-volume copies and refuses replacing an existing destination.
+    let ok = unsafe { MoveFileExW(from_w.as_ptr(), to_w.as_ptr(), 0) };
+    if ok != 0 {
+        Ok(())
+    } else {
+        Err(std::io::Error::last_os_error())
+    }
 }
 
 /// Where browser integration stands: a browser looking for the native host (Chrome's key,

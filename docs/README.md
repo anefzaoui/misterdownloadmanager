@@ -15,7 +15,7 @@ These pages explain each part of the program. The tutorials walk through the thi
 
 - **[Adding downloads](adding-downloads.md)** — Add URL, the clipboard, the drop target, batch downloads and lists of links, and Start Download versus Download Later.
 - **[Link grabber and archives](link-grabber.md)** — many links at once, in packages; zip, 7z and rar archives extracted when they are downloaded.
-- **[Browser integration](browser-integration.md)** — the extension for Firefox (from addons.mozilla.org), Chrome, Edge, Brave, Opera and Vivaldi (from the Chrome Web Store), which downloads it takes, and what happens when MDM isn't running.
+- **[Browser integration](browser-integration.md)** — the extension for Firefox (from addons.mozilla.org), Chrome, Edge, Brave, Opera, Vivaldi and Helium (from the Chrome Web Store), which downloads it takes, and what happens when MDM isn't running.
 - **[Run MDM on a server](server.md)** — MDM without a window on a home server or NAS (Docker, Unraid), downloading into its folders; send it downloads from your phone or browser.
 - **[Control MDM from your phone](remote-control.md)** — add links, magnets and torrents from a phone or another computer at home, and watch and control the list.
 

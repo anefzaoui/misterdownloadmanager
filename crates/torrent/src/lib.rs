@@ -504,6 +504,15 @@ fn id(hash: &str) -> Result<TorrentIdOrHash, TorrentError> {
     TorrentIdOrHash::parse(hash).map_err(|_| TorrentError::Unknown)
 }
 
+/// Session state captured by [`Torrents::detach`] and restored by [`Torrents::attach`].
+pub struct DetachedTorrent {
+    files: Option<Vec<usize>>,
+    paused: bool,
+    limits: Option<(Option<u64>, Option<u64>)>,
+    order: PieceOrder,
+    piece_map: Option<Vec<u8>>,
+}
+
 /// The DHT's first nodes on the internet (#650): the public routers BitTorrent clients use. Any
 /// one that answers is enough; they are asked together, and the rest no more once one has
 /// answered. librqbit's own two alone left the DHT empty where neither answered (a name
@@ -1092,6 +1101,62 @@ impl Torrents {
             .map_err(engine);
         self.refresh(hash);
         res
+    }
+
+    /// Detach a torrent from the session before renaming its folder on disk, preserving its
+    /// saved piece bitmap, chosen files, pause state, rate limits and piece order so [`Self::attach`]
+    /// can restore sharing at the new folder (or back at the old folder if the rename fails).
+    pub async fn detach(&self, hash: &str) -> Result<Option<DetachedTorrent>, TorrentError> {
+        let tid = id(hash)?;
+        let Some(h) = self.session.get(tid) else {
+            return Ok(None);
+        };
+        let (files, paused) = (h.only_files(), h.is_paused());
+        let limits = self.torrent_limits(hash);
+        let order = h.piece_order();
+        drop(h);
+        let map = self
+            .session_dir
+            .join(format!("{}.bitv", hash.to_ascii_lowercase()));
+        let piece_map = std::fs::read(&map).ok();
+        self.session.delete(tid, false).await.map_err(engine)?;
+        Ok(Some(DetachedTorrent {
+            files,
+            paused,
+            limits,
+            order,
+            piece_map,
+        }))
+    }
+
+    /// Re-attach a torrent detached by [`Self::detach`] at `folder`, restoring its saved piece
+    /// bitmap, chosen files, pause state, rate limits and piece order.
+    pub async fn attach(
+        &self,
+        hash: &str,
+        torrent: &[u8],
+        folder: &Path,
+        fallback_files: Option<Vec<usize>>,
+        detached: Option<DetachedTorrent>,
+    ) -> Result<(), TorrentError> {
+        let (files, paused, limits, order, piece_map) = match detached {
+            Some(d) => (d.files, d.paused, d.limits, Some(d.order), d.piece_map),
+            None => (fallback_files, false, None, None, None),
+        };
+        if let Some(bits) = piece_map {
+            let map = self
+                .session_dir
+                .join(format!("{}.bitv", hash.to_ascii_lowercase()));
+            let _ = std::fs::write(map, bits);
+        }
+        self.add(torrent, folder, files, Vec::new(), paused).await?;
+        if let Some((down, up)) = limits {
+            let _ = self.set_torrent_limits(hash, down, up);
+        }
+        if let Some(order) = order {
+            let _ = self.set_order(hash, order);
+        }
+        Ok(())
     }
 
     /// Every torrent the session holds (to forget ones the app no longer lists).

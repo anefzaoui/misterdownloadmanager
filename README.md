@@ -21,7 +21,7 @@
   <sub>The Chrome Web Store's is for
   <img src="docs/images/browsers/edge.png" width="16" height="16" alt=""> Edge,
   <img src="docs/images/browsers/brave.png" width="16" height="16" alt=""> Brave,
-  <img src="docs/images/browsers/opera.png" width="16" height="16" alt=""> Opera and Vivaldi too (<a href="docs/browser-integration.md">how</a>).</sub>
+  <img src="docs/images/browsers/opera.png" width="16" height="16" alt=""> Opera, Vivaldi and Helium too (<a href="docs/browser-integration.md">how</a>).</sub>
 </p>
 
 <p align="center">
@@ -277,9 +277,9 @@ right-to-left window.
 - **Speeds up every download** by fetching parts of the file at the same time, and keeps
   re-balancing until the last byte.
 - **Resumes** after a crash, a restart or a dropped connection, without starting over.
-- **Catches downloads from Firefox, Chrome, Edge, Brave, Opera and Vivaldi** (the extension is
-  on Firefox Add-ons and the Chrome Web Store), and gives them back to the browser when MDM isn't
-  running.
+- **Catches downloads from Firefox, Chrome, Edge, Brave, Opera, Vivaldi and Helium** (the
+  extension is on Firefox Add-ons and the Chrome Web Store), and gives them back to the browser
+  when MDM isn't running.
 - **Downloads videos** from web pages (a button appears over the video; playlists, subtitles,
   the sound alone), **image galleries** with gallery-dl, and **torrents and magnet links**
   (sequential order, RSS feeds, sharing limits).
@@ -355,7 +355,12 @@ working, not a copy of anyone's software.
 <details>
 <summary><b>Build from source</b></summary>
 
-Requires Rust stable 1.95 or later (the MSVC toolchain on Windows).
+Requires Rust stable 1.98 or later (the MSVC toolchain on Windows), and for the engine's
+browser-like connection (BoringSSL, built from source): CMake, LLVM's libclang and, on Windows,
+NASM (`winget install Kitware.CMake LLVM.LLVM NASM.NASM`; on Linux `cmake` and
+`libclang-dev`; on macOS Xcode's command line tools and `cmake`).
+`cargo build -p mdm-app --no-default-features` builds the app without it (a site that refuses MDM's
+own connection then stays refused).
 
 ```
 cargo build --release
