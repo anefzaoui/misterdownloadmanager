@@ -556,6 +556,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Looking up a new video (put online in the last two days) no longer fails with "Permission
+  denied" in MDM's install folder: the helpers run in your temporary folder, or MDM's own if
+  that one can't be written ([#834](https://github.com/anefzaoui/misterdownloadmanager/issues/834))
 - ✅ Windows: downloads follow the Group Policy "Do not preserve zone information in file
   attachments", as browsers' do; **Options → Save to → Mark downloaded files as coming from
   the internet** (on by default) turns the mark off for MDM alone, on every system
