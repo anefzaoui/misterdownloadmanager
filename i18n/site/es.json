@@ -934,6 +934,10 @@
    "source": "The thin edge around a country's flag",
    "text": "El borde fino alrededor de la bandera de un país"
   },
+  "0ea74b188ec2ca88": {
+   "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
+   "text": "Si dice <g1>el sitio envió una página web en lugar del archivo</g1>, el vínculo llevaba a una página del propio sitio: una cuenta atrás de un servidor de archivos, un captcha, un botón de <g2>Descargar</g2> que hay que pulsar o un inicio de sesión. MDM nunca guarda esa página como si fuera tu archivo. Haz clic en <g3>Abrir en el navegador</g3> en la ventana de progreso de la descarga (o abre el vínculo tú mismo), termina allí y, cuando el navegador inicie la descarga real, la extensión de MDM la pasará a MDM. Sin la extensión, deja que el navegador la descargue."
+  },
   "0ebbf5cc3fb70cd9": {
    "source": "Downloads from a private window use that window's cookies, never the normal ones, and aren't kept in MDM's list after it closes.",
    "text": "Las descargas de una ventana privada usan las cookies de esa ventana, nunca las de la ventana normal, y no se guardan en la lista de MDM cuando se cierra la ventana privada."
@@ -4498,10 +4502,6 @@
    "source": "Browser integration — Mister Download Manager help",
    "text": "Integración con el navegador — Ayuda de Mister Download Manager"
   },
-  "439e42205d062684": {
-   "source": "Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (<x1/>)",
-   "text": "Las páginas de vídeo, a través de yt-dlp y ffmpeg; las galerías de imágenes, a través de gallery-dl (ejecutados como programas separados). Cuando se elige un adaptador de red, sus conexiones pasan por un proxy de MDM en 127.0.0.1 que las vincula a él (<x1/>)."
-  },
   "43ad4ee2e95fdb1f": {
    "source": "A page's own short sounds (a click, a voice-search chime) are no longer listed in <g1>Media on this page</g1>.",
    "text": "Los sonidos cortos propios de una página (un clic, un sonido de búsqueda por voz) ya no se listan en <g1>Contenido multimedia en esta página</g1>."
@@ -5657,6 +5657,10 @@
   "567f61dda0920579": {
    "source": "A greyed unchecked box's border",
    "text": "El borde de una casilla sin marcar atenuada"
+  },
+  "5688be9c6942376d": {
+   "source": "Files MDM downloads from the browser are marked as coming from the internet, as the browser marks its own: Windows checks a program with SmartScreen before it runs and Office opens a document in Protected View. Like the browser, MDM leaves the mark out when Windows' Group Policy <g1>Do not preserve zone information in file attachments</g1> is on; <g2>Options → Save to</g2> can turn it off for MDM alone.",
+   "text": "Los archivos que MDM descarga del navegador se marcan como procedentes de internet, igual que el navegador marca los suyos: Windows comprueba un programa con SmartScreen antes de ejecutarlo y Office abre un documento en Vista protegida. Al igual que el navegador, MDM omite la marca cuando la directiva de grupo de Windows <g1>No conservar la información de zona en los datos adjuntos</g1> está activada; <g2>Opciones → Guardar en</g2> puede desactivarla solo para MDM."
   },
   "5690cb4f1434f4bc": {
    "source": "Open Windows <g1>Settings → Apps</g1>, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder. On Linux, remove the package with your package manager, or delete the AppImage; <g2>Uninstall on Linux</g2> says what stays in your home folder and how to remove it.",
@@ -9226,10 +9230,6 @@
    "source": "Downloads and torrents in one app, stable on Android",
    "text": "Descargas y torrents en una sola aplicación, estable en Android"
   },
-  "8c699effe606d133": {
-   "source": "Files MDM downloads from the browser are marked as coming from the internet, as the browser marks its own: Windows checks a program with SmartScreen before it runs and Office opens a document in Protected View.",
-   "text": "Los archivos que MDM descarga desde el navegador se marcan como procedentes de Internet, igual que los que descarga el propio navegador: Windows comprueba los programas con SmartScreen antes de ejecutarlos y Office abre los documentos en Vista protegida."
-  },
   "8c7321b31cd98d97": {
    "source": "<g1>Toolbar.</g1> <g2>Add URL</g2>, <g3>Add Torrent</g3>, <g4>Resume</g4>, <g5>Stop</g5>, <g6>Stop All</g6>, <g7>Delete</g7>, <g8>Delete Completed</g8>, <g9>Options</g9>, <g10>Scheduler</g10>, <g11>Start Queue</g11>, <g12>Stop Queue</g12>. The small arrow next to <g13>Add Torrent</g13>, <g14>Start Queue</g14> and <g15>Stop Queue</g15> opens more choices.",
    "text": "<g1>Barra de herramientas.</g1> <g2>Añadir URL</g2>, <g3>Añadir torrent</g3>, <g4>Reanudar</g4>, <g5>Detener</g5>, <g6>Detener todo</g6>, <g7>Eliminar</g7>, <g8>Eliminar completadas</g8>, <g9>Opciones</g9>, <g10>Programador</g10>, <g11>Iniciar cola</g11>, <g12>Detener cola</g12>. La pequeña flecha junto a <g13>Añadir torrent</g13>, <g14>Iniciar cola</g14> y <g15>Detener cola</g15> abre más opciones."
@@ -10894,6 +10894,10 @@
    "source": "Add downloads with <g1>Add URL</g1>, the clipboard (<g2>Options → General → Offer to download links copied to the clipboard</g2>) or the drop target (<g3>Tasks → Show drop target</g3>).",
    "text": "Añada descargas con <g1>Añadir URL</g1>, el portapapeles (<g2>Opciones → General → Ofrecer la descarga de los enlaces copiados al portapapeles</g2>) o el destino de arrastre (<g3>Tareas → Mostrar destino de arrastre</g3>)."
   },
+  "a54a319c4a29ff03": {
+   "source": "Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (<x1/>); each runs in a folder it can write, also its TEMP (<x2/>)",
+   "text": "Las páginas de vídeo, a través de yt-dlp y ffmpeg; las galerías de imágenes, a través de gallery-dl (se ejecutan como programas independientes). Cuando se elige un adaptador de red, sus conexiones pasan por un proxy de MDM en 127.0.0.1 que las vincula a él (<x1/>); cada uno se ejecuta en una carpeta en la que puede escribir, que también es su TEMP (<x2/>)."
+  },
   "a54ad83afe939ad1": {
    "source": "yt-dlp looks the page up and picks the quality's video and sound. MDM's own downloader then brings each of them in, one after the other, the way it downloads any file:",
    "text": "yt-dlp busca la página y elige el vídeo y el sonido de la calidad. El propio descargador de MDM descarga cada uno de ellos, uno tras otro, como descarga cualquier archivo:"
@@ -12530,6 +12534,10 @@
    "source": "3. Use it",
    "text": "3. Usarlo"
   },
+  "be205ab8272dead7": {
+   "source": "Start the video first: the list fills as the page loads things, and it's emptied when the tab goes to another page. Each file is listed under the name it will be saved with. A file the site sends through a program's address (<x1/>, <x2/>, <x3/>, a bare number) has no name of its own: it's named after the page (<x4/>), or after the <x5/> name in its address when there is one, with the type its server says it is (MP4, not PHP). With <g6>Prefix media file names with the page title</g6> on, a file with a name of its own is named after the page, then that name (<x7/>). Click <g8>Download</g8> beside one: a stream opens MDM's <g9>Download video from a page</g9> window, which reads its qualities (yt-dlp does the work); a file goes to MDM's list like any other download. Your cookies for its server, the page as the referrer and your browser's User-Agent go with it, as they do for a link you click.",
+   "text": "Inicia el vídeo primero: la lista se rellena a medida que la página carga elementos y se vacía cuando la pestaña cambia a otra página. Cada archivo se muestra con el nombre con el que se guardará. Un archivo que el sitio envía a través de la dirección de un programa (<x1/>, <x2/>, <x3/>, un número sin más) no tiene nombre propio: se nombra según la página (<x4/>), o según el nombre <x5/> de su dirección cuando lo tiene, con el tipo que su servidor indica (MP4, no PHP). Con <g6>Añadir el título de la página delante de los nombres de los archivos multimedia</g6> activado, un archivo con nombre propio se nombra según la página y luego con ese nombre (<x7/>). Haz clic en <g8>Descargar</g8> junto a uno: una transmisión abre la ventana <g9>Descargar vídeo de una página</g9> de MDM, que lee sus calidades (yt-dlp hace el trabajo); un archivo va a la lista de MDM como cualquier otra descarga. Tus cookies para su servidor, la página como referente y el User-Agent de tu navegador lo acompañan, como ocurre con un vínculo en el que haces clic."
+  },
   "be3fe1b3f5a5749a": {
    "source": "Yes, completely. Mister Download Manager (MDM) is free and open-source software under the GNU General Public License, version 3. There is no trial period…",
    "text": "Sí, completamente. Mister Download Manager (MDM) es software libre y de código abierto bajo la Licencia Pública General GNU, versión 3. No hay período de prueba…"
@@ -12833,10 +12841,6 @@
   "c2f23d07939a4042": {
    "source": "A greyed button's face",
    "text": "La cara de un botón atenuado"
-  },
-  "c30f4658e7e28160": {
-   "source": "Start the video first: the list fills as the page loads things, and it's emptied when the tab goes to another page. With <g1>Prefix media file names with the page title</g1> on, a file from the list is named after the page, then its own name (<x2/>). Click <g3>Download</g3> beside one: a stream opens MDM's <g4>Download video from a page</g4> window, which reads its qualities (yt-dlp does the work); a file goes to MDM's list like any other download. Your cookies for its server, the page as the referrer and your browser's User-Agent go with it, as they do for a link you click.",
-   "text": "Inicia el vídeo primero: la lista se llena a medida que la página carga elementos y se vacía cuando la pestaña cambia a otra página. Con <g1>Añadir el título de la página delante de los nombres de los archivos multimedia</g1> activado, un archivo de la lista se nombra según la página y luego su propio nombre (<x2/>). Haz clic en <g3>Descargar</g3> junto a uno: una transmisión abre la ventana <g4>Descargar vídeo de una página</g4> de MDM, que lee sus calidades (yt-dlp hace el trabajo); un archivo va a la lista de MDM como cualquier otra descarga. Tus cookies para su servidor, la página como referente y el User-Agent de tu navegador van con él, como lo hacen para un vínculo en el que haces clic."
   },
   "c31622b1a542c888": {
    "source": "<g1>.dmg</g1> for Intel Macs",
@@ -13750,10 +13754,6 @@
    "source": "A button's face under the pointer",
    "text": "La cara de un botón bajo el puntero"
   },
-  "d1595b21d176c816": {
-   "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
-   "text": "Los archivos de torrents se marcan como <g1>descargados de Internet</g1>, igual que los archivos descargados con un navegador. Windows SmartScreen comprueba los programas antes de que se ejecuten por primera vez, y Office abre los documentos en Vista protegida. En Mac, Gatekeeper comprueba las aplicaciones."
-  },
   "d172eb15bbafbde6": {
    "source": "Release signatures are checked by MDM's own small verifier instead of a full OpenPGP library.",
    "text": "Las firmas de las versiones son verificadas por el propio verificador pequeño de MDM en lugar de una biblioteca OpenPGP completa."
@@ -14586,6 +14586,10 @@
    "source": "Minimize hides the main window there too, while <g1>Minimize to the notification area</g1> is on in <g2>Options → General</g2>. It is on by default; where the tray has no icon, Minimize sends the window to the taskbar instead.",
    "text": "Minimizar también oculta la ventana principal allí, mientras que <g1>Minimizar en el área de notificación</g1> está activado en <g2>Opciones → General</g2>. Está activado por defecto; si no hay icono en la bandeja, Minimizar envía la ventana a la barra de tareas."
   },
+  "dec637e2ec402a0d": {
+   "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps. <g2>Options → Save to → Mark downloaded files as coming from the internet</g2> turns it off, and so does Windows' policy <g3>Do not preserve zone information in file attachments</g3>.",
+   "text": "Los archivos de torrents se marcan como <g1>descargados de Internet</g1>, igual que las descargas de un navegador. Windows SmartScreen comprueba un programa antes de que se ejecute por primera vez, y Office abre los documentos en Vista protegida. En un Mac, Gatekeeper comprueba las aplicaciones. La opción <g2>Opciones → Guardar en → Marcar los archivos descargados como procedentes de Internet</g2> lo desactiva, al igual que la política de Windows <g3>No conservar la información de zona en los datos adjuntos</g3>."
+  },
   "dee4ab42b514acda": {
    "source": "The language list on first start: every language with its flag, its own name and its English name",
    "text": "La lista de idiomas al iniciar por primera vez: cada idioma con su bandera, su nombre propio y su nombre en inglés"
@@ -14797,6 +14801,10 @@
   "e2b96614efaa036c": {
    "source": "The drop target's edge at rest",
    "text": "Borde del destino de arrastre en reposo"
+  },
+  "e2d0adb596fd4c4b": {
+   "source": "<g1>Mark downloaded files as coming from the internet</g1> — on by default. Every file MDM downloads (from the browser, a link you add, a video, a gallery, a torrent, and the files extracted from an archive) carries the mark a browser's downloads carry. On Windows that is the Mark of the Web: SmartScreen checks a program before it first runs, and Office opens a document in Protected View. On a Mac it is the quarantine attribute Gatekeeper checks; on Linux, where the file came from, which file managers show. Unticked, no download is marked. On Windows, MDM also follows the Group Policy <g2>Do not preserve zone information in file attachments</g2>, as browsers do: when it is on (for the computer or for you), no download is marked, whatever this box says.",
+   "text": "<g1>Marcar los archivos descargados como procedentes de Internet</g1>: activado de forma predeterminada. Cada archivo que MDM descarga (desde el navegador, un vínculo que añades, un vídeo, una galería, un torrent y los archivos extraídos de un archivo comprimido) lleva la marca que llevan las descargas de un navegador. En Windows, es la Marca de la Web: SmartScreen comprueba un programa antes de que se ejecute por primera vez, y Office abre un documento en Vista protegida. En un Mac, es el atributo de cuarentena que Gatekeeper comprueba; en Linux, de dónde procede el archivo, lo que muestran los gestores de archivos. Si no está marcada, ninguna descarga se marca. En Windows, MDM también sigue la Política de grupo <g2>No conservar la información de zona en los archivos adjuntos</g2>, como hacen los navegadores: cuando está activada (para el equipo o para ti), ninguna descarga se marca, independientemente de lo que diga esta casilla."
   },
   "e2e30d683ce66b3d": {
    "source": "<g1>Zen on Windows:</g1> Zen 1.21.15b and later have a bug of their own that keeps add-ons from reaching their helper program (<g2>zen-browser/desktop#15432</g2>), with any add-on that uses one. Until Zen fixes it, Zen 1.21.14b works.",

@@ -600,6 +600,7 @@ pub fn fetch(
         opts.agent_fallback = None;
         opts.browser_final = None;
         opts.expected_type = None;
+        opts.expected_size = None;
         opts.post = None;
         opts.checksum = None;
         opts.on_file_created = None;

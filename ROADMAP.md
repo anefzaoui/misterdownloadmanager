@@ -560,6 +560,16 @@ These ship in the next version.
 - ✅ Windows: **Open with...** shows Windows' "Select an app to open this file" again, for
   files whose name or folder has a space too
   ([#720](https://github.com/anefzaoui/misterdownloadmanager/issues/720))
+- ✅ A file host's web page (a countdown, a captcha, DropMeFiles', dailyuploads') is never saved
+  under the archive's name and called finished: the download stops, says the site sent its page
+  and to finish in the browser, and the progress window's **Open in browser** opens the link
+  there. The page is told by its first bytes too, when it comes as the file's own type or under
+  its name, by the size the browser announced, and on resume, which keeps the data already
+  downloaded ([#701](https://github.com/anefzaoui/misterdownloadmanager/issues/701),
+  [#692](https://github.com/anefzaoui/misterdownloadmanager/issues/692))
+- ✅ **Embed chapters**: a video's chapters go into the downloaded file (with ffmpeg), on by
+  default, in the Download video window under Subtitles
+  ([#827](https://github.com/anefzaoui/misterdownloadmanager/issues/827))
 - ✅ A YouTube video that lists only the sound says why: yt-dlp has no JavaScript runtime. The
   video window, the menu over a video and the command line say to install Node.js or Deno, with
   a link to the help page's commands for each system

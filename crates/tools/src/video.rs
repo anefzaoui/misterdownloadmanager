@@ -203,6 +203,27 @@ fn subtitle_args(subs: &Subs, ffmpeg: bool) -> Vec<String> {
     out
 }
 
+/// Download video's Embed chapters (#827): on unless the app says otherwise ([`set_chapters`]).
+static CHAPTERS: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(true);
+
+/// Whether the videos started from now on get their chapters (the app's setting, shared as it
+/// changes; the command line keeps the default, on).
+pub fn set_chapters(on: bool) {
+    CHAPTERS.store(on, std::sync::atomic::Ordering::Relaxed);
+}
+
+/// The chapters a video's page lists, put into the file (#827): `--embed-chapters` on yt-dlp's
+/// last run, the one that merges and fixes the file up (after MDM's engine too). Only with ffmpeg,
+/// which writes them, and for a video or the sound as the site has it, not a conversion to MP3,
+/// Opus or FLAC. A video without chapters is left as it is.
+fn chapter_args(chapters: bool, ffmpeg: bool, converted: bool) -> Vec<String> {
+    if chapters && ffmpeg && !converted {
+        vec!["--embed-chapters".into()]
+    } else {
+        Vec::new()
+    }
+}
+
 /// The subtitle files saved beside `video` (`<stem>.<lang>.<srt|vtt…>`, as yt-dlp names them).
 fn side_files(video: &Path) -> Vec<PathBuf> {
     let (Some(dir), Some(stem)) = (video.parent(), video.file_stem()) else {
@@ -1640,6 +1661,7 @@ impl VideoJob {
             output.to_string_lossy().into_owned(),
             "--no-playlist".into(),
         ];
+        let converted = convert.is_some();
         match convert {
             Some(a) => {
                 let x = ["-x".into(), "--audio-format".into(), a.format.into()];
@@ -1651,6 +1673,11 @@ impl VideoJob {
             }
             None => ours.extend(subtitle_args(subs, ffmpeg.is_some())),
         }
+        ours.extend(chapter_args(
+            CHAPTERS.load(std::sync::atomic::Ordering::Relaxed),
+            ffmpeg.is_some(),
+            converted,
+        ));
         let (theirs, cookies) = browser.args(url)?;
         retry_base.extend(theirs.iter().cloned());
         ours.extend(theirs.iter().cloned());
@@ -2477,6 +2504,17 @@ mod tests {
             s(subtitle_args(&subs(&["de", "fr"], false, true), false)),
             "--write-subs --sub-langs de,fr --sub-format srt/vtt/best --ignore-errors"
         );
+    }
+
+    /// Embed chapters (#827): `--embed-chapters` for a video or the sound as the site has it,
+    /// with ffmpeg; nothing when the option is off, without ffmpeg (which writes them), or for a
+    /// conversion to MP3, Opus or FLAC.
+    #[test]
+    fn chapter_arguments() {
+        assert_eq!(chapter_args(true, true, false), ["--embed-chapters"]);
+        assert!(chapter_args(false, true, false).is_empty());
+        assert!(chapter_args(true, false, false).is_empty());
+        assert!(chapter_args(true, true, true).is_empty());
     }
 
     /// yt-dlp's warnings for subtitles it couldn't get (#68): each language once, a site's
