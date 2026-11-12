@@ -934,6 +934,10 @@
    "source": "The thin edge around a country's flag",
    "text": "Tepi tipis di sekitar bendera negara"
   },
+  "0ea74b188ec2ca88": {
+   "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
+   "text": "Jika muncul pesan <g1>situs mengirim halaman web, bukan file</g1>, berarti tautan mengarah ke halaman situs itu sendiri: hitung mundur host file, captcha, tombol <g2>Unduh</g2> yang harus ditekan, atau halaman masuk. MDM tidak pernah menyimpan halaman tersebut sebagai file Anda. Klik <g3>Buka di browser</g3> di jendela progres unduhan (atau buka tautannya sendiri), selesaikan di sana, dan ketika browser memulai unduhan yang sebenarnya, ekstensi MDM akan menyerahkannya ke MDM. Tanpa ekstensi, biarkan browser mengunduhnya."
+  },
   "0ebbf5cc3fb70cd9": {
    "source": "Downloads from a private window use that window's cookies, never the normal ones, and aren't kept in MDM's list after it closes.",
    "text": "Unduhan dari jendela pribadi menggunakan cookie jendela tersebut, tidak pernah menggunakan cookie normal, dan tidak disimpan dalam daftar MDM setelah jendela ditutup."
@@ -4498,10 +4502,6 @@
    "source": "Browser integration — Mister Download Manager help",
    "text": "Integrasi browser — Bantuan Mister Download Manager"
   },
-  "439e42205d062684": {
-   "source": "Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (<x1/>)",
-   "text": "Halaman video melalui yt-dlp dan ffmpeg, galeri gambar melalui gallery-dl (berjalan sebagai program terpisah); saat adaptor jaringan dipilih, koneksi mereka melewati proxy MDM di 127.0.0.1 yang mengikatnya (<x1/>)"
-  },
   "43ad4ee2e95fdb1f": {
    "source": "A page's own short sounds (a click, a voice-search chime) are no longer listed in <g1>Media on this page</g1>.",
    "text": "Suara pendek halaman itu sendiri (klik, nada pencarian suara) tidak lagi dicantumkan di <g1>Media di halaman ini</g1>."
@@ -5657,6 +5657,10 @@
   "567f61dda0920579": {
    "source": "A greyed unchecked box's border",
    "text": "Batas kotak centang yang tidak dicentang dan berwarna abu-abu"
+  },
+  "5688be9c6942376d": {
+   "source": "Files MDM downloads from the browser are marked as coming from the internet, as the browser marks its own: Windows checks a program with SmartScreen before it runs and Office opens a document in Protected View. Like the browser, MDM leaves the mark out when Windows' Group Policy <g1>Do not preserve zone information in file attachments</g1> is on; <g2>Options → Save to</g2> can turn it off for MDM alone.",
+   "text": "File yang diunduh MDM dari browser ditandai sebagai berasal dari internet, seperti halnya browser menandai file-nya sendiri: Windows memeriksa program dengan SmartScreen sebelum dijalankan dan Office membuka dokumen di Protected View. Seperti browser, MDM tidak menyertakan tanda tersebut jika Group Policy Windows <g1>Do not preserve zone information in file attachments</g1> aktif; <g2>Opsi → Simpan ke</g2> dapat menonaktifkannya hanya untuk MDM."
   },
   "5690cb4f1434f4bc": {
    "source": "Open Windows <g1>Settings → Apps</g1>, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder. On Linux, remove the package with your package manager, or delete the AppImage; <g2>Uninstall on Linux</g2> says what stays in your home folder and how to remove it.",
@@ -9226,10 +9230,6 @@
    "source": "Downloads and torrents in one app, stable on Android",
    "text": "Unduhan dan torrent dalam satu aplikasi, stabil di Android"
   },
-  "8c699effe606d133": {
-   "source": "Files MDM downloads from the browser are marked as coming from the internet, as the browser marks its own: Windows checks a program with SmartScreen before it runs and Office opens a document in Protected View.",
-   "text": "File yang diunduh MDM dari browser ditandai sebagai berasal dari internet, seperti yang ditandai oleh browser: Windows memeriksa program dengan SmartScreen sebelum dijalankan dan Office membuka dokumen dalam Tampilan Terlindungi."
-  },
   "8c7321b31cd98d97": {
    "source": "<g1>Toolbar.</g1> <g2>Add URL</g2>, <g3>Add Torrent</g3>, <g4>Resume</g4>, <g5>Stop</g5>, <g6>Stop All</g6>, <g7>Delete</g7>, <g8>Delete Completed</g8>, <g9>Options</g9>, <g10>Scheduler</g10>, <g11>Start Queue</g11>, <g12>Stop Queue</g12>. The small arrow next to <g13>Add Torrent</g13>, <g14>Start Queue</g14> and <g15>Stop Queue</g15> opens more choices.",
    "text": "<g1>Bilah Alat.</g1> <g2>Tambah URL</g2>, <g3>Tambah Torrent</g3>, <g4>Lanjutkan</g4>, <g5>Hentikan</g5>, <g6>Hentikan Semua</g6>, <g7>Hapus</g7>, <g8>Hapus yang Selesai</g8>, <g9>Opsi</g9>, <g10>Penjadwal</g10>, <g11>Mulai Antrean</g11>, <g12>Hentikan Antrean</g12>. Panah kecil di sebelah <g13>Tambah Torrent</g13>, <g14>Mulai Antrean</g14> dan <g15>Hentikan Antrean</g15> membuka lebih banyak pilihan."
@@ -10890,6 +10890,10 @@
    "source": "Add downloads with <g1>Add URL</g1>, the clipboard (<g2>Options → General → Offer to download links copied to the clipboard</g2>) or the drop target (<g3>Tasks → Show drop target</g3>).",
    "text": "Tambahkan unduhan dengan <g1>Tambah URL</g1>, papan klip (<g2>Opsi → Umum → Tawarkan untuk mengunduh tautan yang disalin ke papan klip</g2>) atau target jatuhkan (<g3>Tugas → Tampilkan target jatuhkan</g3>)."
   },
+  "a54a319c4a29ff03": {
+   "source": "Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (<x1/>); each runs in a folder it can write, also its TEMP (<x2/>)",
+   "text": "Halaman video melalui yt-dlp dan ffmpeg, galeri gambar melalui gallery-dl (berjalan sebagai program terpisah); saat adaptor jaringan dipilih, koneksi mereka melewati proxy MDM di 127.0.0.1 yang mengikatnya (<x1/>); setiap program berjalan di folder yang dapat ditulisnya, juga TEMP-nya (<x2/>)"
+  },
   "a54ad83afe939ad1": {
    "source": "yt-dlp looks the page up and picks the quality's video and sound. MDM's own downloader then brings each of them in, one after the other, the way it downloads any file:",
    "text": "yt-dlp mencari halaman dan memilih kualitas video dan suara. Pengunduh MDM sendiri kemudian mengunduh masing-masing, satu per satu, seperti mengunduh file apa pun:"
@@ -12526,6 +12530,10 @@
    "source": "3. Use it",
    "text": "3. Gunakan"
   },
+  "be205ab8272dead7": {
+   "source": "Start the video first: the list fills as the page loads things, and it's emptied when the tab goes to another page. Each file is listed under the name it will be saved with. A file the site sends through a program's address (<x1/>, <x2/>, <x3/>, a bare number) has no name of its own: it's named after the page (<x4/>), or after the <x5/> name in its address when there is one, with the type its server says it is (MP4, not PHP). With <g6>Prefix media file names with the page title</g6> on, a file with a name of its own is named after the page, then that name (<x7/>). Click <g8>Download</g8> beside one: a stream opens MDM's <g9>Download video from a page</g9> window, which reads its qualities (yt-dlp does the work); a file goes to MDM's list like any other download. Your cookies for its server, the page as the referrer and your browser's User-Agent go with it, as they do for a link you click.",
+   "text": "Mulai video terlebih dahulu: daftar akan terisi saat halaman memuat konten, dan akan dikosongkan saat tab beralih ke halaman lain. Setiap file dicantumkan dengan nama yang akan digunakan untuk menyimpannya. File yang dikirim situs melalui alamat program (<x1/>, <x2/>, <x3/>, angka biasa) tidak memiliki nama sendiri: file tersebut dinamai sesuai halaman (<x4/>), atau sesuai nama <x5/> dalam alamatnya jika ada, dengan jenis yang disebutkan servernya (MP4, bukan PHP). Dengan <g6>Tambahkan judul halaman di depan nama file media</g6> aktif, file dengan nama sendiri akan dinamai sesuai halaman, lalu nama tersebut (<x7/>). Klik <g8>Unduh</g8> di samping salah satu file: aliran akan membuka jendela <g9>Unduh video dari halaman</g9> MDM, yang membaca kualitasnya (yt-dlp yang melakukannya); file akan masuk ke daftar MDM seperti unduhan lainnya. Cookie Anda untuk servernya, halaman sebagai perujuk, dan User-Agent browser Anda akan ikut disertakan, seperti halnya untuk tautan yang Anda klik."
+  },
   "be3fe1b3f5a5749a": {
    "source": "Yes, completely. Mister Download Manager (MDM) is free and open-source software under the GNU General Public License, version 3. There is no trial period…",
    "text": "Ya, sepenuhnya. Mister Download Manager (MDM) adalah perangkat lunak gratis dan sumber terbuka di bawah GNU General Public License, versi 3. Tidak ada masa percobaan…"
@@ -12829,10 +12837,6 @@
   "c2f23d07939a4042": {
    "source": "A greyed button's face",
    "text": "Tampilan tombol berwarna abu-abu"
-  },
-  "c30f4658e7e28160": {
-   "source": "Start the video first: the list fills as the page loads things, and it's emptied when the tab goes to another page. With <g1>Prefix media file names with the page title</g1> on, a file from the list is named after the page, then its own name (<x2/>). Click <g3>Download</g3> beside one: a stream opens MDM's <g4>Download video from a page</g4> window, which reads its qualities (yt-dlp does the work); a file goes to MDM's list like any other download. Your cookies for its server, the page as the referrer and your browser's User-Agent go with it, as they do for a link you click.",
-   "text": "Mulai video terlebih dahulu: daftar akan terisi saat halaman memuat konten, dan akan dikosongkan saat tab beralih ke halaman lain. Dengan <g1>Tambahkan judul halaman di depan nama file media</g1> aktif, file dari daftar akan dinamai sesuai halaman, lalu nama file itu sendiri (<x2/>). Klik <g3>Unduh</g3> di samping salah satunya: aliran akan membuka jendela <g4>Unduh video dari halaman</g4> MDM, yang membaca kualitasnya (yt-dlp yang melakukannya); file akan masuk ke daftar MDM seperti unduhan lainnya. Cookie Anda untuk servernya, halaman sebagai perujuk, dan User-Agent browser Anda akan ikut serta, seperti halnya untuk tautan yang Anda klik."
   },
   "c31622b1a542c888": {
    "source": "<g1>.dmg</g1> for Intel Macs",
@@ -13742,10 +13746,6 @@
    "source": "A button's face under the pointer",
    "text": "Tampilan tombol di bawah penunjuk"
   },
-  "d1595b21d176c816": {
-   "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
-   "text": "File dari torrent ditandai sebagai <g1>diunduh dari internet</g1>, seperti file yang diunduh melalui browser. Windows SmartScreen memeriksa program sebelum pertama kali dijalankan, dan Office membuka dokumen dalam Tampilan Terproteksi. Di Mac, Gatekeeper memeriksa aplikasi."
-  },
   "d172eb15bbafbde6": {
    "source": "Release signatures are checked by MDM's own small verifier instead of a full OpenPGP library.",
    "text": "Tanda tangan rilis diperiksa oleh verifikator kecil MDM sendiri alih-alih pustaka OpenPGP lengkap."
@@ -14578,6 +14578,10 @@
    "source": "Minimize hides the main window there too, while <g1>Minimize to the notification area</g1> is on in <g2>Options → General</g2>. It is on by default; where the tray has no icon, Minimize sends the window to the taskbar instead.",
    "text": "Minimalkan juga menyembunyikan jendela utama di sana, selama <g1>Minimalkan ke area notifikasi</g1> diaktifkan di <g2>Opsi → Umum</g2>. Ini aktif secara default; jika baki tidak memiliki ikon, Minimalkan akan mengirim jendela ke bilah tugas sebagai gantinya."
   },
+  "dec637e2ec402a0d": {
+   "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps. <g2>Options → Save to → Mark downloaded files as coming from the internet</g2> turns it off, and so does Windows' policy <g3>Do not preserve zone information in file attachments</g3>.",
+   "text": "File dari torrent ditandai sebagai <g1>diunduh dari internet</g1>, seperti unduhan browser. Windows SmartScreen memeriksa program sebelum dijalankan pertama kali, dan Office membuka dokumen dalam Tampilan Terlindungi. Di Mac, Gatekeeper memeriksa aplikasi. <g2>Opsi → Simpan ke → Tandai file yang diunduh sebagai berasal dari internet</g2> menonaktifkannya, begitu juga kebijakan Windows <g3>Jangan pertahankan informasi zona dalam lampiran file</g3>."
+  },
   "dee4ab42b514acda": {
    "source": "The language list on first start: every language with its flag, its own name and its English name",
    "text": "Daftar bahasa pada awal pertama: setiap bahasa dengan benderanya, nama aslinya, dan nama Inggrisnya"
@@ -14789,6 +14793,10 @@
   "e2b96614efaa036c": {
    "source": "The drop target's edge at rest",
    "text": "Tepi target seret saat tidak aktif"
+  },
+  "e2d0adb596fd4c4b": {
+   "source": "<g1>Mark downloaded files as coming from the internet</g1> — on by default. Every file MDM downloads (from the browser, a link you add, a video, a gallery, a torrent, and the files extracted from an archive) carries the mark a browser's downloads carry. On Windows that is the Mark of the Web: SmartScreen checks a program before it first runs, and Office opens a document in Protected View. On a Mac it is the quarantine attribute Gatekeeper checks; on Linux, where the file came from, which file managers show. Unticked, no download is marked. On Windows, MDM also follows the Group Policy <g2>Do not preserve zone information in file attachments</g2>, as browsers do: when it is on (for the computer or for you), no download is marked, whatever this box says.",
+   "text": "<g1>Tandai file yang diunduh sebagai berasal dari internet</g1> — aktif secara default. Setiap file yang diunduh MDM (dari browser, tautan yang Anda tambahkan, video, galeri, torrent, dan file yang diekstrak dari arsip) membawa tanda yang sama dengan unduhan browser. Di Windows, itu adalah Mark of the Web: SmartScreen memeriksa program sebelum pertama kali dijalankan, dan Office membuka dokumen dalam Tampilan Terlindungi. Di Mac, itu adalah atribut karantina yang diperiksa Gatekeeper; di Linux, dari mana file itu berasal, yang ditampilkan oleh pengelola file. Jika tidak dicentang, tidak ada unduhan yang ditandai. Di Windows, MDM juga mengikuti Kebijakan Grup <g2>Jangan pertahankan informasi zona dalam lampiran file</g2>, seperti yang dilakukan browser: jika aktif (untuk komputer atau untuk Anda), tidak ada unduhan yang ditandai, apa pun yang dikatakan kotak ini."
   },
   "e2e30d683ce66b3d": {
    "source": "<g1>Zen on Windows:</g1> Zen 1.21.15b and later have a bug of their own that keeps add-ons from reaching their helper program (<g2>zen-browser/desktop#15432</g2>), with any add-on that uses one. Until Zen fixes it, Zen 1.21.14b works.",
