@@ -45,7 +45,8 @@
 // language, so the extension shows its _locales text of it; with E2E_SHOTS=<folder> the `qualities`
 // case saves <lang>-looking.png, <lang>-video-tab.png and <lang>-audio-tab.png there (the player and
 // the menu), before the pick, and the `scripted` case <lang>-media-list.png (the popup's list) and
-// <lang>-video-window.png. Neither changes anything when unset.
+// <lang>-video-window.png. Neither changes anything when unset. E2E_APP_LANG sets MDM's own language
+// (the words it sends the menu).
 //
 // Windows: the host is registered for the current user while it runs (nmhost --register, as the
 // installer does) and unregistered at the end. Every registry key that touches (the browsers'
@@ -2777,6 +2778,8 @@ const CASES = {
       await sleep(500);
       if (shots) await snap("page-list", await t.session.picks());
       const lines = m.rows.map((r) => `${r.name} = ${r.size}`);
+      // #852: what the menu says above them (YouTube without a JavaScript runtime).
+      if (m.note) lines.unshift(`note: ${m.note}`);
       const pick = process.env.E2E_VIDEO_PICK;
       if (!pick) return lines.join("; ");
       const wanted = new RegExp(pick);
@@ -3113,7 +3116,9 @@ async function run() {
       items: [],
       version: 2,
       settings: {
-        language: "en",
+        // E2E_APP_LANG: MDM's own language for a pull request's pictures (what the app sends
+        // the menu, #852, is in it), English otherwise.
+        language: process.env.E2E_APP_LANG || "en",
         language_asked: true,
         extension_never_ask: true,
         show_start_dialog: false,

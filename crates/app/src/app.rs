@@ -2613,10 +2613,11 @@ impl App {
                 }
             }
             // A page whose videos need ffmpeg (#351): without it the list has only the sound.
+            // `video-adaptive:runtime`: yt-dlp said it had no JavaScript runtime (#852).
             "video-adaptive" => {
                 self.run(Cmd::VideoPage, None, ctx);
                 if let Some(v) = &mut self.video_dlg {
-                    v.show_sample_adaptive();
+                    v.show_sample_adaptive(tab == "runtime");
                 }
             }
             // A sample playlist (#69), its quality by its place in the list: `video-playlist:7`.

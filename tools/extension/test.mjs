@@ -1965,6 +1965,22 @@ function samplePage(html) {
   }
   assert.deepEqual(act({ fallback: true }, true), { act: "window" });
   assert.equal(act({ ok: false, gone: true }, true), null);
+  // #852: the app's word on what the look-up lacked, shown with the qualities: its text, and a
+  // link to MDM's own help page only (never another address a page could slip in).
+  const { noticeOf } = make(["noticeOf"], "{ noticeOf }");
+  const help = "https://misterdownloadmanager.com/de/help/video.html#javascript-runtime";
+  const notice = { text: "YouTube needs a JavaScript runtime", link: "How to install one", url: help };
+  assert.deepEqual(noticeOf({ ...ready, notice }), notice);
+  assert.deepEqual(noticeOf({ state: "failed", reason: "no-choices", notice }), notice);
+  for (const url of ["javascript:alert(1)", "https://misterdownloadmanager.com.evil.test/", "http://misterdownloadmanager.com/help/", 7]) {
+    assert.deepEqual(noticeOf({ ...ready, notice: { ...notice, url } }), { text: notice.text, link: "", url: "" }, String(url));
+  }
+  for (const n of [undefined, null, "words", { text: "" }, { text: 7 }, { link: "x", url: help }]) {
+    assert.equal(noticeOf({ ...ready, notice: n }), null, JSON.stringify(n));
+  }
+  assert.equal(noticeOf(null), null);
+  assert.equal(noticeOf({ ...ready, notice: { ...notice, text: "x".repeat(900) } }).text.length, 400);
+  assert.ok(fn("fillMenu").includes("tell(noticeOf(look))"), "fillMenu shows it");
   // One window per click, whichever way it comes to it: a lookup's end, then the choice's answer,
   // then "Open in…" (and a second click gets its own).
   const click = {};

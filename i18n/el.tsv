@@ -2072,6 +2072,11 @@
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
 	How to fix it	Πώς να το διορθώσετε
+#. text in the Download video window; text in videolookup.rs
+#. link after the note that YouTube needs a JavaScript runtime: opens the help page that says how to install Node.js or Deno
+#. link in the browser's video menu, after the note that YouTube needs a JavaScript runtime: opens the help page that says how to install Node.js or Deno
+#, machine
+	How to install one	Τρόπος εγκατάστασης
 #. checkbox in the Options window
 #, machine
 	http	http
@@ -5466,6 +5471,10 @@
 #, machine
 	Your system's: {path}	Του συστήματός σας: {path}
 #. text in the Download video window
+#. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
+#, machine
+	YouTube needs a JavaScript runtime to list its video qualities: install Node.js or Deno, then look it up again	Το YouTube χρειάζεται ένα περιβάλλον εκτέλεσης JavaScript για να παραθέσει τις ποιότητες βίντεο: εγκαταστήστε το Node.js ή το Deno και, στη συνέχεια, αναζητήστε το ξανά
+#. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 #, machine
 	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	Το yt-dlp δεν μπορεί να διαβάσει τα cookies του {browser} όσο το {browser} είναι ανοιχτό. Κλείστε το {browser} και αναζητήστε ξανά τη σελίδα, ή επιλέξτε Firefox στις Επιλογές → Σύνδεση σε ιστότοπους.
@@ -6657,6 +6666,10 @@ menu	E&xport	&Εξαγωγή
 #. menu command in the main window
 #, machine
 menu	Edit queue	Επεξεργασία ουράς
+#. menu command in the main window
+#. View → Theme: a style theme's name (a white canvas, emerald fills, 6-point corners), a name: keep "Emerald" as written
+#, machine
+menu	Emerald	Σμαραγδί
 #. menu command in the main window
 #. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
 #, machine

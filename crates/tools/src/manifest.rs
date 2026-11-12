@@ -300,6 +300,7 @@ impl Master {
             automatic: Vec::new(),
             language: None,
             direct: false,
+            needs_js_runtime: false,
         })
     }
 }
