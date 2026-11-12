@@ -12314,6 +12314,10 @@
    "source": "MDM follows every kind of redirect a browser does, including \"your download starts in a moment\" pages.",
    "text": "يتبع MDM كل نوع من أنواع إعادة التوجيه التي يقوم بها المستعرض، بما في ذلك صفحات \"يبدأ تنزيلك بعد لحظات\"."
   },
+  "bb3ef7df5542505d": {
+   "source": "A video yt-dlp downloads by itself (<g1>How a video comes down</g1>) takes a limit only as it starts: when you turn the limiter on or off, change its settings or the video's own limit, MDM stops it and starts it again with the new limit, and it goes on from where it was (the log says \"Stopped: the speed limit changed; starting again with it\"). Under the limit for all downloads, such videos share it evenly: when another starts, the ones running with more than their share start again with it; when one ends, the others keep theirs. Image galleries do the same with gallery-dl, which skips the files already saved. Other changes (torrents taking more or less of the limit for all downloads, <g2>Only while I'm using the computer</g2>) apply to the next one that starts.",
+   "text": "يأخذ الفيديو الذي ينزله yt-dlp بنفسه (<g1>كيفية تنزيل الفيديو</g1>) حدا فقط عند بدء تشغيله: عندما تقوم بتشغيل المحدد أو إيقاف تشغيله، أو تغيير إعداداته أو حد الفيديو الخاص به، يوقفه MDM ويبدأه مرة أخرى بالحد الجديد، ويستمر من حيث توقف (يقول السجل \"توقف: تغير حد السرعة؛ سيبدأ مجددا بهذا الحد\"). ضمن الحد لجميع التنزيلات، تشارك هذه الفيديوهات الحد بالتساوي: عندما يبدأ آخر، تبدأ الفيديوهات التي تعمل بأكثر من حصتها مرة أخرى به؛ عندما ينتهي أحدها، تحتفظ الأخرى بحصتها. تفعل معارض الصور الشيء نفسه مع gallery-dl، الذي يتخطى الملفات المحفوظة بالفعل. التغييرات الأخرى (التورنت التي تأخذ أكثر أو أقل من الحد لجميع التنزيلات، <g2>فقط أثناء استخدامي للكمبيوتر</g2>) تنطبق على التالي الذي يبدأ."
+  },
   "bb49aaf282f37cab": {
    "source": "Made for Windows. On a Mac and Linux too.",
    "text": "مصمم لنظام Windows. ويعمل على Mac وLinux أيضا."
@@ -12853,6 +12857,10 @@
   "c3e54652a3021b62": {
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
    "text": "تفتح نافذة <g1>إضافة تورنت</g1>. الصق رابط magnet في <g2>تورنت</g2>، أو انقر على <g3>...</g3> لاختيار ملف <x4/>، ثم انقر على <g5>بحث</g5>."
+  },
+  "c3e94db31bd7ff31": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: a video the site sends in pieces (HLS, DASH) comes down this many pieces at once (8 by default, 1 to 128); a video in one file is one connection whatever it says. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). <x19/> sends yt-dlp's connections (and ffmpeg's) through one network adapter, as for <x20/>; when it isn't connected, nothing starts.",
+   "text": "ينزل مقطع فيديو؛ <x1/> يأخذ محدد جودة من <x2/> (<x3/> = أفضل ملف واحد؛ <x4/> = الصوت وحده كما هو في الموقع، غير محول؛ <x5/>، <x6/>، <x7/> أو <x8/> = الصوت كملف MP3 بهذه السرعة، <x9/> بأفضل سرعة متغيرة؛ <x10/> = كملف Opus؛ <x11/> = كملف FLAC، بدون فقدان ولكن ليس أفضل من صوت الموقع؛ تتطلب التحويلات ffmpeg). <x12/>: يأتي الفيديو الذي يرسله الموقع على شكل قطع (HLS, DASH) بهذا العدد من القطع دفعة واحدة (8 افتراضيا، من 1 إلى 128)؛ الفيديو في ملف واحد هو اتصال واحد مهما قيل. <x13/> يحفظ الترجمات بجانبه: رموز اللغة من <x14/> (<x15/>)، أو <x16/> لكل لغة قدمها الرافع؛ <x17/> يأخذ التسميات التوضيحية التلقائية للموقع بدلا من ذلك؛ <x18/> يضعها في الفيديو (يتطلب ffmpeg، MP4 أو MKV). <x19/> يرسل اتصالات yt-dlp (واتصالات ffmpeg) عبر محول شبكة واحد، كما هو الحال في <x20/>؛ عندما لا يكون متصلا، لا يبدأ أي شيء."
   },
   "c4102de250d826ec": {
    "source": "50 MiB, every 2nd connection cut after 2 MiB, 4 MB/s",
@@ -16089,6 +16097,10 @@
   "f638ef4dd0b007f8": {
    "source": "Every change in detail",
    "text": "كل تغيير بالتفصيل"
+  },
+  "f669d1970c8b3f96": {
+   "source": "a stream sent in many small pieces (HLS, DASH), for now;",
+   "text": "بث مرسل في العديد من القطع الصغيرة (HLS، DASH)، في الوقت الحالي؛"
   },
   "f6a660460c7cc189": {
    "source": "Downloads from the browser keep the name, size and type the browser saw, so downloads behind a sign-in show correctly right away.",

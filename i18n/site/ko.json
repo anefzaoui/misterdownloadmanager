@@ -12310,6 +12310,10 @@
    "source": "MDM follows every kind of redirect a browser does, including \"your download starts in a moment\" pages.",
    "text": "MDM은 \"잠시 후 다운로드가 시작됩니다\" 페이지를 포함하여 브라우저가 수행하는 모든 종류의 리디렉션을 따릅니다."
   },
+  "bb3ef7df5542505d": {
+   "source": "A video yt-dlp downloads by itself (<g1>How a video comes down</g1>) takes a limit only as it starts: when you turn the limiter on or off, change its settings or the video's own limit, MDM stops it and starts it again with the new limit, and it goes on from where it was (the log says \"Stopped: the speed limit changed; starting again with it\"). Under the limit for all downloads, such videos share it evenly: when another starts, the ones running with more than their share start again with it; when one ends, the others keep theirs. Image galleries do the same with gallery-dl, which skips the files already saved. Other changes (torrents taking more or less of the limit for all downloads, <g2>Only while I'm using the computer</g2>) apply to the next one that starts.",
+   "text": "yt-dlp가 자체적으로 다운로드하는 동영상(<g1>동영상 다운로드 방식</g1>)은 시작할 때만 제한을 적용합니다. 제한기를 켜거나 끄거나, 설정을 변경하거나, 동영상 자체의 제한을 변경하면 MDM은 이를 중지하고 새 제한으로 다시 시작하며, 중단된 지점부터 계속 진행합니다(로그에는 \"중지했습니다: 속도 제한이 변경되어 새 제한으로 다시 시작했습니다\"라고 표시됩니다). 모든 다운로드에 대한 제한 내에서 이러한 동영상은 이를 균등하게 공유합니다. 다른 동영상이 시작되면 할당량보다 많이 실행 중인 동영상은 다시 시작하고, 하나가 끝나면 다른 동영상은 할당량을 유지합니다. 이미지 갤러리도 gallery-dl과 동일하게 작동하며, 이미 저장된 파일은 건너뜁니다. 다른 변경 사항(모든 다운로드에 대한 제한에서 토렌트가 더 많거나 적은 부분을 차지하는 경우, <g2>컴퓨터를 사용하는 동안에만</g2>)은 다음에 시작되는 항목에 적용됩니다."
+  },
   "bb49aaf282f37cab": {
    "source": "Made for Windows. On a Mac and Linux too.",
    "text": "Windows용으로 제작되었습니다. Mac과 Linux에서도 사용할 수 있습니다."
@@ -12849,6 +12853,10 @@
   "c3e54652a3021b62": {
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
    "text": "<g1>토렌트 추가</g1> 창이 열립니다. 마그넷 링크를 <g2>토렌트</g2>에 붙여넣거나 <g3>...</g3>을 클릭해 <x4/> 파일을 선택한 다음 <g5>찾아보기</g5>를 클릭합니다."
+  },
+  "c3e94db31bd7ff31": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: a video the site sends in pieces (HLS, DASH) comes down this many pieces at once (8 by default, 1 to 128); a video in one file is one connection whatever it says. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). <x19/> sends yt-dlp's connections (and ffmpeg's) through one network adapter, as for <x20/>; when it isn't connected, nothing starts.",
+   "text": "동영상을 다운로드합니다. <x1/>는 <x2/>에서 화질 선택자를 가져옵니다(<x3/> = 가장 좋은 단일 파일; <x4/> = 사이트의 원본 사운드, 변환 없음; <x5/>, <x6/>, <x7/> 또는 <x8/> = 해당 비트레이트의 MP3 사운드, <x9/>는 최고 가변 비트레이트; <x10/> = Opus; <x11/> = FLAC, 무손실이지만 사이트 사운드보다 좋지는 않음; 변환에는 ffmpeg 필요). <x12/>: 사이트에서 조각으로 전송되는 동영상(HLS, DASH)은 이 개수만큼 동시에 다운로드됩니다(기본값 8개, 1~128개); 단일 파일 동영상은 설정과 관계없이 하나의 연결로 다운로드됩니다. <x13/>는 자막을 함께 저장합니다: <x14/>(<x15/>)의 언어 코드, 또는 업로더가 제공한 모든 자막에 대해 <x16/>; <x17/>는 대신 사이트의 자동 생성 자막을 가져옵니다; <x18/>는 자막을 동영상에 삽입합니다(ffmpeg, MP4 또는 MKV 필요). <x19/>는 <x20/>와 같이 yt-dlp의 연결(및 ffmpeg의 연결)을 하나의 네트워크 어댑터를 통해 보냅니다; 연결되지 않으면 아무것도 시작되지 않습니다."
   },
   "c4102de250d826ec": {
    "source": "50 MiB, every 2nd connection cut after 2 MiB, 4 MB/s",
@@ -16085,6 +16093,10 @@
   "f638ef4dd0b007f8": {
    "source": "Every change in detail",
    "text": "모든 변경 사항 상세 보기"
+  },
+  "f669d1970c8b3f96": {
+   "source": "a stream sent in many small pieces (HLS, DASH), for now;",
+   "text": "현재로서는 많은 작은 조각으로 전송되는 스트림(HLS, DASH);"
   },
   "f6a660460c7cc189": {
    "source": "Downloads from the browser keep the name, size and type the browser saw, so downloads behind a sign-in show correctly right away.",

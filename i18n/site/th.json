@@ -12310,6 +12310,10 @@
    "source": "MDM follows every kind of redirect a browser does, including \"your download starts in a moment\" pages.",
    "text": "MDM ติดตามการเปลี่ยนเส้นทางทุกประเภทที่เบราว์เซอร์ทำ รวมถึงหน้า \"การดาวน์โหลดของคุณจะเริ่มในไม่ช้า\""
   },
+  "bb3ef7df5542505d": {
+   "source": "A video yt-dlp downloads by itself (<g1>How a video comes down</g1>) takes a limit only as it starts: when you turn the limiter on or off, change its settings or the video's own limit, MDM stops it and starts it again with the new limit, and it goes on from where it was (the log says \"Stopped: the speed limit changed; starting again with it\"). Under the limit for all downloads, such videos share it evenly: when another starts, the ones running with more than their share start again with it; when one ends, the others keep theirs. Image galleries do the same with gallery-dl, which skips the files already saved. Other changes (torrents taking more or less of the limit for all downloads, <g2>Only while I'm using the computer</g2>) apply to the next one that starts.",
+   "text": "วิดีโอที่ yt-dlp ดาวน์โหลดด้วยตัวเอง (<g1>วิดีโอถูกดาวน์โหลดอย่างไร</g1>) จะใช้ขีดจำกัดเมื่อเริ่มเท่านั้น: เมื่อคุณเปิดหรือปิดตัวจำกัด เปลี่ยนการตั้งค่าหรือขีดจำกัดของวิดีโอเอง MDM จะหยุดและเริ่มใหม่ด้วยขีดจำกัดใหม่ และจะดำเนินการต่อจากจุดที่หยุดไว้ (บันทึกจะระบุว่า “หยุดชั่วคราว: ขีดจำกัดความเร็วเปลี่ยนไป; กำลังเริ่มใหม่ด้วยขีดจำกัดใหม่”) ภายใต้ขีดจำกัดสำหรับการดาวน์โหลดทั้งหมด วิดีโอเหล่านั้นจะแบ่งปันกันอย่างเท่าเทียม: เมื่อมีรายการอื่นเริ่ม รายการที่กำลังทำงานอยู่ซึ่งใช้เกินส่วนแบ่งจะเริ่มใหม่พร้อมกัน; เมื่อรายการหนึ่งสิ้นสุด รายการอื่น ๆ จะยังคงใช้ส่วนแบ่งของตน แกลเลอรีรูปภาพก็ทำเช่นเดียวกันกับ gallery-dl ซึ่งจะข้ามไฟล์ที่บันทึกไว้แล้ว การเปลี่ยนแปลงอื่น ๆ (ทอร์เรนต์ที่ใช้ขีดจำกัดสำหรับการดาวน์โหลดทั้งหมดมากหรือน้อยลง, <g2>เฉพาะเมื่อฉันกำลังใช้คอมพิวเตอร์</g2>) จะมีผลกับรายการถัดไปที่จะเริ่ม"
+  },
   "bb49aaf282f37cab": {
    "source": "Made for Windows. On a Mac and Linux too.",
    "text": "สร้างมาเพื่อ Windows และมีให้ใช้บน Mac กับ Linux ด้วย"
@@ -12845,6 +12849,10 @@
   "c3e54652a3021b62": {
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
    "text": "หน้าต่าง <g1>เพิ่มทอร์เรนต์</g1> จะเปิดขึ้น วางลิงก์แม่เหล็กในช่อง <g2>ทอร์เรนต์</g2> หรือคลิก <g3>...</g3> เพื่อเลือกไฟล์ <x4/> จากนั้นคลิก <g5>ค้นหา</g5>"
+  },
+  "c3e94db31bd7ff31": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: a video the site sends in pieces (HLS, DASH) comes down this many pieces at once (8 by default, 1 to 128); a video in one file is one connection whatever it says. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). <x19/> sends yt-dlp's connections (and ffmpeg's) through one network adapter, as for <x20/>; when it isn't connected, nothing starts.",
+   "text": "ดาวน์โหลดวิดีโอ; <x1/> ใช้ตัวเลือกคุณภาพจาก <x2/> (<x3/> = ไฟล์เดียวที่ดีที่สุด; <x4/> = เสียงอย่างเดียวตามที่เว็บไซต์มี ไม่มีการแปลง; <x5/>, <x6/>, <x7/> หรือ <x8/> = เสียงเป็น MP3 ที่บิตเรตนั้น, <x9/> ที่บิตเรตแปรผันที่ดีที่สุด; <x10/> = เป็น Opus; <x11/> = เป็น FLAC, ไม่มีการสูญเสียแต่ไม่ดีไปกว่าเสียงของเว็บไซต์; การแปลงต้องใช้ ffmpeg) <x12/>: วิดีโอที่เว็บไซต์ส่งมาเป็นชิ้น ๆ (HLS, DASH) จะดาวน์โหลดพร้อมกันหลายชิ้น (ค่าเริ่มต้น 8 ชิ้น, 1 ถึง 128); วิดีโอในไฟล์เดียวคือการเชื่อมต่อเดียวไม่ว่าจะระบุอะไร <x13/> บันทึกคำบรรยายข้างวิดีโอ: รหัสภาษาจาก <x14/> (<x15/>) หรือ <x16/> สำหรับทุกภาษาที่ผู้อัปโหลดให้มา; <x17/> ใช้คำบรรยายอัตโนมัติของเว็บไซต์แทน; <x18/> ใส่คำบรรยายลงในวิดีโอ (ต้องใช้ ffmpeg, MP4 หรือ MKV) <x19/> ส่งการเชื่อมต่อของ yt-dlp (และ ffmpeg) ผ่านอะแดปเตอร์เครือข่ายเดียว เหมือนกับ <x20/>; เมื่อไม่ได้เชื่อมต่อ จะไม่มีอะไรเริ่มต้น"
   },
   "c4102de250d826ec": {
    "source": "50 MiB, every 2nd connection cut after 2 MiB, 4 MB/s",
@@ -16077,6 +16085,10 @@
   "f638ef4dd0b007f8": {
    "source": "Every change in detail",
    "text": "ทุกการเปลี่ยนแปลงโดยละเอียด"
+  },
+  "f669d1970c8b3f96": {
+   "source": "a stream sent in many small pieces (HLS, DASH), for now;",
+   "text": "สตรีมที่ส่งเป็นชิ้นเล็ก ๆ จำนวนมาก (HLS, DASH) สำหรับตอนนี้;"
   },
   "f6a660460c7cc189": {
    "source": "Downloads from the browser keep the name, size and type the browser saw, so downloads behind a sign-in show correctly right away.",

@@ -25,6 +25,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Windows: MDM's programs carry Microsoft's C runtime inside them instead of loading it from Windows (`VCRUNTIME140.dll`), so a PC without that runtime, or with a 32-bit copy where the 64-bit one should be, no longer stops them: setup's last step failed there with "The application was unable to start correctly (0xc000007b)" ([#785](https://github.com/anefzaoui/misterdownloadmanager/issues/785)).
 - Wikimedia Commons videos download again: their quality list carries a negative size estimate, which MDM took for a page with no video at all ("it gave no video information").
 - Sites behind Akamai that let only browsers through (a 403 "Access Denied" page for MDM, the file for a browser, such as HPE's documentation PDFs) now download: MDM takes Akamai's refusal for the bot check it is and tries again the way a browser connects, as it does for Cloudflare's ([#771](https://github.com/anefzaoui/misterdownloadmanager/issues/771)).
 - Crash and freeze reports keep the log lines that explain them: 25 of the file-type icons carried no-op styles (`marker:none`, `mask:none` and the like) that MDM's SVG reader warned about each time they were drawn, 1,385 lines for one look at them all, and those warnings filled the end of the log a report includes ([#767](https://github.com/anefzaoui/misterdownloadmanager/issues/767)). The icons look the same.

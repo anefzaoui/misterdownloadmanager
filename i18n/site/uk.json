@@ -12314,6 +12314,10 @@
    "source": "MDM follows every kind of redirect a browser does, including \"your download starts in a moment\" pages.",
    "text": "MDM слідує за всіма видами перенаправлень, які робить браузер, включаючи сторінки «ваше завантаження почнеться за мить»."
   },
+  "bb3ef7df5542505d": {
+   "source": "A video yt-dlp downloads by itself (<g1>How a video comes down</g1>) takes a limit only as it starts: when you turn the limiter on or off, change its settings or the video's own limit, MDM stops it and starts it again with the new limit, and it goes on from where it was (the log says \"Stopped: the speed limit changed; starting again with it\"). Under the limit for all downloads, such videos share it evenly: when another starts, the ones running with more than their share start again with it; when one ends, the others keep theirs. Image galleries do the same with gallery-dl, which skips the files already saved. Other changes (torrents taking more or less of the limit for all downloads, <g2>Only while I'm using the computer</g2>) apply to the next one that starts.",
+   "text": "Відео, яке yt-dlp завантажує самостійно (<g1>Як завантажується відео</g1>), приймає обмеження лише під час запуску: коли ви вмикаєте або вимикаєте обмежувач, змінюєте його налаштування або власне обмеження відео, MDM зупиняє його та запускає знову з новим обмеженням, і воно продовжується з того місця, де було (у журналі написано «Зупинено: змінено обмеження швидкості; перезапуск із новим обмеженням»). Згідно з обмеженням для всіх завантажень, такі відео ділять його порівну: коли починається інше, ті, що працюють з більшою часткою, починаються знову з ним; коли одне закінчується, інші зберігають свою частку. Галереї зображень роблять те саме з gallery-dl, яка пропускає вже збережені файли. Інші зміни (торренти, що займають більше або менше від загального обмеження для всіх завантажень, <g2>Лише коли я використовую комп’ютер</g2>) застосовуються до наступного, що починається."
+  },
   "bb49aaf282f37cab": {
    "source": "Made for Windows. On a Mac and Linux too.",
    "text": "Створено для Windows. Також для Mac і Linux."
@@ -12849,6 +12853,10 @@
   "c3e54652a3021b62": {
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
    "text": "Відкриється вікно <g1>Додати торрент</g1>. Вставте magnet-посилання в поле <g2>Торрент</g2> або натисніть <g3>...</g3>, щоб вибрати файл <x4/>, а потім натисніть <g5>Знайти</g5>."
+  },
+  "c3e94db31bd7ff31": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: a video the site sends in pieces (HLS, DASH) comes down this many pieces at once (8 by default, 1 to 128); a video in one file is one connection whatever it says. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). <x19/> sends yt-dlp's connections (and ffmpeg's) through one network adapter, as for <x20/>; when it isn't connected, nothing starts.",
+   "text": "Завантажити відео; <x1/> приймає селектор якості з <x2/> (<x3/> = найкращий окремий файл; <x4/> = лише звук у тому вигляді, в якому він є на сайті, без конвертації; <x5/>, <x6/>, <x7/> або <x8/> = звук як MP3 з цим бітрейтом, <x9/> з найкращим змінним; <x10/> = як Opus; <x11/> = як FLAC, без втрат, але не краще, ніж звук на сайті; для конвертації потрібен ffmpeg). <x12/>: відео, яке сайт надсилає частинами (HLS, DASH), завантажується стількома частинами одночасно (8 за замовчуванням, від 1 до 128); відео в одному файлі — це одне з’єднання, незалежно від того, що там написано. <x13/> зберігає субтитри поруч: коди мов з <x14/> (<x15/>), або <x16/> для всіх, які надав завантажувач; <x17/> замість цього бере автоматичні субтитри сайту; <x18/> вбудовує їх у відео (потрібен ffmpeg, MP4 або MKV). <x19/> надсилає з’єднання yt-dlp (і ffmpeg) через один мережевий адаптер, як для <x20/>; коли він не підключений, нічого не починається."
   },
   "c4102de250d826ec": {
    "source": "50 MiB, every 2nd connection cut after 2 MiB, 4 MB/s",
@@ -16081,6 +16089,10 @@
   "f638ef4dd0b007f8": {
    "source": "Every change in detail",
    "text": "Усі зміни детально"
+  },
+  "f669d1970c8b3f96": {
+   "source": "a stream sent in many small pieces (HLS, DASH), for now;",
+   "text": "потік, що надсилається багатьма невеликими частинами (HLS, DASH), наразі;"
   },
   "f6a660460c7cc189": {
    "source": "Downloads from the browser keep the name, size and type the browser saw, so downloads behind a sign-in show correctly right away.",

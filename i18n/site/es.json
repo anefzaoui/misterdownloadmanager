@@ -12314,6 +12314,10 @@
    "source": "MDM follows every kind of redirect a browser does, including \"your download starts in a moment\" pages.",
    "text": "MDM sigue todo tipo de redireccionamiento que hace un navegador, incluidas las páginas de «tu descarga comienza en un momento»."
   },
+  "bb3ef7df5542505d": {
+   "source": "A video yt-dlp downloads by itself (<g1>How a video comes down</g1>) takes a limit only as it starts: when you turn the limiter on or off, change its settings or the video's own limit, MDM stops it and starts it again with the new limit, and it goes on from where it was (the log says \"Stopped: the speed limit changed; starting again with it\"). Under the limit for all downloads, such videos share it evenly: when another starts, the ones running with more than their share start again with it; when one ends, the others keep theirs. Image galleries do the same with gallery-dl, which skips the files already saved. Other changes (torrents taking more or less of the limit for all downloads, <g2>Only while I'm using the computer</g2>) apply to the next one that starts.",
+   "text": "Un vídeo que yt-dlp descarga por sí mismo (<g1>Cómo se descarga un vídeo</g1>) toma un límite solo al iniciar: cuando activas o desactivas el limitador, cambias su configuración o el límite propio del vídeo, MDM lo detiene y lo inicia de nuevo con el nuevo límite, y continúa desde donde estaba (el registro dice \"Detenida: ha cambiado el límite de velocidad; se inicia de nuevo con el nuevo límite\"). Bajo el límite para todas las descargas, dichos vídeos lo comparten equitativamente: cuando otro comienza, los que se ejecutan con más de su parte comienzan de nuevo con él; cuando uno termina, los otros mantienen el suyo. Las galerías de imágenes hacen lo mismo con gallery-dl, que omite los archivos ya guardados. Otros cambios (los torrents que toman más o menos del límite para todas las descargas, <g2>Solo mientras uso el equipo</g2>) se aplican al siguiente que se inicie."
+  },
   "bb49aaf282f37cab": {
    "source": "Made for Windows. On a Mac and Linux too.",
    "text": "Hecho para Windows. También en Mac y Linux."
@@ -12853,6 +12857,10 @@
   "c3e54652a3021b62": {
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
    "text": "Se abre <g1>Añadir torrent</g1>. Pega un enlace magnet en <g2>Torrent</g2> o haz clic en <g3>...</g3> para elegir un archivo <x4/>. Después, haz clic en <g5>Buscar</g5>."
+  },
+  "c3e94db31bd7ff31": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: a video the site sends in pieces (HLS, DASH) comes down this many pieces at once (8 by default, 1 to 128); a video in one file is one connection whatever it says. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). <x19/> sends yt-dlp's connections (and ffmpeg's) through one network adapter, as for <x20/>; when it isn't connected, nothing starts.",
+   "text": "Descarga un vídeo; <x1/> toma un selector de calidad de <x2/> (<x3/> = el mejor archivo único; <x4/> = solo el sonido tal como lo tiene el sitio, sin convertir; <x5/>, <x6/>, <x7/> o <x8/> = el sonido como MP3 a esa tasa de bits, <x9/> a su mejor tasa variable; <x10/> = como Opus; <x11/> = como FLAC, sin pérdidas pero no mejor que el sonido del sitio; las conversiones necesitan ffmpeg). <x12/>: un vídeo que el sitio envía en partes (HLS, DASH) se descarga con esta cantidad de partes a la vez (8 por defecto, de 1 a 128); un vídeo en un solo archivo es una conexión, diga lo que diga. <x13/> guarda los subtítulos junto a él: códigos de idioma de <x14/> (<x15/>), o <x16/> para todos los que el cargador proporcionó; <x17/> toma los subtítulos automáticos del sitio en su lugar; <x18/> los incrusta en el vídeo (necesita ffmpeg, MP4 o MKV). <x19/> envía las conexiones de yt-dlp (y las de ffmpeg) a través de un adaptador de red, como en <x20/>; cuando no está conectado, no se inicia nada."
   },
   "c4102de250d826ec": {
    "source": "50 MiB, every 2nd connection cut after 2 MiB, 4 MB/s",
@@ -16089,6 +16097,10 @@
   "f638ef4dd0b007f8": {
    "source": "Every change in detail",
    "text": "Todos los cambios en detalle"
+  },
+  "f669d1970c8b3f96": {
+   "source": "a stream sent in many small pieces (HLS, DASH), for now;",
+   "text": "una transmisión enviada en muchos trozos pequeños (HLS, DASH), por ahora;"
   },
   "f6a660460c7cc189": {
    "source": "Downloads from the browser keep the name, size and type the browser saw, so downloads behind a sign-in show correctly right away.",

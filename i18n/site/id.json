@@ -12314,6 +12314,10 @@
    "source": "MDM follows every kind of redirect a browser does, including \"your download starts in a moment\" pages.",
    "text": "MDM mengikuti setiap jenis pengalihan yang dilakukan peramban, termasuk halaman \"unduhan Anda akan dimulai sebentar lagi\"."
   },
+  "bb3ef7df5542505d": {
+   "source": "A video yt-dlp downloads by itself (<g1>How a video comes down</g1>) takes a limit only as it starts: when you turn the limiter on or off, change its settings or the video's own limit, MDM stops it and starts it again with the new limit, and it goes on from where it was (the log says \"Stopped: the speed limit changed; starting again with it\"). Under the limit for all downloads, such videos share it evenly: when another starts, the ones running with more than their share start again with it; when one ends, the others keep theirs. Image galleries do the same with gallery-dl, which skips the files already saved. Other changes (torrents taking more or less of the limit for all downloads, <g2>Only while I'm using the computer</g2>) apply to the next one that starts.",
+   "text": "Video yang diunduh yt-dlp sendiri (<g1>Cara video diunduh</g1>) hanya mengambil batas saat dimulai: ketika Anda mengaktifkan atau menonaktifkan pembatas, mengubah pengaturannya atau batas kecepatan video itu sendiri, MDM menghentikannya dan memulainya lagi dengan batas baru, dan unduhan berlanjut dari tempat unduhan berada (log mengatakan \"Berhenti: batas kecepatan berubah; memulai lagi dengan batas tersebut\"). Di bawah batas untuk semua unduhan, video tersebut membaginya secara merata: ketika unduhan lain dimulai, yang berjalan dengan lebih dari bagiannya akan dimulai lagi dengan batas tersebut; ketika satu unduhan berakhir, yang lain mempertahankan batasnya. Galeri gambar melakukan hal yang sama dengan gallery-dl, yang melewati file yang sudah disimpan. Perubahan lain (torrent mengambil lebih banyak atau lebih sedikit dari batas untuk semua unduhan, <g2>Hanya saat saya menggunakan komputer</g2>) berlaku untuk unduhan berikutnya yang dimulai."
+  },
   "bb49aaf282f37cab": {
    "source": "Made for Windows. On a Mac and Linux too.",
    "text": "Dibuat untuk Windows. Juga untuk Mac dan Linux."
@@ -12853,6 +12857,10 @@
   "c3e54652a3021b62": {
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
    "text": "Jendela <g1>Tambah torrent</g1> terbuka. Tempel tautan magnet ke <g2>Torrent</g2>, atau klik <g3>...</g3> untuk memilih file <x4/>, lalu klik <g5>Cari</g5>."
+  },
+  "c3e94db31bd7ff31": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: a video the site sends in pieces (HLS, DASH) comes down this many pieces at once (8 by default, 1 to 128); a video in one file is one connection whatever it says. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). <x19/> sends yt-dlp's connections (and ffmpeg's) through one network adapter, as for <x20/>; when it isn't connected, nothing starts.",
+   "text": "Mengunduh video; <x1/> mengambil pemilih kualitas dari <x2/> (<x3/> = file tunggal terbaik; <x4/> = hanya suara seperti yang ada di situs, tidak dikonversi; <x5/>, <x6/>, <x7/> atau <x8/> = suara sebagai MP3 pada bitrate tersebut, <x9/> pada bitrate variabel terbaiknya; <x10/> = sebagai Opus; <x11/> = sebagai FLAC, lossless tetapi tidak lebih baik dari suara situs; konversi memerlukan ffmpeg). <x12/>: video yang dikirim situs dalam beberapa bagian (HLS, DASH) diunduh sebanyak ini bagian sekaligus (8 secara default, 1 hingga 128); video dalam satu file adalah satu koneksi apa pun yang dikatakan. <x13/> menyimpan subtitle di sampingnya: kode bahasa dari <x14/> (<x15/>), atau <x16/> untuk setiap subtitle yang diberikan pengunggah; <x17/> mengambil teks otomatis situs sebagai gantinya; <x18/> menempatkannya ke dalam video (memerlukan ffmpeg, MP4 atau MKV). <x19/> mengirim koneksi yt-dlp (dan ffmpeg) melalui satu adaptor jaringan, seperti pada <x20/>; jika tidak terhubung, tidak ada yang dimulai."
   },
   "c4102de250d826ec": {
    "source": "50 MiB, every 2nd connection cut after 2 MiB, 4 MB/s",
@@ -16085,6 +16093,10 @@
   "f638ef4dd0b007f8": {
    "source": "Every change in detail",
    "text": "Setiap perubahan secara detail"
+  },
+  "f669d1970c8b3f96": {
+   "source": "a stream sent in many small pieces (HLS, DASH), for now;",
+   "text": "aliran yang dikirim dalam banyak potongan kecil (HLS, DASH), untuk saat ini;"
   },
   "f6a660460c7cc189": {
    "source": "Downloads from the browser keep the name, size and type the browser saw, so downloads behind a sign-in show correctly right away.",

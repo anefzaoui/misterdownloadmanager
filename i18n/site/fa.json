@@ -12318,6 +12318,10 @@
    "source": "MDM follows every kind of redirect a browser does, including \"your download starts in a moment\" pages.",
    "text": "MDM از هر نوع تغییر مسیری که یک مرورگر انجام می‌دهد، از جمله صفحات «بارگیری شما لحظاتی دیگر آغاز می‌شود»، پیروی می‌کند."
   },
+  "bb3ef7df5542505d": {
+   "source": "A video yt-dlp downloads by itself (<g1>How a video comes down</g1>) takes a limit only as it starts: when you turn the limiter on or off, change its settings or the video's own limit, MDM stops it and starts it again with the new limit, and it goes on from where it was (the log says \"Stopped: the speed limit changed; starting again with it\"). Under the limit for all downloads, such videos share it evenly: when another starts, the ones running with more than their share start again with it; when one ends, the others keep theirs. Image galleries do the same with gallery-dl, which skips the files already saved. Other changes (torrents taking more or less of the limit for all downloads, <g2>Only while I'm using the computer</g2>) apply to the next one that starts.",
+   "text": "ویدیویی که yt-dlp خودش بارگیری می‌کند (<g1>نحوه بارگیری ویدیو</g1>) فقط هنگام شروع، یک محدودیت را می‌پذیرد: وقتی محدودکننده را روشن یا خاموش می‌کنید، تنظیمات آن یا محدودیت مخصوص ویدیو را تغییر می‌دهید، MDM آن را متوقف کرده و دوباره با محدودیت جدید شروع می‌کند، و از جایی که بود ادامه می‌یابد (گزارش می‌گوید «متوقف شد: محدودیت سرعت تغییر کرد؛ دوباره با آن شروع می‌شود»). تحت محدودیت برای همه بارگیری‌ها، چنین ویدیوهایی آن را به‌طور مساوی به اشتراک می‌گذارند: وقتی دیگری شروع می‌شود، آن‌هایی که با سهم بیشتری در حال اجرا بودند، دوباره با آن شروع می‌شوند؛ وقتی یکی تمام می‌شود، بقیه سهم خود را حفظ می‌کنند. گالری‌های تصویر نیز همین کار را با gallery-dl انجام می‌دهند که از فایل‌های از قبل ذخیره‌شده صرف‌نظر می‌کند. سایر تغییرات (تورنت‌هایی که سهم بیشتری یا کمتری از محدودیت برای همه بارگیری‌ها را می‌گیرند، <g2>فقط زمانی که از رایانه استفاده می‌کنم</g2>) برای مورد بعدی که شروع می‌شود اعمال می‌شوند."
+  },
   "bb49aaf282f37cab": {
    "source": "Made for Windows. On a Mac and Linux too.",
    "text": "ساخته‌شده برای Windows. همچنین برای مک و Linux."
@@ -12857,6 +12861,10 @@
   "c3e54652a3021b62": {
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
    "text": "پنجره <g1>افزودن تورنت</g1> باز می‌شود. پیوند مگنت را در <g2>تورنت</g2> جای‌گذاری کنید، یا برای انتخاب فایل <x4/> روی <g3>...</g3> کلیک کنید و سپس روی <g5>جستجو</g5> کلیک کنید."
+  },
+  "c3e94db31bd7ff31": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: a video the site sends in pieces (HLS, DASH) comes down this many pieces at once (8 by default, 1 to 128); a video in one file is one connection whatever it says. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). <x19/> sends yt-dlp's connections (and ffmpeg's) through one network adapter, as for <x20/>; when it isn't connected, nothing starts.",
+   "text": "یک ویدیو را بارگیری می‌کند؛ <x1/> یک انتخاب‌گر کیفیت را از <x2/> می‌گیرد (<x3/> = بهترین فایل تکی؛ <x4/> = فقط صدا همان‌طور که سایت دارد، بدون تبدیل؛ <x5/>، <x6/>، <x7/> یا <x8/> = صدا به صورت MP3 با آن بیت‌ریت، <x9/> با بهترین بیت‌ریت متغیر؛ <x10/> = به صورت Opus؛ <x11/> = به صورت FLAC، بدون افت کیفیت اما بهتر از صدای سایت نیست؛ تبدیل‌ها به ffmpeg نیاز دارند). <x12/>: ویدیویی که سایت به صورت قطعات (HLS, DASH) ارسال می‌کند، با این تعداد قطعه هم‌زمان (8 به‌طور پیش‌فرض، 1 تا 128) بارگیری می‌شود؛ ویدیویی که در یک فایل است، صرف‌نظر از این عدد، با یک اتصال بارگیری می‌شود. <x13/> زیرنویس‌ها را در کنار آن ذخیره می‌کند: کدهای زبان از <x14/> (<x15/>)، یا <x16/> برای هر زیرنویسی که آپلودکننده ارائه کرده است؛ <x17/> به جای آن زیرنویس‌های خودکار سایت را می‌گیرد؛ <x18/> آن‌ها را در ویدیو قرار می‌دهد (به ffmpeg، MP4 یا MKV نیاز دارد). <x19/> اتصالات yt-dlp (و ffmpeg) را از طریق یک آداپتور شبکه ارسال می‌کند، مانند <x20/>؛ وقتی متصل نباشد، هیچ‌چیز شروع نمی‌شود."
   },
   "c4102de250d826ec": {
    "source": "50 MiB, every 2nd connection cut after 2 MiB, 4 MB/s",
@@ -16093,6 +16101,10 @@
   "f638ef4dd0b007f8": {
    "source": "Every change in detail",
    "text": "تمام تغییرات با جزئیات"
+  },
+  "f669d1970c8b3f96": {
+   "source": "a stream sent in many small pieces (HLS, DASH), for now;",
+   "text": "یک پخش که فعلا در قطعات کوچک زیادی ارسال می‌شود (HLS, DASH)؛"
   },
   "f6a660460c7cc189": {
    "source": "Downloads from the browser keep the name, size and type the browser saw, so downloads behind a sign-in show correctly right away.",

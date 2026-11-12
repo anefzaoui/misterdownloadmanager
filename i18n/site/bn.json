@@ -12318,6 +12318,10 @@
    "source": "MDM follows every kind of redirect a browser does, including \"your download starts in a moment\" pages.",
    "text": "MDM ব্রাউজার যে সব ধরনের রিডাইরেক্ট করে, তা অনুসরণ করে, যার মধ্যে “আপনার ডাউনলোড কিছুক্ষণ পর শুরু হবে” পৃষ্ঠাগুলিও রয়েছে।"
   },
+  "bb3ef7df5542505d": {
+   "source": "A video yt-dlp downloads by itself (<g1>How a video comes down</g1>) takes a limit only as it starts: when you turn the limiter on or off, change its settings or the video's own limit, MDM stops it and starts it again with the new limit, and it goes on from where it was (the log says \"Stopped: the speed limit changed; starting again with it\"). Under the limit for all downloads, such videos share it evenly: when another starts, the ones running with more than their share start again with it; when one ends, the others keep theirs. Image galleries do the same with gallery-dl, which skips the files already saved. Other changes (torrents taking more or less of the limit for all downloads, <g2>Only while I'm using the computer</g2>) apply to the next one that starts.",
+   "text": "একটি ভিডিও যা yt-dlp নিজে ডাউনলোড করে (<g1>একটি ভিডিও কীভাবে ডাউনলোড হয়</g1>) সেটি কেবল শুরু হওয়ার সময় একটি সীমা নেয়: যখন আপনি লিমিটার চালু বা বন্ধ করেন, এর সেটিংস বা ভিডিওর নিজস্ব সীমা পরিবর্তন করেন, MDM এটিকে থামিয়ে দেয় এবং নতুন সীমা দিয়ে আবার শুরু করে, এবং এটি যেখানে ছিল সেখান থেকে চলতে থাকে (লগ বলে \"থামানো হয়েছে: গতির সীমা পরিবর্তিত হয়েছে; নতুন সীমা দিয়ে আবার শুরু হচ্ছে\")। সমস্ত ডাউনলোডের জন্য সীমার অধীনে, এই ধরনের ভিডিওগুলি এটিকে সমানভাবে ভাগ করে: যখন অন্য একটি শুরু হয়, তখন যেগুলি তাদের অংশের চেয়ে বেশি নিয়ে চলছিল সেগুলি আবার নতুন সীমা দিয়ে শুরু হয়; যখন একটি শেষ হয়, তখন অন্যগুলি তাদের সীমা বজায় রাখে। ইমেজ গ্যালারিগুলি gallery-dl দিয়ে একই কাজ করে, যা ইতিমধ্যে সংরক্ষিত ফাইলগুলি এড়িয়ে যায়। অন্যান্য পরিবর্তন (টরেন্টগুলি সমস্ত ডাউনলোডের জন্য সীমার বেশি বা কম নেওয়া, <g2>শুধুমাত্র যখন আমি কম্পিউটার ব্যবহার করছি</g2>) পরবর্তী যে ডাউনলোড শুরু হবে সেটিতে প্রযোজ্য হয়।"
+  },
   "bb49aaf282f37cab": {
    "source": "Made for Windows. On a Mac and Linux too.",
    "text": "Windows-এর জন্য তৈরি। Mac এবং Linux-এও চলে।"
@@ -12857,6 +12861,10 @@
   "c3e54652a3021b62": {
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
    "text": "<g1>টরেন্ট যোগ করুন</g1> খুলবে। <g2>টরেন্ট</g2> এ একটি ম্যাগনেট লিঙ্ক পেস্ট করুন, অথবা একটি <x4/> ফাইল বেছে নিতে <g3>...</g3> এ ক্লিক করুন, তারপর <g5>খুঁজুন</g5> এ ক্লিক করুন।"
+  },
+  "c3e94db31bd7ff31": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: a video the site sends in pieces (HLS, DASH) comes down this many pieces at once (8 by default, 1 to 128); a video in one file is one connection whatever it says. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). <x19/> sends yt-dlp's connections (and ffmpeg's) through one network adapter, as for <x20/>; when it isn't connected, nothing starts.",
+   "text": "একটি ভিডিও ডাউনলোড করুন; <x1/> <x2/> থেকে একটি গুণমানের নির্বাচক নেয় (<x3/> = সেরা একক ফাইল; <x4/> = সাইটে যেমন আছে তেমন শুধু শব্দ, রূপান্তরিত নয়; <x5/>, <x6/>, <x7/> বা <x8/> = সেই বিটরেটে MP3 হিসাবে শব্দ, <x9/> তার সেরা পরিবর্তনশীল বিটরেটে; <x10/> = Opus হিসাবে; <x11/> = FLAC হিসাবে, লসলেস কিন্তু সাইটের শব্দের চেয়ে ভালো নয়; রূপান্তরের জন্য ffmpeg প্রয়োজন)। <x12/>: সাইট থেকে খণ্ড খণ্ড করে আসা একটি ভিডিও (HLS, DASH) একবারে এতগুলি খণ্ডে ডাউনলোড হয় (ডিফল্টরূপে 8, 1 থেকে 128); একটি একক ফাইল হিসাবে আসা ভিডিওর জন্য সংযোগের সংখ্যা যাই বলা হোক না কেন, সেটি একটিই থাকে। <x13/> এর পাশে সাবটাইটেল সংরক্ষণ করে: <x14/> থেকে ভাষার কোড (<x15/>), অথবা আপলোডকারী যতগুলি দিয়েছেন তার সবগুলির জন্য <x16/>; <x17/> এর পরিবর্তে সাইটের স্বয়ংক্রিয় ক্যাপশন নেয়; <x18/> সেগুলিকে ভিডিওতে রাখে (ffmpeg, MP4 বা MKV প্রয়োজন)। <x19/> yt-dlp-এর সংযোগগুলি (এবং ffmpeg-এর) একটি নেটওয়ার্ক অ্যাডাপ্টারের মাধ্যমে পাঠায়, যেমন <x20/>-এর জন্য; যখন এটি সংযুক্ত থাকে না, তখন কিছুই শুরু হয় না।"
   },
   "c4102de250d826ec": {
    "source": "50 MiB, every 2nd connection cut after 2 MiB, 4 MB/s",
@@ -16093,6 +16101,10 @@
   "f638ef4dd0b007f8": {
    "source": "Every change in detail",
    "text": "বিস্তারিত প্রতিটি পরিবর্তন"
+  },
+  "f669d1970c8b3f96": {
+   "source": "a stream sent in many small pieces (HLS, DASH), for now;",
+   "text": "একটি স্ট্রিম যা এখনকার জন্য অনেক ছোট ছোট টুকরোতে পাঠানো হয়েছে (HLS, DASH);"
   },
   "f6a660460c7cc189": {
    "source": "Downloads from the browser keep the name, size and type the browser saw, so downloads behind a sign-in show correctly right away.",
