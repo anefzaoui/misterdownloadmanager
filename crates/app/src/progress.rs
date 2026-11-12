@@ -1318,7 +1318,7 @@ impl Progress {
             _ if let Some(checking) = item.torrent_checking() => checking,
             // After the last byte: the file checked, a video's streams joined (#736), as the
             // list says, not "Connecting...".
-            _ if let Some(finishing) = item.finishing() => finishing,
+            _ if let Some(finishing) = item.finishing(false) => finishing,
             // A torrent its debrid service is downloading (#44).
             Status::Downloading if item.at_service().is_some() => {
                 item.at_service().unwrap_or_default()
@@ -1333,19 +1333,20 @@ impl Progress {
                     && item.rate() > 0.0);
                 // Every byte in and none on its way (#736): the last of it written out, the
                 // file named; nothing is connecting.
-                let completing = snap.is_some_and(|s| {
-                    s.state == mdm_engine::download::State::Completing
-                        || (s.size.is_some_and(|t| t > 0 && s.downloaded >= t)
-                            && !s
-                                .connections
-                                .iter()
-                                .any(|c| matches!(c.status, ConnStatus::Connecting)))
-                });
-                if receiving {
-                    crate::i18n::t("Receiving data...")
-                } else if completing {
+                let completing = item.torrent.is_none()
+                    && snap.is_some_and(|s| {
+                        s.state == mdm_engine::download::State::Completing
+                            || (s.size.is_some_and(|t| t > 0 && s.downloaded >= t)
+                                && !s
+                                    .connections
+                                    .iter()
+                                    .any(|c| matches!(c.status, ConnStatus::Connecting)))
+                    });
+                if completing {
                     // i18n: a download's status: every byte is in, the file is being written out and given its name
                     crate::i18n::t("Finishing...")
+                } else if receiving {
+                    crate::i18n::t("Receiving data...")
                 } else {
                     crate::i18n::t("Connecting...")
                 }

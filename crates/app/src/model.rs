@@ -1104,19 +1104,30 @@ impl Item {
 
     /// After the last byte, while the file is checked against its checksum or a video's
     /// streams are joined (#736): "Verifying... (45%)", "Merging...", with how far it is when
-    /// that's known. The list's Status column and the progress window say the same.
-    pub fn finishing(&self) -> Option<String> {
+    /// that's known. `short`: the list's narrow Status column, "45% verified", the percentage
+    /// first (as "45% at Real-Debrid"); the progress window says it whole.
+    pub fn finishing(&self, short: bool) -> Option<String> {
         let s = self.snap.as_ref()?;
         let (plain, with_percent) = match s.state {
             // i18n: a download's status while the finished file is checked against its checksum
             State::Verifying => (crate::i18n::t("Verifying..."), {
-                // i18n: a download's status while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%"
-                crate::i18n::t("Verifying... ({percent})")
+                if short {
+                    // i18n: the list's narrow Status column while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%": keep it first, the column is narrow
+                    crate::i18n::t("{percent} verified")
+                } else {
+                    // i18n: a download's status while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%"
+                    crate::i18n::t("Verifying... ({percent})")
+                }
             }),
             // i18n: a video's status while its picture and sound are joined into one file (ffmpeg)
             State::Merging => (crate::i18n::t("Merging..."), {
-                // i18n: a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
-                crate::i18n::t("Merging... ({percent})")
+                if short {
+                    // i18n: the list's narrow Status column while a video's picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%": keep it first, the column is narrow
+                    crate::i18n::t("{percent} merged")
+                } else {
+                    // i18n: a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
+                    crate::i18n::t("Merging... ({percent})")
+                }
             }),
             _ => return None,
         };
@@ -1136,7 +1147,7 @@ impl Item {
         if let Some(checking) = self.torrent_checking() {
             return checking;
         }
-        if let Some(finishing) = self.finishing() {
+        if let Some(finishing) = self.finishing(true) {
             return finishing;
         }
         match self.status {
@@ -1382,7 +1393,8 @@ mod tests {
             ..Default::default()
         };
         it.snap = Some(super::tool_snapshot(p.clone(), &url));
-        assert_eq!(it.status_text(), "Merging... (45%)");
+        assert_eq!(it.status_text(), "45% merged");
+        assert_eq!(it.finishing(false).as_deref(), Some("Merging... (45%)"));
         p.merging = Some(None);
         it.snap = Some(super::tool_snapshot(p.clone(), &url));
         assert_eq!(it.status_text(), "Merging...");
@@ -1390,7 +1402,8 @@ mod tests {
         s.state = State::Verifying;
         s.finishing = Some(0.5);
         it.snap = Some(s);
-        assert_eq!(it.status_text(), "Verifying... (50%)");
+        assert_eq!(it.status_text(), "50% verified");
+        assert_eq!(it.finishing(false).as_deref(), Some("Verifying... (50%)"));
     }
 
     /// Without a size there's no share to show: no 0 % (from #384).
