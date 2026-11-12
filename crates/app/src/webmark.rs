@@ -22,6 +22,8 @@ pub fn set(on: bool) {
 /// zone information in file attachments" (`SaveZoneInformation`, `win32::zone_policy`): the
 /// computer's value, where it is set, wins over the user's; 1 keeps none, 2 or none set keeps
 /// it.
+// Asked on Windows only (its tests run everywhere).
+#[cfg_attr(not(windows), allow(dead_code))]
 pub fn keeps_zones(machine: Option<u32>, user: Option<u32>) -> bool {
     machine.or(user) != Some(1)
 }
@@ -42,7 +44,9 @@ fn system_keeps() -> bool {
     // macOS has no such policy for its quarantine attribute (Gatekeeper's, which only
     // MDM's option leaves out), nor Linux for its origin attributes, which nothing enforces.
     #[cfg(not(windows))]
-    true
+    {
+        true
+    }
 }
 
 /// Mark `path`, a file being downloaded (or just downloaded) from `url` (`referrer`'s page), as
