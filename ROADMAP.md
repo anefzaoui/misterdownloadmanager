@@ -556,6 +556,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Linux: no freeze of the window where the session bus doesn't answer (a session started
+  without D-Bus, a bus that hangs): the tray icon is set up beside the window, which carries on
+  without it until the bus answers, and gets it then, however late
+  ([#828](https://github.com/anefzaoui/misterdownloadmanager/issues/828))
 - ✅ A video a site sends through a program's address (`stream.php?file=…`,
   `remote_control.php`) is named by what it is: the page's title (or the address's `file=` name)
   and its real type, `Lecture.mp4`, not `stream.php`; the browser's media list shows that name
