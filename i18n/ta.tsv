@@ -1682,6 +1682,10 @@
 #. noun: a file of no known type
 #, machine
 	File	கோப்பு
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Linux
+#, machine
+	File managers show where the files marked this way came from. Unticked, no download is marked.	கோப்பு மேலாளர்கள் இந்த வழியில் குறிக்கப்பட்ட கோப்புகள் எங்கிருந்து வந்தன என்பதைக் காட்டுகின்றன. தேர்வு நீக்கப்பட்டால், எந்தப் பதிவிறக்கமும் குறிக்கப்படாது.
 #. text in the Scheduler window
 #, machine
 	File Name	கோப்பு பெயர்
@@ -2495,6 +2499,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Macau	மக்காவ்
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on macOS
+#, machine
+	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	இந்த வழியில் குறிக்கப்பட்ட கோப்புகளை macOS சரிபார்க்கிறது: ஒரு நிரல் முதல் முறையாகத் திறக்கப்படுவதற்கு முன் Gatekeeper சரிபார்க்கும். தேர்வு செய்யப்படாவிட்டால், எந்தப் பதிவிறக்கமும் குறிக்கப்படாது.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2546,6 +2554,9 @@
 #. text in the Scheduler window
 #, machine
 	March	மார்ச்
+#. checkbox in the Options window
+#, machine
+	Mark downloaded files as coming from the internet	பதிவிறக்கப்பட்ட கோப்புகளை இணையத்திலிருந்து வந்ததாகக் குறிக்கவும்
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5340,6 +5351,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows ஆனது செருகப்பட்டிருக்கும்போது மட்டுமே விழித்திருக்கும் டைமர்களை அனுமதிக்கிறது
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Windows
+#, machine
+	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows இந்த வழியில் குறிக்கப்பட்ட கோப்புகளைச் சரிபார்க்கிறது: ஒரு நிரல் முதல் முறையாக இயங்குவதற்கு முன் SmartScreen, ஒரு ஆவணம் திறப்பதற்கு முன் Office இன் பாதுகாக்கப்பட்ட பார்வை. தேர்வு நீக்கப்பட்டால், அல்லது Windows இன் கொள்கையான “கோப்பு இணைப்புகளில் மண்டலத் தகவலைப் பாதுகாக்க வேண்டாம்” என்பதன் கீழ், எந்தப் பதிவிறக்கமும் குறிக்கப்படாது.
 #. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine

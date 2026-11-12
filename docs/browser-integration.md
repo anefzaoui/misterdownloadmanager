@@ -97,7 +97,7 @@ When MDM takes a download, the browser's own copy is cancelled and removed from 
 
 Downloads from a private window use that window's cookies, never the normal ones, and aren't kept in MDM's list after it closes.
 
-Files MDM downloads from the browser are marked as coming from the internet, as the browser marks its own: Windows checks a program with SmartScreen before it runs and Office opens a document in Protected View.
+Files MDM downloads from the browser are marked as coming from the internet, as the browser marks its own: Windows checks a program with SmartScreen before it runs and Office opens a document in Protected View. Like the browser, MDM leaves the mark out when Windows' Group Policy **Do not preserve zone information in file attachments** is on; [Options → Save to](options.md#save-to) can turn it off for MDM alone.
 
 ## Files the browser would open
 

@@ -1682,6 +1682,10 @@
 #. noun: a file of no known type
 #, machine
 	File	Tiedosto
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Linux
+#, machine
+	File managers show where the files marked this way came from. Unticked, no download is marked.	Tiedostonhallinnat näyttävät tällä tavoin merkittyjen tiedostojen alkuperän. Jos valintaa ei ole tehty, latauksia ei merkitä.
 #. text in the Scheduler window
 #, machine
 	File Name	Tiedostonimi
@@ -2495,6 +2499,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Macau	Macao
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on macOS
+#, machine
+	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS tarkistaa tällä tavoin merkityt tiedostot: Gatekeeper ennen ohjelman ensimmäistä avaamista. Jos valintaa ei ole tehty, latauksia ei merkitä.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2546,6 +2554,9 @@
 #. text in the Scheduler window
 #, machine
 	March	Maaliskuu
+#. checkbox in the Options window
+#, machine
+	Mark downloaded files as coming from the internet	Merkitse ladatut tiedostot internetistä peräisin oleviksi
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5340,6 +5351,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows sallii herätysajastimet vain verkkovirtaan kytkettynä
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Windows
+#, machine
+	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows tarkistaa tällä tavoin merkityt tiedostot: SmartScreen ennen ohjelman ensimmäistä suorittamista, Officen suojattu näkymä ennen asiakirjan avaamista. Jos valintaa ei ole tehty tai Windowsin käytäntö ”Älä säilytä vyöhyketietoja tiedostoliitteissä” on käytössä, latauksia ei merkitä.
 #. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine

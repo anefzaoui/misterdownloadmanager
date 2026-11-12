@@ -1682,6 +1682,10 @@
 #. noun: a file of no known type
 #, machine
 	File	Tệp
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Linux
+#, machine
+	File managers show where the files marked this way came from. Unticked, no download is marked.	Trình quản lý tệp sẽ hiển thị nguồn gốc của các tệp được đánh dấu theo cách này. Nếu bỏ chọn, không có bản tải xuống nào được đánh dấu.
 #. text in the Scheduler window
 #, machine
 	File Name	Tên tệp
@@ -2495,6 +2499,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Macau	Macau
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on macOS
+#, machine
+	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS kiểm tra các tệp được đánh dấu theo cách này: Gatekeeper trước khi một chương trình mở lần đầu. Nếu bỏ chọn, không có bản tải xuống nào được đánh dấu.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2546,6 +2554,9 @@
 #. text in the Scheduler window
 #, machine
 	March	tháng 3
+#. checkbox in the Options window
+#, machine
+	Mark downloaded files as coming from the internet	Đánh dấu các tệp đã tải xuống là đến từ internet
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5340,6 +5351,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows chỉ cho phép hẹn giờ đánh thức khi cắm điện
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Windows
+#, machine
+	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows kiểm tra các tệp được đánh dấu theo cách này: SmartScreen trước khi một chương trình chạy lần đầu, Chế độ xem được bảo vệ của Office trước khi một tài liệu mở. Nếu bỏ chọn, hoặc theo chính sách của Windows “Không giữ lại thông tin vùng trong tệp đính kèm”, không có bản tải xuống nào được đánh dấu.
 #. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine

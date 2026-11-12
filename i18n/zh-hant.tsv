@@ -1682,6 +1682,10 @@
 #. noun: a file of no known type
 #, machine
 	File	檔案
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Linux
+#, machine
+	File managers show where the files marked this way came from. Unticked, no download is marked.	檔案管理員會顯示以這種方式標記的檔案來源。如果未勾選，則不會標記任何下載項目。
 #. text in the Scheduler window
 #, machine
 	File Name	檔案名稱
@@ -2495,6 +2499,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Macau	澳門
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on macOS
+#, machine
+	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS 會檢查以這種方式標記的檔案：Gatekeeper 會在程式首次開啟前檢查。如果未勾選，則不會標記任何下載項目。
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2546,6 +2554,9 @@
 #. text in the Scheduler window
 #, machine
 	March	三月
+#. checkbox in the Options window
+#, machine
+	Mark downloaded files as coming from the internet	將下載的檔案標記為來自網際網路
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5340,6 +5351,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows 僅在接上電源時才允許喚醒計時器
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Windows
+#, machine
+	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows 會檢查以這種方式標記的檔案：SmartScreen 會在程式首次執行前檢查，Office 的受保護的檢視會在文件開啟前檢查。如果未勾選，或在 Windows 的「不保留檔案附件中的區域資訊」原則下，則不會標記任何下載項目。
 #. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine

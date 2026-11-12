@@ -1682,6 +1682,10 @@
 #. noun: a file of no known type
 #, machine
 	File	ফাইল
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Linux
+#, machine
+	File managers show where the files marked this way came from. Unticked, no download is marked.	ফাইল ম্যানেজারগুলো এভাবে চিহ্নিত ফাইলগুলো কোথা থেকে এসেছে তা দেখায়। টিক চিহ্ন না থাকলে, কোনো ডাউনলোড চিহ্নিত করা হয় না।
 #. text in the Scheduler window
 #, machine
 	File Name	ফাইলের নাম
@@ -2495,6 +2499,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Macau	ম্যাকাও
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on macOS
+#, machine
+	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS এভাবে চিহ্নিত ফাইলগুলো পরীক্ষা করে: একটি প্রোগ্রাম প্রথমবার খোলার আগে গেটকিপার। টিক চিহ্ন না থাকলে, কোনো ডাউনলোড চিহ্নিত করা হয় না।
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2546,6 +2554,9 @@
 #. text in the Scheduler window
 #, machine
 	March	মার্চ
+#. checkbox in the Options window
+#, machine
+	Mark downloaded files as coming from the internet	ডাউনলোড করা ফাইলগুলোকে ইন্টারনেট থেকে আসা হিসেবে চিহ্নিত করুন
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5340,6 +5351,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows ওয়েক টাইমার শুধুমাত্র প্লাগ ইন করা অবস্থায় অনুমোদন করে
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Windows
+#, machine
+	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows এভাবে চিহ্নিত ফাইলগুলো পরীক্ষা করে: একটি প্রোগ্রাম প্রথমবার চালু হওয়ার আগে SmartScreen, একটি ডকুমেন্ট খোলার আগে Office-এর Protected View। টিক চিহ্ন না থাকলে, অথবা Windows-এর নীতি “ফাইল অ্যাটাচমেন্টে জোন তথ্য সংরক্ষণ করবেন না” এর অধীনে, কোনো ডাউনলোড চিহ্নিত করা হয় না।
 #. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine

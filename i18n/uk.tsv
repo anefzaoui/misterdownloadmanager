@@ -1682,6 +1682,10 @@
 #. noun: a file of no known type
 #, machine
 	File	Файл
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Linux
+#, machine
+	File managers show where the files marked this way came from. Unticked, no download is marked.	Файлові менеджери показують, звідки надійшли файли, позначені таким чином. Якщо прапорець не встановлено, жодне завантаження не позначається.
 #. text in the Scheduler window
 #, machine
 	File Name	Ім'я файлу
@@ -2495,6 +2499,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Macau	Макао
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on macOS
+#, machine
+	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS перевіряє файли, позначені таким чином: Gatekeeper перед першим відкриттям програми. Якщо прапорець не встановлено, жодне завантаження не позначається.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2546,6 +2554,9 @@
 #. text in the Scheduler window
 #, machine
 	March	Березень
+#. checkbox in the Options window
+#, machine
+	Mark downloaded files as coming from the internet	Позначати завантажені файли як такі, що надійшли з інтернету
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5340,6 +5351,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows дозволяє таймери пробудження лише під час підключення до мережі
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Windows
+#, machine
+	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows перевіряє файли, позначені таким чином: SmartScreen перед першим запуском програми, захищений перегляд Office перед відкриттям документа. Якщо прапорець не встановлено або згідно з політикою Windows «Не зберігати інформацію про зону вкладень файлів», жодне завантаження не позначається.
 #. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine

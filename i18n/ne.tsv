@@ -1682,6 +1682,10 @@
 #. noun: a file of no known type
 #, machine
 	File	फाइल
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Linux
+#, machine
+	File managers show where the files marked this way came from. Unticked, no download is marked.	फाइल प्रबन्धकहरूले यसरी चिन्ह लगाइएका फाइलहरू कहाँबाट आएका हुन् भनी देखाउँछन्। चयन नगर्दा कुनै पनि डाउनलोड चिन्ह लगाइँदैन।
 #. text in the Scheduler window
 #, machine
 	File Name	फाइलको नाम
@@ -2483,6 +2487,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Macau	मकाउ
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on macOS
+#, machine
+	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS ले यसरी चिन्ह लगाइएका फाइलहरू जाँच गर्छ: एउटा कार्यक्रम पहिलो पटक खुल्नुअघि गेटकीपर। अनटिक गर्दा, कुनै पनि डाउनलोड चिन्ह लगाइँदैन।
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2534,6 +2542,9 @@
 #. text in the Scheduler window
 #, machine
 	March	मार्च
+#. checkbox in the Options window
+#, machine
+	Mark downloaded files as coming from the internet	डाउनलोड गरिएका फाइलहरू इन्टरनेटबाट आएको रूपमा चिन्ह लगाउनुहोस्
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5328,6 +5339,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows ले प्लग इन गर्दा मात्र वेक टाइमरहरूलाई अनुमति दिन्छ
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Windows
+#, machine
+	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows ले यसरी चिन्ह लगाइएका फाइलहरू जाँच गर्छ: कार्यक्रम पहिलो पटक चल्नुअघि SmartScreen ले र कागजात खुल्नुअघि Office को Protected View ले। चयन नगर्दा वा Windows को “फाइल एट्याचमेन्टहरूमा क्षेत्र जानकारी सुरक्षित नगर्नुहोस्” नीतिअन्तर्गत कुनै पनि डाउनलोड चिन्ह लगाइँदैन।
 #. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine

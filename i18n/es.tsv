@@ -1682,6 +1682,10 @@
 #. noun: a file of no known type
 #, machine
 	File	Archivo
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Linux
+#, machine
+	File managers show where the files marked this way came from. Unticked, no download is marked.	Los administradores de archivos muestran el origen de los archivos marcados de esta forma. Si la casilla no está marcada, no se marca ninguna descarga.
 #. text in the Scheduler window
 #, machine
 	File Name	Nombre de archivo
@@ -2495,6 +2499,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Macau	Macao
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on macOS
+#, machine
+	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS comprueba los archivos marcados de esta forma: Gatekeeper antes de que un programa se abra por primera vez. Si no está marcada, no se marca ninguna descarga.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2546,6 +2554,9 @@
 #. text in the Scheduler window
 #, machine
 	March	Marzo
+#. checkbox in the Options window
+#, machine
+	Mark downloaded files as coming from the internet	Marcar los archivos descargados como procedentes de Internet
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5340,6 +5351,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows permite los temporizadores de reactivación solo mientras está enchufado
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Windows
+#, machine
+	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows comprueba los archivos marcados de esta forma con SmartScreen antes de que un programa se ejecute por primera vez y con la Vista protegida de Office antes de que se abra un documento. Si la casilla no está marcada o está activa la directiva de Windows «No conservar la información de zona en los archivos adjuntos», no se marca ninguna descarga.
 #. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine

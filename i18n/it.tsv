@@ -1277,6 +1277,10 @@
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 	File	File
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Linux
+#, machine
+	File managers show where the files marked this way came from. Unticked, no download is marked.	I file manager mostrano la provenienza dei file contrassegnati in questo modo. Se deselezionato, nessun download viene contrassegnato.
 #. text in the Scheduler window
 	File Name	Nome file
 #. text in the Download video window
@@ -1885,6 +1889,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Macau	Macao
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on macOS
+#, machine
+	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS verifica i file contrassegnati in questo modo: Gatekeeper prima che un programma si apra per la prima volta. Se deselezionato, nessun download viene contrassegnato.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Madagascar	Madagascar
@@ -1923,6 +1931,9 @@
 	Map the port on the router (UPnP)	Apri la porta sul router (UPnP)
 #. text in the Scheduler window
 	March	marzo
+#. checkbox in the Options window
+#, machine
+	Mark downloaded files as coming from the internet	Contrassegna i file scaricati come provenienti da Internet
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Marshall Islands	Isole Marshall
@@ -4012,6 +4023,10 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 	Windows allows wake timers only while plugged in	Windows consente i timer di riattivazione solo con l'alimentazione collegata
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Windows
+#, machine
+	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows verifica i file contrassegnati in questo modo: SmartScreen prima che un programma venga eseguito per la prima volta, Visualizzazione protetta di Office prima che un documento si apra. Se deselezionato, o in base ai criteri di Windows "Non conservare le informazioni sulla zona negli allegati", nessun download viene contrassegnato.
 #. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Gestione credenziali di Windows non ha risposto, quindi gli accessi e le password sono conservati nelle impostazioni di MDM, crittografate per il tuo account Windows.

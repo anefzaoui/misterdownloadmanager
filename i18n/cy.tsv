@@ -1682,6 +1682,10 @@
 #. noun: a file of no known type
 #, machine
 	File	Ffeil
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Linux
+#, machine
+	File managers show where the files marked this way came from. Unticked, no download is marked.	Mae rheolwyr ffeiliau yn dangos o ble y daeth y ffeiliau sydd wedi'u marcio fel hyn. Os nad yw'r opsiwn wedi'i dicio, ni chaiff unrhyw lawrlwythiad ei farcio.
 #. text in the Scheduler window
 #, machine
 	File Name	Enw Ffeil
@@ -2495,6 +2499,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Macau	Macau
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on macOS
+#, machine
+	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	Mae macOS yn gwirio'r ffeiliau sydd wedi'u marcio fel hyn: Gatekeeper cyn i raglen agor am y tro cyntaf. Os nad yw'r opsiwn wedi'i dicio, ni chaiff unrhyw lawrlwythiad ei farcio.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2546,6 +2554,9 @@
 #. text in the Scheduler window
 #, machine
 	March	Mawrth
+#. checkbox in the Options window
+#, machine
+	Mark downloaded files as coming from the internet	Marcio ffeiliau sydd wedi'u lawrlwytho fel rhai sy'n dod o'r rhyngrwyd
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5340,6 +5351,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Mae Windows yn caniatáu amseryddion deffro dim ond tra'n plygio i mewn
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Windows
+#, machine
+	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Mae Windows yn gwirio'r ffeiliau sydd wedi'u marcio fel hyn: SmartScreen cyn i raglen redeg am y tro cyntaf, Golwg Warchodedig Office cyn i ddogfen agor. Os nad yw'r opsiwn wedi'i dicio, neu os yw polisi Windows “Peidio â chadw gwybodaeth parth mewn atodiadau ffeil” mewn grym, ni chaiff unrhyw lawrlwythiad ei farcio.
 #. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine

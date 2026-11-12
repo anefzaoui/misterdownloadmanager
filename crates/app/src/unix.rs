@@ -2067,7 +2067,9 @@ pub fn open_in(program: &Path, url: &str) {
 
 /// The counterpart of win32's Mark-of-the-Web on a file being downloaded from `url`: macOS'
 /// quarantine attribute (Gatekeeper checks a program before its first start, as for a browser's
-/// download), and on Linux the freedesktop.org origin attributes file managers show.
+/// download), and on Linux the freedesktop.org origin attributes file managers show. Through
+/// `webmark::mark`, which asks Options' "Mark downloaded files as coming from the internet" first
+/// (neither system has a policy like Windows' "Do not preserve zone information").
 pub fn mark_downloaded(path: &Path, url: &str, referrer: Option<&str>) {
     #[cfg(target_os = "macos")]
     {
