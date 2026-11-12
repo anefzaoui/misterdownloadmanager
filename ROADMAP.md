@@ -507,6 +507,18 @@ These ship in the next version.
   10 s once the system's cache is full, and no connection replaced as "much slower" for waiting on
   the disk; a disk slower than the network slows the download down evenly
   ([#782](https://github.com/anefzaoui/misterdownloadmanager/issues/782))
+- ✅ Windows: MDM starts on a PC without Microsoft's Visual C++ runtime, or with the wrong copy of it
+  (0xc000007b at setup's end): the runtime is inside MDM's programs
+  ([#785](https://github.com/anefzaoui/misterdownloadmanager/issues/785))
+- ✅ Videos in one file (YouTube's qualities and their sound, most sites' MP4s) come down through
+  MDM's own downloader: yt-dlp finds them, then every connection Options → Connection gives, the
+  speed limits (a change applies at once), pause and resume like a file, after a restart too,
+  and a fresh address from yt-dlp when one expires (part of
+  [#769](https://github.com/anefzaoui/misterdownloadmanager/issues/769))
+- ✅ Videos sent in pieces (HLS, DASH) through MDM's own downloader too, several pieces at once
+  (as many as a file's connections), AES-128 pieces decrypted, expired pieces' addresses asked of
+  yt-dlp again ([#531](https://github.com/anefzaoui/misterdownloadmanager/issues/531), part of
+  [#769](https://github.com/anefzaoui/misterdownloadmanager/issues/769))
 - ✅ Sites behind Akamai's bot check (a 403 page for MDM, the file for a browser) download, through the
   browser-like connection ([#771](https://github.com/anefzaoui/misterdownloadmanager/issues/771))
 - ✅ Crash and freeze reports no longer have their log's end filled with warnings about the
@@ -573,9 +585,8 @@ These ship in a later version, when they're ready.
   in review
 - 🔄 Linux and macOS: the system's gallery-dl used when MDM has none of its own, as yt-dlp is
   ([#571](https://github.com/anefzaoui/misterdownloadmanager/issues/571)): in review
-- 🔄 Videos sent in pieces (HLS, DASH) downloading several pieces at once, as many as a file's
-  connections ([#531](https://github.com/anefzaoui/misterdownloadmanager/issues/531)): in review;
-  a video in one file (most of YouTube's) still comes over one connection
+- 🔄 Image galleries through MDM's own downloader too, gallery-dl only finding the addresses
+  ([#769](https://github.com/anefzaoui/misterdownloadmanager/issues/769)): in progress
 - 🔄 Linux and macOS: the system's yt-dlp used when MDM has none of its own, with Helpers able\n  to switch to MDM's copy ([#452](https://github.com/anefzaoui/misterdownloadmanager/issues/452)): in review
 - 🔄 macOS: video look-ups in a copy of MDM a browser downloaded, without the Terminal command
   ([#330](https://github.com/anefzaoui/misterdownloadmanager/issues/330),

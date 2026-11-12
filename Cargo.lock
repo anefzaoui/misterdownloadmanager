@@ -4793,6 +4793,7 @@ name = "mdm-labserver"
 version = "0.5.2"
 dependencies = [
  "anyhow",
+ "aws-lc-rs",
  "axum",
  "bytes",
  "clap",
@@ -4867,6 +4868,7 @@ dependencies = [
  "aws-lc-rs",
  "base64 0.23.1",
  "craft-atomic",
+ "futures",
  "hex",
  "mdm-engine",
  "mdm-ipc",
@@ -4879,6 +4881,7 @@ dependencies = [
  "tempfile",
  "thiserror 2.0.21",
  "tokio",
+ "tokio-util",
  "url",
  "win32job",
  "zip",

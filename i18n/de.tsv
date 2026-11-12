@@ -40,6 +40,11 @@
 #, machine
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Entspricht jetzt {n} Artikel (es werden nur neue hinzugefügt):|Entspricht jetzt {n} Artikeln (es werden nur neue hinzugefügt):
 #. count in a dialog box
+#. Cancel in Download File Info with downloads waiting behind it
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	Es wartet noch {n} weiterer Download. Auch diesen abbrechen?|Es warten noch {n} weitere Downloads. Auch diese abbrechen?
+#. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -95,6 +100,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} ausgewählt|{n} ausgewählt
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site added from the file.|{n} sites added from the file.	{n} Seite aus der Datei hinzugefügt.|{n} Seiten aus der Datei hinzugefügt.
+#. count in the Options window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} site saved to the file.|{n} sites saved to the file.	{n} Seite in der Datei gespeichert.|{n} Seiten in der Datei gespeichert.
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -169,6 +182,9 @@
 #. window title: 7-Zip (a program's name) must be installed
 #, machine
 	7-Zip needed	7-Zip erforderlich
+#. tab in the main window
+#, machine
+	720p	720p
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
@@ -1343,6 +1359,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying yt-dlp...	yt-dlp wird heruntergeladen und überprüft...
+#. text in helpers.rs
+#. Video helpers: MDM's own yt-dlp is being downloaded
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading MDM's own copy...	Eigene Kopie von MDM wird heruntergeladen...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1534,6 +1555,10 @@
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	Exportieren
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Export...	Exportieren...
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	Verfügbarkeit von Manifest 2 Chrome-Erweiterungen verlängern
@@ -2011,6 +2036,10 @@
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Import	Importieren
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Import...	Importieren...
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	In einer Warteschlange
@@ -4111,6 +4140,10 @@
 #, machine
 	Stopped: the network adapter changed; starting again	Angehalten: Der Netzwerkadapter wurde geändert; der Download wird neu gestartet
 #. message or event log entry in the main window
+#. event log entry: a video or gallery download stopped to start again at the new speed limit (its helper program takes a limit only as it starts)
+#, machine
+	Stopped: the speed limit changed; starting again with it	Angehalten: Geschwindigkeitslimit geändert; Neustart mit neuem Limit
+#. message or event log entry in the main window
 #. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
 #, machine
 	Stopped: {adapter} is not connected; it goes on when it is back	Angehalten: {adapter} ist nicht verbunden; wird fortgesetzt, wenn die Verbindung wiederhergestellt ist
@@ -4497,6 +4530,18 @@
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
 	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Die Seite möchte, dass Sie angemeldet sind, selbst mit den Cookies von {browser}. Melden Sie sich in {browser} an und rufen Sie die Seite dann erneut auf.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though the browser's extension passed the page's cookies
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with your browser's cookies for this page. Try again later, or from another browser.	Die Bot-Überprüfung der Website (Cloudflare) hat yt-dlp abgelehnt, selbst mit den Cookies Ihres Browsers für diese Seite. Versuchen Sie es später erneut oder mit einem anderen Browser.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away though it had the cookies of the browser chosen in Options; {browser} = its name
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	Die Bot-Überprüfung der Website (Cloudflare) hat yt-dlp abgelehnt, selbst mit den Cookies von {browser}. Verwenden Sie die Schaltfläche „Video herunterladen“ über dem Video in {browser} oder versuchen Sie die Seite später erneut.
+#. text in the Download video window
+#. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
+#, machine
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Die Bot-Überprüfung der Website (Cloudflare) hat yt-dlp abgelehnt. Wenn die Seite in Ihrem Browser geöffnet wird, wählen Sie diesen Browser unter „Optionen → Website-Anmeldungen → Cookies für Videoseiten“ aus und rufen Sie die Seite erneut auf, oder verwenden Sie die Schaltfläche „Video herunterladen“ über dem Video.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4694,6 +4739,11 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Für dieses Video müssen Sie angemeldet sein. Verwenden Sie die Schaltfläche „Video herunterladen“ darüber in Ihrem Browser, die Ihre Anmeldung weiterleitet, oder wählen Sie Ihren Browser unter „Optionen → Anmeldungen für Seiten → Cookies für Videoseiten“.
+#. text in errors.rs
+#. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	this {site} link is a web page, not the file: open it in your browser and download from there	Dieser {site}-Link ist eine Webseite, nicht die Datei: Öffnen Sie ihn in Ihrem Browser und laden Sie ihn von dort herunter
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -5315,6 +5365,26 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp konnte die Cookies von {browser} nicht lesen: {error}
+#. text in a download's progress window
+#. progress window, a video's line: the helper program yt-dlp gave no address MDM's own downloader could use
+#, machine
+	yt-dlp downloads it itself	yt-dlp lädt es selbst herunter
+#. text in a download's progress window
+#. progress window, a video's line: MDM's own downloader can't take a live broadcast, so the helper program yt-dlp records it
+#, machine
+	yt-dlp downloads it itself: a live stream	yt-dlp lädt es selbst herunter: ein Livestream
+#. text in a download's progress window
+#. progress window, a video's line: a stream sent in many small pieces (HLS, DASH), which the helper program yt-dlp downloads itself for now
+#, machine
+	yt-dlp downloads it itself: a stream in pieces	yt-dlp lädt es selbst herunter: ein Stream in Segmenten
+#. text in a download's progress window
+#. progress window, a video's line: the stream is copy-protected (DRM), left to the helper program yt-dlp, which refuses it
+#, machine
+	yt-dlp downloads it itself: protected (DRM)	yt-dlp lädt es selbst herunter: DRM-geschützter Stream
+#. text in a download's progress window
+#. progress window, a video's line: {protocol} = a streaming protocol's short name (rtmp, rtsp, mms); MDM's own downloader doesn't speak it, so the helper program yt-dlp downloads it
+#, machine
+	yt-dlp downloads it itself: {protocol}	yt-dlp lädt es selbst herunter: {protocol}
 #. text in the Download video window
 #. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
 #, machine
@@ -5883,6 +5953,7 @@ extension	Open its address once and accept its certificate, then enter a code fr
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
 extension	Open Mister Download Manager	Mister Download Manager öffnen
+#. text in the browser extension
 #. shown briefly on the download button over a video in a feed (a social site's home page, a timeline) when nothing in the feed gives that video's own address, so nothing was sent: the user should open the post the video belongs to and click the button on that page; short
 #, machine
 extension	Open the post, then use the button there	Beitrag öffnen, dann die Schaltfläche dort verwenden
@@ -6104,6 +6175,11 @@ menu	&Add new download	Neue&n Download hinzufügen
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	&Add new download...	&Neuen Download hinzufügen...
+#. menu command in the main window
+#. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Classic	&Klassisch
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6191,6 +6267,11 @@ menu	&Scheduler and queues	&Planer und Warteschlangen
 #, machine
 menu	&Show hidden tabs	&Ausgeblendete Registerkarten anzeigen
 #. menu command in the main window
+#. View → Text: letters drawn smooth, as Windows' modern apps draw them, anti-aliased at any size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Smooth	&Glatt
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop All	Alle &stoppen
@@ -6198,6 +6279,11 @@ menu	&Stop All	Alle &stoppen
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	Download &stoppen
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Text	&Text
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6381,6 +6467,10 @@ menu	E&xport	E&xportieren
 #. menu command in the main window
 #, machine
 menu	Edit queue	Warteschlange bearbeiten
+#. menu command in the main window
+#. View → Theme: a style theme's name (a white canvas, emerald fills, 6-point corners), a name: keep "Emerald" as written
+#, machine
+menu	Emerald	Emerald
 #. menu command in the main window
 #. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
 #, machine

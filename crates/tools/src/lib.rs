@@ -11,11 +11,13 @@ mod macos;
 pub mod manifest;
 mod openpgp;
 pub mod pages;
+pub mod pieces;
 pub mod playlist;
 pub mod proc;
 pub mod relay;
 pub mod resolve;
 pub mod servers;
+pub mod streams;
 // System helper discovery is for Linux and macOS; Windows keeps its verified managed copies.
 #[cfg(unix)]
 mod system;
