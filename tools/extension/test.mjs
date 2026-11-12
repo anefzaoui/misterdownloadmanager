@@ -1918,7 +1918,7 @@ function samplePage(html) {
   const english = JSON.parse(readFileSync(new URL("../../extension/_locales/en/messages.json", import.meta.url), "utf8"));
   for (const key of ["video_looking", "video_all_qualities", "video_no_choices", "video_playlist", "video_no_ytdlp", "video_too_long", "video_busy", "video_queued", "video_failed_lookup",
     "video_off", "video_drm", "video_cant_save", "video_open_post", "video_open_post_button", "video_drag_dots", "video_tip_best", "video_sending", "video_added", "video_show",
-    "video_no_answer", "video_get_mdm", "video_retry", "video_turn_on", "video_download_best", "video_best"]) {
+    "video_no_answer", "video_get_mdm", "video_retry", "video_turn_on", "video_download_best", "video_best", "video_original"]) {
     assert.ok(english[key], key);
     assert.ok(source.includes(`${key}: ${JSON.stringify(english[key].message)}`), `video.js FALLBACK: ${key}`);
     assert.ok(source.includes(`t("${key}")`), `video.js uses ${key}`);
@@ -1938,6 +1938,13 @@ function samplePage(html) {
     assert.equal(w.qualityMeta(sound, tt), "128 kbps");
     assert.equal(w.qualityMeta(mp3, tt), "", "a conversion says it in its label");
     assert.equal(w.qualityMeta(older, tt), "", "an older app's label says it all");
+    // The list's sound lines: the type, then the bitrate, and "original" for the sound as the site
+    // sends it (with or without a bitrate); a conversion's VBR.
+    const lw = make(["qualityName", "qualityMeta", "lineWords"], "lineWords");
+    assert.deepEqual({ ...lw({ ext: "m4a", audio: true, kbps: 128, original: true }, tt) }, { q: "M4A", f: "128 kbps · video_original" });
+    assert.deepEqual({ ...lw({ ext: "mp4", audio: true, original: true }, tt) }, { q: "MP4", f: "video_original" });
+    assert.deepEqual({ ...lw({ ext: "mp3", audio: true, kbps: 320 }, tt) }, { q: "MP3", f: "320 kbps" });
+    assert.deepEqual({ ...lw({ ext: "mp3", audio: true, label: "Audio only MP3 VBR" }, tt) }, { q: "MP3", f: "VBR" });
     // The best: the app's first video choice (its order is best first), else its first.
     const ready = { state: "ready", choices: [sound, hd, older] };
     assert.equal(w.bestOf(ready), hd);

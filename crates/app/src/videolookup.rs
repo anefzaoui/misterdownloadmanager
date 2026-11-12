@@ -448,6 +448,7 @@ fn answer(token: &str, s: &Search) -> VideoLookupAnswer {
                         height,
                         fps,
                         kbps,
+                        original: c.selector == "ba",
                     }
                 })
                 .collect(),

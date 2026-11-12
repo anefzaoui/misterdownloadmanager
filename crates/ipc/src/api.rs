@@ -183,6 +183,9 @@ pub struct VideoChoice {
     /// The sound's bitrate in kbit/s, for the sound as the site has it.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub kbps: Option<u32>,
+    /// The sound as the site sends it (not converted): the button's list says "original".
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    pub original: bool,
 }
 
 /// [`VideoLookupAnswer::state`]'s values, and [`VideoLookupAnswer::reason`]'s.

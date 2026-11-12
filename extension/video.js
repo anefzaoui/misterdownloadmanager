@@ -59,6 +59,7 @@
     video_retry: "Retry",
     video_turn_on: "Turn on",
     video_best: "best",
+    video_original: "original",
     video_download_best: "Download best",
     video_all_qualities: "All qualities and subtitles...",
     video_looking: "Looking up the qualities…",
@@ -1799,11 +1800,12 @@ button:focus-visible { outline: none; }
     return s;
   };
 
-  // A quality's words on its line: "1080p", "MP4 · 60 fps"; the sound's "MP3", "320 kbps".
-  function lineWords(c) {
+  // A quality's words on its line: "1080p", "MP4 · 60 fps"; the sound's "MP3", "320 kbps", and
+  // the sound as the site sends it "128 kbps · original" (just "original" when its rate isn't said).
+  function lineWords(c, t) {
     if (c && c.audio === true) {
       const rate = Number(c.kbps) > 0 ? `${Math.round(c.kbps)} kbps` : /\bVBR\b/.test(String(c.label || "")) ? "VBR" : "";
-      return { q: String(c.ext || "").toUpperCase(), f: rate };
+      return { q: String(c.ext || "").toUpperCase(), f: [rate, c.original === true ? t("video_original") : ""].filter(Boolean).join(" · ") };
     }
     return { q: qualityName(c, t), f: qualityMeta(c, t) };
   }
@@ -1833,7 +1835,7 @@ button:focus-visible { outline: none; }
     b.type = "button";
     b.setAttribute("role", "menuitem");
     b.dataset.choice = String(choice);
-    const { q, f } = lineWords(c);
+    const { q, f } = lineWords(c, t);
     const fs = span("f", f);
     if (best) fs.append(span("best", t("video_best")));
     b.append(span("n", String(n)), span("q", q), fs, span("z", rowText(c, lang).size));

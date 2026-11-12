@@ -692,6 +692,10 @@
           "description": "What the menu shows (\"720p mp4\"), in MDM's language.",
           "type": "string"
         },
+        "original": {
+          "description": "The sound as the site sends it (not converted): the button's list says \"original\".",
+          "type": "boolean"
+        },
         "size": {
           "default": null,
           "description": "Bytes, exact or estimated; null when unknown.",
