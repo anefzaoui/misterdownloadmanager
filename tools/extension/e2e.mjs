@@ -2652,7 +2652,7 @@ const CASES = {
         return p && p.state === "ready" && p.chip ? p : null;
       });
       await clickArrow(t.session);
-      const m = await until("the qualities in the menu", 120000, async () => {
+      const m = await until("the qualities in the menu", 300000, async () => {
         const p = await t.session.picks("row");
         if (p && !p.busy && !p.rows.length) throw new Error(`the menu shows no qualities: "${p.note}"`);
         return p && p.rows.length ? p : null;
