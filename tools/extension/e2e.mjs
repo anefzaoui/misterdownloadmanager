@@ -44,7 +44,8 @@
 // Screenshots for a pull request (Chromium only): E2E_LANG=de (or ar, ...) starts the browser in that
 // language, so the extension shows its _locales text of it; with E2E_SHOTS=<folder> the `qualities`
 // case saves <lang>-looking.png, <lang>-video-tab.png and <lang>-audio-tab.png there (the player and
-// the menu), before the pick. Neither changes anything when unset.
+// the menu), before the pick, and the `scripted` case <lang>-media-list.png (the popup's list) and
+// <lang>-video-window.png. Neither changes anything when unset.
 //
 // Windows: the host is registered for the current user while it runs (nmhost --register, as the
 // installer does) and unregistered at the end. Every registry key that touches (the browsers'
@@ -447,10 +448,17 @@ async function chromium(bin, profile, dl, page, ready) {
         if (r.exceptionDetails) throw new Error(`evaluate: ${r.exceptionDetails.text} ${expression}`);
         return r.result.value;
       };
-      // A picture of its page, cut to the body (the popup's 300 px), for a PR's body.
+      // A picture of its page, cut to the body (the popup's 300 px), for a PR's body; in
+      // E2E_COLOR_SCHEME's colours (light or dark) when set, else the system's.
       const shot = async (file) => {
+        const scheme = process.env.E2E_COLOR_SCHEME;
+        if (scheme) {
+          await cdp.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-color-scheme", value: scheme }] }, s);
+          await sleep(300);
+        }
         const r = JSON.parse(await ev("JSON.stringify(document.body.getBoundingClientRect())"));
-        const clip = { x: 0, y: 0, width: Math.ceil(r.right + r.left), height: Math.ceil(r.bottom + r.top), scale: 2 };
+        // Its margin as much on each side as above it (a right-to-left page's body is at the right).
+        const clip = { x: Math.max(0, r.left - r.top), y: 0, width: Math.ceil(r.width + 2 * r.top), height: Math.ceil(r.bottom + r.top), scale: 2 };
         const { data } = await cdp.send("Page.captureScreenshot", { format: "png", clip }, s);
         fs.writeFileSync(file, Buffer.from(data, "base64"));
       };
