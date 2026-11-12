@@ -1731,7 +1731,7 @@ function samplePage(html) {
   assert.deepEqual(grp(undefined), { tabbed: false, video: [], audio: [], all: [], start: "video" });
   assert.deepEqual(grp(mixed, 3), { tabbed: true, video: [0, 1], audio: [2], all: [0, 1, 2], start: "video" }, "the cap keeps the app's order");
   // A row: the app's name for the quality as it is (set as text), its size in the browser's language.
-  const { sizeText, rowText } = make(["sizeText", "rowText"], "{ sizeText, rowText }");
+  const { sizeText, rowText } = make(["sizeText", "choiceSize", "rowText"], "{ sizeText, rowText }");
   assert.equal(sizeText(187500000, "en"), "178.8 MB");
   assert.equal(sizeText(3 * 2 ** 30, "en"), "3 GB");
   assert.equal(sizeText(null, "en"), "");
@@ -1924,8 +1924,8 @@ function samplePage(html) {
     assert.ok(source.includes(`t("${key}")`), `video.js uses ${key}`);
   }
   {
-    const w = make(["sizeText", "qualityName", "qualityMeta", "bestOf", "chipFor", "tipFor", "durationText", "headerLine", "moveIn", "fitsWords"],
-      "{ qualityName, qualityMeta, bestOf, chipFor, tipFor, durationText, headerLine, moveIn, fitsWords }");
+    const w = make(["sizeText", "choiceSize", "qualityName", "qualityMeta", "bestOf", "chipFor", "tipFor", "durationText", "headerLine", "moveIn", "fitsWords"],
+      "{ choiceSize, qualityName, qualityMeta, bestOf, chipFor, tipFor, durationText, headerLine, moveIn, fitsWords }");
     const tt = (k, ...a) => (a.length ? `${k}(${a.join(",")})` : k);
     const hd = { label: "1080p 60fps MP4", ext: "mp4", size: 412000000, audio: false, height: 1080, fps: 60 };
     const k4 = { label: "2160p MP4", ext: "mp4", height: 2160 };
@@ -1938,6 +1938,20 @@ function samplePage(html) {
     assert.equal(w.qualityMeta(sound, tt), "128 kbps");
     assert.equal(w.qualityMeta(mp3, tt), "", "a conversion says it in its label");
     assert.equal(w.qualityMeta(older, tt), "", "an older app's label says it all");
+    // #755: the codec, frame rate and range, the type only when it isn't MP4 (or no codec is
+    // said); each line of one height its own.
+    const av1 = { label: "2160p · AV1 · 60 fps · HDR", ext: "mp4", height: 2160, fps: 60, codec: "AV1", range: "HDR", size: 305554961 };
+    const vp9 = { label: "2160p · VP9 · 60 fps · SDR", ext: "mp4", height: 2160, fps: 60, codec: "VP9", range: "SDR", size: 292630287 };
+    assert.equal(w.qualityMeta(av1, tt), "AV1 · 60 fps · HDR");
+    assert.equal(w.qualityMeta(vp9, tt), "VP9 · 60 fps · SDR");
+    assert.equal(w.qualityMeta({ height: 360, ext: "webm", codec: "VP9", fps: 30 }, tt), "WEBM · VP9 · 30 fps", "a type other than MP4 is said");
+    assert.equal(w.qualityMeta({ height: 720, ext: "mp4", codec: 7, range: { x: 1 } }, tt), "MP4", "only text is shown");
+    assert.equal(w.qualityMeta({ height: 720, ext: "mp4", codec: "H.264".repeat(9) }, tt).length, 24, "a codec's name is cut");
+    // #801: an estimate is marked; an exact size isn't; an older app's has no mark.
+    assert.equal(w.choiceSize({ size: 557842432, approx: true }, "en"), "~532 MB");
+    assert.equal(w.choiceSize({ size: 557842432 }, "en"), "532 MB");
+    assert.equal(w.choiceSize({ size: null, approx: true }, "en"), "");
+    assert.equal(w.choiceSize(null, "en"), "");
     // The list's sound lines: the type, then the bitrate, and "original" for the sound as the site
     // sends it (with or without a bitrate); a conversion's VBR.
     const lw = make(["qualityName", "qualityMeta", "lineWords"], "lineWords");
@@ -1957,6 +1971,7 @@ function samplePage(html) {
     assert.deepEqual(w.chipFor({ file: true, height: 720, ext: "mp4" }, tt), { text: "720p", hd: true });
     assert.equal(w.chipFor({ state: "failed" }, tt), null);
     assert.equal(w.tipFor(ready, tt, "en"), "video_tip(1080p MP4 · 392.9 MB)");
+    assert.equal(w.tipFor({ state: "ready", choices: [{ ...hd, approx: true }] }, tt, "en"), "video_tip(1080p MP4 · ~392.9 MB)");
     assert.equal(w.tipFor({ state: "pending" }, tt, "en"), "video_tip_best");
     assert.equal(w.tipFor(null, tt, "en"), "video_download");
     assert.deepEqual([596, 3723, 0, null, "x"].map(w.durationText), ["9:56", "1:02:03", "", "", ""]);

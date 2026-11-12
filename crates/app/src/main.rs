@@ -21,6 +21,7 @@ mod extension;
 mod extractq;
 mod fileicons;
 mod find;
+mod finish;
 mod gallerydlg;
 mod grabber;
 mod headless;

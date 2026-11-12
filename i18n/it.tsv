@@ -54,6 +54,11 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 @plural	{n} download|{n} downloads	{n} download|{n} download
+#. count in a dialog box
+#. the summary of downloads added together (the Downloads complete window; the tip of the tray icon): {n} of them finished
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download finished|{n} downloads finished	{n} download completato|{n} download completati
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 @plural	{n} downloading|{n} downloading	{n} in corso|{n} in corso
@@ -61,6 +66,11 @@
 #. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
 #. {n} = a number (keep the braces as they are)
 @plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} voce è stata esclusa (un collegamento o un nome che porta fuori dalla cartella)|{n} voci sono state escluse (collegamenti o nomi che portano fuori dalla cartella)
+#. count in a dialog box
+#. the summary of downloads added together; after "12 downloads finished": {n} of them failed
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} failed|{n} failed	{n} non riuscito|{n} non riusciti
 #. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
@@ -203,6 +213,11 @@
 #. text in whereis.rs
 #. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
 	about {ms} ms ({reach})	circa {ms} ms ({reach})
+#. text in the Download video window
+#. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	about {size}	circa {size}
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 	Accept incoming connections	Accetta connessioni in ingresso
@@ -953,6 +968,15 @@
 #. window title in a dialog box; text in a dialog box; text in the Options window
 	Download complete	Download completato
 #. text in the Options window
+#. Options, Downloads, under "Show download complete dialog": snoozed with "Until MDM restarts"
+#, machine
+	Download complete is snoozed until MDM restarts	La finestra di download completato è sospesa fino al riavvio di MDM
+#. text in the Options window
+#. Options, Downloads, under "Show download complete dialog": {time} when the snooze ends, like "14:30"
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Download complete is snoozed until {time}	La finestra di download completato è sospesa fino alle {time}
+#. text in the Options window
 	Download failed	Download non riuscito
 #. window title in a dialog box
 	Download File Info	Informazioni sul file da scaricare
@@ -1037,6 +1061,10 @@
 #. text in the download list; text in the Options window
 #. tab title: download settings
 	Downloads	Download
+#. window title in a dialog box
+#. title of the window that sums up downloads added together (a playlist, a batch) once all are done
+#, machine
+	Downloads complete	Download completati
 #. text in the tray icon's menu
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 	Downloads in progress	Download in corso
@@ -1192,6 +1220,10 @@
 #. a download's status: its archive is being extracted (#37)
 #. the trailing ... means it is still going on: keep it
 	Extracting...	Estrazione in corso...
+#. text in a dialog box
+#. label over the list of the downloads of the group that failed
+#, machine
+	Failed:	Non riusciti:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Falkland Islands	Isole Falkland
@@ -1297,6 +1329,18 @@
 	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	Il FLAC conserva l'audio senza perdite, ma non può aggiungere qualità che l'audio del sito non ha: il file risulta solo più grande.
 #. text in categories.rs
 	Folder:	Cartella:
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 1 hour	Per 1 ora
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 30 minutes	Per 30 minuti
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 8 hours	Per 8 ore
 #. text in the Batch download window
 #. {address} = an example web address with a * in the file name
 	For example:  {address}	Ad esempio:  {address}
@@ -2655,6 +2699,10 @@
 #. text in a download's progress window
 #. label: whether the server lets a stopped download continue (Yes / No)
 	Resume capability	Ripresa supportata
+#. text in the Options window
+#. link after "Download complete is snoozed until 14:30": ends the snooze now
+#, machine
+	Resume now	Riprendi ora
 #. message or event log entry in the main window
 #. event log entry, past tense: the download resumed (just now)
 	Resumed	Ripreso
@@ -2742,7 +2790,8 @@
 #. status shown in green beside the Rename box once the new name is saved
 #, machine
 	Saved	Salvato
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
+#. label over the folder the downloads were saved in
 #. label before the folder the torrent is saved in
 	Saved in	Salvato in
 #. tab in the Scheduler window
@@ -2883,6 +2932,10 @@
 	Show details >>	Mostra dettagli >>
 #. checkbox in the Options window; checkbox in a download's progress window
 	Show download complete dialog	Mostra la finestra di download completato
+#. button in a dialog box
+#. button: shows these downloads in MDM's list, selected
+#, machine
+	Show in list	Mostra nell'elenco
 #. text in extension.rs
 #. button in the browser extension's window: open the tutorial that adds the extension
 	Show me how	Mostrami come
@@ -2945,6 +2998,7 @@
 #. column title: file size
 	Size	Dimensione
 #. text in the Download video window
+#. the video's file size is not known
 	size unknown	dimensione sconosciuta
 #. text in a download's Properties window
 	Size:	Dimensione:
@@ -2961,6 +3015,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Slovenia	Slovenia
+#. text in a dialog box
+#. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
+#, machine
+	Snooze	Sospendi
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Solomon Islands	Isole Salomone
@@ -3752,6 +3810,10 @@
 #. where a download's server is: not known (no address seen)
 #. where a download's server is: an address the location table doesn't place
 	unknown	sconosciuto
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window until MDM is started again
+#, machine
+	Until MDM restarts	Fino al riavvio di MDM
 #. button in the Options window
 #. button (short): move the account up the list (accounts are asked in the list's order)
 	Up	Su
@@ -4176,6 +4238,11 @@
 #. error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
 #. {name} = a file name; {version} = a version number (keep the braces as they are)
 	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} è troppo vecchio: MDM richiede la versione {oldest} o successiva
+#. text in a dialog box
+#. one failed download in the summary of a group of downloads: {name} its file name, {error} why it failed
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	{name}: {error}	{name}: {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -4241,6 +4308,11 @@
 #. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 	{size} free	{size} liberi
+#. text in a dialog box
+#. under "12 downloads finished": {size} the finished files' size together, like "1.25 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} in all	{size} in totale
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 	{size} is too big for this {file_system} drive (files up to 4 GB)	{size} è troppo grande per questa unità {file_system} (file fino a 4 GB)

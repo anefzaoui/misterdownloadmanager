@@ -45,6 +45,11 @@
 #, machine
 @plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	ଆଉ {n}ଟି ଡାଉନଲୋଡ୍ ଅପେକ୍ଷା କରିଛି। ଏହାକୁ ମଧ୍ୟ ବାତିଲ୍ କରିବେ କି?|ଆଉ {n}ଟି ଡାଉନଲୋଡ୍ ଅପେକ୍ଷା କରିଛନ୍ତି। ଏଗୁଡ଼ିକୁ ମଧ୍ୟ ବାତିଲ୍ କରିବେ କି?
 #. count in a dialog box
+#. under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} more|and {n} more	ଏବଂ ଆଉ {n}ଟି|ଏବଂ ଆଉ {n}ଟି
+#. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -66,6 +71,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} download|{n} downloads	{n}ଟି ଡାଉନଲୋଡ୍|{n}ଟି ଡାଉନଲୋଡ୍
+#. count in a dialog box
+#. the summary of downloads added together (the Downloads complete window; the tip of the tray icon): {n} of them finished
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download finished|{n} downloads finished	{n}ଟି ଡାଉନଲୋଡ୍ ସମାପ୍ତ ହେଲା|{n}ଟି ଡାଉନଲୋଡ୍ ସମାପ୍ତ ହେଲା
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -75,6 +85,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n}ଟି ଏଣ୍ଟ୍ରି ବାଦ୍ ଦିଆଗଲା (ଏକ ଲିଙ୍କ୍ କିମ୍ବା ଫୋଲ୍ଡର ବାହାରକୁ ଯାଉଥିବା ନାମ)|{n}ଟି ଏଣ୍ଟ୍ରି ବାଦ୍ ଦିଆଗଲା (ଲିଙ୍କ୍ କିମ୍ବା ଫୋଲ୍ଡର ବାହାରକୁ ଯାଉଥିବା ନାମ)
+#. count in a dialog box
+#. the summary of downloads added together; after "12 downloads finished": {n} of them failed
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} failed|{n} failed	{n}ଟି ବିଫଳ ହେଲା|{n}ଟି ବିଫଳ ହେଲା
 #. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
@@ -255,6 +270,11 @@
 #. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
 #, machine
 	about {ms} ms ({reach})	ପ୍ରାୟ {ms} ମିଲିସେକେଣ୍ଡ ({reach})
+#. text in the Download video window
+#. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	about {size}	ପ୍ରାୟ {size}
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 #, machine
@@ -1265,6 +1285,15 @@
 #, machine
 	Download complete	ଡାଉନଲୋଡ୍ ସରିଛି
 #. text in the Options window
+#. Options, Downloads, under "Show download complete dialog": snoozed with "Until MDM restarts"
+#, machine
+	Download complete is snoozed until MDM restarts	MDM ପୁନଃ ଆରମ୍ଭ ହେବା ପର୍ଯ୍ୟନ୍ତ ଡାଉନଲୋଡ୍ ସମାପ୍ତ ସ୍ନୁଜ୍ ହୋଇଛି
+#. text in the Options window
+#. Options, Downloads, under "Show download complete dialog": {time} when the snooze ends, like "14:30"
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Download complete is snoozed until {time}	{time} ପର୍ଯ୍ୟନ୍ତ ଡାଉନଲୋଡ୍ ସମାପ୍ତ ସ୍ନୁଜ୍ ହୋଇଛି
+#. text in the Options window
 #, machine
 	Download failed	ଡାଉନଲୋଡ୍ ବିଫଳ ହେଲା
 #. window title in a dialog box
@@ -1377,6 +1406,10 @@
 #. tab title: download settings
 #, machine
 	Downloads	ଡାଉନଲୋଡ୍‍ଗୁଡ଼ିକ
+#. window title in a dialog box
+#. title of the window that sums up downloads added together (a playlist, a batch) once all are done
+#, machine
+	Downloads complete	ଡାଉନଲୋଡ୍ ସମାପ୍ତ
 #. text in the tray icon's menu
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #, machine
@@ -1586,6 +1619,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Extracting...	ଏକ୍ସଟ୍ରାକ୍ଟ କରାଯାଉଛି...
+#. text in a dialog box
+#. label over the list of the downloads of the group that failed
+#, machine
+	Failed:	ବିଫଳ ହୋଇଥିବା:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1728,6 +1765,18 @@
 #. text in categories.rs
 #, machine
 	Folder:	ଫୋଲ୍ଡର୍:
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 1 hour	1 ଘଣ୍ଟା ପାଇଁ
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 30 minutes	30 ମିନିଟ୍ ପାଇଁ
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 8 hours	8 ଘଣ୍ଟା ପାଇଁ
 #. text in the Batch download window
 #. {address} = an example web address with a * in the file name
 #, machine
@@ -3558,6 +3607,10 @@
 #. label: whether the server lets a stopped download continue (Yes / No)
 #, machine
 	Resume capability	ପୁନରାରମ୍ଭ କ୍ଷମତା
+#. text in the Options window
+#. link after "Download complete is snoozed until 14:30": ends the snooze now
+#, machine
+	Resume now	ବର୍ତ୍ତମାନ ପୁନଃ ଆରମ୍ଭ କରନ୍ତୁ
 #. message or event log entry in the main window
 #. event log entry, past tense: the download resumed (just now)
 #, machine
@@ -3672,7 +3725,8 @@
 #. status shown in green beside the Rename box once the new name is saved
 #, machine
 	Saved	ସେଭ୍ ହୋଇଛି
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
+#. label over the folder the downloads were saved in
 #. label before the folder the torrent is saved in
 #, machine
 	Saved in	ଏଥିରେ ସେଭ୍ ହୋଇଛି
@@ -3863,6 +3917,10 @@
 #. checkbox in the Options window; checkbox in a download's progress window
 #, machine
 	Show download complete dialog	ଡାଉନଲୋଡ୍ ସମ୍ପୂର୍ଣ୍ଣ ଡାଏଲଗ୍ ଦେଖାନ୍ତୁ
+#. button in a dialog box
+#. button: shows these downloads in MDM's list, selected
+#, machine
+	Show in list	ତାଲିକାରେ ଦେଖାନ୍ତୁ
 #. text in extension.rs
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
@@ -3948,6 +4006,7 @@
 #, machine
 	Size	ଆକାର
 #. text in the Download video window
+#. the video's file size is not known
 #, machine
 	size unknown	ଆକାର ଅଜ୍ଞାତ
 #. text in a download's Properties window
@@ -3970,6 +4029,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Slovenia	ସ୍ଲୋଭେନିଆ
+#. text in a dialog box
+#. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
+#, machine
+	Snooze	ସ୍ନୁଜ୍
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5017,6 +5080,10 @@
 #. where a download's server is: an address the location table doesn't place
 #, machine
 	unknown	ଅଜ୍ଞାତ
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window until MDM is started again
+#, machine
+	Until MDM restarts	MDM ପୁନଃ ଆରମ୍ଭ ହେବା ପର୍ଯ୍ୟନ୍ତ
 #. button in the Options window
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
@@ -5573,6 +5640,11 @@
 #. {name} = a file name; {version} = a version number (keep the braces as they are)
 #, machine
 	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} ବହୁତ ପୁରୁଣା: MDM କୁ {oldest} କିମ୍ବା ନୂଆ ଆବଶ୍ୟକ
+#. text in a dialog box
+#. one failed download in the summary of a group of downloads: {name} its file name, {error} why it failed
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	{name}: {error}	{name}: {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -5660,6 +5732,11 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{size} free	{size} ଖାଲି
+#. text in a dialog box
+#. under "12 downloads finished": {size} the finished files' size together, like "1.25 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} in all	ମୋଟ {size}
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine

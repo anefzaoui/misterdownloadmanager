@@ -45,6 +45,11 @@
 #, machine
 @plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	Ka edhe {n} shkarkim tjetër në pritje. Ta anulosh edhe atë?|Ka edhe {n} shkarkime të tjera në pritje. T’i anulosh edhe ato?
 #. count in a dialog box
+#. under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} more|and {n} more	dhe {n} tjetër|dhe {n} të tjera
+#. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -66,6 +71,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} download|{n} downloads	{n} shkarkim|{n} shkarkime
+#. count in a dialog box
+#. the summary of downloads added together (the Downloads complete window; the tip of the tray icon): {n} of them finished
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download finished|{n} downloads finished	Përfundoi {n} shkarkim|Përfunduan {n} shkarkime
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -75,6 +85,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} hyrje u la jashtë (një lidhje, ose një emër që të çon jashtë dosjes)|{n} hyrje u lanë jashtë (lidhje, ose emra që të çojnë jashtë dosjes)
+#. count in a dialog box
+#. the summary of downloads added together; after "12 downloads finished": {n} of them failed
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} failed|{n} failed	{n} dështoi|{n} dështuan
 #. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
@@ -255,6 +270,11 @@
 #. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
 #, machine
 	about {ms} ms ({reach})	rreth {ms} ms ({reach})
+#. text in the Download video window
+#. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	about {size}	rreth {size}
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 #, machine
@@ -1265,6 +1285,15 @@
 #, machine
 	Download complete	Shkarkimi u krye
 #. text in the Options window
+#. Options, Downloads, under "Show download complete dialog": snoozed with "Until MDM restarts"
+#, machine
+	Download complete is snoozed until MDM restarts	Shkarkimi i plotë është shtyrë deri në rifillimin e MDM-së
+#. text in the Options window
+#. Options, Downloads, under "Show download complete dialog": {time} when the snooze ends, like "14:30"
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Download complete is snoozed until {time}	Shkarkimi i plotë është shtyrë deri në {time}
+#. text in the Options window
 #, machine
 	Download failed	Shkarkimi dështoi
 #. window title in a dialog box
@@ -1377,6 +1406,10 @@
 #. tab title: download settings
 #, machine
 	Downloads	Shkarkimet
+#. window title in a dialog box
+#. title of the window that sums up downloads added together (a playlist, a batch) once all are done
+#, machine
+	Downloads complete	Shkarkimet përfunduan
 #. text in the tray icon's menu
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #, machine
@@ -1586,6 +1619,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Extracting...	Po nxirret...
+#. text in a dialog box
+#. label over the list of the downloads of the group that failed
+#, machine
+	Failed:	Dështuan:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1728,6 +1765,18 @@
 #. text in categories.rs
 #, machine
 	Folder:	Dosja:
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 1 hour	Për 1 orë
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 30 minutes	Për 30 minuta
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 8 hours	Për 8 orë
 #. text in the Batch download window
 #. {address} = an example web address with a * in the file name
 #, machine
@@ -3558,6 +3607,10 @@
 #. label: whether the server lets a stopped download continue (Yes / No)
 #, machine
 	Resume capability	Aftësia e rifillimit
+#. text in the Options window
+#. link after "Download complete is snoozed until 14:30": ends the snooze now
+#, machine
+	Resume now	Rifillo tani
 #. message or event log entry in the main window
 #. event log entry, past tense: the download resumed (just now)
 #, machine
@@ -3672,7 +3725,8 @@
 #. status shown in green beside the Rename box once the new name is saved
 #, machine
 	Saved	Ruajtur
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
+#. label over the folder the downloads were saved in
 #. label before the folder the torrent is saved in
 #, machine
 	Saved in	Ruajtur në
@@ -3863,6 +3917,10 @@
 #. checkbox in the Options window; checkbox in a download's progress window
 #, machine
 	Show download complete dialog	Shfaq dialogun e përfundimit të shkarkimit
+#. button in a dialog box
+#. button: shows these downloads in MDM's list, selected
+#, machine
+	Show in list	Shfaq në listë
 #. text in extension.rs
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
@@ -3948,6 +4006,7 @@
 #, machine
 	Size	Madhësia
 #. text in the Download video window
+#. the video's file size is not known
 #, machine
 	size unknown	madhësia e panjohur
 #. text in a download's Properties window
@@ -3970,6 +4029,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Slovenia	Sllovenia
+#. text in a dialog box
+#. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
+#, machine
+	Snooze	Shtyje
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5017,6 +5080,10 @@
 #. where a download's server is: an address the location table doesn't place
 #, machine
 	unknown	e panjohur
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window until MDM is started again
+#, machine
+	Until MDM restarts	Deri në rifillimin e MDM-së
 #. button in the Options window
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
@@ -5573,6 +5640,11 @@
 #. {name} = a file name; {version} = a version number (keep the braces as they are)
 #, machine
 	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} është shumë i vjetër: MDM-i ka nevojë për {oldest} ose më të ri
+#. text in a dialog box
+#. one failed download in the summary of a group of downloads: {name} its file name, {error} why it failed
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	{name}: {error}	{name}: {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -5660,6 +5732,11 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{size} free	{size} i lirë
+#. text in a dialog box
+#. under "12 downloads finished": {size} the finished files' size together, like "1.25 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} in all	{size} gjithsej
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine

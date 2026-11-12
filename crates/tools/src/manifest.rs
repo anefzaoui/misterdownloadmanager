@@ -35,7 +35,7 @@ use std::time::Duration;
 use url::Url;
 
 use crate::proc::FromBrowser;
-use crate::resolve::{Format, Video};
+use crate::resolve::{Format, Video, picture_rank, sound_rank};
 
 /// The most a playlist may hold, counted on the bytes as they come (not the size the server
 /// announces).
@@ -277,9 +277,16 @@ impl Master {
                     .tbr
                     .filter(|t| t.is_finite() && *t > 0.0)
                     .map(|t| crate::resolve::estimate(duration, t)),
+                // Its bitrate (a peak, often) times the length: about.
+                approx: true,
                 tbr: f.tbr,
                 // A variant of an HLS playlist: its pieces need ffmpeg to make one file (#569).
                 hls: true,
+                vcodec: f.vcodec.clone(),
+                acodec: f.acodec.clone(),
+                // SDR, as yt-dlp says of a picture of no HDR codec (the ones it reads as HDR
+                // are refused: `codecs`).
+                ..Default::default()
             })
             .collect();
         if !ties_are_harmless(&formats) {
@@ -587,45 +594,6 @@ fn origin(u: &Url) -> (String, Option<String>, Option<u16>) {
         u.host_str().map(str::to_ascii_lowercase),
         u.port_or_known_default(),
     )
-}
-
-/// yt-dlp's codec preferences (its format sorter's, best last here): where formats tie on
-/// everything before, the better codec sorts later.
-fn picture_rank(c: Option<&str>) -> u8 {
-    let Some(c) = c else { return 1 };
-    let any = |p: &[&str]| p.iter().any(|x| c.starts_with(x));
-    match c {
-        "none" => 0,
-        _ if any(&["av01", "av1"]) => 10,
-        _ if any(&["vp9.2", "vp09.02", "vp9.02", "vp09.2"]) => 9,
-        _ if any(&["vp9", "vp09"]) => 8,
-        _ if any(&["h265", "x265", "hv", "hev"]) => 7,
-        _ if any(&["h264", "x264", "avc"]) => 6,
-        _ if any(&["vp8", "vp08"]) => 5,
-        _ if any(&["mp4v", "h263"]) => 4,
-        _ if any(&["theora"]) => 3,
-        _ => 2,
-    }
-}
-
-fn sound_rank(c: Option<&str>) -> u8 {
-    let Some(c) = c else { return 1 };
-    let any = |p: &[&str]| p.iter().any(|x| c.starts_with(x));
-    match c {
-        "none" => 0,
-        _ if any(&["flac", "alac"]) => 13,
-        _ if any(&["wav", "aiff"]) => 12,
-        _ if any(&["opus"]) => 11,
-        _ if any(&["vorbis", "ogg"]) => 10,
-        _ if any(&["aac"]) => 9,
-        _ if any(&["m4", "mp4"]) => 8,
-        _ if any(&["mp3"]) => 7,
-        _ if any(&["ac4", "ac-4"]) => 6,
-        _ if any(&["ec3", "eac3", "ec-3", "eac-3", "e-ac-3", "e-ac3"]) => 5,
-        _ if any(&["ac3", "ac-3"]) => 4,
-        _ if any(&["dts"]) => 3,
-        _ => 2,
-    }
 }
 
 /// yt-dlp's order of a stream's formats, worst first (its format sorter's fields that tell them
@@ -998,7 +966,7 @@ mod tests {
         assert_eq!(v.title, "master");
         assert_eq!(v.duration, Some(20.0));
         let labels: Vec<String> = choices(&v, false).into_iter().map(|c| c.label).collect();
-        assert_eq!(labels, ["720p MP4", "360p MP4"]);
+        assert_eq!(labels, ["720p · H.264", "360p · H.264"]);
     }
 
     /// DRM, a live stream, a picture without its resolution, a playlist on another server, a

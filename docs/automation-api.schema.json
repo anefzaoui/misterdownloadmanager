@@ -650,10 +650,21 @@
     "VideoChoice": {
       "description": "One quality the browser's quality menu offers.",
       "properties": {
+        "approx": {
+          "description": "`size` is an estimate (a stream's bitrate times its length, a conversion's), shown as\nabout (\"~532 MB\"); otherwise it is the bytes of exactly the streams this downloads (#801).",
+          "type": "boolean"
+        },
         "audio": {
           "default": false,
           "description": "Only the sound (an audio file, a conversion to MP3, Opus or FLAC): the menu lists these\napart from the videos. False from an app older than the field.",
           "type": "boolean"
+        },
+        "codec": {
+          "description": "The picture's codec as people name it: `AV1`, `VP9`, `H.264`, `H.265`… (#755). None\nfrom an app older than the field.",
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "ext": {
           "default": "",
@@ -661,7 +672,7 @@
           "type": "string"
         },
         "fps": {
-          "description": "Frames a second, when above 31 (60 fps is worth saying, 30 isn't).",
+          "description": "Frames a second, rounded (an app older than #755 said it only above 31).",
           "format": "uint32",
           "minimum": 0,
           "type": [
@@ -696,9 +707,16 @@
           "description": "The sound as the site sends it (not converted): the button's list says \"original\".",
           "type": "boolean"
         },
+        "range": {
+          "description": "The picture's dynamic range when worth saying: `HDR`, `Dolby Vision`, or `SDR` beside an\nHDR choice of the same height (#755).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "size": {
           "default": null,
-          "description": "Bytes, exact or estimated; null when unknown.",
+          "description": "Bytes, exact or estimated (`approx`); null when unknown.",
           "format": "uint64",
           "minimum": 0,
           "type": [

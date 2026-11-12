@@ -29,7 +29,8 @@
 // streams found only when asked, by the button and the media list, a text decoy never), media (the
 // toolbar button's list of the media a tab loaded: streams, files, a protected stream; #38),
 // qualities (the button's menu: a stream's qualities looked up by MDM, with their sizes; the one
-// picked downloads with its progress window only, MDM's main window hidden), video (shown,
+// picked downloads with its progress window only, MDM's main window hidden), page (the menu on a
+// real video page, E2E_VIDEO_PAGE, and the line E2E_VIDEO_PICK downloaded: off by default), video (shown,
 // clicked, dragged, kept; "never on the site" in the last browser; the button's clicks go through
 // its menu's "Open in…" to the Download video window, as in csp, hls, streams, sniffed and
 // inplace), panelOptions (the button follows Options in an open tab: off, on, the site listed;
@@ -2582,6 +2583,10 @@ const CASES = {
       const sounds = { rows: m.rows.filter((r) => r.kind === "audio") };
       if (!pictures.rows.length || pictures.rows.some((r) => !picture.test(r.name))) throw new Error(`VIDEO lists a sound: ${JSON.stringify(pictures.rows.map((r) => r.name))}`);
       if (!sounds.rows.length || sounds.rows.some((r) => picture.test(r.name))) throw new Error(`AUDIO lists a picture: ${JSON.stringify(sounds.rows.map((r) => r.name))}`);
+      // #755: each picture's line says its codec (the lab's variants are H.264); #801: a stream's
+      // sizes come from its bitrate, so each is marked as about ("~").
+      if (pictures.rows.some((r) => !/\bH\.264\b/.test(r.name))) throw new Error(`a picture's line without its codec: ${JSON.stringify(pictures.rows.map((r) => r.name))}`);
+      if (pictures.rows.some((r) => !r.size.startsWith("~"))) throw new Error(`a stream's estimate not marked as about: ${JSON.stringify(pictures.rows.map((r) => r.size))}`);
       await sleep(500);
       if (shots) await snap("list", await t.session.picks());
       // 360p from VIDEO (the click later takes the best, 720p: not the same download).
@@ -2617,6 +2622,67 @@ const CASES = {
       return `chip "${chipped.chip}"; the click: ${best.file} (${green.text} · Show); ${looked ? "looking, then " : ""}VIDEO ${pictures.rows.length} (${list(pictures.rows)}), AUDIO ${sounds.rows.length} (${list(sounds.rows)}); "${row.name}" picked: ${item.file} (${item.status}) with its progress window "${opened}" only, the main window hidden; click to rows ${rowsMs} ms, pick to first progress ${startMs} ms`;
     } finally {
       // The next case starts MDM as usual.
+      await stopApp();
+    }
+  },
+
+  // E2E_VIDEO_PAGE=<a video's page>: the button's qualities' menu on a real site (a pull
+  // request's screenshots and its real check; the network's, so never by default): the lines the
+  // menu shows, then, with E2E_VIDEO_PICK=<a pattern of a line's words>, that line picked and
+  // downloaded to its end, its file's size beside the line's (#801: the size shown is the size
+  // that comes). E2E_SHOTS as in `qualities`: <lang>-page-list.png (the menu), page-pick.png
+  // (the line about to be picked, scrolled to).
+  async page(t) {
+    const address = process.env.E2E_VIDEO_PAGE;
+    if (!address) throw new Skip("no E2E_VIDEO_PAGE");
+    if (!ytdlp) throw new Skip("no yt-dlp (E2E_YTDLP or PATH)");
+    if (!ffmpeg) throw new Skip("no ffmpeg (E2E_FFMPEG or PATH)");
+    if (!WIN) throw new Skip(NO_UIA);
+    await stopApp();
+    fs.rmSync(path.join(data, "ipc.json"), { force: true });
+    spawn(appExe, ["/startup"], { env: process.env, stdio: "ignore", detached: false });
+    try {
+      await until("the test instance, in the notification area", 20000, () => mdmList().then(() => true, () => false));
+      await t.session.navigate(address);
+      const v = await until("the page's video", 30000, () => rect(t.session, "video"));
+      const b = await hover(t.session, v);
+      if (!b) throw new Error("no button over the page's video");
+      await until("the best quality on the button's chip", 120000, async () => {
+        const p = await t.session.pill(PILL_STATE);
+        return p && p.state === "ready" && p.chip ? p : null;
+      });
+      await clickArrow(t.session);
+      const m = await until("the qualities in the menu", 300000, async () => {
+        const p = await t.session.picks("row");
+        if (p && !p.busy && !p.rows.length) throw new Error(`the menu shows no qualities: "${p.note}"`);
+        return p && p.rows.length ? p : null;
+      });
+      const shots = process.env.E2E_SHOTS && t.session.shot ? path.resolve(process.env.E2E_SHOTS) : "";
+      const lang = process.env.E2E_LANG || "en";
+      const snap = (name, p) => t.session.shot(path.join(shots, `${lang}-${name}.png`), { l: p.box.l - 10, t: p.box.t - 10, r: p.box.r + 10, b: p.box.b + 10 });
+      await sleep(500);
+      if (shots) await snap("page-list", await t.session.picks());
+      const lines = m.rows.map((r) => `${r.name} = ${r.size}`);
+      const pick = process.env.E2E_VIDEO_PICK;
+      if (!pick) return lines.join("; ");
+      const wanted = new RegExp(pick);
+      const row = m.rows.find((r) => r.kind !== "top" && wanted.test(r.name));
+      if (!row) throw new Error(`no line like ${pick}: ${lines.join("; ")}`);
+      // Where it is now (the first lines are in the menu's view).
+      const now = await t.session.picks();
+      const seen = now.rows.find((r) => r.choice === row.choice) || row;
+      if (shots) await snap("page-pick", now);
+      const before = new Set((await mdmList()).map((d) => d.id));
+      await t.session.mouse(seen.x, seen.y, "click");
+      const item = await until("the line picked, in MDM's list", 30000, async () => (await mdmList()).find((d) => !before.has(d.id)));
+      const done = await until("the download's end", 20 * 60000, async () => {
+        const d = (await mdmList()).find((x) => x.id === item.id);
+        if (d && d.status === "Error") throw new Error(`the download failed: ${d.error}`);
+        return d && d.status === "Complete" ? d : null;
+      });
+      const bytes = fs.statSync(done.path).size;
+      return `${lines.join("; ")}; picked "${seen.name}" (${seen.size}): ${done.file}, ${bytes} bytes`;
+    } finally {
       await stopApp();
     }
   },
