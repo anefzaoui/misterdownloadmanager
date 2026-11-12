@@ -150,7 +150,7 @@ The downloads go to a queue. As with Download Later, MDM asks which queue unless
 To add every link in a text file:
 
 1. Choose **Tasks → Import → From text file**.
-2. Pick the file. **Link grabber** lists every web address MDM found in it, in packages.
+2. Pick the file. **Link grabber** lists every web address MDM found in it, in packages. While MDM reads a long file, the strip under the list of downloads says **Reading** and the file's name; you can go on using MDM meanwhile. Import reads files of up to 64 MB, far more than any list of links holds: a larger file (a video, an archive, a backup picked by mistake) is refused with a message.
 3. Untick the addresses you don't want (**Check all** and **Uncheck all** help), then click **Add to queue**.
 
 ![Link grabber listing the links of a page in packages, with their names, sizes and whether they are online](images/help/link-grabber.webp)

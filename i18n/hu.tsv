@@ -3503,6 +3503,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	Torrent olvasása...
+#. message or event log entry in the main window
+#. the status strip while Tasks → Import reads a file; {file} is its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading {file}...	A(z) {file} olvasása...
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Beolvassa az oldalt, és felsorolja az összes minőséget, amit a webhely kínál, akár 4K-ig, a YouTube-ról, a Vimeo-ról és több mint ezer más webhelyről.
@@ -5568,6 +5573,11 @@
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	A(z) {file} már nincs ott, ahová mentette (áthelyezték vagy törölték). A jobb gombbal megnyitható menü Újra letöltés parancsával ismét letöltheti.
+#. message or event log entry in the main window
+#. Import refused a file; {size} = its size and {limit} = the largest Import reads, like "4.50 GB" and "64.00 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	A(z) {file} fájl túl nagy ahhoz, hogy címlista legyen ({size}). Az importálás legfeljebb {limit} méretű szövegfájlokat, weboldalakat és .ef2 exportokat olvas be.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
