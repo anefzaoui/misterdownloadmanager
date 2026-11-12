@@ -276,8 +276,18 @@ impl Glide {
     }
 }
 
+/// A stopped, failed or finished transfer must not leave a green indicator behind.
+#[cfg(windows)]
+fn taskbar_fraction(item: &Item) -> Option<f64> {
+    (item.status == Status::Downloading)
+        .then(|| item.fraction())
+        .flatten()
+}
+
 pub struct Progress {
     pub id: u64,
+    #[cfg(windows)]
+    taskbar: crate::win32::TaskbarProgress,
     details: bool,
     tab: Tab,
     /// Tabs taken off the strip with their "Hide tab" button (#326), for this window.
@@ -372,6 +382,8 @@ impl Progress {
     pub fn new(id: u64, show_complete: bool) -> Self {
         Progress {
             id,
+            #[cfg(windows)]
+            taskbar: crate::win32::TaskbarProgress::new(),
             details: true,
             tab: Tab::Status,
             hidden_tabs: Vec::new(),
@@ -408,6 +420,23 @@ impl Progress {
             rename_guard_stamp: None,
             rename_guard: None,
         }
+    }
+
+    /// Updated by the clock too, while the main window is minimized and draws no UI.
+    #[cfg(windows)]
+    pub fn update_taskbar(&mut self, item: Option<&Item>) {
+        self.taskbar.update(item.and_then(taskbar_fraction));
+    }
+
+    #[cfg(windows)]
+    fn needs_frame(&self, ctx: &egui::Context, key: egui::Id, want: &Framed) -> bool {
+        // Completion can remove a Progress without a closing UI pass. A fresh controller must
+        // bind its new HWND even if egui still holds the preceding window's frame settings.
+        self.taskbar.window().is_none()
+            || ctx
+                .data(|d| d.get_temp::<Framed>(key.with("framed")))
+                .as_ref()
+                != Some(want)
     }
 
     fn status_drop(&self) -> f32 {
@@ -521,10 +550,21 @@ impl Progress {
         let buttons = caption_buttons(self.tray);
         let key = egui::Id::unique(("progress-pos", self.id));
         let title_now = title.clone();
+        // Hidden windows need a unique native title until their HWND is bound: two downloads
+        // can have the same filename and percentage. The displayed title is set before reveal.
+        #[cfg(windows)]
+        let hwnd = self.taskbar.window();
+        #[cfg(not(windows))]
+        let hwnd = None;
+        let native_title = if cfg!(windows) && hwnd.is_none() {
+            format!("mdm-progress-{}", self.id)
+        } else {
+            title
+        };
         // Hidden until dialogs::keep_theme has given it its theme.
         let mut builder = crate::quiet(ViewportBuilder::default())
             .with_visible(false)
-            .with_title(title)
+            .with_title(native_title.clone())
             .with_inner_size(shown)
             // IDM's progress window has 2 px borders and a fixed size. On Windows the sizing
             // frame is asked for and win32::progress_frame trims its borders, disables resizing
@@ -540,7 +580,6 @@ impl Progress {
         // Minimize hides it in the notification area when asked (and a tray can bring it back).
         let minimize_hides = self.tray && self.minimize_to_tray;
         // The window, once its frame is applied (Windows: its caption parts go to its hit test).
-        let hwnd = ctx.data(|d| d.get_temp::<isize>(key.with("hwnd")));
         let action = ctx.show_viewport_immediate(vid, builder, |ui, _| {
             // Painted in the pass that closes it too (see dialogs::close_requested).
             let close = crate::dialogs::close_requested(ui);
@@ -616,20 +655,26 @@ impl Progress {
                 .any(|(b, _)| *b == CaptionButton::ToTray)
                 .then(|| crate::i18n::t("Hide to the notification area").to_owned());
             let want: Framed = (shown, (scale * 1000.0).round() as u32, hide);
-            if ctx
-                .data(|d| d.get_temp::<Framed>(key.with("framed")))
-                .as_ref()
-                != Some(&want)
-                && let Some(h) =
-                    crate::win32::thin_frame(&title_now, shown, scale, want.2.as_deref())
+            if self.needs_frame(ctx, key, &want)
+                && let Some(h) = hwnd.map_or_else(
+                    || crate::win32::thin_frame(&native_title, shown, scale, want.2.as_deref()),
+                    |h| crate::win32::thin_frame_on(h, shown, scale, want.2.as_deref()),
+                )
             {
                 ctx.data_mut(|d| {
                     d.insert_temp(key.with("framed"), want);
-                    d.insert_temp(key.with("hwnd"), h);
                 });
+                self.taskbar.set_window(h);
+                ctx.send_viewport_cmd_to(vid, egui::ViewportCommand::Title(title_now.clone()));
             }
         }
+        #[cfg(windows)]
+        self.update_taskbar(Some(item));
         let closing = matches!(action, Action::Close | Action::Cancel | Action::Hide);
+        #[cfg(windows)]
+        if closing {
+            self.taskbar.set_window(0);
+        }
         crate::dialogs::keep_theme(
             ctx,
             vid,
@@ -673,7 +718,6 @@ impl Progress {
             }
             ctx.data_mut(|d| {
                 d.remove::<Framed>(key.with("framed"));
-                d.remove::<isize>(key.with("hwnd"));
             });
         }
         action
@@ -2307,6 +2351,51 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[cfg(windows)]
+    #[test]
+    fn reopening_after_completion_ignores_the_previous_windows_frame_cache() {
+        let ctx = egui::Context::default();
+        let key = egui::Id::unique(("progress-pos", 7_u64));
+        let want: Framed = ([548.0, 472.0], 1000, None);
+        ctx.data_mut(|d| d.insert_temp(key.with("framed"), want.clone()));
+        let reopened = Progress::new(7, false);
+        assert!(
+            reopened.needs_frame(&ctx, key, &want),
+            "an equal cached size is not evidence that this new window has a frame or HWND"
+        );
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn taskbar_follows_only_a_running_download_with_a_known_size() {
+        let mut item = Item::new(
+            7,
+            "https://example.com/a".parse().unwrap(),
+            std::path::PathBuf::from("a"),
+            crate::model::Category::General,
+        );
+        item.size = Some(100);
+        item.downloaded = 25;
+        item.status = Status::Downloading;
+        assert_eq!(taskbar_fraction(&item), Some(0.25));
+        for status in [
+            Status::Queued,
+            Status::Stopped,
+            Status::Error,
+            Status::Complete,
+        ] {
+            item.status = status;
+            assert_eq!(taskbar_fraction(&item), None, "{status:?}");
+        }
+        item.status = Status::Downloading;
+        item.size = None;
+        assert_eq!(taskbar_fraction(&item), None);
+        item.size = Some(0);
+        assert_eq!(taskbar_fraction(&item), None);
+        item.size = Some(100);
+        assert_eq!(taskbar_fraction(&item), Some(0.25), "resumed");
+    }
 
     /// A download of unknown size has no percentage in its title (from #384).
     #[test]

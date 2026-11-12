@@ -10143,7 +10143,12 @@ impl App {
             self.tray(ctx);
             // The taskbar button's green bar: everything running, as one.
             #[cfg(windows)]
-            crate::win32::taskbar_progress(crate::MAIN_TITLE, self.overall_progress());
+            {
+                crate::win32::taskbar_progress(crate::MAIN_TITLE, self.overall_progress());
+                for window in &mut self.progress {
+                    window.update_taskbar(self.items.iter().find(|item| item.id == window.id));
+                }
+            }
         }
         if self
             .ticked

@@ -705,11 +705,25 @@ pub fn thin_frame(
     scale: f32,
     hide_item: Option<&str>,
 ) -> Option<isize> {
+    thin_frame_on(find_own_window(title)? as isize, client, scale, hide_item)
+}
+
+/// Reapply a frame to the bound window, even when another download has the same title.
+pub fn thin_frame_on(
+    window: isize,
+    client: [f32; 2],
+    scale: f32,
+    hide_item: Option<&str>,
+) -> Option<isize> {
     use windows_sys::Win32::UI::HiDpi::{AdjustWindowRectExForDpi, GetDpiForWindow};
     use windows_sys::Win32::UI::WindowsAndMessaging::{
-        AppendMenuW, DeleteMenu, GetSystemMenu, MF_BYCOMMAND, MF_STRING,
+        AppendMenuW, DeleteMenu, GetSystemMenu, IsWindow, MF_BYCOMMAND, MF_STRING,
     };
-    let hwnd = find_own_window(title)?;
+    let hwnd = window as HWND;
+    // SAFETY: a query accepting any handle.
+    if unsafe { IsWindow(hwnd) } == 0 {
+        return None;
+    }
     // Windows 11 draws its 1 px border round a window without a caption style; Windows 10 draws
     // none, so there it has the system's own (WS_BORDER).
     let kind = if windows_11() {
@@ -2973,19 +2987,89 @@ struct TaskbarVtbl {
     set_progress_state: unsafe extern "system" fn(*mut c_void, HWND, u32) -> i32,
 }
 
-/// The taskbar object (created on first use on the UI thread) and the last value shown.
+/// The taskbar object, created on first use on the UI thread.
 struct Taskbar {
     obj: *mut *const TaskbarVtbl,
-    shown: Option<Option<u32>>,
 }
 
 thread_local! {
     static TASKBAR: std::cell::RefCell<Option<Taskbar>> = const { std::cell::RefCell::new(None) };
+    static MAIN_TASKBAR: std::cell::RefCell<TaskbarProgress> = const { std::cell::RefCell::new(TaskbarProgress::new()) };
 }
 
-/// The window's taskbar button shows `progress` (0..=1, the green bar), or nothing (None).
-/// Only changes (in 1/1000 steps) reach the shell.
+/// One window's taskbar progress. The cache belongs to the window, not the COM object:
+/// two downloads (or the main window) can have the same fraction and still need an update.
+/// Dropping it clears the indicator before the viewport goes away.
+#[derive(Default)]
+pub struct TaskbarProgress {
+    window: isize,
+    shown: Option<Option<u32>>,
+}
+
+impl TaskbarProgress {
+    pub const fn new() -> Self {
+        Self {
+            window: 0,
+            shown: None,
+        }
+    }
+
+    pub fn window(&self) -> Option<isize> {
+        (self.window != 0).then_some(self.window)
+    }
+
+    pub fn set_window(&mut self, window: isize) {
+        self.set_window_with(window, write_taskbar_progress);
+    }
+
+    fn set_window_with(&mut self, window: isize, mut send: impl FnMut(isize, Option<u32>) -> bool) {
+        if self.window != window {
+            self.update_with(None, &mut send);
+            self.window = window;
+            self.shown = None;
+        }
+    }
+
+    /// Only changes (in 1/1000 steps) reach the shell; failed calls are retried.
+    pub fn update(&mut self, progress: Option<f64>) {
+        self.update_with(progress, write_taskbar_progress);
+    }
+
+    fn update_with(
+        &mut self,
+        progress: Option<f64>,
+        mut send: impl FnMut(isize, Option<u32>) -> bool,
+    ) {
+        let value = progress.map(|p| (p.clamp(0.0, 1.0) * 1000.0).round() as u32);
+        if self.window != 0 && self.shown != Some(value) && send(self.window, value) {
+            self.shown = Some(value);
+        }
+    }
+}
+
+impl Drop for TaskbarProgress {
+    fn drop(&mut self) {
+        self.update(None);
+    }
+}
+
+/// Aggregate progress on the main window; per-download windows own their own cache and handle.
 pub fn taskbar_progress(title: &str, progress: Option<f64>) {
+    if let Some(hwnd) = find_own_window(title) {
+        MAIN_TASKBAR.with_borrow_mut(|bar| {
+            bar.set_window(hwnd as isize);
+            bar.update(progress);
+        });
+    }
+}
+
+fn write_taskbar_progress(window: isize, value: Option<u32>) -> bool {
+    use windows_sys::Win32::UI::WindowsAndMessaging::IsWindow;
+    let hwnd = window as HWND;
+    // SAFETY: a query accepting any handle. A closed window has no indicator to clear.
+    if unsafe { IsWindow(hwnd) } == 0 {
+        return true;
+    }
     use windows_sys::Win32::System::Com::{
         CLSCTX_INPROC_SERVER, COINIT_APARTMENTTHREADED, CoCreateInstance, CoInitializeEx,
     };
@@ -2994,56 +3078,187 @@ pub fn taskbar_progress(title: &str, progress: Option<f64>) {
     const IID_ITASKBARLIST3: GUID = GUID::from_u128(0xea1afb91_9e28_4b86_90e9_9e9f8a5eefaf);
     const TBPF_NOPROGRESS: u32 = 0;
     const TBPF_NORMAL: u32 = 2;
-    let value = progress.map(|p| (p.clamp(0.0, 1.0) * 1000.0).round() as u32);
-    TASKBAR.with(|cell| {
-        let mut slot = cell.borrow_mut();
-        if slot.is_none() {
-            let mut obj: *mut c_void = std::ptr::null_mut();
-            // SAFETY: COM on the UI thread (a second CoInitializeEx is harmless); the out
-            // pointer receives an ITaskbarList3 on success, checked before use.
+    TASKBAR
+        .try_with(|cell| {
+            let mut slot = cell.borrow_mut();
+            if slot.is_none() {
+                let mut obj: *mut c_void = std::ptr::null_mut();
+                // SAFETY: COM on the UI thread (a second CoInitializeEx is harmless); the out
+                // pointer receives an ITaskbarList3 on success, checked before use.
+                unsafe {
+                    CoInitializeEx(std::ptr::null(), COINIT_APARTMENTTHREADED as u32);
+                    let hr = CoCreateInstance(
+                        &CLSID_TASKBARLIST,
+                        std::ptr::null_mut(),
+                        CLSCTX_INPROC_SERVER,
+                        &IID_ITASKBARLIST3,
+                        &mut obj,
+                    );
+                    if hr < 0 || obj.is_null() {
+                        return false;
+                    }
+                    let tb = obj as *mut *const TaskbarVtbl;
+                    ((**tb).hr_init)(obj);
+                    *slot = Some(Taskbar { obj: tb });
+                }
+            }
+            let Some(tb) = slot.as_mut() else {
+                return false;
+            };
+            // SAFETY: `obj` is a live ITaskbarList3 (never released: it lives as long as the UI
+            // thread); the calls match the vtable above.
             unsafe {
-                CoInitializeEx(std::ptr::null(), COINIT_APARTMENTTHREADED as u32);
-                let hr = CoCreateInstance(
-                    &CLSID_TASKBARLIST,
-                    std::ptr::null_mut(),
-                    CLSCTX_INPROC_SERVER,
-                    &IID_ITASKBARLIST3,
-                    &mut obj,
-                );
-                if hr < 0 || obj.is_null() {
-                    return;
+                let this = tb.obj as *mut c_void;
+                match value {
+                    Some(v) => {
+                        ((**tb.obj).set_progress_state)(this, hwnd, TBPF_NORMAL) >= 0
+                            && ((**tb.obj).set_progress_value)(this, hwnd, u64::from(v), 1000) >= 0
+                    }
+                    None => ((**tb.obj).set_progress_state)(this, hwnd, TBPF_NOPROGRESS) >= 0,
                 }
-                let tb = obj as *mut *const TaskbarVtbl;
-                ((**tb).hr_init)(obj);
-                *slot = Some(Taskbar {
-                    obj: tb,
-                    shown: None,
-                });
             }
-        }
-        let Some(tb) = slot.as_mut() else { return };
-        if tb.shown == Some(value) {
-            return;
-        }
-        let Some(hwnd) = find_own_window(title) else {
-            return;
+        })
+        .unwrap_or(false)
+}
+
+#[cfg(test)]
+mod taskbar_tests {
+    use super::TaskbarProgress;
+
+    #[test]
+    fn taskbar_windows_with_equal_titles_keep_their_own_frames() {
+        use windows_sys::Win32::UI::WindowsAndMessaging::{
+            CreateWindowExW, DefWindowProcW, DestroyWindow, GetWindowRect, RegisterClassW,
+            SetWindowTextW, WNDCLASSW, WS_EX_APPWINDOW, WS_POPUP,
         };
-        // SAFETY: `obj` is a live ITaskbarList3 (never released: it lives as long as the UI
-        // thread); the calls match the vtable above.
+        let class: Vec<u16> = "mdm-taskbar-binding-test\0".encode_utf16().collect();
+        let titles: Vec<Vec<u16>> = (0..2)
+            .map(|id| format!("mdm-progress-test-{id}\0").encode_utf16().collect())
+            .collect();
+        let same: Vec<u16> = "25% same.bin\0".encode_utf16().collect();
+        // SAFETY: hidden test windows on this thread, with the system's window procedure.
+        // All strings are terminated; no input or messages go to any other process.
         unsafe {
-            let this = tb.obj as *mut c_void;
-            match value {
-                Some(v) => {
-                    ((**tb.obj).set_progress_state)(this, hwnd, TBPF_NORMAL);
-                    ((**tb.obj).set_progress_value)(this, hwnd, u64::from(v), 1000);
-                }
-                None => {
-                    ((**tb.obj).set_progress_state)(this, hwnd, TBPF_NOPROGRESS);
-                }
+            let mut wc: WNDCLASSW = std::mem::zeroed();
+            wc.lpfnWndProc = Some(DefWindowProcW);
+            wc.lpszClassName = class.as_ptr();
+            RegisterClassW(&wc);
+            let windows: Vec<_> = titles
+                .iter()
+                .map(|title| {
+                    CreateWindowExW(
+                        WS_EX_APPWINDOW,
+                        class.as_ptr(),
+                        title.as_ptr(),
+                        WS_POPUP,
+                        -20000,
+                        -20000,
+                        548,
+                        472,
+                        std::ptr::null_mut(),
+                        std::ptr::null_mut(),
+                        std::ptr::null_mut(),
+                        std::ptr::null(),
+                    )
+                })
+                .collect();
+            assert!(windows.iter().all(|h| !h.is_null()));
+            for (i, h) in windows.iter().enumerate() {
+                let title = format!("mdm-progress-test-{i}");
+                assert_eq!(super::find_own_window(&title), Some(*h));
+                SetWindowTextW(*h, same.as_ptr());
+            }
+            for (i, h) in windows.iter().enumerate() {
+                assert_eq!(
+                    super::thin_frame_on(*h as isize, [548.0, 472.0], 1.0 + i as f32 * 0.25, None),
+                    Some(*h as isize)
+                );
+            }
+            let mut first = std::mem::zeroed();
+            let mut second = std::mem::zeroed();
+            GetWindowRect(windows[0], &mut first);
+            GetWindowRect(windows[1], &mut second);
+            assert!(
+                second.right - second.left > first.right - first.left,
+                "scaling one of two equal titles must resize that window alone"
+            );
+            for h in windows {
+                DestroyWindow(h);
             }
         }
-        tb.shown = Some(value);
-    });
+    }
+
+    #[test]
+    fn equal_fractions_reach_each_window_and_clear_independently() {
+        let mut main = TaskbarProgress::new();
+        let mut first = TaskbarProgress::new();
+        let mut second = TaskbarProgress::new();
+        let mut calls = Vec::new();
+        let mut send = |h, v| {
+            calls.push((h, v));
+            true
+        };
+        for (bar, h) in [(&mut main, 1), (&mut first, 2), (&mut second, 3)] {
+            bar.set_window_with(h, &mut send);
+            bar.update_with(Some(0.25), &mut send);
+            bar.update_with(Some(0.2501), &mut send);
+        }
+        first.update_with(None, &mut send);
+        second.update_with(Some(0.75), &mut send);
+        main.update_with(Some(0.5), &mut send);
+        assert_eq!(
+            calls,
+            [
+                (1, Some(250)),
+                (2, Some(250)),
+                (3, Some(250)),
+                (2, None),
+                (3, Some(750)),
+                (1, Some(500))
+            ]
+        );
+    }
+
+    #[test]
+    fn replacing_or_closing_a_window_clears_it_and_reopening_sends_again() {
+        let mut bar = TaskbarProgress::new();
+        let mut calls = Vec::new();
+        let mut send = |h, v| {
+            calls.push((h, v));
+            true
+        };
+        bar.set_window_with(1, &mut send);
+        bar.update_with(Some(0.5), &mut send);
+        bar.set_window_with(2, &mut send);
+        bar.update_with(Some(0.5), &mut send);
+        bar.set_window_with(0, &mut send);
+        bar.update_with(Some(0.9), &mut send); // no window
+        bar.set_window_with(2, &mut send); // even a reused HWND is a fresh cache
+        bar.update_with(Some(0.5), &mut send);
+        assert_eq!(
+            calls,
+            [
+                (1, Some(500)),
+                (1, None),
+                (2, Some(500)),
+                (2, None),
+                (2, Some(500))
+            ]
+        );
+    }
+
+    #[test]
+    fn failed_shell_calls_are_retried() {
+        let mut bar = TaskbarProgress::new();
+        bar.set_window_with(1, |_, _| true);
+        bar.update_with(Some(0.4), |_, _| false);
+        let mut calls = Vec::new();
+        bar.update_with(Some(0.4), |h, v| {
+            calls.push((h, v));
+            true
+        });
+        assert_eq!(calls, [(1, Some(400))]);
+    }
 }
 
 /// A REG_SZ / REG_DWORD value under HKEY_CURRENT_USER\`key` (None when absent).
