@@ -557,6 +557,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ No "The window stopped responding" report in the first minute after the computer wakes from
+  sleep, while its disk, network and screen come back: such a stall is logged, and reported only
+  if it lasts longer; every freeze report says what the window was doing when it stopped
+  ([#574](https://github.com/anefzaoui/misterdownloadmanager/issues/574),
+  [#613](https://github.com/anefzaoui/misterdownloadmanager/issues/613))
 - ✅ A YouTube video that lists only the sound says why: yt-dlp has no JavaScript runtime. The
   video window, the menu over a video and the command line say to install Node.js or Deno, with
   a link to the help page's commands for each system
@@ -867,9 +872,11 @@ These ship in a later version, when they're ready.
 - 🔍 A site's bot check refusing MDM's request (testfile.org, a Cloudflare challenge): the
   message now says so ([#376](https://github.com/anefzaoui/misterdownloadmanager/issues/376)); a
   way to hand the download back to the browser is still to decide
-- 🔍 A 10-second freeze of the window after a night left open
-  ([#304](https://github.com/anefzaoui/misterdownloadmanager/issues/304)): most likely the
-  computer waking from sleep; waiting on the reporter's full report
+- 🔍 The window not answering for up to half a minute just after the computer wakes, while MDM
+  waits in the notification area ([#574](https://github.com/anefzaoui/misterdownloadmanager/issues/574),
+  [#613](https://github.com/anefzaoui/misterdownloadmanager/issues/613),
+  [#304](https://github.com/anefzaoui/misterdownloadmanager/issues/304)): no longer reported as
+  a freeze; what it waits on is to be seen in a test build's log
 
 ## Planned
 
