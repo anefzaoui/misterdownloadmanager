@@ -557,6 +557,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows: a menu closes at once when you click outside MDM, instead of 0.4 seconds later
+  ([#859](https://github.com/anefzaoui/misterdownloadmanager/issues/859))
 - ✅ Linux: no freeze of the window where the session bus doesn't answer (a session started
   without D-Bus, a bus that hangs): the tray icon is set up beside the window, which carries on
   without it until the bus answers, and gets it then, however late
