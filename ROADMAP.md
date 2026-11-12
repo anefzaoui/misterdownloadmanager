@@ -585,6 +585,9 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 A freeze of the window while it checked Windows' light or dark mode: the registry took
+  seconds to answer ([#719](https://github.com/anefzaoui/misterdownloadmanager/issues/719)): the
+  system's look and the theme files are now read beside the window; fix in review
 - 🔄 Helium: MDM offers it the extension on Linux and macOS, through Helium's own services, the
   Linux packages' helper files cover it, and the docs say how to add the extension in Helium
   ([#685](https://github.com/anefzaoui/misterdownloadmanager/issues/685)); in review

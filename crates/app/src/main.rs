@@ -32,6 +32,7 @@ mod icons;
 mod langpick;
 mod launch;
 mod list;
+mod lookwatch;
 mod model;
 mod native;
 mod netwatch;
