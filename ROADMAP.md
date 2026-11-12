@@ -556,6 +556,13 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ **Add batch download from clipboard** reads every link copied (a list, a forum post): http,
+  ftp and magnet links, each once, ticked in Link grabber, started or queued together with one
+  summary at the end; a copied address with a number in it (`…/ep01.mp4`) opens Batch download
+  with its pattern; also in the tray menu, and Ctrl+B. Copying several links no longer opens
+  Download File Info with them run together
+  ([#709](https://github.com/anefzaoui/misterdownloadmanager/issues/709),
+  [#780](https://github.com/anefzaoui/misterdownloadmanager/issues/780))
 - ✅ A video quality's size is the size of what downloads: each line of the Download video window
   and of the browser's menu is the very video and sound it was sized from, and a size that is
   only an estimate shows as about ("~532 MB"); a portrait 4K video showed 3.79 GB and downloaded
