@@ -557,6 +557,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows: **Open with...** shows Windows' "Select an app to open this file" again, for
+  files whose name or folder has a space too
+  ([#720](https://github.com/anefzaoui/misterdownloadmanager/issues/720))
 - ✅ Linux: no freeze of the window where the session bus doesn't answer (a session started
   without D-Bus, a bus that hangs): the tray icon is set up beside the window, which carries on
   without it until the bus answers, and gets it then, however late

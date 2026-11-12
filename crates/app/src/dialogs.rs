@@ -3042,6 +3042,13 @@ pub fn open_file(path: &Path) {
 /// than the window's (Download complete asks it through `launch::Asked`: whether it failed
 /// decides whether the box stays open).
 pub fn open_file_now(path: &Path) -> bool {
+    hand_over(path, |p| open::that_detached(p).map_err(|e| e.to_string()))
+}
+
+/// Hand the downloaded file `path` to `hand` (which opens it, or shows a chooser for it), or say
+/// why not: moved or deleted since, or `hand`'s error. True when it was handed over. Waits for
+/// `hand`, so it runs on a thread other than the window's.
+fn hand_over(path: &Path, hand: impl FnOnce(&Path) -> Result<(), String>) -> bool {
     let name = crate::i18n::isolate(&path.file_name().unwrap_or_default().to_string_lossy());
     let failed = if !path.exists() {
         crate::i18n::fmt(
@@ -3050,10 +3057,10 @@ pub fn open_file_now(path: &Path) -> bool {
             ),
             &[("file", &name)],
         )
-    } else if let Err(e) = open::that_detached(path) {
+    } else if let Err(e) = hand(path) {
         crate::i18n::fmt(
             crate::i18n::t("{file} could not be opened: {error}"),
-            &[("file", &name), ("error", &e.to_string())],
+            &[("file", &name), ("error", &e)],
         )
     } else {
         return true;
@@ -3106,18 +3113,30 @@ fn show_in_folder_now(path: &Path) {
     crate::unix::show_in_folder(path);
 }
 
+/// "Open with": the system's chooser of programs for the downloaded file `path`, or a message
+/// saying why not (moved or deleted since). Returns at once: the chooser is shown, and waited
+/// for, on a thread of its own, as is the look at the file (#743, #751).
 pub fn open_with(path: &Path) {
-    #[cfg(windows)]
-    {
-        let _ = std::process::Command::new("rundll32")
-            .arg("shell32.dll,OpenAs_RunDLL")
-            .arg(path)
-            .spawn();
-    }
-    #[cfg(not(windows))]
-    {
-        crate::launch::open(path);
-    }
+    let path = path.to_owned();
+    crate::launch::spawn("open with", move || {
+        hand_over(&path, |p| {
+            // Windows' own "How do you want to open this file?", as Explorer shows it (#720).
+            #[cfg(windows)]
+            {
+                crate::win32::open_with_dialog(p).map_err(|hr| {
+                    tracing::warn!("open with: SHOpenWithDialog failed, {hr:#010x}");
+                    std::io::Error::from_raw_os_error(hr).to_string()
+                })
+            }
+            // Linux and macOS have no chooser MDM can call for a file: the desktop's opener
+            // (xdg-open, which goes through the desktop portal in a sandbox, or macOS's `open`)
+            // opens it with the program set for its type, which the user changes there.
+            #[cfg(not(windows))]
+            {
+                open::that_detached(p).map_err(|e| e.to_string())
+            }
+        });
+    });
 }
 
 /// "Duplicate download link": the address is already in the list (Options → Downloads → "If a
