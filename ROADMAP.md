@@ -503,6 +503,14 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Fewer Download complete windows: downloads added together (a playlist, a batch, Link
+  grabber's links) show one summary once all are done, with how many finished and which failed,
+  Open folder and Show in list; a single download keeps its window
+  ([#766](https://github.com/anefzaoui/misterdownloadmanager/issues/766)). **Snooze** in Download complete keeps it away for
+  30 minutes, 1 hour, 8 hours or until MDM restarts, and Options → Downloads says until when, with
+  Resume now ([#741](https://github.com/anefzaoui/misterdownloadmanager/issues/741))
+- ✅ The video button no longer comes back on play or pause, and fades sooner
+  ([#741](https://github.com/anefzaoui/misterdownloadmanager/issues/741))
 - ✅ Windows 10: no black band above the progress window's title bar, and clicks land on its
   buttons again ([#620](https://github.com/anefzaoui/misterdownloadmanager/issues/620),
   [#772](https://github.com/anefzaoui/misterdownloadmanager/issues/772)): the progress window and
@@ -612,8 +620,6 @@ These ship in a later version, when they're ready.
   as the button appears and the button names the best quality, which one click downloads; a plain
   file downloads as a file; its menu lists every quality; after a click it says what happened in
   its own colour, with Show, Open post, Get MDM and Retry, or Turn on: in review
-- 🔄 The video button no longer comes back on play or pause, and fades sooner
-  ([#741](https://github.com/anefzaoui/misterdownloadmanager/issues/741)): in review
 - 🔄 Picking a video quality already in the list (the menu over a video, the Download video window)
   follows Options' duplicate setting instead of downloading it again: in review
 - 🔄 The progress window's bar glides instead of moving in steps: in review

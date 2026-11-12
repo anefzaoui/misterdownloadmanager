@@ -405,6 +405,11 @@ pub struct Item {
     /// every volume is there.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub package: Option<PackageTag>,
+    /// The downloads it was added with (a playlist, a batch, Link grabber's links, #766): the
+    /// first one's id. They show one summary once all are done, not a Download complete window
+    /// each; cleared once it was summed up. None for a download added alone.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub group: Option<u64>,
     /// Where its server was, as its last run saw it (#140): Properties shows it.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub server: Option<crate::whereis::Seen>,
@@ -786,6 +791,7 @@ impl Item {
             name_from_url: false,
             number_at_start: false,
             package: None,
+            group: None,
             server: None,
             direct: false,
             remote: None,

@@ -45,6 +45,11 @@
 #, machine
 @plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	Yana {n} ta yuklab olish kutilmoqda. Uni ham bekor qilasizmi?|Yana {n} ta yuklab olish kutilmoqda. Ularni ham bekor qilasizmi?
 #. count in a dialog box
+#. under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} more|and {n} more	va yana {n} ta|va yana {n} ta
+#. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -66,6 +71,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} download|{n} downloads	{n} ta yuklab olish|{n} ta yuklab olish
+#. count in a dialog box
+#. the summary of downloads added together (the Downloads complete window; the tip of the tray icon): {n} of them finished
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download finished|{n} downloads finished	{n} ta yuklab olish yakunlandi|{n} ta yuklab olish yakunlandi
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -75,6 +85,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} ta yozuv qoldirildi (havola yoki papkadan tashqariga olib chiquvchi nom)|{n} ta yozuv qoldirildi (havolalar yoki papkadan tashqariga olib chiquvchi nomlar)
+#. count in a dialog box
+#. the summary of downloads added together; after "12 downloads finished": {n} of them failed
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} failed|{n} failed	{n} tasi muvaffaqiyatsiz tugadi|{n} tasi muvaffaqiyatsiz tugadi
 #. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
@@ -1265,6 +1280,15 @@
 #, machine
 	Download complete	Yuklab olish yakunlandi
 #. text in the Options window
+#. Options, Downloads, under "Show download complete dialog": snoozed with "Until MDM restarts"
+#, machine
+	Download complete is snoozed until MDM restarts	Yuklab olish yakunlandi oynasi MDM qayta ishga tushguncha to‘xtatildi
+#. text in the Options window
+#. Options, Downloads, under "Show download complete dialog": {time} when the snooze ends, like "14:30"
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Download complete is snoozed until {time}	Yuklab olish yakunlandi oynasi {time} gacha to‘xtatildi
+#. text in the Options window
 #, machine
 	Download failed	Yuklab olish muvaffaqiyatsiz tugadi
 #. window title in a dialog box
@@ -1377,6 +1401,10 @@
 #. tab title: download settings
 #, machine
 	Downloads	Yuklamalar
+#. window title in a dialog box
+#. title of the window that sums up downloads added together (a playlist, a batch) once all are done
+#, machine
+	Downloads complete	Yuklab olishlar yakunlandi
 #. text in the tray icon's menu
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #, machine
@@ -1586,6 +1614,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Extracting...	Ajratib olinmoqda...
+#. text in a dialog box
+#. label over the list of the downloads of the group that failed
+#, machine
+	Failed:	Muvaffaqiyatsiz tugaganlar:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1724,6 +1756,18 @@
 #. text in categories.rs
 #, machine
 	Folder:	Jild:
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 1 hour	1 soatga
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 30 minutes	30 daqiqaga
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 8 hours	8 soatga
 #. text in the Batch download window
 #. {address} = an example web address with a * in the file name
 #, machine
@@ -3547,6 +3591,10 @@
 #. label: whether the server lets a stopped download continue (Yes / No)
 #, machine
 	Resume capability	Davom ettirish imkoniyati
+#. text in the Options window
+#. link after "Download complete is snoozed until 14:30": ends the snooze now
+#, machine
+	Resume now	Hozir davom ettirish
 #. message or event log entry in the main window
 #. event log entry, past tense: the download resumed (just now)
 #, machine
@@ -3661,7 +3709,8 @@
 #. status shown in green beside the Rename box once the new name is saved
 #, machine
 	Saved	Saqlandi
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
+#. label over the folder the downloads were saved in
 #. label before the folder the torrent is saved in
 #, machine
 	Saved in	Saqlangan joyi
@@ -3852,6 +3901,10 @@
 #. checkbox in the Options window; checkbox in a download's progress window
 #, machine
 	Show download complete dialog	Yuklab olish tugagani haqidagi dialog oynasini koʻrsatish
+#. button in a dialog box
+#. button: shows these downloads in MDM's list, selected
+#, machine
+	Show in list	Ro‘yxatda ko‘rsatish
 #. text in extension.rs
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
@@ -3959,6 +4012,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Slovenia	Sloveniya
+#. text in a dialog box
+#. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
+#, machine
+	Snooze	Keyinga qoldirish
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5006,6 +5063,10 @@
 #. where a download's server is: an address the location table doesn't place
 #, machine
 	unknown	nomaʼlum
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window until MDM is started again
+#, machine
+	Until MDM restarts	MDM qayta ishga tushguncha
 #. button in the Options window
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
@@ -5374,7 +5435,7 @@
 #, machine
 	yt-dlp downloads it itself: a live stream	yt-dlp uni o‘zi yuklab oladi: jonli efir
 #. text in a download's progress window
-#. progress window, a video's line: a stream sent in many small pieces (HLS, DASH), which the helper program yt-dlp downloads itself for now
+#. progress window, a video's line: a stream sent in many small pieces of a rare kind (Adobe HDS, Smooth Streaming), which the helper program yt-dlp downloads itself
 #, machine
 	yt-dlp downloads it itself: a stream in pieces	yt-dlp uni o‘zi yuklab oladi: bo‘laklarga bo‘lingan oqim
 #. text in a download's progress window
@@ -5558,6 +5619,11 @@
 #. {name} = a file name; {version} = a version number (keep the braces as they are)
 #, machine
 	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} juda eski: MDMga {oldest} yoki undan yangirogʻi kerak
+#. text in a dialog box
+#. one failed download in the summary of a group of downloads: {name} its file name, {error} why it failed
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	{name}: {error}	{name}: {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -5645,6 +5711,11 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{size} free	{size} boʻsh
+#. text in a dialog box
+#. under "12 downloads finished": {size} the finished files' size together, like "1.25 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} in all	Jami {size}
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -5736,9 +5807,18 @@ column	Upload speed	Uzatish tezligi
 #, machine
 extension	A list of videos: choose them in Mister Download Manager	Videolar ro‘yxati: ularni Mister Download Manager da tanlang
 #. text in the browser extension
+#. on the download button (green) over a video after the app added and started the download; a quality may follow ('· 1080p') and a 'Show' button; MDM is the app's short name, keep it; short
+#, machine
+extension	Added to MDM	MDMga qo‘shildi
+#. text in the browser extension
 #. shown briefly on the download button over a video after a quality was picked: the download was added to the app's download queue, to start later
 #, machine
 extension	Added to the queue	Navbatga qo‘shildi
+#. text in the browser extension
+#. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	All qualities and subtitles...	Barcha sifat variantlari va subtitrlar...
 #. text in the browser extension
 #. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
 #, machine
@@ -5748,6 +5828,10 @@ extension	Another Mister Download Manager (a server)	Boshqa Mister Download Mana
 #, machine
 extension	Audio	Audio
 #. text in the browser extension
+#. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
+#, machine
+extension	best	eng yaxshi
+#. text in the browser extension
 #. the name this browser gets in the other MDM's list of paired devices
 #, machine
 extension	Browser extension	Brauzer kengaytmasi
@@ -5756,6 +5840,10 @@ extension	Browser extension	Brauzer kengaytmasi
 #. the trailing ... means it is still going on: keep it
 #, machine
 extension	Button settings...	Tugma sozlamalari...
+#. text in the browser extension
+#. on the download button over a copy-protected video, after 'Protected video ·': it can't be downloaded; short, lower case
+#, machine
+extension	can't be saved	saqlab bo‘lmaydi
 #. text in the browser extension
 #. shown briefly on the download button when nothing on the page says which video the player is playing, so nothing was sent
 #, machine
@@ -5782,9 +5870,17 @@ extension	Download	Yuklab olish
 #, machine
 extension	Download all links with Mister Download Manager	Barcha havolalarni Mister Download Manager bilan yuklab olish
 #. text in the browser extension
+#. first line of the list under the download button over a video: downloads the best quality at once; the quality, its file type and size follow on the same line; short
+#, machine
+extension	Download best	Eng yaxshi sifatni yuklab olish
+#. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 #, machine
 extension	Download selected links with Mister Download Manager	Tanlangan havolalarni Mister Download Manager bilan yuklab olish
+#. text in the browser extension
+#. first line of the tooltip of the download button over a video while the app is still finding its qualities
+#, machine
+extension	Download the best quality	Eng yaxshi sifatni yuklab oling
 #. text in the browser extension
 #. the button over a video on a web page that downloads it; verb; short (it sits on the video)
 #, machine
@@ -5793,6 +5889,10 @@ extension	Download video	Videoni yuklab olish
 #. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
 #, machine
 extension	Download with Mister Download Manager	Mister Download Manager yordamida yuklab olish
+#. text in the browser extension
+#. first line of the tooltip of the download button over a video: what one click downloads; $what$ is a quality, a file type and a size, e.g. '1080p MP4 · 412 MB'
+#, machine
+extension	Download {what}	{what}ni yuklab oling
 #. text in the browser extension
 #. shown in the toolbar button's popup after the site was excluded
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -5803,13 +5903,17 @@ extension	Downloads from {site} stay with the browser	{site} dan yuklab olishlar
 #, machine
 extension	Downloads go to {address}	Yuklab olishlar {address} manziliga yuboriladi
 #. text in the browser extension
-#. tooltip of the download button over a video: it can be dragged to another place on the video's edge
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
 #, machine
-extension	Drag to move it along the video's edge	Videoning cheti boʻylab harakatlantirish uchun torting
+extension	Drag the dots to move it along the edge	Nuqtalarni chet bo‘ylab harakatlantirish uchun torting
 #. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
 extension	Enter its https:// address.	Uning https:// manzilini kiriting.
+#. text in the browser extension
+#. button on the download button over a video when the app didn't answer: opens the app's download page; MDM is the app's short name, keep it; very short
+#, machine
+extension	Get MDM	MDMni yuklab oling
 #. text in the browser extension
 #. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
 #, machine
@@ -5871,6 +5975,10 @@ extension	Looking up the qualities…	Sifatlar qidirilmoqda…
 #. in the menu under the download button over a video: the app took more than a minute to find the video's qualities, so the menu stopped waiting
 #, machine
 extension	Looking up took too long	Qidirish juda uzoq davom etdi
+#. text in the browser extension
+#. on the download button (red) over a video when the app isn't installed or didn't start; 'Get MDM' and 'Retry' buttons follow; MDM is the app's short name, keep it; short
+#, machine
+extension	MDM didn't answer	MDM javob bermadi
 #. text in the browser extension
 #. heading in the toolbar button's popup over the list of the videos, sounds and streams the current web page has loaded
 #, machine
@@ -5938,9 +6046,9 @@ extension	No video to download here	Bu yerda yuklab olish uchun video yo‘q
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Ulanmadi. Ushbu brauzerda uning manzilini bir marta oching va sertifikatini qabul qiling, soʻng qaytadan urinib koʻring.
 #. text in the browser extension
-#. last command of the menu of qualities under the download button over a video: opens the app's Download video window for this video instead; keep the name Mister Download Manager as it is
+#. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
 #, machine
-extension	Open in Mister Download Manager…	Mister Download Manager da ochish…
+extension	Off on this site	Ushbu saytda o‘chirilgan
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -5954,14 +6062,22 @@ extension	Open its address once and accept its certificate, then enter a code fr
 #, machine
 extension	Open Mister Download Manager	Mister Download Manager ni ochish
 #. text in the browser extension
-#. shown briefly on the download button over a video in a feed (a social site's home page, a timeline) when nothing in the feed gives that video's own address, so nothing was sent: the user should open the post the video belongs to and click the button on that page; short
+#. button on the download button over a video in a feed: opens the post the video belongs to in a new tab; verb; very short
 #, machine
-extension	Open the post, then use the button there	Postni oching, so‘ngra u yerdagi tugmadan foydalaning
+extension	Open post	Xabarni ochish
+#. text in the browser extension
+#. on the download button (amber) over a video in a feed (a social site's home page, a timeline) that can't be downloaded from there: the user should open the post the video belongs to; short
+#, machine
+extension	Open the post to download it	Yuklab olish uchun xabarni oching
 #. text in the browser extension
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it
 #, machine
 extension	Options...	Parametrlar...
+#. text in the browser extension
+#. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
+#, machine
+extension	original	asl
 #. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
@@ -5983,9 +6099,13 @@ extension	Prefix media file names with the page title	Media fayl nomlari oldiga 
 #, machine
 extension	Protected	Himoyalangan
 #. text in the browser extension
-#. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
+#. on the download button over a copy-protected (DRM) video, which no tool can download; 'can't be saved' follows it after a dot; short
 #, machine
-extension	Protected video: it can't be saved	Himoyalangan videoni saqlab boʻlmaydi
+extension	Protected video	Himoyalangan video
+#. text in the browser extension
+#. button on the download button over a video when the app didn't answer: try again; verb; very short
+#, machine
+extension	Retry	Qayta urinish
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
@@ -5995,9 +6115,18 @@ extension	Send downloads through this browser's proxy or VPN extension	Yuklab ol
 #, machine
 extension	Send downloads to	Yuklab olishlarni yuborish
 #. text in the browser extension
+#. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Sending to MDM...	MDM ga yuborilmoqda...
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Mister Download Manager ga yuborildi
+#. text in the browser extension
+#. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
+#, machine
+extension	Show	Ko‘rsatish
 #. text in the browser extension
 #. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
 #, machine
@@ -6014,10 +6143,6 @@ extension	The Chrome Web Store's rules keep this copy of the add-on away from th
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
 extension	The connection to Mister Download Manager failed	Mister Download Manager bilan ulanish uzildi
-#. text in the browser extension
-#. shown briefly on the download button over a video when the app's settings keep the button off on this web site
-#, machine
-extension	The download button is off on this site	Ushbu saytda yuklab olish tugmasi oʻchirilgan
 #. text in the browser extension
 #. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
 #, machine
@@ -6042,6 +6167,10 @@ extension	This download's details were too large to hand over	Yuklab olish tafsi
 #. in the toolbar button's popup, when the page's player plays from a stream built in the page (a blob:): the list of the page's media has nothing to show; Download video is the name of the button over videos
 #, machine
 extension	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.	Bu sahifadagi pleyer videoni bo‘laklab uzatadi, shuning uchun ro‘yxatga qo‘yadigan fayl yo‘q. Videoga kursorni olib boring va uning “Videoni yuklab olish” tugmasidan foydalaning.
+#. text in the browser extension
+#. button on the download button over a video when it is off on this web site: turns it on again here; verb; very short
+#, machine
+extension	Turn on	Yoqish
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
@@ -6815,85 +6944,3 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/sek
-#. text in the browser extension
-#. on the download button (green) over a video after the app added and started the download; a quality may follow ('· 1080p') and a 'Show' button; MDM is the app's short name, keep it; short
-#, machine
-extension	Added to MDM	MDMga qo‘shildi
-#. text in the browser extension
-#. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
-#. the trailing ... means it is still going on: keep it
-#, machine
-extension	All qualities and subtitles...	Barcha sifat variantlari va subtitrlar...
-#. text in the browser extension
-#. first row of the menu of the download button over a video while the app is still finding its qualities: downloads the best one as soon as it is known; short
-#, machine
-extension	Best quality	Eng yaxshi sifat
-#. text in the browser extension
-#. first line of the tooltip of the download button over a video while the app is still finding its qualities
-#, machine
-extension	Download the best quality	Eng yaxshi sifatni yuklab oling
-#. text in the browser extension
-#. first line of the tooltip of the download button over a video: what one click downloads; $what$ is a quality, a file type and a size, e.g. '1080p MP4 · 412 MB'
-#, machine
-extension	Download {what}	{what}ni yuklab oling
-#. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
-#, machine
-extension	Drag the dots to move it along the edge	Nuqtalarni chet bo‘ylab harakatlantirish uchun torting
-#. text in the browser extension
-#. button on the download button over a video when the app didn't answer: opens the app's download page; MDM is the app's short name, keep it; very short
-#, machine
-extension	Get MDM	MDMni yuklab oling
-#. text in the browser extension
-#. on the download button (red) over a video when the app isn't installed or didn't start; 'Get MDM' and 'Retry' buttons follow; MDM is the app's short name, keep it; short
-#, machine
-extension	MDM didn't answer	MDM javob bermadi
-#. text in the browser extension
-#. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
-#, machine
-extension	Off on this site	Ushbu saytda o‘chirilgan
-#. text in the browser extension
-#. button on the download button over a video in a feed: opens the post the video belongs to in a new tab; verb; very short
-#, machine
-extension	Open post	Xabarni ochish
-#. text in the browser extension
-#. on the download button (amber) over a video in a feed (a social site's home page, a timeline) that can't be downloaded from there: the user should open the post the video belongs to; short
-#, machine
-extension	Open the post to download it	Yuklab olish uchun xabarni oching
-#. text in the browser extension
-#. on the download button over a copy-protected (DRM) video, which no tool can download; 'can't be saved' follows it after a dot; short
-#, machine
-extension	Protected video	Himoyalangan video
-#. text in the browser extension
-#. button on the download button over a video when the app didn't answer: try again; verb; very short
-#, machine
-extension	Retry	Qayta urinish
-#. text in the browser extension
-#. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
-#. the trailing ... means it is still going on: keep it
-#, machine
-extension	Sending to MDM...	MDM ga yuborilmoqda...
-#. text in the browser extension
-#. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
-#, machine
-extension	Show	Ko‘rsatish
-#. text in the browser extension
-#. button on the download button over a video when it is off on this web site: turns it on again here; verb; very short
-#, machine
-extension	Turn on	Yoqish
-#. text in the browser extension
-#. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
-#, machine
-extension	best	eng yaxshi
-#. text in the browser extension
-#. on the download button over a copy-protected video, after 'Protected video ·': it can't be downloaded; short, lower case
-#, machine
-extension	can't be saved	saqlab bo‘lmaydi
-#. text in the browser extension
-#. first line of the list under the download button over a video: downloads the best quality at once; the quality, its file type and size follow on the same line; short
-#, machine
-extension	Download best	Eng yaxshi sifatni yuklab olish
-#. text in the browser extension
-#. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
-#, machine
-extension	original	asl
