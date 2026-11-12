@@ -146,6 +146,10 @@
    "source": "How releases are made",
    "text": "Comment les versions sont faites"
   },
+  "029733b9b37c66ba": {
+   "source": "MDM is also in <g1>WinGet</g1>, Windows' package manager. In a terminal, the first line installs MDM and the second updates it to the latest version:",
+   "text": "MDM est également disponible dans <g1>WinGet</g1>, le gestionnaire de paquets de Windows. Dans un terminal, la première ligne installe MDM et la seconde le met à jour vers la dernière version :"
+  },
   "02a38777a650e8a4": {
    "source": "<g1><g2></g2></g1> <g3>Video from a page</g3> <g4>Paste a page's address and choose a quality, up to 4K, from YouTube, Vimeo and thousands of other sites.</g4>",
    "text": "<g1><g2></g2></g1> <g3>Vidéo depuis une page</g3> <g4>Collez l’adresse d’une page et choisissez une qualité, jusqu’à 4K, sur YouTube, Vimeo et des milliers d’autres sites.</g4>"
@@ -865,6 +869,10 @@
   "0d2938337aca310a": {
    "source": "The Subtitles list of the video window, with Put them into the video",
    "text": "La liste « Sous-titres » de la fenêtre vidéo, avec « Les intégrer à la vidéo »"
+  },
+  "0d2c3326d3fe4e57": {
+   "source": "If MDM is already running, the setup asks it to save and close first. To update, use <g1>Help → Check for updates → Update now</g1>, or run the setup of the new version (or update with <g2>WinGet</g2>); your list and settings stay.",
+   "text": "Si MDM est déjà en cours d’exécution, le programme d’installation lui demande d’abord d’enregistrer et de se fermer. Pour mettre à jour, utilisez <g1>Aide → Rechercher les mises à jour → Mettre à jour maintenant</g1>, ou exécutez le programme d’installation de la nouvelle version (ou mettez à jour avec <g2>WinGet</g2>) ; votre liste et vos paramètres sont conservés."
   },
   "0d440d3ec80b9026": {
    "source": "Version 0.5.2 · free and open source · no ads, no spyware, nothing bundled. <g1>What's new</g1>",
@@ -2746,10 +2754,6 @@
    "source": "<g1>AppImage tools support:</g1> the AppImage can update through them, downloading only what changed.",
    "text": "<g1>Prise en charge des outils AppImage :</g1> l’AppImage peut se mettre à jour via ces outils, en ne téléchargeant que ce qui a changé."
   },
-  "298bf4135e080b41": {
-   "source": "<g1>Upload speed for torrents</g1>, next to <g2>Transfer rate</g2> (part of <g3>#357</g3>): what a torrent sends to peers, in bytes per second, blank for anything but a torrent. A layout saved before it gets it between <g4>Transfer rate</g4> and <g5>Peers</g5>.",
-   "text": "<g1>Vitesse d'envoi pour les torrents</g1>, à côté du <g2>Taux de transfert</g2> (partie de <g3>#357</g3>) : ce qu’un torrent envoie aux pairs, en octets par seconde, vide pour tout sauf un torrent. Une disposition enregistrée avant elle la place entre <g4>Taux de transfert</g4> et <g5>Pairs</g5>."
-  },
   "298c9f2b74a2990f": {
    "source": "How it works",
    "text": "Comment ça marche"
@@ -3194,10 +3198,6 @@
    "source": "MDM splits a file into parts and downloads them over several connections at once:",
    "text": "MDM divise un fichier en plusieurs parties et les télécharge via plusieurs connexions simultanément :"
   },
-  "2f9ba2b25e96700f": {
-   "source": "Last updated 2026-11-11 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "Dernière mise à jour le 11/11/2026 · s’applique à l’application, à l’extension de navigateur et à misterdownloadmanager.com"
-  },
   "2faa21cc3fd58687": {
    "source": "When you click a download, the extension checks MDM's Options:",
    "text": "Lorsque vous cliquez sur un téléchargement, l’extension vérifie les Options de MDM :"
@@ -3321,6 +3321,10 @@
   "31c727cb512fbff6": {
    "source": "<g1>Download all links</g1> and <g2>Download selected links</g2> send a page's links to <g3>Link grabber</g3>.",
    "text": "<g1>Télécharger tous les liens</g1> et <g2>Télécharger les liens sélectionnés</g2> envoient les liens d’une page au <g3>Récupérateur de liens</g3>."
+  },
+  "31cd6fb308737763": {
+   "source": "<g1>With WinGet</g1>, Windows' package manager: in a terminal, the first line installs MDM and the second updates it.",
+   "text": "<g1>Avec WinGet</g1>, le gestionnaire de paquets de Windows : dans un terminal, la première ligne installe MDM et la seconde le met à jour."
   },
   "31df25ab7b0d5144": {
    "source": "line, border, ring",
@@ -3641,10 +3645,6 @@
   "3737a9d9f2dab4e2": {
    "source": "Paste it, get a plain answer",
    "text": "Collez-la, obtenez une réponse claire"
-  },
-  "3737e448cca5bde9": {
-   "source": "If MDM is already running, the setup asks it to save and close first. To update, use <g1>Help → Check for updates → Update now</g1>, or run the setup of the new version; your list and settings stay.",
-   "text": "Si MDM est déjà en cours d'exécution, le programme d'installation lui demande d'abord d'enregistrer et de se fermer. Pour mettre à jour, utilisez <g1>Aide → Rechercher les mises à jour → Mettre à jour maintenant</g1>, ou exécutez le programme d'installation de la nouvelle version ; votre liste et vos paramètres sont conservés."
   },
   "374c7ca1306e3af5": {
    "source": "Numbers your language's way, and buttons that fit",
@@ -4801,10 +4801,6 @@
   "48ca7e0fd6df660f": {
    "source": "<g1>Downloaded file names are cleaned</g1> before they become paths, so a server can't write outside the folder you chose.",
    "text": "<g1>Les noms de fichiers téléchargés sont nettoyés</g1> avant de devenir des chemins, de sorte qu'un serveur ne peut pas écrire en dehors du dossier que vous avez choisi."
-  },
-  "48db2533df9dc7a0": {
-   "source": "Last updated 2026-11-11",
-   "text": "Dernière mise à jour le 11 novembre 2026"
   },
   "48f2a56d5061d294": {
    "source": "Browser extension: <g1><x2/>Add to Firefox</g1> <g3><x4/>Add to Chrome</g3>, for Edge, Brave and Opera too. <g5><g6><x7/>Chrome</g6> <g8><x9/>Edge</g8> <g10><x11/>Brave</g10> <g12><x13/>Opera</g12></g5>",
@@ -7565,10 +7561,6 @@
   "7376905f9a1bfe65": {
    "source": "9 built-in looks in <g1>View → Theme</g1>: Classic, Native, High contrast, Metro, Adwaita, Breeze, Luna, Aero, Aqua.",
    "text": "9 apparences intégrées dans <g1>Affichage → Thème</g1> : Classique, Natif, Contraste élevé, Metro, Adwaita, Breeze, Luna, Aero, Aqua."
-  },
-  "737f9556375bf1e9": {
-   "source": "<g1>Smooth text on Windows, and finer interface sizes:</g1> <g2>View → Text → Smooth</g2> draws letters anti-aliased at their own size instead of as thick, whole-pixel letters that are hard to read on a 1440p screen; <g3>Classic</g3>, the default, keeps the look MDM had. <g4>View → Interface size</g4> now offers 110 %, 115 % and 120 % between 100 % and 125 %.",
-   "text": "<g1>Texte lissé sous Windows et tailles d’interface plus fines :</g1> <g2>Affichage → Texte → Lissé</g2> dessine les lettres avec anti-crénelage à leur propre taille au lieu de lettres épaisses, à pixels entiers, difficiles à lire sur un écran 1440p ; <g3>Classique</g3>, le réglage par défaut, conserve l’apparence que MDM avait. <g4>Affichage → Taille de l’interface</g4> propose désormais 110 %, 115 % et 120 % entre 100 % et 125 %."
   },
   "7389126159a9a4d4": {
    "source": "MDM didn't answer in time",
@@ -12318,10 +12310,6 @@
    "source": "MDM follows every kind of redirect a browser does, including \"your download starts in a moment\" pages.",
    "text": "MDM suit tous les types de redirections qu’un navigateur gère, y compris les pages « votre téléchargement commence dans un instant »."
   },
-  "bb3ef7df5542505d": {
-   "source": "A video yt-dlp downloads by itself (<g1>How a video comes down</g1>) takes a limit only as it starts: when you turn the limiter on or off, change its settings or the video's own limit, MDM stops it and starts it again with the new limit, and it goes on from where it was (the log says \"Stopped: the speed limit changed; starting again with it\"). Under the limit for all downloads, such videos share it evenly: when another starts, the ones running with more than their share start again with it; when one ends, the others keep theirs. Image galleries do the same with gallery-dl, which skips the files already saved. Other changes (torrents taking more or less of the limit for all downloads, <g2>Only while I'm using the computer</g2>) apply to the next one that starts.",
-   "text": "Une vidéo que yt-dlp télécharge lui-même (<g1>Comment une vidéo est téléchargée</g1>) ne prend une limite qu’au démarrage : lorsque vous activez ou désactivez le limiteur, modifiez ses paramètres ou la limite propre à la vidéo, MDM l’arrête et la redémarre avec la nouvelle limite, et elle reprend là où elle en était (le journal indique « Arrêt : la limite de vitesse a changé ; redémarrage avec la nouvelle limite »). Sous la limite pour tous les téléchargements, ces vidéos la partagent équitablement : lorsqu’une autre démarre, celles qui fonctionnent avec plus que leur part redémarrent avec elle ; lorsqu’une se termine, les autres conservent la leur. Les galeries d’images font de même avec gallery-dl, qui ignore les fichiers déjà enregistrés. D’autres changements (les torrents prenant plus ou moins de la limite pour tous les téléchargements, <g2>Uniquement lorsque j’utilise l’ordinateur</g2>) s’appliquent au prochain qui démarre."
-  },
   "bb49aaf282f37cab": {
    "source": "Made for Windows. On a Mac and Linux too.",
    "text": "Conçu pour Windows. Disponible aussi sur Mac et Linux."
@@ -12862,10 +12850,6 @@
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
    "text": "La fenêtre <g1>Ajouter un torrent</g1> s'ouvre. Collez un lien magnet dans <g2>Torrent</g2>, ou cliquez sur <g3>...</g3> pour choisir un fichier <x4/>, puis cliquez sur <g5>Rechercher</g5>."
   },
-  "c3e94db31bd7ff31": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: a video the site sends in pieces (HLS, DASH) comes down this many pieces at once (8 by default, 1 to 128); a video in one file is one connection whatever it says. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). <x19/> sends yt-dlp's connections (and ffmpeg's) through one network adapter, as for <x20/>; when it isn't connected, nothing starts.",
-   "text": "Télécharger une vidéo ; <x1/> prend un sélecteur de qualité de <x2/> (<x3/> = le meilleur fichier unique ; <x4/> = le son seul tel que le site le propose, non converti ; <x5/>, <x6/>, <x7/> ou <x8/> = le son en MP3 à ce débit, <x9/> à son meilleur débit variable ; <x10/> = en Opus ; <x11/> = en FLAC, sans perte mais pas mieux que le son du site ; les conversions nécessitent ffmpeg). <x12/> : une vidéo que le site envoie en morceaux (HLS, DASH) est téléchargée en autant de morceaux à la fois (8 par défaut, 1 à 128) ; une vidéo en un seul fichier est une seule connexion quoi qu’il en soit. <x13/> enregistre les sous-titres à côté : codes de langue de <x14/> (<x15/>), ou <x16/> pour tous ceux que l’auteur a fournis ; <x17/> prend les légendes automatiques du site à la place ; <x18/> les intègre à la vidéo (nécessite ffmpeg, MP4 ou MKV). <x19/> envoie les connexions de yt-dlp (et de ffmpeg) via une seule carte réseau, comme pour <x20/> ; si elle n’est pas connectée, rien ne démarre."
-  },
   "c4102de250d826ec": {
    "source": "50 MiB, every 2nd connection cut after 2 MiB, 4 MB/s",
    "text": "50 Mio, une connexion sur deux coupée après 2 Mio, 4 Mo/s"
@@ -12877,6 +12861,10 @@
   "c41cf3697bdcc8d7": {
    "source": "The extension asks the host which file types to take, checks each download against them, and cancels the browser's download only after the app has accepted it; otherwise the browser keeps it, and the extension says why.",
    "text": "L’extension demande à l’hôte quels types de fichiers prendre en charge, vérifie chaque téléchargement par rapport à ceux-ci, et n’annule le téléchargement du navigateur qu’après que l’application l’a accepté ; sinon, le navigateur le conserve, et l’extension indique pourquoi."
+  },
+  "c45a317f4447914b": {
+   "source": "WinGet downloads the setup and installs MDM without the setup's questions.",
+   "text": "WinGet télécharge le programme d’installation et installe MDM sans poser les questions du programme d’installation."
   },
   "c488af9290492a52": {
    "source": "Closing the main window doesn't quit MDM. It hides in the notification area, and downloads, queues and schedules carry on. To make closing quit (a portable copy's folder can then be deleted), untick <g1>Options → General → Keep running when closing the window</g1>. If there is no icon for MDM at all — not in the notification area, nor behind the ^ hidden icons — the window minimizes to the taskbar instead, so downloads continue and there is a way back. An icon behind ^ can be clicked to bring the window back, and starting MDM again always does.",
@@ -13281,6 +13269,10 @@
   "ca67cb26c4c8dabb": {
    "source": "View → Theme changes how MDM looks at once and keeps everything where it was. Pick one of the built-in looks, each with a light and a dark side, or make your own in a text file.",
    "text": "Affichage → Thème modifie l’apparence de MDM instantanément, sans rien déplacer. Choisissez l’un des thèmes intégrés, chacun avec un mode clair et un mode sombre, ou créez le vôtre dans un fichier texte."
+  },
+  "ca722db87f0d3bad": {
+   "source": "Last updated 2026-11-12 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Dernière mise à jour le 12/11/2026 · s'applique à l'application, à l'extension de navigateur et à misterdownloadmanager.com"
   },
   "ca7a6b77fb1e5a3c": {
    "source": "strengthens every edge and text colour on top.",
@@ -14025,6 +14017,10 @@
   "d5cec151e01dbdab": {
    "source": "First start",
    "text": "Premier lancement"
+  },
+  "d5d8f5d3a4f25771": {
+   "source": "With WinGet",
+   "text": "Avec WinGet"
   },
   "d5dc4ad3d256afa5": {
    "source": "<g1>rustls</g1><g2>encryption</g2>",
@@ -15942,6 +15938,10 @@
    "source": "Download File Info",
    "text": "Informations sur le fichier à télécharger"
   },
+  "f385c86abe758db3": {
+   "source": "Last updated 2026-11-12",
+   "text": "Dernière mise à jour le 12/11/2026"
+  },
   "f3901fedc4a7dd52": {
    "source": "<g1>Browser extension</g1><g2>Downloads you click in Chrome, Edge, Brave, Opera, Vivaldi or Firefox go straight to MDM, sign-in included.</g2>",
    "text": "<g1>Extension de navigateur</g1><g2>Les téléchargements sur lesquels vous cliquez dans Chrome, Edge, Brave, Opera, Vivaldi ou Firefox vont directement vers MDM, connexion incluse.</g2>"
@@ -16101,10 +16101,6 @@
   "f638ef4dd0b007f8": {
    "source": "Every change in detail",
    "text": "Chaque changement en détail"
-  },
-  "f669d1970c8b3f96": {
-   "source": "a stream sent in many small pieces (HLS, DASH), for now;",
-   "text": "un flux envoyé en de nombreux petits morceaux (HLS, DASH), pour l’instant ;"
   },
   "f6a660460c7cc189": {
    "source": "Downloads from the browser keep the name, size and type the browser saw, so downloads behind a sign-in show correctly right away.",
