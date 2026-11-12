@@ -498,6 +498,10 @@
    "source": "Sounds: a sound for each event.",
    "text": "サウンド: 各イベントのサウンド。"
   },
+  "07640f7e75a3c8b1": {
+   "source": "; a choice's <x1/> is what <x2/> takes (the very formats it was sized from, as <x3/>, then the nearest should those be gone), <x4/> says its <x5/> is an estimate, <x6/> is <x7/>, <x8/>, <x9/>…, <x10/> is <x11/> (or <x12/> beside an HDR choice); a subtitle's <x13/> is what <x14/> takes.",
+   "text": "選択肢の <x1/> は <x2/> が取得するものです (サイズ変更元の形式そのもの、<x3/> など。それらがなければ最も近いもの)、<x4/> は <x5/> が推定値であることを示し、<x6/> は <x7/>、<x8/>、<x9/>…、<x10/> は <x11/> (または HDR 選択肢の横にある <x12/>) です。字幕の <x13/> は <x14/> が取得するものです。"
+  },
   "0769503d30963dbd": {
    "source": "A column header being dragged",
    "text": "ドラッグ中の列ヘッダー"
@@ -982,10 +986,6 @@
    "source": "Make the selection longer or shorter",
    "text": "選択範囲を長くまたは短くする"
   },
-  "0f7aa29dcfefad04": {
-   "source": "<g1>Its menu</g1> (the arrow next to it): <g2>Hide on this video</g2>, <g3>Never on</g3> the site (MDM remembers the site), and <g4>Button settings...</g4>, which opens MDM's Options.",
-   "text": "<g1>メニュー</g1>（隣の矢印）: <g2>この動画では非表示</g2>、サイトで<g3>常に非表示</g3>（MDM がサイトを記憶します）、および MDM のオプションを開く<g4>ボタンの設定...</g4>。"
-  },
   "0f7bff98a3ced2ac": {
    "source": "Yes. Put downloads in a queue and let the Scheduler start it at a set time, stop it at another, and even shut down or put the computer to sleep when the queue is done. See Download overnight.",
    "text": "はい。ダウンロードをキューに入れ、スケジューラで指定した時間に開始し、別の時間に停止させ、キューが完了したらコンピューターをシャットダウンしたりスリープ状態にしたりすることもできます。「夜間のダウンロード」をご覧ください。"
@@ -1449,6 +1449,10 @@
   "165ea5e73977b362": {
    "source": "In English, the <g1>Last Try Date</g1> and <g2>Added</g2> columns follow the system's 12- or 24-hour clock: <x3/> when Windows uses a 12-hour clock, and <g4>Added</g4> starts wide enough for it (<g5>#392</g5>).",
    "text": "英語では、<g1>最終試行日時</g1> と <g2>追加されました。</g2> の列はシステムの 12 時間または 24 時間表示に従います。<x3/> Windows が 12 時間表示を使用する場合、<g4>追加されました。</g4> はそれに合わせて十分な幅で表示されます (<g5>#392</g5>)。"
+  },
+  "167087cbbeb790d1": {
+   "source": "Pick the file. <g1>Link grabber</g1> lists every web address MDM found in it, in packages. While MDM reads a long file, the strip under the list of downloads says <g2>Reading</g2> and the file's name; you can go on using MDM meanwhile. Import reads files of up to 64 MB, far more than any list of links holds: a larger file (a video, an archive, a backup picked by mistake) is refused with a message.",
+   "text": "ファイルを選択します。<g1>リンク グラバー</g1>は、MDM がその中で見つけたすべての Web アドレスをパッケージにリストします。MDM が長いファイルを読み取っている間、ダウンロード リストの下のストリップには<g2>読み取り中</g2>とファイル名が表示されます。その間も MDM を使い続けることができます。インポートは最大 64 MB のファイルを読み取ります。これは、リンクのリストが保持するよりもはるかに多い量です。より大きなファイル（ビデオ、アーカイブ、誤って選択されたバックアップ）は、メッセージとともに拒否されます。"
   },
   "167b6aef6b7c3e2d": {
    "source": "On Linux and macOS, MDM sets browser integration up itself each time it starts: start MDM once. <g1>Test browser integration</g1> says what went wrong if it couldn't, such as <g2>The helper program the browsers start is missing</g2>: <g3>Set it up</g3> puts it back.",
@@ -2894,6 +2898,10 @@
    "source": "Right-click any text box for <g1>Undo</g1>, <g2>Cut</g2>, <g3>Copy</g3>, <g4>Paste</g4>, <g5>Delete</g5> and <g6>Select all</g6>. A read-only value (an address, a path, a version) copies with <g7>Ctrl+C</g7> or its right-click menu.",
    "text": "テキストボックスを右クリックすると、<g1>元に戻す</g1>、<g2>切り取り</g2>、<g3>コピー</g3>、<g4>貼り付け</g4>、<g5>削除</g5>、<g6>すべて選択</g6>ができます。読み取り専用の値（アドレス、パス、バージョンなど）は、<g7>Ctrl+C</g7>または右クリックメニューでコピーできます。"
   },
+  "2b85e42ae79f0732": {
+   "source": "<g1>Off on this site</g1> (grey): after <g2>Never on</g2> the site, or when Options keep it off there. <g3>Turn on</g3> shows it on the site again.",
+   "text": "<g1>このサイトではオフ</g1> (灰色): サイトで<g2>常にオフ</g2>にした後、またはオプションでオフにしている場合。<g3>オンにする</g3>をクリックすると、サイトで再び表示されます。"
+  },
   "2bb32fb9b3228a28": {
    "source": "Once every file is here, MDM removes the torrent from the account's list. On Premiumize, only the transfer's record goes: its files stay in your cloud.",
    "text": "すべてのファイルがここに揃うと、MDM はアカウントのリストからトレントを削除します。Premiumize では、転送の記録のみが削除され、ファイルはクラウドに残ります。"
@@ -3417,6 +3425,10 @@
   "33cb6035f72e6370": {
    "source": "Choose the subtitles; tick Put them into the video to keep them inside the file.",
    "text": "字幕を選択し、ビデオに埋め込むにチェックを入れてファイル内に保持します。"
+  },
+  "33cd34762a5593c2": {
+   "source": "It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. When the button can't tell which one you mean, the toolbar button's <g1>Media on this page</g1> lists them all. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
+   "text": "クリックした動画、つまり、動画が再生するファイル自体、またはプレーヤーが読み込んだストリーム (HLS または DASH)、あるいはページを取得します。ボタンがどれを意図しているか判断できない場合、ツールバーボタンの<g1>このページのメディア</g1>にすべてがリストされます。埋め込みプレーヤーも機能し、サイトへのサインイン、プレーヤーを埋め込むページ、ブラウザの User-Agent も一緒に送信されるため、メンバー向け、または埋め込みサイトでのみ再生される動画もダウンロードできます。音声プレーヤーにもボタンが表示されます。"
   },
   "33e74c2131bce5b0": {
    "source": "Torrents share the cap fairly",
@@ -4094,10 +4106,6 @@
    "source": "A download carries its site's cookies (and a form's data) to MDM. A few sites set so many that together they exceed what MDM accepts from the browser (1 MB). The browser kept this one. Signing out and back in to the site usually trims them.",
    "text": "ダウンロードには、そのサイトの Cookie（フォームのデータも含む）が MDM に渡されます。一部のサイトでは Cookie が大量に設定され、合計が MDM がブラウザーから受け取れる上限（1 MB）を超えることがあります。この場合、ブラウザーはダウンロードをそのまま処理します。サイトからサインアウトして再度サインインすると、通常は Cookie が整理されます。"
   },
-  "3d860906265d25ca": {
-   "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and a menu opens over the video: MDM looks up the qualities it can download and lists them with their sizes. Pick one and it downloads at once, with only its progress window; MDM's main window stays where it is (with <g2>Do not start downloading, only add files to the queue</g2> on in Options, it goes in the queue instead). <g3>Open in Mister Download Manager...</g3> at the bottom of the menu opens the <g4>Download video from a page</g4> window instead. MDM must be running for the menu: when it isn't, or for another MDM you send downloads to, a click opens that window directly. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. When the button can't tell which one you mean, the toolbar button's <g5>Media on this page</g5> lists them all. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
-   "text": "Web ページ上のビデオをポイントすると、その端に小さな<g1>動画をダウンロード</g1>ボタンが表示されます。それをクリックすると、ビデオの上にメニューが開きます。MDM はダウンロードできる品質を検索し、サイズと共にそれらを一覧表示します。1 つを選択すると、進行状況ウィンドウのみで直ちにダウンロードされます。MDM のメイン ウィンドウはそのままです (オプションで<g2>ダウンロードを開始せず、ファイルをキューに追加するだけ</g2>がオンになっている場合は、代わりにキューに入ります)。メニューの下部にある<g3>Mister Download Manager で開く...</g3>をクリックすると、代わりに<g4>ページからビデオをダウンロード</g4>ウィンドウが開きます。メニューには MDM が実行されている必要があります。実行されていない場合、またはダウンロードを送信する別の MDM の場合は、クリックするとそのウィンドウが直接開きます。クリックしたビデオを取得します。再生するファイル自体、またはプレーヤーが読み込んだストリーム (HLS または DASH)、それ以外の場合はページです。ボタンがどれを意味するのか判断できない場合、ツールバー ボタンの<g5>このページのメディア</g5>にすべてが一覧表示されます。埋め込みプレーヤーも機能し、サイトへのサインイン、プレーヤーを埋め込むページ、ブラウザーのユーザー エージェントもそれに含まれるため、メンバー向けのビデオ、または埋め込みサイトでのみ再生されるビデオもダウンロードできます。サウンド プレーヤーにもボタンが表示されます。"
-  },
   "3d9137882fe73360": {
    "source": "<g1><g2>Yes</g2></g1><g3>Apache-2.0</g3>",
    "text": "<g1><g2>はい</g2></g1><g3>Apache-2.0</g3>"
@@ -4418,10 +4426,6 @@
    "source": "The download list →",
    "text": "ダウンロードリスト →"
   },
-  "4231bc950a14bdeb": {
-   "source": "Before you click <g1>OK</g1>, the window shows the <g2>First file</g2>, <g3>Second file</g3> and <g4>Last file</g4>, so a typo shows up before anything downloads. If the server needs a login, tick <g5>Use authorization</g5>. Copied the address already? <g6>Tasks → Add batch download from clipboard</g6> fills it in.",
-   "text": "<g1>OK</g1> をクリックする前に、ウィンドウに <g2>最初のファイル</g2>、<g3>2 番目のファイル</g3>、<g4>最後のファイル</g4> が表示されるため、ダウンロードが始まる前に誤入力に気づくことができます。サーバーにログインが必要な場合は、<g5>認証を使用する</g5> にチェックを入れます。アドレスをすでにコピーしている場合は、<g6>タスク → クリップボードからバッチ ダウンロードを追加</g6> で自動入力されます。"
-  },
   "42719c02fcae1f7c": {
    "source": "The copy of the extension from the Chrome Web Store showed no <g1>Download video</g1> button on YouTube before version 0.5.1. From 0.5.1 it shows it. Your browser updates extensions by itself; to get it sooner, open its extensions page and update them there.",
    "text": "Chrome ウェブストアの拡張機能のコピーでは、バージョン 0.5.1 より前は YouTube に <g1>動画をダウンロード</g1> ボタンが表示されませんでした。0.5.1 以降では表示されます。お使いのブラウザーは拡張機能を自動的に更新します。より早く更新するには、拡張機能のページを開いてそこで更新してください。"
@@ -4521,10 +4525,6 @@
   "43ff6b9c3376c383": {
    "source": "Firefox, Chrome, Edge, Brave, Opera, Vivaldi",
    "text": "Firefox、Chrome、Edge、Brave、Opera、Vivaldi"
-  },
-  "4409b6268f79d30a": {
-   "source": "<g1>Pasting.</g1> Choose <g2>Tasks → Link grabber...</g2> and press <g3>Ctrl+V</g3>: every web address in the copied text is added.",
-   "text": "<g1>貼り付け。</g1><g2>タスク → リンク グラバー...</g2>を選択して<g3>Ctrl+V</g3>を押すと、コピーしたテキスト内のすべての Web アドレスが追加されます。"
   },
   "441473c88f5bb354": {
    "source": "Not listed",
@@ -5402,6 +5402,10 @@
    "source": "Select them (<g1>Ctrl+click</g1> for several).",
    "text": "それらを選択します（複数選択する場合は<g1>Ctrl+クリック</g1>）。"
   },
+  "523e1e162fb9a721": {
+   "source": "Download the links in the clipboard (<g1>Tasks → Add batch download from clipboard</g1>)",
+   "text": "クリップボード内のリンクをダウンロードする (<g1>タスク → クリップボードからバッチ ダウンロードを追加</g1>)"
+  },
   "52434a6b584524ff": {
    "source": "<g1>Windows 11's look in light mode</g1>: rounded text boxes and drop-downs (no more black corner dots), pressed states on every button (issue #7), focus rings only when you use the keyboard, tooltips with Windows 11's corners and padding, and dark mode in every window.",
    "text": "<g1>ライトモードの Windows 11 風の外観</g1>：テキストボックスとドロップダウンの角が丸くなり（黒い角の点がなくなりました）、すべてのボタンで押下状態が表示されます（issue #7）。フォーカスリングはキーボード操作時のみ表示され、ツールチップは Windows 11 風の角と余白になりました。すべてのウィンドウでダークモードに対応しました。"
@@ -5413,6 +5417,10 @@
   "52568481c8f45946": {
    "source": "Classic",
    "text": "クラシック"
+  },
+  "52779ac6724617b1": {
+   "source": "After a click it says what happened, in its own colour:",
+   "text": "クリックすると、その結果が独自の色で表示されます。"
   },
   "52ceae361fb11f6c": {
    "source": "A list's, a table's or a box's outline",
@@ -5626,6 +5634,10 @@
    "source": "Made something others would like? Open a <g1>pull request on GitHub</g1> that adds it to <g2><x3/></g2>, with:",
    "text": "他の人が気に入るものを作成しましたか？<g1>GitHub でプル リクエスト</g1> を開いて、次のものを <g2><x3/></g2> に追加してください。"
   },
+  "560a94f3340fd0a3": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, frame rate or bitrate and size, the best one marked; <g6>All qualities and subtitles...</g6>, which opens the <g7>Download video from a page</g7> window; then <g8>Hide on this video</g8> (<g9>Esc</g9>), <g10>Never on</g10> the site (MDM remembers the site), and <g11>Button settings...</g11>, which opens MDM's Options. The arrow keys move through it, <g12>Enter</g12> picks, <g13>Esc</g13> closes it.",
+   "text": "<g1>そのメニュー</g1> (隣の矢印、またはボタンがキーボードのフォーカスを持っている場合は<g2>↓</g2>): 動画のタイトル、長さ、サイト。<g3>最高画質をダウンロード</g3>が最初に表示され、次に<g4>ビデオ</g4>と<g5>オーディオ</g5>の下に画質ごとに番号付きの行が表示され、ファイルの種類、フレームレートまたはビットレート、サイズが表示され、最高のものがマークされます。<g6>すべての画質と字幕...</g6>は<g7>ページからビデオをダウンロード</g7>ウィンドウを開きます。次に<g8>この動画では非表示</g8> (<g9>Esc</g9>)、サイトで<g10>常にオフ</g10> (MDM がサイトを記憶します)、そして MDM のオプションを開く<g11>ボタンの設定...</g11>が表示されます。矢印キーで移動し、<g12>Enter</g12>で選択し、<g13>Esc</g13>で閉じます。"
+  },
   "560b06bdc37086ad": {
    "source": "Previous image",
    "text": "前の画像"
@@ -5666,6 +5678,10 @@
    "source": "Your language, from the first window.",
    "text": "最初のウィンドウから、あなたの言語で。"
   },
+  "56c9545f29a88358": {
+   "source": "<g1>The clipboard.</g1> <g2>Tasks → Add batch download from clipboard</g2> (<g3>Ctrl+B</g3>, also in the tray icon's menu) reads the copied text when you choose it and lists every download link in it: <x4/>, <x5/>, <x6/> and magnet links, in a list, a forum post, Markdown or HTML, each once.",
+   "text": "<g1>クリップボード。</g1> <g2>タスク → クリップボードからバッチ ダウンロードを追加</g2> (<g3>Ctrl+B</g3>、トレイ アイコンのメニューにもあります) を選択すると、コピーされたテキストが読み取られ、そこに含まれるすべてのダウンロード リンク (<x4/>、<x5/>、<x6/>、マグネット リンク) が、リスト、フォーラムの投稿、Markdown、HTML のいずれからでも、それぞれ 1 回ずつ一覧表示されます。"
+  },
   "56c991946fe8d471": {
    "source": "To continue a stopped download, select it and click <g1>Resume</g1> on the toolbar (or <g2>File → Download Now</g2>).",
    "text": "停止したダウンロードを続行するには、ダウンロードを選択し、ツールバーの<g1>再開</g1>（または<g2>ファイル → 今すぐダウンロード</g2>）をクリックします。"
@@ -5701,10 +5717,6 @@
   "57271fd14fc7d6ce": {
    "source": "The main window on Windows 11: the toolbar, the categories on the left and the download list on the right",
    "text": "Windows 11 のメイン ウィンドウ: ツールバー、左側のカテゴリ、右側のダウンロード リスト"
-  },
-  "572eaa88b689dd90": {
-   "source": "Wait for the list. It shows each resolution with its size, best first, then the sound alone: - <g1>Audio only, original</g1>: the site's own file, not converted (M4A, or WebM with Opus inside, as the site serves it). The best sound there is, in the smallest file. - <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g3>Audio only OPUS</g3>: an <x4/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g5>Audio only FLAC</g5>: a lossless <x6/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
-   "text": "リストが表示されるまでお待ちください。各解像度がサイズとともに表示され、最適なものが最初に、次に音声のみが表示されます。 - <g1>音声のみ、オリジナル</g1>: サイト独自のファイルで、変換されていません（M4A、またはサイトが提供するOpusを含むWebM）。最小のファイルで最高の音質です。 - <g2>音声のみ MP3</g2>: 最高の可変ビットレート（VBR）および320、256、192、128 kbpsで、MP3のみを再生するプレーヤー向けです。 - <g3>音声のみ OPUS</g3>: <x4/>ファイル。サイトの音声がすでにOpusの場合（YouTubeは通常そうです）、変換されずにそのファイルに移動されるだけなので、何も失われません。 - <g5>音声のみ FLAC</g5>: ロスレスの<x6/>ファイルで、FLACを必要とするライブラリやプログラム向けです。品質を追加することはできません。サイトの音声はすでに非可逆圧縮されており、FLACはそれをそのまま、数倍大きいファイルに保持します。これを選択すると、ウィンドウにその旨が表示されます。"
   },
   "5730437f2b40d7c8": {
    "source": "You can also <g1>open the form yourself</g1>; it asks for the same details.",
@@ -5930,6 +5942,10 @@
    "source": "Under 10 MB of memory in the notification area on Windows, from about 50 MB.",
    "text": "Windows の通知領域でのメモリ使用量が約 50 MB から 10 MB 未満になりました。"
   },
+  "5adb99b470c63eee": {
+   "source": "A magnet link shows as <g1>Magnet link</g1> and isn't looked up: once you click <g2>Start</g2> or <g3>Add to queue</g3>, MDM finds the torrent's files and adds it with all of them, in the package's folder (or the <g4>Torrents</g4> folder when the package has none).",
+   "text": "マグネット リンクは <g1>マグネット リンク</g1> として表示され、検索されません。<g2>開始</g2> または <g3>キューに追加</g3> をクリックすると、MDM はトレントのファイルを見つけて、それらすべてをパッケージのフォルダー (パッケージにフォルダーがない場合は <g4>トレント</g4> フォルダー) に追加します。"
+  },
   "5add75b015a05297": {
    "source": "Before continuing, MDM checks that the file on the server is still the same. If it changed, the download stops with <g1>the file changed on the server</g1>. Use <g2>Redownload</g2> to start again from the beginning.",
    "text": "続行する前に、MDMはサーバー上のファイルがまだ同じであることを確認します。変更されている場合、ダウンロードは<g1>サーバー上のファイルが変更されました</g1>というメッセージで停止します。<g2>再ダウンロード</g2>を使用して最初からやり直してください。"
@@ -6133,6 +6149,10 @@
   "5d9c0cdbfb96c129": {
    "source": "Mister Download Manager's main window on Ubuntu's GNOME desktop: the categories and a list of downloads.",
    "text": "Ubuntu の GNOME デスクトップで動作する Mister Download Manager のメイン ウィンドウ: カテゴリとダウンロード リスト。"
+  },
+  "5d9faf61efb66f58": {
+   "source": "<g1>Pasting.</g1> Choose <g2>Tasks → Link grabber...</g2> and press <g3>Ctrl+V</g3>: every download link in the copied text is added.",
+   "text": "<g1>貼り付け。</g1> <g2>タスク → リンク グラバー...</g2> を選択して <g3>Ctrl+V</g3> を押すと、コピーされたテキスト内のすべてのダウンロード リンクが追加されます。"
   },
   "5db4d7af773861a3": {
    "source": "Click to zoom · drag to move",
@@ -6446,6 +6466,10 @@
    "source": "No more black band across menus and windows on Windows 11 Insider builds.",
    "text": "Windows 11 Insider ビルドでメニューやウィンドウに黒い帯が表示されなくなりました。"
   },
+  "61d6c2c5f915ca8e": {
+   "source": "<g1>Added to MDM</g1> (green), with the quality: <g2>Show</g2> brings MDM's window up with that download selected.",
+   "text": "<g1>MDM に追加済み</g1> (緑色) と画質: <g2>表示</g2>をクリックすると、MDM のウィンドウが開き、そのダウンロードが選択された状態で表示されます。"
+  },
   "61dfb9258d4ae7c3": {
    "source": "The first time, Windows may ask whether to let MDM communicate on networks: allow it on private networks, or the phone can't reach MDM.",
    "text": "初回起動時、WindowsはMDMがネットワーク上で通信することを許可するかどうかを尋ねる場合があります。プライベートネットワークでの通信を許可しないと、スマートフォンからMDMにアクセスできません。"
@@ -6609,6 +6633,10 @@
   "64537e877bb3abb4": {
    "source": "A selection's fill: rows, a chosen day, selected text",
    "text": "選択範囲の塗りつぶし: 行、選択された日付、選択されたテキスト"
+  },
+  "6455ea30143a8721": {
+   "source": "Right-click a page in the browser for <g1>Download all links with Mister Download Manager</g1>, or select part of it for <g2>Download selected links with Mister Download Manager</g2>. The page's referrer and cookies go with each link. You can also import a text file or an <x3/> export with <g4>Tasks → Import</g4>, drop a list on the download list, or open <g5>Tasks → Link grabber...</g5> and paste any text with <g6>Ctrl+V</g6>: every web address in it is added. Copied a list of links, or a forum post with links in it? <g7>Tasks → Add batch download from clipboard</g7> (Ctrl+B) opens Link grabber with every http, ftp and magnet link in the text, each once, ticked.",
+   "text": "ブラウザーでページを右クリックして<g1>Mister Download Manager で全リンクをダウンロード</g1>するか、ページの一部を選択して<g2>Mister Download Manager で選択したリンクをダウンロード</g2>します。ページの参照元と Cookie は各リンクに付随します。<g4>タスク → インポート</g4>でテキスト ファイルまたは <x3/> エクスポートをインポートしたり、ダウンロード リストにリストをドロップしたり、<g5>タスク → リンク グラバー...</g5>を開いて任意のテキストを<g6>Ctrl+V</g6>で貼り付けたりすることもできます。テキスト内のすべての Web アドレスが追加されます。リンクのリストや、リンクを含むフォーラムの投稿をコピーしましたか？ <g7>タスク → クリップボードからバッチ ダウンロードを追加</g7> (Ctrl+B) を開くと、テキスト内のすべての HTTP、FTP、マグネット リンクが重複なくチェックされた状態でリンク グラバーに表示されます。"
   },
   "645884b486aada81": {
    "source": "Not mentioned on its website",
@@ -8082,6 +8110,10 @@
    "source": "<g1></g1>Open (GPL-3.0)",
    "text": "<g1></g1>オープンソース (GPL-3.0)"
   },
+  "7c262f198bfdda86": {
+   "source": "Point at a video on a web page and a small tab appears at its top corner: MDM's logo and a green <g1>Download video</g1> part, an arrow for its list and <g2>✕</g2> to hide it on this video. It follows Windows' light or dark mode. As it appears, MDM looks the video up (when MDM is running), and the button then names the best quality it found (<g3>1080p</g3>, <g4>4K</g4>). Click it and that quality downloads at once, with only its progress window; MDM's main window stays where it is (with <g5>Do not start downloading, only add files to the queue</g5> on in Options, it goes in the queue instead). Clicking while MDM is still looking works too: it takes the best quality as soon as it is known. A video that plays a plain file (not a stream) needs no look-up: the button shows its picture size and downloads the file itself. When nothing could be looked up (MDM wasn't running, yt-dlp isn't installed, the page is a playlist, or you send downloads to another MDM), a click opens the <g6>Download video from a page</g6> window, which says why and offers what to do.",
+   "text": "ウェブページ上の動画にポインターを合わせると、その上隅に小さなタブが表示されます。MDM のロゴと緑色の<g1>動画をダウンロード</g1>部分、リスト用の矢印、そしてこの動画で非表示にするための<g2>✕</g2>です。Windows のライトモードまたはダークモードに従います。表示されると、MDM は動画を検索し (MDM が実行中の場合)、ボタンには見つかった最高の画質 (<g3>1080p</g3>、<g4>4K</g4>) が表示されます。クリックすると、その画質がすぐにダウンロードされ、進行状況ウィンドウのみが表示されます。MDM のメインウィンドウはそのままです (オプションで<g5>ダウンロードを開始せず、ファイルをキューに追加するだけ</g5>がオンになっている場合は、代わりにキューに入ります)。MDM がまだ検索中でもクリックは機能します。最高の画質が分かり次第、それを取得します。プレーンなファイル (ストリームではない) を再生する動画は検索不要です。ボタンにはその画像サイズが表示され、ファイル自体がダウンロードされます。何も検索できなかった場合 (MDM が実行されていなかった、yt-dlp がインストールされていない、ページがプレイリストである、または別の MDM にダウンロードを送信している場合)、クリックすると<g6>ページからビデオをダウンロード</g6>ウィンドウが開き、その理由と対処法が表示されます。"
+  },
   "7c4ecfb6f966c30e": {
    "source": "Emerald",
    "text": "エメラルド"
@@ -8093,10 +8125,6 @@
   "7c949f90bb503dc8": {
    "source": "Vivaldi",
    "text": "Vivaldi"
-  },
-  "7ca06640051a11fc": {
-   "source": "The tray menu also has <g1>Add new download</g1>, <g2>Add batch download</g2>, the <g3>Speed Limiter</g3>, the <g4>Scheduler</g4>, the main download queue and <g5>Options</g5>.",
-   "text": "トレイ メニューには、<g1>新しいダウンロードを追加</g1>、<g2>バッチ ダウンロードを追加</g2>、<g3>速度制限</g3>、<g4>スケジューラ</g4>、メイン ダウンロード キュー、<g5>オプション</g5>もあります。"
   },
   "7ca97bd5e93217a8": {
    "source": "Its progress window: each file and how much of it is here.",
@@ -9406,10 +9434,6 @@
    "source": "To watch a video while it downloads, tick <g1>Download in order</g1> (see <g2>Download in order</g2>).",
    "text": "ダウンロード中に動画を視聴するには、<g1>順番にダウンロード</g1>にチェックを入れます（<g2>順番にダウンロード</g2>を参照）。"
   },
-  "8ff1535f41018df9": {
-   "source": "Right-click a page in the browser for <g1>Download all links with Mister Download Manager</g1>, or select part of it for <g2>Download selected links with Mister Download Manager</g2>. The page's referrer and cookies go with each link. You can also import a text file or an <x3/> export with <g4>Tasks → Import</g4>, drop a list on the download list, or open <g5>Tasks → Link grabber...</g5> and paste any text with <g6>Ctrl+V</g6>: every web address in it is added.",
-   "text": "ブラウザーでページを右クリックして<g1>Mister Download Manager で全リンクをダウンロード</g1>を選択するか、ページの一部を選択して<g2>Mister Download Manager で選択したリンクをダウンロード</g2>を選択します。ページの参照元と Cookie は各リンクに付随します。また、<g4>タスク → インポート</g4>でテキスト ファイルまたは<x3/>エクスポートをインポートしたり、ダウンロード リストにリストをドロップしたり、<g5>タスク → リンク グラバー...</g5>を開いて<g6>Ctrl+V</g6>で任意のテキストを貼り付けたりすることもできます。その中のすべての Web アドレスが追加されます。"
-  },
   "8ff27389d7631f8e": {
    "source": "The download list's background",
    "text": "ダウンロード リストの背景"
@@ -10358,6 +10382,10 @@
    "source": "<g1>Contents</g1><g2>27 features, every one free</g2>",
    "text": "<g1>目次</g1><g2>27 の機能、すべて無料</g2>"
   },
+  "9e16dcc5a0df9642": {
+   "source": "Choose <g1>Tasks → Add batch download</g1>. Copied one address with a number in its file name, such as <x2/>? <g3>Tasks → Add batch download from clipboard</g3> (<g4>Ctrl+B</g4>) puts the asterisk where the number was, sets <g5>From</g5> and <g6>Wildcard size</g6> from it (<x7/>, from 1, size 2) and waits in <g8>To</g8> for the last number.",
+   "text": "<g1>タスク → バッチ ダウンロードを追加</g1> を選択します。「<x2/>」のようにファイル名に数字を含むアドレスを 1 つコピーしましたか? <g3>タスク → クリップボードからバッチ ダウンロードを追加</g3> (<g4>Ctrl+B</g4>) を選択すると、数字があった場所にアスタリスクが配置され、そこから <g5>開始</g5> と <g6>ワイルドカード サイズ</g6> が設定され (<x7/>、1 から、サイズ 2)、<g8>終了</g8> で最後の数字を待ちます。"
+  },
   "9e18dba709154be4": {
    "source": "Send downloads from your browser",
    "text": "ブラウザからダウンロードを送信する"
@@ -11302,6 +11330,10 @@
    "source": "Select the text and copy it",
    "text": "テキストを選択してコピーしてください"
   },
+  "abe7ed5d6eb405a8": {
+   "source": "<g1>MDM didn't answer</g1> (red): MDM isn't installed or didn't start. <g2>Get MDM</g2> opens its download page; <g3>Retry</g3> tries again.",
+   "text": "<g1>MDM が応答しません</g1> (赤色): MDM がインストールされていないか、起動していません。<g2>MDM を入手</g2>をクリックするとダウンロードページが開きます。<g3>再試行</g3>をクリックすると再試行します。"
+  },
   "abffd3b4ede055a8": {
    "source": "Video from web pages",
    "text": "ウェブページからのビデオ"
@@ -11373,10 +11405,6 @@
   "ad06056d9a651b28": {
    "source": "Firefox asks to confirm: click <g1>Add</g1>. Firefox keeps the add-on up to date.",
    "text": "Firefoxが確認を求めますので、<g1>追加</g1>をクリックします。Firefoxがアドオンを最新の状態に保ちます。"
-  },
-  "ad15abc4931df4fd": {
-   "source": "; a choice's <x1/> is what <x2/> takes, a subtitle's <x3/> what <x4/> takes.",
-   "text": "。選択肢の<x1/>は<x2/>が受け取るもので、字幕の<x3/>は<x4/>が受け取るものです。"
   },
   "ad20819c93bdea53": {
    "source": "Windows may give the stick another drive letter, such as <x1/> instead of <x2/>. The folders you set, and the downloads already in the list, still point at the old letter. Check <g3>Options → Save to</g3> and change the folders if needed. When MDM is about to save into a folder that doesn't exist, it asks whether to create it.",
@@ -12554,6 +12582,10 @@
    "source": "Under a data cap",
    "text": "データ上限の下で"
   },
+  "bf65e2eb8f9aed86": {
+   "source": "<g1>Move it</g1>: drag it by its dots along the video's edge; while you drag, the edge and the spots it snaps to (the corners and the middle) show. It stays there on that site.",
+   "text": "<g1>移動</g1>: 動画の端に沿ってドットをドラッグします。ドラッグ中は、端とスナップする場所 (角と中央) が表示されます。そのサイトではそこに留まります。"
+  },
   "bf6c448169dc52d7": {
    "source": "<g1>A magnet link could wait minutes for its file list</g1> (<g2>#92</g2>): in 0.2.4 on Windows, the DHT (how MDM finds peers without trackers) could stop for the rest of the session once a computer it asked was gone, so a magnet its trackers didn't serve never got its file list. The updated torrent library keeps going, and a test keeps it that way. <g3>Add torrent</g3> now shows the wait: the peers found, from the trackers, the DHT or the local network, and how many answered. After 30 seconds without an answer, it says what may be in the way.",
    "text": "<g1>マグネット リンクがファイル リストを数分間待機することがありました</g1> (<g2>#92</g2>): Windows の 0.2.4 では、DHT (MDM がトラッカーなしでピアを見つける方法) は、要求したコンピューターがなくなった後、セッションの残りの間停止することがあり、トラッカーが提供しないマグネットはファイル リストを取得できませんでした。更新されたトレント ライブラリは継続し、テストによってその状態が維持されます。<g3>トレントを追加</g3> は待機状況を表示するようになりました: トラッカー、DHT、またはローカル ネットワークから見つかったピアと、応答した数です。30 秒間応答がない場合、何が妨げになっている可能性があるかを通知します。"
@@ -12717,10 +12749,6 @@
   "c1b6b2d311bbe187": {
    "source": "Already installed? Open MDM, then <g1>Options → General → Test browser integration</g1>, and click <g2>Set it up</g2> if it offers to.",
    "text": "すでにインストール済みの場合は、MDMを開いて<g1>オプション → 一般 → ブラウザー統合のテスト</g1>を選び、セットアップを促されたら<g2>セットアップ</g2>をクリックします。"
-  },
-  "c1d36b87b24557b5": {
-   "source": "It stays out of the way: it shows only while you point at a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades when the pointer rests, and leaves out small videos and short muted loops (animated pictures, backgrounds). In fullscreen it follows the video when the player allows it. On a copy-protected video (DRM) it says that the video can't be saved.",
-   "text": "邪魔にならないよう、動画にポインターを合わせたときだけ表示されます（プレーヤーにキーボードのフォーカスがある場合も表示され、<g1>Tab</g1>キーでボタンに移動できます）。ポインターを動かさずにいるとフェードアウトし、小さな動画や短い無音のループ（アニメーション画像や背景）には表示されません。全画面表示では、プレーヤーが対応していれば動画に追従します。コピー保護された動画（DRM）では、保存できないことが表示されます。"
   },
   "c1d77bb835bb6ef4": {
    "source": "Debrid service accounts",
@@ -13722,6 +13750,10 @@
    "source": "Nothing new to learn",
    "text": "新しく覚えることはありません"
   },
+  "d1979dff5fbd3774": {
+   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades 1.5 seconds after the pointer stops and at once when it leaves the video, and leaves out small videos and short muted loops (animated pictures, backgrounds). Playing or pausing the video doesn't bring it back. On a video under 360 pixels wide, or where its words wouldn't fit, it is only its logo, its arrow and <g2>✕</g2>. In fullscreen it follows the video when the player allows it.",
+   "text": "邪魔にならないように表示されます。ポインターを動画の上に移動している間のみ表示され (またはプレーヤーがキーボードのフォーカスを持っている場合、<g1>Tab</g1>キーでボタンに移動します)、ポインターが停止してから 1.5 秒後、動画から離れるとすぐにフェードアウトします。小さな動画や短いミュートされたループ (アニメーション画像、背景) は表示されません。動画の再生や一時停止では戻りません。幅 360 ピクセル未満の動画、または文字が収まらない場合は、ロゴ、矢印、<g2>✕</g2>のみが表示されます。全画面表示では、プレーヤーが許可すれば動画に追従します。"
+  },
   "d1b623f4013f4673": {
    "source": "A split button's other part while one is under the pointer",
    "text": "分割ボタンの片方がポインターの下にあるときの、もう一方の部分"
@@ -14238,10 +14270,6 @@
    "source": "Each product's own website, linked above, and for the open-source ones their code on GitHub: <g1>AB Download Manager</g1>, <g2>Motrix</g2>, <g3>Prism</g3>, <g4>Xtreme Download Manager</g4>, <g5>Gopeed</g5>; licences and latest releases as GitHub shows them, 4 November 2026",
    "text": "各製品の公式サイト（上記リンク）、およびオープンソース製品についてはGitHubのコード：<g1>AB Download Manager</g1>、<g2>Motrix</g2>、<g3>Prism</g3>、<g4>Xtreme Download Manager</g4>、<g5>Gopeed</g5>。ライセンスと最新リリースはGitHubに表示されている通り、2026年11月4日時点。"
   },
-  "d9012cd2cc61f595": {
-   "source": "Choose <g1>Tasks → Add batch download</g1>. (<g2>Tasks → Add batch download from clipboard</g2> fills in a copied address.)",
-   "text": "<g1>タスク → バッチ ダウンロードを追加</g1>を選択します。（<g2>タスク → クリップボードからバッチ ダウンロードを追加</g2>は、コピーされたアドレスを埋めます。）"
-  },
   "d92f326852722dd3": {
    "source": "Does it work on Mac and Linux?",
    "text": "MacとLinuxで動作しますか？"
@@ -14297,10 +14325,6 @@
   "da4cfe1f7fd483b0": {
    "source": "Close's glyph under the pointer",
    "text": "ポインター下の［閉じる］のグリフ"
-  },
-  "da4d016180780dc7": {
-   "source": "Pick the file. <g1>Link grabber</g1> lists every web address MDM found in it, in packages.",
-   "text": "ファイルを選択します。<g1>リンクグラバー</g1>は、MDMがその中で見つけたすべてのウェブアドレスをパッケージで一覧表示します。"
   },
   "da5804cb7ae48112": {
    "source": "Some servers report a new date for the same file every time. Tick <g1>Options → Downloads → Ignore file modification time changes when resuming a download</g1>.",
@@ -14966,10 +14990,6 @@
    "source": "Its title and glyphs",
    "text": "そのタイトルとグリフ"
   },
-  "e5c18c89ba8f7efe": {
-   "source": "<g1>Move it</g1>: drag it anywhere along the video's edge; it snaps to the nearest edge and stays there on that site.",
-   "text": "<g1>移動</g1>: 動画の端に沿ってドラッグして移動できます。最も近い端に吸着し、そのサイトではその位置に表示されます。"
-  },
   "e5ec839cf7e9287e": {
    "source": "MDM downloads the pictures of a gallery, a Flickr album, a DeviantArt gallery, a Wikimedia Commons category and many more, with gallery-dl, a free program that reads several hundred sites.",
    "text": "MDM は、数百ものサイトに対応した無料プログラム gallery-dl を使用して、ギャラリー、Flickr アルバム、DeviantArt ギャラリー、Wikimedia Commons カテゴリなどの画像をダウンロードします。"
@@ -15337,6 +15357,10 @@
   "eb19c6905b29ec9c": {
    "source": "Choose <g1>Tasks → Torrent settings...</g1> (or the arrow next to <g2>Add Torrent</g2>):",
    "text": "<g1>タスク → トレント設定...</g1>（または<g2>Torrent を追加</g2>の横の矢印）を選択します。"
+  },
+  "eb1be33b4d67a5a9": {
+   "source": "The tray menu also has <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Add batch download from clipboard</g3>, the <g4>Speed Limiter</g4>, the <g5>Scheduler</g5>, the main download queue and <g6>Options</g6>.",
+   "text": "タスク バーのメニューには、<g1>新しいダウンロードを追加</g1>、<g2>バッチ ダウンロードを追加</g2>、<g3>クリップボードからバッチ ダウンロードを追加</g3>、<g4>速度制限</g4>、<g5>スケジューラ</g5>、メインのダウンロード キュー、<g6>オプション</g6>もあります。"
   },
   "eb1e3724d60ad6dd": {
    "source": "<g1>User-Agent for manually added downloads</g1> — how MDM names itself to servers for downloads you add yourself. With <g2>Automatic</g2> ticked (the default), MDM introduces itself as your default browser: the User-Agent that browser sends, at the version you have installed (Chrome, Edge, Brave, Opera, Vivaldi, Firefox or Safari). The box shows it, and pointing at it names the browser. When MDM doesn't recognise your default browser, it sends a current Chrome's. Untick <g3>Automatic</g3> to type your own; tick it again to go back. Downloads from the browser use that browser's own User-Agent. If a site turns a browser's User-Agent away, MDM asks once more with its own.",
@@ -15765,6 +15789,14 @@
   "f09d8a183f62958e": {
    "source": "The computer has to be asleep, not shut down. On Windows the power plan must allow wake timers: the Scheduler says when it doesn't, and <g1>Change</g1> opens the setting. On Linux an administrator allows it once. On macOS only an administrator can schedule a wake, so the option is greyed there. MDM never asks for an administrator's password.",
    "text": "コンピューターはシャットダウンではなく、スリープ状態である必要があります。Windows では、電源プランでウェイク タイマーが許可されている必要があります。スケジューラは許可されていない場合にその旨を伝え、<g1>変更</g1>で設定を開きます。Linux では、管理者が一度許可します。macOS では、管理者のみがウェイクをスケジュールできるため、オプションはグレー表示されます。MDM は管理者のパスワードを要求することはありません。"
+  },
+  "f0a48a4100d89aef": {
+   "source": "Copied several links at once, a list or a whole forum post? Choose <g1>Tasks → Add batch download from clipboard</g1> (<g2>Ctrl+B</g2>, also in the tray icon's menu). MDM reads the clipboard then, and only then, and finds every download link in the text: <x3/>, <x4/>, <x5/> and magnet links, one per line or among other words, in Markdown (<x6/>) or between <x7/> and <x8/>. Each one is listed once in <g9>Link grabber</g9>, ticked and sorted into packages: pick a folder for each package, then <g10>Start</g10> or <g11>Add to queue</g11>. Downloads added together end with one <g12>Downloads complete</g12> summary. Magnet links are added as torrents with all their files once their files are known. A copied address with a number in its name, such as <x13/>, opens <g14>Batch download</g14> instead (below). If the clipboard holds no text, or no link, MDM says so.",
+   "text": "複数のリンク、リスト、またはフォーラムの投稿全体を一度にコピーしましたか? <g1>タスク → クリップボードからバッチ ダウンロードを追加</g1> (<g2>Ctrl+B</g2>、トレイ アイコンのメニューにもあります) を選択します。MDM はその時点でクリップボードを読み取り、テキスト内のすべてのダウンロード リンクを検索します。<x3/>、<x4/>、<x5/>、マグネット リンクが、1 行に 1 つずつ、または他の単語の中に、Markdown (<x6/>) で、または <x7/> と <x8/> の間にあります。それぞれが <g9>リンク グラバー</g9> に一度リストされ、チェックが入れられ、パッケージに分類されます。各パッケージのフォルダーを選択し、<g10>開始</g10> または <g11>キューに追加</g11> をクリックします。まとめて追加されたダウンロードは、1 つの <g12>ダウンロードが完了しました</g12> の概要で終了します。マグネット リンクは、ファイルが判明すると、すべてのファイルを含むトレントとして追加されます。「<x13/>」のように名前に数字を含むコピーされたアドレスは、代わりに <g14>バッチ ダウンロード</g14> (下記) を開きます。クリップボードにテキストまたはリンクがない場合、MDM はその旨を通知します。"
+  },
+  "f0d4d5fcac6fda0c": {
+   "source": "<g1>Protected video · can't be saved</g1> (grey, with a lock): a copy-protected video (DRM), which no tool may save.",
+   "text": "<g1>保護された動画 · 保存できません</g1> (灰色、ロック付き): コピー保護された動画 (DRM) で、どのツールでも保存できません。"
   },
   "f0e933d37db8b9a1": {
    "source": "<g1>Cursor</g1>: the same <x2/> entry as Claude Desktop's, in <x3/> (or add it in Cursor's MCP settings).",
@@ -16422,6 +16454,10 @@
    "source": "Make your own theme",
    "text": "独自のテーマを作成"
   },
+  "fb3db059de68f3ae": {
+   "source": "<g1>Open the post to download it</g1> (amber): the video sits in a feed and can't be downloaded from there. <g2>Open post</g2> opens the post in a new tab, when the button knows it; use the button there.",
+   "text": "<g1>ダウンロードするには投稿を開く</g1> (琥珀色): 動画がフィードにあり、そこからダウンロードできません。<g2>投稿を開く</g2>をクリックすると、ボタンが認識している場合、新しいタブで投稿が開きます。そこでボタンを使用してください。"
+  },
   "fb3ecd729cffd5f6": {
    "source": "Paste a link from a file host your service supports, in <g1>Add URL</g1>, from the browser's <g2>Download with Mister Download Manager</g2>, or in a batch download. MDM unlocks it through your account, then downloads it with all its connections, pause and resume. When the direct link expires, MDM asks the service for a new one.",
    "text": "<g1>URL を追加</g1>、ブラウザーの<g2>Mister Download Manager でダウンロード</g2>、または一括ダウンロードで、サービスがサポートするファイル ホストのリンクを貼り付けます。MDM はアカウントを通じてそのリンクを解除し、すべての接続でダウンロードを開始し、一時停止や再開も可能です。直接リンクの有効期限が切れると、MDM はサービスに新しいリンクを要求します。"
@@ -16501,6 +16537,10 @@
   "fc337e8e7eb02a6e": {
    "source": "86 languages",
    "text": "86 言語"
+  },
+  "fc3c995e8b5aa1ad": {
+   "source": "Ctrl+B",
+   "text": "Ctrl+B"
   },
   "fc4a679f70deadb3": {
    "source": "GNOME's look: round corners, flat grey buttons, a rounded focus ring and a header bar.",
