@@ -17,9 +17,9 @@ use windows_sys::Win32::UI::Shell::{
 };
 use windows_sys::Win32::UI::WindowsAndMessaging::{
     DestroyIcon, EnumWindows, GWL_EXSTYLE, GWL_STYLE, GetIconInfo, GetWindowLongPtrW,
-    GetWindowThreadProcessId, ICONINFO, InternalGetWindowText, SWP_FRAMECHANGED,
-    SWP_NOACTIVATE, SWP_NOMOVE, SWP_NOZORDER, SetWindowLongPtrW, SetWindowPos, WM_NCCALCSIZE,
-    WM_NCHITTEST, WS_EX_DLGMODALFRAME, WS_THICKFRAME,
+    GetWindowThreadProcessId, ICONINFO, InternalGetWindowText, SWP_FRAMECHANGED, SWP_NOACTIVATE,
+    SWP_NOMOVE, SWP_NOZORDER, SetWindowLongPtrW, SetWindowPos, WM_NCCALCSIZE, WM_NCHITTEST,
+    WS_EX_DLGMODALFRAME, WS_THICKFRAME,
 };
 
 struct Find {
@@ -583,10 +583,10 @@ pub fn thin_frame(
 /// version ([`thin_frame`]): with the caption style hidden by our WM_NCCALCSIZE, a Windows 11
 /// Insider build (#208) and Windows 10 22H2 (#620) showed the window's picture where the style's
 /// client would have been, a black band a title bar tall above it, every click landing above what
-/// it showed. The resizable main window with a style theme is framed so on Windows 11 only
-/// ([`drawn_frame`]), which colours the sizing frame's strip above its title bar
-/// ([`caption_colour`]); Windows 10 can't (DWMWA_CAPTION_COLOR is Windows 11's), so there it keeps
-/// its caption style, given to the client.
+/// it showed. The resizable main window with a style theme is framed so too ([`drawn_frame`],
+/// #802). Windows 11 colours the sizing frame's strip above its title bar ([`caption_colour`]);
+/// Windows 10 can't (DWMWA_CAPTION_COLOR is Windows 11's), so there the strip, 7 px at 100 %, keeps
+/// the system's title bar colour (white, the accent colour, or black in dark mode).
 fn windows_11() -> bool {
     use windows_sys::Win32::System::Registry::HKEY_LOCAL_MACHINE;
     static ON: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
@@ -760,7 +760,8 @@ thread_local! {
 
 /// The colour of the sizing frame's strip above the main window's drawn title bar (`rgb`, the
 /// top of the bar), so the two read as one bar (Windows 11 paints the frame of a window without
-/// a caption style in its caption colour). Cheap: DWM is asked only when it changes.
+/// a caption style in its caption colour; Windows 10 in its own, which no app can set). Cheap:
+/// DWM is asked only when it changes.
 pub fn caption_colour(hwnd: isize, rgb: [u8; 3]) {
     use windows_sys::Win32::Graphics::Dwm::{DWMWA_CAPTION_COLOR, DwmSetWindowAttribute};
     if !windows_11() {

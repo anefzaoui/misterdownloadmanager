@@ -557,6 +557,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows 10 with a style theme (Metro, Adwaita, Aero…): no black band above the main window's
+  title bar, and its menus and clicks land where they show; framed as on Windows 11, as the
+  progress window already was ([#802](https://github.com/anefzaoui/misterdownloadmanager/issues/802))
 - ✅ A YouTube video that lists only the sound says why: yt-dlp has no JavaScript runtime. The
   video window, the menu over a video and the command line say to install Node.js or Deno, with
   a link to the help page's commands for each system
