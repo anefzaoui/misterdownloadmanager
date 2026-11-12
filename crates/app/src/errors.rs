@@ -291,6 +291,11 @@ pub fn tools(e: &mdm_tools::Error) -> String {
 /// A network error in words a user can act on, with Windows' own description of the cause
 /// (Windows words it in its display language) but not the address, which the window shows.
 fn http(e: &reqwest::Error) -> String {
+    // error_for_status() has no source: otherwise a server's refusal becomes only
+    // "network error", hiding the status needed to diagnose helper installs (#581).
+    if let Some(status) = e.status() {
+        return describe(&Error::Status(status));
+    }
     let what = if e.is_timeout() {
         t("the server did not answer in time")
     } else if e.is_connect() {
@@ -330,6 +335,67 @@ fn os_text(s: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[tokio::test]
+    async fn helper_http_refusals_keep_the_status() {
+        use tokio::io::{AsyncReadExt, AsyncWriteExt};
+
+        for status in [403, 404, 429, 500] {
+            let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+            let address = listener.local_addr().unwrap();
+            let server = tokio::spawn(async move {
+                let (mut stream, _) = listener.accept().await.unwrap();
+                let mut request = Vec::new();
+                while !request.ends_with(b"\r\n\r\n") {
+                    request.push(stream.read_u8().await.unwrap());
+                    assert!(request.len() < 4096);
+                }
+                stream
+                    .write_all(
+                        format!("HTTP/1.1 {status} reason-secret\r\nSet-Cookie: response-cookie\r\nContent-Length: 11\r\nConnection: close\r\n\r\nbody-secret")
+                            .as_bytes(),
+                    )
+                    .await
+                    .unwrap();
+            });
+            let response = reqwest::Client::builder()
+                .no_proxy()
+                .timeout(std::time::Duration::from_secs(5))
+                .build()
+                .unwrap()
+                .get(format!(
+                    "http://url-user:url-password@{address}/private-path?access_token=query-token"
+                ))
+                .bearer_auth("header-token")
+                .header(reqwest::header::COOKIE, "session=cookie-secret")
+                .send()
+                .await
+                .unwrap();
+            let engine_message = describe(&Error::Http(std::sync::Arc::new(
+                response.error_for_status_ref().unwrap_err(),
+            )));
+            let error = response.error_for_status().unwrap_err();
+            let message = tools(&mdm_tools::Error::Http(error));
+            assert_eq!(engine_message, message);
+            assert!(message.contains(&status.to_string()), "{message}");
+            assert!(!message.contains("network error"), "{message}");
+            for secret in [
+                "127.0.0.1",
+                "url-user",
+                "url-password",
+                "private-path",
+                "query-token",
+                "header-token",
+                "cookie-secret",
+                "response-cookie",
+                "reason-secret",
+                "body-secret",
+            ] {
+                assert!(!message.contains(secret), "{message}");
+            }
+            server.await.unwrap();
+        }
+    }
 
     #[test]
     fn messages_carry_their_data() {

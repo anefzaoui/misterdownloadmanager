@@ -823,6 +823,10 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔍 yt-dlp installation reports a network error on Windows
+  ([#581](https://github.com/anefzaoui/misterdownloadmanager/issues/581)); HTTP refusals now
+  show their status code, but the reporter's failing request is not yet known.
+
 - 🔍 The main window's own looks at the disk on a drive slow to answer: starting or resuming a
   download that was already under way, a rename or move when one finishes, and links added
   without Download File Info still wait for it (follows
