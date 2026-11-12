@@ -535,6 +535,9 @@ These ship in the next version.
   Scheduler's download limit is reached waits
   ([#708](https://github.com/anefzaoui/misterdownloadmanager/issues/708))
 - ✅ The browser's Download video button in right-to-left languages: its corners and divider follow the text direction, so its outline stays whole
+- ✅ Download video: a title with line breaks stays on one line, shortened with "..." and shown
+  whole on hover, instead of drawing its extra rows over the list and past the window (part of
+  [#350](https://github.com/anefzaoui/misterdownloadmanager/issues/350))
 - ✅ A freeze of the download windows on a drive slow to answer (a sleeping disk, a USB drive, a
   network folder): Download File Info's numbered name, Show in folder, Download complete and
   creating a missing folder ask the disk beside the window

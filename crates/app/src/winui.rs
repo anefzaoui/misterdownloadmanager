@@ -592,8 +592,9 @@ pub fn ellipsize_middle(p: &Painter, font: &FontId, s: &str, max: f32) -> String
     cut(lo)
 }
 
-/// [`text`] that never runs past `right`: cut with "..." when too long. Returns the drawn
-/// rect and whether the text was cut (then show it whole with [`full_on_hover`]).
+/// [`text`] on one line that never runs past `right`: cut with "..." when too long, line breaks
+/// shown as spaces. Returns the drawn rect and whether the text was cut (then show it whole with
+/// [`full_on_hover`]).
 pub fn text_fit(
     p: &Painter,
     x: f32,
@@ -602,7 +603,17 @@ pub fn text_fit(
     color: Color32,
     right: f32,
 ) -> (Rect, bool) {
-    let shown = ellipsize(p, &tahoma(), s, (right - x).max(0.0));
+    // A one-line label, though the text may come from elsewhere (a site's title, an error): a
+    // line break is a space here, not another row drawn down over the window. Cut means the
+    // whole original, line breaks and all, is shown on hover.
+    let flat;
+    let line = if s.contains(['\n', '\r']) {
+        flat = s.replace("\r\n", " ").replace(['\n', '\r'], " ");
+        flat.as_str()
+    } else {
+        s
+    };
+    let shown = ellipsize(p, &tahoma(), line, (right - x).max(0.0));
     let cut = shown != s;
     (text(p, x, baseline, &shown, color), cut)
 }
@@ -6285,6 +6296,44 @@ mod tests {
             }
         });
         out.textures_delta.clear();
+    }
+
+    #[test]
+    fn a_single_line_label_never_grows_another_row() {
+        with_painter(|p| {
+            // A title that fits is drawn as it is, with nothing to hover.
+            let (rc, cut) = text_fit(p, 11.0, 70.0, "A short title", TEXT(), 489.0);
+            assert!(!cut);
+            assert!(rc.right() <= 489.0);
+            // An empty one draws nothing and is not a cut.
+            let (rc, cut) = text_fit(p, 11.0, 70.0, "", TEXT(), 489.0);
+            assert!(!cut);
+            assert_eq!(rc.width(), 0.0);
+            // A column with room for the "..." alone stays in its column.
+            let right = 11.0 + text_width(p, "...") + 1.0;
+            let (rc, cut) = text_fit(p, 11.0, 70.0, "A title", TEXT(), right);
+            assert!(cut);
+            assert!(rc.right() <= right);
+            // A long title stays one row, whatever it has in it: unbroken, wide Unicode, and
+            // line breaks (a site's title). A cut says the whole original is shown on hover.
+            let cases = [
+                "W".repeat(2000),
+                "日本語".repeat(500),
+                "مرحبا بالعالم ".repeat(100),
+                "🎬".repeat(500),
+                "Short\ntitle".to_owned(),
+                "Short\rtitle".to_owned(),
+                "Long title\r\nwith more than one line\nand a third".to_owned(),
+                "\n".to_owned(),
+                "a\n".repeat(100),
+            ];
+            for s in cases {
+                let (rc, cut) = text_fit(p, 11.0, 70.0, &s, TEXT(), 489.0);
+                assert!(cut, "not cut, so no whole text on hover: {s:?}");
+                assert!(rc.right() <= 489.0, "past its right edge: {s:?}");
+                assert!(rc.height() <= 20.0, "more than one row: {s:?}");
+            }
+        });
     }
 
     #[test]
