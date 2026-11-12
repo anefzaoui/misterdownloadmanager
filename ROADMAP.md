@@ -560,6 +560,10 @@ These ship in the next version.
 - ✅ **Embed chapters**: a video's chapters go into the downloaded file (with ffmpeg), on by
   default, in the Download video window under Subtitles
   ([#827](https://github.com/anefzaoui/misterdownloadmanager/issues/827))
+- ✅ A YouTube video that lists only the sound says why: yt-dlp has no JavaScript runtime. The
+  video window, the menu over a video and the command line say to install Node.js or Deno, with
+  a link to the help page's commands for each system
+  ([#852](https://github.com/anefzaoui/misterdownloadmanager/issues/852))
 - ✅ Linux: no freeze of the window where the session bus doesn't answer (a session started
   without D-Bus, a bus that hangs): the tray icon is set up beside the window, which carries on
   without it until the bus answers, and gets it then, however late
