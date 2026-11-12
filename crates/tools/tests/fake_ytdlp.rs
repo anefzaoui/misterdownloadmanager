@@ -598,7 +598,10 @@ fn preloaded_checks(me: &Path) {
     assert_eq!(looked, 1);
 
     // The menu's look-up doesn't offer that choice under that label, or failed: afresh.
-    for menu in [menu("720p · H.264", Some(false)), menu("360p · H.264", None)] {
+    for menu in [
+        menu("720p · H.264", Some(false)),
+        menu("360p · H.264", None),
+    ] {
         let (p, looked, _) = run("", menu);
         assert!(matches!(p.state, State::Done(_)), "{:?}", p.state);
         assert_eq!(looked, 1);
