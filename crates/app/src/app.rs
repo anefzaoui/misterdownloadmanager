@@ -1002,6 +1002,10 @@ pub struct App {
     /// The notification-area icon (created on the first frame), the window hidden in it, and
     /// a real exit under way (closing the window otherwise only hides it, as IDM does).
     tray: Option<crate::tray::Tray>,
+    /// Linux: the icon being made beside the window (#828: its library waits for the session
+    /// bus); `tray` once it is.
+    #[cfg(target_os = "linux")]
+    tray_setup: Option<crate::tray::Setup>,
     tray_limiter: Option<bool>,
     /// When the main window was last seen focused: a tray click steals the focus first
     /// (the taskbar becomes foreground), so a click on a frontmost window reads as
@@ -1624,6 +1628,8 @@ impl App {
             clip_asked: None,
             batch_clip: None,
             tray: None,
+            #[cfg(target_os = "linux")]
+            tray_setup: None,
             tray_limiter: None,
             tray_last_focused: None,
             // Started with the session (#226): hidden from the first frame.
@@ -3719,10 +3725,33 @@ impl App {
         let wanted =
             !crate::offscreen() || std::env::var_os("MDM_TEST_TRAY").is_some_and(|v| v == "1");
         if self.tray.is_none() && self.tray_limiter.is_none() && wanted {
-            self.tray = crate::tray::Tray::new(ctx, self.settings.speed_limit_on);
+            // Linux: made beside the window, which never waits for the session bus (#828); until
+            // it is, the window behaves as with no tray host.
+            #[cfg(target_os = "linux")]
+            {
+                self.tray_setup =
+                    Some(crate::tray::Setup::start(ctx, self.settings.speed_limit_on));
+            }
+            #[cfg(not(target_os = "linux"))]
+            {
+                self.tray = crate::tray::Tray::new(ctx, self.settings.speed_limit_on);
+                if self.tray.is_some() {
+                    tracing::info!("tray icon shown");
+                }
+            }
+            // The limiter the menu is made with (set again below once it changes).
             self.tray_limiter = Some(self.settings.speed_limit_on);
-            if self.tray.is_some() {
-                tracing::info!("tray icon shown");
+        }
+        #[cfg(target_os = "linux")]
+        if let Some(setup) = &mut self.tray_setup {
+            match setup.poll() {
+                crate::tray::Came::Waiting => {}
+                crate::tray::Came::Up(tray) => {
+                    tracing::info!("tray icon shown");
+                    self.tray = Some(tray);
+                    self.tray_setup = None;
+                }
+                crate::tray::Came::Failed => self.tray_setup = None,
             }
         }
         if let Some(t) = &self.tray
