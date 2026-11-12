@@ -195,6 +195,8 @@ struct RawFormat {
     /// yt-dlp leaves out DRM formats when it chooses (unless asked to allow them).
     #[serde(default)]
     has_drm: Option<serde_json::Value>,
+    #[serde(default)]
+    fragments: Option<Vec<serde_json::Value>>,
 }
 
 /// A size as yt-dlp gives it: a count of bytes, or nothing known. Wikimedia Commons' transcodes
@@ -212,6 +214,76 @@ fn size<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Option<u64>, D::Error>
 
 /// Whether `title` is only the last part of `page`'s address, which is what yt-dlp calls a video
 /// on a site it has no page reader for (#345: on some servers that part is a long hash).
+/// Extract total byte size (when exact byte ranges or filesizes are available across all fragments)
+/// and total duration from a format's fragments list (#748 / #320).
+fn fragments_metrics(fragments: &[serde_json::Value]) -> (Option<u64>, bool, Option<f64>) {
+    if fragments.is_empty() {
+        return (None, false, None);
+    }
+    let mut total_bytes = 0u64;
+    let mut all_bytes = true;
+    let mut any_bytes = false;
+    let mut total_dur = 0.0f64;
+    let mut all_dur = true;
+    let mut any_dur = false;
+
+    for f in fragments {
+        let piece_bytes = if let Some(r) = f.get("byte_range") {
+            let start = r.get("start").and_then(serde_json::Value::as_u64);
+            let end = r.get("end").and_then(serde_json::Value::as_u64);
+            match (start, end) {
+                (Some(s), Some(e)) if e >= s => Some(e - s + 1),
+                _ => None,
+            }
+        } else if let Some(r) = f.get("range").and_then(serde_json::Value::as_str) {
+            if let Some((a, b)) = r.split_once('-') {
+                match (a.trim().parse::<u64>(), b.trim().parse::<u64>()) {
+                    (Ok(start), Ok(end)) if end >= start => Some(end - start + 1),
+                    _ => None,
+                }
+            } else {
+                None
+            }
+        } else if let Some(sz) = f.get("filesize").and_then(serde_json::Value::as_u64) {
+            Some(sz)
+        } else {
+            None
+        };
+
+        if let Some(b) = piece_bytes {
+            total_bytes = total_bytes.saturating_add(b);
+            any_bytes = true;
+        } else {
+            all_bytes = false;
+        }
+
+        if let Some(d) = f
+            .get("duration")
+            .and_then(serde_json::Value::as_f64)
+            .filter(|d| *d > 0.0)
+        {
+            total_dur += d;
+            any_dur = true;
+        } else {
+            all_dur = false;
+        }
+    }
+
+    let bytes = if all_bytes && any_bytes && total_bytes > 0 {
+        Some(total_bytes)
+    } else {
+        None
+    };
+
+    let dur = if (all_dur || any_dur) && total_dur > 0.0 {
+        Some(total_dur)
+    } else {
+        None
+    };
+
+    (bytes, all_bytes, dur)
+}
+
 pub fn named_after_address(title: &str, page: &str) -> bool {
     let Some(last) = url::Url::parse(page).ok().and_then(|u| {
         u.path_segments()
@@ -249,25 +321,43 @@ pub fn parse(json: &[u8]) -> Option<Video> {
             .into_iter()
             // yt-dlp never chooses a DRM format (`has_drm` true; "maybe" it still tries).
             .filter(|f| f.has_drm.as_ref().and_then(serde_json::Value::as_bool) != Some(true))
-            .map(|f| Format {
-                video: has(&f.vcodec),
-                audio: has(&f.acodec),
-                id: f.format_id,
-                ext: f.ext.unwrap_or_default(),
-                height: f.height,
-                fps: f.fps.filter(|x| x.is_finite() && *x > 0.0),
-                approx: f.filesize.is_none(),
-                size: f.filesize.or(f.filesize_approx).or_else(|| estimate(f.tbr)),
-                tbr: f.tbr,
-                hls: f.protocol.as_deref().is_some_and(|p| p.contains("m3u8")),
-                vcodec: f.vcodec,
-                acodec: f.acodec,
-                // SDR is none: what a stream's own playlist (`crate::manifest`) says too.
-                range: f.dynamic_range.filter(|r| !r.eq_ignore_ascii_case("SDR")),
-                language_preference: f.language_preference,
-                quality: f.quality,
-                channels: f.audio_channels,
-                preference: f.preference,
+            .map(|f| {
+                let (frag_bytes, frag_exact, frag_dur) = f
+                    .fragments
+                    .as_deref()
+                    .map(fragments_metrics)
+                    .unwrap_or((None, false, None));
+                let size = f
+                    .filesize
+                    .or(frag_bytes)
+                    .or(f.filesize_approx)
+                    .or_else(|| estimate(f.tbr))
+                    .or_else(|| {
+                        let dur = frag_dur.filter(|d| d.is_finite() && *d > 0.0)?;
+                        let tbr = f.tbr.filter(|t| t.is_finite() && *t > 0.0)?;
+                        Some(self::estimate(dur, tbr))
+                    });
+                let approx = f.filesize.is_none() && (!frag_exact || frag_bytes.is_none());
+                Format {
+                    video: has(&f.vcodec),
+                    audio: has(&f.acodec),
+                    id: f.format_id,
+                    ext: f.ext.unwrap_or_default(),
+                    height: f.height,
+                    fps: f.fps.filter(|x| x.is_finite() && *x > 0.0),
+                    approx,
+                    size,
+                    tbr: f.tbr,
+                    hls: f.protocol.as_deref().is_some_and(|p| p.contains("m3u8")),
+                    vcodec: f.vcodec,
+                    acodec: f.acodec,
+                    // SDR is none: what a stream's own playlist (`crate::manifest`) says too.
+                    range: f.dynamic_range.filter(|r| !r.eq_ignore_ascii_case("SDR")),
+                    language_preference: f.language_preference,
+                    quality: f.quality,
+                    channels: f.audio_channels,
+                    preference: f.preference,
+                }
             })
             .collect(),
         subtitles: tracks(raw.subtitles),
@@ -707,8 +797,8 @@ fn sounds(v: &Video, can_merge: bool) -> Vec<&Format> {
             .then(more(b.quality, a.quality, -1.0))
             .then(more(b.channels, a.channels, 0.0))
             .then(sound_rank(b.acodec.as_deref()).cmp(&sound_rank(a.acodec.as_deref())))
-            .then(b.size.unwrap_or(0).cmp(&a.size.unwrap_or(0)))
             .then(more(b.tbr, a.tbr, 0.0))
+            .then(b.size.unwrap_or(0).cmp(&a.size.unwrap_or(0)))
             .then(a.hls.cmp(&b.hls))
             .then(b.id.cmp(&a.id))
     });
@@ -761,11 +851,11 @@ fn videos(v: &Video, can_merge: bool, audio: Option<&Format>) -> Vec<Choice> {
             .cmp(&(can_merge && !b.audio))
             .then(more(a.preference, b.preference, 0.0))
             .then((!a.hls).cmp(&!b.hls))
-            .then((a.size.is_some() && !a.approx).cmp(&(b.size.is_some() && !b.approx)))
             .then(range_rank(a.range.as_deref()).cmp(&range_rank(b.range.as_deref())))
             .then(picture_rank(a.vcodec.as_deref()).cmp(&picture_rank(b.vcodec.as_deref())))
-            .then(a.size.unwrap_or(0).cmp(&b.size.unwrap_or(0)))
             .then(more(a.tbr, b.tbr, 0.0))
+            .then((a.size.is_some() && !a.approx).cmp(&(b.size.is_some() && !b.approx)))
+            .then(a.size.unwrap_or(0).cmp(&b.size.unwrap_or(0)))
             .then(a.id.cmp(&b.id))
     };
     let mut lines: Vec<Line> = Vec::new();
@@ -800,6 +890,7 @@ fn videos(v: &Video, can_merge: bool, audio: Option<&Format>) -> Vec<Choice> {
                 picture_rank(b.format.vcodec.as_deref())
                     .cmp(&picture_rank(a.format.vcodec.as_deref())),
             )
+            .then(more(b.format.tbr, a.format.tbr, 0.0))
             .then(b.format.size.unwrap_or(0).cmp(&a.format.size.unwrap_or(0)))
             .then(a.format.id.cmp(&b.format.id))
     });
@@ -898,7 +989,7 @@ pub fn choices(v: &Video, can_merge: bool) -> Vec<Choice> {
     let mut types = std::collections::HashSet::new();
     for a in sounds
         .iter()
-        .filter(|a| !(files && a.hls) && !(sized && a.size.is_none()))
+        .filter(|a| !(files && a.hls) && !(sized && a.size.is_none() && a.tbr.is_none()))
     {
         if !types.insert(a.ext.to_ascii_lowercase()) {
             continue;
@@ -1553,6 +1644,78 @@ mod tests {
         // A page without any: nothing to offer.
         let none = parse(br#"{"title": "T", "formats": []}"#).unwrap();
         assert!(sub_choices(&none, "en").is_empty());
+    }
+
+    #[test]
+    fn dash_pieces_unknown_content_length_and_stream_selection() {
+        // 1. DASH fragments with byte ranges provide exact size even when format filesize is None.
+        let dash_ranges = r#"{
+            "title": "DASH stream",
+            "formats": [
+                {
+                    "format_id": "dash-ranges",
+                    "ext": "mp4",
+                    "height": 720,
+                    "tbr": 2500.0,
+                    "protocol": "http_dash_segments",
+                    "fragments": [
+                        {"url": "seg1.m4s", "range": "0-999"},
+                        {"url": "seg2.m4s", "range": "1000-1999"}
+                    ]
+                }
+            ]
+        }"#;
+        let v = parse(dash_ranges.as_bytes()).unwrap();
+        assert_eq!(v.formats[0].size, Some(2000));
+        assert!(!v.formats[0].approx, "exact byte ranges produce exact size");
+
+        // 2. DASH fragments with durations calculate estimated size when top-level duration is missing.
+        let dash_durations = r#"{
+            "title": "DASH without top-level duration",
+            "formats": [
+                {
+                    "format_id": "dash-dur",
+                    "ext": "mp4",
+                    "height": 1080,
+                    "tbr": 1000.0,
+                    "protocol": "http_dash_segments",
+                    "fragments": [
+                        {"url": "seg1.m4s", "duration": 5.0},
+                        {"url": "seg2.m4s", "duration": 5.0}
+                    ]
+                }
+            ]
+        }"#;
+        let v = parse(dash_durations.as_bytes()).unwrap();
+        // 10.0s * 1000.0 kbit/s * 125 = 1,250,000 bytes
+        assert_eq!(v.formats[0].size, Some(1_250_000));
+        assert!(v.formats[0].approx);
+
+        // 3. Selection prioritizes higher bitrate (tbr) over lower bitrate format with known size
+        // when content-length is unknown (#748).
+        let selection_cmp = r#"{
+            "title": "Quality comparison",
+            "formats": [
+                {
+                    "format_id": "low-bitrate-known-size",
+                    "ext": "mp4",
+                    "height": 1080,
+                    "vcodec": "avc1",
+                    "tbr": 1500.0,
+                    "filesize": 50000000
+                },
+                {
+                    "format_id": "high-bitrate-unknown-size",
+                    "ext": "mp4",
+                    "height": 1080,
+                    "vcodec": "avc1",
+                    "tbr": 4500.0
+                }
+            ]
+        }"#;
+        let v = parse(selection_cmp.as_bytes()).unwrap();
+        let ch = choices(&v, false);
+        assert_eq!(ch[0].selector, "high-bitrate-unknown-size/b[height=1080]");
     }
 
     #[test]
