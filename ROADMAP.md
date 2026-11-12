@@ -503,6 +503,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows 10: no black band above the progress window's title bar, and clicks land on its
+  buttons again ([#620](https://github.com/anefzaoui/misterdownloadmanager/issues/620),
+  [#772](https://github.com/anefzaoui/misterdownloadmanager/issues/772)): the progress window and
+  the style themes' dialogs are framed as on Windows 11, without a hidden title bar
 - ✅ Fast downloads to a hard disk keep going past the first gigabytes: no more freezes of 7 to
   10 s once the system's cache is full, and no connection replaced as "much slower" for waiting on
   the disk; a disk slower than the network slows the download down evenly
