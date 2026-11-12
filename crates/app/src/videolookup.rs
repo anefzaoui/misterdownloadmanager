@@ -438,11 +438,18 @@ fn answer(token: &str, s: &Search) -> VideoLookupAnswer {
             choices: choices
                 .iter()
                 .take(CHOICES)
-                .map(|c| VideoChoice {
-                    label: crate::videodlg::choice_label(&c.label),
-                    ext: c.ext.clone(),
-                    size: c.size,
-                    audio: mdm_tools::resolve::is_audio(c),
+                .map(|c| {
+                    let (height, fps, kbps) = details(v, c);
+                    VideoChoice {
+                        label: crate::videodlg::choice_label(&c.label),
+                        ext: c.ext.clone(),
+                        size: c.size,
+                        audio: mdm_tools::resolve::is_audio(c),
+                        height,
+                        fps,
+                        kbps,
+                        original: c.selector == "ba",
+                    }
                 })
                 .collect(),
             ..VideoLookupAnswer::of(lookup::READY)
@@ -461,6 +468,53 @@ fn answer(token: &str, s: &Search) -> VideoLookupAnswer {
             VideoLookupAnswer::failed(lookup::ERROR, Some(cut(&message, MESSAGE_MAX)))
         }
     }
+}
+
+/// What the button over the video says of choice `c` of `v` besides its label: the picture's
+/// height (its chip: 1080p, 4K), its frame rate when above 31, and the sound's bitrate (the
+/// sound as the site has it, `ba`, or an MP3 at a constant one).
+fn details(v: &Video, c: &Choice) -> (Option<u32>, Option<u32>, Option<u32>) {
+    let height = c
+        .selector
+        .split("[height=")
+        .nth(1)
+        .and_then(|r| r.split(']').next())
+        .and_then(|h| h.parse::<u32>().ok());
+    let most = |it: &mut dyn Iterator<Item = f64>| {
+        it.fold(None, |m: Option<f64>, x| Some(m.map_or(x, |m| m.max(x))))
+    };
+    let fps = height
+        .and_then(|h| {
+            most(
+                &mut v
+                    .formats
+                    .iter()
+                    .filter(|f| f.video && f.height == Some(h))
+                    .filter_map(|f| f.fps),
+            )
+        })
+        .filter(|f| *f > 31.0)
+        .map(|f| f.round() as u32);
+    let kbps = (c.selector == "ba")
+        .then(|| {
+            most(
+                &mut v
+                    .formats
+                    .iter()
+                    .filter(|f| f.audio && !f.video && f.ext == c.ext)
+                    .filter_map(|f| f.tbr),
+            )
+        })
+        .flatten()
+        .map(|k| k.round() as u32)
+        // An MP3 at a constant bitrate says its own (`mp3:320`; VBR is `mp3:0`).
+        .or_else(|| {
+            c.selector
+                .strip_prefix(mdm_tools::resolve::MP3)
+                .and_then(|r| r.parse::<u32>().ok())
+                .filter(|r| *r > 0)
+        });
+    (height, fps, kbps)
 }
 
 /// The download choice `p` adds, into `folder` (the Video category's), or `music` (the Music
@@ -1356,5 +1410,32 @@ mod tests {
         answered(&job, STREAM);
         let p = l.pick(&pick(&job.token, 0, None), false, now).unwrap();
         assert!(video_add(p, &folder, None, true, &Subs::default()).is_none());
+    }
+
+    #[test]
+    fn the_buttons_details_of_each_choice() {
+        const V: &str = r#"{"title": "A talk", "duration": 60, "formats": [
+            {"format_id": "140", "ext": "m4a", "vcodec": "none", "acodec": "mp4a", "tbr": 129.5},
+            {"format_id": "299", "ext": "mp4", "height": 1080, "fps": 60, "vcodec": "avc1", "acodec": "none"},
+            {"format_id": "136", "ext": "mp4", "height": 720, "fps": 30, "vcodec": "avc1", "acodec": "none"}]}"#;
+        let v = mdm_tools::resolve::parse(V.as_bytes()).unwrap();
+        let all = mdm_tools::resolve::choices(&v, true);
+        let of = |sel: &str| details(&v, all.iter().find(|c| c.selector == sel).unwrap());
+        assert_eq!(
+            of("bv*[height=1080]+ba/b[height=1080]"),
+            (Some(1080), Some(60), None)
+        );
+        assert_eq!(
+            of("bv*[height=720]+ba/b[height=720]"),
+            (Some(720), None, None),
+            "30 fps isn't news"
+        );
+        assert_eq!(of("ba"), (None, None, Some(130)), "the sound as it is");
+        assert_eq!(
+            of("mp3:320"),
+            (None, None, Some(320)),
+            "an MP3 at a constant rate"
+        );
+        assert_eq!(of("mp3:0"), (None, None, None), "VBR says no rate");
     }
 }

@@ -438,6 +438,14 @@
             "null"
           ]
         },
+        "panel_show_site": {
+          "default": null,
+          "description": "From that button's \"Turn on\" (after \"Never on <site>\"): show it on this site again.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "post": {
           "default": null,
           "description": "From the browser: a form's download, re-sent as a POST with this body and its\nContent-Type (`post_type`).",
@@ -510,6 +518,14 @@
             "null"
           ]
         },
+        "show_download": {
+          "default": null,
+          "description": "That button's \"Show\", once a download was added: the main window comes up with the newest\ndownload of this address (the video's page as it was looked up, or its file) selected.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "silent": {
           "default": false,
           "description": "`/n`: silent — no Download File Info dialog.",
@@ -553,6 +569,11 @@
             "string",
             "null"
           ]
+        },
+        "video_direct": {
+          "default": false,
+          "description": "With `video_page`, from that button over a video that plays a plain file (no stream, no\npage to read): `video_page` is that file, downloaded as any file at once, with no window.",
+          "type": "boolean"
         },
         "video_lookup": {
           "anyOf": [
@@ -639,10 +660,41 @@
           "description": "The file's type (`mp4`, `mp3`).",
           "type": "string"
         },
+        "fps": {
+          "description": "Frames a second, when above 31 (60 fps is worth saying, 30 isn't).",
+          "format": "uint32",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "height": {
+          "description": "The picture's height in pixels (the button's chip: 1080p, 4K); none for the sound, or a\nfile known only by its type.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "kbps": {
+          "description": "The sound's bitrate in kbit/s, for the sound as the site has it.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
         "label": {
           "default": "",
           "description": "What the menu shows (\"720p mp4\"), in MDM's language.",
           "type": "string"
+        },
+        "original": {
+          "description": "The sound as the site sends it (not converted): the button's list says \"original\".",
+          "type": "boolean"
         },
         "size": {
           "default": null,

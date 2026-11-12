@@ -87,8 +87,9 @@ struct RawVideo {
     #[serde(default)]
     automatic_captions: Option<std::collections::BTreeMap<String, Vec<RawSub>>>,
     language: Option<String>,
+    /// `null` from some extractors (Wikimedia Commons'): not a plain file.
     #[serde(default)]
-    direct: bool,
+    direct: Option<bool>,
 }
 
 /// One file of a subtitle language (its formats: srt, vtt, json3…); only the name is read.
@@ -195,7 +196,7 @@ pub fn parse(json: &[u8]) -> Option<Video> {
     // its exact size (`needs_size`, #320).
     let duration = raw
         .duration
-        .filter(|d| d.is_finite() && *d > 0.0 && !raw.direct);
+        .filter(|d| d.is_finite() && *d > 0.0 && raw.direct != Some(true));
     let estimate = |tbr: Option<f64>| {
         let tbr = tbr.filter(|t| t.is_finite() && *t > 0.0)?;
         Some(estimate(duration?, tbr))
@@ -221,7 +222,7 @@ pub fn parse(json: &[u8]) -> Option<Video> {
         subtitles: tracks(raw.subtitles),
         automatic: tracks(raw.automatic_captions),
         language: raw.language,
-        direct: raw.direct,
+        direct: raw.direct == Some(true),
     })
 }
 
@@ -741,6 +742,23 @@ mod tests {
             r#""duration": 600, "direct": true, "#,
         );
         assert!(parse(direct.as_bytes()).unwrap().needs_size());
+        // Wikimedia Commons' extractor says `"direct": null`: a page like any other, not "no
+        // video information".
+        let commons = HLS.replacen(
+            r#""duration": 600, "#,
+            r#""duration": 600, "direct": null, "#,
+            1,
+        );
+        let v = parse(commons.as_bytes()).expect("a direct of null");
+        assert!(!v.direct);
+        // …and an estimate below zero for a size: none.
+        let odd = HLS.replacen(
+            r#""tbr": 800.0"#,
+            r#""tbr": 800.0, "filesize_approx": -79319"#,
+            1,
+        );
+        let v = parse(odd.as_bytes()).expect("a size below zero");
+        assert!(v.formats.iter().all(|f| f.size != Some(0)));
     }
 
     #[test]
