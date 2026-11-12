@@ -279,6 +279,13 @@ impl Batch {
             }
             self.focused = true;
         }
+        // Its number selected once the window has the keys (a window shown a few frames after
+        // it opens, on Linux, put the caret after it, and "12" typed made "112").
+        if self.focus_to && to.has_focus() && ui.ctx().input(|i| i.viewport().focused == Some(true))
+        {
+            winui::select_all_text(ui.ctx(), to.id, &self.to);
+            self.focus_to = false;
+        }
         // A longer translation starts earlier instead of running into the box (down to just
         // after the To box), cut with "..." past that, whole on hover.
         let size_label = crate::i18n::t("Wildcard size");
