@@ -556,6 +556,12 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A video a site sends through a program's address (`stream.php?file=…`,
+  `remote_control.php`) is named by what it is: the page's title (or the address's `file=` name)
+  and its real type, `Lecture.mp4`, not `stream.php`; the browser's media list shows that name
+  and type, and the Download video window saves it instead of failing on its `.php`
+  ([#695](https://github.com/anefzaoui/misterdownloadmanager/issues/695),
+  [#800](https://github.com/anefzaoui/misterdownloadmanager/issues/800))
 - ✅ A video quality's size is the size of what downloads: each line of the Download video window
   and of the browser's menu is the very video and sound it was sized from, and a size that is
   only an estimate shows as about ("~532 MB"); a portrait 4K video showed 3.79 GB and downloaded

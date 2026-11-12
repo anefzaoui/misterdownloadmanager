@@ -522,6 +522,8 @@ fn video_command(
     let direct = m.direct && src.is_some();
     Ok(mdm_ipc::Command {
         video_direct: direct,
+        // The type the plain file's server said when the tab loaded it (#800).
+        mime: m.mime.clone().filter(|t| direct && !t.trim().is_empty()),
         video_page: Some(src.unwrap_or_else(|| m.url.clone())),
         video_title: m.title.clone().filter(|t| !t.trim().is_empty()),
         referer,
@@ -840,6 +842,14 @@ fn to_command(m: Message) -> mdm_ipc::Command {
         user_agent: m.user_agent,
         size: m.size.filter(|s| *s > 0),
         mime: some(m.mime),
+        // A page's media from the toolbar button's list (#800): its page's title names a file
+        // whose address names nothing.
+        video_title: m
+            .title
+            .as_deref()
+            .map(str::trim)
+            .filter(|t| !t.is_empty())
+            .map(|t| t.chars().take(TITLE_MAX).collect()),
         post_type: m.post.as_ref().and(some(m.post_type)),
         post: m.post,
         private: m.private,
@@ -1636,6 +1646,17 @@ mod tests {
         assert!(cmd.video_direct);
         assert_eq!(cmd.video_page.as_deref(), Some("https://cdn.test/a.mp4"));
         assert_eq!(cmd.referer.as_deref(), Some("https://videos.test/p"));
+        assert_eq!(cmd.mime, None);
+        // #800: with the type its server said, which names a script's answer at once.
+        let m: Message = serde_json::from_str(&format!(
+            r#"{{"video":true,"url":"https://videos.test/p","src":"https://cdn.test/stream.php?id=1","direct":true,"mime":"video/mp4","title":"Talk","userAgent":"{ua}"}}"#
+        ))
+        .unwrap();
+        let cmd = video_command(&m, &rules, browser(&m)).unwrap();
+        assert_eq!(
+            (cmd.mime.as_deref(), cmd.video_title.as_deref()),
+            (Some("video/mp4"), Some("Talk"))
+        );
         // `direct` without a file of its own is the page, as before.
         let m: Message = serde_json::from_str(&format!(
             r#"{{"video":true,"url":"https://videos.test/p","direct":true,"userAgent":"{ua}"}}"#
@@ -2290,6 +2311,25 @@ mod tests {
         );
         assert!(!c.later && !c.silent);
         assert_eq!((c.proxy, c.proxy_pac, c.proxy_login), (None, None, false));
+        assert_eq!(c.video_title, None);
+    }
+
+    /// #800: a page's media from the toolbar button's list goes with its page's title (for a
+    /// file whose address names nothing), trimmed and cut; a blank one is none.
+    #[test]
+    fn a_media_files_page_title_goes_with_it() {
+        let m: Message = serde_json::from_str(
+            r#"{"url":"https://x/remote_control.php?id=1","mime":"video/mp4","title":"  A talk  "}"#,
+        )
+        .unwrap();
+        let c = to_command(m);
+        assert_eq!(c.video_title.as_deref(), Some("A talk"));
+        assert_eq!(c.mime.as_deref(), Some("video/mp4"));
+        let long = format!(r#"{{"url":"https://x/a","title":"{}"}}"#, "t".repeat(400));
+        let c = to_command(serde_json::from_str(&long).unwrap());
+        assert_eq!(c.video_title.unwrap().len(), TITLE_MAX);
+        let blank: Message = serde_json::from_str(r#"{"url":"https://x/a","title":" "}"#).unwrap();
+        assert_eq!(to_command(blank).video_title, None);
     }
 
     #[test]

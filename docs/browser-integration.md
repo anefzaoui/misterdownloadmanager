@@ -151,8 +151,12 @@ too. The toolbar button lists what the page has loaded, so you can still save it
   for a video, its picture size.
 
 Start the video first: the list fills as the page loads things, and it's emptied when the tab goes
-to another page. With **Prefix media file names with the page title** on, a file from the list is
-named after the page, then its own name (`The page - clip.mp4`). Click **Download** beside one: a stream opens MDM's **Download video from a page**
+to another page. Each file is listed under the name it will be saved with. A file the site sends
+through a program's address (`stream.php`, `remote_control.php`, `videoplayback`, a bare number)
+has no name of its own: it's named after the page (`The page.mp4`), or after the `file=` name in
+its address when there is one, with the type its server says it is (MP4, not PHP). With **Prefix
+media file names with the page title** on, a file with a name of its own is named after the page,
+then that name (`The page - clip.mp4`). Click **Download** beside one: a stream opens MDM's **Download video from a page**
 window, which reads its qualities (yt-dlp does the work); a file goes to MDM's list like any other
 download. Your cookies for its server, the page as the referrer and your browser's User-Agent go
 with it, as they do for a link you click.

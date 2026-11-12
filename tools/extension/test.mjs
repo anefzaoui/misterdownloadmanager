@@ -938,7 +938,14 @@ const ok = (what) => {
     const r = await ask(listeners, { type: "video", src: "https://cdn.test/v/clip.mp4", url: "https://news.test/story", direct: true, title: "" }, from);
     assert.deepEqual(r, { ok: true, show: "https://cdn.test/v/clip.mp4" });
     const v = natives(calls).filter((x) => x.video).at(-1);
-    assert.deepEqual([v.direct, v.src], [true, "https://cdn.test/v/clip.mp4"]);
+    assert.deepEqual([v.direct, v.src, v.mime], [true, "https://cdn.test/v/clip.mp4", undefined]);
+    // #800: a file the tab loaded goes with the type its server said (a script's answer is named
+    // by it at once), and the page's title.
+    listeners.responseStarted({ tabId: 5, frameId: 0, type: "media", url: "https://cdn.test/remote_control.php?id=4", statusCode: 200, responseHeaders: [{ name: "Content-Type", value: "video/mp4" }, { name: "Content-Length", value: "9000000" }] });
+    await settle();
+    await ask(listeners, { type: "video", src: "https://cdn.test/remote_control.php?id=4", url: "https://news.test/story", direct: true, title: "A talk" }, from);
+    const s = natives(calls).filter((x) => x.video).at(-1);
+    assert.deepEqual([s.direct, s.mime, s.title], [true, "video/mp4", "A talk"]);
     // `direct` without a file of its own: the page, as before.
     await ask(listeners, { type: "video", url: "https://news.test/story", direct: true, src: "blob:https://news.test/x" }, from);
     assert.equal(natives(calls).filter((x) => x.video).at(-1).direct, undefined);
@@ -1104,6 +1111,98 @@ const MPD = (protect) => `<?xml version="1.0"?>
   await settle();
   assert.equal((await popupAsk(listeners, { type: "media", tab: 9 })).media.length, 0);
   ok("media list: cleared on another page, kept within one");
+}
+{
+  // #695, #800: a video a server's program sends (`remote_control.php`, `stream.php?file=…`) is
+  // listed and saved as the app's engine names it: the tab's title (or the `file=` value) and the
+  // type its server said, never "remote_control.php · PHP". The popup's switch puts the title
+  // before a real name.
+  const tabs = { 9: { id: 9, url: "https://watch.test/v/2", title: "Movie: the title", incognito: false } };
+  const { api, calls, listeners } = fakeApi({ firefox: false, frames: { 0: { href: "https://watch.test/v/2", players: [] } }, tabs });
+  load(api, false);
+  listeners.tabUpdated(9, { url: "https://watch.test/v/2" });
+  await settle();
+  const big = (type) => H(type, { "Content-Length": "176900000" });
+  const script = "https://files.test/remote_control.php?id=7&t=1";
+  const given = "https://files.test/baigiang/stream.php?file=FL262-1E01-4.mp4&token=x";
+  const bare = "https://files.test/videoplayback?id=3";
+  const real = "https://files.test/a/movie.mp4";
+  for (const [u, type] of [[script, "video/mp4"], [given, "video/mp4"], [bare, "video/webm"], [real, "video/mp4"]]) {
+    listeners.responseStarted(res(u, "media", big(type)));
+  }
+  await settle();
+  const list = async () => (await popupAsk(listeners, { type: "media", tab: 9 })).media.map((m) => [m.name, m.ext]);
+  assert.deepEqual(await list(), [
+    ["Movie the title.mp4", "mp4"],
+    ["FL262-1E01-4.mp4", "mp4"],
+    ["Movie the title.webm", "webm"],
+    ["movie.mp4", "mp4"],
+  ]);
+  const saved = async (u) => {
+    await popupAsk(listeners, { type: "media-download", tab: 9, url: u });
+    const m = natives(calls).filter((x) => x.url === u).at(-1);
+    return [m.filename, m.title, m.mime];
+  };
+  assert.deepEqual(await saved(script), ["Movie the title.mp4", "Movie: the title", "video/mp4"]);
+  // A name the app gives itself (the `file=` value, a real one) isn't sent: a server's own name
+  // (Content-Disposition) still wins there.
+  assert.deepEqual(await saved(given), ["", "Movie: the title", "video/mp4"]);
+  assert.deepEqual(await saved(real), ["", "Movie: the title", "video/mp4"]);
+  await api.storage.local.set({ mediaTitleName: true });
+  assert.deepEqual(await list(), [
+    ["Movie the title.mp4", "mp4"],
+    ["Movie the title - FL262-1E01-4.mp4", "mp4"],
+    ["Movie the title.webm", "webm"],
+    ["Movie the title - movie.mp4", "mp4"],
+  ]);
+  assert.equal((await saved(given))[0], "Movie the title - FL262-1E01-4.mp4");
+  assert.equal((await saved(bare))[0], "Movie the title.webm");
+  // The popup's tag is the saved file's type (popup.js tagOf), its name the saved one (nameOf).
+  const popup = readFileSync(new URL("../../extension/popup.js", import.meta.url), "utf8");
+  const part = (name) => popup.slice(popup.indexOf(`function ${name}(`), popup.indexOf("\n}\n", popup.indexOf(`function ${name}(`)) + 2);
+  const shown = new Function(`const TYPES = {}; ${part("tagOf")}\n${part("nameOf")}\nreturn [tagOf, nameOf];`)();
+  const [tagOf, nameOf] = shown;
+  const listed = (await popupAsk(listeners, { type: "media", tab: 9 })).media;
+  assert.deepEqual(listed.map((m) => `${nameOf(m)} · ${tagOf(m)}`), [
+    "Movie the title.mp4 · MP4",
+    "Movie the title - FL262-1E01-4.mp4 · MP4",
+    "Movie the title.webm · WEBM",
+    "Movie the title - movie.mp4 · MP4",
+  ]);
+  ok("media list: a script's video named by the title or its file= value, typed by its server (#695, #800)");
+}
+{
+  // The names the extension gives a page's media are the app's engine's (crates/engine/src/naming.rs):
+  // the same cases (crates/engine/tests/data/media-names.json), the same types, the same scripts.
+  const ctx = { URL, URLSearchParams, console: quietConsole, setTimeout, clearTimeout, Promise, TextDecoder, fetch: fakeFetch, navigator: { userAgent: "UA" } };
+  ctx.chrome = fakeApi({ firefox: false }).api;
+  vm.runInNewContext(code, ctx);
+  const cases = JSON.parse(readFileSync(new URL("../../crates/engine/tests/data/media-names.json", import.meta.url), "utf8")).cases;
+  for (const [u, mime, title, want] of cases) assert.equal(ctx.mediaName(u, mime, title, false).name, want, u);
+  const naming = readFileSync(new URL("../../crates/engine/src/naming.rs", import.meta.url), "utf8");
+  const table = naming.slice(naming.indexOf("pub const TYPES"), naming.indexOf("];", naming.indexOf("pub const TYPES")));
+  const rustTypes = Object.fromEntries([...table.matchAll(/\("([^"]+)", "([^"]+)"\)/g)].map((m) => [m[1], m[2]]));
+  assert.ok(Object.keys(rustTypes).length > 30);
+  const types = vm.runInNewContext("TYPE_EXTENSIONS", ctx);
+  assert.deepEqual({ ...types }, rustTypes, "background.js' TYPE_EXTENSIONS is naming.rs' TYPES");
+  const list = (name) => {
+    const at = naming.indexOf(`pub const ${name}`);
+    return [...naming.slice(at, naming.indexOf("];", at)).matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+  };
+  assert.deepEqual([...vm.runInNewContext("SCRIPT_EXTENSIONS", ctx)], list("SCRIPT_EXTENSIONS"));
+  assert.deepEqual([...vm.runInNewContext("PAGE_EXTENSIONS", ctx)], list("PAGE_EXTENSIONS"));
+  const video = readFileSync(new URL("../../extension/video.js", import.meta.url), "utf8");
+  const scripts = JSON.parse(/const SCRIPT_EXTENSIONS = (\[[^\]]+\]);/.exec(video)[1]);
+  assert.deepEqual(scripts, [...list("SCRIPT_EXTENSIONS"), ...list("PAGE_EXTENSIONS")], "video.js knows the same scripts and pages");
+  // The button over a plain file says its type as the address says it: a script's file= value's,
+  // none for a script alone (not "PHP").
+  const at = video.indexOf("  function fileType(");
+  const fileType = new Function(`const SCRIPT_EXTENSIONS = ${JSON.stringify(scripts)};\n${video.slice(at, video.indexOf("\n  }\n", at) + 4)}\nreturn fileType;`)();
+  assert.equal(fileType("https://u.test/stream.php?file=FL262-1E01-4.mp4&token=x"), "mp4");
+  assert.equal(fileType("https://u.test/remote_control.php?id=1"), "");
+  assert.equal(fileType("https://u.test/v/clip.webm?x=1"), "webm");
+  assert.equal(fileType("https://u.test/stream.php?file=setup.exe"), "");
+  ok("media names: the extension's are the engine's (types, scripts, cases)");
 }
 {
   // Bounded: a page loading file after file keeps at most 60 per tab, its first stream (the one

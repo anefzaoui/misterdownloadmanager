@@ -190,7 +190,10 @@ pub fn look_up(
     url: &str,
     timeout: Duration,
 ) -> Result<LookedUp, ProcError> {
-    let run = |args: &[String]| output(ytdlp(exe, &[], args, url)?, "yt-dlp", timeout);
+    // A plain file a server's program sends gets its real type (#695).
+    let run = |args: &[String]| {
+        output(ytdlp(exe, &[], args, url)?, "yt-dlp", timeout).map(crate::resolve::typed_scripts)
+    };
     match run(ours) {
         Ok(json) => Ok(LookedUp {
             json,
