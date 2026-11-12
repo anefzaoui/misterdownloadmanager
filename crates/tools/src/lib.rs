@@ -5,6 +5,7 @@
 //! atomically, never downgrade, and keep the previous version for rollback.
 
 pub mod chosen;
+pub mod extractor;
 pub mod ffmpeg;
 pub mod gallery;
 mod macos;

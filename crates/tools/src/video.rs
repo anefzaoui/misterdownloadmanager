@@ -1234,6 +1234,12 @@ fn attempt(
                 progress.lock().unwrap().helper = Some(why);
             }
             Engined::Stopped => return Attempt::Stopped,
+            Engined::Failed(error) if crate::extractor::should_fallback_to_helper(&error) => {
+                note(
+                    progress,
+                    format!("MDM engine hit {error}; falling back to yt-dlp"),
+                );
+            }
             Engined::Failed(error) => return failed(error, rerouted),
         }
     }
