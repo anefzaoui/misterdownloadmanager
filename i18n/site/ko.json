@@ -934,6 +934,10 @@
    "source": "The thin edge around a country's flag",
    "text": "국기 주변의 얇은 테두리"
   },
+  "0ea74b188ec2ca88": {
+   "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
+   "text": "<g1>사이트에서 파일 대신 웹 페이지를 보냈습니다</g1>라고 표시되면, 해당 링크가 파일 호스트의 카운트다운, 캡차, 눌러야 할 <g2>다운로드</g2> 버튼 또는 로그인 페이지와 같은 사이트 자체 페이지로 연결된 것입니다. MDM은 해당 페이지를 파일로 저장하지 않습니다. 다운로드 진행 창에서 <g3>브라우저에서 열기</g3>를 클릭하거나 직접 링크를 열어 작업을 완료하고, 브라우저가 실제 다운로드를 시작하면 MDM 확장 프로그램이 MDM으로 전달합니다. 확장 프로그램이 없으면 브라우저로 다운로드하세요."
+  },
   "0ebbf5cc3fb70cd9": {
    "source": "Downloads from a private window use that window's cookies, never the normal ones, and aren't kept in MDM's list after it closes.",
    "text": "비공개 창에서 다운로드하면 해당 창의 쿠키를 사용하고 일반 창의 쿠키는 사용하지 않습니다. 창을 닫으면 MDM 목록에도 다운로드가 남지 않습니다."
@@ -4494,10 +4498,6 @@
    "source": "Browser integration — Mister Download Manager help",
    "text": "브라우저 통합 — Mister Download Manager 도움말"
   },
-  "439e42205d062684": {
-   "source": "Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (<x1/>)",
-   "text": "yt-dlp와 ffmpeg를 사용한 비디오 페이지 처리, gallery-dl을 사용한 이미지 갤러리 처리(별도 프로그램으로 실행). 네트워크 어댑터를 선택하면 MDM의 127.0.0.1 프록시를 통해 연결해 해당 어댑터를 사용합니다(<x1/>)."
-  },
   "43ad4ee2e95fdb1f": {
    "source": "A page's own short sounds (a click, a voice-search chime) are no longer listed in <g1>Media on this page</g1>.",
    "text": "페이지 자체의 짧은 소리(클릭, 음성 검색 차임)는 더 이상 <g1>이 페이지의 미디어</g1>에 나열되지 않습니다."
@@ -5653,6 +5653,10 @@
   "567f61dda0920579": {
    "source": "A greyed unchecked box's border",
    "text": "회색 선택되지 않은 확인란 테두리"
+  },
+  "5688be9c6942376d": {
+   "source": "Files MDM downloads from the browser are marked as coming from the internet, as the browser marks its own: Windows checks a program with SmartScreen before it runs and Office opens a document in Protected View. Like the browser, MDM leaves the mark out when Windows' Group Policy <g1>Do not preserve zone information in file attachments</g1> is on; <g2>Options → Save to</g2> can turn it off for MDM alone.",
+   "text": "MDM이 브라우저에서 다운로드하는 파일은 브라우저가 자체적으로 표시하는 것처럼 인터넷에서 온 것으로 표시됩니다. Windows는 프로그램 실행 전에 SmartScreen으로 확인하고, Office는 문서를 보호된 보기로 엽니다. 브라우저와 마찬가지로, Windows 그룹 정책 <g1>첨부 파일에 영역 정보를 보존하지 않음</g1>이 켜져 있으면 MDM은 이 표시를 생략합니다. <g2>옵션 → 저장 위치</g2>에서 MDM에 대해서만 이 기능을 끌 수 있습니다."
   },
   "5690cb4f1434f4bc": {
    "source": "Open Windows <g1>Settings → Apps</g1>, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder. On Linux, remove the package with your package manager, or delete the AppImage; <g2>Uninstall on Linux</g2> says what stays in your home folder and how to remove it.",
@@ -9222,10 +9226,6 @@
    "source": "Downloads and torrents in one app, stable on Android",
    "text": "하나의 앱에서 다운로드 및 토렌트, Android에서 안정적"
   },
-  "8c699effe606d133": {
-   "source": "Files MDM downloads from the browser are marked as coming from the internet, as the browser marks its own: Windows checks a program with SmartScreen before it runs and Office opens a document in Protected View.",
-   "text": "MDM이 브라우저에서 다운로드한 파일에는 브라우저가 직접 다운로드한 파일과 마찬가지로 인터넷에서 받은 파일이라는 표시가 붙습니다. Windows는 프로그램을 실행하기 전에 SmartScreen으로 확인하고, Office는 문서를 보호된 보기로 엽니다."
-  },
   "8c7321b31cd98d97": {
    "source": "<g1>Toolbar.</g1> <g2>Add URL</g2>, <g3>Add Torrent</g3>, <g4>Resume</g4>, <g5>Stop</g5>, <g6>Stop All</g6>, <g7>Delete</g7>, <g8>Delete Completed</g8>, <g9>Options</g9>, <g10>Scheduler</g10>, <g11>Start Queue</g11>, <g12>Stop Queue</g12>. The small arrow next to <g13>Add Torrent</g13>, <g14>Start Queue</g14> and <g15>Stop Queue</g15> opens more choices.",
    "text": "<g1>도구 모음.</g1> <g2>URL 추가</g2>, <g3>토렌트 추가</g3>, <g4>다시 시작</g4>, <g5>중지</g5>, <g6>모두 중지</g6>, <g7>삭제</g7>, <g8>완료된 항목 삭제</g8>, <g9>옵션</g9>, <g10>예약 관리자</g10>, <g11>대기열 시작</g11>, <g12>대기열 중지</g12>. <g13>토렌트 추가</g13>, <g14>대기열 시작</g14> 및 <g15>대기열 중지</g15> 옆의 작은 화살표를 클릭하면 더 많은 옵션이 열립니다."
@@ -10890,6 +10890,10 @@
    "source": "Add downloads with <g1>Add URL</g1>, the clipboard (<g2>Options → General → Offer to download links copied to the clipboard</g2>) or the drop target (<g3>Tasks → Show drop target</g3>).",
    "text": "<g1>URL 추가</g1>, 클립보드(<g2>옵션 → 일반 → 클립보드에 복사된 링크 다운로드 제안</g2>) 또는 끌어 놓기 대상(<g3>작업 → 끌어 놓기 대상 표시</g3>)으로 다운로드를 추가하세요."
   },
+  "a54a319c4a29ff03": {
+   "source": "Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (<x1/>); each runs in a folder it can write, also its TEMP (<x2/>)",
+   "text": "yt-dlp와 ffmpeg를 통해 비디오 페이지를, gallery-dl을 통해 이미지 갤러리를 처리합니다(별도 프로그램으로 실행). 네트워크 어댑터가 선택되면, 이들의 연결은 MDM의 127.0.0.1 프록시를 통해 이루어지며 해당 어댑터에 바인딩됩니다(<x1/>). 각 프로그램은 쓰기 가능한 폴더에서 실행되며, 이 폴더는 TEMP로도 사용됩니다(<x2/>)."
+  },
   "a54ad83afe939ad1": {
    "source": "yt-dlp looks the page up and picks the quality's video and sound. MDM's own downloader then brings each of them in, one after the other, the way it downloads any file:",
    "text": "yt-dlp는 페이지를 조회하여 원하는 품질의 동영상과 사운드를 선택합니다. MDM 자체 다운로더는 다른 파일을 다운로드하는 방식과 동일하게 각각을 하나씩 가져옵니다."
@@ -12526,6 +12530,10 @@
    "source": "3. Use it",
    "text": "3. 사용하기"
   },
+  "be205ab8272dead7": {
+   "source": "Start the video first: the list fills as the page loads things, and it's emptied when the tab goes to another page. Each file is listed under the name it will be saved with. A file the site sends through a program's address (<x1/>, <x2/>, <x3/>, a bare number) has no name of its own: it's named after the page (<x4/>), or after the <x5/> name in its address when there is one, with the type its server says it is (MP4, not PHP). With <g6>Prefix media file names with the page title</g6> on, a file with a name of its own is named after the page, then that name (<x7/>). Click <g8>Download</g8> beside one: a stream opens MDM's <g9>Download video from a page</g9> window, which reads its qualities (yt-dlp does the work); a file goes to MDM's list like any other download. Your cookies for its server, the page as the referrer and your browser's User-Agent go with it, as they do for a link you click.",
+   "text": "먼저 비디오를 재생하세요. 페이지가 콘텐츠를 로드함에 따라 목록이 채워지며, 탭이 다른 페이지로 이동하면 목록은 비워집니다. 각 파일은 저장될 이름으로 표시됩니다. 사이트가 프로그램 주소(<x1/>, <x2/>, <x3/>, 단순 숫자)를 통해 보내는 파일은 자체 이름이 없습니다. 이 파일은 페이지 이름(<x4/>)을 따르거나, 주소에 <x5/> 이름이 있는 경우 그 이름을 따르며, 서버가 알려주는 유형(PHP가 아닌 MP4)으로 저장됩니다. <g6>미디어 파일 이름 앞에 페이지 제목 추가</g6>가 켜져 있으면, 자체 이름이 있는 파일은 페이지 이름 뒤에 해당 이름(<x7/>)이 붙습니다. 파일 옆의 <g8>다운로드</g8>를 클릭하세요. 스트림은 MDM의 <g9>페이지에서 비디오 다운로드</g9> 창을 열어 품질을 읽어옵니다(yt-dlp가 이 작업을 수행합니다). 파일은 다른 다운로드와 마찬가지로 MDM 목록으로 이동합니다. 클릭한 링크와 마찬가지로, 해당 서버에 대한 쿠키, 참조자로서의 페이지, 브라우저의 User-Agent가 함께 전송됩니다."
+  },
   "be3fe1b3f5a5749a": {
    "source": "Yes, completely. Mister Download Manager (MDM) is free and open-source software under the GNU General Public License, version 3. There is no trial period…",
    "text": "예, 완전히 무료입니다. Mister Download Manager(MDM)는 GNU 일반 공중 사용 허가서 버전 3에 따라 배포되는 무료 오픈 소스 소프트웨어입니다. 평가판 기간은 없습니다…"
@@ -12829,10 +12837,6 @@
   "c2f23d07939a4042": {
    "source": "A greyed button's face",
    "text": "회색 버튼 면"
-  },
-  "c30f4658e7e28160": {
-   "source": "Start the video first: the list fills as the page loads things, and it's emptied when the tab goes to another page. With <g1>Prefix media file names with the page title</g1> on, a file from the list is named after the page, then its own name (<x2/>). Click <g3>Download</g3> beside one: a stream opens MDM's <g4>Download video from a page</g4> window, which reads its qualities (yt-dlp does the work); a file goes to MDM's list like any other download. Your cookies for its server, the page as the referrer and your browser's User-Agent go with it, as they do for a link you click.",
-   "text": "먼저 비디오를 재생하세요. 페이지가 콘텐츠를 로드함에 따라 목록이 채워지고, 다른 페이지로 이동하면 목록이 비워집니다. <g1>미디어 파일 이름 앞에 페이지 제목 추가</g1>가 켜져 있으면 목록의 파일 이름은 페이지 제목 다음에 자체 이름으로 지정됩니다 (<x2/>). 파일 옆의 <g3>다운로드</g3>를 클릭하세요. 스트림은 MDM의 <g4>페이지에서 비디오 다운로드</g4> 창을 열어 품질을 읽습니다 (yt-dlp가 이 작업을 수행합니다). 파일은 다른 다운로드와 마찬가지로 MDM 목록으로 이동합니다. 클릭한 링크와 마찬가지로 해당 서버에 대한 쿠키, 참조자로 사용된 페이지, 브라우저의 User-Agent가 함께 전송됩니다."
   },
   "c31622b1a542c888": {
    "source": "<g1>.dmg</g1> for Intel Macs",
@@ -13746,10 +13750,6 @@
    "source": "A button's face under the pointer",
    "text": "포인터 아래 버튼 면"
   },
-  "d1595b21d176c816": {
-   "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
-   "text": "토렌트의 파일은 브라우저의 다운로드와 마찬가지로 <g1>인터넷에서 다운로드됨</g1>으로 표시됩니다. Windows SmartScreen은 프로그램이 처음 실행되기 전에 확인하고, Office는 문서를 보호된 보기로 엽니다. Mac에서는 Gatekeeper가 앱을 확인합니다."
-  },
   "d172eb15bbafbde6": {
    "source": "Release signatures are checked by MDM's own small verifier instead of a full OpenPGP library.",
    "text": "릴리스 서명은 전체 OpenPGP 라이브러리 대신 MDM 자체의 작은 검증기로 확인됩니다."
@@ -14581,6 +14581,10 @@
   "debac78242ebe5d9": {
    "source": "Minimize hides the main window there too, while <g1>Minimize to the notification area</g1> is on in <g2>Options → General</g2>. It is on by default; where the tray has no icon, Minimize sends the window to the taskbar instead.",
    "text": "<g2>옵션 → 일반</g2>에서 <g1>알림 영역으로 최소화</g1>가 켜져 있으면 최소화도 메인 창을 그곳에 숨깁니다. 이 설정은 기본적으로 켜져 있습니다. 트레이에 아이콘이 없으면 최소화는 창을 대신 작업 표시줄로 보냅니다."
+  },
+  "dec637e2ec402a0d": {
+   "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps. <g2>Options → Save to → Mark downloaded files as coming from the internet</g2> turns it off, and so does Windows' policy <g3>Do not preserve zone information in file attachments</g3>.",
+   "text": "토렌트 파일은 브라우저 다운로드와 마찬가지로 <g1>인터넷에서 다운로드된 파일</g1>로 표시됩니다. Windows SmartScreen은 프로그램이 처음 실행되기 전에 검사하고, Office는 문서를 보호된 보기로 엽니다. Mac에서는 Gatekeeper가 앱을 검사합니다. <g2>옵션 → 저장 위치 → 다운로드한 파일을 인터넷에서 온 것으로 표시</g2>를 끄거나 Windows 정책 <g3>파일 첨부 파일에 영역 정보 보존 안 함</g3>을 사용하면 이 기능을 끌 수 있습니다."
   },
   "dee4ab42b514acda": {
    "source": "The language list on first start: every language with its flag, its own name and its English name",

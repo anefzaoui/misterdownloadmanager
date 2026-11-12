@@ -1512,6 +1512,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Tölvupóstur
+#. text in the Download video window
+#. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
+#, machine
+	Embed chapters	Fella inn kafla
 #. text in gallerydlg.rs
 #. in Download a gallery, after the "Files at most" box
 #, machine
@@ -1552,7 +1556,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Eritrea	Eritrea
-#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
@@ -2819,6 +2823,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Mozambique	Mósambík
+#. text in the Download video window
+#. why "Embed chapters" is greyed in Download video: the choice is a sound converted to MP3, Opus or FLAC, which MDM saves without chapters
+#, machine
+	MP3, Opus and FLAC files are saved without chapters	MP3-, Opus- og FLAC-skrár eru vistaðar án kafla
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	miklu hægari en aðrar tengingar; endurtengist
@@ -3243,6 +3251,10 @@
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	Opna möppu
+#. text in a download's progress window
+#. button in a download's progress window when the site sent a web page (a waiting page, a captcha) instead of the file: opens the download's link in the web browser
+#, machine
+	Open in browser	Opna í vafra
 #. checkbox in the Add torrent window
 #, machine
 	Open magnet links and .torrent files with Mister Download Manager	Opna segultengla og .torrent skrár með Mister Download Manager
@@ -4662,10 +4674,11 @@
 	the server is busy ({status}); try again later	netþjónninn er upptekinn ({status}); reyndu aftur síðar
 #. text in errors.rs
 #, machine
-	the server sent a web page instead of the file (sign-in needed or the link expired?)	netþjónninn sendi vefsíðu í stað skráarinnar (þarf að skrá sig inn eða tengillinn útrunninn?)
-#. text in errors.rs
-#, machine
 	the server sent an unexpected part of the file ({detail})	netþjónninn sendi óvæntan hluta af skránni ({detail})
+#. text in errors.rs
+#. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
+#, machine
+	the site sent a web page instead of the file (a waiting page, a captcha or a sign-in): open the link in your browser, finish there, and the download comes back to MDM	vefsvæðið sendi vefsíðu í stað skráarinnar (biðsíðu, captcha eða innskráningu): opnaðu tengilinn í vafranum þínum, kláraðu þar og niðurhalið kemur aftur í MDM
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
 #, machine
@@ -4842,6 +4855,7 @@
 #, machine
 	This name is reserved by Windows	Þetta heiti er frátekið af Windows
 #. tooltip (why a control is greyed) in the Download video window
+#. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Þetta krefst ffmpeg

@@ -1158,6 +1158,10 @@
 	El Salvador	El Salvador
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Email	E-mail
+#. text in the Download video window
+#. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
+#, machine
+	Embed chapters	Incorpora capitoli
 #. text in gallerydlg.rs
 #. in Download a gallery, after the "Files at most" box
 	Empty: all of them. On most sites the newest come first.	Vuoto: tutti. Sulla maggior parte dei siti i più recenti compaiono per primi.
@@ -1187,7 +1191,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Eritrea	Eritrea
-#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
@@ -2138,6 +2142,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Mozambique	Mozambico
+#. text in the Download video window
+#. why "Embed chapters" is greyed in Download video: the choice is a sound converted to MP3, Opus or FLAC, which MDM saves without chapters
+#, machine
+	MP3, Opus and FLAC files are saved without chapters	I file MP3, Opus e FLAC vengono salvati senza capitoli
 #. text in errors.rs
 	much slower than the other connections; reconnecting	molto più lenta delle altre connessioni; nuova connessione in corso
 #. text in the download list (sizes, speeds, status)
@@ -2448,6 +2456,10 @@
 #. crash report window button: show the report's file in its folder
 #. button that opens the torrent's containing folder in the file manager
 	Open folder	Apri cartella
+#. text in a download's progress window
+#. button in a download's progress window when the site sent a web page (a waiting page, a captcha) instead of the file: opens the download's link in the web browser
+#, machine
+	Open in browser	Apri nel browser
 #. checkbox in the Add torrent window
 	Open magnet links and .torrent files with Mister Download Manager	Apri i link magnet e i file .torrent con Mister Download Manager
 #. text in the tray icon's menu
@@ -3515,9 +3527,11 @@
 #. text in errors.rs
 	the server is busy ({status}); try again later	il server è occupato ({status}); riprova più tardi
 #. text in errors.rs
-	the server sent a web page instead of the file (sign-in needed or the link expired?)	il server ha inviato una pagina web invece del file (serve l'accesso o il collegamento è scaduto?)
-#. text in errors.rs
 	the server sent an unexpected part of the file ({detail})	il server ha inviato una parte inattesa del file ({detail})
+#. text in errors.rs
+#. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
+#, machine
+	the site sent a web page instead of the file (a waiting page, a captcha or a sign-in): open the link in your browser, finish there, and the download comes back to MDM	il sito ha inviato una pagina web invece del file (una pagina di attesa, un captcha o un accesso): apri il collegamento nel browser, completa lì e il download tornerà a MDM
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
 	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Il sito richiede l'accesso, anche con i cookie del browser per questa pagina. Accedi nel browser, quindi riprova.
@@ -3655,6 +3669,7 @@
 #, machine
 	This name is reserved by Windows	Questo nome è riservato da Windows
 #. tooltip (why a control is greyed) in the Download video window
+#. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 	This needs ffmpeg	Serve ffmpeg
 #. text in the Options window
