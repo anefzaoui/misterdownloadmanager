@@ -560,6 +560,19 @@ These ship in the next version.
   (a video, an archive, another program's backup): it is read beside the window, the status strip
   says "Reading …", a file over 64 MB is refused with a message, and Link grabber takes 10,000
   links at once ([#805](https://github.com/anefzaoui/misterdownloadmanager/issues/805))
+- ✅ A video quality's size is the size of what downloads: each line of the Download video window
+  and of the browser's menu is the very video and sound it was sized from, and a size that is
+  only an estimate shows as about ("~532 MB"); a portrait 4K video showed 3.79 GB and downloaded
+  532 MB ([#801](https://github.com/anefzaoui/misterdownloadmanager/issues/801))
+- ✅ Video qualities show their codec, frame rate and HDR (`2160p · VP9 · 60 fps · HDR`), and AV1,
+  VP9 and H.264, HDR and SDR of one resolution are each their own choice; the best stays first
+  ([#755](https://github.com/anefzaoui/misterdownloadmanager/issues/755))
+- ✅ Fewer Download complete windows: downloads added together (a playlist, a batch, Link
+  grabber's links) show one summary once all are done, with how many finished and which failed,
+  Open folder and Show in list; a single download keeps its window
+  ([#766](https://github.com/anefzaoui/misterdownloadmanager/issues/766)). **Snooze** in Download complete keeps it away for
+  30 minutes, 1 hour, 8 hours or until MDM restarts, and Options → Downloads says until when, with
+  Resume now ([#741](https://github.com/anefzaoui/misterdownloadmanager/issues/741))
 - ✅ WinGet in the install steps: the README, the help and the website's download page give
   `winget install AhmedNefzaoui.MisterDownloadManager` and `winget upgrade`
   ([#798](https://github.com/anefzaoui/misterdownloadmanager/issues/798))

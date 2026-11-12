@@ -40,6 +40,16 @@
 #, machine
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	ഇപ്പോൾ {n} ലേഖനവുമായി പൊരുത്തപ്പെടുന്നു (പുതിയവ മാത്രം ചേർക്കുന്നു):|ഇപ്പോൾ {n} ലേഖനങ്ങളുമായി പൊരുത്തപ്പെടുന്നു (പുതിയവ മാത്രം ചേർക്കുന്നു):
 #. count in a dialog box
+#. Cancel in Download File Info with downloads waiting behind it
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	{n} ഡൗൺലോഡ് കൂടി കാത്തിരിക്കുന്നു. അതും റദ്ദാക്കണോ?|{n} ഡൗൺലോഡുകൾ കൂടി കാത്തിരിക്കുന്നു. അവയും റദ്ദാക്കണോ?
+#. count in a dialog box
+#. under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} more|and {n} more	കൂടാതെ {n} എണ്ണം കൂടി|കൂടാതെ {n} എണ്ണം കൂടി
+#. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -61,6 +71,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} download|{n} downloads	{n} ഡൗൺലോഡ്|{n} ഡൗൺലോഡുകൾ
+#. count in a dialog box
+#. the summary of downloads added together (the Downloads complete window; the tip of the tray icon): {n} of them finished
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download finished|{n} downloads finished	{n} ഡൗൺലോഡ് പൂർത്തിയായി|{n} ഡൗൺലോഡുകൾ പൂർത്തിയായി
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -70,6 +85,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} എൻട്രി ഒഴിവാക്കി (ഒരു ലിങ്ക് അല്ലെങ്കിൽ ഫോൾഡറിന് പുറത്തേക്ക് നയിക്കുന്ന പേര്)|{n} എൻട്രികൾ ഒഴിവാക്കി (ലിങ്കുകൾ അല്ലെങ്കിൽ ഫോൾഡറിന് പുറത്തേക്ക് നയിക്കുന്ന പേരുകൾ)
+#. count in a dialog box
+#. the summary of downloads added together; after "12 downloads finished": {n} of them failed
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} failed|{n} failed	{n} എണ്ണം പരാജയപ്പെട്ടു|{n} എണ്ണം പരാജയപ്പെട്ടു
 #. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
@@ -250,6 +270,11 @@
 #. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
 #, machine
 	about {ms} ms ({reach})	ഏകദേശം {ms} ms ({reach})
+#. text in the Download video window
+#. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	about {size}	ഏകദേശം {size}
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 #, machine
@@ -1260,6 +1285,15 @@
 #, machine
 	Download complete	ഡൗൺലോഡ് പൂർത്തിയായി
 #. text in the Options window
+#. Options, Downloads, under "Show download complete dialog": snoozed with "Until MDM restarts"
+#, machine
+	Download complete is snoozed until MDM restarts	MDM പുനരാരംഭിക്കുന്നത് വരെ ഡൗൺലോഡ് പൂർത്തിയായി എന്ന അറിയിപ്പ് താൽക്കാലികമായി നിർത്തിവെച്ചിരിക്കുന്നു
+#. text in the Options window
+#. Options, Downloads, under "Show download complete dialog": {time} when the snooze ends, like "14:30"
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Download complete is snoozed until {time}	{time} വരെ ഡൗൺലോഡ് പൂർത്തിയായി എന്ന അറിയിപ്പ് താൽക്കാലികമായി നിർത്തിവെച്ചിരിക്കുന്നു
+#. text in the Options window
 #, machine
 	Download failed	ഡൗൺലോഡ് പരാജയപ്പെട്ടു
 #. window title in a dialog box
@@ -1372,6 +1406,10 @@
 #. tab title: download settings
 #, machine
 	Downloads	ഡൗൺലോഡുകൾ
+#. window title in a dialog box
+#. title of the window that sums up downloads added together (a playlist, a batch) once all are done
+#, machine
+	Downloads complete	ഡൗൺലോഡുകൾ പൂർത്തിയായി
 #. text in the tray icon's menu
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #, machine
@@ -1581,6 +1619,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Extracting...	എക്‌സ്‌ട്രാക്‌റ്റുചെയ്യുന്നു...
+#. text in a dialog box
+#. label over the list of the downloads of the group that failed
+#, machine
+	Failed:	പരാജയപ്പെട്ടവ:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1719,6 +1761,18 @@
 #. text in categories.rs
 #, machine
 	Folder:	ഫോൾഡർ:
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 1 hour	1 മണിക്കൂർ നേരത്തേക്ക്
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 30 minutes	30 മിനിറ്റ് നേരത്തേക്ക്
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 8 hours	8 മണിക്കൂർ നേരത്തേക്ക്
 #. text in the Batch download window
 #. {address} = an example web address with a * in the file name
 #, machine
@@ -3547,6 +3601,10 @@
 #. label: whether the server lets a stopped download continue (Yes / No)
 #, machine
 	Resume capability	തുടരാനുള്ള കഴിവ്
+#. text in the Options window
+#. link after "Download complete is snoozed until 14:30": ends the snooze now
+#, machine
+	Resume now	ഇപ്പോൾ വീണ്ടും കാണിക്കുക
 #. message or event log entry in the main window
 #. event log entry, past tense: the download resumed (just now)
 #, machine
@@ -3661,7 +3719,8 @@
 #. status shown in green beside the Rename box once the new name is saved
 #, machine
 	Saved	സംരക്ഷിച്ചു
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
+#. label over the folder the downloads were saved in
 #. label before the folder the torrent is saved in
 #, machine
 	Saved in	സംരക്ഷിച്ച സ്ഥലം
@@ -3852,6 +3911,10 @@
 #. checkbox in the Options window; checkbox in a download's progress window
 #, machine
 	Show download complete dialog	ഡൗൺലോഡ് പൂർത്തിയായ ഡയലോഗ് കാണിക്കുക
+#. button in a dialog box
+#. button: shows these downloads in MDM's list, selected
+#, machine
+	Show in list	ലിസ്റ്റിൽ കാണിക്കുക
 #. text in extension.rs
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
@@ -3937,6 +4000,7 @@
 #, machine
 	Size	വലുപ്പം
 #. text in the Download video window
+#. the video's file size is not known
 #, machine
 	size unknown	വലുപ്പം അജ്ഞാതം
 #. text in a download's Properties window
@@ -3959,6 +4023,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Slovenia	സ്ലൊവേനിയ
+#. text in a dialog box
+#. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
+#, machine
+	Snooze	താൽക്കാലികമായി നിർത്തുക
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5006,6 +5074,10 @@
 #. where a download's server is: an address the location table doesn't place
 #, machine
 	unknown	അജ്ഞാതം
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window until MDM is started again
+#, machine
+	Until MDM restarts	MDM പുനരാരംഭിക്കുന്നത് വരെ
 #. button in the Options window
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
@@ -5563,6 +5635,11 @@
 #. {name} = a file name; {version} = a version number (keep the braces as they are)
 #, machine
 	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} വളരെ പഴയതാണ്: MDM-ന് {oldest} അല്ലെങ്കിൽ പുതിയത് ആവശ്യമാണ്
+#. text in a dialog box
+#. one failed download in the summary of a group of downloads: {name} its file name, {error} why it failed
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	{name}: {error}	{name}: {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -5650,6 +5727,11 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{size} free	{size} സൗജന്യം
+#. text in a dialog box
+#. under "12 downloads finished": {size} the finished files' size together, like "1.25 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} in all	മൊത്തം {size}
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine

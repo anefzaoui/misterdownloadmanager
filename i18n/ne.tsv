@@ -43,7 +43,12 @@
 #. Cancel in Download File Info with downloads waiting behind it
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	थप {n} वटा डाउनलोड पर्खिरहेका छन्। के तिनीहरूलाई पनि रद्द गर्न चाहनुहुन्छ?|थप {n} वटा डाउनलोड पर्खिरहेका छन्। के तिनीहरूलाई पनि रद्द गर्न चाहनुहुन्छ?
+@plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	{n} वटा डाउनलोड अझै पर्खिरहेका छन्। यसलाई पनि रद्द गर्नुहुन्छ?|{n} वटा डाउनलोड अझै पर्खिरहेका छन्। तिनीहरूलाई पनि रद्द गर्नुहुन्छ?
+#. count in a dialog box
+#. under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} more|and {n} more	र {n} थप असफल|र {n} थप असफल
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -66,6 +71,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} download|{n} downloads	{n} वटा डाउनलोड|{n} वटा डाउनलोड
+#. count in a dialog box
+#. the summary of downloads added together (the Downloads complete window; the tip of the tray icon): {n} of them finished
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download finished|{n} downloads finished	{n} डाउनलोड पूरा भयो|{n} डाउनलोडहरू पूरा भए
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -75,6 +85,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} वटा प्रविष्टि छोडियो (लिङ्क वा फोल्डरबाहिर जाने नाम)|{n} वटा प्रविष्टि छोडियो (लिङ्क वा फोल्डरबाहिर जाने नाम)
+#. count in a dialog box
+#. the summary of downloads added together; after "12 downloads finished": {n} of them failed
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} failed|{n} failed	{n} असफल भयो|{n} असफल भए
 #. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
@@ -255,6 +270,11 @@
 #. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
 #, machine
 	about {ms} ms ({reach})	लगभग {ms} मि.से. ({reach})
+#. text in the Download video window
+#. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	about {size}	लगभग {size}
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 #, machine
@@ -1265,6 +1285,15 @@
 #, machine
 	Download complete	डाउनलोड पूरा भयो
 #. text in the Options window
+#. Options, Downloads, under "Show download complete dialog": snoozed with "Until MDM restarts"
+#, machine
+	Download complete is snoozed until MDM restarts	MDM पुन: सुरु नभएसम्म डाउनलोड पूरा भएको सूचना देखाउन रोकिएको छ
+#. text in the Options window
+#. Options, Downloads, under "Show download complete dialog": {time} when the snooze ends, like "14:30"
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Download complete is snoozed until {time}	{time} सम्म डाउनलोड पूरा भएको सूचना देखाउन रोकिएको छ
+#. text in the Options window
 #, machine
 	Download failed	डाउनलोड असफल भयो
 #. window title in a dialog box
@@ -1377,6 +1406,10 @@
 #. tab title: download settings
 #, machine
 	Downloads	डाउनलोडहरू
+#. window title in a dialog box
+#. title of the window that sums up downloads added together (a playlist, a batch) once all are done
+#, machine
+	Downloads complete	डाउनलोडहरू पूरा भए
 #. text in the tray icon's menu
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #, machine
@@ -1586,6 +1619,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Extracting...	निकाल्दै...
+#. text in a dialog box
+#. label over the list of the downloads of the group that failed
+#, machine
+	Failed:	असफल:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3552,6 +3589,10 @@
 #. label: whether the server lets a stopped download continue (Yes / No)
 #, machine
 	Resume capability	पुनः सुरु गर्ने क्षमता
+#. text in the Options window
+#. link after "Download complete is snoozed until 14:30": ends the snooze now
+#, machine
+	Resume now	अहिले फेरि देखाउनुहोस्
 #. message or event log entry in the main window
 #. event log entry, past tense: the download resumed (just now)
 #, machine
@@ -3666,7 +3707,8 @@
 #. status shown in green beside the Rename box once the new name is saved
 #, machine
 	Saved	बचत गरियो
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
+#. label over the folder the downloads were saved in
 #. label before the folder the torrent is saved in
 #, machine
 	Saved in	यसमा बचत गरियो
@@ -3857,6 +3899,10 @@
 #. checkbox in the Options window; checkbox in a download's progress window
 #, machine
 	Show download complete dialog	डाउनलोड पूरा भएपछि संवाद देखाउनुहोस्
+#. button in a dialog box
+#. button: shows these downloads in MDM's list, selected
+#, machine
+	Show in list	सूचीमा देखाउनुहोस्
 #. text in extension.rs
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
@@ -3942,6 +3988,7 @@
 #, machine
 	Size	साइज
 #. text in the Download video window
+#. the video's file size is not known
 #, machine
 	size unknown	साइज अज्ञात
 #. text in a download's Properties window
@@ -3964,6 +4011,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Slovenia	स्लोभेनिया
+#. text in a dialog box
+#. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
+#, machine
+	Snooze	स्नुज गर्नुहोस्
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5011,6 +5062,10 @@
 #. where a download's server is: an address the location table doesn't place
 #, machine
 	unknown	अज्ञात
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window until MDM is started again
+#, machine
+	Until MDM restarts	MDM पुन: सुरु नभएसम्म
 #. button in the Options window
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
@@ -5568,6 +5623,11 @@
 #. {name} = a file name; {version} = a version number (keep the braces as they are)
 #, machine
 	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} धेरै पुरानो छ: MDM लाई {oldest} वा नयाँ चाहिन्छ
+#. text in a dialog box
+#. one failed download in the summary of a group of downloads: {name} its file name, {error} why it failed
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	{name}: {error}	{name}: {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -5655,6 +5715,11 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{size} free	{size} खाली
+#. text in a dialog box
+#. under "12 downloads finished": {size} the finished files' size together, like "1.25 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} in all	जम्मा {size}
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine

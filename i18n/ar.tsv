@@ -38,6 +38,11 @@
 #, machine
 @plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	توجد {n} عملية تنزيل أخرى في قائمة الانتظار. هل تريد إلغاءها أيضا؟|توجد {n} عملية تنزيل أخرى في قائمة الانتظار. هل تريد إلغاءها أيضا؟|توجد {n} عمليتا تنزيل أخريان في قائمة الانتظار. هل تريد إلغاءهما أيضا؟|توجد {n} عمليتا تنزيل أخريان في قائمة الانتظار. هل تريد إلغاءهما أيضا؟|توجد {n} عمليات تنزيل أخرى في قائمة الانتظار. هل تريد إلغاءها أيضا؟|توجد {n} عملية تنزيل أخرى في قائمة الانتظار. هل تريد إلغاءها أيضا؟
 #. count in a dialog box
+#. under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} more|and {n} more	و{n} تنزيل آخر|و{n} تنزيل آخر|و{n} تنزيلان آخران|و{n} تنزيلات أخرى|و{n} تنزيلا آخر|و{n} تنزيل آخر
+#. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
 @plural	and {n} other file|and {n} other files	و{n} ملف آخر|و{n} ملف آخر|و{n} ملفان آخران|و{n} ملفات أخرى|و{n} ملفا آخر|و{n} ملف آخر
@@ -54,6 +59,11 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 @plural	{n} download|{n} downloads	{n} تنزيل|{n} تنزيل|{n} تنزيلان|{n} تنزيلات|{n} تنزيلا|{n} تنزيل
+#. count in a dialog box
+#. the summary of downloads added together (the Downloads complete window; the tip of the tray icon): {n} of them finished
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download finished|{n} downloads finished	اكتمل {n} تنزيل|اكتمل {n} تنزيل|اكتمل {n} تنزيلان|اكتملت {n} تنزيلات|اكتمل {n} تنزيلا|اكتمل {n} تنزيل
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 @plural	{n} downloading|{n} downloading	{n} قيد التنزيل|{n} قيد التنزيل|{n} قيد التنزيل|{n} قيد التنزيل|{n} قيد التنزيل|{n} قيد التنزيل
@@ -61,6 +71,11 @@
 #. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
 #. {n} = a number (keep the braces as they are)
 @plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	تم تخطي {n} عنصر (ارتباط، أو اسم يؤدي إلى خارج المجلد)|تم تخطي {n} عنصر (ارتباط، أو اسم يؤدي إلى خارج المجلد)|تم تخطي {n} عنصرين (ارتباطان، أو اسمان يؤديان إلى خارج المجلد)|تم تخطي {n} عناصر (ارتباطات، أو أسماء تؤدي إلى خارج المجلد)|تم تخطي {n} عنصرا (ارتباطات، أو أسماء تؤدي إلى خارج المجلد)|تم تخطي {n} عنصر (ارتباطات، أو أسماء تؤدي إلى خارج المجلد)
+#. count in a dialog box
+#. the summary of downloads added together; after "12 downloads finished": {n} of them failed
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} failed|{n} failed	فشل {n} تنزيل|فشل {n} تنزيل|فشل {n} تنزيلان|فشلت {n} تنزيلات|فشل {n} تنزيلا|فشل {n} تنزيل
 #. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
@@ -204,6 +219,11 @@
 #. text in whereis.rs
 #. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
 	about {ms} ms ({reach})	حوالي {ms} مللي ثانية ({reach})
+#. text in the Download video window
+#. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	about {size}	حوالي {size}
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 	Accept incoming connections	قبول الاتصالات الواردة
@@ -967,6 +987,15 @@
 #. window title in a dialog box; text in a dialog box; text in the Options window
 	Download complete	اكتمل التنزيل
 #. text in the Options window
+#. Options, Downloads, under "Show download complete dialog": snoozed with "Until MDM restarts"
+#, machine
+	Download complete is snoozed until MDM restarts	تم تأجيل اكتمال التنزيل حتى إعادة تشغيل MDM
+#. text in the Options window
+#. Options, Downloads, under "Show download complete dialog": {time} when the snooze ends, like "14:30"
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Download complete is snoozed until {time}	تم تأجيل اكتمال التنزيل حتى {time}
+#. text in the Options window
 	Download failed	فشل التنزيل
 #. window title in a dialog box
 	Download File Info	معلومات ملف التنزيل
@@ -1051,6 +1080,10 @@
 #. text in the download list; text in the Options window
 #. tab title: download settings
 	Downloads	التنزيلات
+#. window title in a dialog box
+#. title of the window that sums up downloads added together (a playlist, a batch) once all are done
+#, machine
+	Downloads complete	اكتملت التنزيلات
 #. text in the tray icon's menu
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 	Downloads in progress	التنزيلات الجارية
@@ -1208,6 +1241,10 @@
 #. a download's status: its archive is being extracted (#37)
 #. the trailing ... means it is still going on: keep it
 	Extracting...	قيد الاستخراج...
+#. text in a dialog box
+#. label over the list of the downloads of the group that failed
+#, machine
+	Failed:	فشل:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Falkland Islands	جزر فوكلاند
@@ -1309,6 +1346,18 @@
 	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	يحتفظ FLAC بالصوت تماما، ولكنه لا يمكنه إضافة جودة لا يمتلكها صوت الموقع: الملف أكبر فقط.
 #. text in categories.rs
 	Folder:	المجلد:
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 1 hour	لمدة ساعة واحدة
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 30 minutes	لمدة 30 دقيقة
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 8 hours	لمدة 8 ساعات
 #. text in the Batch download window
 #. {address} = an example web address with a * in the file name
 	For example:  {address}	على سبيل المثال: {address}
@@ -2704,6 +2753,10 @@
 #. text in a download's progress window
 #. label: whether the server lets a stopped download continue (Yes / No)
 	Resume capability	إمكانية المتابعة
+#. text in the Options window
+#. link after "Download complete is snoozed until 14:30": ends the snooze now
+#, machine
+	Resume now	متابعة الآن
 #. message or event log entry in the main window
 #. event log entry, past tense: the download resumed (just now)
 	Resumed	تمت المتابعة
@@ -2791,7 +2844,8 @@
 #. status shown in green beside the Rename box once the new name is saved
 #, machine
 	Saved	تم الحفظ
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
+#. label over the folder the downloads were saved in
 #. label before the folder the torrent is saved in
 	Saved in	محفوظ في
 #. tab in the Scheduler window
@@ -2933,6 +2987,10 @@
 	Show details >>	إظهار التفاصيل >>
 #. checkbox in the Options window; checkbox in a download's progress window
 	Show download complete dialog	إظهار مربع حوار اكتمال التنزيل
+#. button in a dialog box
+#. button: shows these downloads in MDM's list, selected
+#, machine
+	Show in list	إظهار في القائمة
 #. text in extension.rs
 #. button in the browser extension's window: open the tutorial that adds the extension
 	Show me how	أرني كيف
@@ -2995,6 +3053,7 @@
 #. column title: file size
 	Size	الحجم
 #. text in the Download video window
+#. the video's file size is not known
 	size unknown	الحجم غير معروف
 #. text in a download's Properties window
 	Size:	الحجم:
@@ -3011,6 +3070,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Slovenia	سلوفينيا
+#. text in a dialog box
+#. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
+#, machine
+	Snooze	تأجيل
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Solomon Islands	جزر سليمان
@@ -3817,6 +3880,10 @@
 #. where a download's server is: not known (no address seen)
 #. where a download's server is: an address the location table doesn't place
 	unknown	غير معروف
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window until MDM is started again
+#, machine
+	Until MDM restarts	حتى إعادة تشغيل MDM
 #. button in the Options window
 #. button (short): move the account up the list (accounts are asked in the list's order)
 	Up	لأعلى
@@ -4253,6 +4320,11 @@
 #. {name} = a file name; {version} = a version number (keep the braces as they are)
 #, machine
 	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} قديم جدا: يحتاج MDM إلى {oldest} أو أحدث
+#. text in a dialog box
+#. one failed download in the summary of a group of downloads: {name} its file name, {error} why it failed
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	{name}: {error}	{name}: {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -4319,6 +4391,11 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{size} free	{size} مجانا
+#. text in a dialog box
+#. under "12 downloads finished": {size} the finished files' size together, like "1.25 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} in all	{size} في المجموع
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 	{size} is too big for this {file_system} drive (files up to 4 GB)	{size} كبير جدا للقرص {file_system} هذا (الملفات حتى 4 غيغابايت)

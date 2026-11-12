@@ -42,8 +42,10 @@ Already have yt-dlp or ffmpeg for another program? Use those instead of a second
 
 ## Choose the quality
 
-1. Wait for the list. It shows each resolution with its size, best first, then the sound alone:
-   - **Audio only, original**: the site's own file, not converted (M4A, or WebM with Opus inside, as the site serves it). The best sound there is, in the smallest file.
+1. Wait for the list. It shows each quality with its size, best first, then the sound alone:
+   - A video's line says its resolution, its codec, its frame rate and whether it is HDR: `2160p · AV1 · 60 fps · HDR`. A resolution that comes in several (AV1, VP9 and H.264, HDR and SDR) has a line for each: AV1 makes the smallest file, H.264 plays on the most devices, and an HDR video looks washed out on a screen without HDR. `SDR` is said only beside an HDR line of the same resolution.
+   - The size is that of exactly what downloads, the video and its sound. A size with `~` before it (`~532 MB`) is only an estimate: the site didn't say the size, so it comes from the stream's bitrate and length.
+   - **Audio only, original**: the site's own file, not converted, once for each type the site has it in (WebM with Opus inside, M4A), the best first. The best sound there is, in the smallest file.
    - **Audio only MP3** at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3.
    - **Audio only OPUS**: an `.opus` file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost.
    - **Audio only FLAC**: a lossless `.flac` file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.

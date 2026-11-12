@@ -224,6 +224,11 @@ pub struct OptionsDialog {
     /// Downloads → User-Agent → Automatic (#668): the default browser's, the box then shows it;
     /// unticked, the box's own text (empty is automatic again when the window opens next).
     ua_auto: bool,
+    /// Download complete snoozed (#741), as the app has it now (set before each frame): the
+    /// Downloads page says until when, with Resume now.
+    pub snoozed_until: Option<crate::finish::Until>,
+    /// Resume now was clicked: the app ends the snooze (at once, not on OK).
+    pub resume_snooze: bool,
 }
 
 impl OptionsDialog {
@@ -301,6 +306,8 @@ impl OptionsDialog {
             device_rows: Default::default(),
             cookie_browser: cookie_browser_at(settings),
             ua_auto: settings.own_user_agent().is_none(),
+            snoozed_until: None,
+            resume_snooze: false,
         }
     }
 
@@ -1047,13 +1054,22 @@ impl OptionsDialog {
             "Show download complete dialog",
             true,
         );
-        text(
-            &p,
-            o.x + 31.0,
-            o.y + 191.0,
-            crate::i18n::t("Note: These settings don't relate to queue processing"),
-            LIGHT_TEXT(),
-        );
+        // Download complete snoozed (#741): until when, and Resume now, in the note's place
+        // while it lasts (the note comes back after).
+        if let Some(until) = self.snoozed_until {
+            if snooze_line(ui, &p, o, until) {
+                self.resume_snooze = true;
+                ui.ctx().request_repaint();
+            }
+        } else {
+            text(
+                &p,
+                o.x + 31.0,
+                o.y + 191.0,
+                crate::i18n::t("Note: These settings don't relate to queue processing"),
+                LIGHT_TEXT(),
+            );
+        }
         winui::etched_h(&p, o.x + 21.0, o.y + 198.0, 381.0);
         winui::checkbox_light(
             ui,
@@ -4640,6 +4656,47 @@ fn kept_text(kept: crate::secrets::Kept) -> Option<&'static str> {
             "No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.",
         ),
     })
+}
+
+/// "Download complete is snoozed until 14:30 · Resume now" (Options, Downloads, #741), on the
+/// note's row under "Show download complete dialog". True when Resume now is clicked.
+fn snooze_line(ui: &mut Ui, p: &egui::Painter, o: Pos2, until: crate::finish::Until) -> bool {
+    let line = match until {
+        crate::finish::Until::At(t) => {
+            use chrono::Timelike;
+            let at = crate::clock::local_at(t)
+                .map(|t| crate::regional::clock_time(t.hour(), t.minute()))
+                .unwrap_or_default();
+            crate::i18n::fmt(
+                // i18n: Options, Downloads, under "Show download complete dialog": {time} when the snooze ends, like "14:30"
+                crate::i18n::t("Download complete is snoozed until {time}"),
+                &[("time", &crate::i18n::ltr(&at))],
+            )
+        }
+        crate::finish::Until::Restart => {
+            // i18n: Options, Downloads, under "Show download complete dialog": snoozed with "Until MDM restarts"
+            crate::i18n::t("Download complete is snoozed until MDM restarts").to_owned()
+        }
+    };
+    // i18n: link after "Download complete is snoozed until 14:30": ends the snooze now
+    let resume = crate::i18n::mark("Resume now");
+    let link_w = winui::text_width(p, crate::i18n::t(resume));
+    // The link keeps its room; the sentence gives way ("...", whole on hover).
+    let right = 402.0 - link_w - 14.0;
+    let (rc, cut) = winui::text_fit(p, o.x + 31.0, o.y + 191.0, &line, LIGHT_TEXT(), o.x + right);
+    if cut {
+        winui::full_on_hover(ui, rc, "snooze-line", &line);
+    }
+    let after = 31.0 + rc.width() + 6.0;
+    let dot = winui::separator_dot(p, o.x + after, o.y + 191.0, winui::MUTED());
+    winui::link(
+        ui,
+        p,
+        o.x + after + dot.width() + 5.0,
+        o.y + 191.0,
+        resume,
+        "snooze-resume",
+    )
 }
 
 #[cfg(test)]

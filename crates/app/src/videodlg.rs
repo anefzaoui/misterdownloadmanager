@@ -268,11 +268,18 @@ impl VideoDialog {
     /// A looked-up video with subtitles in four languages, without yt-dlp or the network
     /// (`/show video-subs`: the window's check in every language, its screenshots).
     pub fn show_sample(&mut self) {
+        // Its 4K in AV1 and VP9, HDR and SDR, each its own line (#755); 720p sized only
+        // about (#801).
         const SAMPLE: &str = r#"{"title": "A conference talk about download managers, recorded in Lisbon",
             "duration": 1830, "language": "en", "formats": [
-            {"format_id": "140", "ext": "m4a", "vcodec": "none", "acodec": "mp4a", "filesize": 29000000},
-            {"format_id": "18", "ext": "mp4", "height": 360, "vcodec": "avc1", "acodec": "mp4a", "filesize": 61000000},
-            {"format_id": "137", "ext": "mp4", "height": 1080, "vcodec": "avc1", "acodec": "none", "filesize": 412000000}],
+            {"format_id": "140", "ext": "m4a", "vcodec": "none", "acodec": "mp4a.40.2", "quality": 3, "tbr": 129.5, "filesize": 29600000},
+            {"format_id": "251", "ext": "webm", "vcodec": "none", "acodec": "opus", "quality": 3, "tbr": 121.8, "filesize": 27900000},
+            {"format_id": "18", "ext": "mp4", "height": 360, "fps": 30, "vcodec": "avc1.42001E", "acodec": "mp4a.40.2", "filesize": 61000000},
+            {"format_id": "701", "ext": "mp4", "height": 2160, "fps": 60, "vcodec": "av01.0.13M.10", "acodec": "none", "dynamic_range": "HDR10", "filesize": 1951000000},
+            {"format_id": "337", "ext": "webm", "height": 2160, "fps": 60, "vcodec": "vp09.02.51.10", "acodec": "none", "dynamic_range": "HDR10", "filesize": 2248000000},
+            {"format_id": "315", "ext": "webm", "height": 2160, "fps": 60, "vcodec": "vp9", "acodec": "none", "dynamic_range": "SDR", "filesize": 1870000000},
+            {"format_id": "299", "ext": "mp4", "height": 1080, "fps": 60, "vcodec": "avc1.64002A", "acodec": "none", "dynamic_range": "SDR", "filesize": 412000000},
+            {"format_id": "136", "ext": "mp4", "height": 720, "fps": 30, "vcodec": "avc1.4D401F", "acodec": "none", "dynamic_range": "SDR", "filesize_approx": 201000000}],
             "subtitles": {"de": [{"name": "German"}], "pt-PT": [{"name": "Portuguese (Portugal)"}],
                 "ar": [{"name": "Arabic"}]},
             "automatic_captions": {"en-orig": [{"name": "English (Original)"}], "en": [{"name": "English"}]}}"#;
@@ -800,8 +807,9 @@ impl VideoDialog {
                 &mut self.rows,
                 |ui, clip, i, row, look| {
                     let c = &choices[i];
-                    // The icon of the file this choice gives, then the format ("1080p mp4, 60
-                    // fps", left to right); its size at the trailing edge.
+                    // The icon of the file this choice gives, then the format ("2160p · VP9 ·
+                    // 60 fps · HDR", left to right); its size at the trailing edge: exactly
+                    // that of the streams it downloads, or "~" before an estimate (#801).
                     let file = format!("video.{}", c.ext);
                     let kind = crate::fileicons::Kind::File(&file);
                     crate::fileicons::paint_at(
@@ -814,16 +822,10 @@ impl VideoDialog {
                     let label = choice_label(&c.label);
                     let x = row.left() + 4.0 + crate::fileicons::INDENT;
                     text(clip, x, row.top() + 12.0, &label, look.ink);
-                    let size = c
-                        .size
-                        // i18n: the video's file size is not known
-                        .map_or(
-                            crate::i18n::t("size unknown").into(),
-                            crate::dialogs::dialog_size,
-                        );
+                    let (size, said) = choice_size(c);
                     // Read as the format and its size (#95: the choices were blank to a screen reader
                     // and alike to UI Automation), in the user's language, as drawn.
-                    look.name = format!("{label}, {size}");
+                    look.name = format!("{label}, {said}");
                     winui::text_right(clip, row.right() - 6.0, row.top() + 12.0, &size, look.ink);
                 },
             );
@@ -1405,6 +1407,28 @@ pub(crate) fn lookup_error(
         return e.to_owned();
     };
     crate::i18n::t(plain).to_owned()
+}
+
+/// A choice's size as its line shows it, and as a screen reader says it: the bytes of the
+/// streams it downloads, or an estimate marked as one ("~532 MB", "about 532 MB"; #801).
+pub(crate) fn choice_size(c: &Choice) -> (String, String) {
+    let Some(bytes) = c.size else {
+        // i18n: the video's file size is not known
+        let unknown = crate::i18n::t("size unknown").to_owned();
+        return (unknown.clone(), unknown);
+    };
+    let size = crate::dialogs::dialog_size(bytes);
+    if !c.approx {
+        return (size.clone(), size);
+    }
+    (
+        crate::i18n::ltr(&format!("~{size}")),
+        crate::i18n::fmt(
+            // i18n: a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
+            crate::i18n::t("about {size}"),
+            &[("size", &size)],
+        ),
+    )
 }
 
 /// A choice's label in the user's language: the audio choice's words translated, the rest (a
