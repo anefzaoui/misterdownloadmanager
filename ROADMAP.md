@@ -556,6 +556,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ No freeze of the window on **Tasks → Import** of a large file, or of one that isn't a list
+  (a video, an archive, another program's backup): it is read beside the window, the status strip
+  says "Reading …", a file over 64 MB is refused with a message, and Link grabber takes 10,000
+  links at once ([#805](https://github.com/anefzaoui/misterdownloadmanager/issues/805))
 - ✅ WinGet in the install steps: the README, the help and the website's download page give
   `winget install AhmedNefzaoui.MisterDownloadManager` and `winget upgrade`
   ([#798](https://github.com/anefzaoui/misterdownloadmanager/issues/798))

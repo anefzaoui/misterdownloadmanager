@@ -3438,6 +3438,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	ടോറന്റ് വായിക്കുന്നു...
+#. message or event log entry in the main window
+#. the status strip while Tasks → Import reads a file; {file} is its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading {file}...	ഫയൽ {file} വായിക്കുന്നു...
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	ഒരു പേജ് വായിക്കുകയും YouTube, Vimeo, ആയിരത്തിലധികം മറ്റ് സൈറ്റുകൾ എന്നിവയിൽ നിന്ന് 4K വരെ സൈറ്റ് വാഗ്ദാനം ചെയ്യുന്ന എല്ലാ ഗുണനിലവാരവും ലിസ്റ്റ് ചെയ്യുകയും ചെയ്യുന്നു.
@@ -5369,7 +5374,7 @@
 #, machine
 	yt-dlp downloads it itself: a live stream	yt-dlp തന്നെയാണ് ഇത് ഡൗൺലോഡ് ചെയ്യുന്നത്: തത്സമയ സ്ട്രീം
 #. text in a download's progress window
-#. progress window, a video's line: a stream sent in many small pieces (HLS, DASH), which the helper program yt-dlp downloads itself for now
+#. progress window, a video's line: a stream sent in many small pieces of a rare kind (Adobe HDS, Smooth Streaming), which the helper program yt-dlp downloads itself
 #, machine
 	yt-dlp downloads it itself: a stream in pieces	yt-dlp തന്നെയാണ് ഇത് ഡൗൺലോഡ് ചെയ്യുന്നത്: കഷണങ്ങളായുള്ള സ്ട്രീം
 #. text in a download's progress window
@@ -5481,6 +5486,11 @@
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} സംരക്ഷിച്ച സ്ഥലത്ത് ഇപ്പോൾ ഇല്ല (മാറ്റുകയോ ഇല്ലാതാക്കുകയോ ചെയ്തു). വലത്-ക്ലിക്ക് മെനുവിലെ വീണ്ടും ഡൗൺലോഡ് ചെയ്യുക എന്ന ഓപ്ഷൻ ഉപയോഗിച്ച് അത് വീണ്ടും ഡൗൺലോഡ് ചെയ്യാം.
+#. message or event log entry in the main window
+#. Import refused a file; {size} = its size and {limit} = the largest Import reads, like "4.50 GB" and "64.00 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} ഒരു വിലാസങ്ങളുടെ ലിസ്റ്റ് ആകാൻ കഴിയാത്തത്ര വലുതാണ് ({size}). ടെക്സ്റ്റ് ഫയലുകൾ, വെബ് പേജുകൾ, .ef2 എക്സ്പോർട്ടുകൾ എന്നിവ {limit} വരെ ഇറക്കുമതി ചെയ്യാം.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5731,9 +5741,18 @@ column	Upload speed	അപ്‌ലോഡ് വേഗത
 #, machine
 extension	A list of videos: choose them in Mister Download Manager	വീഡിയോകളുടെ ഒരു പട്ടിക: അവ Mister Download Manager-ൽ തിരഞ്ഞെടുക്കുക
 #. text in the browser extension
+#. on the download button (green) over a video after the app added and started the download; a quality may follow ('· 1080p') and a 'Show' button; MDM is the app's short name, keep it; short
+#, machine
+extension	Added to MDM	MDM-ലേക്ക് ചേർത്തു
+#. text in the browser extension
 #. shown briefly on the download button over a video after a quality was picked: the download was added to the app's download queue, to start later
 #, machine
 extension	Added to the queue	ക്യൂവിലേക്ക് ചേർത്തു
+#. text in the browser extension
+#. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	All qualities and subtitles...	എല്ലാ ഗുണനിലവാരങ്ങളും സബ്ടൈറ്റിലുകളും...
 #. text in the browser extension
 #. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
 #, machine
@@ -5743,6 +5762,10 @@ extension	Another Mister Download Manager (a server)	മറ്റൊരു Miste
 #, machine
 extension	Audio	ഓഡിയോ
 #. text in the browser extension
+#. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
+#, machine
+extension	best	മികച്ചത്
+#. text in the browser extension
 #. the name this browser gets in the other MDM's list of paired devices
 #, machine
 extension	Browser extension	ബ്രൗസർ എക്സ്റ്റൻഷൻ
@@ -5751,6 +5774,10 @@ extension	Browser extension	ബ്രൗസർ എക്സ്റ്റൻഷൻ
 #. the trailing ... means it is still going on: keep it
 #, machine
 extension	Button settings...	ബട്ടൺ ക്രമീകരണങ്ങൾ...
+#. text in the browser extension
+#. on the download button over a copy-protected video, after 'Protected video ·': it can't be downloaded; short, lower case
+#, machine
+extension	can't be saved	സംരക്ഷിക്കാൻ കഴിയില്ല
 #. text in the browser extension
 #. shown briefly on the download button when nothing on the page says which video the player is playing, so nothing was sent
 #, machine
@@ -5777,9 +5804,17 @@ extension	Download	ഡൗൺലോഡ് ചെയ്യുക
 #, machine
 extension	Download all links with Mister Download Manager	Mister Download Manager ഉപയോഗിച്ച് എല്ലാ ലിങ്കുകളും ഡൗൺലോഡ് ചെയ്യുക
 #. text in the browser extension
+#. first line of the list under the download button over a video: downloads the best quality at once; the quality, its file type and size follow on the same line; short
+#, machine
+extension	Download best	മികച്ചത് ഡൗൺലോഡ് ചെയ്യുക
+#. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 #, machine
 extension	Download selected links with Mister Download Manager	Mister Download Manager ഉപയോഗിച്ച് തിരഞ്ഞെടുത്ത ലിങ്കുകൾ ഡൗൺലോഡ് ചെയ്യുക
+#. text in the browser extension
+#. first line of the tooltip of the download button over a video while the app is still finding its qualities
+#, machine
+extension	Download the best quality	മികച്ച ഗുണനിലവാരം ഡൗൺലോഡ് ചെയ്യുക
 #. text in the browser extension
 #. the button over a video on a web page that downloads it; verb; short (it sits on the video)
 #, machine
@@ -5788,6 +5823,10 @@ extension	Download video	വീഡിയോ ഡൗൺലോഡ് ചെയ്�
 #. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
 #, machine
 extension	Download with Mister Download Manager	Mister Download Manager ഉപയോഗിച്ച് ഡൗൺലോഡ് ചെയ്യുക
+#. text in the browser extension
+#. first line of the tooltip of the download button over a video: what one click downloads; $what$ is a quality, a file type and a size, e.g. '1080p MP4 · 412 MB'
+#, machine
+extension	Download {what}	{what} ഡൗൺലോഡ് ചെയ്യുക
 #. text in the browser extension
 #. shown in the toolbar button's popup after the site was excluded
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -5798,13 +5837,17 @@ extension	Downloads from {site} stay with the browser	{site} എന്നതി�
 #, machine
 extension	Downloads go to {address}	ഡൗൺലോഡുകൾ {address} എന്നതിലേക്ക് പോകുന്നു
 #. text in the browser extension
-#. tooltip of the download button over a video: it can be dragged to another place on the video's edge
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
 #, machine
-extension	Drag to move it along the video's edge	വീഡിയോയുടെ അരികിലൂടെ നീക്കാൻ വലിച്ചിടുക
+extension	Drag the dots to move it along the edge	അരികിലൂടെ നീക്കാൻ ഡോട്ടുകൾ വലിച്ചിടുക
 #. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
 extension	Enter its https:// address.	അതിൻ്റെ https:// വിലാസം നൽകുക.
+#. text in the browser extension
+#. button on the download button over a video when the app didn't answer: opens the app's download page; MDM is the app's short name, keep it; very short
+#, machine
+extension	Get MDM	MDM നേടുക
 #. text in the browser extension
 #. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
 #, machine
@@ -5866,6 +5909,10 @@ extension	Looking up the qualities…	ക്വാളിറ്റികൾ ത�
 #. in the menu under the download button over a video: the app took more than a minute to find the video's qualities, so the menu stopped waiting
 #, machine
 extension	Looking up took too long	തിരയാൻ വളരെയധികം സമയമെടുത്തു
+#. text in the browser extension
+#. on the download button (red) over a video when the app isn't installed or didn't start; 'Get MDM' and 'Retry' buttons follow; MDM is the app's short name, keep it; short
+#, machine
+extension	MDM didn't answer	MDM പ്രതികരിച്ചില്ല
 #. text in the browser extension
 #. heading in the toolbar button's popup over the list of the videos, sounds and streams the current web page has loaded
 #, machine
@@ -5933,9 +5980,9 @@ extension	No video to download here	ഇവിടെ ഡൗൺലോഡ് ചെ
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	എത്തിച്ചേർന്നില്ല. ഈ ബ്രൗസറിൽ അതിൻ്റെ വിലാസം ഒരിക്കൽ തുറന്ന് അതിൻ്റെ സർട്ടിഫിക്കറ്റ് സ്വീകരിക്കുക, തുടർന്ന് വീണ്ടും ശ്രമിക്കുക.
 #. text in the browser extension
-#. last command of the menu of qualities under the download button over a video: opens the app's Download video window for this video instead; keep the name Mister Download Manager as it is
+#. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
 #, machine
-extension	Open in Mister Download Manager…	Mister Download Manager-ൽ തുറക്കുക…
+extension	Off on this site	ഈ സൈറ്റിൽ ഓഫ് ആണ്
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -5949,14 +5996,22 @@ extension	Open its address once and accept its certificate, then enter a code fr
 #, machine
 extension	Open Mister Download Manager	Mister Download Manager തുറക്കുക
 #. text in the browser extension
-#. shown briefly on the download button over a video in a feed (a social site's home page, a timeline) when nothing in the feed gives that video's own address, so nothing was sent: the user should open the post the video belongs to and click the button on that page; short
+#. button on the download button over a video in a feed: opens the post the video belongs to in a new tab; verb; very short
 #, machine
-extension	Open the post, then use the button there	പോസ്റ്റ് തുറക്കുക, എന്നിട്ട് അവിടെയുള്ള ബട്ടൺ ഉപയോഗിക്കുക
+extension	Open post	പോസ്റ്റ് തുറക്കുക
+#. text in the browser extension
+#. on the download button (amber) over a video in a feed (a social site's home page, a timeline) that can't be downloaded from there: the user should open the post the video belongs to; short
+#, machine
+extension	Open the post to download it	ഡൗൺലോഡ് ചെയ്യാൻ പോസ്റ്റ് തുറക്കുക
 #. text in the browser extension
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it
 #, machine
 extension	Options...	ഓപ്ഷനുകൾ...
+#. text in the browser extension
+#. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
+#, machine
+extension	original	ഒറിജിനൽ
 #. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
@@ -5978,9 +6033,13 @@ extension	Prefix media file names with the page title	മീഡിയ ഫയല�
 #, machine
 extension	Protected	പരിരക്ഷിതം
 #. text in the browser extension
-#. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
+#. on the download button over a copy-protected (DRM) video, which no tool can download; 'can't be saved' follows it after a dot; short
 #, machine
-extension	Protected video: it can't be saved	പരിരക്ഷിത വീഡിയോ: സംരക്ഷിക്കാനാവില്ല
+extension	Protected video	സംരക്ഷിത വീഡിയോ
+#. text in the browser extension
+#. button on the download button over a video when the app didn't answer: try again; verb; very short
+#, machine
+extension	Retry	വീണ്ടും ശ്രമിക്കുക
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
@@ -5990,9 +6049,18 @@ extension	Send downloads through this browser's proxy or VPN extension	ഈ ബ�
 #, machine
 extension	Send downloads to	ഡൗൺലോഡുകൾ ഇതിലേക്ക് അയയ്ക്കുക
 #. text in the browser extension
+#. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Sending to MDM...	MDM-ലേക്ക് അയക്കുന്നു...
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Mister Download Manager ലേക്ക് അയച്ചു
+#. text in the browser extension
+#. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
+#, machine
+extension	Show	കാണിക്കുക
 #. text in the browser extension
 #. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
 #, machine
@@ -6009,10 +6077,6 @@ extension	The Chrome Web Store's rules keep this copy of the add-on away from th
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
 extension	The connection to Mister Download Manager failed	Mister Download Manager ലേക്കുള്ള കണക്ഷൻ പരാജയപ്പെട്ടു
-#. text in the browser extension
-#. shown briefly on the download button over a video when the app's settings keep the button off on this web site
-#, machine
-extension	The download button is off on this site	ഈ സൈറ്റിൽ ഡൗൺലോഡ് ബട്ടൺ ഓഫാണ്
 #. text in the browser extension
 #. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
 #, machine
@@ -6037,6 +6101,10 @@ extension	This download's details were too large to hand over	ഈ ഡൗൺല�
 #. in the toolbar button's popup, when the page's player plays from a stream built in the page (a blob:): the list of the page's media has nothing to show; Download video is the name of the button over videos
 #, machine
 extension	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.	ഈ പേജിലെ പ്ലെയർ വീഡിയോ കഷണങ്ങളായി സ്ട്രീം ചെയ്യുന്നു, അതിനാൽ പട്ടികയിൽ കാണിക്കാൻ ഫയൽ ഒന്നുമില്ല. വീഡിയോയിലേക്ക് പോയിന്റ് ചെയ്ത് അതിന്റെ «വീഡിയോ ഡൗൺലോഡ് ചെയ്യുക» ബട്ടൺ ഉപയോഗിക്കുക.
+#. text in the browser extension
+#. button on the download button over a video when it is off on this web site: turns it on again here; verb; very short
+#, machine
+extension	Turn on	ഓൺ ചെയ്യുക
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
@@ -6810,85 +6878,3 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/സെക്കൻഡ്
-#. text in the browser extension
-#. on the download button (green) over a video after the app added and started the download; a quality may follow ('· 1080p') and a 'Show' button; MDM is the app's short name, keep it; short
-#, machine
-extension	Added to MDM	MDM-ലേക്ക് ചേർത്തു
-#. text in the browser extension
-#. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
-#. the trailing ... means it is still going on: keep it
-#, machine
-extension	All qualities and subtitles...	എല്ലാ ഗുണനിലവാരങ്ങളും സബ്ടൈറ്റിലുകളും...
-#. text in the browser extension
-#. first row of the menu of the download button over a video while the app is still finding its qualities: downloads the best one as soon as it is known; short
-#, machine
-extension	Best quality	മികച്ച ഗുണനിലവാരം
-#. text in the browser extension
-#. first line of the tooltip of the download button over a video while the app is still finding its qualities
-#, machine
-extension	Download the best quality	മികച്ച ഗുണനിലവാരം ഡൗൺലോഡ് ചെയ്യുക
-#. text in the browser extension
-#. first line of the tooltip of the download button over a video: what one click downloads; $what$ is a quality, a file type and a size, e.g. '1080p MP4 · 412 MB'
-#, machine
-extension	Download {what}	{what} ഡൗൺലോഡ് ചെയ്യുക
-#. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
-#, machine
-extension	Drag the dots to move it along the edge	അരികിലൂടെ നീക്കാൻ ഡോട്ടുകൾ വലിച്ചിടുക
-#. text in the browser extension
-#. button on the download button over a video when the app didn't answer: opens the app's download page; MDM is the app's short name, keep it; very short
-#, machine
-extension	Get MDM	MDM നേടുക
-#. text in the browser extension
-#. on the download button (red) over a video when the app isn't installed or didn't start; 'Get MDM' and 'Retry' buttons follow; MDM is the app's short name, keep it; short
-#, machine
-extension	MDM didn't answer	MDM പ്രതികരിച്ചില്ല
-#. text in the browser extension
-#. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
-#, machine
-extension	Off on this site	ഈ സൈറ്റിൽ ഓഫ് ആണ്
-#. text in the browser extension
-#. button on the download button over a video in a feed: opens the post the video belongs to in a new tab; verb; very short
-#, machine
-extension	Open post	പോസ്റ്റ് തുറക്കുക
-#. text in the browser extension
-#. on the download button (amber) over a video in a feed (a social site's home page, a timeline) that can't be downloaded from there: the user should open the post the video belongs to; short
-#, machine
-extension	Open the post to download it	ഡൗൺലോഡ് ചെയ്യാൻ പോസ്റ്റ് തുറക്കുക
-#. text in the browser extension
-#. on the download button over a copy-protected (DRM) video, which no tool can download; 'can't be saved' follows it after a dot; short
-#, machine
-extension	Protected video	സംരക്ഷിത വീഡിയോ
-#. text in the browser extension
-#. button on the download button over a video when the app didn't answer: try again; verb; very short
-#, machine
-extension	Retry	വീണ്ടും ശ്രമിക്കുക
-#. text in the browser extension
-#. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
-#. the trailing ... means it is still going on: keep it
-#, machine
-extension	Sending to MDM...	MDM-ലേക്ക് അയക്കുന്നു...
-#. text in the browser extension
-#. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
-#, machine
-extension	Show	കാണിക്കുക
-#. text in the browser extension
-#. button on the download button over a video when it is off on this web site: turns it on again here; verb; very short
-#, machine
-extension	Turn on	ഓൺ ചെയ്യുക
-#. text in the browser extension
-#. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
-#, machine
-extension	best	മികച്ചത്
-#. text in the browser extension
-#. on the download button over a copy-protected video, after 'Protected video ·': it can't be downloaded; short, lower case
-#, machine
-extension	can't be saved	സംരക്ഷിക്കാൻ കഴിയില്ല
-#. text in the browser extension
-#. first line of the list under the download button over a video: downloads the best quality at once; the quality, its file type and size follow on the same line; short
-#, machine
-extension	Download best	മികച്ചത് ഡൗൺലോഡ് ചെയ്യുക
-#. text in the browser extension
-#. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
-#, machine
-extension	original	ഒറിജിനൽ
