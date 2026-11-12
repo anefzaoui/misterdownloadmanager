@@ -17,13 +17,14 @@ Every version is on the [Releases](https://github.com/anefzaoui/misterdownloadma
 
 ### With WinGet
 
-MDM is also in [WinGet](https://learn.microsoft.com/windows/package-manager/winget/), Windows' package manager. In a terminal:
+MDM is also in [WinGet](https://learn.microsoft.com/windows/package-manager/winget/), Windows' package manager. In a terminal, the first line installs MDM and the second updates it to the latest version:
 
 ```
 winget install AhmedNefzaoui.MisterDownloadManager
+winget upgrade AhmedNefzaoui.MisterDownloadManager
 ```
 
-It downloads the setup and installs MDM without the setup's questions. `winget upgrade AhmedNefzaoui.MisterDownloadManager` updates it to the latest version.
+WinGet downloads the setup and installs MDM without the setup's questions.
 
 ### On Linux
 
@@ -132,7 +133,7 @@ Browser integration is set up by MDM itself at each start (the browsers installe
    - **Create a desktop shortcut** (off unless you tick it)
 5. Click **Install**, then **Finish** to start MDM.
 
-If MDM is already running, the setup asks it to save and close first. To update, use **Help → Check for updates → Update now**, or run the setup of the new version (or `winget upgrade AhmedNefzaoui.MisterDownloadManager`); your list and settings stay.
+If MDM is already running, the setup asks it to save and close first. To update, use **Help → Check for updates → Update now**, or run the setup of the new version (or update with [WinGet](#with-winget)); your list and settings stay.
 
 Browser integration needs one more step in each browser: adding the extension. In Firefox, click **Add to Firefox** on [its page on addons.mozilla.org](https://addons.mozilla.org/firefox/addon/mister-download-manager/); in Chrome, Edge, Brave, Opera and Vivaldi, **Add to Chrome** on [its page in the Chrome Web Store](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp). [Browser integration](browser-integration.md) shows how.
 

@@ -113,13 +113,12 @@ one:
 > code-signed yet. Click **More info**, then **Run anyway**.
 
 Or with [WinGet](https://learn.microsoft.com/windows/package-manager/winget/), Windows' package
-manager, in a terminal:
+manager: in a terminal, the first line installs MDM and the second updates it.
 
 ```
 winget install AhmedNefzaoui.MisterDownloadManager
+winget upgrade AhmedNefzaoui.MisterDownloadManager
 ```
-
-`winget upgrade AhmedNefzaoui.MisterDownloadManager` updates it.
 
 ### On Linux
 
