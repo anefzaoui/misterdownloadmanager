@@ -57,7 +57,7 @@ fn video_tag(id: &str, src: &str, (w, h): (u32, u32), muted_loop: bool) -> Strin
     )
 }
 
-/// `/page?link=PATH&video=PATH|1&w=&h=&muted_loop=1&iframe=1&shadow=1&several=N&audio=PATH|1&
+/// `/page?title=TEXT&link=PATH&video=PATH|1&w=&h=&muted_loop=1&iframe=1&shadow=1&several=N&audio=PATH|1&
 /// hls=1&dash=1&drm=1&hls2=1&dash2=1&csp=strict`: a web page with what the browser extension acts on (see
 /// `HELP`).
 pub(crate) async fn page(RawQuery(q): RawQuery) -> Response {
@@ -111,7 +111,7 @@ pub(crate) async fn page(RawQuery(q): RawQuery) -> Response {
         None => None,
     };
 
-    let mut body = head("labserver page");
+    let mut body = head(m.get("title").copied().unwrap_or("labserver page"));
     for (k, link) in links.iter().enumerate() {
         let id = if k == 0 {
             "link".to_owned()

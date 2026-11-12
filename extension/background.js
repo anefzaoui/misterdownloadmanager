@@ -901,6 +901,14 @@ async function mediaList(tabId) {
   await Promise.all(tab.items.filter((it) => isStream(it) && !it.info).map(async (it) => (it.info = await probe(it))));
   tab.frames = Object.fromEntries(Object.entries(frames).map(([id, f]) => [id, f.href]));
   keepMedia();
+  // A file's name as it will be saved (#800): the tab's title and the popup's switch name it too.
+  const { mediaTitleName } = await ext.storage.local.get({ mediaTitleName: false });
+  let title = "";
+  try {
+    title = (await ext.tabs.get(tabId)).title || "";
+  } catch {
+    // The tab is gone: names without its title.
+  }
   const out = [];
   const shown = [];
   for (const it of tab.items) {
@@ -914,10 +922,13 @@ async function mediaList(tabId) {
     const frame = frames[it.frameId] || { players: [] };
     const player = frame.players.find((v) => v.src === it.url);
     const info = it.info && !it.info.failed ? it.info : null;
+    // A stream is named in the Download video window; a file here, with its type (#800).
+    const named = isStream(it) ? null : mediaName(it.url, it.mime, title, mediaTitleName).name;
     out.push({
       url: it.url,
       kind: it.kind,
       mime: it.mime,
+      ...(named ? { name: named, ext: splitExtension(named)[1].toLowerCase() } : {}),
       size: it.size || 0,
       heights: info ? [...new Set(info.heights)].sort((a, b) => b - a) : player && player.h ? [player.h] : [],
       width: (!info && player && player.w) || 0,
@@ -930,21 +941,127 @@ async function mediaList(tabId) {
   return out;
 }
 
-// A file's name from the tab's title when its address ends in a long hash (#345) or is on a
-// server whose names are all random ids (#493: X's video.twimg.com, too short for the hash test);
-// else, with the popup's switch on (`includeOriginal`), the title before the address's own name;
-// else none: the app names it from the address, as for any download.
-function titledName(url, title, includeOriginal = false) {
-  const last = pathOf(url).split("/").pop() || "";
-  const dot = last.lastIndexOf(".");
-  const stem = dot > 0 ? last.slice(0, dot) : last;
-  const name = String(title || "").replace(/[\\/:*?"<>|]/g, " ").trim().slice(0, 150);
+// ---- a page's media file's name (#345, #493, #695, #800): as the app's engine names it
+// (crates/engine/src/naming.rs, answer_name; tools/extension/test.mjs checks they agree) ---------
+
+// The types a file's extension is taken from (naming.rs' TYPES): media, pictures, documents and
+// archives, never a type that runs.
+const TYPE_EXTENSIONS = {
+  "video/mp4": "mp4",
+  "video/x-m4v": "m4v",
+  "video/webm": "webm",
+  "video/x-matroska": "mkv",
+  "video/quicktime": "mov",
+  "video/x-msvideo": "avi",
+  "video/avi": "avi",
+  "video/x-ms-wmv": "wmv",
+  "video/x-flv": "flv",
+  "video/mpeg": "mpg",
+  "video/mp2t": "ts",
+  "video/3gpp": "3gp",
+  "video/3gpp2": "3g2",
+  "video/ogg": "ogv",
+  "audio/mpeg": "mp3",
+  "audio/mp3": "mp3",
+  "audio/mp4": "m4a",
+  "audio/x-m4a": "m4a",
+  "audio/aac": "aac",
+  "audio/aacp": "aac",
+  "audio/webm": "weba",
+  "audio/ogg": "ogg",
+  "audio/opus": "opus",
+  "audio/flac": "flac",
+  "audio/x-flac": "flac",
+  "audio/wav": "wav",
+  "audio/x-wav": "wav",
+  "audio/wave": "wav",
+  "audio/x-ms-wma": "wma",
+  "application/ogg": "ogg",
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/gif": "gif",
+  "image/webp": "webp",
+  "image/avif": "avif",
+  "application/pdf": "pdf",
+  "application/epub+zip": "epub",
+  "application/zip": "zip",
+  "application/x-zip-compressed": "zip",
+  "application/x-7z-compressed": "7z",
+  "application/vnd.rar": "rar",
+  "application/x-rar-compressed": "rar",
+  "application/gzip": "gz",
+  "application/x-gzip": "gz",
+};
+const TYPED = new Set(Object.values(TYPE_EXTENSIONS));
+// A web server's programs (naming.rs' SCRIPT_EXTENSIONS) and a page's: such an address names the
+// program that answers, not the file it sends.
+const SCRIPT_EXTENSIONS = ["php", "php3", "php4", "php5", "phtml", "asp", "aspx", "ashx", "axd", "jsp", "jspx", "do", "action", "cgi", "pl", "cfm", "py", "rb"];
+const PAGE_EXTENSIONS = ["htm", "html", "xhtml", "shtml", "dhtml"];
+
+// A name's stem and extension ("clip.mp4": "clip", "mp4"); ".profile", "clip", "Mr. Smith" have none.
+function splitExtension(name) {
+  const dot = name.lastIndexOf(".");
+  const ext = dot > 0 ? name.slice(dot + 1) : "";
+  return ext && !/\s/.test(ext) ? [name.slice(0, dot), ext] : [name, ""];
+}
+const typeExtension = (mime) => TYPE_EXTENSIONS[String(mime || "").split(";")[0].trim().toLowerCase()] || "";
+const isScriptName = (name) => SCRIPT_EXTENSIONS.includes(splitExtension(name)[1].toLowerCase());
+// Its extension doesn't say what the file is: a script's, a page's, or none.
+function untyped(name) {
+  const ext = splitExtension(name)[1].toLowerCase();
+  return !ext || SCRIPT_EXTENSIONS.includes(ext) || PAGE_EXTENSIONS.includes(ext);
+}
+// A name that says nothing of the file, for the tab's title to replace: a script's, none (a bare
+// id, `videoplayback`), or a long hash (#345).
+function meansNothing(name) {
+  const [stem, ext] = splitExtension(name);
   const hash = stem.length >= 24 && /^[A-Za-z0-9=_-]+$/.test(stem) && (stem.match(/[-_]/g) || []).length <= 2;
+  return !ext || isScriptName(name) || hash;
+}
+// The tab's title as a file's stem: what a file name can't hold becomes a space, at most 150 characters.
+function cleanTitle(title) {
+  const spaced = String(title || "")
+    .replace(/[\u00AD\u200B-\u200F\u202A-\u202E\u2060-\u2064\u2066-\u206F\uFEFF]/g, "")
+    .replace(/[\x00-\x1f\x7f-\x9f<>:"/\\|?*]/g, " ");
+  return [...spaced.split(/\s+/).filter(Boolean).join(" ")].slice(0, 150).join("").replace(/[. ]+$/, "");
+}
+// The address's own name (naming.rs' address_name): a script's `file=` or `filename=` value naming
+// a file of a known type (#695), else its last part.
+function addressFileName(url) {
+  const last = addressName(url);
+  if (splitExtension(last)[1] && !isScriptName(last)) return last;
+  try {
+    for (const [k, v] of new URL(url).searchParams) {
+      if (!/^(file|filename)$/i.test(k)) continue;
+      const name = v.trim().split(/[\\/]/).pop().trim();
+      const [stem, ext] = splitExtension(name);
+      if (stem.trim() && TYPED.has(ext.toLowerCase())) return name;
+    }
+  } catch {
+    // Not an address: its last part.
+  }
+  return last;
+}
+
+// A page's media file's name as the app saves it ({name, own}): its address's (a script's `file=`
+// value), typed by the type its server said (`mime`) when its own extension doesn't say it
+// (stream.php: stream.mp4), and the tab's title instead of a name that means nothing (a script's,
+// a bare id, a hash; any on a server whose names are all random ids, #493: X's video.twimg.com).
+// With the popup's switch on (`includeOriginal`), the title before a real name ("Title -
+// clip.mp4"). `own`: the address names the file as the app would name it with no name sent, so
+// none is (a server's Content-Disposition then still wins).
+function mediaName(url, mime, title, includeOriginal = false) {
+  const given = addressFileName(url);
+  const typed = untyped(given) ? typeExtension(mime) : "";
+  const [stem, ext] = splitExtension(given);
+  const name = cleanTitle(title);
   const randomServer = siteOf(url).toLowerCase() === "video.twimg.com";
-  if ((hash || randomServer) && name) return `${name}${dot > 0 ? last.slice(dot) : ""}`;
-  if (!includeOriginal || !name) return "";
-  const original = addressName(url).replace(/[\\/:*?"<>|\x00-\x1f]/g, " ").trim();
-  return original && original !== "." && original !== ".." ? `${name} - ${original}` : "";
+  const bare = given === addressName(url) && (meansNothing(given) || randomServer);
+  const dotted = typed || ext ? `.${typed || ext}` : "";
+  if (bare && name) return { name: `${name}${dotted}`, own: false };
+  const own = typed ? `${stem || "download"}.${typed}` : given;
+  if (includeOriginal && name && own) return { name: `${name} - ${own}`, own: false };
+  return { name: own, own: !typed };
 }
 
 // One of the tab's media, handed to the app as the popup asked: a stream to the Download video
@@ -980,7 +1097,12 @@ async function mediaDownload(tabId, url) {
     });
   }
   const { mediaTitleName } = await ext.storage.local.get({ mediaTitleName: false });
-  return handOff({ url: it.url, referrer: page, size: it.size, mime: it.mime, explicit: true, filename: titledName(it.url, tab.title, mediaTitleName), ...ctx });
+  const named = mediaName(it.url, it.mime, tab.title, mediaTitleName);
+  // The name the list shows; none when the address names the file as the app would (a server's
+  // Content-Disposition may still name it). The title goes too: a file whose address names nothing
+  // and whose type only the server or its bytes say is named by it in the app (#800).
+  const title = String(tab.title || "").slice(0, 300);
+  return handOff({ url: it.url, referrer: page, size: it.size, mime: it.mime, explicit: true, filename: named.own ? "" : named.name, ...(title ? { title } : {}), ...ctx });
 }
 
 // ---- the hand-off ------------------------------------------------------------------------
@@ -1284,6 +1406,8 @@ async function handOff(d) {
     ...(d.post ? { post: d.post.body, postType: d.post.type || "" } : {}),
     ...(d.incognito ? { private: true } : {}),
     ...(d.explicit ? { explicit: true } : {}),
+    // A page's media from the popup's list (#800): its page's title, for a name the address lacks.
+    ...(d.title ? { title: d.title } : {}),
     // Through the browser's proxy too (#42): the one its own request for the file took.
     ...(await browserProxy(d.finalUrl || d.url, d.incognito)),
   };
@@ -2156,13 +2280,16 @@ async function pageMessage(m, sender) {
   if (m.type === "video" && page) {
     const v = await videoTarget(m, page, sender);
     if (!v) return { ok: false, why: isYouTube(page) ? "unnamed" : "feed" };
-    // The video's own plain file (#703): downloaded as a file, no window.
+    // The video's own plain file (#703): downloaded as a file, no window; with the type its
+    // server said when the tab loaded it, which names a script's answer at once (#800).
     const direct = Boolean(m.direct) && Boolean(v.file) && v.file === v.src;
+    const loaded = direct && ((media.get(tab.id) || {}).items || []).find((it) => it.url === v.src);
     const reply = await native({
       video: true,
       url: v.own,
       ...(v.src ? { src: v.src } : {}),
       ...(direct ? { direct: true } : {}),
+      ...(loaded && loaded.mime ? { mime: loaded.mime } : {}),
       title: v.title,
       referrer: v.referrer,
       cookies: v.cookies,

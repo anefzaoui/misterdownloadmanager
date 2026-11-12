@@ -557,6 +557,12 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A video a site sends through a program's address (`stream.php?file=…`,
+  `remote_control.php`) is named by what it is: the page's title (or the address's `file=` name)
+  and its real type, `Lecture.mp4`, not `stream.php`; the browser's media list shows that name
+  and type, and the Download video window saves it instead of failing on its `.php`
+  ([#695](https://github.com/anefzaoui/misterdownloadmanager/issues/695),
+  [#800](https://github.com/anefzaoui/misterdownloadmanager/issues/800))
 - ✅ The issue tracker: an issue waiting for details from its reporter is labelled "needs info";
   with no answer 14 days after our question it closes with a note, and the reporter's reply
   opens it again

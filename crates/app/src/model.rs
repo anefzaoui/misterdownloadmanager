@@ -325,6 +325,21 @@ pub fn default_downloads<'a>(
         .unwrap_or(std::borrow::Cow::Borrowed(downloads))
 }
 
+/// The name a download from `context` has before its server answers, when nobody named it: the
+/// address's ([`mdm_engine::naming::answer_name`]), typed by the browser's own type for it and,
+/// for a page's media whose address names nothing (a script, a bare id), its page's title
+/// (#695, #800). The engine names it again from the server's answer as it starts.
+pub fn browser_guess(url: &url::Url, context: &mdm_ipc::Command) -> String {
+    mdm_engine::naming::answer_name(
+        url,
+        &mdm_engine::naming::Answer {
+            content_type: context.mime.as_deref(),
+            title: context.video_title.as_deref(),
+            ..Default::default()
+        },
+    )
+}
+
 /// The category's folder: the one chosen in Options → Save to (or remembered from Download
 /// File Info), else the default under [`default_downloads`] (#556).
 pub fn category_folder(cat: Category, downloads: &Path, dirs: &[(String, String)]) -> PathBuf {

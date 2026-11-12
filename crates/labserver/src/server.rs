@@ -7,6 +7,8 @@
 //!   for a form post that carries `FIELD=VALUE`
 //! - `GET /files/{name}` — a real file from `--files DIR` (Range too; 404 without it): archives
 //!   for the link grabber's tests
+//! - `GET /stream.php`, `/remote_control.php` — a generated file a server's program sends, typed
+//!   by `type` and named by nothing but a `file=` value (#695, #800)
 //! - `GET /redirect?to=URL[&ttl_ms=N][&uses=N][&code=3xx]` — a redirect (302 unless `code` says)
 //!   to `URL` (cross-host redirects, credential scoping); with `ttl_ms` the target gets
 //!   `expires=<unix ms>` and answers 403 after it (signed CDN links); with `uses` it is a link of
@@ -386,6 +388,9 @@ impl LabServer {
             .route("/form/{size}", any(form))
             .route("/form/{size}/{*name}", any(form))
             .route("/files/{*name}", get(files))
+            // A file a server's program sends (#695, #800).
+            .route("/stream.php", get(script))
+            .route("/remote_control.php", get(script))
             .route("/redirect", get(redirect))
             .route("/hop", get(hop))
             .route("/_log", get(get_log).delete(clear_log))
@@ -645,6 +650,9 @@ POST /form/{size}[/{name}]?need=FIELD=VALUE&see_other=1&<as /gen>
     (default need=token=abc): 405 to other methods, 403 to a form without it;
     see_other=1: 303 to /gen/{size}/{name}?<the rest of the query> instead
 GET /files/{name}   a real file from --files DIR (Range too; 404 without --files)
+GET /stream.php, /remote_control.php?id=N|file=NAME&size=1M&type=MIME|none&magic=mp4|webm|mp3&<as /gen>
+    a generated file a server's program sends (#695, #800): no Content-Disposition, Content-Type
+    video/mp4 (type= another, none for none at all), magic= its first bytes a media type's
 GET /redirect?to=URL[&ttl_ms=N][&uses=N][&code=3xx]   302 (or code) to URL (not logged); ttl_ms: a signed link expiring after N ms; uses: a new link each time, expiring after N requests
 /rd/rest/1.0/{user,hosts/domains,unrestrict/link,disable_access_token}, /rd/oauth/v2/{device/code,device/credentials,token}
                                               a fake Real-Debrid (#44): tokens good (premium), free; links http://hoster.test/file/SIZE/NAME[?gone=1&down=1&chunks=N&ttl_ms=N&rate=SIZE]
@@ -666,6 +674,7 @@ GET /page?<any of>
     video=PATH|1   <video id=video controls> 640x360 (1: /gen/1M/clip.mp4?inline=1, also shown
                    when nothing else is asked for, or with muted_loop, iframe or shadow)
     w=PX h=PX      the videos' size
+    title=TEXT     the page's title (default "labserver page")
     muted_loop=1   the video muted, looping and autoplaying, without controls
     iframe=1       the video inside <iframe id=frame> (a /page of its own)
     shadow=1       the video inside the open shadow root of <div id=host> (declarative)
@@ -928,6 +937,42 @@ async fn generated(
     serve(shared, entry, &method, &size, name.as_deref(), &query).await
 }
 
+/// `GET /stream.php` and `/remote_control.php` (#695, #800): a generated file a server's program
+/// sends, with no Content-Disposition (as such sites do): `size` (1M by default), `type` its
+/// Content-Type (video/mp4 by default; `none` for no Content-Type at all), `magic` its first bytes
+/// a media type's (`mp4`, `webm`, `mp3`). `id`, `file`, `filename` and `token` are the page's own
+/// (a `file=` value names the file). Every generated file's key works too.
+async fn script(
+    State(shared): State<Arc<Shared>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    method: Method,
+    uri: axum::http::Uri,
+    RawQuery(query): RawQuery,
+    headers: HeaderMap,
+) -> Response {
+    let entry = shared.begin(
+        peer,
+        &method,
+        uri.path().to_owned(),
+        query.clone(),
+        &headers,
+        &[],
+    );
+    let mut pairs: Vec<(String, String)> =
+        serde_urlencoded::from_str(query.as_deref().unwrap_or_default()).unwrap_or_default();
+    let size = pairs
+        .iter()
+        .position(|(k, _)| k == "size")
+        .map_or_else(|| "1M".to_owned(), |i| pairs.remove(i).1);
+    for (k, v) in [("type", "video/mp4"), ("inline", "bare")] {
+        if !pairs.iter().any(|(key, _)| key == k) {
+            pairs.push((k.into(), v.into()));
+        }
+    }
+    let query = serde_urlencoded::to_string(pairs).unwrap_or_default();
+    serve(shared, entry, &method, &size, None, &query).await
+}
+
 /// `GET /files/{name}`: a real file from `Config::files` (404 without one, or for a name that
 /// leaves that folder), whole or one range of it.
 async fn files(
@@ -1114,6 +1159,10 @@ struct FileQuery {
     cd: Option<String>,
     cdstar: Option<String>,
     disposition: Disposition,
+    /// `type`: the Content-Type sent instead of the name's (`none`: none at all).
+    content_type: Option<String>,
+    /// `magic`: the file starts as a media type's ([`content::media_head`]).
+    magic: Option<&'static [u8]>,
     faults: Faults,
 }
 
@@ -1344,13 +1393,17 @@ pub(crate) async fn serve(
     entry.body_len = end - start;
 
     let file_name = q.cdstar.as_deref().or(q.cd.as_deref()).or(name);
-    let content_type = match q.disposition {
-        Disposition::Attachment => "application/octet-stream",
-        _ => mime_type(file_name.unwrap_or("")),
+    let content_type = match (q.content_type.as_deref(), q.disposition) {
+        (Some("none"), _) => None,
+        (Some(t), _) => Some(t),
+        (None, Disposition::Attachment) => Some("application/octet-stream"),
+        (None, _) => Some(mime_type(file_name.unwrap_or(""))),
     };
-    let mut builder = Response::builder()
-        .status(status)
-        .header(header::CONTENT_TYPE, content_type)
+    let mut builder = Response::builder().status(status);
+    if let Some(t) = content_type {
+        builder = builder.header(header::CONTENT_TYPE, t);
+    }
+    let mut builder = builder
         .header(header::CONTENT_LENGTH, end - start)
         .header(header::LAST_MODIFIED, &last_modified);
     if f.no_range != Some(true) {
@@ -1394,6 +1447,7 @@ pub(crate) async fn serve(
         shared: shared.clone(),
         entry: Some(entry),
         seed,
+        magic: q.magic,
         pos: start,
         end,
         rate,
@@ -1489,6 +1543,8 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
         cd: None,
         cdstar: None,
         disposition: Disposition::Attachment,
+        content_type: None,
+        magic: None,
         faults: Faults::default(),
     };
     let name = |k: &str, v: String| {
@@ -1506,7 +1562,13 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
                 out.expires = Some(v.parse().map_err(|_| format!("invalid expires `{v}`\n"))?)
             }
             "uses" => out.uses = Some(v.parse().map_err(|_| format!("invalid uses `{v}`\n"))?),
-            "link" => {}
+            // A page's own keys for a server's program (`script`): they change nothing here.
+            "link" | "id" | "file" | "filename" | "token" => {}
+            "type" => out.content_type = name(&k, v)?,
+            "magic" => {
+                out.magic =
+                    Some(content::media_head(&v).ok_or_else(|| format!("invalid magic `{v}`\n"))?)
+            }
             "cd" => out.cd = name(&k, v)?,
             "cdstar" => out.cdstar = name(&k, v)?,
             "inline" => {
@@ -1531,6 +1593,8 @@ struct Transfer {
     shared: Arc<Shared>,
     entry: Option<LogEntry>,
     seed: u64,
+    /// The file's first bytes, over the generated ones (`magic`).
+    magic: Option<&'static [u8]>,
     pos: u64,
     end: u64,
     rate: Option<u64>,
@@ -1589,7 +1653,7 @@ impl Transfer {
                 n = n.min(d - t.sent);
             }
             let mut buf = vec![0u8; n as usize];
-            content::fill(t.seed, t.pos, &mut buf);
+            content::fill_with_head(t.seed, t.pos, &mut buf, t.magic.unwrap_or_default());
             t.pos += n;
             t.sent += n;
             if let Some(slot) = &t.slot {

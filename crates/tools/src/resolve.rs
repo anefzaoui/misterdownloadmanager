@@ -224,6 +224,79 @@ pub fn named_after_address(title: &str, page: &str) -> bool {
     !stem.is_empty() && title.trim() == stem
 }
 
+/// yt-dlp's `-J` answer with the real type of a file a server's program sends (#695): yt-dlp
+/// takes a plain file's extension from its address (`stream.php?file=x.mp4` → `php`), lists it
+/// so ("PHP") and then refuses to save it ("The extracted extension (php) is unusual and will
+/// be skipped for safety reasons"). Such a format's extension is the one MDM names the file with
+/// (`mdm_engine::naming`): its address's `file=` value's, else the server's type, which yt-dlp
+/// gives a plain file as its format id (`video/mp4` → `mp4`). The answer is given as it came
+/// when nothing in it is such a format, or it isn't JSON.
+pub fn typed_scripts(json: Vec<u8>) -> Vec<u8> {
+    let Ok(mut v) = serde_json::from_slice::<serde_json::Value>(&json) else {
+        return json;
+    };
+    let mut changed = retype(&mut v);
+    for list in ["formats", "requested_formats"] {
+        if let Some(fs) = v.get_mut(list).and_then(serde_json::Value::as_array_mut) {
+            for f in fs {
+                changed |= retype(f);
+            }
+        }
+    }
+    match changed {
+        true => serde_json::to_vec(&v).unwrap_or(json),
+        false => json,
+    }
+}
+
+/// [`typed_scripts`] for one format (or the chosen one's fields at the top): true when its
+/// extension, a program's or a page's, became its file's type's.
+fn retype(f: &mut serde_json::Value) -> bool {
+    use mdm_engine::naming;
+    let Some(ext) = f.get("ext").and_then(serde_json::Value::as_str) else {
+        return false;
+    };
+    let ext = ext.to_ascii_lowercase();
+    if !naming::SCRIPT_EXTENSIONS.contains(&ext.as_str())
+        && !naming::PAGE_EXTENSIONS.contains(&ext.as_str())
+    {
+        return false;
+    }
+    let text = |k: &str| f.get(k).and_then(serde_json::Value::as_str).unwrap_or("");
+    // The `file=` value's own extension, when the address has one.
+    let from_address = url::Url::parse(text("url")).ok().and_then(|u| {
+        let name = naming::address_name(&u);
+        let (_, e) = name.rsplit_once('.')?;
+        (!naming::is_script_name(&name) && naming::is_typed_extension(e))
+            .then(|| e.to_ascii_lowercase())
+    });
+    // A plain file's format id is its type's subtype, as is or after an `f` (yt-dlp 2026.10:
+    // `fmp4` for video/mp4; `webm`, `mpeg`): sound first when it has no picture.
+    let id = text("format_id").to_ascii_lowercase();
+    let families = match text("vcodec") {
+        "none" => ["audio", "video"],
+        _ => ["video", "audio"],
+    };
+    let from_type = || {
+        [Some(id.as_str()), id.strip_prefix('f')]
+            .into_iter()
+            .flatten()
+            .find_map(|subtype| {
+                families
+                    .iter()
+                    .find_map(|k| naming::type_extension(&format!("{k}/{subtype}")))
+            })
+            .map(str::to_owned)
+    };
+    match from_address.or_else(from_type) {
+        Some(e) => {
+            f["ext"] = serde_json::Value::String(e);
+            true
+        }
+        None => false,
+    }
+}
+
 /// Parse `yt-dlp -J` output.
 pub fn parse(json: &[u8]) -> Option<Video> {
     let raw: RawVideo = serde_json::from_slice(json).ok()?;
@@ -1365,6 +1438,65 @@ mod tests {
             v.formats.len()
         );
         assert!(!heights.is_empty(), "no video in {:?}", v.title);
+    }
+
+    /// #695: a plain file a server's program sends (`stream.php`), as yt-dlp's generic reader
+    /// answers for it: the format id is the type's subtype, the extension the address's. It gets
+    /// its file's type: the `file=` value's, else the type's; a real one stays.
+    #[test]
+    fn a_scripts_file_gets_its_real_type() {
+        let answer = |url: &str, id: &str, vcodec: &str| {
+            format!(
+                r#"{{"title": "stream", "direct": true, "ext": "php", "url": "{url}",
+                "format_id": "{id}", "vcodec": {vcodec}, "formats": [{{"format_id": "{id}",
+                "ext": "php", "url": "{url}", "vcodec": {vcodec}, "protocol": "https"}}]}}"#
+            )
+        };
+        let ext = |json: &[u8]| {
+            let v: serde_json::Value = serde_json::from_slice(json).unwrap();
+            (
+                v["ext"].as_str().unwrap().to_owned(),
+                v["formats"][0]["ext"].as_str().unwrap().to_owned(),
+            )
+        };
+        let fixed = typed_scripts(
+            answer(
+                "https://u.test/stream.php?file=FL262-1E01-4.mp4&t=1",
+                "mp4",
+                "null",
+            )
+            .into_bytes(),
+        );
+        assert_eq!(ext(&fixed), ("mp4".into(), "mp4".into()));
+        assert_eq!(parse(&fixed).unwrap().formats[0].ext, "mp4");
+        // No file name in the address: the server's type, read as a sound's when it has no
+        // picture (audio/mpeg is an MP3, video/mpeg an MPG).
+        let fixed = typed_scripts(
+            answer("https://u.test/remote_control.php?id=3", "webm", "null").into_bytes(),
+        );
+        assert_eq!(ext(&fixed), ("webm".into(), "webm".into()));
+        let fixed = typed_scripts(answer("https://u.test/a.php", "mpeg", r#""none""#).into_bytes());
+        assert_eq!(ext(&fixed).1, "mp3");
+        // yt-dlp 2026.10 names it `f` and the subtype (its answer for the lab's /stream.php).
+        let fixed =
+            typed_scripts(answer("https://u.test/stream.php?id=1", "fmp4", "null").into_bytes());
+        assert_eq!(ext(&fixed), ("mp4".into(), "mp4".into()));
+        let fixed = typed_scripts(answer("https://u.test/a.php", "flac", r#""none""#).into_bytes());
+        assert_eq!(ext(&fixed).1, "flac");
+        // Nothing says what it is: as it came. A real extension is never touched.
+        let unknown = answer("https://u.test/a.php", "x-unknown", "null").into_bytes();
+        assert_eq!(typed_scripts(unknown.clone()), unknown);
+        let real = br#"{"title": "t", "ext": "mp4", "formats": [{"format_id": "18", "ext": "mp4", "url": "https://u.test/v.php"}]}"#.to_vec();
+        assert_eq!(typed_scripts(real.clone()), real);
+        assert_eq!(typed_scripts(b"not json".to_vec()), b"not json".to_vec());
+        // A program's type is never one: application/x-msdownload stays as it came.
+        let program = answer(
+            "https://u.test/a.php?file=setup.exe",
+            "x-msdownload",
+            "null",
+        )
+        .into_bytes();
+        assert_eq!(typed_scripts(program.clone()), program);
     }
 
     /// #320: yt-dlp's answer for a plain file (real output, 2026.10.26) says `direct` and no size.

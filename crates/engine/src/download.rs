@@ -171,6 +171,10 @@ pub struct Options {
     /// type is the server refusing MDM (a firewall's "The requested URL was rejected"), an error
     /// and never saved as the file (#533, `expects_other_file`).
     pub expected_type: Option<String>,
+    /// From the browser: the title of the page a media file was played on (#800). A download
+    /// the engine names ([`Destination::Dir`]) whose address names nothing (a script, a bare id,
+    /// `videoplayback`) is named by it ([`naming::answer_name`]).
+    pub page_title: Option<String>,
     /// The most one request asks for (bytes): every request, the first one too, is a range of
     /// at most this many, the next one following on the same connection. For servers that slow
     /// a long answer down (YouTube's media servers serve 10 MB ranges at full speed and a whole
@@ -258,6 +262,7 @@ impl Default for Options {
             post: None,
             on_file_created: None,
             expected_type: None,
+            page_title: None,
             request_cap: None,
             slow_disk: None,
         }
@@ -936,8 +941,14 @@ pub async fn probe_kept(
         StatusCode::OK => (head.len, true),
         _ => (head.len, false),
     };
-    let cd = header_text(&head.headers, header::CONTENT_DISPOSITION);
-    let file_name = name_for(cd.as_deref(), &final_url, unlocked.as_ref());
+    // A name its address and the server leave untyped: the bytes' type, when they are the
+    // file's first (#800).
+    let (body, sniffed) = if from_zero && names_by_bytes(&head, unlocked.as_ref()) {
+        sniff_body(body, &CancellationToken::new()).await?
+    } else {
+        (body, None)
+    };
+    let file_name = name_for(&head, sniffed, unlocked.as_ref(), opts);
     let info = ProbeInfo {
         final_url,
         size: size.or(unlocked.as_ref().and_then(|u| u.size)),
@@ -976,12 +987,63 @@ pub fn hop_client(opts: &Options, url: &Url) -> Result<Client, Error> {
 }
 
 /// The file's name: the server's (Content-Disposition), else the service's (#44), else the
-/// address's.
-fn name_for(cd: Option<&str>, url: &Url, unlocked: Option<&crate::unlock::Unlocked>) -> String {
-    match (cd, unlocked.and_then(|u| u.file_name.as_deref())) {
+/// address's, typed by the server's `Content-Type` or the bytes' own type (`sniffed`), and named
+/// by the page's title when the address names nothing (#695, #800: [`naming::answer_name`]).
+fn name_for(
+    head: &Head,
+    sniffed: Option<&str>,
+    unlocked: Option<&crate::unlock::Unlocked>,
+    opts: &Options,
+) -> String {
+    let cd = header_text(&head.headers, header::CONTENT_DISPOSITION);
+    match (&cd, unlocked.and_then(|u| u.file_name.as_deref())) {
         (None, Some(name)) if !name.trim().is_empty() => naming::sanitize(name),
-        _ => naming::file_name(cd, url),
+        _ => naming::answer_name(
+            &head.url,
+            &naming::Answer {
+                disposition: cd.as_deref(),
+                content_type: header_str(&head.headers, header::CONTENT_TYPE),
+                sniffed,
+                title: opts.page_title.as_deref(),
+            },
+        ),
     }
+}
+
+/// Whether the answer's first bytes are needed for its name (`name_for`): it is named by its
+/// address, whose name doesn't say the file's type, and neither does the server (#800).
+fn names_by_bytes(head: &Head, unlocked: Option<&crate::unlock::Unlocked>) -> bool {
+    let cd = header_text(&head.headers, header::CONTENT_DISPOSITION);
+    let service = unlocked
+        .and_then(|u| u.file_name.as_deref())
+        .is_some_and(|n| !n.trim().is_empty());
+    !(cd.is_none() && service)
+        && naming::needs_sniff(
+            &head.url,
+            cd.as_deref(),
+            header_str(&head.headers, header::CONTENT_TYPE),
+        )
+}
+
+/// The type `body`'s first bytes show ([`naming::sniff`]), and the body that still gives them:
+/// read up to [`naming::SNIFF_BYTES`] (less at its end).
+async fn sniff_body(
+    mut body: Body,
+    cancel: &CancellationToken,
+) -> Result<(Body, Option<&'static str>), Error> {
+    let mut seen: Vec<u8> = Vec::new();
+    while seen.len() < naming::SNIFF_BYTES {
+        let next = tokio::select! {
+            _ = cancel.cancelled() => return Err(Error::Cancelled),
+            n = body.chunk() => n?,
+        };
+        match next {
+            Some(c) => seen.extend_from_slice(&c),
+            None => break,
+        }
+    }
+    let ext = naming::sniff(&seen);
+    Ok((Body::Prefixed(Some(Bytes::from(seen)), Box::new(body)), ext))
 }
 
 /// `opts.unlocker`'s direct link for `url` (#44), noted in the event log (never the link
@@ -1331,6 +1393,9 @@ pub(crate) enum Body {
     /// An answer to the browser-like connection (#668, `crate::browserlike`).
     #[cfg_attr(not(feature = "browser-connection"), allow(dead_code))]
     Browser(crate::browserlike::Stream),
+    /// A body whose first bytes were read already (to know the file's type, #800): they come
+    /// first, then the rest.
+    Prefixed(Option<bytes::Bytes>, Box<Body>),
 }
 
 impl Body {
@@ -1340,6 +1405,10 @@ impl Body {
             Body::Http(r) => Ok(r.chunk().await?),
             Body::Ftp(t) => t.chunk().await,
             Body::Browser(b) => b.chunk().await,
+            Body::Prefixed(first, rest) => match first.take().filter(|b| !b.is_empty()) {
+                Some(b) => Ok(Some(b)),
+                None => Box::pin(rest.chunk()).await,
+            },
         }
     }
 
@@ -1349,6 +1418,7 @@ impl Body {
             Body::Http(r) => r.content_length(),
             Body::Ftp(t) => t.expected(),
             Body::Browser(b) => b.len(),
+            Body::Prefixed(_, rest) => rest.len(),
         }
     }
 
@@ -1364,6 +1434,7 @@ impl Body {
             Body::Ftp(t) => t.done(at_end).await,
             // Its connection isn't pooled for another request: there is only the one.
             Body::Browser(_) => {}
+            Body::Prefixed(_, rest) => Box::pin(rest.done(at_end)).await,
         }
     }
 }
@@ -1868,9 +1939,16 @@ async fn run_fresh(
         .get(header::CONTENT_TYPE)
         .and_then(|v| v.to_str().ok())
         .map(str::to_owned);
+    // A file the engine names whose address and server leave its type unsaid: its first bytes
+    // say it (#800), and still come first to the file.
+    let (body, sniffed) =
+        if matches!(req.dest, Destination::Dir(_)) && names_by_bytes(&head, unlocked.as_ref()) {
+            sniff_body(body, cancel).await?
+        } else {
+            (body, None)
+        };
     let (dest, _reservation, file) = open_destination(&req.dest, size, &opts, || {
-        let cd = header_text(&head.headers, header::CONTENT_DISPOSITION);
-        name_for(cd.as_deref(), &final_url, unlocked.as_ref())
+        name_for(&head, sniffed, unlocked.as_ref(), &opts)
     })
     .await?;
     downloading(shared, &dest, size, ranges);
