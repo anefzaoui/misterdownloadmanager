@@ -8,13 +8,16 @@ pub mod chosen;
 pub mod ffmpeg;
 pub mod gallery;
 mod macos;
+pub mod manifest;
 mod openpgp;
 pub mod pages;
+pub mod pieces;
 pub mod playlist;
 pub mod proc;
 pub mod relay;
 pub mod resolve;
 pub mod servers;
+pub mod streams;
 // System helper discovery is for Linux and macOS; Windows keeps its verified managed copies.
 #[cfg(unix)]
 mod system;
@@ -166,6 +169,7 @@ pub const USER_AGENT: &str = concat!("MisterDownloadManager/", env!("CARGO_PKG_V
 pub fn net(proxy: mdm_engine::Proxy) -> mdm_engine::Options {
     mdm_engine::Options {
         user_agent: USER_AGENT.to_owned(),
+        automatic_agent: false,
         proxy,
         ..Default::default()
     }

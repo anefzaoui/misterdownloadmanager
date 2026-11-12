@@ -5,11 +5,14 @@ mod batch;
 mod categories;
 mod checksum;
 mod chrome;
+mod clipboard;
 mod clock;
 mod countries;
 mod crash;
 mod crashui;
 mod debrid;
+mod defaultbrowser;
+mod deferred_rename;
 mod derive;
 mod dialogs;
 mod droptarget;
@@ -64,6 +67,7 @@ mod tray;
 mod unix;
 mod update;
 mod videodlg;
+mod videolookup;
 mod wake;
 mod whereis;
 #[cfg(windows)]
@@ -114,9 +118,13 @@ pub fn offscreen() -> bool {
 
 /// The clipboard's text, if any. Never read in an off-screen run ([`offscreen`]): its windows
 /// open from scripts, and the clipboard belongs to the person at the computer (Add URL's
-/// address came from it, and was fetched).
+/// address came from it, and was fetched). It may wait for the clipboard's owner for ever:
+/// never called on the window's thread, only by `clipboard`'s reader (#418, #661).
 pub fn clipboard_text() -> Option<String> {
-    read_clipboard(offscreen(), || {
+    // Nor in unit tests: the person's clipboard isn't theirs, and tests opening a window that
+    // reads it (Download video's) on parallel threads corrupted the heap (Windows' clipboard,
+    // opened from two threads at once).
+    read_clipboard(offscreen() || cfg!(test), || {
         arboard::Clipboard::new().ok()?.get_text().ok()
     })
 }
@@ -245,6 +253,13 @@ fn main() -> std::process::ExitCode {
     // misterdownloadmanager-cli's commands (crates/cli): its launcher starts this program for
     // them. Nothing of the app's runs: no window, instance, crash monitor or crash log.
     if let Some(cli) = mdm_cli::launched(std::env::args_os().collect()) {
+        // The default browser's User-Agent (#668): a command's download starts at once, so it
+        // waits for it a moment (Windows reads it from the registry; Linux and macOS may ask the
+        // browser its version). Only `get` and `resume` download with it: the others don't wait.
+        let found = defaultbrowser::start();
+        if mdm_cli::downloads(&cli.args) {
+            defaultbrowser::wait(&found, std::time::Duration::from_secs(3));
+        }
         // A windowed program has no console: the launcher's, unless the output goes to a file
         // or a pipe. On Linux and macOS the launcher became this process, terminal and all.
         #[cfg(windows)]
@@ -371,6 +386,11 @@ fn app() -> eframe::Result {
             help::VERSION,
             help::COMMIT
         );
+    }
+    // The default browser, looked for once on a thread of its own (logged): its User-Agent is
+    // the one links added by hand go with (#668).
+    defaultbrowser::start();
+    if let Some(data) = mdm_ipc::data_dir() {
         crash::start(
             &data,
             crash::session(
@@ -447,6 +467,7 @@ fn app() -> eframe::Result {
         win32::set_main_window(cc);
         scale::start(&cc.egui_ctx, z);
         let _ = window.set(cc.egui_ctx.clone());
+        clipboard::wake(&cc.egui_ctx);
         renderer::test_slow_start();
         app::App::new(&cc.egui_ctx, handle, commands, sink, loaded, start)
     });

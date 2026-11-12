@@ -121,6 +121,25 @@ fn tracks(raw: Option<std::collections::BTreeMap<String, Vec<RawSub>>>) -> Vec<T
     out
 }
 
+/// Subtitle languages that come without names, as yt-dlp lists an HLS stream's (`de`, `und`):
+/// what [`tracks`] makes of them (`crate::manifest`).
+pub(crate) fn unnamed_tracks(codes: impl IntoIterator<Item = String>) -> Vec<Track> {
+    tracks(Some(
+        codes
+            .into_iter()
+            .map(|code| (code, vec![RawSub { name: None }]))
+            .collect(),
+    ))
+}
+
+/// The size of `duration` seconds at `tbr` kbit/s (kbit/s × 125 = bytes/s), as yt-dlp's
+/// `filesize_from_tbr` reckons it: the same operations in the same order, so a stream's variants
+/// come out the same whether yt-dlp listed them or MDM read the stream itself
+/// (`crate::manifest`).
+pub(crate) fn estimate(duration: f64, tbr: f64) -> u64 {
+    (duration * tbr * 125.0) as u64
+}
+
 #[derive(Deserialize)]
 struct RawFormat {
     format_id: String,
@@ -129,10 +148,25 @@ struct RawFormat {
     fps: Option<f64>,
     vcodec: Option<String>,
     acodec: Option<String>,
+    #[serde(default, deserialize_with = "size")]
     filesize: Option<u64>,
+    #[serde(default, deserialize_with = "size")]
     filesize_approx: Option<u64>,
     tbr: Option<f64>,
     protocol: Option<String>,
+}
+
+/// A size as yt-dlp gives it: a count of bytes, or nothing known. Wikimedia Commons' transcodes
+/// come with a negative estimate (`filesize_approx: -79319`, its bitrate unknown), which made
+/// the whole page unreadable ("it gave no video information"): no size then, as for any other
+/// that isn't a positive number.
+fn size<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Option<u64>, D::Error> {
+    let v = Option::<serde_json::Value>::deserialize(d)?;
+    Ok(v.and_then(|v| {
+        v.as_u64()
+            .or_else(|| v.as_f64().filter(|f| *f > 0.0).map(|f| f as u64))
+    })
+    .filter(|n| *n > 0))
 }
 
 /// Whether `title` is only the last part of `page`'s address, which is what yt-dlp calls a video
@@ -155,6 +189,17 @@ pub fn parse(json: &[u8]) -> Option<Video> {
     // yt-dlp: "none" means the stream isn't there; a missing codec is just unknown (plain
     // files on generic sites carry both).
     let has = |c: &Option<String>| c.as_deref() != Some("none");
+    // An HLS stream's variants give their bitrate (BANDWIDTH) but no size, though yt-dlp knows
+    // the duration: about bitrate × duration (kbit/s × 125 = bytes/s), as IDM shows it. A live
+    // stream has no duration, and stays without one. Never for a plain file, whose server says
+    // its exact size (`needs_size`, #320).
+    let duration = raw
+        .duration
+        .filter(|d| d.is_finite() && *d > 0.0 && !raw.direct);
+    let estimate = |tbr: Option<f64>| {
+        let tbr = tbr.filter(|t| t.is_finite() && *t > 0.0)?;
+        Some(estimate(duration?, tbr))
+    };
     Some(Video {
         title: raw.title.unwrap_or_else(|| "video".into()),
         duration: raw.duration,
@@ -168,7 +213,7 @@ pub fn parse(json: &[u8]) -> Option<Video> {
                 ext: f.ext.unwrap_or_default(),
                 height: f.height,
                 fps: f.fps,
-                size: f.filesize.or(f.filesize_approx),
+                size: f.filesize.or(f.filesize_approx).or_else(|| estimate(f.tbr)),
                 tbr: f.tbr,
                 hls: f.protocol.as_deref().is_some_and(|p| p.contains("m3u8")),
             })
@@ -267,11 +312,25 @@ pub fn parse_looked(json: &[u8]) -> Option<Looked> {
     parse(json).map(Looked::Video)
 }
 
+/// How long one yt-dlp look-up may take. `proc::look_up` may run it twice (the second time
+/// without the cookies, #352).
+pub const LOOK_UP_TIMEOUT: Duration = Duration::from_secs(90);
+
 /// Look `url` up with yt-dlp: one video (`--no-playlist`: a video in a playlist is that video),
 /// or, for a page that is a list, only what it is and its first entry, flat (#69: never every
 /// video of a 6,000-long playlist at once; `--flat-playlist -I 1:1` doesn't change a video's
 /// look-up).
 pub fn look_up(exe: &Path, url: &str, browser: &proc::FromBrowser) -> Result<Looked, ProcError> {
+    look_up_kept(exe, url, browser).map(|(looked, _)| looked)
+}
+
+/// [`look_up`], with yt-dlp's answer as it gave it: the browser's quality menu keeps it for the
+/// download chosen there, which then doesn't read the page again (`video::Preloaded`).
+pub fn look_up_kept(
+    exe: &Path,
+    url: &str,
+    browser: &proc::FromBrowser,
+) -> Result<(Looked, proc::LookedUp), ProcError> {
     let mut args: Vec<String> = [
         "-J",
         "--no-playlist",
@@ -285,11 +344,12 @@ pub fn look_up(exe: &Path, url: &str, browser: &proc::FromBrowser) -> Result<Loo
     // Kept until yt-dlp has answered.
     let (theirs, _cookies) = browser.args(url)?;
     args.extend(theirs);
-    let out = proc::look_up(exe, &args, url, Duration::from_secs(90))?;
-    parse_looked(&out.json).ok_or_else(|| ProcError::Failed {
+    let out = proc::look_up(exe, &args, url, LOOK_UP_TIMEOUT)?;
+    let looked = parse_looked(&out.json).ok_or_else(|| ProcError::Failed {
         tool: "yt-dlp".into(),
         message: "it gave no video information".into(),
-    })
+    })?;
+    Ok((looked, out))
 }
 
 /// Look `url` up as one video (a list is an error here).
@@ -587,6 +647,20 @@ mod tests {
 
     use super::*;
 
+    /// Wikimedia Commons' transcodes say a negative size (#769's Commons check): read as none,
+    /// not as a page with no video.
+    #[test]
+    fn a_negative_size_is_no_size() {
+        let page = br#"{"title": "Clip", "duration": 10.0, "formats": [
+            {"format_id": "2", "ext": "webm", "height": 480, "vcodec": "vp9", "acodec": "opus",
+             "filesize_approx": -79319, "tbr": 1218},
+            {"format_id": "source", "ext": "webm", "filesize": 2964839055}]}"#;
+        let v = parse(page).expect("a video");
+        assert_eq!(v.formats.len(), 2);
+        assert_ne!(v.formats[0].size, Some(0));
+        assert_eq!(v.formats[1].size, Some(2964839055));
+    }
+
     #[test]
     fn a_streams_variants_by_bitrate() {
         let fmt = |id: &str, tbr: f64| Format {
@@ -633,6 +707,41 @@ mod tests {
             {"format_id": "136", "ext": "mp4", "height": 720, "fps": 30, "vcodec": "avc1", "acodec": "none", "filesize": 20000000},
             {"format_id": "299", "ext": "mp4", "height": 1080, "fps": 60, "vcodec": "avc1", "acodec": "none", "filesize_approx": 60000000}
         ]}"#;
+
+    /// An HLS master playlist as yt-dlp reads it (checked with yt-dlp 2026.10.26): each variant's
+    /// bitrate and the duration, no size; sized as bitrate × duration. A live one stays unsized.
+    #[test]
+    fn hls_variants_are_sized_from_their_bitrate() {
+        const HLS: &str = r#"{"title": "master", "duration": 600, "formats": [
+            {"format_id": "800", "ext": "mp4", "height": 360, "tbr": 800.0, "protocol": "m3u8_native"},
+            {"format_id": "2500", "ext": "mp4", "height": 720, "tbr": 2500.0, "protocol": "m3u8_native"}]}"#;
+        let v = parse(HLS.as_bytes()).unwrap();
+        let sizes: Vec<_> = choices(&v, true)
+            .into_iter()
+            .filter(|c| !c.label.starts_with("Audio only"))
+            .map(|c| (c.label, c.size))
+            .collect();
+        assert_eq!(
+            sizes,
+            [
+                ("720p MP4".to_owned(), Some(187_500_000)),
+                ("360p MP4".to_owned(), Some(60_000_000))
+            ]
+        );
+        let live = HLS.replace(r#""duration": 600, "#, "");
+        let v = parse(live.as_bytes()).unwrap();
+        assert!(v.formats.iter().all(|f| f.size.is_none()), "live: no size");
+        // A size yt-dlp gives wins over the estimate.
+        let given = HLS.replace(r#""tbr": 800.0"#, r#""tbr": 800.0, "filesize": 123"#);
+        let v = parse(given.as_bytes()).unwrap();
+        assert_eq!(v.formats[0].size, Some(123));
+        // A plain file's size is its server's to say (#320), never estimated.
+        let direct = HLS.replace(
+            r#""duration": 600, "#,
+            r#""duration": 600, "direct": true, "#,
+        );
+        assert!(parse(direct.as_bytes()).unwrap().needs_size());
+    }
 
     #[test]
     fn choices_with_and_without_merging() {
