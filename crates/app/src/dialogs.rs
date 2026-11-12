@@ -1107,6 +1107,7 @@ impl FileInfo {
                     file_name,
                     // The browser had the answer: nothing was asked of the server here.
                     server: None,
+                    web_page: false,
                 })),
             ),
             None => (start_probe(rt, ctx, &new.url, &request), None),
