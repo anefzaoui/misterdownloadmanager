@@ -5,6 +5,7 @@ mod batch;
 mod categories;
 mod checksum;
 mod chrome;
+mod clipbatch;
 mod clipboard;
 mod clock;
 mod countries;
@@ -124,6 +125,14 @@ pub fn offscreen() -> bool {
 /// address came from it, and was fetched). It may wait for the clipboard's owner for ever:
 /// never called on the window's thread, only by `clipboard`'s reader (#418, #661).
 pub fn clipboard_text() -> Option<String> {
+    // Off-screen test copies: MDM_TEST_CLIPBOARD=<file> is what they find in the clipboard
+    // (#709's checks of Add batch download from clipboard), read when they ask, as the
+    // clipboard would be; the person's own clipboard is never read.
+    if offscreen()
+        && let Some(file) = std::env::var_os("MDM_TEST_CLIPBOARD")
+    {
+        return std::fs::read_to_string(file).ok();
+    }
     // Nor in unit tests: the person's clipboard isn't theirs, and tests opening a window that
     // reads it (Download video's) on parallel threads corrupted the heap (Windows' clipboard,
     // opened from two threads at once).

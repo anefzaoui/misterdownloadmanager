@@ -227,6 +227,11 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	A file of this torrent can't be saved safely: {name}	ଏହି ଟୋରେଣ୍ଟର ଏକ ଫାଇଲ୍‌କୁ ସୁରକ୍ଷିତ ଭାବରେ ସେଭ୍ କରିହେବ ନାହିଁ: {name}
+#. message or event log entry in the main window
+#. Link grabber added a magnet link whose torrent could not be found; {error} says why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	A magnet link's files could not be looked up: {error}	ଏକ ମ୍ୟାଗ୍ନେଟ୍ ଲିଙ୍କ୍‌ର ଫାଇଲ୍‌ଗୁଡ଼ିକୁ ଖୋଜିହେଲା ନାହିଁ: {error}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -306,6 +311,10 @@
 #. text in the tray icon's menu
 #, machine
 	Add batch download	ବ୍ୟାଚ୍ ଡାଉନଲୋଡ୍ ଯୋଡ଼ନ୍ତୁ
+#. message or event log entry in the main window; text in the tray icon's menu
+#. title of the note when Tasks → Add batch download from clipboard finds nothing to download
+#, machine
+	Add batch download from clipboard	କ୍ଲିପ୍‌ବୋର୍ଡରୁ ବ୍ୟାଚ୍ ଡାଉନଲୋଡ୍ ଯୋଡ଼ନ୍ତୁ
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -951,6 +960,10 @@
 #. column title: the peer's torrent program
 #, machine
 	Client	କ୍ଲାଏଣ୍ଟ୍‍
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the clipboard (Tasks → Add batch download from clipboard)
+#, machine
+	Clipboard	କ୍ଲିପ୍‌ବୋର୍ଡ
 #. text in the Options window
 #, machine
 	Clock:	ଘଣ୍ଟା:
@@ -1337,6 +1350,9 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	ଏହି ଆକାଉଣ୍ଟ୍ ମାଧ୍ୟମରେ ସମର୍ଥିତ ଫାଇଲ୍-ହୋଷ୍ଟ୍ ଲିଙ୍କ୍ ଡାଉନଲୋଡ୍ କରନ୍ତୁ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download the links in the clipboard (Add batch download from clipboard)	କ୍ଲିପ୍‌ବୋର୍ଡରେ ଥିବା ଲିଙ୍କ୍‌ଗୁଡ଼ିକୁ ଡାଉନଲୋଡ୍ କରନ୍ତୁ (କ୍ଲିପ୍‌ବୋର୍ଡରୁ ବ୍ୟାଚ୍ ଡାଉନଲୋଡ୍ ଯୋଡ଼ନ୍ତୁ)
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 #, machine
@@ -2390,7 +2406,7 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	ସମସ୍ତ ଟୋରେଣ୍ଟ ପାଇଁ ଅପଲୋଡ୍ ସୀମିତ କରନ୍ତୁ
-#. window title in the Link grabber window; group box title in the Options window
+#. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
 	Link grabber	ଲିଙ୍କ୍ ଗ୍ରାବର୍
@@ -2491,6 +2507,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Madagascar	ମାଡାଗାସ୍କର
+#. text in the Link grabber window
+#. Link grabber, a link's status: a magnet link (a torrent, its files looked up once it is added)
+#, machine
+	Magnet link	ମ୍ୟାଗ୍ନେଟ୍ ଲିଙ୍କ୍
 #. message or event log entry in the main window
 #, machine
 	Main download queue	ମୁଖ୍ୟ ଡାଉନଲୋଡ୍ କ୍ୟୁ
@@ -2916,6 +2936,9 @@
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
 	No day is ticked: the queue will not start	କୌଣସି ଦିନ ଟିକ୍ ହୋଇନାହିଁ: ଧାଡ଼ି ଆରମ୍ଭ ହେବ ନାହିଁ
+#. message or event log entry in the main window
+#, machine
+	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	କ୍ଲିପ୍‌ବୋର୍ଡରେ କୌଣସି ଡାଉନଲୋଡ୍ ଲିଙ୍କ୍ ମିଳିଲା ନାହିଁ। http, https, ftp କିମ୍ବା ମ୍ୟାଗ୍ନେଟ୍ ଲିଙ୍କ୍ ଥିବା ଏକ ଟେକ୍ସଟ୍ କପି କରି ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -4385,6 +4408,9 @@
 #. Options → Remote → Status: the settings were changed; they apply on OK
 #, machine
 	The changes apply when you click OK.	ଆପଣ OK କ୍ଲିକ୍ କଲେ ପରିବର୍ତ୍ତନଗୁଡ଼ିକ ପ୍ରଯୁଜ୍ୟ ହେବ।
+#. message or event log entry in the main window
+#, machine
+	The clipboard holds no text. Copy some links, or a text with links in it, and try again.	କ୍ଲିପ୍‌ବୋର୍ଡରେ କୌଣସି ଟେକ୍ସଟ୍ ନାହିଁ। କିଛି ଲିଙ୍କ୍ କିମ୍ବା ଲିଙ୍କ୍ ଥିବା ଏକ ଟେକ୍ସଟ୍ କପି କରି ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -6234,6 +6260,10 @@ key	Ctrl+0	Ctrl+0
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+B	Ctrl+B
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

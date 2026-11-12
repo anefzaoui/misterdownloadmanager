@@ -1,5 +1,6 @@
 //! Link grabber (#37): the links of a page (the browser's "Download all links"), of a list file
-//! (Tasks → Import), dropped or pasted, gathered into packages to tick before they are added.
+//! (Tasks → Import), copied (Tasks → Add batch download from clipboard, #709), dropped or
+//! pasted, gathered into packages to tick before they are added.
 //! It grew out of the Import window and keeps its ways (IDM's "Download all links": every link
 //! looked up for its name and size, Check all / Uncheck all, "Hide web pages", OK adds the
 //! ticked ones to the queue); the packages come from JDownloader's link grabber: a split
@@ -133,7 +134,30 @@ pub struct Link {
     pub state: LinkState,
     pub on: bool,
     known: bool,
+    /// A magnet link (#709): a torrent, added once its files are known; never looked up here.
+    magnet: bool,
     check: Option<Check>,
+}
+
+impl Link {
+    /// Its files' category: a torrent's are Torrents, whatever its name says.
+    fn category(&self) -> Category {
+        if self.magnet {
+            Category::Torrents
+        } else {
+            Category::of(&self.name)
+        }
+    }
+}
+
+/// A magnet link's name: the one it gives (`dn=`), else its torrent's hash.
+fn magnet_name(url: &Url) -> String {
+    url.query_pairs()
+        .find(|(k, _)| k == "dn")
+        .map(|(_, v)| v.into_owned())
+        .filter(|n| !n.trim().is_empty())
+        .or_else(|| crate::transfer::magnet_hash(url.as_str()))
+        .unwrap_or_else(|| url.to_string())
 }
 
 type Check = Arc<Mutex<Option<Result<mdm_engine::ProbeInfo, LinkState>>>>;
@@ -210,7 +234,12 @@ impl Grabber {
             if !here.insert(address_key(&url)) {
                 continue;
             }
-            let name = mdm_engine::naming::sanitize(&mdm_engine::naming::file_name(None, &url));
+            let magnet = url.scheme() == "magnet";
+            let name = mdm_engine::naming::sanitize(&if magnet {
+                magnet_name(&url)
+            } else {
+                mdm_engine::naming::file_name(None, &url)
+            });
             let known = known(&url);
             let origin = if known {
                 Origin::Known
@@ -227,6 +256,7 @@ impl Grabber {
                 state: LinkState::Unchecked,
                 on: !known,
                 known,
+                magnet,
                 check: None,
             });
             if !settle.contains(&pkg) {
@@ -308,7 +338,7 @@ impl Grabber {
     /// did); "Extract when done" when it holds an archive.
     fn settle(&mut self, k: usize) {
         let links: Vec<&Link> = self.links.iter().filter(|l| l.pkg == k).collect();
-        let mut cats = links.iter().map(|l| Category::of(&l.name));
+        let mut cats = links.iter().map(|l| l.category());
         let first = cats.next().unwrap_or(Category::General);
         let folder = if cats.all(|c| c == first) {
             category_folder(first, &self.downloads, &self.dirs)
@@ -317,7 +347,9 @@ impl Grabber {
         } else {
             String::new()
         };
-        let archives = links.iter().any(|l| crate::extractq::archive_name(&l.name));
+        let archives = links
+            .iter()
+            .any(|l| !l.magnet && crate::extractq::archive_name(&l.name));
         let p = &mut self.packages[k];
         if !p.folder_set {
             p.folder = folder;
@@ -371,6 +403,7 @@ impl Grabber {
             let host = l.url.host_str().unwrap_or_default();
             if l.state != LinkState::Unchecked
                 || l.known
+                || l.magnet
                 || hosts.iter().filter(|h| **h == host).count() >= CHECKS_PER_HOST
             {
                 continue;
@@ -759,7 +792,12 @@ impl Grabber {
                             let glyph = pos2(row.left() + 40.0, top + 2.0);
                             let mut on = l.on;
                             let size = l.size.map(crate::dialogs::dialog_size).unwrap_or_default();
-                            let state = state_text(&l.state);
+                            let state = if l.magnet && l.state == LinkState::Unchecked {
+                                // i18n: Link grabber, a link's status: a magnet link (a torrent, its files looked up once it is added)
+                                crate::i18n::t("Magnet link").to_owned()
+                            } else {
+                                state_text(&l.state)
+                            };
                             look.name = [l.name.as_str(), &size, &state]
                                 .iter()
                                 .filter(|s| !s.is_empty())
@@ -1023,10 +1061,14 @@ impl Grabber {
     }
 }
 
-/// Two addresses for one file: the same but for case in the host, a default port or a
-/// `#fragment`.
-/// A link's address as Link grabber tells links apart: without its `#fragment` (the same file).
+/// A link's address as Link grabber tells links apart: without its `#fragment` (the same file);
+/// a magnet link by its torrent's hash alone (its name and trackers aside).
 fn address_key(u: &Url) -> Url {
+    if let Some(hash) = crate::transfer::magnet_hash(u.as_str())
+        && let Ok(key) = Url::parse(&format!("magnet:?xt=urn:btih:{hash}"))
+    {
+        return key;
+    }
     let mut u = u.clone();
     u.set_fragment(None);
     u
@@ -1254,5 +1296,72 @@ mod tests {
             g.checking(i, Arc::default());
         }
         assert!(g.to_check().is_empty());
+    }
+
+    /// #709, Tasks → Add batch download from clipboard, as the window takes it: the clipboard
+    /// read off the window's thread, its 15 links (written twice, among other text) and a
+    /// magnet link become 16 ticked rows in two packages, the magnet one never looked up;
+    /// Start hands them all over.
+    #[test]
+    fn copied_links_become_ticked_rows() {
+        let mut post = String::from("Season 1, all episodes:\n");
+        for k in 1..=15 {
+            post.push_str(&format!(
+                "- [Episode {k}](https://media.example.org/s1/ep{k:02}.mp4)\n"
+            ));
+        }
+        post.push_str("Mirror of the first: https://media.example.org/s1/ep01.mp4.\n");
+        post.push_str("Or the torrent: magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=Season%201\n");
+        let text = post.clone();
+        let reader: &'static crate::clipboard::Reader = Box::leak(Box::new(
+            crate::clipboard::Reader::new(move || Some(text.clone()), || {}),
+        ));
+        let mut asked = crate::clipboard::Prefill::ask_of(reader);
+        let until = std::time::Instant::now() + std::time::Duration::from_secs(5);
+        let got = loop {
+            if let Some(got) = asked.answer() {
+                break got;
+            }
+            assert!(
+                std::time::Instant::now() < until,
+                "the clipboard never answered"
+            );
+            std::thread::sleep(std::time::Duration::from_millis(2));
+        };
+        let crate::clipbatch::Clip::Links(found) = crate::clipbatch::read(got.as_deref()) else {
+            panic!("links expected");
+        };
+        let mut g = grabber();
+        g.add(found, "Clipboard".into(), |_| false);
+        assert_eq!(g.links.len(), 16);
+        assert!(g.links.iter().all(|l| l.on), "every row ticked");
+        let rows = g.visible_rows();
+        assert_eq!(rows.len(), 16 + 1, "one package: Various files");
+        assert_eq!(g.packages[0].name, "Various files");
+        let magnet = g.links.iter().find(|l| l.magnet).unwrap();
+        assert_eq!(magnet.name, "Season 1");
+        assert_eq!(magnet.category(), Category::Torrents);
+        assert!(
+            g.to_check().iter().all(|(_, u, _)| u.scheme() == "https"),
+            "a magnet link is not looked up over HTTP"
+        );
+        let picked = g.picked();
+        let all: Vec<&str> = picked
+            .iter()
+            .flat_map(|p| p.links.iter().map(|l| l.0.url.as_str()))
+            .collect();
+        assert_eq!(all.len(), 16);
+        assert_eq!(all[0], "https://media.example.org/s1/ep01.mp4");
+        assert!(all[15].starts_with("magnet:?"));
+        // The same torrent copied again with its trackers: not a second row.
+        g.add(
+            vec![link(
+                "magnet:?xt=urn:btih:0123456789ABCDEF0123456789ABCDEF01234567&tr=udp%3A%2F%2Ft.example%3A80",
+                None,
+            )],
+            String::new(),
+            |_| false,
+        );
+        assert_eq!(g.links.len(), 16);
     }
 }

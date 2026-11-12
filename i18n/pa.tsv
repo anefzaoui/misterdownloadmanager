@@ -40,6 +40,11 @@
 #, machine
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	ਹੁਣ {n} ਲੇਖ ਮੇਲ ਖਾਂਦਾ ਹੈ (ਸਿਰਫ਼ ਨਵੇਂ ਲੇਖ ਜੋੜੇ ਜਾਂਦੇ ਹਨ):|ਹੁਣ {n} ਲੇਖ ਮੇਲ ਖਾਂਦੇ ਹਨ (ਸਿਰਫ਼ ਨਵੇਂ ਲੇਖ ਜੋੜੇ ਜਾਂਦੇ ਹਨ):
 #. count in a dialog box
+#. Cancel in Download File Info with downloads waiting behind it
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	{n} ਹੋਰ ਡਾਊਨਲੋਡ ਉਡੀਕ ਰਿਹਾ ਹੈ। ਕੀ ਇਸਨੂੰ ਵੀ ਰੱਦ ਕਰਨਾ ਹੈ?|{n} ਹੋਰ ਡਾਊਨਲੋਡ ਉਡੀਕ ਰਹੇ ਹਨ। ਕੀ ਇਹਨਾਂ ਨੂੰ ਵੀ ਰੱਦ ਕਰਨਾ ਹੈ?
+#. count in a dialog box
 #. under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -222,6 +227,11 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	A file of this torrent can't be saved safely: {name}	ਇਸ ਟੋਰੈਂਟ ਦੀ ਇੱਕ ਫ਼ਾਈਲ ਨੂੰ ਸੁਰੱਖਿਅਤ ਢੰਗ ਨਾਲ ਸੇਵ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ: {name}
+#. message or event log entry in the main window
+#. Link grabber added a magnet link whose torrent could not be found; {error} says why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	A magnet link's files could not be looked up: {error}	ਇੱਕ ਮੈਗਨੈੱਟ ਲਿੰਕ ਦੀਆਂ ਫ਼ਾਈਲਾਂ ਲੱਭੀਆਂ ਨਹੀਂ ਜਾ ਸਕੀਆਂ: {error}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -301,6 +311,10 @@
 #. text in the tray icon's menu
 #, machine
 	Add batch download	ਬੈਚ ਡਾਊਨਲੋਡ ਸ਼ਾਮਲ ਕਰੋ
+#. message or event log entry in the main window; text in the tray icon's menu
+#. title of the note when Tasks → Add batch download from clipboard finds nothing to download
+#, machine
+	Add batch download from clipboard	ਕਲਿੱਪਬੋਰਡ ਤੋਂ ਬੈਚ ਡਾਊਨਲੋਡ ਸ਼ਾਮਲ ਕਰੋ
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -946,6 +960,10 @@
 #. column title: the peer's torrent program
 #, machine
 	Client	ਕਲਾਇੰਟ
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the clipboard (Tasks → Add batch download from clipboard)
+#, machine
+	Clipboard	ਕਲਿੱਪਬੋਰਡ
 #. text in the Options window
 #, machine
 	Clock:	ਘੜੀ:
@@ -1332,6 +1350,9 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	ਇਹਨਾਂ ਖਾਤਿਆਂ ਰਾਹੀਂ ਸਮਰਥਿਤ ਫਾਈਲ-ਹੋਸਟ ਲਿੰਕ ਡਾਊਨਲੋਡ ਕਰੋ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download the links in the clipboard (Add batch download from clipboard)	ਕਲਿੱਪਬੋਰਡ ਵਿੱਚ ਲਿੰਕ ਡਾਊਨਲੋਡ ਕਰੋ (ਕਲਿੱਪਬੋਰਡ ਤੋਂ ਬੈਚ ਡਾਊਨਲੋਡ ਸ਼ਾਮਲ ਕਰੋ)
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 #, machine
@@ -2385,7 +2406,7 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	ਸਾਰੇ ਟੋਰੈਂਟਾਂ ਲਈ ਅੱਪਲੋਡ ਕਰਨਾ ਇਸ ਤੱਕ ਸੀਮਤ ਕਰੋ
-#. window title in the Link grabber window; group box title in the Options window
+#. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
 	Link grabber	ਲਿੰਕ ਗ੍ਰੈਬਰ
@@ -2486,6 +2507,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Madagascar	ਮੈਡਾਗਾਸਕਰ
+#. text in the Link grabber window
+#. Link grabber, a link's status: a magnet link (a torrent, its files looked up once it is added)
+#, machine
+	Magnet link	ਮੈਗਨੈੱਟ ਲਿੰਕ
 #. message or event log entry in the main window
 #, machine
 	Main download queue	ਮੁੱਖ ਡਾਊਨਲੋਡ ਕਤਾਰ
@@ -2911,6 +2936,9 @@
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
 	No day is ticked: the queue will not start	ਕੋਈ ਦਿਨ ਟਿੱਕ ਨਹੀਂ ਕੀਤਾ ਗਿਆ: ਕਤਾਰ ਸ਼ੁਰੂ ਨਹੀਂ ਹੋਵੇਗੀ
+#. message or event log entry in the main window
+#, machine
+	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	ਕਲਿੱਪਬੋਰਡ ਵਿੱਚ ਕੋਈ ਡਾਊਨਲੋਡ ਲਿੰਕ ਨਹੀਂ ਮਿਲਿਆ। http, https, ftp ਜਾਂ ਮੈਗਨੈੱਟ ਲਿੰਕਾਂ ਵਾਲਾ ਕੋਈ ਟੈਕਸਟ ਕਾਪੀ ਕਰੋ, ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -4380,6 +4408,9 @@
 #. Options → Remote → Status: the settings were changed; they apply on OK
 #, machine
 	The changes apply when you click OK.	ਤਬਦੀਲੀਆਂ ਉਦੋਂ ਲਾਗੂ ਹੁੰਦੀਆਂ ਹਨ ਜਦੋਂ ਤੁਸੀਂ ਠੀਕ ਕਲਿੱਕ ਕਰਦੇ ਹੋ।
+#. message or event log entry in the main window
+#, machine
+	The clipboard holds no text. Copy some links, or a text with links in it, and try again.	ਕਲਿੱਪਬੋਰਡ ਵਿੱਚ ਕੋਈ ਟੈਕਸਟ ਨਹੀਂ ਹੈ। ਕੁਝ ਲਿੰਕ, ਜਾਂ ਲਿੰਕਾਂ ਵਾਲਾ ਕੋਈ ਟੈਕਸਟ ਕਾਪੀ ਕਰੋ, ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -6233,6 +6264,10 @@ key	Ctrl+0	Ctrl+0
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+B	Ctrl+B
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

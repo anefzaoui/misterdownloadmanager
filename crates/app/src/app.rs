@@ -288,8 +288,11 @@ enum Cmd {
     Scheduler,
     /// Downloads → Options (also the toolbar button).
     Options,
-    /// File → Add batch download (true: from the clipboard).
-    Batch(bool),
+    /// Tasks → Add batch download: an address with a `*` over a range.
+    Batch,
+    /// Tasks → Add batch download from clipboard (#709): the copied text's links in Link
+    /// grabber, or a copied numbered address in Batch download.
+    BatchClipboard,
     /// Tasks → Download video from a page… (yt-dlp, M9).
     VideoPage,
     /// Add torrent → Add magnet link… (M15): the Add torrent dialog, empty or with the
@@ -663,6 +666,7 @@ impl Cmd {
     fn hint(&self) -> Option<&'static str> {
         Some(match self {
             Cmd::AddUrl => "Ctrl+N",
+            Cmd::BatchClipboard => "Ctrl+B",
             Cmd::Find => "Ctrl+F",
             Cmd::FindNext => "F3",
             Cmd::MoveRename => "Ctrl+M",
@@ -1025,6 +1029,8 @@ pub struct App {
     clip_checked: Option<Instant>,
     /// The monitor's ask for the clipboard, its read off the window thread (#418).
     clip_asked: Option<crate::clipboard::Ask>,
+    /// Add batch download from clipboard (#709): its read, until it answers.
+    batch_clip: Option<crate::clipboard::Prefill>,
     confirm_delete: Option<dialogs::ConfirmDelete>,
     /// Queue right-click → Delete, asking first: the queue and the question.
     confirm_queue_delete: Option<(usize, dialogs::Confirm)>,
@@ -1616,6 +1622,7 @@ impl App {
             clip_seen: None,
             clip_checked: None,
             clip_asked: None,
+            batch_clip: None,
             tray: None,
             tray_limiter: None,
             tray_last_focused: None,
@@ -2498,7 +2505,10 @@ impl App {
             "addurl" => self.run(Cmd::AddUrl, None, ctx),
             // MDM_CRASH_TEST=1 only (crash.rs): the crash reports' own check.
             "crash-test" => crate::crash::test(tab),
-            "batch" => self.run(Cmd::Batch(false), None, ctx),
+            "batch" => self.run(Cmd::Batch, None, ctx),
+            // Tasks → Add batch download from clipboard (#709's checks: off-screen, the
+            // clipboard is MDM_TEST_CLIPBOARD's file).
+            "batch-clipboard" => self.run(Cmd::BatchClipboard, None, ctx),
             "find" => self.run(Cmd::Find, None, ctx),
             "scheduler" => self.run(Cmd::Scheduler, None, ctx),
             "about" => self.run(Cmd::About, None, ctx),
@@ -3794,7 +3804,8 @@ impl App {
                     continue;
                 }
                 TrayCmd::AddUrl => Cmd::AddUrl,
-                TrayCmd::Batch => Cmd::Batch(false),
+                TrayCmd::Batch => Cmd::Batch,
+                TrayCmd::BatchClipboard => Cmd::BatchClipboard,
                 TrayCmd::LimiterOn => Cmd::LimiterOn,
                 TrayCmd::LimiterOff => Cmd::LimiterOff,
                 TrayCmd::Scheduler => Cmd::Scheduler,
@@ -3951,6 +3962,12 @@ impl App {
         let Some(text) = text.filter(|t| Some(t) != before.as_ref()) else {
             return;
         };
+        // Several links (or words) are not one address: the address parser drops line breaks,
+        // and made one address of a copied list (#709). They are for Tasks → Add batch download
+        // from clipboard.
+        if text.contains(char::is_whitespace) {
+            return;
+        }
         let Ok(url) = url::Url::parse(&text) else {
             return;
         };
@@ -5016,14 +5033,15 @@ impl App {
     }
 
     /// Add torrent → Download Now / Later. Through the debrid account when torrents go there
-    /// (#44): the .torrent's magnet link (its hash, name and trackers), all its files.
-    fn add_torrent(&mut self, add: crate::torrentdlg::TorrentAdd) {
+    /// (#44): the .torrent's magnet link (its hash, name and trackers), all its files. The
+    /// download added, if one was (not when the debrid account takes it).
+    fn add_torrent(&mut self, add: crate::torrentdlg::TorrentAdd) -> Option<u64> {
         if self.torrent_account().is_some()
             && let Some(magnet) =
                 mdm_torrent::magnet_link(&add.meta.torrent).and_then(|m| url::Url::parse(&m).ok())
         {
             self.add_remote_torrent(magnet, add.dir.clone(), add.category, add.start_now);
-            return;
+            return None;
         }
         let meta = &add.meta;
         if let Err(e) = crate::torrents::save_torrent(&meta.info_hash, &meta.torrent) {
@@ -5034,7 +5052,7 @@ impl App {
                     &[("error", &e.to_string())],
                 ),
             ));
-            return;
+            return None;
         }
         let folder = meta.folder_in(&add.dir);
         let dest = crate::torrents::dest_for(meta, &add.dir, add.files.as_deref());
@@ -5098,6 +5116,7 @@ impl App {
             self.queue_later(vec![id], self.settings.queue_panel_later);
         }
         self.dirty = true;
+        Some(id)
     }
 
     /// Right-click → Torrent → Download in order (`in_order`), or its first and last pieces
@@ -5521,6 +5540,45 @@ impl App {
         }
     }
 
+    /// Add batch download from clipboard (#709), once the clipboard's text came (`None`: no
+    /// text): its links in Link grabber (with those there already), a numbered address in Batch
+    /// download, or a note that says why nothing opens.
+    fn batch_from_clipboard(&mut self, text: Option<&str>, ctx: &egui::Context) {
+        let why = match crate::clipbatch::read(text) {
+            crate::clipbatch::Clip::Links(found) => {
+                tracing::info!("add batch download from clipboard: {} links", found.len());
+                // i18n: Link grabber: where the links came from: the clipboard (Tasks → Add batch download from clipboard)
+                let source = crate::i18n::t("Clipboard").to_owned();
+                self.show_import(found, source);
+                dialogs::raise(ctx, dialogs::dialog_viewport("grabber"));
+                return;
+            }
+            crate::clipbatch::Clip::Pattern(p) => {
+                tracing::info!(
+                    "add batch download from clipboard: the pattern {}",
+                    p.address
+                );
+                if self.batch.is_none() {
+                    self.batch = Some(crate::batch::Batch::with_pattern(p));
+                }
+                dialogs::raise(ctx, dialogs::dialog_viewport("batch"));
+                return;
+            }
+            crate::clipbatch::Clip::Empty => crate::i18n::t(
+                "The clipboard holds no text. Copy some links, or a text with links in it, and try again.",
+            ),
+            crate::clipbatch::Clip::NoLinks => crate::i18n::t(
+                "No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.",
+            ),
+        };
+        tracing::info!("add batch download from clipboard: nothing to download");
+        self.notice = Some((
+            // i18n: title of the note when Tasks → Add batch download from clipboard finds nothing to download
+            crate::i18n::mark("Add batch download from clipboard"),
+            why.to_owned(),
+        ));
+    }
+
     /// Batch download → OK: every address goes to the main download queue (IDM's default; its
     /// queue selection panel is not built yet).
     fn add_batch(&mut self, added: crate::batch::Added) {
@@ -5765,27 +5823,15 @@ impl App {
             None => mdm_torrent::Source::magnet(text.trim()).map(|m| (m, true)),
         };
         if let Some((source, from_magnet)) = torrent {
-            let slot: crate::remote::Slot = Default::default();
-            let (out, host, known) = (
-                slot.clone(),
-                self.torrent_host.clone(),
-                self.session_hashes(),
-            );
-            self.rt.spawn(async move {
-                let res = match host.session(known).await {
-                    Ok(t) => t
-                        .metadata(&source, crate::torrentdlg::METADATA_WAIT, None)
-                        .await
-                        .map_err(|e| crate::errors::torrent(&e)),
-                    Err(e) => Err(e),
-                };
-                *out.lock().unwrap() = Some(res);
-            });
+            let slot = self.look_up_torrent(source);
             self.remote_torrents.push(crate::remote::Lookup {
                 slot,
                 category,
                 queue,
                 from_magnet,
+                dir: None,
+                group: None,
+                tell: false,
             });
             return line(&AddAnswer {
                 id: None,
@@ -5840,35 +5886,81 @@ impl App {
         })
     }
 
-    /// The torrents a paired device sent whose files are known now: added with every file
-    /// (into the category's folder), as an RSS rule adds one; never over files already there.
+    /// A torrent's files looked up on the runtime (a magnet link asks the swarm); the answer
+    /// comes in the slot.
+    fn look_up_torrent(&self, source: mdm_torrent::Source) -> crate::remote::Slot {
+        let slot: crate::remote::Slot = Default::default();
+        let (out, host, known) = (
+            slot.clone(),
+            self.torrent_host.clone(),
+            self.session_hashes(),
+        );
+        self.rt.spawn(async move {
+            let res = match host.session(known).await {
+                Ok(t) => t
+                    .metadata(&source, crate::torrentdlg::METADATA_WAIT, None)
+                    .await
+                    .map_err(|e| crate::errors::torrent(&e)),
+                Err(e) => Err(e),
+            };
+            *out.lock().unwrap() = Some(res);
+        });
+        slot
+    }
+
+    /// The torrents a paired device sent, or Link grabber's magnet links (#709), whose files
+    /// are known now: added with every file (into the category's folder, or the package's), as
+    /// an RSS rule adds one; never over files already there.
     fn poll_remote_torrents(&mut self) {
         let mut ready = Vec::new();
-        self.remote_torrents
-            .retain(|l| match l.slot.lock().unwrap().take() {
-                Some(res) => {
-                    ready.push((res, l.category, l.queue, l.from_magnet));
-                    false
-                }
-                None => true,
-            });
-        for (res, category, queue, from_magnet) in ready {
+        for l in std::mem::take(&mut self.remote_torrents) {
+            let res = l.slot.lock().unwrap().take();
+            match res {
+                Some(res) => ready.push((res, l)),
+                None => self.remote_torrents.push(l),
+            }
+        }
+        for (res, l) in ready {
+            let crate::remote::Lookup {
+                category,
+                queue,
+                from_magnet,
+                dir,
+                group,
+                tell,
+                ..
+            } = l;
             let meta = match res {
                 Ok(meta) => meta,
                 Err(e) => {
                     tracing::warn!("remote control: a torrent could not be read: {e}");
+                    if tell {
+                        self.notice = Some((
+                            crate::i18n::mark("Link grabber"),
+                            crate::i18n::fmt(
+                                // i18n: Link grabber added a magnet link whose torrent could not be found; {error} says why
+                                crate::i18n::t(
+                                    "A magnet link's files could not be looked up: {error}",
+                                ),
+                                &[("error", &e)],
+                            ),
+                        ));
+                    }
                     continue;
                 }
             };
             if self.torrent_hashes().contains(&meta.info_hash) {
+                tracing::info!("{}: this torrent is in the list already", meta.name);
                 continue;
             }
             let category = category.unwrap_or_else(|| crate::torrentdlg::category_of(&meta));
-            let dir = crate::model::category_folder(
-                category,
-                &self.downloads,
-                &self.settings.category_dirs,
-            );
+            let dir = dir.unwrap_or_else(|| {
+                crate::model::category_folder(
+                    category,
+                    &self.downloads,
+                    &self.settings.category_dirs,
+                )
+            });
             if !meta.existing_in(&dir).is_empty() {
                 tracing::warn!(
                     "remote control: {}: its files are already in {}",
@@ -5877,7 +5969,7 @@ impl App {
                 );
                 continue;
             }
-            self.add_torrent(crate::torrentdlg::TorrentAdd {
+            let id = self.add_torrent(crate::torrentdlg::TorrentAdd {
                 meta,
                 dir,
                 files: None,
@@ -5888,6 +5980,11 @@ impl App {
                 queue,
                 quiet: true,
             });
+            if let (Some(g), Some(id)) = (group, id)
+                && let Some(i) = self.item(id)
+            {
+                i.group = Some(g);
+            }
         }
     }
 
@@ -6564,11 +6661,14 @@ impl App {
                         .pick_file()
                 });
             }
-            Cmd::Batch(clipboard) => {
+            Cmd::Batch => {
                 if self.batch.is_none() {
-                    self.batch = Some(crate::batch::Batch::new(clipboard));
+                    self.batch = Some(crate::batch::Batch::new());
                 }
             }
+            // Read now, off the window's thread; what it holds opens a window when it comes
+            // (`batch_from_clipboard`).
+            Cmd::BatchClipboard => self.batch_clip = Some(crate::clipboard::Prefill::ask()),
             Cmd::Options => {
                 if self.options.is_none() {
                     self.options = Some(
@@ -7018,10 +7118,10 @@ impl App {
                 I("Open &torrent file...", Cmd::OpenTorrentFile, true, false),
                 I("Add &magnet link...", Cmd::AddMagnet, true, false),
                 I("Torrent setti&ngs...", Cmd::TorrentSettings, true, false),
-                I("Add &batch download", Cmd::Batch(false), true, false),
+                I("Add &batch download", Cmd::Batch, true, false),
                 I(
                     "Add batch download from &clipboard",
-                    Cmd::Batch(true),
+                    Cmd::BatchClipboard,
                     true,
                     false,
                 ),
@@ -8408,14 +8508,17 @@ impl App {
                 PopupResult::Dismissed => self.popup = None,
             }
         }
-        // Ctrl+F finds, F3 finds the next match (Downloads menu); Ctrl+N adds a download (not
-        // in IDM). The full list: Help → Keyboard shortcuts (`shortcuts.rs`).
+        // Ctrl+F finds, F3 finds the next match (Downloads menu); Ctrl+N adds a download and
+        // Ctrl+B the links in the clipboard (#709), neither in IDM. Not Ctrl+Shift+V for that: the
+        // windowing library answers the paste keys by reading the clipboard on the window's
+        // thread (#418). The full list: Help → Keyboard shortcuts (`help.rs`).
         if chosen.is_none() && self.popup.is_none() && self.open_menu.is_none() {
-            let (find, next, add) = ctx.input_mut(|i| {
+            let (find, next, add, clip) = ctx.input_mut(|i| {
                 (
                     i.consume_key(egui::Modifiers::COMMAND, egui::Key::F),
                     i.consume_key(egui::Modifiers::NONE, egui::Key::F3),
                     i.consume_key(egui::Modifiers::COMMAND, egui::Key::N),
+                    i.consume_key(egui::Modifiers::COMMAND, egui::Key::B),
                 )
             });
             // Ctrl+M as IDM; F2 as renaming in Explorer.
@@ -8431,6 +8534,8 @@ impl App {
                 chosen = Some((Cmd::FindNext, None));
             } else if add {
                 chosen = Some((Cmd::AddUrl, None));
+            } else if clip {
+                chosen = Some((Cmd::BatchClipboard, None));
             }
         }
         // Delete removes the selected downloads, Shift+Delete with their files (both ask first);
@@ -9088,7 +9193,9 @@ impl App {
 
     /// Link grabber's ticked links: each package's to its folder, tagged with the package (its
     /// archives are extracted when all are in), into the main queue; started too on Start (else
-    /// only queued, as IDM's import).
+    /// only queued, as IDM's import). A magnet link's torrent is added once its files are known
+    /// (#709), with every file, in the package's folder when it has one. All of them are one
+    /// group (#766): one summary when the last is done.
     fn add_grabbed(&mut self, start: bool, packages: Vec<crate::grabber::Picked>) {
         // Package numbers after those in the list.
         let last = self
@@ -9098,6 +9205,7 @@ impl App {
             .max()
             .unwrap_or(0);
         let mut added = Vec::new();
+        let mut magnets = Vec::new();
         for (id, pk) in (last + 1..).zip(packages) {
             let tag = crate::model::PackageTag {
                 id,
@@ -9107,6 +9215,11 @@ impl App {
                 password: pk.password.clone(),
             };
             for (d, name, size) in pk.links {
+                if let Some(magnet) = mdm_torrent::Source::magnet(&d.url) {
+                    let dir = (!pk.folder.as_os_str().is_empty()).then(|| pk.folder.clone());
+                    magnets.push((magnet, dir));
+                    continue;
+                }
                 let Ok(url) = url::Url::parse(&d.url) else {
                     continue;
                 };
@@ -9145,7 +9258,28 @@ impl App {
                 added.push(id);
             }
         }
-        self.group(&added);
+        // The torrents join the others' group when their files come (a group of one
+        // download's summary is its own Download complete).
+        let group = (added.len() + magnets.len() > 1)
+            .then(|| added.first().copied())
+            .flatten();
+        if let Some(g) = group {
+            for i in self.items.iter_mut().filter(|i| added.contains(&i.id)) {
+                i.group = Some(g);
+            }
+        }
+        for (source, dir) in magnets {
+            let slot = self.look_up_torrent(source);
+            self.remote_torrents.push(crate::remote::Lookup {
+                slot,
+                category: None,
+                queue: (!start).then_some(0),
+                from_magnet: true,
+                dir,
+                group,
+                tell: true,
+            });
+        }
         self.dirty = true;
         // Start runs the main queue (its files at once, as Options → Queue sets).
         if start && !added.is_empty() {
@@ -9978,6 +10112,10 @@ impl App {
                     }
                 }
             }
+        }
+        if let Some(got) = self.batch_clip.as_mut().and_then(|p| p.answer()) {
+            self.batch_clip = None;
+            self.batch_from_clipboard(got.as_deref(), ctx);
         }
         if let Some(b) = &mut self.batch {
             match b.show(ctx) {

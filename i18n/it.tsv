@@ -38,6 +38,11 @@
 #, machine
 @plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	C'è {n} altro download in attesa. Vuoi annullarlo anche tu?|Ci sono {n} altri download in attesa. Vuoi annullarli anche tu?
 #. count in a dialog box
+#. under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} more|and {n} more	e {n} altro|e {n} altri
+#. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
 @plural	and {n} other file|and {n} other files	e {n} altro file|e altri {n} file
@@ -180,6 +185,11 @@
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
 	A file of this torrent can't be saved safely: {name}	Impossibile salvare in modo sicuro un file di questo torrent: {name}
+#. message or event log entry in the main window
+#. Link grabber added a magnet link whose torrent could not be found; {error} says why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	A magnet link's files could not be looked up: {error}	Impossibile cercare i file di un link magnet: {error}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Un ID di configurazione NextDNS è composto da sei caratteri tra lettere e cifre (0-9, a-f).
@@ -241,6 +251,10 @@
 	Add an account	Aggiungi un account
 #. text in the tray icon's menu
 	Add batch download	Aggiungi download in batch
+#. message or event log entry in the main window; text in the tray icon's menu
+#. title of the note when Tasks → Add batch download from clipboard finds nothing to download
+#, machine
+	Add batch download from clipboard	Aggiungi download in batch dagli Appunti
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 	Add browser...	Aggiungi browser...
@@ -723,6 +737,10 @@
 #. text in a download's progress window
 #. column title: the peer's torrent program
 	Client	Client
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the clipboard (Tasks → Add batch download from clipboard)
+#, machine
+	Clipboard	Appunti
 #. text in the Options window
 	Clock:	Formato ora:
 #. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in standard windows
@@ -1008,6 +1026,9 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 	Download supported file-host links through these accounts	Scarica i collegamenti dei file hosting supportati tramite questi account
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download the links in the clipboard (Add batch download from clipboard)	Scarica i collegamenti negli Appunti (Aggiungi download in batch dagli Appunti)
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 	Download through {service}	Scarica tramite {service}
@@ -1796,7 +1817,7 @@
 #. text in the Add torrent window
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 	Limit uploading for all torrents to	Limita l'upload di tutti i torrent a
-#. window title in the Link grabber window; group box title in the Options window
+#. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 	Link grabber	Link grabber
 #. text in the Link grabber window
@@ -1875,6 +1896,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Madagascar	Madagascar
+#. text in the Link grabber window
+#. Link grabber, a link's status: a magnet link (a torrent, its files looked up once it is added)
+#, machine
+	Magnet link	Link magnet
 #. message or event log entry in the main window
 	Main download queue	Coda di download principale
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2188,6 +2213,9 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's weekdays when none is ticked
 	No day is ticked: the queue will not start	Nessun giorno selezionato: la coda non partirà
+#. message or event log entry in the main window
+#, machine
+	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	Nessun collegamento di download trovato negli Appunti. Copia un testo con collegamenti http, https, ftp o magnet e riprova.
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 	No downloads here	Nessun download qui
@@ -3285,6 +3313,9 @@
 #. text in the Options window
 #. Options → Remote → Status: the settings were changed; they apply on OK
 	The changes apply when you click OK.	Le modifiche verranno applicate quando fai clic su OK.
+#. message or event log entry in the main window
+#, machine
+	The clipboard holds no text. Copy some links, or a text with links in it, and try again.	Gli Appunti non contengono testo. Copia alcuni collegamenti o un testo con collegamenti e riprova.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 	The clipboard is busy: try again.	Gli Appunti sono occupati: riprova.
@@ -4726,6 +4757,10 @@ key	Ctrl+0	Ctrl+0
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+B	Ctrl+B
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Ctrl+click	Ctrl+clic

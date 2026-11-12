@@ -40,6 +40,11 @@
 #, machine
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	נמצא מאמר תואם אחד ({n}) כעת (נוספים פריטים חדשים בלבד):|נמצאו {n} מאמרים תואמים כעת (נוספים פריטים חדשים בלבד):|נמצאו {n} מאמרים תואמים כעת (נוספים פריטים חדשים בלבד):
 #. count in a dialog box
+#. under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} more|and {n} more	ועוד {n} אחד|ועוד {n} נוספים|ועוד {n} נוספים
+#. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -70,6 +75,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	ערך אחד ({n}) הושמט (קישור, או שם המוביל אל מחוץ לתיקיה)|{n} ערכים הושמטו (קישורים, או שמות המובילים אל מחוץ לתיקיה)|{n} ערכים הושמטו (קישורים, או שמות המובילים אל מחוץ לתיקיה)
+#. count in a dialog box
+#. the summary of downloads added together; after "12 downloads finished": {n} of them failed
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} failed|{n} failed	{n} נכשלה|{n} נכשלו|{n} נכשלו
 #. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
@@ -199,6 +209,11 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	A file of this torrent can't be saved safely: {name}	לא ניתן לשמור בבטחה קובץ מהטורנט הזה: {name}
+#. message or event log entry in the main window
+#. Link grabber added a magnet link whose torrent could not be found; {error} says why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	A magnet link's files could not be looked up: {error}	לא ניתן היה למצוא את הקבצים של קישור המגנט: {error}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -278,6 +293,10 @@
 #. text in the tray icon's menu
 #, machine
 	Add batch download	הוסף הורדת אצווה
+#. message or event log entry in the main window; text in the tray icon's menu
+#. title of the note when Tasks → Add batch download from clipboard finds nothing to download
+#, machine
+	Add batch download from clipboard	הוספת הורדות באצווה מהלוח
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -923,6 +942,10 @@
 #. column title: the peer's torrent program
 #, machine
 	Client	לקוח
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the clipboard (Tasks → Add batch download from clipboard)
+#, machine
+	Clipboard	לוח
 #. text in the Options window
 #, machine
 	Clock:	שעון:
@@ -1309,6 +1332,9 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	הורד קישורי מארחי קבצים נתמכים דרך חשבונות אלה
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download the links in the clipboard (Add batch download from clipboard)	הורדת הקישורים שבלוח (הוספת הורדות באצווה מהלוח)
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 #, machine
@@ -2362,7 +2388,7 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	הגבלת העלאה עבור כל הטורנטים ל-
-#. window title in the Link grabber window; group box title in the Options window
+#. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
 	Link grabber	לוכד קישורים
@@ -2463,6 +2489,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Madagascar	מדגסקר
+#. text in the Link grabber window
+#. Link grabber, a link's status: a magnet link (a torrent, its files looked up once it is added)
+#, machine
+	Magnet link	קישור מגנט
 #. message or event log entry in the main window
 #, machine
 	Main download queue	תור ההורדות הראשי
@@ -2888,6 +2918,9 @@
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
 	No day is ticked: the queue will not start	לא סומן אף יום: התור לא יופעל
+#. message or event log entry in the main window
+#, machine
+	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	לא נמצאו קישורי הורדה בלוח. העתק טקסט עם קישורי http, https, ftp או magnet, ונסה שוב.
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -4357,6 +4390,9 @@
 #. Options → Remote → Status: the settings were changed; they apply on OK
 #, machine
 	The changes apply when you click OK.	השינויים יחולו לאחר שתלחץ על אישור.
+#. message or event log entry in the main window
+#, machine
+	The clipboard holds no text. Copy some links, or a text with links in it, and try again.	הלוח אינו מכיל טקסט. העתק כמה קישורים, או טקסט עם קישורים, ונסה שוב.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -6210,6 +6246,10 @@ key	Ctrl+0	Ctrl+0
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+B	Ctrl+B
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

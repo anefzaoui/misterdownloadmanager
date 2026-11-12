@@ -177,6 +177,10 @@
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
 	A file of this torrent can't be saved safely: {name}	A file of this torrent can't be saved safely: {name}
+#. message or event log entry in the main window
+#. Link grabber added a magnet link whose torrent could not be found; {error} says why
+#. {error} = an error message (keep the braces as they are)
+	A magnet link's files could not be looked up: {error}	A magnet link's files could not be looked up: {error}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	A NextDNS configuration ID is six letters and digits (0-9, a-f).
@@ -236,6 +240,9 @@
 	Add an account	Add an account
 #. text in the tray icon's menu
 	Add batch download	Add batch download
+#. message or event log entry in the main window; text in the tray icon's menu
+#. title of the note when Tasks → Add batch download from clipboard finds nothing to download
+	Add batch download from clipboard	Add batch download from clipboard
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 	Add browser...	Add browser...
@@ -714,6 +721,9 @@
 #. text in a download's progress window
 #. column title: the peer's torrent program
 	Client	Client
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the clipboard (Tasks → Add batch download from clipboard)
+	Clipboard	Clipboard
 #. text in the Options window
 	Clock:	Clock:
 #. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in standard windows
@@ -996,6 +1006,8 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 	Download supported file-host links through these accounts	Download supported file-host links through these accounts
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+	Download the links in the clipboard (Add batch download from clipboard)	Download the links in the clipboard (Add batch download from clipboard)
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 	Download through {service}	Download through {service}
@@ -1772,7 +1784,7 @@
 #. text in the Add torrent window
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 	Limit uploading for all torrents to	Limit uploading for all torrents to
-#. window title in the Link grabber window; group box title in the Options window
+#. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 	Link grabber	Link grabber
 #. text in the Link grabber window
@@ -1849,6 +1861,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Madagascar	Madagascar
+#. text in the Link grabber window
+#. Link grabber, a link's status: a magnet link (a torrent, its files looked up once it is added)
+	Magnet link	Magnet link
 #. message or event log entry in the main window
 	Main download queue	Main download queue
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2161,6 +2176,8 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's weekdays when none is ticked
 	No day is ticked: the queue will not start	No day is ticked: the queue will not start
+#. message or event log entry in the main window
+	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 	No downloads here	No downloads here
@@ -3243,6 +3260,8 @@
 #. text in the Options window
 #. Options → Remote → Status: the settings were changed; they apply on OK
 	The changes apply when you click OK.	The changes apply when you click OK.
+#. message or event log entry in the main window
+	The clipboard holds no text. Copy some links, or a text with links in it, and try again.	The clipboard holds no text. Copy some links, or a text with links in it, and try again.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 	The clipboard is busy: try again.	The clipboard is busy: try again.
@@ -4623,6 +4642,9 @@ key	Ctrl+0	Ctrl+0
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+key	Ctrl+B	Ctrl+B
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Ctrl+click	Ctrl+click

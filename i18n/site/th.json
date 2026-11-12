@@ -498,6 +498,10 @@
    "source": "Sounds: a sound for each event.",
    "text": "เสียง: เสียงสำหรับแต่ละเหตุการณ์"
   },
+  "07640f7e75a3c8b1": {
+   "source": "; a choice's <x1/> is what <x2/> takes (the very formats it was sized from, as <x3/>, then the nearest should those be gone), <x4/> says its <x5/> is an estimate, <x6/> is <x7/>, <x8/>, <x9/>…, <x10/> is <x11/> (or <x12/> beside an HDR choice); a subtitle's <x13/> is what <x14/> takes.",
+   "text": "; <x1/> ของตัวเลือกคือสิ่งที่ <x2/> ใช้ (รูปแบบที่ถูกปรับขนาดมาโดยตรง เช่น <x3/> จากนั้นจึงเป็นรูปแบบที่ใกล้เคียงที่สุดหากรูปแบบเหล่านั้นหายไป), <x4/> บอกว่า <x5/> เป็นค่าประมาณ, <x6/> คือ <x7/>, <x8/>, <x9/>…, <x10/> คือ <x11/> (หรือ <x12/> ข้างตัวเลือก HDR); <x13/> ของคำบรรยายคือสิ่งที่ <x14/> ใช้"
+  },
   "0769503d30963dbd": {
    "source": "A column header being dragged",
    "text": "หัวคอลัมน์ที่กำลังถูกลาก"
@@ -982,10 +986,6 @@
    "source": "Make the selection longer or shorter",
    "text": "ทำให้ส่วนที่เลือกยาวขึ้นหรือสั้นลง"
   },
-  "0f7aa29dcfefad04": {
-   "source": "<g1>Its menu</g1> (the arrow next to it): <g2>Hide on this video</g2>, <g3>Never on</g3> the site (MDM remembers the site), and <g4>Button settings...</g4>, which opens MDM's Options.",
-   "text": "<g1>เมนู</g1> (ลูกศรถัดจากปุ่ม): <g2>ซ่อนบนวิดีโอนี้</g2>, <g3>ไม่แสดงบน</g3> เว็บไซต์นี้ (MDM จะจำเว็บไซต์นั้น) และ <g4>การตั้งค่าปุ่ม...</g4> ซึ่งจะเปิดตัวเลือกของ MDM"
-  },
   "0f7bff98a3ced2ac": {
    "source": "Yes. Put downloads in a queue and let the Scheduler start it at a set time, stop it at another, and even shut down or put the computer to sleep when the queue is done. See Download overnight.",
    "text": "ได้ คุณสามารถใส่ไฟล์ดาวน์โหลดลงในคิว และให้ตัวจัดกำหนดการเริ่มดาวน์โหลดในเวลาที่กำหนด หยุดในอีกเวลาหนึ่ง และแม้กระทั่งปิดเครื่องหรือทำให้คอมพิวเตอร์เข้าสู่โหมดสลีปเมื่อคิวเสร็จสิ้น ดูที่ ดาวน์โหลดข้ามคืน"
@@ -1449,6 +1449,10 @@
   "165ea5e73977b362": {
    "source": "In English, the <g1>Last Try Date</g1> and <g2>Added</g2> columns follow the system's 12- or 24-hour clock: <x3/> when Windows uses a 12-hour clock, and <g4>Added</g4> starts wide enough for it (<g5>#392</g5>).",
    "text": "ในภาษาอังกฤษ คอลัมน์ <g1>วันที่ลองครั้งล่าสุด</g1> และ <g2>เพิ่มแล้ว</g2> จะแสดงตามรูปแบบเวลา 12 หรือ 24 ชั่วโมงของระบบ: <x3/> เมื่อ Windows ใช้รูปแบบเวลา 12 ชั่วโมง และ <g4>เพิ่มแล้ว</g4> จะมีความกว้างเพียงพอสำหรับรูปแบบนั้น (<g5>#392</g5>)"
+  },
+  "167087cbbeb790d1": {
+   "source": "Pick the file. <g1>Link grabber</g1> lists every web address MDM found in it, in packages. While MDM reads a long file, the strip under the list of downloads says <g2>Reading</g2> and the file's name; you can go on using MDM meanwhile. Import reads files of up to 64 MB, far more than any list of links holds: a larger file (a video, an archive, a backup picked by mistake) is refused with a message.",
+   "text": "เลือกไฟล์ <g1>ตัวดึงลิงก์</g1> จะแสดงที่อยู่เว็บทุกรายการที่ MDM พบในไฟล์นั้น โดยจัดเป็นแพ็กเกจ ขณะที่ MDM กำลังอ่านไฟล์ขนาดใหญ่ แถบใต้รายการดาวน์โหลดจะแสดง <g2>กำลังอ่าน</g2> และชื่อไฟล์ คุณสามารถใช้งาน MDM ต่อไปได้ในระหว่างนั้น การนำเข้าจะอ่านไฟล์ได้สูงสุด 64 MB ซึ่งมากกว่ารายการลิงก์ใด ๆ มาก: ไฟล์ที่ใหญ่กว่า (วิดีโอ, ไฟล์เก็บถาวร, การสำรองข้อมูลที่เลือกผิดพลาด) จะถูกปฏิเสธพร้อมข้อความ"
   },
   "167b6aef6b7c3e2d": {
    "source": "On Linux and macOS, MDM sets browser integration up itself each time it starts: start MDM once. <g1>Test browser integration</g1> says what went wrong if it couldn't, such as <g2>The helper program the browsers start is missing</g2>: <g3>Set it up</g3> puts it back.",
@@ -2894,6 +2898,10 @@
    "source": "Right-click any text box for <g1>Undo</g1>, <g2>Cut</g2>, <g3>Copy</g3>, <g4>Paste</g4>, <g5>Delete</g5> and <g6>Select all</g6>. A read-only value (an address, a path, a version) copies with <g7>Ctrl+C</g7> or its right-click menu.",
    "text": "คลิกขวาที่กล่องข้อความใดก็ได้เพื่อ <g1>เลิกทำ</g1>, <g2>ตัด</g2>, <g3>คัดลอก</g3>, <g4>วาง</g4>, <g5>ลบ</g5> และ <g6>เลือกทั้งหมด</g6> ค่าที่อ่านอย่างเดียว (ที่อยู่, เส้นทาง, เวอร์ชัน) จะคัดลอกด้วย <g7>Ctrl+C</g7> หรือเมนูคลิกขวา"
   },
+  "2b85e42ae79f0732": {
+   "source": "<g1>Off on this site</g1> (grey): after <g2>Never on</g2> the site, or when Options keep it off there. <g3>Turn on</g3> shows it on the site again.",
+   "text": "<g1>ปิดใช้งานบนไซต์นี้</g1> (สีเทา): หลังจาก <g2>ไม่แสดงบน</g2> ไซต์นี้ หรือเมื่อตัวเลือกปิดใช้งานไว้ที่นั่น <g3>เปิด</g3> จะแสดงบนไซต์อีกครั้ง"
+  },
   "2bb32fb9b3228a28": {
    "source": "Once every file is here, MDM removes the torrent from the account's list. On Premiumize, only the transfer's record goes: its files stay in your cloud.",
    "text": "เมื่อดาวน์โหลดไฟล์ครบแล้ว MDM จะนำทอร์เรนต์ออกจากรายการของบัญชี สำหรับ Premiumize จะลบเฉพาะประวัติการถ่ายโอน ส่วนไฟล์ยังอยู่ในคลาวด์ของคุณ"
@@ -3417,6 +3425,10 @@
   "33cb6035f72e6370": {
    "source": "Choose the subtitles; tick Put them into the video to keep them inside the file.",
    "text": "เลือกคำบรรยาย แล้วเลือก ใส่ลงในวิดีโอ เพื่อเก็บคำบรรยายไว้ในไฟล์"
+  },
+  "33cd34762a5593c2": {
+   "source": "It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. When the button can't tell which one you mean, the toolbar button's <g1>Media on this page</g1> lists them all. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
+   "text": "ปุ่มจะเลือกวิดีโอที่คุณคลิก: ไฟล์ของวิดีโอเองเมื่อเล่นไฟล์นั้น หรือสตรีมที่โปรแกรมเล่นโหลด (HLS หรือ DASH) มิฉะนั้นจะเป็นหน้าเว็บ เมื่อปุ่มไม่สามารถระบุได้ว่าคุณหมายถึงวิดีโอใด ปุ่ม <g1>สื่อในหน้านี้</g1> บนแถบเครื่องมือจะแสดงรายการทั้งหมด โปรแกรมเล่นแบบฝังก็ใช้งานได้เช่นกัน และการลงชื่อเข้าใช้ของคุณสำหรับไซต์, หน้าที่ฝังโปรแกรมเล่น และ User-Agent ของเบราว์เซอร์ของคุณจะถูกส่งไปด้วย ดังนั้นวิดีโอสำหรับสมาชิก หรือวิดีโอที่เล่นได้เฉพาะบนไซต์ที่ฝังเท่านั้น ก็สามารถดาวน์โหลดได้ โปรแกรมเล่นเสียงก็มีปุ่มนี้เช่นกัน"
   },
   "33e74c2131bce5b0": {
    "source": "Torrents share the cap fairly",
@@ -4094,10 +4106,6 @@
    "source": "A download carries its site's cookies (and a form's data) to MDM. A few sites set so many that together they exceed what MDM accepts from the browser (1 MB). The browser kept this one. Signing out and back in to the site usually trims them.",
    "text": "การดาวน์โหลดจะส่งคุกกี้ของเว็บไซต์ (และข้อมูลในฟอร์ม) ไปยัง MDM บางเว็บไซต์มีคุกกี้จำนวนมากจนมีขนาดรวมเกินขีดจำกัดที่ MDM รับจากเบราว์เซอร์ (1 MB) เบราว์เซอร์จึงเก็บการดาวน์โหลดนี้ไว้ การออกจากระบบแล้วลงชื่อเข้าใช้เว็บไซต์อีกครั้งมักช่วยลดขนาดคุกกี้ได้"
   },
-  "3d860906265d25ca": {
-   "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and a menu opens over the video: MDM looks up the qualities it can download and lists them with their sizes. Pick one and it downloads at once, with only its progress window; MDM's main window stays where it is (with <g2>Do not start downloading, only add files to the queue</g2> on in Options, it goes in the queue instead). <g3>Open in Mister Download Manager...</g3> at the bottom of the menu opens the <g4>Download video from a page</g4> window instead. MDM must be running for the menu: when it isn't, or for another MDM you send downloads to, a click opens that window directly. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. When the button can't tell which one you mean, the toolbar button's <g5>Media on this page</g5> lists them all. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
-   "text": "ชี้ไปที่วิดีโอบนหน้าเว็บ แล้วปุ่มเล็ก ๆ <g1>ดาวน์โหลดวิดีโอ</g1> จะปรากฏขึ้นที่ขอบของวิดีโอ คลิกที่ปุ่มนั้นแล้วเมนูจะเปิดขึ้นเหนือวิดีโอ: MDM จะค้นหาคุณภาพที่สามารถดาวน์โหลดได้และแสดงรายการพร้อมขนาด เลือกหนึ่งรายการแล้วจะดาวน์โหลดทันที โดยมีเพียงหน้าต่างแสดงความคืบหน้าเท่านั้น หน้าต่างหลักของ MDM จะยังคงอยู่ที่เดิม (หากเปิด <g2>ไม่เริ่มดาวน์โหลด เพิ่มไฟล์ลงในคิวเท่านั้น</g2> ในตัวเลือก ไฟล์จะเข้าคิวแทน) <g3>เปิดใน Mister Download Manager...</g3> ที่ด้านล่างของเมนูจะเปิดหน้าต่าง <g4>ดาวน์โหลดวิดีโอจากหน้า</g4> แทน MDM ต้องทำงานอยู่เพื่อให้เมนูแสดง: หากไม่ได้ทำงานอยู่ หรือสำหรับ MDM อื่นที่คุณส่งการดาวน์โหลดไปให้ การคลิกจะเปิดหน้าต่างนั้นโดยตรง ระบบจะนำวิดีโอที่คุณคลิก: ไฟล์ของวิดีโอเองเมื่อเล่น หรือสตรีมที่โปรแกรมเล่นโหลด (HLS หรือ DASH) มิฉะนั้นจะเป็นหน้าเว็บ เมื่อปุ่มไม่สามารถระบุได้ว่าคุณหมายถึงวิดีโอใด ปุ่มแถบเครื่องมือ <g5>สื่อในหน้านี้</g5> จะแสดงรายการทั้งหมด โปรแกรมเล่นแบบฝังก็ใช้งานได้เช่นกัน และการลงชื่อเข้าใช้ของคุณสำหรับเว็บไซต์ หน้าเว็บที่ฝังโปรแกรมเล่น และ User-Agent ของเบราว์เซอร์ของคุณจะถูกส่งไปด้วย เพื่อให้สามารถดาวน์โหลดวิดีโอสำหรับสมาชิก หรือวิดีโอที่เล่นได้เฉพาะบนเว็บไซต์ที่ฝังเท่านั้น โปรแกรมเล่นเสียงก็มีปุ่มนี้ด้วย"
-  },
   "3d9137882fe73360": {
    "source": "<g1><g2>Yes</g2></g1><g3>Apache-2.0</g3>",
    "text": "<g1><g2>ใช่</g2></g1><g3>Apache-2.0</g3>"
@@ -4418,10 +4426,6 @@
    "source": "The download list →",
    "text": "รายการดาวน์โหลด →"
   },
-  "4231bc950a14bdeb": {
-   "source": "Before you click <g1>OK</g1>, the window shows the <g2>First file</g2>, <g3>Second file</g3> and <g4>Last file</g4>, so a typo shows up before anything downloads. If the server needs a login, tick <g5>Use authorization</g5>. Copied the address already? <g6>Tasks → Add batch download from clipboard</g6> fills it in.",
-   "text": "ก่อนคลิก <g1>ตกลง</g1> หน้าต่างจะแสดง <g2>ไฟล์แรก</g2>, <g3>ไฟล์ที่สอง</g3> และ <g4>ไฟล์สุดท้าย</g4> เพื่อให้เห็นข้อผิดพลาดก่อนที่จะดาวน์โหลด หากเซิร์ฟเวอร์ต้องการการเข้าสู่ระบบ ให้ทำเครื่องหมายที่ <g5>ใช้การอนุญาต</g5> คัดลอกที่อยู่แล้วใช่ไหม? <g6>งาน → เพิ่มการดาวน์โหลดเป็นชุดจากคลิปบอร์ด</g6> จะกรอกให้"
-  },
   "42719c02fcae1f7c": {
    "source": "The copy of the extension from the Chrome Web Store showed no <g1>Download video</g1> button on YouTube before version 0.5.1. From 0.5.1 it shows it. Your browser updates extensions by itself; to get it sooner, open its extensions page and update them there.",
    "text": "ส่วนขยายที่ได้จาก Chrome Web Store ไม่แสดงปุ่ม <g1>ดาวน์โหลดวิดีโอ</g1> บน YouTube ก่อนเวอร์ชัน 0.5.1 ตั้งแต่เวอร์ชัน 0.5.1 เป็นต้นไปจะแสดงปุ่มนี้ เบราว์เซอร์ของคุณจะอัปเดตส่วนขยายเอง หากต้องการอัปเดตเร็วขึ้น ให้เปิดหน้าส่วนขยายของเบราว์เซอร์แล้วอัปเดตที่นั่น"
@@ -4521,10 +4525,6 @@
   "43ff6b9c3376c383": {
    "source": "Firefox, Chrome, Edge, Brave, Opera, Vivaldi",
    "text": "Firefox, Chrome, Edge, Brave, Opera, Vivaldi"
-  },
-  "4409b6268f79d30a": {
-   "source": "<g1>Pasting.</g1> Choose <g2>Tasks → Link grabber...</g2> and press <g3>Ctrl+V</g3>: every web address in the copied text is added.",
-   "text": "<g1>วาง</g1> เลือก <g2>งาน → ตัวคว้าลิงก์...</g2> แล้วกด <g3>Ctrl+V</g3>: ที่อยู่เว็บทุกรายการในข้อความที่คัดลอกจะถูกเพิ่มเข้ามา"
   },
   "441473c88f5bb354": {
    "source": "Not listed",
@@ -5402,6 +5402,10 @@
    "source": "Select them (<g1>Ctrl+click</g1> for several).",
    "text": "เลือกไฟล์เหล่านั้น (กด <g1>Ctrl+คลิก</g1> สำหรับหลายไฟล์)"
   },
+  "523e1e162fb9a721": {
+   "source": "Download the links in the clipboard (<g1>Tasks → Add batch download from clipboard</g1>)",
+   "text": "ดาวน์โหลดลิงก์ในคลิปบอร์ด (<g1>งาน → เพิ่มการดาวน์โหลดแบบกลุ่มจากคลิปบอร์ด</g1>)"
+  },
   "52434a6b584524ff": {
    "source": "<g1>Windows 11's look in light mode</g1>: rounded text boxes and drop-downs (no more black corner dots), pressed states on every button (issue #7), focus rings only when you use the keyboard, tooltips with Windows 11's corners and padding, and dark mode in every window.",
    "text": "<g1>รูปลักษณ์ของ Windows 11 ในโหมดสว่าง</g1>: ช่องข้อความและเมนูแบบเลื่อนลงมีมุมโค้งมน (ไม่มีจุดสีดำที่มุมอีกต่อไป), ปุ่มทุกปุ่มแสดงสถานะเมื่อกด (ปัญหา #7), วงแหวนโฟกัสจะแสดงเฉพาะเมื่อใช้คีย์บอร์ด, คำแนะนำเครื่องมือมีมุมโค้งมนและระยะห่างแบบ Windows 11 และทุกหน้าต่างรองรับโหมดมืด"
@@ -5413,6 +5417,10 @@
   "52568481c8f45946": {
    "source": "Classic",
    "text": "คลาสสิก"
+  },
+  "52779ac6724617b1": {
+   "source": "After a click it says what happened, in its own colour:",
+   "text": "หลังจากคลิก ปุ่มจะแสดงสิ่งที่เกิดขึ้นด้วยสีของตัวเอง:"
   },
   "52ceae361fb11f6c": {
    "source": "A list's, a table's or a box's outline",
@@ -5626,6 +5634,10 @@
    "source": "Made something others would like? Open a <g1>pull request on GitHub</g1> that adds it to <g2><x3/></g2>, with:",
    "text": "สร้างสิ่งที่คนอื่นน่าจะชอบใช่ไหม เปิด <g1>คำขอพูลบน GitHub</g1> เพื่อเพิ่มลงใน <g2><x3/></g2> พร้อมกับ:"
   },
+  "560a94f3340fd0a3": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, frame rate or bitrate and size, the best one marked; <g6>All qualities and subtitles...</g6>, which opens the <g7>Download video from a page</g7> window; then <g8>Hide on this video</g8> (<g9>Esc</g9>), <g10>Never on</g10> the site (MDM remembers the site), and <g11>Button settings...</g11>, which opens MDM's Options. The arrow keys move through it, <g12>Enter</g12> picks, <g13>Esc</g13> closes it.",
+   "text": "<g1>เมนู</g1> (ลูกศรถัดจากปุ่ม หรือ <g2>↓</g2> เมื่อปุ่มมีโฟกัสของคีย์บอร์ด): ชื่อวิดีโอ, ความยาว และไซต์; <g3>ดาวน์โหลดคุณภาพดีที่สุด</g3> ก่อน, จากนั้นหนึ่งบรรทัดต่อคุณภาพภายใต้ <g4>วิดีโอ</g4> และ <g5>เสียง</g5>, พร้อมประเภทไฟล์, อัตราเฟรมหรือบิตเรตและขนาด, โดยมีคุณภาพที่ดีที่สุดถูกทำเครื่องหมาย; <g6>ทุกคุณภาพและคำบรรยาย...</g6> ซึ่งจะเปิดหน้าต่าง <g7>ดาวน์โหลดวิดีโอจากหน้า</g7>; จากนั้น <g8>ซ่อนวิดีโอนี้</g8> (<g9>Esc</g9>), <g10>ไม่แสดงบน</g10> ไซต์นี้ (MDM จะจำไซต์), และ <g11>การตั้งค่าปุ่ม...</g11> ซึ่งจะเปิดตัวเลือกของ MDM ปุ่มลูกศรจะเลื่อนผ่านเมนู, <g12>Enter</g12> จะเลือก, <g13>Esc</g13> จะปิดเมนู"
+  },
   "560b06bdc37086ad": {
    "source": "Previous image",
    "text": "รูปภาพก่อนหน้า"
@@ -5666,6 +5678,10 @@
    "source": "Your language, from the first window.",
    "text": "ภาษาของคุณ ตั้งแต่หน้าต่างแรก"
   },
+  "56c9545f29a88358": {
+   "source": "<g1>The clipboard.</g1> <g2>Tasks → Add batch download from clipboard</g2> (<g3>Ctrl+B</g3>, also in the tray icon's menu) reads the copied text when you choose it and lists every download link in it: <x4/>, <x5/>, <x6/> and magnet links, in a list, a forum post, Markdown or HTML, each once.",
+   "text": "<g1>คลิปบอร์ด</g1> <g2>งาน → เพิ่มการดาวน์โหลดแบบกลุ่มจากคลิปบอร์ด</g2> (<g3>Ctrl+B</g3> และในเมนูไอคอนถาดระบบ) จะอ่านข้อความที่คัดลอกไว้เมื่อคุณเลือก และแสดงรายการลิงก์ดาวน์โหลดทั้งหมดในนั้น: <x4/>, <x5/>, <x6/> และลิงก์แม่เหล็ก ซึ่งอาจอยู่ในรายการ, กระทู้ในฟอรัม, Markdown หรือ HTML โดยแต่ละลิงก์จะแสดงเพียงครั้งเดียว"
+  },
   "56c991946fe8d471": {
    "source": "To continue a stopped download, select it and click <g1>Resume</g1> on the toolbar (or <g2>File → Download Now</g2>).",
    "text": "หากต้องการดำเนินการดาวน์โหลดที่หยุดไว้ ให้เลือกไฟล์นั้นแล้วคลิก <g1>ดำเนินการต่อ</g1> บนแถบเครื่องมือ (หรือ <g2>ไฟล์ → ดาวน์โหลดเดี๋ยวนี้</g2>)"
@@ -5701,10 +5717,6 @@
   "57271fd14fc7d6ce": {
    "source": "The main window on Windows 11: the toolbar, the categories on the left and the download list on the right",
    "text": "หน้าต่างหลักบน Windows 11: แถบเครื่องมือ หมวดหมู่ทางซ้าย และรายการดาวน์โหลดทางขวา"
-  },
-  "572eaa88b689dd90": {
-   "source": "Wait for the list. It shows each resolution with its size, best first, then the sound alone: - <g1>Audio only, original</g1>: the site's own file, not converted (M4A, or WebM with Opus inside, as the site serves it). The best sound there is, in the smallest file. - <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g3>Audio only OPUS</g3>: an <x4/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g5>Audio only FLAC</g5>: a lossless <x6/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
-   "text": "รอรายการแสดงขึ้นมา รายการจะแสดงความละเอียดแต่ละระดับพร้อมขนาด โดยเรียงจากคุณภาพดีที่สุดก่อน แล้วตามด้วยตัวเลือกเสียงอย่างเดียว: - <g1>เฉพาะเสียง, ต้นฉบับ</g1>: ใช้ไฟล์ต้นฉบับของเว็บไซต์โดยไม่แปลง (M4A หรือ WebM ที่มี Opus อยู่ภายใน ขึ้นอยู่กับรูปแบบที่เว็บไซต์ให้บริการ) ได้เสียงดีที่สุดในไฟล์ขนาดเล็กที่สุด - <g2>เฉพาะเสียง MP3</g2>: เลือกบิตเรตแปรผัน (VBR) ที่ดีที่สุด หรือ 320, 256, 192 และ 128 kbps สำหรับเครื่องเล่นที่รองรับเฉพาะ MP3 - <g3>เฉพาะเสียง OPUS</g3>: ไฟล์ <x4/> หากเสียงจากเว็บไซต์เป็น Opus อยู่แล้ว (โดยปกติ YouTube จะเป็นเช่นนั้น) ก็เพียงย้ายไปไว้ในไฟล์นั้นโดยไม่แปลง จึงไม่มีข้อมูลสูญหาย - <g5>เฉพาะเสียง FLAC</g5>: ไฟล์ <x6/> แบบไม่สูญเสียข้อมูล สำหรับคลังเพลงหรือโปรแกรมที่ต้องใช้ FLAC การแปลงเป็น FLAC ไม่ได้เพิ่มคุณภาพ เพราะเสียงจากเว็บไซต์ถูกบีบอัดแบบสูญเสียข้อมูลอยู่แล้ว และ FLAC จะเก็บเสียงไว้ตามเดิมทุกประการ แต่ไฟล์จะมีขนาดใหญ่ขึ้นหลายเท่า หน้าต่างจะแจ้งเรื่องนี้เมื่อเลือกตัวเลือกดังกล่าว"
   },
   "5730437f2b40d7c8": {
    "source": "You can also <g1>open the form yourself</g1>; it asks for the same details.",
@@ -5934,6 +5946,10 @@
    "source": "Under 10 MB of memory in the notification area on Windows, from about 50 MB.",
    "text": "ใช้หน่วยความจำน้อยกว่า 10 MB ในพื้นที่แจ้งเตือนบน Windows จากประมาณ 50 MB"
   },
+  "5adb99b470c63eee": {
+   "source": "A magnet link shows as <g1>Magnet link</g1> and isn't looked up: once you click <g2>Start</g2> or <g3>Add to queue</g3>, MDM finds the torrent's files and adds it with all of them, in the package's folder (or the <g4>Torrents</g4> folder when the package has none).",
+   "text": "ลิงก์แม่เหล็กจะแสดงเป็น <g1>ลิงก์แม่เหล็ก</g1> และจะไม่ถูกค้นหา: เมื่อคุณคลิก <g2>เริ่ม</g2> หรือ <g3>เพิ่มลงในคิว</g3> MDM จะค้นหาไฟล์ของทอร์เรนต์และเพิ่มไฟล์ทั้งหมดลงในโฟลเดอร์ของแพ็กเกจ (หรือโฟลเดอร์ <g4>ทอร์เรนต์</g4> หากแพ็กเกจไม่มีโฟลเดอร์)"
+  },
   "5add75b015a05297": {
    "source": "Before continuing, MDM checks that the file on the server is still the same. If it changed, the download stops with <g1>the file changed on the server</g1>. Use <g2>Redownload</g2> to start again from the beginning.",
    "text": "ก่อนดำเนินการต่อ MDM จะตรวจสอบว่าไฟล์บนเซิร์ฟเวอร์ยังคงเหมือนเดิมหรือไม่ หากมีการเปลี่ยนแปลง การดาวน์โหลดจะหยุดลงพร้อมข้อความ <g1>ไฟล์บนเซิร์ฟเวอร์มีการเปลี่ยนแปลง</g1> ใช้ <g2>ดาวน์โหลดใหม่</g2> เพื่อเริ่มใหม่ตั้งแต่ต้น"
@@ -6137,6 +6153,10 @@
   "5d9c0cdbfb96c129": {
    "source": "Mister Download Manager's main window on Ubuntu's GNOME desktop: the categories and a list of downloads.",
    "text": "หน้าต่างหลักของ Mister Download Manager บนเดสก์ท็อป GNOME ของ Ubuntu: หมวดหมู่และรายการดาวน์โหลด"
+  },
+  "5d9faf61efb66f58": {
+   "source": "<g1>Pasting.</g1> Choose <g2>Tasks → Link grabber...</g2> and press <g3>Ctrl+V</g3>: every download link in the copied text is added.",
+   "text": "<g1>การวาง</g1> เลือก <g2>งาน → ตัวดึงลิงก์...</g2> แล้วกด <g3>Ctrl+V</g3>: ลิงก์ดาวน์โหลดทั้งหมดในข้อความที่คัดลอกจะถูกเพิ่มเข้ามา"
   },
   "5db4d7af773861a3": {
    "source": "Click to zoom · drag to move",
@@ -6450,6 +6470,10 @@
    "source": "No more black band across menus and windows on Windows 11 Insider builds.",
    "text": "ไม่มีแถบสีดำพาดผ่านเมนูและหน้าต่างบน Windows 11 Insider builds อีกต่อไป"
   },
+  "61d6c2c5f915ca8e": {
+   "source": "<g1>Added to MDM</g1> (green), with the quality: <g2>Show</g2> brings MDM's window up with that download selected.",
+   "text": "<g1>เพิ่มไปยัง MDM แล้ว</g1> (สีเขียว) พร้อมคุณภาพ: <g2>แสดง</g2> จะเปิดหน้าต่าง MDM ขึ้นมาพร้อมกับการดาวน์โหลดที่เลือก"
+  },
   "61dfb9258d4ae7c3": {
    "source": "The first time, Windows may ask whether to let MDM communicate on networks: allow it on private networks, or the phone can't reach MDM.",
    "text": "ครั้งแรก Windows อาจถามว่าจะอนุญาตให้ MDM สื่อสารบนเครือข่ายหรือไม่: อนุญาตบนเครือข่ายส่วนตัว มิฉะนั้นโทรศัพท์จะไม่สามารถเข้าถึง MDM ได้"
@@ -6613,6 +6637,10 @@
   "64537e877bb3abb4": {
    "source": "A selection's fill: rows, a chosen day, selected text",
    "text": "การเติมส่วนที่เลือก: แถว, วันที่เลือก, ข้อความที่เลือก"
+  },
+  "6455ea30143a8721": {
+   "source": "Right-click a page in the browser for <g1>Download all links with Mister Download Manager</g1>, or select part of it for <g2>Download selected links with Mister Download Manager</g2>. The page's referrer and cookies go with each link. You can also import a text file or an <x3/> export with <g4>Tasks → Import</g4>, drop a list on the download list, or open <g5>Tasks → Link grabber...</g5> and paste any text with <g6>Ctrl+V</g6>: every web address in it is added. Copied a list of links, or a forum post with links in it? <g7>Tasks → Add batch download from clipboard</g7> (Ctrl+B) opens Link grabber with every http, ftp and magnet link in the text, each once, ticked.",
+   "text": "คลิกขวาที่หน้าเว็บในเบราว์เซอร์เพื่อ <g1>ดาวน์โหลดลิงก์ทั้งหมดด้วย Mister Download Manager</g1> หรือเลือกบางส่วนของหน้าเพื่อ <g2>ดาวน์โหลดลิงก์ที่เลือกด้วย Mister Download Manager</g2> โดย referrer และคุกกี้ของหน้าจะถูกส่งไปพร้อมกับแต่ละลิงก์ นอกจากนี้ คุณยังสามารถนำเข้าไฟล์ข้อความหรือไฟล์ที่ส่งออกด้วย <x3/> โดยใช้ <g4>งาน → นำเข้า</g4> ลากและวางรายการลงในรายการดาวน์โหลด หรือเปิด <g5>งาน → ตัวดึงลิงก์...</g5> แล้ววางข้อความใด ๆ ด้วย <g6>Ctrl+V</g6> เพื่อเพิ่มที่อยู่เว็บทั้งหมดในข้อความนั้น หากคุณคัดลอกรายการลิงก์ หรือโพสต์ในฟอรัมที่มีลิงก์อยู่ <g7>งาน → เพิ่มการดาวน์โหลดแบบกลุ่มจากคลิปบอร์ด</g7> (Ctrl+B) จะเปิดตัวดึงลิงก์พร้อมลิงก์ http, ftp และ magnet ทั้งหมดในข้อความ โดยแต่ละลิงก์จะถูกเลือกไว้"
   },
   "645884b486aada81": {
    "source": "Not mentioned on its website",
@@ -8086,6 +8114,10 @@
    "source": "<g1></g1>Open (GPL-3.0)",
    "text": "<g1></g1>โอเพนซอร์ส (GPL-3.0)"
   },
+  "7c262f198bfdda86": {
+   "source": "Point at a video on a web page and a small tab appears at its top corner: MDM's logo and a green <g1>Download video</g1> part, an arrow for its list and <g2>✕</g2> to hide it on this video. It follows Windows' light or dark mode. As it appears, MDM looks the video up (when MDM is running), and the button then names the best quality it found (<g3>1080p</g3>, <g4>4K</g4>). Click it and that quality downloads at once, with only its progress window; MDM's main window stays where it is (with <g5>Do not start downloading, only add files to the queue</g5> on in Options, it goes in the queue instead). Clicking while MDM is still looking works too: it takes the best quality as soon as it is known. A video that plays a plain file (not a stream) needs no look-up: the button shows its picture size and downloads the file itself. When nothing could be looked up (MDM wasn't running, yt-dlp isn't installed, the page is a playlist, or you send downloads to another MDM), a click opens the <g6>Download video from a page</g6> window, which says why and offers what to do.",
+   "text": "เมื่อชี้เมาส์ไปที่วิดีโอบนหน้าเว็บ จะมีแท็บเล็ก ๆ ปรากฏขึ้นที่มุมบนของวิดีโอ: โลโก้ของ MDM และส่วน <g1>ดาวน์โหลดวิดีโอ</g1> สีเขียว, ลูกศรสำหรับรายการ และ <g2>✕</g2> เพื่อซ่อนวิดีโอนี้ แท็บจะปรับตามโหมดสว่างหรือมืดของ Windows เมื่อแท็บปรากฏขึ้น MDM จะค้นหาวิดีโอ (เมื่อ MDM กำลังทำงาน) และปุ่มจะแสดงคุณภาพที่ดีที่สุดที่พบ (<g3>1080p</g3>, <g4>4K</g4>) คลิกที่ปุ่มเพื่อดาวน์โหลดคุณภาพนั้นทันที โดยมีเพียงหน้าต่างแสดงความคืบหน้าเท่านั้น หน้าต่างหลักของ MDM จะยังคงอยู่ (หากเปิด <g5>ไม่เริ่มดาวน์โหลด เพิ่มไฟล์ลงในคิวเท่านั้น</g5> ในตัวเลือก ไฟล์จะถูกเพิ่มลงในคิวแทน) การคลิกในขณะที่ MDM ยังคงค้นหาก็ใช้ได้เช่นกัน: มันจะเลือกคุณภาพที่ดีที่สุดทันทีที่ทราบ วิดีโอที่เล่นไฟล์ธรรมดา (ไม่ใช่สตรีม) ไม่จำเป็นต้องค้นหา: ปุ่มจะแสดงขนาดภาพและดาวน์โหลดไฟล์นั้นเอง เมื่อไม่สามารถค้นหาได้ (MDM ไม่ได้ทำงาน, yt-dlp ไม่ได้ติดตั้ง, หน้าเป็นเพลย์ลิสต์ หรือคุณส่งการดาวน์โหลดไปยัง MDM อื่น) การคลิกจะเปิดหน้าต่าง <g6>ดาวน์โหลดวิดีโอจากหน้า</g6> ซึ่งจะบอกเหตุผลและเสนอสิ่งที่ต้องทำ"
+  },
   "7c4ecfb6f966c30e": {
    "source": "Emerald",
    "text": "Emerald"
@@ -8097,10 +8129,6 @@
   "7c949f90bb503dc8": {
    "source": "Vivaldi",
    "text": "Vivaldi"
-  },
-  "7ca06640051a11fc": {
-   "source": "The tray menu also has <g1>Add new download</g1>, <g2>Add batch download</g2>, the <g3>Speed Limiter</g3>, the <g4>Scheduler</g4>, the main download queue and <g5>Options</g5>.",
-   "text": "เมนูถาดระบบยังมี <g1>เพิ่มการดาวน์โหลดใหม่</g1>, <g2>เพิ่มการดาวน์โหลดเป็นชุด</g2>, <g3>ตัวจำกัดความเร็ว</g3>, <g4>ตัวจัดกำหนดการ</g4>, คิวการดาวน์โหลดหลัก และ <g5>ตัวเลือก</g5>"
   },
   "7ca97bd5e93217a8": {
    "source": "Its progress window: each file and how much of it is here.",
@@ -9410,10 +9438,6 @@
    "source": "To watch a video while it downloads, tick <g1>Download in order</g1> (see <g2>Download in order</g2>).",
    "text": "หากต้องการดูวิดีโอระหว่างดาวน์โหลด ให้เลือก <g1>ดาวน์โหลดตามลำดับ</g1> (ดู <g2>ดาวน์โหลดตามลำดับ</g2>)"
   },
-  "8ff1535f41018df9": {
-   "source": "Right-click a page in the browser for <g1>Download all links with Mister Download Manager</g1>, or select part of it for <g2>Download selected links with Mister Download Manager</g2>. The page's referrer and cookies go with each link. You can also import a text file or an <x3/> export with <g4>Tasks → Import</g4>, drop a list on the download list, or open <g5>Tasks → Link grabber...</g5> and paste any text with <g6>Ctrl+V</g6>: every web address in it is added.",
-   "text": "คลิกขวาที่หน้าเว็บในเบราว์เซอร์เพื่อ <g1>ดาวน์โหลดลิงก์ทั้งหมดด้วย Mister Download Manager</g1> หรือเลือกบางส่วนเพื่อ <g2>ดาวน์โหลดลิงก์ที่เลือกด้วย Mister Download Manager</g2> ตัวอ้างอิงและคุกกี้ของหน้าเว็บจะไปพร้อมกับแต่ละลิงก์ คุณยังสามารถนำเข้าไฟล์ข้อความหรือการส่งออก <x3/> ด้วย <g4>งาน → นำเข้า</g4> วางรายการลงในรายการดาวน์โหลด หรือเปิด <g5>งาน → ตัวดึงลิงก์...</g5> แล้ววางข้อความใด ๆ ด้วย <g6>Ctrl+V</g6>: ที่อยู่เว็บทุกแห่งในนั้นจะถูกเพิ่ม"
-  },
   "8ff27389d7631f8e": {
    "source": "The download list's background",
    "text": "พื้นหลังของรายการดาวน์โหลด"
@@ -10362,6 +10386,10 @@
    "source": "<g1>Contents</g1><g2>27 features, every one free</g2>",
    "text": "<g1>สารบัญ</g1><g2>27 คุณสมบัติ ฟรีทุกรายการ</g2>"
   },
+  "9e16dcc5a0df9642": {
+   "source": "Choose <g1>Tasks → Add batch download</g1>. Copied one address with a number in its file name, such as <x2/>? <g3>Tasks → Add batch download from clipboard</g3> (<g4>Ctrl+B</g4>) puts the asterisk where the number was, sets <g5>From</g5> and <g6>Wildcard size</g6> from it (<x7/>, from 1, size 2) and waits in <g8>To</g8> for the last number.",
+   "text": "เลือก <g1>งาน → เพิ่มการดาวน์โหลดเป็นชุด</g1> คัดลอกที่อยู่เดียวที่มีตัวเลขในชื่อไฟล์ เช่น <x2/> ใช่หรือไม่ <g3>งาน → เพิ่มการดาวน์โหลดแบบกลุ่มจากคลิปบอร์ด</g3> (<g4>Ctrl+B</g4>) จะใส่เครื่องหมายดอกจันในตำแหน่งที่มีตัวเลข กำหนด <g5>จาก</g5> และ <g6>ขนาดสัญลักษณ์ตัวแทน</g6> จากตัวเลขนั้น (<x7/>, จาก 1, ขนาด 2) และรอตัวเลขสุดท้ายใน <g8>ถึง</g8>"
+  },
   "9e18dba709154be4": {
    "source": "Send downloads from your browser",
    "text": "ส่งการดาวน์โหลดจากเบราว์เซอร์ของคุณ"
@@ -11306,6 +11334,10 @@
    "source": "Select the text and copy it",
    "text": "เลือกข้อความแล้วคัดลอก"
   },
+  "abe7ed5d6eb405a8": {
+   "source": "<g1>MDM didn't answer</g1> (red): MDM isn't installed or didn't start. <g2>Get MDM</g2> opens its download page; <g3>Retry</g3> tries again.",
+   "text": "<g1>MDM ไม่ตอบสนอง</g1> (สีแดง): MDM ไม่ได้ติดตั้งหรือไม่เริ่มทำงาน <g2>รับ MDM</g2> จะเปิดหน้าดาวน์โหลด; <g3>ลองใหม่</g3> จะลองอีกครั้ง"
+  },
   "abffd3b4ede055a8": {
    "source": "Video from web pages",
    "text": "วิดีโอจากหน้าเว็บ"
@@ -11377,10 +11409,6 @@
   "ad06056d9a651b28": {
    "source": "Firefox asks to confirm: click <g1>Add</g1>. Firefox keeps the add-on up to date.",
    "text": "Firefox จะขอการยืนยัน: คลิก <g1>เพิ่ม</g1> Firefox จะอัปเดตส่วนเสริมให้เป็นปัจจุบันอยู่เสมอ"
-  },
-  "ad15abc4931df4fd": {
-   "source": "; a choice's <x1/> is what <x2/> takes, a subtitle's <x3/> what <x4/> takes.",
-   "text": "; <x1/> ของตัวเลือกคือสิ่งที่ <x2/> ใช้, <x3/> ของคำบรรยายคือสิ่งที่ <x4/> ใช้"
   },
   "ad20819c93bdea53": {
    "source": "Windows may give the stick another drive letter, such as <x1/> instead of <x2/>. The folders you set, and the downloads already in the list, still point at the old letter. Check <g3>Options → Save to</g3> and change the folders if needed. When MDM is about to save into a folder that doesn't exist, it asks whether to create it.",
@@ -12554,6 +12582,10 @@
    "source": "Under a data cap",
    "text": "ภายใต้ขีดจำกัดข้อมูล"
   },
+  "bf65e2eb8f9aed86": {
+   "source": "<g1>Move it</g1>: drag it by its dots along the video's edge; while you drag, the edge and the spots it snaps to (the corners and the middle) show. It stays there on that site.",
+   "text": "<g1>ย้าย</g1>: ลากโดยใช้จุดตามขอบวิดีโอ; ขณะที่คุณลาก ขอบและจุดที่ปุ่มจะยึดติด (มุมและตรงกลาง) จะแสดง ปุ่มจะอยู่ที่นั่นบนไซต์นั้น"
+  },
   "bf6c448169dc52d7": {
    "source": "<g1>A magnet link could wait minutes for its file list</g1> (<g2>#92</g2>): in 0.2.4 on Windows, the DHT (how MDM finds peers without trackers) could stop for the rest of the session once a computer it asked was gone, so a magnet its trackers didn't serve never got its file list. The updated torrent library keeps going, and a test keeps it that way. <g3>Add torrent</g3> now shows the wait: the peers found, from the trackers, the DHT or the local network, and how many answered. After 30 seconds without an answer, it says what may be in the way.",
    "text": "<g1>ลิงก์แม่เหล็กอาจรอรายการไฟล์เป็นนาที</g1> (<g2>#92</g2>): ในเวอร์ชัน 0.2.4 บน Windows DHT (วิธีที่ MDM ค้นหา peer โดยไม่มี tracker) อาจหยุดทำงานตลอดช่วงที่เหลือของเซสชันเมื่อคอมพิวเตอร์ที่ร้องขอหายไป ดังนั้นแม่เหล็กที่ tracker ไม่ได้ให้บริการจึงไม่ได้รับรายการไฟล์ ไลบรารี torrent ที่อัปเดตแล้วยังคงทำงานต่อไป และการทดสอบก็ยังคงเป็นเช่นนั้น ตอนนี้ <g3>เพิ่มทอร์เรนต์</g3> จะแสดงการรอ: peer ที่พบ จาก tracker, DHT หรือเครือข่ายท้องถิ่น และจำนวนที่ตอบกลับ หลังจาก 30 วินาทีที่ไม่มีการตอบกลับ จะระบุว่าอาจมีอะไรขัดขวางอยู่"
@@ -12714,10 +12746,6 @@
    "source": "Already installed? Open MDM, then <g1>Options → General → Test browser integration</g1>, and click <g2>Set it up</g2> if it offers to.",
    "text": "ติดตั้งแล้วใช่ไหม? เปิด MDM จากนั้นไปที่ <g1>ตัวเลือก → ทั่วไป → ทดสอบการรวมเบราว์เซอร์</g1> แล้วคลิก <g2>ตั้งค่า</g2> หากมีให้เลือก"
   },
-  "c1d36b87b24557b5": {
-   "source": "It stays out of the way: it shows only while you point at a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades when the pointer rests, and leaves out small videos and short muted loops (animated pictures, backgrounds). In fullscreen it follows the video when the player allows it. On a copy-protected video (DRM) it says that the video can't be saved.",
-   "text": "ปุ่มจะไม่เกะกะ โดยจะแสดงเฉพาะเมื่อชี้ไปที่วิดีโอ (หรือเมื่อโปรแกรมเล่นได้รับโฟกัสจากแป้นพิมพ์ โดยกด <g1>Tab</g1> เพื่อเลื่อนไปยังปุ่ม) ปุ่มจะค่อยๆ จางเมื่อปล่อยตัวชี้ไว้นิ่งๆ และไม่แสดงบนวิดีโอขนาดเล็กหรือลูปสั้นๆ ที่ไม่มีเสียง (ภาพเคลื่อนไหวและพื้นหลัง) ในโหมดเต็มหน้าจอ ปุ่มจะตามวิดีโอไปหากโปรแกรมเล่นรองรับ สำหรับวิดีโอที่มีการป้องกันการคัดลอก (DRM) ปุ่มจะแจ้งว่าไม่สามารถบันทึกวิดีโอได้"
-  },
   "c1d77bb835bb6ef4": {
    "source": "Debrid service accounts",
    "text": "บัญชีบริการ Debrid"
@@ -12870,6 +12898,10 @@
    "source": "On a queue's <g1>Schedule</g1> tab, tick <g2>Start download at</g2> and choose a time, <g3>Once at</g3> a date or <g4>Daily</g4> on the days you tick. <g5>Stop download at</g5> halts whatever is left, for example before work in the morning. A queue can also start whenever MDM starts.",
    "text": "ในแท็บ <g1>กำหนดการ</g1> ของคิว ให้เลือก <g2>เริ่มดาวน์โหลดเมื่อ</g2> และเลือกเวลา <g3>ครั้งเดียวที่</g3> วันที่ หรือ <g4>รายวัน</g4> ในวันที่คุณเลือก <g5>หยุดดาวน์โหลดเมื่อ</g5> จะหยุดสิ่งที่เหลืออยู่ เช่น ก่อนทำงานในตอนเช้า คิวสามารถเริ่มได้ทุกครั้งที่ MDM เริ่มทำงาน"
   },
+  "c493485e5f202b58": {
+   "source": "Before you click <g1>OK</g1>, the window shows the <g2>First file</g2>, <g3>Second file</g3> and <g4>Last file</g4>, so a typo shows up before anything downloads. If the server needs a login, tick <g5>Use authorization</g5>. Copied one address with a number in it, such as <x6/>? <g7>Tasks → Add batch download from clipboard</g7> (Ctrl+B) puts the asterisk where the number was and waits for the last one in <g8>To</g8>. Copied a whole list of links, or a forum post with links in it? The same command lists every one of them in Link grabber, ticked and ready to start.",
+   "text": "ก่อนคลิก <g1>ตกลง</g1> หน้าต่างจะแสดง <g2>ไฟล์แรก</g2> <g3>ไฟล์ที่สอง</g3> และ <g4>ไฟล์สุดท้าย</g4> เพื่อให้คุณเห็นข้อผิดพลาดก่อนเริ่มดาวน์โหลด หากเซิร์ฟเวอร์ต้องการการเข้าสู่ระบบ ให้เลือก <g5>ใช้การอนุญาต</g5> คัดลอกที่อยู่ที่มีตัวเลข เช่น <x6/> ใช่หรือไม่? <g7>งาน → เพิ่มการดาวน์โหลดแบบกลุ่มจากคลิปบอร์ด</g7> (Ctrl+B) จะใส่เครื่องหมายดอกจันตรงตำแหน่งตัวเลขและรอตัวเลขสุดท้ายใน <g8>ถึง</g8> คัดลอกรายการลิงก์ทั้งหมด หรือข้อความในฟอรัมที่มีลิงก์อยู่ใช่หรือไม่? คำสั่งเดียวกันนี้จะแสดงรายการทั้งหมดใน ตัวดึงลิงก์ โดยเลือกไว้และพร้อมที่จะเริ่ม"
+  },
   "c493cf1e8ba7e4c3": {
    "source": "Ctrl+N",
    "text": "Ctrl+N"
@@ -12977,6 +13009,10 @@
   "c5fa121420a2cd5d": {
    "source": "Opera",
    "text": "Opera"
+  },
+  "c608b90547be8d53": {
+   "source": "Wait for the list. It shows each quality with its size, best first, then the sound alone: - A video's line says its resolution, its codec, its frame rate and whether it is HDR: <x1/>. A resolution that comes in several (AV1, VP9 and H.264, HDR and SDR) has a line for each: AV1 makes the smallest file, H.264 plays on the most devices, and an HDR video looks washed out on a screen without HDR. <x2/> is said only beside an HDR line of the same resolution. - The size is that of exactly what downloads, the video and its sound. A size with <x3/> before it (<x4/>) is only an estimate: the site didn't say the size, so it comes from the stream's bitrate and length. - <g5>Audio only, original</g5>: the site's own file, not converted, once for each type the site has it in (WebM with Opus inside, M4A), the best first. The best sound there is, in the smallest file. - <g6>Audio only MP3</g6> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g7>Audio only OPUS</g7>: an <x8/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g9>Audio only FLAC</g9>: a lossless <x10/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
+   "text": "รอรายการ รายการจะแสดงคุณภาพแต่ละแบบพร้อมขนาด โดยเริ่มจากคุณภาพดีที่สุดก่อน จากนั้นจึงเป็นเสียงอย่างเดียว: - แถวของวิดีโอจะแสดงความละเอียด, ตัวแปลงสัญญาณ, อัตราเฟรม และระบุว่าเป็น HDR หรือไม่: <x1/> ความละเอียดที่มีหลายรูปแบบ (AV1, VP9 และ H.264, HDR และ SDR) จะมีแถวแยกกันสำหรับแต่ละรูปแบบ: AV1 ทำให้ไฟล์มีขนาดเล็กที่สุด, H.264 เล่นได้บนอุปกรณ์ส่วนใหญ่, และวิดีโอ HDR จะดูซีดจางบนหน้าจอที่ไม่มี HDR <x2/> จะระบุไว้ข้างแถว HDR ที่มีความละเอียดเดียวกันเท่านั้น - ขนาดคือขนาดของสิ่งที่ดาวน์โหลดจริง ๆ ทั้งวิดีโอและเสียง ขนาดที่มี <x3/> นำหน้า (<x4/>) เป็นเพียงค่าประมาณ: เว็บไซต์ไม่ได้ระบุขนาด จึงคำนวณจากบิตเรตและความยาวของสตรีม - <g5>เฉพาะเสียง, ต้นฉบับ</g5>: ไฟล์ต้นฉบับของเว็บไซต์ ไม่มีการแปลง โดยมีหนึ่งไฟล์สำหรับแต่ละประเภทที่เว็บไซต์มี (WebM พร้อม Opus, M4A) โดยเริ่มจากไฟล์ที่ดีที่สุด เสียงที่ดีที่สุดในไฟล์ขนาดเล็กที่สุด - <g6>เฉพาะเสียง MP3</g6> ที่บิตเรตแปรผัน (VBR) ที่ดีที่สุด และที่ 320, 256, 192 และ 128 kbps สำหรับเครื่องเล่นที่รองรับเฉพาะ MP3 - <g7>เฉพาะเสียง OPUS</g7>: ไฟล์ <x8/> เมื่อเสียงของเว็บไซต์เป็น Opus อยู่แล้ว (โดยปกติของ YouTube) จะถูกย้ายไปยังไฟล์นั้นโดยตรง ไม่มีการแปลง จึงไม่มีการสูญเสียคุณภาพ - <g9>เฉพาะเสียง FLAC</g9>: ไฟล์ <x10/> แบบไม่สูญเสียคุณภาพ สำหรับคลังเพลงหรือโปรแกรมที่ต้องการ FLAC ไม่สามารถเพิ่มคุณภาพได้: เสียงของเว็บไซต์ถูกบีบอัดแบบสูญเสียคุณภาพอยู่แล้ว และ FLAC จะเก็บรักษาคุณภาพนั้นไว้ตามเดิมในไฟล์ที่มีขนาดใหญ่กว่าหลายเท่า หน้าต่างจะแจ้งให้ทราบเมื่อคุณเลือกตัวเลือกนี้"
   },
   "c616fb0beefab805": {
    "source": "<g1>No site-specific shortcuts around rules.</g1> MDM treats sites the same way. It has no features made for getting around a particular site's terms, paywall or limits.",
@@ -13718,6 +13754,10 @@
    "source": "Nothing new to learn",
    "text": "ไม่ต้องเรียนรู้อะไรใหม่"
   },
+  "d1979dff5fbd3774": {
+   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades 1.5 seconds after the pointer stops and at once when it leaves the video, and leaves out small videos and short muted loops (animated pictures, backgrounds). Playing or pausing the video doesn't bring it back. On a video under 360 pixels wide, or where its words wouldn't fit, it is only its logo, its arrow and <g2>✕</g2>. In fullscreen it follows the video when the player allows it.",
+   "text": "ปุ่มจะหลีกเลี่ยงการรบกวน: จะแสดงเฉพาะเมื่อคุณเลื่อนตัวชี้เมาส์ไปบนวิดีโอ (หรือโปรแกรมเล่นมีโฟกัสของคีย์บอร์ด; จากนั้น <g1>Tab</g1> จะเลื่อนไปยังปุ่ม), จะจางหายไป 1.5 วินาทีหลังจากตัวชี้หยุดนิ่ง และทันทีเมื่อออกจากวิดีโอ และจะไม่แสดงบนวิดีโอขนาดเล็กและวิดีโอวนสั้น ๆ ที่ไม่มีเสียง (ภาพเคลื่อนไหว, พื้นหลัง) การเล่นหรือหยุดวิดีโอชั่วคราวจะไม่ทำให้ปุ่มกลับมา บนวิดีโอที่มีความกว้างน้อยกว่า 360 พิกเซล หรือที่ข้อความไม่พอดี จะมีเพียงโลโก้, ลูกศร และ <g2>✕</g2> เท่านั้น ในโหมดเต็มหน้าจอ ปุ่มจะติดตามวิดีโอเมื่อโปรแกรมเล่นอนุญาต"
+  },
   "d1b623f4013f4673": {
    "source": "A split button's other part while one is under the pointer",
    "text": "ส่วนอื่นของปุ่มแยกเมื่อมีส่วนหนึ่งอยู่ใต้ตัวชี้"
@@ -14234,10 +14274,6 @@
    "source": "Each product's own website, linked above, and for the open-source ones their code on GitHub: <g1>AB Download Manager</g1>, <g2>Motrix</g2>, <g3>Prism</g3>, <g4>Xtreme Download Manager</g4>, <g5>Gopeed</g5>; licences and latest releases as GitHub shows them, 4 November 2026",
    "text": "เว็บไซต์ของผลิตภัณฑ์แต่ละรายการที่ลิงก์ไว้ด้านบน และโค้ดบน GitHub สำหรับผลิตภัณฑ์โอเพนซอร์ส: <g1>AB Download Manager</g1>, <g2>Motrix</g2>, <g3>Prism</g3>, <g4>Xtreme Download Manager</g4>, <g5>Gopeed</g5>; ใบอนุญาตและรุ่นล่าสุดตามข้อมูลบน GitHub ณ วันที่ 4 พฤศจิกายน 2026"
   },
-  "d9012cd2cc61f595": {
-   "source": "Choose <g1>Tasks → Add batch download</g1>. (<g2>Tasks → Add batch download from clipboard</g2> fills in a copied address.)",
-   "text": "เลือก <g1>งาน → เพิ่มการดาวน์โหลดเป็นชุด</g1> (<g2>งาน → เพิ่มการดาวน์โหลดเป็นชุดจากคลิปบอร์ด</g2> จะกรอกที่อยู่ที่คัดลอกไว้)"
-  },
   "d92f326852722dd3": {
    "source": "Does it work on Mac and Linux?",
    "text": "ใช้งานบน Mac และ Linux ได้หรือไม่?"
@@ -14293,10 +14329,6 @@
   "da4cfe1f7fd483b0": {
    "source": "Close's glyph under the pointer",
    "text": "สัญลักษณ์ปิดเมื่อชี้เมาส์"
-  },
-  "da4d016180780dc7": {
-   "source": "Pick the file. <g1>Link grabber</g1> lists every web address MDM found in it, in packages.",
-   "text": "เลือกไฟล์ <g1>ตัวคว้าลิงก์</g1> จะแสดงรายการที่อยู่เว็บทั้งหมดที่ MDM พบในไฟล์นั้น โดยจัดเป็นแพ็กเกจ"
   },
   "da5804cb7ae48112": {
    "source": "Some servers report a new date for the same file every time. Tick <g1>Options → Downloads → Ignore file modification time changes when resuming a download</g1>.",
@@ -14962,10 +14994,6 @@
    "source": "Its title and glyphs",
    "text": "ชื่อเรื่องและสัญลักษณ์"
   },
-  "e5c18c89ba8f7efe": {
-   "source": "<g1>Move it</g1>: drag it anywhere along the video's edge; it snaps to the nearest edge and stays there on that site.",
-   "text": "<g1>ย้ายปุ่ม</g1>: ลากไปตามขอบวิดีโอ ปุ่มจะยึดกับขอบที่ใกล้ที่สุด และอยู่ตรงนั้นบนเว็บไซต์นั้น"
-  },
   "e5ec839cf7e9287e": {
    "source": "MDM downloads the pictures of a gallery, a Flickr album, a DeviantArt gallery, a Wikimedia Commons category and many more, with gallery-dl, a free program that reads several hundred sites.",
    "text": "MDM ดาวน์โหลดรูปภาพจากแกลเลอรี, อัลบั้ม Flickr, แกลเลอรี DeviantArt, หมวดหมู่ Wikimedia Commons และอีกมากมาย ด้วย gallery-dl ซึ่งเป็นโปรแกรมฟรีที่อ่านได้หลายร้อยเว็บไซต์"
@@ -15333,6 +15361,10 @@
   "eb19c6905b29ec9c": {
    "source": "Choose <g1>Tasks → Torrent settings...</g1> (or the arrow next to <g2>Add Torrent</g2>):",
    "text": "เลือก <g1>Tasks → Torrent settings...</g1> (หรือลูกศรข้าง <g2>Add Torrent</g2>):"
+  },
+  "eb1be33b4d67a5a9": {
+   "source": "The tray menu also has <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Add batch download from clipboard</g3>, the <g4>Speed Limiter</g4>, the <g5>Scheduler</g5>, the main download queue and <g6>Options</g6>.",
+   "text": "เมนูถาดระบบยังมี <g1>เพิ่มการดาวน์โหลดใหม่</g1>, <g2>เพิ่มการดาวน์โหลดเป็นชุด</g2>, <g3>เพิ่มการดาวน์โหลดแบบกลุ่มจากคลิปบอร์ด</g3>, <g4>ตัวจำกัดความเร็ว</g4>, <g5>ตัวจัดกำหนดการ</g5>, คิวการดาวน์โหลดหลัก และ <g6>ตัวเลือก</g6>"
   },
   "eb1e3724d60ad6dd": {
    "source": "<g1>User-Agent for manually added downloads</g1> — how MDM names itself to servers for downloads you add yourself. With <g2>Automatic</g2> ticked (the default), MDM introduces itself as your default browser: the User-Agent that browser sends, at the version you have installed (Chrome, Edge, Brave, Opera, Vivaldi, Firefox or Safari). The box shows it, and pointing at it names the browser. When MDM doesn't recognise your default browser, it sends a current Chrome's. Untick <g3>Automatic</g3> to type your own; tick it again to go back. Downloads from the browser use that browser's own User-Agent. If a site turns a browser's User-Agent away, MDM asks once more with its own.",
@@ -15761,6 +15793,14 @@
   "f09d8a183f62958e": {
    "source": "The computer has to be asleep, not shut down. On Windows the power plan must allow wake timers: the Scheduler says when it doesn't, and <g1>Change</g1> opens the setting. On Linux an administrator allows it once. On macOS only an administrator can schedule a wake, so the option is greyed there. MDM never asks for an administrator's password.",
    "text": "คอมพิวเตอร์ต้องอยู่ในสถานะพักเครื่อง ไม่ใช่ปิดเครื่อง บน Windows แผนการใช้พลังงานต้องอนุญาตตัวจับเวลาการปลุก: ตัวจัดกำหนดการจะแจ้งเมื่อไม่สามารถทำได้ และ <g1>เปลี่ยน</g1> จะเปิดการตั้งค่า บน Linux ผู้ดูแลระบบจะอนุญาตเพียงครั้งเดียว บน macOS เฉพาะผู้ดูแลระบบเท่านั้นที่สามารถกำหนดเวลาการปลุกได้ ดังนั้นตัวเลือกนี้จึงเป็นสีเทา MDM ไม่เคยขอรหัสผ่านของผู้ดูแลระบบ"
+  },
+  "f0a48a4100d89aef": {
+   "source": "Copied several links at once, a list or a whole forum post? Choose <g1>Tasks → Add batch download from clipboard</g1> (<g2>Ctrl+B</g2>, also in the tray icon's menu). MDM reads the clipboard then, and only then, and finds every download link in the text: <x3/>, <x4/>, <x5/> and magnet links, one per line or among other words, in Markdown (<x6/>) or between <x7/> and <x8/>. Each one is listed once in <g9>Link grabber</g9>, ticked and sorted into packages: pick a folder for each package, then <g10>Start</g10> or <g11>Add to queue</g11>. Downloads added together end with one <g12>Downloads complete</g12> summary. Magnet links are added as torrents with all their files once their files are known. A copied address with a number in its name, such as <x13/>, opens <g14>Batch download</g14> instead (below). If the clipboard holds no text, or no link, MDM says so.",
+   "text": "คัดลอกหลายลิงก์พร้อมกัน รายการ หรือโพสต์ในฟอรัมทั้งหมดใช่หรือไม่ เลือก <g1>งาน → เพิ่มการดาวน์โหลดแบบกลุ่มจากคลิปบอร์ด</g1> (<g2>Ctrl+B</g2> ซึ่งอยู่ในเมนูไอคอนถาดระบบด้วย) MDM จะอ่านคลิปบอร์ดในตอนนั้น และตอนนั้นเท่านั้น และค้นหาลิงก์ดาวน์โหลดทุกรายการในข้อความ: <x3/>, <x4/>, <x5/> และลิงก์แม่เหล็ก โดยมีหนึ่งลิงก์ต่อบรรทัด หรืออยู่ท่ามกลางคำอื่น ๆ ในรูปแบบ Markdown (<x6/>) หรือระหว่าง <x7/> และ <x8/> แต่ละรายการจะถูกแสดงเพียงครั้งเดียวใน <g9>ตัวดึงลิงก์</g9> ทำเครื่องหมายถูก และจัดเรียงเป็นแพ็กเกจ: เลือกโฟลเดอร์สำหรับแต่ละแพ็กเกจ จากนั้นเลือก <g10>เริ่ม</g10> หรือ <g11>เพิ่มลงในคิว</g11> การดาวน์โหลดที่เพิ่มพร้อมกันจะสรุปด้วย <g12>ดาวน์โหลดเสร็จสิ้น</g12> เพียงครั้งเดียว ลิงก์แม่เหล็กจะถูกเพิ่มเป็นทอร์เรนต์พร้อมไฟล์ทั้งหมดเมื่อทราบไฟล์แล้ว หากที่อยู่ที่คัดลอกมีตัวเลขในชื่อ เช่น <x13/> จะเปิด <g14>ดาวน์โหลดเป็นชุด</g14> แทน (ด้านล่าง) หากคลิปบอร์ดไม่มีข้อความ หรือไม่มีลิงก์ MDM จะแจ้งให้ทราบ"
+  },
+  "f0d4d5fcac6fda0c": {
+   "source": "<g1>Protected video · can't be saved</g1> (grey, with a lock): a copy-protected video (DRM), which no tool may save.",
+   "text": "<g1>วิดีโอที่มีการป้องกัน · ไม่สามารถบันทึกได้</g1> (สีเทา, พร้อมแม่กุญแจ): วิดีโอที่มีการป้องกันการคัดลอก (DRM) ซึ่งไม่มีเครื่องมือใดสามารถบันทึกได้"
   },
   "f0e933d37db8b9a1": {
    "source": "<g1>Cursor</g1>: the same <x2/> entry as Claude Desktop's, in <x3/> (or add it in Cursor's MCP settings).",
@@ -16418,6 +16458,10 @@
    "source": "Make your own theme",
    "text": "สร้างชุดรูปแบบของคุณเอง"
   },
+  "fb3db059de68f3ae": {
+   "source": "<g1>Open the post to download it</g1> (amber): the video sits in a feed and can't be downloaded from there. <g2>Open post</g2> opens the post in a new tab, when the button knows it; use the button there.",
+   "text": "<g1>เปิดโพสต์เพื่อดาวน์โหลด</g1> (สีเหลืองอำพัน): วิดีโออยู่ในฟีดและไม่สามารถดาวน์โหลดจากที่นั่นได้ <g2>เปิดโพสต์</g2> จะเปิดโพสต์ในแท็บใหม่ เมื่อปุ่มทราบ; ใช้ปุ่มที่นั่น"
+  },
   "fb3ecd729cffd5f6": {
    "source": "Paste a link from a file host your service supports, in <g1>Add URL</g1>, from the browser's <g2>Download with Mister Download Manager</g2>, or in a batch download. MDM unlocks it through your account, then downloads it with all its connections, pause and resume. When the direct link expires, MDM asks the service for a new one.",
    "text": "วางลิงก์จากโฮสต์ไฟล์ที่บริการของคุณรองรับ ใน <g1>เพิ่ม URL</g1>, จาก <g2>ดาวน์โหลดด้วย Mister Download Manager</g2> ของเบราว์เซอร์ หรือในการดาวน์โหลดแบบกลุ่ม MDM จะปลดล็อกลิงก์นั้นผ่านบัญชีของคุณ จากนั้นดาวน์โหลดด้วยการเชื่อมต่อทั้งหมด พร้อมหยุดชั่วคราวและดำเนินการต่อได้ เมื่อลิงก์ตรงหมดอายุ MDM จะขอลิงก์ใหม่จากบริการ"
@@ -16497,6 +16541,10 @@
   "fc337e8e7eb02a6e": {
    "source": "86 languages",
    "text": "86 ภาษา"
+  },
+  "fc3c995e8b5aa1ad": {
+   "source": "Ctrl+B",
+   "text": "Ctrl+B"
   },
   "fc4a679f70deadb3": {
    "source": "GNOME's look: round corners, flat grey buttons, a rounded focus ring and a header bar.",

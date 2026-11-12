@@ -559,6 +559,13 @@ These ship in the next version.
 - ✅ Looking up a new video (put online in the last two days) no longer fails with "Permission
   denied" in MDM's install folder: the helpers run in your temporary folder, or MDM's own if
   that one can't be written ([#834](https://github.com/anefzaoui/misterdownloadmanager/issues/834))
+- ✅ **Add batch download from clipboard** reads every link copied (a list, a forum post): http,
+  ftp and magnet links, each once, ticked in Link grabber, started or queued together with one
+  summary at the end; a copied address with a number in it (`…/ep01.mp4`) opens Batch download
+  with its pattern; also in the tray menu, and Ctrl+B. Copying several links no longer opens
+  Download File Info with them run together
+  ([#709](https://github.com/anefzaoui/misterdownloadmanager/issues/709),
+  [#780](https://github.com/anefzaoui/misterdownloadmanager/issues/780))
 - ✅ Windows: downloads follow the Group Policy "Do not preserve zone information in file
   attachments", as browsers' do; **Options → Save to → Mark downloaded files as coming from
   the internet** (on by default) turns the mark off for MDM alone, on every system
