@@ -1498,6 +1498,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ส่งอีเมล
+#. text in the Download video window
+#. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
+#, machine
+	Embed chapters	ฝังบท
 #. text in gallerydlg.rs
 #. in Download a gallery, after the "Files at most" box
 #, machine
@@ -1538,7 +1542,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Eritrea	เอริเทรีย
-#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
@@ -2800,6 +2804,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Mozambique	โมซัมบิก
+#. text in the Download video window
+#. why "Embed chapters" is greyed in Download video: the choice is a sound converted to MP3, Opus or FLAC, which MDM saves without chapters
+#, machine
+	MP3, Opus and FLAC files are saved without chapters	ไฟล์ MP3, Opus และ FLAC จะถูกบันทึกโดยไม่มีบท
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	ช้ากว่าการเชื่อมต่ออื่นมาก; กำลังเชื่อมต่อใหม่
@@ -3224,6 +3232,10 @@
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	เปิดโฟลเดอร์
+#. text in a download's progress window
+#. button in a download's progress window when the site sent a web page (a waiting page, a captcha) instead of the file: opens the download's link in the web browser
+#, machine
+	Open in browser	เปิดในเบราว์เซอร์
 #. checkbox in the Add torrent window
 #, machine
 	Open magnet links and .torrent files with Mister Download Manager	เปิดลิงก์แม่เหล็กและไฟล์ .torrent ด้วย Mister Download Manager
@@ -4628,10 +4640,11 @@
 	the server is busy ({status}); try again later	เซิร์ฟเวอร์ไม่ว่าง ({status}); โปรดลองอีกครั้งในภายหลัง
 #. text in errors.rs
 #, machine
-	the server sent a web page instead of the file (sign-in needed or the link expired?)	เซิร์ฟเวอร์ส่งหน้าเว็บมาแทนไฟล์ (ต้องลงชื่อเข้าใช้หรือลิงก์หมดอายุหรือไม่)
-#. text in errors.rs
-#, machine
 	the server sent an unexpected part of the file ({detail})	เซิร์ฟเวอร์ส่งข้อมูลส่วนที่ไม่คาดคิดของไฟล์ ({detail})
+#. text in errors.rs
+#. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
+#, machine
+	the site sent a web page instead of the file (a waiting page, a captcha or a sign-in): open the link in your browser, finish there, and the download comes back to MDM	เว็บไซต์ส่งหน้าเว็บแทนไฟล์ (หน้าสำหรับรอ, แคปต์ชา หรือการลงชื่อเข้าใช้): เปิดลิงก์ในเบราว์เซอร์ของคุณ ดำเนินการให้เสร็จสิ้นที่นั่น แล้วการดาวน์โหลดจะกลับมาที่ MDM
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
 #, machine
@@ -4808,6 +4821,7 @@
 #, machine
 	This name is reserved by Windows	ชื่อนี้ถูกสงวนไว้โดย Windows
 #. tooltip (why a control is greyed) in the Download video window
+#. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	ต้องใช้ ffmpeg

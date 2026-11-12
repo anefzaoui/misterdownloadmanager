@@ -66,7 +66,7 @@ A distribution's yt-dlp can also be too old for YouTube: if the list stays short
    - **Audio only FLAC**: a lossless `.flac` file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.
 2. Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3, Opus or FLAC (ffmpeg makes them).
 3. Check **Save to** (the Video category's folder by default) and **File name**, which comes from the video's title.
-4. Choose **Subtitles** if you want them (see below).
+4. Choose **Subtitles** if you want them (see below). **Embed chapters** is ticked: see [Chapters](#chapters).
 5. Click **Download Now**, or **Later** to add it to the list without starting.
 
 The video then downloads like any other file, with its own row in the list and its progress window.
@@ -81,7 +81,7 @@ yt-dlp looks the page up and picks the quality's video and sound. MDM's own down
 - **Paused and resumed** like a file, also after quitting MDM: it carries on from the bytes already saved.
 - **When an address stops working**: a video's addresses are signed and expire after a few hours (YouTube's after six). MDM asks yt-dlp for a fresh one for the same quality and carries on from where it stopped.
 
-Then yt-dlp does what it does after a download: it joins the video and its sound with ffmpeg into one MP4, saves or embeds the subtitles, and converts the sound for an MP3, Opus or FLAC choice.
+Then yt-dlp does what it does after a download: it joins the video and its sound with ffmpeg into one MP4, saves or embeds the subtitles, puts the chapters into the file, and converts the sound for an MP3, Opus or FLAC choice.
 
 YouTube serves each connection's long requests slowly, so MDM asks for the video in pieces of 10 MB at most, as yt-dlp does, and several at once.
 
@@ -107,6 +107,15 @@ When the video has subtitles, the **Subtitles** list offers them: the uploader's
 MDM offers the same choice again for the next video when it has that language.
 
 A site may refuse subtitles when it's asked too often: YouTube does, most of all for its translated captions. The video is saved all the same. MDM asks for the subtitles once more after 20 seconds, and if they still don't come, the **Download complete** window and the download's log say which ones are missing and why. Try them again later. When subtitles meant to go inside the video only come on that second try, they're saved beside it instead.
+
+## Chapters
+
+Many videos are split into chapters on their page: YouTube's list under the player, with a title and a start time for each part. With **Embed chapters** ticked, under **Subtitles**, they go into the video file, so players such as VLC, MPV, MPC-HC and Windows' Media Player list them and skip from one to the next.
+
+- It's ticked to begin with, and stays as you leave it for the next video.
+- It needs ffmpeg, which writes them. A video without chapters is saved as it is.
+- They go into a video (MP4, MKV, WebM) and into the sound as the site has it (**Audio only, original**), not into an MP3, Opus or FLAC file.
+- The command line (`video-get`) puts them in too, whenever ffmpeg is there.
 
 ## Playlists and channels
 

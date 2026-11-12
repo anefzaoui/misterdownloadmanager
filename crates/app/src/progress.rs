@@ -731,26 +731,50 @@ impl Progress {
         } else {
             ButtonKind::Normal
         };
+        // The site sent its page instead of the file (#701): a button opens the link in the
+        // browser, which gets past the page (its download then comes back to MDM).
+        let web_page = item.got_web_page();
+        // i18n: button in a download's progress window when the site sent a web page (a waiting page, a captcha) instead of the file: opens the download's link in the web browser
+        let open_label = crate::i18n::mark("Open in browser");
         // The row as wide as its labels in this language need (#192), each laid out for the
         // longer of its two labels so it keeps its size when they change; Cancel stays at the
         // window's edge.
-        let [details_at, pause_at, cancel_at] = winui::button_row(
-            &p,
-            &[
-                (
-                    winui::widest_label(&p, &["<< Hide details", "Show details >>"]),
-                    30.0,
-                    138.0,
-                ),
-                (winui::widest_label(&p, &["Pause", "Resume"]), 311.0, 82.0),
-                ("Cancel", 422.0, 73.0),
-            ],
-            8.0,
-            30.0,
-            200.0,
-        )[..] else {
-            unreachable!("three buttons")
+        let mut row = vec![
+            (
+                winui::widest_label(&p, &["<< Hide details", "Show details >>"]),
+                30.0,
+                138.0,
+            ),
+            (winui::widest_label(&p, &["Pause", "Resume"]), 311.0, 82.0),
+            ("Cancel", 422.0, 73.0),
+        ];
+        if web_page {
+            row.insert(1, (open_label, 176.0, 127.0));
+        }
+        let placed = winui::button_row(&p, &row, 8.0, 30.0, 200.0);
+        let (details_at, open_at, pause_at, cancel_at) = match placed[..] {
+            [details, open, pause, cancel] => (details, Some(open), pause, cancel),
+            [details, pause, cancel] => (details, None, pause, cancel),
+            _ => unreachable!("three or four buttons"),
         };
+        if let Some(open_at) = open_at
+            && winui::button(
+                ui,
+                r(lower, open_at.0, 206.0, open_at.1, 22.0),
+                open_label,
+                // The way on: the default, unless another tab's Show details is.
+                if other_tab {
+                    ButtonKind::Normal
+                } else {
+                    ButtonKind::Default
+                },
+                false,
+                None,
+            )
+            .clicked()
+        {
+            crate::launch::open_page(item.url.as_str());
+        }
         if winui::button(
             ui,
             r(lower, details_at.0, 206.0, details_at.1, 22.0),
@@ -1282,6 +1306,7 @@ impl Progress {
                 winui::text_fit(p, o.x + x, o.y + base, s, color, o.x + PAGE_TEXT_RIGHT);
             winui::copyable(ui, rect, key, s, cut);
         };
+        let web_page = item.got_web_page();
         let status = match item.status {
             // A torrent reading and checking its files says so, not "Receiving data" (#39).
             _ if let Some(checking) = item.torrent_checking() => checking,
@@ -1310,6 +1335,8 @@ impl Progress {
             Status::Stopped => crate::i18n::t("Paused").to_owned(),
             // i18n: a download's status (state it is in, not a command): waiting in a queue
             Status::Queued => crate::i18n::t("Waiting").to_owned(),
+            // The site's page instead of the file (#701): why, and what to do, under it.
+            Status::Error if web_page => crate::i18n::t("Error").to_owned(),
             Status::Error => crate::i18n::fmt(
                 // i18n: a download's status: it failed, with the reason
                 crate::i18n::t("Error: {error}"),
@@ -1393,6 +1420,11 @@ impl Progress {
             .map(|r| after(r.0))
             .fold(135.0, f32::max);
         for (label, base, vx, value) in rows {
+            // A site's page instead of the file (#701): its sizes and times say nothing, the
+            // reason takes their rows.
+            if web_page && label != "Status" {
+                continue;
+            }
             let vx = if vx == 135.0 {
                 column
             } else {
@@ -1412,6 +1444,17 @@ impl Progress {
                 winui::TEXT()
             };
             fit(ui, label, vx, base, &value, vc);
+        }
+        if web_page {
+            winui::paragraph(
+                p,
+                o.x + 33.0,
+                o.y + 80.0,
+                &crate::i18n::sentence_start(item.error.as_deref().unwrap_or_default()),
+                winui::TEXT(),
+                o.x + PAGE_TEXT_RIGHT,
+                16.0,
+            );
         }
         // Where its server is (#140): a file download's, and a video's whose streams MDM's engine
         // downloads (#769; a torrent or a gallery has no single server of MDM's own). As the

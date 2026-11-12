@@ -156,6 +156,27 @@ pub fn isolate(value: &str) -> String {
     craft_i18n::isolate(value)
 }
 
+/// `s` as a sentence of its own: its first letter a capital. A failure's reason starts in lower
+/// case to follow "Error: "; alone in a paragraph it starts as a sentence does (#701). Turkish and
+/// Azerbaijani write i's capital İ; a script without capitals stays as it is.
+pub fn sentence_start(s: &str) -> String {
+    sentence_start_in(s, code())
+}
+
+fn sentence_start_in(s: &str, language: &str) -> String {
+    let mut chars = s.chars();
+    let Some(first) = chars.next() else {
+        return String::new();
+    };
+    let mut out = if first == 'i' && matches!(language, "tr" | "az") {
+        "İ".to_owned()
+    } else {
+        first.to_uppercase().collect()
+    };
+    out.push_str(chars.as_str());
+    out
+}
+
 /// A whole number as the interface language writes it (English: plain digits, as IDM):
 /// `10200`, `10.200`, `10 200`.
 pub fn integer(n: u64) -> String {
@@ -238,6 +259,18 @@ mod tests {
     const LRI: char = '\u{2066}';
     const FSI: char = '\u{2068}';
     const PDI: char = '\u{2069}';
+
+    #[test]
+    fn a_reason_alone_starts_as_a_sentence() {
+        assert_eq!(
+            sentence_start_in("the site sent a web page", "en"),
+            "The site sent a web page"
+        );
+        assert_eq!(sentence_start_in("сайт отправил", "ru"), "Сайт отправил");
+        assert_eq!(sentence_start_in("indirme", "tr"), "İndirme");
+        assert_eq!(sentence_start_in("أرسل الموقع", "ar"), "أرسل الموقع");
+        assert_eq!(sentence_start_in("", "en"), "");
+    }
 
     /// Every embedded catalog parses with no problem (craft-i18n's own checks: placeholders,
     /// plural forms, the trailing ellipsis…), and every language of i18n/languages.tsv has one.

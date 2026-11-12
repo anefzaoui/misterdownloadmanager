@@ -5580,6 +5580,77 @@ mod classic_text {
     }
 }
 
+/// What Explorer's "Open with → Choose another app" asks of the chooser: the "Always use this
+/// app" choice may be saved for the file's type (`ALLOW_REGISTRATION`, `REGISTER_EXT`), and the
+/// app chosen opens the file (`EXEC`; without it the chooser only records the choice).
+const OPEN_WITH_FLAGS: windows_sys::Win32::UI::Shell::OPEN_AS_INFO_FLAGS = {
+    use windows_sys::Win32::UI::Shell::{OAIF_ALLOW_REGISTRATION, OAIF_EXEC, OAIF_REGISTER_EXT};
+    OAIF_ALLOW_REGISTRATION | OAIF_REGISTER_EXT | OAIF_EXEC
+};
+
+/// `path` as `SHOpenWithDialog` reads it: the path itself, wide and NUL-ended, with no quotes
+/// round it (a path with spaces is one string here, not a command line).
+fn open_with_file(path: &std::path::Path) -> Vec<u16> {
+    use std::os::windows::ffi::OsStrExt;
+    path.as_os_str().encode_wide().chain(Some(0)).collect()
+}
+
+/// Windows' own "Open with" chooser for the file `path` ("How do you want to open this file?"),
+/// as Explorer shows it: the app chosen there opens the file (#720). It waits until the chooser
+/// is closed, so it is called on a thread of its own (with COM, apartment-threaded, as the shell
+/// expects). `Err(HRESULT)` when Windows couldn't show it; closing the chooser without a choice
+/// is `Ok`.
+///
+/// It used to run `rundll32 shell32.dll,OpenAs_RunDLL <path>`, which takes the rest of its
+/// command line as the path, quotes included: the quotes a path with a space gets made it a file
+/// that isn't there, and the chooser never showed.
+pub fn open_with_dialog(path: &std::path::Path) -> Result<(), i32> {
+    use windows_sys::Win32::Foundation::ERROR_CANCELLED;
+    use windows_sys::Win32::UI::Shell::{OPENASINFO, SHOpenWithDialog};
+    com_on_this_thread();
+    let file = open_with_file(path);
+    let info = OPENASINFO {
+        pcszFile: file.as_ptr(),
+        pcszClass: std::ptr::null(),
+        oaifInFlags: OPEN_WITH_FLAGS,
+    };
+    // SAFETY: `info` and the NUL-ended `file` it points to outlive the call, which only reads
+    // them. No owner window: the window's thread isn't this one, and an owner would tie the two
+    // threads' input together while the chooser is open.
+    let hr = unsafe { SHOpenWithDialog(std::ptr::null_mut(), &info) };
+    // HRESULT_FROM_WIN32(ERROR_CANCELLED): the chooser closed without a choice.
+    let cancelled = (0x8007_0000 | ERROR_CANCELLED) as i32;
+    if hr >= 0 || hr == cancelled {
+        Ok(())
+    } else {
+        Err(hr)
+    }
+}
+
+#[cfg(test)]
+mod open_with_tests {
+    use super::*;
+
+    #[test]
+    fn the_chooser_opens_the_file_chosen() {
+        use windows_sys::Win32::UI::Shell::{OAIF_EXEC, OAIF_REGISTER_EXT};
+        assert_eq!(OPEN_WITH_FLAGS & OAIF_EXEC, OAIF_EXEC);
+        assert_eq!(OPEN_WITH_FLAGS & OAIF_REGISTER_EXT, OAIF_REGISTER_EXT);
+    }
+
+    #[test]
+    fn a_path_with_spaces_is_given_whole_and_unquoted() {
+        let path = std::path::Path::new(r"C:\Users\A B\Downloads\my file.zip");
+        let wide = open_with_file(path);
+        assert_eq!(wide.last(), Some(&0));
+        assert_eq!(
+            String::from_utf16(&wide[..wide.len() - 1]).unwrap(),
+            r"C:\Users\A B\Downloads\my file.zip"
+        );
+        assert!(!wide.contains(&u16::from(b'"')));
+    }
+}
+
 /// The program Windows runs to open folders, when that isn't Explorer (a file manager such as
 /// Directory Opus set up to replace it, #446); None for Explorer, or when Windows doesn't say.
 pub fn folder_opener() -> Option<String> {
