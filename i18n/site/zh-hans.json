@@ -1182,13 +1182,13 @@
    "source": "The benchmark data could not be loaded.",
    "text": "无法加载基准数据。"
   },
-  "129f913e421a0374": {
-   "source": "Torrents, videos and galleries have no single server of MDM's own (peers, or yt-dlp's and gallery-dl's), so their windows don't show one.",
-   "text": "种子、视频和图库没有 MDM 自己的单一服务器（对等点，或 yt-dlp 和 gallery-dl 的），因此它们的窗口不显示服务器。"
-  },
   "12a228101626f4bc": {
    "source": "How MDM uses connections",
    "text": "MDM 如何使用连接"
+  },
+  "12b0b0ed9c364592": {
+   "source": "Start a finished gallery again (<g1>Resume</g1>) to fetch only the pictures that aren't in its folder yet. The ones already there are skipped.",
+   "text": "再次<g1>恢复</g1>已完成的图库下载，只会获取文件夹中尚未存在的图片。已有的图片会被跳过。"
   },
   "12b7b516a33fffd5": {
    "source": "Settings",
@@ -1982,10 +1982,6 @@
    "source": "Add your account",
    "text": "添加您的帐户"
   },
-  "1e06a14724b6ac4b": {
-   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
-   "text": "MDM 使用 gallery-dl 下载图库（维基共享资源分类、Flickr 相册、DeviantArt 图库、Imgur 相册等）中的图片..."
-  },
   "1e19df04a325bd30": {
    "source": "<x1/> <g2>Open source · GPL-3.0</g2>",
    "text": "<x1/> <g2>开源 · GPL-3.0</g2>"
@@ -2029,6 +2025,10 @@
   "1edcb9d37be4f279": {
    "source": "Options → General → Use advanced browser integration",
    "text": "选项 → 常规 → 使用高级浏览器集成"
+  },
+  "1ee22f4d96ba4d08": {
+   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with the help of…",
+   "text": "MDM 借助 gallery-dl 下载图库中的图片（如维基共享资源分类、Flickr 相册、DeviantArt 图库、Imgur 相册等数百个网站）。"
   },
   "1f027261405d774d": {
    "source": "Know where your data goes",
@@ -3898,6 +3898,10 @@
    "source": "About 40, separate downloads",
    "text": "约 40 种，需单独下载"
   },
+  "3ab6ae7f023cdf09": {
+   "source": "A video yt-dlp downloads by itself (<g1>How a video comes down</g1>) takes a limit only as it starts: when you turn the limiter on or off, change its settings or the video's own limit, MDM stops it and starts it again with the new limit, and it goes on from where it was (the log says \"Stopped: the speed limit changed; starting again with it\"). Under the limit for all downloads, such videos share it evenly: when another starts, the ones running with more than their share start again with it; when one ends, the others keep theirs. A gallery's pictures that MDM brings in follow a change at once; what gallery-dl still fetches itself starts again with the new limit, skipping the files already saved. Other changes (torrents taking more or less of the limit for all downloads, <g2>Only while I'm using the computer</g2>) apply to the next one that starts.",
+   "text": "yt-dlp 独立下载的视频（<g1>视频下载方式</g1>）仅在开始时应用速度限制：当您开启或关闭限速器、更改其设置或视频自身的限制时，MDM 会停止该视频并以新限制重新开始，它会从中断处继续（日志显示“已停止：速度限制已更改；正在以新限制重新开始”）。在所有下载的限制下，此类视频会平均分配速度：当另一个视频开始时，那些超出其份额的视频会以新限制重新开始；当一个视频结束时，其他视频会保持其速度。MDM 导入的图库图片会立即遵循更改；gallery-dl 仍在获取的图片会以新限制重新开始，跳过已保存的文件。其他更改（种子下载占用所有下载限制的增减，<g2>仅在我使用计算机时</g2>）将应用于下一个开始的下载。"
+  },
   "3aca386992ad550b": {
    "source": "Move between the download list and the Categories tree",
    "text": "在下载列表和“类别”树之间移动"
@@ -4362,6 +4366,10 @@
    "source": "Mister Download Manager's main window in night mode: web and torrent downloads in one list.",
    "text": "Mister Download Manager 夜间模式主窗口：网页和种子下载在一个列表中。"
   },
+  "416b2928058d450b": {
+   "source": "Torrents and galleries have no single server of MDM's own (peers, or the many a gallery's pictures come from), so their windows don't show one. A video in one file shows the server it comes from.",
+   "text": "种子和图库没有 MDM 自己的单一服务器（它们来自对等点或图库中的多张图片），因此它们的窗口不显示服务器。单个视频文件会显示其来源服务器。"
+  },
   "416dd4c491e33d28": {
    "source": "A torrent the list already has isn't added again, and MDM never writes into files it didn't make without asking. The window is made for feeds of torrents: an article opens in <g1>Add torrent</g1>, and a rule adds torrents.",
    "text": "列表中已有的种子不会再次添加，MDM 绝不会在未经询问的情况下写入它未创建的文件。该窗口专为种子订阅源设计：文章在<g1>添加种子</g1>中打开，规则添加种子。"
@@ -4545,10 +4553,6 @@
   "44733691a19bafa4": {
    "source": "F3",
    "text": "F3"
-  },
-  "447b0cdb28e67b18": {
-   "source": "<g1>Stop</g1> ends gallery-dl and everything it started. The pictures saved so far stay.",
-   "text": "点击<g1>停止</g1>会结束 gallery-dl 及其启动的所有进程。已保存的图片会保留。"
   },
   "447cc2a2f0918427": {
    "source": "Tab",
@@ -5466,10 +5470,6 @@
    "source": "Success text (a matching checksum)",
    "text": "成功文本（匹配的校验和）"
   },
-  "538610c6a0cb9bfd": {
-   "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones. <x3/> sends gallery-dl's connections through one network adapter, as for <x4/>.",
-   "text": "将图库中的图片（如 Wikimedia Commons 分类、Flickr 相册等）下载到 <x1/> 中以图库名称命名的文件夹；<x2/> 限制下载数量，最多下载网站列出的前若干张图片。再次运行时，只下载新增图片。<x3/> 通过一个网络适配器发送 gallery-dl 的连接，方式与 <x4/> 相同。"
-  },
   "539160f92bae4422": {
    "source": "Being re-measured",
    "text": "正在重新测量"
@@ -5833,6 +5833,10 @@
   "58d632aa7f93ec0d": {
    "source": "<g1>MDM comes back as you left it</g1>: the window's place and size, the Categories pane, its open branches and the node shown.",
    "text": "<g1>MDM 会恢复到上次关闭时的状态</g1>：包括窗口的位置和大小、“类别”窗格、展开的分支以及当前显示的节点。"
+  },
+  "59130ab4ecc47c65": {
+   "source": "<g1>Hide to the notification area</g1> (a short dash with an arrow down to the corner; on Windows in the title bar, left of Minimize) puts the window in the notification area; <g2>Downloads in progress</g2> in the tray icon's menu brings it back. See <g3>The tray icon</g3>.",
+   "text": "<g1>隐藏到通知区域</g1>（在 Windows 标题栏中，最小化按钮左侧，一个带向下箭头的短横线图标）会将窗口最小化到通知区域；通过托盘图标菜单中的<g2>正在进行的下载</g2>可将其恢复。请参阅<g3>托盘图标</g3>。"
   },
   "591498dd46bd5859": {
    "source": "<g1>A copy from elsewhere?</g1> Remove it and add the extension as MDM's <g2>Add Mister Download Manager to your browser</g2> window shows (see <g3>Browser integration</g3>).",
@@ -6830,10 +6834,6 @@
    "source": "Is Mister Download Manager really free?",
    "text": "Mister Download Manager 真的免费吗？"
   },
-  "689d48a0fd15b011": {
-   "source": "Start a finished gallery again (<g1>Resume</g1>) to fetch only the pictures that aren't in its folder yet. gallery-dl skips the ones already there.",
-   "text": "对已完成的图库再次点击<g1>恢复</g1>，只获取文件夹中尚未保存的图片。gallery-dl 会跳过已存在的图片。"
-  },
   "68a1b323ce4d8350": {
    "source": "Themes Support",
    "text": "主题支持"
@@ -6857,6 +6857,10 @@
   "6941e88ad1cb9eb7": {
    "source": "When a download comes from a form you submitted, it passes <g1>the form's data</g1> too, so MDM can submit it again. It notes the data of forms you submit (in memory, used for two minutes at most, never stored) only for that.",
    "text": "当下载来自您提交的表单时，它也会传递<g1>表单数据</g1>，以便 MDM 可以再次提交。它只为此目的记录您提交的表单数据（在内存中，最多使用两分钟，从不存储）。"
+  },
+  "69662d745c57ca02": {
+   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with the help of <g1>gallery-dl</g1>, a free program that reads several hundred sites. Like yt-dlp for videos, it's an optional helper: MDM installs it the first time you need it, or uses your own copy.",
+   "text": "MDM 借助 <g1>gallery-dl</g1>（一个可读取数百个网站的免费程序）下载图库中的图片（如维基共享资源分类、Flickr 相册、DeviantArt 图库、Imgur 相册等）。它和 yt-dlp 视频下载工具一样，是一个可选的辅助程序：MDM 会在您首次需要时安装它，或使用您已有的副本。"
   },
   "6976d3a5455f9216": {
    "source": "Typing the start of a name while the list has the focus jumps to the first download whose name starts with it.",
@@ -8642,10 +8646,6 @@
    "source": "<g1>Tasks</g1> — add downloads, torrents, magnet links, batch downloads and videos from a page; <g2>Torrent settings</g2>; <g3>Link grabber</g3>; <g4>RSS feeds</g4>; show the drop target; import and export the list; exit.",
    "text": "<g1>任务</g1> — 添加下载、种子、磁力链接、批量下载和网页视频；<g2>种子设置</g2>；<g3>链接抓取器</g3>；<g4>RSS 源</g4>；显示拖放目标；导入和导出列表；退出。"
   },
-  "8362706ee6422965": {
-   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with <g1>gallery-dl</g1>, a free program that reads several hundred sites. Like yt-dlp for videos, it's an optional helper: MDM installs it the first time you need it, or uses your own copy.",
-   "text": "MDM 使用 <g1>gallery-dl</g1> 下载图库（维基共享资源分类、Flickr 相册、DeviantArt 图库、Imgur 相册等）中的图片。gallery-dl 是一款免费程序，可读取数百个网站。它和用于下载视频的 yt-dlp 一样，是可选的帮助程序：MDM 会在您首次需要时安装它，也可以使用您自己的副本。"
-  },
   "8362eb1c5519a907": {
    "source": "Put downloads in a queue",
    "text": "将下载添加到队列"
@@ -9270,10 +9270,6 @@
    "source": "Adwaita",
    "text": "Adwaita"
   },
-  "8d6911b8ed8eb4d4": {
-   "source": "<g1>How it asks:</g1> gallery-dl asks sites as MDM, one picture a second at most. Wikimedia's servers refuse tools that ask faster or without a name. It uses no configuration file of yours.",
-   "text": "<g1>请求方式：</g1> gallery-dl 会以 MDM 的名义向网站发送请求，每秒最多请求一张图片。维基媒体的服务器会拒绝请求过快或没有名称的工具。gallery-dl 不会使用您的配置文件。"
-  },
   "8d833607c2d3b591": {
    "source": "Sites change often, and a newer yt-dlp usually fixes a video that stopped working. MDM doesn't update yt-dlp on its own yet; <g1>the help</g1> shows how to get the newest one.",
    "text": "网站经常变化，更新的 yt-dlp 通常能修复停止工作的视频。MDM 尚未自动更新 yt-dlp；<g1>帮助</g1>中说明了如何获取最新版本。"
@@ -9873,6 +9869,10 @@
   "9682bbc6499d98d3": {
    "source": "<g1>All files and install steps</g1><g2>Every release on GitHub</g2>",
    "text": "<g1>所有文件和安装步骤</g1><g2>GitHub 上的所有发布</g2>"
+  },
+  "968549d62c413703": {
+   "source": "<g1>Stop</g1> ends MDM's downloads of the pictures, and gallery-dl with everything it started. The pictures saved so far stay.",
+   "text": "<g1>停止</g1>会终止 MDM 对图片的下载，以及 gallery-dl 启动的所有进程。已保存的图片会保留。"
   },
   "96abca8820d90816": {
    "source": "Download scheduler and queues — Mister Download Manager",
@@ -12418,6 +12418,10 @@
    "source": "Light / dark",
    "text": "亮色/暗色"
   },
+  "bcb21be39ed72c3a": {
+   "source": "A gallery-dl older than 1.32 (a Linux distribution's, often) can't list the pictures this way: it downloads them all itself, one a second, as before.",
+   "text": "版本低于 1.32 的 gallery-dl（通常是 Linux 发行版中的）无法以这种方式列出图片：它会像以前一样，每秒下载一张图片，自行下载所有内容。"
+  },
   "bcb4397f5d370a55": {
    "source": "Click a download. MDM takes it from there.",
    "text": "点击下载，MDM 接管。"
@@ -12969,6 +12973,10 @@
   "c5980664ded251b8": {
    "source": "<g1>The system:</g1> MDM's version and how you installed it, your operating system and its version, the processor, the language and theme, and how many downloads and queues you have. These are counts only.",
    "text": "<g1>系统信息：</g1>MDM 的版本和安装方式、操作系统及其版本、处理器、语言和主题，以及下载和队列的数量。这些信息只包含数量。"
+  },
+  "c5b1d8d5e4be4a3b": {
+   "source": "How the pictures come down",
+   "text": "图片下载方式"
   },
   "c5ddef5d4d228288": {
    "source": "Downloads are smaller: setup.exe 23 → 16 MB, AppImage 36 → 20 MB, .deb 27 → 17 MB.",
@@ -14533,6 +14541,10 @@
   "de7042ead2b68920": {
    "source": "<g1>Delete archives after extracting</g1>: once extracted, the archives go to the Recycle Bin (the Trash on macOS and Linux).",
    "text": "<g1>提取后删除存档</g1>：提取完成后，存档会移入回收站（macOS 和 Linux 上的废纸篓）。"
+  },
+  "de91aa24c4e3719d": {
+   "source": "gallery-dl lists the gallery's pictures: where each one comes from and the name it gets in the folder. MDM's own downloader then brings them in, 4 at a time (fewer when the site answers that it's busy, as Wikimedia's does), under your speed limits (a change applies at once), and the progress window's connections table shows each one. gallery-dl then runs as before: it finds those pictures already there and fetches only what MDM couldn't have, such as a picture from a site that wants a sign-in or headers of its own. The log says how many each saved.",
+   "text": "gallery-dl 会列出图库中的图片：每张图片的来源以及在文件夹中保存的名称。然后，MDM 自己的下载器会以每次 4 张图片的速度（当网站响应繁忙时，如维基媒体，会减少数量）下载它们，并遵循您的速度限制（更改会立即生效）。进度窗口的连接表格会显示每张图片的下载情况。之后，gallery-dl 会像之前一样运行：它会找到已存在的图片，并只抓取 MDM 无法获取的内容，例如需要登录或自定义请求头的网站上的图片。日志会说明每次保存了多少张图片。"
   },
   "deb3f2db3855218f": {
    "source": "<g1>Never take downloads from</g1> the current site: adds it to MDM's excluded sites.",
@@ -16613,6 +16625,10 @@
   "fdac126a9d867074": {
    "source": "<g1>Nothing to relearn.</g1> The toolbar, categories, download list, progress window, queues, Scheduler and Options sit where you expect them. Even the command-line switches are the same: <x2/>.",
    "text": "<g1>无需重新学习。</g1> 工具栏、类别、下载列表、进度窗口、队列、计划程序和选项都在您期望的位置。甚至命令行开关也相同：<x2/>。"
+  },
+  "fdb42bc6bffd138a": {
+   "source": "<g1>How it asks:</g1> gallery-dl and MDM's downloader ask sites as MDM; MDM brings 4 pictures at a time, and gallery-dl, for what's left to it, one a second at most. Wikimedia's servers refuse tools that ask much faster or without a name. gallery-dl uses no configuration file of yours.",
+   "text": "<g1>请求方式：</g1> gallery-dl 和 MDM 的下载器会以 MDM 的身份向网站发出请求；MDM 每次下载 4 张图片，而 gallery-dl 对于剩余部分，最多每秒下载一张。维基媒体的服务器会拒绝请求过快或未具名的工具。gallery-dl 不会使用您的任何配置文件。"
   },
   "fdc70071f8979731": {
    "source": "Warnings",

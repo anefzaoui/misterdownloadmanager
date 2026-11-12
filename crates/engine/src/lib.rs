@@ -15,6 +15,8 @@ pub mod pac;
 pub mod planner;
 pub mod server;
 pub mod sites;
+#[doc(hidden)]
+pub mod slowdisk;
 mod sparse;
 pub mod state;
 pub mod tls;

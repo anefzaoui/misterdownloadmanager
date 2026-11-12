@@ -39,11 +39,23 @@ const BATCH: usize = 256 * 1024;
 /// Received bytes are written at least this often, so a slow connection shows progress and a
 /// pause keeps what arrived.
 const FLUSH_EVERY: Duration = Duration::from_secs(1);
-/// While the resume save flushes the part file to the disk (`Shared::flushing`), the connections
-/// keep what they receive in memory, at most this much for the whole download, instead of
-/// waiting on the disk (#361): on NTFS a file's writes wait for its flush, whatever their
-/// handle (measured: 8 connections' writes held for each whole flush, 3-10 s on a slow disk).
-const FLUSH_HOLD_MAX: usize = 256 << 20;
+/// While the disk takes a connection's write, what it receives meanwhile waits in memory, at
+/// most this much for the whole download (`Writer`), and only then does it stand still for the
+/// disk: a flush on NTFS holds every write to the file (measured: 3-10 s on a slow disk, #361),
+/// and a disk slower than the network holds writes to its pace once the system's cache is full
+/// (#782). About 2 s of a 1 Gbit/s link: room for the first flush, which can only be guessed
+/// (`Synced::fits` keeps the others shorter).
+const HOLD_MAX: u64 = 256 << 20;
+/// The most one write of a connection carries (`Writer::send`): what waited in memory goes to
+/// a disk that sets the pace in steps this small, so the waits stay short and even.
+const WRITE_MAX: usize = 4 << 20;
+/// A connection that stood still this long for the disk tells the others the disk sets the
+/// pace (`too_slow`).
+const DISK_HELD: Duration = Duration::from_millis(50);
+/// A response's speed says what one connection to this server can do once it has run this long
+/// (and brought 256 KiB, `yardstick`): long enough that what was already on its way when it
+/// began doesn't count for much.
+const BEST_AFTER: Duration = Duration::from_millis(100);
 
 /// Shedding a slow connection (`Options::shed_slow`): after `SHED_GRACE` on a response, a
 /// connection under 1/`SHED_RATIO` of the best speed one connection reached, with more than
@@ -165,19 +177,10 @@ pub struct Options {
     /// file at a fraction of it: yt-dlp's `http_chunk_size`, #769). None: each connection asks
     /// for its whole part at once. HTTP only, never with a POST.
     pub request_cap: Option<u64>,
-    /// Tests: a disk whose flush takes this long and holds every write to the file meanwhile
-    /// (as NTFS does, #361). None: the real disk.
+    /// Tests and measurements: a disk slower than the network, behind a write cache, whose
+    /// flush holds every write to the file (as NTFS's does, #361, #782). None: the real disk.
     #[doc(hidden)]
-    pub slow_flush: Option<SlowFlush>,
-}
-
-/// A disk whose flush takes `takes` and, as NTFS's does, makes every write to the file wait for
-/// it: the gate is held exclusively for the flush and shared for each write (`Options::slow_flush`).
-#[doc(hidden)]
-#[derive(Clone, Debug)]
-pub struct SlowFlush {
-    pub takes: Duration,
-    pub gate: Arc<std::sync::RwLock<()>>,
+    pub slow_disk: Option<crate::slowdisk::SlowDisk>,
 }
 
 /// A callback given the path of a file the engine created (`Options::on_file_created`).
@@ -256,7 +259,7 @@ impl Default for Options {
             on_file_created: None,
             expected_type: None,
             request_cap: None,
-            slow_flush: None,
+            slow_disk: None,
         }
     }
 }
@@ -1111,7 +1114,7 @@ impl Download {
             planner: Mutex::new(None),
             limiter: Limiter::new(None),
             best_speed: Default::default(),
-            flushing: Default::default(),
+            disk_held: Default::default(),
             held: Default::default(),
         });
         let task = tokio::spawn(f(shared.clone(), cancel.clone()));
@@ -1193,12 +1196,11 @@ struct Shared {
     seen: std::sync::OnceLock<Arc<crate::server::ServerSeen>>,
     planner: Mutex<Option<Planner>>,
     limiter: Limiter,
-    /// The best speed one connection of this download sustained (≥ 1 s), bytes/s: what a good
+    /// The best speed one connection of this download sustained (`yardstick`), bytes/s: what a good
     /// connection to this server does, the yardstick for shedding.
     best_speed: std::sync::atomic::AtomicU64,
-    /// The resume save is flushing the part file to the disk right now (`save_state`): the
-    /// connections hold what they receive (`hold_cap`).
-    flushing: std::sync::atomic::AtomicBool,
+    /// When a connection last stood still for the disk for `DISK_HELD` or longer (`Pace`).
+    disk_held: Mutex<Option<std::time::Instant>>,
     /// Bytes received and claimed but not yet written, in the connections' buffers: shown as
     /// downloaded (they are), but never saved as such.
     held: std::sync::atomic::AtomicU64,
@@ -2470,6 +2472,7 @@ async fn segmented(
         at: std::time::Instant::now(),
         bytes: 0,
         took: Duration::ZERO,
+        covered: Duration::ZERO,
     };
     save_state(&ctx, &mut saved, &path, &mut synced, true).await?;
     let interval = ctx.opts.save_interval;
@@ -2517,43 +2520,66 @@ async fn segmented(
 
 /// While downloading, the part file is flushed (and the state rewritten) only after 1/16 of
 /// the file (1-64 MiB) has arrived or this long, at most once per save tick, and always when
-/// the connections stop. Flushing every tick stalled HDDs and churned antivirus; IDM saves
-/// "several times per minute" [IDM-doc].
+/// the connections stop. IDM saves "several times per minute" [IDM-doc].
 ///
-/// A flush holds every write to the file for as long as it runs (NTFS, measured, #361), so on a
-/// disk where it takes seconds, flushing as often as the file grows left the download frozen
-/// most of the time. The next flush therefore waits nine times as long as the last flush during
-/// the transfer took (`forced_gap`), at most `SYNC_GAP_MAX`: at most a tenth of the time goes
-/// to flushing, and on a fast disk (a flush of a few milliseconds) nothing changes. What it
-/// gives up: after a power cut or a crash the bytes since the last flush are downloaded again,
-/// so on a slow disk up to `SYNC_GAP_MAX` of them (at 1 Gbit/s about 7 GB) instead of about 2 s
-/// of them. The saved positions still never claim bytes that weren't flushed.
+/// A flush holds every write to the file for as long as it runs (NTFS, measured, #361); the
+/// connections keep receiving into memory meanwhile (`HOLD_MAX`), so a flush the memory covers
+/// costs the download nothing. What a flush has to write is what still waits in the system's
+/// cache: Windows writes it out lazily, so that is about all that came since the last flush,
+/// and on a disk slower than the network, all that piled up. Spacing the flushes out by how
+/// long the last one took (0.5.1 to 0.5.2) therefore made each one longer than the last: past
+/// the first gigabytes a flush took over 10 s and the download froze (#782). So a flush is only
+/// started when it should end well before the memory runs out (`Synced::fits`): flushes come
+/// as often as the file grows while they stay short, and on a disk that can't keep up they
+/// stop, and the system holds the writes to the disk's pace instead, evenly. They start again
+/// if the download slows down enough for them to fit.
+///
+/// What it gives up: after a power cut or a crash the bytes since the last flush are downloaded
+/// again: about 2 s of them on a disk that keeps up, everything since it fell behind on one
+/// that doesn't. Pausing, stopping and finishing still flush everything, and the saved
+/// positions never claim bytes that weren't flushed.
 const SYNC_BYTES_MAX: u64 = 64 << 20;
 const SYNC_BYTES_MIN: u64 = 1 << 20;
 const SYNC_EVERY: Duration = Duration::from_secs(30);
-const SYNC_GAP_MAX: Duration = Duration::from_secs(60);
 
 fn sync_bytes(size: u64) -> u64 {
     (size / 16).clamp(SYNC_BYTES_MIN, SYNC_BYTES_MAX)
 }
 
-/// How long to wait after a flush that took `took` before the next.
-fn flush_gap(took: Duration) -> Duration {
-    took.saturating_mul(9).min(SYNC_GAP_MAX)
-}
-
-/// When the part file was last flushed, how many bytes were on disk then, and how long it took.
+/// When the part file was last flushed, how many bytes were on disk then, how long it took,
+/// and the time it caught up with (since the flush before it ended).
 struct Synced {
     at: std::time::Instant,
     bytes: u64,
     took: Duration,
+    covered: Duration,
 }
 
 impl Synced {
-    /// Is a flush due with `bytes` on disk now, `elapsed` since the last one ended?
-    fn due(&self, bytes: u64, size: u64, elapsed: Duration) -> bool {
-        elapsed >= flush_gap(self.took)
-            && (bytes >= self.bytes.saturating_add(sync_bytes(size)) || elapsed >= SYNC_EVERY)
+    /// Is a flush due with `bytes` on disk now, `elapsed` since the last one ended, `room`
+    /// left in memory for what arrives meanwhile?
+    fn due(&self, bytes: u64, size: u64, elapsed: Duration, room: u64) -> bool {
+        let new = bytes.saturating_sub(self.bytes);
+        (new >= sync_bytes(size) || elapsed >= SYNC_EVERY) && self.fits(new, elapsed, room)
+    }
+
+    /// Whether a flush now, `new` bytes and `elapsed` after the last one, should take at most
+    /// three quarters of the time `room` lasts at the pace those bytes came: the connections
+    /// then keep receiving through it. With the memory full (a disk that sets the pace), none
+    /// does: it would stop them for as long as it takes.
+    fn fits(&self, new: u64, elapsed: Duration, room: u64) -> bool {
+        let lasts = room as f64 * elapsed.as_secs_f64() / new.max(1) as f64;
+        self.expected(elapsed).as_secs_f64() <= lasts * 0.75
+    }
+
+    /// How long a flush `elapsed` after the last one should take: as long as that one took for
+    /// each second it caught up with (what waits in the cache grows with the time, above).
+    fn expected(&self, elapsed: Duration) -> Duration {
+        if self.covered.is_zero() {
+            return self.took;
+        }
+        self.took
+            .mul_f64(elapsed.as_secs_f64() / self.covered.as_secs_f64())
     }
 }
 
@@ -2574,7 +2600,9 @@ async fn save_state(
         || final_url != saved.final_url
         || final_get != saved.final_get;
     let bytes: u64 = segments.iter().map(|s| s.cursor - s.start).sum();
-    let due = force || synced.due(bytes, ctx.size, synced.at.elapsed());
+    // Room left in memory for what arrives while the flush holds the writes.
+    let room = HOLD_MAX.saturating_sub(ctx.shared.held.load(Ordering::Relaxed));
+    let due = force || synced.due(bytes, ctx.size, synced.at.elapsed(), room);
     let file = ctx.file.clone();
     let path = path.to_owned();
     if !due {
@@ -2596,6 +2624,7 @@ async fn save_state(
             at: std::time::Instant::now(),
             bytes,
             took: Duration::ZERO,
+            covered: Duration::ZERO,
         };
         return Ok(());
     }
@@ -2603,36 +2632,28 @@ async fn save_state(
     s.validators = validators;
     s.final_url = final_url;
     s.final_get = final_get;
-    // Tests' slow disk (not for the forced saves at the start and the end).
-    let slow = if force {
-        None
-    } else {
-        ctx.opts.slow_flush.clone()
-    };
-    ctx.shared.flushing.store(true, Ordering::Release);
+    // Tests' slow disk (its extra flush time not for the forced saves at the start and the end).
+    let slow = ctx.opts.slow_disk.clone();
     let began = std::time::Instant::now();
-    let done = tokio::task::spawn_blocking(move || {
-        if let Some(slow) = slow {
-            let _writes_wait = slow.gate.write().unwrap();
-            std::thread::sleep(slow.takes);
-        }
-        s.save(&path, segments, &file).map(|()| s)
+    let done = tokio::task::spawn_blocking(move || match slow {
+        Some(disk) => disk.flush(!force, || s.save(&path, segments, &file).map(|()| s)),
+        None => s.save(&path, segments, &file).map(|()| s),
     })
     .await
     .expect("state writer panicked");
-    ctx.shared.flushing.store(false, Ordering::Release);
     *saved = done?;
     *synced = Synced {
         at: std::time::Instant::now(),
         bytes,
         took: forced_gap(force, began.elapsed()),
+        covered: began.saturating_duration_since(synced.at),
     };
     Ok(())
 }
 
-/// The flush time that spaces out the next flush. A forced save runs while no connection
-/// writes (before they start, after they stop), so it holds no transfer up and doesn't push the
-/// next save back: the first one at the start, which also pays for creating the part file, once
+/// The flush time the next flush is judged by. A forced save runs while no connection writes
+/// (before they start, after they stop), so it holds no transfer up and says nothing of the
+/// next one: the first one at the start, which also pays for creating the part file, once
 /// delayed the first save of progress past the end of a short download (#518).
 fn forced_gap(force: bool, took: Duration) -> Duration {
     if force { Duration::ZERO } else { took }
@@ -3786,7 +3807,11 @@ fn expects_web_page(dest: &Path, content_type: Option<&str>) -> bool {
 /// `None` when the segment was taken over by another connection.
 ///
 /// Every chunk is claimed from the planner as soon as it arrives (not when the buffer is
-/// flushed), so a split can never fall inside data this connection has already received.
+/// written), so a split can never fall inside data this connection has already received.
+///
+/// Writing runs beside receiving (`Writer`): while the disk takes one write, what arrives waits
+/// in memory, up to the connection's share of `HOLD_MAX`, and only then does the connection
+/// stand still for the disk (#361, #782).
 async fn receive(
     ctx: &Ctx,
     id: WorkerId,
@@ -3797,26 +3822,20 @@ async fn receive(
     whole: bool,
 ) -> Result<Received, Error> {
     ctx.shared.conn(id, |c| c.status = ConnStatus::Receiving);
-    // Written and committed up to `pos`; `buf` holds claimed bytes not yet written.
-    let mut pos = from;
-    let mut buf = Vec::with_capacity(BATCH);
-    let mut flushed_at = std::time::Instant::now();
-    let started = std::time::Instant::now();
-    // Time spent waiting for the disk (`flush`): a connection isn't slow for that (#361), it
-    // wasn't reading the network then.
-    let mut on_disk = Duration::ZERO;
-    let mut received = 0u64;
-    let mut checked = started;
+    let mut out = Writer::new(ctx, id, from);
+    let mut pace = Pace::new();
+    let mut checked = std::time::Instant::now();
     loop {
         let next = tokio::select! {
             _ = ctx.cancel.cancelled() => {
                 // Paused or stopped: keep what arrived (it is claimed, so it is ours to write).
-                flush(ctx, id, &mut pos, &mut buf).await?;
+                out.finish(&mut pace).await?;
                 return Err(Error::Cancelled);
             }
             n = body.chunk() => n,
         };
-        let (ended, err) = match next {
+        // `complete`: the segment ended where this connection had written (a split shortened it).
+        let (ended, err, complete) = match next {
             Ok(Some(mut chunk)) => {
                 // The response starts `verify` bytes before `from`: they must equal the disk.
                 if verify > 0 {
@@ -3826,6 +3845,7 @@ async fn receive(
                         .await
                         .expect("reader panicked")?;
                     if disk[..] != chunk[..k as usize] {
+                        out.finish(&mut pace).await?;
                         return Err(Error::FileChanged);
                     }
                     verify -= k;
@@ -3847,12 +3867,12 @@ async fn receive(
                 tokio::select! {
                     _ = ctx.cancel.cancelled() => {
                         // Not claimed yet: this chunk isn't ours to keep; what is, is written.
-                        flush(ctx, id, &mut pos, &mut buf).await?;
+                        out.finish(&mut pace).await?;
                         return Err(Error::Cancelled);
                     }
                     _ = paid => {}
                 }
-                let at = pos + buf.len() as u64;
+                let at = out.next();
                 // An answer that runs to the end of the file (`whole`: the probe's plain GET),
                 // while ranges aren't known to work: at its segment's end it takes over the
                 // split-off segments nothing has arrived for yet, rather than dropping bytes it
@@ -3873,7 +3893,8 @@ async fn receive(
                         p.room(id, at + n) == Some(0) && !(keep_reading && p.absorb_next(id));
                     Some((n, full))
                 });
-                // Claimed bytes can't be taken over, so a lost segment has an empty buffer.
+                // Claimed bytes can't be taken over, so a lost segment has nothing waiting for
+                // the disk (a write still running is waited for all the same, #201).
                 let refund = |n: u64| {
                     ctx.shared.limiter.refund(n);
                     if let Some(g) = &ctx.opts.global {
@@ -3882,12 +3903,13 @@ async fn receive(
                 };
                 let Some((n, full)) = claimed else {
                     refund(want);
+                    out.finish(&mut pace).await?;
                     return Ok(Received::Lost);
                 };
                 if n < want {
                     refund(want - n);
                 }
-                if received == 0
+                if pace.received == 0
                     && n > 0
                     && let Some(limits) = &ctx.opts.host_limits
                 {
@@ -3896,42 +3918,39 @@ async fn receive(
                     let now = ctx.shared.with_planner(|p| p.receiving_workers()) as u32;
                     limits.working(ctx.target().url.host_str().unwrap_or(""), now);
                 }
-                buf.extend_from_slice(&chunk[..n as usize]);
-                ctx.shared.held.fetch_add(n, Ordering::Relaxed);
-                received += n;
+                out.push(&chunk[..n as usize]);
+                pace.received += n;
                 if checked.elapsed() >= Duration::from_millis(500) {
                     checked = std::time::Instant::now();
-                    let on_net = started.elapsed().saturating_sub(on_disk);
-                    let speed = (received as f64 / on_net.as_secs_f64()) as u64;
-                    ctx.shared.conn(id, |c| c.speed = speed);
-                    note_best(ctx, received, on_net);
-                    if should_shed(ctx, id, speed, on_net, pos + buf.len() as u64) {
-                        flush(ctx, id, &mut pos, &mut buf).await?;
+                    ctx.shared.conn(id, |c| c.speed = pace.speed());
+                    note_best(ctx, &pace);
+                    if should_shed(ctx, id, &pace, out.next()) {
+                        out.finish(&mut pace).await?;
                         return Err(Error::SlowConnection);
                     }
                 }
-                if !full && buf.len() < hold_cap(ctx) && ctx.shared.flushing.load(Ordering::Acquire)
-                {
-                    continue; // the disk is busy flushing: this waits in memory (#361)
+                if full {
+                    (false, None, None)
+                } else {
+                    match out.step(&mut pace).await? {
+                        Some(end) => (false, None, Some(end)),
+                        None => continue,
+                    }
                 }
-                if buf.len() < BATCH && !full && flushed_at.elapsed() < FLUSH_EVERY {
-                    continue;
-                }
-                (false, None)
             }
-            Err(e) => (true, Some(e)),
-            Ok(None) => (true, None),
+            Err(e) => (true, Some(e), None),
+            Ok(None) => (true, None, None),
         };
-        let waiting = std::time::Instant::now();
-        let flushed = flush(ctx, id, &mut pos, &mut buf).await?;
-        flushed_at = std::time::Instant::now();
-        on_disk += flushed_at - waiting;
-        match flushed {
+        let complete = match complete {
+            Some(end) => Some(end),
+            None => out.finish(&mut pace).await?,
+        };
+        match complete {
             Some(end) => {
-                note_best(ctx, received, started.elapsed().saturating_sub(on_disk));
+                note_best(ctx, &pace);
                 // A segment another connection shortened leaves an HTTP body far from its end
                 // (dropped); an FTP session is kept either way.
-                if err.is_none() && (pos >= to || matches!(body, Body::Ftp(_))) {
+                if err.is_none() && (out.pos >= to || matches!(body, Body::Ftp(_))) {
                     // Not past a stop (`stop_connections` waits for this connection).
                     tokio::select! {
                         _ = ctx.cancel.cancelled() => {}
@@ -3941,8 +3960,8 @@ async fn receive(
                 return Ok(Received::Complete(end));
             }
             // A capped request (`request_cap`) answered in full: the next one goes on.
-            None if ended && err.is_none() && pos >= to && ctx.opts.cap().is_some() => {
-                return Ok(Received::More(pos));
+            None if ended && err.is_none() && out.pos >= to && ctx.opts.cap().is_some() => {
+                return Ok(Received::More(out.pos));
             }
             None if ended => return Err(err.unwrap_or(Error::ShortBody)),
             None => {}
@@ -3950,67 +3969,266 @@ async fn receive(
     }
 }
 
-/// How much a connection may hold in memory while the part file is flushed (`FLUSH_HOLD_MAX`,
-/// shared by the connections this download may open).
-fn hold_cap(ctx: &Ctx) -> usize {
-    FLUSH_HOLD_MAX / ctx.opts.connections().max(1) as usize
+/// A connection's received bytes on their way to the disk (`receive`): written and committed
+/// up to `pos`, then the write the disk is taking now (one at a time, in order), then the
+/// batches waiting in memory (`queue`), then `buf`, the batch still filling. Every byte claimed
+/// and not yet written counts in `Shared::held`.
+struct Writer<'a> {
+    ctx: &'a Ctx,
+    id: WorkerId,
+    pos: u64,
+    writing: Option<(tokio::task::JoinHandle<io::Result<()>>, u64)>,
+    queue: std::collections::VecDeque<Vec<u8>>,
+    queued: u64,
+    buf: Vec<u8>,
+    /// When `buf` was last closed: received bytes go to the disk at least `FLUSH_EVERY`.
+    closed_at: std::time::Instant,
 }
 
-/// Remember the speed of a response that carried enough (256 KiB) to say what this server can
-/// do over one connection (`on_net`: the time it took, waits for the disk not counted).
-fn note_best(ctx: &Ctx, received: u64, on_net: Duration) {
-    let secs = on_net.as_secs_f64();
-    if received >= 256 * 1024 && secs > 0.0 {
-        ctx.shared
-            .best_speed
-            .fetch_max((received as f64 / secs) as u64, Ordering::Relaxed);
+impl<'a> Writer<'a> {
+    fn new(ctx: &'a Ctx, id: WorkerId, from: u64) -> Self {
+        Writer {
+            ctx,
+            id,
+            pos: from,
+            writing: None,
+            queue: Default::default(),
+            queued: 0,
+            buf: Vec::with_capacity(BATCH),
+            closed_at: std::time::Instant::now(),
+        }
+    }
+
+    /// Bytes claimed and not written yet.
+    fn pending(&self) -> u64 {
+        self.writing.as_ref().map_or(0, |w| w.1) + self.queued + self.buf.len() as u64
+    }
+
+    /// The next byte to claim.
+    fn next(&self) -> u64 {
+        self.pos + self.pending()
+    }
+
+    fn push(&mut self, data: &[u8]) {
+        self.buf.extend_from_slice(data);
+        let n = data.len() as u64;
+        self.ctx.shared.held.fetch_add(n, Ordering::Relaxed);
+    }
+
+    /// After a chunk: once `buf` is a batch (or `FLUSH_EVERY` old) it goes to the disk, or
+    /// waits in memory while the disk still takes an earlier write. Past `hold_cap` waiting,
+    /// the connection waits for the disk. `Some(end)`: the segment is complete.
+    async fn step(&mut self, pace: &mut Pace) -> Result<Option<u64>, Error> {
+        if self.writing.as_ref().is_some_and(|w| w.0.is_finished())
+            && let Some(end) = self.wait().await?
+        {
+            return Ok(Some(end));
+        }
+        if self.buf.len() >= BATCH || self.closed_at.elapsed() >= FLUSH_EVERY {
+            self.close();
+        }
+        if self.writing.is_some() && self.pending() >= hold_cap(self.ctx) {
+            let began = std::time::Instant::now();
+            let done = self.wait().await;
+            pace.waited(self.ctx, began.elapsed());
+            if let Some(end) = done? {
+                return Ok(Some(end));
+            }
+        }
+        if self.writing.is_none() {
+            self.send();
+        }
+        Ok(None)
+    }
+
+    /// Everything to the disk, waiting for it (counted as a wait for the disk in `pace`).
+    /// `Some(end)`: the segment is complete.
+    async fn finish(&mut self, pace: &mut Pace) -> Result<Option<u64>, Error> {
+        let began = std::time::Instant::now();
+        self.close();
+        let mut end = None;
+        let done = loop {
+            match self.wait().await {
+                Ok(e) => end = e.or(end),
+                Err(e) => break Err(e),
+            }
+            if self.queue.is_empty() {
+                break Ok(end);
+            }
+            self.send();
+        };
+        pace.waited(self.ctx, began.elapsed());
+        done
+    }
+
+    /// `buf` joins the queue.
+    fn close(&mut self) {
+        self.closed_at = std::time::Instant::now();
+        if !self.buf.is_empty() {
+            let batch = std::mem::replace(&mut self.buf, Vec::with_capacity(BATCH));
+            self.queued += batch.len() as u64;
+            self.queue.push_back(batch);
+        }
+    }
+
+    /// Start writing the queue's first batches, up to `WRITE_MAX` (nothing else is being
+    /// written). Small writes keep the waits for a disk that sets the pace short and even.
+    fn send(&mut self) {
+        debug_assert!(self.writing.is_none());
+        let Some(mut data) = self.queue.pop_front() else {
+            return;
+        };
+        while let Some(next) = self.queue.front()
+            && data.len() + next.len() <= WRITE_MAX
+        {
+            data.extend_from_slice(next);
+            self.queue.pop_front();
+        }
+        let n = data.len() as u64;
+        self.queued -= n;
+        let (file, at) = (self.ctx.file.clone(), self.pos);
+        let slow = self.ctx.opts.slow_disk.clone();
+        let task = tokio::task::spawn_blocking(move || match slow {
+            Some(disk) => disk.write(n, || write_all_at(&file, at, &data)),
+            None => write_all_at(&file, at, &data),
+        });
+        self.writing = Some((task, n));
+    }
+
+    /// Wait for the write under way and commit it. `Some(end)`: the segment is complete.
+    async fn wait(&mut self) -> Result<Option<u64>, Error> {
+        let Some((task, n)) = self.writing.take() else {
+            return Ok(None);
+        };
+        let written = task.await.expect("writer panicked");
+        self.ctx.shared.held.fetch_sub(n, Ordering::Relaxed);
+        written?;
+        self.pos += n;
+        self.ctx.shared.conn(self.id, |c| c.downloaded += n);
+        Ok(self
+            .ctx
+            .shared
+            .with_planner(|p| p.commit(self.id, self.pos)))
     }
 }
 
-/// Whether connection `id` (at `speed` for `elapsed` on this response, next byte `at`) should
-/// reconnect: far slower than the best a connection of this download sustained (comparing
-/// with the others fails once they are all stuck on slow paths), with a lot left at its pace.
-/// Never while a speed limit makes connections slow on purpose, nor under `request_cap`: each
-/// request ends soon by itself, and the server's pace varies from one to the next (YouTube's,
-/// #769: reconnecting cost more than it won).
-fn should_shed(ctx: &Ctx, id: WorkerId, speed: u64, elapsed: Duration, at: u64) -> bool {
+impl Drop for Writer<'_> {
+    /// Bytes that will never be written (an error ended the connection) are no longer held.
+    fn drop(&mut self) {
+        let left = self.pending();
+        self.ctx.shared.held.fetch_sub(left, Ordering::Relaxed);
+    }
+}
+
+/// How much a connection may keep in memory while the disk takes its writes (`HOLD_MAX`,
+/// shared by the connections this download may open).
+fn hold_cap(ctx: &Ctx) -> u64 {
+    HOLD_MAX / u64::from(ctx.opts.connections().max(1))
+}
+
+/// One response's pace (`receive`): where a connection's speed comes from, for the list and for
+/// the slow check alike.
+struct Pace {
+    started: std::time::Instant,
+    received: u64,
+    /// The time the connection stood still for the disk (`Writer`): it wasn't reading the
+    /// network then.
+    on_disk: Duration,
+}
+
+impl Pace {
+    fn new() -> Self {
+        Pace {
+            started: std::time::Instant::now(),
+            received: 0,
+            on_disk: Duration::ZERO,
+        }
+    }
+
+    /// Bytes/s since the response began, every second counted: what the connection brought.
+    /// The bytes the system kept for it while it stood still for the disk count over all the
+    /// time they took to come, so reading them in a burst afterwards is not speed (#782).
+    fn speed(&self) -> u64 {
+        rate(self.received, self.started.elapsed())
+    }
+
+    /// The time spent reading the network.
+    fn on_net(&self) -> Duration {
+        self.started.elapsed().saturating_sub(self.on_disk)
+    }
+
+    /// Bytes/s while reading the network: for the slow check, so a wait for the disk never
+    /// counts against a connection (#361). The burst after a wait makes it read high, which
+    /// can keep a connection, never shed one.
+    fn net_speed(&self) -> u64 {
+        rate(self.received, self.on_net())
+    }
+
+    /// The connection stood still `d` for the disk; a long wait tells the others (`disk_held`).
+    fn waited(&mut self, ctx: &Ctx, d: Duration) {
+        self.on_disk += d;
+        if d >= DISK_HELD {
+            *ctx.shared.disk_held.lock().unwrap() = Some(std::time::Instant::now());
+        }
+    }
+}
+
+/// `bytes` over `d`, bytes/s (`u64::MAX` for no time at all: nothing is slower than that).
+fn rate(bytes: u64, d: Duration) -> u64 {
+    let secs = d.as_secs_f64();
+    if secs > 0.0 {
+        (bytes as f64 / secs) as u64
+    } else {
+        u64::MAX
+    }
+}
+
+/// Remember the speed of a response that ran long enough (`BEST_AFTER`, 256 KiB) to say what
+/// this server can do over one connection.
+fn note_best(ctx: &Ctx, pace: &Pace) {
+    if let Some(speed) = yardstick(pace.received, pace.started.elapsed()) {
+        ctx.shared.best_speed.fetch_max(speed, Ordering::Relaxed);
+    }
+}
+
+/// The speed a response of `received` bytes in `elapsed` (all of its time, the disk's waits
+/// too) sets as what one connection can do, if it says so yet. Over all its time, never its
+/// time on the network only: a connection that stood still for the disk reads what the system
+/// kept for it meanwhile in a few milliseconds, and that burst once raised the bar so high
+/// that every connection fell under it and was shed, all at once (#782).
+fn yardstick(received: u64, elapsed: Duration) -> Option<u64> {
+    (received >= 256 * 1024 && elapsed >= BEST_AFTER).then(|| rate(received, elapsed))
+}
+
+/// Whether connection `id` should reconnect (`too_slow`), its next byte `at`. Never while a
+/// speed limit makes connections slow on purpose, nor under `request_cap`: each request ends
+/// soon by itself, and the server's pace varies from one to the next (YouTube's, #769:
+/// reconnecting cost more than it won).
+fn should_shed(ctx: &Ctx, id: WorkerId, pace: &Pace, at: u64) -> bool {
     let limited = ctx.shared.limiter.get().is_some()
         || ctx.opts.global.as_ref().is_some_and(|g| g.get().is_some());
-    if !ctx.opts.shed_slow || limited || ctx.opts.cap().is_some() || elapsed < SHED_GRACE {
+    if !ctx.opts.shed_slow || limited || ctx.opts.cap().is_some() {
         return false;
     }
+    let held = ctx.shared.disk_held.lock().unwrap().map(|t| t.elapsed());
     let best = ctx.shared.best_speed.load(Ordering::Relaxed);
     let left = ctx.shared.with_planner(|p| p.room(id, at)).unwrap_or(0);
-    speed.saturating_mul(SHED_RATIO) < best
-        && left as f64 / speed.max(1) as f64 > SHED_LEFT.as_secs_f64()
+    too_slow(pace.net_speed(), pace.on_net(), best, left, held)
 }
 
-/// Write the claimed bytes in `buf` at `pos` and commit them. `Some(end)` when the segment is
-/// now complete.
-async fn flush(
-    ctx: &Ctx,
-    id: WorkerId,
-    pos: &mut u64,
-    buf: &mut Vec<u8>,
-) -> Result<Option<u64>, Error> {
-    let data = std::mem::replace(buf, Vec::with_capacity(BATCH));
-    let n = data.len() as u64;
-    if n > 0 {
-        let file = ctx.file.clone();
-        let at = *pos;
-        let slow = ctx.opts.slow_flush.clone();
-        let written = tokio::task::spawn_blocking(move || {
-            let _waits_for_flush = slow.as_ref().map(|s| s.gate.read().unwrap());
-            write_all_at(&file, at, &data)
-        })
-        .await
-        .expect("writer panicked");
-        ctx.shared.held.fetch_sub(n, Ordering::Relaxed);
-        written?;
+/// A connection at `speed` over `on_net` of reading the network, with `left` bytes of its
+/// segment ahead, is slow enough to reconnect: far slower than the best a connection of this
+/// download sustained (comparing with the others fails once they are all stuck on slow paths),
+/// with a lot left at its pace. Not while the disk sets the pace (`held`: a connection last
+/// stood still for it that long ago, #782): the connections' speeds then say what the disk
+/// lets through, a new connection would wait for the same disk, and the ones that waited
+/// restart slowly (their sender saw a closed window).
+fn too_slow(speed: u64, on_net: Duration, best: u64, left: u64, held: Option<Duration>) -> bool {
+    if on_net < SHED_GRACE || held.is_some_and(|ago| ago < SHED_GRACE) {
+        return false;
     }
-    *pos += n;
-    ctx.shared.conn(id, |c| c.downloaded += n);
-    Ok(ctx.shared.with_planner(|p| p.commit(id, *pos)))
+    speed.saturating_mul(SHED_RATIO) < best
+        && left as f64 / speed.max(1) as f64 > SHED_LEFT.as_secs_f64()
 }
 
 /// Servers without range support: one connection, written in order. Returns the size.
@@ -4199,41 +4417,110 @@ mod tests {
         );
     }
 
-    /// #361: a flush that took a while pushes the next one back, on a fast disk nothing changes.
+    /// #782: a flush is started only when it should be over well before the connections run
+    /// out of memory: on a disk that keeps up, as often as the file grows; on one that falls
+    /// behind (each flush writes all that came since the last), not while it can't keep up.
     #[test]
-    fn a_slow_flush_makes_the_next_one_wait() {
+    fn a_flush_starts_only_when_it_should_be_short() {
         let s = Duration::from_secs;
-        let at = |took| Synced {
+        let at = |took, covered| Synced {
             at: std::time::Instant::now(),
             bytes: 0,
             took,
+            covered,
         };
-        let gb = 1u64 << 30;
-        // 3 s for the last flush: not again before 27 s, however many bytes came.
-        assert!(!at(s(3)).due(gb, 45 * gb, s(20)));
-        assert!(at(s(3)).due(gb, 45 * gb, s(27)));
-        // At most SYNC_GAP_MAX, whatever the flush took.
-        assert!(at(s(30)).due(gb, 45 * gb, s(61)));
-        // A flush of a few milliseconds: the old rules (each tick once 64 MiB have arrived).
-        assert!(at(Duration::from_millis(8)).due(128 << 20, 45 * gb, s(2)));
-        assert!(!at(Duration::from_millis(8)).due(1 << 20, 45 * gb, s(2)));
-        // Few bytes on a fast disk: still the long wait.
-        assert!(at(Duration::from_millis(8)).due(1 << 20, 45 * gb, s(30)));
+        let (gb, mb) = (1u64 << 30, 1u64 << 20);
+        // A disk that keeps up: 0.1 s to write 2 s of 115 MB/s. Every tick once 64 MiB came.
+        let fast = at(Duration::from_millis(100), s(2));
+        assert!(fast.due(230 * mb, 45 * gb, s(2), HOLD_MAX));
+        assert!(!fast.due(32 * mb, 45 * gb, s(2), HOLD_MAX));
+        // Few bytes: at the latest after SYNC_EVERY.
+        assert!(fast.due(32 * mb, 45 * gb, s(30), HOLD_MAX));
+        // A hard disk behind the network: 2 s to write what 2 s of 115 MB/s left in the cache.
+        // The next would take as long again, more than 256 MiB at that pace (2.3 s) covers with
+        // room to spare, and every second waited makes it worse.
+        let behind = at(s(2), s(2));
+        assert!(!behind.due(230 * mb, 45 * gb, s(2), HOLD_MAX));
+        assert!(!behind.due(gb, 45 * gb, s(9), HOLD_MAX));
+        assert!(!behind.due(7 * gb, 45 * gb, s(60), HOLD_MAX));
+        // The same disk once the download has slowed to 10 MB/s: a flush fits again.
+        assert!(behind.due(70 * mb, 45 * gb, s(7), HOLD_MAX));
+        // 0.5.2's spacing (nine times the last flush) let them grow: 2 s, then 18 s later 18 s.
+        assert_eq!(behind.expected(s(18)), s(18));
+        // The memory full of what waits for the disk (one that sets the pace): not even on
+        // the fast disk.
+        assert!(!fast.due(230 * mb, 45 * gb, s(2), 0));
+        // A flush that takes 1.5 s whatever it writes (#361's test disk): not again.
+        assert!(
+            !at(Duration::from_millis(1500), Duration::from_millis(100)).due(
+                gb,
+                gb,
+                s(5),
+                HOLD_MAX
+            )
+        );
     }
 
     /// #518: when the forced save at the start (no connection writing yet) takes 0.5 s on a busy
-    /// disk, the first save of progress still comes at the first tick, not 4.5 s later.
+    /// disk, the first save of progress still comes at the first tick.
     #[test]
     fn a_forced_save_does_not_push_the_next_back() {
         let at = |took| Synced {
             at: std::time::Instant::now(),
             bytes: 0,
             took,
+            covered: Duration::from_millis(1),
         };
         let (slow, tick) = (Duration::from_millis(500), Duration::from_secs(2));
-        assert!(at(forced_gap(true, slow)).due(15 << 20, 24 << 20, tick));
-        // A save during the transfer still does.
-        assert!(!at(forced_gap(false, slow)).due(15 << 20, 24 << 20, tick));
+        assert!(at(forced_gap(true, slow)).due(15 << 20, 24 << 20, tick, HOLD_MAX));
+        // A save during the transfer does count: 0.5 s for 1 ms of data is a disk far behind.
+        assert!(!at(forced_gap(false, slow)).due(15 << 20, 24 << 20, tick, HOLD_MAX));
+    }
+
+    /// #782: what the slow check makes of connections that wait for the disk. A connection
+    /// stood still 8 s for the disk, 2 MiB into its response, then read the 30 MiB the system
+    /// kept for it in 50 ms. Over its time on the network that is 128 MiB/s, which made every
+    /// connection of a 1 Gbit/s link (14 MiB/s each) four times slower than the best: all of
+    /// them were shed, at once. Over all its time it is what the link gave it.
+    #[test]
+    fn waiting_for_the_disk_never_makes_a_connection_slow() {
+        let mb = 1u64 << 20;
+        let (on_net, waited) = (Duration::from_millis(250), Duration::from_secs(8));
+        let burst = yardstick(32 * mb, on_net + waited).unwrap();
+        assert!(burst < 14 * mb, "{burst}");
+        let link = 14 * mb;
+        let left = 1 << 30;
+        let three = Duration::from_secs(3);
+        // Against the burst's speed over its network time alone, a connection doing what the
+        // link gives would be shed (0.5.2); against the honest yardstick it isn't.
+        assert!(too_slow(link, three, rate(32 * mb, on_net), left, None));
+        assert!(!too_slow(link, three, burst.max(link), left, None));
+        // A connection that itself waited for the disk: its speed leaves the waits out (8 s
+        // waited of 10 s, 28 MiB: 14 MiB/s over the 2 s it read).
+        assert_eq!(rate(28 * mb, Duration::from_secs(2)), link);
+        // A connection really slow on its path (1 MiB/s) is still shed, the disk keeping up...
+        assert!(too_slow(mb, three, link, left, None));
+        assert!(too_slow(
+            mb,
+            three,
+            link,
+            left,
+            Some(Duration::from_secs(5))
+        ));
+        // ...but not while the disk sets the pace: a connection stood still for it 1 s ago.
+        assert!(!too_slow(
+            mb,
+            three,
+            link,
+            left,
+            Some(Duration::from_secs(1))
+        ));
+        // Nor before it read the network for SHED_GRACE, nor with little left.
+        assert!(!too_slow(mb, Duration::from_secs(1), link, left, None));
+        assert!(!too_slow(mb, three, link, mb, None));
+        // A response says what a connection can do only once it ran BEST_AFTER (0.1 s).
+        assert_eq!(yardstick(32 * mb, Duration::from_millis(50)), None);
+        assert_eq!(yardstick(100 << 10, Duration::from_secs(2)), None);
     }
 
     #[test]

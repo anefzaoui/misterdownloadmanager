@@ -9,6 +9,11 @@ pub struct Faults {
     /// Per-response speed cap, bytes/s.
     #[serde(deserialize_with = "size_opt")]
     pub rate: Option<u64>,
+    /// With a rate: a link rather than a quota. A response the client stopped reading catches
+    /// up with at most this much at once (what a real link's buffers hold), then goes on at the
+    /// rate; by default it is paced from its start, so it sends everything it fell behind by.
+    #[serde(deserialize_with = "size_opt")]
+    pub burst: Option<u64>,
     /// Every Nth request is throttled to `slow_rate` (simulates one slow connection).
     pub slow_every: Option<u64>,
     #[serde(deserialize_with = "size_opt")]
@@ -88,6 +93,7 @@ impl Faults {
     pub fn overridden_by(&self, over: &Faults) -> Faults {
         Faults {
             rate: over.rate.or(self.rate),
+            burst: over.burst.or(self.burst),
             slow_every: over.slow_every.or(self.slow_every),
             slow_rate: over.slow_rate.or(self.slow_rate),
             max_conns: over.max_conns.or(self.max_conns),

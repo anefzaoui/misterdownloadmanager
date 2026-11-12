@@ -531,11 +531,10 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             adapter,
         } => {
             use mdm_tools::video::State;
-            if let Some(a) = adapter {
-                mdm_tools::proc::set_route(mdm_engine::net::route_for(
-                    &a,
-                    &mdm_engine::net::adapters(),
-                ));
+            let route =
+                adapter.map(|a| mdm_engine::net::route_for(&a, &mdm_engine::net::adapters()));
+            if let Some(r) = &route {
+                mdm_tools::proc::set_route(r.clone());
             }
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
             // A gallery-dl of the person's too old for MDM is passed over (#236), said plainly.
@@ -570,6 +569,7 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                 &folder,
                 &ask,
                 &Default::default(),
+                Some(video_engine(8, route)),
             )?;
             let p = loop {
                 let p = job.progress();

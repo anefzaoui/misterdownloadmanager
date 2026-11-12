@@ -1182,13 +1182,13 @@
    "source": "The benchmark data could not be loaded.",
    "text": "벤치마크 데이터를 로드할 수 없습니다."
   },
-  "129f913e421a0374": {
-   "source": "Torrents, videos and galleries have no single server of MDM's own (peers, or yt-dlp's and gallery-dl's), so their windows don't show one.",
-   "text": "토렌트, 동영상 및 갤러리에는 MDM이 사용하는 단일 서버가 없습니다(피어 또는 yt-dlp와 gallery-dl을 사용함). 따라서 해당 창에는 서버가 표시되지 않습니다."
-  },
   "12a228101626f4bc": {
    "source": "How MDM uses connections",
    "text": "MDM이 연결을 사용하는 방법"
+  },
+  "12b0b0ed9c364592": {
+   "source": "Start a finished gallery again (<g1>Resume</g1>) to fetch only the pictures that aren't in its folder yet. The ones already there are skipped.",
+   "text": "완료된 갤러리를 <g1>다시 시작</g1>하면 아직 폴더에 없는 사진만 가져옵니다. 이미 있는 사진은 건너뜁니다."
   },
   "12b7b516a33fffd5": {
    "source": "Settings",
@@ -1978,10 +1978,6 @@
    "source": "Add your account",
    "text": "계정 추가"
   },
-  "1e06a14724b6ac4b": {
-   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
-   "text": "MDM은 gallery-dl을 사용하여 갤러리(위키미디어 공용 카테고리, Flickr 앨범, DeviantArt 갤러리, Imgur 앨범 등)의 사진을 다운로드합니다..."
-  },
   "1e19df04a325bd30": {
    "source": "<x1/> <g2>Open source · GPL-3.0</g2>",
    "text": "<x1/> <g2>오픈 소스 · GPL-3.0</g2>"
@@ -2025,6 +2021,10 @@
   "1edcb9d37be4f279": {
    "source": "Options → General → Use advanced browser integration",
    "text": "옵션 → 일반 → 고급 브라우저 통합 사용"
+  },
+  "1ee22f4d96ba4d08": {
+   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with the help of…",
+   "text": "MDM은 갤러리(위키미디어 공용 카테고리, Flickr 앨범, DeviantArt 갤러리, Imgur 앨범 등)의 사진을 다음의 도움을 받아 다운로드합니다."
   },
   "1f027261405d774d": {
    "source": "Know where your data goes",
@@ -3894,6 +3894,10 @@
    "source": "About 40, separate downloads",
    "text": "약 40개, 별도 다운로드"
   },
+  "3ab6ae7f023cdf09": {
+   "source": "A video yt-dlp downloads by itself (<g1>How a video comes down</g1>) takes a limit only as it starts: when you turn the limiter on or off, change its settings or the video's own limit, MDM stops it and starts it again with the new limit, and it goes on from where it was (the log says \"Stopped: the speed limit changed; starting again with it\"). Under the limit for all downloads, such videos share it evenly: when another starts, the ones running with more than their share start again with it; when one ends, the others keep theirs. A gallery's pictures that MDM brings in follow a change at once; what gallery-dl still fetches itself starts again with the new limit, skipping the files already saved. Other changes (torrents taking more or less of the limit for all downloads, <g2>Only while I'm using the computer</g2>) apply to the next one that starts.",
+   "text": "yt-dlp가 자체적으로 다운로드하는 동영상(<g1>동영상 다운로드 방식</g1>)은 시작할 때만 제한을 적용합니다. 제한 기능을 켜거나 끄거나, 설정을 변경하거나, 동영상 자체의 제한을 변경하면 MDM이 동영상을 중지하고 새 제한으로 다시 시작하며, 중지된 지점부터 다시 진행합니다(로그에는 “중지했습니다: 속도 제한이 변경되어 새 제한으로 다시 시작했습니다”라고 표시됩니다). 모든 다운로드에 대한 제한이 적용되는 경우, 이러한 동영상은 제한을 균등하게 공유합니다. 다른 동영상이 시작되면 할당량보다 더 많이 사용하던 동영상은 새 제한으로 다시 시작하고, 하나가 끝나면 다른 동영상은 기존 제한을 유지합니다. MDM이 가져오는 갤러리 사진은 변경 사항이 즉시 적용됩니다. gallery-dl이 자체적으로 가져오는 항목은 이미 저장된 파일을 건너뛰고 새 제한으로 다시 시작합니다. 다른 변경 사항(토렌트가 모든 다운로드에 대한 제한을 더 많이 또는 적게 사용하는 경우, <g2>컴퓨터를 사용하는 동안에만</g2>)은 다음에 시작되는 항목에 적용됩니다."
+  },
   "3aca386992ad550b": {
    "source": "Move between the download list and the Categories tree",
    "text": "다운로드 목록과 범주 트리 사이 이동"
@@ -4358,6 +4362,10 @@
    "source": "Mister Download Manager's main window in night mode: web and torrent downloads in one list.",
    "text": "Mister Download Manager의 주 창(야간 모드): 웹 및 토렌트 다운로드가 하나의 목록에 표시됩니다."
   },
+  "416b2928058d450b": {
+   "source": "Torrents and galleries have no single server of MDM's own (peers, or the many a gallery's pictures come from), so their windows don't show one. A video in one file shows the server it comes from.",
+   "text": "토렌트와 갤러리는 MDM 자체의 단일 서버(피어 또는 갤러리 사진의 출처)를 사용하지 않으므로 해당 창에는 서버가 표시되지 않습니다. 단일 파일로 된 동영상은 해당 동영상의 출처 서버를 표시합니다."
+  },
   "416dd4c491e33d28": {
    "source": "A torrent the list already has isn't added again, and MDM never writes into files it didn't make without asking. The window is made for feeds of torrents: an article opens in <g1>Add torrent</g1>, and a rule adds torrents.",
    "text": "목록에 이미 있는 토렌트는 다시 추가되지 않으며, MDM은 묻지 않고 생성하지 않은 파일에 절대 쓰지 않습니다. 이 창은 토렌트 피드용으로 만들어졌습니다. 기사는 <g1>토렌트 추가</g1>에서 열리고, 규칙은 토렌트를 추가합니다."
@@ -4541,10 +4549,6 @@
   "44733691a19bafa4": {
    "source": "F3",
    "text": "F3"
-  },
-  "447b0cdb28e67b18": {
-   "source": "<g1>Stop</g1> ends gallery-dl and everything it started. The pictures saved so far stay.",
-   "text": "<g1>중지</g1>는 gallery-dl과 시작된 모든 작업을 종료합니다. 지금까지 저장된 사진은 유지됩니다."
   },
   "447cc2a2f0918427": {
    "source": "Tab",
@@ -4781,6 +4785,10 @@
   "48aad3564170ee72": {
    "source": "MDM's helper serves only its own extension. The browser says this copy isn't one it knows.",
    "text": "MDM의 도우미는 MDM 자체 확장 프로그램만 지원합니다. 브라우저에서 이 확장 프로그램을 인식하지 못합니다."
+  },
+  "48ad923e8232a9a0": {
+   "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones. MDM's own downloader brings the pictures gallery-dl lists, 4 at a time. <x3/> sends the connections, MDM's and gallery-dl's, through one network adapter, as for <x4/>.",
+   "text": "갤러리(위키미디어 공용 카테고리, Flickr 앨범 등)의 사진을 <x1/> 안에 해당 이름의 폴더로 다운로드합니다. <x2/>는 사이트에 나열된 첫 번째 사진부터 최대 그 개수만큼 가져옵니다. 다시 시작하면 새 사진만 가져옵니다. MDM 자체 다운로더는 gallery-dl에 나열된 사진을 한 번에 4개씩 가져옵니다. <x3/>는 MDM과 gallery-dl의 연결을 <x4/>와 같이 하나의 네트워크 어댑터를 통해 보냅니다."
   },
   "48b84f87d0d17dd5": {
    "source": "On Linux or a Mac",
@@ -5461,10 +5469,6 @@
   "536df2f60bd48da6": {
    "source": "Success text (a matching checksum)",
    "text": "성공 텍스트 (일치하는 체크섬)"
-  },
-  "538610c6a0cb9bfd": {
-   "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones. <x3/> sends gallery-dl's connections through one network adapter, as for <x4/>.",
-   "text": "갤러리(예: Wikimedia Commons 카테고리, Flickr 앨범)의 사진을 <x1/> 안에 갤러리 이름으로 폴더를 만들어 다운로드합니다. <x2/>로 최대 개수를 지정하면 사이트에 표시된 첫 사진부터 그 개수만큼 다운로드합니다. 다시 실행하면 새 사진만 가져옵니다. <x3/>는 <x4/>와 마찬가지로 gallery-dl의 연결을 단일 네트워크 어댑터로 보냅니다."
   },
   "539160f92bae4422": {
    "source": "Being re-measured",
@@ -6826,10 +6830,6 @@
    "source": "Is Mister Download Manager really free?",
    "text": "Mister Download Manager는 정말 무료인가요?"
   },
-  "689d48a0fd15b011": {
-   "source": "Start a finished gallery again (<g1>Resume</g1>) to fetch only the pictures that aren't in its folder yet. gallery-dl skips the ones already there.",
-   "text": "완료된 갤러리를 다시 시작(<g1>다시 시작</g1>)하여 아직 폴더에 없는 사진만 가져옵니다. gallery-dl은 이미 있는 사진은 건너뜁니다."
-  },
   "68a1b323ce4d8350": {
    "source": "Themes Support",
    "text": "테마 지원"
@@ -6853,6 +6853,10 @@
   "6941e88ad1cb9eb7": {
    "source": "When a download comes from a form you submitted, it passes <g1>the form's data</g1> too, so MDM can submit it again. It notes the data of forms you submit (in memory, used for two minutes at most, never stored) only for that.",
    "text": "다운로드가 제출한 양식에서 시작된 경우 MDM이 양식을 다시 제출할 수 있도록 <g1>양식 데이터</g1>도 전달합니다. 제출한 양식의 데이터는 이 용도로만 메모리에 기록하며, 최대 2분 동안만 사용하고 저장하지 않습니다."
+  },
+  "69662d745c57ca02": {
+   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with the help of <g1>gallery-dl</g1>, a free program that reads several hundred sites. Like yt-dlp for videos, it's an optional helper: MDM installs it the first time you need it, or uses your own copy.",
+   "text": "MDM은 수백 개의 사이트를 읽는 무료 프로그램인 <g1>gallery-dl</g1>의 도움을 받아 갤러리(위키미디어 공용 카테고리, Flickr 앨범, DeviantArt 갤러리, Imgur 앨범 등)의 사진을 다운로드합니다. 동영상용 yt-dlp처럼 선택적 도우미 프로그램입니다. MDM은 처음 필요할 때 설치하거나 사용자의 기존 복사본을 사용합니다."
   },
   "6976d3a5455f9216": {
    "source": "Typing the start of a name while the list has the focus jumps to the first download whose name starts with it.",
@@ -8638,10 +8642,6 @@
    "source": "<g1>Tasks</g1> — add downloads, torrents, magnet links, batch downloads and videos from a page; <g2>Torrent settings</g2>; <g3>Link grabber</g3>; <g4>RSS feeds</g4>; show the drop target; import and export the list; exit.",
    "text": "<g1>작업</g1> — 다운로드, 토렌트, 마그넷 링크, 일괄 다운로드 및 페이지의 비디오 추가; <g2>토렌트 설정</g2>; <g3>링크 그래버</g3>; <g4>RSS 피드</g4>; 드롭 대상 표시; 목록 가져오기 및 내보내기; 종료."
   },
-  "8362706ee6422965": {
-   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with <g1>gallery-dl</g1>, a free program that reads several hundred sites. Like yt-dlp for videos, it's an optional helper: MDM installs it the first time you need it, or uses your own copy.",
-   "text": "MDM은 수백 개 사이트의 콘텐츠를 가져오는 무료 프로그램 <g1>gallery-dl</g1>을 사용해 갤러리(위키미디어 공용 카테고리, Flickr 앨범, DeviantArt 갤러리, Imgur 앨범 등)의 사진을 다운로드합니다. 동영상용 yt-dlp처럼 선택적으로 사용하는 도우미 프로그램입니다. 처음 필요할 때 MDM이 설치하거나, 직접 보유한 프로그램을 사용합니다."
-  },
   "8362eb1c5519a907": {
    "source": "Put downloads in a queue",
    "text": "다운로드를 대기열에 넣기"
@@ -9266,10 +9266,6 @@
    "source": "Adwaita",
    "text": "Adwaita"
   },
-  "8d6911b8ed8eb4d4": {
-   "source": "<g1>How it asks:</g1> gallery-dl asks sites as MDM, one picture a second at most. Wikimedia's servers refuse tools that ask faster or without a name. It uses no configuration file of yours.",
-   "text": "<g1>요청 방식:</g1> gallery-dl은 MDM으로 사이트에 요청하며, 초당 최대 한 장의 사진을 요청합니다. 위키미디어 서버는 더 빠르게 또는 이름 없이 요청하는 도구를 거부합니다. 사용자 구성 파일을 사용하지 않습니다."
-  },
   "8d833607c2d3b591": {
    "source": "Sites change often, and a newer yt-dlp usually fixes a video that stopped working. MDM doesn't update yt-dlp on its own yet; <g1>the help</g1> shows how to get the newest one.",
    "text": "사이트는 자주 변경되며, 최신 yt-dlp는 작동이 중단된 비디오를 보통 수정합니다. MDM은 아직 yt-dlp를 자체적으로 업데이트하지 않습니다. <g1>도움말</g1>에서 최신 버전을 얻는 방법을 보여줍니다."
@@ -9869,6 +9865,10 @@
   "9682bbc6499d98d3": {
    "source": "<g1>All files and install steps</g1><g2>Every release on GitHub</g2>",
    "text": "<g1>모든 파일 및 설치 단계</g1><g2>GitHub의 모든 릴리스</g2>"
+  },
+  "968549d62c413703": {
+   "source": "<g1>Stop</g1> ends MDM's downloads of the pictures, and gallery-dl with everything it started. The pictures saved so far stay.",
+   "text": "<g1>중지</g1>를 누르면 MDM의 사진 다운로드가 종료되고, gallery-dl과 시작된 모든 작업이 중지됩니다. 지금까지 저장된 사진은 유지됩니다."
   },
   "96abca8820d90816": {
    "source": "Download scheduler and queues — Mister Download Manager",
@@ -12414,6 +12414,10 @@
    "source": "Light / dark",
    "text": "밝게 / 어둡게"
   },
+  "bcb21be39ed72c3a": {
+   "source": "A gallery-dl older than 1.32 (a Linux distribution's, often) can't list the pictures this way: it downloads them all itself, one a second, as before.",
+   "text": "1.32 이전 버전의 gallery-dl(종종 Linux 배포판에 포함된 버전)은 이런 방식으로 사진 목록을 가져올 수 없습니다. 이전처럼 초당 하나씩 모든 사진을 직접 다운로드합니다."
+  },
   "bcb4397f5d370a55": {
    "source": "Click a download. MDM takes it from there.",
    "text": "다운로드를 클릭하면 MDM이 처리합니다."
@@ -12965,6 +12969,10 @@
   "c5980664ded251b8": {
    "source": "<g1>The system:</g1> MDM's version and how you installed it, your operating system and its version, the processor, the language and theme, and how many downloads and queues you have. These are counts only.",
    "text": "<g1>시스템:</g1> MDM 버전과 설치 방법, 운영 체제와 버전, 프로세서, 언어와 테마, 다운로드 및 대기열 개수. 개수만 포함됩니다."
+  },
+  "c5b1d8d5e4be4a3b": {
+   "source": "How the pictures come down",
+   "text": "사진 다운로드 방식"
   },
   "c5ddef5d4d228288": {
    "source": "Downloads are smaller: setup.exe 23 → 16 MB, AppImage 36 → 20 MB, .deb 27 → 17 MB.",
@@ -14529,6 +14537,10 @@
   "de7042ead2b68920": {
    "source": "<g1>Delete archives after extracting</g1>: once extracted, the archives go to the Recycle Bin (the Trash on macOS and Linux).",
    "text": "<g1>추출 후 압축 파일 삭제</g1>: 추출이 끝나면 압축 파일이 휴지통(macOS 및 Linux에서는 휴지통)으로 이동합니다."
+  },
+  "de91aa24c4e3719d": {
+   "source": "gallery-dl lists the gallery's pictures: where each one comes from and the name it gets in the folder. MDM's own downloader then brings them in, 4 at a time (fewer when the site answers that it's busy, as Wikimedia's does), under your speed limits (a change applies at once), and the progress window's connections table shows each one. gallery-dl then runs as before: it finds those pictures already there and fetches only what MDM couldn't have, such as a picture from a site that wants a sign-in or headers of its own. The log says how many each saved.",
+   "text": "gallery-dl은 갤러리의 사진 목록을 보여줍니다. 각 사진의 출처와 폴더에 저장될 이름도 함께 표시됩니다. MDM의 자체 다운로더는 사용자가 설정한 속도 제한 내에서 한 번에 4개씩(사이트가 바쁘다고 응답하면 더 적게, 위키미디어처럼) 사진을 가져오며, 진행 창의 연결 테이블에 각 사진이 표시됩니다. gallery-dl은 이전과 같이 실행됩니다. 이미 있는 사진을 찾아 MDM이 가져올 수 없었던 사진(예: 로그인이나 자체 헤더를 요구하는 사이트의 사진)만 가져옵니다. 로그에는 각 사진이 얼마나 저장되었는지 표시됩니다."
   },
   "deb3f2db3855218f": {
    "source": "<g1>Never take downloads from</g1> the current site: adds it to MDM's excluded sites.",
@@ -16609,6 +16621,10 @@
   "fdac126a9d867074": {
    "source": "<g1>Nothing to relearn.</g1> The toolbar, categories, download list, progress window, queues, Scheduler and Options sit where you expect them. Even the command-line switches are the same: <x2/>.",
    "text": "<g1>다시 배울 필요가 없습니다.</g1> 도구 모음, 카테고리, 다운로드 목록, 진행 창, 대기열, 예약 관리자 및 옵션은 예상하는 위치에 있습니다. 명령줄 스위치도 동일합니다: <x2/>."
+  },
+  "fdb42bc6bffd138a": {
+   "source": "<g1>How it asks:</g1> gallery-dl and MDM's downloader ask sites as MDM; MDM brings 4 pictures at a time, and gallery-dl, for what's left to it, one a second at most. Wikimedia's servers refuse tools that ask much faster or without a name. gallery-dl uses no configuration file of yours.",
+   "text": "<g1>요청 방식:</g1> gallery-dl과 MDM의 다운로더는 MDM으로 사이트에 요청합니다. MDM은 한 번에 4개의 사진을 가져오고, gallery-dl은 남은 사진에 대해 최대 초당 하나씩 가져옵니다. 위키미디어 서버는 너무 빠르게 또는 이름 없이 요청하는 도구를 거부합니다. gallery-dl은 사용자의 구성 파일을 사용하지 않습니다."
   },
   "fdc70071f8979731": {
    "source": "Warnings",

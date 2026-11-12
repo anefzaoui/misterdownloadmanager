@@ -1182,13 +1182,13 @@
    "source": "The benchmark data could not be loaded.",
    "text": "De benchmarkgegevens konden niet worden geladen."
   },
-  "129f913e421a0374": {
-   "source": "Torrents, videos and galleries have no single server of MDM's own (peers, or yt-dlp's and gallery-dl's), so their windows don't show one.",
-   "text": "Torrents, video's en galerijen hebben niet één server van MDM zelf (ze gebruiken peers of servers van yt-dlp en gallery-dl), dus hun vensters tonen geen server."
-  },
   "12a228101626f4bc": {
    "source": "How MDM uses connections",
    "text": "Hoe MDM verbindingen gebruikt"
+  },
+  "12b0b0ed9c364592": {
+   "source": "Start a finished gallery again (<g1>Resume</g1>) to fetch only the pictures that aren't in its folder yet. The ones already there are skipped.",
+   "text": "Start een voltooide galerij opnieuw (<g1>Hervatten</g1>) om alleen de afbeeldingen op te halen die nog niet in de map staan. De afbeeldingen die er al zijn, worden overgeslagen."
   },
   "12b7b516a33fffd5": {
    "source": "Settings",
@@ -1982,10 +1982,6 @@
    "source": "Add your account",
    "text": "Uw account toevoegen"
   },
-  "1e06a14724b6ac4b": {
-   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
-   "text": "MDM downloadt de afbeeldingen van een galerij (een Wikimedia Commons-categorie, een Flickr-album, een DeviantArt-galerij, een Imgur-album en nog veel meer) met gallery-dl..."
-  },
   "1e19df04a325bd30": {
    "source": "<x1/> <g2>Open source · GPL-3.0</g2>",
    "text": "<x1/> <g2>Open source · GPL-3.0</g2>"
@@ -2029,6 +2025,10 @@
   "1edcb9d37be4f279": {
    "source": "Options → General → Use advanced browser integration",
    "text": "Opties → Algemeen → Geavanceerde browserintegratie gebruiken"
+  },
+  "1ee22f4d96ba4d08": {
+   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with the help of…",
+   "text": "MDM downloadt de afbeeldingen van een galerij (een Wikimedia Commons-categorie, een Flickr-album, een DeviantArt-galerij, een Imgur-album en nog veel meer) met behulp van..."
   },
   "1f027261405d774d": {
    "source": "Know where your data goes",
@@ -3894,6 +3894,10 @@
    "source": "About 40, separate downloads",
    "text": "Ongeveer 40, afzonderlijke downloads"
   },
+  "3ab6ae7f023cdf09": {
+   "source": "A video yt-dlp downloads by itself (<g1>How a video comes down</g1>) takes a limit only as it starts: when you turn the limiter on or off, change its settings or the video's own limit, MDM stops it and starts it again with the new limit, and it goes on from where it was (the log says \"Stopped: the speed limit changed; starting again with it\"). Under the limit for all downloads, such videos share it evenly: when another starts, the ones running with more than their share start again with it; when one ends, the others keep theirs. A gallery's pictures that MDM brings in follow a change at once; what gallery-dl still fetches itself starts again with the new limit, skipping the files already saved. Other changes (torrents taking more or less of the limit for all downloads, <g2>Only while I'm using the computer</g2>) apply to the next one that starts.",
+   "text": "Een video die yt-dlp zelf downloadt (<g1>Hoe een video wordt gedownload</g1>), neemt een limiet alleen over bij de start: wanneer u de snelheidsbegrenzer in- of uitschakelt, de instellingen ervan wijzigt of de limiet van de video zelf aanpast, stopt MDM de download en start deze opnieuw met de nieuwe limiet, waarna de download verdergaat vanaf waar deze was gebleven (het logboek vermeldt \"Gestopt: de snelheidslimiet is gewijzigd; opnieuw starten met de nieuwe limiet\"). Onder de limiet voor alle downloads delen dergelijke video's deze gelijkmatig: wanneer een andere download start, beginnen de downloads die meer dan hun deel gebruiken opnieuw met de nieuwe limiet; wanneer er een eindigt, behouden de andere hun deel. Afbeeldingen van een galerij die MDM binnenhaalt, volgen een wijziging direct; wat gallery-dl nog zelf ophaalt, start opnieuw met de nieuwe limiet, waarbij reeds opgeslagen bestanden worden overgeslagen. Andere wijzigingen (torrents die meer of minder van de limiet voor alle downloads gebruiken, <g2>Alleen terwijl ik de computer gebruik</g2>) zijn van toepassing op de volgende download die start."
+  },
   "3aca386992ad550b": {
    "source": "Move between the download list and the Categories tree",
    "text": "Verplaatsen tussen de downloadlijst en de Categorieën-boom"
@@ -4358,6 +4362,10 @@
    "source": "Mister Download Manager's main window in night mode: web and torrent downloads in one list.",
    "text": "Het hoofdvenster van Mister Download Manager in nachtmodus: web- en torrentdownloads in één lijst."
   },
+  "416b2928058d450b": {
+   "source": "Torrents and galleries have no single server of MDM's own (peers, or the many a gallery's pictures come from), so their windows don't show one. A video in one file shows the server it comes from.",
+   "text": "Torrents en galerijen hebben geen eigen MDM-server (peers, of de vele afbeeldingen waaruit een galerij bestaat), dus hun vensters tonen er geen. Een video in één bestand toont de server waar deze vandaan komt."
+  },
   "416dd4c491e33d28": {
    "source": "A torrent the list already has isn't added again, and MDM never writes into files it didn't make without asking. The window is made for feeds of torrents: an article opens in <g1>Add torrent</g1>, and a rule adds torrents.",
    "text": "Een torrent die al in de lijst staat, wordt niet opnieuw toegevoegd, en MDM schrijft nooit in bestanden die het niet zelf heeft gemaakt zonder te vragen. Het venster is gemaakt voor feeds van torrents: een artikel opent in <g1>Torrent toevoegen</g1>, en een regel voegt torrents toe."
@@ -4541,10 +4549,6 @@
   "44733691a19bafa4": {
    "source": "F3",
    "text": "F3"
-  },
-  "447b0cdb28e67b18": {
-   "source": "<g1>Stop</g1> ends gallery-dl and everything it started. The pictures saved so far stay.",
-   "text": "<g1>Stoppen</g1> beëindigt gallery-dl en alles wat het gestart heeft. De tot nu toe opgeslagen afbeeldingen blijven behouden."
   },
   "447cc2a2f0918427": {
    "source": "Tab",
@@ -4781,6 +4785,10 @@
   "48aad3564170ee72": {
    "source": "MDM's helper serves only its own extension. The browser says this copy isn't one it knows.",
    "text": "De helper van MDM bedient alleen zijn eigen extensie. De browser zegt dat deze kopie er geen is die het kent."
+  },
+  "48ad923e8232a9a0": {
+   "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones. MDM's own downloader brings the pictures gallery-dl lists, 4 at a time. <x3/> sends the connections, MDM's and gallery-dl's, through one network adapter, as for <x4/>.",
+   "text": "Download de afbeeldingen van een galerij (een Wikimedia Commons-categorie, een Flickr-album, ...) naar een map die ernaar is genoemd in <x1/>; <x2/> neemt er maximaal zoveel, de eerste die de site vermeldt. Als het opnieuw wordt gestart, haalt het alleen de nieuwe op. MDM's eigen downloader haalt de afbeeldingen op die gallery-dl vermeldt, 4 tegelijk. <x3/> stuurt de verbindingen, die van MDM en gallery-dl, via één netwerkadapter, net als voor <x4/>."
   },
   "48b84f87d0d17dd5": {
    "source": "On Linux or a Mac",
@@ -5461,10 +5469,6 @@
   "536df2f60bd48da6": {
    "source": "Success text (a matching checksum)",
    "text": "Succestekst (een overeenkomende checksum)"
-  },
-  "538610c6a0cb9bfd": {
-   "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones. <x3/> sends gallery-dl's connections through one network adapter, as for <x4/>.",
-   "text": "De afbeeldingen van een galerij downloaden (een categorie op Wikimedia Commons, een Flickr-album, ...) naar een map met de naam van de galerij in <x1/>. <x2/> stelt een maximum in op het aantal afbeeldingen; de eerste afbeeldingen die op de site worden vermeld, worden gedownload. Bij een nieuwe start worden alleen nieuwe afbeeldingen opgehaald. <x3/> stuurt de verbindingen van gallery-dl via één netwerkadapter, net als bij <x4/>."
   },
   "539160f92bae4422": {
    "source": "Being re-measured",
@@ -6830,10 +6834,6 @@
    "source": "Is Mister Download Manager really free?",
    "text": "Is Mister Download Manager echt gratis?"
   },
-  "689d48a0fd15b011": {
-   "source": "Start a finished gallery again (<g1>Resume</g1>) to fetch only the pictures that aren't in its folder yet. gallery-dl skips the ones already there.",
-   "text": "Start een voltooide galerij opnieuw (<g1>Hervatten</g1>) om alleen de afbeeldingen op te halen die nog niet in de map staan. gallery-dl slaat de reeds aanwezige over."
-  },
   "68a1b323ce4d8350": {
    "source": "Themes Support",
    "text": "Thema's"
@@ -6857,6 +6857,10 @@
   "6941e88ad1cb9eb7": {
    "source": "When a download comes from a form you submitted, it passes <g1>the form's data</g1> too, so MDM can submit it again. It notes the data of forms you submit (in memory, used for two minutes at most, never stored) only for that.",
    "text": "Wanneer een download afkomstig is van een formulier dat u hebt ingediend, stuurt de extensie ook <g1>de gegevens van het formulier</g1> door, zodat MDM het opnieuw kan indienen. De extensie houdt de gegevens van formulieren die u indient alleen daarvoor bij (in het geheugen, maximaal twee minuten en nooit opgeslagen)."
+  },
+  "69662d745c57ca02": {
+   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with the help of <g1>gallery-dl</g1>, a free program that reads several hundred sites. Like yt-dlp for videos, it's an optional helper: MDM installs it the first time you need it, or uses your own copy.",
+   "text": "MDM downloadt de afbeeldingen van een galerij (een Wikimedia Commons-categorie, een Flickr-album, een DeviantArt-galerij, een Imgur-album en nog veel meer) met behulp van <g1>gallery-dl</g1>, een gratis programma dat honderden sites kan lezen. Net als yt-dlp voor video's is het een optionele helper: MDM installeert het de eerste keer dat u het nodig heeft, of gebruikt uw eigen kopie."
   },
   "6976d3a5455f9216": {
    "source": "Typing the start of a name while the list has the focus jumps to the first download whose name starts with it.",
@@ -8642,10 +8646,6 @@
    "source": "<g1>Tasks</g1> — add downloads, torrents, magnet links, batch downloads and videos from a page; <g2>Torrent settings</g2>; <g3>Link grabber</g3>; <g4>RSS feeds</g4>; show the drop target; import and export the list; exit.",
    "text": "<g1>Taken</g1> — downloads, torrents, magneetlinks, batchdownloads en video's van een pagina toevoegen; <g2>Torrent-instellingen</g2>; <g3>Link grabber</g3>; <g4>RSS-feeds</g4>; het drop-doel weergeven; de lijst importeren en exporteren; afsluiten."
   },
-  "8362706ee6422965": {
-   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with <g1>gallery-dl</g1>, a free program that reads several hundred sites. Like yt-dlp for videos, it's an optional helper: MDM installs it the first time you need it, or uses your own copy.",
-   "text": "MDM downloadt de afbeeldingen van een galerij (een Wikimedia Commons-categorie, een Flickr-album, een DeviantArt-galerij, een Imgur-album en nog veel meer) met <g1>gallery-dl</g1>, een gratis programma dat honderden sites leest. Net als yt-dlp voor video's is het een optioneel hulpprogramma: MDM installeert het de eerste keer dat u het nodig hebt, of gebruikt uw eigen kopie."
-  },
   "8362eb1c5519a907": {
    "source": "Put downloads in a queue",
    "text": "Downloads in een wachtrij plaatsen"
@@ -9270,10 +9270,6 @@
    "source": "Adwaita",
    "text": "Adwaita"
   },
-  "8d6911b8ed8eb4d4": {
-   "source": "<g1>How it asks:</g1> gallery-dl asks sites as MDM, one picture a second at most. Wikimedia's servers refuse tools that ask faster or without a name. It uses no configuration file of yours.",
-   "text": "<g1>Hoe het vraagt:</g1> gallery-dl vraagt sites als MDM, maximaal één afbeelding per seconde. De servers van Wikimedia weigeren tools die sneller of zonder naam vragen. Het gebruikt geen configuratiebestand van u."
-  },
   "8d833607c2d3b591": {
    "source": "Sites change often, and a newer yt-dlp usually fixes a video that stopped working. MDM doesn't update yt-dlp on its own yet; <g1>the help</g1> shows how to get the newest one.",
    "text": "Sites veranderen vaak, en een nieuwere yt-dlp lost meestal een video op die niet meer werkte. MDM werkt yt-dlp nog niet zelf bij; <g1>de help</g1> toont hoe u de nieuwste versie krijgt."
@@ -9873,6 +9869,10 @@
   "9682bbc6499d98d3": {
    "source": "<g1>All files and install steps</g1><g2>Every release on GitHub</g2>",
    "text": "<g1>Alle bestanden en installatiestappen</g1><g2>Elke release op GitHub</g2>"
+  },
+  "968549d62c413703": {
+   "source": "<g1>Stop</g1> ends MDM's downloads of the pictures, and gallery-dl with everything it started. The pictures saved so far stay.",
+   "text": "<g1>Stoppen</g1> beëindigt MDM's downloads van de afbeeldingen, en gallery-dl met alles wat het gestart heeft. De tot nu toe opgeslagen afbeeldingen blijven behouden."
   },
   "96abca8820d90816": {
    "source": "Download scheduler and queues — Mister Download Manager",
@@ -12418,6 +12418,10 @@
    "source": "Light / dark",
    "text": "Licht / donker"
   },
+  "bcb21be39ed72c3a": {
+   "source": "A gallery-dl older than 1.32 (a Linux distribution's, often) can't list the pictures this way: it downloads them all itself, one a second, as before.",
+   "text": "Een gallery-dl ouder dan 1.32 (vaak die van een Linux-distributie) kan de afbeeldingen niet op deze manier weergeven: het downloadt ze allemaal zelf, één per seconde, zoals voorheen."
+  },
   "bcb4397f5d370a55": {
    "source": "Click a download. MDM takes it from there.",
    "text": "Klik op een download. MDM regelt de rest."
@@ -12969,6 +12973,10 @@
   "c5980664ded251b8": {
    "source": "<g1>The system:</g1> MDM's version and how you installed it, your operating system and its version, the processor, the language and theme, and how many downloads and queues you have. These are counts only.",
    "text": "<g1>Het systeem:</g1> de versie van MDM en hoe u het hebt geïnstalleerd, uw besturingssysteem en de versie ervan, de processor, de taal en het thema, en hoeveel downloads en wachtrijen u hebt. Dit zijn alleen tellingen."
+  },
+  "c5b1d8d5e4be4a3b": {
+   "source": "How the pictures come down",
+   "text": "Hoe de afbeeldingen worden gedownload"
   },
   "c5ddef5d4d228288": {
    "source": "Downloads are smaller: setup.exe 23 → 16 MB, AppImage 36 → 20 MB, .deb 27 → 17 MB.",
@@ -14533,6 +14541,10 @@
   "de7042ead2b68920": {
    "source": "<g1>Delete archives after extracting</g1>: once extracted, the archives go to the Recycle Bin (the Trash on macOS and Linux).",
    "text": "<g1>Archieven verwijderen na uitpakken</g1>: na het uitpakken worden de archieven naar de Prullenbak verplaatst (de Trash op macOS en Linux)."
+  },
+  "de91aa24c4e3719d": {
+   "source": "gallery-dl lists the gallery's pictures: where each one comes from and the name it gets in the folder. MDM's own downloader then brings them in, 4 at a time (fewer when the site answers that it's busy, as Wikimedia's does), under your speed limits (a change applies at once), and the progress window's connections table shows each one. gallery-dl then runs as before: it finds those pictures already there and fetches only what MDM couldn't have, such as a picture from a site that wants a sign-in or headers of its own. The log says how many each saved.",
+   "text": "gallery-dl toont een lijst van de afbeeldingen in de galerij: waar elke afbeelding vandaan komt en welke naam deze krijgt in de map. MDM's eigen downloader haalt ze vervolgens binnen, 4 tegelijk (minder als de site aangeeft dat deze bezet is, zoals Wikimedia), binnen uw snelheidslimieten (een wijziging wordt direct toegepast), en de verbindingstabel van het voortgangsvenster toont elke afbeelding. gallery-dl draait dan zoals voorheen: het vindt de afbeeldingen die er al zijn en haalt alleen op wat MDM niet kon, zoals een afbeelding van een site die een aanmelding of eigen headers vereist. Het logboek vermeldt hoeveel er elk zijn opgeslagen."
   },
   "deb3f2db3855218f": {
    "source": "<g1>Never take downloads from</g1> the current site: adds it to MDM's excluded sites.",
@@ -16613,6 +16625,10 @@
   "fdac126a9d867074": {
    "source": "<g1>Nothing to relearn.</g1> The toolbar, categories, download list, progress window, queues, Scheduler and Options sit where you expect them. Even the command-line switches are the same: <x2/>.",
    "text": "<g1>Niets nieuws te leren.</g1> De werkbalk, categorieën, downloadlijst, voortgangsvenster, wachtrijen, Planner en Opties bevinden zich waar u ze verwacht. Zelfs de opdrachtregelopties zijn hetzelfde: <x2/>."
+  },
+  "fdb42bc6bffd138a": {
+   "source": "<g1>How it asks:</g1> gallery-dl and MDM's downloader ask sites as MDM; MDM brings 4 pictures at a time, and gallery-dl, for what's left to it, one a second at most. Wikimedia's servers refuse tools that ask much faster or without a name. gallery-dl uses no configuration file of yours.",
+   "text": "<g1>Hoe het vraagt:</g1> gallery-dl en MDM's downloader vragen sites als MDM; MDM haalt 4 afbeeldingen tegelijk binnen, en gallery-dl, voor wat er overblijft, maximaal één per seconde. De servers van Wikimedia weigeren tools die veel sneller of zonder naam vragen. gallery-dl gebruikt geen configuratiebestand van u."
   },
   "fdc70071f8979731": {
    "source": "Warnings",
