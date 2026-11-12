@@ -227,6 +227,11 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	A file of this torrent can't be saved safely: {name}	ಈ ಟೊರೆಂಟ್‌ನ ಫೈಲ್ ಅನ್ನು ಸುರಕ್ಷಿತವಾಗಿ ಉಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ: {name}
+#. message or event log entry in the main window
+#. Link grabber added a magnet link whose torrent could not be found; {error} says why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	A magnet link's files could not be looked up: {error}	ಮ್ಯಾಗ್ನೆಟ್ ಲಿಂಕ್‌ನ ಫೈಲ್‌ಗಳನ್ನು ಹುಡುಕಲಾಗಲಿಲ್ಲ: {error}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -306,6 +311,10 @@
 #. text in the tray icon's menu
 #, machine
 	Add batch download	ಬ್ಯಾಚ್ ಡೌನ್‌ಲೋಡ್ ಸೇರಿಸಿ
+#. message or event log entry in the main window; text in the tray icon's menu
+#. title of the note when Tasks → Add batch download from clipboard finds nothing to download
+#, machine
+	Add batch download from clipboard	ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ನಿಂದ ಬ್ಯಾಚ್ ಡೌನ್‌ಲೋಡ್ ಸೇರಿಸಿ
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -951,6 +960,10 @@
 #. column title: the peer's torrent program
 #, machine
 	Client	ಕ್ಲೈಂಟ್
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the clipboard (Tasks → Add batch download from clipboard)
+#, machine
+	Clipboard	ಕ್ಲಿಪ್‌ಬೋರ್ಡ್
 #. text in the Options window
 #, machine
 	Clock:	ಗಡಿಯಾರ:
@@ -1337,6 +1350,9 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	ಈ ಖಾತೆಗಳ ಮೂಲಕ ಬೆಂಬಲಿತ ಫೈಲ್-ಹೋಸ್ಟ್ ಲಿಂಕ್‌ಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download the links in the clipboard (Add batch download from clipboard)	ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ನಲ್ಲಿರುವ ಲಿಂಕ್‌ಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ (ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ನಿಂದ ಬ್ಯಾಚ್ ಡೌನ್‌ಲೋಡ್ ಸೇರಿಸಿ)
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 #, machine
@@ -1666,6 +1682,10 @@
 #. noun: a file of no known type
 #, machine
 	File	ಫೈಲ್
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Linux
+#, machine
+	File managers show where the files marked this way came from. Unticked, no download is marked.	ಫೈಲ್ ಮ್ಯಾನೇಜರ್‌ಗಳು ಈ ರೀತಿ ಗುರುತಿಸಲಾದ ಫೈಲ್‌ಗಳು ಎಲ್ಲಿಂದ ಬಂದವು ಎಂಬುದನ್ನು ತೋರಿಸುತ್ತವೆ. ಗುರುತಿಸದಿದ್ದರೆ, ಯಾವುದೇ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಗುರುತಿಸಲಾಗುವುದಿಲ್ಲ.
 #. text in the Scheduler window
 #, machine
 	File Name	ಫೈಲ್ ಹೆಸರು
@@ -2386,7 +2406,7 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	ಎಲ್ಲಾ ಟೊರೆಂಟ್‌ಗಳ ಅಪ್‌ಲೋಡ್ ವೇಗವನ್ನು ಇದಕ್ಕೆ ಮಿತಿಗೊಳಿಸಿ
-#. window title in the Link grabber window; group box title in the Options window
+#. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
 	Link grabber	ಲಿಂಕ್ ಗ್ರಾಬರ್
@@ -2479,10 +2499,18 @@
 #. a country's name (where a download's server is)
 #, machine
 	Macau	ಮಕಾವು
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on macOS
+#, machine
+	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS ಈ ರೀತಿ ಗುರುತಿಸಲಾದ ಫೈಲ್‌ಗಳನ್ನು ಪರಿಶೀಲಿಸುತ್ತದೆ: ಪ್ರೋಗ್ರಾಂ ಮೊದಲ ಬಾರಿಗೆ ತೆರೆಯುವ ಮೊದಲು ಗೇಟ್‌ಕೀಪರ್. ಗುರುತಿಸದಿದ್ದರೆ, ಯಾವುದೇ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಗುರುತಿಸಲಾಗುವುದಿಲ್ಲ.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
 	Madagascar	ಮಡಗಾಸ್ಕರ್
+#. text in the Link grabber window
+#. Link grabber, a link's status: a magnet link (a torrent, its files looked up once it is added)
+#, machine
+	Magnet link	ಮ್ಯಾಗ್ನೆಟ್ ಲಿಂಕ್
 #. message or event log entry in the main window
 #, machine
 	Main download queue	ಮುಖ್ಯ ಡೌನ್‌ಲೋಡ್ ಕ್ಯೂ
@@ -2526,6 +2554,9 @@
 #. text in the Scheduler window
 #, machine
 	March	ಮಾರ್ಚ್
+#. checkbox in the Options window
+#, machine
+	Mark downloaded files as coming from the internet	ಡೌನ್‌ಲೋಡ್ ಮಾಡಿದ ಫೈಲ್‌ಗಳನ್ನು ಇಂಟರ್ನೆಟ್‌ನಿಂದ ಬಂದವು ಎಂದು ಗುರುತಿಸಿ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2905,6 +2936,9 @@
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
 	No day is ticked: the queue will not start	ಯಾವುದೇ ದಿನವನ್ನು ಗುರುತಿಸಲಾಗಿಲ್ಲ: ಕ್ಯೂ ಪ್ರಾರಂಭವಾಗುವುದಿಲ್ಲ
+#. message or event log entry in the main window
+#, machine
+	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ನಲ್ಲಿ ಯಾವುದೇ ಡೌನ್‌ಲೋಡ್ ಲಿಂಕ್‌ಗಳು ಕಂಡುಬಂದಿಲ್ಲ. http, https, ftp ಅಥವಾ ಮ್ಯಾಗ್ನೆಟ್ ಲಿಂಕ್‌ಗಳನ್ನು ಹೊಂದಿರುವ ಪಠ್ಯವನ್ನು ನಕಲಿಸಿ ಮತ್ತು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -3492,6 +3526,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	ಟೊರೆಂಟ್ ಓದುತ್ತಿದೆ...
+#. message or event log entry in the main window
+#. the status strip while Tasks → Import reads a file; {file} is its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading {file}...	{file} ಓದಲಾಗುತ್ತಿದೆ...
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	ಒಂದು ಪುಟವನ್ನು ಓದುತ್ತದೆ ಮತ್ತು YouTube, Vimeo ಮತ್ತು ಸಾವಿರಕ್ಕೂ ಹೆಚ್ಚು ಇತರ ಸೈಟ್‌ಗಳಿಂದ 4K ವರೆಗೆ ಸೈಟ್ ನೀಡುವ ಪ್ರತಿ ಗುಣಮಟ್ಟವನ್ನು ಪಟ್ಟಿ ಮಾಡುತ್ತದೆ.
@@ -4369,6 +4408,9 @@
 #. Options → Remote → Status: the settings were changed; they apply on OK
 #, machine
 	The changes apply when you click OK.	ನೀವು ಸರಿ ಕ್ಲಿಕ್ ಮಾಡಿದಾಗ ಬದಲಾವಣೆಗಳು ಅನ್ವಯಿಸುತ್ತವೆ.
+#. message or event log entry in the main window
+#, machine
+	The clipboard holds no text. Copy some links, or a text with links in it, and try again.	ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ನಲ್ಲಿ ಯಾವುದೇ ಪಠ್ಯವಿಲ್ಲ. ಕೆಲವು ಲಿಂಕ್‌ಗಳನ್ನು, ಅಥವಾ ಲಿಂಕ್‌ಗಳನ್ನು ಹೊಂದಿರುವ ಪಠ್ಯವನ್ನು ನಕಲಿಸಿ ಮತ್ತು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -5310,6 +5352,10 @@
 #, machine
 	Windows allows wake timers only while plugged in	ಪ್ಲಗ್ ಇನ್ ಮಾಡಿದಾಗ ಮಾತ್ರ Windows ವೇಕ್ ಟೈಮರ್‌ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ
 #. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Windows
+#, machine
+	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows ಈ ರೀತಿ ಗುರುತಿಸಲಾದ ಫೈಲ್‌ಗಳನ್ನು ಪರಿಶೀಲಿಸುತ್ತದೆ: ಪ್ರೋಗ್ರಾಂ ಮೊದಲ ಬಾರಿಗೆ ರನ್ ಆಗುವ ಮೊದಲು SmartScreen, ಡಾಕ್ಯುಮೆಂಟ್ ತೆರೆಯುವ ಮೊದಲು Office ನ Protected View. ಗುರುತಿಸದಿದ್ದರೆ, ಅಥವಾ Windows ನ ನೀತಿ "ಫೈಲ್ ಲಗತ್ತುಗಳಲ್ಲಿ ವಲಯ ಮಾಹಿತಿಯನ್ನು ಸಂರಕ್ಷಿಸಬೇಡಿ" ಅಡಿಯಲ್ಲಿ, ಯಾವುದೇ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಗುರುತಿಸಲಾಗುವುದಿಲ್ಲ.
+#. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine
 	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows ಕ್ರೆಡೆನ್ಶಿಯಲ್ ಮ್ಯಾನೇಜರ್ ಪ್ರತಿಕ್ರಿಯಿಸಲಿಲ್ಲ, ಆದ್ದರಿಂದ ಸೈನ್-ಇನ್‌ಗಳು ಮತ್ತು ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು MDM ನ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಇರಿಸಲಾಗುತ್ತದೆ, ನಿಮ್ಮ Windows ಖಾತೆಗಾಗಿ ಎನ್‌ಕ್ರಿಪ್ಟ್ ಮಾಡಲಾಗಿದೆ.
@@ -5553,6 +5599,11 @@
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} ಅನ್ನು ಉಳಿಸಿದ ಸ್ಥಳದಲ್ಲಿ ಕಂಡುಬಂದಿಲ್ಲ (ಸ್ಥಳಾಂತರಿಸಲಾಗಿದೆ ಅಥವಾ ಅಳಿಸಲಾಗಿದೆ). ರೈಟ್-ಕ್ಲಿಕ್ ಮೆನುವಿನ ಮರುಡೌನ್‌ಲೋಡ್ ಆಯ್ಕೆಯು ಅದನ್ನು ಮತ್ತೆ ಡೌನ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ.
+#. message or event log entry in the main window
+#. Import refused a file; {size} = its size and {limit} = the largest Import reads, like "4.50 GB" and "64.00 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} ವಿಳಾಸಗಳ ಪಟ್ಟಿಯಾಗಿ ತುಂಬಾ ದೊಡ್ಡದಾಗಿದೆ ({size}). ಆಮದು {limit} ವರೆಗಿನ ಪಠ್ಯ ಫೈಲ್‌ಗಳು, ವೆಬ್ ಪುಟಗಳು ಮತ್ತು .ef2 ರಫ್ತುಗಳನ್ನು ಓದುತ್ತದೆ.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -6213,6 +6264,10 @@ key	Ctrl+0	Ctrl+0
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+B	Ctrl+B
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

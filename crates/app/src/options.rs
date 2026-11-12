@@ -931,16 +931,41 @@ impl OptionsDialog {
             "Set file creation date as provided by the server",
             true,
         );
-        group(ui, o, 21.0, 334.0, 380.0, 118.0, "Temporary directory");
+        // #813: the Mark of the Web (macOS' quarantine): like the date, what the file carries.
+        #[cfg(windows)]
+        let tip = crate::i18n::t(
+            // i18n: tooltip of "Mark downloaded files as coming from the internet" on Windows
+            "Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy \"Do not preserve zone information in file attachments\", no download is marked.",
+        );
+        #[cfg(target_os = "macos")]
+        let tip = crate::i18n::t(
+            // i18n: tooltip of "Mark downloaded files as coming from the internet" on macOS
+            "macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.",
+        );
+        #[cfg(all(unix, not(target_os = "macos")))]
+        let tip = crate::i18n::t(
+            // i18n: tooltip of "Mark downloaded files as coming from the internet" on Linux
+            "File managers show where the files marked this way came from. Unticked, no download is marked.",
+        );
+        winui::checkbox_light(
+            ui,
+            o + vec2(33.0, 329.0),
+            &mut self.s.mark_downloads,
+            "Mark downloaded files as coming from the internet",
+            true,
+        )
+        .on_hover_text(tip);
+        // Down by the row above it; its empty bottom shortened by as much.
+        group(ui, o, 21.0, 356.0, 380.0, 96.0, "Temporary directory");
         // D-004: no temporary directory — parts are written next to the file, so there is
         // nothing to assemble at the end.
         let none = crate::i18n::t("Not used: file parts are written next to the file");
         let (browse_x, browse_w) =
             winui::buttons_to_right(&p, 390.0, 0.0, &[("Browse", 73.0)], 160.0)[0];
-        readonly(ui, r(o, 30.0, 349.0, browse_x - 6.0 - 30.0, 23.0), none);
+        readonly(ui, r(o, 30.0, 371.0, browse_x - 6.0 - 30.0, 23.0), none);
         winui::button_light(
             ui,
-            r(o, browse_x, 350.0, browse_w, 21.0),
+            r(o, browse_x, 372.0, browse_w, 21.0),
             // i18n: verb: choose a folder
             "Browse",
             ButtonKind::Disabled,
@@ -949,7 +974,7 @@ impl OptionsDialog {
         winui::paragraph(
             &p,
             o.x + 30.0,
-            o.y + 387.0,
+            o.y + 409.0,
             crate::i18n::t(
                 "Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.",
             ),

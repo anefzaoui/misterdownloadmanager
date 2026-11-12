@@ -227,6 +227,11 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	A file of this torrent can't be saved safely: {name}	ఈ టోరెంట్ ఫైల్‌ను సురక్షితంగా సేవ్ చేయలేము: {name}
+#. message or event log entry in the main window
+#. Link grabber added a magnet link whose torrent could not be found; {error} says why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	A magnet link's files could not be looked up: {error}	మాగ్నెట్ లింక్ ఫైల్‌లను చూడలేకపోయింది: {error}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -306,6 +311,10 @@
 #. text in the tray icon's menu
 #, machine
 	Add batch download	బ్యాచ్ డౌన్‌లోడ్‌ను జోడించు
+#. message or event log entry in the main window; text in the tray icon's menu
+#. title of the note when Tasks → Add batch download from clipboard finds nothing to download
+#, machine
+	Add batch download from clipboard	క్లిప్‌బోర్డ్ నుండి బ్యాచ్ డౌన్‌లోడ్‌ను జోడించండి
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -951,6 +960,10 @@
 #. column title: the peer's torrent program
 #, machine
 	Client	క్లయింట్
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the clipboard (Tasks → Add batch download from clipboard)
+#, machine
+	Clipboard	క్లిప్‌బోర్డ్
 #. text in the Options window
 #, machine
 	Clock:	గడియారం:
@@ -1337,6 +1350,9 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	ఈ ఖాతాల ద్వారా మద్దతు ఉన్న ఫైల్-హోస్ట్ లింక్‌లను డౌన్‌లోడ్ చేయండి
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download the links in the clipboard (Add batch download from clipboard)	క్లిప్‌బోర్డ్‌లోని లింక్‌లను డౌన్‌లోడ్ చేయండి (క్లిప్‌బోర్డ్ నుండి బ్యాచ్ డౌన్‌లోడ్‌ను జోడించండి)
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 #, machine
@@ -1666,6 +1682,10 @@
 #. noun: a file of no known type
 #, machine
 	File	ఫైల్
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Linux
+#, machine
+	File managers show where the files marked this way came from. Unticked, no download is marked.	ఈ విధంగా గుర్తించబడిన ఫైల్‌లు ఎక్కడి నుంచి వచ్చాయో ఫైల్ మేనేజర్‌లు చూపుతాయి. టిక్ చేయకపోతే, ఏ డౌన్‌లోడ్‌కూ గుర్తు పెట్టబడదు.
 #. text in the Scheduler window
 #, machine
 	File Name	ఫైల్ పేరు
@@ -2386,7 +2406,7 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	అన్ని టొరెంట్‌ల కోసం అప్‌లోడింగ్‌ను దీనికి పరిమితం చేయండి
-#. window title in the Link grabber window; group box title in the Options window
+#. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
 	Link grabber	లింక్ గ్రాబర్
@@ -2479,10 +2499,18 @@
 #. a country's name (where a download's server is)
 #, machine
 	Macau	మకావు
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on macOS
+#, machine
+	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	ఈ విధంగా గుర్తించబడిన ఫైల్‌లను macOS తనిఖీ చేస్తుంది: ప్రోగ్రామ్ మొదటిసారి తెరవడానికి ముందు Gatekeeper. టిక్ చేయకపోతే, ఏ డౌన్‌లోడ్‌కూ గుర్తు పెట్టబడదు.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
 	Madagascar	మడగాస్కర్
+#. text in the Link grabber window
+#. Link grabber, a link's status: a magnet link (a torrent, its files looked up once it is added)
+#, machine
+	Magnet link	మాగ్నెట్ లింక్
 #. message or event log entry in the main window
 #, machine
 	Main download queue	ప్రధాన డౌన్‌లోడ్ క్యూ
@@ -2526,6 +2554,9 @@
 #. text in the Scheduler window
 #, machine
 	March	మార్చి
+#. checkbox in the Options window
+#, machine
+	Mark downloaded files as coming from the internet	డౌన్‌లోడ్ చేయబడిన ఫైల్‌లను ఇంటర్నెట్ నుండి వచ్చినవిగా గుర్తించండి
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2905,6 +2936,9 @@
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
 	No day is ticked: the queue will not start	ఏ రోజునూ టిక్ చేయలేదు: క్యూ ప్రారంభం కాదు
+#. message or event log entry in the main window
+#, machine
+	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	క్లిప్‌బోర్డ్‌లో డౌన్‌లోడ్ లింక్‌లు కనుగొనబడలేదు. http, https, ftp లేదా మాగ్నెట్ లింక్‌లతో కూడిన వచనాన్ని కాపీ చేసి, మళ్లీ ప్రయత్నించండి.
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -3492,6 +3526,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	టొరెంట్‌ను చదువుతోంది...
+#. message or event log entry in the main window
+#. the status strip while Tasks → Import reads a file; {file} is its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading {file}...	{file} చదువుతోంది...
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	ఒక పేజీని చదివి, YouTube, Vimeo మరియు వెయ్యికి పైగా ఇతర సైట్‌ల నుండి 4K వరకు సైట్ అందించే ప్రతి నాణ్యతను జాబితా చేస్తుంది.
@@ -4369,6 +4408,9 @@
 #. Options → Remote → Status: the settings were changed; they apply on OK
 #, machine
 	The changes apply when you click OK.	మీరు సరే క్లిక్ చేసినప్పుడు మార్పులు వర్తిస్తాయి.
+#. message or event log entry in the main window
+#, machine
+	The clipboard holds no text. Copy some links, or a text with links in it, and try again.	క్లిప్‌బోర్డ్‌లో వచనం లేదు. కొన్ని లింక్‌లను లేదా లింక్‌లతో కూడిన వచనాన్ని కాపీ చేసి, మళ్లీ ప్రయత్నించండి.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -5310,6 +5352,10 @@
 #, machine
 	Windows allows wake timers only while plugged in	Windows ప్లగ్ ఇన్ చేసినప్పుడు మాత్రమే వేక్ టైమర్‌లను అనుమతిస్తుంది
 #. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Windows
+#, machine
+	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	ఈ విధంగా గుర్తించబడిన ఫైల్‌లను Windows తనిఖీ చేస్తుంది: ప్రోగ్రామ్ మొదటిసారి అమలయ్యే ముందు SmartScreen, డాక్యుమెంట్ తెరవడానికి ముందు Office యొక్క Protected View. టిక్ చేయకపోతే లేదా Windows విధానం “ఫైల్ జోడింపులలో జోన్ సమాచారాన్ని భద్రపరచవద్దు” అమల్లో ఉంటే, ఏ డౌన్‌లోడ్‌కూ గుర్తు పెట్టబడదు.
+#. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine
 	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows క్రెడెన్షియల్ మేనేజర్ స్పందించలేదు, కాబట్టి సైన్-ఇన్‌లు మరియు పాస్‌వర్డ్‌లు MDM సెట్టింగ్‌లలో ఉంచబడతాయి, మీ Windows ఖాతా కోసం ఎన్‌క్రిప్ట్ చేయబడ్డాయి.
@@ -5553,6 +5599,11 @@
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} అది సేవ్ చేసిన చోట ఇప్పుడు లేదు (తరలించబడింది లేదా తొలగించబడింది). దాన్ని మళ్లీ పొందడానికి, దాని కుడి-క్లిక్ మెనులో మళ్లీ డౌన్‌లోడ్ చేయండి ఎంచుకోండి.
+#. message or event log entry in the main window
+#. Import refused a file; {size} = its size and {limit} = the largest Import reads, like "4.50 GB" and "64.00 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} చిరునామాల జాబితాగా ఉండటానికి చాలా పెద్దది ({size}). దిగుమతి {limit} వరకు టెక్స్ట్ ఫైల్‌లు, వెబ్ పేజీలు మరియు .ef2 ఎగుమతులను చదువుతుంది.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -6213,6 +6264,10 @@ key	Ctrl+0	Ctrl+0
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+B	Ctrl+B
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

@@ -227,6 +227,11 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	A file of this torrent can't be saved safely: {name}	فایلی از این تورنت را نمی‌توان با اطمینان ذخیره کرد: {name}
+#. message or event log entry in the main window
+#. Link grabber added a magnet link whose torrent could not be found; {error} says why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	A magnet link's files could not be looked up: {error}	فایل‌های پیوند مگنت قابل جستجو نبود: {error}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -306,6 +311,10 @@
 #. text in the tray icon's menu
 #, machine
 	Add batch download	افزودن بارگیری دسته‌ای
+#. message or event log entry in the main window; text in the tray icon's menu
+#. title of the note when Tasks → Add batch download from clipboard finds nothing to download
+#, machine
+	Add batch download from clipboard	افزودن بارگیری دسته‌ای از کلیپ‌بورد
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -951,6 +960,10 @@
 #. column title: the peer's torrent program
 #, machine
 	Client	کلاینت
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the clipboard (Tasks → Add batch download from clipboard)
+#, machine
+	Clipboard	کلیپ‌بورد
 #. text in the Options window
 #, machine
 	Clock:	ساعت:
@@ -1337,6 +1350,9 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	پیوندهای میزبان فایل پشتیبانی‌شده را از طریق این حساب‌ها دانلود کنید
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download the links in the clipboard (Add batch download from clipboard)	بارگیری پیوندهای موجود در کلیپ‌بورد (افزودن بارگیری دسته‌ای از کلیپ‌بورد)
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 #, machine
@@ -1666,6 +1682,10 @@
 #. noun: a file of no known type
 #, machine
 	File	فایل
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Linux
+#, machine
+	File managers show where the files marked this way came from. Unticked, no download is marked.	مدیران فایل نشان می‌دهند فایل‌هایی که به این شکل علامت‌گذاری شده‌اند از کجا آمده‌اند. اگر تیک نخورده باشد، هیچ فایلی علامت‌گذاری نمی‌شود.
 #. text in the Scheduler window
 #, machine
 	File Name	نام فایل
@@ -2386,7 +2406,7 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	محدود کردن بارگذاری برای همه تورنت‌ها به
-#. window title in the Link grabber window; group box title in the Options window
+#. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
 	Link grabber	رباینده پیوند
@@ -2479,10 +2499,18 @@
 #. a country's name (where a download's server is)
 #, machine
 	Macau	ماکائو
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on macOS
+#, machine
+	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS فایل‌هایی را که به این شکل علامت‌گذاری شده‌اند بررسی می‌کند: Gatekeeper پیش از نخستین باز شدن یک برنامه. اگر تیک نخورده باشد، هیچ فایلی علامت‌گذاری نمی‌شود.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
 	Madagascar	ماداگاسکار
+#. text in the Link grabber window
+#. Link grabber, a link's status: a magnet link (a torrent, its files looked up once it is added)
+#, machine
+	Magnet link	پیوند مگنت
 #. message or event log entry in the main window
 #, machine
 	Main download queue	صف اصلی دانلود
@@ -2526,6 +2554,9 @@
 #. text in the Scheduler window
 #, machine
 	March	مارس
+#. checkbox in the Options window
+#, machine
+	Mark downloaded files as coming from the internet	علامت‌گذاری فایل‌های بارگیری‌شده به عنوان «از اینترنت»
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2905,6 +2936,9 @@
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
 	No day is ticked: the queue will not start	هیچ روزی علامت نخورده است: صف شروع نخواهد شد
+#. message or event log entry in the main window
+#, machine
+	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	هیچ پیوند بارگیری در کلیپ‌بورد یافت نشد. متنی حاوی پیوندهای http، https، ftp یا magnet را کپی کرده و دوباره امتحان کنید.
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -3492,6 +3526,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	در حال خواندن تورنت...
+#. message or event log entry in the main window
+#. the status strip while Tasks → Import reads a file; {file} is its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading {file}...	در حال خواندن {file}...
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	یک صفحه را می‌خواند و تمام کیفیت‌هایی را که سایت ارائه می‌دهد، تا 4K، از YouTube، Vimeo و بیش از هزار سایت دیگر فهرست می‌کند.
@@ -4369,6 +4408,9 @@
 #. Options → Remote → Status: the settings were changed; they apply on OK
 #, machine
 	The changes apply when you click OK.	تغییرات پس از کلیک روی «تأیید» اعمال می‌شوند.
+#. message or event log entry in the main window
+#, machine
+	The clipboard holds no text. Copy some links, or a text with links in it, and try again.	کلیپ‌بورد حاوی متنی نیست. چند پیوند یا متنی حاوی پیوندها را کپی کرده و دوباره امتحان کنید.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -5553,6 +5595,11 @@
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} دیگر در محل ذخیره‌شده خود نیست (منتقل یا حذف شده است). گزینه بارگیری مجدد در منوی راست‌کلیک آن، فایل را دوباره دریافت می‌کند.
+#. message or event log entry in the main window
+#. Import refused a file; {size} = its size and {limit} = the largest Import reads, like "4.50 GB" and "64.00 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	حجم {file} برای استفاده به‌عنوان فهرست نشانی بیش از حد بزرگ است ({size}). قابلیت وارد کردن، فایل‌های متنی، صفحات وب و فایل‌های خروجی .ef2 را تا حجم {limit} می‌خواند.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -6213,6 +6260,10 @@ key	Ctrl+0	Ctrl+0
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+B	Ctrl+B
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

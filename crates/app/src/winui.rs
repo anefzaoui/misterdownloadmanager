@@ -2244,15 +2244,7 @@ fn edit_text_with(
     name_from_caption(&resp);
     // Tab into a box selects its text, as in Windows (a click places the caret instead).
     if resp.gained_focus() && !ui.input(|i| i.pointer.any_down()) {
-        let mut state = egui::text_edit::TextEditState::load(ui.ctx(), edit_id).unwrap_or_default();
-        let n = value.chars().count();
-        state
-            .cursor
-            .set_char_range(Some(egui::text::CCursorRange::two(
-                egui::text::CCursor::new(0),
-                egui::text::CCursor::new(n),
-            )));
-        state.store(ui.ctx(), edit_id);
+        select_all_text(ui.ctx(), edit_id, value);
     }
     if value.is_empty() && ui.data(|d| d.get_temp::<bool>(was_empty)).is_none() {
         ui.data_mut(|d| d.insert_temp(was_empty, true));
@@ -2517,6 +2509,19 @@ pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline:
     state.set_undoer(undoer);
     state.store(&ctx, id);
     ctx.memory_mut(|m| m.request_focus(id));
+}
+
+/// The whole text of the box `id` (`value`) selected, so what is typed next replaces it (a box
+/// given the keys by its window as it opens, as Tab into a box does).
+pub fn select_all_text(ctx: &egui::Context, id: egui::Id, value: &str) {
+    let mut state = egui::text_edit::TextEditState::load(ctx, id).unwrap_or_default();
+    state
+        .cursor
+        .set_char_range(Some(egui::text::CCursorRange::two(
+            egui::text::CCursor::new(0),
+            egui::text::CCursor::new(value.chars().count()),
+        )));
+    state.store(ctx, id);
 }
 
 /// A dark edit with right-aligned text (numbers, e.g. the Speed Limiter value).

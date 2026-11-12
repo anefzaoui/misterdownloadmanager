@@ -222,6 +222,11 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	A file of this torrent can't be saved safely: {name}	इस टॉरेंट की फ़ाइल सुरक्षित रूप से सहेजी नहीं जा सकती: {name}
+#. message or event log entry in the main window
+#. Link grabber added a magnet link whose torrent could not be found; {error} says why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	A magnet link's files could not be looked up: {error}	मैग्नेट लिंक की फ़ाइलें नहीं खोजी जा सकीं: {error}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -301,6 +306,10 @@
 #. text in the tray icon's menu
 #, machine
 	Add batch download	बैच डाउनलोड जोड़ें
+#. message or event log entry in the main window; text in the tray icon's menu
+#. title of the note when Tasks → Add batch download from clipboard finds nothing to download
+#, machine
+	Add batch download from clipboard	क्लिपबोर्ड से बैच डाउनलोड जोड़ें
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -946,6 +955,10 @@
 #. column title: the peer's torrent program
 #, machine
 	Client	क्लाइंट
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the clipboard (Tasks → Add batch download from clipboard)
+#, machine
+	Clipboard	क्लिपबोर्ड
 #. text in the Options window
 #, machine
 	Clock:	घड़ी:
@@ -1332,6 +1345,9 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	इन खातों के माध्यम से समर्थित फ़ाइल-होस्ट लिंक डाउनलोड करें
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download the links in the clipboard (Add batch download from clipboard)	क्लिपबोर्ड में लिंक डाउनलोड करें (क्लिपबोर्ड से बैच डाउनलोड जोड़ें)
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 #, machine
@@ -1661,6 +1677,10 @@
 #. noun: a file of no known type
 #, machine
 	File	फ़ाइल
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Linux
+#, machine
+	File managers show where the files marked this way came from. Unticked, no download is marked.	फ़ाइल प्रबंधक दिखाते हैं कि इस तरह चिह्नित फ़ाइलें कहाँ से आई हैं। चेक न होने पर, कोई डाउनलोड चिह्नित नहीं होता है।
 #. text in the Scheduler window
 #, machine
 	File Name	फ़ाइल का नाम
@@ -2381,7 +2401,7 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	सभी टोरेंट के लिए अपलोडिंग को इस पर सीमित करें
-#. window title in the Link grabber window; group box title in the Options window
+#. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
 	Link grabber	लिंक ग्रैबर
@@ -2474,10 +2494,18 @@
 #. a country's name (where a download's server is)
 #, machine
 	Macau	मकाऊ
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on macOS
+#, machine
+	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS इस तरह चिह्नित फ़ाइलों की जाँच करता है: प्रोग्राम पहली बार खुलने से पहले Gatekeeper। चेक न होने पर, कोई डाउनलोड चिह्नित नहीं होता है।
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
 	Madagascar	मेडागास्कर
+#. text in the Link grabber window
+#. Link grabber, a link's status: a magnet link (a torrent, its files looked up once it is added)
+#, machine
+	Magnet link	मैग्नेट लिंक
 #. message or event log entry in the main window
 #, machine
 	Main download queue	मुख्य डाउनलोड कतार
@@ -2521,6 +2549,9 @@
 #. text in the Scheduler window
 #, machine
 	March	मार्च
+#. checkbox in the Options window
+#, machine
+	Mark downloaded files as coming from the internet	डाउनलोड की गई फ़ाइलों को इंटरनेट से आया हुआ चिह्नित करें
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2900,6 +2931,9 @@
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
 	No day is ticked: the queue will not start	कोई दिन चुना नहीं गया है: कतार शुरू नहीं होगी
+#. message or event log entry in the main window
+#, machine
+	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	क्लिपबोर्ड में कोई डाउनलोड लिंक नहीं मिला। इसमें http, https, ftp या मैग्नेट लिंक वाला टेक्स्ट कॉपी करें, और फिर से प्रयास करें।
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -3487,6 +3521,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	टॉरेंट पढ़ा जा रहा है...
+#. message or event log entry in the main window
+#. the status strip while Tasks → Import reads a file; {file} is its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading {file}...	फ़ाइल {file} पढ़ी जा रही है...
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	एक पृष्ठ पढ़ता है और YouTube, Vimeo और एक हज़ार से अधिक अन्य साइटों से, 4K तक, साइट द्वारा प्रदान की जाने वाली प्रत्येक गुणवत्ता को सूचीबद्ध करता है।
@@ -4364,6 +4403,9 @@
 #. Options → Remote → Status: the settings were changed; they apply on OK
 #, machine
 	The changes apply when you click OK.	आपके ठीक क्लिक करने पर परिवर्तन लागू होते हैं।
+#. message or event log entry in the main window
+#, machine
+	The clipboard holds no text. Copy some links, or a text with links in it, and try again.	क्लिपबोर्ड में कोई टेक्स्ट नहीं है। कुछ लिंक, या लिंक वाला टेक्स्ट कॉपी करें, और फिर से प्रयास करें।
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -5305,6 +5347,10 @@
 #, machine
 	Windows allows wake timers only while plugged in	Windows केवल प्लग इन होने पर वेक टाइमर की अनुमति देता है
 #. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Windows
+#, machine
+	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows इस तरह चिह्नित फ़ाइलों की जाँच करता है: प्रोग्राम पहली बार चलने से पहले SmartScreen, दस्तावेज़ खुलने से पहले Office का Protected View। चेक न होने पर, या Windows की नीति “फ़ाइल अनुलग्नकों में ज़ोन जानकारी को संरक्षित न करें” के तहत, कोई डाउनलोड चिह्नित नहीं होता है।
+#. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine
 	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows क्रेडेंशियल मैनेजर ने जवाब नहीं दिया, इसलिए साइन-इन और पासवर्ड MDM की सेटिंग्स में रखे जाते हैं, जिन्हें आपके Windows खाते के लिए एन्क्रिप्ट किया जाता है।
@@ -5548,6 +5594,11 @@
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} अब उस स्थान पर नहीं है जहाँ इसे सहेजा गया था (स्थानांतरित या हटाया गया)। राइट-क्लिक मेनू में फिर से डाउनलोड करें चुनने पर यह फ़ाइल फिर से डाउनलोड होगी।
+#. message or event log entry in the main window
+#. Import refused a file; {size} = its size and {limit} = the largest Import reads, like "4.50 GB" and "64.00 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} पते की सूची के लिए बहुत बड़ा है ({size})। आयात {limit} तक की टेक्स्ट फ़ाइलें, वेब पेज और .ef2 निर्यात पढ़ता है।
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -6208,6 +6259,10 @@ key	Ctrl+0	Ctrl+0
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+B	Ctrl+B
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

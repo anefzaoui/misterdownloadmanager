@@ -227,6 +227,11 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	A file of this torrent can't be saved safely: {name}	ამ ტორენტის ფაილის უსაფრთხოდ შენახვა შეუძლებელია: {name}
+#. message or event log entry in the main window
+#. Link grabber added a magnet link whose torrent could not be found; {error} says why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	A magnet link's files could not be looked up: {error}	მაგნიტური ბმულის ფაილების მოძიება ვერ მოხერხდა: {error}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -306,6 +311,10 @@
 #. text in the tray icon's menu
 #, machine
 	Add batch download	პაკეტური ჩამოტვირთვის დამატება
+#. message or event log entry in the main window; text in the tray icon's menu
+#. title of the note when Tasks → Add batch download from clipboard finds nothing to download
+#, machine
+	Add batch download from clipboard	პაკეტური ჩამოტვირთვის დამატება ბუფერიდან
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -951,6 +960,10 @@
 #. column title: the peer's torrent program
 #, machine
 	Client	კლიენტი
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the clipboard (Tasks → Add batch download from clipboard)
+#, machine
+	Clipboard	ბუფერი
 #. text in the Options window
 #, machine
 	Clock:	საათი:
@@ -1337,6 +1350,9 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	მხარდაჭერილი ფაილ-ჰოსტის ბმულების ჩამოტვირთვა ამ ანგარიშების მეშვეობით
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download the links in the clipboard (Add batch download from clipboard)	ბუფერში არსებული ბმულების ჩამოტვირთვა (პაკეტური ჩამოტვირთვის დამატება ბუფერიდან)
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 #, machine
@@ -1666,6 +1682,10 @@
 #. noun: a file of no known type
 #, machine
 	File	ფაილი
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Linux
+#, machine
+	File managers show where the files marked this way came from. Unticked, no download is marked.	ფაილის მენეჯერები აჩვენებენ, საიდან მოვიდა ამგვარად მონიშნული ფაილები. მოხსნის შემთხვევაში, არცერთი ჩამოტვირთვა არ აღინიშნება.
 #. text in the Scheduler window
 #, machine
 	File Name	ფაილის სახელი
@@ -2386,7 +2406,7 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	ყველა ტორენტის ატვირთვის ლიმიტი
-#. window title in the Link grabber window; group box title in the Options window
+#. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
 	Link grabber	ბმულების ამომღები
@@ -2479,10 +2499,18 @@
 #. a country's name (where a download's server is)
 #, machine
 	Macau	მაკაო
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on macOS
+#, machine
+	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS ამოწმებს ამგვარად მონიშნულ ფაილებს: Gatekeeper პროგრამის პირველი გახსნის წინ. მოხსნის შემთხვევაში, არცერთი ჩამოტვირთვა არ აღინიშნება.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
 	Madagascar	მადაგასკარი
+#. text in the Link grabber window
+#. Link grabber, a link's status: a magnet link (a torrent, its files looked up once it is added)
+#, machine
+	Magnet link	მაგნიტური ბმული
 #. message or event log entry in the main window
 #, machine
 	Main download queue	მთავარი ჩამოტვირთვის რიგი
@@ -2526,6 +2554,9 @@
 #. text in the Scheduler window
 #, machine
 	March	მარტი
+#. checkbox in the Options window
+#, machine
+	Mark downloaded files as coming from the internet	ჩამოტვირთული ფაილების მონიშვნა, როგორც ინტერნეტიდან მოსული
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2905,6 +2936,9 @@
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
 	No day is ticked: the queue will not start	არცერთი დღე არ არის მონიშნული: რიგი არ დაიწყება
+#. message or event log entry in the main window
+#, machine
+	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	ბუფერში ჩამოსატვირთი ბმულები ვერ მოიძებნა. დააკოპირეთ ტექსტი, რომელშიც არის http, https, ftp ან მაგნიტური ბმულები, და სცადეთ ხელახლა.
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -4369,6 +4403,9 @@
 #. Options → Remote → Status: the settings were changed; they apply on OK
 #, machine
 	The changes apply when you click OK.	ცვლილებები ამოქმედდება ღილაკზე „OK“ დაწკაპუნებისას.
+#. message or event log entry in the main window
+#, machine
+	The clipboard holds no text. Copy some links, or a text with links in it, and try again.	ბუფერში ტექსტი არ არის. დააკოპირეთ ბმულები ან ტექსტი ბმულებით და სცადეთ ხელახლა.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -5310,6 +5347,10 @@
 #, machine
 	Windows allows wake timers only while plugged in	Windows გაღვიძების ტაიმერებს მხოლოდ კვების წყაროსთან მიერთებისას უშვებს
 #. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Windows
+#, machine
+	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows ამოწმებს ამგვარად მონიშნულ ფაილებს: SmartScreen პროგრამის პირველი გაშვების წინ, Office-ის დაცული ხედი დოკუმენტის გახსნის წინ. მოხსნის შემთხვევაში, ან Windows-ის პოლიტიკის „არ შეინახოს ზონის ინფორმაცია ფაილის დანართებში“ მიხედვით, არცერთი ჩამოტვირთვა არ აღინიშნება.
+#. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine
 	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows-ის სერთიფიკატების მენეჯერმა არ უპასუხა, ამიტომ შესვლის მონაცემები და პაროლები ინახება MDM-ის პარამეტრებში, დაშიფრული თქვენი Windows ანგარიშისთვის.
@@ -5553,6 +5594,11 @@
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} უკვე აღარ არის შენახულ ადგილას (გადატანილია ან წაშლილია). მის ხელახლა ჩამოსატვირთად გამოიყენეთ მარჯვენა ღილაკის მენიუში „ხელახლა ჩამოტვირთვა“.
+#. message or event log entry in the main window
+#. Import refused a file; {size} = its size and {limit} = the largest Import reads, like "4.50 GB" and "64.00 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} ძალიან დიდია მისამართების სიისთვის ({size}). იმპორტის ფუნქცია კითხულობს ტექსტურ ფაილებს, ვებგვერდებს და .ef2 ექსპორტებს, რომელთა ზომა არ აღემატება {limit}-ს.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -6213,6 +6259,10 @@ key	Ctrl+0	Ctrl+0
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+B	Ctrl+B
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

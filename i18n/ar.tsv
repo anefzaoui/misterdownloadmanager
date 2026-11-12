@@ -186,6 +186,11 @@
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
 	A file of this torrent can't be saved safely: {name}	لا يمكن حفظ ملف هذا التورنت بأمان: {name}
+#. message or event log entry in the main window
+#. Link grabber added a magnet link whose torrent could not be found; {error} says why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	A magnet link's files could not be looked up: {error}	تعذر البحث عن ملفات الرابط المغناطيسي: {error}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	معرف ضبط NextDNS هو ستة أحرف وأرقام (0-9، a-f).
@@ -249,6 +254,10 @@
 	Add an account	إضافة حساب
 #. text in the tray icon's menu
 	Add batch download	إضافة تنزيل جماعي
+#. message or event log entry in the main window; text in the tray icon's menu
+#. title of the note when Tasks → Add batch download from clipboard finds nothing to download
+#, machine
+	Add batch download from clipboard	إضافة تنزيل جماعي من الحافظة
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 	Add browser...	إضافة مستعرض...
@@ -738,6 +747,10 @@
 #. text in a download's progress window
 #. column title: the peer's torrent program
 	Client	العميل
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the clipboard (Tasks → Add batch download from clipboard)
+#, machine
+	Clipboard	الحافظة
 #. text in the Options window
 	Clock:	الساعة:
 #. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in standard windows
@@ -1027,6 +1040,9 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 	Download supported file-host links through these accounts	تنزيل روابط مواقع الاستضافة المدعومة عبر هذه الحسابات
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download the links in the clipboard (Add batch download from clipboard)	تنزيل الروابط في الحافظة (إضافة تنزيل جماعي من الحافظة)
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 	Download through {service}	تنزيل عبر {service}
@@ -1277,6 +1293,10 @@
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 	File	ملف
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Linux
+#, machine
+	File managers show where the files marked this way came from. Unticked, no download is marked.	تعرض مديرات الملفات مصدر الملفات التي تم وضع علامة عليها بهذه الطريقة. إذا لم يتم تحديدها، فلن يتم وضع علامة على أي تنزيل.
 #. text in the Scheduler window
 	File Name	اسم الملف
 #. text in the Download video window
@@ -1820,7 +1840,7 @@
 #. text in the Add torrent window
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 	Limit uploading for all torrents to	تحديد الرفع لجميع التورنتات إلى
-#. window title in the Link grabber window; group box title in the Options window
+#. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 	Link grabber	ملتقط الروابط
 #. text in the Link grabber window
@@ -1893,9 +1913,17 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Macau	ماكاو
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on macOS
+#, machine
+	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	يتحقق macOS من الملفات التي تم وضع علامة عليها بهذه الطريقة: Gatekeeper قبل فتح البرنامج لأول مرة. إذا لم يتم تحديدها، فلن يتم وضع علامة على أي تنزيل.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Madagascar	مدغشقر
+#. text in the Link grabber window
+#. Link grabber, a link's status: a magnet link (a torrent, its files looked up once it is added)
+#, machine
+	Magnet link	رابط مغناطيسي
 #. message or event log entry in the main window
 	Main download queue	قائمة انتظار التنزيل الرئيسية
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1928,6 +1956,9 @@
 	Map the port on the router (UPnP)	تعيين المنفذ على الراوتر (UPnP)
 #. text in the Scheduler window
 	March	مارس
+#. checkbox in the Options window
+#, machine
+	Mark downloaded files as coming from the internet	وضع علامة على الملفات التي تم تنزيلها على أنها قادمة من الإنترنت
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Marshall Islands	جزر مارشال
@@ -2219,6 +2250,9 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's weekdays when none is ticked
 	No day is ticked: the queue will not start	لم يتم تحديد أي يوم: لن تبدأ قائمة الانتظار
+#. message or event log entry in the main window
+#, machine
+	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	لم يتم العثور على روابط تنزيل في الحافظة. انسخ نصا يحتوي على روابط http أو https أو ftp أو روابط مغناطيسية، ثم حاول مرة أخرى.
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 	No downloads here	لا توجد تنزيلات هنا
@@ -2666,6 +2700,11 @@
 #. text in the Add torrent window
 #. the trailing ... means it is still going on: keep it
 	Reading the torrent...	قيد قراءة التورنت...
+#. message or event log entry in the main window
+#. the status strip while Tasks → Import reads a file; {file} is its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading {file}...	قيد قراءة {file}...
 #. text in helpers.rs
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	يقرأ صفحة ويعرض كل جودة يقدمها الموقع، حتى 4K، من YouTube وVimeo وأكثر من ألف موقع آخر.
 #. text in helpers.rs
@@ -3332,6 +3371,9 @@
 #. Options → Remote → Status: the settings were changed; they apply on OK
 #, machine
 	The changes apply when you click OK.	سيتم تطبيق التغييرات عند النقر فوق موافق.
+#. message or event log entry in the main window
+#, machine
+	The clipboard holds no text. Copy some links, or a text with links in it, and try again.	لا تحتوي الحافظة على نص. انسخ بعض الروابط، أو نصا يحتوي على روابط، ثم حاول مرة أخرى.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 	The clipboard is busy: try again.	الحافظة مشغولة: حاول مرة أخرى.
@@ -4057,6 +4099,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 	Windows allows wake timers only while plugged in	تسمح Windows بمؤقتات الإيقاظ فقط أثناء توصيل الجهاز بالتيار الكهربائي
 #. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Windows
+#, machine
+	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	يتحقق Windows من الملفات التي تم وضع علامة عليها بهذه الطريقة: SmartScreen قبل تشغيل البرنامج لأول مرة، وProtected View في Office قبل فتح المستند. إذا لم يتم تحديدها، أو بموجب سياسة Windows «عدم الاحتفاظ بمعلومات المنطقة في مرفقات الملفات»، فلن يتم وضع علامة على أي تنزيل.
+#. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	لم يستجب مدير بيانات اعتماد Windows، لذلك يتم حفظ بيانات تسجيل الدخول وكلمات المرور في إعدادات MDM، مشفرة لحساب Windows الخاص بك.
 #. text in a dialog box
@@ -4253,6 +4299,11 @@
 	{file} could not be read to check it	تعذر قراءة {file} للتحقق منه
 #. text in a dialog box
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} لم يعد في مكانه المحفوظ (نقل أو حذف). «إعادة التنزيل» في قائمة النقر بزر الماوس الأيمن تجلبه من جديد.
+#. message or event log entry in the main window
+#. Import refused a file; {size} = its size and {limit} = the largest Import reads, like "4.50 GB" and "64.00 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	حجم {file} كبير جدا ليكون قائمة عناوين ({size}). يستورد البرنامج الملفات النصية وصفحات الويب وملفات التصدير بصيغة .ef2 التي يصل حجمها إلى {limit}.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	{file}: the file does NOT match its checksum ({algorithm})	{file}: الملف لا يطابق بصمته ({algorithm})
@@ -4819,6 +4870,10 @@ key	Ctrl+0	Ctrl+0
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+B	Ctrl+B
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Ctrl+click	Ctrl+نقر

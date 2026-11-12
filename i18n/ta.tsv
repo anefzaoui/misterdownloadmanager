@@ -227,6 +227,11 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	A file of this torrent can't be saved safely: {name}	இந்த டொரண்டின் கோப்பை பாதுகாப்பாகச் சேமிக்க முடியாது: {name}
+#. message or event log entry in the main window
+#. Link grabber added a magnet link whose torrent could not be found; {error} says why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	A magnet link's files could not be looked up: {error}	மேக்னெட் இணைப்பின் கோப்புகளைக் கண்டறிய முடியவில்லை: {error}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -306,6 +311,10 @@
 #. text in the tray icon's menu
 #, machine
 	Add batch download	தொகுப்புப் பதிவிறக்கத்தைச் சேர்
+#. message or event log entry in the main window; text in the tray icon's menu
+#. title of the note when Tasks → Add batch download from clipboard finds nothing to download
+#, machine
+	Add batch download from clipboard	கிளிப்போர்டிலிருந்து தொகுதிப் பதிவிறக்கத்தைச் சேர்க்கவும்
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -951,6 +960,10 @@
 #. column title: the peer's torrent program
 #, machine
 	Client	கிளையன்ட்
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the clipboard (Tasks → Add batch download from clipboard)
+#, machine
+	Clipboard	கிளிப்போர்டு
 #. text in the Options window
 #, machine
 	Clock:	கடிகாரம்:
@@ -1337,6 +1350,9 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	இந்தக் கணக்குகள் மூலம் ஆதரிக்கப்படும் கோப்பு ஹோஸ்ட் இணைப்புகளைப் பதிவிறக்கு
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download the links in the clipboard (Add batch download from clipboard)	கிளிப்போர்டில் உள்ள இணைப்புகளைப் பதிவிறக்கவும் (கிளிப்போர்டிலிருந்து தொகுதிப் பதிவிறக்கத்தைச் சேர்க்கவும்)
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 #, machine
@@ -1666,6 +1682,10 @@
 #. noun: a file of no known type
 #, machine
 	File	கோப்பு
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Linux
+#, machine
+	File managers show where the files marked this way came from. Unticked, no download is marked.	கோப்பு மேலாளர்கள் இந்த வழியில் குறிக்கப்பட்ட கோப்புகள் எங்கிருந்து வந்தன என்பதைக் காட்டுகின்றன. தேர்வு நீக்கப்பட்டால், எந்தப் பதிவிறக்கமும் குறிக்கப்படாது.
 #. text in the Scheduler window
 #, machine
 	File Name	கோப்பு பெயர்
@@ -2386,7 +2406,7 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	அனைத்து டொரண்டுகளுக்கும் பதிவேற்றுவதைக் கட்டுப்படுத்து
-#. window title in the Link grabber window; group box title in the Options window
+#. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
 	Link grabber	இணைப்பு கிராப்பர்
@@ -2479,10 +2499,18 @@
 #. a country's name (where a download's server is)
 #, machine
 	Macau	மக்காவ்
+#. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on macOS
+#, machine
+	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	இந்த வழியில் குறிக்கப்பட்ட கோப்புகளை macOS சரிபார்க்கிறது: ஒரு நிரல் முதல் முறையாகத் திறக்கப்படுவதற்கு முன் Gatekeeper சரிபார்க்கும். தேர்வு செய்யப்படாவிட்டால், எந்தப் பதிவிறக்கமும் குறிக்கப்படாது.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
 	Madagascar	மடகாஸ்கர்
+#. text in the Link grabber window
+#. Link grabber, a link's status: a magnet link (a torrent, its files looked up once it is added)
+#, machine
+	Magnet link	காந்த இணைப்பு
 #. message or event log entry in the main window
 #, machine
 	Main download queue	முக்கிய பதிவிறக்க வரிசை
@@ -2526,6 +2554,9 @@
 #. text in the Scheduler window
 #, machine
 	March	மார்ச்
+#. checkbox in the Options window
+#, machine
+	Mark downloaded files as coming from the internet	பதிவிறக்கப்பட்ட கோப்புகளை இணையத்திலிருந்து வந்ததாகக் குறிக்கவும்
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2905,6 +2936,9 @@
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
 	No day is ticked: the queue will not start	எந்த நாளும் குறிக்கப்படவில்லை: வரிசை தொடங்காது
+#. message or event log entry in the main window
+#, machine
+	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	கிளிப்போர்டில் பதிவிறக்க இணைப்புகள் எதுவும் கண்டறியப்படவில்லை. http, https, ftp அல்லது காந்த இணைப்புகள் உள்ள உரையை நகலெடுத்து மீண்டும் முயற்சிக்கவும்.
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -3492,6 +3526,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	டாரன்ட்டைப் படிக்கிறது...
+#. message or event log entry in the main window
+#. the status strip while Tasks → Import reads a file; {file} is its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading {file}...	{file} படிக்கிறது...
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	ஒரு பக்கத்தைப் படித்து, YouTube, Vimeo மற்றும் ஆயிரக்கணக்கான பிற தளங்களிலிருந்து 4K வரை தளம் வழங்கும் ஒவ்வொரு தரத்தையும் பட்டியலிடுகிறது.
@@ -4369,6 +4408,9 @@
 #. Options → Remote → Status: the settings were changed; they apply on OK
 #, machine
 	The changes apply when you click OK.	நீங்கள் சரி என்பதைக் கிளிக் செய்யும்போது மாற்றங்கள் பயன்படுத்தப்படும்.
+#. message or event log entry in the main window
+#, machine
+	The clipboard holds no text. Copy some links, or a text with links in it, and try again.	கிளிப்போர்டில் உரை எதுவும் இல்லை. சில இணைப்புகளை அல்லது இணைப்புகள் உள்ள உரையை நகலெடுத்து மீண்டும் முயற்சிக்கவும்.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -5310,6 +5352,10 @@
 #, machine
 	Windows allows wake timers only while plugged in	Windows ஆனது செருகப்பட்டிருக்கும்போது மட்டுமே விழித்திருக்கும் டைமர்களை அனுமதிக்கிறது
 #. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Windows
+#, machine
+	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows இந்த வழியில் குறிக்கப்பட்ட கோப்புகளைச் சரிபார்க்கிறது: ஒரு நிரல் முதல் முறையாக இயங்குவதற்கு முன் SmartScreen, ஒரு ஆவணம் திறப்பதற்கு முன் Office இன் பாதுகாக்கப்பட்ட பார்வை. தேர்வு நீக்கப்பட்டால், அல்லது Windows இன் கொள்கையான “கோப்பு இணைப்புகளில் மண்டலத் தகவலைப் பாதுகாக்க வேண்டாம்” என்பதன் கீழ், எந்தப் பதிவிறக்கமும் குறிக்கப்படாது.
+#. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine
 	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows நற்சான்றிதழ் மேலாளர் பதிலளிக்கவில்லை, எனவே உள்நுழைவு விவரங்களும் கடவுச்சொற்களும் MDM அமைப்புகளில் வைக்கப்பட்டுள்ளன; உங்கள் Windows கணக்கால் மட்டுமே படிக்கக்கூடிய வகையில் குறியாக்கம் செய்யப்பட்டுள்ளன.
@@ -5553,6 +5599,11 @@
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} சேமிக்கப்பட்ட இடத்தில் இனி இல்லை (நகர்த்தப்பட்டது அல்லது நீக்கப்பட்டது). வலது கிளிக் மெனுவில் உள்ள மீண்டும் பதிவிறக்கவும் என்பதைத் தேர்ந்தெடுத்தால், அது மீண்டும் பதிவிறக்கப்படும்.
+#. message or event log entry in the main window
+#. Import refused a file; {size} = its size and {limit} = the largest Import reads, like "4.50 GB" and "64.00 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} முகவரிகளின் பட்டியலாக இருக்க முடியாத அளவுக்குப் பெரியது ({size}). இறக்குமதி {limit} வரையிலான உரை கோப்புகள், வலைப்பக்கங்கள் மற்றும் .ef2 ஏற்றுமதிகளைப் படிக்கிறது.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -6213,6 +6264,10 @@ key	Ctrl+0	Ctrl+0
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+B	Ctrl+B
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
