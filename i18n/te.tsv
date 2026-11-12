@@ -1538,7 +1538,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Eritrea	ఎరిట్రియా
-#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
@@ -3219,6 +3219,10 @@
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	ఫోల్డర్‌ను తెరవండి
+#. text in a download's progress window
+#. button in a download's progress window when the site sent a web page (a waiting page, a captcha) instead of the file: opens the download's link in the web browser
+#, machine
+	Open in browser	బ్రౌజర్‌లో తెరవండి
 #. checkbox in the Add torrent window
 #, machine
 	Open magnet links and .torrent files with Mister Download Manager	Mister Download Managerతో మాగ్నెట్ లింక్‌లు మరియు .torrent ఫైల్‌లను తెరవండి
@@ -4623,10 +4627,11 @@
 	the server is busy ({status}); try again later	సర్వర్ బిజీగా ఉంది ({status}); తర్వాత మళ్లీ ప్రయత్నించండి
 #. text in errors.rs
 #, machine
-	the server sent a web page instead of the file (sign-in needed or the link expired?)	సర్వర్ ఫైల్‌కు బదులుగా వెబ్ పేజీని పంపింది (సైన్-ఇన్ అవసరమా లేదా లింక్ గడువు ముగిసిందా?)
-#. text in errors.rs
-#, machine
 	the server sent an unexpected part of the file ({detail})	సర్వర్ ఫైల్ యొక్క ఊహించని భాగాన్ని పంపింది ({detail})
+#. text in errors.rs
+#. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
+#, machine
+	the site sent a web page instead of the file (a waiting page, a captcha or a sign-in): open the link in your browser, finish there, and the download comes back to MDM	సైట్ ఫైల్‌కు బదులుగా వెబ్ పేజీని పంపింది (వేచి ఉండే పేజీ, క్యాప్చా లేదా సైన్-ఇన్): మీ బ్రౌజర్‌లో లింక్‌ను తెరవండి, అక్కడ పూర్తి చేయండి, మరియు డౌన్‌లోడ్ MDMకి తిరిగి వస్తుంది
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
 #, machine

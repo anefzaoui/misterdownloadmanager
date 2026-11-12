@@ -557,6 +557,13 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A file host's web page (a countdown, a captcha, DropMeFiles', dailyuploads') is never saved
+  under the archive's name and called finished: the download stops, says the site sent its page
+  and to finish in the browser, and the progress window's **Open in browser** opens the link
+  there. The page is told by its first bytes too, when it comes as the file's own type or under
+  its name, by the size the browser announced, and on resume, which keeps the data already
+  downloaded ([#701](https://github.com/anefzaoui/misterdownloadmanager/issues/701),
+  [#692](https://github.com/anefzaoui/misterdownloadmanager/issues/692))
 - ✅ Looking up a new video (put online in the last two days) no longer fails with "Permission
   denied" in MDM's install folder: the helpers run in your temporary folder, or MDM's own if
   that one can't be written ([#834](https://github.com/anefzaoui/misterdownloadmanager/issues/834))
