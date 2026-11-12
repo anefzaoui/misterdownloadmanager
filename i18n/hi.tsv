@@ -1493,6 +1493,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ईमेल
+#. text in the Download video window
+#. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
+#, machine
+	Embed chapters	अध्याय एम्बेड करें
 #. text in gallerydlg.rs
 #. in Download a gallery, after the "Files at most" box
 #, machine
@@ -2790,6 +2794,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Mozambique	मोज़ाम्बिक
+#. text in the Download video window
+#. why "Embed chapters" is greyed in Download video: the choice is a sound converted to MP3, Opus or FLAC, which MDM saves without chapters
+#, machine
+	MP3, Opus and FLAC files are saved without chapters	MP3, Opus और FLAC फ़ाइलें अध्यायों के बिना सहेजी जाती हैं
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	अन्य कनेक्शनों की तुलना में बहुत धीमा; फिर से कनेक्ट हो रहा है
@@ -4798,6 +4806,7 @@
 #, machine
 	This name is reserved by Windows	यह नाम Windows द्वारा आरक्षित है
 #. tooltip (why a control is greyed) in the Download video window
+#. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	इसके लिए ffmpeg चाहिए
