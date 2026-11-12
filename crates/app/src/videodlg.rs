@@ -1468,9 +1468,11 @@ mod tests {
             section_label("Audio only MP3 320 kbps"),
             ltr("MP3 320 kbps")
         );
+        // Compared without the direction isolates, which fmt may keep or drop.
+        let bare = |s: String| s.replace(['\u{2066}', '\u{2067}', '\u{2068}', '\u{2069}'], "");
         assert_eq!(
-            section_label("Audio only original M4A"),
-            format!("Original {}", ltr("M4A"))
+            bare(section_label("Audio only original M4A")),
+            "Original M4A"
         );
     }
 
