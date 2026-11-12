@@ -846,6 +846,17 @@ pub struct App {
     /// ([`progress::SHOWN_WHOLE`]) before it gives way to Download complete: each one's id, and
     /// when it finished.
     finishing: Vec<(u64, Instant)>,
+    /// Groups of downloads added together (#766) of which one finished or failed since their
+    /// last summary: looked at each frame until all theirs are done.
+    groups_open: std::collections::BTreeSet<u64>,
+    /// Downloads of a group that finished: their group's summary speaks for them, they open no
+    /// Download complete of their own (their progress window may still be closing).
+    group_finished: std::collections::HashSet<u64>,
+    /// Groups done: their summaries (Downloads complete).
+    summaries: Vec<dialogs::GroupDone>,
+    /// Download complete snoozed (#741), and how many finished meanwhile (the tray icon's tip).
+    snooze: crate::finish::Snooze,
+    snoozed_finished: u64,
     settings: Settings,
     speed_settings: Option<dialogs::SpeedSettings>,
     scheduler: Option<crate::scheduler::Scheduler>,
@@ -1531,6 +1542,11 @@ impl App {
             progress: Vec::new(),
             complete: Vec::new(),
             finishing: Vec::new(),
+            groups_open: Default::default(),
+            group_finished: Default::default(),
+            summaries: Vec::new(),
+            snooze: crate::finish::Snooze::from_saved(settings.complete_snoozed_until, unix_now()),
+            snoozed_finished: 0,
             settings,
             speed_settings: None,
             scheduler: None,
@@ -2028,19 +2044,8 @@ impl App {
                 });
             if complete {
                 // It finished behind the dialog: its box now.
-                if self.settings.show_complete
-                    && let Some(i) = self.items.iter().find(|i| i.id == id)
-                {
-                    self.complete.push(Complete {
-                        id,
-                        url: i.url.to_string(),
-                        path: i.dest.clone(),
-                        size: i.size.unwrap_or(i.downloaded),
-                        dont_show: false,
-                        notices: i.notices.clone(),
-                        seen: false,
-                        opening: None,
-                    });
+                if self.settings.show_complete {
+                    self.complete_window(id);
                 }
             } else if !live {
                 self.start(id, true);
@@ -2123,6 +2128,19 @@ impl App {
             self.queue_pick = Some((ids, dialogs::QueuePick::new(names)));
         } else {
             self.queues[0].items.extend(ids);
+        }
+        self.dirty = true;
+    }
+
+    /// Downloads added together (a playlist, a batch, Link grabber's links) become a group
+    /// (#766): one summary once all are done. A single one stays alone.
+    fn group(&mut self, ids: &[u64]) {
+        let Some(g) = crate::finish::group_of(ids) else {
+            return;
+        };
+        let ids: std::collections::HashSet<u64> = ids.iter().copied().collect();
+        for i in self.items.iter_mut().filter(|i| ids.contains(&i.id)) {
+            i.group = Some(g);
         }
         self.dirty = true;
     }
@@ -3686,10 +3704,15 @@ impl App {
             t.set_queue(q.running);
         }
         if let Some(t) = &self.tray {
-            let tip = match self.activity() {
+            let mut tip = match self.activity() {
                 Some(a) => format!("{}\n{a}", crate::MAIN_TITLE),
                 None => crate::MAIN_TITLE.to_owned(),
             };
+            // Download complete snoozed (#741): what finished meanwhile.
+            if self.snoozed_finished > 0 && self.snooze.active(unix_now()) {
+                tip.push('\n');
+                tip.push_str(&dialogs::finished_count(self.snoozed_finished));
+            }
             t.set_tooltip(&tip);
             // "Downloads in progress": each running download, to show its progress window (#63).
             let running: Vec<(u64, String)> = self
@@ -4550,6 +4573,7 @@ impl App {
             ids.push(id);
         }
         let Some(&first) = ids.first() else { return };
+        self.group(&ids);
         self.selection.set(first);
         if add.start_now {
             self.queues[0].items.extend(ids.iter().copied());
@@ -5503,6 +5527,7 @@ impl App {
             self.name_guessed(id, true);
             ids.push(id);
         }
+        self.group(&ids);
         self.queue_later(ids, self.settings.queue_panel_batch);
         self.dirty = true;
     }
@@ -6673,6 +6698,20 @@ impl App {
         if !failed.is_empty() {
             self.sound(1);
         }
+        // Downloads added together (#766): their group is looked at until all of it is done, and
+        // its summary speaks for the finished ones (no Download complete each).
+        for (id, ok) in finished
+            .iter()
+            .map(|id| (*id, true))
+            .chain(failed.iter().map(|id| (*id, false)))
+        {
+            if let Some(g) = self.items.iter().find(|i| i.id == id).and_then(|i| i.group) {
+                self.groups_open.insert(g);
+                if ok {
+                    self.group_finished.insert(id);
+                }
+            }
+        }
         for id in failed {
             let e = self.failures.entry(id).or_insert((now, 0));
             *e = (now, e.1 + 1);
@@ -6714,6 +6753,17 @@ impl App {
         );
         for id in close {
             self.close_finished(id, early);
+        }
+        self.settle_groups();
+        // A snooze over (#741): Download complete shows again.
+        if self.snooze.expire(unix_now()) {
+            tracing::info!("download complete: the snooze is over");
+            self.snoozed_finished = 0;
+            self.settings.complete_snoozed_until = None;
+            self.dirty = true;
+        }
+        if let Some(left) = self.snooze.left(unix_now()) {
+            ctx.request_repaint_after(Duration::from_secs(left.unsigned_abs().min(60)));
         }
         // The next one's moment ends without a frame of its own otherwise (nothing runs).
         if let Some(&(_, at)) = self.finishing.iter().min_by_key(|(_, at)| *at) {
@@ -6772,21 +6822,140 @@ impl App {
         if Some(id) == early {
             return;
         }
-        if self.settings.show_complete
-            && this_file
-            && let Some(i) = self.items.iter().find(|i| i.id == id)
-        {
-            self.complete.push(Complete {
-                id,
-                url: i.url.to_string(),
-                path: i.dest.clone(),
-                size: i.size.unwrap_or(i.downloaded),
-                dont_show: false,
-                notices: i.notices.clone(),
-                seen: false,
-                opening: None,
-            });
+        // One of a group: its summary speaks for it (#766).
+        if self.group_finished.remove(&id) {
+            return;
         }
+        if self.settings.show_complete && this_file {
+            self.complete_window(id);
+        }
+    }
+
+    /// Download complete for `id`, unless it is snoozed (#741): then the tray icon's tip counts
+    /// it instead.
+    fn complete_window(&mut self, id: u64) {
+        if self.snooze.active(unix_now()) {
+            self.snoozed_finished += 1;
+            return;
+        }
+        if let Some(i) = self.items.iter().find(|i| i.id == id) {
+            self.complete.push(Complete::of(i));
+        }
+    }
+
+    /// Where a group's download stands (#766): running, or waiting in a running queue for its
+    /// turn (or for the download limits' window), the group isn't done; stopped, or waiting in
+    /// a queue that doesn't run, it is left out of the summary.
+    fn group_standing(
+        &self,
+        i: &Item,
+        running: &std::collections::HashSet<u64>,
+    ) -> crate::finish::Standing {
+        use crate::finish::Standing;
+        if i.live.is_some() || i.status == Status::Downloading || self.quota.held.contains(&i.id) {
+            return Standing::Pending;
+        }
+        match i.status {
+            Status::Complete => Standing::Finished,
+            Status::Error => Standing::Failed,
+            Status::Queued | Status::Stopped
+                if running.contains(&i.id) && !self.stopped_by_hand.contains(&i.id) =>
+            {
+                Standing::Pending
+            }
+            _ => Standing::Idle,
+        }
+    }
+
+    /// Groups whose downloads are all done (#766): one summary each, or Download complete when
+    /// only one of them finished; nothing while Download complete is snoozed or turned off. The
+    /// downloads summed up leave their group.
+    fn settle_groups(&mut self) {
+        if self.groups_open.is_empty() {
+            return;
+        }
+        let running: std::collections::HashSet<u64> = self
+            .queues
+            .iter()
+            .filter(|q| q.running)
+            .flat_map(|q| q.items.iter().copied())
+            .collect();
+        let members: Vec<(u64, u64, crate::finish::Standing)> = self
+            .items
+            .iter()
+            .filter_map(|i| {
+                let g = i.group.filter(|g| self.groups_open.contains(g))?;
+                Some((i.id, g, self.group_standing(i, &running)))
+            })
+            .collect();
+        for done in crate::finish::settle(&mut self.groups_open, members) {
+            for id in done.finished.iter().chain(&done.failed) {
+                if let Some(i) = self.item(*id) {
+                    i.group = None;
+                }
+            }
+            self.dirty = true;
+            tracing::info!(
+                "group {} done: {} finished, {} failed",
+                done.group,
+                done.finished.len(),
+                done.failed.len()
+            );
+            if self.snooze.active(unix_now()) {
+                self.snoozed_finished += done.finished.len() as u64;
+                continue;
+            }
+            if !self.settings.show_complete {
+                continue;
+            }
+            match crate::finish::shown(done) {
+                crate::finish::Shown::One(id) => self.complete_window(id),
+                crate::finish::Shown::Summary(s) => {
+                    self.summaries.push(dialogs::GroupDone::new(
+                        s.group,
+                        &s.finished,
+                        &s.failed,
+                        &self.items,
+                    ));
+                }
+            }
+        }
+    }
+
+    /// Download complete snoozed for a while (#741): its setting stays as it is.
+    fn start_snooze(&mut self, choice: crate::finish::SnoozeFor) {
+        self.snooze.start(choice, unix_now());
+        self.settings.complete_snoozed_until = self.snooze.saved();
+        self.snoozed_finished = 0;
+        self.dirty = true;
+        tracing::info!("download complete snoozed: {choice:?}");
+    }
+
+    /// Options, Downloads, Resume now: Download complete shows again.
+    fn resume_snooze(&mut self) {
+        self.snooze.resume();
+        self.settings.complete_snoozed_until = None;
+        self.snoozed_finished = 0;
+        self.dirty = true;
+        tracing::info!("download complete: the snooze ended by hand");
+    }
+
+    /// A group's summary's Show in list: the main window shown, its downloads selected (in All
+    /// Downloads when the view shown hides one), the first scrolled to.
+    fn show_in_list(&mut self, ids: &[u64], ctx: &egui::Context) {
+        self.show_window(ctx);
+        let ids: Vec<u64> = ids
+            .iter()
+            .copied()
+            .filter(|id| self.items.iter().any(|i| i.id == *id))
+            .collect();
+        let Some(&first) = ids.first() else { return };
+        let shown = self.shown_ids();
+        if ids.iter().any(|id| !shown.contains(id)) {
+            self.view = View::All;
+        }
+        self.selection.set_many(&ids);
+        self.list.scroll_to = self.shown_ids().iter().position(|x| *x == first);
     }
 
     /// A list that can't be saved says so, once for each reason (not every second); it was
@@ -8461,16 +8630,8 @@ impl App {
         };
         self.selection.set(id);
         if i.status == Status::Complete {
-            self.complete.push(Complete {
-                id,
-                url: i.url.to_string(),
-                path: i.dest.clone(),
-                size: i.size.unwrap_or(i.downloaded),
-                dont_show: false,
-                notices: i.notices.clone(),
-                seen: false,
-                opening: None,
-            });
+            // Asked for: shown even while Download complete is snoozed.
+            self.complete.push(Complete::of(i));
         } else if i.live.is_none() {
             self.start(id, true);
         } else if !self.progress.iter().any(|p| p.id == id) {
@@ -8935,6 +9096,7 @@ impl App {
                 added.push(id);
             }
         }
+        self.group(&added);
         self.dirty = true;
         // Start runs the main queue (its files at once, as Options → Queue sets).
         if start && !added.is_empty() {
@@ -9778,7 +9940,16 @@ impl App {
                 }
             }
         }
+        // Options, Downloads, Resume now (#741), clicked in the frame before.
+        if self
+            .options
+            .as_mut()
+            .is_some_and(|d| std::mem::take(&mut d.resume_snooze))
+        {
+            self.resume_snooze();
+        }
         if let Some(d) = &mut self.options {
+            d.snoozed_until = self.snooze.until(unix_now());
             match d.show(ctx, &self.downloads) {
                 Outcome::Open => {}
                 Outcome::Closed => {
@@ -10040,11 +10211,39 @@ impl App {
                         self.settings.show_complete = false;
                         self.dirty = true;
                     }
+                    if let Some(choice) = c.snooze {
+                        self.start_snooze(choice);
+                    }
                 }
             }
         }
         self.complete = keep;
+        // Groups' summaries (#766).
+        let mut keep = Vec::new();
+        for mut g in std::mem::take(&mut self.summaries) {
+            let outcome = g.show(ctx);
+            if matches!(outcome, Outcome::Open) {
+                keep.push(g);
+                continue;
+            }
+            if g.dont_show {
+                self.settings.show_complete = false;
+                self.dirty = true;
+            }
+            if let Some(choice) = g.snooze {
+                self.start_snooze(choice);
+            }
+            if let Outcome::Done(dialogs::GroupAction::ShowInList) = outcome {
+                self.show_in_list(&g.ids, ctx);
+            }
+        }
+        self.summaries = keep;
     }
+}
+
+/// The wall clock, in unix seconds (a snooze's end, #741).
+fn unix_now() -> i64 {
+    chrono::Utc::now().timestamp()
 }
 
 /// The finished downloads whose progress windows close at `now` (then Download complete opens):

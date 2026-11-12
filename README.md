@@ -112,6 +112,14 @@ one:
 > Windows may say *"Windows protected your PC"* the first time, because this early version isn't
 > code-signed yet. Click **More info**, then **Run anyway**.
 
+Or with [WinGet](https://learn.microsoft.com/windows/package-manager/winget/), Windows' package
+manager: in a terminal, the first line installs MDM and the second updates it.
+
+```
+winget install AhmedNefzaoui.MisterDownloadManager
+winget upgrade AhmedNefzaoui.MisterDownloadManager
+```
+
 ### On Linux
 
 MDM runs on Linux too, tested on Ubuntu 24.04, Debian 12 and Fedora with GNOME, KDE Plasma, Xfce

@@ -1862,9 +1862,26 @@ pub struct Complete {
     /// Open was pressed: the file is looked for and handed to its program off the window's
     /// thread (#743); the box closes when it opened, and stays (for Open folder) when it didn't.
     pub opening: Option<crate::launch::Asked<PathBuf, bool>>,
+    /// Snooze picked a time (#741): the window closes, and no other opens until then.
+    pub snooze: Option<crate::finish::SnoozeFor>,
 }
 
 impl Complete {
+    /// Download complete for this finished download.
+    pub fn of(i: &model::Item) -> Self {
+        Complete {
+            id: i.id,
+            url: i.url.to_string(),
+            path: i.dest.clone(),
+            size: i.size.unwrap_or(i.downloaded),
+            dont_show: false,
+            notices: i.notices.clone(),
+            seen: false,
+            opening: None,
+            snooze: None,
+        }
+    }
+
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<()> {
         let id = format!("complete-{}", self.id);
         self.seen |= notice_seen(ctx, &id);
@@ -1973,13 +1990,11 @@ impl Complete {
                 let folder = btn(ui, folder_at, "Open folder", ButtonKind::Normal);
                 // i18n: verb: closes this window
                 let close = btn(ui, close_at, "Close", ButtonKind::Normal);
-                winui::checkbox(
-                    ui,
-                    o + vec2(24.0, 191.0),
-                    &mut self.dont_show,
-                    "Don't show this dialog again",
-                    true,
-                );
+                // Windows: the drag handle at the trailing edge, after the snooze.
+                let room = if cfg!(windows) { 406.0 } else { 444.0 };
+                if let Some(s) = complete_footer(ui, o, 191.0, &mut self.dont_show, room) {
+                    self.snooze = Some(s);
+                }
 
                 // Drag handle: white box with a 1 px #828790 border; drag it to drop the file into
                 // Explorer, a mail or a chat (IDM 5.05). Windows only: dragging a file out to
@@ -2047,7 +2062,7 @@ impl Complete {
                     );
                     self.opening = Some(opening);
                 }
-                if opened == Some(true) {
+                if opened == Some(true) || self.snooze.is_some() {
                     Outcome::Done(())
                 } else if with.clicked() {
                     open_with(&self.path);
@@ -2063,6 +2078,293 @@ impl Complete {
             },
         )
     }
+}
+
+/// The last row of Download complete and of a group's summary (#766, #741): "Don't show this
+/// dialog again" (the setting), and Snooze after it, a menu of how long no such window shows.
+/// `y`: the checkbox's top; `room`: where the row ends (English x). Returns the time picked.
+fn complete_footer(
+    ui: &mut Ui,
+    o: Pos2,
+    y: f32,
+    dont_show: &mut bool,
+    room: f32,
+) -> Option<crate::finish::SnoozeFor> {
+    let caption = "Don't show this dialog again";
+    winui::checkbox(ui, o + vec2(24.0, y), dont_show, caption, true);
+    let p = ui.painter().clone();
+    // i18n: button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
+    let label = crate::i18n::mark("Snooze");
+    let w = winui::menu_button_width(&p, label, 80.0, 160.0);
+    // After the checkbox's caption; at the row's end when that is short of room.
+    let x = (winui::checkbox_caption_end(&p, 24.0, caption) + 12.0).min(room - w);
+    let picked = winui::menu_button(
+        ui,
+        r(o, x, y - 4.0, w, 21.0),
+        label,
+        &crate::finish::SnoozeFor::LABELS,
+        "complete-snooze",
+    );
+    picked.map(|i| crate::finish::SnoozeFor::ALL[i])
+}
+
+// ---- Downloads complete: a group's summary (client 455 × 169 and up, #766) -----------------
+
+/// One failed download of a group, as its summary lists it.
+pub struct FailedOne {
+    pub name: String,
+    pub error: String,
+}
+
+/// What a group's summary asks of the app.
+pub enum GroupAction {
+    /// Its downloads selected in the list, the main window shown.
+    ShowInList,
+    Close,
+}
+
+/// Downloads added together (a playlist, a batch, Link grabber's links) once all are done: how
+/// many finished, how many failed (listed), with Open folder and Show in list, in place of a
+/// Download complete window each (#766).
+pub struct GroupDone {
+    pub group: u64,
+    /// Every download it sums up (Show in list selects them).
+    pub ids: Vec<u64>,
+    pub finished: usize,
+    pub failed: Vec<FailedOne>,
+    /// Where the finished files are (the first one's folder), and a file there to select in it.
+    pub folder: PathBuf,
+    pub file: PathBuf,
+    /// The finished files' size together.
+    pub size: u64,
+    pub dont_show: bool,
+    pub seen: bool,
+    pub snooze: Option<crate::finish::SnoozeFor>,
+}
+
+/// How many failed downloads a summary names; "and N more" says the rest.
+const FAILED_SHOWN: usize = 3;
+
+impl GroupDone {
+    /// The summary of `finished` and `failed` (downloads of `items`).
+    pub fn new(group: u64, finished: &[u64], failed: &[u64], items: &[model::Item]) -> Self {
+        let find = |id: &u64| items.iter().find(|i| i.id == *id);
+        let done: Vec<&model::Item> = finished.iter().filter_map(find).collect();
+        let bad: Vec<&model::Item> = failed.iter().filter_map(find).collect();
+        let file = done
+            .first()
+            .or(bad.first())
+            .map(|i| i.dest.clone())
+            .unwrap_or_default();
+        let folder = file.parent().map(Path::to_owned).unwrap_or_default();
+        GroupDone {
+            group,
+            ids: done.iter().chain(bad.iter()).map(|i| i.id).collect(),
+            finished: done.len(),
+            failed: bad
+                .iter()
+                .map(|i| FailedOne {
+                    name: i.file_name.clone(),
+                    error: i.error.clone().unwrap_or_default(),
+                })
+                .collect(),
+            folder,
+            file,
+            size: done.iter().map(|i| i.size.unwrap_or(i.downloaded)).sum(),
+            dont_show: false,
+            seen: false,
+            snooze: None,
+        }
+    }
+
+    /// The headline's two halves: "12 downloads finished", and "1 failed" when some did.
+    pub fn counts(&self) -> (String, Option<String>) {
+        (
+            finished_count(self.finished as u64),
+            (!self.failed.is_empty()).then(|| {
+                // i18n: the summary of downloads added together; after "12 downloads finished": {n} of them failed
+                crate::i18n::tn(self.failed.len() as u64, "{n} failed", "{n} failed")
+            }),
+        )
+    }
+
+    /// The failed list's rows: the downloads named, and "and N more" when there are others.
+    fn failed_rows(&self) -> usize {
+        match self.failed.len() {
+            0 => 0,
+            n if n <= FAILED_SHOWN => n,
+            _ => FAILED_SHOWN + 1,
+        }
+    }
+
+    /// Its client size: taller by the failed list.
+    pub fn client(&self) -> [f32; 2] {
+        let rows = self.failed_rows();
+        let extra = if rows == 0 {
+            0.0
+        } else {
+            22.0 + 17.0 * rows as f32
+        };
+        [455.0, 169.0 + extra]
+    }
+
+    pub fn show(&mut self, ctx: &egui::Context) -> Outcome<GroupAction> {
+        let id = format!("group-done-{}", self.group);
+        self.seen |= notice_seen(ctx, &id);
+        let client = self.client();
+        // The buttons' row: under the folder, or under the failed list.
+        let buttons_y = client[1] - 58.0;
+        notice(
+            ctx,
+            &id,
+            // i18n: title of the window that sums up downloads added together (a playlist, a batch) once all are done
+            "Downloads complete",
+            client,
+            true,
+            winui::BG(),
+            !self.seen,
+            |ui, o| {
+                let p = ui.painter().clone();
+                crate::fileicons::paint_at(
+                    ui,
+                    &p,
+                    crate::fileicons::Kind::FolderOpen,
+                    o + vec2(10.0, 11.0),
+                    32.0,
+                );
+                // "12 downloads finished · 1 failed", the failures in the error colour.
+                let (finished, failed) = self.counts();
+                let drawn = winui::text(&p, o.x + 51.0, o.y + 21.0, &finished, winui::TEXT());
+                if let Some(failed) = failed {
+                    let after = 51.0 + drawn.width() + 6.0;
+                    let dot = winui::separator_dot(&p, o.x + after, o.y + 21.0, winui::MUTED());
+                    winui::text(
+                        &p,
+                        o.x + after + dot.width() + 5.0,
+                        o.y + 21.0,
+                        &failed,
+                        winui::ERROR(),
+                    );
+                }
+                if self.finished > 0 {
+                    let line = crate::i18n::fmt(
+                        // i18n: under "12 downloads finished": {size} the finished files' size together, like "1.25 GB"
+                        crate::i18n::t("{size} in all"),
+                        &[("size", &crate::i18n::ltr(&dialog_size(self.size)))],
+                    );
+                    winui::text(&p, o.x + 51.0, o.y + 34.0, &line, winui::TEXT());
+                }
+                winui::text(
+                    &p,
+                    o.x + 11.0,
+                    o.y + 72.0,
+                    // i18n: label over the folder the downloads were saved in
+                    crate::i18n::t("Saved in"),
+                    winui::TEXT(),
+                );
+                winui::readonly_field(
+                    ui,
+                    r(o, 11.0, 78.0, 434.0, 23.0),
+                    &display_path(&self.folder),
+                    winui::BG(),
+                    true,
+                    "group-done-folder",
+                );
+                if !self.failed.is_empty() {
+                    winui::text(
+                        &p,
+                        o.x + 11.0,
+                        o.y + 120.0,
+                        // i18n: label over the list of the downloads of the group that failed
+                        crate::i18n::t("Failed:"),
+                        winui::TEXT(),
+                    );
+                    for (k, f) in self.failed.iter().take(FAILED_SHOWN).enumerate() {
+                        let line = if f.error.is_empty() {
+                            crate::i18n::isolate(&f.name)
+                        } else {
+                            crate::i18n::fmt(
+                                // i18n: one failed download in the summary of a group of downloads: {name} its file name, {error} why it failed
+                                crate::i18n::t("{name}: {error}"),
+                                &[
+                                    ("name", &crate::i18n::isolate(&f.name)),
+                                    ("error", &f.error),
+                                ],
+                            )
+                        };
+                        winui::fit(
+                            ui,
+                            &p,
+                            o.x + 24.0,
+                            o.y + 137.0 + 17.0 * k as f32,
+                            &line,
+                            winui::ERROR(),
+                            o.x + 444.0,
+                            ("group-failed", k),
+                        );
+                    }
+                    if self.failed.len() > FAILED_SHOWN {
+                        // i18n: under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
+                        let more = crate::i18n::tn(
+                            (self.failed.len() - FAILED_SHOWN) as u64,
+                            "and {n} more",
+                            "and {n} more",
+                        );
+                        winui::text(
+                            &p,
+                            o.x + 24.0,
+                            o.y + 137.0 + 17.0 * FAILED_SHOWN as f32,
+                            &more,
+                            winui::MUTED(),
+                        );
+                    }
+                }
+                let btn = |ui: &mut Ui, (x, w): (f32, f32), label: &str, kind| {
+                    winui::button(ui, r(o, x, buttons_y, w, 21.0), label, kind, false, None)
+                };
+                // As wide as their labels in this language, Close last at the window's edge.
+                let [folder_at, list_at, close_at] = winui::button_row_from_left(
+                    &p,
+                    &[
+                        ("Open folder", 12.0, 90.0),
+                        ("Show in list", 115.0, 90.0),
+                        ("Close", 354.0, 90.0),
+                    ],
+                    13.0,
+                    444.0,
+                    200.0,
+                )[..] else {
+                    unreachable!("three buttons")
+                };
+                let folder = btn(ui, folder_at, "Open folder", ButtonKind::Default);
+                // i18n: button: shows these downloads in MDM's list, selected
+                let list = btn(ui, list_at, "Show in list", ButtonKind::Normal);
+                // i18n: verb: closes this window
+                let close = btn(ui, close_at, "Close", ButtonKind::Normal);
+                let footer = complete_footer(ui, o, buttons_y + 34.0, &mut self.dont_show, 444.0);
+                if footer.is_some() {
+                    self.snooze = footer;
+                }
+                if folder.clicked() || winui::enter_pressed(ui) {
+                    show_in_folder(&self.file);
+                    Outcome::Done(GroupAction::Close)
+                } else if list.clicked() {
+                    Outcome::Done(GroupAction::ShowInList)
+                } else if close.clicked() || self.snooze.is_some() || winui::escape_pressed(ui) {
+                    Outcome::Done(GroupAction::Close)
+                } else {
+                    Outcome::Open
+                }
+            },
+        )
+    }
+}
+
+/// "12 downloads finished": a group's summary's headline, and the tray icon's tip while
+/// Download complete is snoozed (#766, #741).
+pub fn finished_count(n: u64) -> String {
+    // i18n: the summary of downloads added together (the Downloads complete window; the tip of the tray icon): {n} of them finished
+    crate::i18n::tn(n, "{n} download finished", "{n} downloads finished")
 }
 
 // ---- Speed Limiter settings (client 453 × 145, light) --------------------------------------

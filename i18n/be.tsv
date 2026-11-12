@@ -45,6 +45,11 @@
 #, machine
 @plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	Чакае яшчэ {n} спампоўка. Адмяніць яе таксама?|Чакаюць яшчэ {n} спампоўкі. Адмяніць іх таксама?|Чакаюць яшчэ {n} спамповак. Адмяніць іх таксама?
 #. count in a dialog box
+#. under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} more|and {n} more	і яшчэ {n}|і яшчэ {n}|і яшчэ {n}
+#. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -66,6 +71,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} download|{n} downloads	{n} спампоўка|{n} спампоўкі|{n} спамповак
+#. count in a dialog box
+#. the summary of downloads added together (the Downloads complete window; the tip of the tray icon): {n} of them finished
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download finished|{n} downloads finished	{n} спампоўка завершана|{n} спампоўкі завершаны|{n} спамповак завершана
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -75,6 +85,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	Прапушчаны {n} запіс (спасылка або імя, якое вядзе за межы тэчкі)|Прапушчаны {n} запісы (спасылкі або імёны, якія вядуць за межы тэчкі)|Прапушчаны {n} запісаў (спасылкі або імёны, якія вядуць за межы тэчкі)
+#. count in a dialog box
+#. the summary of downloads added together; after "12 downloads finished": {n} of them failed
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} failed|{n} failed	{n} не ўдалося|{n} не ўдалося|{n} не ўдалося
 #. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
@@ -1270,6 +1285,15 @@
 #, machine
 	Download complete	Загрузка завершана
 #. text in the Options window
+#. Options, Downloads, under "Show download complete dialog": snoozed with "Until MDM restarts"
+#, machine
+	Download complete is snoozed until MDM restarts	Акно «Спампоўванне завершана» адкладзена да перазапуску MDM
+#. text in the Options window
+#. Options, Downloads, under "Show download complete dialog": {time} when the snooze ends, like "14:30"
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Download complete is snoozed until {time}	Акно «Спампоўванне завершана» адкладзена да {time}
+#. text in the Options window
 #, machine
 	Download failed	Загрузка не атрымалася
 #. window title in a dialog box
@@ -1382,6 +1406,10 @@
 #. tab title: download settings
 #, machine
 	Downloads	Спампоўкі
+#. window title in a dialog box
+#. title of the window that sums up downloads added together (a playlist, a batch) once all are done
+#, machine
+	Downloads complete	Спампоўванне завершана
 #. text in the tray icon's menu
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #, machine
@@ -1591,6 +1619,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Extracting...	Выманне...
+#. text in a dialog box
+#. label over the list of the downloads of the group that failed
+#, machine
+	Failed:	Не ўдалося:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1729,6 +1761,18 @@
 #. text in categories.rs
 #, machine
 	Folder:	Папка:
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 1 hour	На 1 гадзіну
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 30 minutes	На 30 хвілін
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window for this long
+#, machine
+	For 8 hours	На 8 гадзін
 #. text in the Batch download window
 #. {address} = an example web address with a * in the file name
 #, machine
@@ -3552,6 +3596,10 @@
 #. label: whether the server lets a stopped download continue (Yes / No)
 #, machine
 	Resume capability	Магчымасць аднаўлення
+#. text in the Options window
+#. link after "Download complete is snoozed until 14:30": ends the snooze now
+#, machine
+	Resume now	Скасаваць адтэрміноўку
 #. message or event log entry in the main window
 #. event log entry, past tense: the download resumed (just now)
 #, machine
@@ -3666,7 +3714,8 @@
 #. status shown in green beside the Rename box once the new name is saved
 #, machine
 	Saved	Захавана
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
+#. label over the folder the downloads were saved in
 #. label before the folder the torrent is saved in
 #, machine
 	Saved in	Захавана ў
@@ -3857,6 +3906,10 @@
 #. checkbox in the Options window; checkbox in a download's progress window
 #, machine
 	Show download complete dialog	Паказаць дыялогавае акно аб завяршэнні спампоўкі
+#. button in a dialog box
+#. button: shows these downloads in MDM's list, selected
+#, machine
+	Show in list	Паказаць у спісе
 #. text in extension.rs
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
@@ -3965,6 +4018,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Slovenia	Славенія
+#. text in a dialog box
+#. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
+#, machine
+	Snooze	Адкласці
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5012,6 +5069,10 @@
 #. where a download's server is: an address the location table doesn't place
 #, machine
 	unknown	невядома
+#. text in finish.rs
+#. Snooze menu of the Download complete window: show no Download complete window until MDM is started again
+#, machine
+	Until MDM restarts	Да перазапуску MDM
 #. button in the Options window
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
@@ -5564,6 +5625,11 @@
 #. {name} = a file name; {version} = a version number (keep the braces as they are)
 #, machine
 	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} занадта стары: MDM патрабуе {oldest} або навейшы
+#. text in a dialog box
+#. one failed download in the summary of a group of downloads: {name} its file name, {error} why it failed
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	{name}: {error}	{name}: {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -5651,6 +5717,11 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{size} free	{size} свабодна
+#. text in a dialog box
+#. under "12 downloads finished": {size} the finished files' size together, like "1.25 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} in all	Усяго {size}
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
