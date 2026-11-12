@@ -2,8 +2,9 @@
 
 What's done for version 0.5.2, what's being built, and what's planned. Each item links to its
 issue, where the details and the discussion are. Released changes are in
-[CHANGELOG.md](CHANGELOG.md). Ideas and bug reports are welcome in
-[Issues](https://github.com/anefzaoui/misterdownloadmanager/issues).
+[CHANGELOG.md](CHANGELOG.md). Bug reports are welcome in
+[Issues](https://github.com/anefzaoui/misterdownloadmanager/issues), ideas in
+[Discussions](https://github.com/anefzaoui/misterdownloadmanager/discussions/categories/ideas).
 
 ✅ done · 🔄 being built · 📋 planned · 🔍 looking into it
 
@@ -560,12 +561,20 @@ These ship in the next version.
   without D-Bus, a bus that hangs): the tray icon is set up beside the window, which carries on
   without it until the bus answers, and gets it then, however late
   ([#828](https://github.com/anefzaoui/misterdownloadmanager/issues/828))
+- ✅ Looking up a new video (put online in the last two days) no longer fails with "Permission
+  denied" in MDM's install folder: the helpers run in your temporary folder, or MDM's own if
+  that one can't be written ([#834](https://github.com/anefzaoui/misterdownloadmanager/issues/834))
 - ✅ A video a site sends through a program's address (`stream.php?file=…`,
   `remote_control.php`) is named by what it is: the page's title (or the address's `file=` name)
   and its real type, `Lecture.mp4`, not `stream.php`; the browser's media list shows that name
   and type, and the Download video window saves it instead of failing on its `.php`
   ([#695](https://github.com/anefzaoui/misterdownloadmanager/issues/695),
   [#800](https://github.com/anefzaoui/misterdownloadmanager/issues/800))
+- ✅ The issue tracker: an issue waiting for details from its reporter is labelled "needs info";
+  with no answer 14 days after our question it closes with a note, and the reporter's reply
+  opens it again
+- ✅ Ideas move to GitHub Discussions (Ideas), where they can be talked over and voted on; the
+  issue form for them points there
 - ✅ **Add batch download from clipboard** reads every link copied (a list, a forum post): http,
   ftp and magnet links, each once, ticked in Link grabber, started or queued together with one
   summary at the end; a copied address with a number in it (`…/ep01.mp4`) opens Batch download

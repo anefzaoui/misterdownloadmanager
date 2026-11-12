@@ -608,12 +608,12 @@ fn header_domain(host: &str) -> &str {
 }
 
 /// A cookie file's `text` ([`jar_cookies`], [`header_cookies`]) in a file only this user can
-/// read.
+/// read, in the helpers' temporary folder ([`crate::workdir::temp_dir`]).
 fn cookie_file(text: &str) -> std::io::Result<CookieFile> {
     use std::io::Write;
     use std::sync::atomic::{AtomicU64, Ordering};
     static N: AtomicU64 = AtomicU64::new(0);
-    let path = std::env::temp_dir().join(format!(
+    let path = crate::workdir::temp_dir().join(format!(
         "mdm-cookies-{}-{}.txt",
         std::process::id(),
         N.fetch_add(1, Ordering::Relaxed)
@@ -951,9 +951,11 @@ fn with_cookie_trouble(message: String, warnings: &[String], tail: &VecDeque<Str
 }
 
 /// Start `cmd` supervised: no window, in the job, stdout piped for the caller, stderr kept as a
-/// tail, with a PATH it can walk ([`with_usable_path`], #508).
+/// tail, with a PATH it can walk ([`with_usable_path`], #508), in a folder it can write that is
+/// also its TEMP ([`crate::workdir`], #834: never MDM's install folder).
 pub fn spawn(mut cmd: Command, name: &str) -> Result<Spawned, ProcError> {
     with_usable_path(&mut cmd);
+    crate::workdir::apply(&mut cmd, crate::workdir::folders());
     cmd.stdin(Stdio::null())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped());
@@ -1673,6 +1675,42 @@ foreach ($d in $env:PATH.Split(';')) {
         slow.args(["/C", "ping -n 30 127.0.0.1 >nul"]);
         let err = output(slow, "cmd", Duration::from_millis(500)).unwrap_err();
         assert!(matches!(err, ProcError::Timeout(_)), "{err}");
+    }
+
+    /// #834: a helper (here a stand-in that prints where it runs and its temporary folders)
+    /// starts in the helpers' folder, not in MDM's own working folder, and has it as TEMP, TMP
+    /// and TMPDIR.
+    #[test]
+    fn a_helper_runs_in_the_helpers_folder() {
+        let dir = crate::workdir::folders()
+            .dir
+            .clone()
+            .expect("a temporary folder that can be written");
+        #[cfg(windows)]
+        let cmd = {
+            let mut c = Command::new("cmd");
+            c.args(["/C", "cd& echo %TEMP%& echo %TMP%& echo %TMPDIR%"]);
+            c
+        };
+        #[cfg(unix)]
+        let cmd = {
+            let mut c = Command::new("/bin/sh");
+            c.args(["-c", r#"pwd -P; echo "$TEMP"; echo "$TMP"; echo "$TMPDIR""#]);
+            c
+        };
+        let out = output(cmd, "stand-in", Duration::from_secs(10)).unwrap();
+        let out = String::from_utf8_lossy(&out);
+        let lines: Vec<&str> = out.lines().map(str::trim).collect();
+        assert_eq!(lines.len(), 4, "{out}");
+        let real = |p: &Path| std::fs::canonicalize(p).unwrap();
+        assert_eq!(real(Path::new(lines[0])), real(&dir), "{out}");
+        assert_ne!(
+            real(Path::new(lines[0])),
+            real(&std::env::current_dir().unwrap())
+        );
+        for temp in &lines[1..] {
+            assert_eq!(Path::new(temp), dir, "{out}");
+        }
     }
 
     /// #61: killing a helper ends what it started too (yt-dlp.exe is a launcher whose child

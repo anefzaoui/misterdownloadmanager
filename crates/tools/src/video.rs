@@ -540,11 +540,12 @@ pub struct VideoJob {
     current: Arc<crate::streams::Current>,
 }
 
-/// A private file for the looked-up page (its links are signed; removed when the run ends).
+/// A private file for the looked-up page (its links are signed; removed when the run ends), in
+/// the helpers' temporary folder ([`crate::workdir::temp_dir`]).
 fn info_file() -> PathBuf {
     use std::sync::atomic::{AtomicU64, Ordering};
     static N: AtomicU64 = AtomicU64::new(0);
-    std::env::temp_dir().join(format!(
+    crate::workdir::temp_dir().join(format!(
         "mdm-video-{}-{}.json",
         std::process::id(),
         N.fetch_add(1, Ordering::Relaxed)
@@ -1587,7 +1588,8 @@ impl VideoJob {
     ) -> Result<VideoJob, ProcError> {
         proc::safe(url)?;
         let preloaded = preloaded.filter(|p| p.selector == selector);
-        let output = dir.join(format!("{}.%(ext)s", template_text(stem)));
+        // A full path: yt-dlp runs in a folder of its own (#834).
+        let output = crate::workdir::absolute(dir).join(format!("{}.%(ext)s", template_text(stem)));
         // An MP3, Opus or FLAC choice (#32, #70): the best sound, converted by ffmpeg.
         let convert = crate::resolve::audio_conversion(selector);
         let format = if convert.is_some() {
