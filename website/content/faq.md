@@ -17,6 +17,12 @@ No. MDM is an independent program written from scratch in Rust, with no connecti
 
 The layout is familiar on purpose: the toolbar, the categories, the download list, the progress window with every connection, queues and the scheduler. The differences: MDM is free and open source, downloads BitTorrent and magnet links in the same list, finished faster in [our benchmark](/benchmark.html), speaks 86 languages and has builds for Linux and macOS. IDM is the more mature product, refined over many years. See the full [comparison](/idm-alternative.html).
 
+### Why does MDM show a larger memory figure than IDM? {#memory-vs-idm}
+
+Windows reports two different memory numbers. Memory in use (Task Manager's "Memory" column, the private working set) is what a program is holding in RAM right now. Committed memory (Process Explorer's "Private Bytes", Resource Monitor's "Commit") is memory Windows has set aside for the program; most of it can be paged out, so it doesn't mean the program is using that much RAM.
+
+On one test machine (Windows 11 build 26300, MDM 0.5.2, IDM 6.43.18.2, release builds), memory in use was 9–10 MB for MDM and 8–10 MB for IDM in the tray, and 9–11 MB against about 8 MB with the window open and settled. Committed memory was 140–170 MB for MDM and about 20 MB for IDM. While MDM is busy, its memory in use can rise to tens of MB and settles back down, and in the tray it gives back the memory it isn't using.
+
 ### Is it safe? Does it contain adware or spyware? {#is-it-safe}
 
 MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built from that code by GitHub's servers, where the build can be inspected. The helper programs it can fetch for videos are verified before they run: yt-dlp against its developers' signing key, ffmpeg against its published checksums. Download MDM only from [this site](/download.html) or the project's GitHub releases.
