@@ -454,6 +454,7 @@ impl Default for Progress {
             sub_problems: Vec::new(),
             engine: None,
             helper: None,
+            merging: None,
         }
     }
 }
