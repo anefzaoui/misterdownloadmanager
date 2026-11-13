@@ -557,6 +557,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The progress window's connections table while a video downloads: MDM's own connections (as
+  many as Options → Connection gives), and yt-dlp's one connection while it looks the page up or
+  downloads a live stream itself, instead of an empty table
+  ([#793](https://github.com/anefzaoui/misterdownloadmanager/issues/793))
 - ✅ Windows: the file dragged out of **Download complete** is moved or copied as Explorer does
   it (moved on the same drive or with Shift, copied to another drive or with Ctrl), no longer
   always copied, and its download follows a moved file to its new place; where MDM can't learn
