@@ -563,7 +563,19 @@ These ship in the next version.
   Direct3D failed before moves to WARP at its next start, OpenGL draws when WARP can't, OpenGL
   chosen in **View → Draw with** stays, and the menu says what draws and why
   ([#847](https://github.com/anefzaoui/misterdownloadmanager/issues/847))
-
+- ✅ macOS: .torrent files open in MDM from Finder (double-click, Open With, the Dock's icon) and
+  magnet links from the browser, and Torrent settings can make MDM their default app there
+  ([#698](https://github.com/anefzaoui/misterdownloadmanager/issues/698))
+- ✅ Windows: a menu closes at once when you click outside MDM, instead of 0.4 seconds later
+  ([#859](https://github.com/anefzaoui/misterdownloadmanager/issues/859))
+- ✅ No "The window stopped responding" report in the first minute after the computer wakes from
+  sleep, while its disk, network and screen come back: such a stall is logged, and reported only
+  if it lasts longer; every freeze report says what the window was doing when it stopped
+  ([#574](https://github.com/anefzaoui/misterdownloadmanager/issues/574),
+  [#613](https://github.com/anefzaoui/misterdownloadmanager/issues/613))
+- ✅ Windows 10 with a style theme (Metro, Adwaita, Aero…): no black band above the main window's
+  title bar, and its menus and clicks land where they show; framed as on Windows 11, as the
+  progress window already was ([#802](https://github.com/anefzaoui/misterdownloadmanager/issues/802))
 - ✅ A stream the browser played (an .m3u8) is looked up and downloaded with the Referer, Origin
   and cookies the browser sent with it, for its playlists and every piece too: a site's video
   server that serves its own pages' players only answered 403
@@ -936,9 +948,11 @@ These ship in a later version, when they're ready.
 - 🔍 A site's bot check refusing MDM's request (testfile.org, a Cloudflare challenge): the
   message now says so ([#376](https://github.com/anefzaoui/misterdownloadmanager/issues/376)); a
   way to hand the download back to the browser is still to decide
-- 🔍 A 10-second freeze of the window after a night left open
-  ([#304](https://github.com/anefzaoui/misterdownloadmanager/issues/304)): most likely the
-  computer waking from sleep; waiting on the reporter's full report
+- 🔍 The window not answering for up to half a minute just after the computer wakes, while MDM
+  waits in the notification area ([#574](https://github.com/anefzaoui/misterdownloadmanager/issues/574),
+  [#613](https://github.com/anefzaoui/misterdownloadmanager/issues/613),
+  [#304](https://github.com/anefzaoui/misterdownloadmanager/issues/304)): no longer reported as
+  a freeze; what it waits on is to be seen in a test build's log
 
 ## Planned
 
