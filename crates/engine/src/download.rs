@@ -730,6 +730,9 @@ pub enum State {
     Downloading,
     /// Checking the finished file against its checksum.
     Verifying,
+    /// A video's streams joined into its file (ffmpeg, run by yt-dlp; #736): the app's view of a
+    /// video download, never an engine download's.
+    Merging,
     Completing,
     Done,
     Failed,
@@ -790,6 +793,9 @@ pub struct Snapshot {
     pub at_service: Option<(String, Option<f32>)>,
     /// Where its server is, as its connections saw it (#140).
     pub server: Option<crate::Server>,
+    /// How far `Verifying` (the bytes checked) or `Merging` has come, 0 to 1, when that is
+    /// known (#736).
+    pub finishing: Option<f64>,
 }
 
 /// One entry of a download's event log; `seq` counts up within one `Download`.
@@ -1189,6 +1195,7 @@ impl Download {
                 events: Vec::new(),
                 server: None,
                 at_service: None,
+                finishing: None,
             }),
             seen: Default::default(),
             planner: Mutex::new(None),
@@ -1196,6 +1203,7 @@ impl Download {
             best_speed: Default::default(),
             disk_held: Default::default(),
             held: Default::default(),
+            checked: Default::default(),
         });
         let task = tokio::spawn(f(shared.clone(), cancel.clone()));
         Download {
@@ -1284,6 +1292,8 @@ struct Shared {
     /// Bytes received and claimed but not yet written, in the connections' buffers: shown as
     /// downloaded (they are), but never saved as such.
     held: std::sync::atomic::AtomicU64,
+    /// While `Verifying`: the bytes of the finished file checked so far (#736).
+    checked: Arc<std::sync::atomic::AtomicU64>,
 }
 
 impl Shared {
@@ -1301,6 +1311,12 @@ impl Shared {
                     end: g.end,
                 })
                 .collect();
+        }
+        if s.state == State::Verifying
+            && let Some(size) = s.size.filter(|n| *n > 0)
+        {
+            let checked = self.checked.load(Ordering::Relaxed);
+            s.finishing = Some((checked as f64 / size as f64).min(1.0));
         }
         s
     }
@@ -2527,9 +2543,13 @@ async fn verify_part(
     let _slot = SLOTS.acquire().await.map_err(|_| Error::Cancelled)?;
     let part = naming::part_path(dest);
     let algo = hash.algo;
-    let ok = tokio::task::spawn_blocking(move || crate::verify::matches(&part, &hash))
-        .await
-        .expect("verifier panicked")?;
+    // Counted as it reads (#736): the progress window and the list show how far it is.
+    let checked = shared.checked.clone();
+    checked.store(0, Ordering::Relaxed);
+    let ok =
+        tokio::task::spawn_blocking(move || crate::verify::matches_counted(&part, &hash, &checked))
+            .await
+            .expect("verifier panicked")?;
     if ok {
         shared.event(format!("Checksum verified ({})", algo.name()));
         Ok(())

@@ -176,9 +176,7 @@ pub async fn install_latest(
             "build for this system: install gallery-dl with the system's packages (Homebrew, pip) and choose it in Helpers".into(),
         ));
     };
-    let client = mdm_engine::net::client_builder(&net.dns, &net.route, RELEASES)?
-        .user_agent(crate::USER_AGENT)
-        .build()?;
+    let client = crate::client(net, RELEASES)?;
     let body = crate::get_bytes(&client, RELEASES).await?;
     let release: Release =
         serde_json::from_slice(&body).map_err(|e| Error::BadRelease(e.to_string()))?;
@@ -456,6 +454,7 @@ impl Default for Progress {
             sub_problems: Vec::new(),
             engine: None,
             helper: None,
+            merging: None,
         }
     }
 }
