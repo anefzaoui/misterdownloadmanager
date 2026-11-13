@@ -1947,7 +1947,7 @@ pub mod open_events {
             NSNotificationCenter::defaultCenter().addObserver_selector_name_object(
                 &this,
                 sel!(willFinishLaunching:),
-                Some(&name),
+                Some(&*name),
                 None,
             );
         }
