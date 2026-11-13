@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	无法写入其文件: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	其画面和声音无法合并为一个文件 ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	其画面和声音无法合并为一个文件 ({error})。已下载的内容保留在文件夹中，以便“恢复”再次合并 ({files})；使用“同时从磁盘删除文件”删除下载会将其移除
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	其发布信息与预期不符: {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	美国本土外小岛屿
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	未知
 #. text in a dialog box; text in a download's progress window; text in whereis.rs

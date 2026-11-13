@@ -553,6 +553,33 @@ pub struct GallerySpec {
     pub limit: Option<u64>,
 }
 
+/// Why a video failed when joining its picture and sound did (ffmpeg's `error`, in English),
+/// and what became of what was downloaded: `kept` beside its file, for Resume to join again
+/// without downloading it, until the download is deleted with its files.
+fn merge_failure(error: &str, kept: &[PathBuf]) -> String {
+    let error = crate::i18n::ltr(error);
+    if kept.is_empty() {
+        return crate::i18n::fmt(
+            // i18n: why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+            crate::i18n::t("its picture and sound couldn't be joined into one file ({error})"),
+            &[("error", &error)],
+        );
+    }
+    let files = kept
+        .iter()
+        .filter_map(|f| f.file_name())
+        .map(|n| crate::i18n::isolate(&n.to_string_lossy()))
+        .collect::<Vec<_>>()
+        .join(", ");
+    crate::i18n::fmt(
+        // i18n: why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+        crate::i18n::t(
+            "its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with \"Also delete the file from disk\" removes it",
+        ),
+        &[("error", &error), ("files", &files)],
+    )
+}
+
 /// A helper's progress (yt-dlp's, gallery-dl's) as the engine's view: one segment when its size
 /// is known, one connection (theirs: neither opens more), its notes as events. A video whose
 /// streams MDM's engine downloads (#769) shows the engine's own: the streams' segments one after
@@ -565,7 +592,14 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
         V::Running if p.merging.is_some() => (State::Merging, None, None),
         V::Running => (State::Downloading, None, None),
         V::Done(f) => (State::Done, Some(f), None),
-        V::Failed(e) => (State::Failed, None, Some(e)),
+        V::Failed(e) => (
+            State::Failed,
+            None,
+            Some(match &p.merge_failed {
+                Some(kept) => merge_failure(&e, kept),
+                None => e,
+            }),
+        ),
         V::Stopped => (State::Cancelled, None, None),
     };
     let size = p.total;
@@ -1453,6 +1487,7 @@ mod file_address_tests {
             engine: None,
             helper: None,
             merging: None,
+            merge_failed: None,
         };
         // Looking the page up: no stream yet.
         assert_eq!(tool_snapshot(p.clone(), &page).url, page);
@@ -1545,6 +1580,38 @@ mod tests {
             subs: Default::default(),
         });
         it
+    }
+
+    /// Joining a video's streams failed: why, and that what was downloaded stays for Resume,
+    /// by name; without anything kept, only why.
+    #[test]
+    fn a_failed_merge_says_what_stays() {
+        let url = Url::parse("https://example.org/a.mp4").unwrap();
+        let mut p = mdm_tools::video::Progress {
+            state: mdm_tools::video::State::Failed("Postprocessing: Conversion failed!".into()),
+            merge_failed: Some(vec![
+                PathBuf::from("/v/Talk.f640.mp4"),
+                PathBuf::from("/v/Talk.faud-English.mp4"),
+            ]),
+            ..Default::default()
+        };
+        let e = super::tool_snapshot(p.clone(), &url).error.unwrap();
+        assert!(e.contains("Conversion failed!"), "{e}");
+        assert!(e.contains("Resume"), "{e}");
+        assert!(
+            e.contains("Talk.f640.mp4") && e.contains("Talk.faud-English.mp4"),
+            "{e}"
+        );
+        p.merge_failed = Some(Vec::new());
+        let e = super::tool_snapshot(p.clone(), &url).error.unwrap();
+        assert!(
+            e.contains("Conversion failed!") && !e.contains("Resume"),
+            "{e}"
+        );
+        // Any other failure: yt-dlp's words as they are.
+        p.merge_failed = None;
+        let e = super::tool_snapshot(p, &url).error.unwrap();
+        assert_eq!(e, "Postprocessing: Conversion failed!");
     }
 
     /// #736: after the last byte the Status column says what is happening and how far.
@@ -1739,6 +1806,7 @@ mod helper_connection_tests {
             engine: None,
             helper: None,
             merging: None,
+            merge_failed: None,
         }
     }
 

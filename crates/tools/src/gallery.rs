@@ -457,6 +457,7 @@ impl Default for Progress {
             engine: None,
             helper: None,
             merging: None,
+            merge_failed: None,
         }
     }
 }

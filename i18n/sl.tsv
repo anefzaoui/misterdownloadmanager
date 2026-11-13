@@ -2279,6 +2279,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	datotek ni bilo mogoče zapisati: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	slike in zvoka ni bilo mogoče združiti v eno datoteko ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	slike in zvoka ni bilo mogoče združiti v eno datoteko ({error}). Preneseno ostane v mapi, da ga lahko nadaljujete znova ({files}); izbris prenosa z možnostjo »Izbriši datoteko tudi z diska« ga odstrani.
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	podatki o izdaji niso pričakovani: {detail}
@@ -5172,6 +5182,7 @@
 #, machine
 	United States Minor Outlying Islands	Manjši oddaljeni otoki Združenih držav
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	Neznano
 #. text in a dialog box; text in a download's progress window; text in whereis.rs

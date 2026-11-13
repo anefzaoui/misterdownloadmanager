@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	fișierele sale nu au putut fi scrise: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	imaginea și sunetul nu au putut fi combinate într-un singur fișier ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	imaginea și sunetul nu au putut fi îmbinate într-un singur fișier ({error}). Fișierele descărcate rămân în folder pentru a putea fi îmbinate din nou prin Reluare ({files}); ștergerea descărcării cu opțiunea „Ștergeți și fișierul de pe disc” le elimină
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	informațiile sale de lansare nu sunt cele așteptate: {detail}
@@ -5190,6 +5200,7 @@
 #, machine
 	United States Minor Outlying Islands	Insulele Minore Îndepărtate ale Statelor Unite
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	Necunoscut
 #. text in a dialog box; text in a download's progress window; text in whereis.rs
