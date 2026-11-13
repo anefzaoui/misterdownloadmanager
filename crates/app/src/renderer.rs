@@ -12,19 +12,18 @@
 //! starts again, the next way): the next starts pass over it until that API is chosen again,
 //! and View → Draw with says why. A graphics card lost while MDM runs (a driver update or reset)
 //! starts MDM again; a second loss soon after counts as the API failing. The same code does all
-//! of this on every system: only [`GPU`], [`SOFTWARE_BEFORE_GL`] and the backend in
-//! `gpu::options` differ.
+//! of this on every system: only [`GPU`] and the backend in `gpu::options` differ.
 //!
-//! Windows: when the card has no Direct3D 12 (or it failed here), Direct3D 12 on Microsoft's
-//! software renderer (WARP) draws before OpenGL (#847): the cards without Direct3D 12 are the
-//! old ones whose OpenGL froze or crashed inside the driver while showing a frame (Intel's HD
-//! Graphics 3000 to 5500, AMD's), or drew garbage (#835). WARP failing too is remembered apart
-//! (`direct3d-software-failed.txt`), and OpenGL draws.
-//!
-//! An OpenGL that starts but can't draw MDM ([`gl_unfit`]: on Windows, one older than 3.0, #835)
-//! is passed over too: MDM starts again with the system's API, on a software renderer when no
-//! card has it (WARP), and remembers it, so the next starts go straight there, with OpenGL as the
-//! last way, and View → Draw with says why.
+//! Windows: a card without Direct3D 12 draws with OpenGL, and with Direct3D 12 on Microsoft's
+//! software renderer (WARP) once OpenGL fails here (#847), remembered (`opengl-unfit.txt`) until
+//! OpenGL is chosen again: it can't start, it is too old to draw MDM ([`gl_unfit`], #835), its
+//! first frame doesn't come within [`FIRST_FRAME_WITHIN`], its last start ended before its first
+//! frame, or the window froze inside its driver ([`gl_driver_frame`]: the crash report's window
+//! reads that from the freeze's stack; the cards of #847 froze or crashed there while showing a
+//! frame). WARP draws right on those cards, but keeps the processor busier, so OpenGL comes
+//! first. WARP failing too is remembered apart (`direct3d-software-failed.txt`), and OpenGL draws.
+//! Linux and macOS remember no OpenGL failure ([`WATCH_GL`]): their OpenGL is their default, and
+//! their way out is Vulkan or Metal, chosen in View → Draw with.
 //!
 //! Testing overrides, in this order: `/renderer <name>` on the command line, then
 //! `MDM_RENDERER=<name>`. Names: `opengl` (`gl`); `direct3d` (`d3d`) on Windows, `vulkan` (`vk`)
@@ -33,7 +32,9 @@
 //! renderer (Microsoft's WARP, Mesa's lavapipe), as on a computer without a graphics driver.
 //! Another system's name is ignored. Off-screen test copies also take `MDM_TEST_GL_VERSION=2.1`:
 //! the version OpenGL says it is, as an old card's driver does; `MDM_TEST_NO_HARDWARE=1` (no
-//! card's driver) and `MDM_TEST_NO_SOFTWARE=1` (no software renderer either).
+//! card's driver), `MDM_TEST_NO_SOFTWARE=1` (no software renderer either),
+//! `MDM_TEST_NO_FIRST_FRAME=opengl` (only OpenGL's first frame never comes) and
+//! `MDM_TEST_GL_STALL=1` (the window stalls once while OpenGL draws, as in a driver's present).
 
 use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -105,12 +106,12 @@ pub fn chosen(setting: Option<Api>) -> Api {
         .unwrap_or(DEFAULT)
 }
 
-/// Where the card can't draw with the system's API, its software renderer comes before OpenGL:
-/// Windows only (#847). WARP comes with every Windows 10 and 11 and draws MDM right on the
-/// cards without Direct3D 12, whose OpenGL drivers freeze, crash or draw garbage (#835). Linux
-/// and macOS keep OpenGL next: OpenGL is their default already (#206), Mesa's OpenGL and
-/// Vulkan are one driver's code (no such reports there), and macOS has no software Metal.
-pub const SOFTWARE_BEFORE_GL: bool = cfg!(windows);
+/// OpenGL's starts are watched and its failures remembered, so the next starts draw with the
+/// system's API on its software renderer instead: Windows only (#847: WARP, part of every
+/// Windows 10 and 11, draws MDM right on the cards whose OpenGL froze, crashed or drew garbage).
+/// Linux and macOS keep their plans: OpenGL is their default (#206), Mesa's software Vulkan is
+/// no better a way out than its OpenGL, and macOS has no software Metal.
+pub const WATCH_GL: bool = cfg!(windows);
 
 /// How long a watched start with the system's API may take to its first frame before MDM starts
 /// again the next way (a driver stuck in its first present, a window that never shows). Generous:
@@ -190,8 +191,9 @@ pub struct Known {
     pub card_failed: bool,
     /// ... and on its software renderer (`direct3d-software-failed.txt`: WARP).
     pub software_failed: bool,
-    /// OpenGL can't draw MDM here ([`gl_unfit`], `opengl-unfit.txt`).
-    pub gl_unfit: bool,
+    /// OpenGL can't draw MDM here (`opengl-unfit.txt`): it failed to start, is too old
+    /// ([`gl_unfit`]), drew no first frame, or froze inside its driver (Windows, #835, #847).
+    pub gl_failed: bool,
 }
 
 impl Known {
@@ -199,42 +201,49 @@ impl Known {
     /// and is remembered as that.
     pub fn read() -> Known {
         Known {
-            card_failed: failed_before(Adapters::Hardware).is_some(),
-            software_failed: failed_before(Adapters::Software).is_some(),
-            gl_unfit: gl_unfit_before(),
+            card_failed: failed_before(Way::Card).is_some(),
+            software_failed: failed_before(Way::Software).is_some(),
+            gl_failed: failed_before(Way::OpenGl).is_some(),
         }
     }
 
     /// Only looked at (the crash report's window: its report may be about a start not yet
     /// drawn, which counts as failed).
     pub fn suspect() -> Known {
-        let any = |a| {
-            markers(a)
-                .into_iter()
-                .flat_map(|(starting, failed)| [starting, failed])
-                .filter_map(file)
-                .any(|f| f.exists())
+        let any = |w: Way| {
+            w.files()
+                .is_some_and(|(starting, failed)| starting.exists() || failed.exists())
         };
         Known {
-            card_failed: any(Adapters::Hardware),
-            software_failed: any(Adapters::Software),
-            gl_unfit: gl_unfit_before(),
+            card_failed: any(Way::Card),
+            software_failed: any(Way::Software),
+            gl_failed: any(Way::OpenGl),
         }
     }
 }
 
-/// The ways to try, in order, and whether the starts with the system's API before OpenGL are
-/// watched (see [`run`]): the app's own plan's, not an override's.
+/// The ways to try, in order, and which of them are watched (see [`run`]).
 #[derive(Debug, PartialEq, Eq)]
 pub struct Plan {
     pub attempts: Vec<Attempt>,
-    pub watched: bool,
+    /// The starts watched: each one's start is marked until its first frame, which must come in
+    /// time, and its failure is remembered, so the next start goes on to the next way. The app's
+    /// own plan's only (not an override's, nor the crash report's window's).
+    pub watch: Vec<Attempt>,
     /// Why the first way is the one tried first, for the log and the crash reports.
     pub because: Because,
     /// An OpenGL that can't draw MDM ([`gl_unfit`]) ends this start, is remembered, and MDM
     /// starts again without it: the app's own starts (not an override's, nor the crash report's,
     /// which only passes over one already remembered).
     pub gl_checked: bool,
+}
+
+#[cfg(test)]
+impl Plan {
+    /// Is any of its starts watched?
+    pub fn watched(&self) -> bool {
+        !self.watch.is_empty()
+    }
 }
 
 /// Why a plan's first way is tried first (#280: a report drawn with OpenGL where Direct3D is the
@@ -247,39 +256,30 @@ pub enum Because {
     Default,
     /// `/renderer` or `MDM_RENDERER`.
     Override,
-    /// The system's API is the choice, but it failed here before on the card: its software
-    /// renderer (Windows), or OpenGL, until it is chosen again.
+    /// The system's API is the choice, but it failed here before on the card: OpenGL until it is
+    /// chosen again.
     FailedBefore,
-    /// OpenGL can't draw MDM here ([`gl_unfit`], remembered): the system's API, on a software
-    /// renderer if it failed on the card, until OpenGL is chosen again.
+    /// OpenGL can't draw MDM here (remembered): the system's API, on a software renderer if it
+    /// failed on the card, until OpenGL is chosen again.
     OpenGlUnfit,
 }
 
 impl Because {
     /// Its words after "Drawing with: …" (`api`: the system's API's name).
     fn words(self, api: &str) -> String {
+        let details = |d: &Mutex<Option<String>>| d.lock().ok().and_then(|d| d.clone());
         match self {
             Because::Chosen => "chosen in View → Draw with".into(),
             Because::Default => "the default here".into(),
             Because::Override => "the testing override (/renderer, MDM_RENDERER)".into(),
             Because::OpenGlUnfit => format!(
                 "OpenGL can't draw MDM here: {}",
-                GL_UNFIT
-                    .lock()
-                    .ok()
-                    .and_then(|d| d.clone())
-                    .unwrap_or_default()
+                details(&GL_DETAILS).unwrap_or_default()
             ),
-            Because::FailedBefore => {
-                let details = |d: &Mutex<Option<String>>| d.lock().ok().and_then(|d| d.clone());
-                let card = details(&FAILED_DETAILS).unwrap_or_default();
-                match details(&SOFTWARE_DETAILS) {
-                    Some(soft) => format!(
-                        "{api} failed here before: {card}; on the software renderer too: {soft}"
-                    ),
-                    None => format!("{api} failed here before: {card}"),
-                }
-            }
+            Because::FailedBefore => format!(
+                "{api} failed here before: {}",
+                details(&FAILED_DETAILS).unwrap_or_default()
+            ),
         }
     }
 }
@@ -287,17 +287,16 @@ impl Because {
 /// What to try: the override if any (then the other way), else the setting (or [`DEFAULT`]).
 /// Only OpenGL where wgpu isn't built.
 ///
-/// The system's API chosen: on the card, unless it failed there before; then, on Windows
-/// ([`SOFTWARE_BEFORE_GL`], #847), on its software renderer (WARP) unless that failed here too,
-/// and OpenGL last. Linux and macOS: OpenGL after the card, the software renderer last (Remote
-/// Desktop, a virtual machine: no card's driver). Each way that failed here is passed over:
-/// Windows, `[card, WARP, OpenGL]`; the card failed, `[WARP, OpenGL]`; both, `[OpenGL, any]`.
+/// The system's API chosen: on the card, unless it failed there before; then OpenGL, and the
+/// system's API on a software renderer last (Remote Desktop, a virtual machine: no card's
+/// driver, and Windows' own OpenGL 1.1 can't draw MDM). OpenGL chosen: OpenGL, the system's API
+/// (card, else software) only if OpenGL can't start.
 ///
-/// OpenGL chosen: OpenGL, the system's API (card, else software) only if OpenGL can't start.
-///
-/// `known.gl_unfit`: this computer's OpenGL can't draw MDM ([`gl_unfit`], remembered). It
-/// becomes the last way, after the system's API on the card (unless that failed here before)
-/// and on a software renderer, whatever the setting; an override still gets it.
+/// `known.gl_failed`: this computer's OpenGL can't draw MDM (remembered, Windows: #835, #847). It
+/// becomes the last way, after the system's API on the card (unless that failed here before) and
+/// on its software renderer (unless that failed too: then OpenGL first, nothing else drew),
+/// whatever the setting; an override still gets it. A card without Direct3D 12 on Windows:
+/// `[OpenGL, any]`, then `[WARP, OpenGL]` once OpenGL failed there.
 pub fn plan(setting: Option<Api>, overridden: Option<&str>, known: Known) -> Plan {
     let forced = overridden.and_then(|o| {
         let a = parse(o);
@@ -313,7 +312,7 @@ pub fn plan(setting: Option<Api>, overridden: Option<&str>, known: Known) -> Pla
     let Known {
         card_failed,
         software_failed,
-        gl_unfit,
+        gl_failed,
     } = known;
     let (card, soft, gl, any) = (
         Attempt::Gpu(Adapters::Hardware),
@@ -322,8 +321,8 @@ pub fn plan(setting: Option<Api>, overridden: Option<&str>, known: Known) -> Pla
         Attempt::Gpu(Adapters::Any),
     );
     let wants_gpu = Some(chosen(setting)) == GPU;
-    // Only where there is another way to draw.
-    let skip_gl = gl_unfit && GPU.is_some();
+    // OpenGL passed over: it can't draw MDM here, and the software renderer is left to try.
+    let skip_gl = gl_failed && GPU.is_some() && !software_failed;
     // Only this system's own choices count as chosen (chosen()).
     let as_set = if setting.is_some_and(|s| s == chosen(setting)) {
         Because::Chosen
@@ -335,14 +334,13 @@ pub fn plan(setting: Option<Api>, overridden: Option<&str>, known: Known) -> Pla
         Some(a @ Attempt::Gpu(_)) => (vec![a, gl], Because::Override),
         Some(_) => (vec![gl, any], Because::Override),
         None if wants_gpu => {
-            // The software renderer before OpenGL on Windows (#847), and wherever OpenGL can't
-            // draw MDM (#835), unless it failed here.
-            let soft_first = (SOFTWARE_BEFORE_GL || skip_gl) && !software_failed;
             let mut ways = Vec::new();
             if !card_failed {
                 ways.push(card);
             }
-            if soft_first {
+            if skip_gl {
+                // OpenGL can't draw MDM here: the software renderer (what drew #835's card
+                // right), OpenGL only if that can't start.
                 ways.extend([soft, gl]);
             } else if card_failed {
                 // Nothing left before OpenGL: then whatever adapter there is.
@@ -350,21 +348,16 @@ pub fn plan(setting: Option<Api>, overridden: Option<&str>, known: Known) -> Pla
             } else {
                 ways.extend([gl, soft]);
             }
-            let because = if !card_failed {
-                as_set
-            } else if soft_first && !SOFTWARE_BEFORE_GL {
-                // The software renderer before OpenGL only because OpenGL can't draw MDM (not
-                // on Windows, where it always comes first).
-                Because::OpenGlUnfit
-            } else {
-                Because::FailedBefore
+            let because = match (card_failed, skip_gl) {
+                (false, _) => as_set,
+                (true, true) => Because::OpenGlUnfit,
+                (true, false) => Because::FailedBefore,
             };
             (ways, because)
         }
         // OpenGL would have drawn first, but can't draw MDM: the system's API instead, on a
-        // software renderer when it failed on the card here (what drew #835's card right), else
-        // on the card if any. OpenGL first when both failed here: nothing else drew.
-        None if skip_gl && !(card_failed && software_failed) => (
+        // software renderer when it failed on the card here, else on the card if any.
+        None if skip_gl => (
             vec![if card_failed { soft } else { any }, gl],
             Because::OpenGlUnfit,
         ),
@@ -374,22 +367,46 @@ pub fn plan(setting: Option<Api>, overridden: Option<&str>, known: Known) -> Pla
         .into_iter()
         .filter(|a| GPU.is_some() || *a == Attempt::OpenGl)
         .collect();
+    let watch = match forced {
+        Some(_) => Vec::new(),
+        None => attempts
+            .iter()
+            .copied()
+            .filter(|&a| watchable(&attempts, a, known))
+            .collect(),
+    };
     Plan {
-        watched: forced.is_none() && attempts.iter().any(|a| watchable(&attempts, *a)),
+        watch,
         attempts,
         because,
         gl_checked: forced.is_none(),
     }
 }
 
-/// Is this way's start watched (when its plan's are)? The system's API on the card or on its
-/// software renderer, before OpenGL in the plan: its failure is remembered and the next start
-/// goes on to the next way. Never OpenGL, nor a way after it (remembering it failed changes
-/// nothing: OpenGL comes first again), nor "any adapter", the last way.
-fn watchable(attempts: &[Attempt], a: Attempt) -> bool {
+/// Is this way's start watched (in the app's own plan)? Only where remembering its failure
+/// changes the next start's plan (else a way that never draws would start MDM again and again):
+///
+/// - the system's API on the card or on its software renderer, before OpenGL;
+/// - OpenGL (Windows, [`WATCH_GL`]), not known to fail here, with the system's API on a software
+///   renderer, or any adapter, after it (#847).
+///
+/// Never "any adapter" nor a way after OpenGL: OpenGL would come first again.
+fn watchable(attempts: &[Attempt], a: Attempt, known: Known) -> bool {
     let at = |w: Attempt| attempts.iter().position(|&x| x == w);
-    matches!(a, Attempt::Gpu(adapters) if markers(adapters).is_some())
-        && matches!((at(a), at(Attempt::OpenGl)), (Some(i), Some(gl)) if i < gl)
+    let Some((i, gl)) = at(a).zip(at(Attempt::OpenGl)) else {
+        return false;
+    };
+    match a {
+        Attempt::Gpu(Adapters::Hardware | Adapters::Software) => i < gl,
+        Attempt::OpenGl => {
+            WATCH_GL
+                && !known.gl_failed
+                && attempts[gl..]
+                    .iter()
+                    .any(|w| matches!(w, Attempt::Gpu(Adapters::Software | Adapters::Any)))
+        }
+        _ => false,
+    }
 }
 
 /// The testing override: `/renderer <name>` (or `--renderer`) among the arguments, else
@@ -405,28 +422,73 @@ pub fn overridden(args: &[String]) -> Option<String> {
         .filter(|s| !s.trim().is_empty())
 }
 
-// ---- Remembering a start that never drew --------------------------------------------------
+// ---- Remembering a way that failed ----------------------------------------------------------
 
 /// Written before a watched start with the system's API on the card, removed once its first
 /// frame is drawn.
 const STARTING: &str = "starting";
 /// Why the system's API couldn't draw here on the card; while it is there, the card isn't tried.
 const FAILED: &str = "failed.txt";
-/// The same two for its software renderer (WARP: `direct3d-software-failed.txt`, #847).
+/// The same two for its software renderer (WARP: `direct3d-software-failed.txt`).
 const SOFTWARE_STARTING: &str = "software-starting";
 const SOFTWARE_FAILED: &str = "software-failed.txt";
+/// The same two for OpenGL (Windows): why it can't draw MDM here; while it is there, OpenGL is
+/// the last way (#835, #847).
+const GL_STARTING: &str = "opengl-starting";
+const GL_FAILED: &str = "opengl-unfit.txt";
 
-/// The files that remember a start of the system's API on these adapters: (starting, failed).
-/// None for "any adapter" (the last way, never watched) and for none at all (a test's).
-fn markers(adapters: Adapters) -> Option<(&'static str, &'static str)> {
-    match adapters {
-        Adapters::Hardware => Some((STARTING, FAILED)),
-        Adapters::Software => Some((SOFTWARE_STARTING, SOFTWARE_FAILED)),
-        Adapters::Any | Adapters::Nothing => None,
+/// A way whose failure is remembered in the data folder.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Way {
+    /// The system's API on the graphics card.
+    Card,
+    /// The system's API on its software renderer (WARP, lavapipe).
+    Software,
+    /// OpenGL.
+    OpenGl,
+}
+
+impl Way {
+    /// The way a start is, when its start is one that can be watched.
+    fn of(a: Attempt) -> Option<Way> {
+        match a {
+            Attempt::Gpu(Adapters::Hardware) => Some(Way::Card),
+            Attempt::Gpu(Adapters::Software) => Some(Way::Software),
+            Attempt::OpenGl => Some(Way::OpenGl),
+            Attempt::Gpu(Adapters::Any | Adapters::Nothing) => None,
+        }
+    }
+
+    /// Its files in the data folder: (starting, failed). None where there is no data folder, or
+    /// no system's API for the card's and the software renderer's.
+    fn files(self) -> Option<(PathBuf, PathBuf)> {
+        match self {
+            Way::Card => file(STARTING).zip(file(FAILED)),
+            Way::Software => file(SOFTWARE_STARTING).zip(file(SOFTWARE_FAILED)),
+            Way::OpenGl => mdm_ipc::data_dir().map(|d| (d.join(GL_STARTING), d.join(GL_FAILED))),
+        }
+    }
+
+    /// As the log names it.
+    fn name(self) -> &'static str {
+        match self {
+            Way::Card => Attempt::Gpu(Adapters::Hardware).name(),
+            Way::Software => Attempt::Gpu(Adapters::Software).name(),
+            Way::OpenGl => "OpenGL",
+        }
+    }
+
+    /// The details of its failure, as known in this process.
+    fn details(self) -> &'static Mutex<Option<String>> {
+        match self {
+            Way::Card => &FAILED_DETAILS,
+            Way::Software => &SOFTWARE_DETAILS,
+            Way::OpenGl => &GL_DETAILS,
+        }
     }
 }
 
-/// Why the system's API couldn't draw here, for View → Draw with's note.
+/// Why a way couldn't draw here, for View → Draw with's notes.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Why {
     /// No adapter for it (no driver; only a software renderer when a card was wanted), or no
@@ -438,16 +500,22 @@ pub enum Why {
     EndedEarly,
     /// The graphics card was lost twice within 10 minutes.
     LostTwice,
+    /// OpenGL older than MDM can draw with ([`gl_unfit`], #835).
+    TooOld,
+    /// The window froze inside OpenGL's driver ([`gl_driver_frame`], #847).
+    FrozeInDriver,
     /// Anything else (the log has eframe's error).
     Other,
 }
 
 impl Why {
-    const ALL: [Why; 5] = [
+    const ALL: [Why; 7] = [
         Why::NoAdapter,
         Why::NoFirstFrame,
         Why::EndedEarly,
         Why::LostTwice,
+        Why::TooOld,
+        Why::FrozeInDriver,
         Why::Other,
     ];
 
@@ -458,17 +526,20 @@ impl Why {
             Why::NoFirstFrame => "no-first-frame",
             Why::EndedEarly => "ended-early",
             Why::LostTwice => "lost-twice",
+            Why::TooOld => "too-old",
+            Why::FrozeInDriver => "froze-in-driver",
             Why::Other => "other",
         }
     }
 
-    /// A failure file's text: its reason's key, then the details on the next line. An older
-    /// one (one line of details, from test builds before 0.5.0 on Windows) is `Other`.
-    fn read(text: &str) -> (Why, &str) {
+    /// A failure file's text: its reason's key, then the details on the next line. An older one
+    /// (one line of details) is `older`: `Other` from test builds before 0.5.0 (Direct3D's),
+    /// `TooOld` from #835's (OpenGL's, which only knew that one).
+    fn read(text: &str, older: Why) -> (Why, &str) {
         let (first, rest) = text.trim().split_once('\n').unwrap_or((text.trim(), ""));
         match Why::ALL.into_iter().find(|w| w.key() == first.trim()) {
             Some(w) => (w, rest.trim()),
-            None => (Why::Other, text.trim()),
+            None => (older, text.trim()),
         }
     }
 }
@@ -476,17 +547,34 @@ impl Why {
 /// The system's API failed here (before this start, or in it) and wasn't chosen again since:
 /// why (the first failure: the card's, when it was tried).
 static GPU_FAILED: Mutex<Option<Why>> = Mutex::new(None);
+/// OpenGL can't draw MDM here (remembered, or found in this start) and wasn't chosen again since:
+/// why.
+static GL_FAILED_WHY: Mutex<Option<Why>> = Mutex::new(None);
 
-/// The details of the card's failure, as its file has them (for the crash reports).
+/// The details of each way's failure, as its file has them (for the log and the crash reports).
 static FAILED_DETAILS: Mutex<Option<String>> = Mutex::new(None);
-/// The same for the software renderer's.
 static SOFTWARE_DETAILS: Mutex<Option<String>> = Mutex::new(None);
+static GL_DETAILS: Mutex<Option<String>> = Mutex::new(None);
 
-/// A failure of the system's API: kept unless one is already (the card's comes first, and is
-/// the one View → Draw with explains).
-fn set_failed(why: Why) {
-    if let Ok(mut f) = GPU_FAILED.lock() {
-        f.get_or_insert(why);
+/// A way's failure, known in this process: the system API's first one is kept (the card's, the
+/// one View → Draw with explains), OpenGL's as it comes.
+fn set_failed(way: Option<Way>, why: Why, details: Option<&str>) {
+    match way {
+        Some(Way::OpenGl) => {
+            if let Ok(mut f) = GL_FAILED_WHY.lock() {
+                *f = Some(why);
+            }
+        }
+        _ => {
+            if let Ok(mut f) = GPU_FAILED.lock() {
+                f.get_or_insert(why);
+            }
+        }
+    }
+    if let (Some(way), Some(details)) = (way, details)
+        && let Ok(mut d) = way.details().lock()
+    {
+        *d = Some(details.to_owned());
     }
 }
 
@@ -496,6 +584,12 @@ pub fn gpu_failed() -> Option<Why> {
     GPU_FAILED.lock().ok().and_then(|f| *f)
 }
 
+/// For View → Draw with's note: why OpenGL can't draw MDM here, if it can't.
+#[cfg(gpu)]
+pub fn gl_failed() -> Option<Why> {
+    GL_FAILED_WHY.lock().ok().and_then(|f| *f)
+}
+
 /// The system's API's file `name` in the data folder (`direct3d-failed.txt`,
 /// `vulkan-starting`…). None where there is no such API.
 fn file(name: &str) -> Option<PathBuf> {
@@ -503,44 +597,37 @@ fn file(name: &str) -> Option<PathBuf> {
     mdm_ipc::data_dir().map(|d| d.join(format!("{key}-{name}")))
 }
 
-/// The system's API on these adapters (the card, or its software renderer), as the log names it.
-fn way(adapters: Adapters) -> &'static str {
-    Attempt::Gpu(adapters).name()
-}
-
-/// Why the system's API failed here before on these adapters (the card, or its software
-/// renderer), if it did. A start that left its marker behind ended before its first frame:
-/// that becomes the reason.
-fn failed_before(adapters: Adapters) -> Option<String> {
-    let (starting, failed) = markers(adapters)?;
-    let (starting, failed) = (file(starting)?, file(failed)?);
-    let api = way(adapters);
+/// Why this way failed here before, if it did. A start that left its marker behind ended before
+/// its first frame: that becomes the reason.
+fn failed_before(way: Way) -> Option<String> {
+    let (starting, failed) = way.files()?;
+    let name = way.name();
     if starting.exists() {
-        let why = format!("the last start with {api} ended before its first frame");
-        tracing::warn!("{api}: {why}; passed over until it is chosen again");
-        remember_failure(adapters, Why::EndedEarly, &why);
+        let why = format!("the last start with {name} ended before its first frame");
+        tracing::warn!("{name}: {why}; passed over until it is chosen again");
+        remember_failure(way, Why::EndedEarly, &why);
         let _ = std::fs::remove_file(&starting);
     }
     let text = std::fs::read_to_string(&failed).ok()?;
-    let (why, details) = Why::read(&text);
-    tracing::info!("{api} failed here before ({why:?}: {details})");
-    let kept = match adapters {
-        Adapters::Software => &SOFTWARE_DETAILS,
-        _ => {
-            set_failed(why);
-            &FAILED_DETAILS
-        }
+    let older = if way == Way::OpenGl {
+        Why::TooOld
+    } else {
+        Why::Other
     };
-    if let Ok(mut d) = kept.lock() {
-        *d = Some(details.to_owned());
-    }
+    let (why, details) = Why::read(&text, older);
+    tracing::info!("{name} failed here before ({why:?}: {details})");
+    set_failed(Some(way), why, Some(details));
     Some(details.to_owned())
 }
 
-/// The system's API on these adapters could not draw here: remembered with its reason.
-fn remember_failure(adapters: Adapters, why: Why, details: &str) {
-    if let Some(f) = markers(adapters).and_then(|(_, failed)| file(failed)) {
+/// This way couldn't draw here: remembered with its reason, in the data folder and in this
+/// process (View → Draw with's notes).
+fn remember_failure(way: Way, why: Why, details: &str) {
+    if let Some((_, f)) = way.files() {
         let _ = std::fs::write(f, format!("{}\n{details}", why.key()));
+    }
+    if way == Way::OpenGl {
+        set_failed(Some(way), why, Some(details));
     }
 }
 
@@ -551,20 +638,17 @@ pub fn forget_failure() {
     if let Ok(mut f) = GPU_FAILED.lock() {
         *f = None;
     }
-    for name in [FAILED, STARTING, SOFTWARE_FAILED, SOFTWARE_STARTING] {
-        if let Some(f) = file(name) {
-            let _ = std::fs::remove_file(f);
-        }
+    forget(&[Way::Card, Way::Software]);
+}
+
+fn forget(ways: &[Way]) {
+    for (starting, failed) in ways.iter().filter_map(|w| w.files()) {
+        let _ = std::fs::remove_file(starting);
+        let _ = std::fs::remove_file(failed);
     }
 }
 
-// ---- An OpenGL that can't draw MDM (#835) -----------------------------------------------------
-
-/// Why OpenGL can't draw MDM here, in the data folder; while it is there, OpenGL is the last way.
-const GL_UNFIT_FILE: &str = "opengl-unfit.txt";
-
-/// OpenGL can't draw MDM here (remembered, or found in this start): why.
-static GL_UNFIT: Mutex<Option<String>> = Mutex::new(None);
+// ---- An OpenGL that can't draw MDM (#835, #847) ----------------------------------------------
 
 /// What an OpenGL driver says it is (glow's `version()`, read from `GL_VERSION`).
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -589,39 +673,73 @@ pub fn gl_unfit(v: GlVersion, windows: bool) -> Option<String> {
     None
 }
 
-/// The data folder's file that remembers it.
-fn gl_unfit_file() -> Option<PathBuf> {
-    mdm_ipc::data_dir().map(|d| d.join(GL_UNFIT_FILE))
-}
-
-/// Has OpenGL been found unable to draw MDM here (and not chosen again since)? Read as MDM
-/// starts.
-pub fn gl_unfit_before() -> bool {
-    let text = gl_unfit_file().and_then(|f| std::fs::read_to_string(f).ok());
-    if let Some(t) = &text {
-        tracing::info!("OpenGL can't draw MDM here: {}", t.trim());
-        if let Ok(mut u) = GL_UNFIT.lock() {
-            *u = Some(t.trim().to_owned());
-        }
-    }
-    text.is_some()
-}
-
-/// For View → Draw with's note: OpenGL can't draw MDM here.
-#[cfg(gpu)]
-pub fn opengl_unfit() -> bool {
-    GL_UNFIT.lock().is_ok_and(|u| u.is_some())
-}
-
 /// OpenGL chosen again (View → Draw with): its next start is tried, and checked again.
 #[cfg(gpu)]
-pub fn forget_gl_unfit() {
-    if let Ok(mut u) = GL_UNFIT.lock() {
-        *u = None;
+pub fn forget_gl_failure() {
+    if let Ok(mut f) = GL_FAILED_WHY.lock() {
+        *f = None;
     }
-    if let Some(f) = gl_unfit_file() {
-        let _ = std::fs::remove_file(f);
+    forget(&[Way::OpenGl]);
+}
+
+/// Where a frozen window thread's stack (its frames' modules, top first) shows it stuck inside
+/// OpenGL's driver, as the freeze reports of #847 show it: above the program's own code, Windows'
+/// OpenGL (`opengl32.dll`, whose `wglSwapBuffers` shows a frame) or a card maker's OpenGL driver
+/// (Intel's `ig*icd*.dll`, NVIDIA's `nvoglv*.dll`, AMD's `atio6axx.dll` / `atioglxx.dll`). Its
+/// module's name, if so. Below the program's code, `opengl32.dll` is in every OpenGL window's
+/// message handling: a freeze in MDM's own code isn't one. `testing` (`MDM_TEST_GL_STALL` in an
+/// off-screen test copy): the program's own code counts, its stall standing for a driver's.
+pub fn gl_driver_frame<'a>(
+    modules: impl IntoIterator<Item = Option<&'a str>>,
+    testing: bool,
+) -> Option<String> {
+    let driver = |m: &str| {
+        let m = m.to_ascii_lowercase();
+        m == "opengl32.dll"
+            || (m.starts_with("ig") && m.contains("icd") && m.ends_with(".dll"))
+            || m.starts_with("nvoglv")
+            || m.starts_with("atio6axx")
+            || m.starts_with("atioglxx")
+    };
+    for m in modules.into_iter().flatten() {
+        if driver(m) {
+            return Some(m.to_owned());
+        }
+        // The program's own code (its .exe): what is below it isn't where the window is stuck.
+        if m.to_ascii_lowercase().ends_with(".exe") {
+            return testing.then(|| "MDM_TEST_GL_STALL".to_owned());
+        }
     }
+    None
+}
+
+/// The window froze inside OpenGL's driver (the crash report's window read it from the freeze's
+/// stack, [`gl_driver_frame`]): remembered, so the next starts draw with the system's API on its
+/// software renderer when the card has none (#847). Windows only ([`WATCH_GL`]).
+pub fn remember_gl_froze(module: &str, seconds: u64) {
+    if !WATCH_GL {
+        return;
+    }
+    let details = format!("the window froze for {seconds} s inside {module} as OpenGL drew");
+    tracing::warn!("OpenGL can't draw MDM here: {details}; passed over from the next start");
+    remember_failure(Way::OpenGl, Why::FrozeInDriver, &details);
+}
+
+/// `MDM_TEST_GL_STALL=1` (off-screen test copies): once, a few seconds after the first frame
+/// drawn with OpenGL, the window stalls past the freeze watchdog's limit, as in a driver's
+/// present (#847's freezes), and the crash report's window takes it for one.
+fn stall_test() {
+    static DONE: AtomicBool = AtomicBool::new(false);
+    if !testing("MDM_TEST_GL_STALL")
+        || ACTIVE.get() != Some(&Api::OpenGl)
+        || !DRAWN.load(Ordering::Relaxed)
+        || since_start() < 5000
+        || DONE.swap(true, Ordering::Relaxed)
+    {
+        return;
+    }
+    tracing::info!("testing: the window stalls 12 s while OpenGL draws");
+    std::thread::sleep(std::time::Duration::from_secs(12));
 }
 
 /// The version OpenGL says it is; `MDM_TEST_GL_VERSION=2.1` in off-screen test copies, as an old
@@ -665,17 +783,16 @@ fn check_gl(gl: &eframe::glow::Context, checked: bool, driver: &str) {
     let Some(why) = gl_unfit(gl_version(gl), cfg!(windows)) else {
         return;
     };
-    let known = GL_UNFIT.lock().is_ok_and(|u| u.is_some());
+    let known = GL_FAILED_WHY.lock().is_ok_and(|u| u.is_some());
     if known || !checked || GPU.is_none() {
         tracing::warn!("{why}: it may draw MDM wrong, but nothing else could start");
         return;
     }
     let details = format!("{why} ({driver})");
-    if let Some(f) = gl_unfit_file() {
-        let _ = std::fs::write(f, &details);
-    }
-    if let Ok(mut u) = GL_UNFIT.lock() {
-        *u = Some(details.clone());
+    remember_failure(Way::OpenGl, Why::TooOld, &details);
+    // Remembered as this reason, not as a start that ended before its first frame.
+    if let Some((starting, _)) = Way::OpenGl.files() {
+        let _ = std::fs::remove_file(starting);
     }
     #[cfg(gpu)]
     gpu::start_again(&format!("OpenGL can't draw MDM here: {details}"));
@@ -705,6 +822,7 @@ pub fn frame_begin() {
     own_work_begin();
     #[cfg(gpu)]
     gpu::poll();
+    stall_test();
 }
 
 /// The first frame was drawn (presented).
@@ -719,8 +837,13 @@ pub fn frame_done(ctx: &egui::Context) {
         return;
     }
     // MDM_TEST_NO_FIRST_FRAME=1 (off-screen test copies): a first frame that never comes (the
-    // watchdog's check).
-    if testing("MDM_TEST_NO_FIRST_FRAME") {
+    // watchdog's check); `opengl`: only when OpenGL draws.
+    let never = std::env::var("MDM_TEST_NO_FIRST_FRAME")
+        .ok()
+        .filter(|_| crate::offscreen());
+    if never.as_deref() == Some("1")
+        || (never.as_deref() == Some("opengl") && ACTIVE.get() == Some(&Api::OpenGl))
+    {
         return;
     }
     DRAWN.store(true, Ordering::Relaxed);
@@ -728,10 +851,11 @@ pub fn frame_done(ctx: &egui::Context) {
         format!(" ({} ms of it counted for the API)", d.as_millis())
     });
     tracing::info!("first frame drawn, {} ms after start{api}", since_start());
-    for name in [STARTING, SOFTWARE_STARTING] {
-        if let Some(f) = file(name) {
-            let _ = std::fs::remove_file(f);
-        }
+    for (starting, _) in [Way::Card, Way::Software, Way::OpenGl]
+        .into_iter()
+        .filter_map(Way::files)
+    {
+        let _ = std::fs::remove_file(starting);
     }
 }
 
@@ -871,20 +995,12 @@ pub fn run<A: eframe::App + 'static>(
     let mut result = Ok(());
     let mut instead: Option<String> = None;
     for &attempt in &plan.attempts {
-        // A watched start (the system's API before OpenGL, in the app's own plan): marked until
-        // its first frame (one that ends before is remembered at the next start), which must
-        // come in time, or MDM starts again the next way.
-        let watched = match attempt {
-            Attempt::Gpu(adapters) if plan.watched && watchable(&plan.attempts, attempt) => {
-                Some(adapters)
-            }
-            _ => None,
-        };
-        if let Some(f) = watched
-            .and_then(markers)
-            .and_then(|(starting, _)| file(starting))
-        {
-            let _ = std::fs::write(f, "");
+        // A watched start (see `watchable`): marked until its first frame (one that ends before
+        // is remembered at the next start), which must come in time, or MDM starts again the
+        // next way.
+        let watched = Way::of(attempt).filter(|_| plan.watch.contains(&attempt));
+        if let Some((starting, _)) = watched.and_then(Way::files) {
+            let _ = std::fs::write(starting, "");
         }
         #[cfg(gpu)]
         {
@@ -893,8 +1009,8 @@ pub fn run<A: eframe::App + 'static>(
             if let Ok(mut c) = CLOCK.lock() {
                 *c = watched.map(|_| FirstFrameClock::started(std::time::Instant::now()));
             }
-            if let Some(adapters) = watched {
-                gpu::watch_first_frame(adapters, this_try);
+            if let Some(way) = watched {
+                gpu::watch_first_frame(way, this_try);
             }
         }
         let mut opts = options();
@@ -927,14 +1043,14 @@ pub fn run<A: eframe::App + 'static>(
         }
         let why = format!("{} didn't start: {e}", attempt.name());
         tracing::warn!("{why}");
+        let reason = why_failed(e);
         if attempt != Attempt::OpenGl {
-            let reason = why_failed(e);
-            set_failed(reason);
-            if let Some(adapters) = watched {
-                remember_failure(adapters, reason, &format!("{e}"));
-                if let Some(f) = markers(adapters).and_then(|(starting, _)| file(starting)) {
-                    let _ = std::fs::remove_file(f);
-                }
+            set_failed(None, reason, None);
+        }
+        if let Some(way) = watched {
+            remember_failure(way, reason, &format!("{e}"));
+            if let Some((starting, _)) = way.files() {
+                let _ = std::fs::remove_file(starting);
             }
         }
         instead = Some(why);
@@ -1026,8 +1142,8 @@ pub fn test_device_lost() {
 #[cfg(gpu)]
 mod gpu {
     use super::{
-        Adapters, DRAWN, FIRST_FRAME_WITHIN, GPU, Why, clock_counted, file, markers,
-        remember_failure, testing,
+        Adapters, DRAWN, FIRST_FRAME_WITHIN, GPU, Way, Why, clock_counted, file, remember_failure,
+        testing,
     };
     use eframe::egui_wgpu::{WgpuConfiguration, WgpuSetup, WgpuSetupCreateNew};
     use eframe::wgpu;
@@ -1049,10 +1165,10 @@ mod gpu {
         TRY.fetch_add(1, Ordering::Relaxed) + 1
     }
 
-    /// The first frame of this try (the system's API on `adapters`) must come within
-    /// [`FIRST_FRAME_WITHIN`]; if it doesn't (a driver stuck in its first present, a window left
-    /// black), that way is remembered as failed and MDM starts again, drawing the next way.
-    pub fn watch_first_frame(adapters: Adapters, this_try: usize) {
+    /// The first frame of this try (`way`) must come within [`FIRST_FRAME_WITHIN`]; if it doesn't
+    /// (a driver stuck in its first present, a window left black), that way is remembered as
+    /// failed and MDM starts again, drawing the next way.
+    pub fn watch_first_frame(way: Way, this_try: usize) {
         let _ = std::thread::Builder::new()
             .name("first frame watch".into())
             .spawn(move || {
@@ -1071,14 +1187,14 @@ mod gpu {
                 }
                 let why = format!(
                     "{} drew no first frame within {} s ({} s after start)",
-                    super::way(adapters),
+                    way.name(),
                     FIRST_FRAME_WITHIN.as_secs(),
                     super::since_start() / 1000
                 );
-                remember_failure(adapters, Why::NoFirstFrame, &why);
+                remember_failure(way, Why::NoFirstFrame, &why);
                 // Remembered as this reason, not as a start that ended before its first frame.
-                if let Some(f) = markers(adapters).and_then(|(starting, _)| file(starting)) {
-                    let _ = std::fs::remove_file(f);
+                if let Some((starting, _)) = way.files() {
+                    let _ = std::fs::remove_file(starting);
                 }
                 start_again(&why);
             });
@@ -1111,13 +1227,13 @@ mod gpu {
                 .and_then(|t| t.trim().parse::<u64>().ok());
             if last.is_some_and(|t| now.saturating_sub(t) < LOST_AGAIN_WITHIN.as_secs()) {
                 // The card's, or its software renderer's when that is what drew.
-                let adapters = if super::software() {
-                    Adapters::Software
+                let way = if super::software() {
+                    Way::Software
                 } else {
-                    Adapters::Hardware
+                    Way::Card
                 };
                 let details = format!("{why}, twice within 10 minutes");
-                remember_failure(adapters, Why::LostTwice, &details);
+                remember_failure(way, Why::LostTwice, &details);
             } else if let Some(f) = file(LOST) {
                 let _ = std::fs::write(f, now.to_string());
             }
@@ -1332,45 +1448,45 @@ mod tests {
                 plan(None, Some("gpu"), NONE),
             ] {
                 assert_eq!(p.attempts, [Attempt::OpenGl]);
-                assert!(!p.watched);
+                assert!(!p.watched());
             }
             return;
         };
-        // The system's API chosen: it, watched; then its software renderer before OpenGL on
-        // Windows (#847), OpenGL before it elsewhere.
-        let (chosen_order, failed_order) = if SOFTWARE_BEFORE_GL {
-            (
-                vec![gpu, soft, Attempt::OpenGl],
-                vec![soft, Attempt::OpenGl],
-            )
-        } else {
-            (vec![gpu, Attempt::OpenGl, soft], vec![Attempt::OpenGl, any])
-        };
+        // The system's API chosen: it, watched; OpenGL behind it, then a software renderer.
         let p = plan(Some(api), None, NONE);
-        assert_eq!(p.attempts, chosen_order);
-        assert!(p.watched);
-        // ... unless it failed here before: its software renderer (watched) on Windows, else
-        // OpenGL.
+        assert_eq!(p.attempts, [gpu, Attempt::OpenGl, soft]);
+        assert!(p.watched());
+        // ... unless it failed here before: OpenGL, watched on Windows (#847: its failure sends
+        // the next start to the software renderer).
         let p = plan(Some(api), None, k(true, false, false));
-        assert_eq!(p.attempts, failed_order);
-        assert_eq!(p.watched, SOFTWARE_BEFORE_GL);
+        assert_eq!(p.attempts, [Attempt::OpenGl, any]);
+        assert_eq!(p.watched(), WATCH_GL);
         // Nothing chosen: Direct3D on Windows (#89), OpenGL on Linux and macOS (#206).
         let p = plan(None, None, NONE);
         if cfg!(windows) {
-            assert_eq!(p.attempts, chosen_order);
-            assert!(p.watched);
+            assert_eq!(p.attempts, [gpu, Attempt::OpenGl, soft]);
+            assert!(p.watched());
             assert_eq!(
                 plan(None, None, k(true, false, false)).attempts,
-                failed_order
+                [Attempt::OpenGl, any]
             );
         } else {
             assert_eq!(p.attempts, [Attempt::OpenGl, any]);
-            assert!(!p.watched);
+            assert!(!p.watched());
         }
+        // The card's start is watched, and OpenGL's where its failure would send the next start
+        // to the software renderer (Windows).
+        let p = plan(Some(api), None, NONE);
+        let gl_watched = if WATCH_GL {
+            vec![gpu, Attempt::OpenGl]
+        } else {
+            vec![gpu]
+        };
+        assert_eq!(p.watch, gl_watched);
         // OpenGL chosen: kept, the system's API only if OpenGL can't start.
         let p = plan(Some(Api::OpenGl), None, NONE);
         assert_eq!(p.attempts, [Attempt::OpenGl, any]);
-        assert!(!p.watched);
+        assert_eq!(p.watched(), WATCH_GL);
         // Another system's API chosen (a settings file from another computer): the default.
         for other in [Api::Direct3D, Api::Vulkan, Api::Metal]
             .into_iter()
@@ -1383,7 +1499,7 @@ mod tests {
         for name in [api.key(), "gpu", "GPU"] {
             let p = plan(Some(Api::OpenGl), Some(name), k(true, false, false));
             assert_eq!(p.attempts, [gpu, Attempt::OpenGl]);
-            assert!(!p.watched);
+            assert!(!p.watched());
         }
         let p = plan(Some(api), Some("gl"), NONE);
         assert_eq!(p.attempts, [Attempt::OpenGl, any]);
@@ -1413,124 +1529,177 @@ mod tests {
     const NONE: Known = Known {
         card_failed: false,
         software_failed: false,
-        gl_unfit: false,
+        gl_failed: false,
     };
 
     /// What the data folder remembers: the card failed, its software renderer failed, OpenGL
     /// can't draw MDM.
-    fn k(card_failed: bool, software_failed: bool, gl_unfit: bool) -> Known {
+    fn k(card_failed: bool, software_failed: bool, gl_failed: bool) -> Known {
         Known {
             card_failed,
             software_failed,
-            gl_unfit,
+            gl_failed,
         }
     }
 
-    /// Windows (#847): Direct3D 12 on the card, then on WARP, then OpenGL; each way that failed
-    /// here passed over; OpenGL chosen kept; overrides as they were.
+    /// Windows, a card without Direct3D 12 (#847): OpenGL, watched; once it failed there (no
+    /// start, too old, no first frame, a freeze inside its driver), Direct3D 12 on WARP, watched;
+    /// WARP failing too, OpenGL again, no longer watched.
     #[cfg(windows)]
     #[test]
-    fn windows_draws_with_warp_before_opengl() {
-        let d3d = Attempt::Gpu(Adapters::Hardware);
-        let any = Attempt::Gpu(Adapters::Any);
-        let warp = Attempt::Gpu(Adapters::Software);
-        let gl = Attempt::OpenGl;
-        for setting in [None, Some(Api::Direct3D)] {
-            let because = if setting.is_some() {
-                Because::Chosen
-            } else {
-                Because::Default
-            };
-            // A card with Direct3D 12: as before, then WARP before OpenGL.
-            let p = plan(setting, None, NONE);
-            assert_eq!(p.attempts, [d3d, warp, gl]);
-            assert_eq!(p.because, because);
-            assert!(p.watched && p.gl_checked);
-            // No Direct3D 12 on the card (failed here, or an older MDM's direct3d-failed.txt):
-            // WARP, watched, then OpenGL.
-            let p = plan(setting, None, k(true, false, false));
-            assert_eq!(p.attempts, [warp, gl]);
-            assert_eq!(p.because, Because::FailedBefore);
-            assert!(p.watched);
-            // WARP failed here too: OpenGL, then whatever adapter there is.
-            let p = plan(setting, None, k(true, true, false));
-            assert_eq!(p.attempts, [gl, any]);
-            assert_eq!(p.because, Because::FailedBefore);
-            assert!(!p.watched);
-            // Only WARP failed (its file left alone): the card, then OpenGL, WARP last.
-            let p = plan(setting, None, k(false, true, false));
-            assert_eq!(p.attempts, [d3d, gl, warp]);
-            // An OpenGL that can't draw MDM (#835) changes nothing here: it is last already.
-            for card_failed in [false, true] {
-                let unfit = plan(setting, None, k(card_failed, false, true));
-                assert_eq!(unfit, plan(setting, None, k(card_failed, false, false)));
-            }
-        }
-        // OpenGL chosen: kept, whatever failed here.
-        for (card, soft) in [(false, false), (true, false), (true, true)] {
-            let p = plan(Some(Api::OpenGl), None, k(card, soft, false));
-            assert_eq!(p.attempts, [gl, any]);
-            assert_eq!(p.because, Because::Chosen);
-            assert!(!p.watched);
-        }
-        // Overrides, as before, and never watched.
-        let p = plan(Some(Api::OpenGl), Some("D3D"), k(true, true, false));
-        assert_eq!(p.attempts, [d3d, gl]);
-        assert!(!p.watched);
-        let p = plan(None, Some("warp"), k(true, true, false));
-        assert_eq!(p.attempts, [warp, gl]);
-        assert_eq!(plan(None, Some("gl"), NONE).attempts, [gl, any]);
-        assert_eq!(plan(None, Some("vulkan"), NONE).attempts[0], d3d);
-        // Its files keep their names (an older MDM's direct3d-failed.txt counts).
-        if let Some(f) = file(FAILED) {
-            assert!(f.ends_with("direct3d-failed.txt"));
-        }
-        if let Some(f) = file(SOFTWARE_FAILED) {
-            assert!(f.ends_with("direct3d-software-failed.txt"));
-        }
-        assert_eq!(warp.name(), "Direct3D 12 (WARP)");
-    }
-
-    /// Linux and macOS keep their plans (#847 is Windows'): OpenGL after the card, the software
-    /// renderer last.
-    #[cfg(all(gpu, not(windows)))]
-    #[test]
-    fn linux_and_macos_plans_unchanged() {
-        let card = Attempt::Gpu(Adapters::Hardware);
-        let any = Attempt::Gpu(Adapters::Any);
-        let soft = Attempt::Gpu(Adapters::Software);
-        let gl = Attempt::OpenGl;
-        let api = GPU.unwrap_or(Api::OpenGl);
-        for software_failed in [false, true] {
-            let p = plan(Some(api), None, k(false, software_failed, false));
-            assert_eq!(p.attempts, [card, gl, soft]);
-            let p = plan(Some(api), None, k(true, software_failed, false));
-            assert_eq!(p.attempts, [gl, any]);
-            assert!(!p.watched);
-            let p = plan(None, None, k(true, software_failed, false));
-            assert_eq!(p.attempts, [gl, any]);
-        }
-    }
-
-    /// Which starts are watched: the system's API on the card or its software renderer before
-    /// OpenGL; never OpenGL, a way after it, "any adapter", or none at all.
-    #[test]
-    fn watched_starts_come_before_opengl() {
-        let (card, soft, gl, any) = (
+    fn windows_draws_with_warp_once_opengl_failed() {
+        let (d3d, warp, gl, any) = (
             Attempt::Gpu(Adapters::Hardware),
             Attempt::Gpu(Adapters::Software),
             Attempt::OpenGl,
             Attempt::Gpu(Adapters::Any),
         );
-        let plan = [card, soft, gl];
-        assert!(watchable(&plan, card) && watchable(&plan, soft) && !watchable(&plan, gl));
-        let plan = [card, gl, soft];
-        assert!(watchable(&plan, card) && !watchable(&plan, soft));
-        let plan = [gl, any];
-        assert!(!watchable(&plan, gl) && !watchable(&plan, any));
-        assert!(!watchable(&[any, gl], any));
-        let none = Attempt::Gpu(Adapters::Nothing);
-        assert!(!watchable(&[none, gl], none));
+        for setting in [None, Some(Api::Direct3D)] {
+            // A card with Direct3D 12: as before; OpenGL's start after it is watched too.
+            let p = plan(setting, None, NONE);
+            assert_eq!(p.attempts, [d3d, gl, warp]);
+            assert_eq!(p.watch, [d3d, gl]);
+            // No Direct3D 12 on the card (also an older MDM's direct3d-failed.txt): OpenGL.
+            let p = plan(setting, None, k(true, false, false));
+            assert_eq!(p.attempts, [gl, any]);
+            assert_eq!(p.watch, [gl]);
+            assert_eq!(p.because, Because::FailedBefore);
+            // ... and OpenGL failed there: WARP, watched, OpenGL only if it can't start.
+            let p = plan(setting, None, k(true, false, true));
+            assert_eq!(p.attempts, [warp, gl]);
+            assert_eq!(p.watch, [warp]);
+            assert_eq!(p.because, Because::OpenGlUnfit);
+            // ... and WARP too: OpenGL, nothing else drew, watched no more.
+            let p = plan(setting, None, k(true, true, true));
+            assert_eq!(p.attempts, [gl, any]);
+            assert!(!p.watched());
+            // WARP failed, OpenGL not (yet): OpenGL, watched; its failure then changes nothing.
+            let p = plan(setting, None, k(true, true, false));
+            assert_eq!(p.attempts, [gl, any]);
+            assert_eq!(p.watch, [gl]);
+        }
+        // OpenGL chosen: kept and watched; once it failed here, the card, else WARP.
+        let p = plan(Some(Api::OpenGl), None, NONE);
+        assert_eq!((p.attempts, p.watch), (vec![gl, any], vec![gl]));
+        assert_eq!(p.because, Because::Chosen);
+        let p = plan(Some(Api::OpenGl), None, k(false, false, true));
+        assert_eq!(p.attempts, [any, gl]);
+        assert_eq!(p.because, Because::OpenGlUnfit);
+        let p = plan(Some(Api::OpenGl), None, k(true, false, true));
+        assert_eq!((p.attempts, p.watch), (vec![warp, gl], vec![warp]));
+        // Overrides: as asked, never watched.
+        for (name, first) in [("gl", gl), ("d3d", d3d), ("warp", warp)] {
+            let p = plan(None, Some(name), k(true, true, true));
+            assert_eq!(p.attempts[0], first);
+            assert!(!p.watched());
+        }
+        // The files' names (an older MDM's direct3d-failed.txt and #835's opengl-unfit.txt count).
+        if let Some((starting, failed)) = Way::Card.files() {
+            assert!(starting.ends_with("direct3d-starting"));
+            assert!(failed.ends_with("direct3d-failed.txt"));
+        }
+        if let Some((_, failed)) = Way::Software.files() {
+            assert!(failed.ends_with("direct3d-software-failed.txt"));
+        }
+        if let Some((starting, failed)) = Way::OpenGl.files() {
+            assert!(starting.ends_with("opengl-starting"));
+            assert!(failed.ends_with("opengl-unfit.txt"));
+        }
+        assert_eq!(warp.name(), "Direct3D 12 (WARP)");
+    }
+
+    /// Linux and macOS: no OpenGL start watched, no OpenGL failure remembered (#847 is Windows').
+    #[cfg(all(gpu, not(windows)))]
+    #[test]
+    fn linux_and_macos_watch_no_opengl() {
+        let api = GPU.unwrap_or(Api::OpenGl);
+        let card = Attempt::Gpu(Adapters::Hardware);
+        assert_eq!(plan(Some(api), None, NONE).watch, [card]);
+        assert!(!plan(Some(Api::OpenGl), None, NONE).watched());
+        assert!(!plan(Some(api), None, k(true, false, false)).watched());
+    }
+
+    /// A freeze's window thread inside OpenGL's driver, as #847's reports show it, and not
+    /// anywhere else.
+    #[test]
+    fn a_freeze_inside_an_opengl_driver() {
+        let at = |modules: &[&'static str]| modules.iter().map(|m| Some(*m)).collect::<Vec<_>>();
+        let mdm = "misterdownloadmanager.exe";
+        // Intel HD 5500 (#871), AMD (#860), Windows' own OpenGL showing a frame, NVIDIA: above
+        // MDM's own code.
+        for (stack, driver) in [
+            (
+                at(&["win32u.dll", "ig8icd64.dll", "opengl32.dll", mdm]),
+                "ig8icd64.dll",
+            ),
+            (
+                at(&["ntdll.dll", "atio6axx.dll", "opengl32.dll", mdm]),
+                "atio6axx.dll",
+            ),
+            (
+                at(&["ntdll.dll", "opengl32.dll", "gdi32full.dll", mdm]),
+                "opengl32.dll",
+            ),
+            (at(&["ntdll.dll", "nvoglv64.dll", mdm]), "nvoglv64.dll"),
+            (at(&["kernelbase.dll", "IG9ICD64.DLL", mdm]), "IG9ICD64.DLL"),
+        ] {
+            assert_eq!(gl_driver_frame(stack, false).as_deref(), Some(driver));
+        }
+        // MDM's own code stuck (opengl32.dll lower down, handling the window's messages, as in
+        // every OpenGL window), Direct3D's drivers, unknown frames: not OpenGL's.
+        for stack in [
+            at(&[
+                "ntdll.dll",
+                "kernelbase.dll",
+                mdm,
+                "user32.dll",
+                "opengl32.dll",
+                mdm,
+            ]),
+            at(&["ntdll.dll", "nvwgf2umx.dll", "d3d12core.dll", mdm]),
+            vec![None, None],
+        ] {
+            assert_eq!(gl_driver_frame(stack, false), None);
+        }
+        // A test copy's stall (MDM_TEST_GL_STALL): MDM's own code counts.
+        let stall = at(&["ntdll.dll", "kernelbase.dll", mdm, "opengl32.dll"]);
+        assert_eq!(
+            gl_driver_frame(stall, true).as_deref(),
+            Some("MDM_TEST_GL_STALL")
+        );
+    }
+
+    /// Windows' plans are what they were before Vulkan and Metal (#206): the same attempts for
+    /// every setting, failure and override.
+    #[cfg(windows)]
+    #[test]
+    fn windows_plans_unchanged() {
+        let d3d = Attempt::Gpu(Adapters::Hardware);
+        let any = Attempt::Gpu(Adapters::Any);
+        let warp = Attempt::Gpu(Adapters::Software);
+        let gl = Attempt::OpenGl;
+        for setting in [None, Some(Api::Direct3D)] {
+            assert_eq!(plan(setting, None, NONE).attempts, [d3d, gl, warp]);
+            assert_eq!(
+                plan(setting, None, k(true, false, false)).attempts,
+                [gl, any]
+            );
+        }
+        assert_eq!(plan(Some(Api::OpenGl), None, NONE).attempts, [gl, any]);
+        assert_eq!(
+            plan(Some(Api::OpenGl), Some("D3D"), k(true, false, false)).attempts,
+            [d3d, gl]
+        );
+        assert_eq!(plan(None, Some("warp"), NONE).attempts, [warp, gl]);
+        assert_eq!(plan(None, Some("vulkan"), NONE).attempts[0], d3d);
+        // Its files keep their names.
+        if let Some(f) = file(FAILED) {
+            assert!(f.ends_with("direct3d-failed.txt"));
+        }
+        assert_eq!(
+            Attempt::Gpu(Adapters::Software).name(),
+            "Direct3D 12 (WARP)"
+        );
     }
 
     /// An OpenGL that can't draw MDM (#835) is the last way, after the system's API on the card
@@ -1550,23 +1719,19 @@ mod tests {
         // before OpenGL.
         let p = plan(Some(api), None, k(false, false, true));
         assert_eq!(p.attempts, [card, soft, gl]);
-        assert!(p.watched && p.gl_checked);
+        assert!(p.watched() && p.gl_checked);
         assert_eq!(p.because, Because::Chosen);
         // ... failed on the card here (#835: no Direct3D 12 driver): the software renderer
-        // (WARP) first, watched, OpenGL only if that can't start. On Windows it comes first for
-        // any card without Direct3D 12 (#847), so the reason is the card's failure.
+        // (WARP) first, watched, OpenGL only if that can't start.
         let p = plan(Some(api), None, k(true, false, true));
         assert_eq!(p.attempts, [soft, gl]);
-        assert!(p.watched);
-        let reason = if SOFTWARE_BEFORE_GL {
-            Because::FailedBefore
-        } else {
-            Because::OpenGlUnfit
-        };
-        assert_eq!(p.because, reason);
-        // ... and on the software renderer: OpenGL, nothing else drew.
+        assert_eq!(p.watch, [soft]);
+        assert_eq!(p.because, Because::OpenGlUnfit);
+        // ... and on the software renderer too: OpenGL first, nothing else drew; not watched
+        // again (its failure is known: no start again and again).
         let p = plan(Some(api), None, k(true, true, true));
         assert_eq!(p.attempts, [gl, any]);
+        assert!(!p.watched());
         // OpenGL chosen: the system's API instead, on the card if there is one.
         let p = plan(Some(Api::OpenGl), None, k(false, false, true));
         assert_eq!(p.attempts, [any, gl]);
@@ -1588,15 +1753,10 @@ mod tests {
         assert_eq!(p.attempts, [gl, any]);
         assert!(!p.gl_checked);
         assert!(plan(None, None, NONE).gl_checked);
-        // Not known: OpenGL before the software renderer, except on Windows (#847).
-        let failed = if SOFTWARE_BEFORE_GL {
-            vec![soft, gl]
-        } else {
-            vec![gl, any]
-        };
+        // Not known: the plans above, unchanged for every other card.
         assert_eq!(
             plan(Some(api), None, k(true, false, false)).attempts,
-            failed
+            [gl, any]
         );
     }
 
@@ -1650,12 +1810,15 @@ mod tests {
     fn failure_reasons_in_their_file() {
         for why in Why::ALL {
             let text = format!("{}\nsome details", why.key());
-            assert_eq!(Why::read(&text), (why, "some details"));
+            assert_eq!(Why::read(&text, Why::Other), (why, "some details"));
         }
         // The files of test builds before 0.5.0 on Windows: one line of details.
         let old = "Direct3D drew no first frame within 10 s";
-        assert_eq!(Why::read(old), (Why::Other, old));
-        assert_eq!(Why::read("  \n"), (Why::Other, ""));
+        assert_eq!(Why::read(old, Why::Other), (Why::Other, old));
+        assert_eq!(Why::read("  \n", Why::Other), (Why::Other, ""));
+        // #835's opengl-unfit.txt: one line, the only reason it knew.
+        let unfit = "OpenGL 2.1 is older than 3.0 (Intel HD Graphics)";
+        assert_eq!(Why::read(unfit, Why::TooOld), (Why::TooOld, unfit));
     }
 
     #[cfg(gpu)]

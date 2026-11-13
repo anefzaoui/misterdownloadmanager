@@ -558,11 +558,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 These ship in the next version.
 
 - ✅ Windows: a graphics card without Direct3D 12 (Intel's HD Graphics 3000 to 5500, older AMD
-  Radeon cards) draws with Direct3D 12 on Windows' own software renderer (WARP) before OpenGL,
-  whose drivers on those cards froze or crashed MDM while it showed a frame; a computer where
-  Direct3D failed before moves to WARP at its next start, OpenGL draws when WARP can't, OpenGL
-  chosen in **View → Draw with** stays, and the menu says what draws and why
-  ([#847](https://github.com/anefzaoui/misterdownloadmanager/issues/847))
+  Radeon cards) draws with OpenGL, then with Direct3D 12 on Windows' own software renderer (WARP)
+  once OpenGL fails there: it can't start, is too old, shows no first window, or MDM freezes
+  inside its driver (read from the freeze report); remembered, **View → Draw with** says why, and
+  choosing **OpenGL** tries it again ([#847](https://github.com/anefzaoui/misterdownloadmanager/issues/847))
 - ✅ macOS: .torrent files open in MDM from Finder (double-click, Open With, the Dock's icon) and
   magnet links from the browser, and Torrent settings can make MDM their default app there
   ([#698](https://github.com/anefzaoui/misterdownloadmanager/issues/698))

@@ -6931,9 +6931,25 @@ menu	Open with...	ഇതുപയോഗിച്ച് തുറക്കുക.
 #, machine
 menu	OpenGL	OpenGL
 #. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
+#, machine
+menu	OpenGL didn't start here	OpenGL ഇവിടെ ആരംഭിക്കാനായില്ല
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window froze inside the graphics card's driver while OpenGL drew
+#, machine
+menu	OpenGL froze inside the graphics driver here	OpenGL ഇവിടെ ഗ്രാഫിക്സ് ഡ്രൈവറിനുള്ളിൽ നിശ്ചലമായി
+#. menu command in the main window
 #. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
 #, machine
 menu	OpenGL here is too old to draw MDM	MDM വരയ്ക്കാൻ ഇവിടുത്തെ OpenGL വളരെ പഴയതാണ്
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window stayed empty for 10 seconds, so MDM started again another way
+#, machine
+menu	OpenGL's first frame didn't show within 10 seconds	OpenGL-ന്റെ ആദ്യ ഫ്രെയിം 10 സെക്കൻഡിനുള്ളിൽ കാണിച്ചില്ല
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed or was closed while starting with it
+#, machine
+menu	OpenGL's last start ended before its first frame	OpenGL-ന്റെ അവസാന ആരംഭം അതിന്റെ ആദ്യ ഫ്രെയിമിന് മുമ്പ് അവസാനിച്ചു
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window
