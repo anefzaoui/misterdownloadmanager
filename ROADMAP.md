@@ -560,6 +560,10 @@ These ship in the next version.
 - ✅ macOS: .torrent files open in MDM from Finder (double-click, Open With, the Dock's icon) and
   magnet links from the browser, and Torrent settings can make MDM their default app there
   ([#698](https://github.com/anefzaoui/misterdownloadmanager/issues/698))
+- ✅ Tests: the five that checked a long list is read in linear time against a fixed number of
+  seconds (one failed on a slow macOS runner) now time the same work at two sizes, eight times
+  apart, and fail only when the larger one costs over 24 times as much (a square costs 64 times),
+  whatever the machine's speed
 - ✅ Touch screens: a tap on a menu's item chooses it (the menu bar's, right-click menus,
   drop-downs), where only a mouse could
   ([#733](https://github.com/anefzaoui/misterdownloadmanager/issues/733))

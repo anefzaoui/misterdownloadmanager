@@ -8,6 +8,7 @@ pub mod drive;
 pub mod faults;
 mod feeds;
 pub mod ftp;
+pub mod growth;
 mod pages;
 mod server;
 mod streams;

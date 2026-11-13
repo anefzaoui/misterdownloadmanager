@@ -1111,24 +1111,25 @@ mod tests {
     /// than any real line), and a line just under the cap is read in linear time.
     #[test]
     fn crafted_attribute_lines_cost_no_square() {
-        let t = std::time::Instant::now();
-        for line in [
-            format!("#EXT-X-KEY:{}", "A".repeat(MAX_BYTES)),
-            format!("#EXT-X-KEY:{}", "A=\"".repeat(MAX_BYTES / 3)),
-            format!("#EXT-X-KEY:{}", "A".repeat(MAX_ATTRIBUTE_LINE - 20)),
-            format!(
-                "#EXT-X-KEY:METHOD=AES-128,{}",
-                "B".repeat(MAX_ATTRIBUTE_LINE - 40)
-            ),
-        ] {
-            let _ = attributes(&line);
-        }
-        assert!(
-            t.elapsed() < std::time::Duration::from_secs(1),
-            "{:?}",
-            t.elapsed()
-        );
+        // Longer than any real line: refused from its length alone.
         assert!(attributes(&format!("#EXT-X-KEY:{}", "A".repeat(MAX_BYTES))).is_none());
+        assert!(attributes(&format!("#EXT-X-KEY:{}", "A=\"".repeat(MAX_BYTES / 3))).is_none());
+        // Under the cap: 8 times the line costs about 8 times as long (not 64), on any machine.
+        let crafted = |n: usize| {
+            [
+                format!("#EXT-X-KEY:{}", "A".repeat(n)),
+                format!("#EXT-X-KEY:{}", "A=\"".repeat(n / 3)),
+                format!("#EXT-X-KEY:METHOD=AES-128,{}", "B".repeat(n)),
+            ]
+        };
+        let small = (MAX_ATTRIBUTE_LINE - 40) / mdm_labserver::growth::SCALE;
+        mdm_labserver::growth::assert_linear(small, crafted, |lines| {
+            for _ in 0..20 {
+                for line in &lines {
+                    std::hint::black_box(attributes(line));
+                }
+            }
+        });
         // The run's skip changes nothing: a key after a failed run is still found.
         let a = attributes("#EXT-X-KEY:AAAA BBB-9 METHOD=NONE").unwrap();
         assert_eq!(a.get("METHOD").map(String::as_str), Some("NONE"));
