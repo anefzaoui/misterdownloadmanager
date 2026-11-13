@@ -2042,7 +2042,15 @@ pub mod open_events {
                 );
             }
             let paths = file_paths(&list);
-            assert_eq!(paths, files);
+            // A file URL's path comes back as the file system spells it: `ü` decomposed (u and
+            // its diaeresis), the same file to every macOS call that opens it.
+            assert_eq!(
+                paths,
+                [
+                    "/Users/me/Downloads/debian.iso.torrent",
+                    "/tmp/a b/u\u{308}.torrent"
+                ]
+            );
             let cmd = mdm_ipc::parse_args(&paths[..1]).unwrap();
             assert_eq!(cmd.url.as_deref(), Some(files[0]));
 
