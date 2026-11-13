@@ -418,16 +418,25 @@ fn loadable_font(bytes: &[u8]) -> bool {
 }
 
 /// A font file's bytes, when egui can draw with them ([`loadable_font`]). Any other file is
-/// passed over, and the log says so: the next font in line is used instead.
+/// passed over, and the log says so (once a run: the fonts are loaded again with each change of
+/// language): the next font in line is used instead.
 pub(crate) fn read_font(path: &std::path::Path) -> Option<Vec<u8>> {
+    static SAID: std::sync::Mutex<Option<std::collections::HashSet<std::path::PathBuf>>> =
+        std::sync::Mutex::new(None);
     let bytes = std::fs::read(path).ok()?;
     if loadable_font(&bytes) {
         return Some(bytes);
     }
-    tracing::warn!(
-        "fonts: {} is not a TrueType or OpenType font, passed over",
-        path.display()
-    );
+    let mut said = SAID.lock().unwrap_or_else(|e| e.into_inner());
+    if said
+        .get_or_insert_with(Default::default)
+        .insert(path.to_owned())
+    {
+        tracing::warn!(
+            "fonts: {} is not a TrueType or OpenType font, passed over",
+            path.display()
+        );
+    }
     None
 }
 
