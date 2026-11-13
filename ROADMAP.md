@@ -557,6 +557,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows: Open starts the program Windows has for the file's type (7-Zip for a .zip when it
+  opens them), as a double-click in Explorer does, instead of failing and showing the folder
+  ([#811](https://github.com/anefzaoui/misterdownloadmanager/issues/811),
+  [#854](https://github.com/anefzaoui/misterdownloadmanager/pull/854))
 - ✅ The download list's column lines run straight from the header down: the rows' lines sat a
   pixel to the right of the header's dividers
   ([#924](https://github.com/anefzaoui/misterdownloadmanager/issues/924))
