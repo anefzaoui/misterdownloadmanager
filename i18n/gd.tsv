@@ -1450,6 +1450,12 @@
 #, machine
 	Drag the file into a folder or an app	Slaod am faidhle a-steach do phasgan no aplacaid
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	Chaidh a shlaodadh a-mach à Luchdadh a-nuas deiseil agus a ghluasad gu àite nach b’ urrainn do MDM aithneachadh
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	Slaodadh a-mach à Luchdadh a-nuas deiseil agus ghluais e gu {folder}
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	Ceanglaichean air an slaodadh
@@ -3227,8 +3233,9 @@
 #. verb: opens the file
 #, machine
 	Open	Fosgail
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	Fosgail am pasgan
@@ -5627,6 +5634,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	Tha {file} ro mhòr airson a bhith na liosta de sheòlaidhean ({size}). Leughaidh Import faidhlichean teacsa, duilleagan-lìn agus às-phortadh .ef2 suas gu {limit}.
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	Chaidh {file} a ghluasad gu àite eile le bhith ga shlaodadh a-mach à Luchdadh a-nuas deiseil, agus cha b’ urrainn do MDM aithneachadh càit an deach a chur. Coimhead far an do leig thu sìos e.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

@@ -1450,6 +1450,12 @@
 #, machine
 	Drag the file into a folder or an app	Przeciągnij plik do folderu lub aplikacji
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	Przeciągnięto z „Pobieranie ukończone” i przeniesiono w miejsce, którego MDM nie mógł ustalić
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	Przeciągnięto z „Pobieranie ukończone” i przeniesiono do {folder}
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	Upuszczone łącza
@@ -3227,8 +3233,9 @@
 #. verb: opens the file
 #, machine
 	Open	Otwórz
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	Otwórz folder
@@ -5627,6 +5634,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	Plik {file} jest zbyt duży, aby mógł być listą adresów ({size}). Import odczytuje pliki tekstowe, strony internetowe i eksporty .ef2 o rozmiarze do {limit}.
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	Plik {file} został przeniesiony w inne miejsce przez przeciągnięcie go z „Pobieranie ukończone”, a MDM nie mógł ustalić, gdzie. Poszukaj go tam, gdzie go upuściłeś.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

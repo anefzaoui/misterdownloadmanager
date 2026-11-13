@@ -1450,6 +1450,12 @@
 #, machine
 	Drag the file into a folder or an app	Povucite datoteku u mapu ili aplikaciju
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	Izvučeno iz „Preuzimanje dovršeno” i premješteno na mjesto koje MDM nije mogao saznati.
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	Izvučeno iz „Preuzimanje dovršeno” i premješteno u {folder}.
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	Ispuštene veze
@@ -3227,8 +3233,9 @@
 #. verb: opens the file
 #, machine
 	Open	Otvori
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	Otvori mapu
@@ -5622,6 +5629,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} je prevelik da bi bio popis adresa ({size}). Uvoz čita tekstualne datoteke, web-stranice i .ef2 izvoze do {limit}.
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	Datoteka {file} premještena je drugamo povlačenjem iz „Preuzimanje dovršeno”, a MDM nije mogao saznati gdje. Potražite je tamo gdje ste je ispustili.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

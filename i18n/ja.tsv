@@ -1450,6 +1450,12 @@
 #, machine
 	Drag the file into a folder or an app	ファイルをフォルダーまたはアプリにドラッグする
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	「ダウンロード完了」からドラッグして、MDM が移動先を特定できない場所に移動しました。
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	「ダウンロード完了」からドラッグして、{folder} に移動しました。
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	ドロップされたリンク
@@ -3227,8 +3233,9 @@
 #. verb: opens the file
 #, machine
 	Open	開く
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	フォルダーを開く
@@ -5627,6 +5634,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} はアドレスの一覧としては大きすぎます ({size})。インポートできるのは、テキスト ファイル、Web ページ、および最大 {limit} の .ef2 エクスポートです。
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} は「ダウンロード完了」からドラッグして別の場所に移動されましたが、MDM では移動先を特定できませんでした。ドロップした場所を確認してください。
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

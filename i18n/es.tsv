@@ -1450,6 +1450,12 @@
 #, machine
 	Drag the file into a folder or an app	Arrastra el archivo a una carpeta o aplicación
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	Se arrastró fuera de Descarga completada y se movió a un lugar que MDM no pudo aprender
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	Se arrastró fuera de Descarga completada y se movió a {folder}
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	Enlaces arrastrados
@@ -3227,8 +3233,9 @@
 #. verb: opens the file
 #, machine
 	Open	Abrir
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	Abrir carpeta
@@ -5627,6 +5634,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} es demasiado grande para ser una lista de direcciones ({size}). La importación lee archivos de texto, páginas web y exportaciones .ef2 de hasta {limit}.
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} se movió a otro lugar al arrastrarlo fuera de Descarga completada, y MDM no pudo saber dónde. Búscalo donde lo soltaste.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

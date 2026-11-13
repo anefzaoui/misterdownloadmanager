@@ -1450,6 +1450,12 @@
 #, machine
 	Drag the file into a folder or an app	Faylni papka yoki ilovaga torting
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	Yuklab olish tugallandi bo‘limidan sudrab olib chiqildi va MDM topa olmaydigan joyga ko‘chirildi
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	Yuklab olish tugallandi joyidan sudrab olib ketildi va {folder} joyiga ko‘chirildi
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	Tashlab yuborilgan havolalar
@@ -3227,8 +3233,9 @@
 #. verb: opens the file
 #, machine
 	Open	Ochish
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	Jildni ochish
@@ -5627,6 +5634,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} manzillar ro‘yxati fayli bo‘lish uchun juda katta ({size}). Import hajmi {limit} gacha bo‘lgan matn fayllari, veb-sahifalar va .ef2 eksportlarini o‘qiydi.
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} yuklab olish tugallandi bo‘limidan sudrab olib chiqildi va MDM uning qayerga ko‘chirilganini topa olmadi. Uni tashlagan joyingizdan qidiring.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

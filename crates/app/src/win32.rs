@@ -2464,22 +2464,6 @@ mod menus_dark_tests {
     }
 }
 
-/// One of our windows by handle, for crates that take a `raw-window-handle` window.
-struct OwnWindow(HWND);
-
-impl raw_window_handle::HasWindowHandle for OwnWindow {
-    fn window_handle(
-        &self,
-    ) -> Result<raw_window_handle::WindowHandle<'_>, raw_window_handle::HandleError> {
-        let h = std::num::NonZeroIsize::new(self.0 as isize)
-            .ok_or(raw_window_handle::HandleError::Unavailable)?;
-        let raw =
-            raw_window_handle::RawWindowHandle::Win32(raw_window_handle::Win32WindowHandle::new(h));
-        // SAFETY: the handle belongs to a live window of this process for the call's duration.
-        Ok(unsafe { raw_window_handle::WindowHandle::borrow_raw(raw) })
-    }
-}
-
 /// A drag out of Download complete is under way ([`drag_file_out`]): one at a time, the mouse
 /// holds only one.
 static DRAGGING: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
@@ -2500,10 +2484,19 @@ pub fn dragging_out() -> bool {
 }
 
 /// Start dragging `file` out of our window (to Explorer, a mail, a chat…), like IDM's Download
-/// complete grip. The drag preview is the file's shell icon. The window is the one holding the
-/// mouse (the button is down on its grip: winit captured the mouse for it), so it is the right
-/// one when several show the same title; else our window titled `title`, given in the interface
-/// language, as it shows.
+/// complete grip. The drag is the shell's own for the file, as Explorer's is (its preview, its
+/// formats). The window is the one holding the mouse (the button is down on its grip: winit
+/// captured the mouse for it), so it is the right one when several show the same title; else
+/// our window titled `title`, given in the interface language, as it shows.
+///
+/// The drop target decides what the drag does (#869): MDM offers a move, a copy and a link, so
+/// Explorer applies its own rules, as for a file dragged in Explorer: moved on the same drive or
+/// with Shift, copied to another drive or with Ctrl, a shortcut with Alt. A move is followed:
+/// `followed` is told where the file went (from the shell's change notifications), or that it
+/// went where MDM can't learn; a copy, a link or a cancelled drag tell nothing. It may come long
+/// after the drop (a move to another drive copies first), from the drag's thread. MDM never
+/// deletes the file itself, even for a target that asks the source to (a move it doesn't
+/// optimize): the file stays, so nothing is lost.
 ///
 /// The drag runs on a thread of its own (#561): OLE's drag loop lasts as long as the button is
 /// held, and each step calls the program under the pointer (its drop target, in its own process),
@@ -2511,7 +2504,11 @@ pub fn dragging_out() -> bool {
 /// answers the drop, froze every window until it answered. That thread shares the window
 /// thread's input ([`with_shared_input`]): OLE reads the held button and takes the mouse from
 /// there, as it did from the window thread.
-pub fn drag_file_out(title: &str, file: &std::path::Path) -> Result<(), String> {
+pub fn drag_file_out(
+    title: &str,
+    file: &std::path::Path,
+    followed: impl FnOnce(crate::dialogs::DraggedOut) + Send + 'static,
+) -> Result<(), String> {
     use std::sync::atomic::Ordering;
     let hwnd = own_capture()
         .or_else(|| find_own_window(title))
@@ -2526,9 +2523,9 @@ pub fn drag_file_out(title: &str, file: &std::path::Path) -> Result<(), String> 
         }
         // Looked for here, beside the window (#743): a drive slow to answer doesn't hold it.
         let result = if file.exists() {
-            drag_on_this_thread(hwnd as HWND, &file)
+            dragout::drag(hwnd as HWND, &file)
         } else {
-            Ok(())
+            Ok(None)
         };
         if let Ok(mut t) = DRAG_ENDED.lock() {
             *t = Some(std::time::Instant::now());
@@ -2538,8 +2535,15 @@ pub fn drag_file_out(title: &str, file: &std::path::Path) -> Result<(), String> 
         // the next press on the grip only ended the drag the window still thought was on, and
         // the grip worked every other time.
         release_button(hwnd as HWND);
-        if let Err(e) = result {
+        let dropped = result.unwrap_or_else(|e| {
             tracing::warn!("drag out: {e}");
+            None
+        });
+        // Once the window's input is given back: what became of the file.
+        move || {
+            if let Some(out) = dropped.and_then(dragout::Dropped::follow) {
+                followed(out);
+            }
         }
     });
     if started.is_err() {
@@ -2573,38 +2577,16 @@ fn release_button(hwnd: HWND) {
     }
 }
 
-/// The drag itself, on the thread [`drag_file_out`] started (OLE initialised there).
-fn drag_on_this_thread(hwnd: HWND, file: &std::path::Path) -> Result<(), String> {
-    let name = file.file_name().and_then(|n| n.to_str()).unwrap_or("");
-    let what = crate::fileicons::What::of(crate::fileicons::Kind::File(name));
-    let preview = file_icon(&what, 32)
-        .and_then(|icon| {
-            let crate::fileicons::Native::Rgba { side, rgba, .. } = icon else {
-                return None;
-            };
-            let img = image::RgbaImage::from_raw(side, side, rgba)?;
-            let mut png = Vec::new();
-            img.write_to(&mut std::io::Cursor::new(&mut png), image::ImageFormat::Png)
-                .ok()?;
-            Some(png)
-        })
-        .unwrap_or_default();
-    drag::start_drag(
-        &OwnWindow(hwnd),
-        drag::DragItem::Files(vec![file.to_path_buf()]),
-        drag::Image::Raw(preview),
-        |_, _| {},
-        drag::Options::default(),
-    )
-    .map_err(|e| e.to_string())
-}
-
 /// Run `work` on a new thread named `name`, with OLE (a single-threaded apartment) and the
 /// calling thread's input state: the keys and mouse buttons held, the mouse capture and the
 /// focus (AttachThreadInput), as a modal loop like OLE's drag needs when the button went down in
 /// the caller's window. `work` is told whether the input is shared. Returns at once; the input
-/// is detached and OLE closed when `work` ends. The caller has a message queue (a window thread).
-fn with_shared_input(name: &str, work: impl FnOnce(bool) + Send + 'static) -> Result<(), String> {
+/// is detached when `work` ends, then what `work` returned runs (still with OLE: the drag's
+/// follow-up), and OLE is closed. The caller has a message queue (a window thread).
+fn with_shared_input<A: FnOnce()>(
+    name: &str,
+    work: impl FnOnce(bool) -> A + Send + 'static,
+) -> Result<(), String> {
     use windows_sys::Win32::System::Threading::{AttachThreadInput, GetCurrentThreadId};
     use windows_sys::Win32::UI::WindowsAndMessaging::{MSG, PM_NOREMOVE, PeekMessageW};
     #[link(name = "ole32")]
@@ -2627,11 +2609,12 @@ fn with_shared_input(name: &str, work: impl FnOnce(bool) + Send + 'static) -> Re
             // SAFETY: plain calls with two live threads of this process; undone below.
             let me = unsafe { GetCurrentThreadId() };
             let attached = unsafe { AttachThreadInput(me, caller, 1) } != 0;
-            work(attached);
+            let after = work(attached);
             if attached {
                 // SAFETY: as above.
                 unsafe { AttachThreadInput(me, caller, 0) };
             }
+            after();
             if ole {
                 // SAFETY: matches the OleInitialize above, on this thread.
                 unsafe { OleUninitialize() };
@@ -2670,6 +2653,7 @@ mod drag_thread_tests {
             // SAFETY: a plain query.
             let me = unsafe { GetCurrentThreadId() };
             tx.send((me, shared, hr, kind)).unwrap();
+            || {}
         })
         .unwrap();
         go_tx.send(()).unwrap();
@@ -2682,6 +2666,669 @@ mod drag_thread_tests {
             kind == 0 || kind == 3,
             "a single-threaded apartment, not {kind}"
         );
+    }
+}
+
+/// Dragging a downloaded file out of Download complete (#869): the shell's own data object for
+/// it (Explorer's drag image, its formats), offered for a move, a copy or a link so the drop
+/// target applies Explorer's rules, and a move followed through the shell's change
+/// notifications, so the download can point where its file went.
+mod dragout {
+    use std::cell::RefCell;
+    use std::ffi::c_void;
+    use std::mem::zeroed;
+    use std::path::{Path, PathBuf};
+    use std::time::{Duration, Instant};
+
+    use windows_sys::Win32::Foundation::{HWND, LPARAM, LRESULT, WPARAM};
+    use windows_sys::Win32::System::LibraryLoader::GetModuleHandleW;
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        CreateWindowExW, DefWindowProcW, DestroyWindow, DispatchMessageW, HWND_MESSAGE, MSG,
+        MsgWaitForMultipleObjects, PM_REMOVE, PeekMessageW, QS_ALLINPUT, RegisterClassW,
+        TranslateMessage, WM_APP, WNDCLASSW,
+    };
+
+    use crate::dialogs::DraggedOut;
+
+    type HResult = i32;
+    const DROPEFFECT_COPY: u32 = 1;
+    const DROPEFFECT_MOVE: u32 = 2;
+    const DROPEFFECT_LINK: u32 = 4;
+    /// SHDoDragDrop's (DoDragDrop's) answer when the file was dropped, not cancelled.
+    const DRAGDROP_S_DROP: HResult = 0x0004_0100;
+    /// SHChangeNotifyRegister: the shell's own notifications (what Explorer and every program
+    /// using the shell's file operations do), not the disks' (which would watch every drive),
+    /// delivered as a handle to lock.
+    const SHCNRF_SHELL_LEVEL: i32 = 0x0002;
+    const SHCNRF_NEW_DELIVERY: i32 = 0x8000;
+    const SHCNE_RENAMEITEM: i32 = 0x0000_0001;
+    const SHCNE_CREATE: i32 = 0x0000_0002;
+    const SHCNE_DELETE: i32 = 0x0000_0004;
+    const SHCNE_MKDIR: i32 = 0x0000_0008;
+    const SHCNE_RMDIR: i32 = 0x0000_0010;
+    const SHCNE_RENAMEFOLDER: i32 = 0x0002_0000;
+    /// The notification's message to our watching window.
+    const WM_SHELL_CHANGED: u32 = WM_APP + 0x69;
+    /// The formats a drop target sets on the data object to say what it did (Shell Clipboard
+    /// Formats): an optimized move (Explorer's, on any drive) answers "none" to the drag, so
+    /// the source doesn't delete the file the target already moved, and says "move" here.
+    const PERFORMED: &str = "Performed DropEffect";
+    const LOGICAL_PERFORMED: &str = "Logical Performed DropEffect";
+    /// How long a dropped file is watched while it is still there: a target that said it moves
+    /// it may be copying it to another drive first; one that said nothing may do so on its own
+    /// thread.
+    const MOVING_FOR: Duration = Duration::from_secs(30 * 60);
+    const DROPPED_FOR: Duration = Duration::from_secs(60);
+    /// How long the shell's word on where it went is waited for once the file is gone.
+    const GONE_FOR: Duration = Duration::from_secs(3);
+
+    #[repr(C)]
+    struct Guid(u32, u16, u16, [u8; 8]);
+    const IID_IDATAOBJECT: Guid = Guid(0x0000_010e, 0, 0, [0xC0, 0, 0, 0, 0, 0, 0, 0x46]);
+
+    #[repr(C)]
+    struct NotifyEntry {
+        pidl: *const c_void,
+        recursive: i32,
+    }
+
+    #[repr(C)]
+    struct FormatEtc {
+        cf: u16,
+        ptd: *mut c_void,
+        aspect: u32,
+        lindex: i32,
+        tymed: u32,
+    }
+
+    #[repr(C)]
+    struct StgMedium {
+        tymed: u32,
+        handle: *mut c_void,
+        unk_for_release: *mut c_void,
+    }
+
+    /// IDataObject's vtable up to GetData (index 3), all we call.
+    #[repr(C)]
+    struct DataObjectVtbl {
+        _query_interface: usize,
+        _add_ref: usize,
+        release: unsafe extern "system" fn(*mut c_void) -> u32,
+        get_data:
+            unsafe extern "system" fn(*mut c_void, *const FormatEtc, *mut StgMedium) -> HResult,
+    }
+
+    #[link(name = "shell32")]
+    unsafe extern "system" {
+        fn ILCreateFromPathW(path: *const u16) -> *mut c_void;
+        fn ILFree(pidl: *mut c_void);
+        fn ILClone(pidl: *const c_void) -> *mut c_void;
+        fn ILRemoveLastID(pidl: *mut c_void) -> i32;
+        fn ILFindLastID(pidl: *const c_void) -> *mut c_void;
+        fn SHCreateDataObject(
+            folder: *const c_void,
+            count: u32,
+            items: *const *const c_void,
+            inner: *mut c_void,
+            riid: *const Guid,
+            out: *mut *mut c_void,
+        ) -> HResult;
+        fn SHDoDragDrop(
+            hwnd: HWND,
+            data: *mut c_void,
+            source: *mut c_void,
+            effects: u32,
+            effect: *mut u32,
+        ) -> HResult;
+        fn SHGetSpecialFolderLocation(hwnd: HWND, csidl: i32, pidl: *mut *mut c_void) -> HResult;
+        fn SHChangeNotifyRegister(
+            hwnd: HWND,
+            sources: i32,
+            events: i32,
+            msg: u32,
+            count: i32,
+            entries: *const NotifyEntry,
+        ) -> u32;
+        fn SHChangeNotifyDeregister(id: u32) -> i32;
+        fn SHChangeNotification_Lock(
+            change: *mut c_void,
+            pid: u32,
+            pidls: *mut *mut *mut c_void,
+            event: *mut i32,
+        ) -> *mut c_void;
+        fn SHChangeNotification_Unlock(lock: *mut c_void) -> i32;
+        fn SHGetPathFromIDListEx(pidl: *const c_void, path: *mut u16, len: u32, opts: i32) -> i32;
+    }
+    #[link(name = "ole32")]
+    unsafe extern "system" {
+        fn ReleaseStgMedium(medium: *mut StgMedium);
+    }
+    #[link(name = "kernel32")]
+    unsafe extern "system" {
+        fn GlobalLock(h: *mut c_void) -> *mut c_void;
+        fn GlobalUnlock(h: *mut c_void) -> i32;
+        fn GlobalSize(h: *mut c_void) -> usize;
+    }
+    #[link(name = "user32")]
+    unsafe extern "system" {
+        fn RegisterClipboardFormatW(name: *const u16) -> u32;
+    }
+
+    fn wide(s: &std::ffi::OsStr) -> Vec<u16> {
+        use std::os::windows::ffi::OsStrExt;
+        s.encode_wide().chain(Some(0)).collect()
+    }
+
+    /// What the shell said happened to a file or folder, as paths.
+    #[derive(Clone, Debug, PartialEq, Eq)]
+    pub(super) enum Seen {
+        Renamed(PathBuf, PathBuf),
+        Created(PathBuf),
+        Deleted(PathBuf),
+    }
+
+    thread_local! {
+        /// What this drag's watch saw (one drag per thread).
+        static SEEN: RefCell<Vec<Seen>> = const { RefCell::new(Vec::new()) };
+    }
+
+    /// Two paths name the same file: Windows' names don't tell case apart.
+    fn same(a: &Path, b: &Path) -> bool {
+        let norm = |p: &Path| {
+            p.to_string_lossy()
+                .replace('/', "\\")
+                .trim_end_matches('\\')
+                .to_lowercase()
+        };
+        norm(a) == norm(b)
+    }
+
+    /// `path` without the `\\?\` that canonicalize puts before it (the shell's paths have none).
+    pub(super) fn plain(path: PathBuf) -> PathBuf {
+        let s = path.to_string_lossy();
+        if let Some(rest) = s.strip_prefix(r"\\?\UNC\") {
+            PathBuf::from(format!(r"\\{rest}"))
+        } else if let Some(rest) = s.strip_prefix(r"\\?\") {
+            PathBuf::from(rest)
+        } else {
+            path
+        }
+    }
+
+    /// In a drive's Recycle Bin (`$Recycle.Bin`): thrown away, not put somewhere to open.
+    pub(super) fn in_recycle_bin(path: &Path) -> bool {
+        path.components().any(|c| {
+            c.as_os_str()
+                .to_string_lossy()
+                .eq_ignore_ascii_case("$Recycle.Bin")
+        })
+    }
+
+    /// Where `original` went, from what the shell saw: renamed or moved on its drive (one
+    /// notification with both paths, followed as often as it moved), or, gone from its place,
+    /// the one file of its name made elsewhere meanwhile (a move to another drive copies then
+    /// deletes). None while nothing says, or when two places could be it.
+    pub(super) fn followed(original: &Path, seen: &[Seen]) -> Option<PathBuf> {
+        let mut at = original.to_path_buf();
+        let (mut renamed, mut deleted) = (false, false);
+        for s in seen {
+            match s {
+                Seen::Renamed(from, to) if same(from, &at) => {
+                    at = to.clone();
+                    renamed = true;
+                }
+                Seen::Deleted(p) if same(p, original) => deleted = true,
+                _ => {}
+            }
+        }
+        if renamed {
+            return Some(at);
+        }
+        if !deleted {
+            return None;
+        }
+        let name = original.file_name()?.to_string_lossy().to_lowercase();
+        let mut made = seen.iter().filter_map(|s| match s {
+            Seen::Created(p)
+                if !same(p, original)
+                    && p.file_name()
+                        .is_some_and(|n| n.to_string_lossy().to_lowercase() == name) =>
+            {
+                Some(p)
+            }
+            _ => None,
+        });
+        let first = made.next()?;
+        if made.any(|p| !same(p, first)) {
+            return None;
+        }
+        Some(first.clone())
+    }
+
+    /// The shell's path of an item, if it is one on a disk.
+    fn path_of(pidl: *const c_void) -> Option<PathBuf> {
+        if pidl.is_null() {
+            return None;
+        }
+        let mut buf = vec![0u16; 32_768];
+        // SAFETY: `pidl` is the shell's, valid while its notification is locked; `buf` is as
+        // long as said.
+        let ok = unsafe { SHGetPathFromIDListEx(pidl, buf.as_mut_ptr(), buf.len() as u32, 0) };
+        let len = buf.iter().position(|&c| c == 0).unwrap_or(0);
+        (ok != 0 && len > 0).then(|| PathBuf::from(String::from_utf16_lossy(&buf[..len])))
+    }
+
+    /// The watching window's procedure: each notification, as paths, into [`SEEN`].
+    unsafe extern "system" fn watch_proc(
+        hwnd: HWND,
+        msg: u32,
+        wparam: WPARAM,
+        lparam: LPARAM,
+    ) -> LRESULT {
+        if msg != WM_SHELL_CHANGED {
+            // SAFETY: the system's default for every other message.
+            return unsafe { DefWindowProcW(hwnd, msg, wparam, lparam) };
+        }
+        let mut pidls: *mut *mut c_void = std::ptr::null_mut();
+        let mut event = 0i32;
+        // SAFETY: a new-delivery notification: wParam its handle, lParam the process to lock
+        // it for; the two items read before it is unlocked.
+        unsafe {
+            let lock = SHChangeNotification_Lock(
+                wparam as *mut c_void,
+                lparam as u32,
+                &mut pidls,
+                &mut event,
+            );
+            if lock.is_null() || pidls.is_null() {
+                return 0;
+            }
+            let item = |i: usize| path_of(*pidls.add(i));
+            // The low bits: the event (the high one says it came from the disk).
+            let seen = match event & 0x7FFF_FFFF {
+                SHCNE_RENAMEITEM | SHCNE_RENAMEFOLDER => {
+                    item(0).zip(item(1)).map(|(a, b)| Seen::Renamed(a, b))
+                }
+                SHCNE_CREATE | SHCNE_MKDIR => item(0).map(Seen::Created),
+                SHCNE_DELETE | SHCNE_RMDIR => item(0).map(Seen::Deleted),
+                _ => None,
+            };
+            SHChangeNotification_Unlock(lock);
+            if let Some(s) = seen {
+                tracing::debug!("drag out: the shell saw {s:?}");
+                SEEN.with(|v| v.borrow_mut().push(s));
+            }
+        }
+        0
+    }
+
+    /// A hidden window of the drag's thread, told by the shell of every file renamed, made or
+    /// deleted through it (the whole namespace: a move goes anywhere).
+    struct Watch {
+        hwnd: HWND,
+        id: u32,
+    }
+
+    impl Watch {
+        fn start() -> Option<Watch> {
+            static CLASS: std::sync::Once = std::sync::Once::new();
+            let class: Vec<u16> = "mdm-drag-out-watch\0".encode_utf16().collect();
+            // SAFETY: a class with our procedure, registered once; a message-only window of
+            // this thread, destroyed in Drop (or below when the shell won't watch); the desktop's
+            // item list freed once registered (the shell keeps its own copy).
+            unsafe {
+                let module = GetModuleHandleW(std::ptr::null());
+                CLASS.call_once(|| {
+                    let mut wc: WNDCLASSW = zeroed();
+                    wc.lpfnWndProc = Some(watch_proc);
+                    wc.hInstance = module;
+                    wc.lpszClassName = class.as_ptr();
+                    RegisterClassW(&wc);
+                });
+                let hwnd = CreateWindowExW(
+                    0,
+                    class.as_ptr(),
+                    std::ptr::null(),
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    HWND_MESSAGE,
+                    std::ptr::null_mut(),
+                    module,
+                    std::ptr::null(),
+                );
+                if hwnd.is_null() {
+                    return None;
+                }
+                let mut desktop = std::ptr::null_mut();
+                // CSIDL_DESKTOP (0): the namespace's root.
+                if SHGetSpecialFolderLocation(std::ptr::null_mut(), 0, &mut desktop) < 0 {
+                    DestroyWindow(hwnd);
+                    return None;
+                }
+                let entry = NotifyEntry {
+                    pidl: desktop,
+                    recursive: 1,
+                };
+                let id = SHChangeNotifyRegister(
+                    hwnd,
+                    SHCNRF_SHELL_LEVEL | SHCNRF_NEW_DELIVERY,
+                    SHCNE_RENAMEITEM
+                        | SHCNE_RENAMEFOLDER
+                        | SHCNE_CREATE
+                        | SHCNE_MKDIR
+                        | SHCNE_DELETE
+                        | SHCNE_RMDIR,
+                    WM_SHELL_CHANGED,
+                    1,
+                    &entry,
+                );
+                ILFree(desktop);
+                if id == 0 {
+                    DestroyWindow(hwnd);
+                    return None;
+                }
+                SEEN.with(|v| v.borrow_mut().clear());
+                Some(Watch { hwnd, id })
+            }
+        }
+
+        /// Wait up to `wait` for messages, and hand every one of this thread's to its window.
+        fn pump(&self, wait: Duration) {
+            // SAFETY: waits on no handle, then the thread's own message loop.
+            unsafe {
+                MsgWaitForMultipleObjects(
+                    0,
+                    std::ptr::null(),
+                    0,
+                    wait.as_millis() as u32,
+                    QS_ALLINPUT,
+                );
+                let mut msg: MSG = zeroed();
+                while PeekMessageW(&mut msg, std::ptr::null_mut(), 0, 0, PM_REMOVE) != 0 {
+                    TranslateMessage(&msg);
+                    DispatchMessageW(&msg);
+                }
+            }
+        }
+    }
+
+    impl Drop for Watch {
+        fn drop(&mut self) {
+            // SAFETY: what `start` registered and made, on the same thread.
+            unsafe {
+                SHChangeNotifyDeregister(self.id);
+                DestroyWindow(self.hwnd);
+            }
+            SEEN.with(|v| v.borrow_mut().clear());
+        }
+    }
+
+    /// The shell's data object for one file: what Explorer itself drags (the file, its item, its
+    /// drag image), and where a drop target says what it did.
+    struct DataObject(*mut c_void);
+
+    impl DataObject {
+        fn of(path: &Path) -> Option<DataObject> {
+            let w = wide(path.as_os_str());
+            // SAFETY: the item lists made from a NUL-terminated path (its folder's, and the
+            // file's within it, as Explorer's own drags give them) are freed once the data object
+            // has its own copies; `out` receives an IDataObject we release in Drop.
+            unsafe {
+                let pidl = ILCreateFromPathW(w.as_ptr());
+                if pidl.is_null() {
+                    return None;
+                }
+                let folder = ILClone(pidl);
+                if folder.is_null() {
+                    ILFree(pidl);
+                    return None;
+                }
+                ILRemoveLastID(folder);
+                let item = ILFindLastID(pidl) as *const c_void;
+                let mut out = std::ptr::null_mut();
+                let hr = SHCreateDataObject(
+                    folder,
+                    1,
+                    &item,
+                    std::ptr::null_mut(),
+                    &IID_IDATAOBJECT,
+                    &mut out,
+                );
+                ILFree(folder);
+                ILFree(pidl);
+                (hr >= 0 && !out.is_null()).then_some(DataObject(out))
+            }
+        }
+
+        /// A drop effect the drop target set on it, under the format `name`.
+        fn effect(&self, name: &str) -> Option<u32> {
+            let w = wide(std::ffi::OsStr::new(name));
+            // SAFETY: GetData through the object's vtable with a FORMATETC for an HGLOBAL; the
+            // medium is read under its lock and released.
+            unsafe {
+                let cf = RegisterClipboardFormatW(w.as_ptr());
+                if cf == 0 {
+                    return None;
+                }
+                let fmt = FormatEtc {
+                    cf: cf as u16,
+                    ptd: std::ptr::null_mut(),
+                    aspect: 1,
+                    lindex: -1,
+                    tymed: 1,
+                };
+                let mut medium: StgMedium = zeroed();
+                let vtbl = *(self.0 as *const *const DataObjectVtbl);
+                if ((*vtbl).get_data)(self.0, &fmt, &mut medium) < 0 {
+                    return None;
+                }
+                let mut value = None;
+                if medium.tymed == 1 && GlobalSize(medium.handle) >= 4 {
+                    let p = GlobalLock(medium.handle) as *const u32;
+                    if !p.is_null() {
+                        value = Some(p.read_unaligned());
+                        GlobalUnlock(medium.handle);
+                    }
+                }
+                ReleaseStgMedium(&mut medium);
+                value
+            }
+        }
+
+        fn release(&mut self) {
+            if !self.0.is_null() {
+                // SAFETY: our one reference, released once.
+                unsafe {
+                    let vtbl = *(self.0 as *const *const DataObjectVtbl);
+                    ((*vtbl).release)(self.0);
+                }
+                self.0 = std::ptr::null_mut();
+            }
+        }
+    }
+
+    impl Drop for DataObject {
+        fn drop(&mut self) {
+            self.release();
+        }
+    }
+
+    /// A file dropped somewhere: what it took to learn what became of it.
+    pub(super) struct Dropped {
+        file: PathBuf,
+        data: DataObject,
+        watch: Option<Watch>,
+        /// What the drag returned.
+        effect: u32,
+    }
+
+    /// Drag `file` out of `hwnd` (on the drag's thread, OLE set up), offering a move, a copy and
+    /// a link. Some when it was dropped.
+    pub(super) fn drag(hwnd: HWND, file: &Path) -> Result<Option<Dropped>, String> {
+        let file = plain(std::fs::canonicalize(file).map_err(|e| e.to_string())?);
+        // Watched from before the drop: a move on the same drive is done before the drag ends.
+        // MDM_TEST_NO_SHELL_WATCH=1 (debug builds, for checks): not watched, as when the shell
+        // won't say, so a move is one MDM can't follow.
+        let unwatched = cfg!(debug_assertions)
+            && std::env::var_os("MDM_TEST_NO_SHELL_WATCH").is_some_and(|v| v == "1");
+        let watch = if unwatched { None } else { Watch::start() };
+        if watch.is_none() {
+            tracing::warn!("drag out: the shell won't say where files go: a move isn't followed");
+        }
+        let data = DataObject::of(&file).ok_or("the shell has no data object for the file")?;
+        let mut effect = 0u32;
+        // SAFETY: our window and data object; the shell makes the drop source and drag image,
+        // and runs OLE's drag loop on this thread until the drop.
+        let hr = unsafe {
+            SHDoDragDrop(
+                hwnd,
+                data.0,
+                std::ptr::null_mut(),
+                DROPEFFECT_COPY | DROPEFFECT_MOVE | DROPEFFECT_LINK,
+                &mut effect,
+            )
+        };
+        if hr < 0 {
+            return Err(format!("SHDoDragDrop failed, {hr:#010x}"));
+        }
+        if hr != DRAGDROP_S_DROP {
+            return Ok(None);
+        }
+        tracing::info!(
+            "drag out: dropped, effect {effect}, performed {:?}, logical {:?}",
+            data.effect(PERFORMED),
+            data.effect(LOGICAL_PERFORMED)
+        );
+        Ok(Some(Dropped {
+            file,
+            data,
+            watch,
+            effect,
+        }))
+    }
+
+    impl Dropped {
+        /// What became of the file: moved (where to, or that MDM can't learn where), or None
+        /// when it stayed (a copy, a link, a drop that did nothing). Waits as long as a move may
+        /// take, on the drag's thread.
+        pub(super) fn follow(mut self) -> Option<DraggedOut> {
+            let since = Instant::now();
+            let mut gone: Option<Instant> = None;
+            loop {
+                match &self.watch {
+                    Some(w) => w.pump(Duration::from_millis(250)),
+                    None => std::thread::sleep(Duration::from_millis(250)),
+                }
+                let said = [
+                    Some(self.effect),
+                    self.data.effect(PERFORMED),
+                    self.data.effect(LOGICAL_PERFORMED),
+                ];
+                let moving = said.iter().flatten().any(|e| e & DROPEFFECT_MOVE != 0);
+                // A copy or a link, said so: the file stays.
+                let kept = !moving
+                    && said
+                        .iter()
+                        .flatten()
+                        .any(|e| e & (DROPEFFECT_COPY | DROPEFFECT_LINK) != 0);
+                if kept {
+                    return None;
+                }
+                let seen = SEEN.with(|v| v.borrow().clone());
+                if let Some(to) = followed(&self.file, &seen) {
+                    tracing::info!("drag out: the file was moved");
+                    self.data.release();
+                    return Some(if in_recycle_bin(&to) {
+                        DraggedOut::MovedAway
+                    } else {
+                        DraggedOut::Moved(to)
+                    });
+                }
+                if std::fs::symlink_metadata(&self.file).is_ok() {
+                    gone = None;
+                    if since.elapsed() > if moving { MOVING_FOR } else { DROPPED_FOR } {
+                        return None;
+                    }
+                } else if gone.get_or_insert_with(Instant::now).elapsed() > GONE_FOR {
+                    tracing::info!("drag out: the file was moved where the shell didn't say");
+                    return Some(DraggedOut::MovedAway);
+                }
+            }
+        }
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use super::*;
+
+        fn p(s: &str) -> PathBuf {
+            PathBuf::from(s)
+        }
+
+        /// A move on the same drive is one notification with both paths, followed however
+        /// often the file moved; a move to another drive is a copy made there and the file
+        /// deleted here; the Recycle Bin is no place to open.
+        #[test]
+        fn a_moved_file_is_followed_by_what_the_shell_saw() {
+            let file = p(r"C:\Downloads\video.mp4");
+            let moved = Seen::Renamed(file.clone(), p(r"C:\Movies\video.mp4"));
+            assert_eq!(
+                followed(&file, std::slice::from_ref(&moved)),
+                Some(p(r"C:\Movies\video.mp4"))
+            );
+            // Case and separators don't matter (Windows' names).
+            let other_case = Seen::Renamed(p(r"c:\downloads\VIDEO.mp4"), p(r"C:\Movies\video.mp4"));
+            assert!(followed(&file, &[other_case]).is_some());
+            // Moved again: its last place; a name taken there: the numbered one.
+            let again = Seen::Renamed(p(r"C:\Movies\video.mp4"), p(r"C:\Old\video (2).mp4"));
+            assert_eq!(
+                followed(&file, &[moved.clone(), again]),
+                Some(p(r"C:\Old\video (2).mp4"))
+            );
+            // Another drive: made there, then deleted here.
+            let made = Seen::Created(p(r"E:\Backup\video.mp4"));
+            let deleted = Seen::Deleted(file.clone());
+            assert_eq!(
+                followed(&file, std::slice::from_ref(&made)),
+                None,
+                "still here"
+            );
+            assert_eq!(
+                followed(&file, &[made.clone(), deleted.clone()]),
+                Some(p(r"E:\Backup\video.mp4"))
+            );
+            // Two files of its name made meanwhile: can't tell which.
+            let made2 = Seen::Created(p(r"F:\video.mp4"));
+            assert_eq!(followed(&file, &[made, made2, deleted.clone()]), None);
+            // Deleted, nothing of its name made: not known.
+            assert_eq!(followed(&file, &[deleted]), None);
+            // Other files' changes say nothing.
+            let others = [
+                Seen::Renamed(p(r"C:\Downloads\a.zip"), p(r"C:\b.zip")),
+                Seen::Deleted(p(r"C:\Downloads\a.zip")),
+            ];
+            assert_eq!(followed(&file, &others), None);
+            assert!(in_recycle_bin(&p(
+                r"C:\$Recycle.Bin\S-1-5-21-1\$RAB12CD.mp4"
+            )));
+            assert!(!in_recycle_bin(&p(r"C:\Movies\video.mp4")));
+        }
+
+        #[test]
+        fn canonical_paths_as_the_shell_writes_them() {
+            assert_eq!(
+                plain(p(r"\\?\C:\Downloads\a.zip")),
+                p(r"C:\Downloads\a.zip")
+            );
+            assert_eq!(
+                plain(p(r"\\?\UNC\server\share\a.zip")),
+                p(r"\\server\share\a.zip")
+            );
+            assert_eq!(plain(p(r"C:\a.zip")), p(r"C:\a.zip"));
+        }
     }
 }
 

@@ -1450,6 +1450,12 @@
 #, machine
 	Drag the file into a folder or an app	将文件拖到文件夹或应用中
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	已从“下载完成”拖出并移动到 MDM 无法识别的位置
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	已从“下载完成”拖出并移动到 {folder}
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	拖放的链接
@@ -3227,8 +3233,9 @@
 #. verb: opens the file
 #, machine
 	Open	打开
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	打开文件夹
@@ -5627,6 +5634,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} ({size}) 过大，无法作为地址列表。导入功能可读取大小不超过 {limit} 的文本文件、网页和 .ef2 导出文件。
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} 已从“下载完成”拖出并移动到其他位置，MDM 无法识别具体位置。请在您放置它的位置查找。
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

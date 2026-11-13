@@ -1450,6 +1450,12 @@
 #, machine
 	Drag the file into a folder or an app	ఫైల్‌ను ఫోల్డర్‌లోకి లేదా యాప్‌లోకి లాగండి
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	డౌన్‌లోడ్ పూర్తయింది జాబితా నుండి బయటకు లాగి, MDM గుర్తించలేని ప్రదేశానికి తరలించబడింది.
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	డౌన్‌లోడ్ పూర్తయింది జాబితా నుండి బయటకు లాగి, {folder}కి తరలించబడింది.
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	లాగి వదిలిన లింక్‌లు
@@ -3227,8 +3233,9 @@
 #. verb: opens the file
 #, machine
 	Open	తెరువు
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	ఫోల్డర్‌ను తెరవండి
@@ -5627,6 +5634,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} చిరునామాల జాబితాగా ఉండటానికి చాలా పెద్దది ({size}). దిగుమతి {limit} వరకు టెక్స్ట్ ఫైల్‌లు, వెబ్ పేజీలు మరియు .ef2 ఎగుమతులను చదువుతుంది.
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file}ను డౌన్‌లోడ్ పూర్తయింది జాబితా నుండి బయటకు లాగి వేరే చోటికి తరలించారు, కానీ MDM అది ఎక్కడ ఉందో గుర్తించలేకపోయింది. మీరు దాన్ని వదిలిన చోట వెతకండి.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

@@ -1450,6 +1450,12 @@
 #, machine
 	Drag the file into a folder or an app	Zvarritni skedarin në një dosje ose aplikacion
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	U tërhoq nga Shkarkimet e përfunduara dhe u zhvendos në një vendndodhje që MDM nuk arriti ta përcaktojë
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	U tërhoq nga Shkarkimet e përfunduara dhe u zhvendos te {folder}
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	Lidhje të lëshuara
@@ -3227,8 +3233,9 @@
 #. verb: opens the file
 #, machine
 	Open	Hap
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	Hap dosjen
@@ -5627,6 +5634,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} është shumë i madh për t’u përdorur si listë adresash ({size}). Importi lexon skedarë teksti, faqe uebi dhe eksporte .ef2 deri në {limit}.
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} u zhvendos diku tjetër kur e tërhoqe nga Shkarkimet e përfunduara dhe MDM nuk arriti të përcaktojë vendndodhjen. Kërkoje aty ku e lëshove.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

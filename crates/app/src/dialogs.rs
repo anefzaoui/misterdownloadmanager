@@ -1865,6 +1865,9 @@ pub struct Complete {
     pub opening: Option<crate::launch::Asked<PathBuf, bool>>,
     /// Snooze picked a time (#741): the window closes, and no other opens until then.
     pub snooze: Option<crate::finish::SnoozeFor>,
+    /// The file was dragged out of the box to a place MDM couldn't learn (#869): Open and Open
+    /// folder say so.
+    pub moved_away: bool,
 }
 
 impl Complete {
@@ -1880,6 +1883,7 @@ impl Complete {
             seen: false,
             opening: None,
             snooze: None,
+            moved_away: i.moved_away,
         }
     }
 
@@ -1998,9 +2002,12 @@ impl Complete {
                 }
 
                 // Drag handle: white box with a 1 px #828790 border; drag it to drop the file into
-                // Explorer, a mail or a chat (IDM 5.05). Windows only: dragging a file out to
-                // another app goes through OLE there; Linux and macOS have no such drag built
-                // yet, so the handle isn't shown (Open folder is the way there).
+                // Explorer, a mail or a chat (IDM 5.05). The drop target decides, as for a file
+                // dragged in Explorer: moved on the same drive (or with Shift), copied to another
+                // (or with Ctrl), and MDM's download follows a move (#869). Windows only: dragging
+                // a file out to another app goes through OLE there; Linux and macOS have no such
+                // drag built yet (no drag source in their window library), so the handle isn't
+                // shown there and nothing is moved: Open folder is the way to the file.
                 #[cfg(windows)]
                 {
                     let handle = r(o, 414.0, 187.0, 27.0, 20.0);
@@ -2015,14 +2022,24 @@ impl Complete {
                     if grip.hovered() {
                         ui.ctx().set_cursor_icon(egui::CursorIcon::Grab);
                     }
-                    // The file is looked for beside the window, with the drag (#743).
-                    if grip.drag_started()
-                        && let Err(e) = crate::win32::drag_file_out(
+                    // The file is looked for beside the window, with the drag (#743); where a move
+                    // took it comes back to the app (`dragged_out`), however late.
+                    if grip.drag_started() {
+                        let (id, from, wake) = (self.id, self.path.clone(), ui.ctx().clone());
+                        let followed = move |out| {
+                            DRAGGED_OUT
+                                .lock()
+                                .unwrap_or_else(|e| e.into_inner())
+                                .push((id, from, out));
+                            wake.request_repaint();
+                        };
+                        if let Err(e) = crate::win32::drag_file_out(
                             crate::i18n::t("Download complete"),
                             &self.path,
-                        )
-                    {
-                        tracing::warn!("drag out: {e}");
+                            followed,
+                        ) {
+                            tracing::warn!("drag out: {e}");
+                        }
                     }
                     p.rect_filled(handle, 0.0, winui::FIELD());
                     p.rect_stroke(
@@ -2054,22 +2071,23 @@ impl Complete {
                     && self.opening.is_none()
                 {
                     let opening = crate::launch::Asked::default();
+                    let moved_away = self.moved_away;
                     let _ = opening.get(
                         &self.path,
                         std::time::Duration::MAX,
                         std::time::Duration::ZERO,
                         Some(ui.ctx()),
-                        |p| open_file_now(p),
+                        move |p| open_download_now(p, moved_away),
                     );
                     self.opening = Some(opening);
                 }
                 if opened == Some(true) || self.snooze.is_some() {
                     Outcome::Done(())
                 } else if with.clicked() {
-                    open_with(&self.path);
+                    open_download_with(&self.path, self.moved_away);
                     Outcome::Done(())
                 } else if folder.clicked() {
-                    show_in_folder(&self.path);
+                    show_download_in_folder(&self.path, self.moved_away);
                     Outcome::Done(())
                 } else if close.clicked() || (!dragging && winui::escape_pressed(ui)) {
                     Outcome::Done(())
@@ -3015,6 +3033,27 @@ fn tell_turn_off_failed(why: String) {
     );
 }
 
+/// What became of a file dragged out of Download complete (#869), when the drop target moved
+/// it (a copy or a link leaves it where it was: nothing to say).
+#[derive(Clone, Debug, PartialEq, Eq)]
+// Made by Windows' drag only (the grip is Windows-only, see Complete::show).
+#[cfg_attr(not(windows), allow(dead_code))]
+pub enum DraggedOut {
+    /// Moved there (the shell said where).
+    Moved(PathBuf),
+    /// Gone from its place, to somewhere MDM couldn't learn (a program that took it, the
+    /// Recycle Bin).
+    MovedAway,
+}
+
+/// Files dragged out and moved: (download, the path it was dragged from, what became of it).
+static DRAGGED_OUT: Mutex<Vec<(u64, PathBuf, DraggedOut)>> = Mutex::new(Vec::new());
+
+/// What [`DRAGGED_OUT`] was given since the last call (the app updates its downloads).
+pub fn dragged_out() -> Vec<(u64, PathBuf, DraggedOut)> {
+    std::mem::take(&mut *DRAGGED_OUT.lock().unwrap_or_else(|e| e.into_inner()))
+}
+
 /// Something that failed, to tell the user (the app shows it in its notice): from any window,
 /// without a handle on the app.
 static TOLD: std::sync::Mutex<Vec<(&'static str, String)>> = std::sync::Mutex::new(Vec::new());
@@ -3033,25 +3072,52 @@ pub fn told() -> Vec<(&'static str, String)> {
 /// program for it): on a thread of its own, as the file may be on a drive slow to answer
 /// (#743). Returns at once.
 pub fn open_file(path: &Path) {
+    open_download(path, false);
+}
+
+/// [`open_file`] for a download: `moved_away`, its file was dragged out of Download complete to
+/// a place MDM couldn't learn (#869), which is said when it isn't there.
+pub fn open_download(path: &Path, moved_away: bool) {
     let path = path.to_owned();
     crate::launch::spawn("open file", move || {
-        open_file_now(&path);
+        open_download_now(&path, moved_away);
     });
 }
 
-/// [`open_file`], waited for: true when the file was handed to the system. For a thread other
-/// than the window's (Download complete asks it through `launch::Asked`: whether it failed
-/// decides whether the box stays open).
-pub fn open_file_now(path: &Path) -> bool {
-    hand_over(path, |p| open::that_detached(p).map_err(|e| e.to_string()))
+/// [`open_download`], waited for: true when the file was handed to the system. For a thread
+/// other than the window's (Download complete asks it through `launch::Asked`: whether it
+/// failed decides whether the box stays open).
+pub fn open_download_now(path: &Path, moved_away: bool) -> bool {
+    hand_over(path, moved_away, |p| {
+        open::that_detached(p).map_err(|e| e.to_string())
+    })
+}
+
+/// Why a download's file isn't where MDM saved it, when it was dragged out of Download complete
+/// to a place MDM couldn't learn (#869).
+fn moved_away_text(path: &Path) -> String {
+    let name = crate::i18n::isolate(&path.file_name().unwrap_or_default().to_string_lossy());
+    crate::i18n::fmt(
+        crate::i18n::t(
+            "{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.",
+        ),
+        &[("file", &name)],
+    )
 }
 
 /// Hand the downloaded file `path` to `hand` (which opens it, or shows a chooser for it), or say
-/// why not: moved or deleted since, or `hand`'s error. True when it was handed over. Waits for
-/// `hand`, so it runs on a thread other than the window's.
-fn hand_over(path: &Path, hand: impl FnOnce(&Path) -> Result<(), String>) -> bool {
+/// why not: moved or deleted since (`moved_away`: dragged out to a place MDM couldn't learn,
+/// #869), or `hand`'s error. True when it was handed over. Waits for `hand`, so it runs on a
+/// thread other than the window's.
+fn hand_over(
+    path: &Path,
+    moved_away: bool,
+    hand: impl FnOnce(&Path) -> Result<(), String>,
+) -> bool {
     let name = crate::i18n::isolate(&path.file_name().unwrap_or_default().to_string_lossy());
-    let failed = if !path.exists() {
+    let failed = if !path.exists() && moved_away {
+        moved_away_text(path)
+    } else if !path.exists() {
         crate::i18n::fmt(
             crate::i18n::t(
                 "{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.",
@@ -3076,8 +3142,22 @@ fn hand_over(path: &Path, hand: impl FnOnce(&Path) -> Result<(), String>) -> boo
 /// sleeping hard disk, a USB drive or a network folder can take seconds to answer (#751: 8 s,
 /// on the window's thread, froze it).
 pub fn show_in_folder(path: &Path) {
+    show_download_in_folder(path, false);
+}
+
+/// [`show_in_folder`] for a download: `moved_away`, its file was dragged out of Download
+/// complete to a place MDM couldn't learn (#869): when it isn't there, that is said instead of
+/// opening the folder it left.
+pub fn show_download_in_folder(path: &Path, moved_away: bool) {
     let path = path.to_owned();
-    crate::launch::spawn("show in folder", move || show_in_folder_now(&path));
+    crate::launch::spawn("show in folder", move || {
+        if moved_away && !path.exists() {
+            // i18n: title of the message when the folder of a downloaded file can't be shown
+            tell(crate::i18n::mark("Open folder"), moved_away_text(&path));
+            return;
+        }
+        show_in_folder_now(&path)
+    });
 }
 
 /// [`show_in_folder`], on the thread it runs on.
@@ -3117,10 +3197,11 @@ fn show_in_folder_now(path: &Path) {
 /// "Open with": the system's chooser of programs for the downloaded file `path`, or a message
 /// saying why not (moved or deleted since). Returns at once: the chooser is shown, and waited
 /// for, on a thread of its own, as is the look at the file (#743, #751).
-pub fn open_with(path: &Path) {
+/// `moved_away`: see [`open_download`].
+pub fn open_download_with(path: &Path, moved_away: bool) {
     let path = path.to_owned();
     crate::launch::spawn("open with", move || {
-        hand_over(&path, |p| {
+        hand_over(&path, moved_away, |p| {
             // Windows' own "How do you want to open this file?", as Explorer shows it (#720).
             #[cfg(windows)]
             {

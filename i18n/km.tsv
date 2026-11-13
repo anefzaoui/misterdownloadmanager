@@ -1450,6 +1450,12 @@
 #, machine
 	Drag the file into a folder or an app	អូសឯកសារទៅក្នុងថតឯកសារ ឬកម្មវិធី
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	បានអូសចេញពី «ការទាញយកបានបញ្ចប់» ហើយបានផ្លាស់ទីទៅទីតាំងដែល MDM មិនអាចស្វែងរកបាន
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	បានអូសចេញពី «ការទាញយកបានបញ្ចប់» ហើយបានផ្លាស់ទីទៅ {folder}
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	តំណដែលបានទម្លាក់
@@ -3227,8 +3233,9 @@
 #. verb: opens the file
 #, machine
 	Open	បើក
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	បើកថត
@@ -5627,6 +5634,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} ធំពេកមិនអាចប្រើជាបញ្ជីអាសយដ្ឋានបានទេ ({size})។ ការនាំចូលអាចអានឯកសារអត្ថបទ ទំព័រគេហទំព័រ និងឯកសារនាំចេញ .ef2 ដែលមានទំហំរហូតដល់ {limit}។
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} ត្រូវបានផ្លាស់ទីទៅកន្លែងផ្សេងដោយការអូសចេញពី «ការទាញយកបានបញ្ចប់» ហើយ MDM មិនអាចស្វែងរកទីតាំងបានទេ។ សូមស្វែងរកវានៅកន្លែងដែលអ្នកបានទម្លាក់វា។
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

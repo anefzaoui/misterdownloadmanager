@@ -1450,6 +1450,12 @@
 #, machine
 	Drag the file into a folder or an app	Velciet failu mapē vai lietotnē
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	Izvilkts no sadaļas „Lejupielāde pabeigta” un pārvietots uz vietu, ko MDM nevarēja noteikt
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	Izvilkts no sadaļas „Lejupielāde pabeigta” un pārvietots uz {folder}
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	Nomestās saites
@@ -3227,8 +3233,9 @@
 #. verb: opens the file
 #, machine
 	Open	Atvērt
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	Atvērt mapi
@@ -5627,6 +5634,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} ir pārāk liels, lai to varētu uzskatīt par adrešu sarakstu ({size}). Importēšana nolasa teksta failus, tīmekļa lapas un .ef2 eksportus, kuru izmērs nepārsniedz {limit}.
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	Fails {file} tika pārvietots citur, velkot to ārā no sadaļas „Lejupielāde pabeigta”, un MDM nevarēja noteikt, kur. Meklējiet to vietā, kur to nometāt.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

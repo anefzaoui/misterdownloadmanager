@@ -1450,6 +1450,12 @@
 #, machine
 	Drag the file into a folder or an app	ফাইলটো এটা ফোল্ডাৰ বা এপলৈ টানি আনক
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	ডাউনলোড সম্পূৰ্ণৰ পৰা টানি উলিয়াই MDM-এ জানিব নোৱাৰা ঠাইলৈ স্থানান্তৰ কৰা হ’ল
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	ডাউনলোড সম্পূৰ্ণৰ পৰা টানি উলিয়াই {folder}-লৈ স্থানান্তৰ কৰা হ’ল
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	টানি অনা লিংকসমূহ
@@ -3227,8 +3233,9 @@
 #. verb: opens the file
 #, machine
 	Open	খুলক
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	ফোল্ডাৰ খোলক
@@ -5627,6 +5634,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} ঠিকনাৰ তালিকা হ’বলৈ বৰ ডাঙৰ ({size})। আমদানি কৰিব পৰা ফাইলৰ আকাৰ {limit} পৰ্যন্ত, যিবোৰ টেক্সট ফাইল, ৱেব পৃষ্ঠা আৰু .ef2 এক্সপ’ৰ্ট হ’ব পাৰে।
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} ডাউনলোড সম্পূৰ্ণৰ পৰা টানি উলিয়াই আন ঠাইলৈ স্থানান্তৰ কৰা হৈছিল, আৰু MDM-এ ক’লৈ স্থানান্তৰ কৰা হৈছিল সেয়া জানিব নোৱাৰিলে। আপুনি য’ত এৰিছিল তাত বিচাৰক।
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

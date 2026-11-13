@@ -445,6 +445,11 @@ pub struct Item {
     /// folder-level deferred rename refuses to sweep untracked files along.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub preexisting_folder: bool,
+    /// Its file was dragged out of Download complete and moved to a place MDM couldn't learn
+    /// (#869): Open and Open folder say so while it isn't at `dest`. Cleared when it is placed
+    /// again (a move MDM follows, Move/Rename) or downloaded again.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub moved_away: bool,
     #[serde(skip)]
     pub live: Option<Live>,
     /// The session's temporary view while a torrent is being checked; never saved.
@@ -812,6 +817,7 @@ impl Item {
             remote: None,
             rename_on_complete: None,
             preexisting_folder: false,
+            moved_away: false,
             live: None,
             torrent_check: None,
             snap: None,

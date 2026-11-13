@@ -557,6 +557,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows: the file dragged out of **Download complete** is moved or copied as Explorer does
+  it (moved on the same drive or with Shift, copied to another drive or with Ctrl), no longer
+  always copied, and its download follows a moved file to its new place; where MDM can't learn
+  the new place, **Open** and **Open folder** say the file was moved elsewhere
+  ([#869](https://github.com/anefzaoui/misterdownloadmanager/issues/869))
 - ✅ Link grabber lists a web page's links when given the page's address (pasted, copied, in
   a list), as the browser's "Download all links" does, instead of only the page itself
   ([#705](https://github.com/anefzaoui/misterdownloadmanager/issues/705))

@@ -1450,6 +1450,12 @@
 #, machine
 	Drag the file into a folder or an app	Lohista fail kausta või rakendusse
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	Lohistati kaustast „Allalaadimine lõpetatud” välja kohta, mida MDM ei suutnud tuvastada
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	Lohistati kaustast „Allalaadimine lõpetatud” välja kausta {folder}
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	Lohistatud lingid
@@ -3227,8 +3233,9 @@
 #. verb: opens the file
 #, machine
 	Open	Ava
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	Ava kaust
@@ -5627,6 +5634,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	Fail {file} on aadresside loendi jaoks liiga suur ({size}). Import loeb tekstifaile, veebilehti ja kuni {limit} suuruseid .ef2-ekspordifaile.
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	Fail {file} teisaldati mujale, lohistades selle kaustast „Allalaadimine lõpetatud” välja, ja MDM ei suutnud asukohta tuvastada. Otsige seda kohast, kuhu selle lohistasite.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

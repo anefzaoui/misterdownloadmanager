@@ -1118,6 +1118,12 @@
 #. tooltip of the handle in Download complete: drag it to drop the downloaded file somewhere
 	Drag the file into a folder or an app	اسحب الملف إلى مجلد أو تطبيق
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	أخرج بالسحب من «اكتمل التنزيل» ونقل إلى مكان تعذر على MDM معرفته
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	أخرج بالسحب من «اكتمل التنزيل» ونقل إلى {folder}
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 	Dropped links	روابط مفلتة
 #. window title in a dialog box
@@ -2472,8 +2478,9 @@
 #. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 	Open	فتح
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 	Open folder	فتح المجلد
 #. text in a download's progress window
@@ -4328,6 +4335,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	حجم {file} كبير جدا ليكون قائمة عناوين ({size}). يستورد البرنامج الملفات النصية وصفحات الويب وملفات التصدير بصيغة .ef2 التي يصل حجمها إلى {limit}.
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	تم نقل {file} إلى مكان آخر بسحبه من «اكتمل التنزيل»، ولم يتمكن MDM من معرفة مكانه. ابحث عنه حيث أسقطته.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	{file}: the file does NOT match its checksum ({algorithm})	{file}: الملف لا يطابق بصمته ({algorithm})

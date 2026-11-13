@@ -1450,6 +1450,12 @@
 #, machine
 	Drag the file into a folder or an app	Dra filen til en mappe eller en app
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	Ble dratt ut av «Nedlasting fullført» og flyttet til et sted MDM ikke kunne finne
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	Ble dratt ut av «Nedlasting fullført» og flyttet til {folder}
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	Koblinger som ble sluppet
@@ -3227,8 +3233,9 @@
 #. verb: opens the file
 #, machine
 	Open	Åpne
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	Åpne mappe
@@ -5627,6 +5634,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} er for stor til å være en liste med adresser ({size}). Import leser tekstfiler, nettsider og .ef2-eksporter på opptil {limit}.
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} ble flyttet et annet sted da du dro den ut av «Nedlasting fullført», og MDM kunne ikke finne ut hvor. Se etter den der du slapp den.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
