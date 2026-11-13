@@ -2455,7 +2455,7 @@ fn readonly_with_icon(
 }
 
 pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline: bool) {
-    use crate::chrome::{MenuEntry, PopupResult};
+    use crate::chrome::PopupResult;
     use egui::text::{CCursor, CCursorRange};
     use egui::text_edit::TextEditState;
     let ctx = resp.ctx.clone();
