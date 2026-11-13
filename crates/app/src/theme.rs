@@ -681,26 +681,31 @@ fn fallback_font(c: char) -> Option<(String, egui::FontData)> {
 }
 
 /// `fc-match` for one pattern, asked right now (Linux, a character no loaded font has): the font
-/// files in fontconfig's order ([`FC_ARGS`]).
+/// files in fontconfig's order ([`fc_match`]).
 #[cfg(not(any(windows, target_os = "macos")))]
 fn fc_lookup(pattern: &str) -> Vec<std::path::PathBuf> {
-    match std::process::Command::new("fc-match")
-        .args(FC_ARGS)
-        .arg(pattern)
-        .output()
-    {
+    match fc_match(pattern).output() {
         Ok(out) if out.status.success() => fc_candidates(&String::from_utf8_lossy(&out.stdout)),
         _ => Vec::new(),
     }
 }
 
-/// `fc-match`'s arguments before the pattern: every font that matches it, best first (`-s`), one
-/// file a line. Its best answer alone can be a font egui can't draw with (a PCF bitmap font:
-/// #931), so MDM takes the first it can ([`pick_font`]).
+/// `fc-match` for `pattern`: every font that matches it, best first (`-s`), one file a line. Its
+/// best answer alone can be a font egui can't draw with, a bitmap font fontconfig prefers for a
+/// language (#931: a gzipped PCF font for Japanese). So the fonts that scale come first
+/// (`scalable=true` outranks the family and the language in fontconfig's order: Noto Sans CJK
+/// before a preferred bitmap font), and MDM takes the first it can read ([`pick_font`]: a
+/// scalable Type 1 font is no more readable than a bitmap one).
 #[cfg(not(any(windows, target_os = "macos")))]
-const FC_ARGS: [&str; 3] = ["-s", "-f", "%{file}\\n"];
+fn fc_match(pattern: &str) -> std::process::Command {
+    let mut command = std::process::Command::new("fc-match");
+    command
+        .args(["-s", "-f", "%{file}\\n"])
+        .arg(format!("{pattern}:scalable=true"));
+    command
+}
 
-/// The font files in `fc-match`'s answer ([`FC_ARGS`]), in its order, each once.
+/// The font files in `fc-match`'s answer ([`fc_match`]), in its order, each once.
 #[cfg_attr(any(windows, target_os = "macos"), allow(dead_code))]
 fn fc_candidates(out: &str) -> Vec<std::path::PathBuf> {
     let mut files: Vec<std::path::PathBuf> = Vec::new();
@@ -808,7 +813,7 @@ fn fc_font(pattern: &str) -> Option<(std::path::PathBuf, Vec<u8>)> {
 /// used from its next start.
 #[cfg(not(any(windows, target_os = "macos")))]
 fn fc_files() -> &'static std::collections::HashMap<String, Vec<std::path::PathBuf>> {
-    use std::process::{Command, Stdio};
+    use std::process::Stdio;
     static FILES: std::sync::OnceLock<std::collections::HashMap<String, Vec<std::path::PathBuf>>> =
         std::sync::OnceLock::new();
     FILES.get_or_init(|| {
@@ -817,9 +822,7 @@ fn fc_files() -> &'static std::collections::HashMap<String, Vec<std::path::PathB
             .map(str::to_owned)
             .chain(SCRIPT_LANGS.iter().map(|(_, fc)| format!(":lang={fc}")))
             .filter_map(|pattern| {
-                let child = Command::new("fc-match")
-                    .args(FC_ARGS)
-                    .arg(&pattern)
+                let child = fc_match(&pattern)
                     .stdin(Stdio::null())
                     .stdout(Stdio::piped())
                     .stderr(Stdio::null())
