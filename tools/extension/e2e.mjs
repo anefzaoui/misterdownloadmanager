@@ -36,8 +36,9 @@
 // clicked, dragged, kept; "never on the site" in the last browser; the button's clicks go through
 // its menu's "Open in…" to the Download video window, as in csp, hls, streams, sniffed and
 // inplace), panelOptions (the button follows Options in an open tab: off, on, the site listed;
-// #532), videoFocus (mouse idle/fullscreen and keyboard focus, #480), start (MDM not running: the
-// host starts it),
+// #532), videoFocus (mouse idle/fullscreen and keyboard focus, #480), reconnect (a tab opened while
+// the host couldn't start gets the button once it can, no reload; then MDM started by a click, and
+// reached after it quits and starts again, #474), start (MDM not running: the host starts it),
 // remote (Send downloads to → Another MDM, #157: paired from the popup, a link downloaded by a
 // headless MDM; E2E_REMOTE_URL for one running elsewhere, such as the Docker image: remoteServer).
 //
@@ -2824,6 +2825,85 @@ const CASES = {
 
   async video(t) {
     return videoButton(t.session, t.last);
+  },
+
+  // #474: a tab opened while the browser can't reach MDM's host (MDM being installed or updated,
+  // the host failing to start) gets the video button within seconds once the host is back, with
+  // no reload; its click then starts MDM, and after MDM quits and starts again under the open
+  // tab a click still reaches it. The host's program is moved away while the page loads (the
+  // browser can't start it), then put back.
+  async reconnect(t) {
+    const s = t.session;
+    const nmhost = exe("misterdownloadmanager-nmhost");
+    const away = `${nmhost}.e2e-away`;
+    const page = `${LAB}/page?video=${encodeURIComponent("/gen/1M/clip.mp4")}`;
+    const clip = `${LAB}/gen/1M/clip.mp4`;
+    const status = async () => {
+      const popup = await s.tab(`${s.base}popup.html`);
+      try {
+        // The popup's page may still be loading: asked again until it answers.
+        const said = await until("the extension's status", 10000, () =>
+          popup.evaluate(`(globalThis.browser ?? chrome).storage.local.get({ status: { why: null } }).then((v) => JSON.stringify(v.status.why))`).catch(() => ""),
+        );
+        return JSON.parse(said);
+      } finally {
+        await popup.close();
+      }
+    };
+    const click = async (v, label) => {
+      const b = await hover(s, v);
+      if (!b) throw new Error(`${label}: no button over the video`);
+      await s.mouse(await mainPart(s, b), (b.t + b.b) / 2, "click");
+    };
+    const done = [];
+    await stopApp();
+    try {
+      fs.renameSync(nmhost, away);
+      await s.navigate(page);
+      const v = await rect(s, "#video");
+      if (await hover(s, v)) throw new Error("the host can't start: a button showed all the same");
+      const why = await status();
+      if (!why) throw new Error("the host can't start: the toolbar button says connected");
+      done.push(`host away: no button, the toolbar button says ${why}`);
+      fs.renameSync(away, nmhost);
+      // The page asks again (video.js ASK_MS), with no reload.
+      await s.mouse(5, 5);
+      await sleep(PANEL_KEPT_MS);
+      if (!(await hover(s, v))) throw new Error("the host back: no button in the open tab without a reload");
+      done.push("host back: the button in the open tab, no reload");
+      // MDM isn't running: the click starts it, which takes the video. (Its earlier copy of the
+      // file first off its list: a duplicate would be asked about.)
+      await startApp();
+      const earlier = (await mdmList()).filter((d) => d.url === clip).map((d) => d.id);
+      if (earlier.length) await ipc({ action: "delete", ids: earlier });
+      await stopApp();
+      await click(v, "MDM not running");
+      const first = await until("the video's file in MDM's list (MDM started by the host)", 45000, async () =>
+        (await mdmList().catch(() => [])).find((d) => d.url === clip),
+      );
+      if (ourApps().length !== 1) throw new Error(`${ourApps().length} instances run after the click`);
+      const said = await status();
+      if (said && said !== "update-app") throw new Error(`MDM reached, the toolbar button still says ${said}`);
+      done.push(`click: MDM started, ${first.file} in its list, the toolbar button connected`);
+      // MDM quits and starts again under the open tab: the next click reaches the new one.
+      await ipc({ action: "delete", ids: [first.id] });
+      await stopApp();
+      await startApp();
+      const before = new Set((await mdmList()).map((d) => d.id));
+      // The first click's green "Added to MDM" over (6 s): a click on it isn't a new one.
+      await s.mouse(5, 5);
+      await until("the first click's state over", 10000, async () => (await s.pill(PILL_STATE).catch(() => null))?.state !== "sent");
+      await click(v, "MDM started again");
+      const again = await until("the video's file in the restarted MDM's list", 15000, async () => (await mdmList()).find((d) => !before.has(d.id))).catch(async (e) => {
+        throw new Error(`${e.message} (the button: ${JSON.stringify(await s.pill(PILL_STATE))})`);
+      });
+      if (again.url !== clip) throw new Error(`MDM downloads ${again.url}`);
+      done.push(`MDM quit and started again: the next click reached it (${again.file})`);
+    } finally {
+      if (fs.existsSync(away)) fs.renameSync(away, nmhost);
+      await s.mouse(5, 5);
+    }
+    return done.join("; ");
   },
 
   // MDM not running: the host starts it (off the screens, with the test's data folder: both

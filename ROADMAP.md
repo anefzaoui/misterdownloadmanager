@@ -806,7 +806,9 @@ These ship in the next version.
 - ✅ macOS 15 and later: Chinese text finds PingFang again, which moved into the system's font assets
   ([#541](https://github.com/anefzaoui/misterdownloadmanager/issues/541))
 - ✅ The video button goes when it is switched off, or its site listed, in Options, in pages already
-  open ([#532](https://github.com/anefzaoui/misterdownloadmanager/issues/532))
+  open ([#532](https://github.com/anefzaoui/misterdownloadmanager/issues/532)); and comes in a page
+  opened while the browser couldn't reach MDM once it can, without a reload
+  ([#474](https://github.com/anefzaoui/misterdownloadmanager/issues/474))
 - ✅ macOS: Persian and other Arabic-script file names show their letters in the download list, not
   boxes ([#533](https://github.com/anefzaoui/misterdownloadmanager/issues/533))
 - ✅ A server's refusal page is no longer saved under the document's name and shown as complete,
@@ -830,7 +832,9 @@ These ship in the next version.
   [#754](https://github.com/anefzaoui/misterdownloadmanager/issues/754),
   [#545](https://github.com/anefzaoui/misterdownloadmanager/issues/545),
   [#534](https://github.com/anefzaoui/misterdownloadmanager/issues/534),
-  [#527](https://github.com/anefzaoui/misterdownloadmanager/issues/527))
+  [#527](https://github.com/anefzaoui/misterdownloadmanager/issues/527),
+  [#590](https://github.com/anefzaoui/misterdownloadmanager/issues/590),
+  [#779](https://github.com/anefzaoui/misterdownloadmanager/issues/779))
 - ✅ The window no longer freezes while Explorer is slow to answer about MDM's notification-area
   icon: it is asked beside the window
   ([#747](https://github.com/anefzaoui/misterdownloadmanager/issues/747))
