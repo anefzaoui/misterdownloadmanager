@@ -26,9 +26,11 @@ pub(crate) const PACKAGE_DIRS: [&str; 3] = ["/opt/homebrew/bin", "/usr/local/bin
 ///   and user tool directories (`~/.local/bin`, `~/.cargo/bin`, `~/.bun/bin`, `~/.deno/bin`).
 /// - On Windows: winget links (`%LOCALAPPDATA%\Microsoft\WinGet\Links`), Scoop shims
 ///   (`%USERPROFILE%\scoop\shims`, `%ALLUSERSPROFILE%\scoop\shims`), Chocolatey bin
-///   (`C:\ProgramData\chocolatey\bin`), common direct install locations (`C:\yt-dlp`),
-///   tool managers (`%USERPROFILE%\.cargo\bin`, `%USERPROFILE%\.bun\bin`, `%USERPROFILE%\.deno\bin`),
-///   and pip Scripts folders (`%LOCALAPPDATA%\Python\*\Scripts`, `%APPDATA%\Python\Python*\Scripts`).
+///   (`C:\ProgramData\chocolatey\bin`), tool managers (`%USERPROFILE%\.cargo\bin`,
+///   `%USERPROFILE%\.bun\bin`, `%USERPROFILE%\.deno\bin`), and pip Scripts folders
+///   (`%LOCALAPPDATA%\Python\*\Scripts`, `%APPDATA%\Python\Python*\Scripts`). No fixed folder
+///   anyone can create (`C:\yt-dlp` and the like): a program MDM runs just because it exists
+///   at the root of a drive is too easy to plant.
 pub(crate) fn extra_dirs() -> Vec<PathBuf> {
     let mut dirs = Vec::new();
     #[cfg(unix)]
@@ -71,9 +73,6 @@ pub(crate) fn extra_dirs() -> Vec<PathBuf> {
             dirs.push(aup.join(r"chocolatey\bin"));
         }
         dirs.push(PathBuf::from(r"C:\ProgramData\chocolatey\bin"));
-
-        // Common direct install folder
-        dirs.push(PathBuf::from(r"C:\yt-dlp"));
 
         // Python Scripts (pip install --user yt-dlp, gallery-dl)
         if let Some(lad) = &local_app_data {
