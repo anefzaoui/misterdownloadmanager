@@ -557,6 +557,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Linux: no crash when fontconfig offers a font MDM can't draw with (an old bitmap font for
+  Japanese): the next TrueType or OpenType font is used
+  ([#931](https://github.com/anefzaoui/misterdownloadmanager/issues/931))
 - ✅ Windows 10: no FSI and PDI boxes around a file's name in the taskbar's preview and tip of a
   progress window, or in the notification-area icon's tip; right-to-left titles keep their order
   ([#919](https://github.com/anefzaoui/misterdownloadmanager/issues/919))
