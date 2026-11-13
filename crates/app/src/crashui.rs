@@ -118,8 +118,10 @@ pub fn monitor_main(m: MonitorArgs) -> eframe::Result {
         settings.renderer,
         crate::renderer::overridden(&[]).as_deref(),
         crate::renderer::suspect(),
+        crate::renderer::gl_unfit_before(),
     );
     plan.watched = false;
+    plan.gl_checked = false;
     let data = m.data.clone();
     crate::renderer::run("misterdownloadmanager-crash", &plan, options, move |cc| {
         crate::scale::start(&cc.egui_ctx, zoom);

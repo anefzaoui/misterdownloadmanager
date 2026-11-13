@@ -5277,6 +5277,10 @@ menu	Direct3D	Direct3D
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 menu	Direct3D didn't start here: OpenGL draws	لم يبدأ Direct3D هنا: الرسم بـ OpenGL
 #. menu command in the main window
+#. View → Draw with: a greyed note; Direct3D draws the windows through Windows' own software renderer (WARP) instead of a graphics card
+#, machine
+menu	Direct3D draws with Windows' software renderer (WARP)	يرسم Direct3D باستخدام عارض برامج Windows (WARP)
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 menu	Download &video from a page...	تنزيل &فيديو من صفحة...
@@ -5350,6 +5354,10 @@ menu	Metal	Metal
 #. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
 menu	Metal didn't start here: OpenGL draws	لم يبدأ Metal هنا: الرسم بـ OpenGL
 #. menu command in the main window
+#. View → Draw with: a greyed note; Metal draws the windows through a software renderer instead of a graphics card
+#, machine
+menu	Metal draws with a software renderer	يرسم Metal باستخدام عارض برامج
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 menu	Metro	مترو
 #. menu command in the main window
@@ -5384,6 +5392,10 @@ menu	Open with...	فتح باستخدام...
 #. menu command in the main window
 #. View → Draw with: a graphics system's name, usually kept as is
 menu	OpenGL	OpenGL
+#. menu command in the main window
+#. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
+#, machine
+menu	OpenGL here is too old to draw MDM	إصدار OpenGL هنا قديم جدا بحيث لا يمكنه رسم MDM
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window
@@ -5499,6 +5511,10 @@ menu	Vulkan	Vulkan
 #. menu command in the main window
 #. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
 menu	Vulkan didn't start here: OpenGL draws	لم يبدأ Vulkan هنا: الرسم بـ OpenGL
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan draws the windows through a software renderer instead of a graphics card
+#, machine
+menu	Vulkan draws with a software renderer	يرسم Vulkan باستخدام عارض برامج
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menubar	&Downloads	ا&لتنزيلات
