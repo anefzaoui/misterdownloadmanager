@@ -557,6 +557,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ With a style theme (Metro, Adwaita, Aero…), windows minimize, maximize and restore with
+  Windows' animation, as with Classic
+  ([#874](https://github.com/anefzaoui/misterdownloadmanager/issues/874))
 - ✅ Windows 10 with a style theme (Metro, Adwaita, Aero…): no black band above the main window's
   title bar, and its menus and clicks land where they show; framed as on Windows 11, as the
   progress window already was ([#802](https://github.com/anefzaoui/misterdownloadmanager/issues/802))

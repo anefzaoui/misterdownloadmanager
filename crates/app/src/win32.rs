@@ -797,7 +797,7 @@ fn settled_message() -> u32 {
 /// # Safety
 /// `hwnd` is a window of this thread framed by [`caption_less`] as `kind`.
 unsafe fn animation_caption(hwnd: HWND, kind: Drawn, on: bool) {
-    use windows_sys::Win32::UI::WindowsAndMessaging::{SWP_NOSIZE, WS_CAPTION};
+    use windows_sys::Win32::UI::WindowsAndMessaging::{IsZoomed, SWP_NOSIZE, WS_CAPTION};
     if animating(hwnd) == on {
         return;
     }
@@ -817,15 +817,24 @@ unsafe fn animation_caption(hwnd: HWND, kind: Drawn, on: bool) {
         let style = if on { style | WS_CAPTION } else { style };
         SetWindowLongPtrW(hwnd, GWL_STYLE, style as isize);
         // The frame measured again: the same, by our WM_NCCALCSIZE with the caption style on, by
-        // the system's without it.
+        // the system's without it. Maximized with the caption style, the window was placed by
+        // the system for a caption's frame, a pixel wider than its own on every side: put back
+        // where it is maximized without it, its client the work area.
+        let maximized = (!on && kind == Drawn::Sizable && IsZoomed(hwnd) != 0)
+            .then(|| maximized_to_work_area(hwnd))
+            .flatten();
+        let (r, place) = match maximized {
+            Some((r, _)) => (r, 0),
+            None => (zeroed(), SWP_NOMOVE | SWP_NOSIZE),
+        };
         SetWindowPos(
             hwnd,
             std::ptr::null_mut(),
-            0,
-            0,
-            0,
-            0,
-            SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE,
+            r.left,
+            r.top,
+            r.right - r.left,
+            r.bottom - r.top,
+            SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOACTIVATE | place,
         );
     }
 }
@@ -1166,9 +1175,15 @@ unsafe extern "system" fn caption_less_proc(
             let info = unsafe {
                 &mut *(lparam as *mut windows_sys::Win32::UI::WindowsAndMessaging::MINMAXINFO)
             };
-            if let Some((pos, size)) = maximized_to_work_area(hwnd) {
-                info.ptMaxPosition = pos;
-                info.ptMaxSize = size;
+            if let Some((r, m)) = maximized_to_work_area(hwnd) {
+                info.ptMaxPosition = POINT {
+                    x: r.left - m.x,
+                    y: r.top - m.y,
+                };
+                info.ptMaxSize = POINT {
+                    x: r.right - r.left,
+                    y: r.bottom - r.top,
+                };
             }
             return res;
         }
@@ -1200,16 +1215,12 @@ unsafe extern "system" fn caption_less_proc(
     res
 }
 
-/// Where and how large window `hwnd` is when maximized: its monitor's work area (not over the
-/// taskbar), with its sizing frame beyond the work area's edges, as a window with a caption
-/// style is maximized (Windows maximizes one without a caption over the whole monitor). In the
-/// coordinates WM_GETMINMAXINFO takes: from the monitor's top left.
-fn maximized_to_work_area(
-    hwnd: HWND,
-) -> Option<(
-    windows_sys::Win32::Foundation::POINT,
-    windows_sys::Win32::Foundation::POINT,
-)> {
+/// Where window `hwnd` is when maximized, on the screen: its monitor's work area (not over the
+/// taskbar), with its sizing frame (without the caption style it has while it maximizes, #874)
+/// beyond the work area's edges, as a window with a caption style is maximized (Windows maximizes
+/// one without a caption over the whole monitor). And its monitor's top left, from which
+/// WM_GETMINMAXINFO counts.
+fn maximized_to_work_area(hwnd: HWND) -> Option<(RECT, windows_sys::Win32::Foundation::POINT)> {
     use windows_sys::Win32::Foundation::POINT;
     use windows_sys::Win32::Graphics::Gdi::{
         GetMonitorInfoW, MONITOR_DEFAULTTONEAREST, MONITORINFO, MonitorFromWindow,
@@ -1223,16 +1234,17 @@ fn maximized_to_work_area(
             return None;
         }
         let (w, m) = (mi.rcWork, mi.rcMonitor);
-        // Its frame without the caption style it has while it maximizes (#874).
         let [l, t, r, b] = drawn_frame_edges(hwnd, Drawn::Sizable);
         Some((
-            POINT {
-                x: w.left - m.left - l,
-                y: w.top - m.top - t,
+            RECT {
+                left: w.left - l,
+                top: w.top - t,
+                right: w.right + r,
+                bottom: w.bottom + b,
             },
             POINT {
-                x: (w.right - w.left) + l + r,
-                y: (w.bottom - w.top) + t + b,
+                x: m.left,
+                y: m.top,
             },
         ))
     }
