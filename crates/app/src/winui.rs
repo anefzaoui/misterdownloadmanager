@@ -31,7 +31,7 @@ crate::theme::themed! {
 /// Tahoma −11 ("MS Shell Dlg 2", 8 pt): every dialog body text.
 pub fn tahoma() -> FontId {
     FontId::new(
-        crate::theme::metrics().font_dialog,
+        crate::theme::font_size(crate::theme::metrics().font_dialog),
         FontFamily::Name("tahoma".into()),
     )
 }
@@ -39,7 +39,7 @@ pub fn tahoma() -> FontId {
 /// Tahoma Bold −13: the Options pages' header titles.
 pub fn tahoma_bold() -> FontId {
     FontId::new(
-        crate::theme::metrics().font_dialog_bold,
+        crate::theme::font_size(crate::theme::metrics().font_dialog_bold),
         FontFamily::Name("tahoma-bold".into()),
     )
 }
@@ -47,7 +47,7 @@ pub fn tahoma_bold() -> FontId {
 /// Tahoma Bold −16: a window's headline (the browser extension's, the helpers').
 pub fn tahoma_title() -> FontId {
     FontId::new(
-        crate::theme::metrics().font_title,
+        crate::theme::font_size(crate::theme::metrics().font_title),
         FontFamily::Name("tahoma-bold".into()),
     )
 }
@@ -338,13 +338,13 @@ fn name_from_caption(resp: &Response) {
 
 /// Segoe UI −12: menu bar, toolbar labels.
 pub fn segoe() -> FontId {
-    FontId::proportional(crate::theme::metrics().font_ui)
+    FontId::proportional(crate::theme::font_size(crate::theme::metrics().font_ui))
 }
 
 /// Arial Bold −13: the Categories close "x".
 pub fn arial_bold() -> FontId {
     FontId::new(
-        crate::theme::metrics().font_ui_bold,
+        crate::theme::font_size(crate::theme::metrics().font_ui_bold),
         FontFamily::Name("arial-bold".into()),
     )
 }

@@ -582,6 +582,10 @@ These ship in the next version.
   once OpenGL fails there: it can't start, is too old, shows no first window, or MDM freezes
   inside its driver (read from the freeze report); remembered, **View → Draw with** says why, and
   choosing **OpenGL** tries it again ([#847](https://github.com/anefzaoui/misterdownloadmanager/issues/847))
+- ✅ Chinese, Japanese and Korean: interface text is at least 12 px (the theme's `font.cjk`) and
+  is drawn by the same DirectWrite rasterizer as Latin, so it reads larger and stays sharp at
+  110–120 % interface sizes instead of thinning out; English and the other languages keep their
+  sizes ([#837](https://github.com/anefzaoui/misterdownloadmanager/issues/837))
 - ✅ Help: videos that need you signed in, in short: the button over the video brings the page's
   own cookies, Options reads a browser profile's for pasted links and playlists (a separate
   profile with a spare account works well), and why some videos and networks need it (from

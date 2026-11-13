@@ -6084,8 +6084,9 @@ pub fn text_rasterizer(
 }
 
 /// Does [`text_rasterizer`] draw this character? One code point that needs no shaping: Latin,
-/// Greek and Cyrillic letters, digits and punctuation. Scripts whose letters change shape (Arabic,
-/// Indic, ...) and the invisible marks are left to egui and its shaper; so are the brackets of a
+/// Greek and Cyrillic letters, digits and punctuation, and the CJK characters whose face comes
+/// from the interface language's script font. Scripts whose letters change shape (Arabic, Indic,
+/// ...) and the invisible marks are left to egui and its shaper; so are the brackets of a
 /// right-to-left line, which the shaper mirrors.
 fn classic_char(c: char, rtl: bool) -> bool {
     if rtl
@@ -6106,7 +6107,7 @@ fn classic_char(c: char, rtl: bool) -> bool {
         | '\u{2010}'..='\u{2027}' // dashes, quotes, bullets, ellipsis
         | '\u{2030}'..='\u{205E}' // per mille, primes, guillemets
         | '\u{20A0}'..='\u{20BF}' // currency
-    )
+    ) || crate::theme::cjk_script(c).is_some()
 }
 
 /// The font file of a family `theme.rs` sets up (Segoe UI leads the two built-in ones).
@@ -6130,7 +6131,8 @@ mod classic_text {
     use egui::epaint::text::{GlyphBitmap, GlyphRasterizerRequest, RasterizedGlyph};
     use egui::epaint::{Color32, ColorImage};
     use windows::Win32::Graphics::DirectWrite::{
-        DWRITE_FACTORY_TYPE_SHARED, DWRITE_FONT_FACE_TYPE_TRUETYPE, DWRITE_FONT_METRICS,
+        DWRITE_FACTORY_TYPE_SHARED, DWRITE_FONT_FACE_TYPE_TRUETYPE,
+        DWRITE_FONT_FACE_TYPE_TRUETYPE_COLLECTION, DWRITE_FONT_METRICS,
         DWRITE_FONT_SIMULATIONS_NONE, DWRITE_GLYPH_METRICS, DWRITE_GLYPH_OFFSET, DWRITE_GLYPH_RUN,
         DWRITE_GRID_FIT_MODE_ENABLED, DWRITE_MEASURING_MODE_GDI_CLASSIC,
         DWRITE_MEASURING_MODE_NATURAL, DWRITE_RENDERING_MODE_GDI_CLASSIC,
@@ -6182,7 +6184,12 @@ mod classic_text {
                             .ok()?;
                         factory
                             .CreateFontFace(
-                                DWRITE_FONT_FACE_TYPE_TRUETYPE,
+                                // A .ttc holds a collection: face 0 is its regular face.
+                                if file.to_ascii_lowercase().ends_with(".ttc") {
+                                    DWRITE_FONT_FACE_TYPE_TRUETYPE_COLLECTION
+                                } else {
+                                    DWRITE_FONT_FACE_TYPE_TRUETYPE
+                                },
                                 &[Some(font)],
                                 0,
                                 DWRITE_FONT_SIMULATIONS_NONE,
@@ -6191,6 +6198,41 @@ mod classic_text {
                     }
                 })
                 .clone()
+        }
+
+        /// The face and glyph id for `ch`: the family's own face for the scripts it draws, or the
+        /// interface language's CJK face for Chinese, Japanese and Korean text. None when no face
+        /// has a glyph for it: egui and its shaper draw it instead.
+        fn lookup(
+            &mut self,
+            family: &egui::FontFamily,
+            ch: char,
+        ) -> Option<(IDWriteFontFace, u16, DWRITE_FONT_METRICS)> {
+            let files: Vec<&'static str> = if crate::theme::cjk_script(ch).is_some() {
+                crate::theme::cjk_font_files(ch)
+            } else {
+                super::classic_font_file(family).into_iter().collect()
+            };
+            for file in files {
+                let Some(face) = self.face(file) else {
+                    continue;
+                };
+                let mut id = 0u16;
+                // SAFETY: the pointer is to one element, the count given.
+                if unsafe { face.GetGlyphIndices(&(ch as u32), 1, &mut id) }.is_err() {
+                    continue;
+                }
+                if id == 0 {
+                    continue;
+                }
+                let mut font = DWRITE_FONT_METRICS::default();
+                // SAFETY: the pointer is to one element.
+                unsafe {
+                    face.GetMetrics(&mut font);
+                }
+                return Some((face, id, font));
+            }
+            None
         }
 
         pub fn glyph(
@@ -6207,22 +6249,16 @@ mod classic_text {
             if req.font_size_px.is_nan() || req.font_size_px < 1.0 {
                 return None;
             }
-            let face = self.face(super::classic_font_file(req.family)?)?;
+            let (face, id, font) = self.lookup(req.family, ch)?;
             // GDI's sizes are whole pixels; the natural look keeps the size it is asked for.
             let em = if smooth {
                 req.font_size_px
             } else {
                 req.font_size_px.round()
             };
-            let mut id = 0u16;
             let mut metrics = DWRITE_GLYPH_METRICS::default();
-            let mut font = DWRITE_FONT_METRICS::default();
             // SAFETY: each pointer is to one element, the count given.
             unsafe {
-                face.GetGlyphIndices(&(ch as u32), 1, &mut id).ok()?;
-                if id == 0 {
-                    return None;
-                }
                 if smooth {
                     face.GetDesignGlyphMetrics(&id, 1, &mut metrics, false)
                         .ok()?;
@@ -6239,7 +6275,6 @@ mod classic_text {
                     )
                     .ok()?;
                 }
-                face.GetMetrics(&mut font);
             }
             let advance = metrics.advanceWidth as f32 * em / f32::from(font.designUnitsPerEm);
             // Smooth: the font's own width, as egui lays a line out by it (and places each letter
@@ -6588,6 +6623,119 @@ mod classic_text_tests {
                 }
             }
         }
+    }
+
+    /// #837: Chinese, Japanese and Korean characters are drawn by the same rasterizer as the
+    /// Latin beside them, at whole-pixel widths in the classic look. Fractional interface sizes
+    /// (110 %, 115 %…) round to a whole em instead of blurring the CJK fallback.
+    #[test]
+    fn cjk_letters_are_drawn_with_whole_pixel_advances() {
+        let mut g = glyphs();
+        let dir = std::env::var_os("WINDIR")
+            .map(|w| std::path::PathBuf::from(w).join("Fonts"))
+            .unwrap();
+        for ch in ['中', '文', '語', 'か', '한', '，', '。'] {
+            // A computer without that script's font (a CI image with no CJK fonts) draws it
+            // through egui's provider, if at all: nothing to check here.
+            if !crate::theme::cjk_font_files(ch)
+                .iter()
+                .any(|f| dir.join(f).exists())
+            {
+                eprintln!("no font for {ch}, not checked");
+                continue;
+            }
+            for size in [11.0, 12.0, 13.2] {
+                let text = ch.to_string();
+                let glyph = g
+                    .glyph(&req(&text, &FontFamily::Proportional, size), false, false)
+                    .unwrap_or_else(|| panic!("{ch} at {size} not drawn"));
+                assert_eq!(glyph.advance_px.fract(), 0.0, "{ch} at {size}");
+                assert!(glyph.advance_px >= 1.0, "{ch} at {size}");
+                assert!(glyph.bitmap.image.size[0] > 0, "{ch} at {size}: no bitmap");
+            }
+        }
+    }
+
+    /// #837: a mark that a shaper must place with its base, and every multi-codepoint cluster,
+    /// stay with egui.
+    #[test]
+    fn cjk_marks_and_clusters_stay_with_egui() {
+        let mut g = glyphs();
+        let f = FontFamily::Proportional;
+        for not in [
+            "\u{302A}",         // combining left tone mark
+            "\u{3099}",         // combining voiced sound mark
+            "\u{304B}\u{3099}", // か + voiced mark
+            "\u{4E2D}\u{302A}", // 中 + tone mark
+        ] {
+            assert!(
+                g.glyph(&req(not, &f, 12.0), false, false).is_none(),
+                "{not:?}"
+            );
+        }
+    }
+
+    /// #837: the boundaries of the ranges the rasterizer takes, and the ones a shaper must keep
+    /// (conjoining Jamo, combining marks, halfwidth sound marks).
+    #[test]
+    fn cjk_script_boundaries() {
+        use crate::theme::cjk_script;
+        for not in [
+            '\u{1100}',
+            '\u{11FF}',
+            '\u{A960}',
+            '\u{A97F}',
+            '\u{D7B0}',
+            '\u{D7FF}',
+            '\u{302A}',
+            '\u{302F}',
+            '\u{3099}',
+            '\u{309A}',
+            '\u{FF9E}',
+            '\u{FF9F}',
+            '\u{2000}',
+            '\u{1FFFF}',
+            '\u{40000}',
+        ] {
+            assert_eq!(cjk_script(not), None, "U+{:04X}", not as u32);
+        }
+        for c in ['\u{3040}', '\u{30FF}', '\u{FF9D}'] {
+            assert_eq!(cjk_script(c), Some("japanese"), "U+{:04X}", c as u32);
+        }
+        for c in ['\u{3130}', '\u{318F}', '\u{AC00}', '\u{D7A3}'] {
+            assert_eq!(cjk_script(c), Some("hangul"), "U+{:04X}", c as u32);
+        }
+        for c in ['\u{4E00}', '\u{9FFF}', '\u{20000}', '\u{3FFFF}'] {
+            assert_eq!(cjk_script(c), Some("han"), "U+{:04X}", c as u32);
+        }
+    }
+
+    /// #837: the interface language's own face leads its Han text; kana and Hangul keep their
+    /// script's face whatever the interface language. A language parameter, so no global race.
+    #[test]
+    fn cjk_faces_follow_the_interface_language() {
+        use crate::theme::cjk_font_files_for;
+        assert_eq!(cjk_font_files_for('\u{4E2D}', "zh-hans")[0], "msyh.ttc");
+        assert_eq!(cjk_font_files_for('\u{4E2D}', "zh-hant")[0], "msjh.ttc");
+        assert_eq!(cjk_font_files_for('\u{4E2D}', "ja")[0], "YuGothM.ttc");
+        assert_eq!(cjk_font_files_for('\u{4E2D}', "ko")[0], "malgun.ttf");
+        assert_eq!(cjk_font_files_for('\u{4E2D}', "en")[0], "msyh.ttc");
+        assert_eq!(cjk_font_files_for('\u{304B}', "ko")[0], "YuGothM.ttc");
+        assert_eq!(cjk_font_files_for('\u{D55C}', "zh-hans")[0], "malgun.ttf");
+    }
+
+    /// #837: a supplementary Han character no face has returns to egui instead of drawing tofu.
+    #[test]
+    fn an_unassigned_supplementary_han_falls_back_to_egui() {
+        let mut g = glyphs();
+        assert!(
+            g.glyph(
+                &req("\u{3FFFF}", &FontFamily::Proportional, 12.0),
+                false,
+                false
+            )
+            .is_none()
+        );
     }
 
     /// The smooth look keeps the font's own width and draws more levels of grey than the

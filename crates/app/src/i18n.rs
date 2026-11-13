@@ -116,6 +116,17 @@ pub fn rtl() -> bool {
     i18n().rtl(lang())
 }
 
+/// Is `code` a Chinese, Japanese or Korean language? Its glyphs are denser than Latin at the
+/// same size, so the interface draws its smallest text larger ([`crate::theme::font_size`]).
+pub fn cjk_code(code: &str) -> bool {
+    matches!(code, "zh-hans" | "zh-hant" | "ja" | "ko")
+}
+
+/// Is the interface written with Chinese, Japanese or Korean characters?
+pub fn cjk() -> bool {
+    cjk_code(code())
+}
+
 /// Marks `source` for the catalog (tools/i18n/extract.py) where the lookup happens later, e.g.
 /// a menu label chosen here and translated when the menu is drawn. Returns it unchanged.
 pub const fn mark(source: &'static str) -> &'static str {
@@ -519,6 +530,17 @@ mod tests {
             }
         }
         assert!(!i.rtl(Lang::EN));
+    }
+
+    /// #837: the languages whose glyphs the interface draws a size larger.
+    #[test]
+    fn cjk_languages() {
+        for code in ["zh-hans", "zh-hant", "ja", "ko"] {
+            assert!(cjk_code(code), "{code}");
+        }
+        for code in ["en", "de", "fr", "ru", "ar", "th", "hi", "vi"] {
+            assert!(!cjk_code(code), "{code}");
+        }
     }
 
     const NNBSP: char = '\u{202f}';
