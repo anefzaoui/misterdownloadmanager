@@ -1314,6 +1314,10 @@ pub(crate) fn js_runtime_note() -> &'static str {
 /// reader for the site, and on some servers that part is a long hash (#345). None otherwise:
 /// yt-dlp's title stays. The Download video window and the browser's quality menu both name a
 /// video by it.
+///
+/// A page that shows one file is often titled with the file's name (Dropbox's, a server's own
+/// listing: `Episode 31.mp4`): its video or sound extension is left out, as the choice's type
+/// follows the name (it was `Episode 31.mp4.mp4`, #622).
 pub(crate) fn page_title<'a>(
     context: &'a mdm_ipc::Command,
     v: &Video,
@@ -1322,8 +1326,23 @@ pub(crate) fn page_title<'a>(
     context
         .video_title
         .as_deref()
-        .map(str::trim)
+        .map(|t| without_media_extension(t.trim()))
         .filter(|t| !t.is_empty() && mdm_tools::resolve::named_after_address(&v.title, page))
+}
+
+/// `title` without a video or sound file's extension at its end (`Episode 31.mp4` → `Episode
+/// 31`); as it is otherwise, or when nothing would be left.
+fn without_media_extension(title: &str) -> &str {
+    let media = |ext: &str| {
+        mdm_engine::naming::TYPES.iter().any(|(t, e)| {
+            e.eq_ignore_ascii_case(ext)
+                && (t.starts_with("video/") || t.starts_with("audio/") || *t == "application/ogg")
+        })
+    };
+    match title.rsplit_once('.') {
+        Some((stem, ext)) if media(ext) && !stem.trim().is_empty() => stem.trim_end(),
+        _ => title,
+    }
 }
 
 /// The file name a choice of type `c` gets for a video titled `title`: made safe, with the
@@ -1857,6 +1876,46 @@ mod tests {
             page_title(&mdm_ipc::Command::default(), &hashed, page),
             None
         );
+    }
+
+    /// #622: a Dropbox page is titled with the file's name, extension and all; the video named
+    /// by it got the choice's extension once more (`Episode 31.mp4.mp4`).
+    #[test]
+    fn a_page_titled_with_the_file_name_names_it_once() {
+        let page = "https://www.dropbox.com/s/abc/Episode%2031.mp4?dl=0";
+        let v = Video {
+            title: "Episode 31".into(),
+            duration: None,
+            formats: Vec::new(),
+            subtitles: Vec::new(),
+            automatic: Vec::new(),
+            language: None,
+            direct: false,
+            needs_js_runtime: false,
+        };
+        let mp4 = Choice {
+            ext: "mp4".into(),
+            ..Default::default()
+        };
+        for (title, want) in [
+            ("Episode 31.mp4", "Episode 31"),
+            (" Episode 31.MKV ", "Episode 31"),
+            ("Episode 31.m4a", "Episode 31"),
+            // Not a media file's extension: a title as it is.
+            ("Episode 31. The end", "Episode 31. The end"),
+            ("Report v2.0", "Report v2.0"),
+            (".mp4", ".mp4"),
+        ] {
+            let context = mdm_ipc::Command {
+                video_title: Some(title.into()),
+                ..Default::default()
+            };
+            let got = page_title(&context, &v, page).unwrap();
+            assert_eq!(got, want, "{title}");
+            if want == "Episode 31" {
+                assert_eq!(file_name(got, &mp4), "Episode 31.mp4");
+            }
+        }
     }
 
     /// #661: a page's address from the clipboard comes a frame or more after the window opens:
