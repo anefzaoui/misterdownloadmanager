@@ -1164,7 +1164,7 @@ impl Item {
 
     /// Every byte is in (#736): no rate and no time left, as once it is complete.
     pub fn past_last_byte(&self) -> bool {
-        self.torrent.is_none() && self.snap.as_ref().is_some_and(|s| every_byte_in(s))
+        self.torrent.is_none() && self.snap.as_ref().is_some_and(every_byte_in)
     }
 
     pub fn status_text(&self) -> String {
