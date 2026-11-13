@@ -76,7 +76,7 @@
   },
   "0168c749ceaa28cd": {
    "source": "Many videos are split into chapters on their page: YouTube's list under the player, with a title and a start time for each part. With <g1>Embed chapters</g1> ticked, under <g2>Subtitles</g2>, they go into the video file, so players such as VLC, MPV, MPC-HC and Windows' Media Player list them and skip from one to the next.",
-   "text": "Muitos vídeos são divididos em capítulos na sua página: a lista do YouTube sob o leitor, com um título e uma hora de início para cada parte. Com <g1>Incorporar capítulos</g1> selecionado, em <g2>Legendas</g2>, eles são inseridos no ficheiro de vídeo, para que leitores como o VLC, MPV, MPC-HC e o Media Player do Windows os listem e saltem de um para o outro."
+   "text": "Muitos vídeos são divididos em capítulos na sua página: a lista do YouTube por baixo do leitor, com um título e uma hora de início para cada parte. Com <g1>Incorporar capítulos</g1> selecionado, em <g2>Legendas</g2>, eles são incluídos no ficheiro de vídeo, para que leitores como o VLC, MPV, MPC-HC e o Media Player do Windows os listem e saltem de um para o outro."
   },
   "016a9690b4c55ee5": {
    "source": "Both are kept in a <x1/> folder in MDM's data folder.",
@@ -1952,7 +1952,7 @@
   },
   "1d2b4c5972daa383": {
    "source": "It's ticked to begin with, and stays as you leave it for the next video.",
-   "text": "Está selecionado de início e mantém-se como o deixou para o próximo vídeo."
+   "text": "Está selecionado para começar e mantém-se como o deixou para o próximo vídeo."
   },
   "1d4ee2f96c724f0f": {
    "source": "A torrent: what it sends to peers, while it runs.",
@@ -2458,10 +2458,6 @@
    "source": "A download starts over instead of resuming",
    "text": "Uma transferência recomeça em vez de retomar"
   },
-  "24bf3f2f66091d90": {
-   "source": "Some videos play only for a signed-in viewer: a member's or a private video, an age-restricted one, and YouTube sometimes asks any viewer from an address it doubts to \"Sign in to confirm you're not a bot\". yt-dlp then needs your browser's cookies, the small files that keep you signed in.",
-   "text": "Alguns vídeos só podem ser reproduzidos por um utilizador com sessão iniciada: um vídeo privado ou de membro, um vídeo com restrição de idade, e o YouTube, por vezes, pede a qualquer utilizador de um endereço que considere duvidoso para «Iniciar sessão para confirmar que não é um robô». O yt-dlp precisa, então, dos cookies do seu navegador, os pequenos ficheiros que o mantêm com sessão iniciada."
-  },
   "24c00ebf1248106f": {
    "source": "An etched separator's highlight line",
    "text": "A linha de destaque de um separador gravado"
@@ -2760,7 +2756,7 @@
   },
   "28e42e284885ce6e": {
    "source": "It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. When the button can't tell which one you mean, the toolbar button's <g1>Media on this page</g1> lists them all. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. A stream goes with what the browser sent when the player asked for it, its referrer, its origin and its cookies (a player embedded from another site may have cookies the browser keeps for that page only), and MDM sends them again with each of its playlists and pieces: a site's video server that serves its own pages' players only lets MDM through as well. Sound players get the button too.",
-   "text": "Assume o vídeo em que clicou: o seu próprio ficheiro quando reproduz um, ou o stream que o leitor carregou (HLS ou DASH), caso contrário a página. Quando o botão não consegue determinar qual pretende, a opção <g1>Multimédia nesta página</g1> do botão da barra de ferramentas lista-os a todos. Os leitores incorporados também funcionam, e o seu início de sessão para o site, a página que incorpora o leitor e o User-Agent do seu navegador são enviados com ele, para que os vídeos para membros, ou que são reproduzidos apenas no site que os incorpora, possam ser transferidos. Um stream é enviado com o que o navegador enviou quando o leitor o pediu, o seu referenciador, a sua origem e os seus cookies (um leitor incorporado de outro site pode ter cookies que o navegador guarda apenas para essa página), e o MDM envia-os novamente com cada uma das suas listas de reprodução e partes: um servidor de vídeo de um site que serve apenas os leitores das suas próprias páginas também permite a passagem do MDM. Os leitores de som também recebem o botão."
+   "text": "Assume o vídeo em que clicou: o seu próprio ficheiro quando reproduz um, ou o stream que o leitor carregou (HLS ou DASH), caso contrário a página. Quando o botão não consegue determinar qual pretende, a opção <g1>Multimédia nesta página</g1> do botão da barra de ferramentas lista-os todos. Os leitores incorporados também funcionam, e o seu início de sessão para o site, a página que incorpora o leitor e o User-Agent do seu navegador acompanham-no, para que os vídeos para membros, ou que são reproduzidos apenas no site que os incorpora, possam ser transferidos. Um stream é acompanhado do que o navegador enviou quando o leitor o solicitou, o seu referenciador, a sua origem e os seus cookies (um leitor incorporado de outro site pode ter cookies que o navegador guarda apenas para essa página), e o MDM envia-os novamente com cada uma das suas listas de reprodução e partes: um servidor de vídeo de um site que serve apenas os leitores das suas próprias páginas também permite a passagem do MDM. Os leitores de som também recebem o botão."
   },
   "28eeaa8ad9bf85a3": {
    "source": "Requests",
@@ -3696,7 +3692,7 @@
   },
   "37a51fbe4037e117": {
    "source": "<g1>Any system</g1>, Deno for your user alone: <x2/> (on Windows, in PowerShell: <x3/>)",
-   "text": "<g1>Qualquer sistema</g1>, Deno apenas para o seu utilizador: <x2/> (no Windows, no PowerShell: <x3/>)"
+   "text": "<g1>Qualquer sistema</g1>, Deno apenas para o seu utilizador: <x2/> (no Windows, em PowerShell: <x3/>)"
   },
   "37a82a5012e58c8d": {
    "source": "(the lighter background)",
@@ -4186,6 +4182,10 @@
    "source": "It works as a kill switch. When the adapter disconnects, running torrents stop with \"… is not connected; it goes on when it is back\", and they start again through the adapter when it is. Until MDM notices (within a second), the engine's sockets are still bound to an address that is gone, so nothing can leave another way. A torrent added while the adapter isn't connected doesn't start, and says why. Tracker names are still looked up by the system's DNS.",
    "text": "Funciona como um kill switch. Quando a placa se desliga, os torrents em execução param com \"… não está ligada; continua quando voltar\", e recomeçam através da placa quando esta está ligada. Até que o MDM o detete (dentro de um segundo), os sockets do motor ainda estão associados a um endereço que desapareceu, pelo que nada pode sair de outra forma. Um torrent adicionado enquanto a placa não está ligada não inicia e indica o motivo. Os nomes dos trackers ainda são pesquisados pelo DNS do sistema."
   },
+  "3e956985953c6c3e": {
+   "source": "<g1>Videos that need you signed in</g1>: the button over the video hands MDM the page's own cookies, so you're signed in as in the browser. For pasted links and playlists, <g2>Options → Sites Logins → Cookies for video sites</g2> lets yt-dlp read a browser's cookies, from the profile you choose: a separate one with a spare account works well. Chrome, Edge and Brave lock theirs on Windows, and the window says so; Firefox works. <g3>The help</g3> says more.",
+   "text": "<g1>Vídeos que exigem início de sessão</g1>: o botão sobre o vídeo entrega os cookies da página ao MDM, para que inicie sessão como no navegador. Para ligações coladas e listas de reprodução, <g2>Opções → Inícios de Sessão de Sites → Cookies para sites de vídeo</g2> permite ao yt-dlp ler os cookies de um navegador, a partir do perfil que escolher: um separado com uma conta secundária funciona bem. O Chrome, Edge e Brave bloqueiam os seus no Windows, e a janela indica-o; o Firefox funciona. <g3>A ajuda</g3> explica mais."
+  },
   "3e9e6b7b10d78723": {
    "source": "<g1>Start</g1> adds the ticked links to the <g2>Main download queue</g2> and starts the queue. It downloads as many files at once as the queue allows.",
    "text": "<g1>Iniciar</g1> adiciona os links marcados à <g2>Fila de transferência principal</g2> e inicia a fila. Descarrega tantos ficheiros de uma só vez quanto a fila permite."
@@ -4205,6 +4205,10 @@
   "3ebf8f1307545f42": {
    "source": "Download manager command line and automation API — Mister Download Manager",
    "text": "Linha de comandos e API de automação do gestor de transferências — Mister Download Manager"
+  },
+  "3ec0fd3706431045": {
+   "source": "<g1>The Download video button over the video</g1> passes that page's cookies, from the window and profile you're in (a private window, a Firefox container), for the look-up and the download, so you're signed in as you are in the browser. Nothing to set up. Each cookie goes with the domain the browser keeps it for, so a sign-in on YouTube Music (music.youtube.com) or YouTube's mobile site reaches www.youtube.com too.",
+   "text": "<g1>O botão Transferir vídeo por cima do vídeo</g1> passa os cookies dessa página, da janela e perfil em que está (uma janela privada, um contentor do Firefox), para a pesquisa e a transferência, para que esteja com sessão iniciada como está no navegador. Nada a configurar. Cada cookie vai com o domínio para o qual o navegador o guarda, por isso um início de sessão no YouTube Music (music.youtube.com) ou no site móvel do YouTube também chega a www.youtube.com."
   },
   "3ec9f591006bbd23": {
    "source": "The installer. Pick this one unless you have a reason not to. It can set up browser integration and open <x1/> files and magnet links with MDM.",
@@ -5792,7 +5796,7 @@
   },
   "57d55935c79c75f6": {
    "source": "Install one of them, either works, then look the video up again. MDM finds Deno, Node.js (also one installed with nvm) and Bun by itself. If it still says so, the new program's folder isn't on the <x1/> MDM started with (Windows' installers add it for programs started after them): quit MDM (<g2>Tasks → Exit</g2>) and start it again.",
-   "text": "Instale um deles, qualquer um funciona, e depois procure o vídeo novamente. O MDM encontra o Deno, o Node.js (também um instalado com nvm) e o Bun por si só. Se continuar a avisar, a pasta do novo programa não está no <x1/> com que o MDM foi iniciado (os instaladores do Windows adicionam-no para programas iniciados depois deles): saia do MDM (<g2>Tarefas → Sair</g2>) e inicie-o novamente."
+   "text": "Instale um deles, qualquer um funciona, e depois procure o vídeo novamente. O MDM encontra o Deno, o Node.js (também um instalado com nvm) e o Bun por si só. Se continuar a avisar, a pasta do novo programa não está no <x1/> com que o MDM foi iniciado (os instaladores do Windows adicionam-na para programas iniciados depois deles): saia do MDM (<g2>Tarefas → Sair</g2>) e inicie-o novamente."
   },
   "57df30288a29fe94": {
    "source": "Made possible by these amazing humans",
@@ -5916,7 +5920,7 @@
   },
   "598886119cab837f": {
    "source": "<g1>A web page's address.</g1> Paste or copy the address of a page (<x2/>) and MDM reads the page and lists the links on it, as the browser's <g3>Download all links</g3> does, in a package named after the page. The page itself is left unticked. This works for addresses that came on their own (pasted, copied, typed, in a list), not for the links found on a page, so MDM never wanders off through a site. MDM reads only what the page itself holds: links a page's scripts add after it loads come only through the browser.",
-   "text": "<g1>O endereço de uma página web.</g1> Cole ou copie o endereço de uma página (<x2/>) e o MDM lê a página e lista as ligações nela, como a opção <g3>Transferir todas as ligações</g3> do navegador, num pacote com o nome da página. A própria página não é selecionada. Isto funciona para endereços que surgiram por si só (colados, copiados, digitados, numa lista), não para as ligações encontradas numa página, para que o MDM nunca se desvie por um site. O MDM lê apenas o que a própria página contém: as ligações que os scripts de uma página adicionam depois de carregar só chegam através do navegador."
+   "text": "<g1>O endereço de uma página web.</g1> Cole ou copie o endereço de uma página (<x2/>) e o MDM lê a página e lista as ligações nela, como a opção <g3>Transferir todas as ligações</g3> do navegador, num pacote com o nome da página. A própria página não é selecionada. Isto funciona para endereços que surgiram por si (colados, copiados, digitados, numa lista), não para as ligações encontradas numa página, para que o MDM nunca vagueie por um site. O MDM lê apenas o que a própria página contém: as ligações que os scripts de uma página adicionam depois de carregar só chegam através do navegador."
   },
   "59920ff7101c276f": {
    "source": "Fix the translation in the row's third column and delete its <x1/> line.",
@@ -6806,10 +6810,6 @@
    "source": "Two helpers, checked before use",
    "text": "Dois auxiliares, verificados antes de usar"
   },
-  "66f7530c7179f562": {
-   "source": "<g1>The Download video button over the video</g1> passes that page's cookies, from the window and profile you're in (a private window, a Firefox container), for the look-up and the download. Nothing to set up. Each cookie goes with the domain the browser keeps it for, so a sign-in on YouTube Music (music.youtube.com) or YouTube's mobile site reaches www.youtube.com too.",
-   "text": "<g1>O botão Transferir vídeo sobre o vídeo</g1> passa os cookies dessa página, da janela e perfil em que está (uma janela privada, um contentor do Firefox), para a pesquisa e a transferência. Nada a configurar. Cada cookie vai com o domínio para o qual o navegador o guarda, por isso, um início de sessão no YouTube Music (music.youtube.com) ou no site móvel do YouTube também chega a www.youtube.com."
-  },
   "670bb10cde757ad1": {
    "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
    "text": "O MDM nunca escreve o token no registo de eventos, nos relatórios de falhas, na API de automação nem na saída da linha de comandos."
@@ -7558,6 +7558,10 @@
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "Cole uma ligação do Google Drive tal como está, como a que obtém em <g1>Partilhar → Copiar ligação</g1>:"
   },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "Não foi possível ler a lista do GitHub quando esta página foi criada. Entretanto, todos estão no GitHub, nas <g1>pull requests</g1> e <g2>issues</g2> do projeto."
+  },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
    "text": "Comunicar problemas"
@@ -8137,10 +8141,6 @@
   "7bde548eabfafc71": {
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
    "text": "Oito por transferência por predefinição, e até 32 se escolher em Opções → Ligação, ou 128 depois de selecionar Permitir mais de 32 ligações aí. O MDM utiliza menos quando um servidor permite menos, e apenas uma quando um servidor não consegue enviar partes de um ficheiro."
-  },
-  "7beb76c0e99ab62c": {
-   "source": "<g1>Videos that need you signed in</g1>: <g2>Options → Sites Logins → Cookies for video sites</g2> lets yt-dlp read a browser's cookies, for pasted links. Chrome, Edge and Brave lock theirs on Windows, and the window says so; Firefox works, and so does the button over the video.",
-   "text": "<g1>Vídeos que exigem que esteja com sessão iniciada</g1>: <g2>Opções → Inícios de Sessão de Sites → Cookies para sites de vídeo</g2> permite que o yt-dlp leia os cookies de um navegador, para links colados. Chrome, Edge e Brave bloqueiam os seus no Windows, e a janela diz isso; o Firefox funciona, e o botão sobre o vídeo também."
   },
   "7bf940f9155b4bce": {
    "source": "<x1/> <g2>Open source · Apache-2.0</g2>",
@@ -9276,7 +9276,7 @@
   },
   "8c714d229ab4b2fb": {
    "source": "They go into a video (MP4, MKV, WebM) and into the sound as the site has it (<g1>Audio only, original</g1>), not into an MP3, Opus or FLAC file.",
-   "text": "São inseridos num vídeo (MP4, MKV, WebM) e no som como o site o tem (<g1>Só áudio, original</g1>), não num ficheiro MP3, Opus ou FLAC."
+   "text": "São incluídos num vídeo (MP4, MKV, WebM) e no som como o site o tem (<g1>Só áudio, original</g1>), não num ficheiro MP3, Opus ou FLAC."
   },
   "8c7321b31cd98d97": {
    "source": "<g1>Toolbar.</g1> <g2>Add URL</g2>, <g3>Add Torrent</g3>, <g4>Resume</g4>, <g5>Stop</g5>, <g6>Stop All</g6>, <g7>Delete</g7>, <g8>Delete Completed</g8>, <g9>Options</g9>, <g10>Scheduler</g10>, <g11>Start Queue</g11>, <g12>Stop Queue</g12>. The small arrow next to <g13>Add Torrent</g13>, <g14>Start Queue</g14> and <g15>Stop Queue</g15> opens more choices.",
@@ -10742,6 +10742,10 @@
    "source": "A window larger than the screen at that size (Options at 200 % on a 1366 × 768 screen) opens as large as the screen allows, and the rest scrolls: with the scroll bars, the mouse wheel, or <g1>Tab</g1> to the next control.",
    "text": "Uma janela maior do que o ecrã nesse tamanho (Opções a 200 % num ecrã de 1366 × 768) abre tão grande quanto o ecrã permite, e o resto é deslocado: com as barras de deslocamento, a roda do rato, ou <g1>Tab</g1> para o próximo controlo."
   },
+  "a24bd8fd730a41d0": {
+   "source": "On Windows, an OpenGL older than 3.0 (an old graphics card's driver, such as Intel's first HD Graphics, whose OpenGL is 2.1) can't draw MDM: its windows come out as garbage. MDM notices it as it starts and starts again with Direct3D on Microsoft's software renderer (WARP), from then on, and <g1>View → Draw with</g1> says so. Choosing <g2>OpenGL</g2> there tries it again.",
+   "text": "No Windows, uma versão do OpenGL anterior à 3.0 (um controlador de placa gráfica antigo, como o primeiro HD Graphics da Intel, cujo OpenGL é 2.1) não consegue desenhar o MDM: as suas janelas aparecem com erros. O MDM deteta isso ao iniciar e reinicia com o Direct3D no renderizador de software da Microsoft (WARP) a partir desse momento, e <g1>Ver → Desenhar com</g1> indica-o. Escolher <g2>OpenGL</g2> aí tenta novamente."
+  },
   "a2907e04d7c8512f": {
    "source": "Why doesn't MDM take over my download? — Mister Download Manager",
    "text": "Porque é que o MDM não assume a minha transferência? — Mister Download Manager"
@@ -11764,7 +11768,7 @@
   },
   "b1a0ed24728365e7": {
    "source": "The command line (<x1/>) puts them in too, whenever ffmpeg is there.",
-   "text": "A linha de comandos (<x1/>) também os insere, sempre que o ffmpeg estiver presente."
+   "text": "A linha de comandos (<x1/>) também os inclui, sempre que o ffmpeg estiver presente."
   },
   "b1aebd102c185a01": {
    "source": "RSS feeds for torrents, with download rules — Mister Download Manager",
@@ -11956,7 +11960,7 @@
   },
   "b3d7bbeea9ab71d3": {
    "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g19>Embed chapters</g19> does. <x20/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x21/>; when it isn't connected, nothing starts.",
-   "text": "Transferir um vídeo; <x1/> usa um seletor de qualidade de <x2/> (<x3/> = o melhor ficheiro único; <x4/> = apenas o som como está no site, sem conversão; <x5/>, <x6/>, <x7/> ou <x8/> = o som como MP3 com essa taxa de bits, <x9/> com a melhor taxa variável; <x10/> = como Opus; <x11/> = como FLAC, sem perdas, mas não melhor do que o som do site; as conversões exigem o ffmpeg). <x12/>: o próprio gestor de transferências do MDM transfere cada fluxo que o yt-dlp encontra através deste número de ligações (8 por predefinição, 1 a 128), um fluxo em partes (HLS, DASH) este número de partes de uma só vez. <x13/> guarda as legendas ao lado: códigos de idioma de <x14/> (<x15/>), ou <x16/> para todas as que o carregador forneceu; <x17/> usa as legendas automáticas do site; <x18/> insere-as no vídeo (exige o ffmpeg, MP4 ou MKV). Com o ffmpeg, os capítulos do vídeo também são inseridos no ficheiro, tal como a opção <g19>Incorporar capítulos</g19> de Transferir vídeo. <x20/> envia as ligações das transferências, e as do yt-dlp (e do ffmpeg), através de uma placa de rede, como para <x21/>; quando não está ligada, nada começa."
+   "text": "Transferir um vídeo; <x1/> usa um seletor de qualidade de <x2/> (<x3/> = o melhor ficheiro único; <x4/> = apenas o áudio como está no site, sem conversão; <x5/>, <x6/>, <x7/> ou <x8/> = o áudio como MP3 com essa taxa de bits, <x9/> com a melhor taxa variável; <x10/> = como Opus; <x11/> = como FLAC, sem perdas, mas não melhor do que o áudio do site; as conversões requerem ffmpeg). <x12/>: o próprio gestor de transferências do MDM transfere cada stream que o yt-dlp encontra através deste número de ligações (8 por predefinição, 1 a 128), um stream em partes (HLS, DASH) este número de partes de uma só vez. <x13/> guarda as legendas ao lado: códigos de idioma de <x14/> (<x15/>), ou <x16/> para todas as que o carregador forneceu; <x17/> usa as legendas automáticas do site; <x18/> insere-as no vídeo (requer ffmpeg, MP4 ou MKV). Com o ffmpeg, os capítulos do vídeo também são inseridos no ficheiro, tal como a opção <g19>Incorporar capítulos</g19> de Transferir vídeo. <x20/> envia as ligações das transferências, e as do yt-dlp (e do ffmpeg), através de um adaptador de rede, como para <x21/>; quando não está ligado, nada começa."
   },
   "b3f1633383cc8b77": {
    "source": "Open <g1>Downloads → Options</g1>, or click <g2>Options</g2> on the toolbar. The window has twelve pages on two rows of tabs. <g3>OK</g3> saves your changes; closing the window or pressing <g4>Esc</g4> throws them away.",
@@ -12241,6 +12245,10 @@
   "b86face263e9f2af": {
    "source": "We'd rather you knew. IDM has a site grabber that follows a whole website's pages (MDM's link grabber takes the links of one page), and many years of polish and compatibility fixes. MDM is new; if something you rely on is missing, <g1>ask for it</g1>.",
    "text": "Preferimos que saiba. O IDM tem um extrator de sites que segue as páginas de um site inteiro (o extrator de ligações do MDM recolhe as ligações de uma página), e muitos anos de aperfeiçoamento e correções de compatibilidade. O MDM é novo; se algo de que depende estiver em falta, <g1>peça-o</g1>."
+  },
+  "b886cc5ff82424bc": {
+   "source": "<g1>A spare account, in a profile of its own</g1>: you don't have to lend yt-dlp your main account. Make a second profile in your browser, sign in to the site there with a spare account, and put that profile in <g2>Profile</g2> (its name, or its folder with <g3>...</g3>). yt-dlp reads that profile's cookies only. yt-dlp's developers advise this too: a site may limit an account it sees used by a program.",
+   "text": "<g1>Uma conta secundária, num perfil próprio</g1>: não tem de emprestar a sua conta principal ao yt-dlp. Crie um segundo perfil no seu navegador, inicie sessão no site com uma conta secundária e coloque esse perfil em <g2>Perfil</g2> (o seu nome, ou a sua pasta com <g3>...</g3>). O yt-dlp lê apenas os cookies desse perfil. Os programadores do yt-dlp também aconselham isto: um site pode limitar uma conta que vê ser usada por um programa."
   },
   "b88a67e39c494a61": {
    "source": "The server runs on the app's Tokio runtime, one listener per local network address. Each request is checked (<x1/>, <x2/>, token), turned into an <x3/> marked <x4/> (a field no request line can set) and handed to the app through the same channel as the command line's; the app answers it on its next frame, as it answers the automation API. Its page is built in (<x5/>) and its texts come from the app's catalogs (<x6/>).",
@@ -13918,6 +13926,10 @@
    "source": "Maturity",
    "text": "Maturidade"
   },
+  "d2fc243b93084d12": {
+   "source": "Some videos play only for a signed-in viewer: a member's or a private video, an age-restricted one. And YouTube sometimes asks any viewer from a network it doubts (a VPN, a shared or cloud address) to \"Sign in to confirm you're not a bot\". yt-dlp then needs your browser's cookies, the small files that keep you signed in.",
+   "text": "Alguns vídeos só são reproduzidos para um utilizador com sessão iniciada: um vídeo de membro ou privado, um com restrição de idade. E o YouTube, por vezes, pede a qualquer utilizador de uma rede de que duvida (uma VPN, um endereço partilhado ou na nuvem) para \"Iniciar sessão para confirmar que não é um bot\". O yt-dlp precisa então dos cookies do seu navegador, os pequenos ficheiros que o mantêm com sessão iniciada."
+  },
   "d30e4557ff06a9ab": {
    "source": "Reports, translations and help",
    "text": "Relatórios, traduções e ajuda"
@@ -15164,7 +15176,7 @@
   },
   "e71e432fdd540d5b": {
    "source": "Turn the look-ups off in <g1>Options → Archives → Look links up when they arrive</g1>. Some file hosts count a look-up as a download. With the look-ups off, MDM asks nothing of the network until you start, so a web page's address isn't read for its links either.",
-   "text": "Desative as pesquisas em <g1>Opções → Arquivos → Pesquisar ligações quando chegam</g1>. Alguns anfitriões de ficheiros contam uma pesquisa como uma transferência. Com as pesquisas desativadas, o MDM não pede nada à rede até que inicie, por isso o endereço de uma página web também não é lido para as suas ligações."
+   "text": "Desative as pesquisas em <g1>Opções → Arquivos → Pesquisar ligações quando chegam</g1>. Alguns anfitriões de ficheiros contam uma pesquisa como uma transferência. Com as pesquisas desativadas, o MDM não solicita nada à rede até que inicie, pelo que o endereço de uma página web também não é lido para as suas ligações."
   },
   "e7281739beb4476f": {
    "source": "A download manager can fill your whole connection. These steps cap MDM so that browsing, video calls and games stay smooth.",
@@ -15616,7 +15628,7 @@
   },
   "ed30bf8c293519f0": {
    "source": "<g1>Download complete</g1> shows the file's size, its address and where it was saved. Choose <g2>Open</g2>, <g3>Open with...</g3>, <g4>Open folder</g4> or <g5>Close</g5>. On Windows you can also drag the small box at the bottom right into Explorer, an email or a chat to drop the file there. As when you drag a file in Explorer, a folder on the same drive gets the file moved there and another drive gets a copy (hold <g6>Shift</g6> to move it, <g7>Ctrl</g7> to copy it). The download follows a moved file: the list and <g8>Open</g8> find it in its new place. The window shows above your other programs until you click it, without taking the keyboard from the one you're typing in.",
-   "text": "A janela <g1>Transferência concluída</g1> mostra o tamanho do ficheiro, o seu endereço e onde foi guardado. Escolha <g2>Abrir</g2>, <g3>Abrir com...</g3>, <g4>Abrir pasta</g4> ou <g5>Fechar</g5>. No Windows, também pode arrastar a pequena caixa no canto inferior direito para o Explorador, um e-mail ou um chat para largar o ficheiro lá. Tal como quando arrasta um ficheiro no Explorador, uma pasta na mesma unidade move o ficheiro para lá e outra unidade obtém uma cópia (mantenha <g6>Shift</g6> para o mover, <g7>Ctrl</g7> para o copiar). A transferência segue um ficheiro movido: a lista e <g8>Abrir</g8> encontram-no no seu novo local. A janela aparece por cima dos seus outros programas até clicar nela, sem tirar o teclado daquele em que está a escrever."
+   "text": "<g1>Transferência concluída</g1> mostra o tamanho do ficheiro, o seu endereço e onde foi guardado. Escolha <g2>Abrir</g2>, <g3>Abrir com...</g3>, <g4>Abrir pasta</g4> ou <g5>Fechar</g5>. No Windows, também pode arrastar a pequena caixa no canto inferior direito para o Explorador, um e-mail ou um chat para largar o ficheiro lá. Tal como quando arrasta um ficheiro no Explorador, uma pasta na mesma unidade move o ficheiro para lá e outra unidade obtém uma cópia (mantenha <g6>Shift</g6> para o mover, <g7>Ctrl</g7> para o copiar). A transferência segue um ficheiro movido: a lista e <g8>Abrir</g8> encontram-no no seu novo local. A janela aparece sobre os seus outros programas até clicar nela, sem tirar o teclado daquele em que está a escrever."
   },
   "ed39bbda605ca874": {
    "source": "Every file finds its folder",

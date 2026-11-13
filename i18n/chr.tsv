@@ -6616,6 +6616,10 @@ menu	Direct3D	Direct3D
 #, machine
 menu	Direct3D didn't start here: OpenGL draws	Direct3D ᎥᏝ ᏳᎴᏅᎮ ᎠᏂ: OpenGL ᏕᎪᏪᎵᏍᎪᎢ
 #. menu command in the main window
+#. View → Draw with: a greyed note; Direct3D draws the windows through Windows' own software renderer (WARP) instead of a graphics card
+#, machine
+menu	Direct3D draws with Windows' software renderer (WARP)	Direct3D Windows' software renderer (WARP) ᎬᏗᎭ
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -6711,7 +6715,7 @@ menu	Metal didn't start here: OpenGL draws	Metal ᎥᏝ ᏳᎴᏅᏔᏃ: OpenGL 
 #. menu command in the main window
 #. View → Draw with: a greyed note; Metal draws the windows through a software renderer instead of a graphics card
 #, machine
-menu	Metal draws with a software renderer	Metal ᏕᎦᏃᎷᎦ ᎤᏅᏔᏅᎯ ᏗᏟᎶᏍᏙᏗ
+menu	Metal draws with a software renderer	Metal software renderer ᎬᏗᎭ
 #. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
@@ -6760,25 +6764,9 @@ menu	Open with...	ᎤᏍᏚᎢᏍᏗ...
 #, machine
 menu	OpenGL	OpenGL
 #. menu command in the main window
-#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
-#, machine
-menu	OpenGL didn't start here	OpenGL ᎥᏝ ᎠᏂ ᎠᎴᏅᏗᏍᎬᎾ
-#. menu command in the main window
-#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window froze inside the graphics card's driver while OpenGL drew
-#, machine
-menu	OpenGL froze inside the graphics driver here	OpenGL ᎠᏂ ᎤᏗᎴᎲᏍᏔᏅᎩ ᏗᏟᎶᏍᏙᏗ ᏗᏟᎶᏍᏙᏗ ᎦᏅᎯᏓ
-#. menu command in the main window
 #. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
 #, machine
-menu	OpenGL here is too old to draw MDM	OpenGL ᎠᏂ ᎢᏴ ᎠᎦᏴᎵᎨᎢ ᏕᎦᏃᎷᎦ MDM
-#. menu command in the main window
-#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window stayed empty for 10 seconds, so MDM started again another way
-#, machine
-menu	OpenGL's first frame didn't show within 10 seconds	OpenGL ᎢᎬᏱᏱ ᏗᏟᎶᏍᏙᏗ ᎥᏝ ᎬᏂᎨᏒ ᏱᏄᎵᏍᏔᏁ 10 ᎢᏯᎵᏱ
-#. menu command in the main window
-#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed or was closed while starting with it
-#, machine
-menu	OpenGL's last start ended before its first frame	OpenGL ᎤᎵᏍᏆᎸᏗ ᎠᎴᏅᏙᏗ ᎤᎵᏍᏆᏗᏍᏔᏅᎩ ᎢᎬᏱᏱ ᏗᏟᎶᏍᏙᏗ ᏂᎬᏂᏏᏍᎬᎾ
+menu	OpenGL here is too old to draw MDM	OpenGL ᎡᏂᎢᏳᏍᏗ MDM ᎥᏝ ᎬᏗᏍᏗ ᏱᎩ
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window
@@ -6933,7 +6921,7 @@ menu	Vulkan didn't start here: OpenGL draws	Vulkan ᎥᏝ ᏳᎴᏅᏔᏃ: OpenG
 #. menu command in the main window
 #. View → Draw with: a greyed note; Vulkan draws the windows through a software renderer instead of a graphics card
 #, machine
-menu	Vulkan draws with a software renderer	Vulkan ᏕᎦᏃᎷᎦ ᎤᏅᏔᏅᎯ ᏗᏟᎶᏍᏙᏗ ᏗᏟᎶᏍᏙᏗ
+menu	Vulkan draws with a software renderer	Vulkan software renderer ᎬᏗᎭ
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

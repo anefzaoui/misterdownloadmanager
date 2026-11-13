@@ -562,6 +562,15 @@ These ship in the next version.
   once OpenGL fails there: it can't start, is too old, shows no first window, or MDM freezes
   inside its driver (read from the freeze report); remembered, **View → Draw with** says why, and
   choosing **OpenGL** tries it again ([#847](https://github.com/anefzaoui/misterdownloadmanager/issues/847))
+- ✅ Help: videos that need you signed in, in short: the button over the video brings the page's
+  own cookies, Options reads a browser profile's for pasted links and playlists (a separate
+  profile with a spare account works well), and why some videos and networks need it (from
+  [#721](https://github.com/anefzaoui/misterdownloadmanager/issues/721))
+- ✅ A video whose picture and sound can't be joined says so in full and why, and that its downloaded
+  parts stay in the folder for Resume; deleting it with its files removes them
+- ✅ Tests: the merge's percentages, which a slow macOS runner once saw go back (the test's fake
+  ffmpeg rewrote its file, read empty between two writes), never go back: the app holds them, and
+  the test writes its file as ffmpeg does, empties it once on purpose and checks the end is reached
 - ✅ Torrents: File Properties closes with OK, instead of asking for an http(s) or ftp(s)
   address; a torrent's magnet link is shown read only there
   ([#904](https://github.com/anefzaoui/misterdownloadmanager/issues/904))

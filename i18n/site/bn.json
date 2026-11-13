@@ -76,7 +76,7 @@
   },
   "0168c749ceaa28cd": {
    "source": "Many videos are split into chapters on their page: YouTube's list under the player, with a title and a start time for each part. With <g1>Embed chapters</g1> ticked, under <g2>Subtitles</g2>, they go into the video file, so players such as VLC, MPV, MPC-HC and Windows' Media Player list them and skip from one to the next.",
-   "text": "অনেক ভিডিও তাদের পৃষ্ঠায় অধ্যায়গুলিতে বিভক্ত থাকে: প্লেয়ারের নিচে YouTube-এর তালিকা, প্রতিটি অংশের জন্য একটি শিরোনাম এবং একটি শুরুর সময় সহ। <g2>সাবটাইটেল</g2>-এর নিচে <g1>অধ্যায়গুলি এম্বেড করুন</g1> টিক দেওয়া থাকলে, সেগুলি ভিডিও ফাইলে চলে যায়, যাতে VLC, MPV, MPC-HC এবং Windows-এর মিডিয়া প্লেয়ারের মতো প্লেয়ারগুলি সেগুলিকে তালিকাভুক্ত করে এবং এক থেকে পরেরটিতে চলে যায়।"
+   "text": "অনেক ভিডিও তাদের পৃষ্ঠায় অধ্যায়ে বিভক্ত থাকে: প্লেয়ারের নিচে YouTube-এর তালিকা, প্রতিটি অংশের জন্য একটি শিরোনাম এবং একটি শুরুর সময় সহ। <g2>সাবটাইটেল</g2> এর নিচে, <g1>অধ্যায়গুলি এম্বেড করুন</g1> টিক দেওয়া থাকলে, তারা ভিডিও ফাইলটিতে চলে যায়, যাতে VLC, MPV, MPC-HC এবং Windows-এর মিডিয়া প্লেয়ারের মতো প্লেয়ারগুলি সেগুলিকে তালিকাভুক্ত করে এবং এক অধ্যায় থেকে পরের অধ্যায়ে যেতে পারে।"
   },
   "016a9690b4c55ee5": {
    "source": "Both are kept in a <x1/> folder in MDM's data folder.",
@@ -1952,7 +1952,7 @@
   },
   "1d2b4c5972daa383": {
    "source": "It's ticked to begin with, and stays as you leave it for the next video.",
-   "text": "এটি শুরুতেই টিক দেওয়া থাকে এবং পরবর্তী ভিডিওর জন্য আপনি যেমন রেখে যান তেমনই থাকে।"
+   "text": "এটি শুরুতেই টিক দেওয়া থাকে এবং পরবর্তী ভিডিওর জন্য আপনি যেমন রেখে যাবেন তেমনই থাকবে।"
   },
   "1d4ee2f96c724f0f": {
    "source": "A torrent: what it sends to peers, while it runs.",
@@ -2458,10 +2458,6 @@
    "source": "A download starts over instead of resuming",
    "text": "একটি ডাউনলোড পুনরায় শুরু না হয়ে আবার শুরু হয়"
   },
-  "24bf3f2f66091d90": {
-   "source": "Some videos play only for a signed-in viewer: a member's or a private video, an age-restricted one, and YouTube sometimes asks any viewer from an address it doubts to \"Sign in to confirm you're not a bot\". yt-dlp then needs your browser's cookies, the small files that keep you signed in.",
-   "text": "কিছু ভিডিও শুধুমাত্র সাইন ইন করা দর্শকদের জন্য চলে: যেমন সদস্যের ভিডিও, ব্যক্তিগত ভিডিও, বয়স-সীমাবদ্ধ ভিডিও। YouTube কখনও কখনও সন্দেহজনক ঠিকানা থেকে আসা দর্শকদের কাছে \"আপনি রোবট নন তা নিশ্চিত করতে সাইন ইন করুন\" বলে অনুরোধ করে। তখন yt-dlp-এর আপনার ব্রাউজারের কুকিজ প্রয়োজন হয়, যা আপনাকে সাইন ইন রাখতে সাহায্য করে।"
-  },
   "24c00ebf1248106f": {
    "source": "An etched separator's highlight line",
    "text": "একটি খোদাই করা বিভাজকের হাইলাইট রেখা"
@@ -2760,7 +2756,7 @@
   },
   "28e42e284885ce6e": {
    "source": "It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. When the button can't tell which one you mean, the toolbar button's <g1>Media on this page</g1> lists them all. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. A stream goes with what the browser sent when the player asked for it, its referrer, its origin and its cookies (a player embedded from another site may have cookies the browser keeps for that page only), and MDM sends them again with each of its playlists and pieces: a site's video server that serves its own pages' players only lets MDM through as well. Sound players get the button too.",
-   "text": "এটি আপনি যে ভিডিওতে ক্লিক করেছেন সেটি নেয়: এটি যখন একটি ফাইল প্লে করে তখন তার নিজস্ব ফাইল, অথবা প্লেয়ার যে স্ট্রিম লোড করেছে (HLS বা DASH), অন্যথায় পৃষ্ঠাটি। যখন বোতামটি বলতে পারে না আপনি কোনটি বোঝাতে চাইছেন, তখন টুলবার বোতামের <g1>এই পৃষ্ঠার মিডিয়া</g1> সেগুলির সবগুলি তালিকাভুক্ত করে। এমবেডেড প্লেয়ারগুলিও কাজ করে, এবং সাইটের জন্য আপনার সাইন-ইন, প্লেয়ার এমবেড করা পৃষ্ঠা এবং আপনার ব্রাউজারের User-Agent এটির সাথে যায়, তাই সদস্যদের জন্য ভিডিও, অথবা যেগুলি শুধুমাত্র এমবেড করা সাইটে প্লে হয়, সেগুলি ডাউনলোড করা যায়। একটি স্ট্রিম ব্রাউজার যখন প্লেয়ারের জন্য অনুরোধ করেছিল তখন যা পাঠিয়েছিল, তার রেফারার, তার অরিজিন এবং তার কুকিজ (অন্য সাইট থেকে এমবেড করা একটি প্লেয়ারের কুকিজ থাকতে পারে যা ব্রাউজার শুধুমাত্র সেই পৃষ্ঠার জন্য রাখে) সেগুলির সাথে যায়, এবং MDM সেগুলিকে তার প্রতিটি প্লেলিস্ট এবং অংশের সাথে আবার পাঠায়: একটি সাইটের ভিডিও সার্ভার যা শুধুমাত্র তার নিজস্ব পৃষ্ঠার প্লেয়ারগুলিকে পরিবেশন করে, MDM-কেও এর মাধ্যমে যেতে দেয়। সাউন্ড প্লেয়ারগুলিও বোতামটি পায়।"
+   "text": "এটি আপনার ক্লিক করা ভিডিওটি নেয়: যখন এটি একটি ফাইল চালায় তখন তার নিজস্ব ফাইল, অথবা প্লেয়ার লোড করা স্ট্রিম (HLS বা DASH), অন্যথায় পৃষ্ঠাটি। যখন বোতামটি বুঝতে পারে না আপনি কোনটি বোঝাতে চাইছেন, তখন টুলবার বোতামের <g1>এই পৃষ্ঠার মিডিয়া</g1> সেগুলির সবগুলি তালিকাভুক্ত করে। এম্বেড করা প্লেয়ারগুলিও কাজ করে, এবং সাইটের জন্য আপনার সাইন-ইন, প্লেয়ার এম্বেড করা পৃষ্ঠা এবং আপনার ব্রাউজারের User-Agent এর সাথে যায়, তাই সদস্যদের জন্য ভিডিও, অথবা যেগুলি শুধুমাত্র এম্বেড করা সাইটে চলে, সেগুলি ডাউনলোড করা যায়। একটি স্ট্রিম ব্রাউজার যখন প্লেয়ারের জন্য অনুরোধ করেছিল তখন যা পাঠিয়েছিল, তার রেফারার, তার অরিজিন এবং তার কুকিজ (অন্য সাইট থেকে এম্বেড করা একটি প্লেয়ারের কুকিজ থাকতে পারে যা ব্রাউজার শুধুমাত্র সেই পৃষ্ঠার জন্য রাখে) এর সাথে যায়, এবং MDM সেগুলিকে তার প্রতিটি প্লেলিস্ট এবং অংশের সাথে আবার পাঠায়: একটি সাইটের ভিডিও সার্ভার যা শুধুমাত্র তার নিজস্ব পৃষ্ঠার প্লেয়ারগুলিকে পরিবেশন করে, MDM কেও প্রবেশাধিকার দেয়। সাউন্ড প্লেয়ারগুলিও বোতামটি পায়।"
   },
   "28eeaa8ad9bf85a3": {
    "source": "Requests",
@@ -4186,6 +4182,10 @@
    "source": "It works as a kill switch. When the adapter disconnects, running torrents stop with \"… is not connected; it goes on when it is back\", and they start again through the adapter when it is. Until MDM notices (within a second), the engine's sockets are still bound to an address that is gone, so nothing can leave another way. A torrent added while the adapter isn't connected doesn't start, and says why. Tracker names are still looked up by the system's DNS.",
    "text": "এটি একটি কিল সুইচ হিসাবে কাজ করে। যখন অ্যাডাপ্টার সংযোগ বিচ্ছিন্ন হয়, তখন চলমান টরেন্টগুলি \"… সংযুক্ত নয়; এটি ফিরে এলে আবার শুরু হবে\" বার্তা দিয়ে বন্ধ হয়ে যায় এবং এটি ফিরে এলে অ্যাডাপ্টারের মাধ্যমে আবার শুরু হয়। MDM লক্ষ্য করার আগে (এক সেকেন্ডের মধ্যে), ইঞ্জিনের সকেটগুলি এখনও একটি চলে যাওয়া ঠিকানার সাথে আবদ্ধ থাকে, তাই অন্য কোনো উপায়ে কিছু বের হতে পারে না। অ্যাডাপ্টার সংযুক্ত না থাকা অবস্থায় যোগ করা একটি টরেন্ট শুরু হয় না এবং কারণটি বলে। ট্র্যাকার নামগুলি এখনও সিস্টেমের DNS দ্বারা অনুসন্ধান করা হয়।"
   },
+  "3e956985953c6c3e": {
+   "source": "<g1>Videos that need you signed in</g1>: the button over the video hands MDM the page's own cookies, so you're signed in as in the browser. For pasted links and playlists, <g2>Options → Sites Logins → Cookies for video sites</g2> lets yt-dlp read a browser's cookies, from the profile you choose: a separate one with a spare account works well. Chrome, Edge and Brave lock theirs on Windows, and the window says so; Firefox works. <g3>The help</g3> says more.",
+   "text": "<g1>সাইন-ইন করা প্রয়োজন এমন ভিডিও</g1>: ভিডিওর উপরের বোতামটি MDM-কে পেজের কুকিজ দেয়, ফলে আপনি ব্রাউজারের মতোই সাইন-ইন করা থাকেন। পেস্ট করা লিঙ্ক এবং প্লেলিস্টের জন্য, <g2>সেটিংস → সাইটের লগইন তথ্য → ভিডিও সাইটের জন্য কুকিজ</g2> yt-dlp-কে আপনার পছন্দের প্রোফাইল থেকে ব্রাউজারের কুকিজ পড়তে দেয়: একটি অতিরিক্ত অ্যাকাউন্ট সহ একটি আলাদা প্রোফাইল ভালোভাবে কাজ করে। Chrome, Edge এবং Brave Windows-এ তাদের কুকিজ লক করে রাখে, এবং উইন্ডোতে তা বলা আছে; Firefox কাজ করে। <g3>সাহায্য</g3> বিভাগে আরও তথ্য আছে।"
+  },
   "3e9e6b7b10d78723": {
    "source": "<g1>Start</g1> adds the ticked links to the <g2>Main download queue</g2> and starts the queue. It downloads as many files at once as the queue allows.",
    "text": "<g1>শুরু করুন</g1> টিক দেওয়া লিঙ্কগুলো <g2>প্রধান ডাউনলোড সারি</g2>-তে যোগ করে এবং সারিটি শুরু করে। সারিতে যতগুলো ফাইল একসঙ্গে ডাউনলোড করার অনুমতি আছে, ততগুলোই ডাউনলোড হয়।"
@@ -4205,6 +4205,10 @@
   "3ebf8f1307545f42": {
    "source": "Download manager command line and automation API — Mister Download Manager",
    "text": "ডাউনলোড ম্যানেজার কমান্ড লাইন এবং অটোমেশন এপিআই — Mister Download Manager"
+  },
+  "3ec0fd3706431045": {
+   "source": "<g1>The Download video button over the video</g1> passes that page's cookies, from the window and profile you're in (a private window, a Firefox container), for the look-up and the download, so you're signed in as you are in the browser. Nothing to set up. Each cookie goes with the domain the browser keeps it for, so a sign-in on YouTube Music (music.youtube.com) or YouTube's mobile site reaches www.youtube.com too.",
+   "text": "<g1>ভিডিওর উপরে থাকা ভিডিও ডাউনলোড করুন বোতামটি</g1> আপনার বর্তমান উইন্ডো এবং প্রোফাইল (একটি ব্যক্তিগত উইন্ডো, একটি Firefox কন্টেইনার) থেকে সেই পৃষ্ঠার কুকিজ ব্যবহার করে, যা অনুসন্ধান এবং ডাউনলোডের জন্য ব্যবহৃত হয়। এর ফলে আপনি ব্রাউজারে যেভাবে সাইন ইন করা আছেন, সেভাবেই কাজ করতে পারবেন। কোনো সেটআপের প্রয়োজন নেই। প্রতিটি কুকি ব্রাউজার যে ডোমেইনের জন্য এটি সংরক্ষণ করে, তার সাথে যায়, তাই YouTube Music (music.youtube.com) বা YouTube-এর মোবাইল সাইটে সাইন ইন করলে www.youtube.com-এও তা প্রযোজ্য হয়।"
   },
   "3ec9f591006bbd23": {
    "source": "The installer. Pick this one unless you have a reason not to. It can set up browser integration and open <x1/> files and magnet links with MDM.",
@@ -5196,7 +5200,7 @@
   },
   "4ea06c1b2a86d1c8": {
    "source": "<g1>Hide web pages</g1> (on by default) leaves out links to pages (<x2/>, <x3/> and the like, and any link whose look-up found a web page): they are neither shown nor downloaded.",
-   "text": "<g1>ওয়েব পেজ লুকান</g1> (ডিফল্টরূপে চালু) পেজগুলোর লিঙ্ক বাদ দেয় (<x2/>, <x3/> এবং এই ধরনের, এবং যে কোনো লিঙ্ক যার লুক-আপ একটি ওয়েব পেজ খুঁজে পেয়েছে): সেগুলো দেখানো বা ডাউনলোড করা হয় না।"
+   "text": "<g1>ওয়েব পেজ লুকান</g1> (ডিফল্টরূপে চালু) পেজগুলোর লিঙ্ক বাদ দেয় (<x2/>, <x3/> এবং এই ধরনের, এবং যে কোনো লিঙ্ক যার লুক-আপ একটি ওয়েব পেজ খুঁজে পেয়েছে): সেগুলো দেখানো বা ডাউনলোড করা হয় না।"
   },
   "4f07dda13d242d23": {
    "source": "Options on its Connection page: connections per download, per-server exceptions, Download limits and the DNS list",
@@ -5788,7 +5792,7 @@
   },
   "57d55935c79c75f6": {
    "source": "Install one of them, either works, then look the video up again. MDM finds Deno, Node.js (also one installed with nvm) and Bun by itself. If it still says so, the new program's folder isn't on the <x1/> MDM started with (Windows' installers add it for programs started after them): quit MDM (<g2>Tasks → Exit</g2>) and start it again.",
-   "text": "এগুলোর মধ্যে যেকোনো একটি ইনস্টল করুন, উভয়ই কাজ করে, তারপর ভিডিওটি আবার দেখুন। MDM Deno, Node.js (nvm দিয়ে ইনস্টল করা একটিও) এবং Bun নিজে থেকেই খুঁজে নেয়। যদি এটি এখনও একই কথা বলে, তাহলে নতুন প্রোগ্রামটির ফোল্ডারটি <x1/> MDM যেটির সাথে শুরু হয়েছিল তার পথে নেই (Windows-এর ইনস্টলারগুলি তাদের পরে শুরু হওয়া প্রোগ্রামগুলির জন্য এটি যোগ করে): MDM বন্ধ করুন (<g2>কাজগুলি → প্রস্থান করুন</g2>) এবং এটি আবার শুরু করুন।"
+   "text": "এগুলোর মধ্যে একটি ইনস্টল করুন, যেকোনোটি কাজ করবে, তারপর ভিডিওটি আবার দেখুন। MDM নিজেই Deno, Node.js (nvm দিয়ে ইনস্টল করা একটিও) এবং Bun খুঁজে নেয়। যদি এটি এখনও একই কথা বলে, তাহলে নতুন প্রোগ্রামটির ফোল্ডারটি <x1/> MDM যেটির সাথে শুরু হয়েছিল তার মধ্যে নেই (Windows-এর ইনস্টলারগুলি তাদের পরে শুরু হওয়া প্রোগ্রামগুলির জন্য এটি যোগ করে): MDM বন্ধ করুন (<g2>কাজগুলি → প্রস্থান করুন</g2>) এবং এটি আবার শুরু করুন।"
   },
   "57df30288a29fe94": {
    "source": "Made possible by these amazing humans",
@@ -5912,7 +5916,7 @@
   },
   "598886119cab837f": {
    "source": "<g1>A web page's address.</g1> Paste or copy the address of a page (<x2/>) and MDM reads the page and lists the links on it, as the browser's <g3>Download all links</g3> does, in a package named after the page. The page itself is left unticked. This works for addresses that came on their own (pasted, copied, typed, in a list), not for the links found on a page, so MDM never wanders off through a site. MDM reads only what the page itself holds: links a page's scripts add after it loads come only through the browser.",
-   "text": "<g1>একটি ওয়েব পেজের ঠিকানা।</g1> একটি পেজের ঠিকানা (<x2/>) পেস্ট বা কপি করুন এবং MDM পেজটি পড়ে তাতে থাকা লিঙ্কগুলো তালিকাভুক্ত করবে, যেমন ব্রাউজারের <g3>সব লিঙ্ক ডাউনলোড করুন</g3> করে থাকে, পেজের নামে একটি প্যাকেজে। পেজটি নিজে আনটিক করা থাকবে। এটি শুধুমাত্র সেই ঠিকানাগুলোর জন্য কাজ করে যা নিজে থেকে এসেছে (পেস্ট করা, কপি করা, টাইপ করা, একটি তালিকায়), কোনো পেজে পাওয়া লিঙ্কগুলোর জন্য নয়, তাই MDM কখনোই একটি সাইট জুড়ে ঘুরে বেড়ায় না। MDM শুধুমাত্র পেজটিতে যা আছে তা-ই পড়ে: পেজের স্ক্রিপ্ট লোড হওয়ার পর যে লিঙ্কগুলো যোগ করে, সেগুলো শুধুমাত্র ব্রাউজারের মাধ্যমে আসে।"
+   "text": "<g1>একটি ওয়েব পেজের ঠিকানা।</g1> একটি পেজের ঠিকানা (<x2/>) পেস্ট বা কপি করুন এবং MDM পেজটি পড়ে তাতে থাকা লিঙ্কগুলো তালিকাভুক্ত করবে, যেমন ব্রাউজারের <g3>সব লিঙ্ক ডাউনলোড করুন</g3> করে থাকে, পেজের নামে একটি প্যাকেজে। পেজটি নিজে আনটিক করা থাকবে। এটি শুধুমাত্র সেই ঠিকানাগুলোর জন্য কাজ করে যা নিজে থেকে এসেছে (পেস্ট করা, কপি করা, টাইপ করা, একটি তালিকায়), কোনো পেজে পাওয়া লিঙ্কগুলোর জন্য নয়, তাই MDM কখনোই কোনো সাইটে ঘুরে বেড়ায় না। MDM শুধুমাত্র পেজটিতে যা আছে তা পড়ে: পেজের স্ক্রিপ্ট লোড হওয়ার পর যে লিঙ্কগুলো যোগ করে, সেগুলো শুধুমাত্র ব্রাউজারের মাধ্যমে আসে।"
   },
   "59920ff7101c276f": {
    "source": "Fix the translation in the row's third column and delete its <x1/> line.",
@@ -6802,10 +6806,6 @@
    "source": "Two helpers, checked before use",
    "text": "দুটি হেল্পার, ব্যবহারের আগে যাচাই করা হয়"
   },
-  "66f7530c7179f562": {
-   "source": "<g1>The Download video button over the video</g1> passes that page's cookies, from the window and profile you're in (a private window, a Firefox container), for the look-up and the download. Nothing to set up. Each cookie goes with the domain the browser keeps it for, so a sign-in on YouTube Music (music.youtube.com) or YouTube's mobile site reaches www.youtube.com too.",
-   "text": "<g1>ভিডিওর উপরে ভিডিও ডাউনলোড করুন বোতামটি</g1> সেই পৃষ্ঠার কুকিগুলি, আপনি যে উইন্ডো এবং প্রোফাইলে আছেন (একটি ব্যক্তিগত উইন্ডো, একটি Firefox কন্টেইনার) থেকে, লুক-আপ এবং ডাউনলোডের জন্য পাস করে। কিছু সেট আপ করার দরকার নেই। প্রতিটি কুকি ব্রাউজার যে ডোমেনের জন্য এটি রাখে তার সাথে যায়, তাই YouTube Music (music.youtube.com) বা YouTube এর মোবাইল সাইটে একটি সাইন-ইন www.youtube.com এও পৌঁছায়।"
-  },
   "670bb10cde757ad1": {
    "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
    "text": "MDM কখনো টোকেনটি ইভেন্ট লগ, ক্র্যাশ রিপোর্ট, অটোমেশন API বা কমান্ড লাইনের আউটপুটে লেখে না।"
@@ -7554,6 +7554,10 @@
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "Google Drive-এর লিঙ্কটি যেমন আছে তেমনই পেস্ট করুন। <g1>Share → Copy link</g1> থেকে পাওয়া লিঙ্কটি এমন হয়:"
   },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "এই পৃষ্ঠাটি তৈরি করার সময় GitHub থেকে তালিকাটি পড়া যায়নি। এর মধ্যে সবাই GitHub-এ আছেন, প্রকল্পের <g1>পুল রিকোয়েস্ট</g1> এবং <g2>ইস্যু</g2>-তে।"
+  },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
    "text": "সমস্যা রিপোর্ট করা"
@@ -7768,7 +7772,7 @@
   },
   "75b26b8aac083dec": {
    "source": "Then yt-dlp does what it does after a download: it joins the video and its sound with ffmpeg into one MP4, saves or embeds the subtitles, puts the chapters into the file, and converts the sound for an MP3, Opus or FLAC choice.",
-   "text": "তারপর yt-dlp ডাউনলোডের পরে যা করে: এটি ffmpeg দিয়ে ভিডিও এবং এর শব্দকে একটি MP4-এ যুক্ত করে, সাবটাইটেল সংরক্ষণ বা এম্বেড করে, অধ্যায়গুলি ফাইলে রাখে এবং একটি MP3, Opus বা FLAC পছন্দের জন্য শব্দকে রূপান্তর করে।"
+   "text": "তারপর yt-dlp ডাউনলোডের পরে যা করে: এটি ffmpeg দিয়ে ভিডিও এবং এর শব্দকে একটি MP4 এ যুক্ত করে, সাবটাইটেল সংরক্ষণ বা এম্বেড করে, অধ্যায়গুলি ফাইলটিতে রাখে এবং একটি MP3, Opus বা FLAC পছন্দের জন্য শব্দকে রূপান্তর করে।"
   },
   "75c5e88776534271": {
    "source": "Adding a link again after its finished file was moved or deleted starts a new download, instead of asking about a duplicate that isn't there (<g1>#342</g1>).",
@@ -8133,10 +8137,6 @@
   "7bde548eabfafc71": {
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
    "text": "ডিফল্টভাবে প্রতিটি ডাউনলোডে 8টি সংযোগ ব্যবহার করা হয়। সেটিংস → সংযোগ-এ গিয়ে বেছে নিলে সর্বোচ্চ 32টি সংযোগ ব্যবহার করা যাবে। সেখানে 32টির বেশি সংযোগের অনুমতি দিন চালু করলে সর্বোচ্চ 128টি সংযোগ ব্যবহার করা যাবে। সার্ভার যত কম সংযোগের অনুমতি দেয়, MDM তার চেয়ে বেশি ব্যবহার করে না। সার্ভার ফাইলের অংশ পাঠাতে না পারলে MDM মাত্র 1টি সংযোগ ব্যবহার করে।"
-  },
-  "7beb76c0e99ab62c": {
-   "source": "<g1>Videos that need you signed in</g1>: <g2>Options → Sites Logins → Cookies for video sites</g2> lets yt-dlp read a browser's cookies, for pasted links. Chrome, Edge and Brave lock theirs on Windows, and the window says so; Firefox works, and so does the button over the video.",
-   "text": "<g1>ভিডিওগুলির জন্য সাইন ইন করা প্রয়োজন</g1>: <g2>সেটিংস → সাইটের লগইন তথ্য → ভিডিও সাইটের জন্য কুকিজ</g2> yt-dlp-কে পেস্ট করা লিঙ্কগুলির জন্য একটি ব্রাউজারের কুকিজ পড়তে দেয়। Chrome, Edge এবং Brave Windows-এ তাদের কুকিজ লক করে রাখে এবং উইন্ডোটি তা বলে; Firefox কাজ করে, এবং ভিডিওর উপরের বোতামটিও কাজ করে।"
   },
   "7bf940f9155b4bce": {
    "source": "<x1/> <g2>Open source · Apache-2.0</g2>",
@@ -8580,7 +8580,7 @@
   },
   "810e3acee25be1c6": {
    "source": "YouTube hides most of a video's qualities behind small puzzles that yt-dlp solves with a JavaScript runtime: <g1>Deno</g1>, <g2>Node.js</g2> or <g3>Bun</g3>. Without one, the list is short, sometimes only the sound and a low quality, and MDM says so: <g4>YouTube needs a JavaScript runtime to list its video qualities</g4>. Other sites don't need one.",
-   "text": "YouTube একটি ভিডিওর বেশিরভাগ গুণমান ছোট ছোট ধাঁধার আড়ালে লুকিয়ে রাখে যা yt-dlp একটি জাভাস্ক্রিপ্ট রানটাইম দিয়ে সমাধান করে: <g1>Deno</g1>, <g2>Node.js</g2> অথবা <g3>Bun</g3>। এর যেকোনো একটি ছাড়া, তালিকাটি সংক্ষিপ্ত হয়, কখনও কখনও শুধুমাত্র শব্দ এবং একটি নিম্ন গুণমান থাকে, এবং MDM তা বলে: <g4>YouTube-এর ভিডিও গুণমান তালিকাভুক্ত করতে একটি জাভাস্ক্রিপ্ট রানটাইম প্রয়োজন</g4>। অন্যান্য সাইটের জন্য এর প্রয়োজন হয় না।"
+   "text": "YouTube একটি ভিডিওর বেশিরভাগ গুণাবলী ছোট ছোট ধাঁধার আড়ালে লুকিয়ে রাখে যা yt-dlp একটি জাভাস্ক্রিপ্ট রানটাইম দিয়ে সমাধান করে: <g1>Deno</g1>, <g2>Node.js</g2> অথবা <g3>Bun</g3>। এর মধ্যে একটি ছাড়া, তালিকাটি সংক্ষিপ্ত হয়, কখনও কখনও শুধুমাত্র শব্দ এবং একটি নিম্ন গুণমান থাকে, এবং MDM তা বলে: <g4>YouTube-এর ভিডিও গুণাবলীর তালিকা করার জন্য একটি জাভাস্ক্রিপ্ট রানটাইম প্রয়োজন</g4>। অন্যান্য সাইটের এর প্রয়োজন হয় না।"
   },
   "8144fd9d669ebeed": {
    "source": "Does it download torrents? — Mister Download Manager",
@@ -9272,7 +9272,7 @@
   },
   "8c714d229ab4b2fb": {
    "source": "They go into a video (MP4, MKV, WebM) and into the sound as the site has it (<g1>Audio only, original</g1>), not into an MP3, Opus or FLAC file.",
-   "text": "এগুলি একটি ভিডিওতে (MP4, MKV, WebM) এবং সাইটে যেমন আছে তেমনই শব্দে (<g1>শুধুমাত্র অডিও, আসল</g1>) যায়, MP3, Opus বা FLAC ফাইলে নয়।"
+   "text": "এগুলি একটি ভিডিওতে (MP4, MKV, WebM) এবং সাইটে যেমন আছে তেমন শব্দে (<g1>শুধুমাত্র অডিও, আসল</g1>) যায়, MP3, Opus বা FLAC ফাইলে নয়।"
   },
   "8c7321b31cd98d97": {
    "source": "<g1>Toolbar.</g1> <g2>Add URL</g2>, <g3>Add Torrent</g3>, <g4>Resume</g4>, <g5>Stop</g5>, <g6>Stop All</g6>, <g7>Delete</g7>, <g8>Delete Completed</g8>, <g9>Options</g9>, <g10>Scheduler</g10>, <g11>Start Queue</g11>, <g12>Stop Queue</g12>. The small arrow next to <g13>Add Torrent</g13>, <g14>Start Queue</g14> and <g15>Stop Queue</g15> opens more choices.",
@@ -10738,6 +10738,10 @@
    "source": "A window larger than the screen at that size (Options at 200 % on a 1366 × 768 screen) opens as large as the screen allows, and the rest scrolls: with the scroll bars, the mouse wheel, or <g1>Tab</g1> to the next control.",
    "text": "সেই আকারের চেয়ে বড় একটি উইন্ডো (1366 × 768 স্ক্রিনে 200 % এ সেটিংস) স্ক্রিন যত বড় হতে দেয় তত বড় হয়ে খোলে, এবং বাকিটা স্ক্রল করে: স্ক্রল বার, মাউস হুইল, অথবা পরবর্তী কন্ট্রোলে যেতে <g1>Tab</g1> ব্যবহার করে।"
   },
+  "a24bd8fd730a41d0": {
+   "source": "On Windows, an OpenGL older than 3.0 (an old graphics card's driver, such as Intel's first HD Graphics, whose OpenGL is 2.1) can't draw MDM: its windows come out as garbage. MDM notices it as it starts and starts again with Direct3D on Microsoft's software renderer (WARP), from then on, and <g1>View → Draw with</g1> says so. Choosing <g2>OpenGL</g2> there tries it again.",
+   "text": "Windows-এ, OpenGL 3.0-এর পুরোনো সংস্করণ (যেমন Intel-এর প্রথম HD Graphics-এর মতো পুরোনো গ্রাফিক্স কার্ডের ড্রাইভার, যার OpenGL 2.1) MDM আঁকতে পারে না: এর উইন্ডোগুলি ভুলভাবে প্রদর্শিত হয়। MDM এটি চালু হওয়ার সময়ই বুঝতে পারে এবং তখন থেকে Microsoft-এর সফটওয়্যার রেন্ডারার (WARP) ব্যবহার করে Direct3D দিয়ে আবার চালু হয়, এবং <g1>দেখুন → আঁকার মাধ্যম</g1> এটিই দেখায়। সেখানে <g2>OpenGL</g2> নির্বাচন করলে এটি আবার চেষ্টা করে।"
+  },
   "a2907e04d7c8512f": {
    "source": "Why doesn't MDM take over my download? — Mister Download Manager",
    "text": "MDM কেন আমার ডাউনলোডের দায়িত্ব নিচ্ছে না? — Mister Download Manager"
@@ -11760,7 +11764,7 @@
   },
   "b1a0ed24728365e7": {
    "source": "The command line (<x1/>) puts them in too, whenever ffmpeg is there.",
-   "text": "কমান্ড লাইন (<x1/>) সেগুলিকে ভিতরে রাখে, যখনই ffmpeg থাকে।"
+   "text": "কমান্ড লাইন (<x1/>) এগুলিও রাখে, যখনই ffmpeg থাকে।"
   },
   "b1aebd102c185a01": {
    "source": "RSS feeds for torrents, with download rules — Mister Download Manager",
@@ -11828,7 +11832,7 @@
   },
   "b26c000488bb45a1": {
    "source": "<g1>Windows</g1>: <x2/>, or <x3/>. The installers on <g4>deno.com</g4> and <g5>nodejs.org</g5> work too.",
-   "text": "<g1>Windows</g1>: <x2/>, অথবা <x3/>। <g4>deno.com</g4> এবং <g5>nodejs.org</g5>-এর ইনস্টলারগুলিও কাজ করে।"
+   "text": "<g1>Windows</g1>: <x2/>, অথবা <x3/>। <g4>deno.com</g4> এবং <g5>nodejs.org</g5> এর ইনস্টলারগুলিও কাজ করে।"
   },
   "b26fdfb3218b9d13": {
    "source": "Many more: the checksum dialog, the progress window's completion options and speed limit, the torrent and video windows (Stop a look-up, stale video choices), Batch's letter ranges, addresses without http://, duplicate links arriving together, imports that doubled downloads, menu titles that shared access letters in French and other languages, and more.",
@@ -11952,7 +11956,7 @@
   },
   "b3d7bbeea9ab71d3": {
    "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g19>Embed chapters</g19> does. <x20/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x21/>; when it isn't connected, nothing starts.",
-   "text": "একটি ভিডিও ডাউনলোড করুন; <x1/> <x2/> থেকে একটি কোয়ালিটি সিলেক্টর নেয় (<x3/> = সেরা একক ফাইল; <x4/> = সাইটে যেমন আছে, রূপান্তর না করে শুধু শব্দ; <x5/>, <x6/>, <x7/> অথবা <x8/> = সেই বিটরেটে MP3 হিসাবে শব্দ, <x9/> তার সেরা পরিবর্তনশীলটিতে; <x10/> = Opus হিসাবে; <x11/> = FLAC হিসাবে, লসলেস কিন্তু সাইটের শব্দের চেয়ে ভালো নয়; রূপান্তরের জন্য ffmpeg প্রয়োজন)। <x12/>: MDM-এর নিজস্ব ডাউনলোডার yt-dlp খুঁজে পাওয়া প্রতিটি স্ট্রিমকে এতগুলি সংযোগের মাধ্যমে নিয়ে আসে (ডিফল্টরূপে 8, 1 থেকে 128), একটি স্ট্রিমকে এতগুলি খণ্ডে (HLS, DASH) একবারে নিয়ে আসে। <x13/> এর পাশে সাবটাইটেল সংরক্ষণ করে: <x14/> (<x15/>) থেকে ভাষার কোড, অথবা আপলোডার দেওয়া প্রতিটি ভাষার জন্য <x16/>; <x17/> এর পরিবর্তে সাইটের স্বয়ংক্রিয় ক্যাপশন নেয়; <x18/> সেগুলিকে ভিডিওতে রাখে (ffmpeg, MP4 বা MKV প্রয়োজন)। ffmpeg দিয়ে, ভিডিওর অধ্যায়গুলিও ফাইলে চলে যায়, যেমন ভিডিও ডাউনলোড-এর <g19>অধ্যায়গুলি এম্বেড করুন</g19> করে। <x20/> ডাউনলোডের সংযোগগুলি, এবং yt-dlp-এর (এবং ffmpeg-এর) সংযোগগুলি একটি নেটওয়ার্ক অ্যাডাপ্টারের মাধ্যমে পাঠায়, যেমন <x21/>-এর জন্য; যখন এটি সংযুক্ত থাকে না, তখন কিছুই শুরু হয় না।"
+   "text": "একটি ভিডিও ডাউনলোড করুন; <x1/> <x2/> থেকে একটি কোয়ালিটির নির্বাচক নেয় (<x3/> = সেরা একক ফাইল; <x4/> = সাইটে যেমন আছে তেমন শুধু শব্দ, রূপান্তরিত নয়; <x5/>, <x6/>, <x7/> অথবা <x8/> = সেই বিটরেটে MP3 হিসাবে শব্দ, <x9/> তার সেরা পরিবর্তনশীলটিতে; <x10/> = Opus হিসাবে; <x11/> = FLAC হিসাবে, লসলেস কিন্তু সাইটের শব্দের চেয়ে ভালো নয়; রূপান্তরের জন্য ffmpeg প্রয়োজন)। <x12/>: MDM-এর নিজস্ব ডাউনলোডার yt-dlp যতগুলি স্ট্রিম খুঁজে পায়, সেগুলিকে এতগুলি সংযোগের মাধ্যমে নিয়ে আসে (ডিফল্টরূপে 8, 1 থেকে 128), একটি স্ট্রিমকে একবারে এতগুলি অংশে (HLS, DASH) ভাগ করে। <x13/> এর পাশে সাবটাইটেল সংরক্ষণ করে: <x14/> (<x15/>) থেকে ভাষার কোড, অথবা আপলোডার যতগুলি দিয়েছে তার সবগুলির জন্য <x16/>; <x17/> এর পরিবর্তে সাইটের স্বয়ংক্রিয় ক্যাপশন নেয়; <x18/> সেগুলিকে ভিডিওতে রাখে (ffmpeg, MP4 বা MKV প্রয়োজন)। ffmpeg সহ, ভিডিওর অধ্যায়গুলিও ফাইলে যায়, যেমন ভিডিও ডাউনলোড-এর <g19>অধ্যায়গুলি এম্বেড করুন</g19> করে। <x20/> ডাউনলোডগুলির সংযোগ, এবং yt-dlp-এর (এবং ffmpeg-এর) সংযোগ, একটি নেটওয়ার্ক অ্যাডাপ্টারের মাধ্যমে পাঠায়, যেমন <x21/>-এর জন্য; যখন এটি সংযুক্ত থাকে না, তখন কিছুই শুরু হয় না।"
   },
   "b3f1633383cc8b77": {
    "source": "Open <g1>Downloads → Options</g1>, or click <g2>Options</g2> on the toolbar. The window has twelve pages on two rows of tabs. <g3>OK</g3> saves your changes; closing the window or pressing <g4>Esc</g4> throws them away.",
@@ -12237,6 +12241,10 @@
   "b86face263e9f2af": {
    "source": "We'd rather you knew. IDM has a site grabber that follows a whole website's pages (MDM's link grabber takes the links of one page), and many years of polish and compatibility fixes. MDM is new; if something you rely on is missing, <g1>ask for it</g1>.",
    "text": "আমরা চাই আপনি জানুন। IDM-এর একটি সাইট গ্র্যাবার আছে যা একটি সম্পূর্ণ ওয়েবসাইটের পৃষ্ঠাগুলি অনুসরণ করে (MDM-এর লিঙ্ক গ্র্যাবার একটি পৃষ্ঠার লিঙ্কগুলি নেয়), এবং বহু বছরের পরিমার্জন ও সামঞ্জস্যের সমাধান রয়েছে। MDM নতুন; আপনার প্রয়োজনীয় কিছু অনুপস্থিত থাকলে, <g1>সেটির জন্য অনুরোধ করুন</g1>।"
+  },
+  "b886cc5ff82424bc": {
+   "source": "<g1>A spare account, in a profile of its own</g1>: you don't have to lend yt-dlp your main account. Make a second profile in your browser, sign in to the site there with a spare account, and put that profile in <g2>Profile</g2> (its name, or its folder with <g3>...</g3>). yt-dlp reads that profile's cookies only. yt-dlp's developers advise this too: a site may limit an account it sees used by a program.",
+   "text": "<g1>একটি অতিরিক্ত অ্যাকাউন্ট, নিজস্ব প্রোফাইলে</g1>: আপনাকে আপনার প্রধান অ্যাকাউন্ট yt-dlp কে ধার দিতে হবে না। আপনার ব্রাউজারে একটি দ্বিতীয় প্রোফাইল তৈরি করুন, সেখানে একটি অতিরিক্ত অ্যাকাউন্ট দিয়ে সাইটে সাইন ইন করুন এবং সেই প্রোফাইলটি <g2>প্রোফাইল</g2> এ রাখুন (এর নাম, অথবা <g3>...</g3> সহ এর ফোল্ডার)। yt-dlp শুধুমাত্র সেই প্রোফাইলের কুকিজ পড়ে। yt-dlp এর ডেভেলপাররাও এটি পরামর্শ দেন: একটি সাইট একটি প্রোগ্রাম দ্বারা ব্যবহৃত একটি অ্যাকাউন্টকে সীমাবদ্ধ করতে পারে।"
   },
   "b88a67e39c494a61": {
    "source": "The server runs on the app's Tokio runtime, one listener per local network address. Each request is checked (<x1/>, <x2/>, token), turned into an <x3/> marked <x4/> (a field no request line can set) and handed to the app through the same channel as the command line's; the app answers it on its next frame, as it answers the automation API. Its page is built in (<x5/>) and its texts come from the app's catalogs (<x6/>).",
@@ -12988,7 +12996,7 @@
   },
   "c4d8ea1c0d48428a": {
    "source": "It needs ffmpeg, which writes them. A video without chapters is saved as it is.",
-   "text": "এটির জন্য ffmpeg প্রয়োজন, যা সেগুলিকে লেখে। অধ্যায়বিহীন একটি ভিডিও যেমন আছে তেমনই সংরক্ষণ করা হয়।"
+   "text": "এটির জন্য ffmpeg প্রয়োজন, যা এগুলি লেখে। অধ্যায়বিহীন একটি ভিডিও যেমন আছে তেমনই সংরক্ষণ করা হয়।"
   },
   "c4eff53dc61fce12": {
    "source": "Your rights",
@@ -13064,7 +13072,7 @@
   },
   "c5a292e743078486": {
    "source": "A distribution's yt-dlp can also be too old for YouTube: if the list stays short, click <g1>Use MDM's own copy</g1> beside yt-dlp in <g2>Helpers...</g2>.",
-   "text": "একটি ডিস্ট্রিবিউশনের yt-dlp YouTube-এর জন্য খুব পুরানোও হতে পারে: যদি তালিকাটি সংক্ষিপ্ত থাকে, তাহলে <g2>হেল্পার...</g2>-এ yt-dlp-এর পাশে <g1>MDM-এর নিজস্ব কপি ব্যবহার করুন</g1> ক্লিক করুন।"
+   "text": "একটি ডিস্ট্রিবিউশনের yt-dlp YouTube-এর জন্য খুব পুরানোও হতে পারে: যদি তালিকাটি সংক্ষিপ্ত থাকে, তাহলে <g2>হেল্পার...</g2> এ yt-dlp এর পাশে <g1>MDM-এর নিজস্ব কপি ব্যবহার করুন</g1> এ ক্লিক করুন।"
   },
   "c5b1d8d5e4be4a3b": {
    "source": "How the pictures come down",
@@ -13232,7 +13240,7 @@
   },
   "c845f9239d5bddd5": {
    "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window with the stream its player loaded (HLS or DASH), as the <g3>button over videos</g3> sends it, with your cookies for the stream's server and what the browser sent with the stream (its referrer and origin, else the page as the referrer).",
-   "text": "একটি লিঙ্ক, ভিডিও, শব্দ বা ছবির উপর রাইট-ক্লিক করুন এবং <g1>Mister Download Manager দিয়ে ডাউনলোড করুন</g1> নির্বাচন করুন। MDM এটি যে ধরনেরই হোক না কেন ডাউনলোড করে: আপনি যখন এটি চেয়েছেন, তখন ফাইলের প্রকারের তালিকা এবং বাদ দেওয়া সাইটগুলি এখানে প্রযোজ্য নয় (এগুলি শুধুমাত্র MDM নিজে কোন ডাউনলোডগুলি গ্রহণ করবে তা নির্ধারণ করে)। একটি স্ট্রিম হিসাবে প্লে হওয়া ভিডিও <g2>ভিডিও ডাউনলোড করুন</g2> উইন্ডোতে যায়, প্লেয়ার যে স্ট্রিম লোড করেছে (HLS বা DASH) সেটি সহ, যেমন <g3>ভিডিওর উপরের বোতাম</g3> এটি পাঠায়, স্ট্রিমের সার্ভারের জন্য আপনার কুকিজ এবং ব্রাউজার স্ট্রিমের সাথে যা পাঠিয়েছে (এর রেফারার এবং অরিজিন, অন্যথায় পৃষ্ঠাটি রেফারার হিসাবে)।"
+   "text": "একটি লিঙ্ক, ভিডিও, শব্দ বা ছবির উপর ডান-ক্লিক করুন এবং <g1>Mister Download Manager দিয়ে ডাউনলোড করুন</g1> নির্বাচন করুন। MDM এটি যে কোনো প্রকারের হোক না কেন ডাউনলোড করবে: আপনি এটি চেয়েছেন, তাই ফাইলের প্রকারের তালিকা এবং বাদ দেওয়া সাইটগুলি এখানে প্রযোজ্য নয় (এগুলি শুধুমাত্র MDM নিজে কোন ডাউনলোডগুলি গ্রহণ করবে তা নির্ধারণ করে)। একটি ভিডিও যা স্ট্রিম হিসাবে চলে, তা <g2>ভিডিও ডাউনলোড করুন</g2> উইন্ডোতে যায়, প্লেয়ার যে স্ট্রিম লোড করেছে (HLS বা DASH) তার সাথে, যেমন <g3>ভিডিওর উপরের বোতাম</g3> এটি পাঠায়, আপনার কুকিজ স্ট্রিমের সার্ভারের জন্য এবং ব্রাউজার স্ট্রিমের সাথে যা পাঠিয়েছে (এর রেফারার এবং অরিজিন, অন্যথায় পৃষ্ঠাটি রেফারার হিসাবে)।"
   },
   "c84f2046978e476a": {
    "source": "A title bar MDM draws itself",
@@ -13913,6 +13921,10 @@
   "d2ef5107c69b686f": {
    "source": "Maturity",
    "text": "পরিপক্বতা"
+  },
+  "d2fc243b93084d12": {
+   "source": "Some videos play only for a signed-in viewer: a member's or a private video, an age-restricted one. And YouTube sometimes asks any viewer from a network it doubts (a VPN, a shared or cloud address) to \"Sign in to confirm you're not a bot\". yt-dlp then needs your browser's cookies, the small files that keep you signed in.",
+   "text": "কিছু ভিডিও শুধুমাত্র সাইন-ইন করা দর্শকদের জন্য চলে: একজন সদস্যের বা একটি ব্যক্তিগত ভিডিও, একটি বয়স-সীমাবদ্ধ ভিডিও। এবং YouTube কখনও কখনও সন্দেহজনক নেটওয়ার্ক থেকে (একটি VPN, একটি শেয়ার করা বা ক্লাউড ঠিকানা) যেকোনো দর্শককে \"আপনি বট নন তা নিশ্চিত করতে সাইন ইন করুন\" বলে। yt-dlp এর জন্য আপনার ব্রাউজারের কুকিজ প্রয়োজন, ছোট ফাইল যা আপনাকে সাইন ইন করে রাখে।"
   },
   "d30e4557ff06a9ab": {
    "source": "Reports, translations and help",
@@ -15160,7 +15172,7 @@
   },
   "e71e432fdd540d5b": {
    "source": "Turn the look-ups off in <g1>Options → Archives → Look links up when they arrive</g1>. Some file hosts count a look-up as a download. With the look-ups off, MDM asks nothing of the network until you start, so a web page's address isn't read for its links either.",
-   "text": "<g1>সেটিংস → আর্কাইভ → লিঙ্ক এলে সেগুলো দেখুন</g1> থেকে লুক-আপ বন্ধ করুন। কিছু ফাইল হোস্ট একটি লুক-আপকে একটি ডাউনলোড হিসাবে গণ্য করে। লুক-আপ বন্ধ থাকলে, আপনি শুরু না করা পর্যন্ত MDM নেটওয়ার্ক থেকে কিছু চায় না, তাই একটি ওয়েব পেজের ঠিকানা তার লিঙ্কগুলোর জন্য পড়া হয় না।"
+   "text": "<g1>সেটিংস → আর্কাইভ → লিঙ্ক এলে সেগুলো দেখুন</g1> থেকে লুক-আপ বন্ধ করুন। কিছু ফাইল হোস্ট একটি লুক-আপকে ডাউনলোড হিসেবে গণ্য করে। লুক-আপ বন্ধ থাকলে, আপনি শুরু না করা পর্যন্ত MDM নেটওয়ার্ক থেকে কিছু জিজ্ঞাসা করে না, তাই একটি ওয়েব পেজের ঠিকানা তার লিঙ্কগুলোর জন্য পড়া হয় না।"
   },
   "e7281739beb4476f": {
    "source": "A download manager can fill your whole connection. These steps cap MDM so that browsing, video calls and games stay smooth.",
@@ -15612,7 +15624,7 @@
   },
   "ed30bf8c293519f0": {
    "source": "<g1>Download complete</g1> shows the file's size, its address and where it was saved. Choose <g2>Open</g2>, <g3>Open with...</g3>, <g4>Open folder</g4> or <g5>Close</g5>. On Windows you can also drag the small box at the bottom right into Explorer, an email or a chat to drop the file there. As when you drag a file in Explorer, a folder on the same drive gets the file moved there and another drive gets a copy (hold <g6>Shift</g6> to move it, <g7>Ctrl</g7> to copy it). The download follows a moved file: the list and <g8>Open</g8> find it in its new place. The window shows above your other programs until you click it, without taking the keyboard from the one you're typing in.",
-   "text": "<g1>ডাউনলোড সম্পূর্ণ</g1> ফাইলটির আকার, এর ঠিকানা এবং এটি কোথায় সংরক্ষণ করা হয়েছে তা দেখায়। <g2>খুলুন</g2>, <g3>এর সাথে খুলুন...</g3>, <g4>ফোল্ডার খুলুন</g4> অথবা <g5>বন্ধ করুন</g5> নির্বাচন করুন। Windows-এ আপনি নিচের ডানদিকের ছোট বক্সটি এক্সপ্লোরার, একটি ইমেল বা চ্যাটে টেনে এনে ফাইলটি সেখানে রাখতে পারেন। এক্সপ্লোরারে ফাইল টেনে আনার মতো, একই ড্রাইভে থাকা ফোল্ডারে ফাইলটি স্থানান্তরিত হয় এবং অন্য ড্রাইভে একটি কপি তৈরি হয় (<g6>Shift</g6> চেপে ধরে সরাতে, <g7>Ctrl</g7> চেপে ধরে কপি করতে)। ডাউনলোডটি স্থানান্তরিত ফাইলটিকে অনুসরণ করে: তালিকা এবং <g8>খুলুন</g8> এটিকে এর নতুন স্থানে খুঁজে পায়। আপনি এটিতে ক্লিক না করা পর্যন্ত উইন্ডোটি আপনার অন্যান্য প্রোগ্রামের উপরে প্রদর্শিত হয়, তবে আপনি যে প্রোগ্রামে টাইপ করছেন তার কীবোর্ড নিয়ন্ত্রণ নেয় না।"
+   "text": "<g1>ডাউনলোড সম্পূর্ণ</g1> উইন্ডোটি ফাইলের আকার, তার ঠিকানা এবং এটি কোথায় সংরক্ষণ করা হয়েছে তা দেখায়। আপনি <g2>খুলুন</g2>, <g3>এর সাথে খুলুন...</g3>, <g4>ফোল্ডার খুলুন</g4> অথবা <g5>বন্ধ করুন</g5> নির্বাচন করতে পারেন। Windows-এ আপনি নিচের ডানদিকের ছোট বক্সটি এক্সপ্লোরার, একটি ইমেল বা চ্যাটে টেনে এনে ফাইলটি সেখানে ড্রপ করতে পারেন। এক্সপ্লোরারে ফাইল ড্র্যাগ করার মতো, একই ড্রাইভে একটি ফোল্ডারে ফাইলটি স্থানান্তরিত হয় এবং অন্য ড্রাইভে একটি কপি তৈরি হয় (<g6>Shift</g6> চেপে ধরে স্থানান্তরিত করুন, <g7>Ctrl</g7> চেপে ধরে কপি করুন)। ডাউনলোডটি স্থানান্তরিত ফাইলটিকে অনুসরণ করে: তালিকা এবং <g8>খুলুন</g8> এটিকে তার নতুন স্থানে খুঁজে পায়। আপনি এটিতে ক্লিক না করা পর্যন্ত উইন্ডোটি আপনার অন্যান্য প্রোগ্রামের উপরে প্রদর্শিত হয়, আপনি যেটিতে টাইপ করছেন সেটির থেকে কীবোর্ড না নিয়েই।"
   },
   "ed39bbda605ca874": {
    "source": "Every file finds its folder",

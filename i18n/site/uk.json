@@ -76,7 +76,7 @@
   },
   "0168c749ceaa28cd": {
    "source": "Many videos are split into chapters on their page: YouTube's list under the player, with a title and a start time for each part. With <g1>Embed chapters</g1> ticked, under <g2>Subtitles</g2>, they go into the video file, so players such as VLC, MPV, MPC-HC and Windows' Media Player list them and skip from one to the next.",
-   "text": "Багато відео розділені на розділи на своїй сторінці: список YouTube під програвачем, з назвою та часом початку для кожної частини. Якщо позначено <g1>Вбудувати розділи</g1> під <g2>Субтитри</g2>, вони додаються до відеофайлу, тому такі програвачі, як VLC, MPV, MPC-HC та Windows Media Player, відображають їх у списку та дозволяють переходити від одного до іншого."
+   "text": "Багато відео розділені на розділи на їхній сторінці: список YouTube під плеєром, з назвою та часом початку для кожної частини. Якщо позначено <g1>Вбудувати розділи</g1>, під <g2>Субтитри</g2>, вони додаються до відеофайлу, тому такі плеєри, як VLC, MPV, MPC-HC та Windows Media Player, відображають їх і дозволяють переходити від одного до іншого."
   },
   "016a9690b4c55ee5": {
    "source": "Both are kept in a <x1/> folder in MDM's data folder.",
@@ -1952,7 +1952,7 @@
   },
   "1d2b4c5972daa383": {
    "source": "It's ticked to begin with, and stays as you leave it for the next video.",
-   "text": "Він позначений спочатку і залишається таким, як ви його залишили для наступного відео."
+   "text": "Він позначений на початку і залишається таким, як ви його залишили для наступного відео."
   },
   "1d4ee2f96c724f0f": {
    "source": "A torrent: what it sends to peers, while it runs.",
@@ -2458,10 +2458,6 @@
    "source": "A download starts over instead of resuming",
    "text": "Завантаження починається знову замість відновлення"
   },
-  "24bf3f2f66091d90": {
-   "source": "Some videos play only for a signed-in viewer: a member's or a private video, an age-restricted one, and YouTube sometimes asks any viewer from an address it doubts to \"Sign in to confirm you're not a bot\". yt-dlp then needs your browser's cookies, the small files that keep you signed in.",
-   "text": "Деякі відео відтворюються лише для користувачів, які ввійшли в обліковий запис: відео для учасників або приватне відео, відео з віковими обмеженнями, а YouTube іноді просить будь-якого глядача з підозрілої адреси «Увійти, щоб підтвердити, що ви не робот». Тоді yt-dlp потрібні файли cookie вашого браузера — невеликі файли, які зберігають ваш вхід."
-  },
   "24c00ebf1248106f": {
    "source": "An etched separator's highlight line",
    "text": "Лінія підсвічування витравленого роздільника"
@@ -2760,7 +2756,7 @@
   },
   "28e42e284885ce6e": {
    "source": "It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. When the button can't tell which one you mean, the toolbar button's <g1>Media on this page</g1> lists them all. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. A stream goes with what the browser sent when the player asked for it, its referrer, its origin and its cookies (a player embedded from another site may have cookies the browser keeps for that page only), and MDM sends them again with each of its playlists and pieces: a site's video server that serves its own pages' players only lets MDM through as well. Sound players get the button too.",
-   "text": "Він бере відео, на яке ви натиснули: його власний файл, якщо він відтворює його, або потік, який завантажив плеєр (HLS або DASH), інакше сторінку. Якщо кнопка не може визначити, що саме ви маєте на увазі, кнопка на панелі інструментів <g1>Медіа на цій сторінці</g1> перелічує їх усі. Вбудовані плеєри також працюють, і ваш вхід на сайт, сторінка, яка вбудовує плеєр, і User-Agent вашого браузера надсилаються разом, тому відео для учасників або ті, що відтворюються лише на сайті, який їх вбудовує, можуть бути завантажені. Потік надсилається з тим, що браузер надіслав, коли плеєр його запитав, його реферером, його джерелом та його файлами cookie (плеєр, вбудований з іншого сайту, може мати файли cookie, які браузер зберігає лише для цієї сторінки), і MDM надсилає їх знову з кожним зі своїх списків відтворення та фрагментів: відеосервер сайту, який обслуговує лише плеєри власних сторінок, також пропускає MDM. Звукові плеєри також отримують кнопку."
+   "text": "Він бере відео, на яке ви натиснули: його власний файл, якщо він відтворює один, або потік, який завантажив плеєр (HLS або DASH), інакше сторінку. Якщо кнопка не може визначити, що саме ви маєте на увазі, кнопка на панелі інструментів <g1>Медіа на цій сторінці</g1> перераховує їх усі. Вбудовані плеєри також працюють, і ваш вхід на сайт, сторінка, яка вбудовує плеєр, і User-Agent вашого браузера йдуть разом з ним, тому відео для учасників або ті, що відтворюються лише на сайті, який їх вбудовує, можуть бути завантажені. Потік йде з тим, що браузер надіслав, коли плеєр його запитав, його реферером, його джерелом та його файлами cookie (плеєр, вбудований з іншого сайту, може мати файли cookie, які браузер зберігає лише для цієї сторінки), і MDM надсилає їх знову з кожним зі своїх списків відтворення та частин: відеосервер сайту, який обслуговує лише плеєри власних сторінок, також пропускає MDM. Звукові плеєри також отримують кнопку."
   },
   "28eeaa8ad9bf85a3": {
    "source": "Requests",
@@ -3696,7 +3692,7 @@
   },
   "37a51fbe4037e117": {
    "source": "<g1>Any system</g1>, Deno for your user alone: <x2/> (on Windows, in PowerShell: <x3/>)",
-   "text": "<g1>Будь-яка система</g1>, Deno лише для вашого користувача: <x2/> (на Windows, у PowerShell: <x3/>)"
+   "text": "<g1>Будь-яка система</g1>, Deno лише для вашого користувача: <x2/> (у Windows, у PowerShell: <x3/>)"
   },
   "37a82a5012e58c8d": {
    "source": "(the lighter background)",
@@ -4186,6 +4182,10 @@
    "source": "It works as a kill switch. When the adapter disconnects, running torrents stop with \"… is not connected; it goes on when it is back\", and they start again through the adapter when it is. Until MDM notices (within a second), the engine's sockets are still bound to an address that is gone, so nothing can leave another way. A torrent added while the adapter isn't connected doesn't start, and says why. Tracker names are still looked up by the system's DNS.",
    "text": "Це працює як аварійний вимикач. Коли адаптер відключається, запущені торренти зупиняються з повідомленням «… не підключено; продовжить роботу, коли підключиться», і знову запускаються через адаптер, коли він підключений. Доки MDM не помітить (протягом секунди), сокети рушія все ще прив'язані до адреси, яка зникла, тому ніщо не може вийти іншим шляхом. Торрент, доданий, коли адаптер не підключений, не запускається і повідомляє причину. Імена трекерів все ще шукаються системним DNS."
   },
+  "3e956985953c6c3e": {
+   "source": "<g1>Videos that need you signed in</g1>: the button over the video hands MDM the page's own cookies, so you're signed in as in the browser. For pasted links and playlists, <g2>Options → Sites Logins → Cookies for video sites</g2> lets yt-dlp read a browser's cookies, from the profile you choose: a separate one with a spare account works well. Chrome, Edge and Brave lock theirs on Windows, and the window says so; Firefox works. <g3>The help</g3> says more.",
+   "text": "<g1>Відео, для яких потрібен вхід</g1>: кнопка над відео передає MDM файли cookie сторінки, тому ви входите в систему так само, як у браузері. Для вставлених посилань і списків відтворення <g2>Параметри → Входи на сайти → Файли cookie для відеосайтів</g2> дозволяє yt-dlp читати файли cookie браузера з вибраного вами профілю: окремий профіль із запасним обліковим записом працює добре. Chrome, Edge і Brave блокують свої файли cookie у Windows, і вікно про це повідомляє; Firefox працює. <g3>Довідка</g3> містить більше інформації."
+  },
   "3e9e6b7b10d78723": {
    "source": "<g1>Start</g1> adds the ticked links to the <g2>Main download queue</g2> and starts the queue. It downloads as many files at once as the queue allows.",
    "text": "<g1>Почати</g1> додає позначені посилання до <g2>Основна черга завантажень</g2> та запускає чергу. Він завантажує стільки файлів одночасно, скільки дозволяє черга."
@@ -4205,6 +4205,10 @@
   "3ebf8f1307545f42": {
    "source": "Download manager command line and automation API — Mister Download Manager",
    "text": "Командний рядок і API автоматизації менеджера завантажень — Mister Download Manager"
+  },
+  "3ec0fd3706431045": {
+   "source": "<g1>The Download video button over the video</g1> passes that page's cookies, from the window and profile you're in (a private window, a Firefox container), for the look-up and the download, so you're signed in as you are in the browser. Nothing to set up. Each cookie goes with the domain the browser keeps it for, so a sign-in on YouTube Music (music.youtube.com) or YouTube's mobile site reaches www.youtube.com too.",
+   "text": "<g1>Кнопка «Завантажити відео» над відео</g1> передає файли cookie цієї сторінки, з вікна та профілю, в якому ви перебуваєте (приватне вікно, контейнер Firefox), для пошуку та завантаження, тому ви входите в систему так само, як і в браузері. Нічого налаштовувати. Кожен файл cookie зберігається з доменом, для якого його зберігає браузер, тому вхід на YouTube Music (music.youtube.com) або мобільний сайт YouTube також досягає www.youtube.com."
   },
   "3ec9f591006bbd23": {
    "source": "The installer. Pick this one unless you have a reason not to. It can set up browser integration and open <x1/> files and magnet links with MDM.",
@@ -5200,7 +5204,7 @@
   },
   "4ea06c1b2a86d1c8": {
    "source": "<g1>Hide web pages</g1> (on by default) leaves out links to pages (<x2/>, <x3/> and the like, and any link whose look-up found a web page): they are neither shown nor downloaded.",
-   "text": "<g1>Приховати вебсторінки</g1> (увімкнено за замовчуванням) виключає посилання на сторінки (<x2/>, <x3/> тощо, а також будь-яке посилання, пошук якого виявив вебсторінку): вони не відображаються і не завантажуються."
+   "text": "<g1>Приховати вебсторінки</g1> (увімкнено за замовчуванням) виключає посилання на сторінки (<x2/>, <x3/> тощо, а також будь-яке посилання, пошук якого знайшов вебсторінку): вони не відображаються і не завантажуються."
   },
   "4f07dda13d242d23": {
    "source": "Options on its Connection page: connections per download, per-server exceptions, Download limits and the DNS list",
@@ -5792,7 +5796,7 @@
   },
   "57d55935c79c75f6": {
    "source": "Install one of them, either works, then look the video up again. MDM finds Deno, Node.js (also one installed with nvm) and Bun by itself. If it still says so, the new program's folder isn't on the <x1/> MDM started with (Windows' installers add it for programs started after them): quit MDM (<g2>Tasks → Exit</g2>) and start it again.",
-   "text": "Встановіть одне з них, будь-яке працює, потім знову знайдіть відео. MDM самостійно знаходить Deno, Node.js (також встановлений за допомогою nvm) і Bun. Якщо повідомлення все ще з'являється, папка нової програми не знаходиться в <x1/>, з якої запустився MDM (інсталятори Windows додають її для програм, запущених після них): вийдіть з MDM (<g2>Завдання → Вихід</g2>) і запустіть його знову."
+   "text": "Встановіть одне з них, будь-яке працює, потім знову знайдіть відео. MDM самостійно знаходить Deno, Node.js (також встановлений за допомогою nvm) і Bun. Якщо повідомлення все ще з'являється, папка нової програми не знаходиться в <x1/>, з якої MDM запустився (інсталятори Windows додають її для програм, запущених після них): вийдіть з MDM (<g2>Завдання → Вихід</g2>) і запустіть його знову."
   },
   "57df30288a29fe94": {
    "source": "Made possible by these amazing humans",
@@ -5916,7 +5920,7 @@
   },
   "598886119cab837f": {
    "source": "<g1>A web page's address.</g1> Paste or copy the address of a page (<x2/>) and MDM reads the page and lists the links on it, as the browser's <g3>Download all links</g3> does, in a package named after the page. The page itself is left unticked. This works for addresses that came on their own (pasted, copied, typed, in a list), not for the links found on a page, so MDM never wanders off through a site. MDM reads only what the page itself holds: links a page's scripts add after it loads come only through the browser.",
-   "text": "<g1>Адреса вебсторінки.</g1> Вставте або скопіюйте адресу сторінки (<x2/>), і MDM прочитає сторінку та перерахує посилання на ній, як це робить функція <g3>Завантажити всі посилання</g3> у браузері, у пакеті, названому на честь сторінки. Сама сторінка залишається невідміченою. Це працює для адрес, які надійшли самостійно (вставлені, скопійовані, набрані, у списку), а не для посилань, знайдених на сторінці, тому MDM ніколи не блукає по сайту. MDM читає лише те, що містить сама сторінка: посилання, які додають скрипти сторінки після її завантаження, надходять лише через браузер."
+   "text": "<g1>Адреса вебсторінки.</g1> Вставте або скопіюйте адресу сторінки (<x2/>), і MDM прочитає сторінку та перерахує посилання на ній, як це робить функція браузера <g3>Завантажити всі посилання</g3>, у пакеті, названому на честь сторінки. Сама сторінка залишається невідміченою. Це працює для адрес, які надійшли самостійно (вставлені, скопійовані, набрані, у списку), а не для посилань, знайдених на сторінці, тому MDM ніколи не блукає по сайту. MDM читає лише те, що містить сама сторінка: посилання, які додають скрипти сторінки після її завантаження, надходять лише через браузер."
   },
   "59920ff7101c276f": {
    "source": "Fix the translation in the row's third column and delete its <x1/> line.",
@@ -6806,10 +6810,6 @@
    "source": "Two helpers, checked before use",
    "text": "Дві допоміжні програми, перевірені перед використанням"
   },
-  "66f7530c7179f562": {
-   "source": "<g1>The Download video button over the video</g1> passes that page's cookies, from the window and profile you're in (a private window, a Firefox container), for the look-up and the download. Nothing to set up. Each cookie goes with the domain the browser keeps it for, so a sign-in on YouTube Music (music.youtube.com) or YouTube's mobile site reaches www.youtube.com too.",
-   "text": "<g1>Кнопка «Завантажити відео» над відео</g1> передає файли cookie цієї сторінки з вікна та профілю, в якому ви перебуваєте (приватне вікно, контейнер Firefox), для пошуку та завантаження. Нічого налаштовувати не потрібно. Кожен файл cookie надсилається з доменом, для якого його зберігає браузер, тому вхід на YouTube Music (music.youtube.com) або мобільний сайт YouTube також досягає www.youtube.com."
-  },
   "670bb10cde757ad1": {
    "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
    "text": "MDM ніколи не записує токен у журнал подій, звіти про збої, API автоматизації чи вивід командного рядка."
@@ -7328,7 +7328,7 @@
   },
   "6f06002d2161cba3": {
    "source": "Last updated 2026-11-13",
-   "text": "Оновлено 13.11.2026"
+   "text": "Останнє оновлення: 13.11.2026"
   },
   "6f082d0aaa31277a": {
    "source": "The dotted keyboard focus rectangle",
@@ -7557,6 +7557,10 @@
   "72769bded1d786a9": {
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "Вставте посилання Google Диска як є, те, що дає <g1>Поділитися → Копіювати посилання</g1>:"
+  },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "Не вдалося прочитати список з GitHub під час створення цієї сторінки. Тим часом усі є на GitHub, у <g1>запитах на злиття</g1> та <g2>проблемах</g2> проєкту."
   },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
@@ -8138,10 +8142,6 @@
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
    "text": "За замовчуванням для одного завантаження використовується 8 підключень, а в Параметри → Підключення можна вибрати до 32. Щоб використовувати до 128 підключень, установіть там прапорець Дозволити більше 32 підключень. MDM використовує менше підключень, якщо сервер дозволяє меншу кількість, і лише одне, якщо сервер узагалі не може надсилати частини файлу."
   },
-  "7beb76c0e99ab62c": {
-   "source": "<g1>Videos that need you signed in</g1>: <g2>Options → Sites Logins → Cookies for video sites</g2> lets yt-dlp read a browser's cookies, for pasted links. Chrome, Edge and Brave lock theirs on Windows, and the window says so; Firefox works, and so does the button over the video.",
-   "text": "<g1>Відео, для яких потрібен вхід</g1>: <g2>Параметри → Входи на сайти → Файли cookie для відеосайтів</g2> дозволяє yt-dlp читати файли cookie браузера для вставлених посилань. Chrome, Edge та Brave блокують їх на Windows, і вікно про це повідомляє; Firefox працює, як і кнопка над відео."
-  },
   "7bf940f9155b4bce": {
    "source": "<x1/> <g2>Open source · Apache-2.0</g2>",
    "text": "<x1/> <g2>Відкритий код · Apache-2.0</g2>"
@@ -8584,7 +8584,7 @@
   },
   "810e3acee25be1c6": {
    "source": "YouTube hides most of a video's qualities behind small puzzles that yt-dlp solves with a JavaScript runtime: <g1>Deno</g1>, <g2>Node.js</g2> or <g3>Bun</g3>. Without one, the list is short, sometimes only the sound and a low quality, and MDM says so: <g4>YouTube needs a JavaScript runtime to list its video qualities</g4>. Other sites don't need one.",
-   "text": "YouTube приховує більшість якостей відео за невеликими головоломками, які yt-dlp розв'язує за допомогою середовища виконання JavaScript: <g1>Deno</g1>, <g2>Node.js</g2> або <g3>Bun</g3>. Без нього список короткий, іноді лише звук і низька якість, і MDM про це повідомляє: <g4>YouTube потребує середовища виконання JavaScript для відображення якостей відео</g4>. Інші сайти цього не потребують."
+   "text": "YouTube приховує більшість якостей відео за невеликими головоломками, які yt-dlp розв'язує за допомогою середовища виконання JavaScript: <g1>Deno</g1>, <g2>Node.js</g2> або <g3>Bun</g3>. Без нього список короткий, іноді лише звук і низька якість, і MDM про це повідомляє: <g4>YouTube потребує середовища виконання JavaScript для переліку якостей відео</g4>. Інші сайти його не потребують."
   },
   "8144fd9d669ebeed": {
    "source": "Does it download torrents? — Mister Download Manager",
@@ -10738,6 +10738,10 @@
    "source": "A window larger than the screen at that size (Options at 200 % on a 1366 × 768 screen) opens as large as the screen allows, and the rest scrolls: with the scroll bars, the mouse wheel, or <g1>Tab</g1> to the next control.",
    "text": "Вікно, більше за екран при цьому розмірі (Параметри на 200 % на екрані 1366 × 768), відкривається настільки великим, наскільки дозволяє екран, а решта прокручується: за допомогою смуг прокрутки, коліщатка миші або <g1>Tab</g1> до наступного елемента керування."
   },
+  "a24bd8fd730a41d0": {
+   "source": "On Windows, an OpenGL older than 3.0 (an old graphics card's driver, such as Intel's first HD Graphics, whose OpenGL is 2.1) can't draw MDM: its windows come out as garbage. MDM notices it as it starts and starts again with Direct3D on Microsoft's software renderer (WARP), from then on, and <g1>View → Draw with</g1> says so. Choosing <g2>OpenGL</g2> there tries it again.",
+   "text": "У Windows, OpenGL старіший за 3.0 (драйвер старої відеокарти, наприклад, першої Intel HD Graphics, де OpenGL 2.1) не може відображати MDM: його вікна відображаються некоректно. MDM помічає це під час запуску та перезапускається з Direct3D на програмному рендері Microsoft (WARP), і відтоді <g1>Вигляд → Малювати за допомогою</g1> вказує на це. Вибір <g2>OpenGL</g2> там спробує знову."
+  },
   "a2907e04d7c8512f": {
    "source": "Why doesn't MDM take over my download? — Mister Download Manager",
    "text": "Чому MDM не перехоплює моє завантаження? — Mister Download Manager"
@@ -11760,7 +11764,7 @@
   },
   "b1a0ed24728365e7": {
    "source": "The command line (<x1/>) puts them in too, whenever ffmpeg is there.",
-   "text": "Командний рядок (<x1/>) також додає їх, якщо ffmpeg присутній."
+   "text": "Командний рядок (<x1/>) також додає їх, якщо є ffmpeg."
   },
   "b1aebd102c185a01": {
    "source": "RSS feeds for torrents, with download rules — Mister Download Manager",
@@ -11952,7 +11956,7 @@
   },
   "b3d7bbeea9ab71d3": {
    "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g19>Embed chapters</g19> does. <x20/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x21/>; when it isn't connected, nothing starts.",
-   "text": "Завантажити відео; <x1/> приймає селектор якості з <x2/> (<x3/> = найкращий окремий файл; <x4/> = лише звук, як він є на сайті, без конвертації; <x5/>, <x6/>, <x7/> або <x8/> = звук у форматі MP3 з такою швидкістю потоку, <x9/> з найкращою змінною швидкістю; <x10/> = як Opus; <x11/> = як FLAC, без втрат, але не краще, ніж звук на сайті; для конвертації потрібен ffmpeg). <x12/>: власний завантажувач MDM передає кожен потік, знайдений yt-dlp, через таку кількість з’єднань (за замовчуванням 8, від 1 до 128), потік частинами (HLS, DASH) такою кількістю частин одночасно. <x13/> зберігає субтитри поруч: коди мов з <x14/> (<x15/>), або <x16/> для всіх, які надав завантажувач; <x17/> замість цього бере автоматичні субтитри сайту; <x18/> вбудовує їх у відео (потрібен ffmpeg, MP4 або MKV). За допомогою ffmpeg розділи відео також додаються до файлу, як це робить <g19>Вбудувати розділи</g19> у вікні «Завантажити відео». <x20/> надсилає з’єднання для завантажень, а також yt-dlp (і ffmpeg), через один мережевий адаптер, як для <x21/>; коли він не підключений, нічого не починається."
+   "text": "Завантажити відео; <x1/> приймає селектор якості з <x2/> (<x3/> = найкращий окремий файл; <x4/> = лише звук, як є на сайті, без конвертації; <x5/>, <x6/>, <x7/> або <x8/> = звук як MP3 з цим бітрейтом, <x9/> з найкращим змінним; <x10/> = як Opus; <x11/> = як FLAC, без втрат, але не краще, ніж звук на сайті; для конвертації потрібен ffmpeg). <x12/>: власний завантажувач MDM передає кожен потік, знайдений yt-dlp, через стільки з’єднань (8 за замовчуванням, від 1 до 128), потік частинами (HLS, DASH) стільки частин одночасно. <x13/> зберігає субтитри поруч: коди мов з <x14/> (<x15/>), або <x16/> для всіх, які надав завантажувач; <x17/> замість цього бере автоматичні субтитри сайту; <x18/> вбудовує їх у відео (потрібен ffmpeg, MP4 або MKV). З ffmpeg розділи відео також додаються до файлу, як це робить <g19>Вбудувати розділи</g19> у Завантажити відео. <x20/> надсилає з’єднання завантажень, а також yt-dlp (і ffmpeg), через один мережевий адаптер, як для <x21/>; коли він не підключений, нічого не починається."
   },
   "b3f1633383cc8b77": {
    "source": "Open <g1>Downloads → Options</g1>, or click <g2>Options</g2> on the toolbar. The window has twelve pages on two rows of tabs. <g3>OK</g3> saves your changes; closing the window or pressing <g4>Esc</g4> throws them away.",
@@ -12237,6 +12241,10 @@
   "b86face263e9f2af": {
    "source": "We'd rather you knew. IDM has a site grabber that follows a whole website's pages (MDM's link grabber takes the links of one page), and many years of polish and compatibility fixes. MDM is new; if something you rely on is missing, <g1>ask for it</g1>.",
    "text": "Ми б хотіли, щоб ви знали. IDM має грабер сайтів, який відстежує сторінки цілого вебсайту (грабер посилань MDM бере посилання з однієї сторінки), а також багаторічні доопрацювання та виправлення сумісності. MDM є новим; якщо чогось, на що ви покладаєтеся, бракує, <g1>запитайте про це</g1>."
+  },
+  "b886cc5ff82424bc": {
+   "source": "<g1>A spare account, in a profile of its own</g1>: you don't have to lend yt-dlp your main account. Make a second profile in your browser, sign in to the site there with a spare account, and put that profile in <g2>Profile</g2> (its name, or its folder with <g3>...</g3>). yt-dlp reads that profile's cookies only. yt-dlp's developers advise this too: a site may limit an account it sees used by a program.",
+   "text": "<g1>Запасний обліковий запис у власному профілі</g1>: вам не потрібно надавати yt-dlp свій основний обліковий запис. Створіть другий профіль у своєму браузері, увійдіть на сайт там із запасним обліковим записом і помістіть цей профіль у <g2>Профіль</g2> (його назва або його папка з <g3>...</g3>). yt-dlp читає лише файли cookie цього профілю. Розробники yt-dlp також радять це: сайт може обмежити обліковий запис, який використовується програмою."
   },
   "b88a67e39c494a61": {
    "source": "The server runs on the app's Tokio runtime, one listener per local network address. Each request is checked (<x1/>, <x2/>, token), turned into an <x3/> marked <x4/> (a field no request line can set) and handed to the app through the same channel as the command line's; the app answers it on its next frame, as it answers the automation API. Its page is built in (<x5/>) and its texts come from the app's catalogs (<x6/>).",
@@ -13060,7 +13068,7 @@
   },
   "c5a292e743078486": {
    "source": "A distribution's yt-dlp can also be too old for YouTube: if the list stays short, click <g1>Use MDM's own copy</g1> beside yt-dlp in <g2>Helpers...</g2>.",
-   "text": "Версія yt-dlp у дистрибутиві також може бути застарілою для YouTube: якщо список залишається коротким, натисніть <g1>Використати власну копію MDM</g1> поруч із yt-dlp у <g2>Допоміжні програми...</g2>."
+   "text": "Також yt-dlp з дистрибутива може бути застарілим для YouTube: якщо список залишається коротким, натисніть <g1>Використати власну копію MDM</g1> поруч з yt-dlp у <g2>Допоміжні програми...</g2>."
   },
   "c5b1d8d5e4be4a3b": {
    "source": "How the pictures come down",
@@ -13228,7 +13236,7 @@
   },
   "c845f9239d5bddd5": {
    "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window with the stream its player loaded (HLS or DASH), as the <g3>button over videos</g3> sends it, with your cookies for the stream's server and what the browser sent with the stream (its referrer and origin, else the page as the referrer).",
-   "text": "Клацніть правою кнопкою миші на посиланні, відео, звуку чи зображенні та виберіть <g1>Завантажити за допомогою Mister Download Manager</g1>. MDM завантажить його незалежно від типу: ви самі попросили, тому список типів файлів та виключені сайти тут не застосовуються (вони лише визначають, які завантаження MDM перехоплює автоматично). Відео, що відтворюється як потік, переходить до вікна <g2>Завантажити відео</g2> з потоком, який завантажив його плеєр (HLS або DASH), як це надсилає <g3>кнопка над відео</g3>, з вашими файлами cookie для сервера потоку та тим, що браузер надіслав разом із потоком (його реферер та джерело, інакше сторінка як реферер)."
+   "text": "Клацніть правою кнопкою миші посилання, відео, звук або зображення та виберіть <g1>Завантажити за допомогою Mister Download Manager</g1>. MDM завантажить його незалежно від типу: ви самі це попросили, тому список типів файлів та виключені сайти тут не застосовуються (вони лише вирішують, які завантаження MDM перехоплює автоматично). Відео, що відтворюється як потік, переходить до вікна <g2>Завантажити відео</g2> з потоком, який завантажив його плеєр (HLS або DASH), як його надсилає <g3>кнопка над відео</g3>, з вашими файлами cookie для сервера потоку та тим, що браузер надіслав разом із потоком (його реферер та джерело, інакше сторінка як реферер)."
   },
   "c84f2046978e476a": {
    "source": "A title bar MDM draws itself",
@@ -13905,6 +13913,10 @@
   "d2ef5107c69b686f": {
    "source": "Maturity",
    "text": "Зрілість"
+  },
+  "d2fc243b93084d12": {
+   "source": "Some videos play only for a signed-in viewer: a member's or a private video, an age-restricted one. And YouTube sometimes asks any viewer from a network it doubts (a VPN, a shared or cloud address) to \"Sign in to confirm you're not a bot\". yt-dlp then needs your browser's cookies, the small files that keep you signed in.",
+   "text": "Деякі відео відтворюються лише для користувачів, які увійшли в систему: відео для учасників або приватне відео, відео з віковими обмеженнями. А YouTube іноді просить будь-якого глядача з мережі, якій він не довіряє (VPN, спільна або хмарна адреса), «Увійти, щоб підтвердити, що ви не робот». Тоді yt-dlp потрібні файли cookie вашого браузера, невеликі файли, які зберігають ваш вхід."
   },
   "d30e4557ff06a9ab": {
    "source": "Reports, translations and help",
@@ -15152,7 +15164,7 @@
   },
   "e71e432fdd540d5b": {
    "source": "Turn the look-ups off in <g1>Options → Archives → Look links up when they arrive</g1>. Some file hosts count a look-up as a download. With the look-ups off, MDM asks nothing of the network until you start, so a web page's address isn't read for its links either.",
-   "text": "Вимкніть пошук у <g1>Параметри → Архіви → Шукати посилання після їх надходження</g1>. Деякі файлові хостинги зараховують пошук як завантаження. Якщо пошук вимкнено, MDM не надсилає запитів до мережі, доки ви не почнете завантаження, тому адреса вебсторінки також не читається на наявність посилань."
+   "text": "Вимкніть пошук у <g1>Параметри → Архіви → Шукати посилання, коли вони надходять</g1>. Деякі файлові хостинги зараховують пошук як завантаження. При вимкненому пошуку MDM нічого не запитує від мережі, доки ви не почнете, тому адреса вебсторінки також не читається для її посилань."
   },
   "e7281739beb4476f": {
    "source": "A download manager can fill your whole connection. These steps cap MDM so that browsing, video calls and games stay smooth.",
@@ -15476,7 +15488,7 @@
   },
   "eb9f527d55414228": {
    "source": "Last updated 2026-11-13 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "Останнє оновлення 13.11.2026 · стосується програми, розширення для браузера та сайту misterdownloadmanager.com"
+   "text": "Останнє оновлення: 13.11.2026 · стосується програми, розширення для браузера та сайту misterdownloadmanager.com"
   },
   "ebb00adeab17b68e": {
    "source": "<g1>Links that work only once</g1> (or hosts that allow one download at a time) failed with \"403 Forbidden\" after Download File Info had looked them up (<g2>#28</g2>): the window's look and the download each asked the server. The download now continues from the answer the window got, and asks again only if that connection has closed meanwhile.",
@@ -15604,7 +15616,7 @@
   },
   "ed30bf8c293519f0": {
    "source": "<g1>Download complete</g1> shows the file's size, its address and where it was saved. Choose <g2>Open</g2>, <g3>Open with...</g3>, <g4>Open folder</g4> or <g5>Close</g5>. On Windows you can also drag the small box at the bottom right into Explorer, an email or a chat to drop the file there. As when you drag a file in Explorer, a folder on the same drive gets the file moved there and another drive gets a copy (hold <g6>Shift</g6> to move it, <g7>Ctrl</g7> to copy it). The download follows a moved file: the list and <g8>Open</g8> find it in its new place. The window shows above your other programs until you click it, without taking the keyboard from the one you're typing in.",
-   "text": "<g1>Завантаження завершено</g1> показує розмір файлу, його адресу та місце збереження. Виберіть <g2>Відкрити</g2>, <g3>Відкрити за допомогою...</g3>, <g4>Відкрити папку</g4> або <g5>Закрити</g5>. У Windows ви також можете перетягнути невелике вікно внизу праворуч до Провідника, електронної пошти або чату, щоб перемістити файл туди. Як і при перетягуванні файлу в Провіднику, папка на тому ж диску отримує файл, переміщений туди, а інший диск отримує копію (утримуйте <g6>Shift</g6>, щоб перемістити його, <g7>Ctrl</g7>, щоб скопіювати). Завантаження слідує за переміщеним файлом: список і <g8>Відкрити</g8> знаходять його на новому місці. Вікно відображається над іншими програмами, доки ви не клацнете на ньому, не забираючи клавіатуру від тієї, в якій ви друкуєте."
+   "text": "<g1>Завантаження завершено</g1> показує розмір файлу, його адресу та місце збереження. Виберіть <g2>Відкрити</g2>, <g3>Відкрити за допомогою...</g3>, <g4>Відкрити папку</g4> або <g5>Закрити</g5>. У Windows ви також можете перетягнути невелике вікно внизу праворуч до Провідника, електронної пошти або чату, щоб перемістити туди файл. Як і при перетягуванні файлу в Провіднику, папка на тому ж диску отримує файл, переміщений туди, а інший диск отримує копію (утримуйте <g6>Shift</g6>, щоб перемістити його, <g7>Ctrl</g7>, щоб скопіювати). Завантаження слідує за переміщеним файлом: список і <g8>Відкрити</g8> знаходять його на новому місці. Вікно відображається над іншими програмами, доки ви не клацнете на ньому, не забираючи клавіатуру від тієї, в якій ви друкуєте."
   },
   "ed39bbda605ca874": {
    "source": "Every file finds its folder",
