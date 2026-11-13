@@ -617,6 +617,12 @@ These ship in the next version.
 - ✅ A video of unknown size no longer reads 99.9 % from its first second while yt-dlp downloads it,
   and a video named after a page titled with its file's name gets its extension once (Dropbox's
   `Episode 31.mp4.mp4`) ([#622](https://github.com/anefzaoui/misterdownloadmanager/issues/622))
+- ✅ Where a download's server is: shown once the server answered, its address and round trip
+  together, not a round trip alone (twice too long over https) while a slow server answers; it
+  also made a test fail now and then on Linux
+  ([#933](https://github.com/anefzaoui/misterdownloadmanager/issues/933))
+- ✅ Tests: the slow disk's model is checked on its own clock, and the speed limiter's and a DNS
+  check on Tokio's paused one, instead of the time a busy runner takes (one failed on macOS)
 - ✅ Tests: the five that checked a long list is read in linear time against a fixed number of
   seconds (one failed on a slow macOS runner) now time the same work at two sizes, eight times
   apart, and fail only when the larger one costs over 24 times as much (a square costs 64 times),
