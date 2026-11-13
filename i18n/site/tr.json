@@ -838,10 +838,6 @@
    "source": "The interface is in every language Windows 11 offers. The catalogs in <g1><x2/></g1> were made by machine translation, and each row marked <x3/> waits for a native speaker:",
    "text": "Arayüz, Windows 11'in sunduğu tüm dillerde kullanılabilir. <g1><x2/></g1> içindeki kataloglar makine çevirisiyle oluşturulmuştur ve <x3/> ile işaretlenmiş her satırın ana dili o dil olan bir çevirmen tarafından gözden geçirilmesi beklenmektedir:"
   },
-  "0c4e47b7b5c8f9f5": {
-   "source": "A freeze whose report shows the window thread inside the graphics driver as it shows a frame (<x1/> or <x2/> for Intel, <x3/> for NVIDIA, <x4/> for AMD, under <x5/>) is the driver's OpenGL stuck, not MDM: on Windows, choose <g6>View → Draw with → Direct3D</g6> (the default) and restart MDM, and update the graphics driver. If <g7>Draw with</g7> says Direct3D didn't start there, the line under it says why.",
-   "text": "Raporu, bir çerçeve gösterirken grafik sürücüsü içindeki pencere iş parçacığını gösteren bir donma (<x1/> veya Intel için <x2/>, NVIDIA için <x3/>, AMD için <x4/>, <x5/> altında) MDM'nin değil, sürücünün OpenGL'sinin takılmasıdır: Windows'ta <g6>Görünüm → Şununla çiz → Direct3D</g6> (varsayılan) seçeneğini belirleyin ve MDM'yi yeniden başlatın, ayrıca grafik sürücüsünü güncelleyin. Eğer <g7>Şununla çiz</g7> Direct3D'nin orada başlamadığını belirtiyorsa, altındaki satır nedenini açıklar."
-  },
   "0c6ce890ecccf13e": {
    "source": "For an internet plan with a data cap, select <g1>Download limits</g1> on the left:",
    "text": "Veri kotası olan bir internet paketi kullanılıyorsa soldaki <g1>İndirme sınırları</g1> seçeneğini belirleyin:"
@@ -4516,7 +4512,7 @@
   },
   "43510d0cf7beac55": {
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep and the first minute after the computer wakes, while its disk, network and screen come back: a stall then is written to the log, and reported only if it lasts past that minute. It times both parts of a frame: what MDM handles (the commands that come in, the clock of downloads, queues and the Scheduler), which runs minimized too, and the drawing; never the wait between frames. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). Each report also names what the frame was doing when it stopped (the tray icon, the downloads' progress, drawing the main window). When the window thread is already back in the event loop, or in the pause after a frame of a hidden window, by the time the dump is written, the freeze was over before the snapshot, so its stack can't explain it; those reports say so and share the signature <x3/>. macOS doesn't measure it yet. The monitor then writes a <g4>minidump</g4> of every thread from outside, through <x5/> and <x6/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>Sorunları yakalama.</g1> MDM çöktüğünde (Windows'ta bir özel durum, Linux'ta bir sinyal, macOS'ta bir Mach özel durumu), paniklediğinde veya donduğunda, monitörden bir döküm ister. Donma, pencerenin 8 saniyeden fazla çalıştığı bir kare olup, uykuya dalma süresini ve bilgisayar uyandıktan sonraki ilk dakikayı, disk, ağ ve ekran geri gelirken göz ardı eden bir izleyici iş parçacığı tarafından görülür: bir takılma günlüğe yazılır ve yalnızca bu dakikayı aşarsa rapor edilir. Bir karenin her iki bölümünü de zamanlar: MDM'nin ele aldığı (gelen komutlar, indirmelerin saati, kuyruklar ve Zamanlayıcı), bu da küçültülmüş olarak çalışır ve çizim; asla kareler arasındaki beklemeyi değil. İzleyici ayrıca pencere iş parçacığının bu arada ne kadar işlemci süresi aldığını da ölçer ve rapor bunun ne anlama geldiğini söyler: sürekli çalıştı (bir döngü), bir kilitte veya G/Ç'de bekledi (bir kilitlenme) veya sıradan kodda neredeyse hiç çalışmadı, bu da bilgisayarın MDM'yi çalıştırmak için çok meşgul olduğu veya diskten yüklemek için yavaş olduğu anlamına gelir, büyük olasılıkla MDM'nin hatası değildir (bunlar <x2/> tek bir imzayı paylaşır). Her rapor ayrıca durduğunda karenin ne yaptığını da belirtir (tepsi simgesi, indirmelerin ilerlemesi, ana pencereyi çizme). Döküm yazıldığında pencere iş parçacığı zaten olay döngüsüne geri dönmüşse veya gizli bir pencerenin karesinden sonraki duraklamadaysa, donma anlık görüntüden önce sona ermiş demektir, bu nedenle yığını bunu açıklayamaz; bu raporlar bunu belirtir ve <x3/> imzasını paylaşır. macOS henüz bunu ölçmez. Monitör daha sonra <x5/> ve <x6/> aracılığıyla dışarıdan her iş parçacığının bir <g4>minidump</g4>'ını yazar. Çöken bir işlem asla kendi dökümünü yazmaz, Firefox, Crashpad ve Sentry de bunu böyle yapar."
+   "text": "<g1>Sorunları yakalama.</g1> MDM çöktüğünde (Windows'ta bir özel durum, Linux'ta bir sinyal, macOS'ta bir Mach özel durumu), paniklediğinde veya donduğunda, monitörden bir döküm ister. Donma, pencerenin 8 saniyeden fazla çalıştığı bir kare olup, uyku modunda geçirilen süreyi ve bilgisayar uyandıktan sonraki ilk dakikayı, disk, ağ ve ekran geri gelirken göz ardı eden bir izleyici iş parçacığı tarafından görülür: bir takılma günlüğe yazılır ve yalnızca bu dakikayı aşarsa rapor edilir. Bir karenin her iki bölümünü de zamanlar: MDM'nin ele aldığı (gelen komutlar, indirmelerin saati, kuyruklar ve Zamanlayıcı), bu da küçültülmüş olarak çalışır ve çizim; kareler arasındaki beklemeyi asla zamanlamaz. İzleyici ayrıca pencere iş parçacığının bu arada ne kadar işlemci süresi aldığını da ölçer ve rapor bunun ne anlama geldiğini belirtir: sürekli çalıştı (bir döngü), bir kilitte veya G/Ç'de bekledi (bir kilitlenme) veya sıradan kodda neredeyse hiç çalışmadı, bu da bilgisayarın MDM'yi çalıştırmak için çok meşgul olduğu veya diskten yüklemek için yavaş olduğu anlamına gelir, büyük olasılıkla MDM'nin hatası değildir (bunlar <x2/> tek bir imzayı paylaşır). Her rapor ayrıca durduğunda karenin ne yaptığını da belirtir (tepsi simgesi, indirmelerin ilerlemesi, ana pencereyi çizme). Döküm yazıldığı sırada pencere iş parçacığı zaten olay döngüsüne geri döndüyse veya gizli bir pencerenin karesinden sonraki duraklamadaysa, donma anlık görüntüden önce sona ermiş demektir, bu nedenle yığını bunu açıklayamaz; bu raporlar bunu belirtir ve <x3/> imzasını paylaşır. macOS henüz bunu ölçmüyor. Monitör daha sonra <x5/> ve <x6/> aracılığıyla dışarıdan her iş parçacığının bir <g4>minidump</g4>'ını yazar. Çöken bir işlem asla kendi dökümünü yazmaz, Firefox, Crashpad ve Sentry de bunu böyle yapar."
   },
   "436bac2c4f3d3f4c": {
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
@@ -4576,7 +4572,7 @@
   },
   "44502a7e800ed659": {
    "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you. On Linux it makes MDM your desktop's default app for them; on macOS, their default app (Finder offers MDM in <g5>Open With</g5> for <x6/> files either way, and a double-click opens them in MDM when no other app is their default).",
-   "text": "Bu sınırlardan biri nedeniyle durdurulan bir torrent, olay günlüğünde bunu belirtir ve MDM başladığında tekrar paylaşılmaz. Tekrar paylaşmak için sınırı yükseltin veya kapatın. - <g1>Tüm torrentlerde karşıya yükleme hızını şununla sınırla:</g1> — varsayılan olarak kapalıdır. Tüm torrentlerinizin diğer eşlere birlikte gönderdiği veriyi, hem indirirken hem de paylaşırken sınırlar. Bir torrentin kendi ilerleme penceresindeki yükleme sınırı, bunun üzerine uygulanır. - <g2>Magnet bağlantılarını ve .torrent dosyalarını Mister Download Manager ile aç</g2> — Windows daha sonra tarayıcınızdaki magnet bağlantılarını ve Gezgin'deki <x3/> dosyalarını MDM ile açar. Bu yalnızca Windows hesabınız içindir; Windows'un <g4>Birlikte aç</g4> seçeneğinde seçtiğiniz bir program öncelikli kalır. Kurulum bunu sizin için açabilir. Linux'ta MDM'yi masaüstünüzün varsayılan uygulaması yapar; macOS'ta ise varsayılan uygulamaları yapar (Finder, <x6/> dosyaları için <g5>Birlikte Aç</g5> seçeneğinde MDM'yi her iki durumda da sunar ve başka hiçbir uygulama varsayılan değilse çift tıklama onları MDM'de açar)."
+   "text": "Bu sınırlamalardan biri nedeniyle durdurulan bir torrent, olay günlüğünde bunu belirtir ve MDM başladığında tekrar paylaşılmaz. Tekrar paylaşmak için sınırı yükseltin veya kapatın. - <g1>Tüm torrentlerde karşıya yükleme hızını şununla sınırla:</g1> — varsayılan olarak kapalıdır. Tüm torrentlerinizin indirme ve paylaşım sırasında diğer eşlere birlikte gönderdiği veriyi sınırlar. Bir torrentin kendi ilerleme penceresindeki karşıya yükleme sınırı, bunun üzerine uygulanır. - <g2>Mister Download Manager ile magnet bağlantılarını ve .torrent dosyalarını aç</g2> — Windows daha sonra tarayıcınızdaki magnet bağlantılarını ve Gezgin'deki <x3/> dosyalarını MDM ile açar. Bu yalnızca Windows hesabınız içindir; Windows'un <g4>Birlikte aç</g4> seçeneğinde seçtiğiniz bir program öncelikli kalır. Kurulum bunu sizin için açabilir. Linux'ta MDM'yi bunlar için masaüstünüzün varsayılan uygulaması yapar; macOS'ta, bunların varsayılan uygulaması (Finder, <x6/> dosyaları için <g5>Birlikte Aç</g5> seçeneğinde MDM'yi her iki durumda da sunar ve başka hiçbir uygulama varsayılan değilse çift tıklama onları MDM'de açar)."
   },
   "445e6378c12f1e16": {
    "source": "<g1>Image gallery support:</g1> download whole galleries (Flickr, Imgur, DeviantArt and more) with gallery-dl.",
@@ -4797,6 +4793,10 @@
   "48389b303ae7a75a": {
    "source": "The extension now installs from your browser's store, updates itself, and catches more of what you download.",
    "text": "Uzantı artık tarayıcınızın mağazasından yükleniyor, kendini güncelliyor ve indirdiğiniz daha fazla şeyi yakalıyor."
+  },
+  "483cd37a4558c14a": {
+   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier while a window changes.",
+   "text": "İkisi de başlatılamazsa, MDM bir yazılım oluşturucuyla (Windows'ta Microsoft'un, Linux'ta Mesa'nın) çizim yapar, böylece pencere yine de açılır (Uzak Masaüstü, grafik sürücüsü olmayan bir sanal makine). Çalışır, ancak bir pencere değişirken işlemciyi daha meşgul eder."
   },
   "487a0af4191d3496": {
    "source": "<g1><g2>Its site says so</g2></g1><g3>its site says</g3>",
@@ -6997,6 +6997,10 @@
   "6a3e3e5c75482fe1": {
    "source": "Contribute — Mister Download Manager",
    "text": "Katkıda Bulun — Mister Download Manager"
+  },
+  "6a404128afe84a22": {
+   "source": "A freeze whose report shows the window thread inside the graphics driver as it shows a frame (<x1/> or <x2/> for Intel, <x3/> for NVIDIA, <x4/> for AMD, under <x5/>) is the driver's OpenGL stuck, not MDM: on Windows, choose <g6>View → Draw with → Direct3D</g6> (the default) and restart MDM, and update the graphics driver. If <g7>Draw with</g7> says Direct3D didn't start there, the line under it says why; MDM then remembers the freeze and draws with WARP from the next start.",
+   "text": "Raporu, bir kare gösterirken grafik sürücüsünün içindeki pencere iş parçacığını gösteren bir donma (<x1/> veya <x2/> Intel için, <x3/> NVIDIA için, <x4/> AMD için, <x5/> altında) sürücünün OpenGL'inin takılmasıdır, MDM'nin değil: Windows'ta, <g6>Görünüm → Şununla çiz → Direct3D</g6> (varsayılan) seçeneğini seçin ve MDM'yi yeniden başlatın, ayrıca grafik sürücüsünü güncelleyin. Eğer <g7>Şununla çiz</g7> Direct3D'nin orada başlamadığını söylüyorsa, altındaki satır nedenini belirtir; MDM daha sonra donmayı hatırlar ve bir sonraki başlangıçtan itibaren WARP ile çizim yapar."
   },
   "6a658020a3c19e30": {
    "source": "Other systems and files",
@@ -9222,10 +9226,6 @@
    "source": "<g1>Themes</g1><g2>Nine looks, light and dark, from Classic to Aqua, or your own in a text file.</g2>",
    "text": "<g1>Temalar</g1><g2>Klasik'ten Aqua'ya kadar dokuz görünüm, açık ve koyu, veya kendi temanız bir metin dosyasında.</g2>"
   },
-  "8b93f9dffbe6efdb": {
-   "source": "If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds of its own (the time MDM spends loading your list and its icons doesn't count, however slow the computer is just after it starts), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
-   "text": "Bilgisayarınızda Direct3D, Vulkan veya Metal başlatılamazsa (sürücüsü yoksa, bazı sanal makinelerde), veya ilk penceresi 10 saniye içinde açılmazsa (MDM'nin listenizi ve simgelerini yüklemesi için harcadığı süre sayılmaz, bilgisayar başlangıçta ne kadar yavaş olursa olsun), MDM OpenGL ile çizim yapar ve <g1>Görünüm → Şununla çiz</g1> bu durumu ve nedenini belirtir. Tekrar seçmek, bir sonraki başlangıçta tekrar denemesini sağlar."
-  },
   "8b95ee287644fd4f": {
    "source": "Mister Download Manager's link grabber collects a page's links, sorts them into packages, checks which are online and extracts the archives they bring.",
    "text": "Mister Download Manager'ın bağlantı yakalayıcısı bir sayfanın bağlantılarını toplar, bunları paketler halinde sıralar, hangilerinin çevrimiçi olduğunu denetler ve getirdikleri arşivleri çıkarır."
@@ -9985,6 +9985,10 @@
   "9757a8b628979f6a": {
    "source": "The list shows each quality with its size, best first, and the sound alone at the end. Check <g1>Save to</g1> and <g2>File name</g2>, then click <g3>Download Now</g3>, or <g4>Later</g4> to put it in the list for later. The video gets its own row and progress window, like any other download.",
    "text": "Liste, her kaliteyi boyutuyla birlikte, en iyiden başlayarak ve en sonda yalnızca sesi gösterir. <g1>Kaydedileceği yer</g1> ve <g2>Dosya adı</g2> seçeneklerini kontrol edin, ardından <g3>Şimdi İndir</g3> düğmesine tıklayın veya daha sonra indirme listesine eklemek için <g4>Sonra</g4> seçeneğini kullanın. Video, diğer indirmeler gibi kendi satırına ve ilerleme penceresine sahip olur."
+  },
+  "9763111f0a019af1": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your graphics card (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds of its own (the time MDM spends loading your list and its icons doesn't count, however slow the computer is just after it starts), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
+   "text": "Grafik kartınızda Direct3D, Vulkan veya Metal başlatılamazsa (sürücüsü yoksa, bazı sanal makinelerde), veya ilk penceresi kendi başına 10 saniye içinde görünmezse (MDM'nin listenizi ve simgelerini yüklemesi için harcadığı süre sayılmaz, bilgisayar başlangıçta ne kadar yavaş olursa olsun), MDM OpenGL ile çizim yapar ve <g1>Görünüm → Şununla çiz</g1> bunu ve nedenini belirtir. Tekrar seçmek, bir sonraki başlangıçta tekrar denemesini sağlar."
   },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
@@ -11798,6 +11802,10 @@
    "source": "This <g1>website</g1> counts visits with <g2>Statcounter</g2>, which sets a cookie and sees your IP address; it runs only on the website, never in the app.",
    "text": "Bu <g1>web sitesi</g1>, bir çerez ayarlayan ve IP adresinizi gören <g2>Statcounter</g2> ile ziyaretleri sayar; yalnızca web sitesinde çalışır, uygulamada asla çalışmaz."
   },
+  "b21b0cc3853450de": {
+   "source": "On Windows, when OpenGL fails on a card without Direct3D 12, MDM draws with Direct3D on Microsoft's software renderer (WARP) from the next start, and <g1>View → Draw with</g1> says why: OpenGL couldn't start, it is too old to draw MDM (older than 3.0, such as Intel's first HD Graphics, whose OpenGL 2.1 drew MDM's windows as garbage), its first window didn't show within 10 seconds, or MDM froze inside the graphics driver while OpenGL showed a frame (the older Intel HD Graphics and AMD Radeon cards' drivers did). Choosing <g2>OpenGL</g2> there tries it again.",
+   "text": "Windows'ta, Direct3D 12 olmayan bir kartta OpenGL başarısız olursa, MDM bir sonraki başlangıçtan itibaren Microsoft'un yazılım oluşturucusu (WARP) üzerinde Direct3D ile çizim yapar ve <g1>Görünüm → Şununla çiz</g1> nedenini belirtir: OpenGL başlatılamadı, MDM'yi çizmek için çok eski (3.0'dan eski, örneğin Intel'in ilk HD Graphics'i, OpenGL 2.1'i MDM pencerelerini çöp olarak çiziyordu), ilk penceresi 10 saniye içinde görünmedi veya OpenGL bir kare gösterirken MDM grafik sürücüsünün içinde dondu (eski Intel HD Graphics ve AMD Radeon kartlarının sürücüleri bunu yapıyordu). Orada <g2>OpenGL</g2> seçeneğini seçmek tekrar denemesini sağlar."
+  },
   "b23baab9a4561a1d": {
    "source": "Pauses running downloads.",
    "text": "Çalışan indirmeleri duraklatır."
@@ -12845,10 +12853,6 @@
   "c20486b8df788844": {
    "source": "Choose before you add",
    "text": "Eklemeden önce seçin"
-  },
-  "c20a850dfc745632": {
-   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
-   "text": "İkisi de başlatılamazsa MDM, yazılım tabanlı bir çizici kullanır (Windows'ta Microsoft'un, Linux'ta Mesa'nın). Böylece pencere yine de açılır; örneğin Uzak Masaüstü'nde veya grafik sürücüsü olmayan bir sanal makinede. Bu yöntem çalışır, ancak işlemciyi daha fazla meşgul eder."
   },
   "c21ae87a328182aa": {
    "source": "<g1>Link grabber</g1><g2>A page's links gathered, sorted into packages and checked online, then the archives unpacked when they arrive.</g2>",
@@ -16352,7 +16356,7 @@
   },
   "f89c54d71eb189a4": {
    "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and <g1>View → Draw with</g1> says why.",
-   "text": "MDM çalışırken ekran kartı sıfırlanırsa (bir sürücü güncellemesi), MDM kendiliğinden yeniden başlar. 10 dakika içinde iki kez kaybolursa, OpenGL'e geri döner ve <g1>Görünüm → Şununla çiz</g1> nedeni belirtir."
+   "text": "MDM çalışırken grafik kartı sıfırlanırsa (bir sürücü güncellemesi), MDM kendiliğinden tekrar başlar. 10 dakika içinde iki kez kaybolursa, OpenGL'e geri döner ve <g1>Görünüm → Şununla çiz</g1> nedenini belirtir."
   },
   "f8b52274ed125d5f": {
    "source": "Tick <g1>Wake the computer to run this queue</g1> and a sleeping computer is woken a minute before the start time, so the network is back when the queue begins. It stays awake while the queue runs; afterwards its own sleep settings apply again. The line under the option says when the next wake is, or why there can't be one.",

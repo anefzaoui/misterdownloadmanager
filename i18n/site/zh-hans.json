@@ -838,10 +838,6 @@
    "source": "The interface is in every language Windows 11 offers. The catalogs in <g1><x2/></g1> were made by machine translation, and each row marked <x3/> waits for a native speaker:",
    "text": "界面支持 Windows 11 提供的所有语言。<g1><x2/></g1>中的语言目录由机器翻译生成，每行标记为<x3/>的内容都等待母语人士审校："
   },
-  "0c4e47b7b5c8f9f5": {
-   "source": "A freeze whose report shows the window thread inside the graphics driver as it shows a frame (<x1/> or <x2/> for Intel, <x3/> for NVIDIA, <x4/> for AMD, under <x5/>) is the driver's OpenGL stuck, not MDM: on Windows, choose <g6>View → Draw with → Direct3D</g6> (the default) and restart MDM, and update the graphics driver. If <g7>Draw with</g7> says Direct3D didn't start there, the line under it says why.",
-   "text": "如果冻结报告显示窗口线程在图形驱动程序内部，正在显示帧（Intel 为<x1/>或<x2/>，NVIDIA 为<x3/>，AMD 为<x4/>，在<x5/>下），则表明是驱动程序的 OpenGL 卡住，而非 MDM：在 Windows 上，选择<g6>视图 → 绘制方式 → Direct3D</g6>（默认）并重启 MDM，然后更新图形驱动程序。如果<g7>绘制方式</g7>显示 Direct3D 未在此处启动，其下方会显示原因。"
-  },
   "0c6ce890ecccf13e": {
    "source": "For an internet plan with a data cap, select <g1>Download limits</g1> on the left:",
    "text": "对于有数据上限的互联网套餐，请在左侧选择<g1>下载限制</g1>："
@@ -4572,7 +4568,7 @@
   },
   "44502a7e800ed659": {
    "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you. On Linux it makes MDM your desktop's default app for them; on macOS, their default app (Finder offers MDM in <g5>Open With</g5> for <x6/> files either way, and a double-click opens them in MDM when no other app is their default).",
-   "text": "如果 torrent 因这些限制之一而停止，其事件日志中会显示相关信息，并且 MDM 启动时不会再次共享。提高或关闭限制以再次共享。- <g1>将所有 torrent 的上传限制为</g1> — 默认关闭。限制所有 torrent 在下载和共享时向其他对等点发送的总数据量。torrent 进度窗口中的上传限制在此基础上生效。- <g2>使用 Mister Download Manager 打开磁力链接和 .torrent 文件</g2> — 之后 Windows 会在您的浏览器中用 MDM 打开磁力链接，并在资源管理器中用 MDM 打开 <x3/> 文件。这仅适用于您的 Windows 账户；您在 Windows 的<g4>打开方式</g4>中选择的程序仍将优先。安装程序可以为您启用此功能。在 Linux 上，它将 MDM 设置为这些文件的桌面默认应用程序；在 macOS 上，它将 MDM 设置为这些文件的默认应用程序（无论如何，Finder 都会在<g5>打开方式</g5>中为 <x6/> 文件提供 MDM，并且在没有其他应用程序是其默认应用程序时，双击会用 MDM 打开它们）。"
+   "text": "如果 torrent 因这些限制之一而停止，其事件日志中会显示相关信息，并且 MDM 启动时不会再次共享。提高或关闭限制以再次共享。 - <g1>将所有 torrent 的上传限制为</g1> — 默认关闭。限制所有 torrent 在下载和共享时向其他对等点发送的总量。torrent 进度窗口中的上传限制在此基础上生效。 - <g2>使用 Mister Download Manager 打开磁力链接和 .torrent 文件</g2> — 之后 Windows 会在您的浏览器中用 MDM 打开磁力链接，并在资源管理器中用 MDM 打开 <x3/> 文件。这仅适用于您的 Windows 账户；您在 Windows 的<g4>打开方式</g4>中选择的程序仍将优先。安装程序可以为您启用此功能。在 Linux 上，这会使 MDM 成为您桌面处理这些文件的默认应用程序；在 macOS 上，MDM 会成为它们的默认应用程序（无论如何，Finder 都会在<g5>打开方式</g5>中为 <x6/> 文件提供 MDM，并且当没有其他应用程序是其默认应用程序时，双击会用 MDM 打开它们）。"
   },
   "445e6378c12f1e16": {
    "source": "<g1>Image gallery support:</g1> download whole galleries (Flickr, Imgur, DeviantArt and more) with gallery-dl.",
@@ -4793,6 +4789,10 @@
   "48389b303ae7a75a": {
    "source": "The extension now installs from your browser's store, updates itself, and catches more of what you download.",
    "text": "现在，扩展程序可从您的浏览器商店安装，自动更新，并能捕获更多您下载的内容。"
+  },
+  "483cd37a4558c14a": {
+   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier while a window changes.",
+   "text": "如果两者都无法启动，MDM 将使用软件渲染器（Windows 上是 Microsoft 的，Linux 上是 Mesa 的）绘制，这样窗口仍然可以打开（远程桌面，没有图形驱动程序的虚拟机）。它能工作，但在窗口变化时会使处理器更忙。"
   },
   "487a0af4191d3496": {
    "source": "<g1><g2>Its site says so</g2></g1><g3>its site says</g3>",
@@ -6993,6 +6993,10 @@
   "6a3e3e5c75482fe1": {
    "source": "Contribute — Mister Download Manager",
    "text": "贡献 — Mister Download Manager"
+  },
+  "6a404128afe84a22": {
+   "source": "A freeze whose report shows the window thread inside the graphics driver as it shows a frame (<x1/> or <x2/> for Intel, <x3/> for NVIDIA, <x4/> for AMD, under <x5/>) is the driver's OpenGL stuck, not MDM: on Windows, choose <g6>View → Draw with → Direct3D</g6> (the default) and restart MDM, and update the graphics driver. If <g7>Draw with</g7> says Direct3D didn't start there, the line under it says why; MDM then remembers the freeze and draws with WARP from the next start.",
+   "text": "如果报告显示窗口线程在图形驱动程序内部显示帧时卡住（英特尔为 <x1/> 或 <x2/>，NVIDIA 为 <x3/>，AMD 为 <x4/>，在 <x5/> 下），则是驱动程序的 OpenGL 卡住，而不是 MDM：在 Windows 上，选择“<g6>视图 → 绘制方式 → Direct3D</g6>”（默认）并重新启动 MDM，然后更新图形驱动程序。如果“<g7>绘制方式</g7>”显示 Direct3D 未在此处启动，其下方的行会说明原因；MDM 随后会记住卡顿并在下次启动时使用 WARP 绘制。"
   },
   "6a658020a3c19e30": {
    "source": "Other systems and files",
@@ -9218,10 +9222,6 @@
    "source": "<g1>Themes</g1><g2>Nine looks, light and dark, from Classic to Aqua, or your own in a text file.</g2>",
    "text": "<g1>主题</g1><g2>九种外观，包括浅色和深色模式，从“经典”到“Aqua”，或在文本文件中自定义。</g2>"
   },
-  "8b93f9dffbe6efdb": {
-   "source": "If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds of its own (the time MDM spends loading your list and its icons doesn't count, however slow the computer is just after it starts), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
-   "text": "如果您的电脑无法启动 Direct3D、Vulkan 或 Metal（缺少驱动程序，或在某些虚拟机中），或者 MDM 启动后 10 秒内（不计入 MDM 加载列表和图标的时间，即使电脑启动后运行缓慢）其首个窗口没有显示，MDM 将使用 OpenGL 绘制，并且<g1>视图 → 绘制方式</g1>会显示此信息及原因。再次选择它会在下次启动时再次尝试。"
-  },
   "8b95ee287644fd4f": {
    "source": "Mister Download Manager's link grabber collects a page's links, sorts them into packages, checks which are online and extracts the archives they bring.",
    "text": "Mister Download Manager 的链接抓取器可以收集页面上的链接，将其分类打包，检查哪些在线，并提取它们带来的压缩包。"
@@ -9981,6 +9981,10 @@
   "9757a8b628979f6a": {
    "source": "The list shows each quality with its size, best first, and the sound alone at the end. Check <g1>Save to</g1> and <g2>File name</g2>, then click <g3>Download Now</g3>, or <g4>Later</g4> to put it in the list for later. The video gets its own row and progress window, like any other download.",
    "text": "列表会显示各种画质及其大小，最佳画质排在最前面，纯音频排在最后。检查<g1>保存到</g1>和<g2>文件名</g2>，然后点击<g3>立即下载</g3>，或点击<g4>稍后</g4>将其添加到稍后下载列表。视频会像其他下载一样，拥有独立的行和进度窗口。"
+  },
+  "9763111f0a019af1": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your graphics card (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds of its own (the time MDM spends loading your list and its icons doesn't count, however slow the computer is just after it starts), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
+   "text": "如果您的显卡无法启动 Direct3D、Vulkan 或 Metal（例如没有驱动程序，或在某些虚拟机中），或者 MDM 自己的第一个窗口在 10 秒内没有显示（MDM 加载列表和图标的时间不计入，无论电脑启动后有多慢），MDM 将使用 OpenGL 绘制，并且“<g1>视图 → 绘制方式</g1>”会显示原因。再次选择它会在下次启动时再次尝试。"
   },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
@@ -11794,6 +11798,10 @@
    "source": "This <g1>website</g1> counts visits with <g2>Statcounter</g2>, which sets a cookie and sees your IP address; it runs only on the website, never in the app.",
    "text": "本<g1>网站</g1>使用<g2>Statcounter</g2>统计访问量，它会设置一个 cookie 并查看您的 IP 地址；它只在网站上运行，绝不会在应用中运行。"
   },
+  "b21b0cc3853450de": {
+   "source": "On Windows, when OpenGL fails on a card without Direct3D 12, MDM draws with Direct3D on Microsoft's software renderer (WARP) from the next start, and <g1>View → Draw with</g1> says why: OpenGL couldn't start, it is too old to draw MDM (older than 3.0, such as Intel's first HD Graphics, whose OpenGL 2.1 drew MDM's windows as garbage), its first window didn't show within 10 seconds, or MDM froze inside the graphics driver while OpenGL showed a frame (the older Intel HD Graphics and AMD Radeon cards' drivers did). Choosing <g2>OpenGL</g2> there tries it again.",
+   "text": "在 Windows 上，当 OpenGL 在没有 Direct3D 12 的显卡上失败时，MDM 会在下次启动时使用 Microsoft 的软件渲染器 (WARP) 上的 Direct3D 绘制，并且“<g1>视图 → 绘制方式</g1>”会显示原因：OpenGL 无法启动，它太旧无法绘制 MDM（版本低于 3.0，例如英特尔的第一代 HD Graphics，其 OpenGL 2.1 会将 MDM 窗口绘制成乱码），其第一个窗口在 10 秒内没有显示，或者 MDM 在 OpenGL 显示帧时卡在图形驱动程序内部（较旧的英特尔 HD Graphics 和 AMD Radeon 显卡驱动程序曾出现此问题）。在此处选择“<g2>OpenGL</g2>”会再次尝试。"
+  },
   "b23baab9a4561a1d": {
    "source": "Pauses running downloads.",
    "text": "暂停正在运行的下载。"
@@ -12841,10 +12849,6 @@
   "c20486b8df788844": {
    "source": "Choose before you add",
    "text": "添加前选择"
-  },
-  "c20a850dfc745632": {
-   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
-   "text": "如果两者都无法启动，MDM 会使用软件渲染器绘制（Windows 上使用 Microsoft 的软件渲染器，Linux 上使用 Mesa 的软件渲染器），这样窗口仍能打开（例如在远程桌面或没有图形驱动程序的虚拟机中）。这种方式可以正常工作，但会增加处理器负担。"
   },
   "c21ae87a328182aa": {
    "source": "<g1>Link grabber</g1><g2>A page's links gathered, sorted into packages and checked online, then the archives unpacked when they arrive.</g2>",
@@ -16348,7 +16352,7 @@
   },
   "f89c54d71eb189a4": {
    "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and <g1>View → Draw with</g1> says why.",
-   "text": "如果 MDM 运行时显卡被重置（驱动程序更新），MDM 会自行重新启动。如果在 10 分钟内两次丢失，它会回退到 OpenGL，并且<g1>视图 → 绘制方式</g1>会说明原因。"
+   "text": "如果 MDM 运行时显卡被重置（例如驱动程序更新），MDM 会自行重新启动。如果在 10 分钟内两次丢失，它会回到 OpenGL，并且“<g1>视图 → 绘制方式</g1>”会显示原因。"
   },
   "f8b52274ed125d5f": {
    "source": "Tick <g1>Wake the computer to run this queue</g1> and a sleeping computer is woken a minute before the start time, so the network is back when the queue begins. It stays awake while the queue runs; afterwards its own sleep settings apply again. The line under the option says when the next wake is, or why there can't be one.",

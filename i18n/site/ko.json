@@ -838,10 +838,6 @@
    "source": "The interface is in every language Windows 11 offers. The catalogs in <g1><x2/></g1> were made by machine translation, and each row marked <x3/> waits for a native speaker:",
    "text": "인터페이스는 Windows 11이 제공하는 모든 언어로 제공됩니다. <g1><x2/></g1>의 카탈로그는 기계 번역으로 만들어졌으며, <x3/>로 표시된 각 행은 원어민을 기다립니다."
   },
-  "0c4e47b7b5c8f9f5": {
-   "source": "A freeze whose report shows the window thread inside the graphics driver as it shows a frame (<x1/> or <x2/> for Intel, <x3/> for NVIDIA, <x4/> for AMD, under <x5/>) is the driver's OpenGL stuck, not MDM: on Windows, choose <g6>View → Draw with → Direct3D</g6> (the default) and restart MDM, and update the graphics driver. If <g7>Draw with</g7> says Direct3D didn't start there, the line under it says why.",
-   "text": "그래픽 드라이버 내부의 창 스레드가 프레임을 표시하는 동안(Intel의 경우 <x1/> 또는 <x2/>, NVIDIA의 경우 <x3/>, AMD의 경우 <x4/>, <x5/> 아래) 멈춤 보고서가 나타나면, 이는 MDM이 아닌 드라이버의 OpenGL이 멈춘 것입니다. Windows에서는 <g6>보기 → 다음으로 그리기 → Direct3D</g6>(기본값)를 선택하고 MDM을 다시 시작한 다음 그래픽 드라이버를 업데이트하세요. <g7>다음으로 그리기</g7> 메뉴에 Direct3D가 시작되지 않았다고 표시되면, 그 아래 줄에 이유가 나옵니다."
-  },
   "0c6ce890ecccf13e": {
    "source": "For an internet plan with a data cap, select <g1>Download limits</g1> on the left:",
    "text": "데이터 사용량이 제한된 인터넷 요금제를 사용하는 경우 왼쪽에서 <g1>다운로드 제한</g1>을 선택하세요:"
@@ -1769,6 +1765,10 @@
   "1b0b5fa5425d1c30": {
    "source": "A window larger than the screen at a big interface size scrolls.",
    "text": "인터페이스 크기가 클 때 화면보다 큰 창은 스크롤됩니다."
+  },
+  "1b0dc8717e516ad4": {
+   "source": "MDM doesn't do this alone, and doesn't pretend to. <g1>yt-dlp</g1> reads the page and downloads the video. <g2>ffmpeg</g2> joins the picture and the sound when a site keeps them apart, which most sites do for their higher qualities. MDM offers both on its first start and downloads them from their official releases, checked against what their publishers sign before it uses them. On Linux and macOS MDM uses the system's ffmpeg.",
+   "text": "MDM은 이 기능을 단독으로 수행하지 않으며, 그렇게 가장하지도 않습니다. <g1>yt-dlp</g1>는 페이지를 읽고 비디오를 다운로드합니다. <g2>ffmpeg</g2>는 대부분의 사이트에서 고품질 비디오를 위해 영상과 음성을 분리하여 제공할 때 이를 합쳐줍니다. MDM은 처음 시작할 때 두 도구를 모두 제공하며, 공식 릴리스에서 다운로드하고 게시자가 서명한 내용을 확인한 후에 사용합니다. Linux 및 macOS에서는 MDM이 시스템의 ffmpeg을 사용합니다."
   },
   "1b0e944da20951df": {
    "source": "Faster than IDM. Timed to the millisecond.",
@@ -4512,7 +4512,7 @@
   },
   "43510d0cf7beac55": {
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep and the first minute after the computer wakes, while its disk, network and screen come back: a stall then is written to the log, and reported only if it lasts past that minute. It times both parts of a frame: what MDM handles (the commands that come in, the clock of downloads, queues and the Scheduler), which runs minimized too, and the drawing; never the wait between frames. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). Each report also names what the frame was doing when it stopped (the tray icon, the downloads' progress, drawing the main window). When the window thread is already back in the event loop, or in the pause after a frame of a hidden window, by the time the dump is written, the freeze was over before the snapshot, so its stack can't explain it; those reports say so and share the signature <x3/>. macOS doesn't measure it yet. The monitor then writes a <g4>minidump</g4> of every thread from outside, through <x5/> and <x6/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>문제 포착.</g1> MDM이 충돌(Windows 예외, Linux 신호, macOS Mach 예외)하거나, 패닉 상태가 되거나, 멈추면 모니터에 덤프를 요청합니다. 멈춤은 창이 8초 이상 실행되는 프레임으로, 감시 스레드가 절전 시간과 컴퓨터가 깨어난 후 첫 1분 동안 디스크, 네트워크, 화면이 복구되는 동안 무시하고 감지합니다. 이때 정지 상태가 로그에 기록되며, 1분 이상 지속될 경우에만 보고됩니다. 프레임의 두 부분 모두 시간을 측정합니다. MDM이 처리하는 부분(들어오는 명령, 다운로드, 대기열 및 예약 관리자의 시계)은 최소화된 상태에서도 실행되며, 그리기 부분도 측정합니다. 프레임 사이의 대기 시간은 측정하지 않습니다. 감시 스레드는 또한 창 스레드가 그동안 얼마나 많은 프로세서 시간을 얻었는지 측정하며, 보고서는 그 의미를 설명합니다. 즉, 계속 실행되었는지(루프), 잠금 또는 I/O에서 대기했는지(교착 상태), 아니면 일반 코드에서 거의 실행되지 않았는지(컴퓨터가 MDM을 실행하기에 너무 바쁘거나 디스크에서 로드하는 데 느림, MDM 버그가 아닐 가능성이 높음)를 나타냅니다(이들은 <x2/>라는 하나의 서명을 공유합니다). 각 보고서는 또한 멈췄을 때 프레임이 무엇을 하고 있었는지(트레이 아이콘, 다운로드 진행 상황, 메인 창 그리기)를 명시합니다. 덤프가 기록될 때 창 스레드가 이미 이벤트 루프로 돌아왔거나 숨겨진 창의 프레임 후 일시 중지 상태였다면, 스냅샷 이전에 멈춤이 끝났으므로 스택으로 설명할 수 없습니다. 이러한 보고서는 이를 명시하고 <x3/> 서명을 공유합니다. macOS는 아직 이를 측정하지 않습니다. 모니터는 <x5/> 및 <x6/>를 통해 외부에서 모든 스레드의 <g4>미니덤프</g4>를 작성합니다. 충돌한 프로세스는 자체 덤프를 작성하지 않으며, 이는 Firefox, Crashpad 및 Sentry도 마찬가지입니다."
+   "text": "<g1>문제 포착.</g1> MDM이 충돌(Windows 예외, Linux 신호, macOS Mach 예외), 패닉 또는 멈춤 현상을 겪으면 모니터에 덤프를 요청합니다. 멈춤 현상은 창이 8초 이상 응답하지 않는 상태를 말하며, 이는 컴퓨터가 절전 모드에서 깨어난 후 첫 1분 동안 디스크, 네트워크, 화면이 복구되는 시간을 무시하는 감시 스레드에 의해 감지됩니다. 멈춤 현상이 발생하면 로그에 기록되고, 1분 이상 지속될 경우에만 보고됩니다. 감시 스레드는 프레임의 두 가지 부분의 시간을 측정합니다. MDM이 처리하는 부분(들어오는 명령, 다운로드, 대기열 및 예약 관리자의 시계)은 최소화된 상태에서도 실행되며, 그 다음은 그리는 부분입니다. 프레임 사이의 대기 시간은 측정하지 않습니다. 감시 스레드는 또한 창 스레드가 그동안 얼마나 많은 프로세서 시간을 얻었는지 측정하며, 보고서에는 그 의미가 명시됩니다. 즉, 계속 실행되었는지(루프), 잠금 또는 I/O에서 대기했는지(교착 상태), 아니면 일반 코드에서 거의 실행되지 않았는지(컴퓨터가 MDM을 실행하기에 너무 바쁘거나 디스크에서 로드하는 데 느린 경우, MDM 버그가 아닐 가능성이 높음 - 이들은 <x2/>라는 하나의 서명을 공유함)를 나타냅니다. 각 보고서에는 멈췄을 때 프레임이 무엇을 하고 있었는지도 명시됩니다(트레이 아이콘, 다운로드 진행 상황, 메인 창 그리기). 덤프가 기록될 때 창 스레드가 이미 이벤트 루프로 돌아왔거나 숨겨진 창의 프레임 후 일시 중지 상태에 있었다면, 스냅샷 이전에 멈춤 현상이 끝난 것이므로 스택으로 설명할 수 없습니다. 이러한 보고서에는 그렇게 명시되어 있으며 <x3/> 서명을 공유합니다. macOS에서는 아직 측정하지 않습니다. 모니터는 <x5/> 및 <x6/>를 통해 외부에서 모든 스레드의 <g4>미니덤프</g4>를 작성합니다. 충돌한 프로세스는 자체 덤프를 작성하지 않으며, 이는 Firefox, Crashpad 및 Sentry도 동일하게 작동하는 방식입니다."
   },
   "436bac2c4f3d3f4c": {
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
@@ -4572,7 +4572,7 @@
   },
   "44502a7e800ed659": {
    "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you. On Linux it makes MDM your desktop's default app for them; on macOS, their default app (Finder offers MDM in <g5>Open With</g5> for <x6/> files either way, and a double-click opens them in MDM when no other app is their default).",
-   "text": "이러한 제한으로 중지된 토렌트는 이벤트 로그에 해당 내용이 표시되며, MDM 시작 시 다시 공유되지 않습니다. 다시 공유하려면 제한을 높이거나 해제하세요. - <g1>모든 토렌트의 업로드 제한</g1> — 기본적으로 해제되어 있습니다. 모든 토렌트가 다운로드 및 공유 중 다른 피어에게 보내는 총량을 제한합니다. 토렌트 진행 창에 있는 토렌트 자체의 업로드 제한은 이 제한에 추가로 적용됩니다. - <g2>마그넷 링크 및 .torrent 파일을 Mister Download Manager로 열기</g2> — Windows에서 브라우저의 마그넷 링크와 탐색기의 <x3/> 파일을 MDM으로 엽니다. 이 설정은 Windows 계정에만 적용되며, Windows의 <g4>다른 이름으로 열기</g4>에서 선택한 프로그램이 우선합니다. 설치 시 이 기능을 켤 수 있습니다. Linux에서는 MDM을 해당 파일의 기본 데스크톱 앱으로 설정하고, macOS에서는 기본 앱으로 설정합니다 (Finder는 <x6/> 파일에 대해 <g5>다른 이름으로 열기</g5>에서 MDM을 제공하며, 다른 앱이 기본이 아닐 경우 더블 클릭하면 MDM에서 열립니다)."
+   "text": "이러한 제한으로 중지된 토렌트는 이벤트 로그에 해당 내용이 표시되며, MDM 시작 시 다시 공유되지 않습니다. 다시 공유하려면 제한을 높이거나 끄세요. - <g1>모든 토렌트의 업로드 제한</g1> — 기본적으로 꺼져 있습니다. 모든 토렌트가 다운로드 및 공유하는 동안 다른 피어에게 보내는 총량을 제한합니다. 토렌트 자체의 업로드 제한(진행 창에 있음)은 이 제한 위에 적용됩니다. - <g2>마그넷 링크 및 .torrent 파일을 Mister Download Manager로 열기</g2> — Windows에서 브라우저의 마그넷 링크와 탐색기의 <x3/> 파일을 MDM으로 엽니다. 이 설정은 Windows 계정에만 적용되며, Windows의 <g4>다른 이름으로 열기</g4>에서 선택한 프로그램이 우선합니다. 설치 시 이 설정을 켤 수 있습니다. Linux에서는 MDM을 데스크톱의 기본 앱으로 만듭니다. macOS에서는 기본 앱으로 설정합니다(Finder는 <x6/> 파일에 대해 <g5>다른 이름으로 열기</g5>에서 MDM을 제공하며, 다른 앱이 기본이 아닐 경우 더블 클릭하면 MDM에서 열립니다)."
   },
   "445e6378c12f1e16": {
    "source": "<g1>Image gallery support:</g1> download whole galleries (Flickr, Imgur, DeviantArt and more) with gallery-dl.",
@@ -4793,6 +4793,10 @@
   "48389b303ae7a75a": {
    "source": "The extension now installs from your browser's store, updates itself, and catches more of what you download.",
    "text": "이제 확장 프로그램이 브라우저 스토어에서 설치되고, 자동으로 업데이트되며, 더 많은 다운로드를 감지합니다."
+  },
+  "483cd37a4558c14a": {
+   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier while a window changes.",
+   "text": "둘 다 시작할 수 없으면 MDM은 소프트웨어 렌더러(Windows에서는 Microsoft, Linux에서는 Mesa)로 그리므로 창이 계속 열립니다(원격 데스크톱, 그래픽 드라이버 없는 가상 머신). 작동은 하지만 창이 변경될 때 프로세서가 더 바빠집니다."
   },
   "487a0af4191d3496": {
    "source": "<g1><g2>Its site says so</g2></g1><g3>its site says</g3>",
@@ -6993,6 +6997,10 @@
   "6a3e3e5c75482fe1": {
    "source": "Contribute — Mister Download Manager",
    "text": "Mister Download Manager 기여"
+  },
+  "6a404128afe84a22": {
+   "source": "A freeze whose report shows the window thread inside the graphics driver as it shows a frame (<x1/> or <x2/> for Intel, <x3/> for NVIDIA, <x4/> for AMD, under <x5/>) is the driver's OpenGL stuck, not MDM: on Windows, choose <g6>View → Draw with → Direct3D</g6> (the default) and restart MDM, and update the graphics driver. If <g7>Draw with</g7> says Direct3D didn't start there, the line under it says why; MDM then remembers the freeze and draws with WARP from the next start.",
+   "text": "보고서에 그래픽 드라이버 내의 창 스레드가 프레임을 표시하는 동안 멈춘 것으로 나타나면(<x1/> 또는 Intel의 경우 <x2/>, NVIDIA의 경우 <x3/>, AMD의 경우 <x4/>, <x5/> 아래) MDM이 아닌 드라이버의 OpenGL이 멈춘 것입니다. Windows에서는 <g6>보기 → 다음으로 그리기 → Direct3D</g6>(기본값)를 선택하고 MDM을 다시 시작한 다음 그래픽 드라이버를 업데이트하세요. <g7>다음으로 그리기</g7>에 Direct3D가 시작되지 않았다고 표시되면 그 아래 줄에 이유가 표시됩니다. 그러면 MDM은 멈춤을 기억하고 다음 시작부터 WARP로 그립니다."
   },
   "6a658020a3c19e30": {
    "source": "Other systems and files",
@@ -9218,10 +9226,6 @@
    "source": "<g1>Themes</g1><g2>Nine looks, light and dark, from Classic to Aqua, or your own in a text file.</g2>",
    "text": "<g1>테마</g1><g2>클래식부터 Aqua까지 9가지 밝고 어두운 테마 또는 텍스트 파일로 자신만의 테마를 만들 수 있습니다.</g2>"
   },
-  "8b93f9dffbe6efdb": {
-   "source": "If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds of its own (the time MDM spends loading your list and its icons doesn't count, however slow the computer is just after it starts), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
-   "text": "컴퓨터에서 Direct3D, Vulkan 또는 Metal을 시작할 수 없거나(해당 드라이버 없음, 일부 가상 머신), 첫 번째 창이 10초 이내에 나타나지 않으면(MDM이 목록과 아이콘을 로드하는 시간은 컴퓨터 시작 직후 느리더라도 포함되지 않음), MDM은 OpenGL로 그립니다. <g1>보기 → 다음으로 그리기</g1> 메뉴에 이 내용과 이유가 표시됩니다. 다시 선택하면 다음 시작 시 다시 시도합니다."
-  },
   "8b95ee287644fd4f": {
    "source": "Mister Download Manager's link grabber collects a page's links, sorts them into packages, checks which are online and extracts the archives they bring.",
    "text": "Mister Download Manager의 링크 그래버는 페이지의 링크를 수집하고, 패키지로 분류하며, 온라인 상태를 확인하고, 가져온 압축 파일을 추출합니다."
@@ -9981,6 +9985,10 @@
   "9757a8b628979f6a": {
    "source": "The list shows each quality with its size, best first, and the sound alone at the end. Check <g1>Save to</g1> and <g2>File name</g2>, then click <g3>Download Now</g3>, or <g4>Later</g4> to put it in the list for later. The video gets its own row and progress window, like any other download.",
    "text": "목록에는 각 화질과 크기가 가장 좋은 것부터 순서대로 표시되며, 맨 끝에는 소리만 있는 옵션이 있습니다. <g1>저장 위치</g1>와 <g2>파일 이름</g2>을 확인한 다음 <g3>지금 다운로드</g3>를 클릭하거나, 나중에 다운로드하려면 <g4>나중에</g4>를 클릭하여 목록에 추가합니다. 비디오는 다른 다운로드와 마찬가지로 자체 행과 진행 창을 갖게 됩니다."
+  },
+  "9763111f0a019af1": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your graphics card (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds of its own (the time MDM spends loading your list and its icons doesn't count, however slow the computer is just after it starts), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
+   "text": "그래픽 카드에서 Direct3D, Vulkan 또는 Metal을 시작할 수 없거나(드라이버 없음, 일부 가상 머신), 자체 첫 창이 10초 이내에 나타나지 않으면(MDM이 목록과 아이콘을 로드하는 시간은 포함되지 않으며, 컴퓨터 시작 직후 느려지는 시간도 포함되지 않음), MDM은 OpenGL로 그리며, <g1>보기 → 다음으로 그리기</g1>에 그 이유가 표시됩니다. 다시 선택하면 다음 시작 시 다시 시도합니다."
   },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
@@ -11794,6 +11802,10 @@
    "source": "This <g1>website</g1> counts visits with <g2>Statcounter</g2>, which sets a cookie and sees your IP address; it runs only on the website, never in the app.",
    "text": "이 <g1>웹사이트</g1>는 <g2>Statcounter</g2>를 사용하여 방문 횟수를 집계하며, Statcounter는 쿠키를 설정하고 IP 주소를 확인합니다. 이는 웹사이트에서만 실행되며 앱에서는 실행되지 않습니다."
   },
+  "b21b0cc3853450de": {
+   "source": "On Windows, when OpenGL fails on a card without Direct3D 12, MDM draws with Direct3D on Microsoft's software renderer (WARP) from the next start, and <g1>View → Draw with</g1> says why: OpenGL couldn't start, it is too old to draw MDM (older than 3.0, such as Intel's first HD Graphics, whose OpenGL 2.1 drew MDM's windows as garbage), its first window didn't show within 10 seconds, or MDM froze inside the graphics driver while OpenGL showed a frame (the older Intel HD Graphics and AMD Radeon cards' drivers did). Choosing <g2>OpenGL</g2> there tries it again.",
+   "text": "Windows에서 Direct3D 12가 없는 카드에서 OpenGL이 실패하면 MDM은 다음 시작부터 Microsoft의 소프트웨어 렌더러(WARP)에서 Direct3D로 그리며, <g1>보기 → 다음으로 그리기</g1>에 그 이유가 표시됩니다. OpenGL을 시작할 수 없거나, MDM을 그리기에는 너무 오래되었거나(3.0 이전 버전, 예를 들어 MDM 창을 제대로 그리지 못했던 Intel의 첫 HD Graphics의 OpenGL 2.1), 첫 창이 10초 이내에 나타나지 않았거나, OpenGL이 프레임을 표시하는 동안 MDM이 그래픽 드라이버 내에서 멈췄기 때문입니다(오래된 Intel HD Graphics 및 AMD Radeon 카드 드라이버에서 발생). 거기서 <g2>OpenGL</g2>을 선택하면 다시 시도합니다."
+  },
   "b23baab9a4561a1d": {
    "source": "Pauses running downloads.",
    "text": "실행 중인 다운로드를 일시 중지합니다."
@@ -12841,10 +12853,6 @@
   "c20486b8df788844": {
    "source": "Choose before you add",
    "text": "추가하기 전에 선택하세요"
-  },
-  "c20a850dfc745632": {
-   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
-   "text": "둘 다 시작할 수 없으면 MDM은 소프트웨어 렌더러(Windows에서는 Microsoft, Linux에서는 Mesa)로 창을 그립니다. 따라서 원격 데스크톱이나 그래픽 드라이버가 없는 가상 머신에서도 창이 열립니다. 사용할 수는 있지만 프로세서에 부하가 더 많이 걸립니다."
   },
   "c21ae87a328182aa": {
    "source": "<g1>Link grabber</g1><g2>A page's links gathered, sorted into packages and checked online, then the archives unpacked when they arrive.</g2>",
@@ -16348,7 +16356,7 @@
   },
   "f89c54d71eb189a4": {
    "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and <g1>View → Draw with</g1> says why.",
-   "text": "MDM 실행 중에 그래픽 카드가 재설정되면 (드라이버 업데이트 등), MDM은 자동으로 다시 시작됩니다. 10분 안에 두 번 손실되면 OpenGL로 돌아가며, <g1>보기 → 다음으로 그리기</g1>에서 이유를 확인할 수 있습니다."
+   "text": "MDM 실행 중에 그래픽 카드가 재설정되면(드라이버 업데이트), MDM은 자동으로 다시 시작합니다. 10분 안에 두 번 손실되면 OpenGL로 돌아가며, <g1>보기 → 다음으로 그리기</g1>에 그 이유가 표시됩니다."
   },
   "f8b52274ed125d5f": {
    "source": "Tick <g1>Wake the computer to run this queue</g1> and a sleeping computer is woken a minute before the start time, so the network is back when the queue begins. It stays awake while the queue runs; afterwards its own sleep settings apply again. The line under the option says when the next wake is, or why there can't be one.",

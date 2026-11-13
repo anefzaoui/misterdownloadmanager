@@ -838,10 +838,6 @@
    "source": "The interface is in every language Windows 11 offers. The catalogs in <g1><x2/></g1> were made by machine translation, and each row marked <x3/> waits for a native speaker:",
    "text": "インターフェースはWindows 11で提供されるすべての言語に対応しています。<g1><x2/></g1>の翻訳カタログは機械翻訳で作成されており、<x3/>の印が付いた各行はネイティブスピーカーによる確認を待っています。"
   },
-  "0c4e47b7b5c8f9f5": {
-   "source": "A freeze whose report shows the window thread inside the graphics driver as it shows a frame (<x1/> or <x2/> for Intel, <x3/> for NVIDIA, <x4/> for AMD, under <x5/>) is the driver's OpenGL stuck, not MDM: on Windows, choose <g6>View → Draw with → Direct3D</g6> (the default) and restart MDM, and update the graphics driver. If <g7>Draw with</g7> says Direct3D didn't start there, the line under it says why.",
-   "text": "レポートで、グラフィック ドライバー内でウィンドウ スレッドがフレームを表示しているときにフリーズしていることが示されている場合 (Intel の場合は <x1/> または <x2/>、NVIDIA の場合は <x3/>、AMD の場合は <x4/>、<x5/> の下)、それは MDM ではなくドライバーの OpenGL がスタックしている状態です。Windows では、<g6>表示 → 描画方法 → Direct3D</g6> (既定) を選択して MDM を再起動し、グラフィック ドライバーを更新してください。<g7>描画方法</g7> に Direct3D が起動しなかったと表示されている場合、その下の行に理由が示されます。"
-  },
   "0c6ce890ecccf13e": {
    "source": "For an internet plan with a data cap, select <g1>Download limits</g1> on the left:",
    "text": "データ上限のあるインターネットプランの場合、左側の<g1>ダウンロード制限</g1>を選択します。"
@@ -4576,7 +4572,7 @@
   },
   "44502a7e800ed659": {
    "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you. On Linux it makes MDM your desktop's default app for them; on macOS, their default app (Finder offers MDM in <g5>Open With</g5> for <x6/> files either way, and a double-click opens them in MDM when no other app is their default).",
-   "text": "これらのいずれかによって停止されたトレントは、イベント ログにその旨が表示され、MDM の起動時に再度共有されることはありません。再度共有するには、制限を上げるかオフにしてください。 - <g1>すべてのトレントのアップロードを次の値に制限する:</g1> — 既定ではオフです。すべてのトレントがダウンロード中および共有中に他のピアに送信する合計量を制限します。トレント自身のアップロード制限は、その進行状況ウィンドウで設定され、この制限に加えて適用されます。 - <g2>マグネット リンクと .torrent ファイルを Mister Download Manager で開く</g2> — これにより、Windows はブラウザーでマグネット リンクを、エクスプローラーで <x3/> ファイルを MDM で開きます。これは Windows アカウントのみに適用されます。Windows の <g4>プログラムから開く</g4> で選択したプログラムが優先されます。セットアップでこの設定を有効にできます。Linux では、MDM がデスクトップの既定のアプリになります。macOS では、それらの既定のアプリになります (Finder は、<x6/> ファイルに対して <g5>プログラムから開く</g5> で MDM を提供し、他のアプリが既定でない場合はダブルクリックで MDM で開きます)。"
+   "text": "これらのいずれかによって停止されたトレントは、イベント ログにその旨が表示され、MDM の起動時に再び共有されることはありません。再度共有するには、制限を上げるかオフにしてください。- <g1>すべてのトレントのアップロードを次の値に制限する:</g1> — 既定ではオフです。ダウンロード中および共有中に、すべてのトレントが他のピアに送信する合計量を制限します。トレントの進行状況ウィンドウにある独自のアップロード制限は、これに加えて適用されます。- <g2>マグネット リンクと .torrent ファイルを Mister Download Manager で開く</g2> — これにより、Windows はブラウザーでマグネット リンクを、エクスプローラーで <x3/> ファイルを MDM で開きます。これは Windows アカウントのみに適用されます。Windows の <g4>プログラムから開く</g4> で選択したプログラムが優先されます。セットアップ時にこの設定をオンにできます。Linux では、MDM がデスクトップの既定のアプリになります。macOS では、それらの既定のアプリになります (Finder は、<x6/> ファイルに対しては <g5>プログラムから開く</g5> で MDM を提供し、他のアプリが既定でない場合はダブルクリックで MDM で開きます)。"
   },
   "445e6378c12f1e16": {
    "source": "<g1>Image gallery support:</g1> download whole galleries (Flickr, Imgur, DeviantArt and more) with gallery-dl.",
@@ -4797,6 +4793,10 @@
   "48389b303ae7a75a": {
    "source": "The extension now installs from your browser's store, updates itself, and catches more of what you download.",
    "text": "拡張機能がブラウザーのストアからインストールされ、自動更新されるようになり、より多くのダウンロードを検出するようになりました。"
+  },
+  "483cd37a4558c14a": {
+   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier while a window changes.",
+   "text": "どちらも起動できない場合、MDM はソフトウェア レンダラー (Windows では Microsoft、Linux では Mesa) で描画するため、ウィンドウは開きます (リモート デスクトップ、グラフィック ドライバーのない仮想マシン)。これは機能しますが、ウィンドウが変更される間、プロセッサーの負荷が高くなります。"
   },
   "487a0af4191d3496": {
    "source": "<g1><g2>Its site says so</g2></g1><g3>its site says</g3>",
@@ -6993,6 +6993,10 @@
   "6a3e3e5c75482fe1": {
    "source": "Contribute — Mister Download Manager",
    "text": "貢献 — Mister Download Manager"
+  },
+  "6a404128afe84a22": {
+   "source": "A freeze whose report shows the window thread inside the graphics driver as it shows a frame (<x1/> or <x2/> for Intel, <x3/> for NVIDIA, <x4/> for AMD, under <x5/>) is the driver's OpenGL stuck, not MDM: on Windows, choose <g6>View → Draw with → Direct3D</g6> (the default) and restart MDM, and update the graphics driver. If <g7>Draw with</g7> says Direct3D didn't start there, the line under it says why; MDM then remembers the freeze and draws with WARP from the next start.",
+   "text": "レポートで、ウィンドウ スレッドがフレームを表示しているときにグラフィック ドライバー内にあることが示されるフリーズ (<x1/> または Intel の <x2/>、NVIDIA の <x3/>、AMD の <x4/>、<x5/> の下) は、MDM ではなくドライバーの OpenGL がスタックしている状態です。Windows では、<g6>表示 → 描画方法 → Direct3D</g6> (既定) を選択して MDM を再起動し、グラフィック ドライバーを更新してください。<g7>描画方法</g7> に Direct3D が起動しなかったと表示されている場合、その下の行に理由が表示されます。MDM はフリーズを記憶し、次回の起動時から WARP で描画します。"
   },
   "6a658020a3c19e30": {
    "source": "Other systems and files",
@@ -9214,10 +9218,6 @@
    "source": "<g1>Themes</g1><g2>Nine looks, light and dark, from Classic to Aqua, or your own in a text file.</g2>",
    "text": "<g1>テーマ</g1><g2>クラシックから Aqua まで、ライトとダークの 9 種類の外観、またはテキスト ファイルで独自のテーマを作成できます。</g2>"
   },
-  "8b93f9dffbe6efdb": {
-   "source": "If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds of its own (the time MDM spends loading your list and its icons doesn't count, however slow the computer is just after it starts), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
-   "text": "お使いのコンピューターで Direct3D、Vulkan、または Metal が起動できない場合 (ドライバーがない、一部の仮想マシンなど)、または MDM の最初のウィンドウが 10 秒以内に表示されない場合 (MDM がリストとそのアイコンを読み込む時間は含まれません。コンピューターの起動直後がどれほど遅くても同じです)、MDM は OpenGL で描画します。<g1>表示 → 描画方法</g1> にその旨と理由が表示されます。再度選択すると、次回の起動時に再試行されます。"
-  },
   "8b95ee287644fd4f": {
    "source": "Mister Download Manager's link grabber collects a page's links, sorts them into packages, checks which are online and extracts the archives they bring.",
    "text": "Mister Download Manager のリンク グラバーは、ページのリンクを収集し、パッケージに分類し、オンラインであるかどうかを確認し、それらがもたらすアーカイブを展開します。"
@@ -9973,6 +9973,10 @@
   "9757a8b628979f6a": {
    "source": "The list shows each quality with its size, best first, and the sound alone at the end. Check <g1>Save to</g1> and <g2>File name</g2>, then click <g3>Download Now</g3>, or <g4>Later</g4> to put it in the list for later. The video gets its own row and progress window, like any other download.",
    "text": "リストには、各品質とそのサイズが、最適なものから順に表示され、最後に音声のみが表示されます。<g1>保存先</g1>と<g2>ファイル名</g2>を確認し、<g3>今すぐダウンロード</g3>をクリックするか、<g4>後で</g4>をクリックして後でダウンロードするリストに追加します。動画は、他のダウンロードと同様に、独自の行と進行状況ウィンドウを取得します。"
+  },
+  "9763111f0a019af1": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your graphics card (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds of its own (the time MDM spends loading your list and its icons doesn't count, however slow the computer is just after it starts), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
+   "text": "グラフィック カードで Direct3D、Vulkan、または Metal を起動できない場合 (ドライバーがない、一部の仮想マシンなど)、または最初のウィンドウが 10 秒以内に表示されない場合 (MDM がリストとそのアイコンを読み込む時間は、コンピューターの起動直後の速度に関係なくカウントされません)、MDM は OpenGL で描画し、<g1>表示 → 描画方法</g1> にその理由が表示されます。再度選択すると、次回の起動時に再試行されます。"
   },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
@@ -11786,6 +11790,10 @@
    "source": "This <g1>website</g1> counts visits with <g2>Statcounter</g2>, which sets a cookie and sees your IP address; it runs only on the website, never in the app.",
    "text": "この<g1>ウェブサイト</g1>は、<g2>Statcounter</g2>で訪問者数をカウントしています。StatcounterはCookieを設定し、お客様のIPアドレスを認識します。これはウェブサイト上でのみ実行され、アプリ内では実行されません。"
   },
+  "b21b0cc3853450de": {
+   "source": "On Windows, when OpenGL fails on a card without Direct3D 12, MDM draws with Direct3D on Microsoft's software renderer (WARP) from the next start, and <g1>View → Draw with</g1> says why: OpenGL couldn't start, it is too old to draw MDM (older than 3.0, such as Intel's first HD Graphics, whose OpenGL 2.1 drew MDM's windows as garbage), its first window didn't show within 10 seconds, or MDM froze inside the graphics driver while OpenGL showed a frame (the older Intel HD Graphics and AMD Radeon cards' drivers did). Choosing <g2>OpenGL</g2> there tries it again.",
+   "text": "Windows では、Direct3D 12 のないカードで OpenGL が失敗した場合、MDM は次回の起動時から Microsoft のソフトウェア レンダラー (WARP) で Direct3D を使用して描画し、<g1>表示 → 描画方法</g1> にその理由が表示されます。OpenGL が起動できなかった、MDM を描画するには古すぎる (Intel の最初の HD Graphics など、OpenGL 2.1 が MDM のウィンドウを正しく描画できなかった 3.0 より古いもの)、最初のウィンドウが 10 秒以内に表示されなかった、または OpenGL がフレームを表示している間に MDM がグラフィック ドライバー内でフリーズした (古い Intel HD Graphics および AMD Radeon カードのドライバーで発生しました) などです。そこで <g2>OpenGL</g2> を選択すると、再試行されます。"
+  },
   "b23baab9a4561a1d": {
    "source": "Pauses running downloads.",
    "text": "実行中のダウンロードを一時停止します。"
@@ -12833,10 +12841,6 @@
   "c20486b8df788844": {
    "source": "Choose before you add",
    "text": "追加する前に選択"
-  },
-  "c20a850dfc745632": {
-   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
-   "text": "どちらも起動できない場合、MDMはソフトウェアレンダラー (WindowsではMicrosoft、LinuxではMesa) で描画するため、ウィンドウは開きます (リモートデスクトップ、グラフィックドライバーのない仮想マシンなど)。動作はしますが、プロセッサーの負荷が高くなります。"
   },
   "c21ae87a328182aa": {
    "source": "<g1>Link grabber</g1><g2>A page's links gathered, sorted into packages and checked online, then the archives unpacked when they arrive.</g2>",
@@ -16332,7 +16336,7 @@
   },
   "f89c54d71eb189a4": {
    "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and <g1>View → Draw with</g1> says why.",
-   "text": "MDM の実行中にグラフィック カードがリセットされた場合 (ドライバーの更新など)、MDM は自動的に再起動します。10 分以内に 2 回失われた場合、OpenGL に戻り、<g1>表示 → 描画方法</g1>にその理由が表示されます。"
+   "text": "MDM の実行中にグラフィック カードがリセットされた場合 (ドライバーの更新など)、MDM は自動的に再起動します。10 分以内に 2 回失われた場合、OpenGL に戻り、<g1>表示 → 描画方法</g1> にその理由が表示されます。"
   },
   "f8b52274ed125d5f": {
    "source": "Tick <g1>Wake the computer to run this queue</g1> and a sleeping computer is woken a minute before the start time, so the network is back when the queue begins. It stays awake while the queue runs; afterwards its own sleep settings apply again. The line under the option says when the next wake is, or why there can't be one.",

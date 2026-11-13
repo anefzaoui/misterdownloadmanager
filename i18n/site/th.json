@@ -838,10 +838,6 @@
    "source": "The interface is in every language Windows 11 offers. The catalogs in <g1><x2/></g1> were made by machine translation, and each row marked <x3/> waits for a native speaker:",
    "text": "อินเทอร์เฟซมีให้เลือกทุกภาษาที่ Windows 11 มีให้ แค็ตตาล็อกใน <g1><x2/></g1> สร้างขึ้นโดยการแปลด้วยเครื่อง และแต่ละแถวที่ทำเครื่องหมาย <x3/> กำลังรอเจ้าของภาษา:"
   },
-  "0c4e47b7b5c8f9f5": {
-   "source": "A freeze whose report shows the window thread inside the graphics driver as it shows a frame (<x1/> or <x2/> for Intel, <x3/> for NVIDIA, <x4/> for AMD, under <x5/>) is the driver's OpenGL stuck, not MDM: on Windows, choose <g6>View → Draw with → Direct3D</g6> (the default) and restart MDM, and update the graphics driver. If <g7>Draw with</g7> says Direct3D didn't start there, the line under it says why.",
-   "text": "การค้างที่รายงานแสดงเธรดหน้าต่างภายในไดรเวอร์กราฟิกขณะแสดงเฟรม (<x1/> หรือ <x2/> สำหรับ Intel, <x3/> สำหรับ NVIDIA, <x4/> สำหรับ AMD, ภายใต้ <x5/>) คือ OpenGL ของไดรเวอร์ค้าง ไม่ใช่ MDM: บน Windows ให้เลือก <g6>มุมมอง → วาดด้วย → Direct3D</g6> (ค่าเริ่มต้น) แล้วรีสตาร์ท MDM และอัปเดตไดรเวอร์กราฟิก หาก <g7>วาดด้วย</g7> ระบุว่า Direct3D ไม่ได้เริ่มทำงาน บรรทัดด้านล่างจะบอกสาเหตุ"
-  },
   "0c6ce890ecccf13e": {
    "source": "For an internet plan with a data cap, select <g1>Download limits</g1> on the left:",
    "text": "หากแพ็กเกจอินเทอร์เน็ตมีการจำกัดปริมาณข้อมูล ให้เลือก <g1>ขีดจำกัดการดาวน์โหลด</g1> ทางด้านซ้าย:"
@@ -4516,7 +4512,7 @@
   },
   "43510d0cf7beac55": {
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep and the first minute after the computer wakes, while its disk, network and screen come back: a stall then is written to the log, and reported only if it lasts past that minute. It times both parts of a frame: what MDM handles (the commands that come in, the clock of downloads, queues and the Scheduler), which runs minimized too, and the drawing; never the wait between frames. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). Each report also names what the frame was doing when it stopped (the tray icon, the downloads' progress, drawing the main window). When the window thread is already back in the event loop, or in the pause after a frame of a hidden window, by the time the dump is written, the freeze was over before the snapshot, so its stack can't explain it; those reports say so and share the signature <x3/>. macOS doesn't measure it yet. The monitor then writes a <g4>minidump</g4> of every thread from outside, through <x5/> and <x6/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>การตรวจจับปัญหา</g1> เมื่อ MDM หยุดทำงาน (ข้อผิดพลาดของ Windows, สัญญาณบน Linux, ข้อผิดพลาดของ Mach บน macOS), เกิดข้อผิดพลาดร้ายแรง หรือค้าง โปรแกรมจะขอให้มอนิเตอร์สร้างไฟล์ดัมพ์ การค้างคือเฟรมของหน้าต่างที่ทำงานนานกว่า 8 วินาที ซึ่งถูกตรวจจับโดยเธรดเฝ้าระวังที่ละเว้นเวลาที่เครื่องอยู่ในโหมดพักและนาทีแรกหลังจากคอมพิวเตอร์ตื่นขึ้น ในขณะที่ดิสก์ เครือข่าย และหน้าจอกลับมาทำงาน: การหยุดชะงักจะถูกบันทึกในล็อก และจะรายงานก็ต่อเมื่อการหยุดชะงักนั้นนานเกินหนึ่งนาที โปรแกรมจะจับเวลาทั้งสองส่วนของเฟรม: สิ่งที่ MDM จัดการ (คำสั่งที่เข้ามา, นาฬิกาของการดาวน์โหลด, คิว และตัวจัดกำหนดการ) ซึ่งทำงานในโหมดย่อเล็กสุดด้วย และการวาดภาพ; ไม่ใช่การรอระหว่างเฟรม เธรดเฝ้าระวังยังวัดว่าเธรดหน้าต่างใช้เวลาประมวลผลไปเท่าใด และรายงานจะบอกความหมายของสิ่งนั้น: มันทำงานตลอดเวลา (วนซ้ำ), มันรออยู่ในล็อกหรือ I/O (การติดตาย), หรือมันแทบไม่ได้ทำงานในโค้ดปกติ ซึ่งหมายถึงคอมพิวเตอร์ยุ่งเกินกว่าจะรัน MDM หรือโหลด MDM จากดิสก์ช้า ซึ่งส่วนใหญ่ไม่ใช่ข้อผิดพลาดของ MDM (สิ่งเหล่านี้มีลายเซ็นเดียวกัน <x2/>) รายงานแต่ละฉบับยังระบุว่าเฟรมกำลังทำอะไรอยู่เมื่อหยุดทำงาน (ไอคอนถาด, ความคืบหน้าของการดาวน์โหลด, การวาดหน้าต่างหลัก) เมื่อเธรดหน้าต่างกลับมาอยู่ในลูปเหตุการณ์แล้ว หรืออยู่ในช่วงหยุดชั่วคราวหลังจากเฟรมของหน้าต่างที่ซ่อนอยู่ ในขณะที่ไฟล์ดัมพ์ถูกเขียน การค้างได้สิ้นสุดลงก่อนที่จะมีการบันทึกภาพ ดังนั้นสแต็กจึงไม่สามารถอธิบายได้; รายงานเหล่านั้นจะระบุเช่นนั้นและมีลายเซ็น <x3/> macOS ยังไม่ได้วัดสิ่งนี้ มอนิเตอร์จะเขียน <g4>มินิดัมพ์</g4> ของทุกเธรดจากภายนอก ผ่าน <x5/> และ <x6/> กระบวนการที่หยุดทำงานจะไม่เขียนไฟล์ดัมพ์ของตัวเอง ซึ่งเป็นวิธีที่ Firefox, Crashpad และ Sentry ทำเช่นกัน"
+   "text": "<g1>การตรวจจับปัญหา</g1> เมื่อ MDM หยุดทำงาน (เกิดข้อผิดพลาดใน Windows, สัญญาณใน Linux, ข้อผิดพลาด Mach ใน macOS), เกิดข้อผิดพลาดร้ายแรง หรือค้าง โปรแกรมจะขอให้มอนิเตอร์สร้างไฟล์ดัมพ์ การค้างคือหน้าต่างที่แสดงผลนานกว่า 8 วินาที ซึ่งถูกตรวจจับโดยเธรดเฝ้าระวังที่ไม่นับเวลานอนหลับและนาทีแรกหลังจากคอมพิวเตอร์ตื่นขึ้นมา ในขณะที่ดิสก์ เครือข่าย และหน้าจอเริ่มทำงาน: การหยุดชะงักจะถูกบันทึกในล็อก และจะรายงานก็ต่อเมื่อนานเกินหนึ่งนาทีเท่านั้น โปรแกรมจะจับเวลาทั้งสองส่วนของเฟรม: สิ่งที่ MDM จัดการ (คำสั่งที่เข้ามา, นาฬิกาของการดาวน์โหลด, คิว และตัวจัดกำหนดการ) ซึ่งทำงานแบบย่อเล็กสุดด้วย และการวาดภาพ; ไม่เคยนับเวลารอระหว่างเฟรม เธรดเฝ้าระวังยังวัดว่าเธรดหน้าต่างใช้เวลาประมวลผลไปเท่าใด และรายงานจะระบุความหมาย: ทำงานตลอดเวลา (วนซ้ำ), รอในล็อกหรือ I/O (การติดตาย), หรือแทบไม่ได้ทำงานในโค้ดปกติ ซึ่งหมายถึงคอมพิวเตอร์ยุ่งเกินไปที่จะรัน MDM หรือโหลดจากดิสก์ช้า ซึ่งส่วนใหญ่ไม่ใช่ข้อผิดพลาดของ MDM (ข้อผิดพลาดเหล่านี้มีลายเซ็นเดียวกัน <x2/>) แต่ละรายงานยังระบุว่าเฟรมกำลังทำอะไรอยู่เมื่อหยุดทำงาน (ไอคอนถาด, ความคืบหน้าการดาวน์โหลด, การวาดหน้าต่างหลัก) หากเธรดหน้าต่างกลับมาอยู่ในลูปเหตุการณ์แล้ว หรืออยู่ในช่วงหยุดชั่วคราวหลังจากเฟรมของหน้าต่างที่ซ่อนอยู่ เมื่อมีการเขียนไฟล์ดัมพ์ แสดงว่าการค้างสิ้นสุดลงก่อนที่จะมีการบันทึกภาพ ดังนั้นสแต็กจึงไม่สามารถอธิบายได้; รายงานเหล่านั้นจะระบุเช่นนั้นและมีลายเซ็นเดียวกัน <x3/> macOS ยังไม่ได้วัดค่านี้ จากนั้นมอนิเตอร์จะเขียน <g4>มินิดัมพ์</g4> ของทุกเธรดจากภายนอก ผ่าน <x5/> และ <x6/> กระบวนการที่หยุดทำงานจะไม่เขียนไฟล์ดัมพ์ของตัวเอง ซึ่งเป็นวิธีที่ Firefox, Crashpad และ Sentry ทำเช่นกัน"
   },
   "436bac2c4f3d3f4c": {
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
@@ -4576,7 +4572,7 @@
   },
   "44502a7e800ed659": {
    "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you. On Linux it makes MDM your desktop's default app for them; on macOS, their default app (Finder offers MDM in <g5>Open With</g5> for <x6/> files either way, and a double-click opens them in MDM when no other app is their default).",
-   "text": "ทอร์เรนต์ที่หยุดทำงานเนื่องจากข้อจำกัดเหล่านี้จะแสดงในบันทึกเหตุการณ์ และจะไม่ถูกแชร์อีกครั้งเมื่อ MDM เริ่มทำงาน หากต้องการแชร์อีกครั้ง ให้เพิ่มหรือปิดข้อจำกัดนั้น - <g1>จำกัดความเร็วการอัปโหลดของทอร์เรนต์ทั้งหมดไม่เกิน</g1> — ปิดใช้งานโดยค่าเริ่มต้น กำหนดขีดจำกัดรวมของข้อมูลที่ทอร์เรนต์ทั้งหมดของคุณส่งไปยัง Peer อื่น ทั้งในขณะที่กำลังดาวน์โหลดและกำลังแชร์ ขีดจำกัดการอัปโหลดของทอร์เรนต์แต่ละรายการในหน้าต่างความคืบหน้าจะถูกนำมาใช้เพิ่มเติมจากข้อจำกัดนี้ - <g2>เปิดลิงก์แม่เหล็กและไฟล์ .torrent ด้วย Mister Download Manager</g2> — จากนั้น Windows จะเปิดลิงก์แม่เหล็กในเบราว์เซอร์ของคุณ และไฟล์ <x3/> ใน File Explorer ด้วย MDM การตั้งค่านี้มีผลเฉพาะกับบัญชี Windows ของคุณเท่านั้น โปรแกรมที่คุณเลือกใน <g4>เปิดด้วย</g4> ของ Windows จะยังคงเป็นอันดับแรก การติดตั้งสามารถเปิดใช้งานให้คุณได้ บน Linux การตั้งค่านี้จะทำให้ MDM เป็นแอปเริ่มต้นของเดสก์ท็อปสำหรับไฟล์เหล่านี้ บน macOS จะเป็นแอปเริ่มต้นสำหรับไฟล์เหล่านี้ (Finder จะเสนอ MDM ใน <g5>เปิดด้วย</g5> สำหรับไฟล์ <x6/> ไม่ว่าจะด้วยวิธีใด และการดับเบิลคลิกจะเปิดไฟล์เหล่านั้นใน MDM หากไม่มีแอปอื่นเป็นค่าเริ่มต้น)"
+   "text": "ทอร์เรนต์ที่หยุดทำงานด้วยข้อจำกัดเหล่านี้จะแสดงในบันทึกเหตุการณ์ และจะไม่ถูกแชร์อีกครั้งเมื่อ MDM เริ่มทำงาน หากต้องการแชร์อีกครั้ง ให้เพิ่มหรือปิดข้อจำกัดนั้น - <g1>จำกัดความเร็วการอัปโหลดของทอร์เรนต์ทั้งหมดไม่เกิน</g1> — ปิดใช้งานโดยค่าเริ่มต้น จะจำกัดความเร็วรวมที่ทอร์เรนต์ทั้งหมดของคุณส่งไปยังเพียร์อื่น ๆ ทั้งในขณะที่กำลังดาวน์โหลดและกำลังแชร์ ข้อจำกัดการอัปโหลดของทอร์เรนต์แต่ละรายการในหน้าต่างความคืบหน้าจะถูกนำมาใช้เพิ่มเติมจากข้อจำกัดนี้ - <g2>เปิดลิงก์แม่เหล็กและไฟล์ .torrent ด้วย Mister Download Manager</g2> — จากนั้น Windows จะเปิดลิงก์แม่เหล็กในเบราว์เซอร์ของคุณและไฟล์ <x3/> ใน Explorer ด้วย MDM การตั้งค่านี้ใช้สำหรับบัญชี Windows ของคุณเท่านั้น โปรแกรมที่คุณเลือกใน <g4>เปิดด้วย</g4> ของ Windows จะยังคงเป็นอันดับแรก การติดตั้งสามารถเปิดใช้งานให้คุณได้ บน Linux การตั้งค่านี้จะทำให้ MDM เป็นแอปเริ่มต้นสำหรับสิ่งเหล่านี้บนเดสก์ท็อปของคุณ บน macOS เป็นแอปเริ่มต้น (Finder จะเสนอ MDM ใน <g5>เปิดด้วย</g5> สำหรับไฟล์ <x6/> ไม่ว่าจะด้วยวิธีใด และการดับเบิลคลิกจะเปิดไฟล์เหล่านั้นใน MDM เมื่อไม่มีแอปอื่นเป็นค่าเริ่มต้น)"
   },
   "445e6378c12f1e16": {
    "source": "<g1>Image gallery support:</g1> download whole galleries (Flickr, Imgur, DeviantArt and more) with gallery-dl.",
@@ -4797,6 +4793,10 @@
   "48389b303ae7a75a": {
    "source": "The extension now installs from your browser's store, updates itself, and catches more of what you download.",
    "text": "ส่วนขยายจะติดตั้งจากร้านค้าของเบราว์เซอร์ อัปเดตตัวเอง และตรวจจับสิ่งที่คุณดาวน์โหลดได้มากขึ้น"
+  },
+  "483cd37a4558c14a": {
+   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier while a window changes.",
+   "text": "หากไม่สามารถเริ่มทำงานได้ทั้งคู่ MDM จะวาดด้วยซอฟต์แวร์เรนเดอร์ (ของ Microsoft บน Windows, ของ Mesa บน Linux) เพื่อให้หน้าต่างยังคงเปิดได้ (Remote Desktop, เครื่องเสมือนที่ไม่มีไดรเวอร์การ์ดจอ) ซึ่งใช้งานได้ แต่จะทำให้โปรเซสเซอร์ทำงานหนักขึ้นเมื่อหน้าต่างมีการเปลี่ยนแปลง"
   },
   "487a0af4191d3496": {
    "source": "<g1><g2>Its site says so</g2></g1><g3>its site says</g3>",
@@ -6997,6 +6997,10 @@
   "6a3e3e5c75482fe1": {
    "source": "Contribute — Mister Download Manager",
    "text": "ร่วมสนับสนุน — Mister Download Manager"
+  },
+  "6a404128afe84a22": {
+   "source": "A freeze whose report shows the window thread inside the graphics driver as it shows a frame (<x1/> or <x2/> for Intel, <x3/> for NVIDIA, <x4/> for AMD, under <x5/>) is the driver's OpenGL stuck, not MDM: on Windows, choose <g6>View → Draw with → Direct3D</g6> (the default) and restart MDM, and update the graphics driver. If <g7>Draw with</g7> says Direct3D didn't start there, the line under it says why; MDM then remembers the freeze and draws with WARP from the next start.",
+   "text": "หากรายงานการค้างแสดงว่าเธรดหน้าต่างอยู่ภายในไดรเวอร์การ์ดจอขณะแสดงเฟรม (<x1/> หรือ <x2/> สำหรับ Intel, <x3/> สำหรับ NVIDIA, <x4/> สำหรับ AMD ภายใต้ <x5/>) แสดงว่า OpenGL ของไดรเวอร์ค้าง ไม่ใช่ MDM: บน Windows ให้เลือก <g6>มุมมอง → วาดด้วย → Direct3D</g6> (ค่าเริ่มต้น) แล้วรีสตาร์ท MDM และอัปเดตไดรเวอร์การ์ดจอ หาก <g7>วาดด้วย</g7> ระบุว่า Direct3D ไม่ได้เริ่มทำงาน บรรทัดด้านล่างจะบอกสาเหตุ จากนั้น MDM จะจดจำการค้างและวาดด้วย WARP ตั้งแต่การเริ่มครั้งถัดไป"
   },
   "6a658020a3c19e30": {
    "source": "Other systems and files",
@@ -9222,10 +9226,6 @@
    "source": "<g1>Themes</g1><g2>Nine looks, light and dark, from Classic to Aqua, or your own in a text file.</g2>",
    "text": "<g1>ธีม</g1><g2>มี 9 รูปแบบ ทั้งแบบสว่างและมืด ตั้งแต่คลาสสิกไปจนถึง Aqua หรือสร้างธีมของคุณเองในไฟล์ข้อความ</g2>"
   },
-  "8b93f9dffbe6efdb": {
-   "source": "If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds of its own (the time MDM spends loading your list and its icons doesn't count, however slow the computer is just after it starts), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
-   "text": "หาก Direct3D, Vulkan หรือ Metal ไม่สามารถเริ่มทำงานบนคอมพิวเตอร์ของคุณได้ (ไม่มีไดรเวอร์สำหรับสิ่งนั้น, เครื่องเสมือนบางเครื่อง) หรือหน้าต่างแรกไม่แสดงภายใน 10 วินาที (ไม่นับเวลาที่ MDM ใช้ในการโหลดรายการและไอคอนของคุณ ไม่ว่าจะช้าแค่ไหนหลังจากเริ่มทำงาน) MDM จะวาดด้วย OpenGL และ <g1>มุมมอง → วาดด้วย</g1> จะระบุสาเหตุ การเลือกอีกครั้งจะลองอีกครั้งในการเริ่มครั้งถัดไป"
-  },
   "8b95ee287644fd4f": {
    "source": "Mister Download Manager's link grabber collects a page's links, sorts them into packages, checks which are online and extracts the archives they bring.",
    "text": "ตัวดึงลิงก์ของ Mister Download Manager จะรวบรวมลิงก์ของหน้าเว็บ จัดเรียงเป็นแพ็กเกจ ตรวจสอบว่าลิงก์ใดออนไลน์ และแตกไฟล์เก็บถาวรที่นำมา"
@@ -9981,6 +9981,10 @@
   "9757a8b628979f6a": {
    "source": "The list shows each quality with its size, best first, and the sound alone at the end. Check <g1>Save to</g1> and <g2>File name</g2>, then click <g3>Download Now</g3>, or <g4>Later</g4> to put it in the list for later. The video gets its own row and progress window, like any other download.",
    "text": "รายการจะแสดงคุณภาพแต่ละแบบพร้อมขนาด โดยเรียงจากคุณภาพดีที่สุดก่อน และเสียงอย่างเดียวจะอยู่ท้ายสุด ตรวจสอบ <g1>บันทึกไปที่</g1> และ <g2>ชื่อไฟล์</g2> จากนั้นคลิก <g3>ดาวน์โหลดเดี๋ยวนี้</g3> หรือ <g4>ภายหลัง</g4> เพื่อเพิ่มลงในรายการสำหรับดาวน์โหลดภายหลัง วิดีโอจะปรากฏเป็นแถวของตัวเองพร้อมหน้าต่างแสดงความคืบหน้า เช่นเดียวกับการดาวน์โหลดอื่น ๆ"
+  },
+  "9763111f0a019af1": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your graphics card (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds of its own (the time MDM spends loading your list and its icons doesn't count, however slow the computer is just after it starts), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
+   "text": "หาก Direct3D, Vulkan หรือ Metal ไม่สามารถเริ่มทำงานบนการ์ดจอของคุณได้ (ไม่มีไดรเวอร์ หรือในบางเครื่องเสมือน) หรือหน้าต่างแรกไม่แสดงภายใน 10 วินาที (ไม่นับเวลาที่ MDM ใช้โหลดรายการและไอคอน แม้คอมพิวเตอร์จะช้าแค่ไหนหลังเริ่มทำงาน) MDM จะวาดด้วย OpenGL และ <g1>มุมมอง → วาดด้วย</g1> จะระบุสาเหตุ การเลือกอีกครั้งจะลองใหม่ในการเริ่มครั้งถัดไป"
   },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
@@ -11794,6 +11798,10 @@
    "source": "This <g1>website</g1> counts visits with <g2>Statcounter</g2>, which sets a cookie and sees your IP address; it runs only on the website, never in the app.",
    "text": "<g1>เว็บไซต์</g1> นี้จะนับจำนวนผู้เข้าชมด้วย <g2>Statcounter</g2> ซึ่งจะตั้งค่าคุกกี้และเห็นที่อยู่ IP ของคุณ โดยจะทำงานบนเว็บไซต์เท่านั้น ไม่เคยทำงานในแอป"
   },
+  "b21b0cc3853450de": {
+   "source": "On Windows, when OpenGL fails on a card without Direct3D 12, MDM draws with Direct3D on Microsoft's software renderer (WARP) from the next start, and <g1>View → Draw with</g1> says why: OpenGL couldn't start, it is too old to draw MDM (older than 3.0, such as Intel's first HD Graphics, whose OpenGL 2.1 drew MDM's windows as garbage), its first window didn't show within 10 seconds, or MDM froze inside the graphics driver while OpenGL showed a frame (the older Intel HD Graphics and AMD Radeon cards' drivers did). Choosing <g2>OpenGL</g2> there tries it again.",
+   "text": "บน Windows หาก OpenGL ล้มเหลวบนการ์ดที่ไม่มี Direct3D 12 MDM จะวาดด้วย Direct3D บนซอฟต์แวร์เรนเดอร์ของ Microsoft (WARP) ตั้งแต่การเริ่มครั้งถัดไป และ <g1>มุมมอง → วาดด้วย</g1> จะระบุสาเหตุ: OpenGL ไม่สามารถเริ่มทำงานได้, เก่าเกินไปที่จะวาด MDM (เก่ากว่า 3.0 เช่น Intel HD Graphics รุ่นแรก ซึ่ง OpenGL 2.1 วาดหน้าต่าง MDM เป็นภาพขยะ), หน้าต่างแรกไม่แสดงภายใน 10 วินาที หรือ MDM ค้างภายในไดรเวอร์การ์ดจอขณะ OpenGL แสดงเฟรม (ไดรเวอร์การ์ด Intel HD Graphics และ AMD Radeon รุ่นเก่าเคยเป็น) การเลือก <g2>OpenGL</g2> ตรงนั้นจะลองใหม่"
+  },
   "b23baab9a4561a1d": {
    "source": "Pauses running downloads.",
    "text": "หยุดการดาวน์โหลดที่กำลังทำงานอยู่ชั่วคราว"
@@ -12833,10 +12841,6 @@
   "c20486b8df788844": {
    "source": "Choose before you add",
    "text": "เลือกก่อนเพิ่ม"
-  },
-  "c20a850dfc745632": {
-   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
-   "text": "หากทั้งสองวิธีเริ่มทำงานไม่ได้ MDM จะวาดด้วยตัวแสดงผลซอฟต์แวร์ (ของ Microsoft บน Windows และของ Mesa บน Linux) เพื่อให้หน้าต่างยังเปิดได้ (เช่น Remote Desktop หรือเครื่องเสมือนที่ไม่มีไดรเวอร์กราฟิก) วิธีนี้ใช้งานได้ แต่ทำให้โปรเซสเซอร์ทำงานหนักขึ้น"
   },
   "c21ae87a328182aa": {
    "source": "<g1>Link grabber</g1><g2>A page's links gathered, sorted into packages and checked online, then the archives unpacked when they arrive.</g2>",
@@ -16336,7 +16340,7 @@
   },
   "f89c54d71eb189a4": {
    "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and <g1>View → Draw with</g1> says why.",
-   "text": "หากการ์ดแสดงผลถูกรีเซ็ตขณะ MDM ทำงาน (การอัปเดตไดรเวอร์) MDM จะเริ่มใหม่เอง หากหายไปสองครั้งใน 10 นาที จะกลับไปใช้ OpenGL และ <g1>มุมมอง → วาดด้วย</g1> จะบอกเหตุผล"
+   "text": "หากการ์ดจอถูกรีเซ็ตขณะ MDM ทำงาน (มีการอัปเดตไดรเวอร์) MDM จะเริ่มทำงานใหม่เอง หากเกิดการสูญเสียสองครั้งใน 10 นาที MDM จะกลับไปใช้ OpenGL และ <g1>มุมมอง → วาดด้วย</g1> จะระบุสาเหตุ"
   },
   "f8b52274ed125d5f": {
    "source": "Tick <g1>Wake the computer to run this queue</g1> and a sleeping computer is woken a minute before the start time, so the network is back when the queue begins. It stays awake while the queue runs; afterwards its own sleep settings apply again. The line under the option says when the next wake is, or why there can't be one.",
