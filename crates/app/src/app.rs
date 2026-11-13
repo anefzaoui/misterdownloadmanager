@@ -1920,7 +1920,8 @@ impl App {
                     it.status_text()
                 },
                 it.time_left(),
-                if it.live.is_some() {
+                // Every byte in (#736): no rate, as once it is complete.
+                if it.live.is_some() && !it.past_last_byte() {
                     model::rate(it.rate())
                 } else {
                     String::new()
@@ -1951,6 +1952,11 @@ impl App {
                     .as_ref()
                     .map_or(String::new(), |t| model::rate(t.up_speed)),
             ],
+            // A short word and a percentage in the cell while checked or joined (#736): the
+            // whole words in its tip and for a screen reader.
+            status_whole: (!self.extracts.extracting(it.id))
+                .then(|| it.finishing(false))
+                .flatten(),
         }
     }
 
@@ -3924,7 +3930,7 @@ impl App {
                 OnClose::Minimize => {
                     tracing::info!("close: no visible tray icon; minimizing to the taskbar");
                     ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
-                    ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+                    crate::dialogs::minimize(ctx, self.main_hwnd);
                 }
                 OnClose::Quit => {
                     tracing::info!("close: quitting");
@@ -8153,13 +8159,15 @@ impl App {
             let ctx = ui.ctx();
             match bar.pressed {
                 Some(CaptionButton::Close) => ctx.send_viewport_cmd(egui::ViewportCommand::Close),
-                Some(CaptionButton::Minimize) => {
-                    ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true))
-                }
-                Some(CaptionButton::Maximize) => {
-                    let max = ctx.input(|i| i.viewport().maximized) == Some(true);
-                    ctx.send_viewport_cmd(egui::ViewportCommand::Maximized(!max));
-                }
+                Some(CaptionButton::Minimize) => crate::dialogs::minimize(ctx, self.main_hwnd),
+                Some(CaptionButton::Maximize) => match self.main_hwnd {
+                    // The system's command, as the frame's own Maximize sends it (#874).
+                    Some(h) => crate::win32::toggle_maximized(h),
+                    None => {
+                        let max = ctx.input(|i| i.viewport().maximized) == Some(true);
+                        ctx.send_viewport_cmd(egui::ViewportCommand::Maximized(!max));
+                    }
+                },
                 _ => {}
             }
             egui::Rect::from_min_max(egui::pos2(full.min.x, full.min.y + CAPTION_H), full.max)

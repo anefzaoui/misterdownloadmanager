@@ -560,6 +560,12 @@ These ship in the next version.
 - ✅ Windows 10: no FSI and PDI boxes around a file's name in the taskbar's preview and tip of a
   progress window, or in the notification-area icon's tip; right-to-left titles keep their order
   ([#919](https://github.com/anefzaoui/misterdownloadmanager/issues/919))
+- ✅ With a style theme (Metro, Adwaita, Aero…), windows minimize, maximize and restore with
+  Windows' animation, as with Classic
+  ([#874](https://github.com/anefzaoui/misterdownloadmanager/issues/874))
+- ✅ Windows 10 with a style theme (Metro, Adwaita, Aero…): no black band above the main window's
+  title bar, and its menus and clicks land where they show; framed as on Windows 11, as the
+  progress window already was ([#802](https://github.com/anefzaoui/misterdownloadmanager/issues/802))
 - ✅ An idle MDM no longer redraws its window each second to watch the clipboard for copied
   links: the watch runs on its own thread and wakes the window only for a new text (with
   Windows' software renderer, idle MDM went from most of a processor core to a sixth of it)
@@ -620,8 +626,10 @@ These ship in the next version.
   downloads a live stream itself, instead of an empty table
   ([#793](https://github.com/anefzaoui/misterdownloadmanager/issues/793))
 - ✅ After the last byte, the progress window says **Verifying… (45%)** or **Merging… (45%)**
-  and the list **45% verified**, the bar showing it in the accent colour, and **Finishing…** rather than
-  **Connecting…**; a finished download's map of parts has no gaps
+  and the list's Status column, wider by default, **Checking 45%** or **Merging 45%** (the
+  whole words in its tip), the bar
+  showing it in the accent colour, no transfer rate and no connection still receiving, and
+  **Finishing…** rather than **Connecting…**; a finished download's map of parts has no gaps
   ([#736](https://github.com/anefzaoui/misterdownloadmanager/issues/736))
 - ✅ Windows: the file dragged out of **Download complete** is moved or copied as Explorer does
   it (moved on the same drive or with Shift, copied to another drive or with Ctrl), no longer

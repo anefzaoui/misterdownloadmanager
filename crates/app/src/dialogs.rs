@@ -394,10 +394,7 @@ fn dialog_window<T>(
                     let hwnd = ui.ctx().data(|d| d.get_temp::<isize>(key.with("hwnd")));
                     match drawn_title(ui, origin, shown[0], title, &buttons, hwnd) {
                         Some(CaptionButton::Close) => caption_close = true,
-                        Some(CaptionButton::Minimize) => {
-                            ui.ctx()
-                                .send_viewport_cmd(egui::ViewportCommand::Minimized(true));
-                        }
+                        Some(CaptionButton::Minimize) => crate::dialogs::minimize(ui.ctx(), hwnd),
                         _ => {}
                     }
                 }
@@ -2987,6 +2984,19 @@ it from Mister Download Manager list of downloads?",
             },
         )
     }
+}
+
+/// Minimize a window as its title bar's Minimize asks (`hwnd`: the window, once known). On
+/// Windows by the system's own command, as the system's title bar sends it, so a window whose
+/// title bar is ours animates down to the taskbar like any other (#874).
+pub fn minimize(ctx: &egui::Context, hwnd: Option<isize>) {
+    #[cfg(windows)]
+    if let Some(h) = hwnd {
+        crate::win32::minimize(h);
+        return;
+    }
+    let _ = hwnd;
+    ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
 }
 
 /// Select the file in Explorer (Finder, the Linux file manager). A file that is gone: its
