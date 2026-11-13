@@ -2985,8 +2985,6 @@ it from Mister Download Manager list of downloads?",
     }
 }
 
-/// Select the file in Explorer (Finder, the Linux file manager). A file that is gone: its
-/// folder, if that is still there.
 /// Minimize a window as its title bar's Minimize asks (`hwnd`: the window, once known). On
 /// Windows by the system's own command, as the system's title bar sends it, so a window whose
 /// title bar is ours animates down to the taskbar like any other (#874).
@@ -3000,6 +2998,8 @@ pub fn minimize(ctx: &egui::Context, hwnd: Option<isize>) {
     ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
 }
 
+/// Select the file in Explorer (Finder, the Linux file manager). A file that is gone: its
+/// folder, if that is still there.
 /// Bring an open window to the front (and back from the taskbar): asked for again, it came
 /// to nothing while it sat behind the main window.
 pub fn raise(ctx: &egui::Context, viewport: ViewportId) {
