@@ -1389,6 +1389,7 @@ pub(crate) fn look_up_kept(
 pub fn from_browser(c: &mdm_ipc::Command) -> mdm_tools::proc::FromBrowser {
     mdm_tools::proc::FromBrowser {
         referer: c.referer.clone(),
+        origin: c.origin.clone(),
         user_agent: c.user_agent.clone(),
         cookies: c.cookies.clone(),
         jar: c.cookie_jar.clone(),
@@ -1396,17 +1397,21 @@ pub fn from_browser(c: &mdm_ipc::Command) -> mdm_tools::proc::FromBrowser {
 }
 
 /// The size the server says for a plain file at `page`, asked as the browser would (its Referer,
-/// its cookies, its user agent). None when it won't say: the window then says "size unknown", as
+/// its Origin, its cookies, its user agent). None when it won't say: the window then says "size unknown", as
 /// it always did. A cookie jar (a whole site's cookies, for yt-dlp) isn't used: the header is.
 fn direct_size(
     rt: &tokio::runtime::Handle,
     page: &str,
     browser: &mdm_tools::proc::FromBrowser,
 ) -> Option<u64> {
-    use reqwest::header::{COOKIE, HeaderMap, HeaderValue, REFERER};
+    use reqwest::header::{COOKIE, HeaderMap, HeaderValue, ORIGIN, REFERER};
     let url = url::Url::parse(page).ok()?;
     let mut headers = HeaderMap::new();
-    for (name, value) in [(REFERER, &browser.referer), (COOKIE, &browser.cookies)] {
+    for (name, value) in [
+        (REFERER, &browser.referer),
+        (ORIGIN, &browser.origin),
+        (COOKIE, &browser.cookies),
+    ] {
         if let Some(v) = value.as_deref().and_then(|v| HeaderValue::from_str(v).ok()) {
             headers.insert(name, v);
         }
