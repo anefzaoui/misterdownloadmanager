@@ -561,6 +561,10 @@ These ship in the next version.
   complete and File Properties, its page the web page it was obtained from; a download's page and
   Referer are kept after a restart
   ([#795](https://github.com/anefzaoui/misterdownloadmanager/issues/795))
+- ✅ After the last byte, the progress window says **Verifying… (45%)** or **Merging… (45%)**
+  and the list **45% verified**, the bar showing it in the accent colour, and **Finishing…** rather than
+  **Connecting…**; a finished download's map of parts has no gaps
+  ([#736](https://github.com/anefzaoui/misterdownloadmanager/issues/736))
 - ✅ Windows: the file dragged out of **Download complete** is moved or copied as Explorer does
   it (moved on the same drive or with Shift, copied to another drive or with Ctrl), no longer
   always copied, and its download follows a moved file to its new place; where MDM can't learn

@@ -30,6 +30,7 @@ fn main() -> ExitCode {
     if std::env::var_os("MDM_SUBS_RETRY_SECS").is_some() {
         checks(&me);
         job_checks(&me);
+        merge_checks(&me);
         list_checks(&me);
         preloaded_checks(&me);
         engine_checks(&me);
@@ -212,6 +213,25 @@ fn fake_ytdlp() -> ExitCode {
     if let Some(secs) = mode.strip_prefix("quiet:") {
         std::thread::sleep(Duration::from_secs(secs.trim().parse().unwrap_or(1)));
     }
+    // #736: a video and its sound, merged as yt-dlp's ffmpeg does: into `<stem>.temp.mp4`,
+    // growing for a while, then renamed. Said first when asked (`post_process:` print).
+    if mode == "merge" {
+        println!("MDMQ 137+140 1920x1080");
+        println!("MDMP 3000 3000 NA 1000 137");
+        println!("MDMP 1000 1000 NA 1000 140");
+        let video = template.replace("%(ext)s", "mp4").replace("%%", "%");
+        if args.iter().any(|a| a.starts_with("post_process:MDMM")) {
+            println!("MDMM {video}");
+        }
+        let temp = video.replace(".mp4", ".temp.mp4");
+        for k in 1..=10u64 {
+            std::fs::write(&temp, vec![0u8; (k * 400) as usize]).unwrap();
+            std::thread::sleep(Duration::from_millis(300));
+        }
+        std::fs::rename(&temp, &video).unwrap();
+        println!("MDMF {video}");
+        return ExitCode::SUCCESS;
+    }
     let langs = after("--sub-langs").unwrap_or_default();
     for lang in langs.split(',').filter(|l| !l.is_empty()) {
         let refused = lang == "en" && (mode == "refuse-always" || tried == 0);
@@ -267,7 +287,21 @@ fn fake_ytdlp() -> ExitCode {
         for s in streams.iter().filter(|s| **s != output) {
             let _ = std::fs::remove_file(s);
         }
-        std::fs::write(&output, merged).unwrap();
+        // #736: several streams are merged as yt-dlp's ffmpeg does, said first when asked
+        // (`post_process:` print), into `<stem>.temp.mp4`, growing for a while, then renamed.
+        if streams.len() > 1 && args.iter().any(|a| a.starts_with("post_process:MDMM")) {
+            println!("MDMQ {} 1920x1080", chosen["format_id"].as_str().unwrap());
+            println!("MDMM {output}");
+            let temp = output.replace(".mp4", ".temp.mp4");
+            let step = merged.len().div_ceil(5);
+            for k in 1..=5 {
+                std::fs::write(&temp, &merged[..(k * step).min(merged.len())]).unwrap();
+                std::thread::sleep(Duration::from_millis(300));
+            }
+            std::fs::rename(&temp, &output).unwrap();
+        } else {
+            std::fs::write(&output, merged).unwrap();
+        }
         println!("MDMF {output}");
         return ExitCode::SUCCESS;
     }
@@ -442,6 +476,54 @@ fn download_as(
 
 fn log_of(p: &mdm_tools::video::Progress) -> Vec<String> {
     p.events.iter().map(|(_, t)| t.clone()).collect()
+}
+
+/// #736: while yt-dlp's ffmpeg joins a video and its sound, the job says so, and how far it is
+/// from the joined file's size; it says no more once the file is there.
+fn merge_checks(me: &Path) {
+    let tools = tempfile::tempdir().unwrap();
+    let out = tempfile::tempdir().unwrap();
+    std::fs::write(out.path().join("mode.txt"), "merge").unwrap();
+    let exe = fake_in(me, tools.path());
+    let job = VideoJob::start(
+        &exe,
+        "https://video.example/talk",
+        "bv*+ba",
+        out.path(),
+        "Talk",
+        None,
+        None,
+        None,
+        &Default::default(),
+        &Subs::default(),
+        None,
+    )
+    .expect("started");
+    let end = Instant::now() + Duration::from_secs(60);
+    let mut seen = Vec::new();
+    let p = loop {
+        let p = job.progress();
+        if p.state != State::Running {
+            break p;
+        }
+        if let Some(m) = p.merging {
+            seen.push(m);
+        }
+        assert!(Instant::now() < end, "still running: {p:?}");
+        std::thread::sleep(Duration::from_millis(50));
+    };
+    assert!(matches!(p.state, State::Done(_)), "merge: {:?}", p.state);
+    assert_eq!(p.merging, None, "done: no longer merging");
+    let known: Vec<f64> = seen.iter().filter_map(|m| *m).collect();
+    assert!(!seen.is_empty(), "merging was said");
+    assert!(
+        known.iter().any(|f| *f > 0.0 && *f < 1.0),
+        "a share done was said: {seen:?}"
+    );
+    assert!(
+        known.windows(2).all(|w| w[0] <= w[1]),
+        "it only goes forward: {known:?}"
+    );
 }
 
 /// #79 and #94: the job never gives up while yt-dlp works, never leaves it running when it does
@@ -860,13 +942,19 @@ fn engine_checks(me: &Path) {
         )
         .expect("started")
     };
+    // What each run said of its merge (#736), in order.
+    let merges = std::cell::RefCell::new(Vec::new());
     let wait = |job: &VideoJob| {
         let end = Instant::now() + Duration::from_secs(120);
         let mut most_connections = 0;
+        merges.borrow_mut().clear();
         loop {
             let p = job.progress();
             if let Some(e) = &p.engine {
                 most_connections = most_connections.max(e.connections.len());
+            }
+            if let Some(m) = p.merging {
+                merges.borrow_mut().push(m);
             }
             if p.state != State::Running {
                 return (p, most_connections);
@@ -898,6 +986,15 @@ fn engine_checks(me: &Path) {
         "the streams merged"
     );
     assert!(most >= 2, "several connections: {most}");
+    // #736: the engine downloaded the streams, yt-dlp's ffmpeg merges them: said, with how far.
+    let known: Vec<f64> = merges.borrow().iter().filter_map(|m| *m).collect();
+    assert!(
+        known.iter().any(|f| *f > 0.0 && *f < 1.0),
+        "the merge and its share done were said: {:?}",
+        merges.borrow()
+    );
+    assert!(known.windows(2).all(|w| w[0] <= w[1]), "{known:?}");
+    assert_eq!(p.merging, None, "done: no longer merging");
     assert!(
         log.iter()
             .any(|t| t == "yt-dlp's address for format 137: from 127.0.0.1"),

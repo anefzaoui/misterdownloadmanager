@@ -1367,6 +1367,11 @@
 #. adjective: the downloads that are complete
 #. remote control page (on a phone): tab: downloads finished
 	Finished	Completati
+#. text in a download's progress window
+#. a download's status: every byte is in, the file is being written out and given its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Finishing...	Finalizzazione in corso...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Finland	Finlandia
@@ -2033,6 +2038,15 @@
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 	medium	intermedio
+#. text in the download list (sizes, speeds, status)
+#. a video's status while its picture and sound are joined into one file (ffmpeg)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Merging...	Unione in corso...
+#. text in the download list (sizes, speeds, status)
+#. a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
+#, machine
+	Merging... ({percent})	Unione in corso... ({percent})
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Mexico	Messico
@@ -4016,8 +4030,13 @@
 #. window title in the Checksum window; text in the Checksum window
 	Verify checksum	Verifica checksum
 #. text in the download list (sizes, speeds, status)
+#. a download's status while the finished file is checked against its checksum
 #. the trailing ... means it is still going on: keep it
 	Verifying...	Verifica in corso...
+#. text in the download list (sizes, speeds, status)
+#. a download's status while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%"
+#, machine
+	Verifying... ({percent})	Verifica in corso... ({percent})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 	Version {version} ({commit})	Versione {version} ({commit})
@@ -4409,6 +4428,14 @@
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 	{percent} at {service}	{percent} su {service}
+#. text in the download list (sizes, speeds, status)
+#. the list's narrow Status column while a video's picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%": keep it first, the column is narrow
+#, machine
+	{percent} merged	{percent} unito
+#. text in the download list (sizes, speeds, status)
+#. the list's narrow Status column while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%": keep it first, the column is narrow
+#, machine
+	{percent} verified	{percent} verificato
 #. text in errors.rs
 	{problem} ({cause})	{problem} ({cause})
 #. text in errors.rs

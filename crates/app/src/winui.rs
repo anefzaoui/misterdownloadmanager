@@ -1913,9 +1913,14 @@ pub fn field_frame(p: &Painter, rc: Rect, look: FieldLook) {
 /// How far along something is, as IDM shows a download: its green fill on a track (themed: the
 /// track was light in dark mode too), the controls' rounded corners. `fraction` in 0..=1.
 pub fn meter(p: &Painter, rc: Rect, fraction: f32) {
+    meter_in(p, rc, fraction, crate::theme::colors().meter_fill);
+}
+
+/// [`meter`] filled in `fill` (the progress window's check or merge after the last byte, #736).
+pub fn meter_in(p: &Painter, rc: Rect, fraction: f32, fill: Color32) {
     let radius = control_radius().min(rc.height() / 4.0).floor();
     let c = crate::theme::colors();
-    if era_bar(p, rc, 0.0, fraction.clamp(0.0, 1.0), c.meter_fill, false) {
+    if era_bar(p, rc, 0.0, fraction.clamp(0.0, 1.0), fill, false) {
         return;
     }
     let border = crate::theme::metrics().border;
@@ -1924,7 +1929,7 @@ pub fn meter(p: &Painter, rc: Rect, fraction: f32) {
     let w = (fraction.clamp(0.0, 1.0) * inner.width()).floor();
     if w > 0.0 {
         let done = Rect::from_min_size(inner.min, vec2(w, inner.height()));
-        p.rect_filled(done, (radius - border).max(0.0), c.meter_fill);
+        p.rect_filled(done, (radius - border).max(0.0), fill);
     }
     p.rect_stroke(
         rc,

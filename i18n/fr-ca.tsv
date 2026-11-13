@@ -1793,6 +1793,11 @@
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	Terminé
+#. text in a download's progress window
+#. a download's status: every byte is in, the file is being written out and given its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Finishing...	Finalisation en cours...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2677,6 +2682,15 @@
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
 	medium	moyen
+#. text in the download list (sizes, speeds, status)
+#. a video's status while its picture and sound are joined into one file (ffmpeg)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Merging...	Fusion en cours...
+#. text in the download list (sizes, speeds, status)
+#. a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
+#, machine
+	Merging... ({percent})	Fusion en cours ({percent})
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5315,9 +5329,14 @@
 #, machine
 	Verify checksum	Vérifier la somme de contrôle
 #. text in the download list (sizes, speeds, status)
+#. a download's status while the finished file is checked against its checksum
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Verifying...	Vérification...
+#. text in the download list (sizes, speeds, status)
+#. a download's status while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%"
+#, machine
+	Verifying... ({percent})	Vérification en cours ({percent})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -5809,6 +5828,14 @@
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
 	{percent} at {service}	{percent} chez {service}
+#. text in the download list (sizes, speeds, status)
+#. the list's narrow Status column while a video's picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%": keep it first, the column is narrow
+#, machine
+	{percent} merged	{percent} fusionné
+#. text in the download list (sizes, speeds, status)
+#. the list's narrow Status column while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%": keep it first, the column is narrow
+#, machine
+	{percent} verified	{percent} vérifié
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
