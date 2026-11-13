@@ -901,9 +901,7 @@ impl Item {
             }
         }
         let dt = live.sample.0.elapsed().as_secs_f64();
-        if self.torrent.is_none()
-            && every_byte_in(&s, self.video.is_none() && self.gallery.is_none())
-        {
+        if self.torrent.is_none() && every_byte_in(&s) {
             // Every byte in (#736): nothing comes in while the last of it is written out, the
             // file checked, joined or named; the rate the download ended on isn't one any more.
             live.rate = 0.0;
@@ -1166,11 +1164,7 @@ impl Item {
 
     /// Every byte is in (#736): no rate and no time left, as once it is complete.
     pub fn past_last_byte(&self) -> bool {
-        self.torrent.is_none()
-            && self
-                .snap
-                .as_ref()
-                .is_some_and(|s| every_byte_in(s, self.video.is_none() && self.gallery.is_none()))
+        self.torrent.is_none() && self.snap.as_ref().is_some_and(|s| every_byte_in(s))
     }
 
     pub fn status_text(&self) -> String {
@@ -1214,16 +1208,20 @@ impl Item {
     }
 }
 
-/// Every byte of a download is in (#736): the last of it is written out (a file's whole size
-/// received, `file`), the file checked, a video's streams joined, or the file named. Nothing
-/// comes in any more.
-fn every_byte_in(s: &mdm_engine::Snapshot, file: bool) -> bool {
+/// Every byte of a download is in (#736): the last of it is written out (its whole size
+/// received and no connection receiving or connecting, as the progress window's "Finishing..."),
+/// the file checked, a video's streams joined, or the file named. Nothing comes in any more.
+fn every_byte_in(s: &mdm_engine::Snapshot) -> bool {
+    use mdm_engine::download::ConnStatus;
     matches!(
         s.state,
         State::Verifying | State::Merging | State::Completing
-    ) || (file
-        && s.state == State::Downloading
-        && s.size.is_some_and(|t| t > 0 && s.downloaded >= t))
+    ) || (s.state == State::Downloading
+        && s.size.is_some_and(|t| t > 0 && s.downloaded >= t)
+        && !s
+            .connections
+            .iter()
+            .any(|c| matches!(c.status, ConnStatus::Receiving | ConnStatus::Connecting)))
 }
 
 /// The list's Status column while a finished file is checked against its checksum (a check
@@ -1459,14 +1457,18 @@ mod tests {
         assert_eq!(it.status_text(), "\u{2714} 50%");
         assert_eq!(it.finishing(false).as_deref(), Some("Verifying... (50%)"));
         assert!(it.past_last_byte());
-        // Still coming in: a rate and a time left as before.
+        // Still coming in (yt-dlp's own connection receiving): a rate and a time left as before.
         p.merging = None;
+        p.speed = 1000.0;
         it.snap = Some(super::tool_snapshot(p.clone(), &url));
         assert!(!it.past_last_byte());
         assert_eq!(it.finishing(true), None);
-        // A file whose every byte is in while the last of it is written out: nothing comes in.
-        it.video = None;
+        // Every byte in, the engine's connections done, before the merge: nothing comes in.
+        p.speed = 0.0;
+        p.engine = Some(Default::default());
+        it.snap = Some(super::tool_snapshot(p.clone(), &url));
         assert!(it.past_last_byte());
+        // Short of the whole size: still coming.
         p.downloaded = 99 * m;
         it.snap = Some(super::tool_snapshot(p, &url));
         assert!(!it.past_last_byte());
