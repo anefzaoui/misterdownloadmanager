@@ -1469,6 +1469,12 @@
 #, machine
 	Drag the file into a folder or an app	Tōia te kōnae ki tētahi kōpaki, taupānga rānei
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	I tōia ki waho o te Tikiake kua oti, ā, i nekehia ki tētahi wāhi kāore i taea e MDM te ako
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	I tōia ki waho o te Tikiake kua oti, ā, i nekehia ki {folder}
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	Ngā hononga i whakatōia
@@ -3265,8 +3271,9 @@
 #. verb: opens the file
 #, machine
 	Open	Whakatuwhera
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	Whakatuwhera kōpaki
@@ -5694,6 +5701,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	He nui rawa te {file} hei rārangi wāhitau ({size}). Ka pānuihia e te Kawemai ngā kōnae kuputuhi, ngā whārangi tukutuku me ngā kaweake .ef2 tae atu ki te {limit}.
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	I nekehia a {file} ki tētahi atu wāhi mā te tō i waho o te Tikiake kua oti, ā, kāore i taea e MDM te ako kei hea. Kimihia ki te wāhi i whakatakahia e koe.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

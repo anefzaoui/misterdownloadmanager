@@ -436,7 +436,7 @@ impl Properties {
         )
         .clicked();
         if open && complete {
-            crate::dialogs::open_file(&item.dest);
+            crate::dialogs::open_download(&item.dest, item.moved_away);
         }
         if item.torrent.is_some()
             && winui::button_light(

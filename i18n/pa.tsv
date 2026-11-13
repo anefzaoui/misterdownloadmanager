@@ -1469,6 +1469,12 @@
 #, machine
 	Drag the file into a folder or an app	ਫ਼ਾਈਲ ਨੂੰ ਕਿਸੇ ਫੋਲਡਰ ਜਾਂ ਐਪ ਵਿੱਚ ਖਿੱਚੋ
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	“ਡਾਊਨਲੋਡ ਪੂਰਾ ਹੋ ਗਿਆ” ਵਿੱਚੋਂ ਬਾਹਰ ਖਿੱਚ ਕੇ ਅਜਿਹੀ ਥਾਂ 'ਤੇ ਭੇਜਿਆ ਗਿਆ ਜਿਸ ਬਾਰੇ MDM ਨੂੰ ਪਤਾ ਨਹੀਂ ਲੱਗ ਸਕਿਆ
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	“ਡਾਊਨਲੋਡ ਪੂਰਾ ਹੋ ਗਿਆ” ਵਿੱਚੋਂ ਬਾਹਰ ਖਿੱਚ ਕੇ {folder} ਵਿੱਚ ਭੇਜਿਆ ਗਿਆ
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	ਛੱਡੇ ਗਏ ਲਿੰਕ
@@ -3265,8 +3271,9 @@
 #. verb: opens the file
 #, machine
 	Open	ਖੋਲ੍ਹੋ
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	ਫੋਲਡਰ ਖੋਲ੍ਹੋ
@@ -5694,6 +5701,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} ਪਤਿਆਂ ਦੀ ਸੂਚੀ ਵਜੋਂ ਵਰਤਣ ਲਈ ਬਹੁਤ ਵੱਡੀ ਹੈ ({size})। ਆਯਾਤ {limit} ਤੱਕ ਦੀਆਂ ਟੈਕਸਟ ਫ਼ਾਈਲਾਂ, ਵੈੱਬ ਪੰਨੇ ਅਤੇ .ef2 ਨਿਰਯਾਤ ਪੜ੍ਹਦਾ ਹੈ।
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} ਨੂੰ “ਡਾਊਨਲੋਡ ਪੂਰਾ ਹੋ ਗਿਆ” ਵਿੱਚੋਂ ਬਾਹਰ ਖਿੱਚ ਕੇ ਕਿਤੇ ਹੋਰ ਭੇਜਿਆ ਗਿਆ ਸੀ, ਅਤੇ MDM ਨੂੰ ਪਤਾ ਨਹੀਂ ਲੱਗ ਸਕਿਆ ਕਿ ਕਿੱਥੇ। ਇਸਨੂੰ ਉੱਥੇ ਲੱਭੋ ਜਿੱਥੇ ਤੁਸੀਂ ਇਸਨੂੰ ਛੱਡਿਆ ਸੀ।
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

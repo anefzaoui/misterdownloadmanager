@@ -433,6 +433,7 @@ fn take_place(item: &mut Item, target: PathBuf) {
         }
     }
     item.dest = target;
+    item.moved_away = false;
 }
 
 /// Update `item.pending_mark` after `from` has been renamed to `actual_to` (including renaming
@@ -6354,12 +6355,53 @@ impl App {
         }
     }
 
+    /// Files dragged out of Download complete that the drop target moved (#869): the download
+    /// follows its file where the shell said it went, or remembers it went where MDM couldn't
+    /// learn. Only while the download still points where the drag took the file from.
+    fn poll_dragged_out(&mut self) {
+        for (id, from, out) in dialogs::dragged_out() {
+            let Some(item) = self.item(id).filter(|i| i.dest == from) else {
+                continue;
+            };
+            match &out {
+                dialogs::DraggedOut::Moved(to) => {
+                    tracing::info!("drag out: download {id} moved with its file");
+                    take_place(item, to.clone());
+                    let folder = to.parent().unwrap_or(to).display().to_string();
+                    item.note(crate::i18n::fmt(
+                        crate::i18n::t("Dragged out of Download complete and moved to {folder}"),
+                        &[("folder", &folder)],
+                    ));
+                }
+                dialogs::DraggedOut::MovedAway => {
+                    tracing::info!("drag out: download {id}'s file moved where MDM can't follow");
+                    item.moved_away = true;
+                    item.note(crate::i18n::t(
+                        "Dragged out of Download complete and moved to a place MDM couldn't learn",
+                    ));
+                }
+            }
+            for c in &mut self.complete {
+                if c.id == id {
+                    match &out {
+                        dialogs::DraggedOut::Moved(to) => {
+                            c.path = to.clone();
+                            c.moved_away = false;
+                        }
+                        dialogs::DraggedOut::MovedAway => c.moved_away = true,
+                    }
+                }
+            }
+            self.dirty = true;
+        }
+    }
+
     fn open_item(&mut self, id: u64) {
         let Some(i) = self.items.iter().find(|i| i.id == id) else {
             return;
         };
         if i.status == Status::Complete {
-            crate::dialogs::open_file(&i.dest);
+            crate::dialogs::open_download(&i.dest, i.moved_away);
         } else if !self.progress.iter().any(|p| p.id == id) {
             self.progress
                 .push(Progress::new(id, self.settings.show_complete));
@@ -6386,6 +6428,10 @@ impl App {
         let dest = target
             .and_then(|id| self.items.iter().find(|i| i.id == id))
             .map(|i| i.dest.clone());
+        // Its file dragged out of Download complete to a place MDM couldn't learn (#869).
+        let moved_away = target
+            .and_then(|id| self.items.iter().find(|i| i.id == id))
+            .is_some_and(|i| i.moved_away);
         match cmd {
             Cmd::AddUrl => self.add_url = Some(AddUrl::from_clipboard(&self.settings.url_history)),
             Cmd::Exit => {
@@ -6595,12 +6641,12 @@ impl App {
             }
             Cmd::OpenWith => {
                 if let Some(d) = dest {
-                    dialogs::open_with(&d);
+                    dialogs::open_download_with(&d, moved_away);
                 }
             }
             Cmd::OpenFolder => {
                 if let Some(d) = dest {
-                    dialogs::show_in_folder(&d);
+                    dialogs::show_download_in_folder(&d, moved_away);
                 }
             }
             Cmd::ToggleColumn(i) => self.list.visible[i] = !self.list.visible[i],
@@ -6831,6 +6877,7 @@ impl App {
     /// Pull engine progress into the rows; open "Download complete" when one finishes.
     fn poll(&mut self, ctx: &egui::Context) {
         self.poll_moves();
+        self.poll_dragged_out();
         self.poll_deferred_torrent_renames();
         if !self.moving.is_empty()
             || !self.renaming_torrents.is_empty()
@@ -6845,7 +6892,11 @@ impl App {
             if i.poll() {
                 self.dirty = true;
                 match i.status {
-                    Status::Complete => finished.push(i.id),
+                    Status::Complete => {
+                        // Downloaded again: its file is where MDM saved it.
+                        i.moved_away = false;
+                        finished.push(i.id);
+                    }
                     Status::Error => failed.push(i.id),
                     _ => {}
                 }

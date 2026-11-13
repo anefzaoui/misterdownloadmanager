@@ -1469,6 +1469,12 @@
 #, machine
 	Drag the file into a folder or an app	Ziehen Sie die Datei in einen Ordner oder eine App.
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	Aus „Download abgeschlossen“ gezogen und an einen Ort verschoben, den MDM nicht ermitteln konnte
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	Aus „Download abgeschlossen“ gezogen und nach „{folder}“ verschoben
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	Abgelegte Links
@@ -3265,8 +3271,9 @@
 #. verb: opens the file
 #, machine
 	Open	Öffnen
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	Ordner öffnen
@@ -5694,6 +5701,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} ist zu groß für eine Adressliste ({size}). Der Import liest Textdateien, Webseiten und .ef2-Exporte bis zu {limit}.
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} wurde durch Ziehen aus „Download abgeschlossen“ verschoben, und MDM konnte den neuen Speicherort nicht ermitteln. Suchen Sie die Datei dort, wo Sie sie abgelegt haben.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

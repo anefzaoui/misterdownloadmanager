@@ -561,6 +561,11 @@ These ship in the next version.
   and the list **45% verified**, the bar showing it in the accent colour, and **Finishing…** rather than
   **Connecting…**; a finished download's map of parts has no gaps
   ([#736](https://github.com/anefzaoui/misterdownloadmanager/issues/736))
+- ✅ Windows: the file dragged out of **Download complete** is moved or copied as Explorer does
+  it (moved on the same drive or with Shift, copied to another drive or with Ctrl), no longer
+  always copied, and its download follows a moved file to its new place; where MDM can't learn
+  the new place, **Open** and **Open folder** say the file was moved elsewhere
+  ([#869](https://github.com/anefzaoui/misterdownloadmanager/issues/869))
 - ✅ Windows: a graphics card whose OpenGL is older than 3.0 and that has no Direct3D 12 (Intel's
   first HD Graphics) no longer draws MDM's windows as garbage: MDM notices that OpenGL, draws
   with Direct3D on Windows' own software renderer (WARP) instead, from then on, and **View → Draw

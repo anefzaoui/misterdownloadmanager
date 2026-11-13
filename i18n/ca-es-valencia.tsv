@@ -1469,6 +1469,12 @@
 #, machine
 	Drag the file into a folder or an app	Arrossegueu el fitxer a una carpeta o una aplicació
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	S’ha arrossegat des de Baixades completades i s’ha mogut a un lloc que MDM no ha pogut identificar
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	S’ha arrossegat des de Baixades completades i s’ha mogut a {folder}
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	Enllaços arrossegats
@@ -3265,8 +3271,9 @@
 #. verb: opens the file
 #, machine
 	Open	Obrir
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	Obri la carpeta
@@ -5694,6 +5701,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} és massa gran per a ser una llista d’adreces ({size}). La importació llig fitxers de text, pàgines web i exportacions .ef2 de fins a {limit}.
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	S’ha mogut {file} a un altre lloc arrossegant-lo fora de Baixades completades, i MDM no ha pogut identificar on. Busca’l on l’has deixat anar.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

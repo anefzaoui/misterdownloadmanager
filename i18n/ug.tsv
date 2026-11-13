@@ -1469,6 +1469,12 @@
 #, machine
 	Drag the file into a folder or an app	ھۆججەتنى قىسقۇچقا ياكى ئەپكە سۆرەڭ
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	«چۈشۈرۈش تاماملاندى»دىن سۆرەپ چىقىرىلىپ، MDM تاپالمىغان جايغا يۆتكەلدى.
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	«چۈشۈرۈش تاماملاندى»دىن سۆرەپ چىقىرىلىپ، {folder} غا يۆتكەلدى.
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	سۆرەپ تاشلانغان ئۇلىنىشلار
@@ -3265,8 +3271,9 @@
 #. verb: opens the file
 #, machine
 	Open	ئېچىش
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	ھۆججەت قىسقۇچنى ئېچىش
@@ -5694,6 +5701,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} ئادرېس تىزىملىكى بولۇشقا بەك چوڭ ({size}). ئىمپورت قىلىش {limit} گىچە بولغان تېكىست ھۆججەتلىرى، تور بەتلىرى ۋە .ef2 ئېكسپورتلىرىنى ئوقۇيدۇ.
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} «چۈشۈرۈش تاماملاندى»دىن سۆرەپ چىقىرىلىپ باشقا جايغا يۆتكەلدى، MDM ئۇنىڭ قەيەرگە يۆتكەلگەنلىكىنى بىلەلمىدى. ئۇنى تاشلىغان جايىڭىزدىن ئىزدەڭ.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

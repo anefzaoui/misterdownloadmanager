@@ -1096,6 +1096,10 @@
 #. tooltip of the handle in Download complete: drag it to drop the downloaded file somewhere
 	Drag the file into a folder or an app	Drag the file into a folder or an app
 #. message or event log entry in the main window
+	Dragged out of Download complete and moved to a place MDM couldn't learn	Dragged out of Download complete and moved to a place MDM couldn't learn
+#. message or event log entry in the main window
+	Dragged out of Download complete and moved to {folder}	Dragged out of Download complete and moved to {folder}
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 	Dropped links	Dropped links
 #. window title in a dialog box
@@ -2417,8 +2421,9 @@
 #. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 	Open	Open
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 	Open folder	Open folder
 #. text in a download's progress window
@@ -4214,6 +4219,8 @@
 #. Import refused a file; {size} = its size and {limit} = the largest Import reads, like "4.50 GB" and "64.00 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.
+#. text in a dialog box
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	{file}: the file does NOT match its checksum ({algorithm})	{file}: the file does NOT match its checksum ({algorithm})

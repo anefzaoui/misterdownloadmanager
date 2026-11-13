@@ -1469,6 +1469,12 @@
 #, machine
 	Drag the file into a folder or an app	Faylı qovluğa və ya tətbiqə sürükləyin
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	Tamamlanmış endirmələr qovluğundan çıxarılıb MDM-in müəyyən edə bilmədiyi yerə köçürüldü
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	Tamamlanmış endirmələr qovluğundan çıxarılıb {folder} qovluğuna köçürüldü
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	Buraxılmış keçidlər
@@ -3265,8 +3271,9 @@
 #. verb: opens the file
 #, machine
 	Open	Aç
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	Qovluğu aç
@@ -5694,6 +5701,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} ünvan siyahısı kimi qəbul edilə bilməyəcək qədər böyükdür ({size}). İdxal ən çox {limit} ölçüsündə mətn fayllarını, veb-səhifələri və .ef2 ixraclarını oxuyur.
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} tamamlanmış endirmələr qovluğundan çıxarılıb başqa yerə köçürüldü və MDM onun yerini müəyyən edə bilmədi. Onu buraxdığınız yerdə axtarın.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

@@ -1469,6 +1469,12 @@
 #, machine
 	Drag the file into a folder or an app	ଫାଇଲକୁ ଏକ ଫୋଲ୍ଡର କିମ୍ବା ଏକ ଆପ୍‌ରେ ଟାଣନ୍ତୁ
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	ସମାପ୍ତ ଡାଉନଲୋଡ୍‌ରୁ ଟାଣି ବାହାର କରାଗଲା ଏବଂ MDM ଏହା କେଉଁଠାକୁ ଗଲା ଜାଣିପାରିଲା ନାହିଁ
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	ସମାପ୍ତ ଡାଉନଲୋଡ୍‌ରୁ ଟାଣି ବାହାର କରାଗଲା ଏବଂ {folder}କୁ ସ୍ଥାନାନ୍ତରିତ ହେଲା
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	ଡ୍ରପ୍ ହୋଇଥିବା ଲିଙ୍କ୍
@@ -3265,8 +3271,9 @@
 #. verb: opens the file
 #, machine
 	Open	ଖୋଲନ୍ତୁ
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	ଫୋଲ୍ଡର୍ ଖୋଲନ୍ତୁ
@@ -5694,6 +5701,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} ଏକ ଠିକଣା ତାଲିକା ହେବା ପାଇଁ ବହୁତ ବଡ଼ ({size})। ଆମଦାନୀ ଟେକ୍ସଟ୍ ଫାଇଲ୍, ୱେବ୍ ପୃଷ୍ଠା ଏବଂ {limit} ପର୍ଯ୍ୟନ୍ତ .ef2 ରପ୍ତାନି ପଢ଼ିଥାଏ।
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file}କୁ ସମାପ୍ତ ଡାଉନଲୋଡ୍‌ରୁ ଟାଣି ଅନ୍ୟତ୍ର ସ୍ଥାନାନ୍ତରିତ କରାଗଲା, ଏବଂ MDM ଏହା କେଉଁଠାକୁ ଗଲା ଜାଣିପାରିଲା ନାହିଁ। ଆପଣ ଏହାକୁ ଯେଉଁଠାରେ ଛାଡ଼ିଛନ୍ତି ସେଠାରେ ଖୋଜନ୍ତୁ।
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -6155,6 +6165,10 @@ extension	Left to the browser: {name}	ବ୍ରାଉଜରକୁ ଛଡାଯ�
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	ଲାଇଭ୍
+#. text in the browser extension
+#. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
+#, machine
+extension	Looking up the qualities…	ଗୁଣବତ୍ତାଗୁଡ଼ିକ ଖୋଜାଯାଉଛି…
 #. text in the browser extension
 #. in the menu under the download button over a video: the app took more than a minute to find the video's qualities, so the menu stopped waiting
 #, machine

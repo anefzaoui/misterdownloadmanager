@@ -1469,6 +1469,12 @@
 #, machine
 	Drag the file into a folder or an app	फ़ाइल को किसी फ़ोल्डर या ऐप में खींचें
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	“डाउनलोड पूरा” सूची से खींचकर ऐसी जगह ले जाया गया जिसे MDM पहचान नहीं सका।
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	“डाउनलोड पूरा” सूची से खींचकर {folder} में ले जाया गया।
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	छोड़े गए लिंक
@@ -3265,8 +3271,9 @@
 #. verb: opens the file
 #, machine
 	Open	खोलें
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	फ़ोल्डर खोलें
@@ -5694,6 +5701,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} पते की सूची के लिए बहुत बड़ा है ({size})। आयात {limit} तक की टेक्स्ट फ़ाइलें, वेब पेज और .ef2 निर्यात पढ़ता है।
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} को “डाउनलोड पूरा” सूची से खींचकर दूसरी जगह ले जाया गया था, और MDM यह पता नहीं लगा सका कि कहाँ। उसे वहाँ खोजें जहाँ आपने उसे छोड़ा था।
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
