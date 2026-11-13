@@ -560,6 +560,10 @@ These ship in the next version.
 - ✅ Windows 10: no FSI and PDI boxes around a file's name in the taskbar's preview and tip of a
   progress window, or in the notification-area icon's tip; right-to-left titles keep their order
   ([#919](https://github.com/anefzaoui/misterdownloadmanager/issues/919))
+- ✅ An idle MDM no longer redraws its window each second to watch the clipboard for copied
+  links: the watch runs on its own thread and wakes the window only for a new text (with
+  Windows' software renderer, idle MDM went from most of a processor core to a sixth of it)
+  ([#847](https://github.com/anefzaoui/misterdownloadmanager/issues/847))
 - ✅ Windows: a graphics card without Direct3D 12 (Intel's HD Graphics 3000 to 5500, older AMD
   Radeon cards) draws with OpenGL, then with Direct3D 12 on Windows' own software renderer (WARP)
   once OpenGL fails there: it can't start, is too old, shows no first window, or MDM freezes
