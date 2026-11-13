@@ -557,6 +557,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ An idle MDM no longer redraws its window each second to watch the clipboard for copied
+  links: the watch runs on its own thread and wakes the window only for a new text (with
+  Windows' software renderer, idle MDM went from most of a processor core to a sixth of it)
+  ([#847](https://github.com/anefzaoui/misterdownloadmanager/issues/847))
 - ✅ Torrents: File Properties closes with OK, instead of asking for an http(s) or ftp(s)
   address; a torrent's magnet link is shown read only there
   ([#904](https://github.com/anefzaoui/misterdownloadmanager/issues/904))
