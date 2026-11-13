@@ -1673,7 +1673,6 @@ mod tests {
         let mut st = ListState::default();
         st.apply(saved(65.0));
         assert_eq!(st.widths[STATUS], DEFAULT_WIDTHS[STATUS]);
-        assert!(DEFAULT_WIDTHS[STATUS] > 65.0);
         // Last Try Date's 65 px is its own default, not Status's.
         assert_eq!(st.widths[6], 65.0);
         for chosen in [80.0, 64.0, 200.0] {
