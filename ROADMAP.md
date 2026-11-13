@@ -557,6 +557,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Menus' keyboard letters: no two items of one menu share one. Arrange files' By Status has U, so A
+  reaches By Date Added ([#926](https://github.com/anefzaoui/misterdownloadmanager/issues/926),
+  [#928](https://github.com/anefzaoui/misterdownloadmanager/pull/928)); the list's blank-space menu
+  adds a download with N, so A reaches Select all; View → Text has X. A test checks every menu
+  MDM builds, in English and in the languages that keep its letters
 - ✅ Windows 10: no FSI and PDI boxes around a file's name in the taskbar's preview and tip of a
   progress window, or in the notification-area icon's tip; right-to-left titles keep their order
   ([#919](https://github.com/anefzaoui/misterdownloadmanager/issues/919))
