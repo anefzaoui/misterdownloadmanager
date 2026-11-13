@@ -2778,6 +2778,11 @@ impl App {
                 }
             }
             // Every download selected and the right-click menu open on them (Move/Rename, #333).
+            // The list's right-click menu on blank space (#926), for screenshots.
+            "context" if tab == "blank" => {
+                self.open_menu = None;
+                self.open_popup(Popup::Item(None), egui::pos2(360.0, 220.0));
+            }
             "context" if tab == "all" => {
                 self.run(Cmd::SelectAll, None, ctx);
                 self.open_menu = None;
