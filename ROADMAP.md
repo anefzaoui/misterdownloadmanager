@@ -557,6 +557,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Tests: the five that checked a long list is read in linear time against a fixed number of
+  seconds (one failed on a slow macOS runner) now time the same work at two sizes, eight times
+  apart, and fail only when the larger one costs over 24 times as much (a square costs 64 times),
+  whatever the machine's speed
 - ✅ The progress window's connections table while a video downloads: MDM's own connections (as
   many as Options → Connection gives), and yt-dlp's one connection while it looks the page up or
   downloads a live stream itself, instead of an empty table
