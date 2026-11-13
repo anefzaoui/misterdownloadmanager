@@ -158,30 +158,66 @@ fn replaced_files(items: &[Item], id: u64, yt_dlp: bool) -> Option<Vec<PathBuf>>
     }
     files.push(state_path(dest));
     files.push(mdm_engine::naming::part_path(dest));
-    if yt_dlp
-        && item.video.is_some()
-        && let (Some(dir), Some(stem)) = (dest.parent(), dest.file_stem())
-    {
-        let folder = low(dir);
-        let named: Vec<String> = others
-            .iter()
-            .filter(|o| o.dest.parent().is_some_and(|p| low(p) == folder))
-            .flat_map(|o| [o.dest.file_name(), o.dest.file_stem()])
-            .flatten()
-            .map(|n| format!("{}.", n.to_string_lossy().to_lowercase()))
-            .collect();
-        for f in mdm_tools::video::own_files(dir, &stem.to_string_lossy(), true) {
-            let name = f
-                .file_name()
-                .map(|n| n.to_string_lossy().to_lowercase())
-                .unwrap_or_default();
-            if !named.iter().any(|n| name.starts_with(n)) && !files.contains(&f) {
+    if yt_dlp {
+        for f in video_leftovers(items, id, true) {
+            if !files.contains(&f) {
                 files.push(f);
             }
         }
     }
     files.retain(|f| !others.iter().any(|o| low(&o.dest) == low(f)));
     Some(files)
+}
+
+/// What yt-dlp left beside video download `id`'s file (`mdm_tools::video::own_files`): the
+/// streams of an unfinished run or a failed merge, their part files, the merge's file; with
+/// `outputs`, also the finished file and its subtitles. Never a file another download in that
+/// folder may own: one named after its name or stem and a dot, letter case aside. Nothing for a
+/// download that isn't a video.
+fn video_leftovers(items: &[Item], id: u64, outputs: bool) -> Vec<PathBuf> {
+    let low = |p: &std::path::Path| p.to_string_lossy().to_lowercase();
+    let Some(item) = items.iter().find(|i| i.id == id && i.video.is_some()) else {
+        return Vec::new();
+    };
+    let (Some(dir), Some(stem)) = (item.dest.parent(), item.dest.file_stem()) else {
+        return Vec::new();
+    };
+    let folder = low(dir);
+    let others: Vec<&Item> = items.iter().filter(|i| i.id != id).collect();
+    let named: Vec<String> = others
+        .iter()
+        .filter(|o| o.dest.parent().is_some_and(|p| low(p) == folder))
+        .flat_map(|o| [o.dest.file_name(), o.dest.file_stem()])
+        .flatten()
+        .map(|n| format!("{}.", n.to_string_lossy().to_lowercase()))
+        .collect();
+    // The parts its failed merge kept, by name (yt-dlp names some, `Talk.faud-English.mp4`, as
+    // no other leftover is named), while still beside its file.
+    let kept = item.video.iter().flat_map(|v| &v.parts).filter(|p| {
+        p.parent().is_some_and(|p| low(p) == folder)
+            && p.file_name().is_some_and(|n| {
+                n.to_string_lossy()
+                    .to_lowercase()
+                    .starts_with(&format!("{}.", stem.to_string_lossy().to_lowercase()))
+            })
+    });
+    let mut found = mdm_tools::video::own_files(dir, &stem.to_string_lossy(), outputs);
+    for p in kept {
+        if p.is_file() && !found.iter().any(|f| low(f) == low(p)) {
+            found.push(p.clone());
+        }
+    }
+    found
+        .into_iter()
+        .filter(|f| {
+            let name = f
+                .file_name()
+                .map(|n| n.to_string_lossy().to_lowercase())
+                .unwrap_or_default();
+            !named.iter().any(|n| name.starts_with(n))
+                && !others.iter().any(|o| low(&o.dest) == low(f))
+        })
+        .collect()
 }
 
 /// The quality menu's answer for its choice after the duplicate check: a new download started or
@@ -3444,6 +3480,11 @@ impl App {
                 }
                 let _ = std::fs::remove_file(mdm_engine::naming::part_path(&i.dest));
                 let _ = std::fs::remove_file(state_path(&i.dest));
+                // A video's streams and their parts, kept for Resume (an unfinished run, a
+                // failed merge): they go with it.
+                for f in video_leftovers(&self.items, id, false) {
+                    let _ = std::fs::remove_file(f);
+                }
             }
             self.items.retain(|i| i.id != id);
             for q in &mut self.queues {
@@ -4522,6 +4563,7 @@ impl App {
             item.video = Some(model::VideoSpec {
                 selector: add.selector,
                 subs: add.subs,
+                parts: Vec::new(),
             });
             // The quality menu's look-up goes with this new download only, started now and while
             // fresh: one queued for later, or added on a duplicate question answered late,
@@ -4647,6 +4689,7 @@ impl App {
                 item.video = Some(model::VideoSpec {
                     selector: add.selector.clone(),
                     subs: Default::default(),
+                    parts: Vec::new(),
                 });
             }
             ids.push(id);
@@ -11126,6 +11169,7 @@ mod same_name_tests {
         video.video = Some(crate::model::VideoSpec {
             selector: "b".into(),
             subs: Default::default(),
+            parts: Vec::new(),
         });
         let items = [row(1, &d.join("Master.webm"), Status::Stopped, 9), video];
         assert_eq!(
@@ -11425,6 +11469,7 @@ mod duplicate_tests {
         item.video = Some(model::VideoSpec {
             selector: SELECTOR.into(),
             subs: Default::default(),
+            parts: Vec::new(),
         });
         assert!(same_video(&item, &page(), SELECTOR));
         assert!(!same_video(
@@ -11545,6 +11590,7 @@ mod duplicate_tests {
         i.video = Some(model::VideoSpec {
             selector: SELECTOR.into(),
             subs: Default::default(),
+            parts: Vec::new(),
         });
         i
     }
@@ -11582,10 +11628,15 @@ mod duplicate_tests {
         }
         let old = || video_row(1, d, "Clip.mp4", Status::Complete);
         // Another video named after a stream of the first, running: its parts are its own.
-        let other = video_row(2, d, "Clip.f137.mp4", Status::Downloading);
+        let other_again = || video_row(2, d, "Clip.f137.mp4", Status::Downloading);
+        let other = other_again();
         // A plain download, paused, named alike.
-        let mut plain = Item::new(3, page(), d.join("Clip.v2.zip"), Category::General);
-        plain.status = Status::Stopped;
+        let plain_again = || {
+            let mut plain = Item::new(3, page(), d.join("Clip.v2.zip"), Category::General);
+            plain.status = Status::Stopped;
+            plain
+        };
+        let plain = plain_again();
         let files = replaced_files(&[old(), other, plain], 1, true).unwrap();
         assert_eq!(
             names(&files),
@@ -11597,6 +11648,16 @@ mod duplicate_tests {
                 "Clip.mp4.part-Frag3"
             ]
         );
+        // Deleted with its files (a merge failed, it was never resumed): what yt-dlp kept for
+        // Resume goes, never its subtitles or another download's parts.
+        assert_eq!(
+            names(&video_leftovers(
+                &[old(), other_again(), plain_again()],
+                1,
+                false
+            )),
+            ["Clip.f140.m4a", "Clip.mp4.part-Frag3"]
+        );
         // Another download of the same stem: only the old one's own file.
         let zip = Item::new(4, page(), d.join("clip.zip"), Category::General);
         let files = replaced_files(&[old(), zip], 1, true).unwrap();
@@ -11606,6 +11667,32 @@ mod duplicate_tests {
         let far = video_row(5, elsewhere.path(), "Clip.f140.mp4", Status::Stopped);
         let files = replaced_files(&[old(), far], 1, true).unwrap();
         assert!(names(&files).contains(&"Clip.f140.m4a".to_owned()));
+    }
+
+    /// A failed merge's parts go with Delete by the names the run kept, also those yt-dlp
+    /// names as no other leftover is named (an HLS sound's `Clip.faud-English.mp4`); never one
+    /// in another folder or of another name.
+    #[test]
+    fn a_failed_merges_parts_go_by_name() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        for f in ["Clip.f1280.mp4", "Clip.faud-English.mp4", "Other.mp4"] {
+            std::fs::write(d.join(f), b"x").unwrap();
+        }
+        let mut items = [video_row(1, d, "Clip.mp4", Status::Error)];
+        assert_eq!(
+            names(&video_leftovers(&items, 1, false)),
+            ["Clip.f1280.mp4"]
+        );
+        items[0].video.as_mut().unwrap().parts = vec![
+            d.join("Clip.f1280.mp4"),
+            d.join("Clip.faud-English.mp4"),
+            d.join("Other.mp4"),
+        ];
+        assert_eq!(
+            names(&video_leftovers(&items, 1, false)),
+            ["Clip.f1280.mp4", "Clip.faud-English.mp4"]
+        );
     }
 
     /// A running download is left alone; #342's automatic replacement (its finished file gone)

@@ -3085,12 +3085,25 @@ pub fn open_download(path: &Path, moved_away: bool) {
     });
 }
 
+/// Open a file with the system default application. On Windows, uses Win32 ShellExecuteW
+/// to respect user associations (such as 7-Zip for .zip archives) without explorer.exe failures (#811).
+fn open_file_platform(path: &Path) -> Result<(), std::io::Error> {
+    #[cfg(windows)]
+    {
+        crate::win32::open_file_shell(path)
+    }
+    #[cfg(not(windows))]
+    {
+        open::that_detached(path)
+    }
+}
+
 /// [`open_download`], waited for: true when the file was handed to the system. For a thread
 /// other than the window's (Download complete asks it through `launch::Asked`: whether it
 /// failed decides whether the box stays open).
 pub fn open_download_now(path: &Path, moved_away: bool) -> bool {
     hand_over(path, moved_away, |p| {
-        open::that_detached(p).map_err(|e| e.to_string())
+        open_file_platform(p).map_err(|e| e.to_string())
     })
 }
 

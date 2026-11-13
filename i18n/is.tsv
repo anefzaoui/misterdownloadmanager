@@ -2284,6 +2284,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	ekki tókst að skrifa skrár þess: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	ekki tókst að sameina mynd og hljóð í eina skrá ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	ekki tókst að sameina mynd og hljóð í eina skrá ({error}). Það sem var hlaðið niður er áfram í möppunni svo hægt sé að sameina aftur ({files}); ef niðurhalinu er eytt með „Eyða skrá af diski líka“ er því eytt
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	útgáfuupplýsingar þess eru ekki eins og búist var við: {detail}
@@ -5186,6 +5196,7 @@
 #, machine
 	United States Minor Outlying Islands	Fjarlægar smáeyjar Bandaríkjanna
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	Óþekkt
 #. text in a dialog box; text in a download's progress window; text in whereis.rs

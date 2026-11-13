@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	ಅದರ ಫೈಲ್‌ಗಳನ್ನು ಬರೆಯಲಾಗಲಿಲ್ಲ: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	ಅದರ ಚಿತ್ರ ಮತ್ತು ಧ್ವನಿಯನ್ನು ಒಂದೇ ಫೈಲ್‌ಗೆ ಸೇರಿಸಲಾಗಲಿಲ್ಲ ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	ಅದರ ಚಿತ್ರ ಮತ್ತು ಧ್ವನಿಯನ್ನು ಒಂದೇ ಫೈಲ್‌ಗೆ ಸೇರಿಸಲಾಗಲಿಲ್ಲ ({error}). ಡೌನ್‌ಲೋಡ್ ಮಾಡಿದ ಫೈಲ್‌ಗಳು ಮತ್ತೆ ಸೇರಿಸಲು ಫೋಲ್ಡರ್‌ನಲ್ಲಿ ಉಳಿದಿವೆ ({files}); “ಡಿಸ್ಕ್‌ನಿಂದ ಫೈಲ್ ಅನ್ನು ಸಹ ಅಳಿಸಿ” ಆಯ್ಕೆಯೊಂದಿಗೆ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಅಳಿಸಿದರೆ, ಫೈಲ್ ಕೂಡ ಅಳಿಸಲ್ಪಡುತ್ತದೆ
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	ಅದರ ಬಿಡುಗಡೆ ಮಾಹಿತಿ ನಿರೀಕ್ಷಿಸಿದಂತೆ ಇಲ್ಲ: {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	ಯುನೈಟೆಡ್ ಸ್ಟೇಟ್ಸ್ ಮೈನರ್ ಔಟ್‌ಲೈಯಿಂಗ್ ದ್ವೀಪಗಳು
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	ಅಜ್ಞಾತ
 #. text in a dialog box; text in a download's progress window; text in whereis.rs

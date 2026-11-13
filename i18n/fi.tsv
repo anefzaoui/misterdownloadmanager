@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	sen tiedostoja ei voitu kirjoittaa: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	kuvaa ja ääntä ei voitu yhdistää yhdeksi tiedostoksi ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	kuvaa ja ääntä ei voitu yhdistää yhdeksi tiedostoksi ({error}). Ladatut osat jäävät kansioon, jotta ne voidaan yhdistää uudelleen Jatka-toiminnolla ({files}); latauksen poistaminen valinnalla ”Poista tiedosto myös levyltä” poistaa ne
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	sen julkaisutiedot eivät ole odotetun mukaiset: {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	Yhdysvaltain pienet erillissaaret
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	Tuntematon
 #. text in a dialog box; text in a download's progress window; text in whereis.rs

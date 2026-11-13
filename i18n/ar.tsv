@@ -1763,6 +1763,16 @@
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 	its files could not be written: {error}	تعذر كتابة ملفاته: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	تعذر دمج صورته وصوته في ملف واحد ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	تعذر دمج صورته وصوته في ملف واحد ({error}). تبقى الملفات التي تم تنزيلها في المجلد لكي تدمجها «المتابعة» مرة أخرى ({files})؛ يؤدي حذف التنزيل باستخدام «حذف الملف من القرص أيضا» إلى إزالته
 #. text in errors.rs
 	its release information is not as expected: {detail}	معلومات الإصدار الخاصة به ليست كما هو متوقع: {detail}
 #. text in countries.rs
@@ -4000,6 +4010,7 @@
 #. a country's name (where a download's server is)
 	United States Minor Outlying Islands	جزر الولايات المتحدة النائية الصغرى
 #. text in a download's Properties window
+#. the web page is not known
 	Unknown	غير معروف
 #. text in a dialog box; text in a download's progress window; text in whereis.rs
 #. the reason a download failed is not known

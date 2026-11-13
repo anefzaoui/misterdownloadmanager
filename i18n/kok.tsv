@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	ताचीं फायली बरोवंक शक्य नात: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	ताची प्रतिमा आनी आवाज एका फायलींत जोडपाक जमलें ना ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	ताची प्रतिमा आनी आवाज एका फायलींत जोडपाक शकले ना ({error}). डाउनलोड केल्लें पुन्हा जोडपाखातीर फोल्डरांत उरता ({files}); “डिस्कांतल्यान फायल काडून उडोवची” वापरून डाउनलोड काडून उडयल्यार ती वता
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	ताची रिलीज म्हायती अपेक्षे प्रमाण ना: {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	युनायटेड स्टेट्स मायनर आउटलाइंग जुंवे
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	अज्ञात
 #. text in a dialog box; text in a download's progress window; text in whereis.rs

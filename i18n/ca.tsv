@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	no s'han pogut escriure els seus fitxers: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	No s’han pogut unir la imatge i el so en un sol fitxer ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	no s’han pogut unir la imatge i el so en un sol fitxer ({error}). El que s’ha baixat es queda a la carpeta perquè la funció de reprendre ho torni a unir ({files}); si suprimeixes la baixada amb «Suprimeix també el fitxer del disc», s’eliminarà
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	la informació de la seva versió no és l'esperada: {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	Illes Perifèriques Menors dels Estats Units
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	Desconegut
 #. text in a dialog box; text in a download's progress window; text in whereis.rs

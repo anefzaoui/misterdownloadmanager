@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	ইয়াৰ ফাইলসমূহ লিখিব পৰা নগ'ল: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	ইয়াৰ ছবি আৰু শব্দ এটা ফাইলত একেলগ কৰিব পৰা নগ’ল ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	ইয়াৰ ছবি আৰু শব্দ এটা ফাইলত একেলগ কৰিব পৰা নগ’ল ({error})। পুনৰ একেলগ কৰিবলৈ ডাউনলোড কৰা ফাইলসমূহ ফোল্ডাৰত থাকিব ({files}); “ডিস্কৰ পৰা ফাইলটোও মচি পেলাওক” বিকল্পৰে ডাউনলোডটো মচি পেলালে ফাইলসমূহো মচি পেলোৱা হ’ব।
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	ইয়াৰ ৰিলিজৰ তথ্য আশা কৰা ধৰণৰ নহয়: {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	আমেৰিকা যুক্তৰাষ্ট্ৰৰ ক্ষুদ্ৰ বহিৰ্ভূত দ্বীপসমূহ
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	অজ্ঞাত
 #. text in a dialog box; text in a download's progress window; text in whereis.rs

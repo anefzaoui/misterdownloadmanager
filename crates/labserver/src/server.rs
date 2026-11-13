@@ -372,6 +372,7 @@ impl LabServer {
             .route("/cookie", get(pages::cookie))
             .route("/assets/{file}", get(pages::asset))
             .route("/hls/master.m3u8", get(streams::hls_master))
+            .route("/hls/broken-audio.m3u8", get(streams::hls_broken_master))
             .route("/hls/{track}/{file}", get(streams::hls_file))
             .route("/hlsg/{site}/master.m3u8", get(streams::hlsg_master))
             .route("/hlsg/{site}/{track}/{file}", get(streams::hlsg_file))
@@ -718,6 +719,8 @@ STREAMS  3 segments of 4 s per track. HLS: real MPEG-TS, a grey H.264 picture (2
 GET /hls/master.m3u8   two variants (720p: 1280x720, 1280000 b/s; 360p: 640x360, 640000 b/s)
     and an audio rendition (GROUP-ID="aud"): /hls/{720p,360p,audio}/index.m3u8 -> seg0..2.ts
     of 48128, 24064, 6016 bytes (application/vnd.apple.mpegurl, video/mp2t)
+GET /hls/broken-audio.m3u8  the same, its sound /hls/audio/broken.m3u8 -> broken0..2.ts: seeded
+    bytes, no MPEG-TS, so ffmpeg can't join it with a picture (a video's failed merge)
 GET /dash/manifest.mpd  (application/dash+xml) the same tracks as Representations with a
     SegmentTemplate: /dash/{720p,360p,audio}/init.mp4 and seg1..3.m4s (video/mp4, audio/mp4)
 GET /dash/protected.mpd  the same, each AdaptationSet marked encrypted (CENC, Widevine's

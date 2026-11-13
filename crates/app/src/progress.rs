@@ -1313,6 +1313,10 @@ impl Progress {
             winui::copyable(ui, rect, key, s, cut);
         };
         let web_page = item.got_web_page();
+        // A failure that takes a paragraph to explain: the reason under "Error", in the rows of
+        // the sizes and times, which say nothing then (a site's page, #701; a video's failed
+        // merge, what stays for Resume).
+        let explained = web_page || item.merge_failed();
         let status = match item.status {
             // A torrent reading and checking its files says so, not "Receiving data" (#39).
             _ if let Some(checking) = item.torrent_checking() => checking,
@@ -1359,7 +1363,7 @@ impl Progress {
             // i18n: a download's status (state it is in, not a command): waiting in a queue
             Status::Queued => crate::i18n::t("Waiting").to_owned(),
             // The site's page instead of the file (#701): why, and what to do, under it.
-            Status::Error if web_page => crate::i18n::t("Error").to_owned(),
+            Status::Error if explained => crate::i18n::t("Error").to_owned(),
             Status::Error => crate::i18n::fmt(
                 // i18n: a download's status: it failed, with the reason
                 crate::i18n::t("Error: {error}"),
@@ -1446,7 +1450,7 @@ impl Progress {
         for (label, base, vx, value) in rows {
             // A site's page instead of the file (#701): its sizes and times say nothing, the
             // reason takes their rows.
-            if web_page && label != "Status" {
+            if explained && label != "Status" {
                 continue;
             }
             let vx = if vx == 135.0 {
@@ -1469,7 +1473,7 @@ impl Progress {
             };
             fit(ui, label, vx, base, &value, vc);
         }
-        if web_page {
+        if explained {
             winui::paragraph(
                 p,
                 o.x + 33.0,

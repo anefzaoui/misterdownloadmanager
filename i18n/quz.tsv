@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	kay qillqankuna mana qillqayta atinchu: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	Rikch'anatawan uyarinata mana huk khipuman huñuyta atirqanchu: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	Rikch'anatawan uyarinata mana huk khipuman huñuyta atirqanchu: {error}. Uraykachisqa kaqqa khipu waqaychanapi qhipakun, chaymanta kutichiywan hukllachaypaq ({files}); «Khiputa diskimanta pichay» nisqawan uraykachiyta pichaspaqa chayta chinkachin
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	kay lluqsichisqa willaykuna mana suyasqa hinachu: {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	Hukllachasqa Amirika Suyukunap Huch'uy Hawasuyu Wat'ankuna
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	Mana riqsisqa
 #. text in a dialog box; text in a download's progress window; text in whereis.rs
