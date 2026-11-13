@@ -432,11 +432,13 @@ pub fn forget_caption(hwnd: isize) {
             s.remove(&hwnd);
         }
     });
-    ANIMATING.with(|s| {
-        if let Ok(mut s) = s.try_borrow_mut() {
-            s.remove(&hwnd);
-        }
-    });
+    for set in [&ANIMATING, &FADING] {
+        set.with(|s| {
+            if let Ok(mut s) = s.try_borrow_mut() {
+                s.remove(&hwnd);
+            }
+        });
+    }
 }
 
 /// Was "Hide to the notification area" chosen in window `hwnd`'s system menu (once)?
@@ -725,6 +727,7 @@ unsafe fn caption_back(hwnd: HWND) {
     // SAFETY: (the caller's) our own window; DWM attributes read from locals during the calls.
     unsafe {
         RemoveWindowSubclass(hwnd, Some(caption_less_proc), DRAWN_SUBCLASS);
+        dwm_frame_off(hwnd, false);
         let style = GetWindowLongPtrW(hwnd, GWL_STYLE) as u32;
         SetWindowLongPtrW(hwnd, GWL_STYLE, ((style & !WS_POPUP) | WS_CAPTION) as isize);
         let corner = DWMWCP_DEFAULT;
@@ -756,17 +759,21 @@ unsafe fn caption_back(hwnd: HWND) {
             m.remove(&(hwnd as isize));
         }
     });
-    ANIMATING.with(|s| {
-        if let Ok(mut s) = s.try_borrow_mut() {
-            s.remove(&(hwnd as isize));
-        }
-    });
+    for set in [&ANIMATING, &FADING] {
+        set.with(|s| {
+            if let Ok(mut s) = s.try_borrow_mut() {
+                s.remove(&(hwnd as isize));
+            }
+        });
+    }
 }
 
 thread_local! {
     /// The windows framed by [`caption_less`] that have the caption style for the length of a
     /// minimize, maximize or restore ([`animation_caption`]), by HWND.
     static ANIMATING: std::cell::RefCell<std::collections::HashSet<isize>> = Default::default();
+    /// Those of them that have it for the moment they are hidden ([`fade_caption`]).
+    static FADING: std::cell::RefCell<std::collections::HashSet<isize>> = Default::default();
 }
 
 fn animating(hwnd: HWND) -> bool {
@@ -813,6 +820,9 @@ unsafe fn animation_caption(hwnd: HWND, kind: Drawn, on: bool) {
     });
     // SAFETY: (the caller's) our own window, on its thread.
     unsafe {
+        if on {
+            dwm_frame_off(hwnd, true);
+        }
         let style = drawn_style(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, kind);
         let style = if on { style | WS_CAPTION } else { style };
         SetWindowLongPtrW(hwnd, GWL_STYLE, style as isize);
@@ -835,6 +845,93 @@ unsafe fn animation_caption(hwnd: HWND, kind: Drawn, on: bool) {
             r.right - r.left,
             r.bottom - r.top,
             SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOACTIVATE | place,
+        );
+        if !on {
+            dwm_frame_off(hwnd, false);
+        }
+    }
+}
+
+/// A set of windows by HWND, kept by the window thread ([`ANIMATING`], [`FADING`]).
+type WindowSet = std::thread::LocalKey<std::cell::RefCell<std::collections::HashSet<isize>>>;
+
+fn fading(hwnd: HWND) -> bool {
+    FADING.with(|s| s.try_borrow().is_ok_and(|s| s.contains(&(hwnd as isize))))
+}
+
+/// The caption style on (`on`) or off a window framed by [`caption_less`] for the moment it is
+/// hidden (the main window or a progress window into the tray): Windows fades a window out only
+/// when it has a caption style as it goes (#874). Unlike [`animation_caption`], the style alone
+/// changes: nothing is measured again, so the window's frame and picture stay as they are. Not
+/// while it has the caption of a minimize, nor taken off one minimized meanwhile (its restore
+/// takes it off). (Shown again, a window appears at once, with Classic too: Windows fades in
+/// none of MDM's windows.)
+///
+/// # Safety
+/// `hwnd` is a window of this thread framed by [`caption_less`] as `kind`.
+unsafe fn fade_caption(hwnd: HWND, kind: Drawn, on: bool) {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{IsIconic, WS_CAPTION};
+    if on == fading(hwnd) || (on && animating(hwnd)) {
+        return;
+    }
+    // First: the subclass's WM_STYLECHANGING keeps the caption style only while it is listed.
+    let list = |set: &'static WindowSet| {
+        set.with(|s| {
+            if let Ok(mut s) = s.try_borrow_mut() {
+                if on {
+                    s.insert(hwnd as isize);
+                } else {
+                    s.remove(&(hwnd as isize));
+                }
+            }
+        })
+    };
+    list(&FADING);
+    // SAFETY: (the caller's) our own window, on its thread.
+    unsafe {
+        if !on && IsIconic(hwnd) != 0 {
+            return;
+        }
+        list(&ANIMATING);
+        if on {
+            dwm_frame_off(hwnd, true);
+        }
+        let style = drawn_style(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, kind);
+        let style = if on { style | WS_CAPTION } else { style };
+        SetWindowLongPtrW(hwnd, GWL_STYLE, style as isize);
+        if !on {
+            dwm_frame_off(hwnd, false);
+        }
+    }
+}
+
+/// DWM's own frame off (`caption`) or back on a window framed by [`caption_less`] for as long as it
+/// has the caption style of an animation or a fade, on Windows 10: there DWM draws the caption
+/// style's title bar over the window's for those frames, a white (or accent-coloured) band above
+/// MDM's own title bar (#874). With DWM's frame off, a thin edge shows instead; the window is the
+/// same before and after. Windows 11 draws no such band.
+///
+/// # Safety
+/// `hwnd` is a window of this thread.
+unsafe fn dwm_frame_off(hwnd: HWND, caption: bool) {
+    use windows_sys::Win32::Graphics::Dwm::{
+        DWMNCRP_DISABLED, DWMNCRP_USEWINDOWSTYLE, DWMWA_NCRENDERING_POLICY, DwmSetWindowAttribute,
+    };
+    if windows_11() {
+        return;
+    }
+    let policy = if caption {
+        DWMNCRP_DISABLED
+    } else {
+        DWMNCRP_USEWINDOWSTYLE
+    };
+    // SAFETY: (the caller's) our own window; the policy is read from a local during the call.
+    unsafe {
+        DwmSetWindowAttribute(
+            hwnd,
+            DWMWA_NCRENDERING_POLICY as u32,
+            &policy as *const _ as *const c_void,
+            size_of::<i32>() as u32,
         );
     }
 }
@@ -984,10 +1081,10 @@ unsafe extern "system" fn caption_less_proc(
     };
     use windows_sys::Win32::UI::WindowsAndMessaging::{
         DefWindowProcW, HTMAXBUTTON, IsIconic, IsZoomed, NCCALCSIZE_PARAMS, PostMessageW, SC_CLOSE,
-        SC_MAXIMIZE, SC_MINIMIZE, SC_RESTORE, STYLESTRUCT, SendMessageW, WM_GETMINMAXINFO,
-        WM_NCACTIVATE, WM_NCLBUTTONDBLCLK, WM_NCLBUTTONDOWN, WM_NCLBUTTONUP, WM_NCMOUSELEAVE,
-        WM_NCMOUSEMOVE, WM_NCRBUTTONUP, WM_STYLECHANGING, WM_SYSCOMMAND, WM_WINDOWPOSCHANGED,
-        WS_CAPTION, WS_MINIMIZE,
+        SC_MAXIMIZE, SC_MINIMIZE, SC_RESTORE, STYLESTRUCT, SWP_HIDEWINDOW, SendMessageW, WINDOWPOS,
+        WM_GETMINMAXINFO, WM_NCACTIVATE, WM_NCLBUTTONDBLCLK, WM_NCLBUTTONDOWN, WM_NCLBUTTONUP,
+        WM_NCMOUSELEAVE, WM_NCMOUSEMOVE, WM_NCRBUTTONUP, WM_STYLECHANGING, WM_SYSCOMMAND,
+        WM_WINDOWPOSCHANGED, WM_WINDOWPOSCHANGING, WS_CAPTION, WS_MINIMIZE,
     };
     const HT_MAX: LRESULT = HTMAXBUTTON as LRESULT;
     let kind = Drawn::of(data);
@@ -1061,6 +1158,22 @@ unsafe extern "system" fn caption_less_proc(
                     animation_caption(hwnd, kind, false);
                 }
                 return res;
+            }
+        }
+        // Hidden (into the tray): the caption style for that moment, so it fades out as a window
+        // with a title bar does (#874), taken back once it is hidden.
+        WM_WINDOWPOSCHANGING | WM_WINDOWPOSCHANGED if lparam != 0 => {
+            // SAFETY: for both, lParam points to the WINDOWPOS of the change (Win32 contract),
+            // read here.
+            let flags = unsafe { (*(lparam as *const WINDOWPOS)).flags };
+            if flags & SWP_HIDEWINDOW != 0 {
+                // SAFETY: our own window, framed by caption_less as `kind`, on its thread.
+                unsafe { fade_caption(hwnd, kind, msg == WM_WINDOWPOSCHANGING) };
+            }
+            if msg == WM_WINDOWPOSCHANGED && animating(hwnd) {
+                // As below.
+                // SAFETY: a message posted to our own window.
+                unsafe { PostMessageW(hwnd, settled_message(), 0, 0) };
             }
         }
         // Back from the taskbar some other way (winit restoring it, a program's ShowWindow):
@@ -1519,6 +1632,48 @@ mod caption_less_tests {
                 assert_eq!(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, st);
                 assert!(!animating(hwnd));
                 assert_eq!(framed(hwnd), [l, t, l + r, t + b]);
+                // Hidden (#874: into the tray, so Windows fades it out): the caption style from
+                // the change's start, kept if winit sets its styles meanwhile, the frame
+                // untouched, gone once it is hidden. Shown, or moved, nothing changes. (The
+                // messages of the change, sent as the system sends them: the test window itself
+                // never shows.)
+                use windows_sys::Win32::UI::WindowsAndMessaging::{
+                    SWP_HIDEWINDOW, SWP_SHOWWINDOW, WINDOWPOS, WM_WINDOWPOSCHANGED,
+                    WM_WINDOWPOSCHANGING,
+                };
+                for change in [SWP_HIDEWINDOW, SWP_SHOWWINDOW, 0] {
+                    let mut pos: WINDOWPOS = zeroed();
+                    pos.hwnd = hwnd;
+                    pos.flags = change | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE;
+                    let lp = &mut pos as *mut WINDOWPOS as LPARAM;
+                    SendMessageW(hwnd, WM_WINDOWPOSCHANGING, 0, lp);
+                    let during = if change == SWP_HIDEWINDOW {
+                        st | WS_CAPTION
+                    } else {
+                        st
+                    };
+                    assert_eq!(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, during);
+                    SetWindowLongPtrW(hwnd, GWL_STYLE, st as isize);
+                    assert_eq!(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, during);
+                    assert_eq!(framed(hwnd), [l, t, l + r, t + b]);
+                    SendMessageW(hwnd, WM_WINDOWPOSCHANGED, 0, lp);
+                    assert_eq!(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, st);
+                    assert!(!animating(hwnd) && !fading(hwnd));
+                    assert_eq!(framed(hwnd), [l, t, l + r, t + b]);
+                }
+                // Hidden while it sits minimized with the caption of its animation: it keeps
+                // it (it goes once the window is back, as above).
+                animation_caption(hwnd, kind, true);
+                let mut pos: WINDOWPOS = zeroed();
+                pos.hwnd = hwnd;
+                pos.flags = SWP_HIDEWINDOW | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER;
+                let lp = &mut pos as *mut WINDOWPOS as LPARAM;
+                SendMessageW(hwnd, WM_WINDOWPOSCHANGING, 0, lp);
+                SendMessageW(hwnd, WM_WINDOWPOSCHANGED, 0, lp);
+                assert_eq!(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, st | WS_CAPTION);
+                assert!(animating(hwnd));
+                animation_caption(hwnd, kind, false);
+                assert_eq!(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, st);
                 DestroyWindow(hwnd);
             }
         }
