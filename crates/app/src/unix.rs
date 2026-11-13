@@ -1624,6 +1624,8 @@ pub fn tell_window_failed(text: &str) {
     eprintln!("{text}");
     tracing::error!("{text}");
     let title = "Mister Download Manager";
+    // A program of the desktop's draws it: without isolates (#919).
+    let text = &crate::i18n::os_text(text);
     let boxes: [(&str, Vec<&str>); 2] = [
         (
             "zenity",

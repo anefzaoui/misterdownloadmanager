@@ -4880,6 +4880,12 @@ pub fn pass_focus_on(ui: &Ui, resp: &Response, enabled: bool) {
     }
 }
 
+/// A system file or folder dialog titled `title`, for [`start_pick`]: the system draws the title,
+/// so it goes without isolates (#919).
+pub fn file_dialog(title: &str) -> rfd::FileDialog {
+    rfd::FileDialog::new().set_title(crate::i18n::os_text(title))
+}
+
 /// A system file or folder dialog's answer, from its thread.
 type PickSlot = std::sync::Arc<std::sync::Mutex<Option<Option<std::path::PathBuf>>>>;
 

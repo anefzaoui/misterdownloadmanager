@@ -94,7 +94,9 @@ pub fn monitor_main(m: MonitorArgs) -> eframe::Result {
     crate::theme::init_smooth_text(settings.smooth_text);
     let builder = crate::quiet(
         ViewportBuilder::default()
-            .with_title(crate::i18n::t("Mister Download Manager crash report"))
+            .with_title(crate::i18n::os_text(crate::i18n::t(
+                "Mister Download Manager crash report",
+            )))
             .with_inner_size([CLIENT[0] * zoom, CLIENT[1] * zoom])
             .with_resizable(false)
             .with_maximize_button(false)
