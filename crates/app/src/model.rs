@@ -901,7 +901,14 @@ impl Item {
             }
         }
         let dt = live.sample.0.elapsed().as_secs_f64();
-        if dt >= 0.5 {
+        if self.torrent.is_none()
+            && every_byte_in(&s, self.video.is_none() && self.gallery.is_none())
+        {
+            // Every byte in (#736): nothing comes in while the last of it is written out, the
+            // file checked, joined or named; the rate the download ended on isn't one any more.
+            live.rate = 0.0;
+            live.sample = (Instant::now(), s.downloaded);
+        } else if dt >= 0.5 {
             let inst = s.downloaded.saturating_sub(live.sample.1) as f64 / dt;
             live.rate = if live.rate == 0.0 {
                 inst
@@ -1123,40 +1130,47 @@ impl Item {
 
     /// After the last byte, while the file is checked against its checksum or a video's
     /// streams are joined (#736): "Verifying... (45%)", "Merging...", with how far it is when
-    /// that's known. `short`: the list's narrow Status column, "45% verified", the percentage
-    /// first (as "45% at Real-Debrid"); the progress window says it whole.
+    /// that's known. `short`: the list's Status column, a mark and how far, "✔ 45%" while it is
+    /// checked, "⊕ 45%" while it is joined ("✔ ..." before that is known): the column is 65 px
+    /// wide, and no language's word for it fits there beside a percentage. The cell's tip and a
+    /// screen reader say it whole ([`crate::list::Row::status_whole`]).
     pub fn finishing(&self, short: bool) -> Option<String> {
         let s = self.snap.as_ref()?;
-        let (plain, with_percent) = match s.state {
-            // i18n: a download's status while the finished file is checked against its checksum
-            State::Verifying => (crate::i18n::t("Verifying..."), {
-                if short {
-                    // i18n: the list's narrow Status column while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%": keep it first, the column is narrow
-                    crate::i18n::t("{percent} verified")
-                } else {
-                    // i18n: a download's status while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%"
-                    crate::i18n::t("Verifying... ({percent})")
-                }
-            }),
-            // i18n: a video's status while its picture and sound are joined into one file (ffmpeg)
-            State::Merging => (crate::i18n::t("Merging..."), {
-                if short {
-                    // i18n: the list's narrow Status column while a video's picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%": keep it first, the column is narrow
-                    crate::i18n::t("{percent} merged")
-                } else {
-                    // i18n: a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
-                    crate::i18n::t("Merging... ({percent})")
-                }
-            }),
+        let (mark, plain, with_percent) = match s.state {
+            State::Verifying => (
+                VERIFYING_MARK,
+                // i18n: a download's status while the finished file is checked against its checksum
+                crate::i18n::t("Verifying..."),
+                // i18n: a download's status while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%"
+                crate::i18n::t("Verifying... ({percent})"),
+            ),
+            State::Merging => (
+                MERGING_MARK,
+                // i18n: a video's status while its picture and sound are joined into one file (ffmpeg)
+                crate::i18n::t("Merging..."),
+                // i18n: a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
+                crate::i18n::t("Merging... ({percent})"),
+            ),
             _ => return None,
         };
-        Some(match s.finishing {
-            Some(f) => crate::i18n::fmt(
-                with_percent,
-                &[("percent", &crate::i18n::percent(f.clamp(0.0, 1.0), 0))],
-            ),
-            None => plain.to_owned(),
+        let percent = s
+            .finishing
+            .map(|f| crate::i18n::percent(f.clamp(0.0, 1.0), 0));
+        Some(match (short, percent) {
+            // As "... at Real-Debrid" before its service says how far.
+            (true, percent) => format!("{mark} {}", percent.as_deref().unwrap_or("...")),
+            (false, Some(percent)) => crate::i18n::fmt(with_percent, &[("percent", &percent)]),
+            (false, None) => plain.to_owned(),
         })
+    }
+
+    /// Every byte is in (#736): no rate and no time left, as once it is complete.
+    pub fn past_last_byte(&self) -> bool {
+        self.torrent.is_none()
+            && self
+                .snap
+                .as_ref()
+                .is_some_and(|s| every_byte_in(s, self.video.is_none() && self.gallery.is_none()))
     }
 
     pub fn status_text(&self) -> String {
@@ -1192,13 +1206,31 @@ impl Item {
 
     pub fn time_left(&self) -> String {
         match (self.status, self.size) {
-            (Status::Downloading, Some(t)) if self.rate() > 1.0 => {
+            (Status::Downloading, Some(t)) if self.rate() > 1.0 && !self.past_last_byte() => {
                 time((t.saturating_sub(self.downloaded)) as f64 / self.rate())
             }
             _ => String::new(),
         }
     }
 }
+
+/// Every byte of a download is in (#736): the last of it is written out (a file's whole size
+/// received, `file`), the file checked, a video's streams joined, or the file named. Nothing
+/// comes in any more.
+fn every_byte_in(s: &mdm_engine::Snapshot, file: bool) -> bool {
+    matches!(
+        s.state,
+        State::Verifying | State::Merging | State::Completing
+    ) || (file
+        && s.state == State::Downloading
+        && s.size.is_some_and(|t| t > 0 && s.downloaded >= t))
+}
+
+/// The list's Status column while a finished file is checked against its checksum (a check
+/// mark) and while a video's streams are joined (a circled plus), before how far (#736). Marks
+/// every system's symbol font has (theme.rs: `SYMBOL_FONTS`, `SYMBOL_PATTERN`).
+const VERIFYING_MARK: &str = "\u{2714}";
+const MERGING_MARK: &str = "\u{2295}";
 
 /// The "Last Try Date" and "Added" columns as stored, e.g. `Oct 28 21:44:12 2026` (the list's
 /// format; read back by `stamp_time`).
@@ -1412,17 +1444,32 @@ mod tests {
             ..Default::default()
         };
         it.snap = Some(super::tool_snapshot(p.clone(), &url));
-        assert_eq!(it.status_text(), "45% merged");
+        // A mark and how far: the column is narrow; the progress window says it whole.
+        assert_eq!(it.status_text(), "\u{2295} 45%");
         assert_eq!(it.finishing(false).as_deref(), Some("Merging... (45%)"));
+        assert!(it.past_last_byte());
         p.merging = Some(None);
         it.snap = Some(super::tool_snapshot(p.clone(), &url));
-        assert_eq!(it.status_text(), "Merging...");
-        let mut s = super::tool_snapshot(p, &url);
+        assert_eq!(it.status_text(), "\u{2295} ...");
+        assert_eq!(it.finishing(false).as_deref(), Some("Merging..."));
+        let mut s = super::tool_snapshot(p.clone(), &url);
         s.state = State::Verifying;
         s.finishing = Some(0.5);
         it.snap = Some(s);
-        assert_eq!(it.status_text(), "50% verified");
+        assert_eq!(it.status_text(), "\u{2714} 50%");
         assert_eq!(it.finishing(false).as_deref(), Some("Verifying... (50%)"));
+        assert!(it.past_last_byte());
+        // Still coming in: a rate and a time left as before.
+        p.merging = None;
+        it.snap = Some(super::tool_snapshot(p.clone(), &url));
+        assert!(!it.past_last_byte());
+        assert_eq!(it.finishing(true), None);
+        // A file whose every byte is in while the last of it is written out: nothing comes in.
+        it.video = None;
+        assert!(it.past_last_byte());
+        p.downloaded = 99 * m;
+        it.snap = Some(super::tool_snapshot(p, &url));
+        assert!(!it.past_last_byte());
     }
 
     /// Without a size there's no share to show: no 0 % (from #384).

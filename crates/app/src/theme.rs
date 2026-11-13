@@ -370,7 +370,7 @@ const SCRIPT_LANGS: &[(&str, &str)] = &[
     ("ml", "ml"),
 ];
 
-/// Marks that neither the interface font nor the script fonts have (✔ ✖ ↩ ⇧ ⌘ ⌥ ⌦, and → on
+/// Marks that neither the interface font nor the script fonts have (✔ ✖ ↩ ⇧ ⌘ ⌥ ⌦ ⊕, and → on
 /// Linux: #185): the system's symbol fonts, last in every family's chain, in every language,
 /// each one that is there. macOS keeps ✔ and ✖ in Zapf Dingbats, not in Apple Symbols.
 #[cfg(windows)]
@@ -380,7 +380,7 @@ const SYMBOL_FONTS: &[&str] = &["Apple Symbols.ttf", "ZapfDingbats.ttf"];
 /// Linux: the font fontconfig picks for those marks (glyph_tests lists every one the windows
 /// draw; a new one goes here too).
 #[cfg(not(any(windows, target_os = "macos")))]
-const SYMBOL_PATTERN: &str = ":charset=2024 2192 21a9 21e7 2318 2325 2326 2714 2716";
+const SYMBOL_PATTERN: &str = ":charset=2024 2192 21a9 21e7 2295 2318 2325 2326 2714 2716";
 
 /// The symbol fonts' bytes, in fallback order ([`SYMBOL_FONTS`], [`SYMBOL_PATTERN`]).
 fn symbol_fonts() -> Vec<Vec<u8>> {
@@ -1284,5 +1284,36 @@ mod glyph_tests {
             "marks without a glyph:\n{}",
             report.join("\n")
         );
+    }
+}
+
+#[cfg(test)]
+mod status_width_tests {
+    /// #736: the list's Status cell while a file is checked or a video joined fits its column
+    /// at the default width, in the list's font, the widest percentage a language writes
+    /// ("100 %") included: a mark, not a word ("63% merged" was cut to "63% me...").
+    #[test]
+    fn finishing_fits_the_status_column() {
+        let ctx = egui::Context::default();
+        super::fonts(&ctx, "en", false);
+        let mut out = ctx.run_ui(Default::default(), |_| {});
+        out.textures_delta.clear();
+        let font = crate::winui::tahoma();
+        // The cell's text starts 6 px in and ends 3 px before its right edge (list.rs).
+        let room = crate::list::DEFAULT_WIDTHS[3] - 1.0 - 6.0 - 3.0;
+        for text in [
+            "\u{2714} 100%",
+            "\u{2295} 100%",
+            "\u{2714} 100 %",
+            "\u{2295} 100\u{a0}%",
+            "\u{2295} ...",
+        ] {
+            let width = ctx.fonts_mut(|f| {
+                f.layout_no_wrap(text.to_owned(), font.clone(), egui::Color32::WHITE)
+                    .size()
+                    .x
+            });
+            assert!(width <= room, "{text}: {width} px, {room} px of room");
+        }
     }
 }

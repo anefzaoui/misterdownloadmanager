@@ -330,6 +330,9 @@ pub struct Row {
     /// In a queue: the Q column shows a queue icon (IDM: stacked files).
     pub queued: bool,
     pub cells: [String; COLS],
+    /// The Status cell's whole text when the cell shows it short ("✔ 45%" for "Verifying...
+    /// (45%)", #736): the cell's tip starts with it, and a screen reader says it.
+    pub status_whole: Option<String>,
 }
 
 #[derive(Default)]
@@ -839,7 +842,10 @@ pub fn show(
         rows_ui.interact(bounds, row_id(idx), egui::Sense::hover());
         let spoken = [0usize, 3, 2]
             .iter()
-            .map(|c| row.cells[*c].as_str())
+            .map(|c| match &row.status_whole {
+                Some(whole) if *c == 3 => whole.as_str(),
+                _ => row.cells[*c].as_str(),
+            })
             .filter(|t| !t.is_empty())
             .collect::<Vec<_>>()
             .join(", ");
@@ -956,7 +962,12 @@ pub fn show(
                     .is_some_and(|h| cell.contains(h))
                 {
                     let tip = if *c == 3 {
-                        status_tip(idx)
+                        let events = status_tip(idx);
+                        match &row.status_whole {
+                            Some(whole) if events.is_empty() => whole.clone(),
+                            Some(whole) => format!("{whole}\n{events}"),
+                            None => events,
+                        }
                     } else {
                         String::new()
                     };
@@ -1557,6 +1568,7 @@ mod tests {
             icon: IconKey::Silk("page_white"),
             queued,
             cells,
+            status_whole: None,
         }
     }
 
