@@ -610,8 +610,9 @@ enum Attempt {
         error: String,
         rerouted: bool,
     },
-    /// Every stream came, and joining them failed: no other server or look-up mends that.
-    MergeFailed(String),
+    /// Every stream came, and joining them failed: no other server or look-up mends that. With
+    /// the streams' format ids (`MDMQ`'s `1280+aud-English`).
+    MergeFailed(String, Vec<String>),
 }
 
 /// End yt-dlp and everything it started (#79): whenever the download is given up, nothing may
@@ -727,15 +728,11 @@ fn supervise(
                 }
                 return;
             }
-            Attempt::MergeFailed(error) => {
+            Attempt::MergeFailed(error, ids) => {
                 end(child);
                 // The streams stay for Resume (the merge's own unfinished file is gone).
                 let kept = template_of(&ours)
-                    .map(|(dir, stem)| {
-                        let mut kept = own_files(&dir, &stem, false);
-                        kept.sort();
-                        kept
-                    })
+                    .map(|(dir, stem)| kept_parts(&dir, &stem, &ids))
                     .unwrap_or_default();
                 let mut p = progress.lock().unwrap();
                 if p.state != State::Stopped {
@@ -1209,6 +1206,31 @@ fn saved_by_name(ours: &[String]) -> Option<PathBuf> {
         .max_by_key(|p| std::fs::metadata(p).and_then(|m| m.modified()).ok())
 }
 
+/// What a failed merge left in `dir` for `<stem>.%(ext)s`: what [`own_files`] tells (unfinished
+/// files, streams named by a numbered or `hls-` id), and each stream of format `ids` by its name,
+/// `<stem>.f<id>.<ext>`, however yt-dlp named it (`Talk.faud-English.mp4`, an HLS sound's).
+fn kept_parts(dir: &Path, stem: &str, ids: &[String]) -> Vec<PathBuf> {
+    let mut kept = own_files(dir, stem, false);
+    let named: Vec<String> = ids
+        .iter()
+        .map(|id| format!("{}.f{}.", stem, id).to_lowercase())
+        .collect();
+    if let Ok(rd) = std::fs::read_dir(dir) {
+        for e in rd.filter_map(Result::ok) {
+            let name = e.file_name().to_string_lossy().to_lowercase();
+            let whole = named.iter().any(|n| {
+                name.strip_prefix(n.as_str())
+                    .is_some_and(|ext| MEDIA.contains(&ext))
+            });
+            if whole && e.file_type().is_ok_and(|t| t.is_file()) && !kept.contains(&e.path()) {
+                kept.push(e.path());
+            }
+        }
+    }
+    kept.sort();
+    kept
+}
+
 /// The folder and the file stem of our output template (`-o <dir>/<stem>.%(ext)s`).
 fn template_of(ours: &[String]) -> Option<(PathBuf, String)> {
     let template = ours
@@ -1422,7 +1444,13 @@ fn attempt(
         // was done): what ffmpeg left half written goes.
         _ if let Some(temp) = &ran.merging => {
             let _ = std::fs::remove_file(temp);
-            return Attempt::MergeFailed(ran.failure);
+            let ids = ran
+                .quality
+                .as_deref()
+                .and_then(|q| q.split_whitespace().next())
+                .map(|ids| ids.split('+').map(str::to_owned).collect())
+                .unwrap_or_default();
+            return Attempt::MergeFailed(ran.failure, ids);
         }
         _ => return failed(ran.failure, rerouted),
     };

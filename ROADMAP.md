@@ -557,9 +557,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
-- ✅ A video whose picture and sound can't be joined says so and why, and that its downloaded parts
-  stay in the folder for Resume; deleting it with its files removes them, and ffmpeg's half-joined
-  file goes
+- ✅ A video whose picture and sound can't be joined says so in full and why, and that its downloaded
+  parts stay in the folder for Resume; deleting it with its files removes them
 - ✅ Tests: the merge's percentages, which a slow macOS runner once saw go back (the test's fake
   ffmpeg rewrote its file, read empty between two writes), never go back: the app holds them, and
   the test writes its file as ffmpeg does, empties it once on purpose and checks the end is reached

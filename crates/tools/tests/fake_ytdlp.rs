@@ -224,12 +224,13 @@ fn fake_ytdlp() -> ExitCode {
     // A merge that fails (a stream ffmpeg can't read): the streams stay, whole, as yt-dlp leaves
     // them, and the merge's file half written.
     if mode == "merge-fails" {
-        println!("MDMQ 137+140 1920x1080");
+        println!("MDMQ 137+aud-English 1920x1080");
         println!("MDMP 3000 3000 NA 1000 137");
-        println!("MDMP 1000 1000 NA 1000 140");
+        println!("MDMP 1000 1000 NA 1000 aud-English");
         let video = template.replace("%(ext)s", "mp4").replace("%%", "%");
         std::fs::write(video.replace(".mp4", ".f137.mp4"), [0u8; 3000]).unwrap();
-        std::fs::write(video.replace(".mp4", ".f140.m4a"), [0u8; 1000]).unwrap();
+        // An HLS sound, named as yt-dlp names its rendition.
+        std::fs::write(video.replace(".mp4", ".faud-English.mp4"), [0u8; 1000]).unwrap();
         if args.iter().any(|a| a.starts_with("post_process:MDMM")) {
             println!("MDMM {video}");
         }
@@ -567,7 +568,7 @@ fn merge_checks(me: &Path) {
         other => panic!("merge fails: {other:?}"),
     }
     assert_eq!(p.merging, None);
-    let kept = ["Talk.f137.mp4", "Talk.f140.m4a"];
+    let kept = ["Talk.f137.mp4", "Talk.faud-English.mp4"];
     assert_eq!(files, kept, "the streams stay, the merge's file goes");
     let named: Vec<String> = p
         .merge_failed

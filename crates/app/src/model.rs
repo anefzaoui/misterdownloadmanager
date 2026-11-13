@@ -753,6 +753,11 @@ pub struct VideoSpec {
     /// The subtitles saved with it (#68; none in a list saved before them).
     #[serde(default)]
     pub subs: mdm_tools::video::Subs,
+    /// What its last run kept beside its file when joining its streams failed, for Resume
+    /// (`mdm_tools::video::Progress::merge_failed`): deleting it with its files removes them,
+    /// whatever yt-dlp named them (`Talk.faud-English.mp4`).
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub parts: Vec<PathBuf>,
 }
 
 /// A running download and its speed measurement.
@@ -989,6 +994,15 @@ impl Item {
                 self.status = status;
                 // In the interface language; the engine's English when it gave no failure.
                 self.error = s.failure.as_ref().map(crate::errors::describe).or(s.error);
+                // A video's streams kept after its merge failed: its own, for Delete.
+                if let Some(Live {
+                    dl: Job::Video { job, .. },
+                    ..
+                }) = &self.live
+                    && let Some(v) = self.video.as_mut()
+                {
+                    v.parts = job.progress().merge_failed.unwrap_or_default();
+                }
                 if status == Status::Complete {
                     self.downloaded = self.size.unwrap_or(self.downloaded);
                 }
@@ -1083,6 +1097,13 @@ impl Item {
             && self.snap.as_ref().is_some_and(|s| {
                 s.state == State::Failed && matches!(s.failure, Some(mdm_engine::Error::GotWebPage))
             })
+    }
+
+    /// Its last run failed joining a video's streams and kept them for Resume
+    /// ([`VideoSpec::parts`]): the progress window explains it in full under "Error", as a
+    /// site's page (#701).
+    pub fn merge_failed(&self) -> bool {
+        self.status == Status::Error && self.video.as_ref().is_some_and(|v| !v.parts.is_empty())
     }
 
     /// Where its file comes from, the windows' "Address" (#795): a running video's stream under
@@ -1468,6 +1489,7 @@ mod file_address_tests {
         i.video = Some(VideoSpec {
             selector: "best".into(),
             subs: Default::default(),
+            parts: Vec::new(),
         });
         i
     }
@@ -1578,6 +1600,7 @@ mod tests {
         it.video = Some(VideoSpec {
             selector: "18".into(),
             subs: Default::default(),
+            parts: Vec::new(),
         });
         it
     }

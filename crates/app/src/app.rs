@@ -191,7 +191,23 @@ fn video_leftovers(items: &[Item], id: u64, outputs: bool) -> Vec<PathBuf> {
         .flatten()
         .map(|n| format!("{}.", n.to_string_lossy().to_lowercase()))
         .collect();
-    mdm_tools::video::own_files(dir, &stem.to_string_lossy(), outputs)
+    // The parts its failed merge kept, by name (yt-dlp names some, `Talk.faud-English.mp4`, as
+    // no other leftover is named), while still beside its file.
+    let kept = item.video.iter().flat_map(|v| &v.parts).filter(|p| {
+        p.parent().is_some_and(|p| low(p) == folder)
+            && p.file_name().is_some_and(|n| {
+                n.to_string_lossy()
+                    .to_lowercase()
+                    .starts_with(&format!("{}.", stem.to_string_lossy().to_lowercase()))
+            })
+    });
+    let mut found = mdm_tools::video::own_files(dir, &stem.to_string_lossy(), outputs);
+    for p in kept {
+        if p.is_file() && !found.iter().any(|f| low(f) == low(p)) {
+            found.push(p.clone());
+        }
+    }
+    found
         .into_iter()
         .filter(|f| {
             let name = f
@@ -4547,6 +4563,7 @@ impl App {
             item.video = Some(model::VideoSpec {
                 selector: add.selector,
                 subs: add.subs,
+                parts: Vec::new(),
             });
             // The quality menu's look-up goes with this new download only, started now and while
             // fresh: one queued for later, or added on a duplicate question answered late,
@@ -4672,6 +4689,7 @@ impl App {
                 item.video = Some(model::VideoSpec {
                     selector: add.selector.clone(),
                     subs: Default::default(),
+                    parts: Vec::new(),
                 });
             }
             ids.push(id);
@@ -11131,6 +11149,7 @@ mod same_name_tests {
         video.video = Some(crate::model::VideoSpec {
             selector: "b".into(),
             subs: Default::default(),
+            parts: Vec::new(),
         });
         let items = [row(1, &d.join("Master.webm"), Status::Stopped, 9), video];
         assert_eq!(
@@ -11430,6 +11449,7 @@ mod duplicate_tests {
         item.video = Some(model::VideoSpec {
             selector: SELECTOR.into(),
             subs: Default::default(),
+            parts: Vec::new(),
         });
         assert!(same_video(&item, &page(), SELECTOR));
         assert!(!same_video(
@@ -11550,6 +11570,7 @@ mod duplicate_tests {
         i.video = Some(model::VideoSpec {
             selector: SELECTOR.into(),
             subs: Default::default(),
+            parts: Vec::new(),
         });
         i
     }
@@ -11626,6 +11647,32 @@ mod duplicate_tests {
         let far = video_row(5, elsewhere.path(), "Clip.f140.mp4", Status::Stopped);
         let files = replaced_files(&[old(), far], 1, true).unwrap();
         assert!(names(&files).contains(&"Clip.f140.m4a".to_owned()));
+    }
+
+    /// A failed merge's parts go with Delete by the names the run kept, also those yt-dlp
+    /// names as no other leftover is named (an HLS sound's `Clip.faud-English.mp4`); never one
+    /// in another folder or of another name.
+    #[test]
+    fn a_failed_merges_parts_go_by_name() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        for f in ["Clip.f1280.mp4", "Clip.faud-English.mp4", "Other.mp4"] {
+            std::fs::write(d.join(f), b"x").unwrap();
+        }
+        let mut items = [video_row(1, d, "Clip.mp4", Status::Error)];
+        assert_eq!(
+            names(&video_leftovers(&items, 1, false)),
+            ["Clip.f1280.mp4"]
+        );
+        items[0].video.as_mut().unwrap().parts = vec![
+            d.join("Clip.f1280.mp4"),
+            d.join("Clip.faud-English.mp4"),
+            d.join("Other.mp4"),
+        ];
+        assert_eq!(
+            names(&video_leftovers(&items, 1, false)),
+            ["Clip.f1280.mp4", "Clip.faud-English.mp4"]
+        );
     }
 
     /// A running download is left alone; #342's automatic replacement (its finished file gone)
