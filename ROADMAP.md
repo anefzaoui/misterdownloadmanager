@@ -557,6 +557,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows: Open starts the program Windows has for the file's type (7-Zip for a .zip when it
+  opens them), as a double-click in Explorer does, instead of failing and showing the folder
+  ([#811](https://github.com/anefzaoui/misterdownloadmanager/issues/811),
+  [#854](https://github.com/anefzaoui/misterdownloadmanager/pull/854))
 - ✅ A video whose picture and sound can't be joined says so in full and why, and that its downloaded
   parts stay in the folder for Resume; deleting it with its files removes them
 - ✅ Tests: the merge's percentages, which a slow macOS runner once saw go back (the test's fake
