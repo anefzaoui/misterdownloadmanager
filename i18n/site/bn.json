@@ -838,10 +838,6 @@
    "source": "The interface is in every language Windows 11 offers. The catalogs in <g1><x2/></g1> were made by machine translation, and each row marked <x3/> waits for a native speaker:",
    "text": "ইন্টারফেসটি Windows 11-এর প্রতিটি ভাষায় উপলব্ধ। <g1><x2/></g1>-এর ক্যাটালগগুলি মেশিন অনুবাদ দ্বারা তৈরি করা হয়েছিল এবং <x3/> চিহ্নিত প্রতিটি সারি একজন স্থানীয় ভাষাভাষীর জন্য অপেক্ষা করছে:"
   },
-  "0c4e47b7b5c8f9f5": {
-   "source": "A freeze whose report shows the window thread inside the graphics driver as it shows a frame (<x1/> or <x2/> for Intel, <x3/> for NVIDIA, <x4/> for AMD, under <x5/>) is the driver's OpenGL stuck, not MDM: on Windows, choose <g6>View → Draw with → Direct3D</g6> (the default) and restart MDM, and update the graphics driver. If <g7>Draw with</g7> says Direct3D didn't start there, the line under it says why.",
-   "text": "একটি ফ্রিজ যার রিপোর্টে গ্রাফিক্স ড্রাইভারের মধ্যে উইন্ডো থ্রেড একটি ফ্রেম দেখানোর সময় দেখা যায় (<x1/> বা Intel-এর জন্য <x2/>, NVIDIA-এর জন্য <x3/>, AMD-এর জন্য <x4/>, <x5/>-এর অধীনে) তা ড্রাইভারের OpenGL আটকে থাকার কারণে, MDM-এর কারণে নয়: Windows-এ, <g6>দেখুন → আঁকার মাধ্যম → Direct3D</g6> (ডিফল্ট) নির্বাচন করুন এবং MDM পুনরায় চালু করুন, এবং গ্রাফিক্স ড্রাইভার আপডেট করুন। যদি <g7>আঁকার মাধ্যম</g7> বলে যে Direct3D সেখানে চালু হয়নি, তবে এর নিচের লাইনটি কারণটি বলে।"
-  },
   "0c6ce890ecccf13e": {
    "source": "For an internet plan with a data cap, select <g1>Download limits</g1> on the left:",
    "text": "ডেটা ব্যবহারের সীমা থাকা ইন্টারনেট প্ল্যানের জন্য, বাঁ দিকে <g1>ডাউনলোড সীমা</g1> নির্বাচন করুন:"
@@ -3546,10 +3542,6 @@
    "source": "Download complete with Open and Open folder",
    "text": "খুলুন এবং ফোল্ডার খুলুন সহ ডাউনলোড সম্পূর্ণ"
   },
-  "3512eeafea5246da": {
-   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. It times both parts of a frame: what MDM handles (the commands that come in, the clock of downloads, queues and the Scheduler), which runs minimized too, and the drawing; never the wait between frames. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). When the window thread is already back in the event loop by the time the dump is written, the freeze was over before the snapshot, so its stack can't explain it; those reports say so and share the signature <x3/>. macOS doesn't measure it yet. The monitor then writes a <g4>minidump</g4> of every thread from outside, through <x5/> and <x6/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>সমস্যা চিহ্নিতকরণ।</g1> যখন MDM ক্র্যাশ করে (Windows-এ একটি ব্যতিক্রম, Linux-এ একটি সিগন্যাল, macOS-এ একটি ম্যাক ব্যতিক্রম), প্যানিক করে, অথবা ফ্রিজ হয়ে যায়, তখন এটি মনিটরের কাছে একটি ডাম্প চায়। একটি ফ্রিজ হলো উইন্ডোর একটি ফ্রেম যা 8 সেকেন্ডের বেশি সময় ধরে চলে, যা একটি ওয়াচডগ থ্রেড দ্বারা দেখা হয় যা স্লিপ অবস্থায় ব্যয় করা সময়কে উপেক্ষা করে। এটি একটি ফ্রেমের উভয় অংশ পরিমাপ করে: MDM যা পরিচালনা করে (আগত কমান্ড, ডাউনলোডের ঘড়ি, কিউ এবং সময়সূচী), যা মিনিমাইজড অবস্থায়ও চলে, এবং ড্রইং; ফ্রেমের মধ্যবর্তী অপেক্ষার সময় নয়। ওয়াচডগ উইন্ডো থ্রেডটি এই সময়ের মধ্যে কতটা প্রসেসর সময় পেয়েছে তাও পরিমাপ করে, এবং রিপোর্ট বলে যে এর অর্থ কী: এটি পুরো সময় ধরে চলেছে (একটি লুপ), এটি একটি লক বা I/O-এর জন্য অপেক্ষা করেছে (একটি ডেডলক), অথবা এটি সাধারণ কোডে খুব কমই চলেছে, যার অর্থ কম্পিউটার MDM চালানোর জন্য খুব ব্যস্ত বা ডিস্ক থেকে লোড করতে ধীর, সম্ভবত MDM-এর বাগ নয় (এগুলি একটি স্বাক্ষর ভাগ করে, <x2/>)। যখন ডাম্প লেখার সময় উইন্ডো থ্রেডটি ইতিমধ্যেই ইভেন্ট লুপে ফিরে আসে, তখন স্ন্যাপশটের আগেই ফ্রিজ শেষ হয়ে গিয়েছিল, তাই এর স্ট্যাক এটি ব্যাখ্যা করতে পারে না; সেই রিপোর্টগুলি তা বলে এবং <x3/> স্বাক্ষর ভাগ করে। macOS এখনও এটি পরিমাপ করে না। মনিটর তখন <x5/> এবং <x6/> এর মাধ্যমে বাইরে থেকে প্রতিটি থ্রেডের একটি <g4>মিনিডাম্প</g4> লেখে। একটি ক্র্যাশ করা প্রক্রিয়া কখনোই তার নিজস্ব ডাম্প লেখে না, যা Firefox, Crashpad এবং Sentry-ও করে থাকে।"
-  },
   "3513f93cb0fa7d72": {
    "source": "<g1>Far</g1> (red): over 150 ms, usually another continent. A far server is often slower, and more connections help it most.",
    "text": "<g1>দূরে</g1> (লাল): 150 মি.সে.-এর উপরে, সাধারণত অন্য মহাদেশ। একটি দূরের সার্ভার প্রায়শই ধীর হয় এবং বেশি সংযোগ এটিকে সবচেয়ে বেশি সাহায্য করে।"
@@ -4570,6 +4562,10 @@
    "source": "<g1>The Categories pane and the menus</g1> (<g2>#113</g2>): the pane reads as a tree (each category named with its count, open or shut, selected), the menu bar and every right-click menu as menus whose items can be run, and <g3>Shift+F10</g3> or the <g4>Menu</g4> key opens the selected category's menu. A menu opened from the keyboard no longer stays invisible until the mouse moves.",
    "text": "<g1>শ্রেণীসমূহ প্যান এবং মেনুগুলো</g1> (<g2>#113</g2>): প্যানটি একটি ট্রি হিসাবে পড়া হয় (প্রতিটি শ্রেণীর নাম তার সংখ্যা সহ, খোলা বা বন্ধ, নির্বাচিত), মেনু বার এবং প্রতিটি রাইট-ক্লিক মেনু মেনু হিসাবে পড়া হয় যার আইটেমগুলো চালানো যায়, এবং <g3>Shift+F10</g3> বা <g4>Menu</g4> কী নির্বাচিত শ্রেণীর মেনু খোলে। কীবোর্ড থেকে খোলা একটি মেনু মাউস না নড়া পর্যন্ত আর অদৃশ্য থাকে না।"
   },
+  "44502a7e800ed659": {
+   "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you. On Linux it makes MDM your desktop's default app for them; on macOS, their default app (Finder offers MDM in <g5>Open With</g5> for <x6/> files either way, and a double-click opens them in MDM when no other app is their default).",
+   "text": "এগুলির মধ্যে কোনো একটির দ্বারা বন্ধ করা টরেন্ট তার ইভেন্ট লগে তা দেখায় এবং MDM চালু হলে আবার শেয়ার করা হয় না। এটি আবার শেয়ার করতে সীমা বাড়ান বা বন্ধ করুন। - <g1>সমস্ত টরেন্টের জন্য আপলোড সীমিত করুন</g1> — এটি ডিফল্টভাবে বন্ধ থাকে। এটি আপনার সমস্ত টরেন্ট একসাথে অন্যান্য পিয়ারদের কাছে কী পাঠায়, ডাউনলোড করার সময় এবং শেয়ার করার সময়, তা সীমিত করে। একটি টরেন্টের নিজস্ব আপলোড সীমা, তার অগ্রগতি উইন্ডোতে, এর উপরে প্রযোজ্য হয়। - <g2>Mister Download Manager দিয়ে ম্যাগনেট লিঙ্ক এবং .torrent ফাইল খুলুন</g2> — এরপর Windows আপনার ব্রাউজারে ম্যাগনেট লিঙ্ক এবং এক্সপ্লোরারে <x3/> ফাইল MDM দিয়ে খোলে। এটি শুধুমাত্র আপনার Windows অ্যাকাউন্টের জন্য; Windows-এর <g4>এর সাথে খুলুন</g4> বিকল্পে আপনি যে প্রোগ্রামটি বেছে নিয়েছেন, সেটিই প্রথমে থাকবে। সেটআপ আপনার জন্য এটি চালু করতে পারে। Linux-এ এটি MDM-কে আপনার ডেস্কটপের জন্য ডিফল্ট অ্যাপ তৈরি করে; macOS-এ, তাদের ডিফল্ট অ্যাপ (ফাইন্ডার <g5>এর সাথে খুলুন</g5> বিকল্পে <x6/> ফাইলগুলির জন্য MDM অফার করে, এবং অন্য কোনো অ্যাপ ডিফল্ট না থাকলে ডাবল-ক্লিক করলে MDM-এ খোলে)।"
+  },
   "445e6378c12f1e16": {
    "source": "<g1>Image gallery support:</g1> download whole galleries (Flickr, Imgur, DeviantArt and more) with gallery-dl.",
    "text": "<g1>ছবি গ্যালারি সমর্থন:</g1> gallery-dl ব্যবহার করে পুরো গ্যালারি (Flickr, Imgur, DeviantArt এবং আরও অনেক কিছু) ডাউনলোড করুন।"
@@ -4789,6 +4785,10 @@
   "48389b303ae7a75a": {
    "source": "The extension now installs from your browser's store, updates itself, and catches more of what you download.",
    "text": "এক্সটেনশনটি এখন আপনার ব্রাউজারের স্টোর থেকে ইনস্টল হয়, নিজে আপডেট হয় এবং আপনি যা ডাউনলোড করেন তার আরও বেশি কিছু ধরে রাখে।"
+  },
+  "483cd37a4558c14a": {
+   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier while a window changes.",
+   "text": "যদি কোনোটিই শুরু না হয়, MDM একটি সফটওয়্যার রেন্ডারার দিয়ে আঁকে (Windows-এ মাইক্রোসফটের, Linux-এ মেসার), তাই উইন্ডোটি তখনও খোলে (রিমোট ডেস্কটপ, গ্রাফিক্স ড্রাইভার ছাড়া একটি ভার্চুয়াল মেশিন)। এটি কাজ করে, তবে একটি উইন্ডো পরিবর্তন হওয়ার সময় প্রসেসরকে বেশি ব্যস্ত রাখে।"
   },
   "487a0af4191d3496": {
    "source": "<g1><g2>Its site says so</g2></g1><g3>its site says</g3>",
@@ -6614,10 +6614,6 @@
    "source": "A queue is a list of downloads that run in order, a few at a time. Click <g1>Download Later</g1> in <g2>Download File Info</g2>, or right-click downloads in the list and choose <g3>Add to queue</g3>. The <g4>Q</g4> column marks them, and <g5>Queues</g5> in the categories pane shows each queue on its own.",
    "text": "একটি সারি হলো ডাউনলোডের একটি তালিকা যা ক্রমানুসারে চলে, একবারে কয়েকটি। <g2>ফাইল তথ্য ডাউনলোড করুন</g2>-এ <g1>পরে ডাউনলোড করুন</g1> ক্লিক করুন, অথবা তালিকার ডাউনলোডগুলিতে ডান-ক্লিক করে <g3>কিউতে যোগ করুন</g3> নির্বাচন করুন। <g4>Q</g4> কলাম সেগুলিকে চিহ্নিত করে, এবং ক্যাটাগরি প্যানেলে <g5>সারি</g5> প্রতিটি সারিকে আলাদাভাবে দেখায়।"
   },
-  "63bbda066dbbac86": {
-   "source": "On Linux, if neither can start, MDM draws with Mesa's software renderer, so the window still opens (a virtual machine without a graphics driver). A software renderer (WARP on Windows too) works, but keeps the processor busier while a window changes.",
-   "text": "Linux-এ, যদি কোনটিই শুরু না হয়, MDM Mesa-এর সফটওয়্যার রেন্ডারার দিয়ে আঁকে, তাই উইন্ডোটি এখনও খোলে (গ্রাফিক্স ড্রাইভার ছাড়া একটি ভার্চুয়াল মেশিন)। একটি সফটওয়্যার রেন্ডারার (Windows-এও WARP) কাজ করে, তবে উইন্ডো পরিবর্তন হওয়ার সময় প্রসেসরকে বেশি ব্যস্ত রাখে।"
-  },
   "63cf6dd5807201af": {
    "source": "<g1>Any (the system chooses)</g1> is the default. Choose an adapter instead, and MDM sends its connections through that one only. When it disconnects, or the VPN is switched off, nothing goes out another way. Running downloads stop with \"… is not connected\" and start again by themselves when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
    "text": "<g1>যেকোনো (সিস্টেম বেছে নেয়)</g1> হলো ডিফল্ট। এর পরিবর্তে একটি অ্যাডাপ্টার বেছে নিন, এবং MDM শুধুমাত্র সেটির মাধ্যমে তার সংযোগ পাঠাবে। যখন এটি সংযোগ বিচ্ছিন্ন হয়, অথবা VPN বন্ধ করা হয়, তখন অন্য কোনো উপায়ে কিছুই বের হয় না। চলমান ডাউনলোডগুলি \"… সংযুক্ত নয়\" বার্তা সহ বন্ধ হয়ে যায় এবং অ্যাডাপ্টার ফিরে এলে নিজে থেকেই আবার শুরু হয়। তালিকার নিচের লাইনটি অ্যাডাপ্টারের ঠিকানা দেখায়, অথবা এটি সংযুক্ত নয় তা দেখায়।"
@@ -6998,6 +6994,10 @@
    "source": "Contribute — Mister Download Manager",
    "text": "সহযোগিতা করুন — Mister Download Manager"
   },
+  "6a404128afe84a22": {
+   "source": "A freeze whose report shows the window thread inside the graphics driver as it shows a frame (<x1/> or <x2/> for Intel, <x3/> for NVIDIA, <x4/> for AMD, under <x5/>) is the driver's OpenGL stuck, not MDM: on Windows, choose <g6>View → Draw with → Direct3D</g6> (the default) and restart MDM, and update the graphics driver. If <g7>Draw with</g7> says Direct3D didn't start there, the line under it says why; MDM then remembers the freeze and draws with WARP from the next start.",
+   "text": "একটি ফ্রিজ যার রিপোর্টে গ্রাফিক্স ড্রাইভারের ভিতরে উইন্ডো থ্রেড একটি ফ্রেম দেখানোর সময় দেখা যায় (<x1/> বা ইন্টেলের জন্য <x2/>, NVIDIA এর জন্য <x3/>, AMD এর জন্য <x4/>, <x5/> এর অধীনে) তা ড্রাইভারের OpenGL আটকে যাওয়া, MDM নয়: Windows-এ, <g6>দেখুন → আঁকার মাধ্যম → Direct3D</g6> (ডিফল্ট) নির্বাচন করুন এবং MDM পুনরায় চালু করুন, এবং গ্রাফিক্স ড্রাইভার আপডেট করুন। যদি <g7>আঁকার মাধ্যম</g7> বলে যে Direct3D সেখানে শুরু হয়নি, এর নিচের লাইনটি কেন তা বলে; MDM তখন ফ্রিজটি মনে রাখে এবং পরের শুরু থেকে WARP দিয়ে আঁকে।"
+  },
   "6a658020a3c19e30": {
    "source": "Other systems and files",
    "text": "অন্যান্য সিস্টেম এবং ফাইল"
@@ -7317,10 +7317,6 @@
   "6ed1f7b8dcba3260": {
    "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what MDM does and what it doesn't. The switches it mentions are in <g1>Tasks → Torrent settings...</g1>.",
    "text": "একটি টরেন্ট অন্য মানুষের কম্পিউটার থেকে আসে, কোনো একটি ওয়েবসাইট থেকে নয়। এর ফলে আপনি কী বিশ্বাস করতে পারেন এবং অন্যরা কী দেখতে পারে, তা পরিবর্তিত হয়। এই পৃষ্ঠাটি স্পষ্টভাবে বলে যে MDM কী করে এবং কী করে না। এখানে উল্লিখিত সুইচগুলি <g1>কাজগুলি → টরেন্ট সেটিংস...</g1> এ আছে।"
-  },
-  "6edac9507a8f3ffd": {
-   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it draws the next way (on Windows WARP, then OpenGL), and <g1>View → Draw with</g1> says why.",
-   "text": "MDM চলার সময় যদি গ্রাফিক্স কার্ড রিসেট হয় (একটি ড্রাইভার আপডেট), MDM নিজে থেকেই আবার শুরু হয়। 10 মিনিটের মধ্যে দুবার হারিয়ে গেলে, এটি পরবর্তী উপায়ে আঁকে (Windows-এ WARP, তারপর OpenGL), এবং <g1>দেখুন → আঁকার মাধ্যম</g1> কারণটি বলে দেয়।"
   },
   "6eef75044c57910f": {
    "source": "Stop now also stops yt-dlp, which used to keep downloading in the background.",
@@ -9986,6 +9982,10 @@
    "source": "The list shows each quality with its size, best first, and the sound alone at the end. Check <g1>Save to</g1> and <g2>File name</g2>, then click <g3>Download Now</g3>, or <g4>Later</g4> to put it in the list for later. The video gets its own row and progress window, like any other download.",
    "text": "তালিকাটি প্রতিটি গুণমানকে তার আকার সহ দেখায়, সেরাটি প্রথমে এবং শেষে শুধু শব্দ। <g1>এতে সংরক্ষণ করুন</g1> এবং <g2>ফাইলের নাম</g2> পরীক্ষা করুন, তারপর <g3>এখনই ডাউনলোড করুন</g3> ক্লিক করুন, অথবা <g4>পরে</g4> ক্লিক করে এটি পরে ডাউনলোডের জন্য তালিকায় রাখুন। ভিডিওটি অন্য যেকোনো ডাউনলোডের মতো নিজস্ব সারি এবং অগ্রগতি উইন্ডো পাবে।"
   },
+  "9763111f0a019af1": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your graphics card (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds of its own (the time MDM spends loading your list and its icons doesn't count, however slow the computer is just after it starts), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
+   "text": "যদি আপনার গ্রাফিক্স কার্ডে Direct3D, Vulkan বা Metal শুরু না হয় (এর জন্য কোনো ড্রাইভার নেই, কিছু ভার্চুয়াল মেশিন), অথবা এর প্রথম উইন্ডোটি 10 সেকেন্ডের মধ্যে না দেখায় (MDM আপনার তালিকা এবং এর আইকন লোড করতে যে সময় নেয় তা গণনা করা হয় না, কম্পিউটার শুরু হওয়ার পর যত ধীরই হোক না কেন), MDM OpenGL দিয়ে আঁকে, এবং <g1>দেখুন → আঁকার মাধ্যম</g1> তা বলে দেয় এবং কেন। এটি আবার নির্বাচন করলে পরের শুরুতে আবার চেষ্টা করা হয়।"
+  },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
    "text": "আপনি যে ঠিকানায় ক্লিক করেছেন এবং যে ঠিকানায় এর পুনঃনির্দেশগুলি নিয়ে গেছে, উভয়ই পরীক্ষা করা হয়, তাই আপনি যে সাইটটি বাদ দিয়েছেন সেটি বাদ থাকে, এমনকি যখন এটি আপনাকে অন্য সার্ভারে পাঠায় তখনও। বাকি সবকিছু ব্রাউজারের সাথে থাকে। বিকল্পগুলিতে পরিবর্তনগুলি এক মিনিটের মধ্যে ব্রাউজারে পৌঁছে যায়; আপনাকে এটি পুনরায় চালু করতে হবে না।"
@@ -11793,6 +11793,10 @@
   "b2181eccf65e86be": {
    "source": "This <g1>website</g1> counts visits with <g2>Statcounter</g2>, which sets a cookie and sees your IP address; it runs only on the website, never in the app.",
    "text": "এই <g1>ওয়েবসাইট</g1> <g2>Statcounter</g2> ব্যবহার করে ভিজিট গণনা করে, যা একটি কুকি সেট করে এবং আপনার আইপি ঠিকানা দেখে; এটি শুধুমাত্র ওয়েবসাইটে চলে, অ্যাপে কখনো নয়।"
+  },
+  "b21b0cc3853450de": {
+   "source": "On Windows, when OpenGL fails on a card without Direct3D 12, MDM draws with Direct3D on Microsoft's software renderer (WARP) from the next start, and <g1>View → Draw with</g1> says why: OpenGL couldn't start, it is too old to draw MDM (older than 3.0, such as Intel's first HD Graphics, whose OpenGL 2.1 drew MDM's windows as garbage), its first window didn't show within 10 seconds, or MDM froze inside the graphics driver while OpenGL showed a frame (the older Intel HD Graphics and AMD Radeon cards' drivers did). Choosing <g2>OpenGL</g2> there tries it again.",
+   "text": "Windows-এ, যখন Direct3D 12 ছাড়া কোনো কার্ডে OpenGL ব্যর্থ হয়, MDM পরের শুরু থেকে মাইক্রোসফটের সফটওয়্যার রেন্ডারার (WARP) দিয়ে Direct3D ব্যবহার করে আঁকে, এবং <g1>দেখুন → আঁকার মাধ্যম</g1> কেন তা বলে: OpenGL শুরু হতে পারেনি, MDM আঁকার জন্য এটি খুব পুরোনো (3.0 এর চেয়ে পুরোনো, যেমন ইন্টেলের প্রথম HD গ্রাফিক্স, যার OpenGL 2.1 MDM এর উইন্ডোগুলোকে আবর্জনা হিসাবে দেখাত), এর প্রথম উইন্ডোটি 10 সেকেন্ডের মধ্যে দেখায়নি, অথবা OpenGL একটি ফ্রেম দেখানোর সময় গ্রাফিক্স ড্রাইভারের ভিতরে MDM আটকে গিয়েছিল (পুরোনো ইন্টেল HD গ্রাফিক্স এবং AMD Radeon কার্ডের ড্রাইভারগুলো এমন করত)। সেখানে <g2>OpenGL</g2> নির্বাচন করলে এটি আবার চেষ্টা করে।"
   },
   "b23baab9a4561a1d": {
    "source": "Pauses running downloads.",
@@ -14358,10 +14362,6 @@
    "source": "Does it work on Mac and Linux?",
    "text": "এটি কি Mac এবং Linux এ কাজ করে?"
   },
-  "d93076a907e08557": {
-   "source": "If Direct3D, Vulkan or Metal can't start on your graphics card (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds of its own (the time MDM spends loading your list and its icons doesn't count, however slow the computer is just after it starts), MDM draws another way, and <g1>View → Draw with</g1> says which and why. On Windows that is Direct3D on Microsoft's software renderer (WARP), then OpenGL only if WARP can't draw either: the older cards without Direct3D 12 (Intel's HD Graphics 3000 to 5500, older AMD Radeon cards) froze or crashed inside their OpenGL driver, and WARP draws MDM right there. On Linux and macOS it is OpenGL. Choosing it again tries the card again at the next start.",
-   "text": "যদি আপনার গ্রাফিক্স কার্ডে Direct3D, Vulkan বা Metal শুরু না হয় (এর জন্য কোনো ড্রাইভার নেই, কিছু ভার্চুয়াল মেশিন), অথবা এর প্রথম উইন্ডোটি নিজস্বভাবে 10 সেকেন্ডের মধ্যে না দেখায় (MDM আপনার তালিকা এবং এর আইকন লোড করতে যে সময় নেয় তা গণনা করা হয় না, কম্পিউটার শুরু হওয়ার পর যত ধীরই হোক না কেন), MDM অন্যভাবে আঁকে, এবং <g1>দেখুন → আঁকার মাধ্যম</g1> বলে দেয় কোনটি এবং কেন। Windows-এ এটি Microsoft-এর সফটওয়্যার রেন্ডারারে (WARP) Direct3D, তারপর WARP যদি আঁকতে না পারে তবেই OpenGL: Direct3D 12 ছাড়া পুরোনো কার্ডগুলি (Intel-এর HD Graphics 3000 থেকে 5500, পুরোনো AMD Radeon কার্ড) তাদের OpenGL ড্রাইভারের ভিতরে ফ্রিজ বা ক্র্যাশ করত, এবং WARP সেখানেই MDM আঁকে। Linux এবং macOS-এ এটি OpenGL। এটি আবার নির্বাচন করলে পরবর্তী শুরুতে কার্ডটি আবার চেষ্টা করে।"
-  },
   "d94b3dd782154f61": {
    "source": "Set up the extension once, and every download link you click in Firefox, Chrome, Edge, Brave, Opera, Vivaldi or Helium goes to MDM.",
    "text": "একবার এক্সটেনশন সেট আপ করলে, Firefox, Chrome, Edge, Brave, Opera, Vivaldi বা Helium-এ ক্লিক করা প্রতিটি ডাউনলোড লিঙ্ক MDM-এ চলে যাবে।"
@@ -15126,10 +15126,6 @@
    "source": "<g1>source</g1> is the English text; leave it as it is. Change only <g2>translation</g2>.",
    "text": "<g1>source</g1> হল ইংরেজি টেক্সট; এটি যেমন আছে তেমনই রাখুন। শুধুমাত্র <g2>translation</g2> পরিবর্তন করুন।"
   },
-  "e6800d5aa1fd6842": {
-   "source": "On Windows, an OpenGL older than 3.0 (an old graphics card's driver, such as Intel's first HD Graphics, whose OpenGL is 2.1) can't draw MDM: its windows come out as garbage. With <g1>OpenGL</g1> chosen in <g2>View → Draw with</g2> on such a card, MDM notices it as it starts and starts again with Direct3D on WARP, from then on, and <g3>View → Draw with</g3> says so. Choosing <g4>OpenGL</g4> there tries it again.",
-   "text": "Windows-এ, 3.0-এর চেয়ে পুরোনো OpenGL (একটি পুরোনো গ্রাফিক্স কার্ডের ড্রাইভার, যেমন Intel-এর প্রথম HD Graphics, যার OpenGL 2.1) MDM আঁকতে পারে না: এর উইন্ডোগুলি আবর্জনা হিসাবে আসে। এমন একটি কার্ডে <g2>দেখুন → আঁকার মাধ্যম</g2>-এ <g1>OpenGL</g1> নির্বাচিত থাকলে, MDM এটি শুরু হওয়ার সাথে সাথে লক্ষ্য করে এবং তারপর থেকে WARP-এ Direct3D দিয়ে আবার শুরু হয়, এবং <g3>দেখুন → আঁকার মাধ্যম</g3> তা বলে দেয়। সেখানে <g4>OpenGL</g4> নির্বাচন করলে এটি আবার চেষ্টা করে।"
-  },
   "e680897e60d1dca2": {
    "source": "To bring the built-in categories back as they came, with their names, file types and folders, use <g1>Options → Save to → Restore the built-in categories</g1>. Your own categories, General and Torrents stay as they are.",
    "text": "বিল্ট-ইন শ্রেণীগুলির নাম, ফাইলের ধরন ও ফোল্ডার আগের মতো ফিরিয়ে আনতে <g1>সেটিংস → এতে সংরক্ষণ করুন → বিল্ট-ইন বিভাগগুলি পুনরুদ্ধার করুন</g1> ব্যবহার করুন। আপনার তৈরি শ্রেণীগুলি, সাধারণ এবং টরেন্ট আগের মতোই থাকবে।"
@@ -15541,10 +15537,6 @@
   "ec83076f0311f20e": {
    "source": "A theme is one small text file in <g1>TOML</g1> (or JSON, <x2/>; or a <g3>colour scheme</g3>, <x4/>). It names only what it changes; everything else comes from the theme it <x5/>:",
    "text": "একটি থিম হলো <g1>TOML</g1>-এ (অথবা JSON, <x2/>; অথবা একটি <g3>কালার স্কিম</g3>, <x4/>) একটি ছোট টেক্সট ফাইল। এটি শুধুমাত্র যা পরিবর্তন করে তার নাম দেয়; অন্য সবকিছু যে থিম থেকে <x5/> হয় সেখান থেকে আসে:"
-  },
-  "ec8dbbc2dc38cd32": {
-   "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you.",
-   "text": "এইগুলির মধ্যে যেকোনো একটি দ্বারা বন্ধ করা টরেন্ট তার ইভেন্ট লগে তা দেখায় এবং MDM শুরু হলে আবার শেয়ার করা হয় না। এটি আবার শেয়ার করতে সীমা বাড়ান বা বন্ধ করুন। - <g1>সমস্ত টরেন্টের জন্য আপলোড সীমিত করুন</g1> — ডিফল্টরূপে বন্ধ থাকে। এটি আপনার সমস্ত টরেন্ট একসাথে অন্যান্য পিয়ারদের কাছে যা পাঠায়, তা ডাউনলোড করার সময় এবং শেয়ার করার সময় সীমিত করে। একটি টরেন্টের নিজস্ব আপলোড সীমা, তার অগ্রগতি উইন্ডোতে, এর উপরে প্রযোজ্য হয়। - <g2>Mister Download Manager দিয়ে ম্যাগনেট লিঙ্ক এবং .torrent ফাইল খুলুন</g2> — Windows তখন আপনার ব্রাউজারে ম্যাগনেট লিঙ্ক এবং এক্সপ্লোরারে <x3/> ফাইল MDM দিয়ে খোলে। এটি শুধুমাত্র আপনার Windows অ্যাকাউন্টের জন্য; Windows-এর <g4>এর সাথে খুলুন</g4> এ আপনি যে প্রোগ্রামটি বেছে নিয়েছেন সেটি প্রথমে থাকে। সেটআপ এটি আপনার জন্য চালু করতে পারে।"
   },
   "ec99486fc82e0b86": {
    "source": "Options",
@@ -16345,6 +16337,10 @@
   "f89a410af1a10630": {
    "source": "The site isn't in <g1>Don't start downloading automatically from the following sites</g1>, nor the address in <g2>Don't start downloading automatically from the following addresses</g2>.",
    "text": "সাইটটি <g1>নিম্নলিখিত সাইটগুলি থেকে স্বয়ংক্রিয়ভাবে ডাউনলোড শুরু করবেন না</g1> তালিকায় নেই, এবং ঠিকানাটি <g2>নিম্নলিখিত ঠিকানাগুলি থেকে স্বয়ংক্রিয়ভাবে ডাউনলোড শুরু করবেন না</g2> তালিকায় নেই।"
+  },
+  "f89c54d71eb189a4": {
+   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and <g1>View → Draw with</g1> says why.",
+   "text": "MDM চলার সময় যদি গ্রাফিক্স কার্ড রিসেট করা হয় (একটি ড্রাইভার আপডেট), MDM নিজে থেকেই আবার শুরু হয়। 10 মিনিটের মধ্যে দুবার হারিয়ে গেলে, এটি OpenGL এ ফিরে যায়, এবং <g1>দেখুন → আঁকার মাধ্যম</g1> কেন তা বলে।"
   },
   "f8b52274ed125d5f": {
    "source": "Tick <g1>Wake the computer to run this queue</g1> and a sleeping computer is woken a minute before the start time, so the network is back when the queue begins. It stays awake while the queue runs; afterwards its own sleep settings apply again. The line under the option says when the next wake is, or why there can't be one.",

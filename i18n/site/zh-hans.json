@@ -838,10 +838,6 @@
    "source": "The interface is in every language Windows 11 offers. The catalogs in <g1><x2/></g1> were made by machine translation, and each row marked <x3/> waits for a native speaker:",
    "text": "界面支持 Windows 11 提供的所有语言。<g1><x2/></g1>中的语言目录由机器翻译生成，每行标记为<x3/>的内容都等待母语人士审校："
   },
-  "0c4e47b7b5c8f9f5": {
-   "source": "A freeze whose report shows the window thread inside the graphics driver as it shows a frame (<x1/> or <x2/> for Intel, <x3/> for NVIDIA, <x4/> for AMD, under <x5/>) is the driver's OpenGL stuck, not MDM: on Windows, choose <g6>View → Draw with → Direct3D</g6> (the default) and restart MDM, and update the graphics driver. If <g7>Draw with</g7> says Direct3D didn't start there, the line under it says why.",
-   "text": "如果冻结报告显示窗口线程在图形驱动程序内部，正在显示帧（Intel 为<x1/>或<x2/>，NVIDIA 为<x3/>，AMD 为<x4/>，在<x5/>下），则表明是驱动程序的 OpenGL 卡住，而非 MDM：在 Windows 上，选择<g6>视图 → 绘制方式 → Direct3D</g6>（默认）并重启 MDM，然后更新图形驱动程序。如果<g7>绘制方式</g7>显示 Direct3D 未在此处启动，其下方会显示原因。"
-  },
   "0c6ce890ecccf13e": {
    "source": "For an internet plan with a data cap, select <g1>Download limits</g1> on the left:",
    "text": "对于有数据上限的互联网套餐，请在左侧选择<g1>下载限制</g1>："
@@ -3546,10 +3542,6 @@
    "source": "Download complete with Open and Open folder",
    "text": "“下载完成”显示“打开”和“打开文件夹”"
   },
-  "3512eeafea5246da": {
-   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. It times both parts of a frame: what MDM handles (the commands that come in, the clock of downloads, queues and the Scheduler), which runs minimized too, and the drawing; never the wait between frames. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). When the window thread is already back in the event loop by the time the dump is written, the freeze was over before the snapshot, so its stack can't explain it; those reports say so and share the signature <x3/>. macOS doesn't measure it yet. The monitor then writes a <g4>minidump</g4> of every thread from outside, through <x5/> and <x6/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>捕获问题。</g1> 当 MDM 崩溃（Windows 异常、Linux 信号、macOS Mach 异常）、程序异常终止或冻结时，它会向监视器请求一个转储。冻结是指窗口运行超过 8 秒的帧，由一个忽略休眠时间的看门狗线程检测。它会测量帧的两个部分：MDM 处理的部分（接收到的命令、下载时钟、队列和计划程序），这部分在最小化时也会运行，以及绘图部分；但不测量帧之间的等待时间。看门狗还会测量在此期间窗口线程获得了多少处理器时间，报告会说明这意味着什么：它一直在运行（一个循环），它在锁或 I/O 上等待（死锁），或者它几乎没有在普通代码中运行，这表示计算机太忙而无法运行 MDM 或从磁盘加载 MDM 太慢，这很可能不是 MDM 的错误（这些情况共享一个签名，<x2/>）。如果转储写入时窗口线程已经回到事件循环中，则冻结在快照之前已经结束，因此其堆栈无法解释冻结；这些报告会说明这一点并共享签名 <x3/>。macOS 尚未测量此项。然后，监视器通过 <x5/> 和 <x6/> 从外部写入每个线程的<g4>小型转储</g4>。崩溃的进程从不写入自己的转储，Firefox、Crashpad 和 Sentry 也是如此。"
-  },
   "3513f93cb0fa7d72": {
    "source": "<g1>Far</g1> (red): over 150 ms, usually another continent. A far server is often slower, and more connections help it most.",
    "text": "<g1>远</g1>（红色）：超过 150 毫秒，通常是另一个大陆。远距离服务器通常较慢，增加连接数帮助最大。"
@@ -4570,6 +4562,10 @@
    "source": "<g1>The Categories pane and the menus</g1> (<g2>#113</g2>): the pane reads as a tree (each category named with its count, open or shut, selected), the menu bar and every right-click menu as menus whose items can be run, and <g3>Shift+F10</g3> or the <g4>Menu</g4> key opens the selected category's menu. A menu opened from the keyboard no longer stays invisible until the mouse moves.",
    "text": "<g1>“类别”窗格和菜单</g1> (<g2>#113</g2>)：该窗格现在被读取为树状结构（每个类别都有名称、计数、展开或折叠状态、选中状态），菜单栏和每个右键菜单都被读取为可执行项目的菜单，<g3>Shift+F10</g3>或<g4>菜单</g4>键可以打开所选类别的菜单。通过键盘打开的菜单不再在鼠标移动之前保持不可见。"
   },
+  "44502a7e800ed659": {
+   "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you. On Linux it makes MDM your desktop's default app for them; on macOS, their default app (Finder offers MDM in <g5>Open With</g5> for <x6/> files either way, and a double-click opens them in MDM when no other app is their default).",
+   "text": "如果 torrent 因这些限制之一而停止，其事件日志中会显示相关信息，并且 MDM 启动时不会再次共享。提高或关闭限制以再次共享。 - <g1>将所有 torrent 的上传限制为</g1> — 默认关闭。限制所有 torrent 在下载和共享时向其他对等点发送的总量。torrent 进度窗口中的上传限制在此基础上生效。 - <g2>使用 Mister Download Manager 打开磁力链接和 .torrent 文件</g2> — 之后 Windows 会在您的浏览器中用 MDM 打开磁力链接，并在资源管理器中用 MDM 打开 <x3/> 文件。这仅适用于您的 Windows 账户；您在 Windows 的<g4>打开方式</g4>中选择的程序仍将优先。安装程序可以为您启用此功能。在 Linux 上，这会使 MDM 成为您桌面处理这些文件的默认应用程序；在 macOS 上，MDM 会成为它们的默认应用程序（无论如何，Finder 都会在<g5>打开方式</g5>中为 <x6/> 文件提供 MDM，并且当没有其他应用程序是其默认应用程序时，双击会用 MDM 打开它们）。"
+  },
   "445e6378c12f1e16": {
    "source": "<g1>Image gallery support:</g1> download whole galleries (Flickr, Imgur, DeviantArt and more) with gallery-dl.",
    "text": "<g1>图像画廊支持：</g1> 使用 gallery-dl 下载整个画廊（Flickr、Imgur、DeviantArt 等）。"
@@ -4789,6 +4785,10 @@
   "48389b303ae7a75a": {
    "source": "The extension now installs from your browser's store, updates itself, and catches more of what you download.",
    "text": "现在，扩展程序可从您的浏览器商店安装，自动更新，并能捕获更多您下载的内容。"
+  },
+  "483cd37a4558c14a": {
+   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier while a window changes.",
+   "text": "如果两者都无法启动，MDM 将使用软件渲染器（Windows 上是 Microsoft 的，Linux 上是 Mesa 的）绘制，这样窗口仍然可以打开（远程桌面，没有图形驱动程序的虚拟机）。它能工作，但在窗口变化时会使处理器更忙。"
   },
   "487a0af4191d3496": {
    "source": "<g1><g2>Its site says so</g2></g1><g3>its site says</g3>",
@@ -6614,10 +6614,6 @@
    "source": "A queue is a list of downloads that run in order, a few at a time. Click <g1>Download Later</g1> in <g2>Download File Info</g2>, or right-click downloads in the list and choose <g3>Add to queue</g3>. The <g4>Q</g4> column marks them, and <g5>Queues</g5> in the categories pane shows each queue on its own.",
    "text": "队列是按顺序运行的下载列表，每次运行少量任务。在<g2>下载文件信息</g2>中点击<g1>稍后下载</g1>，或右键点击列表中的下载任务并选择<g3>添加到队列</g3>。<g4>Q</g4>列会标记它们，类别窗格中的<g5>队列</g5>会单独显示每个队列。"
   },
-  "63bbda066dbbac86": {
-   "source": "On Linux, if neither can start, MDM draws with Mesa's software renderer, so the window still opens (a virtual machine without a graphics driver). A software renderer (WARP on Windows too) works, but keeps the processor busier while a window changes.",
-   "text": "在 Linux 上，如果两者都无法启动，MDM 会使用 Mesa 的软件渲染器进行绘制，因此窗口仍然可以打开（例如没有显卡驱动程序的虚拟机）。软件渲染器（Windows 上也是 WARP）可以工作，但在窗口变化时会使处理器更忙。"
-  },
   "63cf6dd5807201af": {
    "source": "<g1>Any (the system chooses)</g1> is the default. Choose an adapter instead, and MDM sends its connections through that one only. When it disconnects, or the VPN is switched off, nothing goes out another way. Running downloads stop with \"… is not connected\" and start again by themselves when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
    "text": "<g1>任何（系统选择）</g1>是默认设置。选择一个网卡后，MDM 只会通过该网卡发送连接。当网卡断开连接或 VPN 关闭时，不会有任何数据通过其他方式传输。正在进行的下载会显示“……未连接”并停止，当网卡恢复后会自动重新开始。列表下方的行显示网卡的地址，或显示其未连接。"
@@ -6998,6 +6994,10 @@
    "source": "Contribute — Mister Download Manager",
    "text": "贡献 — Mister Download Manager"
   },
+  "6a404128afe84a22": {
+   "source": "A freeze whose report shows the window thread inside the graphics driver as it shows a frame (<x1/> or <x2/> for Intel, <x3/> for NVIDIA, <x4/> for AMD, under <x5/>) is the driver's OpenGL stuck, not MDM: on Windows, choose <g6>View → Draw with → Direct3D</g6> (the default) and restart MDM, and update the graphics driver. If <g7>Draw with</g7> says Direct3D didn't start there, the line under it says why; MDM then remembers the freeze and draws with WARP from the next start.",
+   "text": "如果报告显示窗口线程在图形驱动程序内部显示帧时卡住（英特尔为 <x1/> 或 <x2/>，NVIDIA 为 <x3/>，AMD 为 <x4/>，在 <x5/> 下），则是驱动程序的 OpenGL 卡住，而不是 MDM：在 Windows 上，选择“<g6>视图 → 绘制方式 → Direct3D</g6>”（默认）并重新启动 MDM，然后更新图形驱动程序。如果“<g7>绘制方式</g7>”显示 Direct3D 未在此处启动，其下方的行会说明原因；MDM 随后会记住卡顿并在下次启动时使用 WARP 绘制。"
+  },
   "6a658020a3c19e30": {
    "source": "Other systems and files",
    "text": "其他系统和文件"
@@ -7317,10 +7317,6 @@
   "6ed1f7b8dcba3260": {
    "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what MDM does and what it doesn't. The switches it mentions are in <g1>Tasks → Torrent settings...</g1>.",
    "text": "种子来自其他人的计算机，而不是某个网站。这会影响您可以信任什么，以及其他人能看到什么。本页会明确说明 MDM 能做什么、不能做什么。文中提到的开关位于<g1>任务 → 种子设置...</g1>。"
-  },
-  "6edac9507a8f3ffd": {
-   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it draws the next way (on Windows WARP, then OpenGL), and <g1>View → Draw with</g1> says why.",
-   "text": "如果 MDM 运行时显卡被重置（例如驱动程序更新），MDM 会自行重新启动。如果在 10 分钟内两次丢失，它会尝试下一种绘制方式（在 Windows 上是 WARP，然后是 OpenGL），并且“<g1>视图 → 绘制方式</g1>”会说明原因。"
   },
   "6eef75044c57910f": {
    "source": "Stop now also stops yt-dlp, which used to keep downloading in the background.",
@@ -9986,6 +9982,10 @@
    "source": "The list shows each quality with its size, best first, and the sound alone at the end. Check <g1>Save to</g1> and <g2>File name</g2>, then click <g3>Download Now</g3>, or <g4>Later</g4> to put it in the list for later. The video gets its own row and progress window, like any other download.",
    "text": "列表会显示各种画质及其大小，最佳画质排在最前面，纯音频排在最后。检查<g1>保存到</g1>和<g2>文件名</g2>，然后点击<g3>立即下载</g3>，或点击<g4>稍后</g4>将其添加到稍后下载列表。视频会像其他下载一样，拥有独立的行和进度窗口。"
   },
+  "9763111f0a019af1": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your graphics card (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds of its own (the time MDM spends loading your list and its icons doesn't count, however slow the computer is just after it starts), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
+   "text": "如果您的显卡无法启动 Direct3D、Vulkan 或 Metal（例如没有驱动程序，或在某些虚拟机中），或者 MDM 自己的第一个窗口在 10 秒内没有显示（MDM 加载列表和图标的时间不计入，无论电脑启动后有多慢），MDM 将使用 OpenGL 绘制，并且“<g1>视图 → 绘制方式</g1>”会显示原因。再次选择它会在下次启动时再次尝试。"
+  },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
    "text": "系统会检查您点击的地址以及重定向后的地址，因此即使被排除的网站将您重定向到另一台服务器，该网站仍会被排除。其他所有下载仍由浏览器处理。选项中的更改会在一分钟内同步到浏览器，无需重启浏览器。"
@@ -11793,6 +11793,10 @@
   "b2181eccf65e86be": {
    "source": "This <g1>website</g1> counts visits with <g2>Statcounter</g2>, which sets a cookie and sees your IP address; it runs only on the website, never in the app.",
    "text": "本<g1>网站</g1>使用<g2>Statcounter</g2>统计访问量，它会设置一个 cookie 并查看您的 IP 地址；它只在网站上运行，绝不会在应用中运行。"
+  },
+  "b21b0cc3853450de": {
+   "source": "On Windows, when OpenGL fails on a card without Direct3D 12, MDM draws with Direct3D on Microsoft's software renderer (WARP) from the next start, and <g1>View → Draw with</g1> says why: OpenGL couldn't start, it is too old to draw MDM (older than 3.0, such as Intel's first HD Graphics, whose OpenGL 2.1 drew MDM's windows as garbage), its first window didn't show within 10 seconds, or MDM froze inside the graphics driver while OpenGL showed a frame (the older Intel HD Graphics and AMD Radeon cards' drivers did). Choosing <g2>OpenGL</g2> there tries it again.",
+   "text": "在 Windows 上，当 OpenGL 在没有 Direct3D 12 的显卡上失败时，MDM 会在下次启动时使用 Microsoft 的软件渲染器 (WARP) 上的 Direct3D 绘制，并且“<g1>视图 → 绘制方式</g1>”会显示原因：OpenGL 无法启动，它太旧无法绘制 MDM（版本低于 3.0，例如英特尔的第一代 HD Graphics，其 OpenGL 2.1 会将 MDM 窗口绘制成乱码），其第一个窗口在 10 秒内没有显示，或者 MDM 在 OpenGL 显示帧时卡在图形驱动程序内部（较旧的英特尔 HD Graphics 和 AMD Radeon 显卡驱动程序曾出现此问题）。在此处选择“<g2>OpenGL</g2>”会再次尝试。"
   },
   "b23baab9a4561a1d": {
    "source": "Pauses running downloads.",
@@ -14358,10 +14362,6 @@
    "source": "Does it work on Mac and Linux?",
    "text": "它能在 Mac 和 Linux 上运行吗？"
   },
-  "d93076a907e08557": {
-   "source": "If Direct3D, Vulkan or Metal can't start on your graphics card (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds of its own (the time MDM spends loading your list and its icons doesn't count, however slow the computer is just after it starts), MDM draws another way, and <g1>View → Draw with</g1> says which and why. On Windows that is Direct3D on Microsoft's software renderer (WARP), then OpenGL only if WARP can't draw either: the older cards without Direct3D 12 (Intel's HD Graphics 3000 to 5500, older AMD Radeon cards) froze or crashed inside their OpenGL driver, and WARP draws MDM right there. On Linux and macOS it is OpenGL. Choosing it again tries the card again at the next start.",
-   "text": "如果您的显卡无法启动 Direct3D、Vulkan 或 Metal（没有驱动程序，或在某些虚拟机中），或者 MDM 自身启动后的 10 秒内（MDM 加载列表和图标的时间不计，无论电脑启动后有多慢）没有显示第一个窗口，MDM 会尝试其他绘制方式，并且“<g1>视图 → 绘制方式</g1>”会显示当前使用的绘制方式及原因。在 Windows 上，MDM 会先使用 Microsoft 软件渲染器 (WARP) 上的 Direct3D，只有当 WARP 也无法绘制时才使用 OpenGL：因为没有 Direct3D 12 的旧显卡（Intel 的 HD Graphics 3000 到 5500，较旧的 AMD Radeon 显卡）会在其 OpenGL 驱动程序中冻结或崩溃，而 WARP 可以正常绘制 MDM。在 Linux 和 macOS 上，MDM 使用 OpenGL。再次选择该选项会在下次启动时再次尝试使用显卡。"
-  },
   "d94b3dd782154f61": {
    "source": "Set up the extension once, and every download link you click in Firefox, Chrome, Edge, Brave, Opera, Vivaldi or Helium goes to MDM.",
    "text": "只需设置一次扩展，您在 Firefox、Chrome、Edge、Brave、Opera、Vivaldi 或 Helium 中点击的每个下载链接都将发送到 MDM。"
@@ -15126,10 +15126,6 @@
    "source": "<g1>source</g1> is the English text; leave it as it is. Change only <g2>translation</g2>.",
    "text": "<g1>source</g1>是英文文本；请保持不变。只更改<g2>translation</g2>。"
   },
-  "e6800d5aa1fd6842": {
-   "source": "On Windows, an OpenGL older than 3.0 (an old graphics card's driver, such as Intel's first HD Graphics, whose OpenGL is 2.1) can't draw MDM: its windows come out as garbage. With <g1>OpenGL</g1> chosen in <g2>View → Draw with</g2> on such a card, MDM notices it as it starts and starts again with Direct3D on WARP, from then on, and <g3>View → Draw with</g3> says so. Choosing <g4>OpenGL</g4> there tries it again.",
-   "text": "在 Windows 上，低于 3.0 版本的 OpenGL（旧显卡驱动程序，例如 Intel 的第一代 HD Graphics，其 OpenGL 版本为 2.1）无法绘制 MDM：其窗口会显示为乱码。如果在此类显卡上选择“<g2>视图 → 绘制方式</g2>”中的“<g1>OpenGL</g1>”，MDM 会在启动时检测到此情况，并从那时起使用 WARP 上的 Direct3D 重新启动，并且“<g3>视图 → 绘制方式</g3>”会显示此信息。在此处选择“<g4>OpenGL</g4>”会再次尝试。"
-  },
   "e680897e60d1dca2": {
    "source": "To bring the built-in categories back as they came, with their names, file types and folders, use <g1>Options → Save to → Restore the built-in categories</g1>. Your own categories, General and Torrents stay as they are.",
    "text": "要将内置类别恢复为初始状态，包括名称、文件类型和文件夹，请使用<g1>选项 → 保存到 → 恢复内置类别</g1>。自定义类别、常规和种子类别保持不变。"
@@ -15541,10 +15537,6 @@
   "ec83076f0311f20e": {
    "source": "A theme is one small text file in <g1>TOML</g1> (or JSON, <x2/>; or a <g3>colour scheme</g3>, <x4/>). It names only what it changes; everything else comes from the theme it <x5/>:",
    "text": "主题是一个小的 <g1>TOML</g1> 文本文件（或 JSON，<x2/>；或<g3>配色方案</g3>，<x4/>）。它只命名它所更改的内容；所有其他内容都来自它所 <x5/> 的主题："
-  },
-  "ec8dbbc2dc38cd32": {
-   "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you.",
-   "text": "因上述任一原因停止共享的种子会在事件日志中注明，且 MDM 下次启动时不会再次共享。提高或关闭限制即可再次共享。 - <g1>将所有 torrent 的上传限制为</g1> — 默认关闭。限制所有 torrent 在下载和共享期间向其他节点上传的总速度。种子进度窗口中设置的单个种子上传限速也会生效。 - <g2>使用 Mister Download Manager 打开磁力链接和 .torrent 文件</g2> — 设置后，Windows 会使用 MDM 在浏览器中打开磁力链接，并在资源管理器中打开 <x3/> 文件。此设置仅适用于您的 Windows 账户；您在 Windows 的<g4>打开方式</g4>中选择的程序仍优先使用。安装程序可以为您启用此功能。"
   },
   "ec99486fc82e0b86": {
    "source": "Options",
@@ -16345,6 +16337,10 @@
   "f89a410af1a10630": {
    "source": "The site isn't in <g1>Don't start downloading automatically from the following sites</g1>, nor the address in <g2>Don't start downloading automatically from the following addresses</g2>.",
    "text": "该网站不在<g1>不从以下网站自动开始下载</g1>中，地址也不在<g2>不从以下地址自动开始下载</g2>中。"
+  },
+  "f89c54d71eb189a4": {
+   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and <g1>View → Draw with</g1> says why.",
+   "text": "如果 MDM 运行时显卡被重置（例如驱动程序更新），MDM 会自行重新启动。如果在 10 分钟内两次丢失，它会回到 OpenGL，并且“<g1>视图 → 绘制方式</g1>”会显示原因。"
   },
   "f8b52274ed125d5f": {
    "source": "Tick <g1>Wake the computer to run this queue</g1> and a sleeping computer is woken a minute before the start time, so the network is back when the queue begins. It stays awake while the queue runs; afterwards its own sleep settings apply again. The line under the option says when the next wake is, or why there can't be one.",

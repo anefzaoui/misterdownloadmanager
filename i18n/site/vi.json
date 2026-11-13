@@ -838,10 +838,6 @@
    "source": "The interface is in every language Windows 11 offers. The catalogs in <g1><x2/></g1> were made by machine translation, and each row marked <x3/> waits for a native speaker:",
    "text": "Giao diện có sẵn trong mọi ngôn ngữ mà Windows 11 cung cấp. Các danh mục trong <g1><x2/></g1> được tạo bằng dịch máy, và mỗi hàng được đánh dấu <x3/> đang chờ một người bản xứ:"
   },
-  "0c4e47b7b5c8f9f5": {
-   "source": "A freeze whose report shows the window thread inside the graphics driver as it shows a frame (<x1/> or <x2/> for Intel, <x3/> for NVIDIA, <x4/> for AMD, under <x5/>) is the driver's OpenGL stuck, not MDM: on Windows, choose <g6>View → Draw with → Direct3D</g6> (the default) and restart MDM, and update the graphics driver. If <g7>Draw with</g7> says Direct3D didn't start there, the line under it says why.",
-   "text": "Nếu báo cáo treo máy cho thấy luồng cửa sổ nằm trong driver đồ họa khi nó hiển thị một khung hình (<x1/> hoặc <x2/> cho Intel, <x3/> cho NVIDIA, <x4/> cho AMD, dưới <x5/>) thì đó là do OpenGL của driver bị kẹt, không phải MDM: trên Windows, chọn <g6>Xem → Vẽ bằng → Direct3D</g6> (mặc định) và khởi động lại MDM, sau đó cập nhật driver đồ họa. Nếu <g7>Vẽ bằng</g7> cho biết Direct3D không khởi động ở đó, dòng bên dưới sẽ nêu lý do."
-  },
   "0c6ce890ecccf13e": {
    "source": "For an internet plan with a data cap, select <g1>Download limits</g1> on the left:",
    "text": "Đối với gói internet có giới hạn dữ liệu, chọn <g1>Giới hạn tải xuống</g1> ở bên trái:"
@@ -3546,10 +3542,6 @@
    "source": "Download complete with Open and Open folder",
    "text": "Tải xuống hoàn tất với Mở và Mở thư mục"
   },
-  "3512eeafea5246da": {
-   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. It times both parts of a frame: what MDM handles (the commands that come in, the clock of downloads, queues and the Scheduler), which runs minimized too, and the drawing; never the wait between frames. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). When the window thread is already back in the event loop by the time the dump is written, the freeze was over before the snapshot, so its stack can't explain it; those reports say so and share the signature <x3/>. macOS doesn't measure it yet. The monitor then writes a <g4>minidump</g4> of every thread from outside, through <x5/> and <x6/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>Bắt lỗi.</g1> Khi MDM gặp sự cố (ngoại lệ Windows, tín hiệu trên Linux, ngoại lệ Mach trên macOS), hoảng loạn hoặc bị treo, nó sẽ yêu cầu trình giám sát tạo một bản ghi. Treo là khi một khung cửa sổ chạy quá 8 giây, được một luồng giám sát phát hiện (luồng này bỏ qua thời gian ngủ). Nó tính thời gian cho cả hai phần của một khung: những gì MDM xử lý (các lệnh đến, đồng hồ tải xuống, hàng đợi và Bộ lập lịch), cũng chạy khi thu nhỏ, và phần vẽ; không bao giờ tính thời gian chờ giữa các khung. Luồng giám sát cũng đo lượng thời gian xử lý mà luồng cửa sổ nhận được trong khi đó, và báo cáo cho biết điều đó có nghĩa là gì: nó chạy liên tục (một vòng lặp), nó chờ trong một khóa hoặc trên I/O (tắc nghẽn), hoặc nó hầu như không chạy trong mã thông thường, điều này có nghĩa là máy tính quá bận để chạy MDM hoặc chậm tải nó từ đĩa, rất có thể không phải lỗi của MDM (những lỗi này chia sẻ một chữ ký, <x2/>). Khi luồng cửa sổ đã quay lại vòng lặp sự kiện vào thời điểm bản ghi được ghi, thì sự cố treo đã kết thúc trước khi chụp nhanh, vì vậy ngăn xếp của nó không thể giải thích được; những báo cáo đó nói như vậy và chia sẻ chữ ký <x3/>. macOS chưa đo lường điều này. Trình giám sát sau đó ghi một <g4>minidump</g4> của mọi luồng từ bên ngoài, thông qua <x5/> và <x6/>. Một tiến trình bị lỗi không bao giờ tự ghi bản ghi của chính nó, đây cũng là cách Firefox, Crashpad và Sentry thực hiện."
-  },
   "3513f93cb0fa7d72": {
    "source": "<g1>Far</g1> (red): over 150 ms, usually another continent. A far server is often slower, and more connections help it most.",
    "text": "<g1>Xa</g1> (màu đỏ): trên 150 ms, thường là ở châu lục khác. Máy chủ ở xa thường chậm hơn; tăng số kết nối sẽ có ích nhất trong trường hợp này."
@@ -4514,6 +4506,10 @@
    "source": "Links that work only once no longer fail with \"403 Forbidden\".",
    "text": "Các liên kết chỉ hoạt động một lần không còn lỗi “403 Forbidden”."
   },
+  "43510d0cf7beac55": {
+   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep and the first minute after the computer wakes, while its disk, network and screen come back: a stall then is written to the log, and reported only if it lasts past that minute. It times both parts of a frame: what MDM handles (the commands that come in, the clock of downloads, queues and the Scheduler), which runs minimized too, and the drawing; never the wait between frames. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). Each report also names what the frame was doing when it stopped (the tray icon, the downloads' progress, drawing the main window). When the window thread is already back in the event loop, or in the pause after a frame of a hidden window, by the time the dump is written, the freeze was over before the snapshot, so its stack can't explain it; those reports say so and share the signature <x3/>. macOS doesn't measure it yet. The monitor then writes a <g4>minidump</g4> of every thread from outside, through <x5/> and <x6/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
+   "text": "<g1>Bắt lỗi.</g1> Khi MDM gặp sự cố (ngoại lệ trên Windows, tín hiệu trên Linux, ngoại lệ Mach trên macOS), bị treo hoặc đóng băng, chương trình sẽ yêu cầu trình giám sát tạo một bản ghi. Đóng băng là khi một khung hình của cửa sổ chạy quá 8 giây, được một luồng giám sát phát hiện. Luồng này bỏ qua thời gian ngủ và phút đầu tiên sau khi máy tính thức dậy, trong khi ổ đĩa, mạng và màn hình đang khôi phục: một sự cố sẽ được ghi vào nhật ký và chỉ được báo cáo nếu nó kéo dài quá một phút. Nó tính thời gian cả hai phần của một khung hình: những gì MDM xử lý (các lệnh đến, đồng hồ của các lượt tải xuống, hàng đợi và Bộ lập lịch), cũng chạy khi thu nhỏ, và việc vẽ; không bao giờ tính thời gian chờ giữa các khung hình. Luồng giám sát cũng đo lượng thời gian xử lý mà luồng cửa sổ nhận được trong khi đó, và báo cáo cho biết điều đó có nghĩa là gì: nó chạy liên tục (một vòng lặp), nó chờ trong một khóa hoặc trên I/O (một bế tắc), hoặc nó hầu như không chạy trong mã thông thường, tức là máy tính quá bận để chạy MDM hoặc chậm tải nó từ đĩa, rất có thể không phải lỗi của MDM (những lỗi này chia sẻ một chữ ký, <x2/>). Mỗi báo cáo cũng nêu tên những gì khung hình đang làm khi nó dừng lại (biểu tượng khay hệ thống, tiến trình tải xuống, vẽ cửa sổ chính). Khi luồng cửa sổ đã trở lại vòng lặp sự kiện, hoặc trong khoảng dừng sau một khung hình của cửa sổ ẩn, vào thời điểm bản ghi được ghi, sự cố đóng băng đã kết thúc trước khi chụp nhanh, vì vậy ngăn xếp của nó không thể giải thích được; những báo cáo đó nói như vậy và chia sẻ chữ ký <x3/>. macOS chưa đo lường điều này. Trình giám sát sau đó ghi một <g4>minidump</g4> của mọi luồng từ bên ngoài, thông qua <x5/> và <x6/>. Một tiến trình bị lỗi không bao giờ tự ghi bản ghi của chính nó, đây cũng là cách Firefox, Crashpad và Sentry thực hiện."
+  },
   "436bac2c4f3d3f4c": {
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
    "text": "<g1>Tải xuống → Bắt đầu hàng đợi</g1> và <g2>Tải xuống → Dừng hàng đợi</g2> cũng liệt kê chúng."
@@ -4569,6 +4565,10 @@
   "4447a34a8cbe1ae6": {
    "source": "<g1>The Categories pane and the menus</g1> (<g2>#113</g2>): the pane reads as a tree (each category named with its count, open or shut, selected), the menu bar and every right-click menu as menus whose items can be run, and <g3>Shift+F10</g3> or the <g4>Menu</g4> key opens the selected category's menu. A menu opened from the keyboard no longer stays invisible until the mouse moves.",
    "text": "<g1>Ngăn Danh mục và các menu</g1> (<g2>#113</g2>): ngăn đọc dưới dạng cây (mỗi danh mục được đặt tên với số lượng, mở hoặc đóng, được chọn), thanh menu và mọi menu chuột phải dưới dạng menu có các mục có thể chạy, và <g3>Shift+F10</g3> hoặc phím <g4>Menu</g4> mở menu của danh mục được chọn. Menu mở từ bàn phím không còn vô hình cho đến khi chuột di chuyển."
+  },
+  "44502a7e800ed659": {
+   "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you. On Linux it makes MDM your desktop's default app for them; on macOS, their default app (Finder offers MDM in <g5>Open With</g5> for <x6/> files either way, and a double-click opens them in MDM when no other app is their default).",
+   "text": "Một torrent bị dừng bởi một trong các giới hạn này sẽ hiển thị thông báo trong nhật ký sự kiện và sẽ không được chia sẻ lại khi MDM khởi động. Tăng hoặc tắt giới hạn để chia sẻ lại. - <g1>Giới hạn tải lên cho tất cả torrent thành</g1> — tắt theo mặc định. Giới hạn tổng dung lượng tất cả torrent của bạn gửi đến các peer khác, cả khi chúng đang tải xuống và khi chúng đang chia sẻ. Giới hạn tải lên riêng của một torrent, trong cửa sổ tiến trình của nó, sẽ được áp dụng thêm vào. - <g2>Mở liên kết magnet và tệp .torrent bằng Mister Download Manager</g2> — Windows sau đó sẽ mở liên kết magnet trong trình duyệt của bạn và tệp <x3/> trong Explorer bằng MDM. Điều này chỉ áp dụng cho tài khoản Windows của bạn; một chương trình bạn đã chọn trong <g4>Mở bằng</g4> của Windows vẫn được ưu tiên. Trình cài đặt có thể bật tính năng này cho bạn. Trên Linux, nó đặt MDM làm ứng dụng mặc định của màn hình nền cho các loại tệp này; trên macOS, ứng dụng mặc định của chúng (Finder vẫn cung cấp MDM trong <g5>Mở bằng</g5> cho tệp <x6/> và nhấp đúp sẽ mở chúng trong MDM khi không có ứng dụng nào khác là mặc định)."
   },
   "445e6378c12f1e16": {
    "source": "<g1>Image gallery support:</g1> download whole galleries (Flickr, Imgur, DeviantArt and more) with gallery-dl.",
@@ -4789,6 +4789,10 @@
   "48389b303ae7a75a": {
    "source": "The extension now installs from your browser's store, updates itself, and catches more of what you download.",
    "text": "Tiện ích mở rộng giờ đây được cài đặt từ cửa hàng của trình duyệt, tự cập nhật và bắt được nhiều nội dung bạn tải xuống hơn."
+  },
+  "483cd37a4558c14a": {
+   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier while a window changes.",
+   "text": "Nếu cả hai đều không thể khởi động, MDM sẽ vẽ bằng trình kết xuất phần mềm (của Microsoft trên Windows, của Mesa trên Linux), nhờ đó cửa sổ vẫn mở (Remote Desktop, máy ảo không có driver đồ họa). Nó hoạt động, nhưng làm bộ xử lý bận hơn khi cửa sổ thay đổi."
   },
   "487a0af4191d3496": {
    "source": "<g1><g2>Its site says so</g2></g1><g3>its site says</g3>",
@@ -6614,10 +6618,6 @@
    "source": "A queue is a list of downloads that run in order, a few at a time. Click <g1>Download Later</g1> in <g2>Download File Info</g2>, or right-click downloads in the list and choose <g3>Add to queue</g3>. The <g4>Q</g4> column marks them, and <g5>Queues</g5> in the categories pane shows each queue on its own.",
    "text": "Hàng đợi là danh sách các lượt tải xuống chạy theo thứ tự, mỗi lần một vài lượt. Nhấp vào <g1>Tải xuống sau</g1> trong <g2>Thông tin tệp tải xuống</g2>, hoặc nhấp chuột phải vào các lượt tải xuống trong danh sách và chọn <g3>Thêm vào hàng đợi</g3>. Cột <g4>Q</g4> đánh dấu chúng, và <g5>Hàng đợi</g5> trong ngăn danh mục hiển thị từng hàng đợi riêng biệt."
   },
-  "63bbda066dbbac86": {
-   "source": "On Linux, if neither can start, MDM draws with Mesa's software renderer, so the window still opens (a virtual machine without a graphics driver). A software renderer (WARP on Windows too) works, but keeps the processor busier while a window changes.",
-   "text": "Trên Linux, nếu cả hai đều không thể khởi động, MDM sẽ vẽ bằng trình kết xuất phần mềm của Mesa, vì vậy cửa sổ vẫn mở (một máy ảo không có driver đồ họa). Trình kết xuất phần mềm (WARP trên Windows cũng vậy) hoạt động, nhưng làm bộ xử lý bận hơn khi cửa sổ thay đổi."
-  },
   "63cf6dd5807201af": {
    "source": "<g1>Any (the system chooses)</g1> is the default. Choose an adapter instead, and MDM sends its connections through that one only. When it disconnects, or the VPN is switched off, nothing goes out another way. Running downloads stop with \"… is not connected\" and start again by themselves when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
    "text": "<g1>Bất kỳ (hệ thống tự chọn)</g1> là mặc định. Thay vào đó, hãy chọn một bộ điều hợp, và MDM chỉ gửi các kết nối của nó qua bộ điều hợp đó. Khi nó bị ngắt kết nối, hoặc VPN bị tắt, không gì đi ra bằng cách khác. Các lượt tải xuống đang chạy sẽ dừng với thông báo \"… không được kết nối\" và tự động tiếp tục khi bộ điều hợp hoạt động trở lại. Dòng bên dưới danh sách hiển thị địa chỉ của bộ điều hợp, hoặc cho biết nó không được kết nối."
@@ -6998,6 +6998,10 @@
    "source": "Contribute — Mister Download Manager",
    "text": "Đóng góp — Mister Download Manager"
   },
+  "6a404128afe84a22": {
+   "source": "A freeze whose report shows the window thread inside the graphics driver as it shows a frame (<x1/> or <x2/> for Intel, <x3/> for NVIDIA, <x4/> for AMD, under <x5/>) is the driver's OpenGL stuck, not MDM: on Windows, choose <g6>View → Draw with → Direct3D</g6> (the default) and restart MDM, and update the graphics driver. If <g7>Draw with</g7> says Direct3D didn't start there, the line under it says why; MDM then remembers the freeze and draws with WARP from the next start.",
+   "text": "Nếu báo cáo lỗi cho thấy luồng cửa sổ bị treo bên trong driver đồ họa khi hiển thị khung hình (<x1/> hoặc <x2/> cho Intel, <x3/> cho NVIDIA, <x4/> cho AMD, dưới <x5/>) thì đó là do OpenGL của driver bị kẹt, không phải MDM: trên Windows, hãy chọn <g6>Xem → Vẽ bằng → Direct3D</g6> (mặc định) và khởi động lại MDM, đồng thời cập nhật driver đồ họa. Nếu <g7>Vẽ bằng</g7> cho biết Direct3D không khởi động ở đó, dòng bên dưới sẽ cho biết lý do; MDM sau đó sẽ ghi nhớ lỗi treo và vẽ bằng WARP từ lần khởi động tiếp theo."
+  },
   "6a658020a3c19e30": {
    "source": "Other systems and files",
    "text": "Các hệ thống và tệp khác"
@@ -7317,10 +7321,6 @@
   "6ed1f7b8dcba3260": {
    "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what MDM does and what it doesn't. The switches it mentions are in <g1>Tasks → Torrent settings...</g1>.",
    "text": "Torrent đến từ máy tính của những người khác, không phải từ một trang web. Điều đó thay đổi những gì bạn có thể tin tưởng và những gì người khác có thể thấy. Trang này nói rõ những gì MDM làm và không làm. Các công tắc được đề cập nằm trong <g1>Tác vụ → Cài đặt torrent...</g1>."
-  },
-  "6edac9507a8f3ffd": {
-   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it draws the next way (on Windows WARP, then OpenGL), and <g1>View → Draw with</g1> says why.",
-   "text": "Nếu card đồ họa được đặt lại khi MDM đang chạy (cập nhật driver), MDM sẽ tự khởi động lại. Nếu bị mất hai lần trong 10 phút, nó sẽ vẽ theo cách tiếp theo (trên Windows là WARP, sau đó là OpenGL), và <g1>Xem → Vẽ bằng</g1> sẽ cho biết lý do."
   },
   "6eef75044c57910f": {
    "source": "Stop now also stops yt-dlp, which used to keep downloading in the background.",
@@ -9986,6 +9986,10 @@
    "source": "The list shows each quality with its size, best first, and the sound alone at the end. Check <g1>Save to</g1> and <g2>File name</g2>, then click <g3>Download Now</g3>, or <g4>Later</g4> to put it in the list for later. The video gets its own row and progress window, like any other download.",
    "text": "Danh sách hiển thị từng chất lượng với kích thước của nó, chất lượng tốt nhất ở trên cùng, và chỉ âm thanh ở cuối. Kiểm tra <g1>Lưu vào</g1> và <g2>Tên tệp</g2>, sau đó nhấp <g3>Tải xuống ngay</g3>, hoặc <g4>Sau</g4> để đưa vào danh sách tải xuống sau. Video sẽ có hàng riêng và cửa sổ tiến trình, giống như bất kỳ lượt tải xuống nào khác."
   },
+  "9763111f0a019af1": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your graphics card (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds of its own (the time MDM spends loading your list and its icons doesn't count, however slow the computer is just after it starts), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
+   "text": "Nếu Direct3D, Vulkan hoặc Metal không thể khởi động trên card đồ họa của bạn (không có driver, một số máy ảo), hoặc cửa sổ đầu tiên của nó không hiển thị trong vòng 10 giây (thời gian MDM tải danh sách và biểu tượng của bạn không tính, dù máy tính chậm thế nào ngay sau khi khởi động), MDM sẽ vẽ bằng OpenGL, và <g1>Xem → Vẽ bằng</g1> sẽ hiển thị điều đó và lý do. Chọn lại tùy chọn này sẽ thử lại vào lần khởi động tiếp theo."
+  },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
    "text": "MDM kiểm tra cả địa chỉ bạn nhấp vào lẫn địa chỉ sau khi chuyển hướng. Vì vậy, trang web bạn đã loại trừ vẫn bị loại trừ ngay cả khi chuyển bạn đến máy chủ khác. Các lượt tải xuống khác vẫn do trình duyệt xử lý. Các thay đổi trong Tùy chọn sẽ được áp dụng trong trình duyệt trong vòng một phút; bạn không cần khởi động lại trình duyệt."
@@ -11793,6 +11797,10 @@
   "b2181eccf65e86be": {
    "source": "This <g1>website</g1> counts visits with <g2>Statcounter</g2>, which sets a cookie and sees your IP address; it runs only on the website, never in the app.",
    "text": "Trang <g1>web</g1> này đếm lượt truy cập bằng <g2>Statcounter</g2>, công cụ này đặt một cookie và xem địa chỉ IP của bạn; nó chỉ chạy trên trang web, không bao giờ trong ứng dụng."
+  },
+  "b21b0cc3853450de": {
+   "source": "On Windows, when OpenGL fails on a card without Direct3D 12, MDM draws with Direct3D on Microsoft's software renderer (WARP) from the next start, and <g1>View → Draw with</g1> says why: OpenGL couldn't start, it is too old to draw MDM (older than 3.0, such as Intel's first HD Graphics, whose OpenGL 2.1 drew MDM's windows as garbage), its first window didn't show within 10 seconds, or MDM froze inside the graphics driver while OpenGL showed a frame (the older Intel HD Graphics and AMD Radeon cards' drivers did). Choosing <g2>OpenGL</g2> there tries it again.",
+   "text": "Trên Windows, khi OpenGL thất bại trên card không có Direct3D 12, MDM sẽ vẽ bằng Direct3D trên trình kết xuất phần mềm của Microsoft (WARP) từ lần khởi động tiếp theo, và <g1>Xem → Vẽ bằng</g1> sẽ cho biết lý do: OpenGL không thể khởi động, nó quá cũ để vẽ MDM (cũ hơn 3.0, chẳng hạn như Intel HD Graphics đời đầu, với OpenGL 2.1 đã vẽ cửa sổ MDM thành rác), cửa sổ đầu tiên của nó không hiển thị trong vòng 10 giây, hoặc MDM bị treo bên trong driver đồ họa khi OpenGL hiển thị khung hình (driver của Intel HD Graphics và AMD Radeon đời cũ đã gặp phải). Chọn <g2>OpenGL</g2> ở đó sẽ thử lại."
   },
   "b23baab9a4561a1d": {
    "source": "Pauses running downloads.",
@@ -14358,10 +14366,6 @@
    "source": "Does it work on Mac and Linux?",
    "text": "Nó có hoạt động trên Mac và Linux không?"
   },
-  "d93076a907e08557": {
-   "source": "If Direct3D, Vulkan or Metal can't start on your graphics card (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds of its own (the time MDM spends loading your list and its icons doesn't count, however slow the computer is just after it starts), MDM draws another way, and <g1>View → Draw with</g1> says which and why. On Windows that is Direct3D on Microsoft's software renderer (WARP), then OpenGL only if WARP can't draw either: the older cards without Direct3D 12 (Intel's HD Graphics 3000 to 5500, older AMD Radeon cards) froze or crashed inside their OpenGL driver, and WARP draws MDM right there. On Linux and macOS it is OpenGL. Choosing it again tries the card again at the next start.",
-   "text": "Nếu Direct3D, Vulkan hoặc Metal không thể khởi động trên card đồ họa của bạn (không có driver, một số máy ảo), hoặc cửa sổ đầu tiên không hiển thị trong vòng 10 giây (thời gian MDM tải danh sách và biểu tượng không tính, dù máy tính chậm thế nào khi khởi động), MDM sẽ vẽ bằng cách khác, và <g1>Xem → Vẽ bằng</g1> sẽ cho biết cách nào và lý do. Trên Windows, đó là Direct3D trên trình kết xuất phần mềm của Microsoft (WARP), sau đó chỉ OpenGL nếu WARP cũng không thể vẽ: các card cũ hơn không có Direct3D 12 (Intel HD Graphics 3000 đến 5500, các card AMD Radeon cũ hơn) bị treo hoặc gặp sự cố trong driver OpenGL của chúng, và WARP vẽ MDM ngay tại đó. Trên Linux và macOS là OpenGL. Chọn lại tùy chọn này sẽ thử lại card ở lần khởi động tiếp theo."
-  },
   "d94b3dd782154f61": {
    "source": "Set up the extension once, and every download link you click in Firefox, Chrome, Edge, Brave, Opera, Vivaldi or Helium goes to MDM.",
    "text": "Chỉ cần cài đặt tiện ích mở rộng một lần, mọi liên kết tải xuống bạn nhấp vào trong Firefox, Chrome, Edge, Brave, Opera, Vivaldi hoặc Helium sẽ được chuyển đến MDM."
@@ -15126,10 +15130,6 @@
    "source": "<g1>source</g1> is the English text; leave it as it is. Change only <g2>translation</g2>.",
    "text": "<g1>source</g1> là văn bản tiếng Anh; giữ nguyên. Chỉ sửa <g2>translation</g2>."
   },
-  "e6800d5aa1fd6842": {
-   "source": "On Windows, an OpenGL older than 3.0 (an old graphics card's driver, such as Intel's first HD Graphics, whose OpenGL is 2.1) can't draw MDM: its windows come out as garbage. With <g1>OpenGL</g1> chosen in <g2>View → Draw with</g2> on such a card, MDM notices it as it starts and starts again with Direct3D on WARP, from then on, and <g3>View → Draw with</g3> says so. Choosing <g4>OpenGL</g4> there tries it again.",
-   "text": "Trên Windows, OpenGL cũ hơn 3.0 (driver của card đồ họa cũ, như Intel HD Graphics đời đầu, có OpenGL 2.1) không thể vẽ MDM: các cửa sổ của nó hiển thị sai lệch. Với <g1>OpenGL</g1> được chọn trong <g2>Xem → Vẽ bằng</g2> trên một card như vậy, MDM sẽ nhận ra khi khởi động và khởi động lại với Direct3D trên WARP, từ đó trở đi, và <g3>Xem → Vẽ bằng</g3> sẽ thông báo. Chọn <g4>OpenGL</g4> ở đó sẽ thử lại."
-  },
   "e680897e60d1dca2": {
    "source": "To bring the built-in categories back as they came, with their names, file types and folders, use <g1>Options → Save to → Restore the built-in categories</g1>. Your own categories, General and Torrents stay as they are.",
    "text": "Để khôi phục các danh mục tích hợp về trạng thái ban đầu, bao gồm tên, loại tệp và thư mục, hãy dùng <g1>Tùy chọn → Lưu vào → Khôi phục các danh mục tích hợp</g1>. Các danh mục riêng, Chung và Torrent vẫn giữ nguyên."
@@ -15541,10 +15541,6 @@
   "ec83076f0311f20e": {
    "source": "A theme is one small text file in <g1>TOML</g1> (or JSON, <x2/>; or a <g3>colour scheme</g3>, <x4/>). It names only what it changes; everything else comes from the theme it <x5/>:",
    "text": "Một chủ đề là một tệp văn bản nhỏ ở định dạng <g1>TOML</g1> (hoặc JSON, <x2/>; hoặc <g3>bảng màu</g3>, <x4/>). Nó chỉ đặt tên những gì nó thay đổi; mọi thứ khác đến từ chủ đề mà nó <x5/>:"
-  },
-  "ec8dbbc2dc38cd32": {
-   "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you.",
-   "text": "Torrent bị dừng bởi một trong các giới hạn này sẽ được ghi lại trong nhật ký sự kiện và không được chia sẻ lại khi MDM khởi động. Tăng hoặc tắt giới hạn để chia sẻ lại. - <g1>Giới hạn tải lên cho tất cả torrent thành</g1> — mặc định là tắt. Giới hạn tổng lượng dữ liệu mà tất cả torrent tải lên cho các máy ngang hàng khác, cả khi đang tải xuống lẫn khi đang chia sẻ. Giới hạn tải lên riêng của torrent, trong cửa sổ tiến trình, được áp dụng thêm. - <g2>Mở liên kết magnet và tệp .torrent bằng Mister Download Manager</g2> — Windows sẽ mở liên kết magnet trong trình duyệt của bạn và tệp <x3/> trong Explorer bằng MDM. Tùy chọn này chỉ áp dụng cho tài khoản Windows của bạn; chương trình bạn chọn trong mục <g4>Mở bằng</g4> của Windows vẫn được ưu tiên. Trình cài đặt có thể bật tùy chọn này cho bạn."
   },
   "ec99486fc82e0b86": {
    "source": "Options",
@@ -16345,6 +16341,10 @@
   "f89a410af1a10630": {
    "source": "The site isn't in <g1>Don't start downloading automatically from the following sites</g1>, nor the address in <g2>Don't start downloading automatically from the following addresses</g2>.",
    "text": "Trang web không nằm trong <g1>Không tự động bắt đầu tải xuống từ các trang web sau</g1> và địa chỉ cũng không nằm trong <g2>Không tự động bắt đầu tải xuống từ các địa chỉ sau</g2>."
+  },
+  "f89c54d71eb189a4": {
+   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and <g1>View → Draw with</g1> says why.",
+   "text": "Nếu card đồ họa bị đặt lại khi MDM đang chạy (cập nhật driver), MDM sẽ tự khởi động lại. Nếu bị mất hai lần trong 10 phút, nó sẽ quay lại OpenGL, và <g1>Xem → Vẽ bằng</g1> sẽ cho biết lý do."
   },
   "f8b52274ed125d5f": {
    "source": "Tick <g1>Wake the computer to run this queue</g1> and a sleeping computer is woken a minute before the start time, so the network is back when the queue begins. It stays awake while the queue runs; afterwards its own sleep settings apply again. The line under the option says when the next wake is, or why there can't be one.",
