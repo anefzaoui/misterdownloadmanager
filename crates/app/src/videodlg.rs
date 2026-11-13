@@ -562,11 +562,15 @@ impl VideoDialog {
         let (out, ctx) = (slot.clone(), ctx.clone());
         let net = crate::settings::own_net();
         rt.spawn(async move {
-            let res = match tool {
-                Tool::YtDlp => mdm_tools::install_latest(&dir, &net, None).await,
-                Tool::Ffmpeg => mdm_tools::ffmpeg::install_latest(&dir, &net, None).await,
+            let (res, name) = match tool {
+                Tool::YtDlp => (mdm_tools::install_latest(&dir, &net, None).await, "yt-dlp"),
+                Tool::Ffmpeg => (
+                    mdm_tools::ffmpeg::install_latest(&dir, &net, None).await,
+                    "ffmpeg",
+                ),
             };
-            *out.lock().unwrap() = Some(res.map_err(|e| crate::errors::tools(&e)));
+            // What failed and what to do (#816): wrapped in the empty list below.
+            *out.lock().unwrap() = Some(res.map_err(|e| crate::errors::tools_and_advice(&e, name)));
             ctx.request_repaint();
         });
         self.install = Some((tool, slot));

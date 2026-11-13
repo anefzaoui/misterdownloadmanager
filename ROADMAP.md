@@ -561,6 +561,15 @@ These ship in the next version.
   and the list **45% verified**, the bar showing it in the accent colour, and **Finishing…** rather than
   **Connecting…**; a finished download's map of parts has no gaps
   ([#736](https://github.com/anefzaoui/misterdownloadmanager/issues/736))
+- ✅ Windows: a graphics card whose OpenGL is older than 3.0 and that has no Direct3D 12 (Intel's
+  first HD Graphics) no longer draws MDM's windows as garbage: MDM notices that OpenGL, draws
+  with Direct3D on Windows' own software renderer (WARP) instead, from then on, and **View → Draw
+  with** says why; the reporter confirmed WARP draws it right
+  ([#835](https://github.com/anefzaoui/misterdownloadmanager/issues/835))
+- ✅ A helper (yt-dlp, ffmpeg, gallery-dl) that can't be downloaded says which server and why
+  (not found, refused, no answer, a secure connection an antivirus or a proxy reads, GitHub's
+  limit on requests, cut short) and what to do; its release list goes through the proxy set in
+  Options, as its download did ([#816](https://github.com/anefzaoui/misterdownloadmanager/issues/816))
 - ✅ Link grabber lists a web page's links when given the page's address (pasted, copied, in
   a list), as the browser's "Download all links" does, instead of only the page itself
   ([#705](https://github.com/anefzaoui/misterdownloadmanager/issues/705))
