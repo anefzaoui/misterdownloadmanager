@@ -1286,3 +1286,67 @@ mod glyph_tests {
         );
     }
 }
+
+#[cfg(test)]
+mod status_width_tests {
+    /// #736: the list's Status cell while a torrent's files or a finished file are checked or a
+    /// video joined, a short word and how far ("Checking 45%", "Merging 63%"), fits its column
+    /// at the default width in English, German, French, Russian and Arabic, at 100 % and at
+    /// 150 % (View → Interface size), the widest percentage ("100 %") and "..." before it is
+    /// known included. "63% merged" was cut to "63% me..." at 65 px, and a torrent's "Wird
+    /// überprüft 45 %" in German.
+    ///
+    /// In the list's font as this system draws it: Segoe UI on Windows, the system font on
+    /// macOS, fontconfig's interface font on Linux (DejaVu Sans on a bare Ubuntu, where German
+    /// needs 147 px). The default grows with the font there ([`crate::list::status_width`]); on
+    /// Windows it stays 132 px, so the list's other columns keep their room.
+    #[test]
+    fn finishing_fits_the_status_column() {
+        let i18n = crate::i18n::i18n();
+        #[cfg(not(any(windows, target_os = "macos")))]
+        println!("interface font: {:?}", super::fc_match("sans-serif"));
+        let mut widest = (0.0f32, String::new());
+        for code in ["en", "de", "fr", "ru", "ar"] {
+            let lang = i18n.from_code(code).expect("a catalog");
+            let full = craft_i18n::Format::from_tag(code).percent(1.0, 0);
+            for zoom in [1.0, 1.5] {
+                let ctx = egui::Context::default();
+                ctx.set_pixels_per_point(zoom);
+                super::fonts(&ctx, code, false);
+                let mut out = ctx.run_ui(Default::default(), |_| {});
+                out.textures_delta.clear();
+                let font = crate::winui::tahoma();
+                let measure = |text: &str| {
+                    ctx.fonts_mut(|f| {
+                        f.layout_no_wrap(text.to_owned(), font.clone(), egui::Color32::WHITE)
+                            .size()
+                            .x
+                    })
+                };
+                let column = crate::list::status_width(code, &full, measure);
+                let room = column - crate::list::CELL_PAD;
+                println!("{code} at {zoom}: Status {column} px");
+                #[cfg(windows)]
+                assert_eq!(
+                    column,
+                    crate::list::DEFAULT_WIDTHS[crate::list::STATUS],
+                    "{code} at {zoom}: Segoe UI fits in the default"
+                );
+                for source in ["Checking {percent}", "Merging {percent}"] {
+                    for percent in [full.as_str(), "100%", "..."] {
+                        let text = i18n.t(lang, source).replace("{percent}", percent);
+                        let width = measure(&text);
+                        if width > widest.0 {
+                            widest = (width, format!("{code} at {zoom}: {text}"));
+                        }
+                        assert!(
+                            width <= room,
+                            "{code} at {zoom}: {text}: {width} px, {room} px of room"
+                        );
+                    }
+                }
+            }
+        }
+        println!("widest: {} px, {}", widest.0, widest.1);
+    }
+}

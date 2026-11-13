@@ -626,8 +626,10 @@ These ship in the next version.
   downloads a live stream itself, instead of an empty table
   ([#793](https://github.com/anefzaoui/misterdownloadmanager/issues/793))
 - ✅ After the last byte, the progress window says **Verifying… (45%)** or **Merging… (45%)**
-  and the list **45% verified**, the bar showing it in the accent colour, and **Finishing…** rather than
-  **Connecting…**; a finished download's map of parts has no gaps
+  and the list's Status column, wider by default, **Checking 45%** or **Merging 45%** (the
+  whole words in its tip), the bar
+  showing it in the accent colour, no transfer rate and no connection still receiving, and
+  **Finishing…** rather than **Connecting…**; a finished download's map of parts has no gaps
   ([#736](https://github.com/anefzaoui/misterdownloadmanager/issues/736))
 - ✅ Windows: the file dragged out of **Download complete** is moved or copied as Explorer does
   it (moved on the same drive or with Shift, copied to another drive or with Ctrl), no longer
