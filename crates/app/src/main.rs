@@ -376,6 +376,9 @@ fn app() -> eframe::Result {
             ctx.request_repaint();
         }
     });
+    // macOS: so do the .torrent files and magnet links Finder and the browsers hand over (#698).
+    #[cfg(target_os = "macos")]
+    unix::open_events::start(tx.clone(), wake.clone());
     // The remote control (#141) sends its commands down the same channel.
     let sink = mdm_ipc::Sink::new(tx.clone(), wake.clone());
     let _ = mdm_ipc::serve(tx, move || wake());
