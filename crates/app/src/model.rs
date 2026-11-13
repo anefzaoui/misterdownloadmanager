@@ -1235,7 +1235,7 @@ impl Item {
     /// streams are joined (#736): "Verifying... (45%)", "Merging...", with how far it is when
     /// that's known. `short`: the list's Status column, one short word and how far, "Checking
     /// 45%" (as a torrent's check) and "Merging 45%" ("Merging ..." before that is known); the
-    /// column is wide enough for them in every language ([`crate::list::DEFAULT_WIDTHS`]). The
+    /// column is wide enough for them in the interface language and font ([`crate::list::status_width`]). The
     /// cell's tip and a screen reader say it whole ([`crate::list::Row::status_whole`]).
     pub fn finishing(&self, short: bool) -> Option<String> {
         let s = self.snap.as_ref()?;
