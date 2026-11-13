@@ -575,8 +575,7 @@ impl Progress {
                         Some(CaptionButton::ToTray) => Action::Hide,
                         Some(CaptionButton::Minimize) if minimize_hides => Action::Hide,
                         Some(CaptionButton::Minimize) => {
-                            ui.ctx()
-                                .send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+                            crate::dialogs::minimize(ui.ctx(), hwnd);
                             action
                         }
                         _ => action,
