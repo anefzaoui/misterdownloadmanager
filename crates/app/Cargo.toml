@@ -79,8 +79,6 @@ eframe = { workspace = true, features = ["wgpu_no_default_features"] }
 # Cargo.lock keeps gpu-allocator (wgpu-hal's) on wgpu-hal's windows 0.62: its range allows 0.61 too,
 # which win32job uses, and wgpu-hal doesn't build with that one.
 wgpu = { version = "30.0", default-features = false, features = ["dx12", "wgsl"] }
-# Drag the downloaded file out of Download complete (OLE drag and drop).
-drag = "2.1.1"
 raw-window-handle = "0.6"
 # Latin, Greek and Cyrillic text drawn by DirectWrite as Windows' classic controls draw it
 # (win32.rs `text_rasterizer`): its COM interfaces, which windows-sys doesn't have. The windows

@@ -60,7 +60,7 @@ Two more tabs:
 
 ## When a download finishes
 
-**Download complete** shows the file's size, its address and where it was saved. Choose **Open**, **Open with...**, **Open folder** or **Close**. On Windows you can also drag the small box at the bottom right into Explorer, an email or a chat to drop the file there. The window shows above your other programs until you click it, without taking the keyboard from the one you're typing in.
+**Download complete** shows the file's size, its address and where it was saved. Choose **Open**, **Open with...**, **Open folder** or **Close**. On Windows you can also drag the small box at the bottom right into Explorer, an email or a chat to drop the file there. As when you drag a file in Explorer, a folder on the same drive gets the file moved there and another drive gets a copy (hold **Shift** to move it, **Ctrl** to copy it). The download follows a moved file: the list and **Open** find it in its new place. The window shows above your other programs until you click it, without taking the keyboard from the one you're typing in.
 
 Tick **Don't show this dialog again** to stop seeing it. It can be turned back on in **Options → Downloads → Show download complete dialog**.
 

@@ -483,12 +483,15 @@ impl Current {
 }
 
 /// What the engine's part showed last: the streams' segments one after another, the
-/// connections of the stream under way, its server.
+/// connections of the stream under way, its server and its address.
 #[derive(Clone, Debug, Default)]
 pub struct View {
     pub segments: Vec<SegmentView>,
     pub connections: Vec<ConnView>,
     pub server: Option<mdm_engine::Server>,
+    /// The address the stream under way comes from, as yt-dlp gave it (#795): the windows'
+    /// "Address", the page being the web page it was obtained from.
+    pub address: Option<Url>,
 }
 
 /// How the engine's part of a run ended.
@@ -757,6 +760,7 @@ fn fetch_pieces(
                 segments: segments(&sizes, i, &here),
                 connections,
                 server: None,
+                address: Some(s.url.clone()),
             },
         );
         if report.stopped() && !cancelled {
@@ -833,6 +837,7 @@ fn follow(
                 segments: segments(&sizes, i, &s.segments),
                 connections: s.connections.clone(),
                 server: s.server.clone(),
+                address: Some(plan.streams[i].url.clone()),
             },
         );
         if matches!(
