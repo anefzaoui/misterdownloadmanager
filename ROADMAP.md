@@ -557,6 +557,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Touch screens: a tap on a menu's item chooses it (the menu bar's, right-click menus,
+  drop-downs), where only a mouse could
+  ([#733](https://github.com/anefzaoui/misterdownloadmanager/issues/733))
 - ✅ Windows: the file dragged out of **Download complete** is moved or copied as Explorer does
   it (moved on the same drive or with Shift, copied to another drive or with Ctrl), no longer
   always copied, and its download follows a moved file to its new place; where MDM can't learn
