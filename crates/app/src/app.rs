@@ -2196,6 +2196,7 @@ impl App {
         item.login = login;
         // The browser had started it: the host is already sending the file (#44).
         item.direct = crate::debrid::browser_started(&context);
+        item.referer = context.referer.clone().filter(|r| !r.is_empty());
         item.context = context;
         self.items.push(item);
         self.dirty = true;
@@ -4044,7 +4045,7 @@ impl App {
         let Some(item) = self.item(c.id) else { return };
         item.description = c.description;
         item.login = c.login;
-        item.context.referer = c.referer;
+        item.set_referer(c.referer);
         // "Through …" changed (#44): the next start goes the new way. The service's link is
         // dropped from the resume state: directly, it continues from the host's own address;
         // through the account, from a new link the service gives. The size and validators
@@ -4753,6 +4754,9 @@ impl App {
                 ));
                 let url = item.url.clone();
                 item.live = Some(Live::new(model::Job::Video { job, url }, item.downloaded));
+                // This run's stream addresses are new ones (signed, they expire): the windows
+                // show the page until the engine has the first (#795).
+                item.file_url = None;
                 item.status = Status::Downloading;
                 item.error = None;
                 item.last_try = Some(model::now_stamp());
