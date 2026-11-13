@@ -959,7 +959,7 @@ pub enum PopupLook {
 /// makes it a plain popup ([`style_popup`]) and [`show_popup`] shows it then.
 pub fn popup_viewport(title: &str) -> egui::ViewportBuilder {
     egui::ViewportBuilder::default()
-        .with_title(title)
+        .with_title(crate::i18n::os_text(title))
         .with_decorations(false)
         .with_resizable(false)
         .with_taskbar(false)

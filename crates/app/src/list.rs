@@ -1076,8 +1076,9 @@ pub fn show(
     }
     filter_box(ui, st);
     for (_, _, x1) in cols.iter().filter(|_| !rows.is_empty()) {
-        // One line at col.right + 1.
-        fill(&bp, x1 + 1.0, body_top, x1 + 1.0, rb, GRID_V_RIGHT());
+        // On the column's last pixel, under its header's divider: one straight line from the
+        // header down (#924: it sat a pixel to the right, on the next column's first).
+        fill(&bp, *x1, body_top, *x1, rb, GRID_V_RIGHT());
     }
     // While a column is dragged: a translucent copy of its header follows the pointer, and a
     // 2 px mark shows where it will land.
