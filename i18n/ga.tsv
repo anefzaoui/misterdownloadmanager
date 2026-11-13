@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	níorbh fhéidir a chuid comhad a scríobh: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	níorbh fhéidir a phictiúr agus a fhuaim a cheangal in aon chomhad amháin ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	níorbh fhéidir a phictiúr agus a fhuaim a cheangal in aon chomhad amháin ({error}). Fanann an méid a íoslódáladh san fhillteán le haghaidh Atosaigh chun iad a cheangal arís ({files}); má scriostar an íoslódáil le “Scrios an comhad ón diosca freisin” baintear é
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	ní mar a bhíothas ag súil leis atá a chuid faisnéise eisiúna: {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	Mion-Oileáin Imeallacha na Stát Aontaithe
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	Anaithnid
 #. text in a dialog box; text in a download's progress window; text in whereis.rs

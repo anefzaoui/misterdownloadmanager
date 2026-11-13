@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	kāore i taea te tuhi i ōna kōnae: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	kāore i taea te hono i tōna pikitia me tōna oro ki tētahi kōnae kotahi ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	kāore i taea te hono i tōna pikitia me tōna oro ki tētahi kōnae kotahi ({error}). Ko ngā mea i tikiakehia ka noho ki te kōpaki kia hono anō ai te Whakatū anō ({files}); mā te muku i te tikiake me te "Mukua hoki te kōnae mai i te kōpae" ka tangohia
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	kāore i rite ōna mōhiohio tukunga ki te mea i tūmanakohia: {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	United States Minor Outlying Islands
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	Kāore i te mōhiotia
 #. text in a dialog box; text in a download's progress window; text in whereis.rs

@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	sy lêers kon nie geskryf word nie: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	die prent en klank kon nie in een lêer saamgevoeg word nie ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	die prent en klank kon nie in een lêer saamgevoeg word nie ({error}). Wat afgelaai is, bly in die vouer sodat Hervat dit weer kan saamvoeg ({files}); die aflaai met “Vee ook die lêer van skyf af” te verwyder, verwyder dit
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	sy vrystellinginligting is nie soos verwag nie: {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	Klein afgeleë eilande van die Verenigde State
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	Onbekend
 #. text in a dialog box; text in a download's progress window; text in whereis.rs

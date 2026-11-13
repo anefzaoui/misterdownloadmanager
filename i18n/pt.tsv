@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	os ficheiros não puderam ser escritos: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	não foi possível juntar a imagem e o som num só ficheiro ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	não foi possível juntar a imagem e o som num só ficheiro ({error}). O que foi transferido permanece na pasta para que a opção «Retomar» possa juntá-lo novamente ({files}); eliminar a transferência com a opção «Eliminar também o ficheiro do disco» remove-a
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	as informações de lançamento não são as esperadas: {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	Ilhas Menores Distantes dos Estados Unidos
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	Desconhecido
 #. text in a dialog box; text in a download's progress window; text in whereis.rs

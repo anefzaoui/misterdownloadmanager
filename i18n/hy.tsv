@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	դրա ֆայլերը հնարավոր չէր գրել՝ {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	Չհաջողվեց միավորել տեսանյութի պատկերն ու ձայնը մեկ ֆայլում ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	Չհաջողվեց միավորել տեսանյութի պատկերն ու ձայնը մեկ ֆայլում ({error})։ Ներբեռնված մասերը մնում են պանակում, որպեսզի «Վերսկսել» հրամանով հնարավոր լինի դրանք կրկին միավորել ({files})։ «Ջնջել նաև ֆայլը սկավառակից» ընտրանքով ներբեռնումը ջնջելիս ֆայլերը նույնպես հեռացվում են։
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	դրա թողարկման մասին տեղեկությունները չեն համապատասխանում ակնկալիքներին՝ {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	Միացյալ Նահանգների փոքր կղզիներ
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	Անհայտ
 #. text in a dialog box; text in a download's progress window; text in whereis.rs

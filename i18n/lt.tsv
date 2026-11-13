@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	nepavyko įrašyti failų: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	nepavyko sujungti vaizdo ir garso į vieną failą ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	nepavyko sujungti vaizdo ir garso į vieną failą ({error}). Tai, kas buvo atsisiųsta, lieka aplanke, kad būtų galima atnaujinti ir vėl sujungti ({files}); ištrynus atsisiuntimą su parinktimi „Taip pat ištrinti failą iš disko“, jis bus pašalintas
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	išleidimo informacija neatitinka lūkesčių: {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	Jungtinių Valstijų mažosios salos
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	Nežinomas
 #. text in a dialog box; text in a download's progress window; text in whereis.rs

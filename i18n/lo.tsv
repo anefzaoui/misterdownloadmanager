@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	ບໍ່ສາມາດຂຽນໄຟລ໌ຂອງມັນໄດ້: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	ບໍ່ສາມາດລວມວິດີໂອ ແລະ ສຽງເຂົ້າເປັນໄຟລ໌ດຽວໄດ້ ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	ບໍ່ສາມາດລວມຮູບພາບ ແລະ ສຽງເຂົ້າເປັນໄຟລ໌ດຽວໄດ້ ({error}). ສິ່ງທີ່ດາວໂຫຼດແລ້ວຈະຢູ່ໃນໂຟນເດີເພື່ອໃຫ້ Resume ລວມອີກຄັ້ງ ({files}); ການລຶບການດາວໂຫຼດດ້ວຍ “ລຶບໄຟລ໌ອອກຈາກແຜ່ນດິດນຳ” ຈະລຶບມັນອອກ
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	ຂໍ້ມູນການປ່ອຍຂອງມັນບໍ່ເປັນໄປຕາມທີ່ຄາດໄວ້: {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	ໝູ່ເກາະນ້ອຍຮອບນອກຂອງສະຫະລັດ
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	ບໍ່ຮູ້ຈັກ
 #. text in a dialog box; text in a download's progress window; text in whereis.rs

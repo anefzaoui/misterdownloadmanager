@@ -2279,6 +2279,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	skedarët e tij nuk mund të shkruheshin: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	figura dhe zëri nuk mund të bashkoheshin në një skedar ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	figura dhe zëri nuk mund të bashkoheshin në një skedar ({error}). Ajo që u shkarkua mbetet në dosje që të bashkohet sërish nga Rifillo ({files}); fshirja e shkarkimit me “Fshij edhe skedarin nga disku” e heq atë
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	informacioni i lëshimit të tij nuk është siç pritej: {detail}
@@ -5172,6 +5182,7 @@
 #, machine
 	United States Minor Outlying Islands	Ishujt e Vegjël të Jashtëm të Shteteve të Bashkuara
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	E panjohur
 #. text in a dialog box; text in a download's progress window; text in whereis.rs

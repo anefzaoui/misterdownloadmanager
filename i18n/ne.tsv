@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	यसका फाइलहरू लेख्न सकिएन: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	यसको चित्र र ध्वनि एउटै फाइलमा जोड्न सकिएन ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	यसको भिडियो र अडियो एउटै फाइलमा जोड्न सकिएन ({error})। डाउनलोड गरिएका भागहरू फेरि जोड्नका लागि फोल्डरमा रहन्छन् ({files}); “डिस्कबाट फाइल पनि मेटाउनुहोस्” विकल्प चयन गरेर डाउनलोड मेटाउँदा ती फाइलहरू हट्छन्
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	यसको रिलिज जानकारी अपेक्षाअनुसार छैन: {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	संयुक्त राज्य अमेरिकाका साना बाहिरी टापुहरू
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	अज्ञात
 #. text in a dialog box; text in a download's progress window; text in whereis.rs

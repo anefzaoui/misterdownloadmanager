@@ -1788,6 +1788,11 @@
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	Završeno
+#. text in a download's progress window
+#. a download's status: every byte is in, the file is being written out and given its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Finishing...	Završavanje...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2274,6 +2279,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	nije bilo moguće zapisati njegove datoteke: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	sliku i zvuk nije bilo moguće spojiti u jednu datoteku ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	slika i zvuk nisu se mogli spojiti u jednu datoteku ({error}). Preuzeto ostaje u mapi za ponovno spajanje ({files}); brisanje preuzimanja s „Izbriši i datoteku s diska” uklanja ga
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	informacije o izdanju nisu očekivane: {detail}
@@ -2667,6 +2682,15 @@
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
 	medium	srednje
+#. text in the download list (sizes, speeds, status)
+#. a video's status while its picture and sound are joined into one file (ffmpeg)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Merging...	Spajanje...
+#. text in the download list (sizes, speeds, status)
+#. a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
+#, machine
+	Merging... ({percent})	Spajanje... ({percent})
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3564,6 +3588,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	Čitanje torrenta...
+#. message or event log entry in the main window
+#. the status strip while Tasks → Import reads a file; {file} is its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading {file}...	Čitanje {file}...
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Čita stranicu i navodi sve kvalitete koje web-mjesto nudi, do 4K, s YouTubea, Vimea i više od tisuću drugih web-mjesta.
@@ -5153,6 +5182,7 @@
 #, machine
 	United States Minor Outlying Islands	Manji udaljeni otoci Sjedinjenih Država
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	Nepoznato
 #. text in a dialog box; text in a download's progress window; text in whereis.rs
@@ -5295,6 +5325,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Verifying...	Provjeravam...
+#. text in the download list (sizes, speeds, status)
+#. a download's status while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%"
+#, machine
+	Verifying... ({percent})	Provjeravanje... ({percent})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine

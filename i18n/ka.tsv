@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	მისი ფაილების ჩაწერა ვერ მოხერხდა: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	მისი გამოსახულებისა და ხმის ერთ ფაილში გაერთიანება ვერ მოხერხდა ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	მისი გამოსახულება და ხმა ვერ გაერთიანდა ერთ ფაილში ({error}). ჩამოტვირთული ფაილები რჩება საქაღალდეში, რათა განახლდეს გაერთიანება ({files}); ჩამოტვირთვის წაშლა „ფაილის დისკიდან წაშლით“ შლის მას.
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	მისი გამოშვების ინფორმაცია არ არის მოსალოდნელი: {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	ამერიკის შეერთებული შტატების მცირე დაშორებული კუნძულები
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	უცნობი
 #. text in a dialog box; text in a download's progress window; text in whereis.rs

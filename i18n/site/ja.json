@@ -76,7 +76,7 @@
   },
   "0168c749ceaa28cd": {
    "source": "Many videos are split into chapters on their page: YouTube's list under the player, with a title and a start time for each part. With <g1>Embed chapters</g1> ticked, under <g2>Subtitles</g2>, they go into the video file, so players such as VLC, MPV, MPC-HC and Windows' Media Player list them and skip from one to the next.",
-   "text": "多くの動画はページ上でチャプターに分割されています。プレーヤーの下にある YouTube のリストには、各部分のタイトルと開始時刻が表示されます。<g2>字幕</g2> の下にある <g1>チャプターを埋め込む</g1> にチェックを入れると、チャプターが動画ファイルに組み込まれるため、VLC、MPV、MPC-HC、Windows Media Player などのプレーヤーでチャプターが一覧表示され、次々にスキップできます。"
+   "text": "多くの動画はページ上でチャプターに分割されています。YouTube のプレーヤーの下にあるリストには、各部分のタイトルと開始時刻が表示されます。<g2>字幕</g2> の下にある <g1>チャプターを埋め込む</g1> にチェックを入れると、チャプターが動画ファイルに組み込まれるため、VLC、MPV、MPC-HC、Windows Media Player などのプレーヤーでチャプターが一覧表示され、次々にスキップできます。"
   },
   "016a9690b4c55ee5": {
    "source": "Both are kept in a <x1/> folder in MDM's data folder.",
@@ -2462,10 +2462,6 @@
    "source": "A download starts over instead of resuming",
    "text": "ダウンロードが再開されずに最初から始まる"
   },
-  "24bf3f2f66091d90": {
-   "source": "Some videos play only for a signed-in viewer: a member's or a private video, an age-restricted one, and YouTube sometimes asks any viewer from an address it doubts to \"Sign in to confirm you're not a bot\". yt-dlp then needs your browser's cookies, the small files that keep you signed in.",
-   "text": "一部の動画は、サインインしている視聴者のみが再生できます。メンバー限定動画、プライベート動画、年齢制限付き動画、また YouTube は、疑わしいアドレスからの視聴者に対して「ロボットではないことを確認するためにサインインしてください」と求めることがあります。この場合、yt-dlp は、サインイン状態を維持するための小さなファイルであるブラウザーの Cookie を必要とします。"
-  },
   "24c00ebf1248106f": {
    "source": "An etched separator's highlight line",
    "text": "エッチングされた区切り線のハイライト線"
@@ -2764,7 +2760,7 @@
   },
   "28e42e284885ce6e": {
    "source": "It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. When the button can't tell which one you mean, the toolbar button's <g1>Media on this page</g1> lists them all. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. A stream goes with what the browser sent when the player asked for it, its referrer, its origin and its cookies (a player embedded from another site may have cookies the browser keeps for that page only), and MDM sends them again with each of its playlists and pieces: a site's video server that serves its own pages' players only lets MDM through as well. Sound players get the button too.",
-   "text": "クリックした動画、つまり、動画が再生するファイル自体、またはプレーヤーが読み込んだストリーム (HLS または DASH) を取得します。それ以外の場合はページを取得します。ボタンがどれを意味するのか判断できない場合、ツールバー ボタンの<g1>このページのメディア</g1>にすべて表示されます。埋め込みプレーヤーも機能し、サイトへのサインイン情報、プレーヤーを埋め込んでいるページ、ブラウザーのユーザーエージェントも一緒に送信されるため、メンバー向けの動画や、埋め込みサイトでのみ再生される動画もダウンロードできます。ストリームは、プレーヤーが要求したときにブラウザーが送信したもの、そのリファラー、オリジン、Cookie (別のサイトから埋め込まれたプレーヤーは、ブラウザーがそのページ専用に保持する Cookie を持つ場合があります) とともに送信され、MDM はプレイリストと各ピースとともにそれらを再度送信します。独自のページのプレーヤーにのみサービスを提供するサイトの動画サーバーも、MDM を通過させます。音声プレーヤーにもボタンが表示されます。"
+   "text": "クリックした動画、つまり再生中の動画ファイル自体、またはプレーヤーが読み込んだストリーム（HLS または DASH）、それ以外の場合はページを取得します。ボタンがどれを意味するか判断できない場合、ツールバー ボタンの<g1>このページのメディア</g1>にすべて表示されます。埋め込みプレーヤーも機能し、サイトへのサインイン情報、プレーヤーを埋め込んでいるページ、ブラウザーのユーザー エージェントも一緒に送信されるため、メンバー限定の動画や、埋め込みサイトでのみ再生される動画もダウンロードできます。ストリームは、プレーヤーが要求したときにブラウザーが送信したもの、そのリファラー、そのオリジン、およびそのクッキー（別のサイトから埋め込まれたプレーヤーは、ブラウザーがそのページ専用に保持するクッキーを持っている場合があります）とともに送信され、MDM はそれらを各プレイリストとピースとともに再度送信します。独自のページのプレーヤーにのみサービスを提供するサイトの動画サーバーも、MDM を通過させます。音声プレーヤーにもボタンが表示されます。"
   },
   "28eeaa8ad9bf85a3": {
    "source": "Requests",
@@ -3700,7 +3696,7 @@
   },
   "37a51fbe4037e117": {
    "source": "<g1>Any system</g1>, Deno for your user alone: <x2/> (on Windows, in PowerShell: <x3/>)",
-   "text": "<g1>任意のシステム</g1>、Deno をユーザーのみにインストールする場合: <x2/>（Windows の PowerShell では: <x3/>）"
+   "text": "<g1>任意のシステム</g1>、Deno をユーザーのみにインストールする場合: <x2/> (Windows の PowerShell では: <x3/>)"
   },
   "37a82a5012e58c8d": {
    "source": "(the lighter background)",
@@ -4190,6 +4186,10 @@
    "source": "It works as a kill switch. When the adapter disconnects, running torrents stop with \"… is not connected; it goes on when it is back\", and they start again through the adapter when it is. Until MDM notices (within a second), the engine's sockets are still bound to an address that is gone, so nothing can leave another way. A torrent added while the adapter isn't connected doesn't start, and says why. Tracker names are still looked up by the system's DNS.",
    "text": "この機能はキルスイッチとして動作します。アダプターが切断されると、実行中のトレントは「…は接続されていません。接続が戻ると再開します」というメッセージとともに停止します。接続が戻ると、アダプター経由で再開します。MDMが切断を検知するまで（1秒以内）、エンジンのソケットは接続が切れたアドレスにバインドされたままなので、他の経路から通信が送信されることはありません。アダプターが接続されていない間に追加したトレントは開始されず、その理由が表示されます。トラッカー名の検索には引き続きシステムのDNSが使われます。"
   },
+  "3e956985953c6c3e": {
+   "source": "<g1>Videos that need you signed in</g1>: the button over the video hands MDM the page's own cookies, so you're signed in as in the browser. For pasted links and playlists, <g2>Options → Sites Logins → Cookies for video sites</g2> lets yt-dlp read a browser's cookies, from the profile you choose: a separate one with a spare account works well. Chrome, Edge and Brave lock theirs on Windows, and the window says so; Firefox works. <g3>The help</g3> says more.",
+   "text": "<g1>ログインが必要な動画</g1>: 動画上のボタンで、ページの Cookie が MDM に渡され、ブラウザと同じようにログインできます。貼り付けたリンクやプレイリストの場合、<g2>オプション → サイトのログイン → 動画サイトの Cookie</g2> で、yt-dlp が選択したプロファイルのブラウザの Cookie を読み取れるようになります。予備のアカウントを持つ別のプロファイルがうまく機能します。Chrome、Edge、Brave は Windows で Cookie をロックしており、その旨がウィンドウに表示されます。Firefox は機能します。<g3>ヘルプ</g3>に詳細が記載されています。"
+  },
   "3e9e6b7b10d78723": {
    "source": "<g1>Start</g1> adds the ticked links to the <g2>Main download queue</g2> and starts the queue. It downloads as many files at once as the queue allows.",
    "text": "<g1>開始</g1>を選択すると、チェックしたリンクが<g2>メインダウンロードキュー</g2>に追加され、キューが開始します。キューで設定されている数のファイルを同時にダウンロードします。"
@@ -4209,6 +4209,10 @@
   "3ebf8f1307545f42": {
    "source": "Download manager command line and automation API — Mister Download Manager",
    "text": "ダウンロード マネージャーのコマンドラインと自動化 API — Mister Download Manager"
+  },
+  "3ec0fd3706431045": {
+   "source": "<g1>The Download video button over the video</g1> passes that page's cookies, from the window and profile you're in (a private window, a Firefox container), for the look-up and the download, so you're signed in as you are in the browser. Nothing to set up. Each cookie goes with the domain the browser keeps it for, so a sign-in on YouTube Music (music.youtube.com) or YouTube's mobile site reaches www.youtube.com too.",
+   "text": "<g1>動画上の動画をダウンロードボタン</g1> は、現在開いているウィンドウとプロファイル (プライベートウィンドウ、Firefox コンテナ) から、そのページの Cookie を検索とダウンロードのために渡すため、ブラウザでサインインしているのと同じ状態でサインインできます。設定は不要です。各 Cookie はブラウザが保持しているドメインと関連付けられているため、YouTube Music (music.youtube.com) や YouTube のモバイルサイトでのサインインも www.youtube.com にも適用されます。"
   },
   "3ec9f591006bbd23": {
    "source": "The installer. Pick this one unless you have a reason not to. It can set up browser integration and open <x1/> files and magnet links with MDM.",
@@ -5200,7 +5204,7 @@
   },
   "4ea06c1b2a86d1c8": {
    "source": "<g1>Hide web pages</g1> (on by default) leaves out links to pages (<x2/>, <x3/> and the like, and any link whose look-up found a web page): they are neither shown nor downloaded.",
-   "text": "<g1>Web ページを非表示にする</g1> (既定でオン) は、ページへのリンク (<x2/>、<x3/> など、および検索で Web ページが見つかったすべてのリンク) を除外します。これらは表示もダウンロードもされません。"
+   "text": "<g1>Web ページを非表示にする</g1> (既定でオン) は、ページへのリンク (<x2/>、<x3/> など、および検索で Web ページが見つかったリンク) を除外します。これらは表示もダウンロードもされません。"
   },
   "4f07dda13d242d23": {
    "source": "Options on its Connection page: connections per download, per-server exceptions, Download limits and the DNS list",
@@ -5792,7 +5796,7 @@
   },
   "57d55935c79c75f6": {
    "source": "Install one of them, either works, then look the video up again. MDM finds Deno, Node.js (also one installed with nvm) and Bun by itself. If it still says so, the new program's folder isn't on the <x1/> MDM started with (Windows' installers add it for programs started after them): quit MDM (<g2>Tasks → Exit</g2>) and start it again.",
-   "text": "いずれかをインストールしてください。どちらでも動作します。その後、動画をもう一度検索してください。MDM は Deno、Node.js（nvm でインストールされたものも含む）、Bun を自動的に検出します。それでも表示される場合は、新しいプログラムのフォルダーが MDM の起動時に使用された <x1/> にないためです（Windows のインストーラーは、それ以降に起動されたプログラムのために追加します）。MDM を終了し（<g2>タスク → 終了</g2>）、再度起動してください。"
+   "text": "いずれかをインストールしてください。どちらでも動作します。その後、動画をもう一度検索してください。MDM は Deno、Node.js (nvm でインストールされたものも含む)、Bun を自動的に検出します。それでも表示される場合は、新しいプログラムのフォルダーが MDM の起動時に使用された <x1/> にないためです (Windows のインストーラーは、それ以降に起動されたプログラムに対して追加します)。MDM を終了し (<g2>タスク → 終了</g2>)、再度起動してください。"
   },
   "57df30288a29fe94": {
    "source": "Made possible by these amazing humans",
@@ -5912,7 +5916,7 @@
   },
   "598886119cab837f": {
    "source": "<g1>A web page's address.</g1> Paste or copy the address of a page (<x2/>) and MDM reads the page and lists the links on it, as the browser's <g3>Download all links</g3> does, in a package named after the page. The page itself is left unticked. This works for addresses that came on their own (pasted, copied, typed, in a list), not for the links found on a page, so MDM never wanders off through a site. MDM reads only what the page itself holds: links a page's scripts add after it loads come only through the browser.",
-   "text": "<g1>Web ページのアドレス。</g1> ページのアドレス (<x2/>) を貼り付けるかコピーすると、MDM はそのページを読み込み、ブラウザーの <g3>すべてのリンクをダウンロード</g3> と同様に、ページの名前が付いたパッケージにそのページのリンクを一覧表示します。ページ自体はチェックされません。これは、単独で取得されたアドレス (貼り付け、コピー、入力、リスト内) に機能し、ページで見つかったリンクには機能しないため、MDM がサイト内をさまようことはありません。MDM はページ自体が保持しているもののみを読み取ります。ページが読み込まれた後にスクリプトが追加するリンクは、ブラウザーを介してのみ取得されます。"
+   "text": "<g1>Web ページのアドレス。</g1> ページのアドレス (<x2/>) を貼り付けるかコピーすると、MDM はそのページを読み込み、ブラウザの <g3>すべてのリンクをダウンロード</g3> と同様に、ページの名前が付いたパッケージにそのページのリンクを一覧表示します。ページ自体はチェックされません。これは、単独で取得されたアドレス (貼り付け、コピー、入力、リスト内) に機能し、ページで見つかったリンクには機能しないため、MDM がサイト内をさまようことはありません。MDM はページ自体に含まれるもののみを読み取ります。ページが読み込まれた後にスクリプトが追加するリンクは、ブラウザを介してのみ取得されます。"
   },
   "59920ff7101c276f": {
    "source": "Fix the translation in the row's third column and delete its <x1/> line.",
@@ -6802,10 +6806,6 @@
    "source": "Two helpers, checked before use",
    "text": "使用前に確認する 2 つのヘルパー"
   },
-  "66f7530c7179f562": {
-   "source": "<g1>The Download video button over the video</g1> passes that page's cookies, from the window and profile you're in (a private window, a Firefox container), for the look-up and the download. Nothing to set up. Each cookie goes with the domain the browser keeps it for, so a sign-in on YouTube Music (music.youtube.com) or YouTube's mobile site reaches www.youtube.com too.",
-   "text": "<g1>動画上の動画をダウンロード ボタン</g1> は、現在使用しているウィンドウとプロファイル (プライベート ウィンドウ、Firefox コンテナー) から、そのページの Cookie を検索とダウンロードのために渡します。設定は不要です。各 Cookie はブラウザーが保持しているドメインと関連付けられているため、YouTube Music (music.youtube.com) または YouTube のモバイル サイトでのサインインは www.youtube.com にも到達します。"
-  },
   "670bb10cde757ad1": {
    "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
    "text": "MDMは、トークンをイベントログ、クラッシュレポート、自動化 API、コマンドラインの出力に書き込みません。"
@@ -7104,7 +7104,7 @@
   },
   "6be8a7107f3f9737": {
    "source": "Choose <g1>Subtitles</g1> if you want them (see below). <g2>Embed chapters</g2> is ticked: see <g3>Chapters</g3>.",
-   "text": "字幕が必要な場合は <g1>字幕</g1> を選択します（下記参照）。<g2>チャプターを埋め込む</g2> にチェックが入っています。<g3>チャプター</g3> を参照してください。"
+   "text": "字幕が必要な場合は <g1>字幕</g1> を選択します (下記参照)。<g2>チャプターを埋め込む</g2> にチェックが入っています。<g3>チャプター</g3> を参照してください。"
   },
   "6c054ced98124c36": {
    "source": "Options, Connection: connections per download and per-server exceptions.",
@@ -7764,7 +7764,7 @@
   },
   "75b26b8aac083dec": {
    "source": "Then yt-dlp does what it does after a download: it joins the video and its sound with ffmpeg into one MP4, saves or embeds the subtitles, puts the chapters into the file, and converts the sound for an MP3, Opus or FLAC choice.",
-   "text": "その後、yt-dlp はダウンロード後に実行する処理を行います。動画と音声を ffmpeg で結合して 1 つの MP4 にし、字幕を保存または埋め込み、チャプターをファイルに挿入し、MP3、Opus、または FLAC の選択肢のために音声を変換します。"
+   "text": "その後、yt-dlp はダウンロード後に通常行う処理を実行します。動画とその音声を ffmpeg で結合して 1 つの MP4 にし、字幕を保存または埋め込み、チャプターをファイルに含め、MP3、Opus、または FLAC の選択肢のために音声を変換します。"
   },
   "75c5e88776534271": {
    "source": "Adding a link again after its finished file was moved or deleted starts a new download, instead of asking about a duplicate that isn't there (<g1>#342</g1>).",
@@ -8129,10 +8129,6 @@
   "7bde548eabfafc71": {
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
    "text": "デフォルトではダウンロードごとに8接続を使用します。オプション → 接続で最大32接続まで選択でき、32を超える接続を許可にチェックを入れると、最大128接続まで使用できます。サーバーが許可する接続数が少ない場合、MDMはそれに合わせて接続数を減らします。また、サーバーがファイルを分割して送信できない場合は、1接続だけを使用します。"
-  },
-  "7beb76c0e99ab62c": {
-   "source": "<g1>Videos that need you signed in</g1>: <g2>Options → Sites Logins → Cookies for video sites</g2> lets yt-dlp read a browser's cookies, for pasted links. Chrome, Edge and Brave lock theirs on Windows, and the window says so; Firefox works, and so does the button over the video.",
-   "text": "<g1>サインインが必要な動画</g1>: <g2>オプション → サイトのログイン → 動画サイトの Cookie</g2> を使用すると、yt-dlp が貼り付けられたリンクのブラウザーの Cookie を読み取ることができます。Chrome、Edge、Brave は Windows で Cookie をロックするため、ウィンドウにその旨が表示されます。Firefox は機能し、動画上のボタンも機能します。"
   },
   "7bf940f9155b4bce": {
    "source": "<x1/> <g2>Open source · Apache-2.0</g2>",
@@ -8576,7 +8572,7 @@
   },
   "810e3acee25be1c6": {
    "source": "YouTube hides most of a video's qualities behind small puzzles that yt-dlp solves with a JavaScript runtime: <g1>Deno</g1>, <g2>Node.js</g2> or <g3>Bun</g3>. Without one, the list is short, sometimes only the sound and a low quality, and MDM says so: <g4>YouTube needs a JavaScript runtime to list its video qualities</g4>. Other sites don't need one.",
-   "text": "YouTube は、動画のほとんどの品質を、yt-dlp が JavaScript ランタイム（<g1>Deno</g1>、<g2>Node.js</g2>、または <g3>Bun</g3>）で解決する小さなパズルの裏に隠しています。これらがないと、リストは短く、音声と低品質のみの場合があり、MDM は「<g4>YouTube の動画品質を一覧表示するには JavaScript ランタイムが必要です</g4>」と表示します。他のサイトでは必要ありません。"
+   "text": "YouTube は、動画のほとんどの品質を小さなパズルで隠しています。yt-dlp は <g1>Deno</g1>、<g2>Node.js</g2>、<g3>Bun</g3> のいずれかの JavaScript ランタイムを使ってこれを解決します。これらがないと、リストは短く、音声と低品質のみになることもあり、MDM は「<g4>YouTube の動画品質を一覧表示するには JavaScript ランタイムが必要です</g4>」と表示します。他のサイトでは必要ありません。"
   },
   "8144fd9d669ebeed": {
    "source": "Does it download torrents? — Mister Download Manager",
@@ -9272,7 +9268,7 @@
   },
   "8c714d229ab4b2fb": {
    "source": "They go into a video (MP4, MKV, WebM) and into the sound as the site has it (<g1>Audio only, original</g1>), not into an MP3, Opus or FLAC file.",
-   "text": "チャプターは動画（MP4、MKV、WebM）と、サイトにあるままの音声（<g1>音声のみ（オリジナル）</g1>）に組み込まれますが、MP3、Opus、または FLAC ファイルには組み込まれません。"
+   "text": "チャプターは動画 (MP4、MKV、WebM) と、サイトにあるままの音声 (<g1>音声のみ（オリジナル）</g1>) に組み込まれます。MP3、Opus、または FLAC ファイルには組み込まれません。"
   },
   "8c7321b31cd98d97": {
    "source": "<g1>Toolbar.</g1> <g2>Add URL</g2>, <g3>Add Torrent</g3>, <g4>Resume</g4>, <g5>Stop</g5>, <g6>Stop All</g6>, <g7>Delete</g7>, <g8>Delete Completed</g8>, <g9>Options</g9>, <g10>Scheduler</g10>, <g11>Start Queue</g11>, <g12>Stop Queue</g12>. The small arrow next to <g13>Add Torrent</g13>, <g14>Start Queue</g14> and <g15>Stop Queue</g15> opens more choices.",
@@ -10732,7 +10728,7 @@
   },
   "a24bd8fd730a41d0": {
    "source": "On Windows, an OpenGL older than 3.0 (an old graphics card's driver, such as Intel's first HD Graphics, whose OpenGL is 2.1) can't draw MDM: its windows come out as garbage. MDM notices it as it starts and starts again with Direct3D on Microsoft's software renderer (WARP), from then on, and <g1>View → Draw with</g1> says so. Choosing <g2>OpenGL</g2> there tries it again.",
-   "text": "Windows で OpenGL 3.0 より古いバージョン (Intel の初代 HD Graphics など、OpenGL 2.1 の古いグラフィック カード ドライバー) を使用している場合、MDM は正しく描画されず、ウィンドウが破損して表示されます。MDM は起動時にこれを検知すると、Microsoft のソフトウェア レンダラー (WARP) で Direct3D を使用して再起動し、それ以降もその設定を使用します。<g1>表示 → 描画方法</g1> にもその旨が表示されます。そこで <g2>OpenGL</g2> を選択すると、再度 OpenGL での描画を試行します。"
+   "text": "Windows で OpenGL のバージョンが 3.0 より古い場合 (Intel の初代 HD Graphics など、OpenGL 2.1 の古いグラフィック カード ドライバー)、MDM は描画できません。ウィンドウが正しく表示されません。MDM は起動時にこれを検知し、Microsoft のソフトウェア レンダラー (WARP) で Direct3D を使用して再起動します。その後、<g1>表示 → 描画方法</g1> にその旨が表示されます。そこで <g2>OpenGL</g2> を選択すると、再度試行されます。"
   },
   "a2907e04d7c8512f": {
    "source": "Why doesn't MDM take over my download? — Mister Download Manager",
@@ -11756,7 +11752,7 @@
   },
   "b1a0ed24728365e7": {
    "source": "The command line (<x1/>) puts them in too, whenever ffmpeg is there.",
-   "text": "コマンドライン（<x1/>）でも、ffmpeg があればチャプターが組み込まれます。"
+   "text": "コマンドライン (<x1/>) でも、ffmpeg があればチャプターが組み込まれます。"
   },
   "b1aebd102c185a01": {
    "source": "RSS feeds for torrents, with download rules — Mister Download Manager",
@@ -11944,7 +11940,7 @@
   },
   "b3d7bbeea9ab71d3": {
    "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g19>Embed chapters</g19> does. <x20/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x21/>; when it isn't connected, nothing starts.",
-   "text": "動画をダウンロードします。<x1/> は <x2/> から品質セレクターを受け取ります (<x3/> = 最良の単一ファイル、<x4/> = サイトにあるままの音声 (変換なし)、<x5/>、<x6/>、<x7/>、または <x8/> = そのビットレートの MP3 形式の音声、<x9/> = 最良の可変ビットレートの音声、<x10/> = Opus 形式、<x11/> = FLAC 形式 (ロスレスですが、サイトの音声より優れているわけではありません)。変換には ffmpeg が必要です)。<x12/>: MDM 独自のダウンローダーは、yt-dlp が見つけた各ストリームをこの数の接続 (既定では 8、1〜128) で取得し、ストリームを一度にこの数のピース (HLS、DASH) で取得します。<x13/> は字幕をその横に保存します。<x14/> からの言語コード (<x15/>)、またはアップローダーが提供したすべての字幕には <x16/> を使用します。<x17/> は代わりにサイトの自動キャプションを取得します。<x18/> は字幕を動画に埋め込みます (ffmpeg、MP4 または MKV が必要です)。ffmpeg を使用すると、動画のチャプターもファイルに埋め込まれます。これは、［動画をダウンロード］の<g19>チャプターを埋め込む</g19>と同じです。<x20/> は、ダウンロードの接続と yt-dlp (および ffmpeg) の接続を、<x21/> の場合と同様に、1 つのネットワーク アダプター経由で送信します。接続されていない場合、何も開始されません。"
+   "text": "動画をダウンロードします。<x1/> は <x2/> から品質セレクターを受け取ります (<x3/> = 最良の単一ファイル; <x4/> = サイトにあるままの音声、変換なし; <x5/>、<x6/>、<x7/>、<x8/> = そのビットレートの MP3 形式の音声、<x9/> は最高の可変ビットレート; <x10/> = Opus 形式; <x11/> = FLAC 形式、ロスレスですがサイトの音声より良くはありません。変換には ffmpeg が必要です)。<x12/>: MDM 独自のダウンローダーは、yt-dlp が見つけた各ストリームをこの数の接続 (デフォルトは 8、1〜128) で取得し、ストリームをこの数のピース (HLS、DASH) で一度に取得します。<x13/> は字幕をその横に保存します。<x14/> (<x15/>) からの言語コード、またはアップローダーが提供したすべての字幕には <x16/> を使用します。<x17/> は代わりにサイトの自動キャプションを取得します。<x18/> は字幕を動画に埋め込みます (ffmpeg、MP4 または MKV が必要です)。ffmpeg を使用すると、動画のチャプターもファイルに埋め込まれます。これは、動画のダウンロードの <g19>チャプターを埋め込む</g19> と同じです。<x20/> は、<x21/> のように、ダウンロードの接続と yt-dlp (および ffmpeg) の接続を 1 つのネットワーク アダプター経由で送信します。接続されていない場合、何も開始されません。"
   },
   "b3f1633383cc8b77": {
    "source": "Open <g1>Downloads → Options</g1>, or click <g2>Options</g2> on the toolbar. The window has twelve pages on two rows of tabs. <g3>OK</g3> saves your changes; closing the window or pressing <g4>Esc</g4> throws them away.",
@@ -12229,6 +12225,10 @@
   "b86face263e9f2af": {
    "source": "We'd rather you knew. IDM has a site grabber that follows a whole website's pages (MDM's link grabber takes the links of one page), and many years of polish and compatibility fixes. MDM is new; if something you rely on is missing, <g1>ask for it</g1>.",
    "text": "IDM にはウェブサイト全体のページをたどるサイトグラバー (MDM のリンクグラバーは 1 ページのリンクを取得) があり、長年の改良と互換性修正が施されています。MDM は新しいプログラムです。必要な機能が不足している場合は、<g1>ご要望ください</g1>。"
+  },
+  "b886cc5ff82424bc": {
+   "source": "<g1>A spare account, in a profile of its own</g1>: you don't have to lend yt-dlp your main account. Make a second profile in your browser, sign in to the site there with a spare account, and put that profile in <g2>Profile</g2> (its name, or its folder with <g3>...</g3>). yt-dlp reads that profile's cookies only. yt-dlp's developers advise this too: a site may limit an account it sees used by a program.",
+   "text": "<g1>独自のプロファイルに予備のアカウント</g1>: メインのアカウントを yt-dlp に貸す必要はありません。ブラウザで別のプロファイルを作成し、そこで予備のアカウントでサイトにサインインし、そのプロファイルを <g2>プロファイル</g2> (その名前、または <g3>...</g3> を使ってそのフォルダー) に設定します。yt-dlp はそのプロファイルの Cookie のみを読み取ります。yt-dlp の開発者もこれを推奨しています。サイトがプログラムによって使用されているアカウントを制限する可能性があるためです。"
   },
   "b88a67e39c494a61": {
    "source": "The server runs on the app's Tokio runtime, one listener per local network address. Each request is checked (<x1/>, <x2/>, token), turned into an <x3/> marked <x4/> (a field no request line can set) and handed to the app through the same channel as the command line's; the app answers it on its next frame, as it answers the automation API. Its page is built in (<x5/>) and its texts come from the app's catalogs (<x6/>).",
@@ -13224,7 +13224,7 @@
   },
   "c845f9239d5bddd5": {
    "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window with the stream its player loaded (HLS or DASH), as the <g3>button over videos</g3> sends it, with your cookies for the stream's server and what the browser sent with the stream (its referrer and origin, else the page as the referrer).",
-   "text": "リンク、動画、音声、画像を右クリックして、<g1>Mister Download Manager でダウンロード</g1>を選択します。MDM は、種類にかかわらずダウンロードします。ユーザーが要求したため、ファイルの種類リストや除外サイトは適用されません (これらは MDM が自動的に引き継ぐダウンロードを決定するだけです)。ストリームとして再生される動画は、<g2>動画をダウンロード</g2>ウィンドウに、プレーヤーが読み込んだストリーム (HLS または DASH) とともに送られます。<g3>動画上のボタン</g3>が送信するのと同様に、ストリームのサーバー用の Cookie と、ブラウザーがストリームとともに送信したもの (そのリファラーとオリジン、それ以外の場合はページをリファラーとして) も含まれます。"
+   "text": "リンク、動画、音声、画像を右クリックして、<g1>Mister Download Manager でダウンロード</g1>を選択します。MDM は、その種類にかかわらずダウンロードします。ユーザーが要求したため、ファイルの種類リストや除外サイトはここでは適用されません（これらは、MDM が自動的に引き継ぐダウンロードを決定するだけです）。ストリームとして再生される動画は、<g2>動画をダウンロード</g2>ウィンドウに、プレーヤーが読み込んだストリーム（HLS または DASH）として送られます。これは、<g3>動画上のボタン</g3>が送信するのと同じで、ストリームのサーバー用のクッキーと、ブラウザーがストリームとともに送信したもの（そのリファラーとオリジン、それ以外の場合はページがリファラーとして）が含まれます。"
   },
   "c84f2046978e476a": {
    "source": "A title bar MDM draws itself",
@@ -13901,6 +13901,10 @@
   "d2ef5107c69b686f": {
    "source": "Maturity",
    "text": "成熟度"
+  },
+  "d2fc243b93084d12": {
+   "source": "Some videos play only for a signed-in viewer: a member's or a private video, an age-restricted one. And YouTube sometimes asks any viewer from a network it doubts (a VPN, a shared or cloud address) to \"Sign in to confirm you're not a bot\". yt-dlp then needs your browser's cookies, the small files that keep you signed in.",
+   "text": "一部の動画は、サインインした視聴者のみが再生できます。メンバー限定動画、プライベート動画、年齢制限のある動画などです。また、YouTube は、疑わしいネットワーク (VPN、共有アドレス、クラウドアドレス) からの視聴者に対して、「ボットではないことを確認するためにサインインしてください」と求めることがあります。その場合、yt-dlp には、サインイン状態を維持する小さなファイルであるブラウザの Cookie が必要です。"
   },
   "d30e4557ff06a9ab": {
    "source": "Reports, translations and help",
@@ -15148,7 +15152,7 @@
   },
   "e71e432fdd540d5b": {
    "source": "Turn the look-ups off in <g1>Options → Archives → Look links up when they arrive</g1>. Some file hosts count a look-up as a download. With the look-ups off, MDM asks nothing of the network until you start, so a web page's address isn't read for its links either.",
-   "text": "<g1>オプション → アーカイブ → リンクが到着したときに検索</g1> で検索をオフにします。一部のファイル ホストでは、検索をダウンロードとしてカウントします。検索をオフにすると、開始するまで MDM はネットワークに何も要求しないため、Web ページのアドレスもそのリンクのために読み取られません。"
+   "text": "<g1>オプション → アーカイブ → リンクが到着したときに検索</g1> で検索をオフにします。一部のファイル ホストでは、検索をダウンロードとしてカウントします。検索をオフにすると、MDM は開始するまでネットワークに何も要求しないため、Web ページのアドレスもリンクのために読み取られません。"
   },
   "e7281739beb4476f": {
    "source": "A download manager can fill your whole connection. These steps cap MDM so that browsing, video calls and games stay smooth.",
@@ -15600,7 +15604,7 @@
   },
   "ed30bf8c293519f0": {
    "source": "<g1>Download complete</g1> shows the file's size, its address and where it was saved. Choose <g2>Open</g2>, <g3>Open with...</g3>, <g4>Open folder</g4> or <g5>Close</g5>. On Windows you can also drag the small box at the bottom right into Explorer, an email or a chat to drop the file there. As when you drag a file in Explorer, a folder on the same drive gets the file moved there and another drive gets a copy (hold <g6>Shift</g6> to move it, <g7>Ctrl</g7> to copy it). The download follows a moved file: the list and <g8>Open</g8> find it in its new place. The window shows above your other programs until you click it, without taking the keyboard from the one you're typing in.",
-   "text": "<g1>ダウンロード完了</g1> には、ファイルのサイズ、アドレス、保存先が表示されます。<g2>開く</g2>、<g3>プログラムから開く</g3>、<g4>フォルダーを開く</g4>、または <g5>閉じる</g5> を選択します。Windows では、右下の小さなボックスをエクスプローラー、メール、チャットにドラッグしてファイルをドロップすることもできます。エクスプローラーでファイルをドラッグする場合と同様に、同じドライブ上のフォルダーにはファイルが移動され、別のドライブにはコピーが作成されます (<g6>Shift</g6> キーを押しながら移動、<g7>Ctrl</g7> キーを押しながらコピー)。ダウンロードは移動されたファイルに従います。リストと <g8>開く</g8> は新しい場所でファイルを見つけます。このウィンドウは、クリックするまで他のプログラムの上に表示されますが、入力中のプログラムからキーボードのフォーカスを奪うことはありません。"
+   "text": "<g1>ダウンロード完了</g1> には、ファイルのサイズ、アドレス、保存先が表示されます。<g2>開く</g2>、<g3>プログラムから開く</g3>、<g4>フォルダーを開く</g4>、または <g5>閉じる</g5> を選択します。Windows では、右下にある小さなボックスをエクスプローラー、メール、チャットにドラッグして、ファイルをそこにドロップすることもできます。エクスプローラーでファイルをドラッグする場合と同様に、同じドライブ上のフォルダーにはファイルが移動され、別のドライブにはコピーが作成されます (<g6>Shift</g6> キーを押しながらドラッグすると移動、<g7>Ctrl</g7> キーを押しながらドラッグするとコピー)。ダウンロードは移動されたファイルに従います。リストと <g8>開く</g8> は、新しい場所でファイルを見つけます。このウィンドウは、クリックするまで他のプログラムの上に表示され、入力中のプログラムからキーボードのフォーカスを奪うことはありません。"
   },
   "ed39bbda605ca874": {
    "source": "Every file finds its folder",
