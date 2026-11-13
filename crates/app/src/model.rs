@@ -445,6 +445,20 @@ pub struct Item {
     /// folder-level deferred rename refuses to sweep untracked files along.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub preexisting_folder: bool,
+    /// Its file was dragged out of Download complete and moved to a place MDM couldn't learn
+    /// (#869): Open and Open folder say so while it isn't at `dest`. Cleared when it is placed
+    /// again (a move MDM follows, Move/Rename) or downloaded again.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub moved_away: bool,
+    /// The page it was found on, as the browser sent it (its Referer): kept with the list, so
+    /// File Properties shows it and a start after a restart sends it again (#795). The request's
+    /// own copy is `context.referer`; this one follows it (`set_referer`).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub referer: Option<String>,
+    /// A video's (its `url` is the page): the address its file came from, the first stream of
+    /// its last run as yt-dlp gave it to MDM's engine (#795). The windows' "Address".
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub file_url: Option<Url>,
     #[serde(skip)]
     pub live: Option<Live>,
     /// The session's temporary view while a torrent is being checked; never saved.
@@ -540,18 +554,33 @@ pub struct GallerySpec {
 }
 
 /// A helper's progress (yt-dlp's, gallery-dl's) as the engine's view: one segment when its size
-/// is known, no connections, its notes as events. A video whose streams MDM's engine downloads
-/// (#769) shows the engine's own: the streams' segments one after another, the connections of
-/// the one under way, its server.
+/// is known, one connection (theirs: neither opens more), its notes as events. A video whose
+/// streams MDM's engine downloads (#769) shows the engine's own: the streams' segments one after
+/// another, the connections of the one under way, its server.
 fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapshot {
+    use mdm_engine::download::{ConnStatus, ConnView};
     use mdm_tools::video::State as V;
     let (state, file, error) = match p.state {
+        // Every stream in, their file being joined (#736).
+        V::Running if p.merging.is_some() => (State::Merging, None, None),
         V::Running => (State::Downloading, None, None),
         V::Done(f) => (State::Done, Some(f), None),
         V::Failed(e) => (State::Failed, None, Some(e)),
         V::Stopped => (State::Cancelled, None, None),
     };
     let size = p.total;
+    // Downloaded by the helper itself (a live stream, RTMP; looking the page up): its one
+    // connection, not an empty list (#793).
+    let own = (p.engine.is_none() && state == State::Downloading).then(|| ConnView {
+        id: 0,
+        downloaded: p.downloaded,
+        status: if p.speed > 0.0 {
+            ConnStatus::Receiving
+        } else {
+            ConnStatus::Connecting
+        },
+        speed: p.speed as u64,
+    });
     let engine = p.engine.unwrap_or_default();
     let segments = if engine.segments.is_empty() {
         size.map(|t| {
@@ -567,13 +596,15 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
     };
     mdm_engine::Snapshot {
         state,
-        url: url.clone(),
+        // The stream under way's own address once the engine downloads it (#795), else the
+        // page's.
+        url: engine.address.clone().unwrap_or_else(|| url.clone()),
         file,
         size,
         downloaded: p.downloaded,
         resumable: Some(true),
         segments,
-        connections: engine.connections,
+        connections: own.into_iter().chain(engine.connections).collect(),
         error,
         failure: None,
         events: p
@@ -590,6 +621,7 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
         // are (#769).
         server: engine.server,
         at_service: None,
+        finishing: p.merging.flatten(),
     }
 }
 
@@ -696,6 +728,8 @@ pub struct Live {
     sample: (Instant, u64),
     /// The engine's last event already copied into the item's log.
     seen: u64,
+    /// A video's first stream address of this run is in `Item::file_url` (#795).
+    addressed: bool,
 }
 
 impl Live {
@@ -703,6 +737,7 @@ impl Live {
         Live {
             dl,
             seen: 0,
+            addressed: false,
             rate: 0.0,
             sample: (Instant::now(), downloaded),
         }
@@ -812,6 +847,9 @@ impl Item {
             remote: None,
             rename_on_complete: None,
             preexisting_folder: false,
+            moved_away: false,
+            referer: None,
+            file_url: None,
             live: None,
             torrent_check: None,
             snap: None,
@@ -857,6 +895,11 @@ impl Item {
         if let Some(server) = &s.server {
             self.server = Some(crate::whereis::Seen::from(server));
         }
+        // A video's file address (#795): its first stream's, once the engine downloads it.
+        if self.video.is_some() && !live.addressed && s.url != self.url {
+            live.addressed = true;
+            self.file_url = Some(s.url.clone());
+        }
         self.downloaded = s.downloaded;
         self.size = size_after(s.state, s.size, s.downloaded, self.size);
         self.resumable = s.resumable.or(self.resumable);
@@ -898,7 +941,11 @@ impl Item {
         }
         self.snap = Some(s.clone());
         let ended = match s.state {
-            State::Probing | State::Downloading | State::Verifying | State::Completing => None,
+            State::Probing
+            | State::Downloading
+            | State::Verifying
+            | State::Merging
+            | State::Completing => None,
             State::Done => Some(Status::Complete),
             State::Cancelled => Some(Status::Stopped),
             State::Failed => Some(Status::Error),
@@ -993,6 +1040,50 @@ impl Item {
         }
     }
 
+    /// It failed because the site sent a web page where its file was expected (a file host's
+    /// countdown or captcha, #701): the browser gets past it, so the progress window offers to
+    /// open the link there. As its last run ended (the engine's failure, this session only).
+    pub fn got_web_page(&self) -> bool {
+        self.status == Status::Error
+            && self.live.is_none()
+            && self.snap.as_ref().is_some_and(|s| {
+                s.state == State::Failed && matches!(s.failure, Some(mdm_engine::Error::GotWebPage))
+            })
+    }
+
+    /// Where its file comes from, the windows' "Address" (#795): a running video's stream under
+    /// way (its page until the engine has one), a stopped or finished one's first stream of its
+    /// last run; a file's (and a video's never downloaded) own address.
+    pub fn file_address(&self) -> &Url {
+        if self.video.is_none() {
+            return &self.url;
+        }
+        match (&self.live, &self.snap) {
+            (Some(_), Some(s)) => &s.url,
+            _ => self.file_url.as_ref().unwrap_or(&self.url),
+        }
+    }
+
+    /// The web page it was obtained from (#795): a video's or a gallery's is its own address
+    /// (the page yt-dlp, gallery-dl look up), a file's the page the browser sent as its referer.
+    pub fn web_page(&self) -> Option<&str> {
+        if self.video.is_some() || self.gallery.is_some() {
+            return Some(self.url.as_str());
+        }
+        self.context
+            .referer
+            .as_deref()
+            .or(self.referer.as_deref())
+            .filter(|r| !r.is_empty())
+    }
+
+    /// The referer sent with it from now on (the browser's, File Properties'): the request's
+    /// copy and the list's together (#795).
+    pub fn set_referer(&mut self, referer: Option<String>) {
+        self.referer = referer.clone().filter(|r| !r.is_empty());
+        self.context.referer = referer;
+    }
+
     /// Why yt-dlp downloads this running video itself (#769), once it has found out: MDM's engine
     /// downloads every other one.
     pub fn video_helper(&self) -> Option<mdm_tools::streams::Helper> {
@@ -1084,6 +1175,44 @@ impl Item {
         ))
     }
 
+    /// After the last byte, while the file is checked against its checksum or a video's
+    /// streams are joined (#736): "Verifying... (45%)", "Merging...", with how far it is when
+    /// that's known. `short`: the list's narrow Status column, "45% verified", the percentage
+    /// first (as "45% at Real-Debrid"); the progress window says it whole.
+    pub fn finishing(&self, short: bool) -> Option<String> {
+        let s = self.snap.as_ref()?;
+        let (plain, with_percent) = match s.state {
+            // i18n: a download's status while the finished file is checked against its checksum
+            State::Verifying => (crate::i18n::t("Verifying..."), {
+                if short {
+                    // i18n: the list's narrow Status column while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%": keep it first, the column is narrow
+                    crate::i18n::t("{percent} verified")
+                } else {
+                    // i18n: a download's status while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%"
+                    crate::i18n::t("Verifying... ({percent})")
+                }
+            }),
+            // i18n: a video's status while its picture and sound are joined into one file (ffmpeg)
+            State::Merging => (crate::i18n::t("Merging..."), {
+                if short {
+                    // i18n: the list's narrow Status column while a video's picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%": keep it first, the column is narrow
+                    crate::i18n::t("{percent} merged")
+                } else {
+                    // i18n: a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
+                    crate::i18n::t("Merging... ({percent})")
+                }
+            }),
+            _ => return None,
+        };
+        Some(match s.finishing {
+            Some(f) => crate::i18n::fmt(
+                with_percent,
+                &[("percent", &crate::i18n::percent(f.clamp(0.0, 1.0), 0))],
+            ),
+            None => plain.to_owned(),
+        })
+    }
+
     pub fn status_text(&self) -> String {
         if let Some(at) = self.at_service() {
             return at;
@@ -1091,12 +1220,8 @@ impl Item {
         if let Some(checking) = self.torrent_checking() {
             return checking;
         }
-        if self
-            .snap
-            .as_ref()
-            .is_some_and(|s| s.state == State::Verifying)
-        {
-            return crate::i18n::t("Verifying...").into();
+        if let Some(finishing) = self.finishing(true) {
+            return finishing;
         }
         match self.status {
             // i18n: a download's status (state it is in, not a command): finished
@@ -1293,6 +1418,100 @@ pub fn time(secs: f64) -> String {
 }
 
 #[cfg(test)]
+mod file_address_tests {
+    use super::*;
+
+    const PAGE: &str = "https://www.example.com/watch?v=abc";
+    const STREAM: &str = "https://media.example.net/videoplayback?itag=399";
+
+    fn video() -> Item {
+        let mut i = Item::new(
+            1,
+            PAGE.parse().unwrap(),
+            PathBuf::from("Clip.mp4"),
+            Category::Video,
+        );
+        i.video = Some(VideoSpec {
+            selector: "best".into(),
+            subs: Default::default(),
+        });
+        i
+    }
+
+    /// The engine's view of a video's stream carries its address: the snapshot's (#795).
+    #[test]
+    fn a_video_snapshot_has_its_streams_address() {
+        let page: Url = PAGE.parse().unwrap();
+        let mut p = mdm_tools::video::Progress {
+            state: mdm_tools::video::State::Running,
+            downloaded: 0,
+            total: None,
+            speed: 0.0,
+            events: Vec::new(),
+            side_files: Vec::new(),
+            sub_problems: Vec::new(),
+            engine: None,
+            helper: None,
+            merging: None,
+        };
+        // Looking the page up: no stream yet.
+        assert_eq!(tool_snapshot(p.clone(), &page).url, page);
+        p.engine = Some(mdm_tools::streams::View {
+            address: Some(STREAM.parse().unwrap()),
+            ..Default::default()
+        });
+        assert_eq!(tool_snapshot(p, &page).url.as_str(), STREAM);
+    }
+
+    /// Address: a video's stream, its page the web page it was obtained from; a file's own
+    /// address, its referer the page (#795).
+    #[test]
+    fn the_windows_show_the_file_address_and_the_page() {
+        let mut v = video();
+        assert_eq!(v.file_address().as_str(), PAGE);
+        v.file_url = Some(STREAM.parse().unwrap());
+        assert_eq!(v.file_address().as_str(), STREAM);
+        assert_eq!(v.web_page(), Some(PAGE));
+
+        let mut f = Item::new(
+            2,
+            "https://files.example.net/a.zip".parse().unwrap(),
+            PathBuf::from("a.zip"),
+            Category::Compressed,
+        );
+        assert_eq!(f.file_address().as_str(), "https://files.example.net/a.zip");
+        assert_eq!(f.web_page(), None);
+        f.set_referer(Some("https://www.example.com/get".into()));
+        assert_eq!(f.web_page(), Some("https://www.example.com/get"));
+        assert_eq!(
+            f.context.referer.as_deref(),
+            Some("https://www.example.com/get")
+        );
+    }
+
+    /// The referer and a video's file address are kept with the list (#795); the browser's
+    /// other context is not.
+    #[test]
+    fn the_referer_and_file_address_are_saved() {
+        let mut v = video();
+        v.file_url = Some(STREAM.parse().unwrap());
+        v.set_referer(Some("https://www.example.com/".into()));
+        v.context.cookies = Some("sid=1".into());
+        let json = serde_json::to_string(&v).unwrap();
+        assert!(!json.contains("sid=1"));
+        let back: Item = serde_json::from_str(&json).unwrap();
+        assert_eq!(back.referer.as_deref(), Some("https://www.example.com/"));
+        assert_eq!(back.file_url.as_ref().map(Url::as_str), Some(STREAM));
+        // A list saved before them reads as before.
+        let old = json
+            .replace(r#","referer":"https://www.example.com/""#, "")
+            .replace(&format!(",\"file_url\":\"{STREAM}\""), "");
+        let back: Item = serde_json::from_str(&old).unwrap();
+        assert_eq!((back.referer, back.file_url), (None, None));
+    }
+}
+
+#[cfg(test)]
 mod size_tests {
     use super::*;
 
@@ -1326,6 +1545,32 @@ mod tests {
             subs: Default::default(),
         });
         it
+    }
+
+    /// #736: after the last byte the Status column says what is happening and how far.
+    #[test]
+    fn verifying_and_merging_say_how_far() {
+        let m = 1 << 20;
+        let mut it = video_item(Some(100 * m), 100 * m, Status::Downloading);
+        let url = Url::parse("https://example.org/a.mp4").unwrap();
+        let mut p = mdm_tools::video::Progress {
+            total: Some(100 * m),
+            downloaded: 100 * m,
+            merging: Some(Some(0.45)),
+            ..Default::default()
+        };
+        it.snap = Some(super::tool_snapshot(p.clone(), &url));
+        assert_eq!(it.status_text(), "45% merged");
+        assert_eq!(it.finishing(false).as_deref(), Some("Merging... (45%)"));
+        p.merging = Some(None);
+        it.snap = Some(super::tool_snapshot(p.clone(), &url));
+        assert_eq!(it.status_text(), "Merging...");
+        let mut s = super::tool_snapshot(p, &url);
+        s.state = State::Verifying;
+        s.finishing = Some(0.5);
+        it.snap = Some(s);
+        assert_eq!(it.status_text(), "50% verified");
+        assert_eq!(it.finishing(false).as_deref(), Some("Verifying... (50%)"));
     }
 
     /// Without a size there's no share to show: no 0 % (from #384).
@@ -1474,5 +1719,68 @@ mod finished_file_gone_tests {
             &dir.join("no").join("gone.bin")
         ));
         std::fs::remove_dir_all(&dir).unwrap();
+    }
+}
+
+#[cfg(test)]
+mod helper_connection_tests {
+    use super::*;
+    use mdm_engine::download::{ConnStatus, ConnView};
+
+    fn progress() -> mdm_tools::video::Progress {
+        mdm_tools::video::Progress {
+            state: mdm_tools::video::State::Running,
+            downloaded: 0,
+            total: None,
+            speed: 0.0,
+            events: Vec::new(),
+            side_files: Vec::new(),
+            sub_problems: Vec::new(),
+            engine: None,
+            helper: None,
+            merging: None,
+        }
+    }
+
+    /// #793: a video yt-dlp downloads itself shows its one connection, not an empty list; one
+    /// MDM's engine downloads shows the engine's connections, every one of them.
+    #[test]
+    fn the_connections_list_is_never_empty_while_a_video_downloads() {
+        let page: Url = "https://www.example.com/watch?v=abc".parse().unwrap();
+        let mut p = progress();
+        let s = tool_snapshot(p.clone(), &page);
+        assert_eq!(s.connections.len(), 1);
+        assert!(matches!(s.connections[0].status, ConnStatus::Connecting));
+        p.downloaded = 5_000;
+        p.speed = 1_000.0;
+        p.helper = Some(mdm_tools::streams::Helper::Live);
+        let s = tool_snapshot(p.clone(), &page);
+        assert_eq!(
+            (s.connections[0].id, s.connections[0].downloaded),
+            (0, 5_000)
+        );
+        assert!(matches!(s.connections[0].status, ConnStatus::Receiving));
+
+        let conn = |id| ConnView {
+            id,
+            downloaded: 100,
+            status: ConnStatus::Receiving,
+            speed: 10,
+        };
+        p.helper = None;
+        p.engine = Some(mdm_tools::streams::View {
+            connections: (0..8).map(conn).collect(),
+            ..Default::default()
+        });
+        let s = tool_snapshot(p.clone(), &page);
+        assert_eq!(
+            s.connections.iter().map(|c| c.id).collect::<Vec<_>>(),
+            (0..8).collect::<Vec<_>>()
+        );
+
+        // Done: no connection left.
+        p.engine = None;
+        p.state = mdm_tools::video::State::Done("Clip.mp4".into());
+        assert!(tool_snapshot(p, &page).connections.is_empty());
     }
 }

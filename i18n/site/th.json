@@ -934,6 +934,10 @@
    "source": "The thin edge around a country's flag",
    "text": "ขอบบาง ๆ รอบธงชาติ"
   },
+  "0ea74b188ec2ca88": {
+   "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
+   "text": "หากข้อความระบุว่า <g1>เว็บไซต์ส่งหน้าเว็บแทนไฟล์</g1> แสดงว่าลิงก์นำไปสู่หน้าเว็บของเว็บไซต์นั้นเอง เช่น การนับถอยหลังของโฮสต์ไฟล์, แคปต์ชา, ปุ่ม <g2>ดาวน์โหลด</g2> ที่ต้องกด, หรือหน้าเข้าสู่ระบบ MDM จะไม่บันทึกหน้าเว็บนั้นเป็นไฟล์ของคุณ ให้คลิก <g3>เปิดในเบราว์เซอร์</g3> ในหน้าต่างความคืบหน้าการดาวน์โหลด (หรือเปิดลิงก์ด้วยตนเอง) ทำตามขั้นตอนให้เสร็จสิ้น และเมื่อเบราว์เซอร์เริ่มดาวน์โหลดจริง ส่วนขยายของ MDM จะส่งการดาวน์โหลดนั้นให้ MDM หากไม่มีส่วนขยาย ให้เบราว์เซอร์ดาวน์โหลดเอง"
+  },
   "0ebbf5cc3fb70cd9": {
    "source": "Downloads from a private window use that window's cookies, never the normal ones, and aren't kept in MDM's list after it closes.",
    "text": "การดาวน์โหลดจากหน้าต่างส่วนตัวจะใช้คุกกี้ของหน้าต่างนั้น ไม่ใช้คุกกี้ของหน้าต่างปกติ และจะไม่อยู่ในรายการของ MDM หลังจากปิดหน้าต่าง"
@@ -4498,10 +4502,6 @@
    "source": "Browser integration — Mister Download Manager help",
    "text": "การรวมเบราว์เซอร์ — วิธีใช้ Mister Download Manager"
   },
-  "439e42205d062684": {
-   "source": "Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (<x1/>)",
-   "text": "หน้าเว็บวิดีโอผ่าน yt-dlp และ ffmpeg และแกลเลอรีรูปภาพผ่าน gallery-dl (ซึ่งทำงานเป็นโปรแกรมแยกต่างหาก); เมื่อเลือกอะแดปเตอร์เครือข่าย การเชื่อมต่อของโปรแกรมเหล่านี้จะผ่านพร็อกซีของ MDM ที่ 127.0.0.1 เพื่อผูกการเชื่อมต่อกับอะแดปเตอร์นั้น (<x1/>)"
-  },
   "43ad4ee2e95fdb1f": {
    "source": "A page's own short sounds (a click, a voice-search chime) are no longer listed in <g1>Media on this page</g1>.",
    "text": "เสียงสั้น ๆ ของหน้าเว็บเอง (เสียงคลิก เสียงกริ่งค้นหาด้วยเสียง) จะไม่ถูกแสดงใน <g1>สื่อในหน้านี้</g1> อีกต่อไป"
@@ -5657,6 +5657,10 @@
   "567f61dda0920579": {
    "source": "A greyed unchecked box's border",
    "text": "เส้นขอบกล่องกาเครื่องหมายที่ไม่ได้เลือกและเป็นสีเทา"
+  },
+  "5688be9c6942376d": {
+   "source": "Files MDM downloads from the browser are marked as coming from the internet, as the browser marks its own: Windows checks a program with SmartScreen before it runs and Office opens a document in Protected View. Like the browser, MDM leaves the mark out when Windows' Group Policy <g1>Do not preserve zone information in file attachments</g1> is on; <g2>Options → Save to</g2> can turn it off for MDM alone.",
+   "text": "ไฟล์ที่ MDM ดาวน์โหลดจากเบราว์เซอร์จะถูกทำเครื่องหมายว่ามาจากอินเทอร์เน็ต เช่นเดียวกับที่เบราว์เซอร์ทำเครื่องหมายของตัวเอง: Windows จะตรวจสอบโปรแกรมด้วย SmartScreen ก่อนรัน และ Office จะเปิดเอกสารใน Protected View เช่นเดียวกับเบราว์เซอร์ MDM จะไม่ทำเครื่องหมายเมื่อ Group Policy ของ Windows <g1>ห้ามเก็บข้อมูลโซนในไฟล์แนบ</g1> เปิดอยู่; <g2>ตัวเลือก → บันทึกไปที่</g2> สามารถปิดได้สำหรับ MDM เท่านั้น"
   },
   "5690cb4f1434f4bc": {
    "source": "Open Windows <g1>Settings → Apps</g1>, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder. On Linux, remove the package with your package manager, or delete the AppImage; <g2>Uninstall on Linux</g2> says what stays in your home folder and how to remove it.",
@@ -9226,10 +9230,6 @@
    "source": "Downloads and torrents in one app, stable on Android",
    "text": "ดาวน์โหลดและทอร์เรนต์ในแอปเดียว เสถียรบน Android"
   },
-  "8c699effe606d133": {
-   "source": "Files MDM downloads from the browser are marked as coming from the internet, as the browser marks its own: Windows checks a program with SmartScreen before it runs and Office opens a document in Protected View.",
-   "text": "ไฟล์ที่ MDM ดาวน์โหลดจากเบราว์เซอร์จะถูกทำเครื่องหมายว่ามาจากอินเทอร์เน็ต เช่นเดียวกับไฟล์ที่เบราว์เซอร์ดาวน์โหลดเอง: Windows จะตรวจสอบโปรแกรมด้วย SmartScreen ก่อนเรียกใช้ และ Office จะเปิดเอกสารใน Protected View"
-  },
   "8c7321b31cd98d97": {
    "source": "<g1>Toolbar.</g1> <g2>Add URL</g2>, <g3>Add Torrent</g3>, <g4>Resume</g4>, <g5>Stop</g5>, <g6>Stop All</g6>, <g7>Delete</g7>, <g8>Delete Completed</g8>, <g9>Options</g9>, <g10>Scheduler</g10>, <g11>Start Queue</g11>, <g12>Stop Queue</g12>. The small arrow next to <g13>Add Torrent</g13>, <g14>Start Queue</g14> and <g15>Stop Queue</g15> opens more choices.",
    "text": "<g1>แถบเครื่องมือ</g1> <g2>เพิ่ม URL</g2>, <g3>เพิ่มทอร์เรนต์</g3>, <g4>ดำเนินการต่อ</g4>, <g5>หยุด</g5>, <g6>หยุดทั้งหมด</g6>, <g7>ลบ</g7>, <g8>ลบที่เสร็จสมบูรณ์แล้ว</g8>, <g9>ตัวเลือก</g9>, <g10>ตัวจัดกำหนดการ</g10>, <g11>เริ่มคิว</g11>, <g12>หยุดคิว</g12> ลูกศรเล็กๆ ถัดจาก <g13>เพิ่มทอร์เรนต์</g13>, <g14>เริ่มคิว</g14> และ <g15>หยุดคิว</g15> จะเปิดตัวเลือกเพิ่มเติม"
@@ -10890,6 +10890,10 @@
    "source": "Add downloads with <g1>Add URL</g1>, the clipboard (<g2>Options → General → Offer to download links copied to the clipboard</g2>) or the drop target (<g3>Tasks → Show drop target</g3>).",
    "text": "เพิ่มการดาวน์โหลดด้วย <g1>เพิ่ม URL</g1>, คลิปบอร์ด (<g2>ตัวเลือก → ทั่วไป → เสนอให้ดาวน์โหลดลิงก์ที่คัดลอกไปยังคลิปบอร์ด</g2>) หรือเป้าหมายการวาง (<g3>งาน → แสดงเป้าหมายการวาง</g3>)"
   },
+  "a54a319c4a29ff03": {
+   "source": "Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (<x1/>); each runs in a folder it can write, also its TEMP (<x2/>)",
+   "text": "หน้าวิดีโอผ่าน yt-dlp และ ffmpeg, แกลเลอรีรูปภาพผ่าน gallery-dl (ทำงานเป็นโปรแกรมแยก); เมื่อเลือกอะแดปเตอร์เครือข่าย การเชื่อมต่อจะผ่านพร็อกซีของ MDM บน 127.0.0.1 ซึ่งผูกการเชื่อมต่อเหล่านั้นไว้ (<x1/>); แต่ละโปรแกรมทำงานในโฟลเดอร์ที่สามารถเขียนได้ และเป็น TEMP ของโปรแกรมนั้นด้วย (<x2/>)"
+  },
   "a54ad83afe939ad1": {
    "source": "yt-dlp looks the page up and picks the quality's video and sound. MDM's own downloader then brings each of them in, one after the other, the way it downloads any file:",
    "text": "yt-dlp จะค้นหาหน้าเว็บและเลือกคุณภาพของวิดีโอและเสียง จากนั้นตัวดาวน์โหลดของ MDM จะนำแต่ละส่วนเข้ามาทีละส่วน เช่นเดียวกับการดาวน์โหลดไฟล์ทั่วไป:"
@@ -12522,6 +12526,10 @@
    "source": "3. Use it",
    "text": "3. วิธีใช้งาน"
   },
+  "be205ab8272dead7": {
+   "source": "Start the video first: the list fills as the page loads things, and it's emptied when the tab goes to another page. Each file is listed under the name it will be saved with. A file the site sends through a program's address (<x1/>, <x2/>, <x3/>, a bare number) has no name of its own: it's named after the page (<x4/>), or after the <x5/> name in its address when there is one, with the type its server says it is (MP4, not PHP). With <g6>Prefix media file names with the page title</g6> on, a file with a name of its own is named after the page, then that name (<x7/>). Click <g8>Download</g8> beside one: a stream opens MDM's <g9>Download video from a page</g9> window, which reads its qualities (yt-dlp does the work); a file goes to MDM's list like any other download. Your cookies for its server, the page as the referrer and your browser's User-Agent go with it, as they do for a link you click.",
+   "text": "เริ่มวิดีโอก่อน: รายการจะเต็มเมื่อหน้าเว็บโหลดสิ่งต่าง ๆ และจะว่างเปล่าเมื่อแท็บไปยังหน้าอื่น แต่ละไฟล์จะแสดงภายใต้ชื่อที่จะบันทึก ไฟล์ที่เว็บไซต์ส่งผ่านที่อยู่ของโปรแกรม (<x1/>, <x2/>, <x3/>, ตัวเลขเปล่า) จะไม่มีชื่อของตัวเอง: จะตั้งชื่อตามหน้า (<x4/>) หรือตามชื่อ <x5/> ในที่อยู่เมื่อมี โดยมีประเภทที่เซิร์ฟเวอร์ระบุ (MP4 ไม่ใช่ PHP) เมื่อ <g6>เพิ่มชื่อหน้าไว้หน้าชื่อไฟล์สื่อ</g6> เปิดอยู่ ไฟล์ที่มีชื่อของตัวเองจะตั้งชื่อตามหน้า แล้วตามด้วยชื่อนั้น (<x7/>) คลิก <g8>ดาวน์โหลด</g8> ข้างไฟล์ใดไฟล์หนึ่ง: สตรีมจะเปิดหน้าต่าง <g9>ดาวน์โหลดวิดีโอจากหน้า</g9> ของ MDM ซึ่งจะอ่านคุณภาพของวิดีโอ (yt-dlp เป็นผู้ดำเนินการ); ไฟล์จะไปที่รายการของ MDM เหมือนการดาวน์โหลดอื่น ๆ คุกกี้ของคุณสำหรับเซิร์ฟเวอร์นั้น หน้าเว็บเป็นผู้ส่ง และ User-Agent ของเบราว์เซอร์ของคุณจะถูกส่งไปด้วย เช่นเดียวกับลิงก์ที่คุณคลิก"
+  },
   "be3fe1b3f5a5749a": {
    "source": "Yes, completely. Mister Download Manager (MDM) is free and open-source software under the GNU General Public License, version 3. There is no trial period…",
    "text": "ใช่ ฟรีทั้งหมด Mister Download Manager (MDM) เป็นซอฟต์แวร์ฟรีและโอเพนซอร์สภายใต้สัญญาอนุญาตสาธารณะทั่วไปของกนู (GNU General Public License) เวอร์ชัน 3 ไม่มีช่วงทดลองใช้..."
@@ -12821,10 +12829,6 @@
   "c2f23d07939a4042": {
    "source": "A greyed button's face",
    "text": "พื้นผิวของปุ่มสีเทา"
-  },
-  "c30f4658e7e28160": {
-   "source": "Start the video first: the list fills as the page loads things, and it's emptied when the tab goes to another page. With <g1>Prefix media file names with the page title</g1> on, a file from the list is named after the page, then its own name (<x2/>). Click <g3>Download</g3> beside one: a stream opens MDM's <g4>Download video from a page</g4> window, which reads its qualities (yt-dlp does the work); a file goes to MDM's list like any other download. Your cookies for its server, the page as the referrer and your browser's User-Agent go with it, as they do for a link you click.",
-   "text": "เริ่มเล่นวิดีโอก่อน: รายการจะปรากฏขึ้นเมื่อหน้าเว็บโหลดเนื้อหา และจะถูกล้างเมื่อแท็บเปลี่ยนไปหน้าอื่น เมื่อเปิด <g1>เพิ่มชื่อหน้าไว้หน้าชื่อไฟล์สื่อ</g1> ไฟล์จากรายการจะถูกตั้งชื่อตามชื่อหน้า จากนั้นตามด้วยชื่อไฟล์ของตัวเอง (<x2/>) คลิก <g3>ดาวน์โหลด</g3> ข้างไฟล์: สตรีมจะเปิดหน้าต่าง <g4>ดาวน์โหลดวิดีโอจากหน้า</g4> ของ MDM ซึ่งจะอ่านคุณภาพของวิดีโอ (yt-dlp ทำงานนี้); ไฟล์จะถูกเพิ่มไปยังรายการของ MDM เหมือนการดาวน์โหลดอื่น ๆ คุกกี้ของคุณสำหรับเซิร์ฟเวอร์นั้น หน้าเว็บเป็นตัวอ้างอิง และ User-Agent ของเบราว์เซอร์ของคุณจะถูกส่งไปด้วย เช่นเดียวกับลิงก์ที่คุณคลิก"
   },
   "c31622b1a542c888": {
    "source": "<g1>.dmg</g1> for Intel Macs",
@@ -13734,10 +13738,6 @@
    "source": "A button's face under the pointer",
    "text": "พื้นผิวของปุ่มเมื่อตัวชี้อยู่เหนือ"
   },
-  "d1595b21d176c816": {
-   "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
-   "text": "ไฟล์จากทอร์เรนต์จะถูกทำเครื่องหมายว่า <g1>ดาวน์โหลดจากอินเทอร์เน็ต</g1> เช่นเดียวกับการดาวน์โหลดของเบราว์เซอร์ Windows SmartScreen จะตรวจสอบโปรแกรมก่อนที่จะรันครั้งแรก และ Office จะเปิดเอกสารใน Protected View บน Mac, Gatekeeper จะตรวจสอบแอป"
-  },
   "d172eb15bbafbde6": {
    "source": "Release signatures are checked by MDM's own small verifier instead of a full OpenPGP library.",
    "text": "ลายเซ็นของรุ่นจะถูกตรวจสอบโดยตัวตรวจสอบขนาดเล็กของ MDM เอง แทนที่จะเป็นไลบรารี OpenPGP เต็มรูปแบบ"
@@ -14570,6 +14570,10 @@
    "source": "Minimize hides the main window there too, while <g1>Minimize to the notification area</g1> is on in <g2>Options → General</g2>. It is on by default; where the tray has no icon, Minimize sends the window to the taskbar instead.",
    "text": "ย่อเล็กสุด จะซ่อนหน้าต่างหลักไว้ที่นั่นเช่นกัน เมื่อเปิด <g1>ย่อเล็กสุดไปยังพื้นที่แจ้งเตือน</g1> ใน <g2>ตัวเลือก → ทั่วไป</g2> ซึ่งเปิดใช้งานโดยค่าเริ่มต้น หากพื้นที่แจ้งเตือนไม่มีไอคอน ย่อเล็กสุด จะส่งหน้าต่างไปยังแถบงานแทน"
   },
+  "dec637e2ec402a0d": {
+   "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps. <g2>Options → Save to → Mark downloaded files as coming from the internet</g2> turns it off, and so does Windows' policy <g3>Do not preserve zone information in file attachments</g3>.",
+   "text": "ไฟล์จากทอร์เรนต์จะถูกทำเครื่องหมายว่า <g1>ดาวน์โหลดจากอินเทอร์เน็ต</g1> เช่นเดียวกับการดาวน์โหลดของเบราว์เซอร์ Windows SmartScreen จะตรวจสอบโปรแกรมก่อนรันครั้งแรก และ Office จะเปิดเอกสารในมุมมองป้องกัน บน Mac, Gatekeeper จะตรวจสอบแอป การตั้งค่า <g2>ตัวเลือก → บันทึกไปที่ → ทำเครื่องหมายไฟล์ที่ดาวน์โหลดว่ามาจากอินเทอร์เน็ต</g2> จะปิดคุณสมบัตินี้ รวมถึงนโยบายของ Windows <g3>ไม่เก็บข้อมูลโซนในไฟล์แนบ</g3> ด้วย"
+  },
   "dee4ab42b514acda": {
    "source": "The language list on first start: every language with its flag, its own name and its English name",
    "text": "รายการภาษาเมื่อเริ่มใช้งานครั้งแรก: ทุกภาษาพร้อมธง ชื่อภาษานั้น และชื่อภาษาอังกฤษ"
@@ -14781,6 +14785,10 @@
   "e2b96614efaa036c": {
    "source": "The drop target's edge at rest",
    "text": "ขอบของเป้าหมายการลากเมื่อไม่ได้ใช้งาน"
+  },
+  "e2d0adb596fd4c4b": {
+   "source": "<g1>Mark downloaded files as coming from the internet</g1> — on by default. Every file MDM downloads (from the browser, a link you add, a video, a gallery, a torrent, and the files extracted from an archive) carries the mark a browser's downloads carry. On Windows that is the Mark of the Web: SmartScreen checks a program before it first runs, and Office opens a document in Protected View. On a Mac it is the quarantine attribute Gatekeeper checks; on Linux, where the file came from, which file managers show. Unticked, no download is marked. On Windows, MDM also follows the Group Policy <g2>Do not preserve zone information in file attachments</g2>, as browsers do: when it is on (for the computer or for you), no download is marked, whatever this box says.",
+   "text": "<g1>ทำเครื่องหมายไฟล์ที่ดาวน์โหลดว่ามาจากอินเทอร์เน็ต</g1> — เปิดใช้งานโดยค่าเริ่มต้น ไฟล์ทุกไฟล์ที่ MDM ดาวน์โหลด (จากเบราว์เซอร์, ลิงก์ที่คุณเพิ่ม, วิดีโอ, แกลเลอรี, ทอร์เรนต์ และไฟล์ที่แตกจากไฟล์เก็บถาวร) จะมีเครื่องหมายเหมือนไฟล์ที่เบราว์เซอร์ดาวน์โหลด บน Windows คือ Mark of the Web: SmartScreen จะตรวจสอบโปรแกรมก่อนรันครั้งแรก และ Office จะเปิดเอกสารใน Protected View บน Mac คือ quarantine attribute ที่ Gatekeeper ตรวจสอบ; บน Linux คือแหล่งที่มาของไฟล์ ซึ่งตัวจัดการไฟล์จะแสดง หากไม่ได้เลือกไว้ จะไม่มีการทำเครื่องหมายการดาวน์โหลดใด ๆ บน Windows, MDM ยังปฏิบัติตาม Group Policy <g2>Do not preserve zone information in file attachments</g2> เช่นเดียวกับเบราว์เซอร์: หากเปิดใช้งานอยู่ (สำหรับคอมพิวเตอร์หรือสำหรับคุณ) จะไม่มีการทำเครื่องหมายการดาวน์โหลดใด ๆ ไม่ว่าช่องนี้จะระบุไว้อย่างไร"
   },
   "e2e30d683ce66b3d": {
    "source": "<g1>Zen on Windows:</g1> Zen 1.21.15b and later have a bug of their own that keeps add-ons from reaching their helper program (<g2>zen-browser/desktop#15432</g2>), with any add-on that uses one. Until Zen fixes it, Zen 1.21.14b works.",

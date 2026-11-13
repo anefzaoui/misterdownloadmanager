@@ -433,6 +433,7 @@ fn take_place(item: &mut Item, target: PathBuf) {
         }
     }
     item.dest = target;
+    item.moved_away = false;
 }
 
 /// Update `item.pending_mark` after `from` has been renamed to `actual_to` (including renaming
@@ -2195,6 +2196,7 @@ impl App {
         item.login = login;
         // The browser had started it: the host is already sending the file (#44).
         item.direct = crate::debrid::browser_started(&context);
+        item.referer = context.referer.clone().filter(|r| !r.is_empty());
         item.context = context;
         self.items.push(item);
         self.dirty = true;
@@ -2613,10 +2615,11 @@ impl App {
                 }
             }
             // A page whose videos need ffmpeg (#351): without it the list has only the sound.
+            // `video-adaptive:runtime`: yt-dlp said it had no JavaScript runtime (#852).
             "video-adaptive" => {
                 self.run(Cmd::VideoPage, None, ctx);
                 if let Some(v) = &mut self.video_dlg {
-                    v.show_sample_adaptive();
+                    v.show_sample_adaptive(tab == "runtime");
                 }
             }
             // A sample playlist (#69), its quality by its place in the list: `video-playlist:7`.
@@ -3004,6 +3007,8 @@ impl App {
             .and_then(|r| sent_referrer(url, r));
         for (name, v) in [
             (reqwest::header::REFERER, &referer),
+            // A video's file or stream, with the Origin its page's player sent (#900).
+            (reqwest::header::ORIGIN, &context.origin),
             (reqwest::header::COOKIE, &context.cookies),
             (reqwest::header::CONTENT_TYPE, &post_type.cloned()),
         ] {
@@ -3049,6 +3054,9 @@ impl App {
             on_file_created: Some(mark_hook(url, context.referer.as_deref())),
             // The browser's own download's type: a web page instead is an error (#533).
             expected_type: context.mime.clone(),
+            // And the size it announced: larger than any waiting page, a page in its place is
+            // the site's (#701).
+            expected_size: context.size,
             // The page a media file was played on (#800): a file whose address names nothing
             // (a script, a bare id) is named by its title when the engine names it.
             page_title: context.video_title.clone(),
@@ -3136,6 +3144,8 @@ impl App {
                 item.status = Status::Error;
                 item.error = Some(why);
                 item.last_try = Some(model::now_stamp());
+                // A failure of its own, not the last run's (`Item::got_web_page`).
+                item.snap = None;
             }
             self.dirty = true;
             return;
@@ -3166,6 +3176,7 @@ impl App {
                     item.status = Status::Error;
                     item.error = Some(crate::errors::describe(&e));
                     item.last_try = Some(model::now_stamp());
+                    item.snap = None;
                     self.dirty = true;
                     return;
                 }
@@ -4036,7 +4047,7 @@ impl App {
         let Some(item) = self.item(c.id) else { return };
         item.description = c.description;
         item.login = c.login;
-        item.context.referer = c.referer;
+        item.set_referer(c.referer);
         // "Through …" changed (#44): the next start goes the new way. The service's link is
         // dropped from the resume state: directly, it continues from the host's own address;
         // through the account, from a new link the service gives. The size and validators
@@ -4467,6 +4478,7 @@ impl App {
             None => crate::videodlg::VideoDialog::new(dir),
         }
         .with_subs(self.settings.video_subs.clone())
+        .with_chapters(self.settings.video_chapters)
         .with_music_folder(music)
     }
 
@@ -4744,6 +4756,9 @@ impl App {
                 ));
                 let url = item.url.clone();
                 item.live = Some(Live::new(model::Job::Video { job, url }, item.downloaded));
+                // This run's stream addresses are new ones (signed, they expire): the windows
+                // show the page until the engine has the first (#795).
+                item.file_url = None;
                 item.status = Status::Downloading;
                 item.error = None;
                 item.last_try = Some(model::now_stamp());
@@ -6346,12 +6361,53 @@ impl App {
         }
     }
 
+    /// Files dragged out of Download complete that the drop target moved (#869): the download
+    /// follows its file where the shell said it went, or remembers it went where MDM couldn't
+    /// learn. Only while the download still points where the drag took the file from.
+    fn poll_dragged_out(&mut self) {
+        for (id, from, out) in dialogs::dragged_out() {
+            let Some(item) = self.item(id).filter(|i| i.dest == from) else {
+                continue;
+            };
+            match &out {
+                dialogs::DraggedOut::Moved(to) => {
+                    tracing::info!("drag out: download {id} moved with its file");
+                    take_place(item, to.clone());
+                    let folder = to.parent().unwrap_or(to).display().to_string();
+                    item.note(crate::i18n::fmt(
+                        crate::i18n::t("Dragged out of Download complete and moved to {folder}"),
+                        &[("folder", &folder)],
+                    ));
+                }
+                dialogs::DraggedOut::MovedAway => {
+                    tracing::info!("drag out: download {id}'s file moved where MDM can't follow");
+                    item.moved_away = true;
+                    item.note(crate::i18n::t(
+                        "Dragged out of Download complete and moved to a place MDM couldn't learn",
+                    ));
+                }
+            }
+            for c in &mut self.complete {
+                if c.id == id {
+                    match &out {
+                        dialogs::DraggedOut::Moved(to) => {
+                            c.path = to.clone();
+                            c.moved_away = false;
+                        }
+                        dialogs::DraggedOut::MovedAway => c.moved_away = true,
+                    }
+                }
+            }
+            self.dirty = true;
+        }
+    }
+
     fn open_item(&mut self, id: u64) {
         let Some(i) = self.items.iter().find(|i| i.id == id) else {
             return;
         };
         if i.status == Status::Complete {
-            crate::dialogs::open_file(&i.dest);
+            crate::dialogs::open_download(&i.dest, i.moved_away);
         } else if !self.progress.iter().any(|p| p.id == id) {
             self.progress
                 .push(Progress::new(id, self.settings.show_complete));
@@ -6378,6 +6434,10 @@ impl App {
         let dest = target
             .and_then(|id| self.items.iter().find(|i| i.id == id))
             .map(|i| i.dest.clone());
+        // Its file dragged out of Download complete to a place MDM couldn't learn (#869).
+        let moved_away = target
+            .and_then(|id| self.items.iter().find(|i| i.id == id))
+            .is_some_and(|i| i.moved_away);
         match cmd {
             Cmd::AddUrl => self.add_url = Some(AddUrl::from_clipboard(&self.settings.url_history)),
             Cmd::Exit => {
@@ -6531,6 +6591,9 @@ impl App {
                 // Chosen again after it failed here: its next start is tried.
                 if Some(api) == crate::renderer::GPU {
                     crate::renderer::forget_failure();
+                } else {
+                    // OpenGL chosen again after it couldn't draw MDM (#835): tried and checked.
+                    crate::renderer::forget_gl_unfit();
                 }
                 tracing::info!("draw with {api:?} from the next start");
                 self.settings.renderer = Some(api);
@@ -6584,12 +6647,12 @@ impl App {
             }
             Cmd::OpenWith => {
                 if let Some(d) = dest {
-                    dialogs::open_with(&d);
+                    dialogs::open_download_with(&d, moved_away);
                 }
             }
             Cmd::OpenFolder => {
                 if let Some(d) = dest {
-                    dialogs::show_in_folder(&d);
+                    dialogs::show_download_in_folder(&d, moved_away);
                 }
             }
             Cmd::ToggleColumn(i) => self.list.visible[i] = !self.list.visible[i],
@@ -6820,6 +6883,7 @@ impl App {
     /// Pull engine progress into the rows; open "Download complete" when one finishes.
     fn poll(&mut self, ctx: &egui::Context) {
         self.poll_moves();
+        self.poll_dragged_out();
         self.poll_deferred_torrent_renames();
         if !self.moving.is_empty()
             || !self.renaming_torrents.is_empty()
@@ -6834,7 +6898,11 @@ impl App {
             if i.poll() {
                 self.dirty = true;
                 match i.status {
-                    Status::Complete => finished.push(i.id),
+                    Status::Complete => {
+                        // Downloaded again: its file is where MDM saved it.
+                        i.moved_away = false;
+                        finished.push(i.id);
+                    }
                     Status::Error => failed.push(i.id),
                     _ => {}
                 }
@@ -7458,8 +7526,8 @@ impl App {
 
     /// View → Draw with (#89, #206): OpenGL or the system's own graphics API (Direct3D on
     /// Windows, Vulkan on Linux, Metal on macOS), used from the next start. Greyed lines say when
-    /// what draws now isn't the choice: the system's API failed here (and why), or the choice
-    /// waits for the next start.
+    /// what draws now isn't the choice: the system's API failed here (and why), OpenGL can't
+    /// draw MDM here (#835), a software renderer draws, or the choice waits for the next start.
     #[cfg(gpu)]
     fn draw_with_menu(&self) -> MenuEntry<Cmd> {
         use crate::renderer::{self, Api, Why};
@@ -7469,25 +7537,31 @@ impl App {
         let gpu = renderer::GPU.unwrap_or(Api::OpenGl);
         let on = chosen == gpu;
         let draw = Cmd::DrawWith(gpu);
-        // Its choice, and the note when it failed here.
-        let (choice, failed_note) = match gpu {
+        // Its choice, the note when it failed here, and the one when a software renderer draws it.
+        let (choice, failed_note, software_note) = match gpu {
             Api::Direct3D => (
                 // i18n: View → Draw with: a graphics system's name (Microsoft's), usually kept as is
                 Radio("Direct3D", draw, true, on),
                 // i18n: View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
                 off("Direct3D didn't start here: OpenGL draws"),
+                // i18n: View → Draw with: a greyed note; Direct3D draws the windows through Windows' own software renderer (WARP) instead of a graphics card
+                off("Direct3D draws with Windows' software renderer (WARP)"),
             ),
             Api::Vulkan => (
                 // i18n: View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
                 Radio("Vulkan", draw, true, on),
                 // i18n: View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
                 off("Vulkan didn't start here: OpenGL draws"),
+                // i18n: View → Draw with: a greyed note; Vulkan draws the windows through a software renderer instead of a graphics card
+                off("Vulkan draws with a software renderer"),
             ),
             _ => (
                 // i18n: View → Draw with: a graphics system's name (Apple's), usually kept as is
                 Radio("Metal", draw, true, on),
                 // i18n: View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
                 off("Metal didn't start here: OpenGL draws"),
+                // i18n: View → Draw with: a greyed note; Metal draws the windows through a software renderer instead of a graphics card
+                off("Metal draws with a software renderer"),
             ),
         };
         let mut items = vec![
@@ -7501,13 +7575,25 @@ impl App {
             choice,
         ];
         let failed = renderer::gpu_failed().filter(|_| on);
-        if renderer::active().is_some_and(|a| a != chosen) {
+        let active = renderer::active();
+        // The system's API on a software renderer (WARP): said, with why below (no card for
+        // it, an OpenGL that can't draw MDM).
+        let software = active == Some(gpu) && renderer::software();
+        // OpenGL can't draw MDM here (#835): said where it changed what draws.
+        let unfit = renderer::opengl_unfit() && active == Some(gpu) && (software || !on);
+        if active.is_some_and(|a| a != chosen) || software {
             items.push(Sep);
-            let last = match failed {
+            if software {
+                items.push(software_note);
+            }
+            let mut notes = Vec::new();
+            match failed {
                 Some(why) => {
-                    items.push(failed_note);
+                    if !software {
+                        items.push(failed_note);
+                    }
                     // Why, under it ("it": Direct3D, Vulkan or Metal).
-                    match why {
+                    notes.push(match why {
                         // i18n: View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
                         Why::NoAdapter => off("No graphics card here has a driver for it"),
                         // i18n: View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
@@ -7518,12 +7604,18 @@ impl App {
                         Why::LostTwice => off("The graphics card was lost twice in 10 minutes"),
                         // i18n: View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
                         Why::Other => off("It couldn't start: the log says why"),
-                    }
+                    });
                 }
+                // A software renderer that draws for want of a card says only that.
+                None if software || unfit => {}
                 // i18n: View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
-                None => off("Applies the next time MDM starts"),
-            };
-            items.push(last);
+                None => notes.push(off("Applies the next time MDM starts")),
+            }
+            if unfit {
+                // i18n: View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
+                notes.push(off("OpenGL here is too old to draw MDM"));
+            }
+            items.extend(notes);
         }
         // i18n: View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
         Sub("Draw with", true, items)
@@ -9322,11 +9414,22 @@ impl App {
     }
 
     /// Link grabber's look-ups (Options → Archives → "Check links"): the next links, each
-    /// with its own request (the page's referer and cookies), on the runtime.
+    /// with its own request (the page's referer and cookies), on the runtime. Then the web pages
+    /// given on their own that the look-ups found, each read for its links (#705), which join.
     fn grabber_checks(&mut self, ctx: &egui::Context) {
+        let read = self
+            .grabber
+            .as_mut()
+            .map(|g| g.pages_read())
+            .unwrap_or_default();
+        for found in read {
+            // The same rule as every link added: one in the download list comes unticked.
+            self.show_import(found, String::new());
+        }
         if !self.settings.grabber_check {
             return;
         }
+        self.grabber_reads(ctx);
         let Some(g) = &self.grabber else { return };
         for (i, url, d) in g.to_check() {
             let context = ipc::Command {
@@ -9347,6 +9450,51 @@ impl App {
             });
             if let Some(g) = &mut self.grabber {
                 g.checking(i, slot);
+            }
+        }
+    }
+
+    /// Link grabber's web pages to read for their links (#705), each with its own request, on
+    /// the runtime: the page's links come back with the page as their referer (the package is
+    /// named after it), the agent and private mark the page had. Not the page's cookies, which
+    /// are its own site's.
+    fn grabber_reads(&mut self, ctx: &egui::Context) {
+        let Some(g) = &self.grabber else { return };
+        for (i, url, d) in g.to_read() {
+            let context = ipc::Command {
+                referer: d.referer.clone(),
+                cookies: d.cookies.clone(),
+                user_agent: d.user_agent.clone(),
+                ..Default::default()
+            };
+            let parts = self.request_parts(&url, None, &context, false);
+            let slot: std::sync::Arc<std::sync::Mutex<Option<_>>> = Default::default();
+            let (out, ctx) = (slot.clone(), ctx.clone());
+            self.rt.spawn(async move {
+                let found = match mdm_engine::page_links(url, parts.headers, &parts.opts).await {
+                    Ok((at, links)) => {
+                        tracing::info!("link grabber: {} links on a page", links.len());
+                        links
+                            .into_iter()
+                            .map(|u| crate::transfer::Imported {
+                                url: u.into(),
+                                referer: Some(at.to_string()),
+                                user_agent: d.user_agent.clone(),
+                                private: d.private,
+                                ..Default::default()
+                            })
+                            .collect()
+                    }
+                    Err(e) => {
+                        tracing::info!("link grabber: a page couldn't be read: {e}");
+                        Vec::new()
+                    }
+                };
+                *out.lock().unwrap() = Some(found);
+                ctx.request_repaint();
+            });
+            if let Some(g) = &mut self.grabber {
+                g.reading(i, slot);
             }
         }
     }
@@ -10137,6 +10285,13 @@ impl App {
                     {
                         self.dirty = true;
                     }
+                    // Embed chapters is kept for the next video (#827), and the videos added
+                    // now start with it.
+                    if self.settings.video_chapters != v.chapters() {
+                        self.settings.video_chapters = v.chapters();
+                        crate::settings::share_video_settings(&self.settings);
+                        self.dirty = true;
+                    }
                     self.video_dlg = None;
                     match out {
                         crate::videodlg::VideoOut::One(add) => {
@@ -10522,6 +10677,7 @@ impl App {
         // The freeze watchdog times this as it times `ui` (crash.rs): a command or the clock
         // that hangs is reported too, minimized or not (#202).
         crate::crash::logic_begin();
+        crate::crash::step(crate::crash::Step::Commands);
         let mut handled = false;
         while let Ok(inc) = self.commands.try_recv() {
             handled = true;
@@ -10536,34 +10692,47 @@ impl App {
             ctx.request_ui_pass(egui::ViewportId::ROOT);
         }
         self.lookups.prune(Instant::now());
+        crate::crash::step(crate::crash::Step::NetworkSettings);
         // The clock: what must go on whatever the main window's state (#174). Minimized, egui
         // runs no `ui`, and the queues, the Scheduler's starts and stops, the download limits,
         // the kill switch, saving the list, the clipboard monitor, the update check, the tray and
         // the taskbar's progress all stood still until the window was restored.
         crate::settings::share_proxy(self.settings.proxy());
         crate::settings::share_dns(self.settings.dns());
-        crate::settings::share_video_cookies(&self.settings);
+        crate::settings::share_video_settings(&self.settings);
         if !self.headless {
+            crate::crash::step(crate::crash::Step::Accessibility);
             self.follow_assistive_technology(ctx);
         }
+        crate::crash::step(crate::crash::Step::NetworkAdapter);
         self.network_adapter_tick(ctx);
+        crate::crash::step(crate::crash::Step::Limits);
         self.limit_restart_tick();
         self.debrid_tick();
+        crate::crash::step(crate::crash::Step::Downloads);
         self.poll(ctx);
+        crate::crash::step(crate::crash::Step::RemoteTorrents);
         self.poll_remote_torrents();
         // What failed in any window, told here (dialogs::tell).
         if let Some((title, text)) = dialogs::told().pop() {
             self.notice = Some((title, text));
         }
+        crate::crash::step(crate::crash::Step::Limits);
         self.apply_global_limit();
         // A server (#157) has no screen, clipboard or tray, and is updated by its image.
         if !self.headless {
+            crate::crash::step(crate::crash::Step::UpdateCheck);
             self.auto_update_check(ctx);
+            crate::crash::step(crate::crash::Step::Clipboard);
             self.watch_clipboard(ctx);
+            crate::crash::step(crate::crash::Step::Tray);
             self.tray(ctx);
             // The taskbar button's green bar: everything running, as one.
             #[cfg(windows)]
-            crate::win32::taskbar_progress(crate::MAIN_TITLE, self.overall_progress());
+            {
+                crate::crash::step(crate::crash::Step::Taskbar);
+                crate::win32::taskbar_progress(crate::MAIN_TITLE, self.overall_progress());
+            }
         }
         if self
             .ticked
@@ -10571,12 +10740,14 @@ impl App {
         {
             self.ticked = Some(Instant::now());
             // For a crash report: what MDM has open and running (sent when it changes).
+            crate::crash::step(crate::crash::Step::ReportState);
             crate::crash::state(
                 self.items.len(),
                 self.items.iter().filter(|i| i.live.is_some()).count(),
                 self.queues.len(),
                 ctx.pixels_per_point(),
             );
+            crate::crash::step(crate::crash::Step::Torrents);
             self.torrent_tick();
             // Minimized, the windows these open (Download complete, a limit's notice, Download
             // File Info for a copied link, an update) are made by a pass of the main window's
@@ -10618,6 +10789,7 @@ impl App {
         // Light or dark: IDM follows Windows' app mode (checked every 2 s) unless View → Dark
         // Mode support is off. Switches live (IDM asks to restart). On Linux the desktop's own
         // change wakes a frame, and the check runs in it rather than at its next 2 s (#156).
+        crate::crash::step(crate::crash::Step::Theme);
         let desktop_changed = crate::theme::system_changed();
         if desktop_changed
             || self
@@ -10653,6 +10825,7 @@ impl App {
             // The caption follows (first check: the window may not exist yet; retried). Only
             // then: asking DWM every 2 s caught the window's thread in a stalled system (#633).
             if changed || !self.caption_set {
+                crate::crash::step(crate::crash::Step::Caption);
                 crate::theme::apply_mode(&ctx);
                 #[cfg(windows)]
                 {
@@ -10673,9 +10846,11 @@ impl App {
                 ctx.request_repaint();
             }
         }
+        crate::crash::step(crate::crash::Step::MainWindow);
         egui::CentralPanel::no_frame()
             .frame(egui::Frame::new().fill(chrome::WINDOW_BG()))
             .show(ui, |ui| self.paint(ui));
+        crate::crash::step(crate::crash::Step::Dialogs);
         self.dialogs(&ctx);
         crate::crash::frame_end();
         crate::renderer::frame_done(&ctx);

@@ -934,6 +934,10 @@
    "source": "The thin edge around a country's flag",
    "text": "国旗周围的细边"
   },
+  "0ea74b188ec2ca88": {
+   "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
+   "text": "如果提示<g1>网站发送的是网页而非文件</g1>，则说明链接指向的是网站自身的页面：文件托管服务的倒计时、验证码、需要点击的<g2>下载</g2>按钮，或登录页面。MDM 绝不会将此类页面保存为您的文件。请在下载进度窗口中点击<g3>在浏览器中打开</g3>（或自行打开链接），完成相应操作，当浏览器开始实际下载时，MDM 扩展程序会将其交给 MDM。如果没有安装扩展程序，请让浏览器自行下载。"
+  },
   "0ebbf5cc3fb70cd9": {
    "source": "Downloads from a private window use that window's cookies, never the normal ones, and aren't kept in MDM's list after it closes.",
    "text": "在隐私窗口中下载的文件会使用该窗口的 Cookie，不会使用普通窗口的 Cookie；关闭隐私窗口后，这些下载不会保留在 MDM 的列表中。"
@@ -4498,10 +4502,6 @@
    "source": "Browser integration — Mister Download Manager help",
    "text": "浏览器集成 — Mister Download Manager 帮助"
   },
-  "439e42205d062684": {
-   "source": "Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (<x1/>)",
-   "text": "视频页面通过 yt-dlp 和 ffmpeg，图片画廊通过 gallery-dl（作为独立程序运行）；当选择网络适配器时，它们的连接通过 MDM 在 127.0.0.1 上的代理，将它们绑定到该适配器 (<x1/>)"
-  },
   "43ad4ee2e95fdb1f": {
    "source": "A page's own short sounds (a click, a voice-search chime) are no longer listed in <g1>Media on this page</g1>.",
    "text": "页面本身的短音（点击声、语音搜索提示音）不再列在<g1>此页面上的媒体</g1>中。"
@@ -5657,6 +5657,10 @@
   "567f61dda0920579": {
    "source": "A greyed unchecked box's border",
    "text": "灰色未选中复选框的边框"
+  },
+  "5688be9c6942376d": {
+   "source": "Files MDM downloads from the browser are marked as coming from the internet, as the browser marks its own: Windows checks a program with SmartScreen before it runs and Office opens a document in Protected View. Like the browser, MDM leaves the mark out when Windows' Group Policy <g1>Do not preserve zone information in file attachments</g1> is on; <g2>Options → Save to</g2> can turn it off for MDM alone.",
+   "text": "MDM 从浏览器下载的文件会被标记为来自互联网，就像浏览器自己下载的文件一样：Windows 会在程序运行前用 SmartScreen 检查它，Office 会在“受保护的视图”中打开文档。与浏览器一样，当 Windows 的组策略“<g1>不保留文件附件中的区域信息</g1>”开启时，MDM 不会添加此标记；<g2>选项 → 保存到</g2> 可以单独为 MDM 关闭此功能。"
   },
   "5690cb4f1434f4bc": {
    "source": "Open Windows <g1>Settings → Apps</g1>, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder. On Linux, remove the package with your package manager, or delete the AppImage; <g2>Uninstall on Linux</g2> says what stays in your home folder and how to remove it.",
@@ -9226,10 +9230,6 @@
    "source": "Downloads and torrents in one app, stable on Android",
    "text": "在一个应用程序中处理下载和种子，在 Android 上运行稳定"
   },
-  "8c699effe606d133": {
-   "source": "Files MDM downloads from the browser are marked as coming from the internet, as the browser marks its own: Windows checks a program with SmartScreen before it runs and Office opens a document in Protected View.",
-   "text": "MDM 从浏览器下载的文件会被标记为来自互联网，就像浏览器标记自己的文件一样：Windows 会在程序运行前使用 SmartScreen 检查它，Office 会在受保护视图中打开文档。"
-  },
   "8c7321b31cd98d97": {
    "source": "<g1>Toolbar.</g1> <g2>Add URL</g2>, <g3>Add Torrent</g3>, <g4>Resume</g4>, <g5>Stop</g5>, <g6>Stop All</g6>, <g7>Delete</g7>, <g8>Delete Completed</g8>, <g9>Options</g9>, <g10>Scheduler</g10>, <g11>Start Queue</g11>, <g12>Stop Queue</g12>. The small arrow next to <g13>Add Torrent</g13>, <g14>Start Queue</g14> and <g15>Stop Queue</g15> opens more choices.",
    "text": "<g1>工具栏。</g1><g2>添加 URL</g2>、<g3>添加 Torrent</g3>、<g4>恢复</g4>、<g5>停止</g5>、<g6>停止所有</g6>、<g7>删除</g7>、<g8>删除已完成</g8>、<g9>选项</g9>、<g10>计划程序</g10>、<g11>启动队列</g11>、<g12>停止队列</g12>。点击<g13>添加 Torrent</g13>、<g14>启动队列</g14>和<g15>停止队列</g15>旁边的小箭头可打开更多选项。"
@@ -10894,6 +10894,10 @@
    "source": "Add downloads with <g1>Add URL</g1>, the clipboard (<g2>Options → General → Offer to download links copied to the clipboard</g2>) or the drop target (<g3>Tasks → Show drop target</g3>).",
    "text": "使用<g1>添加 URL</g1>、剪贴板（<g2>选项 → 常规 → 提供下载复制到剪贴板的链接</g2>）或拖放目标（<g3>任务 → 显示拖放目标</g3>）添加下载。"
   },
+  "a54a319c4a29ff03": {
+   "source": "Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (<x1/>); each runs in a folder it can write, also its TEMP (<x2/>)",
+   "text": "视频页面通过 yt-dlp 和 ffmpeg 处理，图片库通过 gallery-dl 处理（均作为独立程序运行）；当选择网络适配器时，它们的连接会通过 MDM 在 127.0.0.1 上的代理，将其绑定到该适配器（<x1/>）；每个程序都在一个可写入的文件夹中运行，该文件夹也是其 TEMP 目录（<x2/>）"
+  },
   "a54ad83afe939ad1": {
    "source": "yt-dlp looks the page up and picks the quality's video and sound. MDM's own downloader then brings each of them in, one after the other, the way it downloads any file:",
    "text": "yt-dlp 查找页面并选择所需质量的视频和音频。MDM 自带的下载器会像下载任何文件一样，一个接一个地下载它们："
@@ -12530,6 +12534,10 @@
    "source": "3. Use it",
    "text": "3. 使用方法"
   },
+  "be205ab8272dead7": {
+   "source": "Start the video first: the list fills as the page loads things, and it's emptied when the tab goes to another page. Each file is listed under the name it will be saved with. A file the site sends through a program's address (<x1/>, <x2/>, <x3/>, a bare number) has no name of its own: it's named after the page (<x4/>), or after the <x5/> name in its address when there is one, with the type its server says it is (MP4, not PHP). With <g6>Prefix media file names with the page title</g6> on, a file with a name of its own is named after the page, then that name (<x7/>). Click <g8>Download</g8> beside one: a stream opens MDM's <g9>Download video from a page</g9> window, which reads its qualities (yt-dlp does the work); a file goes to MDM's list like any other download. Your cookies for its server, the page as the referrer and your browser's User-Agent go with it, as they do for a link you click.",
+   "text": "请先播放视频：列表会随着页面加载内容而填充，当标签页跳转到其他页面时，列表会被清空。每个文件都会以其保存时的名称列出。网站通过程序地址（<x1/>、<x2/>、<x3/>，一个纯数字）发送的文件没有自己的名称：它会以页面命名（<x4/>），或者如果地址中有 <x5/> 名称，则以该名称命名，并加上服务器报告的文件类型（MP4，而不是 PHP）。如果开启了<g6>在媒体文件名前加上页面标题</g6>，则有自己名称的文件会以页面命名，然后是该名称（<x7/>）。点击文件旁边的<g8>下载</g8>：如果是流媒体，会打开 MDM 的<g9>从页面下载视频</g9>窗口，该窗口会读取其质量（yt-dlp 完成此工作）；如果是文件，则像其他下载一样添加到 MDM 的列表。您为此服务器的 Cookie、作为引荐来源的页面以及您的浏览器 User-Agent 都会随之发送，就像您点击链接时一样。"
+  },
   "be3fe1b3f5a5749a": {
    "source": "Yes, completely. Mister Download Manager (MDM) is free and open-source software under the GNU General Public License, version 3. There is no trial period…",
    "text": "是的，完全免费。Mister Download Manager (MDM) 是在 GNU 通用公共许可证第 3 版下发布的免费开源软件。没有试用期…"
@@ -12833,10 +12841,6 @@
   "c2f23d07939a4042": {
    "source": "A greyed button's face",
    "text": "置灰按钮表面"
-  },
-  "c30f4658e7e28160": {
-   "source": "Start the video first: the list fills as the page loads things, and it's emptied when the tab goes to another page. With <g1>Prefix media file names with the page title</g1> on, a file from the list is named after the page, then its own name (<x2/>). Click <g3>Download</g3> beside one: a stream opens MDM's <g4>Download video from a page</g4> window, which reads its qualities (yt-dlp does the work); a file goes to MDM's list like any other download. Your cookies for its server, the page as the referrer and your browser's User-Agent go with it, as they do for a link you click.",
-   "text": "请先播放视频：列表会随着页面加载内容而填充，并在标签页转到其他页面时清空。启用<g1>在媒体文件名前加上页面标题</g1>后，列表中的文件将以页面名称命名，然后是其自身名称（<x2/>）。点击其中一个旁边的<g3>下载</g3>：流媒体会打开 MDM 的<g4>从页面下载视频</g4>窗口，该窗口会读取其质量（yt-dlp 完成此工作）；文件会像其他下载一样添加到 MDM 的列表。您为此服务器的 Cookie、页面作为引用者以及您的浏览器用户代理都会随之发送，就像您点击链接时一样。"
   },
   "c31622b1a542c888": {
    "source": "<g1>.dmg</g1> for Intel Macs",
@@ -13750,10 +13754,6 @@
    "source": "A button's face under the pointer",
    "text": "鼠标指向的按钮表面"
   },
-  "d1595b21d176c816": {
-   "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
-   "text": "来自种子的文件被标记为<g1>从互联网下载</g1>，就像浏览器的下载一样。Windows SmartScreen 在程序首次运行前检查它，Office 在受保护视图中打开文档。在 Mac 上，Gatekeeper 检查应用程序。"
-  },
   "d172eb15bbafbde6": {
    "source": "Release signatures are checked by MDM's own small verifier instead of a full OpenPGP library.",
    "text": "发布签名由 MDM 自己的小型验证器检查，而不是完整的 OpenPGP 库。"
@@ -14586,6 +14586,10 @@
    "source": "Minimize hides the main window there too, while <g1>Minimize to the notification area</g1> is on in <g2>Options → General</g2>. It is on by default; where the tray has no icon, Minimize sends the window to the taskbar instead.",
    "text": "当<g1>选项 → 常规</g1>中的<g2>最小化到通知区域</g2>开启时，“最小化”也会将主窗口隐藏到通知区域。此选项默认开启；如果通知区域没有图标，“最小化”会将窗口发送到任务栏。"
   },
+  "dec637e2ec402a0d": {
+   "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps. <g2>Options → Save to → Mark downloaded files as coming from the internet</g2> turns it off, and so does Windows' policy <g3>Do not preserve zone information in file attachments</g3>.",
+   "text": "来自种子的文件会被标记为<g1>从互联网下载</g1>，就像浏览器下载的文件一样。Windows SmartScreen 会在程序首次运行前进行检查，Office 会在“受保护的视图”中打开文档。在 Mac 上，Gatekeeper 会检查应用程序。<g2>选项 → 文件 → 将下载的文件标记为来自互联网</g2>可以关闭此功能，Windows 策略<g3>不保留文件附件中的区域信息</g3>也可以关闭此功能。"
+  },
   "dee4ab42b514acda": {
    "source": "The language list on first start: every language with its flag, its own name and its English name",
    "text": "首次启动时的语言列表：每种语言都带有其旗帜、其本国名称和英文名称"
@@ -14797,6 +14801,10 @@
   "e2b96614efaa036c": {
    "source": "The drop target's edge at rest",
    "text": "放置目标在静止时的边缘"
+  },
+  "e2d0adb596fd4c4b": {
+   "source": "<g1>Mark downloaded files as coming from the internet</g1> — on by default. Every file MDM downloads (from the browser, a link you add, a video, a gallery, a torrent, and the files extracted from an archive) carries the mark a browser's downloads carry. On Windows that is the Mark of the Web: SmartScreen checks a program before it first runs, and Office opens a document in Protected View. On a Mac it is the quarantine attribute Gatekeeper checks; on Linux, where the file came from, which file managers show. Unticked, no download is marked. On Windows, MDM also follows the Group Policy <g2>Do not preserve zone information in file attachments</g2>, as browsers do: when it is on (for the computer or for you), no download is marked, whatever this box says.",
+   "text": "<g1>将下载的文件标记为来自互联网</g1> — 默认开启。MDM 下载的每个文件（无论是来自浏览器、您添加的链接、视频、图库、种子文件，还是从压缩包中提取的文件）都会带有浏览器下载文件所带的标记。在 Windows 上，这是“Web 标记”：SmartScreen 会在程序首次运行前进行检查，Office 会在“受保护的视图”中打开文档。在 Mac 上，这是 Gatekeeper 检查的隔离属性；在 Linux 上，文件管理器会显示文件的来源。如果取消勾选，则不会标记任何下载。在 Windows 上，MDM 还会遵循组策略 <g2>不保留文件附件中的区域信息</g2>，如同浏览器一样：当此策略开启时（针对计算机或您个人），无论此复选框如何设置，都不会标记任何下载。"
   },
   "e2e30d683ce66b3d": {
    "source": "<g1>Zen on Windows:</g1> Zen 1.21.15b and later have a bug of their own that keeps add-ons from reaching their helper program (<g2>zen-browser/desktop#15432</g2>), with any add-on that uses one. Until Zen fixes it, Zen 1.21.14b works.",

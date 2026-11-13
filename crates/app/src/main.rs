@@ -466,6 +466,7 @@ fn app() -> eframe::Result {
         loaded.settings.renderer,
         renderer::overridden(&args).as_deref(),
         renderer::failed_before().is_some(),
+        renderer::gl_unfit_before(),
     );
     let options = || eframe::NativeOptions {
         viewport: viewport.clone(),

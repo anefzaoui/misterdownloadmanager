@@ -1078,6 +1078,20 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Could not be read: {error}	Nie można odczytać: {error}
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: the proxy set in Options ({proxy}, its address) didn't let MDM connect
+#, machine
+	could not connect through the proxy {proxy}	nie można połączyć się przez serwer proxy {proxy}
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) couldn't be reached
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	could not reach {host}	nie można nawiązać połączenia z {host}
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) couldn't be reached, for the system's reason {cause}
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	could not reach {host} ({cause})	nie można nawiązać połączenia z {host} ({cause})
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
@@ -1450,6 +1464,12 @@
 #, machine
 	Drag the file into a folder or an app	Przeciągnij plik do folderu lub aplikacji
 #. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	Przeciągnięto z „Pobieranie ukończone” i przeniesiono w miejsce, którego MDM nie mógł ustalić
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	Przeciągnięto z „Pobieranie ukończone” i przeniesiono do {folder}
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	Upuszczone łącza
@@ -1498,6 +1518,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	E-mail
+#. text in the Download video window
+#. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
+#, machine
+	Embed chapters	Osadź rozdziały
 #. text in gallerydlg.rs
 #. in Download a gallery, after the "Files at most" box
 #, machine
@@ -1538,7 +1562,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Eritrea	Erytrea
-#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
@@ -1764,6 +1788,11 @@
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	Ukończone
+#. text in a download's progress window
+#. a download's status: every byte is in, the file is being written out and given its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Finishing...	Kończenie...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2022,7 +2051,7 @@
 #. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
 #, machine
 	Helpers	Pomocnicy
-#. button in gallerydlg.rs; button in the Download video window
+#. text in errors.rs; button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -2072,6 +2101,11 @@
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
 	How to fix it	Jak to naprawić
+#. text in the Download video window; text in videolookup.rs
+#. link after the note that YouTube needs a JavaScript runtime: opens the help page that says how to install Node.js or Deno
+#. link in the browser's video menu, after the note that YouTube needs a JavaScript runtime: opens the help page that says how to install Node.js or Deno
+#, machine
+	How to install one	Jak zainstalować
 #. checkbox in the Options window
 #, machine
 	http	http
@@ -2638,6 +2672,15 @@
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
 	medium	średni
+#. text in the download list (sizes, speeds, status)
+#. a video's status while its picture and sound are joined into one file (ffmpeg)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Merging...	Łączenie...
+#. text in the download list (sizes, speeds, status)
+#. a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
+#, machine
+	Merging... ({percent})	Łączenie... ({percent})
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2795,6 +2838,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Mozambique	Mozambik
+#. text in the Download video window
+#. why "Embed chapters" is greyed in Download video: the choice is a sound converted to MP3, Opus or FLAC, which MDM saves without chapters
+#, machine
+	MP3, Opus and FLAC files are saved without chapters	Pliki MP3, Opus i FLAC są zapisywane bez rozdziałów
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	znacznie wolniejsze niż inne połączenia; ponowne łączenie
@@ -3214,11 +3261,16 @@
 #. verb: opens the file
 #, machine
 	Open	Otwórz
-#. button in crashui.rs; button in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
+#. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	Otwórz folder
+#. text in a download's progress window
+#. button in a download's progress window when the site sent a web page (a waiting page, a captcha) instead of the file: opens the download's link in the web browser
+#, machine
+	Open in browser	Otwórz w przeglądarce
 #. checkbox in the Add torrent window
 #, machine
 	Open magnet links and .torrent files with Mister Download Manager	Otwieraj linki magnet i pliki .torrent za pomocą Mister Download Manager
@@ -3456,7 +3508,7 @@
 #. text in a download's progress window
 #, machine
 	Property	Właściwość
-#. text in the Options window
+#. text in errors.rs; text in the Options window
 #. tab title
 #, machine
 	Proxy / Socks	Serwer proxy / Socks
@@ -4452,6 +4504,11 @@
 #, machine
 	the connection closed before the part was complete	połączenie zostało zamknięte przed ukończeniem części
 #. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: the connection to its server ({host}) was cut as it opened
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	the connection to {host} was cut: a firewall, or a network that blocks it	połączenie z {host} zostało przerwane: zapora sieciowa lub sieć je blokuje
+#. text in errors.rs
 #, machine
 	the connection was lost while receiving data	utracono połączenie podczas odbierania danych
 #. text in the Add torrent window
@@ -4461,6 +4518,11 @@
 #. text in errors.rs
 #, machine
 	the disk is full	dysk jest pełny
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: the connection to its server ({host}) closed before all of it came
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	the download from {host} was cut short	pobieranie z {host} zostało przerwane
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
@@ -4602,6 +4664,11 @@
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
 	the secure connection failed	nie udało się nawiązać bezpiecznego połączenia
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: the secure connection to its server ({host}) failed, usually because an antivirus or a proxy reads secure (HTTPS) connections with a certificate of its own
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	the secure connection to {host} failed: an antivirus's web filter or a proxy may be reading HTTPS	bezpieczne połączenie z {host} nie powiodło się: filtr sieciowy programu antywirusowego lub serwer proxy może odczytywać HTTPS
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -4623,10 +4690,11 @@
 	the server is busy ({status}); try again later	serwer jest zajęty ({status}); spróbuj ponownie później
 #. text in errors.rs
 #, machine
-	the server sent a web page instead of the file (sign-in needed or the link expired?)	serwer wysłał stronę internetową zamiast pliku (wymagane logowanie lub link wygasł?)
-#. text in errors.rs
-#, machine
 	the server sent an unexpected part of the file ({detail})	serwer wysłał nieoczekiwaną część pliku ({detail})
+#. text in errors.rs
+#. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
+#, machine
+	the site sent a web page instead of the file (a waiting page, a captcha or a sign-in): open the link in your browser, finish there, and the download comes back to MDM	witryna wysłała stronę internetową zamiast pliku (stronę oczekiwania, CAPTCHA lub stronę logowania): otwórz link w przeglądarce, dokończ tam, a pobieranie wróci do MDM
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
 #, machine
@@ -4803,6 +4871,7 @@
 #, machine
 	This name is reserved by Windows	Ta nazwa jest zarezerwowana przez system Windows
 #. tooltip (why a control is greyed) in the Download video window
+#. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Wymaga ffmpeg
@@ -5141,7 +5210,7 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	Użyj zaawansowanej integracji z przeglądarką
-#. button in helpers.rs
+#. text in errors.rs; button in helpers.rs
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -5241,9 +5310,14 @@
 #, machine
 	Verify checksum	Weryfikuj sumę kontrolną
 #. text in the download list (sizes, speeds, status)
+#. a download's status while the finished file is checked against its checksum
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Verifying...	Weryfikowanie...
+#. text in the download list (sizes, speeds, status)
+#. a download's status while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%"
+#, machine
+	Verifying... ({percent})	Weryfikowanie... ({percent})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -5466,6 +5540,10 @@
 #, machine
 	Your system's: {path}	Program systemowy: {path}
 #. text in the Download video window
+#. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
+#, machine
+	YouTube needs a JavaScript runtime to list its video qualities: install Node.js or Deno, then look it up again	YouTube wymaga środowiska uruchomieniowego JavaScript, aby wyświetlić dostępne jakości wideo: zainstaluj Node.js lub Deno, a następnie wyszukaj ponownie
+#. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 #, machine
 	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp nie może odczytać plików cookie przeglądarki {browser}, gdy {browser} jest otwarta. Zamknij {browser} i ponownie wyszukaj stronę, lub wybierz Firefox w Opcje → Loginy witryn.
@@ -5604,6 +5682,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	Plik {file} jest zbyt duży, aby mógł być listą adresów ({size}). Import odczytuje pliki tekstowe, strony internetowe i eksporty .ef2 o rozmiarze do {limit}.
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	Plik {file} został przeniesiony w inne miejsce przez przeciągnięcie go z „Pobieranie ukończone”, a MDM nie mógł ustalić, gdzie. Poszukaj go tam, gdzie go upuściłeś.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5622,6 +5703,35 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{have} of {total} pieces ({size} each)	{have} z {total} części ({size} każda)
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) answered with an HTTP error ({status}, such as "404 Not Found")
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} answered {status}	{host} odpowiedział {status}
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server's name ({host}, such as api.github.com) wasn't found
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} could not be found: no connection, or a network that blocks it	nie można znaleźć {host}: brak połączenia lub sieć je blokuje
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: there is no way to its server ({host}); the network may be down
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} could not be reached: check the connection	nie można nawiązać połączenia z {host}: sprawdź połączenie
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) didn't answer in time
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} did not answer in time	{host} nie odpowiedział na czas
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) or something on the way refused the connection
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} refused the connection: a firewall, or a network that blocks it	{host} odmówił połączenia: zapora sieciowa lub sieć je blokuje
+#. text in errors.rs
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} refused the request ({status}): too many requests from your network for now	{host} odrzucił żądanie ({status}): zbyt wiele żądań z Twojej sieci w tej chwili
 #. text in the download list (sizes, speeds, status)
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
@@ -5699,9 +5809,21 @@
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
 	{percent} at {service}	{percent} w {service}
+#. text in the download list (sizes, speeds, status)
+#. the list's narrow Status column while a video's picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%": keep it first, the column is narrow
+#, machine
+	{percent} merged	{percent} scalono
+#. text in the download list (sizes, speeds, status)
+#. the list's narrow Status column while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%": keep it first, the column is narrow
+#, machine
+	{percent} verified	{percent} zweryfikowano
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. why a helper couldn't be downloaded ({problem}), then what to do about it ({advice}, whole sentences)
+#, machine
+	{problem}. {advice}	{problem}. {advice}
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
@@ -6637,6 +6759,10 @@ menu	Direct3D	Direct3D
 #, machine
 menu	Direct3D didn't start here: OpenGL draws	Direct3D nie uruchomił się: rysuje OpenGL
 #. menu command in the main window
+#. View → Draw with: a greyed note; Direct3D draws the windows through Windows' own software renderer (WARP) instead of a graphics card
+#, machine
+menu	Direct3D draws with Windows' software renderer (WARP)	Direct3D rysuje za pomocą renderera programowego systemu Windows (WARP)
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -6730,6 +6856,10 @@ menu	Metal	Metal
 #, machine
 menu	Metal didn't start here: OpenGL draws	Nie można uruchomić Metal: rysuje OpenGL
 #. menu command in the main window
+#. View → Draw with: a greyed note; Metal draws the windows through a software renderer instead of a graphics card
+#, machine
+menu	Metal draws with a software renderer	Metal rysuje za pomocą renderera programowego
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
 menu	Metro	Metro
@@ -6776,6 +6906,10 @@ menu	Open with...	Otwórz za pomocą...
 #. View → Draw with: a graphics system's name, usually kept as is
 #, machine
 menu	OpenGL	OpenGL
+#. menu command in the main window
+#. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
+#, machine
+menu	OpenGL here is too old to draw MDM	Sterownik OpenGL jest zbyt stary, aby rysować MDM
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window
@@ -6927,6 +7061,10 @@ menu	Vulkan	Vulkan
 #. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
 #, machine
 menu	Vulkan didn't start here: OpenGL draws	Vulkan nie uruchomił się tutaj: rysuje OpenGL
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan draws the windows through a software renderer instead of a graphics card
+#, machine
+menu	Vulkan draws with a software renderer	Vulkan rysuje za pomocą renderera programowego
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

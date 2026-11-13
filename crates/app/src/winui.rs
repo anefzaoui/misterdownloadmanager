@@ -1555,6 +1555,43 @@ pub fn link(ui: &Ui, p: &Painter, x: f32, baseline: f32, label: &str, salt: &str
     resp.clicked()
 }
 
+/// A note (`s`, translated already) from `x` to `right` on at most two lines `line_h` apart,
+/// first baseline `baseline`, with a [`link`] after it (`label`, English, translated here): on
+/// the note's line when they fit together, else the note wraps and the link ends its second
+/// line. A note longer than that is cut, and shown whole on hover. True when the link is
+/// clicked; `salt` tells notes apart.
+#[allow(clippy::too_many_arguments)]
+pub fn note_with_link(
+    ui: &Ui,
+    p: &Painter,
+    x: f32,
+    baseline: f32,
+    line_h: f32,
+    s: &str,
+    color: Color32,
+    right: f32,
+    label: &str,
+    salt: &str,
+) -> bool {
+    const GAP: f32 = 8.0;
+    let link_w = text_width(p, crate::i18n::t(label));
+    if text_width(p, s) + GAP + link_w <= right - x {
+        text(p, x, baseline, s, color);
+        return link(ui, p, x + text_width(p, s) + GAP, baseline, label, salt);
+    }
+    let lines = wrap_lines(p, s, (right - x).max(1.0));
+    let first = lines.first().map_or("", String::as_str);
+    let first_rect = text(p, x, baseline, first, color);
+    let rest = lines.get(1..).unwrap_or_default().join(" ");
+    let second = baseline + line_h;
+    let (rest_rect, cut) = text_fit(p, x, second, &rest, color, right - GAP - link_w);
+    if cut {
+        full_on_hover(ui, first_rect.union(rest_rect), (salt, "note"), s);
+    }
+    let rest_w = text_width(p, &rest).min(right - GAP - link_w - x);
+    link(ui, p, x + rest_w + GAP, second, label, salt)
+}
+
 /// A disabled control says why on hover: `reason` (English, translated here) while `disabled`.
 pub fn why_disabled(resp: Response, disabled: bool, reason: &str) -> Response {
     if disabled {
@@ -1876,9 +1913,14 @@ pub fn field_frame(p: &Painter, rc: Rect, look: FieldLook) {
 /// How far along something is, as IDM shows a download: its green fill on a track (themed: the
 /// track was light in dark mode too), the controls' rounded corners. `fraction` in 0..=1.
 pub fn meter(p: &Painter, rc: Rect, fraction: f32) {
+    meter_in(p, rc, fraction, crate::theme::colors().meter_fill);
+}
+
+/// [`meter`] filled in `fill` (the progress window's check or merge after the last byte, #736).
+pub fn meter_in(p: &Painter, rc: Rect, fraction: f32, fill: Color32) {
     let radius = control_radius().min(rc.height() / 4.0).floor();
     let c = crate::theme::colors();
-    if era_bar(p, rc, 0.0, fraction.clamp(0.0, 1.0), c.meter_fill, false) {
+    if era_bar(p, rc, 0.0, fraction.clamp(0.0, 1.0), fill, false) {
         return;
     }
     let border = crate::theme::metrics().border;
@@ -1887,7 +1929,7 @@ pub fn meter(p: &Painter, rc: Rect, fraction: f32) {
     let w = (fraction.clamp(0.0, 1.0) * inner.width()).floor();
     if w > 0.0 {
         let done = Rect::from_min_size(inner.min, vec2(w, inner.height()));
-        p.rect_filled(done, (radius - border).max(0.0), c.meter_fill);
+        p.rect_filled(done, (radius - border).max(0.0), fill);
     }
     p.rect_stroke(
         rc,
