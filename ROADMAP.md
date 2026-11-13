@@ -561,6 +561,9 @@ These ship in the next version.
   and cookies the browser sent with it, for its playlists and every piece too: a site's video
   server that serves its own pages' players only answered 403
   ([#900](https://github.com/anefzaoui/misterdownloadmanager/issues/900))
+- ✅ A video of unknown size no longer reads 99.9 % from its first second while yt-dlp downloads it,
+  and a video named after a page titled with its file's name gets its extension once (Dropbox's
+  `Episode 31.mp4.mp4`) ([#622](https://github.com/anefzaoui/misterdownloadmanager/issues/622))
 - ✅ Tests: the five that checked a long list is read in linear time against a fixed number of
   seconds (one failed on a slow macOS runner) now time the same work at two sizes, eight times
   apart, and fail only when the larger one costs over 24 times as much (a square costs 64 times),
@@ -813,7 +816,9 @@ These ship in the next version.
   the program under the pointer takes: the drag runs beside the window
   ([#561](https://github.com/anefzaoui/misterdownloadmanager/issues/561))
 - ✅ The video button keeps one corner over YouTube's thumbnail previews, within the pointer's reach
-  ([#560](https://github.com/anefzaoui/misterdownloadmanager/issues/560))
+  ([#560](https://github.com/anefzaoui/misterdownloadmanager/issues/560)), and over a player whose
+  settings button comes and goes as the pointer moves, checked in a real browser
+  ([#899](https://github.com/anefzaoui/misterdownloadmanager/issues/899))
 - ✅ Menus: moving on from an item with a submenu closes the submenu at once, and only the item under
   the pointer is lit ([#579](https://github.com/anefzaoui/misterdownloadmanager/issues/579))
 - ✅ Chromium browsers: a download MDM's extension leaves to the browser keeps the file name and

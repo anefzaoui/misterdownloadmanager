@@ -884,6 +884,10 @@ impl Meter {
             .flatten()
             .or(f.get(2).copied().flatten())
             .map(|t| t.max(0.0) as u64);
+        // Only an estimate, and no more than what came: yt-dlp's first line for a stream in
+        // pieces, before it knows how many there are (1 KB of 1 KB), or its last one. It says
+        // nothing of how much is left, and the bar must not hold on to its end (#622).
+        let blind = f.get(1).copied().flatten().is_none() && total.is_some_and(|t| t <= got);
         let id = fields
             .get(4)
             .map(|id| id.trim())
@@ -935,6 +939,13 @@ impl Meter {
         // HLS): no percentage rather than what came so far as the whole, 100 % (#344).
         if self.last_total == 0 && self.expected.is_none() {
             p.total = None;
+            return;
+        }
+        // Such a line leaves the bar where it was (none yet: no percentage). The stream's bytes
+        // still count in full when the next one starts.
+        if blind {
+            p.total = (self.frac > 0.0)
+                .then(|| ((downloaded as f64 / self.frac).round() as u64).max(downloaded + 1));
             return;
         }
         let mut whole = self.finished + self.last_total.max(got);
@@ -2826,5 +2837,42 @@ mod tests {
     #[test]
     fn percent_signs_in_titles_stay_text() {
         assert_eq!(template_text("100% fun"), "100%% fun");
+    }
+
+    /// #622: a Dropbox video (an HLS stream whose size nobody knows beforehand) read 99.9 % from
+    /// its first second to its end, the size growing with what came and 0 seconds left. yt-dlp's
+    /// first line for a stream gives an estimate as big as what came (1 KB of 1 KB: it knows
+    /// nothing yet), and the bar held on to that 99.9 % ever after. These are the lines yt-dlp
+    /// printed for a Dropbox video, its 1080p stream then its sound.
+    #[test]
+    fn a_first_estimate_as_big_as_what_came_is_no_end() {
+        let lines = [
+            "MDMQ 1080p+aud192k-Track_1 1920x1080",
+            "1024 NA 1024 491.2 1080p",
+            "3072 NA 20480.0 491.2 1080p",
+            "7168 NA 61440.0 491.2 1080p",
+            "1047552 NA 10465280.0 452673.0 1080p",
+            "1206648 NA 12046000.0 502170.4 1080p",
+            "9775640 NA 37005408.0 1553343.6 1080p",
+            "22221428 NA 39449345.4 1594996.9 1080p",
+            "36687072 NA 42130818.8 1439490.0 1080p",
+            "39940760 NA 39940760 1343764.3 1080p",
+            "64512 NA 253952.0 19016.1 aud192k-Track_1",
+            "1122012 NA 2178488.0 258367.6 aud192k-Track_1",
+            "2185904 NA 2460726.8 369230.2 aud192k-Track_1",
+        ];
+        let got = run(None, &lines);
+        // Nothing known at the first line: no percentage, rather than the end.
+        assert_eq!(got[0], (1024, None));
+        let f: Vec<f64> = got[1..]
+            .iter()
+            .map(|(d, t)| (*d as f64 / t.unwrap() as f64).min(MAX_WHILE_RUNNING))
+            .collect();
+        // A sliver at first, then what the estimate says: about a quarter at 9.8 MB of ~37 MB.
+        assert!(f[0] < 0.2, "{f:?}");
+        assert!(f[4] > 0.2 && f[4] < 0.3, "{f:?}");
+        assert!(f[6] > 0.85 && f[6] < 0.9, "{f:?}");
+        // The time left counts down from a size that is not just what came.
+        assert!(got[5].1.unwrap() > got[5].0 * 3, "{got:?}");
     }
 }
