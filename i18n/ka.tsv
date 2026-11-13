@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	მისი ფაილების ჩაწერა ვერ მოხერხდა: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	მისი გამოსახულებისა და ხმის ერთ ფაილში გაერთიანება ვერ მოხერხდა ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	მისი გამოსახულება და ხმა ვერ გაერთიანდა ერთ ფაილში ({error}). ჩამოტვირთული ფაილები რჩება საქაღალდეში, რათა განახლდეს გაერთიანება ({files}); ჩამოტვირთვის წაშლა „ფაილის დისკიდან წაშლით“ შლის მას.
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	მისი გამოშვების ინფორმაცია არ არის მოსალოდნელი: {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	ამერიკის შეერთებული შტატების მცირე დაშორებული კუნძულები
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	უცნობი
 #. text in a dialog box; text in a download's progress window; text in whereis.rs
@@ -6774,6 +6785,10 @@ menu	Delete from queue	რიგიდან წაშლა
 #, machine
 menu	Direct3D	Direct3D
 #. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows and why: Direct3D 12 through Windows' own software renderer (WARP, keep the name), because this computer's graphics card has no Direct3D 12 driver
+#, machine
+menu	Direct3D 12 (WARP): this graphics card has no Direct3D 12 driver	Direct3D 12 (WARP): ამ გრაფიკულ ბარათს არ აქვს Direct3D 12 დრაივერი
+#. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
 menu	Direct3D didn't start here: OpenGL draws	Direct3D აქ არ გაეშვა: OpenGL ხატავს
@@ -6926,9 +6941,25 @@ menu	Open with...	გახსნა რითი...
 #, machine
 menu	OpenGL	OpenGL
 #. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
+#, machine
+menu	OpenGL didn't start here	OpenGL აქ არ გაეშვა
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window froze inside the graphics card's driver while OpenGL drew
+#, machine
+menu	OpenGL froze inside the graphics driver here	OpenGL აქ გაიყინა გრაფიკულ დრაივერში
+#. menu command in the main window
 #. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
 #, machine
 menu	OpenGL here is too old to draw MDM	აქ OpenGL ზედმეტად ძველია MDM-ის გამოსახატავად
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window stayed empty for 10 seconds, so MDM started again another way
+#, machine
+menu	OpenGL's first frame didn't show within 10 seconds	OpenGL-ის პირველი კადრი 10 წამში არ გამოჩნდა
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed or was closed while starting with it
+#, machine
+menu	OpenGL's last start ended before its first frame	OpenGL-ის ბოლო გაშვება პირველ კადრამდე დასრულდა
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window

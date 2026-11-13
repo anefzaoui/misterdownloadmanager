@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	এর ফাইলগুলি লেখা যায়নি: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	এর ভিডিও ও অডিও একটি ফাইলে একত্র করা যায়নি ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	এর ভিডিও ও অডিও একটি ফাইলে একত্র করা যায়নি ({error})। আবার একত্র করার জন্য ডাউনলোড করা অংশগুলো ফোল্ডারে থেকে যায় ({files}); “ডিস্ক থেকে ফাইলটিও মুছে ফেলুন” নির্বাচন করে ডাউনলোড মুছে ফেললে সেগুলোও মুছে যাবে
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	এর রিলিজের তথ্য প্রত্যাশিত নয়: {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	মার্কিন যুক্তরাষ্ট্রের ক্ষুদ্র দূরবর্তী দ্বীপপুঞ্জ
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	অজানা
 #. text in a dialog box; text in a download's progress window; text in whereis.rs
@@ -6774,6 +6785,10 @@ menu	Delete from queue	সারি থেকে মুছুন
 #, machine
 menu	Direct3D	Direct3D
 #. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows and why: Direct3D 12 through Windows' own software renderer (WARP, keep the name), because this computer's graphics card has no Direct3D 12 driver
+#, machine
+menu	Direct3D 12 (WARP): this graphics card has no Direct3D 12 driver	Direct3D 12 (WARP): এই গ্রাফিক্স কার্ডে কোনো Direct3D 12 ড্রাইভার নেই
+#. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
 menu	Direct3D didn't start here: OpenGL draws	এখানে Direct3D চালু হয়নি: OpenGL দিয়ে আঁকা হচ্ছে
@@ -6926,9 +6941,25 @@ menu	Open with...	এর সাথে খুলুন...
 #, machine
 menu	OpenGL	OpenGL
 #. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
+#, machine
+menu	OpenGL didn't start here	এই কম্পিউটারে OpenGL চালু হয়নি
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window froze inside the graphics card's driver while OpenGL drew
+#, machine
+menu	OpenGL froze inside the graphics driver here	OpenGL এখানে গ্রাফিক্স ড্রাইভারের মধ্যে আটকে গিয়েছিল
+#. menu command in the main window
 #. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
 #, machine
 menu	OpenGL here is too old to draw MDM	MDM আঁকার জন্য এখানকার OpenGL অনেক পুরনো
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window stayed empty for 10 seconds, so MDM started again another way
+#, machine
+menu	OpenGL's first frame didn't show within 10 seconds	OpenGL-এর প্রথম ফ্রেম 10 সেকেন্ডের মধ্যে দেখা যায়নি
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed or was closed while starting with it
+#, machine
+menu	OpenGL's last start ended before its first frame	OpenGL-এর শেষ শুরু তার প্রথম ফ্রেমের আগে শেষ হয়েছিল
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window

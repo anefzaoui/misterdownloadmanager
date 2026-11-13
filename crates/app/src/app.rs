@@ -158,30 +158,66 @@ fn replaced_files(items: &[Item], id: u64, yt_dlp: bool) -> Option<Vec<PathBuf>>
     }
     files.push(state_path(dest));
     files.push(mdm_engine::naming::part_path(dest));
-    if yt_dlp
-        && item.video.is_some()
-        && let (Some(dir), Some(stem)) = (dest.parent(), dest.file_stem())
-    {
-        let folder = low(dir);
-        let named: Vec<String> = others
-            .iter()
-            .filter(|o| o.dest.parent().is_some_and(|p| low(p) == folder))
-            .flat_map(|o| [o.dest.file_name(), o.dest.file_stem()])
-            .flatten()
-            .map(|n| format!("{}.", n.to_string_lossy().to_lowercase()))
-            .collect();
-        for f in mdm_tools::video::own_files(dir, &stem.to_string_lossy(), true) {
-            let name = f
-                .file_name()
-                .map(|n| n.to_string_lossy().to_lowercase())
-                .unwrap_or_default();
-            if !named.iter().any(|n| name.starts_with(n)) && !files.contains(&f) {
+    if yt_dlp {
+        for f in video_leftovers(items, id, true) {
+            if !files.contains(&f) {
                 files.push(f);
             }
         }
     }
     files.retain(|f| !others.iter().any(|o| low(&o.dest) == low(f)));
     Some(files)
+}
+
+/// What yt-dlp left beside video download `id`'s file (`mdm_tools::video::own_files`): the
+/// streams of an unfinished run or a failed merge, their part files, the merge's file; with
+/// `outputs`, also the finished file and its subtitles. Never a file another download in that
+/// folder may own: one named after its name or stem and a dot, letter case aside. Nothing for a
+/// download that isn't a video.
+fn video_leftovers(items: &[Item], id: u64, outputs: bool) -> Vec<PathBuf> {
+    let low = |p: &std::path::Path| p.to_string_lossy().to_lowercase();
+    let Some(item) = items.iter().find(|i| i.id == id && i.video.is_some()) else {
+        return Vec::new();
+    };
+    let (Some(dir), Some(stem)) = (item.dest.parent(), item.dest.file_stem()) else {
+        return Vec::new();
+    };
+    let folder = low(dir);
+    let others: Vec<&Item> = items.iter().filter(|i| i.id != id).collect();
+    let named: Vec<String> = others
+        .iter()
+        .filter(|o| o.dest.parent().is_some_and(|p| low(p) == folder))
+        .flat_map(|o| [o.dest.file_name(), o.dest.file_stem()])
+        .flatten()
+        .map(|n| format!("{}.", n.to_string_lossy().to_lowercase()))
+        .collect();
+    // The parts its failed merge kept, by name (yt-dlp names some, `Talk.faud-English.mp4`, as
+    // no other leftover is named), while still beside its file.
+    let kept = item.video.iter().flat_map(|v| &v.parts).filter(|p| {
+        p.parent().is_some_and(|p| low(p) == folder)
+            && p.file_name().is_some_and(|n| {
+                n.to_string_lossy()
+                    .to_lowercase()
+                    .starts_with(&format!("{}.", stem.to_string_lossy().to_lowercase()))
+            })
+    });
+    let mut found = mdm_tools::video::own_files(dir, &stem.to_string_lossy(), outputs);
+    for p in kept {
+        if p.is_file() && !found.iter().any(|f| low(f) == low(p)) {
+            found.push(p.clone());
+        }
+    }
+    found
+        .into_iter()
+        .filter(|f| {
+            let name = f
+                .file_name()
+                .map(|n| n.to_string_lossy().to_lowercase())
+                .unwrap_or_default();
+            !named.iter().any(|n| name.starts_with(n))
+                && !others.iter().any(|o| low(&o.dest) == low(f))
+        })
+        .collect()
 }
 
 /// The quality menu's answer for its choice after the duplicate check: a new download started or
@@ -1028,12 +1064,6 @@ pub struct App {
     /// Run without a window (`--headless`, #157): nothing is shown or asked; what arrives is
     /// added as the remote control adds it.
     headless: bool,
-    /// Clipboard watching (Options → General): the text last seen (outer None: not looked
-    /// yet) and when.
-    clip_seen: Option<Option<String>>,
-    clip_checked: Option<Instant>,
-    /// The monitor's ask for the clipboard, its read off the window thread (#418).
-    clip_asked: Option<crate::clipboard::Ask>,
     /// Add batch download from clipboard (#709): its read, until it answers.
     batch_clip: Option<crate::clipboard::Prefill>,
     confirm_delete: Option<dialogs::ConfirmDelete>,
@@ -1624,9 +1654,6 @@ impl App {
             host_limits: Default::default(),
             quota: Default::default(),
             limit_notice: None,
-            clip_seen: None,
-            clip_checked: None,
-            clip_asked: None,
             batch_clip: None,
             tray: None,
             #[cfg(target_os = "linux")]
@@ -2196,6 +2223,7 @@ impl App {
         item.login = login;
         // The browser had started it: the host is already sending the file (#44).
         item.direct = crate::debrid::browser_started(&context);
+        item.referer = context.referer.clone().filter(|r| !r.is_empty());
         item.context = context;
         self.items.push(item);
         self.dirty = true;
@@ -3006,6 +3034,8 @@ impl App {
             .and_then(|r| sent_referrer(url, r));
         for (name, v) in [
             (reqwest::header::REFERER, &referer),
+            // A video's file or stream, with the Origin its page's player sent (#900).
+            (reqwest::header::ORIGIN, &context.origin),
             (reqwest::header::COOKIE, &context.cookies),
             (reqwest::header::CONTENT_TYPE, &post_type.cloned()),
         ] {
@@ -3441,6 +3471,11 @@ impl App {
                 }
                 let _ = std::fs::remove_file(mdm_engine::naming::part_path(&i.dest));
                 let _ = std::fs::remove_file(state_path(&i.dest));
+                // A video's streams and their parts, kept for Resume (an unfinished run, a
+                // failed merge): they go with it.
+                for f in video_leftovers(&self.items, id, false) {
+                    let _ = std::fs::remove_file(f);
+                }
             }
             self.items.retain(|i| i.id != id);
             for q in &mut self.queues {
@@ -3968,40 +4003,12 @@ impl App {
     /// it, so Download File Info opens with it (unless that window is turned off). Only read,
     /// never written; on by default.
     fn watch_clipboard(&mut self, ctx: &egui::Context) {
-        if !self.settings.clipboard_autostart {
-            self.clip_seen = None;
-            return;
-        }
-        ctx.request_repaint_after(Duration::from_secs(1));
-        // Read off the window's thread (clipboard.rs): the program that owns the clipboard may
-        // hang, and a read that waits for it took the window with it (#418). An ask that is
-        // never answered just means no new look at the clipboard.
-        let text = match self.clip_asked {
-            Some(ask) => match crate::clipboard::answer(ask) {
-                Some(text) => {
-                    self.clip_asked = None;
-                    text
-                }
-                None => return,
-            },
-            None => {
-                if self
-                    .clip_checked
-                    .is_some_and(|t| t.elapsed() < Duration::from_secs(1))
-                {
-                    return;
-                }
-                self.clip_checked = Some(Instant::now());
-                self.clip_asked = Some(crate::clipboard::ask());
-                return;
-            }
-        };
-        let text = text.map(|t| t.trim().to_owned());
-        // The first look only notes what is there: turning it on doesn't grab an old link.
-        let Some(before) = self.clip_seen.replace(text.clone()) else {
-            return;
-        };
-        let Some(text) = text.filter(|t| Some(t) != before.as_ref()) else {
+        // Looked at off the window's thread (clipboard.rs): the program that owns the clipboard
+        // may hang, and a read that waits for it took the window with it (#418). The watch wakes
+        // the window only for a newly copied text: an idle MDM draws no frame for it (#847).
+        let on = self.settings.clipboard_autostart;
+        crate::clipboard::watch(on);
+        let Some(text) = crate::clipboard::copied().filter(|_| on) else {
             return;
         };
         // Several links (or words) are not one address: the address parser drops line breaks,
@@ -4044,7 +4051,7 @@ impl App {
         let Some(item) = self.item(c.id) else { return };
         item.description = c.description;
         item.login = c.login;
-        item.context.referer = c.referer;
+        item.set_referer(c.referer);
         // "Through …" changed (#44): the next start goes the new way. The service's link is
         // dropped from the resume state: directly, it continues from the host's own address;
         // through the account, from a new link the service gives. The size and validators
@@ -4519,6 +4526,7 @@ impl App {
             item.video = Some(model::VideoSpec {
                 selector: add.selector,
                 subs: add.subs,
+                parts: Vec::new(),
             });
             // The quality menu's look-up goes with this new download only, started now and while
             // fresh: one queued for later, or added on a duplicate question answered late,
@@ -4644,6 +4652,7 @@ impl App {
                 item.video = Some(model::VideoSpec {
                     selector: add.selector.clone(),
                     subs: Default::default(),
+                    parts: Vec::new(),
                 });
             }
             ids.push(id);
@@ -4753,6 +4762,9 @@ impl App {
                 ));
                 let url = item.url.clone();
                 item.live = Some(Live::new(model::Job::Video { job, url }, item.downloaded));
+                // This run's stream addresses are new ones (signed, they expire): the windows
+                // show the page until the engine has the first (#795).
+                item.file_url = None;
                 item.status = Status::Downloading;
                 item.error = None;
                 item.last_try = Some(model::now_stamp());
@@ -6586,8 +6598,9 @@ impl App {
                 if Some(api) == crate::renderer::GPU {
                     crate::renderer::forget_failure();
                 } else {
-                    // OpenGL chosen again after it couldn't draw MDM (#835): tried and checked.
-                    crate::renderer::forget_gl_unfit();
+                    // OpenGL chosen again after it couldn't draw MDM (#835, #847): tried and
+                    // checked again.
+                    crate::renderer::forget_gl_failure();
                 }
                 tracing::info!("draw with {api:?} from the next start");
                 self.settings.renderer = Some(api);
@@ -7531,8 +7544,9 @@ impl App {
         let gpu = renderer::GPU.unwrap_or(Api::OpenGl);
         let on = chosen == gpu;
         let draw = Cmd::DrawWith(gpu);
-        // Its choice, the note when it failed here, and the one when a software renderer draws it.
-        let (choice, failed_note, software_note) = match gpu {
+        // Its choice, the note when it failed here, the one when a software renderer draws it,
+        // and the one when that is because the card has no driver for it (Windows' WARP, #847).
+        let (choice, failed_note, software_note, no_driver_note) = match gpu {
             Api::Direct3D => (
                 // i18n: View → Draw with: a graphics system's name (Microsoft's), usually kept as is
                 Radio("Direct3D", draw, true, on),
@@ -7540,6 +7554,10 @@ impl App {
                 off("Direct3D didn't start here: OpenGL draws"),
                 // i18n: View → Draw with: a greyed note; Direct3D draws the windows through Windows' own software renderer (WARP) instead of a graphics card
                 off("Direct3D draws with Windows' software renderer (WARP)"),
+                // i18n: View → Draw with: a greyed note; what draws the windows and why: Direct3D 12 through Windows' own software renderer (WARP, keep the name), because this computer's graphics card has no Direct3D 12 driver
+                Some(off(
+                    "Direct3D 12 (WARP): this graphics card has no Direct3D 12 driver",
+                )),
             ),
             Api::Vulkan => (
                 // i18n: View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
@@ -7548,6 +7566,7 @@ impl App {
                 off("Vulkan didn't start here: OpenGL draws"),
                 // i18n: View → Draw with: a greyed note; Vulkan draws the windows through a software renderer instead of a graphics card
                 off("Vulkan draws with a software renderer"),
+                None,
             ),
             _ => (
                 // i18n: View → Draw with: a graphics system's name (Apple's), usually kept as is
@@ -7556,6 +7575,7 @@ impl App {
                 off("Metal didn't start here: OpenGL draws"),
                 // i18n: View → Draw with: a greyed note; Metal draws the windows through a software renderer instead of a graphics card
                 off("Metal draws with a software renderer"),
+                None,
             ),
         };
         let mut items = vec![
@@ -7573,19 +7593,18 @@ impl App {
         // The system's API on a software renderer (WARP): said, with why below (no card for
         // it, an OpenGL that can't draw MDM).
         let software = active == Some(gpu) && renderer::software();
-        // OpenGL can't draw MDM here (#835): said where it changed what draws.
-        let unfit = renderer::opengl_unfit() && active == Some(gpu) && (software || !on);
+        // OpenGL can't draw MDM here (#835, #847): said, and why, where it changed what draws.
+        let unfit = renderer::gl_failed().filter(|_| active == Some(gpu) && (software || !on));
+        // The software renderer draws because no card here has a driver for the system's API:
+        // one line says both (Windows, #847).
+        let no_driver = no_driver_note.filter(|_| software && failed == Some(Why::NoAdapter));
         if active.is_some_and(|a| a != chosen) || software {
             items.push(Sep);
-            if software {
-                items.push(software_note);
-            }
             let mut notes = Vec::new();
-            match failed {
-                Some(why) => {
-                    if !software {
-                        items.push(failed_note);
-                    }
+            match (failed, no_driver) {
+                (_, Some(note)) => items.push(note),
+                (Some(why), None) => {
+                    items.push(if software { software_note } else { failed_note });
                     // Why, under it ("it": Direct3D, Vulkan or Metal).
                     notes.push(match why {
                         // i18n: View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
@@ -7597,17 +7616,28 @@ impl App {
                         // i18n: View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
                         Why::LostTwice => off("The graphics card was lost twice in 10 minutes"),
                         // i18n: View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
-                        Why::Other => off("It couldn't start: the log says why"),
+                        _ => off("It couldn't start: the log says why"),
                     });
                 }
                 // A software renderer that draws for want of a card says only that.
-                None if software || unfit => {}
+                (None, None) if software => items.push(software_note),
+                (None, None) if unfit.is_some() => {}
                 // i18n: View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
-                None => notes.push(off("Applies the next time MDM starts")),
+                (None, None) => notes.push(off("Applies the next time MDM starts")),
             }
-            if unfit {
-                // i18n: View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
-                notes.push(off("OpenGL here is too old to draw MDM"));
+            if let Some(why) = unfit {
+                notes.push(match why {
+                    // i18n: View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
+                    Why::TooOld => off("OpenGL here is too old to draw MDM"),
+                    // i18n: View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window froze inside the graphics card's driver while OpenGL drew
+                    Why::FrozeInDriver => off("OpenGL froze inside the graphics driver here"),
+                    // i18n: View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window stayed empty for 10 seconds, so MDM started again another way
+                    Why::NoFirstFrame => off("OpenGL's first frame didn't show within 10 seconds"),
+                    // i18n: View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed or was closed while starting with it
+                    Why::EndedEarly => off("OpenGL's last start ended before its first frame"),
+                    // i18n: View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
+                    _ => off("OpenGL didn't start here"),
+                });
             }
             items.extend(notes);
         }
@@ -10673,6 +10703,7 @@ impl App {
         // The freeze watchdog times this as it times `ui` (crash.rs): a command or the clock
         // that hangs is reported too, minimized or not (#202).
         crate::crash::logic_begin();
+        crate::crash::step(crate::crash::Step::Commands);
         let mut handled = false;
         while let Ok(inc) = self.commands.try_recv() {
             handled = true;
@@ -10687,6 +10718,7 @@ impl App {
             ctx.request_ui_pass(egui::ViewportId::ROOT);
         }
         self.lookups.prune(Instant::now());
+        crate::crash::step(crate::crash::Step::NetworkSettings);
         // The clock: what must go on whatever the main window's state (#174). Minimized, egui
         // runs no `ui`, and the queues, the Scheduler's starts and stops, the download limits,
         // the kill switch, saving the list, the clipboard monitor, the update check, the tray and
@@ -10695,26 +10727,38 @@ impl App {
         crate::settings::share_dns(self.settings.dns());
         crate::settings::share_video_settings(&self.settings);
         if !self.headless {
+            crate::crash::step(crate::crash::Step::Accessibility);
             self.follow_assistive_technology(ctx);
         }
+        crate::crash::step(crate::crash::Step::NetworkAdapter);
         self.network_adapter_tick(ctx);
+        crate::crash::step(crate::crash::Step::Limits);
         self.limit_restart_tick();
         self.debrid_tick();
+        crate::crash::step(crate::crash::Step::Downloads);
         self.poll(ctx);
+        crate::crash::step(crate::crash::Step::RemoteTorrents);
         self.poll_remote_torrents();
         // What failed in any window, told here (dialogs::tell).
         if let Some((title, text)) = dialogs::told().pop() {
             self.notice = Some((title, text));
         }
+        crate::crash::step(crate::crash::Step::Limits);
         self.apply_global_limit();
         // A server (#157) has no screen, clipboard or tray, and is updated by its image.
         if !self.headless {
+            crate::crash::step(crate::crash::Step::UpdateCheck);
             self.auto_update_check(ctx);
+            crate::crash::step(crate::crash::Step::Clipboard);
             self.watch_clipboard(ctx);
+            crate::crash::step(crate::crash::Step::Tray);
             self.tray(ctx);
             // The taskbar button's green bar: everything running, as one.
             #[cfg(windows)]
-            crate::win32::taskbar_progress(crate::MAIN_TITLE, self.overall_progress());
+            {
+                crate::crash::step(crate::crash::Step::Taskbar);
+                crate::win32::taskbar_progress(crate::MAIN_TITLE, self.overall_progress());
+            }
         }
         if self
             .ticked
@@ -10722,12 +10766,14 @@ impl App {
         {
             self.ticked = Some(Instant::now());
             // For a crash report: what MDM has open and running (sent when it changes).
+            crate::crash::step(crate::crash::Step::ReportState);
             crate::crash::state(
                 self.items.len(),
                 self.items.iter().filter(|i| i.live.is_some()).count(),
                 self.queues.len(),
                 ctx.pixels_per_point(),
             );
+            crate::crash::step(crate::crash::Step::Torrents);
             self.torrent_tick();
             // Minimized, the windows these open (Download complete, a limit's notice, Download
             // File Info for a copied link, an update) are made by a pass of the main window's
@@ -10769,6 +10815,7 @@ impl App {
         // Light or dark: IDM follows Windows' app mode (checked every 2 s) unless View → Dark
         // Mode support is off. Switches live (IDM asks to restart). On Linux the desktop's own
         // change wakes a frame, and the check runs in it rather than at its next 2 s (#156).
+        crate::crash::step(crate::crash::Step::Theme);
         let desktop_changed = crate::theme::system_changed();
         if desktop_changed
             || self
@@ -10804,6 +10851,7 @@ impl App {
             // The caption follows (first check: the window may not exist yet; retried). Only
             // then: asking DWM every 2 s caught the window's thread in a stalled system (#633).
             if changed || !self.caption_set {
+                crate::crash::step(crate::crash::Step::Caption);
                 crate::theme::apply_mode(&ctx);
                 #[cfg(windows)]
                 {
@@ -10824,9 +10872,11 @@ impl App {
                 ctx.request_repaint();
             }
         }
+        crate::crash::step(crate::crash::Step::MainWindow);
         egui::CentralPanel::no_frame()
             .frame(egui::Frame::new().fill(chrome::WINDOW_BG()))
             .show(ui, |ui| self.paint(ui));
+        crate::crash::step(crate::crash::Step::Dialogs);
         self.dialogs(&ctx);
         crate::crash::frame_end();
         crate::renderer::frame_done(&ctx);
@@ -11102,6 +11152,7 @@ mod same_name_tests {
         video.video = Some(crate::model::VideoSpec {
             selector: "b".into(),
             subs: Default::default(),
+            parts: Vec::new(),
         });
         let items = [row(1, &d.join("Master.webm"), Status::Stopped, 9), video];
         assert_eq!(
@@ -11401,6 +11452,7 @@ mod duplicate_tests {
         item.video = Some(model::VideoSpec {
             selector: SELECTOR.into(),
             subs: Default::default(),
+            parts: Vec::new(),
         });
         assert!(same_video(&item, &page(), SELECTOR));
         assert!(!same_video(
@@ -11521,6 +11573,7 @@ mod duplicate_tests {
         i.video = Some(model::VideoSpec {
             selector: SELECTOR.into(),
             subs: Default::default(),
+            parts: Vec::new(),
         });
         i
     }
@@ -11558,10 +11611,15 @@ mod duplicate_tests {
         }
         let old = || video_row(1, d, "Clip.mp4", Status::Complete);
         // Another video named after a stream of the first, running: its parts are its own.
-        let other = video_row(2, d, "Clip.f137.mp4", Status::Downloading);
+        let other_again = || video_row(2, d, "Clip.f137.mp4", Status::Downloading);
+        let other = other_again();
         // A plain download, paused, named alike.
-        let mut plain = Item::new(3, page(), d.join("Clip.v2.zip"), Category::General);
-        plain.status = Status::Stopped;
+        let plain_again = || {
+            let mut plain = Item::new(3, page(), d.join("Clip.v2.zip"), Category::General);
+            plain.status = Status::Stopped;
+            plain
+        };
+        let plain = plain_again();
         let files = replaced_files(&[old(), other, plain], 1, true).unwrap();
         assert_eq!(
             names(&files),
@@ -11573,6 +11631,16 @@ mod duplicate_tests {
                 "Clip.mp4.part-Frag3"
             ]
         );
+        // Deleted with its files (a merge failed, it was never resumed): what yt-dlp kept for
+        // Resume goes, never its subtitles or another download's parts.
+        assert_eq!(
+            names(&video_leftovers(
+                &[old(), other_again(), plain_again()],
+                1,
+                false
+            )),
+            ["Clip.f140.m4a", "Clip.mp4.part-Frag3"]
+        );
         // Another download of the same stem: only the old one's own file.
         let zip = Item::new(4, page(), d.join("clip.zip"), Category::General);
         let files = replaced_files(&[old(), zip], 1, true).unwrap();
@@ -11582,6 +11650,32 @@ mod duplicate_tests {
         let far = video_row(5, elsewhere.path(), "Clip.f140.mp4", Status::Stopped);
         let files = replaced_files(&[old(), far], 1, true).unwrap();
         assert!(names(&files).contains(&"Clip.f140.m4a".to_owned()));
+    }
+
+    /// A failed merge's parts go with Delete by the names the run kept, also those yt-dlp
+    /// names as no other leftover is named (an HLS sound's `Clip.faud-English.mp4`); never one
+    /// in another folder or of another name.
+    #[test]
+    fn a_failed_merges_parts_go_by_name() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        for f in ["Clip.f1280.mp4", "Clip.faud-English.mp4", "Other.mp4"] {
+            std::fs::write(d.join(f), b"x").unwrap();
+        }
+        let mut items = [video_row(1, d, "Clip.mp4", Status::Error)];
+        assert_eq!(
+            names(&video_leftovers(&items, 1, false)),
+            ["Clip.f1280.mp4"]
+        );
+        items[0].video.as_mut().unwrap().parts = vec![
+            d.join("Clip.f1280.mp4"),
+            d.join("Clip.faud-English.mp4"),
+            d.join("Other.mp4"),
+        ];
+        assert_eq!(
+            names(&video_leftovers(&items, 1, false)),
+            ["Clip.f1280.mp4", "Clip.faud-English.mp4"]
+        );
     }
 
     /// A running download is left alone; #342's automatic replacement (its finished file gone)

@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	ಅದರ ಫೈಲ್‌ಗಳನ್ನು ಬರೆಯಲಾಗಲಿಲ್ಲ: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	ಅದರ ಚಿತ್ರ ಮತ್ತು ಧ್ವನಿಯನ್ನು ಒಂದೇ ಫೈಲ್‌ಗೆ ಸೇರಿಸಲಾಗಲಿಲ್ಲ ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	ಅದರ ಚಿತ್ರ ಮತ್ತು ಧ್ವನಿಯನ್ನು ಒಂದೇ ಫೈಲ್‌ಗೆ ಸೇರಿಸಲಾಗಲಿಲ್ಲ ({error}). ಡೌನ್‌ಲೋಡ್ ಮಾಡಿದ ಫೈಲ್‌ಗಳು ಮತ್ತೆ ಸೇರಿಸಲು ಫೋಲ್ಡರ್‌ನಲ್ಲಿ ಉಳಿದಿವೆ ({files}); “ಡಿಸ್ಕ್‌ನಿಂದ ಫೈಲ್ ಅನ್ನು ಸಹ ಅಳಿಸಿ” ಆಯ್ಕೆಯೊಂದಿಗೆ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಅಳಿಸಿದರೆ, ಫೈಲ್ ಕೂಡ ಅಳಿಸಲ್ಪಡುತ್ತದೆ
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	ಅದರ ಬಿಡುಗಡೆ ಮಾಹಿತಿ ನಿರೀಕ್ಷಿಸಿದಂತೆ ಇಲ್ಲ: {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	ಯುನೈಟೆಡ್ ಸ್ಟೇಟ್ಸ್ ಮೈನರ್ ಔಟ್‌ಲೈಯಿಂಗ್ ದ್ವೀಪಗಳು
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	ಅಜ್ಞಾತ
 #. text in a dialog box; text in a download's progress window; text in whereis.rs
@@ -6774,6 +6785,10 @@ menu	Delete from queue	ಕ್ಯೂನಿಂದ ಅಳಿಸಿ
 #, machine
 menu	Direct3D	Direct3D
 #. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows and why: Direct3D 12 through Windows' own software renderer (WARP, keep the name), because this computer's graphics card has no Direct3D 12 driver
+#, machine
+menu	Direct3D 12 (WARP): this graphics card has no Direct3D 12 driver	Direct3D 12 (WARP): ಈ ಗ್ರಾಫಿಕ್ಸ್ ಕಾರ್ಡ್‌ಗೆ Direct3D 12 ಡ್ರೈವರ್ ಇಲ್ಲ
+#. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
 menu	Direct3D didn't start here: OpenGL draws	Direct3D ಇಲ್ಲಿ ಪ್ರಾರಂಭವಾಗಲಿಲ್ಲ: OpenGL ಚಿತ್ರಿಸುತ್ತದೆ
@@ -6926,9 +6941,25 @@ menu	Open with...	ಇದರೊಂದಿಗೆ ತೆರೆಯಿರಿ...
 #, machine
 menu	OpenGL	OpenGL
 #. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
+#, machine
+menu	OpenGL didn't start here	OpenGL ಇಲ್ಲಿ ಪ್ರಾರಂಭವಾಗಲಿಲ್ಲ
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window froze inside the graphics card's driver while OpenGL drew
+#, machine
+menu	OpenGL froze inside the graphics driver here	OpenGL ಇಲ್ಲಿ ಗ್ರಾಫಿಕ್ಸ್ ಡ್ರೈವರ್ ಒಳಗೆ ಸ್ಥಗಿತಗೊಂಡಿತು
+#. menu command in the main window
 #. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
 #, machine
 menu	OpenGL here is too old to draw MDM	ಇಲ್ಲಿನ OpenGL MDM ಅನ್ನು ಡ್ರಾ ಮಾಡಲು ತುಂಬಾ ಹಳೆಯದಾಗಿದೆ
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window stayed empty for 10 seconds, so MDM started again another way
+#, machine
+menu	OpenGL's first frame didn't show within 10 seconds	OpenGL ನ ಮೊದಲ ಫ್ರೇಮ್ 10 ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಕಾಣಿಸಲಿಲ್ಲ
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed or was closed while starting with it
+#, machine
+menu	OpenGL's last start ended before its first frame	OpenGL ನ ಕೊನೆಯ ಪ್ರಾರಂಭವು ಅದರ ಮೊದಲ ಫ್ರೇಮ್‌ಗೂ ಮುನ್ನ ಕೊನೆಗೊಂಡಿತು
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window

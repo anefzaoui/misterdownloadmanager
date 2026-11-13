@@ -2012,6 +2012,25 @@ pub fn tray_icon_tip(hwnd: isize, id: u32, tip: &str) -> bool {
     unsafe { Shell_NotifyIconW(NIM_MODIFY, &nid) != 0 }
 }
 
+/// Whether the window in front (the foreground window, which takes the keyboard) is another
+/// program's: a click outside MDM's windows (the desktop, the taskbar, another program) put it
+/// there. False while one of ours is in front, and while none is (Windows passing the foreground
+/// on). An open menu closes at once on it (chrome.rs, #859).
+pub fn foreground_is_another_program() -> bool {
+    use windows_sys::Win32::UI::WindowsAndMessaging::GetForegroundWindow;
+    // SAFETY: plain queries about a window handle, which may be gone (then pid stays 0); the
+    // out pointer is a local.
+    unsafe {
+        let front = GetForegroundWindow();
+        if front.is_null() {
+            return false;
+        }
+        let mut pid = 0u32;
+        GetWindowThreadProcessId(front, &mut pid);
+        pid != 0 && pid != GetCurrentProcessId()
+    }
+}
+
 /// What a borderless window of ours is, for [`popup_window`]: every one is a plain popup
 /// ([`popup_style`], #208); they differ in how they take the pointer and how they look.
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -5309,6 +5328,14 @@ pub fn gl_driver(gl: &eframe::glow::Context) -> String {
     format!("{renderer} ({version})")
 }
 
+/// Windows' clipboard sequence number: it changes each time the clipboard does, and asking for
+/// it neither opens the clipboard nor waits for its owner (clipboard.rs: the watch for copied
+/// links reads the clipboard only when it changed).
+pub fn clipboard_sequence() -> u32 {
+    // SAFETY: takes nothing, returns a number.
+    unsafe { windows_sys::Win32::System::DataExchange::GetClipboardSequenceNumber() }
+}
+
 /// End process `pid` (a frozen MDM the user chose to close from the crash report).
 pub fn end_process(pid: u32) -> bool {
     use windows_sys::Win32::Foundation::CloseHandle;
@@ -6356,6 +6383,42 @@ mod open_with_tests {
         );
         assert!(!wide.contains(&u16::from(b'"')));
     }
+}
+
+/// Open a file with its registered default application via Win32 `ShellExecuteW` (#811).
+///
+/// Unlike invoking `explorer.exe <file>`, which fails with `ExitStatus(1)` on archive files
+/// (.zip, .7z) when a third-party tool such as 7-Zip is the default handler, `ShellExecuteW`
+/// invokes the user's registered file association directly.
+pub fn open_file_shell(path: &std::path::Path) -> Result<(), std::io::Error> {
+    use std::os::windows::ffi::OsStrExt;
+    use windows_sys::Win32::UI::Shell::ShellExecuteW;
+    use windows_sys::Win32::UI::WindowsAndMessaging::SW_SHOWNORMAL;
+
+    com_on_this_thread();
+    let wide: Vec<u16> = path.as_os_str().encode_wide().chain(Some(0)).collect();
+    // SAFETY: lpFile is a null-terminated UTF-16 string; lpOperation is NULL so Windows
+    // executes the default action registered for the file type.
+    let ret = unsafe {
+        ShellExecuteW(
+            std::ptr::null_mut(),
+            std::ptr::null(),
+            wide.as_ptr(),
+            std::ptr::null(),
+            std::ptr::null(),
+            SW_SHOWNORMAL,
+        )
+    };
+    let code = ret as usize;
+    if code <= 32 {
+        let err = std::io::Error::last_os_error();
+        return Err(if err.raw_os_error().unwrap_or(0) != 0 {
+            err
+        } else {
+            std::io::Error::from_raw_os_error(code as i32)
+        });
+    }
+    Ok(())
 }
 
 /// The program Windows runs to open folders, when that isn't Explorer (a file manager such as

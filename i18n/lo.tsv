@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	ບໍ່ສາມາດຂຽນໄຟລ໌ຂອງມັນໄດ້: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	ບໍ່ສາມາດລວມວິດີໂອ ແລະ ສຽງເຂົ້າເປັນໄຟລ໌ດຽວໄດ້ ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	ບໍ່ສາມາດລວມຮູບພາບ ແລະ ສຽງເຂົ້າເປັນໄຟລ໌ດຽວໄດ້ ({error}). ສິ່ງທີ່ດາວໂຫຼດແລ້ວຈະຢູ່ໃນໂຟນເດີເພື່ອໃຫ້ Resume ລວມອີກຄັ້ງ ({files}); ການລຶບການດາວໂຫຼດດ້ວຍ “ລຶບໄຟລ໌ອອກຈາກແຜ່ນດິດນຳ” ຈະລຶບມັນອອກ
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	ຂໍ້ມູນການປ່ອຍຂອງມັນບໍ່ເປັນໄປຕາມທີ່ຄາດໄວ້: {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	ໝູ່ເກາະນ້ອຍຮອບນອກຂອງສະຫະລັດ
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	ບໍ່ຮູ້ຈັກ
 #. text in a dialog box; text in a download's progress window; text in whereis.rs
@@ -6770,6 +6781,10 @@ menu	Delete from queue	ລຶບອອກຈາກຄິວ
 #, machine
 menu	Direct3D	Direct3D
 #. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows and why: Direct3D 12 through Windows' own software renderer (WARP, keep the name), because this computer's graphics card has no Direct3D 12 driver
+#, machine
+menu	Direct3D 12 (WARP): this graphics card has no Direct3D 12 driver	Direct3D 12 (WARP): ກາດຈໍນີ້ບໍ່ມີໄດເວີ Direct3D 12
+#. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
 menu	Direct3D didn't start here: OpenGL draws	Direct3D ບໍ່ໄດ້ເລີ່ມຕົ້ນຢູ່ທີ່ນີ້: OpenGL ແຕ້ມ
@@ -6918,9 +6933,25 @@ menu	Open with...	ເປີດດ້ວຍ...
 #, machine
 menu	OpenGL	OpenGL
 #. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
+#, machine
+menu	OpenGL didn't start here	OpenGL ບໍ່ໄດ້ເລີ່ມຕົ້ນຢູ່ທີ່ນີ້
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window froze inside the graphics card's driver while OpenGL drew
+#, machine
+menu	OpenGL froze inside the graphics driver here	OpenGL ຄ້າງຢູ່ໃນໄດເວີກຣາຟິກຢູ່ທີ່ນີ້
+#. menu command in the main window
 #. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
 #, machine
 menu	OpenGL here is too old to draw MDM	OpenGL ເກົ່າເກີນໄປທີ່ຈະແຕ້ມ MDM
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window stayed empty for 10 seconds, so MDM started again another way
+#, machine
+menu	OpenGL's first frame didn't show within 10 seconds	ເຟຣມທຳອິດຂອງ OpenGL ບໍ່ສະແດງພາຍໃນ 10 ວິນາທີ
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed or was closed while starting with it
+#, machine
+menu	OpenGL's last start ended before its first frame	ການເລີ່ມຕົ້ນຄັ້ງສຸດທ້າຍຂອງ OpenGL ສິ້ນສຸດລົງກ່ອນເຟຣມທຳອິດ
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window

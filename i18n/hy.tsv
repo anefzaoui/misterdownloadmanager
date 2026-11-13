@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	դրա ֆայլերը հնարավոր չէր գրել՝ {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	Չհաջողվեց միավորել տեսանյութի պատկերն ու ձայնը մեկ ֆայլում ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	Չհաջողվեց միավորել տեսանյութի պատկերն ու ձայնը մեկ ֆայլում ({error})։ Ներբեռնված մասերը մնում են պանակում, որպեսզի «Վերսկսել» հրամանով հնարավոր լինի դրանք կրկին միավորել ({files})։ «Ջնջել նաև ֆայլը սկավառակից» ընտրանքով ներբեռնումը ջնջելիս ֆայլերը նույնպես հեռացվում են։
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	դրա թողարկման մասին տեղեկությունները չեն համապատասխանում ակնկալիքներին՝ {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	Միացյալ Նահանգների փոքր կղզիներ
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	Անհայտ
 #. text in a dialog box; text in a download's progress window; text in whereis.rs
@@ -6774,6 +6785,10 @@ menu	Delete from queue	Ջնջել հերթից
 #, machine
 menu	Direct3D	Direct3D
 #. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows and why: Direct3D 12 through Windows' own software renderer (WARP, keep the name), because this computer's graphics card has no Direct3D 12 driver
+#, machine
+menu	Direct3D 12 (WARP): this graphics card has no Direct3D 12 driver	Direct3D 12 (WARP). Տեսաքարտը չունի Direct3D 12 դրայվեր
+#. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
 menu	Direct3D didn't start here: OpenGL draws	Direct3D-ն այստեղ չի գործարկվել. OpenGL-ն է նկարում
@@ -6926,9 +6941,25 @@ menu	Open with...	Բացել այլ ծրագրով...
 #, machine
 menu	OpenGL	OpenGL
 #. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
+#, machine
+menu	OpenGL didn't start here	OpenGL-ը չսկսվեց այստեղ
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window froze inside the graphics card's driver while OpenGL drew
+#, machine
+menu	OpenGL froze inside the graphics driver here	OpenGL-ը սառեց գրաֆիկական դրայվերի ներսում
+#. menu command in the main window
 #. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
 #, machine
 menu	OpenGL here is too old to draw MDM	Այս համակարգչի OpenGL-ը չափազանց հին է MDM-ն արտապատկերելու համար
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window stayed empty for 10 seconds, so MDM started again another way
+#, machine
+menu	OpenGL's first frame didn't show within 10 seconds	OpenGL-ի առաջին կադրը չցուցադրվեց 10 վայրկյանի ընթացքում
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed or was closed while starting with it
+#, machine
+menu	OpenGL's last start ended before its first frame	OpenGL-ի վերջին մեկնարկն ավարտվեց մինչև առաջին կադրը
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window

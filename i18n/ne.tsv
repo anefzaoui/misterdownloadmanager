@@ -2289,6 +2289,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	यसका फाइलहरू लेख्न सकिएन: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	यसको चित्र र ध्वनि एउटै फाइलमा जोड्न सकिएन ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	यसको भिडियो र अडियो एउटै फाइलमा जोड्न सकिएन ({error})। डाउनलोड गरिएका भागहरू फेरि जोड्नका लागि फोल्डरमा रहन्छन् ({files}); “डिस्कबाट फाइल पनि मेटाउनुहोस्” विकल्प चयन गरेर डाउनलोड मेटाउँदा ती फाइलहरू हट्छन्
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	यसको रिलिज जानकारी अपेक्षाअनुसार छैन: {detail}
@@ -5191,6 +5201,7 @@
 #, machine
 	United States Minor Outlying Islands	संयुक्त राज्य अमेरिकाका साना बाहिरी टापुहरू
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	अज्ञात
 #. text in a dialog box; text in a download's progress window; text in whereis.rs
@@ -6774,6 +6785,10 @@ menu	Delete from queue	लामबाट मेटाउनुहोस्
 #, machine
 menu	Direct3D	Direct3D
 #. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows and why: Direct3D 12 through Windows' own software renderer (WARP, keep the name), because this computer's graphics card has no Direct3D 12 driver
+#, machine
+menu	Direct3D 12 (WARP): this graphics card has no Direct3D 12 driver	Direct3D 12 (WARP): यो ग्राफिक्स कार्डमा Direct3D 12 ड्राइभर छैन
+#. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
 menu	Direct3D didn't start here: OpenGL draws	Direct3D यहाँ सुरु भएन: OpenGL ले चित्रण गर्छ
@@ -6926,9 +6941,25 @@ menu	Open with...	यससँग खोल्नुहोस्...
 #, machine
 menu	OpenGL	OpenGL
 #. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
+#, machine
+menu	OpenGL didn't start here	OpenGL यहाँ सुरु हुन सकेन
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window froze inside the graphics card's driver while OpenGL drew
+#, machine
+menu	OpenGL froze inside the graphics driver here	OpenGL यहाँ ग्राफिक्स ड्राइभर भित्र रोकियो
+#. menu command in the main window
 #. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
 #, machine
 menu	OpenGL here is too old to draw MDM	यहाँको OpenGL संस्करण MDM रेन्डर गर्न धेरै पुरानो छ
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window stayed empty for 10 seconds, so MDM started again another way
+#, machine
+menu	OpenGL's first frame didn't show within 10 seconds	OpenGL को पहिलो फ्रेम 10 सेकेन्ड भित्र देखिएन
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed or was closed while starting with it
+#, machine
+menu	OpenGL's last start ended before its first frame	OpenGL को पछिल्लो सुरुवात पहिलो फ्रेम आउनुअघि नै समाप्त भयो
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window

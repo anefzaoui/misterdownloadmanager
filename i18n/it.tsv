@@ -1742,6 +1742,16 @@
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 	its files could not be written: {error}	impossibile scrivere i suoi file: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	impossibile unire l'immagine e l'audio in un unico file ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	non è stato possibile unire l'immagine e l'audio in un unico file ({error}). Ciò che è stato scaricato resta nella cartella per consentire a Riprendi di unirlo di nuovo ({files}); l'eliminazione del download con "Elimina anche il file dal disco" lo rimuove
 #. text in errors.rs
 	its release information is not as expected: {detail}	le informazioni sulla release non sono quelle previste: {detail}
 #. text in countries.rs
@@ -3929,6 +3939,7 @@
 #. a country's name (where a download's server is)
 	United States Minor Outlying Islands	Isole minori esterne degli Stati Uniti
 #. text in a download's Properties window
+#. the web page is not known
 	Unknown	Sconosciuto
 #. text in a dialog box; text in a download's progress window; text in whereis.rs
 #. the reason a download failed is not known
@@ -5184,6 +5195,10 @@ menu	Delete from queue	Rimuovi dalla coda
 #. View → Draw with: a graphics system's name (Microsoft's), usually kept as is
 menu	Direct3D	Direct3D
 #. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows and why: Direct3D 12 through Windows' own software renderer (WARP, keep the name), because this computer's graphics card has no Direct3D 12 driver
+#, machine
+menu	Direct3D 12 (WARP): this graphics card has no Direct3D 12 driver	Direct3D 12 (WARP): questa scheda grafica non ha un driver Direct3D 12
+#. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 menu	Direct3D didn't start here: OpenGL draws	Direct3D non si avvia su questo computer: si usa OpenGL
 #. menu command in the main window
@@ -5302,9 +5317,25 @@ menu	Open with...	Apri con...
 #. View → Draw with: a graphics system's name, usually kept as is
 menu	OpenGL	OpenGL
 #. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
+#, machine
+menu	OpenGL didn't start here	OpenGL non si è avviato su questo computer
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window froze inside the graphics card's driver while OpenGL drew
+#, machine
+menu	OpenGL froze inside the graphics driver here	OpenGL si è bloccato nel driver grafico
+#. menu command in the main window
 #. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
 #, machine
 menu	OpenGL here is too old to draw MDM	OpenGL di questo computer è troppo obsoleto per il rendering di MDM
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window stayed empty for 10 seconds, so MDM started again another way
+#, machine
+menu	OpenGL's first frame didn't show within 10 seconds	Il primo fotogramma di OpenGL non è comparso entro 10 secondi
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed or was closed while starting with it
+#, machine
+menu	OpenGL's last start ended before its first frame	L'ultimo avvio di OpenGL si è interrotto prima del primo fotogramma
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window
