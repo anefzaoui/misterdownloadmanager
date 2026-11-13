@@ -1044,12 +1044,11 @@ fn run(
             {
                 m.line(rest, &mut progress.lock().unwrap());
             } else if let Some(rest) = line.strip_prefix("MDMM ")
-                && meter
-                    .as_deref()
-                    .and_then(Meter::streams)
-                    .is_some_and(|n| n > 1)
+                && quality.as_deref().is_some_and(several_streams)
             {
-                // Several streams: ffmpeg joins them now (#736).
+                // Several streams: ffmpeg joins them now (#736). Told by this run's `MDMQ`, not
+                // by the meter: when MDM's engine downloaded the streams (#769) there is none,
+                // and that is how most videos come down.
                 *merged.lock().unwrap() = Some(merge_file(Path::new(rest.trim())));
                 progress.lock().unwrap().merging = Some(None);
             }
@@ -1127,6 +1126,15 @@ fn watch_merge(
             p.merging = Some(Some(merge_fraction(len, p.downloaded)));
         }
     }
+}
+
+/// Whether `MDMQ`'s quality (`137+140 1920x1080`) is a choice of several streams, which
+/// yt-dlp's ffmpeg merges.
+fn several_streams(quality: &str) -> bool {
+    quality
+        .split_whitespace()
+        .next()
+        .is_some_and(|ids| ids.contains('+'))
 }
 
 /// A merge's share done: `written` of about `streams` bytes, held short of the end.
@@ -2003,6 +2011,10 @@ mod tests {
         assert_eq!(merge_fraction(45, 100), 0.45);
         // About as big as the streams, never "done" before the rename.
         assert_eq!(merge_fraction(120, 100), 0.99);
+        // A merge is a choice of several streams, as `MDMQ` names them.
+        assert!(several_streams("401+140 3840x2160"));
+        assert!(!several_streams("18 640x360"));
+        assert!(!several_streams("140 audio only"));
     }
 
     /// #569: what a file joined from HLS pieces holds, from its first bytes. YouTube's sound:

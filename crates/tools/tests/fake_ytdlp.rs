@@ -287,7 +287,21 @@ fn fake_ytdlp() -> ExitCode {
         for s in streams.iter().filter(|s| **s != output) {
             let _ = std::fs::remove_file(s);
         }
-        std::fs::write(&output, merged).unwrap();
+        // #736: several streams are merged as yt-dlp's ffmpeg does, said first when asked
+        // (`post_process:` print), into `<stem>.temp.mp4`, growing for a while, then renamed.
+        if streams.len() > 1 && args.iter().any(|a| a.starts_with("post_process:MDMM")) {
+            println!("MDMQ {} 1920x1080", chosen["format_id"].as_str().unwrap());
+            println!("MDMM {output}");
+            let temp = output.replace(".mp4", ".temp.mp4");
+            let step = merged.len().div_ceil(5);
+            for k in 1..=5 {
+                std::fs::write(&temp, &merged[..(k * step).min(merged.len())]).unwrap();
+                std::thread::sleep(Duration::from_millis(300));
+            }
+            std::fs::rename(&temp, &output).unwrap();
+        } else {
+            std::fs::write(&output, merged).unwrap();
+        }
         println!("MDMF {output}");
         return ExitCode::SUCCESS;
     }
@@ -928,13 +942,19 @@ fn engine_checks(me: &Path) {
         )
         .expect("started")
     };
+    // What each run said of its merge (#736), in order.
+    let merges = std::cell::RefCell::new(Vec::new());
     let wait = |job: &VideoJob| {
         let end = Instant::now() + Duration::from_secs(120);
         let mut most_connections = 0;
+        merges.borrow_mut().clear();
         loop {
             let p = job.progress();
             if let Some(e) = &p.engine {
                 most_connections = most_connections.max(e.connections.len());
+            }
+            if let Some(m) = p.merging {
+                merges.borrow_mut().push(m);
             }
             if p.state != State::Running {
                 return (p, most_connections);
@@ -966,6 +986,15 @@ fn engine_checks(me: &Path) {
         "the streams merged"
     );
     assert!(most >= 2, "several connections: {most}");
+    // #736: the engine downloaded the streams, yt-dlp's ffmpeg merges them: said, with how far.
+    let known: Vec<f64> = merges.borrow().iter().filter_map(|m| *m).collect();
+    assert!(
+        known.iter().any(|f| *f > 0.0 && *f < 1.0),
+        "the merge and its share done were said: {:?}",
+        merges.borrow()
+    );
+    assert!(known.windows(2).all(|w| w[0] <= w[1]), "{known:?}");
+    assert_eq!(p.merging, None, "done: no longer merging");
     assert!(
         log.iter()
             .any(|t| t == "yt-dlp's address for format 137: from 127.0.0.1"),
