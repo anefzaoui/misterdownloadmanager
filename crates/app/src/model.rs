@@ -554,10 +554,11 @@ pub struct GallerySpec {
 }
 
 /// A helper's progress (yt-dlp's, gallery-dl's) as the engine's view: one segment when its size
-/// is known, no connections, its notes as events. A video whose streams MDM's engine downloads
-/// (#769) shows the engine's own: the streams' segments one after another, the connections of
-/// the one under way, its server.
+/// is known, one connection (theirs: neither opens more), its notes as events. A video whose
+/// streams MDM's engine downloads (#769) shows the engine's own: the streams' segments one after
+/// another, the connections of the one under way, its server.
 fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapshot {
+    use mdm_engine::download::{ConnStatus, ConnView};
     use mdm_tools::video::State as V;
     let (state, file, error) = match p.state {
         // Every stream in, their file being joined (#736).
@@ -568,6 +569,18 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
         V::Stopped => (State::Cancelled, None, None),
     };
     let size = p.total;
+    // Downloaded by the helper itself (a live stream, RTMP; looking the page up): its one
+    // connection, not an empty list (#793).
+    let own = (p.engine.is_none() && state == State::Downloading).then(|| ConnView {
+        id: 0,
+        downloaded: p.downloaded,
+        status: if p.speed > 0.0 {
+            ConnStatus::Receiving
+        } else {
+            ConnStatus::Connecting
+        },
+        speed: p.speed as u64,
+    });
     let engine = p.engine.unwrap_or_default();
     let segments = if engine.segments.is_empty() {
         size.map(|t| {
@@ -591,7 +604,7 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
         downloaded: p.downloaded,
         resumable: Some(true),
         segments,
-        connections: engine.connections,
+        connections: own.into_iter().chain(engine.connections).collect(),
         error,
         failure: None,
         events: p
@@ -1706,5 +1719,68 @@ mod finished_file_gone_tests {
             &dir.join("no").join("gone.bin")
         ));
         std::fs::remove_dir_all(&dir).unwrap();
+    }
+}
+
+#[cfg(test)]
+mod helper_connection_tests {
+    use super::*;
+    use mdm_engine::download::{ConnStatus, ConnView};
+
+    fn progress() -> mdm_tools::video::Progress {
+        mdm_tools::video::Progress {
+            state: mdm_tools::video::State::Running,
+            downloaded: 0,
+            total: None,
+            speed: 0.0,
+            events: Vec::new(),
+            side_files: Vec::new(),
+            sub_problems: Vec::new(),
+            engine: None,
+            helper: None,
+            merging: None,
+        }
+    }
+
+    /// #793: a video yt-dlp downloads itself shows its one connection, not an empty list; one
+    /// MDM's engine downloads shows the engine's connections, every one of them.
+    #[test]
+    fn the_connections_list_is_never_empty_while_a_video_downloads() {
+        let page: Url = "https://www.example.com/watch?v=abc".parse().unwrap();
+        let mut p = progress();
+        let s = tool_snapshot(p.clone(), &page);
+        assert_eq!(s.connections.len(), 1);
+        assert!(matches!(s.connections[0].status, ConnStatus::Connecting));
+        p.downloaded = 5_000;
+        p.speed = 1_000.0;
+        p.helper = Some(mdm_tools::streams::Helper::Live);
+        let s = tool_snapshot(p.clone(), &page);
+        assert_eq!(
+            (s.connections[0].id, s.connections[0].downloaded),
+            (0, 5_000)
+        );
+        assert!(matches!(s.connections[0].status, ConnStatus::Receiving));
+
+        let conn = |id| ConnView {
+            id,
+            downloaded: 100,
+            status: ConnStatus::Receiving,
+            speed: 10,
+        };
+        p.helper = None;
+        p.engine = Some(mdm_tools::streams::View {
+            connections: (0..8).map(conn).collect(),
+            ..Default::default()
+        });
+        let s = tool_snapshot(p.clone(), &page);
+        assert_eq!(
+            s.connections.iter().map(|c| c.id).collect::<Vec<_>>(),
+            (0..8).collect::<Vec<_>>()
+        );
+
+        // Done: no connection left.
+        p.engine = None;
+        p.state = mdm_tools::video::State::Done("Clip.mp4".into());
+        assert!(tool_snapshot(p, &page).connections.is_empty());
     }
 }
