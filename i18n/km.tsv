@@ -6785,6 +6785,10 @@ menu	Delete from queue	លុបចេញពីជួរ
 #, machine
 menu	Direct3D	Direct3D
 #. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows and why: Direct3D 12 through Windows' own software renderer (WARP, keep the name), because this computer's graphics card has no Direct3D 12 driver
+#, machine
+menu	Direct3D 12 (WARP): this graphics card has no Direct3D 12 driver	Direct3D 12 (WARP)៖ កាតក្រាហ្វិកនេះគ្មានកម្មវិធីបញ្ជា Direct3D 12 ទេ
+#. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
 menu	Direct3D didn't start here: OpenGL draws	Direct3D មិនបានចាប់ផ្ដើមនៅទីនេះទេ៖ OpenGL គូរ
@@ -6933,9 +6937,25 @@ menu	Open with...	បើកជាមួយ...
 #, machine
 menu	OpenGL	OpenGL
 #. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
+#, machine
+menu	OpenGL didn't start here	OpenGL មិនបានចាប់ផ្តើមនៅទីនេះ
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window froze inside the graphics card's driver while OpenGL drew
+#, machine
+menu	OpenGL froze inside the graphics driver here	OpenGL បានគាំងនៅក្នុងកម្មវិធីបញ្ជាក្រាហ្វិកនៅទីនេះ
+#. menu command in the main window
 #. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
 #, machine
 menu	OpenGL here is too old to draw MDM	OpenGL នៅទីនេះចាស់ពេកមិនអាចគូរ MDM បានទេ
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window stayed empty for 10 seconds, so MDM started again another way
+#, machine
+menu	OpenGL's first frame didn't show within 10 seconds	ស៊ុមដំបូងរបស់ OpenGL មិនបានបង្ហាញក្នុងរយៈពេល 10 វិនាទី
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed or was closed while starting with it
+#, machine
+menu	OpenGL's last start ended before its first frame	ការចាប់ផ្តើមចុងក្រោយរបស់ OpenGL បានបញ្ចប់មុនស៊ុមដំបូងរបស់វា
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window

@@ -560,6 +560,15 @@ These ship in the next version.
 - ✅ Windows 10: no FSI and PDI boxes around a file's name in the taskbar's preview and tip of a
   progress window, or in the notification-area icon's tip; right-to-left titles keep their order
   ([#919](https://github.com/anefzaoui/misterdownloadmanager/issues/919))
+- ✅ Windows: a graphics card without Direct3D 12 (Intel's HD Graphics 3000 to 5500, older AMD
+  Radeon cards) draws with OpenGL, then with Direct3D 12 on Windows' own software renderer (WARP)
+  once OpenGL fails there: it can't start, is too old, shows no first window, or MDM freezes
+  inside its driver (read from the freeze report); remembered, **View → Draw with** says why, and
+  choosing **OpenGL** tries it again ([#847](https://github.com/anefzaoui/misterdownloadmanager/issues/847))
+- ✅ Help: videos that need you signed in, in short: the button over the video brings the page's
+  own cookies, Options reads a browser profile's for pasted links and playlists (a separate
+  profile with a spare account works well), and why some videos and networks need it (from
+  [#721](https://github.com/anefzaoui/misterdownloadmanager/issues/721))
 - ✅ A video whose picture and sound can't be joined says so in full and why, and that its downloaded
   parts stay in the folder for Resume; deleting it with its files removes them
 - ✅ Tests: the merge's percentages, which a slow macOS runner once saw go back (the test's fake
