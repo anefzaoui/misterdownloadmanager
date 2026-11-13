@@ -551,6 +551,8 @@ pub struct GallerySpec {
 fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapshot {
     use mdm_tools::video::State as V;
     let (state, file, error) = match p.state {
+        // Every stream in, their file being joined (#736).
+        V::Running if p.merging.is_some() => (State::Merging, None, None),
         V::Running => (State::Downloading, None, None),
         V::Done(f) => (State::Done, Some(f), None),
         V::Failed(e) => (State::Failed, None, Some(e)),
@@ -595,6 +597,7 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
         // are (#769).
         server: engine.server,
         at_service: None,
+        finishing: p.merging.flatten(),
     }
 }
 
@@ -904,7 +907,11 @@ impl Item {
         }
         self.snap = Some(s.clone());
         let ended = match s.state {
-            State::Probing | State::Downloading | State::Verifying | State::Completing => None,
+            State::Probing
+            | State::Downloading
+            | State::Verifying
+            | State::Merging
+            | State::Completing => None,
             State::Done => Some(Status::Complete),
             State::Cancelled => Some(Status::Stopped),
             State::Failed => Some(Status::Error),
@@ -1101,6 +1108,44 @@ impl Item {
         ))
     }
 
+    /// After the last byte, while the file is checked against its checksum or a video's
+    /// streams are joined (#736): "Verifying... (45%)", "Merging...", with how far it is when
+    /// that's known. `short`: the list's narrow Status column, "45% verified", the percentage
+    /// first (as "45% at Real-Debrid"); the progress window says it whole.
+    pub fn finishing(&self, short: bool) -> Option<String> {
+        let s = self.snap.as_ref()?;
+        let (plain, with_percent) = match s.state {
+            // i18n: a download's status while the finished file is checked against its checksum
+            State::Verifying => (crate::i18n::t("Verifying..."), {
+                if short {
+                    // i18n: the list's narrow Status column while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%": keep it first, the column is narrow
+                    crate::i18n::t("{percent} verified")
+                } else {
+                    // i18n: a download's status while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%"
+                    crate::i18n::t("Verifying... ({percent})")
+                }
+            }),
+            // i18n: a video's status while its picture and sound are joined into one file (ffmpeg)
+            State::Merging => (crate::i18n::t("Merging..."), {
+                if short {
+                    // i18n: the list's narrow Status column while a video's picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%": keep it first, the column is narrow
+                    crate::i18n::t("{percent} merged")
+                } else {
+                    // i18n: a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
+                    crate::i18n::t("Merging... ({percent})")
+                }
+            }),
+            _ => return None,
+        };
+        Some(match s.finishing {
+            Some(f) => crate::i18n::fmt(
+                with_percent,
+                &[("percent", &crate::i18n::percent(f.clamp(0.0, 1.0), 0))],
+            ),
+            None => plain.to_owned(),
+        })
+    }
+
     pub fn status_text(&self) -> String {
         if let Some(at) = self.at_service() {
             return at;
@@ -1108,12 +1153,8 @@ impl Item {
         if let Some(checking) = self.torrent_checking() {
             return checking;
         }
-        if self
-            .snap
-            .as_ref()
-            .is_some_and(|s| s.state == State::Verifying)
-        {
-            return crate::i18n::t("Verifying...").into();
+        if let Some(finishing) = self.finishing(true) {
+            return finishing;
         }
         match self.status {
             // i18n: a download's status (state it is in, not a command): finished
@@ -1343,6 +1384,32 @@ mod tests {
             subs: Default::default(),
         });
         it
+    }
+
+    /// #736: after the last byte the Status column says what is happening and how far.
+    #[test]
+    fn verifying_and_merging_say_how_far() {
+        let m = 1 << 20;
+        let mut it = video_item(Some(100 * m), 100 * m, Status::Downloading);
+        let url = Url::parse("https://example.org/a.mp4").unwrap();
+        let mut p = mdm_tools::video::Progress {
+            total: Some(100 * m),
+            downloaded: 100 * m,
+            merging: Some(Some(0.45)),
+            ..Default::default()
+        };
+        it.snap = Some(super::tool_snapshot(p.clone(), &url));
+        assert_eq!(it.status_text(), "45% merged");
+        assert_eq!(it.finishing(false).as_deref(), Some("Merging... (45%)"));
+        p.merging = Some(None);
+        it.snap = Some(super::tool_snapshot(p.clone(), &url));
+        assert_eq!(it.status_text(), "Merging...");
+        let mut s = super::tool_snapshot(p, &url);
+        s.state = State::Verifying;
+        s.finishing = Some(0.5);
+        it.snap = Some(s);
+        assert_eq!(it.status_text(), "50% verified");
+        assert_eq!(it.finishing(false).as_deref(), Some("Verifying... (50%)"));
     }
 
     /// Without a size there's no share to show: no 0 % (from #384).
