@@ -557,6 +557,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Tests: the test server's HLS videos carry a real picture (H.264), so its video and sound
+  tracks merge into one file as a site's do; its video tracks held only sound, which made the
+  merge fail ("Error opening output files: Invalid argument"). Real sites' videos merged already
 - ✅ A video of unknown size no longer reads 99.9 % from its first second while yt-dlp downloads it,
   and a video named after a page titled with its file's name gets its extension once (Dropbox's
   `Episode 31.mp4.mp4`) ([#622](https://github.com/anefzaoui/misterdownloadmanager/issues/622))
