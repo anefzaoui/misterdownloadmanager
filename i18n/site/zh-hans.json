@@ -74,6 +74,10 @@
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "可以。MDM 会实时写入下载进度，因此在连接丢失、程序崩溃或重启后，它会从中断的地方继续。恢复下载前，它会检查服务器上的文件是否已更改。当下载地址过期时，您可以使用<g1>刷新下载地址</g1>来提供新的地址并保留已下载的数据。请参阅<g2>恢复中断的下载</g2>。"
   },
+  "0168c749ceaa28cd": {
+   "source": "Many videos are split into chapters on their page: YouTube's list under the player, with a title and a start time for each part. With <g1>Embed chapters</g1> ticked, under <g2>Subtitles</g2>, they go into the video file, so players such as VLC, MPV, MPC-HC and Windows' Media Player list them and skip from one to the next.",
+   "text": "许多视频在其页面上都分成了章节：YouTube 播放器下方的列表，每个部分都有标题和开始时间。勾选<g1>嵌入章节</g1>（在<g2>字幕</g2>下方）后，它们会嵌入到视频文件中，这样 VLC、MPV、MPC-HC 和 Windows Media Player 等播放器就能列出它们并从一个章节跳到下一个章节。"
+  },
   "016a9690b4c55ee5": {
    "source": "Both are kept in a <x1/> folder in MDM's data folder.",
    "text": "两者都保存在 MDM 数据文件夹中的 <x1/> 文件夹里。"
@@ -429,6 +433,10 @@
   "06492aa608ada06d": {
    "source": "<g1>Paused and resumed</g1> like a file, also after quitting MDM: it carries on from the bytes already saved.",
    "text": "像文件一样<g1>暂停和恢复</g1>，即使退出 MDM 后也能继续：它会从已保存的字节处继续。"
+  },
+  "064d85de675962c9": {
+   "source": "A JavaScript runtime for YouTube",
+   "text": "YouTube 的 JavaScript 运行时"
   },
   "0679d081a8cd40ea": {
    "source": "Turns the API on or off: <x1/>.",
@@ -1946,6 +1954,10 @@
    "source": "The download's log (hover over it in the list) says what happened: <g1>Extracted 12 files to …</g1>, or why not, for example <g2>Couldn't extract movie.7z.001: volume 3 of it is missing</g2>. An encrypted archive without its password opens the <g3>Archive password</g3> window. Type the password and click <g4>Extract</g4>, or <g5>Cancel</g5> to leave the archive as it is.",
    "text": "下载日志（将鼠标悬停在列表中的下载上即可查看）会说明提取结果：<g1>已提取 12 个文件到…</g1>；如果提取失败，也会说明原因，例如 <g2>无法提取 movie.7z.001：缺少第 3 卷</g2>。如果加密存档没有密码，会打开“<g3>存档密码</g3>”窗口。输入密码并点击“<g4>提取</g4>”，或点击“<g5>取消</g5>”以保留存档。"
   },
+  "1d2b4c5972daa383": {
+   "source": "It's ticked to begin with, and stays as you leave it for the next video.",
+   "text": "它默认是勾选的，并且会保留您上次设置的状态，用于下一个视频。"
+  },
   "1d4ee2f96c724f0f": {
    "source": "A torrent: what it sends to peers, while it runs.",
    "text": "一个种子：运行时发送给对等点的数据。"
@@ -2450,10 +2462,6 @@
    "source": "A download starts over instead of resuming",
    "text": "下载重新开始而不是恢复"
   },
-  "24bf3f2f66091d90": {
-   "source": "Some videos play only for a signed-in viewer: a member's or a private video, an age-restricted one, and YouTube sometimes asks any viewer from an address it doubts to \"Sign in to confirm you're not a bot\". yt-dlp then needs your browser's cookies, the small files that keep you signed in.",
-   "text": "部分视频仅限登录用户观看：会员视频、私人视频、有年龄限制的视频。YouTube 有时也会要求它怀疑的 IP 地址用户“登录以确认您不是机器人”。此时，yt-dlp 需要您浏览器中的 Cookie，这些小文件用于保持您的登录状态。"
-  },
   "24c00ebf1248106f": {
    "source": "An etched separator's highlight line",
    "text": "蚀刻分隔线的高亮线"
@@ -2553,6 +2561,10 @@
   "26673a8544097ecf": {
    "source": "The highlight under it",
    "text": "指针下的高亮部分"
+  },
+  "266d0ba8f73d462e": {
+   "source": "Chapters",
+   "text": "章节"
   },
   "266f7f0ad3be1761": {
    "source": "Languages →",
@@ -2745,6 +2757,10 @@
   "28b58f9af9a6fed9": {
    "source": "In Chrome, Edge, Brave, Opera or Vivaldi",
    "text": "在 Chrome、Edge、Brave、Opera 或 Vivaldi 中"
+  },
+  "28e42e284885ce6e": {
+   "source": "It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. When the button can't tell which one you mean, the toolbar button's <g1>Media on this page</g1> lists them all. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. A stream goes with what the browser sent when the player asked for it, its referrer, its origin and its cookies (a player embedded from another site may have cookies the browser keeps for that page only), and MDM sends them again with each of its playlists and pieces: a site's video server that serves its own pages' players only lets MDM through as well. Sound players get the button too.",
+   "text": "它会获取您点击的视频：如果视频播放的是文件，则获取该文件；否则获取播放器加载的流（HLS 或 DASH），再否则获取页面。当按钮无法判断您指的是哪个时，工具栏按钮的<g1>此页面上的媒体</g1>会列出所有选项。嵌入式播放器也同样适用，并且您的网站登录信息、嵌入播放器的页面以及浏览器的 User-Agent 都会随之发送，因此会员视频或仅在嵌入它们的网站上播放的视频也可以下载。流媒体会附带浏览器在播放器请求时发送的信息、其 referrer、origin 和 Cookie（从其他网站嵌入的播放器可能拥有浏览器仅为该页面保留的 Cookie），MDM 会在每次播放列表和片段请求时再次发送这些信息：一个仅为其自身页面播放器提供服务的视频服务器也会让 MDM 通过。音频播放器也会显示此按钮。"
   },
   "28eeaa8ad9bf85a3": {
    "source": "Requests",
@@ -3330,6 +3346,10 @@
    "source": "<g1>VPN and proxy support:</g1> send downloads through the browser's proxy or VPN extension (off until you turn it on).",
    "text": "<g1>VPN 和代理支持：</g1> 通过浏览器的代理或 VPN 扩展发送下载（默认关闭，需手动开启）。"
   },
+  "31a94655ff7435c5": {
+   "source": "<g1>Arch</g1>: <x2/>, or",
+   "text": "<g1>Arch</g1>：<x2/>，或"
+  },
   "31c727cb512fbff6": {
    "source": "<g1>Download all links</g1> and <g2>Download selected links</g2> send a page's links to <g3>Link grabber</g3>.",
    "text": "<g1>下载所有链接</g1>和<g2>下载选定链接</g2>会将页面的链接发送到<g3>链接抓取器</g3>。"
@@ -3681,6 +3701,10 @@
   "377dbb7411c44fb3": {
    "source": ".AppImage",
    "text": ".AppImage"
+  },
+  "37a51fbe4037e117": {
+   "source": "<g1>Any system</g1>, Deno for your user alone: <x2/> (on Windows, in PowerShell: <x3/>)",
+   "text": "<g1>任何系统</g1>，Deno 仅限当前用户：<x2/>（在 Windows 上，于 PowerShell 中：<x3/>）"
   },
   "37a82a5012e58c8d": {
    "source": "(the lighter background)",
@@ -4170,6 +4194,10 @@
    "source": "It works as a kill switch. When the adapter disconnects, running torrents stop with \"… is not connected; it goes on when it is back\", and they start again through the adapter when it is. Until MDM notices (within a second), the engine's sockets are still bound to an address that is gone, so nothing can leave another way. A torrent added while the adapter isn't connected doesn't start, and says why. Tracker names are still looked up by the system's DNS.",
    "text": "这相当于一个网络断开保护开关。适配器断开连接时，正在运行的种子会停止，并显示“……未连接；重新连接后将继续”。适配器重新连接后，种子会通过该适配器重新启动。在 MDM 检测到断开之前（最多 1 秒），种子引擎的套接字仍绑定到已失效的地址，因此无法通过其他途径发送数据。适配器未连接时添加的种子不会启动，并会说明原因。跟踪器名称仍由系统的 DNS 查询。"
   },
+  "3e956985953c6c3e": {
+   "source": "<g1>Videos that need you signed in</g1>: the button over the video hands MDM the page's own cookies, so you're signed in as in the browser. For pasted links and playlists, <g2>Options → Sites Logins → Cookies for video sites</g2> lets yt-dlp read a browser's cookies, from the profile you choose: a separate one with a spare account works well. Chrome, Edge and Brave lock theirs on Windows, and the window says so; Firefox works. <g3>The help</g3> says more.",
+   "text": "<g1>需要登录才能下载的视频</g1>：视频上方的按钮会将页面本身的 Cookie 交给 MDM，这样您就可以像在浏览器中一样保持登录状态。对于粘贴的链接和播放列表，<g2>选项 → 站点登录 → 视频网站的 Cookie</g2> 允许 yt-dlp 读取您选择的浏览器配置文件中的 Cookie：使用一个单独的备用账户效果很好。Chrome、Edge 和 Brave 在 Windows 上会锁定其 Cookie，窗口中会显示此信息；Firefox 则可以。更多信息请参阅<g3>帮助</g3>。"
+  },
   "3e9e6b7b10d78723": {
    "source": "<g1>Start</g1> adds the ticked links to the <g2>Main download queue</g2> and starts the queue. It downloads as many files at once as the queue allows.",
    "text": "<g1>开始</g1>会将勾选的链接添加到<g2>主下载队列</g2>并启动队列。队列会同时下载其允许数量的文件。"
@@ -4189,6 +4217,10 @@
   "3ebf8f1307545f42": {
    "source": "Download manager command line and automation API — Mister Download Manager",
    "text": "下载管理器命令行和自动化 API — Mister Download Manager"
+  },
+  "3ec0fd3706431045": {
+   "source": "<g1>The Download video button over the video</g1> passes that page's cookies, from the window and profile you're in (a private window, a Firefox container), for the look-up and the download, so you're signed in as you are in the browser. Nothing to set up. Each cookie goes with the domain the browser keeps it for, so a sign-in on YouTube Music (music.youtube.com) or YouTube's mobile site reaches www.youtube.com too.",
+   "text": "<g1>视频上方的“下载视频”按钮</g1>会传递该页面在您当前窗口和配置文件（私人窗口、Firefox 容器）中的 Cookie，用于查找和下载，因此您在浏览器中登录的状态也会在 MDM 中保持。无需设置。每个 Cookie 都与浏览器保存它的域相关联，因此在 YouTube Music (music.youtube.com) 或 YouTube 移动网站上的登录也会影响 www.youtube.com。"
   },
   "3ec9f591006bbd23": {
    "source": "The installer. Pick this one unless you have a reason not to. It can set up browser integration and open <x1/> files and magnet links with MDM.",
@@ -5174,6 +5206,10 @@
    "source": "<g1>A minimized MDM keeps working</g1>: with the main window minimized (not to the notification area), queues didn't start their next file, the Scheduler's starts and stops didn't fire, download limits, the network adapter's kill switch, the clipboard monitor, the update check, the taskbar's progress and saving the list all waited until the window was restored. They run in every window state now, and their windows (Download complete, a limit's notice) open at once.",
    "text": "<g1>最小化后的 MDM 仍可正常工作</g1>：当主窗口最小化（未最小化到通知区域）时，队列不会启动下一个文件，“计划程序”的启动和停止不会触发，下载限制、网络适配器的断路开关、剪贴板监视器、更新检查、任务栏进度和保存列表都会等待，直到窗口恢复。它们现在在所有窗口状态下运行，并且它们的窗口（下载完成、限制通知）会立即打开。"
   },
+  "4ea06c1b2a86d1c8": {
+   "source": "<g1>Hide web pages</g1> (on by default) leaves out links to pages (<x2/>, <x3/> and the like, and any link whose look-up found a web page): they are neither shown nor downloaded.",
+   "text": "<g1>隐藏网页</g1>（默认开启）会排除指向网页的链接（<x2/>、<x3/>等，以及任何查找后发现是网页的链接）：它们既不会显示也不会下载。"
+  },
   "4f07dda13d242d23": {
    "source": "Options on its Connection page: connections per download, per-server exceptions, Download limits and the DNS list",
    "text": "其“连接”页面上的选项：每个下载的连接数、每个服务器的例外、下载限制和 DNS 列表"
@@ -5762,6 +5798,10 @@
    "source": "<g1>Needs a login</g1>: the server wants a user name and password, or the page's cookies.",
    "text": "<g1>需要登录</g1>：服务器需要用户名和密码，或需要页面的 Cookie。"
   },
+  "57d55935c79c75f6": {
+   "source": "Install one of them, either works, then look the video up again. MDM finds Deno, Node.js (also one installed with nvm) and Bun by itself. If it still says so, the new program's folder isn't on the <x1/> MDM started with (Windows' installers add it for programs started after them): quit MDM (<g2>Tasks → Exit</g2>) and start it again.",
+   "text": "安装其中一个，任何一个都可以，然后再次查找视频。MDM 会自行找到 Deno、Node.js（也包括通过 nvm 安装的）和 Bun。如果仍然提示，则新程序的文件夹不在 MDM 启动时使用的 <x1/> 中（Windows 的安装程序会为之后启动的程序添加路径）：退出 MDM（<g2>任务 → 退出</g2>）并重新启动。"
+  },
   "57df30288a29fe94": {
    "source": "Made possible by these amazing humans",
    "text": "由这些杰出人士倾力打造"
@@ -5881,6 +5921,10 @@
   "594222b0d8ddd185": {
    "source": "Add URL.",
    "text": "添加 URL。"
+  },
+  "598886119cab837f": {
+   "source": "<g1>A web page's address.</g1> Paste or copy the address of a page (<x2/>) and MDM reads the page and lists the links on it, as the browser's <g3>Download all links</g3> does, in a package named after the page. The page itself is left unticked. This works for addresses that came on their own (pasted, copied, typed, in a list), not for the links found on a page, so MDM never wanders off through a site. MDM reads only what the page itself holds: links a page's scripts add after it loads come only through the browser.",
+   "text": "<g1>网页地址。</g1> 粘贴或复制网页地址 (<x2/>)，MDM 会读取该页面并列出其上的链接，就像浏览器中的<g3>下载所有链接</g3>功能一样，将它们归入一个以页面命名的包中。页面本身不会被选中。这适用于单独出现的地址（粘贴、复制、输入、列表中的），而不适用于在页面上找到的链接，因此 MDM 不会在网站中随意跳转。MDM 只读取页面本身包含的内容：页面脚本加载后添加的链接只能通过浏览器获取。"
   },
   "59920ff7101c276f": {
    "source": "Fix the translation in the row's third column and delete its <x1/> line.",
@@ -6526,6 +6570,10 @@
    "source": "The layout is familiar on purpose: the toolbar, the categories, the download list, the progress window with every connection, queues and the scheduler. The differences: MDM is free and open source, downloads BitTorrent and magnet links in the same list, finished faster in <g1>our benchmark</g1>, speaks 86 languages and has builds for Linux and macOS. IDM is the more mature product, refined over many years. See the full <g2>comparison</g2>.",
    "text": "界面布局刻意保持熟悉：工具栏、分类、下载列表、显示每个连接的进度窗口、队列和调度程序。不同之处在于：MDM 是免费开源的，可在同一列表中下载 BitTorrent 和磁力链接，在<g1>我们的基准测试</g1>中完成速度更快，支持 86 种语言，并提供 Linux 和 macOS 版本。IDM 是更成熟的产品，经过多年完善。查看完整的<g2>比较</g2>。"
   },
+  "626d6a7f553a1946": {
+   "source": "<g1>macOS</g1>: <x2/>, or",
+   "text": "<g1>macOS</g1>：<x2/>，或"
+  },
   "62e049f954021405": {
    "source": "Control it from your phone or your browser",
    "text": "通过手机或浏览器控制它"
@@ -6769,10 +6817,6 @@
   "66f0d356afa03754": {
    "source": "Two helpers, checked before use",
    "text": "两个辅助程序，使用前需检查"
-  },
-  "66f7530c7179f562": {
-   "source": "<g1>The Download video button over the video</g1> passes that page's cookies, from the window and profile you're in (a private window, a Firefox container), for the look-up and the download. Nothing to set up. Each cookie goes with the domain the browser keeps it for, so a sign-in on YouTube Music (music.youtube.com) or YouTube's mobile site reaches www.youtube.com too.",
-   "text": "<g1>视频上方的下载视频按钮</g1>会传递您当前窗口和配置文件（私人窗口、Firefox 容器）中的页面 Cookie，用于查找和下载。无需设置。每个 Cookie 都与其浏览器保存的域一起使用，因此在 YouTube Music (music.youtube.com) 或 YouTube 移动网站上的登录也会到达 www.youtube.com。"
   },
   "670bb10cde757ad1": {
    "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
@@ -7070,6 +7114,10 @@
    "source": "Every run and the raw data",
    "text": "所有运行记录和原始数据"
   },
+  "6be8a7107f3f9737": {
+   "source": "Choose <g1>Subtitles</g1> if you want them (see below). <g2>Embed chapters</g2> is ticked: see <g3>Chapters</g3>.",
+   "text": "如果需要字幕，请选择<g1>字幕</g1>（见下文）。<g2>嵌入章节</g2>已勾选：请参阅<g3>章节</g3>。"
+  },
   "6c054ced98124c36": {
    "source": "Options, Connection: connections per download and per-server exceptions.",
    "text": "选项 → 连接：每个下载的连接数和针对特定服务器的例外设置。"
@@ -7281,6 +7329,10 @@
   "6eef75044c57910f": {
    "source": "Stop now also stops yt-dlp, which used to keep downloading in the background.",
    "text": "“停止”现在也会停止 yt-dlp，后者以前会在后台继续下载。"
+  },
+  "6f06002d2161cba3": {
+   "source": "Last updated 2026-11-13",
+   "text": "最后更新：2026年11月13日"
   },
   "6f082d0aaa31277a": {
    "source": "The dotted keyboard focus rectangle",
@@ -7510,6 +7562,10 @@
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "直接粘贴 Google Drive 链接，即<g1>分享 → 复制链接</g1>生成的链接："
   },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "此页面构建时无法从 GitHub 读取列表。同时，所有贡献者都在 GitHub 项目的<g1>拉取请求</g1>和<g2>问题</g2>中。"
+  },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
    "text": "报告问题"
@@ -7721,6 +7777,10 @@
   "75a8d67e8ef43ede": {
    "source": "End-to-end medians with interquartile ranges, the ratio with its 95% interval, and the Mann–Whitney test, as <x1/> writes them.",
    "text": "端到端时间的中位数和四分位距、比率及其 95% 区间，以及 Mann–Whitney 检验结果，均按 <x1/> 的格式列出。"
+  },
+  "75b26b8aac083dec": {
+   "source": "Then yt-dlp does what it does after a download: it joins the video and its sound with ffmpeg into one MP4, saves or embeds the subtitles, puts the chapters into the file, and converts the sound for an MP3, Opus or FLAC choice.",
+   "text": "然后 yt-dlp 会在下载后执行其操作：它会使用 ffmpeg 将视频和声音合并为一个 MP4 文件，保存或嵌入字幕，将章节放入文件中，并为 MP3、Opus 或 FLAC 选项转换声音。"
   },
   "75c5e88776534271": {
    "source": "Adding a link again after its finished file was moved or deleted starts a new download, instead of asking about a duplicate that isn't there (<g1>#342</g1>).",
@@ -8093,10 +8153,6 @@
   "7bde548eabfafc71": {
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
    "text": "默认情况下，每个下载使用八个连接。如果您在选项 → 连接中选择，最多可达32个；勾选允许超过32个连接后，可达128个。当服务器允许的连接数较少时，MDM会使用较少的连接；当服务器完全无法发送文件分段时，MDM只使用一个连接。"
-  },
-  "7beb76c0e99ab62c": {
-   "source": "<g1>Videos that need you signed in</g1>: <g2>Options → Sites Logins → Cookies for video sites</g2> lets yt-dlp read a browser's cookies, for pasted links. Chrome, Edge and Brave lock theirs on Windows, and the window says so; Firefox works, and so does the button over the video.",
-   "text": "<g1>需要登录才能观看的视频</g1>：<g2>选项 → 站点登录 → 视频网站的 Cookie</g2>允许 yt-dlp 读取浏览器的 Cookie，用于粘贴的链接。Chrome、Edge 和 Brave 在 Windows 上会锁定其 Cookie，窗口会提示；Firefox 可以正常工作，视频上方的按钮也可以。"
   },
   "7bf940f9155b4bce": {
    "source": "<x1/> <g2>Open source · Apache-2.0</g2>",
@@ -8537,6 +8593,10 @@
   "810aeb3bcab43ab3": {
    "source": "A torrent: what it has sent to peers against what it took.",
    "text": "洪流任务上传给对等方的数据量与从对等方下载的数据量之比。"
+  },
+  "810e3acee25be1c6": {
+   "source": "YouTube hides most of a video's qualities behind small puzzles that yt-dlp solves with a JavaScript runtime: <g1>Deno</g1>, <g2>Node.js</g2> or <g3>Bun</g3>. Without one, the list is short, sometimes only the sound and a low quality, and MDM says so: <g4>YouTube needs a JavaScript runtime to list its video qualities</g4>. Other sites don't need one.",
+   "text": "YouTube 将视频的大部分画质隐藏在一些小谜题后面，yt-dlp 通过 JavaScript 运行时（<g1>Deno</g1>、<g2>Node.js</g2> 或 <g3>Bun</g3>）来解决这些谜题。如果没有这些运行时，画质列表会很短，有时只有声音和低画质，MDM 会提示：<g4>YouTube 需要 JavaScript 运行时才能列出视频画质</g4>。其他网站不需要。"
   },
   "8144fd9d669ebeed": {
    "source": "Does it download torrents? — Mister Download Manager",
@@ -9229,6 +9289,10 @@
   "8c6583c8229f13c3": {
    "source": "Downloads and torrents in one app, stable on Android",
    "text": "在一个应用程序中处理下载和种子，在 Android 上运行稳定"
+  },
+  "8c714d229ab4b2fb": {
+   "source": "They go into a video (MP4, MKV, WebM) and into the sound as the site has it (<g1>Audio only, original</g1>), not into an MP3, Opus or FLAC file.",
+   "text": "它们会嵌入到视频（MP4、MKV、WebM）和网站提供的原始音频（<g1>仅音频，原始</g1>）中，而不是 MP3、Opus 或 FLAC 文件中。"
   },
   "8c7321b31cd98d97": {
    "source": "<g1>Toolbar.</g1> <g2>Add URL</g2>, <g3>Add Torrent</g3>, <g4>Resume</g4>, <g5>Stop</g5>, <g6>Stop All</g6>, <g7>Delete</g7>, <g8>Delete Completed</g8>, <g9>Options</g9>, <g10>Scheduler</g10>, <g11>Start Queue</g11>, <g12>Stop Queue</g12>. The small arrow next to <g13>Add Torrent</g13>, <g14>Start Queue</g14> and <g15>Stop Queue</g15> opens more choices.",
@@ -10690,6 +10754,10 @@
    "source": "A window larger than the screen at that size (Options at 200 % on a 1366 × 768 screen) opens as large as the screen allows, and the rest scrolls: with the scroll bars, the mouse wheel, or <g1>Tab</g1> to the next control.",
    "text": "如果窗口在该尺寸下大于屏幕（例如在 1366 × 768 屏幕上，选项窗口设置为 200 %），它会以屏幕允许的最大尺寸打开，其余部分可滚动：使用滚动条、鼠标滚轮，或按<g1>Tab</g1>键切换到下一个控件。"
   },
+  "a24bd8fd730a41d0": {
+   "source": "On Windows, an OpenGL older than 3.0 (an old graphics card's driver, such as Intel's first HD Graphics, whose OpenGL is 2.1) can't draw MDM: its windows come out as garbage. MDM notices it as it starts and starts again with Direct3D on Microsoft's software renderer (WARP), from then on, and <g1>View → Draw with</g1> says so. Choosing <g2>OpenGL</g2> there tries it again.",
+   "text": "在 Windows 上，如果 OpenGL 版本低于 3.0（例如，某些旧显卡驱动，如英特尔第一代核芯显卡，其 OpenGL 版本为 2.1），MDM 将无法正常绘制窗口，显示可能会出现异常。MDM 启动时会检测到此情况，并自动切换到使用微软软件渲染器 (WARP) 的 Direct3D 模式重新启动。此时，<g1>视图 → 绘制方式</g1> 会显示当前模式。选择 <g2>OpenGL</g2> 将再次尝试使用 OpenGL 绘制。"
+  },
   "a2907e04d7c8512f": {
    "source": "Why doesn't MDM take over my download? — Mister Download Manager",
    "text": "为什么 MDM 没有接管我的下载？ — Mister Download Manager"
@@ -11710,6 +11778,10 @@
    "source": "<g1>Crash reports</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>崩溃报告</g1><g2>Mister Download Manager</g2>"
   },
+  "b1a0ed24728365e7": {
+   "source": "The command line (<x1/>) puts them in too, whenever ffmpeg is there.",
+   "text": "命令行（<x1/>）也会将它们嵌入，只要 ffmpeg 存在。"
+  },
   "b1aebd102c185a01": {
    "source": "RSS feeds for torrents, with download rules — Mister Download Manager",
    "text": "带下载规则的种子 RSS 源 — Mister Download Manager"
@@ -11773,6 +11845,10 @@
   "b26bf4af67d50f02": {
    "source": "If you want Internet Download Manager's layout without its price, Mister Download Manager: it is free and open source, laid out like IDM, imports your IDM list, and also downloads torrents and videos. Free Download Manager, AB Download Manager, Motrix, Neat Download Manager, Prism, JDownloader 2, Xtreme Download Manager and Gopeed are free too, each with its own strengths.",
    "text": "如果您想要 Internet Download Manager 的布局但又不想付费，Mister Download Manager 是一个不错的选择：它免费且开源，界面布局与 IDM 相似，可导入您的 IDM 列表，还能下载种子和视频。Free Download Manager、AB Download Manager、Motrix、Neat Download Manager、Prism、JDownloader 2、Xtreme Download Manager 和 Gopeed 也都是免费的，各有其独特优势。"
+  },
+  "b26c000488bb45a1": {
+   "source": "<g1>Windows</g1>: <x2/>, or <x3/>. The installers on <g4>deno.com</g4> and <g5>nodejs.org</g5> work too.",
+   "text": "<g1>Windows</g1>：<x2/>，或 <x3/>。<g4>deno.com</g4> 和 <g5>nodejs.org</g5> 上的安装程序也适用。"
   },
   "b26fdfb3218b9d13": {
    "source": "Many more: the checksum dialog, the progress window's completion options and speed limit, the torrent and video windows (Stop a look-up, stale video choices), Batch's letter ranges, addresses without http://, duplicate links arriving together, imports that doubled downloads, menu titles that shared access letters in French and other languages, and more.",
@@ -11893,6 +11969,10 @@
   "b3ca971adc7126d9": {
    "source": "View → Theme switches at once, keeping the layout.",
    "text": "视图 → 主题会立即切换，并保持布局不变。"
+  },
+  "b3d7bbeea9ab71d3": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g19>Embed chapters</g19> does. <x20/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x21/>; when it isn't connected, nothing starts.",
+   "text": "下载视频；<x1/> 从 <x2/> 获取画质选择器（<x3/> = 最佳单一文件；<x4/> = 网站提供的纯音频，不转换；<x5/>、<x6/>、<x7/> 或 <x8/> = 该比特率的 MP3 音频，<x9/> 为最佳可变比特率；<x10/> = Opus 格式；<x11/> = FLAC 格式，无损但音质不优于网站源；转换需要 ffmpeg）。<x12/>：MDM 自己的下载器通过这么多连接（默认 8 个，1 到 128 个）下载 yt-dlp 找到的每个流，对于分段流（HLS、DASH），则同时下载这么多分段。<x13/> 将字幕保存到旁边：语言代码来自 <x14/>（<x15/>），或 <x16/> 表示上传者提供的所有字幕；<x17/> 则使用网站的自动字幕；<x18/> 将字幕嵌入视频（需要 ffmpeg，MP4 或 MKV 格式）。如果使用 ffmpeg，视频章节也会嵌入文件，就像“下载视频”的<g19>嵌入章节</g19>功能一样。<x20/> 通过一个网络适配器发送下载连接以及 yt-dlp（和 ffmpeg）的连接，与 <x21/> 类似；如果未连接，则不开始任何操作。"
   },
   "b3f1633383cc8b77": {
    "source": "Open <g1>Downloads → Options</g1>, or click <g2>Options</g2> on the toolbar. The window has twelve pages on two rows of tabs. <g3>OK</g3> saves your changes; closing the window or pressing <g4>Esc</g4> throws them away.",
@@ -12177,6 +12257,10 @@
   "b86face263e9f2af": {
    "source": "We'd rather you knew. IDM has a site grabber that follows a whole website's pages (MDM's link grabber takes the links of one page), and many years of polish and compatibility fixes. MDM is new; if something you rely on is missing, <g1>ask for it</g1>.",
    "text": "我们宁愿您了解。IDM 有一个网站抓取器，可以跟踪整个网站的页面（MDM 的链接抓取器只抓取一个页面的链接），并且经过多年的完善和兼容性修复。MDM 是新程序；如果您依赖的某些功能缺失，<g1>请提出请求</g1>。"
+  },
+  "b886cc5ff82424bc": {
+   "source": "<g1>A spare account, in a profile of its own</g1>: you don't have to lend yt-dlp your main account. Make a second profile in your browser, sign in to the site there with a spare account, and put that profile in <g2>Profile</g2> (its name, or its folder with <g3>...</g3>). yt-dlp reads that profile's cookies only. yt-dlp's developers advise this too: a site may limit an account it sees used by a program.",
+   "text": "<g1>一个独立的备用账户</g1>：您不必将主账户借给 yt-dlp。在浏览器中创建第二个配置文件，使用备用账户登录该网站，然后将该配置文件放入<g2>配置文件</g2>（其名称，或其文件夹，使用<g3>...</g3>）。yt-dlp 只读取该配置文件的 Cookie。yt-dlp 的开发者也建议这样做：网站可能会限制被程序使用的账户。"
   },
   "b88a67e39c494a61": {
    "source": "The server runs on the app's Tokio runtime, one listener per local network address. Each request is checked (<x1/>, <x2/>, token), turned into an <x3/> marked <x4/> (a field no request line can set) and handed to the app through the same channel as the command line's; the app answers it on its next frame, as it answers the automation API. Its page is built in (<x5/>) and its texts come from the app's catalogs (<x6/>).",
@@ -12930,6 +13014,10 @@
    "source": "The download manager you already know, rebuilt to be faster. Free, open source and written from scratch in Rust.",
    "text": "您已熟悉的下载管理器，经过重新构建，速度更快。免费、开源，并用 Rust 从头开始编写。"
   },
+  "c4d8ea1c0d48428a": {
+   "source": "It needs ffmpeg, which writes them. A video without chapters is saved as it is.",
+   "text": "它需要 ffmpeg 来写入章节。没有章节的视频会按原样保存。"
+  },
   "c4eff53dc61fce12": {
    "source": "Your rights",
    "text": "您的权利"
@@ -13001,6 +13089,10 @@
   "c5980664ded251b8": {
    "source": "<g1>The system:</g1> MDM's version and how you installed it, your operating system and its version, the processor, the language and theme, and how many downloads and queues you have. These are counts only.",
    "text": "<g1>系统信息：</g1>MDM 的版本和安装方式、操作系统及其版本、处理器、语言和主题，以及下载和队列的数量。这些信息只包含数量。"
+  },
+  "c5a292e743078486": {
+   "source": "A distribution's yt-dlp can also be too old for YouTube: if the list stays short, click <g1>Use MDM's own copy</g1> beside yt-dlp in <g2>Helpers...</g2>.",
+   "text": "发行版自带的 yt-dlp 也可能对 YouTube 来说太旧了：如果列表仍然很短，请在<g2>帮助程序...</g2>中 yt-dlp 旁边点击<g1>使用 MDM 自带的副本</g1>。"
   },
   "c5b1d8d5e4be4a3b": {
    "source": "How the pictures come down",
@@ -13165,6 +13257,10 @@
   "c83fdbadaf4ef714": {
    "source": "Checked before you download",
    "text": "下载前检查"
+  },
+  "c845f9239d5bddd5": {
+   "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window with the stream its player loaded (HLS or DASH), as the <g3>button over videos</g3> sends it, with your cookies for the stream's server and what the browser sent with the stream (its referrer and origin, else the page as the referrer).",
+   "text": "右键点击链接、视频、音频或图片，然后选择<g1>使用 Mister Download Manager 下载</g1>。MDM 会下载您所选的任何类型文件：因为是您主动请求的，所以文件类型列表和排除站点设置不适用（它们只决定 MDM 自动接管哪些下载）。以流媒体形式播放的视频会进入<g2>下载视频</g2>窗口，其中包含播放器加载的流（HLS 或 DASH），就像<g3>视频上方的按钮</g3>发送的那样，并附带您用于流媒体服务器的 Cookie 以及浏览器随流媒体发送的信息（其 referrer 和 origin，否则为页面的 referrer）。"
   },
   "c84f2046978e476a": {
    "source": "A title bar MDM draws itself",
@@ -13850,6 +13946,10 @@
    "source": "Maturity",
    "text": "成熟度"
   },
+  "d2fc243b93084d12": {
+   "source": "Some videos play only for a signed-in viewer: a member's or a private video, an age-restricted one. And YouTube sometimes asks any viewer from a network it doubts (a VPN, a shared or cloud address) to \"Sign in to confirm you're not a bot\". yt-dlp then needs your browser's cookies, the small files that keep you signed in.",
+   "text": "有些视频仅供登录用户观看：会员视频、私人视频或有年龄限制的视频。YouTube 有时还会要求它怀疑的网络（VPN、共享或云地址）中的任何观看者“登录以确认您不是机器人”。yt-dlp 此时需要您的浏览器 Cookie，即让您保持登录状态的小文件。"
+  },
   "d30e4557ff06a9ab": {
    "source": "Reports, translations and help",
    "text": "报告、翻译和帮助"
@@ -13977,6 +14077,10 @@
   "d4c9212e6107e470": {
    "source": "Playlists and channels",
    "text": "播放列表和频道"
+  },
+  "d4ce3b34f58e526c": {
+   "source": "<g1>Ubuntu and Debian</g1>:",
+   "text": "<g1>Ubuntu 和 Debian</g1>："
   },
   "d4d2535439e2c024": {
    "source": "Coming from IDM?",
@@ -15090,6 +15194,10 @@
    "source": "Press <g1>F3</g1> to jump to the next match. The search wraps round to the top.",
    "text": "按 <g1>F3</g1> 跳转到下一个匹配项。搜索会从列表顶部重新开始。"
   },
+  "e71e432fdd540d5b": {
+   "source": "Turn the look-ups off in <g1>Options → Archives → Look links up when they arrive</g1>. Some file hosts count a look-up as a download. With the look-ups off, MDM asks nothing of the network until you start, so a web page's address isn't read for its links either.",
+   "text": "在<g1>选项 → 压缩包 → 链接到达时查找</g1>中关闭查找功能。有些文件主机将查找计为一次下载。关闭查找功能后，MDM 在您开始下载之前不会向网络发出任何请求，因此也不会读取网页地址以查找其链接。"
+  },
   "e7281739beb4476f": {
    "source": "A download manager can fill your whole connection. These steps cap MDM so that browsing, video calls and games stay smooth.",
    "text": "下载管理器可能会占满整个网络带宽。按以下步骤限制 MDM 的速度，让网页浏览、视频通话和游戏保持流畅。"
@@ -15414,6 +15522,10 @@
    "source": "Note",
    "text": "注意"
   },
+  "eb9f527d55414228": {
+   "source": "Last updated 2026-11-13 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "最后更新日期：2026年11月13日 · 适用于应用程序、浏览器扩展和 misterdownloadmanager.com"
+  },
   "ebb00adeab17b68e": {
    "source": "<g1>Links that work only once</g1> (or hosts that allow one download at a time) failed with \"403 Forbidden\" after Download File Info had looked them up (<g2>#28</g2>): the window's look and the download each asked the server. The download now continues from the answer the window got, and asks again only if that connection has closed meanwhile.",
    "text": "<g1>一次性链接</g1>（或一次只允许一个下载的主机）在“下载文件信息”查询后失败，显示“403 Forbidden”（<g2>#28</g2>）：窗口查询和下载操作都向服务器发出了请求。现在，下载会从窗口获得的响应继续，并且仅当该连接在此期间关闭时才再次请求。"
@@ -15541,6 +15653,10 @@
   "ed1e476b363fc15b": {
    "source": "What protects you",
    "text": "安全保障"
+  },
+  "ed30bf8c293519f0": {
+   "source": "<g1>Download complete</g1> shows the file's size, its address and where it was saved. Choose <g2>Open</g2>, <g3>Open with...</g3>, <g4>Open folder</g4> or <g5>Close</g5>. On Windows you can also drag the small box at the bottom right into Explorer, an email or a chat to drop the file there. As when you drag a file in Explorer, a folder on the same drive gets the file moved there and another drive gets a copy (hold <g6>Shift</g6> to move it, <g7>Ctrl</g7> to copy it). The download follows a moved file: the list and <g8>Open</g8> find it in its new place. The window shows above your other programs until you click it, without taking the keyboard from the one you're typing in.",
+   "text": "<g1>下载完成</g1>窗口会显示文件大小、地址和保存位置。您可以选择<g2>打开</g2>、<g3>打开方式…</g3>、<g4>打开文件夹</g4>或<g5>关闭</g5>。在 Windows 上，您还可以将右下角的小框拖到资源管理器、电子邮件或聊天窗口中以放置文件。与在资源管理器中拖动文件类似，如果目标文件夹在同一驱动器上，文件会被移动；如果目标文件夹在不同驱动器上，文件会被复制（按住<g6>Shift</g6>键移动，按住<g7>Ctrl</g7>键复制）。下载记录会跟随移动后的文件：列表和<g8>打开</g8>功能会在新位置找到它。此窗口会显示在其他程序上方，直到您点击它，但不会抢占您正在输入的程序的键盘焦点。"
   },
   "ed39bbda605ca874": {
    "source": "Every file finds its folder",
@@ -15773,6 +15889,10 @@
   "f01bb992070dab45": {
    "source": "Image galleries — Mister Download Manager help",
    "text": "图片图库 — Mister Download Manager 帮助"
+  },
+  "f02ad447917b29c8": {
+   "source": "<g1>Fedora</g1>:",
+   "text": "<g1>Fedora</g1>："
   },
   "f0332c2aa7cd2077": {
    "source": "<g1>A download's progress file could be written again just after it stopped</g1> (<g2>#106</g2>), and <g3>a download could fail as it finished, with \"part file still in use\"</g3> (<g4>#116</g4>). MDM saves a download's progress every few seconds, in a file beside it. A download paused or finished during one of those saves could stop before the save was done; that save then wrote an old progress file a moment later, or, when the last bytes arrived during it, still held the file. A download now stops only once its save is done.",

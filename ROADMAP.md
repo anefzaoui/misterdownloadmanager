@@ -557,6 +557,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Help: videos that need you signed in, in short: the button over the video brings the page's
+  own cookies, Options reads a browser profile's for pasted links and playlists (a separate
+  profile with a spare account works well), and why some videos and networks need it (from
+  [#721](https://github.com/anefzaoui/misterdownloadmanager/issues/721))
 - ✅ A stream the browser played (an .m3u8) is looked up and downloaded with the Referer, Origin
   and cookies the browser sent with it, for its playlists and every piece too: a site's video
   server that serves its own pages' players only answered 403
