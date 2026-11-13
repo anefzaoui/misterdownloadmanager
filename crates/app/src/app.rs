@@ -7695,7 +7695,7 @@ impl App {
                 by("By &Order Of Addition", None),
                 by("By &File Name", Some(0)),
                 by("By &Size", Some(2)),
-                by("By St&atus", Some(3)),
+                by("By Stat&us", Some(3)),
                 by("By &Time Left", Some(4)),
                 by("By Transfer &Rate", Some(5)),
                 by("By &Last Try Date", Some(6)),
