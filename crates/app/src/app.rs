@@ -1920,7 +1920,8 @@ impl App {
                     it.status_text()
                 },
                 it.time_left(),
-                if it.live.is_some() {
+                // Every byte in (#736): no rate, as once it is complete.
+                if it.live.is_some() && !it.past_last_byte() {
                     model::rate(it.rate())
                 } else {
                     String::new()
@@ -1951,6 +1952,11 @@ impl App {
                     .as_ref()
                     .map_or(String::new(), |t| model::rate(t.up_speed)),
             ],
+            // A short word and a percentage in the cell while checked or joined (#736): the
+            // whole words in its tip and for a screen reader.
+            status_whole: (!self.extracts.extracting(it.id))
+                .then(|| it.finishing(false))
+                .flatten(),
         }
     }
 

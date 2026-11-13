@@ -557,6 +557,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows: Open starts the program Windows has for the file's type (7-Zip for a .zip when it
+  opens them), as a double-click in Explorer does, instead of failing and showing the folder
+  ([#811](https://github.com/anefzaoui/misterdownloadmanager/issues/811),
+  [#854](https://github.com/anefzaoui/misterdownloadmanager/pull/854))
 - ✅ With a style theme (Metro, Adwaita, Aero…), windows minimize, maximize and restore with
   Windows' animation, as with Classic, and fade out into the notification area; on Windows 10
   without its own title bar showing over MDM's for those frames
@@ -621,8 +625,10 @@ These ship in the next version.
   downloads a live stream itself, instead of an empty table
   ([#793](https://github.com/anefzaoui/misterdownloadmanager/issues/793))
 - ✅ After the last byte, the progress window says **Verifying… (45%)** or **Merging… (45%)**
-  and the list **45% verified**, the bar showing it in the accent colour, and **Finishing…** rather than
-  **Connecting…**; a finished download's map of parts has no gaps
+  and the list's Status column, wider by default, **Checking 45%** or **Merging 45%** (the
+  whole words in its tip), the bar
+  showing it in the accent colour, no transfer rate and no connection still receiving, and
+  **Finishing…** rather than **Connecting…**; a finished download's map of parts has no gaps
   ([#736](https://github.com/anefzaoui/misterdownloadmanager/issues/736))
 - ✅ Windows: the file dragged out of **Download complete** is moved or copied as Explorer does
   it (moved on the same drive or with Shift, copied to another drive or with Ctrl), no longer
