@@ -560,6 +560,10 @@ These ship in the next version.
 - ✅ Windows 10: no FSI and PDI boxes around a file's name in the taskbar's preview and tip of a
   progress window, or in the notification-area icon's tip; right-to-left titles keep their order
   ([#919](https://github.com/anefzaoui/misterdownloadmanager/issues/919))
+- ✅ Windows: Open starts the program Windows has for the file's type (7-Zip for a .zip when it
+  opens them), as a double-click in Explorer does, instead of failing and showing the folder
+  ([#811](https://github.com/anefzaoui/misterdownloadmanager/issues/811),
+  [#854](https://github.com/anefzaoui/misterdownloadmanager/pull/854))
 - ✅ With a style theme (Metro, Adwaita, Aero…), windows minimize, maximize and restore with
   Windows' animation, as with Classic
   ([#874](https://github.com/anefzaoui/misterdownloadmanager/issues/874))
