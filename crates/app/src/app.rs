@@ -1064,12 +1064,6 @@ pub struct App {
     /// Run without a window (`--headless`, #157): nothing is shown or asked; what arrives is
     /// added as the remote control adds it.
     headless: bool,
-    /// Clipboard watching (Options → General): the text last seen (outer None: not looked
-    /// yet) and when.
-    clip_seen: Option<Option<String>>,
-    clip_checked: Option<Instant>,
-    /// The monitor's ask for the clipboard, its read off the window thread (#418).
-    clip_asked: Option<crate::clipboard::Ask>,
     /// Add batch download from clipboard (#709): its read, until it answers.
     batch_clip: Option<crate::clipboard::Prefill>,
     confirm_delete: Option<dialogs::ConfirmDelete>,
@@ -1660,9 +1654,6 @@ impl App {
             host_limits: Default::default(),
             quota: Default::default(),
             limit_notice: None,
-            clip_seen: None,
-            clip_checked: None,
-            clip_asked: None,
             batch_clip: None,
             tray: None,
             #[cfg(target_os = "linux")]
@@ -4012,40 +4003,12 @@ impl App {
     /// it, so Download File Info opens with it (unless that window is turned off). Only read,
     /// never written; on by default.
     fn watch_clipboard(&mut self, ctx: &egui::Context) {
-        if !self.settings.clipboard_autostart {
-            self.clip_seen = None;
-            return;
-        }
-        ctx.request_repaint_after(Duration::from_secs(1));
-        // Read off the window's thread (clipboard.rs): the program that owns the clipboard may
-        // hang, and a read that waits for it took the window with it (#418). An ask that is
-        // never answered just means no new look at the clipboard.
-        let text = match self.clip_asked {
-            Some(ask) => match crate::clipboard::answer(ask) {
-                Some(text) => {
-                    self.clip_asked = None;
-                    text
-                }
-                None => return,
-            },
-            None => {
-                if self
-                    .clip_checked
-                    .is_some_and(|t| t.elapsed() < Duration::from_secs(1))
-                {
-                    return;
-                }
-                self.clip_checked = Some(Instant::now());
-                self.clip_asked = Some(crate::clipboard::ask());
-                return;
-            }
-        };
-        let text = text.map(|t| t.trim().to_owned());
-        // The first look only notes what is there: turning it on doesn't grab an old link.
-        let Some(before) = self.clip_seen.replace(text.clone()) else {
-            return;
-        };
-        let Some(text) = text.filter(|t| Some(t) != before.as_ref()) else {
+        // Looked at off the window's thread (clipboard.rs): the program that owns the clipboard
+        // may hang, and a read that waits for it took the window with it (#418). The watch wakes
+        // the window only for a newly copied text: an idle MDM draws no frame for it (#847).
+        let on = self.settings.clipboard_autostart;
+        crate::clipboard::watch(on);
+        let Some(text) = crate::clipboard::copied().filter(|_| on) else {
             return;
         };
         // Several links (or words) are not one address: the address parser drops line breaks,

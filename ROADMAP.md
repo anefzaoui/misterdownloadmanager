@@ -561,6 +561,10 @@ These ship in the next version.
   opens them), as a double-click in Explorer does, instead of failing and showing the folder
   ([#811](https://github.com/anefzaoui/misterdownloadmanager/issues/811),
   [#854](https://github.com/anefzaoui/misterdownloadmanager/pull/854))
+- ✅ An idle MDM no longer redraws its window each second to watch the clipboard for copied
+  links: the watch runs on its own thread and wakes the window only for a new text (with
+  Windows' software renderer, idle MDM went from most of a processor core to a sixth of it)
+  ([#847](https://github.com/anefzaoui/misterdownloadmanager/issues/847))
 - ✅ Windows: a graphics card without Direct3D 12 (Intel's HD Graphics 3000 to 5500, older AMD
   Radeon cards) draws with OpenGL, then with Direct3D 12 on Windows' own software renderer (WARP)
   once OpenGL fails there: it can't start, is too old, shows no first window, or MDM freezes

@@ -5094,6 +5094,14 @@ pub fn gl_driver(gl: &eframe::glow::Context) -> String {
     format!("{renderer} ({version})")
 }
 
+/// Windows' clipboard sequence number: it changes each time the clipboard does, and asking for
+/// it neither opens the clipboard nor waits for its owner (clipboard.rs: the watch for copied
+/// links reads the clipboard only when it changed).
+pub fn clipboard_sequence() -> u32 {
+    // SAFETY: takes nothing, returns a number.
+    unsafe { windows_sys::Win32::System::DataExchange::GetClipboardSequenceNumber() }
+}
+
 /// End process `pid` (a frozen MDM the user chose to close from the crash report).
 pub fn end_process(pid: u32) -> bool {
     use windows_sys::Win32::Foundation::CloseHandle;
