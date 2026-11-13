@@ -452,6 +452,9 @@ async fn slow_connections_reconnect_instead_of_holding_the_end() {
     let s = server("rate=8M&slow_every=3&slow_rate=1K").await;
     let opts = Options {
         min_split: 64 << 10,
+        // Shedding is off by default (it reconnects healthy connections in waves on a shared
+        // link): this is what it does when asked for.
+        shed_slow: true,
         ..fast_opts()
     };
     let (log, size) = fetch(&s, "/gen/8M/slow.bin?seed=32", 32, opts).await;

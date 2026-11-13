@@ -138,7 +138,12 @@ pub struct Options {
     pub global: Option<Arc<Limiter>>,
     /// The finished file must have this hash (else the server's announced one, if any).
     pub checksum: Option<crate::verify::Hash>,
-    /// Reconnect a connection far slower than the others (see `SHED_*`). Beyond IDM's rule.
+    /// Reconnect a connection far slower than the best one reached (see `SHED_*`). Beyond IDM's
+    /// rule, and off by default: the best speed is the highest one connection ever reached, kept
+    /// for the whole download, so once the connections share the link every one of them reads
+    /// as slow against it, and they are dropped and reconnected in waves, a dip in the speed each
+    /// time (measured, 8 connections on a shared 8 MB/s link: 26 reconnects, the worst second
+    /// 5.9 MB/s against 7.9 without, and the download a second slower).
     pub shed_slow: bool,
     /// Connection caps learned per host, shared by the downloads that use the same table.
     pub host_limits: Option<Arc<crate::hosts::HostLimits>>,
@@ -258,7 +263,7 @@ impl Default for Options {
             proxy: Proxy::None,
             global: None,
             checksum: None,
-            shed_slow: true,
+            shed_slow: false,
             host_limits: None,
             ignore_mtime: false,
             server_time: false,

@@ -890,6 +890,11 @@ These ship in the next version.
   (part of [#493](https://github.com/anefzaoui/misterdownloadmanager/issues/493))
 - ✅ Windows: **Open folder** uses the file manager set up to open folders, not always Explorer
   ([#446](https://github.com/anefzaoui/misterdownloadmanager/issues/446))
+- ✅ A steadier download speed: connections slower than a quarter of the best one reached are no
+  longer dropped and reconnected by default. That best speed was the highest one connection ever
+  reached, so once the connections shared the link every one fell under it and they were
+  reconnected in waves, each a dip in the speed. The rule is still in the engine
+  (`Options::shed_slow`), off
 
 ## Being worked on
 
