@@ -5191,6 +5191,7 @@
 #, machine
 	United States Minor Outlying Islands	Внешние малые острова США
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	Неизвестно
 #. text in a dialog box; text in a download's progress window; text in whereis.rs
@@ -6773,6 +6774,10 @@ menu	Delete from queue	Удалить из очереди
 #. View → Draw with: a graphics system's name (Microsoft's), usually kept as is
 #, machine
 menu	Direct3D	Direct3D
+#. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows and why: Direct3D 12 through Windows' own software renderer (WARP, keep the name), because this computer's graphics card has no Direct3D 12 driver
+#, machine
+menu	Direct3D 12 (WARP): this graphics card has no Direct3D 12 driver	Direct3D 12 (WARP): у этой видеокарты нет драйвера Direct3D 12
 #. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine

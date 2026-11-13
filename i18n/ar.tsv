@@ -4000,6 +4000,7 @@
 #. a country's name (where a download's server is)
 	United States Minor Outlying Islands	جزر الولايات المتحدة النائية الصغرى
 #. text in a download's Properties window
+#. the web page is not known
 	Unknown	غير معروف
 #. text in a dialog box; text in a download's progress window; text in whereis.rs
 #. the reason a download failed is not known
@@ -5300,6 +5301,10 @@ menu	Delete from queue	حذف من قائمة الانتظار
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Microsoft's), usually kept as is
 menu	Direct3D	Direct3D
+#. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows and why: Direct3D 12 through Windows' own software renderer (WARP, keep the name), because this computer's graphics card has no Direct3D 12 driver
+#, machine
+menu	Direct3D 12 (WARP): this graphics card has no Direct3D 12 driver	Direct3D 12 (WARP): لا تملك بطاقة الرسومات هذه تعريف Direct3D 12
 #. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 menu	Direct3D didn't start here: OpenGL draws	لم يبدأ Direct3D هنا: الرسم بـ OpenGL

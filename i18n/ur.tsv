@@ -5186,6 +5186,7 @@
 #, machine
 	United States Minor Outlying Islands	ریاستہائے متحدہ کے چھوٹے بیرونی جزائر
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	نامعلوم
 #. text in a dialog box; text in a download's progress window; text in whereis.rs
@@ -5696,6 +5697,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} پتے کی فہرست کے لیے بہت بڑی ہے ({size})۔ امپورٹ ٹیکسٹ فائلیں، ویب پیجز اور .ef2 ایکسپورٹس {limit} تک پڑھتا ہے۔
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} کو ڈاؤن لوڈ مکمل سے گھسیٹ کر کہیں اور منتقل کر دیا گیا تھا، اور MDM اس کا مقام معلوم نہیں کر سکا۔ اسے وہاں تلاش کریں جہاں آپ نے اسے چھوڑا تھا۔
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -6766,9 +6770,17 @@ menu	Delete from queue	قطار سے حذف کریں
 #, machine
 menu	Direct3D	Direct3D
 #. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows and why: Direct3D 12 through Windows' own software renderer (WARP, keep the name), because this computer's graphics card has no Direct3D 12 driver
+#, machine
+menu	Direct3D 12 (WARP): this graphics card has no Direct3D 12 driver	Direct3D 12 (WARP): اس گرافکس کارڈ میں Direct3D 12 ڈرائیور نہیں ہے
+#. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
 menu	Direct3D didn't start here: OpenGL draws	Direct3D یہاں شروع نہیں ہوا: OpenGL ڈرائنگ کرے گا
+#. menu command in the main window
+#. View → Draw with: a greyed note; Direct3D draws the windows through Windows' own software renderer (WARP) instead of a graphics card
+#, machine
+menu	Direct3D draws with Windows' software renderer (WARP)	Direct3D Windows کے سافٹ ویئر رینڈرر (WARP) کے ساتھ ڈرا کرتا ہے
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

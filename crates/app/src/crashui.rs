@@ -111,14 +111,14 @@ pub fn monitor_main(m: MonitorArgs) -> eframe::Result {
         viewport: builder.clone(),
         ..Default::default()
     };
-    // What the app draws with (renderer.rs, MDM_RENDERER too), the other way when it can't
-    // start. OpenGL when the app's Direct3D failed or is still starting (this report may be about
-    // it); only the app's own start is watched.
+    // What the app draws with (renderer.rs, MDM_RENDERER too), the next way when one can't
+    // start. A way the app failed with, or is still starting with (this report may be about it),
+    // is passed over: WARP when its Direct3D on the card did, OpenGL when WARP did too; only the
+    // app's own starts are watched.
     let mut plan = crate::renderer::plan(
         settings.renderer,
         crate::renderer::overridden(&[]).as_deref(),
-        crate::renderer::suspect(),
-        crate::renderer::gl_unfit_before(),
+        crate::renderer::Known::suspect(),
     );
     plan.watched = false;
     plan.gl_checked = false;

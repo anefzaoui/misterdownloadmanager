@@ -74,6 +74,10 @@
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "ใช่ MDM จะบันทึกความคืบหน้าระหว่างดาวน์โหลด ดังนั้นเมื่อการเชื่อมต่อขาดหาย โปรแกรมขัดข้อง หรือรีสตาร์ท ก็จะดาวน์โหลดต่อจากจุดที่หยุดไว้ ก่อนดาวน์โหลดต่อ โปรแกรมจะตรวจสอบว่าไฟล์บนเซิร์ฟเวอร์ไม่มีการเปลี่ยนแปลง หากที่อยู่ดาวน์โหลดหมดอายุ <g1>รีเฟรชที่อยู่ดาวน์โหลด</g1> จะช่วยให้ระบุที่อยู่ใหม่และเก็บข้อมูลเดิมไว้ได้ ดู <g2>ดาวน์โหลดต่อจากจุดที่หยุด</g2>"
   },
+  "0168c749ceaa28cd": {
+   "source": "Many videos are split into chapters on their page: YouTube's list under the player, with a title and a start time for each part. With <g1>Embed chapters</g1> ticked, under <g2>Subtitles</g2>, they go into the video file, so players such as VLC, MPV, MPC-HC and Windows' Media Player list them and skip from one to the next.",
+   "text": "วิดีโอหลายรายการถูกแบ่งเป็นบทในหน้าของมัน: รายการของ YouTube ใต้เครื่องเล่น พร้อมชื่อและเวลาเริ่มต้นสำหรับแต่ละส่วน เมื่อเลือก <g1>ฝังบท</g1> ใต้ <g2>คำบรรยาย</g2> บทเหล่านั้นจะถูกใส่ลงในไฟล์วิดีโอ เพื่อให้เครื่องเล่นเช่น VLC, MPV, MPC-HC และ Windows' Media Player แสดงรายการและข้ามจากบทหนึ่งไปยังอีกบทหนึ่งได้"
+  },
   "016a9690b4c55ee5": {
    "source": "Both are kept in a <x1/> folder in MDM's data folder.",
    "text": "เก็บทั้งสองรายการไว้ในโฟลเดอร์ <x1/> ในโฟลเดอร์ข้อมูลของ MDM"
@@ -429,6 +433,10 @@
   "06492aa608ada06d": {
    "source": "<g1>Paused and resumed</g1> like a file, also after quitting MDM: it carries on from the bytes already saved.",
    "text": "<g1>หยุดชั่วคราวและดำเนินการต่อ</g1> เหมือนไฟล์ แม้หลังจากออกจาก MDM: จะดำเนินการต่อจากไบต์ที่บันทึกไว้แล้ว"
+  },
+  "064d85de675962c9": {
+   "source": "A JavaScript runtime for YouTube",
+   "text": "รันไทม์ JavaScript สำหรับ YouTube"
   },
   "0679d081a8cd40ea": {
    "source": "Turns the API on or off: <x1/>.",
@@ -1946,6 +1954,10 @@
    "source": "The download's log (hover over it in the list) says what happened: <g1>Extracted 12 files to …</g1>, or why not, for example <g2>Couldn't extract movie.7z.001: volume 3 of it is missing</g2>. An encrypted archive without its password opens the <g3>Archive password</g3> window. Type the password and click <g4>Extract</g4>, or <g5>Cancel</g5> to leave the archive as it is.",
    "text": "บันทึกการดาวน์โหลด (เลื่อนเมาส์ไปที่รายการ) จะบอกว่าเกิดอะไรขึ้น: <g1>แตกไฟล์ 12 ไฟล์ไปยัง…</g1> หรือทำไมไม่แตกไฟล์ เช่น <g2>ไม่สามารถแตกไฟล์ movie.7z.001: วอลุ่ม 3 หายไป</g2> ไฟล์เก็บถาวรที่เข้ารหัสที่ไม่มีรหัสผ่านจะเปิดหน้าต่าง <g3>รหัสผ่านของไฟล์เก็บถาวร</g3> พิมพ์รหัสผ่านแล้วคลิก <g4>แตกไฟล์</g4> หรือ <g5>ยกเลิก</g5> เพื่อปล่อยไฟล์เก็บถาวรไว้ตามเดิม"
   },
+  "1d2b4c5972daa383": {
+   "source": "It's ticked to begin with, and stays as you leave it for the next video.",
+   "text": "ถูกเลือกไว้ตั้งแต่แรก และจะคงอยู่ตามที่คุณตั้งค่าไว้สำหรับวิดีโอถัดไป"
+  },
   "1d4ee2f96c724f0f": {
    "source": "A torrent: what it sends to peers, while it runs.",
    "text": "สำหรับทอร์เรนต์: สิ่งที่ส่งไปยังเพียร์ขณะทำงาน"
@@ -2554,6 +2566,10 @@
    "source": "The highlight under it",
    "text": "ไฮไลต์ด้านล่าง"
   },
+  "266d0ba8f73d462e": {
+   "source": "Chapters",
+   "text": "บท"
+  },
   "266f7f0ad3be1761": {
    "source": "Languages →",
    "text": "ภาษา →"
@@ -2745,6 +2761,10 @@
   "28b58f9af9a6fed9": {
    "source": "In Chrome, Edge, Brave, Opera or Vivaldi",
    "text": "ใน Chrome, Edge, Brave, Opera หรือ Vivaldi"
+  },
+  "28e42e284885ce6e": {
+   "source": "It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. When the button can't tell which one you mean, the toolbar button's <g1>Media on this page</g1> lists them all. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. A stream goes with what the browser sent when the player asked for it, its referrer, its origin and its cookies (a player embedded from another site may have cookies the browser keeps for that page only), and MDM sends them again with each of its playlists and pieces: a site's video server that serves its own pages' players only lets MDM through as well. Sound players get the button too.",
+   "text": "ปุ่มนี้จะเลือกวิดีโอที่คุณคลิก: ไฟล์ของวิดีโอเองเมื่อเล่นไฟล์นั้น หรือสตรีมที่โปรแกรมเล่นโหลด (HLS หรือ DASH) หรือไม่ก็หน้าเว็บ หากปุ่มไม่สามารถระบุได้ว่าคุณหมายถึงวิดีโอใด ปุ่ม <g1>สื่อในหน้านี้</g1> บนแถบเครื่องมือจะแสดงรายการทั้งหมด โปรแกรมเล่นแบบฝังก็ใช้งานได้เช่นกัน และการลงชื่อเข้าใช้เว็บไซต์ของคุณ หน้าเว็บที่ฝังโปรแกรมเล่น และ User-Agent ของเบราว์เซอร์ของคุณจะถูกส่งไปด้วย ดังนั้นวิดีโอสำหรับสมาชิก หรือวิดีโอที่เล่นได้เฉพาะบนเว็บไซต์ที่ฝังไว้ ก็สามารถดาวน์โหลดได้ สตรีมจะถูกส่งไปพร้อมกับสิ่งที่เบราว์เซอร์ส่งเมื่อโปรแกรมเล่นร้องขอ, referrer, origin และคุกกี้ (โปรแกรมเล่นที่ฝังจากเว็บไซต์อื่นอาจมีคุกกี้ที่เบราว์เซอร์เก็บไว้สำหรับหน้านั้นเท่านั้น) และ MDM จะส่งสิ่งเหล่านี้อีกครั้งพร้อมกับเพลย์ลิสต์และส่วนประกอบแต่ละรายการ: เซิร์ฟเวอร์วิดีโอของเว็บไซต์ที่ให้บริการเฉพาะโปรแกรมเล่นในหน้าของตนเองก็จะอนุญาตให้ MDM ผ่านได้เช่นกัน โปรแกรมเล่นเสียงก็มีปุ่มนี้ด้วย"
   },
   "28eeaa8ad9bf85a3": {
    "source": "Requests",
@@ -3330,6 +3350,10 @@
    "source": "<g1>VPN and proxy support:</g1> send downloads through the browser's proxy or VPN extension (off until you turn it on).",
    "text": "<g1>รองรับ VPN และพร็อกซี:</g1> ส่งการดาวน์โหลดผ่านพร็อกซีหรือส่วนขยาย VPN ของเบราว์เซอร์ (ปิดอยู่จนกว่าคุณจะเปิดใช้งาน)"
   },
+  "31a94655ff7435c5": {
+   "source": "<g1>Arch</g1>: <x2/>, or",
+   "text": "<g1>Arch</g1>: <x2/> หรือ"
+  },
   "31c727cb512fbff6": {
    "source": "<g1>Download all links</g1> and <g2>Download selected links</g2> send a page's links to <g3>Link grabber</g3>.",
    "text": "<g1>ดาวน์โหลดลิงก์ทั้งหมด</g1> และ <g2>ดาวน์โหลดลิงก์ที่เลือก</g2> จะส่งลิงก์ของหน้าเว็บไปยัง <g3>ตัวดึงลิงก์</g3>"
@@ -3429,10 +3453,6 @@
   "33cb6035f72e6370": {
    "source": "Choose the subtitles; tick Put them into the video to keep them inside the file.",
    "text": "เลือกคำบรรยาย แล้วเลือก ใส่ลงในวิดีโอ เพื่อเก็บคำบรรยายไว้ในไฟล์"
-  },
-  "33cd34762a5593c2": {
-   "source": "It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. When the button can't tell which one you mean, the toolbar button's <g1>Media on this page</g1> lists them all. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
-   "text": "ปุ่มจะเลือกวิดีโอที่คุณคลิก: ไฟล์ของวิดีโอเองเมื่อเล่นไฟล์นั้น หรือสตรีมที่โปรแกรมเล่นโหลด (HLS หรือ DASH) มิฉะนั้นจะเป็นหน้าเว็บ เมื่อปุ่มไม่สามารถระบุได้ว่าคุณหมายถึงวิดีโอใด ปุ่ม <g1>สื่อในหน้านี้</g1> บนแถบเครื่องมือจะแสดงรายการทั้งหมด โปรแกรมเล่นแบบฝังก็ใช้งานได้เช่นกัน และการลงชื่อเข้าใช้ของคุณสำหรับไซต์, หน้าที่ฝังโปรแกรมเล่น และ User-Agent ของเบราว์เซอร์ของคุณจะถูกส่งไปด้วย ดังนั้นวิดีโอสำหรับสมาชิก หรือวิดีโอที่เล่นได้เฉพาะบนไซต์ที่ฝังเท่านั้น ก็สามารถดาวน์โหลดได้ โปรแกรมเล่นเสียงก็มีปุ่มนี้เช่นกัน"
   },
   "33e74c2131bce5b0": {
    "source": "Torrents share the cap fairly",
@@ -3681,6 +3701,10 @@
   "377dbb7411c44fb3": {
    "source": ".AppImage",
    "text": ".AppImage"
+  },
+  "37a51fbe4037e117": {
+   "source": "<g1>Any system</g1>, Deno for your user alone: <x2/> (on Windows, in PowerShell: <x3/>)",
+   "text": "<g1>ระบบใดก็ได้</g1>, Deno สำหรับผู้ใช้ของคุณคนเดียว: <x2/> (บน Windows ใน PowerShell: <x3/>)"
   },
   "37a82a5012e58c8d": {
    "source": "(the lighter background)",
@@ -4894,10 +4918,6 @@
    "source": "Free Download Manager",
    "text": "Free Download Manager"
   },
-  "4a68031b1da16fe4": {
-   "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window with the stream its player loaded (HLS or DASH), as the <g3>button over videos</g3> sends it, with your cookies for the stream's server and the page as the referrer.",
-   "text": "คลิกขวาที่ลิงก์ วิดีโอ เสียง หรือรูปภาพ แล้วเลือก <g1>ดาวน์โหลดด้วย Mister Download Manager</g1> MDM จะดาวน์โหลดรายการนั้นไม่ว่าจะเป็นชนิดใดก็ตาม เนื่องจากเป็นการสั่งดาวน์โหลดโดยตรง รายการชนิดไฟล์และเว็บไซต์ที่ยกเว้นจึงไม่มีผล (รายการเหล่านี้กำหนดเฉพาะการดาวน์โหลดที่ MDM รับไปโดยอัตโนมัติ) หากวิดีโอเล่นเป็นสตรีม หน้าต่าง <g2>ดาวน์โหลดวิดีโอ</g2> จะเปิดขึ้นพร้อมสตรีมที่เครื่องเล่นโหลดไว้ (HLS หรือ DASH) เช่นเดียวกับเมื่อใช้ <g3>ปุ่มเหนือวิดีโอ</g3> โดยจะส่งคุกกี้สำหรับเซิร์ฟเวอร์ของสตรีมและหน้าเว็บในฐานะหน้าผู้อ้างอิงไปด้วย"
-  },
   "4a736a6235625512": {
    "source": "Connections and resuming in detail →",
    "text": "การเชื่อมต่อและการดำเนินการต่อโดยละเอียด →"
@@ -5173,6 +5193,10 @@
   "4e56d054c4ea1845": {
    "source": "<g1>A minimized MDM keeps working</g1>: with the main window minimized (not to the notification area), queues didn't start their next file, the Scheduler's starts and stops didn't fire, download limits, the network adapter's kill switch, the clipboard monitor, the update check, the taskbar's progress and saving the list all waited until the window was restored. They run in every window state now, and their windows (Download complete, a limit's notice) open at once.",
    "text": "<g1>MDM ที่ย่อเล็กสุดยังคงทำงานได้</g1>: เมื่อหน้าต่างหลักถูกย่อเล็กสุด (ไม่ได้ย่อไปที่พื้นที่แจ้งเตือน) คิวจะไม่เริ่มไฟล์ถัดไป การเริ่มและหยุดของ ตัวจัดกำหนดการ จะไม่ทำงาน การจำกัดการดาวน์โหลด สวิตช์ปิดเครือข่าย ตัวตรวจสอบคลิปบอร์ด การตรวจสอบการอัปเดต ความคืบหน้าบนแถบงาน และการบันทึกรายการทั้งหมดจะรอจนกว่าหน้าต่างจะถูกคืนค่า ตอนนี้ทั้งหมดจะทำงานในทุกสถานะของหน้าต่าง และหน้าต่างของพวกมัน (ดาวน์โหลดเสร็จสมบูรณ์, การแจ้งเตือนการจำกัด) จะเปิดขึ้นทันที"
+  },
+  "4ea06c1b2a86d1c8": {
+   "source": "<g1>Hide web pages</g1> (on by default) leaves out links to pages (<x2/>, <x3/> and the like, and any link whose look-up found a web page): they are neither shown nor downloaded.",
+   "text": "<g1>ซ่อนหน้าเว็บ</g1> (เปิดใช้งานโดยค่าเริ่มต้น) จะไม่รวมลิงก์ไปยังหน้าเว็บ (<x2/>, <x3/> และอื่น ๆ รวมถึงลิงก์ใด ๆ ที่การค้นหาพบว่าเป็นหน้าเว็บ): จะไม่แสดงและไม่ดาวน์โหลด"
   },
   "4f07dda13d242d23": {
    "source": "Options on its Connection page: connections per download, per-server exceptions, Download limits and the DNS list",
@@ -5762,6 +5786,10 @@
    "source": "<g1>Needs a login</g1>: the server wants a user name and password, or the page's cookies.",
    "text": "<g1>ต้องเข้าสู่ระบบ</g1>: เซิร์ฟเวอร์ต้องการชื่อผู้ใช้และรหัสผ่าน หรือคุกกี้ของหน้าเว็บ"
   },
+  "57d55935c79c75f6": {
+   "source": "Install one of them, either works, then look the video up again. MDM finds Deno, Node.js (also one installed with nvm) and Bun by itself. If it still says so, the new program's folder isn't on the <x1/> MDM started with (Windows' installers add it for programs started after them): quit MDM (<g2>Tasks → Exit</g2>) and start it again.",
+   "text": "ติดตั้งหนึ่งในนั้น ตัวใดก็ได้ จากนั้นค้นหาวิดีโออีกครั้ง MDM จะพบ Deno, Node.js (รวมถึงที่ติดตั้งด้วย nvm) และ Bun ด้วยตัวเอง หากยังคงแจ้งอยู่ โฟลเดอร์ของโปรแกรมใหม่จะไม่อยู่ใน <x1/> ที่ MDM เริ่มต้น (ตัวติดตั้งของ Windows จะเพิ่มให้โปรแกรมที่เริ่มหลังจากนั้น): ออกจาก MDM (<g2>งาน → ออก</g2>) แล้วเริ่มใหม่อีกครั้ง"
+  },
   "57df30288a29fe94": {
    "source": "Made possible by these amazing humans",
    "text": "สร้างสรรค์โดยผู้คนยอดเยี่ยมเหล่านี้"
@@ -5881,6 +5909,10 @@
   "594222b0d8ddd185": {
    "source": "Add URL.",
    "text": "เพิ่ม URL"
+  },
+  "598886119cab837f": {
+   "source": "<g1>A web page's address.</g1> Paste or copy the address of a page (<x2/>) and MDM reads the page and lists the links on it, as the browser's <g3>Download all links</g3> does, in a package named after the page. The page itself is left unticked. This works for addresses that came on their own (pasted, copied, typed, in a list), not for the links found on a page, so MDM never wanders off through a site. MDM reads only what the page itself holds: links a page's scripts add after it loads come only through the browser.",
+   "text": "<g1>ที่อยู่ของหน้าเว็บ</g1> วางหรือคัดลอกที่อยู่ของหน้า (<x2/>) แล้ว MDM จะอ่านหน้าและแสดงรายการลิงก์บนหน้านั้น เหมือนกับที่เบราว์เซอร์ทำใน <g3>ดาวน์โหลดลิงก์ทั้งหมด</g3> โดยจัดเป็นแพ็กเกจที่ตั้งชื่อตามหน้า หน้าเว็บเองจะถูกปล่อยไว้โดยไม่เลือก การทำงานนี้ใช้ได้กับที่อยู่ที่มาด้วยตัวเอง (วาง, คัดลอก, พิมพ์, ในรายการ) ไม่ใช่สำหรับลิงก์ที่พบบนหน้า ดังนั้น MDM จะไม่ท่องไปทั่วเว็บไซต์ MDM อ่านเฉพาะสิ่งที่หน้าเว็บมีอยู่เท่านั้น: ลิงก์ที่สคริปต์ของหน้าเพิ่มหลังจากโหลดจะมาผ่านเบราว์เซอร์เท่านั้น"
   },
   "59920ff7101c276f": {
    "source": "Fix the translation in the row's third column and delete its <x1/> line.",
@@ -6526,6 +6558,10 @@
    "source": "The layout is familiar on purpose: the toolbar, the categories, the download list, the progress window with every connection, queues and the scheduler. The differences: MDM is free and open source, downloads BitTorrent and magnet links in the same list, finished faster in <g1>our benchmark</g1>, speaks 86 languages and has builds for Linux and macOS. IDM is the more mature product, refined over many years. See the full <g2>comparison</g2>.",
    "text": "เค้าโครงที่คุ้นเคยนี้เป็นไปตามเจตนา: แถบเครื่องมือ, หมวดหมู่, รายการดาวน์โหลด, หน้าต่างความคืบหน้าพร้อมการเชื่อมต่อแต่ละรายการ, คิว และตัวกำหนดเวลา สิ่งที่แตกต่างกันคือ MDM เป็นซอฟต์ต์แวร์ฟรีและโอเพนซอร์ส, ดาวน์โหลด BitTorrent และลิงก์แม่เหล็กในรายการเดียวกัน, เสร็จเร็วกว่าในการ<g1>ทดสอบประสิทธิภาพของเรา</g1>, รองรับ 86 ภาษา และมีเวอร์ชันสำหรับ Linux และ macOS ส่วน IDM เป็นผลิตภัณฑ์ที่สมบูรณ์กว่า ซึ่งได้รับการปรับปรุงมาหลายปี ดู<g2>การเปรียบเทียบ</g2>ฉบับเต็ม"
   },
+  "626d6a7f553a1946": {
+   "source": "<g1>macOS</g1>: <x2/>, or",
+   "text": "<g1>macOS</g1>: <x2/> หรือ"
+  },
   "62e049f954021405": {
    "source": "Control it from your phone or your browser",
    "text": "ควบคุมจากโทรศัพท์หรือเบราว์เซอร์ของคุณ"
@@ -6577,6 +6613,10 @@
   "63b82090a9141698": {
    "source": "A queue is a list of downloads that run in order, a few at a time. Click <g1>Download Later</g1> in <g2>Download File Info</g2>, or right-click downloads in the list and choose <g3>Add to queue</g3>. The <g4>Q</g4> column marks them, and <g5>Queues</g5> in the categories pane shows each queue on its own.",
    "text": "คิวคือรายการดาวน์โหลดที่จะทำงานตามลำดับ ทีละไม่กี่รายการ คลิก <g1>ดาวน์โหลดภายหลัง</g1> ใน <g2>ข้อมูลไฟล์ดาวน์โหลด</g2> หรือคลิกขวาที่รายการดาวน์โหลดในรายการแล้วเลือก <g3>เพิ่มลงในคิว</g3> คอลัมน์ <g4>Q</g4> จะทำเครื่องหมายไว้ และ <g5>คิว</g5> ในบานหน้าต่างหมวดหมู่จะแสดงแต่ละคิวแยกกัน"
+  },
+  "63bbda066dbbac86": {
+   "source": "On Linux, if neither can start, MDM draws with Mesa's software renderer, so the window still opens (a virtual machine without a graphics driver). A software renderer (WARP on Windows too) works, but keeps the processor busier while a window changes.",
+   "text": "บน Linux หากทั้งสองวิธีไม่สามารถเริ่มทำงานได้ MDM จะวาดด้วยซอฟต์แวร์เรนเดอร์ของ Mesa ทำให้หน้าต่างยังคงเปิดได้ (เครื่องเสมือนที่ไม่มีไดรเวอร์การ์ดจอ) ซอฟต์แวร์เรนเดอร์ (WARP บน Windows ด้วย) ทำงานได้ แต่จะทำให้โปรเซสเซอร์ทำงานหนักขึ้นเมื่อหน้าต่างมีการเปลี่ยนแปลง"
   },
   "63cf6dd5807201af": {
    "source": "<g1>Any (the system chooses)</g1> is the default. Choose an adapter instead, and MDM sends its connections through that one only. When it disconnects, or the VPN is switched off, nothing goes out another way. Running downloads stop with \"… is not connected\" and start again by themselves when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
@@ -6713,10 +6753,6 @@
   "65cb5200a6c6b9ad": {
    "source": "The video download button moves to a free corner instead of covering a control of the page, such as a thumbnail's watch-later button (<g1>#421</g1>). Dragging it still puts it where you want it.",
    "text": "ปุ่มดาวน์โหลดวิดีโอจะย้ายไปยังมุมที่ว่างแทนที่จะไปทับส่วนควบคุมของหน้า เช่น ปุ่มดูภายหลังของภาพขนาดย่อ (<g1>#421</g1>) การลากปุ่มยังคงสามารถวางไว้ในตำแหน่งที่คุณต้องการได้"
-  },
-  "65da44cc551abd0f": {
-   "source": "<g1>Download complete</g1> shows the file's size, its address and where it was saved. Choose <g2>Open</g2>, <g3>Open with...</g3>, <g4>Open folder</g4> or <g5>Close</g5>. On Windows you can also drag the small box at the bottom right into Explorer, an email or a chat to drop the file there. The window shows above your other programs until you click it, without taking the keyboard from the one you're typing in.",
-   "text": "<g1>ดาวน์โหลดเสร็จสมบูรณ์</g1> จะแสดงขนาดไฟล์ ที่อยู่ของไฟล์ และตำแหน่งที่บันทึกไว้ เลือก <g2>เปิด</g2>, <g3>เปิดด้วย...</g3>, <g4>เปิดโฟลเดอร์</g4> หรือ <g5>ปิด</g5> บน Windows คุณยังสามารถลากกล่องเล็กๆ ที่มุมล่างขวาไปยัง Explorer, อีเมล หรือแชท เพื่อวางไฟล์ที่นั่นได้ หน้าต่างจะแสดงอยู่เหนือโปรแกรมอื่นๆ ของคุณจนกว่าคุณจะคลิก โดยไม่แย่งแป้นพิมพ์จากโปรแกรมที่คุณกำลังพิมพ์อยู่"
   },
   "662e8cdda4078826": {
    "source": "32 MiB, one connection in three crawls at 128 KB/s",
@@ -7070,6 +7106,10 @@
    "source": "Every run and the raw data",
    "text": "ทุกการทำงานและข้อมูลดิบ"
   },
+  "6be8a7107f3f9737": {
+   "source": "Choose <g1>Subtitles</g1> if you want them (see below). <g2>Embed chapters</g2> is ticked: see <g3>Chapters</g3>.",
+   "text": "เลือก <g1>คำบรรยาย</g1> หากต้องการ (ดูด้านล่าง) <g2>ฝังบท</g2> ถูกเลือกไว้: ดู <g3>บท</g3>"
+  },
   "6c054ced98124c36": {
    "source": "Options, Connection: connections per download and per-server exceptions.",
    "text": "ตัวเลือก, การเชื่อมต่อ: จำนวนการเชื่อมต่อต่อการดาวน์โหลด และข้อยกเว้นต่อเซิร์ฟเวอร์"
@@ -7278,9 +7318,17 @@
    "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what MDM does and what it doesn't. The switches it mentions are in <g1>Tasks → Torrent settings...</g1>.",
    "text": "ทอร์เรนต์มาจากคอมพิวเตอร์ของคนอื่น ไม่ใช่จากเว็บไซต์เดียว ซึ่งเปลี่ยนสิ่งที่คุณเชื่อถือได้และสิ่งที่คนอื่นเห็นได้ หน้านี้บอกอย่างชัดเจนว่า MDM ทำอะไรและไม่ทำอะไร สวิตช์ที่กล่าวถึงอยู่ใน <g1>งาน → การตั้งค่าทอร์เรนต์...</g1>"
   },
+  "6edac9507a8f3ffd": {
+   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it draws the next way (on Windows WARP, then OpenGL), and <g1>View → Draw with</g1> says why.",
+   "text": "หากการ์ดจอถูกรีเซ็ตขณะ MDM ทำงาน (มีการอัปเดตไดรเวอร์) MDM จะเริ่มทำงานใหม่เอง หากเกิดการรีเซ็ตสองครั้งใน 10 นาที MDM จะใช้วิธีการวาดถัดไป (บน Windows คือ WARP จากนั้น OpenGL) และ <g1>มุมมอง → วาดด้วย</g1> จะระบุเหตุผล"
+  },
   "6eef75044c57910f": {
    "source": "Stop now also stops yt-dlp, which used to keep downloading in the background.",
    "text": "หยุด ตอนนี้ยังหยุด yt-dlp ซึ่งเคยดาวน์โหลดอยู่เบื้องหลัง"
+  },
+  "6f06002d2161cba3": {
+   "source": "Last updated 2026-11-13",
+   "text": "อัปเดตล่าสุด 2026-11-13"
   },
   "6f082d0aaa31277a": {
    "source": "The dotted keyboard focus rectangle",
@@ -7722,6 +7770,10 @@
    "source": "End-to-end medians with interquartile ranges, the ratio with its 95% interval, and the Mann–Whitney test, as <x1/> writes them.",
    "text": "ค่ามัธยฐานตั้งแต่ต้นจนจบพร้อมช่วงระหว่างควอร์ไทล์, อัตราส่วนพร้อมช่วง 95% และการทดสอบ Mann–Whitney ตามที่ <x1/> เขียนไว้"
   },
+  "75b26b8aac083dec": {
+   "source": "Then yt-dlp does what it does after a download: it joins the video and its sound with ffmpeg into one MP4, saves or embeds the subtitles, puts the chapters into the file, and converts the sound for an MP3, Opus or FLAC choice.",
+   "text": "จากนั้น yt-dlp จะทำตามที่ทำหลังจากการดาวน์โหลด: มันจะรวมวิดีโอและเสียงเข้าด้วยกันด้วย ffmpeg เป็น MP4 ไฟล์เดียว บันทึกหรือฝังคำบรรยาย ใส่บทลงในไฟล์ และแปลงเสียงสำหรับตัวเลือก MP3, Opus หรือ FLAC"
+  },
   "75c5e88776534271": {
    "source": "Adding a link again after its finished file was moved or deleted starts a new download, instead of asking about a duplicate that isn't there (<g1>#342</g1>).",
    "text": "การเพิ่มลิงก์อีกครั้งหลังจากไฟล์ที่เสร็จสมบูรณ์ถูกย้ายหรือลบ จะเริ่มการดาวน์โหลดใหม่ แทนที่จะถามเกี่ยวกับไฟล์ซ้ำที่ไม่มีอยู่ (<g1>#342</g1>)"
@@ -7781,10 +7833,6 @@
   "76e020dc2c735bdd": {
    "source": "From top to bottom:",
    "text": "จากบนลงล่าง:"
-  },
-  "76e8fe34285e22ca": {
-   "source": "Turn the look-ups off in <g1>Options → Archives → Look links up when they arrive</g1>. Some file hosts count a look-up as a download.",
-   "text": "ปิดการค้นหาใน <g1>ตัวเลือก → ไฟล์เก็บถาวร → ค้นหาลิงก์เมื่อมาถึง</g1> โฮสต์ไฟล์บางแห่งนับการค้นหาเป็นการดาวน์โหลด"
   },
   "7704f35f9d60deac": {
    "source": "Our benchmark, replayed: the same PC, the same test server, the median of alternating runs.",
@@ -7977,10 +8025,6 @@
   "7a31f6dd87f98452": {
    "source": "<g1>The window no longer freezes when the system's sleep or keychain service is slow</g1> (follows <g2>#222</g2>): a queue set to <g3>Wake the computer to run this queue</g3> asks the system to keep the computer awake while it runs. On Linux that is logind, which can be slow to answer just after the computer wakes, exactly when such a queue starts, and MDM waited for it on the window's own thread (asking again every 5 seconds while it refused). It is now asked in the background, on every system; the queue's downloads, retries and log lines are the same. A keyring that doesn't answer at start (a stopped GNOME Keyring) is now waited for once, at most 5 seconds, instead of once per saved password, and saving the list no longer asks it at all. On Linux the check for a tray to hide windows in, and in Download File Info the check that <g4>Save As</g4> isn't a folder (slow on a network share that doesn't answer), no longer run on the window's thread on every frame.",
    "text": "<g1>หน้าต่างไม่ค้างอีกต่อไปเมื่อบริการสลีปหรือคีย์เชนของระบบทำงานช้า</g1> (ต่อเนื่องจาก <g2>#222</g2>): คิวที่ตั้งค่าให้ <g3>ปลุกคอมพิวเตอร์เพื่อเริ่มคิวนี้</g3> จะสั่งให้ระบบเปิดคอมพิวเตอร์ไว้ขณะทำงาน บน Linux คือ logind ซึ่งอาจตอบกลับช้าหลังจากคอมพิวเตอร์ตื่นขึ้นมาพอดีเมื่อคิวเริ่มทำงาน และ MDM จะรอการตอบกลับบนเธรดของหน้าต่างเอง (ถามซ้ำทุก 5 วินาทีหากยังปฏิเสธ) ตอนนี้จะถามในเบื้องหลังบนทุกระบบ การดาวน์โหลด การลองใหม่ และบันทึกของคิวจะเหมือนเดิม คีย์ริงที่ไม่ตอบกลับเมื่อเริ่มต้น (GNOME Keyring ที่หยุดทำงาน) จะรอเพียงครั้งเดียว สูงสุด 5 วินาที แทนที่จะรอครั้งละรหัสผ่านที่บันทึกไว้ และการบันทึกรายการจะไม่ถามคีย์ริงเลย บน Linux การตรวจสอบถาดเพื่อซ่อนหน้าต่าง และใน ข้อมูลไฟล์ดาวน์โหลด การตรวจสอบว่า <g4>บันทึกเป็น</g4> ไม่ใช่โฟลเดอร์ (ช้าบนเครือข่ายที่ไม่ได้ตอบกลับ) จะไม่ทำงานบนเธรดของหน้าต่างในทุกเฟรมอีกต่อไป"
-  },
-  "7a431c024b9ed18e": {
-   "source": "Choose <g1>Subtitles</g1> if you want them (see below).",
-   "text": "เลือก <g1>คำบรรยาย</g1> หากคุณต้องการ (ดูด้านล่าง)"
   },
   "7a5b7ab31d5f22cb": {
    "source": "Click <g1>Add Torrent</g1> on the toolbar to open a <x2/> file, or use the arrow next to it for <g3>Add magnet link...</g3>. A magnet link pasted into <g4>Add URL</g4> works too. Torrents land in the same list as your other downloads, marked <g5>Torrent</g5> in the <g6>Source</g6> column, and go into queues and the Scheduler like them.",
@@ -8537,6 +8581,10 @@
   "810aeb3bcab43ab3": {
    "source": "A torrent: what it has sent to peers against what it took.",
    "text": "ทอร์เรนต์: สิ่งที่ส่งให้เพียร์เทียบกับสิ่งที่ได้รับ"
+  },
+  "810e3acee25be1c6": {
+   "source": "YouTube hides most of a video's qualities behind small puzzles that yt-dlp solves with a JavaScript runtime: <g1>Deno</g1>, <g2>Node.js</g2> or <g3>Bun</g3>. Without one, the list is short, sometimes only the sound and a low quality, and MDM says so: <g4>YouTube needs a JavaScript runtime to list its video qualities</g4>. Other sites don't need one.",
+   "text": "YouTube ซ่อนคุณภาพวิดีโอส่วนใหญ่ไว้เบื้องหลังปริศนาเล็ก ๆ ที่ yt-dlp แก้ไขด้วยรันไทม์ JavaScript: <g1>Deno</g1>, <g2>Node.js</g2> หรือ <g3>Bun</g3> หากไม่มี รันไทม์ รายการจะสั้น บางครั้งมีเพียงเสียงและคุณภาพต่ำ และ MDM จะแจ้งว่า: <g4>YouTube ต้องการรันไทม์ JavaScript เพื่อแสดงรายการคุณภาพวิดีโอ</g4> ไซต์อื่น ๆ ไม่จำเป็นต้องใช้"
   },
   "8144fd9d669ebeed": {
    "source": "Does it download torrents? — Mister Download Manager",
@@ -9178,10 +9226,6 @@
    "source": "<g1>Themes</g1><g2>Nine looks, light and dark, from Classic to Aqua, or your own in a text file.</g2>",
    "text": "<g1>ธีม</g1><g2>มี 9 รูปแบบ ทั้งแบบสว่างและมืด ตั้งแต่คลาสสิกไปจนถึง Aqua หรือสร้างธีมของคุณเองในไฟล์ข้อความ</g2>"
   },
-  "8b93f9dffbe6efdb": {
-   "source": "If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds of its own (the time MDM spends loading your list and its icons doesn't count, however slow the computer is just after it starts), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
-   "text": "หาก Direct3D, Vulkan หรือ Metal ไม่สามารถเริ่มทำงานบนคอมพิวเตอร์ของคุณได้ (ไม่มีไดรเวอร์สำหรับสิ่งนั้น, เครื่องเสมือนบางเครื่อง) หรือหน้าต่างแรกไม่แสดงภายใน 10 วินาที (ไม่นับเวลาที่ MDM ใช้ในการโหลดรายการและไอคอนของคุณ ไม่ว่าจะช้าแค่ไหนหลังจากเริ่มทำงาน) MDM จะวาดด้วย OpenGL และ <g1>มุมมอง → วาดด้วย</g1> จะระบุสาเหตุ การเลือกอีกครั้งจะลองอีกครั้งในการเริ่มครั้งถัดไป"
-  },
   "8b95ee287644fd4f": {
    "source": "Mister Download Manager's link grabber collects a page's links, sorts them into packages, checks which are online and extracts the archives they bring.",
    "text": "ตัวดึงลิงก์ของ Mister Download Manager จะรวบรวมลิงก์ของหน้าเว็บ จัดเรียงเป็นแพ็กเกจ ตรวจสอบว่าลิงก์ใดออนไลน์ และแตกไฟล์เก็บถาวรที่นำมา"
@@ -9229,6 +9273,10 @@
   "8c6583c8229f13c3": {
    "source": "Downloads and torrents in one app, stable on Android",
    "text": "ดาวน์โหลดและทอร์เรนต์ในแอปเดียว เสถียรบน Android"
+  },
+  "8c714d229ab4b2fb": {
+   "source": "They go into a video (MP4, MKV, WebM) and into the sound as the site has it (<g1>Audio only, original</g1>), not into an MP3, Opus or FLAC file.",
+   "text": "บทจะถูกใส่ลงในวิดีโอ (MP4, MKV, WebM) และในเสียงตามที่เว็บไซต์มี (<g1>เฉพาะเสียง, ต้นฉบับ</g1>) ไม่ใช่ในไฟล์ MP3, Opus หรือ FLAC"
   },
   "8c7321b31cd98d97": {
    "source": "<g1>Toolbar.</g1> <g2>Add URL</g2>, <g3>Add Torrent</g3>, <g4>Resume</g4>, <g5>Stop</g5>, <g6>Stop All</g6>, <g7>Delete</g7>, <g8>Delete Completed</g8>, <g9>Options</g9>, <g10>Scheduler</g10>, <g11>Start Queue</g11>, <g12>Stop Queue</g12>. The small arrow next to <g13>Add Torrent</g13>, <g14>Start Queue</g14> and <g15>Stop Queue</g15> opens more choices.",
@@ -11706,6 +11754,10 @@
    "source": "<g1>Crash reports</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>รายงานข้อขัดข้อง</g1><g2>Mister Download Manager</g2>"
   },
+  "b1a0ed24728365e7": {
+   "source": "The command line (<x1/>) puts them in too, whenever ffmpeg is there.",
+   "text": "บรรทัดคำสั่ง (<x1/>) ก็ใส่บทลงไปเช่นกัน เมื่อมี ffmpeg"
+  },
   "b1aebd102c185a01": {
    "source": "RSS feeds for torrents, with download rules — Mister Download Manager",
    "text": "ฟีด RSS สำหรับทอร์เรนต์ พร้อมกฎการดาวน์โหลด — Mister Download Manager"
@@ -11713,10 +11765,6 @@
   "b1b2249661e1c4a9": {
    "source": "Keep changes focused and match the code around them. A few rules hold everywhere:",
    "text": "ให้การเปลี่ยนแปลงมุ่งเน้นและเข้ากับโค้ดรอบ ๆ มีกฎบางอย่างที่ใช้ได้ทุกที่:"
-  },
-  "b1cfb9dac9c38d80": {
-   "source": "Then yt-dlp does what it does after a download: it joins the video and its sound with ffmpeg into one MP4, saves or embeds the subtitles, and converts the sound for an MP3, Opus or FLAC choice.",
-   "text": "จากนั้น yt-dlp จะทำสิ่งที่ทำหลังจากการดาวน์โหลด: จะรวมวิดีโอและเสียงเข้าด้วยกันด้วย ffmpeg เป็น MP4 เดียว บันทึกหรือฝังคำบรรยาย และแปลงเสียงสำหรับตัวเลือก MP3, Opus หรือ FLAC"
   },
   "b1d90b3e9d2a1cd5": {
    "source": "runs unit tests and end-to-end downloads against <x1/> with injected faults (slow, dropped and refused connections, servers without ranges, changing files). <x2/> runs the published speed comparison; its raw data is in <x3/>.",
@@ -11769,6 +11817,10 @@
   "b26bf4af67d50f02": {
    "source": "If you want Internet Download Manager's layout without its price, Mister Download Manager: it is free and open source, laid out like IDM, imports your IDM list, and also downloads torrents and videos. Free Download Manager, AB Download Manager, Motrix, Neat Download Manager, Prism, JDownloader 2, Xtreme Download Manager and Gopeed are free too, each with its own strengths.",
    "text": "หากคุณต้องการหน้าตาของ Internet Download Manager โดยไม่ต้องเสียเงิน Mister Download Manager คือคำตอบ: เป็นโปรแกรมฟรีและโอเพนซอร์ส มีหน้าตาเหมือน IDM สามารถนำเข้ารายการ IDM ของคุณได้ และยังดาวน์โหลดไฟล์ torrent และวิดีโอได้อีกด้วย Free Download Manager, AB Download Manager, Motrix, Neat Download Manager, Prism, JDownloader 2, Xtreme Download Manager และ Gopeed ก็เป็นโปรแกรมฟรีเช่นกัน โดยแต่ละโปรแกรมก็มีจุดเด่นของตัวเอง"
+  },
+  "b26c000488bb45a1": {
+   "source": "<g1>Windows</g1>: <x2/>, or <x3/>. The installers on <g4>deno.com</g4> and <g5>nodejs.org</g5> work too.",
+   "text": "<g1>Windows</g1>: <x2/> หรือ <x3/> ตัวติดตั้งบน <g4>deno.com</g4> และ <g5>nodejs.org</g5> ก็ใช้งานได้เช่นกัน"
   },
   "b26fdfb3218b9d13": {
    "source": "Many more: the checksum dialog, the progress window's completion options and speed limit, the torrent and video windows (Stop a look-up, stale video choices), Batch's letter ranges, addresses without http://, duplicate links arriving together, imports that doubled downloads, menu titles that shared access letters in French and other languages, and more.",
@@ -11889,6 +11941,10 @@
   "b3ca971adc7126d9": {
    "source": "View → Theme switches at once, keeping the layout.",
    "text": "มุมมอง → ชุดรูปแบบ เปลี่ยนได้ทันทีโดยคงเค้าโครงเดิมไว้"
+  },
+  "b3d7bbeea9ab71d3": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g19>Embed chapters</g19> does. <x20/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x21/>; when it isn't connected, nothing starts.",
+   "text": "ดาวน์โหลดวิดีโอ; <x1/> ใช้ตัวเลือกคุณภาพจาก <x2/> (<x3/> = ไฟล์เดี่ยวที่ดีที่สุด; <x4/> = เสียงอย่างเดียวตามที่เว็บไซต์มี ไม่มีการแปลง; <x5/>, <x6/>, <x7/> หรือ <x8/> = เสียงเป็น MP3 ที่บิตเรตนั้น, <x9/> ที่บิตเรตแปรผันที่ดีที่สุด; <x10/> = เป็น Opus; <x11/> = เป็น FLAC, ไม่สูญเสียคุณภาพแต่ไม่ดีไปกว่าเสียงของเว็บไซต์; การแปลงต้องใช้ ffmpeg) <x12/>: ตัวดาวน์โหลดของ MDM จะดึงแต่ละสตรีมที่ yt-dlp พบผ่านการเชื่อมต่อจำนวนเท่านี้ (ค่าเริ่มต้น 8, ตั้งแต่ 1 ถึง 128), สตรีมที่เป็นชิ้นส่วน (HLS, DASH) จะดึงพร้อมกันจำนวนชิ้นส่วนเท่านี้ <x13/> บันทึกคำบรรยายไว้ข้างๆ: รหัสภาษาจาก <x14/> (<x15/>), หรือ <x16/> สำหรับทุกภาษาที่ผู้อัปโหลดให้มา; <x17/> ใช้คำบรรยายอัตโนมัติของเว็บไซต์แทน; <x18/> ใส่คำบรรยายลงในวิดีโอ (ต้องใช้ ffmpeg, MP4 หรือ MKV) ด้วย ffmpeg, บทของวิดีโอจะถูกใส่ลงในไฟล์ด้วย เช่นเดียวกับ <g19>ฝังบท</g19> ของ ดาวน์โหลดวิดีโอ <x20/> ส่งการเชื่อมต่อของการดาวน์โหลด และของ yt-dlp (และ ffmpeg) ผ่านอะแดปเตอร์เครือข่ายเดียว เช่นเดียวกับ <x21/>; เมื่อไม่ได้เชื่อมต่อ จะไม่มีอะไรเริ่มต้น"
   },
   "b3f1633383cc8b77": {
    "source": "Open <g1>Downloads → Options</g1>, or click <g2>Options</g2> on the toolbar. The window has twelve pages on two rows of tabs. <g3>OK</g3> saves your changes; closing the window or pressing <g4>Esc</g4> throws them away.",
@@ -12770,10 +12826,6 @@
    "source": "Choose before you add",
    "text": "เลือกก่อนเพิ่ม"
   },
-  "c20a850dfc745632": {
-   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
-   "text": "หากทั้งสองวิธีเริ่มทำงานไม่ได้ MDM จะวาดด้วยตัวแสดงผลซอฟต์แวร์ (ของ Microsoft บน Windows และของ Mesa บน Linux) เพื่อให้หน้าต่างยังเปิดได้ (เช่น Remote Desktop หรือเครื่องเสมือนที่ไม่มีไดรเวอร์กราฟิก) วิธีนี้ใช้งานได้ แต่ทำให้โปรเซสเซอร์ทำงานหนักขึ้น"
-  },
   "c21ae87a328182aa": {
    "source": "<g1>Link grabber</g1><g2>A page's links gathered, sorted into packages and checked online, then the archives unpacked when they arrive.</g2>",
    "text": "<g1>ตัวดึงลิงก์</g1><g2>รวบรวมลิงก์จากหน้าเว็บ จัดเรียงเป็นแพ็กเกจ ตรวจสอบออนไลน์ และแตกไฟล์เก็บถาวรเมื่อดาวน์โหลดเสร็จ</g2>"
@@ -12918,6 +12970,10 @@
    "source": "The download manager you already know, rebuilt to be faster. Free, open source and written from scratch in Rust.",
    "text": "ตัวจัดการการดาวน์โหลดที่คุณรู้จักอยู่แล้ว สร้างใหม่ให้เร็วขึ้น ฟรี, โอเพนซอร์ส และเขียนขึ้นใหม่ทั้งหมดด้วย Rust"
   },
+  "c4d8ea1c0d48428a": {
+   "source": "It needs ffmpeg, which writes them. A video without chapters is saved as it is.",
+   "text": "ต้องใช้ ffmpeg ซึ่งเป็นตัวเขียนบท วิดีโอที่ไม่มีบทจะถูกบันทึกตามเดิม"
+  },
   "c4eff53dc61fce12": {
    "source": "Your rights",
    "text": "สิทธิ์ของคุณ"
@@ -12989,6 +13045,10 @@
   "c5980664ded251b8": {
    "source": "<g1>The system:</g1> MDM's version and how you installed it, your operating system and its version, the processor, the language and theme, and how many downloads and queues you have. These are counts only.",
    "text": "<g1>ระบบ:</g1> เวอร์ชันของ MDM และวิธีการติดตั้ง ระบบปฏิบัติการและเวอร์ชัน โปรเซสเซอร์ ภาษาและธีม และจำนวนการดาวน์โหลดและคิวที่คุณมี นี่เป็นเพียงจำนวนเท่านั้น"
+  },
+  "c5a292e743078486": {
+   "source": "A distribution's yt-dlp can also be too old for YouTube: if the list stays short, click <g1>Use MDM's own copy</g1> beside yt-dlp in <g2>Helpers...</g2>.",
+   "text": "yt-dlp ของบางดิสโทรอาจเก่าเกินไปสำหรับ YouTube: หากรายการยังคงสั้น ให้คลิก <g1>ใช้สำเนาของ MDM เอง</g1> ข้าง yt-dlp ใน <g2>ตัวช่วย...</g2>"
   },
   "c5b1d8d5e4be4a3b": {
    "source": "How the pictures come down",
@@ -13154,6 +13214,10 @@
    "source": "Checked before you download",
    "text": "ตรวจสอบก่อนดาวน์โหลด"
   },
+  "c845f9239d5bddd5": {
+   "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window with the stream its player loaded (HLS or DASH), as the <g3>button over videos</g3> sends it, with your cookies for the stream's server and what the browser sent with the stream (its referrer and origin, else the page as the referrer).",
+   "text": "คลิกขวาที่ลิงก์ วิดีโอ เสียง หรือรูปภาพ แล้วเลือก <g1>ดาวน์โหลดด้วย Mister Download Manager</g1> MDM จะดาวน์โหลดไฟล์นั้นไม่ว่าจะเป็นประเภทใด: คุณเป็นผู้ร้องขอ ดังนั้นรายการประเภทไฟล์และเว็บไซต์ที่ยกเว้นจึงไม่มีผลบังคับใช้ที่นี่ (มีผลเฉพาะกับการตัดสินใจว่า MDM จะเข้าควบคุมการดาวน์โหลดใดโดยอัตโนมัติ) วิดีโอที่เล่นเป็นสตรีมจะไปที่หน้าต่าง <g2>ดาวน์โหลดวิดีโอ</g2> พร้อมกับสตรีมที่โปรแกรมเล่นโหลด (HLS หรือ DASH) เช่นเดียวกับที่ <g3>ปุ่มเหนือวิดีโอ</g3> ส่งไป โดยมีคุกกี้ของคุณสำหรับเซิร์ฟเวอร์สตรีมและสิ่งที่เบราว์เซอร์ส่งมาพร้อมกับสตรีม (referrer และ origin หรือไม่ก็หน้าเว็บเป็น referrer)"
+  },
   "c84f2046978e476a": {
    "source": "A title bar MDM draws itself",
    "text": "แถบชื่อเรื่องที่ MDM วาดเอง"
@@ -13297,10 +13361,6 @@
   "ca67cb26c4c8dabb": {
    "source": "View → Theme changes how MDM looks at once and keeps everything where it was. Pick one of the built-in looks, each with a light and a dark side, or make your own in a text file.",
    "text": "มุมมอง → ชุดรูปแบบ จะเปลี่ยนรูปลักษณ์ของ MDM ทันที โดยที่ทุกอย่างยังคงอยู่ที่เดิม เลือกรูปลักษณ์ที่มีให้ในตัว ซึ่งแต่ละแบบมีทั้งโหมดสว่างและโหมดมืด หรือสร้างเองในไฟล์ข้อความ"
-  },
-  "ca722db87f0d3bad": {
-   "source": "Last updated 2026-11-12 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "อัปเดตล่าสุด 12 พฤศจิกายน 2569 · ใช้กับแอป ส่วนขยายเบราว์เซอร์ และ misterdownloadmanager.com"
   },
   "ca7a6b77fb1e5a3c": {
    "source": "strengthens every edge and text colour on top.",
@@ -13962,6 +14022,10 @@
    "source": "Playlists and channels",
    "text": "เพลย์ลิสต์และช่อง"
   },
+  "d4ce3b34f58e526c": {
+   "source": "<g1>Ubuntu and Debian</g1>:",
+   "text": "<g1>Ubuntu และ Debian</g1>:"
+  },
   "d4d2535439e2c024": {
    "source": "Coming from IDM?",
    "text": "เปลี่ยนจาก IDM มาใช้หรือไม่"
@@ -14277,6 +14341,10 @@
   "d92f326852722dd3": {
    "source": "Does it work on Mac and Linux?",
    "text": "ใช้งานบน Mac และ Linux ได้หรือไม่?"
+  },
+  "d93076a907e08557": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your graphics card (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds of its own (the time MDM spends loading your list and its icons doesn't count, however slow the computer is just after it starts), MDM draws another way, and <g1>View → Draw with</g1> says which and why. On Windows that is Direct3D on Microsoft's software renderer (WARP), then OpenGL only if WARP can't draw either: the older cards without Direct3D 12 (Intel's HD Graphics 3000 to 5500, older AMD Radeon cards) froze or crashed inside their OpenGL driver, and WARP draws MDM right there. On Linux and macOS it is OpenGL. Choosing it again tries the card again at the next start.",
+   "text": "หาก Direct3D, Vulkan หรือ Metal ไม่สามารถเริ่มทำงานบนการ์ดจอของคุณได้ (ไม่มีไดรเวอร์ หรือในบางเครื่องเสมือน) หรือหน้าต่างแรกไม่แสดงภายใน 10 วินาที (ไม่นับเวลาที่ MDM ใช้โหลดรายการและไอคอน แม้คอมพิวเตอร์จะช้าแค่ไหนหลังเริ่มทำงาน) MDM จะใช้วิธีอื่นในการวาด และ <g1>มุมมอง → วาดด้วย</g1> จะระบุว่าใช้อะไรและเพราะเหตุใด บน Windows จะใช้ Direct3D บนซอฟต์แวร์เรนเดอร์ของ Microsoft (WARP) จากนั้นจะใช้ OpenGL ก็ต่อเมื่อ WARP ไม่สามารถวาดได้เท่านั้น: การ์ดจอรุ่นเก่าที่ไม่มี Direct3D 12 (Intel HD Graphics 3000 ถึง 5500, การ์ด AMD Radeon รุ่นเก่า) จะค้างหรือหยุดทำงานภายในไดรเวอร์ OpenGL ของมัน และ WARP จะวาด MDM ได้ทันที บน Linux และ macOS จะใช้ OpenGL การเลือกอีกครั้งจะลองใช้การ์ดจออีกครั้งในการเริ่มทำงานครั้งถัดไป"
   },
   "d94b3dd782154f61": {
    "source": "Set up the extension once, and every download link you click in Firefox, Chrome, Edge, Brave, Opera, Vivaldi or Helium goes to MDM.",
@@ -15042,6 +15110,10 @@
    "source": "<g1>source</g1> is the English text; leave it as it is. Change only <g2>translation</g2>.",
    "text": "<g1>source</g1> คือข้อความภาษาอังกฤษ; ปล่อยไว้ตามเดิม เปลี่ยนเฉพาะ <g2>translation</g2>"
   },
+  "e6800d5aa1fd6842": {
+   "source": "On Windows, an OpenGL older than 3.0 (an old graphics card's driver, such as Intel's first HD Graphics, whose OpenGL is 2.1) can't draw MDM: its windows come out as garbage. With <g1>OpenGL</g1> chosen in <g2>View → Draw with</g2> on such a card, MDM notices it as it starts and starts again with Direct3D on WARP, from then on, and <g3>View → Draw with</g3> says so. Choosing <g4>OpenGL</g4> there tries it again.",
+   "text": "บน Windows, OpenGL ที่เก่ากว่า 3.0 (ไดรเวอร์การ์ดจอรุ่นเก่า เช่น Intel HD Graphics รุ่นแรก ซึ่ง OpenGL คือ 2.1) ไม่สามารถวาด MDM ได้: หน้าต่างจะแสดงผลผิดพลาด เมื่อเลือก <g1>OpenGL</g1> ใน <g2>มุมมอง → วาดด้วย</g2> บนการ์ดจอแบบนั้น MDM จะตรวจพบเมื่อเริ่มทำงานและจะเริ่มใหม่ด้วย Direct3D บน WARP ตั้งแต่นั้นเป็นต้นไป และ <g3>มุมมอง → วาดด้วย</g3> จะระบุไว้ การเลือก <g4>OpenGL</g4> ที่นั่นจะลองใหม่อีกครั้ง"
+  },
   "e680897e60d1dca2": {
    "source": "To bring the built-in categories back as they came, with their names, file types and folders, use <g1>Options → Save to → Restore the built-in categories</g1>. Your own categories, General and Torrents stay as they are.",
    "text": "หากต้องการคืนชื่อ ประเภทไฟล์ และโฟลเดอร์เดิมให้หมวดหมู่ในตัว ให้ใช้ <g1>ตัวเลือก → บันทึกไปที่ → คืนค่าหมวดหมู่ในตัว</g1> หมวดหมู่ที่สร้างเอง หมวดหมู่ทั่วไป และทอร์เรนต์จะยังคงเหมือนเดิม"
@@ -15073,6 +15145,10 @@
   "e70f4ddad4e54ab0": {
    "source": "Press <g1>F3</g1> to jump to the next match. The search wraps round to the top.",
    "text": "กด <g1>F3</g1> เพื่อข้ามไปยังรายการที่ตรงกันถัดไป การค้นหาจะวนกลับไปที่ด้านบน"
+  },
+  "e71e432fdd540d5b": {
+   "source": "Turn the look-ups off in <g1>Options → Archives → Look links up when they arrive</g1>. Some file hosts count a look-up as a download. With the look-ups off, MDM asks nothing of the network until you start, so a web page's address isn't read for its links either.",
+   "text": "ปิดการค้นหาใน <g1>ตัวเลือก → ไฟล์เก็บถาวร → ค้นหาลิงก์เมื่อได้รับ</g1> โฮสต์ไฟล์บางแห่งนับการค้นหาเป็นการดาวน์โหลด เมื่อปิดการค้นหา MDM จะไม่ขอข้อมูลจากเครือข่ายจนกว่าคุณจะเริ่ม ดังนั้นที่อยู่ของหน้าเว็บจะไม่ถูกอ่านเพื่อหาลิงก์ด้วย"
   },
   "e7281739beb4476f": {
    "source": "A download manager can fill your whole connection. These steps cap MDM so that browsing, video calls and games stay smooth.",
@@ -15141,10 +15217,6 @@
   "e7d58a9cc03da7fd": {
    "source": "Point at the video in your browser and click the Download video button that appears over it, or paste the page's address into Tasks → Download video from a…",
    "text": "ชี้ไปที่วิดีโอในเบราว์เซอร์ของคุณแล้วคลิกปุ่ม ดาวน์โหลดวิดีโอ ที่ปรากฏขึ้น หรือวางที่อยู่ของหน้าลงใน งาน → ดาวน์โหลดวิดีโอจาก…"
-  },
-  "e7e684a8f8aec6c8": {
-   "source": "<g1>Hide web pages</g1> (on by default) leaves out links to pages (<x2/>, <x3/> and the like): they are neither shown nor downloaded.",
-   "text": "<g1>ซ่อนหน้าเว็บ</g1> (เปิดใช้งานโดยค่าเริ่มต้น) จะไม่รวมลิงก์ไปยังหน้าเว็บ (<x2/>, <x3/> และอื่น ๆ): จะไม่แสดงและไม่ดาวน์โหลด"
   },
   "e7f203ecd75caead": {
    "source": "Can my AI assistant use MDM? — Mister Download Manager",
@@ -15398,6 +15470,10 @@
    "source": "Note",
    "text": "หมายเหตุ"
   },
+  "eb9f527d55414228": {
+   "source": "Last updated 2026-11-13 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "อัปเดตล่าสุด 2026-11-13 · ใช้กับแอป ส่วนขยายเบราว์เซอร์ และ misterdownloadmanager.com"
+  },
   "ebb00adeab17b68e": {
    "source": "<g1>Links that work only once</g1> (or hosts that allow one download at a time) failed with \"403 Forbidden\" after Download File Info had looked them up (<g2>#28</g2>): the window's look and the download each asked the server. The download now continues from the answer the window got, and asks again only if that connection has closed meanwhile.",
    "text": "<g1>ลิงก์ที่ใช้งานได้เพียงครั้งเดียว</g1> (หรือโฮสต์ที่อนุญาตให้ดาวน์โหลดได้ครั้งละหนึ่งรายการ) ล้มเหลวด้วยข้อความ “403 Forbidden” หลังจากที่หน้าต่างข้อมูลไฟล์ดาวน์โหลดได้ตรวจสอบแล้ว (<g2>#28</g2>): การตรวจสอบของหน้าต่างและการดาวน์โหลดต่างก็ร้องขอไปยังเซิร์ฟเวอร์ ตอนนี้การดาวน์โหลดจะดำเนินการต่อจากคำตอบที่หน้าต่างได้รับ และจะร้องขออีกครั้งก็ต่อเมื่อการเชื่อมต่อดังกล่าวปิดไปแล้ว"
@@ -15525,6 +15601,10 @@
   "ed1e476b363fc15b": {
    "source": "What protects you",
    "text": "สิ่งที่ปกป้องคุณ"
+  },
+  "ed30bf8c293519f0": {
+   "source": "<g1>Download complete</g1> shows the file's size, its address and where it was saved. Choose <g2>Open</g2>, <g3>Open with...</g3>, <g4>Open folder</g4> or <g5>Close</g5>. On Windows you can also drag the small box at the bottom right into Explorer, an email or a chat to drop the file there. As when you drag a file in Explorer, a folder on the same drive gets the file moved there and another drive gets a copy (hold <g6>Shift</g6> to move it, <g7>Ctrl</g7> to copy it). The download follows a moved file: the list and <g8>Open</g8> find it in its new place. The window shows above your other programs until you click it, without taking the keyboard from the one you're typing in.",
+   "text": "<g1>ดาวน์โหลดเสร็จสมบูรณ์</g1> แสดงขนาดไฟล์ ที่อยู่ และตำแหน่งที่บันทึกไว้ เลือก <g2>เปิด</g2>, <g3>เปิดด้วย...</g3>, <g4>เปิดโฟลเดอร์</g4> หรือ <g5>ปิด</g5> บน Windows คุณยังสามารถลากกล่องเล็ก ๆ ที่มุมล่างขวาไปยัง Explorer, อีเมล หรือแชทเพื่อวางไฟล์ที่นั่นได้ เช่นเดียวกับการลากไฟล์ใน Explorer หากเป็นโฟลเดอร์บนไดรฟ์เดียวกัน ไฟล์จะถูกย้ายไปที่นั่น และหากเป็นไดรฟ์อื่น ไฟล์จะถูกคัดลอกไป (กด <g6>Shift</g6> เพื่อย้าย, <g7>Ctrl</g7> เพื่อคัดลอก) รายการดาวน์โหลดจะติดตามไฟล์ที่ถูกย้าย: รายการและ <g8>เปิด</g8> จะพบไฟล์ในตำแหน่งใหม่ หน้าต่างจะแสดงอยู่เหนือโปรแกรมอื่น ๆ จนกว่าคุณจะคลิก โดยไม่แย่งการพิมพ์จากโปรแกรมที่คุณกำลังใช้งานอยู่"
   },
   "ed39bbda605ca874": {
    "source": "Every file finds its folder",
@@ -15758,6 +15838,10 @@
    "source": "Image galleries — Mister Download Manager help",
    "text": "แกลเลอรีรูปภาพ — วิธีใช้ Mister Download Manager"
   },
+  "f02ad447917b29c8": {
+   "source": "<g1>Fedora</g1>:",
+   "text": "<g1>Fedora</g1>:"
+  },
   "f0332c2aa7cd2077": {
    "source": "<g1>A download's progress file could be written again just after it stopped</g1> (<g2>#106</g2>), and <g3>a download could fail as it finished, with \"part file still in use\"</g3> (<g4>#116</g4>). MDM saves a download's progress every few seconds, in a file beside it. A download paused or finished during one of those saves could stop before the save was done; that save then wrote an old progress file a moment later, or, when the last bytes arrived during it, still held the file. A download now stops only once its save is done.",
    "text": "<g1>ไฟล์ความคืบหน้าของการดาวน์โหลดสามารถเขียนซ้ำได้ทันทีหลังจากหยุด</g1> (<g2>#106</g2>) และ <g3>การดาวน์โหลดอาจล้มเหลวเมื่อเสร็จสิ้นด้วยข้อความ “part file still in use”</g3> (<g4>#116</g4>) MDM บันทึกความคืบหน้าของการดาวน์โหลดทุกสองสามวินาทีในไฟล์ที่อยู่ข้าง ๆ การดาวน์โหลดที่หยุดชั่วคราวหรือเสร็จสิ้นระหว่างการบันทึกเหล่านั้นอาจหยุดก่อนที่การบันทึกจะเสร็จสิ้น จากนั้นการบันทึกนั้นจะเขียนไฟล์ความคืบหน้าเก่าในอีกไม่กี่นาทีต่อมา หรือเมื่อไบต์สุดท้ายมาถึงระหว่างการบันทึก ไฟล์ยังคงถูกถือไว้ ตอนนี้การดาวน์โหลดจะหยุดเมื่อการบันทึกเสร็จสิ้นเท่านั้น"
@@ -15969,10 +16053,6 @@
   "f3664543700a7df7": {
    "source": "Download File Info",
    "text": "ข้อมูลไฟล์ดาวน์โหลด"
-  },
-  "f385c86abe758db3": {
-   "source": "Last updated 2026-11-12",
-   "text": "อัปเดตล่าสุด 12 พฤศจิกายน 2569"
   },
   "f3901fedc4a7dd52": {
    "source": "<g1>Browser extension</g1><g2>Downloads you click in Chrome, Edge, Brave, Opera, Vivaldi or Firefox go straight to MDM, sign-in included.</g2>",
@@ -16250,10 +16330,6 @@
    "source": "The site isn't in <g1>Don't start downloading automatically from the following sites</g1>, nor the address in <g2>Don't start downloading automatically from the following addresses</g2>.",
    "text": "ไซต์นี้ไม่ได้อยู่ใน <g1>ไม่เริ่มดาวน์โหลดอัตโนมัติจากไซต์ต่อไปนี้</g1> และที่อยู่นี้ก็ไม่ได้อยู่ใน <g2>ไม่เริ่มดาวน์โหลดอัตโนมัติจากที่อยู่ต่อไปนี้</g2>"
   },
-  "f89c54d71eb189a4": {
-   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and <g1>View → Draw with</g1> says why.",
-   "text": "หากการ์ดแสดงผลถูกรีเซ็ตขณะ MDM ทำงาน (การอัปเดตไดรเวอร์) MDM จะเริ่มใหม่เอง หากหายไปสองครั้งใน 10 นาที จะกลับไปใช้ OpenGL และ <g1>มุมมอง → วาดด้วย</g1> จะบอกเหตุผล"
-  },
   "f8b52274ed125d5f": {
    "source": "Tick <g1>Wake the computer to run this queue</g1> and a sleeping computer is woken a minute before the start time, so the network is back when the queue begins. It stays awake while the queue runs; afterwards its own sleep settings apply again. The line under the option says when the next wake is, or why there can't be one.",
    "text": "เลือก <g1>ปลุกคอมพิวเตอร์เพื่อเริ่มคิวนี้</g1> และคอมพิวเตอร์ที่พักเครื่องจะถูกปลุกหนึ่งนาทีก่อนเวลาเริ่มต้น เพื่อให้เครือข่ายกลับมาทำงานเมื่อคิวเริ่มขึ้น คอมพิวเตอร์จะยังคงทำงานอยู่ขณะที่คิวทำงาน หลังจากนั้นการตั้งค่าการพักเครื่องของคอมพิวเตอร์จะกลับมาใช้ใหม่ บรรทัดใต้ตัวเลือกจะระบุว่าการปลุกครั้งถัดไปคือเมื่อใด หรือเหตุใดจึงไม่สามารถปลุกได้"
@@ -16521,10 +16597,6 @@
   "fbba8f18d2fae06e": {
    "source": "A text box's bottom line while it can be typed in",
    "text": "เส้นด้านล่างของกล่องข้อความขณะที่สามารถพิมพ์ได้"
-  },
-  "fbc41fd4efa0fd9a": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x13/> saves subtitles beside it: language codes from <x14/> (<x15/>), or <x16/> for every one the uploader gave; <x17/> takes the site's automatic captions instead; <x18/> puts them into the video (needs ffmpeg, MP4 or MKV). <x19/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x20/>; when it isn't connected, nothing starts.",
-   "text": "ดาวน์โหลดวิดีโอ; <x1/> ใช้ตัวเลือกคุณภาพจาก <x2/> (<x3/> = ไฟล์เดี่ยวที่ดีที่สุด; <x4/> = เสียงอย่างเดียวตามที่เว็บไซต์มี ไม่มีการแปลง; <x5/>, <x6/>, <x7/> หรือ <x8/> = เสียงเป็น MP3 ที่บิตเรตนั้น, <x9/> ที่บิตเรตแปรผันที่ดีที่สุด; <x10/> = เป็น Opus; <x11/> = เป็น FLAC, ไม่มีการสูญเสียแต่ไม่ดีไปกว่าเสียงของเว็บไซต์; การแปลงต้องใช้ ffmpeg) <x12/>: ตัวดาวน์โหลดของ MDM จะนำแต่ละสตรีมที่ yt-dlp พบผ่านการเชื่อมต่อจำนวนนี้ (ค่าเริ่มต้น 8, 1 ถึง 128), สตรีมที่แบ่งเป็นส่วน ๆ (HLS, DASH) จำนวนส่วนพร้อมกัน <x13/> บันทึกคำบรรยายข้าง ๆ: รหัสภาษาจาก <x14/> (<x15/>), หรือ <x16/> สำหรับทุกภาษาที่ผู้อัปโหลดให้มา; <x17/> ใช้คำบรรยายอัตโนมัติของเว็บไซต์แทน; <x18/> ใส่คำบรรยายลงในวิดีโอ (ต้องใช้ ffmpeg, MP4 หรือ MKV) <x19/> ส่งการเชื่อมต่อของการดาวน์โหลด และของ yt-dlp (และ ffmpeg) ผ่านอะแดปเตอร์เครือข่ายเดียว เช่นเดียวกับ <x20/>; เมื่อไม่ได้เชื่อมต่อ จะไม่มีอะไรเริ่มต้น"
   },
   "fbc5c79e5fad811f": {
    "source": "<g1>VS Code</g1>: in <x2/>, or <g3>MCP: Add Server</g3> in the command palette:",

@@ -874,6 +874,11 @@
 #. check box in the update window: look for a new version every time MDM starts
 #, machine
 	Check for updates at every start	Pārbaudīt atjauninājumus katrā startēšanas reizē
+#. text in errors.rs
+#. what to do when the proxy set in Options didn't let a helper's download connect; {proxy} = the Options tab Proxy / Socks; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Check the proxy in Options → {proxy}, or download {name} yourself and choose it in {helpers} → {other}.	Pārbaudiet starpniekserveri sadaļā Opcijas → {proxy} vai lejupielādējiet {name} pats un izvēlieties to sadaļā {helpers} → {other}.
 #. text in helpers.rs
 #, machine
 	Check your connection, then try again, or get them later from the video window.	Pārbaudiet savienojumu, pēc tam mēģiniet vēlreiz vai iegūstiet tos vēlāk no video loga.
@@ -5186,6 +5191,7 @@
 #, machine
 	United States Minor Outlying Islands	ASV Mazās Aizjūras Salas
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	Nezināms
 #. text in a dialog box; text in a download's progress window; text in whereis.rs
@@ -6768,6 +6774,10 @@ menu	Delete from queue	Dzēst no rindas
 #. View → Draw with: a graphics system's name (Microsoft's), usually kept as is
 #, machine
 menu	Direct3D	Direct3D
+#. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows and why: Direct3D 12 through Windows' own software renderer (WARP, keep the name), because this computer's graphics card has no Direct3D 12 driver
+#, machine
+menu	Direct3D 12 (WARP): this graphics card has no Direct3D 12 driver	Direct3D 12 (WARP): šai grafikas kartei nav Direct3D 12 draivera
 #. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
