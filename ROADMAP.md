@@ -560,6 +560,46 @@ These ship in the next version.
 - ✅ Windows 10 with a style theme (Metro, Adwaita, Aero…): no black band above the main window's
   title bar, and its menus and clicks land where they show; framed as on Windows 11, as the
   progress window already was ([#802](https://github.com/anefzaoui/misterdownloadmanager/issues/802))
+- ✅ A stream the browser played (an .m3u8) is looked up and downloaded with the Referer, Origin
+  and cookies the browser sent with it, for its playlists and every piece too: a site's video
+  server that serves its own pages' players only answered 403
+  ([#900](https://github.com/anefzaoui/misterdownloadmanager/issues/900))
+- ✅ A video of unknown size no longer reads 99.9 % from its first second while yt-dlp downloads it,
+  and a video named after a page titled with its file's name gets its extension once (Dropbox's
+  `Episode 31.mp4.mp4`) ([#622](https://github.com/anefzaoui/misterdownloadmanager/issues/622))
+- ✅ Tests: the five that checked a long list is read in linear time against a fixed number of
+  seconds (one failed on a slow macOS runner) now time the same work at two sizes, eight times
+  apart, and fail only when the larger one costs over 24 times as much (a square costs 64 times),
+  whatever the machine's speed
+- ✅ Touch screens: a tap on a menu's item chooses it (the menu bar's, right-click menus,
+  drop-downs), where only a mouse could
+  ([#733](https://github.com/anefzaoui/misterdownloadmanager/issues/733))
+- ✅ A video's Address is its file's (the stream MDM downloads) in the progress window, Download
+  complete and File Properties, its page the web page it was obtained from; a download's page and
+  Referer are kept after a restart
+  ([#795](https://github.com/anefzaoui/misterdownloadmanager/issues/795))
+- ✅ The progress window's connections table while a video downloads: MDM's own connections (as
+  many as Options → Connection gives), and yt-dlp's one connection while it looks the page up or
+  downloads a live stream itself, instead of an empty table
+  ([#793](https://github.com/anefzaoui/misterdownloadmanager/issues/793))
+- ✅ After the last byte, the progress window says **Verifying… (45%)** or **Merging… (45%)**
+  and the list **45% verified**, the bar showing it in the accent colour, and **Finishing…** rather than
+  **Connecting…**; a finished download's map of parts has no gaps
+  ([#736](https://github.com/anefzaoui/misterdownloadmanager/issues/736))
+- ✅ Windows: the file dragged out of **Download complete** is moved or copied as Explorer does
+  it (moved on the same drive or with Shift, copied to another drive or with Ctrl), no longer
+  always copied, and its download follows a moved file to its new place; where MDM can't learn
+  the new place, **Open** and **Open folder** say the file was moved elsewhere
+  ([#869](https://github.com/anefzaoui/misterdownloadmanager/issues/869))
+- ✅ Windows: a graphics card whose OpenGL is older than 3.0 and that has no Direct3D 12 (Intel's
+  first HD Graphics) no longer draws MDM's windows as garbage: MDM notices that OpenGL, draws
+  with Direct3D on Windows' own software renderer (WARP) instead, from then on, and **View → Draw
+  with** says why; the reporter confirmed WARP draws it right
+  ([#835](https://github.com/anefzaoui/misterdownloadmanager/issues/835))
+- ✅ A helper (yt-dlp, ffmpeg, gallery-dl) that can't be downloaded says which server and why
+  (not found, refused, no answer, a secure connection an antivirus or a proxy reads, GitHub's
+  limit on requests, cut short) and what to do; its release list goes through the proxy set in
+  Options, as its download did ([#816](https://github.com/anefzaoui/misterdownloadmanager/issues/816))
 - ✅ Link grabber lists a web page's links when given the page's address (pasted, copied, in
   a list), as the browser's "Download all links" does, instead of only the page itself
   ([#705](https://github.com/anefzaoui/misterdownloadmanager/issues/705))
@@ -779,7 +819,9 @@ These ship in the next version.
   the program under the pointer takes: the drag runs beside the window
   ([#561](https://github.com/anefzaoui/misterdownloadmanager/issues/561))
 - ✅ The video button keeps one corner over YouTube's thumbnail previews, within the pointer's reach
-  ([#560](https://github.com/anefzaoui/misterdownloadmanager/issues/560))
+  ([#560](https://github.com/anefzaoui/misterdownloadmanager/issues/560)), and over a player whose
+  settings button comes and goes as the pointer moves, checked in a real browser
+  ([#899](https://github.com/anefzaoui/misterdownloadmanager/issues/899))
 - ✅ Menus: moving on from an item with a submenu closes the submenu at once, and only the item under
   the pointer is lit ([#579](https://github.com/anefzaoui/misterdownloadmanager/issues/579))
 - ✅ Chromium browsers: a download MDM's extension leaves to the browser keeps the file name and
@@ -795,7 +837,9 @@ These ship in the next version.
 - ✅ macOS 15 and later: Chinese text finds PingFang again, which moved into the system's font assets
   ([#541](https://github.com/anefzaoui/misterdownloadmanager/issues/541))
 - ✅ The video button goes when it is switched off, or its site listed, in Options, in pages already
-  open ([#532](https://github.com/anefzaoui/misterdownloadmanager/issues/532))
+  open ([#532](https://github.com/anefzaoui/misterdownloadmanager/issues/532)); and comes in a page
+  opened while the browser couldn't reach MDM once it can, without a reload
+  ([#474](https://github.com/anefzaoui/misterdownloadmanager/issues/474))
 - ✅ macOS: Persian and other Arabic-script file names show their letters in the download list, not
   boxes ([#533](https://github.com/anefzaoui/misterdownloadmanager/issues/533))
 - ✅ A server's refusal page is no longer saved under the document's name and shown as complete,
@@ -819,7 +863,9 @@ These ship in the next version.
   [#754](https://github.com/anefzaoui/misterdownloadmanager/issues/754),
   [#545](https://github.com/anefzaoui/misterdownloadmanager/issues/545),
   [#534](https://github.com/anefzaoui/misterdownloadmanager/issues/534),
-  [#527](https://github.com/anefzaoui/misterdownloadmanager/issues/527))
+  [#527](https://github.com/anefzaoui/misterdownloadmanager/issues/527),
+  [#590](https://github.com/anefzaoui/misterdownloadmanager/issues/590),
+  [#779](https://github.com/anefzaoui/misterdownloadmanager/issues/779))
 - ✅ The window no longer freezes while Explorer is slow to answer about MDM's notification-area
   icon: it is asked beside the window
   ([#747](https://github.com/anefzaoui/misterdownloadmanager/issues/747))
