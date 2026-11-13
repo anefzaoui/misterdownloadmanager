@@ -1778,6 +1778,25 @@ pub fn tray_icon_tip(hwnd: isize, id: u32, tip: &str) -> bool {
     unsafe { Shell_NotifyIconW(NIM_MODIFY, &nid) != 0 }
 }
 
+/// Whether the window in front (the foreground window, which takes the keyboard) is another
+/// program's: a click outside MDM's windows (the desktop, the taskbar, another program) put it
+/// there. False while one of ours is in front, and while none is (Windows passing the foreground
+/// on). An open menu closes at once on it (chrome.rs, #859).
+pub fn foreground_is_another_program() -> bool {
+    use windows_sys::Win32::UI::WindowsAndMessaging::GetForegroundWindow;
+    // SAFETY: plain queries about a window handle, which may be gone (then pid stays 0); the
+    // out pointer is a local.
+    unsafe {
+        let front = GetForegroundWindow();
+        if front.is_null() {
+            return false;
+        }
+        let mut pid = 0u32;
+        GetWindowThreadProcessId(front, &mut pid);
+        pid != 0 && pid != GetCurrentProcessId()
+    }
+}
+
 /// What a borderless window of ours is, for [`popup_window`]: every one is a plain popup
 /// ([`popup_style`], #208); they differ in how they take the pointer and how they look.
 #[derive(Clone, Copy, Debug, PartialEq)]
