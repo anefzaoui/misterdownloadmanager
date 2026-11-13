@@ -557,6 +557,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The download list's column lines run straight from the header down: the rows' lines sat a
+  pixel to the right of the header's dividers
+  ([#924](https://github.com/anefzaoui/misterdownloadmanager/issues/924))
 - ✅ With a style theme (Metro, Adwaita, Aero…), windows minimize, maximize and restore with
   Windows' animation, as with Classic
   ([#874](https://github.com/anefzaoui/misterdownloadmanager/issues/874))
