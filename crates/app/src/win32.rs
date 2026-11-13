@@ -17,9 +17,9 @@ use windows_sys::Win32::UI::Shell::{
 };
 use windows_sys::Win32::UI::WindowsAndMessaging::{
     DestroyIcon, EnumWindows, GWL_EXSTYLE, GWL_STYLE, GetIconInfo, GetWindowLongPtrW,
-    GetWindowThreadProcessId, ICONINFO, InternalGetWindowText, NCCALCSIZE_PARAMS, SWP_FRAMECHANGED,
-    SWP_NOACTIVATE, SWP_NOMOVE, SWP_NOZORDER, SetWindowLongPtrW, SetWindowPos, WM_NCCALCSIZE,
-    WM_NCHITTEST, WS_EX_DLGMODALFRAME, WS_THICKFRAME,
+    GetWindowThreadProcessId, ICONINFO, InternalGetWindowText, SWP_FRAMECHANGED, SWP_NOACTIVATE,
+    SWP_NOMOVE, SWP_NOZORDER, SetWindowLongPtrW, SetWindowPos, WM_NCCALCSIZE, WM_NCHITTEST,
+    WS_EX_DLGMODALFRAME, WS_THICKFRAME,
 };
 
 struct Find {
@@ -496,199 +496,24 @@ fn set_max_button(hwnd: HWND, state: MaxButton) {
     }
 }
 
-/// The sizing frame's thickness at the window's top, in client pixels (Windows' own measure for
-/// the window's DPI).
-fn top_frame(hwnd: HWND) -> i32 {
-    use windows_sys::Win32::UI::HiDpi::{GetDpiForWindow, GetSystemMetricsForDpi};
-    use windows_sys::Win32::UI::WindowsAndMessaging::{SM_CXPADDEDBORDER, SM_CYSIZEFRAME};
-    // SAFETY: plain calls about our own window.
-    unsafe {
-        let dpi = GetDpiForWindow(hwnd).max(96);
-        GetSystemMetricsForDpi(SM_CYSIZEFRAME, dpi) + GetSystemMetricsForDpi(SM_CXPADDEDBORDER, dpi)
-    }
-}
-
-/// A resizable window with its title bar drawn by us (the main window with a style theme, #45),
-/// as Windows Terminal does it: the system frame and WS_CAPTION stay (resizing on every edge,
-/// Aero Snap and shake, the system menu and Alt+Space, the DWM shadow), the caption is given to
-/// the client, which draws it; the hit test reads where the drawn parts are. The top sizing edge
-/// is ours (the client starts at the window's top), and Maximize answers as the system's.
-unsafe extern "system" fn drawn_frame_proc(
-    hwnd: HWND,
-    msg: u32,
-    wparam: WPARAM,
-    lparam: LPARAM,
-    _id: usize,
-    _data: usize,
-) -> LRESULT {
-    use windows_sys::Win32::UI::Input::KeyboardAndMouse::{
-        TME_LEAVE, TME_NONCLIENT, TRACKMOUSEEVENT, TrackMouseEvent,
-    };
-    use windows_sys::Win32::UI::WindowsAndMessaging::{
-        HTMAXBUTTON, HTTOP, HTTOPLEFT, HTTOPRIGHT, IsZoomed, SC_MAXIMIZE, SC_RESTORE, SendMessageW,
-        WM_NCACTIVATE, WM_NCLBUTTONDBLCLK, WM_NCLBUTTONDOWN, WM_NCLBUTTONUP, WM_NCMOUSELEAVE,
-        WM_NCMOUSEMOVE, WM_SYSCOMMAND,
-    };
-    const HT_MAX: LRESULT = HTMAXBUTTON as LRESULT;
-    if msg == WM_NCCALCSIZE && wparam != 0 {
-        // SAFETY: with wParam TRUE, lParam points to NCCALCSIZE_PARAMS (Win32 contract).
-        let p = unsafe { &mut *(lparam as *mut NCCALCSIZE_PARAMS) };
-        let top = p.rgrc[0].top;
-        let res = unsafe { DefSubclassProc(hwnd, msg, wparam, lparam) };
-        // No system caption: the client starts at the window's top; maximized, the window
-        // overhangs the screen by its frame, so the bar starts that much lower.
-        // SAFETY: our own window.
-        let zoomed = unsafe { IsZoomed(hwnd) } != 0;
-        p.rgrc[0].top = if zoomed { top + top_frame(hwnd) } else { top };
-        return res;
-    }
-    if msg == WM_NCACTIVATE {
-        return unsafe { DefSubclassProc(hwnd, msg, wparam, -1) };
-    }
-    if msg == WM_SYSCOMMAND && (wparam & 0xFFF0) == SC_HIDE_TO_TRAY {
-        HIDE_ASKED.with(|s| {
-            if let Ok(mut s) = s.try_borrow_mut() {
-                s.insert(hwnd as isize);
-            }
-        });
-        return 0;
-    }
-    // Maximize: pressed and released on it toggles the window (the system's own button would
-    // draw itself over ours).
-    if (msg == WM_NCLBUTTONDOWN || msg == WM_NCLBUTTONDBLCLK) && wparam as LRESULT == HT_MAX {
-        set_max_button(
-            hwnd,
-            MaxButton {
-                hot: true,
-                pressed: true,
-            },
-        );
-        return 0;
-    }
-    if msg == WM_NCLBUTTONUP && wparam as LRESULT == HT_MAX {
-        let was = max_button_state(hwnd as isize);
-        set_max_button(
-            hwnd,
-            MaxButton {
-                hot: true,
-                pressed: false,
-            },
-        );
-        if was.pressed {
-            // SAFETY: our own window, a system command it handles.
-            let zoomed = unsafe { IsZoomed(hwnd) } != 0;
-            let cmd = if zoomed { SC_RESTORE } else { SC_MAXIMIZE };
-            unsafe { SendMessageW(hwnd, WM_SYSCOMMAND, cmd as WPARAM, 0) };
-        }
-        return 0;
-    }
-    if msg == WM_NCMOUSEMOVE {
-        let on = wparam as LRESULT == HT_MAX;
-        let was = max_button_state(hwnd as isize);
-        set_max_button(
-            hwnd,
-            MaxButton {
-                hot: on,
-                pressed: was.pressed && on,
-            },
-        );
-        if on {
-            let mut t = TRACKMOUSEEVENT {
-                cbSize: size_of::<TRACKMOUSEEVENT>() as u32,
-                dwFlags: TME_LEAVE | TME_NONCLIENT,
-                hwndTrack: hwnd,
-                dwHoverTime: 0,
-            };
-            // SAFETY: a plain call with a filled struct, our own window.
-            unsafe { TrackMouseEvent(&mut t) };
-        }
-    }
-    if msg == WM_NCMOUSELEAVE {
-        set_max_button(hwnd, MaxButton::default());
-    }
-    let res = unsafe { DefSubclassProc(hwnd, msg, wparam, lparam) };
-    if msg == WM_NCHITTEST && res == HTCLIENT {
-        use windows_sys::Win32::Foundation::POINT;
-        use windows_sys::Win32::Graphics::Gdi::ScreenToClient;
-        let mut pt = POINT {
-            x: (lparam & 0xffff) as i16 as i32,
-            y: ((lparam >> 16) & 0xffff) as i16 as i32,
-        };
-        // SAFETY: our own window; the point is a local.
-        unsafe { ScreenToClient(hwnd, &mut pt) };
-        // The top sizing edge (corners too), where the system's caption had it.
-        // SAFETY: our own window.
-        if unsafe { IsZoomed(hwnd) } == 0 && pt.y >= 0 && pt.y < top_frame(hwnd) {
-            let mut rc: RECT = unsafe { zeroed() };
-            unsafe { windows_sys::Win32::UI::WindowsAndMessaging::GetClientRect(hwnd, &mut rc) };
-            let corner = 2 * top_frame(hwnd);
-            return if pt.x < corner {
-                HTTOPLEFT as LRESULT
-            } else if pt.x >= rc.right - corner {
-                HTTOPRIGHT as LRESULT
-            } else {
-                HTTOP as LRESULT
-            };
-        }
-        let hit = CAPTION_HITS.with(|m| {
-            m.try_borrow().ok().and_then(|m| {
-                m.get(&(hwnd as isize)).map(|h| {
-                    if h.max_button
-                        .and_then(|i| h.buttons.get(i))
-                        .is_some_and(|b| inside(b, pt.x, pt.y))
-                    {
-                        HT_MAX
-                    } else {
-                        frame_hit(pt.x, pt.y, h)
-                    }
-                })
-            })
-        });
-        return hit.unwrap_or(HTCLIENT);
-    }
-    res
-}
-
 /// Give the resizable window titled `title` its title bar drawn by us (`on`), or the system's
 /// back. Returns the window when done.
 pub fn drawn_frame(title: &str, on: bool) -> Option<isize> {
-    use windows_sys::Win32::UI::Shell::RemoveWindowSubclass;
     let hwnd = find_own_window(title)?;
-    if windows_11() {
-        // SAFETY: our own window, on its thread.
-        unsafe {
-            if on {
-                caption_less(hwnd, Drawn::Sizable);
-            } else {
-                caption_back(hwnd);
-            }
-        }
-        if !on {
-            forget_caption(hwnd as isize);
-        }
-        return Some(hwnd as isize);
-    }
-    // SAFETY: our own window; the subclass id is ours.
+    // Without a caption style on every version, as the progress window and the dialogs (#802):
+    // on Windows 10 the caption style hidden by our WM_NCCALCSIZE put the window's picture a
+    // title bar lower than its input there too, a black band above the bar and every click
+    // landing above what it showed (#620).
+    // SAFETY: our own window, on its thread.
     unsafe {
         if on {
-            SetWindowSubclass(hwnd, Some(drawn_frame_proc), 0x1d7, 0);
+            caption_less(hwnd, Drawn::Sizable);
         } else {
-            RemoveWindowSubclass(hwnd, Some(drawn_frame_proc), 0x1d7);
-            forget_caption(hwnd as isize);
+            caption_back(hwnd);
         }
-        SetWindowPos(
-            hwnd,
-            std::ptr::null_mut(),
-            0,
-            0,
-            0,
-            0,
-            SWP_FRAMECHANGED
-                | SWP_NOMOVE
-                | windows_sys::Win32::UI::WindowsAndMessaging::SWP_NOSIZE
-                | SWP_NOZORDER
-                | SWP_NOACTIVATE,
-        );
+    }
+    if !on {
+        forget_caption(hwnd as isize);
     }
     Some(hwnd as isize)
 }
@@ -758,10 +583,10 @@ pub fn thin_frame(
 /// version ([`thin_frame`]): with the caption style hidden by our WM_NCCALCSIZE, a Windows 11
 /// Insider build (#208) and Windows 10 22H2 (#620) showed the window's picture where the style's
 /// client would have been, a black band a title bar tall above it, every click landing above what
-/// it showed. The resizable main window with a style theme is framed so on Windows 11 only
-/// ([`drawn_frame`]), which colours the sizing frame's strip above its title bar
-/// ([`caption_colour`]); Windows 10 can't (DWMWA_CAPTION_COLOR is Windows 11's), so there it keeps
-/// its caption style, given to the client.
+/// it showed. The resizable main window with a style theme is framed so too ([`drawn_frame`],
+/// #802). Windows 11 colours the sizing frame's strip above its title bar ([`caption_colour`]);
+/// Windows 10 can't (DWMWA_CAPTION_COLOR is Windows 11's), so there the strip, 7 px at 100 %, keeps
+/// the system's title bar colour (white, the accent colour, or black in dark mode).
 fn windows_11() -> bool {
     use windows_sys::Win32::System::Registry::HKEY_LOCAL_MACHINE;
     static ON: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
@@ -935,7 +760,8 @@ thread_local! {
 
 /// The colour of the sizing frame's strip above the main window's drawn title bar (`rgb`, the
 /// top of the bar), so the two read as one bar (Windows 11 paints the frame of a window without
-/// a caption style in its caption colour). Cheap: DWM is asked only when it changes.
+/// a caption style in its caption colour; Windows 10 in its own, which no app can set). Cheap:
+/// DWM is asked only when it changes.
 pub fn caption_colour(hwnd: isize, rgb: [u8; 3]) {
     use windows_sys::Win32::Graphics::Dwm::{DWMWA_CAPTION_COLOR, DwmSetWindowAttribute};
     if !windows_11() {
