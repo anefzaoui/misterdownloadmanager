@@ -464,12 +464,12 @@ fn app() -> eframe::Result {
         tracing::info!("started with the session: hidden");
         viewport = viewport.with_visible(false);
     }
-    // OpenGL or Direct3D (View → Draw with, #89), the other one when it can't start.
+    // OpenGL or Direct3D (View → Draw with, #89), the next way when one can't start (Direct3D on
+    // WARP before OpenGL, #847).
     let plan = renderer::plan(
         loaded.settings.renderer,
         renderer::overridden(&args).as_deref(),
-        renderer::failed_before().is_some(),
-        renderer::gl_unfit_before(),
+        renderer::Known::read(),
     );
     let options = || eframe::NativeOptions {
         viewport: viewport.clone(),

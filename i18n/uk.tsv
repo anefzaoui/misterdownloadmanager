@@ -874,6 +874,11 @@
 #. check box in the update window: look for a new version every time MDM starts
 #, machine
 	Check for updates at every start	Перевіряти наявність оновлень під час кожного запуску
+#. text in errors.rs
+#. what to do when the proxy set in Options didn't let a helper's download connect; {proxy} = the Options tab Proxy / Socks; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Check the proxy in Options → {proxy}, or download {name} yourself and choose it in {helpers} → {other}.	Перевірте проксі в «Параметрах» → «{proxy}» або завантажте {name} самостійно та виберіть його в «{helpers}» → «{other}».
 #. text in helpers.rs
 #, machine
 	Check your connection, then try again, or get them later from the video window.	Перевірте своє з’єднання, потім спробуйте ще раз або отримайте їх пізніше з вікна відео.
@@ -2133,6 +2138,11 @@
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
 	If it can't be reached, use the system's DNS	Якщо недоступно, використовувати системний DNS
+#. text in errors.rs
+#. what to do when a helper's server couldn't be reached; {proxy} = the Options tab Proxy / Socks; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	If you use a proxy, set it in Options → {proxy}. Or download {name} yourself and choose it in {helpers} → {other}.	Якщо ви використовуєте проксі, налаштуйте його в «Параметрах» → «{proxy}». Або завантажте {name} самостійно та виберіть його в «{helpers}» → «{other}».
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	Ігнорувати зміни часу модифікації файлу при відновленні завантаження
@@ -5036,6 +5046,15 @@
 #. button in helpers.rs
 #, machine
 	Try again	Повторити
+#. text in errors.rs
+#. what to do when a helper couldn't be downloaded because its server limits requests; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Try again in an hour, or download {name} yourself and choose it in {helpers} → {other}.	Спробуйте ще раз через годину або завантажте {name} самостійно та виберіть його в «{helpers}» → «{other}».
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Try again later, or download {name} yourself and choose it in {helpers} → {other}.	Спробуйте ще раз пізніше або завантажте {name} самостійно та виберіть його в «{helpers}» → «{other}».
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -6766,6 +6785,10 @@ menu	Delete from queue	Видалити з черги
 #, machine
 menu	Direct3D	Direct3D
 #. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows and why: Direct3D 12 through Windows' own software renderer (WARP, keep the name), because this computer's graphics card has no Direct3D 12 driver
+#, machine
+menu	Direct3D 12 (WARP): this graphics card has no Direct3D 12 driver	Direct3D 12 (WARP): ця відеокарта не має драйвера Direct3D 12
+#. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
 menu	Direct3D didn't start here: OpenGL draws	Direct3D не запустився: використовується OpenGL
@@ -6918,9 +6941,25 @@ menu	Open with...	Відкрити за допомогою...
 #, machine
 menu	OpenGL	OpenGL
 #. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
+#, machine
+menu	OpenGL didn't start here	OpenGL тут не запустився
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window froze inside the graphics card's driver while OpenGL drew
+#, machine
+menu	OpenGL froze inside the graphics driver here	OpenGL завис у графічному драйвері
+#. menu command in the main window
 #. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
 #, machine
 menu	OpenGL here is too old to draw MDM	Версія OpenGL на цьому комп’ютері надто стара для відображення MDM
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window stayed empty for 10 seconds, so MDM started again another way
+#, machine
+menu	OpenGL's first frame didn't show within 10 seconds	Перший кадр OpenGL не відобразився протягом 10 секунд
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed or was closed while starting with it
+#, machine
+menu	OpenGL's last start ended before its first frame	Останній запуск OpenGL завершився до першого кадру
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window

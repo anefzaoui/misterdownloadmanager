@@ -6785,6 +6785,10 @@ menu	Delete from queue	કતારમાંથી કાઢી નાખો
 #, machine
 menu	Direct3D	Direct3D
 #. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows and why: Direct3D 12 through Windows' own software renderer (WARP, keep the name), because this computer's graphics card has no Direct3D 12 driver
+#, machine
+menu	Direct3D 12 (WARP): this graphics card has no Direct3D 12 driver	Direct3D 12 (WARP): આ ગ્રાફિક્સ કાર્ડમાં Direct3D 12 ડ્રાઇવર નથી
+#. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
 menu	Direct3D didn't start here: OpenGL draws	Direct3D અહીં શરૂ થયું નથી: OpenGL ડ્રો કરે છે
@@ -6937,9 +6941,25 @@ menu	Open with...	આની સાથે ખોલો...
 #, machine
 menu	OpenGL	OpenGL
 #. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
+#, machine
+menu	OpenGL didn't start here	OpenGL અહીં શરૂ થઈ શક્યું નથી
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window froze inside the graphics card's driver while OpenGL drew
+#, machine
+menu	OpenGL froze inside the graphics driver here	OpenGL અહીં ગ્રાફિક્સ ડ્રાઇવરમાં થીજી ગયું છે
+#. menu command in the main window
 #. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
 #, machine
 menu	OpenGL here is too old to draw MDM	અહીં OpenGL એટલું જૂનું છે કે તે MDM ને રેન્ડર કરી શકતું નથી
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window stayed empty for 10 seconds, so MDM started again another way
+#, machine
+menu	OpenGL's first frame didn't show within 10 seconds	OpenGL ની પ્રથમ ફ્રેમ 10 સેકન્ડમાં દેખાઈ નથી
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed or was closed while starting with it
+#, machine
+menu	OpenGL's last start ended before its first frame	OpenGL ની છેલ્લી શરૂઆત તેની પ્રથમ ફ્રેમ દેખાય તે પહેલાં જ સમાપ્ત થઈ ગઈ
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window
