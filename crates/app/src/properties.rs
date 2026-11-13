@@ -277,8 +277,7 @@ impl Properties {
             let title = crate::i18n::t("Move to folder").to_owned();
             let from = item.dest.parent().unwrap_or(Path::new(".")).to_path_buf();
             winui::start_pick(ui.ctx(), &format!("move-to-{}", self.id), move || {
-                rfd::FileDialog::new()
-                    .set_title(title)
+                crate::winui::file_dialog(&title)
                     .set_directory(from)
                     .pick_folder()
             });

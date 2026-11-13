@@ -161,7 +161,8 @@ fn own_window(title: &str, known: Option<HWND>) -> Option<HWND> {
     if let Some(h) = known.filter(|h| unsafe { IsWindow(*h) } != 0) {
         return Some(h);
     }
-    let title: Vec<u16> = title.encode_utf16().collect();
+    // As the window was given it (dialogs.rs, progress.rs): without isolates (#919).
+    let title: Vec<u16> = crate::i18n::os_text(title).encode_utf16().collect();
     let mut f = Find {
         pid: unsafe { GetCurrentProcessId() },
         buf: vec![0; title.len() + 2],
@@ -1577,6 +1578,27 @@ mod find_own_window_tests {
                 DestroyWindow(longer);
             }
         }
+    }
+
+    /// #919: a window is given its title without isolates, and found by the title MDM knows it
+    /// by, isolates and all.
+    #[test]
+    fn a_window_titled_without_isolates_is_found() {
+        let title = format!(
+            "71% {} {}",
+            crate::i18n::isolate("mdm isolate test.zip"),
+            std::process::id()
+        );
+        let given = crate::i18n::os_text(&title);
+        assert!(
+            !given
+                .chars()
+                .any(|c| ('\u{2066}'..='\u{2069}').contains(&c))
+        );
+        let window = test_window(&given);
+        assert_eq!(find_own_window(&title), Some(window));
+        // SAFETY: the test's own window, made on this thread.
+        unsafe { DestroyWindow(window) };
     }
 
     /// A hidden test window of this thread titled `title`, destroyed by the caller.

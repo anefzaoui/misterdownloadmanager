@@ -348,7 +348,7 @@ fn dialog_window<T>(
     // Hidden until `keep_theme` has given it its theme (see there).
     let mut builder = ViewportBuilder::default()
         .with_visible(false)
-        .with_title(title)
+        .with_title(crate::i18n::os_text(title))
         .with_inner_size(shown)
         // The thin frame trims the sizing borders and keeps the size fixed.
         .with_resizable(drawn)
@@ -1473,7 +1473,7 @@ impl FileInfo {
                     // i18n: title of the folder picker
                     let title = crate::i18n::t("Select a folder").to_owned();
                     winui::start_pick(ui.ctx(), "file-info-folder", move || {
-                        let mut pick = rfd::FileDialog::new().set_title(title);
+                        let mut pick = crate::winui::file_dialog(&title);
                         if now.is_dir() {
                             pick = pick.set_directory(&now);
                         }

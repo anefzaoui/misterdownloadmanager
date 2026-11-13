@@ -6579,7 +6579,7 @@ impl App {
                     .filter(|p| p.is_file())
                     .and_then(|p| p.parent().map(std::path::Path::to_path_buf));
                 winui::start_pick(&self.ui_ctx, "app-theme-file", move || {
-                    let dialog = rfd::FileDialog::new().set_title(title);
+                    let dialog = crate::winui::file_dialog(&title);
                     let dialog = match start {
                         Some(dir) => dialog.set_directory(dir),
                         None => dialog,
@@ -6765,9 +6765,8 @@ impl App {
                 let kind = crate::i18n::t("Torrent files").to_owned();
                 let title = crate::i18n::t("Open torrent file").to_owned();
                 winui::start_pick(ctx, "app-torrent-file", move || {
-                    rfd::FileDialog::new()
+                    crate::winui::file_dialog(&title)
                         .add_filter(kind, &["torrent"])
-                        .set_title(title)
                         .pick_file()
                 });
             }
@@ -7695,7 +7694,7 @@ impl App {
                 by("By &Order Of Addition", None),
                 by("By &File Name", Some(0)),
                 by("By &Size", Some(2)),
-                by("By St&atus", Some(3)),
+                by("By Stat&us", Some(3)),
                 by("By &Time Left", Some(4)),
                 by("By Transfer &Rate", Some(5)),
                 by("By &Last Try Date", Some(6)),
@@ -8977,8 +8976,7 @@ impl App {
             "app-export-txt"
         };
         winui::start_pick(&self.ui_ctx, key, move || {
-            rfd::FileDialog::new()
-                .set_title(title)
+            crate::winui::file_dialog(&title)
                 .add_filter(ext.to_ascii_uppercase(), &[ext])
                 .set_file_name(name)
                 .save_file()
@@ -9203,7 +9201,7 @@ impl App {
         let lists = crate::i18n::t("Lists of addresses").to_owned();
         let all = crate::i18n::t("All files").to_owned();
         winui::start_pick(&self.ui_ctx, "app-import", move || {
-            let dialog = rfd::FileDialog::new().set_title(title);
+            let dialog = crate::winui::file_dialog(&title);
             let dialog = if ef2 {
                 dialog.add_filter("EF2", &["ef2"])
             } else {
@@ -9577,8 +9575,7 @@ impl App {
         let name = item.file_name.clone();
         self.move_rename_for = Some(id);
         winui::start_pick(&self.ui_ctx, "app-move-rename", move || {
-            rfd::FileDialog::new()
-                .set_title(title)
+            crate::winui::file_dialog(&title)
                 .set_directory(from)
                 .set_file_name(name)
                 .save_file()
@@ -9608,8 +9605,7 @@ impl App {
             if let Some(dir) = std::env::var_os("MDM_TEST_MOVE_TO") {
                 return Some(PathBuf::from(dir));
             }
-            rfd::FileDialog::new()
-                .set_title(title)
+            crate::winui::file_dialog(&title)
                 .set_directory(from)
                 .pick_folder()
         });
