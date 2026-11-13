@@ -2006,7 +2006,7 @@
 #. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
 #, machine
 	Helpers	ᏗᏓᏍᏕᎵᏍᎩ
-#. button in gallerydlg.rs; button in the Download video window
+#. text in errors.rs; button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -3433,7 +3433,7 @@
 #. text in a download's progress window
 #, machine
 	Property	ᏗᏟᎶᏍᏔᏅ
-#. text in the Options window
+#. text in errors.rs; text in the Options window
 #. tab title
 #, machine
 	Proxy / Socks	ᏗᏟᎶᏍᏔᏅᎢ / Socks
@@ -5113,7 +5113,7 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	ᎬᏔᏅᎢ ᎦᎸᎳᏗᏢ ᎢᏗᏴᏍᏗ ᎦᎷᎩ ᏗᏙᎳᏤᏗ
-#. button in helpers.rs
+#. text in errors.rs; button in helpers.rs
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -5674,6 +5674,10 @@
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. why a helper couldn't be downloaded ({problem}), then what to do about it ({advice}, whole sentences)
+#, machine
+	{problem}. {advice}	{problem}. {advice}
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine

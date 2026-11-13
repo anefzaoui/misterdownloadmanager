@@ -1078,6 +1078,20 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Could not be read: {error}	Ni bilo mogoče prebrati: {error}
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: the proxy set in Options ({proxy}, its address) didn't let MDM connect
+#, machine
+	could not connect through the proxy {proxy}	Povezava prek posrednika {proxy} ni bila mogoča
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) couldn't be reached
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	could not reach {host}	Strežnika {host} ni bilo mogoče doseči
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) couldn't be reached, for the system's reason {cause}
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	could not reach {host} ({cause})	Strežnika {host} ni bilo mogoče doseči ({cause})
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
@@ -2026,7 +2040,7 @@
 #. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
 #, machine
 	Helpers	Pomočniki
-#. button in gallerydlg.rs; button in the Download video window
+#. text in errors.rs; button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -3473,7 +3487,7 @@
 #. text in a download's progress window
 #, machine
 	Property	Lastnost
-#. text in the Options window
+#. text in errors.rs; text in the Options window
 #. tab title
 #, machine
 	Proxy / Socks	Posrednik/Socks
@@ -4469,6 +4483,11 @@
 #, machine
 	the connection closed before the part was complete	povezava se je zaprla, preden je bil prenos dela dokončan
 #. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: the connection to its server ({host}) was cut as it opened
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	the connection to {host} was cut: a firewall, or a network that blocks it	Povezava s strežnikom {host} je bila prekinjena: požarni zid ali omrežje jo blokira
+#. text in errors.rs
 #, machine
 	the connection was lost while receiving data	povezava je bila izgubljena med prejemanjem podatkov
 #. text in the Add torrent window
@@ -4478,6 +4497,11 @@
 #. text in errors.rs
 #, machine
 	the disk is full	disk je poln
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: the connection to its server ({host}) closed before all of it came
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	the download from {host} was cut short	Prenos s strežnika {host} je bil prekinjen
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
@@ -4619,6 +4643,11 @@
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
 	the secure connection failed	varne povezave ni bilo mogoče vzpostaviti
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: the secure connection to its server ({host}) failed, usually because an antivirus or a proxy reads secure (HTTPS) connections with a certificate of its own
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	the secure connection to {host} failed: an antivirus's web filter or a proxy may be reading HTTPS	Varna povezava s strežnikom {host} ni uspela: spletni filter protivirusnega programa ali posrednik morda bere HTTPS
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -5160,7 +5189,7 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	Uporabi napredno integracijo brskalnika
-#. button in helpers.rs
+#. text in errors.rs; button in helpers.rs
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -5645,6 +5674,35 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{have} of {total} pieces ({size} each)	{have} od {total} delov ({size} vsak)
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) answered with an HTTP error ({status}, such as "404 Not Found")
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} answered {status}	Strežnik {host} je odgovoril z {status}
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server's name ({host}, such as api.github.com) wasn't found
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} could not be found: no connection, or a network that blocks it	Strežnika {host} ni bilo mogoče najti: ni povezave ali pa jo omrežje blokira
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: there is no way to its server ({host}); the network may be down
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} could not be reached: check the connection	Strežnika {host} ni bilo mogoče doseči: preverite povezavo
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) didn't answer in time
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} did not answer in time	Strežnik {host} ni odgovoril pravočasno
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) or something on the way refused the connection
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} refused the connection: a firewall, or a network that blocks it	Strežnik {host} ali nekaj na poti je zavrnilo povezavo: požarni zid ali omrežje jo blokira
+#. text in errors.rs
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} refused the request ({status}): too many requests from your network for now	Strežnik {host} je zavrnil zahtevo ({status}): preveč zahtev iz vašega omrežja za zdaj
 #. text in the download list (sizes, speeds, status)
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
@@ -5725,6 +5783,10 @@
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. why a helper couldn't be downloaded ({problem}), then what to do about it ({advice}, whole sentences)
+#, machine
+	{problem}. {advice}	{problem}. {advice}
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine

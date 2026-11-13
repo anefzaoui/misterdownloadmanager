@@ -670,6 +670,11 @@
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. check box in the update window: look for a new version every time MDM starts
 	Check for updates at every start	Verifica aggiornamenti a ogni avvio
+#. text in errors.rs
+#. what to do when the proxy set in Options didn't let a helper's download connect; {proxy} = the Options tab Proxy / Socks; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Check the proxy in Options → {proxy}, or download {name} yourself and choose it in {helpers} → {other}.	Controlla il proxy in Opzioni → {proxy}, oppure scarica {name} e scegli il file in {helpers} → {other}.
 #. text in helpers.rs
 	Check your connection, then try again, or get them later from the video window.	Controlla la connessione e riprova, oppure scaricali più tardi dalla finestra dei video.
 #. text in the Options window
@@ -827,6 +832,20 @@
 #. RSS feeds window: the selected feed's last fetch failed, with why
 #. {error} = an error message (keep the braces as they are)
 	Could not be read: {error}	Impossibile leggere: {error}
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: the proxy set in Options ({proxy}, its address) didn't let MDM connect
+#, machine
+	could not connect through the proxy {proxy}	impossibile connettersi tramite il proxy {proxy}
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) couldn't be reached
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	could not reach {host}	impossibile raggiungere {host}
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) couldn't be reached, for the system's reason {cause}
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	could not reach {host} ({cause})	impossibile raggiungere {host} ({cause})
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
@@ -1535,7 +1554,7 @@
 #. window title in helpers.rs
 #. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
 	Helpers	Programmi di supporto
-#. button in gallerydlg.rs; button in the Download video window
+#. text in errors.rs; button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 	Helpers...	Programmi di supporto...
@@ -1597,6 +1616,11 @@
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 	If it can't be reached, use the system's DNS	Se non è raggiungibile, usa il DNS di sistema
+#. text in errors.rs
+#. what to do when a helper's server couldn't be reached; {proxy} = the Options tab Proxy / Socks; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	If you use a proxy, set it in Options → {proxy}. Or download {name} yourself and choose it in {helpers} → {other}.	Se usi un proxy, impostalo in Opzioni → {proxy}. Oppure scarica {name} e scegli il file in {helpers} → {other}.
 #. checkbox in the Options window
 	Ignore file modification time changes when resuming a download	Ignora i cambiamenti della data di modifica del file quando si riprende un download
 #. message or event log entry in the main window; text in the Options window
@@ -2613,7 +2637,7 @@
 	Properties of the selected download	Proprietà del download selezionato
 #. text in a download's progress window
 	Property	Proprietà
-#. text in the Options window
+#. text in errors.rs; text in the Options window
 #. tab title
 	Proxy / Socks	Proxy / Socks
 #. page title in the Options window
@@ -3364,12 +3388,22 @@
 #. text in errors.rs
 	the connection closed before the part was complete	la connessione si è chiusa prima del completamento della parte
 #. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: the connection to its server ({host}) was cut as it opened
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	the connection to {host} was cut: a firewall, or a network that blocks it	la connessione a {host} è stata interrotta: un firewall o una rete la bloccano
+#. text in errors.rs
 	the connection was lost while receiving data	la connessione si è interrotta durante la ricezione dei dati
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	La DHT non ha raggiunto nessuno. Un firewall, una VPN o la rete potrebbero bloccare UDP, usato dalla DHT e dalla maggior parte dei tracker.
 #. text in errors.rs
 	the disk is full	il disco è pieno
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: the connection to its server ({host}) closed before all of it came
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	the download from {host} was cut short	il download da {host} è stato interrotto
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 	The download isn't complete yet	Il download non è ancora completo
@@ -3474,6 +3508,11 @@
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 	the secure connection failed	impossibile stabilire la connessione protetta
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: the secure connection to its server ({host}) failed, usually because an antivirus or a proxy reads secure (HTTPS) connections with a certificate of its own
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	the secure connection to {host} failed: an antivirus's web filter or a proxy may be reading HTTPS	impossibile stabilire la connessione protetta a {host}: il filtro web di un antivirus o un proxy potrebbero leggere HTTPS
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Il download selezionato non è completo. Vuoi davvero eliminarlo\ndall'elenco dei download di Mister Download Manager?
@@ -3747,6 +3786,15 @@
 	Trinidad and Tobago	Trinidad e Tobago
 #. button in helpers.rs
 	Try again	Riprova
+#. text in errors.rs
+#. what to do when a helper couldn't be downloaded because its server limits requests; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Try again in an hour, or download {name} yourself and choose it in {helpers} → {other}.	Riprova tra un'ora, oppure scarica {name} e scegli il file in {helpers} → {other}.
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Try again later, or download {name} yourself and choose it in {helpers} → {other}.	Riprova più tardi, oppure scarica {name} e scegli il file in {helpers} → {other}.
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 	Tu	Ma
@@ -3889,7 +3937,7 @@
 	Uruguay	Uruguay
 #. text in the Options window
 	Use advanced browser integration	Usa l'integrazione avanzata con i browser
-#. button in helpers.rs
+#. text in errors.rs; button in helpers.rs
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. the trailing ... means it opens a window: keep it
 	Use another program...	Usa un altro programma...
@@ -4261,6 +4309,35 @@
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 	{have} of {total} pieces ({size} each)	{have} di {total} parti ({size} ciascuna)
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) answered with an HTTP error ({status}, such as "404 Not Found")
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} answered {status}	{host} ha risposto {status}
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server's name ({host}, such as api.github.com) wasn't found
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} could not be found: no connection, or a network that blocks it	impossibile trovare {host}: nessuna connessione o una rete che la blocca
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: there is no way to its server ({host}); the network may be down
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} could not be reached: check the connection	impossibile raggiungere {host}: verifica la connessione
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) didn't answer in time
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} did not answer in time	{host} non ha risposto in tempo
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) or something on the way refused the connection
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} refused the connection: a firewall, or a network that blocks it	{host} ha rifiutato la connessione: un firewall o una rete la bloccano
+#. text in errors.rs
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} refused the request ({status}): too many requests from your network for now	{host} ha rifiutato la richiesta ({status}): troppe richieste dalla tua rete per ora
 #. text in the download list (sizes, speeds, status)
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 	{h} hour(s) {m} min	{h} h {m} min
@@ -4324,6 +4401,10 @@
 	{percent} at {service}	{percent} su {service}
 #. text in errors.rs
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. why a helper couldn't be downloaded ({problem}), then what to do about it ({advice}, whole sentences)
+#, machine
+	{problem}. {advice}	{problem}. {advice}
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 	{service} asks to slow down; MDM will try again in a minute	{service} chiede di rallentare; MDM riproverà tra un minuto

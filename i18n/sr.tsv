@@ -1078,6 +1078,20 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Could not be read: {error}	Није могуће прочитати: {error}
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: the proxy set in Options ({proxy}, its address) didn't let MDM connect
+#, machine
+	could not connect through the proxy {proxy}	није могуће повезати се преко проксија {proxy}
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) couldn't be reached
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	could not reach {host}	није могуће доћи до {host}
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) couldn't be reached, for the system's reason {cause}
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	could not reach {host} ({cause})	није могуће доћи до {host} ({cause})
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
@@ -2026,7 +2040,7 @@
 #. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
 #, machine
 	Helpers	Помоћни програми
-#. button in gallerydlg.rs; button in the Download video window
+#. text in errors.rs; button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -3473,7 +3487,7 @@
 #. text in a download's progress window
 #, machine
 	Property	Својство
-#. text in the Options window
+#. text in errors.rs; text in the Options window
 #. tab title
 #, machine
 	Proxy / Socks	Прокси / SOCKS
@@ -4469,6 +4483,11 @@
 #, machine
 	the connection closed before the part was complete	веза је затворена пре него што је део завршен
 #. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: the connection to its server ({host}) was cut as it opened
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	the connection to {host} was cut: a firewall, or a network that blocks it	веза са {host} је прекинута: заштитни зид или мрежа која је блокира
+#. text in errors.rs
 #, machine
 	the connection was lost while receiving data	веза је изгубљена током пријема података
 #. text in the Add torrent window
@@ -4478,6 +4497,11 @@
 #. text in errors.rs
 #, machine
 	the disk is full	диск је пун
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: the connection to its server ({host}) closed before all of it came
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	the download from {host} was cut short	преузимање са {host} је прекинуто
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
@@ -4619,6 +4643,11 @@
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
 	the secure connection failed	безбедна веза није успостављена
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: the secure connection to its server ({host}) failed, usually because an antivirus or a proxy reads secure (HTTPS) connections with a certificate of its own
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	the secure connection to {host} failed: an antivirus's web filter or a proxy may be reading HTTPS	безбедна веза са {host} није успела: веб-филтер антивируса или прокси можда чита HTTPS
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -5160,7 +5189,7 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	Користи напредну интеграцију прегледача
-#. button in helpers.rs
+#. text in errors.rs; button in helpers.rs
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -5645,6 +5674,35 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{have} of {total} pieces ({size} each)	{have} од {total} делова (по {size})
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) answered with an HTTP error ({status}, such as "404 Not Found")
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} answered {status}	{host} је одговорио статусом {status}
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server's name ({host}, such as api.github.com) wasn't found
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} could not be found: no connection, or a network that blocks it	није могуће пронаћи {host}: нема везе или мрежа блокира приступ
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: there is no way to its server ({host}); the network may be down
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} could not be reached: check the connection	није могуће доћи до {host}: проверите везу
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) didn't answer in time
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} did not answer in time	{host} није одговорио на време
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) or something on the way refused the connection
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} refused the connection: a firewall, or a network that blocks it	{host} је одбио везу: заштитни зид или мрежа која је блокира
+#. text in errors.rs
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	{host} refused the request ({status}): too many requests from your network for now	{host} је одбио захтев ({status}): превише захтева са ваше мреже за сада
 #. text in the download list (sizes, speeds, status)
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
@@ -5725,6 +5783,10 @@
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. why a helper couldn't be downloaded ({problem}), then what to do about it ({advice}, whole sentences)
+#, machine
+	{problem}. {advice}	{problem}. {advice}
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
