@@ -74,6 +74,10 @@ pub const TITLES: [&str; COLS] = [
     // i18n: column title: what a torrent sends to peers, bytes per second
     "Upload speed",
 ];
+/// The "Status" column's data slot.
+pub const STATUS: usize = 3;
+/// Status's default width before #736 (IDM's), as saved lists have it.
+const OLD_STATUS_WIDTH: f32 = 65.0;
 /// The "Added" column's data slot.
 pub const ADDED: usize = 8;
 /// The "Source" column's data slot: its cell is "Web" or "Torrent", painted as a chip.
@@ -87,9 +91,12 @@ pub const RATIO: usize = 11;
 pub const UPLOAD: usize = 12;
 
 /// IDM's default column widths (and ours for Added, room for a 12-hour clock's
-/// `Oct 28 9:05:01 AM 2026`, Source, Peers, Share ratio and Upload speed).
+/// `Oct 28 9:05:01 AM 2026`, Source, Peers, Share ratio and Upload speed). Status is wider than
+/// IDM's 65 px (#736): one word and a percentage while a file is checked or a video joined
+/// ("Checking 45%", German's "Zusammenführen 100 %"), in every language the test checks
+/// (theme.rs, `finishing_fits_the_status_column`).
 pub const DEFAULT_WIDTHS: [f32; COLS] = [
-    150.0, 20.0, 75.0, 65.0, 75.0, 95.0, 65.0, 200.0, 145.0, 62.0, 64.0, 92.0, 100.0,
+    150.0, 20.0, 75.0, 132.0, 75.0, 95.0, 65.0, 200.0, 145.0, 62.0, 64.0, 92.0, 100.0,
 ];
 /// Default display order: Source first, then IDM's, a torrent's three columns after its rate, and
 /// Added after Last Try Date.
@@ -309,6 +316,11 @@ impl ListState {
             self.widths[c] = l.widths.get(c).copied().unwrap_or(*default).max(MIN_WIDTH);
             self.visible[c] = l.visible.get(c).copied().unwrap_or(true);
         }
+        // Status at IDM's 65 px, as every list was saved before it widened (#736), was never
+        // made wider or narrower: the new default. A width someone chose stays.
+        if self.widths[STATUS] == OLD_STATUS_WIDTH {
+            self.widths[STATUS] = DEFAULT_WIDTHS[STATUS];
+        }
         self.visible[0] = true;
         self.sort = l.sort.filter(|(c, _)| *c < COLS);
     }
@@ -330,8 +342,8 @@ pub struct Row {
     /// In a queue: the Q column shows a queue icon (IDM: stacked files).
     pub queued: bool,
     pub cells: [String; COLS],
-    /// The Status cell's whole text when the cell shows it short ("✔ 45%" for "Verifying...
-    /// (45%)", #736): the cell's tip starts with it, and a screen reader says it.
+    /// The Status cell's whole text when the cell shows it short ("Checking 45%" for
+    /// "Verifying... (45%)", #736): the cell's tip starts with it, and a screen reader says it.
     pub status_whole: Option<String>,
 }
 
@@ -1644,6 +1656,31 @@ mod tests {
         assert_eq!(st.widths[RATIO], DEFAULT_WIDTHS[RATIO]);
         assert!(st.visible[UPLOAD] && st.visible[PEERS] && st.visible[RATIO]);
         assert_eq!(st.sort, Some((2, false)));
+    }
+
+    /// #736: a list saved with Status at IDM's 65 px (never resized) gets the wider default;
+    /// a width someone chose stays.
+    #[test]
+    fn status_at_the_old_default_widens() {
+        let saved = |status: f32| Layout {
+            order: DEFAULT_ORDER.to_vec(),
+            widths: vec![
+                150.0, 20.0, 75.0, status, 75.0, 95.0, 65.0, 200.0, 145.0, 62.0, 64.0, 92.0, 100.0,
+            ],
+            visible: vec![true; COLS],
+            sort: None,
+        };
+        let mut st = ListState::default();
+        st.apply(saved(65.0));
+        assert_eq!(st.widths[STATUS], DEFAULT_WIDTHS[STATUS]);
+        assert!(DEFAULT_WIDTHS[STATUS] > 65.0);
+        // Last Try Date's 65 px is its own default, not Status's.
+        assert_eq!(st.widths[6], 65.0);
+        for chosen in [80.0, 64.0, 200.0] {
+            let mut st = ListState::default();
+            st.apply(saved(chosen));
+            assert_eq!(st.widths[STATUS], chosen);
+        }
     }
 
     /// #357: a layout saved between "Source" and the torrent columns gets them in the same

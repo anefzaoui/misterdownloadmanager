@@ -915,7 +915,7 @@
 #, machine
 	Checking {name} ({n} of {total})...	{name} ({n} از {total}) کی جانچ ہو رہی ہے...
 #. text in the download list (sizes, speeds, status)
-#. a torrent's status while its files are read and checked; {percent} is how much is checked, e.g. "42%"
+#. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
 #, machine
 	Checking {percent}	{percent} کی جانچ ہو رہی ہے
 #. text in the Checksum window; text in the Link grabber window
@@ -2677,6 +2677,10 @@
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
 	medium	درمیانہ
+#. text in the download list (sizes, speeds, status)
+#. the list's Status column while a video's picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%". One short word: the column is narrow
+#, machine
+	Merging {percent}	ضم کیا جا رہا ہے: {percent}
 #. text in the download list (sizes, speeds, status)
 #. a video's status while its picture and sound are joined into one file (ffmpeg)
 #. the trailing ... means it is still going on: keep it
@@ -5186,6 +5190,7 @@
 #, machine
 	United States Minor Outlying Islands	ریاستہائے متحدہ کے چھوٹے بیرونی جزائر
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	نامعلوم
 #. text in a dialog box; text in a download's progress window; text in whereis.rs
@@ -5696,6 +5701,9 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} پتے کی فہرست کے لیے بہت بڑی ہے ({size})۔ امپورٹ ٹیکسٹ فائلیں، ویب پیجز اور .ef2 ایکسپورٹس {limit} تک پڑھتا ہے۔
+#. text in a dialog box
+#, machine
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} کو 'ڈاؤن لوڈ مکمل' سے گھسیٹ کر کہیں اور منتقل کر دیا گیا تھا، اور MDM اس کا مقام معلوم نہیں کر سکا۔ اسے وہاں تلاش کریں جہاں آپ نے اسے چھوڑا تھا۔
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5820,14 +5828,6 @@
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
 	{percent} at {service}	{service} پر {percent}
-#. text in the download list (sizes, speeds, status)
-#. the list's narrow Status column while a video's picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%": keep it first, the column is narrow
-#, machine
-	{percent} merged	{percent} ضم کیا جا رہا ہے
-#. text in the download list (sizes, speeds, status)
-#. the list's narrow Status column while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%": keep it first, the column is narrow
-#, machine
-	{percent} verified	{percent} کی تصدیق ہو رہی ہے
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -6769,6 +6769,10 @@ menu	Direct3D	Direct3D
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
 menu	Direct3D didn't start here: OpenGL draws	Direct3D یہاں شروع نہیں ہوا: OpenGL ڈرائنگ کرے گا
+#. menu command in the main window
+#. View → Draw with: a greyed note; Direct3D draws the windows through Windows' own software renderer (WARP) instead of a graphics card
+#, machine
+menu	Direct3D draws with Windows' software renderer (WARP)	Direct3D Windows کے سافٹ ویئر رینڈرر (WARP) کے ساتھ ڈرا کرتا ہے
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

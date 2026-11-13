@@ -583,7 +583,8 @@ These ship in the next version.
   downloads a live stream itself, instead of an empty table
   ([#793](https://github.com/anefzaoui/misterdownloadmanager/issues/793))
 - ✅ After the last byte, the progress window says **Verifying… (45%)** or **Merging… (45%)**
-  and the list's narrow Status column **✔ 45%** or **⊕ 45%** (the words in its tip), the bar
+  and the list's Status column, wider by default, **Checking 45%** or **Merging 45%** (the
+  whole words in its tip), the bar
   showing it in the accent colour, no transfer rate and no connection still receiving, and
   **Finishing…** rather than **Connecting…**; a finished download's map of parts has no gaps
   ([#736](https://github.com/anefzaoui/misterdownloadmanager/issues/736))

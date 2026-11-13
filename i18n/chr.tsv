@@ -905,10 +905,6 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking {name} ({n} of {total})...	ᎠᎪᎵᏰᏗ {name} ({n} ᎤᎾᏓᏑᏴ {total})...
-#. text in the download list (sizes, speeds, status)
-#. a torrent's status while its files are read and checked; {percent} is how much is checked, e.g. "42%"
-#, machine
-	Checking {percent}	ᎠᎾᎦᏔᎲᏍᎬ {percent}
 #. text in the Checksum window; text in the Link grabber window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -5076,6 +5072,7 @@
 #, machine
 	United States Minor Outlying Islands	ᎤᎾᎵᎪᏒᎯ ᏍᏓᏗᎢ ᏧᎾᏍᏗ ᏙᏱᏗᏢ ᏚᎦᏚᏛᎢ
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	ᏄᏬᎵᏍᏔᏅᎾ
 #. text in a dialog box; text in a download's progress window; text in whereis.rs
@@ -6755,6 +6752,10 @@ menu	Open with...	ᎤᏍᏚᎢᏍᏗ...
 #, machine
 menu	OpenGL	OpenGL
 #. menu command in the main window
+#. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
+#, machine
+menu	OpenGL here is too old to draw MDM	OpenGL ᎤᏓᏂᎵᎨᎢ ᎡᎯᏍᏗ ᎨᏒᎢ ᎥᏝ ᏰᎵ ᏱᎩ MDM ᎬᏗᏍᏗ
+#. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window
 #. noun: opens the category's properties
@@ -6905,6 +6906,10 @@ menu	Vulkan	Vulkan
 #. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
 #, machine
 menu	Vulkan didn't start here: OpenGL draws	Vulkan ᎥᏝ ᏳᎴᏅᏔᏃ: OpenGL ᏕᎬᎪᏍᏗ
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan draws the windows through a software renderer instead of a graphics card
+#, machine
+menu	Vulkan draws with a software renderer	Vulkan ᎤᏓᏂᎵᎨᎢ ᎬᏗᏍᏗ ᎨᏒᎢ ᎤᎾᏙᏢᏅᎯ ᏗᏟᎶᏍᏙᏗ
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

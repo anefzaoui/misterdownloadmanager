@@ -915,7 +915,7 @@
 #, machine
 	Checking {name} ({n} of {total})...	Provjeravam {name} ({n} od {total})...
 #. text in the download list (sizes, speeds, status)
-#. a torrent's status while its files are read and checked; {percent} is how much is checked, e.g. "42%"
+#. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
 #, machine
 	Checking {percent}	Provjera {percent}
 #. text in the Checksum window; text in the Link grabber window
@@ -1788,6 +1788,11 @@
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	Završeno
+#. text in a download's progress window
+#. a download's status: every byte is in, the file is being written out and given its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Finishing...	Završavanje...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2667,6 +2672,19 @@
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
 	medium	srednje
+#. text in the download list (sizes, speeds, status)
+#. the list's Status column while a video's picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%". One short word: the column is narrow
+#, machine
+	Merging {percent}	Spajanje {percent}
+#. text in the download list (sizes, speeds, status)
+#. a video's status while its picture and sound are joined into one file (ffmpeg)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Merging...	Spajanje...
+#. text in the download list (sizes, speeds, status)
+#. a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
+#, machine
+	Merging... ({percent})	Spajanje... ({percent})
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3564,6 +3582,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	Čitanje torrenta...
+#. message or event log entry in the main window
+#. the status strip while Tasks → Import reads a file; {file} is its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading {file}...	Čitanje {file}...
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Čita stranicu i navodi sve kvalitete koje web-mjesto nudi, do 4K, s YouTubea, Vimea i više od tisuću drugih web-mjesta.
@@ -5153,6 +5176,7 @@
 #, machine
 	United States Minor Outlying Islands	Manji udaljeni otoci Sjedinjenih Država
 #. text in a download's Properties window
+#. the web page is not known
 #, machine
 	Unknown	Nepoznato
 #. text in a dialog box; text in a download's progress window; text in whereis.rs
@@ -5295,6 +5319,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Verifying...	Provjeravam...
+#. text in the download list (sizes, speeds, status)
+#. a download's status while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%"
+#, machine
+	Verifying... ({percent})	Provjera... ({percent})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -5786,14 +5814,6 @@
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
 	{percent} at {service}	{percent} na usluzi {service}
-#. text in the download list (sizes, speeds, status)
-#. the list's narrow Status column while a video's picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%": keep it first, the column is narrow
-#, machine
-	{percent} merged	{percent} spojeno
-#. text in the download list (sizes, speeds, status)
-#. the list's narrow Status column while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%": keep it first, the column is narrow
-#, machine
-	{percent} verified	{percent} provjereno
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})

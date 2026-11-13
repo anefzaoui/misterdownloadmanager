@@ -1173,46 +1173,52 @@ impl Item {
         } else {
             0.0
         };
-        Some(crate::i18n::fmt(
-            // i18n: a torrent's status while its files are read and checked; {percent} is how much is checked, e.g. "42%"
-            crate::i18n::t("Checking {percent}"),
-            &[("percent", &crate::i18n::percent(ratio.min(1.0), 0))],
-        ))
+        Some(checking(&crate::i18n::percent(ratio.min(1.0), 0)))
     }
 
     /// After the last byte, while the file is checked against its checksum or a video's
     /// streams are joined (#736): "Verifying... (45%)", "Merging...", with how far it is when
-    /// that's known. `short`: the list's Status column, a mark and how far, "✔ 45%" while it is
-    /// checked, "⊕ 45%" while it is joined ("✔ ..." before that is known): the column is 65 px
-    /// wide, and no language's word for it fits there beside a percentage. The cell's tip and a
-    /// screen reader say it whole ([`crate::list::Row::status_whole`]).
+    /// that's known. `short`: the list's Status column, one short word and how far, "Checking
+    /// 45%" (as a torrent's check) and "Merging 45%" ("Merging ..." before that is known); the
+    /// column is wide enough for them in every language ([`crate::list::DEFAULT_WIDTHS`]). The
+    /// cell's tip and a screen reader say it whole ([`crate::list::Row::status_whole`]).
     pub fn finishing(&self, short: bool) -> Option<String> {
         let s = self.snap.as_ref()?;
-        let (mark, plain, with_percent) = match s.state {
-            State::Verifying => (
-                VERIFYING_MARK,
-                // i18n: a download's status while the finished file is checked against its checksum
-                crate::i18n::t("Verifying..."),
-                // i18n: a download's status while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%"
-                crate::i18n::t("Verifying... ({percent})"),
-            ),
-            State::Merging => (
-                MERGING_MARK,
-                // i18n: a video's status while its picture and sound are joined into one file (ffmpeg)
-                crate::i18n::t("Merging..."),
-                // i18n: a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
-                crate::i18n::t("Merging... ({percent})"),
-            ),
-            _ => return None,
-        };
+        if !matches!(s.state, State::Verifying | State::Merging) {
+            return None;
+        }
         let percent = s
             .finishing
             .map(|f| crate::i18n::percent(f.clamp(0.0, 1.0), 0));
+        let verifying = s.state == State::Verifying;
         Some(match (short, percent) {
             // As "... at Real-Debrid" before its service says how far.
-            (true, percent) => format!("{mark} {}", percent.as_deref().unwrap_or("...")),
-            (false, Some(percent)) => crate::i18n::fmt(with_percent, &[("percent", &percent)]),
-            (false, None) => plain.to_owned(),
+            (true, percent) => {
+                let percent = percent.as_deref().unwrap_or("...");
+                if verifying {
+                    checking(percent)
+                } else {
+                    merging(percent)
+                }
+            }
+            (false, Some(percent)) => crate::i18n::fmt(
+                if verifying {
+                    // i18n: a download's status while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%"
+                    crate::i18n::t("Verifying... ({percent})")
+                } else {
+                    // i18n: a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
+                    crate::i18n::t("Merging... ({percent})")
+                },
+                &[("percent", &percent)],
+            ),
+            (false, None) if verifying => {
+                // i18n: a download's status while the finished file is checked against its checksum
+                crate::i18n::t("Verifying...").to_owned()
+            }
+            (false, None) => {
+                // i18n: a video's status while its picture and sound are joined into one file (ffmpeg)
+                crate::i18n::t("Merging...").to_owned()
+            }
         })
     }
 
@@ -1278,11 +1284,25 @@ fn every_byte_in(s: &mdm_engine::Snapshot) -> bool {
             .any(|c| matches!(c.status, ConnStatus::Receiving | ConnStatus::Connecting)))
 }
 
-/// The list's Status column while a finished file is checked against its checksum (a check
-/// mark) and while a video's streams are joined (a circled plus), before how far (#736). Marks
-/// every system's symbol font has (theme.rs: `SYMBOL_FONTS`, `SYMBOL_PATTERN`).
-const VERIFYING_MARK: &str = "\u{2714}";
-const MERGING_MARK: &str = "\u{2295}";
+/// The list's Status column while a torrent's files or a finished file are checked (against
+/// the torrent's hashes, against a checksum): one short word and how far (#736).
+pub fn checking(percent: &str) -> String {
+    crate::i18n::fmt(
+        // i18n: the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
+        crate::i18n::t("Checking {percent}"),
+        &[("percent", percent)],
+    )
+}
+
+/// The list's Status column while a video's picture and sound are joined: one short word and
+/// how far (#736).
+pub fn merging(percent: &str) -> String {
+    crate::i18n::fmt(
+        // i18n: the list's Status column while a video's picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%". One short word: the column is narrow
+        crate::i18n::t("Merging {percent}"),
+        &[("percent", percent)],
+    )
+}
 
 /// The "Last Try Date" and "Added" columns as stored, e.g. `Oct 28 21:44:12 2026` (the list's
 /// format; read back by `stamp_time`).
@@ -1590,19 +1610,19 @@ mod tests {
             ..Default::default()
         };
         it.snap = Some(super::tool_snapshot(p.clone(), &url));
-        // A mark and how far: the column is narrow; the progress window says it whole.
-        assert_eq!(it.status_text(), "\u{2295} 45%");
+        // A short word and how far in the list; the progress window says it whole.
+        assert_eq!(it.status_text(), "Merging 45%");
         assert_eq!(it.finishing(false).as_deref(), Some("Merging... (45%)"));
         assert!(it.past_last_byte());
         p.merging = Some(None);
         it.snap = Some(super::tool_snapshot(p.clone(), &url));
-        assert_eq!(it.status_text(), "\u{2295} ...");
+        assert_eq!(it.status_text(), "Merging ...");
         assert_eq!(it.finishing(false).as_deref(), Some("Merging..."));
         let mut s = super::tool_snapshot(p.clone(), &url);
         s.state = State::Verifying;
         s.finishing = Some(0.5);
         it.snap = Some(s);
-        assert_eq!(it.status_text(), "\u{2714} 50%");
+        assert_eq!(it.status_text(), "Checking 50%");
         assert_eq!(it.finishing(false).as_deref(), Some("Verifying... (50%)"));
         assert!(it.past_last_byte());
         // Still coming in (yt-dlp's own connection receiving): a rate and a time left as before.

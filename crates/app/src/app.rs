@@ -1925,8 +1925,8 @@ impl App {
                     .as_ref()
                     .map_or(String::new(), |t| model::rate(t.up_speed)),
             ],
-            // A mark and a percentage in the cell while checked or joined (#736): the words in
-            // its tip and for a screen reader.
+            // A short word and a percentage in the cell while checked or joined (#736): the
+            // whole words in its tip and for a screen reader.
             status_whole: (!self.extracts.extracting(it.id))
                 .then(|| it.finishing(false))
                 .flatten(),
