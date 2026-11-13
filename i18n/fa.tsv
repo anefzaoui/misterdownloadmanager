@@ -5371,6 +5371,10 @@
 #, machine
 	Windows allows wake timers only while plugged in	Windows زمان‌سنج‌های بیدارباش را فقط در حالت اتصال به برق مجاز می‌داند
 #. text in the Options window
+#. tooltip of "Mark downloaded files as coming from the internet" on Windows
+#, machine
+	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows فایل‌های علامت‌گذاری‌شده به این روش را بررسی می‌کند: SmartScreen پیش از اولین اجرای برنامه، Protected View آفیس پیش از باز شدن سند. اگر علامت‌گذاری نشود، یا تحت خط‌مشی Windows «اطلاعات منطقه را در پیوست‌های فایل حفظ نکنید»، هیچ بارگیری‌ای علامت‌گذاری نمی‌شود.
+#. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine
 	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Credential Manager پاسخ نداد، بنابراین ورودها و گذرواژه‌ها در تنظیمات MDM نگهداری می‌شوند، که برای حساب Windows شما رمزگذاری شده‌اند.
@@ -6656,6 +6660,10 @@ menu	Direct3D	Direct3D
 #, machine
 menu	Direct3D didn't start here: OpenGL draws	Direct3D اینجا شروع نشد: OpenGL ترسیم می‌کند
 #. menu command in the main window
+#. View → Draw with: a greyed note; Direct3D draws the windows through Windows' own software renderer (WARP) instead of a graphics card
+#, machine
+menu	Direct3D draws with Windows' software renderer (WARP)	Direct3D با رندرکننده نرم‌افزاری Windows (WARP) ترسیم می‌کند
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -6749,6 +6757,10 @@ menu	Metal	Metal
 #, machine
 menu	Metal didn't start here: OpenGL draws	Metal اینجا شروع نشد: OpenGL ترسیم می‌کند
 #. menu command in the main window
+#. View → Draw with: a greyed note; Metal draws the windows through a software renderer instead of a graphics card
+#, machine
+menu	Metal draws with a software renderer	Metal با یک رندر نرم‌افزاری ترسیم می‌کند
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
 menu	Metro	مترو
@@ -6795,6 +6807,10 @@ menu	Open with...	باز کردن با...
 #. View → Draw with: a graphics system's name, usually kept as is
 #, machine
 menu	OpenGL	OpenGL
+#. menu command in the main window
+#. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
+#, machine
+menu	OpenGL here is too old to draw MDM	OpenGL اینجا برای ترسیم MDM بسیار قدیمی است
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window
@@ -6946,6 +6962,10 @@ menu	Vulkan	Vulkan
 #. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
 #, machine
 menu	Vulkan didn't start here: OpenGL draws	Vulkan اینجا شروع نشد: OpenGL ترسیم می‌کند
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan draws the windows through a software renderer instead of a graphics card
+#, machine
+menu	Vulkan draws with a software renderer	Vulkan با یک رندر نرم‌افزاری ترسیم می‌کند
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

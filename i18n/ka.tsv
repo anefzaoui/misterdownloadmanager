@@ -6660,6 +6660,10 @@ menu	Direct3D	Direct3D
 #, machine
 menu	Direct3D didn't start here: OpenGL draws	Direct3D აქ არ გაეშვა: OpenGL ხატავს
 #. menu command in the main window
+#. View → Draw with: a greyed note; Direct3D draws the windows through Windows' own software renderer (WARP) instead of a graphics card
+#, machine
+menu	Direct3D draws with Windows' software renderer (WARP)	Direct3D ხატავს Windows-ის პროგრამული უზრუნველყოფის რენდერერით (WARP)
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -6749,6 +6753,10 @@ menu	Metal	Metal
 #, machine
 menu	Metal didn't start here: OpenGL draws	Metal აქ არ გაეშვა: OpenGL ხატავს
 #. menu command in the main window
+#. View → Draw with: a greyed note; Metal draws the windows through a software renderer instead of a graphics card
+#, machine
+menu	Metal draws with a software renderer	Metal ხატავს პროგრამული უზრუნველყოფის რენდერერით
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
 menu	Metro	მეტრო
@@ -6795,6 +6803,10 @@ menu	Open with...	გახსნა რითი...
 #. View → Draw with: a graphics system's name, usually kept as is
 #, machine
 menu	OpenGL	OpenGL
+#. menu command in the main window
+#. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
+#, machine
+menu	OpenGL here is too old to draw MDM	აქ OpenGL ზედმეტად ძველია MDM-ის გამოსახატავად
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window
@@ -6946,6 +6958,10 @@ menu	Vulkan	Vulkan
 #. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
 #, machine
 menu	Vulkan didn't start here: OpenGL draws	Vulkan აქ არ გაეშვა: OpenGL ხატავს
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan draws the windows through a software renderer instead of a graphics card
+#, machine
+menu	Vulkan draws with a software renderer	Vulkan ხატავს პროგრამული უზრუნველყოფის რენდერერით
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

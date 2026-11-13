@@ -6539,6 +6539,9 @@ impl App {
                 // Chosen again after it failed here: its next start is tried.
                 if Some(api) == crate::renderer::GPU {
                     crate::renderer::forget_failure();
+                } else {
+                    // OpenGL chosen again after it couldn't draw MDM (#835): tried and checked.
+                    crate::renderer::forget_gl_unfit();
                 }
                 tracing::info!("draw with {api:?} from the next start");
                 self.settings.renderer = Some(api);
@@ -7466,8 +7469,8 @@ impl App {
 
     /// View → Draw with (#89, #206): OpenGL or the system's own graphics API (Direct3D on
     /// Windows, Vulkan on Linux, Metal on macOS), used from the next start. Greyed lines say when
-    /// what draws now isn't the choice: the system's API failed here (and why), or the choice
-    /// waits for the next start.
+    /// what draws now isn't the choice: the system's API failed here (and why), OpenGL can't
+    /// draw MDM here (#835), a software renderer draws, or the choice waits for the next start.
     #[cfg(gpu)]
     fn draw_with_menu(&self) -> MenuEntry<Cmd> {
         use crate::renderer::{self, Api, Why};
@@ -7477,25 +7480,31 @@ impl App {
         let gpu = renderer::GPU.unwrap_or(Api::OpenGl);
         let on = chosen == gpu;
         let draw = Cmd::DrawWith(gpu);
-        // Its choice, and the note when it failed here.
-        let (choice, failed_note) = match gpu {
+        // Its choice, the note when it failed here, and the one when a software renderer draws it.
+        let (choice, failed_note, software_note) = match gpu {
             Api::Direct3D => (
                 // i18n: View → Draw with: a graphics system's name (Microsoft's), usually kept as is
                 Radio("Direct3D", draw, true, on),
                 // i18n: View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
                 off("Direct3D didn't start here: OpenGL draws"),
+                // i18n: View → Draw with: a greyed note; Direct3D draws the windows through Windows' own software renderer (WARP) instead of a graphics card
+                off("Direct3D draws with Windows' software renderer (WARP)"),
             ),
             Api::Vulkan => (
                 // i18n: View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
                 Radio("Vulkan", draw, true, on),
                 // i18n: View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
                 off("Vulkan didn't start here: OpenGL draws"),
+                // i18n: View → Draw with: a greyed note; Vulkan draws the windows through a software renderer instead of a graphics card
+                off("Vulkan draws with a software renderer"),
             ),
             _ => (
                 // i18n: View → Draw with: a graphics system's name (Apple's), usually kept as is
                 Radio("Metal", draw, true, on),
                 // i18n: View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
                 off("Metal didn't start here: OpenGL draws"),
+                // i18n: View → Draw with: a greyed note; Metal draws the windows through a software renderer instead of a graphics card
+                off("Metal draws with a software renderer"),
             ),
         };
         let mut items = vec![
@@ -7509,13 +7518,25 @@ impl App {
             choice,
         ];
         let failed = renderer::gpu_failed().filter(|_| on);
-        if renderer::active().is_some_and(|a| a != chosen) {
+        let active = renderer::active();
+        // The system's API on a software renderer (WARP): said, with why below (no card for
+        // it, an OpenGL that can't draw MDM).
+        let software = active == Some(gpu) && renderer::software();
+        // OpenGL can't draw MDM here (#835): said where it changed what draws.
+        let unfit = renderer::opengl_unfit() && active == Some(gpu) && (software || !on);
+        if active.is_some_and(|a| a != chosen) || software {
             items.push(Sep);
-            let last = match failed {
+            if software {
+                items.push(software_note);
+            }
+            let mut notes = Vec::new();
+            match failed {
                 Some(why) => {
-                    items.push(failed_note);
+                    if !software {
+                        items.push(failed_note);
+                    }
                     // Why, under it ("it": Direct3D, Vulkan or Metal).
-                    match why {
+                    notes.push(match why {
                         // i18n: View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
                         Why::NoAdapter => off("No graphics card here has a driver for it"),
                         // i18n: View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
@@ -7526,12 +7547,18 @@ impl App {
                         Why::LostTwice => off("The graphics card was lost twice in 10 minutes"),
                         // i18n: View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
                         Why::Other => off("It couldn't start: the log says why"),
-                    }
+                    });
                 }
+                // A software renderer that draws for want of a card says only that.
+                None if software || unfit => {}
                 // i18n: View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
-                None => off("Applies the next time MDM starts"),
-            };
-            items.push(last);
+                None => notes.push(off("Applies the next time MDM starts")),
+            }
+            if unfit {
+                // i18n: View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
+                notes.push(off("OpenGL here is too old to draw MDM"));
+            }
+            items.extend(notes);
         }
         // i18n: View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
         Sub("Draw with", true, items)
