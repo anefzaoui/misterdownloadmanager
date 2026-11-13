@@ -562,6 +562,12 @@ These ship in the next version.
   once OpenGL fails there: it can't start, is too old, shows no first window, or MDM freezes
   inside its driver (read from the freeze report); remembered, **View → Draw with** says why, and
   choosing **OpenGL** tries it again ([#847](https://github.com/anefzaoui/misterdownloadmanager/issues/847))
+- ✅ Torrents: File Properties closes with OK, instead of asking for an http(s) or ftp(s)
+  address; a torrent's magnet link is shown read only there
+  ([#904](https://github.com/anefzaoui/misterdownloadmanager/issues/904))
+- ✅ Tests: the test server's HLS videos carry a real picture (H.264), so its video and sound
+  tracks merge into one file as a site's do; its video tracks held only sound, which made the
+  merge fail ("Error opening output files: Invalid argument"). Real sites' videos merged already
 - ✅ macOS: .torrent files open in MDM from Finder (double-click, Open With, the Dock's icon) and
   magnet links from the browser, and Torrent settings can make MDM their default app there
   ([#698](https://github.com/anefzaoui/misterdownloadmanager/issues/698))
