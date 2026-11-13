@@ -1227,7 +1227,7 @@ mod font_file_tests {
         let (picked, _) = pick_font(&[pcf.clone(), gone, hack.clone()], &mut looked).unwrap();
         assert_eq!(picked, hack);
         // Nothing egui can read: nothing.
-        assert!(pick_font(&[bdf.clone()], &mut HashMap::new()).is_none());
+        assert!(pick_font(std::slice::from_ref(&bdf), &mut HashMap::new()).is_none());
         assert!(read_font(&bdf).is_none());
         assert!(read_font(&ubuntu).is_some());
     }
