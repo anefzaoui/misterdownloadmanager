@@ -1177,7 +1177,10 @@ fn popup_level<C: Clone>(
             o.y + size.y - 1.0,
             POPUP_BG(),
         );
-        let pointer = ui.ctx().pointer_hover_pos();
+        // Where the pointer is, or was on this pass: a tap on a touch screen ends with the pointer
+        // gone (egui-winit lets go of it as the finger lifts, so nothing stays lit), in the very
+        // pass that releases it, where the hover position is none and no item was chosen (#733).
+        let pointer = ui.input(|i| i.pointer.hover_pos().or(i.pointer.interact_pos()));
         // The item under the pointer (none on a separator or the padding): one item is lit at a
         // time, so an open submenu's entry gives up its light to it (#579).
         let under = pointer.and_then(|p| item_at(entries, o, w, p));
@@ -2604,6 +2607,92 @@ mod tests {
         let x = o.x + (right - o.x) * 0.9 - o.x;
         frame(at(x, 80.0));
         assert_eq!(open(&ctx), Some(3), "kept on the way into it");
+    }
+
+    /// #733: a tap on a touch screen chooses the item under the finger. egui-winit makes the
+    /// tap a press and a release of the pointer, then lets go of it (PointerGone) as the finger
+    /// lifts, in the same pass as the release (in one pass with the press too, for a quick tap):
+    /// the item was looked for under a pointer that was gone, and none was chosen.
+    #[test]
+    fn a_tap_chooses_the_item_under_the_finger() {
+        let [a, b, c] = ["a", "b", "c"]; // not texts to translate (tools/i18n/extract.py)
+        let entries: Vec<MenuEntry<u8>> = vec![
+            MenuEntry::Item(a, 0, true, false),
+            MenuEntry::Sep,
+            MenuEntry::Item(b, 1, true, false),
+            MenuEntry::Item(c, 2, true, false),
+        ];
+        // Each pass's events; what the menu chose.
+        let run = |passes: &[&dyn Fn(egui::Pos2) -> Vec<egui::Event>]| {
+            let ctx = egui::Context::default();
+            let sub_key = egui::Id::unique(("popup-sub", "t733"));
+            let mut t = 0.0;
+            let mut chosen = None;
+            let mut pass = |events: Vec<egui::Event>| {
+                t += 0.016;
+                let raw = egui::RawInput {
+                    time: Some(t),
+                    screen_rect: Some(Rect::from_min_size(
+                        pos2(0.0, 0.0),
+                        egui::vec2(1200.0, 800.0),
+                    )),
+                    events,
+                    ..Default::default()
+                };
+                let mut out = ctx.run_ui(raw, |ui| {
+                    let mut result = None;
+                    super::popup_level(
+                        ui.ctx(),
+                        MenuKind::Context,
+                        "t733",
+                        pos2(100.0, 100.0),
+                        None,
+                        &entries,
+                        sub_key,
+                        &mut result,
+                        0,
+                        &|_| None,
+                    );
+                    if result.is_some() {
+                        chosen = result;
+                    }
+                });
+                out.textures_delta.clear();
+            };
+            pass(Vec::new());
+            let o = ctx
+                .data(|d| d.get_temp::<egui::Pos2>(sub_key.with(("origin", 0usize))))
+                .expect("drawn");
+            // "b": below "a" (3..25) and the separator (25..34), at 34..56.
+            let on_b = o + egui::vec2(60.0, 45.0);
+            for p in passes {
+                pass(p(on_b));
+            }
+            chosen
+        };
+        let button = |pos, pressed| egui::Event::PointerButton {
+            pos,
+            button: egui::PointerButton::Primary,
+            pressed,
+            modifiers: Default::default(),
+        };
+        let down = |p: egui::Pos2| vec![egui::Event::PointerMoved(p), button(p, true)];
+        let up_gone = |p: egui::Pos2| vec![button(p, false), egui::Event::PointerGone];
+        let tap = |p: egui::Pos2| {
+            vec![
+                egui::Event::PointerMoved(p),
+                button(p, true),
+                button(p, false),
+                egui::Event::PointerGone,
+            ]
+        };
+        let up = |p: egui::Pos2| vec![button(p, false)];
+        // A tap: the finger down in one pass, up (and the pointer gone) in the next.
+        assert_eq!(run(&[&down, &up_gone]), Some(1));
+        // A quick tap, all in one pass.
+        assert_eq!(run(&[&tap]), Some(1));
+        // The mouse, as before.
+        assert_eq!(run(&[&down, &up]), Some(1));
     }
 
     /// #579: the entry under the pointer, separators and padding none.

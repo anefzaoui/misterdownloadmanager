@@ -561,6 +561,13 @@ These ship in the next version.
   seconds (one failed on a slow macOS runner) now time the same work at two sizes, eight times
   apart, and fail only when the larger one costs over 24 times as much (a square costs 64 times),
   whatever the machine's speed
+- ✅ Touch screens: a tap on a menu's item chooses it (the menu bar's, right-click menus,
+  drop-downs), where only a mouse could
+  ([#733](https://github.com/anefzaoui/misterdownloadmanager/issues/733))
+- ✅ A video's Address is its file's (the stream MDM downloads) in the progress window, Download
+  complete and File Properties, its page the web page it was obtained from; a download's page and
+  Referer are kept after a restart
+  ([#795](https://github.com/anefzaoui/misterdownloadmanager/issues/795))
 - ✅ The progress window's connections table while a video downloads: MDM's own connections (as
   many as Options → Connection gives), and yt-dlp's one connection while it looks the page up or
   downloads a live stream itself, instead of an empty table

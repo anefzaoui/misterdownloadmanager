@@ -1375,7 +1375,8 @@ impl Progress {
             "url",
             33.0,
             44.0,
-            &crate::i18n::ltr(item.url.as_str()),
+            // A video's stream, not its page (#795).
+            &crate::i18n::ltr(item.file_address().as_str()),
             winui::TEXT(),
         );
         let rows: [(&str, f32, f32, String); 6] = [
