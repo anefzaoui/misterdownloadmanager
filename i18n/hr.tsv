@@ -2279,6 +2279,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	nije bilo moguće zapisati njegove datoteke: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	sliku i zvuk nije bilo moguće spojiti u jednu datoteku ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	slika i zvuk nisu se mogli spojiti u jednu datoteku ({error}). Preuzeto ostaje u mapi za ponovno spajanje ({files}); brisanje preuzimanja s „Izbriši i datoteku s diska” uklanja ga
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	informacije o izdanju nisu očekivane: {detail}
@@ -5322,7 +5332,7 @@
 #. text in the download list (sizes, speeds, status)
 #. a download's status while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%"
 #, machine
-	Verifying... ({percent})	Provjera... ({percent})
+	Verifying... ({percent})	Provjeravanje... ({percent})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine

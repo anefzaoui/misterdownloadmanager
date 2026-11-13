@@ -304,10 +304,21 @@ const M3U8: &str = "application/vnd.apple.mpegurl";
 
 /// `/hls/master.m3u8`.
 pub(crate) async fn hls_master() -> Response {
-    let mut s = String::from(
+    master("audio/index.m3u8")
+}
+
+/// `/hls/broken-audio.m3u8`: the same, its sound's pieces not MPEG-TS (seeded bytes): every
+/// piece downloads, and ffmpeg can't read the sound to join it with the picture (a failed merge).
+pub(crate) async fn hls_broken_master() -> Response {
+    master("audio/broken.m3u8")
+}
+
+/// A master playlist of the video tracks, its sound at `audio` (relative to it).
+fn master(audio: &str) -> Response {
+    let mut s = format!(
         "#EXTM3U\n#EXT-X-VERSION:3\n\
          #EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID=\"aud\",NAME=\"English\",LANGUAGE=\"en\",\
-         DEFAULT=YES,AUTOSELECT=YES,URI=\"audio/index.m3u8\"\n",
+         DEFAULT=YES,AUTOSELECT=YES,URI=\"{audio}\"\n",
     );
     for t in &TRACKS {
         if let Some((w, h)) = t.video {
@@ -326,13 +337,17 @@ pub(crate) async fn hls_file(Path((name, file)): Path<(String, String)>) -> Resp
     let Some((ti, t)) = track(&name) else {
         return StatusCode::NOT_FOUND.into_response();
     };
-    if file == "index.m3u8" {
+    if let Some(prefix) = match file.as_str() {
+        "index.m3u8" => Some("seg"),
+        "broken.m3u8" => Some("broken"),
+        _ => None,
+    } {
         let mut s = format!(
             "#EXTM3U\n#EXT-X-VERSION:3\n#EXT-X-TARGETDURATION:{SEGMENT_SECS}\n\
              #EXT-X-MEDIA-SEQUENCE:0\n#EXT-X-PLAYLIST-TYPE:VOD\n"
         );
         for i in 0..SEGMENTS {
-            s += &format!("#EXTINF:{SEGMENT_SECS}.000,\nseg{i}.ts\n");
+            s += &format!("#EXTINF:{SEGMENT_SECS}.000,\n{prefix}{i}.ts\n");
         }
         s += "#EXT-X-ENDLIST\n";
         return text(M3U8, s);
@@ -379,6 +394,10 @@ enc{i}.ts
             "video/mp2t",
             encrypt(&ts_segment(ti, i, t.segment_len), &iv),
         );
+    }
+    // Named as pieces, but no MPEG-TS: `broken.m3u8`'s.
+    if let Some(i) = numbered(&file, "broken", ".ts").filter(|i| *i < SEGMENTS) {
+        return bytes("video/mp2t", segment(ti, i, t.segment_len));
     }
     match numbered(&file, "seg", ".ts") {
         Some(i) if i < SEGMENTS => bytes("video/mp2t", ts_segment(ti, i, t.segment_len)),

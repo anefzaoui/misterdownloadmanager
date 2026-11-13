@@ -2284,6 +2284,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	اس کی فائلیں لکھی نہیں جا سکیں: {error}
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error})	اس کی ویڈیو اور آواز کو ایک فائل میں نہیں جوڑا جا سکا ({error})
+#. text in the download list (sizes, speeds, status)
+#. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	اس کی ویڈیو اور آواز کو ایک فائل میں نہیں جوڑا جا سکا ({error})۔ ڈاؤن لوڈ کیے گئے حصے دوبارہ جوڑنے کے لیے فولڈر میں موجود رہتے ہیں ({files})؛ "فائل کو ڈسک سے بھی حذف کریں" منتخب کرنے سے ڈاؤن لوڈ حذف ہو جاتا ہے
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	اس کی ریلیز کی معلومات توقع کے مطابق نہیں ہیں: {detail}
@@ -5703,7 +5713,7 @@
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} پتے کی فہرست کے لیے بہت بڑی ہے ({size})۔ امپورٹ ٹیکسٹ فائلیں، ویب پیجز اور .ef2 ایکسپورٹس {limit} تک پڑھتا ہے۔
 #. text in a dialog box
 #, machine
-	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} کو 'ڈاؤن لوڈ مکمل' سے گھسیٹ کر کہیں اور منتقل کر دیا گیا تھا، اور MDM اس کا مقام معلوم نہیں کر سکا۔ اسے وہاں تلاش کریں جہاں آپ نے اسے چھوڑا تھا۔
+	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} کو ڈاؤن لوڈ مکمل سے گھسیٹ کر کہیں اور منتقل کر دیا گیا تھا، اور MDM یہ معلوم نہیں کر سکا کہ کہاں۔ اسے وہاں تلاش کریں جہاں آپ نے اسے چھوڑا تھا۔
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

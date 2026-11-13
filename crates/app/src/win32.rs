@@ -6143,6 +6143,42 @@ mod open_with_tests {
     }
 }
 
+/// Open a file with its registered default application via Win32 `ShellExecuteW` (#811).
+///
+/// Unlike invoking `explorer.exe <file>`, which fails with `ExitStatus(1)` on archive files
+/// (.zip, .7z) when a third-party tool such as 7-Zip is the default handler, `ShellExecuteW`
+/// invokes the user's registered file association directly.
+pub fn open_file_shell(path: &std::path::Path) -> Result<(), std::io::Error> {
+    use std::os::windows::ffi::OsStrExt;
+    use windows_sys::Win32::UI::Shell::ShellExecuteW;
+    use windows_sys::Win32::UI::WindowsAndMessaging::SW_SHOWNORMAL;
+
+    com_on_this_thread();
+    let wide: Vec<u16> = path.as_os_str().encode_wide().chain(Some(0)).collect();
+    // SAFETY: lpFile is a null-terminated UTF-16 string; lpOperation is NULL so Windows
+    // executes the default action registered for the file type.
+    let ret = unsafe {
+        ShellExecuteW(
+            std::ptr::null_mut(),
+            std::ptr::null(),
+            wide.as_ptr(),
+            std::ptr::null(),
+            std::ptr::null(),
+            SW_SHOWNORMAL,
+        )
+    };
+    let code = ret as usize;
+    if code <= 32 {
+        let err = std::io::Error::last_os_error();
+        return Err(if err.raw_os_error().unwrap_or(0) != 0 {
+            err
+        } else {
+            std::io::Error::from_raw_os_error(code as i32)
+        });
+    }
+    Ok(())
+}
+
 /// The program Windows runs to open folders, when that isn't Explorer (a file manager such as
 /// Directory Opus set up to replace it, #446); None for Explorer, or when Windows doesn't say.
 pub fn folder_opener() -> Option<String> {
