@@ -74,6 +74,43 @@ pub const TITLES: [&str; COLS] = [
     // i18n: column title: what a torrent sends to peers, bytes per second
     "Upload speed",
 ];
+/// The "Status" column's data slot.
+pub const STATUS: usize = 3;
+/// Status's default width before #736 (IDM's), as saved lists have it.
+const OLD_STATUS_WIDTH: f32 = 65.0;
+/// A cell's text starts 6 px in and ends 3 px before the column's separator, its last pixel.
+pub const CELL_PAD: f32 = 6.0 + 3.0 + 1.0;
+
+/// The Status column's default width (#736) in the interface language `code`, whose 100 % is
+/// written `full`: [`DEFAULT_WIDTHS`]'s, or wider where `measure` (the list's font) needs it
+/// for the widest of what the cell says while a file is checked or a video joined.
+pub fn status_width(code: &str, full: &str, measure: impl Fn(&str) -> f32) -> f32 {
+    let need = finishing_texts(code, full)
+        .iter()
+        .map(|s| measure(s))
+        .fold(0.0, f32::max);
+    DEFAULT_WIDTHS[STATUS].max((need + CELL_PAD).ceil())
+}
+
+/// What the Status cell says at its widest while a file is checked or a video joined, in
+/// language `code` (`crate::model::checking` and `merging`): the word with 100 % (as `full`, and
+/// as English writes it) and with "..." before MDM knows how far.
+pub fn finishing_texts(code: &str, full: &str) -> Vec<String> {
+    let i18n = crate::i18n::i18n();
+    let Some(lang) = i18n.from_code(code) else {
+        return Vec::new();
+    };
+    let mut texts = Vec::new();
+    for template in ["Checking {percent}", "Merging {percent}"] {
+        for percent in [full, "100%", "..."] {
+            texts.push(crate::i18n::fmt(
+                i18n.t(lang, template),
+                &[("percent", percent)],
+            ));
+        }
+    }
+    texts
+}
 /// The "Added" column's data slot.
 pub const ADDED: usize = 8;
 /// The "Source" column's data slot: its cell is "Web" or "Torrent", painted as a chip.
@@ -87,9 +124,14 @@ pub const RATIO: usize = 11;
 pub const UPLOAD: usize = 12;
 
 /// IDM's default column widths (and ours for Added, room for a 12-hour clock's
-/// `Oct 28 9:05:01 AM 2026`, Source, Peers, Share ratio and Upload speed).
+/// `Oct 28 9:05:01 AM 2026`, Source, Peers, Share ratio and Upload speed). Status is wider than
+/// IDM's 65 px (#736): one word and a percentage while a file is checked or a video joined
+/// ("Checking 45%", German's "Zusammenführen 100 %"). 132 px is the least it has: while nobody
+/// resized it, it grows to what the list's font needs in the interface language
+/// ([`status_width`]). Linux draws with fontconfig's interface font, often DejaVu Sans, wider
+/// than Windows' Segoe UI.
 pub const DEFAULT_WIDTHS: [f32; COLS] = [
-    150.0, 20.0, 75.0, 65.0, 75.0, 95.0, 65.0, 200.0, 145.0, 62.0, 64.0, 92.0, 100.0,
+    150.0, 20.0, 75.0, 132.0, 75.0, 95.0, 65.0, 200.0, 145.0, 62.0, 64.0, 92.0, 100.0,
 ];
 /// Default display order: Source first, then IDM's, a torrent's three columns after its rate, and
 /// Added after Last Try Date.
@@ -191,6 +233,9 @@ pub struct ListState {
     /// A menu is open: its keys (and letters) are its own, not the list's.
     pub menu_open: bool,
     typed_at: f64,
+    /// Status keeps its default width, fitted to the list's font and the interface language on
+    /// every frame ([`status_width`]), until someone resizes it.
+    status_fits: bool,
 }
 
 impl Default for ListState {
@@ -213,6 +258,7 @@ impl Default for ListState {
             typed: String::new(),
             menu_open: false,
             typed_at: 0.0,
+            status_fits: true,
         }
     }
 }
@@ -225,6 +271,10 @@ pub struct Layout {
     pub widths: Vec<f32>,
     pub visible: Vec<bool>,
     pub sort: Option<(usize, bool)>,
+    /// Status keeps its default width (fitted to the font and language where it runs); `None`
+    /// in a layout saved before #736, where a Status at IDM's 65 px means it was never resized.
+    #[serde(default)]
+    pub status_fits: Option<bool>,
 }
 
 impl ListState {
@@ -245,6 +295,7 @@ impl ListState {
         self.order = fresh.order;
         self.widths = fresh.widths;
         self.visible = fresh.visible;
+        self.status_fits = fresh.status_fits;
         self.hscroll = 0.0;
     }
 
@@ -254,6 +305,7 @@ impl ListState {
             widths: self.widths.to_vec(),
             visible: self.visible.to_vec(),
             sort: self.sort,
+            status_fits: Some(self.status_fits),
         }
     }
 
@@ -309,6 +361,15 @@ impl ListState {
             self.widths[c] = l.widths.get(c).copied().unwrap_or(*default).max(MIN_WIDTH);
             self.visible[c] = l.visible.get(c).copied().unwrap_or(true);
         }
+        // Status at IDM's 65 px, as every list was saved before it widened (#736), was never
+        // made wider or narrower: the new default, fitted to the font when the list is drawn. A
+        // width someone chose stays.
+        self.status_fits = l
+            .status_fits
+            .unwrap_or(self.widths[STATUS] == OLD_STATUS_WIDTH);
+        if self.status_fits {
+            self.widths[STATUS] = DEFAULT_WIDTHS[STATUS].max(self.widths[STATUS]);
+        }
         self.visible[0] = true;
         self.sort = l.sort.filter(|(c, _)| *c < COLS);
     }
@@ -330,6 +391,9 @@ pub struct Row {
     /// In a queue: the Q column shows a queue icon (IDM: stacked files).
     pub queued: bool,
     pub cells: [String; COLS],
+    /// The Status cell's whole text when the cell shows it short ("Checking 45%" for
+    /// "Verifying... (45%)", #736): the cell's tip starts with it, and a screen reader says it.
+    pub status_whole: Option<String>,
 }
 
 #[derive(Default)]
@@ -521,6 +585,13 @@ pub fn show(
     fill(&p, l + 1.0, t + 1.0, r - 1.0, b - 1.0, BG());
     let (cl, ct, cr, cb) = (l + 2.0, t + 2.0, r - 2.0, b - 2.0);
     let font = winui::tahoma();
+    // Status at its default width follows the font and the language (#736): a few words to
+    // measure, kept by egui from frame to frame.
+    if st.status_fits {
+        st.widths[STATUS] = status_width(crate::i18n::code(), &crate::i18n::percent(1.0, 0), |s| {
+            winui::text_width_font(&p, font.clone(), s)
+        });
+    }
 
     // Scroll bars (notes/ui-spec/scrollbars.md), decided like Win32: each one shows when the
     // content overflows the room the other one leaves.
@@ -600,6 +671,7 @@ pub fn show(
             HeaderDrag::Resize { col, width, x0 } => {
                 ui.ctx().set_cursor_icon(CursorIcon::ResizeHorizontal);
                 st.widths[col] = (width + pp.x - x0).round().max(MIN_WIDTH);
+                st.status_fits &= col != STATUS;
             }
             HeaderDrag::Press { col, x0 } if (pp.x - x0).abs() >= DRAG_START => {
                 let start = cols.iter().find(|s| s.0 == col).map_or(x0, |s| s.1);
@@ -617,6 +689,7 @@ pub fn show(
         && let Some(col) = pointer.and_then(|pp| near_sep(pp.x))
     {
         st.widths[col] = fit_width(&p, &font, col, rows);
+        st.status_fits &= col != STATUS;
         st.drag = None;
     }
     if hresp.drag_stopped() {
@@ -839,7 +912,10 @@ pub fn show(
         rows_ui.interact(bounds, row_id(idx), egui::Sense::hover());
         let spoken = [0usize, 3, 2]
             .iter()
-            .map(|c| row.cells[*c].as_str())
+            .map(|c| match &row.status_whole {
+                Some(whole) if *c == 3 => whole.as_str(),
+                _ => row.cells[*c].as_str(),
+            })
             .filter(|t| !t.is_empty())
             .collect::<Vec<_>>()
             .join(", ");
@@ -956,7 +1032,12 @@ pub fn show(
                     .is_some_and(|h| cell.contains(h))
                 {
                     let tip = if *c == 3 {
-                        status_tip(idx)
+                        let events = status_tip(idx);
+                        match &row.status_whole {
+                            Some(whole) if events.is_empty() => whole.clone(),
+                            Some(whole) => format!("{whole}\n{events}"),
+                            None => events,
+                        }
                     } else {
                         String::new()
                     };
@@ -1557,6 +1638,7 @@ mod tests {
             icon: IconKey::Silk("page_white"),
             queued,
             cells,
+            status_whole: None,
         }
     }
 
@@ -1614,6 +1696,7 @@ mod tests {
             widths: vec![200.0, 20.0, 75.0, 65.0, 75.0, 95.0, 65.0, 300.0],
             visible: vec![true; 8],
             sort: Some((2, false)),
+            status_fits: None,
         };
         let mut st = ListState::default();
         st.apply(old);
@@ -1634,6 +1717,77 @@ mod tests {
         assert_eq!(st.sort, Some((2, false)));
     }
 
+    /// #736: a list saved with Status at IDM's 65 px (never resized) gets the wider default;
+    /// a width someone chose stays.
+    #[test]
+    fn status_at_the_old_default_widens() {
+        let saved = |status: f32| Layout {
+            order: DEFAULT_ORDER.to_vec(),
+            widths: vec![
+                150.0, 20.0, 75.0, status, 75.0, 95.0, 65.0, 200.0, 145.0, 62.0, 64.0, 92.0, 100.0,
+            ],
+            visible: vec![true; COLS],
+            sort: None,
+            status_fits: None,
+        };
+        let mut st = ListState::default();
+        st.apply(saved(65.0));
+        assert_eq!(st.widths[STATUS], DEFAULT_WIDTHS[STATUS]);
+        assert!(st.status_fits, "and it follows the font from now on");
+        assert_eq!(st.layout().status_fits, Some(true));
+        // Last Try Date's 65 px is its own default, not Status's.
+        assert_eq!(st.widths[6], 65.0);
+        for chosen in [80.0, 64.0, 200.0] {
+            let mut st = ListState::default();
+            st.apply(saved(chosen));
+            assert_eq!(st.widths[STATUS], chosen);
+            assert!(!st.status_fits);
+        }
+        // Saved since: the layout says whether Status keeps its default, whatever its width.
+        let mut st = ListState::default();
+        st.apply(Layout {
+            status_fits: Some(false),
+            ..saved(65.0)
+        });
+        assert_eq!(st.widths[STATUS], 65.0, "chosen, if at IDM's width");
+        let mut st = ListState::default();
+        st.apply(Layout {
+            status_fits: Some(true),
+            ..saved(147.0)
+        });
+        assert!(st.status_fits);
+        assert_eq!(st.widths[STATUS], 147.0, "as fitted where it was saved");
+        // A layout saved before #736 has no such field.
+        let old: Layout = serde_json::from_str(
+            r#"{"order":[0,1,2,3,4,5,6,7],"widths":[200,20,75,65,75,95,65,300],
+                "visible":[true,true,true,true,true,true,true,true],"sort":null}"#,
+        )
+        .unwrap();
+        assert_eq!(old.status_fits, None);
+        // Columns as they first were: Status fits again.
+        let mut st = ListState::default();
+        st.apply(saved(80.0));
+        st.reset_columns();
+        assert!(st.status_fits);
+    }
+
+    /// #736: Status's default is 132 px, or what the font needs where that is more.
+    #[test]
+    fn status_width_grows_with_the_font() {
+        let texts = finishing_texts("de", "100\u{a0}%");
+        assert!(texts.iter().any(|t| t.contains("100\u{a0}%")));
+        assert!(texts.iter().any(|t| t.contains("...")));
+        // As narrow as no text: the default.
+        assert_eq!(status_width("de", "100 %", |_| 0.0), DEFAULT_WIDTHS[STATUS]);
+        // A wide font: the widest text, its padding, whole pixels.
+        let wide = |s: &str| s.chars().count() as f32 * 7.3;
+        let widest = texts.iter().map(|t| wide(t)).fold(0.0, f32::max);
+        assert_eq!(
+            status_width("de", "100\u{a0}%", wide),
+            (widest + CELL_PAD).ceil()
+        );
+    }
+
     /// #357: a layout saved between "Source" and the torrent columns gets them in the same
     /// place, and a layout that names a column twice is still ignored.
     #[test]
@@ -1645,6 +1799,7 @@ mod tests {
             ],
             visible: vec![true; 10],
             sort: None,
+            status_fits: None,
         };
         let mut st = ListState::default();
         st.apply(old);
@@ -1661,6 +1816,7 @@ mod tests {
             widths: vec![62.0; 12],
             visible: vec![true; 12],
             sort: None,
+            status_fits: None,
         };
         let mut st = ListState::default();
         st.apply(bad);
@@ -1679,6 +1835,7 @@ mod tests {
             ],
             visible: vec![true; 12],
             sort: Some((PEERS, true)),
+            status_fits: None,
         };
         let mut st = ListState::default();
         st.apply(old);

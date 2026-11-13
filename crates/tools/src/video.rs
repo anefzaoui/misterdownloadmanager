@@ -1649,7 +1649,16 @@ impl ByEngine {
             &self.current,
             &Reporter(progress),
         );
-        progress.lock().unwrap().speed = 0.0;
+        // The engine's part is over: no connection receives while yt-dlp joins the streams
+        // (#736); the last view taken of a stream in pieces still had them under way.
+        let mut p = progress.lock().unwrap();
+        p.speed = 0.0;
+        if let (crate::streams::Fetched::Done, Some(view)) = (&out, &mut p.engine) {
+            view.connections
+                .iter_mut()
+                .for_each(mdm_engine::download::ConnView::finish);
+        }
+        drop(p);
         match out {
             crate::streams::Fetched::Done => Engined::Ready,
             crate::streams::Fetched::Stopped => Engined::Stopped,
