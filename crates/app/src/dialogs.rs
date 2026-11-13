@@ -1875,7 +1875,8 @@ impl Complete {
     pub fn of(i: &model::Item) -> Self {
         Complete {
             id: i.id,
-            url: i.url.to_string(),
+            // A video's file address, not its page (#795).
+            url: i.file_address().to_string(),
             path: i.dest.clone(),
             size: i.size.unwrap_or(i.downloaded),
             dont_show: false,

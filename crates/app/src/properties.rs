@@ -27,6 +27,9 @@ pub struct Changes {
 pub struct Properties {
     pub id: u64,
     address: String,
+    /// A video's file address (#795), read only: its page is the web page it was obtained
+    /// from, not an address to change here.
+    stream: bool,
     description: String,
     referer: String,
     login: String,
@@ -42,9 +45,11 @@ pub struct Properties {
 impl Properties {
     pub fn new(item: &Item, route: crate::debrid::Route) -> Self {
         let (login, password) = item.login.clone().unwrap_or_default();
+        let stream = *item.file_address() != item.url;
         Properties {
             id: item.id,
-            address: item.url.to_string(),
+            address: item.file_address().to_string(),
+            stream,
             description: item.description.clone(),
             referer: item.context.referer.clone().unwrap_or_default(),
             login,
@@ -81,7 +86,7 @@ impl Properties {
             Outcome::Done(()) => {
                 let address = url::Url::parse(self.address.trim())
                     .ok()
-                    .filter(|u| *u != item.url);
+                    .filter(|u| !self.stream && *u != item.url);
                 let referer = self.referer.trim();
                 Outcome::Done(Changes {
                     id: self.id,
@@ -105,6 +110,14 @@ impl Properties {
         let running = item.live.is_some();
         // The address can be replaced while the download isn't finished or running.
         let editable = !complete && !running;
+        // A running video's stream changes (the next one, a new address): followed.
+        if self.stream || item.video.is_some() && running {
+            let now = item.file_address();
+            self.stream = *now != item.url;
+            if self.stream {
+                now.as_str().clone_into(&mut self.address);
+            }
+        }
         let ext = Path::new(&item.file_name)
             .extension()
             .map(|e| e.to_string_lossy().to_ascii_lowercase())
@@ -176,7 +189,10 @@ impl Properties {
             .and_then(|s| s.server.as_ref())
             .map(crate::whereis::Seen::from)
             .or_else(|| item.server.clone());
-        if item.torrent.is_some() || item.video.is_some() || item.gallery.is_some() {
+        // A video's server is its file's once MDM's engine has downloaded it (#769, #795), as
+        // the progress window shows it; yt-dlp's own and gallery-dl's are theirs.
+        let helpers = item.video.is_some() || item.gallery.is_some();
+        if item.torrent.is_some() || helpers && seen.is_none() {
             // i18n: Properties, where a download's server is: a torrent, a video or a gallery has no single server of MDM's own
             fit(
                 ui,
@@ -261,7 +277,7 @@ impl Properties {
             crate::i18n::t("Address:"),
             LIGHT_TEXT(),
         );
-        if editable {
+        if editable && !self.stream {
             let edit = winui::edit_light(
                 ui,
                 r(o, col, 171.0, 467.0 - col, 23.0),
@@ -297,12 +313,9 @@ impl Properties {
             crate::i18n::t("The web page from which this file was obtained:"),
             LIGHT_TEXT(),
         );
+        // A video's page, a file's referer (#795).
         // i18n: the web page is not known
-        let page = item
-            .context
-            .referer
-            .as_deref()
-            .unwrap_or(crate::i18n::t("Unknown"));
+        let page = item.web_page().unwrap_or(crate::i18n::t("Unknown"));
         fit(ui, 11.0, 272.0, page);
         winui::etched_h(&p, o.x + 11.0, o.y + 282.0, 456.0);
         // i18n: HTTP term (sic): the page the download was started from
