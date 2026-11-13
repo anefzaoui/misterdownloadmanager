@@ -29,7 +29,9 @@
 // streams found only when asked, by the button and the media list, a text decoy never), media (the
 // toolbar button's list of the media a tab loaded: streams, files, a protected stream; #38),
 // scripted (a video a server's program sends, named after its page with its real type: the list,
-// the button, the Download video window; #695, #800),
+// the button, the Download video window; #695, #800), guarded (a stream another site's server
+// serves to its page's player only: looked up and downloaded with the Origin and Referer the
+// browser sent, #900),
 // qualities (the button's menu: a stream's qualities looked up by MDM, with their sizes; the one
 // picked downloads with its progress window only, MDM's main window hidden), page (the menu on a
 // real video page, E2E_VIDEO_PAGE, and the line E2E_VIDEO_PICK downloaded: off by default), video (shown,
@@ -2740,6 +2742,78 @@ const CASES = {
       // The next case starts MDM as usual.
       await stopApp();
     }
+  },
+
+  // #900: a stream on another site's server that serves it only to its page's player: every
+  // request, its playlists' and each segment's, must carry that page's Origin and a Referer on it
+  // (the lab's /hlsg/, as a site's video server checks; 403 otherwise). The page is the lab's on
+  // localhost, the stream on 127.0.0.1. The button's look-up finds its qualities, and one picked
+  // in its menu downloads through MDM's engine to its end, every request of MDM's with what the
+  // browser sent (E2E_GUARDED_SHOT: a screenshot of the button's menu then, for a PR's body).
+  async guarded(t) {
+    if (!ytdlp) throw new Skip("no yt-dlp (E2E_YTDLP or PATH)");
+    if (!ffmpeg) throw new Skip("no ffmpeg (E2E_FFMPEG or PATH)");
+    const page = `http://localhost:${PORT}`;
+    const site = `localhost:${PORT}`;
+    await clearLog();
+    await t.session.navigate(`${page}/page?hlsg=127.0.0.1:${PORT}&title=${encodeURIComponent("A guarded stream")}`);
+    const state = await until("the stream player", 15000, () => t.session.evaluate("document.body.dataset.stream || ''"));
+    if (state !== "done") throw new Error(`the page's player: ${state} ${await t.session.evaluate("document.body.dataset.streamError || ''")}`);
+    const guarded = (x) => x.path.startsWith(`/hlsg/${site}/`);
+    const browser = (await (await fetch(`${LAB}/_log`)).json()).filter(guarded);
+    if (!browser.length || browser.some((x) => x.status !== 200)) throw new Error(`the browser's own requests: ${browser.map((x) => `${x.path} ${x.status}`).join(", ")}`);
+    // Without the page's Origin, the stream's server refuses it, as the issue's did.
+    const bare = await fetch(`${LAB}/hlsg/${site}/master.m3u8`, { headers: { Referer: `${page}/page` } });
+    if (bare.status !== 403) throw new Error(`the guarded stream answered ${bare.status} without the page's Origin`);
+    const earlier = (await mdmList()).filter((d) => d.url.startsWith(`${LAB}/hlsg/`)).map((d) => d.id);
+    if (earlier.length) await ipc({ action: "delete", ids: earlier });
+    await clearLog();
+    const v = await rect(t.session, "#player");
+    const b = await hover(t.session, v);
+    if (!b) throw new Error("no button over the stream's player");
+    const before = new Set((await mdmList()).map((d) => d.id));
+    const mdm = async () => (await (await fetch(`${LAB}/_log`)).json()).filter(guarded);
+    const refused = async () => (await mdm()).filter((x) => x.status !== 200).map((x) => `${x.path} ${x.status} (origin ${x.origin || "none"}, referer ${x.referer || "none"})`);
+    // The look-up: its chip names the best quality (a failed one names none).
+    let last = null;
+    const pill = await until("the best quality on the button's chip", 60000, async () => {
+      last = await t.session.pill(PILL_STATE);
+      return last && last.state === "ready" && last.chip ? last : null;
+    }).catch(async () => {
+      throw new Error(`no quality found (the button: ${last && last.state} "${last && last.text}"); the stream's server refused: ${(await refused()).join(", ") || "nothing"}`);
+    });
+    // Its menu: the sound's "original" line, one stream, downloaded by MDM's engine to its end
+    // (no merge: the lab's tracks carry sound only, which yt-dlp's merge with some ffmpeg
+    // builds refuses, whatever the request).
+    await clickArrow(t.session);
+    const m = await until("the qualities in the menu", 30000, async () => {
+      const p = await t.session.picks("row");
+      return p && p.rows.length ? p : null;
+    });
+    if (process.env.E2E_GUARDED_SHOT && t.session.shot) {
+      await sleep(400);
+      await t.session.shot(process.env.E2E_GUARDED_SHOT, { l: Math.min(v.l, m.box.l) - 10, t: Math.min(v.t, m.box.t) - 10, r: Math.max(v.r, m.box.r) + 10, b: Math.max(v.b, m.box.b) + 10 });
+    }
+    const row = m.rows.find((r) => r.kind === "audio" && /original/i.test(r.name));
+    if (!row) throw new Error(`no original sound in the menu: ${JSON.stringify(m.rows.map((r) => r.name))}`);
+    await t.session.mouse(row.x, row.y, "click");
+    const item = await until("the stream, in MDM's list", 60000, async () => (await mdmList()).find((d) => !before.has(d.id)));
+    const done = await until("the download's end", 120000, async () => {
+      const d = (await mdmList()).find((x) => x.id === item.id);
+      if (d && d.status === "Error") throw new Error(`the download failed: ${d.error}; refused: ${(await refused()).join(", ")}`);
+      return d && d.status === "Complete" ? d : null;
+    });
+    // Every request of MDM's (yt-dlp's look-up and the engine's playlists and segments): 200,
+    // with the page's Origin and Referer.
+    const asked = await mdm();
+    const segments = asked.filter((x) => x.path.endsWith(".ts"));
+    const bad = await refused();
+    if (bad.length) throw new Error(`refused: ${bad.join(", ")}`);
+    const lacking = asked.filter((x) => x.origin !== page || !(x.referer || "").startsWith(`${page}/`));
+    if (lacking.length) throw new Error(`without the page's Origin and Referer: ${lacking.map((x) => `${x.path} (${x.origin}, ${x.referer})`).join(", ")}`);
+    if (segments.length < 3) throw new Error(`only ${segments.length} segments asked for: ${asked.map((x) => x.path).join(", ")}`);
+    await t.session.mouse(5, 5);
+    return `chip "${pill.chip}"; "${row.name}" picked: ${done.file} (${fs.statSync(done.path).size} bytes); MDM's ${asked.length} requests (${asked.length - segments.length} playlists, ${segments.length} segments) all 200 with Origin ${page} and its Referer`;
   },
 
   // E2E_VIDEO_PAGE=<a video's page>: the button's qualities' menu on a real site (a pull

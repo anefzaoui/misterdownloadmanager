@@ -746,8 +746,8 @@ async fn read(url: &str, from: &FromBrowser, opts: &mdm_engine::Options) -> Opti
 struct Hops<'a> {
     /// The stream's scheme, host and port.
     origin: (String, Option<String>, Option<u16>),
-    /// The browser's cookie and referrer still go: every hop so far was to the stream's origin.
-    /// Once one wasn't, never again, for this request or the next.
+    /// The browser's cookie, referrer and origin still go: every hop so far was to the stream's
+    /// origin. Once one wasn't, never again, for this request or the next.
     credentials: bool,
     from: &'a FromBrowser,
     opts: &'a mdm_engine::Options,
@@ -756,7 +756,7 @@ struct Hops<'a> {
 impl Hops<'_> {
     /// `url`'s text and the address it came from, after at most [`MAX_REDIRECTS`] redirects.
     async fn get(&mut self, mut url: Url) -> Option<(Url, String)> {
-        use reqwest::header::{CONTENT_TYPE, COOKIE, LOCATION, REFERER};
+        use reqwest::header::{CONTENT_TYPE, COOKIE, LOCATION, ORIGIN, REFERER};
         let given = |s: &Option<String>| {
             s.as_deref()
                 .map(str::trim)
@@ -781,6 +781,10 @@ impl Hops<'_> {
                 }
                 if let Some(r) = given(&self.from.referer) {
                     req = req.header(REFERER, r);
+                }
+                // The page's Origin, as its player sent it (#900).
+                if let Some(o) = given(&self.from.origin) {
+                    req = req.header(ORIGIN, o);
                 }
             }
             let mut resp = req.send().await.ok()?;
@@ -1394,6 +1398,7 @@ mod tests {
     fn browser() -> FromBrowser {
         FromBrowser {
             referer: Some("https://videos.test/watch".into()),
+            origin: Some("https://videos.test".into()),
             user_agent: Some("UA/1".into()),
             cookies: Some("sid=secret".into()),
             jar: vec![mdm_ipc::BrowserCookie {
@@ -1412,7 +1417,8 @@ mod tests {
     }
 
     /// The stream as the browser asked for it: its cookie header (never the jar), its page as
-    /// the referrer, its User-Agent, on both requests to the stream's server.
+    /// the referrer, its player's Origin (#900), its User-Agent, on both requests to the
+    /// stream's server.
     #[test]
     fn the_stream_is_asked_for_as_the_browser_did() {
         let s = Server::start(Arc::new(|path: &str| match path {
@@ -1433,6 +1439,7 @@ mod tests {
         for r in &seen {
             assert_eq!(r.header("cookie"), Some("sid=secret"));
             assert_eq!(r.header("referer"), Some("https://videos.test/watch"));
+            assert_eq!(r.header("origin"), Some("https://videos.test"));
             assert_eq!(r.header("user-agent"), Some("UA/1"));
         }
         // Not a playlist's address: not even asked.
@@ -1481,6 +1488,7 @@ mod tests {
         for r in &elsewhere {
             assert_eq!(r.header("cookie"), None, "{}", r.path);
             assert_eq!(r.header("referer"), None, "{}", r.path);
+            assert_eq!(r.header("origin"), None, "{}", r.path);
             assert_eq!(r.header("user-agent"), Some("UA/1"));
         }
         // Back to the stream's server after another: still none.

@@ -11,7 +11,7 @@
 use std::collections::HashMap;
 
 use axum::extract::{Path, Query};
-use axum::http::{StatusCode, header};
+use axum::http::{HeaderMap, StatusCode, header};
 use axum::response::{IntoResponse, Response};
 use percent_encoding::{NON_ALPHANUMERIC, utf8_percent_encode};
 
@@ -338,6 +338,46 @@ enc{i}.ts
         Some(i) if i < SEGMENTS => bytes("video/mp2t", ts_segment(ti, i, t.segment_len)),
         _ => StatusCode::NOT_FOUND.into_response(),
     }
+}
+
+/// #900: the HLS stream again, served only as the browser asks for it from a page of `site` (a
+/// host and port): every request, the playlists' and each segment's, must come with that page's
+/// `Origin` and a `Referer` on it, as a site's video server checks (a player on another site's
+/// page, a CDN that serves its own site's player only). Anything else gets 403. Its answers
+/// allow that origin to read them (CORS), as the browser's player on that page does.
+fn guarded(site: &str, headers: &HeaderMap, resp: Response) -> Response {
+    let want = format!("http://{site}");
+    let origin = headers.get(header::ORIGIN).and_then(|v| v.to_str().ok());
+    let referer = headers.get(header::REFERER).and_then(|v| v.to_str().ok());
+    let allowed = origin == Some(want.as_str())
+        && referer.is_some_and(|r| r.starts_with(&format!("{want}/")));
+    let mut resp = if allowed {
+        resp
+    } else {
+        (
+            StatusCode::FORBIDDEN,
+            format!("the Origin and Referer of {want} are required\n"),
+        )
+            .into_response()
+    };
+    if let Ok(v) = want.parse() {
+        resp.headers_mut()
+            .insert(header::ACCESS_CONTROL_ALLOW_ORIGIN, v);
+    }
+    resp
+}
+
+/// `/hlsg/{site}/master.m3u8` (#900): `/hls/master.m3u8` for pages of `site` only ([`guarded`]).
+pub(crate) async fn hlsg_master(Path(site): Path<String>, headers: HeaderMap) -> Response {
+    guarded(&site, &headers, hls_master().await)
+}
+
+/// `/hlsg/{site}/{track}/{file}` (#900): `/hls/{track}/{file}` for pages of `site` only.
+pub(crate) async fn hlsg_file(
+    Path((site, name, file)): Path<(String, String, String)>,
+    headers: HeaderMap,
+) -> Response {
+    guarded(&site, &headers, hls_file(Path((name, file))).await)
 }
 
 /// The encrypted pieces' key (`/hls/{track}/key.bin`), their playlist's first sequence number.
