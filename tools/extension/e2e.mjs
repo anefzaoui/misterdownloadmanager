@@ -22,7 +22,8 @@
 // nothing and says so, never the feed: sample pages served at LinkedIn's, Facebook's, X's,
 // Instagram's, Reddit's, TikTok's, Vimeo's, Dailymotion's addresses, #689), preview (the video button kept over a hover-to-play
 // preview the page stopped as the pointer went to it, #503), steady (the video button keeping one place over
-// a preview that grows and shows its own buttons while hovered, #560), csp (the video button
+// a preview that grows and shows its own buttons while hovered, #560), player (one place over a
+// player whose settings button comes and goes as the pointer moves, #899), csp (the video button
 // under a strict CSP), hls (the stream a player loaded), streams (HLS and DASH players handed over
 // by the button, the right-click menu and the media list, and read by yt-dlp; #155; also with no
 // .m3u8 or .mpd, served as text/plain or octet-stream, #171), sniffed (#171 without yt-dlp: such
@@ -2318,6 +2319,88 @@ const CASES = {
     if (address !== `${LAB}/gen/1M/clip.mp4`) throw new Error(`the video window got ${address}`);
     await t.session.mouse(5, 5);
     return `${Math.abs(first.l - b.l) > 2 || Math.abs(first.t - b.t) > 2 ? "moved" : "stayed"} off the preview's sound button, at ${Math.round(b.l - v.l)},${Math.round(b.t - v.t)}; then still for ${seen.length} looks (8 steps there, 2.5 s on it while the preview shrank and hid its button), sent ${address.replace(LAB, "")}`;
+  },
+
+  // #899: a site's player shows its own settings button at the top right while the pointer moves
+  // over the player, and hides it a moment after the pointer stops or leaves the player (for the
+  // button, which is no part of it). The button takes a free corner once, and stays there as the
+  // pointer goes to it, rests on it, goes back over the video and stops: it never hops back to
+  // the corner the settings button hid from (0.5.2 did, every time it came and went).
+  async player(t) {
+    await t.session.navigate(`${LAB}/page?video=${encodeURIComponent("/gen/1M/clip.mp4")}`);
+    await t.session.evaluate(`(() => {
+      const v = document.querySelector("#video");
+      const box = document.createElement("div");
+      box.id = "player-box";
+      box.style.cssText = "position:relative;display:inline-block;background:#111";
+      v.replaceWith(box);
+      box.appendChild(v);
+      const gear = document.createElement("button");
+      gear.id = "player-settings";
+      gear.textContent = "settings";
+      gear.style.cssText = "position:absolute;right:8px;top:8px;width:44px;height:36px;z-index:2;display:none";
+      box.appendChild(gear);
+      let idle = 0;
+      const hide = (ms) => {
+        clearTimeout(idle);
+        idle = setTimeout(() => { gear.style.display = "none"; document.body.dataset.hidden = String(Number(document.body.dataset.hidden || 0) + 1); }, ms);
+      };
+      box.addEventListener("mousemove", () => { gear.style.display = "block"; hide(1200); });
+      box.addEventListener("mouseleave", () => hide(250));
+      return true;
+    })()`);
+    const v = await rect(t.session, "#video");
+    const mid = [(v.l + v.r) / 2, (v.t + v.b) / 2];
+    const seen = [];
+    const side = (r) => (r ? ((r.l + r.r) / 2 > mid[0] ? "right" : "left") : "gone");
+    const look = async (what) => {
+      const r = await rect(t.session, "mdm-video-button");
+      seen.push(`${what} ${side(r)}${r ? ` ${Math.round(r.l)},${Math.round(r.t)}` : ""}`);
+      return r;
+    };
+    const glide = async (from, to, steps, what) => {
+      for (let i = 1; i <= steps; i++) {
+        await t.session.mouse(from[0] + ((to[0] - from[0]) * i) / steps, from[1] + ((to[1] - from[1]) * i) / steps);
+        await sleep(60);
+        await look(`${what} ${i}`);
+      }
+    };
+    const rest = async (ms, what) => {
+      for (let n = 0; n < ms / 100; n++) {
+        await sleep(100);
+        await look(`${what} ${n}`);
+      }
+    };
+    // Over the player: its settings button shows, the button shows clear of it.
+    const first = await hover(t.session, v);
+    if (!first) throw new Error("no button over the player");
+    await until("the player's settings button", 3000, () => t.session.evaluate(`document.getElementById("player-settings").style.display === "block"`));
+    await sleep(900);
+    const b = await look("shown");
+    const gear = await rect(t.session, "#player-settings");
+    if (!b) throw new Error("the button went as the player's controls showed");
+    if (gear && b.l < gear.r && b.r > gear.l && b.t < gear.b && b.b > gear.t) throw new Error(`the button covers the player's settings button: ${JSON.stringify({ b, gear })}`);
+    // To the button, and resting on it: the player hides its settings button.
+    const on = [b.l + 14, (b.t + b.b) / 2];
+    await glide(mid, on, 8, "to it");
+    await rest(2000, "on it");
+    // Back over the video, still there while the player's controls show and hide again.
+    await glide(on, mid, 8, "back");
+    await rest(2500, "still");
+    await t.session.mouse(mid[0] + 20, mid[1] + 10);
+    await rest(800, "moved");
+    // And to it again.
+    await glide([mid[0] + 20, mid[1] + 10], on, 8, "again");
+    await rest(1500, "on it again");
+    const hid = await t.session.evaluate("Number(document.body.dataset.hidden || 0)");
+    if (hid < 2) throw new Error(`the player's settings button hid ${hid} time(s): the test's player didn't behave as the issue's`);
+    const sides = seen.map((x) => x.split(" ").find((w) => ["left", "right", "gone"].includes(w)));
+    const flips = sides.filter((x, i) => i > 0 && x !== "gone" && sides[i - 1] !== "gone" && x !== sides[i - 1]).length;
+    // Gone a moment is fine: it fades while the pointer rests still over the video (#480).
+    const kept = seen.filter((x) => !x.includes(side(b)) && !x.endsWith(" gone"));
+    if (flips || kept.length) throw new Error(`the button hopped (${flips} times): ${seen.join("; ")}`);
+    await t.session.mouse(5, 5);
+    return `took the ${side(b)} corner clear of the player's settings button, then kept it for ${seen.length} looks (to it, on it, back over the video, still, moved, on it again) while the player hid its settings button ${hid} times`;
   },
 
   // A player playing a stream (a blob: in the page): the button sends the manifest it loaded.

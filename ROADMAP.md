@@ -809,7 +809,9 @@ These ship in the next version.
   the program under the pointer takes: the drag runs beside the window
   ([#561](https://github.com/anefzaoui/misterdownloadmanager/issues/561))
 - ✅ The video button keeps one corner over YouTube's thumbnail previews, within the pointer's reach
-  ([#560](https://github.com/anefzaoui/misterdownloadmanager/issues/560))
+  ([#560](https://github.com/anefzaoui/misterdownloadmanager/issues/560)), and over a player whose
+  settings button comes and goes as the pointer moves, checked in a real browser
+  ([#899](https://github.com/anefzaoui/misterdownloadmanager/issues/899))
 - ✅ Menus: moving on from an item with a submenu closes the submenu at once, and only the item under
   the pointer is lit ([#579](https://github.com/anefzaoui/misterdownloadmanager/issues/579))
 - ✅ Chromium browsers: a download MDM's extension leaves to the browser keeps the file name and
