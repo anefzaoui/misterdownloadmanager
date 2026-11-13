@@ -557,6 +557,14 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Bangla reviewed by a native speaker: the main window, the list, the progress window, the
+  dialogs and the tray, with the menus' letters on English letters
+  ([#927](https://github.com/anefzaoui/misterdownloadmanager/pull/927))
+- ✅ Menus' keyboard letters: no two items of one menu share one. Arrange files' By Status has U, so A
+  reaches By Date Added ([#926](https://github.com/anefzaoui/misterdownloadmanager/issues/926),
+  [#928](https://github.com/anefzaoui/misterdownloadmanager/pull/928)); the list's blank-space menu
+  adds a download with N, so A reaches Select all; View → Text has X. A test checks every menu
+  MDM builds, in English and in the languages that keep its letters
 - ✅ Windows 10: no FSI and PDI boxes around a file's name in the taskbar's preview and tip of a
   progress window, or in the notification-area icon's tip; right-to-left titles keep their order
   ([#919](https://github.com/anefzaoui/misterdownloadmanager/issues/919))
@@ -568,7 +576,8 @@ These ship in the next version.
   pixel to the right of the header's dividers
   ([#924](https://github.com/anefzaoui/misterdownloadmanager/issues/924))
 - ✅ With a style theme (Metro, Adwaita, Aero…), windows minimize, maximize and restore with
-  Windows' animation, as with Classic
+  Windows' animation, as with Classic, and fade out into the notification area; on Windows 10
+  without its own title bar showing over MDM's for those frames
   ([#874](https://github.com/anefzaoui/misterdownloadmanager/issues/874))
 - ✅ Windows 10 with a style theme (Metro, Adwaita, Aero…): no black band above the main window's
   title bar, and its menus and clicks land where they show; framed as on Windows 11, as the
@@ -582,6 +591,10 @@ These ship in the next version.
   once OpenGL fails there: it can't start, is too old, shows no first window, or MDM freezes
   inside its driver (read from the freeze report); remembered, **View → Draw with** says why, and
   choosing **OpenGL** tries it again ([#847](https://github.com/anefzaoui/misterdownloadmanager/issues/847))
+- ✅ Chinese, Japanese and Korean: interface text is at least 12 px (the theme's `font.cjk`) and
+  is drawn by the same DirectWrite rasterizer as Latin, so it reads larger and stays sharp at
+  110–120 % interface sizes instead of thinning out; English and the other languages keep their
+  sizes ([#837](https://github.com/anefzaoui/misterdownloadmanager/issues/837))
 - ✅ Help: videos that need you signed in, in short: the button over the video brings the page's
   own cookies, Options reads a browser profile's for pasted links and playlists (a separate
   profile with a spare account works well), and why some videos and networks need it (from
@@ -607,9 +620,6 @@ These ship in the next version.
   if it lasts longer; every freeze report says what the window was doing when it stopped
   ([#574](https://github.com/anefzaoui/misterdownloadmanager/issues/574),
   [#613](https://github.com/anefzaoui/misterdownloadmanager/issues/613))
-- ✅ Windows 10 with a style theme (Metro, Adwaita, Aero…): no black band above the main window's
-  title bar, and its menus and clicks land where they show; framed as on Windows 11, as the
-  progress window already was ([#802](https://github.com/anefzaoui/misterdownloadmanager/issues/802))
 - ✅ A stream the browser played (an .m3u8) is looked up and downloaded with the Referer, Origin
   and cookies the browser sent with it, for its playlists and every piece too: a site's video
   server that serves its own pages' players only answered 403
@@ -620,6 +630,12 @@ These ship in the next version.
 - ✅ Tests: the crash reports' end-to-end tests find their crashing example where Rust 1.100's
   Cargo builds the tests (in its build folder, no longer in deps/), as well as where earlier ones
   did ([#934](https://github.com/anefzaoui/misterdownloadmanager/issues/934))
+- ✅ Where a download's server is: shown once the server answered, its address and round trip
+  together, not a round trip alone (twice too long over https) while a slow server answers; it
+  also made a test fail now and then on Linux
+  ([#933](https://github.com/anefzaoui/misterdownloadmanager/issues/933))
+- ✅ Tests: the slow disk's model is checked on its own clock, and the speed limiter's and a DNS
+  check on Tokio's paused one, instead of the time a busy runner takes (one failed on macOS)
 - ✅ Tests: the five that checked a long list is read in linear time against a fixed number of
   seconds (one failed on a slow macOS runner) now time the same work at two sizes, eight times
   apart, and fail only when the larger one costs over 24 times as much (a square costs 64 times),
@@ -765,6 +781,9 @@ These ship in the next version.
   Scheduler's download limit is reached waits
   ([#708](https://github.com/anefzaoui/misterdownloadmanager/issues/708))
 - ✅ The browser's Download video button in right-to-left languages: its corners and divider follow the text direction, so its outline stays whole
+- ✅ Download video: a title with line breaks stays on one line, shortened with "..." and shown
+  whole on hover, instead of drawing its extra rows over the list and past the window (part of
+  [#350](https://github.com/anefzaoui/misterdownloadmanager/issues/350))
 - ✅ A freeze of the download windows on a drive slow to answer (a sleeping disk, a USB drive, a
   network folder): Download File Info's numbered name, Show in folder, Download complete and
   creating a missing folder ask the disk beside the window

@@ -1484,6 +1484,41 @@ impl App {
                 crate::unix::register_browsers();
             }
         }
+        // The categories, for code that only has a `Category` (the list's own below too).
+        settings.publish_categories();
+        // The remote control (#141): off unless Options → Remote turned it on.
+        let remote = crate::remote::start(&rt, sink, &settings);
+        // Started with the session where a window can't be hidden (Wayland, #226): minimized.
+        if start == crate::Start::Minimized {
+            tracing::info!("started with the session: minimized (a window can't be hidden here)");
+            ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+        }
+        let mut app = Self::assemble(
+            ctx,
+            rt,
+            commands,
+            store::Loaded { settings, ..loaded },
+            start,
+        );
+        app.zoom = zoom;
+        app.lang_picker = ask_language.then(|| crate::langpick::Picker::new(true, None));
+        app.remote = remote;
+        app.rss = crate::rss::Store::path()
+            .map(|p| crate::rss::Store::load(&p))
+            .unwrap_or_default();
+        app
+    }
+
+    /// The window's state from `loaded`, setting nothing outside it: no global, nothing of the
+    /// system's, no file read ([`App::new`] does those first). The menus' test builds one.
+    fn assemble(
+        ctx: &egui::Context,
+        rt: tokio::runtime::Handle,
+        commands: std::sync::mpsc::Receiver<ipc::Incoming>,
+        loaded: store::Loaded,
+        start: crate::Start,
+    ) -> Self {
+        let settings = loaded.settings;
         let mut queues = loaded.queues;
         if queues.len() < 2 {
             // The built-in queues' names are saved in English and translated where shown
@@ -1497,7 +1532,6 @@ impl App {
             q.running = q.schedule.start_on_startup;
         }
         let (next_id, mut items) = (loaded.next_id, loaded.items);
-        settings.publish_categories();
         // D-021: torrents are a category of their own (lists from before had them by file
         // type); their files stay where they are.
         for i in &mut items {
@@ -1528,13 +1562,6 @@ impl App {
             _ => View::All,
         };
         let show_categories = settings.show_categories;
-        // The remote control (#141): off unless Options → Remote turned it on.
-        let remote = crate::remote::start(&rt, sink, &settings);
-        // Started with the session where a window can't be hidden (Wayland, #226): minimized.
-        if start == crate::Start::Minimized {
-            tracing::info!("started with the session: minimized (a window can't be hidden here)");
-            ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
-        }
         let deferred_torrent_queue: Vec<u64> = items
             .iter()
             .filter(|i| i.status == Status::Complete && i.rename_on_complete.is_some())
@@ -1563,7 +1590,7 @@ impl App {
             updates: None,
             shortcuts: None,
             tell_friend: None,
-            lang_picker: ask_language.then(|| crate::langpick::Picker::new(true, None)),
+            lang_picker: None,
             helpers: None,
             shown_existing: None,
             extension: None,
@@ -1610,9 +1637,7 @@ impl App {
             torrent_settings: None,
             add_trackers: None,
             torrent_files: None,
-            rss: crate::rss::Store::path()
-                .map(|p| crate::rss::Store::load(&p))
-                .unwrap_or_default(),
+            rss: Default::default(),
             rss_dlg: None,
             rss_busy: Default::default(),
             rss_events: Default::default(),
@@ -1628,7 +1653,7 @@ impl App {
             blocklist_busy: Default::default(),
             torrents_started: false,
             torrent_host: crate::torrents::Host::new(),
-            remote,
+            remote: None,
             remote_torrents: Vec::new(),
             free_space: Default::default(),
             netwatch: Default::default(),
@@ -1683,7 +1708,7 @@ impl App {
             saver: store::Saver::new(),
             rss_saver: store::Saver::writing("rss saver", crate::rss::write),
             theme_checked: None,
-            zoom,
+            zoom: 1.0,
             fitted: false,
             // The built-ins until the watcher's first look at the themes folder (#719).
             theme_list: crate::themefile::list_in(None, None),
@@ -2753,6 +2778,11 @@ impl App {
                 }
             }
             // Every download selected and the right-click menu open on them (Move/Rename, #333).
+            // The list's right-click menu on blank space (#926), for screenshots.
+            "context" if tab == "blank" => {
+                self.open_menu = None;
+                self.open_popup(Popup::Item(None), egui::pos2(360.0, 220.0));
+            }
             "context" if tab == "all" => {
                 self.run(Cmd::SelectAll, None, ctx);
                 self.open_menu = None;
@@ -7533,7 +7563,7 @@ impl App {
         // i18n: View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
         let b = MenuEntry::Radio("&Classic", Cmd::SmoothText(false), true, !smooth);
         // i18n: View menu: submenu choosing how the text is drawn (smooth or classic)
-        MenuEntry::Sub("&Text", true, vec![a, b])
+        MenuEntry::Sub("Te&xt", true, vec![a, b])
     }
 
     /// View → Draw with (#89, #206): OpenGL or the system's own graphics API (Direct3D on
@@ -7707,12 +7737,74 @@ impl App {
         })
     }
 
+    /// The entries of the popup menu `kind`, and the download it acts on.
+    fn popup_entries(&self, kind: Popup) -> (Vec<MenuEntry<Cmd>>, Option<u64>) {
+        match kind {
+            // Column chooser (IDM: right-click on the header). File Name always stays.
+            Popup::Columns => {
+                let mut e: Vec<MenuEntry<Cmd>> = list::TITLES
+                    .iter()
+                    .enumerate()
+                    .map(|(i, t)| {
+                        // As the header names them (its own words, not the menus'), and
+                        // the narrow Q column by its whole name.
+                        let name = if *t == "Q" {
+                            crate::i18n::tc("column", "Queue")
+                        } else {
+                            crate::i18n::tc("column", t)
+                        };
+                        let name = crate::chrome::label(&name.replace('&', "&&"));
+                        MenuEntry::Item(name, Cmd::ToggleColumn(i), i != 0, self.list.visible[i])
+                    })
+                    .collect();
+                e.push(MenuEntry::Sep);
+                e.push(MenuEntry::Item(
+                    "Clear all &filters",
+                    Cmd::ClearFilters,
+                    self.list.filters.iter().any(Option::is_some),
+                    false,
+                ));
+                // i18n: header menu: put the columns back as they first were (order, widths, all shown)
+                e.push(MenuEntry::Item(
+                    "&Reset columns",
+                    Cmd::ResetColumns,
+                    true,
+                    false,
+                ));
+                (e, None)
+            }
+            Popup::Item(None) => (self.blank_entries(), None),
+            Popup::Item(id) => (self.item_entries(id), id),
+            Popup::QueueDrop(start) => (self.queue_drop(start), None),
+            Popup::TorrentDrop => (
+                vec![
+                    MenuEntry::Item("Open &torrent file...", Cmd::OpenTorrentFile, true, false),
+                    MenuEntry::Item("Add &magnet link...", Cmd::AddMagnet, true, false),
+                    MenuEntry::Item("&RSS feeds...", Cmd::RssFeeds(false), true, false),
+                    MenuEntry::Sep,
+                    MenuEntry::Item("Torrent setti&ngs...", Cmd::TorrentSettings, true, false),
+                ],
+                None,
+            ),
+            Popup::Node(node) => (self.node_entries(node), None),
+            Popup::DropTarget => (
+                vec![
+                    MenuEntry::Item("Show Mister Download Manager", Cmd::ShowMain, true, false),
+                    MenuEntry::Item("&Add new download", Cmd::AddUrl, true, false),
+                    MenuEntry::Sep,
+                    MenuEntry::Item("Hide drop target", Cmd::ToggleDropTarget, true, false),
+                ],
+                None,
+            ),
+        }
+    }
+
     /// Right-click on the list's blank space: what applies to the whole list (IDM greys the
     /// download menu there).
     fn blank_entries(&self) -> Vec<MenuEntry<Cmd>> {
         use MenuEntry::{Item as I, Sep};
         vec![
-            I("&Add new download...", Cmd::AddUrl, true, false),
+            I("Add &new download...", Cmd::AddUrl, true, false),
             Sep,
             I(
                 "Select &all",
@@ -8586,69 +8678,7 @@ impl App {
             self.open_popup(Popup::Columns, pos);
         }
         if let Some((kind, pos, serial)) = self.popup {
-            let (entries, target) = match kind {
-                // Column chooser (IDM: right-click on the header). File Name always stays.
-                Popup::Columns => {
-                    let mut e: Vec<MenuEntry<Cmd>> = list::TITLES
-                        .iter()
-                        .enumerate()
-                        .map(|(i, t)| {
-                            // As the header names them (its own words, not the menus'), and
-                            // the narrow Q column by its whole name.
-                            let name = if *t == "Q" {
-                                crate::i18n::tc("column", "Queue")
-                            } else {
-                                crate::i18n::tc("column", t)
-                            };
-                            let name = crate::chrome::label(&name.replace('&', "&&"));
-                            MenuEntry::Item(
-                                name,
-                                Cmd::ToggleColumn(i),
-                                i != 0,
-                                self.list.visible[i],
-                            )
-                        })
-                        .collect();
-                    e.push(MenuEntry::Sep);
-                    e.push(MenuEntry::Item(
-                        "Clear all &filters",
-                        Cmd::ClearFilters,
-                        self.list.filters.iter().any(Option::is_some),
-                        false,
-                    ));
-                    // i18n: header menu: put the columns back as they first were (order, widths, all shown)
-                    e.push(MenuEntry::Item(
-                        "&Reset columns",
-                        Cmd::ResetColumns,
-                        true,
-                        false,
-                    ));
-                    (e, None)
-                }
-                Popup::Item(None) => (self.blank_entries(), None),
-                Popup::Item(id) => (self.item_entries(id), id),
-                Popup::QueueDrop(start) => (self.queue_drop(start), None),
-                Popup::TorrentDrop => (
-                    vec![
-                        MenuEntry::Item("Open &torrent file...", Cmd::OpenTorrentFile, true, false),
-                        MenuEntry::Item("Add &magnet link...", Cmd::AddMagnet, true, false),
-                        MenuEntry::Item("&RSS feeds...", Cmd::RssFeeds(false), true, false),
-                        MenuEntry::Sep,
-                        MenuEntry::Item("Torrent setti&ngs...", Cmd::TorrentSettings, true, false),
-                    ],
-                    None,
-                ),
-                Popup::Node(node) => (self.node_entries(node), None),
-                Popup::DropTarget => (
-                    vec![
-                        MenuEntry::Item("Show Mister Download Manager", Cmd::ShowMain, true, false),
-                        MenuEntry::Item("&Add new download", Cmd::AddUrl, true, false),
-                        MenuEntry::Sep,
-                        MenuEntry::Item("Hide drop target", Cmd::ToggleDropTarget, true, false),
-                    ],
-                    None,
-                ),
-            };
+            let (entries, target) = self.popup_entries(kind);
             match chrome::popup(
                 &ctx,
                 MenuKind::Context,
@@ -12080,5 +12110,187 @@ mod deferred_rename_guard_tests {
             gpm.gallery_files,
             vec![dir.path().join("Album 01").join("sub").join("01.png")]
         );
+    }
+}
+
+#[cfg(test)]
+mod access_key_tests {
+    use super::*;
+    use crate::chrome::{MenuEntry, access_key};
+
+    /// One level of a menu: where it is, the catalog context of its labels, and the labels.
+    struct Level {
+        name: String,
+        context: &'static str,
+        labels: Vec<&'static str>,
+    }
+
+    /// `entries` and each of their submenus, as levels.
+    fn levels<C>(name: String, entries: &[MenuEntry<C>], out: &mut Vec<Level>) {
+        let mut labels = Vec::new();
+        for e in entries {
+            match e {
+                MenuEntry::Item(l, ..) | MenuEntry::Radio(l, ..) => labels.push(*l),
+                MenuEntry::Sub(l, _, children) => {
+                    labels.push(*l);
+                    levels(format!("{name} > {l}"), children, out);
+                }
+                MenuEntry::Sep => {}
+            }
+        }
+        out.push(Level {
+            name,
+            context: "menu",
+            labels,
+        });
+    }
+
+    /// The window's state with three downloads to build the menus of: one unfinished (in the
+    /// main queue), one finished, one torrent.
+    fn app() -> std::mem::ManuallyDrop<App> {
+        let rt = Box::leak(Box::new(
+            tokio::runtime::Builder::new_current_thread()
+                .build()
+                .unwrap(),
+        ));
+        let url = |n: &str| url::Url::parse(&format!("https://example.com/{n}")).unwrap();
+        let item = |id, name: &str, category, status| {
+            let mut i = Item::new(id, url(name), PathBuf::from(name), category);
+            i.status = status;
+            i
+        };
+        let mut torrent = item(3, "c", Category::Torrents, Status::Stopped);
+        torrent.torrent = Some(
+            serde_json::from_value(serde_json::json!({
+                "hash": "0123456789abcdef0123456789abcdef01234567",
+                "folder": "c",
+            }))
+            .unwrap(),
+        );
+        let mut main = Queue::new("Main download queue", false);
+        main.items.push(1);
+        let loaded = store::Loaded {
+            next_id: 4,
+            items: vec![
+                item(1, "a.zip", Category::Compressed, Status::Stopped),
+                item(2, "b.zip", Category::Compressed, Status::Complete),
+                torrent,
+            ],
+            columns: None,
+            settings: Settings::default(),
+            queues: vec![main, Queue::new("Synchronization queue", true)],
+        };
+        let (_, commands) = std::sync::mpsc::channel();
+        // Never dropped: an App saves its list as it goes.
+        std::mem::ManuallyDrop::new(App::assemble(
+            &egui::Context::default(),
+            rt.handle().clone(),
+            commands,
+            loaded,
+            crate::Start::Shown,
+        ))
+    }
+
+    /// Every menu MDM builds, in the states that change them: the menu bar, its menus, the
+    /// right-click and drop-down menus, a text box's, and their submenus.
+    fn every_menu() -> Vec<Level> {
+        let mut app = app();
+        let mut out = vec![Level {
+            name: "menu bar".into(),
+            context: "menubar",
+            labels: crate::chrome::bar_titles(),
+        }];
+        let mut views = vec![
+            None,
+            Some(View::All),
+            Some(View::Unfinished(None)),
+            Some(View::Finished(None)),
+            Some(View::Queue(0)),
+            Some(View::Queue(1)),
+        ];
+        for c in Category::all() {
+            views.extend([
+                Some(View::Cat(c)),
+                Some(View::Unfinished(Some(c))),
+                Some(View::Finished(Some(c))),
+            ]);
+        }
+        let mut popups = vec![
+            Popup::Columns,
+            Popup::QueueDrop(true),
+            Popup::QueueDrop(false),
+            Popup::TorrentDrop,
+            Popup::DropTarget,
+            Popup::Item(None),
+        ];
+        popups.extend([1, 2, 3].map(|id| Popup::Item(Some(id))));
+        popups.extend(views.into_iter().map(Popup::Node));
+        for categories in [false, true] {
+            app.show_categories = categories;
+            for (i, title) in crate::chrome::bar_titles().into_iter().enumerate() {
+                levels(title.into(), &app.menu_entries(i), &mut out);
+            }
+            for p in &popups {
+                levels(format!("{p:?}"), &app.popup_entries(*p).0, &mut out);
+            }
+        }
+        // The progress window's tab row and a read-only field have a menu of one item each.
+        levels("text box".into(), &crate::winui::text_box_menu(), &mut out);
+        out
+    }
+
+    /// An access key, and the labels that have it: as shown, and in English.
+    type Clash = (String, Vec<(&'static str, &'static str)>);
+
+    /// The access keys of `level` that more than one of its labels have, in `lang` (English:
+    /// None), each with those labels.
+    fn clashes(level: &Level, lang: Option<crate::i18n::Lang>) -> Vec<Clash> {
+        let mut by_key: Vec<Clash> = Vec::new();
+        for l in &level.labels {
+            let shown = match lang {
+                Some(lang) => crate::i18n::i18n().tc(lang, level.context, l),
+                None => l,
+            };
+            let Some(key) = access_key(shown) else {
+                continue;
+            };
+            match by_key.iter_mut().find(|(k, _)| *k == key) {
+                Some((_, labels)) => labels.push((shown, l)),
+                None => by_key.push((key, vec![(shown, l)])),
+            }
+        }
+        by_key.retain(|(_, labels)| labels.len() > 1);
+        by_key
+    }
+
+    /// #926: two items of one menu with the same access key, and the key ran only the first. In
+    /// English, and in every catalog where two of them keep the English letter (written in
+    /// brackets after the text, `(&A)`, or underlined in it): there the clash is the English
+    /// one's. A letter a translation chose itself is its translators' to keep apart.
+    #[test]
+    fn no_two_items_of_a_menu_share_an_access_key() {
+        let menus = every_menu();
+        let mut found = Vec::new();
+        for level in &menus {
+            for (key, labels) in clashes(level, None) {
+                found.push(format!("en, {}: {key} in {labels:?}", level.name));
+            }
+        }
+        for (lang, code, _) in crate::i18n::languages() {
+            for level in &menus {
+                for (key, labels) in clashes(level, Some(lang)) {
+                    let english = labels
+                        .iter()
+                        .filter(|(_, source)| access_key(source).as_ref() == Some(&key))
+                        .count();
+                    if english > 1 {
+                        found.push(format!("{code}, {}: {key} in {labels:?}", level.name));
+                    }
+                }
+            }
+        }
+        found.sort();
+        found.dedup();
+        assert!(found.is_empty(), "{}", found.join(", "));
     }
 }
