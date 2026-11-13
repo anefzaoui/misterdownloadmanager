@@ -714,14 +714,19 @@ fn program_in(dirs: &[PathBuf], name: &str) -> Option<PathBuf> {
     dirs.iter().map(|d| d.join(&file)).find(|p| p.is_file())
 }
 
-/// Node.js from nvm (`~/.nvm/versions/node/<version>/bin/node`), the newest name first: a program
-/// started from the desktop doesn't have nvm's folders on its PATH (#360).
+/// Node.js from nvm, the newest version first: a program started from the desktop doesn't have
+/// nvm's folders on its PATH (#360). Unix nvm keeps them in `~/.nvm/versions/node/<v>/bin`;
+/// nvm-windows in `%APPDATA%\nvm\<v>`.
 fn nvm_node(home: &Path) -> Option<PathBuf> {
     let mut versions: Vec<PathBuf> = std::fs::read_dir(home.join(".nvm/versions/node"))
-        .ok()?
-        .flatten()
-        .map(|e| e.path().join("bin"))
-        .collect();
+        .map(|entries| entries.flatten().map(|e| e.path().join("bin")).collect())
+        .unwrap_or_default();
+    #[cfg(windows)]
+    if let Some(appdata) = std::env::var_os("APPDATA").map(PathBuf::from)
+        && let Ok(entries) = std::fs::read_dir(appdata.join("nvm"))
+    {
+        versions.extend(entries.flatten().map(|e| e.path()));
+    }
     versions.sort();
     versions.reverse();
     program_in(&versions, "node")
@@ -731,7 +736,8 @@ fn nvm_node(home: &Path) -> Option<PathBuf> {
 /// runtime, and yt-dlp looks for Deno alone, on the PATH, unless told of another. Deno on the
 /// PATH (`dirs`): nothing to say. Else Deno where its own installer puts it
 /// (`~/.deno/bin`, #852: no PATH of a program started from the desktop has it), or in `more`
-/// (folders a runtime installed after MDM started is in, [`runtime_dirs`]); else Node.js or Bun.
+/// (folders a runtime installed after MDM started is in, [`runtime_dirs`], which on Windows also
+/// carries `~/.deno/bin` and `~/.bun/bin`); else Node.js or Bun, on the PATH or in `more`.
 fn js_runtime(
     dirs: &[PathBuf],
     more: &[PathBuf],
@@ -750,24 +756,25 @@ fn js_runtime(
                 .or_else(|| program_in(more, "node"))
                 .map(|p| ("node", p))
         })
-        .or_else(|| program_in(dirs, "bun").map(|p| ("bun", p)))
+        .or_else(|| {
+            program_in(dirs, "bun")
+                .or_else(|| program_in(more, "bun"))
+                .map(|p| ("bun", p))
+        })
 }
 
-/// Where Windows' installers put a JavaScript runtime (#852): winget's links (Deno, Node.js) and
-/// Node.js's own installer. They add these to the PATH of programs started after them, not to
-/// MDM's own, so a runtime installed while MDM runs is found here when the video is looked up
-/// again. None elsewhere: a package manager's folder is on the PATH already ([`usable_dirs`]).
+/// Where installers put a JavaScript runtime (#852): winget's links (Deno, Node.js) and Node.js's
+/// own installer. They add these to the PATH of programs started after them, not to MDM's own,
+/// so a runtime installed while MDM runs is found here when the video is looked up again.
+/// None elsewhere: a package manager's folder is on the PATH already ([`usable_dirs`]).
 fn runtime_dirs() -> Vec<PathBuf> {
     #[cfg(windows)]
     {
-        let under = |var: &str, rel: &str| std::env::var_os(var).map(|v| Path::new(&v).join(rel));
-        [
-            under("LOCALAPPDATA", r"Microsoft\WinGet\Links"),
-            under("ProgramFiles", "nodejs"),
-        ]
-        .into_iter()
-        .flatten()
-        .collect()
+        let mut dirs = crate::system::extra_dirs();
+        if let Some(programs) = std::env::var_os("ProgramFiles") {
+            dirs.push(Path::new(&programs).join("nodejs"));
+        }
+        dirs
     }
     #[cfg(not(windows))]
     Vec::new()
