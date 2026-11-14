@@ -706,6 +706,7 @@ GET /page?<any of>
                    when nothing else is asked for, or with muted_loop, iframe or shadow)
     w=PX h=PX      the videos' size
     title=TEXT     the page's title (default "labserver page")
+    referrer=POLICY  its Referrer-Policy (origin: its links' Referer is the site's address only)
     muted_loop=1   the video muted, looping and autoplaying, without controls
     iframe=1       the video inside <iframe id=frame> (a /page of its own)
     shadow=1       the video inside the open shadow root of <div id=host> (declarative)

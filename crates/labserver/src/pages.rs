@@ -189,6 +189,14 @@ pub(crate) async fn page(RawQuery(q): RawQuery, headers: HeaderMap) -> Response 
         );
     }
     let mut resp = html(body);
+    // `referrer=POLICY` (#607): the page's own referrer policy; `origin` makes its links'
+    // requests carry the site's address only, as a link to another site's file does by default.
+    if let Some(policy) = m
+        .get("referrer")
+        .and_then(|p| header::HeaderValue::from_str(p).ok())
+    {
+        resp.headers_mut().insert(header::REFERRER_POLICY, policy);
+    }
     if csp {
         let media = if !streams.is_empty() {
             "'self' blob:"

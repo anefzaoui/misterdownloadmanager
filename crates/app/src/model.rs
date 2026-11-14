@@ -455,6 +455,10 @@ pub struct Item {
     /// own copy is `context.referer`; this one follows it (`set_referer`).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub referer: Option<String>,
+    /// The web page it was started from in the browser, whole (#607), where its Referer is
+    /// often the site's address only. Refresh download address opens it; kept with the list.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub page: Option<String>,
     /// A video's (its `url` is the page): the address its file came from, the first stream of
     /// its last run as yt-dlp gave it to MDM's engine (#795). The windows' "Address".
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -891,6 +895,7 @@ impl Item {
             preexisting_folder: false,
             moved_away: false,
             referer: None,
+            page: None,
             file_url: None,
             live: None,
             torrent_check: None,
@@ -1128,14 +1133,16 @@ impl Item {
     }
 
     /// The web page it was obtained from (#795): a video's or a gallery's is its own address
-    /// (the page yt-dlp, gallery-dl look up), a file's the page the browser sent as its referer.
+    /// (the page yt-dlp, gallery-dl look up); a file's the page the browser started it from
+    /// (#607), else the one it sent as its referer (an older extension's, Import's, File
+    /// Properties'). Refresh download address opens it.
     pub fn web_page(&self) -> Option<&str> {
         if self.video.is_some() || self.gallery.is_some() {
             return Some(self.url.as_str());
         }
-        self.context
-            .referer
+        self.page
             .as_deref()
+            .or(self.context.referer.as_deref())
             .or(self.referer.as_deref())
             .filter(|r| !r.is_empty())
     }
@@ -1597,6 +1604,11 @@ mod file_address_tests {
             f.context.referer.as_deref(),
             Some("https://www.example.com/get")
         );
+        // The page the browser started it from, whole, before its Referer (#607): a referrer
+        // policy often cuts that to the site's address.
+        f.set_referer(Some("https://www.example.com/".into()));
+        f.page = Some("https://www.example.com/files/a.html".into());
+        assert_eq!(f.web_page(), Some("https://www.example.com/files/a.html"));
     }
 
     /// The referer and a video's file address are kept with the list (#795); the browser's
@@ -1618,6 +1630,25 @@ mod file_address_tests {
             .replace(&format!(",\"file_url\":\"{STREAM}\""), "");
         let back: Item = serde_json::from_str(&old).unwrap();
         assert_eq!((back.referer, back.file_url), (None, None));
+    }
+
+    /// The page a download was started from is kept with the list (#607), and none is written
+    /// for a download without one.
+    #[test]
+    fn the_page_it_was_started_from_is_saved() {
+        let mut f = Item::new(
+            3,
+            "https://cdn.example.net/a.zip".parse().unwrap(),
+            PathBuf::from("a.zip"),
+            Category::Compressed,
+        );
+        assert!(!serde_json::to_string(&f).unwrap().contains("\"page\""));
+        f.page = Some("https://www.example.com/files/a.html".into());
+        let back: Item = serde_json::from_str(&serde_json::to_string(&f).unwrap()).unwrap();
+        assert_eq!(
+            back.web_page(),
+            Some("https://www.example.com/files/a.html")
+        );
     }
 }
 

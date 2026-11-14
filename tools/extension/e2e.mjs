@@ -16,7 +16,9 @@
 // The cases (per browser): folders (another extension's download in a folder of its own keeps
 // it, #578), link (a .zip link, throttled and not), ask (Firefox set to ask what to
 // do with each new type, as Waterfox is: caught before its dialog, #208), cookie (cookies and referrer
-// forwarded), names (Content-Disposition), redirect, leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
+// forwarded), startedfrom (the page a download was started from goes whole, where its Referer is
+// the site's address only; kept with the download for Refresh download address, #607), names
+// (Content-Disposition), redirect, leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
 // to the browser: a link, a redirect, a page's script; Firefox's own default too, #332), opened (a PDF or MP3 the browser would show or play), spot (the video button
 // clear of the page's controls, #421), feeds (a video in a feed sends its post, its own file, or
 // nothing and says so, never the feed: sample pages served at LinkedIn's, Facebook's, X's,
@@ -2034,6 +2036,30 @@ const CASES = {
     }
     await keptNothing(t.dl);
     return `${mdm.length} request(s) with sid=1, the page as referrer, the browser's User-Agent`;
+  },
+
+  // #607: a page whose referrer policy is `origin` (as a link to another site's file gets by
+  // default; the lab stays on 127.0.0.1, which IDM may be told to leave alone): the browser sends
+  // only the page's site as the Referer, the extension the page itself, which MDM keeps with the
+  // download (its list on disk): Refresh download address opens it.
+  async startedfrom(t) {
+    const file = `e2e-from-${t.name}.zip`;
+    const page = `${LAB}/page?referrer=origin&link=${encodeURIComponent(`/gen/1M/${file}`)}`;
+    await t.session.navigate(page);
+    await t.session.evaluate("document.getElementById('link').click()");
+    await arrived(file, 1 << 20);
+    await keptNothing(t.dl);
+    const saved = await until(`${file} saved with its page`, 20000, () => {
+      try {
+        const list = JSON.parse(fs.readFileSync(path.join(data, "downloads.json"), "utf8").replace(/^\uFEFF/, ""));
+        return (list.items || []).find((i) => String(i.dest || "").endsWith(file) && i.page) || null;
+      } catch {
+        return null;
+      }
+    });
+    if (saved.page !== page) throw new Error(`saved with the page ${saved.page}, not ${page}`);
+    if (saved.referer !== `${LAB}/`) throw new Error(`its Referer is ${saved.referer}, not the site's address ${LAB}/`);
+    return `the page ${saved.page} kept with it, its Referer ${saved.referer}`;
   },
 
   // Names from Content-Disposition: filename= and filename*= (UTF-8).

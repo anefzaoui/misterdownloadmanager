@@ -45,6 +45,8 @@ function fakeApi({
   // The host's answer to the video button's lookups (`videoLookup`, `videoPoll`, `videoPick`): a
   // function of the message; none: `reply`.
   lookup,
+  // tabs.query's answer for the active tab of the window last used (#607).
+  activeTab,
 }) {
   const raw = [];
   // Objects made inside the sandbox have its prototypes: compare plain copies.
@@ -166,7 +168,7 @@ function fakeApi({
       onUpdated: event("tabUpdated"),
       get: async (id) => tabs[id] || { id, url: "about:blank", status: "complete" },
       remove: async (id) => calls.push(["closeTab", id]),
-      query: async () => [],
+      query: async (q) => (q && q.active && activeTab ? [activeTab] : []),
       create: async (t) => calls.push(["openTab", t.url]),
     },
     webRequest: {
@@ -2581,6 +2583,55 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   assert.equal(natives(calls).length, 1);
   assert.deepEqual(steps(calls), []);
   ok("#208 Firefox: a download caught from its answer, before the browser's dialog");
+}
+// #607: the page a download was started from goes whole with it (the app's Refresh download
+// address opens it), where the Referer is often the site's address only. Firefox names it for the
+// load (originUrl), through its redirects; never the file's own address.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true });
+  load(api, true);
+  await settle();
+  const page = "https://site.test/files/report.html?lang=en";
+  listeners.beforeRequest({ requestId: "q1", method: "GET", url: "https://site.test/get?id=7", tabId: 3, originUrl: page });
+  listeners.beforeRequest({ requestId: "q1", method: "GET", url: "https://cdn.test/r/7.zip", tabId: 3, originUrl: page });
+  listeners.beforeRedirect({ url: "https://site.test/get?id=7", redirectUrl: "https://cdn.test/r/7.zip" });
+  listeners.beforeSendHeaders({ requestId: "q1", method: "GET", url: "https://cdn.test/r/7.zip", requestHeaders: [{ name: "Referer", value: "https://site.test/" }] });
+  await held(listeners, answer("https://cdn.test/r/7.zip", { "Content-Type": "application/zip", "Content-Disposition": "attachment" }, { requestId: "q1" }));
+  const m = natives(calls)[0];
+  assert.deepEqual([m.url, m.referrer, m.pageUrl], ["https://site.test/get?id=7", "https://site.test/", page]);
+  // Typed in the address bar: no page started it, the tab shows none, nothing is said.
+  listeners.beforeRequest({ requestId: "q2", method: "GET", url: "https://cdn.test/typed.zip", tabId: 3 });
+  await held(listeners, answer("https://cdn.test/typed.zip", { "Content-Type": "application/zip", "Content-Disposition": "attachment" }, { requestId: "q2" }));
+  assert.equal(natives(calls)[1].pageUrl, undefined);
+  ok("#607 Firefox: the page a download was started from goes with it, whole");
+}
+// #607 Chromium: the tab the download's load was in still shows the page; a link opened in a tab
+// of its own, the tab that opened it; a download no load names (a script's, <a download>), the
+// active tab of the window last used, from the same kind of window only.
+{
+  const page = "https://site.test/list?page=2";
+  const tabs = { 4: { id: 4, url: page }, 5: { id: 5, url: "about:blank", openerTabId: 4 } };
+  const { api, calls, listeners } = fakeApi({ tabs, activeTab: { id: 6, url: "https://other.test/news", incognito: false } });
+  load(api, false);
+  await settle();
+  listeners.beforeRequest({ requestId: "c1", method: "GET", url: "https://cdn.test/a.zip", tabId: 4, initiator: "https://site.test" });
+  listeners.determining({ id: 41, url: "https://cdn.test/a.zip", referrer: "https://site.test/", filename: "a.zip" }, () => {});
+  await settle();
+  listeners.beforeRequest({ requestId: "c2", method: "GET", url: "https://cdn.test/b.zip", tabId: 5 });
+  listeners.determining({ id: 42, url: "https://cdn.test/b.zip", filename: "b.zip" }, () => {});
+  await settle();
+  listeners.determining({ id: 43, url: "https://cdn.test/c.zip", filename: "c.zip" }, () => {});
+  await settle();
+  listeners.determining({ id: 44, url: "https://cdn.test/d.zip", filename: "d.zip", incognito: true }, () => {});
+  await settle();
+  const sent = natives(calls).map((m) => [m.url, m.pageUrl]);
+  assert.deepEqual(sent, [
+    ["https://cdn.test/a.zip", page],
+    ["https://cdn.test/b.zip", page],
+    ["https://cdn.test/c.zip", "https://other.test/news"],
+    ["https://cdn.test/d.zip", undefined],
+  ]);
+  ok("#607 Chromium: the page is the download's tab, its opener, else the active tab");
 }
 // #447: Firefox hands a header's value over byte for byte, each byte one character. A name sent as
 // raw UTF-8 is read as UTF-8; bytes that aren't valid UTF-8 (ISO-8859-1) and a real percent sign stay.

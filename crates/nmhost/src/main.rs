@@ -78,6 +78,8 @@ struct Message {
     v: Option<String>,
     url: String,
     referrer: Option<String>,
+    /// The web page the download was started from, whole (#607; `mdm_ipc::Command::page_url`).
+    page_url: Option<String>,
     cookies: Option<String>,
     /// The same cookies with their domains and flags (`mdm_ipc::Command::cookie_jar`); an older
     /// extension sends none.
@@ -884,6 +886,9 @@ fn to_command(m: Message) -> mdm_ipc::Command {
         url: Some(m.url),
         name,
         referer: some(m.referrer),
+        page_url: some(m.page_url).filter(|p| {
+            (p.starts_with("http://") || p.starts_with("https://")) && p.len() <= PAGE_MAX
+        }),
         cookies: some(m.cookies),
         cookie_jar: m.cookie_jar,
         user_agent: m.user_agent,
@@ -908,6 +913,9 @@ fn to_command(m: Message) -> mdm_ipc::Command {
         ..Default::default()
     }
 }
+
+/// The longest page address taken from the browser (#607): the most the extension sends.
+const PAGE_MAX: usize = 8192;
 
 /// The largest proxy auto-config script taken from the browser (#42).
 const PAC_MAX: usize = 256 * 1024;
@@ -2315,6 +2323,41 @@ mod tests {
             assert_eq!(verdict(&m, &rules), Ok(()), "{raw}");
             assert_eq!(to_command(m).name.as_deref(), Some("a.zip"));
         }
+    }
+
+    /// #607: the page the download was started from goes to the app whole, a web page's address
+    /// only; an older extension's message has none.
+    #[test]
+    fn the_page_a_download_came_from_goes_whole() {
+        let page = |raw: &str| {
+            let m: Message = serde_json::from_str(raw).unwrap();
+            to_command(m).page_url
+        };
+        assert_eq!(
+            page(
+                r#"{"url":"https://cdn.test/a.zip","referrer":"https://site.test/","pageUrl":"https://site.test/files?id=7"}"#
+            )
+            .as_deref(),
+            Some("https://site.test/files?id=7")
+        );
+        assert_eq!(
+            page(r#"{"url":"https://cdn.test/a.zip","referrer":"https://site.test/"}"#),
+            None
+        );
+        for odd in [
+            "",
+            "javascript:alert(1)",
+            "file:///etc/passwd",
+            "about:blank",
+        ] {
+            let raw = format!(r#"{{"url":"https://cdn.test/a.zip","pageUrl":"{odd}"}}"#);
+            assert_eq!(page(&raw), None, "{odd}");
+        }
+        let long = format!(
+            r#"{{"url":"https://cdn.test/a.zip","pageUrl":"https://site.test/{}"}}"#,
+            "a".repeat(PAGE_MAX)
+        );
+        assert_eq!(page(&long), None);
     }
 
     #[test]

@@ -2270,6 +2270,8 @@ impl App {
         // The browser had started it: the host is already sending the file (#44).
         item.direct = crate::debrid::browser_started(&context);
         item.referer = context.referer.clone().filter(|r| !r.is_empty());
+        // The page it was started from (#607), whole: Refresh download address opens it.
+        item.page = context.page_url.clone().filter(|p| !p.is_empty());
         item.context = context;
         self.items.push(item);
         self.dirty = true;
@@ -6772,12 +6774,14 @@ impl App {
             Cmd::RefreshAddress => {
                 // As IDM: the page the link came from opens, so a fresh link can be taken
                 // there; Properties takes the new address and the download resumes from it.
+                // The page the browser started it from, whole, not its Referer, which is often
+                // the site's home page alone (#607); the Referer when that isn't known.
                 if let Some(id) = target {
                     let page = self
                         .items
                         .iter()
                         .find(|i| i.id == id)
-                        .and_then(|i| i.context.referer.clone());
+                        .and_then(|i| i.web_page().map(str::to_owned));
                     if let Some(page) = page {
                         crate::launch::open(page);
                     }

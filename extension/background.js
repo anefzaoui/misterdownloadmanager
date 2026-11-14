@@ -411,10 +411,17 @@ function formBody(details) {
   return { body: null };
 }
 
+// The page each page load was started from, by address (two minutes, #607): Firefox names it
+// (`originUrl`: the page whose link, form or script asked for it); Chromium gives the tab it loads
+// in, whose address stays the page's while the answer turns out to be a download (`pageOf`).
+const startedFrom = new Map();
+
 if (ext.webRequest) {
   const navigations = { urls: ["<all_urls>"], types: ["main_frame", "sub_frame"] };
   ext.webRequest.onBeforeRequest.addListener(
     (d) => {
+      forget(startedFrom, 120000);
+      if (!startedFrom.has(d.url)) startedFrom.set(d.url, { page: d.originUrl || d.documentUrl || "", tabId: d.tabId, at: Date.now() });
       if (d.method !== "POST") return;
       forget(posts, 120000);
       posts.set(d.url, { ...formBody(d), at: Date.now(), id: d.requestId });
@@ -1190,7 +1197,7 @@ async function mediaDownload(tabId, url) {
   // Content-Disposition may still name it). The title goes too: a file whose address names nothing
   // and whose type only the server or its bytes say is named by it in the app (#800).
   const title = String(tab.title || "").slice(0, 300);
-  return handOff({ url: it.url, referrer: page, size: it.size, mime: it.mime, explicit: true, filename: named.own ? "" : named.name, ...(title ? { title } : {}), ...ctx });
+  return handOff({ url: it.url, referrer: page, page: tab.url || page, size: it.size, mime: it.mime, explicit: true, filename: named.own ? "" : named.name, ...(title ? { title } : {}), ...ctx });
 }
 
 // ---- the hand-off ------------------------------------------------------------------------
@@ -1519,13 +1526,38 @@ async function browserProxy(url, incognito) {
   return {};
 }
 
+// The web page a download was started from, whole (#607): the Referer the browser sends with it
+// is often the site's address only (the page's referrer policy), and the app's "Refresh download
+// address" opens this page, where a fresh link can be taken. Firefox names the page a load came
+// from (`startedFrom`); else the tab it was started in (for a link opened in a tab of its own,
+// the tab that opened it), else the active tab of the window last used, from the same kind of
+// window (private or not). "" when none is a web page other than the file itself.
+async function pageOf(item, urls) {
+  const web = (u) => typeof u === "string" && /^https?:\/\//i.test(u) && u.length <= URL_MAX && !urls.includes(u);
+  forget(startedFrom, 120000);
+  const seen = urls.map((u) => startedFrom.get(u)).find(Boolean);
+  if (seen && web(seen.page)) return seen.page;
+  const tabId = item.tabId >= 0 ? item.tabId : seen && seen.tabId >= 0 ? seen.tabId : -1;
+  const same = (tab) => tab && Boolean(tab.incognito) === Boolean(item.incognito);
+  try {
+    let tab = tabId >= 0 ? await ext.tabs.get(tabId) : (await ext.tabs.query({ active: true, lastFocusedWindow: true }))[0];
+    if (same(tab) && !web(tab.url) && tab.openerTabId >= 0) tab = await ext.tabs.get(tab.openerTabId);
+    if (same(tab) && web(tab.url)) return tab.url;
+  } catch {
+    // The tab is gone: no page.
+  }
+  return "";
+}
+
 // `explicit`: the user asked for this one (the right-click item), so Options' automatic-capture
 // rules (file types, excluded sites) don't apply; the host checks them for everything else.
+// `page`: the web page it was started from (`pageOf`).
 async function handOff(d) {
   const message = {
     url: d.url,
     finalUrl: d.finalUrl && d.finalUrl !== d.url ? d.finalUrl : "",
     referrer: d.referrer || "",
+    ...(d.page && /^https?:\/\//i.test(d.page) && d.page.length <= URL_MAX ? { pageUrl: d.page } : {}),
     cookies: await cookieHeader(d.url, d),
     filename: d.filename || "",
     ...(d.size > 0 ? { size: d.size } : {}),
@@ -1600,6 +1632,7 @@ async function offer(item, url, name) {
     url: first,
     finalUrl: url,
     referrer: item.referrer,
+    page: item.page || (await pageOf(item, [first, url, item.url].filter(Boolean))),
     filename: name,
     size: item.totalBytes > 0 ? item.totalBytes : item.fileSize,
     mime: item.mime,
@@ -1641,7 +1674,7 @@ async function link(url, referrer, incognito, name) {
   const type = extensionOf(name || url.split(/[?#]/)[0]).toUpperCase();
   if (r && r.opened === false && OPENED[type]) return { taken: false };
   const filename = name || addressName(url);
-  const item = { url, referrer, incognito, ...(filename ? { filename } : {}) };
+  const item = { url, referrer, page: referrer, incognito, ...(filename ? { filename } : {}) };
   const c = await candidate(item, url, true).catch(() => null);
   if (!c || c.left) {
     leftAlone(c, item, url);
@@ -2083,7 +2116,7 @@ ext.contextMenus.onClicked.addListener(async (info, tab) => {
     }
     // ftp links too: browsers no longer download them, MDM does.
     if (!url || !/^(https?|ftps?|ftpes):/i.test(url)) return;
-    const reply = await handOff({ url, referrer: info.pageUrl, incognito, storeId, explicit: true });
+    const reply = await handOff({ url, referrer: info.pageUrl, page: info.pageUrl, incognito, storeId, explicit: true });
     if (!reply.ok) explain(reply.why);
     return;
   }
