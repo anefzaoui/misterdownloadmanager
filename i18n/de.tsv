@@ -4839,10 +4839,38 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Die Bot-Überprüfung der Website (Cloudflare) hat yt-dlp abgelehnt. Wenn die Seite in Ihrem Browser geöffnet wird, wählen Sie diesen Browser unter „Optionen → Website-Anmeldungen → Cookies für Videoseiten“ aus und rufen Sie die Seite erneut auf, oder verwenden Sie die Schaltfläche „Video herunterladen“ über dem Video.
+#. text in errors.rs
+#. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
+#, machine
+	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	Das Sicherheitszertifikat der Website ist abgelaufen, daher kann MDM nicht sicher sein, dass es die echte Website ist (Ihr Browser warnt ebenfalls davor).
+#. text in errors.rs
+#. why a download failed: the site's security certificate was made for other site names than the one in the address
+#, machine
+	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	Das Sicherheitszertifikat der Website ist für einen anderen Domainnamen ausgestellt, daher kann MDM nicht sicher sein, dass es sich um die tatsächliche Website handelt (Ihr Browser warnt ebenfalls davor).
+#. text in errors.rs
+#. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
+#, machine
+	the site's security certificate isn't trusted (it's self-signed or from an unknown issuer), so MDM can't be sure it's the real site (your browser warns about it too)	Das Sicherheitszertifikat der Website ist nicht vertrauenswürdig (es ist selbstsigniert oder von einem unbekannten Aussteller), daher kann MDM nicht sicher sein, dass es die echte Website ist (Ihr Browser warnt ebenfalls davor).
+#. text in errors.rs
+#. why a download failed: the site's security certificate's validity hasn't begun; usually this computer's date or time is wrong
+#, machine
+	the site's security certificate isn't valid yet: check this computer's date and time	Das Sicherheitszertifikat der Website ist noch nicht gültig: Überprüfen Sie Datum und Uhrzeit dieses Computers.
+#. text in errors.rs
+#. why a download failed: the site's security certificate was refused for another reason (a bad signature, a broken certificate)
+#, machine
+	the site's security certificate was refused, so MDM can't be sure it's the real site	Das Sicherheitszertifikat der Website wurde abgelehnt, daher kann MDM nicht sicher sein, dass es die echte Website ist.
+#. text in errors.rs
+#. why a download failed: the issuer of the site's security certificate took it back
+#, machine
+	the site's security certificate was revoked by its issuer, so MDM won't trust it	Das Sicherheitszertifikat der Website wurde vom Aussteller widerrufen, daher wird MDM ihm nicht vertrauen.
 #. text in the Download video window
 #. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Das Zertifikat der Website wird weder von yt-dlp noch von diesem Computer als vertrauenswürdig eingestuft: Möglicherweise blockiert der Webfilter eines Antivirenprogramms oder ein Proxy, der HTTPS-Verbindungen liest, die Verbindung. Deaktivieren Sie die HTTPS-Überprüfung oder fügen Sie das Zertifikat des Programms zu den Zertifikaten des Computers hinzu, und rufen Sie die Seite dann erneut auf.
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	Das Sicherheitszertifikat der Website ist nicht für Websites ausgestellt, daher kann MDM nicht sicher sein, dass es sich um die echte Website handelt
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine

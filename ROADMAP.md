@@ -565,6 +565,8 @@ These ship in the next version.
 - ✅ Chromium browsers: a video (or a PDF, an MP3) the browser would play, taken by MDM, keeps
   the name its server gives it instead of its address's (`main.mkv`)
   ([#948](https://github.com/anefzaoui/misterdownloadmanager/issues/948))
+- ✅ A download refused for its site's security certificate says why (expired, not trusted, for
+  another name) instead of a bare **Error** (follows [#762](https://github.com/anefzaoui/misterdownloadmanager/issues/762))
 - ✅ **Options → Downloads → Customize "Download progress" dialog → Edit...** works: it can turn
   off the progress window that opens when a download starts; the button was greyed and did
   nothing ([#1041](https://github.com/anefzaoui/misterdownloadmanager/issues/1041))

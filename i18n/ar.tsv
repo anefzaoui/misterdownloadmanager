@@ -3740,10 +3740,38 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	رفض فحص الروبوت الخاص بالموقع (Cloudflare) برنامج yt-dlp. إذا فتحت الصفحة في مستعرضك، فاختر هذا المستعرض في الخيارات ← تسجيلات دخول المواقع ← ملفات تعريف الارتباط لمواقع الفيديو وابحث عن الصفحة مرة أخرى، أو استخدم زر تنزيل الفيديو الموجود فوق الفيديو.
+#. text in errors.rs
+#. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
+#, machine
+	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	انتهت صلاحية شهادة أمان الموقع، لذلك لا يمكن لـ MDM التأكد من أنه الموقع الحقيقي (يحذرك مستعرضك منه أيضا)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was made for other site names than the one in the address
+#, machine
+	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	شهادة أمان الموقع مخصصة لاسم موقع آخر، لذلك لا يمكن لـ MDM التأكد من أنه الموقع الحقيقي (يحذرك مستعرضك منه أيضا)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
+#, machine
+	the site's security certificate isn't trusted (it's self-signed or from an unknown issuer), so MDM can't be sure it's the real site (your browser warns about it too)	شهادة أمان الموقع غير موثوق بها (موقعة ذاتيا أو صادرة عن جهة إصدار غير معروفة)، لذلك لا يمكن لـ MDM التأكد من أنه الموقع الحقيقي (يحذرك مستعرضك منها أيضا)
+#. text in errors.rs
+#. why a download failed: the site's security certificate's validity hasn't begun; usually this computer's date or time is wrong
+#, machine
+	the site's security certificate isn't valid yet: check this computer's date and time	شهادة أمان الموقع غير صالحة بعد: تحقق من تاريخ هذا الكمبيوتر ووقته
+#. text in errors.rs
+#. why a download failed: the site's security certificate was refused for another reason (a bad signature, a broken certificate)
+#, machine
+	the site's security certificate was refused, so MDM can't be sure it's the real site	رفضت شهادة أمان الموقع، لذلك لا يمكن لـ MDM التأكد من أنه الموقع الحقيقي
+#. text in errors.rs
+#. why a download failed: the issuer of the site's security certificate took it back
+#, machine
+	the site's security certificate was revoked by its issuer, so MDM won't trust it	أبطلت جهة الإصدار شهادة أمان الموقع، لذلك لن يثق بها MDM
 #. text in the Download video window
 #. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	شهادة الموقع غير موثوق بها، لا بواسطة yt-dlp ولا بواسطة هذا الكمبيوتر: قد يكون فلتر الويب الخاص ببرنامج مكافحة الفيروسات أو وكيل يقرأ HTTPS هو السبب. أوقف تشغيل فحص HTTPS الخاص به، أو أضف شهادته إلى الكمبيوتر، ثم ابحث عن الصفحة مرة أخرى.
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	شهادة أمان الموقع غير مخصصة لمواقع الويب، لذا لا يمكن لـ MDM التأكد من أنه الموقع الحقيقي
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	تعذر جلب الرموز: تظهر بعض أسطر التقرير عناوين بدلا من الأسماء (لا يزال بإمكان المطورين قراءتها).

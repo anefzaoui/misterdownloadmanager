@@ -4746,10 +4746,38 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Webbplatsens botkontroll (Cloudflare) nekade yt-dlp. Om sidan öppnas i din webbläsare väljer du den webbläsaren i Alternativ → Webbplatsinloggningar → Cookies för videosidor och söker upp sidan igen, eller använder knappen Ladda ned video ovanför videon.
+#. text in errors.rs
+#. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
+#, machine
+	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	webbplatsens säkerhetscertifikat har gått ut, så MDM kan inte vara säker på att det är den riktiga webbplatsen (din webbläsare varnar också för det)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was made for other site names than the one in the address
+#, machine
+	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	webbplatsens säkerhetscertifikat är för ett annat webbplatsnamn, så MDM kan inte vara säker på att det är den riktiga webbplatsen (din webbläsare varnar också för det)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
+#, machine
+	the site's security certificate isn't trusted (it's self-signed or from an unknown issuer), so MDM can't be sure it's the real site (your browser warns about it too)	webbplatsens säkerhetscertifikat är inte betrott (det är självsignerat eller från en okänd utfärdare), så MDM kan inte vara säker på att det är den riktiga webbplatsen (din webbläsare varnar också för det)
+#. text in errors.rs
+#. why a download failed: the site's security certificate's validity hasn't begun; usually this computer's date or time is wrong
+#, machine
+	the site's security certificate isn't valid yet: check this computer's date and time	webbplatsens säkerhetscertifikat är inte giltigt än: kontrollera den här datorns datum och tid
+#. text in errors.rs
+#. why a download failed: the site's security certificate was refused for another reason (a bad signature, a broken certificate)
+#, machine
+	the site's security certificate was refused, so MDM can't be sure it's the real site	webbplatsens säkerhetscertifikat avvisades, så MDM kan inte vara säker på att det är den riktiga webbplatsen
+#. text in errors.rs
+#. why a download failed: the issuer of the site's security certificate took it back
+#, machine
+	the site's security certificate was revoked by its issuer, so MDM won't trust it	webbplatsens säkerhetscertifikat återkallades av utfärdaren, så MDM litar inte på det
 #. text in the Download video window
 #. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Webbplatsens certifikat är inte betrott, varken av yt-dlp eller av den här datorn: ett antivirus webbfilter eller en proxy som läser HTTPS kan vara i vägen. Stäng av HTTPS-skanningen, eller lägg till dess certifikat till datorns, och sök sedan upp sidan igen.
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	webbplatsens säkerhetscertifikat är inte avsett för webbplatser, så MDM kan inte vara säker på att det är den riktiga webbplatsen
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine

@@ -191,6 +191,36 @@ pub struct Config {
     /// Serve HTTPS instead of HTTP, as `localhost`, with a certificate from a test CA made at
     /// start (`LabServer::ca_der`): `browser_only` then looks at the TLS handshake too (#668).
     pub tls: bool,
+    /// Over HTTPS: the certificate the server shows (a faulty one for the certificate errors'
+    /// tests). A connection's fault, before any request: it can't be a URL's.
+    pub cert: Cert,
+}
+
+/// The certificate the HTTPS server shows (`Config::cert`, `--tls-cert`).
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum Cert {
+    /// `localhost`'s, from the test CA: trusted by a client told to trust that CA.
+    #[default]
+    TestCa,
+    /// The test CA's, for `localhost`, expired (2020 to 2021).
+    Expired,
+    /// `localhost`'s, signed by itself: no CA vouches for it.
+    SelfSigned,
+    /// The test CA's, for another name than `localhost`.
+    WrongName,
+}
+
+impl Cert {
+    /// From `--tls-cert`'s words.
+    pub fn parse(s: &str) -> Option<Cert> {
+        Some(match s {
+            "test-ca" => Cert::TestCa,
+            "expired" => Cert::Expired,
+            "self-signed" => Cert::SelfSigned,
+            "wrong-name" => Cert::WrongName,
+            _ => return None,
+        })
+    }
 }
 
 impl Default for Config {
@@ -202,6 +232,7 @@ impl Default for Config {
             files: None,
             rss_dir: None,
             tls: false,
+            cert: Cert::TestCa,
         }
     }
 }
@@ -374,7 +405,7 @@ impl LabServer {
             link_free: Mutex::new(Instant::now()),
         });
         let tls = match cfg.tls {
-            true => Some(crate::ftp::certificate().map_err(io::Error::other)?),
+            true => Some(crate::ftp::certificate_of(cfg.cert).map_err(io::Error::other)?),
             false => None,
         };
         // Routes answered from memory, logged by `log_simple`.
@@ -770,6 +801,13 @@ GOOGLE DRIVE  a fake one for the engine's tests, on Google's host names (resolve
                             (307 to doc-0.docs.googleusercontent.com/export/tok/ID: chunked, no
                             length, ranges ignored)
   accounts.google.com       /ServiceLogin   the sign-in page
+
+HTTPS  --tls serves all of it over HTTPS as localhost, its certificate from a test CA made at start
+  (written next to the log, or printed); --tls-cert picks a faulty one (a connection's fault,
+  before any request, so a server's, never a URL's):
+    expired        the test CA's, expired (2020 to 2021)
+    self-signed    signed by itself, no CA's
+    wrong-name     the test CA's, for another-site.invalid
 
 LOG
 GET /_log   the request log as JSON: method, path, query, range, if_range, user_agent, cookie,

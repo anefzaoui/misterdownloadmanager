@@ -4746,10 +4746,38 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	ಸೈಟ್‌ನ ಬಾಟ್ ಪರಿಶೀಲನೆ (Cloudflare) yt-dlp ಅನ್ನು ನಿರಾಕರಿಸಿದೆ. ಪುಟವು ನಿಮ್ಮ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ತೆರೆದರೆ, ಆಯ್ಕೆಗಳು → ಸೈಟ್‌ಗಳ ಲಾಗಿನ್‌ಗಳು → ವೀಡಿಯೊ ಸೈಟ್‌ಗಳಿಗಾಗಿ ಕುಕೀಗಳಲ್ಲಿ ಆ ಬ್ರೌಸರ್ ಅನ್ನು ಆಯ್ಕೆಮಾಡಿ ಮತ್ತು ಪುಟವನ್ನು ಮತ್ತೆ ನೋಡಿ, ಅಥವಾ ವೀಡಿಯೊದ ಮೇಲಿರುವ ಡೌನ್‌ಲೋಡ್ ವೀಡಿಯೊ ಬಟನ್ ಬಳಸಿ.
+#. text in errors.rs
+#. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
+#, machine
+	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	ಸೈಟ್‌ನ ಭದ್ರತಾ ಪ್ರಮಾಣಪತ್ರದ ಅವಧಿ ಮುಗಿದಿದೆ, ಆದ್ದರಿಂದ MDM ಅದು ನಿಜವಾದ ಸೈಟ್ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಲು ಸಾಧ್ಯವಿಲ್ಲ (ನಿಮ್ಮ ಬ್ರೌಸರ್ ಕೂಡ ಅದರ ಬಗ್ಗೆ ಎಚ್ಚರಿಸುತ್ತದೆ)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was made for other site names than the one in the address
+#, machine
+	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	ಸೈಟ್‌ನ ಭದ್ರತಾ ಪ್ರಮಾಣಪತ್ರವು ವಿಳಾಸದಲ್ಲಿರುವ ಸೈಟ್ ಹೆಸರಿಗಿಂತ ಬೇರೆ ಸೈಟ್ ಹೆಸರುಗಳಿಗಾಗಿ ಆಗಿದೆ, ಆದ್ದರಿಂದ MDM ಅದು ನಿಜವಾದ ಸೈಟ್ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಲು ಸಾಧ್ಯವಿಲ್ಲ (ನಿಮ್ಮ ಬ್ರೌಸರ್ ಕೂಡ ಅದರ ಬಗ್ಗೆ ಎಚ್ಚರಿಸುತ್ತದೆ)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
+#, machine
+	the site's security certificate isn't trusted (it's self-signed or from an unknown issuer), so MDM can't be sure it's the real site (your browser warns about it too)	ಸೈಟ್‌ನ ಭದ್ರತಾ ಪ್ರಮಾಣಪತ್ರವು ವಿಶ್ವಾಸಾರ್ಹವಲ್ಲ (ಅದು ಸ್ವಯಂ-ಸಹಿ ಮಾಡಲ್ಪಟ್ಟಿದೆ ಅಥವಾ ಅಜ್ಞಾತ ವಿತರಕರಿಂದ ಬಂದಿದೆ), ಆದ್ದರಿಂದ MDM ಅದು ನಿಜವಾದ ಸೈಟ್ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಲು ಸಾಧ್ಯವಿಲ್ಲ (ನಿಮ್ಮ ಬ್ರೌಸರ್ ಕೂಡ ಅದರ ಬಗ್ಗೆ ಎಚ್ಚರಿಸುತ್ತದೆ)
+#. text in errors.rs
+#. why a download failed: the site's security certificate's validity hasn't begun; usually this computer's date or time is wrong
+#, machine
+	the site's security certificate isn't valid yet: check this computer's date and time	ಸೈಟ್‌ನ ಭದ್ರತಾ ಪ್ರಮಾಣಪತ್ರವು ಇನ್ನೂ ಮಾನ್ಯವಾಗಿಲ್ಲ: ಈ ಕಂಪ್ಯೂಟರ್‌ನ ದಿನಾಂಕ ಮತ್ತು ಸಮಯವನ್ನು ಪರಿಶೀಲಿಸಿ
+#. text in errors.rs
+#. why a download failed: the site's security certificate was refused for another reason (a bad signature, a broken certificate)
+#, machine
+	the site's security certificate was refused, so MDM can't be sure it's the real site	ಸೈಟ್‌ನ ಭದ್ರತಾ ಪ್ರಮಾಣಪತ್ರವನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ, ಆದ್ದರಿಂದ MDM ಅದು ನಿಜವಾದ ಸೈಟ್ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಲು ಸಾಧ್ಯವಿಲ್ಲ
+#. text in errors.rs
+#. why a download failed: the issuer of the site's security certificate took it back
+#, machine
+	the site's security certificate was revoked by its issuer, so MDM won't trust it	ಸೈಟ್‌ನ ಭದ್ರತಾ ಪ್ರಮಾಣಪತ್ರವನ್ನು ಅದರ ವಿತರಕರು ರದ್ದುಗೊಳಿಸಿದ್ದಾರೆ, ಆದ್ದರಿಂದ MDM ಅದನ್ನು ನಂಬುವುದಿಲ್ಲ
 #. text in the Download video window
 #. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	ಸೈಟ್‌ನ ಪ್ರಮಾಣಪತ್ರವನ್ನು yt-dlp ಅಥವಾ ಈ ಕಂಪ್ಯೂಟರ್‌ನಿಂದ ನಂಬಲಾಗಿಲ್ಲ: ಆಂಟಿವೈರಸ್‌ನ ವೆಬ್ ಫಿಲ್ಟರ್ ಅಥವಾ HTTPS ಅನ್ನು ಓದುವ ಪ್ರಾಕ್ಸಿ ಅಡ್ಡಿಯಾಗಬಹುದು. ಅದರ HTTPS ಸ್ಕ್ಯಾನಿಂಗ್ ಅನ್ನು ಆಫ್ ಮಾಡಿ, ಅಥವಾ ಅದರ ಪ್ರಮಾಣಪತ್ರವನ್ನು ಕಂಪ್ಯೂಟರ್‌ಗೆ ಸೇರಿಸಿ, ನಂತರ ಪುಟವನ್ನು ಮತ್ತೆ ಹುಡುಕಿ.
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	ಸೈಟ್‌ನ ಭದ್ರತಾ ಪ್ರಮಾಣಪತ್ರವನ್ನು ವೆಬ್‌ಸೈಟ್‌ಗಳಿಗಾಗಿ ಮಾಡಲಾಗಿಲ್ಲ, ಆದ್ದರಿಂದ MDM ಅದು ನಿಜವಾದ ಸೈಟ್ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಲು ಸಾಧ್ಯವಿಲ್ಲ
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine

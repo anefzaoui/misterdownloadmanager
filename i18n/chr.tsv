@@ -4618,6 +4618,30 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Cloudflare ᏚᏲᏍᏔᏅᎢ yt-dlp. ᎢᏳᏃ ᏗᎪᏪᎵ ᎤᎵᏍᏚᎢᏒᎢ ᏗᏣᏃᏟᏍᏙᏗ, ᎾᏍᎩ ᏗᏣᏃᏟᏍᏙᏗ ᎾᎿ ᏗᎪᏪᎵ → ᏗᎪᏪᎵ ᏗᎪᏪᎵ → ᏗᎪᏪᎵ ᏗᎪᏪᎵ ᎠᎴ ᏔᎵᏁ ᎪᏢᎾ ᏗᎪᏪᎵ, ᎠᎴ ᎢᏗᏴᏔᏅᎢ ᏗᎪᏪᎵ ᏗᎪᏪᎵ ᎦᎸᎳᏗᏢ ᏗᎪᏪᎵ.
+#. text in errors.rs
+#. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
+#, machine
+	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	ᎯᎠ ᎢᎬᎾᏗ ᎤსᏓᎵᎩ ᎤᏚᏓᎴᏍᏗ ᎨᏒ ᎤᏍᏆᏛ, so MDM can't be sure it's the real site (your browser warns about it too)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was made for other site names than the one in the address
+#, machine
+	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	ᎯᎠ ᎢᎬᎾᏗ ᎤსᏓᎵᎩ ᎤᏚᏓᎴᏍᏗ ᎨᏒ ᎤᏓᏁᎸ ᏅᏩᏓᎴ ᎢᎬᎾᏗ ᏚᏙᎥ, so MDM can't be sure it's the real site (your browser warns about it too)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
+#, machine
+	the site's security certificate isn't trusted (it's self-signed or from an unknown issuer), so MDM can't be sure it's the real site (your browser warns about it too)	ᎯᎠ ᎢᎬᎾᏗ ᎤსᏓᎵᎩ ᎤᏚᏓᎴᏍᏗ ᎨᏒ ᎥᏝ ᏱᏚᏳᎪᏛ (it's self-signed or from an unknown issuer), so MDM can't be sure it's the real site (your browser warns about it too)
+#. text in errors.rs
+#. why a download failed: the site's security certificate's validity hasn't begun; usually this computer's date or time is wrong
+#, machine
+	the site's security certificate isn't valid yet: check this computer's date and time	ᏗᎪᏪᎶᏗ ᏗᏕᎬᏔᏅᎢ ᎤᎾᏕᎳᎰᎯᏍᏗ: ᏗᎪᏪᎶᏗ ᏗᏕᎬᏔᏅᎢ ᎤᎾᏕᎳᎰᎯᏍᏗ, ᎠᎴ ᏗᎪᏪᎶᏗ ᏗᏕᎬᏔᏅᎢ ᎤᎾᏕᎳᎰᎯᏍᏗ
+#. text in errors.rs
+#. why a download failed: the site's security certificate was refused for another reason (a bad signature, a broken certificate)
+#, machine
+	the site's security certificate was refused, so MDM can't be sure it's the real site	ᎯᎠ ᎢᎬᎾᏗ ᎤსᏓᎵᎩ ᎤᏚᏓᎴᏍᏗ ᎨᏒ ᎤᏓᏁᎸ ᎥᏝ ᏱᏚᏳᎪᏛ, so MDM can't be sure it's the real site
+#. text in errors.rs
+#. why a download failed: the issuer of the site's security certificate took it back
+#, machine
+	the site's security certificate was revoked by its issuer, so MDM won't trust it	ᎯᎠ ᎢᎬᎾᏗ ᎤსᏓᎵᎩ ᎤᏚᏓᎴᏍᏗ ᎨᏒ ᎤᏓᏁᎸ ᎤᏲᏨ by its issuer, so MDM won't trust it
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine

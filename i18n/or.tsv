@@ -4746,10 +4746,38 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	ସାଇଟର ବଟ୍ ଯାଞ୍ଚ (Cloudflare) yt-dlpକୁ ପ୍ରତ୍ୟାଖ୍ୟାନ କଲା। ଯଦି ପୃଷ୍ଠା ଆପଣଙ୍କ ବ୍ରାଉଜରରେ ଖୋଲୁଛି, ତେବେ Options → Sites Logins → Cookies for video sitesରେ ସେହି ବ୍ରାଉଜରକୁ ବାଛନ୍ତୁ ଏବଂ ପୃଷ୍ଠାକୁ ପୁଣି ଖୋଜନ୍ତୁ, କିମ୍ବା ଭିଡିଓ ଉପରେ ଥିବା ଡାଉନଲୋଡ୍ ଭିଡିଓ ବଟନ୍ ବ୍ୟବହାର କରନ୍ତୁ।
+#. text in errors.rs
+#. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
+#, machine
+	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	ସାଇଟ୍‌ର ସୁରକ୍ଷା ପ୍ରମାଣପତ୍ରର ମିଆଦ୍ ସରିଯାଇଛି, ତେଣୁ MDM ନିଶ୍ଚିତ ହୋଇପାରୁ ନାହିଁ ଯେ ଏହା ପ୍ରକୃତ ସାଇଟ୍ (ଆପଣଙ୍କ ବ୍ରାଉଜର୍ ମଧ୍ୟ ଏହା ବିଷୟରେ ଚେତାବନୀ ଦିଏ)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was made for other site names than the one in the address
+#, machine
+	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	ସାଇଟ୍‌ର ସୁରକ୍ଷା ପ୍ରମାଣପତ୍ର ଅନ୍ୟ ସାଇଟ୍ ନାମ ପାଇଁ ଅଛି, ତେଣୁ MDM ନିଶ୍ଚିତ ହୋଇପାରୁ ନାହିଁ ଯେ ଏହା ପ୍ରକୃତ ସାଇଟ୍ (ଆପଣଙ୍କ ବ୍ରାଉଜର୍ ମଧ୍ୟ ଏହା ବିଷୟରେ ଚେତାବନୀ ଦିଏ)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
+#, machine
+	the site's security certificate isn't trusted (it's self-signed or from an unknown issuer), so MDM can't be sure it's the real site (your browser warns about it too)	ସାଇଟ୍‌ର ସୁରକ୍ଷା ପ୍ରମାଣପତ୍ର ବିଶ୍ୱାସଯୋଗ୍ୟ ନୁହେଁ (ଏହା ସ୍ୱ-ହସ୍ତାକ୍ଷରିତ କିମ୍ବା ଏକ ଅଜ୍ଞାତ ପ୍ରଦାନକାରୀଙ୍କ ଠାରୁ), ତେଣୁ MDM ନିଶ୍ଚିତ ହୋଇପାରୁ ନାହିଁ ଯେ ଏହା ପ୍ରକୃତ ସାଇଟ୍ (ଆପଣଙ୍କ ବ୍ରାଉଜର୍ ମଧ୍ୟ ଏହା ବିଷୟରେ ଚେତାବନୀ ଦିଏ)
+#. text in errors.rs
+#. why a download failed: the site's security certificate's validity hasn't begun; usually this computer's date or time is wrong
+#, machine
+	the site's security certificate isn't valid yet: check this computer's date and time	ସାଇଟ୍‌ର ସୁରକ୍ଷା ପ୍ରମାଣପତ୍ର ଏପର୍ଯ୍ୟନ୍ତ ବୈଧ ନୁହେଁ: ଏହି କମ୍ପ୍ୟୁଟରର ତାରିଖ ଏବଂ ସମୟ ଯାଞ୍ଚ କରନ୍ତୁ
+#. text in errors.rs
+#. why a download failed: the site's security certificate was refused for another reason (a bad signature, a broken certificate)
+#, machine
+	the site's security certificate was refused, so MDM can't be sure it's the real site	ସାଇଟ୍‌ର ସୁରକ୍ଷା ପ୍ରମାଣପତ୍ରକୁ ପ୍ରତ୍ୟାଖ୍ୟାନ କରାଯାଇଛି, ତେଣୁ MDM ନିଶ୍ଚିତ ହୋଇପାରୁ ନାହିଁ ଯେ ଏହା ପ୍ରକୃତ ସାଇଟ୍
+#. text in errors.rs
+#. why a download failed: the issuer of the site's security certificate took it back
+#, machine
+	the site's security certificate was revoked by its issuer, so MDM won't trust it	ସାଇଟ୍‌ର ସୁରକ୍ଷା ପ୍ରମାଣପତ୍ରକୁ ଏହାର ପ୍ରଦାନକାରୀ ଦ୍ୱାରା ବାତିଲ୍ କରାଯାଇଛି, ତେଣୁ MDM ଏହାକୁ ବିଶ୍ୱାସ କରିବ ନାହିଁ
 #. text in the Download video window
 #. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	ସାଇଟ୍‌ର ସାର୍ଟିଫିକେଟ୍ yt-dlp କିମ୍ବା ଏହି କମ୍ପ୍ୟୁଟର୍ ଦ୍ୱାରା ବିଶ୍ୱସ୍ତ ନୁହେଁ: ଏକ ଆଣ୍ଟିଭାଇରସ୍‌ର ୱେବ୍ ଫିଲ୍ଟର୍ କିମ୍ବା HTTPS ପଢ଼ୁଥିବା ଏକ ପ୍ରକ୍ସି ବାଧା ଦେଉଥାଇପାରେ। ଏହାର HTTPS ସ୍କାନିଂ ବନ୍ଦ କରନ୍ତୁ, କିମ୍ବା ଏହାର ସାର୍ଟିଫିକେଟ୍ କମ୍ପ୍ୟୁଟର୍‌ରେ ଯୋଡ଼ନ୍ତୁ, ତା’ପରେ ପୃଷ୍ଠାକୁ ପୁଣି ଖୋଜନ୍ତୁ।
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	ସାଇଟ୍‌ର ସୁରକ୍ଷା ପ୍ରମାଣପତ୍ର ୱେବସାଇଟ୍ ପାଇଁ ତିଆରି ହୋଇନାହିଁ, ତେଣୁ MDM ନିଶ୍ଚିତ ହୋଇପାରୁ ନାହିଁ ଯେ ଏହା ପ୍ରକୃତ ସାଇଟ୍ କି ନୁହେଁ
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
