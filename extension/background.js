@@ -2494,6 +2494,21 @@ async function popupMessage(m) {
     await refreshRules();
     return { ok: Boolean(reply.ok) };
   }
+  // The popup's Undo (#404): the site taken off the excluded sites again, as it was added.
+  if (m.type === "include-site" && typeof m.host === "string" && m.host) {
+    const reply = await native({ includeSite: m.host });
+    await refreshRules();
+    return { ok: Boolean(reply.ok) };
+  }
+  // Are this site's downloads left to the browser by Options' excluded sites (#404), and is it
+  // listed by its own name (Undo takes that off; a pattern of the user's own stays)?
+  if (m.type === "site-excluded" && typeof m.host === "string" && m.host) {
+    const r = await currentRules();
+    const host = m.host.toLowerCase();
+    const sites = ((r && r.excludedSites) || "").split(/\s+/).filter(Boolean);
+    const undo = sites.some((p) => p.toLowerCase() === host);
+    return { excluded: undo || Boolean(r && siteListed(r, host)), undo };
+  }
   if (m.type === "open-app") return { ok: Boolean((await native({ open: true })).ok) };
   if (m.type === "open-options") return { ok: Boolean((await native({ openOptions: true, page: "general" })).ok) };
   // The media the popup's tab loaded (#38), and one of them handed to the app.

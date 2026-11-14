@@ -568,6 +568,13 @@ These ship in the next version.
   come in each processor's build (no ffmpeg for 32-bit Windows: Helpers says so)
   ([#977](https://github.com/anefzaoui/misterdownloadmanager/discussions/977),
   [#1010](https://github.com/anefzaoui/misterdownloadmanager/discussions/1010))
+- ✅ A download refused for its site's security certificate says why (expired, not trusted, for
+  another name) instead of a bare **Error** (follows [#762](https://github.com/anefzaoui/misterdownloadmanager/issues/762))
+- ✅ **Options → Downloads → Customize "Download progress" dialog → Edit...** works: it can turn
+  off the progress window that opens when a download starts; the button was greyed and did
+  nothing ([#1041](https://github.com/anefzaoui/misterdownloadmanager/issues/1041))
+- ✅ The browser popup's **Never take downloads from <site>** says it worked, with **Undo**
+  ([#404](https://github.com/anefzaoui/misterdownloadmanager/issues/404))
 - ✅ A download to a disk slower than the network no longer stands still for a second or more
   just after it starts (a second save of its progress came too soon after the first); a server
   whose name the DNS doesn't answer in time says it couldn't be found, not that it didn't answer.
@@ -1044,6 +1051,9 @@ These ship in the next version.
 - ✅ Linux on Wayland (XWayland) with NVIDIA's driver: typing and clicking no longer lag by 1 to 2
   seconds; MDM spaces its frames itself instead of waiting for the screen's refresh (other drivers
   keep the refresh)
+- ✅ macOS: a menu whose item opens a file dialog (View → Theme → Add a theme file, Tasks → Open
+  torrent file) closes first, instead of floating on top of every window until MDM quits
+  ([#615](https://github.com/anefzaoui/misterdownloadmanager/issues/615))
 - ✅ Download video works behind an antivirus or a proxy that reads HTTPS: yt-dlp is asked again
   with the system's certificates when it refuses a site's
   ([#955](https://github.com/anefzaoui/misterdownloadmanager/issues/955))

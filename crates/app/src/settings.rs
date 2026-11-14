@@ -205,6 +205,9 @@ pub struct Settings {
     pub mark_downloads: bool,
     /// Downloads.
     pub show_start_dialog: bool,
+    /// Downloads → Customize "Download progress" dialog → Edit... (#1041): a download's
+    /// progress window opens when it starts. Off, it runs in the list (double-click opens it).
+    pub show_progress: bool,
     pub only_add_to_queue: bool,
     pub start_immediately: bool,
     pub queue_panel_later: bool,
@@ -450,6 +453,7 @@ impl Default for Settings {
             set_creation_date: false,
             mark_downloads: true,
             show_start_dialog: true,
+            show_progress: true,
             only_add_to_queue: false,
             start_immediately: true,
             queue_panel_later: true,
