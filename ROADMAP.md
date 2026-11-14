@@ -562,6 +562,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Link grabber keeps answering on a long list of links (thousands at once, an S3 dump of
+  single-archive volumes): a link's category is worked out once, when it arrives, its package is
+  found in a map, and the list is walked once a change, not once per package per frame
+  ([#1063](https://github.com/anefzaoui/misterdownloadmanager/issues/1063))
 - ✅ The sites in **Don't start downloading automatically from the following sites** take their
   subdomains and the files their pages link to on another server (a CDN), as the Download panels'
   list does
