@@ -6402,16 +6402,13 @@ impl App {
                 self.queue_done(q);
             }
         }
-        // The next wake follows the schedules (set again when they change), and a queue that
-        // wakes the computer keeps it awake while it runs (#142).
+        // The next wake follows the schedules (set again when they change). The computer is
+        // kept awake while a queue that woke it runs (#142), and while anything downloads (#939):
+        // its own idle sleep would stop them halfway.
         self.wake.sync(&self.queues);
-        let waking = self
-            .queues
-            .iter()
-            .find(|q| q.running && q.schedule.wake)
-            .map(|q| q.name.clone());
-        self.wake
-            .keep_awake(waking.is_some(), waking.as_deref().unwrap_or_default());
+        let downloading = self.items.iter().any(|i| i.status == Status::Downloading);
+        let why = crate::wake::why_awake(&self.queues, downloading);
+        self.wake.keep_awake(why);
     }
 
     /// Scheduler → Download limits: stop at the limit, go on when the window has room.

@@ -3779,11 +3779,14 @@ pub fn wake_at(at: Option<i64>) -> Result<(), String> {
 }
 
 /// Keep the computer from sleeping while `reason` is given; None lets it sleep again as the
-/// system's settings say. Linux: logind's sleep and idle inhibitor, held by its file
-/// descriptor (`systemd-inhibit --list` shows it with its reason); a user in the active
-/// session may take it without a password. False when logind refused, or didn't answer within
-/// 25 s. Called on wake::Holder's thread, never the window's: logind can be slow right after a
-/// resume.
+/// system's settings say. Linux: logind's sleep inhibitor, held by its file descriptor
+/// (`systemd-inhibit --list` shows it with its reason); a user in the active session may take it
+/// without a password. It stops the desktop's automatic suspend (GNOME, KDE) and logind's own
+/// idle action, which go through logind's suspend; not the screen's dimming, turning off and
+/// locking, as Windows' power request and `caffeinate -i` don't either. (An `idle` inhibitor
+/// too would keep KDE's screen on for as long as downloads run, #939.) False when logind refused,
+/// or didn't answer within 25 s. Called on wake::Holder's thread, never the window's: logind can
+/// be slow right after a resume.
 #[cfg(target_os = "linux")]
 pub fn keep_awake(reason: Option<&str>) -> bool {
     use std::sync::Mutex;
@@ -3806,7 +3809,7 @@ pub fn keep_awake(reason: Option<&str>) -> bool {
         )?;
         logind.call(
             "Inhibit",
-            &("sleep:idle", "Mister Download Manager", reason, "block"),
+            &("sleep", "Mister Download Manager", reason, "block"),
         )
     };
     match take() {
@@ -3815,7 +3818,15 @@ pub fn keep_awake(reason: Option<&str>) -> bool {
             true
         }
         Err(e) => {
-            tracing::warn!("wake: logind's inhibitor refused ({e})");
+            // Once per refusal of its own: a system without logind (a container, #157) refuses
+            // every time downloads run, asked again once a minute.
+            static LAST: Mutex<String> = Mutex::new(String::new());
+            let why = e.to_string();
+            let mut last = LAST.lock().unwrap_or_else(|p| p.into_inner());
+            if *last != why {
+                tracing::warn!("wake: logind's inhibitor refused ({why})");
+                *last = why;
+            }
             false
         }
     }
