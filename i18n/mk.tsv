@@ -4767,6 +4767,10 @@
 #. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Сертификатот на страницата не е доверлив, ниту од yt-dlp, ниту од овој компјутер: веб-филтерот на антивирус или прокси што чита HTTPS може да пречи. Исклучете го неговото HTTPS скенирање или додадете го неговиот сертификат на компјутерот, па повторно пребарајте ја страницата.
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	безбедносниот сертификат на страницата не е направен за веб-страници, така што MDM не може да биде сигурен дека е вистинската страница
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine

@@ -3609,6 +3609,10 @@
 #. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Sertifikat situs tidak dipercaya, baik oleh yt-dlp maupun oleh komputer ini: filter web antivirus atau proksi yang membaca HTTPS mungkin menghalangi. Matikan pemindaian HTTPS-nya, atau tambahkan sertifikatnya ke komputer, lalu cari halaman lagi.
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	sertifikat keamanan situs tidak dibuat untuk situs web, jadi MDM tidak dapat memastikan itu adalah situs yang asli
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Simbol tidak dapat diambil: beberapa baris laporan menunjukkan alamat alih-alih nama (pengembang masih dapat membacanya).

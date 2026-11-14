@@ -4767,6 +4767,10 @@
 #. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Webbplatsens certifikat är inte betrott, varken av yt-dlp eller av den här datorn: ett antivirus webbfilter eller en proxy som läser HTTPS kan vara i vägen. Stäng av HTTPS-skanningen, eller lägg till dess certifikat till datorns, och sök sedan upp sidan igen.
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	webbplatsens säkerhetscertifikat är inte avsett för webbplatser, så MDM kan inte vara säker på att det är den riktiga webbplatsen
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine

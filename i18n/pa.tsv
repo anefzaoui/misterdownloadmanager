@@ -4767,6 +4767,10 @@
 #. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	ਸਾਈਟ ਦਾ ਸਰਟੀਫਿਕੇਟ yt-dlp ਜਾਂ ਇਸ ਕੰਪਿਊਟਰ ਦੁਆਰਾ ਭਰੋਸੇਯੋਗ ਨਹੀਂ ਹੈ: ਇੱਕ ਐਂਟੀਵਾਇਰਸ ਦਾ ਵੈੱਬ ਫਿਲਟਰ ਜਾਂ ਇੱਕ ਪ੍ਰੌਕਸੀ ਜੋ HTTPS ਪੜ੍ਹਦਾ ਹੈ, ਰਸਤੇ ਵਿੱਚ ਹੋ ਸਕਦਾ ਹੈ। ਇਸਦੀ HTTPS ਸਕੈਨਿੰਗ ਬੰਦ ਕਰੋ, ਜਾਂ ਇਸਦਾ ਸਰਟੀਫਿਕੇਟ ਕੰਪਿਊਟਰ ਵਿੱਚ ਸ਼ਾਮਲ ਕਰੋ, ਫਿਰ ਪੰਨੇ ਨੂੰ ਦੁਬਾਰਾ ਲੱਭੋ।
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	ਸਾਈਟ ਦਾ ਸੁਰੱਖਿਆ ਸਰਟੀਫਿਕੇਟ ਵੈੱਬਸਾਈਟਾਂ ਲਈ ਨਹੀਂ ਬਣਾਇਆ ਗਿਆ ਹੈ, ਇਸ ਲਈ MDM ਇਹ ਯਕੀਨੀ ਨਹੀਂ ਕਰ ਸਕਦਾ ਕਿ ਇਹ ਅਸਲੀ ਸਾਈਟ ਹੈ
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine

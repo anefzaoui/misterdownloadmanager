@@ -4767,6 +4767,10 @@
 #. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	yt-dlp와 이 컴퓨터 모두 사이트의 인증서를 신뢰하지 않습니다. 백신 프로그램의 웹 필터 또는 HTTPS를 읽는 프록시가 방해할 수 있습니다. HTTPS 검사를 끄거나 해당 인증서를 컴퓨터의 인증서 저장소에 추가한 다음 페이지를 다시 조회하세요.
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	사이트의 보안 인증서가 웹 사이트용으로 만들어지지 않아 MDM이 실제 사이트인지 확인할 수 없습니다.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine

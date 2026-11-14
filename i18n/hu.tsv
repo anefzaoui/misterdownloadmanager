@@ -4767,6 +4767,10 @@
 #. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	A webhely tanúsítványa nem megbízható, sem a yt-dlp, sem ez a számítógép számára: egy vírusirtó webes szűrője vagy egy HTTPS-t olvasó proxy akadályozhatja. Kapcsolja ki a HTTPS-vizsgálatot, vagy adja hozzá a tanúsítványát a számítógéphez, majd keresse meg újra az oldalt.
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	a webhely biztonsági tanúsítványa nem webhelyekhez készült, ezért az MDM nem lehet biztos benne, hogy valóban a webhelyről van szó
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine

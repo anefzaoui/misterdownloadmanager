@@ -4767,6 +4767,10 @@
 #. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	സൈറ്റിന്റെ സർട്ടിഫിക്കറ്റിനെ yt-dlp-യോ ഈ കമ്പ്യൂട്ടറോ വിശ്വസിക്കുന്നില്ല: ഒരു ആന്റിവൈറസിന്റെ വെബ് ഫിൽട്ടറോ HTTPS വായിക്കുന്ന ഒരു പ്രോക്സിയോ തടസ്സമായേക്കാം. അതിന്റെ HTTPS സ്കാനിംഗ് ഓഫാക്കുക, അല്ലെങ്കിൽ അതിന്റെ സർട്ടിഫിക്കറ്റ് കമ്പ്യൂട്ടറിന്റെ സർട്ടിഫിക്കറ്റുകളിലേക്ക് ചേർക്കുക, തുടർന്ന് പേജ് വീണ്ടും പരിശോധിക്കുക.
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	സൈറ്റിന്റെ സുരക്ഷാ സർട്ടിഫിക്കറ്റ് വെബ്സൈറ്റുകൾക്കായി നിർമ്മിച്ചതല്ല, അതിനാൽ MDM-ന് അത് യഥാർത്ഥ സൈറ്റാണെന്ന് ഉറപ്പില്ല
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
