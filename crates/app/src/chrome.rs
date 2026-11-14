@@ -1136,7 +1136,7 @@ pub enum PopupLook {
 /// resizable, no taskbar button, always on top. On Windows it is created hidden: its first pass
 /// makes it a plain popup ([`style_popup`]) and [`show_popup`] shows it then.
 pub fn popup_viewport(title: &str) -> egui::ViewportBuilder {
-    egui::ViewportBuilder::default()
+    crate::window_builder()
         .with_title(crate::i18n::os_text(title))
         .with_decorations(false)
         .with_resizable(false)
