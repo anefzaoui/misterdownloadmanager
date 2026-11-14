@@ -562,6 +562,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A download refused for its site's security certificate says why (expired, not trusted, for
+  another name) instead of a bare **Error** (follows [#762](https://github.com/anefzaoui/misterdownloadmanager/issues/762))
 - ✅ The menu bar with a screen reader: Alt opens it again, and the screen reader says each item
   as Alt, F10 or the arrows reach it; Shift+F10's menus too
   ([#328](https://github.com/anefzaoui/misterdownloadmanager/issues/328))

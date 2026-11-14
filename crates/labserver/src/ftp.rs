@@ -178,6 +178,16 @@ impl Drop for FtpServer {
 /// A test CA and a `localhost` certificate it signed: the server's configuration, and the CA's
 /// DER (FTPS here, HTTPS for `Config::tls`).
 pub(crate) fn certificate() -> Result<(rustls::ServerConfig, Vec<u8>), String> {
+    certificate_of(crate::server::Cert::TestCa)
+}
+
+/// The server's configuration with the certificate `cert` asks for, and the test CA's DER: a
+/// client trusting that CA still refuses an expired certificate, one for another name, and a
+/// self-signed one (which no CA signed).
+pub(crate) fn certificate_of(
+    cert: crate::server::Cert,
+) -> Result<(rustls::ServerConfig, Vec<u8>), String> {
+    use crate::server::Cert;
     use rcgen::{
         BasicConstraints, CertificateParams, CertifiedIssuer, DnType, IsCa, KeyPair,
         KeyUsagePurpose,
@@ -194,17 +204,30 @@ pub(crate) fn certificate() -> Result<(rustls::ServerConfig, Vec<u8>), String> {
     ];
     let ca = CertifiedIssuer::self_signed(ca, KeyPair::generate().map_err(e)?).map_err(e)?;
     let key = KeyPair::generate().map_err(e)?;
-    let mut leaf = CertificateParams::new(vec!["localhost".to_owned()]).map_err(e)?;
-    leaf.distinguished_name
-        .push(DnType::CommonName, "localhost");
-    let leaf = leaf.signed_by(&key, &ca).map_err(e)?;
+    let name = match cert {
+        Cert::WrongName => "another-site.invalid",
+        _ => "localhost",
+    };
+    let mut leaf = CertificateParams::new(vec![name.to_owned()]).map_err(e)?;
+    leaf.distinguished_name.push(DnType::CommonName, name);
+    if cert == Cert::Expired {
+        leaf.not_before = rcgen::date_time_ymd(2020, 1, 1);
+        leaf.not_after = rcgen::date_time_ymd(2021, 1, 1);
+    }
+    let chain = match cert {
+        Cert::SelfSigned => vec![leaf.self_signed(&key).map_err(e)?.der().clone()],
+        _ => vec![
+            leaf.signed_by(&key, &ca).map_err(e)?.der().clone(),
+            ca.der().clone(),
+        ],
+    };
     let provider = Arc::new(rustls::crypto::aws_lc_rs::default_provider());
     let config = rustls::ServerConfig::builder_with_provider(provider)
         .with_safe_default_protocol_versions()
         .map_err(|e| e.to_string())?
         .with_no_client_auth()
         .with_single_cert(
-            vec![leaf.der().clone(), ca.der().clone()],
+            chain,
             rustls::pki_types::PrivateKeyDer::Pkcs8(key.serialize_der().into()),
         )
         .map_err(|e| e.to_string())?;
@@ -537,5 +560,9 @@ mod tests {
     #[test]
     fn makes_a_certificate() {
         assert!(certificate().is_ok());
+        use crate::server::Cert;
+        for cert in [Cert::Expired, Cert::SelfSigned, Cert::WrongName] {
+            assert!(certificate_of(cert).is_ok(), "{cert:?}");
+        }
     }
 }
