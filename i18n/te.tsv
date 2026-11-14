@@ -1357,6 +1357,10 @@
 #. window title: the download button the extension shows over videos
 #, machine
 	Download panels	డౌన్‌లోడ్ ప్యానెల్‌లు
+#. window title in the Options window
+#. window title: Options → Downloads → Edit... (the progress window's settings)
+#, machine
+	Download progress dialog	డౌన్‌లోడ్ పురోగతి డైలాగ్
 #. text in rssdlg.rs
 #. RSS feeds window: the tab of the rules that add articles by themselves
 #, machine
@@ -2752,6 +2756,10 @@
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager అంతర్గత లోపాన్ని ఎదుర్కొంది
 #. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake (Windows' power requests, Linux's inhibitors)
+#, machine
+	Mister Download Manager is downloading	Mister Download Manager డౌన్‌లోడ్ అవుతోంది
+#. text in wake.rs
 #. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -4021,6 +4029,9 @@
 #. checkbox in the Options window; checkbox in a download's progress window
 #, machine
 	Show download complete dialog	డౌన్‌లోడ్ పూర్తయిన డైలాగ్‌ను చూపించు
+#. checkbox in the Options window
+#, machine
+	Show download progress dialog when a download starts	డౌన్‌లోడ్ ప్రారంభమైనప్పుడు డౌన్‌లోడ్ పురోగతి డైలాగ్‌ను చూపించు
 #. button in a dialog box
 #. button: shows these downloads in MDM's list, selected
 #, machine
@@ -4743,10 +4754,38 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	సైట్ యొక్క బాట్ తనిఖీ (Cloudflare) yt-dlp ని తిరస్కరించింది. పేజీ మీ బ్రౌజర్‌లో తెరిస్తే, ఎంపికలు → సైట్‌ల లాగిన్‌లు → వీడియో సైట్‌ల కోసం కుకీలలో ఆ బ్రౌజర్‌ను ఎంచుకోండి మరియు పేజీని మళ్లీ చూడండి, లేదా వీడియోపై డౌన్‌లోడ్ వీడియో బటన్‌ను ఉపయోగించండి.
+#. text in errors.rs
+#. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
+#, machine
+	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	సైట్ భద్రతా ధృవీకరణ పత్రం గడువు ముగిసింది, కాబట్టి MDM ఇది నిజమైన సైట్ అని నిర్ధారించుకోలేదు (మీ బ్రౌజర్ కూడా దీని గురించి హెచ్చరిస్తుంది)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was made for other site names than the one in the address
+#, machine
+	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	సైట్ భద్రతా ధృవీకరణ పత్రం చిరునామాలోని సైట్ పేరుకు కాకుండా వేరే సైట్ పేరు కోసం ఉంది, కాబట్టి MDM ఇది నిజమైన సైట్ అని నిర్ధారించుకోలేదు (మీ బ్రౌజర్ కూడా దీని గురించి హెచ్చరిస్తుంది)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
+#, machine
+	the site's security certificate isn't trusted (it's self-signed or from an unknown issuer), so MDM can't be sure it's the real site (your browser warns about it too)	సైట్ భద్రతా ధృవీకరణ పత్రం విశ్వసనీయమైనది కాదు (దానికి స్వయంగా సంతకం చేశారు లేదా తెలియని జారీదారు సంతకం చేశారు), కాబట్టి MDM ఇది నిజమైన సైట్ అని నిర్ధారించుకోలేదు (మీ బ్రౌజర్ కూడా దీని గురించి హెచ్చరిస్తుంది)
+#. text in errors.rs
+#. why a download failed: the site's security certificate's validity hasn't begun; usually this computer's date or time is wrong
+#, machine
+	the site's security certificate isn't valid yet: check this computer's date and time	సైట్ భద్రతా ధృవీకరణ పత్రం ఇంకా చెల్లుబాటు కావడం లేదు: ఈ కంప్యూటర్ తేదీ, సమయాన్ని తనిఖీ చేయండి
+#. text in errors.rs
+#. why a download failed: the site's security certificate was refused for another reason (a bad signature, a broken certificate)
+#, machine
+	the site's security certificate was refused, so MDM can't be sure it's the real site	సైట్ భద్రతా ధృవీకరణ పత్రం తిరస్కరించబడింది, కాబట్టి MDM ఇది నిజమైన సైట్ అని నిర్ధారించుకోలేదు
+#. text in errors.rs
+#. why a download failed: the issuer of the site's security certificate took it back
+#, machine
+	the site's security certificate was revoked by its issuer, so MDM won't trust it	సైట్ భద్రతా ధృవీకరణ పత్రాన్ని దాని జారీదారు రద్దు చేశారు, కాబట్టి MDM దాన్ని విశ్వసించదు
 #. text in the Download video window
 #. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	సైట్ యొక్క సర్టిఫికేట్ yt-dlp ద్వారా లేదా ఈ కంప్యూటర్ ద్వారా విశ్వసించబడలేదు: యాంటీవైరస్ యొక్క వెబ్ ఫిల్టర్ లేదా HTTPS చదివే ప్రాక్సీ అడ్డుగా ఉండవచ్చు. దాని HTTPS స్కానింగ్‌ను ఆఫ్ చేయండి లేదా దాని సర్టిఫికేట్‌ను కంప్యూటర్‌కు జోడించండి, ఆపై పేజీని మళ్లీ చూడండి.
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	సైట్ యొక్క భద్రతా ధృవీకరణ పత్రం వెబ్‌సైట్‌ల కోసం జారీ చేయబడలేదు, కాబట్టి MDM అది నిజమైన సైటో కాదో నిర్ధారించలేదు
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -5464,6 +5503,9 @@
 #. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
 #, machine
 	When	ఎప్పుడు
+#. text in the Options window
+#, machine
+	When it is off, downloads go on in the main window's list. Double-click one there to see its progress.	ఇది ఆఫ్ అయినప్పుడు, డౌన్‌లోడ్‌లు ప్రధాన విండో జాబితాలో కొనసాగుతాయి. దాని పురోగతిని చూడటానికి అక్కడ ఒకదానిపై డబుల్-క్లిక్ చేయండి.
 #. text in the Batch download window
 #, machine
 	Wildcard size	వైల్డ్‌కార్డ్ పరిమాణం
@@ -6144,6 +6186,10 @@ extension	Help	సహాయం
 #, machine
 extension	Hide on this video	ఈ వీడియోలో దాచు
 #. text in the browser extension
+#. Option in the toolbar button's popup: while a web page is in full screen, the Download video button over its videos stays hidden
+#, machine
+extension	Hide the download button in full screen	పూర్తి స్క్రీన్‌లో డౌన్‌లోడ్ బటన్‌ను దాచండి
+#. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
 extension	Hold Alt while clicking a link to let the browser download it.	బ్రౌజర్ ద్వారా డౌన్‌లోడ్ చేయడానికి లింక్‌ను క్లిక్ చేస్తున్నప్పుడు Alt కీని నొక్కి ఉంచండి.
@@ -6159,6 +6205,10 @@ extension	It didn't work. Try again.	ఇది పని చేయలేదు. 
 #. pairing failed: the other MDM shows no pairing code; Pair a device is its button
 #, machine
 extension	It shows no code now: click Pair a device there first.	ఇది ఇప్పుడు కోడ్‌ను చూపడం లేదు: ముందుగా అక్కడ పరికరాన్ని జత చేయి క్లిక్ చేయండి.
+#. text in the browser extension
+#. why a download stayed with the browser: it is a .torrent file and the app's Torrent settings don't open torrents with Mister Download Manager, so the browser keeps it for the user's own torrent program; keep the setting's name as the app shows it
+#, machine
+extension	It's a torrent, and Open magnet links and .torrent files with Mister Download Manager is off in Torrent settings.	ఇది టొరెంట్, మరియు టొరెంట్ సెట్టింగ్‌లలో Mister Download Managerతో మాగ్నెట్ లింక్‌లు మరియు .torrent ఫైల్‌లను తెరవండి ఆఫ్ చేయబడింది.
 #. text in the browser extension
 #. why a download stayed with the browser: the file is smaller than the app's minimum size setting
 #, machine
@@ -6389,6 +6439,10 @@ extension	This page's player streams its video in pieces, so there's no file to 
 #, machine
 extension	Turn on	ఆన్ చేయి
 #. text in the browser extension
+#. link beside "Downloads from <site> stay with the browser" in the toolbar button's popup: take the site off the excluded sites again
+#, machine
+extension	Undo	రద్దు చేయి
+#. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	ఈ పొడిగింపు అందించే ప్రతిదాన్ని ఉపయోగించడానికి Mister Download Managerని అప్‌డేట్ చేయండి
@@ -6404,6 +6458,10 @@ extension	Video	వీడియో
 #. pairing failed: codes tried too fast
 #, machine
 extension	Wait a moment, then try again.	ఒక క్షణం వేచి ఉండి, ఆపై మళ్లీ ప్రయత్నించండి.
+#. text in the browser extension
+#. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
+#, machine
+extension	While the page is in full screen, its videos show no Download video button	పేజీ పూర్తి స్క్రీన్‌లో ఉన్నప్పుడు, దాని వీడియోలపై డౌన్‌లోడ్ వీడియో బటన్ కనిపించదు
 #. text in the browser extension
 #. pairing failed: the code was wrong
 #, machine

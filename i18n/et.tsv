@@ -1357,6 +1357,10 @@
 #. window title: the download button the extension shows over videos
 #, machine
 	Download panels	Allalaadimispaneelid
+#. window title in the Options window
+#. window title: Options → Downloads → Edit... (the progress window's settings)
+#, machine
+	Download progress dialog	Allalaadimise edenemise dialoog
 #. text in rssdlg.rs
 #. RSS feeds window: the tab of the rules that add articles by themselves
 #, machine
@@ -2752,6 +2756,10 @@
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manageril ilmnes sisemine viga
 #. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake (Windows' power requests, Linux's inhibitors)
+#, machine
+	Mister Download Manager is downloading	Mister Download Manager laadib alla
+#. text in wake.rs
 #. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -4021,6 +4029,9 @@
 #. checkbox in the Options window; checkbox in a download's progress window
 #, machine
 	Show download complete dialog	Näita allalaadimise lõpetamise dialoogi
+#. checkbox in the Options window
+#, machine
+	Show download progress dialog when a download starts	Näita allalaadimise edenemise dialoogi, kui allalaadimine algab
 #. button in a dialog box
 #. button: shows these downloads in MDM's list, selected
 #, machine
@@ -4743,10 +4754,38 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Saidi robotikontroll (Cloudflare) keeldus yt-dlp päringust. Kui leht avaneb teie brauseris, valige see brauser menüüs „Sätted” → „Saitide sisselogimised” → „Küpsised videolehtede jaoks” ja otsige leht uuesti üles või kasutage video kohal nuppu „Laadi video alla”.
+#. text in errors.rs
+#. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
+#, machine
+	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	saidi turvasertifikaat on aegunud, nii et MDM ei saa olla kindel, et see on õige sait (ka teie brauser hoiatab selle eest)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was made for other site names than the one in the address
+#, machine
+	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	saidi turvasertifikaat on mõeldud teise saidinime jaoks, nii et MDM ei saa olla kindel, et see on õige sait (ka teie brauser hoiatab selle eest)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
+#, machine
+	the site's security certificate isn't trusted (it's self-signed or from an unknown issuer), so MDM can't be sure it's the real site (your browser warns about it too)	saidi turvasertifikaati ei usaldata (see on iseallkirjastatud või tundmatult väljastajalt), nii et MDM ei saa olla kindel, et see on õige sait (ka teie brauser hoiatab selle eest)
+#. text in errors.rs
+#. why a download failed: the site's security certificate's validity hasn't begun; usually this computer's date or time is wrong
+#, machine
+	the site's security certificate isn't valid yet: check this computer's date and time	saidi turvasertifikaat pole veel kehtiv: kontrolli selle arvuti kuupäeva ja kellaaega
+#. text in errors.rs
+#. why a download failed: the site's security certificate was refused for another reason (a bad signature, a broken certificate)
+#, machine
+	the site's security certificate was refused, so MDM can't be sure it's the real site	saidi turvasertifikaadist keelduti muul põhjusel, nii et MDM ei saa olla kindel, et see on õige sait
+#. text in errors.rs
+#. why a download failed: the issuer of the site's security certificate took it back
+#, machine
+	the site's security certificate was revoked by its issuer, so MDM won't trust it	saidi turvasertifikaat tühistati selle väljastaja poolt, nii et MDM seda ei usalda
 #. text in the Download video window
 #. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Saidi sertifikaati ei usalda ei yt-dlp ega see arvuti: viirusetõrje veebifilter või HTTPS-i lugev puhverserver võib takistada. Lülita selle HTTPS-skannimine välja või lisa selle sertifikaat arvutisse, seejärel otsi leht uuesti üles.
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	saidi turvasertifikaat pole veebisaitide jaoks loodud, seega ei saa MDM olla kindel, et see on õige sait
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -5464,6 +5503,9 @@
 #. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
 #, machine
 	When	Millal
+#. text in the Options window
+#, machine
+	When it is off, downloads go on in the main window's list. Double-click one there to see its progress.	Kui see on välja lülitatud, jätkuvad allalaadimised peaakna loendis. Topeltklõpsa seal ühel, et näha selle edenemist.
 #. text in the Batch download window
 #, machine
 	Wildcard size	Metamärgi suurus
@@ -6144,6 +6186,10 @@ extension	Help	Abi
 #, machine
 extension	Hide on this video	Peida ainult selle video puhul
 #. text in the browser extension
+#. Option in the toolbar button's popup: while a web page is in full screen, the Download video button over its videos stays hidden
+#, machine
+extension	Hide the download button in full screen	Peida allalaadimisnupp täisekraanil
+#. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
 extension	Hold Alt while clicking a link to let the browser download it.	Hoia all Alt-klahvi ja klõpsa lingil, et brauser selle alla laadiks.
@@ -6159,6 +6205,10 @@ extension	It didn't work. Try again.	See ei töötanud. Proovige uuesti.
 #. pairing failed: the other MDM shows no pairing code; Pair a device is its button
 #, machine
 extension	It shows no code now: click Pair a device there first.	See ei näita praegu koodi: klõpsake seal esmalt nuppu Seo seade.
+#. text in the browser extension
+#. why a download stayed with the browser: it is a .torrent file and the app's Torrent settings don't open torrents with Mister Download Manager, so the browser keeps it for the user's own torrent program; keep the setting's name as the app shows it
+#, machine
+extension	It's a torrent, and Open magnet links and .torrent files with Mister Download Manager is off in Torrent settings.	See on torrent ja „Ava magnetlingid ja .torrent-failid programmiga Mister Download Manager” on torrenti sätetes välja lülitatud.
 #. text in the browser extension
 #. why a download stayed with the browser: the file is smaller than the app's minimum size setting
 #, machine
@@ -6389,6 +6439,10 @@ extension	This page's player streams its video in pieces, so there's no file to 
 #, machine
 extension	Turn on	Lülita sisse
 #. text in the browser extension
+#. link beside "Downloads from <site> stay with the browser" in the toolbar button's popup: take the site off the excluded sites again
+#, machine
+extension	Undo	Võta tagasi
+#. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	Värskendage rakendust Mister Download Manager, et kasutada kõiki laienduse võimalusi
@@ -6404,6 +6458,10 @@ extension	Video	Video
 #. pairing failed: codes tried too fast
 #, machine
 extension	Wait a moment, then try again.	Oodake hetk, seejärel proovige uuesti.
+#. text in the browser extension
+#. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
+#, machine
+extension	While the page is in full screen, its videos show no Download video button	Kui leht on täisekraanil, ei kuvata selle videote kohal nuppu „Laadi video alla”
 #. text in the browser extension
 #. pairing failed: the code was wrong
 #, machine

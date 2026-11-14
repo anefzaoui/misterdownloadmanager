@@ -567,6 +567,40 @@ These ship in the next version.
   registration that leads nowhere at each start, never one that works, and Test browser
   integration says which copy is gone
   ([#818](https://github.com/anefzaoui/misterdownloadmanager/issues/818))
+- ✅ A page that says which video it is about (its JSON-LD, `og:video` or `twitter:player`) gets
+  that video from Add URL, Download video and the command line, not the first player written in
+  its HTML (a hidden welcome video)
+  ([#1076](https://github.com/anefzaoui/misterdownloadmanager/issues/1076))
+- ✅ The browser extension's popup has **Hide the download button in full screen**, off as installed: a page in full screen shows no **Download video** button, for watching without it in the way ([#670](https://github.com/anefzaoui/misterdownloadmanager/issues/670))
+- ✅ Windows: MDM listed in Settings → Default apps for MAGNET and .torrent, and Torrent
+  settings' switch says when another app chosen there still opens them, and opens that page
+  ([#1091](https://github.com/anefzaoui/misterdownloadmanager/issues/1091))
+- ✅ A .torrent downloaded in the browser stays with the browser (and your own torrent program)
+  while Torrent settings' **Open magnet links and .torrent files with Mister Download Manager**
+  is off ([#1058](https://github.com/anefzaoui/misterdownloadmanager/issues/1058))
+- ✅ A video in a player embedded from another site (Vimeo's on a film site) is named after the
+  page's title, without the site's name, instead of the player's own title
+- ✅ No freeze of the window in Link grabber with thousands of links (a big page's links): each
+  link's category is worked out once, and a frame goes over the links once, however many
+  packages they make ([#1063](https://github.com/anefzaoui/misterdownloadmanager/issues/1063))
+- ✅ **Refresh download address** opens the page the download was started from, not the site's
+  home page ([#607](https://github.com/anefzaoui/misterdownloadmanager/issues/607))
+- ✅ A video's look-up no longer waits 20 s on a server the network drops: 5 s, and once more
+  with yt-dlp's own wait only when the look-up failed for a slow server
+  ([#1053](https://github.com/anefzaoui/misterdownloadmanager/issues/1053))
+- ✅ MediaFire: a download resumed after its address expired asks the file's MediaFire page for a
+  fresh one and goes on; a MediaFire file page's link downloads the file
+  ([#952](https://github.com/anefzaoui/misterdownloadmanager/issues/952))
+- ✅ Chromium browsers: a video (or a PDF, an MP3) the browser would play, taken by MDM, keeps
+  the name its server gives it instead of its address's (`main.mkv`)
+  ([#948](https://github.com/anefzaoui/misterdownloadmanager/issues/948))
+- ✅ A download refused for its site's security certificate says why (expired, not trusted, for
+  another name) instead of a bare **Error** (follows [#762](https://github.com/anefzaoui/misterdownloadmanager/issues/762))
+- ✅ **Options → Downloads → Customize "Download progress" dialog → Edit...** works: it can turn
+  off the progress window that opens when a download starts; the button was greyed and did
+  nothing ([#1041](https://github.com/anefzaoui/misterdownloadmanager/issues/1041))
+- ✅ The browser popup's **Never take downloads from <site>** says it worked, with **Undo**
+  ([#404](https://github.com/anefzaoui/misterdownloadmanager/issues/404))
 - ✅ A download to a disk slower than the network no longer stands still for a second or more
   just after it starts (a second save of its progress came too soon after the first); a server
   whose name the DNS doesn't answer in time says it couldn't be found, not that it didn't answer.
@@ -586,6 +620,10 @@ These ship in the next version.
 - ✅ Windows with Direct3D 12: the progress window no longer flashes a stretched picture when
   Show details or Hide details changes its size
   ([#471](https://github.com/anefzaoui/misterdownloadmanager/issues/471))
+- ✅ Videos looked up about a second sooner on Windows (yt-dlp's folder build, which doesn't unpack
+  itself at every start), and the video button's look-up starts once the pointer rests on it;
+  in a private window only on the click (for
+  [#1053](https://github.com/anefzaoui/misterdownloadmanager/issues/1053))
 - ✅ Extracting archives: the size limit covers every entry, also the ones left out, and
   cancelling stops there too
   (part of [#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37))
@@ -605,6 +643,8 @@ These ship in the next version.
 - ✅ The progress window shows no scroll bars over content that fits at an interface size above
   100 % (125 %), where the window's client comes back a pixel short of its content
   ([#672](https://github.com/anefzaoui/misterdownloadmanager/issues/672))
+- ✅ Less memory during fast downloads to a slower disk: what waits for the disk stays within its
+  256 MB as allocated (a 4 GB download: 967 MB in 0.5.2, 523 MB now with the window open)
 - ✅ Windows and macOS: **Options → General → Shortcut to show or hide window**: a global
   shortcut of two or three keys that shows or hides MDM's window from any program
   ([#558](https://github.com/anefzaoui/misterdownloadmanager/issues/558))
@@ -1043,6 +1083,12 @@ These ship in the next version.
 - ✅ Linux on Wayland (XWayland) with NVIDIA's driver: typing and clicking no longer lag by 1 to 2
   seconds; MDM spaces its frames itself instead of waiting for the screen's refresh (other drivers
   keep the refresh)
+- ✅ The computer stays awake while anything downloads, not only during a queue that woke it, and
+  sleeps as its settings say once the downloads are done
+  ([#939](https://github.com/anefzaoui/misterdownloadmanager/issues/939))
+- ✅ macOS: a menu whose item opens a file dialog (View → Theme → Add a theme file, Tasks → Open
+  torrent file) closes first, instead of floating on top of every window until MDM quits
+  ([#615](https://github.com/anefzaoui/misterdownloadmanager/issues/615))
 - ✅ Download video works behind an antivirus or a proxy that reads HTTPS: yt-dlp is asked again
   with the system's certificates when it refuses a site's
   ([#955](https://github.com/anefzaoui/misterdownloadmanager/issues/955))
@@ -1066,6 +1112,8 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔍 A look-up that waits 20 s on a video server the network doesn't answer
+  ([#1053](https://github.com/anefzaoui/misterdownloadmanager/issues/1053))
 - 🔍 The main window's own looks at the disk on a drive slow to answer: starting or resuming a
   download that was already under way, a rename or move when one finishes, and links added
   without Download File Info still wait for it (follows

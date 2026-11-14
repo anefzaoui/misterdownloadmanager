@@ -1357,6 +1357,10 @@
 #. window title: the download button the extension shows over videos
 #, machine
 	Download panels	Panneaux de téléchargement
+#. window title in the Options window
+#. window title: Options → Downloads → Edit... (the progress window's settings)
+#, machine
+	Download progress dialog	Boîte de dialogue de progression du téléchargement
 #. text in rssdlg.rs
 #. RSS feeds window: the tab of the rules that add articles by themselves
 #, machine
@@ -2752,6 +2756,10 @@
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager a rencontré une erreur interne
 #. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake (Windows' power requests, Linux's inhibitors)
+#, machine
+	Mister Download Manager is downloading	Mister Download Manager télécharge
+#. text in wake.rs
 #. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -4021,6 +4029,9 @@
 #. checkbox in the Options window; checkbox in a download's progress window
 #, machine
 	Show download complete dialog	Afficher la boîte de dialogue Téléchargement terminé
+#. checkbox in the Options window
+#, machine
+	Show download progress dialog when a download starts	Afficher la boîte de dialogue de progression du téléchargement au démarrage d’un téléchargement
 #. button in a dialog box
 #. button: shows these downloads in MDM's list, selected
 #, machine
@@ -4743,10 +4754,38 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Le contrôle anti-bot du site (Cloudflare) a refusé yt-dlp. Si la page s’ouvre dans votre navigateur, choisissez ce navigateur dans Options → Connexions aux sites → Cookies pour les sites vidéo et recherchez à nouveau la page, ou utilisez le bouton Télécharger la vidéo au-dessus de la vidéo.
+#. text in errors.rs
+#. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
+#, machine
+	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	le certificat de sécurité du site a expiré, MDM ne peut donc pas être sûr qu’il s’agit du vrai site (votre navigateur vous avertit également)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was made for other site names than the one in the address
+#, machine
+	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	le certificat de sécurité du site est destiné à un autre nom de site que celui de l’adresse, MDM ne peut donc pas être sûr qu’il s’agit du vrai site (votre navigateur vous avertit également)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
+#, machine
+	the site's security certificate isn't trusted (it's self-signed or from an unknown issuer), so MDM can't be sure it's the real site (your browser warns about it too)	le certificat de sécurité du site n’est pas fiable (il est auto-signé ou provient d’un émetteur inconnu), MDM ne peut donc pas être sûr qu’il s’agit du vrai site (votre navigateur vous avertit également)
+#. text in errors.rs
+#. why a download failed: the site's security certificate's validity hasn't begun; usually this computer's date or time is wrong
+#, machine
+	the site's security certificate isn't valid yet: check this computer's date and time	le certificat de sécurité du site n’est pas encore valide : vérifiez la date et l’heure de cet ordinateur
+#. text in errors.rs
+#. why a download failed: the site's security certificate was refused for another reason (a bad signature, a broken certificate)
+#, machine
+	the site's security certificate was refused, so MDM can't be sure it's the real site	le certificat de sécurité du site a été refusé, MDM ne peut donc pas être sûr qu’il s’agit du vrai site
+#. text in errors.rs
+#. why a download failed: the issuer of the site's security certificate took it back
+#, machine
+	the site's security certificate was revoked by its issuer, so MDM won't trust it	le certificat de sécurité du site a été révoqué par son émetteur, MDM ne lui fera donc pas confiance
 #. text in the Download video window
 #. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Le certificat du site n’est pas approuvé, ni par yt-dlp ni par cet ordinateur : le filtre web d’un antivirus ou un proxy qui lit le HTTPS peut être en cause. Désactivez son analyse HTTPS, ou ajoutez son certificat à l’ordinateur, puis recherchez à nouveau la page.
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	le certificat de sécurité du site n’est pas conçu pour les sites web, donc MDM ne peut pas être sûr qu’il s’agit du vrai site
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -5464,6 +5503,9 @@
 #. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
 #, machine
 	When	Quand
+#. text in the Options window
+#, machine
+	When it is off, downloads go on in the main window's list. Double-click one there to see its progress.	Lorsqu’elle est désactivée, les téléchargements se poursuivent dans la liste de la fenêtre principale. Double-cliquez sur l’un d’eux pour voir sa progression.
 #. text in the Batch download window
 #, machine
 	Wildcard size	Taille du caractère générique
@@ -6144,6 +6186,10 @@ extension	Help	Aide
 #, machine
 extension	Hide on this video	Masquer sur cette vidéo
 #. text in the browser extension
+#. Option in the toolbar button's popup: while a web page is in full screen, the Download video button over its videos stays hidden
+#, machine
+extension	Hide the download button in full screen	Masquer le bouton de téléchargement en plein écran
+#. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
 extension	Hold Alt while clicking a link to let the browser download it.	Maintenez la touche Alt enfoncée en cliquant sur un lien pour laisser le navigateur le télécharger.
@@ -6159,6 +6205,10 @@ extension	It didn't work. Try again.	Échec. Réessayez.
 #. pairing failed: the other MDM shows no pairing code; Pair a device is its button
 #, machine
 extension	It shows no code now: click Pair a device there first.	Il n’affiche aucun code pour l’instant : cliquez d’abord sur Jumeler un appareil.
+#. text in the browser extension
+#. why a download stayed with the browser: it is a .torrent file and the app's Torrent settings don't open torrents with Mister Download Manager, so the browser keeps it for the user's own torrent program; keep the setting's name as the app shows it
+#, machine
+extension	It's a torrent, and Open magnet links and .torrent files with Mister Download Manager is off in Torrent settings.	C’est un torrent, et « Ouvrir les liens magnet et les fichiers .torrent avec Mister Download Manager » est désactivé dans les paramètres Torrent.
 #. text in the browser extension
 #. why a download stayed with the browser: the file is smaller than the app's minimum size setting
 #, machine
@@ -6389,6 +6439,10 @@ extension	This page's player streams its video in pieces, so there's no file to 
 #, machine
 extension	Turn on	Activer
 #. text in the browser extension
+#. link beside "Downloads from <site> stay with the browser" in the toolbar button's popup: take the site off the excluded sites again
+#, machine
+extension	Undo	Annuler
+#. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	Mettez à jour Mister Download Manager pour utiliser toutes les fonctionnalités de cette extension
@@ -6404,6 +6458,10 @@ extension	Video	Vidéo
 #. pairing failed: codes tried too fast
 #, machine
 extension	Wait a moment, then try again.	Attendez un instant, puis réessayez.
+#. text in the browser extension
+#. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
+#, machine
+extension	While the page is in full screen, its videos show no Download video button	Lorsque la page est en plein écran, ses vidéos n’affichent pas de bouton Télécharger la vidéo
 #. text in the browser extension
 #. pairing failed: the code was wrong
 #, machine

@@ -1357,6 +1357,10 @@
 #. window title: the download button the extension shows over videos
 #, machine
 	Download panels	Aflaai-panele
+#. window title in the Options window
+#. window title: Options → Downloads → Edit... (the progress window's settings)
+#, machine
+	Download progress dialog	Aflaai-vorderingsdialoog
 #. text in rssdlg.rs
 #. RSS feeds window: the tab of the rules that add articles by themselves
 #, machine
@@ -2752,6 +2756,10 @@
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager het 'n interne fout opgedoen
 #. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake (Windows' power requests, Linux's inhibitors)
+#, machine
+	Mister Download Manager is downloading	Mister Download Manager laai af
+#. text in wake.rs
 #. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -4021,6 +4029,9 @@
 #. checkbox in the Options window; checkbox in a download's progress window
 #, machine
 	Show download complete dialog	Wys aflaai voltooi-dialoog
+#. checkbox in the Options window
+#, machine
+	Show download progress dialog when a download starts	Wys aflaai-vorderingsdialoog wanneer ’n aflaai begin
 #. button in a dialog box
 #. button: shows these downloads in MDM's list, selected
 #, machine
@@ -4743,10 +4754,38 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Die werf se botkontrole (Cloudflare) het yt-dlp geweier. As die bladsy in jou blaaier oopmaak, kies daardie blaaier in Opsies → Werf-aanmeldings → Koekies vir videowerwe en soek die bladsy weer op, of gebruik die Aflaai video-knoppie oor die video.
+#. text in errors.rs
+#. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
+#, machine
+	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	die webwerf se sekuriteitsertifikaat het verval, daarom kan MDM nie seker wees dat dit die regte webwerf is nie (jou blaaier waarsku ook daaroor)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was made for other site names than the one in the address
+#, machine
+	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	die webwerf se sekuriteitsertifikaat is vir ’n ander webwerfnaam, daarom kan MDM nie seker wees dat dit die regte webwerf is nie (jou blaaier waarsku ook daaroor)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
+#, machine
+	the site's security certificate isn't trusted (it's self-signed or from an unknown issuer), so MDM can't be sure it's the real site (your browser warns about it too)	die webwerf se sekuriteitsertifikaat word nie vertrou nie (dit is selfonderteken of van ’n onbekende uitreiker), daarom kan MDM nie seker wees dat dit die regte webwerf is nie (jou blaaier waarsku ook daaroor)
+#. text in errors.rs
+#. why a download failed: the site's security certificate's validity hasn't begun; usually this computer's date or time is wrong
+#, machine
+	the site's security certificate isn't valid yet: check this computer's date and time	die webwerf se sekuriteitsertifikaat is nog nie geldig nie: kontroleer hierdie rekenaar se datum en tyd
+#. text in errors.rs
+#. why a download failed: the site's security certificate was refused for another reason (a bad signature, a broken certificate)
+#, machine
+	the site's security certificate was refused, so MDM can't be sure it's the real site	die webwerf se sekuriteitsertifikaat is geweier, daarom kan MDM nie seker wees dat dit die regte webwerf is nie
+#. text in errors.rs
+#. why a download failed: the issuer of the site's security certificate took it back
+#, machine
+	the site's security certificate was revoked by its issuer, so MDM won't trust it	die webwerf se sekuriteitsertifikaat is deur sy uitreiker herroep, daarom sal MDM dit nie vertrou nie
 #. text in the Download video window
 #. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Die werf se sertifikaat word nie deur yt-dlp of deur hierdie rekenaar vertrou nie: ’n antivirus se webfilter of ’n instaanbediener wat HTTPS lees, kan in die pad wees. Skakel die HTTPS-skandering af, of voeg die sertifikaat by die rekenaar s’n, soek dan die bladsy weer op.
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	die webwerf se sekuriteitsertifikaat is nie vir webwerwe bedoel nie, so MDM kan nie seker wees dat dit die regte webwerf is nie
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -5464,6 +5503,9 @@
 #. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
 #, machine
 	When	Wanneer
+#. text in the Options window
+#, machine
+	When it is off, downloads go on in the main window's list. Double-click one there to see its progress.	Wanneer dit afgeskakel is, gaan aflaaie voort in die hoofvenster se lys. Dubbelklik op een daar om die vordering daarvan te sien.
 #. text in the Batch download window
 #, machine
 	Wildcard size	Wildcard-grootte
@@ -6144,6 +6186,10 @@ extension	Help	Hulp
 #, machine
 extension	Hide on this video	Versteek op hierdie video
 #. text in the browser extension
+#. Option in the toolbar button's popup: while a web page is in full screen, the Download video button over its videos stays hidden
+#, machine
+extension	Hide the download button in full screen	Versteek die aflaai-knoppie in volskerm
+#. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
 extension	Hold Alt while clicking a link to let the browser download it.	Hou Alt in terwyl jy op 'n skakel klik om die blaaier dit te laat aflaai.
@@ -6159,6 +6205,10 @@ extension	It didn't work. Try again.	Dit het nie gewerk nie. Probeer weer.
 #. pairing failed: the other MDM shows no pairing code; Pair a device is its button
 #, machine
 extension	It shows no code now: click Pair a device there first.	Dit wys nou geen kode nie: klik eers Koppel 'n toestel daar.
+#. text in the browser extension
+#. why a download stayed with the browser: it is a .torrent file and the app's Torrent settings don't open torrents with Mister Download Manager, so the browser keeps it for the user's own torrent program; keep the setting's name as the app shows it
+#, machine
+extension	It's a torrent, and Open magnet links and .torrent files with Mister Download Manager is off in Torrent settings.	Dit is ’n torrent, en Maak magneetskakels en .torrent-lêers oop met Mister Download Manager is afgeskakel in Torrent-instellings.
 #. text in the browser extension
 #. why a download stayed with the browser: the file is smaller than the app's minimum size setting
 #, machine
@@ -6389,6 +6439,10 @@ extension	This page's player streams its video in pieces, so there's no file to 
 #, machine
 extension	Turn on	Skakel aan
 #. text in the browser extension
+#. link beside "Downloads from <site> stay with the browser" in the toolbar button's popup: take the site off the excluded sites again
+#, machine
+extension	Undo	Ontdoen
+#. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	Dateer Mister Download Manager op om alles te gebruik wat hierdie uitbreiding bied
@@ -6404,6 +6458,10 @@ extension	Video	Video
 #. pairing failed: codes tried too fast
 #, machine
 extension	Wait a moment, then try again.	Wag 'n oomblik, probeer dan weer.
+#. text in the browser extension
+#. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
+#, machine
+extension	While the page is in full screen, its videos show no Download video button	Terwyl die bladsy in volskerm is, wys sy video’s geen Aflaai video-knoppie nie
 #. text in the browser extension
 #. pairing failed: the code was wrong
 #, machine

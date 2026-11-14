@@ -622,6 +622,22 @@ pub fn set_torrent_handlers(on: bool) {
     ]));
 }
 
+/// `win32::torrent_handler_is_ours`: is MDM what the desktop opens .torrent files with? Linux:
+/// xdg-mime's default app for them is the packages' desktop entry; macOS: Launch Services'
+/// default for the type is this app (`open_events::is_default`). Asked once, to settle Torrent
+/// settings' switch (#1058).
+pub fn torrent_handler_is_ours() -> bool {
+    #[cfg(target_os = "macos")]
+    return open_events::is_default();
+    #[cfg(not(target_os = "macos"))]
+    Command::new("xdg-mime")
+        .args(["query", "default", "application/x-bittorrent"])
+        .stdin(Stdio::null())
+        .stderr(Stdio::null())
+        .output()
+        .is_ok_and(|o| String::from_utf8_lossy(&o.stdout).trim() == "misterdownloadmanager.desktop")
+}
+
 /// `win32::assistive_technology_listening`: Linux's AT-SPI adapter answers a screen reader with
 /// the first tree a frame produces (no placeholder to replace), and macOS has no such cheap
 /// question; there, as on Windows, a window's tree is ready at once for any window read after
@@ -2172,6 +2188,25 @@ pub mod open_events {
             role: u32,
             bundle_id: *const c_void,
         ) -> i32;
+        fn LSCopyDefaultRoleHandlerForContentType(
+            content_type: *const c_void,
+            role: u32,
+        ) -> *mut c_void;
+    }
+
+    /// Is this app Launch Services' default for .torrent files (`unix::torrent_handler_is_ours`)?
+    pub fn is_default() -> bool {
+        let torrent = NSString::from_str(TORRENT_TYPE);
+        // kLSRolesAll, as `make_default` sets it.
+        const ALL_ROLES: u32 = 0xFFFF_FFFF;
+        // SAFETY: NSString is toll-free bridged to CFString. A Copy function's result is ours to
+        // release, which Retained does; null (no default) is None.
+        let handler = unsafe {
+            Retained::from_raw(
+                LSCopyDefaultRoleHandlerForContentType(cf(&torrent), ALL_ROLES).cast::<NSString>(),
+            )
+        };
+        handler.is_some_and(|h| h.to_string().eq_ignore_ascii_case(BUNDLE_ID))
     }
 
     /// MDM the default app for magnet links and .torrent files (Torrent settings' switch). A
@@ -4015,11 +4050,14 @@ pub fn wake_at(at: Option<i64>) -> Result<(), String> {
 }
 
 /// Keep the computer from sleeping while `reason` is given; None lets it sleep again as the
-/// system's settings say. Linux: logind's sleep and idle inhibitor, held by its file
-/// descriptor (`systemd-inhibit --list` shows it with its reason); a user in the active
-/// session may take it without a password. False when logind refused, or didn't answer within
-/// 25 s. Called on wake::Holder's thread, never the window's: logind can be slow right after a
-/// resume.
+/// system's settings say. Linux: logind's sleep inhibitor, held by its file descriptor
+/// (`systemd-inhibit --list` shows it with its reason); a user in the active session may take it
+/// without a password. It stops the desktop's automatic suspend (GNOME, KDE) and logind's own
+/// idle action, which go through logind's suspend; not the screen's dimming, turning off and
+/// locking, as Windows' power request and `caffeinate -i` don't either. (An `idle` inhibitor
+/// too would keep KDE's screen on for as long as downloads run, #939.) False when logind refused,
+/// or didn't answer within 25 s. Called on wake::Holder's thread, never the window's: logind can
+/// be slow right after a resume.
 #[cfg(target_os = "linux")]
 pub fn keep_awake(reason: Option<&str>) -> bool {
     use std::sync::Mutex;
@@ -4042,7 +4080,7 @@ pub fn keep_awake(reason: Option<&str>) -> bool {
         )?;
         logind.call(
             "Inhibit",
-            &("sleep:idle", "Mister Download Manager", reason, "block"),
+            &("sleep", "Mister Download Manager", reason, "block"),
         )
     };
     match take() {
@@ -4051,7 +4089,15 @@ pub fn keep_awake(reason: Option<&str>) -> bool {
             true
         }
         Err(e) => {
-            tracing::warn!("wake: logind's inhibitor refused ({e})");
+            // Once per refusal of its own: a system without logind (a container, #157) refuses
+            // every time downloads run, asked again once a minute.
+            static LAST: Mutex<String> = Mutex::new(String::new());
+            let why = e.to_string();
+            let mut last = LAST.lock().unwrap_or_else(|p| p.into_inner());
+            if *last != why {
+                tracing::warn!("wake: logind's inhibitor refused ({why})");
+                *last = why;
+            }
             false
         }
     }
