@@ -42,6 +42,7 @@ See [Browser integration](browser-integration.md).
 - **Default download directory for "…" category** — the category's folder. Type a path or click **Browse**.
 - **Change folder for "…" category on last selected** — when you pick another folder in **Download File Info**, it becomes the category's folder from then on. On by default. (It sets the first state of **Remember this path** in that window.)
 - **Set file creation date as provided by the server** — give finished files the date the server reports, not the date you downloaded them.
+- **Mark downloaded files as coming from the internet** — on by default. Every file MDM downloads (from the browser, a link you add, a video, a gallery, a torrent, and the files extracted from an archive) carries the mark a browser's downloads carry. On Windows that is the Mark of the Web: SmartScreen checks a program before it first runs, and Office opens a document in Protected View. On a Mac it is the quarantine attribute Gatekeeper checks; on Linux, where the file came from, which file managers show. Unticked, no download is marked. On Windows, MDM also follows the Group Policy **Do not preserve zone information in file attachments**, as browsers do: when it is on (for the computer or for you), no download is marked, whatever this box says.
 
 MDM doesn't use a temporary folder: every connection writes straight into the final file's place, so there is nothing to put together at the end.
 
@@ -57,7 +58,7 @@ MDM doesn't use a temporary folder: every connection writes straight into the fi
 - **Show queue selection panel on closing batch download dialogs** — the same for batch downloads.
 - **Ignore file modification time changes when resuming a download** — for servers that report a new date for the same file each time. Without it, such a server makes every resume start over.
 - **If a duplicate download link is added** — ask, add it with a numbered name, overwrite the old one, or open the finished one / resume the unfinished one.
-- **User-Agent for manually added downloads** — how MDM names itself to servers for downloads you add yourself. Downloads from the browser use the browser's own User-Agent.
+- **User-Agent for manually added downloads** — how MDM names itself to servers for downloads you add yourself. With **Automatic** ticked (the default), MDM introduces itself as your default browser: the User-Agent that browser sends, at the version you have installed (Chrome, Edge, Brave, Opera, Vivaldi, Firefox or Safari). The box shows it, and pointing at it names the browser. When MDM doesn't recognise your default browser, it sends a current Chrome's. Untick **Automatic** to type your own; tick it again to go back. Downloads from the browser use that browser's own User-Agent. If a site turns a browser's User-Agent away, MDM asks once more with its own.
 
 ## Connection
 
@@ -121,7 +122,7 @@ The passwords (these, the proxy's and the debrid accounts') are kept in the syst
 ![Options on its Accounts page: debrid service accounts](images/help/options-accounts.webp)
 *Accounts: your debrid accounts.*
 
-Your debrid service accounts (Real-Debrid, AllDebrid, Premiumize; experimental): **Add...** signs in by code in the browser or with your API token or key; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See [Debrid service accounts](debrid.md).
+Your debrid service accounts (Real-Debrid, AllDebrid, Premiumize, TorBox; experimental): **Add...** signs in by code in the browser or with your API token or key; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See [Debrid service accounts](debrid.md).
 
 ## Sounds
 

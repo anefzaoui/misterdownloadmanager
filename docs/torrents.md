@@ -109,11 +109,15 @@ Choose **Tasks → Torrent settings...** (or the arrow next to **Add Torrent**):
 
   A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again.
 - **Limit uploading for all torrents to** — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.
-- **Open magnet links and .torrent files with Mister Download Manager** — Windows then opens magnet links in your browser and `.torrent` files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' **Open with** stays first. The setup can turn it on for you.
+- **Open magnet links and .torrent files with Mister Download Manager** — Windows then opens magnet links in your browser and `.torrent` files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' **Open with** stays first. The setup can turn it on for you. On Linux it makes MDM your desktop's default app for them; on macOS, their default app (Finder offers MDM in **Open With** for `.torrent` files either way, and a double-click opens them in MDM when no other app is their default).
 
 The same window has the network switches (incoming connections, the port, UPnP, the DHT, a SOCKS5 proxy) and the blocklist: see [Torrents and your security](torrent-security.md).
 
 MDM starts its torrent engine the first time you add a torrent. If you never use torrents, it never listens for peers.
+
+To find peers without trackers, MDM joins the DHT through four public routers (`dht.libtorrent.org`, `dht.transmissionbt.com`, `router.bittorrent.com` and `router.utorrent.com`); any one that answers is enough. It keeps the DHT nodes it found for the next start, so later starts don't depend on those routers.
+
+MDM's log (`logs\mdm.log` in [MDM's data folder](crash-reports.md#where-reports-are-kept)) says where it listens, for example `torrents: listening for peers on TCP port 51413 (every address, IPv4 and IPv6: [::]:51413)`. That is one socket for IPv4 and IPv6, so on Windows `netstat -ano -p tcp` (IPv4 only) doesn't list it; `netstat -ano` or `Get-NetTCPConnection -State Listen` does, under `[::]` or `::`.
 
 On a Linux system without CA certificates (a minimal install without the `ca-certificates` package), torrents still work: peers, the DHT and `http://` trackers. An `https://` tracker can't be checked there, so MDM skips it; install that package to use those too.
 
