@@ -562,6 +562,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The browser popup's **Never take downloads from <site>** says it worked, with **Undo**
+  ([#404](https://github.com/anefzaoui/misterdownloadmanager/issues/404))
 - ✅ The sites in **Don't start downloading automatically from the following sites** take their
   subdomains and the files their pages link to on another server (a CDN), as the Download panels'
   list does

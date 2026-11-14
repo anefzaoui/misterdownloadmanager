@@ -145,7 +145,8 @@ function fakeApi({
         // for an address it can't download (`noticeReply`).
         if (m.declined) return noticeReply || { ok: true };
         if (lookup && (m.videoLookup || m.videoPoll || m.videoPick)) return lookup(m);
-        return reply;
+        // A function: the app's answer to this message (it may change its rules, as the app would).
+        return typeof reply === "function" ? reply(m) : reply;
       },
       getManifest: () => ({
         version: "0.2.5",
@@ -591,6 +592,47 @@ const ok = (what) => {
   await send({ type: "exclude-site", host: "files.test" });
   assert.ok(natives(calls).some((m) => m.excludeSite === "files.test"));
   ok("the popup: state, pause, never this site");
+}
+
+// #404: "Never take downloads from <site>" says it worked, and its Undo takes the site off the
+// excluded sites again; the popup opened later on that site knows it is excluded. A site excluded
+// by a pattern of Options' own is said excluded, without Undo (the app would keep the pattern).
+{
+  const rules = { excludedSites: "*.update.microsoft.com" };
+  // As the app: the host name added (once), or taken off by its own name only.
+  const reply = (m) => {
+    const sites = rules.excludedSites.split(/\s+/).filter(Boolean);
+    if (m.excludeSite && !sites.includes(m.excludeSite)) rules.excludedSites = [...sites, m.excludeSite].join(" ");
+    if (m.includeSite) rules.excludedSites = sites.filter((p) => p.toLowerCase() !== m.includeSite.toLowerCase()).join(" ");
+    return { ok: true };
+  };
+  const { api, calls, listeners } = fakeApi({ firefox: false, rules, reply });
+  load(api, false);
+  const send = (m) => new Promise((r) => listeners.message(m, { id: "ours" }, (v) => r(JSON.parse(JSON.stringify(v)))));
+  await settle();
+  assert.deepEqual(await send({ type: "site-excluded", host: "files.test" }), { excluded: false, undo: false });
+  assert.deepEqual(await send({ type: "exclude-site", host: "files.test" }), { ok: true });
+  assert.deepEqual(await send({ type: "site-excluded", host: "files.test" }), { excluded: true, undo: true });
+  // Its downloads stay with the browser now.
+  let suggested = false;
+  listeners.determining({ id: 61, url: "https://files.test/a.zip", filename: "a.zip" }, () => (suggested = true));
+  await settle();
+  assert.ok(suggested && !natives(calls).some((m) => m.url === "https://files.test/a.zip"), "excluded: left to the browser");
+  // Undo: the host goes to the app, the site's downloads come back.
+  assert.deepEqual(await send({ type: "include-site", host: "files.test" }), { ok: true });
+  assert.ok(natives(calls).some((m) => m.includeSite === "files.test"));
+  assert.deepEqual(await send({ type: "site-excluded", host: "files.test" }), { excluded: false, undo: false });
+  listeners.determining({ id: 62, url: "https://files.test/b.zip", filename: "b.zip" }, () => {});
+  await settle();
+  assert.ok(natives(calls).some((m) => m.url === "https://files.test/b.zip"), "taken again after Undo");
+  // Excluded by Options' own pattern: said so, no Undo.
+  assert.deepEqual(await send({ type: "site-excluded", host: "dl.update.microsoft.com" }), { excluded: true, undo: false });
+  // An app that can't take it back (an older one): Undo says it didn't work.
+  const old = fakeApi({ firefox: false, reply: (m) => (m.includeSite ? { ok: false, why: "refused" } : { ok: true }) });
+  load(old.api, false);
+  const ask = (m) => new Promise((r) => old.listeners.message(m, { id: "ours" }, (v) => r(JSON.parse(JSON.stringify(v)))));
+  assert.deepEqual(await ask({ type: "include-site", host: "files.test" }), { ok: false });
+  ok("#404 the popup: never this site, said, and its Undo");
 }
 
 // An app older than the extension: still connected, with a nudge to update it.
