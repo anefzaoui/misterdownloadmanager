@@ -68,6 +68,16 @@ pub enum Origin {
     Site(String),
 }
 
+/// An [`Origin`] as a hash key, as [`Origin::key`] makes it.
+#[derive(PartialEq, Eq, Hash)]
+enum OriginKey {
+    Volumes { host: String, base: String },
+    Page(String),
+    Various,
+    Known,
+    Site(String),
+}
+
 impl Origin {
     /// Where the link `url` named `name` (found on page `referer`) belongs.
     pub fn of(url: &Url, name: &str, referer: Option<&str>) -> Origin {
@@ -84,13 +94,19 @@ impl Origin {
         Origin::Various
     }
 
-    /// Volumes of one archive are one set whatever case their names are in.
-    fn same(&self, other: &Origin) -> bool {
-        match (self, other) {
-            (Origin::Volumes { host: a, base: x }, Origin::Volumes { host: b, base: y }) => {
-                a == b && x.to_lowercase() == y.to_lowercase()
-            }
-            _ => self == other,
+    /// It as a key: `Volumes`' base folded to lower case, volumes of one archive being one
+    /// set whatever case their names are in (#1063: a package was looked for by walking the
+    /// packages, one comparison at a time, for every link of a long list).
+    fn key(&self) -> OriginKey {
+        match self {
+            Origin::Volumes { host, base } => OriginKey::Volumes {
+                host: host.clone(),
+                base: base.to_lowercase(),
+            },
+            Origin::Page(p) => OriginKey::Page(p.clone()),
+            Origin::Various => OriginKey::Various,
+            Origin::Known => OriginKey::Known,
+            Origin::Site(name) => OriginKey::Site(name.clone()),
         }
     }
 
@@ -147,6 +163,10 @@ pub struct Link {
     page: bool,
     /// Reading it for its links (#705): asked (`Some`), and its answer once it came.
     read: Option<Read>,
+    /// Its files' category, worked out once as it arrives and again when a look-up renames it:
+    /// a torrent's are Torrents, whatever its name says (#1063: it was worked out for every
+    /// link every time the list settled, which held the window on a long list).
+    cat: Category,
 }
 
 impl Link {
@@ -166,14 +186,14 @@ impl Link {
             && self.read.is_none()
             && !self.known
     }
+}
 
-    /// Its files' category: a torrent's are Torrents, whatever its name says.
-    fn category(&self) -> Category {
-        if self.magnet {
-            Category::Torrents
-        } else {
-            Category::of(&self.name)
-        }
+/// A link's files' category: a torrent's are Torrents, whatever its name says.
+fn category_of(name: &str, magnet: bool) -> Category {
+    if magnet {
+        Category::Torrents
+    } else {
+        Category::of(name)
     }
 }
 
@@ -256,7 +276,15 @@ impl Grabber {
         // every other one, and its packages' defaults were worked out again for each (#805).
         let mut here: std::collections::HashSet<Url> =
             self.links.iter().map(|l| address_key(&l.url)).collect();
-        let mut settle = Vec::new();
+        // The packages too, each by its origin (#1063): a list of a thousand lone archives, a
+        // package each, had each walked the packages to find its own.
+        let mut pkg_of: std::collections::HashMap<OriginKey, usize> = self
+            .packages
+            .iter()
+            .enumerate()
+            .map(|(k, p)| (p.origin.key(), k))
+            .collect();
+        let mut settle: std::collections::HashSet<usize> = std::collections::HashSet::new();
         for d in found {
             let Ok(url) = Url::parse(&d.url) else {
                 continue;
@@ -278,7 +306,25 @@ impl Grabber {
             } else {
                 Origin::of(&url, &name, d.referer.as_deref())
             };
-            let pkg = self.package_for(origin);
+            let pkg = match pkg_of.entry(origin.key()) {
+                std::collections::hash_map::Entry::Occupied(e) => *e.get(),
+                std::collections::hash_map::Entry::Vacant(e) => {
+                    self.packages.push(Package {
+                        name: origin.name(),
+                        origin,
+                        folder: String::new(),
+                        folder_set: false,
+                        password: String::new(),
+                        extract: false,
+                        extract_set: false,
+                        delete: self.delete_default,
+                        open: true,
+                    });
+                    let k = self.packages.len() - 1;
+                    e.insert(k);
+                    k
+                }
+            };
             // The site's archive password, unless one is typed already.
             if let Some(pw) = d.password.as_deref().filter(|p| !p.is_empty())
                 && self.packages[pkg].password.is_empty()
@@ -298,14 +344,12 @@ impl Grabber {
                 check: None,
                 page: false,
                 read: None,
+                cat: category_of(&name, magnet),
             });
-            if !settle.contains(&pkg) {
-                settle.push(pkg);
-            }
+            settle.insert(pkg);
         }
-        for pkg in settle {
-            self.settle(pkg);
-        }
+        let settle: Vec<usize> = settle.into_iter().collect();
+        self.settle(&settle);
         if !source.is_empty() && !self.source.split(", ").any(|s| s == source) {
             self.source = if self.source.is_empty() {
                 source
@@ -355,47 +399,51 @@ impl Grabber {
         }
     }
 
-    fn package_for(&mut self, origin: Origin) -> usize {
-        if let Some(k) = self.packages.iter().position(|p| p.origin.same(&origin)) {
-            return k;
+    /// The packages `ks` after their links changed: the folder of its files' category when
+    /// they have one; else none, each file going to its own category's folder (as Import
+    /// always did); "Extract when done" when it holds an archive. The links are walked once
+    /// for them all (#1063: once for each package, a list of a thousand lone archives, a
+    /// package each, was walked a thousand times over).
+    fn settle(&mut self, ks: &[usize]) {
+        let ks: std::collections::HashSet<usize> = ks.iter().copied().collect();
+        /// What a package's links are so far: none, all of one category, or of more than one.
+        enum SoFar {
+            None,
+            One(Category),
+            Mixed,
         }
-        self.packages.push(Package {
-            name: origin.name(),
-            origin,
-            folder: String::new(),
-            folder_set: false,
-            password: String::new(),
-            extract: false,
-            extract_set: false,
-            delete: self.delete_default,
-            open: true,
-        });
-        self.packages.len() - 1
-    }
-
-    /// A package's defaults after its links changed: the folder of its files' category when
-    /// they have one; else none, each file going to its own category's folder (as Import always
-    /// did); "Extract when done" when it holds an archive.
-    fn settle(&mut self, k: usize) {
-        let links: Vec<&Link> = self.links.iter().filter(|l| l.pkg == k).collect();
-        let mut cats = links.iter().map(|l| l.category());
-        let first = cats.next().unwrap_or(Category::General);
-        let folder = if cats.all(|c| c == first) {
-            category_folder(first, &self.downloads, &self.dirs)
-                .display()
-                .to_string()
-        } else {
-            String::new()
-        };
-        let archives = links
-            .iter()
-            .any(|l| !l.magnet && crate::extractq::archive_name(&l.name));
-        let p = &mut self.packages[k];
-        if !p.folder_set {
-            p.folder = folder;
+        let mut walked: std::collections::HashMap<usize, (SoFar, bool)> =
+            ks.iter().map(|&k| (k, (SoFar::None, false))).collect();
+        for l in &self.links {
+            let Some((cats, archive)) = walked.get_mut(&l.pkg) else {
+                continue;
+            };
+            *cats = match *cats {
+                SoFar::None => SoFar::One(l.cat),
+                SoFar::One(c) if c == l.cat => SoFar::One(c),
+                SoFar::One(_) | SoFar::Mixed => SoFar::Mixed,
+            };
+            *archive |= !l.magnet && crate::extractq::archive_name(&l.name);
         }
-        if !p.extract_set {
-            p.extract = archives;
+        for (k, (cats, archive)) in walked {
+            // No links at all: General's folder, as an empty package always settled to.
+            let cats = match cats {
+                SoFar::None => SoFar::One(Category::General),
+                mixed => mixed,
+            };
+            let p = &mut self.packages[k];
+            if !p.folder_set {
+                p.folder = match cats {
+                    SoFar::One(c) => category_folder(c, &self.downloads, &self.dirs)
+                        .display()
+                        .to_string(),
+                    SoFar::Mixed => String::new(),
+                    SoFar::None => unreachable!(),
+                };
+            }
+            if !p.extract_set {
+                p.extract = archive;
+            }
         }
     }
 
@@ -404,24 +452,36 @@ impl Grabber {
         !(self.hide_pages && l.is_page())
     }
 
-    fn visible_rows(&self) -> Vec<Row> {
+    /// Each package's links shown, the list walked once (#1063: the packages were walked one
+    /// at a time, each through all the links, every frame).
+    fn shown_by_pkg(&self) -> Vec<Vec<usize>> {
+        let mut shown: Vec<Vec<usize>> = vec![Vec::new(); self.packages.len()];
+        for (i, l) in self.links.iter().enumerate() {
+            if self.shows(l) {
+                shown[l.pkg].push(i);
+            }
+        }
+        shown
+    }
+
+    fn visible_rows_of(&self, shown: &[Vec<usize>]) -> Vec<Row> {
         let mut rows = Vec::new();
         for (k, p) in self.packages.iter().enumerate() {
-            let mut links = self
-                .links
-                .iter()
-                .enumerate()
-                .filter(|(_, l)| l.pkg == k && self.shows(l))
-                .peekable();
-            if links.peek().is_none() {
+            if shown[k].is_empty() {
                 continue;
             }
             rows.push(Row::Pkg(k));
             if p.open {
-                rows.extend(links.map(|(i, _)| Row::Link(i)));
+                rows.extend(shown[k].iter().map(|&i| Row::Link(i)));
             }
         }
         rows
+    }
+
+    /// The rows of the list, as it is drawn each frame (the tests' walk of it, whole).
+    #[cfg(test)]
+    fn visible_rows(&self) -> Vec<Row> {
+        self.visible_rows_of(&self.shown_by_pkg())
     }
 
     /// Links to look up now (at most `CHECKS` at once, `CHECKS_PER_HOST` from one host): the
@@ -523,6 +583,8 @@ impl Grabber {
                     let named = mdm_engine::naming::sanitize(&info.file_name);
                     if !named.is_empty() && named != l.name {
                         l.name = named;
+                        // Worked out again, once for this link (#1063).
+                        l.cat = category_of(&l.name, l.magnet);
                         moved.push(l.pkg);
                     }
                 }
@@ -535,9 +597,7 @@ impl Grabber {
                 }
             }
         }
-        for k in moved {
-            self.settle(k);
-        }
+        self.settle(&moved);
     }
 
     /// The package `k`'s links shown: all ticked, some, or none.
@@ -558,16 +618,20 @@ impl Grabber {
     }
 
     fn picked(&self) -> Vec<Picked> {
+        // The ticked links of each package, the list walked once (#1063: each package looked
+        // for them among all the links, a thousand packages a thousand times over).
+        let mut picked: Vec<Vec<(Imported, String, Option<u64>)>> =
+            vec![Vec::new(); self.packages.len()];
+        for l in &self.links {
+            if l.on && self.shows(l) {
+                picked[l.pkg].push((l.found.clone(), l.name.clone(), l.size));
+            }
+        }
         self.packages
             .iter()
             .enumerate()
             .filter_map(|(k, p)| {
-                let links: Vec<(Imported, String, Option<u64>)> = self
-                    .links
-                    .iter()
-                    .filter(|l| l.pkg == k && l.on && self.shows(l))
-                    .map(|l| (l.found.clone(), l.name.clone(), l.size))
-                    .collect();
+                let links = std::mem::take(&mut picked[k]);
                 (!links.is_empty()).then(|| Picked {
                     name: p.name.clone(),
                     folder: PathBuf::from(p.folder.trim()),
@@ -770,7 +834,8 @@ impl Grabber {
             );
             return;
         }
-        let rows = self.visible_rows();
+        let shown = self.shown_by_pkg();
+        let rows = self.visible_rows_of(&shown);
         // i18n: what a screen reader calls Link grabber's list
         self.rows.name = crate::i18n::t("Links");
         let mut toggle_link = None;
@@ -805,7 +870,8 @@ impl Grabber {
                                 flip = Some(n);
                             }
                             winui::tree_expander(clip, pos2(x + 4.0, top + 5.0), pk.open);
-                            let (on_n, all) = this.ticks(n);
+                            let all = shown[n].len();
+                            let on_n = shown[n].iter().filter(|&&i| links[i].on).count();
                             let glyph = pos2(x + 16.0, top + 2.0);
                             let mut on = on_n == all;
                             // i18n: Link grabber: a package's row: {n} is its number of links
@@ -851,11 +917,7 @@ impl Grabber {
                             } else {
                                 winui::MUTED()
                             };
-                            let total: Option<u64> = links
-                                .iter()
-                                .filter(|l| l.pkg == n && this.shows(l))
-                                .map(|l| l.size)
-                                .sum();
+                            let total: Option<u64> = shown[n].iter().map(|&i| links[i].size).sum();
                             let what = match total {
                                 Some(b) => format!("({files}, {})", crate::dialogs::dialog_size(b)),
                                 None => format!("({files})"),
@@ -1285,6 +1347,36 @@ mod tests {
     }
 
     #[test]
+    fn a_long_list_of_lone_archives_takes_each_link_once() {
+        // #1063: a lone .rar is a set of one volume, so a list of them (an S3 dump) makes a
+        // package each; each was looked for among the packages already there, each package
+        // was settled by walking all the links, and the list was laid out and picked a
+        // package at a time, walking all the links for each, every frame.
+        let lists = |n: usize| {
+            let many: Vec<Imported> = (0..n)
+                .map(|i| link(&format!("https://s3.example.com/d/data-{i}.rar"), None))
+                .collect();
+            (grabber(), many)
+        };
+        let add = |(mut g, many): (Grabber, Vec<Imported>)| {
+            g.add(many, "dump.txt".into(), |_| false);
+            g
+        };
+        // Each link taken once: 8 times the links cost about 8 times as long (not 64).
+        mdm_labserver::growth::assert_linear(1_000, &lists, &add);
+        let g = add(lists(20_000));
+        // A package each, settled as one archive's volumes: to extract.
+        assert_eq!(g.packages.len(), 20_000);
+        assert!(g.packages.iter().all(|p| p.extract));
+        // The frame's rows too, walked once whatever the list holds.
+        mdm_labserver::growth::assert_linear(1_000, &|n| add(lists(n)), &|g| g.visible_rows());
+        // One row each: the package's, and its link's under it.
+        assert_eq!(g.visible_rows().len(), 2 * 20_000);
+        // Every package started on its own: picked walks the list once as well.
+        assert_eq!(g.picked().len(), 20_000);
+    }
+
+    #[test]
     fn packages_by_volumes_then_page_then_various() {
         let page = Some("https://site.org/files/?sort=1");
         let mut g = grabber();
@@ -1578,7 +1670,7 @@ mod tests {
         assert_eq!(g.packages[0].name, "Various files");
         let magnet = g.links.iter().find(|l| l.magnet).unwrap();
         assert_eq!(magnet.name, "Season 1");
-        assert_eq!(magnet.category(), Category::Torrents);
+        assert_eq!(magnet.cat, Category::Torrents);
         assert!(
             g.to_check().iter().all(|(_, u, _)| u.scheme() == "https"),
             "a magnet link is not looked up over HTTP"
