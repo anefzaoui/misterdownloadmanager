@@ -2056,6 +2056,46 @@ mod tests {
         }
     }
 
+    /// #1076: the video a page declares is what the download keeps (its address, the page as its
+    /// Referer, the browser's User-Agent, not the page's Cookie header), so the download's own
+    /// look-up, when it starts, finds that one again; until the address is edited.
+    #[test]
+    fn a_declared_video_is_added_at_its_own_address() {
+        let page = "https://films.example/films/before";
+        let mut d = looked_up(false);
+        d.page = page.into();
+        d.from_browser = page.into();
+        d.looked_up = page.into();
+        d.context = mdm_ipc::Command {
+            user_agent: Some("UA".into()),
+            cookies: Some("session=1".into()),
+            referer: Some("https://search.example/".into()),
+            ..Default::default()
+        };
+        d.declared = Some(Declared {
+            address: "https://player.vimeo.com/video/1244858801".into(),
+            page: page.into(),
+            name: Some("Before".into()),
+        });
+        let added = |d: &VideoDialog| match d.added() {
+            Some(VideoOut::One(add)) => add,
+            _ => panic!("a video is added"),
+        };
+        let add = added(&d);
+        assert_eq!(
+            add.page.as_str(),
+            "https://player.vimeo.com/video/1244858801"
+        );
+        assert_eq!(add.context.referer.as_deref(), Some(page));
+        assert_eq!(add.context.user_agent.as_deref(), Some("UA"));
+        assert_eq!(add.context.cookies, None);
+        // An address edited since: that address, as typed.
+        d.page = "https://films.example/films/other".into();
+        let add = added(&d);
+        assert_eq!(add.page.as_str(), "https://films.example/films/other");
+        assert_eq!(add.context.referer, None);
+    }
+
     /// #611: a sound-only choice saves in the Music category's folder and is listed under Music;
     /// a video choice again goes back to Video's.
     #[test]
