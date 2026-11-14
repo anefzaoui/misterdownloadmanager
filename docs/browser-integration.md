@@ -71,7 +71,7 @@ When you click a download, the extension checks MDM's Options:
 - **Options → General → Use advanced browser integration** must be on. Turn it off to send nothing to MDM.
 - **Options → General → Capture downloads from the following browsers** must have your browser ticked.
 - **Options → File types → Automatically start downloading the following file types** must list the file's type. The list starts with the usual ones: ZIP, RAR, 7Z, EXE, MSI, ISO, DMG, DEB, RPM, APPIMAGE, MP3, MP4, MKV, WEBM, PDF, AI models such as GGUF and SAFETENSORS, 3D files such as GLB and STL, and many more. Anything else can be added to the list.
-- **Options → File types → Don't start downloading automatically from the following sites** must not list the site. Names are separated by spaces, and `*` matches any part, as in `*.update.microsoft.com`. **Edit list ...** below it lists whole addresses to leave alone, one per line (`https://example.com/private/*`).
+- **Options → File types → Don't start downloading automatically from the following sites** must not list the site. Names are separated by spaces; a name covers its subdomains (`example.com` covers `www.example.com`, as `*.update.microsoft.com` covers `dl.update.microsoft.com`; `*` matches anything, as in `*.example.*`), and the files the site's pages link to on another server (a CDN), told by the page the download came from (its referrer). **Edit list ...** below it lists whole addresses to leave alone, one per line (`https://example.com/private/*`).
 - **Options → File types → Don't take files smaller than** leaves small files (a receipt, an icon) to the browser. 0 takes any size.
 - The extension must be allowed to read the site. When you limit it to some sites (or **On click**), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.
 
@@ -108,7 +108,7 @@ A PDF, a song or a video that the browser would show or play itself goes to MDM 
 The extension's button shows whether the browser reaches MDM. A red **!** means it doesn't; click the button to see why, and **How to fix it** opens the matching section of [The browser and MDM aren't connected](browser-help.md). The button also:
 
 - **Take downloads from this browser**: untick it to pause, and every download stays with the browser until you tick it again.
-- **Never take downloads from** the current site: adds it to MDM's excluded sites.
+- **Never take downloads from** the current site: adds it to MDM's excluded sites. The popup then says **Downloads from** the site **stay with the browser**, with **Undo** to take it off the list again; it says the same whenever you open it on that site.
 - **Open Mister Download Manager** and **Options...**.
 - **Media on this page**: what the page has loaded that MDM can download (see below).
 
