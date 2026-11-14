@@ -292,17 +292,7 @@ function extensionOf(name) {
   return dot > 0 ? base.slice(dot + 1) : "";
 }
 
-// As the app matches them (mdm_ipc::capture): `*.example.com` takes the domain and its
-// subdomains; an address pattern's `*` any run of characters.
-function hostMatches(host, pattern) {
-  let p = pattern.trim().toLowerCase().replace(/^[a-z]+:\/\//, "").split("/")[0];
-  if (p.startsWith("*.")) {
-    p = p.slice(2);
-    return host === p || host.endsWith("." + p);
-  }
-  return p !== "" && host === p;
-}
-
+// As the app matches them (mdm_ipc::capture): a pattern's `*` is any run of characters.
 function wildcard(pattern, text) {
   const re = new RegExp("^" + pattern.toLowerCase().split("*").map((s) => s.replace(/[.+?^${}()|[\]\\]/g, "\\$&")).join(".*") + "$");
   return re.test(text.toLowerCase());
@@ -315,6 +305,20 @@ function addressMatches(pattern, url) {
   return wildcard(p, p.includes("://") ? url : url.replace(/^[a-z][a-z0-9+.-]*:\/\//i, ""));
 }
 
+// A site pattern against `host`, as the app reads one (mdm_ipc::capture::panel_site_matches):
+// `*` matches anything (#759), and `*.example.com` the domain too.
+function siteMatches(host, pattern) {
+  const p = pattern.trim().toLowerCase().replace(/^[^/]*:\/\//, "").split("/")[0];
+  if (!p) return false;
+  return (p.startsWith("*.") && wildcard(p.slice(2), host)) || wildcard(p, host);
+}
+
+// Whether `host` is on a site of Options' list (mdm_ipc::capture::site_listed): a name without
+// `*` takes its subdomains too, as the Download panels' list does (#1049).
+function siteListed(r, host) {
+  return r.excludedSites.split(/\s+/).some((p) => p && (siteMatches(host, p) || (!p.startsWith("*") && siteMatches(host, `*.${p}`))));
+}
+
 // Which of Options' lists leaves `url` to the browser: "site", "address", or "" (neither).
 function excludedBy(r, url) {
   let host = "";
@@ -323,9 +327,21 @@ function excludedBy(r, url) {
   } catch {
     return "site";
   }
-  if (r.excludedSites.split(/\s+/).some((p) => p && hostMatches(host, p))) return "site";
+  if (siteListed(r, host)) return "site";
   if (r.excludedAddresses.some((p) => addressMatches(p, url))) return "address";
   return "";
+}
+
+// Whether the page a download came from (its referrer) is on a site of Options' list: a file the
+// site serves from another host (a CDN, a mirror) is left to the browser too (#1049). No page
+// known: its own address decides.
+function pageListed(r, page) {
+  if (!/^https?:\/\//i.test(page || "")) return false;
+  try {
+    return siteListed(r, new URL(page).hostname.toLowerCase());
+  } catch {
+    return false;
+  }
 }
 
 // ---- downloads left to the browser: why, for the popup and MDM's log (#208) ----------------
@@ -486,8 +502,50 @@ function firstUrl(item) {
   return r && Date.now() - r.at < 120000 ? r.from : item.url;
 }
 
-// Links clicked with Alt held (page.js): the browser keeps their download.
-const bypass = new Map();
+// Links clicked with Alt (Option on a Mac) held (page.js): the browser keeps their download. By
+// the link's address (the click's own download, the start of a redirect), and once per click the
+// download that follows it under another address in the next seconds (#332): one in the same
+// tab (Firefox says which tab a page load is in), or one whose referrer is the link or the page
+// it was on (a page's script that starts the download, a link to a page whose script does).
+const bypass = new Map(); // address -> {at, tab, page, used}
+const BYPASS_MS = 10000;
+
+// `clicked`: the download is a link the user just clicked without Alt (Safari's `link`), never
+// one that follows an Alt+click.
+function altClicked(item, url, first, clicked = false) {
+  forget(bypass, BYPASS_MS);
+  const exact = [item.url, url, first].map((u) => u && bypass.get(u)).find(Boolean);
+  if (exact) {
+    exact.used = true;
+    return true;
+  }
+  if (clicked) return false;
+  const ref = item.referrer || "";
+  for (const [link, b] of bypass) {
+    if (b.used) continue;
+    const tab = Number.isInteger(item.tabId) && item.tabId >= 0 && item.tabId === b.tab;
+    if (tab || fromPage(ref, link) || fromPage(ref, b.page)) {
+      b.used = true;
+      return true;
+    }
+  }
+  return false;
+}
+
+// Whether `ref` (a download's referrer) names `page`: the same address without its #part, or
+// only its site's, as browsers cut a referrer sent to another site by default.
+function fromPage(ref, page) {
+  if (!ref || !page) return false;
+  try {
+    const r = new URL(ref);
+    const p = new URL(page);
+    p.hash = "";
+    r.hash = "";
+    return r.href === p.href || (r.pathname === "/" && !r.search && r.origin === p.origin);
+  } catch {
+    return false;
+  }
+}
 
 // ---- the media a tab loaded (#38) ------------------------------------------------------------
 
@@ -1522,21 +1580,20 @@ function colabRuntimeProxy(...urls) {
 // The file name to offer the app the download under (`{name}`), or why Options leave it to
 // the browser (`{left, name}`), or null: the browser keeps it and there is nothing to say (not a
 // web address, paused, Alt held, a form that can't be posted again, MDM not reached).
-async function candidate(item, url) {
+// `clicked`: a link just clicked without Alt (Safari's `link`, see `altClicked`).
+async function candidate(item, url, clicked = false) {
   if (!/^https?:/i.test(url)) return null; // blob:, data:, file: stay the browser's
   const { paused } = await ext.storage.local.get({ paused: false });
   if (paused) return null;
-  forget(bypass, 10000);
-  if (bypass.has(item.url) || bypass.has(url)) return null;
   const first = firstUrl(item);
-  if (bypass.has(first) || postOf(first) === null) return null; // Alt; a form not to post again
+  if (altClicked(item, url, first, clicked) || postOf(first) === null) return null; // Alt; a form not to post again
   if (colabRuntimeProxy(first, url)) return null;
   const r = await currentRules();
   if (!r) return null;
   const name = (item.filename || "").split(/[\\/]/).pop() || url.split(/[?#]/)[0].split("/").pop() || "";
   const left = (why) => ({ left: why, name });
   if (!r.capture) return left(r.captureOff || "browser");
-  const by = excludedBy(r, first) || excludedBy(r, url);
+  const by = excludedBy(r, first) || excludedBy(r, url) || (pageListed(r, item.referrer) ? "site" : "");
   if (by) return left(by);
   const type = extensionOf(name);
   if (!type || !typePatterns(r.types).some((p) => p.test(type))) return left("file-type");
@@ -1601,7 +1658,7 @@ async function link(url, referrer, incognito, name) {
   if (r && r.opened === false && OPENED[type]) return { taken: false };
   const filename = name || addressName(url);
   const item = { url, referrer, incognito, ...(filename ? { filename } : {}) };
-  const c = await candidate(item, url).catch(() => null);
+  const c = await candidate(item, url, true).catch(() => null);
   if (!c || c.left) {
     leftAlone(c, item, url);
     return { taken: false };
@@ -1737,29 +1794,25 @@ const OPENED = {
   MKV: ["video/x-matroska"],
 };
 const OPENED_RULE = 1;
-// The allow rules for exact excluded hosts follow it (ids from 2).
-const OPENED_ALLOW = 2;
 let openedTypes = [];
 
-// Options' excluded sites as the rules need them, read as the app reads them: `*.example.com`
-// is the domain and its subdomains (a rule's domain condition), a plain name that host only
-// (an allow rule of its own). As the browser writes a host: no port, punycode.
+// Options' excluded sites as the rule needs them, read as the app reads them: `example.com` and
+// `*.example.com` alike are the domain and its subdomains (#1049), a rule's domain condition. As
+// the browser writes a host: no port, punycode. A pattern with another `*` (`*.youtube.*`) is no
+// domain a rule can name: such a site's PDF is made a download, which the browser then keeps.
 function excludedHosts() {
-  const wide = [];
-  const exact = [];
+  const hosts = [];
   for (const raw of ((rules && rules.excludedSites) || "").split(/\s+/)) {
-    const p = raw.trim().replace(/^[a-z]+:\/\//i, "").split("/")[0];
-    const sub = p.startsWith("*.");
+    const p = raw.trim().replace(/^[a-z]+:\/\//i, "").split("/")[0].replace(/^\*\./, "");
     let host = "";
     try {
-      host = new URL(`http://${sub ? p.slice(2) : p}`).hostname;
+      host = new URL(`http://${p}`).hostname;
     } catch {
       continue;
     }
-    if (!host || host.includes("*")) continue;
-    (sub ? wide : exact).push(host);
+    if (host && !host.includes("*") && !hosts.includes(host)) hosts.push(host);
   }
-  return { wide, exact };
+  return hosts;
 }
 
 function openedMimes(r) {
@@ -1785,22 +1838,16 @@ async function syncOpenedRule() {
     condition: {
       resourceTypes: ["main_frame"],
       responseHeaders: [{ header: "content-type", values: openedTypes.map((m) => `${m}*`) }],
-      // Options' excluded sites keep opening in the browser.
-      ...(hosts.wide.length ? { excludedRequestDomains: hosts.wide } : {}),
+      // Options' excluded sites keep opening in the browser: their files, and those their pages
+      // lead to on another host (the page that started the load, #1049).
+      ...(hosts.length ? { excludedRequestDomains: hosts, excludedInitiatorDomains: hosts } : {}),
     },
   };
-  const esc = (h) => h.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const allows = hosts.exact.slice(0, 500).map((h, i) => ({
-    id: OPENED_ALLOW + i,
-    priority: 2,
-    action: { type: "allow" },
-    condition: { resourceTypes: ["main_frame"], regexFilter: `^[a-z]+://${esc(h)}(:[0-9]+)?/` },
-  }));
   try {
     const old = (await dnr.getSessionRules()).map((r) => r.id);
     await dnr.updateSessionRules({
       removeRuleIds: old.filter((id) => id >= OPENED_RULE),
-      addRules: openedTypes.length ? [rule, ...allows] : [],
+      addRules: openedTypes.length ? [rule] : [],
     });
   } catch {
     // A browser without header conditions (Chrome before 128): it opens them as before.
@@ -1917,6 +1964,7 @@ async function headersReceived(d) {
   const ref = referrers.get(d.requestId);
   const item = {
     url: d.url,
+    tabId: d.tabId,
     filename: file.name,
     totalBytes: file.size,
     fileSize: file.size,
@@ -2361,8 +2409,10 @@ async function pageMessage(m, sender) {
     }
     return { ok: true };
   }
+  // Alt held on a link: as the button went down, and at the click (page.js).
   if (m.type === "bypass" && typeof m.url === "string") {
-    bypass.set(m.url, { at: Date.now() });
+    const was = bypass.get(m.url);
+    bypass.set(m.url, { at: Date.now(), tab: tab.id, page: page || "", used: Boolean(was && was.used) });
     return { ok: true };
   }
   if (m.type === "video" && page) {
