@@ -28,7 +28,7 @@ See [Browser integration](browser-integration.md).
 *File types: what the browser hands over, and the sites left alone.*
 
 - **Automatically start downloading the following file types** — the file types the browser hands over (and the clipboard picks up). Separate them by spaces; `*` matches any characters, as in `R0*`. **Default** puts the original list back. The list starts with the usual archives, programs and installers (Windows, macOS and Linux ones: DMG, PKG, DEB, RPM, APPIMAGE, MSIX), music and videos, PDF and Office files, AI models and datasets (GGUF, SAFETENSORS, CKPT, PT, ONNX, PARQUET), 3D and CAD files (GLB, FBX, OBJ, STL, BLEND, STEP), design and camera RAW files, ebooks, disk images and split archives. Pages, scripts, plain text and web images are left out on purpose, so saving a picture or a page stays with the browser; add any type you need, or put a single `*` in the box to take every file that has an extension. A list you never changed gains the types a new version adds; one you edited stays as it is.
-- **Don't start downloading automatically from the following sites** — sites whose downloads stay in the browser, separated by spaces. `*.example.com` covers every part of a site. **Default** puts the original list back.
+- **Don't start downloading automatically from the following sites** — sites whose downloads stay in the browser, separated by spaces. A name covers the site's subdomains too (`example.com` covers `www.example.com` and `dl.example.com`, as does `*.example.com`), `*` matches anything as in the Download panels' list (`*.example.*`), and the files its pages link to on another server (a download server or a CDN), told by the page the download came from. A download with no page known is matched by its own address. **Default** puts the original list back.
 
 ## Save to
 
@@ -51,6 +51,7 @@ MDM doesn't use a temporary folder: every connection writes straight into the fi
 ![Options on its Downloads page: the start download dialog, Download complete and duplicate links](images/help/options-downloads.webp)
 *Downloads: which windows show, and what a duplicate link does.*
 
+- **Customize "Download progress" dialog → Edit...** — **Show download progress dialog when a download starts**: on by default. Untick it and a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue; it goes on in the main window's list, where a double-click opens its progress window. **Download complete** still shows when it finishes, as **Show download complete dialog** below says.
 - **Show start download dialog** — show **Download File Info** for each new download. With it off, downloads start at once, or only join the queue if you tick **Do not start downloading, only add files to the queue**.
 - **Show download complete dialog** — show **Download complete** when a file finishes.
 - **Start downloading immediately while displaying "Download File Info" dialog** — on by default, so the download is already under way while you choose a folder.

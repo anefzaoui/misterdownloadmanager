@@ -1,7 +1,7 @@
 //! The per-download progress dialog, painted to IDM 6.42's pixels
 //! (notes/ui-spec/progress-dialog.md). Coordinates are client pixels from the spec.
 
-use egui::{Color32, Pos2, Ui, ViewportBuilder, ViewportId, vec2};
+use egui::{Color32, Pos2, Ui, ViewportId, vec2};
 use mdm_engine::Snapshot;
 use mdm_engine::download::ConnStatus;
 
@@ -522,7 +522,7 @@ impl Progress {
         let key = egui::Id::unique(("progress-pos", self.id));
         let title_now = title.clone();
         // Hidden until dialogs::keep_theme has given it its theme.
-        let mut builder = crate::quiet(ViewportBuilder::default())
+        let mut builder = crate::quiet(crate::window_builder())
             .with_visible(false)
             // The taskbar shows it: without isolates (#919).
             .with_title(crate::i18n::os_text(&title))
