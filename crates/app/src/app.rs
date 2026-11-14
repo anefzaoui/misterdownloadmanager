@@ -981,6 +981,8 @@ pub struct App {
     pub remote: Option<mdm_remote::Remote>,
     /// Torrents a paired device sent, their files being looked up (`remote::poll_torrents`).
     pub remote_torrents: Vec<crate::remote::Lookup>,
+    /// Click'n'Load (#37): what pages post waits here, for its site's answer and Link grabber.
+    cnl: crate::cnl::Cnl,
     /// Free space where downloads go, and when it was last looked up (`free_space`).
     free_space: std::sync::Arc<std::sync::Mutex<(Option<Instant>, Option<u64>)>>,
     /// Options → Proxy / Socks → Network adapter (#35): the watch, the route seen last frame, and
@@ -1044,6 +1046,7 @@ pub struct App {
     #[cfg(target_os = "linux")]
     tray_setup: Option<crate::tray::Setup>,
     tray_limiter: Option<bool>,
+    hotkey: Option<crate::hotkey::GlobalHotkey>,
     /// When the main window was last seen focused: a tray click steals the focus first
     /// (the taskbar becomes foreground), so a click on a frontmost window reads as
     /// unfocused by the time Toggle runs. Within [`TRAY_TOGGLE_GRACE`] it still counts
@@ -1411,6 +1414,8 @@ impl App {
         if let Some(d) = downloads {
             self.downloads = d;
         }
+        // Nobody to answer Click'n'Load's question or tick Link grabber's packages.
+        let _ = self.cnl.listen(false);
         self
     }
 
@@ -1503,6 +1508,11 @@ impl App {
         app.zoom = zoom;
         app.lang_picker = ask_language.then(|| crate::langpick::Picker::new(true, None));
         app.remote = remote;
+        // Click'n'Load (#37): off unless Options → Archives and Link grabber turned it on.
+        if let Err(why) = app.cnl.listen(app.settings.cnl_on) {
+            // i18n: title of the notice when Click'n'Load couldn't start
+            app.notice = Some((crate::i18n::mark("Click'n'Load"), why));
+        }
         app.rss = crate::rss::Store::path()
             .map(|p| crate::rss::Store::load(&p))
             .unwrap_or_default();
@@ -1562,6 +1572,9 @@ impl App {
             _ => View::All,
         };
         let show_categories = settings.show_categories;
+        // Click'n'Load (#37): made here, listening only once `new` starts it (Options →
+        // Archives and Link grabber turns it on).
+        let cnl = crate::cnl::Cnl::new(rt.clone(), ctx.clone());
         let deferred_torrent_queue: Vec<u64> = items
             .iter()
             .filter(|i| i.status == Status::Complete && i.rename_on_complete.is_some())
@@ -1655,6 +1668,7 @@ impl App {
             torrent_host: crate::torrents::Host::new(),
             remote: None,
             remote_torrents: Vec::new(),
+            cnl,
             free_space: Default::default(),
             netwatch: Default::default(),
             debrid: Default::default(),
@@ -1684,6 +1698,7 @@ impl App {
             #[cfg(target_os = "linux")]
             tray_setup: None,
             tray_limiter: None,
+            hotkey: None,
             tray_last_focused: None,
             // Started with the session (#226): hidden from the first frame.
             hidden: start == crate::Start::Session,
@@ -2935,6 +2950,7 @@ impl App {
                     cookies: page_data_for(url, cmd.referer.as_deref(), cmd.cookies.as_deref()),
                     user_agent: cmd.user_agent.clone(),
                     private: cmd.private,
+                    ..Default::default()
                 })
                 .collect();
             // i18n: in Import, where the addresses came from: a page in the browser
@@ -3710,6 +3726,34 @@ impl App {
         if !crate::offscreen() {
             ctx.send_viewport_cmd(egui::ViewportCommand::Focus);
         }
+        ctx.request_repaint();
+    }
+
+    /// Global shortcut (#558): show and focus the window when hidden, minimized, or behind
+    /// another application; otherwise hide it to the notification area (or minimize it).
+    fn toggle_window(&mut self, ctx: &egui::Context) {
+        let minimized = ctx.input(|i| i.viewport().minimized == Some(true));
+        #[cfg(target_os = "macos")]
+        let active_and_visible =
+            !self.hidden && !minimized && crate::unix::macos_is_active_and_visible();
+        #[cfg(not(target_os = "macos"))]
+        let active_and_visible =
+            !self.hidden && !minimized && ctx.input(|i| i.viewport().focused.unwrap_or(true));
+        if !active_and_visible {
+            self.show_window(ctx);
+            #[cfg(target_os = "macos")]
+            if !crate::offscreen() {
+                crate::unix::macos_activate_and_show();
+            }
+        } else if self.tray.is_some() && self.tray_icon_now() != crate::tray::Icon::Gone {
+            self.hide_to_tray(ctx);
+            #[cfg(target_os = "macos")]
+            if !crate::offscreen() {
+                crate::unix::macos_hide_window();
+            }
+        } else {
+            ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+        }
     }
 
     /// Before a handoff's dialog: the main window stays where it is (hidden, minimized) and
@@ -3831,6 +3875,30 @@ impl App {
                     self.tray_setup = None;
                 }
                 crate::tray::Came::Failed => self.tray_setup = None,
+            }
+        }
+        if !crate::offscreen() {
+            let spec = self
+                .options
+                .as_ref()
+                .map_or(self.settings.show_hide_hotkey.as_str(), |o| {
+                    o.draft_hotkey()
+                })
+                .to_owned();
+            let recording = self
+                .options
+                .as_ref()
+                .is_some_and(|o| o.is_recording_hotkey());
+            let hk = self
+                .hotkey
+                .get_or_insert_with(|| crate::hotkey::GlobalHotkey::new(ctx, &spec));
+            hk.apply(ctx, &spec);
+            let taken = hk.is_taken();
+            if let Some(o) = &mut self.options {
+                o.set_hotkey_taken(taken);
+            }
+            if hk.take_fired() && !recording {
+                self.toggle_window(ctx);
             }
         }
         if let Some(t) = &self.tray
@@ -4985,7 +5053,7 @@ impl App {
             let dir = self
                 .settings
                 .category_dir(Category::Torrents, &self.downloads);
-            self.add_remote_torrent(magnet, dir, Category::Torrents, true);
+            self.add_remote_torrent(magnet, dir, Category::Torrents, true, None);
             self.show_window(ctx);
             return;
         }
@@ -5032,15 +5100,22 @@ impl App {
         dir: PathBuf,
         category: Category,
         start_now: bool,
+        renamed: Option<String>,
     ) {
         let Some((account, service)) = self.torrent_account() else {
             return;
         };
-        let name = magnet
-            .query_pairs()
-            .find(|(k, _)| k == "dn")
-            .map(|(_, v)| mdm_engine::naming::sanitize(&v))
+        let name = renamed
+            .as_deref()
+            .map(mdm_engine::naming::sanitize)
             .filter(|n| !n.is_empty())
+            .or_else(|| {
+                magnet
+                    .query_pairs()
+                    .find(|(k, _)| k == "dn")
+                    .map(|(_, v)| mdm_engine::naming::sanitize(&v))
+                    .filter(|n| !n.is_empty())
+            })
             .unwrap_or_else(|| "torrent".to_owned());
         let target = dir.join(&name);
         let preexisting = crate::deferred_rename::folder_has_any_entries(&target);
@@ -5067,6 +5142,7 @@ impl App {
                 account,
                 transfer: None,
                 folder: dir,
+                renamed,
             });
         }
         self.selection.set(id);
@@ -5102,6 +5178,7 @@ impl App {
                 magnet: url,
                 transfer: spec.transfer.clone(),
                 folder: spec.folder.clone(),
+                renamed: spec.renamed.clone(),
                 net,
                 poll: std::time::Duration::from_secs(5),
             },
@@ -5127,14 +5204,22 @@ impl App {
     /// (#44): the .torrent's magnet link (its hash, name and trackers), all its files. The
     /// download added, if one was (not when the debrid account takes it).
     fn add_torrent(&mut self, add: crate::torrentdlg::TorrentAdd) -> Option<u64> {
+        let meta = &add.meta;
+        crate::torrent_rename::on_add_torrent(meta);
         if self.torrent_account().is_some()
             && let Some(magnet) =
-                mdm_torrent::magnet_link(&add.meta.torrent).and_then(|m| url::Url::parse(&m).ok())
+                mdm_torrent::magnet_link(&meta.torrent).and_then(|m| url::Url::parse(&m).ok())
         {
-            self.add_remote_torrent(magnet, add.dir.clone(), add.category, add.start_now);
+            let renamed = crate::torrent_rename::renamed_target(meta);
+            self.add_remote_torrent(
+                magnet,
+                add.dir.clone(),
+                add.category,
+                add.start_now,
+                renamed,
+            );
             return None;
         }
-        let meta = &add.meta;
         if let Err(e) = crate::torrents::save_torrent(&meta.info_hash, &meta.torrent) {
             self.notice = Some((
                 crate::i18n::mark("Add torrent"),
@@ -6152,6 +6237,15 @@ impl App {
         // Options → Remote: listening started, stopped or moved.
         if let Some(r) = &self.remote {
             r.apply(crate::remote::config(&self.settings));
+        }
+        // Options → Archives and Link grabber: Click'n'Load turned on or off; off forgets the
+        // sites' answers, so a blocked site can be asked again.
+        if !self.settings.cnl_on {
+            self.settings.cnl_sites.clear();
+        }
+        if let Err(why) = self.cnl.listen(self.settings.cnl_on && !self.headless) {
+            // i18n: title of the notice when Click'n'Load couldn't start
+            self.notice = Some((crate::i18n::mark("Click'n'Load"), why));
         }
         if self.settings.proxy_mode == 2 {
             crate::pacfetch::refresh(&self.settings.proxy_script, &self.rt);
@@ -9181,6 +9275,7 @@ impl App {
                     cookies: None,
                     user_agent: None,
                     private: false,
+                    ..Default::default()
                 })
                 .collect();
             // i18n: in Import, where the addresses came from: dragged onto the window
@@ -9356,6 +9451,19 @@ impl App {
             return;
         }
         self.show_import(found, file);
+    }
+
+    /// What Click'n'Load pages posted: an allowed site's links into Link grabber; the others
+    /// wait for their site's answer (`cnl.ask`). The window comes up for either, once a minute
+    /// for one site.
+    fn poll_cnl(&mut self, ctx: &egui::Context) {
+        let (links, raise) = self.cnl.take(&self.settings.cnl_sites);
+        if raise {
+            self.show_window(ctx);
+        }
+        if !links.is_empty() {
+            self.show_import(links, "Click'n'Load".into());
+        }
     }
 
     /// Links to tick before adding (the browser's page links, Import, dropped links): into Link
@@ -9897,6 +10005,23 @@ impl App {
                     self.grabber = None;
                     self.add_grabbed(start, packages);
                 }
+            }
+        }
+        // Click'n'Load's question about a site; closing it is "Not now".
+        let answer = self.cnl.ask.as_mut().and_then(|d| match d.show(ctx) {
+            Outcome::Open => None,
+            Outcome::Closed => Some(crate::cnl::Answer::NotNow),
+            Outcome::Done(a) => Some(a),
+        });
+        if let Some(answer) = answer {
+            let (links, keep) = self.cnl.answer(answer);
+            if let Some((site, allowed)) = keep {
+                self.settings.cnl_sites.retain(|(s, _)| *s != site);
+                self.settings.cnl_sites.push((site, allowed));
+                self.dirty = true;
+            }
+            if !links.is_empty() {
+                self.show_import(links, "Click'n'Load".into());
             }
         }
         if let Some(d) = &mut self.extracts.needs_7zip
@@ -10717,7 +10842,8 @@ impl eframe::App for App {
     /// is minimized, and a magnet or a download handed over then waited until it was restored
     /// (#162). A command that opens a window gets the UI pass that creates it, minimized or not
     /// (no window is raised or focused for it beyond what the command itself does).
-    fn logic(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+    fn logic(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
+        crate::renderer::present_unpaced(frame);
         // MDM's own work: not counted as the graphics API's time to its first frame (#280).
         crate::renderer::own_work_begin();
         self.tick(ctx);
@@ -10843,6 +10969,7 @@ impl App {
         // Incoming commands and the clock (downloads, queues, Scheduler, saving…): `logic`, just
         // before, which runs minimized too.
         self.poll_picks(&ctx);
+        self.poll_cnl(&ctx);
         self.poll_imports();
         self.drop_target(&ctx);
         self.main_drops(&ctx);
