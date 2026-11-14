@@ -557,6 +557,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Left and Right in Download File Info's Save As box and Add URL's Address box move the caret,
+  no longer the focus to the button beside the box
+  ([#812](https://github.com/anefzaoui/misterdownloadmanager/pull/812))
 - ✅ Linux: no crash when fontconfig offers a font MDM can't draw with (an old bitmap font for
   Japanese): the best font that scales and MDM can read is used instead
   ([#931](https://github.com/anefzaoui/misterdownloadmanager/issues/931))
