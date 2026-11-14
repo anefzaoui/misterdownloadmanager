@@ -79,6 +79,10 @@ pub struct Settings {
     pub many_connections: bool,
     /// Show the "Download complete" dialog (Options → Downloads).
     pub show_complete: bool,
+    /// Download complete snoozed until then (unix seconds; its window's Snooze menu, #741):
+    /// `show_complete` stays as it is. A snooze until MDM restarts is not saved.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub complete_snoozed_until: Option<i64>,
     /// List right-click → On Double click: Open (true) or Properties (IDM default).
     pub double_click_open: bool,
     /// Ask before deleting downloads ("Don't show this dialog again" clears it).
@@ -108,9 +112,13 @@ pub struct Settings {
     /// View → Draw with (#89): OpenGL or Direct3D (Windows only), used from the next start.
     /// None: MDM's default (`renderer::DEFAULT`), which may change.
     pub renderer: Option<crate::renderer::Api>,
-    /// View → Interface size (#262), percent: 100, 125, 150, 175 or 200 (crate::scale). Every
+    /// View → Interface size (#262), percent: one of `crate::scale::STEPS` (100 to 200). Every
     /// window drawn that much larger than the display's own scale makes it.
     pub interface_size: u16,
+    /// View → Text (Windows): smooth text as Windows' modern apps draw it, or the classic
+    /// controls' hinted, whole-pixel look, the default (`crate::theme::set_smooth_text`): text
+    /// doesn't change look on an update; a dense screen can choose Smooth.
+    pub smooth_text: bool,
     /// Scheduler → Download limits: "Download no more than `limits_mb` MBytes every
     /// `limits_hours` hours" (IDM defaults 200 / 5), with a warning before stopping.
     pub limits_on: bool,
@@ -172,6 +180,9 @@ pub struct Settings {
     pub url_history: Vec<String>,
     pub folder_history: Vec<String>,
     pub set_creation_date: bool,
+    /// Downloads → "Mark downloaded files as coming from the internet" (#813): Windows' Mark of
+    /// the Web, macOS' quarantine, Linux's origin attributes (`webmark`).
+    pub mark_downloads: bool,
     /// Downloads.
     pub show_start_dialog: bool,
     pub only_add_to_queue: bool,
@@ -182,6 +193,11 @@ pub struct Settings {
     /// "If a duplicate download link is added": 0 ask, 1 numbered name, 2 overwrite,
     /// 3 complete → show the complete dialog, else resume.
     pub duplicate_action: u8,
+    /// "User-Agent for manually added downloads": the user's, or empty for the automatic one
+    /// (the default browser's, #668: `mdm_engine::agent::automatic`). Saved before #668 as
+    /// Internet Explorer 11's, the default then: read as empty (`own_user_agent`), which an older
+    /// MDM reads as its default again.
+    #[serde(deserialize_with = "automatic_agent")]
     pub user_agent: String,
     /// Connection: per-server connection limits (server, number).
     pub conn_exceptions: Vec<(String, u32)>,
@@ -291,6 +307,9 @@ pub struct Settings {
     /// Download video from a page: the subtitles last chosen (#68), offered again for the
     /// next video when it has that language (none at first).
     pub video_subs: mdm_tools::video::Subs,
+    /// Download video from a page → Embed chapters (#827): a video's chapters go into its file
+    /// (with ffmpeg). On; a settings file from before has none: on.
+    pub video_chapters: bool,
     /// Options → Sites Logins → Cookies for video sites (#229): the browser whose cookies
     /// yt-dlp reads on this computer when the extension passed none (yt-dlp's name: `firefox`,
     /// `chrome`...; empty: off, the default), and its profile (a name or a folder; empty: the
@@ -310,6 +329,11 @@ pub struct Settings {
     pub grabber_check: bool,
     /// Link grabber: web pages hidden (IDM's "Hide HTML files"). On.
     pub grabber_hide_pages: bool,
+    /// Click'n'Load (#37): a page's button posts its links to 127.0.0.1:9666, shown in Link
+    /// grabber. Off by default: any page may post there.
+    pub cnl_on: bool,
+    /// Click'n'Load: the sites asked about, each allowed (true) or blocked, by host.
+    pub cnl_sites: Vec<(String, bool)>,
 }
 
 /// Options → File types defaults (IDM 6.42), shared with the browser host (mdm_ipc::capture).
@@ -355,6 +379,7 @@ impl Default for Settings {
             max_connections: 8,
             many_connections: false,
             show_complete: true,
+            complete_snoozed_until: None,
             double_click_open: false,
             confirm_delete: true,
             delete_files_too: false,
@@ -369,6 +394,7 @@ impl Default for Settings {
             theme: "classic".into(),
             renderer: None,
             interface_size: 100,
+            smooth_text: false,
             limits_on: false,
             limits_mb: 200,
             limits_hours: 5,
@@ -397,6 +423,7 @@ impl Default for Settings {
             url_history: Vec::new(),
             folder_history: Vec::new(),
             set_creation_date: false,
+            mark_downloads: true,
             show_start_dialog: true,
             only_add_to_queue: false,
             start_immediately: true,
@@ -404,7 +431,7 @@ impl Default for Settings {
             queue_panel_batch: true,
             ignore_mtime: false,
             duplicate_action: 0,
-            user_agent: mdm_engine::download::DEFAULT_USER_AGENT.into(),
+            user_agent: String::new(),
             conn_exceptions: Vec::new(),
             proxy_from_browser: true,
             proxy_mode: 0,
@@ -457,6 +484,7 @@ impl Default for Settings {
             drop_target: false,
             drop_target_pos: None,
             video_subs: Default::default(),
+            video_chapters: true,
             video_cookies: String::new(),
             video_cookies_profile: String::new(),
             extract_auto: false,
@@ -464,6 +492,8 @@ impl Default for Settings {
             extract_subfolder: 0,
             grabber_check: true,
             grabber_hide_pages: true,
+            cnl_on: false,
+            cnl_sites: Vec::new(),
         }
     }
 }
@@ -560,7 +590,25 @@ pub fn remember(list: &mut Vec<String>, value: &str) {
     list.truncate(HISTORY);
 }
 
+/// A saved "User-Agent for manually added downloads": MDM's former default (Internet Explorer
+/// 11's, before #668) or nothing is the automatic one (empty).
+fn automatic_agent<'de, D: serde::Deserializer<'de>>(d: D) -> Result<String, D::Error> {
+    let saved = String::deserialize(d)?;
+    Ok(if saved.trim() == mdm_engine::agent::IE11_USER_AGENT {
+        String::new()
+    } else {
+        saved
+    })
+}
+
 impl Settings {
+    /// The User-Agent the user set for links added by hand; None: the automatic one (the
+    /// default browser's, #668).
+    pub fn own_user_agent(&self) -> Option<&str> {
+        let ua = self.user_agent.trim();
+        (!ua.is_empty() && ua != mdm_engine::agent::IE11_USER_AGENT).then_some(ua)
+    }
+
     /// `live` with the settings a dialog changed (`from` → `to`) put in, field by field: what
     /// changed elsewhere while it was open (the toolbar's Speed Limiter, Torrent settings, the
     /// Categories pane) is kept, not reverted to the copy the dialog started from.
@@ -988,9 +1036,11 @@ impl Settings {
     }
 }
 
-/// Keep every yt-dlp run on Options' cookies for video sites (cheap when they didn't change).
-pub fn share_video_cookies(s: &Settings) {
+/// Keep every yt-dlp run on Options' cookies for video sites (cheap when they didn't change),
+/// and every video started on Embed chapters (#827).
+pub fn share_video_settings(s: &Settings) {
     mdm_tools::proc::set_browser_cookies(s.video_cookies());
+    mdm_tools::video::set_chapters(s.video_chapters);
 }
 
 /// The network adapter MDM's connections go through now (#35).
@@ -1016,6 +1066,38 @@ pub fn own_net() -> mdm_engine::Options {
 #[cfg(test)]
 mod tests {
     use std::path::Path;
+
+    /// #668: the User-Agent for links added by hand is the default browser's unless one is set.
+    /// Saved before, MDM's former default (Internet Explorer 11's) or nothing reads as automatic;
+    /// automatic is saved empty, which an older MDM reads as its own default again.
+    #[test]
+    fn the_user_agent_is_automatic_unless_one_is_set() {
+        use super::Settings;
+        let ie11 = mdm_engine::agent::IE11_USER_AGENT;
+        assert_eq!(Settings::default().user_agent, "");
+        assert_eq!(Settings::default().own_user_agent(), None);
+        for saved in [
+            serde_json::json!({ "user_agent": ie11 }),
+            serde_json::json!({ "user_agent": format!(" {ie11} ") }),
+            serde_json::json!({ "user_agent": "" }),
+            serde_json::json!({ "user_agent": "   " }),
+            serde_json::json!({}),
+        ] {
+            let s: Settings = serde_json::from_value(saved.clone()).unwrap();
+            assert_eq!(s.own_user_agent(), None, "{saved}");
+            let again = serde_json::to_value(&s).unwrap();
+            assert_eq!(
+                again["user_agent"].as_str().map(str::trim),
+                Some(""),
+                "{saved}"
+            );
+        }
+        let own: Settings =
+            serde_json::from_value(serde_json::json!({ "user_agent": " MyAgent/1.0 " })).unwrap();
+        assert_eq!(own.own_user_agent(), Some("MyAgent/1.0"));
+        let again: Settings = serde_json::from_value(serde_json::to_value(&own).unwrap()).unwrap();
+        assert_eq!(again.own_user_agent(), Some("MyAgent/1.0"));
+    }
 
     /// #475: a folder chosen for a video is the Video category's next time; the category's own
     /// folder stays "the default", following Downloads, and other categories stay as they were.

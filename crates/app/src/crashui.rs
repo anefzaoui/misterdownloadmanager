@@ -91,9 +91,12 @@ pub fn monitor_main(m: MonitorArgs) -> eframe::Result {
     // And its interface size (#262): the window is made before the zoom applies, so its size is
     // given zoomed (brought inside the screen at its first frame).
     let zoom = crate::scale::startup(settings.interface_size);
+    crate::theme::init_smooth_text(settings.smooth_text);
     let builder = crate::quiet(
         ViewportBuilder::default()
-            .with_title(crate::i18n::t("Mister Download Manager crash report"))
+            .with_title(crate::i18n::os_text(crate::i18n::t(
+                "Mister Download Manager crash report",
+            )))
             .with_inner_size([CLIENT[0] * zoom, CLIENT[1] * zoom])
             .with_resizable(false)
             .with_maximize_button(false)
@@ -110,15 +113,17 @@ pub fn monitor_main(m: MonitorArgs) -> eframe::Result {
         viewport: builder.clone(),
         ..Default::default()
     };
-    // What the app draws with (renderer.rs, MDM_RENDERER too), the other way when it can't
-    // start. OpenGL when the app's Direct3D failed or is still starting (this report may be about
-    // it); only the app's own start is watched.
+    // What the app draws with (renderer.rs, MDM_RENDERER too), the next way when one can't
+    // start. A way the app failed with, or is still starting with (this report may be about it),
+    // is passed over: WARP when its Direct3D on the card did, OpenGL when WARP did too; only the
+    // app's own starts are watched.
     let mut plan = crate::renderer::plan(
         settings.renderer,
         crate::renderer::overridden(&[]).as_deref(),
-        crate::renderer::suspect(),
+        crate::renderer::Known::suspect(),
     );
-    plan.watched = false;
+    plan.watch.clear();
+    plan.gl_checked = false;
     let data = m.data.clone();
     crate::renderer::run("misterdownloadmanager-crash", &plan, options, move |cc| {
         crate::scale::start(&cc.egui_ctx, zoom);
@@ -190,6 +195,10 @@ struct ReportWindow {
     icon: Option<egui::TextureHandle>,
     /// Windows' caption follows the window's theme (set once the window exists).
     caption_set: bool,
+    /// DWM gave the caption its light or dark (once: asked every second, it caught the window's
+    /// thread in a stalled system, #633).
+    #[cfg(windows)]
+    caption_dwm: bool,
     /// Brought inside the screen once it exists (scale::fit_window, #262).
     fitted: bool,
 }
@@ -208,6 +217,8 @@ impl ReportWindow {
             told: None,
             icon: None,
             caption_set: false,
+            #[cfg(windows)]
+            caption_dwm: false,
             fitted: false,
         }
     }
@@ -237,6 +248,7 @@ fn prepare(job: &Job, shared: Arc<Mutex<Shared>>, ctx: egui::Context) {
             .map(|v| mdm_crash::symbols::store(&data, v));
         let stores: Vec<PathBuf> = store.iter().cloned().collect();
         let made = report::make(dump.as_deref(), kind, notes.clone(), &data, &stores);
+        note_gl_freeze(&made);
         let missing = made
             .analysis
             .as_ref()
@@ -276,6 +288,7 @@ fn prepare(job: &Job, shared: Arc<Mutex<Shared>>, ctx: egui::Context) {
             match fetched {
                 Ok(()) => {
                     let made = report::make(dump.as_deref(), kind, notes, &data, &stores);
+                    note_gl_freeze(&made);
                     set(&shared, &ctx, |s| s.made = Some(made));
                 }
                 Err(e) => {
@@ -298,6 +311,28 @@ fn prepare(job: &Job, shared: Arc<Mutex<Shared>>, ctx: egui::Context) {
             });
         }
     });
+}
+
+/// A freeze while OpenGL drew, its window thread stuck inside OpenGL's driver (#847): remembered,
+/// so the app's next start draws another way (renderer.rs; Windows only). Read from the stack's
+/// modules, which need no symbols.
+fn note_gl_freeze(made: &Made) {
+    let drew_gl = made
+        .notes
+        .session
+        .as_ref()
+        .is_some_and(|s| s.renderer.starts_with("OpenGL"));
+    let Some(thread) = made.frozen_window_thread().filter(|_| drew_gl) else {
+        return;
+    };
+    let modules = thread.frames.iter().map(|f| f.module.as_deref());
+    // MDM_TEST_GL_STALL=1 (off-screen test copies): the app's stall stands for a driver's.
+    let testing =
+        crate::offscreen() && std::env::var_os("MDM_TEST_GL_STALL").is_some_and(|v| v == "1");
+    if let Some(module) = crate::renderer::gl_driver_frame(modules, testing) {
+        let seconds = made.notes.freeze.as_ref().map_or(0, |f| f.seconds);
+        crate::renderer::remember_gl_froze(&module, seconds);
+    }
 }
 
 fn set(shared: &Mutex<Shared>, ctx: &egui::Context, f: impl FnOnce(&mut Shared)) {
@@ -325,12 +360,14 @@ impl eframe::App for ReportWindow {
             let layout = egui::vec2(CLIENT[0], CLIENT[1]);
             crate::scale::fit_window(ui.ctx(), egui::vec2(120.0, 120.0), Some(layout));
         }
-        // Re-asserted as the main window does (winit can set it back from Windows' own mode).
+        // And through DWM, as the main window's, once the window is there.
         #[cfg(windows)]
-        crate::win32::caption_dark(
-            crate::i18n::t("Mister Download Manager crash report"),
-            crate::theme::dark_surface(),
-        );
+        if !self.caption_dwm {
+            self.caption_dwm = crate::win32::caption_dark(
+                crate::i18n::t("Mister Download Manager crash report"),
+                crate::theme::dark_surface(),
+            );
+        }
         while let Ok(e) = self.events.try_recv() {
             if matches!(e, Event::Recovered) {
                 self.recovered = true;

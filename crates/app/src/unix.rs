@@ -420,6 +420,189 @@ pub fn os_version() -> String {
         .unwrap_or_else(|| "Linux".into())
 }
 
+/// What `cmd` prints, trimmed, when it succeeds within `secs` seconds (`launch::output_within`).
+fn printed_within(cmd: &mut Command, secs: u64) -> Option<String> {
+    crate::launch::output_within(cmd, std::time::Duration::from_secs(secs))
+        .filter(|o| o.status.success())
+        .map(|o| String::from_utf8_lossy(&o.stdout).trim().to_owned())
+        .filter(|s| !s.is_empty())
+}
+
+/// The default browser (#668): the desktop's choice for web links (`xdg-settings`, else
+/// `mimeapps.list`), the program its `.desktop` file runs, and that program's version (Firefox's
+/// `application.ini` beside it, else its `--version`, on this thread, bounded in time). None when
+/// it isn't a browser MDM knows (MDM then speaks as Chrome).
+#[cfg(target_os = "linux")]
+pub fn default_browser() -> Option<mdm_engine::agent::Found> {
+    use crate::defaultbrowser::{exec_program, mimeapps_https, version_in};
+    use crate::xdgicons::{Dirs, ini_value};
+    use mdm_engine::agent::{Browser, Found};
+    let var = |n: &str| std::env::var(n).ok().filter(|v| !v.is_empty());
+    let home = var("HOME");
+    let desktop = printed_within(
+        Command::new("xdg-settings").args(["get", "default-web-browser"]),
+        5,
+    )
+    .filter(|d| d.ends_with(".desktop"))
+    .or_else(|| {
+        let config =
+            var("XDG_CONFIG_HOME").or_else(|| home.as_ref().map(|h| format!("{h}/.config")));
+        let lists = config
+            .iter()
+            .map(|c| format!("{c}/mimeapps.list"))
+            .chain(["/etc/xdg/mimeapps.list".to_owned()]);
+        lists
+            .filter_map(|l| std::fs::read_to_string(l).ok())
+            .find_map(|t| mimeapps_https(&t))
+    })?;
+    let dirs = Dirs::new(
+        home.as_deref(),
+        var("XDG_DATA_HOME").as_deref(),
+        var("XDG_DATA_DIRS").as_deref(),
+    );
+    // Snaps' and Flatpaks' launchers, also when the session's XDG_DATA_DIRS doesn't list them.
+    let entry = dirs
+        .data
+        .iter()
+        .map(|d| d.join("applications"))
+        .chain(
+            [
+                "/var/lib/snapd/desktop/applications",
+                "/var/lib/flatpak/exports/share/applications",
+            ]
+            .map(PathBuf::from),
+        )
+        .find_map(|d| std::fs::read_to_string(d.join(&desktop)).ok());
+    let program = entry
+        .as_deref()
+        .and_then(|e| ini_value(e, "Desktop Entry", "Exec"))
+        .and_then(|e| exec_program(&e));
+    let base = program
+        .as_deref()
+        .and_then(|p| Path::new(p).file_name())
+        .map(|b| b.to_string_lossy().into_owned());
+    let browser = Browser::named(&desktop).or_else(|| base.as_deref().and_then(Browser::named))?;
+    let firefox = matches!(browser, Browser::Firefox | Browser::FirefoxFork);
+    // A Flatpak's launcher would start its sandbox, and its files are inside it: its version
+    // stays unknown (MDM's estimate of today's).
+    let program = program.filter(|_| base.as_deref() != Some("flatpak"));
+    let install = program
+        .as_deref()
+        .filter(|_| firefox)
+        .and_then(|p| firefox_install(p, browser == Browser::Firefox));
+    let version = install
+        .as_ref()
+        .and_then(|d| std::fs::read_to_string(d.join("application.ini")).ok())
+        .and_then(|t| ini_value(&t, "App", "Version"))
+        .or_else(|| {
+            let program = program.as_deref()?;
+            version_in(&printed_within(Command::new(program).arg("--version"), 10)?)
+        });
+    // Ubuntu's own Firefox (its snap) says so in its User-Agent, and its distribution file
+    // names Ubuntu as its partner.
+    let ubuntu = install
+        .and_then(|d| std::fs::read_to_string(d.join("distribution/distribution.ini")).ok())
+        .is_some_and(|t| t.contains("partner.id=\"ubuntu\""));
+    Some(Found {
+        browser,
+        version,
+        ubuntu,
+    })
+}
+
+/// The folder a Firefox `program` runs from (the one holding its `application.ini`): a snap's
+/// (`/snap/bin/firefox` → `/snap/firefox/current/usr/lib/firefox`), the program's own folder
+/// with its links followed, else (`plain`: Firefox itself, not a fork) the distributions' usual
+/// places, for a `/usr/bin/firefox` that is a script.
+#[cfg(target_os = "linux")]
+fn firefox_install(program: &str, plain: bool) -> Option<PathBuf> {
+    let path = if program.contains('/') {
+        PathBuf::from(program)
+    } else {
+        std::env::split_paths(&std::env::var_os("PATH")?)
+            .map(|d| d.join(program))
+            .find(|p| p.is_file())?
+    };
+    let snap = path
+        .strip_prefix("/snap/bin")
+        .ok()
+        .and_then(|n| n.to_str())
+        .map(|n| PathBuf::from(format!("/snap/{n}/current/usr/lib/{n}")));
+    let own = std::fs::canonicalize(&path)
+        .ok()
+        .and_then(|p| p.parent().map(Path::to_path_buf));
+    let usual = ["/usr/lib/firefox", "/usr/lib64/firefox", "/opt/firefox"]
+        .map(PathBuf::from)
+        .into_iter()
+        .filter(|_| plain);
+    snap.into_iter()
+        .chain(own)
+        .chain(usual)
+        .find(|d| d.join("application.ini").is_file())
+}
+
+/// The default browser (#668): the app macOS opens https links with (LaunchServices' handlers;
+/// none set is Safari), and its version (its Info.plist's). None when it isn't a browser MDM
+/// knows (MDM then speaks as Chrome).
+#[cfg(target_os = "macos")]
+pub fn default_browser() -> Option<mdm_engine::agent::Found> {
+    use mdm_engine::agent::{Browser, Found};
+    let handlers = printed_within(
+        Command::new("defaults").args([
+            "read",
+            "com.apple.LaunchServices/com.apple.launchservices.secure",
+            "LSHandlers",
+        ]),
+        5,
+    );
+    let id = handlers
+        .as_deref()
+        .and_then(|h| crate::defaultbrowser::ls_handler(h, "https"))
+        .unwrap_or_else(|| "com.apple.safari".to_owned());
+    let browser = Browser::named(&id)?;
+    // Where the app is: Spotlight's answer, else where browsers install themselves.
+    let safe_id: String = id
+        .chars()
+        .filter(|c| c.is_ascii_alphanumeric() || matches!(c, '.' | '-' | '_'))
+        .collect();
+    let found = printed_within(
+        Command::new("mdfind").arg(format!("kMDItemCFBundleIdentifier == '{safe_id}'c")),
+        5,
+    )
+    .and_then(|o| o.lines().find(|l| l.ends_with(".app")).map(PathBuf::from));
+    let app = found.or_else(|| {
+        let name = match browser {
+            Browser::Chrome => "Google Chrome",
+            Browser::Edge => "Microsoft Edge",
+            Browser::Brave => "Brave Browser",
+            other => other.name(),
+        };
+        let home = std::env::var_os("HOME").map(PathBuf::from);
+        [
+            Some(PathBuf::from("/Applications")),
+            home.map(|h| h.join("Applications")),
+        ]
+        .into_iter()
+        .flatten()
+        .map(|d| d.join(format!("{name}.app")))
+        .find(|a| a.is_dir())
+    });
+    let version = app.and_then(|a| {
+        printed_within(
+            Command::new("defaults")
+                .arg("read")
+                .arg(a.join("Contents/Info"))
+                .arg("CFBundleShortVersionString"),
+            5,
+        )
+    });
+    Some(Found {
+        browser,
+        version,
+        ubuntu: false,
+    })
+}
+
 /// How long the file manager has to answer ShowItems before its folder is opened instead: one
 /// started for it (D-Bus activation) answers in a second or two.
 const SHOW_ITEMS_LIMIT: std::time::Duration = std::time::Duration::from_secs(5);
@@ -468,19 +651,23 @@ pub fn show_in_folder(path: &Path) {
     });
 }
 
-/// Options → Downloads → open magnet links and .torrent files with Mister Download Manager:
-/// Linux records it with xdg-mime for the desktop entry the packages install (turning it off
-/// leaves the choice to the desktop's settings). Not on macOS yet: it hands links to an app as
-/// open-URL events, which the app doesn't receive.
+/// Torrent settings → open magnet links and .torrent files with Mister Download Manager: Linux
+/// records it with xdg-mime for the desktop entry the packages install, macOS with Launch
+/// Services for the app (`open_events::make_default`, #698). Turning it off leaves the choice to
+/// the desktop's settings (macOS: Finder's Get Info → Open with).
 pub fn set_torrent_handlers(on: bool) {
-    if on && !cfg!(target_os = "macos") {
-        spawn(Command::new("xdg-mime").args([
-            "default",
-            "misterdownloadmanager.desktop",
-            "x-scheme-handler/magnet",
-            "application/x-bittorrent",
-        ]));
+    if !on {
+        return;
     }
+    #[cfg(target_os = "macos")]
+    open_events::make_default();
+    #[cfg(not(target_os = "macos"))]
+    spawn(Command::new("xdg-mime").args([
+        "default",
+        "misterdownloadmanager.desktop",
+        "x-scheme-handler/magnet",
+        "application/x-bittorrent",
+    ]));
 }
 
 /// `win32::assistive_technology_listening`: Linux's AT-SPI adapter answers a screen reader with
@@ -1327,6 +1514,49 @@ pub fn on_wayland() -> bool {
     window_system().wayland
 }
 
+/// Linux: MDM's windows are X11's in a Wayland session (XWayland), its default there.
+#[cfg(target_os = "linux")]
+pub fn on_xwayland() -> bool {
+    window_system().x11_over_wayland
+}
+
+/// Linux: the vendor of the GLX that will draw MDM's OpenGL windows on the X display, before any
+/// of them is made (their swap interval is chosen when the first one is): `glXGetClientString`'s
+/// `GLX_VENDOR` ("NVIDIA Corporation", "Mesa Project and SGI"). libglvnd picks the driver for
+/// the display the same way when eframe makes its context. None without libGL or a display.
+#[cfg(target_os = "linux")]
+#[allow(unsafe_code)]
+pub fn glx_vendor() -> Option<String> {
+    let xlib = x11_dl::xlib::Xlib::open().ok()?;
+    let glx = x11_dl::glx::Glx::open().ok()?;
+    // SAFETY: a display opened here and closed before returning; the vendor string belongs to
+    // the GLX library, and is copied while the display is open.
+    unsafe {
+        let display = (xlib.XOpenDisplay)(std::ptr::null());
+        if display.is_null() {
+            return None;
+        }
+        let vendor = (glx.glXGetClientString)(display, x11_dl::glx::GLX_VENDOR);
+        let vendor = (!vendor.is_null()).then(|| {
+            std::ffi::CStr::from_ptr(vendor)
+                .to_string_lossy()
+                .into_owned()
+        });
+        (xlib.XCloseDisplay)(display);
+        vendor
+    }
+}
+
+/// Linux: the vendor OpenGL says it is (`GL_VENDOR`), with eframe's context current.
+#[cfg(target_os = "linux")]
+#[allow(unsafe_code)]
+pub fn gl_vendor(gl: &eframe::glow::Context) -> String {
+    use eframe::glow::{self, HasContext as _};
+    // SAFETY: called while eframe makes the app, with its context current on this thread;
+    // glGetString only reads the driver's strings.
+    unsafe { gl.get_parameter_string(glow::VENDOR) }
+}
+
 /// Linux, X11 and XWayland (MDM's default): a menu's window as X11 menus are (GTK's, Qt's).
 /// Override-redirect: no window manager manages it, so it opens exactly where it's placed (a
 /// tiling compositor, sway, centred a managed one, #267), and compositors treat it as a menu:
@@ -1437,6 +1667,8 @@ pub fn tell_window_failed(text: &str) {
     eprintln!("{text}");
     tracing::error!("{text}");
     let title = "Mister Download Manager";
+    // A program of the desktop's draws it: without isolates (#919).
+    let text = &crate::i18n::os_text(text);
     let boxes: [(&str, Vec<&str>); 2] = [
         (
             "zenity",
@@ -1648,6 +1880,234 @@ pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileic
             premultiplied: true,
         })
     })
+}
+
+/// macOS hands an app what it should open (a .torrent double-clicked in Finder or dropped on
+/// MDM's icon in the Dock, a magnet link clicked in a browser) as Apple events, not on its
+/// command line, also to an MDM already running (#698). These receive them and send each one
+/// down the command channel, as a .torrent or magnet link on Windows' or Linux's command line
+/// goes (`mdm_ipc::parse_args`): Add torrent opens for it. The app's Info.plist
+/// (tools/installer/build-macos.sh) tells macOS that MDM opens them.
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+pub mod open_events {
+    use std::ffi::c_void;
+    use std::sync::Arc;
+    use std::sync::mpsc::Sender;
+
+    use objc2::rc::Retained;
+    use objc2::{DefinedClass as _, MainThreadMarker, MainThreadOnly, define_class, msg_send, sel};
+    use objc2_foundation::{
+        NSAppleEventDescriptor, NSAppleEventManager, NSNotification, NSNotificationCenter,
+        NSObject, NSString,
+    };
+
+    /// Apple event codes (four characters): open documents, get URL, and an event's direct
+    /// object (the files, the link).
+    const CORE_EVENT_CLASS: u32 = u32::from_be_bytes(*b"aevt");
+    const OPEN_DOCUMENTS: u32 = u32::from_be_bytes(*b"odoc");
+    const INTERNET_EVENT_CLASS: u32 = u32::from_be_bytes(*b"GURL");
+    const GET_URL: u32 = u32::from_be_bytes(*b"GURL");
+    const DIRECT_OBJECT: u32 = u32::from_be_bytes(*b"----");
+
+    pub struct Ivars {
+        tx: Sender<mdm_ipc::Incoming>,
+        wake: Arc<dyn Fn() + Send + Sync>,
+    }
+
+    define_class!(
+        // SAFETY: NSObject has no subclassing requirements, and OpenEvents doesn't implement Drop.
+        #[unsafe(super(NSObject))]
+        #[thread_kind = MainThreadOnly]
+        #[name = "MDMOpenEvents"]
+        #[ivars = Ivars]
+        pub struct OpenEvents;
+
+        impl OpenEvents {
+            /// AppKit installs its own handlers as the app starts, and dispatches the events
+            /// that launched it after this notification: Apple's moment for an app's own
+            /// handlers (installed earlier, AppKit's would replace them).
+            #[unsafe(method(willFinishLaunching:))]
+            fn will_finish_launching(&self, _note: &NSNotification) {
+                let manager = NSAppleEventManager::sharedAppleEventManager();
+                // SAFETY: both selectors are this class's, taking (event, reply) as the manager
+                // calls them; the handler lives as long as MDM (`start`). The event codes are
+                // AEEventClass and AEEventID, 32-bit codes.
+                unsafe {
+                    let _: () = msg_send![&*manager, setEventHandler: self,
+                        andSelector: sel!(openDocuments:withReplyEvent:),
+                        forEventClass: CORE_EVENT_CLASS, andEventID: OPEN_DOCUMENTS];
+                    let _: () = msg_send![&*manager, setEventHandler: self,
+                        andSelector: sel!(getURL:withReplyEvent:),
+                        forEventClass: INTERNET_EVENT_CLASS, andEventID: GET_URL];
+                }
+            }
+
+            #[unsafe(method(openDocuments:withReplyEvent:))]
+            fn open_documents(
+                &self,
+                event: &NSAppleEventDescriptor,
+                _reply: &NSAppleEventDescriptor,
+            ) {
+                for path in direct_object(event).map(|l| file_paths(&l)).unwrap_or_default() {
+                    self.hand(path);
+                }
+            }
+
+            #[unsafe(method(getURL:withReplyEvent:))]
+            fn get_url(&self, event: &NSAppleEventDescriptor, _reply: &NSAppleEventDescriptor) {
+                if let Some(link) = direct_object(event).and_then(|d| link(&d)) {
+                    self.hand(link);
+                }
+            }
+        }
+    );
+
+    impl OpenEvents {
+        /// A .torrent's path or a magnet link to the app, as its command line would.
+        fn hand(&self, item: String) {
+            match mdm_ipc::parse_args(std::slice::from_ref(&item)) {
+                Some(cmd) => {
+                    tracing::info!("opened from the system: {item}");
+                    let _ = self.ivars().tx.send(mdm_ipc::Incoming { cmd, reply: None });
+                    (self.ivars().wake)();
+                }
+                None => tracing::info!("opened from the system, not a torrent: {item}"),
+            }
+        }
+    }
+
+    /// Receive the open-documents and get-URL events from now on (`app` calls it on the main
+    /// thread, before the window's event loop starts).
+    pub fn start(tx: Sender<mdm_ipc::Incoming>, wake: Arc<dyn Fn() + Send + Sync>) {
+        let Some(mtm) = MainThreadMarker::new() else {
+            return;
+        };
+        let this = OpenEvents::alloc(mtm).set_ivars(Ivars { tx, wake });
+        // SAFETY: NSObject's init, on the object just allocated with its ivars set.
+        let this: Retained<OpenEvents> = unsafe { msg_send![super(this), init] };
+        let name = NSString::from_str("NSApplicationWillFinishLaunchingNotification");
+        // SAFETY: the selector is this class's and takes the notification.
+        unsafe {
+            NSNotificationCenter::defaultCenter().addObserver_selector_name_object(
+                &this,
+                sel!(willFinishLaunching:),
+                Some(&*name),
+                None,
+            );
+        }
+        // Neither the notification centre nor the event manager keeps its observer or handler:
+        // this one lives as long as MDM.
+        std::mem::forget(this);
+    }
+
+    /// The app's identifier and the .torrent file type, as Info.plist names them
+    /// (tools/installer/build-macos.sh).
+    pub const BUNDLE_ID: &str = "io.github.anefzaoui.misterdownloadmanager";
+    pub const TORRENT_TYPE: &str = "org.bittorrent.torrent";
+
+    #[link(name = "CoreServices", kind = "framework")]
+    unsafe extern "C" {
+        fn LSSetDefaultHandlerForURLScheme(scheme: *const c_void, bundle_id: *const c_void) -> i32;
+        fn LSSetDefaultRoleHandlerForContentType(
+            content_type: *const c_void,
+            role: u32,
+            bundle_id: *const c_void,
+        ) -> i32;
+    }
+
+    /// MDM the default app for magnet links and .torrent files (Torrent settings' switch). A
+    /// copy started outside its app (`cargo run`) has nothing to register: the log says so.
+    pub fn make_default() {
+        let id = NSString::from_str(BUNDLE_ID);
+        let scheme = NSString::from_str("magnet");
+        let torrent = NSString::from_str(TORRENT_TYPE);
+        // kLSRolesAll: viewer, editor, shell.
+        const ALL_ROLES: u32 = 0xFFFF_FFFF;
+        // SAFETY: NSString is toll-free bridged to CFString; the strings outlive the calls.
+        let (magnet, file) = unsafe {
+            (
+                LSSetDefaultHandlerForURLScheme(cf(&scheme), cf(&id)),
+                LSSetDefaultRoleHandlerForContentType(cf(&torrent), ALL_ROLES, cf(&id)),
+            )
+        };
+        if magnet != 0 || file != 0 {
+            tracing::info!(
+                "torrents: Launch Services didn't take MDM for magnet links ({magnet}) or                  .torrent files ({file})"
+            );
+        }
+    }
+
+    fn cf(s: &NSString) -> *const c_void {
+        (s as *const NSString).cast()
+    }
+
+    fn direct_object(event: &NSAppleEventDescriptor) -> Option<Retained<NSAppleEventDescriptor>> {
+        // SAFETY: paramDescriptorForKeyword: takes an AEKeyword (a 32-bit code).
+        unsafe { msg_send![event, paramDescriptorForKeyword: DIRECT_OBJECT] }
+    }
+
+    /// The paths of an open-documents event's files (a list, numbered from 1, of file URLs or
+    /// aliases).
+    pub fn file_paths(list: &NSAppleEventDescriptor) -> Vec<String> {
+        (1..=list.numberOfItems())
+            .filter_map(|i| list.descriptorAtIndex(i))
+            .filter_map(|d| d.fileURLValue())
+            .filter_map(|u| u.path())
+            .map(|p| p.to_string())
+            .collect()
+    }
+
+    /// A get-URL event's link.
+    pub fn link(d: &NSAppleEventDescriptor) -> Option<String> {
+        d.stringValue()
+            .map(|s| s.to_string())
+            .filter(|s| !s.is_empty())
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use super::*;
+        use objc2_foundation::NSURL;
+
+        /// #698: the files of an open-documents event, as Finder sends them, and a magnet
+        /// link's get-URL event become what MDM's command line takes.
+        #[test]
+        fn finder_events_become_commands() {
+            let list = NSAppleEventDescriptor::listDescriptor();
+            let files = [
+                "/Users/me/Downloads/debian.iso.torrent",
+                "/tmp/a b/ü.torrent",
+            ];
+            for (i, p) in files.iter().enumerate() {
+                let url = NSURL::fileURLWithPath(&NSString::from_str(p));
+                list.insertDescriptor_atIndex(
+                    &NSAppleEventDescriptor::descriptorWithFileURL(&url),
+                    i as isize + 1,
+                );
+            }
+            let paths = file_paths(&list);
+            // A file URL's path comes back as the file system spells it: `ü` decomposed (u and
+            // its diaeresis), the same file to every macOS call that opens it.
+            assert_eq!(
+                paths,
+                [
+                    "/Users/me/Downloads/debian.iso.torrent",
+                    "/tmp/a b/u\u{308}.torrent"
+                ]
+            );
+            let cmd = mdm_ipc::parse_args(&paths[..1]).unwrap();
+            assert_eq!(cmd.url.as_deref(), Some(files[0]));
+
+            let magnet = "magnet:?xt=urn:btih:7acf8fb590b2060dd9c3146ef770169d593433b0&dn=x";
+            let d = NSAppleEventDescriptor::descriptorWithString(&NSString::from_str(magnet));
+            let got = link(&d).unwrap();
+            assert_eq!(got, magnet);
+            let cmd = mdm_ipc::parse_args(&[got]).unwrap();
+            assert_eq!(cmd.url.as_deref(), Some(magnet));
+            assert!(file_paths(&NSAppleEventDescriptor::listDescriptor()).is_empty());
+        }
+    }
 }
 
 // ---- Crash reports (crash.rs, mdm-crash) -------------------------------------------------------
@@ -1884,7 +2344,9 @@ pub fn open_in(program: &Path, url: &str) {
 
 /// The counterpart of win32's Mark-of-the-Web on a file being downloaded from `url`: macOS'
 /// quarantine attribute (Gatekeeper checks a program before its first start, as for a browser's
-/// download), and on Linux the freedesktop.org origin attributes file managers show.
+/// download), and on Linux the freedesktop.org origin attributes file managers show. Through
+/// `webmark::mark`, which asks Options' "Mark downloaded files as coming from the internet" first
+/// (neither system has a policy like Windows' "Do not preserve zone information").
 pub fn mark_downloaded(path: &Path, url: &str, referrer: Option<&str>) {
     #[cfg(target_os = "macos")]
     {
@@ -1942,6 +2404,92 @@ fn set_xattr(path: &Path, name: &str, value: &str) {
             0,
         )
     };
+}
+
+/// Rename `from` to `to` without ever replacing an existing entry (`ErrorKind::AlreadyExists`
+/// when `to` is already there).
+#[allow(unsafe_code)]
+pub fn rename_no_replace(from: &Path, to: &Path) -> std::io::Result<()> {
+    use std::ffi::CString;
+    use std::os::unix::ffi::OsStrExt;
+    let from_c = CString::new(from.as_os_str().as_bytes())
+        .map_err(|_| std::io::Error::new(std::io::ErrorKind::InvalidInput, "interior NUL"))?;
+    let to_c = CString::new(to.as_os_str().as_bytes())
+        .map_err(|_| std::io::Error::new(std::io::ErrorKind::InvalidInput, "interior NUL"))?;
+
+    #[cfg(target_os = "macos")]
+    {
+        // SAFETY: both paths are valid NUL-terminated C strings alive for the call.
+        let rc = unsafe { libc::renamex_np(from_c.as_ptr(), to_c.as_ptr(), libc::RENAME_EXCL) };
+        if rc == 0 {
+            Ok(())
+        } else {
+            Err(std::io::Error::last_os_error())
+        }
+    }
+
+    #[cfg(not(target_os = "macos"))]
+    {
+        #[cfg(target_os = "linux")]
+        {
+            // SAFETY: AT_FDCWD with two valid NUL-terminated C strings and RENAME_NOREPLACE.
+            let rc = unsafe {
+                libc::syscall(
+                    libc::SYS_renameat2,
+                    libc::AT_FDCWD,
+                    from_c.as_ptr(),
+                    libc::AT_FDCWD,
+                    to_c.as_ptr(),
+                    libc::RENAME_NOREPLACE as libc::c_uint,
+                )
+            };
+            if rc == 0 {
+                return Ok(());
+            }
+            let err = std::io::Error::last_os_error();
+            if !matches!(err.raw_os_error(), Some(libc::ENOSYS | libc::EINVAL)) {
+                return Err(err);
+            }
+        }
+
+        fallback_rename_no_replace(from, to)
+    }
+}
+
+/// Non-replacing POSIX fallback when `RENAME_NOREPLACE` is unavailable (`ENOSYS` / `EINVAL` or
+/// non-Linux Unix):
+/// - Directories claim `to` atomically via `create_dir(to)` (`EEXIST` -> `AlreadyExists` even if
+///   `to` is an empty folder), then `fs::rename(from, to)` replaces only our own placeholder.
+/// - Files link atomically via `hard_link(from, to)` (`EEXIST` -> `AlreadyExists` without ever
+///   falling through to `fs::rename`), falling back to `symlink_metadata` + `fs::rename` only on
+///   filesystems that reject hard links (`EXDEV` / `EOPNOTSUPP` / `EPERM`).
+#[cfg_attr(target_os = "macos", allow(dead_code))]
+pub(crate) fn fallback_rename_no_replace(from: &Path, to: &Path) -> std::io::Result<()> {
+    let meta = std::fs::symlink_metadata(from)?;
+    if meta.is_dir() {
+        std::fs::create_dir(to)?;
+        if let Err(e) = std::fs::rename(from, to) {
+            let _ = std::fs::remove_dir(to);
+            return Err(e);
+        }
+        return Ok(());
+    }
+    match std::fs::hard_link(from, to) {
+        Ok(()) => {
+            if let Err(e) = std::fs::remove_file(from) {
+                let _ = std::fs::remove_file(to);
+                return Err(e);
+            }
+            Ok(())
+        }
+        Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => Err(e),
+        Err(_) => {
+            if std::fs::symlink_metadata(to).is_ok() {
+                return Err(std::io::Error::from(std::io::ErrorKind::AlreadyExists));
+            }
+            std::fs::rename(from, to)
+        }
+    }
 }
 
 #[cfg(all(test, target_os = "linux"))]
@@ -2351,11 +2899,18 @@ mod host_copy_tests {
         let t = tempfile::tempdir().unwrap();
         let dir = t.path().join("browser-host");
         std::fs::create_dir_all(&dir).unwrap();
-        // A real program (a script would run as the shell, its file only read).
+        // A real program (a script would run as the shell, its file only read). The shell, which
+        // runs under any name: Ubuntu 26.04's `sleep` is one program for every core tool, telling
+        // them apart by the name it's started under, so a copy of it named after the helper ended
+        // at once. `; :` keeps the shell from replacing itself with `sleep`.
         let old = dir.join(HOST);
-        std::fs::copy("/bin/sleep", &old).unwrap();
-        let mut running = std::process::Command::new(&old).arg("30").spawn().unwrap();
+        std::fs::copy("/bin/sh", &old).unwrap();
+        let mut running = std::process::Command::new(&old)
+            .args(["-c", "sleep 30; :"])
+            .spawn()
+            .unwrap();
         std::thread::sleep(std::time::Duration::from_millis(200));
+        assert!(running.try_wait().unwrap().is_none(), "the old copy runs");
         assert!(
             std::fs::write(&old, b"x").is_err() || cfg!(target_os = "macos"),
             "Linux refuses to write over a running program"

@@ -78,12 +78,14 @@ pub struct TorrentDialog {
     /// Download in order (#39).
     in_order: bool,
     /// Asking to create a missing folder.
-    asking: Option<(crate::dialogs::CreateFolder, ())>,
+    asking: crate::dialogs::FolderGate<()>,
     /// Asking whether to use files of the torrent's names already in the folder (#40).
-    asking_files: Option<(crate::dialogs::ExistingFiles, ())>,
+    asking_files: crate::dialogs::FilesGate<()>,
     /// A .torrent on the web (#39, Add URL or the browser): the request it is fetched with
     /// (the browser's cookies). One typed in the box goes as MDM's own downloads do.
     remote: Option<crate::torrents::Remote>,
+    /// The clipboard's magnet link, read off the window's thread (#661).
+    clip: crate::clipboard::Prefill,
 }
 
 /// The category of a torrent: its largest file's.
@@ -206,7 +208,7 @@ impl TorrentDialog {
 
     /// `source`: a magnet link, a .torrent path or a .torrent's web address (`remote`: how to
     /// ask for it) to look up at once, or None (the clipboard's magnet, if any, is offered and
-    /// looked up).
+    /// looked up on the frame it comes: the clipboard is read off the window's thread).
     #[allow(clippy::too_many_arguments)]
     pub fn new(
         source: Option<String>,
@@ -218,13 +220,13 @@ impl TorrentDialog {
         rt: &tokio::runtime::Handle,
         ctx: &egui::Context,
     ) -> Self {
-        let source = source.unwrap_or_else(|| {
-            crate::clipboard_text()
-                .filter(|t| Source::magnet(t).is_some())
-                .map(|t| t.trim().to_owned())
-                .unwrap_or_default()
-        });
-        let folder = category_folder(Category::General, &downloads, &category_dirs);
+        let clip = if source.is_none() {
+            crate::clipboard::Prefill::ask()
+        } else {
+            Default::default()
+        };
+        let source = source.unwrap_or_default();
+        let folder = category_folder(Category::Torrents, &downloads, &category_dirs);
         let mut d = TorrentDialog {
             source,
             folder: folder.display().to_string(),
@@ -247,14 +249,25 @@ impl TorrentDialog {
             focused: false,
             start_now: None,
             in_order: false,
-            asking: None,
-            asking_files: None,
+            asking: Default::default(),
+            asking_files: Default::default(),
             remote,
+            clip,
         };
         if !d.source.is_empty() {
             d.look_up(rt, ctx);
         }
         d
+    }
+
+    /// The clipboard's magnet link in the box, when it holds one and the box is still empty
+    /// (nothing typed meanwhile); whether it was put there (and is to be looked up).
+    fn fill_from_clipboard(&mut self, clip: &str) -> bool {
+        let fill = self.source.is_empty() && Source::magnet(clip).is_some();
+        if fill {
+            clip.trim().clone_into(&mut self.source);
+        }
+        fill
     }
 
     fn look_up(&mut self, rt: &tokio::runtime::Handle, ctx: &egui::Context) {
@@ -343,6 +356,11 @@ impl TorrentDialog {
         ctx: &egui::Context,
         rt: &tokio::runtime::Handle,
     ) -> Outcome<TorrentAdd> {
+        if let Some(clip) = self.clip.take()
+            && self.fill_from_clipboard(&clip)
+        {
+            self.look_up(rt, ctx);
+        }
         let looked = self.lookup.as_ref().and_then(|s| s.lock().unwrap().take());
         if let Some(res) = looked {
             self.lookup = None;
@@ -382,11 +400,13 @@ impl TorrentDialog {
         let folder = crate::dialogs::resolve_path(&self.folder);
         let out = crate::dialogs::ensure_folder(ctx, &mut self.asking, out, &folder);
         // Then: files of the torrent's names already there would be written into (#40).
+        // Looked for off the window's thread (#743), with what the torrent holds as it is now.
         let meta = &self.meta;
-        let out = crate::dialogs::ensure_files_free(ctx, &mut self.asking_files, out, || {
-            meta.as_ref()
-                .map_or_else(Vec::new, |m| m.existing_in(&folder))
-        });
+        let out =
+            crate::dialogs::ensure_files_free(ctx, &mut self.asking_files, out, &folder, || {
+                let (meta, there) = (meta.clone(), folder.clone());
+                move || meta.map_or_else(Vec::new, |m| m.existing_in(&there))
+            });
         match out {
             Outcome::Open => Outcome::Open,
             Outcome::Closed => Outcome::Closed,
@@ -463,9 +483,8 @@ impl TorrentDialog {
             let kind = crate::i18n::t("Torrent files").to_owned();
             let title = crate::i18n::t("Open torrent file").to_owned();
             winui::start_pick(ui.ctx(), "torrent-file", move || {
-                rfd::FileDialog::new()
+                crate::winui::file_dialog(&title)
                     .add_filter(kind, &["torrent"])
-                    .set_title(title)
                     .pick_file()
             });
         }
@@ -1808,5 +1827,43 @@ mod tests {
         assert_eq!(rows.len(), 1);
         assert_eq!(t[rows[0]].name, "debian.iso");
         assert_eq!(t[rows[0]].files, [0]);
+    }
+
+    #[test]
+    fn categories_without_their_own_folder_follow_general() {
+        // Absolute on every system (a path like "/Volumes/…" is drive-relative on Windows).
+        let root = std::env::temp_dir().join("mdm-554");
+        let at = |p: &str| root.join(p).display().to_string();
+        let dl = root.join("Users/test/Downloads");
+        assert_eq!(
+            category_folder(Category::Torrents, &dl, &[]),
+            dl.join("Torrents")
+        );
+        let general_only = vec![("General".to_owned(), at("Volumes/Data/Downloads"))];
+        let general = root.join("Volumes/Data/Downloads");
+        assert_eq!(
+            category_folder(Category::General, &dl, &general_only),
+            general
+        );
+        assert_eq!(
+            category_folder(Category::Torrents, &dl, &general_only),
+            general.join("Torrents")
+        );
+        assert_eq!(
+            category_folder(Category::Video, &dl, &general_only),
+            general.join("Video")
+        );
+        let both = vec![
+            ("General".to_owned(), at("Volumes/Data/Downloads")),
+            ("Torrents".to_owned(), at("Volumes/NAS/Torrents")),
+        ];
+        assert_eq!(
+            category_folder(Category::Torrents, &dl, &both),
+            root.join("Volumes/NAS/Torrents")
+        );
+        assert_eq!(
+            category_folder(Category::Video, &dl, &both),
+            general.join("Video")
+        );
     }
 }

@@ -20,8 +20,9 @@ struct State {
     current: Option<(&'static str, usize, usize)>,
     /// The helpers done: name and version.
     ready: Vec<(&'static str, String)>,
-    /// The helper that failed, and why (the ones after it are not tried).
-    error: Option<(&'static str, String)>,
+    /// The helper that failed, why, and what to do about it (#816; the ones after it are not
+    /// tried).
+    error: Option<(&'static str, String, Option<String>)>,
     done: bool,
 }
 
@@ -94,7 +95,11 @@ impl Helpers {
                     Ok(installed) => s.ready.push((name, installed.version)),
                     Err(e) => {
                         tracing::warn!("helper download failed: {name}: {e}");
-                        s.error = Some((name, crate::errors::tools(&e)));
+                        s.error = Some((
+                            name,
+                            crate::errors::tools(&e),
+                            crate::errors::tools_advice(&e, name),
+                        ));
                         break;
                     }
                 }
@@ -123,7 +128,9 @@ impl Helpers {
         }
         let mut answer = None;
         // A long translation's subline makes the banner taller (winui::banner).
-        let extra = crate::dialogs::grow_extra(ctx, "helpers-banner");
+        let extra = crate::dialogs::grow_extra(ctx, "helpers-banner")
+            + crate::dialogs::grow_extra(ctx, "helpers-error")
+            + crate::dialogs::grow_extra(ctx, "helpers-advice");
         window(
             ctx,
             "helpers",
@@ -248,7 +255,7 @@ impl Helpers {
         if let Some(job) = &self.job {
             let st = job.state.lock().unwrap();
             let f = job.progress.fraction().unwrap_or(0.0);
-            let (fraction, line, color) = if let Some((name, error)) = &st.error {
+            let (fraction, line, color) = if let Some((name, error, _)) = &st.error {
                 (
                     st.ready.len() as f32 / (st.ready.len() + 1) as f32,
                     crate::i18n::fmt(
@@ -311,32 +318,56 @@ impl Helpers {
             drop(st);
             let bar_w = 320.0;
             winui::meter(&p, r(o, (w - bar_w) / 2.0, 312.0, bar_w, 8.0), fraction);
-            // Centred on screen (the same place in both directions); cut to the window.
             let room = w - 40.0;
-            let shown = winui::ellipsize(&p, &winui::tahoma(), &line, room);
-            let tw = winui::text_width(&p, &shown);
-            let rc = winui::text_at(
-                &p,
-                winui::tahoma(),
-                (o.x + (w - tw) / 2.0).round(),
-                o.y + 340.0,
-                &shown,
-                color,
-            );
-            if shown != line {
-                winui::full_on_hover(ui, rc, "helpers-status", &line);
+            let mut more = 0.0;
+            if failed && winui::text_width(&p, &line) > room {
+                // A failure is read whole (#816): wrapped, the window growing by its lines past
+                // the first.
+                let n = winui::paragraph(
+                    &p,
+                    o.x + 20.0,
+                    o.y + 340.0,
+                    &line,
+                    color,
+                    o.x + w - 20.0,
+                    16.0,
+                );
+                more = 16.0 * n.saturating_sub(1) as f32;
+            } else {
+                // Centred on screen (the same place in both directions); cut to the window.
+                let shown = winui::ellipsize(&p, &winui::tahoma(), &line, room);
+                let tw = winui::text_width(&p, &shown);
+                let rc = winui::text_at(
+                    &p,
+                    winui::tahoma(),
+                    (o.x + (w - tw) / 2.0).round(),
+                    o.y + 340.0,
+                    &shown,
+                    color,
+                );
+                if shown != line {
+                    winui::full_on_hover(ui, rc, "helpers-status", &line);
+                }
             }
-            y += 36.0;
+            crate::dialogs::grow_px(ui.ctx(), "helpers-error", more);
+            y += 36.0 + more;
         }
 
         // The way back later, then the answer.
         winui::etched_h(&p, o.x + 16.0, o.y + y, w - 32.0);
+        // What to do about the failure (#816), when it says.
+        let advice = self.job.as_ref().and_then(|job| {
+            let st = job.state.lock().unwrap();
+            st.error.as_ref().and_then(|(_, _, a)| a.clone())
+        });
         let later = if self.job.is_some() && running {
             crate::i18n::t("They keep downloading if you close this window.")
         } else if self.job.is_some() && !failed {
             crate::i18n::t(
                 "All set: on a page with a video, use Tasks → Download video from a page.",
             )
+        } else if let Some(advice) = &advice {
+            advice.as_str()
         } else if self.job.is_some() {
             crate::i18n::t(
                 "Check your connection, then try again, or get them later from the video window.",
@@ -344,8 +375,22 @@ impl Helpers {
         } else {
             crate::i18n::t("Not now? Get them later from Tasks → Download video from a page.")
         };
-        winui::text(&p, o.x + 16.0, o.y + y + 20.0, later, muted);
-        let y = y + 28.0;
+        // Wrapped: the window grows by the lines past the first.
+        let lines = winui::paragraph(
+            &p,
+            o.x + 16.0,
+            o.y + y + 20.0,
+            later,
+            muted,
+            o.x + w - 16.0,
+            16.0,
+        );
+        crate::dialogs::grow_px(
+            ui.ctx(),
+            "helpers-advice",
+            16.0 * lines.saturating_sub(1) as f32,
+        );
+        let y = y + 28.0 + 16.0 * lines.saturating_sub(1) as f32;
         if self.job.is_none() {
             // As wide as their labels in this language (#192), the row ending where it ends in
             // English.
@@ -434,8 +479,9 @@ pub struct Programs {
     found: [Option<mdm_tools::Installed>; 3],
     /// A chosen program being checked (`--version`), and what it answered.
     checking: Option<(Helper, Answer)>,
-    /// MDM's own yt-dlp being downloaded in place of the system's (#452), and how that went.
-    installing: Option<Answer>,
+    /// MDM's own yt-dlp or gallery-dl being downloaded in place of the system's (#452, #571),
+    /// and how that went.
+    installing: Option<(Helper, Answer)>,
     error: Option<String>,
 }
 
@@ -468,10 +514,12 @@ impl Programs {
         ];
     }
 
-    /// MDM's own yt-dlp in place of the system's (#452): downloaded and checked as usual, from
-    /// then on the one used (`mdm_tools::installed`). It goes on if the window is closed.
+    /// MDM's own yt-dlp or gallery-dl in place of the system's (#452, #571): downloaded and
+    /// checked as usual, from then on the one used (`mdm_tools::installed`,
+    /// `mdm_tools::gallery::installed`). It goes on if the window is closed.
     fn install_own(
         &mut self,
+        h: Helper,
         dir: std::path::PathBuf,
         rt: &tokio::runtime::Handle,
         ctx: &egui::Context,
@@ -480,14 +528,14 @@ impl Programs {
         let (out, wake) = (slot.clone(), ctx.clone());
         let net = crate::settings::own_net();
         rt.spawn(async move {
-            let res = mdm_tools::install_latest(&dir, &net, None)
-                .await
-                .map(|_| ())
-                .map_err(|e| crate::errors::tools(&e));
-            *out.lock().unwrap() = Some(res);
+            let res = match h {
+                Helper::GalleryDl => mdm_tools::gallery::install_latest(&dir, &net, None).await,
+                _ => mdm_tools::install_latest(&dir, &net, None).await,
+            };
+            *out.lock().unwrap() = Some(res.map(|_| ()).map_err(|e| crate::errors::tools(&e)));
             wake.request_repaint();
         });
-        self.installing = Some(slot);
+        self.installing = Some((h, slot));
         self.error = None;
     }
 
@@ -505,7 +553,7 @@ impl Programs {
         let installed = self
             .installing
             .as_ref()
-            .and_then(|slot| slot.lock().unwrap().take());
+            .and_then(|(_, slot)| slot.lock().unwrap().take());
         if let Some(res) = installed {
             self.error = res.err();
             self.installing = None;
@@ -563,9 +611,15 @@ impl Programs {
                 .as_ref()
                 .filter(|c| h == Helper::GalleryDl && mdm_tools::gallery::too_old(&c.version));
             let checking = self.checking.as_ref().is_some_and(|(c, _)| *c == h);
-            let downloading = h == Helper::YtDlp && self.installing.is_some();
-            // The system's yt-dlp may be old: MDM's own copy can replace it (#452).
-            let system = h == Helper::YtDlp && found.is_some_and(mdm_tools::Installed::is_system);
+            let downloading = self.installing.as_ref().is_some_and(|(i, _)| *i == h);
+            // The system's yt-dlp or gallery-dl may be old: MDM's own copy can replace it (#452,
+            // #571), where MDM has one for this system (gallery-dl: none on macOS).
+            let replaceable = match h {
+                Helper::YtDlp => true,
+                Helper::GalleryDl => mdm_tools::gallery::asset().is_some(),
+                Helper::Ffmpeg => false,
+            };
+            let system = replaceable && found.is_some_and(mdm_tools::Installed::is_system);
             let status = match (too_old, found) {
                 _ if downloading => {
                     // i18n: Video helpers: MDM's own yt-dlp is being downloaded
@@ -649,7 +703,7 @@ impl Programs {
                 let title =
                     crate::i18n::fmt(crate::i18n::t("Choose {name}"), &[("name", h.name())]);
                 winui::start_pick(ui.ctx(), &format!("helper-{}", h.name()), move || {
-                    rfd::FileDialog::new().set_title(title).pick_file()
+                    crate::winui::file_dialog(&title).pick_file()
                 });
             }
             if winui::button(
@@ -674,7 +728,7 @@ impl Programs {
                         .map(|e| crate::errors::tools(&e));
                     self.look();
                 } else {
-                    self.install_own(dir, rt, ui.ctx());
+                    self.install_own(h, dir, rt, ui.ctx());
                 }
             }
             if k + 1 < HELPERS.len() {

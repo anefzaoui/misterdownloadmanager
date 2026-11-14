@@ -11,6 +11,7 @@ use mdm_tools::resolve::{Choice, Looked, SubChoice, Video};
 use mdm_tools::video::{ALL_UPLOADERS, Subs};
 
 use crate::dialogs::{Outcome, window};
+use crate::model::Category;
 use crate::winui::{self, ButtonKind, r, text};
 
 type Slot<T> = Arc<Mutex<Option<Result<T, String>>>>;
@@ -26,6 +27,8 @@ pub struct VideoAdd {
     pub page: url::Url,
     pub selector: String,
     pub dest: PathBuf,
+    /// The category it is listed under: Music for a sound-only choice (#611), else Video.
+    pub category: Category,
     pub size: Option<u64>,
     pub start_now: bool,
     /// What the browser's request for the page carried (its button), for yt-dlp to ask the
@@ -36,6 +39,9 @@ pub struct VideoAdd {
     /// The Subtitles choice to remember for the next video (settings.video_subs); none when
     /// the page had no subtitles to choose from (the last real choice stays).
     pub remember: Option<Subs>,
+    /// The browser's quality menu's look-up the choice was made from, for the download's first
+    /// run (videolookup.rs); none from this window, whose download looks the page up itself.
+    pub preloaded: Option<mdm_tools::video::Preloaded>,
 }
 
 /// Which helper is being installed.
@@ -50,7 +56,15 @@ pub struct VideoDialog {
     /// The browser's request context for `page` as it came (VideoAdd::context).
     context: mdm_ipc::Command,
     from_browser: String,
+    /// Save to.
     folder: String,
+    /// The Video and Music categories' folders MDM puts in Save to (#611): Music's while a
+    /// sound-only choice is chosen, as long as Save to holds one of them (a folder typed or
+    /// picked stays). No Music folder: the Music category was deleted, all goes as video.
+    video_dir: String,
+    music_dir: Option<String>,
+    /// Save to was last set for a sound-only choice.
+    sound: bool,
     name: String,
     lookup: Option<Slot<Looked>>,
     /// The yt-dlp and the browser's context the look-up ran with (a list is listed with them).
@@ -76,7 +90,7 @@ pub struct VideoDialog {
     /// Look the page up as soon as yt-dlp is there (opened from Add URL).
     auto_look: bool,
     /// Asking to create a missing folder.
-    asking: Option<(crate::dialogs::CreateFolder, ())>,
+    asking: crate::dialogs::FolderGate<()>,
     /// Helpers...: where yt-dlp and ffmpeg come from (#51).
     helpers: Option<crate::helpers::Programs>,
     /// The looked-up video's subtitle languages (#68) and the one chosen in the Subtitles list
@@ -85,9 +99,17 @@ pub struct VideoDialog {
     sub_pick: usize,
     /// Put the subtitles into the video rather than beside it.
     embed: bool,
+    /// Embed chapters (#827; settings.video_chapters).
+    chapters: bool,
     /// The last video's choice (settings.video_subs), applied to each video looked up.
     pref: Subs,
+    /// The clipboard's page address, read off the window's thread (#661).
+    clip: crate::clipboard::Prefill,
 }
+
+/// The top of the window's bottom row of buttons (Helpers..., Download Now, Later, Cancel),
+/// under Embed chapters.
+const BUTTONS_Y: f32 = 389.0;
 
 /// What is installed in the tools folder: (folder, yt-dlp, ffmpeg).
 type Tools = (
@@ -125,16 +147,37 @@ fn tools() -> Tools {
 }
 
 impl VideoDialog {
+    /// Opened from the menu: a video page's address on the clipboard is taken (read off the
+    /// window's thread, put in the box on the frame it comes).
     pub fn new(folder: PathBuf) -> Self {
-        let page = crate::clipboard_text()
-            .map(|t| t.trim().to_owned())
-            .filter(|t| url::Url::parse(t).is_ok_and(|u| matches!(u.scheme(), "http" | "https")))
-            .unwrap_or_default();
         VideoDialog {
-            page,
+            clip: crate::clipboard::Prefill::ask(),
+            ..Self::blank(folder)
+        }
+    }
+
+    /// The clipboard's text as the page, when it is a web address and the box is still empty
+    /// (nothing typed meanwhile).
+    fn fill_from_clipboard(&mut self, clip: &str) {
+        let clip = clip.trim();
+        if self.page.is_empty()
+            && url::Url::parse(clip).is_ok_and(|u| matches!(u.scheme(), "http" | "https"))
+        {
+            self.page = clip.to_owned();
+        }
+    }
+
+    /// No address yet, saving into `folder` (the Video category's).
+    fn blank(folder: PathBuf) -> Self {
+        let folder = folder.display().to_string();
+        VideoDialog {
+            page: String::new(),
             context: Default::default(),
             from_browser: String::new(),
-            folder: folder.display().to_string(),
+            video_dir: folder.clone(),
+            music_dir: None,
+            sound: false,
+            folder,
             name: String::new(),
             lookup: None,
             looking: None,
@@ -150,19 +193,34 @@ impl VideoDialog {
             focused: false,
             start_now: None,
             auto_look: false,
-            asking: None,
+            asking: Default::default(),
             helpers: None,
             subs: Vec::new(),
             sub_pick: 0,
             embed: false,
+            chapters: true,
             pref: Subs::default(),
+            clip: Default::default(),
         }
+    }
+
+    /// Embed chapters ticked or not (settings.video_chapters, #827).
+    pub fn with_chapters(mut self, on: bool) -> Self {
+        self.chapters = on;
+        self
     }
 
     /// Offer `pref` (the last video's subtitles, settings.video_subs) for the videos looked up.
     pub fn with_subs(mut self, pref: Subs) -> Self {
         self.embed = pref.embed;
         self.pref = pref;
+        self
+    }
+
+    /// Save to switches to `dir`, the Music category's folder, while a sound-only choice is
+    /// chosen (#611); None (the Music category was deleted): sound goes as video does.
+    pub fn with_music_folder(mut self, dir: Option<PathBuf>) -> Self {
+        self.music_dir = dir.map(|d| d.display().to_string());
         self
     }
 
@@ -181,7 +239,7 @@ impl VideoDialog {
             from_browser: page,
             context,
             auto_look: true,
-            ..Self::new(folder)
+            ..Self::blank(folder)
         }
     }
 
@@ -197,10 +255,8 @@ impl VideoDialog {
     /// The choices for a looked-up video: merged qualities when ffmpeg is there.
     fn set_video(&mut self, mut v: Video) {
         // No page reader for this site: the page's own title rather than a hash (#345).
-        if let Some(title) = self.context.video_title.as_deref().map(str::trim)
-            && !title.is_empty()
-            && self.page.trim() == self.from_browser
-            && mdm_tools::resolve::named_after_address(&v.title, &self.page)
+        if self.page.trim() == self.from_browser
+            && let Some(title) = page_title(&self.context, &v, &self.page)
         {
             v.title = title.to_owned();
         }
@@ -219,40 +275,24 @@ impl VideoDialog {
 
     /// The Subtitles list's choice as yt-dlp is asked for it.
     fn chosen_subs(&self) -> Subs {
-        let embed = self.embed;
-        let all = all_offered(&self.subs);
-        match self.sub_pick {
-            0 => Subs {
-                embed,
-                ..Default::default()
-            },
-            1 if all => Subs {
-                langs: vec![ALL_UPLOADERS.into()],
-                automatic: false,
-                embed,
-            },
-            i => match self.subs.get(i - 1 - usize::from(all)) {
-                Some(c) => Subs {
-                    langs: vec![c.code.clone()],
-                    automatic: c.automatic,
-                    embed,
-                },
-                None => Subs {
-                    embed,
-                    ..Default::default()
-                },
-            },
-        }
+        subs_at(&self.subs, self.sub_pick, self.embed)
     }
 
     /// A looked-up video with subtitles in four languages, without yt-dlp or the network
     /// (`/show video-subs`: the window's check in every language, its screenshots).
     pub fn show_sample(&mut self) {
+        // Its 4K in AV1 and VP9, HDR and SDR, each its own line (#755); 720p sized only
+        // about (#801).
         const SAMPLE: &str = r#"{"title": "A conference talk about download managers, recorded in Lisbon",
             "duration": 1830, "language": "en", "formats": [
-            {"format_id": "140", "ext": "m4a", "vcodec": "none", "acodec": "mp4a", "filesize": 29000000},
-            {"format_id": "18", "ext": "mp4", "height": 360, "vcodec": "avc1", "acodec": "mp4a", "filesize": 61000000},
-            {"format_id": "137", "ext": "mp4", "height": 1080, "vcodec": "avc1", "acodec": "none", "filesize": 412000000}],
+            {"format_id": "140", "ext": "m4a", "vcodec": "none", "acodec": "mp4a.40.2", "quality": 3, "tbr": 129.5, "filesize": 29600000},
+            {"format_id": "251", "ext": "webm", "vcodec": "none", "acodec": "opus", "quality": 3, "tbr": 121.8, "filesize": 27900000},
+            {"format_id": "18", "ext": "mp4", "height": 360, "fps": 30, "vcodec": "avc1.42001E", "acodec": "mp4a.40.2", "filesize": 61000000},
+            {"format_id": "701", "ext": "mp4", "height": 2160, "fps": 60, "vcodec": "av01.0.13M.10", "acodec": "none", "dynamic_range": "HDR10", "filesize": 1951000000},
+            {"format_id": "337", "ext": "webm", "height": 2160, "fps": 60, "vcodec": "vp09.02.51.10", "acodec": "none", "dynamic_range": "HDR10", "filesize": 2248000000},
+            {"format_id": "315", "ext": "webm", "height": 2160, "fps": 60, "vcodec": "vp9", "acodec": "none", "dynamic_range": "SDR", "filesize": 1870000000},
+            {"format_id": "299", "ext": "mp4", "height": 1080, "fps": 60, "vcodec": "avc1.64002A", "acodec": "none", "dynamic_range": "SDR", "filesize": 412000000},
+            {"format_id": "136", "ext": "mp4", "height": 720, "fps": 30, "vcodec": "avc1.4D401F", "acodec": "none", "dynamic_range": "SDR", "filesize_approx": 201000000}],
             "subtitles": {"de": [{"name": "German"}], "pt-PT": [{"name": "Portuguese (Portugal)"}],
                 "ar": [{"name": "Arabic"}]},
             "automatic_captions": {"en-orig": [{"name": "English (Original)"}], "en": [{"name": "English"}]}}"#;
@@ -265,14 +305,16 @@ impl VideoDialog {
     }
 
     /// A page like YouTube's when yt-dlp has no JavaScript runtime (#351): videos and sound
-    /// apart, nothing carrying both (`/show video-adaptive`).
-    pub fn show_sample_adaptive(&mut self) {
+    /// apart, nothing carrying both (`/show video-adaptive`); `runtime_said`: yt-dlp said why
+    /// (#852, `/show video-adaptive:runtime`).
+    pub fn show_sample_adaptive(&mut self, runtime_said: bool) {
         const SAMPLE: &str = r#"{"title": "A conference talk about download managers, recorded in Lisbon",
             "duration": 1830, "language": "en", "formats": [
             {"format_id": "140", "ext": "m4a", "vcodec": "none", "acodec": "mp4a", "filesize": 29000000},
             {"format_id": "137", "ext": "mp4", "height": 1080, "vcodec": "avc1", "acodec": "none", "filesize": 412000000},
             {"format_id": "136", "ext": "mp4", "height": 720, "vcodec": "avc1", "acodec": "none", "filesize": 201000000}]}"#;
-        if let Some(v) = mdm_tools::resolve::parse(SAMPLE.as_bytes()) {
+        if let Some(mut v) = mdm_tools::resolve::parse(SAMPLE.as_bytes()) {
+            v.needs_js_runtime = runtime_said;
             self.page = "https://video.example/talk".into();
             self.looked_up = self.page.clone();
             self.auto_look = false;
@@ -318,6 +360,9 @@ impl VideoDialog {
     }
 
     pub fn show(&mut self, ctx: &egui::Context, rt: &tokio::runtime::Handle) -> Outcome<VideoOut> {
+        if let Some(clip) = self.clip.take() {
+            self.fill_from_clipboard(&clip);
+        }
         // Results from the background work.
         let looked = self.lookup.as_ref().and_then(|s| s.lock().unwrap().take());
         if let Some(res) = looked {
@@ -385,11 +430,13 @@ impl VideoDialog {
             ctx,
             "video-page",
             "Download video from a page",
-            [500.0, 391.0],
+            [500.0, 422.0],
             false,
             winui::BG(),
             |ui, o| self.body(ui, o, rt),
         );
+        // A playlist's quality chosen, a list or a video looked up: Save to follows (#611).
+        self.follow_sound();
         // Helpers... open: on Close, the helpers are read again (another program, or MDM's own).
         if let Some(h) = &mut self.helpers
             && !matches!(h.show(ctx, rt), Outcome::Open)
@@ -402,49 +449,89 @@ impl VideoDialog {
         }
         let folder = crate::dialogs::resolve_path(&self.folder);
         let out = crate::dialogs::ensure_folder(ctx, &mut self.asking, out, &folder);
-        // A playlist's videos, each its own download.
-        if let (Some(list), Outcome::Done(())) = (&self.list, &out) {
+        match out {
+            Outcome::Open => Outcome::Open,
+            Outcome::Closed => Outcome::Closed,
+            Outcome::Done(()) => self.added().map_or(Outcome::Closed, Outcome::Done),
+        }
+    }
+
+    /// What Download Now or Later adds: a playlist's videos, each its own download, or the
+    /// video looked up (none when there is nothing to add).
+    fn added(&self) -> Option<VideoOut> {
+        let folder = self.save_folder();
+        let start_now = self.start_now.unwrap_or(true);
+        if let Some(list) = &self.list {
             let merge = self.tools.as_ref().is_some_and(|t| t.2.is_some());
-            let start_now = self.start_now.unwrap_or(true);
-            return Outcome::Done(VideoOut::Many(list.add(
+            return Some(VideoOut::Many(list.add(
                 &folder,
                 merge,
                 start_now,
                 &self.context(),
+                self.category(),
             )));
         }
-        match out {
-            Outcome::Open => Outcome::Open,
-            Outcome::Closed => Outcome::Closed,
-            Outcome::Done(()) => {
-                let (Some((_, choices)), Ok(page)) =
-                    (&self.video, url::Url::parse(self.page.trim()))
-                else {
-                    return Outcome::Closed;
-                };
-                let c = &choices[self.chosen.min(choices.len() - 1)];
-                let name = mdm_engine::naming::sanitize(self.name.trim());
-                let chosen = self.chosen_subs();
-                Outcome::Done(VideoOut::One(VideoAdd {
-                    page,
-                    selector: c.selector.clone(),
-                    dest: crate::dialogs::resolve_path(&self.folder).join(name),
-                    size: c.size,
-                    start_now: self.start_now.unwrap_or(true),
-                    context: self.context(),
-                    // Into the video only where its file type holds them (and with ffmpeg,
-                    // which VideoJob checks).
-                    subs: if mdm_tools::resolve::is_audio(c) {
-                        Subs::default()
-                    } else {
-                        Subs {
-                            embed: chosen.embed && mdm_tools::resolve::holds_subtitles(c),
-                            ..chosen.clone()
-                        }
-                    },
-                    remember: (!self.subs.is_empty()).then_some(chosen),
-                }))
-            }
+        let (Some((_, choices)), Ok(page)) = (&self.video, url::Url::parse(self.page.trim()))
+        else {
+            return None;
+        };
+        let c = choices.get(self.chosen.min(choices.len().checked_sub(1)?))?;
+        let name = mdm_engine::naming::sanitize(self.name.trim());
+        let chosen = self.chosen_subs();
+        Some(VideoOut::One(VideoAdd {
+            page,
+            selector: c.selector.clone(),
+            dest: folder.join(name),
+            category: self.category(),
+            size: c.size,
+            start_now,
+            context: self.context(),
+            subs: subs_for_choice(c, &chosen),
+            remember: (!self.subs.is_empty()).then_some(chosen),
+            preloaded: None,
+        }))
+    }
+
+    /// The choice (or the playlist's quality) saves only the sound; None while there is none.
+    fn sound_only(&self) -> Option<bool> {
+        if let Some(list) = &self.list {
+            return Some(list.sound_only());
+        }
+        let (_, choices) = self.video.as_ref()?;
+        choices.get(self.chosen).map(mdm_tools::resolve::is_audio)
+    }
+
+    /// The category the download is listed under (#611), and whose folder "Change folder for
+    /// this category on last selected" keeps: Music for a sound-only choice, else Video.
+    pub fn category(&self) -> Category {
+        if self.music_dir.is_some() && self.sound_only() == Some(true) {
+            Category::Music
+        } else {
+            Category::Video
+        }
+    }
+
+    /// Save to goes to the Music category's folder when the choice turns sound-only, back to
+    /// Video's when it turns video again, but only while it holds the folder MDM put there: a
+    /// folder the user typed or picked is theirs (#611).
+    fn follow_sound(&mut self) {
+        let Some(sound) = self.sound_only() else {
+            return;
+        };
+        if sound == self.sound {
+            return;
+        }
+        self.sound = sound;
+        let Some(music) = &self.music_dir else {
+            return;
+        };
+        let (from, to) = if sound {
+            (&self.video_dir, music)
+        } else {
+            (music, &self.video_dir)
+        };
+        if crate::dialogs::resolve_path(&self.folder) == crate::dialogs::resolve_path(from) {
+            self.folder = to.clone();
         }
     }
 
@@ -453,13 +540,14 @@ impl VideoDialog {
         crate::dialogs::resolve_path(&self.folder)
     }
 
+    /// The file name, and Save to (#611), follow the choice.
     fn name_from_choice(&mut self) {
         if let Some((v, choices)) = &self.video
             && let Some(c) = choices.get(self.chosen)
         {
-            let stem = mdm_engine::naming::sanitize(&v.title);
-            self.name = format!("{stem}.{}", c.ext);
+            self.name = file_name(&v.title, c);
         }
+        self.follow_sound();
     }
 
     /// Install a helper in the background.
@@ -474,11 +562,15 @@ impl VideoDialog {
         let (out, ctx) = (slot.clone(), ctx.clone());
         let net = crate::settings::own_net();
         rt.spawn(async move {
-            let res = match tool {
-                Tool::YtDlp => mdm_tools::install_latest(&dir, &net, None).await,
-                Tool::Ffmpeg => mdm_tools::ffmpeg::install_latest(&dir, &net, None).await,
+            let (res, name) = match tool {
+                Tool::YtDlp => (mdm_tools::install_latest(&dir, &net, None).await, "yt-dlp"),
+                Tool::Ffmpeg => (
+                    mdm_tools::ffmpeg::install_latest(&dir, &net, None).await,
+                    "ffmpeg",
+                ),
             };
-            *out.lock().unwrap() = Some(res.map_err(|e| crate::errors::tools(&e)));
+            // What failed and what to do (#816): wrapped in the empty list below.
+            *out.lock().unwrap() = Some(res.map_err(|e| crate::errors::tools_and_advice(&e, name)));
             ctx.request_repaint();
         });
         self.install = Some((tool, slot));
@@ -549,15 +641,7 @@ impl VideoDialog {
             let browser = from_browser(&self.context());
             self.looking = Some((exe.clone(), browser.clone()));
             std::thread::spawn(move || {
-                let mut res =
-                    mdm_tools::resolve::look_up(&exe, &page, &browser).map_err(|e| e.to_string());
-                // A plain file: yt-dlp doesn't say its size, its server does (#320).
-                if let Ok(Looked::Video(v)) = &mut res
-                    && v.needs_size()
-                    && let Some(size) = direct_size(&rt, &page, &browser)
-                {
-                    v.set_size(size);
-                }
+                let res = look_up(&exe, &page, &browser, &rt);
                 *out.lock().unwrap() = Some(res);
                 ctx.request_repaint();
             });
@@ -617,6 +701,11 @@ impl VideoDialog {
             .filter(|(v, _)| ffmpeg.is_none() && mdm_tools::resolve::needs_merging(v))
             .and(offer.as_ref())
             .map(|(_, _, msg)| *msg);
+        // #852: YouTube looked up without a JavaScript runtime lists only some of its qualities
+        // (on some days only the sound): said on the title's line and the one under it, with
+        // the help page's section on installing one.
+        let runtime_note =
+            self.error.is_none() && self.video.as_ref().is_some_and(|(v, _)| v.needs_js_runtime);
         if let Some(t) = installing {
             crate::torrentdlg::spinner(ui, pos2(o.x + 18.0, line_y - 4.0), 6.0);
             let msg = if t == Tool::YtDlp {
@@ -636,6 +725,22 @@ impl VideoDialog {
             );
         } else if self.list.is_some() {
             // The list draws its own (PlaylistView::middle).
+        } else if runtime_note {
+            if winui::note_with_link(
+                ui,
+                &p,
+                o.x + 11.0,
+                line_y,
+                16.0,
+                js_runtime_note(),
+                winui::ERROR(),
+                o.x + status_right,
+                // i18n: link after the note that YouTube needs a JavaScript runtime: opens the help page that says how to install Node.js or Deno
+                "How to install one",
+                "video-runtime",
+            ) {
+                crate::help::open_page(JS_RUNTIME_HELP);
+            }
         } else if let Some(msg) = merge_note {
             winui::fit(
                 ui,
@@ -699,11 +804,12 @@ impl VideoDialog {
             if cut {
                 winui::full_on_hover(ui, rect, "video-error", e);
             }
-        } else if self
-            .video
-            .as_ref()
-            .and_then(|(_, c)| c.get(self.chosen))
-            .is_some_and(|c| c.selector == mdm_tools::resolve::FLAC)
+        } else if !runtime_note
+            && self
+                .video
+                .as_ref()
+                .and_then(|(_, c)| c.get(self.chosen))
+                .is_some_and(|c| c.selector == mdm_tools::resolve::FLAC)
         {
             // The honest word on FLAC (#70): the site's sound is compressed with losses already.
             winui::fit(
@@ -742,8 +848,9 @@ impl VideoDialog {
                 &mut self.rows,
                 |ui, clip, i, row, look| {
                     let c = &choices[i];
-                    // The icon of the file this choice gives, then the format ("1080p mp4, 60
-                    // fps", left to right); its size at the trailing edge.
+                    // The icon of the file this choice gives, then the format ("2160p · VP9 ·
+                    // 60 fps · HDR", left to right); its size at the trailing edge: exactly
+                    // that of the streams it downloads, or "~" before an estimate (#801).
                     let file = format!("video.{}", c.ext);
                     let kind = crate::fileicons::Kind::File(&file);
                     crate::fileicons::paint_at(
@@ -756,16 +863,10 @@ impl VideoDialog {
                     let label = choice_label(&c.label);
                     let x = row.left() + 4.0 + crate::fileicons::INDENT;
                     text(clip, x, row.top() + 12.0, &label, look.ink);
-                    let size = c
-                        .size
-                        // i18n: the video's file size is not known
-                        .map_or(
-                            crate::i18n::t("size unknown").into(),
-                            crate::dialogs::dialog_size,
-                        );
+                    let (size, said) = choice_size(c);
                     // Read as the format and its size (#95: the choices were blank to a screen reader
                     // and alike to UI Automation), in the user's language, as drawn.
-                    look.name = format!("{label}, {size}");
+                    look.name = format!("{label}, {said}");
                     winui::text_right(clip, row.right() - 6.0, row.top() + 12.0, &size, look.ink);
                 },
             );
@@ -874,6 +975,7 @@ impl VideoDialog {
             };
             label(ui, 328.0, labels[2], shade);
         }
+        self.chapters_row(ui, o, bx, ffmpeg.is_some());
 
         // The choices belong to the address looked up: an edited address is looked up first
         // (it downloaded the new page with the old one's format and name).
@@ -914,7 +1016,7 @@ impl VideoDialog {
         // Where yt-dlp and ffmpeg come from: MDM's own copies or the person's (#51).
         if winui::button(
             ui,
-            r(o, helpers_at.0, 358.0, helpers_at.1, 21.0),
+            r(o, helpers_at.0, BUTTONS_Y, helpers_at.1, 21.0),
             // i18n: button in Download video: where MDM takes yt-dlp and ffmpeg from
             "Helpers...",
             ButtonKind::Normal,
@@ -927,7 +1029,7 @@ impl VideoDialog {
         }
         let now = winui::button(
             ui,
-            r(o, now_at.0, 358.0, now_at.1, 21.0),
+            r(o, now_at.0, BUTTONS_Y, now_at.1, 21.0),
             "Download Now",
             kind(true),
             false,
@@ -940,7 +1042,7 @@ impl VideoDialog {
             || (ready && winui::enter_pressed(ui));
         let later = winui::button(
             ui,
-            r(o, later_at.0, 358.0, later_at.1, 21.0),
+            r(o, later_at.0, BUTTONS_Y, later_at.1, 21.0),
             // i18n: button: add it now, start downloading later
             "Later",
             kind(false),
@@ -950,7 +1052,7 @@ impl VideoDialog {
         .clicked();
         let cancel = winui::button(
             ui,
-            r(o, cancel_at.0, 358.0, cancel_at.1, 21.0),
+            r(o, cancel_at.0, BUTTONS_Y, cancel_at.1, 21.0),
             "Cancel",
             ButtonKind::Normal,
             false,
@@ -983,6 +1085,51 @@ impl VideoDialog {
 }
 
 impl VideoDialog {
+    /// Embed chapters (#827), under Subtitles, for a video and a playlist alike: the chapters a
+    /// video's page lists go into its file (ffmpeg writes them; on by default). Greyed without
+    /// ffmpeg, and for a choice converted to MP3, Opus or FLAC; its tick stays as it was.
+    fn chapters_row(&mut self, ui: &mut Ui, o: Pos2, bx: f32, ffmpeg: bool) {
+        let converts = match &self.list {
+            Some(list) => list.converts(),
+            None => self
+                .video
+                .as_ref()
+                .and_then(|(_, c)| c.get(self.chosen))
+                .is_some_and(|c| mdm_tools::resolve::audio_conversion(&c.selector).is_some()),
+        };
+        let can = ffmpeg && !converts;
+        let mut on = self.chapters && can;
+        let resp = winui::checkbox_until(
+            ui,
+            pos2(o.x + bx, o.y + 350.0),
+            &mut on,
+            // i18n: checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
+            "Embed chapters",
+            can,
+            Some(o.x + 489.0),
+        );
+        let resp = winui::why_disabled(
+            resp,
+            !ffmpeg,
+            // i18n: why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+            "This needs ffmpeg",
+        );
+        winui::why_disabled(
+            resp,
+            ffmpeg && converts,
+            // i18n: why "Embed chapters" is greyed in Download video: the choice is a sound converted to MP3, Opus or FLAC, which MDM saves without chapters
+            "MP3, Opus and FLAC files are saved without chapters",
+        );
+        if can {
+            self.chapters = on;
+        }
+    }
+
+    /// Embed chapters' tick, for the settings (`video_chapters`).
+    pub fn chapters(&self) -> bool {
+        self.chapters
+    }
+
     /// Subtitles (#68): a language the video has, from the uploader or the site's automatic
     /// captions, saved beside the video (`<name>.<language>.srt`) or put into it (ffmpeg).
     /// The list starts at `bx`, after the labels' column; true when it can be chosen from (its
@@ -1100,10 +1247,149 @@ fn pick_for(subs: &[SubChoice], pref: &Subs) -> usize {
         .map_or(0, |i| i + first)
 }
 
+/// What the Subtitles list's entry `pick` asks yt-dlp for (0: none, then "All the uploader's"
+/// when offered, then `subs` in order), put into the video when `embed`.
+fn subs_at(subs: &[SubChoice], pick: usize, embed: bool) -> Subs {
+    let all = all_offered(subs);
+    match pick {
+        0 => Subs {
+            embed,
+            ..Default::default()
+        },
+        1 if all => Subs {
+            langs: vec![ALL_UPLOADERS.into()],
+            automatic: false,
+            embed,
+        },
+        i => match subs.get(i - 1 - usize::from(all)) {
+            Some(c) => Subs {
+                langs: vec![c.code.clone()],
+                automatic: c.automatic,
+                embed,
+            },
+            None => Subs {
+                embed,
+                ..Default::default()
+            },
+        },
+    }
+}
+
+/// The subtitles saved with choice `c`, from the Subtitles list's choice `chosen`: none for a
+/// sound-only choice; into the video only where its file type holds them (and with ffmpeg,
+/// which VideoJob checks).
+pub(crate) fn subs_for_choice(c: &Choice, chosen: &Subs) -> Subs {
+    if mdm_tools::resolve::is_audio(c) {
+        Subs::default()
+    } else {
+        Subs {
+            embed: chosen.embed && mdm_tools::resolve::holds_subtitles(c),
+            ..chosen.clone()
+        }
+    }
+}
+
+/// The subtitles the window would save with choice `c` of video `v` as it opens, untouched:
+/// the last video's choice (`pref`, settings.video_subs) where this video has that language
+/// ([`pick_for`]), else none. The browser's quality menu adds its choice with these.
+pub(crate) fn default_subs(v: &Video, c: &Choice, pref: &Subs) -> Subs {
+    let subs = mdm_tools::resolve::sub_choices(v, crate::i18n::code());
+    subs_for_choice(c, &subs_at(&subs, pick_for(&subs, pref), pref.embed))
+}
+
+/// #852: the help page's section on installing a JavaScript runtime for yt-dlp.
+pub(crate) const JS_RUNTIME_HELP: &str = "video.md#javascript-runtime";
+
+/// #852: what a YouTube look-up yt-dlp made without a JavaScript runtime says: in the Download
+/// video window, and in the browser's quality menu.
+pub(crate) fn js_runtime_note() -> &'static str {
+    // i18n: in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
+    crate::i18n::t(
+        "YouTube needs a JavaScript runtime to list its video qualities: install Node.js or Deno, then look it up again",
+    )
+}
+
+/// The title of the page the browser played video `v` on (`mdm_ipc::Command::video_title`,
+/// trimmed), when yt-dlp knows `v` only by the address it looked up, `page`: it has no page
+/// reader for the site, and on some servers that part is a long hash (#345). None otherwise:
+/// yt-dlp's title stays. The Download video window and the browser's quality menu both name a
+/// video by it.
+///
+/// A page that shows one file is often titled with the file's name (Dropbox's, a server's own
+/// listing: `Episode 31.mp4`): its video or sound extension is left out, as the choice's type
+/// follows the name (it was `Episode 31.mp4.mp4`, #622).
+pub(crate) fn page_title<'a>(
+    context: &'a mdm_ipc::Command,
+    v: &Video,
+    page: &str,
+) -> Option<&'a str> {
+    context
+        .video_title
+        .as_deref()
+        .map(|t| without_media_extension(t.trim()))
+        .filter(|t| !t.is_empty() && mdm_tools::resolve::named_after_address(&v.title, page))
+}
+
+/// `title` without a video or sound file's extension at its end (`Episode 31.mp4` → `Episode
+/// 31`); as it is otherwise, or when nothing would be left.
+fn without_media_extension(title: &str) -> &str {
+    let media = |ext: &str| {
+        mdm_engine::naming::TYPES.iter().any(|(t, e)| {
+            e.eq_ignore_ascii_case(ext)
+                && (t.starts_with("video/") || t.starts_with("audio/") || *t == "application/ogg")
+        })
+    };
+    match title.rsplit_once('.') {
+        Some((stem, ext)) if media(ext) && !stem.trim().is_empty() => stem.trim_end(),
+        _ => title,
+    }
+}
+
+/// The file name a choice of type `c` gets for a video titled `title`: made safe, with the
+/// choice's type.
+pub(crate) fn file_name(title: &str, c: &Choice) -> String {
+    let stem = mdm_engine::naming::sanitize(title);
+    format!("{stem}.{}", c.ext)
+}
+
+/// yt-dlp's look-up of `page` with the browser's context, as the Download video window and the
+/// browser's quality menu make it: a plain file's size is asked of its server, as yt-dlp doesn't
+/// say it (#320).
+pub(crate) fn look_up(
+    exe: &std::path::Path,
+    page: &str,
+    browser: &mdm_tools::proc::FromBrowser,
+    rt: &tokio::runtime::Handle,
+) -> Result<Looked, String> {
+    look_up_kept(exe, page, browser, rt).0
+}
+
+/// [`look_up`], with yt-dlp's answer as it gave it, when it gave one (the browser's quality menu
+/// keeps it for the download chosen there, `mdm_tools::video::Preloaded`).
+pub(crate) fn look_up_kept(
+    exe: &std::path::Path,
+    page: &str,
+    browser: &mdm_tools::proc::FromBrowser,
+    rt: &tokio::runtime::Handle,
+) -> (Result<Looked, String>, Option<mdm_tools::proc::LookedUp>) {
+    let (mut res, kept) = match mdm_tools::resolve::look_up_kept(exe, page, browser) {
+        Ok((looked, out)) => (Ok(looked), Some(out)),
+        Err(e) => (Err(e.to_string()), None),
+    };
+    if let Ok(Looked::Video(v)) = &mut res
+        && v.needs_size()
+        && let Some(size) = direct_size(rt, page, browser)
+    {
+        v.set_size(size);
+    }
+    (res, kept)
+}
+
 /// yt-dlp's view of the browser's request context.
 pub fn from_browser(c: &mdm_ipc::Command) -> mdm_tools::proc::FromBrowser {
     mdm_tools::proc::FromBrowser {
         referer: c.referer.clone(),
+        origin: c.origin.clone(),
         user_agent: c.user_agent.clone(),
         cookies: c.cookies.clone(),
         jar: c.cookie_jar.clone(),
@@ -1111,24 +1397,28 @@ pub fn from_browser(c: &mdm_ipc::Command) -> mdm_tools::proc::FromBrowser {
 }
 
 /// The size the server says for a plain file at `page`, asked as the browser would (its Referer,
-/// its cookies, its user agent). None when it won't say: the window then says "size unknown", as
+/// its Origin, its cookies, its user agent). None when it won't say: the window then says "size unknown", as
 /// it always did. A cookie jar (a whole site's cookies, for yt-dlp) isn't used: the header is.
 fn direct_size(
     rt: &tokio::runtime::Handle,
     page: &str,
     browser: &mdm_tools::proc::FromBrowser,
 ) -> Option<u64> {
-    use reqwest::header::{COOKIE, HeaderMap, HeaderValue, REFERER};
+    use reqwest::header::{COOKIE, HeaderMap, HeaderValue, ORIGIN, REFERER};
     let url = url::Url::parse(page).ok()?;
     let mut headers = HeaderMap::new();
-    for (name, value) in [(REFERER, &browser.referer), (COOKIE, &browser.cookies)] {
+    for (name, value) in [
+        (REFERER, &browser.referer),
+        (ORIGIN, &browser.origin),
+        (COOKIE, &browser.cookies),
+    ] {
         if let Some(v) = value.as_deref().and_then(|v| HeaderValue::from_str(v).ok()) {
             headers.insert(name, v);
         }
     }
     let mut opts = crate::settings::own_net();
     if let Some(agent) = &browser.user_agent {
-        opts.user_agent = agent.clone();
+        opts.speak_as(agent.clone());
     }
     rt.block_on(mdm_engine::probe(url, headers, &opts))
         .ok()?
@@ -1154,7 +1444,11 @@ pub fn browser_label(name: &str) -> &'static str {
 /// yt-dlp's reason in plain words where it is one users meet often; otherwise its own text.
 /// `sent`: the browser's extension passed the page's cookies; `store`: else, the browser whose
 /// cookies yt-dlp read (Options → Sites Logins → Cookies for video sites, #229).
-fn lookup_error(e: &str, sent: bool, store: Option<&mdm_tools::proc::BrowserCookies>) -> String {
+pub(crate) fn lookup_error(
+    e: &str,
+    sent: bool,
+    store: Option<&mdm_tools::proc::BrowserCookies>,
+) -> String {
     let lower = e.to_ascii_lowercase();
     let browser = store.map_or("?", |b| browser_label(&b.browser));
     let named = |text: &str| crate::i18n::fmt(crate::i18n::t(text), &[("browser", browser)]);
@@ -1236,6 +1530,28 @@ fn lookup_error(e: &str, sent: bool, store: Option<&mdm_tools::proc::BrowserCook
         return e.to_owned();
     };
     crate::i18n::t(plain).to_owned()
+}
+
+/// A choice's size as its line shows it, and as a screen reader says it: the bytes of the
+/// streams it downloads, or an estimate marked as one ("~532 MB", "about 532 MB"; #801).
+pub(crate) fn choice_size(c: &Choice) -> (String, String) {
+    let Some(bytes) = c.size else {
+        // i18n: the video's file size is not known
+        let unknown = crate::i18n::t("size unknown").to_owned();
+        return (unknown.clone(), unknown);
+    };
+    let size = crate::dialogs::dialog_size(bytes);
+    if !c.approx {
+        return (size.clone(), size);
+    }
+    (
+        crate::i18n::ltr(&format!("~{size}")),
+        crate::i18n::fmt(
+            // i18n: a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
+            crate::i18n::t("about {size}"),
+            &[("size", &size)],
+        ),
+    )
 }
 
 /// A choice's label in the user's language: the audio choice's words translated, the rest (a
@@ -1425,7 +1741,7 @@ mod tests {
     /// Each entry stands for what yt-dlp is asked.
     #[test]
     fn entries_ask_for_their_subtitles() {
-        let mut d = VideoDialog::new(PathBuf::from("."));
+        let mut d = VideoDialog::blank(PathBuf::from("."));
         d.subs = vec![sub("de", false), sub("fr", false), sub("en-orig", true)];
         d.embed = true;
         let mut at = |i: usize| {
@@ -1438,5 +1754,311 @@ mod tests {
         let auto = at(4);
         assert_eq!(auto.langs, ["en-orig"]);
         assert!(auto.automatic && auto.embed);
+    }
+
+    /// #345: a stream the browser's button sent (its manifest, which yt-dlp names after its
+    /// address) is saved under the title of the page that played it; a video yt-dlp titled
+    /// itself keeps yt-dlp's title.
+    #[test]
+    fn a_streams_file_is_named_after_its_page() {
+        const STREAM: &str = r#"{"title": "master", "formats": [
+            {"format_id": "hls-720", "ext": "mp4", "height": 720, "vcodec": "avc1", "acodec": "mp4a"}]}"#;
+        let video = || mdm_tools::resolve::parse(STREAM.as_bytes()).unwrap();
+        let src = "https://cdn.test/v/hls/master.m3u8";
+        let context = mdm_ipc::Command {
+            video_page: Some(src.into()),
+            video_title: Some("A talk: about download managers? ".into()),
+            ..Default::default()
+        };
+        let mut d = VideoDialog::for_page(PathBuf::from("."), src, context.clone());
+        d.set_video(video());
+        assert_eq!(d.name, "A talk_ about download managers_.mp4");
+        // No page title came (an older extension, or a page yt-dlp read itself): yt-dlp's.
+        let mut d = VideoDialog::for_page(PathBuf::from("."), src, Default::default());
+        d.set_video(video());
+        assert_eq!(d.name, "master.mp4");
+        // The address edited: the browser's title is not for it.
+        let mut d = VideoDialog::for_page(PathBuf::from("."), src, context.clone());
+        d.page = "https://cdn.test/other/index.m3u8".into();
+        d.set_video(video());
+        assert_eq!(d.name, "master.mp4");
+        // A page yt-dlp read itself: its title, not the browser's.
+        const TITLED: &str = r#"{"title": "Its own title", "formats": [
+            {"format_id": "18", "ext": "mp4", "height": 360, "vcodec": "avc1", "acodec": "mp4a"}]}"#;
+        let page = "https://videos.test/watch?v=1";
+        let mut d = VideoDialog::for_page(PathBuf::from("."), page, context);
+        d.set_video(mdm_tools::resolve::parse(TITLED.as_bytes()).unwrap());
+        assert_eq!(d.name, "Its own title.mp4");
+    }
+
+    /// The browser's quality menu adds its choice as this window would, untouched: the same
+    /// file name, and the subtitles it preselects from the last video's choice.
+    #[test]
+    fn the_quality_menu_adds_what_the_window_would() {
+        const TALK: &str = r#"{"title": "A talk: in Lisbon", "language": "en", "duration": 60, "formats": [
+            {"format_id": "140", "ext": "m4a", "vcodec": "none", "acodec": "mp4a", "filesize": 29000000},
+            {"format_id": "43", "ext": "webm", "height": 480, "vcodec": "vp8", "acodec": "vorbis"},
+            {"format_id": "18", "ext": "mp4", "height": 360, "vcodec": "avc1", "acodec": "mp4a", "filesize": 61000000}],
+            "subtitles": {"de": [{"name": "German"}], "fr": [{"name": "French"}]}}"#;
+        let v = mdm_tools::resolve::parse(TALK.as_bytes()).unwrap();
+        let page = "https://videos.test/talk";
+        let with_title = mdm_ipc::Command {
+            video_page: Some(page.into()),
+            video_title: Some(" The page's title ".into()),
+            ..Default::default()
+        };
+        let embed = |mut s: Subs| {
+            s.embed = true;
+            s
+        };
+        for merge in [false, true] {
+            let choices = mdm_tools::resolve::choices(&v, merge);
+            assert!(choices.len() >= 2);
+            for context in [mdm_ipc::Command::default(), with_title.clone()] {
+                for pref in [
+                    Subs::default(),
+                    want(&["de"], false),
+                    embed(want(&["fr"], false)),
+                    want(&["ja"], false),
+                    embed(want(&[ALL_UPLOADERS], false)),
+                ] {
+                    let mut d = VideoDialog::for_page(PathBuf::from("."), page, context.clone())
+                        .with_subs(pref.clone());
+                    // As set_video leaves it, with or without ffmpeg (not this computer's):
+                    // yt-dlp's title is the page's own, which no browser title replaces.
+                    assert_eq!(page_title(&context, &v, page), None);
+                    d.video = Some((v.clone(), choices.clone()));
+                    d.subs = mdm_tools::resolve::sub_choices(&v, crate::i18n::code());
+                    d.sub_pick = pick_for(&d.subs, &d.pref);
+                    for (i, c) in choices.iter().enumerate() {
+                        d.chosen = i;
+                        d.name_from_choice();
+                        assert_eq!(
+                            subs_for_choice(c, &d.chosen_subs()),
+                            default_subs(&v, c, &pref),
+                            "{pref:?} {c:?}"
+                        );
+                        assert_eq!(d.name, file_name(&v.title, c));
+                    }
+                }
+            }
+        }
+        let choices = mdm_tools::resolve::choices(&v, false);
+        let mp4 = choices.iter().find(|c| c.ext == "mp4").unwrap();
+        let webm = choices.iter().find(|c| c.ext == "webm").unwrap();
+        let audio = choices
+            .iter()
+            .find(|c| mdm_tools::resolve::is_audio(c))
+            .unwrap();
+        assert_eq!(default_subs(&v, mp4, &want(&["de"], false)).langs, ["de"]);
+        let fr = default_subs(&v, webm, &embed(want(&["fr"], false)));
+        assert_eq!(fr.langs, ["fr"]);
+        assert!(!fr.embed, "a WebM can't hold them: beside it");
+        assert!(default_subs(&v, mp4, &embed(want(&["fr"], false))).embed);
+        assert!(
+            default_subs(&v, audio, &want(&["de"], false))
+                .langs
+                .is_empty(),
+            "none with the sound alone"
+        );
+        assert!(
+            default_subs(&v, mp4, &want(&["ja"], false))
+                .langs
+                .is_empty(),
+            "not on this page: none"
+        );
+        assert_eq!(file_name(&v.title, mp4), "A talk_ in Lisbon.mp4");
+        // Named after its address (`talk`): the page's title, trimmed (#345).
+        let hashed = Video {
+            title: "talk".into(),
+            ..v.clone()
+        };
+        assert_eq!(
+            page_title(&with_title, &hashed, page),
+            Some("The page's title")
+        );
+        assert_eq!(
+            page_title(&mdm_ipc::Command::default(), &hashed, page),
+            None
+        );
+    }
+
+    /// #622: a Dropbox page is titled with the file's name, extension and all; the video named
+    /// by it got the choice's extension once more (`Episode 31.mp4.mp4`).
+    #[test]
+    fn a_page_titled_with_the_file_name_names_it_once() {
+        let page = "https://www.dropbox.com/s/abc/Episode%2031.mp4?dl=0";
+        let v = Video {
+            title: "Episode 31".into(),
+            duration: None,
+            formats: Vec::new(),
+            subtitles: Vec::new(),
+            automatic: Vec::new(),
+            language: None,
+            direct: false,
+            needs_js_runtime: false,
+        };
+        let mp4 = Choice {
+            ext: "mp4".into(),
+            ..Default::default()
+        };
+        for (title, want) in [
+            ("Episode 31.mp4", "Episode 31"),
+            (" Episode 31.MKV ", "Episode 31"),
+            ("Episode 31.m4a", "Episode 31"),
+            // Not a media file's extension: a title as it is.
+            ("Episode 31. The end", "Episode 31. The end"),
+            ("Report v2.0", "Report v2.0"),
+            (".mp4", ".mp4"),
+        ] {
+            let context = mdm_ipc::Command {
+                video_title: Some(title.into()),
+                ..Default::default()
+            };
+            let got = page_title(&context, &v, page).unwrap();
+            assert_eq!(got, want, "{title}");
+            if want == "Episode 31" {
+                assert_eq!(file_name(got, &mp4), "Episode 31.mp4");
+            }
+        }
+    }
+
+    /// #661: a page's address from the clipboard comes a frame or more after the window opens:
+    /// it fills an empty box only, and only with a web address.
+    #[test]
+    fn the_clipboard_fills_only_an_empty_page_box() {
+        let (video, _) = dirs();
+        let mut d = VideoDialog::blank(video.clone());
+        d.fill_from_clipboard(
+            " https://video.example/talk 
+",
+        );
+        assert_eq!(d.page, "https://video.example/talk");
+        d.fill_from_clipboard("https://video.example/other");
+        assert_eq!(
+            d.page, "https://video.example/talk",
+            "not over what is there"
+        );
+        let mut d = VideoDialog::blank(video);
+        d.fill_from_clipboard("ftp://files.example/a.mp4");
+        assert_eq!(d.page, "");
+    }
+
+    /// The Video and Music categories' folders (not made: only their names are compared).
+    fn dirs() -> (PathBuf, PathBuf) {
+        let base = std::env::temp_dir().join("mdm-611");
+        (base.join("Video"), base.join("Music"))
+    }
+
+    /// Download video as the app opens it (Save to: Video's folder, Music's offered), a video
+    /// with a sound-only choice and video ones looked up, without yt-dlp or ffmpeg.
+    fn looked_up(music: bool) -> VideoDialog {
+        const SAMPLE: &str = r#"{"title": "A talk", "duration": 60, "formats": [
+            {"format_id": "140", "ext": "m4a", "vcodec": "none", "acodec": "mp4a", "filesize": 2900},
+            {"format_id": "18", "ext": "mp4", "height": 360, "vcodec": "avc1", "acodec": "mp4a", "filesize": 6100}]}"#;
+        let (video, music_dir) = dirs();
+        let mut d = VideoDialog::for_page(video, "https://video.example/talk", Default::default())
+            .with_music_folder(music.then_some(music_dir));
+        // No helpers looked for on this computer: no merged qualities.
+        d.tools = Some((None, None, None));
+        d.looked_up = d.page.clone();
+        d.set_video(mdm_tools::resolve::parse(SAMPLE.as_bytes()).unwrap());
+        d
+    }
+
+    /// The choices' rows: (a sound-only one, a video one).
+    fn rows(d: &VideoDialog) -> (usize, usize) {
+        let choices = &d.video.as_ref().unwrap().1;
+        let sound = choices.iter().position(mdm_tools::resolve::is_audio);
+        let video = choices
+            .iter()
+            .position(|c| !mdm_tools::resolve::is_audio(c));
+        (sound.unwrap(), video.unwrap())
+    }
+
+    /// A row clicked in the choices list, as the list does it.
+    fn choose(d: &mut VideoDialog, row: usize) {
+        d.chosen = row;
+        d.name_from_choice();
+    }
+
+    /// What Download Now adds for a single video: (its folder, its category).
+    fn one(d: &VideoDialog) -> (PathBuf, Category) {
+        match d.added() {
+            Some(VideoOut::One(add)) => (add.dest.parent().unwrap().to_owned(), add.category),
+            _ => panic!("a video is added"),
+        }
+    }
+
+    /// #611: a sound-only choice saves in the Music category's folder and is listed under Music;
+    /// a video choice again goes back to Video's.
+    #[test]
+    fn a_sound_only_choice_saves_in_music_and_back() {
+        let (video, music) = dirs();
+        let mut d = looked_up(true);
+        let (sound, film) = rows(&d);
+        choose(&mut d, film);
+        assert_eq!(d.save_folder(), video);
+        assert_eq!(one(&d), (video.clone(), Category::Video));
+        choose(&mut d, sound);
+        assert_eq!(
+            d.save_folder(),
+            music,
+            "Save to follows a sound-only choice"
+        );
+        assert_eq!(one(&d), (music.clone(), Category::Music));
+        assert_eq!(d.category(), Category::Music, "the folder kept is Music's");
+        choose(&mut d, film);
+        assert_eq!(d.save_folder(), video, "and goes back for a video");
+        assert_eq!(one(&d), (video, Category::Video));
+    }
+
+    /// #611: a folder the user typed or picked stays whatever is chosen; a sound-only download
+    /// into it is still listed under Music.
+    #[test]
+    fn a_folder_the_user_chose_stays() {
+        let mut d = looked_up(true);
+        let (sound, film) = rows(&d);
+        let own = std::env::temp_dir().join("mdm-611").join("Talks");
+        d.folder = own.display().to_string();
+        choose(&mut d, sound);
+        assert_eq!(d.save_folder(), own);
+        assert_eq!(one(&d), (own.clone(), Category::Music));
+        choose(&mut d, film);
+        assert_eq!(d.save_folder(), own);
+        assert_eq!(one(&d), (own, Category::Video));
+    }
+
+    /// The Music category deleted (#93): sound-only goes where video does, as before.
+    #[test]
+    fn without_a_music_category_sound_goes_as_video() {
+        let (video, _) = dirs();
+        let mut d = looked_up(false);
+        let (sound, _) = rows(&d);
+        choose(&mut d, sound);
+        assert_eq!(d.save_folder(), video);
+        assert_eq!(one(&d), (video, Category::Video));
+    }
+
+    /// #611: a playlist downloaded as sound only goes into the Music category's folder (then the
+    /// list's own folder) and each of its videos is listed under Music; a video quality, Video's.
+    #[test]
+    fn a_playlist_as_sound_saves_in_music() {
+        let (video, music) = dirs();
+        let many = |d: &VideoDialog| match d.added() {
+            Some(VideoOut::Many(add)) => (add.folder.parent().unwrap().to_owned(), add.category),
+            _ => panic!("a playlist is added"),
+        };
+        // "Audio only, original" (7), then "Up to 1080p" (3).
+        for (pick, folder, category) in
+            [("7", music, Category::Music), ("3", video, Category::Video)]
+        {
+            let mut d = looked_up(true);
+            d.show_sample_list(pick);
+            // As each frame of the window does.
+            d.follow_sound();
+            assert_eq!(d.save_folder(), folder, "quality {pick}");
+            assert_eq!(many(&d), (folder, category), "quality {pick}");
+        }
     }
 }

@@ -123,13 +123,13 @@ enum Cmd {
         /// Put the subtitles into the video file instead of beside it (needs ffmpeg; MP4/MKV).
         #[arg(long)]
         embed_subs: bool,
-        /// A stream in pieces (HLS, DASH): this many pieces at once (1 to 128), as `get`'s
-        /// connections; a plain file is one connection whatever this says.
+        /// Connections per stream (1 to 128), as `get`'s: MDM's engine downloads the streams
+        /// yt-dlp finds (#769), one in pieces (HLS, DASH) this many pieces at once.
         #[arg(short, long, default_value_t = Options::default().max_connections,
               value_parser = clap::value_parser!(u32).range(1..=MAX_CONNECTIONS_UNLOCKED as i64))]
         connections: u32,
-        /// The network adapter yt-dlp (and the ffmpeg it starts) goes through (#35), as
-        /// `get --adapter`.
+        /// The network adapter the downloads go through (#35), as `get --adapter`: the
+        /// engine's connections, and yt-dlp's (and the ffmpeg it starts).
         #[arg(long)]
         adapter: Option<String>,
     },
@@ -155,8 +155,7 @@ enum Cmd {
         /// Folder to save into: a folder named after the list is made there.
         #[arg(short, long, default_value = ".")]
         output: PathBuf,
-        /// A stream in pieces (HLS, DASH): this many pieces at once (1 to 128), as `get`'s
-        /// connections; a plain file is one connection whatever this says.
+        /// Connections per stream (1 to 128), as for `video-get`.
         #[arg(short, long, default_value_t = Options::default().max_connections,
               value_parser = clap::value_parser!(u32).range(1..=MAX_CONNECTIONS_UNLOCKED as i64))]
         connections: u32,
@@ -371,6 +370,15 @@ fn act(action: &str, ids: Vec<u64>) -> anyhow::Result<()> {
 /// window. On Windows the launcher adds its process id (`--cli=1234`), see [`Launch`].
 pub const FLAG: &str = "--cli";
 
+/// #852: what a YouTube look-up yt-dlp made without a JavaScript runtime says (its list is short,
+/// on some days only the sound), as the Download video window says it, with the help page's
+/// section on installing one.
+fn js_runtime_note() -> String {
+    "YouTube needs a JavaScript runtime to list its video qualities: install Node.js or Deno, \
+     then look it up again (https://misterdownloadmanager.com/help/video.html#javascript-runtime)"
+        .into()
+}
+
 /// The launcher's name, which the commands' help and messages show.
 pub const NAME: &str = "misterdownloadmanager-cli";
 
@@ -425,6 +433,13 @@ pub fn main(args: Vec<OsString>) -> ExitCode {
 }
 
 /// [`main`], downloading through the app's debrid `accounts` (#44).
+/// Does the command line `args` (as [`main_with`] takes them) download a link with MDM's own
+/// User-Agent (`get`, `resume`)? The app waits for the default browser's (#668) only for these.
+pub fn downloads(args: &[OsString]) -> bool {
+    Cli::try_parse_from(std::iter::once(OsString::from(NAME)).chain(args.iter().cloned()))
+        .is_ok_and(|cli| matches!(cli.cmd, Cmd::Get { .. } | Cmd::Resume { .. }))
+}
+
 pub fn main_with(args: Vec<OsString>, accounts: Option<&dyn Accounts>) -> ExitCode {
     let cli = Cli::parse_from(std::iter::once(OsString::from(NAME)).chain(args));
     let rt = tokio::runtime::Runtime::new().expect("tokio runtime");
@@ -525,11 +540,10 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             adapter,
         } => {
             use mdm_tools::video::State;
-            if let Some(a) = adapter {
-                mdm_tools::proc::set_route(mdm_engine::net::route_for(
-                    &a,
-                    &mdm_engine::net::adapters(),
-                ));
+            let route =
+                adapter.map(|a| mdm_engine::net::route_for(&a, &mdm_engine::net::adapters()));
+            if let Some(r) = &route {
+                mdm_tools::proc::set_route(r.clone());
             }
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
             // A gallery-dl of the person's too old for MDM is passed over (#236), said plainly.
@@ -546,7 +560,11 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                 None => anyhow::anyhow!("gallery-dl is not installed: run install-gallery-dl"),
             })?;
             if let Some(why) = &old {
-                eprintln!("{why}: using MDM's own copy, {}", tool.version);
+                if tool.is_system() {
+                    eprintln!("{why}: using the system's, {}", tool.exe.display());
+                } else {
+                    eprintln!("{why}: using MDM's own copy, {}", tool.version);
+                }
             }
             if !mdm_tools::gallery::handles(&tool, &url)? {
                 anyhow::bail!("gallery-dl can't read this address");
@@ -560,6 +578,7 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                 &folder,
                 &ask,
                 &Default::default(),
+                Some(video_engine(8, route)),
             )?;
             let p = loop {
                 let p = job.progress();
@@ -614,20 +633,41 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             if json {
                 let choices: Vec<_> = choices
                     .iter()
-                    .map(|c| json!({ "label": c.label, "format": c.selector, "size": c.size }))
+                    .map(|c| {
+                        json!({
+                            "label": c.label,
+                            "format": c.selector,
+                            "size": c.size,
+                            "approx": c.approx,
+                            "height": c.height,
+                            "fps": c.fps,
+                            "codec": c.codec,
+                            "range": c.range,
+                        })
+                    })
                     .collect();
                 let subs: Vec<_> = subs
                     .iter()
                     .map(|s| json!({ "code": s.code, "name": s.name, "automatic": s.automatic }))
                     .collect();
-                emit(json!({ "title": v.title, "choices": choices, "subtitles": subs }));
+                emit(json!({
+                    "title": v.title,
+                    "choices": choices,
+                    "subtitles": subs,
+                    "needs_js_runtime": v.needs_js_runtime,
+                }));
                 return Ok(());
+            }
+            if v.needs_js_runtime {
+                eprintln!("{}", js_runtime_note());
             }
             println!("{}", v.title);
             for c in choices {
+                // The streams' own bytes, or "~" before an estimate (#801).
+                let about = if c.approx { "~" } else { "" };
                 let size = c
                     .size
-                    .map_or(String::new(), |s| format!("  ~{} MB", s / 1_000_000));
+                    .map_or(String::new(), |s| format!("  {about}{} MB", s / 1_000_000));
                 println!("  {}{size}    -f \"{}\"", c.label, c.selector);
             }
             if !subs.is_empty() {
@@ -745,11 +785,11 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                     &folder,
                     &stem,
                     None,
-                    connections,
                     ffmpeg.as_deref(),
                     None,
                     &Default::default(),
                     &Default::default(),
+                    Some(video_engine(connections, None)),
                 )?;
                 let state = loop {
                     tokio::time::sleep(std::time::Duration::from_millis(500)).await;
@@ -916,17 +956,19 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             connections,
             adapter,
         } => {
-            if let Some(a) = adapter {
-                mdm_tools::proc::set_route(mdm_engine::net::route_for(
-                    &a,
-                    &mdm_engine::net::adapters(),
-                ));
+            let route =
+                adapter.map(|a| mdm_engine::net::route_for(&a, &mdm_engine::net::adapters()));
+            if let Some(r) = &route {
+                mdm_tools::proc::set_route(r.clone());
             }
             let subs = subs_arg(&subs, auto_subs, embed_subs);
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
             let tool = mdm_tools::installed(&dir)
                 .ok_or_else(|| anyhow::anyhow!("yt-dlp is not installed (install-ytdlp)"))?;
             let v = mdm_tools::resolve::resolve(&tool.exe, &url, &Default::default())?;
+            if v.needs_js_runtime {
+                eprintln!("{}", js_runtime_note());
+            }
             // A stem no file in the folder has, whatever the extension: yt-dlp takes any
             // `<stem>.*` there as its own (#32). The extension only sizes the name.
             let ext = mdm_tools::resolve::audio_conversion(&format).map_or("mp4", |a| a.format);
@@ -944,12 +986,12 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                 &output,
                 &stem,
                 None,
-                connections,
                 ffmpeg.as_deref(),
                 // No size shown here: the progress steadies itself (video::Meter).
                 None,
                 &Default::default(),
                 &subs,
+                Some(video_engine(connections, route)),
             )?;
             loop {
                 tokio::time::sleep(std::time::Duration::from_millis(500)).await;
@@ -1078,9 +1120,23 @@ fn subs_arg(langs: &str, automatic: bool, embed: bool) -> mdm_tools::video::Subs
     }
 }
 
+/// MDM's engine for a video's streams (#769): this many connections each, through `route`.
+fn video_engine(connections: u32, route: Option<mdm_engine::Route>) -> mdm_tools::streams::Engine {
+    mdm_tools::streams::Engine {
+        handle: tokio::runtime::Handle::current(),
+        opts: Options {
+            route: route.unwrap_or_default(),
+            ..opts(connections)
+        },
+    }
+}
+
+/// A download's options: the app's defaults (the default browser's User-Agent, #668, and MDM's
+/// former one once if a site refuses it, #372).
 fn opts(connections: u32) -> Options {
     Options {
         max_connections: connections,
+        agent_fallback: Some(mdm_engine::agent::IE11_USER_AGENT.to_owned()),
         ..Options::default()
     }
 }
@@ -1266,6 +1322,28 @@ fn torrent_source(s: &str) -> anyhow::Result<mdm_torrent::Source> {
 mod tests {
     use super::*;
 
+    /// #668: only the commands that download a link wait for the default browser's User-Agent.
+    #[test]
+    fn only_downloads_wait_for_the_default_browser() {
+        let args = |a: &[&str]| a.iter().map(OsString::from).collect::<Vec<_>>();
+        assert!(downloads(&args(&[
+            "get",
+            "https://example.test/a.zip",
+            "-o",
+            "."
+        ])));
+        assert!(downloads(&args(&[
+            "--json",
+            "get",
+            "https://example.test/a.zip"
+        ])));
+        assert!(downloads(&args(&["resume", "a.zip.mdm.json"])));
+        assert!(!downloads(&args(&["api", "on"])));
+        assert!(!downloads(&args(&["status"])));
+        assert!(!downloads(&args(&["--help"])));
+        assert!(!downloads(&args(&[])));
+    }
+
     /// A service that takes `hoster.test` only, or (`broken`) can't say which hosts it takes.
     #[derive(Debug)]
     struct Service;
@@ -1278,7 +1356,7 @@ mod tests {
         fn unlock<'a>(
             &'a self,
             _: &'a url::Url,
-            _: &'a (dyn Fn(String) + Send + Sync),
+            _: &'a (dyn Fn(String, Option<f32>) + Send + Sync),
             _: &'a tokio_util::sync::CancellationToken,
         ) -> std::pin::Pin<
             Box<

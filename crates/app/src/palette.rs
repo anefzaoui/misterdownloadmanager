@@ -374,6 +374,7 @@ metrics! {
     chevron_width: "chevron.width", "Stroke width of a drop-down's chevron" = 1.2;
     font_dialog: "font.dialog", "Dialog text (Tahoma in IDM's dialogs)" = 11.0;
     font_dialog_bold: "font.dialog.bold", "Options pages' titles" = 13.0;
+    font_cjk: "font.cjk", "The smallest text in a Chinese, Japanese or Korean interface (their glyphs are denser than Latin's)" = 12.0;
     font_title: "font.title", "A window's headline (Tahoma Bold): the browser extension's, the helpers'" = 16.0;
     font_code: "font.code", "A sign-in code to type at a service's page" = 22.0;
     font_ui: "font.ui", "Menus and the main window's text (Segoe UI)" = 12.0;
@@ -622,7 +623,7 @@ pub static CLASSIC: Theme = Theme {
 /// (written out above), then the ones shipped as theme files (`assets/themes/`, in the format
 /// users write, so they double as examples). Native follows the system and is made when chosen
 /// (`crate::native`).
-pub fn builtins() -> [&'static Theme; 8] {
+pub fn builtins() -> [&'static Theme; 9] {
     static HIGH_CONTRAST: std::sync::LazyLock<Theme> = std::sync::LazyLock::new(|| {
         crate::themefile::builtin(
             "high-contrast",
@@ -648,6 +649,9 @@ pub fn builtins() -> [&'static Theme; 8] {
     static AQUA: std::sync::LazyLock<Theme> = std::sync::LazyLock::new(|| {
         crate::themefile::builtin("aqua", include_str!("../assets/themes/aqua.toml"))
     });
+    static EMERALD: std::sync::LazyLock<Theme> = std::sync::LazyLock::new(|| {
+        crate::themefile::builtin("emerald", include_str!("../assets/themes/emerald.toml"))
+    });
     [
         &CLASSIC,
         &HIGH_CONTRAST,
@@ -657,6 +661,7 @@ pub fn builtins() -> [&'static Theme; 8] {
         &LUNA,
         &AERO,
         &AQUA,
+        &EMERALD,
     ]
 }
 
@@ -859,6 +864,11 @@ mod tests {
             ("luna", "Luna", include_str!("../assets/themes/luna.toml")),
             ("aero", "Aero", include_str!("../assets/themes/aero.toml")),
             ("aqua", "Aqua", include_str!("../assets/themes/aqua.toml")),
+            (
+                "emerald",
+                "Emerald",
+                include_str!("../assets/themes/emerald.toml"),
+            ),
         ] {
             let v: serde_json::Value = toml::from_str(text).unwrap();
             let l = crate::themefile::parse(id, &v, |_| {
@@ -933,6 +943,22 @@ mod tests {
         assert_eq!(builtins()[7].controls.focus, FocusLook::Ring);
         assert_eq!(builtins()[5].controls.focus, FocusLook::Dotted);
         assert_eq!(builtins()[6].controls.focus, FocusLook::Dotted);
+        // Emerald: flat 6-point corners, ring focus, and its chips inked rather than lettered
+        // in white — the soft fill carries the near-black text in both variants.
+        let emerald = builtins()[8];
+        assert_eq!(emerald.metrics.control_radius, 6.0);
+        assert_eq!(emerald.controls.field_focus, FieldFocus::Ring);
+        assert_eq!(emerald.controls.focus, FocusLook::Ring);
+        assert_eq!(emerald.controls.button, ButtonLook::Fluent);
+        assert_eq!(emerald.controls.check, CheckLook::Fluent);
+        assert_eq!(emerald.controls.progress, ProgressLook::Bar);
+        assert_eq!(emerald.controls.scroll, ScrollLook::Overlay);
+        use crate::derive::contrast;
+        for p in [&emerald.light, &emerald.dark] {
+            assert!(contrast(p.chip_text, p.chip_web) >= 4.5);
+            assert!(contrast(p.chip_text, p.chip_torrent) >= 4.5);
+            assert!(contrast(p.text, p.window) >= 4.5);
+        }
     }
 
     /// The classic look's dark secondary and error texts read on every dark surface they sit on
