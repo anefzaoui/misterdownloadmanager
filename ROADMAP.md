@@ -562,6 +562,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The window no longer waits for its crash monitor at start: the connection is made beside it,
+  a monitor slow to listen is connected to late, with what was sent meanwhile told again, and one
+  the system refuses for a while no longer ends the session's crash reports
+  ([#476](https://github.com/anefzaoui/misterdownloadmanager/issues/476))
 - ✅ The sites in **Don't start downloading automatically from the following sites** take their
   subdomains and the files their pages link to on another server (a CDN), as the Download panels'
   list does

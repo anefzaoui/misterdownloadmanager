@@ -80,7 +80,6 @@ pub fn start(data: &Path, session: Session) {
     if let Ok(mut s) = SESSION.lock() {
         *s = Some(session);
     }
-    let reporter = Arc::new(reporter);
     #[cfg(windows)]
     let attached = crate::win32::attach_crash_handler(reporter.clone());
     #[cfg(unix)]

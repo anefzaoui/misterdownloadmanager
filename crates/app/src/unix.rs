@@ -2124,7 +2124,8 @@ pub fn attach_crash_handler(reporter: std::sync::Arc<mdm_crash::client::Reporter
     #[cfg(target_os = "linux")]
     let monitor = reporter.monitor_pid();
     // SAFETY: the closure runs in the signal / exception handler; it only sends the dump request
-    // over the already-open socket.
+    // over the monitor's socket, when its connection is open (before it is, the dump is refused
+    // and the process dies the system's way).
     let event = unsafe { make_crash_event(move |cc| CrashEventResult::Handled(reporter.dump(cc))) };
     match CrashHandler::attach(event) {
         Ok(h) => {
