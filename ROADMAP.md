@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A video's look-up no longer waits 20 s on a server the network drops: 5 s, and once more
+  with yt-dlp's own wait only when the look-up failed for a slow server
+  ([#1053](https://github.com/anefzaoui/misterdownloadmanager/issues/1053))
 - ✅ The sites in **Don't start downloading automatically from the following sites** take their
   subdomains and the files their pages link to on another server (a CDN), as the Download panels'
   list does

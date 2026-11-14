@@ -189,6 +189,8 @@ pub struct LookedUp {
 /// cookies is made once more without them; if that fails too, the first error is the one told.
 /// A look-up whose secure connection failed for a certificate yt-dlp doesn't trust is made once
 /// more with the system's certificates ([`with_system_certs`], #955).
+///
+/// Each try waits [`QUICK_SOCKET`] on a server first, then yt-dlp's own time ([`quick_first`]).
 pub fn look_up(
     exe: &Path,
     ours: &[String],
@@ -197,8 +199,10 @@ pub fn look_up(
 ) -> Result<LookedUp, ProcError> {
     // A plain file a server's program sends gets its real type (#695).
     let run = |args: &[String]| {
-        output_warned(ytdlp(exe, &[], args, url)?, "yt-dlp", timeout)
-            .map(|(json, warnings)| (crate::resolve::typed_scripts(json), warnings))
+        quick_first(args, |args| {
+            output_warned(ytdlp(exe, &[], args, url)?, "yt-dlp", timeout)
+                .map(|(json, warnings)| (crate::resolve::typed_scripts(json), warnings))
+        })
     };
     match with_system_certs(&SYSTEM_CERTS, || run(ours)) {
         Ok((json, warnings)) => Ok(LookedUp {
@@ -275,6 +279,61 @@ fn with_system_certs<T>(
         }
         done => done,
     }
+}
+
+/// How long a look-up's first try lets a server keep it waiting, in seconds (`--socket-timeout`;
+/// yt-dlp's own is 20). yt-dlp tries a host's addresses one after the other, each for that long,
+/// and a host the network drops without a word (#1053: YouTube's HLS manifest server, where a
+/// network blocks it; a dead first address, as broken IPv6 gives) cost each look-up 20 s before
+/// yt-dlp went on without it. A page's servers answer within a second when they answer.
+pub const QUICK_SOCKET: &str = "5";
+
+/// `run` with `args`, [`QUICK_SOCKET`] and no retries of yt-dlp's own, then, only when that try
+/// failed on the network ([`network_failure`]: a server too slow for it among them), once more
+/// with `args` alone: yt-dlp's own wait and retries, so a slow server still gets its time. The
+/// first try retries nothing itself: yt-dlp retries a request that timed out up to 3 times, and a
+/// server answering in 8 s cost 41 s before it gave up, against 11 s with them off (#1053). A
+/// caller's own `--socket-timeout` or `--extractor-retries` is kept as it is, tried once.
+pub(crate) fn quick_first<T>(
+    args: &[String],
+    mut run: impl FnMut(&[String]) -> Result<T, ProcError>,
+) -> Result<T, ProcError> {
+    if args
+        .iter()
+        .any(|a| a == "--socket-timeout" || a == "--extractor-retries")
+    {
+        return run(args);
+    }
+    let mut quick = args.to_vec();
+    quick.extend(["--socket-timeout", QUICK_SOCKET, "--extractor-retries", "0"].map(str::to_owned));
+    match run(&quick) {
+        Err(ProcError::Failed { message, .. }) if network_failure(&message) => run(args),
+        other => other,
+    }
+}
+
+/// Does yt-dlp's error say the network failed it, as its own retries would have tried again: a
+/// server that didn't answer in time ("Read timed out. (read timeout=5.0)", "Connection to …
+/// timed out. (connect timeout=5.0)", "The read operation timed out"), a connection that broke,
+/// or a server's error (HTTP 5xx)?
+pub(crate) fn network_failure(message: &str) -> bool {
+    // A certificate yt-dlp doesn't trust is no network trouble: `with_system_certs` asks again.
+    if message.contains("CERTIFICATE_VERIFY_FAILED") {
+        return false;
+    }
+    let m = message.to_ascii_lowercase();
+    [
+        "timed out",
+        "read timeout",
+        "connect timeout",
+        "transporterror",
+        "connection reset",
+        "connection aborted",
+        "remote end closed",
+        "http error 5",
+    ]
+    .iter()
+    .any(|k| m.contains(k))
 }
 
 /// Did yt-dlp's look-up say YouTube's qualities went missing for want of a JavaScript runtime
@@ -1218,6 +1277,100 @@ pub fn output_warned(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #1053: a look-up waits 5 s on a server first; only a try that failed for a server that
+    /// didn't answer in time is made again, once, with yt-dlp's own wait.
+    #[test]
+    fn a_look_up_waits_briefly_then_once_as_long_as_ytdlp_would() {
+        let args = vec!["-J".to_owned()];
+        let quick: Vec<String> = [
+            "-J",
+            "--socket-timeout",
+            QUICK_SOCKET,
+            "--extractor-retries",
+            "0",
+        ]
+        .map(str::to_owned)
+        .to_vec();
+        let failed = |message: &str| ProcError::Failed {
+            tool: "yt-dlp".into(),
+            message: message.into(),
+        };
+        // Answered: one try, with the short wait.
+        let mut tried = Vec::new();
+        let r = quick_first(&args, |a| {
+            tried.push(a.to_vec());
+            Ok::<_, ProcError>("json")
+        });
+        assert_eq!(r.unwrap(), "json");
+        assert_eq!(tried, std::slice::from_ref(&quick));
+        // A server too slow for it: again with yt-dlp's own wait, which answers.
+        let mut tried = Vec::new();
+        let r = quick_first(&args, |a| {
+            tried.push(a.to_vec());
+            if tried.len() == 1 {
+                Err(failed(
+                    "ERROR: [generic] Unable to download webpage: HTTPSConnectionPool(host='slow.test', port=443): Read timed out. (read timeout=5.0)",
+                ))
+            } else {
+                Ok("json")
+            }
+        });
+        assert_eq!(r.unwrap(), "json");
+        assert_eq!(tried, [quick.clone(), args.clone()]);
+        // Timed out both times: twice only, the second error told.
+        let mut tried = 0;
+        let r: Result<(), _> = quick_first(&args, |_| {
+            tried += 1;
+            Err(failed(&format!(
+                "try {tried}: The read operation timed out"
+            )))
+        });
+        assert_eq!(tried, 2);
+        assert!(r.unwrap_err().to_string().contains("try 2"));
+        // Any other failure, or MDM's own limit on the whole run: not made again.
+        for e in [
+            failed("ERROR: [youtube] x: Video unavailable"),
+            ProcError::Timeout("yt-dlp".into()),
+        ] {
+            let mut tried = 0;
+            let mut e = Some(e);
+            let r: Result<(), _> = quick_first(&args, |_| {
+                tried += 1;
+                Err(e.take().unwrap())
+            });
+            assert!(r.is_err());
+            assert_eq!(tried, 1);
+        }
+        // A caller's own wait or retries stay, tried once.
+        for own in [["--socket-timeout", "60"], ["--extractor-retries", "9"]] {
+            let own = own.map(str::to_owned).to_vec();
+            let mut tried = Vec::new();
+            let _ = quick_first(&own, |a| {
+                tried.push(a.to_vec());
+                Err::<(), _>(failed("Read timed out."))
+            });
+            assert_eq!(tried, std::slice::from_ref(&own));
+        }
+        // yt-dlp's words for the network failing it, which its own retries would try again.
+        for m in [
+            "Read timed out. (read timeout=5.0)",
+            "HTTPSConnectionPool(host='x', port=443): Max retries exceeded (Caused by ConnectTimeoutError(<…>, 'Connection to x timed out. (connect timeout=5.0)'))",
+            "<urlopen error The read operation timed out>",
+            "Unable to download API page: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) (caused by TransportError(...))",
+            "Unable to download webpage: HTTP Error 503: Service Unavailable",
+        ] {
+            assert!(network_failure(m), "{m}");
+        }
+        for m in [
+            "HTTP Error 403: Forbidden",
+            "Video unavailable",
+            "Requested format is not available",
+            "Unable to download webpage: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1032)> (caused by TransportError(...))",
+        ] {
+            assert!(!network_failure(m), "{m}");
+        }
+    }
 
     /// A program is looked for in absolute folders only: `.` on the PATH would be wherever MDM
     /// was started from.
