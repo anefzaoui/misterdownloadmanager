@@ -4739,6 +4739,30 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	ছাইটৰ বট পৰীক্ষাই (Cloudflare) yt-dlp-ক অস্বীকাৰ কৰিলে। যদি পৃষ্ঠাখন আপোনাৰ ব্ৰাউজাৰত খোলে, তেন্তে বিকল্প → ছাইট লগইন → ভিডিঅ’ ছাইটৰ বাবে কুকিজত সেই ব্ৰাউজাৰটো বাছনি কৰক আৰু পৃষ্ঠাখন পুনৰ চাব, বা ভিডিঅ’ৰ ওপৰত থকা ডাউনলোড ভিডিঅ’ বুটামটো ব্যৱহাৰ কৰক।
+#. text in errors.rs
+#. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
+#, machine
+	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	চাইটটোৰ সুৰক্ষা প্ৰমাণপত্ৰৰ ম্যাদ উকলি গৈছে, সেয়েহে MDM নিশ্চিত হ’ব নোৱাৰে যে ই প্ৰকৃত চাইট (আপোনাৰ ব্ৰাউজাৰেও ইয়াৰ বিষয়ে সতৰ্ক কৰে)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was made for other site names than the one in the address
+#, machine
+	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	চাইটটোৰ সুৰক্ষা প্ৰমাণপত্ৰটো ঠিকনাত থকা চাইটৰ নামৰ সলনি আন চাইটৰ নামৰ বাবে বনোৱা হৈছে, সেয়েহে MDM নিশ্চিত হ’ব নোৱাৰে যে এইটো প্ৰকৃত চাইট (আপোনাৰ ব্ৰাউজাৰেও ইয়াৰ বিষয়ে সতৰ্ক কৰে)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
+#, machine
+	the site's security certificate isn't trusted (it's self-signed or from an unknown issuer), so MDM can't be sure it's the real site (your browser warns about it too)	চাইটটোৰ সুৰক্ষা প্ৰমাণপত্ৰ বিশ্বাসযোগ্য নহয় (ই স্ব-স্বাক্ষৰিত বা এটা অচিনাকি জাৰিকাৰীৰ পৰা অহা), সেয়েহে MDM নিশ্চিত হ’ব নোৱাৰে যে ই প্ৰকৃত চাইট (আপোনাৰ ব্ৰাউজাৰেও ইয়াৰ বিষয়ে সতৰ্ক কৰে)
+#. text in errors.rs
+#. why a download failed: the site's security certificate's validity hasn't begun; usually this computer's date or time is wrong
+#, machine
+	the site's security certificate isn't valid yet: check this computer's date and time	চাইটটোৰ সুৰক্ষা প্ৰমাণপত্ৰ এতিয়াও বৈধ নহয়: এই কম্পিউটাৰৰ তাৰিখ আৰু সময় পৰীক্ষা কৰক
+#. text in errors.rs
+#. why a download failed: the site's security certificate was refused for another reason (a bad signature, a broken certificate)
+#, machine
+	the site's security certificate was refused, so MDM can't be sure it's the real site	চাইটটোৰ সুৰক্ষা প্ৰমাণপত্ৰ অস্বীকাৰ কৰা হৈছিল, সেয়েহে MDM নিশ্চিত হ’ব নোৱাৰে যে ই প্ৰকৃত চাইট
+#. text in errors.rs
+#. why a download failed: the issuer of the site's security certificate took it back
+#, machine
+	the site's security certificate was revoked by its issuer, so MDM won't trust it	চাইটটোৰ সুৰক্ষা প্ৰমাণপত্ৰ ইয়াৰ জাৰিকাৰীয়ে বাতিল কৰিছিল, সেয়েহে MDM-এ ইয়াক বিশ্বাস নকৰে
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine

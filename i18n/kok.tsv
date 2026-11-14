@@ -4739,6 +4739,30 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	साइटाच्या बॉट तपासणीन (Cloudflare) yt-dlp क न्हयकारलें. जर पान तुमच्या ब्राउझरांत उगडटा, जाल्यार ऑप्शन्स → साइट्स लॉगइन्स → व्हिडिओ साइट्सखातीर कुकीज हातूंत तो ब्राउझर निवडात आनी परत पान सोदात, वा व्हिडिओ वयल्या डाउनलोड व्हिडिओ बटणाचो वापर करात.
+#. text in errors.rs
+#. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
+#, machine
+	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	साइटचें सुरक्षा प्रमाणपत्र कालबाह्य जालां, देखून MDM ती खरी साइट आसा हाची खात्री करूंक शकना (तुमचो ब्राउझर लेगीत ताचे विशीं इशारो दिता)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was made for other site names than the one in the address
+#, machine
+	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	साइटचें सुरक्षा प्रमाणपत्र दुसऱ्या साइट नांवा खातीर आसा, देखून MDM ती खरी साइट आसा हाची खात्री करूंक शकना (तुमचो ब्राउझर लेगीत ताचे विशीं इशारो दिता)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
+#, machine
+	the site's security certificate isn't trusted (it's self-signed or from an unknown issuer), so MDM can't be sure it's the real site (your browser warns about it too)	साइटचें सुरक्षा प्रमाणपत्र विश्वासार्ह ना (तें स्व-सही केल्लें वा अज्ञात जारीकर्त्याचें आसा), देखून MDM ती खरी साइट आसा हाची खात्री करूंक शकना (तुमचो ब्राउझर लेगीत ताचे विशीं इशारो दिता)
+#. text in errors.rs
+#. why a download failed: the site's security certificate's validity hasn't begun; usually this computer's date or time is wrong
+#, machine
+	the site's security certificate isn't valid yet: check this computer's date and time	साइटचें सुरक्षा प्रमाणपत्र अजून वैध ना: ह्या संगणकाची तारीख आनी वेळ तपासात
+#. text in errors.rs
+#. why a download failed: the site's security certificate was refused for another reason (a bad signature, a broken certificate)
+#, machine
+	the site's security certificate was refused, so MDM can't be sure it's the real site	साइटचें सुरक्षा प्रमाणपत्र न्हयकारलें, देखून MDM ती खरी साइट आसा हाची खात्री करूंक शकना
+#. text in errors.rs
+#. why a download failed: the issuer of the site's security certificate took it back
+#, machine
+	the site's security certificate was revoked by its issuer, so MDM won't trust it	साइटचें सुरक्षा प्रमाणपत्र ताच्या जारीकर्त्यान रद्द केलें, देखून MDM ताचेर विश्वास दवरचो ना
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine

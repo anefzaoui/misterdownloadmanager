@@ -408,6 +408,10 @@ pub enum Error {
     /// the server with (a minimal Linux without `ca-certificates`, #264).
     #[error("{}", crate::tls::NO_ROOTS)]
     NoCertificates,
+    /// The server's certificate was refused (expired, not trusted, for another name): what a
+    /// browser warns about. Retrying won't help, and there is no way around it (#762).
+    #[error("{0}")]
+    Certificate(crate::tls::CertProblem),
 }
 
 /// What failed on the network (`Error::Net`).
@@ -452,6 +456,7 @@ impl Error {
                 | Error::Cancelled
                 | Error::InUse(_)
                 | Error::NoCertificates
+                | Error::Certificate(_)
         )
     }
 
@@ -574,6 +579,9 @@ impl From<reqwest::Error> for Error {
     fn from(e: reqwest::Error) -> Self {
         if crate::tls::is_no_roots(&e) {
             return Error::NoCertificates;
+        }
+        if let Some(problem) = crate::tls::certificate_problem(&e) {
+            return Error::Certificate(problem);
         }
         Error::Http(Arc::new(e))
     }

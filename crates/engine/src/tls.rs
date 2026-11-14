@@ -80,6 +80,63 @@ pub fn is_no_roots(e: &(dyn std::error::Error + 'static)) -> bool {
     false
 }
 
+/// Why a server's certificate was refused (`Error::Certificate`): what a browser warns about
+/// too. MDM has no way around it: the user is told what is wrong with it.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum CertProblem {
+    /// Its validity ended.
+    Expired,
+    /// Its validity hasn't begun (or this computer's clock is wrong).
+    NotYetValid,
+    /// No certificate the system trusts vouches for it: signed by itself, or by an issuer the
+    /// system doesn't know.
+    Untrusted,
+    /// It is for other names than the server's.
+    WrongName,
+    /// Its issuer took it back.
+    Revoked,
+    /// Refused for another reason (a bad signature, an encoding, a purpose it isn't for).
+    Other,
+}
+
+impl std::fmt::Display for CertProblem {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(match self {
+            CertProblem::Expired => "the server's certificate has expired",
+            CertProblem::NotYetValid => "the server's certificate is not valid yet",
+            CertProblem::Untrusted => {
+                "the server's certificate is not trusted (self-signed or from an unknown issuer)"
+            }
+            CertProblem::WrongName => "the server's certificate is for another name",
+            CertProblem::Revoked => "the server's certificate was revoked",
+            CertProblem::Other => "the server's certificate was refused",
+        })
+    }
+}
+
+/// Whether `e` (or one of its causes) is a server's certificate refused by the verifier, and
+/// why. An `io::Error` hides the error it wraps from `source()` (it gives that error's own
+/// source): it is looked into as well.
+pub fn certificate_problem(e: &(dyn std::error::Error + 'static)) -> Option<CertProblem> {
+    use rustls::CertificateError as C;
+    if let Some(rustls::Error::InvalidCertificate(c)) = e.downcast_ref::<rustls::Error>() {
+        return Some(match c {
+            C::Expired | C::ExpiredContext { .. } => CertProblem::Expired,
+            C::NotValidYet | C::NotValidYetContext { .. } => CertProblem::NotYetValid,
+            C::UnknownIssuer => CertProblem::Untrusted,
+            C::NotValidForName | C::NotValidForNameContext { .. } => CertProblem::WrongName,
+            C::Revoked => CertProblem::Revoked,
+            _ => CertProblem::Other,
+        });
+    }
+    // What an io::Error wraps (hyper's connector wraps one io::Error in another).
+    let wrapped = e
+        .downcast_ref::<std::io::Error>()
+        .and_then(|io| io.get_ref())
+        .and_then(|inner| certificate_problem(inner));
+    wrapped.or_else(|| e.source().and_then(certificate_problem))
+}
+
 /// The verifier of a system without certificates: no server can be checked, so none is trusted.
 #[derive(Debug)]
 struct NoRoots(Arc<CryptoProvider>);
@@ -171,6 +228,76 @@ mod tests {
         let e = crate::Error::from(e);
         assert!(matches!(e, crate::Error::NoCertificates), "{e:?}");
         assert_eq!(e.to_string(), NO_ROOTS);
+    }
+
+    /// A client of this system (its verifier, as MDM's downloads have it), trusting the lab's
+    /// test CA besides.
+    fn trusting(ca: Vec<u8>) -> reqwest::Client {
+        let config = crate::ftp::client_config(&[ca]).unwrap();
+        reqwest::Client::builder()
+            .tls_backend_preconfigured(config)
+            .build()
+            .unwrap()
+    }
+
+    /// A refused certificate says why (#762): expired, self-signed, for another name; the
+    /// system's own verifier decides (Windows', macOS's, or the CA bundle's on Linux).
+    #[tokio::test]
+    async fn a_refused_certificate_says_why() {
+        use mdm_labserver::Cert;
+        for (cert, want) in [
+            (Cert::Expired, CertProblem::Expired),
+            (Cert::SelfSigned, CertProblem::Untrusted),
+            (Cert::WrongName, CertProblem::WrongName),
+        ] {
+            let lab = LabServer::start(Config {
+                tls: true,
+                cert,
+                ..Config::default()
+            })
+            .await
+            .unwrap();
+            let url = format!("https://localhost:{}/gen/16K", lab.addr().port());
+            let e = trusting(lab.ca_der().unwrap())
+                .get(&url)
+                .send()
+                .await
+                .unwrap_err();
+            assert_eq!(certificate_problem(&e), Some(want), "{cert:?}: {e:?}");
+            let e = crate::Error::from(e);
+            assert!(
+                matches!(e, crate::Error::Certificate(p) if p == want),
+                "{cert:?}: {e:?}"
+            );
+        }
+        // The good one downloads.
+        let lab = LabServer::start(Config {
+            tls: true,
+            ..Config::default()
+        })
+        .await
+        .unwrap();
+        let url = format!("https://localhost:{}/gen/16K", lab.addr().port());
+        let body = trusting(lab.ca_der().unwrap())
+            .get(&url)
+            .send()
+            .await
+            .unwrap()
+            .bytes()
+            .await
+            .unwrap();
+        assert_eq!(body.len(), 16 * 1024);
+    }
+
+    #[test]
+    fn a_wrapped_certificate_error_is_found() {
+        let e = std::io::Error::other(rustls::Error::InvalidCertificate(
+            rustls::CertificateError::Expired,
+        ));
+        assert_eq!(certificate_problem(&e), Some(CertProblem::Expired));
+        let e = std::io::Error::other(rustls::Error::General("handshake".into()));
+        assert_eq!(certificate_problem(&e), None);
+        assert_eq!(certificate_problem(&std::io::Error::other(refused())), None);
     }
 
     #[test]
