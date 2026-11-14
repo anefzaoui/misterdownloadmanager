@@ -558,9 +558,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 These ship in the next version.
 
 - ✅ Linux, Wayland: MDM chooses its windows' system the same way however it starts (its menu
-  entry, the browser's helper, autostart): Wayland's own windows where nothing looks after X11
-  programs (labwc, Hyprland, sway), XWayland on GNOME and KDE Plasma; **View → Window system**
-  to choose ([#624](https://github.com/anefzaoui/misterdownloadmanager/issues/624))
+  entry, the browser's helper, autostart): Wayland's own windows on a scaled screen where nothing
+  tells X11 programs the scale (Hyprland, labwc, sway), XWayland elsewhere; **View → Window
+  system** to choose ([#624](https://github.com/anefzaoui/misterdownloadmanager/issues/624))
 - ✅ Linux: no crash when fontconfig offers a font MDM can't draw with (an old bitmap font for
   Japanese): the best font that scales and MDM can read is used instead
   ([#931](https://github.com/anefzaoui/misterdownloadmanager/issues/931))
@@ -998,8 +998,8 @@ These ship in a later version, when they're ready.
   screen readers (Orca) reading MDM's windows; browsers installed as a Flatpak (Firefox from
   Flathub may reach MDM through the desktop, as the Snap does: to check); native Wayland windows
   placing their menus, which needs popup windows the window library doesn't have yet, so
-  XWayland stays the default where the desktop looks after X11 programs (GNOME, KDE Plasma);
-  Vulkan as the default renderer (below)
+  XWayland stays the default unless X11's windows would be scaled up (#624); Vulkan as the
+  default renderer (below)
 - 🔄 The Safari extension (in 0.5.2): still to check in Safari itself, signed with a Developer ID
 
 ### Bugs being looked into

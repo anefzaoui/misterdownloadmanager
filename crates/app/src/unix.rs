@@ -1457,27 +1457,42 @@ impl Pick {
     }
 }
 
+/// How X11's windows would look in this Wayland session, for MDM's own choice (#624).
+#[cfg(target_os = "linux")]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum X11Fit {
+    /// The desktop looks after X11 programs: a settings daemon tells them its scale and fonts
+    /// (GNOME, KDE Plasma: XSETTINGS).
+    CaredFor,
+    /// Nothing does, but no screen is scaled: X11's windows are drawn as they are.
+    Unscaled,
+    /// Nothing does, and a screen is scaled: the compositor scales X11's windows up (blurry), or
+    /// leaves them at a fraction of the size (Hyprland's `force_zero_scaling`).
+    Scaled,
+}
+
 /// The windows' system. In a Wayland session that runs XWayland too, `pick` decides; MDM's own
-/// choice (`Pick::Auto`) is X11 where the desktop looks after X11 programs (`x11_cared_for`),
-/// Wayland where it doesn't (#624):
+/// choice (`Pick::Auto`) is X11 unless X11's windows would be scaled (`x11_fit`, #624):
 ///
 /// - X11 (XWayland) lets MDM place its menus and drop lists, windows of their own, under what
 ///   was clicked (#50; override-redirect: exactly there on tiling compositors too, #267), and
 ///   hide its window in the notification area. Wayland lets no program place or hide its
-///   windows, and winit 0.30 has no popup windows (xdg_popup) there.
-/// - But an X11 program is only as good as the desktop's XWayland: GNOME and KDE Plasma run a
-///   settings daemon for it (XSETTINGS: its scale, its fonts) and size its windows as asked.
-///   wlroots compositors (labwc, Hyprland, sway, …) run none: there MDM's windows came out
-///   blurry, or sized other than asked (#624), and Wayland's own windows are right.
+///   windows, and winit 0.30 has no popup windows (xdg_popup) there: a menu opens where the
+///   compositor puts new windows (labwc and sway: the middle of the screen).
+/// - An X11 program is drawn at the screen's scale only when the desktop tells it that scale:
+///   GNOME and KDE Plasma run a settings daemon for XWayland (XSETTINGS). wlroots compositors
+///   (labwc, Hyprland, sway, …) run none: on a scaled screen they scale X11's windows up,
+///   blurry (Hyprland, #624), and Wayland's own windows are right. At scale 1 X11's are right
+///   too, and keep their menus in place.
 ///
 /// Without the libraries X11's windows need, Wayland's when there is one (#265). `loads`:
-/// whether a library can be loaded. `x11_cared_for` is only asked when it decides.
+/// whether a library can be loaded. `x11_fit` is only asked when it decides.
 #[cfg(target_os = "linux")]
 fn choose_window_system(
     wayland_session: bool,
     x11_session: bool,
     pick: Pick,
-    x11_cared_for: impl FnOnce() -> bool,
+    x11_fit: impl FnOnce() -> X11Fit,
     loads: impl Fn(&WindowLib) -> bool,
 ) -> WindowSystem {
     let lacking = |libs: &'static [WindowLib]| libs.iter().filter(|l| !loads(l)).collect();
@@ -1489,11 +1504,14 @@ fn choose_window_system(
         _ if !ws.both => (wayland_session, "the session's only one"),
         Pick::Wayland(why) => (true, why),
         Pick::X11(why) => (false, why),
-        Pick::Auto if x11_cared_for() => (false, "automatic: the desktop looks after X11 programs"),
-        Pick::Auto => (
-            true,
-            "automatic: no settings daemon looks after X11 programs here (no XSETTINGS)",
-        ),
+        Pick::Auto => match x11_fit() {
+            X11Fit::CaredFor => (false, "automatic: the desktop looks after X11 programs"),
+            X11Fit::Unscaled => (false, "automatic: no screen is scaled"),
+            X11Fit::Scaled => (
+                true,
+                "automatic: a screen is scaled and nothing tells X11 programs (no XSETTINGS)",
+            ),
+        },
     };
     ws.why = why;
     if x11_session && !(wayland_session && keep_wayland) {
@@ -1542,7 +1560,7 @@ pub fn window_system() -> &'static WindowSystem {
             set("WAYLAND_DISPLAY"),
             set("DISPLAY"),
             pick,
-            x11_cared_for,
+            x11_fit,
             |lib| lib.names.iter().any(|n| loads(n)),
         );
         let system = match (ws.wayland, ws.x11_over_wayland) {
@@ -1555,15 +1573,80 @@ pub fn window_system() -> &'static WindowSystem {
     })
 }
 
-/// Whether the desktop looks after X11 programs (#624): a settings daemon owns XSETTINGS on the
-/// X server and tells them its scale and fonts (GNOME's, KDE Plasma's), or the desktop is one
-/// that starts one with XWayland, perhaps a moment after (`desktop_looks_after_x11`). A wlroots
-/// compositor's XWayland (labwc, Hyprland, sway, …) has none. False when the X server can't be
-/// reached.
+/// How X11's windows would look here (#624): looked after by the desktop (a settings daemon owns
+/// XSETTINGS on the X server, or the desktop is one that starts one with XWayland,
+/// `desktop_looks_after_x11`), else scaled when a Wayland screen has a scale above 1
+/// (`wayland_scaled`; unknown: as at scale 1, MDM's choice until now).
 #[cfg(target_os = "linux")]
-fn x11_cared_for() -> bool {
+fn x11_fit() -> X11Fit {
     let desktop = std::env::var("XDG_CURRENT_DESKTOP").unwrap_or_default();
-    desktop_looks_after_x11(&desktop) || xsettings_owned().unwrap_or(false)
+    if desktop_looks_after_x11(&desktop) || xsettings_owned().unwrap_or(false) {
+        return X11Fit::CaredFor;
+    }
+    match wayland_scaled() {
+        Ok(true) => X11Fit::Scaled,
+        Ok(false) => X11Fit::Unscaled,
+        Err(e) => {
+            tracing::info!("windows: the screens' scale is unknown ({e})");
+            X11Fit::Unscaled
+        }
+    }
+}
+
+/// Whether a screen of the Wayland session has a scale above 1, as the compositor tells its
+/// programs (`wl_output`'s scale: a fractional scale such as 1.25 is told rounded up, 2).
+#[cfg(target_os = "linux")]
+fn wayland_scaled() -> Result<bool, Box<dyn std::error::Error>> {
+    use wayland_client::protocol::{wl_output, wl_registry};
+    use wayland_client::{Connection, Dispatch, QueueHandle};
+    #[derive(Default)]
+    struct Outputs {
+        scales: Vec<i32>,
+    }
+    impl Dispatch<wl_registry::WlRegistry, ()> for Outputs {
+        fn event(
+            _: &mut Self,
+            registry: &wl_registry::WlRegistry,
+            event: wl_registry::Event,
+            _: &(),
+            _: &Connection,
+            qh: &QueueHandle<Self>,
+        ) {
+            if let wl_registry::Event::Global {
+                name,
+                interface,
+                version,
+            } = event
+                && interface == "wl_output"
+                && version >= 2
+            {
+                registry.bind::<wl_output::WlOutput, _, _>(name, 2, qh, ());
+            }
+        }
+    }
+    impl Dispatch<wl_output::WlOutput, ()> for Outputs {
+        fn event(
+            state: &mut Self,
+            _: &wl_output::WlOutput,
+            event: wl_output::Event,
+            _: &(),
+            _: &Connection,
+            _: &QueueHandle<Self>,
+        ) {
+            if let wl_output::Event::Scale { factor } = event {
+                state.scales.push(factor);
+            }
+        }
+    }
+    let conn = Connection::connect_to_env()?;
+    let mut queue = conn.new_event_queue();
+    let qh = queue.handle();
+    conn.display().get_registry(&qh, ());
+    let mut outputs = Outputs::default();
+    // The globals, then each screen's own events.
+    queue.roundtrip(&mut outputs)?;
+    queue.roundtrip(&mut outputs)?;
+    Ok(outputs.scales.iter().any(|s| *s > 1))
 }
 
 /// The desktops (`XDG_CURRENT_DESKTOP`, a `:`-separated list) whose Wayland session starts a
@@ -2574,7 +2657,7 @@ mod tests {
     use zbus::zvariant::Value;
 
     use super::{
-        Pick, WindowLib, X11_LIBS, choose_window_system, desktop_looks_after_x11, install_command,
+        Pick, WindowLib, X11_LIBS, X11Fit, choose_window_system, desktop_looks_after_x11, install_command,
         menu_window_type,
     };
 
@@ -2602,7 +2685,7 @@ mod tests {
     }
 
     /// MDM's own choice, with the desktop looking after X11 programs (GNOME, KDE Plasma).
-    const CARED: fn() -> bool = || true;
+    const CARED: fn() -> X11Fit = || X11Fit::CaredFor;
 
     /// #265: without libxkbcommon-x11, an X11 session can't open the window (said, not a
     /// panic); a Wayland session opens it on Wayland instead; with everything there, X11 as
@@ -2657,15 +2740,17 @@ mod tests {
         assert!(matches!(Pick::of(env("0"), None), Pick::X11(_)));
     }
 
-    /// #624: MDM chooses X11 (XWayland) where the desktop looks after X11 programs (its menus
-    /// placed, its window hidden in the tray), Wayland where it doesn't (labwc, Hyprland, sway:
-    /// windows blurry or sized other than asked). A choice made wins either way; the desktop is
-    /// only asked when it decides.
+    /// #624: MDM chooses X11 (XWayland: its menus placed under their titles, its window hidden in
+    /// the tray) unless X11's windows would be scaled up, blurry: a scaled screen, and nothing
+    /// to tell X11 programs (Hyprland at 1.5, labwc or sway at 2). A choice made wins either
+    /// way; the desktop is only asked when it decides.
     #[test]
-    fn mdm_chooses_wayland_where_x11_programs_are_left_alone() {
+    fn mdm_chooses_wayland_where_x11_windows_would_be_scaled() {
         let ok = |_: &WindowLib| true;
-        let left_alone = choose_window_system(true, true, Pick::Auto, || false, ok);
-        assert!(left_alone.wayland && left_alone.both, "{left_alone:?}");
+        let scaled = choose_window_system(true, true, Pick::Auto, || X11Fit::Scaled, ok);
+        assert!(scaled.wayland && scaled.both, "{scaled:?}");
+        let unscaled = choose_window_system(true, true, Pick::Auto, || X11Fit::Unscaled, ok);
+        assert!(!unscaled.wayland && unscaled.x11_over_wayland && unscaled.both);
         let cared = choose_window_system(true, true, Pick::Auto, CARED, ok);
         assert!(!cared.wayland && cared.x11_over_wayland && cared.both);
         let x11 = choose_window_system(true, true, Pick::X11("saved"), || panic!("asked"), ok);
