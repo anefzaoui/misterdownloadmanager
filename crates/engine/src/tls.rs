@@ -95,7 +95,9 @@ pub enum CertProblem {
     WrongName,
     /// Its issuer took it back.
     Revoked,
-    /// Refused for another reason (a bad signature, an encoding, a purpose it isn't for).
+    /// It isn't made for a website (its extended key usage leaves out TLS servers).
+    NotForWebsites,
+    /// Refused for another reason (a bad signature, an encoding).
     Other,
 }
 
@@ -109,6 +111,7 @@ impl std::fmt::Display for CertProblem {
             }
             CertProblem::WrongName => "the server's certificate is for another name",
             CertProblem::Revoked => "the server's certificate was revoked",
+            CertProblem::NotForWebsites => "the server's certificate isn't made for websites",
             CertProblem::Other => "the server's certificate was refused",
         })
     }
@@ -126,6 +129,8 @@ pub fn certificate_problem(e: &(dyn std::error::Error + 'static)) -> Option<Cert
             C::UnknownIssuer => CertProblem::Untrusted,
             C::NotValidForName | C::NotValidForNameContext { .. } => CertProblem::WrongName,
             C::Revoked => CertProblem::Revoked,
+            C::InvalidPurpose | C::InvalidPurposeContext { .. } => CertProblem::NotForWebsites,
+            C::Other(other) => of_platform(&other.to_string()),
             _ => CertProblem::Other,
         });
     }
@@ -135,6 +140,34 @@ pub fn certificate_problem(e: &(dyn std::error::Error + 'static)) -> Option<Cert
         .and_then(|io| io.get_ref())
         .and_then(|inner| certificate_problem(inner));
     wrapped.or_else(|| e.source().and_then(certificate_problem))
+}
+
+/// The platform verifier's own words for what rustls has no variant for (`CertificateError::Other`).
+/// On macOS (and iOS) it names only a few of the system's reasons and gives the others as
+/// "<the system's description>: <its OSStatus code>", an expired certificate among them. On
+/// macOS and Android a certificate not for TLS servers is its `EkuError`, by its words.
+fn of_platform(said: &str) -> CertProblem {
+    if said == "certificate had invalid extensions" {
+        return CertProblem::NotForWebsites;
+    }
+    let code = said
+        .rsplit_once(": ")
+        .and_then(|(_, code)| code.trim().parse::<i64>().ok());
+    match code {
+        // errSecCertificateExpired, CSSMERR_TP_CERT_EXPIRED
+        Some(-67818 | -2147409654) => CertProblem::Expired,
+        // errSecCertificateNotValidYet, CSSMERR_TP_CERT_NOT_VALID_YET
+        Some(-67819 | -2147409653) => CertProblem::NotYetValid,
+        // errSecNotTrusted, errSecCreateChainFailed
+        Some(-67843 | -25318) => CertProblem::Untrusted,
+        // errSecHostNameMismatch
+        Some(-67602) => CertProblem::WrongName,
+        // errSecInvalidExtendedKeyUsage
+        Some(-67609) => CertProblem::NotForWebsites,
+        // errSecCertificateRevoked
+        Some(-67820) => CertProblem::Revoked,
+        _ => CertProblem::Other,
+    }
 }
 
 /// The verifier of a system without certificates: no server can be checked, so none is trusted.
@@ -295,6 +328,41 @@ mod tests {
             rustls::CertificateError::Expired,
         ));
         assert_eq!(certificate_problem(&e), Some(CertProblem::Expired));
+        // As macOS's verifier gives what rustls has no variant for, and an EKU it refused.
+        let other =
+            |s: &str| {
+                std::io::Error::other(rustls::Error::InvalidCertificate(
+                    rustls::CertificateError::Other(rustls::OtherError(std::sync::Arc::from(
+                        Box::<dyn std::error::Error + Send + Sync>::from(s.to_owned()),
+                    ))),
+                ))
+            };
+        for (said, want) in [
+            (
+                "“localhost” certificate is expired: -67818",
+                CertProblem::Expired,
+            ),
+            (
+                "“localhost” certificate is not yet valid: -67819",
+                CertProblem::NotYetValid,
+            ),
+            (
+                "“localhost” certificate is not trusted: -67843",
+                CertProblem::Untrusted,
+            ),
+            (
+                "certificate had invalid extensions",
+                CertProblem::NotForWebsites,
+            ),
+            ("something new: -1", CertProblem::Other),
+            ("no code at all", CertProblem::Other),
+        ] {
+            assert_eq!(certificate_problem(&other(said)), Some(want), "{said}");
+        }
+        let e = std::io::Error::other(rustls::Error::InvalidCertificate(
+            rustls::CertificateError::InvalidPurpose,
+        ));
+        assert_eq!(certificate_problem(&e), Some(CertProblem::NotForWebsites));
         let e = std::io::Error::other(rustls::Error::General("handshake".into()));
         assert_eq!(certificate_problem(&e), None);
         assert_eq!(certificate_problem(&std::io::Error::other(refused())), None);

@@ -189,11 +189,16 @@ pub(crate) fn certificate_of(
 ) -> Result<(rustls::ServerConfig, Vec<u8>), String> {
     use crate::server::Cert;
     use rcgen::{
-        BasicConstraints, CertificateParams, CertifiedIssuer, DnType, IsCa, KeyPair,
-        KeyUsagePurpose,
+        BasicConstraints, CertificateParams, CertifiedIssuer, DnType, ExtendedKeyUsagePurpose,
+        IsCa, KeyPair, KeyUsagePurpose,
     };
     let e = |e: rcgen::Error| e.to_string();
+    // Dates as a real certificate has them: macOS refuses a server's certificate valid for
+    // more than 825 days, before it looks at anything else.
+    let now = time::OffsetDateTime::now_utc();
     let mut ca = CertificateParams::new(Vec::<String>::new()).map_err(e)?;
+    ca.not_before = now - time::Duration::days(1);
+    ca.not_after = now + time::Duration::days(365);
     ca.is_ca = IsCa::Ca(BasicConstraints::Unconstrained);
     ca.distinguished_name
         .push(DnType::CommonName, "MDM lab test CA");
@@ -208,8 +213,17 @@ pub(crate) fn certificate_of(
         Cert::WrongName => "another-site.invalid",
         _ => "localhost",
     };
+    // A website's certificate, as a real one is made: its name among the subject's alternative
+    // names, for TLS servers only (the extended key usage every system's verifier requires;
+    // macOS's checks it before the dates), its key for signing the handshake, not a CA.
     let mut leaf = CertificateParams::new(vec![name.to_owned()]).map_err(e)?;
     leaf.distinguished_name.push(DnType::CommonName, name);
+    leaf.is_ca = IsCa::ExplicitNoCa;
+    leaf.key_usages = vec![KeyUsagePurpose::DigitalSignature];
+    leaf.extended_key_usages = vec![ExtendedKeyUsagePurpose::ServerAuth];
+    leaf.use_authority_key_identifier_extension = cert != Cert::SelfSigned;
+    leaf.not_before = now - time::Duration::days(1);
+    leaf.not_after = now + time::Duration::days(90);
     if cert == Cert::Expired {
         leaf.not_before = rcgen::date_time_ymd(2020, 1, 1);
         leaf.not_after = rcgen::date_time_ymd(2021, 1, 1);

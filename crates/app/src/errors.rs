@@ -137,6 +137,10 @@ fn certificate(problem: CertProblem) -> &'static str {
             // i18n: why a download failed: the issuer of the site's security certificate took it back
             t("the site's security certificate was revoked by its issuer, so MDM won't trust it")
         }
+        // i18n: why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+        CertProblem::NotForWebsites => t(
+            "the site's security certificate isn't made for websites, so MDM can't be sure it's the real site",
+        ),
         // i18n: why a download failed: the site's security certificate was refused for another reason (a bad signature, a broken certificate)
         CertProblem::Other => t(
             "the site's security certificate was refused, so MDM can't be sure it's the real site",
@@ -543,6 +547,7 @@ mod tests {
             P::Untrusted,
             P::WrongName,
             P::Revoked,
+            P::NotForWebsites,
             P::Other,
         ];
         let said: Vec<String> = all
@@ -555,6 +560,7 @@ mod tests {
         assert!(said[0].contains("expired"));
         assert!(said[2].contains("self-signed"));
         assert!(said[3].contains("another site name"));
+        assert!(said[5].contains("isn't made for websites"));
         let distinct: std::collections::HashSet<_> = said.iter().collect();
         assert_eq!(distinct.len(), all.len());
     }
