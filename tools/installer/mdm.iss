@@ -44,13 +44,15 @@ PrivilegesRequiredOverridesAllowed=dialog
 UsedUserAreasWarning=no
 ; One installer per processor, all with the same AppId: the ARM64 one run on a Windows on ARM PC
 ; that has the x64 one replaces it in place. x64 runs on x64 Windows and, emulated, on Windows 11
-; on ARM; ARM64 on Windows on ARM only; the 32-bit one on any Windows (in Program Files (x86) on a
-; 64-bit one, when installed for everyone).
+; on ARM; ARM64 on Windows on ARM only; the 32-bit one on 32-bit Windows only (x86os): on a 64-bit
+; one it would replace a per-user x64 copy (which would then update to the 32-bit files for good)
+; or add a second copy in Program Files (x86). There Setup refuses with its own message, which
+; names the processors it is for.
 #if Arch == "arm64"
 ArchitecturesAllowed=arm64
 ArchitecturesInstallIn64BitMode=arm64
 #elif Arch == "x86"
-ArchitecturesAllowed=x86compatible
+ArchitecturesAllowed=x86os
 #else
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
@@ -99,6 +101,13 @@ lang_en.TaskStartup=Start {#AppName} when &Windows starts
 lang_en.TaskGroupOther=Other:
 lang_en.Launch=Start {#AppName}
 lang_en.KeepData=Also delete your download list and settings?%n%nYour downloaded files are not touched either way.
+
+; 32-bit Windows' setup run on 64-bit Windows (x86os above): which setup to take instead. Other
+; languages show Setup's own message, that this Windows isn't supported.
+#if Arch == "x86"
+[Messages]
+lang_en.WindowsVersionNotSupported=This is the setup for 32-bit Windows, and this computer runs 64-bit Windows. Download MisterDownloadManager-{#AppVersion}-setup.exe instead (or MisterDownloadManager-{#AppVersion}-setup-arm64.exe on a Windows on ARM PC).
+#endif
 
 [Tasks]
 Name: "browser"; Description: "{cm:TaskBrowser}"

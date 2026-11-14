@@ -1,7 +1,9 @@
 # Build, lint and test main and every pull request: Windows and Linux, which must pass, and the
-# experimental macOS build (its failures are reported but don't fail the run). Each processor MDM
-# is published for: x64 everywhere; Windows on ARM and Linux on ARM on GitHub's ARM runners;
-# 32-bit Windows built on the x64 runner, whose 64-bit Windows runs its tests too.
+# experimental macOS build (its failures are reported but don't fail the run). The other processors
+# MDM is published for (Windows on ARM and Linux on ARM on GitHub's ARM runners; 32-bit Windows on
+# the x64 runner, whose 64-bit Windows runs its tests too) on main and when run by hand only: on
+# every pull request they would add about an hour of runners, and their caches would push x64's
+# out of the repository's 10 GB. A pull request never saves their caches, as it never runs them.
 name: CI
 
 # Pushes to main only: a pull request's branch is tested once as the pull request (a bare push:
@@ -24,6 +26,8 @@ on:
       - "i18n/site/**"
       - "docs/**"
       - "**/*.md"
+  # Actions -> CI -> Run workflow: every processor, on any branch.
+  workflow_dispatch:
 
 # A newer commit on a pull request makes its older run moot: cancel it (main runs to the end).
 concurrency:
@@ -42,18 +46,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - os: windows-latest
-          - os: ubuntu-latest
-          - os: macos-latest
-            experimental: true
-          - os: windows-11-arm
-            name: windows-arm64
-          - os: ubuntu-24.04-arm
-            name: linux-arm64
-          - os: windows-latest
-            name: windows-x86
-            target: i686-pc-windows-msvc
+        # x64 on pull requests; with Windows on ARM, Linux on ARM and 32-bit Windows on main and
+        # by hand.
+        include: ${{ fromJSON(github.event_name == 'pull_request' && '[{"os":"windows-latest"},{"os":"ubuntu-latest"},{"os":"macos-latest","experimental":true}]' || '[{"os":"windows-latest"},{"os":"ubuntu-latest"},{"os":"macos-latest","experimental":true},{"os":"windows-11-arm","name":"windows-arm64"},{"os":"ubuntu-24.04-arm","name":"linux-arm64"},{"os":"windows-latest","name":"windows-x86","target":"i686-pc-windows-msvc"}]') }}
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental == true }}
     # A cold build takes about 10 minutes; a hung runner (apt-get once hung for hours) is cut off

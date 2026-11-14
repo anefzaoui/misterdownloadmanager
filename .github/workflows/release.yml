@@ -48,6 +48,9 @@ jobs:
     # (32-bit programs run there too, for the tests), ARM64 on its Windows on ARM.
     name: windows-${{ matrix.arch }}
     needs: geo
+    # A cold build with its tests takes about 45 minutes; a stuck or long-queued runner (the ARM
+    # ones) is cut off instead of holding the release for GitHub's 6 hours.
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       matrix:
@@ -281,6 +284,8 @@ jobs:
     # ARM64, each on a runner of its own.
     name: linux-${{ matrix.arch }}
     needs: geo
+    # As Windows' (above).
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       matrix:

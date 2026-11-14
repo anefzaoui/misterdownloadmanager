@@ -661,9 +661,13 @@ impl Programs {
                     crate::i18n::t("Mister Download Manager's own copy, version {version}"),
                     &[("version", &i.version)],
                 ),
+                // Linux and macOS as before: there the system's package manager (or Homebrew)
+                // installs what MDM has no copy of, and MDM finds it.
                 // i18n: Video helpers: no copy of this helper yet
-                (None, None) if has_own => crate::i18n::t("Not installed yet").to_owned(),
-                // i18n: Video helpers: MDM can't download this helper for this system and processor (ffmpeg on 32-bit Windows, gallery-dl on macOS or Linux on ARM); "Use another program" is the button below
+                (None, None) if has_own || !cfg!(windows) => {
+                    crate::i18n::t("Not installed yet").to_owned()
+                }
+                // i18n: Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
                 (None, None) => crate::i18n::t(
                     "MDM has no copy for this system: install it, or use another program",
                 )
