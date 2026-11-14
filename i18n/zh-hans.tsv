@@ -7,6 +7,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Also delete the {n} file from disk|Also delete the {n} files from disk	同时从磁盘中删除 {n} 个文件
+#. count in cnl.rs
+#. Click'n'Load window: a page whose web site the browser doesn't name, so MDM can't tell which site it is
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	未知网站要向链接抓取器发送 {n} 个链接。
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -133,6 +138,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} 个跟踪器：{peers}
+#. count in cnl.rs
+#. Click'n'Load window: {site} is a web site's name such as "example.com"
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} 要向链接抓取器发送 {n} 个链接。
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -280,6 +290,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	about {size}	约 {size}
+#. text in the Options window
+#. Options → Archives → Link grabber check box: Click'n'Load, a link site's button that sends its links to a program on this computer (port 9666, as JDownloader)
+#, machine
+	Accept Click'n'Load from web pages (port 9666)	接受来自网页的 Click'n'Load（端口 9666）
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 #, machine
@@ -435,6 +449,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Afghanistan	阿富汗
+#. text in the Options window
+#. Options → Add an account: a note under the user name and password fields (Mega-Debrid bans the address for some minutes after a few wrong passwords)
+#, machine
+	After a few wrong passwords the service blocks this connection for some minutes.	输入几次错误密码后，此服务会在几分钟内阻止此连接。
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -464,11 +482,19 @@
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
 	All the uploader's	上传者提供的所有字幕
+#. text in cnl.rs
+#. button in the Click'n'Load window: let this site send links (remembered)
+#, machine
+	Allow	允许
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Allow more than {n} connections	允许超过 {n} 个连接
+#. text in cnl.rs
+#. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
+#, machine
+	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	仅允许您使用的网站。在您将链接添加到链接抓取器之前，不会查询或下载任何内容。
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	正在下载: {path}
@@ -691,6 +717,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Bhutan	不丹
+#. text in cnl.rs
+#. button in the Click'n'Load window: refuse this site's links (remembered)
+#, machine
+	Block	阻止
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -957,10 +987,19 @@
 #. a country's name (where a download's server is)
 #, machine
 	Christmas Island	圣诞岛
-#. button in the download list
+#. button in the download list; button in the Options window
 #. verb: clears this filter
 #, machine
 	Clear	清除
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {port} is 9666; JDownloader is another download manager that uses the same port
+#, machine
+	Click'n'Load can't start: another program (JDownloader?) is using port {port}. Close it, then turn Click'n'Load off and on again in Options.	Click'n'Load 无法启动：另一个程序（JDownloader？）正在使用端口 {port}。请关闭该程序，然后在“选项”中关闭并重新打开 Click'n'Load。
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Click'n'Load can't start: {error}	Click'n'Load 无法启动：{error}
 #. text in a download's progress window
 #. column title: the peer's torrent program
 #, machine
@@ -2068,7 +2107,7 @@
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-	Hide &categories	隐藏&类别
+	Hide &categories	隐藏类别(&C)
 #. button in a download's progress window
 #, machine
 	Hide tab	隐藏选项卡
@@ -3082,7 +3121,7 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	在 {file} 中未找到任何网址。
-#. text in the Download video window
+#. text in the Options window; text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
 	None	无
@@ -3143,7 +3182,12 @@
 #. Video helpers: no copy of this helper yet
 #, machine
 	Not installed yet	尚未安装
-#. button in helpers.rs
+#. text in the Link grabber window
+#. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
+#, machine
+	Not looked up	未查找
+#. text in cnl.rs; button in helpers.rs
+#. button in the Click'n'Load window: refuse these links, ask again next time
 #, machine
 	Not now	暂不
 #. text in helpers.rs
@@ -3345,6 +3389,10 @@
 #, machine
 	Options on completion	完成后选项
 #. text in the Options window
+#. Options → Add an account: label before the field for an API key the user made at the service (Mega-Debrid: My Account → API Key; the other way to sign in)
+#, machine
+	Or paste an application's API key:	或粘贴应用程序的 API 密钥：
+#. text in the Options window
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	或粘贴您的 API 令牌：
@@ -3409,6 +3457,7 @@
 	Password	密码
 #. text in the Link grabber window; text in the Options window
 #. Link grabber: the package's archives' password (a label before its box)
+#. Options → Add an account: label before the field for the password at the debrid service
 #, machine
 	Password:	密码:
 #. text in the Add torrent window
@@ -3510,6 +3559,10 @@
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 #, machine
 	premium, {days} days left	高级版，剩余 {days} 天
+#. text in the Options window
+#. Options → General: shown inside the shortcut recorder box while waiting for the user to press a 2-key or 3-key shortcut (#558)
+#. the trailing ... means it is still going on: keep it
+	Press keys...	请按下组合键...
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -3684,8 +3737,9 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Remove {name} from the list?	从列表中删除 {name}？
-#. text in a download's progress window
+#. text in a download's progress window; text in torrent_rename.rs
 #. noun: label before the deferred new file or folder name in the progress window
+#. noun: label before the new file or folder name in Add torrent
 #, machine
 	Rename	重命名
 #. text in the Batch download window
@@ -3751,7 +3805,7 @@
 #. verb: stop the queue
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-	S&top	停&止
+	S&top	停止(&T)
 #. text in the Scheduler window
 #. Saturday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -3995,13 +4049,16 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Sharing stopped: {error}	共享停止：{error}
+#. text in the Options window
+#. Options → General: label for the global keyboard shortcut that shows or hides MDM's main window (#558)
+	Shortcut to show or hide window:	显示或隐藏窗口的快捷键：
 #. text in the download list
 #, machine
 	Show	显示
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-	Show &categories	显示&类别
+	Show &categories	显示类别(&C)
 #. text in the Options window
 #, machine
 	Show a dialog and ask what to do.	显示对话框并询问如何操作。
@@ -4053,6 +4110,10 @@
 #, machine
 	Sierra Leone	塞拉利昂
 #. button in the Options window
+#. button: sign in to the debrid service with the user name and password typed in
+#, machine
+	Sign in	登录
+#. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	在浏览器中登录
@@ -4068,6 +4129,10 @@
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
 #, machine
 	Sign-ins and passwords are kept in Windows Credential Manager.	登录信息和密码保存在 Windows 凭据管理器中。
+#. text in the Options window
+#. Options → Add an account: signed in, the service gives no account name; {state} premium or not
+#, machine
+	Signed in ({state})	已登录 ({state})
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -4715,6 +4780,10 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	服务器发送了意外的文件部分({detail})
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
+#, machine
+	the service doesn't say whether it is premium	服务未说明是否为高级账户
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 #, machine
@@ -4912,6 +4981,9 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	this program isn't {name}	此程序不是 {name}
+#. text in the Options window
+#. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
+	This shortcut is already in use	此快捷键已被占用
 #. text in errors.rs
 #. why a download failed: the site's bot check (Cloudflare) lets browsers through, not programs. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
 #, machine
@@ -5301,6 +5373,10 @@
 #. column title: the user name
 #, machine
 	User	用户
+#. text in the Options window
+#. Options → Add an account: label before the field for the user name at the debrid service
+#, machine
+	User name:	用户名：
 #. page title in the Options window
 #, machine
 	User names and passwords for servers/sites	服务器/站点的用户名和密码
@@ -5459,6 +5535,9 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
 	Windows allows wake timers only while plugged in	Windows 仅在接通电源时允许唤醒计时器
+#. text in the Options window
+#. Options → General → Shortcut to show or hide window: shown in the disabled shortcut box on Linux (#558)
+	Windows and macOS	Windows 和 macOS
 #. text in the Options window
 #. tooltip of "Mark downloaded files as coming from the internet" on Windows
 #, machine
@@ -6512,12 +6591,12 @@ menu	&Add new download	添加新下载(&D)
 #. View → Window system: MDM chooses the window system itself at each start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Automatic	自&动
+menu	&Automatic	&自动
 #. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Classic	经&典
+menu	&Classic	经典(&C)
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6547,7 +6626,7 @@ menu	&Import	导入(&I)
 #. View menu: submenu choosing how large MDM draws its windows and text (100 % to 200 %), as a browser's zoom
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Interface size	界面&大小
+menu	&Interface size	界面大小(&I)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6588,13 +6667,13 @@ menu	&Report a problem	报告问题(&R)
 #. header menu: put the columns back as they first were (order, widths, all shown)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Reset columns	&重置列
+menu	&Reset columns	重置列(&R)
 #. menu command in the main window
 #. Tasks menu: the RSS feeds window (feeds of torrents, and rules that add them)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	&RSS feeds...	R&SS 源...
+menu	&RSS feeds...	RSS 源(&S)...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6608,7 +6687,7 @@ menu	&Show hidden tabs	显示隐藏的选项卡(&S)
 #. View → Text: letters drawn smooth, as Windows' modern apps draw them, anti-aliased at any size
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Smooth	&平滑
+menu	&Smooth	平滑(&S)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -6651,7 +6730,7 @@ menu	Add &magnet link...	添加磁力链接(&M)...
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Add &new download...	添&加新下载...
+menu	Add &new download...	添加新下载(&N)...
 #. menu command in the main window
 #. View → Theme: picks a theme file or a Base16 or pywal colour scheme, copies it into the themes folder and uses it
 #, machine
@@ -6933,7 +7012,7 @@ menu	Open	打开
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Open &torrent file...	打开&torrent 文件...
+menu	Open &torrent file...	打开 torrent 文件(&T)...
 #. menu command in the main window
 #, machine
 menu	Open folder	打开文件夹
@@ -6983,7 +7062,7 @@ menu	pywal	pywal 配色
 #. verb: download the file again from the start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	R&edownload	重新&下载
+menu	R&edownload	重新下载(&E)
 #. menu command in the main window
 #. right-click → Torrent: ask the torrent's trackers for peers again now
 #, machine
@@ -7007,7 +7086,7 @@ menu	Remove	删除
 #. verb: removes the selected download from the list and its file from the disk
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Remove with &files	删除&文件
+menu	Remove with &files	删除文件(&F)
 #. menu command in the main window
 #. verb: removes the download from the list and its file from the disk
 #, machine
@@ -7018,16 +7097,16 @@ menu	Resume Download	恢复下载
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	S&cheduler	计划&任务
+menu	S&cheduler	计划任务(&C)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	S&ettings...	&设置...
+menu	S&ettings...	设置(&E)...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	S&top queue	停止&队列
+menu	S&top queue	停止队列(&T)
 #. menu command in the main window
 #. command: opens this queue's schedule (when it starts and stops)
 #, machine
@@ -7039,18 +7118,18 @@ menu	Select &all	全选(&A)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Show &drop target	显示&拖放目标
+menu	Show &drop target	显示拖放目标(&D)
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	显示 Mister Download Manager
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Speed &Limiter	速度&限制器
+menu	Speed &Limiter	速度限制器(&L)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Start &queue	启动&队列
+menu	Start &queue	启动队列(&Q)
 #. menu command in the main window
 #, machine
 menu	Start now	立即开始
@@ -7064,16 +7143,16 @@ menu	Stop Download	停止下载
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Support &MDM	支持 &MDM
+menu	Support &MDM	支持 MDM(&M)
 #. menu command in the main window
 #. View menu: submenu choosing how the text is drawn (smooth or classic)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Te&xt	&文本
+menu	Te&xt	文本(&X)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Tell a &friend	推荐给&朋友
+menu	Tell a &friend	推荐给朋友(&F)
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
@@ -7086,12 +7165,12 @@ menu	Theme	主题
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	To &IDM export file...	导出到 &IDM 文件...
+menu	To &IDM export file...	导出到 IDM 文件(&I)...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	To &text file...	导出到&文本文件...
+menu	To &text file...	导出到文本文件(&T)...
 #. menu command in the main window
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
@@ -7104,15 +7183,15 @@ menu	Torrent	种子
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Torrent setti&ngs...	Torrent 设&置...
+menu	Torrent setti&ngs...	Torrent 设置(&N)...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Turn o&n	打&开
+menu	Turn o&n	打开(&N)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Turn of&f	关&闭
+menu	Turn of&f	关闭(&F)
 #. menu command in the main window
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -7132,23 +7211,23 @@ menu	Vulkan draws with a software renderer	Vulkan 使用软件渲染器绘制
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	&Downloads	&下载
+menubar	&Downloads	下载(&D)
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	&File	&文件
+menubar	&File	文件(&F)
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	&Help	&帮助
+menubar	&Help	帮助(&H)
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	&Tasks	&任务
+menubar	&Tasks	任务(&T)
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	&View	&视图
+menubar	&View	视图(&V)
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	添加 Torrent
