@@ -5,7 +5,7 @@
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
 
-use egui::{Pos2, Ui, ViewportBuilder, ViewportId, vec2};
+use egui::{Pos2, Ui, ViewportId, vec2};
 use mdm_engine::ProbeInfo;
 use url::Url;
 
@@ -346,7 +346,7 @@ fn dialog_window<T>(
         forget_window(ctx, vid, key);
     }
     // Hidden until `keep_theme` has given it its theme (see there).
-    let mut builder = ViewportBuilder::default()
+    let mut builder = crate::window_builder()
         .with_visible(false)
         .with_title(crate::i18n::os_text(title))
         .with_inner_size(shown)
