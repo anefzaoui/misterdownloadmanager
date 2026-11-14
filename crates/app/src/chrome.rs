@@ -407,6 +407,20 @@ fn plain(label: &str) -> (String, Option<usize>) {
     (out, mnemonic)
 }
 
+/// The access key of `label`: the letter after its `&`, in lower case (None without one). An
+/// open menu runs its first enabled item with the key pressed.
+pub fn access_key(label: &str) -> Option<String> {
+    let (text, at) = plain(label);
+    at.and_then(|at| text.chars().nth(at))
+        .map(|c| c.to_lowercase().to_string())
+}
+
+/// The menu bar's titles, in English (their translations: context "menubar").
+#[cfg(test)]
+pub fn bar_titles() -> Vec<&'static str> {
+    MENUS.iter().map(|m| m.0).collect()
+}
+
 pub enum PopupResult<C> {
     Open,
     Chosen(C),
@@ -594,10 +608,7 @@ fn keyboard<C: Clone>(
                 if name.chars().count() == 1 {
                     target = level.iter().position(|e| {
                         entry_label(e).is_some_and(|(l, en)| {
-                            let (t, m) = plain(crate::i18n::tc("menu", l));
-                            en && m
-                                .and_then(|m| t.chars().nth(m))
-                                .is_some_and(|c| c.to_lowercase().to_string() == name)
+                            en && access_key(crate::i18n::tc("menu", l)).is_some_and(|k| k == name)
                         })
                     });
                 }
@@ -731,8 +742,11 @@ pub fn popup<C: Clone>(
     // gives that window the focus, and must not count as clicking away.
     let focused = ctx.input(|i| i.viewport().focused) == Some(true)
         || ctx.data(|d| d.get_temp::<bool>(window_focus).unwrap_or(false));
-    // (first pass, last pass, the focus): focus is only *lost* if it was had, and only when no
-    // window of ours gets it back within FOCUS_GRACE (#250).
+    // Away from our windows, the system may say who has it now: another program (#859).
+    let elsewhere = !focused && another_program_in_front();
+    // (first pass, last pass, the focus): focus is only *lost* if it was had, and then at once
+    // when another program has it, else when no window of ours gets it back within FOCUS_GRACE
+    // (#250).
     let now = ctx.input(|i| i.time);
     let (first, verdict) = ctx.data_mut(|d| {
         let (first, last, seen) = d.get_temp::<(u64, u64, MenuFocus)>(shown).unwrap_or((
@@ -745,7 +759,7 @@ pub fn popup<C: Clone>(
         } else {
             (first, seen)
         };
-        let verdict = seen.pass(focused, now);
+        let verdict = seen.pass(focused, elsewhere, now);
         d.insert_temp(shown, (first, pass, seen));
         (first == pass, verdict)
     });
@@ -776,12 +790,31 @@ pub fn popup<C: Clone>(
     PopupResult::Open
 }
 
-/// How long the focus may be away from every window of ours before an open menu counts as left.
+/// How long the focus may be away from every window of ours before an open menu counts as left,
+/// when the system doesn't say that another program has it ([`another_program_in_front`]).
 /// On Linux a window manager may give a menu's window the focus (KWin, sway, and GNOME under
 /// Wayland give it to a submenu's as it opens). When that submenu closes (the pointer back on
 /// another item of its parent), its window passes the focus on, and for a frame or more no
 /// window of ours has it: counted as the app losing the focus, it closed the whole menu (#250).
 const FOCUS_GRACE: f64 = 0.4;
+
+/// Whether the system says another program's window is in front now: the click that took the
+/// focus away landed outside MDM (the desktop, the taskbar, another program's window), and an
+/// open menu closes on this pass, as Win32's own menus do. Waiting FOCUS_GRACE for it kept a
+/// menu on the screen 0.4 s after such a click (#859): a menu's window never takes the focus on
+/// Windows (WS_EX_NOACTIVATE), so there the grace only ever delayed the close.
+fn another_program_in_front() -> bool {
+    #[cfg(windows)]
+    {
+        crate::win32::foreground_is_another_program()
+    }
+    // Linux and macOS: a program isn't told whose window has the focus (Wayland never says; X11
+    // and macOS would, through calls MDM doesn't make), so FOCUS_GRACE decides there, as before.
+    #[cfg(not(windows))]
+    {
+        false
+    }
+}
 
 /// Whether an open menu still has the focus: the main window's or one of the menu's windows'.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
@@ -803,8 +836,9 @@ enum FocusVerdict {
 }
 
 impl MenuFocus {
-    /// After a pass at `now`: `focused` is whether one of our windows had the focus in it.
-    fn pass(&mut self, focused: bool, now: f64) -> FocusVerdict {
+    /// After a pass at `now`: `focused` is whether one of our windows had the focus in it, and
+    /// `elsewhere` whether the system said another program has it.
+    fn pass(&mut self, focused: bool, elsewhere: bool, now: f64) -> FocusVerdict {
         if focused {
             self.had = true;
             self.away_since = None;
@@ -812,6 +846,10 @@ impl MenuFocus {
         }
         if !self.had {
             return FocusVerdict::Here;
+        }
+        // Another program has it: no window of ours is about to take it back (#859).
+        if elsewhere {
+            return FocusVerdict::Left;
         }
         let since = *self.away_since.get_or_insert(now);
         let away = now - since;
@@ -932,7 +970,7 @@ pub enum PopupLook {
 /// makes it a plain popup ([`style_popup`]) and [`show_popup`] shows it then.
 pub fn popup_viewport(title: &str) -> egui::ViewportBuilder {
     egui::ViewportBuilder::default()
-        .with_title(title)
+        .with_title(crate::i18n::os_text(title))
         .with_decorations(false)
         .with_resizable(false)
         .with_taskbar(false)
@@ -2388,10 +2426,35 @@ mod tests {
         assert_eq!(steps, [Some(0), Some(1), Some(1), Some(2)]);
     }
 
-    /// The focus over a menu's passes (`(focused, time)` each), as `MenuFocus` judges it.
+    /// The focus over a menu's passes (`(focused, time)` each), as `MenuFocus` judges it, the
+    /// system saying nothing of who has it (Linux, macOS).
     fn focus_run(passes: &[(bool, f64)]) -> Vec<FocusVerdict> {
         let mut f = MenuFocus::default();
-        passes.iter().map(|&(on, t)| f.pass(on, t)).collect()
+        passes.iter().map(|&(on, t)| f.pass(on, false, t)).collect()
+    }
+
+    /// #859: a click on the desktop (Windows 10's video), the taskbar or another program's window
+    /// while a menu is open. The system says another program is in front: the menu closes on
+    /// the very pass that learns the focus left, not FOCUS_GRACE later.
+    #[test]
+    fn a_click_in_another_program_closes_the_menu_at_once() {
+        let mut f = MenuFocus::default();
+        assert_eq!(f.pass(true, false, 0.0), FocusVerdict::Here);
+        assert_eq!(f.pass(true, false, 0.5), FocusVerdict::Here);
+        assert_eq!(f.pass(false, true, 1.0), FocusVerdict::Left);
+        // Away from our windows without another program in front (focus passing between our
+        // own windows): the grace, as on Linux.
+        let mut f = MenuFocus::default();
+        f.pass(true, false, 0.0);
+        assert_eq!(
+            f.pass(false, false, 1.0),
+            FocusVerdict::Away { wait: FOCUS_GRACE }
+        );
+        assert_eq!(f.pass(false, true, 1.01), FocusVerdict::Left);
+        // A menu opened while another program was in front (a tray menu): nothing to lose.
+        let mut f = MenuFocus::default();
+        assert_eq!(f.pass(false, true, 0.0), FocusVerdict::Here);
+        assert_eq!(f.pass(false, true, 5.0), FocusVerdict::Here);
     }
 
     /// #250: Tasks open, Import's submenu open with the focus (KWin, sway), the pointer back

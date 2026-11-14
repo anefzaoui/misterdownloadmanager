@@ -768,6 +768,21 @@ pub struct ConnView {
     pub speed: u64,
 }
 
+impl ConnView {
+    /// Done: nothing left for it, or every byte of the download is in (#736). One still
+    /// connecting, receiving or about to retry is finished; a failed or retired one keeps saying
+    /// why. None receives any more.
+    pub fn finish(&mut self) {
+        if matches!(
+            self.status,
+            ConnStatus::Connecting | ConnStatus::Receiving | ConnStatus::Retrying(_)
+        ) {
+            self.status = ConnStatus::Finished;
+        }
+        self.speed = 0;
+    }
+}
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct SegmentView {
     pub start: u64,
@@ -941,10 +956,7 @@ pub async fn probe_kept(
         asked => (client, asked),
     };
     let (head, body, browser, headers, took) = match asked {
-        Ok((resp, headers, took)) => {
-            seen.answered(&resp);
-            (Head::of(&resp), Body::Http(resp), None, headers, took)
-        }
+        Ok((resp, headers, took)) => (Head::of(&resp), Body::Http(resp), None, headers, took),
         // #668: the site refused MDM's connection as a program's (`refused_as_a_program`):
         // looked at once more the way a browser connects, its answer kept for the download
         // (which then asks no more).
@@ -961,6 +973,8 @@ pub async fn probe_kept(
         }
         Err(e) => return Err(e),
     };
+    // Whichever connection it came through, the browser-like one too (#954).
+    seen.answered(&head);
     let final_url = head.url.clone();
     let (size, from_zero) = match head.status {
         StatusCode::PARTIAL_CONTENT => {
@@ -1330,6 +1344,14 @@ impl Shared {
         self.view.lock().unwrap().state = state;
     }
 
+    /// Every byte is in (#736): while the file is checked and named, no connection shows one
+    /// on its way (one stopped with the others still said "Receiving data...").
+    fn every_byte_in(&self) {
+        for c in &mut self.view.lock().unwrap().connections {
+            c.finish();
+        }
+    }
+
     /// Add to the event log.
     fn event(&self, text: impl Into<String>) {
         let mut v = self.view.lock().unwrap();
@@ -1490,6 +1512,9 @@ pub(crate) struct Head {
     /// Where the answer came from, its redirects followed.
     pub(crate) url: Url,
     pub(crate) len: Option<u64>,
+    /// The address that sent it: the server's, or the proxy's when one carried the request
+    /// (`crate::server`, #954).
+    pub(crate) from: Option<std::net::SocketAddr>,
 }
 
 impl Head {
@@ -1499,6 +1524,7 @@ impl Head {
             headers: resp.headers().clone(),
             url: resp.url().clone(),
             len: resp.content_length(),
+            from: resp.remote_addr(),
         }
     }
 }
@@ -1886,7 +1912,6 @@ async fn run_fresh(
             // headers. Its refusal stays the one told if that fails too.
             match first {
                 Ok(((resp, headers), ttfb)) => {
-                    seen.answered(&resp);
                     let head = Head::of(&resp);
                     (as_get, client0, (head, Body::Http(resp)), headers, ttfb)
                 }
@@ -1904,6 +1929,9 @@ async fn run_fresh(
             }
         }
     };
+    // Whichever connection it came through, the browser-like one too (#954); the look's answer,
+    // kept, was told as it came.
+    shared.seen.get_or_init(Default::default).answered(&head);
     // One connection, as a browser downloads: the site let this one through.
     if browser.is_some() {
         opts.max_connections = 1;
@@ -2541,6 +2569,7 @@ async fn verify_part(
     hash: Option<&crate::verify::Hash>,
 ) -> Result<(), Error> {
     static SLOTS: tokio::sync::Semaphore = tokio::sync::Semaphore::const_new(2);
+    shared.every_byte_in();
     let Some(hash) = hash.cloned() else {
         return Ok(());
     };
@@ -2571,6 +2600,7 @@ fn finish(
     size: u64,
     stamp: Option<std::time::SystemTime>,
 ) -> Result<Outcome, Error> {
+    shared.every_byte_in();
     shared.set_state(State::Completing);
     let file = Arc::try_unwrap(file).map_err(|_| io::Error::other("part file still in use"))?;
     file.set_len(size)?;
@@ -3435,7 +3465,7 @@ async fn worker(ctx: Arc<Ctx>, id: WorkerId, mut first: Option<Body>) -> Result<
             return Err(Error::Cancelled);
         }
         let Some(a) = ctx.shared.with_planner(|p| p.assign(id, after.take())) else {
-            ctx.shared.conn(id, |c| c.status = ConnStatus::Finished);
+            ctx.shared.conn(id, ConnView::finish);
             return Ok(());
         };
         ctx.shared.conn(id, |c| {
@@ -3450,7 +3480,7 @@ async fn worker(ctx: Arc<Ctx>, id: WorkerId, mut first: Option<Body>) -> Result<
         if first.is_none() && ctx.ranges.load(Ordering::SeqCst) == RANGES_NO {
             ctx.shared.with_planner(|p| p.release(id));
             return if ctx.shared.with_planner(|p| p.holds(0)) {
-                ctx.shared.conn(id, |c| c.status = ConnStatus::Finished);
+                ctx.shared.conn(id, ConnView::finish);
                 Ok(())
             } else {
                 Err(Error::NoRanges)
@@ -3491,7 +3521,7 @@ async fn worker(ctx: Arc<Ctx>, id: WorkerId, mut first: Option<Body>) -> Result<
                 // split), it still takes each segment over as it reaches it, while it streams.
                 ctx.shared.with_planner(|p| p.release(id));
                 return if ctx.shared.with_planner(|p| p.make_single(0) || p.holds(0)) {
-                    ctx.shared.conn(id, |c| c.status = ConnStatus::Finished);
+                    ctx.shared.conn(id, ConnView::finish);
                     Ok(())
                 } else {
                     Err(Error::NoRanges)
@@ -3705,6 +3735,11 @@ async fn request(ctx: &Ctx, target: &Target, from: u64, to: u64) -> Result<Body,
             (Head::of(&resp), Body::Http(resp))
         }
     };
+    // A resumed download asks nothing before its connections: the first one's answer is the
+    // first it gets (#954).
+    if let Some(seen) = ctx.shared.seen.get() {
+        seen.connection_answered(&head);
+    }
     if head.status.is_success() && !ctx.web_page_ok && is_web_page(&head.headers) {
         return Err(Error::GotWebPage);
     }
@@ -4767,7 +4802,7 @@ async fn single_stream(
     if expected.is_some_and(|e| e != pos) {
         return Err(Error::ShortBody);
     }
-    shared.conn(0, |c| c.status = ConnStatus::Finished);
+    shared.conn(0, ConnView::finish);
     Ok(pos)
 }
 
