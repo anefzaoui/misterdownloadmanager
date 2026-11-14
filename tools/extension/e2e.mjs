@@ -271,6 +271,18 @@ const MORE_AT = `function () {
   const r = m && m.getBoundingClientRect();
   return JSON.stringify(r && r.width ? { x: r.left + r.width / 2, y: r.top + r.height / 2 } : null);
 }`;
+// The look-ups the browser's button asked of the test instance so far (the host logs each), with
+// when: [ms since the epoch].
+function lookupsLogged() {
+  let text = "";
+  try {
+    text = fs.readFileSync(path.join(data, "logs", "mdm.log"), "utf8");
+  } catch {
+    return [];
+  }
+  return [...text.matchAll(/^(\S+)\s+INFO nmhost .*looked up the qualities of a video/gm)].map((m) => Date.parse(m[1].replace(/(\.\d{3})\d*Z$/, "$1Z")));
+}
+
 // A click on the button's arrow, as a person makes it: the pointer onto it first, a moment (the tab
 // shows its grip as the pointer comes, and keeps its end where it was), then the click where the
 // arrow is now.
@@ -2795,8 +2807,24 @@ const CASES = {
       const state = await until("the stream player", 15000, () => t.session.evaluate("document.body.dataset.stream || ''"));
       if (state !== "done") throw new Error(`the page's player: ${state}`);
       const v = await rect(t.session, "#player");
+      // #1053: the pointer passing over the button (onto it and off the video within a moment)
+      // asks nothing; resting on it asks at once, without the button's own wait over the video
+      // (600 ms), and the arrow's click later shares that look-up.
+      const asked = lookupsLogged().length;
+      if (!(await hover(t.session, v))) throw new Error("no button over the stream's player");
+      const passAt = await t.session.pill(MORE_AT);
+      if (!passAt) throw new Error("no arrow on the button");
+      await t.session.mouse(passAt.x, passAt.y);
+      await t.session.mouse(v.r + 40, v.b + 40);
+      await sleep(1500);
+      if (lookupsLogged().length !== asked) throw new Error("a pass over the button looked the video up");
       const b = await hover(t.session, v);
       if (!b) throw new Error("no button over the stream's player");
+      const restAt = await t.session.pill(MORE_AT);
+      await t.session.mouse(restAt.x, restAt.y);
+      const rested = Date.now();
+      const early = await until("the look-up of the pointer resting on the button", 5000, () => lookupsLogged().slice(asked)[0]);
+      const restMs = early - rested;
       // An earlier browser's downloads of this stream off the list (with their files): the same
       // quality again would be a duplicate, which Options' default asks about.
       const earlier = (await mdmList()).filter((d) => d.url.startsWith(`${LAB}/hls/`)).map((d) => d.id);
@@ -2834,6 +2862,8 @@ const CASES = {
         return p && p.rows.length ? p : null;
       });
       const rowsMs = Date.now() - clicked;
+      if (lookupsLogged().length !== asked + 1) throw new Error(`${lookupsLogged().length - asked} look-ups, not the rest's one shared by the arrow's click`);
+      if (restMs > 500) throw new Error(`the look-up came ${restMs} ms after the pointer rested on the button, not about 200 ms`);
       if (!m.rows.some((r) => r.size)) throw new Error(`no row has a size: ${JSON.stringify(m.rows.map((r) => [r.name, r.size]))}`);
       if (!m.open.text) throw new Error("no \"All qualities and subtitles…\" under the qualities");
       // The arrows move through the menu, and the page's shortcuts don't hear them.
@@ -2886,7 +2916,7 @@ const CASES = {
       if (!green.acts.some((a) => a.act === "show")) throw new Error(`no "Show": ${JSON.stringify(green)}`);
       if (appWindows(pid).includes(VIDEO_WINDOW)) throw new Error("the click opened the Download video window");
       const list = (rs) => rs.map((r) => `${r.name}${r.size ? ` ${r.size}` : ""}`).join(", ");
-      return `chip "${chipped.chip}"; the click: ${best.file} (${green.text} · Show); ${looked ? "looking, then " : ""}VIDEO ${pictures.rows.length} (${list(pictures.rows)}), AUDIO ${sounds.rows.length} (${list(sounds.rows)}); "${row.name}" picked: ${item.file} (${item.status}) with its progress window "${opened}" only, the main window hidden; click to rows ${rowsMs} ms, pick to first progress ${startMs} ms`;
+      return `chip "${chipped.chip}"; the click: ${best.file} (${green.text} · Show); ${looked ? "looking, then " : ""}VIDEO ${pictures.rows.length} (${list(pictures.rows)}), AUDIO ${sounds.rows.length} (${list(sounds.rows)}); "${row.name}" picked: ${item.file} (${item.status}) with its progress window "${opened}" only, the main window hidden; click to rows ${rowsMs} ms, pick to first progress ${startMs} ms; a pass over the button asked nothing, resting on it asked ${restMs} ms later, once`;
     } finally {
       // The next case starts MDM as usual.
       await stopApp();
@@ -2970,7 +3000,9 @@ const CASES = {
   // menu shows, then, with E2E_VIDEO_PICK=<a pattern of a line's words>, that line picked and
   // downloaded to its end, its file's size beside the line's (#801: the size shown is the size
   // that comes). E2E_SHOTS as in `qualities`: <lang>-page-list.png (the menu), page-pick.png
-  // (the line about to be picked, scrolled to).
+  // (the line about to be picked, scrolled to). E2E_PAGE_REST=<ms> times the click instead (#1053):
+  // the pointer goes over the video and straight onto the button's arrow, rests there that long
+  // and clicks; how long from the click to the qualities is the case's answer.
   async page(t) {
     const address = process.env.E2E_VIDEO_PAGE;
     if (!address) throw new Skip("no E2E_VIDEO_PAGE");
@@ -2983,9 +3015,35 @@ const CASES = {
     try {
       await until("the test instance, in the notification area", 20000, () => mdmList().then(() => true, () => false));
       await t.session.navigate(address);
+      // Timing the click: the video playing, as a person watching it would have it (a player
+      // that waits for its play button shows no picture before).
+      if (process.env.E2E_PAGE_REST) {
+        await until("the page's video", 30000, () => rect(t.session, "video"));
+        await t.session.evaluate("(() => { const v = document.querySelector('video'); v.muted = true; v.play().catch(() => {}); return 0; })()");
+        await sleep(2000);
+      }
       const v = await until("the page's video", 30000, () => rect(t.session, "video"));
-      const b = await hover(t.session, v);
+      // A heavy page (YouTube) may still be busy at the first try.
+      const b = (await hover(t.session, v)) || (await hover(t.session, v));
       if (!b) throw new Error("no button over the page's video");
+      const rest = process.env.E2E_PAGE_REST;
+      if (rest) {
+        const at = await t.session.pill(MORE_AT);
+        if (!at) throw new Error("no arrow on the button");
+        await t.session.mouse(at.x, at.y);
+        await sleep(Number(rest));
+        await t.session.mouse(at.x, at.y, "click");
+        const clicked = Date.now();
+        // Asked every 50 ms (`until`'s quarter second would blur the time).
+        for (;;) {
+          const p = await t.session.picks("row");
+          if (p && !p.busy && !p.rows.length) throw new Error(`the menu shows no qualities: "${p.note}"`);
+          // Done looking (the lines under "Download best" are there).
+          if (p && !p.busy && p.rows.length) return `on the button ${rest} ms, click to ${p.rows.length - 1} qualities ${Date.now() - clicked} ms`;
+          if (Date.now() - clicked > 120000) throw new Error("timed out: the qualities in the menu");
+          await sleep(50);
+        }
+      }
       await until("the best quality on the button's chip", 120000, async () => {
         const p = await t.session.pill(PILL_STATE);
         return p && p.state === "ready" && p.chip ? p : null;
