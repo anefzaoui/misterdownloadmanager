@@ -395,6 +395,18 @@ fn a_host_inside_an_appimage_mount_is_not_registered() {
     let _ = std::fs::remove_dir_all(&home);
 }
 
+/// Chrome's folder in `home`, and where it reads native messaging hosts for this user.
+#[cfg(not(windows))]
+fn chrome_dirs(home: &std::path::Path) -> (PathBuf, PathBuf) {
+    let chrome = if cfg!(target_os = "macos") {
+        home.join("Library/Application Support/Google/Chrome")
+    } else {
+        home.join(".config/google-chrome")
+    };
+    let hosts = chrome.join("NativeMessagingHosts");
+    (chrome, hosts)
+}
+
 /// #818: a copy run from a temporary folder (an archive run without extracting it first, whose
 /// tool deletes the folder afterwards) refuses to register itself: the browsers would be left
 /// with a helper that is gone, and look for no other.
@@ -403,7 +415,8 @@ fn a_host_inside_an_appimage_mount_is_not_registered() {
 fn a_host_in_a_temporary_folder_is_not_registered() {
     use std::os::unix::fs::PermissionsExt;
     let home = data_dir("temporary", serde_json::json!({}));
-    std::fs::create_dir_all(home.join(".config/google-chrome")).unwrap();
+    let (chrome, hosts) = chrome_dirs(&home);
+    std::fs::create_dir_all(&chrome).unwrap();
     let extracted = home.join("Rar$EXa34720.17029.rartemp/MisterDownloadManager");
     std::fs::create_dir_all(&extracted).unwrap();
     let copy = extracted.join("misterdownloadmanager-nmhost");
@@ -434,12 +447,7 @@ fn a_host_in_a_temporary_folder_is_not_registered() {
             String::from_utf8_lossy(&out.stderr).contains("temporary folder"),
             "{arg}: {out:?}"
         );
-        assert!(
-            !home
-                .join(".config/google-chrome/NativeMessagingHosts")
-                .exists(),
-            "{arg}"
-        );
+        assert!(!hosts.exists(), "{arg}");
     }
     let _ = std::fs::remove_dir_all(&home);
 }
@@ -452,8 +460,7 @@ fn a_host_in_a_temporary_folder_is_not_registered() {
 fn a_start_takes_only_a_registration_that_leads_nowhere() {
     use std::os::unix::fs::PermissionsExt;
     let home = data_dir("repair", serde_json::json!({}));
-    std::fs::create_dir_all(home.join(".config/google-chrome")).unwrap();
-    let hosts = home.join(".config/google-chrome/NativeMessagingHosts");
+    let (_, hosts) = chrome_dirs(&home);
     std::fs::create_dir_all(&hosts).unwrap();
     let file = hosts.join("com.misterdownloadmanager.host.json");
     let other = home.join("other-copy/misterdownloadmanager-nmhost");
