@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Text boxes keep their selection under a right-click, so the menu's Copy and Cut take it
+  (Select all, then Copy, copied nothing)
+  ([#1084](https://github.com/anefzaoui/misterdownloadmanager/issues/1084))
 - ✅ The sites in **Don't start downloading automatically from the following sites** take their
   subdomains and the files their pages link to on another server (a CDN), as the Download panels'
   list does
