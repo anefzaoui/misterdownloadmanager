@@ -410,14 +410,25 @@ fn a_host_in_a_temporary_folder_is_not_registered() {
     std::fs::copy(HOST, &copy).unwrap();
     std::fs::set_permissions(&copy, std::fs::Permissions::from_mode(0o755)).unwrap();
     for arg in ["--register", "--repair"] {
-        let out = Command::new(&copy)
-            .arg(arg)
-            .env("HOME", &home)
-            .env_remove("XDG_CONFIG_HOME")
-            .env_remove("APPDIR")
-            .env("MDM_DATA_DIR", &home)
-            .output()
-            .unwrap();
+        // A program just written can't be run while another test's child, forked before the
+        // copy was closed, still holds it open (ETXTBSY): tried again until that child execs.
+        let mut tries = 0;
+        let out = loop {
+            let run = Command::new(&copy)
+                .arg(arg)
+                .env("HOME", &home)
+                .env_remove("XDG_CONFIG_HOME")
+                .env_remove("APPDIR")
+                .env("MDM_DATA_DIR", &home)
+                .output();
+            match run {
+                Err(e) if e.kind() == std::io::ErrorKind::ExecutableFileBusy && tries < 50 => {
+                    tries += 1;
+                    std::thread::sleep(Duration::from_millis(20));
+                }
+                run => break run.unwrap(),
+            }
+        };
         assert!(!out.status.success(), "{arg}: {out:?}");
         assert!(
             String::from_utf8_lossy(&out.stderr).contains("temporary folder"),
