@@ -4763,6 +4763,10 @@
 #. why a download failed: the issuer of the site's security certificate took it back
 #, machine
 	the site's security certificate was revoked by its issuer, so MDM won't trust it	de Sécherheetszertifikat vun der Säit gouf vu sengem Aussteller zréckgezunn, sou datt MDM et net vertraut
+#. text in the Download video window
+#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
+#, machine
+	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Den Zertifikat vun der Säit gëtt weder vun yt-dlp nach vun dësem Computer vertraut: E Webfilter vun engem Antivirus oder e Proxy, deen HTTPS liest, kéint am Wee sinn. Schalt säin HTTPS-Scannen aus, oder füügt säin Zertifikat zum Computer derbäi, an da kuckt d'Säit nach eng Kéier no.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine

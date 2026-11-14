@@ -83,6 +83,22 @@ mod winui;
 #[cfg(any(target_os = "linux", test))]
 mod xdgicons;
 
+/// The application's id: Wayland's app_id and X11's WM_CLASS of every window of ours
+/// ([`window_builder`]). The desktop matches a window to the desktop entry whose
+/// `StartupWMClass=` names it (tools/installer/build-linux.sh, in the AppImage and the packages),
+/// so a window pinned to the taskbar or the dock is the launcher's, whatever name an AppImage
+/// manager gave the entry (#940). Also the entry's own name and the program's.
+pub const APP_ID: &str = "misterdownloadmanager";
+
+/// A new window's builder: every window of ours starts from it, so each carries [`APP_ID`]
+/// (eframe gives the main window its app name, a dialog nothing). Without it a dialog had no
+/// app_id on Wayland and X11's default WM_CLASS, the program's file name (an AppImage's own name),
+/// so the dock showed it apart from the launcher and the main window (#940). Windows and macOS
+/// have no such id: nothing changes there.
+pub fn window_builder() -> egui::ViewportBuilder {
+    egui::ViewportBuilder::default().with_app_id(APP_ID)
+}
+
 /// The main window's title (dialogs find their owner by it).
 pub const MAIN_TITLE: &str = concat!("Mister Download Manager ", env!("CARGO_PKG_VERSION"));
 
@@ -468,7 +484,7 @@ fn app() -> eframe::Result {
         .filter(|[x, y, w, h]| *w >= 600 && *h >= 300 && on_a_screen(x + 40, y + 10));
     let size = saved.map_or([930.0 * z, 470.0 * z], |[_, _, w, h]| [w as f32, h as f32]);
     let mut viewport = quiet(
-        egui::ViewportBuilder::default()
+        window_builder()
             .with_title(MAIN_TITLE)
             .with_inner_size(size)
             .with_min_inner_size([600.0 * z, 300.0 * z])
@@ -501,7 +517,7 @@ fn app() -> eframe::Result {
         event_loop_builder: unix::event_loop_hook(),
         ..Default::default()
     };
-    let result = renderer::run("misterdownloadmanager", &plan, options, move |cc| {
+    let result = renderer::run(APP_ID, &plan, options, move |cc| {
         #[cfg(windows)]
         win32::set_main_window(cc);
         scale::start(&cc.egui_ctx, z);
@@ -618,5 +634,54 @@ mod tests {
             .collect();
         let reads: u32 = threads.into_iter().map(|t| t.join().unwrap()).sum();
         assert!(reads > 0);
+    }
+
+    /// Every window carries the application's id (#940): the main window, the dialogs, the
+    /// menus, the crash report. A builder made another way would leave its window apart from the
+    /// launcher in the dock.
+    #[test]
+    fn every_window_has_the_app_id() {
+        assert_eq!(
+            super::window_builder().app_id.as_deref(),
+            Some(super::APP_ID)
+        );
+        // Split, so this test's own line isn't one.
+        let made = ["ViewportBuilder", "::default()"].concat();
+        let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src");
+        let mut found = Vec::new();
+        for entry in std::fs::read_dir(dir).unwrap() {
+            let path = entry.unwrap().path();
+            let Ok(src) = std::fs::read_to_string(&path) else {
+                continue;
+            };
+            let own = path.file_name().is_some_and(|n| n == "main.rs");
+            for (n, line) in src.lines().enumerate() {
+                let code = line.split("//").next().unwrap_or_default();
+                if code.contains(&made) && !(own && code.contains(".with_app_id(APP_ID)")) {
+                    found.push(format!("{}:{}", path.display(), n + 1));
+                }
+            }
+        }
+        assert!(found.is_empty(), "windows without the app id: {found:?}");
+    }
+
+    /// The desktop entry the AppImage and the packages install names the class the windows
+    /// carry (#940): a taskbar or a dock matches them by it.
+    #[test]
+    fn desktop_entry_names_the_window_class() {
+        let script = include_str!("../../../tools/installer/build-linux.sh").replace(
+            "
+", "
+",
+        );
+        let entry = script
+            .split("[Desktop Entry]")
+            .nth(1)
+            .and_then(|e| e.split("\nEOF\n").next())
+            .expect("the desktop entry in build-linux.sh");
+        let class = entry
+            .lines()
+            .find_map(|l| l.strip_prefix("StartupWMClass="));
+        assert_eq!(class, Some(super::APP_ID));
     }
 }

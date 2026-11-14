@@ -4763,6 +4763,10 @@
 #. why a download failed: the issuer of the site's security certificate took it back
 #, machine
 	the site's security certificate was revoked by its issuer, so MDM won't trust it	サイトのセキュリティ証明書は発行元によって取り消されたため、MDM はそれを信頼しません
+#. text in the Download video window
+#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
+#, machine
+	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	サイトの証明書は yt-dlp およびこのコンピューターによって信頼されていません。アンチウイルスの Web フィルターまたは HTTPS を読み取るプロキシが原因である可能性があります。HTTPS スキャンをオフにするか、その証明書をコンピューターに追加してから、もう一度ページを検索してください。
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine

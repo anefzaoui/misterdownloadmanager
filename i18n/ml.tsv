@@ -4763,6 +4763,10 @@
 #. why a download failed: the issuer of the site's security certificate took it back
 #, machine
 	the site's security certificate was revoked by its issuer, so MDM won't trust it	സൈറ്റിന്റെ സുരക്ഷാ സർട്ടിഫിക്കറ്റ് അതിന്റെ ഇഷ്യൂവർ റദ്ദാക്കി, അതിനാൽ MDM അതിനെ വിശ്വസിക്കില്ല
+#. text in the Download video window
+#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
+#, machine
+	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	സൈറ്റിന്റെ സർട്ടിഫിക്കറ്റിനെ yt-dlp-യോ ഈ കമ്പ്യൂട്ടറോ വിശ്വസിക്കുന്നില്ല: ഒരു ആന്റിവൈറസിന്റെ വെബ് ഫിൽട്ടറോ HTTPS വായിക്കുന്ന ഒരു പ്രോക്സിയോ തടസ്സമായേക്കാം. അതിന്റെ HTTPS സ്കാനിംഗ് ഓഫാക്കുക, അല്ലെങ്കിൽ അതിന്റെ സർട്ടിഫിക്കറ്റ് കമ്പ്യൂട്ടറിന്റെ സർട്ടിഫിക്കറ്റുകളിലേക്ക് ചേർക്കുക, തുടർന്ന് പേജ് വീണ്ടും പരിശോധിക്കുക.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine

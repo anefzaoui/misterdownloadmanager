@@ -292,17 +292,7 @@ function extensionOf(name) {
   return dot > 0 ? base.slice(dot + 1) : "";
 }
 
-// As the app matches them (mdm_ipc::capture): `*.example.com` takes the domain and its
-// subdomains; an address pattern's `*` any run of characters.
-function hostMatches(host, pattern) {
-  let p = pattern.trim().toLowerCase().replace(/^[a-z]+:\/\//, "").split("/")[0];
-  if (p.startsWith("*.")) {
-    p = p.slice(2);
-    return host === p || host.endsWith("." + p);
-  }
-  return p !== "" && host === p;
-}
-
+// As the app matches them (mdm_ipc::capture): a pattern's `*` is any run of characters.
 function wildcard(pattern, text) {
   const re = new RegExp("^" + pattern.toLowerCase().split("*").map((s) => s.replace(/[.+?^${}()|[\]\\]/g, "\\$&")).join(".*") + "$");
   return re.test(text.toLowerCase());
@@ -315,6 +305,20 @@ function addressMatches(pattern, url) {
   return wildcard(p, p.includes("://") ? url : url.replace(/^[a-z][a-z0-9+.-]*:\/\//i, ""));
 }
 
+// A site pattern against `host`, as the app reads one (mdm_ipc::capture::panel_site_matches):
+// `*` matches anything (#759), and `*.example.com` the domain too.
+function siteMatches(host, pattern) {
+  const p = pattern.trim().toLowerCase().replace(/^[^/]*:\/\//, "").split("/")[0];
+  if (!p) return false;
+  return (p.startsWith("*.") && wildcard(p.slice(2), host)) || wildcard(p, host);
+}
+
+// Whether `host` is on a site of Options' list (mdm_ipc::capture::site_listed): a name without
+// `*` takes its subdomains too, as the Download panels' list does (#1049).
+function siteListed(r, host) {
+  return r.excludedSites.split(/\s+/).some((p) => p && (siteMatches(host, p) || (!p.startsWith("*") && siteMatches(host, `*.${p}`))));
+}
+
 // Which of Options' lists leaves `url` to the browser: "site", "address", or "" (neither).
 function excludedBy(r, url) {
   let host = "";
@@ -323,9 +327,21 @@ function excludedBy(r, url) {
   } catch {
     return "site";
   }
-  if (r.excludedSites.split(/\s+/).some((p) => p && hostMatches(host, p))) return "site";
+  if (siteListed(r, host)) return "site";
   if (r.excludedAddresses.some((p) => addressMatches(p, url))) return "address";
   return "";
+}
+
+// Whether the page a download came from (its referrer) is on a site of Options' list: a file the
+// site serves from another host (a CDN, a mirror) is left to the browser too (#1049). No page
+// known: its own address decides.
+function pageListed(r, page) {
+  if (!/^https?:\/\//i.test(page || "")) return false;
+  try {
+    return siteListed(r, new URL(page).hostname.toLowerCase());
+  } catch {
+    return false;
+  }
 }
 
 // ---- downloads left to the browser: why, for the popup and MDM's log (#208) ----------------
@@ -1577,7 +1593,7 @@ async function candidate(item, url, clicked = false) {
   const name = (item.filename || "").split(/[\\/]/).pop() || url.split(/[?#]/)[0].split("/").pop() || "";
   const left = (why) => ({ left: why, name });
   if (!r.capture) return left(r.captureOff || "browser");
-  const by = excludedBy(r, first) || excludedBy(r, url);
+  const by = excludedBy(r, first) || excludedBy(r, url) || (pageListed(r, item.referrer) ? "site" : "");
   if (by) return left(by);
   const type = extensionOf(name);
   if (!type || !typePatterns(r.types).some((p) => p.test(type))) return left("file-type");
@@ -1778,29 +1794,25 @@ const OPENED = {
   MKV: ["video/x-matroska"],
 };
 const OPENED_RULE = 1;
-// The allow rules for exact excluded hosts follow it (ids from 2).
-const OPENED_ALLOW = 2;
 let openedTypes = [];
 
-// Options' excluded sites as the rules need them, read as the app reads them: `*.example.com`
-// is the domain and its subdomains (a rule's domain condition), a plain name that host only
-// (an allow rule of its own). As the browser writes a host: no port, punycode.
+// Options' excluded sites as the rule needs them, read as the app reads them: `example.com` and
+// `*.example.com` alike are the domain and its subdomains (#1049), a rule's domain condition. As
+// the browser writes a host: no port, punycode. A pattern with another `*` (`*.youtube.*`) is no
+// domain a rule can name: such a site's PDF is made a download, which the browser then keeps.
 function excludedHosts() {
-  const wide = [];
-  const exact = [];
+  const hosts = [];
   for (const raw of ((rules && rules.excludedSites) || "").split(/\s+/)) {
-    const p = raw.trim().replace(/^[a-z]+:\/\//i, "").split("/")[0];
-    const sub = p.startsWith("*.");
+    const p = raw.trim().replace(/^[a-z]+:\/\//i, "").split("/")[0].replace(/^\*\./, "");
     let host = "";
     try {
-      host = new URL(`http://${sub ? p.slice(2) : p}`).hostname;
+      host = new URL(`http://${p}`).hostname;
     } catch {
       continue;
     }
-    if (!host || host.includes("*")) continue;
-    (sub ? wide : exact).push(host);
+    if (host && !host.includes("*") && !hosts.includes(host)) hosts.push(host);
   }
-  return { wide, exact };
+  return hosts;
 }
 
 function openedMimes(r) {
@@ -1826,22 +1838,16 @@ async function syncOpenedRule() {
     condition: {
       resourceTypes: ["main_frame"],
       responseHeaders: [{ header: "content-type", values: openedTypes.map((m) => `${m}*`) }],
-      // Options' excluded sites keep opening in the browser.
-      ...(hosts.wide.length ? { excludedRequestDomains: hosts.wide } : {}),
+      // Options' excluded sites keep opening in the browser: their files, and those their pages
+      // lead to on another host (the page that started the load, #1049).
+      ...(hosts.length ? { excludedRequestDomains: hosts, excludedInitiatorDomains: hosts } : {}),
     },
   };
-  const esc = (h) => h.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const allows = hosts.exact.slice(0, 500).map((h, i) => ({
-    id: OPENED_ALLOW + i,
-    priority: 2,
-    action: { type: "allow" },
-    condition: { resourceTypes: ["main_frame"], regexFilter: `^[a-z]+://${esc(h)}(:[0-9]+)?/` },
-  }));
   try {
     const old = (await dnr.getSessionRules()).map((r) => r.id);
     await dnr.updateSessionRules({
       removeRuleIds: old.filter((id) => id >= OPENED_RULE),
-      addRules: openedTypes.length ? [rule, ...allows] : [],
+      addRules: openedTypes.length ? [rule] : [],
     });
   } catch {
     // A browser without header conditions (Chrome before 128): it opens them as before.
