@@ -149,15 +149,15 @@ fn browser_cookie_args(args: &[String], chosen: Option<&BrowserCookies>) -> Vec<
 /// yt-dlp's "no cookies from any browser": a run told this gets none of the chosen browser's.
 const NO_COOKIES: &str = "--no-cookies-from-browser";
 
-/// `ours` for a look-up without cookies (#352): the cookie file taken out, the browser's store
+/// `ours` for a run without cookies (#352, #686): the cookie file taken out, the browser's store
 /// refused.
-fn without_cookies(ours: &[String]) -> Vec<String> {
+pub fn without_cookies(ours: &[String]) -> Vec<String> {
     let mut out = Vec::with_capacity(ours.len() + 1);
     let mut args = ours.iter();
     while let Some(a) = args.next() {
         if a == "--cookies" || a == "--cookies-from-browser" {
             args.next();
-        } else {
+        } else if a != NO_COOKIES {
             out.push(a.clone());
         }
     }
@@ -165,12 +165,29 @@ fn without_cookies(ours: &[String]) -> Vec<String> {
     out
 }
 
-/// Does a run with arguments `ours` have cookies (its own, or the chosen browser's)?
+/// Does a run with arguments `ours` have cookies (its own, or the chosen browser's)? One told
+/// [`NO_COOKIES`] has none: the chosen browser's store isn't read for it.
 fn with_cookies(ours: &[String], chosen: Option<&BrowserCookies>) -> bool {
-    chosen.is_some()
-        || ours
-            .iter()
-            .any(|a| a == "--cookies" || a == "--cookies-from-browser")
+    !ours.iter().any(|a| a == NO_COOKIES)
+        && (chosen.is_some()
+            || ours
+                .iter()
+                .any(|a| a == "--cookies" || a == "--cookies-from-browser"))
+}
+
+/// Does a run of yt-dlp with arguments `ours` send cookies: the browser's extension's (a cookie
+/// file), or those of the browser Options → Sites Logins names?
+pub fn has_cookies(ours: &[String]) -> bool {
+    with_cookies(ours, browser_cookies().as_ref())
+}
+
+/// Is a look-up of `url` that failed with cookies (`message`) to be made once more without
+/// them? Any site's that left no format to choose (#352), and YouTube's refusals of a signed-in
+/// viewer, which a private window gets past (#686, [`crate::youtube::refused_signed_in`]): a
+/// private or a members' video, which needs them, fails as it did.
+fn refused_with_cookies(url: &str, message: &str) -> bool {
+    crate::servers::format_unavailable(message)
+        || (crate::youtube::is_youtube(url) && crate::youtube::refused_signed_in(message))
 }
 
 /// A page's `-J` output, whether it took looking the page up without cookies, and yt-dlp's
@@ -186,7 +203,9 @@ pub struct LookedUp {
 /// asks only the players that need a JavaScript runtime to decode their links, and without one
 /// (it looks for Deno alone) every video is dropped: "Requested format is not available". The
 /// same page without the cookies lists its qualities, so a look-up that fails this way and had
-/// cookies is made once more without them; if that fails too, the first error is the one told.
+/// cookies is made once more without them, as is a YouTube look-up refused for its signed-in
+/// viewer (#686: the bot check, a 403, a PO token; [`refused_with_cookies`]); if that fails too,
+/// the first error is the one told.
 /// A look-up whose secure connection failed for a certificate yt-dlp doesn't trust is made once
 /// more with the system's certificates ([`with_system_certs`], #955).
 ///
@@ -212,15 +231,25 @@ pub fn look_up(
         }),
         Err(first)
             if with_cookies(ours, browser_cookies().as_ref())
-                && crate::servers::format_unavailable(&first.to_string()) =>
+                && refused_with_cookies(url, &first.to_string()) =>
         {
             match run(&without_cookies(ours)) {
-                Ok((json, warnings)) => Ok(LookedUp {
-                    json,
-                    without_cookies: true,
-                    warnings,
-                }),
-                Err(_) => Err(first),
+                Ok((json, warnings)) => {
+                    tracing::info!(
+                        "yt-dlp's look-up failed with the browser's cookies ({first}); without them, it worked"
+                    );
+                    Ok(LookedUp {
+                        json,
+                        without_cookies: true,
+                        warnings,
+                    })
+                }
+                Err(e) => {
+                    tracing::info!(
+                        "yt-dlp's look-up failed with the browser's cookies ({first}), and without them ({e})"
+                    );
+                    Err(first)
+                }
             }
         }
         Err(e) => Err(e),
@@ -2005,6 +2034,53 @@ foreach ($d in $env:PATH.Split(';')) {
         assert!(!with_cookies(&["-J".to_owned()], None));
         // Told so, the chosen browser's cookies aren't read either.
         assert_eq!(yt(Some(&firefox), &["-J", NO_COOKIES]), ["-J", NO_COOKIES]);
+        // #686: a run made without them has none, the chosen browser's neither, and taking them
+        // out twice is taking them out once.
+        let plain = without_cookies(&ours);
+        assert!(!with_cookies(&plain, None));
+        assert!(!with_cookies(&plain, Some(&firefox)));
+        assert_eq!(without_cookies(&plain), plain);
+    }
+
+    /// #686: which look-ups that failed with cookies are made once more without them: any
+    /// site's with no format left (#352); on YouTube only, its refusals of a signed-in viewer,
+    /// in yt-dlp's real words (`tests/fixtures/ytdlp-refusals`), never a video that needs the
+    /// sign-in.
+    #[test]
+    fn a_look_up_refused_with_cookies_is_made_without_them_on_youtube_only() {
+        let error = |stderr: &str| {
+            stderr
+                .lines()
+                .find_map(|l| l.strip_prefix("ERROR:"))
+                .unwrap()
+                .trim()
+                .to_owned()
+        };
+        let yt = "https://www.youtube.com/watch?v=jNQXAC9IVRw";
+        let other = "https://video.example/watch?v=1";
+        let bot = error(include_str!(
+            "../tests/fixtures/ytdlp-refusals/bot-check.stderr"
+        ));
+        let api = error(include_str!(
+            "../tests/fixtures/ytdlp-refusals/api-403.stderr"
+        ));
+        for e in [&bot, &api] {
+            assert!(refused_with_cookies(yt, e), "{e}");
+            assert!(!refused_with_cookies(other, e), "another site: {e}");
+        }
+        for stderr in [
+            include_str!("../tests/fixtures/ytdlp-refusals/private.stderr"),
+            include_str!("../tests/fixtures/ytdlp-refusals/age.stderr"),
+            include_str!("../tests/fixtures/ytdlp-refusals/members.stderr"),
+        ] {
+            let e = error(stderr);
+            assert!(!refused_with_cookies(yt, &e), "{e}");
+        }
+        let none = error(include_str!(
+            "../tests/fixtures/ytdlp-js-runtime/challenge-failed.stderr"
+        ));
+        assert!(refused_with_cookies(yt, &none));
+        assert!(refused_with_cookies(other, &none), "#352, every site");
     }
 
     /// #229: why the browser's cookies didn't help stays on the failure's message.

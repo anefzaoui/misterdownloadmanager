@@ -28,6 +28,7 @@ resumes, and uses your proxy settings:
 
 - **yt-dlp** (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them ([How a video comes down](#how-a-video-comes-down)). The first time, click **Install yt-dlp**. MDM checks the download against the signature yt-dlp's developers publish before it uses it.
 - **ffmpeg** (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click **Install ffmpeg** when MDM offers it. MDM checks it against the checksums its release publishes.
+- **Each processor gets its own build:** yt-dlp's for x64, ARM64 and 32-bit Windows and for Linux on ARM, and ffmpeg's for x64 and ARM64 Windows. No ffmpeg is built for 32-bit Windows that MDM can check, so there MDM offers none: choose your own in **Helpers...** (below), or download the qualities that come with their sound.
 
 Both are kept in a `tools` folder in MDM's data folder.
 
@@ -167,6 +168,12 @@ cookies, the small files that keep you signed in.
   account, and put that profile in **Profile** (its name, or its folder with **...**). yt-dlp
   reads that profile's cookies only. yt-dlp's developers advise this too: a site may limit an
   account it sees used by a program.
+
+Signed in, YouTube sometimes refuses what it gives a visitor: its servers answer the video with
+*HTTP Error 403: Forbidden*, or the look-up with its bot check, where a private window plays it.
+When YouTube refuses a video anyone may watch that way, MDM looks it up once more without your
+cookies, as a private window would, and the download's log says so. A private, members' or
+age-restricted video keeps them.
 
 ![Options, Sites Logins: Cookies for video sites, From browser: Firefox](images/help/options-logins.webp)
 *Cookies for video sites: off, or a browser and its profile.*
