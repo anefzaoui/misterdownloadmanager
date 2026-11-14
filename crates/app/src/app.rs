@@ -4694,6 +4694,9 @@ impl App {
             return VideoLookupAnswer::of(lookup::USE_WINDOW);
         }
         let now = Instant::now();
+        let folder = self.settings.category_dir(Category::Video, &self.downloads);
+        let music = (!Category::Music.deleted())
+            .then(|| self.settings.category_dir(Category::Music, &self.downloads));
         if let Some(ask) = &cmd.video_lookup {
             crate::videodlg::refresh_ytdlp(&self.rt);
             let Some(tool) = mdm_tools::tools_dir()
@@ -4702,19 +4705,20 @@ impl App {
             else {
                 return VideoLookupAnswer::failed(lookup::NO_YTDLP, None);
             };
-            return self.lookups.start(ask, cmd, tool.exe, self.rt.clone(), now);
+            let answer = self.lookups.start(ask, cmd, tool.exe, self.rt.clone(), now);
+            return self.lookups.with_folders(answer, &folder, music.as_deref());
         }
         if let Some(token) = &cmd.video_poll {
-            return self.lookups.poll(token, now);
+            let answer = self.lookups.poll(token, now);
+            return self.lookups.with_folders(answer, &folder, music.as_deref());
         }
         let Some(pick) = &cmd.video_pick else {
             return VideoLookupAnswer::of(lookup::USE_WINDOW);
         };
-        let folder = self.settings.category_dir(Category::Video, &self.downloads);
-        // A sound-only choice saves in Music, as in the Download video window (#611).
-        let music = (!Category::Music.deleted())
-            .then(|| self.settings.category_dir(Category::Music, &self.downloads));
-        let start_now = !self.settings.only_add_to_queue;
+        if let Some(answer) = self.lookups.received(pick, cmd.private, now) {
+            return answer;
+        }
+        let start_now = pick.start_now.unwrap_or(!self.settings.only_add_to_queue);
         let add = self.lookups.pick(pick, cmd.private, now).and_then(|p| {
             crate::videolookup::video_add(
                 p,
@@ -4734,7 +4738,10 @@ impl App {
         }
         // Already in the list in this quality: Options' "If a duplicate download link is added".
         let step = self.add_video_checked(add, true);
-        VideoLookupAnswer::of(menu_answer(step, start_now))
+        let answer = VideoLookupAnswer::of(menu_answer(step, start_now));
+        self.lookups
+            .remember(pick, cmd.private, answer.clone(), now);
+        answer
     }
 
     /// A playlist's videos (#69), one download each, into its folder: names picked with the

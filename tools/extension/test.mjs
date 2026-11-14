@@ -991,6 +991,11 @@ const ok = (what) => {
       [{ token: "t1", choice: 0, storeId: "firefox-private" }, true, undefined, undefined],
       "the tab's window and container, not the page's say",
     );
+    // The confirmation's Later action must survive the background/native-host boundary.
+    await ask(listeners, { type: "video-pick", token: "t1", choice: 0, startNow: false }, sender);
+    assert.equal(natives(calls).filter((x) => x.videoPick).at(-1).videoPick.startNow, false);
+    await ask(listeners, { type: "video-pick", token: "t1", choice: 0, startNow: true }, sender);
+    assert.equal(natives(calls).filter((x) => x.videoPick).at(-1).videoPick.startNow, true);
     // An answer without `lookup`: the lookup is gone; a pick gets the window.
     answers.videoPoll = { ok: true };
     answers.videoPick = { ok: true };
@@ -1971,6 +1976,85 @@ function samplePage(html) {
     throw new Error(`${name}: no end`);
   };
   const make = (names, value) => new Function(`${names.map(fn).join("\n")}\nreturn ${value};`)();
+  // Execute the actual confirmation handlers with a small DOM and a native-message recorder.
+  // Merely choosing a quality (or cancelling it) must never send a download request.
+  {
+    class Element {
+      constructor() { this.children = []; this.dataset = {}; this.textContent = ""; this.attrs = {}; this.classList = { add() {}, remove() {} }; }
+      append(...children) { this.children.push(...children); }
+      replaceChildren(...children) { this.children = children; }
+      setAttribute(key, value) { this.attrs[key] = value; }
+      get firstElementChild() { return this.children[0]; }
+      focus() {}
+    }
+    const elements = new Map();
+    const messages = [];
+    const statuses = [];
+    const location = { href: "https://video.test/watch?v=one" };
+    const context = {
+      document: { createElement: () => new Element() }, location,
+      $: (sel) => { if (!elements.has(sel)) elements.set(sel, new Element()); return elements.get(sel); },
+      rows: new Element(), menu: new Element(), more: new Element(), note: new Element(),
+      busy: false, confirmation: null, menuOpen: false, lastMove: 0, lang: "en", LOOKUP_MS: 60000,
+      t: (key) => key, position() {}, endStatus() {},
+      closeMenu() { context.confirmation = null; context.menuOpen = false; },
+      setStatus: (status) => statuses.push(status),
+      showFlash: (action) => statuses.push(action),
+      within: (promise) => promise,
+      send: async (message) => { messages.push({ ...message }); return { lookup: { state: message.startNow ? "started" : "queued" } }; },
+    };
+    vm.createContext(context);
+    vm.runInContext(["sizeText", "choiceSize", "rowText", "qualityName", "replyState", "lookupAction", "selectionCurrent", "confirmSelection", "confirmDownload", "pick"].map(fn).join("\n"), context);
+    const job = () => ({ video: { isConnected: true, currentSrc: "blob:one" }, src: "blob:one", href: location.href, asked: { title: "A film" } });
+    const ready = () => ({ token: "lookup-one", title: "<b>A film</b>", save_to: { video: "/chosen/Video", audio: "/chosen/Music" }, choices: [
+      { label: "720p MP4", ext: "mp4", size: 9000 },
+      { label: "Original M4A", ext: "m4a", audio: true, size: null },
+    ] });
+    let look = ready();
+    context.confirmSelection(job(), look, 1);
+    assert.equal(messages.length, 0);
+    assert.equal(elements.get(".mh .t").textContent, "<b>A film</b>", "title is text, not markup");
+    assert.equal(context.rows.children[0].children[0].textContent, "/chosen/Music");
+    assert.ok(elements.get(".mh .s").textContent.includes("video_size_unknown"));
+    await context.confirmDownload("cancel");
+    assert.equal(messages.length, 0, "Cancel adds no job and does not consume the lookup");
+    assert.ok(!look.picked);
+    context.confirmSelection(job(), look, 1);
+    await Promise.all([context.confirmDownload("later"), context.confirmDownload("now")]);
+    assert.deepEqual(messages, [{ type: "video-pick", token: "lookup-one", choice: 1, startNow: false }]);
+    assert.equal(statuses.at(-1).text, "video_queued");
+    await context.pick(job(), look, 1, true);
+    assert.equal(messages.length, 1, "a consumed choice is never sent twice");
+    look = ready();
+    context.confirmSelection(job(), look, 0);
+    assert.equal(context.rows.children[0].children[0].textContent, "/chosen/Video");
+    await context.confirmDownload("now");
+    assert.deepEqual(messages.at(-1), { type: "video-pick", token: "lookup-one", choice: 0, startNow: true });
+    assert.equal(statuses.at(-1).text, "video_added");
+    const changed = job();
+    context.confirmSelection(changed, ready(), 0);
+    changed.video.currentSrc = "blob:another-video";
+    await context.confirmDownload("now");
+    assert.equal(messages.length, 2, "a replaced video is not downloaded under the old choice");
+    assert.equal(statuses.at(-1).text, "video_changed");
+    context.confirmSelection(job(), ready(), 0);
+    context.send = async () => ({ lookup: { state: "gone" } });
+    await context.confirmDownload("now");
+    assert.equal(statuses.at(-1).text, "video_choice_expired", "expiry must not start an unselected fallback");
+    // The app may have accepted a job even when its acknowledgement was lost. Retry the
+    // original token, choice and Later action, allowing the app's receipt to answer it.
+    look = ready();
+    context.send = async (message) => { messages.push({ ...message }); return { late: true }; };
+    context.confirmSelection(job(), look, 1);
+    await context.confirmDownload("later");
+    const uncertain = messages.at(-1);
+    assert.ok(look.submission.pending);
+    context.send = async (message) => { messages.push({ ...message }); return { lookup: { state: "queued" } }; };
+    await context.pick(job(), look, 0, true, true);
+    assert.deepEqual(messages.at(-1), uncertain, "retry cannot change the token, format or queue action");
+    assert.equal(look.submission.pending, false);
+    ok("video confirmation: selection, Download, Later, Cancel, repeated clicks, changed video and expired lookup");
+  }
   // 100 ms before the first question, then the old backoff's target (1 s x 1.25^n, 2 s at most)
   // less what the last answer took (50 ms at least): an older app (60 ms) is asked as seldom as
   // before, a newer one (holding the answer ~1.5 s) is asked again almost at once early on.
@@ -2184,11 +2268,11 @@ function samplePage(html) {
   // The page's own controls: a key the open menu used doesn't reach the page, and the button (and
   // so its menu) stays where it is while the menu is open.
   const keys = source.slice(source.indexOf('shadow.addEventListener("keydown"'), source.indexOf("// The main part: a click downloads"));
-  assert.equal(keys.match(/e\.stopPropagation\(\)/g).length, 5, "Escape (the menu, the button), Enter and Space, the arrows, ↓ on the button: not the page's too");
+  assert.equal(keys.match(/e\.stopPropagation\(\)/g).length, 6, "Tab in confirmation, Escape, Enter and Space, arrows: not the page's too");
   assert.ok(fn("spot").includes("if (menuOpen && auto.v === video && auto.at) return auto.at;"), "spot: still while its menu is open");
   assert.equal(source.match(/innerHTML/g).length, 1, "markup only for the fixed parts");
   assert.ok(!/insertAdjacentHTML|outerHTML|setInterval/.test(source));
-  assert.ok(/send\(\{ type: "video-pick", token: l\.token, choice: i \}\)/.test(fn("pick")), "a pick: the token and the row's number");
+  assert.ok(/send\(\{ type: "video-pick", token: l\.token, choice: i, startNow \}\)/.test(fn("pick")), "a pick: token, row and the confirmed action");
   assert.equal(source.split('"video-lookup"').length, 2, "one lookup message");
   // #703: asked as the button shows, once it stayed a moment over the same video (previews the
   // pointer only crosses aren't), one per video for the page's life; a plain file never.
@@ -2387,8 +2471,8 @@ function samplePage(html) {
   ok("nothing of IDM's in the extension");
 }
 
-// The right-click command in the browser's language, and every locale complete: the same keys
-// as English, which both manifests' __MSG_…__ names exist in.
+// The right-click command in the browser's language. New messages may await translation:
+// Chrome/Firefox use the default English locale, as locales.py does for absent catalog rows.
 {
   const { api, calls, listeners } = fakeApi({ firefox: false });
   load(api, false);
@@ -2399,10 +2483,13 @@ function samplePage(html) {
   const english = JSON.parse(readFileSync(new URL("en/messages.json", dir), "utf8"));
   for (const locale of readdirSync(dir)) {
     const m = JSON.parse(readFileSync(new URL(`${locale}/messages.json`, dir), "utf8"));
-    assert.deepEqual(Object.keys(m).sort(), Object.keys(english).sort(), `${locale} has every text`);
+    for (const key of Object.keys(m)) assert.ok(english[key], `${locale}: known message ${key}`);
+    // A missing localized entry must still resolve to a nonempty default message.
+    for (const key of Object.keys(english)) assert.ok((m[key] || english[key]).message, `${locale}: ${key}`);
   }
   for (const name of ["manifest.json", "manifest.firefox.json"]) {
     const text = readFileSync(new URL(`../../extension/${name}`, import.meta.url), "utf8");
+    assert.equal(JSON.parse(text).default_locale, "en", `${name}: missing translations fall back to English`);
     for (const [, key] of text.matchAll(/__MSG_(\w+)__/g)) assert.ok(english[key], `${name}: ${key}`);
   }
   // Every key the scripts use exists in English.
@@ -2413,7 +2500,7 @@ function samplePage(html) {
   for (const why of ["not_installed", "forbidden", "not_running", "host_failed", "too_large", "update_app"]) {
     assert.ok(english[`status_${why}`], `status_${why}`);
   }
-  ok("translations complete");
+  ok("translations and their default-locale fallback");
 }
 
 // #42: the browser's proxy goes with the download, so the app uses the same one: an opt-in, the

@@ -222,6 +222,7 @@ struct PickAsk {
     token: String,
     choice: usize,
     store_id: Option<String>,
+    start_now: Option<bool>,
 }
 
 /// A download the extension left to the browser: why (a `Declined` code, or `site-access`:
@@ -693,6 +694,7 @@ fn menu_command(
                     token: token(&p.token).ok_or(lookup::USE_WINDOW)?,
                     choice: p.choice,
                     store_id: store(&p.store_id),
+                    start_now: p.start_now,
                 }),
                 private: m.private,
                 ..Default::default()
@@ -1913,9 +1915,19 @@ mod tests {
                 token: "abc".into(),
                 choice: 2,
                 store_id: Some("firefox-private".into()),
+                start_now: None,
             })
         );
         assert!(cmd.private && cmd.startup && cmd.wants_reply());
+        // Explicit confirmation actions override the app's default; legacy picks omit it.
+        for start in [false, true] {
+            let message: Message = serde_json::from_value(serde_json::json!({
+                "videoPick": {"token": "abc", "choice": 2, "startNow": start}
+            }))
+            .unwrap();
+            let cmd = menu_command(MenuAsk::Pick, &message, &rules, "").unwrap();
+            assert_eq!(cmd.video_pick.unwrap().start_now, Some(start));
+        }
         // No token: answered without asking the app.
         let blank: Message = serde_json::from_str(r#"{"videoPoll":{"token":" "}}"#).unwrap();
         assert_eq!(

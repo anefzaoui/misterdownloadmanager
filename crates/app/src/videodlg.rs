@@ -671,16 +671,9 @@ impl VideoDialog {
                 Tool::Ffmpeg,
                 // i18n: button: download and install the ffmpeg program
                 crate::i18n::mark("Install ffmpeg"),
-                crate::i18n::t("The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB)."),
+                ffmpeg_note(),
             )),
-            (Some(_), None) => Some((
-                Tool::Ffmpeg,
-                "",
-                // i18n: in Download video, on macOS and Linux (no button: the system installs it)
-                crate::i18n::t(
-                    "The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).",
-                ),
-            )),
+            (Some(_), None) => Some((Tool::Ffmpeg, "", ffmpeg_note())),
             _ => None,
         };
         // The Install button, as wide as its label in this language, and the status line up to
@@ -1299,6 +1292,18 @@ pub(crate) fn default_subs(v: &Video, c: &Choice, pref: &Subs) -> Subs {
 
 /// #852: the help page's section on installing a JavaScript runtime for yt-dlp.
 pub(crate) const JS_RUNTIME_HELP: &str = "video.md#javascript-runtime";
+
+/// Why better video choices are unavailable without the merging helper.
+pub(crate) fn ffmpeg_note() -> &'static str {
+    if cfg!(windows) {
+        crate::i18n::t("The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).")
+    } else {
+        // i18n: in Download video and the browser quality menu, on macOS and Linux (the system installs ffmpeg)
+        crate::i18n::t(
+            "The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).",
+        )
+    }
+}
 
 /// #852: what a YouTube look-up yt-dlp made without a JavaScript runtime says: in the Download
 /// video window, and in the browser's quality menu.

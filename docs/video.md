@@ -6,6 +6,14 @@ MDM downloads videos from their web pages: YouTube, Vimeo, Dailymotion, Twitch, 
 
 ## Start a video download
 
+With the browser extension, open the menu on **Download video** to choose a video quality or
+an audio format. MDM shows a confirmation in the page with your selection, its size (or
+**Size unknown**) and its category folder. **Download** starts it, **Download Later** adds it
+to the main queue without starting, and **Cancel** adds nothing. A repeated confirmation adds
+only one download. **All qualities and subtitles...** opens MDM's full video window instead.
+Update both MDM and its browser extension to use the browser confirmation; older components
+use MDM's own window.
+
 - Give the video's page address to **Add URL** (**Ctrl+N**). MDM recognises video pages and opens the video window, already looking the page up.
 - Or choose **Tasks → Download video from a page...**, paste the address into **Page address** and click **Look up**.
 

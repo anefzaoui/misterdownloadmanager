@@ -190,6 +190,10 @@ pub struct VideoPick {
     pub choice: usize,
     /// The cookie store the choice was made in: the look-up's, or it isn't taken.
     pub store_id: Option<String>,
+    /// The browser confirmation's Download (true) or Later (false). None from an older
+    /// extension: follow Options' "only add to the queue", as before.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub start_now: Option<bool>,
 }
 
 impl Command {
@@ -916,6 +920,7 @@ mod tests {
                 token: "abc".into(),
                 choice: 2,
                 store_id: None,
+                start_now: None,
             }),
             startup: true,
             ..Default::default()
@@ -958,6 +963,7 @@ mod tests {
                 token: "abc".into(),
                 choice: 3,
                 store_id: Some("firefox-private".into()),
+                start_now: None,
             })
         );
         let raw: Command =

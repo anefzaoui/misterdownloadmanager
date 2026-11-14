@@ -77,6 +77,14 @@
     video_failed_lookup: "Could not look it up",
     video_tab_video: "Video",
     video_tab_audio: "Audio",
+    video_confirm: "Confirm download",
+    video_confirm_now: "Download",
+    video_confirm_later: "Download Later",
+    video_confirm_cancel: "Cancel",
+    video_save_to: "Save to",
+    video_size_unknown: "Size unknown",
+    video_choice_expired: "This choice expired. Choose a quality again.",
+    video_changed: "The video changed. Choose a quality again.",
   };
   // Sizes as the browser's language writes them.
   const lang = ext.i18n.getUILanguage?.() || undefined;
@@ -809,6 +817,7 @@
   let menuOpen = false;
   let dragging = null;
   let busy = false;
+  let confirmation = null;
   let raf = 0;
   let scan = 0;
   // Kept on screen while the keyboard is on it (not after a mouse click: that leaves focus too),
@@ -904,6 +913,12 @@ button:focus-visible { outline: none; }
 .chip.skel { width: 30px; height: 15px; padding: 0; background-size: 200% 100%;
   background-image: linear-gradient(90deg, rgba(255, 255, 255, .3), rgba(255, 255, 255, .8), rgba(255, 255, 255, .3));
   animation: shimmer 1.4s linear infinite; }
+.menu.confirming > button, .menu.confirming > .hr { display: none; }
+.menu .confirm-save { padding: 8px; white-space: normal; overflow-wrap: anywhere; }
+.menu .confirm-save bdi { display: block; margin-top: 4px; color: var(--tx2); }
+.menu .confirm-actions { display: flex; flex-wrap: wrap; gap: 4px; padding: 8px 4px; }
+.menu .confirm-actions button { width: auto; flex: 1 1 auto; justify-content: center; height: auto; min-height: 30px; padding: 6px 8px; white-space: normal; }
+.menu .confirm-actions button:first-child { background: var(--go); color: #fff; }
 .chip:empty:not(.skel), .sub:empty, .label:empty, .acts:empty { display: none; }
 .label { font-weight: 600; }
 .sub { color: var(--tx2); }
@@ -1718,7 +1733,7 @@ button:focus-visible { outline: none; }
   // also where a click goes when nothing was found (no look-ups here, yt-dlp missing, a list, an
   // error: the window says so and offers what to do).
   async function download(row, toWindow = false) {
-    if (busy || !video) return;
+    if (busy || confirmation || !video) return;
     busy = true;
     try {
       closeMenu();
@@ -1733,6 +1748,8 @@ button:focus-visible { outline: none; }
       const j = { video, src: video.currentSrc || "", href: location.href, asked: { src: d.src, title, url: d.url, at: d.at }, row, toWindow };
       const c = { v: video, d, key: lookKey(d) };
       let l = lookOf(c);
+      // An uncertain acknowledgement is retried with the same token, never a new lookup.
+      if (l && l.submission && l.submission.pending) return await pick(j, l, 0, false, true);
       setStatus({ state: "sending", text: t("video_sending") });
       if (toWindow) return await useWindow(j);
       if (l && l.file) return await useWindow(j, { direct: true, words: qualityName(l, t) });
@@ -1747,7 +1764,9 @@ button:focus-visible { outline: none; }
       if (a.act !== "offer") return await useWindow(j);
       const choices = l.choices;
       const i = row && Number.isInteger(row.choice) ? row.choice : choices.indexOf(bestOf(l));
-      return await pick(j, l, Math.max(0, i));
+      // A legacy app/host cannot honour Later: use its own confirmation in that case.
+      if (!l.save_to || typeof l.save_to.video !== "string" || typeof l.save_to.audio !== "string") return await useWindow(j);
+      return confirmSelection(j, l, Math.max(0, i));
     } finally {
       busy = false;
     }
@@ -1755,16 +1774,80 @@ button:focus-visible { outline: none; }
 
   // A quality the look-up offered: MDM downloads it (its own choice of it, with what it looked the
   // video up with) without its window. Only the token and the quality's number go.
-  async function pick(j, l, i) {
-    if (!l.token || l.picked || !(i >= 0 && i < Math.min(l.choices.length, 100))) return useWindow(j);
+  async function pick(j, l, i, startNow, retry = false) {
+    if (retry && l.submission) ({ j, i, startNow } = l.submission);
+    if (!l.token || (l.picked && !retry) || !(i >= 0 && i < Math.min(l.choices.length, 100))) return;
     l.picked = true;
-    const s = replyState(await send({ type: "video-pick", token: l.token, choice: i }));
+    l.submission = { j, i, startNow, pending: true };
+    const reply = await within(send({ type: "video-pick", token: l.token, choice: i, startNow }), LOOKUP_MS);
+    if (!reply || reply.late || reply.fallback || (reply.ok === false && !reply.lookup && !reply.gone)) {
+      return setStatus({ state: "err", text: t("video_no_answer"), acts: [["retry-pick", t("video_retry")]], again: { j, l, i, startNow } });
+    }
+    const s = replyState(reply);
     if (!s) return endStatus(true);
+    l.submission.pending = false;
     // Downloading, queued, or handed to the app ("sent"): green, with "Show". Anything else (the
     // look-up forgotten, another window's, an older app): the window.
     const a = lookupAction(s, t, true);
     if (a.act === "flash") return showFlash(a, l, qualityName(l.choices[i], t));
-    return useWindow(j);
+    // Never silently replace an expired selection with an unselected app window.
+    setStatus({ state: "warn", text: t("video_choice_expired") }, 9000);
+  }
+
+  // Keep the selected lookup and index until the user confirms. Cancel/outside click/Escape
+  // sends nothing, and a second click while sending cannot submit this selection again.
+  function confirmSelection(j, l, i) {
+    if (!selectionCurrent(j)) return setStatus({ state: "warn", text: t("video_changed") }, 9000);
+    const c = l.choices[i];
+    if (!c) return;
+    endStatus(true);
+    confirmation = { j, l, i };
+    menuOpen = true;
+    menu.classList.add("open", "confirming");
+    menu.setAttribute("role", "dialog");
+    menu.setAttribute("aria-label", t("video_confirm"));
+    more.setAttribute("aria-expanded", "true");
+    $(".mh .t").textContent = String(l.title || j.asked.title).slice(0, 300);
+    $(".mh .s").textContent = [rowText(c, lang).name, choiceSize(c, lang) || t("video_size_unknown")].join(" · ");
+    note.hidden = true;
+    const save = document.createElement("div");
+    save.className = "confirm-save";
+    save.textContent = t("video_save_to");
+    const path = document.createElement("bdi");
+    path.textContent = c.audio === true ? l.save_to.audio : l.save_to.video;
+    save.append(path);
+    const actions = document.createElement("div");
+    actions.className = "confirm-actions";
+    for (const [act, key] of [["now", "video_confirm_now"], ["later", "video_confirm_later"], ["cancel", "video_confirm_cancel"]]) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.dataset.confirm = act;
+      b.textContent = t(key);
+      actions.append(b);
+    }
+    rows.replaceChildren(save, actions);
+    lastMove = Date.now();
+    position();
+    actions.firstElementChild.focus();
+  }
+
+  function selectionCurrent(j) {
+    return Boolean(j.video.isConnected && location.href === j.href && j.video.currentSrc === j.src);
+  }
+
+  async function confirmDownload(act) {
+    if (!confirmation || busy) return;
+    const { j, l, i } = confirmation;
+    closeMenu();
+    if (act === "cancel") return endStatus(true);
+    if (!selectionCurrent(j)) return setStatus({ state: "warn", text: t("video_changed") }, 9000);
+    busy = true;
+    try {
+      setStatus({ state: "sending", text: t("video_sending") });
+      await pick(j, l, i, act === "now");
+    } finally {
+      busy = false;
+    }
   }
 
   // What a look-up or a choice came to, on the button: green with "Show", grey "off" with "Turn
@@ -1820,6 +1903,15 @@ button:focus-visible { outline: none; }
     } else if (name === "retry") {
       endStatus(true);
       download(s.again && s.again.row, Boolean(s.again && s.again.toWindow));
+    } else if (name === "retry-pick" && s.again && !busy) {
+      const { j, l, i, startNow } = s.again;
+      busy = true;
+      setStatus({ state: "sending", text: t("video_sending") });
+      try {
+        await pick(j, l, i, startNow, true);
+      } finally {
+        busy = false;
+      }
     } else if (name === "on") {
       never = false;
       allowed = null;
@@ -1834,6 +1926,7 @@ button:focus-visible { outline: none; }
   // line per quality (video, then sound); MDM's whole window; hiding and settings. Filled as it
   // opens and again when the look-up ends.
   function fillMenu() {
+    if (confirmation) return;
     const c = video ? describeNow(video) : null;
     const look = lookOf(c);
     const site = host.replace(/^www\./, "");
@@ -1965,7 +2058,7 @@ button:focus-visible { outline: none; }
   }
 
   // The menu's items the arrows go through.
-  const menuItems = () => [...menu.querySelectorAll("button")];
+  const menuItems = () => [...(confirmation ? rows : menu).querySelectorAll("button")];
   function focusItem(b) {
     if (!b) return;
     b.focus();
@@ -1993,7 +2086,10 @@ button:focus-visible { outline: none; }
     if (!menuOpen) return;
     const back = menu.contains(shadow.activeElement);
     menuOpen = false;
-    menu.classList.remove("open");
+    confirmation = null;
+    menu.classList.remove("open", "confirming");
+    menu.setAttribute("role", "menu");
+    menu.setAttribute("aria-label", idleLabel);
     more.setAttribute("aria-expanded", "false");
     // The keyboard's focus back on its button, not lost with the menu.
     if (back) more.focus();
@@ -2002,6 +2098,7 @@ button:focus-visible { outline: none; }
   // An item of the menu, clicked or by key.
   function runItem(b) {
     if (!b) return;
+    if (b.dataset.confirm) return confirmDownload(b.dataset.confirm);
     if (b.dataset.choice !== undefined) return download({ choice: Number(b.dataset.choice) });
     if (b.dataset.row !== undefined) return download();
     run(b.dataset.act);
@@ -2063,7 +2160,13 @@ button:focus-visible { outline: none; }
     if (!e.isTrusted) return;
     const focused = shadow.activeElement;
     const inMenu = menuOpen && focused && menu.contains(focused);
-    if (e.key === "Escape" && menuOpen) {
+    if (e.key === "Tab" && confirmation) {
+      const items = menuItems();
+      const index = items.indexOf(focused);
+      focusItem(items[(index + (e.shiftKey ? items.length - 1 : 1)) % items.length]);
+      e.preventDefault();
+      e.stopPropagation();
+    } else if (e.key === "Escape" && menuOpen) {
       closeMenu();
       more.focus();
       e.preventDefault();

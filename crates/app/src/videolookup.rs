@@ -91,6 +91,14 @@ struct Search {
     info: InfoSlot,
     /// Its choices are merged qualities (ffmpeg was there).
     merge: bool,
+    /// Destinations shown with this token, frozen until it is confirmed or expires.
+    folders: Option<Folders>,
+}
+
+#[derive(Clone, Debug)]
+struct Folders {
+    video: PathBuf,
+    music: Option<PathBuf>,
 }
 
 /// What makes two clicks one look-up ([`Lookups::share`]): the address looked up and everything
@@ -167,6 +175,7 @@ pub struct Picked {
     /// yt-dlp's look-up, for the download (its `Debug` shows nothing of it).
     pub info: InfoSlot,
     pub merge: bool,
+    folders: Option<Folders>,
 }
 
 /// The look-ups the browser's quality menu asked for (`App::lookups`).
@@ -176,9 +185,81 @@ pub struct Lookups {
     /// The look-ups a click may share, at most [`KEPT`], for [`TTL`] after they began.
     recent: Vec<Recent>,
     running: Arc<AtomicUsize>,
+    /// A retry of a confirmed choice gets its first answer, never another job or dialog.
+    receipts: Vec<Receipt>,
+}
+
+struct Receipt {
+    pick: mdm_ipc::VideoPick,
+    private: bool,
+    answer: VideoLookupAnswer,
+    created: Instant,
 }
 
 impl Lookups {
+    /// Bind the advertised folders to this token so changing Options while a confirmation
+    /// is open cannot change where its download will be saved.
+    pub fn with_folders(
+        &mut self,
+        answer: VideoLookupAnswer,
+        video: &Path,
+        music: Option<&Path>,
+    ) -> VideoLookupAnswer {
+        if answer.state != lookup::READY {
+            return answer;
+        }
+        let Some(search) = answer
+            .token
+            .as_ref()
+            .and_then(|token| self.searches.get_mut(token))
+        else {
+            return answer;
+        };
+        let folders = search.folders.get_or_insert_with(|| Folders {
+            video: video.to_owned(),
+            music: music.map(Path::to_owned),
+        });
+        with_folders(answer, &folders.video, folders.music.as_deref())
+    }
+
+    /// The answer already given for this token and choice, in this browser context.
+    pub fn received(
+        &mut self,
+        pick: &mdm_ipc::VideoPick,
+        private: bool,
+        now: Instant,
+    ) -> Option<VideoLookupAnswer> {
+        self.prune(now);
+        self.receipts
+            .iter()
+            .find(|r| {
+                r.pick.token == pick.token
+                    && r.pick.choice == pick.choice
+                    && r.private == private
+                    && store(&r.pick.store_id) == store(&pick.store_id)
+            })
+            .map(|r| r.answer.clone())
+    }
+
+    /// Keep only the result, token and browser identity; no cookies or media addresses.
+    pub fn remember(
+        &mut self,
+        pick: &mdm_ipc::VideoPick,
+        private: bool,
+        answer: VideoLookupAnswer,
+        now: Instant,
+    ) {
+        if self.receipts.len() >= KEPT {
+            self.receipts.remove(0);
+        }
+        self.receipts.push(Receipt {
+            pick: pick.clone(),
+            private,
+            answer,
+            created: now,
+        });
+    }
+
     /// Look `ask` up with yt-dlp `exe` and the browser's context of `cmd` (`rt`: for a plain
     /// file's server): answered at once, `pending` with its token (`busy` while [`RUNNING`] run
     /// already).
@@ -253,6 +334,7 @@ impl Lookups {
                 found,
                 info,
                 merge,
+                folders: None,
             },
         );
         Some(token)
@@ -313,6 +395,7 @@ impl Lookups {
                 found,
                 info,
                 merge,
+                folders: None,
             },
         );
         Some(job)
@@ -371,6 +454,7 @@ impl Lookups {
             choice,
             info: s.info,
             merge: s.merge,
+            folders: s.folders,
         })
     }
 
@@ -381,7 +465,25 @@ impl Lookups {
             .retain(|_, s| now.saturating_duration_since(s.created) < TTL);
         self.recent
             .retain(|r| now.saturating_duration_since(r.started) < TTL);
+        self.receipts
+            .retain(|r| now.saturating_duration_since(r.created) < TTL);
     }
+}
+
+/// A ready menu also tells the browser where each kind of choice goes. Older native hosts
+/// discard this field, so the extension uses MDM's own confirmation instead in that case.
+pub fn with_folders(
+    mut answer: VideoLookupAnswer,
+    video: &Path,
+    music: Option<&Path>,
+) -> VideoLookupAnswer {
+    if answer.state == lookup::READY {
+        answer.save_to = Some(mdm_ipc::api::VideoFolders {
+            video: video.display().to_string(),
+            audio: music.unwrap_or(video).display().to_string(),
+        });
+    }
+    answer
 }
 
 /// A cookie store's name, none when blank.
@@ -447,12 +549,29 @@ fn menu_choice(c: &Choice) -> VideoChoice {
 
 /// What the menu says with video `v`'s choices, as the Download video window says it (#852:
 /// YouTube looked up without a JavaScript runtime), with its help page in MDM's language.
-fn notice(v: &Video) -> Option<VideoNotice> {
-    v.needs_js_runtime.then(|| VideoNotice {
-        text: crate::videodlg::js_runtime_note().to_owned(),
+fn notice(v: &Video, merge: bool) -> Option<VideoNotice> {
+    let mut notes = Vec::new();
+    if v.needs_js_runtime {
+        notes.push(crate::videodlg::js_runtime_note());
+    }
+    if !merge && mdm_tools::resolve::needs_merging(v) {
+        notes.push(crate::videodlg::ffmpeg_note());
+    }
+    if notes.is_empty() {
+        return None;
+    }
+    Some(VideoNotice {
+        text: notes.join(" "),
         // i18n: link in the browser's video menu, after the note that YouTube needs a JavaScript runtime: opens the help page that says how to install Node.js or Deno
         link: crate::i18n::t("How to install one").to_owned(),
-        url: crate::help::page_url(crate::videodlg::JS_RUNTIME_HELP, crate::i18n::code()),
+        url: crate::help::page_url(
+            if v.needs_js_runtime {
+                crate::videodlg::JS_RUNTIME_HELP
+            } else {
+                "video.md#yt-dlp-and-ffmpeg"
+            },
+            crate::i18n::code(),
+        ),
     })
 }
 
@@ -462,14 +581,14 @@ fn answer(token: &str, s: &Search) -> VideoLookupAnswer {
     match &*lock(&s.found) {
         Found::Looking => VideoLookupAnswer::pending(token),
         Found::Video(v, choices) if choices.is_empty() => VideoLookupAnswer {
-            notice: notice(v),
+            notice: notice(v, s.merge),
             ..VideoLookupAnswer::failed(lookup::NO_CHOICES, None)
         },
         Found::Video(v, choices) => VideoLookupAnswer {
             token: Some(token.to_owned()),
             title: Some(cut(title_of(v, &s.address, &s.context), TITLE_MAX)),
             choices: choices.iter().take(CHOICES).map(menu_choice).collect(),
-            notice: notice(v),
+            notice: notice(v, s.merge),
             ..VideoLookupAnswer::of(lookup::READY)
         },
         Found::List => VideoLookupAnswer::of(lookup::LIST),
@@ -502,6 +621,10 @@ pub fn video_add(
     start_now: bool,
     pref: &Subs,
 ) -> Option<VideoAdd> {
+    let (folder, music) = p
+        .folders
+        .as_ref()
+        .map_or((folder, music), |f| (f.video.as_path(), f.music.as_deref()));
     let page = url::Url::parse(&p.address)
         .ok()
         .filter(|u| matches!(u.scheme(), "http" | "https"))?;
@@ -639,6 +762,128 @@ mod tests {
     use super::*;
     use mdm_ipc::{Command, VideoLookup, VideoPick};
 
+    #[test]
+    fn confirmed_choices_are_replayed_only_in_their_own_browser_context() {
+        let now = Instant::now();
+        let mut lookups = Lookups::default();
+        let chosen = pick("one", 1, Some("container-1"));
+        let answer = VideoLookupAnswer::of(lookup::QUEUED);
+        lookups.remember(&chosen, true, answer.clone(), now);
+        assert_eq!(lookups.received(&chosen, true, now), Some(answer.clone()));
+        assert!(lookups.received(&chosen, false, now).is_none());
+        assert!(
+            lookups
+                .received(&pick("one", 0, Some("container-1")), true, now)
+                .is_none()
+        );
+        assert!(
+            lookups
+                .received(&pick("one", 1, Some("container-2")), true, now)
+                .is_none()
+        );
+        let mut retry = chosen.clone();
+        retry.start_now = Some(true);
+        assert_eq!(lookups.received(&retry, true, now), Some(answer));
+        assert!(lookups.received(&chosen, true, now + TTL).is_none());
+    }
+
+    #[test]
+    fn confirmation_receipts_are_bounded() {
+        let now = Instant::now();
+        let mut lookups = Lookups::default();
+        for i in 0..=KEPT {
+            lookups.remember(
+                &pick(&i.to_string(), 0, None),
+                false,
+                VideoLookupAnswer::of(lookup::STARTED),
+                now,
+            );
+        }
+        assert_eq!(lookups.receipts.len(), KEPT);
+        assert!(lookups.received(&pick("0", 0, None), false, now).is_none());
+        assert!(
+            lookups
+                .received(&pick(&KEPT.to_string(), 0, None), false, now)
+                .is_some()
+        );
+    }
+
+    #[test]
+    fn confirmation_follows_the_configured_video_and_audio_folders() {
+        let ready = with_folders(
+            VideoLookupAnswer::of(lookup::READY),
+            Path::new("custom/video"),
+            Some(Path::new("custom/music")),
+        );
+        assert_eq!(
+            ready.save_to.unwrap(),
+            mdm_ipc::api::VideoFolders {
+                video: "custom/video".into(),
+                audio: "custom/music".into(),
+            }
+        );
+        let fallback = with_folders(
+            VideoLookupAnswer::of(lookup::READY),
+            Path::new("video"),
+            None,
+        );
+        assert_eq!(fallback.save_to.unwrap().audio, "video");
+        assert!(
+            with_folders(VideoLookupAnswer::pending("one"), Path::new("video"), None)
+                .save_to
+                .is_none()
+        );
+    }
+
+    #[test]
+    fn the_confirmed_destination_survives_a_settings_change() {
+        let now = Instant::now();
+        let mut lookups = Lookups::default();
+        let job = lookups
+            .begin(&look(SRC, Some("Film"), None), &sent(false, ""), false, now)
+            .unwrap();
+        answered(&job, STREAM);
+        let answer = lookups.poll(&job.token, now);
+        let answer = lookups.with_folders(answer, Path::new("confirmed/video"), None);
+        assert_eq!(answer.save_to.unwrap().video, "confirmed/video");
+        let again = lookups.poll(&job.token, now);
+        assert_eq!(
+            lookups
+                .with_folders(again, Path::new("changed/video"), None)
+                .save_to
+                .unwrap()
+                .video,
+            "confirmed/video"
+        );
+        let picked = lookups
+            .pick(&pick(&job.token, 0, None), false, now)
+            .unwrap();
+        let add = video_add(
+            picked,
+            Path::new("changed/video"),
+            None,
+            false,
+            &Subs::default(),
+        )
+        .unwrap();
+        assert!(add.dest.starts_with("confirmed/video"));
+    }
+
+    #[test]
+    fn missing_ffmpeg_explains_why_only_audio_is_offered() {
+        let mut video = mdm_tools::resolve::parse(
+            br#"{"title":"A film","formats":[
+            {"format_id":"video","ext":"mp4","height":720,"vcodec":"avc1","acodec":"none"},
+            {"format_id":"audio","ext":"m4a","vcodec":"none","acodec":"mp4a"}] }"#,
+        )
+        .unwrap();
+        assert!(notice(&video, false).unwrap().text.contains("ffmpeg"));
+        assert!(notice(&video, true).is_none());
+        video.needs_js_runtime = true;
+        let both = notice(&video, false).unwrap();
+        assert!(both.text.contains("ffmpeg") && both.text.contains("JavaScript runtime"));
+    }
+
     /// A stream's manifest as yt-dlp sees it (named after its address) with two variants and
     /// German subtitles.
     const STREAM: &str = r#"{"title": "master", "duration": 60, "formats": [
@@ -673,6 +918,7 @@ mod tests {
             token: token.into(),
             choice,
             store_id: store.map(str::to_owned),
+            start_now: None,
         }
     }
 

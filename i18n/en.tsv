@@ -3391,7 +3391,7 @@
 #. text in the Download video window
 	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).
 #. text in the Download video window
-#. in Download video, on macOS and Linux (no button: the system installs it)
+#. in Download video and the browser quality menu, on macOS and Linux (the system installs ffmpeg)
 	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).
 #. text in the settings
 #. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
@@ -4615,6 +4615,12 @@ extension	can't be saved	can't be saved
 #. shown briefly on the download button when nothing on the page says which video the player is playing, so nothing was sent
 extension	Can't tell which video this is: open its own page and try there	Can't tell which video this is: open its own page and try there
 #. text in the browser extension
+#. button in the browser video confirmation: close it without adding a download
+extension	Cancel	Cancel
+#. text in the browser extension
+#. title of the confirmation after choosing a video or audio quality in the browser
+extension	Confirm download	Confirm download
+#. text in the browser extension
 #. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
 extension	Connected to Mister Download Manager	Connected to Mister Download Manager
 #. text in the browser extension
@@ -4626,6 +4632,7 @@ extension	Connected to Mister Download Manager {version}	Connected to Mister Dow
 extension	Could not look it up	Could not look it up
 #. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
+#. button in the browser video confirmation: start the selected download now
 extension	Download	Download
 #. text in the browser extension
 #. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
@@ -4633,6 +4640,9 @@ extension	Download all links with Mister Download Manager	Download all links wit
 #. text in the browser extension
 #. first line of the list under the download button over a video: downloads the best quality at once; the quality, its file type and size follow on the same line; short
 extension	Download best	Download best
+#. text in the browser extension
+#. button in the browser video confirmation: queue the selected download without starting it
+extension	Download Later	Download Later
 #. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 extension	Download selected links with Mister Download Manager	Download selected links with Mister Download Manager
@@ -4810,6 +4820,9 @@ extension	Protected video	Protected video
 #. button on the download button over a video when the app didn't answer: try again; verb; very short
 extension	Retry	Retry
 #. text in the browser extension
+#. label above the destination folder in the browser video confirmation
+extension	Save to	Save to
+#. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 extension	Send downloads through this browser's proxy or VPN extension	Send downloads through this browser's proxy or VPN extension
 #. text in the browser extension
@@ -4825,6 +4838,9 @@ extension	Sent to Mister Download Manager	Sent to Mister Download Manager
 #. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
 extension	Show	Show
+#. text in the browser extension
+#. in the browser video confirmation when the site gave no size or estimate
+extension	Size unknown	Size unknown
 #. text in the browser extension
 #. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
 extension	Support MDM	Support MDM
@@ -4844,8 +4860,14 @@ extension	The extension isn't allowed to read this site (the browser's site acce
 #. in the toolbar button's popup when the last download the browser kept came from a private window (its name isn't kept); followed by why (one of the declined_* texts)
 extension	The last download was left to the browser.	The last download was left to the browser.
 #. text in the browser extension
+#. browser video changed while its download was being confirmed; no download was added
+extension	The video changed. Choose a quality again.	The video changed. Choose a quality again.
+#. text in the browser extension
 #. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
 extension	This browser isn't ticked in Options → General.	This browser isn't ticked in Options → General.
+#. text in the browser extension
+#. browser video download could not use the confirmed lookup; ask the user to select again instead of silently changing the format
+extension	This choice expired. Choose a quality again.	This choice expired. Choose a quality again.
 #. text in the browser extension
 #. choice under Send downloads to: the Mister Download Manager on this computer
 extension	This computer	This computer

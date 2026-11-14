@@ -152,6 +152,10 @@ pub struct VideoLookupAnswer {
     /// place in this list.
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub choices: Vec<VideoChoice>,
+    /// `ready`: destination folders for the browser confirmation. Its presence also says
+    /// that the app and native host understand `VideoPick::start_now`.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub save_to: Option<VideoFolders>,
     /// `failed`: [`lookup::NO_YTDLP`], [`lookup::NO_CHOICES`] or [`lookup::ERROR`].
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reason: Option<String>,
@@ -163,6 +167,13 @@ pub struct VideoLookupAnswer {
     /// None from an app older than the field.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub notice: Option<VideoNotice>,
+}
+
+/// Category folders shown before confirming a video download in the browser.
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, JsonSchema)]
+pub struct VideoFolders {
+    pub video: String,
+    pub audio: String,
 }
 
 /// A word in the browser's quality menu on what the look-up lacked (#852), in MDM's language.
