@@ -121,6 +121,7 @@ pub fn keep_theme(
     title: &str,
     dark: bool,
     open: bool,
+    activate: bool,
 ) {
     let theme_key = key.with("theme");
     let shown_key = key.with("shown");
@@ -159,8 +160,10 @@ pub fn keep_theme(
     }
     // Shown (in an earlier frame), once: in front of the other programs' windows, where Windows
     // didn't give it the foreground (#208: Download File Info behind the browser that asked for
-    // it). Not in off-screen test runs, whose windows stay out of the way. Elsewhere the window
-    // manager places a new window and decides on its focus; an app has no say there.
+    // it), or on macOS where `makeKeyAndOrderFront:` alone never activates the app behind the
+    // browser or another program. Not in off-screen test runs, whose windows stay out of the way,
+    // and never for passive notices (Download complete). Elsewhere the window manager places a
+    // new window and decides on its focus; an app has no say there.
     // Looked for in a few frames at most (its title may change meanwhile: a progress window's).
     #[cfg(windows)]
     {
@@ -182,7 +185,30 @@ pub fn keep_theme(
             ctx.data_mut(|d| d.insert_temp(front_key, tries));
         }
     }
-    #[cfg(not(windows))]
+    #[cfg(target_os = "macos")]
+    {
+        const TRIES: u32 = 30;
+        let tries = ctx.data(|d| d.get_temp::<u32>(front_key).unwrap_or(0));
+        if activate && shown && !crate::offscreen() && tries < TRIES {
+            let tries = match crate::unix::macos_bring_window_forward(title) {
+                Some(lifted) => {
+                    if lifted {
+                        tracing::info!("window {title:?} shown behind another program's: lifted");
+                    }
+                    ctx.send_viewport_cmd_to(vid, egui::ViewportCommand::Focus);
+                    TRIES
+                }
+                None => {
+                    ctx.request_repaint();
+                    tries + 1
+                }
+            };
+            ctx.data_mut(|d| d.insert_temp(front_key, tries));
+        }
+    }
+    #[cfg(not(target_os = "macos"))]
+    let _ = activate;
+    #[cfg(not(any(windows, target_os = "macos")))]
     let _ = front_key;
     // Belt and braces, once per window and theme (until the window is found): asked every frame,
     // the window's thread waited on DWM, or on a busy window of this process while looking for
@@ -194,7 +220,9 @@ pub fn keep_theme(
         ctx.data_mut(|d| d.insert_temp(caption_key, dark));
     }
     #[cfg(not(windows))]
-    let _ = (title, caption_key);
+    let _ = caption_key;
+    #[cfg(not(any(windows, target_os = "macos")))]
+    let _ = title;
 }
 
 /// Whether the window `key` is drawn again after a pass that didn't draw it: egui destroys a
@@ -311,6 +339,13 @@ enum Kind {
     Notice {
         on_top: bool,
     },
+}
+
+/// Interactive dialogs (`Plain` and `Question`) activate MDM and come forward when shown on
+/// macOS; passive `Notice` windows (`Download complete`) stay non-activating so typing in another
+/// program is never interrupted.
+fn dialog_activates_on_open(kind: Kind) -> bool {
+    !matches!(kind, Kind::Notice { .. })
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -442,6 +477,7 @@ fn dialog_window<T>(
             }
         }
     }
+    let activate = dialog_activates_on_open(kind);
     keep_theme(
         ctx,
         ViewportId::from_hash_of(id),
@@ -450,12 +486,14 @@ fn dialog_window<T>(
         // Every dialog follows the mode (the light dialogs too), its caption the theme's surface.
         crate::theme::dark_surface(),
         matches!(out, Outcome::Open),
+        activate,
     );
     // A question takes the focus once it is shown (not while hidden for its theme), and so does
-    // Download File Info outside Windows (#484): asked for from the browser, it opened behind
-    // it. Windows lifts it in keep_theme instead.
+    // Download File Info on Linux (#484): asked for from the browser, it opened behind it.
+    // Windows and macOS lift and focus in `keep_theme` once visible.
     let focused = key.with("focus-sent");
-    let takes_focus = modal || (cfg!(not(windows)) && id == "file-info");
+    let takes_focus =
+        modal || (cfg!(all(not(windows), not(target_os = "macos"))) && id == "file-info");
     if takes_focus && matches!(out, Outcome::Open) && !crate::offscreen() {
         let shown = ctx.data(|d| d.get_temp::<bool>(key.with("shown")).unwrap_or(false));
         if shown && !ctx.data(|d| d.get_temp::<bool>(focused).unwrap_or(false)) {
@@ -3011,6 +3049,8 @@ pub fn raise(ctx: &egui::Context, viewport: ViewportId) {
     ctx.send_viewport_cmd_to(viewport, egui::ViewportCommand::Minimized(false));
     // Off-screen test runs never take the focus (main.rs `offscreen`), as the other paths here.
     if !crate::offscreen() {
+        #[cfg(target_os = "macos")]
+        crate::unix::macos_activate_app();
         ctx.send_viewport_cmd_to(viewport, egui::ViewportCommand::Focus);
     }
 }
@@ -4561,5 +4601,13 @@ mod tests {
             next = ensure_folder_with(&ctx, &mut gate, Outcome::Open, &folder, |_| true);
         }
         assert!(matches!(next, Outcome::Done(9)));
+    }
+
+    #[test]
+    fn passive_notices_never_activate_on_open() {
+        assert!(dialog_activates_on_open(Kind::Plain));
+        assert!(dialog_activates_on_open(Kind::Question));
+        assert!(!dialog_activates_on_open(Kind::Notice { on_top: true }));
+        assert!(!dialog_activates_on_open(Kind::Notice { on_top: false }));
     }
 }

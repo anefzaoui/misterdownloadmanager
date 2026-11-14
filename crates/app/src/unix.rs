@@ -2499,6 +2499,120 @@ pub fn macos_hide_window() {
     }
 }
 
+/// Whether bringing a dialog or progress window forward on macOS should activate MDM and order
+/// that window front: true when MDM is inactive, hidden, or that window isn't key yet.
+#[cfg(any(target_os = "macos", test))]
+fn macos_window_needs_lift(app_active: bool, app_hidden: bool, window_key: bool) -> bool {
+    !app_active || app_hidden || !window_key
+}
+
+/// SAFETY: called on the main UI thread with a valid `NSApplication` pointer.
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+unsafe fn activate_nsapp(app: *mut objc2::runtime::AnyObject, all_windows: bool) {
+    use objc2::msg_send;
+    use objc2::runtime::{AnyClass, AnyObject, Bool};
+    let null_obj: *mut AnyObject = std::ptr::null_mut();
+    // SAFETY: main UI thread; unhides `NSApp` if hidden and activates the current running app.
+    unsafe {
+        let _: () = msg_send![app, unhide: null_obj];
+        if let Some(run_cls) = AnyClass::get(c"NSRunningApplication") {
+            let cur: *mut AnyObject = msg_send![run_cls, currentApplication];
+            if !cur.is_null() {
+                // NSApplicationActivateAllWindows (1) | NSApplicationActivateIgnoringOtherApps (2)
+                let opts: usize = if all_windows { 3 } else { 2 };
+                let _: Bool = msg_send![cur, activateWithOptions: opts];
+            }
+        }
+        let _: () = msg_send![app, activateIgnoringOtherApps: Bool::YES];
+    }
+}
+
+/// macOS: activates MDM without pulling up minimized or tray-hidden windows (for `dialogs::raise`).
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+pub fn macos_activate_app() {
+    use objc2::msg_send;
+    use objc2::runtime::{AnyClass, AnyObject};
+    // SAFETY: called on the main UI thread; queries `NSApplication.sharedApplication`.
+    unsafe {
+        let Some(cls) = AnyClass::get(c"NSApplication") else {
+            return;
+        };
+        let app: *mut AnyObject = msg_send![cls, sharedApplication];
+        if !app.is_null() {
+            activate_nsapp(app, false);
+        }
+    }
+}
+
+/// macOS: activates MDM and orders a newly shown visible window matching `title` (already stripped
+/// via [`crate::i18n::os_text`]) to the foreground in front of browsers and other apps without
+/// deminiaturizing or showing unrelated windows. Returns `Some(lifted)` once the window is
+/// visible, or `None` while winit has not yet applied `Visible(true)` (`keep_theme` retries across
+/// frames).
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+pub fn macos_bring_window_forward(title: &str) -> Option<bool> {
+    use objc2::msg_send;
+    use objc2::runtime::{AnyClass, AnyObject, Bool};
+    use objc2_foundation::NSString;
+    let want = NSString::from_str(&crate::i18n::os_text(title));
+    // SAFETY: called on the main UI thread; iterates `[NSApp windows]` and orders the matching
+    // visible, non-miniaturized titled window to the front.
+    unsafe {
+        let cls = AnyClass::get(c"NSApplication")?;
+        let app: *mut AnyObject = msg_send![cls, sharedApplication];
+        if app.is_null() {
+            return None;
+        }
+        let windows: *mut AnyObject = msg_send![app, windows];
+        if windows.is_null() {
+            return None;
+        }
+        let count: usize = msg_send![windows, count];
+        let mut target: *mut AnyObject = std::ptr::null_mut();
+        for i in 0..count {
+            let win: *mut AnyObject = msg_send![windows, objectAtIndex: i];
+            if win.is_null() {
+                continue;
+            }
+            let style: usize = msg_send![win, styleMask];
+            if (style & 1) == 0 {
+                continue;
+            }
+            let visible: Bool = msg_send![win, isVisible];
+            let mini: Bool = msg_send![win, isMiniaturized];
+            if !visible.as_bool() || mini.as_bool() {
+                continue;
+            }
+            let win_title: *mut AnyObject = msg_send![win, title];
+            if win_title.is_null() {
+                continue;
+            }
+            let same: Bool = msg_send![win_title, isEqualToString: &*want];
+            if same.as_bool() {
+                target = win;
+                break;
+            }
+        }
+        if target.is_null() {
+            return None;
+        }
+        let active: Bool = msg_send![app, isActive];
+        let hidden: Bool = msg_send![app, isHidden];
+        let key: Bool = msg_send![target, isKeyWindow];
+        let lift = macos_window_needs_lift(active.as_bool(), hidden.as_bool(), key.as_bool());
+        if lift {
+            let null_obj: *mut AnyObject = std::ptr::null_mut();
+            activate_nsapp(app, false);
+            let _: () = msg_send![target, makeKeyAndOrderFront: null_obj];
+            let _: () = msg_send![target, orderFrontRegardless];
+        }
+        Some(lift)
+    }
+}
+
 /// macOS: brings MDM and its windows to the topmost foreground in front of all other apps when
 /// woken from the menu bar icon or the global hotkey (#558).
 #[cfg(target_os = "macos")]
@@ -2517,15 +2631,7 @@ pub fn macos_activate_and_show() {
             return;
         }
         let null_obj: *mut AnyObject = std::ptr::null_mut();
-        let _: () = msg_send![app, unhide: null_obj];
-        if let Some(run_cls) = AnyClass::get(c"NSRunningApplication") {
-            let cur: *mut AnyObject = msg_send![run_cls, currentApplication];
-            if !cur.is_null() {
-                // NSApplicationActivateAllWindows (1) | NSApplicationActivateIgnoringOtherApps (2) = 3
-                let _: Bool = msg_send![cur, activateWithOptions: 3usize];
-            }
-        }
-        let _: () = msg_send![app, activateIgnoringOtherApps: Bool::YES];
+        activate_nsapp(app, true);
         let windows: *mut AnyObject = msg_send![app, windows];
         if !windows.is_null() {
             let count: usize = msg_send![windows, count];
@@ -2805,6 +2911,18 @@ pub(crate) fn fallback_rename_no_replace(from: &Path, to: &Path) -> std::io::Res
 
 #[cfg(target_os = "macos")]
 pub use macos_hotkey::GlobalHotKeyOs;
+
+#[cfg(test)]
+mod macos_focus_tests {
+    #[test]
+    fn macos_window_needs_lift_when_inactive_hidden_or_not_key() {
+        assert!(!super::macos_window_needs_lift(true, false, true));
+        assert!(super::macos_window_needs_lift(false, false, true));
+        assert!(super::macos_window_needs_lift(true, true, true));
+        assert!(super::macos_window_needs_lift(true, false, false));
+        assert!(super::macos_window_needs_lift(false, true, false));
+    }
+}
 
 #[cfg(all(test, target_os = "linux"))]
 mod tests {

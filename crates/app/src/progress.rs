@@ -639,6 +639,7 @@ impl Progress {
             &title_now,
             crate::theme::dark_surface(),
             !closing,
+            true,
         );
         let action = match (action, self.pending_limit.take()) {
             (Action::None, Some((limit, remember))) => Action::Limit(limit, remember),
