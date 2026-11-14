@@ -1552,6 +1552,9 @@ pub fn window_system() -> &'static WindowSystem {
     static CHOSEN: std::sync::OnceLock<WindowSystem> = std::sync::OnceLock::new();
     CHOSEN.get_or_init(|| {
         let set = |name: &str| std::env::var_os(name).is_some_and(|v| !v.is_empty());
+        if SAVED_PICK.get().is_none() {
+            tracing::warn!("windows: chosen before the settings were read (View → Window system)");
+        }
         let pick = Pick::of(
             std::env::var_os("MDM_WAYLAND").as_deref(),
             SAVED_PICK.get().copied().flatten(),
@@ -3014,8 +3017,8 @@ mod tests {
     use zbus::zvariant::Value;
 
     use super::{
-        Pick, WindowLib, X11_LIBS, X11Fit, choose_window_system, desktop_looks_after_x11, install_command,
-        menu_window_type,
+        Pick, WindowLib, X11_LIBS, X11Fit, choose_window_system, desktop_looks_after_x11,
+        install_command, menu_window_type,
     };
 
     /// #277: each menu's window says which menu it is, as GTK's and Qt's do.
