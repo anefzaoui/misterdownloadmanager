@@ -16,6 +16,7 @@
 //! - `GET /hop?to=URL&how=meta|header[&wait=S][&cookie=N=V]` — a page that sends the browser on to
 //!   `URL` itself (`<meta http-equiv="refresh">` or a `Refresh` header), as download sites' waiting pages do
 //! - `GET /page`, `/formpage`, `/cookie`, `/assets/*` — web pages for the browser tests (`pages`)
+//! - `GET /declared` — a page that declares its video and hides another (#1076, `pages`)
 //! - `GET /hls/*`, `/dash/*` — adaptive streams (`streams`); `/hls2/*`, `/dash2/*` the same with
 //!   no `.m3u8`/`.mpd` in their addresses, served as text/plain or octet-stream (#171)
 //! - Google Drive's addresses on its own host names (`drive`): links, the virus-scan and quota
@@ -381,6 +382,7 @@ impl LabServer {
         let simple = Router::new()
             .route("/page", get(pages::page))
             .route("/leadon", get(pages::leadon))
+            .route("/declared", get(pages::declared))
             .route("/formpage", get(pages::formpage))
             .route("/cookie", get(pages::cookie))
             .route("/assets/{file}", get(pages::asset))
@@ -731,6 +733,11 @@ GET /formpage?size=1M&name=report.zip&token=abc&with=QUERY   three forms posting
 GET /cookie?set=NAME=VALUE&httponly=NAME=VALUE&clear=NAME   (each repeatable) a small page with
     Set-Cookie: NAME=VALUE; Path=/ (; HttpOnly), or NAME=; Path=/; Max-Age=0
 GET /assets/page.css  /assets/stream.js
+GET /declared?film=PATH&hidden=PATH&name=TEXT&title=TEXT&how=jsonld|og|twitter|none   a page
+    that declares its video (#1076) and plays only another, hidden one: hidden (default
+    /gen/1M/welcome.mp4?seed=2&inline=1) in a <video> inside <div hidden>; film (default
+    /gen/2M/film.mp4?seed=3&inline=1) named name (default "The Film") in its JSON-LD VideoObject
+    (contentUrl), og:video (og:title), twitter:player (twitter:title), or nowhere (none)
 
 STREAMS  3 segments of 4 s per track. HLS: real MPEG-TS, a grey H.264 picture (25 fps) on the
     video tracks, AAC silence on the audio track (ffmpeg remuxes and merges them); DASH: fake bytes

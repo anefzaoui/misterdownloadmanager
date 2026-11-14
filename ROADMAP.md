@@ -562,6 +562,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A page that says which video it is about (its JSON-LD, `og:video` or `twitter:player`) gets
+  that video from Add URL, Download video and the command line, not the first player written in
+  its HTML (a hidden welcome video)
+  ([#1076](https://github.com/anefzaoui/misterdownloadmanager/issues/1076))
 - ✅ The sites in **Don't start downloading automatically from the following sites** take their
   subdomains and the files their pages link to on another server (a CDN), as the Download panels'
   list does

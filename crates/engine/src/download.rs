@@ -3196,18 +3196,18 @@ async fn read_up_to(
 
 /// The most of a web page [`page_links`] reads.
 const PAGE_LINKS_MAX: usize = 8 << 20;
+/// The most of a web page [`page_videos`] reads: what it declares is in its head, or near it.
+const PAGE_VIDEOS_MAX: usize = 2 << 20;
 
-/// The links on the web page at `url`, for Link grabber (#705): an address given on its own
-/// (pasted, copied, in a list) that is a page lists the page's links, as the browser's
-/// "Download all links" does. Asked as a download's look asks (`get`: the user's proxy and
-/// agent, the redirects and waiting pages it follows), read up to `PAGE_LINKS_MAX`, and its
-/// links found by [`html::links`] against the address the page came from, which comes back
-/// too. An answer that isn't a web page has no links (its body isn't read).
-pub async fn page_links(
+/// The web page at `url`, asked as a download's look asks (`get`: the user's proxy and agent,
+/// the redirects and waiting pages it follows), read up to `max` bytes, with the address it came
+/// from. None for an answer that isn't a web page (its body isn't read).
+async fn web_page(
     url: Url,
     headers: HeaderMap,
     opts: &Options,
-) -> Result<(Url, Vec<Url>), Error> {
+    max: usize,
+) -> Result<(Url, Option<String>), Error> {
     let cancel = CancellationToken::new();
     let client = http_client(opts, &url)?;
     let (resp, _, _) = get(
@@ -3222,11 +3222,41 @@ pub async fn page_links(
     .await?;
     let at = resp.url().clone();
     if !is_web_page(resp.headers()) {
-        return Ok((at, Vec::new()));
+        return Ok((at, None));
     }
-    let page = read_up_to(resp, PAGE_LINKS_MAX, &cancel).await?;
-    let links = html::links(&String::from_utf8_lossy(&page), &at);
+    let page = read_up_to(resp, max, &cancel).await?;
+    Ok((at, Some(String::from_utf8_lossy(&page).into_owned())))
+}
+
+/// The links on the web page at `url`, for Link grabber (#705): an address given on its own
+/// (pasted, copied, in a list) that is a page lists the page's links, as the browser's
+/// "Download all links" does. Read as [`web_page`] reads it, up to `PAGE_LINKS_MAX`, and its
+/// links found by [`html::links`] against the address the page came from, which comes back
+/// too. An answer that isn't a web page has no links.
+pub async fn page_links(
+    url: Url,
+    headers: HeaderMap,
+    opts: &Options,
+) -> Result<(Url, Vec<Url>), Error> {
+    let (at, page) = web_page(url, headers, opts, PAGE_LINKS_MAX).await?;
+    let links = page.map(|p| html::links(&p, &at)).unwrap_or_default();
     Ok((at, links))
+}
+
+/// The videos the web page at `url` declares its own (#1076: its JSON-LD, Open Graph and
+/// Twitter card, [`html::declared_videos`]), read as [`web_page`] reads it, up to
+/// `PAGE_VIDEOS_MAX`, against the address the page came from, which comes back too. An answer
+/// that isn't a web page declares none.
+pub async fn page_videos(
+    url: Url,
+    headers: HeaderMap,
+    opts: &Options,
+) -> Result<(Url, html::DeclaredVideos), Error> {
+    let (at, page) = web_page(url, headers, opts, PAGE_VIDEOS_MAX).await?;
+    let videos = page
+        .map(|p| html::declared_videos(&p, &at))
+        .unwrap_or_default();
+    Ok((at, videos))
 }
 
 /// Where a page leads on to and after how long, from its `Refresh` value or a meta refresh's

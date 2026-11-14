@@ -1,6 +1,7 @@
 //! Web pages for the browser extension's tests (tools/extension/e2e.mjs): `/page` (links, videos,
 //! audio, adaptive streams; optionally under a strict Content-Security-Policy), `/formpage`
-//! (forms that post to `/form`), `/cookie` (sets cookies) and their `/assets`. Styles and scripts
+//! (forms that post to `/form`), `/cookie` (sets cookies) and their `/assets`; and `/declared`, a
+//! page that declares one video and hides another (#1076, the video look-up's tests). Styles and scripts
 //! are files, never inline, so the pages work under `csp=strict`.
 
 use std::collections::HashMap;
@@ -226,6 +227,68 @@ pub(crate) async fn leadon(RawQuery(q): RawQuery) -> Response {
         "{}Thank you<script>location.href = \"{to}\";</script>",
         head("Thank you")
     ))
+}
+
+/// What `/declared` declares and what it hides, by default.
+const DECLARED_FILM: &str = "/gen/2M/film.mp4?seed=3&inline=1";
+const DECLARED_HIDDEN: &str = "/gen/1M/welcome.mp4?seed=2&inline=1";
+
+/// `/declared?film=PATH&hidden=PATH&name=TEXT&title=TEXT&how=jsonld|og|twitter|none`: a page that
+/// declares its video (#1076) but whose HTML plays only another, hidden one (a site's welcome
+/// video in a closed help box): `hidden` in a `<video>` inside `<div hidden>`, and `film`
+/// declared as the page's own by its JSON-LD `VideoObject` (`contentUrl`, `name`), its
+/// `og:video` (`og:title`) or its `twitter:player` (`twitter:title`), or not at all.
+pub(crate) async fn declared(RawQuery(q): RawQuery) -> Response {
+    let m: HashMap<String, String> = pairs(q).into_iter().collect();
+    let get = |k: &str, default: &str| m.get(k).cloned().unwrap_or_else(|| default.to_owned());
+    let (film, hidden, name, title, how) = (
+        get("film", DECLARED_FILM),
+        get("hidden", DECLARED_HIDDEN),
+        get("name", "The Film"),
+        get("title", "The Film | Lab"),
+        get("how", "jsonld"),
+    );
+    let mut body = format!(
+        "<!doctype html><meta charset=utf-8><title>{}</title>",
+        esc(&title)
+    );
+    match how.as_str() {
+        "og" => {
+            body += &format!(
+                "<meta property=og:title content=\"{}\"><meta property=og:video content=\"{}\">\
+                 <meta property=og:video:type content=video/mp4>",
+                esc(&name),
+                esc(&film)
+            );
+        }
+        "twitter" => {
+            body += &format!(
+                "<meta name=twitter:card content=player><meta name=twitter:title content=\"{}\">\
+                 <meta name=twitter:player content=\"{}\">",
+                esc(&name),
+                esc(&film)
+            );
+        }
+        "none" => {}
+        _ => {
+            let ld = serde_json::json!({
+                "@context": "https://schema.org",
+                "@type": "VideoObject",
+                "name": name,
+                "contentUrl": film,
+            });
+            // `</` can't end the script early.
+            let ld = ld.to_string().replace("</", "<\\/");
+            body += &format!("<script type=application/ld+json>{ld}</script>");
+        }
+    }
+    body += &format!(
+        "<link rel=stylesheet href=/assets/page.css><body><h1>{}</h1>\
+         <div class=help hidden><video src=\"{}\" controls></video></div>",
+        esc(&name),
+        esc(&hidden)
+    );
+    html(body)
 }
 
 /// `/formpage?size=1M&name=report.zip&token=abc&with=QUERY`: three forms that post to `/form`
