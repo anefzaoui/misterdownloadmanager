@@ -819,10 +819,48 @@ pub fn test_slow_start() {
 /// The start of every main-window pass: the system's API's device checked (see `gpu::poll`).
 /// The pass itself is MDM's own work, not the API's (see [`FirstFrameClock`]).
 pub fn frame_begin() {
+    pace();
     own_work_begin();
     #[cfg(gpu)]
     gpu::poll();
     stall_test();
+}
+
+/// The frames are paced by MDM, not by the screen's refresh (see [`unpaced_swaps`]).
+static PACED: AtomicBool = AtomicBool::new(false);
+/// The shortest time between two frames when MDM paces them: 60 a second, as the screen would.
+const FRAME_PACE: std::time::Duration = std::time::Duration::from_micros(16_667);
+
+/// Linux under XWayland (MDM's default in a Wayland session): a swap that waits for the
+/// screen's refresh waited about a second on NVIDIA's driver for each window XWayland's
+/// compositor wasn't showing at that moment (the main window behind a dialog, a dialog behind
+/// another), and every window of MDM draws in one pass, so a key typed in Download video's File
+/// name showed 1 to 2 seconds later, and every click the same. Its windows swap at once there,
+/// and MDM spaces its frames itself ([`pace`]).
+fn unpaced_swaps() -> bool {
+    #[cfg(target_os = "linux")]
+    return crate::unix::on_xwayland();
+    #[cfg(not(target_os = "linux"))]
+    false
+}
+
+/// When MDM paces the frames: the next waits until [`FRAME_PACE`] has passed since the last
+/// began (a pass only runs when there is something to draw: an idle window waits as before).
+fn pace() {
+    use std::cell::Cell;
+    use std::time::Instant;
+    thread_local! {
+        static LAST: Cell<Option<Instant>> = const { Cell::new(None) };
+    }
+    if !PACED.load(Ordering::Relaxed) {
+        return;
+    }
+    LAST.with(|last| {
+        if let Some(wait) = last.get().and_then(|t| FRAME_PACE.checked_sub(t.elapsed())) {
+            std::thread::sleep(wait);
+        }
+        last.set(Some(Instant::now()));
+    });
 }
 
 /// The first frame was drawn (presented).
@@ -1079,6 +1117,15 @@ fn configure(opts: &mut eframe::NativeOptions, attempt: Attempt) {
         // Not built here (plan() never asks for it).
         #[cfg(not(gpu))]
         Attempt::Gpu(_) => opts.renderer = eframe::Renderer::Glow,
+    }
+    let unpaced = unpaced_swaps();
+    PACED.store(unpaced, Ordering::Relaxed);
+    if unpaced {
+        opts.glow_options.vsync = false;
+        #[cfg(gpu)]
+        {
+            opts.wgpu_options.surface.present_mode = eframe::wgpu::PresentMode::AutoNoVsync;
+        }
     }
 }
 

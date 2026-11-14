@@ -987,6 +987,8 @@ These ship in the next version.
   ([#446](https://github.com/anefzaoui/misterdownloadmanager/issues/446))
 - ✅ Linux: downloads to an NTFS drive (`ntfs3`) start at once instead of filling the file with
   zeros first, which held the download at 0% and slowed the whole computer
+- ✅ Linux on Wayland (XWayland): typing and clicking no longer lag by 1 to 2 seconds on NVIDIA's
+  driver; MDM spaces its frames itself instead of waiting for the screen's refresh
 
 ## Being worked on
 

@@ -1514,6 +1514,12 @@ pub fn on_wayland() -> bool {
     window_system().wayland
 }
 
+/// Linux: MDM's windows are X11's in a Wayland session (XWayland), its default there.
+#[cfg(target_os = "linux")]
+pub fn on_xwayland() -> bool {
+    window_system().x11_over_wayland
+}
+
 /// Linux, X11 and XWayland (MDM's default): a menu's window as X11 menus are (GTK's, Qt's).
 /// Override-redirect: no window manager manages it, so it opens exactly where it's placed (a
 /// tiling compositor, sway, centred a managed one, #267), and compositors treat it as a menu:
