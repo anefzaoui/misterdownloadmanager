@@ -567,6 +567,11 @@ These ship in the next version.
   registration that leads nowhere at each start, never one that works, and Test browser
   integration says which copy is gone
   ([#818](https://github.com/anefzaoui/misterdownloadmanager/issues/818))
+- ✅ A download to a disk slower than the network no longer stands still for a second or more
+  just after it starts (a second save of its progress came too soon after the first); a server
+  whose name the DNS doesn't answer in time says it couldn't be found, not that it didn't answer.
+  Two tests that failed now and then on macOS check both without the network or the runner's speed
+  ([#782](https://github.com/anefzaoui/misterdownloadmanager/issues/782))
 - ✅ Linux, Wayland: MDM chooses its windows' system the same way however it starts (its menu
   entry, the browser's helper, autostart): Wayland's own windows on a scaled screen where nothing
   tells X11 programs the scale (Hyprland, labwc, sway), XWayland elsewhere; **View → Window
