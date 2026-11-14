@@ -34,6 +34,12 @@ pub struct Command {
     pub start_queue: bool,
     /// From the browser: request context to reuse.
     pub referer: Option<String>,
+    /// From the browser (#607): the web page the download was started from, whole (its tab's
+    /// address; a link's opened in a tab of its own, the tab that opened it), where the Referer
+    /// is often cut to the site's address by the page's referrer policy. Kept with the download:
+    /// Refresh download address opens it.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub page_url: Option<String>,
     /// From the browser (#900): the `Origin` its page's player sent with a video's stream or
     /// file (`video_page`, `video_lookup`), sent again with it, its playlists and each of its
     /// pieces, as a site's video server may serve its own pages' players only.
