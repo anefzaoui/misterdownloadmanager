@@ -638,7 +638,7 @@
         },
         "video_title": {
           "default": null,
-          "description": "The title of the page the button was clicked on: a video yt-dlp knows only by its address\nis named by it.",
+          "description": "The title of the page the button was clicked on (the tab's, for a player in a frame of\nit), without the site's name (`Film | Site` is `Film`: the extension's `withoutSiteName`):\na video yt-dlp knows only by its address is named by it.",
           "type": [
             "string",
             "null"
@@ -766,7 +766,7 @@
         },
         "title": {
           "default": null,
-          "description": "The title of the page the button was clicked on: a video yt-dlp knows only by its address\nis named by it (as [`Command::video_title`]).",
+          "description": "The title of the page the button was clicked on, as [`Command::video_title`] has it: a\nvideo yt-dlp knows only by its address is named by it.",
           "type": [
             "string",
             "null"

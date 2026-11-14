@@ -568,6 +568,8 @@ These ship in the next version.
 - ✅ A .torrent downloaded in the browser stays with the browser (and your own torrent program)
   while Torrent settings' **Open magnet links and .torrent files with Mister Download Manager**
   is off ([#1058](https://github.com/anefzaoui/misterdownloadmanager/issues/1058))
+- ✅ A video in a player embedded from another site (Vimeo's on a film site) is named after the
+  page's title, without the site's name, instead of the player's own title
 - ✅ No freeze of the window in Link grabber with thousands of links (a big page's links): each
   link's category is worked out once, and a frame goes over the links once, however many
   packages they make ([#1063](https://github.com/anefzaoui/misterdownloadmanager/issues/1063))
