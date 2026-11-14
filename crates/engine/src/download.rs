@@ -58,13 +58,15 @@ const DISK_HELD: Duration = Duration::from_millis(50);
 const BEST_AFTER: Duration = Duration::from_millis(100);
 
 /// Shedding a slow connection (`Options::shed_slow`): after `SHED_GRACE` on a response, a
-/// connection under 1/`SHED_RATIO` of the best speed one connection reached, with more than
+/// connection under 1/`SHED_RATIO` of what one connection gets (`fair_share`), with more than
 /// `SHED_LEFT` of work left at its own pace, reconnects. A slow TCP path (or a slow server
 /// slot) rarely survives a new request, and otherwise every free connection can end up stuck
 /// on one (measured: 14 s instead of ~2 s for 32 MiB when every third request was slow).
 const SHED_GRACE: Duration = Duration::from_secs(2);
 const SHED_RATIO: u64 = 4;
 const SHED_LEFT: Duration = Duration::from_secs(2);
+/// The connections' bytes together are counted over windows of at least this long (`Line`).
+const LINE_WINDOW: Duration = Duration::from_secs(1);
 /// A download starts with one connection per this many bytes (at most `max_connections`).
 const INITIAL_PIECE: u64 = 64 * 1024;
 /// A pending connection is taken over after this many first-byte times of the probe (and never
@@ -138,12 +140,8 @@ pub struct Options {
     pub global: Option<Arc<Limiter>>,
     /// The finished file must have this hash (else the server's announced one, if any).
     pub checksum: Option<crate::verify::Hash>,
-    /// Reconnect a connection far slower than the best one reached (see `SHED_*`). Beyond IDM's
-    /// rule, and off by default: the best speed is the highest one connection ever reached, kept
-    /// for the whole download, so once the connections share the link every one of them reads
-    /// as slow against it, and they are dropped and reconnected in waves, a dip in the speed each
-    /// time (measured, 8 connections on a shared 8 MB/s link: 26 reconnects, the worst second
-    /// 5.9 MB/s against 7.9 without, and the download a second slower).
+    /// Reconnect a connection far slower than what one gets (see `SHED_*`, `fair_share`). Beyond
+    /// IDM's rule.
     pub shed_slow: bool,
     /// Connection caps learned per host, shared by the downloads that use the same table.
     pub host_limits: Option<Arc<crate::hosts::HostLimits>>,
@@ -263,7 +261,7 @@ impl Default for Options {
             proxy: Proxy::None,
             global: None,
             checksum: None,
-            shed_slow: false,
+            shed_slow: true,
             host_limits: None,
             ignore_mtime: false,
             server_time: false,
@@ -1220,6 +1218,8 @@ impl Download {
             planner: Mutex::new(None),
             limiter: Limiter::new(None),
             best_speed: Default::default(),
+            received: Default::default(),
+            line: Mutex::new(Line::new()),
             disk_held: Default::default(),
             held: Default::default(),
             checked: Default::default(),
@@ -1304,8 +1304,12 @@ struct Shared {
     planner: Mutex<Option<Planner>>,
     limiter: Limiter,
     /// The best speed one connection of this download sustained (`yardstick`), bytes/s: what a good
-    /// connection to this server does, the yardstick for shedding.
+    /// connection to this server does alone on its path, the most `fair_share` gives.
     best_speed: std::sync::atomic::AtomicU64,
+    /// Bytes received by all the connections, counted as they arrive (`Line`).
+    received: std::sync::atomic::AtomicU64,
+    /// What the connections bring together (`Line`).
+    line: Mutex<Line>,
     /// When a connection last stood still for the disk for `DISK_HELD` or longer (`Pace`).
     disk_held: Mutex<Option<std::time::Instant>>,
     /// Bytes received and claimed but not yet written, in the connections' buffers: shown as
@@ -1364,6 +1368,23 @@ impl Shared {
             at: std::time::SystemTime::now(),
             text: text.into(),
         });
+    }
+
+    /// The connections still open: on their way to the server, receiving, or waiting to retry.
+    /// (A connection being replaced is one: it takes its share of the link again at once.)
+    fn open_connections(&self) -> usize {
+        self.view
+            .lock()
+            .unwrap()
+            .connections
+            .iter()
+            .filter(|c| {
+                matches!(
+                    c.status,
+                    ConnStatus::Connecting | ConnStatus::Receiving | ConnStatus::Retrying(_)
+                )
+            })
+            .count()
     }
 
     fn conn(&self, id: WorkerId, f: impl FnOnce(&mut ConnView)) {
@@ -4449,6 +4470,7 @@ async fn receive(
                 }
                 out.push(&chunk[..n as usize]);
                 pace.received += n;
+                ctx.shared.received.fetch_add(n, Ordering::Relaxed);
                 if checked.elapsed() >= Duration::from_millis(500) {
                     checked = std::time::Instant::now();
                     ctx.shared.conn(id, |c| c.speed = pace.speed());
@@ -4718,6 +4740,58 @@ fn note_best(ctx: &Ctx, pace: &Pace) {
     if let Some(speed) = yardstick(pace.received, pace.started.elapsed()) {
         ctx.shared.best_speed.fetch_max(speed, Ordering::Relaxed);
     }
+    let held = ctx.shared.disk_held.lock().unwrap().map(|t| t.elapsed());
+    let bytes = ctx.shared.received.load(Ordering::Relaxed);
+    ctx.shared.line.lock().unwrap().sample(bytes, held);
+}
+
+/// What the connections of a download bring together, over windows of `LINE_WINDOW` or more:
+/// the most they reached is what the link carried, and a connection's share of it, over the
+/// connections open, is what one gets while they divide it (`fair_share`). Kept as a peak, so
+/// it is still there when the others have finished and one connection is left to be judged.
+struct Line {
+    since: std::time::Instant,
+    bytes: u64,
+    /// The most bytes/s a window brought.
+    best: u64,
+}
+
+impl Line {
+    fn new() -> Self {
+        Line {
+            since: std::time::Instant::now(),
+            bytes: 0,
+            best: 0,
+        }
+    }
+
+    /// Close the window once it ran `LINE_WINDOW`; `bytes` is everything received so far. A
+    /// window in which a connection stood still for the disk (`held`: how long ago it last did)
+    /// counts for nothing: what the system kept for the others comes in a burst after it, and
+    /// that is not what the link carries (#782).
+    fn sample(&mut self, bytes: u64, held: Option<Duration>) {
+        let window = self.since.elapsed();
+        if window < LINE_WINDOW {
+            return;
+        }
+        if held.is_none_or(|ago| ago > window) {
+            self.best = self
+                .best
+                .max(rate(bytes.saturating_sub(self.bytes), window));
+        }
+        self.since = std::time::Instant::now();
+        self.bytes = bytes;
+    }
+}
+
+/// What one connection gets: the best speed one reached (`single`), but no more than its share
+/// of the `line` (the most the connections brought together) among the `open` connections. A
+/// connection that began alone on the link ran at all of it; once eight share it, each gets an
+/// eighth, and none of them is slow for that. With one connection left, the share is the whole
+/// line, and a straggler is judged against it. `single` caps the share: where every connection
+/// has a path of its own, the one left at the end is not slow for being alone.
+fn fair_share(single: u64, line: u64, open: usize) -> u64 {
+    single.min(line / open.max(1) as u64)
 }
 
 /// The speed a response of `received` bytes in `elapsed` (all of its time, the disk's waits
@@ -4740,15 +4814,17 @@ fn should_shed(ctx: &Ctx, id: WorkerId, pace: &Pace, at: u64) -> bool {
         return false;
     }
     let held = ctx.shared.disk_held.lock().unwrap().map(|t| t.elapsed());
-    let best = ctx.shared.best_speed.load(Ordering::Relaxed);
+    let open = ctx.shared.open_connections();
+    let line = ctx.shared.line.lock().unwrap().best;
+    let best = fair_share(ctx.shared.best_speed.load(Ordering::Relaxed), line, open);
     let left = ctx.shared.with_planner(|p| p.room(id, at)).unwrap_or(0);
     too_slow(pace.net_speed(), pace.on_net(), best, left, held)
 }
 
 /// A connection at `speed` over `on_net` of reading the network, with `left` bytes of its
-/// segment ahead, is slow enough to reconnect: far slower than the best a connection of this
-/// download sustained (comparing with the others fails once they are all stuck on slow paths),
-/// with a lot left at its pace. Not while the disk sets the pace (`held`: a connection last
+/// segment ahead, is slow enough to reconnect: far slower than `best`, what one connection of
+/// this download gets (`fair_share`; comparing with the others fails once they are all stuck on
+/// slow paths), with a lot left at its pace. Not while the disk sets the pace (`held`: a connection last
 /// stood still for it that long ago, #782): the connections' speeds then say what the disk
 /// lets through, a new connection would wait for the same disk, and the ones that waited
 /// restart slowly (their sender saw a closed window).
@@ -5011,6 +5087,83 @@ mod tests {
     /// kept for it in 50 ms. Over its time on the network that is 128 MiB/s, which made every
     /// connection of a 1 Gbit/s link (14 MiB/s each) four times slower than the best: all of
     /// them were shed, at once. Over all its time it is what the link gave it.
+    /// Eight connections on one link each get an eighth of it: the first one's speed, alone on
+    /// the link, is not the yardstick for them (they were all dropped together, again and again).
+    #[test]
+    fn a_share_of_the_link_is_not_slow() {
+        let mb = 1 << 20;
+        let (single, line) = (8 * mb, 8 * mb);
+        let share = fair_share(single, line, 8);
+        assert_eq!(share, mb);
+        let ok = |speed| !too_slow(speed, Duration::from_secs(3), share, 64 * mb, None);
+        assert!(ok(mb), "its share");
+        assert!(ok(mb / 3), "a third of its share");
+        assert!(!ok(mb / 5), "under a quarter of its share is slow");
+    }
+
+    /// The others finished: one connection left is judged against the whole line, so a straggler
+    /// at a crawl is replaced as before.
+    #[test]
+    fn a_straggler_is_judged_against_the_whole_line() {
+        let mb = 1 << 20;
+        let share = fair_share(8 * mb, 8 * mb, 1);
+        assert_eq!(share, 8 * mb);
+        assert!(too_slow(1024, Duration::from_secs(3), share, 64 * mb, None));
+    }
+
+    /// Every connection has a path of its own (the line is the sum): a share is what one gets,
+    /// and a connection left alone at the end is not slow for it.
+    #[test]
+    fn paths_of_their_own_are_not_a_line() {
+        let mb = 1 << 20;
+        assert_eq!(fair_share(5 * mb, 40 * mb, 8), 5 * mb);
+        assert_eq!(fair_share(5 * mb, 40 * mb, 1), 5 * mb, "alone at the end");
+        assert_eq!(
+            fair_share(5 * mb, 0, 8),
+            0,
+            "no window closed yet: nothing is slow"
+        );
+    }
+
+    #[test]
+    fn the_line_is_the_most_a_window_brought() {
+        // Elapsed time is a hair over what the test sets, so the rate a hair under.
+        let near = |got: u64, want: u64| got.abs_diff(want) < 8192;
+        let ago = |ms| std::time::Instant::now() - Duration::from_millis(ms);
+        let mut line = Line::new();
+        line.since = ago(1500);
+        line.sample(6 << 20, None);
+        assert!(near(line.best, 4 << 20), "6 MiB in 1.5 s: {}", line.best);
+        line.since = ago(1500);
+        line.sample(8 << 20, None);
+        assert!(near(line.best, 4 << 20), "a slower window keeps the peak");
+        line.since = ago(500);
+        line.sample(100 << 20, None);
+        assert!(
+            near(line.best, 4 << 20),
+            "a window under LINE_WINDOW stays open"
+        );
+    }
+
+    /// A connection stood still for the disk in the window: the others' bytes come in a burst
+    /// after it, which is not what the link carries (#782).
+    #[test]
+    fn a_window_with_a_disk_wait_counts_for_nothing() {
+        let ago = |ms| std::time::Instant::now() - Duration::from_millis(ms);
+        let mut line = Line::new();
+        line.since = ago(1500);
+        line.sample(60 << 20, Some(Duration::from_millis(300)));
+        assert_eq!(line.best, 0);
+        assert_eq!(line.bytes, 60 << 20, "the next window starts from here");
+        line.since = ago(1500);
+        line.sample(66 << 20, Some(Duration::from_secs(5)));
+        assert!(
+            line.best.abs_diff(4 << 20) < 8192,
+            "a wait before the window is not in it: {}",
+            line.best
+        );
+    }
+
     #[test]
     fn waiting_for_the_disk_never_makes_a_connection_slow() {
         let mb = 1u64 << 20;

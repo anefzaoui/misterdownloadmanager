@@ -48,6 +48,47 @@ async fn fetch(s: &LabServer, path: &str, seed: u64, opts: Options) -> (Vec<LogE
     (s.log(), out.size)
 }
 
+/// `fetch`, and how many times the engine replaced a connection for being slow (`shed_slow`),
+/// counted from the download's events as it runs.
+async fn fetch_counting_sheds(
+    s: &LabServer,
+    path: &str,
+    seed: u64,
+    opts: Options,
+) -> (Vec<LogEntry>, u64, usize) {
+    use mdm_engine::download::{Error, State};
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url: s.url(path).parse().unwrap(),
+        headers: Default::default(),
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    let dl = Download::start(req, opts);
+    let shed = Error::SlowConnection.to_string();
+    let (mut seen, mut sheds) = (0, 0);
+    loop {
+        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+        let snap = dl.snapshot();
+        let from = seen;
+        for e in snap.events.iter().filter(|e| e.seq > from) {
+            seen = e.seq;
+            sheds += usize::from(e.text.contains(&shed));
+        }
+        if matches!(snap.state, State::Done | State::Failed | State::Cancelled) {
+            break;
+        }
+    }
+    let out = dl.wait().await.expect("download succeeds");
+    let data = std::fs::read(&out.path).unwrap();
+    let mut want = vec![0; data.len()];
+    content::fill(seed, 0, &mut want);
+    assert!(data == want, "content mismatch");
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("every request ends");
+    (s.log(), out.size, sheds)
+}
+
 fn max_concurrent(log: &[LogEntry]) -> usize {
     let mut edges: Vec<(u64, i32)> = log
         .iter()
@@ -452,9 +493,6 @@ async fn slow_connections_reconnect_instead_of_holding_the_end() {
     let s = server("rate=8M&slow_every=3&slow_rate=1K").await;
     let opts = Options {
         min_split: 64 << 10,
-        // Shedding is off by default (it reconnects healthy connections in waves on a shared
-        // link): this is what it does when asked for.
-        shed_slow: true,
         ..fast_opts()
     };
     let (log, size) = fetch(&s, "/gen/8M/slow.bin?seed=32", 32, opts).await;
@@ -464,6 +502,68 @@ async fn slow_connections_reconnect_instead_of_holding_the_end() {
     // shedding too). Shedding drops a slow request once 2 s have shown it slow (or lets it end
     // with under 2 s of its own pace left): about 2 s on an idle machine, up to 8 s on a starved
     // one. Without shedding the last ones run 64 s or more.
+    let slow: Vec<_> = log
+        .iter()
+        .filter(|e| e.rate == Some(1024))
+        .map(|e| (e.t_end_ms - e.t_start_ms, e.bytes_sent, e.body_len))
+        .collect();
+    assert!(!slow.is_empty(), "the fault was there");
+    assert!(
+        slow.iter().all(|(ms, ..)| *ms < 20_000),
+        "a slow request held its piece (ms, sent, asked): {slow:?}"
+    );
+}
+
+/// `link_rate` is one line for all the server's responses: eight connections divide it, they
+/// don't each get it (`rate` would let 4 MB/s through on every one).
+#[tokio::test]
+async fn a_shared_link_carries_no_more_than_its_rate() {
+    let s = server("link_rate=4M").await;
+    let t = std::time::Instant::now();
+    let (_, size) = fetch(&s, "/gen/12M?seed=41", 41, fast_opts()).await;
+    assert_eq!(size, 12 << 20);
+    assert!(
+        t.elapsed() >= std::time::Duration::from_millis(2400),
+        "12 MiB over a 4 MiB/s line in {:?}",
+        t.elapsed()
+    );
+}
+
+/// Connections that divide a link each get an eighth of it. The first one, alone on the link
+/// before the others opened, had run at all of it, and against that every one of the eight
+/// read as slow: after 2 s they were all dropped and reconnected together, again and again,
+/// a dip in the speed each time.
+#[tokio::test]
+async fn connections_sharing_a_link_are_not_replaced_in_waves() {
+    // A round trip of 300 ms, as over the internet: the first connection runs alone on the line
+    // for that long before the others have connected.
+    let s = server("link_rate=4M&latency_ms=300").await;
+    let opts = Options {
+        max_connections: 8,
+        ..fast_opts()
+    };
+    // 6 s at the line's rate: well past the 2 s a connection is given before it is judged.
+    let (log, size, sheds) = fetch_counting_sheds(&s, "/gen/24M?seed=42", 42, opts).await;
+    assert_eq!(size, 24 << 20);
+    assert!(max_concurrent(&log) >= 6, "the connections ran in parallel");
+    assert!(
+        sheds <= 1,
+        "{sheds} connections replaced for being slow on a shared link"
+    );
+}
+
+/// The same rule with a crawling connection among them: the line is shared, and the ones that
+/// crawl are replaced all the same, once the others have finished and left them to hold the end.
+#[tokio::test]
+async fn a_stuck_connection_on_a_shared_link_is_still_replaced() {
+    let s = server("link_rate=8M&slow_every=3&slow_rate=1K").await;
+    let opts = Options {
+        min_split: 64 << 10,
+        ..fast_opts()
+    };
+    let (log, size, sheds) = fetch_counting_sheds(&s, "/gen/16M?seed=43", 43, opts).await;
+    assert_eq!(size, 16 << 20);
+    assert!(sheds >= 1, "no slow connection was replaced");
     let slow: Vec<_> = log
         .iter()
         .filter(|e| e.rate == Some(1024))

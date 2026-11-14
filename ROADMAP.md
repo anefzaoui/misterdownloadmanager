@@ -985,13 +985,11 @@ These ship in the next version.
   (part of [#493](https://github.com/anefzaoui/misterdownloadmanager/issues/493))
 - ✅ Windows: **Open folder** uses the file manager set up to open folders, not always Explorer
   ([#446](https://github.com/anefzaoui/misterdownloadmanager/issues/446))
-- ✅ A steadier download speed: connections slower than a quarter of the best one reached are no
-  longer dropped and reconnected by default. That best speed was the highest one connection ever
-  reached, so once the connections shared the link every one fell under it and they were
-  reconnected in waves, each a dip in the speed. The rule is still in the engine
-  (`Options::shed_slow`), off
-- ✅ Linux: downloads to an NTFS drive (`ntfs3`) start at once instead of filling the file with
-  zeros first, which held the download at 0% and slowed the whole computer
+- ✅ A steadier download speed: a connection is slow when it gets under a quarter of what one connection gets
+  while the others share the link (the most they brought together, over the connections open), no
+  longer a quarter of the best speed one reached alone before the others opened, which made all of
+  them read as slow and dropped them together every few seconds. A stuck connection is still
+  replaced; the lab server's `link_rate` (one line shared by all its responses) tests both
 
 ## Being worked on
 
