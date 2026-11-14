@@ -16,7 +16,10 @@
 // The cases (per browser): folders (another extension's download in a folder of its own keeps
 // it, #578), link (a .zip link, throttled and not), ask (Firefox set to ask what to
 // do with each new type, as Waterfox is: caught before its dialog, #208), cookie (cookies and referrer
-// forwarded), names (Content-Disposition), redirect, leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
+// forwarded), startedfrom (the page a download was started from goes whole, where its Referer is
+// the site's address only; kept with the download for Refresh download address, #607), names
+// (Content-Disposition), torrents (a tracker's .torrent stays with the browser
+// while Torrent settings leave torrents alone, #1058), redirect, leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
 // to the browser: a link, a redirect, a page's script; Firefox's own default too, #332), sites (a listed
 // site's page linking to a file on another host leaves it to the browser, #1049), opened (a PDF or MP3 the browser would show or play), openedNames
 // (such a video under its server's name, inline or an attachment, #948), spot (the video button
@@ -273,6 +276,18 @@ const MORE_AT = `function () {
   const r = m && m.getBoundingClientRect();
   return JSON.stringify(r && r.width ? { x: r.left + r.width / 2, y: r.top + r.height / 2 } : null);
 }`;
+// The look-ups the browser's button asked of the test instance so far (the host logs each), with
+// when: [ms since the epoch].
+function lookupsLogged() {
+  let text = "";
+  try {
+    text = fs.readFileSync(path.join(data, "logs", "mdm.log"), "utf8");
+  } catch {
+    return [];
+  }
+  return [...text.matchAll(/^(\S+)\s+INFO nmhost .*looked up the qualities of a video/gm)].map((m) => Date.parse(m[1].replace(/(\.\d{3})\d*Z$/, "$1Z")));
+}
+
 // A click on the button's arrow, as a person makes it: the pointer onto it first, a moment (the tab
 // shows its grip as the pointer comes, and keeps its end where it was), then the click where the
 // arrow is now.
@@ -2039,6 +2054,30 @@ const CASES = {
     return `${mdm.length} request(s) with sid=1, the page as referrer, the browser's User-Agent`;
   },
 
+  // #607: a page whose referrer policy is `origin` (as a link to another site's file gets by
+  // default; the lab stays on 127.0.0.1, which IDM may be told to leave alone): the browser sends
+  // only the page's site as the Referer, the extension the page itself, which MDM keeps with the
+  // download (its list on disk): Refresh download address opens it.
+  async startedfrom(t) {
+    const file = `e2e-from-${t.name}.zip`;
+    const page = `${LAB}/page?referrer=origin&link=${encodeURIComponent(`/gen/1M/${file}`)}`;
+    await t.session.navigate(page);
+    await t.session.evaluate("document.getElementById('link').click()");
+    await arrived(file, 1 << 20);
+    await keptNothing(t.dl);
+    const saved = await until(`${file} saved with its page`, 20000, () => {
+      try {
+        const list = JSON.parse(fs.readFileSync(path.join(data, "downloads.json"), "utf8").replace(/^\uFEFF/, ""));
+        return (list.items || []).find((i) => String(i.dest || "").endsWith(file) && i.page) || null;
+      } catch {
+        return null;
+      }
+    });
+    if (saved.page !== page) throw new Error(`saved with the page ${saved.page}, not ${page}`);
+    if (saved.referer !== `${LAB}/`) throw new Error(`its Referer is ${saved.referer}, not the site's address ${LAB}/`);
+    return `the page ${saved.page} kept with it, its Referer ${saved.referer}`;
+  },
+
   // Names from Content-Disposition: filename= and filename*= (UTF-8).
   async names(t) {
     const plain = `e2e-report-${t.name}.zip`;
@@ -2057,6 +2096,96 @@ const CASES = {
     const wrong = fs.readdirSync(path.join(downloads, "Compressed")).filter((f) => /^(download\.php|get|fallback-name\.zip)/.test(f));
     if (wrong.length) throw new Error(`saved under the address's or the fallback name too: ${wrong.join(", ")}`);
     return `${plain}, ${star}, ${raw}`;
+  },
+
+  // #1058: a .torrent from a tracker's download.php (named by Content-Disposition, sent as
+  // application/x-bittorrent) stays with the browser while Torrent settings' "Open magnet links
+  // and .torrent files with Mister Download Manager" is off, as by default, though TORRENT is in
+  // File types (it is in this run's list); with it on, MDM takes it (its Add torrent fetches it)
+  // and the browser keeps nothing.
+  async torrents(t) {
+    const p = `/gen/16K/tracker-${t.name}/download.php`;
+    const link = (name) => `${p}?id=42&cd=${encodeURIComponent(name)}&type=${encodeURIComponent("application/x-bittorrent")}`;
+    const off = `e2e-show-${t.name}.torrent`;
+    await clickLink(t, link(off));
+    const at = path.join(t.dl, off);
+    try {
+      await until(`${off} in the browser's folder`, 20000, () => fs.existsSync(at) && fs.statSync(at).size === 16 << 10);
+    } catch (e) {
+      e.message += ` (requests: ${(await requests(p)).map(brief).join("; ") || "none"}; the browser's folder: ${fs.readdirSync(t.dl).join(", ") || "empty"})`;
+      throw e;
+    }
+    await sleep(2000);
+    const asked = await requests(p);
+    if (asked.length !== 1) throw new Error(`off: ${asked.length} requests (only the browser's expected): ${asked.map(brief).join("; ")}`);
+    if ((await mdmList()).some((d) => d.file === off)) throw new Error("off: MDM took it too");
+    if (WIN && appWindows(appPid()).includes("Add torrent")) throw new Error("off: Add torrent opened");
+    // MDM's log says why (the host's line, or the extension's notice it wrote down).
+    const logged = () => {
+      const file = path.join(data, "logs", "mdm.log");
+      const log = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : "";
+      return log.split(/\r?\n/).find((l) => l.includes(off) && l.includes("Torrent settings"));
+    };
+    const why = await until("MDM's log line for it", 10000, logged).catch(() => {
+      throw new Error("off: MDM's log doesn't say why it stayed with the browser");
+    });
+    fs.rmSync(at);
+    // E2E_SHOTS (Chromium): <lang>-<scheme>-torrent-left.png, the popup saying why.
+    const shots = process.env.E2E_SHOTS ? path.resolve(process.env.E2E_SHOTS) : "";
+    const tag = `${process.env.E2E_LANG || "en"}-${process.env.E2E_COLOR_SCHEME || "system"}`;
+    if (shots && t.session.tab) {
+      const popup = await t.session.tab(`${t.session.base}popup.html`);
+      try {
+        const said = await until("the popup's reason", 10000, () =>
+          popup.evaluate(`(() => { const b = document.getElementById("declined"); return b && !b.hidden && document.getElementById("declined-why").textContent; })()`).catch(() => ""),
+        );
+        await sleep(500);
+        await popup.shot(path.join(shots, `${tag}-torrent-left.png`));
+        if (!said) throw new Error("the popup gives no reason");
+      } finally {
+        await popup.close();
+      }
+    }
+    // On: the extension learns it at its next question for the rules (Chromium: asked now;
+    // Firefox: once its copy is a minute old).
+    await panelSettings({ torrent_handler: true });
+    try {
+      if (t.session.inExtension) await t.session.inExtension("refreshRules().then(() => true)");
+      else {
+        await sleep(61000);
+        const primer = `e2e-primer-${t.name}.torrent`;
+        await clickLink(t, link(primer));
+        await until(`${primer} in the browser's folder`, 20000, () => fs.existsSync(path.join(t.dl, primer)));
+        await sleep(2000);
+        fs.rmSync(path.join(t.dl, primer), { force: true });
+      }
+      await clearLog();
+      const on = `e2e-show-on-${t.name}.torrent`;
+      await clickLink(t, link(on));
+      // Add torrent fetches it with the browser's request (MDM's own request after the browser's).
+      // The app started again with the setting (panelSettings): its process now.
+      const pid = WIN ? appPid() : 0;
+      await until("MDM's request for it", 20000, async () => (await requests(p)).length >= 2);
+      if (WIN) {
+        await until("Add torrent", 15000, () => appWindows(pid).includes("Add torrent")).catch((e) => {
+          e.message += ` (its windows: ${JSON.stringify(appWindows(pid))})`;
+          throw e;
+        });
+        // E2E_SHOTS: <lang>-<scheme>-torrent-taken.png, Add torrent as the browser's .torrent
+        // opens it (what the setting off did too, before #1058).
+        if (shots) {
+          await sleep(3000);
+          const cap = path.join(root, "tools", "lab", "cap-own.ps1");
+          spawnSync("powershell", ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", cap, "-ProcessId", String(pid), "-Title", "Add torrent", "-Out", path.join(shots, `${tag}-torrent-taken.png`)], { stdio: "ignore" });
+        }
+        appWindows(pid, "Add torrent");
+        await until("Add torrent closed", 5000, () => !appWindows(pid).includes("Add torrent"));
+      }
+      await keptNothing(t.dl);
+    } finally {
+      await panelSettings({ torrent_handler: false });
+    }
+    return `off: the browser kept ${off}, MDM's log says why (${why.split(": ").slice(-1)[0].slice(0, 60)}...); on: Add torrent fetched it, the browser kept nothing`;
   },
 
   // A redirect: MDM keeps the address clicked (it asks it again to renew the link).
@@ -2885,8 +3014,24 @@ const CASES = {
       const state = await until("the stream player", 15000, () => t.session.evaluate("document.body.dataset.stream || ''"));
       if (state !== "done") throw new Error(`the page's player: ${state}`);
       const v = await rect(t.session, "#player");
+      // #1053: the pointer passing over the button (onto it and off the video within a moment)
+      // asks nothing; resting on it asks at once, without the button's own wait over the video
+      // (600 ms), and the arrow's click later shares that look-up.
+      const asked = lookupsLogged().length;
+      if (!(await hover(t.session, v))) throw new Error("no button over the stream's player");
+      const passAt = await t.session.pill(MORE_AT);
+      if (!passAt) throw new Error("no arrow on the button");
+      await t.session.mouse(passAt.x, passAt.y);
+      await t.session.mouse(v.r + 40, v.b + 40);
+      await sleep(1500);
+      if (lookupsLogged().length !== asked) throw new Error("a pass over the button looked the video up");
       const b = await hover(t.session, v);
       if (!b) throw new Error("no button over the stream's player");
+      const restAt = await t.session.pill(MORE_AT);
+      await t.session.mouse(restAt.x, restAt.y);
+      const rested = Date.now();
+      const early = await until("the look-up of the pointer resting on the button", 5000, () => lookupsLogged().slice(asked)[0]);
+      const restMs = early - rested;
       // An earlier browser's downloads of this stream off the list (with their files): the same
       // quality again would be a duplicate, which Options' default asks about.
       const earlier = (await mdmList()).filter((d) => d.url.startsWith(`${LAB}/hls/`)).map((d) => d.id);
@@ -2924,6 +3069,8 @@ const CASES = {
         return p && p.rows.length ? p : null;
       });
       const rowsMs = Date.now() - clicked;
+      if (lookupsLogged().length !== asked + 1) throw new Error(`${lookupsLogged().length - asked} look-ups, not the rest's one shared by the arrow's click`);
+      if (restMs > 500) throw new Error(`the look-up came ${restMs} ms after the pointer rested on the button, not about 200 ms`);
       if (!m.rows.some((r) => r.size)) throw new Error(`no row has a size: ${JSON.stringify(m.rows.map((r) => [r.name, r.size]))}`);
       if (!m.open.text) throw new Error("no \"All qualities and subtitles…\" under the qualities");
       // The arrows move through the menu, and the page's shortcuts don't hear them.
@@ -2976,7 +3123,7 @@ const CASES = {
       if (!green.acts.some((a) => a.act === "show")) throw new Error(`no "Show": ${JSON.stringify(green)}`);
       if (appWindows(pid).includes(VIDEO_WINDOW)) throw new Error("the click opened the Download video window");
       const list = (rs) => rs.map((r) => `${r.name}${r.size ? ` ${r.size}` : ""}`).join(", ");
-      return `chip "${chipped.chip}"; the click: ${best.file} (${green.text} · Show); ${looked ? "looking, then " : ""}VIDEO ${pictures.rows.length} (${list(pictures.rows)}), AUDIO ${sounds.rows.length} (${list(sounds.rows)}); "${row.name}" picked: ${item.file} (${item.status}) with its progress window "${opened}" only, the main window hidden; click to rows ${rowsMs} ms, pick to first progress ${startMs} ms`;
+      return `chip "${chipped.chip}"; the click: ${best.file} (${green.text} · Show); ${looked ? "looking, then " : ""}VIDEO ${pictures.rows.length} (${list(pictures.rows)}), AUDIO ${sounds.rows.length} (${list(sounds.rows)}); "${row.name}" picked: ${item.file} (${item.status}) with its progress window "${opened}" only, the main window hidden; click to rows ${rowsMs} ms, pick to first progress ${startMs} ms; a pass over the button asked nothing, resting on it asked ${restMs} ms later, once`;
     } finally {
       // The next case starts MDM as usual.
       await stopApp();
@@ -3060,7 +3207,9 @@ const CASES = {
   // menu shows, then, with E2E_VIDEO_PICK=<a pattern of a line's words>, that line picked and
   // downloaded to its end, its file's size beside the line's (#801: the size shown is the size
   // that comes). E2E_SHOTS as in `qualities`: <lang>-page-list.png (the menu), page-pick.png
-  // (the line about to be picked, scrolled to).
+  // (the line about to be picked, scrolled to). E2E_PAGE_REST=<ms> times the click instead (#1053):
+  // the pointer goes over the video and straight onto the button's arrow, rests there that long
+  // and clicks; how long from the click to the qualities is the case's answer.
   async page(t) {
     const address = process.env.E2E_VIDEO_PAGE;
     if (!address) throw new Skip("no E2E_VIDEO_PAGE");
@@ -3073,9 +3222,35 @@ const CASES = {
     try {
       await until("the test instance, in the notification area", 20000, () => mdmList().then(() => true, () => false));
       await t.session.navigate(address);
+      // Timing the click: the video playing, as a person watching it would have it (a player
+      // that waits for its play button shows no picture before).
+      if (process.env.E2E_PAGE_REST) {
+        await until("the page's video", 30000, () => rect(t.session, "video"));
+        await t.session.evaluate("(() => { const v = document.querySelector('video'); v.muted = true; v.play().catch(() => {}); return 0; })()");
+        await sleep(2000);
+      }
       const v = await until("the page's video", 30000, () => rect(t.session, "video"));
-      const b = await hover(t.session, v);
+      // A heavy page (YouTube) may still be busy at the first try.
+      const b = (await hover(t.session, v)) || (await hover(t.session, v));
       if (!b) throw new Error("no button over the page's video");
+      const rest = process.env.E2E_PAGE_REST;
+      if (rest) {
+        const at = await t.session.pill(MORE_AT);
+        if (!at) throw new Error("no arrow on the button");
+        await t.session.mouse(at.x, at.y);
+        await sleep(Number(rest));
+        await t.session.mouse(at.x, at.y, "click");
+        const clicked = Date.now();
+        // Asked every 50 ms (`until`'s quarter second would blur the time).
+        for (;;) {
+          const p = await t.session.picks("row");
+          if (p && !p.busy && !p.rows.length) throw new Error(`the menu shows no qualities: "${p.note}"`);
+          // Done looking (the lines under "Download best" are there).
+          if (p && !p.busy && p.rows.length) return `on the button ${rest} ms, click to ${p.rows.length - 1} qualities ${Date.now() - clicked} ms`;
+          if (Date.now() - clicked > 120000) throw new Error("timed out: the qualities in the menu");
+          await sleep(50);
+        }
+      }
       await until("the best quality on the button's chip", 120000, async () => {
         const p = await t.session.pill(PILL_STATE);
         return p && p.state === "ready" && p.chip ? p : null;
@@ -3404,6 +3579,9 @@ const KNOWN_BUGS = {};
 // The registry keys `nmhost --register` and `--unregister` touch (crates/nmhost REGISTRY_KEYS,
 // FIREFOX_KEY, CHROME_EXTERNAL_KEY): each browser's host entry and Chrome's external extension,
 // per user and for everyone (the latter only read: an installed copy's). [key, 32-bit view].
+// Also this account's .torrent and magnet associations (TORRENT_KEYS), which Torrent settings'
+// switch writes (win32.rs set_torrent_handlers): no test instance may touch them (#1058); one
+// changed fails the run, after being put back.
 const HOST = "com.misterdownloadmanager.host";
 const REG_KEYS = ["HKCU", "HKLM"].flatMap((root) => [
   ...[
@@ -3414,7 +3592,8 @@ const REG_KEYS = ["HKCU", "HKLM"].flatMap((root) => [
     "Software\\Mozilla\\NativeMessagingHosts",
   ].map((k) => [`${root}\\${k}\\${HOST}`, false]),
   [`${root}\\Software\\Google\\Chrome\\Extensions`, true],
-]);
+]).concat([".torrent", "magnet", "MisterDownloadManager.Torrent"].map((k) => [`HKCU\\Software\\Classes\\${k}`, false]));
+const TORRENT_KEYS = new Set(REG_KEYS.filter(([k]) => k.includes("\\Classes\\")).map(([k]) => k));
 
 // Linux and macOS: the host's manifests (`<HOST>.json`) in the home folder's browser folders,
 // found by a walk (each browser family has its own places: crates/ipc browsers.rs host_dirs),
@@ -3620,9 +3799,13 @@ async function run() {
         extension_never_ask: true,
         show_start_dialog: false,
         automation_api: true,
-        // The default types plus XZ, for the proxy case (a type other download managers leave alone).
-        auto_types: "3GP 7Z AAC ACE AIF APK ARJ ASF AVI BIN BZ2 EXE GZ GZIP IMG ISO LZH M4A M4V MKV MOV MP3 MP4 MPA MPE MPEG MPG MSI MSU OGG OGV PDF PLJ PPS PPT QT R0* R1* RA RAR RM RMVB SEA SIT SITX TAR TIF TIFF WAV WMA WMV XZ Z ZIP",
+        // The default types plus XZ, for the proxy case (a type other download managers leave
+        // alone); TORRENT for the torrents case (#1058).
+        auto_types: "3GP 7Z AAC ACE AIF APK ARJ ASF AVI BIN BZ2 EXE GZ GZIP IMG ISO LZH M4A M4V MKV MOV MP3 MP4 MPA MPE MPEG MPG MSI MSU OGG OGV PDF PLJ PPS PPT QT R0* R1* RA RAR RM RMVB SEA SIT SITX TAR TIF TIFF TORRENT WAV WMA WMV XZ Z ZIP",
         category_dirs: dirs,
+        // Torrent settings' switch decided (off): the instance never settles it from this
+        // computer's installer value or associations (#1058).
+        torrent_handler: false,
       },
     }),
   );
@@ -3785,9 +3968,12 @@ async function run() {
         : `${WIN ? "registry" : "host manifests"}: ${regBefore.length} ${WIN ? "keys" : "files"} byte-identical to before the run${regCheck.changed.length ? ` (put back: ${regCheck.changed.join(", ")})` : ""}; present before: ${kept.join(", ") || "none"}`,
     );
   }
+  // A test instance changed this account's .torrent or magnet association (put back above).
+  const associations = regCheck ? regCheck.changed.filter((k) => TORRENT_KEYS.has(k)) : [];
+  if (associations.length) console.log(`registry: the run CHANGED this account's torrent associations (put back): ${associations.join(", ")}`);
   if (test) console.log(testLeft.length ? `test host: STILL REGISTERED: ${testLeft.join(", ")}` : `test host: ${test.keys.join(", ")} registered for the run, removed`);
   console.log(`total ${((Date.now() - t0) / 1000).toFixed(0)}s`);
-  if (results.some((r) => r[2] === "FAILED" || r[2] === "BUG") || (regCheck && regCheck.differ.length) || testLeft.length) process.exit(1);
+  if (results.some((r) => r[2] === "FAILED" || r[2] === "BUG") || (regCheck && regCheck.differ.length) || associations.length || testLeft.length) process.exit(1);
 }
 
 // Run when started, not when another script imports its helpers (tools/readme/browser-shots.mjs).

@@ -10,6 +10,7 @@ mod feeds;
 pub mod ftp;
 pub mod growth;
 mod h264;
+pub mod mediafire;
 mod pages;
 mod server;
 mod streams;
