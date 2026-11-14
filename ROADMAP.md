@@ -588,6 +588,8 @@ These ship in the next version.
 - ✅ The progress window shows no scroll bars over content that fits at an interface size above
   100 % (125 %), where the window's client comes back a pixel short of its content
   ([#672](https://github.com/anefzaoui/misterdownloadmanager/issues/672))
+- ✅ Less memory during fast downloads to a slower disk: what waits for the disk stays within its
+  256 MB as allocated (a 4 GB download: 967 MB in 0.5.2, 523 MB now with the window open)
 - ✅ Windows and macOS: **Options → General → Shortcut to show or hide window**: a global
   shortcut of two or three keys that shows or hides MDM's window from any program
   ([#558](https://github.com/anefzaoui/misterdownloadmanager/issues/558))
