@@ -5030,6 +5030,56 @@ pub fn file_dialog(title: &str) -> rfd::FileDialog {
     rfd::FileDialog::new().set_title(crate::i18n::os_text(title))
 }
 
+/// The system Save dialog for a download's file (Download File Info's Save As, #1088): `name`
+/// filled in, in `dir` when it is there, and the download's own file type. Built on
+/// [`start_pick`]'s thread (it looks at the disk); its answer goes through [`saved_name`].
+pub fn save_dialog(title: &str, dir: &std::path::Path, name: &str) -> rfd::FileDialog {
+    let mut dialog = file_dialog(title).set_file_name(name);
+    if dir.is_dir() {
+        dialog = dialog.set_directory(dir);
+    }
+    // The type list: the download's type first (Windows adds its extension to a name typed
+    // without one), then All files. Not on macOS: there the types are the only extensions a
+    // name may end with (another one typed gets the download's added after it), and its Save
+    // panel shows no type list; `saved_name` adds a missing extension there the same way.
+    #[cfg(not(target_os = "macos"))]
+    {
+        if let Some(ext) = std::path::Path::new(name)
+            .extension()
+            .and_then(|e| e.to_str())
+            .filter(|e| !e.is_empty())
+        {
+            dialog = dialog.add_filter(ext.to_uppercase(), &[ext]);
+        }
+        dialog = dialog.add_filter(crate::i18n::t("All files"), &["*"]);
+    }
+    dialog
+}
+
+/// The file [`save_dialog`] answered for a download named `was`: the name typed there made a
+/// valid file name (`naming::sanitize`; GTK's and macOS's dialogs take `a:b`), and given `was`'s
+/// extension when typed without one, as Windows' dialog does itself. So on every system
+/// `testName` saves as `testName.7z`, and `testName.zip` as typed.
+pub fn saved_name(was: &str, picked: &std::path::Path) -> std::path::PathBuf {
+    let ext = |n: &str| {
+        std::path::Path::new(n)
+            .extension()
+            .map(|e| e.to_string_lossy().into_owned())
+            .filter(|e| !e.is_empty())
+    };
+    let typed = picked
+        .file_name()
+        .map(|n| n.to_string_lossy().into_owned())
+        .unwrap_or_default();
+    let mut name = mdm_engine::naming::sanitize(&typed);
+    if ext(&name).is_none()
+        && let Some(e) = ext(was)
+    {
+        name = format!("{name}.{e}");
+    }
+    picked.with_file_name(name)
+}
+
 /// A system file or folder dialog's answer, from its thread.
 type PickSlot = std::sync::Arc<std::sync::Mutex<Option<Option<std::path::PathBuf>>>>;
 
@@ -6621,6 +6671,35 @@ pub mod caption {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #1088: the name typed in Download File Info's Save dialog is the download's, its
+    /// extension kept or replaced as typed, the same on every system.
+    #[test]
+    fn a_name_typed_in_the_save_dialog_is_the_one_saved() {
+        let dir = std::env::temp_dir().join("mdm-1088");
+        let was = "MPC-BE.1.9.3.x86.7z";
+        // As a dialog answers, the name whole after the folder (`join` would read `a:` as a
+        // drive on Windows).
+        let saved = |typed: &str| {
+            let picked = format!("{}{}{typed}", dir.display(), std::path::MAIN_SEPARATOR);
+            saved_name(was, std::path::Path::new(&picked))
+        };
+        // Typed without an extension (GTK's and macOS's dialogs keep it so): the download's.
+        assert_eq!(saved("testName"), dir.join("testName.7z"));
+        // With Windows' own (it added the type's extension): as it is.
+        assert_eq!(saved("testName.7z"), dir.join("testName.7z"));
+        // Another extension typed: replaced, as typed.
+        assert_eq!(saved("testName.zip"), dir.join("testName.zip"));
+        assert_eq!(saved("my.file.v2.zip"), dir.join("my.file.v2.zip"));
+        // The name unchanged: the same file.
+        assert_eq!(saved(was), dir.join(was));
+        // A name Windows can't hold (a Linux or macOS dialog lets these through): made valid.
+        assert_eq!(saved("a:b?.7z"), dir.join("a_b_.7z"));
+        assert_eq!(saved("con"), dir.join("_con.7z"));
+        assert_eq!(saved("name. . "), dir.join("name.7z"));
+        // A download without an extension adds none.
+        assert_eq!(saved_name("README", &dir.join("notes")), dir.join("notes"));
+    }
 
     /// `r` already gives the screen rect (mirrored in RTL); `rect` around it mirrors it back,
     /// so the thing stays at its English place in Arabic (#170: the browser offer window's logo
