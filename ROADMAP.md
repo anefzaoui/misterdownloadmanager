@@ -562,6 +562,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A download to a disk slower than the network no longer stands still for a second or more
+  just after it starts (a second save of its progress came too soon after the first); a server
+  whose name the DNS doesn't answer in time says it couldn't be found, not that it didn't answer.
+  Two tests that failed now and then on macOS check both without the network or the runner's speed
+  ([#782](https://github.com/anefzaoui/misterdownloadmanager/issues/782))
 - ✅ The sites in **Don't start downloading automatically from the following sites** take their
   subdomains and the files their pages link to on another server (a CDN), as the Download panels'
   list does
