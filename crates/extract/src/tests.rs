@@ -271,6 +271,23 @@ fn sevenz_plain_encrypted_and_split_through_7zip() {
         .0
         .unwrap();
     no_staging(&dest);
+    // Its names encrypted too (`-mhe`): 7-Zip asks before it can list it; the password, given
+    // on its input, opens it.
+    let hidden = t.path().join("hidden.7z");
+    seven_of(&tool, &src, &hidden, &["-ps3cret", "-mhe=on"]);
+    let dest = t.path().join("o3");
+    assert!(matches!(
+        run(&hidden, &dest, None, Subfolder::Smart).0,
+        Err(Error::NeedsPassword)
+    ));
+    assert!(matches!(
+        run(&hidden, &dest, Some("bad"), Subfolder::Smart).0,
+        Err(Error::WrongPassword)
+    ));
+    run(&hidden, &dest, Some("s3cret"), Subfolder::Smart)
+        .0
+        .unwrap();
+    no_staging(&dest);
 
     // 7-Zip's "Split to volumes": split.7z.001, .002…
     let split = t.path().join("split.7z");
@@ -417,6 +434,11 @@ fn external_7zip_goes_through_the_same_checks() {
 
 /// Like [`run`], with HatchZip and in place as given (7-Zip as installed unless `no_7zip`),
 /// MDM's records of its runs in `runs`.
+///
+/// The stand-in HatchZips are scripts these tests write and run at once. While one is written,
+/// another test's thread may start a program, which holds the script open for writing until it
+/// runs: Linux then refuses to run the script ("Text file busy"), and the stand-in never ran.
+/// That is tried again, a little later; nothing else is.
 fn run_hz(
     archive: &Path,
     dest: &Path,
@@ -439,7 +461,14 @@ fn run_hz(
         on_file: &mut on_file,
         cancel: None,
     };
-    let r = extract(archive, &mut policy);
+    let mut r = extract(archive, &mut policy);
+    for _ in 0..50 {
+        if !matches!(&r, Err(Error::Io(e)) if e.kind() == std::io::ErrorKind::ExecutableFileBusy) {
+            break;
+        }
+        std::thread::sleep(std::time::Duration::from_millis(20));
+        r = extract(archive, &mut policy);
+    }
     (r, seen)
 }
 

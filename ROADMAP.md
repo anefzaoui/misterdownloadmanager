@@ -309,6 +309,8 @@ Everything below ships together, in version 0.5.0.
 - ✅ Link grabber: Click'n'Load from link sites, in their packages with their archive passwords;
   off by default, asked once per site, the links not looked up before they are added
   ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37))
+- ✅ Archives: saved archive passwords, tried before the password is asked, the one that fits
+  first ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37))
 - ✅ Image galleries with gallery-dl: Wikimedia Commons, Flickr, DeviantArt and many more,
   verified like yt-dlp, or your own copy ([#58](https://github.com/anefzaoui/misterdownloadmanager/issues/58))
 - ✅ Torrents: seeding limits (a share ratio, or a time), off by default, and a finished torrent's
