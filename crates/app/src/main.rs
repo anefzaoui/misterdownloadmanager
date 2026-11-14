@@ -439,6 +439,8 @@ fn app() -> eframe::Result {
     #[cfg(target_os = "linux")]
     {
         i18n::set_lang(loaded.settings.language.as_deref());
+        // View → Window system's choice (#624): the same however MDM was started.
+        unix::set_window_system_pick(loaded.settings.window_system);
         let ws = unix::window_system();
         if !ws.missing.is_empty() {
             crash::clean_exit();

@@ -1419,22 +1419,83 @@ pub struct WindowSystem {
     pub x11_missing: Vec<&'static WindowLib>,
     /// The chosen system lacks these: no window can open (#265).
     pub missing: Vec<&'static WindowLib>,
+    /// A Wayland session that runs XWayland too: View → Window system offers the choice (#624).
+    pub both: bool,
+    /// What decided it, for the log.
+    pub why: &'static str,
 }
 
-/// The windows run through X11 (XWayland, in a Wayland session) when there is one, unless
-/// `MDM_WAYLAND=1` (#50). Wayland lets no program place its own windows, and MDM's menus and drop
-/// lists are windows it places under what was clicked: Wayland put them in the middle of the
-/// screen. Without the libraries X11's windows need, Wayland's when there is one (#265).
-/// `loads`: whether a library can be loaded.
+/// Who chose the window system for this start, strongest first (#624): `MDM_WAYLAND=1` or `0`,
+/// else View → Window system (saved, so every way MDM starts agrees: its menu entry, the
+/// browser's helper, the session's autostart), else MDM itself (`Pick::Auto`).
+#[cfg(target_os = "linux")]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Pick {
+    Wayland(&'static str),
+    X11(&'static str),
+    Auto,
+}
+
+#[cfg(target_os = "linux")]
+impl Pick {
+    /// From `MDM_WAYLAND`'s value and the saved choice.
+    pub fn of(
+        env: Option<&std::ffi::OsStr>,
+        saved: Option<crate::settings::WindowSystemPick>,
+    ) -> Pick {
+        use crate::settings::WindowSystemPick as Saved;
+        match env.and_then(|v| v.to_str()).map(str::trim) {
+            Some("1") => return Pick::Wayland("MDM_WAYLAND=1"),
+            Some("0") => return Pick::X11("MDM_WAYLAND=0"),
+            _ => {}
+        }
+        match saved {
+            Some(Saved::Wayland) => Pick::Wayland("View → Window system"),
+            Some(Saved::X11) => Pick::X11("View → Window system"),
+            None => Pick::Auto,
+        }
+    }
+}
+
+/// The windows' system. In a Wayland session that runs XWayland too, `pick` decides; MDM's own
+/// choice (`Pick::Auto`) is X11 where the desktop looks after X11 programs (`x11_cared_for`),
+/// Wayland where it doesn't (#624):
+///
+/// - X11 (XWayland) lets MDM place its menus and drop lists, windows of their own, under what
+///   was clicked (#50; override-redirect: exactly there on tiling compositors too, #267), and
+///   hide its window in the notification area. Wayland lets no program place or hide its
+///   windows, and winit 0.30 has no popup windows (xdg_popup) there.
+/// - But an X11 program is only as good as the desktop's XWayland: GNOME and KDE Plasma run a
+///   settings daemon for it (XSETTINGS: its scale, its fonts) and size its windows as asked.
+///   wlroots compositors (labwc, Hyprland, sway, …) run none: there MDM's windows came out
+///   blurry, or sized other than asked (#624), and Wayland's own windows are right.
+///
+/// Without the libraries X11's windows need, Wayland's when there is one (#265). `loads`:
+/// whether a library can be loaded. `x11_cared_for` is only asked when it decides.
 #[cfg(target_os = "linux")]
 fn choose_window_system(
     wayland_session: bool,
     x11_session: bool,
-    keep_wayland: bool,
+    pick: Pick,
+    x11_cared_for: impl FnOnce() -> bool,
     loads: impl Fn(&WindowLib) -> bool,
 ) -> WindowSystem {
     let lacking = |libs: &'static [WindowLib]| libs.iter().filter(|l| !loads(l)).collect();
-    let mut ws = WindowSystem::default();
+    let mut ws = WindowSystem {
+        both: wayland_session && x11_session,
+        ..Default::default()
+    };
+    let (keep_wayland, why) = match pick {
+        _ if !ws.both => (wayland_session, "the session's only one"),
+        Pick::Wayland(why) => (true, why),
+        Pick::X11(why) => (false, why),
+        Pick::Auto if x11_cared_for() => (false, "automatic: the desktop looks after X11 programs"),
+        Pick::Auto => (
+            true,
+            "automatic: no settings daemon looks after X11 programs here (no XSETTINGS)",
+        ),
+    };
+    ws.why = why;
     if x11_session && !(wayland_session && keep_wayland) {
         ws.missing = lacking(X11_LIBS);
         if ws.missing.is_empty() {
@@ -1445,6 +1506,7 @@ fn choose_window_system(
             return ws;
         }
         ws.x11_missing = std::mem::take(&mut ws.missing);
+        ws.why = "X11's libraries are missing";
     }
     if wayland_session {
         ws.wayland = true;
@@ -1453,20 +1515,78 @@ fn choose_window_system(
     ws
 }
 
+/// View → Window system's saved choice, given before the first window opens.
+#[cfg(target_os = "linux")]
+static SAVED_PICK: std::sync::OnceLock<Option<crate::settings::WindowSystemPick>> =
+    std::sync::OnceLock::new();
+
+/// Linux: View → Window system's saved choice (#624), for [`window_system`]: main.rs gives it
+/// once the settings are read, before the first window opens.
+#[cfg(target_os = "linux")]
+pub fn set_window_system_pick(saved: Option<crate::settings::WindowSystemPick>) {
+    let _ = SAVED_PICK.set(saved);
+}
+
 /// Linux: the display system MDM's windows use (see `choose_window_system`), decided at the
-/// first question.
+/// first question, and said in the log.
 #[cfg(target_os = "linux")]
 pub fn window_system() -> &'static WindowSystem {
     static CHOSEN: std::sync::OnceLock<WindowSystem> = std::sync::OnceLock::new();
     CHOSEN.get_or_init(|| {
         let set = |name: &str| std::env::var_os(name).is_some_and(|v| !v.is_empty());
-        choose_window_system(
+        let pick = Pick::of(
+            std::env::var_os("MDM_WAYLAND").as_deref(),
+            SAVED_PICK.get().copied().flatten(),
+        );
+        let ws = choose_window_system(
             set("WAYLAND_DISPLAY"),
             set("DISPLAY"),
-            std::env::var_os("MDM_WAYLAND").is_some_and(|v| v == "1"),
+            pick,
+            x11_cared_for,
             |lib| lib.names.iter().any(|n| loads(n)),
-        )
+        );
+        let system = match (ws.wayland, ws.x11_over_wayland) {
+            (true, _) => "Wayland",
+            (false, true) => "X11 (XWayland)",
+            (false, false) => "X11",
+        };
+        tracing::info!("windows: {system} ({})", ws.why);
+        ws
     })
+}
+
+/// Whether the desktop looks after X11 programs (#624): a settings daemon owns XSETTINGS on the
+/// X server and tells them its scale and fonts (GNOME's, KDE Plasma's), or the desktop is one
+/// that starts one with XWayland, perhaps a moment after (`desktop_looks_after_x11`). A wlroots
+/// compositor's XWayland (labwc, Hyprland, sway, …) has none. False when the X server can't be
+/// reached.
+#[cfg(target_os = "linux")]
+fn x11_cared_for() -> bool {
+    let desktop = std::env::var("XDG_CURRENT_DESKTOP").unwrap_or_default();
+    desktop_looks_after_x11(&desktop) || xsettings_owned().unwrap_or(false)
+}
+
+/// The desktops (`XDG_CURRENT_DESKTOP`, a `:`-separated list) whose Wayland session starts a
+/// settings daemon for XWayland's programs: GNOME (Ubuntu's too: `ubuntu:GNOME`) starts
+/// gsd-xsettings with XWayland, which it starts at the first X11 program (so its XSETTINGS may
+/// come a moment after that program asks), KDE Plasma xsettingsd.
+#[cfg(target_os = "linux")]
+fn desktop_looks_after_x11(desktop: &str) -> bool {
+    desktop.split(':').any(|d| {
+        ["GNOME", "KDE"]
+            .iter()
+            .any(|known| d.trim().eq_ignore_ascii_case(known))
+    })
+}
+
+/// Whether a settings daemon owns the X server's XSETTINGS.
+#[cfg(target_os = "linux")]
+fn xsettings_owned() -> Result<bool, Box<dyn std::error::Error>> {
+    use x11rb::protocol::xproto::ConnectionExt;
+    let (conn, screen) = x11rb::rust_connection::RustConnection::connect(None)?;
+    let name = format!("_XSETTINGS_S{screen}");
+    let atom = conn.intern_atom(false, name.as_bytes())?.reply()?.atom;
+    Ok(conn.get_selection_owner(atom)?.reply()?.owner != x11rb::NONE)
 }
 
 /// Whether the library `name` can be loaded, as winit's loaders would load it (and unloaded
@@ -2453,7 +2573,10 @@ pub(crate) fn fallback_rename_no_replace(from: &Path, to: &Path) -> std::io::Res
 mod tests {
     use zbus::zvariant::Value;
 
-    use super::{WindowLib, X11_LIBS, choose_window_system, install_command, menu_window_type};
+    use super::{
+        Pick, WindowLib, X11_LIBS, choose_window_system, desktop_looks_after_x11, install_command,
+        menu_window_type,
+    };
 
     /// #277: each menu's window says which menu it is, as GTK's and Qt's do.
     #[test]
@@ -2478,30 +2601,103 @@ mod tests {
         lib.names[0] != X11_KEYBOARD
     }
 
+    /// MDM's own choice, with the desktop looking after X11 programs (GNOME, KDE Plasma).
+    const CARED: fn() -> bool = || true;
+
     /// #265: without libxkbcommon-x11, an X11 session can't open the window (said, not a
     /// panic); a Wayland session opens it on Wayland instead; with everything there, X11 as
     /// before (#50).
     #[test]
     fn a_missing_x11_library_is_named_or_wayland_used() {
-        let x11_only = choose_window_system(false, true, false, without_x11_keyboard);
+        let x11_only = choose_window_system(false, true, Pick::Auto, CARED, without_x11_keyboard);
         assert!(!x11_only.wayland);
         let names: Vec<&str> = x11_only.missing.iter().map(|l| l.names[0]).collect();
         assert_eq!(names, [X11_KEYBOARD]);
 
-        let both = choose_window_system(true, true, false, without_x11_keyboard);
+        let both = choose_window_system(true, true, Pick::Auto, CARED, without_x11_keyboard);
         assert!(both.wayland && both.missing.is_empty(), "{both:?}");
         assert_eq!(both.x11_missing.len(), 1);
         assert!(!both.x11_over_wayland);
 
-        let fine = choose_window_system(true, true, false, |_| true);
+        let fine = choose_window_system(true, true, Pick::Auto, CARED, |_| true);
         assert!(!fine.wayland && fine.x11_over_wayland && fine.missing.is_empty());
-        let asked = choose_window_system(true, true, true, |_| true);
+        let asked =
+            choose_window_system(true, true, Pick::Wayland("MDM_WAYLAND=1"), CARED, |_| true);
         assert!(asked.wayland && !asked.x11_over_wayland && asked.x11_missing.is_empty());
 
         // Nothing loads: on Wayland, its own libraries are named.
-        let none = choose_window_system(true, false, false, |_| false);
+        let none = choose_window_system(true, false, Pick::Auto, CARED, |_| false);
         assert!(none.wayland);
         assert_eq!(none.missing[0].names[0], "libxkbcommon.so.0");
+    }
+
+    /// #624: MDM_WAYLAND first (1 or 0), then View → Window system's saved choice, then MDM's
+    /// own: the same however MDM is started, as the saved choice goes with every start.
+    #[test]
+    fn the_window_system_is_picked_the_same_way_at_every_start() {
+        use crate::settings::WindowSystemPick as Saved;
+        use std::ffi::OsStr;
+        let env = |v: &'static str| Some(OsStr::new(v));
+        assert_eq!(Pick::of(None, None), Pick::Auto);
+        assert_eq!(Pick::of(env(""), None), Pick::Auto);
+        assert_eq!(Pick::of(env("yes"), None), Pick::Auto);
+        assert!(matches!(
+            Pick::of(None, Some(Saved::Wayland)),
+            Pick::Wayland(_)
+        ));
+        assert!(matches!(Pick::of(None, Some(Saved::X11)), Pick::X11(_)));
+        assert!(matches!(
+            Pick::of(env("1"), Some(Saved::X11)),
+            Pick::Wayland(_)
+        ));
+        assert!(matches!(
+            Pick::of(env("0"), Some(Saved::Wayland)),
+            Pick::X11(_)
+        ));
+        assert!(matches!(Pick::of(env("0"), None), Pick::X11(_)));
+    }
+
+    /// #624: MDM chooses X11 (XWayland) where the desktop looks after X11 programs (its menus
+    /// placed, its window hidden in the tray), Wayland where it doesn't (labwc, Hyprland, sway:
+    /// windows blurry or sized other than asked). A choice made wins either way; the desktop is
+    /// only asked when it decides.
+    #[test]
+    fn mdm_chooses_wayland_where_x11_programs_are_left_alone() {
+        let ok = |_: &WindowLib| true;
+        let left_alone = choose_window_system(true, true, Pick::Auto, || false, ok);
+        assert!(left_alone.wayland && left_alone.both, "{left_alone:?}");
+        let cared = choose_window_system(true, true, Pick::Auto, CARED, ok);
+        assert!(!cared.wayland && cared.x11_over_wayland && cared.both);
+        let x11 = choose_window_system(true, true, Pick::X11("saved"), || panic!("asked"), ok);
+        assert!(!x11.wayland && x11.x11_over_wayland && x11.why == "saved");
+        let wl = choose_window_system(true, true, Pick::Wayland("saved"), || panic!("asked"), ok);
+        assert!(wl.wayland && wl.why == "saved");
+        // One system only: no choice to offer, nothing asked.
+        let x11_session =
+            choose_window_system(false, true, Pick::Wayland("saved"), || panic!(), ok);
+        assert!(!x11_session.wayland && !x11_session.both && !x11_session.x11_over_wayland);
+        let wayland_only = choose_window_system(true, false, Pick::X11("saved"), || panic!(), ok);
+        assert!(wayland_only.wayland && !wayland_only.both);
+    }
+
+    /// The desktops that start a settings daemon for XWayland's programs, by
+    /// XDG_CURRENT_DESKTOP; the others are asked through XSETTINGS itself.
+    #[test]
+    fn gnome_and_plasma_look_after_x11_programs() {
+        for d in ["GNOME", "ubuntu:GNOME", "KDE", "Budgie:GNOME", "gnome"] {
+            assert!(desktop_looks_after_x11(d), "{d}");
+        }
+        for d in [
+            "",
+            "labwc:wlroots",
+            "Hyprland",
+            "sway",
+            "niri",
+            "river",
+            "Wayfire",
+        ] {
+            assert!(!desktop_looks_after_x11(d), "{d}");
+        }
     }
 
     /// The package to install, by the distribution's family (/etc/os-release's ID and ID_LIKE).
