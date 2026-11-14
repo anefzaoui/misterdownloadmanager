@@ -1923,6 +1923,30 @@ mod tests {
         }
     }
 
+    /// A film whose video plays in another site's player, in a frame (Vimeo's on a film site),
+    /// as a browser saw it (`tests/data/embedded-player-title.json`): yt-dlp knows the stream
+    /// the button sends only by its address (`playlist`), and the title the extension sends
+    /// with it (the tab's, without the site's name: tools/extension/test.mjs) names the video
+    /// in the window and its file. It was the player frame's own, "Before The - Short Film from
+    /// Justin Barry on Vimeo".
+    #[test]
+    fn a_stream_from_an_embedded_player_is_named_by_the_pages_title() {
+        let film: serde_json::Value =
+            serde_json::from_str(include_str!("../tests/data/embedded-player-title.json")).unwrap();
+        let text = |k: &str| film[k].as_str().unwrap().to_owned();
+        let v = mdm_tools::resolve::parse(film["ytdlp"].to_string().as_bytes()).unwrap();
+        assert_eq!(v.title, "playlist");
+        let context = mdm_ipc::Command {
+            video_title: Some(text("sent")),
+            ..Default::default()
+        };
+        let title = page_title(&context, &v, &text("stream")).unwrap();
+        assert_eq!(title, text("sent"));
+        let best = &mdm_tools::resolve::choices(&v, true)[0];
+        assert_eq!(best.height, Some(2160));
+        assert_eq!(file_name(title, best), text("file"));
+    }
+
     /// #661: a page's address from the clipboard comes a frame or more after the window opens:
     /// it fills an empty box only, and only with a web address.
     #[test]

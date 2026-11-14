@@ -114,7 +114,8 @@ struct Message {
     /// the tab's media asked for it (#38).
     video: bool,
     src: Option<String>,
-    /// The page's title (`video`).
+    /// The page's title (`video`): the tab's for a player in a frame of it, without the site's
+    /// name (the extension's `withoutSiteName`).
     title: Option<String>,
     /// The button over a plain file (`src`, #703): it is downloaded as any file, at once.
     direct: bool,

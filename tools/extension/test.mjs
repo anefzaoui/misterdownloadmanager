@@ -958,6 +958,61 @@ const ok = (what) => {
   ok("video button: qualities looked up by the app, picked in the page; else the window, as before; Show, Turn on, Get MDM, Open post, a plain file");
 }
 
+// The title a video is named by when yt-dlp knows it only by its address goes without the site's
+// name, and a player in a frame of the page (another site's, an embed) is named by the tab's title,
+// not by its own ("… from Justin Barry on Vimeo"): the film page a browser saw, reduced
+// (crates/app/tests/data/embedded-player-title.json; the app's side is videodlg.rs').
+{
+  const film = JSON.parse(readFileSync(new URL("../../crates/app/tests/data/embedded-player-title.json", import.meta.url), "utf8"));
+  const ask = (listeners, m, sender) => new Promise((r) => listeners.message(m, sender, (x) => r(JSON.parse(JSON.stringify(x)))));
+  const tab = { id: 8, url: film.tab.url, title: film.tab.title, status: "complete" };
+  const frames = { 0: { href: film.tab.url, players: [] }, 4: { href: film.frame.url, players: [] } };
+  const { api, calls, listeners } = fakeApi({ firefox: false, frames, tabs: { 8: tab }, rules: { videoLookup: true }, lookup: () => ({ ok: true, lookup: { state: "pending", token: "t1" } }) });
+  load(api, false);
+  await settle();
+  listeners.responseStarted({ tabId: 8, frameId: 4, url: film.stream, responseHeaders: [{ name: "Content-Type", value: "application/vnd.apple.mpegurl" }] });
+  const framed = { id: "ours", url: film.frame.url, frameId: 4, tab };
+  const clicked = { src: "", title: film.frame.title, url: film.frame.url, at: { x: 1, y: 1 } };
+  await ask(listeners, { type: "video-lookup", ...clicked }, framed);
+  const looked = natives(calls).find((x) => x.videoLookup).videoLookup;
+  assert.deepEqual([looked.page, looked.src, looked.title], [film.frame.url, film.stream, film.sent], "the lookup: the frame's stream, the tab's title");
+  await ask(listeners, { type: "video", ...clicked }, framed);
+  assert.equal(natives(calls).find((x) => x.video).title, film.sent, "the window: the same title");
+  // The same page's own player (not in a frame): its title, without the site's name.
+  const top = { id: "ours", url: film.tab.url, frameId: 0, tab: framed.tab };
+  await ask(listeners, { type: "video", src: "", title: film.tab.title, url: film.tab.url }, top);
+  assert.equal(natives(calls).filter((x) => x.video).at(-1).title, film.sent, "the page's own player");
+  // A frame in a tab without a title: the frame's own.
+  await ask(listeners, { type: "video", ...clicked }, { ...framed, tab: { id: 8, url: film.tab.url } });
+  assert.equal(natives(calls).filter((x) => x.video).at(-1).title, film.frame.title);
+  // The toolbar's media list: the stream goes with the tab's title, without the site's name.
+  const listed = await ask(listeners, { type: "media-download", tab: 8, url: film.stream }, { id: "ours", url: "chrome-extension://ours/popup.html" });
+  assert.ok(listed.ok, "sent from the list");
+  assert.equal(natives(calls).filter((x) => x.video).at(-1).title, film.sent, "the media list");
+
+  const ctx = { URL, URLSearchParams, console: quietConsole, setTimeout, clearTimeout, Promise, TextDecoder, fetch: fakeFetch, navigator: { userAgent: "UA" } };
+  ctx.chrome = fakeApi({ firefox: false }).api;
+  vm.runInNewContext(code, ctx);
+  for (const [title, url, want] of [
+    [film.tab.title, film.tab.url, film.sent],
+    ["Election results – BBC News", "https://www.bbc.co.uk/news/x", "Election results"],
+    ["The Verge | A phone, reviewed", "https://www.theverge.com/x", "A phone, reviewed"],
+    ["Watch: a talk about download managers - YouTube", "https://m.youtube.com/watch?v=x", "Watch: a talk about download managers"],
+    ["A talk :: Example", "https://example.org/", "A talk"],
+    // Only the site's own name, only at an end; never the whole title.
+    ["Before The - Short Film", film.tab.url, "Before The - Short Film"],
+    ["A clip | Another site", film.tab.url, "A clip | Another site"],
+    ["Apple pie - Easy dessert | Apple", "https://www.apple.com/", "Apple pie - Easy dessert"],
+    ["Shortverse", film.tab.url, "Shortverse"],
+    ["Shortverse | Shortverse", film.tab.url, "Shortverse"],
+    ["Clip - 192", "http://192.168.1.5/clip", "Clip - 192"],
+    [" A film | Shortverse ", "not an address", "A film | Shortverse"],
+  ]) {
+    assert.equal(ctx.withoutSiteName(title, url), want, title);
+  }
+  ok("a page's title names its video without the site's name; a player in a frame by the tab's title");
+}
+
 // #38: the media a tab loaded, as the popup lists them. A response is media by its type or its
 // address; segments, byte ranges and small pieces a player fetched are parts of a stream.
 const H = (type, more = {}) => [{ name: "Content-Type", value: type }, ...Object.entries(more).map(([name, value]) => ({ name, value }))];

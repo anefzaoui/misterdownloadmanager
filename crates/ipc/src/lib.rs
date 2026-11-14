@@ -108,8 +108,9 @@ pub struct Command {
     /// From the browser's download button over a video: open the Download video window for this
     /// page (its address; an embedded player's own).
     pub video_page: Option<String>,
-    /// The title of the page the button was clicked on: a video yt-dlp knows only by its address
-    /// is named by it.
+    /// The title of the page the button was clicked on (the tab's, for a player in a frame of
+    /// it), without the site's name (`Film | Site` is `Film`: the extension's `withoutSiteName`):
+    /// a video yt-dlp knows only by its address is named by it.
     pub video_title: Option<String>,
     /// From the browser's quality menu over a video (the button's click): look this video up
     /// with yt-dlp, off the window, and answer at once with a token to ask about it
@@ -168,8 +169,8 @@ pub struct VideoLookup {
     /// What yt-dlp looks up: the video's own file or its stream's manifest when the page plays
     /// one, else the page.
     pub address: String,
-    /// The title of the page the button was clicked on: a video yt-dlp knows only by its address
-    /// is named by it (as [`Command::video_title`]).
+    /// The title of the page the button was clicked on, as [`Command::video_title`] has it: a
+    /// video yt-dlp knows only by its address is named by it.
     pub title: Option<String>,
     /// The browser's cookie store the page is in (Firefox's containers): a choice is only taken
     /// from the same one.

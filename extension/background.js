@@ -993,7 +993,7 @@ async function mediaList(tabId) {
   const { mediaTitleName } = await ext.storage.local.get({ mediaTitleName: false });
   let title = "";
   try {
-    title = (await ext.tabs.get(tabId)).title || "";
+    title = tabTitle(await ext.tabs.get(tabId));
   } catch {
     // The tab is gone: names without its title.
   }
@@ -1113,6 +1113,42 @@ function cleanTitle(title) {
     .replace(/[\x00-\x1f\x7f-\x9f<>:"/\\|?*]/g, " ");
   return [...spaced.split(/\s+/).filter(Boolean).join(" ")].slice(0, 150).join("").replace(/[. ]+$/, "");
 }
+// A site's own name in its address: the part before its domain's ending (www.shortverse.com:
+// "shortverse"; news.bbc.co.uk: "bbc", a country's second level left out). None for an IP
+// address.
+function siteNameOf(url) {
+  const host = siteOf(url).toLowerCase();
+  if (!host || host.includes(":") || /^[\d.]+$/.test(host)) return "";
+  const labels = host.split(".").filter(Boolean);
+  let at = labels.length - 2;
+  if (at > 0 && labels[labels.length - 1].length === 2 && /^(co|com|org|net|gov|edu|ac|or|ne|go)$/.test(labels[at])) at -= 1;
+  return labels[Math.max(at, 0)] || "";
+}
+// A tab's title without its site's name: "Before The - Short Film | Shortverse" on
+// shortverse.com is "Before The - Short Film". The title names what the app knows by no name of
+// its own: a video yt-dlp knows only by its address (a stream's `playlist`, #345), a page's file
+// whose address names nothing (#800). The site's name goes where it ends the title after a
+// separator (| - – — · • » : ::), when its letters and digits are the address's own name's
+// (siteNameOf) or its first word's are ("BBC News" on bbc.co.uk); where it starts the title, only
+// when it is that name. The title stays whole when nothing else would be left.
+const TITLE_SEPARATOR = /\s+(?:[|\-–—·•»]|::?)\s+/g;
+function withoutSiteName(title, url) {
+  const whole = String(title || "").trim();
+  const letters = (s) => s.toLowerCase().replace(/[^\p{L}\p{N}]/gu, "");
+  const site = letters(siteNameOf(url));
+  if (!site) return whole;
+  let rest = whole;
+  const ends = [...rest.matchAll(TITLE_SEPARATOR)].pop();
+  if (ends) {
+    const tail = rest.slice(ends.index + ends[0].length);
+    if (letters(tail) === site || letters(tail.split(/\s+/)[0]) === site) rest = rest.slice(0, ends.index).trim();
+  }
+  const starts = [...rest.matchAll(TITLE_SEPARATOR)][0];
+  if (starts && letters(rest.slice(0, starts.index)) === site) rest = rest.slice(starts.index + starts[0].length).trim();
+  return rest || whole;
+}
+// The tab's title as it names what the tab shows: without its site's name (withoutSiteName).
+const tabTitle = (tab) => withoutSiteName((tab && tab.title) || "", tab && tab.url).slice(0, 300);
 // The address's own name (naming.rs' address_name): a script's `file=` or `filename=` value naming
 // a file of a known type (#695), else its last part.
 function addressFileName(url) {
@@ -1178,18 +1214,18 @@ async function mediaDownload(tabId, url) {
       explicit: true,
       url: page,
       src: it.url,
-      title: String(tab.title || "").slice(0, 300),
+      title: tabTitle(tab),
       referrer: tab.url && tab.url !== page ? tab.url : "",
       ...(await streamContext(tabId, it.url, ctx)),
       ...(ctx.incognito ? { private: true } : {}),
     });
   }
   const { mediaTitleName } = await ext.storage.local.get({ mediaTitleName: false });
-  const named = mediaName(it.url, it.mime, tab.title, mediaTitleName);
+  const title = tabTitle(tab);
+  const named = mediaName(it.url, it.mime, title, mediaTitleName);
   // The name the list shows; none when the address names the file as the app would (a server's
   // Content-Disposition may still name it). The title goes too: a file whose address names nothing
   // and whose type only the server or its bytes say is named by it in the app (#800).
-  const title = String(tab.title || "").slice(0, 300);
   return handOff({ url: it.url, referrer: page, size: it.size, mime: it.mime, explicit: true, filename: named.own ? "" : named.name, ...(title ? { title } : {}), ...ctx });
 }
 
@@ -2049,7 +2085,7 @@ ext.contextMenus.onClicked.addListener(async (info, tab) => {
     const url = info.linkUrl || info.srcUrl;
     // The tab's title, as the button's click sends it: the app names a video yt-dlp knows only
     // by its address (a stream's `master`, a long hash) after it (#345).
-    const title = String((tab && tab.title) || "").slice(0, 300);
+    const title = tabTitle(tab);
     // A player's own stream (blob:, a MediaSource) or a stream's manifest: the Download video
     // window, which reads streams (a manifest downloaded as a file is only a short list).
     // The manifest's own cookies (its server may not be the page's), as the media list sends.
@@ -2268,6 +2304,18 @@ async function videoAddress(m, page, sender) {
   return named && siteKey(named) === siteKey(page) ? named : page;
 }
 
+// The title of the page the button's video is on, without its site's name (withoutSiteName): the
+// app names the video by it when yt-dlp knows it only by its address (a stream's `playlist`,
+// #345). A player in a frame of the page (an embed) has a title of its own, its site's ("Before The
+// - Short Film from Justin Barry on Vimeo"): the tab's names its video, as the right-click menu and
+// the toolbar's media list name it; the frame's only when the tab has none.
+function shownTitle(m, page, sender) {
+  const tab = sender.tab || {};
+  const framed = Boolean(sender.frameId) && Boolean(tab.title);
+  const title = framed ? tab.title : typeof m.title === "string" ? m.title : "";
+  return withoutSiteName(title, framed ? tab.url : page).slice(0, 300);
+}
+
 // What the button's click is about, as the browser knows it: the address yt-dlp is given (`own`,
 // the video's page), the video's own file or stream (`src`), the page's title, the tab as
 // referrer, and the cookies of what yt-dlp asks. Null when nothing names the video.
@@ -2295,7 +2343,7 @@ async function videoTarget(m, page, sender) {
     post: post ? own : "",
     // The video's own plain file, sent as itself (#703).
     file,
-    title: typeof m.title === "string" && !post && !feed ? m.title.slice(0, 300) : "",
+    title: post || feed ? "" : shownTitle(m, page, sender),
     referrer: tab.url && tab.url !== own ? tab.url : "",
     // The cookies of what yt-dlp is given (the app files them under its host): the stream's
     // own server may not be the page's, and the page's cookies are not for it. With a stream's,
