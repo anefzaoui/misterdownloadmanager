@@ -2507,7 +2507,7 @@ async function popupMessage(m) {
     const host = m.host.toLowerCase();
     const sites = ((r && r.excludedSites) || "").split(/\s+/).filter(Boolean);
     const undo = sites.some((p) => p.toLowerCase() === host);
-    return { excluded: undo || sites.some((p) => hostMatches(host, p)), undo };
+    return { excluded: undo || Boolean(r && siteListed(r, host)), undo };
   }
   if (m.type === "open-app") return { ok: Boolean((await native({ open: true })).ok) };
   if (m.type === "open-options") return { ok: Boolean((await native({ openOptions: true, page: "general" })).ok) };
