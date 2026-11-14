@@ -269,6 +269,17 @@
     return r.lookup;
   }
 
+  // The app's word on what the look-up lacked, to show with its qualities (#852: YouTube without
+  // a JavaScript runtime lists only some): its text, its link's words and the help page it
+  // opens, on MDM's own site only. Null when there is none (an app older than it) or it isn't one.
+  function noticeOf(s) {
+    const n = s && typeof s === "object" ? s.notice : null;
+    if (!n || typeof n !== "object" || typeof n.text !== "string" || !n.text.trim()) return null;
+    const ok = typeof n.url === "string" && /^https:\/\/misterdownloadmanager\.com\//.test(n.url);
+    const link = ok && typeof n.link === "string" && n.link.trim() ? n.link.slice(0, 100) : "";
+    return { text: n.text.slice(0, 400), link, url: link ? n.url : "" };
+  }
+
   // What a lookup's state (or replyState's) comes to, as the menu does it: "follow" it while the
   // app looks, "offer" its qualities, "say" a message in the menu (with the app's own words under
   // it), "flash" a word on the button (the menu closed), or "window": the click as it always was,
@@ -947,6 +958,8 @@ button:focus-visible { outline: none; }
 .note { padding: 6px 8px; color: var(--tx2); white-space: normal; }
 .note[hidden] { display: none; }
 .note .why { display: block; margin-top: 3px; font-size: 11px; overflow-wrap: anywhere; }
+.note.warn { color: var(--warn); }
+.note a { display: inline-block; margin-top: 3px; color: var(--accent); text-decoration: underline; }
 .rows { max-height: min(300px, 45vh); overflow: auto; overscroll-behavior: contain; }
 .menu button { position: relative; display: flex; width: 100%; height: 28px; gap: 8px; padding-inline: 8px; border-radius: 4px; cursor: default; }
 .menu button:hover { background: var(--hov); }
@@ -1070,6 +1083,26 @@ button:focus-visible { outline: none; }
   let lookTimer = 0;
   // A stream's manifest the page plays as its file (Safari's way, Chrome's own HLS): looked up.
   const STREAM = /\.(m3u8|mpd)(?:[?#]|$)/i;
+  // A web server's programs and a page (background.js' SCRIPT_EXTENSIONS and PAGE_EXTENSIONS):
+  // a file such an address sends is of another type, which only its server says (#695, #800).
+  const SCRIPT_EXTENSIONS = ["php", "php3", "php4", "php5", "phtml", "asp", "aspx", "ashx", "axd", "jsp", "jspx", "do", "action", "cgi", "pl", "cfm", "py", "rb", "htm", "html", "xhtml", "shtml", "dhtml"];
+  // A plain file's type as its address says it: its extension, or a script's `file=` value's
+  // (stream.php?file=x.mp4: MP4); none for a script's alone (not "PHP": the file isn't one).
+  function fileType(src) {
+    let u;
+    try {
+      u = new URL(src);
+    } catch {
+      return "";
+    }
+    const ext = ((/\.([a-z0-9]{2,5})$/i.exec(u.pathname) || [])[1] || "").toLowerCase();
+    if (!SCRIPT_EXTENSIONS.includes(ext) && ext) return ext;
+    for (const [k, v] of u.searchParams) {
+      const given = /^(file|filename)$/i.test(k) && /\.(mp4|m4v|webm|mkv|mov|avi|wmv|flv|3gp|ogv|mp3|m4a|aac|ogg|oga|opus|flac|wav|wma)$/i.exec(v.trim());
+      if (given) return given[1].toLowerCase();
+    }
+    return "";
+  }
   // What the button sends for a video, and its look-up's key (none when nothing names the video).
   const lookKey = (d) => (d.url === null ? null : `${d.url} ${d.src}`);
   // What download sends for the video now ({v, d, key}), kept a moment (the DOM walk is not free).
@@ -1085,15 +1118,7 @@ button:focus-visible { outline: none; }
   // one asked, or null.
   function lookOf(c) {
     if (!c || c.d.drm) return null;
-    if (c.d.src && !STREAM.test(c.d.src)) {
-      let ext = "";
-      try {
-        ext = (/\.([a-z0-9]{2,5})$/i.exec(new URL(c.d.src).pathname) || [])[1] || "";
-      } catch {
-        // No type to say.
-      }
-      return { file: true, height: c.v.videoHeight || 0, ext: ext.toLowerCase() };
-    }
+    if (c.d.src && !STREAM.test(c.d.src)) return { file: true, height: c.v.videoHeight || 0, ext: fileType(c.d.src) };
     return (c.key && looks.get(c.key)) || null;
   }
   // A look-up worth keeping: one under way, or one that found the video (and wasn't picked from:
@@ -1759,6 +1784,7 @@ button:focus-visible { outline: none; }
     $(".mh .s").textContent = headerLine("", video && video.duration, site);
     rows.replaceChildren();
     note.hidden = true;
+    note.classList.remove("warn");
     note.replaceChildren();
     const best = bestOf(look);
     if (look && look.file) {
@@ -1786,10 +1812,12 @@ button:focus-visible { outline: none; }
         rows.append(cap);
         for (const i of groups[kind]) rows.append(row(look.choices[i], i, (n += 1), look.choices[i] === best));
       }
+      tell(noticeOf(look));
     } else if (look) {
       // What the look-up came to, in its words; the window does the rest.
       const a = lookupAction(look, t);
       if (a.act === "say" || a.act === "flash") say(a.text, a.detail);
+      tell(noticeOf(look));
     }
     if (menuOpen) position();
   }
@@ -1804,6 +1832,30 @@ button:focus-visible { outline: none; }
       note.append(why);
     }
     note.hidden = !text;
+  }
+
+  // The app's word on what the look-up lacked (noticeOf), above the qualities, with its help
+  // page's link; under the menu's own message when it has one.
+  function tell(n) {
+    if (!n) return;
+    const words = document.createElement("span");
+    words.className = "why";
+    words.textContent = n.text;
+    if (note.hidden) {
+      note.replaceChildren();
+      words.className = "";
+    }
+    note.append(words);
+    if (n.link) {
+      const a = document.createElement("a");
+      a.href = n.url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = n.link;
+      note.append(document.createElement("br"), a);
+    }
+    note.classList.add("warn");
+    note.hidden = false;
   }
 
   const span = (cls, text) => {

@@ -158,6 +158,23 @@ pub struct VideoLookupAnswer {
     /// `failed` with [`lookup::ERROR`]: why, in MDM's words and language.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
+    /// `ready` (and `failed` with [`lookup::NO_CHOICES`]): what the look-up lacked and how to
+    /// mend it, shown with the choices (#852: YouTube's qualities need a JavaScript runtime).
+    /// None from an app older than the field.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub notice: Option<VideoNotice>,
+}
+
+/// A word in the browser's quality menu on what the look-up lacked (#852), in MDM's language.
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[serde(default)]
+pub struct VideoNotice {
+    /// What is wrong and what to do ("YouTube needs a JavaScript runtime…").
+    pub text: String,
+    /// The link's words ("How to install one").
+    pub link: String,
+    /// The help page it opens, on MDM's website.
+    pub url: String,
 }
 
 /// One quality the browser's quality menu offers.
