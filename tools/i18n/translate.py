@@ -82,7 +82,7 @@ SCRIPT = {
     "he": "HEBREW", "hi": "DEVANAGARI", "hy": "ARMENIAN", "ja": ("HIRAGANA", "KATAKANA", "CJK"),
     "ka": "GEORGIAN", "kk": "CYRILLIC", "km": "KHMER", "kn": "KANNADA", "ko": "HANGUL",
     "kok": "DEVANAGARI", "lo": "LAO", "mk": "CYRILLIC", "ml": "MALAYALAM", "mr": "DEVANAGARI",
-    "ne": "DEVANAGARI", "or": "ORIYA", "pa": "GURMUKHI", "ru": "CYRILLIC", "sr": "CYRILLIC",
+    "ne": "DEVANAGARI", "or": "ORIYA", "pa": "GURMUKHI", "ru": "CYRILLIC", "si": "SINHALA", "sr": "CYRILLIC",
     "ta": "TAMIL", "te": "TELUGU", "th": "THAI", "tt": "CYRILLIC", "ug": "ARABIC",
     "uk": "CYRILLIC", "ur": "ARABIC", "zh-hans": "CJK", "zh-hant": "CJK",
 }
