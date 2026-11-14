@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Left and Right in Download File Info's Save As box and Add URL's Address box move the caret,
+  no longer the focus to the button beside the box
+  ([#812](https://github.com/anefzaoui/misterdownloadmanager/pull/812))
 - ✅ The progress window shows no scroll bars over content that fits at an interface size above
   100 % (125 %), where the window's client comes back a pixel short of its content
   ([#672](https://github.com/anefzaoui/misterdownloadmanager/issues/672))
