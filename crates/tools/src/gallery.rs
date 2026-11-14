@@ -122,18 +122,15 @@ pub fn too_old(version: &str) -> bool {
     release(version).is_some_and(|have| Some(have) < release(OLDEST))
 }
 
-/// The gallery-dl to use: the person's own (`chosen`), else MDM's install in `dir`; on Linux
-/// and macOS, else the system's (#571, as yt-dlp's: a package manager's or Homebrew's, kept up
-/// to date by it). A chosen one too old for MDM ([`too_old`], chosen before #236 checked) is
-/// passed over; [`chosen_too_old`] names it, for the Helpers window to say so.
+/// The gallery-dl to use: the person's own (`chosen`), else MDM's install in `dir`; else the
+/// system's (#571, as yt-dlp's: a package manager's, Homebrew's or pip's, kept up to date by
+/// it). A chosen one too old for MDM ([`too_old`], chosen before #236 checked) is passed over;
+/// [`chosen_too_old`] names it, for the Helpers window to say so.
 pub fn installed(dir: &Path) -> Option<Installed> {
     let own = chosen::chosen(dir, chosen::Helper::GalleryDl)
         .filter(|mine| !too_old(&mine.version))
         .or_else(|| own(dir));
-    #[cfg(unix)]
-    return own.or_else(|| crate::system::installed("gallery-dl"));
-    #[cfg(not(unix))]
-    own
+    own.or_else(|| crate::system::installed("gallery-dl"))
 }
 
 /// The person's own gallery-dl when it is too old for MDM, so passed over.

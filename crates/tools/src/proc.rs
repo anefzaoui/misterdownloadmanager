@@ -239,10 +239,10 @@ pub fn missing_js_runtime(warnings: &[String], runtime_here: bool) -> bool {
     })
 }
 
-/// Has this computer a JavaScript runtime yt-dlp can use (Deno, Node.js or Bun), where the
-/// helpers' runs look for one ([`js_runtime_found`])?
-pub fn js_runtime_here() -> bool {
-    js_runtime_found().is_some()
+/// Has this computer a JavaScript runtime yt-dlp can use (Deno, Node.js, QuickJS or Bun), where
+/// the helpers' runs look for one ([`js_runtime_found`])?
+pub fn js_runtime_here(exe: &Path) -> bool {
+    js_runtime_found(exe).is_some()
 }
 
 /// Does yt-dlp's `WARNING:` (or `ERROR:`) line say it couldn't read the browser's cookies?
@@ -723,24 +723,33 @@ fn file_in(dirs: &[PathBuf], file: &str) -> Option<PathBuf> {
         .find(|p| p.is_file())
 }
 
-/// Node.js from nvm (`~/.nvm/versions/node/<version>/bin/node`), the newest name first: a program
-/// started from the desktop doesn't have nvm's folders on its PATH (#360).
+/// Node.js from nvm, the newest version first: a program started from the desktop doesn't have
+/// nvm's folders on its PATH (#360). Unix nvm keeps them in `~/.nvm/versions/node/<v>/bin`;
+/// nvm-windows in `%APPDATA%\nvm\<v>`.
 fn nvm_node(home: &Path) -> Option<PathBuf> {
     let mut versions: Vec<PathBuf> = std::fs::read_dir(home.join(".nvm/versions/node"))
-        .ok()?
-        .flatten()
-        .map(|e| e.path().join("bin"))
-        .collect();
+        .map(|entries| entries.flatten().map(|e| e.path().join("bin")).collect())
+        .unwrap_or_default();
+    #[cfg(windows)]
+    if let Some(appdata) = std::env::var_os("APPDATA").map(PathBuf::from)
+        && let Ok(entries) = std::fs::read_dir(appdata.join("nvm"))
+    {
+        versions.extend(entries.flatten().map(|e| e.path()));
+    }
     versions.sort();
     versions.reverse();
     program_in(&versions, "node")
 }
 
 /// What yt-dlp should be told about JavaScript (#360, #352, #351): YouTube's formats need a
-/// runtime, and yt-dlp looks for Deno alone, on the PATH, unless told of another. Deno on the
-/// PATH (`dirs`): nothing to say. Else Deno where its own installer puts it
-/// (`~/.deno/bin`, #852: no PATH of a program started from the desktop has it), or in `more`
-/// (folders a runtime installed after MDM started is in, [`runtime_dirs`]); else Node.js or Bun.
+/// runtime, and per yt-dlp's EJS guide (https://github.com/yt-dlp/yt-dlp/wiki/EJS) only Deno is
+/// enabled by default — every other runtime is passed as `--js-runtimes name:path`. Deno on the
+/// PATH (`dirs`): nothing to say. Else Deno where its own installer puts it (`~/.deno/bin`,
+/// #852: no PATH of a program started from the desktop has it), or in `more` (folders a runtime
+/// installed after MDM started is in, [`runtime_dirs`], which on Windows also carries
+/// `~/.deno/bin` and `~/.bun/bin`); else Node.js (≥ 22) on the PATH, under nvm, or in `more`;
+/// else QuickJS (`qjs`, the executable must be named so); else Bun — deprecated in yt-dlp and
+/// unsupported past 1.3.14, so only a last resort.
 fn js_runtime(
     dirs: &[PathBuf],
     more: &[PathBuf],
@@ -759,24 +768,30 @@ fn js_runtime(
                 .or_else(|| program_in(more, "node"))
                 .map(|p| ("node", p))
         })
-        .or_else(|| program_in(dirs, "bun").map(|p| ("bun", p)))
+        .or_else(|| {
+            program_in(dirs, "qjs")
+                .or_else(|| program_in(more, "qjs"))
+                .map(|p| ("quickjs", p))
+        })
+        .or_else(|| {
+            program_in(dirs, "bun")
+                .or_else(|| program_in(more, "bun"))
+                .map(|p| ("bun", p))
+        })
 }
 
-/// Where Windows' installers put a JavaScript runtime (#852): winget's links (Deno, Node.js) and
-/// Node.js's own installer. They add these to the PATH of programs started after them, not to
-/// MDM's own, so a runtime installed while MDM runs is found here when the video is looked up
-/// again. None elsewhere: a package manager's folder is on the PATH already ([`usable_dirs`]).
+/// Where installers put a JavaScript runtime (#852): winget's links (Deno, Node.js) and Node.js's
+/// own installer. They add these to the PATH of programs started after them, not to MDM's own,
+/// so a runtime installed while MDM runs is found here when the video is looked up again.
+/// None elsewhere: a package manager's folder is on the PATH already ([`usable_dirs`]).
 fn runtime_dirs() -> Vec<PathBuf> {
     #[cfg(windows)]
     {
-        let under = |var: &str, rel: &str| std::env::var_os(var).map(|v| Path::new(&v).join(rel));
-        [
-            under("LOCALAPPDATA", r"Microsoft\WinGet\Links"),
-            under("ProgramFiles", "nodejs"),
-        ]
-        .into_iter()
-        .flatten()
-        .collect()
+        let mut dirs = crate::system::extra_dirs();
+        if let Some(programs) = std::env::var_os("ProgramFiles") {
+            dirs.push(Path::new(&programs).join("nodejs"));
+        }
+        dirs
     }
     #[cfg(not(windows))]
     Vec::new()
@@ -877,19 +892,27 @@ fn with_usable_path(cmd: &mut Command) {
 }
 
 /// This computer's JavaScript runtime for yt-dlp ([`js_runtime`]): `Some` with the arguments
-/// that tell yt-dlp of it (none for Deno on the PATH, which it finds itself), in the PATH
-/// folders a helper gets ([`usable_dirs`]: a node.exe behind a junction is named by its real
-/// folder). Kept once found; while there is none it is looked for again at each run, so one
-/// installed meanwhile counts at the next look-up (#852).
-fn js_runtime_found() -> Option<Vec<String>> {
+/// that tell yt-dlp of it (none for Deno where yt-dlp finds it itself), in the PATH folders a
+/// helper gets ([`usable_dirs`]: a node.exe behind a junction is named by its real folder) and
+/// in MDM's own tools folder (per the EJS guide, a runtime beside `yt-dlp.exe` counts too; only
+/// MDM's, never a folder a chosen program sits in, where a node.exe nobody meant could land and
+/// be run, cached for the session). Kept once found; while there is none it is looked for again
+/// at each run, so one installed meanwhile counts at the next look-up (#852).
+fn js_runtime_found(exe: &Path) -> Option<Vec<String>> {
     static FOUND: Mutex<Option<Vec<String>>> = Mutex::new(None);
     let mut found = FOUND
         .lock()
         .unwrap_or_else(std::sync::PoisonError::into_inner);
     if found.is_none() {
-        let dirs: Vec<PathBuf> = std::env::var_os("PATH")
+        let mut dirs: Vec<PathBuf> = std::env::var_os("PATH")
             .map(|p| usable_dirs(&p))
             .unwrap_or_default();
+        if let Some(tools) = crate::tools_dir()
+            && exe.starts_with(&tools)
+            && let Some(beside) = exe.parent()
+        {
+            dirs.push(beside.to_path_buf());
+        }
         let home = std::env::var_os("HOME")
             .or_else(|| std::env::var_os("USERPROFILE"))
             .map(PathBuf::from);
@@ -908,8 +931,8 @@ fn js_runtime_found() -> Option<Vec<String>> {
 }
 
 /// `--js-runtimes` for this computer's runtime, when yt-dlp must be told of it.
-fn js_runtime_args() -> Vec<String> {
-    js_runtime_found().unwrap_or_default()
+fn js_runtime_args(exe: &Path) -> Vec<String> {
+    js_runtime_found(exe).unwrap_or_default()
 }
 
 /// `yt-dlp` with arguments in layers: `user` extras, then `ours` (then the chosen browser's
@@ -926,7 +949,7 @@ pub fn ytdlp(
     let route = through_adapter(&mut cmd, Helper::YtDlp, Some(url))?;
     layers(&mut cmd, user, ours)?;
     cmd.args(["--ignore-config", "--no-exec", "--no-update"]);
-    cmd.args(js_runtime_args());
+    cmd.args(js_runtime_args(exe));
     cmd.args(UTF8);
     cmd.args(route);
     cmd.arg("--");
@@ -946,7 +969,7 @@ pub fn ytdlp_info(
     let route = through_adapter(&mut cmd, Helper::YtDlp, None)?;
     layers(&mut cmd, user, ours)?;
     cmd.args(["--ignore-config", "--no-exec", "--no-update"]);
-    cmd.args(js_runtime_args());
+    cmd.args(js_runtime_args(exe));
     cmd.args(UTF8);
     cmd.args(route);
     cmd.arg("--load-info-json");
@@ -1549,6 +1572,17 @@ mod tests {
         assert!(found.to_string_lossy().contains("v22.3.0"));
         touch(&path, "bun");
         assert_eq!(js_runtime(&dirs, &[], None).unwrap().0, "bun");
+        // QuickJS (`qjs`) is a supported runtime too, and preferred over Bun, which yt-dlp
+        // deprecated (https://github.com/yt-dlp/yt-dlp/wiki/EJS).
+        let qjs_bin = root.path().join("qjs-bin");
+        touch(&qjs_bin, "qjs");
+        touch(&qjs_bin, "bun");
+        assert_eq!(
+            js_runtime(std::slice::from_ref(&qjs_bin), &[], None)
+                .unwrap()
+                .0,
+            "quickjs"
+        );
         touch(&path, "node");
         assert_eq!(
             js_runtime(&dirs, &[], None).unwrap().1,

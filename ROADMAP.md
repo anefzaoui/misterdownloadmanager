@@ -703,6 +703,11 @@ These ship in the next version.
   with Direct3D on Windows' own software renderer (WARP) instead, from then on, and **View → Draw
   with** says why; the reporter confirmed WARP draws it right
   ([#835](https://github.com/anefzaoui/misterdownloadmanager/issues/835))
+- ✅ System helper detection on Windows and Unix: yt-dlp, ffmpeg, gallery-dl and JS runtimes
+  (deno, node, quickjs, bun) are discovered across package managers (WinGet, Scoop, Chocolatey,
+  Homebrew, Flatpak, Nix), pip environments and standard directories; a bgutil Proof-of-Origin
+  Token (POT) provider the person already runs is detected (a server on 127.0.0.1:4416, a
+  `bgutil-pot` binary, an installed yt-dlp plugin), never downloaded or started by MDM
 - ✅ A helper (yt-dlp, ffmpeg, gallery-dl) that can't be downloaded says which server and why
   (not found, refused, no answer, a secure connection an antivirus or a proxy reads, GitHub's
   limit on requests, cut short) and what to do; its release list goes through the proxy set in
