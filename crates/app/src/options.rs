@@ -209,6 +209,8 @@ pub struct OptionsDialog {
     learned: Vec<(String, u32)>,
     /// 7-Zip's program (Archives: RAR goes through it), looked for when the window opens.
     seven_zip: Option<std::path::PathBuf>,
+    /// HatchZip's command line program (Archives: extract in place), looked for with 7-Zip.
+    hatch_zip: Option<std::path::PathBuf>,
     /// Proxy / Socks → Network adapter (#35): the computer's adapters, read again every 2 s.
     adapters: Option<(std::time::Instant, Vec<mdm_engine::net::Adapter>)>,
     /// Remote (#141): the running remote control (its state, paired devices, pairing), the
@@ -319,6 +321,7 @@ impl OptionsDialog {
             restore_ask: None,
             learned,
             seven_zip: crate::extractq::seven_zip(),
+            hatch_zip: crate::extractq::hatch_zip(),
             adapters: None,
             remote: None,
             port: settings.remote_port.to_string(),
@@ -2381,7 +2384,7 @@ impl OptionsDialog {
         );
         let s = &mut self.s;
         // i18n: Options → Archives: group box title
-        group(ui, o, 16.0, 92.0, 392.0, 196.0, "Archives");
+        group(ui, o, 16.0, 92.0, 392.0, 228.0, "Archives");
         winui::checkbox_light(
             ui,
             o + vec2(30.0, 110.0),
@@ -2440,8 +2443,18 @@ impl OptionsDialog {
             o.x + 400.0,
             13.0,
         );
-        let (rar, ink) = match &self.seven_zip {
-            Some(path) => (
+        // HatchZip only when asked for (in place); without it, 7z and RAR need 7-Zip.
+        let hatch = self.hatch_zip.as_ref().filter(|_| s.extract_in_place);
+        let (rar, ink) = match (hatch, &self.seven_zip) {
+            (Some(path), _) => (
+                crate::i18n::fmt(
+                    // i18n: Options → Archives, when Extract in place with HatchZip (a program's name) is on: {path} is where its program is
+                    crate::i18n::t("7z and RAR archives are extracted by HatchZip ({path})."),
+                    &[("path", &crate::i18n::ltr(&path.display().to_string()))],
+                ),
+                LIGHT_TEXT(),
+            ),
+            (None, Some(path)) => (
                 crate::i18n::fmt(
                     // i18n: Options → Archives: {path} is where 7-Zip's program is
                     crate::i18n::t("7z and RAR archives are extracted by 7-Zip ({path})."),
@@ -2449,7 +2462,7 @@ impl OptionsDialog {
                 ),
                 LIGHT_TEXT(),
             ),
-            None => (
+            (None, None) => (
                 // i18n: Options → Archives, when 7-Zip isn't installed
                 crate::i18n::t(
                     "7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.",
@@ -2468,11 +2481,25 @@ impl OptionsDialog {
             o.x + 400.0,
             "opt-rar-tool",
         );
-        // i18n: Options → Archives: group box title
-        group(ui, o, 16.0, 300.0, 392.0, 124.0, "Link grabber");
+        let has_hatchzip = self.hatch_zip.is_some();
         winui::checkbox_light(
             ui,
-            o + vec2(30.0, 318.0),
+            o + vec2(30.0, 294.0),
+            &mut s.extract_in_place,
+            if has_hatchzip {
+                // i18n: Options → Archives check box: HatchZip (a program's name) removes the archive while extracting it, so only the extracted files need disk space
+                "Extract in place with HatchZip: only the files need room"
+            } else {
+                // i18n: Options → Archives check box, greyed: HatchZip (a program's name, hatchzip.dev its site) isn't installed
+                "Extract in place with HatchZip (hatchzip.dev, not installed)"
+            },
+            has_hatchzip,
+        );
+        // i18n: Options → Archives: group box title
+        group(ui, o, 16.0, 320.0, 392.0, 132.0, "Link grabber");
+        winui::checkbox_light(
+            ui,
+            o + vec2(30.0, 338.0),
             &mut s.grabber_check,
             // i18n: Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
             "Look links up when they arrive (name, size, online)",
@@ -2480,14 +2507,14 @@ impl OptionsDialog {
         );
         winui::checkbox_light(
             ui,
-            o + vec2(30.0, 342.0),
+            o + vec2(30.0, 362.0),
             &mut s.grabber_hide_pages,
             "Hide web pages",
             true,
         );
         winui::checkbox_light(
             ui,
-            o + vec2(30.0, 366.0),
+            o + vec2(30.0, 386.0),
             &mut s.cnl_on,
             // i18n: Options → Archives → Link grabber check box: Click'n'Load, a link site's button that sends its links to a program on this computer (port 9666, as JDownloader)
             "Accept Click'n'Load from web pages (port 9666)",
@@ -2496,7 +2523,7 @@ impl OptionsDialog {
         winui::paragraph(
             &p,
             o.x + 30.0,
-            o.y + 404.0,
+            o.y + 418.0,
             crate::i18n::t(
                 "Tasks → Link grabber, or the browser's \"Download all links\": a split\narchive's volumes are one package, the other links of a page another.",
             ),

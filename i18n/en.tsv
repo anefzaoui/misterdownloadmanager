@@ -169,6 +169,9 @@
 #. Options → Archives: {path} is where 7-Zip's program is
 	7z and RAR archives are extracted by 7-Zip ({path}).	7z and RAR archives are extracted by 7-Zip ({path}).
 #. text in the Options window
+#. Options → Archives, when Extract in place with HatchZip (a program's name) is on: {path} is where its program is
+	7z and RAR archives are extracted by HatchZip ({path}).	7z and RAR archives are extracted by HatchZip ({path}).
+#. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.
 #. text in extracting archives (a download's log, the Archive password window)
@@ -1263,6 +1266,12 @@
 #. checkbox in the Options window
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 	Extract archives when their download completes	Extract archives when their download completes
+#. text in the Options window
+#. Options → Archives check box, greyed: HatchZip (a program's name, hatchzip.dev its site) isn't installed
+	Extract in place with HatchZip (hatchzip.dev, not installed)	Extract in place with HatchZip (hatchzip.dev, not installed)
+#. text in the Options window
+#. Options → Archives check box: HatchZip (a program's name) removes the archive while extracting it, so only the extracted files need disk space
+	Extract in place with HatchZip: only the files need room	Extract in place with HatchZip: only the files need room
 #. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 	Extract when done	Extract when done
@@ -1549,6 +1558,9 @@
 	Haiti	Haiti
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 	Hang up modem when done	Hang up modem when done
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: HatchZip (a program's name) extracted the archive in place, removing it as it went
+	HatchZip extracted it in place: the archive was removed as its files came out	HatchZip extracted it in place: the archive was removed as its files came out
 #. text in a download's progress window
 #. legend: pieces downloaded
 	Have	Have
@@ -1715,6 +1727,9 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 	it needs a password	it needs a password
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); {folder} holds the files extracted so far
+	it stopped partway. The files extracted so far are in {folder}, the rest is still in the archive: Extract continues	it stopped partway. The files extracted so far are in {folder}, the rest is still in the archive: Extract continues
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 	It tells the computers on your network which torrents you have.	It tells the computers on your network which torrents you have.
@@ -1731,6 +1746,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Italy	Italy
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+	its files came out, but moving them stopped ({error}). Those moved are in {to}, the others still in {left}; nothing was deleted	its files came out, but moving them stopped ({error}). Those moved are in {to}, the others still in {left}; nothing was deleted
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 	its files could not be written: {error}	its files could not be written: {error}
@@ -3444,6 +3463,9 @@
 	The downloads you add, or drop on this window, show here.	The downloads you add, or drop on this window, show here.
 #. text in errors.rs
 	the drive or network share is no longer available	the drive or network share is no longer available
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after HatchZip (a program's name) extracted in place: the entries left out (links, unsafe names) were not deleted, they are still in {folder}
+	The entries left out are still in {folder}	The entries left out are still in {folder}
 #. text in extension.rs
 	The extension is already in this app. Apple hasn't notarized this build, so Safari needs these steps to allow it.	The extension is already in this app. Apple hasn't notarized this build, so Safari needs these steps to allow it.
 #. text in errors.rs
@@ -3606,6 +3628,9 @@
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 	There is already a queue with this name	There is already a queue with this name
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
+	there isn't enough free space for its files, HatchZip says; nothing was changed	there isn't enough free space for its files, HatchZip says; nothing was changed
 #. text in a download's progress window
 	These settings are unavailable when "Show download complete dialog" is turned on	These settings are unavailable when "Show download complete dialog" is turned on
 #. text in helpers.rs
