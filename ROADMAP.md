@@ -619,6 +619,8 @@ These ship in the next version.
 - ✅ The progress window shows no scroll bars over content that fits at an interface size above
   100 % (125 %), where the window's client comes back a pixel short of its content
   ([#672](https://github.com/anefzaoui/misterdownloadmanager/issues/672))
+- ✅ Less memory during fast downloads to a slower disk: what waits for the disk stays within its
+  256 MB as allocated (a 4 GB download: 967 MB in 0.5.2, 523 MB now with the window open)
 - ✅ Windows and macOS: **Options → General → Shortcut to show or hide window**: a global
   shortcut of two or three keys that shows or hides MDM's window from any program
   ([#558](https://github.com/anefzaoui/misterdownloadmanager/issues/558))
@@ -1057,6 +1059,9 @@ These ship in the next version.
 - ✅ Linux on Wayland (XWayland) with NVIDIA's driver: typing and clicking no longer lag by 1 to 2
   seconds; MDM spaces its frames itself instead of waiting for the screen's refresh (other drivers
   keep the refresh)
+- ✅ The computer stays awake while anything downloads, not only during a queue that woke it, and
+  sleeps as its settings say once the downloads are done
+  ([#939](https://github.com/anefzaoui/misterdownloadmanager/issues/939))
 - ✅ macOS: a menu whose item opens a file dialog (View → Theme → Add a theme file, Tasks → Open
   torrent file) closes first, instead of floating on top of every window until MDM quits
   ([#615](https://github.com/anefzaoui/misterdownloadmanager/issues/615))
