@@ -564,6 +564,9 @@ These ship in the next version.
 
 - ✅ The browser popup's **Never take downloads from <site>** says it worked, with **Undo**
   ([#404](https://github.com/anefzaoui/misterdownloadmanager/issues/404))
+- ✅ The menu bar with a screen reader: Alt opens it again, and the screen reader says each item
+  as Alt, F10 or the arrows reach it; Shift+F10's menus too
+  ([#328](https://github.com/anefzaoui/misterdownloadmanager/issues/328))
 - ✅ Windows with Direct3D 12: the progress window no longer flashes a stretched picture when
   Show details or Hide details changes its size
   ([#471](https://github.com/anefzaoui/misterdownloadmanager/issues/471))
@@ -1042,9 +1045,6 @@ These ship in a later version, when they're ready.
   download that was already under way, a rename or move when one finishes, and links added
   without Download File Info still wait for it (follows
   [#743](https://github.com/anefzaoui/misterdownloadmanager/issues/743))
-- 🔍 Alt and F10 not reaching the menu bar while a screen reader (NVDA, Narrator) runs
-  ([#328](https://github.com/anefzaoui/misterdownloadmanager/issues/328)): 0.5.2's fix covers a
-  focused control, not this
 - 🔍 A site's bot check refusing MDM's request (testfile.org, a Cloudflare challenge): the
   message now says so ([#376](https://github.com/anefzaoui/misterdownloadmanager/issues/376)); a
   way to hand the download back to the browser is still to decide
