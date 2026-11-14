@@ -202,7 +202,7 @@ pub fn keep_theme(
 /// ended without a closing pass, as Download File Info behind the Create folder question, #440).
 /// False while it is drawn pass after pass, whatever the time between them (a minimized main
 /// window runs its passes seconds apart). `key` is this caller's alone.
-fn window_was_gone(ctx: &egui::Context, key: egui::Id) -> bool {
+pub(crate) fn window_was_gone(ctx: &egui::Context, key: egui::Id) -> bool {
     let pass = ctx.cumulative_pass_nr();
     let last = ctx.data(|d| d.get_temp::<u64>(key));
     ctx.data_mut(|d| d.insert_temp(key, pass));

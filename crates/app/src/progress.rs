@@ -549,6 +549,13 @@ impl Progress {
         let vid = ViewportId::from_hash_of(("progress", self.id));
         let buttons = caption_buttons(self.tray);
         let key = egui::Id::unique(("progress-pos", self.id));
+        #[cfg(windows)]
+        if crate::dialogs::window_was_gone(ctx, key.with("binding-pass")) {
+            // The same lifecycle as keep_theme: a viewport can disappear without a close
+            // action. Forget its HWND before choosing the new window's discovery title.
+            self.taskbar.window_gone();
+            ctx.data_mut(|d| d.remove::<Framed>(key.with("framed")));
+        }
         let title_now = title.clone();
         // Hidden windows need a unique native title until their HWND is bound: two downloads
         // can have the same filename and percentage. The displayed title is set before reveal.
@@ -671,8 +678,6 @@ impl Progress {
                 );
             }
         }
-        #[cfg(windows)]
-        self.update_taskbar(Some(item));
         let closing = matches!(action, Action::Close | Action::Cancel | Action::Hide);
         #[cfg(windows)]
         if closing {
