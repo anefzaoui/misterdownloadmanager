@@ -11052,7 +11052,7 @@ impl App {
         // The freeze watchdog times every frame's drawing, as it times its logic (crash.rs).
         crate::crash::frame_begin();
         // A lost graphics device is noticed before this frame paints (renderer.rs).
-        crate::renderer::frame_begin();
+        crate::renderer::frame_begin(ui.ctx());
         // Off-screen test runs: no window of ours may become the foreground one (win32.rs). Linux
         // and macOS need no such pass: their off-screen windows open inactive (main.rs `quiet`)
         // and nothing raises them then (dialogs::raise).
