@@ -568,6 +568,9 @@ These ship in the next version.
   come in each processor's build (no ffmpeg for 32-bit Windows: Helpers says so)
   ([#977](https://github.com/anefzaoui/misterdownloadmanager/discussions/977),
   [#1010](https://github.com/anefzaoui/misterdownloadmanager/discussions/1010))
+- ✅ The progress window's connections table shows connection numbers 10 and up instead of
+  **...**: the number column fits its widest number
+  ([#1101](https://github.com/anefzaoui/misterdownloadmanager/issues/1101))
 - ✅ YouTube: a video the browser's button sends with the page's cookies, refused with 403 or the
   bot check as a signed-in viewer's, is looked up once more without them, as a private window
   gets it; private, members' and age-restricted videos keep them
@@ -575,6 +578,9 @@ These ship in the next version.
 - ✅ **Download File Info**: **...** beside **Save As** opens the system's Save dialog (the
   folder and the file name, the download's type listed), and the name typed there is the one
   saved ([#1088](https://github.com/anefzaoui/misterdownloadmanager/issues/1088))
+- ✅ The browser's **Download all links** on a page with thousands of long links: the list goes to
+  MDM in parts the browser lets through, and opens in Link grabber whole, as one list; past 1 MB of
+  links nothing arrived
 - ✅ Browser integration: a copy run from inside a zip (a temporary folder) no longer sets it up
   for itself and leaves the browsers looking for a copy that is gone; MDM takes back a
   registration that leads nowhere at each start, never one that works, and Test browser
@@ -993,8 +999,9 @@ These ship in the next version.
   [#583](https://github.com/anefzaoui/misterdownloadmanager/issues/583),
   [#513](https://github.com/anefzaoui/misterdownloadmanager/issues/513))
 - ✅ Windows: no crash when the clipboard is read in two places at once (the clipboard monitor and
-  Add URL): every read and write of it goes one at a time
-  ([#629](https://github.com/anefzaoui/misterdownloadmanager/issues/629))
+  Add URL, or a paste in a text box): every read and write of it goes one at a time
+  ([#629](https://github.com/anefzaoui/misterdownloadmanager/issues/629),
+  [#1103](https://github.com/anefzaoui/misterdownloadmanager/issues/1103))
 - ✅ The window no longer waits on the program that owns the clipboard when it doesn't answer (Linux
   especially): a text box's right-click menu, Add URL, Add batch download, Add torrent and Download
   video read the clipboard beside the window, and fill in a copied link when it comes (follows
