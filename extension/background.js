@@ -309,17 +309,7 @@ function extensionOf(name) {
   return dot > 0 ? base.slice(dot + 1) : "";
 }
 
-// As the app matches them (mdm_ipc::capture): `*.example.com` takes the domain and its
-// subdomains; an address pattern's `*` any run of characters.
-function hostMatches(host, pattern) {
-  let p = pattern.trim().toLowerCase().replace(/^[a-z]+:\/\//, "").split("/")[0];
-  if (p.startsWith("*.")) {
-    p = p.slice(2);
-    return host === p || host.endsWith("." + p);
-  }
-  return p !== "" && host === p;
-}
-
+// As the app matches them (mdm_ipc::capture): a pattern's `*` is any run of characters.
 function wildcard(pattern, text) {
   const re = new RegExp("^" + pattern.toLowerCase().split("*").map((s) => s.replace(/[.+?^${}()|[\]\\]/g, "\\$&")).join(".*") + "$");
   return re.test(text.toLowerCase());
@@ -332,6 +322,20 @@ function addressMatches(pattern, url) {
   return wildcard(p, p.includes("://") ? url : url.replace(/^[a-z][a-z0-9+.-]*:\/\//i, ""));
 }
 
+// A site pattern against `host`, as the app reads one (mdm_ipc::capture::panel_site_matches):
+// `*` matches anything (#759), and `*.example.com` the domain too.
+function siteMatches(host, pattern) {
+  const p = pattern.trim().toLowerCase().replace(/^[^/]*:\/\//, "").split("/")[0];
+  if (!p) return false;
+  return (p.startsWith("*.") && wildcard(p.slice(2), host)) || wildcard(p, host);
+}
+
+// Whether `host` is on a site of Options' list (mdm_ipc::capture::site_listed): a name without
+// `*` takes its subdomains too, as the Download panels' list does (#1049).
+function siteListed(r, host) {
+  return r.excludedSites.split(/\s+/).some((p) => p && (siteMatches(host, p) || (!p.startsWith("*") && siteMatches(host, `*.${p}`))));
+}
+
 // Which of Options' lists leaves `url` to the browser: "site", "address", or "" (neither).
 function excludedBy(r, url) {
   let host = "";
@@ -340,9 +344,21 @@ function excludedBy(r, url) {
   } catch {
     return "site";
   }
-  if (r.excludedSites.split(/\s+/).some((p) => p && hostMatches(host, p))) return "site";
+  if (siteListed(r, host)) return "site";
   if (r.excludedAddresses.some((p) => addressMatches(p, url))) return "address";
   return "";
+}
+
+// Whether the page a download came from (its referrer) is on a site of Options' list: a file the
+// site serves from another host (a CDN, a mirror) is left to the browser too (#1049). No page
+// known: its own address decides.
+function pageListed(r, page) {
+  if (!/^https?:\/\//i.test(page || "")) return false;
+  try {
+    return siteListed(r, new URL(page).hostname.toLowerCase());
+  } catch {
+    return false;
+  }
 }
 
 // ---- downloads left to the browser: why, for the popup and MDM's log (#208) ----------------
@@ -1545,6 +1561,9 @@ async function handOff(d) {
     referrer: d.referrer || "",
     cookies: await cookieHeader(d.url, d),
     filename: d.filename || "",
+    // The browser's name is only its address's guess (#948, `addressNamed`): the host checks
+    // Options' file types by it, and MDM names the file from the server's own answer.
+    ...(d.nameGuessed ? { nameGuessed: true } : {}),
     ...(d.size > 0 ? { size: d.size } : {}),
     ...(d.mime ? { mime: d.mime } : {}),
     ...(d.post ? { post: d.post.body, postType: d.post.type || "" } : {}),
@@ -1594,7 +1613,7 @@ async function candidate(item, url, clicked = false) {
   const name = (item.filename || "").split(/[\\/]/).pop() || url.split(/[?#]/)[0].split("/").pop() || "";
   const left = (why) => ({ left: why, name });
   if (!r.capture) return left(r.captureOff || "browser");
-  const by = excludedBy(r, first) || excludedBy(r, url);
+  const by = excludedBy(r, first) || excludedBy(r, url) || (pageListed(r, item.referrer) ? "site" : "");
   if (by) return left(by);
   const type = extensionOf(name);
   if (!type || !typePatterns(r.types).some((p) => p.test(type))) return left("file-type");
@@ -1612,14 +1631,16 @@ function leftAlone(c, item, url) {
   if (c && c.left) noteLeft(c.left, c.name, firstUrl(item) || url, item.incognito, false).catch(() => {});
 }
 
-// Offer the download to the app under `name`; true if it took it.
-async function offer(item, url, name) {
+// Offer the download to the app under `name`; true if it took it. `nameGuessed`: `name` is only
+// its address's (`addressNamed`).
+async function offer(item, url, name, nameGuessed = false) {
   const first = firstUrl(item);
   const reply = await handOff({
     url: first,
     finalUrl: url,
     referrer: item.referrer,
     filename: name,
+    nameGuessed,
     size: item.totalBytes > 0 ? item.totalBytes : item.fileSize,
     mime: item.mime,
     post: postOf(first),
@@ -1725,6 +1746,22 @@ function noName(suggest) {
   suggest({ filename: "..", conflictAction: "uniquify" });
 }
 
+// Chromium: whether the browser's `name` for a download is only its address's (#948). The session
+// rule below makes a file the browser would show or play a download by setting its answer's
+// Content-Disposition to "attachment": an inline answer's own name (`inline; filename="Movie.mkv"`)
+// goes with it, and the browser names the file after its address (`main.mkv`). Such a download (a
+// type the rule takes, named after its address, give or take the extension the type adds) goes to
+// MDM unnamed: MDM reads the server's own name from its answer, as Firefox's way does here
+// (`answerFile`). A name of its own (an attachment's, which the rule leaves alone; a link's
+// `download` name) stays the browser's.
+function addressNamed(item, url, name) {
+  const mime = String(item.mime || "").toLowerCase();
+  if (!mime || !openedTypes.some((m) => mime.startsWith(m))) return false;
+  const stem = (n) => splitExtension(n)[0].toLowerCase();
+  const own = addressName(url);
+  return Boolean(own) && stem(name) === stem(own);
+}
+
 if (SAFARI) {
   // Nothing to listen to: see `link`.
 } else if (!FIREFOX) {
@@ -1736,7 +1773,8 @@ if (SAFARI) {
     const url = item.finalUrl || item.url;
     candidate(item, url)
       .then(async (c) => {
-        const taken = Boolean(c && c.name && !c.left) && (await offer(item, url, c.name));
+        const taken =
+          Boolean(c && c.name && !c.left) && (await offer(item, url, c.name, addressNamed(item, url, c.name)));
         if (taken) return drop(item);
         // The browser goes on first; why is said after.
         noName(suggest);
@@ -1797,29 +1835,25 @@ const OPENED = {
   MKV: ["video/x-matroska"],
 };
 const OPENED_RULE = 1;
-// The allow rules for exact excluded hosts follow it (ids from 2).
-const OPENED_ALLOW = 2;
 let openedTypes = [];
 
-// Options' excluded sites as the rules need them, read as the app reads them: `*.example.com`
-// is the domain and its subdomains (a rule's domain condition), a plain name that host only
-// (an allow rule of its own). As the browser writes a host: no port, punycode.
+// Options' excluded sites as the rule needs them, read as the app reads them: `example.com` and
+// `*.example.com` alike are the domain and its subdomains (#1049), a rule's domain condition. As
+// the browser writes a host: no port, punycode. A pattern with another `*` (`*.youtube.*`) is no
+// domain a rule can name: such a site's PDF is made a download, which the browser then keeps.
 function excludedHosts() {
-  const wide = [];
-  const exact = [];
+  const hosts = [];
   for (const raw of ((rules && rules.excludedSites) || "").split(/\s+/)) {
-    const p = raw.trim().replace(/^[a-z]+:\/\//i, "").split("/")[0];
-    const sub = p.startsWith("*.");
+    const p = raw.trim().replace(/^[a-z]+:\/\//i, "").split("/")[0].replace(/^\*\./, "");
     let host = "";
     try {
-      host = new URL(`http://${sub ? p.slice(2) : p}`).hostname;
+      host = new URL(`http://${p}`).hostname;
     } catch {
       continue;
     }
-    if (!host || host.includes("*")) continue;
-    (sub ? wide : exact).push(host);
+    if (host && !host.includes("*") && !hosts.includes(host)) hosts.push(host);
   }
-  return { wide, exact };
+  return hosts;
 }
 
 function openedMimes(r) {
@@ -1845,22 +1879,19 @@ async function syncOpenedRule() {
     condition: {
       resourceTypes: ["main_frame"],
       responseHeaders: [{ header: "content-type", values: openedTypes.map((m) => `${m}*`) }],
-      // Options' excluded sites keep opening in the browser.
-      ...(hosts.wide.length ? { excludedRequestDomains: hosts.wide } : {}),
+      // An attachment is a download already, with the server's own name, which "set" would drop
+      // (#948): left as it is.
+      excludedResponseHeaders: [{ header: "content-disposition", values: ["attachment*"] }],
+      // Options' excluded sites keep opening in the browser: their files, and those their pages
+      // lead to on another host (the page that started the load, #1049).
+      ...(hosts.length ? { excludedRequestDomains: hosts, excludedInitiatorDomains: hosts } : {}),
     },
   };
-  const esc = (h) => h.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const allows = hosts.exact.slice(0, 500).map((h, i) => ({
-    id: OPENED_ALLOW + i,
-    priority: 2,
-    action: { type: "allow" },
-    condition: { resourceTypes: ["main_frame"], regexFilter: `^[a-z]+://${esc(h)}(:[0-9]+)?/` },
-  }));
   try {
     const old = (await dnr.getSessionRules()).map((r) => r.id);
     await dnr.updateSessionRules({
       removeRuleIds: old.filter((id) => id >= OPENED_RULE),
-      addRules: openedTypes.length ? [rule, ...allows] : [],
+      addRules: openedTypes.length ? [rule] : [],
     });
   } catch {
     // A browser without header conditions (Chrome before 128): it opens them as before.
@@ -2506,6 +2537,21 @@ async function popupMessage(m) {
     const reply = await native({ excludeSite: m.host });
     await refreshRules();
     return { ok: Boolean(reply.ok) };
+  }
+  // The popup's Undo (#404): the site taken off the excluded sites again, as it was added.
+  if (m.type === "include-site" && typeof m.host === "string" && m.host) {
+    const reply = await native({ includeSite: m.host });
+    await refreshRules();
+    return { ok: Boolean(reply.ok) };
+  }
+  // Are this site's downloads left to the browser by Options' excluded sites (#404), and is it
+  // listed by its own name (Undo takes that off; a pattern of the user's own stays)?
+  if (m.type === "site-excluded" && typeof m.host === "string" && m.host) {
+    const r = await currentRules();
+    const host = m.host.toLowerCase();
+    const sites = ((r && r.excludedSites) || "").split(/\s+/).filter(Boolean);
+    const undo = sites.some((p) => p.toLowerCase() === host);
+    return { excluded: undo || Boolean(r && siteListed(r, host)), undo };
   }
   if (m.type === "open-app") return { ok: Boolean((await native({ open: true })).ok) };
   if (m.type === "open-options") return { ok: Boolean((await native({ openOptions: true, page: "general" })).ok) };
