@@ -564,12 +564,19 @@ These ship in the next version.
 
 - ✅ The browser popup's **Never take downloads from <site>** says it worked, with **Undo**
   ([#404](https://github.com/anefzaoui/misterdownloadmanager/issues/404))
+- ✅ The sites in **Don't start downloading automatically from the following sites** take their
+  subdomains and the files their pages link to on another server (a CDN), as the Download panels'
+  list does
+  ([#1049](https://github.com/anefzaoui/misterdownloadmanager/issues/1049))
 - ✅ The menu bar with a screen reader: Alt opens it again, and the screen reader says each item
   as Alt, F10 or the arrows reach it; Shift+F10's menus too
   ([#328](https://github.com/anefzaoui/misterdownloadmanager/issues/328))
 - ✅ Windows with Direct3D 12: the progress window no longer flashes a stretched picture when
   Show details or Hide details changes its size
   ([#471](https://github.com/anefzaoui/misterdownloadmanager/issues/471))
+- ✅ Extracting archives: the size limit covers every entry, also the ones left out, and
+  cancelling stops there too
+  (part of [#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37))
 - ✅ No reconnecting in waves on a shared line: a connection is measured against its share of
   what the connections bring together, not the speed the first one had alone
   ([#896](https://github.com/anefzaoui/misterdownloadmanager/pull/896))
@@ -1024,6 +1031,11 @@ These ship in the next version.
 - ✅ Linux on Wayland (XWayland) with NVIDIA's driver: typing and clicking no longer lag by 1 to 2
   seconds; MDM spaces its frames itself instead of waiting for the screen's refresh (other drivers
   keep the refresh)
+- ✅ Download video works behind an antivirus or a proxy that reads HTTPS: yt-dlp is asked again
+  with the system's certificates when it refuses a site's
+  ([#955](https://github.com/anefzaoui/misterdownloadmanager/issues/955))
+- ✅ Linux: MDM pins to the taskbar and the dock: its desktop entry names its windows' class, and
+  every window of MDM carries it ([#940](https://github.com/anefzaoui/misterdownloadmanager/issues/940))
 
 ## Being worked on
 
