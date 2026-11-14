@@ -6336,10 +6336,10 @@ menu	&About Mister Download Manager	&Mister Download Manager ᎤᎬᏩᎵ
 #, machine
 menu	&Add new download	Ꭲ&ᏓᏁᏟᏴᏓ ᎢᏤ ᏗᎦᏁᏟᏴᏗ
 #. menu command in the main window
+#. View → Window system: MDM chooses the window system itself at each start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#. the trailing ... means it opens a window: keep it
 #, machine
-menu	Add &new download...	Ꭲ&ᏓᏁᏟᏴᏓ ᎢᏤ ᎭᏓᎴᎯᏍᏗ...
+menu	&Automatic	Ꮎ&ᎪᏪᎸ
 #. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -6445,11 +6445,6 @@ menu	&Stop All	&ᏂᎦᏗᏳ ᎠᏑᏰᏍᏗ
 #, machine
 menu	&Stop Download	&ᎠᏑᏰᏍᏗ ᏗᎦᏁᏟᏴᏗ
 #. menu command in the main window
-#. View menu: submenu choosing how the text is drawn (smooth or classic)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
-menu	Te&xt	&ᏗᎪᏪᎵ
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tray icon	&ᏗᏟᎶᏍᏔᏅ ᎦᏁᎳ
@@ -6466,6 +6461,11 @@ menu	&Undo	ᏔᎵᏁ &ᏂᎦᎵᏍᏔᏅᏗ
 #, machine
 menu	&Video downloads	&ᏗᏟᎶᏍᏔᏅ ᏗᎦᏁᏟᏴᏗ
 #. menu command in the main window
+#. View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Window system	&ᏙᎾᏗᏒᎢ ᏗᏟᎶᏍᏔᏅᎢ
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Add &batch download	Ꭲ&ᏓᏁᏟᏴᏓ ᎤᏂᎪᏗᏗ ᏗᎦᏁᏟᏴᏗ
@@ -6474,6 +6474,11 @@ menu	Add &batch download	Ꭲ&ᏓᏁᏟᏴᏓ ᎤᏂᎪᏗᏗ ᏗᎦᏁᏟᏴᏗ
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Add &magnet link...	Ꭲ&ᏓᏁᏟᏴᏓ ᏗᎦᏁᏟᏴᏗ ᏗᏟᎶᏍᏔᏅ...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &new download...	Ꭲ&ᏓᏁᏟᏴᏓ ᎢᏤ ᎭᏓᎴᎯᏍᏗ...
 #. menu command in the main window
 #. View → Theme: picks a theme file or a Base16 or pywal colour scheme, copies it into the themes folder and uses it
 #, machine
@@ -6608,6 +6613,10 @@ menu	Delete from queue	ᏗᏓᏟᏍᏔᏅᎯ ᎢᏗᏁᏟᏴᏍᏗ
 #, machine
 menu	Direct3D	Direct3D
 #. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows and why: Direct3D 12 through Windows' own software renderer (WARP, keep the name), because this computer's graphics card has no Direct3D 12 driver
+#, machine
+menu	Direct3D 12 (WARP): this graphics card has no Direct3D 12 driver	Direct3D 12 (WARP): ᎯᎠ ᏗᏟᎶᏍᏔᏅᎢ ᎢᏗᏢᏅᏗ ᎥᏝ Direct3D 12 ᏗᏟᎶᏍᏔᏅᎢ ᎢᏗᏢᏅᏗ ᏱᎩ
+#. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
 menu	Direct3D didn't start here: OpenGL draws	Direct3D ᎥᏝ ᏳᎴᏅᎮ ᎠᏂ: OpenGL ᏕᎪᏪᎵᏍᎪᎢ
@@ -6685,6 +6694,14 @@ menu	Hide drop target	ᏗᏓᏟᏍᏔᏅᎯ ᎢᏗᏁᏟᏴᏍᏗ
 #, machine
 menu	High contrast	ᎦᎸᎳᏗᏢ ᎬᏂᎨᏒᎢ
 #. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are Wayland's now
+#, machine
+menu	In use: Wayland	ᎦᏙᎬᎢ: Wayland
+#. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are X11's (through XWayland) now
+#, machine
+menu	In use: X11 (XWayland)	ᎦᏙᎬᎢ: X11 (XWayland)
+#. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
 menu	It couldn't start: the log says why	ᎠᎴᏅᏗᏱ ᎢᎬᏩᏁᎸᎯ ᎥᏝ: ᏗᎪᏪᎵ ᎦᏛᎬᏍᏗᎭ
@@ -6760,9 +6777,25 @@ menu	Open with...	ᎤᏍᏚᎢᏍᏗ...
 #, machine
 menu	OpenGL	OpenGL
 #. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
+#, machine
+menu	OpenGL didn't start here	OpenGL ᎥᏝ ᎤᎴᏅᎲ ᎾᎿ
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window froze inside the graphics card's driver while OpenGL drew
+#, machine
+menu	OpenGL froze inside the graphics driver here	OpenGL ᎤᏁᎳᎩ ᎤᏪᏅᏒ ᎾᎿ ᏗᏟᎶᏍᏔᏅᎢ ᎢᏗᏢᏅᏗ ᎾᎿ
+#. menu command in the main window
 #. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
 #, machine
 menu	OpenGL here is too old to draw MDM	OpenGL ᎡᏂᎢᏳᏍᏗ MDM ᎥᏝ ᎬᏗᏍᏗ ᏱᎩ
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window stayed empty for 10 seconds, so MDM started again another way
+#, machine
+menu	OpenGL's first frame didn't show within 10 seconds	OpenGL ᎤᎾᎴᏅᎲᎯ ᎥᏝ ᏱᎬᏂᎨᏒ ᏱᏄᎵᏍᏔᏅ 10 ᎢᏯᏗᏔᏍᏗ ᎢᏴᏓ
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed or was closed while starting with it
+#, machine
+menu	OpenGL's last start ended before its first frame	OpenGL ᎤᎾᎴᏅᎲᎯ ᎥᏝ ᏱᎬᏂᎨᏒ ᏱᏄᎵᏍᏔᏅ ᎤᎾᎴᏅᎲᎯ ᎢᏴᏓ
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window
@@ -6859,6 +6892,11 @@ menu	Stop Download	ᎠᏠᏯᏍᏗ ᎤᎵᏍᏛ
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Support &MDM	MDM &ᎠᎵᏍᏕᎸᏙᏗ
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Te&xt	&ᏗᎪᏪᎵ
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
