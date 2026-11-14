@@ -9,7 +9,7 @@ MDM downloads videos from their web pages: YouTube, Vimeo, Dailymotion, Twitch, 
 - Give the video's page address to **Add URL** (**Ctrl+N**). MDM recognises video pages and opens the video window, already looking the page up.
 - Or choose **Tasks → Download video from a page...**, paste the address into **Page address** and click **Look up**.
 
-Any other page address that turns out to be a web page, not a file, is offered to the video window too.
+Any other page address that turns out to be a web page, not a file, is offered to the video window too. On a site yt-dlp has no reader of its own for, the video is the one the page says it is about, when it names one (in what it tells search engines and link previews: its JSON-LD, `og:video` or `twitter:player`), rather than the first player written in its HTML, and the file is named as the page names it.
 
 <!-- steps -->
 
