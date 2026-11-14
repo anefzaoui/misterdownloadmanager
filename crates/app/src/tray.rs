@@ -64,15 +64,23 @@ pub enum OnClose {
 /// window", `tray` whether a tray object exists, `icon` what the shell last said of its icon
 /// ([`Tray::icon`]; Linux: there when a tray host runs), `taskbar` whether a window can wait in the
 /// taskbar or the Dock instead (not Linux: #59, a window there that merely minimized could never
-/// be closed).
+/// be closed), `dock` whether a click on the app's icon in the Dock brings a hidden window back
+/// (macOS, `unix::open_events::dock_reopens`).
 ///
 /// Never a hidden window with no icon to bring it back: the taskbar (or quitting) only when the
 /// shell said the icon is gone. No answer, or an old one, hides the window as an icon that is
 /// there does (#750, #718, #754: a shell that couldn't confirm the icon left the window in the
 /// taskbar with the icon right there); such a window still comes back from the icon once the
-/// shell answers, and a second start of MDM always brings it back.
-pub fn on_close(keep_running: bool, tray: bool, icon: Icon, taskbar: bool) -> OnClose {
-    if !(keep_running && tray) {
+/// shell answers, and a second start of MDM always brings it back. On macOS the Dock is that way
+/// back (#1125): MDM's icon stays there while it runs, and a click on it shows the window, so
+/// closing hides the window as Mac apps do, whatever the menu bar shows (an icon behind the
+/// notch, or turned off in System Settings, is no way back).
+pub fn on_close(keep_running: bool, tray: bool, icon: Icon, taskbar: bool, dock: bool) -> OnClose {
+    if !keep_running {
+        OnClose::Quit
+    } else if dock {
+        OnClose::Hide
+    } else if !tray {
         OnClose::Quit
     } else if icon != Icon::Gone {
         OnClose::Hide
@@ -694,21 +702,47 @@ mod tests {
     #[test]
     fn closing_hides_unless_the_shell_says_the_icon_is_gone() {
         for icon in [Icon::There, Icon::Unknown] {
-            assert_eq!(on_close(true, true, icon, true), OnClose::Hide, "{icon:?}");
+            assert_eq!(
+                on_close(true, true, icon, true, false),
+                OnClose::Hide,
+                "{icon:?}"
+            );
         }
-        assert_eq!(on_close(true, true, Icon::Gone, true), OnClose::Minimize);
+        assert_eq!(
+            on_close(true, true, Icon::Gone, true, false),
+            OnClose::Minimize
+        );
     }
 
     /// The rest of the close decision, on every system (#457, #59).
     #[test]
     fn closing_quits_with_the_option_off_no_tray_or_nowhere_to_wait() {
         // No icon and no taskbar to wait in (Linux with no tray host): quit.
-        assert_eq!(on_close(true, true, Icon::Gone, false), OnClose::Quit);
-        assert_eq!(on_close(true, true, Icon::There, false), OnClose::Hide);
+        assert_eq!(
+            on_close(true, true, Icon::Gone, false, false),
+            OnClose::Quit
+        );
+        assert_eq!(
+            on_close(true, true, Icon::There, false, false),
+            OnClose::Hide
+        );
         // The option off, or no tray object at all: closing quits, whatever the shell says.
         for icon in [Icon::There, Icon::Unknown, Icon::Gone] {
-            assert_eq!(on_close(false, true, icon, true), OnClose::Quit);
-            assert_eq!(on_close(true, false, icon, true), OnClose::Quit);
+            assert_eq!(on_close(false, true, icon, true, false), OnClose::Quit);
+            assert_eq!(on_close(true, false, icon, true, false), OnClose::Quit);
+        }
+    }
+
+    /// #1125: on macOS a click on MDM's icon in the Dock brings the window back, so closing
+    /// leaves MDM running there, as Mac apps do, whatever the menu bar shows of its icon and even
+    /// with no menu bar icon at all. Unticked, "Keep running when closing the window" still quits.
+    #[test]
+    fn on_macos_closing_leaves_mdm_in_the_dock() {
+        for tray in [true, false] {
+            for icon in [Icon::There, Icon::Unknown, Icon::Gone] {
+                assert_eq!(on_close(true, tray, icon, true, true), OnClose::Hide);
+                assert_eq!(on_close(false, tray, icon, true, true), OnClose::Quit);
+            }
         }
     }
 

@@ -4025,19 +4025,30 @@ impl App {
         // No answer from the shell is not such a "no" (#750, `tray::on_close`). Everywhere else
         // closing closes, as any window's does: Options' "Keep running when closing the window"
         // off, no tray at all, or Linux with no tray host (#59: a hidden window couldn't come
-        // back, and one that merely minimized could never be closed).
+        // back, and one that merely minimized could never be closed). macOS (#1125): the window
+        // closes into the Dock, as Mac apps' do, and a click on MDM's icon there brings it back;
+        // Cmd+Q and MDM → Quit quit.
         if !self.exiting && ctx.input(|i| i.viewport().close_requested()) {
             use crate::tray::OnClose;
             let keep = self.settings.close_to_tray;
             let tray = self.tray.is_some();
+            #[cfg(target_os = "macos")]
+            let dock = crate::unix::open_events::dock_reopens();
+            #[cfg(not(target_os = "macos"))]
+            let dock = false;
             // The shell's answer, only when it matters (macOS: asked afresh).
-            let icon = if keep && tray {
+            let icon = if keep && tray && !dock {
                 self.tray_icon_now()
             } else {
                 crate::tray::Icon::Gone
             };
             let taskbar = cfg!(not(target_os = "linux"));
-            match crate::tray::on_close(keep, tray, icon, taskbar) {
+            match crate::tray::on_close(keep, tray, icon, taskbar, dock) {
+                OnClose::Hide if dock => {
+                    tracing::info!("close: hidden; MDM's icon in the Dock brings it back");
+                    ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
+                    self.hide_to_tray(ctx);
+                }
                 OnClose::Hide => {
                     tracing::info!("close: hidden to the notification area (tray icon: {icon:?})");
                     ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
@@ -11295,6 +11306,11 @@ impl App {
 
 impl Drop for App {
     fn drop(&mut self) {
+        // macOS ends the program right after this when it quits MDM itself (Cmd+Q, MDM → Quit,
+        // the Dock's Quit, logging out): eframe drops the app on the way, and `main` never
+        // gets its turn to say the exit was clean (#1125).
+        #[cfg(target_os = "macos")]
+        let by_the_system = !self.exiting;
         // Let any in-flight torrent folder rename finish and update `item.dest` before saving.
         for (id, from, rx) in std::mem::take(&mut self.renaming_torrents) {
             if let Ok((r, sharing_error)) = rx.recv_timeout(Duration::from_secs(2)) {
@@ -11317,6 +11333,11 @@ impl Drop for App {
             &self.settings,
             &self.queues,
         );
+        #[cfg(target_os = "macos")]
+        if by_the_system {
+            tracing::info!("quit by macOS (Cmd+Q, the menu's or the Dock's Quit, logging out)");
+            crate::crash::clean_exit();
+        }
     }
 }
 

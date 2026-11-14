@@ -352,9 +352,12 @@ fn panic_reported(closing: bool, thread: &str) -> bool {
     !(closing && thread.starts_with("tokio"))
 }
 
-/// MDM is closing normally: the monitor leaves without a report.
+/// MDM is closing normally: the monitor leaves without a report. Once: macOS's own quit says so
+/// as the app goes (`App`'s drop), before `main` would.
 pub fn clean_exit() {
-    CLOSING.store(true, Ordering::Release);
+    if CLOSING.swap(true, Ordering::AcqRel) {
+        return;
+    }
     if let Some(r) = REPORTER.get() {
         tracing::info!("closing");
         r.clean();
