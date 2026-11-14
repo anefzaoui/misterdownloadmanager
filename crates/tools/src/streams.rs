@@ -469,15 +469,29 @@ impl Current {
     pub fn busy(&self) -> bool {
         self.busy.load(Ordering::Acquire)
     }
+
+    /// Pieces under way (a gallery's files, #769), stopped by [`Current::cancel`].
+    pub fn set_pieces(&self, token: Option<CancellationToken>) {
+        self.busy.store(token.is_some(), Ordering::Release);
+        *self.pieces.lock().unwrap() = token;
+    }
+
+    /// The download's own speed limit, shared by its pieces' connections.
+    pub fn limiter(&self) -> Arc<mdm_engine::limiter::Limiter> {
+        self.limiter.clone()
+    }
 }
 
 /// What the engine's part showed last: the streams' segments one after another, the
-/// connections of the stream under way, its server.
+/// connections of the stream under way, its server and its address.
 #[derive(Clone, Debug, Default)]
 pub struct View {
     pub segments: Vec<SegmentView>,
     pub connections: Vec<ConnView>,
     pub server: Option<mdm_engine::Server>,
+    /// The address the stream under way comes from, as yt-dlp gave it (#795): the windows'
+    /// "Address", the page being the web page it was obtained from.
+    pub address: Option<Url>,
 }
 
 /// How the engine's part of a run ended.
@@ -589,6 +603,7 @@ pub fn fetch(
         opts.agent_fallback = None;
         opts.browser_final = None;
         opts.expected_type = None;
+        opts.expected_size = None;
         opts.post = None;
         opts.checksum = None;
         opts.on_file_created = None;
@@ -717,7 +732,7 @@ fn fetch_pieces(
     let shared = Arc::new(crate::pieces::Shared::default());
     let task = engine.handle.spawn(crate::pieces::download(
         list,
-        s.path.clone(),
+        crate::pieces::Target::Join(s.path.clone()),
         header_map(&s.headers),
         engine.opts.clone(),
         current.limiter.clone(),
@@ -745,6 +760,7 @@ fn fetch_pieces(
                 segments: segments(&sizes, i, &here),
                 connections,
                 server: None,
+                address: Some(s.url.clone()),
             },
         );
         if report.stopped() && !cancelled {
@@ -821,6 +837,7 @@ fn follow(
                 segments: segments(&sizes, i, &s.segments),
                 connections: s.connections.clone(),
                 server: s.server.clone(),
+                address: Some(plan.streams[i].url.clone()),
             },
         );
         if matches!(

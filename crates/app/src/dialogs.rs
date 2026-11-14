@@ -348,7 +348,7 @@ fn dialog_window<T>(
     // Hidden until `keep_theme` has given it its theme (see there).
     let mut builder = ViewportBuilder::default()
         .with_visible(false)
-        .with_title(title)
+        .with_title(crate::i18n::os_text(title))
         .with_inner_size(shown)
         // The thin frame trims the sizing borders and keeps the size fixed.
         .with_resizable(drawn)
@@ -394,10 +394,7 @@ fn dialog_window<T>(
                     let hwnd = ui.ctx().data(|d| d.get_temp::<isize>(key.with("hwnd")));
                     match drawn_title(ui, origin, shown[0], title, &buttons, hwnd) {
                         Some(CaptionButton::Close) => caption_close = true,
-                        Some(CaptionButton::Minimize) => {
-                            ui.ctx()
-                                .send_viewport_cmd(egui::ViewportCommand::Minimized(true));
-                        }
+                        Some(CaptionButton::Minimize) => crate::dialogs::minimize(ui.ctx(), hwnd),
                         _ => {}
                     }
                 }
@@ -1089,7 +1086,7 @@ impl FileInfo {
             .filter(|n| !n.is_empty());
         let name = from_browser
             .clone()
-            .unwrap_or_else(|| mdm_engine::naming::file_name(None, &new.url));
+            .unwrap_or_else(|| crate::model::browser_guess(&new.url, &context));
         let category = Category::of(&name);
         let folder = crate::model::category_folder(category, &downloads, &dirs);
         let mut place = SaveAsPlace::new(Some(ctx));
@@ -1107,6 +1104,7 @@ impl FileInfo {
                     file_name,
                     // The browser had the answer: nothing was asked of the server here.
                     server: None,
+                    web_page: false,
                 })),
             ),
             None => (start_probe(rt, ctx, &new.url, &request), None),
@@ -1475,7 +1473,7 @@ impl FileInfo {
                     // i18n: title of the folder picker
                     let title = crate::i18n::t("Select a folder").to_owned();
                     winui::start_pick(ui.ctx(), "file-info-folder", move || {
-                        let mut pick = rfd::FileDialog::new().set_title(title);
+                        let mut pick = crate::winui::file_dialog(&title);
                         if now.is_dir() {
                             pick = pick.set_directory(&now);
                         }
@@ -1862,9 +1860,31 @@ pub struct Complete {
     /// Open was pressed: the file is looked for and handed to its program off the window's
     /// thread (#743); the box closes when it opened, and stays (for Open folder) when it didn't.
     pub opening: Option<crate::launch::Asked<PathBuf, bool>>,
+    /// Snooze picked a time (#741): the window closes, and no other opens until then.
+    pub snooze: Option<crate::finish::SnoozeFor>,
+    /// The file was dragged out of the box to a place MDM couldn't learn (#869): Open and Open
+    /// folder say so.
+    pub moved_away: bool,
 }
 
 impl Complete {
+    /// Download complete for this finished download.
+    pub fn of(i: &model::Item) -> Self {
+        Complete {
+            id: i.id,
+            // A video's file address, not its page (#795).
+            url: i.file_address().to_string(),
+            path: i.dest.clone(),
+            size: i.size.unwrap_or(i.downloaded),
+            dont_show: false,
+            notices: i.notices.clone(),
+            seen: false,
+            opening: None,
+            snooze: None,
+            moved_away: i.moved_away,
+        }
+    }
+
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<()> {
         let id = format!("complete-{}", self.id);
         self.seen |= notice_seen(ctx, &id);
@@ -1973,18 +1993,19 @@ impl Complete {
                 let folder = btn(ui, folder_at, "Open folder", ButtonKind::Normal);
                 // i18n: verb: closes this window
                 let close = btn(ui, close_at, "Close", ButtonKind::Normal);
-                winui::checkbox(
-                    ui,
-                    o + vec2(24.0, 191.0),
-                    &mut self.dont_show,
-                    "Don't show this dialog again",
-                    true,
-                );
+                // Windows: the drag handle at the trailing edge, after the snooze.
+                let room = if cfg!(windows) { 406.0 } else { 444.0 };
+                if let Some(s) = complete_footer(ui, o, 191.0, &mut self.dont_show, room) {
+                    self.snooze = Some(s);
+                }
 
                 // Drag handle: white box with a 1 px #828790 border; drag it to drop the file into
-                // Explorer, a mail or a chat (IDM 5.05). Windows only: dragging a file out to
-                // another app goes through OLE there; Linux and macOS have no such drag built
-                // yet, so the handle isn't shown (Open folder is the way there).
+                // Explorer, a mail or a chat (IDM 5.05). The drop target decides, as for a file
+                // dragged in Explorer: moved on the same drive (or with Shift), copied to another
+                // (or with Ctrl), and MDM's download follows a move (#869). Windows only: dragging
+                // a file out to another app goes through OLE there; Linux and macOS have no such
+                // drag built yet (no drag source in their window library), so the handle isn't
+                // shown there and nothing is moved: Open folder is the way to the file.
                 #[cfg(windows)]
                 {
                     let handle = r(o, 414.0, 187.0, 27.0, 20.0);
@@ -1999,14 +2020,24 @@ impl Complete {
                     if grip.hovered() {
                         ui.ctx().set_cursor_icon(egui::CursorIcon::Grab);
                     }
-                    // The file is looked for beside the window, with the drag (#743).
-                    if grip.drag_started()
-                        && let Err(e) = crate::win32::drag_file_out(
+                    // The file is looked for beside the window, with the drag (#743); where a move
+                    // took it comes back to the app (`dragged_out`), however late.
+                    if grip.drag_started() {
+                        let (id, from, wake) = (self.id, self.path.clone(), ui.ctx().clone());
+                        let followed = move |out| {
+                            DRAGGED_OUT
+                                .lock()
+                                .unwrap_or_else(|e| e.into_inner())
+                                .push((id, from, out));
+                            wake.request_repaint();
+                        };
+                        if let Err(e) = crate::win32::drag_file_out(
                             crate::i18n::t("Download complete"),
                             &self.path,
-                        )
-                    {
-                        tracing::warn!("drag out: {e}");
+                            followed,
+                        ) {
+                            tracing::warn!("drag out: {e}");
+                        }
                     }
                     p.rect_filled(handle, 0.0, winui::FIELD());
                     p.rect_stroke(
@@ -2038,22 +2069,23 @@ impl Complete {
                     && self.opening.is_none()
                 {
                     let opening = crate::launch::Asked::default();
+                    let moved_away = self.moved_away;
                     let _ = opening.get(
                         &self.path,
                         std::time::Duration::MAX,
                         std::time::Duration::ZERO,
                         Some(ui.ctx()),
-                        |p| open_file_now(p),
+                        move |p| open_download_now(p, moved_away),
                     );
                     self.opening = Some(opening);
                 }
-                if opened == Some(true) {
+                if opened == Some(true) || self.snooze.is_some() {
                     Outcome::Done(())
                 } else if with.clicked() {
-                    open_with(&self.path);
+                    open_download_with(&self.path, self.moved_away);
                     Outcome::Done(())
                 } else if folder.clicked() {
-                    show_in_folder(&self.path);
+                    show_download_in_folder(&self.path, self.moved_away);
                     Outcome::Done(())
                 } else if close.clicked() || (!dragging && winui::escape_pressed(ui)) {
                     Outcome::Done(())
@@ -2063,6 +2095,293 @@ impl Complete {
             },
         )
     }
+}
+
+/// The last row of Download complete and of a group's summary (#766, #741): "Don't show this
+/// dialog again" (the setting), and Snooze after it, a menu of how long no such window shows.
+/// `y`: the checkbox's top; `room`: where the row ends (English x). Returns the time picked.
+fn complete_footer(
+    ui: &mut Ui,
+    o: Pos2,
+    y: f32,
+    dont_show: &mut bool,
+    room: f32,
+) -> Option<crate::finish::SnoozeFor> {
+    let caption = "Don't show this dialog again";
+    winui::checkbox(ui, o + vec2(24.0, y), dont_show, caption, true);
+    let p = ui.painter().clone();
+    // i18n: button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
+    let label = crate::i18n::mark("Snooze");
+    let w = winui::menu_button_width(&p, label, 80.0, 160.0);
+    // After the checkbox's caption; at the row's end when that is short of room.
+    let x = (winui::checkbox_caption_end(&p, 24.0, caption) + 12.0).min(room - w);
+    let picked = winui::menu_button(
+        ui,
+        r(o, x, y - 4.0, w, 21.0),
+        label,
+        &crate::finish::SnoozeFor::LABELS,
+        "complete-snooze",
+    );
+    picked.map(|i| crate::finish::SnoozeFor::ALL[i])
+}
+
+// ---- Downloads complete: a group's summary (client 455 × 169 and up, #766) -----------------
+
+/// One failed download of a group, as its summary lists it.
+pub struct FailedOne {
+    pub name: String,
+    pub error: String,
+}
+
+/// What a group's summary asks of the app.
+pub enum GroupAction {
+    /// Its downloads selected in the list, the main window shown.
+    ShowInList,
+    Close,
+}
+
+/// Downloads added together (a playlist, a batch, Link grabber's links) once all are done: how
+/// many finished, how many failed (listed), with Open folder and Show in list, in place of a
+/// Download complete window each (#766).
+pub struct GroupDone {
+    pub group: u64,
+    /// Every download it sums up (Show in list selects them).
+    pub ids: Vec<u64>,
+    pub finished: usize,
+    pub failed: Vec<FailedOne>,
+    /// Where the finished files are (the first one's folder), and a file there to select in it.
+    pub folder: PathBuf,
+    pub file: PathBuf,
+    /// The finished files' size together.
+    pub size: u64,
+    pub dont_show: bool,
+    pub seen: bool,
+    pub snooze: Option<crate::finish::SnoozeFor>,
+}
+
+/// How many failed downloads a summary names; "and N more" says the rest.
+const FAILED_SHOWN: usize = 3;
+
+impl GroupDone {
+    /// The summary of `finished` and `failed` (downloads of `items`).
+    pub fn new(group: u64, finished: &[u64], failed: &[u64], items: &[model::Item]) -> Self {
+        let find = |id: &u64| items.iter().find(|i| i.id == *id);
+        let done: Vec<&model::Item> = finished.iter().filter_map(find).collect();
+        let bad: Vec<&model::Item> = failed.iter().filter_map(find).collect();
+        let file = done
+            .first()
+            .or(bad.first())
+            .map(|i| i.dest.clone())
+            .unwrap_or_default();
+        let folder = file.parent().map(Path::to_owned).unwrap_or_default();
+        GroupDone {
+            group,
+            ids: done.iter().chain(bad.iter()).map(|i| i.id).collect(),
+            finished: done.len(),
+            failed: bad
+                .iter()
+                .map(|i| FailedOne {
+                    name: i.file_name.clone(),
+                    error: i.error.clone().unwrap_or_default(),
+                })
+                .collect(),
+            folder,
+            file,
+            size: done.iter().map(|i| i.size.unwrap_or(i.downloaded)).sum(),
+            dont_show: false,
+            seen: false,
+            snooze: None,
+        }
+    }
+
+    /// The headline's two halves: "12 downloads finished", and "1 failed" when some did.
+    pub fn counts(&self) -> (String, Option<String>) {
+        (
+            finished_count(self.finished as u64),
+            (!self.failed.is_empty()).then(|| {
+                // i18n: the summary of downloads added together; after "12 downloads finished": {n} of them failed
+                crate::i18n::tn(self.failed.len() as u64, "{n} failed", "{n} failed")
+            }),
+        )
+    }
+
+    /// The failed list's rows: the downloads named, and "and N more" when there are others.
+    fn failed_rows(&self) -> usize {
+        match self.failed.len() {
+            0 => 0,
+            n if n <= FAILED_SHOWN => n,
+            _ => FAILED_SHOWN + 1,
+        }
+    }
+
+    /// Its client size: taller by the failed list.
+    pub fn client(&self) -> [f32; 2] {
+        let rows = self.failed_rows();
+        let extra = if rows == 0 {
+            0.0
+        } else {
+            22.0 + 17.0 * rows as f32
+        };
+        [455.0, 169.0 + extra]
+    }
+
+    pub fn show(&mut self, ctx: &egui::Context) -> Outcome<GroupAction> {
+        let id = format!("group-done-{}", self.group);
+        self.seen |= notice_seen(ctx, &id);
+        let client = self.client();
+        // The buttons' row: under the folder, or under the failed list.
+        let buttons_y = client[1] - 58.0;
+        notice(
+            ctx,
+            &id,
+            // i18n: title of the window that sums up downloads added together (a playlist, a batch) once all are done
+            "Downloads complete",
+            client,
+            true,
+            winui::BG(),
+            !self.seen,
+            |ui, o| {
+                let p = ui.painter().clone();
+                crate::fileicons::paint_at(
+                    ui,
+                    &p,
+                    crate::fileicons::Kind::FolderOpen,
+                    o + vec2(10.0, 11.0),
+                    32.0,
+                );
+                // "12 downloads finished · 1 failed", the failures in the error colour.
+                let (finished, failed) = self.counts();
+                let drawn = winui::text(&p, o.x + 51.0, o.y + 21.0, &finished, winui::TEXT());
+                if let Some(failed) = failed {
+                    let after = 51.0 + drawn.width() + 6.0;
+                    let dot = winui::separator_dot(&p, o.x + after, o.y + 21.0, winui::MUTED());
+                    winui::text(
+                        &p,
+                        o.x + after + dot.width() + 5.0,
+                        o.y + 21.0,
+                        &failed,
+                        winui::ERROR(),
+                    );
+                }
+                if self.finished > 0 {
+                    let line = crate::i18n::fmt(
+                        // i18n: under "12 downloads finished": {size} the finished files' size together, like "1.25 GB"
+                        crate::i18n::t("{size} in all"),
+                        &[("size", &crate::i18n::ltr(&dialog_size(self.size)))],
+                    );
+                    winui::text(&p, o.x + 51.0, o.y + 34.0, &line, winui::TEXT());
+                }
+                winui::text(
+                    &p,
+                    o.x + 11.0,
+                    o.y + 72.0,
+                    // i18n: label over the folder the downloads were saved in
+                    crate::i18n::t("Saved in"),
+                    winui::TEXT(),
+                );
+                winui::readonly_field(
+                    ui,
+                    r(o, 11.0, 78.0, 434.0, 23.0),
+                    &display_path(&self.folder),
+                    winui::BG(),
+                    true,
+                    "group-done-folder",
+                );
+                if !self.failed.is_empty() {
+                    winui::text(
+                        &p,
+                        o.x + 11.0,
+                        o.y + 120.0,
+                        // i18n: label over the list of the downloads of the group that failed
+                        crate::i18n::t("Failed:"),
+                        winui::TEXT(),
+                    );
+                    for (k, f) in self.failed.iter().take(FAILED_SHOWN).enumerate() {
+                        let line = if f.error.is_empty() {
+                            crate::i18n::isolate(&f.name)
+                        } else {
+                            crate::i18n::fmt(
+                                // i18n: one failed download in the summary of a group of downloads: {name} its file name, {error} why it failed
+                                crate::i18n::t("{name}: {error}"),
+                                &[
+                                    ("name", &crate::i18n::isolate(&f.name)),
+                                    ("error", &f.error),
+                                ],
+                            )
+                        };
+                        winui::fit(
+                            ui,
+                            &p,
+                            o.x + 24.0,
+                            o.y + 137.0 + 17.0 * k as f32,
+                            &line,
+                            winui::ERROR(),
+                            o.x + 444.0,
+                            ("group-failed", k),
+                        );
+                    }
+                    if self.failed.len() > FAILED_SHOWN {
+                        // i18n: under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
+                        let more = crate::i18n::tn(
+                            (self.failed.len() - FAILED_SHOWN) as u64,
+                            "and {n} more",
+                            "and {n} more",
+                        );
+                        winui::text(
+                            &p,
+                            o.x + 24.0,
+                            o.y + 137.0 + 17.0 * FAILED_SHOWN as f32,
+                            &more,
+                            winui::MUTED(),
+                        );
+                    }
+                }
+                let btn = |ui: &mut Ui, (x, w): (f32, f32), label: &str, kind| {
+                    winui::button(ui, r(o, x, buttons_y, w, 21.0), label, kind, false, None)
+                };
+                // As wide as their labels in this language, Close last at the window's edge.
+                let [folder_at, list_at, close_at] = winui::button_row_from_left(
+                    &p,
+                    &[
+                        ("Open folder", 12.0, 90.0),
+                        ("Show in list", 115.0, 90.0),
+                        ("Close", 354.0, 90.0),
+                    ],
+                    13.0,
+                    444.0,
+                    200.0,
+                )[..] else {
+                    unreachable!("three buttons")
+                };
+                let folder = btn(ui, folder_at, "Open folder", ButtonKind::Default);
+                // i18n: button: shows these downloads in MDM's list, selected
+                let list = btn(ui, list_at, "Show in list", ButtonKind::Normal);
+                // i18n: verb: closes this window
+                let close = btn(ui, close_at, "Close", ButtonKind::Normal);
+                let footer = complete_footer(ui, o, buttons_y + 34.0, &mut self.dont_show, 444.0);
+                if footer.is_some() {
+                    self.snooze = footer;
+                }
+                if folder.clicked() || winui::enter_pressed(ui) {
+                    show_in_folder(&self.file);
+                    Outcome::Done(GroupAction::Close)
+                } else if list.clicked() {
+                    Outcome::Done(GroupAction::ShowInList)
+                } else if close.clicked() || self.snooze.is_some() || winui::escape_pressed(ui) {
+                    Outcome::Done(GroupAction::Close)
+                } else {
+                    Outcome::Open
+                }
+            },
+        )
+    }
+}
+
+/// "12 downloads finished": a group's summary's headline, and the tray icon's tip while
+/// Download complete is snoozed (#766, #741).
+pub fn finished_count(n: u64) -> String {
+    // i18n: the summary of downloads added together (the Downloads complete window; the tip of the tray icon): {n} of them finished
+    crate::i18n::tn(n, "{n} download finished", "{n} downloads finished")
 }
 
 // ---- Speed Limiter settings (client 453 × 145, light) --------------------------------------
@@ -2667,6 +2986,19 @@ it from Mister Download Manager list of downloads?",
     }
 }
 
+/// Minimize a window as its title bar's Minimize asks (`hwnd`: the window, once known). On
+/// Windows by the system's own command, as the system's title bar sends it, so a window whose
+/// title bar is ours animates down to the taskbar like any other (#874).
+pub fn minimize(ctx: &egui::Context, hwnd: Option<isize>) {
+    #[cfg(windows)]
+    if let Some(h) = hwnd {
+        crate::win32::minimize(h);
+        return;
+    }
+    let _ = hwnd;
+    ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+}
+
 /// Select the file in Explorer (Finder, the Linux file manager). A file that is gone: its
 /// folder, if that is still there.
 /// Bring an open window to the front (and back from the taskbar): asked for again, it came
@@ -2712,6 +3044,27 @@ fn tell_turn_off_failed(why: String) {
     );
 }
 
+/// What became of a file dragged out of Download complete (#869), when the drop target moved
+/// it (a copy or a link leaves it where it was: nothing to say).
+#[derive(Clone, Debug, PartialEq, Eq)]
+// Made by Windows' drag only (the grip is Windows-only, see Complete::show).
+#[cfg_attr(not(windows), allow(dead_code))]
+pub enum DraggedOut {
+    /// Moved there (the shell said where).
+    Moved(PathBuf),
+    /// Gone from its place, to somewhere MDM couldn't learn (a program that took it, the
+    /// Recycle Bin).
+    MovedAway,
+}
+
+/// Files dragged out and moved: (download, the path it was dragged from, what became of it).
+static DRAGGED_OUT: Mutex<Vec<(u64, PathBuf, DraggedOut)>> = Mutex::new(Vec::new());
+
+/// What [`DRAGGED_OUT`] was given since the last call (the app updates its downloads).
+pub fn dragged_out() -> Vec<(u64, PathBuf, DraggedOut)> {
+    std::mem::take(&mut *DRAGGED_OUT.lock().unwrap_or_else(|e| e.into_inner()))
+}
+
 /// Something that failed, to tell the user (the app shows it in its notice): from any window,
 /// without a handle on the app.
 static TOLD: std::sync::Mutex<Vec<(&'static str, String)>> = std::sync::Mutex::new(Vec::new());
@@ -2730,28 +3083,75 @@ pub fn told() -> Vec<(&'static str, String)> {
 /// program for it): on a thread of its own, as the file may be on a drive slow to answer
 /// (#743). Returns at once.
 pub fn open_file(path: &Path) {
+    open_download(path, false);
+}
+
+/// [`open_file`] for a download: `moved_away`, its file was dragged out of Download complete to
+/// a place MDM couldn't learn (#869), which is said when it isn't there.
+pub fn open_download(path: &Path, moved_away: bool) {
     let path = path.to_owned();
     crate::launch::spawn("open file", move || {
-        open_file_now(&path);
+        open_download_now(&path, moved_away);
     });
 }
 
-/// [`open_file`], waited for: true when the file was handed to the system. For a thread other
-/// than the window's (Download complete asks it through `launch::Asked`: whether it failed
-/// decides whether the box stays open).
-pub fn open_file_now(path: &Path) -> bool {
+/// Open a file with the system default application. On Windows, uses Win32 ShellExecuteW
+/// to respect user associations (such as 7-Zip for .zip archives) without explorer.exe failures (#811).
+fn open_file_platform(path: &Path) -> Result<(), std::io::Error> {
+    #[cfg(windows)]
+    {
+        crate::win32::open_file_shell(path)
+    }
+    #[cfg(not(windows))]
+    {
+        open::that_detached(path)
+    }
+}
+
+/// [`open_download`], waited for: true when the file was handed to the system. For a thread
+/// other than the window's (Download complete asks it through `launch::Asked`: whether it
+/// failed decides whether the box stays open).
+pub fn open_download_now(path: &Path, moved_away: bool) -> bool {
+    hand_over(path, moved_away, |p| {
+        open_file_platform(p).map_err(|e| e.to_string())
+    })
+}
+
+/// Why a download's file isn't where MDM saved it, when it was dragged out of Download complete
+/// to a place MDM couldn't learn (#869).
+fn moved_away_text(path: &Path) -> String {
     let name = crate::i18n::isolate(&path.file_name().unwrap_or_default().to_string_lossy());
-    let failed = if !path.exists() {
+    crate::i18n::fmt(
+        crate::i18n::t(
+            "{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.",
+        ),
+        &[("file", &name)],
+    )
+}
+
+/// Hand the downloaded file `path` to `hand` (which opens it, or shows a chooser for it), or say
+/// why not: moved or deleted since (`moved_away`: dragged out to a place MDM couldn't learn,
+/// #869), or `hand`'s error. True when it was handed over. Waits for `hand`, so it runs on a
+/// thread other than the window's.
+fn hand_over(
+    path: &Path,
+    moved_away: bool,
+    hand: impl FnOnce(&Path) -> Result<(), String>,
+) -> bool {
+    let name = crate::i18n::isolate(&path.file_name().unwrap_or_default().to_string_lossy());
+    let failed = if !path.exists() && moved_away {
+        moved_away_text(path)
+    } else if !path.exists() {
         crate::i18n::fmt(
             crate::i18n::t(
                 "{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.",
             ),
             &[("file", &name)],
         )
-    } else if let Err(e) = open::that_detached(path) {
+    } else if let Err(e) = hand(path) {
         crate::i18n::fmt(
             crate::i18n::t("{file} could not be opened: {error}"),
-            &[("file", &name), ("error", &e.to_string())],
+            &[("file", &name), ("error", &e)],
         )
     } else {
         return true;
@@ -2766,8 +3166,22 @@ pub fn open_file_now(path: &Path) -> bool {
 /// sleeping hard disk, a USB drive or a network folder can take seconds to answer (#751: 8 s,
 /// on the window's thread, froze it).
 pub fn show_in_folder(path: &Path) {
+    show_download_in_folder(path, false);
+}
+
+/// [`show_in_folder`] for a download: `moved_away`, its file was dragged out of Download
+/// complete to a place MDM couldn't learn (#869): when it isn't there, that is said instead of
+/// opening the folder it left.
+pub fn show_download_in_folder(path: &Path, moved_away: bool) {
     let path = path.to_owned();
-    crate::launch::spawn("show in folder", move || show_in_folder_now(&path));
+    crate::launch::spawn("show in folder", move || {
+        if moved_away && !path.exists() {
+            // i18n: title of the message when the folder of a downloaded file can't be shown
+            tell(crate::i18n::mark("Open folder"), moved_away_text(&path));
+            return;
+        }
+        show_in_folder_now(&path)
+    });
 }
 
 /// [`show_in_folder`], on the thread it runs on.
@@ -2804,18 +3218,31 @@ fn show_in_folder_now(path: &Path) {
     crate::unix::show_in_folder(path);
 }
 
-pub fn open_with(path: &Path) {
-    #[cfg(windows)]
-    {
-        let _ = std::process::Command::new("rundll32")
-            .arg("shell32.dll,OpenAs_RunDLL")
-            .arg(path)
-            .spawn();
-    }
-    #[cfg(not(windows))]
-    {
-        crate::launch::open(path);
-    }
+/// "Open with": the system's chooser of programs for the downloaded file `path`, or a message
+/// saying why not (moved or deleted since). Returns at once: the chooser is shown, and waited
+/// for, on a thread of its own, as is the look at the file (#743, #751).
+/// `moved_away`: see [`open_download`].
+pub fn open_download_with(path: &Path, moved_away: bool) {
+    let path = path.to_owned();
+    crate::launch::spawn("open with", move || {
+        hand_over(&path, moved_away, |p| {
+            // Windows' own "How do you want to open this file?", as Explorer shows it (#720).
+            #[cfg(windows)]
+            {
+                crate::win32::open_with_dialog(p).map_err(|hr| {
+                    tracing::warn!("open with: SHOpenWithDialog failed, {hr:#010x}");
+                    std::io::Error::from_raw_os_error(hr).to_string()
+                })
+            }
+            // Linux and macOS have no chooser MDM can call for a file: the desktop's opener
+            // (xdg-open, which goes through the desktop portal in a sandbox, or macOS's `open`)
+            // opens it with the program set for its type, which the user changes there.
+            #[cfg(not(windows))]
+            {
+                open::that_detached(p).map_err(|e| e.to_string())
+            }
+        });
+    });
 }
 
 /// "Duplicate download link": the address is already in the list (Options → Downloads → "If a
