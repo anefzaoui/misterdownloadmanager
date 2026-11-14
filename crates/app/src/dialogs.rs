@@ -411,6 +411,8 @@ fn dialog_window<T>(
                 if caption_close { Outcome::Closed } else { out }
             })
             .inner;
+        // A drop-down list opened from the keyboard, said to screen readers (#328).
+        crate::chrome::tell_screen_readers(ui.ctx());
         if close { Outcome::Closed } else { out }
     });
     let rescaled = follow_scale(ctx, vid, key, shown);
