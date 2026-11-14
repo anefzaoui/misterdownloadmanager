@@ -1305,7 +1305,7 @@ def processor_rows(system: str) -> str:
     rows, coming = [], []
     for name, anchor, files in PROCESSORS[system]:
         if processor_out(files[0][1]):
-            links = " · ".join(f'<a href="{FILES[key]}">{text}</a>' for text, key in files)
+            links = "&nbsp;· ".join(f'<a class="file" href="{FILES[key]}">{text}</a>' for text, key in files)
             rows.append(f'<div id="{anchor}"><dt>{name}</dt><dd>{links}</dd></div>')
         else:
             coming.append(name)
