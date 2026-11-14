@@ -564,6 +564,10 @@ These ship in the next version.
 
 - ✅ **Refresh download address** opens the page the download was started from, not the site's
   home page ([#607](https://github.com/anefzaoui/misterdownloadmanager/issues/607))
+- ✅ No reconnecting in waves on a shared line: a connection is measured against its share of
+  what the connections bring together, not the speed the first one had alone
+  ([#896](https://github.com/anefzaoui/misterdownloadmanager/pull/896))
+- ✅ Download panels (the video button): site exclusions support wildcards (`*`) like `*.youtube.*` or `youtube.*` ([#759](https://github.com/anefzaoui/misterdownloadmanager/issues/759))
 - ✅ Firefox: one Download video button over a video, not two, after the extension is updated while
   it shows (seen on YouTube in full screen)
   ([#336](https://github.com/anefzaoui/misterdownloadmanager/issues/336))
@@ -640,6 +644,9 @@ These ship in the next version.
   ([#698](https://github.com/anefzaoui/misterdownloadmanager/issues/698))
 - ✅ Windows: a menu closes at once when you click outside MDM, instead of 0.4 seconds later
   ([#859](https://github.com/anefzaoui/misterdownloadmanager/issues/859))
+- ✅ Windows: programs MDM starts (an update's installer, a browser, the power options) start
+  beside the window, which no longer waits while an antivirus checks them
+  ([#846](https://github.com/anefzaoui/misterdownloadmanager/issues/846))
 - ✅ No "The window stopped responding" report in the first minute after the computer wakes from
   sleep, while its disk, network and screen come back: such a stall is logged, and reported only
   if it lasts longer; every freeze report says what the window was doing when it stopped
@@ -716,6 +723,7 @@ These ship in the next version.
   video window, the menu over a video and the command line say to install Node.js or Deno, with
   a link to the help page's commands for each system
   ([#852](https://github.com/anefzaoui/misterdownloadmanager/issues/852))
+- ✅ Video helpers: the JavaScript runtime yt-dlp is given is looked for more carefully
 - ✅ Linux: no freeze of the window where the session bus doesn't answer (a session started
   without D-Bus, a bus that hangs): the tray icon is set up beside the window, which carries on
   without it until the bus answers, and gets it then, however late
