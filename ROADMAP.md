@@ -1026,6 +1026,9 @@ These ship in the next version.
 - ✅ Linux on Wayland (XWayland) with NVIDIA's driver: typing and clicking no longer lag by 1 to 2
   seconds; MDM spaces its frames itself instead of waiting for the screen's refresh (other drivers
   keep the refresh)
+- ✅ The computer stays awake while anything downloads, not only during a queue that woke it, and
+  sleeps as its settings say once the downloads are done
+  ([#939](https://github.com/anefzaoui/misterdownloadmanager/issues/939))
 - ✅ Linux: MDM pins to the taskbar and the dock: its desktop entry names its windows' class, and
   every window of MDM carries it ([#940](https://github.com/anefzaoui/misterdownloadmanager/issues/940))
 
