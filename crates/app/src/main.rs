@@ -5,11 +5,15 @@ mod batch;
 mod categories;
 mod checksum;
 mod chrome;
+mod clipbatch;
+mod clipboard;
 mod clock;
 mod countries;
 mod crash;
 mod crashui;
 mod debrid;
+mod defaultbrowser;
+mod deferred_rename;
 mod derive;
 mod dialogs;
 mod droptarget;
@@ -18,6 +22,7 @@ mod extension;
 mod extractq;
 mod fileicons;
 mod find;
+mod finish;
 mod gallerydlg;
 mod grabber;
 mod headless;
@@ -29,6 +34,7 @@ mod icons;
 mod langpick;
 mod launch;
 mod list;
+mod lookwatch;
 mod model;
 mod native;
 mod netwatch;
@@ -65,7 +71,9 @@ mod tray;
 mod unix;
 mod update;
 mod videodlg;
+mod videolookup;
 mod wake;
+mod webmark;
 mod whereis;
 #[cfg(windows)]
 mod win32;
@@ -115,11 +123,43 @@ pub fn offscreen() -> bool {
 
 /// The clipboard's text, if any. Never read in an off-screen run ([`offscreen`]): its windows
 /// open from scripts, and the clipboard belongs to the person at the computer (Add URL's
-/// address came from it, and was fetched).
+/// address came from it, and was fetched). It may wait for the clipboard's owner for ever:
+/// never called on the window's thread, only by `clipboard`'s reader (#418, #661).
 pub fn clipboard_text() -> Option<String> {
-    read_clipboard(offscreen(), || {
+    // Off-screen test copies: MDM_TEST_CLIPBOARD=<file> is what they find in the clipboard
+    // (#709's checks of Add batch download from clipboard), read when they ask, as the
+    // clipboard would be; the person's own clipboard is never read.
+    if offscreen()
+        && let Some(file) = std::env::var_os("MDM_TEST_CLIPBOARD")
+    {
+        return std::fs::read_to_string(file).ok();
+    }
+    // Nor in unit tests: the person's clipboard isn't theirs, and tests opening a window that
+    // reads it (Download video's) on parallel threads corrupted the heap (Windows' clipboard,
+    // opened from two threads at once).
+    read_clipboard(offscreen() || cfg!(test), || {
         arboard::Clipboard::new().ok()?.get_text().ok()
     })
+}
+
+/// A number that changes whenever the clipboard does, so the watch for copied links
+/// (clipboard.rs) reads it only then: Windows' sequence number. None where the system keeps none
+/// a program can ask for without opening the clipboard (Linux, macOS): read at each look.
+/// Off-screen test copies: when their `MDM_TEST_CLIPBOARD` file last changed (or never).
+pub fn clipboard_changes() -> Option<u64> {
+    if offscreen() {
+        let changed = std::env::var_os("MDM_TEST_CLIPBOARD")
+            .and_then(|f| std::fs::metadata(f).ok()?.modified().ok())
+            .and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok())
+            .map_or(0, |d| d.as_nanos() as u64);
+        return Some(changed);
+    }
+    #[cfg(windows)]
+    return Some(u64::from(win32::clipboard_sequence()));
+    // Linux and macOS: no such number without the clipboard's own protocol (X11's XFixes,
+    // macOS's changeCount): the watch reads the text each time, off the window's thread.
+    #[cfg(not(windows))]
+    None
 }
 
 /// How long a read or write of the clipboard waits for the one under way in this process.
@@ -246,6 +286,13 @@ fn main() -> std::process::ExitCode {
     // misterdownloadmanager-cli's commands (crates/cli): its launcher starts this program for
     // them. Nothing of the app's runs: no window, instance, crash monitor or crash log.
     if let Some(cli) = mdm_cli::launched(std::env::args_os().collect()) {
+        // The default browser's User-Agent (#668): a command's download starts at once, so it
+        // waits for it a moment (Windows reads it from the registry; Linux and macOS may ask the
+        // browser its version). Only `get` and `resume` download with it: the others don't wait.
+        let found = defaultbrowser::start();
+        if mdm_cli::downloads(&cli.args) {
+            defaultbrowser::wait(&found, std::time::Duration::from_secs(3));
+        }
         // A windowed program has no console: the launcher's, unless the output goes to a file
         // or a pipe. On Linux and macOS the launcher became this process, terminal and all.
         #[cfg(windows)]
@@ -350,6 +397,9 @@ fn app() -> eframe::Result {
             ctx.request_repaint();
         }
     });
+    // macOS: so do the .torrent files and magnet links Finder and the browsers hand over (#698).
+    #[cfg(target_os = "macos")]
+    unix::open_events::start(tx.clone(), wake.clone());
     // The remote control (#141) sends its commands down the same channel.
     let sink = mdm_ipc::Sink::new(tx.clone(), wake.clone());
     let _ = mdm_ipc::serve(tx, move || wake());
@@ -372,6 +422,11 @@ fn app() -> eframe::Result {
             help::VERSION,
             help::COMMIT
         );
+    }
+    // The default browser, looked for once on a thread of its own (logged): its User-Agent is
+    // the one links added by hand go with (#668).
+    defaultbrowser::start();
+    if let Some(data) = mdm_ipc::data_dir() {
         crash::start(
             &data,
             crash::session(
@@ -430,11 +485,12 @@ fn app() -> eframe::Result {
         tracing::info!("started with the session: hidden");
         viewport = viewport.with_visible(false);
     }
-    // OpenGL or Direct3D (View → Draw with, #89), the other one when it can't start.
+    // OpenGL or Direct3D (View → Draw with, #89), the next way when one can't start (Direct3D on
+    // WARP before OpenGL, #847).
     let plan = renderer::plan(
         loaded.settings.renderer,
         renderer::overridden(&args).as_deref(),
-        renderer::failed_before().is_some(),
+        renderer::Known::read(),
     );
     let options = || eframe::NativeOptions {
         viewport: viewport.clone(),
@@ -448,6 +504,7 @@ fn app() -> eframe::Result {
         win32::set_main_window(cc);
         scale::start(&cc.egui_ctx, z);
         let _ = window.set(cc.egui_ctx.clone());
+        clipboard::wake(&cc.egui_ctx);
         renderer::test_slow_start();
         app::App::new(&cc.egui_ctx, handle, commands, sink, loaded, start)
     });
@@ -458,6 +515,17 @@ fn app() -> eframe::Result {
 #[cfg(test)]
 mod tests {
     use super::{Start, start_mode};
+
+    /// The tests that take the process-wide clipboard lock, one at a time: they run in parallel
+    /// in one process, and the reads of one waited out the others' (more than the 500 ms a read
+    /// waits), so a read meant to go through came back empty.
+    static CLIPBOARD_TESTS: std::sync::Mutex<()> = std::sync::Mutex::new(());
+
+    fn clipboard_test() -> std::sync::MutexGuard<'static, ()> {
+        CLIPBOARD_TESTS
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+    }
 
     /// Started with the session (#226): hidden (the tray decided by the app), or minimized
     /// where a window can't be hidden; a start by the user shows the window.
@@ -473,6 +541,7 @@ mod tests {
     /// nor writes it (Copy magnet link, Copy…): it logs what it would have copied.
     #[test]
     fn offscreen_runs_leave_the_clipboard_alone() {
+        let _one = clipboard_test();
         let mut asked = false;
         let got = super::read_clipboard(true, || {
             asked = true;
@@ -498,6 +567,7 @@ mod tests {
     /// Add URL on the window's) corrupted the heap. Every read waits for the one under way.
     #[test]
     fn clipboard_reads_are_one_at_a_time() {
+        let _one = clipboard_test();
         use std::sync::atomic::{AtomicUsize, Ordering};
         let inside = std::sync::Arc::new(AtomicUsize::new(0));
         let most = std::sync::Arc::new(AtomicUsize::new(0));
@@ -530,6 +600,7 @@ mod tests {
     #[test]
     #[ignore = "reads the real clipboard"]
     fn real_clipboard_reads_from_many_threads_live() {
+        let _one = clipboard_test();
         let until = std::time::Instant::now() + std::time::Duration::from_secs(3);
         let threads: Vec<_> = (0..6)
             .map(|_| {
