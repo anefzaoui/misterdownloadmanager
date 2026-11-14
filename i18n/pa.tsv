@@ -4477,6 +4477,10 @@
 #, machine
 	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	ਬ੍ਰਾਊਜ਼ਰ ਦਾ ਪ੍ਰੌਕਸੀ (ਇੱਕ VPN ਜਾਂ ਪ੍ਰੌਕਸੀ ਐਕਸਟੈਂਸ਼ਨ) ਸਿਰਫ਼ ਉਸ ਐਕਸਟੈਂਸ਼ਨ ਕੋਲ ਮੌਜੂਦ ਲੌਗਇਨ ਲਈ ਪੁੱਛਦਾ ਹੈ: VPN ਦੀ ਆਪਣੀ ਐਪ ਦੀ ਵਰਤੋਂ ਕਰੋ, ਜਾਂ ਵਿਕਲਪ → ਪ੍ਰੌਕਸੀ / SOCKS ਵਿੱਚ ਇਸਦਾ ਨੈੱਟਵਰਕ ਅਡਾਪਟਰ ਚੁਣੋ
 #. text in extension.rs
+#. a check of Test browser integration: the browsers are pointed at a copy of MDM that was deleted (often one started from inside a zip); that copy's folder shows on the line under it
+#, machine
+	The browsers are set up for a copy that is gone:	ਬ੍ਰਾਊਜ਼ਰ ਇੱਕ ਅਜਿਹੀ ਕਾਪੀ ਲਈ ਸੈੱਟ ਕੀਤੇ ਗਏ ਹਨ ਜੋ ਹੁਣ ਮੌਜੂਦ ਨਹੀਂ ਹੈ:
+#. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	ਬ੍ਰਾਊਜ਼ਰ Mister Download Manager ਨੂੰ ਲੱਭ ਸਕਦੇ ਹਨ
@@ -4835,6 +4839,10 @@
 #. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
 #, machine
 	This computer only (127.0.0.1)	ਸਿਰਫ਼ ਇਹ ਕੰਪਿਊਟਰ (127.0.0.1)
+#. text in extension.rs
+#. a check of Test browser integration: MDM was started from inside a zip (or from the temporary folder), which is deleted after it quits, so it can't be connected to the browsers
+#, machine
+	This copy runs from a temporary folder that will be deleted	ਇਹ ਕਾਪੀ ਇੱਕ ਅਸਥਾਈ ਫੋਲਡਰ ਤੋਂ ਚੱਲਦੀ ਹੈ ਜੋ ਮਿਟਾ ਦਿੱਤਾ ਜਾਵੇਗਾ
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine

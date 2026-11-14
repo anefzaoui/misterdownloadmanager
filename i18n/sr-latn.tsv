@@ -4477,6 +4477,10 @@
 #, machine
 	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	Proksi pregledača (VPN ili proksi ekstenzija) zahteva prijavu koju može da obavi samo ta ekstenzija: koristite sopstvenu VPN aplikaciju ili izaberite njen mrežni adapter u Podešavanja → Proksi / SOCKS
 #. text in extension.rs
+#. a check of Test browser integration: the browsers are pointed at a copy of MDM that was deleted (often one started from inside a zip); that copy's folder shows on the line under it
+#, machine
+	The browsers are set up for a copy that is gone:	Pretraživači su podešeni za kopiju koja je nestala:
+#. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	Pregledači mogu da pronađu Mister Download Manager
@@ -4835,6 +4839,10 @@
 #. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
 #, machine
 	This computer only (127.0.0.1)	Samo ovaj računar (127.0.0.1)
+#. text in extension.rs
+#. a check of Test browser integration: MDM was started from inside a zip (or from the temporary folder), which is deleted after it quits, so it can't be connected to the browsers
+#, machine
+	This copy runs from a temporary folder that will be deleted	Ova kopija se pokreće iz privremene fascikle koja će biti obrisana
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine

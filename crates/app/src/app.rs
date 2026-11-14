@@ -1485,10 +1485,10 @@ impl App {
             if settings.launch_on_startup && mdm_ipc::portable_dir().is_none() {
                 crate::unix::update_run_at_startup();
             }
-            if mdm_ipc::portable_dir().is_none() && !crate::offscreen() {
-                crate::unix::register_browsers();
-            }
         }
+        // Browser integration: a registration that leads nowhere is repaired (#818); Linux and
+        // macOS, which have no installer step, register with each browser here too.
+        crate::extension::repair_at_start();
         // The categories, for code that only has a `Category` (the list's own below too).
         settings.publish_categories();
         // The remote control (#141): off unless Options → Remote turned it on.

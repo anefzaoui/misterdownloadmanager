@@ -4477,6 +4477,10 @@
 #, machine
 	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	브라우저 프록시(VPN 또는 프록시 확장)가 해당 확장만 가지고 있는 로그인을 요청합니다. VPN 자체 앱을 사용하거나 옵션 → 프록시/SOCKS에서 네트워크 어댑터를 선택하세요.
 #. text in extension.rs
+#. a check of Test browser integration: the browsers are pointed at a copy of MDM that was deleted (often one started from inside a zip); that copy's folder shows on the line under it
+#, machine
+	The browsers are set up for a copy that is gone:	브라우저가 더 이상 존재하지 않는 복사본으로 설정되어 있습니다:
+#. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	브라우저가 Mister Download Manager을(를) 찾을 수 있습니다.
@@ -4835,6 +4839,10 @@
 #. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
 #, machine
 	This computer only (127.0.0.1)	이 컴퓨터만 (127.0.0.1)
+#. text in extension.rs
+#. a check of Test browser integration: MDM was started from inside a zip (or from the temporary folder), which is deleted after it quits, so it can't be connected to the browsers
+#, machine
+	This copy runs from a temporary folder that will be deleted	이 복사본은 삭제될 임시 폴더에서 실행됩니다.
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine

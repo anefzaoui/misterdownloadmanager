@@ -27,6 +27,13 @@
 //!   installer step), or the system-wide ones with `--all-users`. A browser that reads a
 //!   system-wide manifest naming this same program (the .deb's or .rpm's) gets none in the home
 //!   folder: the package manager removes the package's with it (#266).
+//! - `misterdownloadmanager-nmhost --repair`: what the app runs at its start (#818): a browser's
+//!   registration that leads nowhere (its manifest or helper gone: a copy run from inside a zip,
+//!   moved or deleted) is pointed at this copy, for this user; one that works is left alone,
+//!   whichever copy it names. Windows adds none where there was none (the setup's box); Linux
+//!   and macOS write one for a browser without it, as `--register` does.
+//! - Neither registers a copy in a temporary folder (an archive run without extracting it first,
+//!   whose tool deletes the folder afterwards), nor a portable one.
 //! - `misterdownloadmanager-nmhost --safari` (macOS): the same host for Safari, started by the
 //!   app's Safari extension (tools/safari), which passes each message on; nothing to register.
 //! - `misterdownloadmanager-nmhost --package-manifests <root>` (Linux, the .deb and .rpm build):
@@ -42,22 +49,11 @@ use serde::{Deserialize, Serialize};
 #[cfg(windows)]
 mod win32;
 
-const HOST_NAME: &str = "com.misterdownloadmanager.host";
+use mdm_ipc::browsers::HOST_NAME;
+#[cfg(windows)]
+use mdm_ipc::browsers::{Family, Holder, Repair, WINDOWS_HOST_KEYS};
 use mdm_ipc::extension::{FIREFOX_ID, STORE_ID, chromium_ids, store_id};
-/// Where each Chromium browser looks for native messaging hosts on Windows, under HKCU (one
-/// user) or HKLM (everyone). Chromium-branded builds (Chromium, Helium, Thorium, and Brave and
-/// Brave Origin with every channel) read Chromium's first, then Chrome's, as most other forks do
-/// (Chromium's launch_context_win.cc). Brave's own key is kept for builds that read it.
-#[cfg(windows)]
-const REGISTRY_KEYS: [&str; 4] = [
-    r"Software\Google\Chrome\NativeMessagingHosts",
-    r"Software\Chromium\NativeMessagingHosts",
-    r"Software\Microsoft\Edge\NativeMessagingHosts",
-    r"Software\BraveSoftware\Brave-Browser\NativeMessagingHosts",
-];
-/// Where Firefox looks.
-#[cfg(windows)]
-const FIREFOX_KEY: &str = r"Software\Mozilla\NativeMessagingHosts";
+
 /// Chrome's external extensions: an entry naming the store's extension makes Chrome offer it at
 /// its next start ("New extension added"), the user turning it on there. HKLM's is read from the
 /// 32-bit view on 64-bit Windows, hence /reg:32 (HKCU has one view). Helium reads it too, but
@@ -1151,6 +1147,23 @@ fn portable_refused() -> Result<(), String> {
     Ok(())
 }
 
+/// #818: this program runs from a folder that is deleted later (a zip or rar run without
+/// extracting it first, whose archive tool deletes its temporary folder afterwards; anything
+/// under the temporary folder): the browsers would be pointed at a helper that is soon gone, and
+/// would find no other copy.
+fn temporary_refused() -> Result<(), String> {
+    let program = this_program()?;
+    if mdm_ipc::browsers::in_temporary_folder(&program) {
+        return Err(format!(
+            "{} is a temporary folder, deleted once it quits (an archive run without extracting \
+             it first): browser integration is not registered. Extract Mister Download Manager \
+             to a folder of its own and run it from there",
+            program.parent().unwrap_or(&program).display()
+        ));
+    }
+    Ok(())
+}
+
 /// A Chromium extension's origin, as browsers name the caller.
 fn origin(id: &str) -> String {
     format!("chrome-extension://{id}/")
@@ -1164,38 +1177,53 @@ fn our_caller(args: &[String]) -> bool {
         || args.get(1).is_some_and(|a| a == FIREFOX_ID)
 }
 
+/// Windows: the manifest beside this exe that a browser of `family` reads, written when it isn't
+/// already what it should be (an installation for everyone can't write there, and needn't).
+#[cfg(windows)]
+fn own_manifest(family: Family) -> Result<PathBuf, String> {
+    let program = this_program()?;
+    let (name, value) = match family {
+        Family::Chromium => (format!("{HOST_NAME}.json"), chromium_manifest(&program)),
+        Family::Gecko => (
+            format!("{HOST_NAME}.firefox.json"),
+            firefox_manifest(&program),
+        ),
+    };
+    let path = exe_dir()?.join(name);
+    let current = std::fs::read(&path)
+        .ok()
+        .and_then(|b| serde_json::from_slice::<serde_json::Value>(&b).ok());
+    if current.as_ref() != Some(&value) {
+        write_json(&path, &value)?;
+    }
+    Ok(path)
+}
+
+/// Windows: point `root`'s (HKCU or HKLM) entry under `key` at `manifest`.
+#[cfg(windows)]
+fn reg_point(root: &str, key: &str, manifest: &std::path::Path) -> Result<(), String> {
+    reg(&[
+        "add",
+        &format!(r"{root}\{key}\{HOST_NAME}"),
+        "/ve",
+        "/t",
+        "REG_SZ",
+        "/d",
+        &manifest.display().to_string(),
+        "/f",
+    ])
+}
+
 /// Windows: the manifests beside this exe, and the registry entries naming them, per user
 /// (HKCU) or for everyone (HKLM).
 #[cfg(windows)]
 fn register(all_users: bool) -> Result<(), String> {
     portable_refused()?;
+    temporary_refused()?;
     let root = if all_users { "HKLM" } else { "HKCU" };
-    let path = exe_dir()?.join(format!("{HOST_NAME}.json"));
-    write_json(&path, &chromium_manifest(&this_program()?))?;
-    for key in REGISTRY_KEYS {
-        reg(&[
-            "add",
-            &format!(r"{root}\{key}\{HOST_NAME}"),
-            "/ve",
-            "/t",
-            "REG_SZ",
-            "/d",
-            &path.display().to_string(),
-            "/f",
-        ])?;
+    for (key, family) in WINDOWS_HOST_KEYS {
+        reg_point(root, key, &own_manifest(family)?)?;
     }
-    let ff_path = exe_dir()?.join(format!("{HOST_NAME}.firefox.json"));
-    write_json(&ff_path, &firefox_manifest(&this_program()?))?;
-    reg(&[
-        "add",
-        &format!(r"{root}\{FIREFOX_KEY}\{HOST_NAME}"),
-        "/ve",
-        "/t",
-        "REG_SZ",
-        "/d",
-        &ff_path.display().to_string(),
-        "/f",
-    ])?;
     // Chrome offers the store's extension once it is listed (never a placeholder ID).
     if let Some(id) = store_id() {
         reg(&[
@@ -1214,16 +1242,52 @@ fn register(all_users: bool) -> Result<(), String> {
     println!(
         "registered {HOST_NAME} for Chrome, Edge, Brave, Helium and the other Chromium browsers \
          ({}), and for Firefox, Zen and its other forks ({})",
-        path.display(),
-        ff_path.display()
+        own_manifest(Family::Chromium)?.display(),
+        own_manifest(Family::Gecko)?.display()
     );
+    Ok(())
+}
+
+/// Windows, at the app's start (#818): each browser's registration that leads nowhere (a copy
+/// run from inside a zip, whose temporary folder is gone; a copy moved or deleted) is pointed at
+/// this copy, for this user. One that works is left alone, whichever copy it names, and none is
+/// added where there was none (`mdm_ipc::browsers::windows_repair`).
+#[cfg(windows)]
+fn repair() -> Result<(), String> {
+    portable_refused()?;
+    temporary_refused()?;
+    let holder = |machine: bool, entry: &str| {
+        win32::reg_string(machine, entry)
+            .map(|v| Holder::of(&mdm_ipc::browsers::registered_manifest(&v)))
+    };
+    let mut repaired = 0;
+    for (key, family) in WINDOWS_HOST_KEYS {
+        let entry = format!(r"{key}\{HOST_NAME}");
+        let user = holder(false, &entry);
+        match mdm_ipc::browsers::windows_repair(user.as_ref(), holder(true, &entry).as_ref()) {
+            Repair::Keep => continue,
+            Repair::Take => {
+                let manifest = own_manifest(family)?;
+                reg_point("HKCU", key, &manifest)?;
+                println!(r"HKCU\{entry}: {user:?}, now {}", manifest.display());
+            }
+            Repair::Clear => {
+                reg(&["delete", &format!(r"HKCU\{entry}"), "/f"])?;
+                println!(r"HKCU\{entry}: {user:?}, removed (the computer's works)");
+            }
+        }
+        repaired += 1;
+    }
+    if repaired == 0 {
+        println!("{HOST_NAME}: nothing to repair");
+    }
     Ok(())
 }
 
 #[cfg(windows)]
 fn unregister(all_users: bool) -> Result<(), String> {
     let root = if all_users { "HKLM" } else { "HKCU" };
-    for key in REGISTRY_KEYS.into_iter().chain([FIREFOX_KEY]) {
+    for (key, _) in WINDOWS_HOST_KEYS {
         let _ = reg(&["delete", &format!(r"{root}\{key}\{HOST_NAME}"), "/f"]);
     }
     let _ = reg(&[
@@ -1302,16 +1366,41 @@ fn mount_refused() -> Result<(), String> {
 
 #[cfg(not(windows))]
 fn register(all_users: bool) -> Result<(), String> {
+    register_as(all_users, false)
+}
+
+/// Linux and macOS, at the app's start (#818): `--register` for this user, but a manifest that
+/// works naming another copy of MDM is left alone (two copies are both legitimate; neither takes
+/// the other's at each start). A browser without one, or with one that leads nowhere (a copy
+/// moved or deleted, run from a temporary folder, an AppImage gone), gets this program's.
+#[cfg(not(windows))]
+fn repair() -> Result<(), String> {
+    register_as(false, true)
+}
+
+/// `--register` (`at_start`: `--repair`).
+#[cfg(not(windows))]
+fn register_as(all_users: bool, at_start: bool) -> Result<(), String> {
     portable_refused()?;
     mount_refused()?;
+    temporary_refused()?;
     let program = this_program()?;
     let (chromium, firefox) = (chromium_manifest(&program), firefox_manifest(&program));
     let dirs = host_dirs(all_users, Some(&program));
+    // At a start, a manifest that works naming another copy stays.
+    let keeps = |manifest: &std::path::Path| {
+        at_start
+            && manifest.is_file()
+            && !mdm_ipc::browsers::takes_over(
+                Some(&mdm_ipc::browsers::Holder::of(manifest)),
+                &program,
+            )
+    };
     // A browser that reads the package's manifest for everyone, naming this program, needs none
     // in the home folder: one written there before is taken away, so uninstalling the package
     // leaves nothing behind (#266). The browser reads a user's manifest first, so one naming
-    // another program (an earlier MDM, an AppImage's copy) would win over the package's: the MDM
-    // registered last is the one the browsers start, as when each wrote its own.
+    // another program (an earlier MDM, an AppImage's copy) would win over the package's: Set it
+    // up takes it away too (at a start, one that works stays, #818).
     let mut covered = 0;
     if !all_users {
         for (dir, _) in host_dirs(false, None) {
@@ -1320,7 +1409,9 @@ fn register(all_users: bool) -> Result<(), String> {
             }
             covered += 1;
             let manifest = dir.join(format!("{HOST_NAME}.json"));
-            if std::fs::remove_file(&manifest).is_ok() {
+            if keeps(&manifest) {
+                println!("kept {} (another copy's, which works)", manifest.display());
+            } else if std::fs::remove_file(&manifest).is_ok() {
                 println!(
                     "removed {} (the browser reads the one for everyone)",
                     manifest.display()
@@ -1338,6 +1429,11 @@ fn register(all_users: bool) -> Result<(), String> {
     let mut failed = Vec::new();
     for (dir, is_firefox) in &dirs {
         let manifest = if *is_firefox { &firefox } else { &chromium };
+        let file = dir.join(format!("{HOST_NAME}.json"));
+        if keeps(&file) {
+            println!("kept {} (another copy's, which works)", file.display());
+            continue;
+        }
         let written = std::fs::create_dir_all(dir)
             .map_err(|e| format!("{}: {e}", dir.display()))
             .and_then(|()| write_json(&dir.join(format!("{HOST_NAME}.json")), manifest));
@@ -1422,6 +1518,7 @@ fn main() {
     let result = match args.first().map(String::as_str).unwrap_or_default() {
         "--register" => register(all_users),
         "--unregister" => unregister(all_users),
+        "--repair" => repair(),
         "--package-manifests" => package_manifests(args.get(1).map(String::as_str)),
         // Safari's extension has no host manifest: its app extension (tools/safari) starts this
         // program from inside the app, which is the only caller there is.

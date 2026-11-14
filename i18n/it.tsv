@@ -3384,6 +3384,10 @@
 #. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
 	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	il proxy del browser (una VPN o un'estensione proxy) richiede un accesso che ha solo quell'estensione: usa l'app della VPN oppure scegli la sua scheda di rete in Opzioni → Proxy / Socks
 #. text in extension.rs
+#. a check of Test browser integration: the browsers are pointed at a copy of MDM that was deleted (often one started from inside a zip); that copy's folder shows on the line under it
+#, machine
+	The browsers are set up for a copy that is gone:	I browser sono configurati per una copia che non esiste più:
+#. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 	The browsers can find Mister Download Manager	I browser riescono a trovare Mister Download Manager
 #. text in the Options window
@@ -3656,6 +3660,10 @@
 #. text in the Options window
 #. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
 	This computer only (127.0.0.1)	Solo questo computer (127.0.0.1)
+#. text in extension.rs
+#. a check of Test browser integration: MDM was started from inside a zip (or from the temporary folder), which is deleted after it quits, so it can't be connected to the browsers
+#, machine
+	This copy runs from a temporary folder that will be deleted	Questa copia viene eseguita da una cartella temporanea che verrà eliminata
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 	This date has passed: the queue will not start	Questa data è già passata: la coda non partirà

@@ -4477,6 +4477,10 @@
 #, machine
 	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	พร็อกซีของเบราว์เซอร์ (ส่วนขยาย VPN หรือพร็อกซี) ขอข้อมูลเข้าสู่ระบบที่มีเฉพาะส่วนขยายนั้น: ใช้แอป VPN เอง หรือเลือกอะแดปเตอร์เครือข่ายของ VPN ในตัวเลือก → พร็อกซี / SOCKS
 #. text in extension.rs
+#. a check of Test browser integration: the browsers are pointed at a copy of MDM that was deleted (often one started from inside a zip); that copy's folder shows on the line under it
+#, machine
+	The browsers are set up for a copy that is gone:	เบราว์เซอร์ถูกตั้งค่าให้ใช้สำเนาที่ถูกลบไปแล้ว:
+#. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	เบราว์เซอร์ค้นหา Mister Download Manager ได้
@@ -4835,6 +4839,10 @@
 #. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
 #, machine
 	This computer only (127.0.0.1)	คอมพิวเตอร์เครื่องนี้เท่านั้น (127.0.0.1)
+#. text in extension.rs
+#. a check of Test browser integration: MDM was started from inside a zip (or from the temporary folder), which is deleted after it quits, so it can't be connected to the browsers
+#, machine
+	This copy runs from a temporary folder that will be deleted	สำเนาที่กำลังทำงานนี้มาจากโฟลเดอร์ชั่วคราวที่จะถูกลบ
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine

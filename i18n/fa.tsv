@@ -4477,6 +4477,10 @@
 #, machine
 	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	پراکسی مرورگر (یک VPN یا افزونه پراکسی) فقط یک ورود به سیستم را درخواست می‌کند که فقط آن افزونه دارد: از برنامه خود VPN استفاده کنید، یا آداپتور شبکه آن را در گزینه‌ها ← پراکسی/Socks انتخاب کنید
 #. text in extension.rs
+#. a check of Test browser integration: the browsers are pointed at a copy of MDM that was deleted (often one started from inside a zip); that copy's folder shows on the line under it
+#, machine
+	The browsers are set up for a copy that is gone:	مرورگرها برای نسخه‌ای تنظیم شده‌اند که دیگر وجود ندارد:
+#. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	مرورگرها می‌توانند Mister Download Manager را پیدا کنند
@@ -4835,6 +4839,10 @@
 #. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
 #, machine
 	This computer only (127.0.0.1)	فقط این رایانه (127.0.0.1)
+#. text in extension.rs
+#. a check of Test browser integration: MDM was started from inside a zip (or from the temporary folder), which is deleted after it quits, so it can't be connected to the browsers
+#, machine
+	This copy runs from a temporary folder that will be deleted	این نسخه از پوشه‌ای موقت اجرا می‌شود که پس از بسته شدن برنامه حذف خواهد شد
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine

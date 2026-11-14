@@ -4477,6 +4477,10 @@
 #, machine
 	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	o proxy do navegador (unha VPN ou extensión de proxy) solicita un inicio de sesión que só ten esa extensión: use a propia aplicación da VPN ou escolla o seu adaptador de rede en Opcións → Proxy/Socks
 #. text in extension.rs
+#. a check of Test browser integration: the browsers are pointed at a copy of MDM that was deleted (often one started from inside a zip); that copy's folder shows on the line under it
+#, machine
+	The browsers are set up for a copy that is gone:	Os navegadores están configurados para unha copia que xa non existe:
+#. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	Os navegadores poden atopar Mister Download Manager
@@ -4835,6 +4839,10 @@
 #. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
 #, machine
 	This computer only (127.0.0.1)	Só este equipo (127.0.0.1)
+#. text in extension.rs
+#. a check of Test browser integration: MDM was started from inside a zip (or from the temporary folder), which is deleted after it quits, so it can't be connected to the browsers
+#, machine
+	This copy runs from a temporary folder that will be deleted	Esta copia execútase desde un cartafol temporal que se eliminará
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine

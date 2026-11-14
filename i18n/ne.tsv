@@ -4477,6 +4477,10 @@
 #, machine
 	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	ब्राउजरको प्रोक्सी (VPN वा प्रोक्सी एक्स्टेन्सन) ले लगइन माग्छ, तर लगइन जानकारी त्यस एक्स्टेन्सनसँग मात्र हुन्छ: VPN को आफ्नै एप प्रयोग गर्नुहोस्, वा विकल्पहरू → प्रोक्सी / SOCKS मा त्यसको नेटवर्क एडाप्टर छान्नुहोस्।
 #. text in extension.rs
+#. a check of Test browser integration: the browsers are pointed at a copy of MDM that was deleted (often one started from inside a zip); that copy's folder shows on the line under it
+#, machine
+	The browsers are set up for a copy that is gone:	ब्राउजरहरू हटाइएको प्रतिलिपिमा सेटअप गरिएका छन्:
+#. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	ब्राउजरहरूले Mister Download Manager फेला पार्न सक्छन्
@@ -4835,6 +4839,10 @@
 #. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
 #, machine
 	This computer only (127.0.0.1)	यो कम्प्युटर मात्र (127.0.0.1)
+#. text in extension.rs
+#. a check of Test browser integration: MDM was started from inside a zip (or from the temporary folder), which is deleted after it quits, so it can't be connected to the browsers
+#, machine
+	This copy runs from a temporary folder that will be deleted	यो प्रतिलिपि मेटाइने अस्थायी फोल्डरबाट चल्छ
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
