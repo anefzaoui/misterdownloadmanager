@@ -69,7 +69,7 @@ pub enum Origin {
 }
 
 /// An [`Origin`] as a hash key, as [`Origin::key`] makes it.
-#[derive(PartialEq, Eq, Hash)]
+#[derive(Debug, PartialEq, Eq, Hash)]
 enum OriginKey {
     Volumes { host: String, base: String },
     Page(String),
@@ -331,6 +331,7 @@ impl Grabber {
             {
                 self.packages[pkg].password = pw.to_owned();
             }
+            let cat = category_of(&name, magnet);
             self.links.push(Link {
                 found: d,
                 url,
@@ -344,7 +345,7 @@ impl Grabber {
                 check: None,
                 page: false,
                 read: None,
-                cat: category_of(&name, magnet),
+                cat,
             });
             settle.insert(pkg);
         }
@@ -1058,8 +1059,8 @@ impl Grabber {
     /// The selected package's name, folder, password and what happens to its archives.
     fn package_box(&mut self, ui: &mut Ui, o: Pos2) {
         let p = ui.painter().clone();
-        let shown = self.visible_rows();
-        let has = |k: usize| shown.contains(&Row::Pkg(k));
+        let shown = self.shown_by_pkg();
+        let has = |k: usize| !shown[k].is_empty();
         if !has(self.current) {
             self.current = (0..self.packages.len()).find(|k| has(*k)).unwrap_or(0);
         }
@@ -1369,7 +1370,9 @@ mod tests {
         assert_eq!(g.packages.len(), 20_000);
         assert!(g.packages.iter().all(|p| p.extract));
         // The frame's rows too, walked once whatever the list holds.
-        mdm_labserver::growth::assert_linear(1_000, &|n| add(lists(n)), &|g| g.visible_rows());
+        mdm_labserver::growth::assert_linear(1_000, &|n| add(lists(n)), &|g: Grabber| {
+            g.visible_rows()
+        });
         // One row each: the package's, and its link's under it.
         assert_eq!(g.visible_rows().len(), 2 * 20_000);
         // Every package started on its own: picked walks the list once as well.
@@ -1474,13 +1477,13 @@ mod tests {
             "x.part2.rar",
             None,
         );
-        assert!(!a.same(&b));
+        assert_ne!(a.key(), b.key());
         let c = Origin::of(
             &"https://A.org/X.part2.rar".parse().unwrap(),
             "X.part2.rar",
             None,
         );
-        assert!(a.same(&c));
+        assert_eq!(a.key(), c.key());
     }
 
     #[test]
