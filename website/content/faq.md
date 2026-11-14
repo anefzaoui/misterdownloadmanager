@@ -21,7 +21,7 @@ The layout is familiar on purpose: the toolbar, the categories, the download lis
 
 Windows reports two different memory numbers. Memory in use (Task Manager's "Memory" column, the private working set) is what a program is holding in RAM right now. Committed memory (Process Explorer's "Private Bytes", Resource Monitor's "Commit") is memory Windows has set aside for the program; most of it can be paged out, so it doesn't mean the program is using that much RAM.
 
-On one test machine (Windows 11 build 26300, MDM 0.5.2, IDM 6.43.18.2, release builds), memory in use was 9–10 MB for MDM and 8–10 MB for IDM in the tray, and 9–11 MB against about 8 MB with the window open and settled. Committed memory was 140–170 MB for MDM and about 20 MB for IDM. While MDM is busy, its memory in use can rise to tens of MB and settles back down, and in the tray it gives back the memory it isn't using.
+On one test machine (Windows 11 build 26300, MDM 0.5.2, IDM 6.43.18.2, release builds), memory in use was 9–10 MB for MDM and 8–10 MB for IDM in the tray, and 9–11 MB against about 8 MB with the window open and settled. Committed memory was 140–170 MB for MDM and about 20 MB for IDM. While MDM downloads fast, its memory in use can rise to around 100 MB or more (it holds data in memory while a slow disk catches up), and settles back down, and in the tray it gives back the memory it isn't using.
 
 ### Is it safe? Does it contain adware or spyware? {#is-it-safe}
 
