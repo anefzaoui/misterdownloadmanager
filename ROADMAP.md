@@ -306,6 +306,9 @@ Everything below ships together, in version 0.5.0.
   built in; 7z and RAR need 7-Zip) extracted when they are downloaded
   ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37)); collecting copied links
   comes later
+- ✅ Link grabber: Click'n'Load from link sites, in their packages with their archive passwords;
+  off by default, asked once per site, the links not looked up before they are added
+  ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37))
 - ✅ Image galleries with gallery-dl: Wikimedia Commons, Flickr, DeviantArt and many more,
   verified like yt-dlp, or your own copy ([#58](https://github.com/anefzaoui/misterdownloadmanager/issues/58))
 - ✅ Torrents: seeding limits (a share ratio, or a time), off by default, and a finished torrent's
@@ -323,6 +326,8 @@ Everything below ships together, in version 0.5.0.
   HTTP, no peer connections ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 - ✅ Debrid accounts (experimental): TorBox, for file-host links and torrents
   ([#391](https://github.com/anefzaoui/misterdownloadmanager/issues/391))
+- ✅ Debrid accounts: Mega-Debrid, with its user name and password or an application's API key
+  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 - ✅ Sign-ins in the system's keychain: Windows Credential Manager, the Secret Service keyring on
   Linux, the macOS keychain; for debrid accounts, Sites Logins and the proxy
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
@@ -560,6 +565,12 @@ These ship in the next version.
 - ✅ Left and Right in Download File Info's Save As box and Add URL's Address box move the caret,
   no longer the focus to the button beside the box
   ([#812](https://github.com/anefzaoui/misterdownloadmanager/pull/812))
+- ✅ The progress window shows no scroll bars over content that fits at an interface size above
+  100 % (125 %), where the window's client comes back a pixel short of its content
+  ([#672](https://github.com/anefzaoui/misterdownloadmanager/issues/672))
+- ✅ Windows and macOS: **Options → General → Shortcut to show or hide window**: a global
+  shortcut of two or three keys that shows or hides MDM's window from any program
+  ([#558](https://github.com/anefzaoui/misterdownloadmanager/issues/558))
 - ✅ Linux: no crash when fontconfig offers a font MDM can't draw with (an old bitmap font for
   Japanese): the best font that scales and MDM can read is used instead
   ([#931](https://github.com/anefzaoui/misterdownloadmanager/issues/931))
@@ -986,6 +997,11 @@ These ship in the next version.
   (part of [#493](https://github.com/anefzaoui/misterdownloadmanager/issues/493))
 - ✅ Windows: **Open folder** uses the file manager set up to open folders, not always Explorer
   ([#446](https://github.com/anefzaoui/misterdownloadmanager/issues/446))
+- ✅ Linux: downloads to an NTFS drive (`ntfs3`) start at once instead of filling the file with
+  zeros first, which held the download at 0% and slowed the whole computer
+- ✅ Linux on Wayland (XWayland) with NVIDIA's driver: typing and clicking no longer lag by 1 to 2
+  seconds; MDM spaces its frames itself instead of waiting for the screen's refresh (other drivers
+  keep the refresh)
 
 ## Being worked on
 
@@ -993,6 +1009,7 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 **Add torrent**: a **Rename** row (main name and extension) to rename a single-file torrent or a multi-file torrent's folder before the download starts ([#517](https://github.com/anefzaoui/misterdownloadmanager/issues/517)): in review
 - 🔄 Linux, what's left ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
   screen readers (Orca) reading MDM's windows; browsers installed as a Flatpak (Firefox from
   Flathub may reach MDM through the desktop, as the Snap does: to check); native Wayland windows
