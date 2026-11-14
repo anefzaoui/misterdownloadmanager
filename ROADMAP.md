@@ -565,6 +565,9 @@ These ship in the next version.
 - ✅ The browser's **Download all links** on a page with thousands of long links: the list goes to
   MDM in parts the browser lets through, and opens in Link grabber whole, as one list; past 1 MB of
   links nothing arrived
+- ✅ Text boxes keep their selection under a right-click, so the menu's Copy and Cut take it
+  (Select all, then Copy, copied nothing)
+  ([#1084](https://github.com/anefzaoui/misterdownloadmanager/issues/1084))
 - ✅ A page that says which video it is about (its JSON-LD, `og:video` or `twitter:player`) gets
   that video from Add URL, Download video and the command line, not the first player written in
   its HTML (a hidden welcome video)
