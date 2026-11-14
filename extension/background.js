@@ -1528,6 +1528,9 @@ async function handOff(d) {
     referrer: d.referrer || "",
     cookies: await cookieHeader(d.url, d),
     filename: d.filename || "",
+    // The browser's name is only its address's guess (#948, `addressNamed`): the host checks
+    // Options' file types by it, and MDM names the file from the server's own answer.
+    ...(d.nameGuessed ? { nameGuessed: true } : {}),
     ...(d.size > 0 ? { size: d.size } : {}),
     ...(d.mime ? { mime: d.mime } : {}),
     ...(d.post ? { post: d.post.body, postType: d.post.type || "" } : {}),
@@ -1593,14 +1596,16 @@ function leftAlone(c, item, url) {
   if (c && c.left) noteLeft(c.left, c.name, firstUrl(item) || url, item.incognito, false).catch(() => {});
 }
 
-// Offer the download to the app under `name`; true if it took it.
-async function offer(item, url, name) {
+// Offer the download to the app under `name`; true if it took it. `nameGuessed`: `name` is only
+// its address's (`addressNamed`).
+async function offer(item, url, name, nameGuessed = false) {
   const first = firstUrl(item);
   const reply = await handOff({
     url: first,
     finalUrl: url,
     referrer: item.referrer,
     filename: name,
+    nameGuessed,
     size: item.totalBytes > 0 ? item.totalBytes : item.fileSize,
     mime: item.mime,
     post: postOf(first),
@@ -1706,6 +1711,22 @@ function noName(suggest) {
   suggest({ filename: "..", conflictAction: "uniquify" });
 }
 
+// Chromium: whether the browser's `name` for a download is only its address's (#948). The session
+// rule below makes a file the browser would show or play a download by setting its answer's
+// Content-Disposition to "attachment": an inline answer's own name (`inline; filename="Movie.mkv"`)
+// goes with it, and the browser names the file after its address (`main.mkv`). Such a download (a
+// type the rule takes, named after its address, give or take the extension the type adds) goes to
+// MDM unnamed: MDM reads the server's own name from its answer, as Firefox's way does here
+// (`answerFile`). A name of its own (an attachment's, which the rule leaves alone; a link's
+// `download` name) stays the browser's.
+function addressNamed(item, url, name) {
+  const mime = String(item.mime || "").toLowerCase();
+  if (!mime || !openedTypes.some((m) => mime.startsWith(m))) return false;
+  const stem = (n) => splitExtension(n)[0].toLowerCase();
+  const own = addressName(url);
+  return Boolean(own) && stem(name) === stem(own);
+}
+
 if (SAFARI) {
   // Nothing to listen to: see `link`.
 } else if (!FIREFOX) {
@@ -1717,7 +1738,8 @@ if (SAFARI) {
     const url = item.finalUrl || item.url;
     candidate(item, url)
       .then(async (c) => {
-        const taken = Boolean(c && c.name && !c.left) && (await offer(item, url, c.name));
+        const taken =
+          Boolean(c && c.name && !c.left) && (await offer(item, url, c.name, addressNamed(item, url, c.name)));
         if (taken) return drop(item);
         // The browser goes on first; why is said after.
         noName(suggest);
@@ -1826,6 +1848,9 @@ async function syncOpenedRule() {
     condition: {
       resourceTypes: ["main_frame"],
       responseHeaders: [{ header: "content-type", values: openedTypes.map((m) => `${m}*`) }],
+      // An attachment is a download already, with the server's own name, which "set" would drop
+      // (#948): left as it is.
+      excludedResponseHeaders: [{ header: "content-disposition", values: ["attachment*"] }],
       // Options' excluded sites keep opening in the browser.
       ...(hosts.wide.length ? { excludedRequestDomains: hosts.wide } : {}),
     },

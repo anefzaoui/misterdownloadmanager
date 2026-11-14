@@ -609,6 +609,48 @@ const ok = (what) => {
   ok("opened types: the session rule follows the app's list");
 }
 
+// #948: the rule leaves an attachment alone (its server's name stays the browser's). A file it
+// made a download, which Chromium then names after its address (`main.mkv`, an inline answer's own
+// name dropped with the header), goes to MDM as only a guess: MDM names it from the server's answer.
+// A name of the browser's own, or a type the rule doesn't take, stays a name.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: false, types: "MKV MP4 ZIP" });
+  load(api, false);
+  await settle();
+  const rule = calls.filter((c) => c[0] === "dnr").pop()[1].addRules[0];
+  assert.deepEqual(rule.condition.excludedResponseHeaders, [{ header: "content-disposition", values: ["attachment*"] }]);
+  let id = 300;
+  const offered = async (item) => {
+    const before = natives(calls).length;
+    listeners.determining({ id: id++, referrer: "https://site.test/watch", totalBytes: 1 << 20, ...item }, () => {});
+    await settle();
+    const sent = natives(calls).slice(before);
+    assert.equal(sent.length, 1, `offered: ${JSON.stringify(item)}`);
+    return sent[0];
+  };
+  for (const [url, filename, mime] of [
+    ["https://cdn.test/v/9f3/main.mkv?token=a1", "C:\\dl\\main.mkv", "video/x-matroska"],
+    ["https://cdn.test/v/9f3/MAIN.mp4", "main.mp4", "video/mp4"],
+    // No extension in the address: the browser adds the type's.
+    ["https://cdn.test/v/stream", "stream.mp4", "video/mp4"],
+  ]) {
+    const m = await offered({ url, finalUrl: url, filename, mime });
+    assert.equal(m.nameGuessed, true, url);
+    assert.equal(m.filename, filename.split("\\").pop(), "still sent, for Options' file types");
+  }
+  for (const [url, filename, mime] of [
+    // An attachment's own name, or a link's `download` name.
+    ["https://cdn.test/v/9f3/main.mkv", "Real Movie (2024).mkv", "video/x-matroska"],
+    // Not a type the rule makes a download.
+    ["https://cdn.test/f/main.zip", "main.zip", "application/zip"],
+  ]) {
+    const m = await offered({ url, finalUrl: url, filename, mime });
+    assert.equal(m.nameGuessed, undefined, url);
+    assert.equal(m.filename, filename);
+  }
+  ok("#948 Chromium: a name only the address gave is sent as a guess; the rule keeps attachments");
+}
+
 // Right-click → Download with Mister Download Manager: handed over as an explicit request, so
 // the host takes any link (an .html page here); a failure opens the help page's section.
 {

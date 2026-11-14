@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Chromium browsers: a video (or a PDF, an MP3) the browser would play, taken by MDM, keeps
+  the name its server gives it instead of its address's (`main.mkv`)
+  ([#948](https://github.com/anefzaoui/misterdownloadmanager/issues/948))
 - ✅ Alt+click (Option+click on a Mac) leaves a download to the browser in Firefox too, where it
   did nothing, and when the link redirects or a page's script starts the download
   ([#332](https://github.com/anefzaoui/misterdownloadmanager/issues/332))
