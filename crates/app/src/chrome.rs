@@ -463,6 +463,164 @@ fn without_shortcut(text: &str) -> &str {
     t
 }
 
+/// Where the menu opened from the keyboard that a screen reader is to follow is, in its window:
+/// its lit item's node, kept for [`tell_screen_readers`] at the end of that window's pass.
+fn lit_menu_item_key(ctx: &egui::Context) -> egui::Id {
+    egui::Id::unique(("menu-lit-item", ctx.viewport_id()))
+}
+
+/// The open menu, told in the window it was opened from, for screen readers (#328). They follow
+/// the keyboard focus, and a menu's windows never take it (the main window keeps the keys, as
+/// with Win32's menus), so a menu opened with Alt, F10, Shift+F10 or a drop-down's keys showed
+/// and moved without a word. Here its levels are menus of this window too (at their places on
+/// the screen, in this window's points) with the item the keyboard lit as the focus's active
+/// descendant ([`tell_screen_readers`]): NVDA and Narrator say the item as it lights, and the
+/// control that had the focus again once the menu closes. A menu opened with the pointer is left
+/// to its own windows' nodes (a screen reader's pointer reads those).
+#[allow(clippy::too_many_arguments)]
+fn mirror_for_screen_readers<C>(
+    ctx: &egui::Context,
+    id: &str,
+    origin: Pos2,
+    at: Pos2,
+    entries: &[MenuEntry<C>],
+    sub_key: egui::Id,
+    hint: &dyn Fn(&C) -> Option<&'static str>,
+) {
+    let Some((Some(hl0), hl1)) =
+        ctx.data(|d| d.get_temp::<(Option<usize>, Option<usize>)>(sub_key.with("kb")))
+    else {
+        return;
+    };
+    if hl0 == usize::MAX {
+        return;
+    }
+    let size = menu_size(ctx, entries, hint);
+    let screen = Rect::from_min_size(place_menu(ctx, at, size, None), size);
+    let open_sub = ctx.data(|d| d.get_temp::<usize>(sub_key));
+    let sub_screen = ctx.data(|d| d.get_temp::<Rect>(sub_key.with("sub-rect")));
+    let mut ui = egui::Ui::new(
+        ctx.clone(),
+        egui::Id::unique(("menu-mirror", id)),
+        egui::UiBuilder::new().max_rect(screen.translate(-origin.to_vec2())),
+    );
+    // One level: its menu node at `rect` (this window's points) under `parent`, its items under
+    // it; the node of item `lit`, when it is one.
+    let mut level = |parent: Option<egui::Id>,
+                     depth: usize,
+                     rect: Rect,
+                     here: &[MenuEntry<C>],
+                     lit: Option<usize>,
+                     open: Option<usize>| {
+        let mut b = egui::UiBuilder::new().max_rect(rect);
+        if let Some(p) = parent {
+            b = b.accessibility_parent(p);
+        }
+        let mut level_ui = ui.new_child(b);
+        let menu = level_ui.interact(
+            rect,
+            egui::Id::unique(("menu-mirror-node", id, depth)),
+            egui::Sense::hover(),
+        );
+        winui::expose(&menu, egui::Role::Menu, "", true, None);
+        let items = level_ui.new_child(egui::UiBuilder::new().accessibility_parent(menu.id));
+        let (mut y, mut found, mut sub_node) = (rect.min.y + 3.0, None, None);
+        for (i, e) in here.iter().enumerate() {
+            if matches!(e, MenuEntry::Sep) {
+                y += SEP;
+                continue;
+            }
+            let slot =
+                Rect::from_min_max(pos2(rect.min.x + 6.0, y), pos2(rect.max.x - 6.0, y + SLOT));
+            y += SLOT;
+            let (label, enabled, checked) = match e {
+                MenuEntry::Item(l, _, en, ch) | MenuEntry::Radio(l, _, en, ch) => (*l, *en, *ch),
+                MenuEntry::Sub(l, en, _) => (*l, *en, false),
+                MenuEntry::Sep => continue,
+            };
+            let (t, _) = plain(crate::i18n::tc("menu", label));
+            let t = match e {
+                MenuEntry::Item(_, c, ..) | MenuEntry::Radio(_, c, ..) if hint(c).is_some() => {
+                    without_shortcut(&t).to_owned()
+                }
+                _ => t,
+            };
+            let item = items.interact(
+                slot,
+                egui::Id::unique(("menu-mirror-item", id, depth, i)),
+                egui::Sense::hover(),
+            );
+            let (role, on) = match e {
+                MenuEntry::Radio(..) => (egui::Role::MenuItemRadio, Some(checked)),
+                MenuEntry::Item(..) if checked => (egui::Role::MenuItemCheckBox, Some(true)),
+                _ => (egui::Role::MenuItem, None),
+            };
+            winui::expose(&item, role, &t, enabled, on);
+            if let MenuEntry::Sub(..) = e {
+                ctx.accesskit_node_builder(item.id, |n| {
+                    n.set_has_popup(egui::accesskit::HasPopup::Menu);
+                    n.set_expanded(open == Some(i));
+                });
+                if open == Some(i) {
+                    sub_node = Some(item.id);
+                }
+            }
+            if lit == Some(i) {
+                found = Some(item.id);
+            }
+        }
+        (found, sub_node)
+    };
+    let (mut lit, sub_parent) = level(
+        None,
+        0,
+        screen.translate(-origin.to_vec2()),
+        entries,
+        Some(hl0),
+        open_sub,
+    );
+    if let (Some(i), Some(r)) = (open_sub, sub_screen)
+        && let Some(MenuEntry::Sub(_, _, children)) = entries.get(i)
+    {
+        let (in_sub, _) = level(
+            sub_parent,
+            1,
+            r.translate(-origin.to_vec2()),
+            children,
+            hl1,
+            None,
+        );
+        if hl1.is_some() {
+            lit = in_sub;
+        }
+    }
+    if let Some(item) = lit {
+        // The key first: asking the context inside its data lock deadlocks.
+        let key = lit_menu_item_key(ctx);
+        ctx.data_mut(|d| d.insert_temp(key, item));
+    }
+}
+
+/// At the end of a window's pass: the menu item a screen reader is to follow ([`mirror_for_screen_readers`]),
+/// made the active descendant of what has the accessibility focus there (the focused control's
+/// node, else the window's own), so the screen reader says it as if it had the focus (#328).
+pub fn tell_screen_readers(ctx: &egui::Context) {
+    let key = lit_menu_item_key(ctx);
+    let Some(item) = ctx.data_mut(|d| {
+        let item = d.get_temp::<egui::Id>(key);
+        d.remove::<egui::Id>(key);
+        item
+    }) else {
+        return;
+    };
+    // As egui names the focus in its tree update: the focused widget, if it has a node.
+    let focus = ctx
+        .memory(|m| m.focused())
+        .filter(|f| ctx.has_accesskit_node(*f))
+        .unwrap_or_else(egui::accesskit_root_id);
+    ctx.accesskit_node_builder(focus, |n| n.set_active_descendant(item.accesskit_id()));
+}
+
 /// Open a menu from the keyboard: its first item is highlighted.
 pub fn start_keyboard(ctx: &egui::Context, id: &str) {
     show_cues(ctx);
@@ -723,6 +881,15 @@ pub fn popup<C: Clone>(
         sub_key,
         &mut result,
         0,
+        hint,
+    );
+    mirror_for_screen_readers(
+        ctx,
+        id,
+        origin,
+        origin + pos.to_vec2(),
+        entries,
+        sub_key,
         hint,
     );
     if let Some(c) = result {
@@ -2811,5 +2978,114 @@ mod tests {
             run(&[MenuBarEvent::Open(0), MenuBarEvent::Open(4)]),
             [Some(0), Some(4)]
         );
+    }
+
+    /// #328: a menu opened from the keyboard is said to screen readers. Its windows never take
+    /// the focus, so the window that has it shows the menu too, with the lit item as its focus's
+    /// active descendant; the arrows move it, and once the menu closes the focus is the control's
+    /// again. A menu opened with the pointer adds nothing there.
+    #[test]
+    fn a_menu_opened_from_the_keyboard_is_said_to_screen_readers() {
+        use egui::accesskit::{NodeId, Role};
+        let [one, two, three] = ["one", "two", "three"]; // not texts to translate
+        let entries: Vec<MenuEntry<u8>> = vec![
+            MenuEntry::Item(one, 0, true, false),
+            MenuEntry::Sep,
+            MenuEntry::Item(two, 1, true, false),
+            MenuEntry::Item(three, 2, false, false),
+        ];
+        let ctx = egui::Context::default();
+        ctx.enable_accesskit();
+        let button = egui::Id::unique("t328-button");
+        let mut t = 0.0;
+        // One pass of the window: a focused button (a toolbar's), the menu while `open`; the
+        // tree's focus, and what the screen reader takes for it (the focused node's active
+        // descendant, by name).
+        let mut pass = |open: bool, events: Vec<egui::Event>| {
+            t += 0.016;
+            let raw = egui::RawInput {
+                time: Some(t),
+                screen_rect: Some(Rect::from_min_size(
+                    pos2(0.0, 0.0),
+                    egui::vec2(1200.0, 800.0),
+                )),
+                events,
+                ..Default::default()
+            };
+            let mut out = ctx.run_ui(raw, |ui| {
+                let r = ui.interact(
+                    Rect::from_min_size(pos2(10.0, 40.0), egui::vec2(60.0, 40.0)),
+                    button,
+                    egui::Sense::click(),
+                );
+                r.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Button, true, "Add URL"));
+                if !ui.ctx().memory(|m| m.has_focus(button)) {
+                    ui.ctx().memory_mut(|m| m.request_focus(button));
+                }
+                if open {
+                    super::popup(
+                        ui.ctx(),
+                        MenuKind::Bar,
+                        "t328",
+                        pos2(10.0, 20.0),
+                        &entries,
+                        &|_| None,
+                    );
+                }
+                super::tell_screen_readers(ui.ctx());
+            });
+            out.textures_delta.clear();
+            let update = out
+                .platform_output
+                .accesskit_update
+                .expect("AccessKit is on");
+            let by_id: std::collections::HashMap<NodeId, &egui::accesskit::Node> =
+                update.nodes.iter().map(|(id, n)| (*id, n)).collect();
+            let focus = by_id[&update.focus];
+            let said = focus.active_descendant().map(|d| {
+                (
+                    by_id[&d].role(),
+                    by_id[&d].label().unwrap_or_default().to_owned(),
+                )
+            });
+            // The menu shown in this window for screen readers (the menu's own window, which a
+            // test embeds in this one, isn't counted).
+            let mirror = egui::Id::unique(("menu-mirror-node", "t328", 0usize)).accesskit_id();
+            let menus = update
+                .nodes
+                .iter()
+                .filter(|(id, n)| *id == mirror && n.role() == Role::Menu)
+                .count();
+            (update.focus == button.accesskit_id(), said, menus)
+        };
+        assert_eq!(pass(false, Vec::new()), (true, None, 0));
+        // Opened from the keyboard (Alt, F10): the first item.
+        super::start_keyboard(&ctx, "t328");
+        assert_eq!(
+            pass(true, Vec::new()),
+            (true, Some((Role::MenuItem, "one".to_owned())), 1)
+        );
+        let down = egui::Event::Key {
+            key: egui::Key::ArrowDown,
+            physical_key: None,
+            pressed: true,
+            repeat: false,
+            modifiers: egui::Modifiers::NONE,
+        };
+        // Down: over the separator to the next item; and to the disabled one, which is said too.
+        assert_eq!(
+            pass(true, vec![down.clone()]).1,
+            Some((Role::MenuItem, "two".to_owned()))
+        );
+        assert_eq!(
+            pass(true, vec![down]).1,
+            Some((Role::MenuItem, "three".to_owned()))
+        );
+        // Closed: the button again, and no menu in this window.
+        assert_eq!(pass(false, Vec::new()), (true, None, 0));
+        // Opened with the pointer (no item lit by the keyboard): nothing added here.
+        let pointer = egui::Id::unique(("popup-sub", "t328")).with("kb");
+        ctx.data_mut(|d| d.remove::<(Option<usize>, Option<usize>)>(pointer));
+        assert_eq!(pass(true, Vec::new()), (true, None, 0));
     }
 }
