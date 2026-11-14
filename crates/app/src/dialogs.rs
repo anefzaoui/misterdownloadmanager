@@ -5,7 +5,7 @@
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
 
-use egui::{Pos2, Ui, ViewportBuilder, ViewportId, vec2};
+use egui::{Pos2, Ui, ViewportId, vec2};
 use mdm_engine::ProbeInfo;
 use url::Url;
 
@@ -346,7 +346,7 @@ fn dialog_window<T>(
         forget_window(ctx, vid, key);
     }
     // Hidden until `keep_theme` has given it its theme (see there).
-    let mut builder = ViewportBuilder::default()
+    let mut builder = crate::window_builder()
         .with_visible(false)
         .with_title(crate::i18n::os_text(title))
         .with_inner_size(shown)
@@ -411,6 +411,8 @@ fn dialog_window<T>(
                 if caption_close { Outcome::Closed } else { out }
             })
             .inner;
+        // A drop-down list opened from the keyboard, said to screen readers (#328).
+        crate::chrome::tell_screen_readers(ui.ctx());
         if close { Outcome::Closed } else { out }
     });
     let rescaled = follow_scale(ctx, vid, key, shown);
@@ -1557,7 +1559,8 @@ impl FileInfo {
                 }
 
                 // Where the server is (#140), as the look saw it: "..." while it looks; blank when
-                // nothing was asked (the browser had the answer) or the look failed.
+                // nothing was asked (the browser had the answer). When the look failed, why, in
+                // words (#762: a refused certificate said so), where the size says "Error".
                 // i18n: label before where a download's server is (its country and round trip)
                 winui::text_right(
                     &p,
@@ -1588,7 +1591,17 @@ impl FileInfo {
                             );
                         }
                     }
-                    Some(Err(_)) => {}
+                    Some(Err(reason)) => {
+                        let (rect, cut) = winui::text_fit(
+                            &p,
+                            o.x + 96.0,
+                            o.y + 193.0 + dy,
+                            reason,
+                            winui::ERROR(),
+                            o.x + 462.0,
+                        );
+                        winui::copyable(ui, rect, "file-info-failed", reason, cut);
+                    }
                 }
 
                 // Held back while the address or the file's name can't be downloaded to (an

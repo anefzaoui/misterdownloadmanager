@@ -56,9 +56,13 @@ const DISK_HELD: Duration = Duration::from_millis(50);
 /// (and brought 256 KiB, `yardstick`): long enough that what was already on its way when it
 /// began doesn't count for much.
 const BEST_AFTER: Duration = Duration::from_millis(100);
+/// What the connections of a download bring together is measured over windows this long
+/// (`note_link`): the best one says what the link to this server carries, and the share of it
+/// each receiving connection gets is what one connection can do while they share it (#896).
+const LINK_WINDOW: Duration = Duration::from_secs(1);
 
 /// Shedding a slow connection (`Options::shed_slow`): after `SHED_GRACE` on a response, a
-/// connection under 1/`SHED_RATIO` of the best speed one connection reached, with more than
+/// connection under 1/`SHED_RATIO` of what one connection can do (`shed_bar`), with more than
 /// `SHED_LEFT` of work left at its own pace, reconnects. A slow TCP path (or a slow server
 /// slot) rarely survives a new request, and otherwise every free connection can end up stuck
 /// on one (measured: 14 s instead of ~2 s for 32 MiB when every third request was slow).
@@ -408,6 +412,10 @@ pub enum Error {
     /// the server with (a minimal Linux without `ca-certificates`, #264).
     #[error("{}", crate::tls::NO_ROOTS)]
     NoCertificates,
+    /// The server's certificate was refused (expired, not trusted, for another name): what a
+    /// browser warns about. Retrying won't help, and there is no way around it (#762).
+    #[error("{0}")]
+    Certificate(crate::tls::CertProblem),
 }
 
 /// What failed on the network (`Error::Net`).
@@ -452,6 +460,7 @@ impl Error {
                 | Error::Cancelled
                 | Error::InUse(_)
                 | Error::NoCertificates
+                | Error::Certificate(_)
         )
     }
 
@@ -574,6 +583,9 @@ impl From<reqwest::Error> for Error {
     fn from(e: reqwest::Error) -> Self {
         if crate::tls::is_no_roots(&e) {
             return Error::NoCertificates;
+        }
+        if let Some(problem) = crate::tls::certificate_problem(&e) {
+            return Error::Certificate(problem);
         }
         Error::Http(Arc::new(e))
     }
@@ -1215,6 +1227,8 @@ impl Download {
             planner: Mutex::new(None),
             limiter: Limiter::new(None),
             best_speed: Default::default(),
+            received: Default::default(),
+            link: Default::default(),
             disk_held: Default::default(),
             held: Default::default(),
             checked: Default::default(),
@@ -1299,8 +1313,12 @@ struct Shared {
     planner: Mutex<Option<Planner>>,
     limiter: Limiter,
     /// The best speed one connection of this download sustained (`yardstick`), bytes/s: what a good
-    /// connection to this server does, the yardstick for shedding.
+    /// connection to this server does, the yardstick for shedding (with `link`, `shed_bar`).
     best_speed: std::sync::atomic::AtomicU64,
+    /// Bytes every connection of this download received (claimed), for `link`.
+    received: std::sync::atomic::AtomicU64,
+    /// What the connections bring together (`note_link`).
+    link: Mutex<LinkMeter>,
     /// When a connection last stood still for the disk for `DISK_HELD` or longer (`Pace`).
     disk_held: Mutex<Option<std::time::Instant>>,
     /// Bytes received and claimed but not yet written, in the connections' buffers: shown as
@@ -1783,6 +1801,7 @@ fn client_with(
             &opts.dns,
             &opts.extra_roots,
             route,
+            Some(opts.connect_timeout),
         )))
         .http1_only()
         .user_agent(&opts.user_agent)
@@ -2669,7 +2688,7 @@ async fn segmented(
         at: std::time::Instant::now(),
         bytes: 0,
         took: Duration::ZERO,
-        covered: Duration::ZERO,
+        covered: 0,
     };
     save_state(&ctx, &mut saved, &path, &mut synced, true).await?;
     let interval = ctx.opts.save_interval;
@@ -2744,12 +2763,12 @@ fn sync_bytes(size: u64) -> u64 {
 }
 
 /// When the part file was last flushed, how many bytes were on disk then, how long it took,
-/// and the time it caught up with (since the flush before it ended).
+/// and the bytes it caught up with (those written since the flush before it).
 struct Synced {
     at: std::time::Instant,
     bytes: u64,
     took: Duration,
-    covered: Duration,
+    covered: u64,
 }
 
 impl Synced {
@@ -2766,17 +2785,21 @@ impl Synced {
     /// does: it would stop them for as long as it takes.
     fn fits(&self, new: u64, elapsed: Duration, room: u64) -> bool {
         let lasts = room as f64 * elapsed.as_secs_f64() / new.max(1) as f64;
-        self.expected(elapsed).as_secs_f64() <= lasts * 0.75
+        self.expected(new).as_secs_f64() <= lasts * 0.75
     }
 
-    /// How long a flush `elapsed` after the last one should take: as long as that one took for
-    /// each second it caught up with (what waits in the cache grows with the time, above).
-    fn expected(&self, elapsed: Duration) -> Duration {
-        if self.covered.is_zero() {
+    /// How long a flush of `new` bytes (written since the last one began) should take: as long
+    /// as that one took for each byte it caught up with. What waits in the cache is what came
+    /// since (above), by bytes, not by time: what the connections kept in memory while the last
+    /// flush held their writes reaches the cache all at once when it ends. Counted by the
+    /// seconds since, a flush right after a long one was expected to take a seventh of what it
+    /// did, and stopped the transfer for the rest (on GitHub's macOS runners: 3 s, 1.4 s of it
+    /// with the memory full).
+    fn expected(&self, new: u64) -> Duration {
+        if self.covered == 0 {
             return self.took;
         }
-        self.took
-            .mul_f64(elapsed.as_secs_f64() / self.covered.as_secs_f64())
+        self.took.mul_f64(new as f64 / self.covered as f64)
     }
 }
 
@@ -2821,7 +2844,7 @@ async fn save_state(
             at: std::time::Instant::now(),
             bytes,
             took: Duration::ZERO,
-            covered: Duration::ZERO,
+            covered: 0,
         };
         return Ok(());
     }
@@ -2843,7 +2866,7 @@ async fn save_state(
         at: std::time::Instant::now(),
         bytes,
         took: forced_gap(force, began.elapsed()),
-        covered: began.saturating_duration_since(synced.at),
+        covered: bytes.saturating_sub(synced.bytes),
     };
     Ok(())
 }
@@ -4463,6 +4486,7 @@ async fn receive(
                 }
                 out.push(&chunk[..n as usize]);
                 pace.received += n;
+                ctx.shared.received.fetch_add(n, Ordering::Relaxed);
                 if checked.elapsed() >= Duration::from_millis(500) {
                     checked = std::time::Instant::now();
                     ctx.shared.conn(id, |c| c.speed = pace.speed());
@@ -4727,11 +4751,60 @@ fn rate(bytes: u64, d: Duration) -> u64 {
 }
 
 /// Remember the speed of a response that ran long enough (`BEST_AFTER`, 256 KiB) to say what
-/// this server can do over one connection.
+/// this server can do over one connection, and what the connections bring together.
 fn note_best(ctx: &Ctx, pace: &Pace) {
     if let Some(speed) = yardstick(pace.received, pace.started.elapsed()) {
         ctx.shared.best_speed.fetch_max(speed, Ordering::Relaxed);
     }
+    note_link(&ctx.shared);
+}
+
+/// What a download's connections receive together, window by window (`LINK_WINDOW`).
+#[derive(Debug, Default)]
+struct LinkMeter {
+    /// Where the window under way began: when, and the bytes received by then.
+    since: Option<(std::time::Instant, u64)>,
+    /// The most the connections brought together in one window, bytes/s.
+    best: u64,
+}
+
+/// Close the link's window once it is `LINK_WINDOW` old, and keep its speed if it is the best.
+/// Not a window in which a connection stood still for the disk (`disk_held`), nor the one after:
+/// what the system kept for the connections meanwhile came in a burst once the disk let them
+/// read again, faster than the link (#782).
+fn note_link(shared: &Shared) {
+    let now = std::time::Instant::now();
+    let total = shared.received.load(Ordering::Relaxed);
+    let held = *shared.disk_held.lock().unwrap();
+    let mut m = shared.link.lock().unwrap();
+    let Some((since, then)) = m.since else {
+        m.since = Some((now, total));
+        return;
+    };
+    let took = now.saturating_duration_since(since);
+    if took < LINK_WINDOW {
+        return;
+    }
+    let disk = held.is_some_and(|t| now.saturating_duration_since(t) < took + LINK_WINDOW);
+    if !disk {
+        m.best = m.best.max(rate(total.saturating_sub(then), took));
+    }
+    m.since = Some((now, total));
+}
+
+/// What one connection of this download can do, the bar `too_slow` measures connections
+/// against: the best speed one connection sustained (`one`), but never more than its share of
+/// the best the connections brought together (`link`) among the `receiving` ones. A first
+/// connection alone on the line takes all of it, and once the others join each gets a part:
+/// measured against that first speed every one of them read as slow, and they were reconnected
+/// together every few seconds, a dip in the speed each time (#896, found by mhmdeve). Where each
+/// connection has a speed of its own (a server that caps each one), the share is above it and
+/// the bar stays that speed.
+fn shed_bar(one: u64, link: u64, receiving: usize) -> u64 {
+    if link == 0 {
+        return one;
+    }
+    one.min(link / receiving.max(1) as u64)
 }
 
 /// The speed a response of `received` bytes in `elapsed` (all of its time, the disk's waits
@@ -4754,14 +4827,24 @@ fn should_shed(ctx: &Ctx, id: WorkerId, pace: &Pace, at: u64) -> bool {
         return false;
     }
     let held = ctx.shared.disk_held.lock().unwrap().map(|t| t.elapsed());
-    let best = ctx.shared.best_speed.load(Ordering::Relaxed);
-    let left = ctx.shared.with_planner(|p| p.room(id, at)).unwrap_or(0);
-    too_slow(pace.net_speed(), pace.on_net(), best, left, held)
+    let one = ctx.shared.best_speed.load(Ordering::Relaxed);
+    let link = ctx.shared.link.lock().unwrap().best;
+    let (left, receiving) = ctx
+        .shared
+        .with_planner(|p| (p.room(id, at).unwrap_or(0), p.receiving_workers()));
+    too_slow(
+        pace.net_speed(),
+        pace.on_net(),
+        shed_bar(one, link, receiving),
+        left,
+        held,
+    )
 }
 
 /// A connection at `speed` over `on_net` of reading the network, with `left` bytes of its
-/// segment ahead, is slow enough to reconnect: far slower than the best a connection of this
-/// download sustained (comparing with the others fails once they are all stuck on slow paths),
+/// segment ahead, is slow enough to reconnect: far slower than `best`, what one connection of
+/// this download can do (`shed_bar`; comparing with the others now fails once they are all
+/// stuck on slow paths),
 /// with a lot left at its pace. Not while the disk sets the pace (`held`: a connection last
 /// stood still for it that long ago, #782): the connections' speeds then say what the disk
 /// lets through, a new connection would wait for the same disk, and the ones that waited
@@ -4974,7 +5057,7 @@ mod tests {
         };
         let (gb, mb) = (1u64 << 30, 1u64 << 20);
         // A disk that keeps up: 0.1 s to write 2 s of 115 MB/s. Every tick once 64 MiB came.
-        let fast = at(Duration::from_millis(100), s(2));
+        let fast = at(Duration::from_millis(100), 230 * mb);
         assert!(fast.due(230 * mb, 45 * gb, s(2), HOLD_MAX));
         assert!(!fast.due(32 * mb, 45 * gb, s(2), HOLD_MAX));
         // Few bytes: at the latest after SYNC_EVERY.
@@ -4982,26 +5065,29 @@ mod tests {
         // A hard disk behind the network: 2 s to write what 2 s of 115 MB/s left in the cache.
         // The next would take as long again, more than 256 MiB at that pace (2.3 s) covers with
         // room to spare, and every second waited makes it worse.
-        let behind = at(s(2), s(2));
+        let behind = at(s(2), 230 * mb);
         assert!(!behind.due(230 * mb, 45 * gb, s(2), HOLD_MAX));
         assert!(!behind.due(gb, 45 * gb, s(9), HOLD_MAX));
         assert!(!behind.due(7 * gb, 45 * gb, s(60), HOLD_MAX));
         // The same disk once the download has slowed to 10 MB/s: a flush fits again.
         assert!(behind.due(70 * mb, 45 * gb, s(7), HOLD_MAX));
         // 0.5.2's spacing (nine times the last flush) let them grow: 2 s, then 18 s later 18 s.
-        assert_eq!(behind.expected(s(18)), s(18));
+        assert_eq!(behind.expected(9 * 230 * mb), s(18));
         // The memory full of what waits for the disk (one that sets the pace): not even on
         // the fast disk.
         assert!(!fast.due(230 * mb, 45 * gb, s(2), 0));
-        // A flush that takes 1.5 s whatever it writes (#361's test disk): not again.
-        assert!(
-            !at(Duration::from_millis(1500), Duration::from_millis(100)).due(
-                gb,
-                gb,
-                s(5),
-                HOLD_MAX
-            )
-        );
+        // A flush that takes 1.5 s whatever it writes (#361's test disk), here after 100 ms of
+        // 115 MB/s: not again.
+        assert!(!at(Duration::from_millis(1500), 11 * mb).due(gb, gb, s(5), HOLD_MAX));
+        // Right after a flush of 0.8 s for 48 MiB, the 80 MiB that came meanwhile (the memory
+        // keeps them while it holds the writes) reach the cache at once: the next flush has them
+        // to write, 1.3 s at that pace, too long for the 210 MiB of memory left. Counted by
+        // the 0.16 s since, it was expected to take 0.3 s; it took 2.1 s, and on GitHub's macOS
+        // runners 3 s, the transfer stopped for 1.4 s of it.
+        let after_one = at(Duration::from_millis(800), 48 * mb);
+        assert!(!after_one.due(80 * mb, 768 * mb, Duration::from_millis(155), 210 * mb));
+        // Once the download has slowed enough for it to fit, it is due again.
+        assert!(after_one.due(80 * mb, 768 * mb, s(4), 210 * mb));
     }
 
     /// #518: when the forced save at the start (no connection writing yet) takes 0.5 s on a busy
@@ -5012,7 +5098,8 @@ mod tests {
             at: std::time::Instant::now(),
             bytes: 0,
             took,
-            covered: Duration::from_millis(1),
+            // 1 ms of 24 MB/s.
+            covered: 24 << 10,
         };
         let (slow, tick) = (Duration::from_millis(500), Duration::from_secs(2));
         assert!(at(forced_gap(true, slow)).due(15 << 20, 24 << 20, tick, HOLD_MAX));
@@ -5064,6 +5151,27 @@ mod tests {
         // A response says what a connection can do only once it ran BEST_AFTER (0.1 s).
         assert_eq!(yardstick(32 * mb, Duration::from_millis(50)), None);
         assert_eq!(yardstick(100 << 10, Duration::from_secs(2)), None);
+    }
+
+    /// #896: a line of 8 MiB/s that the first connection had to itself before the others
+    /// opened. Shared by 8, each gets 1 MiB/s: against the first one's speed every one of them
+    /// was slow; against its share of the line none is, and one that crawls still is.
+    #[test]
+    fn connections_sharing_a_line_are_measured_against_their_share() {
+        let mb = 1u64 << 20;
+        let (left, three) = (1 << 30, Duration::from_secs(3));
+        let (first, line) = (8 * mb, 8 * mb);
+        assert!(too_slow(mb, three, first, left, None), "the old bar");
+        let bar = shed_bar(first, line, 8);
+        assert_eq!(bar, mb);
+        assert!(!too_slow(mb, three, bar, left, None));
+        assert!(too_slow(64 << 10, three, bar, left, None), "a crawling one");
+        // A server that caps each connection (2 MiB/s each, 16 MiB/s for 8): the share is
+        // above what one connection does, so the bar stays that, with 8 receiving or 2.
+        assert_eq!(shed_bar(2 * mb, 16 * mb, 8), 2 * mb);
+        assert_eq!(shed_bar(2 * mb, 16 * mb, 2), 2 * mb);
+        // Nothing measured together yet: the one connection's best.
+        assert_eq!(shed_bar(first, 0, 8), first);
     }
 
     #[test]
