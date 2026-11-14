@@ -845,10 +845,28 @@ fn archive_folder(name: &str) -> bool {
     lower.starts_with("rar$") || seven || explorer
 }
 
-/// `path` with its links and short names resolved (`C:\Users\MEGAPC~1` is `C:\Users\Mega PC`),
-/// without Windows' `\\?\` before a drive; as given when it can't be read.
+/// `path` with its links and short names resolved (`C:\Users\MEGAPC~1` is `C:\Users\Mega PC`,
+/// macOS' `/tmp` is `/private/tmp`), without Windows' `\\?\` before a drive. A path that isn't
+/// there (yet) is resolved as far as it is, the rest kept as given, so it compares with a folder
+/// that is; as given when none of it can be read.
 fn full_path(path: &Path) -> PathBuf {
-    let full = std::fs::canonicalize(path).unwrap_or_else(|_| path.to_owned());
+    let mut there = path;
+    let mut rest = Vec::new();
+    let full = loop {
+        if let Ok(full) = std::fs::canonicalize(there) {
+            break rest
+                .iter()
+                .rev()
+                .fold(full, |p: PathBuf, name| p.join(name));
+        }
+        match (there.parent(), there.file_name()) {
+            (Some(parent), Some(name)) => {
+                rest.push(name);
+                there = parent;
+            }
+            _ => break path.to_owned(),
+        }
+    };
     let text = full.to_string_lossy();
     match text.strip_prefix(r"\\?\") {
         Some(rest) if rest.as_bytes().get(1) == Some(&b':') => PathBuf::from(rest),
@@ -1364,6 +1382,19 @@ mod tests {
         let exe = d.path().join("copy").join("misterdownloadmanager.exe");
         std::fs::write(&exe, b"").unwrap();
         assert!(in_temporary_folder(&exe));
+        // A temporary folder reached through a link (macOS' /tmp is /private/tmp), with a path
+        // under it that isn't there.
+        #[cfg(unix)]
+        {
+            let real = d.path().join("real");
+            std::fs::create_dir(&real).unwrap();
+            let link = d.path().join("link");
+            std::os::unix::fs::symlink(&real, &link).unwrap();
+            let gone = |dir: &Path| at(&dir.join("gone").to_string_lossy());
+            assert!(temporary(&gone(&link), std::slice::from_ref(&link)));
+            assert!(temporary(&gone(&link), std::slice::from_ref(&real)));
+            assert!(temporary(&gone(&real), &[link]));
+        }
     }
 
     fn manifest_naming(dir: &Path, program: &Path) -> PathBuf {
