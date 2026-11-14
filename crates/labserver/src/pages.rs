@@ -1,6 +1,7 @@
 //! Web pages for the browser extension's tests (tools/extension/e2e.mjs): `/page` (links, videos,
 //! audio, adaptive streams; optionally under a strict Content-Security-Policy), `/formpage`
-//! (forms that post to `/form`), `/cookie` (sets cookies) and their `/assets`. Styles and scripts
+//! (forms that post to `/form`), `/cookie` (sets cookies) and their `/assets`; and `/declared`, a
+//! page that declares one video and hides another (#1076, the video look-up's tests). Styles and scripts
 //! are files, never inline, so the pages work under `csp=strict`.
 
 use std::collections::HashMap;
@@ -61,16 +62,36 @@ fn video_tag(id: &str, src: &str, (w, h): (u32, u32), muted_loop: bool) -> Strin
 const MAX_FILES: u32 = 200_000;
 const MAX_PATH: u32 = 8_000;
 
-/// `files=N` links `/gen/1K/<folder>/fileK.zip?seed=K`, each path at least `pathlen` characters
-/// long (the folder's name made long enough), one per line in a list, after a line of text
+/// `files=N`: N links to small generated files, one per line in a list, after a line of text
 /// with no link (`#blank`: where a right-click is on the page, not on a link).
+///
+/// Without `pathlen`, as a big page's "Download all links" gives Link grabber (#1063): two in
+/// five a split archive's volumes (`setK.part1.rar`, `setK.part2.rar`: a package each), the
+/// others zips, videos and documents. With `pathlen`, `/gen/1K/<folder>/fileK.zip?seed=K`, each
+/// path at least `pathlen` characters long (the folder's name made long enough): a list too big
+/// for one message to the host, sent in parts (#1063).
 fn file_links(n: u32, pathlen: usize) -> String {
+    use std::fmt::Write;
     let mut out = format!("<p id=blank>{n} files</p><ul id=files>");
-    for k in 1..=n {
-        let name = format!("file{k}.zip");
-        let fixed = "/gen/1K//".len() + name.len();
-        let folder = "d".repeat(pathlen.saturating_sub(fixed).max(1));
-        out += &format!("<li><a href=\"/gen/1K/{folder}/{name}?seed={k}\">{name}</a>");
+    for k in 0..n {
+        let (folder, name, seed) = if pathlen == 0 {
+            let name = match k % 5 {
+                0 | 1 => format!("set{}.part{}.rar", k / 5, k % 5 + 1),
+                2 => format!("file{k}.zip"),
+                3 => format!("clip{k}.mp4"),
+                _ => format!("doc{k}.pdf"),
+            };
+            (String::new(), name, k)
+        } else {
+            let name = format!("file{}.zip", k + 1);
+            let fixed = "/gen/1K//".len() + name.len();
+            let folder = "d".repeat(pathlen.saturating_sub(fixed).max(1));
+            (format!("{folder}/"), name, k + 1)
+        };
+        let _ = write!(
+            out,
+            "<li><a href=\"/gen/1K/{folder}{name}?seed={seed}\">{name}</a>"
+        );
     }
     out + "</ul>"
 }
@@ -117,8 +138,9 @@ pub(crate) async fn page(RawQuery(q): RawQuery, headers: HeaderMap) -> Response 
         .map(|(_, v)| v.as_str())
         .collect();
     let link = links.first();
-    // `files=N`: N more links, each its own file, with paths `pathlen` characters long (a page
-    // listing a big folder: "Download all links" sends them all, in parts, #1063).
+    // `files=N`: N more links, each its own file (a big page's, for Link grabber, #1063); with
+    // `pathlen`, paths that long (a page listing a big folder: "Download all links" sends them
+    // all, in parts).
     let files = num("files", 0).min(MAX_FILES);
     let audio = m.get("audio").map(|a| {
         if parse_flag(a) == Some(true) {
@@ -217,6 +239,14 @@ pub(crate) async fn page(RawQuery(q): RawQuery, headers: HeaderMap) -> Response 
         );
     }
     let mut resp = html(body);
+    // `referrer=POLICY` (#607): the page's own referrer policy; `origin` makes its links'
+    // requests carry the site's address only, as a link to another site's file does by default.
+    if let Some(policy) = m
+        .get("referrer")
+        .and_then(|p| header::HeaderValue::from_str(p).ok())
+    {
+        resp.headers_mut().insert(header::REFERRER_POLICY, policy);
+    }
     if csp {
         let media = if !streams.is_empty() {
             "'self' blob:"
@@ -254,6 +284,68 @@ pub(crate) async fn leadon(RawQuery(q): RawQuery) -> Response {
         "{}Thank you<script>location.href = \"{to}\";</script>",
         head("Thank you")
     ))
+}
+
+/// What `/declared` declares and what it hides, by default.
+const DECLARED_FILM: &str = "/gen/2M/film.mp4?seed=3&inline=1";
+const DECLARED_HIDDEN: &str = "/gen/1M/welcome.mp4?seed=2&inline=1";
+
+/// `/declared?film=PATH&hidden=PATH&name=TEXT&title=TEXT&how=jsonld|og|twitter|none`: a page that
+/// declares its video (#1076) but whose HTML plays only another, hidden one (a site's welcome
+/// video in a closed help box): `hidden` in a `<video>` inside `<div hidden>`, and `film`
+/// declared as the page's own by its JSON-LD `VideoObject` (`contentUrl`, `name`), its
+/// `og:video` (`og:title`) or its `twitter:player` (`twitter:title`), or not at all.
+pub(crate) async fn declared(RawQuery(q): RawQuery) -> Response {
+    let m: HashMap<String, String> = pairs(q).into_iter().collect();
+    let get = |k: &str, default: &str| m.get(k).cloned().unwrap_or_else(|| default.to_owned());
+    let (film, hidden, name, title, how) = (
+        get("film", DECLARED_FILM),
+        get("hidden", DECLARED_HIDDEN),
+        get("name", "The Film"),
+        get("title", "The Film | Lab"),
+        get("how", "jsonld"),
+    );
+    let mut body = format!(
+        "<!doctype html><meta charset=utf-8><title>{}</title>",
+        esc(&title)
+    );
+    match how.as_str() {
+        "og" => {
+            body += &format!(
+                "<meta property=og:title content=\"{}\"><meta property=og:video content=\"{}\">\
+                 <meta property=og:video:type content=video/mp4>",
+                esc(&name),
+                esc(&film)
+            );
+        }
+        "twitter" => {
+            body += &format!(
+                "<meta name=twitter:card content=player><meta name=twitter:title content=\"{}\">\
+                 <meta name=twitter:player content=\"{}\">",
+                esc(&name),
+                esc(&film)
+            );
+        }
+        "none" => {}
+        _ => {
+            let ld = serde_json::json!({
+                "@context": "https://schema.org",
+                "@type": "VideoObject",
+                "name": name,
+                "contentUrl": film,
+            });
+            // `</` can't end the script early.
+            let ld = ld.to_string().replace("</", "<\\/");
+            body += &format!("<script type=application/ld+json>{ld}</script>");
+        }
+    }
+    body += &format!(
+        "<link rel=stylesheet href=/assets/page.css><body><h1>{}</h1>\
+         <div class=help hidden><video src=\"{}\" controls></video></div>",
+        esc(&name),
+        esc(&hidden)
+    );
+    html(body)
 }
 
 /// `/formpage?size=1M&name=report.zip&token=abc&with=QUERY`: three forms that post to `/form`

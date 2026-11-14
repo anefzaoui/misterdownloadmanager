@@ -423,6 +423,13 @@
           },
           "type": "array"
         },
+        "include_site": {
+          "description": "That button's Undo (#404): the host name `exclude_site` listed is taken off the excluded\nsites again (a pattern of the user's own that covers it stays).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "later": {
           "default": false,
           "description": "`/a`: add to the main queue, don't start.",
@@ -463,6 +470,13 @@
         },
         "origin": {
           "description": "From the browser (#900): the `Origin` its page's player sent with a video's stream or\nfile (`video_page`, `video_lookup`), sent again with it, its playlists and each of its\npieces, as a site's video server may serve its own pages' players only.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "page_url": {
+          "description": "From the browser (#607): the web page the download was started from, whole (its tab's\naddress; a link's opened in a tab of its own, the tab that opened it), where the Referer\nis often cut to the site's address by the page's referrer policy. Kept with the download:\nRefresh download address opens it.",
           "type": [
             "string",
             "null"
@@ -660,7 +674,7 @@
         },
         "video_title": {
           "default": null,
-          "description": "The title of the page the button was clicked on: a video yt-dlp knows only by its address\nis named by it.",
+          "description": "The title of the page the button was clicked on (the tab's, for a player in a frame of\nit), without the site's name (`Film | Site` is `Film`: the extension's `withoutSiteName`):\na video yt-dlp knows only by its address is named by it.",
           "type": [
             "string",
             "null"
@@ -788,7 +802,7 @@
         },
         "title": {
           "default": null,
-          "description": "The title of the page the button was clicked on: a video yt-dlp knows only by its address\nis named by it (as [`Command::video_title`]).",
+          "description": "The title of the page the button was clicked on, as [`Command::video_title`] has it: a\nvideo yt-dlp knows only by its address is named by it.",
           "type": [
             "string",
             "null"
