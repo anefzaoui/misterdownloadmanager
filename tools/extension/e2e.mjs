@@ -3076,13 +3076,15 @@ const CASES = {
           if (q) said.add(q.busy ? "looking" : q.note || q.rows.map((r) => r.name).join(", "));
           return filled(q) ? q : null;
         }).catch((e) => {
+          // An older extension may have nothing to say there (a feed's video no post names).
+          if (process.env.E2E_PLAYED_BEFORE) return null;
           throw new Error(`${e.message} (it said: ${[...said].join(" | ")})`);
         });
         // E2E_PLAYED_BEFORE=1: pictures of an older extension's menu there (a pull request's
         // "before"), which never offers what played.
         if (process.env.E2E_PLAYED_BEFORE) {
           await sleep(400);
-          const q = (await s.picks()) || m;
+          const q = (await s.picks()) || m || { box: (await rect(s, "mdm-video-button")) || v };
           if (shots && shot) await s.shot(path.join(shots, `${lang}-${shot}-before.png`), { l: Math.min(v.l, q.box.l) - 10, t: Math.min(v.t, q.box.t) - 10, r: Math.max(v.r, q.box.r) + 10, b: Math.max(v.b, q.box.b) + 10 });
           return null;
         }
