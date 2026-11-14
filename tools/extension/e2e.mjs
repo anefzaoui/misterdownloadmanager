@@ -16,9 +16,14 @@
 // The cases (per browser): folders (another extension's download in a folder of its own keeps
 // it, #578), link (a .zip link, throttled and not), ask (Firefox set to ask what to
 // do with each new type, as Waterfox is: caught before its dialog, #208), cookie (cookies and referrer
-// forwarded), names (Content-Disposition), redirect, leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
+// forwarded), startedfrom (the page a download was started from goes whole, where its Referer is
+// the site's address only; kept with the download for Refresh download address, #607), names
+// (Content-Disposition), torrents (a tracker's .torrent stays with the browser
+// while Torrent settings leave torrents alone, #1058), redirect, leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
 // to the browser: a link, a redirect, a page's script; Firefox's own default too, #332), sites (a listed
-// site's page linking to a file on another host leaves it to the browser, #1049), opened (a PDF or MP3 the browser would show or play), openedNames
+// site's page linking to a file on another host leaves it to the browser, #1049), manylinks
+// (Download all links on a page of 20,000 long links, in parts, to one Link grabber list), opened
+// (a PDF or MP3 the browser would show or play), openedNames
 // (such a video under its server's name, inline or an attachment, #948), spot (the video button
 // clear of the page's controls, #421), feeds (a video in a feed sends its post, its own file, or
 // nothing and says so, never the feed: sample pages served at LinkedIn's, Facebook's, X's,
@@ -2051,6 +2056,30 @@ const CASES = {
     return `${mdm.length} request(s) with sid=1, the page as referrer, the browser's User-Agent`;
   },
 
+  // #607: a page whose referrer policy is `origin` (as a link to another site's file gets by
+  // default; the lab stays on 127.0.0.1, which IDM may be told to leave alone): the browser sends
+  // only the page's site as the Referer, the extension the page itself, which MDM keeps with the
+  // download (its list on disk): Refresh download address opens it.
+  async startedfrom(t) {
+    const file = `e2e-from-${t.name}.zip`;
+    const page = `${LAB}/page?referrer=origin&link=${encodeURIComponent(`/gen/1M/${file}`)}`;
+    await t.session.navigate(page);
+    await t.session.evaluate("document.getElementById('link').click()");
+    await arrived(file, 1 << 20);
+    await keptNothing(t.dl);
+    const saved = await until(`${file} saved with its page`, 20000, () => {
+      try {
+        const list = JSON.parse(fs.readFileSync(path.join(data, "downloads.json"), "utf8").replace(/^\uFEFF/, ""));
+        return (list.items || []).find((i) => String(i.dest || "").endsWith(file) && i.page) || null;
+      } catch {
+        return null;
+      }
+    });
+    if (saved.page !== page) throw new Error(`saved with the page ${saved.page}, not ${page}`);
+    if (saved.referer !== `${LAB}/`) throw new Error(`its Referer is ${saved.referer}, not the site's address ${LAB}/`);
+    return `the page ${saved.page} kept with it, its Referer ${saved.referer}`;
+  },
+
   // Names from Content-Disposition: filename= and filename*= (UTF-8).
   async names(t) {
     const plain = `e2e-report-${t.name}.zip`;
@@ -2069,6 +2098,96 @@ const CASES = {
     const wrong = fs.readdirSync(path.join(downloads, "Compressed")).filter((f) => /^(download\.php|get|fallback-name\.zip)/.test(f));
     if (wrong.length) throw new Error(`saved under the address's or the fallback name too: ${wrong.join(", ")}`);
     return `${plain}, ${star}, ${raw}`;
+  },
+
+  // #1058: a .torrent from a tracker's download.php (named by Content-Disposition, sent as
+  // application/x-bittorrent) stays with the browser while Torrent settings' "Open magnet links
+  // and .torrent files with Mister Download Manager" is off, as by default, though TORRENT is in
+  // File types (it is in this run's list); with it on, MDM takes it (its Add torrent fetches it)
+  // and the browser keeps nothing.
+  async torrents(t) {
+    const p = `/gen/16K/tracker-${t.name}/download.php`;
+    const link = (name) => `${p}?id=42&cd=${encodeURIComponent(name)}&type=${encodeURIComponent("application/x-bittorrent")}`;
+    const off = `e2e-show-${t.name}.torrent`;
+    await clickLink(t, link(off));
+    const at = path.join(t.dl, off);
+    try {
+      await until(`${off} in the browser's folder`, 20000, () => fs.existsSync(at) && fs.statSync(at).size === 16 << 10);
+    } catch (e) {
+      e.message += ` (requests: ${(await requests(p)).map(brief).join("; ") || "none"}; the browser's folder: ${fs.readdirSync(t.dl).join(", ") || "empty"})`;
+      throw e;
+    }
+    await sleep(2000);
+    const asked = await requests(p);
+    if (asked.length !== 1) throw new Error(`off: ${asked.length} requests (only the browser's expected): ${asked.map(brief).join("; ")}`);
+    if ((await mdmList()).some((d) => d.file === off)) throw new Error("off: MDM took it too");
+    if (WIN && appWindows(appPid()).includes("Add torrent")) throw new Error("off: Add torrent opened");
+    // MDM's log says why (the host's line, or the extension's notice it wrote down).
+    const logged = () => {
+      const file = path.join(data, "logs", "mdm.log");
+      const log = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : "";
+      return log.split(/\r?\n/).find((l) => l.includes(off) && l.includes("Torrent settings"));
+    };
+    const why = await until("MDM's log line for it", 10000, logged).catch(() => {
+      throw new Error("off: MDM's log doesn't say why it stayed with the browser");
+    });
+    fs.rmSync(at);
+    // E2E_SHOTS (Chromium): <lang>-<scheme>-torrent-left.png, the popup saying why.
+    const shots = process.env.E2E_SHOTS ? path.resolve(process.env.E2E_SHOTS) : "";
+    const tag = `${process.env.E2E_LANG || "en"}-${process.env.E2E_COLOR_SCHEME || "system"}`;
+    if (shots && t.session.tab) {
+      const popup = await t.session.tab(`${t.session.base}popup.html`);
+      try {
+        const said = await until("the popup's reason", 10000, () =>
+          popup.evaluate(`(() => { const b = document.getElementById("declined"); return b && !b.hidden && document.getElementById("declined-why").textContent; })()`).catch(() => ""),
+        );
+        await sleep(500);
+        await popup.shot(path.join(shots, `${tag}-torrent-left.png`));
+        if (!said) throw new Error("the popup gives no reason");
+      } finally {
+        await popup.close();
+      }
+    }
+    // On: the extension learns it at its next question for the rules (Chromium: asked now;
+    // Firefox: once its copy is a minute old).
+    await panelSettings({ torrent_handler: true });
+    try {
+      if (t.session.inExtension) await t.session.inExtension("refreshRules().then(() => true)");
+      else {
+        await sleep(61000);
+        const primer = `e2e-primer-${t.name}.torrent`;
+        await clickLink(t, link(primer));
+        await until(`${primer} in the browser's folder`, 20000, () => fs.existsSync(path.join(t.dl, primer)));
+        await sleep(2000);
+        fs.rmSync(path.join(t.dl, primer), { force: true });
+      }
+      await clearLog();
+      const on = `e2e-show-on-${t.name}.torrent`;
+      await clickLink(t, link(on));
+      // Add torrent fetches it with the browser's request (MDM's own request after the browser's).
+      // The app started again with the setting (panelSettings): its process now.
+      const pid = WIN ? appPid() : 0;
+      await until("MDM's request for it", 20000, async () => (await requests(p)).length >= 2);
+      if (WIN) {
+        await until("Add torrent", 15000, () => appWindows(pid).includes("Add torrent")).catch((e) => {
+          e.message += ` (its windows: ${JSON.stringify(appWindows(pid))})`;
+          throw e;
+        });
+        // E2E_SHOTS: <lang>-<scheme>-torrent-taken.png, Add torrent as the browser's .torrent
+        // opens it (what the setting off did too, before #1058).
+        if (shots) {
+          await sleep(3000);
+          const cap = path.join(root, "tools", "lab", "cap-own.ps1");
+          spawnSync("powershell", ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", cap, "-ProcessId", String(pid), "-Title", "Add torrent", "-Out", path.join(shots, `${tag}-torrent-taken.png`)], { stdio: "ignore" });
+        }
+        appWindows(pid, "Add torrent");
+        await until("Add torrent closed", 5000, () => !appWindows(pid).includes("Add torrent"));
+      }
+      await keptNothing(t.dl);
+    } finally {
+      await panelSettings({ torrent_handler: false });
+    }
+    return `off: the browser kept ${off}, MDM's log says why (${why.split(": ").slice(-1)[0].slice(0, 60)}...); on: Add torrent fetched it, the browser kept nothing`;
   },
 
   // A redirect: MDM keeps the address clicked (it asks it again to renew the link).
@@ -2201,6 +2320,83 @@ const CASES = {
       await panelSettings({ excluded_sites: was });
     }
     return "a file on 127.0.0.1 linked from a listed site's page (localhost): the browser's, MDM untouched";
+  },
+
+  // Download all links on a page of 20,000 links with long paths (E2E_MANY_LINKS: another
+  // number), about 5 MB of them, past the 1 MB a message to the host may be: sent in parts, they
+  // open in Link grabber as one list, every link once, and nothing opens the help page. Firefox's
+  // right-click menu is opened and its item chosen; Chromium's can't be opened headless, so its
+  // handler is called as the menu calls it.
+  async manylinks(t) {
+    const n = Number(process.env.E2E_MANY_LINKS || 20000);
+    const page = `${LAB}/page?files=${n}&pathlen=200&title=many`;
+    await t.session.navigate(page);
+    const log = path.join(data, "logs", "mdm.log");
+    const from = fs.existsSync(log) ? fs.statSync(log).size : 0;
+    const label = "Download all links with Mister Download Manager";
+    const help = "https://misterdownloadmanager.com/help/browser-help.html";
+    // The tabs open now (the help page's, when the extension explains a failure).
+    const tabs = () =>
+      t.kind === "chromium"
+        ? t.session.inExtension(`chrome.tabs.query({}).then((ts) => ts.map((x) => x.pendingUrl || x.url || ""))`)
+        : t.session.inBrowser(`[...gBrowser.tabs].map((x) => x.linkedBrowser.currentURI.spec || "")`);
+    const started = Date.now();
+    let clicked;
+    if (t.kind === "chromium") {
+      clicked = await t.session.inExtension(`(async () => {
+        const tab = (await chrome.tabs.query({})).find((x) => x.url === ${JSON.stringify(page)});
+        if (!tab) return "no tab";
+        await menuClicked({ menuItemId: "mdm-all", pageUrl: tab.url, frameId: 0 }, tab);
+        const { status } = await chrome.storage.local.get("status");
+        return "called; status " + JSON.stringify(status && status.why) + ", badge " + JSON.stringify(await chrome.action.getBadgeText({}));
+      })()`);
+    } else {
+      const at = await t.session.evaluate(`(() => { const b = document.getElementById("blank").getBoundingClientRect(); return [b.left + 4, b.top + b.height / 2]; })()`);
+      clicked = await t.session.menu(at[0], at[1], label);
+      if (!String(clicked).startsWith("chosen")) throw new Error(`the menu: ${clicked}`);
+    }
+    // E2E_OLD_APP (a released app and its host, which know no parts): each part reaches Link
+    // grabber as a list of its own, and nothing says why (no line in its log): it opens, and no
+    // help page does.
+    if (process.env.E2E_OLD_APP) {
+      if (!WIN) throw new Skip(NO_UIA);
+      const pid = ourApps()[0];
+      const shown = await until("Link grabber", 120000, async () => (await tabs()).some((u) => u.startsWith(help)) ? ["help"] : appWindows(pid).includes("Link grabber") && appWindows(pid));
+      if (shown[0] === "help") throw new Error(`the help page opened: ${(await tabs()).join(", ")} (${clicked})`);
+      await sleep(3000);
+      if ((await tabs()).some((u) => u.startsWith(help))) throw new Error(`the help page opened: ${(await tabs()).join(", ")}`);
+      await stopApp();
+      return `an older app: Link grabber opened (${shown.join(", ")}), no help page in ${((Date.now() - started) / 1000).toFixed(1)} s (${clicked})`;
+    }
+    // The app's line once the list is whole (crates/app/src/linkparts.rs), or the help page.
+    const said = () => (fs.existsSync(log) ? fs.readFileSync(log, "utf8").slice(from) : "");
+    const whole = new RegExp(`a page's (\\d+) links came in (\\d+) parts`);
+    let got = null;
+    try {
+      got = await until("the page's links in MDM", 90000, async () => whole.exec(said()) || ((await tabs()).some((u) => u.startsWith(help)) && "help"));
+    } catch (e) {
+      e.message += ` (${clicked}; tabs: ${(await tabs()).join(", ")})`;
+      throw e;
+    }
+    const open = await tabs();
+    if (got === "help") throw new Error(`the help page opened instead: ${open.filter((u) => u.startsWith(help)).join(", ")} (${clicked})`);
+    const [, links, parts] = got.map(Number);
+    if (links !== n) throw new Error(`${links} links reached MDM, not ${n} (${parts} parts)`);
+    if (parts < 2) throw new Error(`in ${parts} part: the test's list should need more`);
+    const ms = Date.now() - started;
+    let windows = "";
+    if (WIN) {
+      const pid = ourApps()[0];
+      const shown = await until("Link grabber", 20000, () => appWindows(pid).includes("Link grabber") && appWindows(pid));
+      windows = `, windows: ${shown.join(", ")}`;
+      appWindows(pid, "Link grabber");
+    }
+    await sleep(1000);
+    const after = await tabs();
+    if (after.some((u) => u.startsWith(help))) throw new Error(`the help page opened too: ${after.join(", ")}`);
+    // Link grabber looks its links up: stopped with the app (the next case starts another).
+    await stopApp();
+    return `${links} links in ${parts} parts to Link grabber in ${(ms / 1000).toFixed(1)} s${windows}; no help page (${clicked})`;
   },
 
   // Files the browser would show or play, made downloads, MDM's (Chromium 128+, Firefox): typed
@@ -3462,6 +3658,9 @@ const KNOWN_BUGS = {};
 // The registry keys `nmhost --register` and `--unregister` touch (crates/nmhost REGISTRY_KEYS,
 // FIREFOX_KEY, CHROME_EXTERNAL_KEY): each browser's host entry and Chrome's external extension,
 // per user and for everyone (the latter only read: an installed copy's). [key, 32-bit view].
+// Also this account's .torrent and magnet associations (TORRENT_KEYS), which Torrent settings'
+// switch writes (win32.rs set_torrent_handlers): no test instance may touch them (#1058); one
+// changed fails the run, after being put back.
 const HOST = "com.misterdownloadmanager.host";
 const REG_KEYS = ["HKCU", "HKLM"].flatMap((root) => [
   ...[
@@ -3472,7 +3671,8 @@ const REG_KEYS = ["HKCU", "HKLM"].flatMap((root) => [
     "Software\\Mozilla\\NativeMessagingHosts",
   ].map((k) => [`${root}\\${k}\\${HOST}`, false]),
   [`${root}\\Software\\Google\\Chrome\\Extensions`, true],
-]);
+]).concat([".torrent", "magnet", "MisterDownloadManager.Torrent"].map((k) => [`HKCU\\Software\\Classes\\${k}`, false]));
+const TORRENT_KEYS = new Set(REG_KEYS.filter(([k]) => k.includes("\\Classes\\")).map(([k]) => k));
 
 // Linux and macOS: the host's manifests (`<HOST>.json`) in the home folder's browser folders,
 // found by a walk (each browser family has its own places: crates/ipc browsers.rs host_dirs),
@@ -3678,9 +3878,13 @@ async function run() {
         extension_never_ask: true,
         show_start_dialog: false,
         automation_api: true,
-        // The default types plus XZ, for the proxy case (a type other download managers leave alone).
-        auto_types: "3GP 7Z AAC ACE AIF APK ARJ ASF AVI BIN BZ2 EXE GZ GZIP IMG ISO LZH M4A M4V MKV MOV MP3 MP4 MPA MPE MPEG MPG MSI MSU OGG OGV PDF PLJ PPS PPT QT R0* R1* RA RAR RM RMVB SEA SIT SITX TAR TIF TIFF WAV WMA WMV XZ Z ZIP",
+        // The default types plus XZ, for the proxy case (a type other download managers leave
+        // alone); TORRENT for the torrents case (#1058).
+        auto_types: "3GP 7Z AAC ACE AIF APK ARJ ASF AVI BIN BZ2 EXE GZ GZIP IMG ISO LZH M4A M4V MKV MOV MP3 MP4 MPA MPE MPEG MPG MSI MSU OGG OGV PDF PLJ PPS PPT QT R0* R1* RA RAR RM RMVB SEA SIT SITX TAR TIF TIFF TORRENT WAV WMA WMV XZ Z ZIP",
         category_dirs: dirs,
+        // Torrent settings' switch decided (off): the instance never settles it from this
+        // computer's installer value or associations (#1058).
+        torrent_handler: false,
       },
     }),
   );
@@ -3843,9 +4047,12 @@ async function run() {
         : `${WIN ? "registry" : "host manifests"}: ${regBefore.length} ${WIN ? "keys" : "files"} byte-identical to before the run${regCheck.changed.length ? ` (put back: ${regCheck.changed.join(", ")})` : ""}; present before: ${kept.join(", ") || "none"}`,
     );
   }
+  // A test instance changed this account's .torrent or magnet association (put back above).
+  const associations = regCheck ? regCheck.changed.filter((k) => TORRENT_KEYS.has(k)) : [];
+  if (associations.length) console.log(`registry: the run CHANGED this account's torrent associations (put back): ${associations.join(", ")}`);
   if (test) console.log(testLeft.length ? `test host: STILL REGISTERED: ${testLeft.join(", ")}` : `test host: ${test.keys.join(", ")} registered for the run, removed`);
   console.log(`total ${((Date.now() - t0) / 1000).toFixed(0)}s`);
-  if (results.some((r) => r[2] === "FAILED" || r[2] === "BUG") || (regCheck && regCheck.differ.length) || testLeft.length) process.exit(1);
+  if (results.some((r) => r[2] === "FAILED" || r[2] === "BUG") || (regCheck && regCheck.differ.length) || associations.length || testLeft.length) process.exit(1);
 }
 
 // Run when started, not when another script imports its helpers (tools/readme/browser-shots.mjs).
