@@ -306,6 +306,9 @@ Everything below ships together, in version 0.5.0.
   built in; 7z and RAR need 7-Zip) extracted when they are downloaded
   ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37)); collecting copied links
   comes later
+- ✅ Link grabber: Click'n'Load from link sites, in their packages with their archive passwords;
+  off by default, asked once per site, the links not looked up before they are added
+  ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37))
 - ✅ Image galleries with gallery-dl: Wikimedia Commons, Flickr, DeviantArt and many more,
   verified like yt-dlp, or your own copy ([#58](https://github.com/anefzaoui/misterdownloadmanager/issues/58))
 - ✅ Torrents: seeding limits (a share ratio, or a time), off by default, and a finished torrent's
@@ -323,6 +326,8 @@ Everything below ships together, in version 0.5.0.
   HTTP, no peer connections ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 - ✅ Debrid accounts (experimental): TorBox, for file-host links and torrents
   ([#391](https://github.com/anefzaoui/misterdownloadmanager/issues/391))
+- ✅ Debrid accounts: Mega-Debrid, with its user name and password or an application's API key
+  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 - ✅ Sign-ins in the system's keychain: Windows Credential Manager, the Secret Service keyring on
   Linux, the macOS keychain; for debrid accounts, Sites Logins and the proxy
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
@@ -986,6 +991,11 @@ These ship in the next version.
   (part of [#493](https://github.com/anefzaoui/misterdownloadmanager/issues/493))
 - ✅ Windows: **Open folder** uses the file manager set up to open folders, not always Explorer
   ([#446](https://github.com/anefzaoui/misterdownloadmanager/issues/446))
+- ✅ Linux: downloads to an NTFS drive (`ntfs3`) start at once instead of filling the file with
+  zeros first, which held the download at 0% and slowed the whole computer
+- ✅ Linux on Wayland (XWayland) with NVIDIA's driver: typing and clicking no longer lag by 1 to 2
+  seconds; MDM spaces its frames itself instead of waiting for the screen's refresh (other drivers
+  keep the refresh)
 
 ## Being worked on
 
