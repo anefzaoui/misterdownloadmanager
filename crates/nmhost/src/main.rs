@@ -822,7 +822,8 @@ fn delivered(cmd: &mdm_ipc::Command) -> Reply {
 }
 
 /// Whether Options let the browser hand `m` over; an explicit request always may. Both
-/// addresses must pass when redirects led elsewhere (an excluded site sending to a CDN).
+/// addresses must pass when redirects led elsewhere (an excluded site sending to a CDN), and the
+/// page the download came from (its `referrer`) is on no excluded site either (#1049).
 fn verdict(
     m: &Message,
     rules: &mdm_ipc::capture::CaptureRules,
@@ -831,12 +832,13 @@ fn verdict(
         return Ok(());
     }
     let (name, browser) = (file_name_of(m), browser(m));
-    rules.accepts(&m.url, &name, browser)?;
+    let page = m.referrer.as_deref();
+    rules.accepts(&m.url, &name, browser, page)?;
     if rules.too_small(m.size) {
         return Err(mdm_ipc::capture::Declined::Small);
     }
     match m.final_url.as_deref().filter(|f| *f != m.url) {
-        Some(f) => rules.accepts(f, &name, browser),
+        Some(f) => rules.accepts(f, &name, browser, page),
         None => Ok(()),
     }
 }
@@ -2186,6 +2188,25 @@ mod tests {
         };
         assert_eq!(verdict(&m, &rules), Err(mdm_ipc::capture::Declined::Site));
         m.final_url = Some("https://cdn.example.com/a.zip".into());
+        assert_eq!(verdict(&m, &rules), Ok(()));
+        // #1049: the page it came from (the referrer) on an excluded site leaves it to the
+        // browser too, wherever the file is; a page elsewhere or none takes it as before.
+        let mut rules = rules;
+        rules.excluded_sites = "example.org".into();
+        m.final_url = None;
+        m.url = "https://cdn.files.test/a.zip".into();
+        m.referrer = Some("https://www.example.org/downloads".into());
+        assert_eq!(verdict(&m, &rules), Err(mdm_ipc::capture::Declined::Site));
+        m.explicit = true;
+        assert_eq!(
+            verdict(&m, &rules),
+            Ok(()),
+            "asked for: Options don't apply"
+        );
+        m.explicit = false;
+        m.referrer = Some("https://other.test/".into());
+        assert_eq!(verdict(&m, &rules), Ok(()));
+        m.referrer = None;
         assert_eq!(verdict(&m, &rules), Ok(()));
     }
 
