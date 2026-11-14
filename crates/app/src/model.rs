@@ -40,7 +40,14 @@ pub struct CustomCategory {
 static CUSTOM: std::sync::RwLock<Vec<CustomCategory>> = std::sync::RwLock::new(Vec::new());
 
 pub fn set_custom(list: &[CustomCategory]) {
-    *CUSTOM.write().unwrap() = list.to_vec();
+    // The rules' lock first, as `rules` takes it: nobody matches a name against half a change.
+    let mut rules = RULES.write().unwrap();
+    let mut custom = CUSTOM.write().unwrap();
+    if *custom != list {
+        *custom = list.to_vec();
+        *rules = None;
+        CHANGES.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+    }
 }
 
 pub fn custom(id: u32) -> Option<CustomCategory> {
@@ -69,7 +76,51 @@ pub struct BuiltinEdit {
 static BUILTIN: std::sync::RwLock<Vec<BuiltinEdit>> = std::sync::RwLock::new(Vec::new());
 
 pub fn set_builtin(list: &[BuiltinEdit]) {
-    *BUILTIN.write().unwrap() = list.to_vec();
+    let mut rules = RULES.write().unwrap();
+    let mut builtin = BUILTIN.write().unwrap();
+    if *builtin != list {
+        *builtin = list.to_vec();
+        *rules = None;
+        CHANGES.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+    }
+}
+
+/// The file types each category takes, in the order [`Category::of`] tries them: the user's
+/// categories, then the built-in ones not deleted. Worked out from `CUSTOM` and `BUILTIN` once,
+/// and again after they change (`None` until then): `of` runs for each link of a list of
+/// thousands, and listing every category's types again for each name held the window (#1063).
+type Rules = Vec<(Category, Vec<String>)>;
+static RULES: std::sync::RwLock<Option<Rules>> = std::sync::RwLock::new(None);
+
+/// How many times the categories changed (`set_custom`, `set_builtin`): what was worked out
+/// from them (a link's category) is worked out again when this moves.
+static CHANGES: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+
+/// See [`CHANGES`].
+pub fn categories_changed() -> u64 {
+    CHANGES.load(std::sync::atomic::Ordering::Relaxed)
+}
+
+/// `f` with the rules, worked out first if the categories changed since.
+fn rules<R>(f: impl FnOnce(&Rules) -> R) -> R {
+    if let Some(rules) = RULES.read().unwrap().as_ref() {
+        return f(rules);
+    }
+    let mut rules = RULES.write().unwrap();
+    f(rules.get_or_insert_with(|| {
+        let custom: Vec<Category> = CUSTOM
+            .read()
+            .unwrap()
+            .iter()
+            .map(|c| Category::Custom(c.id))
+            .collect();
+        // A deleted built-in takes no file: its types go to another category, or to General.
+        custom
+            .into_iter()
+            .chain(Category::BUILT_IN.into_iter().filter(|c| !c.deleted()))
+            .map(|c| (c, c.extensions()))
+            .collect()
+    }))
 }
 
 fn builtin(cat: Category) -> Option<BuiltinEdit> {
@@ -91,12 +142,13 @@ fn parse_types(types: &str) -> Vec<String> {
         .collect()
 }
 
-/// Does `ext` (lower case) match a file-type pattern (`mp4`, `r0*`)?
+/// Does `ext` match a file-type pattern (`mp4`, `r0*`), in any case?
 fn type_matches(pattern: &str, ext: &str) -> bool {
-    let pattern = pattern.to_ascii_lowercase();
     match pattern.strip_suffix('*') {
-        Some(prefix) => ext.starts_with(prefix),
-        None => ext == pattern,
+        Some(prefix) => ext
+            .get(..prefix.len())
+            .is_some_and(|start| start.eq_ignore_ascii_case(prefix)),
+        None => ext.eq_ignore_ascii_case(pattern),
     }
 }
 
@@ -257,18 +309,41 @@ impl Category {
 
     /// The category a file name falls into: the user's categories first (that is why they made
     /// one), then IDM's; Torrents only by source, never by name.
+    /// Nothing is listed or copied for a name: the categories' types are worked out once
+    /// ([`RULES`], #1063).
     pub fn of(file_name: &str) -> Category {
         let Some((_, ext)) = file_name.rsplit_once('.') else {
             return Category::General;
         };
+        rules(|rules| {
+            rules
+                .iter()
+                .find(|(_, types)| types.iter().any(|p| type_matches(p, ext)))
+                .map_or(Category::General, |(c, _)| *c)
+        })
+    }
+
+    /// [`Self::of`] as it was before #1063 (every category's types listed again for each
+    /// name), for the tests that show both give the same answers.
+    #[cfg(test)]
+    pub fn of_as_before(file_name: &str) -> Category {
+        let Some((_, ext)) = file_name.rsplit_once('.') else {
+            return Category::General;
+        };
         let ext = ext.to_ascii_lowercase();
+        let type_matches = |pattern: &str, ext: &str| {
+            let pattern = pattern.to_ascii_lowercase();
+            match pattern.strip_suffix('*') {
+                Some(prefix) => ext.starts_with(prefix),
+                None => ext == pattern,
+            }
+        };
         let custom: Vec<Category> = CUSTOM
             .read()
             .unwrap()
             .iter()
             .map(|c| Category::Custom(c.id))
             .collect();
-        // A deleted built-in takes no file: its types go to another category, or to General.
         custom
             .into_iter()
             .chain(Category::BUILT_IN.into_iter().filter(|c| !c.deleted()))

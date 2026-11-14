@@ -57,8 +57,29 @@ fn video_tag(id: &str, src: &str, (w, h): (u32, u32), muted_loop: bool) -> Strin
     )
 }
 
+/// The most links `files=N` gives.
+const MAX_FILES: u32 = 50_000;
+
+/// `files=N`: N links to small generated files, as a big page's "Download all links" gives Link
+/// grabber (#1063): two in five a split archive's volumes (`setK.part1.rar`, `setK.part2.rar`:
+/// a package each), the others zips, videos and documents.
+fn file_links(n: u32) -> String {
+    use std::fmt::Write;
+    let mut out = String::new();
+    for k in 0..n {
+        let name = match k % 5 {
+            0 | 1 => format!("set{}.part{}.rar", k / 5, k % 5 + 1),
+            2 => format!("file{k}.zip"),
+            3 => format!("clip{k}.mp4"),
+            _ => format!("doc{k}.pdf"),
+        };
+        let _ = write!(out, "<p><a href=\"/gen/1K/{name}?seed={k}\">{name}</a></p>");
+    }
+    out
+}
+
 /// `/page?title=TEXT&link=PATH&video=PATH|1&w=&h=&muted_loop=1&iframe=1&shadow=1&several=N&audio=PATH|1&
-/// hls=1&dash=1&drm=1&hls2=1&dash2=1&hlsg=SITE&csp=strict`: a web page with what the browser
+/// hls=1&dash=1&drm=1&hls2=1&dash2=1&hlsg=SITE&csp=strict&files=N`: a web page with what the browser
 /// extension acts on (see `HELP`).
 pub(crate) async fn page(RawQuery(q): RawQuery, headers: HeaderMap) -> Response {
     let pairs = pairs(q);
@@ -71,6 +92,8 @@ pub(crate) async fn page(RawQuery(q): RawQuery, headers: HeaderMap) -> Response 
     let size = (num("w", 640), num("h", 360));
     let (muted_loop, iframe, shadow) = (flag("muted_loop"), flag("iframe"), flag("shadow"));
     let several = num("several", 0).min(16);
+    // A big page's links (#1063), for Link grabber.
+    let files = num("files", 0).min(MAX_FILES);
     let csp = m.get("csp") == Some(&"strict");
     // #900: the stream on another site (`hlsg=SITE`), served only to this page's Origin and
     // Referer: SITE's address for this host's guarded stream.
@@ -113,7 +136,11 @@ pub(crate) async fn page(RawQuery(q): RawQuery, headers: HeaderMap) -> Response 
         None if muted_loop
             || iframe
             || shadow
-            || (link.is_none() && audio.is_none() && several == 0 && streams.is_empty()) =>
+            || (link.is_none()
+                && audio.is_none()
+                && several == 0
+                && files == 0
+                && streams.is_empty()) =>
         {
             Some(DEFAULT_VIDEO)
         }
@@ -167,6 +194,7 @@ pub(crate) async fn page(RawQuery(q): RawQuery, headers: HeaderMap) -> Response 
     if let Some(src) = audio {
         body += &format!("<audio id=audio src=\"{}\" controls></audio>", esc(src));
     }
+    body += &file_links(files);
     for (k, (kind, manifest)) in streams.iter().enumerate() {
         let id = if k == 0 {
             "player".to_owned()

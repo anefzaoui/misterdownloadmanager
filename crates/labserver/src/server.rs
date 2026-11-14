@@ -710,6 +710,9 @@ GET /page?<any of>
     iframe=1       the video inside <iframe id=frame> (a /page of its own)
     shadow=1       the video inside the open shadow root of <div id=host> (declarative)
     several=N      N more videos #video1..N, each with its own <source> /gen/1M/clipK.mp4?seed=K
+    files=N        N links (at most 50000) to /gen/1K files, as a big page gives Link grabber:
+                   two in five a split archive's volumes (setK.part1.rar, setK.part2.rar), the
+                   others fileK.zip, clipK.mp4, docK.pdf
     audio=PATH|1   <audio id=audio controls> (1: /gen/512K/sound.mp3?inline=1)
     hls=1, dash=1, drm=1   a <video> and /assets/stream.js for each (#player, then #player2,
                    #player3), which fetches /hls/master.m3u8, /dash/manifest.mpd or

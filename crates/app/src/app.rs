@@ -9531,12 +9531,14 @@ impl App {
                     context,
                     crate::i18n::mark("by Link grabber"),
                 );
-                if let Some(i) = self.items.iter_mut().find(|i| i.id == id) {
+                // The download just added is the list's last: not looked for among them all,
+                // for each link (#1063: 37,000 links took seconds).
+                if let Some(i) = self.items.last_mut().filter(|i| i.id == id) {
                     i.package = Some(tag.clone());
-                }
-                // A name the server didn't give (none looked up) may still change.
-                if size.is_none() {
-                    self.name_guessed(id, true);
+                    // A name the server didn't give (none looked up) may still change.
+                    if size.is_none() {
+                        i.name_from_url = true;
+                    }
                 }
                 self.queues[0].items.push(id);
                 added.push(id);
@@ -9548,6 +9550,7 @@ impl App {
             .then(|| added.first().copied())
             .flatten();
         if let Some(g) = group {
+            let added: std::collections::HashSet<u64> = added.iter().copied().collect();
             for i in self.items.iter_mut().filter(|i| added.contains(&i.id)) {
                 i.group = Some(g);
             }
