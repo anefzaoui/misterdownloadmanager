@@ -567,6 +567,10 @@ These ship in the next version.
   registration that leads nowhere at each start, never one that works, and Test browser
   integration says which copy is gone
   ([#818](https://github.com/anefzaoui/misterdownloadmanager/issues/818))
+- ✅ Linux, Wayland: MDM chooses its windows' system the same way however it starts (its menu
+  entry, the browser's helper, autostart): Wayland's own windows on a scaled screen where nothing
+  tells X11 programs the scale (Hyprland, labwc, sway), XWayland elsewhere; **View → Window
+  system** to choose ([#624](https://github.com/anefzaoui/misterdownloadmanager/issues/624))
 - ✅ The sites in **Don't start downloading automatically from the following sites** take their
   subdomains and the files their pages link to on another server (a CDN), as the Download panels'
   list does
@@ -1050,8 +1054,9 @@ These ship in a later version, when they're ready.
 - 🔄 Linux, what's left ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
   screen readers (Orca) reading MDM's windows; browsers installed as a Flatpak (Firefox from
   Flathub may reach MDM through the desktop, as the Snap does: to check); native Wayland windows
-  (`MDM_WAYLAND=1`) placing their menus, which needs popup windows the window library doesn't
-  have yet, so XWayland stays the default; Vulkan as the default renderer (below)
+  placing their menus, which needs popup windows the window library doesn't have yet, so
+  XWayland stays the default unless X11's windows would be scaled up (#624); Vulkan as the
+  default renderer (below)
 - 🔄 The Safari extension (in 0.5.2): still to check in Safari itself, signed with a Developer ID
 
 ### Bugs being looked into
