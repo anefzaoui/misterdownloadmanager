@@ -17,7 +17,8 @@
 // it, #578), link (a .zip link, throttled and not), ask (Firefox set to ask what to
 // do with each new type, as Waterfox is: caught before its dialog, #208), cookie (cookies and referrer
 // forwarded), names (Content-Disposition), redirect, leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
-// to the browser: a link, a redirect, a page's script; Firefox's own default too, #332), opened (a PDF or MP3 the browser would show or play), spot (the video button
+// to the browser: a link, a redirect, a page's script; Firefox's own default too, #332), sites (a listed
+// site's page linking to a file on another host leaves it to the browser, #1049), opened (a PDF or MP3 the browser would show or play), spot (the video button
 // clear of the page's controls, #421), feeds (a video in a feed sends its post, its own file, or
 // nothing and says so, never the feed: sample pages served at LinkedIn's, Facebook's, X's,
 // Instagram's, Reddit's, TikTok's, Vimeo's, Dailymotion's addresses, #689), preview (the video button kept over a hover-to-play
@@ -44,6 +45,7 @@
 // updated while it showed, #336), reconnect (a tab opened while
 // the host couldn't start gets the button once it can, no reload; then MDM started by a click, and
 // reached after it quits and starts again, #474), start (MDM not running: the host starts it),
+// exclude (the toolbar button's "Never take downloads from <site>" says it worked, with Undo, #404),
 // remote (Send downloads to → Another MDM, #157: paired from the popup, a link downloaded by a
 // headless MDM; E2E_REMOTE_URL for one running elsewhere, such as the Docker image: remoteServer).
 //
@@ -2153,6 +2155,41 @@ const CASES = {
     return `the browser's own download, MDM untouched: ${done.join(", ")}`;
   },
 
+  // #1049: a site in Options' excluded sites keeps the files its pages link to on another host
+  // (a CDN) in the browser, by the page the download came from (its referrer): a page on
+  // localhost, listed, links to a file on 127.0.0.1, not listed.
+  async sites(t) {
+    const file = `e2e-sites-${t.name}.zip`;
+    const p = `/gen/1M/${file}`;
+    const saved = JSON.parse(fs.readFileSync(path.join(data, "downloads.json"), "utf8").replace(/^﻿/, ""));
+    const was = saved.settings.excluded_sites;
+    await panelSettings({ excluded_sites: "localhost" });
+    try {
+      await t.session.navigate(`http://localhost:${PORT}/page?link=${encodeURIComponent(LAB + p)}`);
+      await t.session.evaluate("document.getElementById('link').click()");
+      const at = path.join(t.dl, file);
+      try {
+        await until(`${file} in the browser's folder`, 20000, () => {
+          const names = fs.readdirSync(t.dl);
+          return names.length === 1 && names[0] === file && fs.statSync(at).size === 1 << 20;
+        });
+      } catch (e) {
+        const item = (await mdmList()).find((d) => d.file === file);
+        e.message += ` (MDM: ${item ? `${item.status} ${item.path}` : "nothing"}; requests: ${(await requests(p)).map(brief).join("; ") || "none"})`;
+        throw e;
+      }
+      await sleep(1500);
+      const item = (await mdmList()).find((d) => d.file === file);
+      if (item) throw new Error(`MDM got it too: ${item.status} ${item.path}`);
+      const all = await requests(p);
+      if (all.length !== 1) throw new Error(`${all.length} requests for it (only the browser's expected): ${all.map(brief).join("; ")}`);
+      fs.rmSync(at);
+    } finally {
+      await panelSettings({ excluded_sites: was });
+    }
+    return "a file on 127.0.0.1 linked from a listed site's page (localhost): the browser's, MDM untouched";
+  },
+
   // Files the browser would show or play, made downloads, MDM's (Chromium 128+, Firefox): typed
   // into the address bar, the tab stays on its page. A PDF sent with "Content-Disposition:
   // inline; filename=..." (as many servers do), one sent without it, an MP3 sent inline.
@@ -2642,6 +2679,72 @@ const CASES = {
       return `listed ${all.map((r) => `${r.tag} ${r.name}${r.drm ? " (protected)" : ""}`).join(", ")}; ${file} downloaded with the cookie and referrer; video window: ${opened.join(", ")}`;
     } finally {
       await popup.close();
+    }
+  },
+
+  // #404: the toolbar button's "Never take downloads from localhost" says it worked, with Undo,
+  // in a real popup: MDM lists the site (its saved Options), the popup opened again says the same,
+  // and Undo takes it off. E2E_SHOTS: <lang>-exclude-offer.png, <lang>-exclude-done.png
+  // (E2E_COLOR_SCHEME: light or dark). E2E_EXCLUDE_BEFORE=1: only the pictures, for an older
+  // popup put in the packed extension (nothing it doesn't have is asked of it).
+  async exclude(t) {
+    if (!t.session.tab || !t.session.base) throw new Skip("the popup in a tab of its own: Chromium's");
+    const shots = process.env.E2E_SHOTS ? path.resolve(process.env.E2E_SHOTS) : "";
+    const lang = process.env.E2E_LANG || "en";
+    const before = process.env.E2E_EXCLUDE_BEFORE === "1";
+    const site = "localhost";
+    const page = `http://${site}:${PORT}/page?title=${encodeURIComponent("Lab downloads")}`;
+    const listed = () => {
+      try {
+        const s = JSON.parse(fs.readFileSync(path.join(data, "downloads.json"), "utf8").replace(/^\uFEFF/, "")).settings;
+        return (s.excluded_sites || "").split(/\s+/).includes(site);
+      } catch {
+        return false;
+      }
+    };
+    if (listed()) throw new Error(`${site} is excluded already`);
+    await t.session.navigate(page);
+    const open = () => t.session.tab(`${t.session.base}popup.html?page=${encodeURIComponent(page)}`);
+    const seen = (popup) =>
+      popup.evaluate(`(() => { const v = (id) => { const e = document.getElementById(id); return e && !e.hidden && e.offsetParent !== null; };
+        return { offer: v("exclude"), offerText: document.getElementById("exclude").textContent, done: v("excluded"),
+          doneText: document.getElementById("excluded-text") ? document.getElementById("excluded-text").textContent : document.getElementById("excluded").textContent,
+          undo: v("undo") }; })()`);
+    const snap = async (popup, name) => {
+      if (shots && popup.shot) await popup.shot(path.join(shots, `${lang}-${name}.png`));
+    };
+    let popup = await open();
+    try {
+      await until("the popup's offer", 10000, async () => (await seen(popup).catch(() => ({}))).offer);
+      await sleep(300);
+      await snap(popup, "exclude-offer");
+      await popup.evaluate(`document.getElementById("exclude").click(), true`);
+      await until(`${site} in MDM's excluded sites`, 10000, listed);
+      await sleep(500);
+      await snap(popup, "exclude-done");
+      if (before) return "pictures only (E2E_EXCLUDE_BEFORE)";
+      const done = await seen(popup);
+      if (done.offer || !done.done || !done.undo) throw new Error(`after the click: ${JSON.stringify(done)}`);
+      if (!done.doneText.includes(site)) throw new Error(`it says "${done.doneText}"`);
+      await popup.close();
+      // Opened again on the site: the same, not the offer.
+      popup = await open();
+      const again = await until("the popup opened again", 10000, async () => {
+        const s = await seen(popup).catch(() => ({}));
+        return (s.done || s.offer) && s;
+      });
+      if (again.offer || !again.undo) throw new Error(`opened again: ${JSON.stringify(again)}`);
+      await popup.evaluate(`document.getElementById("undo").click(), true`);
+      await until(`${site} off MDM's excluded sites`, 10000, () => !listed());
+      const undone = await until("the offer back", 5000, async () => {
+        const s = await seen(popup);
+        return s.offer && !s.done && s;
+      });
+      return `"${done.doneText}" with Undo, also when opened again; Undo took ${site} off (the offer back: "${undone.offerText}")`;
+    } finally {
+      await popup.close();
+      // Never left listed for the next case.
+      if (listed()) await ipc({ include_site: site }).catch(() => {});
     }
   },
 

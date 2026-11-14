@@ -145,7 +145,8 @@ function fakeApi({
         // for an address it can't download (`noticeReply`).
         if (m.declined) return noticeReply || { ok: true };
         if (lookup && (m.videoLookup || m.videoPoll || m.videoPick)) return lookup(m);
-        return reply;
+        // A function: the app's answer to this message (it may change its rules, as the app would).
+        return typeof reply === "function" ? reply(m) : reply;
       },
       getManifest: () => ({
         version: "0.2.5",
@@ -543,6 +544,37 @@ const ok = (what) => {
   ok("Alt, excluded sites, blob: and withdrawn site access stay with the browser");
 }
 
+// #1049: a plain name in Options' excluded sites takes its subdomains, and a file its pages link
+// to on another host (a CDN) is the site's too, by the download's referrer; with no page known,
+// the file's own host decides.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: false, rules: { excludedSites: "example.test *.mirror.* https://*kept*" } });
+  load(api, false);
+  const keep = async (item) => {
+    let suggested = false;
+    listeners.determining(item, () => (suggested = true));
+    await settle();
+    return suggested;
+  };
+  assert.ok(await keep({ id: 60, url: "https://www.example.test/a.zip", filename: "a.zip" }), "a subdomain");
+  assert.ok(
+    await keep({ id: 61, url: "https://cdn.files.test/b.zip", referrer: "https://www.example.test/get", filename: "b.zip" }),
+    "from the site's page",
+  );
+  assert.deepEqual(natives(calls), []);
+  assert.deepEqual(notices(calls).map((n) => [n.why, n.name]), [["site", "a.zip"], ["site", "b.zip"]]);
+  assert.ok(!(await keep({ id: 62, url: "https://cdn.files.test/c.zip", referrer: "https://other.test/", filename: "c.zip" })), "another site's page");
+  assert.ok(!(await keep({ id: 63, url: "https://cdn.files.test/d.zip", referrer: "", filename: "d.zip" })), "no page known");
+  assert.ok(!(await keep({ id: 64, url: "https://badexample.test/e.zip", filename: "e.zip" })), "not a subdomain");
+  assert.deepEqual(natives(calls).map((m) => m.url), ["https://cdn.files.test/c.zip", "https://cdn.files.test/d.zip", "https://badexample.test/e.zip"]);
+  // Wildcards, as the app reads them (#759): `*.mirror.*`, a scheme left out.
+  assert.ok(await keep({ id: 65, url: "https://dl.mirror.org/f.zip", filename: "f.zip" }), "*.mirror.*");
+  assert.ok(await keep({ id: 66, url: "https://mirror.net/g.zip", filename: "g.zip" }), "*.mirror.* takes the domain");
+  assert.ok(await keep({ id: 67, url: "https://cdn.files.test/h.zip", referrer: "https://www.kept.test/", filename: "h.zip" }), "*kept*");
+  assert.equal(natives(calls).length, 3);
+  ok("#1049: excluded sites take their subdomains and the files their pages link to");
+}
+
 // Paused from the toolbar button: nothing is taken until it is on again.
 {
   const { api, calls, listeners, store } = fakeApi({ firefox: false });
@@ -560,6 +592,47 @@ const ok = (what) => {
   await send({ type: "exclude-site", host: "files.test" });
   assert.ok(natives(calls).some((m) => m.excludeSite === "files.test"));
   ok("the popup: state, pause, never this site");
+}
+
+// #404: "Never take downloads from <site>" says it worked, and its Undo takes the site off the
+// excluded sites again; the popup opened later on that site knows it is excluded. A site excluded
+// by a pattern of Options' own is said excluded, without Undo (the app would keep the pattern).
+{
+  const rules = { excludedSites: "*.update.microsoft.com" };
+  // As the app: the host name added (once), or taken off by its own name only.
+  const reply = (m) => {
+    const sites = rules.excludedSites.split(/\s+/).filter(Boolean);
+    if (m.excludeSite && !sites.includes(m.excludeSite)) rules.excludedSites = [...sites, m.excludeSite].join(" ");
+    if (m.includeSite) rules.excludedSites = sites.filter((p) => p.toLowerCase() !== m.includeSite.toLowerCase()).join(" ");
+    return { ok: true };
+  };
+  const { api, calls, listeners } = fakeApi({ firefox: false, rules, reply });
+  load(api, false);
+  const send = (m) => new Promise((r) => listeners.message(m, { id: "ours" }, (v) => r(JSON.parse(JSON.stringify(v)))));
+  await settle();
+  assert.deepEqual(await send({ type: "site-excluded", host: "files.test" }), { excluded: false, undo: false });
+  assert.deepEqual(await send({ type: "exclude-site", host: "files.test" }), { ok: true });
+  assert.deepEqual(await send({ type: "site-excluded", host: "files.test" }), { excluded: true, undo: true });
+  // Its downloads stay with the browser now.
+  let suggested = false;
+  listeners.determining({ id: 61, url: "https://files.test/a.zip", filename: "a.zip" }, () => (suggested = true));
+  await settle();
+  assert.ok(suggested && !natives(calls).some((m) => m.url === "https://files.test/a.zip"), "excluded: left to the browser");
+  // Undo: the host goes to the app, the site's downloads come back.
+  assert.deepEqual(await send({ type: "include-site", host: "files.test" }), { ok: true });
+  assert.ok(natives(calls).some((m) => m.includeSite === "files.test"));
+  assert.deepEqual(await send({ type: "site-excluded", host: "files.test" }), { excluded: false, undo: false });
+  listeners.determining({ id: 62, url: "https://files.test/b.zip", filename: "b.zip" }, () => {});
+  await settle();
+  assert.ok(natives(calls).some((m) => m.url === "https://files.test/b.zip"), "taken again after Undo");
+  // Excluded by Options' own pattern: said so, no Undo.
+  assert.deepEqual(await send({ type: "site-excluded", host: "dl.update.microsoft.com" }), { excluded: true, undo: false });
+  // An app that can't take it back (an older one): Undo says it didn't work.
+  const old = fakeApi({ firefox: false, reply: (m) => (m.includeSite ? { ok: false, why: "refused" } : { ok: true }) });
+  load(old.api, false);
+  const ask = (m) => new Promise((r) => old.listeners.message(m, { id: "ours" }, (v) => r(JSON.parse(JSON.stringify(v)))));
+  assert.deepEqual(await ask({ type: "include-site", host: "files.test" }), { ok: false });
+  ok("#404 the popup: never this site, said, and its Undo");
 }
 
 // An app older than the extension: still connected, with a nudge to update it.
@@ -593,15 +666,15 @@ const ok = (what) => {
   const values = rule.addRules[0].condition.responseHeaders[0].values;
   assert.ok(values.includes("application/pdf*") && values.includes("audio/mpeg*"));
   assert.ok(!values.some((v) => v.startsWith("video/mp4")), "MP4 not listed");
-  // Options' excluded sites keep opening in the browser: *. with its subdomains, a plain host
-  // by itself (an allow rule).
-  const ex = fakeApi({ firefox: false, types: "PDF", rules: { excludedSites: "*.docs.test files.test:8080" } });
+  // Options' excluded sites keep opening in the browser, with their subdomains whether written
+  // with *. or not (#1049), and so do the files their pages lead to on another host.
+  const ex = fakeApi({ firefox: false, types: "PDF", rules: { excludedSites: "*.docs.test files.test:8080 docs.test" } });
   load(ex.api, false);
   await settle();
   const added = ex.calls.filter((c) => c[0] === "dnr").pop()[1].addRules;
-  assert.deepEqual(added[0].condition.excludedRequestDomains, ["docs.test"]);
-  assert.equal(added[1].action.type, "allow");
-  assert.equal(added[1].condition.regexFilter, "^[a-z]+://files\\.test(:[0-9]+)?/", "the host alone, any port");
+  assert.equal(added.length, 1, "one rule: no allow rules of their own");
+  assert.deepEqual(added[0].condition.excludedRequestDomains, ["docs.test", "files.test"]);
+  assert.deepEqual(added[0].condition.excludedInitiatorDomains, ["docs.test", "files.test"]);
   const off = fakeApi({ firefox: false, rules: { opened: false } });
   load(off.api, false);
   await settle();

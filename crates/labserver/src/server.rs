@@ -235,6 +235,8 @@ pub(crate) struct Shared {
     /// Over HTTPS: each connection's ClientHello, browser-like or not (`LogEntry::browser_tls`),
     /// by the client's address.
     browser_tls: Mutex<HashMap<SocketAddr, bool>>,
+    /// `link_rate`: when the shared link is free again (`Shared::link_turn`).
+    link_free: Mutex<Instant>,
 }
 
 impl Shared {
@@ -244,6 +246,16 @@ impl Shared {
 
     fn faults(&self) -> Faults {
         self.faults.read().unwrap().clone()
+    }
+
+    /// `link_rate`: when `n` bytes may go, after every chunk already given a turn on the link
+    /// (first come, first served: each connection waits for one chunk at a time, so they take
+    /// turns and share the link evenly).
+    fn link_turn(&self, n: u64, rate: u64) -> Instant {
+        let mut free = self.link_free.lock().unwrap();
+        let start = (*free).max(Instant::now());
+        *free = start + Duration::from_secs_f64(n as f64 / rate as f64);
+        *free
     }
 
     /// Resolves once the server's faults leave the byte at `at` to be sent.
@@ -359,6 +371,7 @@ impl LabServer {
             drive_uuids: Mutex::default(),
             files: cfg.files,
             browser_tls: Mutex::default(),
+            link_free: Mutex::new(Instant::now()),
         });
         let tls = match cfg.tls {
             true => Some(crate::ftp::certificate().map_err(io::Error::other)?),
@@ -646,6 +659,8 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     range_rate=SIZE  the rate of answers to requests with a Range (instead of rate)
     burst=SIZE     with a rate, a link: a response the client stopped reading catches up with
                    at most SIZE at once (by default all it fell behind by)
+    link_rate=SIZE one link of SIZE bytes/s that every response of the server shares: a
+                   connection alone takes all of it, n connections a share each
     stall_at=SIZE  never send the file's byte at that offset: a response stops there and waits
                    (until the server's faults change, from a test; a URL's own value stays)
     require_cookie=NAME=VALUE|NAME   403 unless the Cookie header has it
@@ -1479,6 +1494,7 @@ pub(crate) async fn serve(
         end,
         rate,
         burst: f.burst,
+        link_rate: f.link_rate.filter(|l| *l > 0),
         drop_at,
         // A URL's own stall stays; the server's is lifted with `set_faults`.
         stall_at: f.stall_at.filter(|at| (start..end).contains(at)),
@@ -1665,6 +1681,8 @@ struct Transfer {
     end: u64,
     rate: Option<u64>,
     burst: Option<u64>,
+    /// `link_rate`: the link this response shares with every other one.
+    link_rate: Option<u64>,
     drop_at: Option<u64>,
     /// The file offset this response stops at (`stall_at`), and whether `set_faults` can lift it.
     stall_at: Option<u64>,
@@ -1701,6 +1719,9 @@ impl Transfer {
             if let Some(at) = t.stall_at {
                 n = n.min(at - t.pos);
             }
+            if let Some(link) = t.link_rate {
+                n = n.min((link / 50).max(1024));
+            }
             if let Some(r) = t.rate.filter(|r| *r > 0) {
                 n = n.min((r / 20).max(1024));
                 if let Some(b) = t.burst {
@@ -1717,6 +1738,10 @@ impl Transfer {
             }
             if let Some(d) = t.drop_at {
                 n = n.min(d - t.sent);
+            }
+            if let Some(link) = t.link_rate {
+                let turn = t.shared.link_turn(n, link);
+                tokio::time::sleep_until(turn.into()).await;
             }
             let mut buf = vec![0u8; n as usize];
             content::fill_with_head(t.seed, t.pos, &mut buf, t.magic.unwrap_or_default());

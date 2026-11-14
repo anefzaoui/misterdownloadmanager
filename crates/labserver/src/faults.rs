@@ -14,6 +14,11 @@ pub struct Faults {
     /// rate; by default it is paced from its start, so it sends everything it fell behind by.
     #[serde(deserialize_with = "size_opt")]
     pub burst: Option<u64>,
+    /// One link every response of the server shares, bytes/s: each connection gets its turn on
+    /// it, so a connection alone takes all of it and n of them a share each, as on a real line
+    /// whose speed the connections divide (#896). On top of `rate`, which caps one response.
+    #[serde(deserialize_with = "size_opt")]
+    pub link_rate: Option<u64>,
     /// Every Nth request is throttled to `slow_rate` (simulates one slow connection).
     pub slow_every: Option<u64>,
     #[serde(deserialize_with = "size_opt")]
@@ -105,6 +110,7 @@ impl Faults {
         Faults {
             rate: over.rate.or(self.rate),
             burst: over.burst.or(self.burst),
+            link_rate: over.link_rate.or(self.link_rate),
             slow_every: over.slow_every.or(self.slow_every),
             slow_rate: over.slow_rate.or(self.slow_rate),
             max_conns: over.max_conns.or(self.max_conns),
