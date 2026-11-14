@@ -2823,7 +2823,7 @@ mod tests {
             X11WindowType::PopupMenu
         );
         assert_eq!(menu_window_type(MenuKind::List), X11WindowType::Combo);
-        let b = super::menu_window(egui::ViewportBuilder::default(), MenuKind::Bar);
+        let b = super::menu_window(crate::window_builder(), MenuKind::Bar);
         assert_eq!(b.override_redirect, Some(true));
         assert_eq!(b.window_type, Some(X11WindowType::DropdownMenu));
     }
