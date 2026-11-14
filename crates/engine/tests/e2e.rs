@@ -2211,3 +2211,126 @@ async fn a_capped_download_resumes_within_the_cap() {
         "{spans:?}"
     );
 }
+
+/// Download `path` from `s` into a fresh folder the engine names it in; its name and its bytes
+/// (the generated file `seed`, with `head` over its first bytes).
+async fn named_download(
+    s: &LabServer,
+    path: &str,
+    seed: u64,
+    head: &[u8],
+    opts: Options,
+) -> String {
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url: s.url(path).parse().unwrap(),
+        headers: Default::default(),
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    let out = Download::start(req, opts)
+        .wait()
+        .await
+        .expect("download succeeds");
+    let data = std::fs::read(&out.path).unwrap();
+    let mut want = vec![0; data.len()];
+    content::fill_with_head(seed, 0, &mut want, head);
+    assert!(data == want, "{path}: content mismatch");
+    assert_eq!(data.len() as u64, 1 << 20, "{path}");
+    out.path.file_name().unwrap().to_string_lossy().into_owned()
+}
+
+/// #695, #800: a video a server's program sends (`/stream.php?id=…` as video/mp4) is named by
+/// its type, its `file=` value, its bytes and the page's title, never the script's extension;
+/// the server's own name still wins; segmented as any download.
+#[tokio::test]
+async fn a_scripts_video_is_named_by_what_it_is() {
+    let s = server("").await;
+    let titled = || Options {
+        page_title: Some("Lecture: one".into()),
+        ..fast_opts()
+    };
+    let mp4 = content::media_head("mp4").unwrap();
+    // Its type: video/mp4.
+    assert_eq!(
+        named_download(&s, "/stream.php?id=7", 0, &[], fast_opts()).await,
+        "stream.mp4"
+    );
+    // Its `file=` value, before the page's title.
+    assert_eq!(
+        named_download(&s, "/stream.php?file=clip.mp4&token=x", 0, &[], titled()).await,
+        "clip.mp4"
+    );
+    // The page's title for a name that means nothing.
+    assert_eq!(
+        named_download(&s, "/remote_control.php?id=9&seed=4", 4, &[], titled()).await,
+        "Lecture one.mp4"
+    );
+    // No type said (none, or octet-stream): its first bytes say it, and are saved as sent.
+    assert_eq!(
+        named_download(
+            &s,
+            "/remote_control.php?id=9&type=none&magic=mp4&seed=5",
+            5,
+            mp4,
+            titled()
+        )
+        .await,
+        "Lecture one.mp4"
+    );
+    assert_eq!(
+        named_download(
+            &s,
+            "/stream.php?id=3&type=application/octet-stream&magic=webm&seed=6",
+            6,
+            content::media_head("webm").unwrap(),
+            fast_opts()
+        )
+        .await,
+        "stream.webm"
+    );
+    // Nothing says what it is: the script's name stays (nothing is guessed).
+    assert_eq!(
+        named_download(&s, "/stream.php?id=3&type=none&seed=8", 8, &[], fast_opts()).await,
+        "stream.php"
+    );
+    // The server's own name (Content-Disposition) wins over all of it.
+    assert_eq!(
+        named_download(
+            &s,
+            "/stream.php?file=clip.mp4&inline=0&cd=Lecture%201.webm",
+            0,
+            &[],
+            titled()
+        )
+        .await,
+        "Lecture 1.webm"
+    );
+    // Download File Info's look-up gives the same name, its bytes kept for the download.
+    let opts = titled();
+    let url: url::Url = s
+        .url("/remote_control.php?id=9&type=none&magic=mp4&seed=5")
+        .parse()
+        .unwrap();
+    let (info, kept) = mdm_engine::probe_kept(url.clone(), Default::default(), &opts)
+        .await
+        .unwrap();
+    assert_eq!(info.file_name, "Lecture one.mp4");
+    let dir = tempfile::tempdir().unwrap();
+    let out = Download::start_with(
+        Request {
+            url,
+            headers: Default::default(),
+            dest: Destination::Dir(dir.path().to_owned()),
+        },
+        opts,
+        kept,
+    )
+    .wait()
+    .await
+    .expect("download succeeds");
+    let data = std::fs::read(&out.path).unwrap();
+    let mut want = vec![0; data.len()];
+    content::fill_with_head(5, 0, &mut want, mp4);
+    assert!(data == want, "the kept answer's first bytes are the file's");
+    assert_eq!(out.path.file_name().unwrap(), "Lecture one.mp4");
+}
