@@ -273,6 +273,12 @@ To quit, choose **Tasks → Exit** or **Exit** in the tray menu.
 
 The download list and settings are in `%APPDATA%\misterdownloadmanager` (`downloads.json`); on Linux in `~/.local/share/misterdownloadmanager`, on a Mac in `~/Library/Application Support/misterdownloadmanager`. A portable copy keeps them in its `data` folder instead. Downloaded files go to your **Downloads** folder, sorted into a folder per category; you can change that in **Options → Save to**.
 
+The installed desktop app prepares its built-in category folders on its first start,
+independently of downloads. It follows saved folder settings and skips deleted categories. Existing
+files stay untouched. If a folder cannot be created, MDM reports why and retries setup on the
+next start. Downloads arriving while setup is in progress keep their usual folder checks.
+Portable copies and headless runs create folders when their downloads need them.
+
 ## Next steps
 
 - [Download your first file →](guide-first-download.md)

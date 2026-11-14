@@ -11,6 +11,24 @@ use crate::model::{BuiltinEdit, Category, CustomCategory};
 use crate::settings::Settings;
 use crate::winui::{self, ButtonKind, LIGHT_BG, LIGHT_DISABLED, LIGHT_TEXT, r};
 
+/// First-run setup, called off the window thread: create missing directories without touching
+/// existing contents. A failure leaves setup unfinished so the next start can retry it.
+pub fn initialize_folders(paths: &[std::path::PathBuf]) -> Result<(), String> {
+    for path in paths {
+        if let Err(error) = std::fs::create_dir_all(path) {
+            return Err(crate::i18n::fmt(
+                // i18n: first-run category folder setup failed; {folder} is its path and {error} is the system's explanation
+                crate::i18n::t("Could not create {folder}: {error}"),
+                &[
+                    ("folder", &crate::i18n::isolate(&path.display().to_string())),
+                    ("error", &crate::i18n::isolate(&error.to_string())),
+                ],
+            ));
+        }
+    }
+    Ok(())
+}
+
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum Target {
     New,
@@ -555,6 +573,62 @@ mod tests {
         delete(&mut s, cat, &mut items);
         assert_eq!(Category::of("novel.epub"), Category::General);
         crate::model::set_custom(&[]);
+    }
+
+    #[test]
+    fn first_run_prepares_folders_without_changing_existing_files() {
+        let _turn = registry();
+        let root = tempfile::tempdir().unwrap();
+        let downloads = root.path().join("Downloads");
+        let settings = Settings::default();
+        let paths = settings.initial_category_folders(&downloads);
+        let existing = downloads.join("Video/keep.mp4");
+        std::fs::create_dir_all(existing.parent().unwrap()).unwrap();
+        std::fs::write(&existing, b"existing video").unwrap();
+        initialize_folders(&paths).unwrap();
+        initialize_folders(&paths).unwrap();
+        for category in Category::BUILT_IN {
+            assert!(downloads.join(category.key().as_ref()).is_dir());
+        }
+        assert_eq!(std::fs::read(existing).unwrap(), b"existing video");
+        assert!(!settings.category_folders_initialized);
+    }
+
+    #[test]
+    fn initial_setup_respects_saved_destinations_and_deleted_categories() {
+        let _turn = registry();
+        let root = tempfile::tempdir().unwrap();
+        let downloads = root.path().join("unused");
+        let general = root.path().join("configured");
+        let video = root.path().join("clips");
+        let mut settings = Settings::default();
+        settings.set_category_dir(Category::General, Some(general.display().to_string()));
+        settings.set_category_dir(Category::Video, Some(video.display().to_string()));
+        settings.builtin_categories.push(BuiltinEdit {
+            category: Category::Documents,
+            name: None,
+            types: None,
+            deleted: true,
+        });
+        initialize_folders(&settings.initial_category_folders(&downloads)).unwrap();
+        assert!(video.is_dir());
+        assert!(general.join("Music").is_dir());
+        assert!(!general.join("Documents").exists());
+        assert!(!general.join("Video").exists());
+        assert!(!downloads.exists());
+    }
+
+    #[test]
+    fn initial_setup_reports_a_conflicting_file_and_can_retry() {
+        let root = tempfile::tempdir().unwrap();
+        let conflict = root.path().join("Video");
+        std::fs::write(&conflict, b"keep me").unwrap();
+        let paths = vec![conflict.clone()];
+        assert!(initialize_folders(&paths).is_err());
+        assert_eq!(std::fs::read(&conflict).unwrap(), b"keep me");
+        std::fs::remove_file(&conflict).unwrap();
+        initialize_folders(&paths).unwrap();
+        assert!(conflict.is_dir());
     }
 
     #[test]

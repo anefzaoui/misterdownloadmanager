@@ -1085,6 +1085,9 @@ pub struct App {
     /// The next duplicate check is passed (the user chose to add it anyway).
     duplicate_cleared: bool,
     downloads: PathBuf,
+    /// Initial category folders are made once, off the window thread. None after this run's
+    /// answer (a failed setup is retried at the next start).
+    category_setup: Option<crate::launch::Asked<Vec<PathBuf>, Result<(), String>>>,
     dirty: bool,
     /// `secrets::Vault::confirmed` when last seen.
     secrets_confirmed: u64,
@@ -1721,6 +1724,7 @@ impl App {
             duplicates_waiting: Default::default(),
             duplicate_cleared: false,
             downloads,
+            category_setup: Some(Default::default()),
             dirty: false,
             secrets_confirmed: 0,
             last_save: Instant::now(),
@@ -10960,8 +10964,48 @@ impl eframe::App for App {
 }
 
 impl App {
+    fn initialize_category_folders(&mut self, ctx: &egui::Context) {
+        if self.settings.category_folders_initialized
+            || self.headless
+            || crate::offscreen()
+            || mdm_ipc::portable_dir().is_some()
+        {
+            return;
+        }
+        let Some(setup) = &self.category_setup else {
+            return;
+        };
+        let folders = self.settings.initial_category_folders(&self.downloads);
+        let Some(result) = setup.get(
+            &folders,
+            Duration::MAX,
+            Duration::ZERO,
+            Some(ctx),
+            |paths| crate::categories::initialize_folders(paths),
+        ) else {
+            return;
+        };
+        // Do not replace an unrelated startup notice; the cached error can be shown once
+        // that notice is dismissed, without starting the filesystem work again.
+        if result.is_err() && self.notice.is_some() {
+            return;
+        }
+        self.category_setup = None;
+        match result {
+            Ok(()) => {
+                self.settings.category_folders_initialized = true;
+                self.dirty = true;
+            }
+            Err(error) => {
+                // i18n: title of a first-run error preparing the default download category folders
+                self.notice = Some((crate::i18n::mark("Category folders"), error));
+            }
+        }
+    }
+
     /// What runs at every frame, window or not (`logic`, and a headless run's loop).
     pub fn tick(&mut self, ctx: &egui::Context) {
+        self.initialize_category_folders(ctx);
         // The freeze watchdog times this as it times `ui` (crash.rs): a command or the clock
         // that hangs is reported too, minimized or not (#202).
         crate::crash::logic_begin();

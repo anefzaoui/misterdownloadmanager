@@ -153,6 +153,9 @@ pub struct Settings {
     pub language_asked: bool,
     /// The video helpers (yt-dlp, ffmpeg) have been offered once, at a start (helpers.rs).
     pub helpers_asked: bool,
+    /// The installed desktop app has prepared its built-in category folders once. Old
+    /// settings retry this setup on their first start with this version.
+    pub category_folders_initialized: bool,
     /// The browser extension is offered at each start until a browser has it, unless "Don't ask
     /// again" was pressed (extension.rs).
     pub extension_never_ask: bool,
@@ -430,6 +433,7 @@ impl Default for Settings {
             language: None,
             language_asked: false,
             helpers_asked: false,
+            category_folders_initialized: false,
             extension_never_ask: false,
             clipboard_autostart: true,
             minimize_to_tray: true,
@@ -664,6 +668,21 @@ impl Settings {
         downloads: &std::path::Path,
     ) -> std::path::PathBuf {
         crate::model::category_folder(cat, downloads, &self.category_dirs)
+    }
+
+    /// Active built-in folders, following General's root and each category's saved override.
+    /// Deleted categories and user-created categories are not part of initial setup.
+    pub fn initial_category_folders(&self, downloads: &std::path::Path) -> Vec<std::path::PathBuf> {
+        crate::model::Category::BUILT_IN
+            .into_iter()
+            .filter(|cat| {
+                !self
+                    .builtin_categories
+                    .iter()
+                    .any(|e| e.category == *cat && e.deleted)
+            })
+            .map(|cat| self.category_dir(cat, downloads))
+            .collect()
     }
 
     /// Options → Proxy / Socks for the engine. An automatic configuration script (PAC) is run
