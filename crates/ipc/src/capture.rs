@@ -589,6 +589,19 @@ mod tests {
             "a pattern stays"
         );
         assert_eq!(remove_site("a.test", "c.test"), "a.test");
+        // The popup's Undo (#404): the host as "Never take downloads from" listed it, only.
+        let listed = add_site("*.update.microsoft.com a.test", "Files.Test");
+        assert_eq!(listed, "*.update.microsoft.com a.test files.test");
+        assert_eq!(
+            unlist_site(&listed, "files.test"),
+            "*.update.microsoft.com a.test"
+        );
+        assert_eq!(
+            unlist_site("*.b.test b.test", "www.b.test"),
+            "*.b.test b.test",
+            "patterns and other names that cover it stay"
+        );
+        assert_eq!(unlist_site("A.Test", "a.test"), "");
     }
 
     #[test]
