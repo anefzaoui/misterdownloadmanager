@@ -562,6 +562,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A crash while checking for updates on some computers; a check that goes wrong says why
+  ([#1123](https://github.com/anefzaoui/misterdownloadmanager/issues/1123))
 - ✅ Browser integration: a copy run from inside a zip (a temporary folder) no longer sets it up
   for itself and leaves the browsers looking for a copy that is gone; MDM takes back a
   registration that leads nowhere at each start, never one that works, and Test browser
