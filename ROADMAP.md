@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The progress window's connections table shows connection numbers 10 and up instead of
+  **...**: the number column fits its widest number
+  ([#1101](https://github.com/anefzaoui/misterdownloadmanager/issues/1101))
 - ✅ Chromium browsers: a video (or a PDF, an MP3) the browser would play, taken by MDM, keeps
   the name its server gives it instead of its address's (`main.mkv`)
   ([#948](https://github.com/anefzaoui/misterdownloadmanager/issues/948))
