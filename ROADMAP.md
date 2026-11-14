@@ -557,6 +557,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ No reconnecting in waves on a shared line: a connection is measured against its share of
+  what the connections bring together, not the speed the first one had alone
+  ([#896](https://github.com/anefzaoui/misterdownloadmanager/pull/896))
 - ✅ Linux: no crash when fontconfig offers a font MDM can't draw with (an old bitmap font for
   Japanese): the best font that scales and MDM can read is used instead
   ([#931](https://github.com/anefzaoui/misterdownloadmanager/issues/931))
