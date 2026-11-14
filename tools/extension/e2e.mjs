@@ -17,7 +17,7 @@
 // it, #578), link (a .zip link, throttled and not), ask (Firefox set to ask what to
 // do with each new type, as Waterfox is: caught before its dialog, #208), cookie (cookies and referrer
 // forwarded), names (Content-Disposition), redirect, leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
-// to the browser), opened (a PDF or MP3 the browser would show or play), spot (the video button
+// to the browser: a link, a redirect, a page's script; Firefox's own default too, #332), opened (a PDF or MP3 the browser would show or play), spot (the video button
 // clear of the page's controls, #421), feeds (a video in a feed sends its post, its own file, or
 // nothing and says so, never the feed: sample pages served at LinkedIn's, Facebook's, X's,
 // Instagram's, Reddit's, TikTok's, Vimeo's, Dailymotion's addresses, #689), preview (the video button kept over a hover-to-play
@@ -2095,32 +2095,53 @@ const CASES = {
     return `posted again with token=abc (${posts.length} request(s)); 303: ${seen.map((e) => `${e.method} ${e.path.split("/")[1]} ${e.status}`).join(", ")}`;
   },
 
-  // Alt+click: the browser keeps the download, MDM gets nothing.
+  // Alt+click (Option+click on a Mac, #332): the browser keeps the download, MDM gets nothing. A
+  // link to the file; one that redirects to it; Firefox's family: one to a page whose script goes
+  // to the file (Chromium downloads such a link's page itself), and its default setting, where the
+  // browser alone does nothing with an Alt+click (browser.altClickSave off; the run's profile has
+  // it on, as Chromium's behaviour).
   async alt(t) {
-    const file = `e2e-alt-${t.name}.zip`;
-    const p = `/gen/1M/${file}`;
-    await t.session.navigate(`${LAB}/page?link=${encodeURIComponent(p)}`);
-    const a = await rect(t.session, "#link");
-    await t.session.mouse((a.l + a.r) / 2, (a.t + a.b) / 2, "click", { alt: true });
-    const kept = path.join(t.dl, file);
-    try {
-      await until(`${file} in the browser's folder`, 20000, () => {
-        const names = fs.readdirSync(t.dl);
-        return names.length === 1 && names[0] === file && fs.statSync(kept).size === 1 << 20;
-      });
-    } catch (e) {
+    const firefox = Boolean(t.session.inBrowser);
+    const kept = async (label, link, file) => {
+      const p = `/gen/1M/${file}`;
+      await t.session.navigate(`${LAB}/page?link=${encodeURIComponent(link)}`);
+      const a = await rect(t.session, "#link");
+      await t.session.mouse((a.l + a.r) / 2, (a.t + a.b) / 2, "click", { alt: true });
+      const at = path.join(t.dl, file);
+      try {
+        await until(`${file} in the browser's folder`, 20000, () => {
+          const names = fs.readdirSync(t.dl);
+          return names.length === 1 && names[0] === file && fs.statSync(at).size === 1 << 20;
+        });
+      } catch (e) {
+        const item = (await mdmList()).find((d) => d.file === file);
+        const tab = await t.session.evaluate("location.href").catch((x) => x.message);
+        e.message += ` (${label}; MDM: ${item ? `${item.status} ${item.path}` : "nothing"}; the tab: ${tab}; requests: ${(await requests(p)).map(brief).join("; ") || "none"}; the browser's folder: ${fs.readdirSync(t.dl).join(", ") || "empty"})`;
+        throw e;
+      }
+      await sleep(1500);
       const item = (await mdmList()).find((d) => d.file === file);
-      const tab = await t.session.evaluate("location.href").catch((x) => x.message);
-      e.message += ` (MDM: ${item ? `${item.status} ${item.path}` : "nothing"}; the tab: ${tab}; requests: ${(await requests(p)).map(brief).join("; ") || "none"}; the browser's folder: ${fs.readdirSync(t.dl).join(", ") || "empty"})`;
-      throw e;
+      if (item) throw new Error(`${label}: MDM got it too: ${item.status} ${item.path}`);
+      const all = await requests(p);
+      if (all.length !== 1) throw new Error(`${label}: ${all.length} requests for it (only the browser's expected): ${all.map(brief).join("; ")}`);
+      fs.rmSync(at);
+      return label;
+    };
+    const done = [];
+    const name = (k) => `e2e-alt-${k}-${t.name}.zip`;
+    done.push(await kept("the link", `/gen/1M/${name("link")}`, name("link")));
+    done.push(await kept("a redirect", `/redirect?to=${encodeURIComponent(`/gen/1M/${name("redirect")}`)}`, name("redirect")));
+    if (firefox) {
+      done.push(await kept("a page's script", `/leadon?to=${encodeURIComponent(`/gen/1M/${name("script")}`)}`, name("script")));
+      const pref = JSON.stringify("browser.altClickSave");
+      await t.session.inBrowser(`(Services.prefs.setBoolPref(${pref}, false), "set")`);
+      try {
+        done.push(await kept("Firefox's default (no save on Alt+click)", `/gen/1M/${name("default")}`, name("default")));
+      } finally {
+        await t.session.inBrowser(`(Services.prefs.setBoolPref(${pref}, true), "set")`).catch(() => {});
+      }
     }
-    await sleep(1500);
-    const item = (await mdmList()).find((d) => d.file === file);
-    if (item) throw new Error(`MDM got it too: ${item.status} ${item.path}`);
-    const all = await requests(p);
-    if (all.length !== 1) throw new Error(`${all.length} requests for it (only the browser's expected): ${all.map(brief).join("; ")}`);
-    fs.rmSync(kept);
-    return "the browser's own download, MDM untouched";
+    return `the browser's own download, MDM untouched: ${done.join(", ")}`;
   },
 
   // Files the browser would show or play, made downloads, MDM's (Chromium 128+, Firefox): typed
