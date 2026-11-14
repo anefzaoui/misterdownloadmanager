@@ -16,6 +16,7 @@
 //! - `GET /hop?to=URL&how=meta|header[&wait=S][&cookie=N=V]` — a page that sends the browser on to
 //!   `URL` itself (`<meta http-equiv="refresh">` or a `Refresh` header), as download sites' waiting pages do
 //! - `GET /page`, `/formpage`, `/cookie`, `/assets/*` — web pages for the browser tests (`pages`)
+//! - `GET /declared` — a page that declares its video and hides another (#1076, `pages`)
 //! - `GET /hls/*`, `/dash/*` — adaptive streams (`streams`); `/hls2/*`, `/dash2/*` the same with
 //!   no `.m3u8`/`.mpd` in their addresses, served as text/plain or octet-stream (#171)
 //! - Google Drive's addresses on its own host names (`drive`): links, the virus-scan and quota
@@ -416,6 +417,7 @@ impl LabServer {
             .route("/feed", get(pages::feed))
             .route("/feed/post/{n}", get(pages::feed_post))
             .route("/leadon", get(pages::leadon))
+            .route("/declared", get(pages::declared))
             .route("/formpage", get(pages::formpage))
             .route("/cookie", get(pages::cookie))
             .route("/assets/{file}", get(pages::asset))
@@ -766,10 +768,14 @@ GET /page?<any of>
                    when nothing else is asked for, or with muted_loop, iframe or shadow)
     w=PX h=PX      the videos' size
     title=TEXT     the page's title (default "labserver page")
+    referrer=POLICY  its Referrer-Policy (origin: its links' Referer is the site's address only)
     muted_loop=1   the video muted, looping and autoplaying, without controls
     iframe=1       the video inside <iframe id=frame> (a /page of its own)
     shadow=1       the video inside the open shadow root of <div id=host> (declarative)
     several=N      N more videos #video1..N, each with its own <source> /gen/1M/clipK.mp4?seed=K
+    files=N        N links (at most 50000) to /gen/1K files, as a big page gives Link grabber:
+                   two in five a split archive's volumes (setK.part1.rar, setK.part2.rar), the
+                   others fileK.zip, clipK.mp4, docK.pdf
     audio=PATH|1   <audio id=audio controls> (1: /gen/512K/sound.mp3?inline=1)
     hls=1, dash=1, drm=1   a <video> and /assets/stream.js for each (#player, then #player2,
                    #player3), which fetches /hls/master.m3u8, /dash/manifest.mpd or
@@ -796,6 +802,11 @@ GET /feed   a feed whose page names no video (#1092): three posts whose players 
     no video), #feed2 the HLS stream (/hls/master.m3u8, 12 s), #feed3 only the start of
     /gen/3M/feed-b.mp4?movie=33000 (the next video, 33 s); <body data-feed=done> when loaded
 GET /feed/post/N   a post's own page, without its video
+GET /declared?film=PATH&hidden=PATH&name=TEXT&title=TEXT&how=jsonld|og|twitter|none   a page
+    that declares its video (#1076) and plays only another, hidden one: hidden (default
+    /gen/1M/welcome.mp4?seed=2&inline=1) in a <video> inside <div hidden>; film (default
+    /gen/2M/film.mp4?seed=3&inline=1) named name (default "The Film") in its JSON-LD VideoObject
+    (contentUrl), og:video (og:title), twitter:player (twitter:title), or nowhere (none)
 GET /assets/page.css  /assets/stream.js  /assets/feed.js
 
 STREAMS  3 segments of 4 s per track. HLS: real MPEG-TS, a grey H.264 picture (25 fps) on the
