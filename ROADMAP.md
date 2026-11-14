@@ -562,6 +562,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Browser integration: a copy run from inside a zip (a temporary folder) no longer sets it up
+  for itself and leaves the browsers looking for a copy that is gone; MDM takes back a
+  registration that leads nowhere at each start, never one that works, and Test browser
+  integration says which copy is gone
+  ([#818](https://github.com/anefzaoui/misterdownloadmanager/issues/818))
 - ✅ The sites in **Don't start downloading automatically from the following sites** take their
   subdomains and the files their pages link to on another server (a CDN), as the Download panels'
   list does

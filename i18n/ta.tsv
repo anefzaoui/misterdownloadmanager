@@ -4477,6 +4477,10 @@
 #, machine
 	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	உலாவியின் ப்ராக்ஸி (VPN அல்லது ப்ராக்ஸி நீட்டிப்பு) உள்நுழைவைக் கேட்கிறது; அதற்கான உள்நுழைவு விவரங்கள் அந்த நீட்டிப்பிடம் மட்டுமே உள்ளன: VPN-இன் சொந்த பயன்பாட்டைப் பயன்படுத்தவும் அல்லது விருப்பங்கள் → ப்ராக்ஸி / SOCKS என்பதில் அதன் பிணைய அடாப்டரைத் தேர்ந்தெடுக்கவும்
 #. text in extension.rs
+#. a check of Test browser integration: the browsers are pointed at a copy of MDM that was deleted (often one started from inside a zip); that copy's folder shows on the line under it
+#, machine
+	The browsers are set up for a copy that is gone:	உலாவிகள் நீக்கப்பட்ட நகலுக்காக அமைக்கப்பட்டுள்ளன:
+#. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	உலாவிகளால் Mister Download Managerஐக் கண்டறிய முடியும்
@@ -4839,6 +4843,10 @@
 #. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
 #, machine
 	This computer only (127.0.0.1)	இந்தக் கணினி மட்டும் (127.0.0.1)
+#. text in extension.rs
+#. a check of Test browser integration: MDM was started from inside a zip (or from the temporary folder), which is deleted after it quits, so it can't be connected to the browsers
+#, machine
+	This copy runs from a temporary folder that will be deleted	இந்த நகல் நீக்கப்படும் ஒரு தற்காலிக கோப்புறையிலிருந்து இயங்குகிறது
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine

@@ -4477,6 +4477,10 @@
 #, machine
 	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	ブラウザーのプロキシ (VPN またはプロキシ拡張機能) は、その拡張機能のみが持つログインを要求します。VPN 独自のアプリを使用するか、[オプション] → [プロキシ / SOCKS] でネットワーク アダプターを選択してください
 #. text in extension.rs
+#. a check of Test browser integration: the browsers are pointed at a copy of MDM that was deleted (often one started from inside a zip); that copy's folder shows on the line under it
+#, machine
+	The browsers are set up for a copy that is gone:	ブラウザーは、存在しないコピー用に設定されています:
+#. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	ブラウザーは Mister Download Manager を見つけることができます
@@ -4839,6 +4843,10 @@
 #. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
 #, machine
 	This computer only (127.0.0.1)	このコンピューターのみ (127.0.0.1)
+#. text in extension.rs
+#. a check of Test browser integration: MDM was started from inside a zip (or from the temporary folder), which is deleted after it quits, so it can't be connected to the browsers
+#, machine
+	This copy runs from a temporary folder that will be deleted	このコピーは、削除される一時フォルダーから実行されます
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine

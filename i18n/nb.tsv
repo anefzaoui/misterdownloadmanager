@@ -4477,6 +4477,10 @@
 #, machine
 	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	nettleserens proxy (en VPN- eller proxyutvidelse) ber om en pålogging som bare utvidelsen har: bruk VPN-ens egen app, eller velg nettverkskortet i Alternativer → Proxy/Socks
 #. text in extension.rs
+#. a check of Test browser integration: the browsers are pointed at a copy of MDM that was deleted (often one started from inside a zip); that copy's folder shows on the line under it
+#, machine
+	The browsers are set up for a copy that is gone:	Nettleserne er konfigurert for en kopi som er borte:
+#. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	Nettleserne kan finne Mister Download Manager
@@ -4839,6 +4843,10 @@
 #. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
 #, machine
 	This computer only (127.0.0.1)	Bare denne datamaskinen (127.0.0.1)
+#. text in extension.rs
+#. a check of Test browser integration: MDM was started from inside a zip (or from the temporary folder), which is deleted after it quits, so it can't be connected to the browsers
+#, machine
+	This copy runs from a temporary folder that will be deleted	Denne kopien kjører fra en midlertidig mappe som vil bli slettet
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
