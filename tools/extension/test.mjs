@@ -2519,13 +2519,50 @@ const popupState = (listeners) =>
   ok("#208: a private window's refusal names nothing");
 }
 
+// #1058: the app's Torrent settings leave torrents to the browser (its own torrent client): a
+// .torrent (a tracker's download.php named by Content-Disposition, or a .torrent address) stays
+// with the browser and says why; other types go as before. On, or a host before it: taken.
+for (const firefox of [false, true]) {
+  const fire = (listeners, id, url, filename, mime) =>
+    firefox ? listeners.created({ id, url, filename: `C:\\dl\\${filename}`, mime }) : listeners.determining({ id, url, filename, mime }, () => {});
+  const types = "ZIP TORRENT";
+  {
+    const { api, calls, listeners } = fakeApi({ firefox, types, rules: { torrents: false } });
+    load(api, firefox);
+    fire(listeners, 70, "https://tracker.test/download.php?id=42", "Show.S01.torrent", "application/x-bittorrent");
+    await settle();
+    fire(listeners, 71, "https://tracker.test/dl/set.torrent", "set.torrent", "");
+    await settle();
+    assert.deepEqual(natives(calls).filter((m) => m.url), [], "no torrent offered");
+    assert.deepEqual(notices(calls).map((n) => n.why), ["torrents", "torrents"]);
+    assert.equal((await popupState(listeners)).declined.why, "torrents");
+    fire(listeners, 72, "https://tracker.test/a.zip", "a.zip", "application/zip");
+    await settle();
+    assert.deepEqual(natives(calls).filter((m) => m.url).map((m) => m.filename), ["a.zip"], "other types as before");
+  }
+  for (const rules of [{ torrents: true }, {}]) {
+    const { api, calls, listeners } = fakeApi({ firefox, types, rules });
+    load(api, firefox);
+    fire(listeners, 73, "https://tracker.test/download.php?id=42", "Show.S01.torrent", "application/x-bittorrent");
+    await settle();
+    assert.deepEqual(natives(calls).filter((m) => m.url).map((m) => m.filename), ["Show.S01.torrent"], JSON.stringify(rules));
+    assert.deepEqual(notices(calls), []);
+  }
+}
+{
+  // Safari's page.js holds no .torrent link then (its stored rules say so).
+  const page = readFileSync(new URL("../../extension/page.js", import.meta.url), "utf8");
+  assert.ok(/noTorrents = Boolean\(rules && rules\.torrents === false\)/.test(page) && page.includes("!(noTorrents && /^torrent$/i.test(type))"));
+}
+ok("#1058: a torrent stays with the browser while the app's Torrent settings leave torrents alone");
+
 // The codes agree end to end: the app's (mdm_ipc::capture::Declined::code), the extension's own
 // ("site-access"), and a popup text for each.
 {
   const rust = readFileSync(new URL("../../crates/ipc/src/capture.rs", import.meta.url), "utf8");
   const body = /pub fn code\(self\)[\s\S]*?\n    \}\n/.exec(rust)[0];
   const codes = [...body.matchAll(/=> "([a-z-]+)"/g)].map((m) => m[1]);
-  assert.deepEqual(codes, ["integration-off", "browser", "file-type", "site", "address", "small"]);
+  assert.deepEqual(codes, ["integration-off", "browser", "file-type", "site", "address", "small", "torrents"]);
   const en = JSON.parse(readFileSync(new URL("../../extension/_locales/en/messages.json", import.meta.url), "utf8"));
   for (const c of [...codes, "site-access"]) assert.ok(en[`declined_${c.replace(/-/g, "_")}`], `a popup text for ${c}`);
   assert.ok(en.popup_declined && en.popup_declined_unnamed);

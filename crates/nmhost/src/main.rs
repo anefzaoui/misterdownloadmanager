@@ -261,6 +261,11 @@ struct Reply {
     /// For `rules` when `capture` is false: why (`integration-off`, `browser`).
     #[serde(skip_serializing_if = "Option::is_none")]
     capture_off: Option<&'static str>,
+    /// For `rules`: whether a .torrent is taken (Torrent settings → "Open magnet links and
+    /// .torrent files with Mister Download Manager", #1058); false, the extension leaves one to
+    /// the browser (`torrents`). A host before it doesn't say: the extension takes them as listed.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    torrents: Option<bool>,
     /// A download left to the browser by Options: which rule (a `Declined` code), for the
     /// extension to say (its popup).
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -341,6 +346,7 @@ fn answer(m: Message, rules: &mdm_ipc::capture::CaptureRules) -> Reply {
             opened: Some(rules.capture_opened),
             min_kb: Some(rules.capture_min_kb),
             capture_off: rules.capture_off(browser).map(|d| d.code()),
+            torrents: Some(rules.torrent_associations),
             video_lookup: Some(true),
             ..Default::default()
         };
@@ -832,6 +838,12 @@ fn verdict(
     }
     let (name, browser) = (file_name_of(m), browser(m));
     rules.accepts(&m.url, &name, browser)?;
+    // A .torrent only its type tells (a name of another listed type), as the app's Add torrent
+    // would take it (#1058).
+    if !rules.torrent_associations && mdm_ipc::capture::is_torrent(&m.url, &name, m.mime.as_deref())
+    {
+        return Err(mdm_ipc::capture::Declined::Torrents);
+    }
     if rules.too_small(m.size) {
         return Err(mdm_ipc::capture::Declined::Small);
     }
@@ -2257,6 +2269,64 @@ mod tests {
         };
         let json = serde_json::to_string(&answer(hello, &rules)).unwrap();
         assert!(json.contains(r#""capture":false"#) && json.contains(r#""captureOff":"browser""#));
+    }
+
+    #[test]
+    fn a_torrent_stays_with_the_browser_while_torrent_settings_leave_torrents_alone() {
+        // #1058: a tracker's download.php serving a .torrent (Content-Disposition's name).
+        let ua = "Mozilla/5.0 (Windows NT 10.0) Chrome/141.0.0.0 Safari/537.36";
+        let msg = |name: &str, mime: &str| Message {
+            url: "https://tracker.test/download.php?id=42".into(),
+            filename: Some(name.into()),
+            mime: Some(mime.into()),
+            user_agent: Some(ua.into()),
+            ..Default::default()
+        };
+        let mut rules = mdm_ipc::capture::CaptureRules::default();
+        let r = answer(msg("Show.S01.torrent", "application/x-bittorrent"), &rules);
+        assert_eq!(
+            (r.ok, r.why, r.declined),
+            (false, Some("options"), Some("torrents"))
+        );
+        // Only its type says so (named as another listed type): the app would open Add torrent.
+        assert_eq!(
+            verdict(&msg("Show.S01.bin", "application/x-bittorrent"), &rules),
+            Err(mdm_ipc::capture::Declined::Torrents)
+        );
+        // Asked for (the right-click menu): taken.
+        let explicit = Message {
+            explicit: true,
+            ..msg("Show.S01.torrent", "application/x-bittorrent")
+        };
+        assert_eq!(verdict(&explicit, &rules), Ok(()));
+        // Other types as before.
+        assert_eq!(verdict(&msg("a.zip", "application/zip"), &rules), Ok(()));
+        // The rules tell the extension, which leaves one alone without asking.
+        let hello = || Message {
+            hello: true,
+            user_agent: Some(ua.into()),
+            ..Default::default()
+        };
+        let json = serde_json::to_string(&answer(hello(), &rules)).unwrap();
+        assert!(json.contains(r#""torrents":false"#), "{json}");
+        // On: taken as before.
+        rules.torrent_associations = true;
+        assert_eq!(
+            verdict(&msg("Show.S01.torrent", "application/x-bittorrent"), &rules),
+            Ok(())
+        );
+        assert_eq!(
+            verdict(&msg("Show.S01.bin", "application/x-bittorrent"), &rules),
+            Ok(())
+        );
+        let json = serde_json::to_string(&answer(hello(), &rules)).unwrap();
+        assert!(json.contains(r#""torrents":true"#), "{json}");
+        // The log says why.
+        assert!(
+            notice_reason("torrents").contains("Torrent settings"),
+            "{}",
+            notice_reason("torrents")
+        );
     }
 
     #[test]

@@ -222,8 +222,10 @@ async function showStatus() {
 
 // ---- the rules: Options in the app, kept here between the browser's stops ------------------
 
-// {types, capture, captureOff, excludedSites, excludedAddresses, opened, minKb, at}; null until
-// first asked. `captureOff`: why `capture` is false (a host before #208 doesn't say).
+// {types, capture, captureOff, excludedSites, excludedAddresses, opened, minKb, torrents, at};
+// null until first asked. `captureOff`: why `capture` is false (a host before #208 doesn't say).
+// `torrents`: false while the app's Torrent settings leave .torrent files to the browser (#1058;
+// a host before it doesn't say, and takes them as listed).
 let rules = null;
 
 async function storedRules() {
@@ -251,6 +253,7 @@ async function askRules() {
       excludedAddresses: Array.isArray(reply.excludedAddresses) ? reply.excludedAddresses : [],
       opened: reply.opened !== false,
       minKb: Number(reply.minKb) || 0,
+      torrents: reply.torrents !== false,
       at: Date.now(),
     };
     await ext.storage.local.set({ rules });
@@ -260,7 +263,7 @@ async function askRules() {
   // No MDM on this computer, another one chosen: the app's default file types (the browser
   // keeps the files it would open).
   if (await remoteTarget()) {
-    rules = { types: DEFAULT_TYPES, capture: true, excludedSites: "", excludedAddresses: [], opened: false, minKb: 0, at: Date.now() };
+    rules = { types: DEFAULT_TYPES, capture: true, excludedSites: "", excludedAddresses: [], opened: false, minKb: 0, torrents: true, at: Date.now() };
     // Kept as the app's are: Safari's page.js holds links by the stored copy.
     await ext.storage.local.set({ rules });
     return rules;
@@ -284,6 +287,20 @@ function typePatterns(list) {
     .split(/\s+/)
     .filter(Boolean)
     .map((t) => new RegExp("^" + t.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*") + "$", "i"));
+}
+
+// A .torrent, as the app tells one (mdm_ipc::capture::is_torrent): its name or an address's
+// path ends in .torrent, or its type is application/x-bittorrent.
+function isTorrent(name, urls, mime) {
+  const ends = (s) => /\.torrent$/i.test(s || "");
+  const path = (u) => {
+    try {
+      return new URL(u).pathname;
+    } catch {
+      return "";
+    }
+  };
+  return ends(name) || urls.some((u) => ends(path(u))) || /^\s*application\/x-bittorrent\s*(;|$)/i.test(mime || "");
 }
 
 function extensionOf(name) {
@@ -1581,6 +1598,8 @@ async function candidate(item, url, clicked = false) {
   if (by) return left(by);
   const type = extensionOf(name);
   if (!type || !typePatterns(r.types).some((p) => p.test(type))) return left("file-type");
+  // The app's Torrent settings leave torrents to the browser (its own torrent client, #1058).
+  if (r.torrents === false && isTorrent(name, [first, url], item.mime)) return left("torrents");
   // Smaller than Options' minimum (when the browser knows the size already).
   const size = item.totalBytes > 0 ? item.totalBytes : item.fileSize;
   if (r.minKb > 0 && size > 0 && size < r.minKb * 1024) return left("small");

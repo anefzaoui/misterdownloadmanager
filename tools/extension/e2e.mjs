@@ -16,7 +16,8 @@
 // The cases (per browser): folders (another extension's download in a folder of its own keeps
 // it, #578), link (a .zip link, throttled and not), ask (Firefox set to ask what to
 // do with each new type, as Waterfox is: caught before its dialog, #208), cookie (cookies and referrer
-// forwarded), names (Content-Disposition), redirect, leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
+// forwarded), names (Content-Disposition), torrents (a tracker's .torrent stays with the browser
+// while Torrent settings leave torrents alone, #1058), redirect, leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
 // to the browser: a link, a redirect, a page's script; Firefox's own default too, #332), opened (a PDF or MP3 the browser would show or play), spot (the video button
 // clear of the page's controls, #421), feeds (a video in a feed sends its post, its own file, or
 // nothing and says so, never the feed: sample pages served at LinkedIn's, Facebook's, X's,
@@ -2056,6 +2057,96 @@ const CASES = {
     return `${plain}, ${star}, ${raw}`;
   },
 
+  // #1058: a .torrent from a tracker's download.php (named by Content-Disposition, sent as
+  // application/x-bittorrent) stays with the browser while Torrent settings' "Open magnet links
+  // and .torrent files with Mister Download Manager" is off, as by default, though TORRENT is in
+  // File types (it is in this run's list); with it on, MDM takes it (its Add torrent fetches it)
+  // and the browser keeps nothing.
+  async torrents(t) {
+    const p = `/gen/16K/tracker-${t.name}/download.php`;
+    const link = (name) => `${p}?id=42&cd=${encodeURIComponent(name)}&type=${encodeURIComponent("application/x-bittorrent")}`;
+    const off = `e2e-show-${t.name}.torrent`;
+    await clickLink(t, link(off));
+    const at = path.join(t.dl, off);
+    try {
+      await until(`${off} in the browser's folder`, 20000, () => fs.existsSync(at) && fs.statSync(at).size === 16 << 10);
+    } catch (e) {
+      e.message += ` (requests: ${(await requests(p)).map(brief).join("; ") || "none"}; the browser's folder: ${fs.readdirSync(t.dl).join(", ") || "empty"})`;
+      throw e;
+    }
+    await sleep(2000);
+    const asked = await requests(p);
+    if (asked.length !== 1) throw new Error(`off: ${asked.length} requests (only the browser's expected): ${asked.map(brief).join("; ")}`);
+    if ((await mdmList()).some((d) => d.file === off)) throw new Error("off: MDM took it too");
+    if (WIN && appWindows(appPid()).includes("Add torrent")) throw new Error("off: Add torrent opened");
+    // MDM's log says why (the host's line, or the extension's notice it wrote down).
+    const logged = () => {
+      const file = path.join(data, "logs", "mdm.log");
+      const log = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : "";
+      return log.split(/\r?\n/).find((l) => l.includes(off) && l.includes("Torrent settings"));
+    };
+    const why = await until("MDM's log line for it", 10000, logged).catch(() => {
+      throw new Error("off: MDM's log doesn't say why it stayed with the browser");
+    });
+    fs.rmSync(at);
+    // E2E_SHOTS (Chromium): <lang>-<scheme>-torrent-left.png, the popup saying why.
+    const shots = process.env.E2E_SHOTS ? path.resolve(process.env.E2E_SHOTS) : "";
+    const tag = `${process.env.E2E_LANG || "en"}-${process.env.E2E_COLOR_SCHEME || "system"}`;
+    if (shots && t.session.tab) {
+      const popup = await t.session.tab(`${t.session.base}popup.html`);
+      try {
+        const said = await until("the popup's reason", 10000, () =>
+          popup.evaluate(`(() => { const b = document.getElementById("declined"); return b && !b.hidden && document.getElementById("declined-why").textContent; })()`).catch(() => ""),
+        );
+        await sleep(500);
+        await popup.shot(path.join(shots, `${tag}-torrent-left.png`));
+        if (!said) throw new Error("the popup gives no reason");
+      } finally {
+        await popup.close();
+      }
+    }
+    // On: the extension learns it at its next question for the rules (Chromium: asked now;
+    // Firefox: once its copy is a minute old).
+    await panelSettings({ torrent_associations: true });
+    try {
+      if (t.session.inExtension) await t.session.inExtension("refreshRules().then(() => true)");
+      else {
+        await sleep(61000);
+        const primer = `e2e-primer-${t.name}.torrent`;
+        await clickLink(t, link(primer));
+        await until(`${primer} in the browser's folder`, 20000, () => fs.existsSync(path.join(t.dl, primer)));
+        await sleep(2000);
+        fs.rmSync(path.join(t.dl, primer), { force: true });
+      }
+      await clearLog();
+      const on = `e2e-show-on-${t.name}.torrent`;
+      await clickLink(t, link(on));
+      // Add torrent fetches it with the browser's request (MDM's own request after the browser's).
+      // The app started again with the setting (panelSettings): its process now.
+      const pid = WIN ? appPid() : 0;
+      await until("MDM's request for it", 20000, async () => (await requests(p)).length >= 2);
+      if (WIN) {
+        await until("Add torrent", 15000, () => appWindows(pid).includes("Add torrent")).catch((e) => {
+          e.message += ` (its windows: ${JSON.stringify(appWindows(pid))})`;
+          throw e;
+        });
+        // E2E_SHOTS: <lang>-<scheme>-torrent-taken.png, Add torrent as the browser's .torrent
+        // opens it (what the setting off did too, before #1058).
+        if (shots) {
+          await sleep(3000);
+          const cap = path.join(root, "tools", "lab", "cap-own.ps1");
+          spawnSync("powershell", ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", cap, "-ProcessId", String(pid), "-Title", "Add torrent", "-Out", path.join(shots, `${tag}-torrent-taken.png`)], { stdio: "ignore" });
+        }
+        appWindows(pid, "Add torrent");
+        await until("Add torrent closed", 5000, () => !appWindows(pid).includes("Add torrent"));
+      }
+      await keptNothing(t.dl);
+    } finally {
+      await panelSettings({ torrent_associations: false });
+    }
+    return `off: the browser kept ${off}, MDM's log says why (${why.split(": ").slice(-1)[0].slice(0, 60)}...); on: Add torrent fetched it, the browser kept nothing`;
+  },
+
   // A redirect: MDM keeps the address clicked (it asks it again to renew the link).
   async redirect(t) {
     const file = `e2e-r-${t.name}.zip`;
@@ -3494,8 +3585,9 @@ async function run() {
         extension_never_ask: true,
         show_start_dialog: false,
         automation_api: true,
-        // The default types plus XZ, for the proxy case (a type other download managers leave alone).
-        auto_types: "3GP 7Z AAC ACE AIF APK ARJ ASF AVI BIN BZ2 EXE GZ GZIP IMG ISO LZH M4A M4V MKV MOV MP3 MP4 MPA MPE MPEG MPG MSI MSU OGG OGV PDF PLJ PPS PPT QT R0* R1* RA RAR RM RMVB SEA SIT SITX TAR TIF TIFF WAV WMA WMV XZ Z ZIP",
+        // The default types plus XZ, for the proxy case (a type other download managers leave
+        // alone); TORRENT for the torrents case (#1058).
+        auto_types: "3GP 7Z AAC ACE AIF APK ARJ ASF AVI BIN BZ2 EXE GZ GZIP IMG ISO LZH M4A M4V MKV MOV MP3 MP4 MPA MPE MPEG MPG MSI MSU OGG OGV PDF PLJ PPS PPT QT R0* R1* RA RAR RM RMVB SEA SIT SITX TAR TIF TIFF TORRENT WAV WMA WMV XZ Z ZIP",
         category_dirs: dirs,
       },
     }),

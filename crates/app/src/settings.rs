@@ -269,6 +269,9 @@ pub struct Settings {
     /// download).
     pub torrent_keep_sharing: bool,
     /// Windows opens magnet links and .torrent files with MDM (D-018: opt-in, current user).
+    /// Also whether the browser hands a .torrent download over (#1058: off, it stays with the
+    /// browser for the user's own torrent client; mdm_ipc::capture::CaptureRules reads it under
+    /// this name).
     pub torrent_associations: bool,
     /// Torrent settings → Network (#40, `torrent_config`): accept incoming connections, map
     /// the port with the router's UPnP, a fixed port (0: any, picked at each start), the DHT,
@@ -1180,6 +1183,30 @@ mod tests {
             (c.port, c.listen, c.dht, c.lsd),
             (Some(51413), true, true, true)
         );
+    }
+
+    /// #1058: the browser integration (the native host, mdm_ipc::capture::CaptureRules) reads
+    /// the capture settings from the saved list by the app's own names: Torrent settings' switch
+    /// too, off by default in both.
+    #[test]
+    fn the_host_reads_the_capture_settings_as_saved() {
+        use mdm_ipc::capture::CaptureRules;
+        let read = |s: &Settings| -> CaptureRules {
+            serde_json::from_value(serde_json::to_value(s).unwrap()).unwrap()
+        };
+        let d = Settings::default();
+        let r = read(&d);
+        assert!(!d.torrent_associations && !r.torrent_associations);
+        assert_eq!(r.auto_types, d.auto_types);
+        assert_eq!(r.capture_min_kb, d.capture_min_kb);
+        let on = Settings {
+            torrent_associations: true,
+            capture_min_kb: 7,
+            ..Settings::default()
+        };
+        let r = read(&on);
+        assert!(r.torrent_associations);
+        assert_eq!(r.capture_min_kb, 7);
     }
 
     /// #41: a list saved before Zen was known gets it, captured; a choice made is kept.

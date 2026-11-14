@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A .torrent downloaded in the browser stays with the browser (and your own torrent program)
+  while Torrent settings' **Open magnet links and .torrent files with Mister Download Manager**
+  is off ([#1058](https://github.com/anefzaoui/misterdownloadmanager/issues/1058))
 - ✅ No reconnecting in waves on a shared line: a connection is measured against its share of
   what the connections bring together, not the speed the first one had alone
   ([#896](https://github.com/anefzaoui/misterdownloadmanager/pull/896))
