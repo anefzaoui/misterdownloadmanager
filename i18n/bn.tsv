@@ -6322,9 +6322,10 @@ menu	&About Mister Download Manager	Mister Download Manager সম্পর্�
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Add new download	নতুন ডাউনলোড যোগ করুন(&A)
 #. menu command in the main window
+#. View → Window system: MDM chooses the window system itself at each start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#. the trailing ... means it opens a window: keep it
-menu	Add &new download...	নতুন ডাউনলোড যোগ করুন(&N)...
+#, machine
+menu	&Automatic	স্বয়ংক্রিয়(&A)
 #. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -6411,10 +6412,6 @@ menu	&Stop All	সব ডাউনলোড থামান(&S)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Stop Download	ডাউনলোড থামান(&S)
 #. menu command in the main window
-#. View menu: submenu choosing how the text is drawn (smooth or classic)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-menu	Te&xt	টেক্সট(&X)
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Tray icon	ট্রে আইকন(&T)
 #. menu command in the main window
@@ -6428,12 +6425,26 @@ menu	&Undo	&পূর্বাবস্থায় ফিরিয়ে আন
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Video downloads	ভিডিও ডাউনলোড(&V)
 #. menu command in the main window
+#. View → Window system: Wayland's own windows (the name of a Linux display system, usually kept as is)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Wayland	ওয়েল্যান্ড(&W)
+#. menu command in the main window
+#. View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Window system	উইন্ডো সিস্টেম(&W)
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Add &batch download	ব্যাচ ডাউনলোড যোগ করুন(&B)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 menu	Add &magnet link...	ম্যাগনেট লিংক যোগ করুন(&M)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+menu	Add &new download...	নতুন ডাউনলোড যোগ করুন(&N)...
 #. menu command in the main window
 #. View → Theme: picks a theme file or a Base16 or pywal colour scheme, copies it into the themes folder and uses it
 menu	Add a theme file…	একটি থিম ফাইল যোগ করুন…
@@ -6596,6 +6607,14 @@ menu	Hide drop target	ড্রপ টার্গেট লুকান
 #. View → Theme: black and white with strong edges, for low vision
 menu	High contrast	উচ্চ বৈসাদৃশ্য
 #. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are Wayland's now
+#, machine
+menu	In use: Wayland	ব্যবহারে: ওয়েল্যান্ড
+#. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are X11's (through XWayland) now
+#, machine
+menu	In use: X11 (XWayland)	ব্যবহারে: X11 (XWayland)
+#. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 menu	It couldn't start: the log says why	চালু হতে পারেনি: কারণ লগে লেখা আছে
 #. menu command in the main window
@@ -6739,6 +6758,10 @@ menu	Stop Download	ডাউনলোড থামান
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Support &MDM	MDM-কে সমর্থন করুন(&M)
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menu	Te&xt	টেক্সট(&X)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Tell a &friend	বন্ধুকে জানান(&F)

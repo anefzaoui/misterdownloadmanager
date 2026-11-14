@@ -4930,6 +4930,10 @@ menu	&About Mister Download Manager	&About Mister Download Manager
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Add new download	&Add new download
 #. menu command in the main window
+#. View → Window system: MDM chooses the window system itself at each start
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menu	&Automatic	&Automatic
+#. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Classic	&Classic
@@ -5022,6 +5026,18 @@ menu	&Undo	&Undo
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Video downloads	&Video downloads
+#. menu command in the main window
+#. View → Window system: Wayland's own windows (the name of a Linux display system, usually kept as is)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menu	&Wayland	&Wayland
+#. menu command in the main window
+#. View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menu	&Window system	&Window system
+#. menu command in the main window
+#. View → Window system: X11's windows, through XWayland in a Wayland session (names of Linux display systems, usually kept as is)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menu	&X11 (XWayland)	&X11 (XWayland)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Add &batch download	Add &batch download
@@ -5193,6 +5209,12 @@ menu	Hide drop target	Hide drop target
 #. menu command in the main window
 #. View → Theme: black and white with strong edges, for low vision
 menu	High contrast	High contrast
+#. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are Wayland's now
+menu	In use: Wayland	In use: Wayland
+#. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are X11's (through XWayland) now
+menu	In use: X11 (XWayland)	In use: X11 (XWayland)
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 menu	It couldn't start: the log says why	It couldn't start: the log says why

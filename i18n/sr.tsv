@@ -6494,10 +6494,10 @@ menu	&About Mister Download Manager	О &Mister Download Manager-у
 #, machine
 menu	&Add new download	&Додај ново преузимање
 #. menu command in the main window
+#. View → Window system: MDM chooses the window system itself at each start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#. the trailing ... means it opens a window: keep it
 #, machine
-menu	Add &new download...	&Додај ново преузимање...
+menu	&Automatic	&Аутоматски
 #. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -6603,11 +6603,6 @@ menu	&Stop All	&Заустави све
 #, machine
 menu	&Stop Download	&Заустави преузимање
 #. menu command in the main window
-#. View menu: submenu choosing how the text is drawn (smooth or classic)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
-menu	Te&xt	&Текст
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tray icon	&Икона у системској палети
@@ -6624,6 +6619,11 @@ menu	&Undo	&Опозови радњу
 #, machine
 menu	&Video downloads	&Видео преузимања
 #. menu command in the main window
+#. View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Window system	&Систем прозора
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Add &batch download	Додај &групно преузимање
@@ -6632,6 +6632,11 @@ menu	Add &batch download	Додај &групно преузимање
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Add &magnet link...	Додај &магнетну везу...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &new download...	&Додај ново преузимање...
 #. menu command in the main window
 #. View → Theme: picks a theme file or a Base16 or pywal colour scheme, copies it into the themes folder and uses it
 #, machine
@@ -6847,6 +6852,14 @@ menu	Hide drop target	Сакриј циљ превлачења
 #, machine
 menu	High contrast	Висок контраст
 #. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are Wayland's now
+#, machine
+menu	In use: Wayland	У употреби: Wayland
+#. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are X11's (through XWayland) now
+#, machine
+menu	In use: X11 (XWayland)	У употреби: X11 (XWayland)
+#. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
 menu	It couldn't start: the log says why	Није могло да се покрене: у дневнику је наведен разлог
@@ -7037,6 +7050,11 @@ menu	Stop Download	Заустави преузимање
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Support &MDM	Подржите &MDM
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Te&xt	&Текст
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

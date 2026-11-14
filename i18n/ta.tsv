@@ -6513,10 +6513,10 @@ menu	&About Mister Download Manager	Mister Download Manager பற்றி(&A)
 #, machine
 menu	&Add new download	புதிய பதிவிறக்கத்தைச் சேர்(&A)
 #. menu command in the main window
+#. View → Window system: MDM chooses the window system itself at each start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#. the trailing ... means it opens a window: keep it
 #, machine
-menu	Add &new download...	புதிய பதிவிறக்கத்தைச் &சேர்...
+menu	&Automatic	தானி&யங்கு
 #. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -6622,11 +6622,6 @@ menu	&Stop All	அனைத்தையும் நிறுத்து(&S)
 #, machine
 menu	&Stop Download	பதிவிறக்கத்தை நிறுத்து(&S)
 #. menu command in the main window
-#. View menu: submenu choosing how the text is drawn (smooth or classic)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
-menu	Te&xt	உரை(&X)
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tray icon	ட்ரே ஐகான்(&T)
@@ -6643,6 +6638,21 @@ menu	&Undo	&செயல்தவிர்
 #, machine
 menu	&Video downloads	வீடியோ பதிவிறக்கங்கள்(&V)
 #. menu command in the main window
+#. View → Window system: Wayland's own windows (the name of a Linux display system, usually kept as is)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Wayland	வேலேண்ட்(&W)
+#. menu command in the main window
+#. View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Window system	&சாளர அமைப்பு
+#. menu command in the main window
+#. View → Window system: X11's windows, through XWayland in a Wayland session (names of Linux display systems, usually kept as is)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&X11 (XWayland)	X11 (Xவேலேண்ட்)(&X)
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Add &batch download	தொகுப்பு பதிவிறக்கத்தைச் சேர்(&b)
@@ -6651,6 +6661,11 @@ menu	Add &batch download	தொகுப்பு பதிவிறக்கத
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Add &magnet link...	காந்த இணைப்பைச் சேர்...(&m)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &new download...	புதிய பதிவிறக்கத்தைச் &சேர்...
 #. menu command in the main window
 #. View → Theme: picks a theme file or a Base16 or pywal colour scheme, copies it into the themes folder and uses it
 #, machine
@@ -6866,6 +6881,14 @@ menu	Hide drop target	இழுத்துவிடும் இலக்கை
 #, machine
 menu	High contrast	உயர் மாறுபாடு
 #. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are Wayland's now
+#, machine
+menu	In use: Wayland	பயன்பாட்டில் உள்ளது: Wayland
+#. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are X11's (through XWayland) now
+#, machine
+menu	In use: X11 (XWayland)	பயன்பாட்டில் உள்ளது: X11 (XWayland)
+#. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
 menu	It couldn't start: the log says why	தொடங்க முடியவில்லை: பதிவில் காரணம் குறிப்பிடப்பட்டுள்ளது
@@ -7056,6 +7079,11 @@ menu	Stop Download	பதிவிறக்கத்தை நிறுத்த
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Support &MDM	MDM-ஐ ஆ&தரிக்கவும்
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Te&xt	உரை(&X)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

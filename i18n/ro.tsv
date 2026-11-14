@@ -6512,10 +6512,10 @@ menu	&About Mister Download Manager	&Despre Mister Download Manager
 #, machine
 menu	&Add new download	Adăugați descărcare &nouă
 #. menu command in the main window
+#. View → Window system: MDM chooses the window system itself at each start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#. the trailing ... means it opens a window: keep it
 #, machine
-menu	Add &new download...	Adăugați descărcare &nouă...
+menu	&Automatic	A&utomat
 #. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -6621,11 +6621,6 @@ menu	&Stop All	&Opriți tot
 #, machine
 menu	&Stop Download	&Opriți descărcarea
 #. menu command in the main window
-#. View menu: submenu choosing how the text is drawn (smooth or classic)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
-menu	Te&xt	&Text
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tray icon	Icoană în &tavă
@@ -6642,6 +6637,21 @@ menu	&Undo	&Anulare
 #, machine
 menu	&Video downloads	Descărcări &video
 #. menu command in the main window
+#. View → Window system: Wayland's own windows (the name of a Linux display system, usually kept as is)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Wayland	&Wayland
+#. menu command in the main window
+#. View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Window system	Sistem de &ferestre
+#. menu command in the main window
+#. View → Window system: X11's windows, through XWayland in a Wayland session (names of Linux display systems, usually kept as is)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&X11 (XWayland)	&X11 (XWayland)
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Add &batch download	Adăugați descărcare în &bloc
@@ -6650,6 +6660,11 @@ menu	Add &batch download	Adăugați descărcare în &bloc
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Add &magnet link...	Adăugați link &magnet...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &new download...	Adăugați descărcare &nouă...
 #. menu command in the main window
 #. View → Theme: picks a theme file or a Base16 or pywal colour scheme, copies it into the themes folder and uses it
 #, machine
@@ -6865,6 +6880,14 @@ menu	Hide drop target	Ascundeți ținta de glisare
 #, machine
 menu	High contrast	Contrast ridicat
 #. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are Wayland's now
+#, machine
+menu	In use: Wayland	În uz: Wayland
+#. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are X11's (through XWayland) now
+#, machine
+menu	In use: X11 (XWayland)	În uz: X11 (XWayland)
+#. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
 menu	It couldn't start: the log says why	Nu a putut porni: jurnalul spune de ce
@@ -7055,6 +7078,11 @@ menu	Stop Download	Oprire descărcare
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Support &MDM	Susține &MDM
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Te&xt	&Text
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

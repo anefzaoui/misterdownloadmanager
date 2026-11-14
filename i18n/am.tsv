@@ -6513,10 +6513,10 @@ menu	&About Mister Download Manager	ስለ &Mister Download Manager
 #, machine
 menu	&Add new download	አዲስ &ማውረድ አክል
 #. menu command in the main window
+#. View → Window system: MDM chooses the window system itself at each start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#. the trailing ... means it opens a window: keep it
 #, machine
-menu	Add &new download...	አዲስ ማውረድ &አክል...
+menu	&Automatic	በ&ራስ-ሰር
 #. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -6622,11 +6622,6 @@ menu	&Stop All	ሁሉንም &ያቁሙ
 #, machine
 menu	&Stop Download	ማውረዱን &ያቁሙ
 #. menu command in the main window
-#. View menu: submenu choosing how the text is drawn (smooth or classic)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
-menu	Te&xt	&ጽሑፍ
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tray icon	&የሲስተም ትሪ አዶ
@@ -6643,6 +6638,16 @@ menu	&Undo	&መልሰው ይተግብሩ
 #, machine
 menu	&Video downloads	&የቪዲዮ ማውረዶች
 #. menu command in the main window
+#. View → Window system: Wayland's own windows (the name of a Linux display system, usually kept as is)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Wayland	&ዌይላንድ
+#. menu command in the main window
+#. View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Window system	&የመስኮት ስርዓት
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Add &batch download	የ&ቡድን ማውረድ አክል
@@ -6651,6 +6656,11 @@ menu	Add &batch download	የ&ቡድን ማውረድ አክል
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Add &magnet link...	የ&ማግኔት አገናኝ አክል...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &new download...	አዲስ ማውረድ &አክል...
 #. menu command in the main window
 #. View → Theme: picks a theme file or a Base16 or pywal colour scheme, copies it into the themes folder and uses it
 #, machine
@@ -6866,6 +6876,14 @@ menu	Hide drop target	የመጣል ኢላማ ደብቅ
 #, machine
 menu	High contrast	ከፍተኛ ንፅፅር
 #. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are Wayland's now
+#, machine
+menu	In use: Wayland	በአገልግሎት ላይ ያለ፦ ዌይላንድ
+#. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are X11's (through XWayland) now
+#, machine
+menu	In use: X11 (XWayland)	በአገልግሎት ላይ ያለ፦ X11 (XWayland)
+#. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
 menu	It couldn't start: the log says why	መጀመር አልቻለም፦ የምዝግብ ማስታወሻው ምክንያቱን ይናገራል
@@ -7056,6 +7074,11 @@ menu	Stop Download	ማውረድ አቁም
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Support &MDM	MDMን ይ&ደግፉ
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Te&xt	&ጽሑፍ
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

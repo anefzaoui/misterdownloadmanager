@@ -4923,6 +4923,11 @@ menu	&About Mister Download Manager	T&entang Mister Download Manager
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Add new download	T&ambah unduhan baru
 #. menu command in the main window
+#. View → Window system: MDM chooses the window system itself at each start
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Automatic	&Otomatis
+#. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Classic	&Klasik
@@ -5015,6 +5020,21 @@ menu	&Undo	&Urungkan
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Video downloads	Unduhan &video
+#. menu command in the main window
+#. View → Window system: Wayland's own windows (the name of a Linux display system, usually kept as is)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Wayland	&Wayland
+#. menu command in the main window
+#. View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Window system	Sistem &jendela
+#. menu command in the main window
+#. View → Window system: X11's windows, through XWayland in a Wayland session (names of Linux display systems, usually kept as is)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&X11 (XWayland)	&X11 (XWayland)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Add &batch download	Tambah unduhan &batch
@@ -5186,6 +5206,14 @@ menu	Hide drop target	Sembunyikan target lepas
 #. menu command in the main window
 #. View → Theme: black and white with strong edges, for low vision
 menu	High contrast	Kontras tinggi
+#. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are Wayland's now
+#, machine
+menu	In use: Wayland	Digunakan: Wayland
+#. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are X11's (through XWayland) now
+#, machine
+menu	In use: X11 (XWayland)	Digunakan: X11 (XWayland)
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 menu	It couldn't start: the log says why	Tidak dapat dijalankan: log menjelaskan alasannya

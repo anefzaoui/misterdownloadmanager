@@ -6513,10 +6513,10 @@ menu	&About Mister Download Manager	Mister Download Manager турында(&A)
 #, machine
 menu	&Add new download	Яңа йөкләү өстәү(&A)
 #. menu command in the main window
+#. View → Window system: MDM chooses the window system itself at each start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#. the trailing ... means it opens a window: keep it
 #, machine
-menu	Add &new download...	Яңа йөкләү өс&тәү...
+menu	&Automatic	А&втоматик
 #. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -6622,11 +6622,6 @@ menu	&Stop All	Барысын туктату(&S)
 #, machine
 menu	&Stop Download	Йөкләүне туктату(&S)
 #. menu command in the main window
-#. View menu: submenu choosing how the text is drawn (smooth or classic)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
-menu	Te&xt	&Текст
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tray icon	Тәлинкә иконасы(&T)
@@ -6643,6 +6638,11 @@ menu	&Undo	&Кире алу
 #, machine
 menu	&Video downloads	Видео йөкләүләр(&V)
 #. menu command in the main window
+#. View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Window system	Тәрәзә сис&темасы
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Add &batch download	Пакетлы йөкләү өстәү(&B)
@@ -6651,6 +6651,11 @@ menu	Add &batch download	Пакетлы йөкләү өстәү(&B)
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Add &magnet link...	Магнит сылтамасы өстәү(&M)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &new download...	Яңа йөкләү өс&тәү...
 #. menu command in the main window
 #. View → Theme: picks a theme file or a Base16 or pywal colour scheme, copies it into the themes folder and uses it
 #, machine
@@ -6866,6 +6871,14 @@ menu	Hide drop target	Төшерү максатын яшерү
 #, machine
 menu	High contrast	Югары контраст
 #. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are Wayland's now
+#, machine
+menu	In use: Wayland	Кулланыла: Wayland
+#. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are X11's (through XWayland) now
+#, machine
+menu	In use: X11 (XWayland)	Кулланыла: X11 (XWayland)
+#. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
 menu	It couldn't start: the log says why	Башлап булмады: журналда сәбәбе язылган
@@ -7056,6 +7069,11 @@ menu	Stop Download	Йөкләүне туктату
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Support &MDM	MDM'ны яклау(&M)
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Te&xt	&Текст
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

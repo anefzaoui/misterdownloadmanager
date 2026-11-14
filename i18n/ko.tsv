@@ -6513,10 +6513,10 @@ menu	&About Mister Download Manager	Mister Download Manager 정보(&A)
 #, machine
 menu	&Add new download	새 다운로드 추가(&A)
 #. menu command in the main window
+#. View → Window system: MDM chooses the window system itself at each start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#. the trailing ... means it opens a window: keep it
 #, machine
-menu	Add &new download...	새 다운로드 &추가...
+menu	&Automatic	자동(&A)
 #. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -6622,11 +6622,6 @@ menu	&Stop All	모두 중지(&S)
 #, machine
 menu	&Stop Download	다운로드 중지(&S)
 #. menu command in the main window
-#. View menu: submenu choosing how the text is drawn (smooth or classic)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
-menu	Te&xt	텍스트(&X)
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tray icon	트레이 아이콘(&T)
@@ -6643,6 +6638,11 @@ menu	&Undo	&실행 취소
 #, machine
 menu	&Video downloads	비디오 다운로드(&V)
 #. menu command in the main window
+#. View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Window system	창 시스템(&W)
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Add &batch download	일괄 다운로드 추가(&B)
@@ -6651,6 +6651,11 @@ menu	Add &batch download	일괄 다운로드 추가(&B)
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Add &magnet link...	마그넷 링크 추가(&M)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &new download...	새 다운로드 &추가...
 #. menu command in the main window
 #. View → Theme: picks a theme file or a Base16 or pywal colour scheme, copies it into the themes folder and uses it
 #, machine
@@ -6866,6 +6871,14 @@ menu	Hide drop target	드롭 대상 숨기기
 #, machine
 menu	High contrast	고대비
 #. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are Wayland's now
+#, machine
+menu	In use: Wayland	사용 중: Wayland
+#. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are X11's (through XWayland) now
+#, machine
+menu	In use: X11 (XWayland)	사용 중: X11 (XWayland)
+#. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
 menu	It couldn't start: the log says why	시작할 수 없음: 로그에 이유가 기록되어 있습니다.
@@ -7056,6 +7069,11 @@ menu	Stop Download	다운로드 중지
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Support &MDM	MDM &지원
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Te&xt	텍스트(&X)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

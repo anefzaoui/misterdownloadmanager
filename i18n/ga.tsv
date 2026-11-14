@@ -6513,10 +6513,10 @@ menu	&About Mister Download Manager	&Maidir le Mister Download Manager
 #, machine
 menu	&Add new download	Íoslódáil nua &a chur leis
 #. menu command in the main window
+#. View → Window system: MDM chooses the window system itself at each start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#. the trailing ... means it opens a window: keep it
 #, machine
-menu	Add &new download...	Íoslódáil nua &a chur leis...
+menu	&Automatic	&Uathoibríoch
 #. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -6622,11 +6622,6 @@ menu	&Stop All	&Stop gach ceann
 #, machine
 menu	&Stop Download	&Stop an íoslódáil
 #. menu command in the main window
-#. View menu: submenu choosing how the text is drawn (smooth or classic)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
-menu	Te&xt	&Téacs
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tray icon	Deilbhín &tráidire
@@ -6643,6 +6638,21 @@ menu	&Undo	&Cealaigh
 #, machine
 menu	&Video downloads	Íoslódálacha &físeáin
 #. menu command in the main window
+#. View → Window system: Wayland's own windows (the name of a Linux display system, usually kept as is)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Wayland	&Wayland
+#. menu command in the main window
+#. View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Window system	Córas &fuinneog
+#. menu command in the main window
+#. View → Window system: X11's windows, through XWayland in a Wayland session (names of Linux display systems, usually kept as is)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&X11 (XWayland)	&X11 (XWayland)
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Add &batch download	Cuir íoslódáil &bhaisce leis
@@ -6651,6 +6661,11 @@ menu	Add &batch download	Cuir íoslódáil &bhaisce leis
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Add &magnet link...	Cuir nasc &maighnéadach leis...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &new download...	Íoslódáil nua &a chur leis...
 #. menu command in the main window
 #. View → Theme: picks a theme file or a Base16 or pywal colour scheme, copies it into the themes folder and uses it
 #, machine
@@ -6866,6 +6881,14 @@ menu	Hide drop target	Folaigh an sprioc scaoilte
 #, machine
 menu	High contrast	Ardchodarsnacht
 #. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are Wayland's now
+#, machine
+menu	In use: Wayland	In úsáid: Wayland
+#. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are X11's (through XWayland) now
+#, machine
+menu	In use: X11 (XWayland)	In úsáid: X11 (XWayland)
+#. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
 menu	It couldn't start: the log says why	Níorbh fhéidir é a thosú: deir an logáil cén fáth
@@ -7056,6 +7079,11 @@ menu	Stop Download	Cuir an íoslódáil ar stad
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Support &MDM	Tacaigh le &MDM
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Te&xt	&Téacs
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

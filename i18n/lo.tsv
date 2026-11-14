@@ -6509,10 +6509,10 @@ menu	&About Mister Download Manager	ກ່ຽວ&ກັບ Mister Download Manag
 #, machine
 menu	&Add new download	ເພີ່ມການດາວໂຫຼດໃ&ໝ່
 #. menu command in the main window
+#. View → Window system: MDM chooses the window system itself at each start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#. the trailing ... means it opens a window: keep it
 #, machine
-menu	Add &new download...	ເພີ່ມການດາວໂຫຼດໃ&ໝ່...
+menu	&Automatic	ອັດຕະໂນມັດ(&A)
 #. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -6618,11 +6618,6 @@ menu	&Stop All	ຢຸດທັງ&ໝົດ
 #, machine
 menu	&Stop Download	ຢຸດການດາວໂຫຼ&ດ
 #. menu command in the main window
-#. View menu: submenu choosing how the text is drawn (smooth or classic)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
-menu	Te&xt	&ຂໍ້ຄວາມ
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tray icon	&ໄອຄອນຖາດ
@@ -6639,6 +6634,11 @@ menu	&Undo	&ຍົກເລີກ
 #, machine
 menu	&Video downloads	ການດາວໂຫຼດວິດີໂ&ອ
 #. menu command in the main window
+#. View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Window system	ລະບົບໜ້າຕ່າງ(&W)
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Add &batch download	ເພີ່ມການດາວໂຫຼດເປັນ&ຊຸດ
@@ -6647,6 +6647,11 @@ menu	Add &batch download	ເພີ່ມການດາວໂຫຼດເປັ�
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Add &magnet link...	ເພີ່ມລິ້ງ &magnet...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &new download...	ເພີ່ມການດາວໂຫຼດໃ&ໝ່...
 #. menu command in the main window
 #. View → Theme: picks a theme file or a Base16 or pywal colour scheme, copies it into the themes folder and uses it
 #, machine
@@ -6858,6 +6863,14 @@ menu	Hide drop target	ເຊື່ອງເປົ້າໝາຍການລາ�
 #, machine
 menu	High contrast	ຄອນທຣາສສູງ
 #. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are Wayland's now
+#, machine
+menu	In use: Wayland	ກຳລັງໃຊ້: Wayland
+#. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are X11's (through XWayland) now
+#, machine
+menu	In use: X11 (XWayland)	ກຳລັງໃຊ້: X11 (XWayland)
+#. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
 menu	It couldn't start: the log says why	ມັນບໍ່ສາມາດເລີ່ມຕົ້ນໄດ້: ບັນທຶກບອກເຫດຜົນ
@@ -7048,6 +7061,11 @@ menu	Stop Download	ຢຸດດາວໂຫຼດ
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Support &MDM	ສະໜັບສະໜູນ &MDM
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Te&xt	&ຂໍ້ຄວາມ
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
