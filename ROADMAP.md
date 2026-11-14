@@ -557,6 +557,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Firefox: one Download video button over a video, not two, after the extension is updated while
+  it shows (seen on YouTube in full screen)
+  ([#336](https://github.com/anefzaoui/misterdownloadmanager/issues/336))
 - ✅ Linux: no crash when fontconfig offers a font MDM can't draw with (an old bitmap font for
   Japanese): the best font that scales and MDM can read is used instead
   ([#931](https://github.com/anefzaoui/misterdownloadmanager/issues/931))
