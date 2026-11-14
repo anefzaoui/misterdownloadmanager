@@ -2886,6 +2886,18 @@ mod tests {
             tokio::time::sleep(Duration::from_millis(50)).await;
         }
         assert_eq!(resumed.stats(&hash).unwrap().done, data.len() as u64);
+        // The lists read without waiting (the progress window's, Files...) name it the new way
+        // too after the restart: the renames are loaded as the session starts.
+        let deadline = std::time::Instant::now() + Duration::from_secs(20);
+        let seen = loop {
+            if let Some((files, _, _)) = resumed.seen_files(&hash) {
+                break files;
+            }
+            assert!(std::time::Instant::now() < deadline, "never seen");
+            tokio::time::sleep(Duration::from_millis(50)).await;
+        };
+        assert_eq!(seen.len(), 1);
+        assert_eq!(seen[0].path, PathBuf::from("renamed_video.mp4"));
 
         resumed.stop().await;
         seeder.stop().await;
