@@ -4528,6 +4528,7 @@ dependencies = [
  "image",
  "libc",
  "mdm-cli",
+ "mdm-cnl",
  "mdm-crash",
  "mdm-debrid",
  "mdm-engine",
@@ -4552,12 +4553,14 @@ dependencies = [
  "security-framework",
  "serde",
  "serde_json",
+ "skrifa",
  "tempfile",
  "tokio",
  "toml 1.1.8+spec-1.1.0",
  "tracing",
  "tracing-subscriber",
  "tray-icon",
+ "unicode-bidi",
  "unicode-segmentation",
  "url",
  "wgpu",
@@ -4565,6 +4568,7 @@ dependencies = [
  "windows-sys 0.61.2",
  "winit",
  "winresource",
+ "x11-dl",
  "x11rb",
  "zbus",
 ]
@@ -4585,6 +4589,19 @@ dependencies = [
  "tempfile",
  "tokio",
  "tokio-util",
+ "url",
+]
+
+[[package]]
+name = "mdm-cnl"
+version = "0.5.2"
+dependencies = [
+ "aes",
+ "axum",
+ "base64 0.23.1",
+ "reqwest 0.13.5",
+ "tokio",
+ "tracing",
  "url",
 ]
 
@@ -4820,6 +4837,7 @@ dependencies = [
 name = "mdm-torrent"
 version = "0.5.2"
 dependencies = [
+ "anyhow",
  "flate2",
  "librqbit",
  "mdm-engine",

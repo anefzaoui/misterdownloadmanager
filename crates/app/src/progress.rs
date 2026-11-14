@@ -524,7 +524,8 @@ impl Progress {
         // Hidden until dialogs::keep_theme has given it its theme.
         let mut builder = crate::quiet(ViewportBuilder::default())
             .with_visible(false)
-            .with_title(title)
+            // The taskbar shows it: without isolates (#919).
+            .with_title(crate::i18n::os_text(&title))
             .with_inner_size(shown)
             // IDM's progress window has 2 px borders and a fixed size. On Windows the sizing
             // frame is asked for and win32::progress_frame trims its borders, disables resizing
@@ -575,8 +576,7 @@ impl Progress {
                         Some(CaptionButton::ToTray) => Action::Hide,
                         Some(CaptionButton::Minimize) if minimize_hides => Action::Hide,
                         Some(CaptionButton::Minimize) => {
-                            ui.ctx()
-                                .send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+                            crate::dialogs::minimize(ui.ctx(), hwnd);
                             action
                         }
                         _ => action,
@@ -1003,7 +1003,7 @@ impl Progress {
             crate::i18n::t("Transfer rate"),
             winui::TEXT(),
         );
-        let rate = if item.status == Status::Downloading {
+        let rate = if item.status == Status::Downloading && !item.past_last_byte() {
             model::rate(item.rate())
         } else {
             String::new()
@@ -1414,7 +1414,8 @@ impl Progress {
                 crate::i18n::mark("Transfer rate"),
                 112.0,
                 135.0,
-                if item.status == Status::Downloading {
+                // Every byte in (#736): nothing comes in while the file is checked or joined.
+                if item.status == Status::Downloading && !item.past_last_byte() {
                     model::rate(item.rate())
                 } else {
                     String::new()

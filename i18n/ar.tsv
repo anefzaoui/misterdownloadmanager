@@ -6,6 +6,11 @@
 #. never shown for a single file
 #. {n} = a number (keep the braces as they are)
 @plural	Also delete the {n} file from disk|Also delete the {n} files from disk	حذف {n} ملف من القرص أيضا|حذف {n} ملف من القرص أيضا|حذف {n} ملفين من القرص أيضا|حذف {n} ملفات من القرص أيضا|حذف {n} ملفا من القرص أيضا|حذف {n} ملف من القرص أيضا
+#. count in cnl.rs
+#. Click'n'Load window: a page whose web site the browser doesn't name, so MDM can't tell which site it is
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	يريد موقع غير معروف إرسال {n} رابط إلى ملتقط الروابط.|يريد موقع غير معروف إرسال {n} رابط إلى ملتقط الروابط.|يريد موقع غير معروف إرسال {n} رابطين إلى ملتقط الروابط.|يريد موقع غير معروف إرسال {n} روابط إلى ملتقط الروابط.|يريد موقع غير معروف إرسال {n} رابطا إلى ملتقط الروابط.|يريد موقع غير معروف إرسال {n} رابط إلى ملتقط الروابط.
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -112,6 +117,11 @@
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} متتبع: {peers}|{n} متتبع: {peers}|{n} متتبعان: {peers}|{n} متتبعات: {peers}|{n} متتبعا: {peers}|{n} متتبع: {peers}
+#. count in cnl.rs
+#. Click'n'Load window: {site} is a web site's name such as "example.com"
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	يريد {site} إرسال {n} رابط إلى ملتقط الروابط.|يريد {site} إرسال {n} رابط إلى ملتقط الروابط.|يريد {site} إرسال {n} رابطين إلى ملتقط الروابط.|يريد {site} إرسال {n} روابط إلى ملتقط الروابط.|يريد {site} إرسال {n} رابطا إلى ملتقط الروابط.|يريد {site} إرسال {n} رابط إلى ملتقط الروابط.
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -168,6 +178,10 @@
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 	7z and RAR archives are extracted by 7-Zip ({path}).	يستخرج 7-Zip أرشيفات 7z وRAR ({path}).
+#. text in the Options window
+#. Options → Archives, when Extract in place with HatchZip (a program's name) is on: {path} is where its program is
+#, machine
+	7z and RAR archives are extracted by HatchZip ({path}).	يستخرج HatchZip أرشيفات 7z وRAR ({path}).
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	تحتاج أرشيفات 7z وRAR إلى 7-Zip (7-zip.org)، وهو غير مثبت.
@@ -229,6 +243,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	about {size}	حوالي {size}
+#. text in the Options window
+#. Options → Archives → Link grabber check box: Click'n'Load, a link site's button that sends its links to a program on this computer (port 9666, as JDownloader)
+#, machine
+	Accept Click'n'Load from web pages (port 9666)	قبول Click'n'Load من صفحات الويب (المنفذ 9666)
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 	Accept incoming connections	قبول الاتصالات الواردة
@@ -351,6 +369,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Afghanistan	أفغانستان
+#. text in the Options window
+#. Options → Add an account: a note under the user name and password fields (Mega-Debrid bans the address for some minutes after a few wrong passwords)
+#, machine
+	After a few wrong passwords the service blocks this connection for some minutes.	بعد عدة كلمات مرور خاطئة تحظر الخدمة هذا الاتصال لبضع دقائق.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Aland Islands	جزر آلاند
@@ -373,10 +395,18 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 	All the uploader's	كل ما رفعه الناشر
+#. text in cnl.rs
+#. button in the Click'n'Load window: let this site send links (remembered)
+#, machine
+	Allow	السماح
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
 	Allow more than {n} connections	السماح بأكثر من {n} اتصال
+#. text in cnl.rs
+#. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
+#, machine
+	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	اسمح فقط بالمواقع التي تستخدمها. لا يبحث عن شيء ولا ينزل شيء قبل أن تضيفه في ملتقط الروابط.
 #. text in errors.rs
 	already being downloaded: {path}	قيد التنزيل بالفعل: {path}
 #. text in the Link grabber window
@@ -544,6 +574,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Bhutan	بوتان
+#. text in cnl.rs
+#. button in the Click'n'Load window: refuse this site's links (remembered)
+#, machine
+	Block	حظر
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 	Block the addresses in this list (P2P or eMule format):	حظر العناوين في هذه القائمة (صيغة P2P أو eMule):
@@ -717,7 +751,7 @@
 #. the trailing ... means it is still going on: keep it
 	Checking {name} ({n} of {total})...	قيد التحقق من {name} ({n} من {total})...
 #. text in the download list (sizes, speeds, status)
-#. a torrent's status while its files are read and checked; {percent} is how much is checked, e.g. "42%"
+#. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
 #, machine
 	Checking {percent}	قيد التحقق {percent}
 #. text in the Checksum window; text in the Link grabber window
@@ -749,6 +783,15 @@
 #. button in the download list
 #. verb: clears this filter
 	Clear	مسح
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {port} is 9666; JDownloader is another download manager that uses the same port
+#, machine
+	Click'n'Load can't start: another program (JDownloader?) is using port {port}. Close it, then turn Click'n'Load off and on again in Options.	لا يمكن تشغيل Click'n'Load: برنامج آخر (JDownloader؟) يستخدم المنفذ {port}. أغلقه، ثم أوقف Click'n'Load وشغله مرة أخرى في الخيارات.
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Click'n'Load can't start: {error}	لا يمكن تشغيل Click'n'Load: {error}
 #. text in a download's progress window
 #. column title: the peer's torrent program
 	Client	العميل
@@ -1276,6 +1319,14 @@
 #. checkbox in the Options window
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 	Extract archives when their download completes	استخراج الأرشيفات عند اكتمال تنزيلها
+#. text in the Options window
+#. Options → Archives check box, greyed: HatchZip (a program's name, hatchzip.dev its site) isn't installed
+#, machine
+	Extract in place with HatchZip (hatchzip.dev, not installed)	الاستخراج في المكان باستخدام HatchZip (hatchzip.dev، غير مثبت)
+#. text in the Options window
+#. Options → Archives check box: HatchZip (a program's name) removes the archive while extracting it, so only the extracted files need disk space
+#, machine
+	Extract in place with HatchZip: only the files need room	الاستخراج في المكان باستخدام HatchZip: تحتاج الملفات وحدها إلى مساحة
 #. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 	Extract when done	استخراج عند الانتهاء
@@ -1572,6 +1623,10 @@
 	Haiti	هايتي
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 	Hang up modem when done	قطع اتصال المودم عند الانتهاء
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: HatchZip (a program's name) extracted the archive in place, removing it as it went
+#, machine
+	HatchZip extracted it in place: the archive was removed as its files came out	استخرجه HatchZip في المكان: أُزيل الأرشيف بينما كانت ملفاته تُستخرج
 #. text in a download's progress window
 #. legend: pieces downloaded
 	Have	المتوفر
@@ -1744,6 +1799,10 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 	it needs a password	يحتاج إلى كلمة مرور
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); {folder} holds the files extracted so far
+#, machine
+	it stopped partway. The files extracted so far are in {folder}, the rest is still in the archive: Extract continues	توقف في منتصف الطريق. الملفات المستخرجة حتى الآن في {folder}، والباقي ما زال في الأرشيف: «استخراج» يُكمل
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 	It tells the computers on your network which torrents you have.	يخبر أجهزة الكمبيوتر على شبكتك بالتورنتات التي لديك.
@@ -1760,6 +1819,11 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Italy	إيطاليا
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files came out, but moving them stopped ({error}). Those moved are in {to}, the others still in {left}; nothing was deleted	استخرجت ملفاته، لكن نقلها توقف ({error}). الملفات المنقولة في {to}، والباقية ما زالت في {left}؛ لم يحذف شيء
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 	its files could not be written: {error}	تعذر كتابة ملفاته: {error}
@@ -2080,6 +2144,10 @@
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 	medium	متوسط
+#. text in the download list (sizes, speeds, status)
+#. the list's Status column while a video's picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%". One short word: the column is narrow
+#, machine
+	Merging {percent}	قيد الدمج {percent}
 #. text in the download list (sizes, speeds, status)
 #. a video's status while its picture and sound are joined into one file (ffmpeg)
 #. the trailing ... means it is still going on: keep it
@@ -2419,6 +2487,10 @@
 #. text in helpers.rs
 #. Video helpers: no copy of this helper yet
 	Not installed yet	لم يتم التثبيت بعد
+#. text in the Link grabber window
+#. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
+#, machine
+	Not looked up	لم يبحث عنه
 #. button in helpers.rs
 	Not now	ليس الآن
 #. text in helpers.rs
@@ -2572,6 +2644,10 @@
 #. text in a download's progress window
 #. tab title: what happens when the download finishes
 	Options on completion	خيارات عند الاكتمال
+#. text in the Options window
+#. Options → Add an account: label before the field for an API key the user made at the service (Mega-Debrid: My Account → API Key; the other way to sign in)
+#, machine
+	Or paste an application's API key:	أو الصق مفتاح API لتطبيق:
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 	Or paste your API token:	أو الصق رمز API الخاص بك:
@@ -3117,6 +3193,10 @@
 #. a country's name (where a download's server is)
 	Sierra Leone	سيراليون
 #. button in the Options window
+#. button: sign in to the debrid service with the user name and password typed in
+#, machine
+	Sign in	تسجيل الدخول
+#. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 	Sign in in the browser	تسجيل الدخول في المستعرض
 #. text in the Options window
@@ -3128,6 +3208,10 @@
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
 	Sign-ins and passwords are kept in Windows Credential Manager.	يتم حفظ بيانات تسجيل الدخول وكلمات المرور في مدير بيانات اعتماد Windows.
+#. text in the Options window
+#. Options → Add an account: signed in, the service gives no account name; {state} premium or not
+#, machine
+	Signed in ({state})	تم تسجيل الدخول ({state})
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 	Signed in as {user} ({state})	تم تسجيل الدخول باسم {user} ({state})
@@ -3515,6 +3599,10 @@
 	The downloads you add, or drop on this window, show here.	التنزيلات التي تضيفها، أو تفلتها في هذه النافذة، تظهر هنا.
 #. text in errors.rs
 	the drive or network share is no longer available	القرص أو مشاركة الشبكة لم يعد متوفرا
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after HatchZip (a program's name) extracted in place: the entries left out (links, unsafe names) were not deleted, they are still in {folder}
+#, machine
+	The entries left out are still in {folder}	العناصر التي تم تخطيها ما زالت في {folder}
 #. text in extension.rs
 #, machine
 	The extension is already in this app. Apple hasn't notarized this build, so Safari needs these steps to allow it.	الملحق موجود بالفعل في هذا التطبيق. لم توثق Apple هذا الإصدار، لذا يحتاج Safari إلى هذه الخطوات للسماح به.
@@ -3619,6 +3707,10 @@
 	the server is busy ({status}); try again later	الخادم مشغول ({status})؛ حاول مرة أخرى لاحقا
 #. text in errors.rs
 	the server sent an unexpected part of the file ({detail})	أرسل الخادم جزءا غير متوقع من الملف ({detail})
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
+#, machine
+	the service doesn't say whether it is premium	لا تذكر الخدمة ما إذا كان الحساب مميزا
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 #, machine
@@ -3684,6 +3776,10 @@
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 	There is already a queue with this name	توجد بالفعل قائمة انتظار بهذا الاسم
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
+#, machine
+	there isn't enough free space for its files, HatchZip says; nothing was changed	لا توجد مساحة حرة كافية لملفاته بحسب HatchZip؛ لم يتغير شيء
 #. text in a download's progress window
 	These settings are unavailable when "Show download complete dialog" is turned on	هذه الإعدادات غير متاحة عند تشغيل "إظهار مربع حوار اكتمال التنزيل"
 #. text in helpers.rs
@@ -4081,6 +4177,10 @@
 #. text in the Options window
 #. column title: the user name
 	User	المستخدم
+#. text in the Options window
+#. Options → Add an account: label before the field for the user name at the debrid service
+#, machine
+	User name:	اسم المستخدم:
 #. page title in the Options window
 	User names and passwords for servers/sites	أسماء المستخدمين وكلمات المرور للخوادم/المواقع
 #. text in the Options window
@@ -4521,14 +4621,6 @@
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 	{percent} at {service}	{percent} في {service}
-#. text in the download list (sizes, speeds, status)
-#. the list's narrow Status column while a video's picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%": keep it first, the column is narrow
-#, machine
-	{percent} merged	{percent} مدمج
-#. text in the download list (sizes, speeds, status)
-#. the list's narrow Status column while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%": keep it first, the column is narrow
-#, machine
-	{percent} verified	{percent} قيد التحقق
 #. text in errors.rs
 	{problem} ({cause})	{problem} ({cause})
 #. text in errors.rs
@@ -5099,7 +5191,7 @@ menu	&Add new download	&إضافة تنزيل جديد
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
-menu	&Add new download...	إضافة تنزيل &جديد...
+menu	Add &new download...	إضافة تنزيل &جديد...
 #. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -5189,7 +5281,7 @@ menu	&Stop Download	إيقاف الت&نزيل
 #. View menu: submenu choosing how the text is drawn (smooth or classic)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Text	&نص
+menu	Te&xt	&نص
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Tray icon	أيقونة &علبة النظام
@@ -5275,7 +5367,7 @@ menu	By R&eferer	حسب الم&رجع
 menu	By Save &Path	حسب &مسار الحفظ
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-menu	By St&atus	حسب ال&حالة
+menu	By Stat&us	حسب ال&حالة
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	By Transfer &Rate	حسب &معدل النقل
@@ -5311,6 +5403,10 @@ menu	Delete from queue	حذف من قائمة الانتظار
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Microsoft's), usually kept as is
 menu	Direct3D	Direct3D
+#. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows and why: Direct3D 12 through Windows' own software renderer (WARP, keep the name), because this computer's graphics card has no Direct3D 12 driver
+#, machine
+menu	Direct3D 12 (WARP): this graphics card has no Direct3D 12 driver	Direct3D 12 (WARP): لا تملك بطاقة الرسومات هذه تعريف Direct3D 12
 #. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 menu	Direct3D didn't start here: OpenGL draws	لم يبدأ Direct3D هنا: الرسم بـ OpenGL
@@ -5431,9 +5527,25 @@ menu	Open with...	فتح باستخدام...
 #. View → Draw with: a graphics system's name, usually kept as is
 menu	OpenGL	OpenGL
 #. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
+#, machine
+menu	OpenGL didn't start here	لم يبدأ OpenGL هنا
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window froze inside the graphics card's driver while OpenGL drew
+#, machine
+menu	OpenGL froze inside the graphics driver here	توقف OpenGL داخل برنامج تشغيل الرسومات هنا
+#. menu command in the main window
 #. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
 #, machine
 menu	OpenGL here is too old to draw MDM	إصدار OpenGL هنا قديم جدا بحيث لا يمكنه رسم MDM
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window stayed empty for 10 seconds, so MDM started again another way
+#, machine
+menu	OpenGL's first frame didn't show within 10 seconds	لم يظهر الإطار الأول لـ OpenGL خلال 10 ثوان
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed or was closed while starting with it
+#, machine
+menu	OpenGL's last start ended before its first frame	انتهى آخر بدء لـ OpenGL قبل إطاره الأول
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window
@@ -5610,3 +5722,7 @@ unit	{n} MB	{n} ميغابايت
 #. unit after a number in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
 unit	{n} MB/sec	{n} ميغابايت/ثانية
+	Shortcut to show or hide window:	اختصار إظهار أو إخفاء النافذة:
+	Press keys...	اضغط المفاتيح...
+	This shortcut is already in use	هذا الاختصار قيد الاستخدام بالفعل
+	Windows and macOS	Windows و macOS

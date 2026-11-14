@@ -8,6 +8,7 @@ mod chrome;
 mod clipbatch;
 mod clipboard;
 mod clock;
+mod cnl;
 mod countries;
 mod crash;
 mod crashui;
@@ -28,6 +29,7 @@ mod grabber;
 mod headless;
 mod help;
 mod helpers;
+mod hotkey;
 mod i18n;
 mod icons;
 mod langpick;
@@ -61,6 +63,7 @@ mod store;
 mod theme;
 mod themefile;
 mod themeicons;
+mod torrent_rename;
 mod torrentdlg;
 mod torrentfiles;
 mod torrents;
@@ -139,6 +142,26 @@ pub fn clipboard_text() -> Option<String> {
     read_clipboard(offscreen() || cfg!(test), || {
         arboard::Clipboard::new().ok()?.get_text().ok()
     })
+}
+
+/// A number that changes whenever the clipboard does, so the watch for copied links
+/// (clipboard.rs) reads it only then: Windows' sequence number. None where the system keeps none
+/// a program can ask for without opening the clipboard (Linux, macOS): read at each look.
+/// Off-screen test copies: when their `MDM_TEST_CLIPBOARD` file last changed (or never).
+pub fn clipboard_changes() -> Option<u64> {
+    if offscreen() {
+        let changed = std::env::var_os("MDM_TEST_CLIPBOARD")
+            .and_then(|f| std::fs::metadata(f).ok()?.modified().ok())
+            .and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok())
+            .map_or(0, |d| d.as_nanos() as u64);
+        return Some(changed);
+    }
+    #[cfg(windows)]
+    return Some(u64::from(win32::clipboard_sequence()));
+    // Linux and macOS: no such number without the clipboard's own protocol (X11's XFixes,
+    // macOS's changeCount): the watch reads the text each time, off the window's thread.
+    #[cfg(not(windows))]
+    None
 }
 
 /// How long a read or write of the clipboard waits for the one under way in this process.
@@ -464,12 +487,12 @@ fn app() -> eframe::Result {
         tracing::info!("started with the session: hidden");
         viewport = viewport.with_visible(false);
     }
-    // OpenGL or Direct3D (View → Draw with, #89), the other one when it can't start.
+    // OpenGL or Direct3D (View → Draw with, #89), the next way when one can't start (Direct3D on
+    // WARP before OpenGL, #847).
     let plan = renderer::plan(
         loaded.settings.renderer,
         renderer::overridden(&args).as_deref(),
-        renderer::failed_before().is_some(),
-        renderer::gl_unfit_before(),
+        renderer::Known::read(),
     );
     let options = || eframe::NativeOptions {
         viewport: viewport.clone(),

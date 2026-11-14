@@ -981,6 +981,8 @@ pub struct App {
     pub remote: Option<mdm_remote::Remote>,
     /// Torrents a paired device sent, their files being looked up (`remote::poll_torrents`).
     pub remote_torrents: Vec<crate::remote::Lookup>,
+    /// Click'n'Load (#37): what pages post waits here, for its site's answer and Link grabber.
+    cnl: crate::cnl::Cnl,
     /// Free space where downloads go, and when it was last looked up (`free_space`).
     free_space: std::sync::Arc<std::sync::Mutex<(Option<Instant>, Option<u64>)>>,
     /// Options → Proxy / Socks → Network adapter (#35): the watch, the route seen last frame, and
@@ -1044,6 +1046,7 @@ pub struct App {
     #[cfg(target_os = "linux")]
     tray_setup: Option<crate::tray::Setup>,
     tray_limiter: Option<bool>,
+    hotkey: Option<crate::hotkey::GlobalHotkey>,
     /// When the main window was last seen focused: a tray click steals the focus first
     /// (the taskbar becomes foreground), so a click on a frontmost window reads as
     /// unfocused by the time Toggle runs. Within [`TRAY_TOGGLE_GRACE`] it still counts
@@ -1064,12 +1067,6 @@ pub struct App {
     /// Run without a window (`--headless`, #157): nothing is shown or asked; what arrives is
     /// added as the remote control adds it.
     headless: bool,
-    /// Clipboard watching (Options → General): the text last seen (outer None: not looked
-    /// yet) and when.
-    clip_seen: Option<Option<String>>,
-    clip_checked: Option<Instant>,
-    /// The monitor's ask for the clipboard, its read off the window thread (#418).
-    clip_asked: Option<crate::clipboard::Ask>,
     /// Add batch download from clipboard (#709): its read, until it answers.
     batch_clip: Option<crate::clipboard::Prefill>,
     confirm_delete: Option<dialogs::ConfirmDelete>,
@@ -1417,6 +1414,8 @@ impl App {
         if let Some(d) = downloads {
             self.downloads = d;
         }
+        // Nobody to answer Click'n'Load's question or tick Link grabber's packages.
+        let _ = self.cnl.listen(false);
         self
     }
 
@@ -1490,6 +1489,46 @@ impl App {
                 crate::unix::register_browsers();
             }
         }
+        // The categories, for code that only has a `Category` (the list's own below too).
+        settings.publish_categories();
+        // The remote control (#141): off unless Options → Remote turned it on.
+        let remote = crate::remote::start(&rt, sink, &settings);
+        // Started with the session where a window can't be hidden (Wayland, #226): minimized.
+        if start == crate::Start::Minimized {
+            tracing::info!("started with the session: minimized (a window can't be hidden here)");
+            ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+        }
+        let mut app = Self::assemble(
+            ctx,
+            rt,
+            commands,
+            store::Loaded { settings, ..loaded },
+            start,
+        );
+        app.zoom = zoom;
+        app.lang_picker = ask_language.then(|| crate::langpick::Picker::new(true, None));
+        app.remote = remote;
+        // Click'n'Load (#37): off unless Options → Archives and Link grabber turned it on.
+        if let Err(why) = app.cnl.listen(app.settings.cnl_on) {
+            // i18n: title of the notice when Click'n'Load couldn't start
+            app.notice = Some((crate::i18n::mark("Click'n'Load"), why));
+        }
+        app.rss = crate::rss::Store::path()
+            .map(|p| crate::rss::Store::load(&p))
+            .unwrap_or_default();
+        app
+    }
+
+    /// The window's state from `loaded`, setting nothing outside it: no global, nothing of the
+    /// system's, no file read ([`App::new`] does those first). The menus' test builds one.
+    fn assemble(
+        ctx: &egui::Context,
+        rt: tokio::runtime::Handle,
+        commands: std::sync::mpsc::Receiver<ipc::Incoming>,
+        loaded: store::Loaded,
+        start: crate::Start,
+    ) -> Self {
+        let settings = loaded.settings;
         let mut queues = loaded.queues;
         if queues.len() < 2 {
             // The built-in queues' names are saved in English and translated where shown
@@ -1503,7 +1542,6 @@ impl App {
             q.running = q.schedule.start_on_startup;
         }
         let (next_id, mut items) = (loaded.next_id, loaded.items);
-        settings.publish_categories();
         // D-021: torrents are a category of their own (lists from before had them by file
         // type); their files stay where they are.
         for i in &mut items {
@@ -1534,13 +1572,9 @@ impl App {
             _ => View::All,
         };
         let show_categories = settings.show_categories;
-        // The remote control (#141): off unless Options → Remote turned it on.
-        let remote = crate::remote::start(&rt, sink, &settings);
-        // Started with the session where a window can't be hidden (Wayland, #226): minimized.
-        if start == crate::Start::Minimized {
-            tracing::info!("started with the session: minimized (a window can't be hidden here)");
-            ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
-        }
+        // Click'n'Load (#37): made here, listening only once `new` starts it (Options →
+        // Archives and Link grabber turns it on).
+        let cnl = crate::cnl::Cnl::new(rt.clone(), ctx.clone());
         let deferred_torrent_queue: Vec<u64> = items
             .iter()
             .filter(|i| i.status == Status::Complete && i.rename_on_complete.is_some())
@@ -1569,7 +1603,7 @@ impl App {
             updates: None,
             shortcuts: None,
             tell_friend: None,
-            lang_picker: ask_language.then(|| crate::langpick::Picker::new(true, None)),
+            lang_picker: None,
             helpers: None,
             shown_existing: None,
             extension: None,
@@ -1616,9 +1650,7 @@ impl App {
             torrent_settings: None,
             add_trackers: None,
             torrent_files: None,
-            rss: crate::rss::Store::path()
-                .map(|p| crate::rss::Store::load(&p))
-                .unwrap_or_default(),
+            rss: Default::default(),
             rss_dlg: None,
             rss_busy: Default::default(),
             rss_events: Default::default(),
@@ -1634,8 +1666,9 @@ impl App {
             blocklist_busy: Default::default(),
             torrents_started: false,
             torrent_host: crate::torrents::Host::new(),
-            remote,
+            remote: None,
             remote_torrents: Vec::new(),
+            cnl,
             free_space: Default::default(),
             netwatch: Default::default(),
             debrid: Default::default(),
@@ -1660,14 +1693,12 @@ impl App {
             host_limits: Default::default(),
             quota: Default::default(),
             limit_notice: None,
-            clip_seen: None,
-            clip_checked: None,
-            clip_asked: None,
             batch_clip: None,
             tray: None,
             #[cfg(target_os = "linux")]
             tray_setup: None,
             tray_limiter: None,
+            hotkey: None,
             tray_last_focused: None,
             // Started with the session (#226): hidden from the first frame.
             hidden: start == crate::Start::Session,
@@ -1692,7 +1723,7 @@ impl App {
             saver: store::Saver::new(),
             rss_saver: store::Saver::writing("rss saver", crate::rss::write),
             theme_checked: None,
-            zoom,
+            zoom: 1.0,
             fitted: false,
             // The built-ins until the watcher's first look at the themes folder (#719).
             theme_list: crate::themefile::list_in(None, None),
@@ -1929,7 +1960,8 @@ impl App {
                     it.status_text()
                 },
                 it.time_left(),
-                if it.live.is_some() {
+                // Every byte in (#736): no rate, as once it is complete.
+                if it.live.is_some() && !it.past_last_byte() {
                     model::rate(it.rate())
                 } else {
                     String::new()
@@ -1960,6 +1992,11 @@ impl App {
                     .as_ref()
                     .map_or(String::new(), |t| model::rate(t.up_speed)),
             ],
+            // A short word and a percentage in the cell while checked or joined (#736): the
+            // whole words in its tip and for a screen reader.
+            status_whole: (!self.extracts.extracting(it.id))
+                .then(|| it.finishing(false))
+                .flatten(),
         }
     }
 
@@ -2756,6 +2793,11 @@ impl App {
                 }
             }
             // Every download selected and the right-click menu open on them (Move/Rename, #333).
+            // The list's right-click menu on blank space (#926), for screenshots.
+            "context" if tab == "blank" => {
+                self.open_menu = None;
+                self.open_popup(Popup::Item(None), egui::pos2(360.0, 220.0));
+            }
             "context" if tab == "all" => {
                 self.run(Cmd::SelectAll, None, ctx);
                 self.open_menu = None;
@@ -2908,6 +2950,7 @@ impl App {
                     cookies: page_data_for(url, cmd.referer.as_deref(), cmd.cookies.as_deref()),
                     user_agent: cmd.user_agent.clone(),
                     private: cmd.private,
+                    ..Default::default()
                 })
                 .collect();
             // i18n: in Import, where the addresses came from: a page in the browser
@@ -3683,6 +3726,34 @@ impl App {
         if !crate::offscreen() {
             ctx.send_viewport_cmd(egui::ViewportCommand::Focus);
         }
+        ctx.request_repaint();
+    }
+
+    /// Global shortcut (#558): show and focus the window when hidden, minimized, or behind
+    /// another application; otherwise hide it to the notification area (or minimize it).
+    fn toggle_window(&mut self, ctx: &egui::Context) {
+        let minimized = ctx.input(|i| i.viewport().minimized == Some(true));
+        #[cfg(target_os = "macos")]
+        let active_and_visible =
+            !self.hidden && !minimized && crate::unix::macos_is_active_and_visible();
+        #[cfg(not(target_os = "macos"))]
+        let active_and_visible =
+            !self.hidden && !minimized && ctx.input(|i| i.viewport().focused.unwrap_or(true));
+        if !active_and_visible {
+            self.show_window(ctx);
+            #[cfg(target_os = "macos")]
+            if !crate::offscreen() {
+                crate::unix::macos_activate_and_show();
+            }
+        } else if self.tray.is_some() && self.tray_icon_now() != crate::tray::Icon::Gone {
+            self.hide_to_tray(ctx);
+            #[cfg(target_os = "macos")]
+            if !crate::offscreen() {
+                crate::unix::macos_hide_window();
+            }
+        } else {
+            ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+        }
     }
 
     /// Before a handoff's dialog: the main window stays where it is (hidden, minimized) and
@@ -3804,6 +3875,30 @@ impl App {
                     self.tray_setup = None;
                 }
                 crate::tray::Came::Failed => self.tray_setup = None,
+            }
+        }
+        if !crate::offscreen() {
+            let spec = self
+                .options
+                .as_ref()
+                .map_or(self.settings.show_hide_hotkey.as_str(), |o| {
+                    o.draft_hotkey()
+                })
+                .to_owned();
+            let recording = self
+                .options
+                .as_ref()
+                .is_some_and(|o| o.is_recording_hotkey());
+            let hk = self
+                .hotkey
+                .get_or_insert_with(|| crate::hotkey::GlobalHotkey::new(ctx, &spec));
+            hk.apply(ctx, &spec);
+            let taken = hk.is_taken();
+            if let Some(o) = &mut self.options {
+                o.set_hotkey_taken(taken);
+            }
+            if hk.take_fired() && !recording {
+                self.toggle_window(ctx);
             }
         }
         if let Some(t) = &self.tray
@@ -3933,7 +4028,7 @@ impl App {
                 OnClose::Minimize => {
                     tracing::info!("close: no visible tray icon; minimizing to the taskbar");
                     ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
-                    ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+                    crate::dialogs::minimize(ctx, self.main_hwnd);
                 }
                 OnClose::Quit => {
                     tracing::info!("close: quitting");
@@ -4012,40 +4107,12 @@ impl App {
     /// it, so Download File Info opens with it (unless that window is turned off). Only read,
     /// never written; on by default.
     fn watch_clipboard(&mut self, ctx: &egui::Context) {
-        if !self.settings.clipboard_autostart {
-            self.clip_seen = None;
-            return;
-        }
-        ctx.request_repaint_after(Duration::from_secs(1));
-        // Read off the window's thread (clipboard.rs): the program that owns the clipboard may
-        // hang, and a read that waits for it took the window with it (#418). An ask that is
-        // never answered just means no new look at the clipboard.
-        let text = match self.clip_asked {
-            Some(ask) => match crate::clipboard::answer(ask) {
-                Some(text) => {
-                    self.clip_asked = None;
-                    text
-                }
-                None => return,
-            },
-            None => {
-                if self
-                    .clip_checked
-                    .is_some_and(|t| t.elapsed() < Duration::from_secs(1))
-                {
-                    return;
-                }
-                self.clip_checked = Some(Instant::now());
-                self.clip_asked = Some(crate::clipboard::ask());
-                return;
-            }
-        };
-        let text = text.map(|t| t.trim().to_owned());
-        // The first look only notes what is there: turning it on doesn't grab an old link.
-        let Some(before) = self.clip_seen.replace(text.clone()) else {
-            return;
-        };
-        let Some(text) = text.filter(|t| Some(t) != before.as_ref()) else {
+        // Looked at off the window's thread (clipboard.rs): the program that owns the clipboard
+        // may hang, and a read that waits for it took the window with it (#418). The watch wakes
+        // the window only for a newly copied text: an idle MDM draws no frame for it (#847).
+        let on = self.settings.clipboard_autostart;
+        crate::clipboard::watch(on);
+        let Some(text) = crate::clipboard::copied().filter(|_| on) else {
             return;
         };
         // Several links (or words) are not one address: the address parser drops line breaks,
@@ -4986,7 +5053,7 @@ impl App {
             let dir = self
                 .settings
                 .category_dir(Category::Torrents, &self.downloads);
-            self.add_remote_torrent(magnet, dir, Category::Torrents, true);
+            self.add_remote_torrent(magnet, dir, Category::Torrents, true, None);
             self.show_window(ctx);
             return;
         }
@@ -5033,15 +5100,22 @@ impl App {
         dir: PathBuf,
         category: Category,
         start_now: bool,
+        renamed: Option<String>,
     ) {
         let Some((account, service)) = self.torrent_account() else {
             return;
         };
-        let name = magnet
-            .query_pairs()
-            .find(|(k, _)| k == "dn")
-            .map(|(_, v)| mdm_engine::naming::sanitize(&v))
+        let name = renamed
+            .as_deref()
+            .map(mdm_engine::naming::sanitize)
             .filter(|n| !n.is_empty())
+            .or_else(|| {
+                magnet
+                    .query_pairs()
+                    .find(|(k, _)| k == "dn")
+                    .map(|(_, v)| mdm_engine::naming::sanitize(&v))
+                    .filter(|n| !n.is_empty())
+            })
             .unwrap_or_else(|| "torrent".to_owned());
         let target = dir.join(&name);
         let preexisting = crate::deferred_rename::folder_has_any_entries(&target);
@@ -5068,6 +5142,7 @@ impl App {
                 account,
                 transfer: None,
                 folder: dir,
+                renamed,
             });
         }
         self.selection.set(id);
@@ -5103,6 +5178,7 @@ impl App {
                 magnet: url,
                 transfer: spec.transfer.clone(),
                 folder: spec.folder.clone(),
+                renamed: spec.renamed.clone(),
                 net,
                 poll: std::time::Duration::from_secs(5),
             },
@@ -5128,14 +5204,22 @@ impl App {
     /// (#44): the .torrent's magnet link (its hash, name and trackers), all its files. The
     /// download added, if one was (not when the debrid account takes it).
     fn add_torrent(&mut self, add: crate::torrentdlg::TorrentAdd) -> Option<u64> {
+        let meta = &add.meta;
+        crate::torrent_rename::on_add_torrent(meta);
         if self.torrent_account().is_some()
             && let Some(magnet) =
-                mdm_torrent::magnet_link(&add.meta.torrent).and_then(|m| url::Url::parse(&m).ok())
+                mdm_torrent::magnet_link(&meta.torrent).and_then(|m| url::Url::parse(&m).ok())
         {
-            self.add_remote_torrent(magnet, add.dir.clone(), add.category, add.start_now);
+            let renamed = crate::torrent_rename::renamed_target(meta);
+            self.add_remote_torrent(
+                magnet,
+                add.dir.clone(),
+                add.category,
+                add.start_now,
+                renamed,
+            );
             return None;
         }
-        let meta = &add.meta;
         if let Err(e) = crate::torrents::save_torrent(&meta.info_hash, &meta.torrent) {
             self.notice = Some((
                 crate::i18n::mark("Add torrent"),
@@ -6154,6 +6238,15 @@ impl App {
         if let Some(r) = &self.remote {
             r.apply(crate::remote::config(&self.settings));
         }
+        // Options → Archives and Link grabber: Click'n'Load turned on or off; off forgets the
+        // sites' answers, so a blocked site can be asked again.
+        if !self.settings.cnl_on {
+            self.settings.cnl_sites.clear();
+        }
+        if let Err(why) = self.cnl.listen(self.settings.cnl_on && !self.headless) {
+            // i18n: title of the notice when Click'n'Load couldn't start
+            self.notice = Some((crate::i18n::mark("Click'n'Load"), why));
+        }
         if self.settings.proxy_mode == 2 {
             crate::pacfetch::refresh(&self.settings.proxy_script, &self.rt);
         }
@@ -6612,7 +6705,7 @@ impl App {
                     .filter(|p| p.is_file())
                     .and_then(|p| p.parent().map(std::path::Path::to_path_buf));
                 winui::start_pick(&self.ui_ctx, "app-theme-file", move || {
-                    let dialog = rfd::FileDialog::new().set_title(title);
+                    let dialog = crate::winui::file_dialog(&title);
                     let dialog = match start {
                         Some(dir) => dialog.set_directory(dir),
                         None => dialog,
@@ -6637,8 +6730,9 @@ impl App {
                 if Some(api) == crate::renderer::GPU {
                     crate::renderer::forget_failure();
                 } else {
-                    // OpenGL chosen again after it couldn't draw MDM (#835): tried and checked.
-                    crate::renderer::forget_gl_unfit();
+                    // OpenGL chosen again after it couldn't draw MDM (#835, #847): tried and
+                    // checked again.
+                    crate::renderer::forget_gl_failure();
                 }
                 tracing::info!("draw with {api:?} from the next start");
                 self.settings.renderer = Some(api);
@@ -6797,9 +6891,8 @@ impl App {
                 let kind = crate::i18n::t("Torrent files").to_owned();
                 let title = crate::i18n::t("Open torrent file").to_owned();
                 winui::start_pick(ctx, "app-torrent-file", move || {
-                    rfd::FileDialog::new()
+                    crate::winui::file_dialog(&title)
                         .add_filter(kind, &["torrent"])
-                        .set_title(title)
                         .pick_file()
                 });
             }
@@ -7566,7 +7659,7 @@ impl App {
         // i18n: View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
         let b = MenuEntry::Radio("&Classic", Cmd::SmoothText(false), true, !smooth);
         // i18n: View menu: submenu choosing how the text is drawn (smooth or classic)
-        MenuEntry::Sub("&Text", true, vec![a, b])
+        MenuEntry::Sub("Te&xt", true, vec![a, b])
     }
 
     /// View → Draw with (#89, #206): OpenGL or the system's own graphics API (Direct3D on
@@ -7582,8 +7675,9 @@ impl App {
         let gpu = renderer::GPU.unwrap_or(Api::OpenGl);
         let on = chosen == gpu;
         let draw = Cmd::DrawWith(gpu);
-        // Its choice, the note when it failed here, and the one when a software renderer draws it.
-        let (choice, failed_note, software_note) = match gpu {
+        // Its choice, the note when it failed here, the one when a software renderer draws it,
+        // and the one when that is because the card has no driver for it (Windows' WARP, #847).
+        let (choice, failed_note, software_note, no_driver_note) = match gpu {
             Api::Direct3D => (
                 // i18n: View → Draw with: a graphics system's name (Microsoft's), usually kept as is
                 Radio("Direct3D", draw, true, on),
@@ -7591,6 +7685,10 @@ impl App {
                 off("Direct3D didn't start here: OpenGL draws"),
                 // i18n: View → Draw with: a greyed note; Direct3D draws the windows through Windows' own software renderer (WARP) instead of a graphics card
                 off("Direct3D draws with Windows' software renderer (WARP)"),
+                // i18n: View → Draw with: a greyed note; what draws the windows and why: Direct3D 12 through Windows' own software renderer (WARP, keep the name), because this computer's graphics card has no Direct3D 12 driver
+                Some(off(
+                    "Direct3D 12 (WARP): this graphics card has no Direct3D 12 driver",
+                )),
             ),
             Api::Vulkan => (
                 // i18n: View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
@@ -7599,6 +7697,7 @@ impl App {
                 off("Vulkan didn't start here: OpenGL draws"),
                 // i18n: View → Draw with: a greyed note; Vulkan draws the windows through a software renderer instead of a graphics card
                 off("Vulkan draws with a software renderer"),
+                None,
             ),
             _ => (
                 // i18n: View → Draw with: a graphics system's name (Apple's), usually kept as is
@@ -7607,6 +7706,7 @@ impl App {
                 off("Metal didn't start here: OpenGL draws"),
                 // i18n: View → Draw with: a greyed note; Metal draws the windows through a software renderer instead of a graphics card
                 off("Metal draws with a software renderer"),
+                None,
             ),
         };
         let mut items = vec![
@@ -7624,19 +7724,18 @@ impl App {
         // The system's API on a software renderer (WARP): said, with why below (no card for
         // it, an OpenGL that can't draw MDM).
         let software = active == Some(gpu) && renderer::software();
-        // OpenGL can't draw MDM here (#835): said where it changed what draws.
-        let unfit = renderer::opengl_unfit() && active == Some(gpu) && (software || !on);
+        // OpenGL can't draw MDM here (#835, #847): said, and why, where it changed what draws.
+        let unfit = renderer::gl_failed().filter(|_| active == Some(gpu) && (software || !on));
+        // The software renderer draws because no card here has a driver for the system's API:
+        // one line says both (Windows, #847).
+        let no_driver = no_driver_note.filter(|_| software && failed == Some(Why::NoAdapter));
         if active.is_some_and(|a| a != chosen) || software {
             items.push(Sep);
-            if software {
-                items.push(software_note);
-            }
             let mut notes = Vec::new();
-            match failed {
-                Some(why) => {
-                    if !software {
-                        items.push(failed_note);
-                    }
+            match (failed, no_driver) {
+                (_, Some(note)) => items.push(note),
+                (Some(why), None) => {
+                    items.push(if software { software_note } else { failed_note });
                     // Why, under it ("it": Direct3D, Vulkan or Metal).
                     notes.push(match why {
                         // i18n: View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
@@ -7648,17 +7747,28 @@ impl App {
                         // i18n: View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
                         Why::LostTwice => off("The graphics card was lost twice in 10 minutes"),
                         // i18n: View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
-                        Why::Other => off("It couldn't start: the log says why"),
+                        _ => off("It couldn't start: the log says why"),
                     });
                 }
                 // A software renderer that draws for want of a card says only that.
-                None if software || unfit => {}
+                (None, None) if software => items.push(software_note),
+                (None, None) if unfit.is_some() => {}
                 // i18n: View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
-                None => notes.push(off("Applies the next time MDM starts")),
+                (None, None) => notes.push(off("Applies the next time MDM starts")),
             }
-            if unfit {
-                // i18n: View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
-                notes.push(off("OpenGL here is too old to draw MDM"));
+            if let Some(why) = unfit {
+                notes.push(match why {
+                    // i18n: View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
+                    Why::TooOld => off("OpenGL here is too old to draw MDM"),
+                    // i18n: View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window froze inside the graphics card's driver while OpenGL drew
+                    Why::FrozeInDriver => off("OpenGL froze inside the graphics driver here"),
+                    // i18n: View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window stayed empty for 10 seconds, so MDM started again another way
+                    Why::NoFirstFrame => off("OpenGL's first frame didn't show within 10 seconds"),
+                    // i18n: View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed or was closed while starting with it
+                    Why::EndedEarly => off("OpenGL's last start ended before its first frame"),
+                    // i18n: View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
+                    _ => off("OpenGL didn't start here"),
+                });
             }
             items.extend(notes);
         }
@@ -7710,7 +7820,7 @@ impl App {
                 by("By &Order Of Addition", None),
                 by("By &File Name", Some(0)),
                 by("By &Size", Some(2)),
-                by("By St&atus", Some(3)),
+                by("By Stat&us", Some(3)),
                 by("By &Time Left", Some(4)),
                 by("By Transfer &Rate", Some(5)),
                 by("By &Last Try Date", Some(6)),
@@ -7723,12 +7833,74 @@ impl App {
         })
     }
 
+    /// The entries of the popup menu `kind`, and the download it acts on.
+    fn popup_entries(&self, kind: Popup) -> (Vec<MenuEntry<Cmd>>, Option<u64>) {
+        match kind {
+            // Column chooser (IDM: right-click on the header). File Name always stays.
+            Popup::Columns => {
+                let mut e: Vec<MenuEntry<Cmd>> = list::TITLES
+                    .iter()
+                    .enumerate()
+                    .map(|(i, t)| {
+                        // As the header names them (its own words, not the menus'), and
+                        // the narrow Q column by its whole name.
+                        let name = if *t == "Q" {
+                            crate::i18n::tc("column", "Queue")
+                        } else {
+                            crate::i18n::tc("column", t)
+                        };
+                        let name = crate::chrome::label(&name.replace('&', "&&"));
+                        MenuEntry::Item(name, Cmd::ToggleColumn(i), i != 0, self.list.visible[i])
+                    })
+                    .collect();
+                e.push(MenuEntry::Sep);
+                e.push(MenuEntry::Item(
+                    "Clear all &filters",
+                    Cmd::ClearFilters,
+                    self.list.filters.iter().any(Option::is_some),
+                    false,
+                ));
+                // i18n: header menu: put the columns back as they first were (order, widths, all shown)
+                e.push(MenuEntry::Item(
+                    "&Reset columns",
+                    Cmd::ResetColumns,
+                    true,
+                    false,
+                ));
+                (e, None)
+            }
+            Popup::Item(None) => (self.blank_entries(), None),
+            Popup::Item(id) => (self.item_entries(id), id),
+            Popup::QueueDrop(start) => (self.queue_drop(start), None),
+            Popup::TorrentDrop => (
+                vec![
+                    MenuEntry::Item("Open &torrent file...", Cmd::OpenTorrentFile, true, false),
+                    MenuEntry::Item("Add &magnet link...", Cmd::AddMagnet, true, false),
+                    MenuEntry::Item("&RSS feeds...", Cmd::RssFeeds(false), true, false),
+                    MenuEntry::Sep,
+                    MenuEntry::Item("Torrent setti&ngs...", Cmd::TorrentSettings, true, false),
+                ],
+                None,
+            ),
+            Popup::Node(node) => (self.node_entries(node), None),
+            Popup::DropTarget => (
+                vec![
+                    MenuEntry::Item("Show Mister Download Manager", Cmd::ShowMain, true, false),
+                    MenuEntry::Item("&Add new download", Cmd::AddUrl, true, false),
+                    MenuEntry::Sep,
+                    MenuEntry::Item("Hide drop target", Cmd::ToggleDropTarget, true, false),
+                ],
+                None,
+            ),
+        }
+    }
+
     /// Right-click on the list's blank space: what applies to the whole list (IDM greys the
     /// download menu there).
     fn blank_entries(&self) -> Vec<MenuEntry<Cmd>> {
         use MenuEntry::{Item as I, Sep};
         vec![
-            I("&Add new download...", Cmd::AddUrl, true, false),
+            I("Add &new download...", Cmd::AddUrl, true, false),
             Sep,
             I(
                 "Select &all",
@@ -8175,13 +8347,15 @@ impl App {
             let ctx = ui.ctx();
             match bar.pressed {
                 Some(CaptionButton::Close) => ctx.send_viewport_cmd(egui::ViewportCommand::Close),
-                Some(CaptionButton::Minimize) => {
-                    ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true))
-                }
-                Some(CaptionButton::Maximize) => {
-                    let max = ctx.input(|i| i.viewport().maximized) == Some(true);
-                    ctx.send_viewport_cmd(egui::ViewportCommand::Maximized(!max));
-                }
+                Some(CaptionButton::Minimize) => crate::dialogs::minimize(ctx, self.main_hwnd),
+                Some(CaptionButton::Maximize) => match self.main_hwnd {
+                    // The system's command, as the frame's own Maximize sends it (#874).
+                    Some(h) => crate::win32::toggle_maximized(h),
+                    None => {
+                        let max = ctx.input(|i| i.viewport().maximized) == Some(true);
+                        ctx.send_viewport_cmd(egui::ViewportCommand::Maximized(!max));
+                    }
+                },
                 _ => {}
             }
             egui::Rect::from_min_max(egui::pos2(full.min.x, full.min.y + CAPTION_H), full.max)
@@ -8600,69 +8774,7 @@ impl App {
             self.open_popup(Popup::Columns, pos);
         }
         if let Some((kind, pos, serial)) = self.popup {
-            let (entries, target) = match kind {
-                // Column chooser (IDM: right-click on the header). File Name always stays.
-                Popup::Columns => {
-                    let mut e: Vec<MenuEntry<Cmd>> = list::TITLES
-                        .iter()
-                        .enumerate()
-                        .map(|(i, t)| {
-                            // As the header names them (its own words, not the menus'), and
-                            // the narrow Q column by its whole name.
-                            let name = if *t == "Q" {
-                                crate::i18n::tc("column", "Queue")
-                            } else {
-                                crate::i18n::tc("column", t)
-                            };
-                            let name = crate::chrome::label(&name.replace('&', "&&"));
-                            MenuEntry::Item(
-                                name,
-                                Cmd::ToggleColumn(i),
-                                i != 0,
-                                self.list.visible[i],
-                            )
-                        })
-                        .collect();
-                    e.push(MenuEntry::Sep);
-                    e.push(MenuEntry::Item(
-                        "Clear all &filters",
-                        Cmd::ClearFilters,
-                        self.list.filters.iter().any(Option::is_some),
-                        false,
-                    ));
-                    // i18n: header menu: put the columns back as they first were (order, widths, all shown)
-                    e.push(MenuEntry::Item(
-                        "&Reset columns",
-                        Cmd::ResetColumns,
-                        true,
-                        false,
-                    ));
-                    (e, None)
-                }
-                Popup::Item(None) => (self.blank_entries(), None),
-                Popup::Item(id) => (self.item_entries(id), id),
-                Popup::QueueDrop(start) => (self.queue_drop(start), None),
-                Popup::TorrentDrop => (
-                    vec![
-                        MenuEntry::Item("Open &torrent file...", Cmd::OpenTorrentFile, true, false),
-                        MenuEntry::Item("Add &magnet link...", Cmd::AddMagnet, true, false),
-                        MenuEntry::Item("&RSS feeds...", Cmd::RssFeeds(false), true, false),
-                        MenuEntry::Sep,
-                        MenuEntry::Item("Torrent setti&ngs...", Cmd::TorrentSettings, true, false),
-                    ],
-                    None,
-                ),
-                Popup::Node(node) => (self.node_entries(node), None),
-                Popup::DropTarget => (
-                    vec![
-                        MenuEntry::Item("Show Mister Download Manager", Cmd::ShowMain, true, false),
-                        MenuEntry::Item("&Add new download", Cmd::AddUrl, true, false),
-                        MenuEntry::Sep,
-                        MenuEntry::Item("Hide drop target", Cmd::ToggleDropTarget, true, false),
-                    ],
-                    None,
-                ),
-            };
+            let (entries, target) = self.popup_entries(kind);
             match chrome::popup(
                 &ctx,
                 MenuKind::Context,
@@ -8990,8 +9102,7 @@ impl App {
             "app-export-txt"
         };
         winui::start_pick(&self.ui_ctx, key, move || {
-            rfd::FileDialog::new()
-                .set_title(title)
+            crate::winui::file_dialog(&title)
                 .add_filter(ext.to_ascii_uppercase(), &[ext])
                 .set_file_name(name)
                 .save_file()
@@ -9166,6 +9277,7 @@ impl App {
                     cookies: None,
                     user_agent: None,
                     private: false,
+                    ..Default::default()
                 })
                 .collect();
             // i18n: in Import, where the addresses came from: dragged onto the window
@@ -9216,7 +9328,7 @@ impl App {
         let lists = crate::i18n::t("Lists of addresses").to_owned();
         let all = crate::i18n::t("All files").to_owned();
         winui::start_pick(&self.ui_ctx, "app-import", move || {
-            let dialog = rfd::FileDialog::new().set_title(title);
+            let dialog = crate::winui::file_dialog(&title);
             let dialog = if ef2 {
                 dialog.add_filter("EF2", &["ef2"])
             } else {
@@ -9341,6 +9453,19 @@ impl App {
             return;
         }
         self.show_import(found, file);
+    }
+
+    /// What Click'n'Load pages posted: an allowed site's links into Link grabber; the others
+    /// wait for their site's answer (`cnl.ask`). The window comes up for either, once a minute
+    /// for one site.
+    fn poll_cnl(&mut self, ctx: &egui::Context) {
+        let (links, raise) = self.cnl.take(&self.settings.cnl_sites);
+        if raise {
+            self.show_window(ctx);
+        }
+        if !links.is_empty() {
+            self.show_import(links, "Click'n'Load".into());
+        }
     }
 
     /// Links to tick before adding (the browser's page links, Import, dropped links): into Link
@@ -9590,8 +9715,7 @@ impl App {
         let name = item.file_name.clone();
         self.move_rename_for = Some(id);
         winui::start_pick(&self.ui_ctx, "app-move-rename", move || {
-            rfd::FileDialog::new()
-                .set_title(title)
+            crate::winui::file_dialog(&title)
                 .set_directory(from)
                 .set_file_name(name)
                 .save_file()
@@ -9621,8 +9745,7 @@ impl App {
             if let Some(dir) = std::env::var_os("MDM_TEST_MOVE_TO") {
                 return Some(PathBuf::from(dir));
             }
-            rfd::FileDialog::new()
-                .set_title(title)
+            crate::winui::file_dialog(&title)
                 .set_directory(from)
                 .pick_folder()
         });
@@ -9884,6 +10007,23 @@ impl App {
                     self.grabber = None;
                     self.add_grabbed(start, packages);
                 }
+            }
+        }
+        // Click'n'Load's question about a site; closing it is "Not now".
+        let answer = self.cnl.ask.as_mut().and_then(|d| match d.show(ctx) {
+            Outcome::Open => None,
+            Outcome::Closed => Some(crate::cnl::Answer::NotNow),
+            Outcome::Done(a) => Some(a),
+        });
+        if let Some(answer) = answer {
+            let (links, keep) = self.cnl.answer(answer);
+            if let Some((site, allowed)) = keep {
+                self.settings.cnl_sites.retain(|(s, _)| *s != site);
+                self.settings.cnl_sites.push((site, allowed));
+                self.dirty = true;
+            }
+            if !links.is_empty() {
+                self.show_import(links, "Click'n'Load".into());
             }
         }
         if let Some(d) = &mut self.extracts.needs_7zip
@@ -10704,7 +10844,8 @@ impl eframe::App for App {
     /// is minimized, and a magnet or a download handed over then waited until it was restored
     /// (#162). A command that opens a window gets the UI pass that creates it, minimized or not
     /// (no window is raised or focused for it beyond what the command itself does).
-    fn logic(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+    fn logic(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
+        crate::renderer::present_unpaced(frame);
         // MDM's own work: not counted as the graphics API's time to its first frame (#280).
         crate::renderer::own_work_begin();
         self.tick(ctx);
@@ -10827,6 +10968,7 @@ impl App {
         // Incoming commands and the clock (downloads, queues, Scheduler, saving…): `logic`, just
         // before, which runs minimized too.
         self.poll_picks(&ctx);
+        self.poll_cnl(&ctx);
         self.poll_imports();
         self.drop_target(&ctx);
         self.main_drops(&ctx);
@@ -12097,5 +12239,187 @@ mod deferred_rename_guard_tests {
             gpm.gallery_files,
             vec![dir.path().join("Album 01").join("sub").join("01.png")]
         );
+    }
+}
+
+#[cfg(test)]
+mod access_key_tests {
+    use super::*;
+    use crate::chrome::{MenuEntry, access_key};
+
+    /// One level of a menu: where it is, the catalog context of its labels, and the labels.
+    struct Level {
+        name: String,
+        context: &'static str,
+        labels: Vec<&'static str>,
+    }
+
+    /// `entries` and each of their submenus, as levels.
+    fn levels<C>(name: String, entries: &[MenuEntry<C>], out: &mut Vec<Level>) {
+        let mut labels = Vec::new();
+        for e in entries {
+            match e {
+                MenuEntry::Item(l, ..) | MenuEntry::Radio(l, ..) => labels.push(*l),
+                MenuEntry::Sub(l, _, children) => {
+                    labels.push(*l);
+                    levels(format!("{name} > {l}"), children, out);
+                }
+                MenuEntry::Sep => {}
+            }
+        }
+        out.push(Level {
+            name,
+            context: "menu",
+            labels,
+        });
+    }
+
+    /// The window's state with three downloads to build the menus of: one unfinished (in the
+    /// main queue), one finished, one torrent.
+    fn app() -> std::mem::ManuallyDrop<App> {
+        let rt = Box::leak(Box::new(
+            tokio::runtime::Builder::new_current_thread()
+                .build()
+                .unwrap(),
+        ));
+        let url = |n: &str| url::Url::parse(&format!("https://example.com/{n}")).unwrap();
+        let item = |id, name: &str, category, status| {
+            let mut i = Item::new(id, url(name), PathBuf::from(name), category);
+            i.status = status;
+            i
+        };
+        let mut torrent = item(3, "c", Category::Torrents, Status::Stopped);
+        torrent.torrent = Some(
+            serde_json::from_value(serde_json::json!({
+                "hash": "0123456789abcdef0123456789abcdef01234567",
+                "folder": "c",
+            }))
+            .unwrap(),
+        );
+        let mut main = Queue::new("Main download queue", false);
+        main.items.push(1);
+        let loaded = store::Loaded {
+            next_id: 4,
+            items: vec![
+                item(1, "a.zip", Category::Compressed, Status::Stopped),
+                item(2, "b.zip", Category::Compressed, Status::Complete),
+                torrent,
+            ],
+            columns: None,
+            settings: Settings::default(),
+            queues: vec![main, Queue::new("Synchronization queue", true)],
+        };
+        let (_, commands) = std::sync::mpsc::channel();
+        // Never dropped: an App saves its list as it goes.
+        std::mem::ManuallyDrop::new(App::assemble(
+            &egui::Context::default(),
+            rt.handle().clone(),
+            commands,
+            loaded,
+            crate::Start::Shown,
+        ))
+    }
+
+    /// Every menu MDM builds, in the states that change them: the menu bar, its menus, the
+    /// right-click and drop-down menus, a text box's, and their submenus.
+    fn every_menu() -> Vec<Level> {
+        let mut app = app();
+        let mut out = vec![Level {
+            name: "menu bar".into(),
+            context: "menubar",
+            labels: crate::chrome::bar_titles(),
+        }];
+        let mut views = vec![
+            None,
+            Some(View::All),
+            Some(View::Unfinished(None)),
+            Some(View::Finished(None)),
+            Some(View::Queue(0)),
+            Some(View::Queue(1)),
+        ];
+        for c in Category::all() {
+            views.extend([
+                Some(View::Cat(c)),
+                Some(View::Unfinished(Some(c))),
+                Some(View::Finished(Some(c))),
+            ]);
+        }
+        let mut popups = vec![
+            Popup::Columns,
+            Popup::QueueDrop(true),
+            Popup::QueueDrop(false),
+            Popup::TorrentDrop,
+            Popup::DropTarget,
+            Popup::Item(None),
+        ];
+        popups.extend([1, 2, 3].map(|id| Popup::Item(Some(id))));
+        popups.extend(views.into_iter().map(Popup::Node));
+        for categories in [false, true] {
+            app.show_categories = categories;
+            for (i, title) in crate::chrome::bar_titles().into_iter().enumerate() {
+                levels(title.into(), &app.menu_entries(i), &mut out);
+            }
+            for p in &popups {
+                levels(format!("{p:?}"), &app.popup_entries(*p).0, &mut out);
+            }
+        }
+        // The progress window's tab row and a read-only field have a menu of one item each.
+        levels("text box".into(), &crate::winui::text_box_menu(), &mut out);
+        out
+    }
+
+    /// An access key, and the labels that have it: as shown, and in English.
+    type Clash = (String, Vec<(&'static str, &'static str)>);
+
+    /// The access keys of `level` that more than one of its labels have, in `lang` (English:
+    /// None), each with those labels.
+    fn clashes(level: &Level, lang: Option<crate::i18n::Lang>) -> Vec<Clash> {
+        let mut by_key: Vec<Clash> = Vec::new();
+        for l in &level.labels {
+            let shown = match lang {
+                Some(lang) => crate::i18n::i18n().tc(lang, level.context, l),
+                None => l,
+            };
+            let Some(key) = access_key(shown) else {
+                continue;
+            };
+            match by_key.iter_mut().find(|(k, _)| *k == key) {
+                Some((_, labels)) => labels.push((shown, l)),
+                None => by_key.push((key, vec![(shown, l)])),
+            }
+        }
+        by_key.retain(|(_, labels)| labels.len() > 1);
+        by_key
+    }
+
+    /// #926: two items of one menu with the same access key, and the key ran only the first. In
+    /// English, and in every catalog where two of them keep the English letter (written in
+    /// brackets after the text, `(&A)`, or underlined in it): there the clash is the English
+    /// one's. A letter a translation chose itself is its translators' to keep apart.
+    #[test]
+    fn no_two_items_of_a_menu_share_an_access_key() {
+        let menus = every_menu();
+        let mut found = Vec::new();
+        for level in &menus {
+            for (key, labels) in clashes(level, None) {
+                found.push(format!("en, {}: {key} in {labels:?}", level.name));
+            }
+        }
+        for (lang, code, _) in crate::i18n::languages() {
+            for level in &menus {
+                for (key, labels) in clashes(level, Some(lang)) {
+                    let english = labels
+                        .iter()
+                        .filter(|(_, source)| access_key(source).as_ref() == Some(&key))
+                        .count();
+                    if english > 1 {
+                        found.push(format!("{code}, {}: {key} in {labels:?}", level.name));
+                    }
+                }
+            }
+        }
+        found.sort();
+        found.dedup();
+        assert!(found.is_empty(), "{}", found.join(", "));
     }
 }

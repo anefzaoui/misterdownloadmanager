@@ -348,7 +348,7 @@ fn dialog_window<T>(
     // Hidden until `keep_theme` has given it its theme (see there).
     let mut builder = ViewportBuilder::default()
         .with_visible(false)
-        .with_title(title)
+        .with_title(crate::i18n::os_text(title))
         .with_inner_size(shown)
         // The thin frame trims the sizing borders and keeps the size fixed.
         .with_resizable(drawn)
@@ -394,10 +394,7 @@ fn dialog_window<T>(
                     let hwnd = ui.ctx().data(|d| d.get_temp::<isize>(key.with("hwnd")));
                     match drawn_title(ui, origin, shown[0], title, &buttons, hwnd) {
                         Some(CaptionButton::Close) => caption_close = true,
-                        Some(CaptionButton::Minimize) => {
-                            ui.ctx()
-                                .send_viewport_cmd(egui::ViewportCommand::Minimized(true));
-                        }
+                        Some(CaptionButton::Minimize) => crate::dialogs::minimize(ui.ctx(), hwnd),
                         _ => {}
                     }
                 }
@@ -727,8 +724,9 @@ impl AddUrl {
                     self.address = self.history[i].clone();
                     self.error = None;
                 }
-                // While its list is open, Escape closes the list and the box keeps the keys.
-                winui::keep_keys(ui, &addr, false, true, self.list_open);
+                // Left / Right move its caret (#812); while its list is open, Escape closes
+                // the list and the box keeps the keys.
+                winui::keep_edit_keys(ui, &addr, self.list_open);
                 let list_was_open = self.list_open;
                 if self.list_open
                     && let Some(i) = winui::drop_list(
@@ -1446,7 +1444,8 @@ impl FileInfo {
                     self.set_folder(&folder);
                     self.edited = true;
                 }
-                winui::keep_keys(ui, &save, false, true, self.folders_open);
+                // Left / Right move its caret, not the focus to "..." beside it (#812).
+                winui::keep_edit_keys(ui, &save, self.folders_open);
                 let folders_were_open = self.folders_open;
                 if self.folders_open {
                     let shown: Vec<String> = self
@@ -1476,7 +1475,7 @@ impl FileInfo {
                     // i18n: title of the folder picker
                     let title = crate::i18n::t("Select a folder").to_owned();
                     winui::start_pick(ui.ctx(), "file-info-folder", move || {
-                        let mut pick = rfd::FileDialog::new().set_title(title);
+                        let mut pick = crate::winui::file_dialog(&title);
                         if now.is_dir() {
                             pick = pick.set_directory(&now);
                         }
@@ -2989,6 +2988,19 @@ it from Mister Download Manager list of downloads?",
     }
 }
 
+/// Minimize a window as its title bar's Minimize asks (`hwnd`: the window, once known). On
+/// Windows by the system's own command, as the system's title bar sends it, so a window whose
+/// title bar is ours animates down to the taskbar like any other (#874).
+pub fn minimize(ctx: &egui::Context, hwnd: Option<isize>) {
+    #[cfg(windows)]
+    if let Some(h) = hwnd {
+        crate::win32::minimize(h);
+        return;
+    }
+    let _ = hwnd;
+    ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+}
+
 /// Select the file in Explorer (Finder, the Linux file manager). A file that is gone: its
 /// folder, if that is still there.
 /// Bring an open window to the front (and back from the taskbar): asked for again, it came
@@ -4105,6 +4117,57 @@ mod tests {
         });
         rx.recv_timeout(std::time::Duration::from_secs(20))
             .expect("Add URL hung");
+    }
+
+    /// #812: Left / Right in Add URL's Address box move its caret, and the focus stays in the
+    /// box, not on OK beside it (Save As in Download File Info keeps them the same way,
+    /// `winui::keep_edit_keys`). With addresses entered before, as Up / Down step through them.
+    #[test]
+    fn add_url_left_and_right_stay_in_the_address_box() {
+        let ctx = egui::Context::default();
+        let mut dlg = AddUrl {
+            address: "https://example.com/file.zip".to_owned(),
+            history: vec!["https://a.example/x.zip".to_owned()],
+            ..AddUrl::default()
+        };
+        let mut frame = |key: Option<egui::Key>| {
+            let events = key
+                .map(|key| egui::Event::Key {
+                    key,
+                    physical_key: None,
+                    pressed: true,
+                    repeat: false,
+                    modifiers: egui::Modifiers::default(),
+                })
+                .into_iter()
+                .collect();
+            let input = egui::RawInput {
+                events,
+                ..Default::default()
+            };
+            let mut out = ctx.run_ui(input, |ui| {
+                let _ = dlg.show(ui.ctx(), |_| None);
+            });
+            out.textures_delta.clear();
+        };
+        for _ in 0..4 {
+            frame(None);
+        }
+        let in_box = ctx.memory(|m| m.focused());
+        assert!(in_box.is_some(), "the Address box has the focus");
+        for key in [
+            egui::Key::ArrowRight,
+            egui::Key::ArrowLeft,
+            egui::Key::ArrowRight,
+        ] {
+            frame(Some(key));
+            frame(None);
+            assert_eq!(
+                ctx.memory(|m| m.focused()),
+                in_box,
+                "{key:?} keeps the focus in the box"
+            );
+        }
     }
 
     /// #661: Add URL asks for the clipboard as it opens and draws its frames without waiting for

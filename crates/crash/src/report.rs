@@ -307,6 +307,16 @@ pub struct Made {
     pub notes: Notes,
 }
 
+impl Made {
+    /// A freeze's window thread, as its dump has it (the app reads where it was stuck: #847).
+    pub fn frozen_window_thread(&self) -> Option<&Thread> {
+        if self.kind != Kind::Freeze {
+            return None;
+        }
+        window_thread(self.analysis.as_ref()?, self.notes.freeze.as_ref()?)
+    }
+}
+
 /// Read `dump` (none for an exit nothing caught), write the report beside it in `data`'s crashes
 /// folder, and return it. `symbols`: Breakpad symbol stores to try (the release's, once fetched).
 pub fn make(
@@ -524,13 +534,16 @@ fn panic_entry(frames: &[Frame]) -> usize {
 fn key_thread<'a>(kind: Kind, input: &Input<'a>) -> Option<&'a Thread> {
     let a = input.analysis?;
     if kind == Kind::Freeze {
-        let f = input.notes.freeze.as_ref()?;
-        return a
-            .thread(f.ui_thread)
-            .filter(|_| f.ui_thread != 0)
-            .or_else(|| f.main.then(|| a.threads.first()).flatten());
+        return window_thread(a, input.notes.freeze.as_ref()?);
     }
     a.thread(a.requesting?)
+}
+
+/// A freeze's window thread in its dump: by its id, or the first when it is the main thread.
+fn window_thread<'a>(a: &'a Analysis, f: &crate::protocol::Freeze) -> Option<&'a Thread> {
+    a.thread(f.ui_thread)
+        .filter(|_| f.ui_thread != 0)
+        .or_else(|| f.main.then(|| a.threads.first()).flatten())
 }
 
 /// A freeze whose window thread was already back in the event loop's wait (or in eframe's pause
