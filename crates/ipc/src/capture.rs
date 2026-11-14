@@ -130,7 +130,7 @@ impl Declined {
             }
             Declined::FileType => "its type isn't in Options > File types",
             Declined::Site => {
-                "its site is in Options > File types > Don't start downloading automatically from the following sites"
+                "its site, or the page it came from, is in Options > File types > Don't start downloading automatically from the following sites"
             }
             Declined::Address => {
                 "its address is in Options > File types > Edit list (addresses left to the browser)"
@@ -192,20 +192,24 @@ impl CaptureRules {
         }
     }
 
-    /// May `browser` hand `url` (saved as `file_name`) over?
-    pub fn accepts(&self, url: &str, file_name: &str, browser: &str) -> Result<(), Declined> {
+    /// May `browser` hand `url` (saved as `file_name`) over? `page`: the page the download came
+    /// from (its referrer), when known. A site of Options → File types' list leaves both its own
+    /// files and those its pages link to on another host (a CDN, a mirror it redirects to) to the
+    /// browser (#1049); with no page known, the file's own host decides.
+    pub fn accepts(
+        &self,
+        url: &str,
+        file_name: &str,
+        browser: &str,
+        page: Option<&str>,
+    ) -> Result<(), Declined> {
         if let Some(off) = self.capture_off(browser) {
             return Err(off);
         }
         if !self.auto_type(file_name) {
             return Err(Declined::FileType);
         }
-        let host = host_of(url);
-        if self
-            .excluded_sites
-            .split_whitespace()
-            .any(|p| host_matches(&host, p))
-        {
+        if self.site_excluded(url) || page.is_some_and(|p| is_web(p) && self.site_excluded(p)) {
             return Err(Declined::Site);
         }
         if self
@@ -217,6 +221,25 @@ impl CaptureRules {
         }
         Ok(())
     }
+
+    /// Is `address` on a site of Options → File types' list ("Don't start downloading
+    /// automatically from the following sites")? A name without `*.` takes its subdomains too, as
+    /// in the Download panels' list (`panel_hidden_on`; #1049: `example.com` listed, its files
+    /// from www.example.com were still taken).
+    pub fn site_excluded(&self, address: &str) -> bool {
+        let host = host_of(address);
+        !host.is_empty()
+            && self
+                .excluded_sites
+                .split_whitespace()
+                .any(|p| host_matches(&host, p) || host_matches(&host, &format!("*.{p}")))
+    }
+}
+
+/// An http(s) address (a referrer may be empty, or a page of the browser's own).
+fn is_web(address: &str) -> bool {
+    let lower = address.trim_start().to_ascii_lowercase();
+    lower.starts_with("http://") || lower.starts_with("https://")
 }
 
 impl CaptureRules {
@@ -579,6 +602,75 @@ mod tests {
     }
 
     #[test]
+    fn a_listed_site_takes_its_subdomains_and_the_files_its_pages_link_to() {
+        let r = CaptureRules {
+            excluded_sites: "example.com *.wide.test".into(),
+            ..CaptureRules::default()
+        };
+        // #1049: a plain name takes its subdomains, as the Download panels' list does.
+        for url in [
+            "https://example.com/a.zip",
+            "https://www.example.com/a.zip",
+            "https://dl.files.example.com:8443/a.zip",
+            "https://WWW.Example.com/a.zip",
+            "https://wide.test/a.zip",
+            "https://cdn.wide.test/a.zip",
+        ] {
+            assert_eq!(
+                r.accepts(url, "a.zip", CHROME, None),
+                Err(Declined::Site),
+                "{url}"
+            );
+        }
+        for url in [
+            "https://badexample.com/a.zip",
+            "https://example.com.evil.test/a.zip",
+        ] {
+            assert_eq!(r.accepts(url, "a.zip", CHROME, None), Ok(()), "{url}");
+        }
+        // A file the site serves from another host (a CDN, a mirror): its page decides.
+        let cdn = "https://cdn.files.test/build/a.zip";
+        for page in [
+            "https://www.example.com/downloads/app",
+            "https://example.com/",
+            "https://mirror.wide.test/get?id=1",
+        ] {
+            assert_eq!(
+                r.accepts(cdn, "a.zip", CHROME, Some(page)),
+                Err(Declined::Site),
+                "{page}"
+            );
+        }
+        assert_eq!(
+            r.accepts(cdn, "a.zip", CHROME, Some("https://other.test/page")),
+            Ok(()),
+            "a page of a site not listed"
+        );
+        // A listed file host is left to the browser whatever page links to it.
+        assert_eq!(
+            r.accepts(
+                "https://www.example.com/a.zip",
+                "a.zip",
+                CHROME,
+                Some("https://other.test/")
+            ),
+            Err(Declined::Site)
+        );
+        // No page known (none sent, an empty referrer, a page of the browser's own): the file's
+        // own host decides, as before.
+        for page in [None, Some(""), Some("about:blank"), Some("example.com")] {
+            assert_eq!(r.accepts(cdn, "a.zip", CHROME, page), Ok(()), "{page:?}");
+            assert_eq!(
+                r.accepts("https://example.com/a.zip", "a.zip", CHROME, page),
+                Err(Declined::Site),
+                "{page:?}"
+            );
+        }
+        // host_matches itself stays exact for its other users (debrid, servers' logins).
+        assert!(!host_matches("www.example.com", "example.com"));
+    }
+
+    #[test]
     fn small_files_by_options() {
         let mut r = CaptureRules::default();
         assert!(!r.too_small(Some(10)), "any size by default");
@@ -615,30 +707,41 @@ mod tests {
     fn the_defaults_take_listed_types_from_any_browser() {
         let r = CaptureRules::default();
         assert_eq!(
-            r.accepts("https://example.com/a/setup.exe", "setup.exe", CHROME),
+            r.accepts("https://example.com/a/setup.exe", "setup.exe", CHROME, None),
             Ok(())
         );
         assert_eq!(
             r.accepts(
                 "https://example.com/movie.part.r01",
                 "movie.part.r01",
-                FIREFOX
+                FIREFOX,
+                None
             ),
             Ok(())
         );
         assert_eq!(
-            r.accepts("https://example.com/page.html", "page.html", CHROME),
+            r.accepts("https://example.com/page.html", "page.html", CHROME, None),
             Err(Declined::FileType)
         );
         // #39: a .torrent, by default (Add torrent shows what it holds); a list saved before keeps
         // what it had.
         assert_eq!(
-            r.accepts("https://example.com/dl/set.torrent", "set.torrent", CHROME),
+            r.accepts(
+                "https://example.com/dl/set.torrent",
+                "set.torrent",
+                CHROME,
+                None
+            ),
             Ok(())
         );
         let saved: CaptureRules = serde_json::from_str(r#"{"auto_types":"ZIP EXE"}"#).unwrap();
         assert_eq!(
-            saved.accepts("https://example.com/dl/set.torrent", "set.torrent", CHROME),
+            saved.accepts(
+                "https://example.com/dl/set.torrent",
+                "set.torrent",
+                CHROME,
+                None
+            ),
             Err(Declined::FileType)
         );
     }
@@ -647,16 +750,21 @@ mod tests {
     fn excluded_sites_addresses_and_browsers_are_left_to_the_browser() {
         let mut r = CaptureRules::default();
         assert_eq!(
-            r.accepts("https://dl.update.microsoft.com/x.exe", "x.exe", CHROME),
+            r.accepts(
+                "https://dl.update.microsoft.com/x.exe",
+                "x.exe",
+                CHROME,
+                None
+            ),
             Err(Declined::Site)
         );
         r.excluded_addresses = vec!["https://example.com/private/*".into()];
         assert_eq!(
-            r.accepts("https://example.com/private/a.zip", "a.zip", CHROME),
+            r.accepts("https://example.com/private/a.zip", "a.zip", CHROME, None),
             Err(Declined::Address)
         );
         assert_eq!(
-            r.accepts("https://example.com/public/a.zip", "a.zip", CHROME),
+            r.accepts("https://example.com/public/a.zip", "a.zip", CHROME, None),
             Ok(())
         );
         r.browsers = vec![
@@ -664,16 +772,16 @@ mod tests {
             ("Google Chrome".into(), true),
         ];
         assert_eq!(
-            r.accepts("https://example.com/a.zip", "a.zip", EDGE),
+            r.accepts("https://example.com/a.zip", "a.zip", EDGE, None),
             Err(Declined::Browser)
         );
         assert_eq!(
-            r.accepts("https://example.com/a.zip", "a.zip", CHROME),
+            r.accepts("https://example.com/a.zip", "a.zip", CHROME, None),
             Ok(())
         );
         r.advanced_integration = false;
         assert_eq!(
-            r.accepts("https://example.com/a.zip", "a.zip", CHROME),
+            r.accepts("https://example.com/a.zip", "a.zip", CHROME, None),
             Err(Declined::IntegrationOff)
         );
     }
@@ -826,7 +934,10 @@ mod tests {
             ..CaptureRules::default()
         };
         for name in ["model.gguf", "photo.jpg", "anything.xyz123"] {
-            assert_eq!(r.accepts("https://x.test/f", name, "Google Chrome"), Ok(()));
+            assert_eq!(
+                r.accepts("https://x.test/f", name, "Google Chrome", None),
+                Ok(())
+            );
         }
         assert!(!r.auto_type("no_extension"));
     }
