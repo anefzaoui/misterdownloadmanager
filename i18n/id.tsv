@@ -6,6 +6,11 @@
 #. never shown for a single file
 #. {n} = a number (keep the braces as they are)
 @plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Hapus {n} file dari disk juga
+#. count in cnl.rs
+#. Click'n'Load window: a page whose web site the browser doesn't name, so MDM can't tell which site it is
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	Situs yang tidak dikenal ingin mengirim {n} tautan ke Link grabber.
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -106,6 +111,11 @@
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} pelacak: {peers}
+#. count in cnl.rs
+#. Click'n'Load window: {site} is a web site's name such as "example.com"
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} ingin mengirim {n} tautan ke Link grabber.
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -217,6 +227,10 @@
 #. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 	about {size}	sekitar {size}
+#. text in the Options window
+#. Options → Archives → Link grabber check box: Click'n'Load, a link site's button that sends its links to a program on this computer (port 9666, as JDownloader)
+#, machine
+	Accept Click'n'Load from web pages (port 9666)	Terima Click'n'Load dari halaman web (port 9666)
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 	Accept incoming connections	Terima koneksi masuk
@@ -332,6 +346,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Afghanistan	Afghanistan
+#. text in the Options window
+#. Options → Add an account: a note under the user name and password fields (Mega-Debrid bans the address for some minutes after a few wrong passwords)
+#, machine
+	After a few wrong passwords the service blocks this connection for some minutes.	Setelah beberapa kali salah kata sandi, layanan akan memblokir koneksi ini selama beberapa menit.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Aland Islands	Kepulauan Aland
@@ -353,10 +371,18 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 	All the uploader's	Semua milik pengunggah
+#. text in cnl.rs
+#. button in the Click'n'Load window: let this site send links (remembered)
+#, machine
+	Allow	Izinkan
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
 	Allow more than {n} connections	Izinkan lebih dari {n} koneksi
+#. text in cnl.rs
+#. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
+#, machine
+	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	Izinkan hanya situs yang Anda gunakan. Tidak ada yang dicari atau diunduh sebelum Anda menambahkannya di Link grabber.
 #. text in errors.rs
 	already being downloaded: {path}	sedang diunduh: {path}
 #. text in the Link grabber window
@@ -522,6 +548,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Bhutan	Bhutan
+#. text in cnl.rs
+#. button in the Click'n'Load window: refuse this site's links (remembered)
+#, machine
+	Block	Blokir
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 	Block the addresses in this list (P2P or eMule format):	Blokir alamat dalam daftar ini (format P2P atau eMule):
@@ -719,9 +749,23 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Christmas Island	Pulau Christmas
-#. button in the download list
+#. button in the download list; button in the Options window
 #. verb: clears this filter
 	Clear	Hapus
+#. message or event log entry in the main window; window title in cnl.rs
+#. title of the notice when Click'n'Load couldn't start
+#. window title: a web page used Click'n'Load (a link site's button that sends its links to this program)
+#, machine
+	Click'n'Load	Click'n'Load
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {port} is 9666; JDownloader is another download manager that uses the same port
+#, machine
+	Click'n'Load can't start: another program (JDownloader?) is using port {port}. Close it, then turn Click'n'Load off and on again in Options.	Click'n'Load tidak dapat dimulai: program lain (JDownloader?) sedang menggunakan port {port}. Tutup program tersebut, lalu matikan dan nyalakan lagi Click'n'Load di Opsi.
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Click'n'Load can't start: {error}	Click'n'Load tidak dapat dimulai: {error}
 #. text in a download's progress window
 #. column title: the peer's torrent program
 	Client	Klien
@@ -2285,7 +2329,7 @@
 	No video this can download on that page	Tidak ada video yang dapat diunduh di halaman tersebut
 #. message or event log entry in the main window
 	No web addresses were found in {file}.	Tidak ada alamat web yang ditemukan di {file}.
-#. text in the Download video window
+#. text in the Options window; text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 	None	Tidak ada
 #. text in the Download video window
@@ -2330,7 +2374,12 @@
 #. text in helpers.rs
 #. Video helpers: no copy of this helper yet
 	Not installed yet	Belum terinstal
-#. button in helpers.rs
+#. text in the Link grabber window
+#. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
+#, machine
+	Not looked up	Belum dicari
+#. text in cnl.rs; button in helpers.rs
+#. button in the Click'n'Load window: refuse these links, ask again next time
 	Not now	Nanti saja
 #. text in helpers.rs
 	Not now? Get them later from Tasks → Download video from a page.	Nanti saja? Dapatkan nanti dari Tugas → Unduh video dari halaman.
@@ -2476,6 +2525,10 @@
 #. tab title: what happens when the download finishes
 	Options on completion	Opsi saat selesai
 #. text in the Options window
+#. Options → Add an account: label before the field for an API key the user made at the service (Mega-Debrid: My Account → API Key; the other way to sign in)
+#, machine
+	Or paste an application's API key:	Atau tempel kunci API aplikasi:
+#. text in the Options window
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 	Or paste your API token:	Atau tempel token API Anda:
 #. text in the Link grabber window
@@ -2524,6 +2577,7 @@
 	Password	Kata Sandi
 #. text in the Link grabber window; text in the Options window
 #. Link grabber: the package's archives' password (a label before its box)
+#. Options → Add an account: label before the field for the password at the debrid service
 	Password:	Kata Sandi:
 #. text in the Add torrent window
 	Paste a magnet link or choose a .torrent file, then Look up.	Tempel tautan magnet atau pilih file .torrent, lalu Cari.
@@ -2599,6 +2653,11 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 	premium, {days} days left	premium, sisa {days} hari
+#. text in the Options window
+#. Options → General: shown inside the shortcut recorder box while waiting for the user to press a 2-key or 3-key shortcut (#558)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Press keys...	Tekan tombol...
 #. button in a dialog box
 #. verb: open the part already downloaded
 	Preview	Pratinjau
@@ -2729,8 +2788,9 @@
 #. remote control page (on a phone): question before removing a download; {name} its file name
 #. {name} = a file name (keep the braces as they are)
 	Remove {name} from the list?	Hapus {name} dari daftar?
-#. text in a download's progress window
+#. text in a download's progress window; text in torrent_rename.rs
 #. noun: label before the deferred new file or folder name in the progress window
+#. noun: label before the new file or folder name in Add torrent
 	Rename	Ubah nama
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
@@ -2960,6 +3020,10 @@
 #. event log entry on a finished torrent when re-attaching it to keep sharing failed; {error} = why
 #. {error} = an error message (keep the braces as they are)
 	Sharing stopped: {error}	Berbagi berhenti: {error}
+#. text in the Options window
+#. Options → General: label for the global keyboard shortcut that shows or hides MDM's main window (#558)
+#, machine
+	Shortcut to show or hide window:	Pintasan untuk menampilkan atau menyembunyikan jendela:
 #. text in the download list
 	Show	Tampilkan
 #. message or event log entry in the main window
@@ -3001,6 +3065,10 @@
 #. a country's name (where a download's server is)
 	Sierra Leone	Sierra Leone
 #. button in the Options window
+#. button: sign in to the debrid service with the user name and password typed in
+#, machine
+	Sign in	Masuk
+#. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 	Sign in in the browser	Masuk di browser
 #. text in the Options window
@@ -3012,6 +3080,10 @@
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
 	Sign-ins and passwords are kept in Windows Credential Manager.	Info masuk dan kata sandi disimpan di Manajer Kredensial Windows.
+#. text in the Options window
+#. Options → Add an account: signed in, the service gives no account name; {state} premium or not
+#, machine
+	Signed in ({state})	Sudah masuk ({state})
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 	Signed in as {user} ({state})	Masuk sebagai {user} ({state})
@@ -3487,6 +3559,10 @@
 	the server is busy ({status}); try again later	server sibuk ({status}); coba lagi nanti
 #. text in errors.rs
 	the server sent an unexpected part of the file ({detail})	server mengirim bagian file yang tidak terduga ({detail})
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
+#, machine
+	the service doesn't say whether it is premium	layanan tidak menyebutkan apakah akun ini premium
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 	the site sent a web page instead of the file (a waiting page, a captcha or a sign-in): open the link in your browser, finish there, and the download comes back to MDM	situs mengirim halaman web alih-alih file (halaman tunggu, captcha, atau masuk): buka tautan di browser Anda, selesaikan di sana, dan unduhan akan kembali ke MDM
@@ -3633,6 +3709,10 @@
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
 	this program isn't {name}	program ini bukan {name}
+#. text in the Options window
+#. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
+#, machine
+	This shortcut is already in use	Pintasan ini sudah digunakan
 #. text in errors.rs
 #. why a download failed: the site's bot check (Cloudflare) lets browsers through, not programs. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
 	this site lets only browsers through; Alt+click the link	situs ini hanya mengizinkan browser; tekan Alt saat mengeklik tautan
@@ -3921,6 +4001,10 @@
 #. text in the Options window
 #. column title: the user name
 	User	Pengguna
+#. text in the Options window
+#. Options → Add an account: label before the field for the user name at the debrid service
+#, machine
+	User name:	Nama pengguna:
 #. page title in the Options window
 	User names and passwords for servers/sites	Nama pengguna dan kata sandi untuk server/situs
 #. text in the Options window
@@ -4038,6 +4122,10 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 	Windows allows wake timers only while plugged in	Windows mengizinkan pengatur waktu bangun hanya saat dicolokkan
+#. text in the Options window
+#. Options → General → Shortcut to show or hide window: shown in the disabled shortcut box on Linux (#558)
+#, machine
+	Windows and macOS	Windows dan macOS
 #. text in the Options window
 #. tooltip of "Mark downloaded files as coming from the internet" on Windows
 	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows memeriksa file yang ditandai dengan cara ini: SmartScreen sebelum program pertama kali dijalankan, Tampilan Terlindungi Office sebelum dokumen dibuka. Jika tidak dicentang, atau di bawah kebijakan Windows "Jangan pertahankan informasi zona dalam lampiran file", tidak ada unduhan yang ditandai.
@@ -4831,10 +4919,6 @@ menu	&About Mister Download Manager	T&entang Mister Download Manager
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Add new download	T&ambah unduhan baru
 #. menu command in the main window
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#. the trailing ... means it opens a window: keep it
-menu	Add &new download...	&Tambah unduhan baru...
-#. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Classic	&Klasik
@@ -4916,10 +5000,6 @@ menu	&Stop All	&Hentikan Semua
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Stop Download	&Hentikan Unduhan
 #. menu command in the main window
-#. View menu: submenu choosing how the text is drawn (smooth or classic)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-menu	Te&xt	&Teks
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Tray icon	Ikon &baki
 #. menu command in the main window
@@ -4938,6 +5018,10 @@ menu	Add &batch download	Tambah unduhan &batch
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 menu	Add &magnet link...	Tambah tautan &magnet...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+menu	Add &new download...	&Tambah unduhan baru...
 #. menu command in the main window
 #. View → Theme: picks a theme file or a Base16 or pywal colour scheme, copies it into the themes folder and uses it
 menu	Add a theme file…	Tambahkan file tema…
@@ -5241,6 +5325,10 @@ menu	Stop Download	Hentikan Unduhan
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Support &MDM	Dukung &MDM
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menu	Te&xt	&Teks
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Tell a &friend	Beri tahu &teman

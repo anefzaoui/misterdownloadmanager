@@ -565,6 +565,10 @@ These ship in the next version.
 - ✅ Windows with Direct3D 12: the progress window no longer flashes a stretched picture when
   Show details or Hide details changes its size
   ([#471](https://github.com/anefzaoui/misterdownloadmanager/issues/471))
+- ✅ No reconnecting in waves on a shared line: a connection is measured against its share of
+  what the connections bring together, not the speed the first one had alone
+  ([#896](https://github.com/anefzaoui/misterdownloadmanager/pull/896))
+- ✅ Download panels (the video button): site exclusions support wildcards (`*`) like `*.youtube.*` or `youtube.*` ([#759](https://github.com/anefzaoui/misterdownloadmanager/issues/759))
 - ✅ Firefox: one Download video button over a video, not two, after the extension is updated while
   it shows (seen on YouTube in full screen)
   ([#336](https://github.com/anefzaoui/misterdownloadmanager/issues/336))
@@ -720,6 +724,7 @@ These ship in the next version.
   video window, the menu over a video and the command line say to install Node.js or Deno, with
   a link to the help page's commands for each system
   ([#852](https://github.com/anefzaoui/misterdownloadmanager/issues/852))
+- ✅ Video helpers: the JavaScript runtime yt-dlp is given is looked for more carefully
 - ✅ Linux: no freeze of the window where the session bus doesn't answer (a session started
   without D-Bus, a bus that hangs): the tray icon is set up beside the window, which carries on
   without it until the bus answers, and gets it then, however late
