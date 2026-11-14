@@ -301,6 +301,10 @@ enum Cmd {
     /// View → Draw with → OpenGL / Direct3D, Vulkan or Metal (#89, #206), from the next start.
     #[cfg(gpu)]
     DrawWith(crate::renderer::Api),
+    /// View → Window system → Automatic (`None`), X11 (XWayland) or Wayland (Linux, #624), from
+    /// the next start.
+    #[cfg(target_os = "linux")]
+    WindowSystem(Option<crate::settings::WindowSystemPick>),
     /// View → Interface size → a size in percent (#262).
     InterfaceSize(u16),
     /// View → Text → Smooth (`true`) or Classic (Windows).
@@ -2149,7 +2153,7 @@ impl App {
                 }
             } else if !live {
                 self.start(id, true);
-            } else if !self.progress.iter().any(|p| p.id == id) {
+            } else if self.settings.show_progress && !self.progress.iter().any(|p| p.id == id) {
                 self.progress
                     .push(Progress::new(id, self.settings.show_complete));
             }
@@ -2844,6 +2848,8 @@ impl App {
                     "sounds" => 8,
                     "regional" => 9,
                     "remote" | "pair" => 11,
+                    // Downloads → Customize "Download progress" dialog → Edit... (#1041).
+                    "progress" => 3,
                     _ => 0,
                 };
                 self.run(Cmd::Options, None, ctx);
@@ -2853,7 +2859,8 @@ impl App {
                 if tab == "panels" {
                     self.options = self.options.take().map(|o| o.with_panels());
                 }
-                // A window over a page (screenshots, #192): options:test, options:account.
+                // A window over a page (screenshots, #192): options:test, options:account,
+                // options:progress.
                 self.options = self.options.take().map(|o| o.with_window(tab));
                 // Remote → Pair a device... (the docs' screenshots, #141).
                 if tab == "pair" {
@@ -2962,6 +2969,13 @@ impl App {
         if let Some(host) = cmd.exclude_site.as_deref() {
             self.settings.excluded_sites =
                 mdm_ipc::capture::add_site(&self.settings.excluded_sites, host);
+            self.dirty = true;
+            return;
+        }
+        // Its Undo (#404): that site's downloads come to MDM again.
+        if let Some(host) = cmd.include_site.as_deref() {
+            self.settings.excluded_sites =
+                mdm_ipc::capture::unlist_site(&self.settings.excluded_sites, host);
             self.dirty = true;
             return;
         }
@@ -3160,8 +3174,10 @@ impl App {
         }
     }
 
-    /// Start or resume a download; `show` opens its progress dialog (IDM's default).
+    /// Start or resume a download; `show` opens its progress dialog (IDM's default), unless
+    /// Options → Downloads → Customize "Download progress" dialog turned it off (#1041).
     fn start(&mut self, id: u64, show: bool) {
+        let show = show && self.settings.show_progress;
         self.stopped_by_hand.remove(&id);
         let rt = self.rt.clone();
         let Some(item) = self.item(id) else { return };
@@ -6402,16 +6418,13 @@ impl App {
                 self.queue_done(q);
             }
         }
-        // The next wake follows the schedules (set again when they change), and a queue that
-        // wakes the computer keeps it awake while it runs (#142).
+        // The next wake follows the schedules (set again when they change). The computer is
+        // kept awake while a queue that woke it runs (#142), and while anything downloads (#939):
+        // its own idle sleep would stop them halfway.
         self.wake.sync(&self.queues);
-        let waking = self
-            .queues
-            .iter()
-            .find(|q| q.running && q.schedule.wake)
-            .map(|q| q.name.clone());
-        self.wake
-            .keep_awake(waking.is_some(), waking.as_deref().unwrap_or_default());
+        let downloading = self.items.iter().any(|i| i.status == Status::Downloading);
+        let why = crate::wake::why_awake(&self.queues, downloading);
+        self.wake.keep_awake(why);
     }
 
     /// Scheduler → Download limits: stop at the limit, go on when the window has room.
@@ -6486,9 +6499,11 @@ impl App {
         // Linux have no dial-up command to call.
         #[cfg(windows)]
         if w.hang_up {
-            let _ = std::process::Command::new("rasdial")
-                .arg("/disconnect")
-                .spawn();
+            crate::launch::spawn("rasdial", move || {
+                let _ = std::process::Command::new("rasdial")
+                    .arg("/disconnect")
+                    .spawn();
+            });
         }
         if let Some(mode) = w.turn_off {
             self.turn_off = Some(dialogs::TurnOffCountdown::new(mode, w.force));
@@ -6734,6 +6749,12 @@ impl App {
                 }
                 tracing::info!("draw with {api:?} from the next start");
                 self.settings.renderer = Some(api);
+                self.dirty = true;
+            }
+            #[cfg(target_os = "linux")]
+            Cmd::WindowSystem(pick) => {
+                tracing::info!("windows through {pick:?} from the next start (None: automatic)");
+                self.settings.window_system = pick;
                 self.dirty = true;
             }
             Cmd::Open => {
@@ -7567,6 +7588,11 @@ impl App {
                 at + if cfg!(windows) { 4 } else { 3 },
                 self.draw_with_menu(),
             );
+            // Linux, a Wayland session that runs XWayland too: after Draw with (#624).
+            #[cfg(target_os = "linux")]
+            if crate::unix::window_system().both {
+                menu.insert(at + 4, self.window_system_menu());
+            }
         }
         menu
     }
@@ -7772,6 +7798,52 @@ impl App {
         }
         // i18n: View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
         Sub("Draw with", true, items)
+    }
+
+    /// View → Window system (Linux, a Wayland session that runs XWayland too, #624): MDM's own
+    /// choice at each start, X11 through XWayland, or Wayland's own windows; saved, so every
+    /// way MDM starts (its menu entry, the browser's helper, the session's autostart) uses it
+    /// from the next start. A greyed line says which one draws now, and when the choice waits
+    /// for the next start.
+    #[cfg(target_os = "linux")]
+    fn window_system_menu(&self) -> MenuEntry<Cmd> {
+        use crate::settings::WindowSystemPick as P;
+        use MenuEntry::{Item as I, Radio, Sep, Sub};
+        let off = |label| I(label, Cmd::None, false, false);
+        let pick = self.settings.window_system;
+        let ws = crate::unix::window_system();
+        let mut items = vec![
+            // i18n: View → Window system: MDM chooses the window system itself at each start
+            Radio("&Automatic", Cmd::WindowSystem(None), true, pick.is_none()),
+            // i18n: View → Window system: X11's windows, through XWayland in a Wayland session (names of Linux display systems, usually kept as is)
+            Radio(
+                "&X11 (XWayland)",
+                Cmd::WindowSystem(Some(P::X11)),
+                true,
+                pick == Some(P::X11),
+            ),
+            // i18n: View → Window system: Wayland's own windows (the name of a Linux display system, usually kept as is)
+            Radio(
+                "&Wayland",
+                Cmd::WindowSystem(Some(P::Wayland)),
+                true,
+                pick == Some(P::Wayland),
+            ),
+            Sep,
+            if ws.wayland {
+                // i18n: View → Window system: a greyed note; MDM's windows are Wayland's now
+                off("In use: Wayland")
+            } else {
+                // i18n: View → Window system: a greyed note; MDM's windows are X11's (through XWayland) now
+                off("In use: X11 (XWayland)")
+            },
+        ];
+        if pick.is_some_and(|p| (p == P::Wayland) != ws.wayland) {
+            // i18n: View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
+            items.push(off("Applies the next time MDM starts"));
+        }
+        // i18n: View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
+        Sub("&Window system", true, items)
     }
 
     /// Start Queue / Stop Queue drop-downs (and the Downloads menu's submenus).
@@ -8400,9 +8472,8 @@ impl App {
                 .iter()
                 .map(|(l, ..)| chrome::menu_letter(l))
                 .collect();
-            let (alt, other, f10, ctrl_f2, letter) = ctx.input(|i| {
+            let (alt_alone, f10, ctrl_f2, letter) = ctx.input(|i| {
                 let mut letter = None;
-                let mut other = false;
                 for e in &i.events {
                     match e {
                         egui::Event::Key {
@@ -8410,13 +8481,11 @@ impl App {
                             pressed: true,
                             modifiers,
                             ..
-                        } => {
-                            other = true;
+                        } if !matches!(key, egui::Key::AltLeft | egui::Key::AltRight) => {
                             if modifiers.alt && !modifiers.ctrl && !modifiers.command {
                                 letter = Some(key.name().to_lowercase());
                             }
                         }
-                        egui::Event::PointerButton { pressed: true, .. } => other = true,
                         // A letter of another script (Cyrillic, Arabic...) typed with Alt.
                         egui::Event::Text(t) if i.modifiers.alt && !i.modifiers.ctrl => {
                             letter = Some(t.to_lowercase());
@@ -8425,8 +8494,7 @@ impl App {
                     }
                 }
                 (
-                    i.modifiers.alt,
-                    other,
+                    alt_alone_released(&i.events, &mut self.alt_down, &mut self.alt_alone),
                     i.key_pressed(egui::Key::F10) && i.modifiers.is_none(),
                     i.key_pressed(egui::Key::F2) && i.modifiers.ctrl,
                     letter,
@@ -8438,25 +8506,17 @@ impl App {
                     open = Some(0);
                 }
             } else {
-                if alt && !self.alt_down {
-                    self.alt_alone = true;
+                if self.alt_down {
                     // The keyboard is in use: access letters show (light mode too).
                     crate::chrome::show_cues(&ctx);
                 }
-                if alt && other {
-                    self.alt_alone = false;
-                }
-                if !alt && self.alt_down && self.alt_alone {
-                    open = Some(0);
-                }
-                if f10 {
+                if alt_alone || f10 {
                     open = Some(0);
                 }
                 if let Some(l) = letter {
                     open = labels.iter().position(|m| *m == l).or(open);
                 }
             }
-            self.alt_down = alt;
             if let Some(i) = open {
                 self.alt_alone = false;
                 self.open_menu = chrome::menubar_next(self.open_menu, MenuBarEvent::Open(i));
@@ -9037,7 +9097,7 @@ impl App {
             self.complete.push(Complete::of(i));
         } else if i.live.is_none() {
             self.start(id, true);
-        } else if !self.progress.iter().any(|p| p.id == id) {
+        } else if self.settings.show_progress && !self.progress.iter().any(|p| p.id == id) {
             self.progress
                 .push(Progress::new(id, self.settings.show_complete));
         }
@@ -10836,6 +10896,47 @@ fn finished_windows(
     close
 }
 
+/// Whether Alt was pressed and let go alone in `events` (one pass's, in their order): the menu
+/// bar's key, as in Windows. `down` and `alone` carry the state from pass to pass. Read from the
+/// events, not from the pass's modifiers: a screen reader (NVDA, Narrator) holds a key back and
+/// passes it on with its release, so Alt's press and release came in one pass, where Alt never
+/// showed as held, and Alt never opened the menu while one ran (#328). The Alt key's own key
+/// event (egui names AltLeft and AltRight too) isn't another key.
+fn alt_alone_released(events: &[egui::Event], down: &mut bool, alone: &mut bool) -> bool {
+    let mut released = false;
+    for e in events {
+        match e {
+            egui::Event::ModifiersChanged(m) => {
+                if m.alt && !*down {
+                    *down = true;
+                    *alone = !(m.ctrl || m.shift || m.command || m.mac_cmd);
+                } else if m.alt {
+                    // Ctrl or Shift added while Alt is held: not Alt alone.
+                    *alone &= !(m.ctrl || m.shift || m.command || m.mac_cmd);
+                } else if *down {
+                    released |= *alone;
+                    *down = false;
+                    *alone = false;
+                }
+            }
+            egui::Event::Key {
+                key: egui::Key::AltLeft | egui::Key::AltRight,
+                ..
+            } => {}
+            egui::Event::Key { pressed: true, .. }
+            | egui::Event::PointerButton { pressed: true, .. } => {
+                *alone = false;
+            }
+            egui::Event::WindowFocused(false) => {
+                *down = false;
+                *alone = false;
+            }
+            _ => {}
+        }
+    }
+    released
+}
+
 impl eframe::App for App {
     /// What comes in from outside (a second launch, the browser's native host, the automation
     /// API) is handled here, which runs at every frame: `ui` doesn't run while the main window
@@ -11035,6 +11136,8 @@ impl App {
         egui::CentralPanel::no_frame()
             .frame(egui::Frame::new().fill(chrome::WINDOW_BG()))
             .show(ui, |ui| self.paint(ui));
+        // A menu opened from the keyboard, said to screen readers (#328).
+        chrome::tell_screen_readers(&ctx);
         crate::crash::step(crate::crash::Step::Dialogs);
         self.dialogs(&ctx);
         crate::crash::frame_end();
@@ -12419,5 +12522,102 @@ mod access_key_tests {
         found.sort();
         found.dedup();
         assert!(found.is_empty(), "{}", found.join(", "));
+    }
+}
+
+#[cfg(test)]
+mod alt_key_tests {
+    use super::alt_alone_released;
+    use egui::{Event, Key, Modifiers};
+
+    fn alt(on: bool) -> Event {
+        Event::ModifiersChanged(Modifiers {
+            alt: on,
+            ..Modifiers::NONE
+        })
+    }
+    fn key(k: Key, pressed: bool) -> Event {
+        Event::Key {
+            key: k,
+            physical_key: None,
+            pressed,
+            repeat: false,
+            modifiers: Modifiers::NONE,
+        }
+    }
+
+    /// #328: Alt pressed and let go alone opens the menu bar, whether the press and the release
+    /// come in passes of their own or (a screen reader passing the key on as it is let go) in
+    /// one pass; Alt with another key, or a click, doesn't.
+    #[test]
+    fn alt_alone_is_read_from_the_events_in_their_order() {
+        let (mut down, mut alone) = (false, false);
+        // Two passes, as the keyboard alone gives them.
+        assert!(!alt_alone_released(
+            &[alt(true), key(Key::AltLeft, true)],
+            &mut down,
+            &mut alone
+        ));
+        assert!(alt_alone_released(
+            &[key(Key::AltLeft, false), alt(false)],
+            &mut down,
+            &mut alone
+        ));
+        // One pass (NVDA, Narrator).
+        let one = [
+            alt(true),
+            key(Key::AltLeft, true),
+            key(Key::AltLeft, false),
+            alt(false),
+        ];
+        assert!(alt_alone_released(&one, &mut down, &mut alone));
+        // The right Alt too.
+        let right = [
+            alt(true),
+            key(Key::AltRight, true),
+            key(Key::AltRight, false),
+            alt(false),
+        ];
+        assert!(alt_alone_released(&right, &mut down, &mut alone));
+        // Alt+Tab-like: another key while Alt is held.
+        let with_key = [
+            alt(true),
+            key(Key::AltLeft, true),
+            key(Key::Tab, true),
+            alt(false),
+        ];
+        assert!(!alt_alone_released(&with_key, &mut down, &mut alone));
+        // A click while Alt is held, in two passes.
+        assert!(!alt_alone_released(&[alt(true)], &mut down, &mut alone));
+        let click = Event::PointerButton {
+            pos: egui::pos2(1.0, 1.0),
+            button: egui::PointerButton::Primary,
+            pressed: true,
+            modifiers: Modifiers::NONE,
+        };
+        assert!(!alt_alone_released(
+            &[click, alt(false)],
+            &mut down,
+            &mut alone
+        ));
+        // Ctrl+Alt (AltGr on many keyboards): not the menu's.
+        let ctrl_alt = Event::ModifiersChanged(Modifiers {
+            alt: true,
+            ctrl: true,
+            command: true,
+            ..Modifiers::NONE
+        });
+        assert!(!alt_alone_released(
+            &[ctrl_alt, alt(false)],
+            &mut down,
+            &mut alone
+        ));
+        // The window losing the focus while Alt is down (Alt+Tab away).
+        assert!(!alt_alone_released(
+            &[alt(true), Event::WindowFocused(false)],
+            &mut down,
+            &mut alone
+        ));
+        assert!(!alt_alone_released(&[alt(false)], &mut down, &mut alone));
     }
 }

@@ -5628,7 +5628,11 @@ pub fn browsers() -> Vec<(String, std::path::PathBuf)> {
 
 /// Open `url` in the browser whose program is `program` (from `browsers`).
 pub fn open_in(program: &std::path::Path, url: &str) {
-    let _ = std::process::Command::new(program).arg(url).spawn();
+    let program = program.to_owned();
+    let url = url.to_owned();
+    crate::launch::spawn("open browser", move || {
+        let _ = std::process::Command::new(program).arg(url).spawn();
+    });
 }
 
 /// Windows' Group Policy "Do not preserve zone information in file attachments" (#813), as
@@ -6052,10 +6056,12 @@ pub fn open_power_options() {
         return;
     }
     use std::os::windows::process::CommandExt;
-    let _ = std::process::Command::new("control.exe")
-        .arg("powercfg.cpl,,3")
-        .creation_flags(0x0800_0000)
-        .spawn();
+    crate::launch::spawn("power options", move || {
+        let _ = std::process::Command::new("control.exe")
+            .arg("powercfg.cpl,,3")
+            .creation_flags(0x0800_0000)
+            .spawn();
+    });
 }
 
 /// A change to the wake timer, and where its result goes.

@@ -20,6 +20,8 @@
 //!   no `.m3u8`/`.mpd` in their addresses, served as text/plain or octet-stream (#171)
 //! - Google Drive's addresses on its own host names (`drive`): links, the virus-scan and quota
 //!   pages, Docs exports, the sign-in page
+//! - MediaFire's on its own (`mediafire`): file pages, file hosts whose tickets expire, the
+//!   repair page
 //! - `GET /_log` — the request log as JSON; `DELETE /_log` clears it
 //!
 //! Every request is logged except `/`, `/_log` and `/redirect` (the engine's tests read the log
@@ -34,7 +36,7 @@ use std::time::{Duration, Instant, UNIX_EPOCH};
 
 use axum::body::{Body, HttpBody};
 use axum::extract::{ConnectInfo, Path, RawQuery, Request, State};
-use axum::http::{HeaderMap, HeaderValue, Method, StatusCode, header};
+use axum::http::{HeaderMap, HeaderValue, Method, StatusCode, Uri, header};
 use axum::middleware::Next;
 use axum::response::{Html, IntoResponse, Response};
 use axum::routing::{any, get, post};
@@ -49,7 +51,7 @@ use tokio::task::JoinHandle;
 
 use crate::content;
 use crate::faults::{Faults, every, has_cookie, parse_flag};
-use crate::{debrid, drive, pages, streams};
+use crate::{debrid, drive, mediafire, pages, streams};
 
 const CHUNK: u64 = 64 * 1024;
 
@@ -191,6 +193,36 @@ pub struct Config {
     /// Serve HTTPS instead of HTTP, as `localhost`, with a certificate from a test CA made at
     /// start (`LabServer::ca_der`): `browser_only` then looks at the TLS handshake too (#668).
     pub tls: bool,
+    /// Over HTTPS: the certificate the server shows (a faulty one for the certificate errors'
+    /// tests). A connection's fault, before any request: it can't be a URL's.
+    pub cert: Cert,
+}
+
+/// The certificate the HTTPS server shows (`Config::cert`, `--tls-cert`).
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum Cert {
+    /// `localhost`'s, from the test CA: trusted by a client told to trust that CA.
+    #[default]
+    TestCa,
+    /// The test CA's, for `localhost`, expired (2020 to 2021).
+    Expired,
+    /// `localhost`'s, signed by itself: no CA vouches for it.
+    SelfSigned,
+    /// The test CA's, for another name than `localhost`.
+    WrongName,
+}
+
+impl Cert {
+    /// From `--tls-cert`'s words.
+    pub fn parse(s: &str) -> Option<Cert> {
+        Some(match s {
+            "test-ca" => Cert::TestCa,
+            "expired" => Cert::Expired,
+            "self-signed" => Cert::SelfSigned,
+            "wrong-name" => Cert::WrongName,
+            _ => return None,
+        })
+    }
 }
 
 impl Default for Config {
@@ -202,6 +234,7 @@ impl Default for Config {
             files: None,
             rss_dir: None,
             tls: false,
+            cert: Cert::TestCa,
         }
     }
 }
@@ -235,6 +268,8 @@ pub(crate) struct Shared {
     /// Over HTTPS: each connection's ClientHello, browser-like or not (`LogEntry::browser_tls`),
     /// by the client's address.
     browser_tls: Mutex<HashMap<SocketAddr, bool>>,
+    /// `link_rate`: when the shared link is free again (`Shared::link_turn`).
+    link_free: Mutex<Instant>,
 }
 
 impl Shared {
@@ -244,6 +279,16 @@ impl Shared {
 
     fn faults(&self) -> Faults {
         self.faults.read().unwrap().clone()
+    }
+
+    /// `link_rate`: when `n` bytes may go, after every chunk already given a turn on the link
+    /// (first come, first served: each connection waits for one chunk at a time, so they take
+    /// turns and share the link evenly).
+    fn link_turn(&self, n: u64, rate: u64) -> Instant {
+        let mut free = self.link_free.lock().unwrap();
+        let start = (*free).max(Instant::now());
+        *free = start + Duration::from_secs_f64(n as f64 / rate as f64);
+        *free
     }
 
     /// Resolves once the server's faults leave the byte at `at` to be sent.
@@ -359,9 +404,10 @@ impl LabServer {
             drive_uuids: Mutex::default(),
             files: cfg.files,
             browser_tls: Mutex::default(),
+            link_free: Mutex::new(Instant::now()),
         });
         let tls = match cfg.tls {
-            true => Some(crate::ftp::certificate().map_err(io::Error::other)?),
+            true => Some(crate::ftp::certificate_of(cfg.cert).map_err(io::Error::other)?),
             false => None,
         };
         // Routes answered from memory, logged by `log_simple`.
@@ -517,8 +563,8 @@ impl LabServer {
             .route("/rss/dir.xml", get(crate::feeds::dir))
             .route("/rss/files/{name}", get(crate::feeds::file))
             .merge(simple)
-            // Every other address: the fake Google Drive's, by the Host header (`drive`).
-            .fallback(drive::handle)
+            // Every other address: the fake MediaFire's or Google Drive's, by the Host header.
+            .fallback(by_host)
             .with_state(shared.clone());
         let ca = tls.as_ref().map(|(_, ca)| ca.clone());
         let task = match tls {
@@ -617,6 +663,27 @@ impl Drop for LabServer {
     }
 }
 
+/// Every address the routes don't have, by its Host header: MediaFire's host names go to the fake
+/// MediaFire (`mediafire`), the rest to the fake Google Drive (`drive`, which answers 404 for
+/// any host but Google's).
+async fn by_host(
+    State(shared): State<Arc<Shared>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    method: Method,
+    uri: Uri,
+    headers: HeaderMap,
+) -> Response {
+    let host = header_str(&headers, header::HOST)
+        .unwrap_or_default()
+        .to_ascii_lowercase();
+    let (name, port) = host.rsplit_once(':').unwrap_or((host.as_str(), "80"));
+    if mediafire::HOSTS.contains(&name) {
+        let (name, port) = (name.to_owned(), port.to_owned());
+        return mediafire::handle(shared, peer, method, uri, headers, &name, &port).await;
+    }
+    drive::handle(State(shared), ConnectInfo(peer), method, uri, headers).await
+}
+
 /// The index page (`GET /`): every route, parameter and fault.
 pub const HELP: &str = r#"labserver: an HTTP test server for Mister Download Manager
 
@@ -646,6 +713,8 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     range_rate=SIZE  the rate of answers to requests with a Range (instead of rate)
     burst=SIZE     with a rate, a link: a response the client stopped reading catches up with
                    at most SIZE at once (by default all it fell behind by)
+    link_rate=SIZE one link of SIZE bytes/s that every response of the server shares: a
+                   connection alone takes all of it, n connections a share each
     stall_at=SIZE  never send the file's byte at that offset: a response stops there and waits
                    (until the server's faults change, from a test; a URL's own value stays)
     require_cookie=NAME=VALUE|NAME   403 unless the Cookie header has it
@@ -755,6 +824,22 @@ GOOGLE DRIVE  a fake one for the engine's tests, on Google's host names (resolve
                             (307 to doc-0.docs.googleusercontent.com/export/tok/ID: chunked, no
                             length, ranges ignored)
   accounts.google.com       /ServiceLogin   the sign-in page
+
+MEDIAFIRE  a fake one for the engine's tests, on MediaFire's host names (resolve
+    www.mediafire.com and download1589.mediafire.com to this server); hand-made pages (src/mediafire.rs)
+  keys: lab<SIZE>t<TTL ms> padded with z to 15 characters, e.g. lab4Mt60000zzzz
+  www.mediafire.com         /file/KEY[/NAME/file], /file_premium/KEY, /download/KEY: the file's page,
+                            its download button on the file host with a ticket lasting TTL ms;
+                            /download_repair.php?qkey=KEY: a page linking the file's page
+  download1589.mediafire.com  /t<expiry unix ms>/KEY/NAME (file params and faults as /gen):
+                            the file until then, after it 302 to the repair page
+
+HTTPS  --tls serves all of it over HTTPS as localhost, its certificate from a test CA made at start
+  (written next to the log, or printed); --tls-cert picks a faulty one (a connection's fault,
+  before any request, so a server's, never a URL's):
+    expired        the test CA's, expired (2020 to 2021)
+    self-signed    signed by itself, no CA's
+    wrong-name     the test CA's, for another-site.invalid
 
 LOG
 GET /_log   the request log as JSON: method, path, query, range, if_range, user_agent, cookie,
@@ -1479,6 +1564,7 @@ pub(crate) async fn serve(
         end,
         rate,
         burst: f.burst,
+        link_rate: f.link_rate.filter(|l| *l > 0),
         drop_at,
         // A URL's own stall stays; the server's is lifted with `set_faults`.
         stall_at: f.stall_at.filter(|at| (start..end).contains(at)),
@@ -1665,6 +1751,8 @@ struct Transfer {
     end: u64,
     rate: Option<u64>,
     burst: Option<u64>,
+    /// `link_rate`: the link this response shares with every other one.
+    link_rate: Option<u64>,
     drop_at: Option<u64>,
     /// The file offset this response stops at (`stall_at`), and whether `set_faults` can lift it.
     stall_at: Option<u64>,
@@ -1701,6 +1789,9 @@ impl Transfer {
             if let Some(at) = t.stall_at {
                 n = n.min(at - t.pos);
             }
+            if let Some(link) = t.link_rate {
+                n = n.min((link / 50).max(1024));
+            }
             if let Some(r) = t.rate.filter(|r| *r > 0) {
                 n = n.min((r / 20).max(1024));
                 if let Some(b) = t.burst {
@@ -1717,6 +1808,10 @@ impl Transfer {
             }
             if let Some(d) = t.drop_at {
                 n = n.min(d - t.sent);
+            }
+            if let Some(link) = t.link_rate {
+                let turn = t.shared.link_turn(n, link);
+                tokio::time::sleep_until(turn.into()).await;
             }
             let mut buf = vec![0u8; n as usize];
             content::fill_with_head(t.seed, t.pos, &mut buf, t.magic.unwrap_or_default());
