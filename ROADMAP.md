@@ -562,6 +562,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ YouTube: a video the browser's button sends with the page's cookies, refused with 403 or the
+  bot check as a signed-in viewer's, is looked up once more without them, as a private window
+  gets it; private, members' and age-restricted videos keep them
+  ([#686](https://github.com/anefzaoui/misterdownloadmanager/issues/686))
 - ✅ The browser popup's **Never take downloads from <site>** says it worked, with **Undo**
   ([#404](https://github.com/anefzaoui/misterdownloadmanager/issues/404))
 - ✅ A download to a disk slower than the network no longer stands still for a second or more

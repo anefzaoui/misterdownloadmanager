@@ -24,6 +24,7 @@ mod system;
 pub mod update;
 pub mod video;
 pub mod workdir;
+pub mod youtube;
 
 use std::path::{Path, PathBuf};
 

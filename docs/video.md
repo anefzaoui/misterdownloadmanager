@@ -168,6 +168,12 @@ cookies, the small files that keep you signed in.
   reads that profile's cookies only. yt-dlp's developers advise this too: a site may limit an
   account it sees used by a program.
 
+Signed in, YouTube sometimes refuses what it gives a visitor: its servers answer the video with
+*HTTP Error 403: Forbidden*, or the look-up with its bot check, where a private window plays it.
+When YouTube refuses a video anyone may watch that way, MDM looks it up once more without your
+cookies, as a private window would, and the download's log says so. A private, members' or
+age-restricted video keeps them.
+
 ![Options, Sites Logins: Cookies for video sites, From browser: Firefox](images/help/options-logins.webp)
 *Cookies for video sites: off, or a browser and its profile.*
 
