@@ -6,6 +6,10 @@
 #. never shown for a single file
 #. {n} = a number (keep the braces as they are)
 @plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Also delete the {n} file from disk|Also delete the {n} files from disk
+#. count in cnl.rs
+#. Click'n'Load window: a page whose web site the browser doesn't name, so MDM can't tell which site it is
+#. {n} = a number (keep the braces as they are)
+@plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -110,6 +114,10 @@
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} tracker: {peers}|{n} trackers: {peers}
+#. count in cnl.rs
+#. Click'n'Load window: {site} is a web site's name such as "example.com"
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+@plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -143,6 +151,9 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 	&Start now	&Start now
 #. text in the Options window
+#. under Download panels site exclusions list
+	(separate by spaces; * matches anything)	(separate by spaces; * matches anything)
+#. text in the Options window
 	(separate names by spaces)	(separate names by spaces)
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown in the empty Save to box
@@ -164,6 +175,9 @@
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 	7z and RAR archives are extracted by 7-Zip ({path}).	7z and RAR archives are extracted by 7-Zip ({path}).
+#. text in the Options window
+#. Options → Archives, when Extract in place with HatchZip (a program's name) is on: {path} is where its program is
+	7z and RAR archives are extracted by HatchZip ({path}).	7z and RAR archives are extracted by HatchZip ({path}).
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.
@@ -221,6 +235,9 @@
 #. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 	about {size}	about {size}
+#. text in the Options window
+#. Options → Archives → Link grabber check box: Click'n'Load, a link site's button that sends its links to a program on this computer (port 9666, as JDownloader)
+	Accept Click'n'Load from web pages (port 9666)	Accept Click'n'Load from web pages (port 9666)
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 	Accept incoming connections	Accept incoming connections
@@ -336,6 +353,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Afghanistan	Afghanistan
+#. text in the Options window
+#. Options → Add an account: a note under the user name and password fields (Mega-Debrid bans the address for some minutes after a few wrong passwords)
+	After a few wrong passwords the service blocks this connection for some minutes.	After a few wrong passwords the service blocks this connection for some minutes.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Aland Islands	Aland Islands
@@ -357,10 +377,16 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 	All the uploader's	All the uploader's
+#. text in cnl.rs
+#. button in the Click'n'Load window: let this site send links (remembered)
+	Allow	Allow
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
 	Allow more than {n} connections	Allow more than {n} connections
+#. text in cnl.rs
+#. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
+	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.
 #. text in errors.rs
 	already being downloaded: {path}	already being downloaded: {path}
 #. text in the Link grabber window
@@ -536,6 +562,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Bhutan	Bhutan
+#. text in cnl.rs
+#. button in the Click'n'Load window: refuse this site's links (remembered)
+	Block	Block
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 	Block the addresses in this list (P2P or eMule format):	Block the addresses in this list (P2P or eMule format):
@@ -733,9 +762,20 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Christmas Island	Christmas Island
-#. button in the download list
+#. button in the download list; button in the Options window
 #. verb: clears this filter
 	Clear	Clear
+#. message or event log entry in the main window; window title in cnl.rs
+#. title of the notice when Click'n'Load couldn't start
+#. window title: a web page used Click'n'Load (a link site's button that sends its links to this program)
+	Click'n'Load	Click'n'Load
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {port} is 9666; JDownloader is another download manager that uses the same port
+	Click'n'Load can't start: another program (JDownloader?) is using port {port}. Close it, then turn Click'n'Load off and on again in Options.	Click'n'Load can't start: another program (JDownloader?) is using port {port}. Close it, then turn Click'n'Load off and on again in Options.
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+	Click'n'Load can't start: {error}	Click'n'Load can't start: {error}
 #. text in a download's progress window
 #. column title: the peer's torrent program
 	Client	Client
@@ -1243,6 +1283,12 @@
 #. checkbox in the Options window
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 	Extract archives when their download completes	Extract archives when their download completes
+#. text in the Options window
+#. Options → Archives check box, greyed: HatchZip (a program's name, hatchzip.dev its site) isn't installed
+	Extract in place with HatchZip (hatchzip.dev, not installed)	Extract in place with HatchZip (hatchzip.dev, not installed)
+#. text in the Options window
+#. Options → Archives check box: HatchZip (a program's name) removes the archive while extracting it, so only the extracted files need disk space
+	Extract in place with HatchZip: only the files need room	Extract in place with HatchZip: only the files need room
 #. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 	Extract when done	Extract when done
@@ -1529,6 +1575,9 @@
 	Haiti	Haiti
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 	Hang up modem when done	Hang up modem when done
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: HatchZip (a program's name) extracted the archive in place, removing it as it went
+	HatchZip extracted it in place: the archive was removed as its files came out	HatchZip extracted it in place: the archive was removed as its files came out
 #. text in a download's progress window
 #. legend: pieces downloaded
 	Have	Have
@@ -1698,6 +1747,9 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 	it needs a password	it needs a password
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); {folder} holds the files extracted so far
+	it stopped partway. The files extracted so far are in {folder}, the rest is still in the archive: Extract continues	it stopped partway. The files extracted so far are in {folder}, the rest is still in the archive: Extract continues
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 	It tells the computers on your network which torrents you have.	It tells the computers on your network which torrents you have.
@@ -1714,6 +1766,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Italy	Italy
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+	its files came out, but moving them stopped ({error}). Those moved are in {to}, the others still in {left}; nothing was deleted	its files came out, but moving them stopped ({error}). Those moved are in {to}, the others still in {left}; nothing was deleted
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 	its files could not be written: {error}	its files could not be written: {error}
@@ -2302,7 +2358,7 @@
 	No video this can download on that page	No video this can download on that page
 #. message or event log entry in the main window
 	No web addresses were found in {file}.	No web addresses were found in {file}.
-#. text in the Download video window
+#. text in the Options window; text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 	None	None
 #. text in the Download video window
@@ -2347,7 +2403,11 @@
 #. text in helpers.rs
 #. Video helpers: no copy of this helper yet
 	Not installed yet	Not installed yet
-#. button in helpers.rs
+#. text in the Link grabber window
+#. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
+	Not looked up	Not looked up
+#. text in cnl.rs; button in helpers.rs
+#. button in the Click'n'Load window: refuse these links, ask again next time
 	Not now	Not now
 #. text in helpers.rs
 	Not now? Get them later from Tasks → Download video from a page.	Not now? Get them later from Tasks → Download video from a page.
@@ -2496,6 +2556,9 @@
 #. tab title: what happens when the download finishes
 	Options on completion	Options on completion
 #. text in the Options window
+#. Options → Add an account: label before the field for an API key the user made at the service (Mega-Debrid: My Account → API Key; the other way to sign in)
+	Or paste an application's API key:	Or paste an application's API key:
+#. text in the Options window
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 	Or paste your API token:	Or paste your API token:
 #. text in the Link grabber window
@@ -2544,6 +2607,7 @@
 	Password	Password
 #. text in the Link grabber window; text in the Options window
 #. Link grabber: the package's archives' password (a label before its box)
+#. Options → Add an account: label before the field for the password at the debrid service
 	Password:	Password:
 #. text in the Add torrent window
 	Paste a magnet link or choose a .torrent file, then Look up.	Paste a magnet link or choose a .torrent file, then Look up.
@@ -2619,6 +2683,10 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 	premium, {days} days left	premium, {days} days left
+#. text in the Options window
+#. Options → General: shown inside the shortcut recorder box while waiting for the user to press a 2-key or 3-key shortcut (#558)
+#. the trailing ... means it is still going on: keep it
+	Press keys...	Press keys...
 #. button in a dialog box
 #. verb: open the part already downloaded
 	Preview	Preview
@@ -2752,8 +2820,9 @@
 #. remote control page (on a phone): question before removing a download; {name} its file name
 #. {name} = a file name (keep the braces as they are)
 	Remove {name} from the list?	Remove {name} from the list?
-#. text in a download's progress window
+#. text in a download's progress window; text in torrent_rename.rs
 #. noun: label before the deferred new file or folder name in the progress window
+#. noun: label before the new file or folder name in Add torrent
 	Rename	Rename
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
@@ -2983,6 +3052,9 @@
 #. event log entry on a finished torrent when re-attaching it to keep sharing failed; {error} = why
 #. {error} = an error message (keep the braces as they are)
 	Sharing stopped: {error}	Sharing stopped: {error}
+#. text in the Options window
+#. Options → General: label for the global keyboard shortcut that shows or hides MDM's main window (#558)
+	Shortcut to show or hide window:	Shortcut to show or hide window:
 #. text in the download list
 	Show	Show
 #. message or event log entry in the main window
@@ -3024,6 +3096,9 @@
 #. a country's name (where a download's server is)
 	Sierra Leone	Sierra Leone
 #. button in the Options window
+#. button: sign in to the debrid service with the user name and password typed in
+	Sign in	Sign in
+#. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 	Sign in in the browser	Sign in in the browser
 #. text in the Options window
@@ -3035,6 +3110,9 @@
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
 	Sign-ins and passwords are kept in Windows Credential Manager.	Sign-ins and passwords are kept in Windows Credential Manager.
+#. text in the Options window
+#. Options → Add an account: signed in, the service gives no account name; {state} premium or not
+	Signed in ({state})	Signed in ({state})
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 	Signed in as {user} ({state})	Signed in as {user} ({state})
@@ -3411,6 +3489,9 @@
 	The downloads you add, or drop on this window, show here.	The downloads you add, or drop on this window, show here.
 #. text in errors.rs
 	the drive or network share is no longer available	the drive or network share is no longer available
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after HatchZip (a program's name) extracted in place: the entries left out (links, unsafe names) were not deleted, they are still in {folder}
+	The entries left out are still in {folder}	The entries left out are still in {folder}
 #. text in extension.rs
 	The extension is already in this app. Apple hasn't notarized this build, so Safari needs these steps to allow it.	The extension is already in this app. Apple hasn't notarized this build, so Safari needs these steps to allow it.
 #. text in errors.rs
@@ -3510,6 +3591,9 @@
 	the server is busy ({status}); try again later	the server is busy ({status}); try again later
 #. text in errors.rs
 	the server sent an unexpected part of the file ({detail})	the server sent an unexpected part of the file ({detail})
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
+	the service doesn't say whether it is premium	the service doesn't say whether it is premium
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 	the site sent a web page instead of the file (a waiting page, a captcha or a sign-in): open the link in your browser, finish there, and the download comes back to MDM	the site sent a web page instead of the file (a waiting page, a captcha or a sign-in): open the link in your browser, finish there, and the download comes back to MDM
@@ -3570,6 +3654,9 @@
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 	There is already a queue with this name	There is already a queue with this name
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
+	there isn't enough free space for its files, HatchZip says; nothing was changed	there isn't enough free space for its files, HatchZip says; nothing was changed
 #. text in a download's progress window
 	These settings are unavailable when "Show download complete dialog" is turned on	These settings are unavailable when "Show download complete dialog" is turned on
 #. text in helpers.rs
@@ -3656,6 +3743,9 @@
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
 	this program isn't {name}	this program isn't {name}
+#. text in the Options window
+#. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
+	This shortcut is already in use	This shortcut is already in use
 #. text in errors.rs
 #. why a download failed: the site's bot check (Cloudflare) lets browsers through, not programs. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
 	this site lets only browsers through; Alt+click the link	this site lets only browsers through; Alt+click the link
@@ -3947,6 +4037,9 @@
 #. text in the Options window
 #. column title: the user name
 	User	User
+#. text in the Options window
+#. Options → Add an account: label before the field for the user name at the debrid service
+	User name:	User name:
 #. page title in the Options window
 	User names and passwords for servers/sites	User names and passwords for servers/sites
 #. text in the Options window
@@ -4064,6 +4157,9 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 	Windows allows wake timers only while plugged in	Windows allows wake timers only while plugged in
+#. text in the Options window
+#. Options → General → Shortcut to show or hide window: shown in the disabled shortcut box on Linux (#558)
+	Windows and macOS	Windows and macOS
 #. text in the Options window
 #. tooltip of "Mark downloaded files as coming from the internet" on Windows
 	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.

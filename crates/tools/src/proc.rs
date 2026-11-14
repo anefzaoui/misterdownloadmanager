@@ -710,8 +710,17 @@ fn layers_with(
 
 /// The file named `name` (`name.exe` on Windows) in one of `dirs`.
 fn program_in(dirs: &[PathBuf], name: &str) -> Option<PathBuf> {
-    let file = format!("{name}{}", std::env::consts::EXE_SUFFIX);
-    dirs.iter().map(|d| d.join(&file)).find(|p| p.is_file())
+    file_in(dirs, &format!("{name}{}", std::env::consts::EXE_SUFFIX))
+}
+
+/// `file` in one of `dirs`, the absolute ones only: a relative PATH entry (`.`, `bin`) is a
+/// folder under wherever MDM was started, so a program found there is one anybody who could
+/// put a file in that folder chose.
+fn file_in(dirs: &[PathBuf], file: &str) -> Option<PathBuf> {
+    dirs.iter()
+        .filter(|d| d.is_absolute())
+        .map(|d| d.join(file))
+        .find(|p| p.is_file())
 }
 
 /// Node.js from nvm (`~/.nvm/versions/node/<version>/bin/node`), the newest name first: a program
@@ -1150,6 +1159,19 @@ pub fn output_warned(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// A program is looked for in absolute folders only: `.` on the PATH would be wherever MDM
+    /// was started from.
+    #[test]
+    fn a_relative_folder_is_never_searched() {
+        let here = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        assert_eq!(file_in(&[PathBuf::from("src")], "lib.rs"), None);
+        assert_eq!(file_in(&[PathBuf::from(".")], "Cargo.toml"), None);
+        assert_eq!(
+            file_in(&[PathBuf::from("."), here.join("src")], "lib.rs"),
+            Some(here.join("src").join("lib.rs"))
+        );
+    }
 
     #[test]
     fn the_browsers_context_for_ytdlp() {
