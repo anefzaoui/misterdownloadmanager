@@ -3067,12 +3067,20 @@ const CASES = {
         // E2E_PLAYED_BEFORE=1: pictures of an older extension's menu there (a pull request's
         // "before"), which never offers what played: its menu once its look-up ended, then no more.
         if (process.env.E2E_PLAYED_BEFORE) {
-          await sleep(15000);
+          // Its look-up ended (the button no longer "looking"), then its menu once filled.
+          await until(`${sel}: its look-up's end`, 90000, async () => {
+            const q = await s.pill(PILL_STATE);
+            return q && q.state !== "looking";
+          }).catch(() => {});
           if (!(await over(v))) throw new Error(`${sel}: no button again`);
           await clickArrow(s);
-          await sleep(1500);
-          const q = await s.picks();
-          if (shots && shot && q) await s.shot(path.join(shots, `${lang}-${shot}-before.png`), { l: Math.min(v.l, q.box.l) - 10, t: Math.min(v.t, q.box.t) - 10, r: Math.max(v.r, q.box.r) + 10, b: Math.max(v.b, q.box.b) + 10 });
+          const q = await until(`${sel}: its menu`, 30000, async () => {
+            const m = await s.picks();
+            return m && !m.busy ? m : null;
+          }).catch(() => null);
+          await sleep(400);
+          const box = q ? q.box : (await rect(s, "mdm-video-button")) || v;
+          if (shots && shot) await s.shot(path.join(shots, `${lang}-${shot}-before.png`), { l: Math.min(v.l, box.l) - 10, t: Math.min(v.t, box.t) - 10, r: Math.max(v.r, box.r) + 10, b: Math.max(v.b, box.b) + 10 });
           return null;
         }
         const said = new Set();
