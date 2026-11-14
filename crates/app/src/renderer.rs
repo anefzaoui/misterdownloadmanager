@@ -854,13 +854,13 @@ const FRAME_PACE: std::time::Duration = std::time::Duration::from_micros(16_667)
 ///
 /// Every window of MDM (the main window, its dialogs, progress windows, menus) draws in one pass
 /// of the main window, each ending with its own swap. Linux on X11 and XWayland, with Mesa
-/// (Intel, AMD, llvmpipe, VMware) as with NVIDIA: with vsync on every window, each swap waited
-/// for a refresh of its own, so a pass with a dialog and a menu open took three refreshes or
-/// more, and a swap to a window the compositor wasn't showing (minimized, covered, behind a
-/// dialog) waited for the compositor's slow timer instead, about a second under XWayland. The
-/// main window lagged as it was moved and the download dialog didn't answer clicks (#347;
-/// Mesa's `vblank_mode=0` made it rare), and under XWayland with NVIDIA a key typed showed 1 to
-/// 2 seconds later (#1025).
+/// (Intel, AMD, llvmpipe, VMware) as with NVIDIA: with vsync on every window, each swap could
+/// wait for a refresh of its own, so a pass with a dialog and a menu open could take three
+/// refreshes, and a swap to a window the compositor wasn't showing (minimized, covered, behind a
+/// dialog) waited for the compositor's slow timer instead, about a second under XWayland. Under
+/// XWayland with NVIDIA a key typed showed 1 to 2 seconds later (#1025); with Mesa the main
+/// window lagged as it was moved and the download dialog didn't answer clicks, and Mesa's
+/// `vblank_mode=0` (no window waits) made it rare (#347).
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum Swaps {
     /// The graphics API's own choice: Windows, macOS, and Wayland (where winit paces the frames
