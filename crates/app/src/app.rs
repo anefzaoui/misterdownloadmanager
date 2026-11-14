@@ -2969,6 +2969,13 @@ impl App {
             self.dirty = true;
             return;
         }
+        // Its Undo (#404): that site's downloads come to MDM again.
+        if let Some(host) = cmd.include_site.as_deref() {
+            self.settings.excluded_sites =
+                mdm_ipc::capture::unlist_site(&self.settings.excluded_sites, host);
+            self.dirty = true;
+            return;
+        }
         if cmd.start_queue {
             self.start_queue(0);
         }

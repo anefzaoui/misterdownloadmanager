@@ -564,6 +564,8 @@ These ship in the next version.
 
 - ✅ A download refused for its site's security certificate says why (expired, not trusted, for
   another name) instead of a bare **Error** (follows [#762](https://github.com/anefzaoui/misterdownloadmanager/issues/762))
+- ✅ The browser popup's **Never take downloads from <site>** says it worked, with **Undo**
+  ([#404](https://github.com/anefzaoui/misterdownloadmanager/issues/404))
 - ✅ A download to a disk slower than the network no longer stands still for a second or more
   just after it starts (a second save of its progress came too soon after the first); a server
   whose name the DNS doesn't answer in time says it couldn't be found, not that it didn't answer.
