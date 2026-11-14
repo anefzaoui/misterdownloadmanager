@@ -3731,7 +3731,7 @@ impl App {
             if !crate::offscreen() {
                 crate::unix::macos_activate_and_show();
             }
-        } else if self.tray.is_some() && self.tray_shown_now() {
+        } else if self.tray.is_some() && self.tray_icon_now() != crate::tray::Icon::Gone {
             self.hide_to_tray(ctx);
             #[cfg(target_os = "macos")]
             if !crate::offscreen() {
