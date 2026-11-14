@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows: MDM listed in Settings → Default apps for MAGNET and .torrent, and Torrent
+  settings' switch says when another app chosen there still opens them, and opens that page
+  ([#1091](https://github.com/anefzaoui/misterdownloadmanager/issues/1091))
 - ✅ A .torrent downloaded in the browser stays with the browser (and your own torrent program)
   while Torrent settings' **Open magnet links and .torrent files with Mister Download Manager**
   is off ([#1058](https://github.com/anefzaoui/misterdownloadmanager/issues/1058))
