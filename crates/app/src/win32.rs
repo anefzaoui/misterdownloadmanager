@@ -5295,7 +5295,8 @@ static CRASH_HANDLER: std::sync::OnceLock<mdm_crash::crash_handler::CrashHandler
 pub fn attach_crash_handler(reporter: std::sync::Arc<mdm_crash::client::Reporter>) -> bool {
     use mdm_crash::crash_handler::{CrashEventResult, CrashHandler, make_crash_event};
     // SAFETY: the closure runs in the exception's context; it only sends the dump request over
-    // the already-open socket (no allocation needed by minidumper's request).
+    // the monitor's socket, when its connection is open (no allocation needed by minidumper's
+    // request; before it is, the dump is refused and the process dies the system's way).
     let event = unsafe { make_crash_event(move |cc| CrashEventResult::Handled(reporter.dump(cc))) };
     match CrashHandler::attach(event) {
         Ok(h) => CRASH_HANDLER.set(h).is_ok(),
