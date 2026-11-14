@@ -2079,8 +2079,113 @@ function samplePage(html) {
   // pointer only crosses aren't), one per video for the page's life; a plain file never.
   assert.ok(fn("startLook").includes('"video-lookup"'), "sent by startLook alone");
   assert.ok(/if \(lookingFor === v\) return;[^]*setTimeout\(\(\) => \{[^]*if \(video === v && v\.isConnected && pill\.classList\.contains\("shown"\)\) startLook\(describeNow\(v\)\);\s*\}, LOOK_DELAY_MS\)/.test(fn("scheduleLook")), "scheduleLook: after LOOK_DELAY_MS, the same video still shown, not put off by each move");
-  assert.ok(fn("startLook").includes("if (usable(kept)) return kept;"), "one look-up per video, kept");
+  assert.ok(fn("startLook").includes("if (usable(kept) && !(byUser && kept.state === \"busy\")) return kept;"), "one look-up per video, kept");
   assert.ok(fn("startLook").includes("!STREAM.test(c.d.src)"), "none for a plain file");
+  // #1053: the pointer resting on the button starts the look-up (REST_MS), a pass over it doesn't;
+  // it is sent once, and the click (or its menu) shares it rather than asking again. Run here on a
+  // clock of the test's own, with startLook, lookOf and usable as video.js has them.
+  {
+    const constant = (name) => {
+      const m = new RegExp(`const ${name} = [^]*?;\\n`).exec(source);
+      assert.ok(m, `video.js has ${name}`);
+      return m[0];
+    };
+    assert.ok(/const REST_MS = (\d+);/.test(source) && +/const REST_MS = (\d+);/.exec(source)[1] >= 150 && +/const REST_MS = (\d+);/.exec(source)[1] <= 250, "REST_MS: 150 to 250 ms");
+    const page = new Function(
+      "send",
+      `const LOOKUP_MS = 60000;
+      ${constant("LOOK_RETRY_MS")}${constant("STREAM")}${constant("REST_MS")}${constant("usable")}
+      const looks = new Map();
+      const location = { href: "https://videos.test/watch?v=1" };
+      const landedAt = location.href;
+      const document = { title: "A talk", querySelector: () => null };
+      const current = null;
+      const menuOpen = false;
+      const render = () => {};
+      const fillMenu = () => {};
+      const within = (p) => p;
+      ${["pollDelay", "followLookup", "replyState", "lookOf", "startLook", "restWait"].map(fn).join("\n")}
+      return { REST_MS, looks, usable, lookOf, startLook, restWait };`,
+    );
+    const asked = [];
+    let answer = { lookup: { state: "pending", token: "t1" } };
+    const w = page((m) => {
+      asked.push(m);
+      return Promise.resolve(answer);
+    });
+    // The page's timers, on the test's clock.
+    let now = 0;
+    let timers = [];
+    let next = 1;
+    const set = (f, ms) => {
+      timers.push({ id: next, at: now + ms, f });
+      return next++;
+    };
+    const clear = (id) => (timers = timers.filter((x) => x.id !== id));
+    const to = (t) => {
+      for (;;) {
+        const due = timers.filter((x) => x.at <= t).sort((a, b) => a.at - b.at)[0];
+        if (!due) break;
+        clear(due.id);
+        now = due.at;
+        due.f();
+      }
+      now = t;
+    };
+    const v = { id: "video" };
+    const c = { v, d: { url: "https://videos.test/watch?v=1", src: "", at: null, drm: false }, key: "https://videos.test/watch?v=1 " };
+    const resting = w.restWait(w.REST_MS, (x) => x === v && w.startLook(c), set, clear);
+    // A pass: over the button and off it again before REST_MS.
+    resting.rest(v);
+    to(w.REST_MS - 50);
+    resting.leave();
+    to(5000);
+    assert.equal(asked.length, 0, "a pass over the button asks nothing");
+    // Resting: nothing before REST_MS (the pointer's moves on it don't start the wait over), then
+    // one look-up.
+    resting.rest(v);
+    to(5000 + w.REST_MS - 100);
+    resting.rest(v);
+    to(5000 + w.REST_MS - 1);
+    assert.equal(asked.length, 0, "not before REST_MS");
+    to(5000 + w.REST_MS);
+    assert.equal(asked.length, 1, "after REST_MS: the look-up");
+    assert.equal(asked[0].type, "video-lookup");
+    to(60000);
+    assert.equal(asked.length, 1, "once");
+    // The click, as download() takes it: the rest's look-up, still running, and no second one.
+    let l = w.lookOf(c);
+    assert.ok(w.usable(l) && l.state === "pending", "the click finds it running");
+    if (!w.usable(l) || l.state === "busy") l = w.startLook(c, true);
+    assert.equal(l, w.looks.get(c.key));
+    assert.equal(w.startLook(c, true), l, "the menu's arrow too");
+    // Off the button and back: rested again, the same look-up.
+    resting.leave();
+    resting.rest(v);
+    to(60000 + w.REST_MS);
+    assert.equal(asked.length, 1, "one look-up per video");
+    assert.ok(/if \(!usable\(l\) \|\| l\.state === "busy"\) l = startLook\(c, true\);/.test(fn("download")), "download: shares the kept look-up");
+    assert.ok(fn("openMenu").includes("if (video) startLook(describeNow(video), true);"), "openMenu: shares it too");
+    // An early look-up the app was too busy for (other videos' running): kept for the rests, which
+    // don't ask again, but the click asks again.
+    const c2 = { v, d: { url: "https://videos.test/watch?v=2", src: "", at: null, drm: false }, key: "https://videos.test/watch?v=2 " };
+    answer = { lookup: { state: "busy" } };
+    const early = w.startLook(c2);
+    await early.done;
+    assert.equal(early.state, "busy");
+    assert.equal(w.startLook(c2), early, "a rest keeps it");
+    answer = { lookup: { state: "pending", token: "t2" } };
+    const clicked = w.startLook(c2, true);
+    assert.notEqual(clicked, early, "the click asks again");
+    assert.equal(asked.length, 3);
+    // A private window: neither the button showing nor resting on it asks; the click and the menu do.
+    assert.ok(source.includes("const PRIVATE = Boolean(ext.extension?.inIncognitoContext);"), "PRIVATE: the browser's word");
+    assert.ok(fn("show").includes("if (!PRIVATE && !usable(looks.get(c.key))) scheduleLook(v);"), "show: not in a private window");
+    assert.ok(/restWait\(\s*REST_MS,\s*\(v\) => \{\s*if \(!PRIVATE && video === v && v\.isConnected && root\.matches\(":hover"\)\) startLook\(describeNow\(v\)\);/.test(source), "resting: not in a private window, the same video, still on the button");
+    assert.ok(/pill\.addEventListener\("pointerenter", \(\) => \{\s*if \(video && !PRIVATE\) resting\.rest\(video\);\s*\}\);\s*pill\.addEventListener\("pointerleave", \(\) => resting\.leave\(\)\);/.test(source), "the pointer on the button rests, off it leaves");
+    assert.ok(fn("hide").includes("resting.leave();") && fn("teardown").includes("resting.leave();"), "hidden or torn down: no rest's look-up after");
+    assert.ok(!/PRIVATE/.test(fn("openMenu")) && !/PRIVATE/.test(fn("download")), "the click and the menu look up in a private window too");
+  }
   // #741: only the pointer really moving shows it (a repeated move, as a browser sends when the
   // page changes under a still pointer on pause or play, doesn't), nor the focus a click gives.
   assert.ok(fn("onMove").startsWith("function onMove(e) {\n    if (e.clientX === pointer.x && e.clientY === pointer.y) return;"), "onMove: a move in place is no move");
