@@ -71,7 +71,7 @@ When you click a download, the extension checks MDM's Options:
 - **Options → General → Use advanced browser integration** must be on. Turn it off to send nothing to MDM.
 - **Options → General → Capture downloads from the following browsers** must have your browser ticked.
 - **Options → File types → Automatically start downloading the following file types** must list the file's type. The list starts with the usual ones: ZIP, RAR, 7Z, EXE, MSI, ISO, DMG, DEB, RPM, APPIMAGE, MP3, MP4, MKV, WEBM, PDF, AI models such as GGUF and SAFETENSORS, 3D files such as GLB and STL, and many more. Anything else can be added to the list.
-- **Options → File types → Don't start downloading automatically from the following sites** must not list the site. Names are separated by spaces, and `*` matches any part, as in `*.update.microsoft.com`. **Edit list ...** below it lists whole addresses to leave alone, one per line (`https://example.com/private/*`).
+- **Options → File types → Don't start downloading automatically from the following sites** must not list the site. Names are separated by spaces; a name covers its subdomains (`example.com` covers `www.example.com`, as `*.update.microsoft.com` covers `dl.update.microsoft.com`; `*` matches anything, as in `*.example.*`), and the files the site's pages link to on another server (a CDN), told by the page the download came from (its referrer). **Edit list ...** below it lists whole addresses to leave alone, one per line (`https://example.com/private/*`).
 - **Options → File types → Don't take files smaller than** leaves small files (a receipt, an icon) to the browser. 0 takes any size.
 - The extension must be allowed to read the site. When you limit it to some sites (or **On click**), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.
 
@@ -207,7 +207,7 @@ The button follows the rest of the integration: it doesn't show when **Use advan
 
 ## Keys to force or prevent capture
 
-Hold **Alt** while clicking a link to let the browser download it instead of MDM. In Firefox, Alt+click saves a link only when its `browser.altClickSave` setting is on (in `about:config`); otherwise right-click the link and choose **Save Link As...**, which the browser keeps. **Options → General → Keys...** says so, and holds **Also take files the browser would open**.
+Hold **Alt** (**Option** on a Mac) while clicking a link to let the browser download it instead of MDM. Chromium browsers and Safari download such a link themselves. Firefox does nothing with that click, so the extension follows the link for it, as a plain click would, and the browser keeps what comes of it. When the link redirects, or the page it leads to starts the download by script ("your download starts in 5 seconds"), that download stays with the browser too when it starts within ten seconds. **Options → General → Keys...** says so, and holds **Also take files the browser would open**.
 
 To keep a site's downloads in the browser for good, use the toolbar button's **Never take downloads from**, or add the site to **Don't start downloading automatically from the following sites**. To keep a file type in the browser, take it off the file types list.
 

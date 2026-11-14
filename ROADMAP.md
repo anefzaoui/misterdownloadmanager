@@ -303,9 +303,9 @@ Everything below ships together, in version 0.5.0.
   files says "Checking 42%"; a finished torrent that isn't shared lets go of its files; a
   `.torrent` file's web address opens Add torrent ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 - ✅ Link grabber: links in packages, looked up for name and size; archives (zip and tar
-  built in; 7z and RAR need 7-Zip) extracted when they are downloaded
-  ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37)); collecting copied links
-  comes later
+  built in; 7z and RAR need 7-Zip) extracted when they are downloaded, in place
+  with HatchZip when asked ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37));
+  collecting copied links comes later
 - ✅ Link grabber: Click'n'Load from link sites, in their packages with their archive passwords;
   off by default, asked once per site, the links not looked up before they are added
   ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37))
@@ -562,6 +562,29 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The sites in **Don't start downloading automatically from the following sites** take their
+  subdomains and the files their pages link to on another server (a CDN), as the Download panels'
+  list does
+  ([#1049](https://github.com/anefzaoui/misterdownloadmanager/issues/1049))
+- ✅ The menu bar with a screen reader: Alt opens it again, and the screen reader says each item
+  as Alt, F10 or the arrows reach it; Shift+F10's menus too
+  ([#328](https://github.com/anefzaoui/misterdownloadmanager/issues/328))
+- ✅ Windows with Direct3D 12: the progress window no longer flashes a stretched picture when
+  Show details or Hide details changes its size
+  ([#471](https://github.com/anefzaoui/misterdownloadmanager/issues/471))
+- ✅ No reconnecting in waves on a shared line: a connection is measured against its share of
+  what the connections bring together, not the speed the first one had alone
+  ([#896](https://github.com/anefzaoui/misterdownloadmanager/pull/896))
+- ✅ Download panels (the video button): site exclusions support wildcards (`*`) like `*.youtube.*` or `youtube.*` ([#759](https://github.com/anefzaoui/misterdownloadmanager/issues/759))
+- ✅ Firefox: one Download video button over a video, not two, after the extension is updated while
+  it shows (seen on YouTube in full screen)
+  ([#336](https://github.com/anefzaoui/misterdownloadmanager/issues/336))
+- ✅ Alt+click (Option+click on a Mac) leaves a download to the browser in Firefox too, where it
+  did nothing, and when the link redirects or a page's script starts the download
+  ([#332](https://github.com/anefzaoui/misterdownloadmanager/issues/332))
+- ✅ Left and Right in Download File Info's Save As box and Add URL's Address box move the caret,
+  no longer the focus to the button beside the box
+  ([#812](https://github.com/anefzaoui/misterdownloadmanager/pull/812))
 - ✅ The progress window shows no scroll bars over content that fits at an interface size above
   100 % (125 %), where the window's client comes back a pixel short of its content
   ([#672](https://github.com/anefzaoui/misterdownloadmanager/issues/672))
@@ -629,6 +652,9 @@ These ship in the next version.
   ([#698](https://github.com/anefzaoui/misterdownloadmanager/issues/698))
 - ✅ Windows: a menu closes at once when you click outside MDM, instead of 0.4 seconds later
   ([#859](https://github.com/anefzaoui/misterdownloadmanager/issues/859))
+- ✅ Windows: programs MDM starts (an update's installer, a browser, the power options) start
+  beside the window, which no longer waits while an antivirus checks them
+  ([#846](https://github.com/anefzaoui/misterdownloadmanager/issues/846))
 - ✅ No "The window stopped responding" report in the first minute after the computer wakes from
   sleep, while its disk, network and screen come back: such a stall is logged, and reported only
   if it lasts longer; every freeze report says what the window was doing when it stopped
@@ -705,6 +731,7 @@ These ship in the next version.
   video window, the menu over a video and the command line say to install Node.js or Deno, with
   a link to the help page's commands for each system
   ([#852](https://github.com/anefzaoui/misterdownloadmanager/issues/852))
+- ✅ Video helpers: the JavaScript runtime yt-dlp is given is looked for more carefully
 - ✅ Linux: no freeze of the window where the session bus doesn't answer (a session started
   without D-Bus, a bus that hangs): the tray icon is set up beside the window, which carries on
   without it until the bus answers, and gets it then, however late
@@ -1022,9 +1049,6 @@ These ship in a later version, when they're ready.
   download that was already under way, a rename or move when one finishes, and links added
   without Download File Info still wait for it (follows
   [#743](https://github.com/anefzaoui/misterdownloadmanager/issues/743))
-- 🔍 Alt and F10 not reaching the menu bar while a screen reader (NVDA, Narrator) runs
-  ([#328](https://github.com/anefzaoui/misterdownloadmanager/issues/328)): 0.5.2's fix covers a
-  focused control, not this
 - 🔍 A site's bot check refusing MDM's request (testfile.org, a Cloudflare challenge): the
   message now says so ([#376](https://github.com/anefzaoui/misterdownloadmanager/issues/376)); a
   way to hand the download back to the browser is still to decide

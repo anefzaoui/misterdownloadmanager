@@ -175,6 +175,7 @@ function fakeApi({
       onSendHeaders: event("sendHeaders"),
       onErrorOccurred: event("errorOccurred"),
       onHeadersReceived: event("headersReceived"),
+      onBeforeRedirect: event("beforeRedirect"),
       onResponseStarted: event("responseStarted"),
       onAuthRequired: event("authRequired"),
     },
@@ -542,6 +543,37 @@ const ok = (what) => {
   ok("Alt, excluded sites, blob: and withdrawn site access stay with the browser");
 }
 
+// #1049: a plain name in Options' excluded sites takes its subdomains, and a file its pages link
+// to on another host (a CDN) is the site's too, by the download's referrer; with no page known,
+// the file's own host decides.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: false, rules: { excludedSites: "example.test *.mirror.* https://*kept*" } });
+  load(api, false);
+  const keep = async (item) => {
+    let suggested = false;
+    listeners.determining(item, () => (suggested = true));
+    await settle();
+    return suggested;
+  };
+  assert.ok(await keep({ id: 60, url: "https://www.example.test/a.zip", filename: "a.zip" }), "a subdomain");
+  assert.ok(
+    await keep({ id: 61, url: "https://cdn.files.test/b.zip", referrer: "https://www.example.test/get", filename: "b.zip" }),
+    "from the site's page",
+  );
+  assert.deepEqual(natives(calls), []);
+  assert.deepEqual(notices(calls).map((n) => [n.why, n.name]), [["site", "a.zip"], ["site", "b.zip"]]);
+  assert.ok(!(await keep({ id: 62, url: "https://cdn.files.test/c.zip", referrer: "https://other.test/", filename: "c.zip" })), "another site's page");
+  assert.ok(!(await keep({ id: 63, url: "https://cdn.files.test/d.zip", referrer: "", filename: "d.zip" })), "no page known");
+  assert.ok(!(await keep({ id: 64, url: "https://badexample.test/e.zip", filename: "e.zip" })), "not a subdomain");
+  assert.deepEqual(natives(calls).map((m) => m.url), ["https://cdn.files.test/c.zip", "https://cdn.files.test/d.zip", "https://badexample.test/e.zip"]);
+  // Wildcards, as the app reads them (#759): `*.mirror.*`, a scheme left out.
+  assert.ok(await keep({ id: 65, url: "https://dl.mirror.org/f.zip", filename: "f.zip" }), "*.mirror.*");
+  assert.ok(await keep({ id: 66, url: "https://mirror.net/g.zip", filename: "g.zip" }), "*.mirror.* takes the domain");
+  assert.ok(await keep({ id: 67, url: "https://cdn.files.test/h.zip", referrer: "https://www.kept.test/", filename: "h.zip" }), "*kept*");
+  assert.equal(natives(calls).length, 3);
+  ok("#1049: excluded sites take their subdomains and the files their pages link to");
+}
+
 // Paused from the toolbar button: nothing is taken until it is on again.
 {
   const { api, calls, listeners, store } = fakeApi({ firefox: false });
@@ -592,15 +624,15 @@ const ok = (what) => {
   const values = rule.addRules[0].condition.responseHeaders[0].values;
   assert.ok(values.includes("application/pdf*") && values.includes("audio/mpeg*"));
   assert.ok(!values.some((v) => v.startsWith("video/mp4")), "MP4 not listed");
-  // Options' excluded sites keep opening in the browser: *. with its subdomains, a plain host
-  // by itself (an allow rule).
-  const ex = fakeApi({ firefox: false, types: "PDF", rules: { excludedSites: "*.docs.test files.test:8080" } });
+  // Options' excluded sites keep opening in the browser, with their subdomains whether written
+  // with *. or not (#1049), and so do the files their pages lead to on another host.
+  const ex = fakeApi({ firefox: false, types: "PDF", rules: { excludedSites: "*.docs.test files.test:8080 docs.test" } });
   load(ex.api, false);
   await settle();
   const added = ex.calls.filter((c) => c[0] === "dnr").pop()[1].addRules;
-  assert.deepEqual(added[0].condition.excludedRequestDomains, ["docs.test"]);
-  assert.equal(added[1].action.type, "allow");
-  assert.equal(added[1].condition.regexFilter, "^[a-z]+://files\\.test(:[0-9]+)?/", "the host alone, any port");
+  assert.equal(added.length, 1, "one rule: no allow rules of their own");
+  assert.deepEqual(added[0].condition.excludedRequestDomains, ["docs.test", "files.test"]);
+  assert.deepEqual(added[0].condition.excludedInitiatorDomains, ["docs.test", "files.test"]);
   const off = fakeApi({ firefox: false, rules: { opened: false } });
   load(off.api, false);
   await settle();
@@ -2712,6 +2744,96 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   assert.deepEqual(natives(calls), []);
   ok("#208 Firefox: Alt, excluded sites, small files, file uploads and pause stay the browser's");
 }
+// #332: Alt (Option on a Mac) held on a link, in the order each browser's events come. page.js
+// says it as the button goes down (pointerdown) and again at the click; the download may come
+// before the click's word, under the link's address, its redirect's end, or another address a
+// page's script went to. Each is the browser's; one click leaves one such download to it, for ten
+// seconds.
+{
+  const clock = { t: Date.now() };
+  class FakeDate extends Date {
+    static now() {
+      return clock.t;
+    }
+  }
+  const page = { id: "ours", url: "https://site.test/files", frameId: 0, tab: { id: 3, url: "https://site.test/files" } };
+  // Chrome and Edge on a Mac (and everywhere): Option+click downloads the link itself, at the
+  // click; only the press was said by then.
+  {
+    const { api, calls, listeners } = fakeApi({ firefox: false });
+    load(api, false, { Date: FakeDate });
+    const send = (m, sender) => new Promise((r) => listeners.message(m, sender, r));
+    const kept = async (item) => {
+      let suggested = false;
+      listeners.determining(item, () => (suggested = true));
+      await settle();
+      return suggested;
+    };
+    await send({ type: "bypass", url: "https://site.test/get?id=7" }, page);
+    assert.ok(await kept({ id: 60, url: "https://site.test/get?id=7", finalUrl: "https://cdn.test/a.zip", referrer: "https://site.test/files", filename: "a.zip" }), "redirected: the link's own address");
+    // The click's word comes after: still the same click, nothing more is left to the browser.
+    await send({ type: "bypass", url: "https://site.test/get?id=7" }, page);
+    assert.ok(!(await kept({ id: 61, url: "https://site.test/b.zip", referrer: "https://site.test/files", filename: "b.zip" })), "a later plain download from the page");
+    assert.equal(natives(calls).length, 1);
+    // A link the page's script took (the click's own download prevented): the download it
+    // started instead, under another address, sent from the page (the referrer cut to the site
+    // too, the default across sites); once.
+    calls.length = 0;
+    await send({ type: "bypass", url: "https://site.test/dl/9" }, page);
+    assert.ok(await kept({ id: 62, url: "https://files.test/token/c.zip", referrer: "https://site.test/", filename: "c.zip" }), "a script's download");
+    assert.ok(!(await kept({ id: 63, url: "https://files.test/token/d.zip", referrer: "https://site.test/", filename: "d.zip" })), "only one");
+    assert.equal(natives(calls).length, 1);
+    // Another site's download meanwhile is not the click's.
+    calls.length = 0;
+    await send({ type: "bypass", url: "https://site.test/dl/10" }, page);
+    assert.ok(!(await kept({ id: 64, url: "https://other.test/e.zip", referrer: "https://other.test/page", filename: "e.zip" })), "another site's");
+    // Ten seconds on, the click is forgotten: its link goes to MDM again.
+    clock.t += 10001;
+    assert.ok(!(await kept({ id: 65, url: "https://site.test/dl/10", referrer: "https://site.test/files", filename: "f.zip" })), "forgotten");
+    assert.equal(natives(calls).length, 2);
+  }
+  // Firefox (on a Mac too): page.js follows the link once the background has it (the browser
+  // alone does nothing with an Alt+click); the page load's answer is the download. Straight, by a
+  // redirect, or a page whose script goes to the file in the same tab.
+  {
+    const { api, calls, listeners } = fakeApi({ firefox: true });
+    load(api, true, { Date: FakeDate });
+    await settle();
+    const send = ask(listeners);
+    const zip = { "Content-Type": "application/zip" };
+    await send({ type: "bypass", url: "https://site.test/a.zip" }, page);
+    assert.deepEqual(await held(listeners, answer("https://site.test/a.zip", zip)), {}, "straight");
+    await send({ type: "bypass", url: "https://site.test/go?f=b" }, page);
+    listeners.beforeRedirect({ url: "https://site.test/go?f=b", redirectUrl: "https://cdn.test/b.zip", type: "main_frame", tabId: 3 });
+    assert.deepEqual(await held(listeners, answer("https://cdn.test/b.zip", zip, { requestId: "r2" })), {}, "redirected");
+    await send({ type: "bypass", url: "https://site.test/thanks?f=c" }, page);
+    assert.deepEqual(await held(listeners, answer("https://cdn.test/c.zip", zip, { requestId: "r3" })), {}, "a script's, same tab");
+    assert.deepEqual(natives(calls), []);
+    // That click's leave is used: the next download in the tab is MDM's.
+    assert.deepEqual(await held(listeners, answer("https://cdn.test/d.zip", zip, { requestId: "r4" })), { cancel: true });
+    assert.equal(natives(calls).length, 1);
+    // The download Firefox itself makes of it (a save with browser.altClickSave, a script's
+    // downloads.download): by its address.
+    calls.length = 0;
+    await send({ type: "bypass", url: "https://site.test/e.zip" }, page);
+    listeners.created({ id: 70, url: "https://site.test/e.zip", filename: "/dl/e.zip", referrer: "https://site.test/files" });
+    await settle();
+    assert.deepEqual(natives(calls), []);
+    assert.deepEqual(steps(calls), []);
+  }
+  // Safari: Option+click downloads the link itself (nothing to see here); a plain click on another
+  // link of that page right after is still offered to the app.
+  {
+    const { api, calls, listeners } = fakeApi({ firefox: true, safari: true });
+    load(api, true, { Date: FakeDate });
+    const send = (m) => new Promise((r) => listeners.message(m, page, (v) => r(JSON.parse(JSON.stringify(v)))));
+    await send({ type: "bypass", url: "https://site.test/a.zip" });
+    assert.deepEqual(await send({ type: "link", url: "https://site.test/b.zip" }), { taken: true });
+    assert.deepEqual(await send({ type: "link", url: "https://site.test/a.zip" }), { taken: false }, "the Alt-clicked link itself");
+    assert.equal(natives(calls).length, 1);
+  }
+  ok("#332: Alt / Option+click: the link, its redirect, a script's download after it, once; Chrome, Firefox, Safari orders");
+}
 // A private window's download goes as one; a tab opened only for it closes with it.
 {
   const { api, calls, listeners } = fakeApi({ firefox: true });
@@ -2935,7 +3057,7 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
 // and (when it isn't taken) clicks again; Alt and other types are never held.
 {
   const pageCode = readFileSync(new URL("../../extension/page.js", import.meta.url), "utf8");
-  const run = async ({ safari, taken, types = "ZIP ISO R0*", capture = true }) => {
+  const run = async ({ safari, firefox, taken, types = "ZIP ISO R0*", capture = true }) => {
     const sent = [];
     const handlers = {};
     class Element {
@@ -2955,7 +3077,9 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
       dispatchEvent(ev) {
         this.clicks++;
         this.again = ev;
-        handlers.click({ type: "click", button: 0, isTrusted: false, target: this, preventDefault() {} });
+        const plain = { type: "click", button: 0, isTrusted: false, target: this, preventDefault() {} };
+        handlers.click(plain);
+        handlers["click:bubble"](plain);
       }
     }
     class MouseEvent {
@@ -2968,6 +3092,7 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
       runtime: {
         id: "ours",
         getManifest: () => (safari ? { browser_specific_settings: { safari: {} } } : {}),
+        getURL: (p) => (firefox ? "moz-extension://5d0c/" : safari ? "safari-web-extension://5d0c/" : "chrome-extension://ours/") + p,
         sendMessage: async (m) => (sent.push(JSON.parse(JSON.stringify(m))), m.type === "link" ? { taken } : { ok: true }),
       },
       storage: { local: { get: async () => stored }, onChanged: { addListener() {}, removeListener() {} } },
@@ -2978,14 +3103,20 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
       MouseEvent,
       URL,
       Promise,
-      addEventListener: (n, f) => (handlers[n] = f),
+      // The capture listeners by the event's name, the bubbling ones as "name:bubble".
+      addEventListener: (n, f, capture) => (handlers[capture ? n : `${n}:bubble`] = f),
       removeEventListener() {},
     });
     await settle();
-    const click = (href, extra = {}, attrs) => {
+    // A person's click: the button pressed, then the click going down to the link (capture) and
+    // back up to the window (`page`: what the page's own listener does with it on the way).
+    const click = (href, extra = {}, attrs, page = () => {}) => {
       const a = new Element(href, attrs);
       const e = { type: "click", button: 0, isTrusted: true, altKey: false, target: a, defaultPrevented: false, preventDefault() { this.defaultPrevented = true; }, ...extra };
+      handlers.pointerdown({ ...e, type: "pointerdown" });
       handlers.click(e);
+      page(e);
+      handlers["click:bubble"](e);
       return { a, e };
     };
     return { click, sent, settle };
@@ -3024,7 +3155,36 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   assert.ok(!t.click("https://x.test/f/a.zip").e.defaultPrevented);
   t = await run({ safari: false, taken: true });
   assert.ok(!t.click("https://x.test/f/a.zip").e.defaultPrevented, "Chrome and Firefox take it from the downloads API");
-  ok("Safari: page.js holds a click on a listed file type, never Alt or other types");
+  // #332, Alt (Option on a Mac) on a link. Chromium (and Safari) download it themselves at the
+  // click: the press already said it, the click is left as it is.
+  ({ a, e } = t.click("https://x.test/f/a.zip", { altKey: true }));
+  await t.settle();
+  assert.ok(!e.defaultPrevented && a.clicks === 0);
+  assert.deepEqual(t.sent.slice(-2), [{ type: "bypass", url: "https://x.test/f/a.zip" }, { type: "bypass", url: "https://x.test/f/a.zip" }], "at the press, and the click");
+  // Firefox does nothing with it (or saves it, with browser.altClickSave): its own handling is
+  // stopped, and once the background has it the link is followed as a plain click (one click,
+  // not trusted, without Alt).
+  t = await run({ firefox: true, taken: true });
+  ({ a, e } = t.click("https://x.test/go?f=a", { altKey: true }));
+  assert.ok(e.defaultPrevented && a.clicks === 0, "not before the background has it");
+  await t.settle();
+  assert.ok(a.clicks === 1 && !a.again.altKey && a.again.isTrusted !== true, "followed");
+  assert.ok(t.sent.length >= 2 && t.sent.every((m) => m.type === "bypass" && m.url === "https://x.test/go?f=a"));
+  // A link the page's own script took, Alt with Shift or Cmd (Firefox's new window, new tab),
+  // the middle button: left as they are.
+  ({ a, e } = t.click("https://x.test/go?f=b", { altKey: true }, undefined, (ev) => ev.preventDefault()));
+  await t.settle();
+  assert.equal(a.clicks, 0, "the page's script");
+  for (const keys of [{ shiftKey: true }, { metaKey: true }, { ctrlKey: true }]) {
+    ({ a, e } = t.click("https://x.test/go?f=c", { altKey: true, ...keys }));
+    await t.settle();
+    assert.ok(!e.defaultPrevented && a.clicks === 0, JSON.stringify(keys));
+  }
+  // Without Alt nothing changes.
+  ({ a, e } = t.click("https://x.test/f/a.zip"));
+  await t.settle();
+  assert.ok(!e.defaultPrevented && a.clicks === 0);
+  ok("Safari: page.js holds a click on a listed file type, never Alt or other types; #332: Alt said at the press, Firefox follows the link");
 }
 assert.deepEqual(complaints, [], "nothing written to the console as an error or warning");
 
