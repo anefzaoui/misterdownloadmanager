@@ -301,6 +301,10 @@ enum Cmd {
     /// View → Draw with → OpenGL / Direct3D, Vulkan or Metal (#89, #206), from the next start.
     #[cfg(gpu)]
     DrawWith(crate::renderer::Api),
+    /// View → Window system → Automatic (`None`), X11 (XWayland) or Wayland (Linux, #624), from
+    /// the next start.
+    #[cfg(target_os = "linux")]
+    WindowSystem(Option<crate::settings::WindowSystemPick>),
     /// View → Interface size → a size in percent (#262).
     InterfaceSize(u16),
     /// View → Text → Smooth (`true`) or Classic (Windows).
@@ -6738,6 +6742,12 @@ impl App {
                 self.settings.renderer = Some(api);
                 self.dirty = true;
             }
+            #[cfg(target_os = "linux")]
+            Cmd::WindowSystem(pick) => {
+                tracing::info!("windows through {pick:?} from the next start (None: automatic)");
+                self.settings.window_system = pick;
+                self.dirty = true;
+            }
             Cmd::Open => {
                 if let Some(id) = target {
                     self.open_item(id);
@@ -7569,6 +7579,11 @@ impl App {
                 at + if cfg!(windows) { 4 } else { 3 },
                 self.draw_with_menu(),
             );
+            // Linux, a Wayland session that runs XWayland too: after Draw with (#624).
+            #[cfg(target_os = "linux")]
+            if crate::unix::window_system().both {
+                menu.insert(at + 4, self.window_system_menu());
+            }
         }
         menu
     }
@@ -7774,6 +7789,52 @@ impl App {
         }
         // i18n: View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
         Sub("Draw with", true, items)
+    }
+
+    /// View → Window system (Linux, a Wayland session that runs XWayland too, #624): MDM's own
+    /// choice at each start, X11 through XWayland, or Wayland's own windows; saved, so every
+    /// way MDM starts (its menu entry, the browser's helper, the session's autostart) uses it
+    /// from the next start. A greyed line says which one draws now, and when the choice waits
+    /// for the next start.
+    #[cfg(target_os = "linux")]
+    fn window_system_menu(&self) -> MenuEntry<Cmd> {
+        use crate::settings::WindowSystemPick as P;
+        use MenuEntry::{Item as I, Radio, Sep, Sub};
+        let off = |label| I(label, Cmd::None, false, false);
+        let pick = self.settings.window_system;
+        let ws = crate::unix::window_system();
+        let mut items = vec![
+            // i18n: View → Window system: MDM chooses the window system itself at each start
+            Radio("&Automatic", Cmd::WindowSystem(None), true, pick.is_none()),
+            // i18n: View → Window system: X11's windows, through XWayland in a Wayland session (names of Linux display systems, usually kept as is)
+            Radio(
+                "&X11 (XWayland)",
+                Cmd::WindowSystem(Some(P::X11)),
+                true,
+                pick == Some(P::X11),
+            ),
+            // i18n: View → Window system: Wayland's own windows (the name of a Linux display system, usually kept as is)
+            Radio(
+                "&Wayland",
+                Cmd::WindowSystem(Some(P::Wayland)),
+                true,
+                pick == Some(P::Wayland),
+            ),
+            Sep,
+            if ws.wayland {
+                // i18n: View → Window system: a greyed note; MDM's windows are Wayland's now
+                off("In use: Wayland")
+            } else {
+                // i18n: View → Window system: a greyed note; MDM's windows are X11's (through XWayland) now
+                off("In use: X11 (XWayland)")
+            },
+        ];
+        if pick.is_some_and(|p| (p == P::Wayland) != ws.wayland) {
+            // i18n: View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
+            items.push(off("Applies the next time MDM starts"));
+        }
+        // i18n: View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
+        Sub("&Window system", true, items)
     }
 
     /// Start Queue / Stop Queue drop-downs (and the Downloads menu's submenus).
