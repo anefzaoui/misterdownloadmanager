@@ -1837,6 +1837,214 @@ function samplePage(html) {
   ok("video.js: Shorts and live pages name their video");
 }
 
+// #670: video.js's button against a fake DOM — whether it shows over a video while the page is
+// in full screen, with the popup's option off (as installed) or on.
+function videoButton({ stored = {} } = {}) {
+  const source = readFileSync(new URL("../../extension/video.js", import.meta.url), "utf8");
+  const handlers = {};
+  const queued = [];
+  let root = null;
+  const node = (name = "") => {
+    const style = new Map();
+    const classes = new Set();
+    const el = {
+      localName: name,
+      children: new Proxy([], {
+        get(t, k) {
+          if (typeof k === "string" && /^\d+$/.test(k)) return t[k] || (t[k] = node());
+          return t[k];
+        },
+      }),
+      parentNode: null,
+      dataset: {},
+      textContent: "",
+      innerHTML: "",
+      dir: "",
+      title: "",
+      src: "",
+      offsetWidth: 0,
+      offsetHeight: 0,
+      activeElement: undefined,
+      hidden: false,
+      style: {
+        setProperty: (k, v) => style.set(k, v),
+        getPropertyValue: (k) => style.get(k) || "",
+      },
+      classList: {
+        add: (c) => classes.add(c),
+        remove: (c) => classes.delete(c),
+        toggle: (c, on) => (on === false ? classes.delete(c) : classes.add(c)),
+        contains: (c) => classes.has(c),
+      },
+      addEventListener(n, f) {
+        (el.handlers[n] = el.handlers[n] || []).push(f);
+      },
+      removeEventListener() {},
+      setAttribute() {},
+      append(c) {
+        el.appendChild(c);
+      },
+      appendChild(c) {
+        c.parentNode = el;
+        el.children.push(c);
+        return c;
+      },
+      get lastElementChild() {
+        return el.children[el.children.length - 1] || node();
+      },
+      replaceChildren(...kids) {
+        el.children.length = 0;
+        for (const k of kids) if (k && typeof k === "object") el.appendChild(k);
+      },
+      attachShadow: () => node("#shadow-root"),
+      querySelector: () => node(),
+      querySelectorAll: () => [],
+      closest: () => null,
+      matches: () => false,
+      contains: () => true,
+      remove() {
+        el.parentNode = null;
+      },
+      focus() {},
+      blur() {},
+      getAttribute: () => null,
+      getBoundingClientRect: () => ({ left: 0, top: 0, right: 640, bottom: 360, width: 640, height: 360 }),
+    };
+    el.handlers = {};
+    if (name === "mdm-video-button") root = el;
+    return el;
+  };
+  const rect = { left: 0, top: 0, right: 640, bottom: 360, width: 640, height: 360 };
+  const video = {
+    isConnected: true,
+    muted: false,
+    loop: false,
+    controls: true,
+    duration: 60,
+    currentSrc: "",
+    getBoundingClientRect: () => rect,
+  };
+  const fs = node("div");
+  const documentElement = node("html");
+  const doc = {
+    title: "A video",
+    createElement: (tag) => node(tag),
+    getElementsByTagName: (tag) => (tag === "video" ? [video] : []),
+    querySelector: () => null,
+    querySelectorAll: () => [],
+    documentElement,
+    elementsFromPoint: () => [],
+    activeElement: null,
+    fullscreenElement: null,
+    addEventListener(n, f) {
+      (handlers[n] = handlers[n] || []).push(f);
+    },
+    createTreeWalker: () => ({ nextNode: () => null }),
+  };
+  // The storage listeners the script keeps, so a change can be fired at them as the browser does.
+  const storageListeners = [];
+  const api = {
+    i18n: { getMessage: () => "" },
+    runtime: { id: "ours", sendMessage: async (m) => (m.type === "panel" ? { on: true } : { ok: false }) },
+    storage: {
+      local: {
+        get: async (defaults) => ({ ...defaults, ...stored }),
+        set: async () => {},
+      },
+      onChanged: { addListener: (f) => storageListeners.push(f) },
+    },
+  };
+  class HTMLAudioElement {}
+  vm.runInNewContext(source, {
+    browser: api,
+    location: { hostname: "vid.test", href: "https://vid.test/watch" },
+    document: doc,
+    matchMedia: () => ({ matches: false, addEventListener() {} }),
+    getComputedStyle: () => ({ visibility: "visible", display: "block", opacity: "1" }),
+    requestAnimationFrame: (f) => (queued.push(f), queued.length),
+    cancelAnimationFrame: () => {},
+    addEventListener: (n, f) => ((handlers[n] = handlers[n] || []).push(f)),
+    removeEventListener: () => {},
+    setTimeout,
+    clearTimeout,
+    Promise,
+    Date,
+    innerHeight: 800,
+    innerWidth: 1280,
+    NodeFilter: { SHOW_ELEMENT: 1 },
+    HTMLAudioElement,
+    console: quietConsole,
+  });
+  // The pointer over the video, up to the button's question being answered: only its look runs
+  // (its tick would ask for another frame).
+  const move = async () => {
+    for (const f of handlers.pointermove || []) f({ clientX: 320, clientY: 180 });
+    assert.ok(queued.length, "the look queued");
+    await queued.shift()();
+    await settle();
+  };
+  return {
+    display: () => root.style.getPropertyValue("display"),
+    move,
+    setFullscreen: (on) => {
+      doc.fullscreenElement = on ? fs : null;
+    },
+    fullscreenchange: async () => {
+      for (const f of handlers.fullscreenchange || []) await f();
+      await settle();
+    },
+    // The popup's checkbox changing, as the browser tells every page (#670).
+    setting: async (value) => {
+      stored.hideVideoFullscreen = value;
+      for (const f of storageListeners) f({ hideVideoFullscreen: { newValue: value } }, "local");
+      await settle();
+    },
+  };
+}
+{
+  // Off, as installed: the button shows in full screen, placed there or entering it afterwards.
+  const b = videoButton();
+  b.setFullscreen(true);
+  await b.move();
+  assert.equal(b.display(), "block", "off: the button shows in full screen");
+  b.setFullscreen(false);
+  await b.fullscreenchange();
+  b.setFullscreen(true);
+  await b.fullscreenchange();
+  assert.equal(b.display(), "block", "off: entering full screen keeps it");
+  ok("#670: with the option off, the button shows in full screen");
+}
+{
+  // On: it never shows while the page is in full screen — entering it hides a placed button,
+  // leaving it shows the button again.
+  const b = videoButton({ stored: { hideVideoFullscreen: true } });
+  await b.move();
+  assert.equal(b.display(), "block", "on, not fullscreen: the button shows");
+  b.setFullscreen(true);
+  await b.fullscreenchange();
+  assert.equal(b.display(), "none", "on: entering full screen hides it");
+  await b.move();
+  assert.equal(b.display(), "none", "on: it stays hidden while fullscreen");
+  b.setFullscreen(false);
+  await b.fullscreenchange();
+  assert.equal(b.display(), "block", "on: leaving full screen shows it again");
+  ok("#670: with the option on, the button hides in full screen");
+}
+{
+  // The setting changed while the video was already in full screen: it hides at once, and comes
+  // back at once when turned off again, without waiting for the page to leave full screen.
+  const b = videoButton();
+  b.setFullscreen(true);
+  await b.move();
+  assert.equal(b.display(), "block", "off in full screen: the button shows");
+  await b.setting(true);
+  assert.equal(b.display(), "none", "turned on in full screen: the button hides at once");
+  await b.setting(false);
+  await b.move();
+  assert.equal(b.display(), "block", "turned off in full screen: the button comes back");
+  ok("#670: turning the option on and off while in full screen");
+}
+
 // The qualities' menu (video.js; its plain functions run here): the questions' pace and their
 // minute, a row's text, and what a page can never make it do.
 {
