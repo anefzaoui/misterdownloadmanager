@@ -1198,6 +1198,7 @@ impl FileInfo {
                 if url.origin() != self.url.origin() {
                     self.context.cookies = None;
                     self.context.referer = None;
+                    self.context.page_url = None;
                     self.request.headers.remove(reqwest::header::COOKIE);
                     self.request.headers.remove(reqwest::header::REFERER);
                 }

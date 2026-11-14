@@ -568,6 +568,14 @@ These ship in the next version.
 - ✅ A .torrent downloaded in the browser stays with the browser (and your own torrent program)
   while Torrent settings' **Open magnet links and .torrent files with Mister Download Manager**
   is off ([#1058](https://github.com/anefzaoui/misterdownloadmanager/issues/1058))
+- ✅ No freeze of the window in Link grabber with thousands of links (a big page's links): each
+  link's category is worked out once, and a frame goes over the links once, however many
+  packages they make ([#1063](https://github.com/anefzaoui/misterdownloadmanager/issues/1063))
+- ✅ **Refresh download address** opens the page the download was started from, not the site's
+  home page ([#607](https://github.com/anefzaoui/misterdownloadmanager/issues/607))
+- ✅ A video's look-up no longer waits 20 s on a server the network drops: 5 s, and once more
+  with yt-dlp's own wait only when the look-up failed for a slow server
+  ([#1053](https://github.com/anefzaoui/misterdownloadmanager/issues/1053))
 - ✅ MediaFire: a download resumed after its address expired asks the file's MediaFire page for a
   fresh one and goes on; a MediaFire file page's link downloads the file
   ([#952](https://github.com/anefzaoui/misterdownloadmanager/issues/952))
@@ -623,6 +631,8 @@ These ship in the next version.
 - ✅ The progress window shows no scroll bars over content that fits at an interface size above
   100 % (125 %), where the window's client comes back a pixel short of its content
   ([#672](https://github.com/anefzaoui/misterdownloadmanager/issues/672))
+- ✅ Less memory during fast downloads to a slower disk: what waits for the disk stays within its
+  256 MB as allocated (a 4 GB download: 967 MB in 0.5.2, 523 MB now with the window open)
 - ✅ Windows and macOS: **Options → General → Shortcut to show or hide window**: a global
   shortcut of two or three keys that shows or hides MDM's window from any program
   ([#558](https://github.com/anefzaoui/misterdownloadmanager/issues/558))
