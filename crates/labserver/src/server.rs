@@ -20,6 +20,8 @@
 //!   no `.m3u8`/`.mpd` in their addresses, served as text/plain or octet-stream (#171)
 //! - Google Drive's addresses on its own host names (`drive`): links, the virus-scan and quota
 //!   pages, Docs exports, the sign-in page
+//! - MediaFire's on its own (`mediafire`): file pages, file hosts whose tickets expire, the
+//!   repair page
 //! - `GET /_log` — the request log as JSON; `DELETE /_log` clears it
 //!
 //! Every request is logged except `/`, `/_log` and `/redirect` (the engine's tests read the log
@@ -34,7 +36,7 @@ use std::time::{Duration, Instant, UNIX_EPOCH};
 
 use axum::body::{Body, HttpBody};
 use axum::extract::{ConnectInfo, Path, RawQuery, Request, State};
-use axum::http::{HeaderMap, HeaderValue, Method, StatusCode, header};
+use axum::http::{HeaderMap, HeaderValue, Method, StatusCode, Uri, header};
 use axum::middleware::Next;
 use axum::response::{Html, IntoResponse, Response};
 use axum::routing::{any, get, post};
@@ -49,7 +51,7 @@ use tokio::task::JoinHandle;
 
 use crate::content;
 use crate::faults::{Faults, every, has_cookie, parse_flag};
-use crate::{debrid, drive, pages, streams};
+use crate::{debrid, drive, mediafire, pages, streams};
 
 const CHUNK: u64 = 64 * 1024;
 
@@ -517,8 +519,8 @@ impl LabServer {
             .route("/rss/dir.xml", get(crate::feeds::dir))
             .route("/rss/files/{name}", get(crate::feeds::file))
             .merge(simple)
-            // Every other address: the fake Google Drive's, by the Host header (`drive`).
-            .fallback(drive::handle)
+            // Every other address: the fake MediaFire's or Google Drive's, by the Host header.
+            .fallback(by_host)
             .with_state(shared.clone());
         let ca = tls.as_ref().map(|(_, ca)| ca.clone());
         let task = match tls {
@@ -615,6 +617,27 @@ impl Drop for LabServer {
     fn drop(&mut self) {
         self.task.abort();
     }
+}
+
+/// Every address the routes don't have, by its Host header: MediaFire's host names go to the fake
+/// MediaFire (`mediafire`), the rest to the fake Google Drive (`drive`, which answers 404 for
+/// any host but Google's).
+async fn by_host(
+    State(shared): State<Arc<Shared>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    method: Method,
+    uri: Uri,
+    headers: HeaderMap,
+) -> Response {
+    let host = header_str(&headers, header::HOST)
+        .unwrap_or_default()
+        .to_ascii_lowercase();
+    let (name, port) = host.rsplit_once(':').unwrap_or((host.as_str(), "80"));
+    if mediafire::HOSTS.contains(&name) {
+        let (name, port) = (name.to_owned(), port.to_owned());
+        return mediafire::handle(shared, peer, method, uri, headers, &name, &port).await;
+    }
+    drive::handle(State(shared), ConnectInfo(peer), method, uri, headers).await
 }
 
 /// The index page (`GET /`): every route, parameter and fault.
@@ -755,6 +778,15 @@ GOOGLE DRIVE  a fake one for the engine's tests, on Google's host names (resolve
                             (307 to doc-0.docs.googleusercontent.com/export/tok/ID: chunked, no
                             length, ranges ignored)
   accounts.google.com       /ServiceLogin   the sign-in page
+
+MEDIAFIRE  a fake one for the engine's tests, on MediaFire's host names (resolve
+    www.mediafire.com and download1589.mediafire.com to this server); hand-made pages (src/mediafire.rs)
+  keys: lab<SIZE>t<TTL ms> padded with z to 15 characters, e.g. lab4Mt60000zzzz
+  www.mediafire.com         /file/KEY[/NAME/file], /file_premium/KEY, /download/KEY: the file's page,
+                            its download button on the file host with a ticket lasting TTL ms;
+                            /download_repair.php?qkey=KEY: a page linking the file's page
+  download1589.mediafire.com  /t<expiry unix ms>/KEY/NAME (file params and faults as /gen):
+                            the file until then, after it 302 to the repair page
 
 LOG
 GET /_log   the request log as JSON: method, path, query, range, if_range, user_agent, cookie,

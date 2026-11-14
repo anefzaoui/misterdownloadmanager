@@ -1409,8 +1409,8 @@ struct Ctx {
     validators: Mutex<Validators>,
     /// Where ranges come from now (after redirects); switched when it expires.
     target: Mutex<Target>,
-    /// The address the user gave and its headers, when it redirected: asked again when the
-    /// target expires.
+    /// The address the user gave and its headers, when it redirected, or the page its site gives
+    /// the target on (`origin_of`): asked again when the target expires.
     origin: Option<(Url, HeaderMap)>,
     /// When asking the origin last failed to help (one refresh at a time; after a failure,
     /// none for `REFRESH_EVERY`).
@@ -1584,6 +1584,29 @@ impl Ctx {
         {
             self.shared.view.lock().unwrap().resumable = Some(yes);
         }
+    }
+}
+
+/// What a download asks again for today's target when `target` stops working (`Ctx::origin`),
+/// with its headers: `given`, the address the user gave, when it led elsewhere; else the page a
+/// site gives `target` on when its file addresses expire (`sites::origin`: MediaFire's, #952),
+/// credentials kept to their host. None for a browser-like download: asked again through MDM's own
+/// connection, which the site's bot check refuses, it keeps the address it has (#668).
+fn origin_of(
+    given: &Url,
+    headers: &HeaderMap,
+    target: &Url,
+    browser_like: bool,
+) -> Option<(Url, HeaderMap)> {
+    if browser_like {
+        None
+    } else if given != target {
+        Some((given.clone(), headers.clone()))
+    } else {
+        sites::origin(target).map(|page| {
+            let headers = scoped_headers(headers, given, &page);
+            (page, headers)
+        })
     }
 }
 
@@ -2060,10 +2083,7 @@ async fn run_fresh(
                 post: post.clone(),
                 generation: 0,
             }),
-            // Asked again through MDM's own connection, which the site's bot check refuses: a
-            // browser-like download keeps the address it has (#668).
-            origin: (req.url != final_url && browser.is_none())
-                .then(|| (req.url.clone(), req.headers.clone())),
+            origin: origin_of(&req.url, &req.headers, &final_url, browser.is_some()),
             refreshed: Default::default(),
             size,
             file: file.clone(),
@@ -2406,8 +2426,7 @@ async fn run_resume(
         Some((url, h)) => (url.clone(), as_get.contains(&url), Some(h)),
         None => (saved.final_url.clone(), saved.final_get, None),
     };
-    let origin =
-        (saved.url != url && browser.is_none()).then(|| (saved.url.clone(), headers.clone()));
+    let origin = origin_of(&saved.url, &headers, &url, browser.is_some());
     // Credentials stay with the host they were given for (the refresh's own way there scoped
     // them as it went).
     headers = refreshed_headers.unwrap_or_else(|| scoped_headers(&headers, &saved.url, &url));

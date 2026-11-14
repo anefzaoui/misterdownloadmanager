@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ MediaFire: a download resumed after its address expired asks the file's MediaFire page for a
+  fresh one and goes on; a MediaFire file page's link downloads the file
+  ([#952](https://github.com/anefzaoui/misterdownloadmanager/issues/952))
 - ✅ Alt+click (Option+click on a Mac) leaves a download to the browser in Firefox too, where it
   did nothing, and when the link redirects or a page's script starts the download
   ([#332](https://github.com/anefzaoui/misterdownloadmanager/issues/332))
