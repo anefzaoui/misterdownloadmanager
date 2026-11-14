@@ -68,6 +68,7 @@ The extension is connected, but MDM's own settings leave this download to the br
 2. The file's type is listed in **Options → File types**.
 3. The site isn't in **Don't start downloading automatically from the following sites**, nor the address in **Don't start downloading automatically from the following addresses**.
 4. The file isn't smaller than **Don't take files smaller than** in **Options → File types**.
+5. For a `.torrent` file: **Open magnet links and .torrent files with Mister Download Manager** is on in **Tasks → Torrent settings**.
 
 Also check the extension's toolbar button: with **Take downloads from this browser** off, everything stays with the browser.
 
