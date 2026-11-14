@@ -3066,38 +3066,29 @@ const CASES = {
         if (!(await over(v))) throw new Error(`${sel}: no button`);
         // E2E_PLAYED_BEFORE=1: pictures of an older extension's menu there (a pull request's
         // "before"), which never offers what played: its menu once its look-up ended, then no more.
-        if (process.env.E2E_PLAYED_BEFORE) {
-          // Its look-up ended (the button no longer "looking"), then its menu once filled.
-          await until(`${sel}: its look-up's end`, 90000, async () => {
-            const q = await s.pill(PILL_STATE);
-            return q && q.state !== "looking";
-          }).catch(() => {});
-          if (!(await over(v))) throw new Error(`${sel}: no button again`);
-          await clickArrow(s);
-          const q = await until(`${sel}: its menu`, 30000, async () => {
-            const m = await s.picks();
-            return m && !m.busy ? m : null;
-          }).catch(() => null);
-          await sleep(400);
-          const box = q ? q.box : (await rect(s, "mdm-video-button")) || v;
-          if (shots && shot) await s.shot(path.join(shots, `${lang}-${shot}-before.png`), { l: Math.min(v.l, box.l) - 10, t: Math.min(v.t, box.t) - 10, r: Math.max(v.r, box.r) + 10, b: Math.max(v.b, box.b) + 10 });
-          return null;
-        }
+        // Its menu: its arrow (the pointer resting on the button starts its look-up, #1053), then
+        // what the look-up and what the tab played came to (a minute and a half at most).
+        await clickArrow(s);
+        const filled = (q) => q && !q.busy && (q.rows.length || q.note);
         const said = new Set();
-        const p = await until(`${sel}: the button's chip ${chip}`, 90000, async () => {
-          const q = await s.pill(PILL_STATE);
-          if (q) said.add(`${q.state} ${q.text} ${q.chip}`);
-          return q && q.state === "ready" && q.chip === chip ? q : null;
+        const m = await until(`${sel}: its menu`, 90000, async () => {
+          const q = await s.picks("row");
+          if (q) said.add(q.busy ? "looking" : q.note || q.rows.map((r) => r.name).join(", "));
+          return filled(q) ? q : null;
         }).catch((e) => {
           throw new Error(`${e.message} (it said: ${[...said].join(" | ")})`);
         });
-        // The button again (it faded while the pointer rested), then its arrow.
-        if (!(await over(v))) throw new Error(`${sel}: no button again`);
-        await clickArrow(s);
-        const m = await until(`${sel}: its menu`, 30000, async () => {
-          const q = await s.picks("row");
-          return q && !q.busy && q.rows.length ? q : null;
-        });
+        // E2E_PLAYED_BEFORE=1: pictures of an older extension's menu there (a pull request's
+        // "before"), which never offers what played.
+        if (process.env.E2E_PLAYED_BEFORE) {
+          await sleep(400);
+          const q = (await s.picks()) || m;
+          if (shots && shot) await s.shot(path.join(shots, `${lang}-${shot}-before.png`), { l: Math.min(v.l, q.box.l) - 10, t: Math.min(v.t, q.box.t) - 10, r: Math.max(v.r, q.box.r) + 10, b: Math.max(v.b, q.box.b) + 10 });
+          return null;
+        }
+        if (!m.rows.length) throw new Error(`${sel}: its menu says "${m.note}"`);
+        const p = await s.pill(PILL_STATE);
+        if (!p || p.chip !== chip) throw new Error(`${sel}: the button's chip is "${p && p.chip}", not ${chip}`);
         if (shots && shot) {
           await sleep(400);
           const q = await s.picks();
