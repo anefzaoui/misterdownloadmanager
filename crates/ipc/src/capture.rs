@@ -272,6 +272,18 @@ pub fn remove_site(sites: &str, host: &str) -> String {
         .join(" ")
 }
 
+/// `sites` without `host` listed by its own name (the browser popup's Undo of "Never take
+/// downloads from <site>", #404, which listed it so): any other pattern stays, one that covers
+/// it too, as the user wrote it.
+pub fn unlist_site(sites: &str, host: &str) -> String {
+    let host = host.trim();
+    sites
+        .split_whitespace()
+        .filter(|p| !p.eq_ignore_ascii_case(host))
+        .collect::<Vec<_>>()
+        .join(" ")
+}
+
 /// The sites a list holds (space-separated), as a file: one a line (Options → Download panels,
 /// #424).
 pub fn sites_to_text(sites: &str) -> String {

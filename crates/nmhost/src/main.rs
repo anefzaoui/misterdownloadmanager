@@ -132,6 +132,8 @@ struct Message {
     links: Vec<String>,
     /// The toolbar button: leave this site (a host name) to the browser.
     exclude_site: Option<String>,
+    /// The popup's Undo (#404): take this host name off the excluded sites again.
+    include_site: Option<String>,
     /// The toolbar button: bring Mister Download Manager's window up.
     open: bool,
     /// The extension left a download to the browser by Options' rules (it has them from
@@ -411,6 +413,16 @@ fn answer(m: Message, rules: &mdm_ipc::capture::CaptureRules) -> Reply {
     {
         Some(mdm_ipc::Command {
             exclude_site: Some(host.to_owned()),
+            ..Default::default()
+        })
+    } else if let Some(host) = m
+        .include_site
+        .as_deref()
+        .map(str::trim)
+        .filter(|h| !h.is_empty())
+    {
+        Some(mdm_ipc::Command {
+            include_site: Some(host.to_owned()),
             ..Default::default()
         })
     } else if !m.links.is_empty() {
