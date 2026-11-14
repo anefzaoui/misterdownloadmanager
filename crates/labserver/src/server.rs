@@ -16,10 +16,13 @@
 //! - `GET /hop?to=URL&how=meta|header[&wait=S][&cookie=N=V]` — a page that sends the browser on to
 //!   `URL` itself (`<meta http-equiv="refresh">` or a `Refresh` header), as download sites' waiting pages do
 //! - `GET /page`, `/formpage`, `/cookie`, `/assets/*` — web pages for the browser tests (`pages`)
+//! - `GET /declared` — a page that declares its video and hides another (#1076, `pages`)
 //! - `GET /hls/*`, `/dash/*` — adaptive streams (`streams`); `/hls2/*`, `/dash2/*` the same with
 //!   no `.m3u8`/`.mpd` in their addresses, served as text/plain or octet-stream (#171)
 //! - Google Drive's addresses on its own host names (`drive`): links, the virus-scan and quota
 //!   pages, Docs exports, the sign-in page
+//! - MediaFire's on its own (`mediafire`): file pages, file hosts whose tickets expire, the
+//!   repair page
 //! - `GET /_log` — the request log as JSON; `DELETE /_log` clears it
 //!
 //! Every request is logged except `/`, `/_log` and `/redirect` (the engine's tests read the log
@@ -34,7 +37,7 @@ use std::time::{Duration, Instant, UNIX_EPOCH};
 
 use axum::body::{Body, HttpBody};
 use axum::extract::{ConnectInfo, Path, RawQuery, Request, State};
-use axum::http::{HeaderMap, HeaderValue, Method, StatusCode, header};
+use axum::http::{HeaderMap, HeaderValue, Method, StatusCode, Uri, header};
 use axum::middleware::Next;
 use axum::response::{Html, IntoResponse, Response};
 use axum::routing::{any, get, post};
@@ -49,7 +52,7 @@ use tokio::task::JoinHandle;
 
 use crate::content;
 use crate::faults::{Faults, every, has_cookie, parse_flag};
-use crate::{debrid, drive, pages, streams};
+use crate::{debrid, drive, mediafire, pages, streams};
 
 const CHUNK: u64 = 64 * 1024;
 
@@ -412,6 +415,7 @@ impl LabServer {
         let simple = Router::new()
             .route("/page", get(pages::page))
             .route("/leadon", get(pages::leadon))
+            .route("/declared", get(pages::declared))
             .route("/formpage", get(pages::formpage))
             .route("/cookie", get(pages::cookie))
             .route("/assets/{file}", get(pages::asset))
@@ -561,8 +565,8 @@ impl LabServer {
             .route("/rss/dir.xml", get(crate::feeds::dir))
             .route("/rss/files/{name}", get(crate::feeds::file))
             .merge(simple)
-            // Every other address: the fake Google Drive's, by the Host header (`drive`).
-            .fallback(drive::handle)
+            // Every other address: the fake MediaFire's or Google Drive's, by the Host header.
+            .fallback(by_host)
             .with_state(shared.clone());
         let ca = tls.as_ref().map(|(_, ca)| ca.clone());
         let task = match tls {
@@ -661,6 +665,27 @@ impl Drop for LabServer {
     }
 }
 
+/// Every address the routes don't have, by its Host header: MediaFire's host names go to the fake
+/// MediaFire (`mediafire`), the rest to the fake Google Drive (`drive`, which answers 404 for
+/// any host but Google's).
+async fn by_host(
+    State(shared): State<Arc<Shared>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    method: Method,
+    uri: Uri,
+    headers: HeaderMap,
+) -> Response {
+    let host = header_str(&headers, header::HOST)
+        .unwrap_or_default()
+        .to_ascii_lowercase();
+    let (name, port) = host.rsplit_once(':').unwrap_or((host.as_str(), "80"));
+    if mediafire::HOSTS.contains(&name) {
+        let (name, port) = (name.to_owned(), port.to_owned());
+        return mediafire::handle(shared, peer, method, uri, headers, &name, &port).await;
+    }
+    drive::handle(State(shared), ConnectInfo(peer), method, uri, headers).await
+}
+
 /// The index page (`GET /`): every route, parameter and fault.
 pub const HELP: &str = r#"labserver: an HTTP test server for Mister Download Manager
 
@@ -737,10 +762,14 @@ GET /page?<any of>
                    when nothing else is asked for, or with muted_loop, iframe or shadow)
     w=PX h=PX      the videos' size
     title=TEXT     the page's title (default "labserver page")
+    referrer=POLICY  its Referrer-Policy (origin: its links' Referer is the site's address only)
     muted_loop=1   the video muted, looping and autoplaying, without controls
     iframe=1       the video inside <iframe id=frame> (a /page of its own)
     shadow=1       the video inside the open shadow root of <div id=host> (declarative)
     several=N      N more videos #video1..N, each with its own <source> /gen/1M/clipK.mp4?seed=K
+    files=N        N links (at most 50000) to /gen/1K files, as a big page gives Link grabber:
+                   two in five a split archive's volumes (setK.part1.rar, setK.part2.rar), the
+                   others fileK.zip, clipK.mp4, docK.pdf
     audio=PATH|1   <audio id=audio controls> (1: /gen/512K/sound.mp3?inline=1)
     hls=1, dash=1, drm=1   a <video> and /assets/stream.js for each (#player, then #player2,
                    #player3), which fetches /hls/master.m3u8, /dash/manifest.mpd or
@@ -762,6 +791,11 @@ GET /formpage?size=1M&name=report.zip&token=abc&with=QUERY   three forms posting
 GET /cookie?set=NAME=VALUE&httponly=NAME=VALUE&clear=NAME   (each repeatable) a small page with
     Set-Cookie: NAME=VALUE; Path=/ (; HttpOnly), or NAME=; Path=/; Max-Age=0
 GET /assets/page.css  /assets/stream.js
+GET /declared?film=PATH&hidden=PATH&name=TEXT&title=TEXT&how=jsonld|og|twitter|none   a page
+    that declares its video (#1076) and plays only another, hidden one: hidden (default
+    /gen/1M/welcome.mp4?seed=2&inline=1) in a <video> inside <div hidden>; film (default
+    /gen/2M/film.mp4?seed=3&inline=1) named name (default "The Film") in its JSON-LD VideoObject
+    (contentUrl), og:video (og:title), twitter:player (twitter:title), or nowhere (none)
 
 STREAMS  3 segments of 4 s per track. HLS: real MPEG-TS, a grey H.264 picture (25 fps) on the
     video tracks, AAC silence on the audio track (ffmpeg remuxes and merges them); DASH: fake bytes
@@ -801,6 +835,15 @@ GOOGLE DRIVE  a fake one for the engine's tests, on Google's host names (resolve
                             (307 to doc-0.docs.googleusercontent.com/export/tok/ID: chunked, no
                             length, ranges ignored)
   accounts.google.com       /ServiceLogin   the sign-in page
+
+MEDIAFIRE  a fake one for the engine's tests, on MediaFire's host names (resolve
+    www.mediafire.com and download1589.mediafire.com to this server); hand-made pages (src/mediafire.rs)
+  keys: lab<SIZE>t<TTL ms> padded with z to 15 characters, e.g. lab4Mt60000zzzz
+  www.mediafire.com         /file/KEY[/NAME/file], /file_premium/KEY, /download/KEY: the file's page,
+                            its download button on the file host with a ticket lasting TTL ms;
+                            /download_repair.php?qkey=KEY: a page linking the file's page
+  download1589.mediafire.com  /t<expiry unix ms>/KEY/NAME (file params and faults as /gen):
+                            the file until then, after it 302 to the repair page
 
 HTTPS  --tls serves all of it over HTTPS as localhost, its certificate from a test CA made at start
   (written next to the log, or printed); --tls-cert picks a faulty one (a connection's fault,
