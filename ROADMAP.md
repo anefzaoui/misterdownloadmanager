@@ -568,6 +568,10 @@ These ship in the next version.
   come in each processor's build (no ffmpeg for 32-bit Windows: Helpers says so)
   ([#977](https://github.com/anefzaoui/misterdownloadmanager/discussions/977),
   [#1010](https://github.com/anefzaoui/misterdownloadmanager/discussions/1010))
+- ✅ The sites in **Don't start downloading automatically from the following sites** take their
+  subdomains and the files their pages link to on another server (a CDN), as the Download panels'
+  list does
+  ([#1049](https://github.com/anefzaoui/misterdownloadmanager/issues/1049))
 - ✅ The menu bar with a screen reader: Alt opens it again, and the screen reader says each item
   as Alt, F10 or the arrows reach it; Shift+F10's menus too
   ([#328](https://github.com/anefzaoui/misterdownloadmanager/issues/328))
@@ -1028,6 +1032,8 @@ These ship in the next version.
 - ✅ Linux on Wayland (XWayland) with NVIDIA's driver: typing and clicking no longer lag by 1 to 2
   seconds; MDM spaces its frames itself instead of waiting for the screen's refresh (other drivers
   keep the refresh)
+- ✅ Linux: MDM pins to the taskbar and the dock: its desktop entry names its windows' class, and
+  every window of MDM carries it ([#940](https://github.com/anefzaoui/misterdownloadmanager/issues/940))
 
 ## Being worked on
 
