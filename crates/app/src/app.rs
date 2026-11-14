@@ -10916,6 +10916,9 @@ impl App {
             {
                 crate::crash::step(crate::crash::Step::Taskbar);
                 crate::win32::taskbar_progress(crate::MAIN_TITLE, self.overall_progress());
+                for window in &mut self.progress {
+                    window.update_taskbar(self.items.iter().find(|item| item.id == window.id));
+                }
             }
         }
         if self

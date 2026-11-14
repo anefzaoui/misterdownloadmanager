@@ -770,6 +770,9 @@ These ship in the next version.
   buttons again ([#620](https://github.com/anefzaoui/misterdownloadmanager/issues/620),
   [#772](https://github.com/anefzaoui/misterdownloadmanager/issues/772)): the progress window and
   the style themes' dialogs are framed as on Windows 11, without a hidden title bar
+- ✅ Windows: download progress on each download window's taskbar button, alongside the main
+  window's existing combined progress
+  ([#678](https://github.com/anefzaoui/misterdownloadmanager/issues/678))
 - ✅ Fast downloads to a hard disk keep going past the first gigabytes: no more freezes of 7 to
   10 s once the system's cache is full, and no connection replaced as "much slower" for waiting on
   the disk; a disk slower than the network slows the download down evenly
