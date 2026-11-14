@@ -983,6 +983,8 @@ These ship in the next version.
   (part of [#493](https://github.com/anefzaoui/misterdownloadmanager/issues/493))
 - ✅ Windows: **Open folder** uses the file manager set up to open folders, not always Explorer
   ([#446](https://github.com/anefzaoui/misterdownloadmanager/issues/446))
+- ✅ Linux: downloads to an NTFS drive (`ntfs3`) start at once instead of filling the file with
+  zeros first, which held the download at 0% and slowed the whole computer
 
 ## Being worked on
 
