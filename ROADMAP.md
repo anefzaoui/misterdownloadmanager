@@ -573,6 +573,9 @@ These ship in the next version.
   ([#698](https://github.com/anefzaoui/misterdownloadmanager/issues/698))
 - ✅ Windows: a menu closes at once when you click outside MDM, instead of 0.4 seconds later
   ([#859](https://github.com/anefzaoui/misterdownloadmanager/issues/859))
+- ✅ Windows: programs MDM starts (an update's installer, a browser, the power options) start
+  beside the window, which no longer waits while an antivirus checks them
+  ([#846](https://github.com/anefzaoui/misterdownloadmanager/issues/846))
 - ✅ No "The window stopped responding" report in the first minute after the computer wakes from
   sleep, while its disk, network and screen come back: such a stall is logged, and reported only
   if it lasts longer; every freeze report says what the window was doing when it stopped
