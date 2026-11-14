@@ -2153,7 +2153,7 @@ impl App {
                 }
             } else if !live {
                 self.start(id, true);
-            } else if !self.progress.iter().any(|p| p.id == id) {
+            } else if self.settings.show_progress && !self.progress.iter().any(|p| p.id == id) {
                 self.progress
                     .push(Progress::new(id, self.settings.show_complete));
             }
@@ -2848,6 +2848,8 @@ impl App {
                     "sounds" => 8,
                     "regional" => 9,
                     "remote" | "pair" => 11,
+                    // Downloads → Customize "Download progress" dialog → Edit... (#1041).
+                    "progress" => 3,
                     _ => 0,
                 };
                 self.run(Cmd::Options, None, ctx);
@@ -2857,7 +2859,8 @@ impl App {
                 if tab == "panels" {
                     self.options = self.options.take().map(|o| o.with_panels());
                 }
-                // A window over a page (screenshots, #192): options:test, options:account.
+                // A window over a page (screenshots, #192): options:test, options:account,
+                // options:progress.
                 self.options = self.options.take().map(|o| o.with_window(tab));
                 // Remote → Pair a device... (the docs' screenshots, #141).
                 if tab == "pair" {
@@ -3171,8 +3174,10 @@ impl App {
         }
     }
 
-    /// Start or resume a download; `show` opens its progress dialog (IDM's default).
+    /// Start or resume a download; `show` opens its progress dialog (IDM's default), unless
+    /// Options → Downloads → Customize "Download progress" dialog turned it off (#1041).
     fn start(&mut self, id: u64, show: bool) {
+        let show = show && self.settings.show_progress;
         self.stopped_by_hand.remove(&id);
         let rt = self.rt.clone();
         let Some(item) = self.item(id) else { return };
@@ -9095,7 +9100,7 @@ impl App {
             self.complete.push(Complete::of(i));
         } else if i.live.is_none() {
             self.start(id, true);
-        } else if !self.progress.iter().any(|p| p.id == id) {
+        } else if self.settings.show_progress && !self.progress.iter().any(|p| p.id == id) {
             self.progress
                 .push(Progress::new(id, self.settings.show_complete));
         }
