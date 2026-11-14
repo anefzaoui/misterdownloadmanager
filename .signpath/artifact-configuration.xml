@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SignPath's artifact configuration for MDM's Windows builds (release.yml), the project's
+     default one: SignPath keeps its own copy, so a change here is pasted into it too.
+     Both signing requests send a GitHub artifact, a zip with the files at its root:
+     1. the programs and Inno Setup's uninstaller (tools/installer/build.ps1 -ToSign),
+     2. the installer, built from those (-Signed).
+     Every .exe and .dll in it is signed (Authenticode, SHA-256). -->
+<artifact-configuration xmlns="http://signpath.io/artifact-configuration/v1">
+  <zip-file>
+    <pe-file-set>
+      <include path="*.exe" max-matches="unbounded" />
+      <include path="*.dll" min-matches="0" max-matches="unbounded" />
+      <for-each>
+        <authenticode-sign />
+      </for-each>
+    </pe-file-set>
+  </zip-file>
+</artifact-configuration>

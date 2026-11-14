@@ -9,15 +9,51 @@
 #   signtool sign /fd sha256 /tr http://timestamp.digicert.com /td sha256 /a $f
 # Inno Setup then signs the programs (in place, so the zip carries them signed too), the
 # installer and its uninstaller.
-param([switch]$NoBuild, [string]$SignCommand = $env:MDM_SIGN_COMMAND)
+# Or signed elsewhere (SignPath, in release.yml), in three runs:
+#   -ToSign <dir>            builds (unless -NoBuild), puts what is to be signed in <dir> and stops:
+#                            the programs and Inno Setup's uninstaller (named uninst-*.e32.exe)
+#   -Signed <dir>            no build: the installer and the zips from those files, once signed
+#   -SignedInstaller <file>  the installer, once signed, replaces the one in target/dist
+param([switch]$NoBuild, [string]$SignCommand = $env:MDM_SIGN_COMMAND, [string]$ToSign,
+  [string]$Signed, [string]$SignedInstaller)
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $dist = Join-Path $root "target\dist"
 $bin = Join-Path $root "target\release"
+$programs = "misterdownloadmanager.exe", "misterdownloadmanager-nmhost.exe",
+  "misterdownloadmanager-cli.exe", "misterdownloadmanager-mcp.exe"
 
 $cargo = Get-Content (Join-Path $root "Cargo.toml") -Raw
 $version = [regex]::Match($cargo, '(?m)^version\s*=\s*"([^"]+)"').Groups[1].Value
 if (-not $version) { throw "no version in Cargo.toml" }
+
+function Write-Sums {
+  $files = Get-ChildItem $dist -File | Where-Object { $_.Name -like "MisterDownloadManager-$version-*" }
+  $files | ForEach-Object { "{0}  {1}" -f (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower(), $_.Name } |
+    Set-Content -Encoding ascii (Join-Path $dist "SHA256SUMS.txt")
+  $files | ForEach-Object { "{0}  {1:N1} MB" -f $_.Name, ($_.Length / 1MB) }
+}
+
+# A file signed elsewhere has to come back with a signature. Whether Windows trusts its
+# certificate is the signer's matter, not checked here.
+function Assert-Signed([string]$path) {
+  if (-not (Get-AuthenticodeSignature -LiteralPath $path).SignerCertificate) { throw "not signed: $path" }
+}
+
+if ($SignedInstaller) {
+  $setup = Join-Path $dist "MisterDownloadManager-$version-setup.exe"
+  if (-not (Test-Path -LiteralPath $setup)) { throw "no installer to replace: $setup" }
+  Assert-Signed $SignedInstaller
+  Copy-Item -LiteralPath $SignedInstaller $setup -Force
+  Write-Sums
+  return
+}
+if ($Signed) {
+  if ($SignCommand) { throw "-Signed packages programs that are signed already: no MDM_SIGN_COMMAND" }
+  $NoBuild = $true
+  $bin = (Resolve-Path -LiteralPath $Signed).Path
+  foreach ($exe in $programs) { Assert-Signed (Join-Path $bin $exe) }
+}
 
 if (-not $NoBuild) {
   # The build machine's paths out of the programs (#25): panic locations and debug info say
@@ -43,10 +79,42 @@ $iscc = @($env:ISCC, (Get-Command ISCC.exe -ErrorAction SilentlyContinue).Source
   "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe") |
   Where-Object { $_ -and (Test-Path $_) } | Select-Object -First 1
 if (-not $iscc) { throw "Inno Setup 6 (ISCC.exe) not found" }
+$isccArgs = @("/Qp", "/DAppVersion=$version")
+
+if ($ToSign) {
+  # With /DUninstallerDir, Inno Setup writes the uninstaller there unsigned and stops ("attach
+  # your digital signature ... and compile again"). Named .exe for the signer; -Signed names it
+  # back.
+  if (Test-Path -LiteralPath $ToSign) { Remove-Item -LiteralPath $ToSign -Recurse -Force }
+  New-Item -ItemType Directory -Force $ToSign | Out-Null
+  $ToSign = (Resolve-Path -LiteralPath $ToSign).Path
+  foreach ($exe in $programs) { Copy-Item (Join-Path $bin $exe) $ToSign }
+  $ErrorActionPreference = "Continue" # ISCC's expected error on stderr, checked below
+  $log = & $iscc @isccArgs "/DUninstallerDir=$ToSign" (Join-Path $PSScriptRoot "mdm.iss") 2>&1
+  $ErrorActionPreference = "Stop"
+  $global:LASTEXITCODE = 0 # else a CI step ends with ISCC's exit code
+  $uninst = @(Get-ChildItem -LiteralPath $ToSign -Filter "uninst-*.e32")
+  if ($uninst.Count -ne 1) { $log | Write-Output; throw "ISCC wrote no uninstaller to sign" }
+  Rename-Item -LiteralPath $uninst[0].FullName "$($uninst[0].Name).exe"
+  Get-ChildItem -LiteralPath $ToSign -File | ForEach-Object { "to sign: $($_.Name)" }
+  return
+}
 
 New-Item -ItemType Directory -Force $dist | Out-Null
-$isccArgs = @("/Qp", "/DAppVersion=$version")
-if ($SignCommand) { $isccArgs += @("/DSign", "/Smdmsign=$SignCommand") }
+if ($Signed) {
+  # The signed uninstaller, under the name Inno Setup looks for. The installer itself is signed
+  # afterwards (-SignedInstaller).
+  $uninst = @(Get-ChildItem -LiteralPath $bin -Filter "uninst-*.e32.exe")
+  if ($uninst.Count -ne 1) { throw "no signed uninstaller (uninst-*.e32.exe) in $bin" }
+  Assert-Signed $uninst[0].FullName
+  $uninstDir = Join-Path $dist "stage\uninstaller"
+  if (Test-Path -LiteralPath $uninstDir) { Remove-Item -LiteralPath $uninstDir -Recurse -Force }
+  New-Item -ItemType Directory -Force $uninstDir | Out-Null
+  Copy-Item -LiteralPath $uninst[0].FullName (Join-Path $uninstDir $uninst[0].BaseName)
+  $isccArgs += @("/DBin=$bin", "/DUninstallerDir=$uninstDir")
+} elseif ($SignCommand) {
+  $isccArgs += @("/DSign", "/Smdmsign=$SignCommand")
+}
 & $iscc @isccArgs (Join-Path $PSScriptRoot "mdm.iss")
 if ($LASTEXITCODE) { throw "ISCC failed" }
 
@@ -56,9 +124,7 @@ function New-Zip([string]$name, [bool]$portable) {
   $stage = Join-Path $dist "stage\$name"
   if (Test-Path $stage) { Remove-Item -LiteralPath $stage -Recurse -Force }
   New-Item -ItemType Directory -Force $stage | Out-Null
-  foreach ($exe in "misterdownloadmanager.exe", "misterdownloadmanager-nmhost.exe", "misterdownloadmanager-cli.exe", "misterdownloadmanager-mcp.exe") {
-    Copy-Item (Join-Path $bin $exe) $stage
-  }
+  foreach ($exe in $programs) { Copy-Item (Join-Path $bin $exe) $stage }
   New-Item -ItemType Directory -Force (Join-Path $stage "extension") | Out-Null
   Copy-Item (Join-Path $root "target\extension\chromium") (Join-Path $stage "extension\chromium") -Recurse
   Copy-Item (Join-Path $root "target\extension\mdm-firefox.xpi") (Join-Path $stage "extension")
@@ -101,7 +167,4 @@ New-Zip "MisterDownloadManager-$version-portable" $true
 New-Zip "MisterDownloadManager-$version-x64" $false
 Remove-Item -LiteralPath (Join-Path $dist "stage") -Recurse -Force
 
-$files = Get-ChildItem $dist -File | Where-Object { $_.Name -like "MisterDownloadManager-$version-*" }
-$files | ForEach-Object { "{0}  {1}" -f (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower(), $_.Name } |
-  Set-Content -Encoding ascii (Join-Path $dist "SHA256SUMS.txt")
-$files | ForEach-Object { "{0}  {1:N1} MB" -f $_.Name, ($_.Length / 1MB) }
+Write-Sums

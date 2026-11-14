@@ -1,5 +1,7 @@
 ; Mister Download Manager's Windows installer (Inno Setup 6). Built by tools/installer/build.ps1,
-; which passes /DAppVersion=... and, when a certificate is set up, /DSign with /Smdmsign=...
+; which passes /DAppVersion=... and, when a certificate is set up, /DSign with /Smdmsign=...; or,
+; for programs signed elsewhere (SignPath, release.yml), /DBin=<their folder> and
+; /DUninstallerDir=<the folder of the signed uninstaller>.
 ;
 ; Install for the current user (no administrator rights, %LOCALAPPDATA%\Programs) or for
 ; everyone (Program Files); the wizard asks. Tasks: browser integration (native messaging host
@@ -62,6 +64,12 @@ SignedUninstaller=yes
   #define SignFlag "signonce"
 #else
   #define SignFlag ""
+#endif
+#ifdef UninstallerDir
+; Signed outside Inno Setup: a first compile only writes the uninstaller (uninst-*.e32) to this
+; folder and stops; once it is signed there, the next compile puts its signature in the setup.
+SignedUninstaller=yes
+SignedUninstallerDir={#UninstallerDir}
 #endif
 
 ; Every interface language (i18n/languages.tsv): tools/installer/languages.py writes the list and

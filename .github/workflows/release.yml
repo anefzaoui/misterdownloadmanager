@@ -7,6 +7,9 @@
 #   release waits for Windows and the extensions: a failed Linux or macOS build leaves those out.
 # - Run by hand (Actions -> Release -> Run workflow) it only builds and keeps them as artifacts:
 #   nothing is published, and nothing is sent to addons.mozilla.org or the Chrome Web Store.
+# - Windows: the programs, the installer and its uninstaller are signed through SignPath when its
+#   token (the SIGNPATH_API_TOKEN secret) is set; without it, as before (the certificate below if
+#   there is one, else unsigned).
 name: Release
 
 on:
@@ -43,6 +46,14 @@ jobs:
   windows:
     needs: geo
     runs-on: windows-latest
+    permissions:
+      contents: read
+      actions: write # SignPath reads the files to sign from this run; they are deleted once signed
+    env:
+      # SignPath (signpath.io): MDM's project, and the signing policy it signs with.
+      SIGNPATH_ORGANIZATION_ID: f210c38b-b4a8-4639-8fe0-f40c7225c8a7
+      SIGNPATH_PROJECT: misterdownloadmanager
+      SIGNPATH_SIGNING_POLICY: test-signing
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
@@ -91,6 +102,7 @@ jobs:
             choco install innosetup --no-progress -y
           }
 
+      # A certificate of our own (a PFX), used when SignPath isn't (below).
       - name: Code-signing certificate
         id: cert
         shell: pwsh
@@ -105,11 +117,98 @@ jobs:
             Sort-Object FullName -Descending | Select-Object -First 1
           "command=`"$($signtool.FullName)`" sign /fd sha256 /tr http://timestamp.digicert.com /td sha256 /f `"$pfx`" /p `"$env:PASSWORD`" `$f" >> $env:GITHUB_OUTPUT
 
+      - name: SignPath token
+        id: signpath
+        shell: pwsh
+        env:
+          TOKEN: ${{ secrets.SIGNPATH_API_TOKEN }}
+        run: |
+          if ($env:TOKEN) { "enabled=true" >> $env:GITHUB_OUTPUT } else { "No SignPath token: building without SignPath." }
+
       - name: Installer and portable zip
+        if: steps.signpath.outputs.enabled != 'true'
         shell: pwsh
         env:
           MDM_SIGN_COMMAND: ${{ steps.cert.outputs.command }}
         run: ./tools/installer/build.ps1
+
+      # With SignPath: the programs and the uninstaller are signed first, then the installer
+      # (built from them), each sent as an artifact of this run (.signpath/artifact-configuration.xml
+      # says what SignPath signs in it). A request waits for its approval, if the policy asks for
+      # one, up to an hour.
+      - name: Programs to sign
+        if: steps.signpath.outputs.enabled == 'true'
+        shell: pwsh
+        run: ./tools/installer/build.ps1 -ToSign "$env:RUNNER_TEMP/signpath/programs"
+
+      - name: Upload the programs to sign
+        id: programs-unsigned
+        if: steps.signpath.outputs.enabled == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: windows-programs-unsigned
+          path: ${{ runner.temp }}/signpath/programs/*
+          if-no-files-found: error
+          retention-days: 1
+          overwrite: true
+
+      - name: Sign the programs
+        if: steps.signpath.outputs.enabled == 'true'
+        uses: signpath/github-action-submit-signing-request@f6d04783b4569d051e0c80105fe66e82819d0092 # v3.0
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ env.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ env.SIGNPATH_PROJECT }}
+          signing-policy-slug: ${{ env.SIGNPATH_SIGNING_POLICY }}
+          github-artifact-id: ${{ steps.programs-unsigned.outputs.artifact-id }}
+          wait-for-completion: true
+          wait-for-completion-timeout-in-seconds: 3600
+          output-artifact-directory: ${{ runner.temp }}/signpath/programs-signed
+
+      - name: Installer and portable zip, from the signed programs
+        if: steps.signpath.outputs.enabled == 'true'
+        shell: pwsh
+        run: ./tools/installer/build.ps1 -Signed "$env:RUNNER_TEMP/signpath/programs-signed"
+
+      - name: Upload the installer to sign
+        id: installer-unsigned
+        if: steps.signpath.outputs.enabled == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: windows-installer-unsigned
+          path: target/dist/*-setup.exe
+          if-no-files-found: error
+          retention-days: 1
+          overwrite: true
+
+      - name: Sign the installer
+        if: steps.signpath.outputs.enabled == 'true'
+        uses: signpath/github-action-submit-signing-request@f6d04783b4569d051e0c80105fe66e82819d0092 # v3.0
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ env.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ env.SIGNPATH_PROJECT }}
+          signing-policy-slug: ${{ env.SIGNPATH_SIGNING_POLICY }}
+          github-artifact-id: ${{ steps.installer-unsigned.outputs.artifact-id }}
+          wait-for-completion: true
+          wait-for-completion-timeout-in-seconds: 3600
+          output-artifact-directory: ${{ runner.temp }}/signpath/installer-signed
+
+      # publish takes every artifact of the run: the unsigned ones go once their signed files are
+      # in target/dist.
+      - name: The signed installer
+        if: steps.signpath.outputs.enabled == 'true'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $setup = @(Get-ChildItem "$env:RUNNER_TEMP/signpath/installer-signed" -Filter *-setup.exe)
+          if ($setup.Count -ne 1) { throw "SignPath sent back $($setup.Count) installers" }
+          ./tools/installer/build.ps1 -SignedInstaller $setup[0].FullName
+          foreach ($id in "${{ steps.programs-unsigned.outputs.artifact-id }}", "${{ steps.installer-unsigned.outputs.artifact-id }}") {
+            gh api -X DELETE "repos/${{ github.repository }}/actions/artifacts/$id"
+            if ($LASTEXITCODE) { throw "the unsigned artifact $id couldn't be deleted" }
+          }
 
       # Crash reports: the release's symbols (dump_syms reads each program's .pdb beside it; no
       # download includes the .pdb files themselves).
