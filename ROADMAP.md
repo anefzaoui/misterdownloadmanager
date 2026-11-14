@@ -562,6 +562,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The Download video button over a video in a feed, or on a site yt-dlp can't read (Douyin):
+  when MDM finds nothing on the page, it offers what the tab played for that video, told apart
+  from the feed's next one by its length, and says so when it can't tell
+  ([#1092](https://github.com/anefzaoui/misterdownloadmanager/issues/1092))
 - ✅ MediaFire: a download resumed after its address expired asks the file's MediaFire page for a
   fresh one and goes on; a MediaFire file page's link downloads the file
   ([#952](https://github.com/anefzaoui/misterdownloadmanager/issues/952))
