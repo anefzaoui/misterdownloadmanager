@@ -11,13 +11,14 @@ static ALLOC: cap::Cap<std::alloc::System> = cap::Cap::new(std::alloc::System, u
 /// The engine's `HOLD_MAX`.
 const HOLD_MAX: usize = 256 << 20;
 
-/// A flush that holds every write for 5 s while 8 connections receive as fast as the lab server
-/// sends (no rate: its chunks come in all sizes, as from a fast real server): their memory fills
-/// to `HOLD_MAX` and they wait for the disk. Before, the engine counted 256 MiB there and
-/// allocated more: a batch grew past its 256 KiB when a chunk overran it (Vec doubling), and a
-/// write joined its batches into one buffer, grown in steps up to 4 MiB. Measured here: 309 MiB
-/// allocated before, 268 MiB after (0.5.2, one buffer per connection grown by doubling to its
-/// share of the cap, did worse).
+/// The disk holds every write (this test takes the slow disk's gate, as a flush on NTFS does)
+/// while 8 connections receive as fast as the lab server sends (no rate: its chunks come in all
+/// sizes, as from a fast real server), until their memory stops growing: full, they wait for
+/// the disk. Before, the engine counted 256 MiB there and allocated more: a batch grew past its
+/// 256 KiB when a chunk overran it (Vec doubling), and a write joined its batches into one
+/// buffer, grown in steps up to 4 MiB. Measured here: 309 MiB allocated before on Windows (279
+/// and 281 MiB on Linux), 266 to 269 MiB after (0.5.2, one buffer per connection grown by
+/// doubling to its share of the cap, did worse).
 #[tokio::test]
 async fn memory_held_for_the_disk_stays_within_its_cap() {
     const SIZE: u64 = 512 << 20;
@@ -28,8 +29,9 @@ async fn memory_held_for_the_disk_stays_within_its_cap() {
     .await
     .unwrap();
     let dir = tempfile::tempdir().unwrap();
-    let slow = mdm_engine::slowdisk::SlowDisk::slow_flush(std::time::Duration::from_secs(5));
-    let gate = slow.gate.clone();
+    // A disk as fast as the real one, but for the gate.
+    let disk = mdm_engine::slowdisk::SlowDisk::slow_flush(std::time::Duration::ZERO);
+    let gate = disk.gate.clone();
     let before = ALLOC.allocated();
     let d = Download::start(
         Request {
@@ -39,40 +41,47 @@ async fn memory_held_for_the_disk_stays_within_its_cap() {
         },
         Options {
             retry_delay: std::time::Duration::from_millis(50),
-            save_interval: std::time::Duration::from_millis(100),
-            slow_disk: Some(slow),
+            slow_disk: Some(disk),
             ..Options::default()
         },
     );
-    // The most allocated while the slow flush held the writes (sampled), and overall.
-    let mut flushed = false;
-    let mut during = 0;
-    loop {
-        let v = d.snapshot();
-        if gate.try_read().is_err() {
-            flushed = true;
-            during = during.max(ALLOC.allocated().saturating_sub(before));
+    // The disk holds the writes until the memory is about full and stopped growing for a
+    // second (each connection waiting for the disk), on a slow machine too (at most a minute).
+    let (hold, release) = std::sync::mpsc::channel::<()>();
+    let holder = std::thread::spawn(move || {
+        let _writes_wait = gate.write().unwrap();
+        let _ = release.recv();
+    });
+    let held = {
+        let began = std::time::Instant::now();
+        let (mut most, mut grew_at) = (0, std::time::Instant::now());
+        let full = |most: usize, grew_at: std::time::Instant| {
+            most >= HOLD_MAX * 7 / 8 && grew_at.elapsed() >= std::time::Duration::from_secs(1)
+        };
+        while !full(most, grew_at) && began.elapsed() < std::time::Duration::from_secs(60) {
+            let now = ALLOC.allocated().saturating_sub(before);
+            if now > most + (1 << 20) {
+                (most, grew_at) = (now, std::time::Instant::now());
+            }
+            tokio::time::sleep(std::time::Duration::from_millis(20)).await;
         }
-        use mdm_engine::download::State;
-        if matches!(v.state, State::Done | State::Failed | State::Cancelled) {
-            break;
-        }
-        tokio::time::sleep(std::time::Duration::from_millis(5)).await;
-    }
+        most
+    };
+    drop(hold);
+    holder.join().unwrap();
     let out = d.wait().await.expect("download succeeds");
     let peak = ALLOC.max_allocated().saturating_sub(before);
     eprintln!(
-        "allocated beyond the start: {} MiB at most, {} MiB while the flush held the writes",
+        "allocated beyond the start: {} MiB at most, {} MiB while the disk held the writes",
         peak >> 20,
-        during >> 20
+        held >> 20
     );
-    assert!(flushed, "a slow flush held the writes");
     // The memory did fill up (else this proves nothing)...
-    assert!(during >= HOLD_MAX * 3 / 4, "{} MiB held", during >> 20);
+    assert!(held >= HOLD_MAX * 3 / 4, "{} MiB held", held >> 20);
     // ...and no further than the cap, with room for the connections' own receive buffers, the
     // lab server's, and a chunk past the cap per connection.
     assert!(
-        peak <= HOLD_MAX + (24 << 20),
+        peak <= HOLD_MAX + (20 << 20),
         "{} MiB allocated at most, for {} MiB held",
         peak >> 20,
         HOLD_MAX >> 20
