@@ -20,25 +20,6 @@ use crate::Installed;
 /// The default port for the bgutil POT HTTP provider server.
 pub const DEFAULT_PORT: u16 = 4416;
 
-/// Overall detection status for the bgutil POT provider.
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub struct Status {
-    /// Whether a POT HTTP server is currently running and answering on `127.0.0.1:4416`.
-    pub server_reachable: bool,
-    /// A standalone POT provider executable found on the system (`bgutil-pot` or `bgutil`).
-    pub provider_exe: Option<Installed>,
-    /// Location of the yt-dlp plugin for bgutil, if found.
-    pub plugin_path: Option<PathBuf>,
-}
-
-impl Status {
-    /// Whether any bgutil POT provider component is present (server running, CLI executable,
-    /// or installed yt-dlp plugin).
-    pub fn is_detected(&self) -> bool {
-        self.server_reachable || self.provider_exe.is_some() || self.plugin_path.is_some()
-    }
-}
-
 /// Check if a POT HTTP provider server is listening on `127.0.0.1:4416`.
 pub fn server_reachable() -> bool {
     let addr = SocketAddr::from(([127, 0, 0, 1], DEFAULT_PORT));
@@ -63,15 +44,6 @@ pub fn find_plugin() -> Option<PathBuf> {
         }
     }
     None
-}
-
-/// Return all detection status at once.
-pub fn status() -> Status {
-    Status {
-        server_reachable: server_reachable(),
-        provider_exe: find_system_executable(),
-        plugin_path: find_plugin(),
-    }
 }
 
 /// Standard directories where yt-dlp searches for plugins.

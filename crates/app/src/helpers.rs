@@ -39,12 +39,13 @@ pub struct Helpers {
 }
 
 /// Whether to offer the helpers at this start: never asked, and one of them is missing (ffmpeg
-/// counts only where the system has none).
+/// counts only where MDM can install one, Windows; elsewhere the system's is used).
 pub fn worth_asking() -> bool {
     let Some(dir) = mdm_tools::tools_dir() else {
         return false;
     };
-    mdm_tools::installed(&dir).is_none() || mdm_tools::ffmpeg::installed(&dir).is_none()
+    mdm_tools::installed(&dir).is_none()
+        || (cfg!(windows) && mdm_tools::ffmpeg::installed(&dir).is_none())
 }
 
 impl Helpers {
@@ -65,8 +66,8 @@ impl Helpers {
         if mdm_tools::installed(&dir).is_none() {
             list.push("yt-dlp");
         }
-        // ffmpeg: only where the system has none.
-        if mdm_tools::ffmpeg::installed(&dir).is_none() {
+        // ffmpeg: MDM's own on Windows (it has no build elsewhere, where the system's is used).
+        if cfg!(windows) && mdm_tools::ffmpeg::installed(&dir).is_none() {
             list.push("ffmpeg");
         }
         let job = Job {

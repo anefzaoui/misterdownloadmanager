@@ -885,9 +885,10 @@ fn with_usable_path(cmd: &mut Command) {
 /// This computer's JavaScript runtime for yt-dlp ([`js_runtime`]): `Some` with the arguments
 /// that tell yt-dlp of it (none for Deno where yt-dlp finds it itself), in the PATH folders a
 /// helper gets ([`usable_dirs`]: a node.exe behind a junction is named by its real folder) and
-/// in yt-dlp's own folder (per the EJS guide, a runtime beside `yt-dlp.exe` counts too). Kept
-/// once found; while there is none it is looked for again at each run, so one installed
-/// meanwhile counts at the next look-up (#852).
+/// in MDM's own tools folder (per the EJS guide, a runtime beside `yt-dlp.exe` counts too; only
+/// MDM's, never a folder a chosen program sits in, where a node.exe nobody meant could land and
+/// be run, cached for the session). Kept once found; while there is none it is looked for again
+/// at each run, so one installed meanwhile counts at the next look-up (#852).
 fn js_runtime_found(exe: &Path) -> Option<Vec<String>> {
     static FOUND: Mutex<Option<Vec<String>>> = Mutex::new(None);
     let mut found = FOUND
@@ -897,7 +898,10 @@ fn js_runtime_found(exe: &Path) -> Option<Vec<String>> {
         let mut dirs: Vec<PathBuf> = std::env::var_os("PATH")
             .map(|p| usable_dirs(&p))
             .unwrap_or_default();
-        if let Some(beside) = exe.parent() {
+        if let Some(tools) = crate::tools_dir()
+            && exe.starts_with(&tools)
+            && let Some(beside) = exe.parent()
+        {
             dirs.push(beside.to_path_buf());
         }
         let home = std::env::var_os("HOME")

@@ -24,13 +24,14 @@ pub(crate) const PACKAGE_DIRS: [&str; 3] = ["/opt/homebrew/bin", "/usr/local/bin
 /// - On Unix: the package managers' ([`PACKAGE_DIRS`]), Flatpak (`~/.local/share/flatpak/exports/bin`,
 ///   `/var/lib/flatpak/exports/bin`), Nix (`~/.nix-profile/bin`, `/nix/var/nix/profiles/default/bin`),
 ///   and user tool directories (`~/.local/bin`, `~/.cargo/bin`, `~/.bun/bin`, `~/.deno/bin`).
-/// - On Windows: winget links (`%LOCALAPPDATA%\Microsoft\WinGet\Links`), Scoop shims
-///   (`%USERPROFILE%\scoop\shims`, `%ALLUSERSPROFILE%\scoop\shims`), Chocolatey bin
-///   (`C:\ProgramData\chocolatey\bin`), tool managers (`%USERPROFILE%\.cargo\bin`,
-///   `%USERPROFILE%\.bun\bin`, `%USERPROFILE%\.deno\bin`), and pip Scripts folders
-///   (`%LOCALAPPDATA%\Python\*\Scripts`, `%APPDATA%\Python\Python*\Scripts`). No fixed folder
-///   anyone can create (`C:\yt-dlp` and the like): a program MDM runs just because it exists
-///   at the root of a drive is too easy to plant.
+/// - On Windows: winget links (`%LOCALAPPDATA%\Microsoft\WinGet\Links`), the person's own Scoop
+///   shims (`%USERPROFILE%\scoop\shims`), tool managers (`%USERPROFILE%\.cargo\bin`,
+///   `%USERPROFILE%\.bun\bin`, `%USERPROFILE%\.deno\bin`), pip Scripts folders
+///   (`%LOCALAPPDATA%\Python\*\Scripts`, `%APPDATA%\Python\Python*\Scripts`), and Chocolatey's
+///   and global Scoop's own places, read from `%ChocolateyInstall%` and `%SCOOP_GLOBAL%` (set
+///   by their installers, so they say the program is really there). No fixed folder anyone can
+///   create (`C:\yt-dlp`, the default `C:\ProgramData\chocolatey\bin`, `%ALLUSERSPROFILE%\scoop\shims`):
+///   a program MDM runs just because it exists there is too easy to plant.
 pub(crate) fn extra_dirs() -> Vec<PathBuf> {
     let mut dirs = Vec::new();
     #[cfg(unix)]
@@ -54,25 +55,29 @@ pub(crate) fn extra_dirs() -> Vec<PathBuf> {
     {
         let local_app_data = std::env::var_os("LOCALAPPDATA").map(PathBuf::from);
         let user_profile = std::env::var_os("USERPROFILE").map(PathBuf::from);
-        let all_users_profile = std::env::var_os("ALLUSERSPROFILE").map(PathBuf::from);
 
         // WinGet links (ffmpeg, yt-dlp, etc.)
         if let Some(lad) = &local_app_data {
             dirs.push(lad.join(r"Microsoft\WinGet\Links"));
         }
 
-        // Scoop shims and developer runtimes (.cargo, .bun, .deno)
+        // The person's own Scoop shims and developer runtimes (.cargo, .bun, .deno)
         if let Some(up) = &user_profile {
             dirs.push(up.join(r"scoop\shims"));
             dirs.push(up.join(r".cargo\bin"));
             dirs.push(up.join(r".bun\bin"));
             dirs.push(up.join(r".deno\bin"));
         }
-        if let Some(aup) = &all_users_profile {
-            dirs.push(aup.join(r"scoop\shims"));
-            dirs.push(aup.join(r"chocolatey\bin"));
+        // Chocolatey and global Scoop: only the places their own installers name. Their default
+        // folders under ProgramData are left out: on a machine without them, any user can create
+        // those (ProgramData lets ordinary users make folders), the same plant-it problem as a
+        // fixed folder at a drive's root; a real install puts its bin on the machine PATH anyway.
+        if let Some(choco) = std::env::var_os("ChocolateyInstall") {
+            dirs.push(Path::new(&choco).join("bin"));
         }
-        dirs.push(PathBuf::from(r"C:\ProgramData\chocolatey\bin"));
+        if let Some(scoop_global) = std::env::var_os("SCOOP_GLOBAL") {
+            dirs.push(Path::new(&scoop_global).join("shims"));
+        }
 
         // Python Scripts (pip install --user yt-dlp, gallery-dl)
         if let Some(lad) = &local_app_data {
