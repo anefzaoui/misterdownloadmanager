@@ -9,6 +9,7 @@
 #. count in cnl.rs
 #. Click'n'Load window: a page whose web site the browser doesn't name, so MDM can't tell which site it is
 #. {n} = a number (keep the braces as they are)
+#, machine
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	Situs yang tidak dikenal ingin mengirim {n} tautan ke Link grabber.
 #. count in a dialog box
 #. never shown for a single download
@@ -113,6 +114,7 @@
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
 @plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} ingin mengirim {n} tautan ke Link grabber.
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
@@ -227,6 +229,7 @@
 	about {size}	sekitar {size}
 #. text in the Options window
 #. Options → Archives → Link grabber check box: Click'n'Load, a link site's button that sends its links to a program on this computer (port 9666, as JDownloader)
+#, machine
 	Accept Click'n'Load from web pages (port 9666)	Terima Click'n'Load dari halaman web (port 9666)
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
@@ -345,6 +348,7 @@
 	Afghanistan	Afghanistan
 #. text in the Options window
 #. Options → Add an account: a note under the user name and password fields (Mega-Debrid bans the address for some minutes after a few wrong passwords)
+#, machine
 	After a few wrong passwords the service blocks this connection for some minutes.	Setelah beberapa kali salah kata sandi, layanan akan memblokir koneksi ini selama beberapa menit.
 #. text in countries.rs
 #. a country's name (where a download's server is)
@@ -369,6 +373,7 @@
 	All the uploader's	Semua milik pengunggah
 #. text in cnl.rs
 #. button in the Click'n'Load window: let this site send links (remembered)
+#, machine
 	Allow	Izinkan
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
@@ -376,6 +381,7 @@
 	Allow more than {n} connections	Izinkan lebih dari {n} koneksi
 #. text in cnl.rs
 #. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
+#, machine
 	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	Izinkan hanya situs yang Anda gunakan. Tidak ada yang dicari atau diunduh sebelum Anda menambahkannya di Link grabber.
 #. text in errors.rs
 	already being downloaded: {path}	sedang diunduh: {path}
@@ -544,6 +550,7 @@
 	Bhutan	Bhutan
 #. text in cnl.rs
 #. button in the Click'n'Load window: refuse this site's links (remembered)
+#, machine
 	Block	Blokir
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
@@ -748,13 +755,16 @@
 #. message or event log entry in the main window; window title in cnl.rs
 #. title of the notice when Click'n'Load couldn't start
 #. window title: a web page used Click'n'Load (a link site's button that sends its links to this program)
+#, machine
 	Click'n'Load	Click'n'Load
 #. text in cnl.rs
 #. notice: Click'n'Load couldn't start; {port} is 9666; JDownloader is another download manager that uses the same port
+#, machine
 	Click'n'Load can't start: another program (JDownloader?) is using port {port}. Close it, then turn Click'n'Load off and on again in Options.	Click'n'Load tidak dapat dimulai: program lain (JDownloader?) sedang menggunakan port {port}. Tutup program tersebut, lalu matikan dan nyalakan lagi Click'n'Load di Opsi.
 #. text in cnl.rs
 #. notice: Click'n'Load couldn't start; {error} the system's reason
 #. {error} = an error message (keep the braces as they are)
+#, machine
 	Click'n'Load can't start: {error}	Click'n'Load tidak dapat dimulai: {error}
 #. text in a download's progress window
 #. column title: the peer's torrent program
@@ -2366,6 +2376,7 @@
 	Not installed yet	Belum terinstal
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
+#, machine
 	Not looked up	Belum dicari
 #. text in cnl.rs; button in helpers.rs
 #. button in the Click'n'Load window: refuse these links, ask again next time
@@ -2515,6 +2526,7 @@
 	Options on completion	Opsi saat selesai
 #. text in the Options window
 #. Options → Add an account: label before the field for an API key the user made at the service (Mega-Debrid: My Account → API Key; the other way to sign in)
+#, machine
 	Or paste an application's API key:	Atau tempel kunci API aplikasi:
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
@@ -2644,6 +2656,7 @@
 #. text in the Options window
 #. Options → General: shown inside the shortcut recorder box while waiting for the user to press a 2-key or 3-key shortcut (#558)
 #. the trailing ... means it is still going on: keep it
+#, machine
 	Press keys...	Tekan tombol...
 #. button in a dialog box
 #. verb: open the part already downloaded
@@ -3009,6 +3022,7 @@
 	Sharing stopped: {error}	Berbagi berhenti: {error}
 #. text in the Options window
 #. Options → General: label for the global keyboard shortcut that shows or hides MDM's main window (#558)
+#, machine
 	Shortcut to show or hide window:	Pintasan untuk menampilkan atau menyembunyikan jendela:
 #. text in the download list
 	Show	Tampilkan
@@ -3052,6 +3066,7 @@
 	Sierra Leone	Sierra Leone
 #. button in the Options window
 #. button: sign in to the debrid service with the user name and password typed in
+#, machine
 	Sign in	Masuk
 #. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
@@ -3067,6 +3082,7 @@
 	Sign-ins and passwords are kept in Windows Credential Manager.	Info masuk dan kata sandi disimpan di Manajer Kredensial Windows.
 #. text in the Options window
 #. Options → Add an account: signed in, the service gives no account name; {state} premium or not
+#, machine
 	Signed in ({state})	Sudah masuk ({state})
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
@@ -3545,6 +3561,7 @@
 	the server sent an unexpected part of the file ({detail})	server mengirim bagian file yang tidak terduga ({detail})
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
+#, machine
 	the service doesn't say whether it is premium	layanan tidak menyebutkan apakah akun ini premium
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
@@ -3694,6 +3711,7 @@
 	this program isn't {name}	program ini bukan {name}
 #. text in the Options window
 #. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
+#, machine
 	This shortcut is already in use	Pintasan ini sudah digunakan
 #. text in errors.rs
 #. why a download failed: the site's bot check (Cloudflare) lets browsers through, not programs. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
@@ -3985,6 +4003,7 @@
 	User	Pengguna
 #. text in the Options window
 #. Options → Add an account: label before the field for the user name at the debrid service
+#, machine
 	User name:	Nama pengguna:
 #. page title in the Options window
 	User names and passwords for servers/sites	Nama pengguna dan kata sandi untuk server/situs
@@ -4105,6 +4124,7 @@
 	Windows allows wake timers only while plugged in	Windows mengizinkan pengatur waktu bangun hanya saat dicolokkan
 #. text in the Options window
 #. Options → General → Shortcut to show or hide window: shown in the disabled shortcut box on Linux (#558)
+#, machine
 	Windows and macOS	Windows dan macOS
 #. text in the Options window
 #. tooltip of "Mark downloaded files as coming from the internet" on Windows
