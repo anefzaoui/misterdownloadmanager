@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ No freeze of the window in Link grabber with thousands of links (a big page's links): each
+  link's category is worked out once, and a frame goes over the links once, however many
+  packages they make ([#1063](https://github.com/anefzaoui/misterdownloadmanager/issues/1063))
 - ✅ The sites in **Don't start downloading automatically from the following sites** take their
   subdomains and the files their pages link to on another server (a CDN), as the Download panels'
   list does
