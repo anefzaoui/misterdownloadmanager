@@ -566,6 +566,9 @@ These ship in the next version.
   bot check as a signed-in viewer's, is looked up once more without them, as a private window
   gets it; private, members' and age-restricted videos keep them
   ([#686](https://github.com/anefzaoui/misterdownloadmanager/issues/686))
+- ✅ **Download File Info**: **...** beside **Save As** opens the system's Save dialog (the
+  folder and the file name, the download's type listed), and the name typed there is the one
+  saved ([#1088](https://github.com/anefzaoui/misterdownloadmanager/issues/1088))
 - ✅ Browser integration: a copy run from inside a zip (a temporary folder) no longer sets it up
   for itself and leaves the browsers looking for a copy that is gone; MDM takes back a
   registration that leads nowhere at each start, never one that works, and Test browser
