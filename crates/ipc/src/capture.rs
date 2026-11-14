@@ -223,17 +223,23 @@ impl CaptureRules {
     }
 
     /// Is `address` on a site of Options → File types' list ("Don't start downloading
-    /// automatically from the following sites")? A name without `*.` takes its subdomains too, as
-    /// in the Download panels' list (`panel_hidden_on`; #1049: `example.com` listed, its files
-    /// from www.example.com were still taken).
+    /// automatically from the following sites")? Read as the Download panels' list is
+    /// ([`site_listed`]; #1049: `example.com` listed, its files from www.example.com were still
+    /// taken).
     pub fn site_excluded(&self, address: &str) -> bool {
         let host = host_of(address);
-        !host.is_empty()
-            && self
-                .excluded_sites
-                .split_whitespace()
-                .any(|p| host_matches(&host, p) || host_matches(&host, &format!("*.{p}")))
+        !host.is_empty() && site_listed(&self.excluded_sites, &host)
     }
+}
+
+/// Is `host` on a site of `sites` (space-separated: Options → File types' excluded sites, the
+/// Download panels' list)? A name without `*` takes its subdomains too (#532, #1049), and `*`
+/// matches anything ([`panel_site_matches`], #759).
+pub fn site_listed(sites: &str, host: &str) -> bool {
+    sites.split_whitespace().any(|p| {
+        panel_site_matches(host, p)
+            || (!p.starts_with('*') && panel_site_matches(host, &format!("*.{p}")))
+    })
 }
 
 /// An http(s) address (a referrer may be empty, or a page of the browser's own).
@@ -258,11 +264,7 @@ impl CaptureRules {
     /// subdomains too (#532: `youtube.com` listed, the button still showed on www.youtube.com).
     /// Supports wildcards (`*`) like `*.youtube.*` or `youtube.*` (#759).
     pub fn panel_hidden_on(&self, page: &str) -> bool {
-        let host = host_of(page);
-        self.video_panel_sites.split_whitespace().any(|p| {
-            panel_site_matches(&host, p)
-                || (!p.starts_with('*') && panel_site_matches(&host, &format!("*.{p}")))
-        })
+        site_listed(&self.video_panel_sites, &host_of(page))
     }
 }
 
@@ -666,6 +668,30 @@ mod tests {
                 "{page:?}"
             );
         }
+        // Wildcards, as in the Download panels' list (#759).
+        let wild = CaptureRules {
+            excluded_sites: "*.mirror.* *myfiles*".into(),
+            ..CaptureRules::default()
+        };
+        for url in [
+            "https://dl.mirror.org/a.zip",
+            "https://mirror.net/a.zip",
+            "https://cdn.myfiles.test/a.zip",
+        ] {
+            assert_eq!(
+                wild.accepts(url, "a.zip", CHROME, None),
+                Err(Declined::Site),
+                "{url}"
+            );
+        }
+        assert_eq!(
+            wild.accepts(cdn, "a.zip", CHROME, Some("https://www.mirror.io/get")),
+            Err(Declined::Site)
+        );
+        assert_eq!(
+            wild.accepts("https://other.test/a.zip", "a.zip", CHROME, None),
+            Ok(())
+        );
         // host_matches itself stays exact for its other users (debrid, servers' logins).
         assert!(!host_matches("www.example.com", "example.com"));
     }

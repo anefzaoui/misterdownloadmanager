@@ -292,17 +292,7 @@ function extensionOf(name) {
   return dot > 0 ? base.slice(dot + 1) : "";
 }
 
-// As the app matches them (mdm_ipc::capture): `*.example.com` takes the domain and its
-// subdomains; an address pattern's `*` any run of characters.
-function hostMatches(host, pattern) {
-  let p = pattern.trim().toLowerCase().replace(/^[a-z]+:\/\//, "").split("/")[0];
-  if (p.startsWith("*.")) {
-    p = p.slice(2);
-    return host === p || host.endsWith("." + p);
-  }
-  return p !== "" && host === p;
-}
-
+// As the app matches them (mdm_ipc::capture): a pattern's `*` is any run of characters.
 function wildcard(pattern, text) {
   const re = new RegExp("^" + pattern.toLowerCase().split("*").map((s) => s.replace(/[.+?^${}()|[\]\\]/g, "\\$&")).join(".*") + "$");
   return re.test(text.toLowerCase());
@@ -315,10 +305,18 @@ function addressMatches(pattern, url) {
   return wildcard(p, p.includes("://") ? url : url.replace(/^[a-z][a-z0-9+.-]*:\/\//i, ""));
 }
 
-// Whether `host` is on a site of Options' list (mdm_ipc::capture::CaptureRules::site_excluded):
-// a name without `*.` takes its subdomains too, as the Download panels' list (#1049).
+// A site pattern against `host`, as the app reads one (mdm_ipc::capture::panel_site_matches):
+// `*` matches anything (#759), and `*.example.com` the domain too.
+function siteMatches(host, pattern) {
+  const p = pattern.trim().toLowerCase().replace(/^[^/]*:\/\//, "").split("/")[0];
+  if (!p) return false;
+  return (p.startsWith("*.") && wildcard(p.slice(2), host)) || wildcard(p, host);
+}
+
+// Whether `host` is on a site of Options' list (mdm_ipc::capture::site_listed): a name without
+// `*` takes its subdomains too, as the Download panels' list does (#1049).
 function siteListed(r, host) {
-  return r.excludedSites.split(/\s+/).some((p) => p && (hostMatches(host, p) || hostMatches(host, `*.${p}`)));
+  return r.excludedSites.split(/\s+/).some((p) => p && (siteMatches(host, p) || (!p.startsWith("*") && siteMatches(host, `*.${p}`))));
 }
 
 // Which of Options' lists leaves `url` to the browser: "site", "address", or "" (neither).
@@ -1800,7 +1798,8 @@ let openedTypes = [];
 
 // Options' excluded sites as the rule needs them, read as the app reads them: `example.com` and
 // `*.example.com` alike are the domain and its subdomains (#1049), a rule's domain condition. As
-// the browser writes a host: no port, punycode.
+// the browser writes a host: no port, punycode. A pattern with another `*` (`*.youtube.*`) is no
+// domain a rule can name: such a site's PDF is made a download, which the browser then keeps.
 function excludedHosts() {
   const hosts = [];
   for (const raw of ((rules && rules.excludedSites) || "").split(/\s+/)) {

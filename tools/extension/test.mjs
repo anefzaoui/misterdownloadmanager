@@ -547,7 +547,7 @@ const ok = (what) => {
 // to on another host (a CDN) is the site's too, by the download's referrer; with no page known,
 // the file's own host decides.
 {
-  const { api, calls, listeners } = fakeApi({ firefox: false, rules: { excludedSites: "example.test" } });
+  const { api, calls, listeners } = fakeApi({ firefox: false, rules: { excludedSites: "example.test *.mirror.* https://*kept*" } });
   load(api, false);
   const keep = async (item) => {
     let suggested = false;
@@ -566,6 +566,11 @@ const ok = (what) => {
   assert.ok(!(await keep({ id: 63, url: "https://cdn.files.test/d.zip", referrer: "", filename: "d.zip" })), "no page known");
   assert.ok(!(await keep({ id: 64, url: "https://badexample.test/e.zip", filename: "e.zip" })), "not a subdomain");
   assert.deepEqual(natives(calls).map((m) => m.url), ["https://cdn.files.test/c.zip", "https://cdn.files.test/d.zip", "https://badexample.test/e.zip"]);
+  // Wildcards, as the app reads them (#759): `*.mirror.*`, a scheme left out.
+  assert.ok(await keep({ id: 65, url: "https://dl.mirror.org/f.zip", filename: "f.zip" }), "*.mirror.*");
+  assert.ok(await keep({ id: 66, url: "https://mirror.net/g.zip", filename: "g.zip" }), "*.mirror.* takes the domain");
+  assert.ok(await keep({ id: 67, url: "https://cdn.files.test/h.zip", referrer: "https://www.kept.test/", filename: "h.zip" }), "*kept*");
+  assert.equal(natives(calls).length, 3);
   ok("#1049: excluded sites take their subdomains and the files their pages link to");
 }
 
