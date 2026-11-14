@@ -939,8 +939,9 @@ These ship in the next version.
   [#583](https://github.com/anefzaoui/misterdownloadmanager/issues/583),
   [#513](https://github.com/anefzaoui/misterdownloadmanager/issues/513))
 - ✅ Windows: no crash when the clipboard is read in two places at once (the clipboard monitor and
-  Add URL): every read and write of it goes one at a time
-  ([#629](https://github.com/anefzaoui/misterdownloadmanager/issues/629))
+  Add URL, or a paste in a text box): every read and write of it goes one at a time
+  ([#629](https://github.com/anefzaoui/misterdownloadmanager/issues/629),
+  [#1103](https://github.com/anefzaoui/misterdownloadmanager/issues/1103))
 - ✅ The window no longer waits on the program that owns the clipboard when it doesn't answer (Linux
   especially): a text box's right-click menu, Add URL, Add batch download, Add torrent and Download
   video read the clipboard beside the window, and fill in a copied link when it comes (follows

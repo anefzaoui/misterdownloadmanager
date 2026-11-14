@@ -5513,6 +5513,266 @@ pub fn clipboard_sequence() -> u32 {
     unsafe { windows_sys::Win32::System::DataExchange::GetClipboardSequenceNumber() }
 }
 
+/// Tests only: a clipboard apart from the person's at this computer (#1103).
+///
+/// Windows keeps one clipboard per window station; the person's is on the interactive one,
+/// `WinSta0`. [`in_private_clipboard`] runs a test again in a process of its own that moves to
+/// another window station (and a desktop on it) before it touches the clipboard: there the test
+/// reads and writes with the real clipboard functions, arboard's and MDM's own, and the person's
+/// clipboard is neither read nor written. Without a name, Windows makes (or opens) the window
+/// station of the logon session, `Service-0x0-…$`, which shows nothing and whose clipboard no
+/// program of the person's uses; the tests that use it run one at a time.
+///
+/// [`in_private_clipboard`]: private_clipboard::in_private_clipboard
+#[cfg(test)]
+pub mod private_clipboard {
+    use std::ffi::c_void;
+
+    /// Set in the process [`in_private_clipboard`] starts: the test runs there, and only there.
+    const CHILD: &str = "MDM_TEST_PRIVATE_CLIPBOARD";
+
+    #[link(name = "user32")]
+    unsafe extern "system" {
+        fn CreateWindowStationW(
+            name: *const u16,
+            flags: u32,
+            access: u32,
+            sa: *const c_void,
+        ) -> *mut c_void;
+        fn SetProcessWindowStation(winsta: *mut c_void) -> i32;
+        fn GetProcessWindowStation() -> *mut c_void;
+        fn GetUserObjectInformationW(
+            object: *mut c_void,
+            index: i32,
+            info: *mut c_void,
+            len: u32,
+            needed: *mut u32,
+        ) -> i32;
+        fn CreateDesktopW(
+            name: *const u16,
+            device: *const u16,
+            devmode: *const c_void,
+            flags: u32,
+            access: u32,
+            sa: *const c_void,
+        ) -> *mut c_void;
+        fn SetThreadDesktop(desktop: *mut c_void) -> i32;
+        fn GetThreadDesktop(thread: u32) -> *mut c_void;
+        fn OpenClipboard(owner: *mut c_void) -> i32;
+        fn CloseClipboard() -> i32;
+    }
+    #[link(name = "kernel32")]
+    unsafe extern "system" {
+        fn GetCurrentThreadId() -> u32;
+        fn GetProcessHeap() -> *mut c_void;
+        fn HeapValidate(heap: *mut c_void, flags: u32, block: *const c_void) -> i32;
+    }
+
+    const WINSTA_ALL_ACCESS: u32 = 0x37F;
+    const GENERIC_ALL: u32 = 0x1000_0000;
+    const UOI_NAME: i32 = 2;
+
+    fn wide(s: &str) -> Vec<u16> {
+        s.encode_utf16().chain(Some(0)).collect()
+    }
+
+    /// A window station's name (empty: unknown).
+    fn station_name(winsta: *mut c_void) -> String {
+        let mut buf = [0u16; 256];
+        let mut needed = 0;
+        // SAFETY: the buffer and its size in bytes; the name comes back NUL-terminated.
+        let ok = unsafe {
+            GetUserObjectInformationW(
+                winsta,
+                UOI_NAME,
+                buf.as_mut_ptr().cast(),
+                size_of_val(&buf) as u32,
+                &mut needed,
+            )
+        };
+        if ok == 0 {
+            return String::new();
+        }
+        let len = buf.iter().position(|&c| c == 0).unwrap_or(buf.len());
+        String::from_utf16_lossy(&buf[..len])
+    }
+
+    /// The test's window station and desktop (their handles, as numbers: every thread joins).
+    pub struct PrivateClipboard {
+        winsta: usize,
+        desktop: usize,
+    }
+
+    impl PrivateClipboard {
+        /// Move this process to a window station other than the one it started on (the
+        /// person's), and this thread to a desktop on it. Panics, before anything uses the
+        /// clipboard, unless both moved.
+        fn enter() -> Self {
+            assert!(
+                std::env::var_os(CHILD).is_some(),
+                "only in the process in_private_clipboard starts"
+            );
+            // SAFETY: takes nothing; the process's handle, not closed.
+            let started_on = station_name(unsafe { GetProcessWindowStation() });
+            // SAFETY: no name, no security attributes; the handle is checked.
+            let winsta = unsafe {
+                CreateWindowStationW(std::ptr::null(), 0, WINSTA_ALL_ACCESS, std::ptr::null())
+            };
+            assert!(
+                !winsta.is_null(),
+                "no window station: {}",
+                std::io::Error::last_os_error()
+            );
+            let name = station_name(winsta);
+            assert!(
+                !name.is_empty() && name != started_on && !name.eq_ignore_ascii_case("WinSta0"),
+                "window station {name:?}, started on {started_on:?}"
+            );
+            // SAFETY: the handle just made.
+            let moved = unsafe { SetProcessWindowStation(winsta) };
+            assert!(
+                moved != 0,
+                "process not moved: {}",
+                std::io::Error::last_os_error()
+            );
+            let desk = wide(&format!("mdm-test-{}", std::process::id()));
+            // SAFETY: a NUL-terminated name, no device, mode or security attributes; it is made
+            // on the process's window station, the test's.
+            let desktop = unsafe {
+                CreateDesktopW(
+                    desk.as_ptr(),
+                    std::ptr::null(),
+                    std::ptr::null(),
+                    0,
+                    GENERIC_ALL,
+                    std::ptr::null(),
+                )
+            };
+            assert!(
+                !desktop.is_null(),
+                "no desktop: {}",
+                std::io::Error::last_os_error()
+            );
+            let clip = PrivateClipboard {
+                winsta: winsta as usize,
+                desktop: desktop as usize,
+            };
+            clip.join();
+            clip
+        }
+
+        /// Put the calling thread on the test's desktop: each thread that uses the clipboard,
+        /// first. Panics unless the thread and its process are on the test's window station.
+        pub fn join(&self) {
+            // SAFETY: the desktop made in `enter`, open for the process's life; the handles
+            // compared are only read.
+            unsafe {
+                let set = SetThreadDesktop(self.desktop as *mut c_void);
+                assert!(
+                    set != 0,
+                    "thread not moved: {}",
+                    std::io::Error::last_os_error()
+                );
+                assert_eq!(
+                    GetThreadDesktop(GetCurrentThreadId()) as usize,
+                    self.desktop
+                );
+                assert_eq!(GetProcessWindowStation() as usize, self.winsta);
+            }
+        }
+    }
+
+    /// Run `body` in a clipboard of its own: the test (`test`, its path in the crate as `cargo
+    /// test` names it) runs again in a process of its own, which moves to a new window station
+    /// first ([`PrivateClipboard`]), and passes when `body` passed there.
+    pub fn in_private_clipboard(test: &str, body: impl FnOnce(&PrivateClipboard)) {
+        if std::env::var_os(CHILD).is_some() {
+            body(&PrivateClipboard::enter());
+            return;
+        }
+        // One at a time: they share the logon session's window station, and its clipboard.
+        static ONE: std::sync::Mutex<()> = std::sync::Mutex::new(());
+        let _one = ONE
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        let exe = std::env::current_exe().expect("the test program");
+        let out = std::process::Command::new(exe)
+            .args([test, "--exact", "--nocapture", "--test-threads=1"])
+            .env(CHILD, "1")
+            .output()
+            .expect("the test's own process");
+        let said = format!(
+            "{}{}",
+            String::from_utf8_lossy(&out.stdout),
+            String::from_utf8_lossy(&out.stderr)
+        );
+        assert!(out.status.success(), "{test}: {:?}\n{said}", out.status);
+        assert!(said.contains("1 passed"), "{test} didn't run:\n{said}");
+    }
+
+    /// `OpenClipboard` without a window, as arboard opens it; whether it opened.
+    pub fn open_without_window() -> bool {
+        // SAFETY: no window; the caller closes it ([`close`]).
+        unsafe { OpenClipboard(std::ptr::null_mut()) != 0 }
+    }
+
+    /// `CloseClipboard`, after [`open_without_window`].
+    pub fn close() -> bool {
+        // SAFETY: takes nothing.
+        unsafe { CloseClipboard() != 0 }
+    }
+
+    /// Whether the process's heap (Rust's allocations and the clipboard's memory alike) checks
+    /// out whole, every block of it.
+    pub fn process_heap_is_whole() -> bool {
+        // SAFETY: the process's own heap, checked whole (no block given).
+        unsafe { HeapValidate(GetProcessHeap(), 0, std::ptr::null()) != 0 }
+    }
+
+    /// egui's clipboard, as a window's text boxes paste and copy with it (arboard, under
+    /// egui_winit's `lock_system_clipboard`).
+    pub fn egui_clipboard() -> egui_winit::clipboard::Clipboard {
+        // SAFETY: no display handle to keep alive: on Windows egui's clipboard is arboard's.
+        unsafe { egui_winit::clipboard::Clipboard::new(None) }
+    }
+
+    mod tests {
+        use super::*;
+
+        /// #629, #1103: why MDM's reads and writes of the clipboard, egui's copy and paste
+        /// among them, take one lock (main.rs `clipboard_lock`). Opened without a window, as
+        /// arboard opens it, the clipboard lets a second thread of the process in while the
+        /// first still has it open, and the second's close closes it under the first: a read
+        /// still under way then works on data the clipboard has let go of, and the heap is
+        /// corrupted (STATUS_HEAP_CORRUPTION, on the "clipboard read" thread).
+        #[test]
+        fn two_threads_open_the_clipboard_at_once_without_a_window() {
+            in_private_clipboard(
+                "win32::private_clipboard::tests::two_threads_open_the_clipboard_at_once_without_a_window",
+                |clip| {
+                    let until = std::time::Instant::now() + std::time::Duration::from_secs(5);
+                    while !open_without_window() {
+                        assert!(std::time::Instant::now() < until, "never opened");
+                        std::thread::sleep(std::time::Duration::from_millis(10));
+                    }
+                    let (opened, closed) = std::thread::scope(|s| {
+                        s.spawn(|| {
+                            clip.join();
+                            let opened = open_without_window();
+                            (opened, opened && close())
+                        })
+                        .join()
+                        .unwrap()
+                    });
+                    assert!(opened, "Windows kept the second thread out");
+                    assert!(closed, "the second closes it");
+                    assert!(!close(), "the first's was still open");
+                },
+            );
+        }
+    }
+}
+
 /// End process `pid` (a frozen MDM the user chose to close from the crash report).
 pub fn end_process(pid: u32) -> bool {
     use windows_sys::Win32::Foundation::CloseHandle;
