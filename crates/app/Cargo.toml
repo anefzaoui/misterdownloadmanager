@@ -92,6 +92,9 @@ windows = { version = "0.62", default-features = false, features = ["Win32_Graph
 # The notification-area icon and its menu (tray.rs).
 [target.'cfg(not(target_os = "linux"))'.dependencies]
 tray-icon = "0.26.1"
+# Windows and macOS: the system's font for a script MDM's font lists don't name (theme.rs,
+# #1125). Linux asks fontconfig for any script already (`fc-match :charset=`).
+egui_system_font_provider.workspace = true
 
 # Linux: windows on Wayland and X11; the tray over D-Bus (StatusNotifierItem:
 # KDE, and GNOME with its AppIndicator extension), no GTK.

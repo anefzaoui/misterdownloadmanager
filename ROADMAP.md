@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows and macOS: names in any script a font on the computer has show their letters, whatever
+  the interface language: the system's own font for the scripts MDM lists none for
+  ([#1125](https://github.com/anefzaoui/misterdownloadmanager/issues/1125))
 - ✅ YouTube: a video the browser's button sends with the page's cookies, refused with 403 or the
   bot check as a signed-in viewer's, is looked up once more without them, as a private window
   gets it; private, members' and age-restricted videos keep them
