@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The browser's **Download all links** on a page with thousands of long links: the list goes to
+  MDM in parts the browser lets through, and opens in Link grabber whole, as one list; past 1 MB of
+  links nothing arrived
 - ✅ The sites in **Don't start downloading automatically from the following sites** take their
   subdomains and the files their pages link to on another server (a CDN), as the Download panels'
   list does

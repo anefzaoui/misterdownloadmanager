@@ -702,6 +702,9 @@ GET /rss/dir.xml   the .torrent files in --rss-dir, newest first, linked to /rss
 PAGES  for the browser extension's tests (tools/extension/e2e.mjs); styles and scripts are files
 GET /page?<any of>
     link=PATH      <a id=link href=PATH>download</a>; again for more (#link2, #link3...)
+    files=N        N more links in <ul id=files>, /gen/1K/<folder>/fileK.zip?seed=K (up to 200000),
+                   after <p id=blank>, a line without a link
+    pathlen=L      with files: each path L characters long, its folder's name made that long
     video=PATH|1   <video id=video controls> 640x360 (1: /gen/1M/clip.mp4?inline=1, also shown
                    when nothing else is asked for, or with muted_loop, iframe or shadow)
     w=PX h=PX      the videos' size

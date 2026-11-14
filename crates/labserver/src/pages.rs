@@ -57,7 +57,25 @@ fn video_tag(id: &str, src: &str, (w, h): (u32, u32), muted_loop: bool) -> Strin
     )
 }
 
-/// `/page?title=TEXT&link=PATH&video=PATH|1&w=&h=&muted_loop=1&iframe=1&shadow=1&several=N&audio=PATH|1&
+/// The most links `files=N` lists, and the longest path `pathlen` gives each.
+const MAX_FILES: u32 = 200_000;
+const MAX_PATH: u32 = 8_000;
+
+/// `files=N` links `/gen/1K/<folder>/fileK.zip?seed=K`, each path at least `pathlen` characters
+/// long (the folder's name made long enough), one per line in a list, after a line of text
+/// with no link (`#blank`: where a right-click is on the page, not on a link).
+fn file_links(n: u32, pathlen: usize) -> String {
+    let mut out = format!("<p id=blank>{n} files</p><ul id=files>");
+    for k in 1..=n {
+        let name = format!("file{k}.zip");
+        let fixed = "/gen/1K//".len() + name.len();
+        let folder = "d".repeat(pathlen.saturating_sub(fixed).max(1));
+        out += &format!("<li><a href=\"/gen/1K/{folder}/{name}?seed={k}\">{name}</a>");
+    }
+    out + "</ul>"
+}
+
+/// `/page?title=TEXT&link=PATH&files=N&pathlen=L&video=PATH|1&w=&h=&muted_loop=1&iframe=1&shadow=1&several=N&audio=PATH|1&
 /// hls=1&dash=1&drm=1&hls2=1&dash2=1&hlsg=SITE&csp=strict`: a web page with what the browser
 /// extension acts on (see `HELP`).
 pub(crate) async fn page(RawQuery(q): RawQuery, headers: HeaderMap) -> Response {
@@ -99,6 +117,9 @@ pub(crate) async fn page(RawQuery(q): RawQuery, headers: HeaderMap) -> Response 
         .map(|(_, v)| v.as_str())
         .collect();
     let link = links.first();
+    // `files=N`: N more links, each its own file, with paths `pathlen` characters long (a page
+    // listing a big folder: "Download all links" sends them all, in parts, #1063).
+    let files = num("files", 0).min(MAX_FILES);
     let audio = m.get("audio").map(|a| {
         if parse_flag(a) == Some(true) {
             DEFAULT_AUDIO
@@ -113,7 +134,11 @@ pub(crate) async fn page(RawQuery(q): RawQuery, headers: HeaderMap) -> Response 
         None if muted_loop
             || iframe
             || shadow
-            || (link.is_none() && audio.is_none() && several == 0 && streams.is_empty()) =>
+            || (link.is_none()
+                && files == 0
+                && audio.is_none()
+                && several == 0
+                && streams.is_empty()) =>
         {
             Some(DEFAULT_VIDEO)
         }
@@ -130,6 +155,9 @@ pub(crate) async fn page(RawQuery(q): RawQuery, headers: HeaderMap) -> Response 
         let name = link.rsplit('/').next().unwrap_or("download");
         let text = if k == 0 { "download" } else { name };
         body += &format!("<p><a id={id} href=\"{}\">{}</a></p>", esc(link), esc(text));
+    }
+    if files > 0 {
+        body += &file_links(files, num("pathlen", 0).min(MAX_PATH) as usize);
     }
     if let Some(src) = video {
         if iframe {
