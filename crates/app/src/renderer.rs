@@ -1631,7 +1631,8 @@ mod tests {
             );
         } else {
             assert_eq!(p.attempts, [Attempt::OpenGl, any]);
-            assert!(!p.watched());
+            // Watched on Windows (32-bit), as OpenGL chosen is.
+            assert_eq!(p.watched(), WATCH_GL);
         }
         // The card's start is watched, and OpenGL's where its failure would send the next start
         // to the software renderer (Windows).
