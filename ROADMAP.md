@@ -573,6 +573,9 @@ These ship in the next version.
   entry, the browser's helper, autostart): Wayland's own windows on a scaled screen where nothing
   tells X11 programs the scale (Hyprland, labwc, sway), XWayland elsewhere; **View → Window
   system** to choose ([#624](https://github.com/anefzaoui/misterdownloadmanager/issues/624))
+- ✅ A PDF a page shows in a frame, an embed or an object goes to MDM like one opened from a link,
+  in Chromium browsers and Firefox; a page's own PDF viewer keeps the file it reads
+  (part of [#1087](https://github.com/anefzaoui/misterdownloadmanager/issues/1087))
 - ✅ The sites in **Don't start downloading automatically from the following sites** take their
   subdomains and the files their pages link to on another server (a CDN), as the Download panels'
   list does

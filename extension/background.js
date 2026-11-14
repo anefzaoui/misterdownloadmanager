@@ -427,8 +427,12 @@ function formBody(details) {
   return { body: null };
 }
 
+// The loads a browser shows a file in: a tab, a frame, an <embed> or <object> (#1087: a PDF a
+// page shows in one is taken as one the tab goes to is).
+const PAGE_LOADS = ["main_frame", "sub_frame", "object"];
+
 if (ext.webRequest) {
-  const navigations = { urls: ["<all_urls>"], types: ["main_frame", "sub_frame"] };
+  const navigations = { urls: ["<all_urls>"], types: PAGE_LOADS };
   ext.webRequest.onBeforeRequest.addListener(
     (d) => {
       if (d.method !== "POST") return;
@@ -482,7 +486,7 @@ if (ext.webRequest && ext.webRequest.onBeforeRedirect) {
       const first = (redirected.get(d.url) || {}).from || d.url;
       redirected.set(d.redirectUrl, { from: first, at: Date.now() });
     },
-    { urls: ["<all_urls>"], types: ["main_frame", "sub_frame"] },
+    { urls: ["<all_urls>"], types: PAGE_LOADS },
   );
 }
 
@@ -1772,9 +1776,12 @@ if (SAFARI) {
 // ---- files the browser would open itself (a PDF, an MP3): made downloads -----------------
 
 // Options → General in the app: also take the listed types the browser shows or plays when a
-// link leads to one. Chromium: a session rule marks such answers as attachments, so they come
-// down the download path above (where the rules and Alt apply). Firefox: taken from the answer
-// as a download is (`headersReceived`), else it opens.
+// link leads to one, or a page shows one in a frame, an <embed> or an <object> (a course's PDF,
+// #1087). Chromium: a session rule marks such answers as attachments, so they come down the
+// download path above (where the rules and Alt apply). Firefox: taken from the answer as a
+// download is (`headersReceived`), else it opens. A file a page's script fetches (its own PDF
+// viewer reading it, then showing what it read) stays the page's: taken, the page would get
+// nothing and say the file failed to load.
 const OPENED = {
   PDF: ["application/pdf"],
   MP3: ["audio/mpeg", "audio/mp3"],
@@ -1836,7 +1843,7 @@ async function syncOpenedRule() {
       responseHeaders: [{ header: "content-disposition", operation: "set", value: "attachment" }],
     },
     condition: {
-      resourceTypes: ["main_frame"],
+      resourceTypes: PAGE_LOADS,
       responseHeaders: [{ header: "content-type", values: openedTypes.map((m) => `${m}*`) }],
       // Options' excluded sites keep opening in the browser: their files, and those their pages
       // lead to on another host (the page that started the load, #1049).
@@ -1989,14 +1996,15 @@ async function headersReceived(d) {
   }
   const taken = await offer(item, d.url, c.name).catch(() => false);
   if (!taken) return {};
-  closeDownloadTab(d.tabId, [first, d.url]).catch(() => {});
+  // A frame's or an <embed>'s file leaves its page where it is.
+  if (d.type === "main_frame") closeDownloadTab(d.tabId, [first, d.url]).catch(() => {});
   return { cancel: true };
 }
 
 if (FIREFOX && ext.webRequest && ext.webRequest.onHeadersReceived) {
   ext.webRequest.onHeadersReceived.addListener(
     (d) => headersReceived(d).catch(() => ({})),
-    { urls: ["<all_urls>"], types: ["main_frame", "sub_frame"] },
+    { urls: ["<all_urls>"], types: PAGE_LOADS },
     ["blocking", "responseHeaders"],
   );
 }
