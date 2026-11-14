@@ -562,6 +562,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ macOS: dialogs and download progress windows activate MDM and open in front of browsers and
+  other applications (including when raised or opened while MDM is behind another program or hidden
+  in the menu bar), without pulling up minimized or tray-hidden windows or stealing focus for
+  Download complete notices
 - ✅ Firefox: one Download video button over a video, not two, after the extension is updated while
   it shows (seen on YouTube in full screen)
   ([#336](https://github.com/anefzaoui/misterdownloadmanager/issues/336))
