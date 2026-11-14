@@ -3592,6 +3592,13 @@ const MP4 = (() => {
     played: { url: B, stream: false, ext: "mp4", size: 1981590, height: 720, duration: 5.617 },
   });
   assert.equal(fetched.length, reads);
+  // The feed moving to another address of the site (Douyin's /jingxuan to /?recommend=1, after its
+  // player fetched the first video): its files stay; another site's page: they go.
+  listeners.tabUpdated(4, { url: "https://www.douyin.test/jingxuan?from=feed" });
+  await settle();
+  assert.equal((await message({ type: "video-played", duration: 10.167, height: 720 })).played.url, A);
+  listeners.tabUpdated(4, { url: page });
+  await settle();
   // The long video, a picture and a sound apart: nothing (its post, if any, is the way).
   assert.deepEqual(await message({ type: "video-played", duration: 796.5, height: 1080 }), {});
   // Another frame played none of these.
@@ -3624,7 +3631,10 @@ const MP4 = (() => {
   ]) {
     assert.deepEqual(await message({ type: "video-lookup", url: null, src: "", played, title: "Feed" }, frame), { ok: false, why: "feed" }, String(played));
   }
-  ok("#1092: a feed's file of the video's length goes as its own, its stream to the look-up; ranged files never listed");
+  listeners.tabUpdated(4, { url: "https://elsewhere.test/" });
+  await settle();
+  assert.deepEqual(await message({ type: "video-played", duration: 10.167, height: 720 }), {}, "another site: its files gone");
+  ok("#1092: a feed's file of the video's length goes as its own (kept while the tab stays on its site), its stream to the look-up; ranged files never listed");
 }
 
 // #1092: Douyin names its posts (a slide's data-e2e-vid, ?modal_id=), and the button asks what the

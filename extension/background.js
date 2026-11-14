@@ -839,7 +839,12 @@ ext.tabs.onUpdated.addListener((id, change) => {
     const page = change.url.split("#")[0];
     const tab = media.get(id);
     if (tab && tab.page === page) return;
-    media.set(id, { page, items: [] });
+    // #1092: the files a player fetched in ranges stay while the tab stays on the site: a feed
+    // moves to another address as it shows its first video (Douyin's goes from /jingxuan to
+    // /?recommend=1), after its player fetched it. Offered only for a video of their length.
+    const site = (u) => (/^https?:\/\/[^/]+/i.exec(u || "") || [""])[0].toLowerCase();
+    const ranged = tab && tab.ranged && (!tab.page || site(tab.page) === site(page)) ? tab.ranged : null;
+    media.set(id, { page, items: [], ...(ranged ? { ranged } : {}) });
     keepMedia();
   });
 });

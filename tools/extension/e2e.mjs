@@ -56,7 +56,8 @@
 // case saves <lang>-looking.png, <lang>-video-tab.png and <lang>-audio-tab.png there (the player and
 // the menu), before the pick, and the `scripted` case <lang>-media-list.png (the popup's list) and
 // <lang>-video-window.png. Neither changes anything when unset. E2E_APP_LANG sets MDM's own language
-// (the words it sends the menu).
+// (the words it sends the menu). E2E_COLOR_SCHEME=light|dark shows the pages (the video button with
+// them) and the popup in those colours.
 //
 // Windows: the host is registered for the current user while it runs (nmhost --register, as the
 // installer does) and unregistered at the end. Every registry key that touches (the browsers'
@@ -394,6 +395,10 @@ async function chromium(bin, profile, dl, page, ready) {
     const { targetId } = await cdp.send("Target.createTarget", { url: "about:blank" });
     const { sessionId } = await cdp.send("Target.attachToTarget", { targetId, flatten: true });
     await cdp.send("Page.enable", {}, sessionId);
+    // E2E_COLOR_SCHEME (light or dark): the page in those colours, and the video button with it.
+    if (process.env.E2E_COLOR_SCHEME) {
+      await cdp.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-color-scheme", value: process.env.E2E_COLOR_SCHEME }] }, sessionId);
+    }
     const evaluate = async (expression) => {
       const r = await cdp.send("Runtime.evaluate", { expression, userGesture: true, awaitPromise: true, returnByValue: true }, sessionId);
       if (r.exceptionDetails) throw new Error(`evaluate: ${r.exceptionDetails.text} ${expression}`);
@@ -3092,6 +3097,8 @@ const CASES = {
         }
         return { p, m };
       };
+      // A size of `n` MB in the browser's language ("2 MB", "2 م.ب").
+      const megabytes = (size, n) => new RegExp(`^(${n}|${"٠١٢٣٤٥٦٧٨٩"[n]})\\s?\\S+$`).test(size.replace(/\u00a0/g, " "));
       const rows = (m) => m.rows.map((r) => `${r.name}${r.size ? ` ${r.size}` : ""}`).join(", ");
       // The first post: its file (2 MB, 360p MP4), its only line; the next video's (3 MB) never.
       const one = await menuOver("#feed1", "360p", "played-file");
@@ -3100,7 +3107,7 @@ const CASES = {
         throw new Skip("E2E_PLAYED_BEFORE: the older menus' pictures taken");
       }
       const top = one.m.rows[0];
-      if (one.m.rows.length !== 1 || top.kind !== "top" || !/\bMP4\b/.test(top.name) || !/^2\s?MB$/.test(top.size.replace(/\u00a0/g, " "))) {
+      if (one.m.rows.length !== 1 || top.kind !== "top" || !/\bMP4\b/.test(top.name) || !megabytes(top.size, 2)) {
         throw new Error(`#feed1's menu: ${rows(one.m)}`);
       }
       await clearLog();
@@ -3138,7 +3145,7 @@ const CASES = {
       });
       // The third, the next video: its own file (3 MB), not the first's.
       const three = await menuOver("#feed3", "360p");
-      if (three.m.rows.length !== 1 || !/^3\s?MB$/.test(three.m.rows[0].size.replace(/\u00a0/g, " "))) throw new Error(`#feed3's menu: ${rows(three.m)}`);
+      if (three.m.rows.length !== 1 || !megabytes(three.m.rows[0].size, 3)) throw new Error(`#feed3's menu: ${rows(three.m)}`);
       await s.mouse(2, 2);
       return `#feed1: chip "${one.p.chip}", "${rows(one.m)}", ${done.file} ${done.size} bytes, ${got.length} request(s) with the feed as Referer, "${green.text}"; #feed2: ${rows(two.m)}, 360p: ${streamed.file}; #feed3: "${rows(three.m)}"`;
     } finally {
