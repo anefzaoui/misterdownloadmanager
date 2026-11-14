@@ -562,6 +562,12 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Downloads for Windows on ARM, 32-bit Windows and Linux on ARM, beside the x64 ones: the
+  installer, the portable zip and the plain zip; the AppImage, .deb, .rpm and .tar.gz. Each is
+  built and tested on its own processor, Update now keeps each copy on its own, and the helpers
+  come in each processor's build (no ffmpeg for 32-bit Windows: Helpers says so)
+  ([#977](https://github.com/anefzaoui/misterdownloadmanager/discussions/977),
+  [#1010](https://github.com/anefzaoui/misterdownloadmanager/discussions/1010))
 - ✅ The menu bar with a screen reader: Alt opens it again, and the screen reader says each item
   as Alt, F10 or the arrows reach it; Shift+F10's menus too
   ([#328](https://github.com/anefzaoui/misterdownloadmanager/issues/328))
