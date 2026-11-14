@@ -30,6 +30,10 @@ pub enum ProcError {
     /// The chosen network adapter is down, or yt-dlp can't be held to it here (#35).
     #[error(transparent)]
     Adapter(#[from] mdm_engine::NetError),
+    /// A video's files would pass the system's path limits in its folder (#1102): its name
+    /// (`<folder>/<stem>`) is too long there, or the folder is too deep for any.
+    #[error("the path is too long for this system with the files saved beside it: {}", .0.display())]
+    PathTooLong(std::path::PathBuf),
 }
 
 /// Options → Proxy / Socks → Network adapter (#35) for the helpers and the media-server checks;

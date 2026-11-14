@@ -674,16 +674,26 @@ fn place_to_take(item: &Item, items: &[Item]) -> Option<PathBuf> {
             .file_stem()
             .map(|s| s.to_string_lossy().to_lowercase())
     };
-    if item.video.is_some() {
-        // yt-dlp takes any `<stem>.*` there as its own (#32): the stem has to be free.
-        others()
-            .any(|o| stem(o) == stem(item) && o.holds_place())
-            .then(|| {
-                mdm_engine::naming::stem_destination(dir, &item.file_name, |s| {
-                    let s = s.to_lowercase();
-                    others().any(|o| stem(o).as_ref() == Some(&s) && o.holds_place())
-                })
-            })
+    if let Some(video) = &item.video {
+        // yt-dlp takes any `<stem>.*` there as its own (#32): the stem has to be free. A page's
+        // title named before titles were fitted to the path limits with the files a video has
+        // beside it (#1102) is shortened now; a name the user typed stays as typed.
+        let too_long = !video.named
+            && !item
+                .dest
+                .file_stem()
+                .is_some_and(|s| mdm_engine::naming::stem_fits(dir, &s.to_string_lossy()));
+        let in_use = |s: &str| {
+            let s = s.to_lowercase();
+            others().any(|o| stem(o).as_ref() == Some(&s) && o.holds_place())
+        };
+        (too_long || others().any(|o| stem(o) == stem(item) && o.holds_place())).then(|| {
+            if video.named {
+                mdm_engine::naming::typed_stem_destination(dir, &item.file_name, in_use)
+            } else {
+                mdm_engine::naming::stem_destination(dir, &item.file_name, in_use)
+            }
+        })
     } else {
         others()
             .any(|o| lower(&o.dest) == lower(&item.dest) && o.holds_place())
@@ -4621,16 +4631,23 @@ impl App {
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_else(|| "video".into());
         // yt-dlp takes any `<stem>.*` there as its own: a stem no file and no other download
-        // in the folder has, whatever the extension (#32).
+        // in the folder has, whatever the extension (#32). The page's title is shortened to
+        // fit the path limits with the files the video has beside it; a name the user typed is
+        // kept as typed (#1102).
         let items = &self.items;
-        let dest = mdm_engine::naming::stem_destination(&folder, &name, |stem| {
+        let in_use = |stem: &str| {
             items.iter().any(|i| {
                 i.dest.parent() == Some(folder.as_path())
                     && i.dest
                         .file_stem()
                         .is_some_and(|s| s.to_string_lossy().to_lowercase() == stem.to_lowercase())
             })
-        });
+        };
+        let dest = if add.named {
+            mdm_engine::naming::typed_stem_destination(&folder, &name, in_use)
+        } else {
+            mdm_engine::naming::stem_destination(&folder, &name, in_use)
+        };
         let id = self.push_item(
             add.page,
             dest,
@@ -4647,6 +4664,7 @@ impl App {
                 selector: add.selector,
                 subs: add.subs,
                 parts: Vec::new(),
+                named: add.named,
             });
             // The quality menu's look-up goes with this new download only, started now and while
             // fresh: one queued for later, or added on a duplicate question answered late,
@@ -4773,6 +4791,7 @@ impl App {
                     selector: add.selector.clone(),
                     subs: Default::default(),
                     parts: Vec::new(),
+                    named: false,
                 });
             }
             ids.push(id);
@@ -4891,7 +4910,14 @@ impl App {
             }
             Err(e) => {
                 item.status = Status::Error;
-                item.error = Some(e.to_string());
+                item.error = Some(match e {
+                    // Its files would pass the path limits (#1102): said in the interface's
+                    // language, with the video's path.
+                    mdm_tools::proc::ProcError::PathTooLong(_) => {
+                        crate::errors::describe(&mdm_engine::Error::PathTooLong(item.dest.clone()))
+                    }
+                    e => e.to_string(),
+                });
             }
         }
         self.dirty = true;
@@ -11418,6 +11444,7 @@ mod same_name_tests {
             selector: "b".into(),
             subs: Default::default(),
             parts: Vec::new(),
+            named: false,
         });
         let items = [row(1, &d.join("Master.webm"), Status::Stopped, 9), video];
         assert_eq!(
@@ -11686,6 +11713,7 @@ mod duplicate_tests {
                 label: "720p".into(),
                 merge: true,
             }),
+            named: false,
         }
     }
 
@@ -11718,6 +11746,7 @@ mod duplicate_tests {
             selector: SELECTOR.into(),
             subs: Default::default(),
             parts: Vec::new(),
+            named: false,
         });
         assert!(same_video(&item, &page(), SELECTOR));
         assert!(!same_video(
@@ -11839,6 +11868,7 @@ mod duplicate_tests {
             selector: SELECTOR.into(),
             subs: Default::default(),
             parts: Vec::new(),
+            named: false,
         });
         i
     }
