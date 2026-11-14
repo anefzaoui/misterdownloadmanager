@@ -583,6 +583,8 @@ impl Progress {
                     }
                 })
                 .inner;
+            // Its menu opened from the keyboard, said to screen readers (#328).
+            crate::chrome::tell_screen_readers(ui.ctx());
             if close {
                 return Action::Close;
             }

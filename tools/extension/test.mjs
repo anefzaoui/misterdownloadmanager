@@ -543,6 +543,37 @@ const ok = (what) => {
   ok("Alt, excluded sites, blob: and withdrawn site access stay with the browser");
 }
 
+// #1049: a plain name in Options' excluded sites takes its subdomains, and a file its pages link
+// to on another host (a CDN) is the site's too, by the download's referrer; with no page known,
+// the file's own host decides.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: false, rules: { excludedSites: "example.test *.mirror.* https://*kept*" } });
+  load(api, false);
+  const keep = async (item) => {
+    let suggested = false;
+    listeners.determining(item, () => (suggested = true));
+    await settle();
+    return suggested;
+  };
+  assert.ok(await keep({ id: 60, url: "https://www.example.test/a.zip", filename: "a.zip" }), "a subdomain");
+  assert.ok(
+    await keep({ id: 61, url: "https://cdn.files.test/b.zip", referrer: "https://www.example.test/get", filename: "b.zip" }),
+    "from the site's page",
+  );
+  assert.deepEqual(natives(calls), []);
+  assert.deepEqual(notices(calls).map((n) => [n.why, n.name]), [["site", "a.zip"], ["site", "b.zip"]]);
+  assert.ok(!(await keep({ id: 62, url: "https://cdn.files.test/c.zip", referrer: "https://other.test/", filename: "c.zip" })), "another site's page");
+  assert.ok(!(await keep({ id: 63, url: "https://cdn.files.test/d.zip", referrer: "", filename: "d.zip" })), "no page known");
+  assert.ok(!(await keep({ id: 64, url: "https://badexample.test/e.zip", filename: "e.zip" })), "not a subdomain");
+  assert.deepEqual(natives(calls).map((m) => m.url), ["https://cdn.files.test/c.zip", "https://cdn.files.test/d.zip", "https://badexample.test/e.zip"]);
+  // Wildcards, as the app reads them (#759): `*.mirror.*`, a scheme left out.
+  assert.ok(await keep({ id: 65, url: "https://dl.mirror.org/f.zip", filename: "f.zip" }), "*.mirror.*");
+  assert.ok(await keep({ id: 66, url: "https://mirror.net/g.zip", filename: "g.zip" }), "*.mirror.* takes the domain");
+  assert.ok(await keep({ id: 67, url: "https://cdn.files.test/h.zip", referrer: "https://www.kept.test/", filename: "h.zip" }), "*kept*");
+  assert.equal(natives(calls).length, 3);
+  ok("#1049: excluded sites take their subdomains and the files their pages link to");
+}
+
 // Paused from the toolbar button: nothing is taken until it is on again.
 {
   const { api, calls, listeners, store } = fakeApi({ firefox: false });
@@ -593,15 +624,15 @@ const ok = (what) => {
   const values = rule.addRules[0].condition.responseHeaders[0].values;
   assert.ok(values.includes("application/pdf*") && values.includes("audio/mpeg*"));
   assert.ok(!values.some((v) => v.startsWith("video/mp4")), "MP4 not listed");
-  // Options' excluded sites keep opening in the browser: *. with its subdomains, a plain host
-  // by itself (an allow rule).
-  const ex = fakeApi({ firefox: false, types: "PDF", rules: { excludedSites: "*.docs.test files.test:8080" } });
+  // Options' excluded sites keep opening in the browser, with their subdomains whether written
+  // with *. or not (#1049), and so do the files their pages lead to on another host.
+  const ex = fakeApi({ firefox: false, types: "PDF", rules: { excludedSites: "*.docs.test files.test:8080 docs.test" } });
   load(ex.api, false);
   await settle();
   const added = ex.calls.filter((c) => c[0] === "dnr").pop()[1].addRules;
-  assert.deepEqual(added[0].condition.excludedRequestDomains, ["docs.test"]);
-  assert.equal(added[1].action.type, "allow");
-  assert.equal(added[1].condition.regexFilter, "^[a-z]+://files\\.test(:[0-9]+)?/", "the host alone, any port");
+  assert.equal(added.length, 1, "one rule: no allow rules of their own");
+  assert.deepEqual(added[0].condition.excludedRequestDomains, ["docs.test", "files.test"]);
+  assert.deepEqual(added[0].condition.excludedInitiatorDomains, ["docs.test", "files.test"]);
   const off = fakeApi({ firefox: false, rules: { opened: false } });
   load(off.api, false);
   await settle();

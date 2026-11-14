@@ -3491,7 +3491,8 @@ impl OptionsDialog {
                             &p,
                             o.x + 14.0,
                             o.y + 133.0,
-                            crate::i18n::t("(separate names by spaces)"),
+                            // i18n: under Download panels site exclusions list
+                            crate::i18n::t("(separate by spaces; * matches anything)"),
                             LIGHT_TEXT(),
                         );
                         // The list as a file, to keep or carry to a new installation (#424).
