@@ -224,6 +224,9 @@ pub(crate) struct Shared {
     used_once: Mutex<HashSet<String>>,
     /// Requests each signed link with `uses` has served (path and query).
     link_uses: Mutex<HashMap<String, u64>>,
+    /// When the shared line (`link_rate`) is free again: each chunk sent books its time on it,
+    /// so the responses take turns and divide it between them.
+    line_free: Mutex<Instant>,
     conn_reqs: Mutex<HashMap<SocketAddr, u64>>,
     /// Each client's `max_conns` slots in use.
     active: Mutex<HashMap<IpAddr, Vec<Arc<SlotUse>>>>,
@@ -244,6 +247,16 @@ impl Shared {
 
     fn faults(&self) -> Faults {
         self.faults.read().unwrap().clone()
+    }
+
+    /// Books `bytes` on the shared line (`Faults::link_rate`, `rate` bytes/s) and returns when
+    /// they are through. Time the line sat idle is not banked: a line carries no more than its
+    /// rate, whoever was late.
+    fn book_line(&self, bytes: u64, rate: u64) -> Instant {
+        let mut free = self.line_free.lock().unwrap();
+        let due = (*free).max(Instant::now()) + Duration::from_secs_f64(bytes as f64 / rate as f64);
+        *free = due;
+        due
     }
 
     /// Resolves once the server's faults leave the byte at `at` to be sent.
@@ -352,6 +365,7 @@ impl LabServer {
             seq: AtomicU64::new(0),
             used_once: Mutex::default(),
             link_uses: Mutex::default(),
+            line_free: Mutex::new(Instant::now()),
             conn_reqs: Mutex::default(),
             active: Mutex::default(),
             log: Mutex::default(),
@@ -636,6 +650,9 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
   faults (also server-wide with --faults; per-URL values override):
     rate=SIZE slow_every=N slow_rate=SIZE max_conns=N drop_after=SIZE drop_every=N
     fail_every=N fail_first=N no_range=1 no_range_every=N html=1 etag_change_every=N
+    link_rate=SIZE one line shared by all the server's responses (rate caps each on its own): N
+                   connections get about SIZE/N each, as over one real link; with slow_every, the
+                   slow ones stay slow on the shared line too
     html=1         a small web page (a sign-in wall, a file host's waiting page) instead of the
                    file, text/html; with html_type=TYPE|none the page comes as TYPE (none: no
                    Content-Type), with html_cd=1 under the file's name (Content-Disposition)
@@ -1479,6 +1496,7 @@ pub(crate) async fn serve(
         end,
         rate,
         burst: f.burst,
+        link_rate: f.link_rate,
         drop_at,
         // A URL's own stall stays; the server's is lifted with `set_faults`.
         stall_at: f.stall_at.filter(|at| (start..end).contains(at)),
@@ -1665,6 +1683,8 @@ struct Transfer {
     end: u64,
     rate: Option<u64>,
     burst: Option<u64>,
+    /// The line shared by every response (`Faults::link_rate`).
+    link_rate: Option<u64>,
     drop_at: Option<u64>,
     /// The file offset this response stops at (`stall_at`), and whether `set_faults` can lift it.
     stall_at: Option<u64>,
@@ -1701,6 +1721,9 @@ impl Transfer {
             if let Some(at) = t.stall_at {
                 n = n.min(at - t.pos);
             }
+            if let Some(l) = t.link_rate.filter(|l| *l > 0) {
+                n = n.min((l / 20).max(1024));
+            }
             if let Some(r) = t.rate.filter(|r| *r > 0) {
                 n = n.min((r / 20).max(1024));
                 if let Some(b) = t.burst {
@@ -1717,6 +1740,11 @@ impl Transfer {
             }
             if let Some(d) = t.drop_at {
                 n = n.min(d - t.sent);
+            }
+            if let Some(l) = t.link_rate.filter(|l| *l > 0) {
+                // After the response's own pace: the slower of the two holds, not their sum.
+                let due = t.shared.book_line(n, l);
+                tokio::time::sleep_until(due.into()).await;
             }
             let mut buf = vec![0u8; n as usize];
             content::fill_with_head(t.seed, t.pos, &mut buf, t.magic.unwrap_or_default());

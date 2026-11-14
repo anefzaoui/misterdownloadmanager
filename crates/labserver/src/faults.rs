@@ -14,6 +14,11 @@ pub struct Faults {
     /// rate; by default it is paced from its start, so it sends everything it fell behind by.
     #[serde(deserialize_with = "size_opt")]
     pub burst: Option<u64>,
+    /// One line shared by all the server's responses, bytes/s: the connections divide it between
+    /// them as connections to one server do over one link, each getting about its share. (`rate`
+    /// caps every response on its own; both can be set, the slower holds.)
+    #[serde(deserialize_with = "size_opt")]
+    pub link_rate: Option<u64>,
     /// Every Nth request is throttled to `slow_rate` (simulates one slow connection).
     pub slow_every: Option<u64>,
     #[serde(deserialize_with = "size_opt")]
@@ -105,6 +110,7 @@ impl Faults {
         Faults {
             rate: over.rate.or(self.rate),
             burst: over.burst.or(self.burst),
+            link_rate: over.link_rate.or(self.link_rate),
             slow_every: over.slow_every.or(self.slow_every),
             slow_rate: over.slow_rate.or(self.slow_rate),
             max_conns: over.max_conns.or(self.max_conns),
@@ -192,6 +198,18 @@ mod tests {
         assert_eq!(f.rate, Some(1 << 20));
         assert_eq!(f.max_conns, Some(4));
         assert_eq!(f.no_range, Some(true));
+    }
+
+    /// `link_rate`, not `link`: `link=` is a query key the file requests already pass over
+    /// (`/redirect?uses=N&link=PATH`).
+    #[test]
+    fn the_shared_link_has_its_own_name() {
+        let base = Faults::parse("link_rate=8M").unwrap();
+        assert_eq!(base.link_rate, Some(8 << 20));
+        let f = base.overridden_by(&Faults::parse("rate=1M").unwrap());
+        assert_eq!((f.link_rate, f.rate), (Some(8 << 20), Some(1 << 20)));
+        let f = base.overridden_by(&Faults::parse("link_rate=2M").unwrap());
+        assert_eq!(f.link_rate, Some(2 << 20));
     }
 
     #[test]
