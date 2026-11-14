@@ -562,6 +562,7 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ macOS: a browser hand-off while MDM is hidden from the menu bar opens its window
 - ✅ MediaFire: a download resumed after its address expired asks the file's MediaFire page for a
   fresh one and goes on; a MediaFire file page's link downloads the file
   ([#952](https://github.com/anefzaoui/misterdownloadmanager/issues/952))
