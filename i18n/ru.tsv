@@ -1357,6 +1357,10 @@
 #. window title: the download button the extension shows over videos
 #, machine
 	Download panels	Панели загрузки
+#. window title in the Options window
+#. window title: Options → Downloads → Edit... (the progress window's settings)
+#, machine
+	Download progress dialog	Диалоговое окно хода загрузки
 #. text in rssdlg.rs
 #. RSS feeds window: the tab of the rules that add articles by themselves
 #, machine
@@ -2752,6 +2756,10 @@
 #, machine
 	Mister Download Manager hit an internal error	В Mister Download Manager произошла внутренняя ошибка
 #. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake (Windows' power requests, Linux's inhibitors)
+#, machine
+	Mister Download Manager is downloading	Mister Download Manager загружает
+#. text in wake.rs
 #. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -4021,6 +4029,9 @@
 #. checkbox in the Options window; checkbox in a download's progress window
 #, machine
 	Show download complete dialog	Показать диалоговое окно завершения загрузки
+#. checkbox in the Options window
+#, machine
+	Show download progress dialog when a download starts	Показывать диалоговое окно хода загрузки при начале загрузки
 #. button in a dialog box
 #. button: shows these downloads in MDM's list, selected
 #, machine
@@ -4477,6 +4488,10 @@
 #, machine
 	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	прокси-сервер браузера (расширение VPN или прокси) запрашивает данные для входа, которые есть только у этого расширения: используйте собственное приложение VPN или выберите его сетевой адаптер в меню «Параметры» → «Прокси / SOCKS»
 #. text in extension.rs
+#. a check of Test browser integration: the browsers are pointed at a copy of MDM that was deleted (often one started from inside a zip); that copy's folder shows on the line under it
+#, machine
+	The browsers are set up for a copy that is gone:	Браузеры настроены для копии, которая отсутствует:
+#. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	Браузеры могут найти Mister Download Manager
@@ -4739,10 +4754,38 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Проверка на бота (Cloudflare) отказала yt-dlp. Если страница открывается в вашем браузере, выберите этот браузер в разделе «Параметры» → «Входы на сайты» → «Файлы cookie для видеосайтов» и снова найдите страницу или используйте кнопку «Скачать видео» над видео.
+#. text in errors.rs
+#. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
+#, machine
+	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	срок действия сертификата безопасности сайта истек, поэтому MDM не может быть уверен, что это настоящий сайт (ваш браузер тоже предупреждает об этом)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was made for other site names than the one in the address
+#, machine
+	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	сертификат безопасности сайта предназначен для другого имени сайта, поэтому MDM не может быть уверен, что это настоящий сайт (ваш браузер тоже предупреждает об этом)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
+#, machine
+	the site's security certificate isn't trusted (it's self-signed or from an unknown issuer), so MDM can't be sure it's the real site (your browser warns about it too)	сертификат безопасности сайта не является доверенным (он самоподписан или от неизвестного издателя), поэтому MDM не может быть уверен, что это настоящий сайт (ваш браузер тоже предупреждает об этом)
+#. text in errors.rs
+#. why a download failed: the site's security certificate's validity hasn't begun; usually this computer's date or time is wrong
+#, machine
+	the site's security certificate isn't valid yet: check this computer's date and time	сертификат безопасности сайта еще недействителен: проверьте дату и время на этом компьютере
+#. text in errors.rs
+#. why a download failed: the site's security certificate was refused for another reason (a bad signature, a broken certificate)
+#, machine
+	the site's security certificate was refused, so MDM can't be sure it's the real site	сертификат безопасности сайта был отклонен, поэтому MDM не может быть уверен, что это настоящий сайт
+#. text in errors.rs
+#. why a download failed: the issuer of the site's security certificate took it back
+#, machine
+	the site's security certificate was revoked by its issuer, so MDM won't trust it	сертификат безопасности сайта был отозван его издателем, поэтому MDM не будет доверять ему
 #. text in the Download video window
 #. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Сертификат сайта не является доверенным ни для yt-dlp, ни для этого компьютера: возможно, мешает веб-фильтр антивируса или прокси, который читает HTTPS-соединения. Отключите сканирование HTTPS или добавьте его сертификат на компьютер, затем снова найдите страницу.
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	сертификат безопасности сайта не предназначен для веб-сайтов, поэтому MDM не может быть уверен, что это настоящий сайт
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4839,6 +4882,10 @@
 #. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
 #, machine
 	This computer only (127.0.0.1)	Только этот компьютер (127.0.0.1)
+#. text in extension.rs
+#. a check of Test browser integration: MDM was started from inside a zip (or from the temporary folder), which is deleted after it quits, so it can't be connected to the browsers
+#, machine
+	This copy runs from a temporary folder that will be deleted	Эта копия запускается из временной папки, которая будет удалена
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
@@ -5456,6 +5503,9 @@
 #. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
 #, machine
 	When	Когда
+#. text in the Options window
+#, machine
+	When it is off, downloads go on in the main window's list. Double-click one there to see its progress.	Когда оно выключено, загрузки продолжаются в списке главного окна. Дважды щелкните загрузку, чтобы увидеть ее ход.
 #. text in the Batch download window
 #, machine
 	Wildcard size	Размер подстановочного знака
@@ -6136,6 +6186,10 @@ extension	Help	Справка
 #, machine
 extension	Hide on this video	Скрыть на этом видео
 #. text in the browser extension
+#. Option in the toolbar button's popup: while a web page is in full screen, the Download video button over its videos stays hidden
+#, machine
+extension	Hide the download button in full screen	Скрывать кнопку загрузки в полноэкранном режиме
+#. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
 extension	Hold Alt while clicking a link to let the browser download it.	Удерживайте Alt при нажатии на ссылку, чтобы браузер загрузил ее.
@@ -6151,6 +6205,10 @@ extension	It didn't work. Try again.	Не удалось. Повторите п�
 #. pairing failed: the other MDM shows no pairing code; Pair a device is its button
 #, machine
 extension	It shows no code now: click Pair a device there first.	Сейчас код не отображается: сначала нажмите «Сопрячь устройство» там.
+#. text in the browser extension
+#. why a download stayed with the browser: it is a .torrent file and the app's Torrent settings don't open torrents with Mister Download Manager, so the browser keeps it for the user's own torrent program; keep the setting's name as the app shows it
+#, machine
+extension	It's a torrent, and Open magnet links and .torrent files with Mister Download Manager is off in Torrent settings.	Это торрент, а параметр «Открывать magnet-ссылки и файлы .torrent с помощью Mister Download Manager» в настройках торрентов отключён.
 #. text in the browser extension
 #. why a download stayed with the browser: the file is smaller than the app's minimum size setting
 #, machine
@@ -6381,6 +6439,10 @@ extension	This page's player streams its video in pieces, so there's no file to 
 #, machine
 extension	Turn on	Включить
 #. text in the browser extension
+#. link beside "Downloads from <site> stay with the browser" in the toolbar button's popup: take the site off the excluded sites again
+#, machine
+extension	Undo	Отменить
+#. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	Обновите Mister Download Manager, чтобы использовать все возможности этого расширения
@@ -6396,6 +6458,10 @@ extension	Video	Видео
 #. pairing failed: codes tried too fast
 #, machine
 extension	Wait a moment, then try again.	Подождите немного, затем повторите попытку.
+#. text in the browser extension
+#. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
+#, machine
+extension	While the page is in full screen, its videos show no Download video button	Пока страница находится в полноэкранном режиме, её видео не показывают кнопку «Загрузить видео»
 #. text in the browser extension
 #. pairing failed: the code was wrong
 #, machine

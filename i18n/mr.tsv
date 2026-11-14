@@ -1357,6 +1357,10 @@
 #. window title: the download button the extension shows over videos
 #, machine
 	Download panels	डाउनलोड पॅनेल
+#. window title in the Options window
+#. window title: Options → Downloads → Edit... (the progress window's settings)
+#, machine
+	Download progress dialog	डाउनलोड प्रगती संवाद
 #. text in rssdlg.rs
 #. RSS feeds window: the tab of the rules that add articles by themselves
 #, machine
@@ -2752,6 +2756,10 @@
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager मध्ये अंतर्गत त्रुटी आली
 #. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake (Windows' power requests, Linux's inhibitors)
+#, machine
+	Mister Download Manager is downloading	Mister Download Manager डाउनलोड करत आहे
+#. text in wake.rs
 #. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -4021,6 +4029,9 @@
 #. checkbox in the Options window; checkbox in a download's progress window
 #, machine
 	Show download complete dialog	डाउनलोड पूर्ण झाल्याचा संवाद बॉक्स दाखवा
+#. checkbox in the Options window
+#, machine
+	Show download progress dialog when a download starts	डाउनलोड सुरू झाल्यावर डाउनलोड प्रगती संवाद बॉक्स दाखवा
 #. button in a dialog box
 #. button: shows these downloads in MDM's list, selected
 #, machine
@@ -4477,6 +4488,10 @@
 #, machine
 	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	ब्राउझरचा प्रॉक्सी (एक VPN किंवा प्रॉक्सी एक्स्टेंशन) फक्त त्या एक्स्टेंशनकडे असलेला लॉगिन विचारतो: VPN चे स्वतःचे ॲप वापरा किंवा Options → Proxy / SOCKS मध्ये त्याचा नेटवर्क ॲडॉप्टर निवडा
 #. text in extension.rs
+#. a check of Test browser integration: the browsers are pointed at a copy of MDM that was deleted (often one started from inside a zip); that copy's folder shows on the line under it
+#, machine
+	The browsers are set up for a copy that is gone:	ब्राउझर अशा कॉपीसाठी सेट केले आहेत जे आता अस्तित्वात नाही:
+#. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	ब्राउझर Mister Download Manager शोधू शकतात
@@ -4739,10 +4754,38 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	साइटच्या बॉट तपासणीने (Cloudflare) yt-dlp ला प्रवेश नाकारला. पृष्ठ तुमच्या ब्राउझरमध्ये उघडत असल्यास, पर्याय → साइट लॉगिन → व्हिडिओ साइट्ससाठी कुकीजमध्ये तो ब्राउझर निवडा आणि पृष्ठ पुन्हा शोधा किंवा व्हिडिओवरील डाउनलोड व्हिडिओ बटण वापरा.
+#. text in errors.rs
+#. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
+#, machine
+	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	साइटचे सुरक्षा प्रमाणपत्र कालबाह्य झाले आहे, त्यामुळे MDM ला खात्री नाही की ती खरी साइट आहे (तुमचा ब्राउझर देखील त्याबद्दल चेतावणी देतो)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was made for other site names than the one in the address
+#, machine
+	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	साइटचे सुरक्षा प्रमाणपत्र पत्त्यातील इतर साइट नावासाठी आहे, त्यामुळे MDM ला खात्री नाही की ती खरी साइट आहे (तुमचा ब्राउझर देखील त्याबद्दल चेतावणी देतो)
+#. text in errors.rs
+#. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
+#, machine
+	the site's security certificate isn't trusted (it's self-signed or from an unknown issuer), so MDM can't be sure it's the real site (your browser warns about it too)	साइटचे सुरक्षा प्रमाणपत्र विश्वसनीय नाही (ते सेल्फ-साईन केलेले आहे किंवा अज्ञात जारीकर्त्याकडून आहे), त्यामुळे MDM ला खात्री नाही की ती खरी साइट आहे (तुमचा ब्राउझर देखील त्याबद्दल चेतावणी देतो)
+#. text in errors.rs
+#. why a download failed: the site's security certificate's validity hasn't begun; usually this computer's date or time is wrong
+#, machine
+	the site's security certificate isn't valid yet: check this computer's date and time	साइटचे सुरक्षा प्रमाणपत्र अजून वैध नाही: या संगणकाची तारीख आणि वेळ तपासा
+#. text in errors.rs
+#. why a download failed: the site's security certificate was refused for another reason (a bad signature, a broken certificate)
+#, machine
+	the site's security certificate was refused, so MDM can't be sure it's the real site	साइटचे सुरक्षा प्रमाणपत्र नाकारले गेले, त्यामुळे MDM ला खात्री नाही की ती खरी साइट आहे
+#. text in errors.rs
+#. why a download failed: the issuer of the site's security certificate took it back
+#, machine
+	the site's security certificate was revoked by its issuer, so MDM won't trust it	साइटचे सुरक्षा प्रमाणपत्र त्याच्या जारीकर्त्याने रद्द केले, त्यामुळे MDM त्यावर विश्वास ठेवणार नाही
 #. text in the Download video window
 #. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	साइटचे प्रमाणपत्र yt-dlp किंवा या संगणकाद्वारे विश्वसनीय नाही: अँटीव्हायरसचा वेब फिल्टर किंवा HTTPS वाचणारा प्रॉक्सी अडथळा आणत असेल. त्याचे HTTPS स्कॅनिंग बंद करा, किंवा त्याचे प्रमाणपत्र संगणकात जोडा, नंतर पृष्ठ पुन्हा शोधा.
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	साइटचे सुरक्षा प्रमाणपत्र वेबसाइटसाठी बनवलेले नाही, त्यामुळे MDM ला खात्री नाही की ती खरी साइट आहे
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4839,6 +4882,10 @@
 #. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
 #, machine
 	This computer only (127.0.0.1)	फक्त हेच संगणक (127.0.0.1)
+#. text in extension.rs
+#. a check of Test browser integration: MDM was started from inside a zip (or from the temporary folder), which is deleted after it quits, so it can't be connected to the browsers
+#, machine
+	This copy runs from a temporary folder that will be deleted	ही कॉपी तात्पुरत्या फोल्डरमधून चालते जी हटवली जाईल
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
@@ -5456,6 +5503,9 @@
 #. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
 #, machine
 	When	कधी
+#. text in the Options window
+#, machine
+	When it is off, downloads go on in the main window's list. Double-click one there to see its progress.	जेव्हा ते बंद असते, तेव्हा डाउनलोड मुख्य विंडोच्या सूचीमध्ये चालू राहतात. त्याची प्रगती पाहण्यासाठी त्यावर डबल-क्लिक करा.
 #. text in the Batch download window
 #, machine
 	Wildcard size	वाइल्डकार्डचा आकार
@@ -6136,6 +6186,10 @@ extension	Help	मदत
 #, machine
 extension	Hide on this video	फक्त या व्हिडिओवर लपवा
 #. text in the browser extension
+#. Option in the toolbar button's popup: while a web page is in full screen, the Download video button over its videos stays hidden
+#, machine
+extension	Hide the download button in full screen	पूर्ण स्क्रीनमध्ये डाउनलोड बटण लपवा
+#. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
 extension	Hold Alt while clicking a link to let the browser download it.	ब्राउझरला डाउनलोड करू देण्यासाठी लिंकवर क्लिक करताना Alt दाबून ठेवा.
@@ -6151,6 +6205,10 @@ extension	It didn't work. Try again.	ते काम केले नाही.
 #. pairing failed: the other MDM shows no pairing code; Pair a device is its button
 #, machine
 extension	It shows no code now: click Pair a device there first.	तो आता कोड दाखवत नाही: तिथे आधी 'डिव्हाइस पेअर करा' वर क्लिक करा.
+#. text in the browser extension
+#. why a download stayed with the browser: it is a .torrent file and the app's Torrent settings don't open torrents with Mister Download Manager, so the browser keeps it for the user's own torrent program; keep the setting's name as the app shows it
+#, machine
+extension	It's a torrent, and Open magnet links and .torrent files with Mister Download Manager is off in Torrent settings.	ही एक टॉरेंट फाइल आहे आणि टॉरेंट सेटिंग्जमध्ये Mister Download Manager सह मॅग्नेट लिंक्स आणि .torrent फाइल्स उघडा हे बंद आहे.
 #. text in the browser extension
 #. why a download stayed with the browser: the file is smaller than the app's minimum size setting
 #, machine
@@ -6381,6 +6439,10 @@ extension	This page's player streams its video in pieces, so there's no file to 
 #, machine
 extension	Turn on	चालू करा
 #. text in the browser extension
+#. link beside "Downloads from <site> stay with the browser" in the toolbar button's popup: take the site off the excluded sites again
+#, machine
+extension	Undo	पूर्ववत करा
+#. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	या एक्स्टेंशनची सर्व वैशिष्ट्ये वापरण्यासाठी Mister Download Manager अपडेट करा
@@ -6396,6 +6458,10 @@ extension	Video	व्हिडिओ
 #. pairing failed: codes tried too fast
 #, machine
 extension	Wait a moment, then try again.	एक क्षण थांबा, नंतर पुन्हा प्रयत्न करा.
+#. text in the browser extension
+#. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
+#, machine
+extension	While the page is in full screen, its videos show no Download video button	पृष्ठ पूर्ण स्क्रीनमध्ये असताना, त्याच्या व्हिडिओंवर डाउनलोड व्हिडिओ बटण दिसत नाही
 #. text in the browser extension
 #. pairing failed: the code was wrong
 #, machine
