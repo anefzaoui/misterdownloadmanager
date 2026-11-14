@@ -567,6 +567,12 @@ These ship in the next version.
   registration that leads nowhere at each start, never one that works, and Test browser
   integration says which copy is gone
   ([#818](https://github.com/anefzaoui/misterdownloadmanager/issues/818))
+- ✅ The menu bar with a screen reader: Alt opens it again, and the screen reader says each item
+  as Alt, F10 or the arrows reach it; Shift+F10's menus too
+  ([#328](https://github.com/anefzaoui/misterdownloadmanager/issues/328))
+- ✅ Windows with Direct3D 12: the progress window no longer flashes a stretched picture when
+  Show details or Hide details changes its size
+  ([#471](https://github.com/anefzaoui/misterdownloadmanager/issues/471))
 - ✅ No reconnecting in waves on a shared line: a connection is measured against its share of
   what the connections bring together, not the speed the first one had alone
   ([#896](https://github.com/anefzaoui/misterdownloadmanager/pull/896))
@@ -726,6 +732,7 @@ These ship in the next version.
   video window, the menu over a video and the command line say to install Node.js or Deno, with
   a link to the help page's commands for each system
   ([#852](https://github.com/anefzaoui/misterdownloadmanager/issues/852))
+- ✅ Video helpers: the JavaScript runtime yt-dlp is given is looked for more carefully
 - ✅ Linux: no freeze of the window where the session bus doesn't answer (a session started
   without D-Bus, a bus that hangs): the tray icon is set up beside the window, which carries on
   without it until the bus answers, and gets it then, however late
@@ -1041,9 +1048,6 @@ These ship in a later version, when they're ready.
   download that was already under way, a rename or move when one finishes, and links added
   without Download File Info still wait for it (follows
   [#743](https://github.com/anefzaoui/misterdownloadmanager/issues/743))
-- 🔍 Alt and F10 not reaching the menu bar while a screen reader (NVDA, Narrator) runs
-  ([#328](https://github.com/anefzaoui/misterdownloadmanager/issues/328)): 0.5.2's fix covers a
-  focused control, not this
 - 🔍 A site's bot check refusing MDM's request (testfile.org, a Cloudflare challenge): the
   message now says so ([#376](https://github.com/anefzaoui/misterdownloadmanager/issues/376)); a
   way to hand the download back to the browser is still to decide
