@@ -670,6 +670,22 @@ pub fn set_torrent_handlers(on: bool) {
     ]));
 }
 
+/// `win32::torrent_handler_is_ours`: is MDM what the desktop opens .torrent files with? Linux:
+/// xdg-mime's default app for them is the packages' desktop entry; macOS: Launch Services'
+/// default for the type is this app (`open_events::is_default`). Asked once, to settle Torrent
+/// settings' switch (#1058).
+pub fn torrent_handler_is_ours() -> bool {
+    #[cfg(target_os = "macos")]
+    return open_events::is_default();
+    #[cfg(not(target_os = "macos"))]
+    Command::new("xdg-mime")
+        .args(["query", "default", "application/x-bittorrent"])
+        .stdin(Stdio::null())
+        .stderr(Stdio::null())
+        .output()
+        .is_ok_and(|o| String::from_utf8_lossy(&o.stdout).trim() == "misterdownloadmanager.desktop")
+}
+
 /// `win32::assistive_technology_listening`: Linux's AT-SPI adapter answers a screen reader with
 /// the first tree a frame produces (no placeholder to replace), and macOS has no such cheap
 /// question; there, as on Windows, a window's tree is ready at once for any window read after
@@ -2014,6 +2030,25 @@ pub mod open_events {
             role: u32,
             bundle_id: *const c_void,
         ) -> i32;
+        fn LSCopyDefaultRoleHandlerForContentType(
+            content_type: *const c_void,
+            role: u32,
+        ) -> *mut c_void;
+    }
+
+    /// Is this app Launch Services' default for .torrent files (`unix::torrent_handler_is_ours`)?
+    pub fn is_default() -> bool {
+        let torrent = NSString::from_str(TORRENT_TYPE);
+        // kLSRolesAll, as `make_default` sets it.
+        const ALL_ROLES: u32 = 0xFFFF_FFFF;
+        // SAFETY: NSString is toll-free bridged to CFString. A Copy function's result is ours to
+        // release, which Retained does; null (no default) is None.
+        let handler = unsafe {
+            Retained::from_raw(
+                LSCopyDefaultRoleHandlerForContentType(cf(&torrent), ALL_ROLES).cast::<NSString>(),
+            )
+        };
+        handler.is_some_and(|h| h.to_string().eq_ignore_ascii_case(BUNDLE_ID))
     }
 
     /// MDM the default app for magnet links and .torrent files (Torrent settings' switch). A

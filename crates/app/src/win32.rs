@@ -3975,6 +3975,49 @@ pub fn take_install_language() -> Option<String> {
     Some(install_language_code(&value))
 }
 
+/// What the installer's task "Open .torrent files and magnet links with Mister Download
+/// Manager" was (tools/installer/mdm.iss writes `1` or `0` on every install): None when no
+/// installer wrote it. Only read: the app settles Torrent settings' switch from it once
+/// (`Settings::settle_torrent_handler`, #1058), and an upgrade's value is never asked again.
+pub fn install_torrents() -> Option<bool> {
+    reg_string(r"Software\MisterDownloadManager", "InstallTorrents").map(|v| v.trim() == "1")
+}
+
+/// Is this program what Windows opens .torrent files with by their class (the user's or
+/// everyone's, as HKEY_CLASSES_ROOT merges them): the installer's task, or Torrent settings'
+/// switch? A copy elsewhere (another install, a portable one) isn't this one.
+pub fn torrent_handler_is_ours() -> bool {
+    use windows_sys::Win32::System::Registry::HKEY_CLASSES_ROOT;
+    let Ok(exe) = std::env::current_exe() else {
+        return false;
+    };
+    let Some(class) = reg_string_in(HKEY_CLASSES_ROOT, ".torrent", "") else {
+        return false;
+    };
+    let command = format!(r"{}\shell\open\command", class.trim());
+    reg_string_in(HKEY_CLASSES_ROOT, &command, "")
+        .is_some_and(|c| runs_program(&c, &exe.display().to_string()))
+}
+
+/// Does an open command (`"C:\…\misterdownloadmanager.exe" "%1"`) start `exe`? Windows' paths
+/// are case-insensitive.
+fn runs_program(command: &str, exe: &str) -> bool {
+    !exe.is_empty() && command.to_lowercase().contains(&exe.to_lowercase())
+}
+
+#[cfg(test)]
+mod torrent_handler_tests {
+    #[test]
+    fn an_open_command_names_its_program() {
+        let exe = r"C:\Program Files\Mister Download Manager\misterdownloadmanager.exe";
+        let ours = r#""c:\program files\mister download manager\MisterDownloadManager.exe" "%1""#;
+        assert!(super::runs_program(ours, exe));
+        let other = r#""C:\Program Files\qBittorrent\qbittorrent.exe" "%1""#;
+        assert!(!super::runs_program(other, exe));
+        assert!(!super::runs_program(ours, ""));
+    }
+}
+
 /// An Inno language name (`lang_pt_br`, tools/installer/languages.py) as a languages.tsv code.
 fn install_language_code(inno: &str) -> String {
     inno.strip_prefix("lang_").unwrap_or(inno).replace('_', "-")

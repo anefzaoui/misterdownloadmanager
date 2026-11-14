@@ -346,7 +346,7 @@ fn answer(m: Message, rules: &mdm_ipc::capture::CaptureRules) -> Reply {
             opened: Some(rules.capture_opened),
             min_kb: Some(rules.capture_min_kb),
             capture_off: rules.capture_off(browser).map(|d| d.code()),
-            torrents: Some(rules.torrent_associations),
+            torrents: Some(rules.takes_torrents()),
             video_lookup: Some(true),
             ..Default::default()
         };
@@ -840,8 +840,7 @@ fn verdict(
     rules.accepts(&m.url, &name, browser)?;
     // A .torrent only its type tells (a name of another listed type), as the app's Add torrent
     // would take it (#1058).
-    if !rules.torrent_associations && mdm_ipc::capture::is_torrent(&m.url, &name, m.mime.as_deref())
-    {
+    if !rules.takes_torrents() && mdm_ipc::capture::is_torrent(&m.url, &name, m.mime.as_deref()) {
         return Err(mdm_ipc::capture::Declined::Torrents);
     }
     if rules.too_small(m.size) {
@@ -2282,7 +2281,10 @@ mod tests {
             user_agent: Some(ua.into()),
             ..Default::default()
         };
-        let mut rules = mdm_ipc::capture::CaptureRules::default();
+        let mut rules = mdm_ipc::capture::CaptureRules {
+            torrent_handler: Some(false),
+            ..Default::default()
+        };
         let r = answer(msg("Show.S01.torrent", "application/x-bittorrent"), &rules);
         assert_eq!(
             (r.ok, r.why, r.declined),
@@ -2310,7 +2312,7 @@ mod tests {
         let json = serde_json::to_string(&answer(hello(), &rules)).unwrap();
         assert!(json.contains(r#""torrents":false"#), "{json}");
         // On: taken as before.
-        rules.torrent_associations = true;
+        rules.torrent_handler = Some(true);
         assert_eq!(
             verdict(&msg("Show.S01.torrent", "application/x-bittorrent"), &rules),
             Ok(())
@@ -2321,6 +2323,12 @@ mod tests {
         );
         let json = serde_json::to_string(&answer(hello(), &rules)).unwrap();
         assert!(json.contains(r#""torrents":true"#), "{json}");
+        // Not decided yet (an app that hasn't started since its update): taken, as before.
+        rules.torrent_handler = None;
+        assert_eq!(
+            verdict(&msg("Show.S01.torrent", "application/x-bittorrent"), &rules),
+            Ok(())
+        );
         // The log says why.
         assert!(
             notice_reason("torrents").contains("Torrent settings"),

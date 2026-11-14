@@ -106,6 +106,11 @@ Root: HKCU; Subkey: "Software\MisterDownloadManager"; ValueType: string; ValueNa
 ; Start with Windows: the same value Options -> "Launch on startup" writes and reads, with the
 ; argument that starts MDM in the notification area (#226; win32.rs startup_command).
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "MisterDownloadManager"; ValueData: """{app}\{#AppExe}"" /startup"; Flags: uninsdeletevalue; Tasks: startup
+; The "torrents" task, ticked or not: Torrent settings' switch on the app's first start that hasn't
+; decided it (#1058: it then also decides whether the browser hands .torrent downloads over;
+; settings.rs settle_torrent_handler). Only read, once.
+Root: HKCU; Subkey: "Software\MisterDownloadManager"; ValueType: string; ValueName: "InstallTorrents"; ValueData: "1"; Flags: uninsdeletevalue uninsdeletekeyifempty; Tasks: torrents
+Root: HKCU; Subkey: "Software\MisterDownloadManager"; ValueType: string; ValueName: "InstallTorrents"; ValueData: "0"; Flags: uninsdeletevalue uninsdeletekeyifempty; Tasks: not torrents
 ; .torrent files and magnet links (HKA: the user's or everyone's classes, as installed).
 Root: HKA; Subkey: "Software\Classes\MisterDownloadManager.torrent"; ValueType: string; ValueName: ""; ValueData: "Torrent file"; Flags: uninsdeletekey; Tasks: torrents
 Root: HKA; Subkey: "Software\Classes\MisterDownloadManager.torrent\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#AppExe},0"; Tasks: torrents

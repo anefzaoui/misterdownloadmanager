@@ -10271,8 +10271,40 @@ impl App {
         }
         if !self.torrents_started {
             self.torrents_started = true;
-            // The handlers follow the exe (a portable copy may have moved).
-            if self.settings.torrent_associations {
+            // Torrent settings' switch never decided (a list from before #1058, a new one):
+            // settled once, as the user chose (the installer's task, an earlier tick, or what the
+            // system opens .torrent files with now), and saved for the browser integration. An
+            // instance off the screens (a test's, MDM_OFFSCREEN) never reads this computer's
+            // installer value or associations: off, unless its list ticked it before.
+            if self.settings.torrent_associations.is_none() {
+                let system = !crate::offscreen();
+                #[cfg(windows)]
+                let installer = (system && mdm_ipc::portable_dir().is_none())
+                    .then(crate::win32::install_torrents)
+                    .flatten();
+                #[cfg(not(windows))]
+                let installer: Option<bool> = None;
+                let registered = || {
+                    #[cfg(windows)]
+                    return system && crate::win32::torrent_handler_is_ours();
+                    #[cfg(unix)]
+                    return system && crate::unix::torrent_handler_is_ours();
+                };
+                if self.settings.settle_torrent_handler(installer, registered) {
+                    tracing::info!(
+                        "torrents: Open magnet links and .torrent files with MDM settled {}",
+                        if self.settings.torrent_associations == Some(true) {
+                            "on"
+                        } else {
+                            "off"
+                        }
+                    );
+                    self.dirty = true;
+                }
+            }
+            // The handlers follow the exe (a portable copy may have moved). Never from an
+            // instance off the screens (a test's build would take this computer's associations).
+            if self.settings.torrent_associations == Some(true) && !crate::offscreen() {
                 #[cfg(windows)]
                 crate::win32::set_torrent_handlers(true);
                 #[cfg(unix)]
@@ -10334,12 +10366,15 @@ impl App {
                             share,
                         );
                     }
-                    if assoc != self.settings.torrent_associations {
-                        self.settings.torrent_associations = assoc;
-                        #[cfg(windows)]
-                        crate::win32::set_torrent_handlers(assoc);
-                        #[cfg(unix)]
-                        crate::unix::set_torrent_handlers(assoc);
+                    if Some(assoc) != self.settings.torrent_associations {
+                        self.settings.torrent_associations = Some(assoc);
+                        // Not from an instance off the screens (a test's), as at start.
+                        if !crate::offscreen() {
+                            #[cfg(windows)]
+                            crate::win32::set_torrent_handlers(assoc);
+                            #[cfg(unix)]
+                            crate::unix::set_torrent_handlers(assoc);
+                        }
                     }
                     self.dirty = true;
                 }

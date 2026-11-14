@@ -2107,7 +2107,7 @@ const CASES = {
     }
     // On: the extension learns it at its next question for the rules (Chromium: asked now;
     // Firefox: once its copy is a minute old).
-    await panelSettings({ torrent_associations: true });
+    await panelSettings({ torrent_handler: true });
     try {
       if (t.session.inExtension) await t.session.inExtension("refreshRules().then(() => true)");
       else {
@@ -2142,7 +2142,7 @@ const CASES = {
       }
       await keptNothing(t.dl);
     } finally {
-      await panelSettings({ torrent_associations: false });
+      await panelSettings({ torrent_handler: false });
     }
     return `off: the browser kept ${off}, MDM's log says why (${why.split(": ").slice(-1)[0].slice(0, 60)}...); on: Add torrent fetched it, the browser kept nothing`;
   },
@@ -3369,6 +3369,9 @@ const KNOWN_BUGS = {};
 // The registry keys `nmhost --register` and `--unregister` touch (crates/nmhost REGISTRY_KEYS,
 // FIREFOX_KEY, CHROME_EXTERNAL_KEY): each browser's host entry and Chrome's external extension,
 // per user and for everyone (the latter only read: an installed copy's). [key, 32-bit view].
+// Also this account's .torrent and magnet associations (TORRENT_KEYS), which Torrent settings'
+// switch writes (win32.rs set_torrent_handlers): no test instance may touch them (#1058); one
+// changed fails the run, after being put back.
 const HOST = "com.misterdownloadmanager.host";
 const REG_KEYS = ["HKCU", "HKLM"].flatMap((root) => [
   ...[
@@ -3379,7 +3382,8 @@ const REG_KEYS = ["HKCU", "HKLM"].flatMap((root) => [
     "Software\\Mozilla\\NativeMessagingHosts",
   ].map((k) => [`${root}\\${k}\\${HOST}`, false]),
   [`${root}\\Software\\Google\\Chrome\\Extensions`, true],
-]);
+]).concat([".torrent", "magnet", "MisterDownloadManager.Torrent"].map((k) => [`HKCU\\Software\\Classes\\${k}`, false]));
+const TORRENT_KEYS = new Set(REG_KEYS.filter(([k]) => k.includes("\\Classes\\")).map(([k]) => k));
 
 // Linux and macOS: the host's manifests (`<HOST>.json`) in the home folder's browser folders,
 // found by a walk (each browser family has its own places: crates/ipc browsers.rs host_dirs),
@@ -3589,6 +3593,9 @@ async function run() {
         // alone); TORRENT for the torrents case (#1058).
         auto_types: "3GP 7Z AAC ACE AIF APK ARJ ASF AVI BIN BZ2 EXE GZ GZIP IMG ISO LZH M4A M4V MKV MOV MP3 MP4 MPA MPE MPEG MPG MSI MSU OGG OGV PDF PLJ PPS PPT QT R0* R1* RA RAR RM RMVB SEA SIT SITX TAR TIF TIFF TORRENT WAV WMA WMV XZ Z ZIP",
         category_dirs: dirs,
+        // Torrent settings' switch decided (off): the instance never settles it from this
+        // computer's installer value or associations (#1058).
+        torrent_handler: false,
       },
     }),
   );
@@ -3751,9 +3758,12 @@ async function run() {
         : `${WIN ? "registry" : "host manifests"}: ${regBefore.length} ${WIN ? "keys" : "files"} byte-identical to before the run${regCheck.changed.length ? ` (put back: ${regCheck.changed.join(", ")})` : ""}; present before: ${kept.join(", ") || "none"}`,
     );
   }
+  // A test instance changed this account's .torrent or magnet association (put back above).
+  const associations = regCheck ? regCheck.changed.filter((k) => TORRENT_KEYS.has(k)) : [];
+  if (associations.length) console.log(`registry: the run CHANGED this account's torrent associations (put back): ${associations.join(", ")}`);
   if (test) console.log(testLeft.length ? `test host: STILL REGISTERED: ${testLeft.join(", ")}` : `test host: ${test.keys.join(", ")} registered for the run, removed`);
   console.log(`total ${((Date.now() - t0) / 1000).toFixed(0)}s`);
-  if (results.some((r) => r[2] === "FAILED" || r[2] === "BUG") || (regCheck && regCheck.differ.length) || testLeft.length) process.exit(1);
+  if (results.some((r) => r[2] === "FAILED" || r[2] === "BUG") || (regCheck && regCheck.differ.length) || associations.length || testLeft.length) process.exit(1);
 }
 
 // Run when started, not when another script imports its helpers (tools/readme/browser-shots.mjs).

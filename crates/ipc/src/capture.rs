@@ -9,7 +9,7 @@ use serde::Deserialize;
 
 /// Options → File types defaults: IDM 6.42's; TORRENT (a .torrent the browser hands over opens
 /// Add torrent, #39; only while Torrent settings open torrents with MDM, else the browser keeps it
-/// for the user's own torrent client, #1058: `CaptureRules::torrent_associations`); and today's
+/// for the user's own torrent client, #1058: `CaptureRules::takes_torrents`); and today's
 /// installers, packages and archives (macOS DMG and PKG, Linux DEB, RPM and AppImage, Windows MSIX, APPX and CAB, Java's JAR, XZ, Zstandard and their tarballs)
 /// and open audio and video formats (WEBM, FLAC, OPUS; #208); and what people fetch by the
 /// gigabyte today (#382): AI models and datasets, 3D and CAD, camera RAW and design files, books
@@ -64,10 +64,11 @@ pub struct CaptureRules {
     /// icon); 0 takes any size. Only when the browser knows the size.
     pub capture_min_kb: u64,
     /// Torrent settings → "Open magnet links and .torrent files with Mister Download Manager"
-    /// (`Settings::torrent_associations`, off by default). Off, a .torrent the browser downloads
-    /// stays with the browser too, which opens it in the user's own torrent client (#1058),
-    /// though TORRENT is in File types.
-    pub torrent_associations: bool,
+    /// as the app settled it (`Settings::torrent_associations`, saved under this name). Off, a
+    /// .torrent the browser downloads stays with the browser too, which opens it in the user's
+    /// own torrent client (#1058), though TORRENT is in File types. None (not decided yet: an
+    /// app that hasn't started since its update): taken, as before (`takes_torrents`).
+    pub torrent_handler: Option<bool>,
 }
 
 impl Default for CaptureRules {
@@ -82,7 +83,7 @@ impl Default for CaptureRules {
             video_panel_sites: String::new(),
             capture_opened: true,
             capture_min_kb: 0,
-            torrent_associations: false,
+            torrent_handler: None,
         }
     }
 }
@@ -179,6 +180,11 @@ impl CaptureRules {
         self
     }
 
+    /// Does the browser hand a .torrent over (Torrent settings' switch on, or not decided yet)?
+    pub fn takes_torrents(&self) -> bool {
+        self.torrent_handler != Some(false)
+    }
+
     /// Is a file of `size` bytes (the browser's figure, when it has one) too small to take?
     pub fn too_small(&self, size: Option<u64>) -> bool {
         size.is_some_and(|s| s > 0 && s < self.capture_min_kb.saturating_mul(1024))
@@ -213,7 +219,7 @@ impl CaptureRules {
         if !self.auto_type(file_name) {
             return Err(Declined::FileType);
         }
-        if !self.torrent_associations && is_torrent(url, file_name, None) {
+        if !self.takes_torrents() && is_torrent(url, file_name, None) {
             return Err(Declined::Torrents);
         }
         let host = host_of(url);
@@ -664,13 +670,11 @@ mod tests {
             r.accepts("https://example.com/page.html", "page.html", CHROME),
             Err(Declined::FileType)
         );
-        // #39: a .torrent is listed by default, but stays with the browser while Torrent
-        // settings don't open torrents with MDM, off by default (#1058); a list saved before
-        // keeps what it had.
-        assert!(r.auto_type("set.torrent"));
+        // #39: a .torrent, by default (Add torrent shows what it holds; Torrent settings' switch
+        // not decided yet counts as on, #1058); a list saved before keeps what it had.
         assert_eq!(
             r.accepts("https://example.com/dl/set.torrent", "set.torrent", CHROME),
-            Err(Declined::Torrents)
+            Ok(())
         );
         let saved: CaptureRules = serde_json::from_str(r#"{"auto_types":"ZIP EXE"}"#).unwrap();
         assert_eq!(
@@ -683,11 +687,16 @@ mod tests {
     fn a_torrent_goes_to_mdm_only_while_torrent_settings_open_torrents_with_it() {
         // #1058: a tracker's `download.php?id=…` serving a .torrent (its name from
         // Content-Disposition), and a plain .torrent link.
-        let off = CaptureRules::default();
-        let on = CaptureRules {
-            torrent_associations: true,
+        let off = CaptureRules {
+            torrent_handler: Some(false),
             ..CaptureRules::default()
         };
+        let on = CaptureRules {
+            torrent_handler: Some(true),
+            ..CaptureRules::default()
+        };
+        // Not decided yet (an app that hasn't started since its update): as before, taken.
+        let undecided = CaptureRules::default();
         for (url, name) in [
             (
                 "https://tracker.test/download.php?id=42",
@@ -701,6 +710,7 @@ mod tests {
                 "{url}"
             );
             assert_eq!(on.accepts(url, name, FIREFOX), Ok(()), "{url}");
+            assert_eq!(undecided.accepts(url, name, CHROME), Ok(()), "{url}");
         }
         // Every other type as before, either way.
         for r in [&off, &on] {
@@ -719,7 +729,7 @@ mod tests {
         // The other rules still say first why it stays (integration off, the type not listed).
         let unlisted = CaptureRules {
             auto_types: "ZIP".into(),
-            ..CaptureRules::default()
+            ..off.clone()
         };
         assert_eq!(
             unlisted.accepts("https://x.test/a.torrent", "a.torrent", CHROME),
@@ -727,18 +737,24 @@ mod tests {
         );
         let integration_off = CaptureRules {
             advanced_integration: false,
-            ..CaptureRules::default()
+            ..off.clone()
         };
         assert_eq!(
             integration_off.accepts("https://x.test/a.torrent", "a.torrent", CHROME),
             Err(Declined::IntegrationOff)
         );
-        // Read from the app's saved settings under the app's name; a list saved before the
-        // setting existed has it off, as the app's default.
-        let saved: CaptureRules = serde_json::from_str(r#"{"torrent_associations":true}"#).unwrap();
-        assert!(saved.torrent_associations);
-        let before: CaptureRules = serde_json::from_str(r#"{"auto_types":"TORRENT"}"#).unwrap();
-        assert!(!before.torrent_associations);
+        // Read from the app's saved settings under the app's name. A list saved before #1058
+        // (its `torrent_associations: false` says nothing: unticked or never looked at) is
+        // undecided until the app settles it: taken.
+        let saved: CaptureRules = serde_json::from_str(r#"{"torrent_handler":false}"#).unwrap();
+        assert!(!saved.takes_torrents());
+        let saved: CaptureRules = serde_json::from_str(r#"{"torrent_handler":true}"#).unwrap();
+        assert!(saved.takes_torrents());
+        let before: CaptureRules =
+            serde_json::from_str(r#"{"auto_types":"TORRENT","torrent_associations":false}"#)
+                .unwrap();
+        assert_eq!(before.torrent_handler, None);
+        assert!(before.takes_torrents());
         assert!(Declined::Torrents.reason().contains("Torrent settings"));
     }
 
