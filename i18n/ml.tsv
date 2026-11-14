@@ -4739,6 +4739,10 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	സൈറ്റിന്റെ ബോട്ട് പരിശോധന (Cloudflare) yt-dlp-യെ നിരസിച്ചു. പേജ് നിങ്ങളുടെ ബ്രൗസറിൽ തുറക്കുകയാണെങ്കിൽ, ഓപ്ഷനുകൾ → സൈറ്റുകൾ ലോഗിനുകൾ → വീഡിയോ സൈറ്റുകൾക്കുള്ള കുക്കികൾ എന്നതിൽ ആ ബ്രൗസർ തിരഞ്ഞെടുത്ത് പേജ് വീണ്ടും തിരയുക, അല്ലെങ്കിൽ വീഡിയോയ്ക്ക് മുകളിലുള്ള ഡൗൺലോഡ് വീഡിയോ ബട്ടൺ ഉപയോഗിക്കുക.
+#. text in the Download video window
+#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
+#, machine
+	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	സൈറ്റിന്റെ സർട്ടിഫിക്കറ്റിനെ yt-dlp-യോ ഈ കമ്പ്യൂട്ടറോ വിശ്വസിക്കുന്നില്ല: ഒരു ആന്റിവൈറസിന്റെ വെബ് ഫിൽട്ടറോ HTTPS വായിക്കുന്ന ഒരു പ്രോക്സിയോ തടസ്സമായേക്കാം. അതിന്റെ HTTPS സ്കാനിംഗ് ഓഫാക്കുക, അല്ലെങ്കിൽ അതിന്റെ സർട്ടിഫിക്കറ്റ് കമ്പ്യൂട്ടറിന്റെ സർട്ടിഫിക്കറ്റുകളിലേക്ക് ചേർക്കുക, തുടർന്ന് പേജ് വീണ്ടും പരിശോധിക്കുക.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -6377,6 +6381,10 @@ extension	This page's player streams its video in pieces, so there's no file to 
 #, machine
 extension	Turn on	ഓൺ ചെയ്യുക
 #. text in the browser extension
+#. link beside "Downloads from <site> stay with the browser" in the toolbar button's popup: take the site off the excluded sites again
+#, machine
+extension	Undo	പഴയപടിയാക്കുക
+#. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	ഈ എക്സ്റ്റൻഷന്റെ എല്ലാ സവിശേഷതകളും ഉപയോഗിക്കാൻ Mister Download Manager അപ്‌ഡേറ്റ് ചെയ്യുക
@@ -6509,10 +6517,10 @@ menu	&About Mister Download Manager	Mister Download Manager-നെക്കു�
 #, machine
 menu	&Add new download	പുതിയ ഡൗൺലോഡ് ചേർക്കുക(&A)
 #. menu command in the main window
+#. View → Window system: MDM chooses the window system itself at each start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#. the trailing ... means it opens a window: keep it
 #, machine
-menu	Add &new download...	പുതിയ ഡൗൺലോഡ് &ചേർക്കുക...
+menu	&Automatic	സ്വ&യമേവ
 #. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -6618,11 +6626,6 @@ menu	&Stop All	എല്ലാം നിർത്തുക(&S)
 #, machine
 menu	&Stop Download	ഡൗൺലോഡ് നിർത്തുക(&S)
 #. menu command in the main window
-#. View menu: submenu choosing how the text is drawn (smooth or classic)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
-menu	Te&xt	ടെക്സ്റ്റ്(&X)
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tray icon	ട്രേ ഐക്കൺ(&T)
@@ -6639,6 +6642,11 @@ menu	&Undo	&പഴയപടിയാക്കുക
 #, machine
 menu	&Video downloads	വീഡിയോ ഡൗൺലോഡുകൾ(&V)
 #. menu command in the main window
+#. View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Window system	&വിൻഡോ സിസ്റ്റം
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Add &batch download	ബാച്ച് ഡൗൺലോഡ് ചേർക്കുക(&b)
@@ -6647,6 +6655,11 @@ menu	Add &batch download	ബാച്ച് ഡൗൺലോഡ് ചേർക�
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Add &magnet link...	മാഗ്നറ്റ് ലിങ്ക് ചേർക്കുക(&m)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &new download...	പുതിയ ഡൗൺലോഡ് &ചേർക്കുക...
 #. menu command in the main window
 #. View → Theme: picks a theme file or a Base16 or pywal colour scheme, copies it into the themes folder and uses it
 #, machine
@@ -6862,6 +6875,14 @@ menu	Hide drop target	ഡ്രോപ്പ് ടാർഗറ്റ് മറ�
 #, machine
 menu	High contrast	ഉയർന്ന കോൺട്രാസ്റ്റ്
 #. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are Wayland's now
+#, machine
+menu	In use: Wayland	ഉപയോഗത്തിലുണ്ട്: Wayland
+#. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are X11's (through XWayland) now
+#, machine
+menu	In use: X11 (XWayland)	ഉപയോഗത്തിലുണ്ട്: X11 (XWayland)
+#. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
 menu	It couldn't start: the log says why	ഇതിന് ആരംഭിക്കാനായില്ല: ലോഗിൽ കാരണം രേഖപ്പെടുത്തിയിട്ടുണ്ട്
@@ -7052,6 +7073,11 @@ menu	Stop Download	ഡൗൺലോഡ് നിർത്തുക
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Support &MDM	MDM-നെ പിന്തുണയ്ക്കുക(&M)
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Te&xt	ടെക്സ്റ്റ്(&X)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

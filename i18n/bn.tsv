@@ -4606,6 +4606,10 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	সাইটের বট চেক (Cloudflare) yt-dlp প্রত্যাখ্যান করেছে। যদি পৃষ্ঠাটি আপনার ব্রাউজারে খোলে, তাহলে বিকল্পসমূহ → সাইট লগইন → ভিডিও সাইটগুলির জন্য কুকিজ-এ সেই ব্রাউজারটি নির্বাচন করুন এবং আবার পৃষ্ঠাটি দেখুন, অথবা ভিডিওর উপরে ডাউনলোড ভিডিও বোতামটি ব্যবহার করুন।
+#. text in the Download video window
+#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
+#, machine
+	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	সাইটের সার্টিফিকেট yt-dlp বা এই কম্পিউটার দ্বারা বিশ্বস্ত নয়: একটি অ্যান্টিভাইরাসের ওয়েব ফিল্টার বা HTTPS পড়া একটি প্রক্সি বাধা দিতে পারে। এর HTTPS স্ক্যানিং বন্ধ করুন, অথবা এর সার্টিফিকেট কম্পিউটারে যোগ করুন, তারপর আবার পেজটি দেখুন।
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -6188,6 +6192,10 @@ extension	This page's player streams its video in pieces, so there's no file to 
 #, machine
 extension	Turn on	চালু করুন
 #. text in the browser extension
+#. link beside "Downloads from <site> stay with the browser" in the toolbar button's popup: take the site off the excluded sites again
+#, machine
+extension	Undo	পূর্বাবস্থায় ফিরিয়ে আনুন
+#. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	এই এক্সটেনশনের সব সুবিধা ব্যবহার করতে Mister Download Manager আপডেট করুন
@@ -6318,9 +6326,10 @@ menu	&About Mister Download Manager	Mister Download Manager সম্পর্�
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Add new download	নতুন ডাউনলোড যোগ করুন(&A)
 #. menu command in the main window
+#. View → Window system: MDM chooses the window system itself at each start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#. the trailing ... means it opens a window: keep it
-menu	Add &new download...	নতুন ডাউনলোড যোগ করুন(&N)...
+#, machine
+menu	&Automatic	স্বয়ংক্রিয়(&A)
 #. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -6407,10 +6416,6 @@ menu	&Stop All	সব ডাউনলোড থামান(&S)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Stop Download	ডাউনলোড থামান(&S)
 #. menu command in the main window
-#. View menu: submenu choosing how the text is drawn (smooth or classic)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-menu	Te&xt	টেক্সট(&X)
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Tray icon	ট্রে আইকন(&T)
 #. menu command in the main window
@@ -6424,12 +6429,26 @@ menu	&Undo	&পূর্বাবস্থায় ফিরিয়ে আন
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Video downloads	ভিডিও ডাউনলোড(&V)
 #. menu command in the main window
+#. View → Window system: Wayland's own windows (the name of a Linux display system, usually kept as is)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Wayland	ওয়েল্যান্ড(&W)
+#. menu command in the main window
+#. View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Window system	উইন্ডো সিস্টেম(&W)
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Add &batch download	ব্যাচ ডাউনলোড যোগ করুন(&B)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 menu	Add &magnet link...	ম্যাগনেট লিংক যোগ করুন(&M)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+menu	Add &new download...	নতুন ডাউনলোড যোগ করুন(&N)...
 #. menu command in the main window
 #. View → Theme: picks a theme file or a Base16 or pywal colour scheme, copies it into the themes folder and uses it
 menu	Add a theme file…	একটি থিম ফাইল যোগ করুন…
@@ -6592,6 +6611,14 @@ menu	Hide drop target	ড্রপ টার্গেট লুকান
 #. View → Theme: black and white with strong edges, for low vision
 menu	High contrast	উচ্চ বৈসাদৃশ্য
 #. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are Wayland's now
+#, machine
+menu	In use: Wayland	ব্যবহারে: ওয়েল্যান্ড
+#. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are X11's (through XWayland) now
+#, machine
+menu	In use: X11 (XWayland)	ব্যবহারে: X11 (XWayland)
+#. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 menu	It couldn't start: the log says why	চালু হতে পারেনি: কারণ লগে লেখা আছে
 #. menu command in the main window
@@ -6735,6 +6762,10 @@ menu	Stop Download	ডাউনলোড থামান
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Support &MDM	MDM-কে সমর্থন করুন(&M)
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menu	Te&xt	টেক্সট(&X)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Tell a &friend	বন্ধুকে জানান(&F)

@@ -4739,6 +4739,10 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Сайттың бот тексеруі (Cloudflare) yt-dlp-ге рұқсат бермеді. Егер бет браузеріңізде ашылса, Параметрлер → Сайттарға кіру → Бейне сайттарға арналған cookie файлдары бөлімінен сол браузерді таңдап, бетті қайта қараңыз немесе бейне үстіндегі «Бейнені жүктеп алу» түймесін пайдаланыңыз.
+#. text in the Download video window
+#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
+#, machine
+	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Сайттың сертификатына yt-dlp де, бұл компьютер де сенбейді: антивирустың веб-сүзгісі немесе HTTPS оқитын прокси кедергі жасауы мүмкін. Оның HTTPS сканерлеуін өшіріңіз немесе оның сертификатын компьютерге қосыңыз, содан кейін бетті қайта қараңыз.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -6377,6 +6381,10 @@ extension	This page's player streams its video in pieces, so there's no file to 
 #, machine
 extension	Turn on	Қосу
 #. text in the browser extension
+#. link beside "Downloads from <site> stay with the browser" in the toolbar button's popup: take the site off the excluded sites again
+#, machine
+extension	Undo	Болдырмау
+#. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	Осы кеңейтім ұсынатын барлық мүмкіндіктерді пайдалану үшін Mister Download Manager қолданбасын жаңартыңыз
@@ -6509,10 +6517,10 @@ menu	&About Mister Download Manager	Mister Download Manager туралы(&A)
 #, machine
 menu	&Add new download	Жаңа жүктеуді қосу(&A)
 #. menu command in the main window
+#. View → Window system: MDM chooses the window system itself at each start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#. the trailing ... means it opens a window: keep it
 #, machine
-menu	Add &new download...	Жаңа жүктеуді &қосу...
+menu	&Automatic	А&втоматты
 #. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -6618,11 +6626,6 @@ menu	&Stop All	Барлығын тоқтату(&S)
 #, machine
 menu	&Stop Download	Жүктеп алуды тоқтату(&S)
 #. menu command in the main window
-#. View menu: submenu choosing how the text is drawn (smooth or classic)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
-menu	Te&xt	&Мәтін
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tray icon	Науа белгішесі(&T)
@@ -6639,6 +6642,11 @@ menu	&Undo	&Болдырмау
 #, machine
 menu	&Video downloads	Бейне жүктеулер(&V)
 #. menu command in the main window
+#. View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Window system	Терезе &жүйесі
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Add &batch download	Пакеттік жүктеуді қосу(&b)
@@ -6647,6 +6655,11 @@ menu	Add &batch download	Пакеттік жүктеуді қосу(&b)
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Add &magnet link...	Магнит сілтемесін қосу(&m)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &new download...	Жаңа жүктеуді &қосу...
 #. menu command in the main window
 #. View → Theme: picks a theme file or a Base16 or pywal colour scheme, copies it into the themes folder and uses it
 #, machine
@@ -6858,6 +6871,14 @@ menu	Hide drop target	Апару нысанасын жасыру
 #, machine
 menu	High contrast	Жоғары контраст
 #. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are Wayland's now
+#, machine
+menu	In use: Wayland	Қолданылуда: Wayland
+#. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are X11's (through XWayland) now
+#, machine
+menu	In use: X11 (XWayland)	Қолданылуда: X11 (XWayland)
+#. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
 menu	It couldn't start: the log says why	Іске қосылмады: себебі журналда көрсетілген
@@ -7048,6 +7069,11 @@ menu	Stop Download	Жүктеп алуды тоқтату
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Support &MDM	MDM-ге &қолдау көрсету
+#. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Te&xt	&Мәтін
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
