@@ -567,6 +567,9 @@ These ship in the next version.
   registration that leads nowhere at each start, never one that works, and Test browser
   integration says which copy is gone
   ([#818](https://github.com/anefzaoui/misterdownloadmanager/issues/818))
+- ✅ Text boxes keep their selection under a right-click, so the menu's Copy and Cut take it
+  (Select all, then Copy, copied nothing)
+  ([#1084](https://github.com/anefzaoui/misterdownloadmanager/issues/1084))
 - ✅ A page that says which video it is about (its JSON-LD, `og:video` or `twitter:player`) gets
   that video from Add URL, Download video and the command line, not the first player written in
   its HTML (a hidden welcome video)
