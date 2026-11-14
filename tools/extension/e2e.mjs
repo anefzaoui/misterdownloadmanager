@@ -17,7 +17,8 @@
 // it, #578), link (a .zip link, throttled and not), ask (Firefox set to ask what to
 // do with each new type, as Waterfox is: caught before its dialog, #208), cookie (cookies and referrer
 // forwarded), names (Content-Disposition), redirect, leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
-// to the browser: a link, a redirect, a page's script; Firefox's own default too, #332), opened (a PDF or MP3 the browser would show or play), spot (the video button
+// to the browser: a link, a redirect, a page's script; Firefox's own default too, #332), opened (a PDF or MP3 the browser would show or play), openedNames
+// (such a video under its server's name, inline or an attachment, #948), spot (the video button
 // clear of the page's controls, #421), feeds (a video in a feed sends its post, its own file, or
 // nothing and says so, never the feed: sample pages served at LinkedIn's, Facebook's, X's,
 // Instagram's, Reddit's, TikTok's, Vimeo's, Dailymotion's addresses, #689), preview (the video button kept over a hover-to-play
@@ -2179,6 +2180,28 @@ const CASES = {
     }
     if (failed.length) throw new Error(`${failed.join(" | ")}${done.length ? ` (taken: ${done.join(", ")})` : ""}`);
     return `taken, the tab stayed: ${[...done, ...left].join(", ")}`;
+  },
+
+  // #948: such a file under the server's own name, not its address's (`main.mp4`, `main.mkv`): one
+  // played inline with "inline; filename=...", which the extension's rule makes a download (the
+  // name goes with the header: MDM reads it from its own answer), and one sent as an attachment
+  // (the rule leaves it, and its name, as they are).
+  async openedNames(t) {
+    if (t.kind === "chromium" && t.session.major < 128) throw new Skip(`${t.name} ${t.session.major}: needs 128 (header conditions)`);
+    const done = [];
+    for (const [at, query, file] of [
+      ["/gen/1M/main.mp4", "inline=1", `e2e-movie-${t.name}.mp4`],
+      ["/gen/1M/main.mkv", "type=video%2Fx-matroska", `e2e-film-${t.name}.mkv`],
+    ]) {
+      await t.session.navigate(`${LAB}/page?link=none`);
+      await t.session.navigate(`${LAB}${at}?${query}&cd=${encodeURIComponent(file)}`, { download: true });
+      await arrived(file, 1 << 20, "Video", 20000);
+      await keptNothing(t.dl);
+      done.push(`${at.split("/").pop()} (${query.split("=")[0]}) as ${file}`);
+    }
+    const wrong = fs.readdirSync(path.join(downloads, "Video")).filter((f) => /^main( \(\d+\))?\.(mp4|mkv)$/.test(f));
+    if (wrong.length) throw new Error(`saved under the address's name too: ${wrong.join(", ")}`);
+    return done.join(", ");
   },
 
   // The video button on a page whose Content-Security-Policy allows no inline style.
