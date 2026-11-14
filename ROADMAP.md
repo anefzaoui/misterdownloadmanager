@@ -557,7 +557,7 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
-- ✅ The menu bar with a screen reader: Alt opens it again, and NVDA and Narrator say each item
+- ✅ The menu bar with a screen reader: Alt opens it again, and the screen reader says each item
   as Alt, F10 or the arrows reach it; Shift+F10's menus too
   ([#328](https://github.com/anefzaoui/misterdownloadmanager/issues/328))
 - ✅ Linux: no crash when fontconfig offers a font MDM can't draw with (an old bitmap font for
