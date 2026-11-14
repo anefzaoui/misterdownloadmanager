@@ -916,7 +916,12 @@ impl eframe::ViewportHooks for SwapHooks {
         info: &egui::ViewportInfo,
         vsync: bool,
     ) -> bool {
-        swap_waits(self.0, viewport == egui::ViewportId::ROOT, shown(info), vsync)
+        swap_waits(
+            self.0,
+            viewport == egui::ViewportId::ROOT,
+            shown(info),
+            vsync,
+        )
     }
 }
 

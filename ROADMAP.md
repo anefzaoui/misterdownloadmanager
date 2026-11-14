@@ -1053,8 +1053,11 @@ These ship in the next version.
 - ✅ Linux: downloads to an NTFS drive (`ntfs3`) start at once instead of filling the file with
   zeros first, which held the download at 0% and slowed the whole computer
 - ✅ Linux on Wayland (XWayland) with NVIDIA's driver: typing and clicking no longer lag by 1 to 2
-  seconds; MDM spaces its frames itself instead of waiting for the screen's refresh (other drivers
-  keep the refresh)
+  seconds; MDM spaces its frames itself instead of waiting for the screen's refresh
+- ✅ Linux on X11 and XWayland with Mesa's drivers (Intel, AMD, llvmpipe): moving the main window
+  and clicking in the download dialog no longer lag; one window at most waits for the screen's
+  refresh, and none under XWayland
+  ([#347](https://github.com/anefzaoui/misterdownloadmanager/issues/347))
 - ✅ macOS: a menu whose item opens a file dialog (View → Theme → Add a theme file, Tasks → Open
   torrent file) closes first, instead of floating on top of every window until MDM quits
   ([#615](https://github.com/anefzaoui/misterdownloadmanager/issues/615))
