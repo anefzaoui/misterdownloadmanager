@@ -954,8 +954,9 @@ mod tests {
         }
         stems = pick_all((stems, 5000));
         assert_eq!(stems.pick("Video 7.mp4"), d.join("Video 7 (2).mp4"));
-        // 8 times the names cost about 8 times as long (not 64), on any machine.
-        mdm_labserver::growth::assert_linear(1000, |n| (Stems::new(d, []), n), pick_all);
+        // 16 times the names in one folder cost about as much as in 16 folders (a square: 16
+        // times as much), on any machine.
+        mdm_labserver::growth::assert_linear(500, |n| (Stems::new(d, []), n), pick_all);
     }
 
     #[test]
