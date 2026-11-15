@@ -12396,7 +12396,10 @@ mod end_tests {
                 saves_by(began, Some(deadline)),
                 began + Duration::from_millis(2800)
             );
-            assert_eq!(\n                deadline - saves_by(began, Some(deadline)),\n                super::SESSION_END_LIST\n            );
+            assert_eq!(
+                deadline - saves_by(began, Some(deadline)),
+                super::SESSION_END_LIST
+            );
         }
         let soon = began + Duration::from_millis(500);
         assert!(saves_by(began, Some(soon)) <= soon);
