@@ -1300,7 +1300,8 @@ mod tests {
     }
 
     /// The most a held request is held: a deadlock breaker for a client that never hangs up,
-    /// longer than any budget a test gives.
+    /// longer than any other budget a test gives; also the budget of a test that checks
+    /// something other than time.
     const HELD: Duration = Duration::from_secs(30);
 
     fn ok(body: &str) -> Answer {
@@ -1596,12 +1597,13 @@ mod tests {
                 ..ok("")
             },
         }));
+        // The sizes, with all the time they may need (a busy machine reads 2 MB slowly).
         assert!(
-            fetch_now(&s.url("/small.m3u8"), BUDGET).is_some(),
+            fetch_now(&s.url("/small.m3u8"), HELD).is_some(),
             "under 2 MB"
         );
         assert!(
-            fetch_now(&s.url("/big.m3u8"), BUDGET).is_none(),
+            fetch_now(&s.url("/big.m3u8"), HELD).is_none(),
             "over 2 MB"
         );
         // Slow requests within the budget: the stream.
