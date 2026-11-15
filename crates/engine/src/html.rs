@@ -154,7 +154,17 @@ pub(crate) fn text_of_class(page: &str, class: &str) -> Option<String> {
             .take_while(|c| c.is_ascii_alphanumeric())
             .collect();
         let close = format!("</{name}");
-        let inner_end = lower[end..].find(&close).map_or(page.len(), |e| end + e);
+        // The element's own closing tag, not a longer one that starts with it (`</picture`
+        // begins with `</p`): the name ends at `>`, whitespace or `/`.
+        let inner_end = lower[end..]
+            .match_indices(close.as_str())
+            .find(|(i, _)| {
+                lower[end + i + close.len()..]
+                    .chars()
+                    .next()
+                    .is_none_or(|c| c.is_ascii_whitespace() || c == '>' || c == '/')
+            })
+            .map_or(page.len(), |(i, _)| end + i);
         let text = decode(&strip_tags(&page[end..inner_end]));
         let text = text.split_whitespace().collect::<Vec<_>>().join(" ");
         return (!text.is_empty()).then_some(text);
@@ -586,6 +596,9 @@ mod tests {
         );
         assert_eq!(text_of_class(page, "uc-error"), None);
         assert_eq!(text_of_class("<p class=e>  </p>", "e"), None);
+        // `</picture` starts with `</p`: it doesn't end the paragraph.
+        let nested = r#"<p class="e">a <picture>x</picture> b</p>"#;
+        assert_eq!(text_of_class(nested, "e").as_deref(), Some("a x b"));
     }
 
     fn found(page: &str, at: &str) -> Vec<String> {
