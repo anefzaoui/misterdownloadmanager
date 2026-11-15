@@ -479,7 +479,7 @@ pub fn look_up_kept(
         message: "it gave no video information".into(),
     })?;
     if let Looked::Video(v) = &mut looked {
-        v.needs_js_runtime = proc::missing_js_runtime(&out.warnings, proc::js_runtime_here());
+        v.needs_js_runtime = proc::missing_js_runtime(&out.warnings, proc::js_runtime_here(exe));
     }
     Ok((looked, out))
 }

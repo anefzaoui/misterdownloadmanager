@@ -222,7 +222,7 @@ pub struct Feed {
     #[serde(default)]
     pub articles: Vec<Article>,
     /// The ids of the articles already seen, newest first: only the others go through the
-    /// rules. Empty with `fetched` None: never fetched (its first articles are the backlog).
+    /// rules.
     #[serde(default)]
     pub seen: Vec<String>,
     /// When it was last fetched (Unix seconds), and why that failed if it did.
@@ -230,6 +230,11 @@ pub struct Feed {
     pub fetched: Option<i64>,
     #[serde(default)]
     pub error: Option<String>,
+    /// A fetch has come back with the feed's contents, whether it held an article or not (a
+    /// search feed stays empty until what it looks for is posted). Its articles after that are
+    /// news; before it, they are the backlog. A failed fetch leaves it as it was.
+    #[serde(default)]
+    pub good: bool,
 }
 
 impl Feed {
@@ -243,9 +248,12 @@ impl Feed {
     }
 
     /// Take a fetch's articles: kept newest first, and the ones never seen before returned
-    /// (none the first time: a feed's first articles are its backlog, not news).
+    /// (none until a fetch comes back: a feed's first articles are its backlog, not news — even
+    /// when a fetch that failed came first; an empty first fetch is still a good one, so the
+    /// episode a search feed waits for is news).
     pub fn take(&mut self, parsed: Parsed, now: i64) -> Vec<Article> {
-        let first = self.fetched.is_none();
+        let first = !self.good;
+        self.good = true;
         self.fetched = Some(now);
         self.error = None;
         if !parsed.title.trim().is_empty() {
@@ -544,6 +552,13 @@ impl Store {
         };
         match serde_json::from_str::<Store>(&text) {
             Ok(mut s) => {
+                // A file from before `good`: a fetch that came back (no error) or left seen ids
+                // was a good one, so the feed's next articles are news, not a backlog again.
+                for f in &mut s.feeds {
+                    if !f.good && f.fetched.is_some() && (f.error.is_none() || !f.seen.is_empty()) {
+                        f.good = true;
+                    }
+                }
                 let top = s
                     .feeds
                     .iter()
@@ -911,5 +926,83 @@ mod tests {
         std::fs::write(&path, "{broken").unwrap();
         assert_eq!(Store::load(&path), Store::default());
         assert!(path.with_extension("json.bad").exists(), "kept aside");
+    }
+
+    /// A first fetch that failed (a timeout, a 503) is not the feed's first fetch: its first
+    /// good one still brings a backlog the rules take nothing of.
+    #[test]
+    fn a_failed_first_fetch_keeps_the_backlog_a_backlog() {
+        let mut s = Store::default();
+        let f = s.add_feed("http://127.0.0.1:8899/rss/shows.xml").unwrap();
+        let mut r = Rule::new(s.new_id(), "Open Show");
+        r.must = "open show".into();
+        s.rules.push(r);
+        s.failed(f, "timed out".into(), 100);
+        let art = |id: &str, title: &str| Parsed {
+            title: "Shows".into(),
+            articles: vec![Article {
+                id: id.into(),
+                title: title.into(),
+                torrent: format!("magnet:?xt=urn:btih:{id}"),
+                ..Default::default()
+            }],
+        };
+        assert!(
+            s.fetched(f, art("1", "Open Show S01E01"), 200).is_empty(),
+            "the feed's first articles are its backlog, not news"
+        );
+        let got = s.fetched(f, art("2", "Open Show S01E02"), 300);
+        assert_eq!(got.len(), 1, "an article after the backlog is taken");
+        assert_eq!(got[0].1.id, "2");
+    }
+
+    /// A search feed is empty until what it looks for is posted: its first good fetch holds no
+    /// article, and the one it was subscribed for is news, not the backlog again.
+    #[test]
+    fn an_empty_first_fetch_still_makes_the_next_article_news() {
+        let mut s = Store::default();
+        let f = s.add_feed("http://127.0.0.1:8899/rss/search.xml").unwrap();
+        let mut r = Rule::new(s.new_id(), "Open Show");
+        r.must = "open show".into();
+        s.rules.push(r);
+        let feed = |articles| Parsed {
+            title: "Search".into(),
+            articles,
+        };
+        assert!(
+            s.fetched(f, feed(Vec::new()), 100).is_empty(),
+            "an empty first fetch is still the feed's first"
+        );
+        let got = s.fetched(
+            f,
+            feed(vec![Article {
+                id: "1".into(),
+                title: "Open Show S01E01".into(),
+                torrent: "magnet:?xt=urn:btih:1".into(),
+                ..Default::default()
+            }]),
+            200,
+        );
+        assert_eq!(got.len(), 1, "the episode it waited for is news");
+    }
+
+    /// A file saved before the flag: a feed whose fetch came back (or that has seen articles)
+    /// was good and keeps taking news; one whose only fetch failed was not.
+    #[test]
+    fn an_old_feed_that_came_back_is_migrated_as_good() {
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("rss.json");
+        let old = r#"{"feeds":[
+            {"id":1,"url":"http://x/a","fetched":100,"seen":["a1"]},
+            {"id":2,"url":"http://x/b","fetched":100,"error":"timed out"},
+            {"id":3,"url":"http://x/c"}
+        ]}"#;
+        std::fs::write(&path, old).unwrap();
+        let s = Store::load(&path);
+        assert_eq!(
+            s.feeds.iter().map(|f| f.good).collect::<Vec<_>>(),
+            [true, false, false],
+            "a fetch that came back was good; a failed first one and a never-fetched one were not"
+        );
     }
 }

@@ -328,10 +328,12 @@ function addressMatches(pattern, url) {
 }
 
 // A site pattern against `host`, as the app reads one (mdm_ipc::capture::panel_site_matches):
-// `*` matches anything (#759), and `*.example.com` the domain too.
+// `*` matches anything (#759), and `*.example.com` the domain too; `example.com.` (the root's
+// dot) is `example.com`.
 function siteMatches(host, pattern) {
-  const p = pattern.trim().toLowerCase().replace(/^[^/]*:\/\//, "").split("/")[0];
+  const p = pattern.trim().toLowerCase().replace(/^[^/]*:\/\//, "").split("/")[0].replace(/\.+$/, "");
   if (!p) return false;
+  host = String(host).toLowerCase().replace(/\.+$/, "");
   return (p.startsWith("*.") && wildcard(p.slice(2), host)) || wildcard(p, host);
 }
 
@@ -2270,7 +2272,7 @@ function excludedHosts() {
     const p = raw.trim().replace(/^[a-z]+:\/\//i, "").split("/")[0].replace(/^\*\./, "");
     let host = "";
     try {
-      host = new URL(`http://${p}`).hostname;
+      host = new URL(`http://${p}`).hostname.replace(/\.+$/, "");
     } catch {
       continue;
     }

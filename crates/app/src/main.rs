@@ -460,6 +460,7 @@ fn app() -> eframe::Result {
                 loaded.settings.language.as_deref().unwrap_or("system"),
                 loaded.settings.dark_mode_support,
             ),
+            at_login,
         );
     }
     // Linux: the libraries the window loads when it opens (#265). Without them it can't open
