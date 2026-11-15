@@ -566,6 +566,7 @@ These ship in the next version.
   directory** on Windows: its name is shortened so its download's files fit Windows' path limit,
   and a name or folder too long says so
   ([#1102](https://github.com/anefzaoui/misterdownloadmanager/issues/1102))
+- ✅ macOS: a browser hand-off while MDM is hidden from the menu bar opens its window
 - ✅ Downloads for Windows on ARM, 32-bit Windows and Linux on ARM, beside the x64 ones: the
   installer, the portable zip and the plain zip; the AppImage, .deb, .rpm and .tar.gz. Each is
   built and tested on its own processor, Update now keeps each copy on its own, and the helpers
@@ -636,6 +637,9 @@ These ship in the next version.
   entry, the browser's helper, autostart): Wayland's own windows on a scaled screen where nothing
   tells X11 programs the scale (Hyprland, labwc, sway), XWayland elsewhere; **View → Window
   system** to choose ([#624](https://github.com/anefzaoui/misterdownloadmanager/issues/624))
+- ✅ A PDF a page shows in a frame, an embed or an object goes to MDM like one opened from a link,
+  in Chromium browsers and Firefox; a page's own PDF viewer keeps the file it reads
+  (part of [#1087](https://github.com/anefzaoui/misterdownloadmanager/issues/1087))
 - ✅ The sites in **Don't start downloading automatically from the following sites** take their
   subdomains and the files their pages link to on another server (a CDN), as the Download panels'
   list does
