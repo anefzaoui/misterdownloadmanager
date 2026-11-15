@@ -1,0 +1,133 @@
+# Builds MDM's Windows downloads for one processor into target/dist/, as the Release workflow
+# does, without the Linux, macOS, extension or publish jobs. Run by hand on any branch.
+name: Windows build
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    # One build per processor, each on a runner of its own: x64 and 32-bit on GitHub's x64 Windows
+    # (32-bit programs run there too), ARM64 on its Windows on ARM.
+    name: windows-${{ matrix.arch }}
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x64
+            runner: windows-latest
+            target: x86_64-pc-windows-msvc
+          - arch: arm64
+            runner: windows-11-arm
+            target: aarch64-pc-windows-msvc
+          - arch: x86
+            runner: windows-latest
+            target: i686-pc-windows-msvc
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      # Windows on ARM's runner may come without rustup: rustup's own installer, checked.
+      - name: rustup
+        if: runner.arch == 'ARM64'
+        shell: pwsh
+        run: |
+          if (Get-Command rustup -ErrorAction SilentlyContinue) { exit 0 }
+          $url = "https://static.rust-lang.org/rustup/dist/aarch64-pc-windows-msvc/rustup-init.exe"
+          $exe = "$env:RUNNER_TEMP\rustup-init.exe"
+          Invoke-WebRequest $url -OutFile $exe
+          $want = (Invoke-WebRequest "$url.sha256").Content.Split()[0]
+          if ((Get-FileHash $exe -Algorithm SHA256).Hash -ne $want) { throw "rustup-init's checksum doesn't match" }
+          & $exe -y --default-toolchain none --profile minimal
+          if ($LASTEXITCODE) { throw "rustup-init failed" }
+          "$env:USERPROFILE\.cargo\bin" >> $env:GITHUB_PATH
+
+      - name: Toolchain
+        run: |
+          rustup show active-toolchain || rustup toolchain install
+          rustup target add ${{ matrix.target }}
+
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: release-${{ runner.os }}-${{ matrix.target }}-cargo-${{ hashFiles('Cargo.lock') }}
+          restore-keys: release-${{ runner.os }}-${{ matrix.target }}-cargo-
+
+      # BoringSSL, under the browser-like connection (#668), and AWS-LC are built with NASM for
+      # x64 and 32-bit Windows; the runner has CMake and LLVM's libclang already.
+      - name: NASM
+        if: runner.arch != 'ARM64'
+        shell: pwsh
+        run: |
+          choco install nasm --version 2.16.3 --no-progress -y
+          "C:\Program Files\NASM" >> $env:GITHUB_PATH
+
+      # Windows on ARM: LLVM (clang and libclang) for their assembly and bindings there.
+      - name: LLVM
+        if: runner.arch == 'ARM64'
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "C:\Program Files\LLVM\bin\clang-cl.exe")) {
+            choco install llvm --no-progress -y
+          }
+          "C:\Program Files\LLVM\bin" >> $env:GITHUB_PATH
+          "LIBCLANG_PATH=C:\Program Files\LLVM\bin" >> $env:GITHUB_ENV
+
+      - name: Inno Setup
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe")) {
+            choco install innosetup --no-progress -y
+          }
+
+      - name: Code-signing certificate
+        id: cert
+        shell: pwsh
+        env:
+          PFX: ${{ secrets.CODESIGN_PFX_BASE64 }}
+          PASSWORD: ${{ secrets.CODESIGN_PASSWORD }}
+        run: |
+          if (-not $env:PFX) { "No certificate: building unsigned."; exit 0 }
+          $pfx = Join-Path $env:RUNNER_TEMP "codesign.pfx"
+          [IO.File]::WriteAllBytes($pfx, [Convert]::FromBase64String($env:PFX))
+          $signtool = Get-ChildItem "${env:ProgramFiles(x86)}\Windows Kits\10\bin\*\x64\signtool.exe" |
+            Sort-Object FullName -Descending | Select-Object -First 1
+          "command=`"$($signtool.FullName)`" sign /fd sha256 /tr http://timestamp.digicert.com /td sha256 /f `"$pfx`" /p `"$env:PASSWORD`" `$f" >> $env:GITHUB_OUTPUT
+
+      - name: Installer and portable zip
+        shell: pwsh
+        env:
+          MDM_SIGN_COMMAND: ${{ steps.cert.outputs.command }}
+        run: ./tools/installer/build.ps1 -Arch ${{ matrix.arch }}
+
+      # The programs on the machine that built them: for this processor, and a download works.
+      - name: Smoke test
+        run: python tools/installer/smoke.py target/${{ matrix.target }}/release ${{ matrix.arch }}
+
+      # Crash reports: the release's symbols (no download includes the .pdb files themselves).
+      - name: Symbols
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $v = [regex]::Match((Get-Content Cargo.toml -Raw), '(?m)^version\s*=\s*"([^"]+)"').Groups[1].Value
+          $exes = "misterdownloadmanager", "misterdownloadmanager-nmhost", "misterdownloadmanager-cli", "misterdownloadmanager-mcp" |
+            ForEach-Object { "target/${{ matrix.target }}/release/$_.exe" }
+          python tools/installer/symbols.py windows-${{ matrix.arch }} $v target/dist @exes
+          if ($LASTEXITCODE) { throw "symbols failed" }
+
+      # x64's under the name it always had ("windows"), the others' with their processor.
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: ${{ matrix.arch == 'x64' && 'windows' || format('windows-{0}', matrix.arch) }}
+          path: target/dist/*
+          retention-days: 7
