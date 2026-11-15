@@ -566,6 +566,10 @@ These ship in the next version.
   when MDM finds nothing on the page, it offers what the tab played for that video, told apart
   from the feed's next one by its length, and says so when it can't tell
   ([#1092](https://github.com/anefzaoui/misterdownloadmanager/issues/1092))
+- ✅ A video with a long title (an X post's text) no longer fails at 0% with **No such file or
+  directory** on Windows: its name is shortened so its download's files fit Windows' path limit,
+  and a name or folder too long says so
+  ([#1102](https://github.com/anefzaoui/misterdownloadmanager/issues/1102))
 - ✅ macOS: a browser hand-off while MDM is hidden from the menu bar opens its window
 - ✅ Downloads for Windows on ARM, 32-bit Windows and Linux on ARM, beside the x64 ones: the
   installer, the portable zip and the plain zip; the AppImage, .deb, .rpm and .tar.gz. Each is
@@ -1112,6 +1116,11 @@ These ship in the next version.
 - ✅ Linux: downloads to an NTFS drive (`ntfs3`) start at once instead of filling the file with
   zeros first, which held the download at 0% and slowed the whole computer
 - ✅ Linux on Wayland (XWayland) with NVIDIA's driver: typing and clicking no longer lag by 1 to 2
+  seconds; MDM spaces its frames itself instead of waiting for the screen's refresh
+- ✅ Linux on X11 and XWayland with Mesa's drivers (Intel, AMD, llvmpipe): one window at most waits
+  for the screen's refresh, none under XWayland, as `vblank_mode=0` did for the lag when moving the
+  main window and clicking in the download dialog (for
+  [#347](https://github.com/anefzaoui/misterdownloadmanager/issues/347), waiting for the reporter)
   seconds; MDM spaces its frames itself instead of waiting for the screen's refresh (other drivers
   keep the refresh)
 - ✅ The computer stays awake while anything downloads, not only during a queue that woke it, and

@@ -4256,6 +4256,17 @@ fn reg_string_in(
     Some(String::from_utf16_lossy(&buf[..len]))
 }
 
+/// Whether Windows lets programs that ask for it use paths past `MAX_PATH` (Group Policy's
+/// "Enable Win32 long paths", `LongPathsEnabled`; off on a new install): yt-dlp and ffmpeg ask,
+/// so a video's files may then pass 259 characters (#1102). Read only.
+pub fn long_paths_enabled() -> bool {
+    reg_dword_in(
+        windows_sys::Win32::System::Registry::HKEY_LOCAL_MACHINE,
+        r"SYSTEM\CurrentControlSet\Control\FileSystem",
+        "LongPathsEnabled",
+    ) == Some(1)
+}
+
 fn reg_dword(key: &str, name: &str) -> Option<u32> {
     reg_dword_in(
         windows_sys::Win32::System::Registry::HKEY_CURRENT_USER,

@@ -821,16 +821,19 @@ pub fn test_slow_start() {
 
 /// The start of every main-window pass: the system's API's device checked (see `gpu::poll`).
 /// The pass itself is MDM's own work, not the API's (see [`FirstFrameClock`]).
-pub fn frame_begin() {
-    pace();
+pub fn frame_begin(ctx: &egui::Context) {
+    pace(ctx);
     own_work_begin();
     #[cfg(gpu)]
     gpu::poll();
     stall_test();
 }
 
-/// The frames are paced by MDM, not by the screen's refresh (see [`unpaced_swaps`]).
+/// wgpu presents without waiting for the refresh, and MDM paces its frames (see [`Swaps`]).
 static PACED: AtomicBool = AtomicBool::new(false);
+
+/// OpenGL's windows swap as [`swap_waits`] says, through [`SwapHooks`] (see [`Swaps`]).
+static GL_HOOKED: AtomicBool = AtomicBool::new(false);
 
 /// wgpu presents without waiting for the refresh once MDM paces the frames: its surface takes
 /// the present mode from the app's frame, which the first pass has (none while the app is made).
@@ -850,40 +853,90 @@ pub fn present_unpaced(frame: &mut eframe::Frame) {
 /// The shortest time between two frames when MDM paces them: 60 a second, as the screen would.
 const FRAME_PACE: std::time::Duration = std::time::Duration::from_micros(16_667);
 
-/// Linux under XWayland (MDM's default in a Wayland session) with NVIDIA's own driver: a swap
-/// that waits for the screen's refresh waited about a second for each window XWayland's
-/// compositor wasn't showing at that moment (the main window behind a dialog, a dialog behind
-/// another), and every window of MDM draws in one pass, so a key typed in Download video's File
-/// name showed 1 to 2 seconds later, and every click the same. Its windows swap at once there,
-/// and MDM spaces its frames itself ([`pace`]). Other drivers under XWayland (Mesa: Intel, AMD,
-/// nouveau) keep the refresh's pacing. `vendor`: the driver's vendor, as it names itself.
-fn unpaced_swaps(xwayland: bool, vendor: &str) -> bool {
-    xwayland && vendor.to_ascii_lowercase().contains("nvidia")
+/// Which of MDM's windows wait for the screen's refresh when they swap (vsync).
+///
+/// Every window of MDM (the main window, its dialogs, progress windows, menus) draws in one pass
+/// of the main window, each ending with its own swap. Linux on X11 and XWayland, with Mesa
+/// (Intel, AMD, llvmpipe, VMware) as with NVIDIA: with vsync on every window, each swap could
+/// wait for a refresh of its own, so a pass with a dialog and a menu open could take three
+/// refreshes, and a swap to a window the compositor wasn't showing (minimized, covered, behind a
+/// dialog) waited for the compositor's slow timer instead, about a second under XWayland. Under
+/// XWayland with NVIDIA a key typed showed 1 to 2 seconds later (#1025); with Mesa the main
+/// window lagged as it was moved and the download dialog didn't answer clicks, and Mesa's
+/// `vblank_mode=0` (no window waits) made it rare (#347).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Swaps {
+    /// The graphics API's own choice: Windows, macOS, and Wayland (where winit paces the frames
+    /// by the compositor's frame callbacks and eframe never waits in a swap).
+    Own,
+    /// X11 (Xorg): only the main window waits, while it is shown (it doesn't tear, and a pass
+    /// waits one refresh at most); every other window swaps at once. MDM paces the frames
+    /// itself while the main window doesn't wait ([`pace`]).
+    MainOnly,
+    /// XWayland: no window waits, since the compositor may not be showing any one of them (MDM
+    /// can't tell a covered window there), and MDM paces the frames itself. The compositor draws
+    /// every window there, so they don't tear.
+    NoneWait,
 }
 
-/// MDM's windows are X11's in a Wayland session (XWayland).
-fn on_xwayland() -> bool {
+/// How MDM's windows swap on this system (see [`Swaps`]).
+fn swaps() -> Swaps {
+    // Linux: X11 and XWayland. Wayland, Windows and macOS keep the graphics API's own choice.
     #[cfg(target_os = "linux")]
-    return crate::unix::on_xwayland();
-    #[cfg(not(target_os = "linux"))]
-    false
+    if !crate::unix::on_wayland() {
+        return if crate::unix::on_xwayland() {
+            Swaps::NoneWait
+        } else {
+            Swaps::MainOnly
+        };
+    }
+    Swaps::Own
 }
 
-/// OpenGL's swap interval is chosen as its first window is made, before the app knows the
-/// driver: under XWayland, the GLX vendor of the display is asked first (`unix::glx_vendor`).
-fn gl_vendor_before_windows() -> Option<String> {
-    #[cfg(target_os = "linux")]
-    return on_xwayland().then(crate::unix::glx_vendor).flatten();
-    #[cfg(not(target_os = "linux"))]
-    None
+/// Whether a window's next swap waits for the screen's refresh (OpenGL: eframe asks before each
+/// swap, [`SwapHooks`]). `main`: the main window; `shown`: neither minimized nor covered, as far
+/// as the system says; `vsync`: what eframe gave every window.
+fn swap_waits(swaps: Swaps, main: bool, shown: bool, vsync: bool) -> bool {
+    match swaps {
+        Swaps::Own => vsync,
+        Swaps::MainOnly => vsync && main && shown,
+        Swaps::NoneWait => false,
+    }
+}
+
+/// A window is shown unless the system says it's minimized or covered.
+fn shown(info: &egui::ViewportInfo) -> bool {
+    info.visible() != Some(false)
+}
+
+/// OpenGL: each window's swap interval, chosen before each of its swaps ([`swap_waits`]).
+struct SwapHooks(Swaps);
+
+impl eframe::ViewportHooks for SwapHooks {
+    fn swap_waits_for_vsync(
+        &self,
+        viewport: egui::ViewportId,
+        info: &egui::ViewportInfo,
+        vsync: bool,
+    ) -> bool {
+        swap_waits(
+            self.0,
+            viewport == egui::ViewportId::ROOT,
+            shown(info),
+            vsync,
+        )
+    }
 }
 
 /// Once the app is made and its driver is known: whether MDM paces the frames, and the log says
-/// so. OpenGL's windows were made unpaced only if [`configure`] took the GLX vendor for NVIDIA's;
-/// wgpu's adapter says its vendor now, and its present mode follows at the first pass
+/// so. OpenGL's windows swap through [`SwapHooks`] (installed by [`configure`]); wgpu's present
+/// mode is one for every window, so none waits on X11 and XWayland, from the first pass
 /// ([`present_unpaced`]).
-fn pacing_known(cc: &eframe::CreationContext<'_>, swapped_at_once: bool) {
-    let xwayland = on_xwayland();
+fn pacing_known(cc: &eframe::CreationContext<'_>) {
+    let swaps = swaps();
+    if swaps == Swaps::Own {
+        return;
+    }
     #[cfg(target_os = "linux")]
     let gl_vendor = cc.gl.as_deref().map(crate::unix::gl_vendor);
     #[cfg(not(target_os = "linux"))]
@@ -896,42 +949,38 @@ fn pacing_known(cc: &eframe::CreationContext<'_>, swapped_at_once: bool) {
     #[cfg(not(gpu))]
     let gpu_vendor: Option<String> = None;
     let vendor = gl_vendor.or(gpu_vendor).unwrap_or_default();
-    let unpaced = unpaced_swaps(xwayland, &vendor);
-    if cc.gl.is_some() && unpaced != swapped_at_once {
-        // The GLX vendor and the context's disagree (an offloading setup): the windows keep the
-        // swap they were made with, and MDM paces only when they don't wait for the refresh.
-        tracing::warn!(
-            "OpenGL's vendor is {vendor}, but its windows were made {}",
-            if swapped_at_once {
-                "without waiting for the screen's refresh"
-            } else {
-                "waiting for the screen's refresh"
-            }
-        );
-    }
-    let paced = if cc.gl.is_some() {
-        swapped_at_once
+    let gl = cc.gl.is_some();
+    PACED.store(!gl, Ordering::Relaxed);
+    let at_most = (1.0 / FRAME_PACE.as_secs_f64()).round();
+    let system = if swaps == Swaps::NoneWait {
+        "XWayland"
     } else {
-        unpaced
+        "X11"
     };
-    PACED.store(paced, Ordering::Relaxed);
-    if paced {
+    if gl && swaps == Swaps::MainOnly {
         tracing::info!(
-            "frame pacing: {vendor} under XWayland, so frames don't wait for the screen's refresh; MDM spaces them itself, {} a second at most",
-            (1.0 / FRAME_PACE.as_secs_f64()).round()
+            "frame pacing ({vendor}, {system}): only the main window waits for the screen's refresh, while it's shown; while it isn't, MDM spaces the frames itself, {at_most} a second at most"
+        );
+    } else {
+        tracing::info!(
+            "frame pacing ({vendor}, {system}): frames don't wait for the screen's refresh; MDM spaces them itself, {at_most} a second at most"
         );
     }
 }
 
-/// When MDM paces the frames: the next waits until [`FRAME_PACE`] has passed since the last
+/// While MDM paces the frames: the next waits until [`FRAME_PACE`] has passed since the last
 /// began (a pass only runs when there is something to draw: an idle window waits as before).
-fn pace() {
+/// With OpenGL, that is while the main window's swap doesn't wait for the refresh.
+fn pace(ctx: &egui::Context) {
     use std::cell::Cell;
     use std::time::Instant;
     thread_local! {
         static LAST: Cell<Option<Instant>> = const { Cell::new(None) };
     }
-    if !PACED.load(Ordering::Relaxed) {
+    let paced = PACED.load(Ordering::Relaxed)
+        || GL_HOOKED.load(Ordering::Relaxed)
+            && !swap_waits(swaps(), true, ctx.input(|i| shown(i.viewport())), true);
+    if !paced {
         return;
     }
     LAST.with(|last| {
@@ -1135,7 +1184,6 @@ pub fn run<A: eframe::App + 'static>(
         tracing::info!("drawing with {}", attempt.name());
         let make = creator.clone();
         let gl_checked = plan.gl_checked;
-        let swapped_at_once = attempt == Attempt::OpenGl && !opts.glow_options.vsync;
         // Why this way: the plan's reason for its first, the last one's failure for another.
         let why_not = match &instead {
             Some(w) => w.clone(),
@@ -1147,7 +1195,7 @@ pub fn run<A: eframe::App + 'static>(
             Box::new(move |cc| {
                 let make = make.borrow_mut().take().ok_or("the app was already made")?;
                 started(cc, attempt, why_not, gl_checked);
-                pacing_known(cc, swapped_at_once);
+                pacing_known(cc);
                 // Making the app is MDM's own work, not the API's: off the first frame's clock.
                 own_work_begin();
                 let app = make(cc);
@@ -1200,9 +1248,11 @@ fn configure(opts: &mut eframe::NativeOptions, attempt: Attempt) {
         Attempt::Gpu(_) => opts.renderer = eframe::Renderer::Glow,
     }
     PACED.store(false, Ordering::Relaxed);
-    if attempt == Attempt::OpenGl {
-        let vendor = gl_vendor_before_windows().unwrap_or_default();
-        opts.glow_options.vsync = !unpaced_swaps(on_xwayland(), &vendor);
+    let swaps = swaps();
+    let hooked = attempt == Attempt::OpenGl && swaps != Swaps::Own;
+    GL_HOOKED.store(hooked, Ordering::Relaxed);
+    if hooked {
+        opts.viewport_hooks = Some(std::sync::Arc::new(SwapHooks(swaps)));
     }
 }
 
@@ -1498,7 +1548,7 @@ mod gpu {
     }
 
     /// The adapter's vendor and driver as words ("NVIDIA", "radv", "Intel open-source Mesa
-    /// driver"), for [`super::unpaced_swaps`]: NVIDIA's PCI vendor id said by name too.
+    /// driver"), for the log ([`super::pacing_known`]): NVIDIA's PCI vendor id said by name too.
     pub fn vendor_name(info: &wgpu::AdapterInfo) -> String {
         const NVIDIA: u32 = 0x10de;
         let said = format!("{} {}", info.driver, info.driver_info);
@@ -1571,26 +1621,54 @@ fn choose(
 mod tests {
     use super::*;
 
-    /// Only NVIDIA's own driver under XWayland swaps at once (its vsynced swap waits about a
-    /// second for a window the compositor isn't showing); Mesa's drivers keep the refresh's
-    /// pacing, and so does every driver outside XWayland.
+    /// X11: only the main window waits for the refresh, and only while it's shown; XWayland:
+    /// none (#347, #1025); elsewhere every window keeps what eframe gave it.
     #[test]
-    fn only_nvidia_under_xwayland_swaps_at_once() {
-        for nvidia in ["NVIDIA Corporation", "NVIDIA 595.99.02", "nvidia"] {
-            assert!(unpaced_swaps(true, nvidia), "{nvidia}");
-            assert!(!unpaced_swaps(false, nvidia), "{nvidia} outside XWayland");
-        }
-        for other in [
-            "Mesa Project and SGI",
-            "Mesa",
-            "Intel",
-            "AMD",
-            "radv Mesa 25.2.8",
-            "Intel open-source Mesa driver Mesa 25.2.8",
-            "",
+    fn one_window_at_most_waits_for_the_refresh() {
+        for (main, shown, waits) in [
+            (true, true, true),
+            (true, false, false),
+            (false, true, false),
+            (false, false, false),
         ] {
-            assert!(!unpaced_swaps(true, other), "{other}");
+            assert_eq!(swap_waits(Swaps::MainOnly, main, shown, true), waits);
+            assert!(!swap_waits(Swaps::MainOnly, main, shown, false));
+            assert!(!swap_waits(Swaps::NoneWait, main, shown, true));
+            assert!(swap_waits(Swaps::Own, main, shown, true));
+            assert!(!swap_waits(Swaps::Own, main, shown, false));
         }
+    }
+
+    /// A window is shown unless the system says it's minimized or covered.
+    #[test]
+    fn a_window_is_shown_unless_minimized_or_covered() {
+        let info = |minimized, occluded| egui::ViewportInfo {
+            minimized,
+            occluded,
+            ..Default::default()
+        };
+        assert!(shown(&info(None, None)));
+        assert!(shown(&info(Some(false), None)));
+        assert!(shown(&info(Some(false), Some(false))));
+        assert!(!shown(&info(Some(true), None)));
+        assert!(!shown(&info(None, Some(true))));
+        assert!(!shown(&info(Some(false), Some(true))));
+    }
+
+    /// The hooks eframe asks: the main window is the root viewport.
+    #[test]
+    fn the_hooks_ask_for_the_main_window_by_its_viewport() {
+        use eframe::ViewportHooks as _;
+        let hooks = SwapHooks(Swaps::MainOnly);
+        let info = egui::ViewportInfo::default();
+        assert!(hooks.swap_waits_for_vsync(egui::ViewportId::ROOT, &info, true));
+        let dialog = egui::ViewportId::from_hash_of("dialog");
+        assert!(!hooks.swap_waits_for_vsync(dialog, &info, true));
+        let minimized = egui::ViewportInfo {
+            minimized: Some(true),
+            ..Default::default()
+        };
+        assert!(!hooks.swap_waits_for_vsync(egui::ViewportId::ROOT, &minimized, true));
     }
 
     #[test]

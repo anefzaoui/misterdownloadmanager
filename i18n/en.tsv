@@ -3504,6 +3504,12 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	The file matches ({algorithm})	The file matches ({algorithm})
+#. text in errors.rs
+#. why a download failed on Linux or macOS (#1102): the file name is longer than the system allows ({limit} bytes, 255; a letter can take several bytes), counting the temporary files saved beside the file while it downloads. {path} = the path
+	the file name is too long: at most {limit} bytes with the files saved while it downloads. Choose a shorter name ({path})	the file name is too long: at most {limit} bytes with the files saved while it downloads. Choose a shorter name ({path})
+#. text in errors.rs
+#. why a download failed (#1102): the file name is longer than Windows allows ({limit} characters, 255), counting the temporary files saved beside the file while it downloads. {path} = the path
+	the file name is too long: at most {limit} characters with the files saved while it downloads. Choose a shorter name ({path})	the file name is too long: at most {limit} characters with the files saved while it downloads. Choose a shorter name ({path})
 #. text in a dialog box
 	The file saved as	The file saved as
 #. text in the download list (sizes, speeds, status)
@@ -3546,7 +3552,8 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 	the password is wrong	the password is wrong
 #. text in errors.rs
-	the path is too long for Windows: {path}	the path is too long for Windows: {path}
+#. why a download failed (#1102): the folder and file name together are longer than Windows allows ({limit} characters, 259), counting the temporary files saved beside the file while it downloads (their names are longer). {path} = the path
+	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 	the release has no version	the release has no version

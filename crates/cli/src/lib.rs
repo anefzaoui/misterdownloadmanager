@@ -1090,6 +1090,12 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                         }
                         return Ok(());
                     }
+                    // A path yt-dlp couldn't make, too long for the system (#1102): said as such.
+                    mdm_tools::video::State::Failed(e)
+                        if let Some(path) = mdm_tools::video::too_long(&e) =>
+                    {
+                        anyhow::bail!(mdm_tools::proc::ProcError::PathTooLong(path))
+                    }
                     other => anyhow::bail!("{other:?}"),
                 }
             }
