@@ -1118,7 +1118,8 @@ mod tests {
         // Longer than any real line: refused from its length alone.
         assert!(attributes(&format!("#EXT-X-KEY:{}", "A".repeat(MAX_BYTES))).is_none());
         assert!(attributes(&format!("#EXT-X-KEY:{}", "A=\"".repeat(MAX_BYTES / 3))).is_none());
-        // Under the cap: 8 times the line costs about 8 times as long (not 64), on any machine.
+        // Under the cap: a line 16 times as long costs about as much as 16 short lines (a square:
+        // 16 times as much), on any machine.
         let crafted = |n: usize| {
             [
                 format!("#EXT-X-KEY:{}", "A".repeat(n)),

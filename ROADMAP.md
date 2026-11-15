@@ -566,6 +566,10 @@ These ship in the next version.
   directory** on Windows: its name is shortened so its download's files fit Windows' path limit,
   and a name or folder too long says so
   ([#1102](https://github.com/anefzaoui/misterdownloadmanager/issues/1102))
+- ✅ Tests: the checks that a long list is read in linear time, which still failed now and then on
+  a busy macOS runner, time one input 16 times as long against 16 short ones (as many items, as
+  long a run), take each side's fastest of several runs, and fail at three times as long (a square
+  costs 16 times): steady under load, and they catch more of the squares they guard against
 - ✅ macOS: a browser hand-off while MDM is hidden from the menu bar opens its window
 - ✅ Downloads for Windows on ARM, 32-bit Windows and Linux on ARM, beside the x64 ones: the
   installer, the portable zip and the plain zip; the AppImage, .deb, .rpm and .tar.gz. Each is
