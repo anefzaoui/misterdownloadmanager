@@ -754,8 +754,10 @@ mod tests {
     fn keeping_awake_never_waits_for_a_slow_system() {
         let (mut w, sys) = waker();
         w.keep_awake(Some(Awake::Queue(QUEUE)));
-        // The system is asked, and answers only now that keep_awake is back: it didn't wait.
+        // The system is asked, and answers only once the test says: keep_awake came back
+        // without its answer (one that waited would have, the fake's own after STUCK).
         assert!(sys.next().unwrap().contains(QUEUE));
+        assert_eq!(sys.returned(), 0, "keep_awake waited for the system");
         assert!(!w.awake, "not held before the system said so");
         // Every tick while the system takes its time comes back too, and asks nothing more.
         for _ in 0..50 {
@@ -770,7 +772,7 @@ mod tests {
         w.keep_awake(None);
         assert!(!w.awake);
         assert_eq!(sys.next(), None, "let go");
-        assert_eq!(sys.returned(), 1, "the let go answered before it was asked");
+        assert_eq!(sys.returned(), 1, "keep_awake waited for the let go");
         sys.answer(true);
         assert!(!sys.stuck(), "keep_awake waited for the system");
     }
