@@ -566,6 +566,12 @@ These ship in the next version.
   when MDM finds nothing on the page, it offers what the tab played for that video, told apart
   from the feed's next one by its length, and says so when it can't tell
   ([#1092](https://github.com/anefzaoui/misterdownloadmanager/issues/1092))
+- ✅ Downloads for Windows on ARM, 32-bit Windows and Linux on ARM, beside the x64 ones: the
+  installer, the portable zip and the plain zip; the AppImage, .deb, .rpm and .tar.gz. Each is
+  built and tested on its own processor, Update now keeps each copy on its own, and the helpers
+  come in each processor's build (no ffmpeg for 32-bit Windows: Helpers says so)
+  ([#977](https://github.com/anefzaoui/misterdownloadmanager/discussions/977),
+  [#1010](https://github.com/anefzaoui/misterdownloadmanager/discussions/1010))
 - ✅ The progress window's connections table shows connection numbers 10 and up instead of
   **...**: the number column fits its widest number
   ([#1101](https://github.com/anefzaoui/misterdownloadmanager/issues/1101))
@@ -576,6 +582,9 @@ These ship in the next version.
 - ✅ **Download File Info**: **...** beside **Save As** opens the system's Save dialog (the
   folder and the file name, the download's type listed), and the name typed there is the one
   saved ([#1088](https://github.com/anefzaoui/misterdownloadmanager/issues/1088))
+- ✅ The browser's **Download all links** on a page with thousands of long links: the list goes to
+  MDM in parts the browser lets through, and opens in Link grabber whole, as one list; past 1 MB of
+  links nothing arrived
 - ✅ Browser integration: a copy run from inside a zip (a temporary folder) no longer sets it up
   for itself and leaves the browsers looking for a copy that is gone; MDM takes back a
   registration that leads nowhere at each start, never one that works, and Test browser
