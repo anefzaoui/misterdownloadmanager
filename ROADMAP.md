@@ -577,6 +577,9 @@ These ship in the next version.
   come in each processor's build (no ffmpeg for 32-bit Windows: Helpers says so)
   ([#977](https://github.com/anefzaoui/misterdownloadmanager/discussions/977),
   [#1010](https://github.com/anefzaoui/misterdownloadmanager/discussions/1010))
+- ✅ Torrents through a debrid service: a file already at the torrent's place counts as the
+  torrent's only at its size; another one stays untouched and the torrent's file comes down
+  beside it, numbered ([#1143](https://github.com/anefzaoui/misterdownloadmanager/issues/1143))
 - ✅ The progress window's connections table shows connection numbers 10 and up instead of
   **...**: the number column fits its widest number
   ([#1101](https://github.com/anefzaoui/misterdownloadmanager/issues/1101))
