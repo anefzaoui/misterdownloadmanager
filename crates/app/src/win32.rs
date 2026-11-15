@@ -8332,6 +8332,10 @@ mod open_with_tests {
 /// Unlike invoking `explorer.exe <file>`, which fails with `ExitStatus(1)` on archive files
 /// (.zip, .7z) when a third-party tool such as 7-Zip is the default handler, `ShellExecuteW`
 /// invokes the user's registered file association directly.
+///
+/// The program starts in the file's folder, as Explorer starts it (#1216): without a folder it
+/// would start in MDM's own working folder, which is `C:\Windows\System32` when Windows started
+/// MDM with the session, and a downloaded program writing beside itself would be refused there.
 pub fn open_file_shell(path: &std::path::Path) -> Result<(), std::io::Error> {
     use std::os::windows::ffi::OsStrExt;
     use windows_sys::Win32::UI::Shell::ShellExecuteW;
@@ -8339,15 +8343,19 @@ pub fn open_file_shell(path: &std::path::Path) -> Result<(), std::io::Error> {
 
     com_on_this_thread();
     let wide: Vec<u16> = path.as_os_str().encode_wide().chain(Some(0)).collect();
-    // SAFETY: lpFile is a null-terminated UTF-16 string; lpOperation is NULL so Windows
-    // executes the default action registered for the file type.
+    let folder: Option<Vec<u16>> = std::path::absolute(path).ok().and_then(|p| {
+        p.parent()
+            .map(|d| d.as_os_str().encode_wide().chain(Some(0)).collect())
+    });
+    // SAFETY: lpFile and lpDirectory (or NULL) are null-terminated UTF-16 strings that outlive
+    // the call; lpOperation is NULL so Windows executes the default action for the file type.
     let ret = unsafe {
         ShellExecuteW(
             std::ptr::null_mut(),
             std::ptr::null(),
             wide.as_ptr(),
             std::ptr::null(),
-            std::ptr::null(),
+            folder.as_ref().map_or(std::ptr::null(), |f| f.as_ptr()),
             SW_SHOWNORMAL,
         )
     };
@@ -8361,6 +8369,33 @@ pub fn open_file_shell(path: &std::path::Path) -> Result<(), std::io::Error> {
         });
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod open_file_tests {
+    /// #1216: the program a file opens with starts in the file's folder, not in MDM's own
+    /// working folder. A batch file writes where it runs; Windows shows its console a moment,
+    /// so it is run by hand: `cargo test -p mdm-app opened_in_its_folder -- --ignored`.
+    #[test]
+    #[ignore = "opens a console window for a moment"]
+    fn a_file_is_opened_in_its_folder() {
+        let dir = tempfile::tempdir().unwrap();
+        let script = dir.path().join("where.cmd");
+        std::fs::write(&script, "@cd > \"%~dp0cwd.txt\"\r\n").unwrap();
+        assert_ne!(std::env::current_dir().unwrap(), dir.path());
+        super::open_file_shell(&script).unwrap();
+        let said = dir.path().join("cwd.txt");
+        let deadline = std::time::Instant::now() + std::time::Duration::from_secs(20);
+        let text = loop {
+            match std::fs::read_to_string(&said) {
+                Ok(t) if t.ends_with('\n') => break t,
+                _ if std::time::Instant::now() > deadline => panic!("the batch file didn't run"),
+                _ => std::thread::sleep(std::time::Duration::from_millis(100)),
+            }
+        };
+        let real = |p: &std::path::Path| std::fs::canonicalize(p).unwrap();
+        assert_eq!(real(std::path::Path::new(text.trim())), real(dir.path()));
+    }
 }
 
 /// The program Windows runs to open folders, when that isn't Explorer (a file manager such as

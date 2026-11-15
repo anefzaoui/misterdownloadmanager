@@ -3206,6 +3206,9 @@ fn open_file_platform(path: &Path) -> Result<(), std::io::Error> {
     {
         crate::win32::open_file_shell(path)
     }
+    // Linux and macOS: no folder to give. Their file managers start a file's program in no
+    // folder of the file's either (macOS's LaunchServices starts every app in `/`; a Linux
+    // desktop's in the launcher's own), and programs there don't write beside themselves.
     #[cfg(not(windows))]
     {
         open::that_detached(path)

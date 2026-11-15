@@ -566,6 +566,9 @@ These ship in the next version.
   beside the window, so a slow folder can't freeze it; macOS: a browser's folder macOS keeps MDM
   out of is said, with the setting that allows it
   ([#1218](https://github.com/anefzaoui/misterdownloadmanager/issues/1218))
+- ✅ Malay: a queue is a **baris gilir**, the clipboard a **papan klip** and a checksum a
+  **jumlah semak**, as the reviewed termbase settles them — not "giliran", "papan keratan" or
+  "jumlah hasil tambah" (thanks to [@Seyamalam](https://github.com/Seyamalam))
 - ✅ Windows: finished downloads drag out of the list onto a folder or a program, one or several,
   moved or copied as from Explorer; a moved file is followed, as from Download complete
   ([#1210](https://github.com/anefzaoui/misterdownloadmanager/issues/1210))
@@ -948,8 +951,11 @@ These ship in the next version.
   without it until the bus answers, and gets it then, however late
   ([#828](https://github.com/anefzaoui/misterdownloadmanager/issues/828))
 - ✅ Looking up a new video (put online in the last two days) no longer fails with "Permission
-  denied" in MDM's install folder: the helpers run in your temporary folder, or MDM's own if
-  that one can't be written ([#834](https://github.com/anefzaoui/misterdownloadmanager/issues/834))
+  denied" in MDM's install folder, or in `System32` when MDM started with Windows: the helpers
+  run in your temporary folder, or MDM's own if that one can't be written; on Windows a file
+  opened from MDM starts in its own folder
+  ([#834](https://github.com/anefzaoui/misterdownloadmanager/issues/834),
+  [#1216](https://github.com/anefzaoui/misterdownloadmanager/issues/1216))
 - ✅ A video a site sends through a program's address (`stream.php?file=…`,
   `remote_control.php`) is named by what it is: the page's title (or the address's `file=` name)
   and its real type, `Lecture.mp4`, not `stream.php`; the browser's media list shows that name
