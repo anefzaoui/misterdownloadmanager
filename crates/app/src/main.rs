@@ -305,6 +305,10 @@ fn main() -> std::process::ExitCode {
     // PAC's myIpAddress from the routing table, not a UDP socket (a firewall prompt, #35).
     #[cfg(windows)]
     mdm_engine::net::set_source_lookup(win32::source_address);
+    // Whether paths may pass Windows' MAX_PATH (#1102): names are fitted to it while they may
+    // not. Linux and macOS have no such switch, only their own fixed limits (naming::Limits).
+    #[cfg(windows)]
+    mdm_engine::naming::set_long_paths(win32::long_paths_enabled());
     // misterdownloadmanager-cli's commands (crates/cli): its launcher starts this program for
     // them. Nothing of the app's runs: no window, instance, crash monitor or crash log.
     if let Some(cli) = mdm_cli::launched(std::env::args_os().collect()) {
