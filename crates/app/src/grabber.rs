@@ -46,6 +46,15 @@ pub enum LinkState {
     NeedsLogin,
     /// The server asked to wait (429, 503).
     Busy,
+    /// A failure whose sentence doesn't fit the Status column: `short` says it in the column,
+    /// and `why` is the whole sentence, which ends with what to do about it, shown on hover
+    /// (#1110: "this site lets only b..." cut before "Alt+click the link").
+    Short {
+        /// The column's words, translated by `state_of`.
+        short: &'static str,
+        /// The whole sentence, in the interface language.
+        why: String,
+    },
     /// Anything else, in the interface language.
     Failed(String),
 }
@@ -1041,20 +1050,40 @@ impl Grabber {
                             } else {
                                 match l.state {
                                     LinkState::Online => winui::SUCCESS(),
-                                    LinkState::Offline(_) | LinkState::Failed(_) => winui::ERROR(),
+                                    LinkState::Offline(_)
+                                    | LinkState::Failed(_)
+                                    | LinkState::Short { .. } => winui::ERROR(),
                                     _ => winui::MUTED(),
                                 }
                             };
-                            winui::fit(
-                                ui,
-                                clip,
-                                state_x,
-                                top + 13.0,
-                                &state,
-                                ink,
-                                row.right() - 6.0,
-                                ("grabber-state", i),
-                            );
+                            match state_reason(&l.state) {
+                                // The action fits the column; the whole sentence behind it is
+                                // the tip (#1110). Drawn with the row list's clipped painter,
+                                // so a half-scrolled row doesn't paint over the header.
+                                Some(why) => {
+                                    let (rect, _) = winui::text_fit(
+                                        clip,
+                                        state_x,
+                                        top + 13.0,
+                                        &state,
+                                        ink,
+                                        row.right() - 6.0,
+                                    );
+                                    winui::full_on_hover(ui, rect, ("grabber-state", i), why);
+                                }
+                                None => {
+                                    winui::fit(
+                                        ui,
+                                        clip,
+                                        state_x,
+                                        top + 13.0,
+                                        &state,
+                                        ink,
+                                        row.right() - 6.0,
+                                        ("grabber-state", i),
+                                    );
+                                }
+                            }
                         }
                     }
                 },
@@ -1291,20 +1320,50 @@ fn state_text(s: &LinkState) -> String {
         LinkState::NeedsLogin => crate::i18n::t("Needs a login").to_owned(),
         // i18n: Link grabber, a link's status: the server asked to try later (429, 503)
         LinkState::Busy => crate::i18n::t("Busy, try later").to_owned(),
+        LinkState::Short { short, .. } => (*short).to_owned(),
         LinkState::Failed(why) => why.clone(),
+    }
+}
+
+/// The whole sentence behind a short status (`LinkState::Short`), for its hover tip: it says
+/// why the link failed and ends with what to do about it.
+fn state_reason(s: &LinkState) -> Option<&str> {
+    match s {
+        LinkState::Short { why, .. } => Some(why),
+        _ => None,
     }
 }
 
 /// A look-up's failure as a link's status.
 pub fn state_of(e: &mdm_engine::Error) -> LinkState {
+    use mdm_engine::{Error, Refusal};
+    let short = |short| LinkState::Short {
+        short,
+        why: crate::errors::describe(e),
+    };
     match e {
-        mdm_engine::Error::Status(s) => match s.as_u16() {
+        Error::Status(s) => match s.as_u16() {
             404 | 410 => LinkState::Offline(s.as_u16()),
             401 | 403 => LinkState::NeedsLogin,
             429 | 503 => LinkState::Busy,
             _ => LinkState::Failed(crate::errors::describe(e)),
         },
-        mdm_engine::Error::Throttled(..) => LinkState::Busy,
+        Error::Throttled(..) => LinkState::Busy,
+        // #1110: these sentences end with what to do about the failure, and the Status column
+        // cuts them before it. The column shows the action itself, in words that fit; the whole
+        // sentence is the tip.
+        // i18n: Link grabber, a link's status (a failure's action): the site's bot check turns programs away, so the link is opened in the browser with Alt held (the whole sentence is on hover)
+        Error::BotCheck => short(crate::i18n::t("Alt+click the link")),
+        // i18n: Link grabber, a link's status (a failure's action): the download address expired; refreshing it brings the file back
+        Error::LinkExpired => short(crate::i18n::t("Refresh the address")),
+        // i18n: Link grabber, a link's status (a failure's action): the server sent a web page, so open the link in the browser
+        Error::GotWebPage => short(crate::i18n::t("Open in browser")),
+        // i18n: Link grabber, a link's status: the server can't send parts of the file, so a download can't be resumed (nothing to do about it here)
+        Error::NoRanges => short(crate::i18n::t("Can't resume")),
+        // i18n: Link grabber, a link's status (a failure's action): the file doesn't match its checksum; download it again
+        Error::ChecksumMismatch(_) => short(crate::i18n::t("Download it again")),
+        // i18n: Link grabber, a link's status (a failure's action): the address is a site's web page, not the file; open it in the browser and download from there
+        Error::Refused(Refusal::NeedsBrowser { .. }) => short(crate::i18n::t("Open in browser")),
         _ => LinkState::Failed(crate::errors::describe(e)),
     }
 }
@@ -1648,6 +1707,37 @@ mod tests {
             g.checking(i, Arc::default());
         }
         assert!(g.to_check().is_empty());
+    }
+
+    /// #1110: a failure whose sentence ends with what to do about it gets a short state in the
+    /// Status column, and the whole sentence is the row's tip.
+    #[test]
+    fn a_remedys_sentence_is_short_in_the_status_column() {
+        use mdm_engine::{Error, Refusal};
+        let cases = [
+            Error::BotCheck,
+            Error::LinkExpired,
+            Error::GotWebPage,
+            Error::NoRanges,
+            Error::ChecksumMismatch("SHA-256"),
+            Error::Refused(Refusal::NeedsBrowser {
+                site: "gofile".into(),
+            }),
+        ];
+        for e in cases {
+            let state = state_of(&e);
+            let short = state_text(&state);
+            let why = state_reason(&state).unwrap_or_else(|| panic!("no sentence for {e:?}"));
+            assert_ne!(short, why, "{e:?}: the column shows the whole sentence");
+            assert!(
+                short.chars().count() < why.chars().count(),
+                "{e:?}: the column's words are not shorter"
+            );
+            assert_eq!(why, crate::errors::describe(&e), "{e:?}");
+        }
+        // A failure with no remedy in its words is still the sentence it was.
+        assert!(matches!(state_of(&Error::ShortBody), LinkState::Failed(_)));
+        assert!(state_reason(&LinkState::Online).is_none());
     }
 
     /// #709, Tasks → Add batch download from clipboard, as the window takes it: the clipboard

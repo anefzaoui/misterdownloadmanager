@@ -398,6 +398,9 @@
 	Also delete the file from disk	Also delete the file from disk
 #. checkbox in the Options window
 	Also take files the browser would open (PDF, music, video)	Also take files the browser would open (PDF, music, video)
+#. text in the Link grabber window
+#. Link grabber, a link's status (a failure's action): the site's bot check turns programs away, so the link is opened in the browser with Alt held (the whole sentence is on hover)
+	Alt+click the link	Alt+click the link
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 	Always dark	Always dark
@@ -617,6 +620,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Cameroon	Cameroon
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server can't send parts of the file, so a download can't be resumed (nothing to do about it here)
+	Can't resume	Can't resume
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Canada	Canada
@@ -1036,6 +1042,9 @@
 #. text in the Add torrent window
 #. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
 	Download in order	Download in order
+#. text in the Link grabber window
+#. Link grabber, a link's status (a failure's action): the file doesn't match its checksum; download it again
+	Download it again	Download it again
 #. button in a dialog box
 	Download Later	Download Later
 #. window title in a dialog box
@@ -2508,7 +2517,9 @@
 #. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 	Open folder	Open folder
-#. text in a download's progress window
+#. text in the Link grabber window; text in a download's progress window
+#. Link grabber, a link's status (a failure's action): the server sent a web page, so open the link in the browser
+#. Link grabber, a link's status (a failure's action): the address is a site's web page, not the file; open it in the browser and download from there
 #. button in a download's progress window when the site sent a web page (a waiting page, a captcha) instead of the file: opens the download's link in the web browser
 	Open in browser	Open in browser
 #. checkbox in the Add torrent window
@@ -2777,6 +2788,9 @@
 #. button in rssdlg.rs
 #. RSS feeds window: fetch the selected feed again now
 	Refresh	Refresh
+#. text in the Link grabber window
+#. Link grabber, a link's status (a failure's action): the download address expired; refreshing it brings the file back
+	Refresh the address	Refresh the address
 #. text in the Options window
 #. tab title: how dates and times are written (date order, 12- or 24-hour clock)
 	Regional	Regional
