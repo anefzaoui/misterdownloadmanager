@@ -562,6 +562,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The browser extension's window and Test browser integration read the browsers' folders
+  beside the window, so a slow folder can't freeze it; macOS: a browser's folder macOS keeps MDM
+  out of is said, with the setting that allows it
+  ([#1218](https://github.com/anefzaoui/misterdownloadmanager/issues/1218))
 - ✅ Windows: finished downloads drag out of the list onto a folder or a program, one or several,
   moved or copied as from Explorer; a moved file is followed, as from Download complete
   ([#1210](https://github.com/anefzaoui/misterdownloadmanager/issues/1210))

@@ -161,6 +161,27 @@ where
         }
     }
 
+    /// [`Asked::get`] for a window that shows what it read last until the new answer comes
+    /// (#1218): the answer for `key`, else the last one, whichever key it was for. Only the call
+    /// that asks the very first time waits, at most `first_wait`; the others never wait.
+    pub fn get_or_last(
+        &self,
+        key: &K,
+        every: Duration,
+        first_wait: Duration,
+        repaint: Option<&egui::Context>,
+        ask: impl FnOnce(&K) -> T + Send + 'static,
+    ) -> Option<T> {
+        let lock = || self.shared.0.lock().unwrap_or_else(|e| e.into_inner());
+        let last = || lock().answer.as_ref().map(|(_, v, _)| v.clone());
+        let first = {
+            let s = lock();
+            s.answer.is_none() && !s.asking
+        };
+        let wait = if first { first_wait } else { Duration::ZERO };
+        self.get(key, every, wait, repaint, ask).or_else(last)
+    }
+
     /// The answer for `key` if it came; never asks, never waits (a window that asked once, with
     /// [`Asked::get`], and looks for its answer each frame after).
     pub fn answer(&self, key: &K) -> Option<T> {
@@ -426,6 +447,76 @@ mod asked_tests {
         go.send(()).unwrap();
         assert_eq!(asked.get(&(), FRESH, STUCK, None, ask()), Some(true));
         assert_eq!(not_asked.load(Ordering::SeqCst), 51, "asked again");
+    }
+
+    /// #1218: a window that shows what it read last. A slow read never holds it (only the very
+    /// first is waited for, as long as it says), the last answer stays shown while a new key's
+    /// read is under way, and a read under way is never asked twice.
+    #[test]
+    fn the_last_answer_shows_while_a_slow_read_is_under_way() {
+        let asked = Asked::<u64, &'static str>::default();
+        let reads = Arc::new(AtomicU32::new(0));
+        let (go, gate) = std::sync::mpsc::channel::<()>();
+        let gate = Arc::new(Mutex::new(gate));
+        let read = |answer: &'static str| {
+            let (reads, gate) = (reads.clone(), gate.clone());
+            move |_: &u64| {
+                reads.fetch_add(1, Ordering::SeqCst);
+                let _ = gate.lock().unwrap().recv_timeout(STUCK);
+                answer
+            }
+        };
+        let first_wait = Duration::from_millis(50);
+        // Nothing read yet: waited `first_wait`, not for the read ("Checking...").
+        let start = Instant::now();
+        assert_eq!(
+            asked.get_or_last(&0, FRESH, first_wait, None, read("a")),
+            None
+        );
+        let took = start.elapsed();
+        assert!(took >= first_wait && took < STUCK / 2, "{took:?}");
+        // The next frames don't wait at all, and the read isn't asked again.
+        for _ in 0..20 {
+            let start = Instant::now();
+            assert_eq!(
+                asked.get_or_last(&0, FRESH, first_wait, None, read("a")),
+                None
+            );
+            assert!(start.elapsed() < first_wait, "{:?}", start.elapsed());
+        }
+        go.send(()).unwrap();
+        let start = Instant::now();
+        while asked.get_or_last(&0, FRESH, NO_WAIT, None, read("a")) != Some("a") {
+            assert!(start.elapsed() < STUCK, "never came");
+            std::thread::sleep(Duration::from_millis(5));
+        }
+        // A new key (Set it up finished): the last answer at once, while its read hangs.
+        for _ in 0..20 {
+            let start = Instant::now();
+            assert_eq!(
+                asked.get_or_last(&1, FRESH, first_wait, None, read("b")),
+                Some("a")
+            );
+            assert!(start.elapsed() < first_wait, "{:?}", start.elapsed());
+        }
+        // Its read started (on its own thread, a moment later), and only it.
+        let start = Instant::now();
+        while reads.load(Ordering::SeqCst) < 2 {
+            assert!(start.elapsed() < STUCK, "never asked");
+            std::thread::sleep(Duration::from_millis(5));
+        }
+        for _ in 0..20 {
+            asked.get_or_last(&1, FRESH, first_wait, None, read("b"));
+        }
+        std::thread::sleep(Duration::from_millis(50));
+        assert_eq!(reads.load(Ordering::SeqCst), 2, "one read at a time");
+        go.send(()).unwrap();
+        let start = Instant::now();
+        while asked.get_or_last(&1, FRESH, NO_WAIT, None, read("b")) != Some("b") {
+            assert!(start.elapsed() < STUCK, "never came");
+            std::thread::sleep(Duration::from_millis(5));
+        }
+        assert_eq!(reads.load(Ordering::SeqCst), 2);
     }
 
     #[test]

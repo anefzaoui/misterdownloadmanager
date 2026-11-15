@@ -643,23 +643,53 @@ fn registration_in(
     dirs: Vec<(PathBuf, mdm_ipc::browsers::Family)>,
     all_users: bool,
 ) -> crate::extension::Registration {
+    registration_with(dirs, all_users, &|dir| {
+        cfg!(target_os = "macos") && refused(dir)
+    })
+}
+
+/// macOS refused to let MDM into the browser folder `dir` (#1218): its manifest, or the folder
+/// itself, can't be read, "Operation not permitted" (EPERM). macOS's protection of other apps'
+/// data says so; a folder that is simply not there, or not MDM's to read, says other errors.
+fn refused(dir: &Path) -> bool {
+    let eperm = |e: std::io::Error| e.raw_os_error() == Some(libc::EPERM);
+    std::fs::File::open(dir.join(MANIFEST))
+        .err()
+        .is_some_and(eperm)
+        || std::fs::read_dir(dir).err().is_some_and(eperm)
+}
+
+/// `registration_in`, with `refuses` telling a folder whose manifest is missing because the
+/// system refused it.
+fn registration_with(
+    dirs: Vec<(PathBuf, mdm_ipc::browsers::Family)>,
+    all_users: bool,
+    refuses: &dyn Fn(&Path) -> bool,
+) -> crate::extension::Registration {
     use crate::extension::Registration;
     if dirs.is_empty() {
         return Registration::NoBrowser;
     }
     // A browser reads its user folder's manifest first: each must be there and name a helper
     // that runs. Everyone's folders: one that works is enough.
-    let (mut ready, mut missing, mut broken) = (0, 0, None);
+    let (mut ready, mut missing, mut broken, mut refused) = (0, 0, None, None);
     for (dir, _) in dirs {
         match mdm_ipc::browsers::Holder::of(&dir.join(MANIFEST)) {
             mdm_ipc::browsers::Holder::Alive(_) => ready += 1,
             mdm_ipc::browsers::Holder::ProgramGone(p) => broken = broken.or(Some(p)),
-            mdm_ipc::browsers::Holder::ManifestGone(_) => missing += 1,
+            mdm_ipc::browsers::Holder::ManifestGone(_) => {
+                missing += 1;
+                if refused.is_none() && refuses(&dir) {
+                    refused = Some(dir);
+                }
+            }
         }
     }
-    match broken {
-        Some(p) if !(all_users && ready > 0) => Registration::HelperMissing(p),
+    match (broken, refused) {
+        (Some(p), _) if !(all_users && ready > 0) => Registration::HelperMissing(p),
         _ if ready > 0 && (all_users || missing == 0) => Registration::Ready,
+        // Missing because the system refused it: said, with what to do (extension::Refused).
+        (_, Some(dir)) => Registration::Refused(dir),
         _ => Registration::Missing,
     }
 }
@@ -3949,7 +3979,7 @@ mod session_end_tests {
 
 #[cfg(test)]
 mod host_copy_tests {
-    use super::{HOST, MANIFEST, install_host_copy, registration_in, runs};
+    use super::{HOST, MANIFEST, install_host_copy, registration_in, registration_with, runs};
     use crate::extension::Registration;
     use mdm_ipc::browsers::Family;
     use std::path::Path;
@@ -4084,6 +4114,36 @@ mod host_copy_tests {
             Registration::HelperMissing(gone.clone())
         );
         assert_eq!(registration_in(dirs(), true), Registration::Ready);
+    }
+
+    /// #1218: a browser's folder the system refused (macOS: "Operation not permitted") is said
+    /// as such, with the folder; one that works for everyone is still enough; Linux never says
+    /// it (`registration_in` asks only on macOS).
+    #[test]
+    fn a_refused_folder_is_said_as_refused() {
+        let t = tempfile::tempdir().unwrap();
+        let helper = program(t.path(), HOST, "true");
+        let (a, b) = (t.path().join("a"), t.path().join("b"));
+        std::fs::create_dir_all(&a).unwrap();
+        let json = serde_json::json!({ "name": "com.misterdownloadmanager.host", "path": helper });
+        std::fs::write(a.join(MANIFEST), json.to_string()).unwrap();
+        let dirs = || vec![(a.clone(), Family::Chromium), (b.clone(), Family::Chromium)];
+        let refuses_b = |d: &Path| d == b;
+        assert_eq!(
+            registration_with(dirs(), false, &refuses_b),
+            Registration::Refused(b.clone())
+        );
+        assert_eq!(
+            registration_with(dirs(), true, &refuses_b),
+            Registration::Ready
+        );
+        assert_eq!(
+            registration_with(dirs(), false, &|_| false),
+            Registration::Missing
+        );
+        if cfg!(target_os = "linux") {
+            assert_eq!(registration_in(dirs(), false), Registration::Missing);
+        }
     }
 }
 

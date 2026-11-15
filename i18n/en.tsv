@@ -733,7 +733,9 @@
 #. text in the download list (sizes, speeds, status)
 #. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
 	Checking {percent}	Checking {percent}
-#. text in the Checksum window; text in the Link grabber window
+#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in the Options window
+#. in the browser extension's window, while it reads whether the browsers can reach MDM (a moment, usually)
+#. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
 	Checking...	Checking...
 #. text in countries.rs
@@ -1661,6 +1663,9 @@
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 	If it can't be reached, use the system's DNS	If it can't be reached, use the system's DNS
+#. text in extension.rs
+#. under "macOS keeps Mister Download Manager out of …'s folder" (Test browser integration, the browser extension's window): how to allow it. The quoted words and System Settings → Privacy & Security → Full Disk Access are macOS's own: use Apple's words in this language, or keep the English ones when unsure
+	If macOS asks whether it may access data from other apps, allow it. Or turn on Mister Download Manager in System Settings → Privacy & Security → Full Disk Access. Then press Set it up.	If macOS asks whether it may access data from other apps, allow it. Or turn on Mister Download Manager in System Settings → Privacy & Security → Full Disk Access. Then press Set it up.
 #. text in errors.rs
 #. what to do when a helper's server couldn't be reached; {proxy} = the Options tab Proxy / Socks; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
@@ -1981,6 +1986,12 @@
 #. text in the Options window
 #. tooltip of "Mark downloaded files as coming from the internet" on macOS
 	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write a browser's folder (where the browser finds MDM's helper)
+	macOS keeps Mister Download Manager out of a browser's folder.	macOS keeps Mister Download Manager out of a browser's folder.
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write {browser}'s folder (where the browser finds MDM's helper); {browser} is a browser's name
+	macOS keeps Mister Download Manager out of {browser}'s folder.	macOS keeps Mister Download Manager out of {browser}'s folder.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Madagascar	Madagascar

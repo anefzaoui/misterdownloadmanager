@@ -1713,6 +1713,10 @@
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 	If it can't be reached, use the system's DNS	إذا تعذر الوصول إليه، فاستخدم DNS الخاص بالنظام
+#. text in extension.rs
+#. under "macOS keeps Mister Download Manager out of …'s folder" (Test browser integration, the browser extension's window): how to allow it. The quoted words and System Settings → Privacy & Security → Full Disk Access are macOS's own: use Apple's words in this language, or keep the English ones when unsure
+#, machine
+	If macOS asks whether it may access data from other apps, allow it. Or turn on Mister Download Manager in System Settings → Privacy & Security → Full Disk Access. Then press Set it up.	إذا سألك macOS عما إذا كان يمكنه الوصول إلى بيانات من تطبيقات أخرى، فاسمح بذلك. أو فعّل Mister Download Manager في إعدادات النظام ← الخصوصية والأمن ← الوصول الكامل إلى القرص. ثم اضغط «إعداده».
 #. text in errors.rs
 #. what to do when a helper's server couldn't be reached; {proxy} = the Options tab Proxy / Socks; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
@@ -2047,6 +2051,14 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on macOS
 #, machine
 	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	يتحقق macOS من الملفات التي تم وضع علامة عليها بهذه الطريقة: Gatekeeper قبل فتح البرنامج لأول مرة. إذا لم يتم تحديدها، فلن يتم وضع علامة على أي تنزيل.
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write a browser's folder (where the browser finds MDM's helper)
+#, machine
+	macOS keeps Mister Download Manager out of a browser's folder.	يمنع macOS برنامج Mister Download Manager من الوصول إلى مجلد أحد المستعرضات.
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write {browser}'s folder (where the browser finds MDM's helper); {browser} is a browser's name
+#, machine
+	macOS keeps Mister Download Manager out of {browser}'s folder.	يمنع macOS برنامج Mister Download Manager من الوصول إلى مجلد {browser}.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Madagascar	مدغشقر
