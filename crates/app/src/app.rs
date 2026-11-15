@@ -396,6 +396,27 @@ fn member_in(members: &std::collections::HashMap<u64, Member>, id: u64) -> Membe
     members.get(&id).copied().unwrap_or(Member::Complete)
 }
 
+/// What Stop All stops (#1164): every queue that runs (the main queue, synchronization queues,
+/// the user's: one left running would start its next download as soon as this one stopped),
+/// with its downloads; then, by hand, the other downloads that run (`live`) or would start
+/// again by themselves (`pending`), each once. A running queue's downloads aren't stopped by
+/// hand: starting the queue again, by hand or on its schedule, goes on with them.
+fn stop_all_plan(
+    queues: &[Queue],
+    live: impl IntoIterator<Item = u64>,
+    pending: impl IntoIterator<Item = u64>,
+) -> (Vec<usize>, Vec<u64>) {
+    let running: Vec<usize> = (0..queues.len()).filter(|q| queues[*q].running).collect();
+    let in_running = |id: &u64| running.iter().any(|q| queues[*q].items.contains(id));
+    let mut ids: Vec<u64> = Vec::new();
+    for id in live.into_iter().chain(pending) {
+        if !in_running(&id) && !ids.contains(&id) {
+            ids.push(id);
+        }
+    }
+    (running, ids)
+}
+
 /// A file move's answer, from its thread.
 type MoveDone = std::sync::mpsc::Receiver<Result<(), String>>;
 
@@ -3468,18 +3489,55 @@ impl App {
 
     /// The user's Stop (or Pause): it stays stopped, even in a queue that is running (#341).
     fn stop_by_hand(&mut self, id: u64) {
-        self.stop(id);
+        self.halt(id);
         self.stopped_by_hand.insert(id);
     }
 
+    /// Stop, and not start again by itself for a network adapter, a speed limit or the
+    /// download limit (#1164): the user's Stop, Stop All and a queue's stop.
+    fn halt(&mut self, id: u64) {
+        self.stop(id);
+        self.adapter_paused.retain(|x| *x != id);
+        self.limit_restarts.retain(|x| *x != id);
+        if let Some(at) = self.quota.held.iter().position(|x| *x == id) {
+            self.quota.held.remove(at);
+            if let Some(item) = self.item(id)
+                && item.live.is_none()
+                && item.status == Status::Queued
+            {
+                item.status = Status::Stopped;
+            }
+            self.dirty = true;
+        }
+    }
+
+    /// Downloads waiting to start again by themselves: for the network adapter (#35), a new
+    /// speed limit (#708) or room under the download limit.
+    fn restarts_pending(&self) -> Vec<u64> {
+        let mut ids = self.adapter_paused.clone();
+        ids.extend(&self.limit_restarts);
+        ids.extend(&self.quota.held);
+        ids
+    }
+
+    /// Stop All (and Pause All) has something to stop: a download, a queue, or a download that
+    /// would start again by itself.
+    fn can_stop_all(&self) -> bool {
+        self.items.iter().any(|i| i.live.is_some())
+            || self.queues.iter().any(|q| q.running)
+            || !self.restarts_pending().is_empty()
+    }
+
+    /// Stop All: everything stops, the queues too (#1164), and nothing starts again by itself.
+    /// A running queue's downloads stop with it (not by hand), so starting it again, or its
+    /// schedule, goes on with them.
     fn stop_all(&mut self) {
-        let running: Vec<u64> = self
-            .items
-            .iter()
-            .filter(|i| i.live.is_some())
-            .map(|i| i.id)
-            .collect();
-        for id in running {
+        let live = self.items.iter().filter(|i| i.live.is_some()).map(|i| i.id);
+        let (queues, ids) = stop_all_plan(&self.queues, live, self.restarts_pending());
+        for q in queues {
+            self.stop_queue(q);
+        }
+        for id in ids {
             self.stop_by_hand(id);
         }
     }
@@ -6395,7 +6453,7 @@ impl App {
     fn stop_queue(&mut self, q: usize) {
         self.queues[q].running = false;
         for id in self.queues[q].items.clone() {
-            self.stop(id);
+            self.halt(id);
         }
     }
 
@@ -7417,7 +7475,7 @@ impl App {
         let running = picked.iter().any(|i| i.live.is_some());
         let resumable = picked.iter().any(|i| i.can_start());
         let deletable = picked.iter().any(|i| i.live.is_none());
-        let any_running = self.items.iter().any(|i| i.live.is_some());
+        let can_stop_all = self.can_stop_all();
         let off = |label| I(label, Cmd::None, false, false);
         #[allow(unused_mut)]
         let mut menu = match index {
@@ -7503,8 +7561,8 @@ impl App {
                 ),
             ],
             2 => vec![
-                I("&Pause All", Cmd::StopAll, any_running, false),
-                I("&Stop All", Cmd::StopAll, any_running, false),
+                I("&Pause All", Cmd::StopAll, can_stop_all, false),
+                I("&Stop All", Cmd::StopAll, can_stop_all, false),
                 Sep,
                 I(
                     "&Delete All Completed",
@@ -8632,7 +8690,7 @@ impl App {
         let running = picked.iter().any(|i| i.live.is_some());
         let resumable = picked.iter().any(|i| i.can_start());
         let deletable = picked.iter().any(|i| i.live.is_none());
-        let any_running = self.items.iter().any(|i| i.live.is_some());
+        let can_stop_all = self.can_stop_all();
         let any_complete = self.items.iter().any(|i| i.status == Status::Complete);
         let buttons = [
             (Icon::AddUrl, "Add URL", true, Cmd::AddUrl),
@@ -8641,7 +8699,7 @@ impl App {
             (Icon::Resume, "Resume", resumable, Cmd::Resume),
             // i18n: verb: stop the selected downloads
             (Icon::Stop, "Stop", running, Cmd::Stop),
-            (Icon::StopAll, "Stop All", any_running, Cmd::StopAll),
+            (Icon::StopAll, "Stop All", can_stop_all, Cmd::StopAll),
             // i18n: verb: delete the selected downloads
             (Icon::Delete, "Delete", deletable, Cmd::Remove),
             (
@@ -12722,5 +12780,43 @@ mod alt_key_tests {
             &mut alone
         ));
         assert!(!alt_alone_released(&[alt(false)], &mut down, &mut alone));
+    }
+}
+
+#[cfg(test)]
+mod stop_all_tests {
+    use super::*;
+
+    fn queue(name: &str, sync: bool, items: &[u64], running: bool) -> Queue {
+        Queue {
+            items: items.to_vec(),
+            running,
+            ..Queue::new(name, sync)
+        }
+    }
+
+    /// #1164: Stop All turns off every running queue (the main one, a synchronization queue, the
+    /// user's), so none starts its next download; their downloads stop with them, not by hand
+    /// (the queue goes on with them when started again); the rest stop by hand, once each.
+    #[test]
+    fn stop_all_stops_every_running_queue_too() {
+        let queues = [
+            queue("Main download queue", false, &[1, 2, 3], true),
+            queue("Synchronization queue", true, &[4], true),
+            queue("Queue # 3", false, &[5, 6], false),
+            queue("Queue # 4", false, &[7], true),
+        ];
+        // 1 and 4 run in their queues, 5 was started by hand in a queue that is off, 8 is in no
+        // queue; 9 waits to start again by itself (a new speed limit), 8 too (listed twice).
+        let (stop, by_hand) = stop_all_plan(&queues, [1, 4, 5, 8], [9, 8, 2]);
+        assert_eq!(stop, [0, 1, 3]);
+        assert_eq!(by_hand, [5, 8, 9]);
+    }
+
+    #[test]
+    fn nothing_running_stops_nothing() {
+        let queues = [queue("Main download queue", false, &[1], false)];
+        let (stop, by_hand) = stop_all_plan(&queues, [], []);
+        assert!(stop.is_empty() && by_hand.is_empty());
     }
 }
