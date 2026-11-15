@@ -562,6 +562,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The window no longer waits for its crash monitor at start: the connection is made beside it,
+  a monitor slow to listen is connected to late, with what was sent meanwhile told again, and one
+  the system refuses for a while no longer ends the session's crash reports
+  ([#476](https://github.com/anefzaoui/misterdownloadmanager/issues/476))
 - ✅ Windows: shutting down, restarting or signing out saves MDM as File → Exit does (its
   downloads stop where they are and resume there, no crash report at the next start), and an
   installer closing MDM through the Restart Manager closes it; File → Exit also stops the
