@@ -2920,6 +2920,13 @@ impl App {
         // page up at once. The main window stays where it is (hidden, minimized): only the
         // dialog opens, as its window is its own.
         if let Some(page) = cmd.video_page.as_deref() {
+            // A browser may fall back to its ordinary page button when a quality-menu pick is
+            // busy. Keep the dialog already being edited instead of replacing it.
+            if self.video_dlg.is_some() {
+                self.show_for_dialog(ctx);
+                dialogs::raise(ctx, dialogs::dialog_viewport("video-page"));
+                return;
+            }
             self.show_for_dialog(ctx);
             let page = page.to_owned();
             self.video_dlg = Some(self.video_dialog(Some((&page, cmd))));
@@ -4685,10 +4692,13 @@ impl App {
 
     /// The browser's quality menu over a video (crates/nmhost, videolookup.rs): a look-up
     /// started (answered at once, yt-dlp on a thread of its own), a question about one, or the
-    /// choice made there, added as Download video's Download Now adds it: MDM's window stays
-    /// where it is, the download's progress window opens (Options' "only add to the queue":
-    /// into the main queue instead, with no queue panel either).
-    fn quality_menu(&mut self, cmd: &ipc::Command) -> ipc::api::VideoLookupAnswer {
+    /// choice made there. With "Show start download dialog", the choice opens Download video's
+    /// native dialog; otherwise it is added as the browser menu's Download Now adds it.
+    fn quality_menu(
+        &mut self,
+        cmd: &ipc::Command,
+        ctx: &egui::Context,
+    ) -> ipc::api::VideoLookupAnswer {
         use ipc::api::{VideoLookupAnswer, lookup};
         if menu_needs_window(cmd, self.headless) {
             return VideoLookupAnswer::of(lookup::USE_WINDOW);
@@ -4718,8 +4728,16 @@ impl App {
         if let Some(answer) = self.lookups.received(pick, cmd.private, now) {
             return answer;
         }
+        // Leave an already-open dialog (and any edits in it) alone. Do this before taking the
+        // browser's one-use lookup so it can retry once the dialog is closed.
+        if self.settings.show_start_dialog && self.video_dlg.is_some() {
+            dialogs::raise(ctx, dialogs::dialog_viewport("video-page"));
+            return VideoLookupAnswer::of(lookup::BUSY);
+        }
         let start_now = pick.start_now.unwrap_or(!self.settings.only_add_to_queue);
-        let add = self.lookups.pick(pick, cmd.private, now).and_then(|p| {
+        let picked = self.lookups.pick(pick, cmd.private, now);
+        let add = picked.and_then(|p| {
+            let video = p.video.clone();
             crate::videolookup::video_add(
                 p,
                 &folder,
@@ -4727,10 +4745,23 @@ impl App {
                 start_now,
                 &self.settings.video_subs,
             )
+            .map(|add| (add, video))
         });
-        let Some(add) = add else {
+        let Some((add, video)) = add else {
             return VideoLookupAnswer::of(lookup::USE_WINDOW);
         };
+        if self.settings.show_start_dialog {
+            let dialog = self.video_dialog(None).with_lookup(add, video);
+            let Some(dialog) = dialog else {
+                return VideoLookupAnswer::of(lookup::USE_WINDOW);
+            };
+            self.show_for_dialog(ctx);
+            self.video_dlg = Some(dialog);
+            let answer = VideoLookupAnswer::of(lookup::SENT);
+            self.lookups
+                .remember(pick, cmd.private, answer.clone(), now);
+            return answer;
+        }
         // Its category's folder, made when it isn't there yet (the window asks first; the
         // choice was made in the browser).
         if let Some(dir) = add.dest.parent() {
@@ -5811,14 +5842,14 @@ impl App {
     ///
     /// A paired device's command (the remote control, #141) is answered while Options → Remote
     /// is on, whatever the automation API's switch: it may list, add and act, nothing else.
-    fn answer(&mut self, cmd: &ipc::Command) -> String {
+    fn answer(&mut self, cmd: &ipc::Command, ctx: &egui::Context) -> String {
         use ipc::api::{ApiAnswer, DownloadInfo, ErrorAnswer, ListAnswer, line};
         // The browser's quality menu (its native host asks): whatever the automation API's
         // switch, and never for a paired device.
         if !cmd.remote
             && (cmd.video_lookup.is_some() || cmd.video_poll.is_some() || cmd.video_pick.is_some())
         {
-            return line(&self.quality_menu(cmd));
+            return line(&self.quality_menu(cmd, ctx));
         }
         if cmd.pair && !cmd.remote {
             return self.pair_answer();
@@ -10978,7 +11009,7 @@ impl App {
             handled = true;
             match inc.reply {
                 Some(reply) => {
-                    let _ = reply.send(self.answer(&inc.cmd));
+                    let _ = reply.send(self.answer(&inc.cmd, ctx));
                 }
                 None => self.handle_command(inc.cmd, ctx),
             }
