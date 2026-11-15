@@ -567,6 +567,28 @@ These ship in the next version.
   the keys are on; the toolbar is a toolbar of named buttons; the lists in MDM's windows say their
   selected row as the arrows move it
   ([#1190](https://github.com/anefzaoui/misterdownloadmanager/issues/1190))
+- ✅ The Linux lab scripts (tools/lab) keep the lab VM account's password in private files, never on
+  a command line, on the host or in the VM
+- ✅ Bangla: a menu or button's shortcut is its letter in brackets — "ফাইল(&F)", "থামান(&T)" —
+  not "&" on a Bangla letter no key can press (thanks to
+  [@Seyamalam](https://github.com/Seyamalam))
+- ✅ The browser extension's window and Test browser integration read the browsers' folders
+  beside the window, so a slow folder can't freeze it; macOS: a browser's folder macOS keeps MDM
+  out of is said, with the setting that allows it
+  ([#1218](https://github.com/anefzaoui/misterdownloadmanager/issues/1218))
+- ✅ Malay: a queue is a **baris gilir**, the clipboard a **papan klip** and a checksum a
+  **jumlah semak**, as the reviewed termbase settles them — not "giliran", "papan keratan" or
+  "jumlah hasil tambah" (thanks to [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Windows: finished downloads drag out of the list onto a folder or a program, one or several,
+  moved or copied as from Explorer; a moved file is followed, as from Download complete
+  ([#1210](https://github.com/anefzaoui/misterdownloadmanager/issues/1210))
+- ✅ French: a torrent's **tracker** is a "tracker", as French download managers call it, not a
+  "traqueur" (thanks to [@Seyamalam](https://github.com/Seyamalam))
+- ✅ A way of drawing that failed once is tried again: after a graphics driver update, or a
+  while that depends on why it failed (twice as long each time it fails again), and at the next
+  start for a window slow just after signing in; View → Draw with says since when and until when
+  ([#1205](https://github.com/anefzaoui/misterdownloadmanager/issues/1205))
+- ✅ The guide's links to **Click'n'Load** and **Proxy / Socks** land on their sections (thanks to [@Seyamalam](https://github.com/Seyamalam))
 - ✅ macOS: no more **The window stopped responding** report while a file dialog is open: the
   time its window thread spends in a system Open or Save dialog isn't counted
   ([#1192](https://github.com/anefzaoui/misterdownloadmanager/issues/1192))
@@ -939,8 +961,11 @@ These ship in the next version.
   without it until the bus answers, and gets it then, however late
   ([#828](https://github.com/anefzaoui/misterdownloadmanager/issues/828))
 - ✅ Looking up a new video (put online in the last two days) no longer fails with "Permission
-  denied" in MDM's install folder: the helpers run in your temporary folder, or MDM's own if
-  that one can't be written ([#834](https://github.com/anefzaoui/misterdownloadmanager/issues/834))
+  denied" in MDM's install folder, or in `System32` when MDM started with Windows: the helpers
+  run in your temporary folder, or MDM's own if that one can't be written; on Windows a file
+  opened from MDM starts in its own folder
+  ([#834](https://github.com/anefzaoui/misterdownloadmanager/issues/834),
+  [#1216](https://github.com/anefzaoui/misterdownloadmanager/issues/1216))
 - ✅ A video a site sends through a program's address (`stream.php?file=…`,
   `remote_control.php`) is named by what it is: the page's title (or the address's `file=` name)
   and its real type, `Lecture.mp4`, not `stream.php`; the browser's media list shows that name

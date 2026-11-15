@@ -44,8 +44,9 @@ enum Sub {
     /// Downloads → Customize "Download progress" dialog → Edit... (#1041): (show it when a
     /// download starts).
     Progress(bool),
-    /// General → Test browser integration...: the checks, as found when it opened.
-    Test(Vec<crate::extension::Check>),
+    /// General → Test browser integration...: the checks, read beside the window (#1218) when it
+    /// opened, and again once a Set it up finished.
+    Test(crate::extension::Tester),
     /// File types → "Don't start downloading automatically from the following addresses" →
     /// Edit list...: one address pattern per line.
     Addresses(String),
@@ -223,8 +224,6 @@ pub struct OptionsDialog {
     remote: Option<mdm_remote::Remote>,
     port: String,
     device_rows: winui::RowList,
-    /// Test browser integration → Set it up's runs seen finished (crate::extension).
-    set_up_seen: u64,
     /// Sites Logins → Cookies for video sites (#229): the browser in the list (an index into
     /// `mdm_tools::proc::cookie_browsers`), kept while Off is chosen.
     cookie_browser: usize,
@@ -293,7 +292,11 @@ impl OptionsDialog {
     /// `options:account`, `options:progress`: screenshots, #192, #1041).
     pub fn with_window(mut self, name: &str) -> Self {
         match name {
-            "test" => self.sub = Some(Sub::Test(crate::extension::checks(&self.s))),
+            "test" => {
+                self.sub = Some(Sub::Test(crate::extension::Tester::new(
+                    self.s.advanced_integration,
+                )))
+            }
             "account" => self.sub = Some(Sub::Account(AccountEdit::default())),
             "progress" => self.sub = Some(Sub::Progress(self.s.show_progress)),
             _ => {}
@@ -323,7 +326,6 @@ impl OptionsDialog {
             account_rows: Default::default(),
             sound_rows: Default::default(),
             sub: None,
-            set_up_seen: 0,
             cat_edit: None,
             restore_ask: None,
             learned,
@@ -785,7 +787,9 @@ impl OptionsDialog {
         )
         .clicked()
         {
-            self.sub = Some(Sub::Test(crate::extension::checks(&self.s)));
+            self.sub = Some(Sub::Test(crate::extension::Tester::new(
+                self.s.advanced_integration,
+            )));
         }
         winui::etched_h(&p, o.x + 34.0, o.y + 356.0, 357.0);
         // The buttons at the right as wide as their labels in this language (#192), their
@@ -3760,10 +3764,20 @@ impl OptionsDialog {
                     Outcome::Closed => {}
                 }
             }
-            Sub::Test(mut checks) => {
-                // A check's path takes a line of its own (#818).
+            Sub::Test(tester) => {
+                // Read beside the window (#1218): the last checks while new ones are read (Set it
+                // up finished), "Checking..." before the first.
+                let found = tester.checks(Some(ctx));
+                let checking = found.is_none();
+                let checks = found.unwrap_or_default();
+                // A check's path takes a line of its own (#818), what to do about it a paragraph
+                // (#1218), as tall as it was last drawn.
                 let details = checks.iter().filter(|c| c.detail.is_some()).count();
-                let h = 120.0 + checks.len() as f32 * 22.0 + details as f32 * DETAIL_H;
+                let rows = checks.len().max(usize::from(checking));
+                let h = 120.0
+                    + rows as f32 * 22.0
+                    + details as f32 * DETAIL_H
+                    + crate::dialogs::grow_extra(ctx, "opt-test-how");
                 let mut set_up = false;
                 let out = window(
                     ctx,
@@ -3776,6 +3790,18 @@ impl OptionsDialog {
                     |ui, o| {
                         let p = ui.painter().clone();
                         let mut y = o.y + 22.0;
+                        let mut how_h = 0.0;
+                        if checking {
+                            winui::text_in_window(
+                                ui,
+                                &p,
+                                o.x + 34.0,
+                                y,
+                                // i18n: Test browser integration, while it reads where browser integration stands (a moment, usually)
+                                crate::i18n::t("Checking..."),
+                                LIGHT_TEXT(),
+                            );
+                        }
                         for (k, c) in checks.iter().enumerate() {
                             let (mark, color) = if c.ok {
                                 ("\u{2714}", winui::SUCCESS())
@@ -3786,19 +3812,35 @@ impl OptionsDialog {
                             winui::text_in_window(ui, &p, o.x + 34.0, y, &c.text, LIGHT_TEXT());
                             if let Some(path) = &c.detail {
                                 y += DETAIL_H;
+                                // A path reads left to right in a right-to-left language too.
                                 winui::fit_middle(
                                     ui,
                                     &p,
                                     o.x + 34.0,
                                     y,
-                                    path,
+                                    &crate::i18n::ltr(path),
                                     LIGHT_TEXT(),
                                     o.x + 440.0 - 14.0,
                                     ("test-detail", k),
                                 );
                             }
+                            if let Some(how) = &c.how {
+                                let lines = winui::paragraph(
+                                    &p,
+                                    o.x + 34.0,
+                                    y + DETAIL_H,
+                                    how,
+                                    LIGHT_TEXT(),
+                                    o.x + 440.0 - 14.0,
+                                    14.0,
+                                );
+                                let more = DETAIL_H + 14.0 * lines.saturating_sub(1) as f32;
+                                y += more;
+                                how_h += more;
+                            }
                             y += 22.0;
                         }
+                        crate::dialogs::grow_px(ui.ctx(), "opt-test-how", how_h);
                         let first = checks.iter().find(|c| !c.ok);
                         let y = h - 46.0;
                         // As wide as their labels in this language (#192), short of Close.
@@ -3862,11 +3904,8 @@ impl OptionsDialog {
                 if set_up {
                     crate::extension::set_up(ctx);
                 }
-                if crate::extension::set_up_finished(&mut self.set_up_seen) {
-                    checks = crate::extension::checks(&self.s);
-                }
                 if matches!(out, Outcome::Open) {
-                    self.sub = Some(Sub::Test(checks));
+                    self.sub = Some(Sub::Test(tester));
                 }
             }
         }

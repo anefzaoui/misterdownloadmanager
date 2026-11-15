@@ -1527,6 +1527,14 @@
 #, machine
 	Dragged out of Download complete and moved to {folder}	Aus „Download abgeschlossen“ gezogen und nach „{folder}“ verschoben
 #. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved somewhere MDM can't tell (a program took it, the Recycle Bin)
+#, machine
+	Dragged out of the list and moved to a place MDM couldn't learn	Aus der Liste gezogen und an einen Ort verschoben, den MDM nicht ermitteln konnte
+#. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved to that folder
+#, machine
+	Dragged out of the list and moved to {folder}	Aus der Liste gezogen und nach „{folder}“ verschoben
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	Abgelegte Links
@@ -2202,6 +2210,10 @@
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
 	If it can't be reached, use the system's DNS	Wenn nicht erreichbar, den DNS des Systems verwenden
+#. text in extension.rs
+#. under "macOS keeps Mister Download Manager out of …'s folder" (Test browser integration, the browser extension's window): how to allow it. The quoted words and System Settings → Privacy & Security → Full Disk Access are macOS's own: use Apple's words in this language, or keep the English ones when unsure
+#, machine
+	If macOS asks whether it may access data from other apps, allow it. Or turn on Mister Download Manager in System Settings → Privacy & Security → Full Disk Access. Then press Set it up.	Wenn macOS fragt, ob es auf Daten von anderen Apps zugreifen darf, erlauben Sie es. Oder aktivieren Sie Mister Download Manager unter Systemeinstellungen → Datenschutz & Sicherheit → Festplattenvollzugriff. Drücken Sie dann „Einrichten“.
 #. text in errors.rs
 #. what to do when a helper's server couldn't be reached; {proxy} = the Options tab Proxy / Socks; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
@@ -2630,6 +2642,14 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on macOS
 #, machine
 	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS überprüft so markierte Dateien: Gatekeeper, bevor ein Programm zum ersten Mal geöffnet wird. Wenn die Option deaktiviert ist, wird kein Download markiert.
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write a browser's folder (where the browser finds MDM's helper)
+#, machine
+	macOS keeps Mister Download Manager out of a browser's folder.	macOS verwehrt Mister Download Manager den Zugriff auf den Ordner eines Browsers.
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write {browser}'s folder (where the browser finds MDM's helper); {browser} is a browser's name
+#, machine
+	macOS keeps Mister Download Manager out of {browser}'s folder.	macOS verwehrt Mister Download Manager den Zugriff auf den Ordner von {browser}.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4172,6 +4192,26 @@
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
 	signed out: sign in again	abgemeldet: erneut anmelden
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system doesn't draw MDM; {date}: the day that was found
+#, machine
+	Since {date}	Seit {date}
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries it again once the graphics driver is updated
+#, machine
+	Since {date}: MDM tries it again after a driver update	Seit {date}: MDM versucht es nach einer Treiberaktualisierung erneut
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries that graphics system again when it next starts
+#, machine
+	Since {date}: MDM tries it again at its next start	Seit {date}: MDM versucht es beim nächsten Start erneut
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again
+#, machine
+	Since {date}: MDM tries it again on {retry}	Seit {date}: MDM versucht es am {retry} erneut
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again, unless the graphics driver is updated before
+#, machine
+	Since {date}: MDM tries it again on {retry}, or after a driver update	Seit {date}: MDM versucht es am {retry} erneut oder nach einer Treiberaktualisierung
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5893,7 +5933,7 @@
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} ist zu groß für eine Adressliste ({size}). Der Import liest Textdateien, Webseiten und .ef2-Exporte bis zu {limit}.
 #. text in a dialog box
 #, machine
-	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} wurde durch Ziehen aus „Download abgeschlossen“ verschoben, und MDM konnte den neuen Speicherort nicht ermitteln. Suchen Sie die Datei dort, wo Sie sie abgelegt haben.
+	{file} was moved elsewhere by dragging it out of MDM, and MDM couldn't learn where. Look for it where you dropped it.	{file} wurde durch Ziehen aus MDM verschoben, und MDM konnte den neuen Speicherort nicht ermitteln. Suchen Sie die Datei dort, wo Sie sie abgelegt haben.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine

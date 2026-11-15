@@ -555,6 +555,8 @@ fn app() -> eframe::Result {
     }
     // OpenGL or Direct3D (View → Draw with, #89), the next way when one can't start (Direct3D on
     // WARP before OpenGL, #847).
+    // A first frame late in a start with the session is the busy login's first (#1205).
+    renderer::started_with_session(at_login);
     let plan = renderer::plan(
         loaded.settings.renderer,
         renderer::overridden(&args).as_deref(),
