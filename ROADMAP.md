@@ -562,12 +562,150 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows and macOS: names in any script a font on the computer has show their letters, whatever
+  the interface language: the system's own font for the scripts MDM lists none for
+  ([#1125](https://github.com/anefzaoui/misterdownloadmanager/issues/1125))
+- ✅ Tests: the ones that failed now and then on a busy runner (keeping the computer awake, a
+  program or a call to the system that hangs, a stream's time for both its requests, a helper's
+  children ending with it, the clipboard used from many threads at once) check what they guard
+  by the order things happen in, not by the runner's speed: a fake system that answers when the
+  test says, a program that ends when the test lets it, a count of the work done instead of a
+  fixed time
+- ✅ The Download video button over a video in a feed, or on a site yt-dlp can't read (Douyin):
+  when MDM finds nothing on the page, it offers what the tab played for that video, told apart
+  from the feed's next one by its length, and says so when it can't tell
+  ([#1092](https://github.com/anefzaoui/misterdownloadmanager/issues/1092))
+- ✅ No freeze when a video or a gallery finishes on a slow or busy disk: its files are marked as
+  downloaded from the internet by the download itself, before it's done, and a rename on
+  completion happens beside the window (for [#1103](https://github.com/anefzaoui/misterdownloadmanager/issues/1103))
+- ✅ A crash while checking for updates on some computers; a check that goes wrong says why
+  ([#1123](https://github.com/anefzaoui/misterdownloadmanager/issues/1123))
+- ✅ Tests: the programs tests write and then run (the extraction tests' stand-in for HatchZip,
+  the Linux file manager's and the browser helper's) no longer fail now and then with "Text file
+  busy" (a file written while another test started a program was still open there for writing
+  when it ran); a program of their own writes them, and a test that gets another result says which
+- ✅ A video with a long title (an X post's text) no longer fails at 0% with **No such file or
+  directory** on Windows: its name is shortened so its download's files fit Windows' path limit,
+  and a name or folder too long says so
+  ([#1102](https://github.com/anefzaoui/misterdownloadmanager/issues/1102))
+- ✅ Tests: the checks that a long list is read in linear time, which still failed now and then on
+  a busy macOS runner, time one input 16 times as long against 16 short ones (as many items, as
+  long a run), take each side's fastest of several runs, and fail at three times as long (a square
+  costs 16 times): steady under load, and they catch more of the squares they guard against
+- ✅ Tests: a MediaFire download resumed after its address expired is checked request by
+  request (nothing it had on disk is asked again, but for the few bytes each part re-reads to
+  check the file), not by a total of what the server sent, which grew on a busy runner when a
+  part was split while its bytes were on the way
+  ([#952](https://github.com/anefzaoui/misterdownloadmanager/issues/952))
+- ✅ macOS: a browser hand-off while MDM is hidden from the menu bar opens its window
+- ✅ Downloads for Windows on ARM, 32-bit Windows and Linux on ARM, beside the x64 ones: the
+  installer, the portable zip and the plain zip; the AppImage, .deb, .rpm and .tar.gz. Each is
+  built and tested on its own processor, Update now keeps each copy on its own, and the helpers
+  come in each processor's build (no ffmpeg for 32-bit Windows: Helpers says so)
+  ([#977](https://github.com/anefzaoui/misterdownloadmanager/discussions/977),
+  [#1010](https://github.com/anefzaoui/misterdownloadmanager/discussions/1010))
+- ✅ The progress window's connections table shows connection numbers 10 and up instead of
+  **...**: the number column fits its widest number
+  ([#1101](https://github.com/anefzaoui/misterdownloadmanager/issues/1101))
+- ✅ YouTube: a video the browser's button sends with the page's cookies, refused with 403 or the
+  bot check as a signed-in viewer's, is looked up once more without them, as a private window
+  gets it; private, members' and age-restricted videos keep them
+  ([#686](https://github.com/anefzaoui/misterdownloadmanager/issues/686))
+- ✅ **Download File Info**: **...** beside **Save As** opens the system's Save dialog (the
+  folder and the file name, the download's type listed), and the name typed there is the one
+  saved ([#1088](https://github.com/anefzaoui/misterdownloadmanager/issues/1088))
+- ✅ The browser's **Download all links** on a page with thousands of long links: the list goes to
+  MDM in parts the browser lets through, and opens in Link grabber whole, as one list; past 1 MB of
+  links nothing arrived
+- ✅ Browser integration: a copy run from inside a zip (a temporary folder) no longer sets it up
+  for itself and leaves the browsers looking for a copy that is gone; MDM takes back a
+  registration that leads nowhere at each start, never one that works, and Test browser
+  integration says which copy is gone
+  ([#818](https://github.com/anefzaoui/misterdownloadmanager/issues/818))
+- ✅ Text boxes keep their selection under a right-click, so the menu's Copy and Cut take it
+  (Select all, then Copy, copied nothing)
+  ([#1084](https://github.com/anefzaoui/misterdownloadmanager/issues/1084))
+- ✅ A page that says which video it is about (its JSON-LD, `og:video` or `twitter:player`) gets
+  that video from Add URL, Download video and the command line, not the first player written in
+  its HTML (a hidden welcome video)
+  ([#1076](https://github.com/anefzaoui/misterdownloadmanager/issues/1076))
+- ✅ The browser extension's popup has **Hide the download button in full screen**, off as installed: a page in full screen shows no **Download video** button, for watching without it in the way ([#670](https://github.com/anefzaoui/misterdownloadmanager/issues/670))
+- ✅ Windows: MDM listed in Settings → Default apps for MAGNET and .torrent, and Torrent
+  settings' switch says when another app chosen there still opens them, and opens that page
+  ([#1091](https://github.com/anefzaoui/misterdownloadmanager/issues/1091))
+- ✅ A .torrent downloaded in the browser stays with the browser (and your own torrent program)
+  while Torrent settings' **Open magnet links and .torrent files with Mister Download Manager**
+  is off ([#1058](https://github.com/anefzaoui/misterdownloadmanager/issues/1058))
+- ✅ A video in a player embedded from another site (Vimeo's on a film site) is named after the
+  page's title, without the site's name, instead of the player's own title
+- ✅ No freeze of the window in Link grabber with thousands of links (a big page's links): each
+  link's category is worked out once, and a frame goes over the links once, however many
+  packages they make ([#1063](https://github.com/anefzaoui/misterdownloadmanager/issues/1063))
+- ✅ **Refresh download address** opens the page the download was started from, not the site's
+  home page ([#607](https://github.com/anefzaoui/misterdownloadmanager/issues/607))
+- ✅ A video's look-up no longer waits 20 s on a server the network drops: 5 s, and once more
+  with yt-dlp's own wait only when the look-up failed for a slow server
+  ([#1053](https://github.com/anefzaoui/misterdownloadmanager/issues/1053))
+- ✅ MediaFire: a download resumed after its address expired asks the file's MediaFire page for a
+  fresh one and goes on; a MediaFire file page's link downloads the file
+  ([#952](https://github.com/anefzaoui/misterdownloadmanager/issues/952))
+- ✅ Chromium browsers: a video (or a PDF, an MP3) the browser would play, taken by MDM, keeps
+  the name its server gives it instead of its address's (`main.mkv`)
+  ([#948](https://github.com/anefzaoui/misterdownloadmanager/issues/948))
+- ✅ A download refused for its site's security certificate says why (expired, not trusted, for
+  another name) instead of a bare **Error** (follows [#762](https://github.com/anefzaoui/misterdownloadmanager/issues/762))
+- ✅ **Options → Downloads → Customize "Download progress" dialog → Edit...** works: it can turn
+  off the progress window that opens when a download starts; the button was greyed and did
+  nothing ([#1041](https://github.com/anefzaoui/misterdownloadmanager/issues/1041))
+- ✅ The browser popup's **Never take downloads from <site>** says it worked, with **Undo**
+  ([#404](https://github.com/anefzaoui/misterdownloadmanager/issues/404))
+- ✅ A download to a disk slower than the network no longer stands still for a second or more
+  just after it starts (a second save of its progress came too soon after the first); a server
+  whose name the DNS doesn't answer in time says it couldn't be found, not that it didn't answer.
+  Two tests that failed now and then on macOS check both without the network or the runner's speed
+  ([#782](https://github.com/anefzaoui/misterdownloadmanager/issues/782))
+- ✅ Linux, Wayland: MDM chooses its windows' system the same way however it starts (its menu
+  entry, the browser's helper, autostart): Wayland's own windows on a scaled screen where nothing
+  tells X11 programs the scale (Hyprland, labwc, sway), XWayland elsewhere; **View → Window
+  system** to choose ([#624](https://github.com/anefzaoui/misterdownloadmanager/issues/624))
+- ✅ A PDF a page shows in a frame, an embed or an object goes to MDM like one opened from a link,
+  in Chromium browsers and Firefox; a page's own PDF viewer keeps the file it reads
+  (part of [#1087](https://github.com/anefzaoui/misterdownloadmanager/issues/1087))
+- ✅ The sites in **Don't start downloading automatically from the following sites** take their
+  subdomains and the files their pages link to on another server (a CDN), as the Download panels'
+  list does
+  ([#1049](https://github.com/anefzaoui/misterdownloadmanager/issues/1049))
+- ✅ The menu bar with a screen reader: Alt opens it again, and the screen reader says each item
+  as Alt, F10 or the arrows reach it; Shift+F10's menus too
+  ([#328](https://github.com/anefzaoui/misterdownloadmanager/issues/328))
+- ✅ Windows with Direct3D 12: the progress window no longer flashes a stretched picture when
+  Show details or Hide details changes its size
+  ([#471](https://github.com/anefzaoui/misterdownloadmanager/issues/471))
+- ✅ Videos looked up about a second sooner on Windows (yt-dlp's folder build, which doesn't unpack
+  itself at every start), and the video button's look-up starts once the pointer rests on it;
+  in a private window only on the click (for
+  [#1053](https://github.com/anefzaoui/misterdownloadmanager/issues/1053))
+- ✅ Extracting archives: the size limit covers every entry, also the ones left out, and
+  cancelling stops there too
+  (part of [#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37))
+- ✅ No reconnecting in waves on a shared line: a connection is measured against its share of
+  what the connections bring together, not the speed the first one had alone
+  ([#896](https://github.com/anefzaoui/misterdownloadmanager/pull/896))
+- ✅ Download panels (the video button): site exclusions support wildcards (`*`) like `*.youtube.*` or `youtube.*` ([#759](https://github.com/anefzaoui/misterdownloadmanager/issues/759))
+- ✅ Firefox: one Download video button over a video, not two, after the extension is updated while
+  it shows (seen on YouTube in full screen)
+  ([#336](https://github.com/anefzaoui/misterdownloadmanager/issues/336))
+- ✅ Alt+click (Option+click on a Mac) leaves a download to the browser in Firefox too, where it
+  did nothing, and when the link redirects or a page's script starts the download
+  ([#332](https://github.com/anefzaoui/misterdownloadmanager/issues/332))
 - ✅ Left and Right in Download File Info's Save As box and Add URL's Address box move the caret,
   no longer the focus to the button beside the box
   ([#812](https://github.com/anefzaoui/misterdownloadmanager/pull/812))
 - ✅ The progress window shows no scroll bars over content that fits at an interface size above
   100 % (125 %), where the window's client comes back a pixel short of its content
   ([#672](https://github.com/anefzaoui/misterdownloadmanager/issues/672))
+- ✅ Less memory during fast downloads to a slower disk: what waits for the disk stays within its
+  256 MB as allocated (a 4 GB download: 967 MB in 0.5.2, 523 MB now with the window open)
 - ✅ Windows and macOS: **Options → General → Shortcut to show or hide window**: a global
   shortcut of two or three keys that shows or hides MDM's window from any program
   ([#558](https://github.com/anefzaoui/misterdownloadmanager/issues/558))
@@ -632,6 +770,9 @@ These ship in the next version.
   ([#698](https://github.com/anefzaoui/misterdownloadmanager/issues/698))
 - ✅ Windows: a menu closes at once when you click outside MDM, instead of 0.4 seconds later
   ([#859](https://github.com/anefzaoui/misterdownloadmanager/issues/859))
+- ✅ Windows: programs MDM starts (an update's installer, a browser, the power options) start
+  beside the window, which no longer waits while an antivirus checks them
+  ([#846](https://github.com/anefzaoui/misterdownloadmanager/issues/846))
 - ✅ No "The window stopped responding" report in the first minute after the computer wakes from
   sleep, while its disk, network and screen come back: such a stall is logged, and reported only
   if it lasts longer; every freeze report says what the window was doing when it stopped
@@ -708,6 +849,7 @@ These ship in the next version.
   video window, the menu over a video and the command line say to install Node.js or Deno, with
   a link to the help page's commands for each system
   ([#852](https://github.com/anefzaoui/misterdownloadmanager/issues/852))
+- ✅ Video helpers: the JavaScript runtime yt-dlp is given is looked for more carefully
 - ✅ Linux: no freeze of the window where the session bus doesn't answer (a session started
   without D-Bus, a bus that hangs): the tray icon is set up beside the window, which carries on
   without it until the bus answers, and gets it then, however late
@@ -899,8 +1041,9 @@ These ship in the next version.
   [#583](https://github.com/anefzaoui/misterdownloadmanager/issues/583),
   [#513](https://github.com/anefzaoui/misterdownloadmanager/issues/513))
 - ✅ Windows: no crash when the clipboard is read in two places at once (the clipboard monitor and
-  Add URL): every read and write of it goes one at a time
-  ([#629](https://github.com/anefzaoui/misterdownloadmanager/issues/629))
+  Add URL, or a paste in a text box): every read and write of it goes one at a time
+  ([#629](https://github.com/anefzaoui/misterdownloadmanager/issues/629),
+  [#1103](https://github.com/anefzaoui/misterdownloadmanager/issues/1103))
 - ✅ The window no longer waits on the program that owns the clipboard when it doesn't answer (Linux
   especially): a text box's right-click menu, Add URL, Add batch download, Add torrent and Download
   video read the clipboard beside the window, and fill in a copied link when it comes (follows
@@ -1003,8 +1146,24 @@ These ship in the next version.
 - ✅ Linux: downloads to an NTFS drive (`ntfs3`) start at once instead of filling the file with
   zeros first, which held the download at 0% and slowed the whole computer
 - ✅ Linux on Wayland (XWayland) with NVIDIA's driver: typing and clicking no longer lag by 1 to 2
+  seconds; MDM spaces its frames itself instead of waiting for the screen's refresh
+- ✅ Linux on X11 and XWayland with Mesa's drivers (Intel, AMD, llvmpipe): one window at most waits
+  for the screen's refresh, none under XWayland, as `vblank_mode=0` did for the lag when moving the
+  main window and clicking in the download dialog (for
+  [#347](https://github.com/anefzaoui/misterdownloadmanager/issues/347), waiting for the reporter)
   seconds; MDM spaces its frames itself instead of waiting for the screen's refresh (other drivers
   keep the refresh)
+- ✅ The computer stays awake while anything downloads, not only during a queue that woke it, and
+  sleeps as its settings say once the downloads are done
+  ([#939](https://github.com/anefzaoui/misterdownloadmanager/issues/939))
+- ✅ macOS: a menu whose item opens a file dialog (View → Theme → Add a theme file, Tasks → Open
+  torrent file) closes first, instead of floating on top of every window until MDM quits
+  ([#615](https://github.com/anefzaoui/misterdownloadmanager/issues/615))
+- ✅ Download video works behind an antivirus or a proxy that reads HTTPS: yt-dlp is asked again
+  with the system's certificates when it refuses a site's
+  ([#955](https://github.com/anefzaoui/misterdownloadmanager/issues/955))
+- ✅ Linux: MDM pins to the taskbar and the dock: its desktop entry names its windows' class, and
+  every window of MDM carries it ([#940](https://github.com/anefzaoui/misterdownloadmanager/issues/940))
 
 ## Being worked on
 
@@ -1016,19 +1175,19 @@ These ship in a later version, when they're ready.
 - 🔄 Linux, what's left ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
   screen readers (Orca) reading MDM's windows; browsers installed as a Flatpak (Firefox from
   Flathub may reach MDM through the desktop, as the Snap does: to check); native Wayland windows
-  (`MDM_WAYLAND=1`) placing their menus, which needs popup windows the window library doesn't
-  have yet, so XWayland stays the default; Vulkan as the default renderer (below)
+  placing their menus, which needs popup windows the window library doesn't have yet, so
+  XWayland stays the default unless X11's windows would be scaled up (#624); Vulkan as the
+  default renderer (below)
 - 🔄 The Safari extension (in 0.5.2): still to check in Safari itself, signed with a Developer ID
 
 ### Bugs being looked into
 
+- 🔍 A look-up that waits 20 s on a video server the network doesn't answer
+  ([#1053](https://github.com/anefzaoui/misterdownloadmanager/issues/1053))
 - 🔍 The main window's own looks at the disk on a drive slow to answer: starting or resuming a
   download that was already under way, a rename or move when one finishes, and links added
   without Download File Info still wait for it (follows
   [#743](https://github.com/anefzaoui/misterdownloadmanager/issues/743))
-- 🔍 Alt and F10 not reaching the menu bar while a screen reader (NVDA, Narrator) runs
-  ([#328](https://github.com/anefzaoui/misterdownloadmanager/issues/328)): 0.5.2's fix covers a
-  focused control, not this
 - 🔍 A site's bot check refusing MDM's request (testfile.org, a Cloudflare challenge): the
   message now says so ([#376](https://github.com/anefzaoui/misterdownloadmanager/issues/376)); a
   way to hand the download back to the browser is still to decide

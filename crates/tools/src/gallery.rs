@@ -42,16 +42,22 @@ pub const USER_AGENT: &str = concat!(
     " (+https://misterdownloadmanager.com) gallery-dl"
 );
 
-/// gallery-dl's program for this system in its releases. None on macOS (it publishes no build
-/// for it: Homebrew's `gallery-dl`, chosen in Helpers, works there) and on Linux other than
-/// x86-64 (the same, from the system's packages or pip).
+/// gallery-dl's program for this system and processor in its releases: see [`asset_for`].
 pub fn asset() -> Option<&'static str> {
-    if cfg!(windows) {
-        Some("gallery-dl.exe")
-    } else if cfg!(all(target_os = "linux", target_arch = "x86_64")) {
-        Some("gallery-dl.bin")
-    } else {
-        None
+    asset_for(std::env::consts::OS, std::env::consts::ARCH)
+}
+
+/// gallery-dl's program in its releases for a system and a processor, as Rust names them
+/// (`std::env::consts`). It builds for 64-bit and 32-bit Windows and for Linux on x86-64; Windows
+/// on ARM runs the x64 one (Windows 11 runs x64 programs on ARM). None on macOS (no build: Homebrew's
+/// `gallery-dl`, chosen in Helpers, works there) and on Linux on ARM (the same, from the system's
+/// packages or pip).
+fn asset_for(os: &str, arch: &str) -> Option<&'static str> {
+    match (os, arch) {
+        ("windows", "x86_64" | "aarch64") => Some("gallery-dl.exe"),
+        ("windows", "x86") => Some("gallery-dl_x86.exe"),
+        ("linux", "x86_64") => Some("gallery-dl.bin"),
+        _ => None,
     }
 }
 
@@ -488,7 +494,9 @@ fn listed(line: &str, folder: &Path) -> Option<(url::Url, PathBuf)> {
 impl GalleryJob {
     /// Download `url`'s files into `folder`, the gallery's own.
     /// `engine`: MDM's engine, which downloads the files gallery-dl lists (#769); without it, or
-    /// with a gallery-dl too old to list them, gallery-dl downloads them itself.
+    /// with a gallery-dl too old to list them, gallery-dl downloads them itself. `saved` is shown
+    /// each file saved, on the job's own thread before the job says it is done (#1103): the
+    /// app's mark that they came from the internet, never written on the window's thread.
     pub fn start(
         tool: &Installed,
         url: &str,
@@ -496,6 +504,7 @@ impl GalleryJob {
         ask: &Ask,
         browser: &FromBrowser,
         engine: Option<crate::streams::Engine>,
+        saved: Option<mdm_engine::FileHook>,
     ) -> Result<GalleryJob, ProcError> {
         let mut ours: Vec<String> = vec![
             // The files right in `folder` (the gallery's own), not in subfolders of the site's.
@@ -598,7 +607,7 @@ impl GalleryJob {
                 }
             };
             read(stdout, &sh);
-            finish(&sh, &ch, folder);
+            finish(&sh, &ch, folder, saved.as_ref());
         });
         Ok(GalleryJob {
             shared,
@@ -750,8 +759,14 @@ fn read(stdout: impl std::io::Read, shared: &Mutex<Shared>) {
     }
 }
 
-/// gallery-dl's end: what it saved and what it couldn't, said in the download's log.
-fn finish(shared: &Mutex<Shared>, child: &Mutex<Option<Spawned>>, folder: PathBuf) {
+/// gallery-dl's end: what it saved and what it couldn't, said in the download's log; each saved
+/// file shown to `saved` first.
+fn finish(
+    shared: &Mutex<Shared>,
+    child: &Mutex<Option<Spawned>>,
+    folder: PathBuf,
+    saved: Option<&mdm_engine::FileHook>,
+) {
     // Polled with the lock free in between, so `stop` never waits on it.
     let (code, failure) = loop {
         let mut slot = child.lock().unwrap();
@@ -771,6 +786,14 @@ fn finish(shared: &Mutex<Shared>, child: &Mutex<Option<Spawned>>, folder: PathBu
         std::thread::sleep(Duration::from_millis(100));
     };
     child.lock().unwrap().take();
+    // Before Done, with the progress unlocked: a disk slow to take the mark keeps this thread
+    // waiting, never a window reading the progress (#1103).
+    if let Some(hook) = saved {
+        let files = shared.lock().unwrap().files.clone();
+        for file in files.iter().filter(|f| f.is_file()) {
+            (hook.0)(file);
+        }
+    }
     let mut sh = shared.lock().unwrap();
     let (saved, there, engine) = (sh.saved, sh.there, sh.by_engine);
     sh.progress.speed = 0.0;
@@ -818,6 +841,36 @@ mod tests {
         assert_eq!(
             hex::encode(crate::sum_for(&sums, "gallery-dl.exe").unwrap()),
             "4dda3f14efbc8a8e616af1fc7e1e88d795995326b47692453e620117254dec18"
+        );
+    }
+
+    /// Each processor MDM is published for takes gallery-dl's build for it, or the x64 one on
+    /// Windows on ARM, and the release's signed list has a checksum for each.
+    #[test]
+    fn gallery_dl_has_a_build_for_each_windows_processor() {
+        let sums = String::from_utf8_lossy(SUMS);
+        for (os, arch, want) in [
+            ("windows", "x86_64", "gallery-dl.exe"),
+            ("windows", "aarch64", "gallery-dl.exe"),
+            ("windows", "x86", "gallery-dl_x86.exe"),
+            ("linux", "x86_64", "gallery-dl.bin"),
+        ] {
+            assert_eq!(asset_for(os, arch), Some(want), "{os} {arch}");
+            assert!(
+                crate::sum_for(&sums, want).is_some(),
+                "{want} not in the list"
+            );
+        }
+        for (os, arch) in [
+            ("linux", "aarch64"),
+            ("macos", "aarch64"),
+            ("macos", "x86_64"),
+        ] {
+            assert_eq!(asset_for(os, arch), None, "{os} {arch}");
+        }
+        assert_eq!(
+            asset(),
+            asset_for(std::env::consts::OS, std::env::consts::ARCH)
         );
     }
 

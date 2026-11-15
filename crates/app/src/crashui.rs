@@ -12,7 +12,7 @@ use std::sync::mpsc::{Receiver, channel};
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
-use egui::{Pos2, Rect, Ui, ViewportBuilder};
+use egui::{Pos2, Rect, Ui};
 use mdm_crash::MonitorArgs;
 use mdm_crash::github::{self, Found};
 use mdm_crash::monitor::{self, Event};
@@ -93,7 +93,7 @@ pub fn monitor_main(m: MonitorArgs) -> eframe::Result {
     let zoom = crate::scale::startup(settings.interface_size);
     crate::theme::init_smooth_text(settings.smooth_text);
     let builder = crate::quiet(
-        ViewportBuilder::default()
+        crate::window_builder()
             .with_title(crate::i18n::os_text(crate::i18n::t(
                 "Mister Download Manager crash report",
             )))

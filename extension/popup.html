@@ -23,6 +23,10 @@
     <input id="proxy" type="checkbox">
     <span data-i18n="popup_proxy"></span>
   </label>
+  <label class="switch" id="video-hide-fullscreen-row">
+    <input id="video-hide-fullscreen" type="checkbox">
+    <span data-i18n="popup_video_hide_fullscreen"></span>
+  </label>
   <section id="send" class="send">
     <h2 data-i18n="popup_send_to"></h2>
     <label class="choice"><input type="radio" name="to" id="to-here"> <span data-i18n="popup_send_here"></span></label>
@@ -39,7 +43,7 @@
     </div>
   </section>
   <button id="exclude" class="row" hidden></button>
-  <p id="excluded" class="note" hidden></p>
+  <p id="excluded" class="excluded" role="status" hidden><span id="excluded-text"></span><button id="undo" class="undo" data-i18n="popup_undo"></button></p>
   <div class="actions">
     <button id="open" class="accent" data-i18n="popup_open"></button>
     <button id="options" data-i18n="popup_options"></button>

@@ -66,19 +66,43 @@ async function show() {
   } catch {
     // Not a web page (the browser's own): nothing to leave.
   }
+  await showExcluded(site, s.connected);
+  if (site) await showMedia(tab, s.connected);
+}
+
+// "Never take downloads from <site>", or, once the site's downloads stay with the browser, that
+// said where the button was, with Undo (#404): it takes the site off Options' excluded sites
+// again. A site excluded by a pattern of Options' own (`*.example.com`) has no Undo here: Options
+// holds it.
+async function showExcluded(site, connected) {
   const exclude = $("exclude");
-  exclude.hidden = !site || !s.connected;
+  const box = $("excluded");
+  const listed = site && connected ? await ask({ type: "site-excluded", host: site }) : {};
+  const said = (excluded, undo) => {
+    exclude.hidden = !site || !connected || excluded;
+    box.hidden = !site || !connected || !excluded;
+    $("undo").hidden = !undo;
+  };
   exclude.textContent = t("popup_exclude_site", site);
   exclude.title = exclude.textContent;
+  $("excluded-text").textContent = t("popup_excluded", site);
+  said(Boolean(listed.excluded), Boolean(listed.undo));
   exclude.onclick = async () => {
+    exclude.disabled = true;
     const r = await ask({ type: "exclude-site", host: site });
-    if (r.ok) {
-      exclude.hidden = true;
-      $("excluded").hidden = false;
-      $("excluded").textContent = t("popup_excluded", site);
-    }
+    exclude.disabled = false;
+    if (!r.ok) return;
+    said(true, true);
+    $("undo").focus();
   };
-  if (site) await showMedia(tab, s.connected);
+  $("undo").onclick = async () => {
+    $("undo").disabled = true;
+    const r = await ask({ type: "include-site", host: site });
+    $("undo").disabled = false;
+    if (!r.ok) return;
+    said(false, false);
+    exclude.focus();
+  };
 }
 
 // The last download left to the browser by MDM's Options, and which one (#208); a later one
@@ -229,6 +253,15 @@ ext.storage.local.get({ mediaTitleName: false })
 // The list's names follow it at once.
 mediaTitleName.addEventListener("change", () =>
   ext.storage.local.set({ mediaTitleName: mediaTitleName.checked }).then(show, () => {}));
+
+// Hide the download button over videos while the page is in full screen (#670), off as installed.
+const hideFullscreen = $("video-hide-fullscreen");
+$("video-hide-fullscreen-row").title = t("popup_video_hide_fullscreen_title");
+ext.storage.local.get({ hideVideoFullscreen: false })
+  .then((v) => (hideFullscreen.checked = Boolean(v.hideVideoFullscreen)))
+  .catch(() => {});
+hideFullscreen.addEventListener("change", () =>
+  ext.storage.local.set({ hideVideoFullscreen: hideFullscreen.checked }).catch(() => {}));
 
 // #42: reading the browser's proxy (a VPN or proxy extension's) is an opt-in, this switch, off as
 // installed. Firefox: the optional "proxy" permission, asked for on it. Chromium can't make that

@@ -212,6 +212,41 @@ fn limits_stop_a_bomb() {
     no_staging(&dest);
 }
 
+/// An entry whose name isn't safe is left out but still decompressed, so it counts against the
+/// same limit: naming a bomb `../b1` doesn't make it free.
+#[test]
+fn limits_stop_a_bomb_behind_an_unsafe_name() {
+    let t = tempfile::tempdir().unwrap();
+    let a = t.path().join("evil-big.zip");
+    let zeros = vec![0u8; 3 << 20];
+    zip_of(&a, &[("../b1", &zeros), ("../b2", &zeros)], None);
+    let dest = t.path().join("out");
+    let mut on_file = |_: &Path| {};
+    let mut policy = Policy {
+        dest: dest.clone(),
+        subfolder: Subfolder::Never,
+        password: None,
+        limits: Limits {
+            total: 4 << 20,
+            entries: 100,
+            depth: 8,
+        },
+        tool: None,
+        hatchzip: None,
+        in_place: false,
+        runs: None,
+        on_file: &mut on_file,
+        cancel: None,
+    };
+    // Six megabytes read, four allowed: stopped mid-entry.
+    assert!(matches!(
+        extract(&a, &mut policy),
+        Err(Error::TooBig { .. })
+    ));
+    assert!(!t.path().join("b1").exists() && !t.path().join("b2").exists());
+    no_staging(&dest);
+}
+
 /// 7-Zip's own archives (`7z a`): plain, encrypted, or split in 100 KB volumes.
 fn seven_of(tool: &Path, src: &Path, archive: &Path, extra: &[&str]) {
     let ok = std::process::Command::new(tool)
@@ -513,23 +548,36 @@ fn hatchzip_in_place_wrong_passwords_change_nothing() {
     assert!(!a.exists());
 }
 
+/// Write a program a test then runs: `content` goes to `path`, executable.
+///
+/// A `sh` of its own writes it, never this process: a file written here while another test's
+/// thread starts a program is handed to that child still open for writing, and Linux refuses to
+/// run a file open for writing anywhere ("Text file busy"), so running it would fail now and
+/// then.
+#[cfg(unix)]
+fn write_program(path: &Path, content: &[u8]) {
+    let mut sh = std::process::Command::new("/bin/sh")
+        .args(["-c", "cat > \"$1\" && chmod 755 \"$1\"", "sh"])
+        .arg(path)
+        .stdin(std::process::Stdio::piped())
+        .spawn()
+        .unwrap();
+    sh.stdin.take().unwrap().write_all(content).unwrap();
+    assert!(sh.wait().unwrap().success(), "{}", path.display());
+}
+
 /// A stand-in for HatchZip: records its arguments beside the archive, runs `body` (`$out` its
 /// folder, `$archive` the archive) and exits with `code`.
 #[cfg(unix)]
 fn fake_hatchzip(dir: &Path, code: i32, body: &str) -> PathBuf {
-    use std::os::unix::fs::PermissionsExt;
     static N: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
     let n = N.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
     let p = dir.join(format!("fake-hatchzip-{code}-{n}"));
-    std::fs::write(
-        &p,
-        format!(
-            "#!/bin/sh\nout=\"${{2#--output=}}\"\narchive=\"$6\"\nmkdir -p \"$out\"\n\
-             echo \"$@\" > \"$archive.args\"\n{body}\necho 'error: it stopped' >&2\nexit {code}\n"
-        ),
-    )
-    .unwrap();
-    std::fs::set_permissions(&p, std::fs::Permissions::from_mode(0o755)).unwrap();
+    let script = format!(
+        "#!/bin/sh\nout=\"${{2#--output=}}\"\narchive=\"$6\"\nmkdir -p \"$out\"\n\
+         echo \"$@\" > \"$archive.args\"\n{body}\necho 'error: it stopped' >&2\nexit {code}\n"
+    );
+    write_program(&p, script.as_bytes());
     p
 }
 
@@ -812,7 +860,8 @@ fn a_failed_move_in_place_keeps_every_file() {
     let out = t.path().join("stuck.hatchzip-out");
     let back = || std::fs::set_permissions(out.join("z"), std::fs::Permissions::from_mode(0o755));
     let Err(Error::Unplaced { to, left, .. }) = r else {
-        back().unwrap();
+        // The rights back if `z` was made, then what came instead.
+        let _ = back();
         panic!("{r:?}")
     };
     back().unwrap();
@@ -845,7 +894,8 @@ fn a_folder_that_cant_be_read_says_where_the_files_are() {
         runs.path(),
     );
     let out = t.path().join("shut.hatchzip-out");
-    std::fs::set_permissions(&out, std::fs::Permissions::from_mode(0o755)).unwrap();
+    // Its rights back if it was made; what came instead is said below.
+    let _ = std::fs::set_permissions(&out, std::fs::Permissions::from_mode(0o755));
     // Root reads any folder: nothing to check then.
     if r.is_ok() {
         return;
