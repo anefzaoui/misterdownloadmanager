@@ -43,7 +43,8 @@ const WAKE_GRACE: Duration = Duration::from_secs(60);
 /// the snapshot found it back waiting for messages (#1126): the computer wasn't running MDM. A
 /// frame stalled then is logged, and reported only if it is still stuck [`FREEZE_AFTER`] past
 /// this (counted from MDM's start).
-const LOGIN_GRACE: Duration = Duration::from_secs(180);
+/// A first frame late then is taken for the busy login's, once (renderer.rs, #1205).
+pub(crate) const LOGIN_GRACE: Duration = Duration::from_secs(180);
 
 static REPORTER: OnceLock<Arc<Reporter>> = OnceLock::new();
 /// The session as sent, to send again when it learns more (what draws).

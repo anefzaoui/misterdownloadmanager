@@ -2810,6 +2810,63 @@ pub fn gl_driver(gl: &eframe::glow::Context) -> String {
     format!("{renderer} ({version})")
 }
 
+/// The graphics drivers (name, version, software renderer), for a remembered failure to be tried
+/// again once they change (renderer.rs, #1205). Read without starting Vulkan or Metal:
+///
+/// - Linux: the Vulkan drivers' manifests (`vulkan/icd.d/*.json`, which a driver's update writes
+///   anew: their time stands for the version), lavapipe's (`lvp_icd…`) as the software renderer;
+///   and NVIDIA's own version (`/proc/driver/nvidia/version`), whose OpenGL comes with it.
+/// - macOS: its build (`sw_vers -buildVersion`): Metal's drivers come with macOS.
+///
+/// None elsewhere (no system's API there).
+pub fn graphics_drivers() -> Option<Vec<(String, String, bool)>> {
+    #[cfg(target_os = "macos")]
+    {
+        let build = printed_within(Command::new("sw_vers").arg("-buildVersion"), 2)?;
+        Some(vec![("macOS".to_owned(), build, false)])
+    }
+    #[cfg(target_os = "linux")]
+    {
+        let mut dirs: Vec<PathBuf> = std::env::var("XDG_DATA_DIRS")
+            .ok()
+            .filter(|d| !d.is_empty())
+            .unwrap_or_else(|| "/usr/local/share:/usr/share".into())
+            .split(':')
+            .map(|d| Path::new(d).join("vulkan/icd.d"))
+            .collect();
+        dirs.push(PathBuf::from("/etc/vulkan/icd.d"));
+        let mut list = Vec::new();
+        for dir in dirs {
+            let Ok(entries) = std::fs::read_dir(&dir) else {
+                continue;
+            };
+            for e in entries.flatten() {
+                let name = e.file_name().to_string_lossy().into_owned();
+                if !name.ends_with(".json") {
+                    continue;
+                }
+                let time = e
+                    .metadata()
+                    .and_then(|m| m.modified())
+                    .ok()
+                    .and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok())
+                    .map_or(0, |d| d.as_secs());
+                list.push((name.clone(), time.to_string(), name.starts_with("lvp_icd")));
+            }
+        }
+        if let Ok(v) = std::fs::read_to_string("/proc/driver/nvidia/version")
+            && let Some(first) = v.lines().next()
+        {
+            list.push(("NVIDIA".to_owned(), first.trim().to_owned(), false));
+        }
+        Some(list)
+    }
+    #[cfg(not(any(target_os = "linux", target_os = "macos")))]
+    {
+        None
+    }
+}
+
 /// End process `pid` (a frozen MDM the user chose to close from the crash report).
 #[allow(unsafe_code)]
 pub fn end_process(pid: u32) -> bool {

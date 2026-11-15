@@ -8163,8 +8163,15 @@ impl App {
         if active.is_some_and(|a| a != chosen) || software {
             items.push(Sep);
             let mut notes = Vec::new();
+            // Since when, and when MDM tries it again (#1205).
+            let again = |a: Option<renderer::Again>| {
+                a.map(|a| off(crate::chrome::label(&Self::again_text(a))))
+            };
             match (failed, no_driver) {
-                (_, Some(note)) => items.push(note),
+                (_, Some(note)) => {
+                    items.push(note);
+                    notes.extend(again(renderer::gpu_again()));
+                }
                 (Some(why), None) => {
                     items.push(if software { software_note } else { failed_note });
                     // Why, under it ("it": Direct3D, Vulkan or Metal).
@@ -8180,6 +8187,7 @@ impl App {
                         // i18n: View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
                         _ => off("It couldn't start: the log says why"),
                     });
+                    notes.extend(again(renderer::gpu_again()));
                 }
                 // A software renderer that draws for want of a card says only that.
                 (None, None) if software => items.push(software_note),
@@ -8200,11 +8208,43 @@ impl App {
                     // i18n: View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
                     _ => off("OpenGL didn't start here"),
                 });
+                notes.extend(again(renderer::gl_again()));
             }
             items.extend(notes);
         }
         // i18n: View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
         Sub("Draw with", true, items)
+    }
+
+    /// View → Draw with's note under a way that failed here: since when it is passed over, and
+    /// when MDM tries it again (#1205; renderer.rs `verdict`). Dates as the interface writes them.
+    #[cfg(gpu)]
+    fn again_text(a: crate::renderer::Again) -> String {
+        use crate::i18n::{fmt, t};
+        let date = |secs: u64| {
+            chrono::DateTime::from_timestamp(secs.min(i64::MAX as u64) as i64, 0)
+                .map(|d| {
+                    let local = d.with_timezone(&chrono::Local).date_naive();
+                    crate::i18n::ltr(&crate::regional::short_date(local))
+                })
+                .unwrap_or_default()
+        };
+        let template = match (a.next_start, a.at, a.on_update) {
+            // i18n: View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries that graphics system again when it next starts
+            (true, ..) => t("Since {date}: MDM tries it again at its next start"),
+            (false, Some(_), true) => {
+                // i18n: View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again, unless the graphics driver is updated before
+                t("Since {date}: MDM tries it again on {retry}, or after a driver update")
+            }
+            // i18n: View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again
+            (false, Some(_), false) => t("Since {date}: MDM tries it again on {retry}"),
+            // i18n: View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries it again once the graphics driver is updated
+            (false, None, true) => t("Since {date}: MDM tries it again after a driver update"),
+            // i18n: View → Draw with: a greyed note under why a graphics system doesn't draw MDM; {date}: the day that was found
+            (false, None, false) => t("Since {date}"),
+        };
+        let retry = a.at.map(date).unwrap_or_default();
+        fmt(template, &[("date", &date(a.since)), ("retry", &retry)])
     }
 
     /// View → Window system (Linux, a Wayland session that runs XWayland too, #624): MDM's own

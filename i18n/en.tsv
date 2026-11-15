@@ -3127,6 +3127,21 @@
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 	signed out: sign in again	signed out: sign in again
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system doesn't draw MDM; {date}: the day that was found
+	Since {date}	Since {date}
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries it again once the graphics driver is updated
+	Since {date}: MDM tries it again after a driver update	Since {date}: MDM tries it again after a driver update
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries that graphics system again when it next starts
+	Since {date}: MDM tries it again at its next start	Since {date}: MDM tries it again at its next start
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again
+	Since {date}: MDM tries it again on {retry}	Since {date}: MDM tries it again on {retry}
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again, unless the graphics driver is updated before
+	Since {date}: MDM tries it again on {retry}, or after a driver update	Since {date}: MDM tries it again on {retry}, or after a driver update
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Singapore	Singapore

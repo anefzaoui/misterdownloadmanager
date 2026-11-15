@@ -6813,6 +6813,52 @@ pub fn gl_driver(gl: &eframe::glow::Context) -> String {
     format!("{renderer} ({version})")
 }
 
+/// The graphics adapters and their drivers' versions, as Direct3D 12 sees them (DXGI; the
+/// version as wgpu writes it, "32.0.15.6224"), and whether each is a software renderer (WARP):
+/// a remembered failure is tried again once they change (renderer.rs, #1205). Read without
+/// starting Direct3D 12 on any of them. None when DXGI can't say.
+pub fn graphics_drivers() -> Option<Vec<(String, String, bool)>> {
+    use windows::Win32::Graphics::Dxgi::{
+        CreateDXGIFactory1, DXGI_ADAPTER_FLAG_SOFTWARE, IDXGIDevice, IDXGIFactory1,
+    };
+    use windows::core::Interface as _;
+    // SAFETY: a DXGI factory and its adapters, asked for their descriptions and their drivers'
+    // versions only; each COM object is released when dropped.
+    unsafe {
+        let factory: IDXGIFactory1 = CreateDXGIFactory1().ok()?;
+        let mut list = Vec::new();
+        // EnumAdapters1 fails past the last one (DXGI_ERROR_NOT_FOUND).
+        for i in 0..32 {
+            let Ok(adapter) = factory.EnumAdapters1(i) else {
+                break;
+            };
+            let Ok(desc) = adapter.GetDesc1() else {
+                continue;
+            };
+            let end = desc.Description.iter().position(|&c| c == 0);
+            let name = String::from_utf16_lossy(&desc.Description[..end.unwrap_or(128)]);
+            let version = adapter
+                .CheckInterfaceSupport(&IDXGIDevice::IID)
+                .map_or_else(
+                    |_| String::new(),
+                    |v| {
+                        let v = v as u64;
+                        format!(
+                            "{}.{}.{}.{}",
+                            (v >> 48) as u16,
+                            (v >> 32) as u16,
+                            (v >> 16) as u16,
+                            v as u16
+                        )
+                    },
+                );
+            let software = desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE.0 as u32 != 0;
+            list.push((name.trim().to_owned(), version, software));
+        }
+        Some(list)
+    }
+}
+
 /// Windows' clipboard sequence number: it changes each time the clipboard does, and asking for
 /// it neither opens the clipboard nor waits for its owner (clipboard.rs: the watch for copied
 /// links reads the clipboard only when it changed).

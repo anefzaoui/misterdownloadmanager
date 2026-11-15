@@ -562,6 +562,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A way of drawing that failed once is tried again: after a graphics driver update, or a
+  while that depends on why it failed (twice as long each time it fails again), and at the next
+  start for a window slow just after signing in; View → Draw with says since when and until when
+  ([#1205](https://github.com/anefzaoui/misterdownloadmanager/issues/1205))
 - ✅ macOS: no more **The window stopped responding** report while a file dialog is open: the
   time its window thread spends in a system Open or Save dialog isn't counted
   ([#1192](https://github.com/anefzaoui/misterdownloadmanager/issues/1192))
