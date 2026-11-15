@@ -932,6 +932,188 @@ async fn a_name_given_unlooked_is_numbered_as_it_starts() {
     assert_eq!(view_and_outcome(dl).await.1, free);
 }
 
+/// The generated content `seed` of `size` bytes.
+fn generated(seed: u64, size: usize) -> Vec<u8> {
+    let mut want = vec![0; size];
+    content::fill(seed, 0, &mut want);
+    want
+}
+
+/// #1088: a file the user chose to replace (the system Save dialog's "Replace?" answered Yes)
+/// keeps its name for the download, on a fresh start (`Free`, as Download File Info starts one,
+/// or `File`) and with one connection on a server without ranges. It is there, untouched, while
+/// the download runs, and replaced only as it completes.
+#[tokio::test]
+async fn a_file_chosen_to_be_replaced_is_replaced_as_the_download_completes() {
+    let s = server("").await;
+    for (i, query) in ["seed=21", "seed=21&no_range=true"].iter().enumerate() {
+        for free in [true, false] {
+            let dir = tempfile::tempdir().unwrap();
+            let dest = dir.path().join("taken.7z");
+            std::fs::write(&dest, b"the old file").unwrap();
+            // Held back at 512 KiB: it is looked at mid-way, then let go.
+            s.set_faults(Faults {
+                stall_at: Some(512 << 10),
+                ..Faults::default()
+            });
+            let dl = Download::start(
+                Request {
+                    url: s.url(&format!("/gen/1M/taken.7z?{query}")).parse().unwrap(),
+                    headers: Default::default(),
+                    dest: if free {
+                        Destination::Free(dest.clone())
+                    } else {
+                        Destination::File(dest.clone())
+                    },
+                },
+                Options {
+                    replace_existing: true,
+                    ..fast_opts()
+                },
+            );
+            let deadline = std::time::Instant::now() + std::time::Duration::from_secs(20);
+            while dl.snapshot().downloaded == 0 {
+                assert!(std::time::Instant::now() < deadline, "never started");
+                tokio::time::sleep(std::time::Duration::from_millis(5)).await;
+            }
+            assert_eq!(dl.snapshot().file.as_deref(), Some(dest.as_path()), "{i}");
+            assert_eq!(std::fs::read(&dest).unwrap(), b"the old file", "{i}");
+            assert!(mdm_engine::naming::part_path(&dest).exists(), "{i}");
+            s.set_faults(Faults::default());
+            let (file, path) = view_and_outcome(dl).await;
+            assert_eq!(path, dest, "{i} {free}");
+            assert_eq!(file.as_deref(), Some(dest.as_path()));
+            assert_eq!(std::fs::read(&dest).unwrap(), generated(21, 1 << 20));
+            assert!(!dir.path().join("taken (1).7z").exists());
+            assert!(!mdm_engine::naming::part_path(&dest).exists());
+        }
+    }
+}
+
+/// #1088: a download that fails (its checksum, at the very end) or is cancelled leaves the file
+/// it was to replace as it was.
+#[tokio::test]
+async fn a_file_chosen_to_be_replaced_stays_when_the_download_fails() {
+    let s = server("").await;
+    let dir = tempfile::tempdir().unwrap();
+    let dest = dir.path().join("taken.7z");
+    std::fs::write(&dest, b"the old file").unwrap();
+    let err = Download::start(
+        Request {
+            url: s.url("/gen/256K/taken.7z?seed=22").parse().unwrap(),
+            headers: Default::default(),
+            dest: Destination::Free(dest.clone()),
+        },
+        Options {
+            replace_existing: true,
+            checksum: Some(sha256_of(23, 256 << 10)),
+            ..fast_opts()
+        },
+    )
+    .wait()
+    .await
+    .unwrap_err();
+    assert!(
+        matches!(err, mdm_engine::Error::ChecksumMismatch(_)),
+        "{err}"
+    );
+    assert_eq!(std::fs::read(&dest).unwrap(), b"the old file");
+
+    // Cancelled half-way.
+    s.set_faults(Faults {
+        stall_at: Some(512 << 10),
+        ..Faults::default()
+    });
+    let dl = Download::start(
+        Request {
+            url: s.url("/gen/1M/taken.7z?seed=24").parse().unwrap(),
+            headers: Default::default(),
+            dest: Destination::Free(dest.clone()),
+        },
+        Options {
+            replace_existing: true,
+            ..fast_opts()
+        },
+    );
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(20);
+    while dl.snapshot().downloaded == 0 {
+        assert!(std::time::Instant::now() < deadline, "never started");
+        tokio::time::sleep(std::time::Duration::from_millis(5)).await;
+    }
+    dl.cancel();
+    assert!(matches!(dl.wait().await, Err(mdm_engine::Error::Cancelled)));
+    assert_eq!(std::fs::read(&dest).unwrap(), b"the old file");
+    s.set_faults(Faults::default());
+}
+
+/// #1088: a paused download whose user chose to replace the file at its place replaces it when
+/// a resume completes it (the choice is given again with the resume, as its headers are).
+/// Without the choice, the file there is kept and the download numbered (as before).
+#[tokio::test]
+async fn a_resume_replaces_the_file_chosen_to_be_replaced() {
+    let s = server("rate=1M").await;
+    for replace in [true, false] {
+        let (dir, state) = paused(&s, "/gen/8M/master.mp4?seed=25").await;
+        let dest = mdm_engine::state::ResumeState::load(&state).unwrap().dest;
+        std::fs::write(&dest, b"the old file").unwrap();
+        s.set_faults(Faults::default());
+        let opts = Options {
+            replace_existing: replace,
+            ..fast_opts()
+        };
+        let dl = Download::resume(state.clone(), Default::default(), opts).unwrap();
+        let (file, path) = view_and_outcome(dl).await;
+        assert_eq!(file.as_deref(), Some(path.as_path()));
+        if replace {
+            assert_eq!(path, dest);
+        } else {
+            assert_eq!(path, dir.path().join("master (1).mp4"));
+            assert_eq!(std::fs::read(&dest).unwrap(), b"the old file");
+        }
+        assert_eq!(std::fs::read(&path).unwrap(), generated(25, 8 << 20));
+        s.set_faults(Faults {
+            rate: Some(1 << 20),
+            ..Faults::default()
+        });
+    }
+}
+
+/// #1088: a file chosen to be replaced that can't be as the download completes (another program
+/// has it open without letting it be deleted) is kept, and the download saved beside it,
+/// numbered. Windows only: elsewhere an open file doesn't stop a rename over it.
+#[cfg(windows)]
+#[tokio::test]
+async fn a_file_that_cannot_be_replaced_is_kept_and_the_download_numbered() {
+    use std::os::windows::fs::OpenOptionsExt;
+    let s = server("").await;
+    let dir = tempfile::tempdir().unwrap();
+    let dest = dir.path().join("taken.7z");
+    std::fs::write(&dest, b"the old file").unwrap();
+    // Read-only sharing: no one may delete or replace it while it is open.
+    let held = std::fs::OpenOptions::new()
+        .read(true)
+        .share_mode(1) // FILE_SHARE_READ
+        .open(&dest)
+        .unwrap();
+    let dl = Download::start(
+        Request {
+            url: s.url("/gen/256K/taken.7z?seed=26").parse().unwrap(),
+            headers: Default::default(),
+            dest: Destination::Free(dest.clone()),
+        },
+        Options {
+            replace_existing: true,
+            ..fast_opts()
+        },
+    );
+    let (file, path) = view_and_outcome(dl).await;
+    drop(held);
+    assert_eq!(path, dir.path().join("taken (1).7z"));
+    assert_eq!(file.as_deref(), Some(path.as_path()));
+    assert_eq!(std::fs::read(&dest).unwrap(), b"the old file");
+    assert_eq!(std::fs::read(&path).unwrap(), generated(26, 256 << 10));
+}
+
 /// The same for a resumed download: the row follows, and the resume itself still works.
 #[tokio::test]
 async fn the_view_names_the_file_when_a_resume_finds_its_place_taken() {

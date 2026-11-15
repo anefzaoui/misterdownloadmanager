@@ -158,6 +158,13 @@ pub struct Options {
     /// Give the finished file the server's date (IDM: "Set file creation date as provided by
     /// the server"): created and modified times from `Last-Modified`.
     pub server_time: bool,
+    /// The user chose to replace the file already at the destination (#1088: a system Save
+    /// dialog's "Replace?" answered Yes): a file there doesn't count as taken, and it is replaced
+    /// only as the download completes, so a download that fails or is cancelled leaves it as it
+    /// was. One that can't be replaced then (open in another program, read-only) is kept, and
+    /// the download takes the next free numbered name. Off: a file there is never replaced.
+    /// [`Destination::Dir`] ignores it (the server names that file).
+    pub replace_existing: bool,
     /// FTP data connections: passive (the client connects; IDM's "Use passive mode for FTP",
     /// on by default), else active (the server connects back).
     pub ftp_passive: bool,
@@ -271,6 +278,7 @@ impl Default for Options {
             host_limits: None,
             ignore_mtime: false,
             server_time: false,
+            replace_existing: false,
             ftp_passive: true,
             extra_roots: Vec::new(),
             post: None,
@@ -2167,7 +2175,7 @@ async fn run_fresh(
         single_stream(body, &file, shared, opts.global.as_deref(), cancel).await?
     };
     verify_part(shared, &dest, checksum.as_ref()).await?;
-    finish(shared, file, &dest, size, stamp)
+    finish(shared, file, &dest, size, stamp, replaces(&req.dest, &opts))
 }
 
 /// Prepare the destination of a new download of `size` bytes (if known), named `name()` in a
@@ -2216,12 +2224,12 @@ async fn open_destination(
             // Shortened to fit Windows' path limit; a folder too deep for any name is an error.
             let name =
                 naming::fit_name(dir, &name).ok_or_else(|| Error::PathTooLong(dir.join(&name)))?;
-            claim_free(dir, &name)?
+            claim_free(dir, &name, false)?
         }
         Destination::Free(p) => {
             let dir = p.parent().unwrap_or(Path::new(""));
             let name = p.file_name().unwrap_or_default().to_string_lossy();
-            claim_free(dir, &name)?
+            claim_free(dir, &name, opts.replace_existing)?
         }
     };
     // Before any data: a mark the hook sets (Mark of the Web, quarantine) is on the file from
@@ -2239,12 +2247,21 @@ async fn open_destination(
     Ok((dest, reservation, file))
 }
 
-/// `name` in `dir`, or the next free numbered name (`naming::unique_path`): reserved in this
-/// process, its part file created exclusively (another program may take the name meanwhile).
-fn claim_free(dir: &Path, name: &str) -> Result<(PathBuf, naming::Reservation, File), Error> {
+/// `name` in `dir`, or the next free numbered name (`naming::unique_path`; with `replace`, a file
+/// there to be replaced doesn't count: `naming::replacing_path`): reserved in this process, its
+/// part file created exclusively (another program may take the name meanwhile).
+fn claim_free(
+    dir: &Path,
+    name: &str,
+    replace: bool,
+) -> Result<(PathBuf, naming::Reservation, File), Error> {
     let mut attempt = 0;
     loop {
-        let dest = naming::unique_path(dir, name);
+        let dest = if replace {
+            naming::replacing_path(dir, name)
+        } else {
+            naming::unique_path(dir, name)
+        };
         if let Some(r) = naming::reserve(&dest) {
             // Read too: reconnecting connections re-read their last bytes (overlap check).
             match std::fs::OpenOptions::new()
@@ -2371,7 +2388,7 @@ async fn run_fresh_ftp(
         single_stream(first, &file, shared, opts.global.as_deref(), cancel).await?
     };
     verify_part(shared, &dest, opts.checksum.as_ref()).await?;
-    finish(shared, file, &dest, size, stamp)
+    finish(shared, file, &dest, size, stamp, replaces(&req.dest, &opts))
 }
 
 async fn run_resume(
@@ -2505,6 +2522,8 @@ async fn run_resume(
     let file = Arc::new(file);
     let (dest, size) = (saved.dest.clone(), saved.size);
     let checksum = opts.checksum.clone().or_else(|| saved.checksum.clone());
+    // Given again by whoever resumes, as the headers are: not in the resume state.
+    let replace = opts.replace_existing;
     let web_page_ok = expects_web_page(&dest, saved.content_type.as_deref());
     // The server's type for it then stands for the browser's (#701).
     let never_page = never_a_page(
@@ -2554,7 +2573,7 @@ async fn run_resume(
         .and_then(|lm| httpdate::parse_http_date(&lm).ok());
     segmented(ctx, saved, None).await?;
     verify_part(&shared, &dest, checksum.as_ref()).await?;
-    finish(&shared, file, &dest, size, stamp)
+    finish(&shared, file, &dest, size, stamp, replace)
 }
 
 /// Follow the original address again (with its own headers, and a POST download's body) as the
@@ -2630,13 +2649,15 @@ async fn verify_part(
     }
 }
 
-/// Flush and rename the part file to its final name.
+/// Flush and rename the part file to its final name. With `replace` (`Options::replace_existing`)
+/// a file at `dest` is replaced now, as the download completes.
 fn finish(
     shared: &Shared,
     file: Arc<File>,
     dest: &Path,
     size: u64,
     stamp: Option<std::time::SystemTime>,
+    replace: bool,
 ) -> Result<Outcome, Error> {
     shared.every_byte_in();
     shared.set_state(State::Completing);
@@ -2659,26 +2680,85 @@ fn finish(
     }
     drop(file);
     let part = naming::part_path(dest);
-    // Never replace a file that appeared at the destination meanwhile (rename replaces on
-    // Windows): take the next free numbered name instead.
     let original = dest;
-    let dest = if dest.exists() {
-        let dir = dest.parent().unwrap_or(Path::new("."));
-        let name = dest
+    let numbered = || {
+        let dir = original.parent().unwrap_or(Path::new("."));
+        let name = original
             .file_name()
             .and_then(|n| n.to_str())
             .unwrap_or("download");
         naming::unique_path(dir, name)
-    } else {
-        dest.to_owned()
     };
     // Antivirus scanners and indexers briefly lock new files on Windows: retry the rename.
-    craft_atomic::retry_rename(craft_atomic::RenameRetry::platform(), || {
-        std::fs::rename(&part, &dest)
-    })?;
+    let rename = |to: &Path| {
+        craft_atomic::retry_rename(craft_atomic::RenameRetry::platform(), || {
+            std::fs::rename(&part, to)
+        })
+    };
+    let dest = match final_place(dest, replace) {
+        Final::Free => {
+            rename(dest)?;
+            dest.to_owned()
+        }
+        // The user chose to replace it (`Options::replace_existing`): renamed over it (on every
+        // system `rename` replaces a file). One that can't be (open in another program,
+        // read-only) is kept: the download is saved beside it, numbered.
+        Final::Replace => match rename(dest) {
+            Ok(()) => {
+                shared.event(format!("Replaced the file that was at {}", dest.display()));
+                dest.to_owned()
+            }
+            Err(e) => {
+                let other = numbered();
+                shared.event(format!(
+                    "Could not replace {} ({e}): saved as {}",
+                    dest.display(),
+                    other.display()
+                ));
+                rename(&other)?;
+                other
+            }
+        },
+        // Never replace a file that appeared at the destination meanwhile (rename replaces on
+        // Windows): take the next free numbered name instead.
+        Final::Numbered => {
+            let other = numbered();
+            rename(&other)?;
+            other
+        }
+    };
     // Only now is the resume state obsolete.
     let _ = std::fs::remove_file(state_path(original));
     Ok(Outcome { path: dest, size })
+}
+
+/// Whether a new download to `dest` may replace the file at its place
+/// ([`Options::replace_existing`]): never one the server names in a folder.
+fn replaces(dest: &Destination, opts: &Options) -> bool {
+    opts.replace_existing && !matches!(dest, Destination::Dir(_))
+}
+
+/// What a finished download's part file becomes ([`final_place`]).
+#[derive(Debug, PartialEq, Eq)]
+enum Final {
+    /// Nothing is at its name: it takes it.
+    Free,
+    /// A file is there that the user chose to replace (`Options::replace_existing`).
+    Replace,
+    /// Something is there that it may not replace: the next free numbered name.
+    Numbered,
+}
+
+/// Where a download finishing at `dest` goes, `replace` being `Options::replace_existing`. A
+/// folder at that name is never replaced.
+fn final_place(dest: &Path, replace: bool) -> Final {
+    if !dest.exists() {
+        Final::Free
+    } else if replace && !dest.is_dir() {
+        Final::Replace
+    } else {
+        Final::Numbered
+    }
 }
 
 /// Run the connections with the resume state saved every `save_interval`, and once more when

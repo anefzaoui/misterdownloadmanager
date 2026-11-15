@@ -491,6 +491,13 @@ pub struct Item {
     /// the engine finds as it starts (`Destination::Free`). Cleared once the file is made.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub number_at_start: bool,
+    /// The file the user chose to replace with this download (#1088: Download File Info's Save
+    /// dialog asked "Replace?" and was answered Yes). While the download's place is that file
+    /// ([`Item::replaces`]), the engine replaces it as the download completes, never before
+    /// (`Options::replace_existing`): one that fails or is cancelled leaves it as it was. Cleared
+    /// once complete.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub replace_file: Option<PathBuf>,
     /// The Link grabber package it came in (#37): its archives are extracted together once
     /// every volume is there.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -931,6 +938,12 @@ impl Item {
             .join("\n")
     }
 
+    /// The file at its place is the one the user chose to replace (`replace_file`): the engine
+    /// replaces it as the download completes. Its place moved since (renamed, numbered): no.
+    pub fn replaces(&self) -> bool {
+        self.replace_file.as_ref() == Some(&self.dest)
+    }
+
     /// What tells where this row's files are (its place, its kind, the files it wrote), for a
     /// look at the disk on a thread other than the window's (#743): no live download, no log.
     pub fn place_copy(&self) -> Item {
@@ -974,6 +987,7 @@ impl Item {
             log: Vec::new(),
             name_from_url: false,
             number_at_start: false,
+            replace_file: None,
             package: None,
             group: None,
             server: None,
@@ -1106,6 +1120,8 @@ impl Item {
                 }
                 if status == Status::Complete {
                     self.downloaded = self.size.unwrap_or(self.downloaded);
+                    // Replaced (or kept, when it couldn't be): the file there now is its own.
+                    self.replace_file = None;
                 }
                 // A video and its subtitles (#68), already marked as downloaded from the web by
                 // its job, before it said it was done (#1103).
@@ -1738,6 +1754,36 @@ mod size_tests {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #1088: a download replaces the file chosen in the Save dialog only while its place is that
+    /// file; the choice is kept with the list (a download queued with Later, MDM restarted).
+    #[test]
+    fn a_download_replaces_only_the_file_chosen_while_it_is_its_place() {
+        let url = Url::parse("http://127.0.0.1:9/a.7z").unwrap();
+        let taken = PathBuf::from("dl").join("taken.7z");
+        let mut it = Item::new(1, url, taken.clone(), Category::Compressed);
+        assert!(!it.replaces());
+        it.replace_file = Some(taken.clone());
+        assert!(it.replaces());
+        let back: Item = serde_json::from_str(&serde_json::to_string(&it).unwrap()).unwrap();
+        assert_eq!(back.replace_file.as_deref(), Some(taken.as_path()));
+        assert!(back.replaces());
+        // Its place moved (another row's, a rename): nothing replaced there.
+        it.dest = PathBuf::from("dl").join("taken (1).7z");
+        assert!(!it.replaces());
+        // Never written for a download without one.
+        let none = Item::new(
+            2,
+            Url::parse("http://127.0.0.1:9/b.7z").unwrap(),
+            PathBuf::from("b.7z"),
+            Category::Compressed,
+        );
+        assert!(
+            !serde_json::to_string(&none)
+                .unwrap()
+                .contains("replace_file")
+        );
+    }
 
     /// A finished gallery's files join its written files in time linear in them, each once.
     #[test]

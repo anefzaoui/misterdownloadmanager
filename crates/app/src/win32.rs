@@ -164,6 +164,182 @@ pub fn set_main_window(cc: &eframe::CreationContext<'_>) {
     }
 }
 
+// ---- The session's end (shut down, restart, sign out; an installer closing MDM) ---------------
+
+/// Why the session ends, as WM_QUERYENDSESSION and WM_ENDSESSION say (their lParam).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SessionEnd {
+    /// The computer shuts down or restarts.
+    ShutDown,
+    /// The user signs out.
+    SignOut,
+    /// A program closes MDM through the Restart Manager (an installer replacing its files).
+    Closed,
+}
+
+impl SessionEnd {
+    fn of(lparam: LPARAM) -> SessionEnd {
+        use windows_sys::Win32::UI::WindowsAndMessaging::{ENDSESSION_CLOSEAPP, ENDSESSION_LOGOFF};
+        let flags = lparam as u32;
+        if flags & ENDSESSION_CLOSEAPP != 0 {
+            SessionEnd::Closed
+        } else if flags & ENDSESSION_LOGOFF != 0 {
+            SessionEnd::SignOut
+        } else {
+            SessionEnd::ShutDown
+        }
+    }
+}
+
+/// The subclass that hears the session's end on the main window.
+const SESSION_SUBCLASS: usize = 0x5e5;
+
+/// What the session's end runs ([`on_session_end`]).
+type OnSessionEnd = Box<dyn FnOnce(SessionEnd)>;
+
+thread_local! {
+    /// Taken when the session's end comes.
+    static SESSION_END: std::cell::RefCell<Option<OnSessionEnd>> =
+        const { std::cell::RefCell::new(None) };
+}
+
+/// At the session's end, run `end` on the window's thread before Windows is answered: Windows may
+/// end the process as soon as WM_ENDSESSION returns, so whatever must be saved is saved in it.
+/// Heard on the main window ([`set_main_window`]; call this after it, on its thread): Windows
+/// asks every top-level window, hidden in the tray or not. winit answers neither message itself.
+pub fn on_session_end(end: impl FnOnce(SessionEnd) + 'static) {
+    let hwnd = MAIN_WINDOW.load(std::sync::atomic::Ordering::Relaxed);
+    if hwnd == 0 {
+        tracing::warn!("the session's end isn't heard: no main window");
+        return;
+    }
+    // SAFETY: the main window, made on this thread (eframe's creator runs on it).
+    unsafe { watch_session_end(hwnd as HWND, Box::new(end)) };
+}
+
+/// # Safety
+/// `hwnd` is a window of this thread.
+unsafe fn watch_session_end(hwnd: HWND, end: OnSessionEnd) {
+    SESSION_END.with(|s| *s.borrow_mut() = Some(end));
+    // SAFETY: (the caller's) our own window; the proc lives as long as the program.
+    unsafe { SetWindowSubclass(hwnd, Some(session_proc), SESSION_SUBCLASS, 0) };
+}
+
+/// MDM never holds the session up: nothing it does then needs the user (a download stops where
+/// it is and resumes at the next start), so it answers yes at once and does its saving when the
+/// end is certain (WM_ENDSESSION), not when another program could still cancel it.
+unsafe extern "system" fn session_proc(
+    hwnd: HWND,
+    msg: u32,
+    wparam: WPARAM,
+    lparam: LPARAM,
+    _id: usize,
+    _data: usize,
+) -> LRESULT {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{WM_ENDSESSION, WM_QUERYENDSESSION};
+    match msg {
+        WM_QUERYENDSESSION => {
+            let why = SessionEnd::of(lparam);
+            tracing::info!("Windows asks whether the session may end ({why:?}): yes");
+            return 1;
+        }
+        WM_ENDSESSION if wparam != 0 => {
+            let why = SessionEnd::of(lparam);
+            tracing::info!("the session ends ({why:?})");
+            let end = SESSION_END.with(|s| s.try_borrow_mut().ok().and_then(|mut s| s.take()));
+            if let Some(end) = end {
+                end(why);
+            }
+            return 0;
+        }
+        WM_ENDSESSION => {
+            tracing::info!("the session goes on (another program kept it, or it was cancelled)");
+            return 0;
+        }
+        _ => {}
+    }
+    // SAFETY: the subclass's own arguments, passed on.
+    unsafe { DefSubclassProc(hwnd, msg, wparam, lparam) }
+}
+
+#[cfg(test)]
+mod session_end_tests {
+    use super::*;
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        CreateWindowExW, DefWindowProcW, DestroyWindow, ENDSESSION_CLOSEAPP, ENDSESSION_LOGOFF,
+        RegisterClassW, SendMessageW, WM_ENDSESSION, WM_QUERYENDSESSION, WNDCLASSW,
+        WS_OVERLAPPEDWINDOW,
+    };
+
+    #[test]
+    fn the_reason_comes_from_lparam() {
+        assert_eq!(SessionEnd::of(0), SessionEnd::ShutDown);
+        assert_eq!(
+            SessionEnd::of(ENDSESSION_LOGOFF as LPARAM),
+            SessionEnd::SignOut
+        );
+        assert_eq!(
+            SessionEnd::of(ENDSESSION_CLOSEAPP as LPARAM),
+            SessionEnd::Closed
+        );
+        // A critical end (the battery running out) is still a shut down.
+        assert_eq!(SessionEnd::of(0x4000_0000), SessionEnd::ShutDown);
+    }
+
+    /// A real hidden top-level window, sent what Windows sends: asked, it says yes at once
+    /// without running the end; a session that goes on runs nothing; the end runs it, once,
+    /// before WM_ENDSESSION returns.
+    #[test]
+    fn a_window_answers_the_session_s_end_and_saves_before_it_returns() {
+        use std::cell::RefCell;
+        use std::rc::Rc;
+        let ran: Rc<RefCell<Vec<SessionEnd>>> = Rc::default();
+        let class: Vec<u16> = "mdm-session-end-test\0".encode_utf16().collect();
+        let title: Vec<u16> = "mdm session end test\0".encode_utf16().collect();
+        // SAFETY: a class with the system's own procedure and a hidden window of it on this
+        // thread, destroyed below; NUL-terminated strings; messages sent to it.
+        unsafe {
+            let mut wc: WNDCLASSW = zeroed();
+            wc.lpfnWndProc = Some(DefWindowProcW);
+            wc.lpszClassName = class.as_ptr();
+            RegisterClassW(&wc);
+            let hwnd = CreateWindowExW(
+                0,
+                class.as_ptr(),
+                title.as_ptr(),
+                WS_OVERLAPPEDWINDOW,
+                -20000,
+                -20000,
+                200,
+                100,
+                std::ptr::null_mut(),
+                std::ptr::null_mut(),
+                std::ptr::null_mut(),
+                std::ptr::null(),
+            );
+            assert!(!hwnd.is_null());
+            let seen = ran.clone();
+            watch_session_end(hwnd, Box::new(move |why| seen.borrow_mut().push(why)));
+            let logoff = ENDSESSION_LOGOFF as LPARAM;
+            assert_eq!(SendMessageW(hwnd, WM_QUERYENDSESSION, 0, logoff), 1);
+            assert!(
+                ran.borrow().is_empty(),
+                "nothing is done while it may be cancelled"
+            );
+            assert_eq!(SendMessageW(hwnd, WM_ENDSESSION, 0, logoff), 0);
+            assert!(
+                ran.borrow().is_empty(),
+                "a session that goes on ends nothing"
+            );
+            SendMessageW(hwnd, WM_ENDSESSION, 1, logoff);
+            assert_eq!(*ran.borrow(), [SessionEnd::SignOut]);
+            SendMessageW(hwnd, WM_ENDSESSION, 1, logoff);
+            assert_eq!(ran.borrow().len(), 1, "once");
+            DestroyWindow(hwnd);
+        }
+    }
+}
+
 /// This process's top-level window with exactly `title`; the main window by its handle.
 pub(crate) fn find_own_window(title: &str) -> Option<HWND> {
     let known = MAIN_WINDOW.load(std::sync::atomic::Ordering::Relaxed);
