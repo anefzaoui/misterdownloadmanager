@@ -2306,11 +2306,17 @@ foreach ($d in $env:PATH.Split(';')) {
     }
 
     /// #61: killing a helper ends what it started too (yt-dlp.exe is a launcher whose child
-    /// downloads). Here a script starts a child that writes a line every second: once killed,
-    /// the file stops growing.
+    /// downloads). Here a script starts a child that writes a line every second for a minute,
+    /// holding the helper's stderr as yt-dlp's child does: once killed, the stderr closes (every
+    /// process that held it has ended), long before the child's minute, and the file stops
+    /// growing.
     #[cfg(windows)]
     #[test]
     fn killing_a_helper_ends_its_children() {
+        use std::sync::atomic::Ordering;
+        /// Long enough for anything the test waits for to come on the slowest runner, and half
+        /// the child's minute: a child left running holds the stderr past it.
+        const STUCK: Duration = Duration::from_secs(30);
         let dir = tempfile::tempdir().unwrap();
         let marker = dir.path().join("marker.txt");
         let child = dir.path().join("child.cmd");
@@ -2335,12 +2341,24 @@ foreach ($d in $env:PATH.Split(';')) {
         cmd.arg("/C").arg(&parent);
         let mut s = spawn(cmd, "cmd").unwrap();
         let size = || std::fs::metadata(&marker).map_or(0, |m| m.len());
-        std::thread::sleep(Duration::from_secs(3));
-        assert!(size() > 0, "the child runs");
+        let start = Instant::now();
+        while size() == 0 {
+            assert!(start.elapsed() < STUCK, "the child never ran");
+            std::thread::sleep(Duration::from_millis(20));
+        }
+        assert!(
+            !s.stderr_done.load(Ordering::Acquire),
+            "the stderr closed early"
+        );
         s.kill();
-        std::thread::sleep(Duration::from_millis(1500));
+        let start = Instant::now();
+        while !s.stderr_done.load(Ordering::Acquire) {
+            assert!(start.elapsed() < STUCK, "the child outlived the helper");
+            std::thread::sleep(Duration::from_millis(20));
+        }
         let after_kill = size();
-        std::thread::sleep(Duration::from_secs(3));
+        // Nothing left to write it: the same a child's second later.
+        std::thread::sleep(Duration::from_millis(1500));
         assert_eq!(size(), after_kill, "the child ended with the helper");
     }
 }
