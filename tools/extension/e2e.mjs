@@ -41,7 +41,8 @@
 // scripted (a video a server's program sends, named after its page with its real type: the list,
 // the button, the Download video window; #695, #800), guarded (a stream another site's server
 // serves to its page's player only: looked up and downloaded with the Origin and Referer the
-// browser sent, #900),
+// browser sent, #900), played (a feed whose page names no video: the file and the stream the tab
+// played for each video, found by its length, downloaded by MDM; never the next video, #1092),
 // qualities (the button's menu: a stream's qualities looked up by MDM, with their sizes; the one
 // picked downloads with its progress window only, MDM's main window hidden), page (the menu on a
 // real video page, E2E_VIDEO_PAGE, and the line E2E_VIDEO_PICK downloaded: off by default), video (shown,
@@ -62,7 +63,8 @@
 // case saves <lang>-looking.png, <lang>-video-tab.png and <lang>-audio-tab.png there (the player and
 // the menu), before the pick, and the `scripted` case <lang>-media-list.png (the popup's list) and
 // <lang>-video-window.png. Neither changes anything when unset. E2E_APP_LANG sets MDM's own language
-// (the words it sends the menu).
+// (the words it sends the menu). E2E_COLOR_SCHEME=light|dark shows the pages (the video button with
+// them) and the popup in those colours.
 //
 // Windows: the host is registered for the current user while it runs (nmhost --register, as the
 // installer does) and unregistered at the end. Every registry key that touches (the browsers'
@@ -400,6 +402,10 @@ async function chromium(bin, profile, dl, page, ready) {
     const { targetId } = await cdp.send("Target.createTarget", { url: "about:blank" });
     const { sessionId } = await cdp.send("Target.attachToTarget", { targetId, flatten: true });
     await cdp.send("Page.enable", {}, sessionId);
+    // E2E_COLOR_SCHEME (light or dark): the page in those colours, and the video button with it.
+    if (process.env.E2E_COLOR_SCHEME) {
+      await cdp.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-color-scheme", value: process.env.E2E_COLOR_SCHEME }] }, sessionId);
+    }
     const evaluate = async (expression) => {
       const r = await cdp.send("Runtime.evaluate", { expression, userGesture: true, awaitPromise: true, returnByValue: true }, sessionId);
       if (r.exceptionDetails) throw new Error(`evaluate: ${r.exceptionDetails.text} ${expression}`);
@@ -3321,6 +3327,141 @@ const CASES = {
       return `chip "${chipped.chip}"; the click: ${best.file} (${green.text} · Show); ${looked ? "looking, then " : ""}VIDEO ${pictures.rows.length} (${list(pictures.rows)}), AUDIO ${sounds.rows.length} (${list(sounds.rows)}); "${row.name}" picked: ${item.file} (${item.status}) with its progress window "${opened}" only, the main window hidden; click to rows ${rowsMs} ms, pick to first progress ${startMs} ms; a pass over the button asked nothing, resting on it asked ${restMs} ms later, once`;
     } finally {
       // The next case starts MDM as usual.
+      await stopApp();
+    }
+  },
+
+  // #1092: a feed whose page names no video (/feed: yt-dlp finds none in it nor in its post's
+  // page), its players fed by the page (blob:): the button over each offers what the tab played
+  // for that video, found by its length. The first post's file, fetched in ranges: "Download best"
+  // its MP4, downloaded by MDM's engine with the feed as Referer; the second's HLS stream: its
+  // qualities, looked up by MDM, one picked and downloaded; the third, the next video, only begun:
+  // its own file, never the first's. E2E_SHOTS: <lang>-played-file.png and
+  // <lang>-played-stream.png (the player and its menu); with E2E_PLAYED_BEFORE=1 (an older
+  // extension, for a pull request's "before") <lang>-played-file-before.png and
+  // <lang>-played-stream-before.png only.
+  async played(t) {
+    if (!ytdlp) throw new Skip("no yt-dlp (E2E_YTDLP or PATH)");
+    if (!ffmpeg) throw new Skip("no ffmpeg (E2E_FFMPEG or PATH)");
+    await stopApp();
+    fs.rmSync(path.join(data, "ipc.json"), { force: true });
+    spawn(appExe, ["/startup"], { env: process.env, stdio: "ignore", detached: false });
+    try {
+      await until("the test instance, in the notification area", 20000, () => mdmList().then(() => true, () => false));
+      const s = t.session;
+      const FILE_A = "/gen/2M/feed-a.mp4";
+      // An earlier browser's downloads of these off the list (with their files).
+      const earlier = (await mdmList()).filter((d) => d.url.startsWith(`${LAB}${FILE_A}`) || d.url.startsWith(`${LAB}/hls/`)).map((d) => d.id);
+      if (earlier.length) await ipc({ action: "delete", ids: earlier });
+      await s.navigate(`${LAB}/feed`);
+      const state = await until("the feed's players", 30000, () => s.evaluate("document.body.dataset.feed || ''"));
+      if (state !== "done") throw new Error(`the feed's players: ${state} ${await s.evaluate("document.body.dataset.feedError || ''")}`);
+      const shots = process.env.E2E_SHOTS && s.shot ? path.resolve(process.env.E2E_SHOTS) : "";
+      const lang = process.env.E2E_LANG || "en";
+      // The button over `v`, the pointer brought onto it again a few times (MDM may be slow to say
+      // the button may show while it looks a video up).
+      const over = async (v) => {
+        for (let i = 0; i < 4; i++) {
+          const b = await hover(s, v);
+          if (b) return b;
+          await s.mouse(2, 2);
+          await sleep(1000);
+        }
+        return null;
+      };
+      // The button over `sel` with `chip`, its menu opened and filled (a picture of both: `shot`).
+      const menuOver = async (sel, chip, shot = "") => {
+        await s.mouse(2, 2);
+        await s.evaluate(`document.querySelector(${JSON.stringify(sel)}).scrollIntoView({ block: "center" })`);
+        await sleep(500);
+        const v = await rect(s, sel);
+        if (!(await over(v))) throw new Error(`${sel}: no button`);
+        // E2E_PLAYED_BEFORE=1: pictures of an older extension's menu there (a pull request's
+        // "before"), which never offers what played: its menu once its look-up ended, then no more.
+        // Its menu: its arrow (the pointer resting on the button starts its look-up, #1053), then
+        // what the look-up and what the tab played came to (a minute and a half at most).
+        await clickArrow(s);
+        const filled = (q) => q && !q.busy && (q.rows.length || q.note);
+        const said = new Set();
+        const m = await until(`${sel}: its menu`, 90000, async () => {
+          const q = await s.picks("row");
+          if (q) said.add(q.busy ? "looking" : q.note || q.rows.map((r) => r.name).join(", "));
+          return filled(q) ? q : null;
+        }).catch((e) => {
+          // An older extension may have nothing to say there (a feed's video no post names).
+          if (process.env.E2E_PLAYED_BEFORE) return null;
+          throw new Error(`${e.message} (it said: ${[...said].join(" | ")})`);
+        });
+        // E2E_PLAYED_BEFORE=1: pictures of an older extension's menu there (a pull request's
+        // "before"), which never offers what played.
+        if (process.env.E2E_PLAYED_BEFORE) {
+          await sleep(400);
+          const q = (await s.picks()) || m || { box: (await rect(s, "mdm-video-button")) || v };
+          if (shots && shot) await s.shot(path.join(shots, `${lang}-${shot}-before.png`), { l: Math.min(v.l, q.box.l) - 10, t: Math.min(v.t, q.box.t) - 10, r: Math.max(v.r, q.box.r) + 10, b: Math.max(v.b, q.box.b) + 10 });
+          return null;
+        }
+        if (!m.rows.length) throw new Error(`${sel}: its menu says "${m.note}"`);
+        const p = await s.pill(PILL_STATE);
+        if (!p || p.chip !== chip) throw new Error(`${sel}: the button's chip is "${p && p.chip}", not ${chip}`);
+        if (shots && shot) {
+          await sleep(400);
+          const q = await s.picks();
+          await s.shot(path.join(shots, `${lang}-${shot}.png`), { l: Math.min(v.l, q.box.l) - 10, t: Math.min(v.t, q.box.t) - 10, r: Math.max(v.r, q.box.r) + 10, b: Math.max(v.b, q.box.b) + 10 });
+        }
+        return { p, m };
+      };
+      // A size of `n` MB in the browser's language ("2 MB", "2 م.ب").
+      const megabytes = (size, n) => new RegExp(`^(${n}|${"٠١٢٣٤٥٦٧٨٩"[n]})\\s?\\S+$`).test(size.replace(/\u00a0/g, " "));
+      const rows = (m) => m.rows.map((r) => `${r.name}${r.size ? ` ${r.size}` : ""}`).join(", ");
+      // The first post: its file (2 MB, 360p MP4), its only line; the next video's (3 MB) never.
+      const one = await menuOver("#feed1", "360p", "played-file");
+      if (!one) {
+        await menuOver("#feed2", "720p", "played-stream");
+        throw new Skip("E2E_PLAYED_BEFORE: the older menus' pictures taken");
+      }
+      const top = one.m.rows[0];
+      if (one.m.rows.length !== 1 || top.kind !== "top" || !/\bMP4\b/.test(top.name) || !megabytes(top.size, 2)) {
+        throw new Error(`#feed1's menu: ${rows(one.m)}`);
+      }
+      await clearLog();
+      const before = new Set((await mdmList()).map((d) => d.id));
+      await s.mouse(top.x, top.y, "click");
+      const item = await until("#feed1's file, in MDM's list", 15000, async () => (await mdmList().catch(() => [])).find((d) => !before.has(d.id))).catch(async (e) => {
+        throw new Error(`${e.message} (the button: ${JSON.stringify(await s.pill(PILL_STATE))}, the menu: ${JSON.stringify(await s.picks())})`);
+      });
+      if (!item.url.startsWith(`${LAB}${FILE_A}?`)) throw new Error(`MDM downloads ${item.url}, not #feed1's file`);
+      const green = await until("the button's green state", 10000, async () => {
+        const q = await s.pill(PILL_STATE);
+        return q && q.state === "sent" ? q : null;
+      });
+      const done = await until(`${item.file}, complete`, 45000, async () => {
+        const d = (await mdmList().catch(() => [])).find((x) => x.id === item.id);
+        if (d && d.status === "Error") throw new Error(`${item.file}: ${d.error}`);
+        return d && d.status === "Complete" ? d : null;
+      });
+      if (fs.statSync(done.path).size !== 2 << 20) throw new Error(`${done.path}: ${fs.statSync(done.path).size} bytes`);
+      // Every request of MDM's for it: the feed as its Referer.
+      const got = await requests(FILE_A);
+      if (!got.length || got.some((e) => e.referer !== `${LAB}/feed`)) throw new Error(`MDM's requests for #feed1's file: ${JSON.stringify(got.map((e) => [brief(e), e.referer]))}`);
+      // The second: the stream's qualities (MDM's look-up of its manifest); 360p picked.
+      const two = await menuOver("#feed2", "720p", "played-stream");
+      const q360 = two.m.rows.find((r) => r.kind === "video" && /\b360p\b/.test(r.name));
+      if (!q360 || !two.m.rows.some((r) => /\b720p\b/.test(r.name))) throw new Error(`#feed2's menu: ${rows(two.m)}`);
+      const before2 = new Set((await mdmList()).map((d) => d.id));
+      await s.mouse(q360.x, q360.y, "click");
+      const stream = await until("#feed2's 360p, in MDM's list", 15000, async () => (await mdmList().catch(() => [])).find((d) => !before2.has(d.id)));
+      if (stream.url !== `${LAB}/hls/master.m3u8`) throw new Error(`MDM downloads ${stream.url}, not #feed2's stream`);
+      const streamed = await until(`${stream.file}, complete`, 90000, async () => {
+        const d = (await mdmList().catch(() => [])).find((x) => x.id === stream.id);
+        if (d && d.status === "Error") throw new Error(`${stream.file}: ${d.error}`);
+        return d && d.status === "Complete" ? d : null;
+      });
+      // The third, the next video: its own file (3 MB), not the first's.
+      const three = await menuOver("#feed3", "360p");
+      if (three.m.rows.length !== 1 || !megabytes(three.m.rows[0].size, 3)) throw new Error(`#feed3's menu: ${rows(three.m)}`);
+      await s.mouse(2, 2);
+      return `#feed1: chip "${one.p.chip}", "${rows(one.m)}", ${done.file} ${done.size} bytes, ${got.length} request(s) with the feed as Referer, "${green.text}"; #feed2: ${rows(two.m)}, 360p: ${streamed.file}; #feed3: "${rows(three.m)}"`;
+    } finally {
       await stopApp();
     }
   },
