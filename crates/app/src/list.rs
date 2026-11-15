@@ -76,6 +76,8 @@ pub const TITLES: [&str; COLS] = [
 ];
 /// The "Status" column's data slot.
 pub const STATUS: usize = 3;
+/// The "Transfer rate" column's data slot.
+pub const RATE: usize = 5;
 /// Status's default width before #736 (IDM's), as saved lists have it.
 const OLD_STATUS_WIDTH: f32 = 65.0;
 /// A cell's text starts 6 px in and ends 3 px before the column's separator, its last pixel.
@@ -394,6 +396,9 @@ pub struct Row {
     /// The Status cell's whole text when the cell shows it short ("Checking 45%" for
     /// "Verifying... (45%)", #736): the cell's tip starts with it, and a screen reader says it.
     pub status_whole: Option<String>,
+    /// The speed limit holding the download back (#1191), said by the Transfer rate cell's tip:
+    /// the column is too narrow for it beside the speed.
+    pub rate_tip: Option<String>,
 }
 
 #[derive(Default)]
@@ -1049,6 +1054,8 @@ pub fn show(
                             Some(whole) => format!("{whole}\n{events}"),
                             None => events,
                         }
+                    } else if *c == RATE && !row.cells[*c].is_empty() {
+                        row.rate_tip.clone().unwrap_or_default()
                     } else {
                         String::new()
                     };
@@ -1730,6 +1737,7 @@ mod tests {
             queued,
             cells,
             status_whole: None,
+            rate_tip: None,
         }
     }
 

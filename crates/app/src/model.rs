@@ -820,7 +820,7 @@ impl Job {
             Job::Torrent(t) => t.speed_limit(),
             Job::Video { job, .. } => job.speed_limit(),
             Job::Gallery { job, .. } => job.speed_limit(),
-            Job::Remote(_) => None,
+            Job::Remote(r) => r.speed_limit(),
         }
     }
 }
@@ -1737,6 +1737,114 @@ pub fn rate(bps: f64) -> String {
     }
 }
 
+/// A speed limit as the user typed it, in whole KBytes/sec: `512 KB/sec`, `2048 KB/sec` (the
+/// Speed Limiter's boxes take KBytes/sec).
+pub fn limit_rate(bps: u64) -> String {
+    let kb = (bps / 1024).max(1);
+    if english() {
+        format!("{kb} KB/sec") // not translated: English path
+    } else {
+        unit(kb as f64, 0, "{n} KB/sec")
+    }
+}
+
+/// The speed limit that holds a running download back (#1191): what its Transfer rate says
+/// beside the speed, so a limiter left on is not forgotten.
+///
+/// It names the limit, not that the download is "limited": the speed measured goes a little
+/// above and below a limit it runs at, and a download slower than its limit (a slow server) is
+/// under that limit all the same, so comparing the two would flicker or claim too much.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Limit {
+    /// At most this many bytes a second for this download: its own limit (its progress
+    /// window's Speed Limiter tab, or remembered for the file), else the Speed Limiter's for one
+    /// file.
+    One(u64),
+    /// This many bytes a second for all downloads together (Speed Limiter settings, beyond
+    /// IDM), the tighter one for this download.
+    All(u64),
+}
+
+impl Limit {
+    /// The limit that binds a download whose own limit is `one`, while the limit for all
+    /// downloads together is `all` (both bytes/s, None: off) and `running` downloads share it
+    /// (this one among them). Its own binds unless that many downloads, each at it, would go
+    /// over the shared one: then each gets less than its own, and the shared one binds.
+    pub fn binding(one: Option<u64>, all: Option<u64>, running: usize) -> Option<Limit> {
+        match (one, all) {
+            (None, None) => None,
+            (Some(one), None) => Some(Limit::One(one)),
+            (None, Some(all)) => Some(Limit::All(all)),
+            (Some(one), Some(all)) => {
+                let together = one.saturating_mul(running.max(1) as u64);
+                Some(if together <= all {
+                    Limit::One(one)
+                } else {
+                    Limit::All(all)
+                })
+            }
+        }
+    }
+
+    /// Bytes a second.
+    pub fn rate(self) -> u64 {
+        match self {
+            Limit::One(r) | Limit::All(r) => r,
+        }
+    }
+
+    /// The progress window's Transfer rate with the limit after the speed `shown` (a
+    /// [`rate`]): `512.000 KB/sec (limit: 512 KB/sec)`.
+    pub fn after(self, shown: &str) -> String {
+        let limit = limit_rate(self.rate());
+        let template = match self {
+            // i18n: the progress window's Transfer rate row while a speed limit applies: {rate} is the download's speed now ("512.000 KB/sec"), {limit} the most this download may take ("512 KB/sec"). The row is narrow: keep it short
+            Limit::One(_) => crate::i18n::t("{rate} (limit: {limit})"),
+            // i18n: the progress window's Transfer rate row while the limit for all downloads together applies: {rate} is this download's speed now ("512.000 KB/sec"), {limit} the most all downloads together may take ("1024 KB/sec"). The row is narrow: keep it short
+            Limit::All(_) => crate::i18n::t("{rate} (limit for all downloads: {limit})"),
+        };
+        crate::i18n::fmt(template, &[("rate", shown), ("limit", &limit)])
+    }
+
+    /// The tip of a download's Transfer rate cell in the list (the column is too narrow for
+    /// the limit beside the speed).
+    pub fn tip(self) -> String {
+        let limit = limit_rate(self.rate());
+        let template = match self {
+            // i18n: tip of a download's Transfer rate in the list: {limit} is the most this download may take ("512 KB/sec"), set with the Speed Limiter
+            Limit::One(_) => crate::i18n::t("Speed Limiter: at most {limit} for this download"),
+            // i18n: tip of a download's Transfer rate in the list: {limit} is the most all downloads together may take ("1024 KB/sec"), set in the Speed Limiter's settings
+            Limit::All(_) => crate::i18n::t("Speed Limiter: {limit} for all downloads together"),
+        };
+        crate::i18n::fmt(template, &[("limit", &limit)])
+    }
+}
+
+/// The status strip's and the tray tip's word that the Speed Limiter is on (#1191), whatever
+/// runs: the limit for one download (`one`, Downloads → Speed Limiter → Turn on) and the limit
+/// for all downloads together (`all`, while it applies), bytes/s. None while both are off.
+pub fn limiter_hint(one: Option<u64>, all: Option<u64>) -> Option<String> {
+    let t = crate::i18n::t;
+    Some(match (one, all) {
+        (None, None) => return None,
+        (Some(one), None) => crate::i18n::fmt(
+            // i18n: the status bar and the tray icon's tip while Downloads → Speed Limiter is turned on: {limit} is the most each download may take ("512 KB/sec")
+            t("Speed Limiter: {limit} per download"),
+            &[("limit", &limit_rate(one))],
+        ),
+        (None, Some(all)) => crate::i18n::fmt(
+            // i18n: the status bar and the tray icon's tip while the Speed Limiter's limit for all downloads together is on: {limit} is the most they may take together ("1024 KB/sec")
+            t("Speed Limiter: {limit} for all downloads"),
+            &[("limit", &limit_rate(all))],
+        ),
+        (Some(one), Some(all)) => crate::i18n::fmt(
+            // i18n: the status bar and the tray icon's tip while both Speed Limiter limits are on: {one} is the most each download may take ("512 KB/sec"), {all} the most all of them together may take ("1024 KB/sec")
+            t("Speed Limiter: {one} per download, {all} for all"),
+            &[("one", &limit_rate(one)), ("all", &limit_rate(all))],
+        ),
+    })
+}
+
 /// The list's Size column: IDM puts two spaces before the unit (`200.00  MB`).
 pub fn size_list(b: u64) -> String {
     if english() {
@@ -2438,5 +2546,96 @@ mod speed_tests {
         assert!((s.average() / MB - 1.0).abs() < 1e-6, "{}", s.average());
         s.read(at(3.5), 1000 + MB as u64 / 4);
         assert!((s.average() / MB - 1.0).abs() < 1e-6, "{}", s.average());
+    }
+}
+
+/// Which speed limit a download's Transfer rate names, and how (#1191).
+#[cfg(test)]
+mod limit_tests {
+    use super::{Limit, limit_rate, limiter_hint};
+
+    const KB: u64 = 1024;
+
+    #[test]
+    fn its_own_limit_binds_until_the_shared_one_is_tighter() {
+        assert_eq!(Limit::binding(None, None, 1), None);
+        assert_eq!(
+            Limit::binding(Some(10 * KB), None, 3),
+            Some(Limit::One(10 * KB))
+        );
+        assert_eq!(
+            Limit::binding(None, Some(500 * KB), 3),
+            Some(Limit::All(500 * KB))
+        );
+        // One download at 10 KB/s under 500 KB/s for all: its own limit holds it.
+        assert_eq!(
+            Limit::binding(Some(10 * KB), Some(500 * KB), 1),
+            Some(Limit::One(10 * KB))
+        );
+        // 50 of them at 10 KB/s fill 500 KB/s exactly: still their own.
+        assert_eq!(
+            Limit::binding(Some(10 * KB), Some(500 * KB), 50),
+            Some(Limit::One(10 * KB))
+        );
+        // 51 would take more than 500 KB/s together: the shared limit holds them.
+        assert_eq!(
+            Limit::binding(Some(10 * KB), Some(500 * KB), 51),
+            Some(Limit::All(500 * KB))
+        );
+        // Its own above the shared one: the shared one, even alone.
+        assert_eq!(
+            Limit::binding(Some(800 * KB), Some(500 * KB), 1),
+            Some(Limit::All(500 * KB))
+        );
+        // No count (asked before it runs) counts it alone; no overflow at the top.
+        assert_eq!(
+            Limit::binding(Some(10 * KB), Some(500 * KB), 0),
+            Some(Limit::One(10 * KB))
+        );
+        assert_eq!(
+            Limit::binding(Some(u64::MAX), Some(500 * KB), 2),
+            Some(Limit::All(500 * KB))
+        );
+    }
+
+    #[test]
+    fn limits_read_as_typed() {
+        assert_eq!(limit_rate(512 * KB), "512 KB/sec");
+        assert_eq!(limit_rate(2048 * KB), "2048 KB/sec");
+        // Below a kilobyte (a share of the limit for all): never "0 KB/sec".
+        assert_eq!(limit_rate(100), "1 KB/sec");
+    }
+
+    #[test]
+    fn transfer_rate_tip_and_hint() {
+        assert_eq!(
+            Limit::One(512 * KB).after("511.998 KB/sec"),
+            "511.998 KB/sec (limit: 512 KB/sec)"
+        );
+        assert_eq!(
+            Limit::All(1024 * KB).after("340.112 KB/sec"),
+            "340.112 KB/sec (limit for all downloads: 1024 KB/sec)"
+        );
+        assert_eq!(
+            Limit::One(10 * KB).tip(),
+            "Speed Limiter: at most 10 KB/sec for this download"
+        );
+        assert_eq!(
+            Limit::All(500 * KB).tip(),
+            "Speed Limiter: 500 KB/sec for all downloads together"
+        );
+        assert_eq!(limiter_hint(None, None), None);
+        assert_eq!(
+            limiter_hint(Some(10 * KB), None).as_deref(),
+            Some("Speed Limiter: 10 KB/sec per download")
+        );
+        assert_eq!(
+            limiter_hint(None, Some(500 * KB)).as_deref(),
+            Some("Speed Limiter: 500 KB/sec for all downloads")
+        );
+        assert_eq!(
+            limiter_hint(Some(10 * KB), Some(500 * KB)).as_deref(),
+            Some("Speed Limiter: 10 KB/sec per download, 500 KB/sec for all")
+        );
     }
 }

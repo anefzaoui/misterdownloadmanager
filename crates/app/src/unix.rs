@@ -60,6 +60,341 @@ pub async fn terminated() {
     }
 }
 
+// ---- The session's end (Linux: logging out, shutting down; a `kill`; the display going away) ---
+
+/// Linux: why MDM's session ends, as the system says it (Windows: `win32::SessionEnd`; macOS's
+/// logout quits the app through AppKit, which `App`'s drop saves, main.rs).
+#[cfg(target_os = "linux")]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SessionEnd {
+    /// SIGTERM: logind ending the session's programs at logout or shutdown (systemd stops their
+    /// scopes; SIGKILL follows 90 s later by default, sooner on some desktops), or a `kill`.
+    Terminated,
+    /// SIGHUP: the terminal MDM was started from closed.
+    HungUp,
+    /// SIGINT: Ctrl+C in the terminal MDM was started from.
+    Interrupted,
+    /// The display went away: the X server's connection is lost (GNOME's X server ends at logout
+    /// before logind's SIGTERM comes).
+    DisplayLost,
+}
+
+#[cfg(target_os = "linux")]
+impl SessionEnd {
+    const ALL: [SessionEnd; 4] = [
+        SessionEnd::Terminated,
+        SessionEnd::HungUp,
+        SessionEnd::Interrupted,
+        SessionEnd::DisplayLost,
+    ];
+
+    /// The signal that says it; None for the display going away.
+    fn signal(self) -> Option<libc::c_int> {
+        match self {
+            SessionEnd::Terminated => Some(libc::SIGTERM),
+            SessionEnd::HungUp => Some(libc::SIGHUP),
+            SessionEnd::Interrupted => Some(libc::SIGINT),
+            SessionEnd::DisplayLost => None,
+        }
+    }
+
+    /// Kept in [`END_ASKED`]: 0 is none.
+    fn code(self) -> u8 {
+        Self::ALL
+            .iter()
+            .position(|&e| e == self)
+            .map_or(0, |i| i as u8 + 1)
+    }
+
+    fn of_code(code: u8) -> Option<SessionEnd> {
+        Self::ALL.get(usize::from(code).checked_sub(1)?).copied()
+    }
+}
+
+/// The end asked for and not yet run ([`SessionEnd::code`]; 0: none).
+#[cfg(target_os = "linux")]
+static END_ASKED: std::sync::atomic::AtomicU8 = std::sync::atomic::AtomicU8::new(0);
+
+/// The end is asked for: true the first time (the window's thread is to run it), false when it
+/// already was.
+#[cfg(target_os = "linux")]
+fn ask_end(why: SessionEnd) -> bool {
+    use std::sync::atomic::Ordering;
+    END_ASKED
+        .compare_exchange(0, why.code(), Ordering::AcqRel, Ordering::Acquire)
+        .is_ok()
+}
+
+/// Linux: the session's end that was asked for ([`on_session_end`]), for the window's thread to
+/// run at its next frame (main.rs).
+#[cfg(target_os = "linux")]
+pub fn session_ending() -> Option<SessionEnd> {
+    SessionEnd::of_code(END_ASKED.load(std::sync::atomic::Ordering::Acquire))
+}
+
+/// How long the window's thread has, once the end is asked for, before MDM ends without it: a
+/// frame that never comes (the window's thread held up) must not hold the session's end until
+/// logind's SIGKILL. The end itself takes at most `App::end_session`'s 4 s and the log's 2 s.
+#[cfg(target_os = "linux")]
+const END_GRACE: std::time::Duration = std::time::Duration::from_secs(10);
+
+/// Linux: the session's end reaches MDM as a signal: logind's SIGTERM at logout and shutdown (and
+/// a `kill`), SIGHUP and SIGINT from the terminal it was started from. Each is run as Windows'
+/// session end is: `wake` brings the window's next frame, which saves as an Exit saves and ends
+/// MDM (main.rs). A signal ignored when MDM started (`nohup`'s SIGHUP, a background job's SIGINT)
+/// stays ignored. Ctrl+C once more ends MDM at once, and so does a window that hasn't ended
+/// within [`END_GRACE`]: then each download resumes from its last save, as before. Heard on
+/// `rt`, a signal handler itself only wakes it (tokio's).
+#[cfg(target_os = "linux")]
+pub fn on_session_end(rt: &tokio::runtime::Handle, wake: std::sync::Arc<dyn Fn() + Send + Sync>) {
+    hear_signals(rt, wake, Some(END_GRACE));
+}
+
+/// [`on_session_end`]'s signals, the window given `grace` (None: as long as it takes, the tests).
+#[cfg(target_os = "linux")]
+fn hear_signals(
+    rt: &tokio::runtime::Handle,
+    wake: std::sync::Arc<dyn Fn() + Send + Sync>,
+    grace: Option<std::time::Duration>,
+) {
+    use tokio::signal::unix::{SignalKind, signal};
+    let _ = WAKE.set(wake.clone());
+    for why in SessionEnd::ALL {
+        let Some(sig) = why.signal() else { continue };
+        if ignored(sig) {
+            tracing::info!("{why:?}: its signal is ignored, as when MDM was started");
+            continue;
+        }
+        let wake = wake.clone();
+        rt.spawn(async move {
+            let mut heard = match signal(SignalKind::from_raw(sig)) {
+                Ok(s) => s,
+                Err(e) => {
+                    tracing::warn!("{why:?}: its signal isn't heard ({e})");
+                    return;
+                }
+            };
+            while heard.recv().await.is_some() {
+                end_asked(why, &*wake, grace);
+            }
+        });
+    }
+}
+
+/// A signal asks for the end ([`on_session_end`]).
+#[cfg(target_os = "linux")]
+fn end_asked(why: SessionEnd, wake: &dyn Fn(), grace: Option<std::time::Duration>) {
+    if !ask_end(why) {
+        if again_ends_now(why) {
+            tracing::warn!("asked again to end ({why:?}): MDM ends now");
+            end_now();
+        }
+        tracing::info!("asked again to end ({why:?}): the end is under way");
+        return;
+    }
+    tracing::info!("asked to end ({why:?}): the window saves and ends");
+    wait_for_the_window(wake, grace);
+}
+
+/// Whether `why`, once the end is under way, cuts it short: Ctrl+C once more does. Nothing else:
+/// systemd sends a session's programs SIGHUP right after its SIGTERM at shutdown (logind's
+/// session scopes, SendSIGHUP), which must not undo the end it asked for.
+#[cfg(target_os = "linux")]
+fn again_ends_now(why: SessionEnd) -> bool {
+    why == SessionEnd::Interrupted
+}
+
+/// The end is asked of the window's thread: `wake` brings its next frame, which runs it; one
+/// that hasn't come within `grace` ends MDM without it.
+#[cfg(target_os = "linux")]
+fn wait_for_the_window(wake: &dyn Fn(), grace: Option<std::time::Duration>) {
+    wake();
+    let Some(grace) = grace else { return };
+    let _ = std::thread::Builder::new()
+        .name("session end".into())
+        .spawn(move || {
+            std::thread::sleep(grace);
+            tracing::warn!("the window didn't end within {grace:?}: MDM ends without it");
+            end_now();
+        });
+}
+
+/// What wakes the window's thread ([`on_session_end`]'s), for the display's end too.
+#[cfg(target_os = "linux")]
+static WAKE: std::sync::OnceLock<std::sync::Arc<dyn Fn() + Send + Sync>> =
+    std::sync::OnceLock::new();
+
+/// Linux: the process ends now, once the session's end has saved (main.rs), without the
+/// libraries' exit handlers: with the display gone they would only touch it again, which runs
+/// Xlib's handler (and so the end) once more.
+#[cfg(target_os = "linux")]
+#[allow(unsafe_code)]
+pub fn exit_now(code: i32) -> ! {
+    // SAFETY: ends the process; the log was flushed by the caller.
+    unsafe { libc::_exit(code) }
+}
+
+/// MDM ends at once, the list and the downloads as last saved: the session's end, not a crash.
+#[cfg(target_os = "linux")]
+fn end_now() -> ! {
+    crate::crash::clean_exit();
+    std::process::exit(1);
+}
+
+/// Whether the signal `sig` is ignored (SIG_IGN), as MDM was started.
+#[cfg(target_os = "linux")]
+#[allow(unsafe_code)]
+fn ignored(sig: libc::c_int) -> bool {
+    // SAFETY: zeroed is a valid `sigaction` (plain integers and a mask) for the call to fill.
+    let mut old: libc::sigaction = unsafe { std::mem::zeroed() };
+    // SAFETY: a null new action only reads the current one into `old`.
+    let read = unsafe { libc::sigaction(sig, std::ptr::null(), &mut old) } == 0;
+    read && old.sa_sigaction == libc::SIG_IGN
+}
+
+/// What the display going away runs ([`on_display_lost`]): the end now, true; false when the app
+/// is busy in a frame of its own (the window's thread is in it), and nothing was done.
+#[cfg(target_os = "linux")]
+type OnDisplayLost = Box<dyn Fn() -> bool>;
+
+#[cfg(target_os = "linux")]
+thread_local! {
+    /// Run when the display goes away, on the window's thread.
+    static DISPLAY_LOST: std::cell::RefCell<Option<OnDisplayLost>> =
+        const { std::cell::RefCell::new(None) };
+}
+
+/// Xlib returns from its I/O error handler to the call that failed, instead of ending the
+/// program ([`on_display_lost`]: XSetIOErrorExitHandler, Xlib 1.7 and later).
+#[cfg(target_os = "linux")]
+static XLIB_RETURNS: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
+/// Linux, X11 (XWayland too): when the X server of `display` (eframe's creation context) goes
+/// away (GNOME's at logout, before logind's SIGTERM comes), MDM saves as an Exit does and ends:
+/// `end` runs on the window's thread between two frames, or, when the display's end is found in
+/// the middle of one, the end waits for the next frame (`session_ending`), as a SIGTERM's does.
+/// Call it on the window's thread once the window is open. It is found two ways, whichever comes
+/// first: winit's own calls on the lost connection fail and panic on the window's thread
+/// (`inner_size`'s unwrap: crash.rs asks [`display_lost_panic`]); or Xlib sees it and calls its
+/// I/O error handler, whose default ends the program (`exit(1)`). Either way MDM ended unsaved,
+/// or with a crash report. Wayland's windows: winit's event loop ends on its own when the
+/// connection is lost, and eframe drops the app, which saves as an Exit does.
+#[cfg(target_os = "linux")]
+#[allow(unsafe_code)]
+pub fn on_display_lost(
+    display: &impl raw_window_handle::HasDisplayHandle,
+    end: impl Fn() -> bool + 'static,
+) {
+    if on_wayland() {
+        return;
+    }
+    DISPLAY_LOST.with(|d| *d.borrow_mut() = Some(Box::new(end)));
+    type IoErrorHandler = unsafe extern "C" fn(*mut std::ffi::c_void) -> libc::c_int;
+    type SetIoErrorHandler = unsafe extern "C" fn(Option<IoErrorHandler>) -> Option<IoErrorHandler>;
+    type ExitHandler = unsafe extern "C" fn(*mut std::ffi::c_void, *mut std::ffi::c_void);
+    type SetExitHandler =
+        unsafe extern "C" fn(*mut std::ffi::c_void, Option<ExitHandler>, *mut std::ffi::c_void);
+    // SAFETY: a NUL-terminated name; RTLD_NOLOAD only finds the library winit already loaded
+    // (and keeps it loaded, which it is for the program's life anyway).
+    let lib = unsafe {
+        libc::dlopen(
+            c"libX11.so.6".as_ptr(),
+            libc::RTLD_LAZY | libc::RTLD_LOCAL | libc::RTLD_NOLOAD,
+        )
+    };
+    if lib.is_null() {
+        tracing::warn!("Xlib's end of the display isn't heard: Xlib isn't loaded");
+        return;
+    }
+    // SAFETY: the handle dlopen just gave; NUL-terminated names.
+    let (set, set_exit) = unsafe {
+        (
+            libc::dlsym(lib, c"XSetIOErrorHandler".as_ptr()),
+            libc::dlsym(lib, c"XSetIOErrorExitHandler".as_ptr()),
+        )
+    };
+    if set.is_null() {
+        tracing::warn!("Xlib's end of the display isn't heard: no XSetIOErrorHandler");
+        return;
+    }
+    // The display winit opened, for Xlib to return to it once its I/O error handler has.
+    let xlib_display = match display.display_handle().map(|h| h.as_raw()) {
+        Ok(raw_window_handle::RawDisplayHandle::Xlib(h)) => h.display,
+        _ => None,
+    };
+    if let Some(dpy) = xlib_display
+        && !set_exit.is_null()
+    {
+        // SAFETY: the symbol is Xlib's XSetIOErrorExitHandler, of this signature (Xlib.h).
+        let set_exit =
+            unsafe { std::mem::transmute::<*mut std::ffi::c_void, SetExitHandler>(set_exit) };
+        // SAFETY: winit's display, open for the program's life; the handler a function of the
+        // signature Xlib calls, for the program's life.
+        unsafe { set_exit(dpy.as_ptr(), Some(xlib_returns), std::ptr::null_mut()) };
+        XLIB_RETURNS.store(true, std::sync::atomic::Ordering::Release);
+    }
+    // SAFETY: the symbol is Xlib's XSetIOErrorHandler, of this signature (Xlib.h).
+    let set = unsafe { std::mem::transmute::<*mut std::ffi::c_void, SetIoErrorHandler>(set) };
+    // SAFETY: the handler is a function of the signature Xlib calls, for the program's life.
+    unsafe { set(Some(xlib_lost_display)) };
+}
+
+/// Xlib's I/O error handler ([`on_display_lost`]): the X server's connection is lost.
+#[cfg(target_os = "linux")]
+#[allow(unsafe_code)]
+unsafe extern "C" fn xlib_lost_display(_display: *mut std::ffi::c_void) -> libc::c_int {
+    tracing::warn!("the display went away (Xlib: the X server's connection is lost)");
+    display_lost();
+    if !XLIB_RETURNS.load(std::sync::atomic::Ordering::Acquire) {
+        // An older Xlib ends the program once this returns: before it, as it is.
+        tracing::warn!("in the middle of a frame: nothing more is saved");
+        crate::crash::clean_exit();
+        mdm_crash::logs::flush(std::time::Duration::from_secs(1));
+        // SAFETY: ends the process, as Xlib's own handler would (with exit).
+        unsafe { libc::_exit(1) }
+    }
+    0
+}
+
+/// Xlib's exit handler ([`on_display_lost`]): returning lets the call that failed return.
+#[cfg(target_os = "linux")]
+extern "C" fn xlib_returns(_display: *mut std::ffi::c_void, _data: *mut std::ffi::c_void) {}
+
+/// Linux: whether a panic on `thread` is winit's on a lost display ([`on_display_lost`]): on the
+/// window's thread, with MDM's windows on X11 and its X server gone (a new connection to it is
+/// refused). Then it's the session's end, not a crash: [`display_lost`] instead of a report.
+#[cfg(target_os = "linux")]
+pub fn display_lost_panic(thread: &str) -> bool {
+    thread == "main"
+        && DISPLAY_LOST.with(|d| d.try_borrow().is_ok_and(|d| d.is_some()))
+        && x11rb::rust_connection::RustConnection::connect(None).is_err()
+}
+
+/// The display went away. Between two frames: the end now ([`on_display_lost`]'s), and MDM ends
+/// at once, without the libraries' exit handlers, which would only touch the lost display again.
+/// In the middle of a frame (the app busy in it): the end is asked of the next frame, as a
+/// SIGTERM's is, and this returns; a panic of winit's then unwinds, which drops the app, and its
+/// drop saves as an Exit does.
+#[cfg(target_os = "linux")]
+#[allow(unsafe_code)]
+pub fn display_lost() {
+    let ended = DISPLAY_LOST.with(|d| {
+        d.try_borrow()
+            .ok()
+            .and_then(|d| d.as_ref().map(|end| end()))
+    });
+    if ended == Some(true) {
+        // SAFETY: ends the process, as Xlib's own handler would (with exit).
+        unsafe { libc::_exit(0) }
+    }
+    if ask_end(SessionEnd::DisplayLost) {
+        tracing::info!("the display went away during a frame: the next one saves and ends");
+        crate::crash::clean_exit();
+        let wake = WAKE.get().cloned();
+        wait_for_the_window(&|| wake.as_ref().map_or((), |w| w()), Some(END_GRACE));
+    }
+}
+
 pub fn run_at_startup() -> bool {
     startup_file().is_some_and(|f| f.is_file())
 }
@@ -3475,6 +3810,84 @@ fn write_program(path: &Path, content: &[u8]) {
         .unwrap();
     sh.stdin.take().unwrap().write_all(content).unwrap();
     assert!(sh.wait().unwrap().success(), "{}", path.display());
+}
+
+#[cfg(all(test, target_os = "linux"))]
+mod session_end_tests {
+    use super::{SessionEnd, again_ends_now, ask_end, hear_signals, ignored, session_ending};
+    use std::time::Duration;
+
+    #[test]
+    fn each_end_is_kept_as_its_own_code_and_none_as_zero() {
+        for why in SessionEnd::ALL {
+            assert_ne!(why.code(), 0);
+            assert_eq!(SessionEnd::of_code(why.code()), Some(why));
+        }
+        assert_eq!(SessionEnd::of_code(0), None);
+        assert_eq!(SessionEnd::of_code(99), None);
+        assert_eq!(SessionEnd::Terminated.signal(), Some(libc::SIGTERM));
+        assert_eq!(SessionEnd::DisplayLost.signal(), None);
+    }
+
+    /// Once the end is under way, only Ctrl+C again cuts it short: systemd's SIGHUP right after
+    /// its SIGTERM at shutdown (seen in the lab's VM) must not.
+    #[test]
+    fn only_ctrl_c_again_cuts_the_end_short() {
+        assert!(again_ends_now(SessionEnd::Interrupted));
+        assert!(!again_ends_now(SessionEnd::HungUp));
+        assert!(!again_ends_now(SessionEnd::Terminated));
+        assert!(!again_ends_now(SessionEnd::DisplayLost));
+    }
+
+    /// A real SIGHUP to this process (tokio's handler in place, so it doesn't end it): the end is
+    /// asked for, the window woken, and `session_ending` gives it to the window's next frame. A
+    /// second ask is refused (Ctrl+C again would end the process: not tried here). The only test
+    /// that touches the end's flag (it's the process's).
+    #[test]
+    #[allow(unsafe_code)]
+    fn a_signal_asks_for_the_end_and_wakes_the_window_once() {
+        if ignored(libc::SIGHUP) {
+            // Run under nohup: MDM leaves an ignored SIGHUP ignored, so nothing would come.
+            return;
+        }
+        assert_eq!(session_ending(), None);
+        let rt = tokio::runtime::Runtime::new().unwrap();
+        let (tx, woken) = std::sync::mpsc::channel();
+        let tx = std::sync::Mutex::new(tx);
+        hear_signals(
+            rt.handle(),
+            std::sync::Arc::new(move || {
+                let _ = tx.lock().unwrap().send(());
+            }),
+            None,
+        );
+        // The listeners are spawned tasks: once SIGHUP's handler is tokio's (the default one
+        // would end the test's process), and its listener settled, one SIGHUP.
+        let handled = |sig| {
+            // SAFETY: zeroed is a valid `sigaction` for the call to fill.
+            let mut now: libc::sigaction = unsafe { std::mem::zeroed() };
+            // SAFETY: a null new action only reads the current one.
+            unsafe { libc::sigaction(sig, std::ptr::null(), &mut now) };
+            now.sa_sigaction != libc::SIG_DFL
+        };
+        let mut waited = 0;
+        while !handled(libc::SIGHUP) {
+            assert!(waited < 100, "SIGHUP's handler wasn't installed");
+            std::thread::sleep(Duration::from_millis(20));
+            waited += 1;
+        }
+        std::thread::sleep(Duration::from_millis(200));
+        // SAFETY: a signal to this process, which tokio's handler (installed above) takes.
+        unsafe { libc::kill(libc::getpid(), libc::SIGHUP) };
+        assert!(
+            woken.recv_timeout(Duration::from_secs(5)).is_ok(),
+            "the window wasn't woken"
+        );
+        assert_eq!(session_ending(), Some(SessionEnd::HungUp));
+        // Asked again (here directly: a second signal would end the test's process).
+        assert!(!ask_end(SessionEnd::Terminated));
+        assert_eq!(session_ending(), Some(SessionEnd::HungUp));
+    }
 }
 
 #[cfg(test)]
