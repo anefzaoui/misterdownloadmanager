@@ -420,28 +420,35 @@ fn video_objects<'a>(v: &'a Value, main: bool, out: &mut Vec<(&'a Node, bool)>) 
 }
 
 /// The insides of `page`'s `<script type="application/ld+json">` elements, outside comments.
+/// A script's body is skipped as it is read: a `<script` inside one (a template, a JS string)
+/// is text, not an element, and holds no declaration of the page's.
 fn json_ld_blocks(page: &str) -> Vec<&str> {
     // ASCII lowercasing keeps every byte offset.
     let lower = page.to_ascii_lowercase();
     let comments = comment_spans(&lower);
-    tags(page, "script")
-        .filter(|(start, _)| !comments.iter().any(|(a, b)| a <= start && start < b))
-        .filter(|(_, tag)| {
-            attribute(tag, "type").is_some_and(|t| {
-                decode(&t)
-                    .split(';')
-                    .next()
-                    .is_some_and(|t| t.trim().eq_ignore_ascii_case("application/ld+json"))
-            })
-        })
-        .map(|(start, tag)| {
-            let from = start + tag.len();
-            let to = lower[from..]
-                .find("</script")
-                .map_or(page.len(), |e| from + e);
-            &page[from..to]
-        })
-        .collect()
+    let mut out = Vec::new();
+    let mut after = 0;
+    for (start, tag) in tags(page, "script") {
+        // A tag inside the script read last, or in a comment, is not an element.
+        if start < after || comments.iter().any(|&(a, b)| a <= start && start < b) {
+            continue;
+        }
+        let from = start + tag.len();
+        let to = lower[from..]
+            .find("</script")
+            .map_or(page.len(), |e| from + e);
+        after = (to + "</script".len()).min(page.len());
+        let json_ld = attribute(tag, "type").is_some_and(|t| {
+            decode(&t)
+                .split(';')
+                .next()
+                .is_some_and(|t| t.trim().eq_ignore_ascii_case("application/ld+json"))
+        });
+        if json_ld {
+            out.push(&page[from..to]);
+        }
+    }
+    out
 }
 
 /// Where `lower`'s comments are (`<!--` to past `-->`).
@@ -679,6 +686,25 @@ mod tests {
 
     fn declared(page: &str, at: &str) -> DeclaredVideos {
         declared_videos(page, &Url::parse(at).unwrap())
+    }
+
+    /// A script that builds or holds a JSON-LD block in its text (a template, a JS string) is
+    /// not the page declaring that video.
+    #[test]
+    fn a_script_that_builds_the_block_holds_no_declaration() {
+        let page = r#"<script>var t = '<script type="application/ld+json">{"@type":"VideoObject","contentUrl":"https://cdn.test/t.mp4"}</script>';</script>"#;
+        assert_eq!(
+            declared(page, "https://site.test/v/1"),
+            DeclaredVideos::default()
+        );
+        // The real block after it is read as before.
+        let page = format!(
+            r#"{page}<script type="application/ld+json">{{"@type":"VideoObject","contentUrl":"https://cdn.test/real.mp4"}}</script>"#
+        );
+        assert_eq!(
+            addresses(&declared(&page, "https://site.test/v/1").json_ld),
+            ["https://cdn.test/real.mp4"]
+        );
     }
 
     /// The addresses of `list`, as text.
