@@ -221,10 +221,7 @@ mod tests {
             (3, PathBuf::from(fine).with_file_name("b.bin")),
         ];
         let mut reads = StateReads::start(rows, load, || {});
-        assert!(
-            at.elapsed() < Duration::from_millis(500),
-            "start never waits"
-        );
+        assert!(at.elapsed() < Duration::from_secs(5), "start never waits");
         assert!(reads.pending(1) && reads.pending(2) && reads.pending(3));
         let got = wait_for(&mut reads, 2);
         let mut ids: Vec<u64> = got.iter().map(|r| r.id).collect();

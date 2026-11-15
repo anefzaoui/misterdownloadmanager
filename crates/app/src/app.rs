@@ -13212,8 +13212,10 @@ mod start_disk_tests {
     use std::path::Path;
     use std::sync::{Arc, Mutex};
 
-    /// What the window may take for one of its frames' work here.
-    const AT_ONCE: Duration = Duration::from_millis(500);
+    /// Far less than a share's 21 s. The fake disk stays held throughout each call timed with
+    /// it, so a call that waited for it would never return; the bound only leaves room for a
+    /// slow machine's first use of what is loaded once (the interface's catalogs).
+    const AT_ONCE: Duration = Duration::from_secs(5);
 
     fn app_with(items: Vec<Item>) -> std::mem::ManuallyDrop<App> {
         let rt = Box::leak(Box::new(
