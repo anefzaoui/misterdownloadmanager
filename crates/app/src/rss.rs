@@ -301,6 +301,10 @@ pub struct Rule {
     /// The episodes it has already added (`S1E2`): each is taken once, whichever release.
     #[serde(default)]
     pub done: Vec<String>,
+    /// Turned off because every feed it watched was removed ([`Store::remove_feed`]), never
+    /// widened to every feed: said under its feeds until one is ticked or it is turned on.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub feeds_gone: bool,
 }
 
 impl Rule {
@@ -317,6 +321,7 @@ impl Rule {
             folder: String::new(),
             later: false,
             done: Vec::new(),
+            feeds_gone: false,
         }
     }
 
@@ -587,11 +592,18 @@ impl Store {
         Ok(id)
     }
 
-    /// Forget a feed (and take it out of the rules that named it).
+    /// Forget a feed (and take it out of the rules that named it). A rule left with none of the
+    /// feeds it named is turned off: an empty list means every feed, which it never asked for.
+    /// A rule whose list was already empty (every feed) stays as it is.
     pub fn remove_feed(&mut self, id: u64) {
         self.feeds.retain(|f| f.id != id);
         for r in &mut self.rules {
+            let named = !r.feeds.is_empty();
             r.feeds.retain(|f| *f != id);
+            if named && r.feeds.is_empty() {
+                r.enabled = false;
+                r.feeds_gone = true;
+            }
         }
     }
 
@@ -761,6 +773,66 @@ mod tests {
         assert!(ok(&r, "S02E09") && ok(&r, "S03E01"));
     }
 
+    /// A rule for feed A is turned off when A is removed, not widened to every feed: feed B's
+    /// articles that match it are not taken. A rule for every feed, or for A and B, goes on.
+    #[test]
+    fn removing_its_feeds_turns_a_rule_off() {
+        let mut s = Store::default();
+        let a = s.add_feed("http://127.0.0.1:8899/rss/a.xml").unwrap();
+        let b = s.add_feed("http://127.0.0.1:8899/rss/b.xml").unwrap();
+        let rule = |s: &mut Store, name: &str, feeds: Vec<u64>| {
+            let mut r = Rule::new(s.new_id(), name);
+            r.must = "open show".into();
+            r.feeds = feeds;
+            s.rules.push(r);
+        };
+        rule(&mut s, "Only A", vec![a]);
+        let art = |id: &str, title: &str| Article {
+            id: id.into(),
+            title: title.into(),
+            torrent: format!("magnet:?xt=urn:btih:{id}"),
+            ..Default::default()
+        };
+        let feed = |v: Vec<Article>| Parsed {
+            title: "Shows".into(),
+            articles: v,
+        };
+        // B's backlog, then A goes.
+        s.fetched(b, feed(vec![art("1", "Open Show S01E01")]), 100);
+        s.remove_feed(a);
+        let r = &s.rules[0];
+        assert!(r.feeds.is_empty() && !r.enabled && r.feeds_gone);
+        assert!(
+            s.fetched(b, feed(vec![art("2", "Open Show S01E02")]), 200)
+                .is_empty(),
+            "the rule for A takes nothing from B"
+        );
+        // Saved so: still off, and why, after a restart.
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("rss.json");
+        write(&path, &s.encode().unwrap()).unwrap();
+        assert_eq!(Store::load(&path).rules, s.rules);
+
+        // A rule for every feed (none named), and one for A and B, go on without A.
+        let mut s = Store::default();
+        let a = s.add_feed("http://127.0.0.1:8899/rss/a.xml").unwrap();
+        let b = s.add_feed("http://127.0.0.1:8899/rss/b.xml").unwrap();
+        rule(&mut s, "Every feed", vec![]);
+        rule(&mut s, "A and B", vec![a, b]);
+        s.remove_feed(a);
+        assert!(s.rules[0].enabled && s.rules[0].feeds.is_empty() && !s.rules[0].feeds_gone);
+        assert!(s.rules[1].enabled && s.rules[1].feeds == [b] && !s.rules[1].feeds_gone);
+        // An earlier rules file, without the field, reads as before.
+        let old: Rule =
+            serde_json::from_str(r#"{"id":1,"name":"x","enabled":true,"feeds":[]}"#).unwrap();
+        assert!(old.enabled && !old.feeds_gone);
+        assert!(
+            !String::from_utf8(s.encode().unwrap())
+                .unwrap()
+                .contains("feeds_gone")
+        );
+    }
+
     #[test]
     fn only_new_articles_go_through_the_rules() {
         let mut s = Store::default();
@@ -835,6 +907,7 @@ mod tests {
         back.rules[0].feeds = vec![f];
         back.remove_feed(f);
         assert!(back.feeds.is_empty() && back.rules[0].feeds.is_empty());
+        assert!(!back.rules[0].enabled && back.rules[0].feeds_gone);
         std::fs::write(&path, "{broken").unwrap();
         assert_eq!(Store::load(&path), Store::default());
         assert!(path.with_extension("json.bad").exists(), "kept aside");

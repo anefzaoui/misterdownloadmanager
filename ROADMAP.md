@@ -584,6 +584,9 @@ These ship in the next version.
   bot check as a signed-in viewer's, is looked up once more without them, as a private window
   gets it; private, members' and age-restricted videos keep them
   ([#686](https://github.com/anefzaoui/misterdownloadmanager/issues/686))
+- ✅ RSS feeds: removing a feed turns off the download rules that watched only it, instead of
+  widening them to every feed, and the rule says why
+  ([#1144](https://github.com/anefzaoui/misterdownloadmanager/issues/1144))
 - ✅ **Download File Info**: **...** beside **Save As** opens the system's Save dialog (the
   folder and the file name, the download's type listed), and the name typed there is the one
   saved ([#1088](https://github.com/anefzaoui/misterdownloadmanager/issues/1088))
