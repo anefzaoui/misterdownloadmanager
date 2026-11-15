@@ -562,6 +562,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ An excluded site is the same site written with the root's dot (`example.com.`), in the app
+  and the extension
 - ✅ Tests: the programs tests write and then run (the extraction tests' stand-in for HatchZip,
   the Linux file manager's and the browser helper's) no longer fail now and then with "Text file
   busy" (a file written while another test started a program was still open there for writing
