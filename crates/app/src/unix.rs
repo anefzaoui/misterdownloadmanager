@@ -1694,33 +1694,6 @@ pub fn on_xwayland() -> bool {
     window_system().x11_over_wayland
 }
 
-/// Linux: the vendor of the GLX that will draw MDM's OpenGL windows on the X display, before any
-/// of them is made (their swap interval is chosen when the first one is): `glXGetClientString`'s
-/// `GLX_VENDOR` ("NVIDIA Corporation", "Mesa Project and SGI"). libglvnd picks the driver for
-/// the display the same way when eframe makes its context. None without libGL or a display.
-#[cfg(target_os = "linux")]
-#[allow(unsafe_code)]
-pub fn glx_vendor() -> Option<String> {
-    let xlib = x11_dl::xlib::Xlib::open().ok()?;
-    let glx = x11_dl::glx::Glx::open().ok()?;
-    // SAFETY: a display opened here and closed before returning; the vendor string belongs to
-    // the GLX library, and is copied while the display is open.
-    unsafe {
-        let display = (xlib.XOpenDisplay)(std::ptr::null());
-        if display.is_null() {
-            return None;
-        }
-        let vendor = (glx.glXGetClientString)(display, x11_dl::glx::GLX_VENDOR);
-        let vendor = (!vendor.is_null()).then(|| {
-            std::ffi::CStr::from_ptr(vendor)
-                .to_string_lossy()
-                .into_owned()
-        });
-        (xlib.XCloseDisplay)(display);
-        vendor
-    }
-}
-
 /// Linux: the vendor OpenGL says it is (`GL_VENDOR`), with eframe's context current.
 #[cfg(target_os = "linux")]
 #[allow(unsafe_code)]
@@ -2648,6 +2621,33 @@ pub fn macos_is_active_and_visible() -> bool {
     }
 }
 
+/// macOS: unhides the application if [`macos_hide_window`] hid it, without activating it or
+/// ordering any window back to the front. While `NSApp` is hidden, macOS lets none of its windows
+/// draw, so eframe runs only the app's logic: a window a command opens (the browser's Download
+/// video, Download File Info) is never created, and the browser's click seems to do nothing.
+/// The main window stays ordered out (hidden to the menu bar) as it was.
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+pub fn macos_unhide_app() {
+    use objc2::msg_send;
+    use objc2::runtime::{AnyClass, AnyObject, Bool};
+    // SAFETY: called on the main UI thread; reads `isHidden` of, and sends
+    // `unhideWithoutActivation` to, `NSApplication.sharedApplication`.
+    unsafe {
+        let Some(cls) = AnyClass::get(c"NSApplication") else {
+            return;
+        };
+        let app: *mut AnyObject = msg_send![cls, sharedApplication];
+        if app.is_null() {
+            return;
+        }
+        let hidden: Bool = msg_send![app, isHidden];
+        if hidden.as_bool() {
+            let _: () = msg_send![app, unhideWithoutActivation];
+        }
+    }
+}
+
 /// macOS: orders out the main window and hides the application when no other titled window is
 /// visible, so focus returns cleanly to the previously active app (#558).
 #[cfg(target_os = "macos")]
@@ -3353,7 +3353,6 @@ ID_LIKE=arch
     /// own, so the test runs itself again as a child with it (no `set_var` in a test).
     #[test]
     fn show_in_folder_never_waits_for_the_file_manager() {
-        use std::os::unix::fs::PermissionsExt;
         use std::time::{Duration, Instant};
         if let Some(file) = std::env::var_os(SHOW_CHILD) {
             let file = std::path::PathBuf::from(file);
@@ -3380,9 +3379,7 @@ ID_LIKE=arch
         std::fs::write(&file, b"test").unwrap();
         let opened = folder.join("opened.txt");
         let tool = |name: &str, body: String| {
-            let p = bin.join(name);
-            std::fs::write(&p, format!("#!/bin/sh\n{body}\n")).unwrap();
-            std::fs::set_permissions(&p, std::fs::Permissions::from_mode(0o755)).unwrap();
+            super::write_program(&bin.join(name), format!("#!/bin/sh\n{body}\n").as_bytes());
         };
         tool("gdbus", "exec sleep 30".into());
         tool("xdg-open", format!("echo \"$1\" > '{}'", opened.display()));
@@ -3422,6 +3419,25 @@ ID_LIKE=arch
         assert!(took < Duration::from_secs(20), "took {took:?}");
         let _ = std::fs::remove_dir_all(&root);
     }
+}
+
+/// Write a program a test then runs: `content` goes to `path`, executable.
+///
+/// A `sh` of its own writes it, never this process: a file written here while another test's
+/// thread starts a program is handed to that child still open for writing, and Linux refuses to
+/// run a file open for writing anywhere ("Text file busy"), so running it would fail now and
+/// then.
+#[cfg(test)]
+fn write_program(path: &Path, content: &[u8]) {
+    use std::io::Write;
+    let mut sh = Command::new("/bin/sh")
+        .args(["-c", "cat > \"$1\" && chmod 755 \"$1\"", "sh"])
+        .arg(path)
+        .stdin(Stdio::piped())
+        .spawn()
+        .unwrap();
+    sh.stdin.take().unwrap().write_all(content).unwrap();
+    assert!(sh.wait().unwrap().success(), "{}", path.display());
 }
 
 #[cfg(test)]
@@ -3489,7 +3505,7 @@ mod host_copy_tests {
         // them apart by the name it's started under, so a copy of it named after the helper ended
         // at once. `; :` keeps the shell from replacing itself with `sleep`.
         let old = dir.join(HOST);
-        std::fs::copy("/bin/sh", &old).unwrap();
+        super::write_program(&old, &std::fs::read("/bin/sh").unwrap());
         let mut running = std::process::Command::new(&old)
             .args(["-c", "sleep 30; :"])
             .spawn()
