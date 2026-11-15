@@ -4237,7 +4237,7 @@ mod tests {
             Box::leak(Box::new(crate::clipboard::Reader::new(
                 move || {
                     let _ = stuck.lock().unwrap().recv();
-                    Some(
+                    crate::clipboard::Read::Text(
                         " https://late.example/a.zip
 "
                         .to_owned(),

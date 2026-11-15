@@ -2422,6 +2422,111 @@ pub fn tray_icon_tip(hwnd: isize, id: u32, tip: &str) -> bool {
     unsafe { Shell_NotifyIconW(NIM_MODIFY, &nid) != 0 }
 }
 
+/// The size the notification area draws MDM's icon at, in px, and the taskbar it draws it in (its
+/// window, 0 if none): Windows' small icon size (`SM_CXSMICON`) at the taskbar's DPI (#1161). The
+/// taskbar window's own DPI, not the system's: the system DPI is the main display's scale as it
+/// was when the user signed in, kept until they sign out, while Explorer draws the taskbar at its
+/// display's scale as soon as it changes. With no taskbar (Explorer isn't running), the system
+/// DPI. Never waits: Explorer is sent no message.
+pub fn tray_icon_px() -> (isize, u32) {
+    use windows_sys::Win32::UI::HiDpi::{GetDpiForSystem, GetDpiForWindow};
+    use windows_sys::Win32::UI::WindowsAndMessaging::FindWindowW;
+    let class: Vec<u16> = "Shell_TrayWnd\0".encode_utf16().collect();
+    // SAFETY: a NUL-ended class name and no title: no window is sent a message.
+    let taskbar = unsafe { FindWindowW(class.as_ptr(), std::ptr::null()) };
+    let mut dpi = 0;
+    if !taskbar.is_null() {
+        // SAFETY: reads a window's DPI, as its own awareness of DPI has it (Explorer's: its
+        // display's); 0 for a window gone since.
+        dpi = unsafe { GetDpiForWindow(taskbar) };
+    }
+    if dpi == 0 {
+        // SAFETY: no arguments; reads the system's DPI.
+        dpi = unsafe { GetDpiForSystem() };
+    }
+    let px = small_icon_px_for_dpi(dpi)
+        .unwrap_or_else(|| crate::tray::small_icon_px(dpi))
+        .clamp(16, 256);
+    (taskbar as isize, px)
+}
+
+/// Windows' small icon size at `dpi` (`GetSystemMetricsForDpi(SM_CXSMICON)`), if it says.
+pub fn small_icon_px_for_dpi(dpi: u32) -> Option<u32> {
+    use windows_sys::Win32::UI::HiDpi::GetSystemMetricsForDpi;
+    use windows_sys::Win32::UI::WindowsAndMessaging::SM_CXSMICON;
+    // SAFETY: a plain query.
+    let px = unsafe { GetSystemMetricsForDpi(SM_CXSMICON, dpi) };
+    u32::try_from(px).ok().filter(|&px| px > 0)
+}
+
+/// A picture handed to the shell as the notification-area icon ([`tray_icon_picture`]), kept for
+/// as long as the shell may draw it, and destroyed when dropped (the next one handed over, or the
+/// icon gone).
+pub struct TrayPicture(isize);
+
+impl Drop for TrayPicture {
+    fn drop(&mut self) {
+        // SAFETY: an icon made by CreateIcon, owned here alone.
+        unsafe { DestroyIcon(self.0 as _) };
+    }
+}
+
+/// Draw icon `id` of `hwnd` with `rgba`, a `size`×`size` picture (straight alpha), from the
+/// tray's watcher thread: it waits for Explorer as [`tray_icon_ask`] does. The picture to keep
+/// while the shell has it, or None when the shell didn't take it (no such icon, or no answer).
+pub fn tray_icon_picture(hwnd: isize, id: u32, rgba: &[u8], size: u32) -> Option<TrayPicture> {
+    use windows_sys::Win32::UI::Shell::{NIF_ICON, NIM_MODIFY, NOTIFYICONDATAW, Shell_NotifyIconW};
+    use windows_sys::Win32::UI::WindowsAndMessaging::CreateIcon;
+    let side = size as usize;
+    if side == 0 || rgba.len() != side * side * 4 {
+        return None;
+    }
+    let bgra: Vec<u8> = rgba
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .flat_map(|p| [p[2], p[1], p[0], p[3]])
+        .collect();
+    // The mask, for whatever draws the icon without its alpha: one bit a pixel, set where it is
+    // clear, in rows of whole 16-bit words.
+    let row = side.div_ceil(16) * 2;
+    let mut mask = vec![0u8; row * side];
+    for (i, p) in rgba.as_chunks::<4>().0.iter().enumerate() {
+        if p[3] == 0 {
+            let (y, x) = (i / side, i % side);
+            mask[y * row + x / 8] |= 0x80 >> (x % 8);
+        }
+    }
+    // SAFETY: both buffers live for the call and hold what the size says (32 bits a pixel, and
+    // the mask's rows); no module: the icon is made from them.
+    let icon = unsafe {
+        CreateIcon(
+            std::ptr::null_mut(),
+            size as i32,
+            size as i32,
+            1,
+            32,
+            mask.as_ptr(),
+            bgra.as_ptr(),
+        )
+    };
+    if icon.is_null() {
+        return None;
+    }
+    let picture = TrayPicture(icon as isize);
+    let nid = NOTIFYICONDATAW {
+        cbSize: size_of::<NOTIFYICONDATAW>() as u32,
+        hWnd: hwnd as HWND,
+        uID: id,
+        uFlags: NIF_ICON,
+        hIcon: icon,
+        // SAFETY: a plain C struct; all zero is its empty value.
+        ..unsafe { zeroed() }
+    };
+    // SAFETY: nid lives for the call; the shell only reads it (the icon stays alive in `picture`).
+    (unsafe { Shell_NotifyIconW(NIM_MODIFY, &nid) } != 0).then_some(picture)
+}
+
 /// Whether the window in front (the foreground window, which takes the keyboard) is another
 /// program's: a click outside MDM's windows (the desktop, the taskbar, another program) put it
 /// there. False while one of ours is in front, and while none is (Windows passing the foreground

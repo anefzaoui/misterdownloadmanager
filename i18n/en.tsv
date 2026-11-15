@@ -89,6 +89,10 @@
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered
+#. count in the main window's messages (deleting downloads' files)
+#. the message's next line: how many more deleted files stayed on the disk
+#. {n} = a number (keep the braces as they are)
+@plural	{n} more file could not be deleted either.|{n} more files could not be deleted either.	{n} more file could not be deleted either.|{n} more files could not be deleted either.
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
@@ -929,7 +933,7 @@
 	Default download settings	Default download settings
 #. text in the Options window
 	Default max. conn. number	Default max. conn. number
-#. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
+#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
 	Delete	Delete
@@ -4386,7 +4390,8 @@
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 	{ext} File	{ext} File
-#. message or event log entry in the main window
+#. text in the main window's messages (deleting downloads' files)
+#. a message: a deleted download's file stayed on the disk; {file} = its name
 #. {error} = an error message (keep the braces as they are)
 	{file} could not be deleted from the disk: {error}	{file} could not be deleted from the disk: {error}
 #. text in a dialog box

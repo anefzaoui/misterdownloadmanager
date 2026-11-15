@@ -8,7 +8,11 @@ use std::sync::mpsc::{Receiver, Sender, channel};
 use std::sync::{Arc, Mutex};
 
 mod beside;
+mod picture;
 mod watch;
+
+#[cfg(windows)]
+pub(crate) use picture::small_icon_px;
 
 pub use watch::Icon;
 
@@ -489,7 +493,15 @@ impl Native {
         items.push((limiter_on.id().clone(), TrayCmd::LimiterOn));
         items.push((limiter_off.id().clone(), TrayCmd::LimiterOff));
 
-        let icon = match picture() {
+        // Windows: the size the taskbar draws the icon at, and the taskbar, drawn again for another
+        // by the watcher (`WindowsShell::fit`).
+        #[cfg(windows)]
+        let fitted = crate::win32::tray_icon_px();
+        #[cfg(windows)]
+        let px = fitted.1;
+        #[cfg(not(windows))]
+        let px = picture::fitting();
+        let icon = match picture(px) {
             Ok(icon) => icon,
             Err(e) => {
                 tracing::warn!("tray icon: no picture: {e}");
@@ -521,6 +533,8 @@ impl Native {
                     // MDM_TEST_TRAY_RECT=0: the shell gives the icon no place, as the reporters'
                     // did for one behind ^ (the close test, with a real icon the shell holds).
                     rect_withheld: std::env::var_os("MDM_TEST_TRAY_RECT").is_some_and(|v| v == "0"),
+                    fit: picture::Fit::new(fitted),
+                    shown: None,
                 },
                 move || wake.request_repaint(),
             )
@@ -653,6 +667,44 @@ struct WindowsShell {
     hwnd: isize,
     id: Option<u32>,
     rect_withheld: bool,
+    /// The size and taskbar the icon is drawn for (#1161).
+    fit: picture::Fit<(isize, u32)>,
+    /// The picture the watcher last drew the icon with, kept while the shell has it (the first is
+    /// tray-icon's).
+    shown: Option<crate::win32::TrayPicture>,
+}
+
+#[cfg(windows)]
+impl WindowsShell {
+    /// Draw icon `id` again at the size the notification area draws it now, when that changed
+    /// ([`picture::Fit`]): the taskbar's display scale changed, or Explorer started again (a new
+    /// taskbar, given tray-icon's first picture back). Explorer is waited for here, on the
+    /// watcher's thread, never on the window's (#747); a draw it didn't take is tried again with
+    /// the next question.
+    fn fit(&mut self, id: u32) {
+        let now = crate::win32::tray_icon_px();
+        if !self.fit.due(now) {
+            return;
+        }
+        let px = now.1;
+        match picture::at(px) {
+            Ok(p) => {
+                if let Some(shown) = crate::win32::tray_icon_picture(self.hwnd, id, &p.rgba, px) {
+                    self.shown = Some(shown);
+                    self.fit.drawn(now);
+                    tracing::info!(
+                        "tray icon: drawn at {px} px (from the {} px picture)",
+                        picture::source(px)
+                    );
+                }
+            }
+            Err(e) => {
+                // Never asked again for this size: the picture won't come out better.
+                self.fit.drawn(now);
+                tracing::warn!("tray icon: no {px} px picture: {e}");
+            }
+        }
+    }
 }
 
 #[cfg(windows)]
@@ -663,8 +715,9 @@ impl watch::Port for WindowsShell {
             TrayAnswer::NoTaskbar => watch::Shell::NoTaskbar,
             TrayAnswer::Silent => watch::Shell::Silent,
             TrayAnswer::Answered { held, placed } => {
-                if held.is_some() {
+                if let Some(id) = held {
                     self.id = held;
+                    self.fit(id);
                 }
                 watch::Shell::Answered {
                     placed,
@@ -690,16 +743,16 @@ fn short(name: &str) -> String {
     s.replace('&', "&&")
 }
 
-/// The icon's picture: the app icon's ([`crate::app_picture`]), square. Never an empty one:
-/// tray-icon takes a 0×0 picture, and macOS then fails to make the menu bar item of it (it
-/// encodes the picture as a PNG, which can't be 0 wide), so before #529 macOS had no menu bar
-/// icon and closing the window quit.
-fn picture() -> Result<tray_icon::Icon, String> {
-    let p = crate::app_picture();
-    if p.width == 0 || p.width != p.height {
-        return Err(format!("{}×{} px", p.width, p.height));
+/// The icon's picture at `px` px: the app icon's hand-made picture of the size the system draws
+/// it at ([`picture`], #1161). Never an empty one: tray-icon takes a 0×0 picture, and macOS then
+/// fails to make the menu bar item of it (it encodes the picture as a PNG, which can't be 0 wide),
+/// so before #529 macOS had no menu bar icon and closing the window quit.
+fn picture(px: u32) -> Result<tray_icon::Icon, String> {
+    let p = picture::at(px)?;
+    if p.size == 0 || p.rgba.len() != (p.size * p.size * 4) as usize {
+        return Err(format!("{0}×{0} px", p.size));
     }
-    tray_icon::Icon::from_rgba(p.rgba.clone(), p.width, p.height).map_err(|e| e.to_string())
+    tray_icon::Icon::from_rgba(p.rgba, p.size, p.size).map_err(|e| e.to_string())
 }
 
 #[cfg(test)]
@@ -800,14 +853,18 @@ mod tests {
     }
 
     /// #529: the tray's picture is a real one on every system, macOS's menu bar included (where
-    /// the window icon, `app_icon`, is empty on purpose).
+    /// the window icon, `app_icon`, is empty on purpose), at every size it is drawn at (#1161).
     #[test]
     fn the_tray_picture_is_never_empty() {
-        let p = crate::app_picture();
-        assert_eq!((p.width, p.height), (256, 256));
-        assert_eq!(p.rgba.len(), 256 * 256 * 4);
-        assert!(p.rgba.chunks(4).any(|px| px[3] > 0), "a blank picture");
-        assert!(picture().is_ok());
+        for px in [16, 20, 24, 28, 32, 40, 44, 48, 256] {
+            let p = picture::at(px).unwrap();
+            assert_eq!(p.rgba.len(), (px * px * 4) as usize);
+            assert!(
+                p.rgba.chunks(4).any(|c| c[3] > 0),
+                "{px} px: a blank picture"
+            );
+            assert!(picture(px).is_ok(), "{px} px");
+        }
         #[cfg(target_os = "macos")]
         assert_eq!(
             crate::app_icon().width,
