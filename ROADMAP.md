@@ -579,6 +579,11 @@ These ship in the next version.
   a busy macOS runner, time one input 16 times as long against 16 short ones (as many items, as
   long a run), take each side's fastest of several runs, and fail at three times as long (a square
   costs 16 times): steady under load, and they catch more of the squares they guard against
+- ✅ Tests: a MediaFire download resumed after its address expired is checked request by
+  request (nothing it had on disk is asked again, but for the few bytes each part re-reads to
+  check the file), not by a total of what the server sent, which grew on a busy runner when a
+  part was split while its bytes were on the way
+  ([#952](https://github.com/anefzaoui/misterdownloadmanager/issues/952))
 - ✅ macOS: a browser hand-off while MDM is hidden from the menu bar opens its window
 - ✅ Downloads for Windows on ARM, 32-bit Windows and Linux on ARM, beside the x64 ones: the
   installer, the portable zip and the plain zip; the AppImage, .deb, .rpm and .tar.gz. Each is
