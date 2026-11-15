@@ -706,6 +706,7 @@ fn supervise(
     retry: Option<&SubsRetry>,
     preloaded: Option<Preloaded>,
     engine: Option<&ByEngine>,
+    saved: Option<&mdm_engine::FileHook>,
 ) {
     // The first run only: a run after it looks the page up afresh (links expire).
     let mut preloaded = preloaded;
@@ -750,14 +751,21 @@ fn supervise(
                 }
                 // The saved file's own size: a merged video or a converted MP3 isn't the size
                 // of what came down.
-                let saved = std::fs::metadata(&f).ok().map(|m| m.len());
+                let size = std::fs::metadata(&f).ok().map(|m| m.len());
                 let side = side_files(&f);
+                // Before Done, with the progress unlocked: a disk slow to take the mark keeps
+                // this thread waiting, never a window reading the progress (#1103).
+                if let Some(hook) = saved {
+                    for file in std::iter::once(&f).chain(&side).filter(|p| p.is_file()) {
+                        (hook.0)(file);
+                    }
+                }
                 let mut p = progress.lock().unwrap();
                 if p.state != State::Stopped {
                     p.speed = 0.0;
                     p.side_files = side;
                     p.sub_problems = problems;
-                    if let Some(len) = saved {
+                    if let Some(len) = size {
                         p.total = Some(len);
                         p.downloaded = len;
                     }
@@ -1882,11 +1890,15 @@ impl VideoJob {
     ) -> Result<VideoJob, ProcError> {
         Self::start_with(
             exe, url, selector, dir, stem, rate, ffmpeg, expected, browser, subs, None, engine,
+            None,
         )
     }
 
     /// [`VideoJob::start`], the first run taking the quality menu's look-up (`preloaded`) when
-    /// it is for this very choice.
+    /// it is for this very choice. `saved` is shown the video and the files saved beside it
+    /// (subtitles) on the job's own thread before the job says it is done (#1103): the app's
+    /// mark that they came from the internet, written before the file is announced, opened or
+    /// renamed (a rename keeps the mark), and never on the window's thread.
     #[allow(clippy::too_many_arguments)]
     pub fn start_with(
         exe: &Path,
@@ -1901,6 +1913,7 @@ impl VideoJob {
         subs: &Subs,
         preloaded: Option<Preloaded>,
         engine: Option<crate::streams::Engine>,
+        saved: Option<mdm_engine::FileHook>,
     ) -> Result<VideoJob, ProcError> {
         proc::safe(url)?;
         let preloaded = preloaded.filter(|p| p.selector == selector);
@@ -2077,6 +2090,7 @@ impl VideoJob {
                         retry.as_ref(),
                         preloaded,
                         by_engine.as_ref(),
+                        saved.as_ref(),
                     )
                 });
                 if std::panic::catch_unwind(run).is_err() {

@@ -580,6 +580,7 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                 &ask,
                 &Default::default(),
                 Some(video_engine(8, route)),
+                None,
             )?;
             let p = loop {
                 let p = job.progress();

@@ -476,33 +476,27 @@ fn take_place(item: &mut Item, target: PathBuf) {
     item.moved_away = false;
 }
 
-/// Update `item.pending_mark` after `from` has been renamed to `actual_to` (including renaming
-/// `yt-dlp` sidecar subtitle files alongside a video, or rewriting saved file paths inside a
-/// renamed gallery folder) so `flush_pending_mark` marks the final paths on disk.
-fn apply_renamed_paths_to_pending_mark(
-    item: &mut Item,
+/// A finished download's rename on completion (#655), on a thread other than the window's
+/// (#1103): `from` takes the name `desired` (numbered when it is taken), a video's subtitles
+/// (`side`) going with it. Its own path when there is nothing to rename. The mark that it came
+/// from the internet, written before it was done, goes along (a rename keeps it).
+fn rename_finished(
     from: &std::path::Path,
-    actual_to: &std::path::Path,
+    desired: &str,
     is_dir: bool,
-) {
-    let Some(pm) = item.pending_mark.as_mut() else {
-        return;
+    side: &[PathBuf],
+) -> Result<PathBuf, String> {
+    use crate::deferred_rename::{
+        rename_reserved_or_number, rename_video_side_files, reserve_target_path,
     };
-    if is_dir {
-        for gf in &mut pm.gallery_files {
-            if let Ok(rel) = gf.strip_prefix(from) {
-                *gf = actual_to.join(rel);
-            }
-        }
-    } else {
-        if pm.main_file.is_some() {
-            pm.main_file = Some(actual_to.to_path_buf());
-        }
-        if !pm.side_files.is_empty() {
-            pm.side_files =
-                crate::deferred_rename::rename_video_side_files(from, actual_to, &pm.side_files);
-        }
+    let Some((to, hold)) = reserve_target_path(from, desired, is_dir) else {
+        return Ok(from.to_owned());
+    };
+    let to = rename_reserved_or_number(from, to, hold, is_dir).map_err(|e| e.to_string())?;
+    if !is_dir && !side.is_empty() {
+        rename_video_side_files(from, &to, side);
     }
+    Ok(to)
 }
 
 /// Whether `folder` is a root/category/save folder or contains another download's files, making a
@@ -1032,11 +1026,12 @@ pub struct App {
     save_failed: Option<String>,
     /// Finished files being moved (Move/Rename, Properties → Move): where to, and the answer.
     moving: Vec<(u64, PathBuf, MoveDone)>,
-    /// Finished torrents whose deferred rename is running asynchronously through `torrent_host`.
+    /// Finished downloads whose rename on completion is under way: a file's on a thread of its
+    /// own (#1103), a torrent's through `torrent_host`. The answer: the new path, and why
+    /// sharing stopped.
     #[allow(clippy::type_complexity)]
-    renaming_torrents: Vec<(
+    renaming: Vec<(
         u64,
-        PathBuf,
         std::sync::mpsc::Receiver<(Result<PathBuf, String>, Option<String>)>,
     )>,
     /// Finished downloads whose deferred rename is persisted on `Item::rename_on_complete` and
@@ -1211,29 +1206,12 @@ fn page_data_for(link: &str, page: Option<&str>, data: Option<&str>) -> Option<S
         .flatten()
 }
 
-/// Marks finished files (a video's and its subtitles, a gallery's pictures) as downloaded from the
-/// web, as `mark_hook` does for the engine's, on a thread of their own: writing the mark has the
-/// antivirus read the whole file again, and on a big video that kept the window waiting (#510). A
-/// file moved or removed meanwhile is left alone: marking its old path would create an empty
-/// file there.
-pub(crate) fn mark_finished(
-    files: Vec<std::path::PathBuf>,
-    url: String,
-    referrer: Option<String>,
-) -> Option<std::thread::JoinHandle<()>> {
-    std::thread::Builder::new()
-        .name("mark-downloaded".into())
-        .spawn(move || {
-            for f in files.iter().filter(|f| f.is_file()) {
-                crate::webmark::mark(f, &url, referrer.as_deref());
-            }
-        })
-        .ok()
-}
-
 /// Marks each file the engine starts writing as downloaded from the web (Mark-of-the-Web, macOS'
 /// quarantine: `webmark::mark`, as the option and Windows' policy say), as browsers mark theirs.
-/// Only http(s) addresses (an FTP address may carry its login).
+/// Only http(s) addresses (an FTP address may carry its login). Also what a video's and a
+/// gallery's jobs show their saved files to, on their own threads before they say they are done
+/// (#1103): never on the window's thread, where a disk slow to take the mark froze the window
+/// (#510), and always before the file can be opened or renamed (a rename keeps the mark).
 pub(crate) fn mark_hook(url: &url::Url, referrer: Option<&str>) -> mdm_engine::FileHook {
     let web = matches!(url.scheme(), "http" | "https");
     let (url, referrer) = (url.to_string(), referrer.map(str::to_owned));
@@ -1702,7 +1680,7 @@ impl App {
             importing: Default::default(),
             save_failed: None,
             moving: Vec::new(),
-            renaming_torrents: Vec::new(),
+            renaming: Vec::new(),
             deferred_torrent_queue,
             turn_off: None,
             exit_requested: false,
@@ -4413,6 +4391,23 @@ impl App {
             self.dirty = true;
             return false;
         }
+        let Some(spec) = torrent_spec else {
+            // A file or a folder of MDM's own: renamed on a thread of its own (#1103), as a disk
+            // slow to answer would hold the window meanwhile; `poll_deferred_torrent_renames`
+            // takes the answer. Cleared now, as for a torrent below.
+            let side = self.item(id).map(|i| {
+                i.rename_on_complete = None;
+                i.side_files.clone()
+            });
+            let (tx, rx) = std::sync::mpsc::channel();
+            crate::launch::spawn("rename", move || {
+                let side = side.unwrap_or_default();
+                let _ = tx.send((rename_finished(&from, &desired, is_dir, &side), None));
+            });
+            self.renaming.push((id, rx));
+            self.dirty = true;
+            return true;
+        };
         let Some((initial_to, hold)) =
             crate::deferred_rename::reserve_target_path(&from, &desired, is_dir)
         else {
@@ -4422,72 +4417,48 @@ impl App {
             self.dirty = true;
             return false;
         };
-        if let Some(spec) = torrent_spec {
-            let (tx, rx) = std::sync::mpsc::channel();
-            let known = self.session_hashes();
-            match self.torrent_host.rename_finished(
-                &self.rt,
-                known,
-                &spec,
-                from.clone(),
-                initial_to,
-                hold,
-                is_dir,
-                self.settings.torrent_keep_sharing,
-                tx,
-            ) {
-                Ok(()) => {
-                    // Clear before the background rename moves the folder so an abrupt exit
-                    // never leaves a stale `rename_on_complete` pointing at the old `dest`.
-                    if let Some(item) = self.item(id) {
-                        item.rename_on_complete = None;
-                    }
-                    self.renaming_torrents.push((id, from, rx));
-                    self.dirty = true;
-                    return true;
-                }
-                Err(hold) => {
-                    drop(hold);
-                    // Keep `item.rename_on_complete` persisted in `downloads.json` while waiting
-                    // for `torrent_host` so quitting MDM before it starts does not lose it.
-                    if !self.deferred_torrent_queue.contains(&id) {
-                        self.deferred_torrent_queue.push(id);
-                    }
-                    self.dirty = true;
-                    return true;
-                }
-            }
-        }
-        match crate::deferred_rename::rename_reserved_or_number(&from, initial_to, hold, is_dir) {
-            Ok(actual_to) => {
+        let (tx, rx) = std::sync::mpsc::channel();
+        let known = self.session_hashes();
+        match self.torrent_host.rename_finished(
+            &self.rt,
+            known,
+            &spec,
+            from.clone(),
+            initial_to,
+            hold,
+            is_dir,
+            self.settings.torrent_keep_sharing,
+            tx,
+        ) {
+            Ok(()) => {
+                // Clear before the background rename moves the folder so an abrupt exit
+                // never leaves a stale `rename_on_complete` pointing at the old `dest`.
                 if let Some(item) = self.item(id) {
                     item.rename_on_complete = None;
-                    apply_renamed_paths_to_pending_mark(item, &from, &actual_to, is_dir);
-                    take_place(item, actual_to);
                 }
+                self.renaming.push((id, rx));
                 self.dirty = true;
+                true
             }
-            Err(e) => {
-                let err = e.to_string();
-                let msg = crate::i18n::fmt(
-                    crate::i18n::t("The file could not be moved: {error}"),
-                    &[("error", &err)],
-                );
-                if let Some(item) = self.item(id) {
-                    item.rename_on_complete = None;
-                    item.note(msg.clone());
+            Err(hold) => {
+                drop(hold);
+                // Keep `item.rename_on_complete` persisted in `downloads.json` while waiting
+                // for `torrent_host` so quitting MDM before it starts does not lose it.
+                if !self.deferred_torrent_queue.contains(&id) {
+                    self.deferred_torrent_queue.push(id);
                 }
-                self.notice = Some((crate::i18n::mark("Move/Rename"), msg));
                 self.dirty = true;
+                true
             }
         }
-        false
     }
 
-    fn apply_finished_torrent_rename(
+    /// A finished download's rename on completion (a file's or a torrent's, each on a thread of
+    /// its own) is done: the row follows the new name, then its archive is extracted
+    /// (`notify_ui`; not while MDM exits).
+    fn apply_finished_rename(
         &mut self,
         id: u64,
-        from: &std::path::Path,
         r: Result<PathBuf, String>,
         sharing_error: Option<String>,
         notify_ui: bool,
@@ -4496,8 +4467,6 @@ impl App {
             Ok(actual_to) => {
                 if let Some(item) = self.item(id) {
                     item.rename_on_complete = None;
-                    let is_dir = crate::deferred_rename::is_folder_target(item);
-                    apply_renamed_paths_to_pending_mark(item, from, &actual_to, is_dir);
                     take_place(item, actual_to.clone());
                 }
                 for c in &mut self.complete {
@@ -4532,7 +4501,6 @@ impl App {
             ));
             self.dirty = true;
         }
-        self.flush_pending_mark(id);
         if notify_ui {
             self.extracts.finished(id, &self.items, &self.settings);
         }
@@ -4553,10 +4521,9 @@ impl App {
                     if !self.deferred_torrent_queue.contains(&id) {
                         self.deferred_torrent_queue.push(id);
                     }
-                } else if !self.renaming_torrents.iter().any(|(rid, _, _)| *rid == id) {
-                    let torrent_renaming = self.apply_deferred_rename(id);
-                    if !torrent_renaming {
-                        self.flush_pending_mark(id);
+                } else if !self.renaming.iter().any(|(rid, _)| *rid == id) {
+                    let renaming = self.apply_deferred_rename(id);
+                    if !renaming {
                         self.extracts.finished(id, &self.items, &self.settings);
                     }
                 }
@@ -4564,32 +4531,16 @@ impl App {
         }
 
         let mut done = Vec::new();
-        self.renaming_torrents
-            .retain(|(id, from, rx)| match rx.try_recv() {
-                Ok(r) => {
-                    done.push((*id, from.clone(), r));
-                    false
-                }
-                Err(std::sync::mpsc::TryRecvError::Empty) => true,
-                Err(_) => false,
-            });
-        for (id, from, (r, sharing_error)) in done {
-            self.apply_finished_torrent_rename(id, &from, r, sharing_error, true);
-        }
-    }
-
-    fn flush_pending_mark(&mut self, id: u64) {
-        let Some(pm) = self.item(id).and_then(|i| i.pending_mark.take()) else {
-            return;
-        };
-        let files: Vec<PathBuf> = pm
-            .main_file
-            .into_iter()
-            .chain(pm.side_files)
-            .chain(pm.gallery_files)
-            .collect();
-        if !files.is_empty() {
-            mark_finished(files, pm.url, pm.referer);
+        self.renaming.retain(|(id, rx)| match rx.try_recv() {
+            Ok(r) => {
+                done.push((*id, r));
+                false
+            }
+            Err(std::sync::mpsc::TryRecvError::Empty) => true,
+            Err(_) => false,
+        });
+        for (id, (r, sharing_error)) in done {
+            self.apply_finished_rename(id, r, sharing_error, true);
         }
     }
 
@@ -4913,6 +4864,7 @@ impl App {
             &spec.subs,
             preloaded,
             engine,
+            Some(mark_hook(&item.url, item.context.referer.as_deref())),
         );
         match started {
             Ok(job) => {
@@ -5022,6 +4974,7 @@ impl App {
             &ask,
             &crate::videodlg::from_browser(&item.context),
             engine,
+            Some(mark_hook(&item.url, None)),
         );
         match started {
             Ok(job) => {
@@ -7130,7 +7083,7 @@ impl App {
         self.poll_dragged_out();
         self.poll_deferred_torrent_renames();
         if !self.moving.is_empty()
-            || !self.renaming_torrents.is_empty()
+            || !self.renaming.is_empty()
             || !self.deferred_torrent_queue.is_empty()
         {
             ctx.request_repaint_after(Duration::from_millis(200));
@@ -7185,9 +7138,8 @@ impl App {
         for id in &finished {
             self.release_link(*id);
             self.failures.remove(id);
-            let torrent_renaming = self.apply_deferred_rename(*id);
-            if !torrent_renaming {
-                self.flush_pending_mark(*id);
+            let renaming = self.apply_deferred_rename(*id);
+            if !renaming {
                 // Its archive, when it is to be extracted and its last volume is in (#37).
                 self.extracts.finished(*id, &self.items, &self.settings);
             }
@@ -11354,10 +11306,10 @@ impl App {
 
 impl Drop for App {
     fn drop(&mut self) {
-        // Let any in-flight torrent folder rename finish and update `item.dest` before saving.
-        for (id, from, rx) in std::mem::take(&mut self.renaming_torrents) {
+        // Let any rename on completion under way finish and update `item.dest` before saving.
+        for (id, rx) in std::mem::take(&mut self.renaming) {
             if let Ok((r, sharing_error)) = rx.recv_timeout(Duration::from_secs(2)) {
-                self.apply_finished_torrent_rename(id, &from, r, sharing_error, false);
+                self.apply_finished_rename(id, r, sharing_error, false);
             }
         }
         // An archive being extracted stops; its staging folder goes with it.
@@ -12206,31 +12158,32 @@ mod window_thread_tests {
 }
 
 #[cfg(test)]
-mod mark_finished_tests {
-    /// #510: finished files are marked away from the window's thread; a file gone from its path
-    /// meanwhile (moved, deleted) isn't created again by the mark.
+mod mark_hook_tests {
+    /// #510, #1103: what a video's or a gallery's job shows its saved files to marks them as
+    /// downloaded from the web (an http(s) address only); a file gone from its path meanwhile
+    /// isn't created again by the mark (the jobs show only files that are there).
     #[test]
-    fn a_finished_file_is_marked_and_a_gone_one_is_not_created() {
+    fn a_saved_file_is_marked_from_a_web_address_only() {
         let dir = tempfile::tempdir().unwrap();
         let here = dir.path().join("video.mp4");
+        let ftp = dir.path().join("listing.txt");
         std::fs::write(&here, b"x").unwrap();
-        let gone = dir.path().join("moved.mp4");
-        super::mark_finished(
-            vec![here.clone(), gone.clone()],
-            "https://videos.test/v".into(),
-            None,
-        )
-        .unwrap()
-        .join()
-        .unwrap();
-        assert!(!gone.exists(), "a moved file's old path stays empty");
+        std::fs::write(&ftp, b"x").unwrap();
+        let web = super::mark_hook(&"https://videos.test/v".parse().unwrap(), None);
+        (web.0)(&here);
+        let other = super::mark_hook(&"ftp://files.test/listing.txt".parse().unwrap(), None);
+        (other.0)(&ftp);
         #[cfg(windows)]
         {
-            let mut stream = here.as_os_str().to_owned();
-            stream.push(":Zone.Identifier");
-            let zone = std::fs::read_to_string(stream).unwrap();
-            assert!(zone.contains("ZoneId=3"), "{zone}");
-            assert!(zone.contains("HostUrl=https://videos.test/v"), "{zone}");
+            let zone = |p: &std::path::Path| {
+                let mut stream = p.as_os_str().to_owned();
+                stream.push(":Zone.Identifier");
+                std::fs::read_to_string(stream).ok()
+            };
+            let marked = zone(&here).unwrap();
+            assert!(marked.contains("ZoneId=3"), "{marked}");
+            assert!(marked.contains("HostUrl=https://videos.test/v"), "{marked}");
+            assert_eq!(zone(&ftp), None, "an FTP address may carry its login");
         }
     }
 }
@@ -12437,59 +12390,49 @@ mod deferred_rename_guard_tests {
         );
     }
 
+    /// #655, #1103: a rename on completion (on a thread of its own) takes a video's subtitles
+    /// along, and a gallery's folder its pictures; the mark each got before it was done goes
+    /// with them.
     #[test]
-    fn pending_mark_updates_video_subtitles_and_gallery_paths_after_rename() {
+    fn a_rename_on_completion_takes_subtitles_and_the_mark_along() {
         let dir = tempfile::tempdir().unwrap();
         let from_vid = dir.path().join("raw_id.mp4");
         let sub_en = dir.path().join("raw_id.en.srt");
         std::fs::write(&from_vid, b"v").unwrap();
         std::fs::write(&sub_en, b"s").unwrap();
-
-        let mut vid_item = test_item(1, from_vid.clone());
-        vid_item.pending_mark = Some(model::PendingMark {
-            main_file: Some(from_vid.clone()),
-            side_files: vec![sub_en.clone()],
-            gallery_files: Vec::new(),
-            url: "https://videos.test/watch".into(),
-            referer: None,
-        });
-
-        let (initial_to, hold) =
-            crate::deferred_rename::reserve_target_path(&from_vid, "Talk 01", false).unwrap();
-        let actual_to =
-            crate::deferred_rename::rename_reserved_or_number(&from_vid, initial_to, hold, false)
-                .unwrap();
-        apply_renamed_paths_to_pending_mark(&mut vid_item, &from_vid, &actual_to, false);
-        let pm = vid_item.pending_mark.unwrap();
-        assert_eq!(pm.main_file, Some(dir.path().join("Talk 01.mp4")));
-        assert_eq!(pm.side_files, vec![dir.path().join("Talk 01.en.srt")]);
-        assert!(dir.path().join("Talk 01.en.srt").exists());
-        assert!(!sub_en.exists());
-
         let old_gal = dir.path().join("gal_raw");
         std::fs::create_dir_all(old_gal.join("sub")).unwrap();
         let img = old_gal.join("sub").join("01.png");
         std::fs::write(&img, b"img").unwrap();
-        let mut gal_item = test_item(2, old_gal.clone());
-        gal_item.gallery = Some(Default::default());
-        gal_item.pending_mark = Some(model::PendingMark {
-            main_file: None,
-            side_files: Vec::new(),
-            gallery_files: vec![img],
-            url: "https://gallery.test/a".into(),
-            referer: None,
-        });
-        let (g_to, g_hold) =
-            crate::deferred_rename::reserve_target_path(&old_gal, "Album 01", true).unwrap();
-        let actual_gal =
-            crate::deferred_rename::rename_reserved_or_number(&old_gal, g_to, g_hold, true)
-                .unwrap();
-        apply_renamed_paths_to_pending_mark(&mut gal_item, &old_gal, &actual_gal, true);
-        let gpm = gal_item.pending_mark.unwrap();
+        #[cfg(windows)]
+        for f in [&from_vid, &sub_en, &img] {
+            crate::win32::mark_downloaded(f, "https://videos.test/watch", None);
+        }
+
+        let to = rename_finished(&from_vid, "Talk 01", false, std::slice::from_ref(&sub_en));
+        assert_eq!(to, Ok(dir.path().join("Talk 01.mp4")));
+        assert!(dir.path().join("Talk 01.en.srt").exists());
+        assert!(!from_vid.exists() && !sub_en.exists());
+
+        let to = rename_finished(&old_gal, "Album 01", true, &[]);
+        assert_eq!(to, Ok(dir.path().join("Album 01")));
+        let moved_img = dir.path().join("Album 01").join("sub").join("01.png");
+        assert!(moved_img.exists());
+
+        // Nothing to rename (the same name): the path stays.
+        let same = dir.path().join("Talk 01.mp4");
         assert_eq!(
-            gpm.gallery_files,
-            vec![dir.path().join("Album 01").join("sub").join("01.png")]
+            rename_finished(&same, "Talk 01", false, &[]),
+            Ok(same.clone())
         );
+
+        #[cfg(windows)]
+        for f in [&same, &dir.path().join("Talk 01.en.srt"), &moved_img] {
+            let mut stream = f.as_os_str().to_owned();
+            stream.push(":Zone.Identifier");
+            let zone = std::fs::read_to_string(stream).unwrap_or_default();
+            assert!(zone.contains("ZoneId=3"), "{}: {zone}", f.display());
+        }
     }
 }
 
