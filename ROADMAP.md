@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows: finished downloads drag out of the list onto a folder or a program, one or several,
+  moved or copied as from Explorer; a moved file is followed, as from Download complete
+  ([#1210](https://github.com/anefzaoui/misterdownloadmanager/issues/1210))
 - ✅ A way of drawing that failed once is tried again: after a graphics driver update, or a
   while that depends on why it failed (twice as long each time it fails again), and at the next
   start for a window slow just after signing in; View → Draw with says since when and until when

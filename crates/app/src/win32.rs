@@ -3058,8 +3058,8 @@ mod menus_dark_tests {
     }
 }
 
-/// A drag out of Download complete is under way ([`drag_file_out`]): one at a time, the mouse
-/// holds only one.
+/// A drag out (of Download complete or the list) is under way ([`drag_files_out`]): one at a
+/// time, the mouse holds only one.
 static DRAGGING: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
 /// When the last drag out ended.
 static DRAG_ENDED: std::sync::Mutex<Option<std::time::Instant>> = std::sync::Mutex::new(None);
@@ -3077,20 +3077,22 @@ pub fn dragging_out() -> bool {
             .is_some_and(|t| t.elapsed() < std::time::Duration::from_millis(500))
 }
 
-/// Start dragging `file` out of our window (to Explorer, a mail, a chat…), like IDM's Download
-/// complete grip. The drag is the shell's own for the file, as Explorer's is (its preview, its
-/// formats). The window is the one holding the mouse (the button is down on its grip: winit
-/// captured the mouse for it), so it is the right one when several show the same title; else
-/// our window titled `title`, given in the interface language, as it shows.
+/// Start dragging `files` out of our window (to Explorer, a mail, a chat, a player…): from
+/// Download complete's grip, as IDM's, or from the download list's rows (#1210). The drag is the
+/// shell's own for the files, as Explorer's is (its preview, its formats). The window is the one
+/// holding the mouse (the button is down on it: winit captured the mouse for it), so it is the
+/// right one when several show the same title; else our window titled `title`, given in the
+/// interface language, as it shows. The files are looked for on the drag's thread (#743): those
+/// that aren't there are left out, and with none there is no drag.
 ///
 /// The drop target decides what the drag does (#869): MDM offers a move, a copy and a link, so
-/// Explorer applies its own rules, as for a file dragged in Explorer: moved on the same drive or
+/// Explorer applies its own rules, as for files dragged in Explorer: moved on the same drive or
 /// with Shift, copied to another drive or with Ctrl, a shortcut with Alt. A move is followed:
-/// `followed` is told where the file went (from the shell's change notifications), or that it
-/// went where MDM can't learn; a copy, a link or a cancelled drag tell nothing. It may come long
-/// after the drop (a move to another drive copies first), from the drag's thread. MDM never
-/// deletes the file itself, even for a target that asks the source to (a move it doesn't
-/// optimize): the file stays, so nothing is lost.
+/// `followed` is told, for each file moved (as it was given), where it went (from the shell's
+/// change notifications), or that it went where MDM can't learn; a copy, a link or a cancelled
+/// drag tell nothing. It may come long after the drop (a move to another drive copies first),
+/// from the drag's thread. MDM never deletes a file itself, even for a target that asks the
+/// source to (a move it doesn't optimize): the file stays, so nothing is lost.
 ///
 /// The drag runs on a thread of its own (#561): OLE's drag loop lasts as long as the button is
 /// held, and each step calls the program under the pointer (its drop target, in its own process),
@@ -3098,10 +3100,10 @@ pub fn dragging_out() -> bool {
 /// answers the drop, froze every window until it answered. That thread shares the window
 /// thread's input ([`with_shared_input`]): OLE reads the held button and takes the mouse from
 /// there, as it did from the window thread.
-pub fn drag_file_out(
+pub fn drag_files_out(
     title: &str,
-    file: &std::path::Path,
-    followed: impl FnOnce(crate::dialogs::DraggedOut) + Send + 'static,
+    files: Vec<std::path::PathBuf>,
+    followed: impl FnMut(std::path::PathBuf, crate::dialogs::DraggedOut) + Send + 'static,
 ) -> Result<(), String> {
     use std::sync::atomic::Ordering;
     let hwnd = own_capture()
@@ -3110,16 +3112,16 @@ pub fn drag_file_out(
     if DRAGGING.swap(true, Ordering::AcqRel) {
         return Ok(());
     }
-    let file = file.to_path_buf();
     let started = with_shared_input("drag out", move |shared| {
         if !shared {
             tracing::warn!("drag out: the window's input isn't shared");
         }
         // Looked for here, beside the window (#743): a drive slow to answer doesn't hold it.
-        let result = if file.exists() {
-            dragout::drag(hwnd as HWND, &file)
-        } else {
+        let there: Vec<_> = files.into_iter().filter(|f| f.exists()).collect();
+        let result = if there.is_empty() {
             Ok(None)
+        } else {
+            dragout::drag(hwnd as HWND, &there)
         };
         if let Ok(mut t) = DRAG_ENDED.lock() {
             *t = Some(std::time::Instant::now());
@@ -3133,10 +3135,10 @@ pub fn drag_file_out(
             tracing::warn!("drag out: {e}");
             None
         });
-        // Once the window's input is given back: what became of the file.
+        // Once the window's input is given back: what became of the files.
         move || {
-            if let Some(out) = dropped.and_then(dragout::Dropped::follow) {
-                followed(out);
+            if let Some(dropped) = dropped {
+                dropped.follow(followed);
             }
         }
     });
@@ -3144,6 +3146,12 @@ pub fn drag_file_out(
         DRAGGING.store(false, Ordering::Release);
     }
     started
+}
+
+/// A drag out of ours is over our own windows' drop target now: it refuses it (#1210), so a
+/// download's file dropped back on MDM isn't taken for a list of links or a torrent to add.
+fn own_drag_over_us() -> bool {
+    DRAGGING.load(std::sync::atomic::Ordering::Acquire)
 }
 
 /// Tell `hwnd` the left button is up, at the pointer, as Windows would have done had OLE's
@@ -3263,10 +3271,10 @@ mod drag_thread_tests {
     }
 }
 
-/// Dragging a downloaded file out of Download complete (#869): the shell's own data object for
-/// it (Explorer's drag image, its formats), offered for a move, a copy or a link so the drop
-/// target applies Explorer's rules, and a move followed through the shell's change
-/// notifications, so the download can point where its file went.
+/// Dragging downloaded files out of Download complete (#869) or the list (#1210): the shell's own
+/// data object for them (Explorer's drag image, its formats), offered for a move, a copy or a
+/// link so the drop target applies Explorer's rules, and a move followed through the shell's
+/// change notifications, so each download can point where its file went.
 mod dragout {
     use std::cell::RefCell;
     use std::ffi::c_void;
@@ -3359,6 +3367,7 @@ mod dragout {
         fn ILClone(pidl: *const c_void) -> *mut c_void;
         fn ILRemoveLastID(pidl: *mut c_void) -> i32;
         fn ILFindLastID(pidl: *const c_void) -> *mut c_void;
+        fn ILIsParent(parent: *const c_void, child: *const c_void, immediate: i32) -> i32;
         fn SHCreateDataObject(
             folder: *const c_void,
             count: u32,
@@ -3660,39 +3669,65 @@ mod dragout {
         }
     }
 
-    /// The shell's data object for one file: what Explorer itself drags (the file, its item, its
-    /// drag image), and where a drop target says what it did.
+    /// The shell's data object for files: what Explorer itself drags (the files, their items,
+    /// the drag image), and where a drop target says what it did.
     struct DataObject(*mut c_void);
 
     impl DataObject {
-        fn of(path: &Path) -> Option<DataObject> {
-            let w = wide(path.as_os_str());
-            // SAFETY: the item lists made from a NUL-terminated path (its folder's, and the
-            // file's within it, as Explorer's own drags give them) are freed once the data object
-            // has its own copies; `out` receives an IDataObject we release in Drop.
+        fn of(paths: &[PathBuf]) -> Option<DataObject> {
+            let free = |pidls: Vec<*mut c_void>| {
+                // SAFETY: item lists made by ILCreateFromPathW below, freed once.
+                pidls.into_iter().for_each(|p| unsafe { ILFree(p) })
+            };
+            // SAFETY: the item lists made from NUL-terminated paths (and their folder's) are
+            // freed once the data object has its own copies; `out` receives an IDataObject we
+            // release in Drop.
             unsafe {
-                let pidl = ILCreateFromPathW(w.as_ptr());
-                if pidl.is_null() {
-                    return None;
+                let mut pidls = Vec::with_capacity(paths.len());
+                for p in paths {
+                    let w = wide(p.as_os_str());
+                    let pidl = ILCreateFromPathW(w.as_ptr());
+                    if pidl.is_null() {
+                        free(pidls);
+                        return None;
+                    }
+                    pidls.push(pidl);
                 }
-                let folder = ILClone(pidl);
+                let folder = ILClone(*pidls.first()?);
                 if folder.is_null() {
-                    ILFree(pidl);
+                    free(pidls);
                     return None;
                 }
                 ILRemoveLastID(folder);
-                let item = ILFindLastID(pidl) as *const c_void;
+                // Files of one folder, as Explorer's own drags give them: the folder, and each
+                // file within it. Files of several folders (the list shows every category's):
+                // the desktop, the namespace's root, and each file's whole path from there.
+                let one_folder = pidls.iter().all(|p| ILIsParent(folder, *p, 1) != 0);
+                let (root, items): (*mut c_void, Vec<*const c_void>) = if one_folder {
+                    let items = pidls.iter().map(|p| ILFindLastID(*p) as *const c_void);
+                    (folder, items.collect())
+                } else {
+                    ILFree(folder);
+                    let mut desktop = std::ptr::null_mut();
+                    // CSIDL_DESKTOP (0).
+                    if SHGetSpecialFolderLocation(std::ptr::null_mut(), 0, &mut desktop) < 0 {
+                        free(pidls);
+                        return None;
+                    }
+                    let items = pidls.iter().map(|p| *p as *const c_void);
+                    (desktop, items.collect())
+                };
                 let mut out = std::ptr::null_mut();
                 let hr = SHCreateDataObject(
-                    folder,
-                    1,
-                    &item,
+                    root,
+                    items.len() as u32,
+                    items.as_ptr(),
                     std::ptr::null_mut(),
                     &IID_IDATAOBJECT,
                     &mut out,
                 );
-                ILFree(folder);
-                ILFree(pidl);
+                ILFree(root);
+                free(pidls);
                 (hr >= 0 && !out.is_null()).then_some(DataObject(out))
             }
         }
@@ -3750,19 +3785,24 @@ mod dragout {
         }
     }
 
-    /// A file dropped somewhere: what it took to learn what became of it.
+    /// Files dropped somewhere: what it took to learn what became of them.
     pub(super) struct Dropped {
-        file: PathBuf,
+        /// Each file as it was given, and as the shell names it.
+        files: Vec<(PathBuf, PathBuf)>,
         data: DataObject,
         watch: Option<Watch>,
         /// What the drag returned.
         effect: u32,
     }
 
-    /// Drag `file` out of `hwnd` (on the drag's thread, OLE set up), offering a move, a copy and
-    /// a link. Some when it was dropped.
-    pub(super) fn drag(hwnd: HWND, file: &Path) -> Result<Option<Dropped>, String> {
-        let file = plain(std::fs::canonicalize(file).map_err(|e| e.to_string())?);
+    /// Drag `files` out of `hwnd` (on the drag's thread, OLE set up), offering a move, a copy and
+    /// a link. Some when they were dropped.
+    pub(super) fn drag(hwnd: HWND, files: &[PathBuf]) -> Result<Option<Dropped>, String> {
+        let files = files
+            .iter()
+            .map(|f| Ok((f.clone(), plain(std::fs::canonicalize(f)?))))
+            .collect::<Result<Vec<_>, std::io::Error>>()
+            .map_err(|e| e.to_string())?;
         // Watched from before the drop: a move on the same drive is done before the drag ends.
         // MDM_TEST_NO_SHELL_WATCH=1 (debug builds, for checks): not watched, as when the shell
         // won't say, so a move is one MDM can't follow.
@@ -3772,7 +3812,8 @@ mod dragout {
         if watch.is_none() {
             tracing::warn!("drag out: the shell won't say where files go: a move isn't followed");
         }
-        let data = DataObject::of(&file).ok_or("the shell has no data object for the file")?;
+        let named: Vec<PathBuf> = files.iter().map(|(_, f)| f.clone()).collect();
+        let data = DataObject::of(&named).ok_or("the shell has no data object for the files")?;
         let mut effect = 0u32;
         // SAFETY: our window and data object; the shell makes the drop source and drag image,
         // and runs OLE's drag loop on this thread until the drop.
@@ -3792,12 +3833,13 @@ mod dragout {
             return Ok(None);
         }
         tracing::info!(
-            "drag out: dropped, effect {effect}, performed {:?}, logical {:?}",
+            "drag out: {} dropped, effect {effect}, performed {:?}, logical {:?}",
+            files.len(),
             data.effect(PERFORMED),
             data.effect(LOGICAL_PERFORMED)
         );
         Ok(Some(Dropped {
-            file,
+            files,
             data,
             watch,
             effect,
@@ -3805,13 +3847,18 @@ mod dragout {
     }
 
     impl Dropped {
-        /// What became of the file: moved (where to, or that MDM can't learn where), or None
-        /// when it stayed (a copy, a link, a drop that did nothing). Waits as long as a move may
-        /// take, on the drag's thread.
-        pub(super) fn follow(mut self) -> Option<DraggedOut> {
+        /// What became of each file: `told` the ones moved (as they were given: where to, or
+        /// that MDM can't learn where), nothing of those that stayed (a copy, a link, a drop
+        /// that did nothing). Waits as long as a move may take, on the drag's thread.
+        pub(super) fn follow(self, mut told: impl FnMut(PathBuf, DraggedOut)) {
             let since = Instant::now();
-            let mut gone: Option<Instant> = None;
-            loop {
+            // The files not settled yet, and since when each is gone from its place.
+            let mut open: Vec<(PathBuf, PathBuf, Option<Instant>)> = self
+                .files
+                .iter()
+                .map(|(given, file)| (given.clone(), file.clone(), None))
+                .collect();
+            while !open.is_empty() {
                 match &self.watch {
                     Some(w) => w.pump(Duration::from_millis(250)),
                     None => std::thread::sleep(Duration::from_millis(250)),
@@ -3822,34 +3869,38 @@ mod dragout {
                     self.data.effect(LOGICAL_PERFORMED),
                 ];
                 let moving = said.iter().flatten().any(|e| e & DROPEFFECT_MOVE != 0);
-                // A copy or a link, said so: the file stays.
+                // A copy or a link, said so: the files stay.
                 let kept = !moving
                     && said
                         .iter()
                         .flatten()
                         .any(|e| e & (DROPEFFECT_COPY | DROPEFFECT_LINK) != 0);
                 if kept {
-                    return None;
+                    return;
                 }
                 let seen = SEEN.with(|v| v.borrow().clone());
-                if let Some(to) = followed(&self.file, &seen) {
-                    tracing::info!("drag out: the file was moved");
-                    self.data.release();
-                    return Some(if in_recycle_bin(&to) {
-                        DraggedOut::MovedAway
+                let waited = since.elapsed() > if moving { MOVING_FOR } else { DROPPED_FOR };
+                open.retain_mut(|(given, file, gone)| {
+                    if let Some(to) = followed(file, &seen) {
+                        tracing::info!("drag out: a file was moved");
+                        let out = if in_recycle_bin(&to) {
+                            DraggedOut::MovedAway
+                        } else {
+                            DraggedOut::Moved(to)
+                        };
+                        told(given.clone(), out);
+                        false
+                    } else if std::fs::symlink_metadata(&*file).is_ok() {
+                        *gone = None;
+                        !waited
+                    } else if gone.get_or_insert_with(Instant::now).elapsed() > GONE_FOR {
+                        tracing::info!("drag out: a file was moved where the shell didn't say");
+                        told(given.clone(), DraggedOut::MovedAway);
+                        false
                     } else {
-                        DraggedOut::Moved(to)
-                    });
-                }
-                if std::fs::symlink_metadata(&self.file).is_ok() {
-                    gone = None;
-                    if since.elapsed() > if moving { MOVING_FOR } else { DROPPED_FOR } {
-                        return None;
+                        true
                     }
-                } else if gone.get_or_insert_with(Instant::now).elapsed() > GONE_FOR {
-                    tracing::info!("drag out: the file was moved where the shell didn't say");
-                    return Some(DraggedOut::MovedAway);
-                }
+                });
             }
         }
     }
@@ -6275,7 +6326,8 @@ pub mod ole {
     ) -> HResult {
         // SAFETY: valid for the call.
         unsafe {
-            let ok = !read(data).is_empty();
+            // Our own drag out (a download's file): not something to add (#1210).
+            let ok = !super::own_drag_over_us() && !read(data).is_empty();
             (*this).accepts.store(ok, Ordering::Relaxed);
             (*this).over.store(ok, Ordering::Relaxed);
             (*this).wake.request_repaint();
@@ -6320,7 +6372,11 @@ pub mod ole {
         // SAFETY: valid for the call.
         unsafe {
             (*this).over.store(false, Ordering::Relaxed);
-            let found = read(data);
+            let found = if super::own_drag_over_us() {
+                Vec::new()
+            } else {
+                read(data)
+            };
             *effect = if found.is_empty() {
                 DROPEFFECT_NONE
             } else {

@@ -2077,24 +2077,13 @@ impl Complete {
                     if grip.hovered() {
                         ui.ctx().set_cursor_icon(egui::CursorIcon::Grab);
                     }
-                    // The file is looked for beside the window, with the drag (#743); where a move
-                    // took it comes back to the app (`dragged_out`), however late.
                     if grip.drag_started() {
-                        let (id, from, wake) = (self.id, self.path.clone(), ui.ctx().clone());
-                        let followed = move |out| {
-                            DRAGGED_OUT
-                                .lock()
-                                .unwrap_or_else(|e| e.into_inner())
-                                .push((id, from, out));
-                            wake.request_repaint();
-                        };
-                        if let Err(e) = crate::win32::drag_file_out(
+                        drag_downloads_out(
+                            ui.ctx(),
                             crate::i18n::t("Download complete"),
-                            &self.path,
-                            followed,
-                        ) {
-                            tracing::warn!("drag out: {e}");
-                        }
+                            vec![(self.id, self.path.clone())],
+                            DraggedFrom::Complete,
+                        );
                     }
                     p.rect_filled(handle, 0.0, winui::FIELD());
                     p.rect_stroke(
@@ -3101,10 +3090,10 @@ fn tell_turn_off_failed(why: String) {
     );
 }
 
-/// What became of a file dragged out of Download complete (#869), when the drop target moved
-/// it (a copy or a link leaves it where it was: nothing to say).
+/// What became of a file dragged out of Download complete (#869) or the list (#1210), when the
+/// drop target moved it (a copy or a link leaves it where it was: nothing to say).
 #[derive(Clone, Debug, PartialEq, Eq)]
-// Made by Windows' drag only (the grip is Windows-only, see Complete::show).
+// Made by Windows' drag only (see drag_downloads_out).
 #[cfg_attr(not(windows), allow(dead_code))]
 pub enum DraggedOut {
     /// Moved there (the shell said where).
@@ -3114,12 +3103,70 @@ pub enum DraggedOut {
     MovedAway,
 }
 
-/// Files dragged out and moved: (download, the path it was dragged from, what became of it).
-static DRAGGED_OUT: Mutex<Vec<(u64, PathBuf, DraggedOut)>> = Mutex::new(Vec::new());
+/// Where downloads' files were dragged out from: the download's note says so.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[cfg_attr(not(windows), allow(dead_code))]
+pub enum DraggedFrom {
+    /// Download complete's grip (#869).
+    Complete,
+    /// The main window's list (#1210).
+    List,
+}
+
+/// A download's file dragged out and moved.
+#[cfg_attr(not(windows), allow(dead_code))]
+pub struct Followed {
+    pub id: u64,
+    /// The path it was dragged from (the download follows only while it still points there).
+    pub from: PathBuf,
+    pub out: DraggedOut,
+    pub dragged_from: DraggedFrom,
+}
+
+/// Files dragged out and moved, for the app to update their downloads.
+static DRAGGED_OUT: Mutex<Vec<Followed>> = Mutex::new(Vec::new());
 
 /// What [`DRAGGED_OUT`] was given since the last call (the app updates its downloads).
-pub fn dragged_out() -> Vec<(u64, PathBuf, DraggedOut)> {
+pub fn dragged_out() -> Vec<Followed> {
     std::mem::take(&mut *DRAGGED_OUT.lock().unwrap_or_else(|e| e.into_inner()))
+}
+
+/// Drag downloads' files (download, its file) out of our window titled `title` (in the
+/// interface language), as Explorer drags files: Download complete's grip and the list's rows
+/// share it. The files are looked for beside the window, with the drag (#743): those not there
+/// are left out. Where a move took each one comes back to the app (`dragged_out`), however late.
+/// Windows only: dragging files out to another program goes through OLE there; Linux and macOS
+/// have no such drag yet (their window library has no drag source), so nothing starts one there.
+#[cfg(windows)]
+pub fn drag_downloads_out(
+    ctx: &egui::Context,
+    title: &str,
+    files: Vec<(u64, PathBuf)>,
+    dragged_from: DraggedFrom,
+) {
+    // One file for downloads that share it, in the order given.
+    let mut paths: Vec<PathBuf> = Vec::new();
+    for (_, f) in &files {
+        if !paths.contains(f) {
+            paths.push(f.clone());
+        }
+    }
+    let wake = ctx.clone();
+    let followed = move |from: PathBuf, out: DraggedOut| {
+        let mut told = DRAGGED_OUT.lock().unwrap_or_else(|e| e.into_inner());
+        for (id, _) in files.iter().filter(|(_, f)| *f == from) {
+            told.push(Followed {
+                id: *id,
+                from: from.clone(),
+                out: out.clone(),
+                dragged_from,
+            });
+        }
+        wake.request_repaint();
+    };
+    if let Err(e) = crate::win32::drag_files_out(title, paths, followed) {
+        tracing::warn!("drag out: {e}");
+    }
 }
 
 /// Something that failed, to tell the user (the app shows it in its notice): from any window,
@@ -3175,12 +3222,12 @@ pub fn open_download_now(path: &Path, moved_away: bool) -> bool {
 }
 
 /// Why a download's file isn't where MDM saved it, when it was dragged out of Download complete
-/// to a place MDM couldn't learn (#869).
+/// (#869) or the list (#1210) to a place MDM couldn't learn.
 fn moved_away_text(path: &Path) -> String {
     let name = crate::i18n::isolate(&path.file_name().unwrap_or_default().to_string_lossy());
     crate::i18n::fmt(
         crate::i18n::t(
-            "{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.",
+            "{file} was moved elsewhere by dragging it out of MDM, and MDM couldn't learn where. Look for it where you dropped it.",
         ),
         &[("file", &name)],
     )

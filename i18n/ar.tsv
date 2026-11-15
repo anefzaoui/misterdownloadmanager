@@ -1190,6 +1190,14 @@
 #, machine
 	Dragged out of Download complete and moved to {folder}	أخرج بالسحب من «اكتمل التنزيل» ونقل إلى {folder}
 #. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved somewhere MDM can't tell (a program took it, the Recycle Bin)
+#, machine
+	Dragged out of the list and moved to a place MDM couldn't learn	أخرج بالسحب من القائمة ونقل إلى مكان تعذر على MDM معرفته
+#. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved to that folder
+#, machine
+	Dragged out of the list and moved to {folder}	أخرج بالسحب من القائمة ونقل إلى {folder}
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 	Dropped links	روابط مفلتة
 #. window title in a dialog box
@@ -4609,7 +4617,7 @@
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	حجم {file} كبير جدا ليكون قائمة عناوين ({size}). يستورد البرنامج الملفات النصية وصفحات الويب وملفات التصدير بصيغة .ef2 التي يصل حجمها إلى {limit}.
 #. text in a dialog box
 #, machine
-	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	تم نقل {file} إلى مكان آخر بسحبه من «اكتمل التنزيل»، ولم يتمكن MDM من معرفة مكانه. ابحث عنه حيث أسقطته.
+	{file} was moved elsewhere by dragging it out of MDM, and MDM couldn't learn where. Look for it where you dropped it.	تم نقل {file} إلى مكان آخر بسحبه من MDM، ولم يتمكن MDM من معرفة مكانه. ابحث عنه حيث أسقطته.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	{file}: the file does NOT match its checksum ({algorithm})	{file}: الملف لا يطابق بصمته ({algorithm})

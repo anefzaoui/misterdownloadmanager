@@ -142,7 +142,8 @@ const DEFAULT_ORDER: [usize; COLS] = [SOURCE, 0, 1, 2, 3, 4, 5, UPLOAD, PEERS, R
 const MIN_WIDTH: f32 = 16.0;
 /// How far from a separator a press grabs it for resizing.
 const GRIP: f32 = 4.0;
-/// Pointer travel before a header press becomes a column drag.
+/// Pointer travel before a header press becomes a column drag, and a press on a row a drag of its
+/// files out of the list.
 const DRAG_START: f32 = 5.0;
 
 /// A column filter (beyond IDM, user 2026-10-29): a few fixed values to keep, or text the cell
@@ -230,6 +231,9 @@ pub struct ListState {
     /// A selection box being dragged: where it started (x in content, y in rows' space) and
     /// whether Ctrl adds it to the selection.
     marquee: Option<(Pos2, bool)>,
+    /// A press on this row, held: where it went down (English). A drag of the rows' files once
+    /// the pointer is [`DRAG_START`] away from there (egui calls a long press a drag too).
+    row_press: Option<(usize, Pos2)>,
     /// Type-ahead: the letters typed so far and when the last one came (seconds).
     typed: String,
     /// A menu is open: its keys (and letters) are its own, not the list's.
@@ -257,6 +261,7 @@ impl Default for ListState {
             filter_open: None,
             filter_hscroll: 0.0,
             marquee: None,
+            row_press: None,
             typed: String::new(),
             menu_open: false,
             typed_at: 0.0,
@@ -410,6 +415,9 @@ pub struct ListResponse {
     pub pick: Option<Pick>,
     /// Double-click on this row.
     pub double_clicked: Option<usize>,
+    /// The selected rows were dragged, from this one (#1210): their files go out, as Explorer's
+    /// do (the app decides what they carry). A row not selected is selected first.
+    pub drag_out: Option<usize>,
     /// Enter on the focused row (Open, as its menu says, whatever a double-click does).
     pub enter: Option<usize>,
     /// Alt+Enter: the focused row's Properties.
@@ -1226,6 +1234,33 @@ pub fn show(
         });
         // `at` is English; the menu opens at its screen point.
         out.context = Some((focus, pos2(winui::mx(at.x), at.y)));
+    }
+
+    // A drag from a row carries the selected rows' files out of the window, as from Explorer's
+    // list (#1210): from a row not selected, that row is selected first (Ctrl adds it), as a list
+    // view selects on the press. It goes once the pointer has moved a few pixels with the button
+    // held, so a click still selects and a double-click opens.
+    if resp.drag_started()
+        && let Some(origin) = ui.input(|i| i.pointer.press_origin()).map(english)
+        && body.contains(origin)
+        && let Some(row) = row_at(origin)
+    {
+        st.row_press = Some((row, origin));
+        if !selected.get(row).copied().unwrap_or(false) {
+            out.pick = Some(if mods.command {
+                Pick::Toggle(row)
+            } else {
+                Pick::Only(row)
+            });
+        }
+    }
+    if let Some((row, origin)) = st.row_press {
+        if !ui.input(|i| i.pointer.primary_down()) {
+            st.row_press = None;
+        } else if pointer.is_some_and(|pp| pp.distance(origin) >= DRAG_START) {
+            st.row_press = None;
+            out.drag_out = Some(row);
+        }
     }
 
     // A selection box, dragged from blank space (below the rows or right of the columns), as in

@@ -506,6 +506,25 @@ fn place_in(
     at
 }
 
+/// What a drag of the list's selected rows carries out (#1210): the files of the finished
+/// downloads among them, in the list's order (`rows`), as they are where MDM put them. A row not
+/// finished has no file to give yet and stays out (a drag of only those carries nothing, so none
+/// starts), and so does a file a drop took where MDM couldn't follow (#869: it isn't at its
+/// path). Whether each file is still there is the drag's to see, off the window's thread (#743).
+#[cfg_attr(not(windows), allow(dead_code))]
+fn drag_carries(
+    items: &[Item],
+    rows: &[u64],
+    selected: impl Fn(u64) -> bool,
+) -> Vec<(u64, PathBuf)> {
+    rows.iter()
+        .filter(|id| selected(**id))
+        .filter_map(|id| items.iter().find(|i| i.id == *id))
+        .filter(|i| i.status == Status::Complete && !i.moved_away)
+        .map(|i| (i.id, i.dest.clone()))
+        .collect()
+}
+
 /// A download's new place (its name from it). A name the user gave is no longer the address's
 /// guess (`Item::name_from_url`); another folder alone keeps the server's say.
 fn take_place(item: &mut Item, target: PathBuf) {
@@ -6919,11 +6938,19 @@ impl App {
         }
     }
 
-    /// Files dragged out of Download complete that the drop target moved (#869): the download
-    /// follows its file where the shell said it went, or remembers it went where MDM couldn't
-    /// learn. Only while the download still points where the drag took the file from.
+    /// Files dragged out of Download complete (#869) or the list (#1210) that the drop target
+    /// moved: the download follows its file where the shell said it went, or remembers it went
+    /// where MDM couldn't learn. Only while the download still points where the drag took the
+    /// file from.
     fn poll_dragged_out(&mut self) {
-        for (id, from, out) in dialogs::dragged_out() {
+        use dialogs::DraggedFrom;
+        for dialogs::Followed {
+            id,
+            from,
+            out,
+            dragged_from,
+        } in dialogs::dragged_out()
+        {
             let Some(item) = self.item(id).filter(|i| i.dest == from) else {
                 continue;
             };
@@ -6932,17 +6959,29 @@ impl App {
                     tracing::info!("drag out: download {id} moved with its file");
                     take_place(item, to.clone());
                     let folder = to.parent().unwrap_or(to).display().to_string();
-                    item.note(crate::i18n::fmt(
-                        crate::i18n::t("Dragged out of Download complete and moved to {folder}"),
-                        &[("folder", &folder)],
-                    ));
+                    let note = match dragged_from {
+                        DraggedFrom::Complete => {
+                            crate::i18n::t("Dragged out of Download complete and moved to {folder}")
+                        }
+                        DraggedFrom::List => crate::i18n::t(
+                            // i18n: a download's note: its file was dragged out of the download list and moved to that folder
+                            "Dragged out of the list and moved to {folder}",
+                        ),
+                    };
+                    item.note(crate::i18n::fmt(note, &[("folder", &folder)]));
                 }
                 dialogs::DraggedOut::MovedAway => {
                     tracing::info!("drag out: download {id}'s file moved where MDM can't follow");
                     item.moved_away = true;
-                    item.note(crate::i18n::t(
-                        "Dragged out of Download complete and moved to a place MDM couldn't learn",
-                    ));
+                    item.note(match dragged_from {
+                        DraggedFrom::Complete => crate::i18n::t(
+                            "Dragged out of Download complete and moved to a place MDM couldn't learn",
+                        ),
+                        DraggedFrom::List => crate::i18n::t(
+                            // i18n: a download's note: its file was dragged out of the download list and moved somewhere MDM can't tell (a program took it, the Recycle Bin)
+                            "Dragged out of the list and moved to a place MDM couldn't learn",
+                        ),
+                    });
                 }
             }
             for c in &mut self.complete {
@@ -9248,8 +9287,30 @@ impl App {
                 self.open_item(id);
             }
         }
-        if let Some(i) = r.enter {
+        // Enter while files are dragged out is the drag's (#561), not the list's.
+        #[cfg(windows)]
+        let dragging_out = crate::win32::dragging_out();
+        #[cfg(not(windows))]
+        let dragging_out = false; // no drag out there (dialogs::drag_downloads_out)
+        if let Some(i) = r.enter
+            && !dragging_out
+        {
             self.open_item(ids[i]);
+        }
+        // Rows dragged (#1210): the finished ones' files go out, as Explorer's do. Windows only:
+        // Linux and macOS have no drag of files out of a window yet (dialogs::drag_downloads_out),
+        // so a drag from a row there does nothing.
+        #[cfg(windows)]
+        if r.drag_out.is_some() {
+            let files = drag_carries(&self.items, &ids, |id| self.selection.contains(id));
+            if !files.is_empty() {
+                dialogs::drag_downloads_out(
+                    &ctx,
+                    crate::MAIN_TITLE,
+                    files,
+                    dialogs::DraggedFrom::List,
+                );
+            }
         }
         // Something droppable over the window: the list is where it goes.
         let dragging = self.drops.over() || ctx.input(|i| !i.raw.hovered_files.is_empty());
@@ -11966,6 +12027,61 @@ mod finished_window_tests {
         let close = finished_windows(vec![], |_| true, |id| id != 3, &mut finishing, later);
         assert!(close.is_empty());
         assert!(finishing.is_empty());
+    }
+}
+
+#[cfg(test)]
+mod drag_carries_tests {
+    use super::{Category, Item, Status, drag_carries};
+    use std::path::PathBuf;
+
+    fn item(id: u64, status: Status, moved_away: bool) -> Item {
+        let url = format!("http://127.0.0.1/{id}.bin").parse().unwrap();
+        let mut i = Item::new(
+            id,
+            url,
+            PathBuf::from(format!("D:/dl/{id}.bin")),
+            Category::General,
+        );
+        i.status = status;
+        i.moved_away = moved_away;
+        i
+    }
+
+    /// #1210: a drag of the list's selection carries the finished downloads' files, in the
+    /// list's order; rows not finished, rows not selected and a file moved where MDM couldn't
+    /// follow stay out; a selection of unfinished rows only carries nothing.
+    #[test]
+    fn a_drag_carries_the_selected_finished_files_in_list_order() {
+        let items = [
+            item(1, Status::Complete, false),
+            item(2, Status::Downloading, false),
+            item(3, Status::Complete, false),
+            item(4, Status::Complete, true),
+            item(5, Status::Stopped, false),
+            item(6, Status::Complete, false),
+            item(7, Status::Error, false),
+            item(8, Status::Queued, false),
+        ];
+        // The list shows them sorted otherwise than they were added.
+        let rows = [6, 5, 4, 3, 2, 1, 7, 8];
+        let all = |_: u64| true;
+        let carried = drag_carries(&items, &rows, all);
+        assert_eq!(
+            carried,
+            [6, 3, 1]
+                .map(|id| (id, PathBuf::from(format!("D:/dl/{id}.bin"))))
+                .to_vec()
+        );
+        let some = |id: u64| [1, 2, 5].contains(&id);
+        assert_eq!(
+            drag_carries(&items, &rows, some),
+            vec![(1, PathBuf::from("D:/dl/1.bin"))]
+        );
+        let unfinished = |id: u64| [2, 5, 7, 8].contains(&id);
+        assert!(drag_carries(&items, &rows, unfinished).is_empty());
+        // Rows of another view (not in `rows`) aren't carried, even selected.
+        assert_eq!(drag_carries(&items, &[3], all).len(), 1);
     }
 }
 
