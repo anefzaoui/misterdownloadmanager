@@ -560,24 +560,27 @@ pub struct Item {
     /// (taken then); memory only, never written (its links are signed).
     #[serde(skip)]
     pub preloaded: Option<mdm_tools::video::Preloaded>,
-    /// Finished video / subtitle / gallery paths waiting to be marked as downloaded from the
-    /// web once any deferred rename in `App::poll` has moved them to their final names.
+    /// A finished video's subtitles saved beside it (#68): a rename on completion takes them
+    /// along (#655). Memory only.
     #[serde(skip)]
-    pub(crate) pending_mark: Option<PendingMark>,
+    pub(crate) side_files: Vec<PathBuf>,
     /// Files known to belong to a finished gallery or debrid folder download, kept across
     /// restarts so a requeued or resumed folder rename still checks for untracked files.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub(crate) written_files: Option<Vec<PathBuf>>,
 }
 
-/// Files saved by `yt-dlp` or `gallery-dl` waiting for Mark-of-the-Web after deferred rename.
-#[derive(Clone, Debug)]
-pub(crate) struct PendingMark {
-    pub main_file: Option<PathBuf>,
-    pub side_files: Vec<PathBuf>,
-    pub gallery_files: Vec<PathBuf>,
-    pub url: String,
-    pub referer: Option<String>,
+/// Adds `more` to a download's `written_files`, each path once, in order. A gallery lists up to
+/// 100 000 files: each told from those listed at once, not searched for among them (time
+/// squared, on the window's thread).
+fn add_written(list: &mut Vec<PathBuf>, more: Vec<PathBuf>) {
+    let mut listed: std::collections::HashSet<PathBuf> = list.iter().cloned().collect();
+    for p in more {
+        if !listed.contains(&p) {
+            listed.insert(p.clone());
+            list.push(p);
+        }
+    }
 }
 
 /// A Link grabber package, as each of its downloads keeps it (#37).
@@ -989,7 +992,7 @@ impl Item {
             context: Default::default(),
             notices: Vec::new(),
             preloaded: None,
-            pending_mark: None,
+            side_files: Vec::new(),
             written_files: None,
         }
     }
@@ -1104,57 +1107,37 @@ impl Item {
                 if status == Status::Complete {
                     self.downloaded = self.size.unwrap_or(self.downloaded);
                 }
-                // A video and its subtitles (#68), marked as downloaded from the web once
-                // yt-dlp has saved them (and after any deferred rename in `App::poll`).
+                // A video and its subtitles (#68), already marked as downloaded from the web by
+                // its job, before it said it was done (#1103).
                 let mut notices = Vec::new();
                 if status == Status::Complete
                     && let Some(Live {
                         dl: Job::Video { job, url },
                         ..
                     }) = &self.live
-                    && matches!(url.scheme(), "http" | "https")
                 {
                     let done = job.progress();
                     // The subtitles the site wouldn't give: said in the log and the Download
                     // complete window (the video is saved all the same).
-                    let site = url.host_str().unwrap_or("").trim_start_matches("www.");
-                    notices = done
-                        .sub_problems
-                        .iter()
-                        .map(|p| sub_notice(p, site))
-                        .collect();
-                    self.pending_mark = Some(PendingMark {
-                        main_file: s.file.clone(),
-                        side_files: done.side_files,
-                        gallery_files: Vec::new(),
-                        url: url.to_string(),
-                        referer: self.context.referer.clone(),
-                    });
+                    if matches!(url.scheme(), "http" | "https") {
+                        let site = url.host_str().unwrap_or("").trim_start_matches("www.");
+                        notices = done
+                            .sub_problems
+                            .iter()
+                            .map(|p| sub_notice(p, site))
+                            .collect();
+                    }
+                    self.side_files = done.side_files;
                 }
-                // A gallery's files (#58), each marked as downloaded from the web after any
-                // deferred folder rename in `App::poll`.
+                // A gallery's files (#58), already marked by its job as the video's are.
                 if status == Status::Complete
                     && let Some(Live {
-                        dl: Job::Gallery { job, url },
+                        dl: Job::Gallery { job, .. },
                         ..
                     }) = &self.live
                 {
                     let known = job.known_files();
-                    let list = self.written_files.get_or_insert_with(Vec::new);
-                    for p in known {
-                        if !list.contains(&p) {
-                            list.push(p);
-                        }
-                    }
-                    if matches!(url.scheme(), "http" | "https") {
-                        self.pending_mark = Some(PendingMark {
-                            main_file: None,
-                            side_files: Vec::new(),
-                            gallery_files: job.saved(),
-                            url: url.to_string(),
-                            referer: None,
-                        });
-                    }
+                    add_written(self.written_files.get_or_insert_with(Vec::new), known);
                 }
                 if status == Status::Complete
                     && let Some(Live {
@@ -1165,12 +1148,7 @@ impl Item {
                         self.preexisting_folder = true;
                     }
                     let saved = r.saved_files();
-                    let list = self.written_files.get_or_insert_with(Vec::new);
-                    for p in saved {
-                        if !list.contains(&p) {
-                            list.push(p);
-                        }
-                    }
+                    add_written(self.written_files.get_or_insert_with(Vec::new), saved);
                 }
                 for n in &notices {
                     self.note(n.clone());
@@ -1760,6 +1738,27 @@ mod size_tests {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// A finished gallery's files join its written files in time linear in them, each once.
+    #[test]
+    fn written_files_join_in_linear_time() {
+        let paths = |from: usize, n: usize| -> Vec<PathBuf> {
+            (from..from + n)
+                .map(|i| PathBuf::from(format!("/gallery/image-{i:09}.jpg")))
+                .collect()
+        };
+        mdm_labserver::growth::assert_linear(
+            2_000,
+            |n| (paths(0, n / 2), paths(n / 4, n)),
+            |(mut list, more)| {
+                add_written(&mut list, more);
+                list.len()
+            },
+        );
+        let mut list = paths(0, 3);
+        add_written(&mut list, paths(2, 3));
+        assert_eq!(list, paths(0, 5));
+    }
 
     fn video_item(size: Option<u64>, downloaded: u64, status: Status) -> Item {
         let url = Url::parse("https://example.org/a.mp4").unwrap();

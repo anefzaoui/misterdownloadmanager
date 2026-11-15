@@ -689,6 +689,7 @@ async fn list_pieces(
         U::Live => Unlisted::Helper(Helper::Live),
         U::Protected(_) => Unlisted::Helper(Helper::Protected),
         U::NoPieces => Unlisted::Failed("the playlist lists no pieces".into()),
+        U::BadIv => Unlisted::Failed("the playlist gives a key a malformed IV".into()),
     })
 }
 
