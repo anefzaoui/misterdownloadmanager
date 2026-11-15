@@ -366,7 +366,7 @@
 	All	All
 #. item in the Categories tree in the main window
 	All Downloads	All Downloads
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in standard windows
 	All files	All files
 #. text in helpers.rs
 	All set: on a page with a video, use Tasks → Download video from a page.	All set: on a page with a video, use Tasks → Download video from a page.
@@ -2055,6 +2055,9 @@
 #. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
 #. the trailing ... means it is still going on: keep it
 	MDM does not answer. Trying again...	MDM does not answer. Trying again...
+#. text in helpers.rs
+#. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
+	MDM has no copy for this system: install it, or use another program	MDM has no copy for this system: install it, or use another program
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 	MDM shows no code now. Click Pair a device there first.	MDM shows no code now. Click Pair a device there first.
@@ -2393,7 +2396,6 @@
 #. value in a column's filter list in the download list
 	Not in a queue	Not in a queue
 #. text in helpers.rs
-#. Video helpers: no copy of this helper yet
 	Not installed yet	Not installed yet
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
@@ -2930,9 +2932,6 @@
 	Search:	Search:
 #. text in the Batch download window
 	Second file:	Second file:
-#. text in a dialog box
-#. title of the folder picker
-	Select a folder	Select a folder
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 	Select all	Select all
@@ -3397,6 +3396,10 @@
 #. text in the Download video window
 	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).
 #. text in the Download video window
+#. in Download video, on 32-bit Windows (no button: no ffmpeg build MDM can check exists for it); Helpers... is the button below
+#. the trailing ... means it is still going on: keep it
+	The best qualities, MP3, Opus and FLAC need ffmpeg, which MDM has no copy of for 32-bit Windows: choose your own with Helpers...	The best qualities, MP3, Opus and FLAC need ffmpeg, which MDM has no copy of for 32-bit Windows: choose your own with Helpers...
+#. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).
 #. text in the settings
@@ -3501,6 +3504,12 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	The file matches ({algorithm})	The file matches ({algorithm})
+#. text in errors.rs
+#. why a download failed on Linux or macOS (#1102): the file name is longer than the system allows ({limit} bytes, 255; a letter can take several bytes), counting the temporary files saved beside the file while it downloads. {path} = the path
+	the file name is too long: at most {limit} bytes with the files saved while it downloads. Choose a shorter name ({path})	the file name is too long: at most {limit} bytes with the files saved while it downloads. Choose a shorter name ({path})
+#. text in errors.rs
+#. why a download failed (#1102): the file name is longer than Windows allows ({limit} characters, 255), counting the temporary files saved beside the file while it downloads. {path} = the path
+	the file name is too long: at most {limit} characters with the files saved while it downloads. Choose a shorter name ({path})	the file name is too long: at most {limit} characters with the files saved while it downloads. Choose a shorter name ({path})
 #. text in a dialog box
 	The file saved as	The file saved as
 #. text in the download list (sizes, speeds, status)
@@ -3543,7 +3552,8 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 	the password is wrong	the password is wrong
 #. text in errors.rs
-	the path is too long for Windows: {path}	the path is too long for Windows: {path}
+#. why a download failed (#1102): the folder and file name together are longer than Windows allows ({limit} characters, 259), counting the temporary files saved beside the file while it downloads (their names are longer). {path} = the path
+	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 	the release has no version	the release has no version

@@ -61,6 +61,8 @@ If MDM says it's up to date, there's nothing for you to do. The extension update
 
 A download carries its site's cookies (and a form's data) to MDM. A few sites set so many that together they exceed what MDM accepts from the browser (1 MB). The browser kept this one. Signing out and back in to the site usually trims them.
 
+**Download all links** and **Download selected links** send a long list of links in parts of up to 1 MB, so a page with tens of thousands of links reaches Link grabber whole. A single link longer than that, which no server takes, can't be sent: it is left out, the others still reach Link grabber, and this page opens to say so. When a site's cookies alone fill the 1 MB, no link can go with them: sign out and back in to the site, as above.
+
 ## Downloads stay with the browser although MDM is connected {#options}
 
 The extension is connected, but MDM's own settings leave this download to the browser. Check, in MDM:
@@ -75,7 +77,7 @@ Also check the extension's toolbar button: with **Take downloads from this brows
 
 ## The browser opens PDFs and music instead of sending them {#opened}
 
-MDM also takes the file types the browser would show or play itself (a PDF, an MP3), when they're listed in **Options → File types** and **Also take files the browser would open** is ticked in **Options → General → Keys...**. This needs a Chromium browser (Chrome, Edge, Brave, Opera, Vivaldi) version 128 or later, or Firefox. Sites in MDM's excluded sites keep opening them in the browser. Hold **Alt** (**Option** on a Mac) while clicking a link to leave it to the browser: Firefox then follows it as a plain click does, while Chromium browsers and Safari download it themselves (it is their own "download link").
+MDM also takes the file types the browser would show or play itself (a PDF, an MP3, also in a frame of a page), when they're listed in **Options → File types** and **Also take files the browser would open** is ticked in **Options → General → Keys...**. This needs a Chromium browser (Chrome, Edge, Brave, Opera, Vivaldi) version 128 or later, or Firefox. Sites in MDM's excluded sites keep opening them in the browser. Hold **Alt** (**Option** on a Mac) while clicking a link to leave it to the browser: Firefox then follows it as a plain click does, while Chromium browsers and Safari download it themselves (it is their own "download link").
 
 ## No Download video button on YouTube in Chrome, Edge or Brave {#store-youtube}
 
