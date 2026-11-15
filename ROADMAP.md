@@ -564,6 +564,10 @@ These ship in the next version.
 
 - ✅ A crash while checking for updates on some computers; a check that goes wrong says why
   ([#1123](https://github.com/anefzaoui/misterdownloadmanager/issues/1123))
+- ✅ Tests: the programs tests write and then run (the extraction tests' stand-in for HatchZip,
+  the Linux file manager's and the browser helper's) no longer fail now and then with "Text file
+  busy" (a file written while another test started a program was still open there for writing
+  when it ran); a program of their own writes them, and a test that gets another result says which
 - ✅ A video with a long title (an X post's text) no longer fails at 0% with **No such file or
   directory** on Windows: its name is shortened so its download's files fit Windows' path limit,
   and a name or folder too long says so
